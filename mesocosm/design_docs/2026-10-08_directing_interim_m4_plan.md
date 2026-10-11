@@ -182,6 +182,25 @@ on Isocosm, both modes, receipts replaying.
 
 ## Findings
 
+- **2026-10-11, Q3 fresh bare seed zero classified:** the original arm
+  ends at tick 41 without births; the independently frozen 454/813 candidate
+  reaches tick 180 with three played births, eight played heirs and three
+  played boundaries. Its native record contains 81 birth joins, comprising
+  28 children of founder parents and 53 children of born parents. Their
+  generations are 28/34/18/1; native births by epoch are 55/26/0. Only one
+  born consumer remains alive at tick 180, with no third-epoch birth. Native
+  birth joins and the three played births are distinct measures. Root
+  recomputed the full receipt/state/history classification; review
+  `q3-consumer-birth-root-review.json` in the external reproduction directory
+  has SHA-256
+  `3fd4a11f341755cfddb6c025513ccf2458111ae51839504ce6132dfcfeef1477`.
+  The retained Session replays its final saved state in Individuals and
+  Grouped modes; conservation was checked each tick. This is one bare seed,
+  not a per-tick replay or an A1 matrix certification. The bodied seed-zero
+  proposal and its strict parser are source-qualified; actual post-HEAL
+  source refresh, original/candidate bodied pilots and the remaining draws
+  are still required. No rate/default promotion is made.
+
 - **2026-10-10, Q3 actual Choice/Plan/Act diagnostic, verified:** unchanged
   bare meal3/birth14 seed0 reproduces the rejected125-tick baseline exactly,
   including71 native births and four ordinary receipt hashes. Fresh original

@@ -499,3 +499,33 @@ tests, compiled faults 0 to 9 and repaired verifier controls. The historical
 coverage, ordinary HEAL, adapter allocation 812 and full C10 remain open.
 Earlier primary documentation and failed evidence are retained. Q6's protocol
 edits are excluded. Four Q8 scratch files remain after the automatic rejection.
+
+## Ordinary HEAL and strict C10 preparation, 2026-10-11
+
+The ordinary-life proposal appends HEAL to the catalogue and draws its
+independent `life-heal` coin without changing the nine earlier trait coins,
+clutch or anamorphy. Its four native/test paths are not integrated. The first
+pinned Cargo/Rustc1.98.1 all-target native compiler check actually compiled
+the changed isocosm crate and exited zero. The original v3 harness result
+remains `valid=false`: its double-escaped compiler-trace regex rejected
+Windows command lines. Root independently qualified the actual executable
+positions, raw logs/PID/argv/times and all 356 native inputs, 53 config
+candidates and 119 immutable references. External
+`q8-heal-first-check-root-review.json` has SHA-256
+`8c4105993d9883d9733a72255e3b6c776905c0eae9e93bd668a5344a4f41306d`.
+A distinct strict parser and honest historical revalidation are being
+prepared; the six remaining trait/harm/incorporation/omission/restoration
+checks are unrun. Neither this compiler result nor pure parser fixtures
+qualify ordinary HEAL behavior.
+
+The strict C10 v2 source proposal contains twenty separately declared fault
+projections, including a coherent uniform-part control. Root replayed 672
+fabricated verdict/trace/prerequisite controls and its independent refusal
+cases; external `q8-c10-strict-v2-root-source-review.json` has SHA-256
+`a2e193490cd49a0e9dc2ab507df687f4873601efcf21c2bc2ecbf7bd3e22093b`.
+These are source/parser checks. No new C10 native control or statistical
+draw ran. The opt-in harm founding uses its separate life-trait generator;
+ordinary-life HEAL does not silently change that probe. Full C10, injury
+coverage and its statistical acceptance remain open.
+
+\r\n

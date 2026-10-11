@@ -506,6 +506,29 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
+- **2026-10-11, Q6 fixture baseline closed:** five fixture paths retain
+  authored native assertions, place/map identities, route endpoints/costs and
+  native history keys. The synthetic fixture adds routes after all their
+  endpoint places exist. Native HistoryLine events use `key`; PublicFact
+  effect IDs retain their separate contract shape. The independently
+  reproduced pinned-compiler baseline had 8 Genet, 1 System and 6 Views
+  failures. Their candidate now passes 55/49/6 tests (one ignored in Genet
+  and Views), with Watchtower 5, synthetic 1 and Lua assertion 2 positives.
+  Four compiled single-fault controls fail at the exact intended assertion:
+  zero route costs, omitted demo assertions, a swapped authored map and a
+  missing native history key. Both restored groups and the root all-target,
+  all-feature compiler pass. Root rehashed all 767 physical inputs, all 880
+  archive members, 125 config candidates and 110 immutable references;
+  all thirteen raw commands and 39 source/environment/tool guards qualify.
+  `q6-candidate-root-runtime-review.json` in the external Q6 receipt directory
+  has SHA-256
+  `987395951c49fcbb1b757c0d9e080b3429794cafa1a5cd9fa34b3c960ccd3b1a`.
+  The earlier compiler/cache stops, exact six-fingerprint repair and Git CRLF
+  application stop remain separate immutable evidence. The four line-ending
+  corrections restored the approved bytes without changing Git settings.
+  Together with the qualified protocol5/ALPNv5 checkpoint, this closes Q6.
+  Historical wire evidence and V2's remaining product gates remain open.
+
 - **2026-10-11, Q6 protocol checkpoint:** `PROTOCOL_VERSION` and transport
   ALPN move together from four to five. Eight envelope tests and the exact
   current-version QUIC loopback passed; restoring the envelope passed all

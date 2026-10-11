@@ -432,6 +432,23 @@ Put to Mark on 2026-09-26 as eight forks; he ruled seven the same day.
 
 ## Progress
 
+- **2026-10-11, Q14 core proposal source-qualified:** the isolated
+  fifteen-path proposal keeps one native Session in a private shared handle,
+  resolves each window's explicit participant through native plays, retains
+  opaque mode bytes across save/load, and prepares binding intentions with
+  participant/tick stamps. Root independently rehashed all proposal bytes,
+  current preimages/references, eighteen declared native fixture tests and
+  four exact single-fault projections; all twenty-one proposed Cargo gates
+  retain `--locked`. External `q14-host-core-root-source-review.json` and
+  `q14-host-core-root-locked-review.json` have SHA-256
+  `ea12c446b855ff116d69abf2388818588f1ec7345f006bdc38a438b30778c68c`
+  and
+  `ba925740359e602378bf63d8336fc223e52c4aee2687a1cc76812c5a56537c59`.
+  No host source was applied or compiled. Actual post-Q6/HEAL refresh,
+  reviewed offline host lock generation and a full compiled-source seal
+  precede those gates. Native participant attention still needs its bridge;
+  product adapters, shared windows/device and headed modes remain open.
+
 - **2026-10-10, Q15 verification complete:** tactile 4/4; the compiled
   omitted-refresh control caught (Cargo 101), exact source restored and
   positive 1/1; Eponym motion targets 13 passed, 18 failed as qualified in

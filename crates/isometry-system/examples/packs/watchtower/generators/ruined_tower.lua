@@ -29,35 +29,26 @@ function call_gen(request_json, entropy, request)
   "id":"watchtower:ash-and-bells",
   "name":"Ash and Bells",
   "world":{
-    "factions":{
-      "bellwardens":{"id":"bellwardens","name":"Bellwardens","tags":["watch","duty"],"claims":["watchtower:ruined-watchtower"]},
-      "road-scavengers":{"id":"road-scavengers","name":"Road Scavengers","tags":["scavengers","survivors"],"claims":["watchtower:ruined-watchtower"]}
-    },
-    "places":{
-      "watchtower:forest-region":{"id":"watchtower:forest-region","name":"Bellwood Reach","tags":["region","forest","frontier"],"map":"watchtower:forest-region","position":[5,4]},
-      "watchtower:forest-entry":{"id":"watchtower:forest-entry","name":"The Forest Road","tags":["entry","forest","road"],"map":"watchtower:forest-entry","position":[0,4]},
-      "watchtower:stream-clearing":{"id":"watchtower:stream-clearing","name":"Alder Stream Clearing","tags":["stream","clearing","local"],"map":"watchtower:stream-clearing","position":[10,4]},
-      "watchtower:ruined-watchtower":{"id":"watchtower:ruined-watchtower","name":"The Ash-Bell Watchtower","tags":["ruin","frontier","local"],"map":"watchtower:ruined-watchtower","position":[5,1]}
-    },
-    "characters":{
-      "brin":{"id":"brin","name":"Brin Tallow","tags":["scavenger","negotiator"],"faction":"road-scavengers","place":"watchtower:ruined-watchtower"},
-      "otta":{"id":"otta","name":"Otta Reed","tags":["scavenger","lookout"],"faction":"road-scavengers","place":"watchtower:ruined-watchtower"},
-      "elian":{"id":"elian","name":"Elian Voss","tags":["traveler","stranded"],"place":"watchtower:ruined-watchtower"},
-      "mira":{"id":"mira","name":"Mira Vale","tags":["hero","negotiator"],"place":"watchtower:ruined-watchtower"}
-    },
-    "routes":{
-      "forest-entry-region":{"id":"forest-entry-region","from":"watchtower:forest-entry","to":"watchtower:forest-region","tags":["road","forest"]},
-      "stream-region":{"id":"stream-region","from":"watchtower:stream-clearing","to":"watchtower:forest-region","tags":["water","crossing"]},
-      "tower-region":{"id":"tower-region","from":"watchtower:ruined-watchtower","to":"watchtower:forest-region","tags":["watch","road"]}
-    },
-    "laws":{},
-    "history":[
-      {"id":"bell-cracked","time":-12,"kind":"collapse","text":"The watchtower bell cracked when the old road burned, leaving its warning unfinished.","participants":["bellwardens"],"place":"watchtower:ruined-watchtower","tags":["ruin","bell"]},
-      {"id":"scavengers-arrived","time":-2,"kind":"arrival","text":"Brin and Otta reached the tower before the road closed and made a camp among the fallen stones.","participants":["brin","otta","road-scavengers"],"place":"watchtower:ruined-watchtower","tags":["scavengers","camp"]}
+    "assertions":[
+      {"Faction":{"authored":{"key":"bellwardens","name":"Bellwardens","tags":["watch","duty"],"claims":["watchtower:ruined-watchtower"]}}},
+      {"Faction":{"authored":{"key":"road-scavengers","name":"Road Scavengers","tags":["scavengers","survivors"],"claims":["watchtower:ruined-watchtower"]}}},
+      {"Place":{"key":"watchtower:forest-entry","name":"The Forest Road","tags":["entry","forest","road"],"map":"watchtower:forest-entry","position":[0,4]}},
+      {"Place":{"key":"watchtower:forest-region","name":"Bellwood Reach","tags":["region","forest","frontier"],"map":"watchtower:forest-region","position":[5,4]}},
+      {"Place":{"key":"watchtower:ruined-watchtower","name":"The Ash-Bell Watchtower","tags":["ruin","frontier","local"],"map":"watchtower:ruined-watchtower","position":[5,1]}},
+      {"Place":{"key":"watchtower:stream-clearing","name":"Alder Stream Clearing","tags":["stream","clearing","local"],"map":"watchtower:stream-clearing","position":[10,4]}},
+      {"Character":{"key":"brin","name":"Brin Tallow","tags":["scavenger","negotiator"],"faction":"road-scavengers","place":"watchtower:ruined-watchtower"}},
+      {"Character":{"key":"elian","name":"Elian Voss","tags":["traveler","stranded"],"place":"watchtower:ruined-watchtower"}},
+      {"Character":{"key":"mira","name":"Mira Vale","tags":["hero","negotiator"],"place":"watchtower:ruined-watchtower"}},
+      {"Character":{"key":"otta","name":"Otta Reed","tags":["scavenger","lookout"],"faction":"road-scavengers","place":"watchtower:ruined-watchtower"}},
+      {"Route":{"key":"forest-entry-region","from":"watchtower:forest-entry","to":"watchtower:forest-region","tags":["road","forest"]}},
+      {"Route":{"key":"stream-region","from":"watchtower:stream-clearing","to":"watchtower:forest-region","tags":["water","crossing"]}},
+      {"Route":{"key":"tower-region","from":"watchtower:ruined-watchtower","to":"watchtower:forest-region","tags":["watch","road"]}},
+      {"History":{"key":"bell-cracked","time":-12,"kind":"collapse","text":"The watchtower bell cracked when the old road burned, leaving its warning unfinished.","participants":["bellwardens"],"place":"watchtower:ruined-watchtower","tags":["ruin","bell"]}},
+      {"History":{"key":"scavengers-arrived","time":-2,"kind":"arrival","text":"Brin and Otta reached the tower before the road closed and made a camp among the fallen stones.","participants":["brin","otta","road-scavengers"],"place":"watchtower:ruined-watchtower","tags":["scavengers","camp"]}}
     ],
     "storylets":{
       "parley-at-the-breach":{"key":"parley-at-the-breach","entry":"Brin raises an empty hand at the breach. The scavengers will share their water if the party helps Elian and leaves their camp standing.","tags":["negotiation","encounter","scavengers"],"roles":[{"key":"speaker","tags":["hero","negotiator"]},{"key":"scavenger","tags":["scavenger"]}],"effects":[{"type":"fact","fact":{"id":"watchtower:parley","kind":"outcome","text":"The scavengers lower their blades and point the traveler toward the old road.","tags":["negotiation","conclusion"]}}]},
-      "steel-in-the-stones":{"key":"steel-in-the-stones","entry":"Otta's hand closes around a chipped blade. A shouted accusation, a drawn weapon, or a step toward the nest turns the ruin into a fight.","tags":["fight","encounter","scavengers"],"roles":[{"key":"challenger","tags":["hero"]},{"key":"lookout","tags":["lookout"]}],"effects":[{"type":"history","event":{"id":"watchtower:stone-fight","time":0,"kind":"skirmish","text":"The tower stones rang with a short, sharp fight over the stranded traveler and the nest.","participants":["brin","otta"],"place":"watchtower:ruined-watchtower","tags":["fight","conclusion"]}}]},
+      "steel-in-the-stones":{"key":"steel-in-the-stones","entry":"Otta's hand closes around a chipped blade. A shouted accusation, a drawn weapon, or a step toward the nest turns the ruin into a fight.","tags":["fight","encounter","scavengers"],"roles":[{"key":"challenger","tags":["hero"]},{"key":"lookout","tags":["lookout"]}],"effects":[{"type":"history","event":{"key":"watchtower:stone-fight","time":0,"kind":"skirmish","text":"The tower stones rang with a short, sharp fight over the stranded traveler and the nest.","participants":["brin","otta"],"place":"watchtower:ruined-watchtower","tags":["fight","conclusion"]}}]},
       "the-last-bell":{"key":"the-last-bell","entry":"With the stranded traveler safe and the tower beast faced, someone may climb to the broken bell and decide what warning the road hears next.","tags":["conclusion","encounter","watchtower"],"roles":[{"key":"climber","tags":["hero"]}],"effects":[{"type":"fact","fact":{"id":"watchtower:last-bell","kind":"outcome","text":"The next warning from the tower belongs to the people who survived it.","tags":["bell","conclusion"]}}]}
     }
   },

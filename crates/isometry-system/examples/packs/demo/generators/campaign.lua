@@ -5,28 +5,18 @@ function call_gen(request_json, entropy, request)
 {
   "id":"river-oath","name":"The River Oath",
   "world":{
-    "factions":{
-      "tide-court":{"id":"tide-court","name":"Tide Court","tags":["river","keepers"],"claims":["ford"]},
-      "ash-choir":{"id":"ash-choir","name":"Ash Choir","tags":["fire","invaders"],"claims":["glass-shrine"]}
-    },
-    "places":{
-      "ford":{"id":"ford","name":"Oath Ford","tags":["village","river"],"map":"river-ford"},
-      "glass-shrine":{"id":"glass-shrine","name":"Glass Shrine","tags":["ruin","fire"],"map":"glass-shrine-map"},
-      "river-region":{"id":"river-region","name":"River March","tags":["region"],"map":"river-region"}
-    },
-    "characters":{
-      "mara":{"id":"mara","name":"Mara Vale","tags":["warden","tide-court"],"faction":"tide-court","place":"ford"}
-    },
-    "routes":{
-      "ford-shrine":{"id":"ford-shrine","from":"ford","to":"glass-shrine","tags":["road","contested"]},
-      "region-ford":{"id":"region-ford","from":"river-region","to":"ford","tags":["river"]}
-    },
-    "laws":{
-      "iron-remembers":{"id":"iron-remembers","name":"Iron Remembers","text":"Worked iron keeps the true name of its maker.","tags":["magic","names"],"parameters":{"identified_iron":"reveals_maker"}}
-    },
-    "history":[
-      {"id":"choir-arrives","time":-8,"kind":"invasion","text":"The Ash Choir crossed the dry eastern bed.","participants":["ash-choir","tide-court"],"place":"glass-shrine","tags":["conflict"]},
-      {"id":"oath-broken","time":-3,"kind":"schism","text":"A keeper broke the ford oath and hid the witness blade.","participants":["tide-court"],"place":"ford","tags":["secret","oath"]}
+    "assertions":[
+      {"Faction":{"authored":{"key":"ash-choir","name":"Ash Choir","tags":["fire","invaders"],"claims":["glass-shrine"]}}},
+      {"Faction":{"authored":{"key":"tide-court","name":"Tide Court","tags":["river","keepers"],"claims":["ford"]}}},
+      {"Place":{"key":"ford","name":"Oath Ford","tags":["village","river"],"map":"river-ford"}},
+      {"Place":{"key":"glass-shrine","name":"Glass Shrine","tags":["ruin","fire"],"map":"glass-shrine-map"}},
+      {"Place":{"key":"river-region","name":"River March","tags":["region"],"map":"river-region"}},
+      {"Character":{"key":"mara","name":"Mara Vale","tags":["warden","tide-court"],"faction":"tide-court","place":"ford"}},
+      {"Route":{"key":"ford-shrine","from":"ford","to":"glass-shrine","tags":["road","contested"]}},
+      {"Route":{"key":"region-ford","from":"river-region","to":"ford","tags":["river"]}},
+      {"Law":{"key":"iron-remembers","name":"Iron Remembers","text":"Worked iron keeps the true name of its maker.","tags":["magic","names"],"parameters":{"identified_iron":"reveals_maker"}}},
+      {"History":{"key":"choir-arrives","time":-8,"kind":"invasion","text":"The Ash Choir crossed the dry eastern bed.","participants":["ash-choir","tide-court"],"place":"glass-shrine","tags":["conflict"]}},
+      {"History":{"key":"oath-broken","time":-3,"kind":"schism","text":"A keeper broke the ford oath and hid the witness blade.","participants":["tide-court"],"place":"ford","tags":["secret","oath"]}}
     ],
     "storylets":{
       "final-oath":{"key":"final-oath","entry":"At the Glass Shrine, the remembered name decides the river war.","tags":["finale","encounter"],"requirements":{"faction_tags":["river","fire"],"hidden_facts":["witness-blade.secret"],"world_laws":["iron-remembers"]},"roles":[{"key":"warden","tags":["warden"]}],"effects":[{"type":"fact","fact":{"id":"river-oath.restored","kind":"history","text":"The River Oath was spoken again.","tags":["river","oath"]}}]}

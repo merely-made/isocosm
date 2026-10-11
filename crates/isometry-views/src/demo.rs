@@ -151,6 +151,7 @@ pub fn synth_world(places: usize, storylets: usize) -> CampaignWorld {
     // than exploding quadratically. A pointcrawl is sparse; a dense one would
     // measure a graph nobody plays.
     let side = (places as f64).sqrt().ceil().max(1.0) as usize;
+    let mut routes = Vec::new();
 
     for i in 0..places {
         let place = Place {
@@ -192,8 +193,13 @@ pub fn synth_world(places: usize, storylets: usize) -> CampaignWorld {
                 tags: Default::default(),
                 weight: (i % 5 + 1) as u32,
             };
-            world.assert(Assertion::Route(route)).unwrap();
+            routes.push(route);
         }
+    }
+
+    // Routes follow both endpoint places in the asserted history.
+    for route in routes {
+        world.assert(Assertion::Route(route)).unwrap();
     }
 
     for i in 0..side {

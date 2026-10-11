@@ -117,6 +117,25 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-11, Q3 fresh bare seed zero classified:** the original arm
+  ends at tick 41 without births; the independently frozen 454/813 candidate
+  reaches tick 180 with three played births, eight played heirs and three
+  played boundaries. Its native record contains 81 birth joins, comprising
+  28 children of founder parents and 53 children of born parents. Their
+  generations are 28/34/18/1; native births by epoch are 55/26/0. Only one
+  born consumer remains alive at tick 180, with no third-epoch birth. Native
+  birth joins and the three played births are distinct measures. Root
+  recomputed the full receipt/state/history classification; review
+  `q3-consumer-birth-root-review.json` in the external reproduction directory
+  has SHA-256
+  `3fd4a11f341755cfddb6c025513ccf2458111ae51839504ce6132dfcfeef1477`.
+  The retained Session replays its final saved state in Individuals and
+  Grouped modes; conservation was checked each tick. This is one bare seed,
+  not a per-tick replay or an A1 matrix certification. The bodied seed-zero
+  proposal and its strict parser are source-qualified; actual post-HEAL
+  source refresh, original/candidate bodied pilots and the remaining draws
+  are still required. No rate/default promotion is made.
+
 - **2026-10-11, Q3 supply classification root-verified:** all 39 referenced
   files, 173,364 contiguous observer rows and all 267 restored native inputs
   match. Root independently confirms 68 same-pass mutated-target choices,
@@ -445,6 +464,29 @@ headed meal choice feels tense rather than clerical.
   `legacy/campaign`, held by the faction turn until V2 (247).
 
 ## Progress
+
+- **2026-10-11, Q6 fixture baseline closed:** five fixture paths retain
+  authored native assertions, place/map identities, route endpoints/costs and
+  native history keys. The synthetic fixture adds routes after all their
+  endpoint places exist. Native HistoryLine events use `key`; PublicFact
+  effect IDs retain their separate contract shape. The independently
+  reproduced pinned-compiler baseline had 8 Genet, 1 System and 6 Views
+  failures. Their candidate now passes 55/49/6 tests (one ignored in Genet
+  and Views), with Watchtower 5, synthetic 1 and Lua assertion 2 positives.
+  Four compiled single-fault controls fail at the exact intended assertion:
+  zero route costs, omitted demo assertions, a swapped authored map and a
+  missing native history key. Both restored groups and the root all-target,
+  all-feature compiler pass. Root rehashed all 767 physical inputs, all 880
+  archive members, 125 config candidates and 110 immutable references;
+  all thirteen raw commands and 39 source/environment/tool guards qualify.
+  `q6-candidate-root-runtime-review.json` in the external Q6 receipt directory
+  has SHA-256
+  `987395951c49fcbb1b757c0d9e080b3429794cafa1a5cd9fa34b3c960ccd3b1a`.
+  The earlier compiler/cache stops, exact six-fingerprint repair and Git CRLF
+  application stop remain separate immutable evidence. The four line-ending
+  corrections restored the approved bytes without changing Git settings.
+  Together with the qualified protocol5/ALPNv5 checkpoint, this closes Q6.
+  Historical wire evidence and V2's remaining product gates remain open.
 
 - **2026-10-11, combined native integration checked:** all nine required
   workspace compiler gates passed on the twelve Q3/Q8 paths. The complete
