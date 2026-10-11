@@ -266,8 +266,9 @@ research note (754) waits for Mark.
 Numbering originally continued at 805; that ruling records the Codex model
 translation on resumption. Rulings 806 to 811 settle lineage complexity,
 event-handle translation, native deed agreement links, character table
-metadata, healing allocation and unknown legacy losses; the next ruling is
-812. Form, in the wing
+metadata, healing allocation and unknown legacy losses. Rulings 812 and 813
+settle adapter-loss restoration and empty-choice timing; the next ruling is
+814. Form, in the wing
 record before the "Two
 earlier rulings" paragraph:
 
@@ -284,6 +285,37 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, rulings 812 and 813 answered:** adapter healing restores
+  recorded losses as free-pool cells after allocation clearing, retaining
+  cell IDs. Q8 resumes bounded source-only transfer/healing preflight in its
+  existing plans tree. An empty choice is reconsidered at a later pass start
+  until a process is selected; that process then stays committed for the
+  tick. Q3 finishes its unchanged v2 batch before a separate timing proposal
+  and fresh controls. Its five positive commands passed 41 named tests;
+  compiled fault controls are still running. Q6's environment-provider
+  correction passed root review and parks; Q10's source and revised helper
+  await final root review and Cargo. Q3 and Q8 are active, with Q6/Q10 parked.
+  Ordinary HEAL, full C10 and A1 remain open; no new resource was created.
+  The next ruling is 814.
+- **2026-10-11, Q3 setup corrected and Q6 setup stopped:** Q3's first
+  recursive inventory counted three existing Cargo marker/lock files in
+  `shared/isocosm/target`, outside its 269 native inputs. No Cargo ran in
+  that attempt. Its separately archived v2 runner excludes only that marked
+  subtree, retains those files and all 273 frozen bytes, and seals native
+  membership, configuration, environment and toolchain binaries. Root
+  review `q3-pass-start-454-scoring-run-v2-source-root-review.json` has
+  SHA-256 `c545be86c9a8a85b9130b060374e411c00add1acb580d1bb4f4498cb6430422e`.
+  Its focused pass-start batch actually started at 02:02:59 UTC; results
+  remain unqualified. Q6's reviewed 768-input protocol runner stopped
+  before Cargo because clearing three scene flags with .NET retained empty
+  strings where its envelope required absent/null values. Its failed
+  attempt is retained; an environment-provider correction is source-only.
+  Q3 now owns serialized Cargo, with no reproduction pilot, matrix, rate or
+  empty-choice policy grant. Q10's temporary observer is source-ready:
+  root verified all 629 inputs, 25 unchanged original functions and eight
+  staged Q5 guards; its execution helper still needs membership/environment
+  sealing before Cargo. Q3, Q6 and Q10 remain the three lanes. Forks 812
+  and empty-choice timing remain pending; no new tree, target or Cargo home.
 - **2026-10-11, Q9 replay API checkpoint integrated:** four code paths
   publish a private native Session replay with atomic assertion batches and
   immutable readings. All eight new plus fifteen existing tests passed,

@@ -446,6 +446,14 @@ headed meal choice feels tense rather than clerical.
 
 ## Progress
 
+- **2026-10-11, rulings 812 and 813:** Q8 can now clear the restoration
+  function of an adapter's recorded losses, retaining IDs and healing them
+  into the free pool; 811's unknown legacy losses remain. Transfer/healing
+  verification, ordinary HEAL and full C10 remain open. Q3 can reconsider
+  an empty choice once at a later pass start until a process commits for
+  that tick. Its current frozen 454/scoring batch finishes unchanged, then
+  separately qualified timing controls precede any A1 reproduction pilot.
+  Neither ruling certifies a draw or promotes a rate/default.
 - **2026-10-10, ruling 811:** unknown legacy loss allocations remain until
   explicitly repaired, while recorded losses in the same body can heal.
   Q8's existing archive validation remains in force. Exact JSON/genesis and

@@ -10162,6 +10162,37 @@ what later sections derive from.
      an archive actually loading and replaying; serialization/migration
      compatibility remains a verification gate, not supplied by this ruling.
 
+812. **Healing after adapter transfer restores free-pool cells.**
+     2026-10-11, Q8's transfer-allocation fork after 810. Question: "When an
+     injured whole part is taken as an adapter, the adapter clears its donor
+     functions. Later healing could restore a lost cell's recorded donor
+     function under ruling 810. What should healing restore after that
+     transfer?" Options: restore free-pool cells after the adapter clears
+     allocations, retaining lost IDs (recommended); restore the recorded
+     donor functions; leave the transferred losses unknown until repaired.
+     Mark chose "Restore lost cells as free-pool cells after the adapter clears their function allocations (Recommended); retain the lost cell IDs."
+     So clearing an adapter's function allocations also clears the function
+     to be restored for its recorded losses, while retaining their cell IDs.
+     Healing does not recreate donor functions. Q8 verifies normal and crowd
+     transfer, paid healing and save/replay. Ruling 811 still governs unknown
+     legacy allocations; these are not silently reconstructed.
+
+813. **An empty choice can be reconsidered at a later pass start.**
+     2026-10-11, Q3's receipt-backed timing fork under 683. Question: "Ruling
+     683 allows one chosen process per tick, but leaves an empty choice
+     unspecified. Q3 observed all 37 consumers choose nothing before food
+     arrived at tick 111, then skip feeding despite 74 eligible producers.
+     Should an empty choice commit the whole tick?" Options: reconsider at
+     later pass starts until a process is selected, then keep it for the tick
+     (recommended); keep the first empty choice for the whole tick. Mark chose
+     "Reconsider at later pass starts until one process is selected, then keep it for the tick (Recommended)."
+     So a no-process result can be reconsidered once at a later pass start;
+     an actual selected process remains committed for that tick. This amends
+     683's unspecified empty result without permitting a second process.
+     Pass-start readings under 454 and an explicit nudge's named identity
+     remain intact. Q3 qualifies the timing, one-process and replay controls
+     on a fresh envelope before any reproduction pilot or rate promotion.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -277,6 +277,13 @@ on Isocosm, both modes, receipts replaying.
 
 ## Progress
 
+- **2026-10-11, ruling 813:** an empty choice may be reconsidered once at
+  a later pass start; a selected process stays committed for the tick.
+  Q3 finishes its already frozen 454/scoring batch before preparing this
+  separate timing correction. Explicit nudge identity, framed feasibility
+  and live bond-credit readings remain. Fresh one-process, same-pass and
+  replay controls precede any A1 pilot; neither timing nor reproduction is
+  qualified by the ruling alone.
 - **2026-10-10, Q3 balance after the prey fix:** unchanged seed 0 again
   exhausted at tick 115. Conservation and saved replay in both modes
   passed. No born consumer reproduced: first child 130 peaked at nine
