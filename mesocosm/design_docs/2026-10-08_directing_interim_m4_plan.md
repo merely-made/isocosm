@@ -301,6 +301,18 @@ on Isocosm, both modes, receipts replaying.
 
 ## Progress
 
+- **2026-10-11, Q3 bitten-part sharing qualified on main:** whole-prey and
+  part quotas remain bounded across a pass (454, 459); zero accepted shares
+  publish no flow, and partial consumption does not allocate a fractional
+  whole part. The eleven-command native batch passed 48 named positives,
+  two intended compiled faults, exact restoration and its all-target check.
+  All nine consumer workspace compilers passed after the six-path main
+  application. Complete root reviews and the preserved reader-format failure
+  are recorded in [lane queue Progress](2026-10-10_lane_queue_plan.md#progress).
+  Route-duration journeys still await transit upkeep/birth choices. The
+  rejected reproduction candidate, eighty-world A1 and headed certification
+  remain open.
+
 - **2026-10-11, ruling 817 and Q3 causal diagnosis:** migration departs and
   arrives after the traversed route's authored travel time; another route
   becomes available after arrival. All 117 missing feeds in the qualified

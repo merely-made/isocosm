@@ -55,6 +55,8 @@ pub(crate) struct Demands {
     /// A meal: of whom, how much, and of which accounts, none naming every
     /// matter account.
     pub(crate) meal: Option<(Holder, u64, Vec<Key>)>,
+    /// The already-drawn bitten part, limiting the whole-prey quota (454, 459).
+    pub(crate) meal_part: Option<Holder>,
 }
 
 /// One act the plan found, in pass order.
@@ -183,8 +185,38 @@ impl Frame {
                 .collect();
             portions.insert(holder, split.into_iter());
         }
+        let mut meals: Vec<Option<Ledger>> = plans
+            .iter()
+            .map(|p| {
+                p.demands.meal.as_ref().map(|(holder, ..)| {
+                    portions
+                        .get_mut(holder)
+                        .and_then(Iterator::next)
+                        .expect("a portion for every meal")
+                })
+            })
+            .collect();
+        // Preserve whole-prey quotas. Where several bites land on one part,
+        // share that part's shortfall before any act writes it (454, 459).
+        let mut bitten: BTreeMap<(Holder, Key), u128> = BTreeMap::new();
+        for (p, meal) in plans.iter().zip(&meals) {
+            if let (Some(part), Some(meal)) = (p.demands.meal_part, meal) {
+                for (key, amount) in meal {
+                    *bitten.entry((part, key.clone())).or_default() += u128::from(*amount);
+                }
+            }
+        }
+        for (p, meal) in plans.iter().zip(&mut meals) {
+            if let (Some(part), Some(meal)) = (p.demands.meal_part, meal) {
+                for (key, amount) in meal.iter_mut() {
+                    let at = (part, key.clone());
+                    *amount = fraction(*amount, held(&at), bitten[&at]);
+                }
+                meal.retain(|_, amount| *amount > 0);
+            }
+        }
         let mut planned = BTreeMap::new();
-        for (p, takes) in plans.into_iter().zip(takes) {
+        for ((p, takes), meal) in plans.into_iter().zip(takes).zip(meals) {
             let accounts = takes
                 .into_iter()
                 .map(|(k, take)| {
@@ -192,10 +224,6 @@ impl Frame {
                     (k, g)
                 })
                 .collect();
-            let meal = p.demands.meal.as_ref().map(|(holder, ..)| {
-                let next = portions.get_mut(holder).and_then(Iterator::next);
-                next.expect("a portion for every meal")
-            });
             let shares = Shares { accounts, meal };
             planned.insert(
                 p.actor,

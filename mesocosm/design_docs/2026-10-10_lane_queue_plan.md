@@ -285,6 +285,28 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, Q3 bitten-part sharing qualified on main:** the six-path
+  change preserves whole prey and part quotas across a pass, without extra
+  draws or altered rates (454, 459). Its eleven-command native batch passed
+  48 named positives, two intended compiled semantic faults, exact restored
+  positives and the native all-target compiler. Root native review SHA-256
+  is `fca63b7d12f44985c5e43d1b4d5f7830870fd86f92fb8f6913970b0bbe4946ff`.
+  All nine offline consumer workspace compilers then passed on the six main
+  postimages. The independent review binds 998 physical inputs, 181 config
+  candidates, the complete archive, actual command exits and serial process
+  custody; SHA-256 is
+  `34a746aac54e08857bb18bf4ddaf8edc41f41f69d17966da646b402d7914934e`.
+  The initial single-line compiler reader refused multiline dependency
+  descriptions; its failure and raw logs are preserved, and the qualified
+  multiline reader checks the same commands without a build rerun. The
+  earlier rejected sharing batch remains historical evidence only. Q8's
+  thousand-draw probe is running against its frozen earlier executable and
+  source; it cannot certify this changed main by itself. Q9's explicit
+  profile preview/site attachments and Q14's native host/Mesocosm producer
+  remain source proposals with runtime and headed gates open. Journeys await
+  rulings 820 and 821; recipe choices await 818 and 819. Full A1, C10, V2,
+  E3 and M3/M4 remain open.
+
 - **2026-10-11, Q9 admission and note vocabulary qualified:** the distinct
   fifteen-command batch passes three native positive groups, three intended
   compiled contract faults and all nine offline workspace compilers. Root

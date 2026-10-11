@@ -292,3 +292,6 @@ fn every_draw_of_a_pass_reads_the_pass_start() {
     assert!(draws(hunt(3), 0).len() > 2);
     assert!(draws(give(40), 40).len() > 2);
 }
+
+#[path = "shares/parts.rs"]
+mod parts;

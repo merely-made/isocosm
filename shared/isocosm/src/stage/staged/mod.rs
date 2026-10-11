@@ -221,6 +221,7 @@ impl Staged<'_> {
                 let (holder, asked) = (holder(from)?, amount.resolved()?);
                 if let Some(d) = &mut self.stage.demands {
                     d.meal = Some((holder, asked, of.clone()));
+                    d.meal_part = None;
                 }
                 Ok(e)
             },
@@ -484,6 +485,13 @@ impl Staged<'_> {
                 };
                 let bitten = crate::anatomy::bitten(self.body(*from)?, &accounts, draw);
                 self.stage.bitten = bitten;
+                if let (Some(part), Some(Holder::Entity(body))) = (bitten, self.holder(*from)) {
+                    if let Some(d) = &mut self.stage.demands {
+                        if d.meal.as_ref().is_some_and(|(holder, ..)| *holder == Holder::Entity(body)) {
+                            d.meal_part = Some(Holder::Part(body, part));
+                        }
+                    }
+                }
                 let offered = match bitten {
                     Some(part) => {
                         let prey = self.body(*from)?;

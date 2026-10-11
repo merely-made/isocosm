@@ -294,8 +294,9 @@ fn a_bite_that_takes_less_than_the_part_or_wants_no_part_eats_it() {
 /// take all of the frond (rulings 454 and 516). A part an earlier act of
 /// the pass bit or took may not be taken again as the pass found it, and
 /// a part it took stays taken, so the world's matter holds whichever order
-/// the bites come in; across seeds the frond is taken whole and a later
-/// bite refused.
+/// the bites come in. A coincident oversubscribed bite is capped before
+/// incorporation, so both partial meals land; an unopposed full quota
+/// can still take the frond whole.
 #[test]
 fn a_pass_takes_a_part_whole_only_as_it_finds_it() {
     let (mut taken, mut refused) = (0, 0);
@@ -323,7 +324,8 @@ fn a_pass_takes_a_part_whole_only_as_it_finds_it() {
             refused += 2 - sim.take_watched().len();
         }
     }
-    assert!(taken > 0 && refused > 0, "{taken} taken, {refused} refused");
+    assert!(taken > 0, "an unopposed full quota still incorporates a frond");
+    assert_eq!(refused, 0, "coincident quotas are capped before any part is removed");
 }
 
 /// The probe's world cut to one site's ground, a producer of two fronds
@@ -419,3 +421,6 @@ fn a_pass_gives_nothing_to_a_part_it_took() {
     }
     assert!(refused > 0, "no gift met a frond taken");
 }
+
+#[path = "incorporation/sharing.rs"]
+mod sharing;
