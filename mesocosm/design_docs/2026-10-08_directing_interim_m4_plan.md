@@ -177,6 +177,28 @@ on Isocosm, both modes, receipts replaying.
 
 ## Findings
 
+- **2026-10-10, Q3 actual Choice/Plan/Act diagnostic, verified:** unchanged
+  bare meal3/birth14 seed0 reproduces the rejected125-tick baseline exactly,
+  including71 native births and four ordinary receipt hashes. Fresh original
+  seed0 ends41 with0 births. Every tick conserves and both saved replays pass
+  in both arms. At111 all37 first choices cache None/options={} before a later
+  Move pass brings74 edible producers/225 matter; actual feed is Foregone.
+  This is separate from68 first choices whose scored prey moved earlier in
+  the same unframed Move pass (60 at93,8 at123), violating454's pass-start read.
+  Candidate81..125 has79 accepted meals/170 own units at81,407 Foregone plans,
+  329 NoTarget blocks and no accepted zero-share meal. Original's16 Foregone
+  plans explicitly choose upkeep20 over feed10 with food already eligible.
+  **Reading, not ruled:**683 chooses one process, but does not settle whether
+  an empty first cache is final for the tick. Keeping the empty commitment
+  and retrying only an uncommitted None at a later pass are separate defended
+  policies; root owns any numbered decision. A Move frame alone is not proved
+  sufficient because lazy body preservation and target-index candidates must
+  agree. No policy/rate/source repair or matrix was chosen by this diagnostic.
+  All173364 observer rows remain non-authoritative. Six original files restored
+  exactly, two archived helpers removed;267 original input bytes match before
+  and after the24.125s offline-j1 native all-target gate. Cargo released. Receipts
+  use external `q3-reproduction-meal3-birth14-supply-trace` stem; A1 remains open.
+
 - **2026-10-10, the fork resolved by existing ruling 454:** its text says
   hunters draw prey from the pass's start, while 683 chooses one process
   and never binds automatic prey for the entire tick. The bounded correction

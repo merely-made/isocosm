@@ -117,6 +117,17 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-11, Q3 supply classification root-verified:** all 39 referenced
+  files, 173,364 contiguous observer rows and all 267 restored native inputs
+  match. Root independently confirms 68 same-pass mutated-target choices,
+  37 empty choices before later food at tick 111 and 1,274 local soil blocks.
+  External `q3-reproduction-meal3-birth14-supply-trace-classification-root-review.json`
+  has SHA-256 `e3cff2a5943ab3f4d638f680ecffdb1d3468ff391b5fd3ab3d0997c2d311368f`.
+  The diagnostic conserved both fresh arms and passed both saved replay modes;
+  the candidate remains rejected at 125 and original control ends at 41.
+  Existing 454 authorizes the bounded pass-start body/index correction; its
+  source is preparing separately. Empty-choice timing is a pending user fork
+  after 812. No rate/default promotion or full A1 gate follows this diagnostic.
 - **2026-10-10, Q5 fresh failure classification:** the integrated consumer
   source at `21edca66` yields 55 passing, 43 failing and three ignored tests,
   with ten failed targets. Root rehashed all 620 source/config/archive inputs
