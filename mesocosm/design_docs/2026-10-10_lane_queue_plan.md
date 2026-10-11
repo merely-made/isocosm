@@ -284,6 +284,29 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-10, Q5 launched; Q3/Q8 diagnostics prepared:** Q2 is pushed at
+  `21edca66`; its final external `q2-root-integration.json` has SHA-256
+  `46bea55360919bcc4416434591e2cb79cebca2b7ed9319a5b423c07d96e230e8`.
+  Q5 reuses `Code/worktrees/isometry-contracts`, now clean at that commit
+  on `lane-eponym-tests`; old Q2 tip `d1c65d43` remains preserved. Its sole
+  Cargo grant is a fresh Eponym workspace/all-feature/no-fail-fast baseline,
+  using the existing `contracts` target/build directories. It freezes 620
+  inputs and authentic archive bytes before edits, then releases Cargo for
+  classification. Q6 is eligible but awaits the three-lane limit.
+  Q3's unchanged saved-native reconstruction matches 299 non-participant
+  final ledgers/positions and three sites. Edible producers and soil remain;
+  thirteen of fourteen late feeding passes lack co-located eligible prey,
+  while tick 111 has eligible prey but no accepted meal. Its seven-file
+  review manifest, SHA-256
+  `d63fed40eaa3b95c2f5344120ff88f6a53ae3cd18eec3b32e3724227db29ef86`,
+  is root-verified. Q3 prepares temporary test-only Choice/Plan/Act
+  observation source; fresh candidate/original diagnostics still need a
+  reviewed source envelope and serial grant. No retune or matrix follows.
+  Q8 prepares an independent Python implementation of Rust's declared
+  permutation tape, preserving all thresholds and the failed verifier.
+  Python-only method controls and separately named old-pilot reanalysis
+  are granted; no new simulation, 100/1000 run or certification is granted.
+  Q3/Q5/Q8 are the three lanes; 812 and ordinary HEAL remain open.
 - **2026-10-10, Q2 consumer checkpoint integrated:** the complete 26-path
   extraction through `d1c65d43` passes main's root and Eponym workspace,
   all-target and all-feature checks offline (45.35 and 28.88 seconds).

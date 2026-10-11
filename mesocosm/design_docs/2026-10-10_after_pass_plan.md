@@ -117,6 +117,25 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-10, Q3 food-access reconstruction:** unchanged saved-native
+  flows and accepted watches reconstruct all 299 non-participant final
+  ledgers, places and alive flags and three site accounts exactly. At
+  feeding tick 123, 64 living producers hold 191 edible units; final tick
+  125 retains 64 at site two with 127 units. Final soil totals 4,451.
+  Producer production/migration cadence leaves replenished soil zero
+  unused after tick 16 and soil one after 14; subsequent intake is at two.
+  Thirteen of fourteen feeding passes from 84 through 123 lack eligible
+  co-located prey for every consumer. At 111, 37 consumers share site two
+  with 74 eligible producers holding 225 units, but no meal is accepted.
+  This last absence's actual cached Choice/Foregone/Plan reason remains
+  unobserved. Decomposers lack positive eligible carcasses through 48 and
+  all exhaust at 50. Reading, not ruled: inspect actual first-choice and
+  pass-frame context before changing rates, movement or choice policy.
+  The root-verified external `q3-reproduction-meal3-birth14-supply-review.md`
+  has SHA-256 `4c95535cb177dd03afaa363888f8ab368a156d6813c9f4f701130e62b049a394`.
+  A diagnostic will retain fresh candidate/original receipts, exact
+  candidate Genesis/state-hash agreement and all conservation/replay
+  requirements. Its source and execution remain separate gates; A1/A4 stay open.
 - **2026-10-10, C10 pilot stopped by independent statistics:** the frozen
   release artifact runs seed `2026101001`, twenty draws and all five arms.
   All arms refuse zero draws; the forty native arm-runs conserve unassisted
