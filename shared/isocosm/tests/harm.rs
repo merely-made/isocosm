@@ -14,6 +14,8 @@ use isocosm::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 
+#[path = "harm/certification.rs"]
+mod certification_tests;
 #[path = "harm/crowd.rs"]
 mod crowd_tests;
 #[path = "harm/healing_legacy.rs"]
@@ -286,6 +288,7 @@ fn hazard_zero_wounds_nothing_in_native_and_crowd_runs() {
         ticks: 12,
         harm: Some(HarmFounding {
             hazard: [0, 0],
+            heals: 0,
             ..Default::default()
         }),
         ..Default::default()

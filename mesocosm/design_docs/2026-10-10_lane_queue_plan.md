@@ -284,6 +284,18 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, Q8 diagnostic harness integrated:** eight code/test/script
+  paths retain the qualified native harness and matching Python tape. Root's
+  offline native workspace/all-target check passed with all 349 frozen inputs
+  unchanged; receipt `q8-c10-root-native-check.json`, SHA-256
+  `5739230570a37cd2971edbe29f1f22f6e86794eb7a90d3537a99239a51ec158a`.
+  The 13 tape controls and six corrupted receipts qualify the historical
+  196-comparison reanalysis; the 20-draw pilot remains uncertified. Original
+  failures remain. Full 100/1000 draws, injury coverage, ordinary HEAL and
+  fork 812 remain open. Four archived Q8 scratch files remain after automatic
+  cleanup rejection. Q3's two supply diagnostics and restored compiler gate
+  passed; source-only classification continues. Q5 owns Cargo for its frozen
+  Ground/Room repair. Q6 awaits a fresh protocol envelope; Q9 refines preflight.
 - **2026-10-10, next bounded gates:** Q5's fresh baseline is 55 passed,
   43 failed and three ignored; all 620 inputs are root-verified unchanged.
   Its first source repair targets the truncated shared surface query and

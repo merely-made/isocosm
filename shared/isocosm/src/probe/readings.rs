@@ -244,9 +244,21 @@ pub fn derive(world: &ProbeWorld) -> Vec<Reading> {
     // the identity its members carry.
     if competitions.is_empty() {
         let living = world.genesis.lineages.values();
-        let identities = living
+        let mut identities: Vec<Key> = living
             .filter(|l| l.kingdom != "kingdom:world")
-            .flat_map(|l| &l.traits);
+            .flat_map(|l| l.traits.iter().cloned())
+            .collect();
+        let optional: Vec<Key> = [crate::harm::HEAL, crate::harm::FRAGMENT]
+            .into_iter()
+            .filter(|key| world.genesis.rules.traits.contains(*key))
+            .map(Key::from)
+            .collect();
+        // A declared optional trait reads zero when no lineage draws it.
+        if !optional.is_empty() {
+            identities.extend(optional);
+            identities.sort();
+            identities.dedup();
+        }
         for identity in identities {
             let probe = Probe::Alive {
                 identity: identity.clone(),

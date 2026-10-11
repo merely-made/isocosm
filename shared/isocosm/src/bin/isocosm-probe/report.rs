@@ -45,6 +45,9 @@ pub struct Arm {
     /// and is left out of the comparisons the arm takes part in.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub refused: Option<String>,
+    /// Harm runs: whole-world native totals checked after every tick.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub matter: Option<super::conservation::Matter>,
     pub readings: Vec<u64>,
 }
 
@@ -63,6 +66,7 @@ impl Arm {
             alive_states: 0,
             shortfalls: 0,
             refused: Some(why),
+            matter: None,
             readings: Vec::new(),
         }
     }
@@ -262,6 +266,7 @@ static MISSING: Arm = Arm {
     alive_states: 0,
     shortfalls: 0,
     refused: None,
+    matter: None,
     readings: Vec::new(),
 };
 

@@ -526,3 +526,81 @@ headed meal choice feels tense rather than clerical.
   Adapter allocation (812), ordinary assignment, downstream gates, remaining
   fresh faults and statistical crowd certification remain open. Hazard/rot
   bounds and cadence remain after-pass balance choices. Cargo released.
+
+- **2026-10-10, Q8 certification preparation:** the harm receipt now has
+  source-ready optional trait columns and a probe-owned whole-world native
+  audit for every tick. Generated column and conservation controls await
+  Cargo. All remaining 0 to 9 fault anchors/tests passed a read-only audit;
+  the zero-hazard fixture excludes healing so repair cannot mask the fault.
+  The independent verifier passed arithmetic and synthetic corruption
+  controls, without certifying those synthetic inputs. Its fresh profile,
+  proposed pilot/full seeds and commands are declared in `CHECKPOINT_10.md`.
+  Hazard/rot bounds and cadence remain after-pass balance choices. Fresh
+  statistical agreement, material conservation and compiled controls remain
+  distinct open gates; prior receipts retain their exact source scope.
+  Adapter allocation (812) and ordinary HEAL assignment are still open.
+
+- **2026-10-10, Q8 source refresh:** exactly eleven native paths from main
+  `6f879936` now overlay the verified `02ac8167` base; none overlaps the
+  C10 preparation. All eight prepared code/test/script files are unchanged.
+  The owning docs preserve root integration annotations and the preparation
+  notes. The bounded native/fault batch awaits Cargo after Q3; release
+  pilots need its gates and a fresh source/executable freeze. No Cargo was
+  invoked. Ruling 812 and ordinary HEAL assignment remain open.
+
+- **2026-10-10, Q8 bounded certification evidence:** the refreshed 31-input
+  envelope `825487c4...e3bb5be` passed 32 harm positives and three probe
+  conservation controls. All ten remaining faults compiled and were caught,
+  with exact restoration per invocation, then the native all-target check
+  and 31-input audit passed. The immutable bounded batch receipt retains
+  each actual command and raw log; Cargo was released. The fresh release
+  20/100/1000 sequence is prepared with the previously declared masters
+  2026101001/2026101002/2026101003, unchanged bounds and controls. Pilot
+  integrity, observed coverage and operational cost are separate from the
+  1000-draw statistical verdict. Material conservation, statistical agreement
+  and compiled fault proof remain separately scoped. These new doc entries
+  follow the tested envelope; all 28 non-doc inputs retain its hashes.
+  C10 source integration, release execution/provenance, ordinary HEAL and
+  adapter ruling 812 remain open. No fresh statistical result is claimed.
+
+- **2026-10-10, Q8 release pilot stopped:** build 203.5 seconds; declared
+  20-draw run 381.406 seconds, 19.06 per draw. Five arms refused zero draws;
+  all 40 native arm-runs conserved matter for 60 ticks, without issued
+  assistance. The frozen verifier failed on unweighted hazard meal-holdings:
+  Rust and Python agree on KS distance 0.65 and means, but Holm p-values
+  0.0735/0.0245 fall on opposite sides of alpha 0.05. No main/positive
+  equivalence is established by this pilot. The immutable diagnostic
+  retains all raw draws, failed verification, source/executable provenance
+  and costs. Reading, not ruled: different random-label tapes can cause this
+  finite-permutation disagreement. A concrete matched-tape independent
+  recomputation proposal is recorded in `CHECKPOINT_10.md` for review;
+  native/verifier source and controls remain frozen. Cargo was released
+  immediately; 100/1000, ordinary HEAL and 812 promotion did not proceed.
+
+- **2026-10-10, Q8 verifier repair first attempt stopped:** thirteen fixed
+  byte/wrap and tiny complete-permutation controls passed. The first seed
+  corruption raised a helper-name collision, not a valid caught corruption;
+  zero corruptions are counted as caught. The frozen source and failed logs
+  remain preserved, with other controls/reanalysis unrun. The narrow helper
+  rename requires separately named source/output records. Native inputs,
+  thresholds, bounds and simulation settings remain unchanged; no Cargo,
+  fresh draws or certification promotion occurred.
+
+- **2026-10-10, Q8 matched-tape method qualification:** thirteen independent
+  byte/wrap/all-swap controls passed and all six seed/raw-p/Holm/reading/summary/
+  refusal corruptions were caught. The unchanged historical 20 draws now agree
+  in Python with all 196 Rust raw p-values, Holm corrections and reading flags;
+  reading 19 has extreme count 2 and Holm 0.0735. This qualifies the repaired
+  integrity method, with certification false and all native statistical verdicts
+  unchanged. Original failed evidence remains preserved. Main/positive
+  equivalence and negative-control detection are still unestablished at 20;
+  no fresh draw or 100/1000 stage ran. The owning C10 receipt links the exact
+  repaired source and method evidence. Final crowd certification, ordinary
+  HEAL and adapter 812 remain open; hazard/rot balance remains after-pass.
+
+**2026-10-11, C10 diagnostic harness integration:** root's native compiler gate
+passed offline with all 349 frozen inputs unchanged. The verifier's 13 tape
+controls and six corrupted receipts qualify the 196-comparison historical
+20-draw reanalysis, which remains uncertified. Full 100/1000 draws, injury
+coverage, ordinary HEAL and adapter fork 812 remain open. `CHECKPOINT_10.md`
+owns the source/command receipts; original failures remain.

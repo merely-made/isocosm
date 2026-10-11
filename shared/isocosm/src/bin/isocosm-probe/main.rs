@@ -14,6 +14,7 @@
 //! crowd. `--bodies` draws checkpoint 6's worlds of bodies instead (ruling
 //! 262), where the draw control runs as it does with hunters.
 
+mod conservation;
 mod report;
 
 use isocosm::probe::{
@@ -38,6 +39,7 @@ fn arm(
     derived: &[Reading],
     index: usize,
     dynamics: u64,
+    audit_matter: bool,
 ) -> Result<Arm, String> {
     let start = Instant::now();
     let inspect = isocosm::draw(dynamics, "probe-inspect", &[]);
@@ -61,11 +63,17 @@ fn arm(
             alive_states,
             shortfalls,
             refused: None,
+            matter: None,
             readings: values,
         }
     };
     if index < 2 {
-        let run = run_exact(world, dynamics, true)?;
+        let (run, matter) = if audit_matter {
+            let (run, matter) = conservation::run(world, dynamics)?;
+            (run, Some(matter))
+        } else {
+            (run_exact(world, dynamics, true)?, None)
+        };
         let micros = start.elapsed().as_micros() as u64;
         let members = readings::exact_members(&run);
         let s = run.sim.state();
@@ -74,7 +82,9 @@ fn arm(
             derived, world, &members, &s.sites, s.tick, inspected, &run.meals,
         )?;
         let stored = s.population.groups.len() - s.sites.len();
-        Ok(finish(micros, &members, &run.work, stored, 0, values))
+        let mut out = finish(micros, &members, &run.work, stored, 0, values);
+        out.matter = matter;
+        Ok(out)
     } else {
         let variant = match index {
             2 => Variant::Histogram,
@@ -281,7 +291,7 @@ fn run() -> Result<(), String> {
         let mut draw = Draw::new(k, seed, &world)?;
         for &index in &arms {
             let dynamics = isocosm::draw(o.master, "probe-dynamics", &[k, index as u64]);
-            let a = match arm(&world, &derived, index, dynamics) {
+            let a = match arm(&world, &derived, index, dynamics, o.harm) {
                 Ok(a) => a,
                 Err(why) if why.contains(REFUSED) => Arm::refused(ARMS[index], dynamics, why),
                 Err(why) => return Err(format!("draw {k}, {}: {why}", ARMS[index])),

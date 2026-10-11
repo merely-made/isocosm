@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 
 
@@ -78,6 +79,21 @@ def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+def audit(root, index):
+    name, relative, before, after, test = FAULTS[index]
+    original = (root / relative).read_bytes()
+    anchors = original.count(before.encode())
+    tests = [root / "tests/harm.rs", *(root / "tests/harm").glob("*.rs")]
+    pattern = rf"\bfn\s+{re.escape(test.split('::')[-1])}\s*\("
+    matches = [str(p.relative_to(root)) for p in tests
+               if re.search(pattern, p.read_text(encoding="utf-8"))]
+    return {"index": index, "fault": name, "source": relative, "test": test,
+            "original_sha256": sha(original), "anchors": anchors,
+            "test_sources": matches,
+            "verdict": "SOURCE-READY" if anchors == 1 and len(matches) == 1 else "INVALID",
+            "compiled": False, "mutated": False}
+
+
 def run(root, index):
     name, relative, before, after, test = FAULTS[index]
     source = root / relative
@@ -93,13 +109,17 @@ def run(root, index):
         source.write_bytes(mutant)
         trial = subprocess.run(command, cwd=root, capture_output=True, text=True)
         result.update(exit_code=trial.returncode, stdout=trial.stdout, stderr=trial.stderr)
-        compiled = "error[" not in trial.stderr and "could not compile" not in trial.stderr
-        caught = trial.returncode != 0 and "FAILED" in trial.stdout and "1 failed" in trial.stdout
+        compiled = ("Finished `test`" in trial.stderr and "error[" not in trial.stderr
+                    and "could not compile" not in trial.stderr)
+        caught = (trial.returncode != 0 and "running 1 test" in trial.stdout
+                  and "FAILED" in trial.stdout and "1 failed" in trial.stdout)
+        result.update(compiled=compiled, caught=caught)
         result["verdict"] = "CAUGHT" if compiled and caught else "MISSED" if compiled else "NO-COMPILE"
     finally:
         source.write_bytes(original)
         if source.read_bytes() != original:
             raise RuntimeError(f"failed to restore {source}")
+    result["restored_sha256"] = sha(source.read_bytes())
     return result
 
 
@@ -107,6 +127,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workspace", type=Path, default=Path.cwd())
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--audit", action="store_true", help="read source anchors/tests without Cargo or mutation")
     parser.add_argument("picks", nargs="*", type=int)
     args = parser.parse_args()
     root = args.workspace.resolve()
@@ -114,12 +135,15 @@ def main():
         parser.error("--workspace must name the assigned shared/isocosm workspace")
     results = []
     for index in args.picks or range(len(FAULTS)):
-        result = run(root, index)
+        if index not in range(len(FAULTS)):
+            parser.error(f"unknown fault index {index}")
+        result = audit(root, index) if args.audit else run(root, index)
         results.append(result)
         print(f"{index}: {result['verdict']} {result['fault']}", flush=True)
-    if args.output:
-        args.output.write_text(json.dumps(results, indent=2), encoding="utf-8")
-    return 0 if all(r["verdict"] == "CAUGHT" for r in results) else 1
+        if args.output:
+            args.output.write_text(json.dumps(results, indent=2), encoding="utf-8")
+    expected = "SOURCE-READY" if args.audit else "CAUGHT"
+    return 0 if all(r["verdict"] == expected for r in results) else 1
 
 
 if __name__ == "__main__":
