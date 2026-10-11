@@ -10193,6 +10193,23 @@ what later sections derive from.
      remain intact. Q3 qualifies the timing, one-process and replay controls
      on a fresh envelope before any reproduction pilot or rate promotion.
 
+814. **The VTT declares its note kinds in the world's founding rules.**
+     2026-10-11, Q9's native contract-admission source audit. Question: "The
+     VTT authors `reveal`, `narration`, and `history` notes, but generated
+     native worlds only admit their declared `sim:*` kinds. How should VTT
+     notes enter a native session?" Options: declare the table's note kinds
+     in the VTT world's founding rules (recommended), preserving names and
+     native validation; map them to existing native kinds while retaining
+     the original kind separately; allow native assertions to introduce
+     undeclared note kinds. Mark chose "Declare the table’s note kinds in the VTT world’s founding rules (Recommended); preserve their names and native validation."
+     So the VTT's founding rules declare its authored note vocabulary before
+     native replay; contract lowering retains each kind's name, and native
+     admission continues to refuse kinds absent from those rules. This does
+     not introduce a second note authority or change generic native admission.
+     *Reading, not ruled:* the VTT generator/profile must assemble that
+     vocabulary with the rest of its native Genesis. This ruling does not
+     choose that product attachment or complete V2's hosted integration.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

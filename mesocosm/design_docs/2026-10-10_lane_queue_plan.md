@@ -285,6 +285,12 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, ruling 814 recorded:** the VTT declares its authored
+  note kinds in its world's founding rules, preserving names and native
+  validation. Q9's three-path contract-admission proposal is source-reviewed
+  and uncompiled; its post-HEAL execution refresh remains pending. The next
+  ruling is 815.
+
 - **2026-10-11, Q6 fixture baseline closed:** five fixture paths retain
   authored native assertions, place/map identities, route endpoints/costs and
   native history keys. The synthetic fixture adds routes after all their

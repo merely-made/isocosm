@@ -506,6 +506,13 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
+- **2026-10-11, ruling 814:** the VTT's founding rules declare the table's
+  authored note kinds, including `reveal`, `narration` and `history`;
+  contract lowering preserves their names and native validation remains.
+  The bounded `Replay::with_contract_assertions` proposal has passed source
+  review only. Its six positives, three compiled controls and compiler gates
+  remain unrun, and the VTT's generator/profile attachment remains open.
+
 - **2026-10-11, Q6 fixture baseline closed:** five fixture paths retain
   authored native assertions, place/map identities, route endpoints/costs and
   native history keys. The synthetic fixture adds routes after all their
