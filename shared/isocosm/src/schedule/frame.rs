@@ -20,6 +20,8 @@ use std::collections::BTreeMap;
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Frame {
     sites: BTreeMap<Id, Site>,
+    projects: BTreeMap<crate::projects::ProjectId, Option<crate::projects::Project>>,
+    project_bindings: BTreeMap<Id, Option<crate::projects::ProjectId>>,
     /// Bodies as the pass began, by their span then: a member lifted out of
     /// its group alone, a cohort written whole with its count.
     bodies: BTreeMap<Id, (u64, Entity)>,
@@ -88,6 +90,18 @@ pub(crate) fn edible(ledger: &Ledger, of: &[Key]) -> Ledger {
 }
 
 impl Frame {
+    pub(crate) fn project(&self, id: crate::projects::ProjectId) -> Option<&Option<crate::projects::Project>> {
+        self.projects.get(&id)
+    }
+    pub(crate) fn project_binding(&self, actor: Id) -> Option<Option<crate::projects::ProjectId>> {
+        self.project_bindings.get(&actor).copied()
+    }
+    pub(crate) fn keep_project(&mut self, id: crate::projects::ProjectId, was: Option<&crate::projects::Project>) {
+        self.projects.entry(id).or_insert_with(|| was.cloned());
+    }
+    pub(crate) fn keep_project_binding(&mut self, actor: Id, was: Option<crate::projects::ProjectId>) {
+        self.project_bindings.entry(actor).or_insert(was);
+    }
     pub(crate) fn site(&self, id: Id) -> Option<&Site> {
         self.sites.get(&id)
     }
@@ -116,6 +130,7 @@ impl Frame {
             Holder::Site(id) => self.sites.contains_key(&id),
             Holder::Entity(id) | Holder::Part(id, _) => self.body(id).is_some(),
             Holder::Dev => false,
+            Holder::ProjectReservation(id) | Holder::ProjectConstruction(id) => self.projects.contains_key(&id),
         }
     }
 

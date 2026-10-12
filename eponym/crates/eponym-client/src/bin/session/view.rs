@@ -18,7 +18,7 @@ use super::{LEAF_KEY, SessionApp};
 pub(super) type Child = Box<dyn AnyView<SessionApp, (), GenetCtx, GenetElement>>;
 pub(super) type Logic = fn(&SessionApp) -> Child;
 
-fn button(label: String, class: &'static str, action: impl Fn(&mut SessionApp) + 'static) -> Child {
+pub(super) fn button(label: String, class: &'static str, action: impl Fn(&mut SessionApp) + 'static) -> Child {
     let aria = label.clone();
     Box::new(focusable(clickable(
         el("button", text(label))
@@ -185,6 +185,8 @@ fn equipment_panel(state: &SessionApp) -> Child {
             item_details(state, id),
             button(format!("Take item {}", id.0), "equip",
                 move |state: &mut SessionApp| state.take_item(id)),
+            button("Use for work".into(), "equip",
+                move |state: &mut SessionApp| state.use_for_work(id)),
         )).attr("class", "item")));
     }
     if ground.is_empty() {
@@ -206,6 +208,8 @@ fn equipment_panel(state: &SessionApp) -> Child {
                 if at.is_some() {
                     controls.push(button(format!("Place item {} here", id.0), "equip",
                         move |state: &mut SessionApp| state.drop_item(id)));
+                    controls.push(button("Use for work".into(), "equip",
+                        move |state: &mut SessionApp| state.use_for_work(id)));
                 }
                 if at.is_some() && item.kind == ItemKind::Dressing { match item.attached {
                     Some(part) => controls.push(button(
@@ -340,6 +344,7 @@ pub(super) fn root(state: &SessionApp) -> Child {
                                 sheet_panel(state),
                                 journal_panel(state),
                                 equipment_panel(state),
+                                super::projects::panel(state),
                             ),
                         )
                         .attr("class", "panel-column"),

@@ -42,6 +42,15 @@ impl World {
         let world = self.0.try_borrow().map_err(|_| "world is being advanced")?;
         Ok(read(&world.session))
     }
+    /// The requested available mode's opaque bytes and current native owner
+    /// are borrowed at one cut. Reading creates no Session or authority.
+    #[cfg(feature = "desktop")]
+    pub fn read_game<T>(&self, mode: crate::products::Mode,
+        read: impl FnOnce(&Session, &[u8]) -> Result<T, String>) -> Result<T, String> {
+        let world = self.0.try_borrow().map_err(|_| "world is being advanced")?;
+        let game = crate::mode_sections::game(&world.sections, mode)?;
+        read(&world.session, &game)
+    }
     // Only the admitted world driver calls these. A candidate also protects
     // compound native operations whose individual implementation can refuse.
     pub fn command(&self, command: Command) -> Result<String, String> {

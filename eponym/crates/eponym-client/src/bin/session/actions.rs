@@ -36,6 +36,16 @@ impl SessionApp {
             let Some(body) = game.bodies().get(played) else {
                 return;
             };
+            let rules = match model.motion_rules {
+                Some(rules) => rules,
+                None if game.world().material_profile().is_none() => {
+                    eponym_play::fixtures::session::motion_rules(game, played)
+                },
+                None => {
+                    self.status = vec!["Motion needs the world's authored rules".into()];
+                    return;
+                },
+            };
             GameIntent::AdvanceMotion {
                 tick: game.next_tick(),
                 subject: played,
@@ -45,7 +55,7 @@ impl SessionApp {
                     move_x: (toward[0] * 32767) as i16,
                     move_z: (toward[2] * 32767) as i16,
                 },
-                rules: eponym_play::fixtures::session::motion_rules(game, played),
+                rules,
             }
         };
         let step = match &intent {
@@ -353,6 +363,7 @@ impl SessionApp {
     }
 
     pub(super) fn select(&mut self, subject: SubjectId, part: PartId) {
+        self.project_target = None;
         self.selected = Some((subject, part));
     }
 
@@ -369,10 +380,12 @@ impl SessionApp {
         match self.scene.borrow().pick_body(ndc) {
             Some((subject, part)) => {
                 self.selected = Some((subject, part));
+                self.project_target = None;
                 self.status = vec![format!("Picked subject {} part {}", subject.0, part.0)];
             },
             None => {
                 self.selected = None;
+                self.project_target = None;
                 self.status = vec!["No body under the pointer".into()];
             },
         }

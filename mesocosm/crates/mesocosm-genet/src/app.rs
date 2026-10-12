@@ -194,6 +194,20 @@ impl Host {
             return self.scene.take().is_some();
         };
         let visible = self.runtime.view();
+        if self.config.spatial.is_some() || !self.runtime.spatial().members.is_empty() {
+            let result = crate::played::scene::site_scene_physical(sim, played, &visible, self.runtime.spatial());
+            return match result {
+                Ok(scene) => {
+                    let window = (&scene.window.min, &scene.window.max, scene.window.datum, scene.window.extent);
+                    let key = (site, format!("{}:{}", sim.terrain_revision(), isocosm::digest(&window)));
+                    let changed = self.scene_key.as_ref() != Some(&key);
+                    self.scene = Some(scene); self.scene_key = Some(key); changed
+                },
+                Err(why) => {
+                    eprintln!("physical site: {why}"); self.scene_key = None; self.scene.take().is_some()
+                },
+            };
+        }
         let key = (site, mesocosm_runtime::runtime::placing::terrain_key(sim));
         if self.scene_key.as_ref() == Some(&key)
             && let Some(scene) = &mut self.scene

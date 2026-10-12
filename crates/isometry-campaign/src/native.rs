@@ -17,8 +17,11 @@ pub use borrowed::{WindowReading, submit_contract_assertions};
 
 mod characters;
 pub use characters::{CharacterAdmission, RecipeBinding, admit_character};
+mod placement;
+pub use placement::{CharacterControl, CharacterPlacement, ControlBinding, ParticipantInput,
+    PlacementWindow, PositionBinding};
 mod game;
-pub use game::{AdmissionBatch, GameBindings, submit_game};
+pub use game::{AdmissionBatch, GameBindings, submit_game, submit_game_as};
 
 mod reading;
 pub use reading::{Geography, Reading};

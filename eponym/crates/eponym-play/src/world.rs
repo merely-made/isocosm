@@ -26,6 +26,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::identity::{SubjectId, Tick};
 use crate::{HistoryFactId, NativeFixtureProfile, NativeFixtureRecipe, SiteKind, SlotId, WorldMap};
+use crate::founding::materials::{MaterialProfile, GENERATOR_VERSION as MATERIAL_GENERATOR_VERSION};
 
 pub const GENERATOR_VERSION: u32 = 4;
 /// Rock held under the lifted window's lowest soil.
@@ -47,7 +48,7 @@ impl Default for WorldConfig {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum WorldIntent {
     Carve {
         tick: Tick,
@@ -61,12 +62,16 @@ pub enum WorldIntent {
         kind: SiteKind,
         fact: HistoryFactId,
     },
+    /// Founding-only grammar appended after the original wire variants.
+    /// Exactly one first marker is required by the material generator tag.
+    MaterialProfile { profile: Box<MaterialProfile> },
 }
 
 impl WorldIntent {
-    pub const fn tick(self) -> Tick {
+    pub const fn tick(&self) -> Tick {
         match self {
-            Self::Carve { tick, .. } | Self::InheritSite { tick, .. } => tick,
+            Self::Carve { tick, .. } | Self::InheritSite { tick, .. } => *tick,
+            Self::MaterialProfile { .. } => Tick(0),
         }
     }
 }
@@ -126,6 +131,7 @@ pub enum WorldError {
     NotFounding,
     /// A fixture recipe was offered outside its declared founding profile.
     NotFixture,
+    InvalidMaterialProfile,
     Encode,
     Decode,
 }
@@ -160,6 +166,60 @@ impl World {
         Self::generate_version(seed, config, version)
     }
 
+    /// A new material world requires its authored profile. Older generators
+    /// and saved pooled holdings are not reconstructed or reissued here.
+    pub fn generate_materials(seed: u64, config: WorldConfig, profile: MaterialProfile)
+        -> Result<Self, WorldError> {
+        Self::check_config(config)?;
+        let genesis = profile.genesis(seed, u32::from(config.side), config.extent as u64 * 2)
+            .map_err(|_| WorldError::InvalidMaterialProfile)?;
+        let mut world = Self::from_genesis(seed, config, MATERIAL_GENERATOR_VERSION, genesis,
+            isocosm::schema::Movement::Journey,
+            vec![WorldIntent::MaterialProfile { profile:Box::new(profile.clone()) }])?;
+        for item in &profile.items {
+            let [x, _, z] = crate::walking::to_site(&world.volume, item.at);
+            if x < world.volume.min[0] || x >= world.volume.max[0]
+                || z < world.volume.min[1] || z >= world.volume.max[1]
+            { return Err(WorldError::InvalidMaterialProfile); }
+            let recipe = &world.sim().genesis().rules.material_recipes[&item.recipe];
+            let arrival = recipe.arrival(world.site).map_err(|_| WorldError::InvalidMaterialProfile)?;
+            world.found(Command::Arrive(arrival))?;
+        }
+        Ok(world)
+    }
+
+    pub fn material_profile(&self) -> Option<&MaterialProfile> {
+        if self.generator_version != MATERIAL_GENERATOR_VERSION { return None; }
+        match self.intents.first()? {
+            WorldIntent::MaterialProfile { profile } => Some(profile), _ => None,
+        }
+    }
+
+    /// Each selected recipe is tied to its actual founding Arrive receipt.
+    pub(crate) fn material_items(&self) -> Vec<(crate::ItemId, [i32; 3])> {
+        let Some(profile) = self.material_profile() else { return Vec::new(); };
+        profile.items.iter().zip(&self.session.entries).filter_map(|(item, entry)| {
+            if !matches!(entry.command, Command::Arrive(_)) { return None; }
+            let id = entry.outcome.strip_prefix("entity:")?.parse().ok()?;
+            Some((crate::ItemId(id), item.at))
+        }).collect()
+    }
+
+    /// The selected recipe, resolved from its genuine arrival or project output.
+    pub fn material_recipe(&self, item: crate::ItemId) -> Option<&str> {
+        let profile = self.material_profile()?;
+        if let Some(index) = self.session.entries.iter().take(profile.items.len()).position(|entry|
+            entry.outcome == format!("entity:{}", item.0))
+        { return Some(&profile.items[index].recipe); }
+        let project = self.sim().state().projects.records.values()
+            .find(|project| project.output == Some(item.0))?;
+        profile.recipes.contains_key(&project.recipe).then_some(project.recipe.as_str())
+    }
+
+    pub(crate) fn material_consumption(&self, item: crate::ItemId) -> Option<&str> {
+        self.material_profile()?.recipes.get(self.material_recipe(item)?)?.consume.as_deref()
+    }
+
     // Version 3 is an explicit source proposal, not a claimed released archive format.
     fn generate_version(seed: u64, config: WorldConfig, version: u32) -> Result<Self, WorldError> {
         let movement = match version {
@@ -167,12 +227,7 @@ impl World {
             3 | GENERATOR_VERSION | crate::founding::fixture::GENERATOR_VERSION => isocosm::schema::Movement::Journey,
             _ => return Err(WorldError::GeneratorDiverged { saved:version, current:GENERATOR_VERSION }),
         };
-        if !(2..=16).contains(&config.side) {
-            return Err(WorldError::InvalidSide);
-        }
-        if !(8..=1 << 19).contains(&config.extent) {
-            return Err(WorldError::InvalidExtent);
-        }
+        Self::check_config(config)?;
         let side = config.extent as u64 * 2;
         let founding = match version {
             GENERATOR_VERSION => crate::founding::genesis,
@@ -181,6 +236,23 @@ impl World {
         };
         let genesis = founding(seed, u32::from(config.side), side)
             .map_err(|_| WorldError::InvalidExtent)?;
+        Self::from_genesis(seed, config, version, genesis, movement, Vec::new())
+    }
+
+    fn check_config(config: WorldConfig) -> Result<(), WorldError> {
+        if !(2..=16).contains(&config.side) {
+            return Err(WorldError::InvalidSide);
+        }
+        if !(8..=1 << 19).contains(&config.extent) {
+            return Err(WorldError::InvalidExtent);
+        }
+        Ok(())
+    }
+
+    fn from_genesis(seed: u64, config: WorldConfig, version: u32,
+        genesis: isocosm::simulation::Genesis, movement: isocosm::schema::Movement,
+        intents: Vec<WorldIntent>) -> Result<Self, WorldError> {
+        let side = config.extent as u64 * 2;
         let base_hash = hash_bytes(isocosm::digest(&genesis).as_bytes());
         let session =
             Session::new_with_movement(genesis, Execution::Individuals, movement).map_err(|_| WorldError::Refused)?;
@@ -204,7 +276,7 @@ impl World {
             volume,
             map,
             subjects: BTreeMap::new(),
-            intents: Vec::new(),
+            intents,
             events: Vec::new(),
             last_tick: None,
         })
@@ -212,7 +284,7 @@ impl World {
 
     pub const fn generator_version(&self) -> u32 { self.generator_version }
     pub(crate) const fn developed_bodies(&self) -> bool {
-        matches!(self.generator_version, GENERATOR_VERSION | crate::founding::fixture::GENERATOR_VERSION)
+        matches!(self.generator_version, GENERATOR_VERSION | MATERIAL_GENERATOR_VERSION | crate::founding::fixture::GENERATOR_VERSION)
     }
     pub(crate) fn select_native_recipe(&mut self, recipe: Option<NativeFixtureRecipe>) -> Result<(), WorldError> {
         if self.generator_version != crate::founding::fixture::GENERATOR_VERSION {
@@ -311,7 +383,8 @@ impl World {
                 next: tick,
             });
         }
-        let event = match intent {
+        let event = match intent.clone() {
+            WorldIntent::MaterialProfile { .. } => return Err(WorldError::InvalidMaterialProfile),
             WorldIntent::Carve {
                 tick,
                 by,
@@ -427,20 +500,30 @@ impl World {
     }
 
     pub fn restore_record(save: WorldSave) -> Result<Self, WorldError> {
-        if ![2, 3, GENERATOR_VERSION, crate::founding::fixture::GENERATOR_VERSION].contains(&save.generator_version) {
+        if ![2, 3, GENERATOR_VERSION, MATERIAL_GENERATOR_VERSION, crate::founding::fixture::GENERATOR_VERSION].contains(&save.generator_version) {
             return Err(WorldError::GeneratorDiverged {
                 saved: save.generator_version,
                 current: GENERATOR_VERSION,
             });
         }
-        let mut world = Self::generate_version(save.seed, save.config, save.generator_version)?;
+        let material = save.generator_version == MATERIAL_GENERATOR_VERSION;
+        if save.intents.iter().filter(|i| matches!(i, WorldIntent::MaterialProfile { .. })).count()
+            != usize::from(material) { return Err(WorldError::InvalidMaterialProfile); }
+        let mut world = if material {
+            let Some(WorldIntent::MaterialProfile { profile }) = save.intents.first() else {
+                return Err(WorldError::InvalidMaterialProfile);
+            };
+            Self::generate_materials(save.seed, save.config, (**profile).clone())?
+        } else {
+            Self::generate_version(save.seed, save.config, save.generator_version)?
+        };
         if save.base_hash != world.base_hash {
             return Err(WorldError::BaseDiverged {
                 saved: save.base_hash,
                 regrown: world.base_hash,
             });
         }
-        for intent in save.intents {
+        for intent in save.intents.into_iter().skip(usize::from(material)) {
             world.apply(intent)?;
         }
         Ok(world)

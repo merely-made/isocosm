@@ -85,6 +85,8 @@ pub struct State {
     pub movement: Movement,
     #[serde(default, skip_serializing_if = "crate::spread::Spreads::is_empty")]
     pub spreads: crate::spread::Spreads,
+    #[serde(default, skip_serializing_if = "crate::projects::Projects::is_empty")]
+    pub projects: crate::projects::Projects,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -201,6 +203,7 @@ impl Simulation {
             attention: Default::default(),
             movement: Movement::Journey,
             spreads: genesis.spreads.clone(),
+            projects: crate::projects::Projects::default(),
         };
         let conserved = matter(&state, &genesis.rules);
         Ok(Self {
@@ -527,4 +530,5 @@ pub(crate) fn matter(state: &State, rules: &Rules) -> u128 {
             .sum::<u128>()
         + state.spreads.places.iter().map(|p| mass(&p.accounts)).sum::<u128>()
         + state.spreads.transit.iter().map(|t| u128::from(t.amount)).sum::<u128>()
+        + state.projects.records.values().map(|p| mass(&p.reserved) + mass(&p.construction)).sum::<u128>()
 }

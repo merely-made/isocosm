@@ -15,6 +15,8 @@ pub const VERSION: u32 = 1;
 
 mod input;
 pub use input::{GameInput, Input};
+mod refresh;
+pub use refresh::Refresh;
 
 /// Exact root-pivot pose in the site's base cells; no presentation scale.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -84,7 +86,11 @@ impl Game {
     pub fn resolve(&self, pending: &Pending) -> Result<TerrainGeometry, String> {
         self.version()?;
         let request = &pending.request;
-        let at = self.members.get(&request.actor).ok_or("chosen actor has no saved physical pose")?;
+        let held = self.members.get(&request.actor).ok_or("chosen actor has no saved physical pose")?;
+        // A pending native action can follow an earlier native body/terrain
+        // change in this same tick. Revalidate the same actual cells, never
+        // substitute a presentation spot or a different native patch.
+        let at = held.rebound(&pending.sim)?;
         at.check(&pending.sim)?;
         if at.patch != request.patch || at.body_revision != request.body_revision
             || at.terrain_revision != request.terrain_revision || at.site.0 != request.site
@@ -105,14 +111,18 @@ impl Game {
     }
 
     /// Both candidates stay private until every native operation is admitted.
-    pub fn advance(&self, session: &mut Session, access: isocosm_overlay::OrdinaryAccess)
+    pub fn advance(&mut self, session: &mut Session, access: isocosm_overlay::OrdinaryAccess)
         -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, crate::Refusal> {
         self.version().map_err(crate::Refusal::Sim)?;
         let mut native = session.clone();
+        let mut game = self.clone();
+        game.refresh(&mut native).map_err(crate::Refusal::Sim)?;
         let out = crate::terrain::advance(&mut native, access, &mut |pending: &Pending| {
-            self.resolve(pending)
+            game.resolve(pending)
         })?;
+        game.refresh(&mut native).map_err(crate::Refusal::Sim)?;
         *session = native;
+        *self = game;
         Ok(out)
     }
 }

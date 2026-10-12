@@ -114,17 +114,7 @@ impl GameState {
                 if found.location != ItemLocation::At(at) {
                     return Err(ItemError::NotHere(*item).into());
                 }
-                let body = self.bodies.get(subject).expect("living");
-                let carried = self.items.carried_mass_mg(subject);
-                if !body.can_carry(carried, found.kind.mass_mg()) {
-                    let capacity_mg = body.profile.carry_capacity_mg;
-                    let attempted_mg = carried.saturating_add(found.kind.mass_mg());
-                    return Err(ItemError::OverCapacity {
-                        capacity_mg,
-                        attempted_mg,
-                    }
-                    .into());
-                }
+                self.check_item_capacity(subject, *item)?;
                 self.act(subject, Some(item.0), TAKE)?;
                 self.exert(
                     subject,
@@ -148,7 +138,12 @@ impl GameState {
                 if food.kind != ItemKind::Food {
                     return Err(ItemError::WrongKind(*item, food.kind).into());
                 }
-                self.act(subject, Some(item.0), EAT)?;
+                let eat = match self.world.material_profile() {
+                    Some(_) => self.world.material_consumption(*item)
+                        .ok_or(crate::WorldError::Unbuilt("this recipe has no declared consumption process"))?,
+                    None => EAT,
+                }.to_owned();
+                self.act(subject, Some(item.0), &eat)?;
                 self.act(subject, Some(item.0), SPENT)?;
                 let hunger = self.need(subject, RESERVE);
                 self.exert(

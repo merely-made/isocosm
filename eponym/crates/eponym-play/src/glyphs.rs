@@ -371,6 +371,7 @@ fn tick_of(event: &GameEvent) -> u64 {
         | GameEvent::MotionAdvanced { tick, .. }
         | GameEvent::MovementProfileConfigured { tick, .. }
         | GameEvent::Dropped { tick, .. }
+        | GameEvent::ProjectAct { tick, .. }
         | GameEvent::CanonRevised { tick, .. } => tick.0,
     }
 }

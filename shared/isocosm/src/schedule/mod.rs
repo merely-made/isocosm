@@ -255,6 +255,8 @@ impl Simulation {
                 .get(id)
                 .and_then(|e| e.parts.get(&part).map(|p| p.matter.clone())),
             crate::flows::Holder::Dev => None,
+            crate::flows::Holder::ProjectReservation(id) => self.state.projects.get(id).map(|p| p.reserved.clone()),
+            crate::flows::Holder::ProjectConstruction(id) => self.state.projects.get(id).map(|p| p.construction.clone()),
         };
         let mut frame = self.frame.take().expect("a pass under way");
         frame.share(plans, ground, rules);

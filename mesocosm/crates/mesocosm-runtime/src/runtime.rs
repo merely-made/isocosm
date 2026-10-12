@@ -249,6 +249,12 @@ impl Runtime {
             Ok((happenings, flows)) => {
                 self.absorb(happenings, &flows);
                 self.place_members();
+                // Refresh valid same-cell physical bindings after native
+                // placement/geometry changes; dormant history stays saved.
+                if let Err(why) = self.spatial.refresh(&mut self.interim.session) {
+                    self.fault = Some(why);
+                    return false;
+                }
             },
             Err(why) => {
                 self.happenings.clear();

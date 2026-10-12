@@ -142,7 +142,8 @@ pub(crate) fn submit_game(session: &mut Session, cut: &Projection, mode: Mode,
         #[cfg(feature = "vtt")]
         Mode::Vtt => {
             if cut.access.seat != Seat::Dm { return Err("native table assertions require the DM seat".into()); }
-            isometry_campaign::native::submit_game(session, game, &input.bytes)
+            isometry_campaign::native::submit_game_as(session, game, &input.bytes,
+                cut.access.participant.0)
         },
         _ => Ok((submit(session, cut, mode, input)?, game)),
     }

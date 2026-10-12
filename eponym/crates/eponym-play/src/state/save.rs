@@ -17,6 +17,7 @@ use crate::{
     CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION,
     ITEM_PLACEMENT_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION, GameError, GameIntent, GameSave,
     LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION, World,
+    PROJECT_GAME_STATE_VERSION,
 };
 
 impl GameState {
@@ -104,6 +105,11 @@ impl GameState {
             && save.intents.iter().any(|intent| matches!(intent, GameIntent::Drop { .. }))
         {
             return Err(GameError::LegacyItemPlacementIntent);
+        }
+        if save.version < PROJECT_GAME_STATE_VERSION
+            && save.intents.iter().any(|intent| matches!(intent, GameIntent::ProjectAct { .. }))
+        {
+            return Err(GameError::LegacyProjectIntent);
         }
         let world = World::restore_record(save.world)?;
         let mut state = Self::new(world).with_motion_solver(solver);

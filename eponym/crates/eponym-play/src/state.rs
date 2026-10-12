@@ -36,6 +36,7 @@ mod legacy_body;
 mod motion;
 mod native_anatomy;
 mod material;
+mod projects;
 mod save;
 
 #[derive(Clone, Debug)]
@@ -329,6 +330,9 @@ impl GameState {
             .subject()
             .expect("every intent but a world-level revision names a subject");
         match intent {
+            GameIntent::ProjectAct { process, target, project, .. } => {
+                self.project_act(tick, subject, process, *target, *project)
+            },
             GameIntent::AdvanceMotion {
                 revision,
                 step,
@@ -349,6 +353,10 @@ impl GameState {
 
     /// Items the played site starts with, by its kind (legacy's layout).
     fn lay_items(&mut self) {
+        if self.world.material_profile().is_some() {
+            self.places.at.extend(self.world.material_items());
+            return;
+        }
         use crate::items::ItemKind::*;
         let slot = crate::SlotId::surface(self.world.site());
         let kind = self.world.map().site(slot).map(|s| s.kind);

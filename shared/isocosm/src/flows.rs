@@ -32,6 +32,8 @@ pub enum Holder {
     Part(Id, crate::schema::PartId),
     /// The dev source (ruling 344): outside the world, holding nothing.
     Dev,
+    ProjectReservation(crate::projects::ProjectId),
+    ProjectConstruction(crate::projects::ProjectId),
 }
 
 /// What made a move: an act of a process, or a host command, which is how
@@ -78,7 +80,7 @@ impl Holder {
     pub fn body(self) -> Option<Id> {
         match self {
             Holder::Entity(id) | Holder::Part(id, _) => Some(id),
-            Holder::Site(_) | Holder::Dev => None,
+            Holder::Site(_) | Holder::Dev | Holder::ProjectReservation(_) | Holder::ProjectConstruction(_) => None,
         }
     }
 }

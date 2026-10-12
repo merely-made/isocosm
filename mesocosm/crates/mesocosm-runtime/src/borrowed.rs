@@ -48,7 +48,7 @@ where R: FnMut(&isocosm::operations::Pending)
 
 /// The caller publishes these native and product candidates together.
 pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAccess,
-    round: u64, input: &crate::spatial::Input, game: crate::spatial::Game)
+    round: u64, input: &crate::spatial::Input, mut game: crate::spatial::Game)
     -> Result<(String, crate::spatial::Game), Refusal> {
     use crate::spatial::Input;
     if access.seat == isocosm_overlay::Seat::CreativeObserver
@@ -83,6 +83,7 @@ pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAcces
             accepted.join("\n")
         },
     };
+    game.refresh(&mut candidate).map_err(Refusal::Sim)?;
     *session = candidate;
     Ok((accepted, game))
 }

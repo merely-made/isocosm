@@ -64,10 +64,10 @@ impl HostBodies {
             document: &body.document,
             pose: Pose {
                 position: body.at.map(|v| v as f32),
-                yaw_radians: 0.0,
+                yaw_radians: body.physical.as_ref().map_or(0.0, |p| super::capsules::yaw_radians(p.yaw)),
             },
             scale: self.scale,
-            grounded: true,
+            grounded: body.physical.is_none(),
             tint: body.tint,
             materials: &[],
             always_visible: Some(body.id) == played,
@@ -89,7 +89,8 @@ impl HostBodies {
             tint: body.tint,
         };
         match BodyLensProjection::project_truncated(body.document, placement) {
-            Ok((projected, dropped)) if played || self.fallback.len() < MAX_ROSTER => {
+            Ok((mut projected, dropped)) if played || self.fallback.len() < MAX_ROSTER => {
+                super::capsules::rotate_pose(&mut projected.pose, body.origin(), body.pose.yaw_radians);
                 stats.fallback_bodies += 1;
                 stats.controlled_drawn |= played;
                 stats.fallback_parts_dropped += dropped;

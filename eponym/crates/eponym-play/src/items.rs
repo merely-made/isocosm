@@ -139,4 +139,6 @@ pub enum ItemError {
     AlreadyAttached(ItemId),
     WrongKind(ItemId, ItemKind),
     OverCapacity { capacity_mg: u32, attempted_mg: u32 },
+    /// Marked recipe worlds compare the complete native matter ledger.
+    NativeOverCapacity { capacity_mg: u32, attempted_mg: u128 },
 }

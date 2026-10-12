@@ -75,7 +75,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
         if !visible.shows(id) || bodies.iter().any(|b: &PlacedBody| b.id == id) { continue; }
         let e = sim.state().population.get(id).ok_or("sighted body disappeared")?;
         let Some(document) = e.body.clone() else { continue; };
-        bodies.push(PlacedBody { id, document, at:volume.to_ground(cell),
+        bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical:None,
             tint:tint_of(kingdom::of(e)), alive:e.alive });
     }
     let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
@@ -106,6 +106,7 @@ pub fn placed(
         .map(|(index, (id, entity, document))| PlacedBody {
             id,
             document,
+            physical: None,
             at: entity
                 .patch
                 .filter(|p| volume.holds(p.cell[0], p.cell[2]))
@@ -125,4 +126,45 @@ pub fn tint_of(kingdom: Option<Kingdom>) -> [f32; 3] {
         Some(Kingdom::Decomposer) => 2,
     };
     kingdom_colour(index)
+}
+
+/// Current actual saved poses through the supplied native seat cut. Bodies
+/// without physical input are omitted; neither layout nor eye is a root pose.
+pub fn placed_physical(sim: &Simulation, site: Id,
+    volume: &isometer::space::volume::Volume, visible: &View,
+    game: &mesocosm_runtime::spatial::Game) -> Result<Vec<PlacedBody>, String> {
+    game.version()?;
+    let mut bodies = Vec::new();
+    for (&id, at) in &game.members {
+        if at.site.0 != site || !visible.shows(id) { continue; }
+        let entity = sim.state().population.get(id).ok_or("physical picture names an absent native member")?;
+        if entity.resident_site() != Some(site) { continue; }
+        at.realized(sim)?;
+        let Some(document) = entity.body.clone() else { continue; };
+        if !volume.holds(at.pose.at[0], at.pose.at[2]) { continue; }
+        let cell = volume.to_ground(at.pose.at);
+        let base = [volume.min[0], volume.datum, volume.min[1]];
+        let offsets = [i64::from(volume.extent), 0, i64::from(volume.extent)];
+        if (0..3).any(|i| base[i].checked_add(offsets[i]).and_then(|b|
+            b.checked_add(i64::from(cell[i]))) != Some(at.pose.at[i])) {
+            return Err("physical picture exceeds Ground coordinate bounds".into());
+        }
+        bodies.push(PlacedBody { id, document, at:cell, physical:Some(at.pose.clone()),
+            tint:tint_of(kingdom::of(entity)), alive:entity.alive });
+    }
+    Ok(bodies)
+}
+
+/// The played body's authored physical window. This is never a first-body
+/// fallback or the old layout's manufactured ground placement.
+pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
+    game: &mesocosm_runtime::spatial::Game) -> Result<SiteScene, String> {
+    let id = played.ok_or("physical scene has no played native member")?;
+    let held = game.members.get(&id).ok_or("played member has no saved physical window or pose")?;
+    held.realized(sim)?;
+    let site = held.site.0;
+    let volume = sim.volume(site, held.window.min, held.window.max, held.window.depth)?;
+    let bodies = placed_physical(sim, site, &volume, visible, game)?;
+    let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
+    Ok(SiteScene { site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })
 }

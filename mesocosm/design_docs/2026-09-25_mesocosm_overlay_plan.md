@@ -375,6 +375,18 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- **2026-10-12, physical spatial consumer source placed:**833's saved actual
+  pose/eye/operation inputs now connect to same-site validated native
+  patch refresh and the real Genet/shared-host picture, including saved root
+  pivot and yaw. Refresh retains invalid/departed bindings as stale history
+  without cancelling native growth, death or clocks; stale physical driving and
+  close-up readings refuse. Movement selection and destination-arrival geometry
+  are pending841/842; display positions remain advisory. Current native seat
+  cuts omit dead bodies, so corpse visibility cannot be invented by the product.
+  Both runtime clocks and borrowed submission publish the native Session and
+  refreshed game bindings together. Source is unverified under826; compiler/tests/fixtures/probes/tuning
+  stay deferred. Full M4 remains open.
+
 - **2026-10-11, chosen geometry owner settled (830):** native declares the
   selected operation; Mesocosm resolves its actual geometry and returns it
   to the same Session for admission/recording. Disposable candidate preflight

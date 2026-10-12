@@ -548,6 +548,18 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
+- **2026-10-12, explicit placement/control source:** the actual DM-gated shared
+  host now accepts an additive version2 character batch with explicit geometry
+  and native participant control. Placement checks the selected native body
+  revision, terrain revision, supplied volume/position and derived clear patch
+  before logged `Patch`; `Join`/`Take` are explicit, with separate-player sharing
+  and the current DM's unclaimed-character restriction. Saved game bindings cite
+  accepted native entries; stale/departed position readings refuse. Owner and
+  authored cell metadata supply neither placement nor control. Version1 and
+  previous assertion arrays keep their prior payload behavior. This is placed,
+  unverified source under826. Party movement, player/ruleset actuation and full
+  V2 acceptance remain open; compiler/tests/fixtures/tuning remain deferred.
+
 - **2026-10-11, combined product state:** implementation checkpoint
   `a4fea109` is committed and pushed. All 168 campaign and protocol tests
   pass on its combined source with a corrected travel fixture: a departed

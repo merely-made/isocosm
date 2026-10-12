@@ -58,6 +58,9 @@ impl Genesis {
         }
         crate::validation::conversions(&self.rules, &self.lineages)?;
         crate::validation::development(&self.rules, &self.lineages)?;
+        for material in self.rules.material_recipes.values() {
+            material.validate_lineages(&self.lineages)?;
+        }
         for process in self.rules.processes.values() {
             process.validate_feeding_sources(&self.lineages)?;
             if process.target.as_ref().is_some_and(|t| {

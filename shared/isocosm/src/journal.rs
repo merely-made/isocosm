@@ -34,6 +34,7 @@ pub(crate) struct Journal {
     nudges: Option<Vec<crate::directing::Nudge>>,
     attention: crate::attention::Windows,
     spreads: crate::spread::Spreads,
+    projects: crate::projects::Projects,
     /// Debug builds keep the whole world too, to check each rollback.
     #[cfg(debug_assertions)]
     before: Box<State>,
@@ -57,6 +58,7 @@ impl Journal {
             nudges: None,
             attention: state.attention.clone(),
             spreads: state.spreads.clone(),
+            projects: state.projects.clone(),
             #[cfg(debug_assertions)]
             before: Box::new(state.clone()),
         }
@@ -96,6 +98,7 @@ impl Journal {
         s.tick = self.tick;
         s.attention = self.attention;
         s.spreads = self.spreads;
+        s.projects = self.projects;
         s.next_action = self.next_action;
         s.edits.truncate(self.edits);
         s.population.next_id = self.next_id;

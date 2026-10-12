@@ -199,6 +199,8 @@ pub enum Effect {
         cells: Amount,
         reach: u64,
     },
+    ReserveProject { definition: Key, from: Binding, authority: Binding },
+    WorkProject,
 }
 
 impl Effect {

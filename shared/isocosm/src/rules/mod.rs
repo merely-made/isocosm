@@ -133,6 +133,13 @@ pub enum Query {
         function: Key,
         role: Role,
     },
+    /// Native reservation or incomplete selected work must be eligible
+    /// before a material process can claim the actor's choice (837/838).
+    Project {
+        definition: Key,
+        phase: crate::projects::Phase,
+        process: Key,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -269,6 +276,13 @@ pub struct Rules {
     /// Worlds without the declaration retain their recorded grammar.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub spread_capacity: Option<crate::spread::CapacityRules>,
+    /// Named native material recipes and their authored source stocks (835).
+    /// An undeclared catalogue retains the world's recorded grammar.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub material_recipes: BTreeMap<Key, crate::material::Recipe>,
+    /// Authored material work, progress steps and reservation limits (837/838).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub projects: Option<crate::projects::Catalogue>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -324,7 +338,8 @@ impl Process {
         fn takes(e: &Effect) -> bool {
             let shared = |b: &Binding| matches!(b, Binding::Place | Binding::Target);
             match e {
-                Effect::Transfer { from, .. } | Effect::Eat { from, .. } => shared(from),
+                Effect::Transfer { from, .. } | Effect::Eat { from, .. }
+                | Effect::ReserveProject { from, .. } => shared(from),
                 Effect::Transform { who, take, .. } => shared(who) && !take.is_empty(),
                 Effect::Convert { who, .. } => shared(who),
                 Effect::When { .. } => e.branches().any(takes),

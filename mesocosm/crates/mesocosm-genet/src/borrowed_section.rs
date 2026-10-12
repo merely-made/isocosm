@@ -67,6 +67,50 @@ impl SceneHandle {
         self.update_geometry(session, participant, window, mode, site.site(), quarter_turn, Some((site, sight)))
     }
 
+    /// An actual close-up lowers ONLY saved physical poses inside the same
+    /// admitted native window and awareness cut. No advisory layout is used.
+    pub fn update_spatial(&self, session: &Session, participant: Id, window: u64, mode: Mode,
+        site: Id, quarter_turn: u8, game: &mesocosm_runtime::spatial::Game) -> Result<bool, String> {
+        let result = (|| {
+            if quarter_turn > 3 { return Err("quarter turn must be zero through three".into()); }
+            game.version()?;
+            let region = session.sim.region_reading(participant, window, mode, site)?;
+            let subject = session.sim.plays(participant);
+            if mode == Mode::Survival && subject.is_some_and(|id|
+                session.sim.state().population.get(id).is_none_or(|e| e.resident_site() != Some(site))) {
+                return Err("played critter is off-site; physical close-up withdrawn".into());
+            }
+            let visible = isocosm::directing::readings::view(&session.sim, subject.unwrap_or(Id::MAX), mode);
+            let volume = if let Some(held) = subject.and_then(|id| game.members.get(&id))
+                .filter(|held| held.site.0 == site) {
+                held.realized(&session.sim)?;
+                session.sim.volume(site, held.window.min, held.window.max, held.window.depth)?
+            } else if mode == Mode::Survival {
+                return Err("played member has no actual saved close-up geometry".into());
+            } else {
+                // A creative lens's native window frames the picture only;
+                // it still supplies no missing body position or control.
+                mesocosm_runtime::runtime::placing::lift(&session.sim, site)?
+            };
+            let bodies = scene::placed_physical(&session.sim, site, &volume, &visible, game)?;
+            let digest = isocosm::digest(&(session.sim.genesis(), session.sim.state(), &region, game));
+            let mut fingerprint = [0; 4];
+            for (i, word) in fingerprint.iter_mut().enumerate() {
+                *word = u64::from_str_radix(&digest[i * 16..(i + 1) * 16], 16).map_err(|e| e.to_string())?;
+            }
+            if self.input.borrow().as_ref().is_some_and(|old|
+                old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
+            let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
+            let snapshot = Snapshot { scene:SiteScene { site, ground:volume.ground().clone(), window:volume,
+                bodies, played:region.played, volumes }, fingerprint, quarter_turn };
+            *self.input.borrow_mut() = Some(Rc::new(snapshot));
+            self.error.borrow_mut().take();
+            Ok(true)
+        })();
+        if let Err(why) = &result { self.clear(); *self.error.borrow_mut() = Some(why.clone()); }
+        result
+    }
+
     fn update_geometry(&self, session: &Session, participant: Id, window: u64, mode: Mode,
         site: Id, quarter_turn: u8, geometry: Option<(&InSite, &Sight)>) -> Result<bool, String> {
         let result: Result<bool, String> = (|| {
@@ -131,7 +175,7 @@ fn lower(session: &Session, region: RegionReading, fingerprint: [u64; 4], quarte
             None => body.patch.filter(|p| volume.holds(p.cell[0], p.cell[2]))
                 .map(|p| volume.to_ground(p.cell)).unwrap_or_else(|| layout::spot(&ground, index)),
         };
-        bodies.push(PlacedBody { id: body.id, document: body.document, at,
+        bodies.push(PlacedBody { id: body.id, document: body.document, at, physical:None,
             tint: scene::tint_of(isocosm::kingdom::of(entity)), alive: true });
     }
     let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|body| &body.document), 1);

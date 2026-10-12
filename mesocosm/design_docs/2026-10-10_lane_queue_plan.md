@@ -44,7 +44,11 @@ bindings, and develop the VTT character itself from a selected native recipe
 while retaining its ID. Their dependent source and host consumers are placed,
 unverified. The next choices are now835 to838: named native material recipes,
 distinct native material stocks, project reservation/progress, and resumption
-by eligible natively authorized subjects. Their source lanes follow. Next839.
+by eligible natively authorized subjects. Their material catalogue and Eponym
+world/session consumer are placed; conserved projects and controlled work are
+placed, unverified. Explicit VTT placement/Join/Take also reaches the host.
+Four pending choices839 to842 concern project grants, interrupted-work location,
+physical movement selection and destination-arrival geometry. Next839.
 
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
@@ -375,6 +379,19 @@ is never rewritten: later changes are annotations or new rulings naming what
 they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
+
+- **2026-10-12, production source continues:**835/836's native material
+  catalogue and explicit Eponym generator6/session consumer are placed.837/838's
+  native reserved projects, exact authored progress, conserved staged completion
+  and controlled overlay/UI caller are placed, unverified. New projects have no
+  implicit maker grant; later work waits for native access admission. The VTT's explicit
+  version2 placement/Join/Take batch now reaches the actual DM-gated host and
+  cites accepted native entries. Same-pose Mesocosm spatial refresh/render
+  source is also placed in the real Genet/shared-host loops. Four questions are pending:839 project
+  grant issuer,840 interrupted-work location,841 physical movement selection
+  and842 destination-arrival geometry. No answers or defaults are inferred.
+  All source is unverified, and all Cargo/compiler/tests/fixtures/probes/tuning
+  remain deferred under826. Whole queue/E3/V2/M4 completion remains open.
 
 - **2026-10-12, 835 to838:** Mark settled all four material/work choices:
   named native stock recipes, distinct material stocks in new worlds,

@@ -53,6 +53,9 @@ impl Held {
 pub struct SceneModel {
     pub(super) held: Held,
     played: SubjectId,
+    /// Authored production motion rules; absent only in the older demo path.
+    /// Accepted motion intents retain the actual rules in game history.
+    pub motion_rules: Option<eponym_play::MotionRules>,
     pub camera: CameraPolicy,
     pub appearance: Appearance,
     /// Draw the traced terrain under the bodies. The bodies-only arm is the
@@ -85,6 +88,7 @@ impl SceneModel {
         Self {
             held,
             played,
+            motion_rules: None,
             camera: CameraPolicy::default(),
             appearance: Appearance::default(),
             terrain: true,

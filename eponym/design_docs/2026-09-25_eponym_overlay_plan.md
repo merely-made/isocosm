@@ -593,6 +593,22 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-12, material worlds and controlled work source:** generator6's
+  named authored material profile and founding-only save marker preserve the
+  original five-field world record and prior profiles. Selected items issue
+  their actual native recipe stocks; carry checks read the complete native
+  ledger and consumption names an explicit authored native process. The real
+  session host reads `EPONYM_MATERIAL_WORLD`, using authored motion, timed,
+  network, combat and optional glyph rules. GameSave10 appends controlled
+  `ProjectAct` vocabulary; session/UI work crosses the overlay into native
+  reservation/work admission and records its actual project/output IDs. Native
+  project recipe identity also supplies consumption lookup for completed items.
+  Project access issuer and physical interrupted-work/output placement await
+  choices839/840. New reservations have empty native authorization sets; work
+  refuses until grants are admitted. Recipe quantities, densities, costs and steps remain authored
+  content. Source is unverified; all compiler/tests/fixtures/probes/tuning stay
+  deferred under826. T1/T3, full E3 and the complete played loop remain open.
+
 - **2026-10-12, material/work choices835 to838:** source now proceeds toward
   named native stock recipes, distinct material accounts, conserved project
   reservation/progress and eligible authorized resumption. Native owns those

@@ -64,8 +64,10 @@ pub struct Pan {
 pub struct PlacedBody {
     pub id: u64,
     pub document: BodyDocument,
-    /// A presentation spot, never a world position (see `played::layout`).
+    /// Ground-frame root pivot when physical is present; the older
+    /// site-grain picture otherwise uses its presentation ground anchor.
     pub at: [i32; 3],
+    pub physical: Option<mesocosm_runtime::spatial::Pose>,
     pub tint: [f32; 3],
     pub alive: bool,
 }

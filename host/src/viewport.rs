@@ -27,14 +27,25 @@ pub(crate) fn refresh(app: &mut App) {
             let window = local.native.handle()?;
             let defaults: Defaults = serde_json::from_slice(&local.native.binding().view_defaults)
                 .map_err(|e| e.to_string())?;
-            app.world.read(|session| {
+            app.world.read_game(Mode::Mesocosm, |session, bytes| {
                 crate::spatial::region(session, &cut, window, site.0)?;
                 let mode = if cut.access.seat == Seat::Player {
                     isocosm::directing::readings::Mode::Survival
                 } else { isocosm::directing::readings::Mode::Creative };
-                local.scene.update(session, cut.access.participant.0, window.0, mode, site.0, defaults.quarter_turn)?;
+                if bytes.is_empty() {
+                    if cut.access.seat == Seat::Player {
+                        return Err("Mesocosm close-up requires actual saved physical inputs".into());
+                    }
+                    // The unbound creative picture remains a native
+                    // site-grain projection and drives no game geometry.
+                    local.scene.update(session, cut.access.participant.0, window.0, mode, site.0, defaults.quarter_turn)?;
+                } else {
+                    let game: mesocosm_runtime::spatial::Game = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
+                    local.scene.update_spatial(session, cut.access.participant.0, window.0, mode, site.0,
+                        defaults.quarter_turn, &game)?;
+                }
                 Ok::<(), String>(())
-            })??;
+            })?;
             Ok::<(), String>(())
         })();
         if let Err(why) = result { local.scene.clear(); local.error = Some(why); }

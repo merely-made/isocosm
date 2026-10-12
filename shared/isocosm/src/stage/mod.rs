@@ -30,6 +30,7 @@ pub(crate) use staged::Staged;
 pub(crate) struct Stage {
     pub(crate) process: Key,
     pub(crate) terrain: Option<crate::operations::StagedTerrain>,
+    projects: crate::projects::Writes,
     actor: Id,
     target: Option<Id>,
     place: Id,
@@ -102,6 +103,7 @@ impl Simulation {
         Ok(Stage {
             process: String::new(),
             terrain: None,
+            projects: crate::projects::Writes::default(),
             actor,
             target,
             place,
@@ -133,6 +135,7 @@ impl Simulation {
     /// Whether what the act changed lands whole on bodies and a site that
     /// earlier acts of its pass changed too.
     pub(crate) fn fits(&self, stage: &Stage) -> bool {
+        if !stage.projects.fits(&self.state.projects) { return false; }
         let Some(frame) = &self.frame else {
             return true;
         };
@@ -206,6 +209,10 @@ impl Simulation {
             after += mass(&site.accounts, &self.genesis.rules);
         }
         after += stage.births.iter().map(weigh).sum::<u128>();
+        let held = |p: &crate::projects::Project| mass(&p.reserved, &self.genesis.rules)
+            + mass(&p.construction, &self.genesis.rules);
+        before += stage.projects.before.values().filter_map(|p| p.as_ref()).map(held).sum::<u128>();
+        after += stage.projects.records.values().map(held).sum::<u128>();
         !crate::operations::balanced(&stage.terrain, before, after)
     }
 
@@ -345,6 +352,8 @@ impl Simulation {
             if let Some(base) = &site_base {
                 frame.keep_site(stage.place, base);
             }
+            for (id, was) in &stage.projects.before { frame.keep_project(*id, was.as_ref()); }
+            for (actor, was) in &stage.projects.binding_before { frame.keep_project_binding(*actor, *was); }
         }
         let s = &mut self.state;
         if stage.count == 1 {
@@ -386,6 +395,8 @@ impl Simulation {
             }
         }
         s.polities.extend(stage.polities);
+        s.projects.records.extend(stage.projects.records);
+        s.projects.bindings.extend(stage.projects.bindings);
         for (axis, value) in stage.marks {
             s.record.reckon(&[hagiograph::Entry {
                 axis,

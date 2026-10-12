@@ -18,7 +18,8 @@ use crate::{
 };
 
 /// Version 9 adds recorded item placement through native custody.
-pub const GAME_STATE_VERSION: u32 = 9;
+pub const GAME_STATE_VERSION: u32 = 10;
+pub const PROJECT_GAME_STATE_VERSION: u32 = 10;
 pub const ITEM_PLACEMENT_GAME_STATE_VERSION: u32 = 9;
 pub const NATIVE_RECIPE_GAME_STATE_VERSION: u32 = 8;
 pub const CANON_GAME_STATE_VERSION: u32 = 7;
@@ -175,6 +176,15 @@ pub enum GameIntent {
         subject: SubjectId,
         item: ItemId,
     },
+    /// One controlled native material act. The world's authored process
+    /// supplies reservation, authority and work definitions.
+    ProjectAct {
+        tick: Tick,
+        subject: SubjectId,
+        process: String,
+        target: Option<isocosm::schema::Id>,
+        project: Option<isocosm::projects::ProjectId>,
+    },
 }
 
 impl GameIntent {
@@ -183,6 +193,7 @@ impl GameIntent {
             Self::Generate { tick, .. }
             | Self::GenerateNativeRecipe { tick, .. }
             | Self::Drop { tick, .. }
+            | Self::ProjectAct { tick, .. }
             | Self::Name { tick, .. }
             | Self::Move { tick, .. }
             | Self::Observe { tick, .. }
@@ -209,6 +220,7 @@ impl GameIntent {
             Self::Generate { subject, .. }
             | Self::GenerateNativeRecipe { subject, .. }
             | Self::Drop { subject, .. }
+            | Self::ProjectAct { subject, .. }
             | Self::Name { subject, .. }
             | Self::Move { subject, .. }
             | Self::Observe { subject, .. }
@@ -359,6 +371,14 @@ pub enum GameEvent {
         item: ItemId,
         at: [i32; 3],
     },
+    ProjectAct {
+        tick: Tick,
+        subject: SubjectId,
+        process: String,
+        project: Option<isocosm::projects::ProjectId>,
+        output: Option<ItemId>,
+        receipt: isocosm::simulation::Receipt,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -384,6 +404,7 @@ pub enum GameError {
     LegacyCanonIntent,
     LegacyNativeRecipeIntent,
     LegacyItemPlacementIntent,
+    LegacyProjectIntent,
     UnreceiptedPromotion,
     WrongTick { expected: Tick, actual: Tick },
     StateDiverged { saved: u64, restored: u64 },

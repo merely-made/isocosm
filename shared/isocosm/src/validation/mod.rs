@@ -7,6 +7,7 @@ use std::collections::BTreeMap;
 mod body;
 mod conversion;
 mod harm;
+mod material;
 mod note;
 mod recipe;
 
@@ -39,6 +40,7 @@ fn account(rules: &Rules, value: &str) -> Result<()> {
 }
 
 fn query(rules: &Rules, q: &Query) -> Result<()> {
+    material::query(rules, q)?;
     match q {
         Query::Account { key, .. } => account(rules, key)?,
         Query::Below { key, .. } => account(rules, key)?,
@@ -232,6 +234,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
     body::catalogue(rules)?;
     body::systems(rules)?;
     recipe::kinds(rules)?;
+    material::catalogue(rules)?;
     if let Some(capacity) = &rules.spread_capacity {
         capacity.validate(rules)?;
     }
@@ -286,6 +289,9 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         }
         for q in &p.requires {
             query(rules, q)?;
+            if matches!(q, Query::Project { process, .. } if process != id) {
+                return Err(format!("{id} has another process's project readiness gate"));
+            }
             if let Query::Computed(x) = q {
                 x.validate().map_err(|why| format!("{id}: {why}"))?;
                 reads(rules, p, id, x)?;
@@ -345,6 +351,7 @@ fn kept_first(p: &Process, id: &str) -> Result<()> {
 /// checked in turn (X5).
 fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
     conversion::declared(rules, id, e)?;
+    crate::projects::validate_effect(rules, p, e)?;
     for a in e.amounts() {
         amount(rules, p, id, a)?;
     }

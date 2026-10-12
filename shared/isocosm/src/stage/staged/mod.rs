@@ -23,6 +23,7 @@ use std::{
 mod harm;
 mod meal;
 mod terrain;
+mod projects;
 
 /// A stage read against the world it will be committed to.
 pub(crate) struct Staged<'a> {
@@ -277,6 +278,14 @@ impl Staged<'_> {
         // An ordered take and a conversion read the balances they take, so
         // their moves are worked out as they are applied.
         match e {
+            Effect::ReserveProject { definition, from, authority } => {
+                self.reserve_project(definition, *from, *authority)?;
+                return Ok(false);
+            },
+            Effect::WorkProject => {
+                self.work_project()?;
+                return Ok(false);
+            },
             Effect::Terrain { change, cells, reach } => {
                 self.terrain(cause, change, cells, *reach)?;
                 return Ok(false);

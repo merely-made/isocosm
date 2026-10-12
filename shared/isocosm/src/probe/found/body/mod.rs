@@ -293,6 +293,8 @@ impl BodyFounding {
             directing: None,
             social: None,
             spread_capacity: None,
+            material_recipes: BTreeMap::new(),
+            projects: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

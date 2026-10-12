@@ -22,6 +22,7 @@ mod agree;
 mod ask;
 mod checkpoint;
 mod handoff;
+mod project;
 mod telling;
 
 pub use act::{KnowingAct, PlayerAct, PlayerActKind};
@@ -30,6 +31,7 @@ pub use agree::{AgreementAct, Deed, DeedKey, EndReason};
 pub use ask::{AgreementHandle, Proposal, Term, TermSide, WorkKey};
 pub use checkpoint::{FirstLife, LifeCheckpoint, LifeChoice, StartTime, Succession, Successor};
 pub use handoff::{Blow, EponymHandoff};
+pub use project::{ProjectAct, ProjectHandle};
 pub use telling::{Claim, Manner, Telling};
 
 use serde::{Deserialize, Serialize};
@@ -50,6 +52,7 @@ pub enum EponymIntent {
     Act(PlayerAct),
     Checkpoint(LifeCheckpoint),
     Creative(CreativeIntent),
+    Project(ProjectAct),
 }
 
 /// Creative mode's intents (ruling 187), and nothing else's: tag in to a

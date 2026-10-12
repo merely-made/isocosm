@@ -18,6 +18,7 @@ use crate::{
     CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION,
     ITEM_PLACEMENT_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
     GameState, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
+    PROJECT_GAME_STATE_VERSION,
     World,
 };
 
@@ -149,6 +150,23 @@ impl Session {
             tick: self.game.next_tick(),
             subject: self.control.played(),
             item,
+        })
+    }
+
+    /// Run the world's declared material process as the currently played
+    /// subject. Native project access and craft requirements still apply.
+    pub fn project_act(
+        &mut self,
+        process: String,
+        target: Option<isocosm::schema::Id>,
+        project: Option<isocosm::projects::ProjectId>,
+    ) -> Result<Vec<GameEvent>, SessionError> {
+        self.apply_game(GameIntent::ProjectAct {
+            tick: self.game.next_tick(),
+            subject: self.control.played(),
+            process,
+            target,
+            project,
         })
     }
 
@@ -322,6 +340,11 @@ impl Session {
             && save.game.intents.iter().any(|intent| matches!(intent, GameIntent::Drop { .. }))
         {
             return Err(SessionError::Game(GameError::LegacyItemPlacementIntent));
+        }
+        if save.game.version < PROJECT_GAME_STATE_VERSION
+            && save.game.intents.iter().any(|intent| matches!(intent, GameIntent::ProjectAct { .. }))
+        {
+            return Err(SessionError::Game(GameError::LegacyProjectIntent));
         }
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents

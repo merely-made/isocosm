@@ -397,6 +397,7 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
         Command::AdvanceGeometry { .. } => Err("geometry advance needs its native Session".into()),
         Command::Window(change) => sim.change_window(change),
         Command::Spread(change) => sim.spread(change),
+        Command::Project(change) => sim.project_change(change),
         Command::Develop { entity, seed } => {
             sim.develop_arrival(*entity, *seed)?;
             Ok("developed".into())

@@ -85,6 +85,23 @@ impl Borrowed<'_> {
         };
         let mut out = Lowered::default();
         let social = match intent {
+            EponymIntent::Project(act) => {
+                check(act.subject)?;
+                let participant = participant.ok_or(WorldError::NotPlayed)?;
+                let outcome = self.run(Command::Project(isocosm::projects::Change::Act {
+                    participant,
+                    actor: act.subject.0,
+                    target: act.target.map(|target| target.0),
+                    process: act.process.0.clone(),
+                    project: act.project.map(|project| isocosm::projects::ProjectId(project.0)),
+                    cause: None,
+                }))?;
+                let acted: isocosm::projects::Acted =
+                    serde_json::from_str(&outcome).map_err(|_| WorldError::Decode)?;
+                if !acted.receipt.accepted() { return Err(WorldError::Refused); }
+                out.outcomes.push(outcome);
+                return Ok(out);
+            },
             EponymIntent::Drive(a) => {
                 check(a.body)?;
                 self.drive(a, &mut out)?;

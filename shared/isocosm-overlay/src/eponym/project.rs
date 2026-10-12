@@ -1,0 +1,21 @@
+// Copyright 2026 Mark Alan Boykin
+// SPDX-License-Identifier: MPL-2.0
+
+//! Material work uses the world's named process and an existing native project.
+
+use crate::{ActKey, EntityHandle};
+use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProjectHandle(pub u64);
+
+/// Reservation and work share native process admission. Selecting a project
+/// here requests resumption; it grants neither access nor craft eligibility.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ProjectAct {
+    pub subject: EntityHandle,
+    pub process: ActKey,
+    pub target: Option<EntityHandle>,
+    pub project: Option<ProjectHandle>,
+}

@@ -53,6 +53,7 @@ pub use combat::{
 };
 pub use equipment::AttachmentView;
 pub use founding::fixture::{NativeFixtureProfile, NativeFixtureRecipe};
+pub use founding::materials::{MaterialProfile, MaterialStock, ItemRecipe, InitialMaterialItem};
 pub use items::{Item, ItemError, ItemHolding, ItemHoldingKind, ItemId, ItemKind,
     ItemLocation, ItemPlaces, ItemReading, ItemReadingError, Items, MakerProvenance, SourceLineage};
 pub use motion::{
@@ -83,6 +84,7 @@ pub use transitions::{
     CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, CanonRevisionCause, DeathCause, GAME_STATE_VERSION, GameError,
     GameEvent, GameIntent, GameSave, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION,
     ITEM_PLACEMENT_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
+    PROJECT_GAME_STATE_VERSION,
 };
 pub use world::{
     GENERATOR_VERSION, World, WorldConfig, WorldError, WorldEvent, WorldIntent, WorldSave,

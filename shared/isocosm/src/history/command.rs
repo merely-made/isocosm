@@ -112,4 +112,5 @@ pub enum Command {
     Spread(crate::spread::Command),
     /// Exact game geometry inputs, consumed only by the native chosen actions.
     AdvanceGeometry { ticks: Tick, resolutions: Vec<crate::operations::Resolution> },
+    Project(crate::projects::Change),
 }

@@ -53,12 +53,16 @@ use eponym_play::{CombatRules, ItemId};
 mod actions;
 #[path = "panels.rs"]
 mod panels;
+#[path = "projects.rs"]
+mod projects;
 #[path = "probe.rs"]
 mod probe;
 #[path = "smoke.rs"]
 mod smoke;
 #[path = "view.rs"]
 mod view;
+#[path = "founding.rs"]
+mod founding;
 
 /// The one custom-leaf key this document owns. "PARD".
 pub(crate) const LEAF_KEY: u64 = 0x5041_5244;
@@ -192,6 +196,7 @@ pub(crate) struct SessionApp {
     pub(crate) scene: Rc<RefCell<SceneProducer>>,
     pub(crate) target: SubjectId,
     pub(crate) target_item: ItemId,
+    pub(crate) project_target: Option<ItemId>,
     pub(crate) combat_rules: CombatRules,
     pub(crate) direction: Direction,
     pub(crate) charging: bool,
@@ -367,26 +372,14 @@ impl Product for Session {
     }
 }
 
-/// Builds the fixture world, opens the window, and returns the process code.
+/// Opens an explicitly authored material world or the historical demo profile.
 pub fn run() -> i32 {
     let Some(options) = probe::options() else {
         return 0;
     };
-    let fixture = session_fixture::timed_action_world_solving(eponym_motion::SOLVER);
-    let played = fixture.keeper;
-    let target = fixture.target;
-    let target_item = fixture.target_item;
-    let combat_rules = fixture.combat_rules;
-    let model = SceneModel::timed(fixture.action, played).into_handle();
-    let glyphs = {
-        let rules = session_fixture::demonstration_rules(played);
-        match GlyphReading::new(rules, model.borrow().game()) {
-            Ok(reading) => Some(reading),
-            Err(why) => {
-                eprintln!("session: acquisition journal disabled: {why}");
-                None
-            },
-        }
+    let founding::Start { model, target, target_item, combat_rules, glyphs } = match founding::start() {
+        Ok(start) => start,
+        Err(why) => { eprintln!("session: founding refused: {why}"); return 1; },
     };
     let scene = Rc::new(RefCell::new(SceneProducer::new(SceneModelSource::new(
         model.clone(),
@@ -400,6 +393,7 @@ pub fn run() -> i32 {
         scene,
         target,
         target_item,
+        project_target: None,
         combat_rules,
         direction: Direction::Right,
         charging: false,
