@@ -22,6 +22,7 @@ pub(crate) struct Frame {
     sites: BTreeMap<Id, Site>,
     projects: BTreeMap<crate::projects::ProjectId, Option<crate::projects::Project>>,
     project_bindings: BTreeMap<Id, Option<crate::projects::ProjectId>>,
+    ownership: BTreeMap<Key, Option<crate::projects::OwnedLot>>,
     /// Bodies as the pass began, by their span then: a member lifted out of
     /// its group alone, a cohort written whole with its count.
     bodies: BTreeMap<Id, (u64, Entity)>,
@@ -90,6 +91,12 @@ pub(crate) fn edible(ledger: &Ledger, of: &[Key]) -> Ledger {
 }
 
 impl Frame {
+    pub(crate) fn stock_lot(&self, key: &str) -> Option<&Option<crate::projects::OwnedLot>> {
+        self.ownership.get(key)
+    }
+    pub(crate) fn keep_stock_lot(&mut self, key: &str, was: Option<&crate::projects::OwnedLot>) {
+        self.ownership.entry(key.into()).or_insert_with(|| was.cloned());
+    }
     pub(crate) fn project(&self, id: crate::projects::ProjectId) -> Option<&Option<crate::projects::Project>> {
         self.projects.get(&id)
     }

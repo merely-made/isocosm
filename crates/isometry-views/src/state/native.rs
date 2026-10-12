@@ -18,12 +18,23 @@ pub struct Selection {
 #[derive(Clone, Debug, Default)]
 pub struct NativeUi {
     pub world: Option<NativeWorld>,
+    pub table: Option<isonetry::NativeTable>,
+    pub binding_request: Option<isonetry::NativeTableBindingInput>,
+    pub admission_request: Option<isonetry::native_table::NativeTableAdmissionInput>,
+    pub admission_path: TextInput,
+    pub binding_path: TextInput,
+    pub export_path: TextInput,
+    pub file_request: Option<TableFileAction>,
+    pub endpoints: Vec<[u8; 32]>,
     pub enabled: bool,
     pub profile_path: TextInput,
     pub attachment_path: TextInput,
     pub preview_request: bool,
     pub selection: Option<Selection>,
 }
+
+#[derive(Clone, Copy, Debug)]
+pub enum TableFileAction { Admit, Bind, Export }
 
 #[derive(Clone, Debug)]
 pub enum Acceptance { TableOnly, Native(Selection) }
@@ -59,6 +70,28 @@ impl NativeUi {
 }
 
 impl super::UiState {
+    pub fn request_native_table_file(&mut self, action: TableFileAction) {
+        if !self.can_edit_inventory || self.native.world.is_none() {
+            self.status = "native table authoring requires the host's existing world".into();
+            return;
+        }
+        self.native.file_request = Some(action);
+    }
+
+    /// Explicit host-authored mappings; validation and publication belong to
+    /// the existing authority callback, not to this request flag.
+    pub fn request_native_table_binding(&mut self, input: isonetry::NativeTableBindingInput) {
+        if !self.can_edit_inventory { self.status = "native table binding requires the host".into(); return; }
+        self.native.binding_request = Some(input);
+    }
+
+    pub(super) fn request_native_move(&mut self, id: isometry_core::TokenId, to: isometry_core::TileCoord) -> bool {
+        if self.native.world.is_none() { return false; }
+        self.net_outbox.push(isonetry::GameEvent::Map(isometry_core::SessionEvent::TokenMoved { id, to }));
+        self.status = "requested native table move".into();
+        true
+    }
+
     pub fn choose_native_world(&mut self, enabled: bool) {
         if !self.can_edit_inventory { self.status = "world selection requires the host".into(); return; }
         if self.native.world.is_some() { self.status = "this campaign already owns a native world".into(); return; }

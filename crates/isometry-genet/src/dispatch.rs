@@ -26,6 +26,7 @@ impl App {
             );
         }
         ctx.runner.update(|ui| ui.sync_overmap_source_time());
+        self.pump_native_table(ctx);
         // Cheap flags first: this tail runs after every dispatch, and the save
         // path below starts by cloning the journal. An ordinary click asks for
         // neither and must not pay for either.
@@ -71,6 +72,7 @@ impl App {
                                     active_map: ui.active_map.clone(),
                                     world: ui.world.clone(),
                                     native: ui.native.world.clone(),
+                                    native_table: ui.native.table.clone(),
                                     clocks: ui.clocks.clone(),
 
                                     party_cap: ui.party_cap,
@@ -216,6 +218,7 @@ impl App {
         }
         let mut received = Vec::new();
         let mut players = Vec::new();
+        let mut endpoints = Vec::new();
         let mut campaign_outcomes = Vec::new();
         let mut failure = None;
         if let Some(net) = self.net.as_mut() {
@@ -235,8 +238,12 @@ impl App {
             // the whisper-target list from connected players.
             received = net.take_whispers();
             players = net.players();
+            endpoints = net.authenticated_endpoints();
             campaign_outcomes = net.take_campaign_outcomes();
             failure = net.take_failure();
+        }
+        if ctx.runner.state().native.endpoints != endpoints {
+            ctx.runner.update(|ui| ui.native.endpoints = endpoints);
         }
         if !received.is_empty()
             || !players.is_empty()
@@ -362,6 +369,7 @@ pub(crate) fn snapshot_with_journal(
         active_map: ui.active_map.clone(),
         world: ui.world.clone(),
         native: ui.native.world.clone(),
+        native_table: ui.native.table.clone(),
         clocks: ui.clocks.clone(),
         party_cap: ui.party_cap,
         last_beats: Vec::new(),

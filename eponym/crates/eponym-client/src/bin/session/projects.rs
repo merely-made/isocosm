@@ -5,7 +5,7 @@
 
 use cambium::{el, text};
 use eponym_play::{GameEvent, GameIntent};
-use isocosm::projects::{Phase, ProjectId};
+use isocosm::projects::{Phase, ProjectId, StockSource};
 use isocosm::rules::{Effect, Query};
 use super::{SessionApp, view::{Child, button}};
 
@@ -23,8 +23,21 @@ pub(super) fn panel(state: &SessionApp) -> Child {
     };
     let site = sim.state().population.get(actor).and_then(|body| body.resident_site());
     let mut rows: Vec<Child> = Vec::new();
+    rows.extend(super::project_permissions::rows(state));
     if let Some(item) = state.project_target {
         rows.push(Box::new(el("p", text(format!("Selected material: item {}", item.0)))));
+    }
+    let selected = state.project_target.map(|item| item.0)
+        .or_else(|| state.selected.and_then(|(subject, _)| game.entity(subject)));
+    for (_, lot) in sim.available_lots().filter(|(source, _)| match *source {
+        StockSource::Entity(id) => id == actor || Some(id) == selected,
+        StockSource::Site(id) => Some(id) == site,
+    }) {
+        let key = lot.key.clone();
+        rows.push(button(format!("{} {}: {}mg {}",
+            if state.project_lots.contains(&key) { "Selected" } else { "Select" },
+            label(&key), lot.amount, label(&lot.account)), "control",
+            move |state| state.select_lot(key.clone())));
     }
     for (key, definition) in &catalogue.definitions {
         for process in sim.genesis().rules.processes.values().filter(|process|
@@ -39,10 +52,16 @@ pub(super) fn panel(state: &SessionApp) -> Child {
         }
         for (&id, project) in &sim.state().projects.records {
             if project.definition != *key || project.output.is_some()
-                || !project.authorized.contains(&actor) || site != Some(project.site)
+                || !sim.project_authorized(project, actor) || site != sim.project_site(project)
             { continue; }
+            let Ok(location) = game.project_location(id) else { continue; };
+            let (work_site, at) = location.position();
+            if site != Some(work_site) || game.movement().position(model.played()) != Some(at) { continue; }
             rows.push(Box::new(el("p", text(format!("{}: {} / {}",
                 label(&project.recipe), project.progress, definition.total)))));
+            let carrying = project.carrier == Some(actor);
+            rows.push(button(if carrying { "Put work down" } else { "Carry work" }, "control",
+                move |state| state.carry_work(id, !carrying)));
             for process in sim.genesis().rules.processes.values().filter(|process|
                 process.requires.iter().any(|query| matches!(query,
                     Query::Project { definition, phase:Phase::Work, .. } if definition == key))
@@ -60,22 +79,41 @@ pub(super) fn panel(state: &SessionApp) -> Child {
 }
 
 impl SessionApp {
+    fn select_lot(&mut self, key:String) {
+        if !self.project_lots.remove(&key) { self.project_lots.insert(key); }
+    }
+    fn carry_work(&mut self, project:ProjectId, carried:bool) {
+        let intent = {
+            let model = self.model.borrow();
+            GameIntent::ProjectCarry { tick:model.game().next_tick(),
+                subject:model.played(), project, carried }
+        };
+        self.status = vec![match self.model.borrow_mut().apply(intent) {
+            Ok(_) => if carried { "Work is now carried." } else { "Work is placed here." }.into(),
+            Err(error) => format!("Moving work refused: {error:?}"),
+        }];
+    }
     pub(super) fn use_for_work(&mut self, item: eponym_play::ItemId) {
         self.project_target = Some(item);
+        self.project_lots.clear();
         self.status = vec![format!("Item {} selected for material work", item.0)];
     }
     fn material_act(&mut self, process: String, project: Option<ProjectId>) {
         let intent = {
             let model = self.model.borrow();
             let game = model.game();
-            GameIntent::ProjectAct {
+            let target = self.project_target.map(|item| item.0)
+                .or_else(|| self.selected.and_then(|(subject, _)| game.entity(subject)));
+            if project.is_none() { GameIntent::ProjectReserve {
+                tick:game.next_tick(), subject:model.played(), process, target,
+                lots:self.project_lots.iter().cloned().collect(),
+            }} else { GameIntent::ProjectAct {
                 tick: game.next_tick(),
                 subject: model.played(),
-                target: self.project_target.map(|item| item.0)
-                    .or_else(|| self.selected.and_then(|(subject, _)| game.entity(subject))),
+                target,
                 process,
                 project,
-            }
+            }}
         };
         self.status = match self.model.borrow_mut().apply(intent) {
             Ok(events) => events.iter().filter_map(|event| match event {

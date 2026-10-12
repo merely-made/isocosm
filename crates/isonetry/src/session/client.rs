@@ -21,6 +21,7 @@ pub struct ClientSession {
     pending: Vec<(u64, GameEvent)>,
     /// Whispers received from the DM, oldest first: `(from, text)`.
     inbox: Vec<(String, String)>,
+    rejections: Vec<String>,
     /// Nonces for this client's own asks. Monotone, so two swings in one turn
     /// are two requests and the second is not mistaken for a replay of the
     /// first.
@@ -45,6 +46,7 @@ impl ClientSession {
             log_hash: FNV_OFFSET,
             pending: Vec::new(),
             inbox: Vec::new(),
+            rejections: Vec::new(),
             next_request: 0,
             refused: None,
         }
@@ -79,6 +81,8 @@ impl ClientSession {
     pub fn drain_inbox(&mut self) -> Vec<(String, String)> {
         std::mem::take(&mut self.inbox)
     }
+
+    pub fn drain_rejections(&mut self) -> Vec<String> { std::mem::take(&mut self.rejections) }
 
     /// The replicated state, once the snapshot has arrived.
     pub fn state(&self) -> Option<&GameSnapshot> {
@@ -158,13 +162,13 @@ impl ClientSession {
             NetMessage::Whisper { from, text } => {
                 self.inbox.push((from, text));
             }
+            NetMessage::Rejected { reason } => self.rejections.push(reason),
             // The host refused *us*. Symmetric: the session is over either way,
             // and `supported` records the dialect it does speak.
             NetMessage::VersionRefused { supported, .. } => {
                 self.refused = Some(supported);
             }
             NetMessage::Intent { .. }
-            | NetMessage::Rejected { .. }
             | NetMessage::Hello { .. }
             | NetMessage::Action(_) => {}
         }

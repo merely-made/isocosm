@@ -108,6 +108,12 @@ pub fn generator_overlay(ui: &UiState) -> Option<UiChild> {
     if !ui.generator_open {
         return None;
     }
+    if ui.native.world.is_some() {
+        return Some(crate::widgets::overlay_panel("generator", "Native table".into(), vec![
+            Box::new(clickable(el::<_, UiState, ()>("span", text("close")).attr("class", "btn btn-mini"),
+                |ui: &mut UiState, _| ui.close_generator())),
+        ], founding::table_controls(ui)));
+    }
     let choice = ui.selected_generator()?;
     let preset = choice.lock_presets.first();
     let locked = preset.is_some_and(|preset| ui.generator_locks.contains_key(&preset.key));

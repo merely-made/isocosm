@@ -9,7 +9,9 @@ unfinished work for any eligible natively authorized subject to resume.
 The dependent native/product source is the next migration slice. Existing
 saved holdings are retained; no recipe quantities, yields or duration are
 chosen by these answers. Tests and adjustments remain deferred under826.
-Next839; full E3 remains open.
+Rulings839 to845 are recorded; selected native lots, joint-owner permission
+and explicit carrying are being connected to the actual caller. Ordinary
+stock-debit disposition is pending846. Full E3 remains open.
 
 **Earlier source checkpoint, 2026-10-12 (826):** the client Items panel exposes explicit
 Take choices for actual items at the living played subject's current game
@@ -592,6 +594,31 @@ Ruling 793 archived the genet document host plan to
   no type to the core.
 
 ## Progress
+
+- **2026-10-12, joint permission/custody caller placed:** actual work controls
+  select quantity lots and request the native process. Each eligible current
+  input owner can grant/revoke for an explicitly selected worker through its
+  current native decision policy. Saved positions retain creation site/cell
+  and later explicit drops; travelling or outside-world carriers supply no
+  local pose. Complete item/project burden is checked before carrying, and
+  completed output appears at the same accepted work position. Founding-only
+  stock assertions are recorded for replay and refused by ordinary controlled
+  play. GameSave11 appends these vocabularies, preserving old intent indices.
+  Owned ordinary debits remain unavailable pending846, with no automatic lot
+  allocation or repair. Source is uncompiled/untested under826; full E3 open.
+
+- **2026-10-12, 839 to845 caller source assembling:** GameSave11 appends
+  exact-lot reservation, controlled project carry/drop, owner consent and
+  founding-only ownership assertion vocabulary. Saved fixed project
+  positions preserve creation and later explicit drops; carried positions
+  require the current native carrier's actual residence and accepted game
+  pose. Work/output placement publishes with the same native candidate.
+  Carry capacity counts native item matter and reserved/construction matter
+  once; completing carried work retains authored custody. The actual UI
+  exposes explicit lot selection and carry/drop, with owner decisions being
+  connected. Earlier saves cannot hide this new vocabulary. Ordinary debit
+  disposition is pending846; help has no invented rules. Source is unverified
+  and compiler/tests/fixtures/probes/tuning wait under826. Full E3 is open.
 
 - **2026-10-12, material worlds and controlled work source:** generator6's
   named authored material profile and founding-only save marker preserve the

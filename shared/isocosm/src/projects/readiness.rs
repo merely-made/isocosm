@@ -5,6 +5,16 @@ use super::*;
 use crate::rules::{Binding, Query};
 
 impl Simulation {
+    pub fn project_reservation_readiness(&self, actor:Id, target:Option<Id>, process:&str, lots:&[Key]) -> Result<String> {
+        if lots.is_empty() { return Err("reservation needs an explicit native lot selection".into()); }
+        if !self.genesis.rules.processes.get(process).is_some_and(|p| p.requires.iter()
+            .any(|q| matches!(q, Query::Project { phase:Phase::Reserve, .. }))) {
+            return Err("process declares no native reservation".into());
+        }
+        let mut candidate = self.clone();
+        candidate.project_inputs = Some((actor,lots.to_vec()));
+        candidate.project_process_readiness(actor,target,process)
+    }
     /// Conservative until an actual target is supplied for target-bound inputs.
     pub fn project_readiness(&self, actor: Id, definition: &str, phase: Phase) -> Result<String> {
         let mut refusal = "no authored native project process".into();
@@ -48,11 +58,7 @@ impl Simulation {
                     return Err("project actor already has selected unfinished work".into());
                 }
                 let p = self.genesis.rules.processes.get(process).ok_or("project process is absent")?;
-                let (from, authority) = reserve_bindings(p, key)?;
-                let authority = self.bound(actor, target, authority)?;
-                if !self.body_at_start(authority).is_some_and(|e| e.alive && !crate::directing::is_participant(e)) {
-                    return Err("project has no available native subject authority".into());
-                }
+                let (from, authored) = reserve_bindings(p, key)?;
                 let stocks = match from {
                     Binding::Place => self.site_at_start(body.resident_site().expect("checked above"))
                         .map(|s| s.accounts.clone()).ok_or("project stock site is absent")?,
@@ -63,6 +69,8 @@ impl Simulation {
                     Binding::Part => return Err("project source needs an addressed native ledger".into()),
                 };
                 let recipe = self.genesis.rules.material_recipes.get(&definition.recipe).ok_or("project recipe is absent")?;
+                let selected = self.selected_project_lots(actor, &authored)?;
+                self.check_project_lots(self.stock_source(actor, target, from)?, &selected, &recipe.stocks)?;
                 if recipe.stocks.iter().any(|(key, amount)| stocks.get(key).copied().unwrap_or(0) < *amount) {
                     return Err("project source lacks exact reserved recipe stocks".into());
                 }
@@ -76,6 +84,11 @@ impl Simulation {
                     || usize::try_from(project.steps).ok().and_then(|i| definition.steps.get(i)).is_none()
                 { return Err("selected project has no matching unfinished work step".into()); }
                 self.project_eligible(actor, project)?;
+                let step = &definition.steps[project.steps as usize];
+                if project.carrier.is_some() && project.progress.checked_add(step.progress) == Some(definition.total)
+                    && definition.output_custody.is_none() {
+                    return Err("carried final work needs its declared native output custody relation".into());
+                }
                 Ok(format!("project work ready: {key}, progress {}", project.progress))
             },
         }

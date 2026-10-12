@@ -50,6 +50,19 @@ impl Runtime {
     fn translate(&mut self, intent: &MesocosmIntent) -> Result<String, Refusal> {
         match intent {
             MesocosmIntent::Checkpoint(answer) => self.answer(answer.kind),
+            MesocosmIntent::Dev(isocosm_overlay::mesocosm::DevIntent::EndEpoch) => {
+                let epoch = self.interim.session.sim.genesis().rules.epoch_ticks.max(1);
+                let left = epoch - self.interim.session.sim.state().tick % epoch;
+                let ticks = left.saturating_sub(self.interim.pace.round);
+                // The existing authored dev clock uses the same saved spatial
+                // driver; it cannot bypass chosen-step geometry or arrival data.
+                let mut session = self.interim.session.clone();
+                let mut game = self.spatial.clone();
+                for _ in 0..ticks { game.advance_clock(&mut session).map_err(Refusal::Sim)?; }
+                self.interim.session = session;
+                self.spatial = game;
+                Ok(format!("advanced {ticks}"))
+            },
             _ => direct::apply(&mut self.interim.session, self.interim.participant,
                 self.interim.pace.round, intent),
         }

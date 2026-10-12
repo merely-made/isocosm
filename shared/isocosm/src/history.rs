@@ -185,6 +185,8 @@ impl Session {
     fn recorded(&mut self, command: &Command) -> Result<String> {
         match command {
             Command::AdvanceGeometry { ticks, resolutions } => self.advance_geometry(*ticks, resolutions),
+            Command::AdvanceSpatial { ticks, terrain, steps, arrivals } =>
+                self.advance_spatial(*ticks, terrain, steps, arrivals),
             _ => run(&mut self.sim, command),
         }
     }
@@ -328,7 +330,8 @@ impl Session {
         fork.sim.state.movement = self.sim.state.movement;
         fork.branch = branch;
         for entry in self.entries.iter().filter(|e| e.tick <= tick && match &e.command {
-            Command::AdvanceGeometry { ticks, .. } => e.tick.checked_add(*ticks).is_some_and(|end| end <= tick),
+            Command::AdvanceGeometry { ticks, .. } | Command::AdvanceSpatial { ticks, .. } =>
+                e.tick.checked_add(*ticks).is_some_and(|end| end <= tick),
             _ => true,
         }) {
             fork.replay_until(entry.tick)?;
@@ -395,6 +398,7 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
 fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
     match command {
         Command::AdvanceGeometry { .. } => Err("geometry advance needs its native Session".into()),
+        Command::AdvanceSpatial { .. } => Err("spatial advance needs its native Session".into()),
         Command::Window(change) => sim.change_window(change),
         Command::Spread(change) => sim.spread(change),
         Command::Project(change) => sim.project_change(change),

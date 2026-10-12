@@ -14,7 +14,9 @@ resolver = "2"
 default = []
 desktop = ["dep:cambium", "dep:cambium-rootstock", "dep:cambium-genet-winit-host", "dep:isomere"]
 mesocosm = ["desktop", "dep:mesocosm-genet", "dep:mesocosm-runtime", "dep:mesocosm-views", "dep:isomere"]
-vtt = ["desktop", "dep:isometry-campaign", "dep:isometry-views", "dep:isomere"]
+# Reuse the existing native-body Section producer on the same RenderCore;
+# this is a picture dependency, not Mesocosm play or VTT ruleset authority.
+vtt = ["desktop", "dep:isometry-campaign", "dep:isometry-views", "dep:isomere", "dep:mesocosm-genet", "dep:mesocosm-runtime"]
 eponym = ["desktop", "dep:eponym-play", "dep:eponym-client", "dep:isomere"]
 
 [dependencies]

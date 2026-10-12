@@ -163,6 +163,10 @@ pub struct Simulation {
     pub(crate) pass: Option<crate::schedule::Pass>,
     /// What that pass reads: the world as it began (ruling 454).
     pub(crate) frame: Option<crate::schedule::Frame>,
+    /// Explicit command inputs, recorded in the command, never pending saved authority.
+    pub(crate) project_inputs: Option<(Id, Vec<Key>)>,
+    pub(crate) project_decision: Option<crate::projects::DecisionContext>,
+    pub(crate) project_decision_stamp: Option<crate::projects::DecisionStamp>,
     /// What the advance under way has changed, to put back if it is refused.
     pub(crate) journal: Option<crate::journal::Journal>,
     /// The scheduled acts a host asked to see.
@@ -174,6 +178,7 @@ pub struct Simulation {
     pub(crate) chosen: crate::directing::Chosen,
     pub(crate) journeys: Option<crate::journey::Journeys>,
     pub(crate) geometry_resolutions: crate::operations::Resolutions,
+    pub(crate) spatial_resolutions: crate::spatial::Resolutions,
 }
 
 impl Simulation {
@@ -217,12 +222,16 @@ impl Simulation {
             filed: None,
             pass: None,
             frame: None,
+            project_inputs: None,
+            project_decision: None,
+            project_decision_stamp: None,
             journal: None,
             watch: Default::default(),
             flows: Default::default(),
             chosen: Default::default(),
             journeys: None,
             geometry_resolutions: Default::default(),
+            spatial_resolutions: Default::default(),
         })
     }
     pub fn state(&self) -> &State {
@@ -341,6 +350,7 @@ impl Simulation {
     }
     pub fn kept(&self) -> BTreeSet<Id> {
         let mut roots = self.state.roots.clone();
+        roots.extend(self.project_identity_roots());
         roots.extend(self.attention_roots());
         roots.extend(self.state.attention.buffered(self.state.tick));
         roots.extend(

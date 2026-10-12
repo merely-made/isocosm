@@ -20,6 +20,9 @@ pub use session::{NativePublication, NativeTravelResolved, TravelMember, TravelT
 mod mode_game;
 pub use mode_game::ModeGame;
 mod protocol;
+pub mod native_table;
+pub use native_table::{NativeTable, NativeTableAdmissionInput, NativeTableBindingInput, NativeTableResolved,
+    NativeTokenMove, PeerParticipant, BoardBinding, TokenCharacter, TileCell};
 mod session;
 mod source_time;
 pub mod sim;

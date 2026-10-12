@@ -301,7 +301,7 @@ impl UiState {
     pub fn open_generator(&mut self) {
         if !self.can_edit_inventory {
             self.status = "generation requires the host".to_owned();
-        } else if self.generator_choices.is_empty() {
+        } else if self.native.world.is_none() && self.generator_choices.is_empty() {
             self.status = "no generator packs loaded".to_owned();
         } else {
             self.generator_open = true;

@@ -40,6 +40,9 @@ impl Simulation {
         if let Query::Project { definition, phase, process } = query {
             return self.project_ready(actor, target, definition, *phase, process);
         }
+        if matches!(query, Query::ProjectDecision) {
+            return self.project_decision_ready(actor, target);
+        }
         let related = |kind: &Key| -> Result<bool> {
             let object = target.ok_or("target required")?;
             Ok(related(&self.state.relations, actor, kind, object).is_some())

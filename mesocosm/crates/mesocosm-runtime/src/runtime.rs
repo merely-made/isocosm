@@ -163,6 +163,10 @@ impl Runtime {
         self.spatial.replace(&self.interim.session.sim, placements)
     }
 
+    pub fn setup_spatial(&mut self, setup: &crate::spatial::Setup) -> Result<(), String> {
+        self.spatial.setup(&self.interim.session, setup)
+    }
+
     pub fn spatial(&self) -> &crate::spatial::Game { &self.spatial }
 
     /// Queues an envelope for the next step.
@@ -231,20 +235,12 @@ impl Runtime {
             }
         }
         let revisions = isocosm::lineage::revise::revisions;
-        let access = isocosm_overlay::OrdinaryAccess {
-            participant: isocosm_overlay::ParticipantHandle(self.interim.participant),
-            subject: self.critter().map(isocosm_overlay::EntityHandle),
-            seat: isocosm_overlay::Seat::Player,
-        };
-        let round = if access.subject.is_some() {
-            let spatial = &mut self.spatial;
-            self.interim.round_with_flows_using(&revisions, &mut |session| {
-                spatial.advance(session, access)
-                    .map(|out| out.flows).map_err(|why| format!("{why:?}"))
-            })
-        } else {
-            self.interim.round_with_flows(&revisions)
-        };
+        let spatial = &mut self.spatial;
+        // This is the runtime's existing native clock, including periods
+        // without a played member. It is not a player command or a new grant.
+        let round = self.interim.round_with_flows_using(&revisions, &mut |session| {
+            spatial.advance_clock(session).map(|out| out.flows)
+        });
         match round {
             Ok((happenings, flows)) => {
                 self.absorb(happenings, &flows);

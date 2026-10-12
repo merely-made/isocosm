@@ -41,6 +41,8 @@ pub enum Assertion {
     Storylet(Applied),
     /// A pack forced over generated content (190).
     PackForced(Applied),
+    /// Exact native property lots, distinct from custody and tenancy (845).
+    StockOwnership(crate::projects::StockLot),
 }
 
 impl Assertion {
@@ -56,6 +58,7 @@ impl Assertion {
             Self::History(h) => &h.key,
             Self::Edit(m) => &m.key,
             Self::Storylet(a) | Self::PackForced(a) => &a.key,
+            Self::StockOwnership(lot) => &lot.key,
         }
     }
 }
@@ -216,6 +219,7 @@ impl Simulation {
             Assertion::Edit(m) => self.assert_map(m).map(|()| format!("map:{}", m.key)),
             Assertion::Storylet(a) => self.assert_group(a, false),
             Assertion::PackForced(a) => self.assert_group(a, true),
+            Assertion::StockOwnership(lot) => self.assert_stock_ownership(lot),
         }
     }
 }

@@ -3,7 +3,7 @@
 
 //! Material work uses the world's named process and an existing native project.
 
-use crate::{ActKey, EntityHandle};
+use crate::{ActKey, EntityHandle, FactionHandle};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -18,4 +18,31 @@ pub struct ProjectAct {
     pub process: ActKey,
     pub target: Option<EntityHandle>,
     pub project: Option<ProjectHandle>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub lots: Vec<String>,
+}
+
+/// Carrying requests native custody; the game pairs it with accepted position
+/// and actual burden capacity before publishing either side (840).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ProjectCarry {
+    pub subject: EntityHandle,
+    pub project: ProjectHandle,
+    pub carried: bool,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum ProjectOwner { Entity(EntityHandle), Polity(FactionHandle) }
+
+/// Each genuine input owner supplies its own native decision (839/844).
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ProjectConsent {
+    pub subject: EntityHandle,
+    pub project: ProjectHandle,
+    pub owner: ProjectOwner,
+    pub worker: EntityHandle,
+    pub grant: bool,
+    pub process: Option<ActKey>,
 }

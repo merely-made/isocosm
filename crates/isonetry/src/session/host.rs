@@ -23,6 +23,8 @@ pub struct HostSession {
     /// Player name each connected peer announced (via `Hello`), so the
     /// DM can whisper by name.
     pub(super) peer_names: HashMap<PeerId, String>,
+    /// Transport-authenticated endpoint keys; names remain display metadata.
+    pub(super) peer_endpoints: HashMap<PeerId, [u8; 32]>,
     /// Client action requests awaiting adjudication. They sit here because this
     /// crate is deliberately rules-blind: it can validate that you own the token
     /// you are swinging, but it has no `System` and so cannot say whether you
@@ -65,6 +67,7 @@ impl HostSession {
             log_hash,
             history,
             peer_names: HashMap::new(),
+            peer_endpoints: HashMap::new(),
             pending_actions: Vec::new(),
             refused: HashMap::new(),
         }
@@ -128,7 +131,16 @@ impl HostSession {
     /// The host itself proposes an event (the DM plays too). Validates
     /// and, on success, returns the broadcast to every peer.
     pub fn local_event(&mut self, event: GameEvent) -> Vec<Outbound> {
-        self.commit(event)
+        self.try_local_event(event).unwrap_or_default()
+    }
+
+    pub fn try_local_event(&mut self, event: GameEvent) -> Result<Vec<Outbound>, String> {
+        if self.state.native.is_some()
+            && let GameEvent::Map(isometry_core::SessionEvent::TokenMoved { id, to }) = &event
+        {
+            return self.native_move(crate::native_table::TableSender::Host, *id, *to);
+        }
+        self.try_commit(event)
     }
 
     /// Commit a secret reveal without losing it if the public fact is rejected.

@@ -21,7 +21,9 @@ impl Staged<'_> {
             .get(&e.lineage)
             .is_some_and(|l| l.traits.contains(harm::FRAGMENT));
         let cells = u32::try_from(cells).map_err(|_| "wound exceeds cell range")?;
+        let before = crate::anatomy::books(e);
         let hit = harm::hurt(&sim.genesis.rules, e, part, cells, sim.state.tick, regrows)?;
+        self.guard_owned_body_change(who,&before)?;
         let parent = sim.bound(self.stage.actor, self.stage.target, who)?;
         for (key, n) in &hit.wounded.spilled {
             credit(&mut self.site()?.accounts, key, *n)?;
@@ -49,7 +51,9 @@ impl Staged<'_> {
     pub(super) fn rot(&mut self, who: Binding, amount: u64) -> Result<()> {
         let sim = self.sim;
         if self.body(who)?.resident_site().is_none() { return Err("a corpse outside any site".into()); }
+        let before = crate::anatomy::books(self.body(who)?);
         let moved = harm::rot::rot(self.body(who)?, &sim.genesis.rules, amount)?;
+        self.guard_owned_body_change(who,&before)?;
         harm::rot::deposit(&mut self.site()?.accounts, &moved)?;
         if sim.flowing() {
             let entity = sim.bound(self.stage.actor, self.stage.target, who)?;

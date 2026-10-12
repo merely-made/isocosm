@@ -37,6 +37,10 @@ mod motion;
 mod native_anatomy;
 mod material;
 mod projects;
+mod project_places;
+mod project_carry;
+mod project_consent;
+pub use project_places::ProjectLocation;
 mod save;
 
 #[derive(Clone, Debug)]
@@ -46,6 +50,7 @@ pub struct GameState {
     anatomies: Anatomies,
     records: BTreeMap<SubjectId, BodyRecord>,
     places: ItemPlaces,
+    project_places: project_places::ProjectPlaces,
     /// The player, a participant in the sim, who takes up the sophont it
     /// drives through native `Take` (671, 779).
     participant: Option<Id>,
@@ -76,6 +81,7 @@ impl GameState {
             anatomies: Anatomies::default(),
             records: BTreeMap::new(),
             places: ItemPlaces::default(),
+            project_places: Default::default(),
             participant: None,
             intents: Vec::new(),
             events: Vec::new(),
@@ -218,7 +224,12 @@ impl GameState {
             self.participant,
         );
         let bytes = snapshot::encode(&record).map_err(|_| GameError::Encode)?;
-        Ok(hash_bytes(&bytes) ^ self.world.state_hash()?)
+        let mut hash = hash_bytes(&bytes) ^ self.world.state_hash()?;
+        if !self.project_places.is_empty() {
+            let places = snapshot::encode(&self.project_places).map_err(|_| GameError::Encode)?;
+            hash ^= hash_bytes(&places);
+        }
+        Ok(hash)
     }
 
     fn living(&self, subject: SubjectId) -> Result<(), GameError> {
@@ -311,6 +322,11 @@ impl GameState {
 
     fn admit(&mut self, intent: &GameIntent) -> Result<Vec<GameEvent>, GameError> {
         let tick = intent.tick();
+        if let GameIntent::StockOwnership { lot, .. } = intent {
+            if self.participant.is_some() { return Err(WorldError::NotFounding.into()); }
+            self.world.found(Command::Assert(isocosm::asserted::Assertion::StockOwnership(lot.clone())))?;
+            return Ok(vec![]);
+        }
         if let GameIntent::ReviseCanon {
             revision,
             seed,
@@ -330,8 +346,17 @@ impl GameState {
             .subject()
             .expect("every intent but a world-level revision names a subject");
         match intent {
+            GameIntent::ProjectConsent { project, owner, worker, grant, process, .. } => {
+                self.project_consent(tick, subject, *project, *owner, *worker, *grant, process.as_deref())
+            },
+            GameIntent::ProjectCarry { project, carried, .. } => {
+                self.project_carry(tick, subject, *project, *carried)
+            },
             GameIntent::ProjectAct { process, target, project, .. } => {
-                self.project_act(tick, subject, process, *target, *project)
+                self.project_act(tick, subject, process, *target, *project, &[])
+            },
+            GameIntent::ProjectReserve { process, target, lots, .. } => {
+                self.project_act(tick, subject, process, *target, None, lots)
             },
             GameIntent::AdvanceMotion {
                 revision,

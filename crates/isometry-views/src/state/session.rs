@@ -282,6 +282,7 @@ impl UiState {
         self.active_map = snap.active_map;
         self.world = snap.world;
         self.native.world = snap.native;
+        self.native.table = snap.native_table;
         // A joined client mirrors these too, or its panel shows the wrong split-
         // party time (a C3 omission) and its cap disagrees with the host.
         self.clocks = snap.clocks;

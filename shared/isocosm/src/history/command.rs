@@ -113,4 +113,11 @@ pub enum Command {
     /// Exact game geometry inputs, consumed only by the native chosen actions.
     AdvanceGeometry { ticks: Tick, resolutions: Vec<crate::operations::Resolution> },
     Project(crate::projects::Change),
+    /// Exact step and destination inputs consumed at native act/arrival boundaries.
+    AdvanceSpatial {
+        ticks: Tick,
+        terrain: Vec<crate::spatial::TerrainResolution>,
+        steps: Vec<crate::spatial::Resolution>,
+        arrivals: Vec<crate::spatial::ArrivalResolution>,
+    },
 }

@@ -4,6 +4,7 @@
 use crate::{Result, rules::{Query, Rules}};
 
 pub(super) fn catalogue(rules: &Rules) -> Result<()> {
+    crate::spatial::validate(rules)?;
     for (name, material) in &rules.material_recipes {
         super::key(name)?;
         material.validate(rules)?;

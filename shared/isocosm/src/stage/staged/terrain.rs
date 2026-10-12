@@ -7,7 +7,7 @@ use crate::operations::{Change, Request, StagedTerrain};
 impl Staged<'_> {
     pub(super) fn terrain(&mut self, action: &str, change: &Change,
         cells: &Amount, reach: u64) -> Result<()> {
-        if self.stage.terrain.is_some() || self.stage.count != 1 {
+        if self.stage.terrain.is_some() || self.stage.step.is_some() || self.stage.count != 1 {
             return Err("terrain geometry needs one operation on one native member".into());
         }
         let body = &self.stage.bodies[&self.stage.actor];
@@ -20,13 +20,25 @@ impl Staged<'_> {
             terrain_revision: self.sim.terrain_revision(), change: change.clone(),
             cells: cells.resolved()?, reach,
         };
-        let mut terrain = StagedTerrain { request: request.clone(), edit: None, gained: 0, paid: 0 };
+        let mut terrain = StagedTerrain { request: request.clone(), answered: false, edit: None, gained: 0, paid: 0 };
+        if let Some((declared, why)) = self.sim.geometry_resolutions.refused.get(action) {
+            if declared != &request { return Err("terrain refusal names another native action".into()); }
+            terrain.answered = true;
+            self.stage.terrain = Some(terrain);
+            return Err(format!("game terrain refused: {why}"));
+        }
         let Some(resolved) = self.sim.geometry_resolutions.inputs.get(action) else {
             self.stage.terrain = Some(terrain);
             return Err("native operation needs game geometry".into());
         };
         if resolved.request != request { return Err("geometry names another native operation".into()); }
+        terrain.answered = true;
+        self.stage.terrain = Some(terrain.clone());
         let (gained, paid) = crate::operations::geometry::price(self.sim, &request, &resolved.geometry)?;
+        for (key, amount) in &paid {
+            crate::projects::guard_debit(&self.sim.state,
+                crate::projects::StockSource::Entity(self.stage.actor), key, *amount)?;
+        }
         let ledger = &mut self.stage.bodies.get_mut(&self.stage.actor).ok_or("terrain actor absent")?.accounts;
         for (key, amount) in gained { credit(ledger, &key, amount)?; terrain.gained += u128::from(amount); }
         for (key, amount) in paid { debit(ledger, &key, amount)?; terrain.paid += u128::from(amount); }

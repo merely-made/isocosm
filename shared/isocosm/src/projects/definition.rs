@@ -17,6 +17,8 @@ pub struct Definition {
     pub work: Work,
     pub total: u64,
     pub steps: Vec<Step>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub output_custody: Option<Key>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -40,6 +42,10 @@ impl Definition {
     pub fn validate(&self, rules: &Rules) -> Result<()> {
         crate::validation::key(&self.recipe)?;
         crate::validation::key(&self.work.craft)?;
+        if let Some(key) = &self.output_custody {
+            crate::validation::key(key)?;
+            if !rules.relations.contains(key) { return Err("project output custody relation is undeclared".into()); }
+        }
         let recipe = rules.material_recipes.get(&self.recipe).ok_or("project material recipe is absent")?;
         if self.total == 0 || self.steps.is_empty()
             || !rules.social.as_ref().is_some_and(|v| v.crafts.contains(&self.work.craft))

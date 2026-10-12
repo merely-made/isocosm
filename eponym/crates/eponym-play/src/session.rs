@@ -19,6 +19,7 @@ use crate::{
     ITEM_PLACEMENT_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
     GameState, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
     PROJECT_GAME_STATE_VERSION,
+    PROJECT_CUSTODY_GAME_STATE_VERSION,
     World,
 };
 
@@ -129,6 +130,9 @@ impl Session {
 
     /// Applies one ordinary game action for the one currently controlled body.
     pub fn apply_game(&mut self, intent: GameIntent) -> Result<Vec<GameEvent>, SessionError> {
+        if matches!(intent, GameIntent::StockOwnership { .. }) {
+            return Err(GameError::World(crate::WorldError::NotFounding).into());
+        }
         // A world-level intent names no subject, so control does not gate it.
         // Who is played is the sim's (779).
         let played = self.game.played().unwrap_or(self.control.played());
@@ -168,6 +172,20 @@ impl Session {
             target,
             project,
         })
+    }
+
+    pub fn carry_project(&mut self, project: isocosm::projects::ProjectId, carried: bool)
+        -> Result<Vec<GameEvent>, SessionError> {
+        self.apply_game(GameIntent::ProjectCarry { tick:self.game.next_tick(),
+            subject:self.game.played().ok_or(GameError::World(crate::WorldError::NotPlayed))?,
+            project, carried })
+    }
+
+    pub fn reserve_project(&mut self, process:String, target:Option<isocosm::schema::Id>,
+        lots:Vec<String>) -> Result<Vec<GameEvent>, SessionError> {
+        self.apply_game(GameIntent::ProjectReserve { tick:self.game.next_tick(),
+            subject:self.game.played().ok_or(GameError::World(crate::WorldError::NotPlayed))?,
+            process, target, lots })
     }
 
     /// Continues after the current home body died through another existing life.
@@ -345,6 +363,13 @@ impl Session {
             && save.game.intents.iter().any(|intent| matches!(intent, GameIntent::ProjectAct { .. }))
         {
             return Err(SessionError::Game(GameError::LegacyProjectIntent));
+        }
+        if save.game.version < PROJECT_CUSTODY_GAME_STATE_VERSION
+            && save.game.intents.iter().any(|intent| matches!(intent,
+                GameIntent::ProjectCarry { .. } | GameIntent::ProjectReserve { .. }
+                | GameIntent::StockOwnership { .. } | GameIntent::ProjectConsent { .. }))
+        {
+            return Err(SessionError::Game(GameError::LegacyProjectCustodyIntent));
         }
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents

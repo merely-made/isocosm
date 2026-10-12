@@ -140,6 +140,8 @@ pub enum Query {
         phase: crate::projects::Phase,
         process: Key,
     },
+    /// A real polity decision is evaluated only inside native consent admission.
+    ProjectDecision,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -283,6 +285,8 @@ pub struct Rules {
     /// Authored material work, progress steps and reservation limits (837/838).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub projects: Option<crate::projects::Catalogue>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub step_profiles: BTreeMap<Key, crate::spatial::StepProfile>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

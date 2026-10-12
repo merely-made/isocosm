@@ -199,8 +199,16 @@ pub enum Effect {
         cells: Amount,
         reach: u64,
     },
-    ReserveProject { definition: Key, from: Binding, authority: Binding },
+    ReserveProject {
+        definition: Key,
+        from: Binding,
+        authority: Binding,
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        lots: Vec<Key>,
+    },
     WorkProject,
+    Step { profile: Key },
+    ProjectDecision,
 }
 
 impl Effect {

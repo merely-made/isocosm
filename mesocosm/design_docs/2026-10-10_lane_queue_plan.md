@@ -47,8 +47,15 @@ distinct native material stocks, project reservation/progress, and resumption
 by eligible natively authorized subjects. Their material catalogue and Eponym
 world/session consumer are placed; conserved projects and controlled work are
 placed, unverified. Explicit VTT placement/Join/Take also reaches the host.
-Four pending choices839 to842 concern project grants, interrupted-work location,
-physical movement selection and destination-arrival geometry. Next839.
+Rulings839 to845 now settle joint input-owner permission, fixed creation
+placement with chosen carrying, native-process step profiles, explicit
+destination placements, required ownership, selectable polity decision
+strategies and exact selected quantity lots. Those source connections are
+placed with Eponym's actual caller, unverified. Questions846 to848 are pending:
+lot disposition for ordinary stock debits, corpse visibility through native
+awareness and newborn physical placement. The help
+action mentioned in843 is a separate idea with unspecified admission rules.
+Next unused question849; verification and adjustments still wait under826.
 
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
@@ -379,6 +386,37 @@ is never rewritten: later changes are annotations or new rulings naming what
 they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
+
+- **2026-10-12, ownership/custody and spatial consumer source placed:**
+  the three lanes returned stable production source. Native exact lots and
+  joint owner decisions reach Eponym's GameSave11 and actual work UI, with
+  saved original/current project positions, complete burden and output
+  placement. Governance requires an actual declared decision effect and
+  current polity/member/constitution proof; unanimity and declared
+  representatives are separate authored strategies. Unselected owned debits
+  refuse at the identified mutation doors pending846; no allocation or repair
+  has been chosen. Protocol7's VTT bridge has real solo/network admission,
+  binding/export file actions and full endpoint attribution. Mesocosm's
+  authored steps and destination inputs reach actual clocks, with recorded
+  geometry refusals and exact visit stamps. Native corpse visibility is
+  pending847; newborns have no invented physical pose pending848. Source is
+  uncompiled and untested under826. Whole migration/E3/V2/M4 remain open.
+
+- **2026-10-12, 839 to845 answered and migration continues:** all seven
+  answers are recorded verbatim in the wing record. Explicit native lots,
+  joint input-owner decisions, the three authored polity strategies and
+  controlled project custody are being connected. Eponym retains creation
+  and dropped positions, derives carried positions from actual native
+  residence and game pose, and pairs custody with complete native burden.
+  The live VTT token bridge uses explicit native character/participant/board
+  bindings and protocol7; Mesocosm's authored Step/arrival source is being
+  assembled. Ordinary owned-stock debit disposition is pending846, and
+  native corpse visibility is pending847. Missing debit vocabulary refuses
+  unselected owned debits while the explicit project transfer remains admitted;
+  no allocation, repair or replacement-matter title is inferred.
+  A separate help action is not yet defined. Source remains unverified;
+  all compiler/tests/fixtures/probes/tuning remain deferred under826.
+  Full E3/V2/M4 and whole queue completion remain open.
 
 - **2026-10-12, production source continues:**835/836's native material
   catalogue and explicit Eponym generator6/session consumer are placed.837/838's

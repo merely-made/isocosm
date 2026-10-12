@@ -24,6 +24,8 @@ mod harm;
 mod meal;
 mod terrain;
 mod projects;
+mod step;
+mod owned;
 
 /// A stage read against the world it will be committed to.
 pub(crate) struct Staged<'a> {
@@ -278,8 +280,21 @@ impl Staged<'_> {
         // An ordered take and a conversion read the balances they take, so
         // their moves are worked out as they are applied.
         match e {
-            Effect::ReserveProject { definition, from, authority } => {
-                self.reserve_project(definition, *from, *authority)?;
+            Effect::ProjectDecision => {
+                self.sim.project_decision_ready(self.stage.actor,self.stage.target)?;
+                let input = self.sim.project_decision.as_ref().expect("decision checked above");
+                if input.process != self.stage.process { return Err("collective decision uses a different authored process".into()); }
+                self.stage.project_decision = Some(crate::projects::DecisionStamp {
+                    decision:input.clone(),action:self.stage.act,
+                });
+                return Ok(false);
+            },
+            Effect::ReserveProject { definition, from, lots, .. } => {
+                self.reserve_project(definition, *from, lots)?;
+                return Ok(false);
+            },
+            Effect::Step { profile } => {
+                self.step(cause, profile)?;
                 return Ok(false);
             },
             Effect::WorkProject => {

@@ -35,6 +35,7 @@ pub mod knowing;
 pub mod lineage;
 pub mod map;
 pub mod material;
+pub mod spatial;
 pub mod mosaic;
 pub mod matter;
 mod meaning;

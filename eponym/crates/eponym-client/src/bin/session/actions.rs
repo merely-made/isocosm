@@ -364,6 +364,7 @@ impl SessionApp {
 
     pub(super) fn select(&mut self, subject: SubjectId, part: PartId) {
         self.project_target = None;
+        self.project_lots.clear();
         self.selected = Some((subject, part));
     }
 
@@ -381,11 +382,13 @@ impl SessionApp {
             Some((subject, part)) => {
                 self.selected = Some((subject, part));
                 self.project_target = None;
+                self.project_lots.clear();
                 self.status = vec![format!("Picked subject {} part {}", subject.0, part.0)];
             },
             None => {
                 self.selected = None;
                 self.project_target = None;
+                self.project_lots.clear();
                 self.status = vec!["No body under the pointer".into()];
             },
         }

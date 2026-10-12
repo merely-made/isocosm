@@ -10,15 +10,18 @@ use crate::simulation::State;
 impl Simulation {
     pub(crate) fn commit_resolved(&mut self, mut stage: Stage, next: u64, process: &str) -> Result<()> {
         let terrain = stage.terrain.take();
+        let step = stage.step.take();
         if self.genesis.rules.spread_capacity.is_none() {
             self.commit(stage, next, process);
             self.commit_geometry(terrain);
+            self.commit_step(step);
             return Ok(());
         }
         let before = self.state.clone();
         let mut candidate = self.clone();
         candidate.commit(stage, next, process);
         candidate.commit_geometry(terrain);
+        candidate.commit_step(step);
         crate::spread::dispatch_changed(&before, &mut candidate.state, &candidate.genesis.rules)?;
         self.publish_candidate(candidate)
     }

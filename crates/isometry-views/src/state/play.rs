@@ -333,6 +333,7 @@ impl UiState {
             active_map: self.active_map.clone(),
             world: self.world.clone(),
             native: self.native.world.clone(),
+            native_table: self.native.table.clone(),
             // The clocks must cross too, or reconciliation runs against empty
             // time and wipes the ledger on copy-back.
             clocks: self.clocks.clone(),

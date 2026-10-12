@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use crate::projects::{Project, ProjectId};
+use crate::projects::{LotAt, Project, ProjectId};
 
 impl Staged<'_> {
     fn project_bind(&mut self, id: ProjectId) {
@@ -12,7 +12,7 @@ impl Staged<'_> {
         self.stage.projects.bindings.insert(actor, id);
     }
 
-    pub(super) fn reserve_project(&mut self, key: &str, from: Binding, authority: Binding) -> Result<()> {
+    pub(super) fn reserve_project(&mut self, key: &str, from: Binding, authored: &[Key]) -> Result<()> {
         if self.stage.count != 1 || from == Binding::Part {
             return Err("project reservation requires one worker and an addressed ledger".into());
         }
@@ -22,10 +22,6 @@ impl Staged<'_> {
         let definition = self.sim.project_definition(key)?.clone();
         if !worker.alive || !crate::social::Confidence::read(worker, &definition.work).sufficient() {
             return Err("project reservation lacks current craft eligibility".into());
-        }
-        let authority = self.sim.bound(actor, self.stage.target, authority)?;
-        if !self.stage.bodies.get(&authority).is_some_and(|e| e.alive && !crate::directing::is_participant(e)) {
-            return Err("project reservation names no native subject authority".into());
         }
         let id = ProjectId(self.stage.act);
         if self.stage.projects.records.contains_key(&id) || self.sim.state.projects.records.contains_key(&id) {
@@ -40,6 +36,19 @@ impl Staged<'_> {
         let recipe = self.sim.genesis.rules.material_recipes.get(&definition.recipe)
             .ok_or("project material recipe is absent")?;
         let stocks = recipe.stocks.clone();
+        let selected = self.sim.selected_project_lots(actor, authored)?;
+        let lots = self.sim.check_project_lots(self.sim.stock_source(actor,self.stage.target,from)?, &selected, &stocks)?;
+        let mut owners = BTreeSet::new();
+        let mut collectives = BTreeMap::new();
+        for held in &lots {
+            owners.extend(held.lot.owners.iter().copied());
+            for (owner, policy) in &held.lot.collectives {
+                if collectives.get(owner).is_some_and(|was| was != policy) {
+                    return Err("selected stock lots disagree on their collective owner's native decision policy".into());
+                }
+                collectives.insert(*owner,policy.clone());
+            }
+        }
         let source = self.holder(from).ok_or("project input source is absent")?;
         for (account, amount) in &stocks {
             if matches!(from, Binding::Place | Binding::Target) {
@@ -52,16 +61,27 @@ impl Staged<'_> {
                     *share -= *amount;
                 }
             }
-            self.take(from, account, *amount)?;
+            self.stage.project_debit = Some((self.sim.stock_source(actor,self.stage.target,from)?,account.clone(),*amount));
+            let taken = self.take(from, account, *amount);
+            self.stage.project_debit = None;
+            taken?;
             if self.sim.flowing() { self.stage.legs.push(Leg {
                 from: (source, account.clone()), to: (Holder::ProjectReservation(id), account.clone()), amount: *amount,
             }); }
         }
         self.stage.projects.before.insert(id, None);
+        for mut held in lots {
+            let key = held.lot.key.clone();
+            if self.stage.projects.ownership.contains_key(&key) { return Err("stock lot is already staged for another move".into()); }
+            self.stage.projects.ownership_before.insert(key.clone(),Some(held.clone()));
+            held.at = LotAt::Project(id);
+            self.stage.projects.ownership.insert(key,held);
+        }
         self.stage.projects.records.insert(id, Project {
-            definition: key.into(), recipe: definition.recipe, maker: actor, authority, site,
+            definition: key.into(), recipe: definition.recipe, maker: actor, authority:actor, site,
             reserved: stocks, construction: Ledger::new(), progress: 0, steps: 0,
-            authorized: BTreeSet::new(), output: None,
+            authorized: BTreeSet::new(), output: None, carrier: None,
+            inputs:selected,owners,collectives,permissions:BTreeMap::new(),
         });
         self.project_bind(id);
         Ok(())
@@ -80,8 +100,11 @@ impl Staged<'_> {
         let mut project = self.stage.projects.records[&id].clone();
         let definition = self.sim.project_definition(&project.definition)?.clone();
         let worker = &self.stage.bodies[&actor];
-        if !worker.alive || worker.resident_site() != Some(project.site) || project.output.is_some()
-            || !project.authorized.contains(&actor)
+        let site = project.carrier.map_or(Some(project.site), |carrier|
+            self.stage.bodies.get(&carrier).or_else(|| self.sim.body_at_start(carrier))
+                .and_then(Entity::resident_site));
+        if !worker.alive || !worker.resident_site().is_some_and(|at| site == Some(at)) || project.output.is_some()
+            || !self.sim.project_authorized(&project,actor)
             || !crate::social::Confidence::read(worker, &definition.work).sufficient() {
             return Err("project work lacks current craft, residence or native authorization".into());
         }
@@ -103,7 +126,8 @@ impl Staged<'_> {
                 return Err("project completion retains unspent reservation or unfinished steps".into());
             }
             let rule = self.sim.genesis.rules.material_recipes.get(&project.recipe).ok_or("project recipe is absent")?;
-            let output = rule.output(&self.sim.genesis.rules, &self.sim.state, actor, project.site, &project.construction)?;
+            let output = rule.output(&self.sim.genesis.rules, &self.sim.state, actor,
+                site.expect("work checked actual residence"), &project.construction)?;
             let count = self.sim.state.population.count().checked_add(self.stage.births.len() as u64)
                 .and_then(|count| count.checked_add(1)).ok_or("project output count overflow")?;
             let next = self.sim.state.population.next_id.checked_add(self.stage.births.len() as u64)
@@ -115,6 +139,21 @@ impl Staged<'_> {
             }); } }
             project.construction.clear();
             project.output = Some(next);
+            if let Some(carrier) = project.carrier {
+                let kind = definition.output_custody.as_ref().ok_or("carried completion needs its authored custody relation")?;
+                self.stage.relations.push((Relation::new(carrier,kind,next),true));
+                project.carrier = None;
+                project.site = site.expect("completion checked actual residence");
+            }
+            for key in &project.inputs {
+                let mut held = self.stage.projects.ownership.get(key).cloned()
+                    .or_else(|| self.sim.stock_lot_at_start(key).cloned()).ok_or("project stock lot identity is absent")?;
+                if held.at != LotAt::Project(id) { return Err("project no longer holds its reserved stock lot".into()); }
+                self.stage.projects.ownership_before.entry(key.clone())
+                    .or_insert_with(|| self.sim.stock_lot_at_start(key).cloned());
+                held.at = LotAt::Output(next);
+                self.stage.projects.ownership.insert(key.clone(),held);
+            }
             self.stage.births.push(output);
         }
         self.stage.projects.records.insert(id, project);

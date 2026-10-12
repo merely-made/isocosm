@@ -360,6 +360,12 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         reads(rules, p, id, value)?;
     }
     match e {
+        Effect::Step { profile } => {
+            let step = rules.step_profiles.get(profile).ok_or_else(||
+                format!("unknown step profile {profile}"))?;
+            if step.process != p.id { return Err("step profile names another process".into()); }
+            amount(rules, p, id, &step.cells)?;
+        },
         Effect::Terrain { change, cells, reach } => {
             crate::operations::validate(p, change, cells, *reach)?;
         }

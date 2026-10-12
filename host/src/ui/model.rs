@@ -22,7 +22,7 @@ pub(crate) struct Local {
     pub native: Window, pub rows: Rows, pub error: Option<String>,
     pub preferences: Preferences, pub attention: BTreeMap<String, AttentionSet>,
     pub input: Option<Input>, pub close_requested: bool,
-    #[cfg(feature = "mesocosm")]
+    #[cfg(any(feature = "mesocosm", feature = "vtt"))]
     pub scene: mesocosm_genet::borrowed_section::SceneHandle,
 }
 
@@ -43,7 +43,7 @@ impl App {
         preferences: Option<Preferences>, restore: Option<WindowHandle>) -> Result<u64, String> {
         let preferences = crate::mode_sections::preferences(&self.world, mode, participant, restore, preferences)?;
         let key = self.next;
-        #[cfg(feature = "mesocosm")]
+        #[cfg(any(feature = "mesocosm", feature = "vtt"))]
         crate::viewport::key(key)?;
         let next = key.checked_add(1).ok_or("local window identity exhausted")?;
         let mut attention = AttentionSet::default();
@@ -58,7 +58,7 @@ impl App {
         self.next = next;
         self.windows.insert(key, Local { native, rows: Rows::default(), error: None, preferences,
             attention: BTreeMap::new(), input: None, close_requested: false,
-            #[cfg(feature = "mesocosm")]
+            #[cfg(any(feature = "mesocosm", feature = "vtt"))]
             scene: crate::viewport::handle(), });
         self.refresh();
         Ok(key)
@@ -195,7 +195,7 @@ impl App {
         self.refresh_viewport();
     }
     pub fn refresh_viewport(&mut self) {
-        #[cfg(feature = "mesocosm")]
+        #[cfg(any(feature = "mesocosm", feature = "vtt"))]
         crate::viewport::refresh(self);
     }
     pub fn record(&mut self, key: u64, result: Result<(), String>) {

@@ -11,7 +11,7 @@ use crate::Refusal;
 
 pub type Resolver = dyn FnMut(&Pending) -> Result<TerrainGeometry, String>;
 
-fn resolved(pending: &Pending, actual: TerrainGeometry) -> Result<Resolution, String> {
+pub(crate) fn resolved(pending: &Pending, actual: TerrainGeometry) -> Result<Resolution, String> {
     let request = &pending.request;
     if actual.action != request.action || actual.process.0 != request.process
         || actual.tick.0 != request.tick

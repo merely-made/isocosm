@@ -113,6 +113,17 @@ impl HostSession {
                 Vec::new()
             }
             NetMessage::Intent { event } => {
+                if self.state.native.is_some()
+                    && let GameEvent::Map(SessionEvent::TokenMoved { id, to }) = &event
+                {
+                    let accepted = self.peer_endpoints.get(&from).copied()
+                        .ok_or_else(|| "native move arrived without an authenticated endpoint".to_string())
+                        .and_then(|endpoint| self.native_move(crate::native_table::TableSender::Endpoint(endpoint), *id, *to));
+                    return match accepted {
+                        Ok(out) => out,
+                        Err(reason) => vec![(Recipient::One(from), NetMessage::Rejected { reason })],
+                    };
+                }
                 if let Some(reason) = self.intent_refusal(from, &event) {
                     return vec![(Recipient::One(from), NetMessage::Rejected { reason })];
                 }
@@ -158,7 +169,7 @@ impl HostSession {
             // Verdicts. A peer cannot choose whether it hit and for how much,
             // what a condition means, or how its own journey went.
             GameEvent::ActionResolved(_) => Some("actions are adjudicated by the host".to_owned()),
-            GameEvent::NativePublished(_) | GameEvent::NativeTravelResolved(_) => {
+            GameEvent::NativePublished(_) | GameEvent::NativeTravelResolved(_) | GameEvent::NativeTableResolved(_) => {
                 Some("native results are admitted by the host".to_owned())
             },
             GameEvent::TravelResolved { .. } => {

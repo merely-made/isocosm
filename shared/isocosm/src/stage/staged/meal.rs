@@ -77,6 +77,7 @@ impl Staged<'_> {
         let prey = self.holder(from);
         let mut total = 0u64;
         for (key, value) in &taken {
+            self.guard_owned_debit(from,key,*value)?;
             match (bitten, prey) {
                 (Some(part), Some(Holder::Entity(id))) => {
                     let body = self.body(from)?;

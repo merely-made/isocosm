@@ -78,10 +78,10 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
         Box::new(el("section", pins).attr("class", "panel")) as Child,
         Box::new(el("p", text(error)).attr("id", "error").attr("role", "status")) as Child,
     ];
-    #[cfg(feature = "mesocosm")]
+    #[cfg(any(feature = "mesocosm", feature = "vtt"))]
     if local.scene.snapshot().is_some() {
         let card = isomere::ViewportCard::new(crate::viewport::key(key).expect("admitted local slot"),
-            (720, 440), "Mesocosm section");
+            (720, 440), "Site view");
         children.insert(4, isomere::viewport_card(&card, None, None::<fn(&mut App, cambium::PointerEvent)>));
     }
     Box::new(el("main", children).attr("data-local-window", key.to_string()))

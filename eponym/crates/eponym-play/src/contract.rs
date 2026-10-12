@@ -85,6 +85,35 @@ impl Borrowed<'_> {
         };
         let mut out = Lowered::default();
         let social = match intent {
+            EponymIntent::ProjectConsent(act) => {
+                check(act.subject)?;
+                use isocosm_overlay::eponym::ProjectOwner;
+                let owner = match act.owner {
+                    ProjectOwner::Entity(entity) => isocosm::projects::Owner::Entity(entity.0),
+                    ProjectOwner::Polity(polity) => isocosm::projects::Owner::Polity(polity.0),
+                };
+                let outcome = self.run(Command::Project(isocosm::projects::Change::Consent {
+                    participant: participant.ok_or(WorldError::NotPlayed)?, actor:act.subject.0,
+                    project:isocosm::projects::ProjectId(act.project.0), owner, worker:act.worker.0,
+                    grant:act.grant, process:act.process.as_ref().map(|process| process.0.clone()), cause:None,
+                }))?;
+                let _:isocosm::projects::Consented = serde_json::from_str(&outcome).map_err(|_| WorldError::Decode)?;
+                out.outcomes.push(outcome);
+                return Ok(out);
+            },
+            EponymIntent::ProjectCarry(act) => {
+                check(act.subject)?;
+                let outcome = self.run(Command::Project(isocosm::projects::Change::Carry {
+                    participant: participant.ok_or(WorldError::NotPlayed)?,
+                    actor: act.subject.0,
+                    project: isocosm::projects::ProjectId(act.project.0),
+                    carried: act.carried,
+                }))?;
+                let _: isocosm::projects::Custody =
+                    serde_json::from_str(&outcome).map_err(|_| WorldError::Decode)?;
+                out.outcomes.push(outcome);
+                return Ok(out);
+            },
             EponymIntent::Project(act) => {
                 check(act.subject)?;
                 let participant = participant.ok_or(WorldError::NotPlayed)?;
@@ -94,6 +123,7 @@ impl Borrowed<'_> {
                     target: act.target.map(|target| target.0),
                     process: act.process.0.clone(),
                     project: act.project.map(|project| isocosm::projects::ProjectId(project.0)),
+                    lots: act.lots.clone(),
                     cause: None,
                 }))?;
                 let acted: isocosm::projects::Acted =

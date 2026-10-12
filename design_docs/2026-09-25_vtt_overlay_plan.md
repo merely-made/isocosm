@@ -548,6 +548,21 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
+- **2026-10-12, actual token/native bridge source assembling:** ordinary
+  table moves read current native recipe/position/control bindings. The real
+  standalone path explicitly binds map tokens to those characters, actual
+  authenticated endpoint keys to participants and authored tiles to native
+  cells. Protocol7 carries atomic native/table/render publication; solo and
+  network moves request before local mutation. Sim-on play without a current
+  binding refuses. The shared host's physical picture reads the same saved
+  positions and requires authored framing or a unique placement window.
+  Names/owner metadata confer no native control. Source is unverified; all
+  compiler/tests/fixtures/probes/tuning wait under826. Full V2 remains open.
+  Actual admission/binding/export file actions are connected in solo and
+  network play. Current visit stamps gate live positions while historical
+  unstamped metadata remains readable. Ruleset action/harm mappings are V3,
+  beyond this V2 source slice; native corpse visibility is pending847.
+
 - **2026-10-12, explicit placement/control source:** the actual DM-gated shared
   host now accepts an additive version2 character batch with explicit geometry
   and native participant control. Placement checks the selected native body

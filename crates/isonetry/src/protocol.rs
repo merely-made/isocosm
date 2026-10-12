@@ -23,7 +23,7 @@ use serde::{Deserialize, Serialize};
 /// the space: a body that *does* decode and means something else. Bump it for
 /// any change to the wire shape, and move `iroh_link::ALPN` with it so an
 /// incompatible peer cannot even dial.
-pub const PROTOCOL_VERSION: u16 = 6;
+pub const PROTOCOL_VERSION: u16 = 7;
 
 /// A peer's identity within a session. For the iroh transport this wraps
 /// the remote node id; the pure-sync core only needs it to route.
@@ -158,6 +158,10 @@ pub struct GameSnapshot {
     /// integers.
     #[serde(default)]
     pub applied_actions: BTreeSet<RequestId>,
+    /// Explicit native character, participant and authored board bindings.
+    /// Older JSON checkpoints leave this absent; protocol7 has a fixed slot.
+    #[serde(default)]
+    pub native_table: Option<crate::native_table::NativeTable>,
 }
 
 /// Rolls kept in the shared log; older ones drop off.
@@ -428,6 +432,7 @@ pub enum GameEvent {
     CharacterCreated { token: isometry_core::Token, sheet: SheetData },
     NativePublished(crate::session::NativePublication),
     NativeTravelResolved(crate::session::NativeTravelResolved),
+    NativeTableResolved(crate::native_table::NativeTableResolved),
 }
 
 /// One message on the wire. The host is the authority: clients send

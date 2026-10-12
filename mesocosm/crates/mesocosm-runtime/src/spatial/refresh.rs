@@ -25,8 +25,11 @@ impl Placement {
         if member.body.is_none() || member.resident_site() != Some(self.site.0) {
             return Err("saved pose has no realized native body at its recorded site".into());
         }
+        if self.resident_since != Some(member.arrived) {
+            return Err("saved pose is not bound to this native visit".into());
+        }
         let volume = sim.volume(self.site.0, self.window.min, self.window.max, self.window.depth)?;
-        let places = Places::derive(&volume, Rules::default())?;
+        let places = Places::derive(&volume, self.places.unwrap_or_else(Rules::default))?;
         let mut next = self.clone();
         let patch = places.place_at(self.pose.at).ok_or("saved pose has no current realized patch")?;
         for cell in [self.pose.at, self.eye] {

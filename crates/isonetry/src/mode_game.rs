@@ -22,7 +22,8 @@ pub struct ModeGame {
     table: Table,
 }
 
-/// Table state has no native Session, saved history, legacy world fold or grants.
+/// Table state has no native Session or saved history. Explicit bindings must
+/// still authenticate against that borrowed Session before standalone use.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Table {
@@ -39,6 +40,8 @@ struct Table {
     last_beats: Vec<Beat>,
     beat_seq: u64,
     applied_actions: BTreeSet<crate::RequestId>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    native_table: Option<crate::NativeTable>,
 }
 
 impl ModeGame {
@@ -53,6 +56,7 @@ impl ModeGame {
             maps: state.maps.clone(), active_map: state.active_map.clone(), clocks: state.clocks.clone(),
             party_cap: state.party_cap, last_beats: state.last_beats.clone(), beat_seq: state.beat_seq,
             applied_actions: state.applied_actions.clone(),
+            native_table: state.native_table.clone(),
         } }
     }
 
@@ -75,14 +79,17 @@ impl ModeGame {
     /// Publish from the one borrowed native Session. Mode bytes grant no control.
     pub fn snapshot(&self, session: &Session) -> Result<GameSnapshot, String> {
         let table = &self.table;
-        Ok(GameSnapshot {
+        let snapshot = GameSnapshot {
             map: table.map.clone(), turns: table.turns.clone(), roll_log: table.roll_log.clone(),
             journal: table.journal.clone(), inventories: table.inventories.clone(),
             generations: table.generations.clone(), maps: table.maps.clone(),
             active_map: table.active_map.clone(), world: Default::default(),
             native: Some(NativeWorld::from_session(session, self.content.clone(), self.origin.clone())?),
+            native_table: table.native_table.clone(),
             clocks: table.clocks.clone(), party_cap: table.party_cap, last_beats: table.last_beats.clone(),
             beat_seq: table.beat_seq, applied_actions: table.applied_actions.clone(),
-        })
+        };
+        if let Some(bindings) = &snapshot.native_table { bindings.validate_history(session)?; }
+        Ok(snapshot)
     }
 }

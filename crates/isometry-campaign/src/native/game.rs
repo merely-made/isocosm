@@ -8,7 +8,7 @@ use super::{CharacterAdmission, CharacterControl, CharacterPlacement, ControlBin
     PositionBinding, RecipeBinding, admit_character, submit_contract_assertions,
     placement::{place_character, take_character}};
 use isocosm::{Session, schema::{Id, Key}};
-use isocosm_overlay::vtt::Assertion;
+use isocosm_overlay::{OrdinaryAccess, Seat, vtt::{Assertion, VttIntentEnvelope}};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -32,7 +32,7 @@ pub struct AdmissionBatch {
 
 #[derive(Deserialize)]
 #[serde(untagged)]
-enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch) }
+enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch), Play(VttIntentEnvelope) }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -74,6 +74,11 @@ impl GameBindings {
     pub fn controls(&self) -> &BTreeMap<Id, ControlBinding> { &self.controls }
     pub fn payload(&self) -> &[u8] { &self.payload }
 
+    pub(super) fn record_position(&mut self, character: Key, position: PositionBinding) {
+        self.version = PLACEMENT_VERSION;
+        self.positions.insert(character, position);
+    }
+
     pub fn validate(&self, session: &Session) -> Result<(), String> {
         for (key, binding) in &self.characters { binding.validate(session, key)?; }
         for (key, binding) in &self.positions {
@@ -109,15 +114,34 @@ pub fn submit_game_as(session: &mut Session, game: Vec<u8>, bytes: &[u8], dm: Id
     submit(session, game, bytes, Some(dm))
 }
 
+/// The actual shared host supplies its already admitted seat and native cut.
+/// Player play is separate from DM assertion/body/control authoring.
+pub fn submit_game_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: OrdinaryAccess)
+    -> Result<(String, Vec<u8>), String> {
+    super::movement::current_access(session, access)?;
+    let input: Input = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
+    match input {
+        Input::Play(envelope) => super::submit_table(session, game, access, &envelope),
+        _ if access.seat != Seat::Dm => Err("native table assertions and admissions require the DM seat".into()),
+        input => submit_decoded(session, game, input, Some(access.participant.0)),
+    }
+}
+
 fn submit(session: &mut Session, game: Vec<u8>, bytes: &[u8], dm: Option<Id>)
     -> Result<(String, Vec<u8>), String> {
     let input: Input = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
+    submit_decoded(session, game, input, dm)
+}
+
+fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option<Id>)
+    -> Result<(String, Vec<u8>), String> {
     let batch = match input {
         Input::Assertions(assertions) => {
             submit_contract_assertions(session, &assertions).map_err(|error| error.to_string())?;
             return Ok(("asserted".into(), game));
         },
         Input::Admissions(batch) => batch,
+        Input::Play(_) => return Err("table play requires a resolved native seat cut".into()),
     };
     if !matches!(batch.version, VERSION | PLACEMENT_VERSION)
         || batch.version == VERSION && (!batch.placements.is_empty() || !batch.controls.is_empty())

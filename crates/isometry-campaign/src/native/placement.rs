@@ -32,6 +32,10 @@ pub struct PositionBinding {
     pub entity: Id,
     pub placement: CharacterPlacement,
     pub patch_entry: Key,
+    /// Missing in older bindings: retain the record, but require explicit setup
+    /// before presenting a physical pose in a later or unknown visit.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub resident_since: Option<isocosm::schema::Tick>,
 }
 
 /// Join is explicit and always creates a new native participant. Existing
@@ -97,6 +101,10 @@ impl PositionBinding {
     /// Historical metadata never supplies a departed or stale body's pose.
     pub fn current(&self, session: &Session) -> Result<[i64; 3], String> {
         self.placement.check(session, self.entity, true)?;
+        let native = session.sim.state().population.get(self.entity).ok_or("position character is absent")?;
+        if self.resident_since != Some(native.arrived) {
+            return Err("character position belongs to an unstamped or earlier native visit".into());
+        }
         Ok(self.placement.at)
     }
 }
@@ -136,7 +144,9 @@ pub(crate) fn place_character(session: &mut Session, input: &CharacterPlacement,
     input.check(session, recipe.entity, false)?;
     session.command(Command::Patch { entity: recipe.entity, patch: Some(input.patch) })?;
     let binding = PositionBinding { entity: recipe.entity, placement: input.clone(),
-        patch_entry: session.entries.last().ok_or("native patch entry is absent")?.id.clone() };
+        patch_entry: session.entries.last().ok_or("native patch entry is absent")?.id.clone(),
+        resident_since: Some(session.sim.state().population.get(recipe.entity)
+            .ok_or("position character is absent")?.arrived) };
     binding.validate(session, &input.character, recipe)?;
     binding.current(session)?;
     Ok(binding)

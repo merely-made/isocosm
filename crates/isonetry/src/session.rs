@@ -27,6 +27,7 @@ mod host;
 mod messages;
 mod native;
 mod native_host;
+pub mod native_table;
 pub use native::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
 mod travel;
 

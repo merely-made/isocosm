@@ -52,6 +52,14 @@ pub fn overflow_at(state: &mut State, identity: &Identity, at: Substrate, capaci
         }
     }
     if sent == 0 { return Ok(0); }
+    match at {
+        Substrate::Site(id) => crate::projects::guard_debit(state,
+            crate::projects::StockSource::Site(id), &identity.key(), sent)?,
+        Substrate::Host(id) => crate::projects::guard_debit(state,
+            crate::projects::StockSource::Entity(id), &identity.key(), sent)?,
+        // Patch stocks are a distinct ledger with no asserted StockSource variant.
+        Substrate::Place(_) => {},
+    }
     let mut candidate = state.clone();
     crate::meaning::debit(stock::ledger_mut(&mut candidate, at)?, &identity.key(), sent)?;
     candidate.spreads.transit.extend(transfers);

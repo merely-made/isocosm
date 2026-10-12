@@ -70,7 +70,7 @@ pub use session::{
     SessionError, SessionLimits, SessionSave,
 };
 pub use sites::{HistoryFactId, Layer, Site, SiteKind, SiteSource, SlotId, WorldMap};
-pub use state::GameState;
+pub use state::{GameState, ProjectLocation};
 pub use subject_sheet::{
     ActionRow, CapabilityRow, EquipmentRow, PartRow, ResourceRow, SubjectSheet, SubjectSheetInput,
 };
@@ -85,6 +85,7 @@ pub use transitions::{
     GameEvent, GameIntent, GameSave, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION,
     ITEM_PLACEMENT_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
     PROJECT_GAME_STATE_VERSION,
+    PROJECT_CUSTODY_GAME_STATE_VERSION,
 };
 pub use world::{
     GENERATOR_VERSION, World, WorldConfig, WorldError, WorldEvent, WorldIntent, WorldSave,

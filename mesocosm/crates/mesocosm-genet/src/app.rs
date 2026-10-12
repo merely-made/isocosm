@@ -119,9 +119,9 @@ impl Host {
         });
         if let Some(path) = &config.spatial {
             let authored = std::fs::read(path).map_err(|why| why.to_string())
-                .and_then(|bytes| serde_json::from_slice::<Vec<mesocosm_runtime::spatial::Placement>>(&bytes)
+                .and_then(|bytes| serde_json::from_slice::<mesocosm_runtime::spatial::Setup>(&bytes)
                     .map_err(|why| why.to_string()))
-                .and_then(|placements| runtime.set_spatial(&placements));
+                .and_then(|setup| runtime.setup_spatial(&setup));
             if let Err(why) = authored {
                 eprintln!("spatial {}: {why}", path.display());
                 std::process::exit(1);

@@ -22,6 +22,7 @@ enum Assertion<'a> {
     Edit(&'a asserted::MapEdit),
     Storylet(Applied<'a>),
     PackForced(Applied<'a>),
+    StockOwnership(&'a crate::projects::StockLot),
 }
 
 impl<'a> From<&'a asserted::Assertion> for Assertion<'a> {
@@ -38,6 +39,7 @@ impl<'a> From<&'a asserted::Assertion> for Assertion<'a> {
             Native::Edit(v) => Self::Edit(v),
             Native::Storylet(v) => Self::Storylet(v.into()),
             Native::PackForced(v) => Self::PackForced(v.into()),
+            Native::StockOwnership(v) => Self::StockOwnership(v),
         }
     }
 }

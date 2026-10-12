@@ -4,6 +4,14 @@
 use super::*;
 
 impl NetBridge {
+    pub fn commit_native_table_admission(&mut self, input: isonetry::native_table::NativeTableAdmissionInput) -> Option<RequestId> {
+        let request = self.request_ids.issue();
+        self.actor.command(BridgeCommand::NativeTableAdmission { request, input }).then_some(request)
+    }
+    pub fn commit_native_table_binding(&mut self, input: isonetry::NativeTableBindingInput) -> Option<RequestId> {
+        let request = self.request_ids.issue();
+        self.actor.command(BridgeCommand::NativeTableBinding { request, input }).then_some(request)
+    }
     pub fn commit_native_setup(
         &mut self, setup: isometry_campaign::founding::Setup,
         expected: isometry_campaign::founding::NativeWorld,

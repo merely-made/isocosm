@@ -88,6 +88,7 @@ impl Simulation {
             .lineages
             .get(&e.lineage)
             .is_some_and(|l| l.traits.contains(FRAGMENT));
+        let before = anatomy::books(&e);
         let mut hit = hurt(
             &self.genesis.rules,
             &mut e,
@@ -96,6 +97,7 @@ impl Simulation {
             self.state.tick,
             regrows,
         )?;
+        self.guard_entity_debits(entity,&before,&e)?;
         let mut accounts = self.state.sites[&site].accounts.clone();
         for (key, amount) in &hit.wounded.spilled {
             credit(&mut accounts, key, *amount)?;

@@ -25,6 +25,7 @@ impl UiState {
     /// `TokenMoved` (replicated in Remote, applied and undoable locally). A
     /// no-op if `to` is out of bounds, unchanged, or already occupied.
     pub fn drag_move_token(&mut self, id: TokenId, to: TileCoord) {
+        if self.request_native_move(id, to) { return; }
         if !self.map.ground.in_bounds(to.0, to.1) {
             return;
         }
@@ -318,6 +319,7 @@ impl UiState {
                 if let Some(id) = self.token_at(at) {
                     self.select_token(id);
                 } else if let Some(id) = self.selected_token {
+                    if self.request_native_move(id, at) { return; }
                     if self.reach.contains_key(&at) {
                         let path = isometry_core::path_to(&self.reach, at);
                         let from = self.map.token(id).map(|t| t.at).unwrap_or(at);

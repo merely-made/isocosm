@@ -16,6 +16,13 @@ pub fn fork_strain(state: &mut State, rules: &Rules, seed: u64, parent: &str,
     if !traits.is_subset(&rules.traits) { return Err("strain selects an unknown trait".into()); }
     let original = Identity::Surface(parent.into());
     if amount == 0 || held(state, at, &original)? < amount { return Err("strain has no selected local living matter".into()); }
+    match at {
+        Substrate::Site(id) => crate::projects::guard_debit(state,
+            crate::projects::StockSource::Site(id), &original.key(), amount)?,
+        Substrate::Host(id) => crate::projects::guard_debit(state,
+            crate::projects::StockSource::Entity(id), &original.key(), amount)?,
+        Substrate::Place(_) => {},
+    }
     let before = state.lineages.get(parent).ok_or("unknown strain parent")?;
     let key = strain_key(seed, parent, at, &traits);
     if rules.accounts.contains_key(&key) { return Err("strain key aliases an ordinary account".into()); }

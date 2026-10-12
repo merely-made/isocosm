@@ -12,7 +12,7 @@ mod spatial;
 mod mode_sections;
 mod window;
 mod world;
-#[cfg(feature = "mesocosm")]
+#[cfg(any(feature = "mesocosm", feature = "vtt"))]
 mod viewport;
 #[cfg(feature = "desktop")]
 mod cli;

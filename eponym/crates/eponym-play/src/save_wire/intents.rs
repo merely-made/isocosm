@@ -75,4 +75,11 @@ intents! {
     Drop { tick:Tick, subject:SubjectId, item:ItemId },
     ProjectAct { tick:Tick, subject:SubjectId, process:String,
         target:Option<isocosm::schema::Id>, project:Option<isocosm::projects::ProjectId> },
+    ProjectCarry { tick:Tick, subject:SubjectId, project:isocosm::projects::ProjectId,
+        carried:bool },
+    ProjectReserve { tick:Tick, subject:SubjectId, process:String,
+        target:Option<isocosm::schema::Id>, lots:Vec<String> },
+    StockOwnership { tick:Tick, lot:isocosm::projects::StockLot },
+    ProjectConsent { tick:Tick, subject:SubjectId, project:isocosm::projects::ProjectId,
+        owner:isocosm::projects::Owner, worker:SubjectId, grant:bool, process:Option<String> },
 }

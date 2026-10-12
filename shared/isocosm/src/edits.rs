@@ -76,6 +76,7 @@ impl Simulation {
             credit(&mut ledger, account, *amount)?;
         }
         for (account, amount) in &paid {
+            crate::projects::guard_debit(&self.state,crate::projects::StockSource::Entity(actor),account,*amount)?;
             debit(&mut ledger, account, *amount)?;
         }
         let sum = |legs: &[(Key, u64)]| legs.iter().map(|l| u128::from(l.1)).sum::<u128>();

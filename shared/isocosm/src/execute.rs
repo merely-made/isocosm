@@ -192,12 +192,21 @@ impl Simulation {
                 Ok(feat) => legend |= feat,
                 Err(why) => {
                     let terrain = staged.stage.terrain.clone();
+                    let step = staged.stage.step.clone();
                     drop(staged);
                     self.capture_geometry(&terrain);
+                    self.capture_step(&step);
                     return refused(receipt, Outcome::Blocked(why));
                 },
             }
         }
+        // A geometry answer was consumed even if a later conservation,
+        // shared-ground or event check refuses the whole staged act.
+        // Only commit_step records actual physical acceptance.
+        let step = stage.step.clone();
+        self.capture_step(&step);
+        let terrain = stage.terrain.clone();
+        self.capture_geometry(&terrain);
         // Only what the act bound can have changed, so weighing it alone
         // decides whether the world's matter would change.
         if self.moves_matter(&stage) {

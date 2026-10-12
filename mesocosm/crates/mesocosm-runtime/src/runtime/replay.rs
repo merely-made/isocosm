@@ -45,7 +45,7 @@ impl GameSave {
         Self { version: crate::spatial::VERSION, native, spatial: crate::spatial::Game::default() }
     }
     pub fn check(&self) -> Result<(), String> {
-        if self.version != crate::spatial::VERSION { return Err("unsupported Mesocosm game save".into()); }
+        if self.version != 1 && self.version != crate::spatial::VERSION { return Err("unsupported Mesocosm game save".into()); }
         self.spatial.version()
     }
 }
@@ -62,12 +62,15 @@ impl Runtime {
 
     pub fn replayed_game(saved: GameSave) -> Result<Replayed, String> {
         saved.check()?;
-        Self::replayed(saved.native)
+        let replayed = Self::replayed(saved.native)?;
+        saved.spatial.validate_replay(&replayed.session)?;
+        Ok(replayed)
     }
 
     pub fn resume_game(saved: GameSave, mode: Mode, pace: Pace, ticks_per_second: u32) -> Result<Self, String> {
         saved.check()?;
         let mut runtime = Self::resume(saved.native, mode, pace, ticks_per_second)?;
+        saved.spatial.validate_replay(&runtime.interim.session)?;
         runtime.spatial = saved.spatial;
         Ok(runtime)
     }

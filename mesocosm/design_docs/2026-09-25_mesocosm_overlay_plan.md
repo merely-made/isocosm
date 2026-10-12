@@ -375,6 +375,19 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- **2026-10-12, 841/842:** authored step profiles bind actual chosen native
+  movement processes; game geometry returns through exact native admission.
+  Explicit destination poses/windows are checked at due arrival boundaries.
+  Missing or refused physical geometry withdraws that binding without undoing
+  native arrival. This dependent Step/arrival and real clock consumer source
+  is assembling, unverified. Values and placement templates remain authored.
+  Compiler/tests/fixtures/probes/tuning wait under826; full M4 stays open.
+  Native corpse visibility is pending847. Current visit stamps prevent old
+  origin poses from reappearing after an unbound return journey.
+  Actual native birth proceeds without an invented newborn pose; its physical
+  placement source is pending848. Step/terrain refusals block only the chosen
+  act, with no costs/edits published and due native arrivals retained.
+
 - **2026-10-12, physical spatial consumer source placed:**833's saved actual
   pose/eye/operation inputs now connect to same-site validated native
   patch refresh and the real Genet/shared-host picture, including saved root

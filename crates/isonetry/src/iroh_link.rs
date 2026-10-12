@@ -37,7 +37,7 @@ use muniment::Journal;
 /// stops an incompatible peer from dialing at all, while the version is the
 /// in-session handshake that refuses one which got through anyway (a same-ALPN
 /// build with a changed message shape).
-pub const ALPN: &[u8] = b"isometry/session/v6";
+pub const ALPN: &[u8] = b"isometry/session/v7";
 
 type PeerMap = Arc<Mutex<HashMap<PeerId, mpsc::UnboundedSender<NetMessage>>>>;
 
@@ -190,6 +190,10 @@ impl HostNet {
             while let Some(connecting) = endpoint.accept().await {
                 let Ok(conn) = connecting.await else { continue };
                 let peer = peer_of(&conn);
+                let out = match session.lock().await.on_authenticated_connect(peer, *conn.remote_id().as_bytes()) {
+                    Ok(out) => out,
+                    Err(_) => continue,
+                };
                 // Host opens the stream and speaks first (the snapshot).
                 let Ok((send, recv)) = conn.open_bi().await else {
                     continue;
@@ -199,7 +203,6 @@ impl HostNet {
                 tokio::spawn(writer_task(send, rx));
                 // Snapshot handshake, then the live tail follows via the
                 // same per-peer channel as `Applied` broadcasts arrive.
-                let out = session.lock().await.on_connect(peer);
                 dispatch(&peers, out).await;
                 tokio::spawn(reader_task_host(
                     conn,
@@ -216,6 +219,13 @@ impl HostNet {
     pub async fn local_event(&self, event: GameEvent) {
         let out = self.session.lock().await.local_event(event);
         dispatch(&self.peers, out).await;
+    }
+
+    /// The live desktop path observes a native refusal rather than dropping it.
+    pub async fn submit_event(&self, event: GameEvent) -> Result<(), String> {
+        let out = self.session.lock().await.try_local_event(event)?;
+        dispatch(&self.peers, out).await;
+        Ok(())
     }
 
     pub async fn commit_campaign(
@@ -428,6 +438,8 @@ impl ClientNet {
     pub async fn take_whispers(&self) -> Vec<(String, String)> {
         self.session.lock().await.drain_inbox()
     }
+
+    pub async fn take_rejections(&self) -> Vec<String> { self.session.lock().await.drain_rejections() }
 }
 
 #[cfg(test)]

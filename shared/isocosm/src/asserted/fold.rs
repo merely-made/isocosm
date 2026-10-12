@@ -20,6 +20,9 @@ pub struct Asserted {
     pub facts: BTreeMap<Key, Fact>,
     /// Map edits, storylets applied and packs forced (795).
     pub records: Records,
+    /// Retained author assertions; native source/owner validation needs a Session.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub stock_ownership: BTreeMap<Key, crate::projects::StockLot>,
 }
 
 /// Why a fold refused an assertion.
@@ -96,6 +99,7 @@ impl Asserted {
             },
             Assertion::Storylet(a) => self.group(a, false),
             Assertion::PackForced(a) => self.group(a, true),
+            Assertion::StockOwnership(lot) => once(&mut self.stock_ownership, key, lot),
         }
     }
 

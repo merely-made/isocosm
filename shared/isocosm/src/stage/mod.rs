@@ -30,6 +30,9 @@ pub(crate) use staged::Staged;
 pub(crate) struct Stage {
     pub(crate) process: Key,
     pub(crate) terrain: Option<crate::operations::StagedTerrain>,
+    pub(crate) step: Option<crate::spatial::StagedStep>,
+    project_decision: Option<crate::projects::DecisionStamp>,
+    project_debit: Option<(crate::projects::StockSource, Key, u64)>,
     projects: crate::projects::Writes,
     actor: Id,
     target: Option<Id>,
@@ -103,6 +106,9 @@ impl Simulation {
         Ok(Stage {
             process: String::new(),
             terrain: None,
+            step: None,
+            project_decision: None,
+            project_debit: None,
             projects: crate::projects::Writes::default(),
             actor,
             target,
@@ -136,6 +142,8 @@ impl Simulation {
     /// earlier acts of its pass changed too.
     pub(crate) fn fits(&self, stage: &Stage) -> bool {
         if !stage.projects.fits(&self.state.projects) { return false; }
+        if stage.project_decision.as_ref().is_some_and(|stamp|
+            self.project_decision_ready(stamp.decision.actor,Some(stamp.decision.worker)).is_err()) { return false; }
         let Some(frame) = &self.frame else {
             return true;
         };
@@ -354,7 +362,9 @@ impl Simulation {
             }
             for (id, was) in &stage.projects.before { frame.keep_project(*id, was.as_ref()); }
             for (actor, was) in &stage.projects.binding_before { frame.keep_project_binding(*actor, *was); }
+            for (key, was) in &stage.projects.ownership_before { frame.keep_stock_lot(key, was.as_ref()); }
         }
+        self.project_decision_stamp = stage.project_decision;
         let s = &mut self.state;
         if stage.count == 1 {
             s.population.lift(stage.actor).expect("the actor exists");
@@ -397,6 +407,7 @@ impl Simulation {
         s.polities.extend(stage.polities);
         s.projects.records.extend(stage.projects.records);
         s.projects.bindings.extend(stage.projects.bindings);
+        s.projects.ownership.extend(stage.projects.ownership);
         for (axis, value) in stage.marks {
             s.record.reckon(&[hagiograph::Entry {
                 axis,

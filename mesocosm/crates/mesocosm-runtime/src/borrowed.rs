@@ -54,7 +54,7 @@ pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAcces
     if access.seat == isocosm_overlay::Seat::CreativeObserver
         || session.sim.plays(access.participant.0) != access.subject.map(|id| id.0)
     { return Err(Refusal::NotPlayed); }
-    game.version().map_err(Refusal::Sim)?;
+    game.validate(session).map_err(Refusal::Sim)?;
     let mut candidate = session.clone();
     let accepted = match input {
         Input::Envelope(envelope) => {

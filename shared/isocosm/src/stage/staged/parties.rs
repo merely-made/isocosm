@@ -67,6 +67,7 @@ impl Parties for Staged<'_> {
         self.ledger(who).map(|_| ())
     }
     fn take(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
+        self.guard_owned_debit(who,key,amount)?;
         match self.routed(who, key, amount, false) {
             Some(done) => done,
             None => debit(self.ledger(who)?, key, amount),

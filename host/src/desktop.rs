@@ -13,13 +13,13 @@ pub(crate) fn mesocosm_spatial(world: &crate::world::World, path: &std::path::Pa
     #[cfg(feature = "mesocosm")]
     {
         let authored = std::fs::read(path).map_err(|why| why.to_string())?;
-        let placements: Vec<mesocosm_runtime::spatial::Placement> =
+        let setup: mesocosm_runtime::spatial::Setup =
             serde_json::from_slice(&authored).map_err(|why| why.to_string())?;
         world.product_game(world.cut()?, crate::products::Mode::Mesocosm, |session, bytes| {
             let mut game: mesocosm_runtime::spatial::Game = if bytes.is_empty() {
                 Default::default()
             } else { serde_json::from_slice(&bytes).map_err(|why| why.to_string())? };
-            game.replace(&session.sim, &placements)?;
+            game.setup(session, &setup)?;
             let bytes = serde_json::to_vec(&game).map_err(|why| why.to_string())?;
             Ok(((), bytes))
         })
@@ -47,7 +47,7 @@ pub(crate) fn run(app: App) -> Result<(), String> {
     let routes = Rc::new(RefCell::new(HashMap::<ProjectionId, u64>::new()));
     let initial = Rc::new(keys.clone());
     let core = Rc::new(RefCell::new(None));
-    #[cfg(feature = "mesocosm")]
+    #[cfg(any(feature = "mesocosm", feature = "vtt"))]
     let registrations = Rc::new(RefCell::new(crate::viewport::Registrations::default()));
     let mut hooks: WindowHooks<App, Logic, Child> = HostHooks::inert();
     hooks.frame = Box::new({
@@ -60,7 +60,7 @@ pub(crate) fn run(app: App) -> Result<(), String> {
                     assert!(Arc::ptr_eq(first, actual), "all mode windows use the same real render core");
                 } else { *held = Some(actual.clone()); }
             }
-            #[cfg(feature = "mesocosm")]
+            #[cfg(any(feature = "mesocosm", feature = "vtt"))]
             {
                 let errors = registrations.borrow_mut().sync(ctx.runner.state(), ctx.producers);
                 if !errors.is_empty() {

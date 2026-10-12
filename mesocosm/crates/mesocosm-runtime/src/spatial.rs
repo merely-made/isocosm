@@ -11,12 +11,17 @@ use isometer_core::Yaw;
 use isometer_space::places::PlaceId;
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 1;
+pub const VERSION: u32 = 2;
 
 mod input;
 pub use input::{GameInput, Input};
 mod refresh;
 pub use refresh::Refresh;
+mod profile;
+pub use profile::{Authored, Setup, Profile, StepInput, ArrivalInput, Driver};
+mod driver;
+mod arrival;
+mod replay;
 
 /// Exact root-pivot pose in the site's base cells; no presentation scale.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -44,6 +49,11 @@ pub struct Placement {
     pub eye: [i64; 3],
     pub window: Window,
     pub operations: BTreeMap<String, Operation>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub places: Option<isometer_space::places::Rules>,
+    /// This exact native visit, not a remembered pose from a prior journey.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub resident_since: Option<u64>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -51,15 +61,19 @@ pub struct Placement {
 pub struct Game {
     pub version: u32,
     pub members: BTreeMap<Id, Placement>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub driver: Option<Driver>,
 }
 
 impl Default for Game {
-    fn default() -> Self { Self { version: VERSION, members: BTreeMap::new() } }
+    fn default() -> Self { Self { version: 1, members: BTreeMap::new(), driver: None } }
 }
 
 impl Game {
     pub fn version(&self) -> Result<(), String> {
-        if self.version != VERSION { return Err("unsupported Mesocosm spatial version".into()); }
+        if !(self.version == 1 && self.driver.is_none() || self.version == VERSION) {
+            return Err("unsupported Mesocosm spatial version".into());
+        }
         if self.members.iter().any(|(id, at)| *id != at.actor.0) {
             return Err("saved spatial identity differs from its native key".into());
         }
@@ -69,13 +83,19 @@ impl Game {
     /// Trusted authored geometry; this never moves or takes a native body.
     pub fn replace(&mut self, sim: &Simulation, placements: &[Placement]) -> Result<(), String> {
         self.version()?;
+        if self.driver.is_some() { return Err("saved driver poses change only through admitted native spatial work".into()); }
         let mut ids = BTreeSet::new();
+        let mut admitted = Vec::new();
         for at in placements {
             if !ids.insert(at.actor.0) { return Err("duplicate authored spatial member".into()); }
+            let mut at = at.clone();
+            let member = sim.state().population.get(at.actor.0).ok_or("spatial actor absent")?;
+            if at.resident_since.is_none() { at.resident_since = Some(member.arrived); }
             at.check(sim)?;
+            admitted.push(at);
         }
         let mut next = self.clone();
-        for at in placements { next.members.insert(at.actor.0, at.clone()); }
+        for at in admitted { next.members.insert(at.actor.0, at); }
         if next.members.len() as u64 > sim.genesis().rules.limits.entities {
             return Err("saved spatial member limit".into());
         }
@@ -113,17 +133,10 @@ impl Game {
     /// Both candidates stay private until every native operation is admitted.
     pub fn advance(&mut self, session: &mut Session, access: isocosm_overlay::OrdinaryAccess)
         -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, crate::Refusal> {
-        self.version().map_err(crate::Refusal::Sim)?;
-        let mut native = session.clone();
-        let mut game = self.clone();
-        game.refresh(&mut native).map_err(crate::Refusal::Sim)?;
-        let out = crate::terrain::advance(&mut native, access, &mut |pending: &Pending| {
-            game.resolve(pending)
-        })?;
-        game.refresh(&mut native).map_err(crate::Refusal::Sim)?;
-        *session = native;
-        *self = game;
-        Ok(out)
+        if access.seat != isocosm_overlay::Seat::Player || access.subject.is_none()
+            || session.sim.plays(access.participant.0) != access.subject.map(|id| id.0)
+        { return Err(crate::Refusal::NotPlayed); }
+        self.advance_clock(session).map_err(crate::Refusal::Sim)
     }
 }
 
@@ -132,10 +145,11 @@ impl Placement {
         let member = sim.state().population.get(self.actor.0).ok_or("spatial actor is absent")?;
         if !member.alive || member.body.is_none() || member.body_revision != self.body_revision
             || member.resident_site() != Some(self.site.0) || member.patch != Some(self.patch)
+            || self.resident_since != Some(member.arrived)
             || self.patch.site != self.site.0 || sim.terrain_revision() != self.terrain_revision
         { return Err("saved spatial body, place or terrain binding is stale".into()); }
         let volume = sim.volume(self.site.0, self.window.min, self.window.max, self.window.depth)?;
-        let site = crate::perception::InSite::of(sim, volume, Default::default())?;
+        let site = crate::perception::InSite::of(sim, volume, self.places.unwrap_or_default())?;
         site.cell(sim, self.actor.0, self.pose.at)?;
         site.cell(sim, self.actor.0, self.eye)
     }

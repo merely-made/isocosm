@@ -4,6 +4,21 @@
 use super::*;
 
 impl HostNet {
+    pub async fn commit_native_table_admission(&self, input: &crate::native_table::NativeTableAdmissionInput) -> Result<(), String> {
+        let out = self.session.lock().await.commit_native_table_admission(input)?;
+        dispatch(&self.peers, out).await;
+        Ok(())
+    }
+
+    pub async fn authenticated_endpoints(&self) -> Vec<[u8; 32]> {
+        self.session.lock().await.authenticated_endpoints()
+    }
+
+    pub async fn commit_native_table_binding(&self, input: &crate::NativeTableBindingInput) -> Result<(), String> {
+        let out = self.session.lock().await.commit_native_table_binding(input)?;
+        dispatch(&self.peers, out).await;
+        Ok(())
+    }
     pub async fn commit_native_setup(
         &self, setup: &isometry_campaign::founding::Setup,
         expected: &isometry_campaign::founding::NativeWorld,

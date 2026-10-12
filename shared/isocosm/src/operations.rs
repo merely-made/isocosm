@@ -42,6 +42,7 @@ pub struct Pending { pub request: Request, pub sim: Box<Simulation> }
 #[derive(Clone, Debug)]
 pub(crate) struct StagedTerrain {
     pub request: Request,
+    pub answered: bool,
     pub edit: Option<Edit>,
     pub gained: u128,
     pub paid: u128,
@@ -50,13 +51,15 @@ pub(crate) struct StagedTerrain {
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Resolutions {
     pub inputs: BTreeMap<Key, Resolution>,
+    pub refused: BTreeMap<Key, (Request, String)>,
+    pub allow_refusals: bool,
     pub used: BTreeSet<Key>,
     pub pending: Option<Pending>,
     pub work: Option<Work>,
 }
 
 impl Resolutions {
-    fn of(inputs: &[Resolution]) -> Result<Self> {
+    pub(crate) fn of(inputs: &[Resolution]) -> Result<Self> {
         let mut held = Self::default();
         for input in inputs {
             if held.inputs.insert(input.request.action.clone(), input.clone()).is_some() {
@@ -72,7 +75,7 @@ pub enum Preparation { Pending(Pending), Ready(Prepared) }
 /// Publication checks that the original native Session has not changed.
 pub struct Prepared { candidate: Session, source: Key, pub work: Work, flows: Vec<crate::flows::Flow> }
 
-fn source(session: &Session) -> Key {
+pub(crate) fn source(session: &Session) -> Key {
     crate::digest(&(&session.branch, &session.entries, session.sim.state_hash(),
         session.sim.genesis()))
 }
@@ -140,7 +143,13 @@ impl Simulation {
     }
 
     pub(crate) fn capture_geometry(&mut self, terrain: &Option<StagedTerrain>) {
-        let Some(terrain) = terrain.as_ref().filter(|t| t.edit.is_none()) else { return; };
+        let Some(terrain) = terrain else { return; };
+        if terrain.answered {
+            if self.geometry_resolutions.allow_refusals {
+                self.geometry_resolutions.used.insert(terrain.request.action.clone());
+            }
+            return;
+        }
         if self.geometry_resolutions.pending.is_some() { return; }
         let mut sim = self.clone();
         sim.geometry_resolutions = Resolutions::default();
@@ -151,7 +160,7 @@ impl Simulation {
     }
 
     pub(crate) fn geometry_ready(&self) -> Result<()> {
-        if self.geometry_resolutions.pending.is_some() {
+        if self.geometry_resolutions.pending.is_some() || self.spatial_resolutions.pending.is_some() {
             return Err("native operation needs game geometry".into());
         }
         Ok(())

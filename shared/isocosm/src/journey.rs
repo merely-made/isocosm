@@ -81,6 +81,7 @@ impl Simulation {
             entity.arrived = tick;
             entity.journey = None;
             entity.patch = None;
+            self.place_arrivals(first, count, &journey)?;
             if let Some(before) = &before { self.overflow_resolved(before)?; }
             // Carried soil stays in its conserved body ledger until an authored deposit.
             // No arrival event, selected process, receipt, draw or invented site flow.

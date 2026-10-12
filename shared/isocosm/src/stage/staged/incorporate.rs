@@ -37,6 +37,9 @@ impl Staged<'_> {
         let Some(w) = growth::whole((eater, donor), part, (&mine, &theirs), &affinity) else {
             return Ok(false);
         };
+        for (key,amount) in &donor.parts.get(&part).ok_or("bitten part missing")?.matter {
+            self.guard_owned_debit(from,key,*amount)?;
+        }
         let mut donor = self.stage.bodies.remove(&prey).expect("found above");
         let id = growth::take_whole(self.actor(), &mut donor, part, &w);
         self.stage.bodies.insert(prey, donor);

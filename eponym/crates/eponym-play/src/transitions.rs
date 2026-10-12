@@ -17,8 +17,9 @@ use crate::{
     MovementProfile, ResolvedStrike, WorldError, WorldSave,
 };
 
-/// Version 9 adds recorded item placement through native custody.
-pub const GAME_STATE_VERSION: u32 = 10;
+/// Version11 adds explicit custody and physical placement of native work.
+pub const GAME_STATE_VERSION: u32 = 11;
+pub const PROJECT_CUSTODY_GAME_STATE_VERSION: u32 = 11;
 pub const PROJECT_GAME_STATE_VERSION: u32 = 10;
 pub const ITEM_PLACEMENT_GAME_STATE_VERSION: u32 = 9;
 pub const NATIVE_RECIPE_GAME_STATE_VERSION: u32 = 8;
@@ -185,6 +186,31 @@ pub enum GameIntent {
         target: Option<isocosm::schema::Id>,
         project: Option<isocosm::projects::ProjectId>,
     },
+    ProjectCarry {
+        tick: Tick,
+        subject: SubjectId,
+        project: isocosm::projects::ProjectId,
+        carried: bool,
+    },
+    /// Exact owned lots are selected, never inferred from the source balance.
+    ProjectReserve {
+        tick: Tick,
+        subject: SubjectId,
+        process: String,
+        target: Option<isocosm::schema::Id>,
+        lots: Vec<String>,
+    },
+    /// Founding-only author assertion; ordinary controlled play refuses it.
+    StockOwnership { tick: Tick, lot: isocosm::projects::StockLot },
+    ProjectConsent {
+        tick: Tick,
+        subject: SubjectId,
+        project: isocosm::projects::ProjectId,
+        owner: isocosm::projects::Owner,
+        worker: SubjectId,
+        grant: bool,
+        process: Option<String>,
+    },
 }
 
 impl GameIntent {
@@ -194,6 +220,10 @@ impl GameIntent {
             | Self::GenerateNativeRecipe { tick, .. }
             | Self::Drop { tick, .. }
             | Self::ProjectAct { tick, .. }
+            | Self::ProjectCarry { tick, .. }
+            | Self::ProjectReserve { tick, .. }
+            | Self::StockOwnership { tick, .. }
+            | Self::ProjectConsent { tick, .. }
             | Self::Name { tick, .. }
             | Self::Move { tick, .. }
             | Self::Observe { tick, .. }
@@ -221,6 +251,9 @@ impl GameIntent {
             | Self::GenerateNativeRecipe { subject, .. }
             | Self::Drop { subject, .. }
             | Self::ProjectAct { subject, .. }
+            | Self::ProjectCarry { subject, .. }
+            | Self::ProjectReserve { subject, .. }
+            | Self::ProjectConsent { subject, .. }
             | Self::Name { subject, .. }
             | Self::Move { subject, .. }
             | Self::Observe { subject, .. }
@@ -236,7 +269,7 @@ impl GameIntent {
             | Self::ConfigureMovementProfile { subject, .. }
             | Self::Wait { subject, .. } => Some(*subject),
             Self::ResolveVolley { actor, .. } => Some(*actor),
-            Self::ReviseCanon { .. } => None,
+            Self::ReviseCanon { .. } | Self::StockOwnership { .. } => None,
         }
     }
 }
@@ -379,6 +412,22 @@ pub enum GameEvent {
         output: Option<ItemId>,
         receipt: isocosm::simulation::Receipt,
     },
+    ProjectCarried {
+        tick: Tick,
+        subject: SubjectId,
+        project: isocosm::projects::ProjectId,
+        carried: bool,
+        site: isocosm::schema::Id,
+        at: [i32; 3],
+    },
+    ProjectConsented {
+        tick: Tick,
+        subject: SubjectId,
+        project: isocosm::projects::ProjectId,
+        worker: SubjectId,
+        authorized: bool,
+        round: u64,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -405,6 +454,7 @@ pub enum GameError {
     LegacyNativeRecipeIntent,
     LegacyItemPlacementIntent,
     LegacyProjectIntent,
+    LegacyProjectCustodyIntent,
     UnreceiptedPromotion,
     WrongTick { expected: Tick, actual: Tick },
     StateDiverged { saved: u64, restored: u64 },

@@ -98,6 +98,7 @@ mod host_routing;
 #[cfg(test)]
 mod host_zoom;
 mod net;
+mod native_table;
 mod overmap;
 mod product;
 mod scene_board;

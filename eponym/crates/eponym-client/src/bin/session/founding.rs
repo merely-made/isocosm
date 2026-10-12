@@ -20,6 +20,8 @@ struct Input {
     materials: MaterialProfile,
     /// Existing admitted game vocabulary, with authored seeds/positions.
     initial_intents: Vec<GameIntent>,
+    #[serde(default)]
+    stock_ownership: Vec<isocosm::projects::StockLot>,
     played: SubjectId,
     target: SubjectId,
     target_item: ItemId,
@@ -58,6 +60,10 @@ pub(super) fn start() -> Result<Start, String> {
     let mut game = GameState::new(world).with_motion_solver(eponym_motion::SOLVER);
     for (index, intent) in input.initial_intents.into_iter().enumerate() {
         game.apply(intent).map_err(|error| format!("initial intent {index}: {error:?}"))?;
+    }
+    for lot in input.stock_ownership {
+        game.apply(GameIntent::StockOwnership { tick:game.next_tick(), lot })
+            .map_err(|error| format!("initial ownership: {error:?}"))?;
     }
     if !game.bodies().get(input.target).is_some_and(|body| body.alive())
         || game.items().get(input.target_item).is_none()

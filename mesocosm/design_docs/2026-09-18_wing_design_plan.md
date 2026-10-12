@@ -10513,7 +10513,85 @@ what later sections derive from.
      authorization and the ordinary control boundary. It is not restricted
      to the original maker or one assigned worker. Existing social agreement
      acceptance alone does not complete a material operation or grant an
-     unrelated project's access. The next ruling is839.
+     unrelated project's access.
+
+839. **Native owners of reserved inputs grant project access together.**
+     2026-10-12, native project grant/revoke authority under838.
+     Question: "Ruling 838 allows eligible, authorized subjects to resume a project, but native agreements do not yet define who grants project access. Who should grant or revoke permission to work on a project?"
+     Options: (1) "An explicitly named project authority, recorded when inputs are reserved (Recommended)"; (2) "The subject who creates the project"; (3) "The native owners of the reserved inputs, acting together".
+     Mark chose "The native owners of the reserved inputs, acting together"
+     So native input ownership supplies joint project access authority. A
+     maker or separately authored authority does not acquire that right by
+     naming itself. Native admission must establish the owners and their
+     joint decision; table metadata and agreement acceptance supply none.
+     *Reading, not ruled:* ownership of unowned site stocks and changes to
+     the joint owner roster need their actual native semantics before grants.
+
+840. **Interrupted work stays at creation by default, with carrying chosen.**
+     2026-10-12, physical project placement under837/838.
+     Question: "The native project ledger retains reserved matter and progress, but Eponym needs a physical location for interrupted work. Where should that work remain?"
+     Options: (1) "At its creation position until explicitly moved (Recommended)"; (2) "Carried by the current worker, subject to carrying capacity"; (3) "In a site-level ledger, with an explicit position chosen when the output completes".
+     Mark answered "1 default, 2 at your choice"
+     So fixed creation placement is the default, and carrying is an explicit
+     option with capacity checks. Interruption retains the same native
+     project, stocks and progress; changing worker does not move it itself.
+     *Reading, not ruled:* the player chooses carrying through an admitted
+     action; this is not permission for an adapter to relocate work silently.
+
+841. **Authored step profiles tie physical movement to native processes.**
+     2026-10-12, Mesocosm's actual in-site movement source.
+     Question: "Mesocosm now saves actual positions, but its current physics world is advisory and cannot drive a body. How should a chosen native movement process produce an actual step?"
+     Options: (1) "Authored step profiles tied to native movement processes, with geometry resolved by the game (Recommended)"; (2) "A separately selected game physics solver and movement profile".
+     Mark chose "Authored step profiles tied to native movement processes, with geometry resolved by the game (Recommended)"
+     So the world's authored step profile binds a native movement process;
+     its chosen act drives game-resolved geometry through native admission.
+     Advisory layout is not an actual step. Step values, cost, timing and
+     collision parameters remain authored rather than supplied by this answer.
+
+842. **Destinations supply explicit authored arrival placements and windows.**
+     2026-10-12, actual geometry after a native journey.
+     Question: "Native journeys clear the old site placement on arrival. What should supply a body's actual destination position and spatial window?"
+     Options: (1) "Explicit authored arrival placements and windows for destinations (Recommended)"; (2) "A selected game solver derives placement from authored route-entry geometry".
+     Mark chose "Explicit authored arrival placements and windows for destinations (Recommended)"
+     So actual destination placement and its spatial window come from
+     explicit authored data and are checked against current native geometry.
+     An old-site pose or a display position is not a fallback; an absent or
+     refused destination binding remains unavailable. The answer supplies
+     no coordinates or window dimensions.
+
+843. **Ordinary reservation requires explicit native ownership.**
+     2026-10-12, ownerless material under839.
+     Question: "Native code distinguishes ownership from carrying and tenancy, but currently records no stock owners. For stocks without an asserted owner, including new items and site matter, what should reservation require?"
+     Options: (1) "Require explicit native ownership before reservation (Recommended)"; (2) "Allow ownerless projects under a separately declared access policy"; (3) "Claim ownership through the admitted reservation".
+     Mark answered "hm, 1, but a separate pathway would be something like a help action"
+     So ordinary reservation needs an explicit native ownership assertion;
+     holding, tenancy, maker provenance and the act of reservation supply
+     none. A help action is a separate possible pathway, whose admission,
+     inputs and permissions this answer does not define. It is not an
+     inferred bypass of the ordinary ownership requirement.
+
+844. **Polities may author any of the three collective approval strategies.**
+     2026-10-12, a polity's share of joint project permission under839.
+     Question: "If a polity owns some reserved inputs, how should it give its share of the joint project permission? Its native constitution names governance but does not yet evaluate collective decisions."
+     Options: (1) "A native collective decision under its authored governance (Recommended)"; (2) "Unanimous approval from all current native members"; (3) "Approval by explicitly declared native representatives".
+     Mark answered "all 3 are legitimate strategies"
+     So native polity authorization supports an explicitly authored choice
+     among governance decisions, current-member unanimity and declared
+     representatives. A constitution's name does not invent its evaluation
+     rules, and no strategy is silently selected for existing polities.
+     *Reading, not ruled:* the applicable strategy and its required inputs
+     are authored native state, checked when permission is given or revoked.
+
+845. **Stock ownership names exact quantity lots selected for reservation.**
+     2026-10-12, native property quantity boundary under839/843.
+     Question: "Native ownership also needs a stock boundary: incoming matter can refill the same account after some has been reserved. Should an ownership assertion cover a specific quantity, or the account's whole changing balance?"
+     Options: (1) "Exact quantity lots, selected explicitly for reservation (Recommended)"; (2) "The whole source account, including later incoming matter".
+     Mark chose "Exact quantity lots, selected explicitly for reservation (Recommended)"
+     So the native assertion identifies a typed stock source, account,
+     exact quantity and owners. Reservation explicitly selects those lots;
+     later incoming matter does not acquire an earlier quantity's owners.
+     These ownership records do not issue or duplicate conserved matter.
+     The next ruling is846.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

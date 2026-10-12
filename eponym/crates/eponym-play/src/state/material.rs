@@ -19,7 +19,15 @@ impl GameState {
         let found = self.items.get(item).ok_or(ItemError::Missing(item))?;
         if self.world.material_profile().is_none() {
             let carried = self.items.carried_mass_mg(subject);
-            if !body.can_carry(carried, found.kind.mass_mg()) {
+            let project_mass = self.project_burden(subject)?;
+            let attempted = u128::from(carried).checked_add(u128::from(found.kind.mass_mg()))
+                .and_then(|mass| mass.checked_add(project_mass)).ok_or(WorldError::Refused)?;
+            if project_mass > 0 && attempted > u128::from(body.profile.carry_capacity_mg) {
+                return Err(ItemError::NativeOverCapacity {
+                    capacity_mg:body.profile.carry_capacity_mg, attempted_mg:attempted,
+                }.into());
+            }
+            if project_mass == 0 && !body.can_carry(carried, found.kind.mass_mg()) {
                 return Err(ItemError::OverCapacity { capacity_mg: body.profile.carry_capacity_mg,
                     attempted_mg: carried.saturating_add(found.kind.mass_mg()) }.into());
             }
@@ -27,10 +35,8 @@ impl GameState {
         }
         let mass = |id| self.item_reading(id).map(|reading| reading.matter_mass_mg)
             .map_err(|_| GameError::World(WorldError::Refused));
-        let mut attempted_mg = mass(item)?;
-        for held in self.items.carried_by(subject) {
-            attempted_mg = attempted_mg.checked_add(mass(held.id)?).ok_or(WorldError::Refused)?;
-        }
+        let attempted_mg = self.actual_burden(subject)?.checked_add(mass(item)?)
+            .ok_or(WorldError::Refused)?;
         if attempted_mg > u128::from(body.profile.carry_capacity_mg) {
             return Err(ItemError::NativeOverCapacity {
                 capacity_mg: body.profile.carry_capacity_mg, attempted_mg,

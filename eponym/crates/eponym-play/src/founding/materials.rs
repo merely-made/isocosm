@@ -80,6 +80,10 @@ impl MaterialProfile {
         if materials.len() != g.world.materials.len() {
             return Err("every declared material requires its own authored stock and density".into());
         }
+        if self.projects.as_ref().is_some_and(|catalogue| catalogue.definitions.values().any(|definition|
+            definition.output_custody.as_deref().is_some_and(|key| key != super::CARRIES))) {
+            return Err("Eponym output custody must use its declared item carrying relation".into());
+        }
         for (key, process) in &self.processes {
             if key != &process.id || g.rules.processes.contains_key(key) {
                 return Err("material profile process is misnamed or replaces a native process".into());

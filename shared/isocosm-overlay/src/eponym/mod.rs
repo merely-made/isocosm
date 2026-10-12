@@ -31,7 +31,7 @@ pub use agree::{AgreementAct, Deed, DeedKey, EndReason};
 pub use ask::{AgreementHandle, Proposal, Term, TermSide, WorkKey};
 pub use checkpoint::{FirstLife, LifeCheckpoint, LifeChoice, StartTime, Succession, Successor};
 pub use handoff::{Blow, EponymHandoff};
-pub use project::{ProjectAct, ProjectHandle};
+pub use project::{ProjectAct, ProjectCarry, ProjectConsent, ProjectHandle, ProjectOwner};
 pub use telling::{Claim, Manner, Telling};
 
 use serde::{Deserialize, Serialize};
@@ -53,6 +53,8 @@ pub enum EponymIntent {
     Checkpoint(LifeCheckpoint),
     Creative(CreativeIntent),
     Project(ProjectAct),
+    ProjectCarry(ProjectCarry),
+    ProjectConsent(ProjectConsent),
 }
 
 /// Creative mode's intents (ruling 187), and nothing else's: tag in to a

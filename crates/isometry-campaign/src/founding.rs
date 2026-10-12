@@ -15,6 +15,7 @@ mod publication;
 pub use publication::{NativeCursor, NativeWorld};
 mod content;
 mod generation;
+mod table;
 pub use content::{Content, TableMetadata};
 pub use generation::GenerationOrigin;
 

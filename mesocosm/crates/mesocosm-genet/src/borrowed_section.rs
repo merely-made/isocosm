@@ -12,6 +12,7 @@ use std::{cell::RefCell, rc::Rc};
 use isocosm::{Session, attention::spatial::RegionReading, directing::readings::Mode, schema::Id};
 use isometer::{DeclaredExtentVolumes, SlabCamera};
 use mesocosm_runtime::perception::{InSite, Sight};
+pub use isometer::core::Yaw as RootYaw;
 use crate::{played::{layout, scene}, section::{self, CameraMode, Pan, PlacedBody, SiteScene}};
 
 pub struct Snapshot {
@@ -105,6 +106,58 @@ impl SceneHandle {
                 bodies, played:region.played, volumes }, fingerprint, quarter_turn };
             *self.input.borrow_mut() = Some(Rc::new(snapshot));
             self.error.borrow_mut().take();
+            Ok(true)
+        })();
+        if let Err(why) = &result { self.clear(); *self.error.borrow_mut() = Some(why.clone()); }
+        result
+    }
+
+    /// A product validates its own saved root bindings against this same
+    /// borrowed Session. The picture then uses the admitted local region's
+    /// current native body documents, and gives missing roots no layout pose.
+    pub fn update_roots(&self, session: &Session, participant: Id, window: u64, mode: Mode,
+        site: Id, quarter_turn: u8, frame: &isocosm::operations::Window,
+        roots: &std::collections::BTreeMap<Id, mesocosm_runtime::spatial::Pose>) -> Result<bool, String> {
+        let result: Result<bool, String> = (|| {
+            if quarter_turn > 3 { return Err("quarter turn must be zero through three".into()); }
+            if frame.depth < 0 { return Err("physical picture needs a nonnegative authored depth".into()); }
+            let region = session.sim.region_reading(participant, window, mode, site)?;
+            if roots.is_empty() || mode == Mode::Survival
+                && region.played.is_none_or(|id| !roots.contains_key(&id)) {
+                return Err("physical picture has no current root for its played native subject".into());
+            }
+            let volume = session.sim.volume(site, frame.min, frame.max, frame.depth)?;
+            let mut bodies = Vec::new();
+            for body in &region.bodies {
+                let Some(pose) = roots.get(&body.id) else { continue; };
+                let member = session.sim.state().population.get(body.id).ok_or("native picture member is absent")?;
+                if member.resident_site() != Some(site) || member.body.as_ref() != Some(&body.document)
+                    || member.body_revision != body.revision || member.patch != body.patch {
+                    return Err("native picture body changed before root lowering".into());
+                }
+                if !volume.holds(pose.at[0], pose.at[2]) { continue; }
+                let cell = volume.to_ground(pose.at);
+                let base = [volume.min[0], volume.datum, volume.min[1]];
+                let offset = [i64::from(volume.extent), 0, i64::from(volume.extent)];
+                if (0..3).any(|i| base[i].checked_add(offset[i]).and_then(|b|
+                    b.checked_add(i64::from(cell[i]))) != Some(pose.at[i])) {
+                    return Err("physical root exceeds Ground coordinate bounds".into());
+                }
+                bodies.push(PlacedBody { id:body.id, document:body.document.clone(), at:cell,
+                    physical:Some(pose.clone()), tint:scene::tint_of(isocosm::kingdom::of(member)),
+                    alive:member.alive });
+            }
+            let digest = isocosm::digest(&(session.sim.genesis(), session.sim.state(), &region, frame, roots));
+            let mut fingerprint = [0; 4];
+            for (i, word) in fingerprint.iter_mut().enumerate() {
+                *word = u64::from_str_radix(&digest[i * 16..(i + 1) * 16], 16).map_err(|e| e.to_string())?;
+            }
+            if self.input.borrow().as_ref().is_some_and(|old|
+                old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
+            let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
+            let snapshot = Snapshot { scene:SiteScene { site, ground:volume.ground().clone(), window:volume,
+                bodies, played:region.played, volumes }, fingerprint, quarter_turn };
+            *self.input.borrow_mut() = Some(Rc::new(snapshot)); self.error.borrow_mut().take();
             Ok(true)
         })();
         if let Err(why) = &result { self.clear(); *self.error.borrow_mut() = Some(why.clone()); }

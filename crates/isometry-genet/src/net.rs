@@ -30,6 +30,8 @@ pub enum Role {
 }
 
 enum BridgeCommand {
+    NativeTableAdmission { request: RequestId, input: isonetry::native_table::NativeTableAdmissionInput },
+    NativeTableBinding { request: RequestId, input: isonetry::NativeTableBindingInput },
     NativeSetup {
         request: RequestId, setup: isometry_campaign::founding::Setup,
         expected: isometry_campaign::founding::NativeWorld,
@@ -66,6 +68,7 @@ enum BridgeCommand {
 }
 
 enum BridgeUpdate {
+    NativeEndpoints(Vec<[u8; 32]>),
     HostReady {
         ticket: String,
         snapshot: GameSnapshot,
@@ -99,6 +102,7 @@ pub struct NetBridge {
     ticket: Option<String>,
     inbox: Vec<(String, String)>,
     players: Vec<String>,
+    endpoints: Vec<[u8; 32]>,
     request_ids: RequestIds,
     campaign_outcomes: Vec<Correlated<Result<(), String>>>,
     failure: Option<String>,
@@ -132,6 +136,7 @@ impl NetBridge {
             ticket: None,
             inbox: Vec::new(),
             players: Vec::new(),
+            endpoints: Vec::new(),
             request_ids: RequestIds::default(),
             campaign_outcomes: Vec::new(),
             failure: None,
@@ -145,6 +150,10 @@ impl NetBridge {
         let mut changed = false;
         loop {
             match self.updates.try_recv() {
+                Ok(BridgeUpdate::NativeEndpoints(endpoints)) => {
+                    self.endpoints = endpoints;
+                    changed = true;
+                },
                 Ok(BridgeUpdate::HostReady {
                     ticket,
                     snapshot,
@@ -276,6 +285,8 @@ impl NetBridge {
         self.players.clone()
     }
 
+    pub fn authenticated_endpoints(&self) -> Vec<[u8; 32]> { self.endpoints.clone() }
+
     /// The current change version; the UI redraws when it advances.
     pub fn version(&self) -> u64 {
         self.version
@@ -354,6 +365,7 @@ async fn run_host(
 
     let mut last_seq = host.seq().await;
     let mut last_players = Vec::new();
+    let mut last_endpoints = Vec::new();
     loop {
         let commands = match drain_commands(&commands) {
             Ok(commands) => commands,
@@ -361,7 +373,17 @@ async fn run_host(
         };
         for command in commands {
             match command {
-                BridgeCommand::Event(event) => host.local_event(event).await,
+                BridgeCommand::Event(event) => {
+                    if let Err(reason) = host.submit_event(event).await { out.emit(BridgeUpdate::Failed(reason)); }
+                },
+                BridgeCommand::NativeTableBinding { request, input } => {
+                    let result = host.commit_native_table_binding(&input).await;
+                    out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
+                },
+                BridgeCommand::NativeTableAdmission { request, input } => {
+                    let result = host.commit_native_table_admission(&input).await;
+                    out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
+                },
                 // The DM resolves its own swings directly (it *is* the rules
                 // system), so it never routes one through here. Handled anyway,
                 // as the same request a player would send.
@@ -429,6 +451,11 @@ async fn run_host(
 
         let seq = host.seq().await;
         let players = host.player_names().await;
+        let endpoints = host.authenticated_endpoints().await;
+        if endpoints != last_endpoints {
+            last_endpoints = endpoints.clone();
+            out.emit(BridgeUpdate::NativeEndpoints(endpoints));
+        }
         if seq != last_seq || players != last_players {
             last_seq = seq;
             last_players = players.clone();
@@ -480,7 +507,8 @@ async fn run_client(
                     )));
                 },
                 BridgeCommand::Campaign { request, .. } | BridgeCommand::NativeCampaign { request, .. }
-                    | BridgeCommand::NativeSetup { request, .. } => {
+                    | BridgeCommand::NativeSetup { request, .. } | BridgeCommand::NativeTableBinding { request, .. }
+                    | BridgeCommand::NativeTableAdmission { request, .. } => {
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(
                         request,
                         Err("campaign commits require the host".to_owned()),
@@ -507,6 +535,7 @@ async fn run_client(
         if !whispers.is_empty() {
             out.emit(BridgeUpdate::Whispers(whispers));
         }
+        for reason in client.take_rejections().await { out.emit(BridgeUpdate::Failed(reason)); }
         tokio::time::sleep(Duration::from_millis(60)).await;
     }
 }
