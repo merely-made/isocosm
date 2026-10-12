@@ -11,7 +11,7 @@ use isomere::{
     ViewportCard,
 };
 use isometer::core::PartId;
-use eponym_play::ItemKind;
+use eponym_play::{ItemId, ItemKind};
 
 use super::{LEAF_KEY, SessionApp};
 
@@ -174,12 +174,28 @@ fn journal_panel(state: &SessionApp) -> Child {
 }
 
 fn equipment_panel(state: &SessionApp) -> Child {
+    let at = state.item_position();
+    let nearby = state.nearby_items();
+    let mut ground: Vec<Child> = Vec::new();
+    for item in nearby {
+        let id = item.id;
+        ground.push(Box::new(el("div", (
+            el("div", text(format!("Item {} · {}", id.0, item_kind(item.kind))))
+                .attr("class", "field-name"),
+            item_details(state, id),
+            button(format!("Take item {}", id.0), "equip",
+                move |state: &mut SessionApp| state.take_item(id)),
+        )).attr("class", "item")));
+    }
+    if ground.is_empty() {
+        ground.push(Box::new(el("p", text("No items available to take at this position."))));
+    }
     let attachable = state.attachable_parts();
     let carried = state.carried();
     let rows: Vec<Child> = if carried.is_empty() {
         vec![Box::new(el(
             "p",
-            text("Nothing carried. Press E over a dressing."),
+            text("Nothing carried."),
         ))]
     } else {
         carried
@@ -187,7 +203,11 @@ fn equipment_panel(state: &SessionApp) -> Child {
             .map(|item| {
                 let id = item.item;
                 let mut controls: Vec<Child> = Vec::new();
-                match item.attached {
+                if at.is_some() {
+                    controls.push(button(format!("Place item {} here", id.0), "equip",
+                        move |state: &mut SessionApp| state.drop_item(id)));
+                }
+                if at.is_some() && item.kind == ItemKind::Dressing { match item.attached {
                     Some(part) => controls.push(button(
                         format!("Detach from part {}", part.0),
                         "equip",
@@ -203,7 +223,7 @@ fn equipment_panel(state: &SessionApp) -> Child {
                             ));
                         }
                     },
-                }
+                } }
                 Box::new(
                     el(
                         "div",
@@ -213,14 +233,11 @@ fn equipment_panel(state: &SessionApp) -> Child {
                                 text(format!(
                                     "Item {} · {}",
                                     id.0,
-                                    match item.kind {
-                                        ItemKind::Dressing => "dressing",
-                                        ItemKind::Food => "food",
-                                        ItemKind::Scrap => "scrap",
-                                    }
+                                    item_kind(item.kind)
                                 )),
                             )
                             .attr("class", "field-name"),
+                            item_details(state, id),
                             el("div", controls).attr("class", "toolbar"),
                         ),
                     )
@@ -233,12 +250,29 @@ fn equipment_panel(state: &SessionApp) -> Child {
         el(
             "aside",
             (
-                el("h2", text("Equipment")),
+                el("h2", text("Items")),
+                el("p", text(match at {
+                    Some(at) => format!("Take at {}, {}, {}. Placement uses your current position.", at[0], at[1], at[2]),
+                    None => "Item actions need a living played subject with an accepted position.".into(),
+                })),
+                el("h3", text("At your position")),
+                el("div", ground).attr("class", "items"),
+                el("h3", text("Carried and worn")),
                 el("div", rows).attr("class", "items"),
             ),
         )
         .attr("class", "panel"),
     )
+}
+
+fn item_kind(kind: ItemKind) -> &'static str {
+    match kind { ItemKind::Dressing => "dressing", ItemKind::Food => "food", ItemKind::Scrap => "scrap" }
+}
+
+fn item_details(state: &SessionApp, id: ItemId) -> Child {
+    let rows: Vec<Child> = state.item_details(id).into_iter()
+        .map(|line| Box::new(el("p", text(line))) as Child).collect();
+    Box::new(el("div", rows).attr("class", "reading"))
 }
 
 /// The status panel: isomere's shared stack of published lines (M3), over the
@@ -263,7 +297,7 @@ pub(super) fn root(state: &SessionApp) -> Child {
         button("Join part 2".into(), "control", |state: &mut SessionApp| {
             state.join_limb(PartId(2))
         }),
-        button("Take dressing".into(), "control", SessionApp::take_dressing),
+        button("Choose item".into(), "control", SessionApp::take_dressing),
         button("Rest".into(), "control", SessionApp::rest),
         button("Injury debug".into(), "control", SessionApp::injure),
         button("Save".into(), "control", SessionApp::save),

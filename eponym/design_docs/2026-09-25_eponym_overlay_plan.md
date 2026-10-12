@@ -2,7 +2,16 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-11 (826):** T1 now has a recorded item-drop action
+**Current source, 2026-10-12 (826):** the client Items panel exposes explicit
+Take choices for actual items at the living played subject's current game
+cell and Place here for its carried/worn items. These use admitted Take/Drop,
+the same native identity/custody and existing game placement/refusal path.
+Native material/provenance readings are connected beside those rows.
+This source is unverified; all compiler/test acceptance and adjustments wait
+until migration pieces are in place. Material founding/fabrication and
+interrupted/resumed work remain open. Earlier receipts certify earlier source.
+
+**Earlier source checkpoint, 2026-10-11 (826):** T1 now has a recorded item-drop action
 and `Session::drop_item`. Native DROP releases custody of the same item;
 Eponym owns its in-site placement. GameSave9 appends this vocabulary and
 refuses it under older version tags. This is an unverified production slice;
@@ -537,6 +546,22 @@ Ruling 793 archived the genet document host plan to
 
 ## Findings
 
+- **2026-10-12, native material/work inventory:** `ItemKind::mass_mg`
+  declares 250/100/900mg for food/dressing/scrap, while `GameState::lay_items`
+  founds food with `MEAL` (40mg) and dressing/scrap with empty native matter
+  ledgers. Carry admission still reads the declared kind masses. These are
+  distinct existing readings, not replacement founding quantities.
+  `founding.rs` maps both soil and rock to `world:soil`, so that scalar cannot
+  reconstruct their material identity. Native `Provenance::Made(Id)` exists
+  without a manufacture constructor; `Arrive` issues outside matter and
+  cannot stand in for a conserved fabrication operation. `Social::Exercise`
+  records performed work and its deed but has no material progress or resumed
+  project state. *Reading, not ruled:* the next crafting choice must settle
+  authored inputs/output/costs, retained progress, spend or reservation timing,
+  and another eligible subject's resumption before that source is placed.
+  Rulings95 to98 and776/778 establish material incorporation, provenance and
+  ownership, not those recipes or progress semantics. No stock, mass, fixture,
+  carry rule or work-completion default changed in this inventory.
 - **2026-09-25:** `eponym-world` counted at 11,508 lines, `eponym-social`
   2,747, `eponym-identity` 509, `eponym-sortie` 1,082 and `eponym-client`
   11,951 (`wc -l` over each `src` tree's `.rs` files); per-module counts in
@@ -559,6 +584,16 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-12, explicit item controls placed:** client production now lists
+  actual nearby and native-derived custodied items with Take and Place-here
+  controls. Pickup no longer chooses the first dressing automatically.
+  Existing Session/timed-action admission returns actual placement coordinates
+  or its refusal. `GameState::item_reading` provides on-demand native holdings,
+  matter mass, source lineages, origin and maker records beside those rows.
+  Missing records are explicit; it creates no saved fields or replacement quantities.
+  Native material founding, fabrication and interrupted work stay open.
+  No Cargo, compiler, test/fixture changes or tuning ran under826. Old
+  smoke/probe pickup assumptions remain for the later assembled-source review.
 - **2026-10-11, material placement source:** T1 now has a subject-addressed
   `GameIntent::Drop` and item-addressed `Session::drop_item`. Placement runs
   the founding pack's existing native DROP process through actuation,

@@ -171,7 +171,7 @@ pub(crate) static KEYMAP: LazyLock<Keymap<'static, Press, Command>> = LazyLock::
             Command::Charge,
         ),
         Binding::said("left mouse hold on the scene", "to charge"),
-        Binding::one("E", "take", Press::character("e"), Command::Take),
+        Binding::one("E", "choose pickup in Items", Press::character("e"), Command::Take),
         Binding::one("R", "rest", Press::character("r"), Command::Rest),
         Binding::one("I", "injury", Press::character("i"), Command::Injure),
         Binding::one("J", "join part 2", Press::character("j"), Command::Join),

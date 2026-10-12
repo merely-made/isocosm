@@ -21,6 +21,10 @@ use serde::{Deserialize, Serialize};
 use crate::founding::{CARRIES, DRESSING, FOOD, SCRAP};
 use crate::identity::SubjectId;
 
+mod reading;
+pub use reading::{ItemHolding, ItemHoldingKind, ItemReading, ItemReadingError,
+    MakerProvenance, SourceLineage};
+
 /// An item, by its entity's id.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
 pub struct ItemId(pub u64);

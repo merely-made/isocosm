@@ -23,7 +23,8 @@ use eponym_play::identity::SubjectId;
 use eponym_play::CanonRevisionCause;
 use eponym_play::glyphs::ProvenanceKind;
 use eponym_play::{
-    AdhesiveResource, AdhesiveSurface, ArrestFallEnvironment, GameState, ItemKind, ItemLocation,
+    AdhesiveResource, AdhesiveSurface, ArrestFallEnvironment, GameState, Item, ItemHoldingKind,
+    ItemId, ItemKind, ItemLocation, MakerProvenance, SourceLineage,
     MOTION_SCALE, SubjectSheet, SubjectSheetInput, TechniqueInputs, TechniqueKnowledge,
 };
 
@@ -111,7 +112,7 @@ impl SessionApp {
     /// Everything the played subject carries or wears.
     pub(super) fn carried(&self) -> Vec<Carried> {
         let model = self.model.borrow();
-        let played = model.played();
+        let played = model.game().played().unwrap_or(model.session().control().played());
         model
             .game()
             .items()
@@ -125,6 +126,48 @@ impl SessionApp {
                 },
             })
             .collect()
+    }
+
+    /// Take and Drop use this same accepted logical position in GameState.
+    /// No pickup radius or placement coordinate is manufactured by the UI.
+    pub(super) fn item_position(&self) -> Option<[i32; 3]> {
+        let model = self.model.borrow();
+        let game = model.game();
+        let played = game.played().unwrap_or(model.session().control().played());
+        game.bodies().get(played).filter(|body| body.alive())?;
+        game.movement().position(played)
+    }
+
+    pub(super) fn nearby_items(&self) -> Vec<Item> {
+        let Some(at) = self.item_position() else { return Vec::new(); };
+        self.model.borrow().game().items().at(at).copied().collect()
+    }
+
+    pub(super) fn item_details(&self, id: ItemId) -> Vec<String> {
+        let model = self.model.borrow();
+        let reading = match model.game().item_reading(id) {
+            Ok(reading) => reading,
+            Err(why) => return vec![format!("Item record unavailable: {why:?}")],
+        };
+        let mut rows = vec![format!("Recorded matter: {} mg", reading.matter_mass_mg),
+            format!("Item lineage: {}", item_source(&reading.lineage))];
+        if let Some(source) = &reading.born_from {
+            rows.push(format!("Origin lineage: {}", item_source(source)));
+        }
+        rows.push(match &reading.maker {
+            MakerProvenance::NotDeclared => "Maker not recorded".into(),
+            MakerProvenance::Known { entity, .. } => format!("Maker: entity {entity}"),
+            MakerProvenance::Missing { entity } => format!("Maker record unavailable: entity {entity}"),
+        });
+        for held in reading.holdings {
+            rows.push(match held.kind {
+                ItemHoldingKind::Matter { source, .. } | ItemHoldingKind::SpreadMatter { source } =>
+                    format!("{}: {} mg; source {}", held.account, held.amount, item_source(&source)),
+                ItemHoldingKind::NonMatter(_) => format!("{}: {} (non-matter)", held.account, held.amount),
+                ItemHoldingKind::Unknown => format!("{}: {}; definition unavailable", held.account, held.amount),
+            });
+        }
+        rows
     }
 
     /// Parts an item may be attached to: intact, and not the root.
@@ -264,6 +307,14 @@ impl SessionApp {
 
     pub(super) fn played(&self) -> SubjectId {
         self.model.borrow().played()
+    }
+}
+
+fn item_source(source: &SourceLineage) -> String {
+    match source {
+        SourceLineage::Known { lineage, .. } => lineage.clone(),
+        SourceLineage::Missing { lineage } => format!("{lineage} (record unavailable)"),
+        SourceLineage::Unresolved => "unresolved".into(),
     }
 }
 

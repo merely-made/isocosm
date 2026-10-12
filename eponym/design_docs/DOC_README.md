@@ -37,7 +37,7 @@ native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-11: T1 native item drop and GameSave9 vocabulary placed in source, unverified under826. Tests and adjustments wait for assembled migration pieces. Earlier closeout receipts retain their scope; material/work/app-selection source, archive continuation and full E3 remain open. |
+| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-12: explicit client Take/Place controls and on-demand native matter/source/maker readings placed. Source unverified under826; material founding, fabrication, interrupted/resumed work, archive continuation and full E3 remain open. Earlier receipts retain their scope. |
 | [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | 2026-10-10: reference charter; executable work belongs to the overlay plan, including folded functional and memory gates in E3. |
 
 ## Open items

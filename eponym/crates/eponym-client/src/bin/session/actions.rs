@@ -14,7 +14,7 @@ use isometer::core::PartId;
 use eponym_play::identity::{BodyRevisionId, SubjectId, Tick};
 use eponym_play::timed_action::Direction;
 use eponym_play::{
-    CanonRevisionCause, GameEvent, GameIntent, ItemId, ItemKind, MotionInput, StrikeOutcome,
+    CanonRevisionCause, GameEvent, GameIntent, ItemId, MotionInput, StrikeOutcome,
 };
 
 use super::{CHARGE_INTERVAL, MOTION_INTERVAL, SessionApp};
@@ -283,33 +283,36 @@ impl SessionApp {
     }
 
     pub(super) fn take_dressing(&mut self) {
+        self.status = vec!["Choose Take beside an item at your position in the Items panel.".into()];
+    }
+
+    pub(super) fn take_item(&mut self, item: ItemId) {
         let intent = {
             let model = self.model.borrow();
             let game = model.game();
-            let played = model.played();
-            let Some(at) = game.movement().position(played) else {
-                return;
-            };
-            game.items()
-                .at(at)
-                .find(|item| item.kind == ItemKind::Dressing)
-                .map(|item| GameIntent::Take {
-                    tick: game.next_tick(),
-                    subject: played,
-                    item: item.id,
-                })
-        };
-        let Some(intent) = intent else {
-            self.status = vec!["No dressing at this position".into()];
-            return;
-        };
-        let item = match &intent {
-            GameIntent::Take { item, .. } => *item,
-            _ => ItemId(0),
+            let played = game.played().unwrap_or(model.session().control().played());
+            GameIntent::Take { tick: game.next_tick(), subject: played, item }
         };
         self.status = vec![match self.model.borrow_mut().apply(intent) {
-            Ok(_) => format!("Picked up dressing {}", item.0),
+            Ok(_) => format!("Picked up item {}", item.0),
             Err(error) => format!("Pickup failed: {error:?}"),
+        }];
+    }
+
+    pub(super) fn drop_item(&mut self, item: ItemId) {
+        let intent = {
+            let model = self.model.borrow();
+            let game = model.game();
+            let played = game.played().unwrap_or(model.session().control().played());
+            GameIntent::Drop { tick: game.next_tick(), subject: played, item }
+        };
+        self.status = vec![match self.model.borrow_mut().apply(intent) {
+            Ok(events) => events.iter().find_map(|event| match event {
+                GameEvent::Dropped { item: placed, at, .. } if *placed == item =>
+                    Some(format!("Placed item {} at {}, {}, {}", item.0, at[0], at[1], at[2])),
+                _ => None,
+            }).unwrap_or_else(|| format!("Item {} placement accepted", item.0)),
+            Err(error) => format!("Placement refused: {error:?}"),
         }];
     }
 

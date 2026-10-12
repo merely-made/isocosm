@@ -2,7 +2,16 @@
 
 **Date:** 2026-09-25
 
-**Current status, 2026-10-11:** Native founding/profile attachment, publication,
+**Current source, 2026-10-12 (826):** native asserted characters retain table
+metadata but have no developed body. The sim-on relation is asked: develop
+that same character from a selected native recipe, or save an explicit
+binding to an existing native body. Placement and control still require
+separate native admission. This is an unresolved migration choice, next831;
+owner metadata grants neither. Opaque shared-host product-game actuation,
+participant/party binding and complete V2 remain open. All compiler/test
+acceptance and adjustments wait until migration pieces are in place under826.
+
+**Earlier checkpoint, 2026-10-11:** Native founding/profile attachment, publication,
 site-space, native travel-result and shared-host VTT sources are applied in the
 combined migration. The root workspace and shared host passed their current
 all-target/all-feature compiler checks. All 168 current default-feature

@@ -53,7 +53,8 @@ pub use combat::{
 };
 pub use equipment::AttachmentView;
 pub use founding::fixture::{NativeFixtureProfile, NativeFixtureRecipe};
-pub use items::{Item, ItemError, ItemId, ItemKind, ItemLocation, ItemPlaces, Items};
+pub use items::{Item, ItemError, ItemHolding, ItemHoldingKind, ItemId, ItemKind,
+    ItemLocation, ItemPlaces, ItemReading, ItemReadingError, Items, MakerProvenance, SourceLineage};
 pub use motion::{
     MOTION_SCALE, MotionError, MotionInput, MotionOutcome, MotionPose, MotionRules, MotionSolver,
     Solve,

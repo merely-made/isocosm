@@ -39,7 +39,8 @@ Record source checkpoints honestly as awaiting verification. The four
 capacity, overflow, feeding and native-edit choices are recorded as827 to830.
 Their independent source connections are placed, unverified. Three follow-up
 choices are asked: zero-transmission route eligibility, the ordinary founding
-jaw/process pair, and the owner of actual Mesocosm geometry inputs. Next831.
+jaw/process pair, and the owner of actual Mesocosm geometry inputs. A fourth
+asks the sim-on VTT character/native-body relation. Next831.
 
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
@@ -371,6 +372,21 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-12, remaining product connections:** `8ceeac8c` is pushed with
+  827 to830's independent capacity/port/terrain source. Eponym's client now
+  connects explicit actual-item Take/Place choices to admitted custody and
+  game placement, beside on-demand native holding/source/maker inspection.
+  The material/work inventory preserves current stock/weight differences and
+  reports the missing conserved fabrication and resumable-project semantics.
+  A fourth structural question asks whether a sim-on VTT character develops
+  itself from a selected native recipe or binds to an existing body; placement
+  and control remain separately native-admitted. The first path already has
+  native `Arrival.character` plus `Develop`; no new conversion command is
+  required. Host table actuation and versioned product-game publication still
+  need source after the choice. The four asked follow-ups await Mark, next831.
+  Further material/work choices belong to a later round. All tests, fixture
+  adjustments and tuning remain deferred under826; these source pieces do
+  not complete E3, V2, M4 or the whole queue.
 - **2026-10-11, 827 to830 source placed:** native capacity uses authored
   lineage expressions and ordered modifier layers. Equal overflow offers
   conserve transmitted and retained matter across site, finer-place and host
