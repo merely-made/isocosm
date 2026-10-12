@@ -5,6 +5,7 @@ use eponym_play::identity::{BodyRevisionId, SubjectId};
 use eponym_play::{
     GameEvent, GameIntent, GameState, MotionInput, MotionRules, Name, World, WorldConfig,
 };
+use isocosm::{anatomy, history::Command};
 
 const SUBJECT: SubjectId = SubjectId(1);
 
@@ -134,25 +135,42 @@ fn input_for(step: u64, direction: MotionInput) -> MotionInput {
 #[test]
 fn ledge_landing_admits_one_fall_consequence_and_current_anatomy() {
     let (mut state, input, _drop) = game();
+    let entity = state.entity(SUBJECT).unwrap();
     let mut landed = Vec::new();
+    let mut prior = None;
     for step in 1..=240 {
+        let sim = state.world().sim();
+        let body = sim.state().population.get(entity).unwrap().clone();
+        let matter = sim.matter();
+        let site = body.resident_site().unwrap();
+        let tissue_at_site = sim.state().sites[&site].accounts
+            .get(eponym_play::founding::TISSUE).copied().unwrap_or(0);
+        let entries = state.world().session().entries.len();
+        let revision = state.bodies().get(SUBJECT).unwrap().revision;
         let events = advance(&mut state, step, input_for(step, input));
         if events
             .iter()
             .any(|event| matches!(event, GameEvent::Injured { .. }))
         {
             landed = events;
+            prior = Some((body, matter, tissue_at_site, entries, revision));
             break;
         }
     }
     assert!(!landed.is_empty(), "ledge should produce a landing injury");
-    assert!(
-        landed
-            .iter()
-            .any(|event| matches!(event, GameEvent::Injured {
-        distance, harm, revision: BodyRevisionId(1), ..
-    } if *distance > 4 && *harm > 0))
-    );
+    let (before, matter, tissue_at_site, entries, before_revision) = prior.unwrap();
+    let sim = state.world().sim();
+    let native = sim.state().population.get(entity).unwrap();
+    let severed: Vec<_> = native.body.as_ref().unwrap().parts.iter()
+        .filter(|part| part.severed && !before.body.as_ref().unwrap().part(part.id).unwrap().severed)
+        .map(|part| part.id).collect();
+    let revision = BodyRevisionId(before_revision.0 + u64::from(!severed.is_empty()));
+    let (distance, harm, injured_revision) = landed.iter().find_map(|event| match event {
+        GameEvent::Injured { distance, harm, revision, .. } => Some((*distance, *harm, *revision)),
+        _ => None,
+    }).unwrap();
+    assert!(distance > eponym_play::SAFE_FALL && harm > 0);
+    assert_eq!(injured_revision, revision);
     assert_eq!(
         landed
             .iter()
@@ -162,12 +180,42 @@ fn ledge_landing_admits_one_fall_consequence_and_current_anatomy() {
     );
     assert_eq!(
         state.bodies().get(SUBJECT).unwrap().revision,
-        BodyRevisionId(1)
+        revision
     );
-    assert_eq!(
-        state.current_anatomy(SUBJECT).unwrap().revision,
-        BodyRevisionId(1)
-    );
+    let admitted = state.current_anatomy(SUBJECT).unwrap();
+    assert_eq!(admitted.revision, revision);
+    assert_eq!(native.body_revision, before.body_revision + u64::from(!severed.is_empty()));
+    assert_eq!(admitted.native_source.as_ref().unwrap().body_revision, native.body_revision);
+    assert_eq!(admitted.document.doc(), native.body.as_ref().unwrap());
+    let current = state.native_anatomy(SUBJECT, admitted.document.species()).unwrap();
+    assert_eq!(current.doc(), admitted.document.doc());
+    assert_eq!(current.total_mass_mg(), u64::from(state.bodies().get(SUBJECT).unwrap().profile.mass_mg));
+
+    let wounds: Vec<_> = state.world().session().entries[entries..].iter()
+        .filter_map(|entry| match entry.command {
+            Command::Wound { entity: wounded, part, cells } if wounded == entity => Some((part, cells)),
+            _ => None,
+        }).collect();
+    assert_eq!(wounds.len(), 1, "one landing must lower to one native Wound");
+    assert_eq!(wounds[0].0, None, "the native draw owns whole-body fall injury");
+    let living: u64 = before.living().map(|(id, part)|
+        u64::from(anatomy::living_cells(before.extent(id), part))).sum();
+    assert_eq!(u64::from(wounds[0].1), (living * u64::from(harm)).div_ceil(100).max(1));
+    let lost: usize = native.parts.iter().map(|(id, part)| {
+        let old = &before.parts[id];
+        assert!(old.lost.iter().all(|cell| part.lost.contains(cell)));
+        assert!(part.lost.iter().all(|cell| part.losses.contains_key(cell)));
+        part.lost.len() - old.lost.len()
+    }).sum();
+    assert!(lost > 0, "the accepted native Wound must lose actual cells");
+    assert_eq!(sim.matter(), matter, "native injury must conserve matter");
+    let rules = &sim.genesis().rules;
+    let tissue_before = anatomy::held(&before, rules, eponym_play::founding::TISSUE);
+    let tissue_after = anatomy::held(native, rules, eponym_play::founding::TISSUE);
+    assert!(tissue_after < tissue_before);
+    let site = native.resident_site().unwrap();
+    assert_eq!(sim.state().sites[&site].accounts.get(eponym_play::founding::TISSUE).copied().unwrap_or(0),
+        tissue_at_site + tissue_before - tissue_after, "lost tissue must remain in the native site ledger");
     assert!(state.movement().pose(SUBJECT).unwrap().grounded);
     let next = state.movement().pose(SUBJECT).unwrap().step + 1;
     for step in next..next + 10 {
@@ -179,8 +227,10 @@ fn ledge_landing_admits_one_fall_consequence_and_current_anatomy() {
     }
     assert_eq!(
         state.bodies().get(SUBJECT).unwrap().revision,
-        BodyRevisionId(1)
+        revision
     );
+    assert_eq!(state.world().session().entries.iter().filter(|entry|
+        matches!(entry.command, Command::Wound { entity: wounded, .. } if wounded == entity)).count(), 1);
     assert_eq!(
         state.movement().pose(SUBJECT).unwrap().cell().unwrap(),
         state.movement().position(SUBJECT).unwrap()

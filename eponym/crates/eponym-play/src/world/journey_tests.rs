@@ -18,7 +18,9 @@ fn world_save_wire_pins_its_movement_semantics() {
         assert_eq!(loaded.base_hash,w.base_hash);
         assert_eq!(loaded.session.sim.state_hash(),w.session.sim.state_hash());
         assert_eq!(loaded.save().unwrap(),bytes);
-        let mut wrong = record; wrong.generator_version = 5;
+        let mut mislabeled = record.clone(); mislabeled.generator_version = 5;
+        assert!(matches!(World::restore_record(mislabeled),Err(WorldError::BaseDiverged {..})));
+        let mut wrong = record; wrong.generator_version = 6;
         assert!(matches!(World::restore_record(wrong),Err(WorldError::GeneratorDiverged {..})));
     }
 }

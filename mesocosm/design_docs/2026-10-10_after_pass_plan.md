@@ -5,6 +5,18 @@
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
 
+**Execution update, 2026-10-11:** Mark identified intermediate-state
+verification delaying the actual migrations. The combined source is pushed
+at `a4fea109`; remaining source choices and implementation precede expensive
+statistical, reproduction and headed acceptance. The 58-step CORE31 sequence
+and earlier Q8 lifecycle packet are parked. Current compiler gates pass,
+with 76 native preservation and 168 default-feature VTT campaign/protocol
+tests passed. Eponym's compact native capacity and six anatomical-motion
+cases pass; its original generator1 archive restoration remains a genuine
+migration obligation. Historical runs below retain their original source
+scope and do not certify the changed app. See the lane queue's latest
+Progress for current execution.
+
 Wing rulings 732 (realign now, compile-gated; testing after), 761 (no tuning
 or playing during the migration; findings to this list), 789 to 792
 (`2026-09-18_wing_design_plan.md`). 791 replaces 667's parity draws against
@@ -464,6 +476,16 @@ headed meal choice feels tense rather than clerical.
   `legacy/campaign`, held by the faction turn until V2 (247).
 
 ## Progress
+
+- **2026-10-11, execution order corrected:** actual source migrations
+  proceed under their implementation dependencies; expensive acceptance
+  waits for their settled source. The combined native/shared-host/product
+  checkpoint is pushed as `a4fea109`. The existing invariants have focused
+  current evidence (native preservation76, VTT campaign/protocol168 and
+  Eponym native recipe4/anatomical motion6), while whole-app, archive,
+  reproduction, statistical and headed conditions remain open. Preserve
+  authentic archives and old receipts; their compatibility work does not
+  hold the independent remaining migrations.
 
 - **2026-10-11, Q6 fixture baseline closed:** five fixture paths retain
   authored native assertions, place/map identities, route endpoints/costs and

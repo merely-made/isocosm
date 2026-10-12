@@ -46,14 +46,15 @@ ruled migrations before running the expensive reproduction, distribution
 and headed suites. Keep unresolved design choices with Mark; a pending
 choice blocks its own implementation, not independent work in the lane.
 
-The combined source was applied on main at `8548cd2d` with 111 existing
+The initial combined source was applied on main at `8548cd2d` with 111 existing
 files changed and 55 added; all 1,089 prepared members matched. The first
 native compiler run exposed six integration errors, now repaired. The
 library compiled on the combined source; two test-only visibility errors
-were then repaired. No simulator product tests have run on that source.
+were then repaired. At that initial checkpoint, simulator product tests
+had not run on the source.
 Isomere's all-target/all-feature and Isometer's default all-target compiler
 checks passed. Host product bindings and the lossless genuine v1/v2 reader
-are applied, with consumer/save/conservation validation still pending. The
+were applied with consumer/save/conservation validation pending. The
 last intermediate host inventory compiled and listed 24 tests; its wrapper
 refused cleanup, so it establishes no lifecycle acceptance. The earlier Q8
 thousand-draw probe completed, but its positive control failed. Full C10
@@ -71,7 +72,14 @@ on the combined source (Isometer's default features; the others' applicable
 all-feature checks). The shared host also passed with all three product modes.
 The focused native preservation pass passed 76 tests, including genuine
 v1/v2 saves, attention/authority, developed stocks, healing and incorporation.
-Eponym's changed body/contact tests are running; expensive acceptance remains deferred.
+The implementation checkpoint is committed and pushed at `a4fea109`.
+All 168 VTT campaign/protocol tests pass on the combined source. Eponym's
+four native-recipe and six repaired anatomical-motion tests pass, verifying
+real capacity, stock spending, contact, severing and current replay. Its
+complete play/motion family exposed stale fixtures and a genuine generator1
+archive migration gap, retained as open work. Archive preservation must not
+grow into another prerequisite holding remaining product migrations.
+Expensive acceptance remains deferred.
 Participant-to-native-member binding for the
 VTT's overmap is a remaining design seam, not inferred from table ownership.
 
@@ -1142,3 +1150,22 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   late refusals stay atomic, stock is conserved, and recorded loss allocation
   heals under the ruled adapter transfer. This verifies those obligations,
   not the deferred distribution, reproduction or headed acceptance.
+- **2026-10-11, product-first checkpoint pushed:** `a4fea109` lands the
+  combined native, shared-host and product source. All 168 default-feature
+  VTT campaign/protocol tests pass, including actual departure and timed
+  arrival. Eponym's native six-part capacity is verified as 860mg tissue
+  and 105mg reserve; the six anatomical-motion tests now pass using actual
+  native severing. Current contract, stock and replay checks pass, while
+  genuine pre-native Eponym archives still need their own authenticated
+  founding/hash migration. Preserve their bytes and refusals; do not build
+  a second live simulator or make that archive project a prerequisite for
+  the four pending source choices. Full queue completion and expensive
+  statistical, reproduction and headed acceptance remain open.
+- **2026-10-11, bounded product closeout:** 39 Eponym checks pass on the
+  changed anatomy/landing fixtures and finite archive codec (one original-byte
+  dependent check ignored). Native wound/cell-loss conservation, real revisions,
+  landing/current replay and fixture founding remain checked. Genuine v3/v4/v5
+  motion archives decode and reencode exactly; their original generator1
+  founding/hash migration remains open and restore refuses. This completes
+  the bounded fixture/wire work without opening a legacy simulation project.
+  The four source choices and larger acceptance remain pending.

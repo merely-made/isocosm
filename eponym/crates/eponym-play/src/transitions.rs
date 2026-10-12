@@ -346,7 +346,7 @@ pub enum GameEvent {
     },
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct GameSave {
     pub version: u32,
     pub world: WorldSave,

@@ -131,6 +131,8 @@ fn published_canon_v7_keeps_its_existing_vocabulary_guard_after_v8() {
     let world = World::generate(7, WorldConfig { side: 2, extent: 8 }).unwrap();
     let at = start(&world); let mut game = GameState::new(world);
     game.apply(GameIntent::Generate { tick: game.next_tick(), subject: ACTOR, body_seed: 1, at }).unwrap();
+    game.apply(GameIntent::Name { tick: game.next_tick(), subject: ACTOR,
+        name: Name::new("Canon witness").unwrap() }).unwrap();
     let mut session = Session::begin(game, ACTOR).unwrap();
     session.apply_game(GameIntent::ReviseCanon { tick: session.game().next_tick(), revision: 2,
         seed: 99, cause: CanonRevisionCause::Authored { label: "kept v7 canon".into() } }).unwrap();

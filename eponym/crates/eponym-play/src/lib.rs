@@ -34,6 +34,7 @@ mod state;
 mod subject_sheet;
 mod technique;
 pub mod timed_action;
+mod save_wire;
 mod transitions;
 pub mod vocabulary;
 pub mod walking;

@@ -5,8 +5,10 @@
 **Current status, 2026-10-11:** Native founding/profile attachment, publication,
 site-space, native travel-result and shared-host VTT sources are applied in the
 combined migration. The root workspace and shared host passed their current
-all-target/all-feature compiler checks. Current runtime acceptance remains
-open; the earlier dated nine-workspace receipts certify their earlier source.
+all-target/all-feature compiler checks. All 168 current default-feature
+campaign/protocol tests pass, including departure without residence, arrival
+after the authored route duration, save replay, publication and refusal.
+The earlier dated nine-workspace receipts certify their earlier source.
 Campaign content, maps, item proposals, storylet offers, private facts and
 chronicle arrival adapters now belong to `isometry-campaign`. Native Isocosm
 has no `legacy/campaign` module or entropy-driven faction turn. `CampaignWorld`
@@ -16,7 +18,7 @@ geography takes explicit native viewer IDs and uses actual residence and native
 event knowing. Participant/party binding remains open; Character owner metadata
 and old table discovery do not grant it. Until that binding exists, the native
 campaign refuses the old travel/map-reading UI path. Table-only travel is kept.
-Headed, current protocol/archive/save, native polity/time-consent and complete V2
+Headed, live transport, native polity/time-consent and complete V2
 acceptance remain open.
 
 **Status, 2026-10-10, Q2:** V2 is open in push mode (798). The contract's
@@ -522,6 +524,16 @@ what each left open lands here, so it has a live owner.
   vocabulary, the ruleset §6 decision 6 would calibrate first.
 
 ## Progress
+
+- **2026-10-11, combined product state:** implementation checkpoint
+  `a4fea109` is committed and pushed. All 168 campaign and protocol tests
+  pass on its combined source with a corrected travel fixture: a departed
+  member has no resident site until its authored journey finishes. Wire
+  identity, replica replay, forgery refusal, founding and table-only saves
+  remain checked. This is default-feature runtime evidence; optional
+  transports only compiled, and native party binding, polity/time consent,
+  headed play and complete V2 remain open. Expensive acceptance waits for
+  the remaining actual migrations, not repeated intermediate certification.
 
 - **2026-10-11, Q9 native contract admission qualified:**
   `Replay::with_contract_assertions` lowers a trusted caller's entire batch

@@ -8,6 +8,9 @@ use eponym_play::{
 };
 use isometer_core::PartId;
 
+#[path = "fixtures/native_severing.rs"]
+mod native_severing;
+
 const SUBJECT: SubjectId = SubjectId(73);
 const ROOT: PartId = PartId(0);
 const LIMB_A: PartId = PartId(1);
@@ -115,22 +118,7 @@ fn support_removal_changes_declared_projection_and_disallows_input() {
     )
     .unwrap();
 
-    state
-        .apply(GameIntent::Fall {
-            tick: state.next_tick(),
-            subject: SUBJECT,
-            distance: 5,
-        })
-        .unwrap();
-    state
-        .apply(GameIntent::ReconcileAnatomy {
-            tick: state.next_tick(),
-            subject: SUBJECT,
-            from_revision: BodyRevisionId(0),
-            revision: BodyRevisionId(1),
-            severed_parts: vec![LIMB_A],
-        })
-        .unwrap();
+    native_severing::sever(&mut state, SUBJECT, LIMB_A);
     let before = state.clone();
     assert!(
         advance(
@@ -153,8 +141,8 @@ fn losing_one_of_two_supports_halves_speed_and_survives_resume() {
     let mut two = state();
     configure(&mut one, 0, vec![LIMB_A, LIMB_B]);
     configure(&mut two, 0, vec![LIMB_A, LIMB_B]);
-    injure(&mut one, vec![LIMB_B]);
-    injure(&mut two, vec![]);
+    native_severing::sever(&mut one, SUBJECT, LIMB_B);
+    native_severing::sever(&mut two, SUBJECT, PartId(3));
     let one_projection = one.movement_projection(SUBJECT).unwrap().unwrap();
     let two_projection = two.movement_projection(SUBJECT).unwrap().unwrap();
     assert_eq!(one_projection.speed * 2, two_projection.speed);
@@ -173,49 +161,15 @@ fn losing_one_of_two_supports_halves_speed_and_survives_resume() {
     assert_eq!(resumed, one);
 }
 
-fn injure(state: &mut GameState, severed_parts: Vec<PartId>) {
-    state
-        .apply(GameIntent::Fall {
-            tick: state.next_tick(),
-            subject: SUBJECT,
-            distance: 5,
-        })
-        .unwrap();
-    state
-        .apply(GameIntent::ReconcileAnatomy {
-            tick: state.next_tick(),
-            subject: SUBJECT,
-            from_revision: BodyRevisionId(0),
-            revision: BodyRevisionId(1),
-            severed_parts,
-        })
-        .unwrap();
-}
-
 #[test]
 fn unrelated_extended_limb_does_not_enlarge_collision_envelope() {
     let mut with_arm = state();
     let mut without_arm = with_arm.clone();
     configure(&mut with_arm, 0, vec![LIMB_A, LIMB_B]);
     configure(&mut without_arm, 0, vec![LIMB_A, LIMB_B]);
-    for (world, severed_parts) in [(&mut with_arm, vec![]), (&mut without_arm, vec![PartId(3)])] {
-        world
-            .apply(GameIntent::Fall {
-                tick: world.next_tick(),
-                subject: SUBJECT,
-                distance: 5,
-            })
-            .unwrap();
-        world
-            .apply(GameIntent::ReconcileAnatomy {
-                tick: world.next_tick(),
-                subject: SUBJECT,
-                from_revision: BodyRevisionId(0),
-                revision: BodyRevisionId(1),
-                severed_parts,
-            })
-            .unwrap();
-    }
+    // Both snapshots advance once; only one loses the limb being compared.
+    native_severing::sever(&mut with_arm, SUBJECT, PartId(4));
+    native_severing::sever(&mut without_arm, SUBJECT, PartId(3));
     let input = MotionInput {
         move_x: 32767,
         move_z: 0,
@@ -269,7 +223,7 @@ fn stale_or_invalid_profiles_and_disguised_old_archives_reject() {
     assert_eq!(state, before);
 
     configure(&mut state, 0, vec![LIMB_A]);
-    injure(&mut state, vec![LIMB_A]);
+    native_severing::sever(&mut state, SUBJECT, LIMB_A);
     configure(&mut state, 1, vec![LIMB_B]);
     let before = state.clone();
     assert!(

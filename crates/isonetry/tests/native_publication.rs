@@ -127,6 +127,16 @@ fn command(actor: u64) -> Command {
 
 #[test]
 fn native_travel_receivers_use_one_admitted_result_and_absolute_split_clocks() {
+    let (host, actor, to) = travel_host();
+    let campaign = host.state().native.as_ref().unwrap().load(Execution::Grouped).unwrap();
+    let from = campaign.reading().state().population.get(actor).unwrap().resident_site().unwrap();
+    let travel = campaign.reading().genesis().sites[&from].routes.iter()
+        .find(|route| route.to == to).unwrap().travel;
+    assert!(travel > 0);
+    for ticks in [0, travel] { travel_receivers(ticks); }
+}
+
+fn travel_receivers(ticks: u64) {
     let (mut host, actor, to) = travel_host();
     let before = host.state().clone();
     let mut boards = before.maps.clone();
@@ -136,12 +146,13 @@ fn native_travel_receivers_use_one_admitted_result_and_absolute_split_clocks() {
         boards, clocks: BTreeMap::from([("river-map".into(), 80), ("elsewhere".into(), 47)]),
         active: Some("river-map".into()), inventories: before.inventories.clone(), rolls: Vec::new(),
     };
-    let out = host.commit_native_travel(RequestId::host(77), &[command(actor)], 0,
+    let out = host.commit_native_travel(RequestId::host(77), &[command(actor)], ticks,
         &BTreeSet::from([actor]), |_| Ok(table.clone())).unwrap();
     let NetMessage::Applied { event: GameEvent::NativeTravelResolved(result), .. } = &out[0].1 else {
         panic!("host did not publish one native travel result");
     };
-    assert_eq!(result.members[&actor].resident, Some(to));
+    let resident = (ticks > 0).then_some(to);
+    assert_eq!(result.members[&actor].resident, resident);
     let mut receiver = before.clone();
     apply_game(&mut receiver, &GameEvent::NativeTravelResolved(result.clone())).unwrap();
     assert_eq!(&receiver, host.state(), "native travel receiver diverged");
@@ -157,7 +168,9 @@ fn native_travel_receivers_use_one_admitted_result_and_absolute_split_clocks() {
     assert_eq!(wire_receiver, once);
     for mode in [Execution::Individuals, Execution::Grouped] {
         let replay = once.native.as_ref().unwrap().load(mode).unwrap();
-        assert_eq!(replay.reading().state().population.get(actor).unwrap().place, to);
+        let member = replay.reading().state().population.get(actor).unwrap();
+        assert_eq!(member.resident_site(), resident);
+        assert_eq!(member.journey.is_some(), ticks == 0);
         assert_eq!(replay.reading().state_hash(), result.publication.world.cursor().unwrap().state_hash);
     }
 }

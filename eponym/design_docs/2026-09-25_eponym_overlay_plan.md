@@ -8,7 +8,14 @@ world supplies its base. Play reaches native commands through
 Native recipe development, compact first-life issuance (818/819), named
 contact fixture founding (825), and borrowed host commands are applied.
 Eponym and the shared host passed current all-target/all-feature compiler
-checks. Capacity, contact and replay checks remain pending. Contract routing
+checks. Native recipe tests verify six parts, 860mg tissue capacity and 105mg
+reserve capacity, admitted stocks and current replay. Real contact and motion
+tests pass; anatomy fixtures now use logged native severing instead of an
+authored revision. The focused closeout passes 39 tests (one archive-dependent
+test remains ignored). All three genuine generator1 motion archives decode
+and reencode byte-for-byte; restoration still requires an authenticated
+migration across their old founding and state hash. That work does not hold
+the remaining product migrations. Contract routing
 does not complete E3's played done-conditions;
 §5.1's remaining material work and memory remain open.
 
@@ -542,6 +549,33 @@ Ruling 793 archived the genet document host plan to
   no type to the core.
 
 ## Progress
+
+- **2026-10-11, combined product state:** implementation checkpoint
+  `a4fea109` is committed and pushed; Eponym and the shared product host
+  compile. All four native-recipe tests pass, verifying the six-part
+  860mg/105mg capacities, native stock spending and snapshot/replay. Nine
+  fixture-profile tests also passed in that initial run, including conserved overflow refusal,
+  founding authentication, logged recipe choice and current replay. The
+  anatomical-motion fixture repair passes all six cases through public
+  ResolveVolley and logged native Wound. The complete play/motion run is
+  not green: old archive decoding/restoration and stale fixture setup
+  expectations are tracked separately. Authentic archive bytes and expected
+  hashes remain unchanged. Their generator1 founding and old state-hash
+  grammar require a bounded authenticated migration, not relabeling or
+  hash bypass. Full E3 and expensive/headed acceptance remain open.
+
+- **2026-10-11, bounded fixture/wire closeout:** the focused current run
+  passes 39 tests: six anatomical-motion, two landing/replay, 21 play-library
+  and ten fixture/profile checks. One genuine WorldSave2 test remains ignored
+  awaiting its original bytes. Landing proves actual native cell loss and
+  conserved tissue, with revisions driven by native severing. Canon control
+  is founded with its named body; unknown generator6 and mislabeled fixture5
+  retain their distinct refusals. The finite generator1 anatomy codec preserves
+  all three original motion archives byte-for-byte and current GameSave bytes;
+  malformed part identities refuse. Genuine generator1 continuation still
+  refuses at its unauthenticated old founding, with old state-hash migration
+  explicitly open. The complete earlier failed-family receipt is preserved;
+  this scoped run does not certify complete archive continuation or full E3.
 
 - **2026-10-11, native fixture founding selected (825):** a named
   native founding profile selected by a saved version tag retains the
