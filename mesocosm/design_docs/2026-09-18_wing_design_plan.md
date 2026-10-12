@@ -10364,6 +10364,60 @@ what later sections derive from.
      intermediate verification round. Queue implementation does not wait on
      after-pass acceptance. The next design ruling is 827.
 
+827. **Spread capacity is a lineage mechanic with an explicit modifier or manipulator.**
+     2026-10-11, fungal and microbial substrate capacity.
+     Question: "Fungal and microbial spread can overflow into other places, but its native capacity is still unspecified. What determines how much biomass a substrate can hold?"
+     Options: (1) "An explicit capacity in milligrams for each spread and substrate, configured in the world (Recommended)."; (2) "A configured ratio of the substrate’s soil or host matter."; (3) "A capacity calculated from the spread’s lineage traits."
+     Mark chose "3 + 1; mechanic and modifier/manipulator"
+     So the lineage-derived capacity is the mechanic, and explicit capacity
+     values can modify or manipulate it at the substrate. Both belong to
+     native rules and state, rather than a game-side capacity authority.
+     *Reading, not ruled:* use bounded authored expressions over native
+     lineage trait inputs, with declared modifier layers and stacking under
+     427/429. This answer supplies neither coefficients nor one fixed
+     additive, multiplicative or replacement default. World definitions
+     supply those choices; missing declarations do not invent a capacity.
+
+828. **Overflow is split equally before each route transmits its share.**
+     2026-10-11, native spread route allocation.
+     Question: "When spread exceeds capacity and several routes are available, how should the excess be allocated? Routes already have transmission rates, and untransmitted matter must stay at the source."
+     Options: (1) "Divide the excess equally among eligible routes, then apply each route’s transmission rate (Recommended)."; (2) "Divide it among routes using their transmission rates as weights."; (3) "Offer the whole excess to every route, then scale the combined transfers to avoid duplicating matter."
+     Mark chose "Divide the excess equally among eligible routes, then apply each route’s transmission rate (Recommended)."
+     So capacity excess is divided among eligible native routes before
+     their authored transmission rates apply. Untransmitted matter stays
+     at the source, and departures/arrivals use the existing conserved
+     native transfer queue and authored travel duration.
+     *Reading, not ruled:* indivisible integer remainders remain at the
+     source. Whether a zero-transmission route is eligible is asked as
+     a separate fork; neither interpretation is silently selected.
+
+829. **Port feeding is declared by its process and founded with its ports.**
+     2026-10-11, native intake migration scope.
+     Question: "Native intake ports can restrict which living or dead matter a body eats. How broadly should that restriction apply during this migration?"
+     Options: (1) "Apply it to processes that declare port feeding; migrate those processes and their founding ports together, preserving unmarked saved grammars (Recommended)."; (2) "Require a valid intake port for every feeding process and migrate all founding definitions."
+     Mark chose "Apply it to processes that declare port feeding; migrate those processes and their founding ports together, preserving unmarked saved grammars (Recommended)."
+     So an explicitly marked process uses the addressed living native
+     intake port and its declared source selector for prospective feeding
+     and actual admission. Its founding recipe/port and process migrate
+     together. Unmarked recorded feeding retains its former grammar.
+     *Reading, not ruled:* native descendants retain their recipe's port
+     declaration; per-body port differences retain distinct admissible
+     prey pools without changing the existing draw, weights or quotas.
+
+830. **Native declares a terrain operation and the game resolves its geometry.**
+     2026-10-11, chosen-process carve/deposit ownership.
+     Question: "For a chosen process that carves or deposits terrain, who should calculate the exact cells to change? Native must still admit and record the result."
+     Options: (1) "Native declares the operation; the game resolves the geometry and returns the edit to the same native Session (Recommended)."; (2) "Native calculates and applies the complete terrain edit itself."
+     Mark chose "Native declares the operation; the game resolves the geometry and returns the edit to the same native Session (Recommended)."
+     So the chosen native process supplies the operation, the game
+     resolves its actual geometry, and the same native Session admits
+     and records the resulting edit. Accepted costs, matter and history
+     remain native; the game does not gain a second simulation authority.
+     *Reading, not ruled:* preflight disposable candidates until every
+     action-bound resolution is supplied, then publish one accepted
+     command. Geometry refusal must not leave process costs committed;
+     replay uses recorded resolutions and the native admission rules.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -36,7 +36,8 @@ fault controls and tuning. Ask the unresolved structural choices and continue
 independent ruled source work. This supersedes the earlier combined-state
 testing instruction below and the lane briefs' intermediate acceptance order.
 Record source checkpoints honestly as awaiting verification. The four
-capacity, overflow, feeding and native-edit choices are asked; next ruling827.
+capacity, overflow, feeding and native-edit choices are recorded as827 to830.
+The remaining zero-transmission-route eligibility question is asked; next831.
 
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
@@ -367,6 +368,14 @@ is never rewritten: later changes are annotations or new rulings naming what
 they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
+
+- **2026-10-11, 827 to 830:** Mark chose trait-derived capacity plus an
+  explicit modifier/manipulator, equal route shares before transmission,
+  process-declared port feeding founded with its ports, and native-declared
+  terrain operations resolved by the game and admitted in the same Session.
+  Q12/Q13/Q16 now place these source connections in parallel with central
+  ownership coordinated. The zero-rate route question is pending, next831.
+  All compiler/test/fixture/tuning work remains deferred under826.
 
 - **2026-10-11, execution clarified (826):** all testing and test-driven
   adjustments wait until migration pieces and their consumer connections

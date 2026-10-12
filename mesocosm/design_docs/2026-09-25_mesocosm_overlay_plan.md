@@ -2,7 +2,14 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-10-11:** M0/M1 done; M2 realigned to native Isocosm with
+**Current source, 2026-10-11 (830):** a chosen native process declares its
+carve/deposit operation; Mesocosm resolves actual cells and returns the edit
+to the same native Session. The action-bound preflight and publication path
+is being placed, retaining native costs, matter, revisions and history.
+All tests and subsequent adjustments wait until migration pieces are in
+place under826. This does not certify full M4.
+
+**Earlier checkpoint, 2026-10-11:** M0/M1 done; M2 realigned to native Isocosm with
 certification in the after-pass. Directing owns M3 and the interim M4
 (800), built under the compile gate. This plan retains the profile, contract
 and full in-site M4, which remains open. Explicit caller-geometry sight and
@@ -350,6 +357,13 @@ All three taken on 2026-09-25, the day the plan was drafted.
   0.0.1 name reservation that crates.io does not hold; corrected on merge.
 
 ## Progress
+
+- **2026-10-11, chosen geometry owner settled (830):** native declares the
+  selected operation; Mesocosm resolves its actual geometry and returns it
+  to the same Session for admission/recording. Disposable candidate preflight
+  avoids committing native process costs before a geometry refusal. The
+  finite source door and runtime connection are being placed; tests, fixture
+  repairs and tuning remain deferred under826.
 
 - **2026-10-10, Q1:** current ownership, gates and status checked against
   the lane tree under 793 to 802; earlier dated text retained. No new
