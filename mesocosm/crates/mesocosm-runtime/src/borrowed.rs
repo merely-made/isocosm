@@ -45,3 +45,44 @@ where R: FnMut(&isocosm::operations::Pending)
 {
     crate::terrain::advance(session, access, resolver)
 }
+
+/// The caller publishes these native and product candidates together.
+pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAccess,
+    round: u64, input: &crate::spatial::Input, game: crate::spatial::Game)
+    -> Result<(String, crate::spatial::Game), Refusal> {
+    use crate::spatial::Input;
+    if access.seat == isocosm_overlay::Seat::CreativeObserver
+        || session.sim.plays(access.participant.0) != access.subject.map(|id| id.0)
+    { return Err(Refusal::NotPlayed); }
+    game.version().map_err(Refusal::Sim)?;
+    let mut candidate = session.clone();
+    let accepted = match input {
+        Input::Envelope(envelope) => {
+            if matches!(&envelope.intent, Intent::Game(intent) if intent.is_dev()) {
+                return Err(Refusal::Sim("dev intents require the separate authored-run door".into()));
+            }
+            submit(&mut candidate, access.participant.0, round, envelope)?
+        },
+        Input::Game(input) => {
+            if access.seat != isocosm_overlay::Seat::Player
+                || access.subject.is_none()
+                || candidate.sim.plays(access.participant.0) != access.subject.map(|id| id.0)
+                || input.participant != access.participant || input.tick.0 != candidate.sim.state().tick
+            { return Err(Refusal::NotPlayed); }
+            let mut accepted = Vec::new();
+            if let Some(envelope) = &input.envelope {
+                if matches!(&envelope.intent, Intent::Game(intent) if intent.is_dev()) {
+                    return Err(Refusal::Sim("dev geometry needs the separate authored-run door".into()));
+                }
+                accepted.push(submit(&mut candidate, access.participant.0, round, envelope)?);
+            }
+            if input.advance {
+                game.advance(&mut candidate, access)?;
+                accepted.push("advanced 1".into());
+            }
+            accepted.join("\n")
+        },
+    };
+    *session = candidate;
+    Ok((accepted, game))
+}

@@ -10418,6 +10418,103 @@ what later sections derive from.
      command. Geometry refusal must not leave process costs committed;
      replay uses recorded resolutions and the native admission rules.
 
+831. **Zero-transmission routes do not participate in the overflow split.**
+     2026-10-12, the routing follow-up to828.
+     Question: "Overflow is divided equally before each route’s transmission rate is applied. Should a route with zero transmission receive a share of that split?"
+     Options: (1) "Exclude zero-transmission routes from the split (Recommended)"; (2) "Include them; their untransmitted share stays at the source".
+     Mark chose "Exclude zero-transmission routes from the split (Recommended)"
+     So automatic overflow divides excess only among eligible routes with
+     positive transmission, then applies each selected route's authored rate.
+     If none are eligible, the excess remains at the source. Existing native
+     route validation, travel duration and conserved remainders still apply.
+     This settles the explicit eligibility fork left by828.
+
+832. **New ordinary feeding processes target what their declared ports admit.**
+     2026-10-12, the ordinary founding follow-up to829.
+     Question: "New ordinary founding can give a jaw a port that admits living consumers, while its feeding process targets producers only. How should we align that pair? Existing unmarked saves retain their behavior."
+     Options: (1) "Make the process target what its port admits (Recommended)"; (2) "Keep the producer-only diet and make the port admit producers"; (3) "Keep the current pair and refuse incompatible meals".
+     Mark chose "Make the process target what its port admits (Recommended)"
+     So new ordinary founding derives its marked process's target and source
+     selector from its actual declared intake port. A consumer-admitting jaw
+     no longer retains a producer-only shortcut. Unmarked saved grammar stays
+     unchanged, as829 requires; this supplies no new rate or meal quantity.
+     *Reading, not ruled:* prospective eligibility and actual admission read
+     offered matter provenance, including mixed-source parts, rather than
+     require the current holder's lineage to equal the admitted source.
+
+833. **Mesocosm saves actual spatial state beside native body and terrain revisions.**
+     2026-10-12, the actual geometry provider follow-up to830.
+     Question: "Mesocosm has advisory display positions, but lacks authoritative in-site position, eye and terrain-target inputs. Where should the actual geometry inputs live?"
+     Options: (1) "Saved Mesocosm spatial state linked to native body and terrain revisions (Recommended)"; (2) "Native state stores position and target; Mesocosm resolves the shape"; (3) "Supply explicit geometry separately for each operation".
+     Mark chose "Saved Mesocosm spatial state linked to native body and terrain revisions (Recommended)"
+     So Mesocosm owns and saves actual spatial inputs, bound to the corresponding
+     native body and terrain revisions. Its provider supplies those actual
+     inputs to830's operation door; native still admits costs, matter, placement
+     and the returned edit in the same Session. Advisory display positions do
+     not become the physical source of those inputs.
+     *Reading, not ruled:* publish versioned game bytes and native acceptance
+     together; missing or stale required physical inputs refuse rather than
+     invent a position, eye, target or shape. This answer does not choose a
+     movement solver, spawn coordinate, process or travel-arrival pose.
+
+834. **A sim-on VTT character develops its own native body and keeps its ID.**
+     2026-10-12, native body admission at the table.
+     Question: "An authored VTT character currently has table metadata but no developed native body. With simulation on, should that same character develop a body, or bind to an existing body? Placement and control still require separate native admission."
+     Options: (1) "Develop that character from a selected native recipe, preserving its ID (Recommended)"; (2) "Save an explicit binding to an existing native body".
+     Mark chose "Develop that character from a selected native recipe, preserving its ID (Recommended)"
+     So the selected recipe develops the asserted character itself; its native
+     identity remains the same. Native placement and control are separately
+     admitted;809's table owner and cell metadata still grant neither.
+     *Reading, not ruled:* use existing `Arrival.character` plus `Develop`,
+     with explicit authored lineage/recipe, stocks, seed and site. Publish
+     versioned table game data and native acceptance together. The answer
+     supplies no default recipe, stock quantities, ruleset calibration or
+     participant/party control policy. The next ruling is835.
+
+835. **Named native material recipes specify new item stocks and quantities.**
+     2026-10-12, Eponym's material founding after776/801.
+     Question: "For newly founded material items, what should specify their actual native stocks? Current food gets 40mg, dressing and scrap get none, while their declared weights are 250/100/900mg. Existing saves would retain their recorded holdings."
+     Options: (1) "Named native material recipes specify source stocks and quantities (Recommended)"; (2) "Use the existing item-kind weights as fresh native issuance"; (3) "Require an explicit stock ledger for each newly founded item".
+     Mark chose "Named native material recipes specify source stocks and quantities (Recommended)"
+     So new material items use named native recipes for their source holdings
+     and quantities. Existing saves retain their recorded matter; nominal
+     item-kind weights do not silently replace their ledgers. This answer
+     names the construction owner but supplies no recipe quantities or costs.
+
+836. **Each declared material has a distinct native stock in new worlds.**
+     2026-10-12, material identity before fabrication.
+     Question: "Soil and rock currently both credit `world:soil` when carved, which loses their material distinction. How should newly founded worlds retain material identity for later crafting?"
+     Options: (1) "Give each declared material a distinct native stock (Recommended)"; (2) "Keep one matter pool with separately recorded material composition"; (3) "Let authored crafting conversions use the shared pool without retaining the distinction".
+     Mark chose "Give each declared material a distinct native stock (Recommended)"
+     So newly founded worlds retain separate native stocks for declared
+     materials; carve, deposit and fabrication preserve that identity through
+     their admitted ledgers. This does not reconstruct the composition of
+     an older pooled `world:soil` balance or rewrite its saved founding.
+
+837. **A native project reserves inputs and spends from that ledger as work progresses.**
+     2026-10-12, interrupted material work under E3's T1/T3.
+     Question: "When material work is interrupted, how should its inputs and unfinished progress remain conserved?"
+     Options: (1) "Reserve inputs in a native project ledger, then spend from it as work progresses (Recommended)"; (2) "Spend directly from accessible stocks as each work step is admitted"; (3) "Spend all inputs only when the output completes".
+     Mark chose "Reserve inputs in a native project ledger, then spend from it as work progresses (Recommended)"
+     So admitted reservation transfers the inputs into a native project
+     ledger. Work spends from that reservation; interruption preserves
+     remaining inputs and unfinished progress. Matter is counted once across
+     source, project, partial construction and accepted output.
+     *Reading, not ruled:* authored native recipes/processes declare costs,
+     progress units and output; this answer supplies no duration, yield,
+     refund/cancellation policy or scripted autonomous decision.
+
+838. **Any eligible natively authorized subject may resume a project.**
+     2026-10-12, resumed work admission.
+     Question: "Who should be allowed to resume an interrupted project? Craft requirements and native control still apply."
+     Options: (1) "Any eligible subject with native authorization to the project (Recommended)"; (2) "Only the original maker"; (3) "Only an explicitly assigned worker".
+     Mark chose "Any eligible subject with native authorization to the project (Recommended)"
+     So resumption requires current craft eligibility, native project
+     authorization and the ordinary control boundary. It is not restricted
+     to the original maker or one assigned worker. Existing social agreement
+     acceptance alone does not complete a material operation or grant an
+     unrelated project's access. The next ruling is839.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -78,11 +78,7 @@ pub(crate) struct Input { pub mode: Mode, pub bytes: Vec<u8>, pub round: u64, pu
 
 pub(crate) fn submit(session: &mut Session, cut: &Projection, mode: Mode, input: &Input)
     -> Result<String, String> {
-    if mode != input.mode || !mode.available() { return Err("intent belongs to another mode or build".into()); }
-    if cut.access.seat == Seat::CreativeObserver { return Err("creative observation admits no play or edit".into()); }
-    if session.sim.plays(cut.access.participant.0).map(isocosm_overlay::EntityHandle) != cut.access.subject {
-        return Err("product access names a stale subject".into());
-    }
+    current(session, cut, mode, input)?;
     match mode {
         #[cfg(feature = "mesocosm")]
         Mode::Mesocosm => {
@@ -114,5 +110,40 @@ pub(crate) fn submit(session: &mut Session, cut: &Projection, mode: Mode, input:
             Ok(out.outcomes.join("\n"))
         },
         _ => Err("mode is absent from this build".into()),
+    }
+}
+
+fn current(session: &Session, cut: &Projection, mode: Mode, input: &Input) -> Result<(), String> {
+    if mode != input.mode || !mode.available() { return Err("intent belongs to another mode or build".into()); }
+    if cut.access.seat == Seat::CreativeObserver { return Err("creative observation admits no play or edit".into()); }
+    if session.sim.plays(cut.access.participant.0).map(isocosm_overlay::EntityHandle) != cut.access.subject {
+        return Err("product access names a stale subject".into());
+    }
+    Ok(())
+}
+
+/// This mode's accepted native changes and versioned game bytes share a cut.
+pub(crate) fn submit_game(session: &mut Session, cut: &Projection, mode: Mode,
+    input: &Input, game: Vec<u8>) -> Result<(String, Vec<u8>), String> {
+    current(session, cut, mode, input)?;
+    match mode {
+        #[cfg(feature = "mesocosm")]
+        Mode::Mesocosm => {
+            let decoded: mesocosm_runtime::spatial::Input =
+                serde_json::from_slice(&input.bytes).map_err(|e| e.to_string())?;
+            let saved: mesocosm_runtime::spatial::Game = if game.is_empty() {
+                Default::default()
+            } else { serde_json::from_slice(&game).map_err(|e| e.to_string())? };
+            saved.version()?;
+            let (accepted, saved) = mesocosm_runtime::borrowed::submit_game(
+                session, cut.access, input.round, &decoded, saved).map_err(|e| format!("{e:?}"))?;
+            Ok((accepted, serde_json::to_vec(&saved).map_err(|e| e.to_string())?))
+        },
+        #[cfg(feature = "vtt")]
+        Mode::Vtt => {
+            if cut.access.seat != Seat::Dm { return Err("native table assertions require the DM seat".into()); }
+            isometry_campaign::native::submit_game(session, game, &input.bytes)
+        },
+        _ => Ok((submit(session, cut, mode, input)?, game)),
     }
 }

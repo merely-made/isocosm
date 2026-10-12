@@ -49,6 +49,19 @@ impl<'a> Source<'a> {
     pub fn lineage(self) -> &'a str {
         self.lineage
     }
+
+    /// Declared foods, independent of whether an organ currently holds its
+    /// supporting cells. Runtime admission checks readiness separately.
+    pub(crate) fn admitted_by(self, port: crate::process::IntakePort) -> Result<(), Refusal> {
+        if self.alive {
+            if !self.kind.is_some_and(|kind| port.admits_live(kind)) {
+                return Err(Refusal::LivingKind);
+            }
+        } else if !port.admits_deadstock() {
+            return Err(Refusal::Deadstock);
+        }
+        Ok(())
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -76,14 +89,7 @@ pub fn check(part: &Part, sources: Sources<'_>, source: Source<'_>) -> Result<()
             return Err(Refusal::SourceLine);
         }
     }
-    if source.alive {
-        if !source.kind.is_some_and(|kind| port.admits_live(kind)) {
-            return Err(Refusal::LivingKind);
-        }
-    } else if !port.admits_deadstock() {
-        return Err(Refusal::Deadstock);
-    }
-    Ok(())
+    source.admitted_by(port)
 }
 
 /// Admitted positive holdings, for the same addressed source part or body

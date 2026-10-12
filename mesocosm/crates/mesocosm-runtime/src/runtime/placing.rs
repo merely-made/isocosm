@@ -31,10 +31,7 @@ pub fn lift(sim: &Simulation, site: Id) -> Result<Volume, String> {
 /// Source of the terrain lift, including weather/skeleton changes and edits
 /// reaching across borders. Body ledgers alone do not require another lift.
 pub fn terrain_key(sim: &Simulation) -> String {
-    let sites: Vec<_> = sim.state().sites.iter().map(|(id, s)|
-        (id, s.terrain_seed, &s.conditions, &s.routes)).collect();
-    isocosm::digest(&(&sim.genesis().world, &sim.genesis().rules.skeleton,
-        sites, &sim.state().edits))
+    sim.terrain_revision()
 }
 
 impl Runtime {

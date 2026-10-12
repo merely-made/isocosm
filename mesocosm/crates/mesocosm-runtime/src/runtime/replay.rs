@@ -31,10 +31,45 @@ pub struct Replayed {
     pub state_hash: u64,
 }
 
+/// The native record and its product-owned physical inputs share one save.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct GameSave {
+    pub version: u32,
+    pub native: Saved,
+    pub spatial: crate::spatial::Game,
+}
+
+impl GameSave {
+    pub fn from_native(native: Saved) -> Self {
+        Self { version: crate::spatial::VERSION, native, spatial: crate::spatial::Game::default() }
+    }
+    pub fn check(&self) -> Result<(), String> {
+        if self.version != crate::spatial::VERSION { return Err("unsupported Mesocosm game save".into()); }
+        self.spatial.version()
+    }
+}
+
 impl Runtime {
     /// The run's save: its genesis and its log.
     pub fn save(&self) -> Saved {
         self.interim.session.save()
+    }
+
+    pub fn save_game(&self) -> GameSave {
+        GameSave { version: crate::spatial::VERSION, native: self.save(), spatial: self.spatial.clone() }
+    }
+
+    pub fn replayed_game(saved: GameSave) -> Result<Replayed, String> {
+        saved.check()?;
+        Self::replayed(saved.native)
+    }
+
+    pub fn resume_game(saved: GameSave, mode: Mode, pace: Pace, ticks_per_second: u32) -> Result<Self, String> {
+        saved.check()?;
+        let mut runtime = Self::resume(saved.native, mode, pace, ticks_per_second)?;
+        runtime.spatial = saved.spatial;
+        Ok(runtime)
     }
 
     pub fn receipt(&self) -> Receipt {

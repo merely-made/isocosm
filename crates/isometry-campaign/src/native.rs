@@ -15,6 +15,11 @@ pub use contract::ContractError;
 mod borrowed;
 pub use borrowed::{WindowReading, submit_contract_assertions};
 
+mod characters;
+pub use characters::{CharacterAdmission, RecipeBinding, admit_character};
+mod game;
+pub use game::{AdmissionBatch, GameBindings, submit_game};
+
 mod reading;
 pub use reading::{Geography, Reading};
 

@@ -133,8 +133,10 @@ impl Session {
 
 impl Simulation {
     pub fn terrain_revision(&self) -> Key {
-        crate::digest(&(&self.genesis.world, &self.genesis.rules.skeleton,
-            &self.state.sites, &self.state.edits))
+        let sites: Vec<_> = self.state.sites.iter().map(|(id, site)|
+            (id, site.terrain_seed, &site.conditions, &site.routes)).collect();
+        crate::digest(&(self.genesis.seed, &self.genesis.world, &self.genesis.rules.skeleton,
+            sites, &self.state.edits))
     }
 
     pub(crate) fn capture_geometry(&mut self, terrain: &Option<StagedTerrain>) {

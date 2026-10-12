@@ -75,10 +75,9 @@ pub fn resolved_overflow_at(state: &mut State, rules: &crate::rules::Rules,
     // a real native arrival makes its outgoing site routes available.
     let Some(from) = route_origin(state, at)? else { return Ok(0); };
     let site = state.sites.get(&from).ok_or("unknown overflow source")?;
-    if site.routes.iter().any(|route| route.transmission == 0) {
-        return Err("zero-transmission overflow eligibility awaits its design ruling".into());
-    }
-    let eligible: Vec<usize> = (0..site.routes.len()).collect();
+    // 831: routes unable to transmit receive no share of the excess.
+    let eligible: Vec<usize> = site.routes.iter().enumerate()
+        .filter_map(|(index, route)| (route.transmission != 0).then_some(index)).collect();
     if eligible.is_empty() { return Ok(0); }
     let count = u64::try_from(eligible.len()).map_err(|_| "overflow route count exceeds native integers")?;
     let offered = excess / count;

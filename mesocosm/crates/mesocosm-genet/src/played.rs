@@ -146,26 +146,40 @@ pub fn write_json<T: Serialize>(path: &Path, value: &T) -> Result<(), String> {
 }
 
 pub fn read_trace(path: &Path) -> Result<PlayedTrace, String> {
+    Ok(read_game_trace(path)?.native)
+}
+
+/// Older native-only traces have no physical inputs; none are manufactured.
+pub fn read_game_trace(path: &Path) -> Result<mesocosm_runtime::GameSave, String> {
+    #[derive(serde::Deserialize)]
+    #[serde(untagged)]
+    enum Recorded { Game(mesocosm_runtime::GameSave), Native(PlayedTrace) }
     let bytes = std::fs::read(path).map_err(|error| format!("{}: {error}", path.display()))?;
-    serde_json::from_slice(&bytes).map_err(|error| format!("{}: {error}", path.display()))
+    let saved = match serde_json::from_slice(&bytes)
+        .map_err(|error| format!("{}: {error}", path.display()))? {
+        Recorded::Game(game) => game,
+        Recorded::Native(native) => mesocosm_runtime::GameSave::from_native(native),
+    };
+    saved.check()?;
+    Ok(saved)
 }
 
 /// Takes a recorded trace up where it stands, to play on (786).
 pub fn resume(path: &Path, ticks_per_second: u32) -> Result<Runtime, String> {
-    let saved = read_trace(path)?;
+    let saved = read_game_trace(path)?;
     let pace = isocosm::directing::interim::Pace {
         round: 1,
         scoring: 6,
     };
     let mode = isocosm::directing::readings::Mode::Creative;
-    Runtime::resume(saved, mode, pace, ticks_per_second)
+    Runtime::resume_game(saved, mode, pace, ticks_per_second)
 }
 
 /// Replays a recorded trace; returns the recorded hash and the replayed one.
 pub fn replay(path: &Path) -> Result<(u64, u64), String> {
-    let saved = read_trace(path)?;
-    let recorded = saved.state_hash;
-    let replayed = Runtime::replayed(saved)?;
+    let saved = read_game_trace(path)?;
+    let recorded = saved.native.state_hash;
+    let replayed = Runtime::replayed_game(saved)?;
     Ok((recorded, replayed.state_hash))
 }
 

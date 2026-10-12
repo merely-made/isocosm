@@ -95,7 +95,7 @@ impl Host {
         let Some(path) = &self.config.trace else {
             return;
         };
-        if let Err(error) = played::write_json(path, &self.runtime.save()) {
+        if let Err(error) = played::write_json(path, &self.runtime.save_game()) {
             eprintln!("trace: {error}");
         }
     }

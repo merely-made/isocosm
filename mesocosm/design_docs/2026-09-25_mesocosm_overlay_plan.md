@@ -2,7 +2,21 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-11 (830):** a chosen native process declares its
+**Current source, 2026-10-12 (833):** actual spatial state is saved by
+Mesocosm and linked to native body/terrain revisions. It supplies830's native
+operation/game geometry door. The versioned provider, owned Runtime save/
+resume and actual borrowed-host consumer are connected. Explicit authored
+setup uses Genet `--spatial` or shared-host `--mesocosm-spatial`, validating
+already admitted native placement. Ordinary player packets cannot set pose.
+The native terrain revision and lift key share actual terrain inputs;
+stock-only ledger changes do not become terrain changes. Advisory rendering
+positions remain projections. No initial
+pose, eye, target, shape, movement solver or process was selected by this
+answer. A trusted physical driver must still supply continuous movement and
+arrival inputs, and refresh genuinely stale bindings. Source remains
+unverified; tests and adjustments wait under826. Full M4 remains open.
+
+**Earlier source checkpoint, 2026-10-11 (830):** a chosen native process declares its
 carve/deposit operation; Mesocosm resolves actual cells and returns the edit
 to the same native Session. The action-bound preflight and publication path
 is placed, unverified, retaining native costs, matter, revisions and history.

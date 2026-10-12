@@ -109,7 +109,7 @@ pub(crate) struct Lanes {
 
 impl Host {
     pub fn new(config: HostConfig) -> Self {
-        let runtime = match &config.watch {
+        let mut runtime = match &config.watch {
             Some(path) => crate::played::resume(path, config.ticks_per_second),
             None => Runtime::generated(config.seed, config.population, config.ticks_per_second),
         }
@@ -117,6 +117,16 @@ impl Host {
             eprintln!("world: {why}");
             std::process::exit(1);
         });
+        if let Some(path) = &config.spatial {
+            let authored = std::fs::read(path).map_err(|why| why.to_string())
+                .and_then(|bytes| serde_json::from_slice::<Vec<mesocosm_runtime::spatial::Placement>>(&bytes)
+                    .map_err(|why| why.to_string()))
+                .and_then(|placements| runtime.set_spatial(&placements));
+            if let Err(why) = authored {
+                eprintln!("spatial {}: {why}", path.display());
+                std::process::exit(1);
+            }
+        }
         // The shipped pack's expression scripts, the review's second source
         // (781); a pack that will not load leaves the board one source.
         let runtime = match mesocosm_runtime::Authored::load(&pack_root()) {

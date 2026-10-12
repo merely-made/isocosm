@@ -2,7 +2,21 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-12 (826):** native asserted characters retain table
+**Current source, 2026-10-12 (834):** a sim-on character develops its own
+body from a selected native recipe, preserving the asserted native ID.
+Existing `Arrival.character` and `Develop` provide that admission; native
+placement/control remain separate. Product `native::submit_game` accepts
+legacy assertion arrays or a strict versioned admission batch with explicit
+lineage/recipe, seed, stocks, site and arrival fields. The actual shared host
+checks its DM seat and current access, then publishes native acceptance and
+versioned game bindings together through `World::product_game`. Existing
+opaque table payload remains byte-exact; accepted native entry references
+own recipe admission history. Placement, Join/Take, party binding and
+ruleset actuation remain separate source work.
+No default recipe, stocks or table control policy is selected. Source remains
+unverified; all tests and adjustments wait under826. Complete V2 stays open.
+
+**Earlier source checkpoint, 2026-10-12 (826):** native asserted characters retain table
 metadata but have no developed body. The sim-on relation is asked: develop
 that same character from a selected native recipe, or save an explicit
 binding to an existing native body. Placement and control still require

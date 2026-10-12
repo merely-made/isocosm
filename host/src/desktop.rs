@@ -8,6 +8,29 @@ use cambium_genet_winit_host::{CloseDisposition, HostHooks, HostOptions, WindowH
     WindowsInit, WindowTree, run_windows};
 use crate::ui::{model::App, view::{self, Child, Logic}};
 
+/// Explicit authored startup data, separate from ordinary player packets.
+pub(crate) fn mesocosm_spatial(world: &crate::world::World, path: &std::path::Path) -> Result<(), String> {
+    #[cfg(feature = "mesocosm")]
+    {
+        let authored = std::fs::read(path).map_err(|why| why.to_string())?;
+        let placements: Vec<mesocosm_runtime::spatial::Placement> =
+            serde_json::from_slice(&authored).map_err(|why| why.to_string())?;
+        world.product_game(world.cut()?, crate::products::Mode::Mesocosm, |session, bytes| {
+            let mut game: mesocosm_runtime::spatial::Game = if bytes.is_empty() {
+                Default::default()
+            } else { serde_json::from_slice(&bytes).map_err(|why| why.to_string())? };
+            game.replace(&session.sim, &placements)?;
+            let bytes = serde_json::to_vec(&game).map_err(|why| why.to_string())?;
+            Ok(((), bytes))
+        })
+    }
+    #[cfg(not(feature = "mesocosm"))]
+    {
+        let _ = (world, path);
+        Err("authored Mesocosm spatial setup is absent from this build".into())
+    }
+}
+
 fn options() -> HostOptions { HostOptions { title: "Isocosm".into(),
     initial_logical_size: (960.0, 720.0), ..Default::default() } }
 

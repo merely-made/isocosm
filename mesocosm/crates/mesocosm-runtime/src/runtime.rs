@@ -108,7 +108,7 @@ pub struct Runtime {
     /// The sim's refusal of a round, which stops the run until replaced.
     fault: Option<String>,
     max_steps: u64,
-    terrain: Option<Box<crate::terrain::Resolver>>,
+    spatial: crate::spatial::Game,
 }
 
 impl Runtime {
@@ -148,7 +148,7 @@ impl Runtime {
             dev_intents: 0,
             fault: None,
             max_steps: DEFAULT_MAX_STEPS_PER_ADVANCE,
-            terrain: None,
+            spatial: crate::spatial::Game::default(),
         }
     }
 
@@ -158,11 +158,12 @@ impl Runtime {
         self
     }
 
-    /// Supplies actual geometry; render spots and native place anchors are not positions.
-    pub fn with_terrain_resolver(mut self, resolver: Box<crate::terrain::Resolver>) -> Self {
-        self.terrain = Some(resolver);
-        self
+    /// Authored physical input; no display position supplies a missing value.
+    pub fn set_spatial(&mut self, placements: &[crate::spatial::Placement]) -> Result<(), String> {
+        self.spatial.replace(&self.interim.session.sim, placements)
     }
+
+    pub fn spatial(&self) -> &crate::spatial::Game { &self.spatial }
 
     /// Queues an envelope for the next step.
     pub fn queue(&mut self, envelope: Envelope) {
@@ -235,12 +236,14 @@ impl Runtime {
             subject: self.critter().map(isocosm_overlay::EntityHandle),
             seat: isocosm_overlay::Seat::Player,
         };
-        let round = match &mut self.terrain {
-            Some(resolver) => self.interim.round_with_flows_using(&revisions, &mut |session| {
-                crate::terrain::advance(session, access, resolver.as_mut())
+        let round = if access.subject.is_some() {
+            let spatial = &mut self.spatial;
+            self.interim.round_with_flows_using(&revisions, &mut |session| {
+                spatial.advance(session, access)
                     .map(|out| out.flows).map_err(|why| format!("{why:?}"))
-            }),
-            None => self.interim.round_with_flows(&revisions),
+            })
+        } else {
+            self.interim.round_with_flows(&revisions)
         };
         match round {
             Ok((happenings, flows)) => {
@@ -406,4 +409,4 @@ impl Runtime {
 }
 
 mod replay;
-pub use replay::{Receipt, Replayed};
+pub use replay::{GameSave, Receipt, Replayed};

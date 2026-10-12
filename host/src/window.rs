@@ -118,9 +118,9 @@ impl Window {
         let before = self.cut()?;
         let window = self.active.ok_or("window has no active native attachment")?;
         let mode = crate::products::Mode::parse(&self.binding.mode)?;
-        self.world.product(before, |session| {
+        self.world.product_game(before, mode, |session, game| {
             session.sim.attention_window(self.participant.0, window.id())?;
-            crate::products::submit(session, &cut, mode, input)
+            crate::products::submit_game(session, &cut, mode, input, game)
         })
     }
 

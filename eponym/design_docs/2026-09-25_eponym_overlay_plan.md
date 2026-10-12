@@ -2,7 +2,16 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-12 (826):** the client Items panel exposes explicit
+**Current choices, 2026-10-12 (835 to838):** named native material recipes
+supply new item stocks/quantities; new worlds keep distinct material stocks.
+Native projects reserve inputs, spend them as work progresses and retain
+unfinished work for any eligible natively authorized subject to resume.
+The dependent native/product source is the next migration slice. Existing
+saved holdings are retained; no recipe quantities, yields or duration are
+chosen by these answers. Tests and adjustments remain deferred under826.
+Next839; full E3 remains open.
+
+**Earlier source checkpoint, 2026-10-12 (826):** the client Items panel exposes explicit
 Take choices for actual items at the living played subject's current game
 cell and Place here for its carried/worn items. These use admitted Take/Drop,
 the same native identity/custody and existing game placement/refusal path.
@@ -584,6 +593,14 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-12, material/work choices835 to838:** source now proceeds toward
+  named native stock recipes, distinct material accounts, conserved project
+  reservation/progress and eligible authorized resumption. Native owns those
+  quantities, ledgers and admission; game placement, control and presentation
+  keep their existing owners. The old nominal/issued-stock mismatch remains
+  historical input, not permission to rewrite existing saves. Authored costs,
+  quantities and progress definitions remain explicit. Tests/fixture/probe
+  adjustments and tuning stay deferred; source placement is not E3 acceptance.
 - **2026-10-12, explicit item controls placed:** client production now lists
   actual nearby and native-derived custodied items with Take and Place-here
   controls. Pickup no longer chooses the first dressing automatically.

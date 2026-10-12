@@ -37,10 +37,14 @@ independent ruled source work. This supersedes the earlier combined-state
 testing instruction below and the lane briefs' intermediate acceptance order.
 Record source checkpoints honestly as awaiting verification. The four
 capacity, overflow, feeding and native-edit choices are recorded as827 to830.
-Their independent source connections are placed, unverified. Three follow-up
-choices are asked: zero-transmission route eligibility, the ordinary founding
-jaw/process pair, and the owner of actual Mesocosm geometry inputs. A fourth
-asks the sim-on VTT character/native-body relation. Next831.
+Their independent source connections are placed, unverified. The follow-ups
+are now recorded as831 to834: exclude zero-rate routes, derive ordinary
+feeding from its port, save actual Mesocosm spatial state with native revision
+bindings, and develop the VTT character itself from a selected native recipe
+while retaining its ID. Their dependent source and host consumers are placed,
+unverified. The next choices are now835 to838: named native material recipes,
+distinct native material stocks, project reservation/progress, and resumption
+by eligible natively authorized subjects. Their source lanes follow. Next839.
 
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
@@ -372,6 +376,34 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-12, 835 to838:** Mark settled all four material/work choices:
+  named native stock recipes, distinct material stocks in new worlds,
+  project-held reservation with progress spending, and resumption by any
+  eligible natively authorized subject. All answers are recorded verbatim.
+  Those native/product pieces now proceed after the preceding source lands.
+  Recipe costs/quantities, output and progress definitions remain authored;
+  existing saves' holdings are conserved. Next839; all tests/adjustments
+  remain deferred under826 and whole-queue completion remains open.
+- **2026-10-12, 831 to834 source placed:** zero-rate routes are excluded
+  before the overflow split; new ordinary marked feeding reads its actual
+  port and offered matter provenance. Mesocosm persists a revision-bound
+  spatial provider in owned/runtime and borrowed-host paths, with explicit
+  trusted CLI setup and no ordinary pose-editing packet. Native terrain/lift
+  revisions share actual terrain inputs. VTT selected-recipe Arrive/Develop
+  preserves the asserted ID/fill/faction and publishes versioned game metadata
+  with the accepted native Session; the actual host calls this DM-gated door.
+  These source pieces are unverified. Continuous physical movement/arrival
+  poses, VTT placement/control/party/ruleset actuation and full E3/V2/M4 remain
+  open. No Cargo, compiler/tests, test constructors/fixtures or tuning ran.
+- **2026-10-12, 831 to834:** all four follow-up answers are recorded verbatim.
+  Route filtering, new ordinary port-derived feeding, saved Mesocosm spatial
+  state/provider and same-ID VTT recipe admission now proceed in bounded
+  production lanes. Root coordinates shared host publication and documentation.
+  Required authored recipe/stock/geometry inputs remain explicit; these answers
+  do not create defaults or ordinary control authority. The material/work
+  inventory's first operation and progress semantics remain later choices.
+  All Cargo/compiler/test, fixture/probe repair and tuning stay deferred
+  under826. Next835; the whole queue remains incomplete.
 - **2026-10-12, remaining product connections:** `8ceeac8c` is pushed with
   827 to830's independent capacity/port/terrain source. Eponym's client now
   connects explicit actual-item Take/Place choices to admitted custody and

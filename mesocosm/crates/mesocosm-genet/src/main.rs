@@ -106,6 +106,10 @@ fn main() {
                 Some(path) => config.watch = Some(path),
                 None => fail("--watch wants a recorded save"),
             },
+            "--spatial" => match args.next().map(PathBuf::from) {
+                Some(path) => config.spatial = Some(path),
+                None => fail("--spatial wants authored physical input for admitted native bodies"),
+            },
             "--scenario" => {
                 let path = args
                     .next()
@@ -197,6 +201,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --receipt PATH  write the run's receipt
   --replay PATH   replay a recorded save headlessly and check its hash
   --watch PATH    take a recorded save up and play on in the window
+  --spatial PATH  load explicit authored poses and operation geometry
   --scenario PATH drive the run from a text scenario and exit 1 if it fails
   --bench         open the bench over a native session (1280x900)
   --dev           enable the dev lane and its keys (DT1, DT2, DT3)

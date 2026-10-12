@@ -44,6 +44,8 @@ pub struct HostConfig {
     pub follow: Option<u64>,
     /// A recorded save to take up and play on from (786).
     pub watch: Option<PathBuf>,
+    /// Authored physical inputs for already admitted native bodies and patches.
+    pub spatial: Option<PathBuf>,
 }
 
 impl Default for HostConfig {
@@ -69,6 +71,7 @@ impl Default for HostConfig {
             dev: false,
             follow: None,
             watch: None,
+            spatial: None,
         }
     }
 }

@@ -253,6 +253,9 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
     let (mut producers, mut consumers) = (0, 0);
     let affinity = Affinity::default();
     let mut added: BTreeMap<Key, BTreeSet<Key>> = BTreeMap::new();
+    // Kingdom/provenance facts do not change when recipes and life traits
+    // are assigned below; keep them available during the mutable line walk.
+    let source_lineages = g.lineages.clone();
     for (index, (key, lineage)) in g.lineages.iter_mut().enumerate() {
         let index = index as u64;
         let producer = match lineage.kingdom.as_str() {
@@ -276,15 +279,11 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
         };
         reproducing(&mut kinds, &mut recipe)?;
         if !producer {
-            let function = feeding::declare(&mut kinds, &mut recipe, key)?;
-            if let Some(p) = g.rules.processes.get_mut(&format!(
-                "ecology:feed-{}", key.trim_start_matches("lineage:")
-            )) {
-                let sources = p.target.as_ref().map_or(FeedingSources::All, |t| {
-                    if t.among.is_empty() { FeedingSources::All }
-                    else { FeedingSources::Only(t.among.clone()) }
-                });
-                p.port_feeding = Some(PortFeeding { function, sources });
+            let intake = feeding::declare(&mut kinds, &mut recipe, key)?;
+            let feed = format!("ecology:feed-{}", key.trim_start_matches("lineage:"));
+            if let Some(mut p) = g.rules.processes.get(&feed).cloned() {
+                feeding::configure(&mut p, intake, &g.rules, &source_lineages)?;
+                g.rules.processes.insert(feed, p);
             }
         }
         let (traits, clutch, anamorphic) = life(g.seed, index, b);
