@@ -26,6 +26,18 @@ Read with: the wing record's rulings 732 to 804
 
 ## 1. The orchestrator's loop
 
+**Current execution instruction, 2026-10-11 (826):** Mark clarified:
+"Ask what you need to, to continue the migration. Test and tune when things
+are in place. Don’t dust mid move." Then: "I’m saying: save the tests and
+adjustments for when the pieces are in place". Finish migration source and
+its consumer connections before running tests or making test-driven
+adjustments. Defer focused tests as well as larger suites, fixture repair,
+fault controls and tuning. Ask the unresolved structural choices and continue
+independent ruled source work. This supersedes the earlier combined-state
+testing instruction below and the lane briefs' intermediate acceptance order.
+Record source checkpoints honestly as awaiting verification. The four
+capacity, overflow, feeding and native-edit choices are asked; next ruling827.
+
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
 orchestrator has stopped the separate 58-step CORE31 sequence and parked
@@ -140,6 +152,9 @@ required. This condition narrows the compiler rule for this execution.
   `shared/wing-integration`, `shared/isocosm-overlay`, and
   `mesocosm/crates/probes/parry-ground` (its own workspace; never commit its
   `target/`). After-pass lanes also run the tests their brief names.
+  **826 supersedes this intermediate gate order:** place the migration
+  pieces first; save compiler/test acceptance and subsequent adjustments
+  for that assembled source. Do not repair or tune fixtures between pieces.
 - 600-line ceiling per source file, tests included; the pre-commit hook in
   `.githooks` enforces it. Split along seams. Short comments in code; prose
   in docs.
@@ -352,6 +367,13 @@ is never rewritten: later changes are annotations or new rulings naming what
 they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
+
+- **2026-10-11, execution clarified (826):** all testing and test-driven
+  adjustments wait until migration pieces and their consumer connections
+  are in place, including the formerly retained focused intermediate pass.
+  Four structural questions are presented to Mark. Q10 continues ruled
+  Eponym source work; test fixtures, tuning, archives and certification
+  machinery are outside that source continuation. No Cargo is started.
 
 - **2026-10-11, fixture founding selected (825):** Eponym's precise
   contact fixture uses a named native founding profile selected by a

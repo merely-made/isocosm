@@ -10351,6 +10351,19 @@ what later sections derive from.
      and retains Canon's actual minimum7. Native capacity, contact,
      complete replay and compiled refusal controls remain gates.
 
+826. **Tests and adjustments wait until the migration pieces are in place.**
+     2026-10-11, the orchestrator's execution order.
+     Mark directed "Ask what you need to, to continue the migration. Test and tune when things are in place. Don’t dust mid move."
+     Mark clarified "I’m saying: save the tests and adjustments for when the pieces are in place"
+     So migration source and its consumer connections come first. Ask the
+     unresolved structural choices now and continue independent ruled source
+     work. Defer test runs, fixture repairs, fault controls, tuning and
+     test-driven adjustments until the migration pieces are in place.
+     This applies to focused checks too, not only expensive certification.
+     Earlier receipts retain their source scope; they do not require another
+     intermediate verification round. Queue implementation does not wait on
+     after-pass acceptance. The next design ruling is 827.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

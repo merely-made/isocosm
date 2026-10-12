@@ -5,6 +5,14 @@
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
 
+**Current execution instruction, 2026-10-11 (826):** all tests and
+test-driven adjustments wait until the migration pieces are in place.
+This includes focused tests, fixture repairs, fault controls and tuning.
+Remaining source and consumer connections proceed first, with structural
+choices asked now. This supersedes the earlier narrower deferral of expensive
+suites. Existing results below remain historical evidence, not intermediate
+prerequisites. The after-pass resumes against the assembled migration.
+
 **Execution update, 2026-10-11:** Mark identified intermediate-state
 verification delaying the actual migrations. The combined source is pushed
 at `a4fea109`; remaining source choices and implementation precede expensive
@@ -476,6 +484,11 @@ headed meal choice feels tense rather than clerical.
   `legacy/campaign`, held by the faction turn until V2 (247).
 
 ## Progress
+
+- **2026-10-11, 826:** Mark explicitly saves tests and adjustments for
+  when the pieces are in place. Source migration continues; focused passes,
+  fixture repair and tuning now join the larger suites in the deferred
+  after-pass. The current next ruling is827; no new test result is claimed.
 
 - **2026-10-11, execution order corrected:** actual source migrations
   proceed under their implementation dependencies; expensive acceptance
