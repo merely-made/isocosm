@@ -39,6 +39,22 @@ pub struct ProbeWorld {
 }
 
 impl ProbeWorld {
+    pub(crate) fn movement_supported(&self) -> Result<()> {
+        fn moved(e: &crate::rules::Effect) -> bool {
+            matches!(e, crate::rules::Effect::Move { .. }) || e.branches().any(moved)
+        }
+        let moving = self.genesis.rules.processes.values().filter(|p|
+            p.commitments.iter().chain(&p.effects)
+                .chain(p.risk.iter().flat_map(|r| &r.effects)).any(moved)).collect::<Vec<_>>();
+        if !moving.is_empty() && self.genesis.population.groups.values()
+            .any(|g| g.entity.method == Method::Deliberative)
+        { return Err("moving aggregate worlds require the native deliberative chooser".into()); }
+        if moving.iter().any(|p| p.note || p.risk.is_some() || p.target.is_some()) {
+            return Err("identity-bound migration runs individually".into());
+        }
+        Ok(())
+    }
+
     /// The world's competitions, by what each contests.
     pub fn competitions(&self) -> &BTreeMap<Key, Competition> {
         &self.genesis.rules.competitions

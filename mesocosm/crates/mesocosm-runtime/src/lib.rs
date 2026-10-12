@@ -16,8 +16,10 @@
 //! delivery never reaches the simulation.
 
 pub mod clock;
+pub mod borrowed;
 pub mod effect_experiment;
 pub mod glyphs;
+pub mod perception;
 pub mod readings;
 pub mod review;
 pub mod runtime;

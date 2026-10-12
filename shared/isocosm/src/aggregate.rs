@@ -67,6 +67,7 @@ pub fn compare(founding: &Founding, ticks: Tick) -> Result<Comparison> {
 fn add(total: &mut Work, work: Work) {
     total.evaluations += work.evaluations;
     total.represented += work.represented;
+    total.arrivals += work.arrivals;
     total.accepted += work.accepted;
     total.blocked += work.blocked;
 }

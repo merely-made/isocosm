@@ -15,6 +15,10 @@
 //! and every peer replays it. No rollback, no CRDTs. A per-peer rolling
 //! log hash ([`HostSession::log_hash`]) makes divergence detectable.
 
+pub use isometry_campaign::founding::NativeWorld;
+pub use session::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
+mod mode_game;
+pub use mode_game::ModeGame;
 mod protocol;
 mod session;
 mod source_time;
@@ -40,7 +44,7 @@ pub use session::{
     apply_game, resolve_transition, resolve_transition_for_party, ClientSession, GameError,
     HostSession,
 };
-pub use source_time::{GameSourceHistory, GameSourceTimeError};
+pub use source_time::{GameSourceHistory, GameSourceTimeError, NativeSiteVersion};
 
 #[cfg(feature = "iroh")]
 pub mod iroh_link;

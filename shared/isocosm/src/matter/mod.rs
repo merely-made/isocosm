@@ -7,6 +7,7 @@
 //! [`crate::diffusion`], the kernel ledgers share.
 
 pub mod receipt;
+pub mod scruple;
 pub mod stock;
 
 pub use receipt::Conversion;

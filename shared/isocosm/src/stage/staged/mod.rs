@@ -38,6 +38,9 @@ impl Staged<'_> {
         Ok(&mut body.ok_or("body binding changed")?.accounts)
     }
     fn site(&mut self) -> Result<&mut Site> {
+        if self.stage.bodies[&self.stage.actor].resident_site() != Some(self.stage.place) {
+            return Err("actor has no resident site".into());
+        }
         if self.stage.site.is_none() {
             let site = self.sim.site_at_start(self.stage.place);
             self.stage.site = Some(site.ok_or("site missing")?.clone());
@@ -49,7 +52,7 @@ impl Staged<'_> {
         match who {
             Binding::Actor => Some(Holder::Entity(self.stage.actor)),
             Binding::Target => self.stage.target.map(Holder::Entity),
-            Binding::Place => Some(Holder::Site(self.stage.place)),
+            Binding::Place => self.stage.bodies[&self.stage.actor].resident_site().map(Holder::Site),
             Binding::Part => None,
         }
     }
@@ -246,8 +249,22 @@ impl Staged<'_> {
             return Ok(feat);
         }
         let resolved = self.resolve(e)?;
+        // 820 also covers authored upkeep that mineralizes directly into a place.
+        let resolved = if self.stage.bodies[&self.stage.actor].journey.is_some()
+            && matches!(resolved.as_ref(), Effect::Spend { to: Binding::Place, into: Some(k), .. }
+                if k == "world:soil")
+        {
+            let mut carried = resolved.into_owned();
+            if let Effect::Spend { to, .. } = &mut carried { *to = Binding::Actor; }
+            Cow::Owned(carried)
+        } else { resolved };
         let resolved = self.share_out(resolved)?;
         let e = resolved.as_ref();
+        // 820: keep already produced soil in the actor's existing ledger.
+        // Other site operations remain unavailable; no flow is fabricated.
+        if matches!(e, Effect::Transfer { from: Binding::Actor, to: Binding::Place, account, .. }
+            if account == "world:soil") && self.stage.bodies[&self.stage.actor].journey.is_some()
+        { return Ok(false); }
         let rules = &self.sim.genesis.rules;
         // Moves are worked out only while a host keeps the flow record.
         let legs = match self.sim.flowing() {
@@ -359,11 +376,13 @@ impl Staged<'_> {
                 self.stage.relations.push((relation, *present));
             },
             Effect::Move { destination } => {
-                if !sim.state.sites[&place]
-                    .routes
-                    .iter()
-                    .any(|r| r.to == *destination)
-                {
+                let site = sim.site_at_start(place).ok_or("departure site absent")?;
+                if !sim.state.movement.immediate() {
+                    crate::journey::depart(self.actor(), site, *destination, tick)?;
+                    return Ok(false);
+                }
+                // Kept v3 action semantics, explicitly tagged and witnessed.
+                if !site.routes.iter().any(|r| r.to == *destination) {
                     return Err("no route to destination".into());
                 }
                 let entity = self.actor();
@@ -468,6 +487,9 @@ impl Staged<'_> {
                 of,
                 whole,
             } => {
+                if *from == Binding::Target && self.body(*from)?.journey.is_some() {
+                    return Err("travelling prey has no resident site".into());
+                }
                 let rules = &sim.genesis.rules;
                 let portion = self.stage.shares.as_mut().and_then(|s| s.meal.take());
                 // A bite lands on one part, drawn by what each holds (459).

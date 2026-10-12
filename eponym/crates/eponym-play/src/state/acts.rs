@@ -9,7 +9,7 @@ use isocosm::history::Command;
 use isocosm_overlay::eponym::{EponymIntent, PlayerAct, PlayerActKind};
 use isocosm_overlay::{EntityHandle, Pointable};
 
-use crate::bodies::{BodyError, BodyProfile, BodyRecord, SAFE_FALL};
+use crate::bodies::{BodyError, BodyRecord, SAFE_FALL};
 use crate::founding::{
     self, DROP, EAT, ENERGY, FATIGUE, FULL, HUNGER, RESERVE, RESTS, SPENT, TAKE,
 };
@@ -31,7 +31,10 @@ impl GameState {
     ) -> Result<Vec<GameEvent>, GameError> {
         Ok(match intent {
             GameIntent::Generate { body_seed, at, .. } => {
-                self.generate(tick, subject, *body_seed, *at)?
+                self.generate(tick, subject, *body_seed, *at, None)?
+            },
+            GameIntent::GenerateNativeRecipe { body_seed, at, recipe, .. } => {
+                self.generate(tick, subject, *body_seed, *at, Some(*recipe))?
             },
             GameIntent::Name { name, .. } => {
                 name.validate()?;
@@ -234,11 +237,14 @@ impl GameState {
                     }
                     .into());
                 }
-                let entity = self.entity_of(subject)?;
-                self.anatomies
-                    .admit(subject, *revision, document.as_ref().clone())?;
-                let body = document.doc().clone();
-                self.world.found(Command::Embody { entity, body })?;
+                if !self.world.developed_bodies() {
+                    return self.admit_legacy_body(tick, subject, *revision, document);
+                }
+                let expected = self.native_anatomy(subject, document.species())?;
+                if expected != **document { return Err(AnatomyError::NativeMismatch.into()); }
+                let source = self.native_anatomy_source(subject)?;
+                self.anatomies.admit(subject, *revision, expected)?;
+                self.anatomies.bind_native(subject, source)?;
                 vec![GameEvent::AnatomyAdmitted {
                     tick,
                     subject,
@@ -347,7 +353,12 @@ impl GameState {
         subject: SubjectId,
         body_seed: u64,
         at: [i32; 3],
+        recipe: Option<crate::NativeFixtureRecipe>,
     ) -> Result<Vec<GameEvent>, GameError> {
+        if !self.world.developed_bodies() {
+            if recipe.is_some() { return Err(crate::WorldError::NotFixture.into()); }
+            return self.generate_legacy_body(tick, subject, body_seed, at);
+        }
         if self.records.contains_key(&subject) {
             return Err(BodyError::SubjectExists(subject).into());
         }
@@ -357,9 +368,17 @@ impl GameState {
         if !crate::walking::stands(self.world.volume(), at) {
             return Err(MovementError::InvalidStart(at).into());
         }
-        let profile = BodyProfile::draw(self.world.seed(), body_seed, subject);
+        self.world.select_native_recipe(recipe)?;
+        let seed = isocosm::draw(self.world.seed(), "eponym:development", &[body_seed, subject.0]);
+        let sim = self.world.sim();
+        let body = sim.development_body(founding::SOPHONT, seed).map_err(|_| GameError::Decode)?;
+        let tissue = body.parts.iter().try_fold(0u64, |total, (id, part)| {
+            let geo = body.doc.part(*id).ok_or(GameError::Decode)?;
+            total.checked_add(isocosm::anatomy::bound(geo.half_extent, part, &sim.genesis().rules, founding::TISSUE))
+                .ok_or(GameError::Decode)
+        })?;
         let accounts = [
-            (founding::TISSUE, u64::from(profile.mass_mg)),
+            (founding::TISSUE, tissue),
             (RESERVE, FULL),
             (ENERGY, FULL),
         ];
@@ -378,10 +397,7 @@ impl GameState {
             .strip_prefix("entity:")
             .and_then(|s| s.parse().ok())
             .ok_or(GameError::Decode)?;
-        // A body of one part until its anatomy is admitted.
-        let body =
-            isometer_core::BodyDocument::new(isometer_core::VolumeRef::from_tag(0), [2, 4, 2]);
-        self.world.found(Command::Embody { entity, body })?;
+        self.world.found(Command::Develop { entity, seed })?;
         self.world.bind(subject, entity);
         let revision = BodyRevisionId(0);
         self.records.insert(

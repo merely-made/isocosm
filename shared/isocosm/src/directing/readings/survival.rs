@@ -44,18 +44,18 @@ pub fn view(sim: &Simulation, critter: Id, mode: Mode) -> View {
         return View::default();
     };
     let mut v = View::default();
-    v.sites.insert(e.place);
+    v.sites.extend(e.resident_site());
     v.sites.extend(e.visits.iter().map(|visit| visit.place));
     let mut subjects = BTreeSet::new();
     for (key, event) in &s.events {
         if sim.knows(critter, key).unwrap_or(false) {
             v.events.insert(key.clone());
-            v.sites.insert(event.place);
+            v.sites.extend(event.place.site());
             subjects.insert(event.subject);
         }
     }
     for (first, g) in living {
-        let here = g.entity.place == e.place;
+        let here = g.entity.colocated(e);
         let told = subjects.range(*first..*first + g.count).next().is_some();
         if here || told {
             v.things.insert(*first, g.count);

@@ -194,11 +194,12 @@ pub fn timed_action_world_solving(solver: crate::MotionSolver) -> Fixture {
         subject: keeper,
         name: crate::Name::new("Keeper").unwrap(),
     });
+    let keeper_anatomy = game.native_anatomy(keeper, three_lives::WETLAND_LINE).unwrap();
     apply(&mut game, |tick| GameIntent::AdmitAnatomy {
         tick,
         subject: keeper,
         revision: BodyRevisionId(0),
-        document: Box::new(three_lives::three_lives()[0].body.clone()),
+        document: Box::new(keeper_anatomy),
     });
     configure_keeper(&mut game, keeper);
 
@@ -225,11 +226,12 @@ pub fn timed_action_world_solving(solver: crate::MotionSolver) -> Fixture {
         subject: target,
         name: crate::Name::new("Target").unwrap(),
     });
+    let target_anatomy = game.native_anatomy(target, SpeciesId(73)).unwrap();
     apply(&mut game, |tick| GameIntent::AdmitAnatomy {
         tick,
         subject: target,
         revision: BodyRevisionId(0),
-        document: Box::new(target_body()),
+        document: Box::new(target_anatomy),
     });
     apply(&mut game, |tick| GameIntent::Take {
         tick,

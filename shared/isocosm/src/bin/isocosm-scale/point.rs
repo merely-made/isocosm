@@ -141,7 +141,7 @@ pub(super) fn point(
         .values()
         .map(|g| {
             let e = &g.entity;
-            (&e.lineage, &e.traits, e.place, e.alive, e.born, &e.accounts)
+            (&e.lineage, &e.traits, e.place, &e.journey, e.alive, e.born, &e.accounts)
         })
         .collect::<BTreeSet<_>>()
         .len();

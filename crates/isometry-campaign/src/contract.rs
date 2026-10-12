@@ -11,7 +11,7 @@ use std::collections::BTreeSet;
 
 use isocosm::Simulation;
 use isocosm::asserted as native;
-use isocosm::legacy::campaign::{CampaignWorld, WorldEvent};
+use crate::{CampaignWorld, WorldEvent};
 use isocosm_overlay::Pointable;
 use isocosm_overlay::vtt::Assertion;
 

@@ -116,6 +116,7 @@ fn inspection_rows(inspection: &PartInspection) -> Vec<DetailRow> {
         DetailRow::new("history", reading.history_event.clone()),
         DetailRow::new("lineage", reading.lineage.clone()),
         DetailRow::new("donor", reading.donor.clone()),
+        DetailRow::new("scruple", reading.scruple.clone()),
         keys(),
     ]
 }

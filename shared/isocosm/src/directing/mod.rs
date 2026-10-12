@@ -54,6 +54,10 @@ pub struct Answer {
     pub served: bool,
 }
 
+impl Answer {
+    pub fn resident_site(&self) -> Option<Id> { (self.site != PLACELESS).then_some(self.site) }
+}
+
 /// A nudge as the world keeps it, in the order given.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Nudge {
@@ -120,6 +124,7 @@ impl Simulation {
             place: PLACELESS,
             arrived: self.state.tick,
             visits: vec![],
+            journey: None,
             born: self.state.tick,
             alive: true,
             body_revision: 1,

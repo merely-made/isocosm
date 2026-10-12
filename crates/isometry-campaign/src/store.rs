@@ -8,8 +8,8 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-use isocosm::legacy::campaign::{HiddenItemModifier, ItemModifierReveal};
-use isocosm::legacy::campaign::{SecretFact, WorldFact};
+use crate::{HiddenItemModifier, ItemModifierReveal};
+use crate::{SecretFact, WorldFact};
 
 /// GM-only campaign state. `BTreeMap` so saves and any hashing are
 /// deterministic.
@@ -146,7 +146,7 @@ impl CampaignStore {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::campaign::RevealCondition;
+    use crate::RevealCondition;
 
     fn cursed_sword_secret() -> SecretFact {
         SecretFact {

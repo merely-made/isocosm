@@ -17,6 +17,9 @@ use isocosm::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 
+mod body;
+pub(crate) mod fixture;
+
 pub const SOPHONT: &str = "lineage:eponym";
 pub const TISSUE: &str = "eponym:tissue";
 pub const RESERVE: &str = "eponym:reserve";
@@ -79,6 +82,84 @@ fn anyone(among: &[&str]) -> Option<Target> {
 /// The world `seed` founds: `side` sites a side, each `extent` base units
 /// across, Eponym's pack laid over its rules.
 pub fn genesis(seed: u64, side: u32, extent: u64) -> Result<Genesis> {
+    let grid = Grid {
+        shape: "shape:plane".into(),
+        width: side,
+        height: side,
+        side: extent,
+        elevation: [0, extent as i64 / 4],
+        relief: [0, extent as i64 / 16],
+        sea_per_mille: 0,
+    };
+    let founding = Founding {
+        seed,
+        sites: side * side,
+        population: 1,
+        lineages: 1,
+        cohort_size: 1,
+        map: Some(Layout::Grid(grid)),
+        ..Founding::default()
+    };
+    let mut g = founding.generate()?;
+    let lineage = |kingdom: &str| Lineage {
+        parent: None,
+        revision: 1,
+        traits: BTreeSet::new(),
+        kingdom: kingdom.into(),
+        development: None,
+    };
+    let mut sophont = lineage("kingdom:fauna");
+    sophont.development = Some(body::install(&mut g.rules));
+    g.lineages.insert(SOPHONT.into(), sophont);
+    for item in [FOOD, DRESSING, SCRAP] {
+        g.lineages.insert(item.into(), lineage("kingdom:made"));
+    }
+    let matter = |lineage: &str, reserve| AccountKind::Matter {
+        lineage: lineage.into(),
+        reserve,
+        provision: false,
+    };
+    let r = &mut g.rules;
+    r.accounts.insert(TISSUE.into(), matter(SOPHONT, false));
+    r.accounts.insert(RESERVE.into(), matter(SOPHONT, true));
+    for item in [FOOD, DRESSING, SCRAP] {
+        r.accounts.insert(item.into(), matter(item, false));
+    }
+    r.relations.insert(CARRIES.into());
+    r.relations.insert(isocosm::social::TENANT.into());
+    r.note_kinds.extend(set(&[isocosm::arrival::NAME, SITE_FACT]));
+    r.note_kinds.extend(isocosm::knowing::NOTE_KINDS.iter().map(|k| k.to_string()));
+    let social = crate::vocabulary::vocabulary();
+    r.processes.extend(isocosm::social::processes(&social));
+    r.social = Some(social);
+    r.processes.extend(processes());
+    r.mind = Some(Mind {
+        strain: "sim:strain".into(),
+        needs: [RESERVE, ENERGY].map(need).to_vec(),
+        bearing: 100,
+        bearing_traits: BTreeMap::new(),
+        rise: 0,
+        rise_traits: BTreeMap::new(),
+        stake: 0,
+    });
+    r.accounts.insert("sim:strain".into(), AccountKind::Strain);
+    // A sophont carves through its own ledger (412, 739).
+    for m in g.world.materials.iter_mut().filter(|m| m.key == "world:soil" || m.key == "world:rock") {
+        m.density = Some(1);
+        m.account = Some("world:soil".into());
+    }
+    Ok(g)
+}
+
+/// A versioned native pack for the precise-contact fixture (825).
+pub(crate) fn fixture_genesis(seed: u64, side: u32, extent: u64) -> Result<Genesis> {
+    let mut g = genesis(seed, side, extent)?;
+    fixture::install(&mut g)?;
+    Ok(g)
+}
+
+/// Kept generator-2 founding, authenticated before legacy intent replay.
+pub(crate) fn legacy_genesis_v2(seed: u64, side: u32, extent: u64) -> Result<Genesis> {
     let grid = Grid {
         shape: "shape:plane".into(),
         width: side,

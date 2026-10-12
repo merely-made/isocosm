@@ -39,8 +39,9 @@ impl Crowd<'_> {
             let bins = self.bins.iter().map(|(e, &n)| (e, n, Who::Bin));
             let kin = self.kin.iter().map(|(id, e)| (e, 1, Who::Kin(*id)));
             for (e, n, who) in bins.chain(kin) {
+                let Some(site) = e.resident_site() else { continue; };
                 if let Some(key) = averaged(e).into_iter().nth(which).filter(|_| e.alive) {
-                    let class = classes.entry((key, e.place)).or_default();
+                    let class = classes.entry((key, site)).or_default();
                     class.push((e.clone(), n, who));
                 }
             }

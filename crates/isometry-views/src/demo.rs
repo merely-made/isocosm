@@ -7,7 +7,7 @@
 //! costs and neither substitutes for the other.
 
 use isocosm::asserted::{Assertion, Authored, Character, Faction, Law, Place, Route};
-use isocosm::legacy::campaign::{CampaignWorld, RoleSlot, StoryletProposal, StoryletRequirements};
+use isometry_campaign::{CampaignWorld, RoleSlot, StoryletProposal, StoryletRequirements};
 use isometry_core::{Facing, MapDocument, Token, TokenId};
 
 pub fn demo_map() -> MapDocument {

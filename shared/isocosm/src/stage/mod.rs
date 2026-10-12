@@ -249,7 +249,7 @@ impl Simulation {
         let legs = std::mem::take(&mut stage.legs);
         let legs = crate::flows::split(legs, std::mem::take(&mut stage.routed));
         let count = stage.count;
-        let reached = if self.targets.is_some() || self.filed.is_some() || self.journal.is_some() {
+        let reached = if self.targets.is_some() || self.filed.is_some() || self.journal.is_some() || self.journeys.is_some() {
             self.reaches(&stage)
         } else {
             vec![]
@@ -290,6 +290,9 @@ impl Simulation {
         self.flowed(MadeBy::Process(process.into()), legs, count);
         if let Some(t) = &mut self.targets {
             t.touch(&self.state.population, reached.iter().copied());
+        }
+        if let Some(j) = &mut self.journeys {
+            j.touch(&self.state.population, reached.iter().copied());
         }
         if let Some(f) = &mut self.filed {
             f.touch(

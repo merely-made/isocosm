@@ -301,6 +301,7 @@ pub(crate) fn init(
                 maps: ui.campaign_maps.clone(),
                 active_map: ui.active_map.clone(),
                 world: ui.world.clone(),
+                native: ui.native.world.clone(),
                 clocks: ui.clocks.clone(),
 
                 party_cap: ui.party_cap,

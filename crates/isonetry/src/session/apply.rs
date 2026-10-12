@@ -28,6 +28,7 @@ pub enum GameError {
     UnknownMap(String),
     ConflictingMap(String),
     World(WorldError),
+    Native(String),
 }
 
 const MAX_GENERATION_VALUE_DEPTH: usize = 16;
@@ -52,7 +53,14 @@ pub(crate) fn push_roll(state: &mut GameSnapshot, record: &isometry_core::RollRe
 }
 
 pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), GameError> {
+    if state.native.is_some()
+        && matches!(event, GameEvent::World(_) | GameEvent::TravelResolved { .. } | GameEvent::TimeAdvanced { .. })
+    {
+        return Err(GameError::Native("legacy world mutation on a native campaign".into()));
+    }
     match event {
+        GameEvent::NativePublished(publication) => super::native::apply_publication(state, publication),
+        GameEvent::NativeTravelResolved(result) => super::native::apply_native_travel(state, result),
         GameEvent::Map(e) => {
             apply(&mut state.map, e).map_err(GameError::Core)?;
             sync_active_map(state);

@@ -26,6 +26,56 @@ Read with: the wing record's rulings 732 to 804
 
 ## 1. The orchestrator's loop
 
+**Execution update, 2026-10-11, combined migrations:** Mark identified
+excessive verification of intermediate states delaying the migrations. The
+orchestrator has stopped the separate 58-step CORE31 sequence and parked
+the diagnostic lifecycle packet for the earlier Q8 build. Apply the reviewed
+CORE31, Journey67, competing-kernel15, native recipe/fixture30 and VTT65
+changes together; run compiler and product tests on that combined state.
+Preserve genuine save compatibility, conserved matter, native authority,
+window attention and replica admission checks. Do not repeatedly certify
+superseded states or add monitor qualification as a product prerequisite.
+Run the existing final-state workspace compiler gates once after repairs.
+Resource measurements and separate output ownership still govern builds.
+
+Implementation dependencies now mean required native vocabulary and source,
+not completed statistical or headed certification. Q12 may build on the
+applied Q8 harm source, Q13 on the applied Q3 journey/feeding source, and
+Q16 on those native doors while their acceptance stays open. Finish the
+ruled migrations before running the expensive reproduction, distribution
+and headed suites. Keep unresolved design choices with Mark; a pending
+choice blocks its own implementation, not independent work in the lane.
+
+The combined source was applied on main at `8548cd2d` with 111 existing
+files changed and 55 added; all 1,089 prepared members matched. The first
+native compiler run exposed six integration errors, now repaired. The
+library compiled on the combined source; two test-only visibility errors
+were then repaired. No simulator product tests have run on that source.
+Isomere's all-target/all-feature and Isometer's default all-target compiler
+checks passed. Host product bindings and the lossless genuine v1/v2 reader
+are applied, with consumer/save/conservation validation still pending. The
+last intermediate host inventory compiled and listed 24 tests; its wrapper
+refused cleanup, so it establishes no lifecycle acceptance. The earlier Q8
+thousand-draw probe completed, but its positive control failed. Full C10
+remains open, and that earlier build cannot certify the changed simulator.
+
+The next source checkpoint adds the bounded lossless old-save reader,
+VTT's product-owned campaign content with retired faction execution doors,
+Q12's typed spread stocks, logged strain selection and conserved arrivals,
+Q13's explicit port-admission helper, and Q16's actual-cell sight/native
+scene filtering. Q12 overflow remains an unconnected kernel pending capacity
+and route-allocation rulings. Q13 intake policy and Q16 chosen-process edit
+binding also await Mark. Native Isocosm, VTT, Eponym, Mesocosm, Isomere,
+Isometer, wing-integration, overlay and parry-ground compiler checks passed
+on the combined source (Isometer's default features; the others' applicable
+all-feature checks). The shared host also passed with all three product modes.
+The focused native preservation pass passed 76 tests, including genuine
+v1/v2 saves, attention/authority, developed stocks, healing and incorporation.
+Eponym's changed body/contact tests are running; expensive acceptance remains deferred.
+Participant-to-native-member binding for the
+VTT's overmap is a remaining design seam, not inferred from table ownership.
+
+
 **Execution update, 2026-10-10 (805):** resumed in Codex from main
 `8c8b49bb`. Mark translates Opus to the orchestrator's current Codex model;
 lanes inherit that model. Q1 to Q3 reuse their existing worktrees. Workspace
@@ -35,6 +85,16 @@ where concurrent source work requires isolation. The orchestrator grants
 one Cargo turn at a time. Temporary scripts stay in the owning worktree and
 are removed after use. These current workspace rules replace the older
 `target/build` and scratchpad instructions below for this execution.
+
+**Execution update, 2026-10-11 (824):** the queue still grants one
+Cargo job and at most three tasks. It may run that job alongside unrelated
+builds only after measuring RAM, CPU, GPU and SSD headroom and verifying
+separate output custody. Measurements must be fresh at admission and
+long builds must be monitored. Preserve foreign source and processes;
+resource pressure stops only the queue's own bound job. The reviewed
+proposal uses the existing Isometry contracts target and one compiler
+worker. Source, configuration, tool and native acceptance gates remain
+required. This condition narrows the compiler rule for this execution.
 
 1. On start, read this plan's §4 queue and Progress, `git worktree list` in
    `Code/repos/isometry`, and each `lane-*` branch's `git log main..`. A lane
@@ -284,6 +344,42 @@ is never rewritten: later changes are annotations or new rulings naming what
 they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
+
+- **2026-10-11, fixture founding selected (825):** Eponym's precise
+  contact fixture uses a named native founding profile selected by a
+  saved version tag. Its native recipes preserve the probe root shapes
+  and provide storage. The source packet is being sealed; original
+  seeds, moves, assertions and authentic archives remain obligations.
+  The conditional824 guard passed source controls and fresh RAM/CPU/
+  GPU/SSD parsing after a retained counter-path failure. Actual Windows
+  cleanup verification and current CORE31 compiler gates remain open.
+  These records establish choices and source preparation, not E3/M3.
+
+- **2026-10-11, resource condition received (824):** the initial RAM,
+  CPU, GPU and NVMe readings showed room for a serial headless build
+  beside unrelated builds using separate targets. A separate guard
+  proposal is under review; no current CORE31 compiler gate is qualified.
+  Root independently reviewed Q3's 67-path journey source packet and its
+  unchanged primary/protected reproduction inputs. Competing-runner
+  migration remains source work in progress. Q8's frozen earlier
+  thousand-draw probe continues; its outcome cannot certify changed
+  main. The fixture founding/save choice is pending as ruling 825.
+  Q1/Q2/Q6/Q7/Q15 remain integrated. Full A1/C10/V2/E3/M3/M4 remain open.
+
+- **2026-10-11, rulings 818 to 823 settled:** Eponym starts from the compact
+  six-part native recipe, with newly issued tissue within developed capacity
+  and reserve 100/energy 100 where admitted. Travellers continue upkeep and
+  carry its produced soil; children share the remaining journey; transit
+  events use a typed journey location without site reach; corpses finish the
+  remaining journey before destination availability. The exact questions,
+  answers and consequences live in the [wing record](2026-09-18_wing_design_plan.md).
+  All six choices are settled; the next ruling is 824. Q3 journey and Q10
+  recipe implementations are source preparation in progress, with rates,
+  original failures, supplied-stock conservation and genuine archive gates
+  retained. CORE31 host source is applied but uncompiled; its execution freeze
+  stopped on an unrelated workspace compiler owner. The completed source
+  archive and every stopped attempt are retained. The frozen earlier Q8
+  thousand-draw probe is still running. Full A1/C10/V2/E3/M3/M4 remain open.
 
 - **2026-10-11, Q3 bitten-part sharing qualified on main:** the six-path
   change preserves whole prey and part quotas across a pass, without extra
@@ -1019,3 +1115,30 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   of the concurrent contracts and reproduction lanes. Its Cargo output,
   when granted, belongs at `C:\t\cargo-targets\isometry\tenant`. Q2, Q3
   and Q7 are the three active lanes; no new worktree was created.
+
+- **2026-10-11, combined migration execution:** the prepared journey,
+  competing-kernel, native body-development/fixture and VTT founding/
+  geography source is applied together with CORE31. This supersedes the
+  intermediate gate order. One low-priority offline Cargo job uses the
+  existing contracts target after measured RAM/CPU/GPU/SSD admission.
+  The native compile exposed six integration errors; product tests,
+  genuine save loading, conservation and full A1/C10/V2/E3/M3/M4 remain
+  open. Existing source, worktrees, frozen Q8 executable and failed
+  receipts remain preserved. Canonical rulings 818 through 825 are now
+  recorded verbatim; the next ruling is 826.
+- **2026-10-11, combined source compiles:** the later bounded VTT ownership,
+  spread/strain, port-admission, lossless old-save and in-site sight changes
+  are applied on main. All affected workspace compiler gates passed, including
+  the shared host with Mesocosm, VTT and Eponym enabled together. Repairs fixed
+  actual imports, fixture borrows, edition syntax, camera defaults and typed
+  product assertions. Native preservation tests now run on this source.
+  No intermediate certification is resumed. The four pending capacity,
+  overflow, intake and chosen-edit choices block their own remaining source;
+  full C10/C11, ecology, V2, E3 and M4 acceptance stays open.
+- **2026-10-11, combined native preservation:** all 76 tests in witness,
+  developed-arrival, attention, spatial attention, stream attention, harm
+  and incorporation passed on the combined source. Authentic v1/v2 archive
+  loading and every checkpoint remain authenticated; current saves replay,
+  late refusals stay atomic, stock is conserved, and recorded loss allocation
+  heals under the ruled adapter transfer. This verifies those obligations,
+  not the deferred distribution, reproduction or headed acceptance.

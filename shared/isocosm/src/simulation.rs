@@ -5,7 +5,7 @@ use crate::{Result, population::Population, reach::Reach, rules::*, schema::*};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
-mod preimage;
+pub(crate) mod preimage;
 mod witness;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -29,6 +29,8 @@ pub struct Genesis {
     pub lineages: BTreeMap<Key, Lineage>,
     pub sites: BTreeMap<Id, Site>,
     pub population: Population,
+    #[serde(default, skip_serializing_if = "crate::spread::Spreads::is_empty")]
+    pub spreads: crate::spread::Spreads,
 }
 
 impl Genesis {
@@ -76,6 +78,13 @@ pub struct State {
     /// with none, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "crate::asserted::Records::is_empty")]
     pub asserted: crate::asserted::Records,
+    /// Native admitted active-window contributions; absent in older preimages.
+    #[serde(default, skip_serializing_if = "crate::attention::Windows::is_empty")]
+    pub attention: crate::attention::Windows,
+    #[serde(default, skip_serializing_if = "Movement::immediate")]
+    pub movement: Movement,
+    #[serde(default, skip_serializing_if = "crate::spread::Spreads::is_empty")]
+    pub spreads: crate::spread::Spreads,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -124,7 +133,11 @@ pub struct Work {
     pub represented: u64,
     pub accepted: u64,
     pub blocked: u64,
+    /// Members landed by the clock, separate from authored evaluations.
+    #[serde(default, skip_serializing_if = "zero_work")]
+    pub arrivals: u64,
 }
+fn zero_work(n: &u64) -> bool { *n == 0 }
 
 #[derive(Clone, Debug)]
 pub struct Simulation {
@@ -157,6 +170,7 @@ pub struct Simulation {
     /// Each deliberative critter's choice this tick, kept only during an
     /// advance (ruling 683).
     pub(crate) chosen: crate::directing::Chosen,
+    pub(crate) journeys: Option<crate::journey::Journeys>,
 }
 
 impl Simulation {
@@ -183,6 +197,9 @@ impl Simulation {
             laws: BTreeMap::new(),
             agreements: BTreeMap::new(),
             asserted: Default::default(),
+            attention: Default::default(),
+            movement: Movement::Journey,
+            spreads: genesis.spreads.clone(),
         };
         let conserved = matter(&state, &genesis.rules);
         Ok(Self {
@@ -200,6 +217,7 @@ impl Simulation {
             watch: Default::default(),
             flows: Default::default(),
             chosen: Default::default(),
+            journeys: None,
         })
     }
     pub fn state(&self) -> &State {
@@ -233,7 +251,8 @@ impl Simulation {
     /// version-2 saves (ruling 651).
     pub(crate) fn state_hash_v2(&self) -> u64 {
         use isometer_core::snapshot::{encode, hash_bytes};
-        hash_bytes(&encode(&self.witnessed()).expect("sim schema encodes"))
+        let (seed, revision, world, state) = self.witnessed();
+        hash_bytes(&encode(&(seed, revision, world, preimage::State::from(&state))).expect("sim schema encodes"))
     }
     /// SHA-256 over JSON, kept only to verify version-1 saves (608).
     pub(crate) fn state_hash_v1(&self) -> Key {
@@ -316,6 +335,8 @@ impl Simulation {
     }
     pub fn kept(&self) -> BTreeSet<Id> {
         let mut roots = self.state.roots.clone();
+        roots.extend(self.attention_roots());
+        roots.extend(self.state.attention.buffered(self.state.tick));
         roots.extend(
             self.state
                 .released
@@ -383,18 +404,15 @@ impl Simulation {
         if self.state.notes.iter().chain(staged).any(|n| {
             n.core.subject == format!("entity:{entity}")
                 && n.core.object == event.id
-                && n.core.kind == "sim:discover"
+                && (n.core.kind == "sim:discover"
+                    || (event.place.site().is_none() && n.core.kind == "sim:act"))
         }) {
             return Ok(true);
         }
         let field = &self.genesis.rules.field;
-        let mut exposure = self.state.reach.exposure(
-            event,
-            e.place,
-            e.arrived,
-            self.state.tick.saturating_add(1),
-            field,
-        );
+        let mut exposure = e.resident_site().map_or(0, |site| self.state.reach.exposure(
+            event, site, e.arrived, self.state.tick.saturating_add(1), field,
+        ));
         for visit in &e.visits {
             exposure = exposure.saturating_add(self.state.reach.exposure(
                 event,
@@ -487,7 +505,7 @@ impl Simulation {
 }
 
 pub(crate) fn matter(state: &State, rules: &Rules) -> u128 {
-    let mass = |a: &Ledger| crate::meaning::mass(a, rules);
+    let mass = |a: &Ledger| crate::spread::ledger_mass(a, rules, &state.spreads);
     state
         .population
         .groups
@@ -504,4 +522,6 @@ pub(crate) fn matter(state: &State, rules: &Rules) -> u128 {
             .values()
             .map(|p| mass(&p.accounts))
             .sum::<u128>()
+        + state.spreads.places.iter().map(|p| mass(&p.accounts)).sum::<u128>()
+        + state.spreads.transit.iter().map(|t| u128::from(t.amount)).sum::<u128>()
 }

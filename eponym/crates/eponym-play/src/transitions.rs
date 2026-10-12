@@ -17,8 +17,10 @@ use crate::{
     MovementProfile, ResolvedStrike, WorldError, WorldSave,
 };
 
-/// Version 7 adds published canon revisions.
-pub const GAME_STATE_VERSION: u32 = 7;
+/// Version 8 adds recorded native fixture recipe choices.
+pub const GAME_STATE_VERSION: u32 = 8;
+pub const NATIVE_RECIPE_GAME_STATE_VERSION: u32 = 8;
+pub const CANON_GAME_STATE_VERSION: u32 = 7;
 pub const PROFILE_GAME_STATE_VERSION: u32 = 6;
 pub const MOTION_GAME_STATE_VERSION: u32 = 5;
 pub const COMBAT_GAME_STATE_VERSION: u32 = 4;
@@ -158,12 +160,21 @@ pub enum GameIntent {
         seed: u64,
         cause: CanonRevisionCause,
     },
+    /// Select a named native fixture recipe before this body's development.
+    GenerateNativeRecipe {
+        tick: Tick,
+        subject: SubjectId,
+        body_seed: u64,
+        at: [i32; 3],
+        recipe: crate::NativeFixtureRecipe,
+    },
 }
 
 impl GameIntent {
     pub const fn tick(&self) -> Tick {
         match self {
             Self::Generate { tick, .. }
+            | Self::GenerateNativeRecipe { tick, .. }
             | Self::Name { tick, .. }
             | Self::Move { tick, .. }
             | Self::Observe { tick, .. }
@@ -188,6 +199,7 @@ impl GameIntent {
     pub const fn subject(&self) -> Option<SubjectId> {
         match self {
             Self::Generate { subject, .. }
+            | Self::GenerateNativeRecipe { subject, .. }
             | Self::Name { subject, .. }
             | Self::Move { subject, .. }
             | Self::Observe { subject, .. }
@@ -355,6 +367,7 @@ pub enum GameError {
     LegacyMotionIntent,
     LegacyMovementProfileIntent,
     LegacyCanonIntent,
+    LegacyNativeRecipeIntent,
     UnreceiptedPromotion,
     WrongTick { expected: Tick, actual: Tick },
     StateDiverged { saved: u64, restored: u64 },

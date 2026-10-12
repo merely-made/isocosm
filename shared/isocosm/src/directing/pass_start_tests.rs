@@ -100,6 +100,7 @@ fn replay(s: &Session) {
 
 fn watched(g: Genesis, mode: Execution) -> Session {
     let mut s = Session::new(g, mode).unwrap();
+        s.sim.state.movement = Movement::ImmediateV3;
     s.sim.watch("test:early");
     s.sim.watch("ecology:feed-1");
     s
@@ -394,6 +395,7 @@ fn answered_bond_credits_live_mood_relief_despite_its_matter_cost() {
     g.rules.processes = BTreeMap::from([(relief.id.clone(), relief)]);
     for mode in [Execution::Individuals, Execution::Grouped] {
         let mut s = Session::new(g.clone(), mode).unwrap();
+        s.sim.state.movement = Movement::ImmediateV3;
         let (participant, _) = super::tests::played(&mut s);
         s.command(Command::Nudge {
             participant,

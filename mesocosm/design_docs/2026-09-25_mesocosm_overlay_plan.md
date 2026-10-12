@@ -2,10 +2,13 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-10-10:** M0/M1 done; M2 realigned to native Isocosm with
+**Status, 2026-10-11:** M0/M1 done; M2 realigned to native Isocosm with
 certification in the after-pass. Directing owns M3 and the interim M4
 (800), built under the compile gate. This plan retains the profile, contract
-and full in-site M4, which remains open.
+and full in-site M4, which remains open. Explicit caller-geometry sight and
+native-awareness scene filtering are applied. Mesocosm and the shared host
+passed all-target/all-feature compiler checks; runtime acceptance is pending.
+Chosen-process carve/deposit binding still requires a ruling.
 
 ## Current state, 2026-10-10
 
@@ -24,11 +27,13 @@ M3 and site-grain interim M4 are the
 [directing plan](2026-10-08_directing_interim_m4_plan.md)'s; migration is
 not their draw or headed certification.
 
-Full M4 still must connect in-site acts and contact to the same accepted
-world: isometer-space lift/queries, native `Command::Edit` and `Patch`,
-and perception through 741's ray. A lifted site and presentation placement
-alone do not meet those conditions. The body path still uses LiveBody here;
-796's tenant adoption belongs to the presentation lane.
+Full M4 still must connect chosen in-site acts and contact to the same
+accepted world. `mesocosm-runtime::perception` now refines native awareness
+through 741's ray with explicit actual cells and range; `Patch` remains
+native, and scene lowering withdraws departed or refused inputs. The shared
+host registers Mesocosm's actual Section on its rendering device. These
+source changes leave native targeting at site grain and chosen-process
+`Edit` binding open; presentation spots never supply sight geometry.
 
 *The dated profile, absorption survey and receipts below remain as written (793).*
 
@@ -306,6 +311,24 @@ All three taken on 2026-09-25, the day the plan was drafted.
    plan when M3 lands.
 
 ## Findings
+
+- **2026-10-11, Q16 source integration:** `mesocosm-runtime::perception`
+  derives the edited native site's `Volume` and `Places`. Its `Sight` takes
+  explicit caller eye/target cells and range, validates living residency and
+  admitted patches, then refines the native survival knowledge view through
+  `Places::sees` (740, 741). Patch identity anchors and presentation spots
+  supply neither eye position nor range. Runtime and owned/borrowed scene
+  APIs use the same refinement when actual geometry is supplied. Default
+  site-grain survival scenes use the native view; departure or failed lifting
+  withdraws the old owned scene, and terrain refresh also tracks condition
+  changes rather than only edit count. These are source changes, uncompiled
+  in this lane. Native process targets remain at site grain. Carve/deposit
+  still need a chosen-process resolution binding to `Command::Edit { by }`;
+  679 prevents restoring their player-driving intents. The actual display
+  path presents an empty frame after withdrawal, clears captured body/terrain
+  pixels and inspection queries, and retains the current native chrome.
+  Borrowed producers publish an empty texture instead of returning the
+  previous-frame-retaining `None`. Full M4 is open.
 
 - **2026-09-25:** `mesocosm-core` counted at 44,901 lines and
   `shared/isocosm` at 3,208 (`wc -l` over each `src` tree's `.rs` files);

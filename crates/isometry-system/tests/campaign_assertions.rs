@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 use isocosm::asserted::Assertion;
-use isocosm::legacy::campaign::{
+use isometry_campaign::{
     CampaignDraft, EntropyTape, GenValue, GeneratorRequest, StoryletEffect,
 };
 use isometry_system::{GeneratorLimits, GeneratorPack};

@@ -125,7 +125,7 @@ fn attack_expr_folds_str_mod_and_proficiency() {
 
 #[test]
 fn equipped_modifier_changes_effective_attack_without_mutating_sheet() {
-    use isocosm::legacy::campaign::{
+    use isometry_campaign::{
         EquipmentSlot, Inventory, ItemId, ItemInstance, ItemModifier, ItemModifierKind,
     };
 

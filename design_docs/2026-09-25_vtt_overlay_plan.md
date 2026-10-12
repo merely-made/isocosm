@@ -2,6 +2,23 @@
 
 **Date:** 2026-09-25
 
+**Current status, 2026-10-11:** Native founding/profile attachment, publication,
+site-space, native travel-result and shared-host VTT sources are applied in the
+combined migration. The root workspace and shared host passed their current
+all-target/all-feature compiler checks. Current runtime acceptance remains
+open; the earlier dated nine-workspace receipts certify their earlier source.
+Campaign content, maps, item proposals, storylet offers, private facts and
+chronicle arrival adapters now belong to `isometry-campaign`. Native Isocosm
+has no `legacy/campaign` module or entropy-driven faction turn. `CampaignWorld`
+remains an asserted-entry reading with table metadata for sim-off authoring;
+native accepted history and state remain the Session's. Read-only native
+geography takes explicit native viewer IDs and uses actual residence and native
+event knowing. Participant/party binding remains open; Character owner metadata
+and old table discovery do not grant it. Until that binding exists, the native
+campaign refuses the old travel/map-reading UI path. Table-only travel is kept.
+Headed, current protocol/archive/save, native polity/time-consent and complete V2
+acceptance remain open.
+
 **Status, 2026-10-10, Q2:** V2 is open in push mode (798). The contract's
 assertions translate to native entries (795), which the campaign and each
 replicated peer fold (768). This boundary does not complete V2's native
@@ -753,3 +770,26 @@ what each left open lands here, so it has a live owner.
   Immutable native readings are trusted adapter inputs; seat/awareness
   filtering and runtime product publication are later V2 work. The existing
   product still uses its legacy campaign path until those slices land.
+
+- **2026-10-11, bounded V2 ownership completion source:** Product campaign
+  vocabulary and the native-assertion fold moved to `isometry-campaign/src/content/`,
+  with public exports and all product consumers retargeted. The useful chronicle
+  import proof/example and their authentic played/RNG bytes moved into the campaign
+  crate; `wing-formats` still owns Chronicle, Deed and PartOrigin. The obsolete
+  faction generator and host/Sim/iroh/bridge commit doors were removed. Its two
+  entropy-turn/banked-time tests retired under 247 and 672; native noun/polity
+  admission remains named by `native_reading_carries_all_nouns_and_groups`, and
+  actual native polity advancement/unanimous downtime remains an acceptance
+  obligation, not an inherited proof from those retired tests.
+  Serialized WorldEvent/GameEvent variants and their order are retained, including
+  the table metadata carriers; only the process-local faction bridge variant left.
+  `native::Reading::geography` exposes admitted site labels and actual route
+  weights only for explicit viewers' residence/known site events; journey events
+  supply no site reach. The native knowing/replay test now covers that projection,
+  including undisclosed and unknown viewers. Native travel result verification
+  reads `resident_site()` rather than a stale departure place.
+  Current native campaigns refuse old table travel, pace, exploration and map-read
+  requests until participant binding reaches the same Session. Sim-off behavior
+  is retained. Neither optional character owner metadata nor old `party_known`
+  creates a native participant or knowing fact. Compiler, product/runtime,
+  protocol/archive/save and headed qualification remain unrun for this source.

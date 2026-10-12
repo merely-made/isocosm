@@ -100,7 +100,7 @@ impl CampaignRepository {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::campaign::{
+    use isometry_campaign::{
         EntropyTape, EquipmentSlot, GenValue, GenerationRecord, GeneratorRequest, Inventory,
         ItemId, ItemInstance, ItemProposal, RevealCondition, SecretFact, WorldFact,
     };
@@ -177,6 +177,7 @@ mod tests {
             maps: Default::default(),
             active_map: None,
             world: Default::default(),
+            native: None,
             clocks: Default::default(),
 
             party_cap: isonetry::default_party_cap(),

@@ -4,14 +4,13 @@
 use eponym_play::identity::{BodyRevisionId, SubjectId};
 use eponym_play::timed_action::{Direction, LimbBinding, StrikeReceipt};
 use eponym_play::*;
-use isocosm::lineage::{LineageBody as BodyDocument, SpeciesId};
-use isometer_core::VolumeRef;
+use isocosm::lineage::SpeciesId;
 
 const ACTOR: SubjectId = SubjectId(31);
 const TARGET: SubjectId = SubjectId(32);
 
 fn setup() -> GameState {
-    let mut game = GameState::new(World::generate(7, WorldConfig::default()).unwrap())
+    let mut game = GameState::new(World::generate_native_fixture(7, WorldConfig::default(), NativeFixtureProfile::PreciseCombatV1).unwrap())
         .with_motion_solver(eponym_motion::SOLVER);
     let at = game
         .items()
@@ -21,12 +20,13 @@ fn setup() -> GameState {
             _ => None,
         })
         .unwrap();
-    for (subject, dimensions) in [(ACTOR, [1; 3]), (TARGET, [1, 3, 1])] {
-        game.apply(GameIntent::Generate {
+    for (subject, recipe) in [(ACTOR, NativeFixtureRecipe::ProbeActorV1), (TARGET, NativeFixtureRecipe::ProbeTargetV1)] {
+        game.apply(GameIntent::GenerateNativeRecipe {
             tick: game.next_tick(),
             subject,
             body_seed: 1,
             at,
+            recipe,
         })
         .unwrap();
         game.apply(GameIntent::Name {
@@ -39,12 +39,7 @@ fn setup() -> GameState {
             tick: game.next_tick(),
             subject,
             revision: BodyRevisionId(0),
-            document: Box::new(BodyDocument::new(
-                SpeciesId(1),
-                VolumeRef::from_tag(1),
-                100,
-                dimensions,
-            )),
+            document: Box::new(game.native_anatomy(subject, SpeciesId(1)).unwrap()),
         })
         .unwrap();
     }

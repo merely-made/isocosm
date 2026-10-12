@@ -1,13 +1,5 @@
-//! The downtime surface (C7, "factions as participants"): a DM-only table for
-//! the faction turn.
-//!
-//! The host rolls a tick -- a move per faction, proportional to banked world
-//! time -- and hands the view [`FactionMoveRow`]s. This only *displays* the
-//! batch and lets the DM edit it: cycle the moves, strike the ones it does not
-//! want, reroll for a fresh batch, and commit the keepers. Committing flattens
-//! each kept move to ordinary world events on the host, which replicate like any
-//! other. A joined client never rolls a tick (the roll reads the world and
-//! spends host entropy), so it never receives this surface.
+//! The retained table downtime surface. Its rows grant no faction acts.
+//! The entropy turn is retired; native time requires unanimous consent.
 //!
 //! The selected move renders through Cambium's catalog `summary_body`, isometry's
 //! first use of a catalog composition here: a titled record (the verb) with the

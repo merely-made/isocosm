@@ -2,16 +2,18 @@
 
 **Date:** 2026-09-15
 
-**Status, 2026-10-10:** the shared sheet, panels and host assembly exist.
-The mode host remains unbuilt (442 to 445); Mesocosm's D5 supplies a native
-mode, so the old wait on M3 is removed.
+**Status, 2026-10-11:** the mode host is implemented in `host/` over one
+native session and shared rendering device. Borrowed VTT, Eponym and
+Mesocosm inputs, transactional saves and per-window attention are applied.
+Isomere and the combined host passed all-target/all-feature compiler checks;
+host runtime and headed two-window acceptance remain open.
 
-## Current state, 2026-10-10
+## Current state, 2026-10-11
 
 `shared/isomere/src/lib.rs` exposes the shared sheet, viewport, examiner,
 journal, status and optional host assembly. Those implemented M0 to M4
-lanes are distinct from §2.4's one-window mode host; this checkout has no
-mode-host workspace.
+lanes are distinct from §2.4's mode host, now present as the separate
+`host/` workspace. It borrows native authority and each product's inputs.
 
 Mesocosm runs a native session through
 `mesocosm/crates/mesocosm-runtime/src/runtime.rs`. D5 switched its host
@@ -30,9 +32,9 @@ contribute to that participant's single attention set. Their pinned
 subjects and close-up regions combine; closing or replacing one window
 withdraws only that contribution. Modes and controls remain independent
 under 443. Native play, care and seat access retain their existing owners.
-Q14 has an uncompiled source proposal for the value union; native admission,
-history, transactional host binding, presentation filtering and headed
-two-window acceptance remain open.
+The native admission/history, transactional host binding and presentation
+filtering are applied in source. The latest combined host runtime and
+headed two-window checks remain open.
 
 *The dated design and receipts below remain as written (793).*
 
@@ -316,6 +318,17 @@ in parallel (disjoint panels), then M4, then M5 and M6.
 
 ## Progress
 
+- **2026-10-11, native attention/host core prepared:** CORE31 is
+  applied in the primary checkout, including the native union of active
+  windows under 815 and the host command/admission/lifecycle source.
+  Source review is qualified; compilation, saved lifecycle and headed
+  product binding are still open. The initial execution freeze stopped
+  on unrelated compiler ownership. Ruling 824 conditionally admits one
+  queue Cargo job alongside unrelated builds after RAM, CPU, GPU and
+  SSD checks with separate output custody. The revised guard is being
+  reviewed. This does not certify M3 or replace native/spatial/headed
+  acceptance. Earlier dated records below are retained.
+
 - **2026-10-10, Q1:** current ownership and status checked against the lane
   tree under 793; dated prose retained. Documentation verification only;
   no new test, draw or headed certification.
@@ -571,3 +584,5 @@ in parallel (disjoint panels), then M4, then M5 and M6.
 - **2026-10-01:** the knowledge contract ruled (445): a window's access
   follows its seat and subject, never its mode. §2.4 has no open item left;
   the host waits on Mesocosm's M3.
+
+- **2026-10-11, combined migration execution:** CORE31 and the reviewed journey/body/VTT migrations are applied together. Final-state compiler and product checks replace repeated intermediate-state certification. Native attention and shared-world/window lifecycle checks remain required; inventory listing alone does not certify M3.

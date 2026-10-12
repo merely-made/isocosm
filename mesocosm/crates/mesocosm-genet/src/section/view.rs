@@ -14,7 +14,7 @@ impl super::Section {
     pub(super) fn view(&self, centre: [f32; 3]) -> SlabCamera {
         SlabCamera {
             centre,
-            forward: self.mode.forward(),
+            forward: self.custom_forward.unwrap_or_else(|| self.mode.forward()),
             half_height: self.half_height,
             aspect: self.aspect(),
             depth: super::SLAB_DEPTH,
@@ -22,10 +22,20 @@ impl super::Section {
         }
     }
 
+    /// Optional host-local orientation over the same terrain/body/cull camera.
+    pub fn set_forward(&mut self, forward: Option<[f32; 3]>) -> Result<(), String> {
+        if forward.is_some_and(|f| SlabCamera::new([0.0;3], f, self.half_height, 1.0, super::SLAB_DEPTH).is_none()) {
+            return Err("invalid local section orientation".into());
+        }
+        if self.custom_forward != forward { self.invalidate_query(); self.custom_forward = forward; }
+        Ok(())
+    }
+
     pub fn set_mode(&mut self, mode: CameraMode) {
         if self.mode != mode {
             self.invalidate_query();
             self.mode = mode;
+            self.custom_forward = None;
         }
     }
 }

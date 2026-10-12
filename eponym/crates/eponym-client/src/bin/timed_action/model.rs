@@ -130,7 +130,7 @@ impl App {
             tick,
             subject,
             revision: eponym_play::identity::BodyRevisionId(0),
-            document: Box::new(three_lives::three_lives()[0].body.clone()),
+            document: Box::new(game.native_anatomy(subject, three_lives::WETLAND_LINE).unwrap()),
         })
         .unwrap();
         support::configure_keeper(&mut game, subject);
@@ -167,7 +167,7 @@ impl App {
             tick,
             subject: target,
             revision: eponym_play::identity::BodyRevisionId(0),
-            document: Box::new(target_body()),
+            document: Box::new(game.native_anatomy(target, SpeciesId(73)).unwrap()),
         })
         .unwrap();
         let tick = game.next_tick();

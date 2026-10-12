@@ -36,9 +36,10 @@ impl Host {
         let focused = self.config.dev.then(|| self.followed()).flatten();
         let (steps, critter) = (self.steps, self.runtime.critter());
 
-        let Some(scene) = &self.scene else { return };
+        let scene = self.scene.as_ref();
         let Some(gpu) = &mut self.gpu else { return };
-        if rebound && let Err(error) = gpu.section.set_ground(&scene.ground) {
+        if rebound && let Some(scene) = scene
+            && let Err(error) = gpu.section.set_ground(&scene.ground) {
             eprintln!("section: {error}");
         }
         gpu.section.set_half_height(half);
@@ -48,12 +49,13 @@ impl Host {
             .configure_terrain(self.config.terrain_style, centre, at[1] as f32);
         gpu.section
             .set_body_focus(focused, self.inspection.selected);
-        let (pose, dropped) = match section::pose_of(scene, 1.0) {
+        let (pose, dropped) = match scene.and_then(|s| section::pose_of(s, 1.0)) {
             Some((pose, dropped)) => (Some(pose), dropped),
             None => (None, 0),
         };
         self.body_capsules_dropped = dropped;
-        let roster = section::roster_of(scene, gpu.section.slab_window(centre), 1.0);
+        let roster = scene.map(|s| section::roster_of(s, gpu.section.slab_window(centre), 1.0))
+            .unwrap_or_default();
 
         let surface_texture = match gpu.surface.get_current_texture() {
             wgpu::CurrentSurfaceTexture::Success(texture)
@@ -65,13 +67,13 @@ impl Host {
             _ => return,
         };
         let view = surface_texture.texture.create_view(&Default::default());
-        let section_frame = SectionFrame {
+        let section_frame = scene.map(|scene| SectionFrame {
             scene,
             dirty: &[],
             centre,
             pose: pose.as_ref(),
             roster: &roster,
-        };
+        });
         let sim = self.runtime.sim();
         if let Some(lanes) = &mut gpu.chrome {
             let frame = (gpu.config.width, gpu.config.height);
@@ -82,8 +84,13 @@ impl Host {
                 .create_command_encoder(&wgpu::CommandEncoderDescriptor {
                     label: Some("mesocosm section tenant"),
                 });
-            if let Err(error) = gpu.section.render(&mut tenant, section_frame) {
-                eprintln!("section: {error}");
+            if let Some(section_frame) = section_frame {
+                if let Err(error) = gpu.section.render(&mut tenant, section_frame) {
+                    eprintln!("section: {error}");
+                    gpu.section.withdraw(&mut tenant, None);
+                }
+            } else {
+                gpu.section.withdraw(&mut tenant, None);
             }
             gpu.queue.submit(Some(tenant.finish()));
 
@@ -97,11 +104,12 @@ impl Host {
             let held = checkpoint.as_ref().filter(|_| !lanes.board.standing());
             lanes.checkpoint.refresh(&lanes.device, sim, held);
 
+            let body_view = scene.and_then(|_| gpu.section.body_view());
             let framed = lanes.device.frame_master(
                 gpu.section.display_texture(),
                 frame,
                 gpu.section.body_stats().fallback_bodies as u64,
-                gpu.section.body_view().as_ref(),
+                body_view.as_ref(),
             );
             gpu.last_tenant_receipt = Some(framed.receipt);
             let master = framed.texture.create_view(&Default::default());
@@ -128,8 +136,13 @@ impl Host {
                 .create_command_encoder(&wgpu::CommandEncoderDescriptor {
                     label: Some("chromeless frame"),
                 });
-            if let Err(error) = gpu.section.draw(&mut encoder, &view, section_frame) {
-                eprintln!("section: {error}");
+            if let Some(section_frame) = section_frame {
+                if let Err(error) = gpu.section.draw(&mut encoder, &view, section_frame) {
+                    eprintln!("section: {error}");
+                    gpu.section.withdraw(&mut encoder, Some(&view));
+                }
+            } else {
+                gpu.section.withdraw(&mut encoder, Some(&view));
             }
             gpu.queue.submit(Some(encoder.finish()));
         }

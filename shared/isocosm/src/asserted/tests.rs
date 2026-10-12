@@ -134,7 +134,7 @@ fn authored_nouns_land_on_native_nouns() {
     assert!(related(&sim.state.relations, mara, "member", polity).is_some());
     assert!(sim.state.laws.contains_key("iron"));
     let event = &sim.state.events["line:arrival"];
-    assert_eq!((event.place, event.subject), (ford, mara));
+    assert_eq!((event.place.site().unwrap(), event.subject), (ford, mara));
     assert!(
         s.command(Command::Assert(route("bad", "ford", "nowhere")))
             .is_err()

@@ -124,9 +124,9 @@ impl Host {
             input::DevKey::Kill => DevIntent::Kill {
                 organism: EntityHandle(followed.unwrap_or_default()),
             },
-            input::DevKey::PlaceMatter => DevIntent::PlaceMatter {
-                site: PlaceHandle(self.runtime.played().map_or(0, |e| e.place)),
-                mass_mg: super::DEV_PLACE_MG,
+            input::DevKey::PlaceMatter => {
+                let Some(site) = self.runtime.played().and_then(|e| e.resident_site()) else { return; };
+                DevIntent::PlaceMatter { site: PlaceHandle(site), mass_mg: super::DEV_PLACE_MG }
             },
             _ => return,
         };

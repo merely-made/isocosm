@@ -102,7 +102,9 @@ pub fn dominant_lineages(sim: &Simulation) -> BTreeMap<Id, Option<Key>> {
     let mut count: BTreeMap<(Id, Key), u64> = BTreeMap::new();
     for group in s.population.groups.values().filter(|g| g.entity.alive) {
         let e = &group.entity;
-        *count.entry((e.place, e.lineage.clone())).or_default() += group.count;
+        if let Some(site) = e.resident_site() {
+            *count.entry((site, e.lineage.clone())).or_default() += group.count;
+        }
     }
     let mut holders: BTreeMap<Id, Option<Key>> = s.sites.keys().map(|id| (*id, None)).collect();
     let mut best: BTreeMap<Id, u64> = BTreeMap::new();
@@ -159,7 +161,7 @@ pub fn minimap_leaf(sim: &Simulation, played: Option<Id>) -> crate::leaf::Minima
     let pop = &sim.state().population;
     let player = played
         .and_then(|c| pop.get(c))
-        .and_then(|e| points.get(&e.place))
+        .and_then(|e| e.resident_site()).and_then(|site| points.get(&site))
         .map(|p| (p.x, p.y));
     crate::leaf::MinimapLeaf::new(scene, tints, player)
 }

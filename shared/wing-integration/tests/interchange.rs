@@ -9,7 +9,7 @@
 //! producer's live bytes against the retained artifact, and the same bytes
 //! through the baker.
 
-use isocosm::legacy::campaign::{Arrival, ChronicleError};
+use isometry_campaign::{Arrival, ChronicleError};
 use isocosm::lineage::chronicle::Deed;
 use isocosm::lineage::{
     Chronicle, Consequence, LineageBody as BodyDocument, Origin, Provenance, SpeciesId,

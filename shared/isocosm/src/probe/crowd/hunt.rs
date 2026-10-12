@@ -91,7 +91,7 @@ fn meal(p: &Process) -> Result<Meal<'_>> {
 impl Meal<'_> {
     fn accepts(&self, e: &Entity, site: Id, rules: &Rules) -> bool {
         let t = self.selector;
-        e.place == site
+        e.resident_site() == Some(site)
             && t.alive.is_none_or(|alive| alive == e.alive)
             && t.lineage.as_ref().is_none_or(|l| *l == e.lineage)
             && (t.among.is_empty() || t.among.contains(&e.lineage))
@@ -108,6 +108,7 @@ impl Crowd<'_> {
         let start = self.sites.clone();
         let mut at: BTreeMap<Id, Vec<(Entity, u64, u64, Who)>> = BTreeMap::new();
         for (e, n, who) in hunters {
+            if e.resident_site().is_none() { self.work.blocked += n; continue; }
             let site = start.get(&e.place).ok_or("a bin at an unknown site")?;
             if m.accepts(&e, e.place, rules) {
                 return Err(format!("{}: a hunter is its own prey", p.id));
@@ -253,7 +254,7 @@ impl Crowd<'_> {
             match who {
                 Who::Bin => self.moved(&from, to, 1),
                 Who::Kin(id) => {
-                    self.kin.insert(id, to);
+                    self.insert_kin(id, to);
                 },
             }
         }

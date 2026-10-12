@@ -17,6 +17,9 @@ use crate::{GameError, GameEvent};
 
 use super::GameState;
 
+#[cfg(test)]
+mod native_source_tests;
+
 impl GameState {
     /// Wounds `subject` by `harm` and through `severed`; returns its
     /// revision after, whether it died, and the events of any severing.
@@ -141,6 +144,9 @@ impl GameState {
                 .collect();
             self.anatomies
                 .reconcile(subject, from_revision, revision, &fresh)?;
+            if self.world.developed_bodies() {
+                self.refresh_native_anatomy(subject)?;
+            }
             events.push(GameEvent::AnatomyReconciled {
                 tick,
                 subject,

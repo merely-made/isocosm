@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::Replay;
-use crate::contract::{self, Refusal};
-use isocosm::Command;
+use crate::contract::Refusal;
 use isocosm_overlay::vtt::Assertion;
 use std::fmt;
 
@@ -31,13 +30,7 @@ impl Replay {
     /// Admit a trusted caller's whole table batch through the contract.
     pub fn with_contract_assertions(&self, assertions: &[Assertion]) -> Result<Self, ContractError> {
         let mut session = self.session.clone();
-        for (index, assertion) in assertions.iter().enumerate() {
-            let entry = contract::lower(assertion, &session.sim)
-                .map_err(|refusal| ContractError::Lowering { index, refusal })?;
-            session
-                .command(Command::Assert(entry))
-                .map_err(|reason| ContractError::Native { index, reason })?;
-        }
+        super::borrowed::submit_contract_assertions(&mut session, assertions)?;
         Ok(Self { session })
     }
 }

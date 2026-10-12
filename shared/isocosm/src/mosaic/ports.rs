@@ -10,6 +10,8 @@ use crate::kingdom;
 use crate::process::{FeedingMode, IntakePort, NisKind, Process, Registry};
 use crate::schema::*;
 
+pub mod admission;
+
 /// The function a port's supporting definition binds, natively.
 fn supporting(port: IntakePort) -> Option<Key> {
     let support = port.support()?;

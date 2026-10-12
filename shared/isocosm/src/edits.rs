@@ -56,7 +56,7 @@ impl Simulation {
     pub fn edit_by(&mut self, actor: Id, site: Id, edit: Edit) -> Result<()> {
         self.admit(site, &edit)?;
         let member = self.state.population.get(actor).ok_or("unknown actor")?;
-        if !member.alive || member.place != site {
+        if !member.alive || member.resident_site() != Some(site) {
             return Err("an actor not standing in the site".into());
         }
         let mut ledger = member.accounts.clone();
@@ -97,7 +97,7 @@ impl Simulation {
     /// site; a move to another site clears it (ruling 740).
     pub fn set_patch(&mut self, entity: Id, patch: Option<PlaceId>) -> Result<()> {
         let member = self.state.population.get(entity).ok_or("unknown entity")?;
-        if patch.is_some_and(|p| p.site != member.place) {
+        if patch.is_some_and(|p| member.resident_site() != Some(p.site)) {
             return Err("a patch outside the entity's site".into());
         }
         self.state.population.lift(entity)?.patch = patch;

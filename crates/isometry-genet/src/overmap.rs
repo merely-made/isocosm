@@ -9,12 +9,30 @@
 use super::*;
 
 impl App {
+    fn refuse_unbound_native_geography(&mut self, ctx: &mut Ctx<'_>) -> bool {
+        let ui = ctx.runner.state();
+        if ui.native.world.is_none() { return false; }
+        let pending = ui.overmap_travel_request.is_some() || ui.overmap_read_request
+            || ui.overmap_pace_request.is_some() || ui.overmap_stance_request.is_some();
+        if pending {
+            ctx.runner.update(|ui| {
+                ui.overmap_travel_request = None;
+                ui.overmap_read_request = false;
+                ui.overmap_pace_request = None;
+                ui.overmap_stance_request = None;
+                ui.status = "choose the party's native members before travel or map reading".into();
+            });
+        }
+        true
+    }
+
     /// The overmap surface (C8). When the table clicks a place to travel to,
     /// resolve the trip and move the party. Host-adjudicated, like an action:
     /// the authority rolls the navigation (`resolve_travel`), spends the time,
     /// and emits a `TravelResolved` verdict every peer applies. If the party is
     /// not on the overmap yet, the first click simply places it there.
     pub(crate) fn pump_overmap(&mut self, ctx: &mut Ctx<'_>) {
+        if self.refuse_unbound_native_geography(ctx) { return; }
         // Cheap flag first: this pump runs after every dispatch, and cloning the
         // world to then discover there is no request would tax every click.
         let (request, remote) = {
@@ -132,6 +150,7 @@ impl App {
     /// not a travel resolution. A pace sets the party's marching speed; a stance
     /// is set on the party's lead token, which the travel rule then reads.
     pub(crate) fn pump_overmap_orders(&mut self, ctx: &mut Ctx<'_>) {
+        if self.refuse_unbound_native_geography(ctx) { return; }
         let (pace_req, stance_req, remote) = {
             let r = &*ctx.runner;
             let s = r.state();
@@ -188,6 +207,7 @@ impl App {
     /// reveal the places just beyond the known frontier, so a lettered party sees
     /// further than it has walked and a dull-witted one learns nothing.
     pub(crate) fn pump_overmap_read(&mut self, ctx: &mut Ctx<'_>) {
+        if self.refuse_unbound_native_geography(ctx) { return; }
         // Cheap flag first; the world clone below is only for a live request.
         let (read_req, remote) = {
             let r = &*ctx.runner;

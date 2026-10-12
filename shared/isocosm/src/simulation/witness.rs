@@ -24,6 +24,7 @@ impl Simulation {
         put(&mut w, "world", world);
         put(&mut w, "tick", &s.tick);
         put(&mut w, "next_action", &s.next_action);
+        if !s.movement.immediate() { put(&mut w, "movement", &s.movement); }
         put(
             &mut w,
             "population",
@@ -38,7 +39,7 @@ impl Simulation {
         put(&mut w, "roots", &s.roots);
         put(&mut w, "released", &s.released);
         put(&mut w, "record", &s.record);
-        put(&mut w, "events", &s.events);
+        put(&mut w, "events", &preimage::event::Events(&s.events));
         put(&mut w, "reach", &s.reach);
         if !s.edits.is_empty() {
             put(&mut w, "edits", &s.edits);
@@ -55,6 +56,8 @@ impl Simulation {
         if !s.asserted.is_empty() {
             put(&mut w, "asserted", &preimage::Records::from(&s.asserted));
         }
+        if !s.attention.is_empty() { put(&mut w, "attention", &s.attention); }
+        if !s.spreads.is_empty() { put(&mut w, "spreads", &s.spreads); }
         w
     }
     /// One entry per entity, every critter by id, its cohort's digest
@@ -67,6 +70,7 @@ impl Simulation {
         put(&mut w, "world", world);
         put(&mut w, "tick", &s.tick);
         put(&mut w, "next_action", &s.next_action);
+        if !s.movement.immediate() { put(&mut w, "movement", &s.movement); }
         put(&mut w, "next_id", &s.population.next_id);
         for (&first, cohort) in &s.population.groups {
             let digest =
@@ -133,7 +137,7 @@ impl Simulation {
             put(&mut w, label("mark", [axis]), &s.record.standing(axis));
         }
         for (key, event) in &s.events {
-            put(&mut w, label("event", [key]), event);
+            put(&mut w, label("event", [key]), &preimage::event::Event::from(event));
         }
         for (event, sites) in &s.reach.arrivals {
             for (site, arrival) in sites {
@@ -144,6 +148,8 @@ impl Simulation {
                 );
             }
         }
+        if !s.attention.is_empty() { put(&mut w, "attention", &s.attention); }
+        if !s.spreads.is_empty() { put(&mut w, "spreads", &s.spreads); }
         w
     }
 }

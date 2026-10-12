@@ -351,6 +351,7 @@ impl ProbeFounding {
         let (site_map, population) =
             self.found(&drawn, &lineages, sites, &per_site, hunters.as_ref())?;
         let genesis = Genesis {
+            spreads: Default::default(),
             version: crate::VERSION,
             seed: self.seed,
             dynamics: None,
@@ -467,6 +468,7 @@ pub(super) fn member(
         place,
         arrived: 0,
         visits: vec![],
+        journey: None,
         born: 0,
         alive: true,
         body_revision: 1,

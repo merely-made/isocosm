@@ -45,7 +45,8 @@ impl Simulation {
                 Some(id) => self.body_at_start(id).map_or(Named::Missing, Named::Found),
             },
             part,
-            site: self.site_at_start(place),
+            site: self.body_at_start(actor).and_then(Entity::resident_site)
+                .filter(|site| *site == place).and_then(|site| self.site_at_start(site)),
             tick: self.state.tick,
             related: &related,
             rules: &self.genesis.rules,
@@ -75,7 +76,7 @@ impl Simulation {
         if crate::directing::is_participant(b) {
             return false;
         }
-        (!selector.same_place || a.place == b.place)
+        (!selector.same_place || if self.state.movement.immediate() { a.place == b.place } else { a.colocated(b) })
             && selector.alive.is_none_or(|alive| alive == b.alive)
             && selector
                 .lineage

@@ -7,107 +7,11 @@ use state_witness::{Witness, first_divergence};
 use std::collections::BTreeMap;
 
 mod read;
-pub use read::{CheckpointV1, CheckpointV2, SavedV1, SavedV2};
+mod movement;
+pub use read::{CheckpointV1, CheckpointV2, SavedV1, SavedV2, LegacyCohort, LegacyEntity, LegacyGenesis, LegacyPart, LegacyPopulation};
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Command {
-    Act {
-        actor: Id,
-        target: Option<Id>,
-        process: Key,
-        cause: Option<Key>,
-    },
-    Inspect(Id),
-    Release(Id),
-    Collect,
-    Learn {
-        entity: Id,
-        event: Key,
-    },
-    /// The dev source places matter at a site (rulings 271, 344 and 358).
-    PlaceMatter {
-        site: Id,
-        account: Key,
-        amount: u64,
-    },
-    /// An edit to a site's volume (rulings 412, 696 and 739): by a member,
-    /// through its ledger, or with none by the dev source.
-    Edit {
-        site: Id,
-        edit: isometer_space::Edit,
-        #[serde(default, skip_serializing_if = "Option::is_none")]
-        by: Option<Id>,
-    },
-    /// A game places a member in a patch or room of its site, or takes it
-    /// out (rulings 422 and 740).
-    Patch {
-        entity: Id,
-        patch: Option<isometer_space::places::PlaceId>,
-    },
-    /// A participant joins, a placeless entity (ruling 688).
-    Join,
-    /// A participant takes up a critter, its bond seeded by the world's
-    /// setting (178): a deliberative one to direct, a sophont to drive
-    /// (671, 779).
-    Take {
-        participant: Id,
-        critter: Id,
-    },
-    /// A participant nudges its critter to attend or act (686, 690).
-    Nudge {
-        participant: Id,
-        critter: Id,
-        aim: crate::directing::Aim,
-        toward: crate::directing::Toward,
-        /// The act it names, a process key (784).
-        #[serde(default, skip_serializing_if = "Option::is_none")]
-        act: Option<Key>,
-    },
-    /// The dev source forces a birth to `parent` (ruling 782).
-    ForceBirth { parent: Id },
-    /// A dev kills `entity` (ruling 782).
-    Kill { entity: Id },
-    /// Places a part's cells exactly, as an authored script proposed for a
-    /// committed review offer (ruling 787).
-    Express {
-        entity: Id,
-        part: PartId,
-        tracts: Vec<(Key, Vec<crate::mosaic::CellId>)>,
-    },
-    /// Authored content asserted into the world (ruling 757).
-    Assert(crate::asserted::Assertion),
-    /// A lineage commits a variant of its development (ruling 752).
-    Revise {
-        lineage: Key,
-        development: crate::rules::Development,
-    },
-    /// A founder leaves its line for a new one, named (legacy speciation).
-    Speciate {
-        founder: Id,
-        name: Key,
-    },
-    /// A wound to a body, a part named or drawn by its cells (704 to 719):
-    /// how a game hands back a blow it resolved (669).
-    Wound {
-        entity: Id,
-        #[serde(default, skip_serializing_if = "Option::is_none")]
-        part: Option<PartId>,
-        cells: u32,
-    },
-    /// An outsider arrives (235, 238).
-    Arrive(crate::arrival::Arrival),
-    /// A body's geometry admitted (674).
-    Embody {
-        entity: Id,
-        body: isometer_core::BodyDocument,
-    },
-    /// `by` names `of` (36, 168, 200).
-    Name { by: Id, of: Id, name: String },
-    /// A record of knowing (771).
-    Know(crate::knowing::Knowing),
-    /// A deed, an ask or a step in an agreement's life (60, 63, 67).
-    Social(crate::social::Social),
-}
+mod command;
+pub use command::Command;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Entry {
@@ -119,7 +23,7 @@ pub struct Entry {
 }
 
 /// Saves have their own version: `crate::VERSION` also gates every genesis.
-pub const SAVE_VERSION: u32 = 3;
+pub const SAVE_VERSION: u32 = 4;
 
 /// An epoch boundary's per-field entries (rulings 633 and 651).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -131,6 +35,9 @@ pub struct Checkpoint {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Saved {
     pub version: u32,
+    /// v4 records the exact movement semantics; absent only in genuine v3.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub movement: Option<Movement>,
     pub genesis: Genesis,
     pub genesis_digest: Key,
     pub branch: Key,
@@ -202,6 +109,7 @@ impl Session {
             let next = self.advance(1)?;
             work.evaluations += next.evaluations;
             work.represented += next.represented;
+            work.arrivals += next.arrivals;
             work.accepted += next.accepted;
             work.blocked += next.blocked;
             each(&self.sim);
@@ -222,6 +130,7 @@ impl Session {
             let next = self.sim.advance(boundary - now)?;
             work.evaluations += next.evaluations;
             work.represented += next.represented;
+            work.arrivals += next.arrivals;
             work.accepted += next.accepted;
             work.blocked += next.blocked;
             // The budget counts members (ruling 285), the same in both modes.
@@ -282,6 +191,7 @@ impl Session {
                     | Command::Edit { by: None, .. }
                     | Command::ForceBirth { .. }
                     | Command::Kill { .. }
+                    | Command::AttachSite { attachment: crate::site_authoring::Attachment::New { .. }, .. }
             )
         };
         self.entries.iter().any(placed)
@@ -290,6 +200,7 @@ impl Session {
         let witness = self.sim.witness();
         Saved {
             version: SAVE_VERSION,
+            movement: Some(self.sim.state.movement),
             genesis: self.sim.genesis.as_ref().clone(),
             genesis_digest: crate::digest(&self.sim.genesis),
             branch: self.branch.clone(),
@@ -317,7 +228,12 @@ impl Session {
         }
     }
     pub fn load(saved: Saved, mode: Execution) -> Result<Self> {
-        if saved.version != SAVE_VERSION || crate::digest(&saved.genesis) != saved.genesis_digest {
+        let movement = match (saved.version, saved.movement) {
+            (3, None) => Movement::ImmediateV3,
+            (SAVE_VERSION, Some(movement)) => movement,
+            _ => return Err("save version or movement semantics mismatch".into()),
+        };
+        if crate::digest(&saved.genesis) != saved.genesis_digest {
             return Err("save version or genesis digest mismatch".into());
         }
         let session = Self::replay(
@@ -326,6 +242,7 @@ impl Session {
             saved.entries,
             saved.tick,
             mode,
+            movement,
             &[],
             |_, _| Ok(()),
         )?;
@@ -359,10 +276,12 @@ impl Session {
         entries: Vec<Entry>,
         tick: Tick,
         mode: Execution,
+        movement: Movement,
         stops: &[Tick],
         mut at: impl FnMut(usize, &Simulation) -> Result<()>,
     ) -> Result<Self> {
         let mut session = Self::new(genesis, mode)?;
+        session.sim.state.movement = movement;
         session.branch = branch;
         let mut next = 0;
         let mut reach = |session: &mut Self, until: Tick| -> Result<()> {
@@ -399,6 +318,7 @@ impl Session {
             return Err("cannot fork an unplayed future".into());
         }
         let mut fork = Self::new(self.sim.genesis.as_ref().clone(), self.sim.mode)?;
+        fork.sim.state.movement = self.sim.state.movement;
         fork.branch = branch;
         for entry in self.entries.iter().filter(|e| e.tick <= tick) {
             fork.replay_until(entry.tick)?;
@@ -417,6 +337,9 @@ impl Session {
         if self.sim.state.tick != other.sim.state.tick {
             return Err("different spans require realignment".into());
         }
+        if self.sim.state.movement != other.sim.state.movement {
+            return Err("histories use different movement semantics".into());
+        }
         if crate::digest(&self.sim.genesis) != crate::digest(&other.sim.genesis) {
             return Err("worlds have different founding facts".into());
         }
@@ -431,6 +354,7 @@ impl Session {
         let mut entries: Vec<_> = union.into_values().collect();
         entries.sort_by(|a, b| (a.tick, a.order, &a.id).cmp(&(b.tick, b.order, &b.id)));
         let mut proposed = Self::new(self.sim.genesis.as_ref().clone(), self.sim.mode)?;
+        proposed.sim.state.movement = self.sim.state.movement;
         proposed.branch = format!("branch:{}", crate::digest(&entries));
         let mut changes = Vec::new();
         for mut entry in entries {
@@ -452,7 +376,20 @@ impl Session {
 }
 
 fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
+    let outcome = dispatch(sim, command)?;
+    sim.refresh_attention();
+    sim.protect_attention();
+    Ok(outcome)
+}
+
+fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
     match command {
+        Command::Window(change) => sim.change_window(change),
+        Command::Spread(change) => sim.spread(change),
+        Command::Develop { entity, seed } => {
+            sim.develop_arrival(*entity, *seed)?;
+            Ok("developed".into())
+        },
         Command::Act {
             actor,
             target,
@@ -534,6 +471,7 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
         },
         Command::Speciate { founder, name } => sim.speciate(*founder, name),
         Command::Assert(assertion) => sim.assert(assertion),
+        Command::AttachSite { place, attachment } => sim.attach_site(place, attachment),
         Command::Wound {
             entity,
             part,

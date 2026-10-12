@@ -73,7 +73,7 @@ pub fn nudge(critter: Id, site: Id, picked: Option<Id>, meaning: NudgeMeaning) -
 /// A play key's intent while no question stands. `None` for every other key.
 pub fn intent_for(runtime: &Runtime, picked: Option<Id>, key: &Key) -> Option<MesocosmIntent> {
     let critter = runtime.critter()?;
-    let site = runtime.played()?.place;
+    let site = runtime.played()?.resident_site()?;
     let letter = match key {
         Key::Named(NamedKey::Space) => "e".to_owned(),
         Key::Character(c) => c.to_lowercase(),

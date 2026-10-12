@@ -68,8 +68,9 @@ impl GlyphReading {
     pub fn new(rules: GlyphRules, session: &Session) -> Result<Self, String> {
         let canon = Canon::new(rules.canon.clone())?;
         let pop = &session.sim.state().population;
-        let place = pop.get(rules.organism).filter(|e| e.alive).map(|e| e.place);
-        if place.is_none() {
+        let body = pop.get(rules.organism).filter(|e| e.alive);
+        let place = body.and_then(|e| e.resident_site());
+        if body.is_none() {
             return Err("glyph reading requires a living bound critter".into());
         }
         if rules.grants.is_empty() || rules.grants.len() > 4 {
@@ -123,7 +124,7 @@ impl GlyphReading {
             }
         }
         self.seen = session.entries.len();
-        let now = session.sim.state().population.get(me).map(|e| e.place);
+        let now = session.sim.state().population.get(me).and_then(|e| e.resident_site());
         if now.is_some() && now != self.place {
             self.grant(AcceptedKind::Moved, tick, &format!("place/{tick}"));
         }

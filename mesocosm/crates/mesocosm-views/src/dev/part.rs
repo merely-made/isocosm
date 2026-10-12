@@ -24,6 +24,7 @@ pub struct PartReading {
     pub history_event: String,
     pub lineage: String,
     pub donor: String,
+    pub scruple: String,
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
@@ -68,6 +69,12 @@ pub fn part_of(sim: &Simulation, critter: Id, part: PartId) -> PartInspection {
             history_event: String::new(),
             lineage: e.lineage.clone(),
             donor: origin,
+            scruple: match isocosm::matter::scruple::of(p, &sim.genesis().rules) {
+                Ok(mix) if mix.is_empty() => "no tissue".into(),
+                Ok(mix) => mix.iter().map(|(line, mg)| format!("{line}: {mg} mg"))
+                    .collect::<Vec<_>>().join(", "),
+                Err(why) => why,
+            },
         }),
         notice: None,
     }

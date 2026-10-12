@@ -11,6 +11,11 @@ impl Genesis {
         }
         self.rules.validate()?;
         self.population.validate(self.rules.limits.entities)?;
+        crate::spread::validate(&self.spreads, &self.rules, &self.population,
+            &self.sites, &self.lineages)?;
+        if self.spreads.transit.iter().any(|t| t.departed != 0) {
+            return Err("founding spread transit must depart at tick zero".into());
+        }
         if self.sites.is_empty()
             || self.sites.len() > self.rules.limits.sites
             || self.world.base_unit_micrometres == 0
@@ -73,21 +78,22 @@ impl Genesis {
                 }
             }
             for account in site.accounts.keys() {
-                if !self.rules.accounts.contains_key(account) {
+                if !self.rules.accounts.contains_key(account) && !self.spreads.owns(account) {
                     return Err("unknown site account".into());
                 }
             }
         }
         for group in self.population.groups.values() {
             let e = &group.entity;
-            if e.born != 0 || e.arrived != 0 || !e.visits.is_empty() {
+            if e.born != 0 || e.arrived != 0 || !e.visits.is_empty() || e.journey.is_some() {
                 return Err("founding bodies must begin at tick zero".into());
             }
             if !self.sites.contains_key(&e.place) || !self.lineages.contains_key(&e.lineage) {
                 return Err("entity references an absent place or lineage".into());
             }
             for key in e.accounts.keys() {
-                if !self.rules.accounts.contains_key(key) {
+                if !self.rules.accounts.contains_key(key) && !self.spreads.identities.contains(
+                    &crate::spread::Identity::Surface(key.clone())) {
                     return Err("unknown entity account".into());
                 }
             }

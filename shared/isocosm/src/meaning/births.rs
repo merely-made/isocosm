@@ -68,6 +68,7 @@ pub(crate) fn bear(
 /// A child of `parent` born at `tick`, holding nothing, with `body` and
 /// the segments its soma drew.
 pub(crate) fn newborn(parent: &Entity, body: Body, soma: Vec<u8>, tick: Tick) -> Entity {
+    // 821: the newborn inherits the actual remaining journey.
     let mut child = parent.clone();
     child.embody(body);
     child.soma = soma;

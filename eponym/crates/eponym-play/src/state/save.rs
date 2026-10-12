@@ -14,7 +14,8 @@ use isometer_core::snapshot;
 
 use super::GameState;
 use crate::{
-    COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION, GameError, GameIntent, GameSave,
+    CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION,
+    NATIVE_RECIPE_GAME_STATE_VERSION, GameError, GameIntent, GameSave,
     LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION, World,
 };
 
@@ -86,13 +87,18 @@ impl GameState {
         {
             return Err(GameError::LegacyMovementProfileIntent);
         }
-        if save.version < GAME_STATE_VERSION
+        if save.version < CANON_GAME_STATE_VERSION
             && save
                 .intents
                 .iter()
                 .any(|intent| matches!(intent, GameIntent::ReviseCanon { .. }))
         {
             return Err(GameError::LegacyCanonIntent);
+        }
+        if save.version < NATIVE_RECIPE_GAME_STATE_VERSION
+            && save.intents.iter().any(|i| matches!(i, GameIntent::GenerateNativeRecipe { .. }))
+        {
+            return Err(GameError::LegacyNativeRecipeIntent);
         }
         let world = World::restore_record(save.world)?;
         let mut state = Self::new(world).with_motion_solver(solver);

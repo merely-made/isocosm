@@ -158,6 +158,9 @@ impl HostSession {
             // Verdicts. A peer cannot choose whether it hit and for how much,
             // what a condition means, or how its own journey went.
             GameEvent::ActionResolved(_) => Some("actions are adjudicated by the host".to_owned()),
+            GameEvent::NativePublished(_) | GameEvent::NativeTravelResolved(_) => {
+                Some("native results are admitted by the host".to_owned())
+            },
             GameEvent::TravelResolved { .. } => {
                 Some("travel is adjudicated by the host".to_owned())
             }

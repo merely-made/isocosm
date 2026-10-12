@@ -357,7 +357,7 @@ pub(super) fn view(state: &Bench) -> Child {
                     .population
                     .groups
                     .iter()
-                    .filter(|(_, g)| g.entity.place == id && g.entity.method != Method::Inert)
+                    .filter(|(_, g)| g.entity.resident_site() == Some(id) && g.entity.method != Method::Inert)
                     .collect();
                 let count: u64 = groups.iter().map(|(_, g)| g.count).sum();
                 let alive: u64 = groups
@@ -417,7 +417,7 @@ pub(super) fn view(state: &Bench) -> Child {
                     "{} · {}\nSite {} · born {} · alive {}\nTraits: {}\n\n{}",
                     e.lineage,
                     e.kingdom,
-                    e.place,
+                    e.resident_site().map_or_else(|| "journey".into(), |site| site.to_string()),
                     e.born,
                     e.alive,
                     e.traits.iter().cloned().collect::<Vec<_>>().join(", "),

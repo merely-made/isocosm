@@ -8,11 +8,15 @@ use isocosm::{
 };
 use std::fmt;
 
+mod commands;
 mod contract;
 pub use contract::ContractError;
 
+mod borrowed;
+pub use borrowed::{WindowReading, submit_contract_assertions};
+
 mod reading;
-pub use reading::Reading;
+pub use reading::{Geography, Reading};
 
 /// Where the native operation refused an input.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -23,6 +27,8 @@ pub enum Phase {
         index: usize,
     },
     Load,
+    Command { index: usize },
+    Advance,
 }
 
 /// Native refusal text, retained verbatim beside its calling context.

@@ -15,7 +15,7 @@ use std::fs;
 use std::path::Path;
 use std::time::{Duration, Instant};
 
-use isocosm::legacy::campaign::{EntropyTape, GenValue, GenerationRecord, GeneratorRequest};
+use isometry_campaign::{EntropyTape, GenValue, GenerationRecord, GeneratorRequest};
 use isometry_core::{Facing, FieldValue, MapDocument, SheetData, Token, TokenId, TurnList};
 use isometry_system::{GeneratorCatalog, GeneratorLimits};
 use isonetry::iroh_link::{ClientNet, HostNet};
@@ -45,6 +45,7 @@ fn empty_snapshot() -> GameSnapshot {
         maps: BTreeMap::new(),
         active_map: None,
         world: Default::default(),
+        native: None,
         clocks: BTreeMap::new(),
         party_cap: isonetry::default_party_cap(),
         last_beats: Vec::new(),

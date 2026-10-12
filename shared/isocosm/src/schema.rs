@@ -11,6 +11,8 @@ pub type Tick = u64;
 pub type Key = String;
 pub type Ledger = BTreeMap<Key, u64>;
 
+pub mod spread;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Storage {
     Asserted,
@@ -88,6 +90,9 @@ pub struct Entity {
     pub place: Id,
     pub arrived: Tick,
     pub visits: Vec<Visit>,
+    /// Off-site saved authority; absent fields preserve earlier preimages.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub journey: Option<Journey>,
     pub born: Tick,
     pub alive: bool,
     pub body_revision: u64,
@@ -135,7 +140,44 @@ pub struct Varied {
     pub to: Key,
 }
 
-/// A past residence. The departure tick belongs to the next place.
+
+/// The actual traversed route, with its absolute elapsed-time boundary (817).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Journey {
+    pub from: Id,
+    pub to: Id,
+    pub departed: Tick,
+    pub arrives: Tick,
+}
+
+/// The explicit replay semantics, witnessed independently of founding facts.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Movement {
+    #[default]
+    ImmediateV3,
+    Journey,
+}
+impl Movement {
+    pub fn immediate(&self) -> bool { *self == Self::ImmediateV3 }
+}
+
+mod event_location;
+pub use event_location::EventPlace;
+impl Entity {
+    /// `place` remains the last residence's identity tag while travelling.
+    pub fn resident_site(&self) -> Option<Id> {
+        (self.journey.is_none() && self.place != crate::directing::PLACELESS).then_some(self.place)
+    }
+    pub fn event_place(&self) -> EventPlace {
+        self.journey.map_or(EventPlace::Site(self.place), EventPlace::Journey)
+    }
+    pub fn colocated(&self, other: &Self) -> bool {
+        self.resident_site().is_some_and(|site| other.resident_site() == Some(site))
+    }
+}
+
+/// A past residence. A departure closes it; a journey is no residence.
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub struct Visit {
     pub place: Id,
@@ -362,28 +404,27 @@ pub struct Edited {
     pub by: Option<Id>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Event {
     pub id: Key,
     pub tick: Tick,
-    pub place: Id,
+    pub place: EventPlace,
     pub subject: Id,
     /// Whom the act was toward, where it had a target: a deed's other party
     /// (Eponym's world move, 755). Absent elsewhere, which serialize and
     /// hash as before.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub object: Option<Id>,
     pub process: Key,
     pub cause: Option<Key>,
     /// A deed's agreement link, distinct from its causal event (808).
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub agreement: Option<Id>,
     pub strength: u32,
     pub legend: bool,
     /// An authored history line's fill (769); absent elsewhere, which serialize and hash as before.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub authored: Option<crate::asserted::HistoryLine>,
 }
+
+mod event_wire;
 
 #[cfg(test)]
 mod event_tests;

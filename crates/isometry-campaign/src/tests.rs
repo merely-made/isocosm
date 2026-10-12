@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use isocosm::legacy::campaign::{MapCellProposal, MapInhabitant, MapPoint};
+use crate::{MapCellProposal, MapInhabitant, MapPoint};
 
 use super::*;
 

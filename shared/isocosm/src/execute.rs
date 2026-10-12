@@ -114,6 +114,10 @@ impl Simulation {
             return refused(receipt, Outcome::Refused("actor is absent".into()));
         };
         let place = entity.place;
+        let event_place = entity.event_place();
+        if !self.route_ready(actor, definition) {
+            return refused(receipt, Outcome::Blocked("route actor is not resident or route is absent".into()));
+        }
         if definition.target.is_some() && !self.target_matches(actor, target, definition) {
             let why = "no target satisfies the declared scope".into();
             return refused(receipt, Outcome::Blocked(why));
@@ -140,7 +144,7 @@ impl Simulation {
             .filter(|p| p.id != process && p.causation == Causation::Choice)
             .filter(|p| {
                 let part = self.bind_part(actor, p);
-                self.target_matches(actor, target, p)
+                self.route_ready(actor, p) && self.target_matches(actor, target, p)
                     && p.requires
                         .iter()
                         .all(|q| self.query(actor, target, place, part, q).is_ok())
@@ -204,7 +208,7 @@ impl Simulation {
             let event = Event {
                 id: id.clone(),
                 tick: self.state.tick,
-                place,
+                place: event_place,
                 subject: actor,
                 object: target,
                 process: process.into(),

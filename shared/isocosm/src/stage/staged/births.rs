@@ -53,6 +53,7 @@ impl Staged<'_> {
         let id = self.next_child()?;
         let tick = self.sim.state.tick;
         let rules = &self.sim.genesis.rules;
+        // 821: cloning also retains the exact remaining journey.
         let mut child = self.actor().clone();
         child.accounts.clear();
         for part in child.parts.values_mut() {

@@ -183,6 +183,9 @@ impl HostSession {
         &mut self,
         assertion: &isocosm_overlay::vtt::Assertion,
     ) -> Result<Vec<Outbound>, String> {
+        if self.state.native.is_some() {
+            return self.commit_native_assertions(std::slice::from_ref(assertion));
+        }
         let event = isometry_campaign::contract::translate(&self.state.world, assertion)
             .map_err(|refusal| format!("assertion refused: {refusal:?}"))?;
         self.try_commit(GameEvent::World(event))
@@ -272,52 +275,6 @@ impl HostSession {
         Ok(out)
     }
 
-    /// Commit a downtime faction tick: a batch of moves the DM has previewed
-    /// and edited. Each move flattens to ordinary world events (its history line
-    /// and its change), which commit through the same path a DM edit does, so
-    /// the whole batch lands in the ordered log and replicates to every peer.
-    /// Staged on a clone first, so one rejected move cannot half-apply the tick.
-    pub fn commit_faction_turn(
-        &mut self,
-        moves: Vec<FactionMove>,
-    ) -> Result<Vec<Outbound>, String> {
-        // A faction empties its bank when it acts: the moves it earned are the
-        // time it spent, so the same banked time cannot buy a busy tick twice.
-        // Collected before the moves are consumed; a faction with nothing banked
-        // gets no spend event, so a sheetless world is untouched.
-        let acted: std::collections::BTreeSet<String> =
-            moves.iter().map(|m| m.faction.clone()).collect();
-        let mut events: Vec<GameEvent> = moves
-            .into_iter()
-            .flat_map(FactionMove::into_events)
-            .map(GameEvent::World)
-            .collect();
-        for faction in acted {
-            let Some(sheet) = self.state.world.faction_sheet(&faction) else {
-                continue;
-            };
-            if sheet.get("banked_time").copied().unwrap_or(0) == 0 {
-                continue;
-            }
-            let mut spent = sheet.clone();
-            spent.insert("banked_time".to_owned(), 0);
-            events.push(GameEvent::World(WorldEvent::FactionSheet {
-                faction,
-                sheet: spent,
-            }));
-        }
-        let mut preview = self.state.clone();
-        for event in &events {
-            apply_game(&mut preview, event)
-                .map_err(|error| format!("faction move rejected: {error:?}"))?;
-        }
-        let mut out = Vec::new();
-        for event in events {
-            out.extend(self.try_commit(event)?);
-        }
-        Ok(out)
-    }
-
     /// Offer a batch of radiant quests: faction-demand storylets the DM chose to
     /// make playable. Each enters the world as an ordinary storylet proposal, so
     /// it shows up in the storylet surface (C6) and can be played while its
@@ -392,7 +349,7 @@ impl HostSession {
         item_owner: Option<TokenId>,
         party: Option<&str>,
     ) -> Result<Vec<Outbound>, String> {
-        let isocosm::legacy::campaign::GenValue::Campaign { campaign: draft } =
+        let isometry_campaign::GenValue::Campaign { campaign: draft } =
             record.proposal.clone()
         else {
             return Err("generation record is not a campaign draft".to_owned());
@@ -444,7 +401,7 @@ impl HostSession {
         // host-private campaign state. Keep the original `draft` above for
         // staging, then redact only the public record that enters the log.
         let mut public_record = record;
-        if let isocosm::legacy::campaign::GenValue::Campaign { campaign } =
+        if let isometry_campaign::GenValue::Campaign { campaign } =
             &mut public_record.proposal
         {
             campaign.secrets.clear();

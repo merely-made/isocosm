@@ -162,7 +162,7 @@ fn native_reading_carries_all_nouns_and_groups() {
     assert!(related(&reading.state().relations, mira, "member", polity).is_some());
     assert_eq!(reading.state().laws["iron"].parameters["penalty"], "one");
     let event = &reading.state().events["line:arrival"];
-    assert_eq!((event.place, event.subject), (ford, mira));
+    assert_eq!((event.place.site().unwrap(), event.subject), (ford, mira));
     assert_eq!(event.authored.as_ref().unwrap().time, -4);
     assert!(reading.authored_entity("echo").is_some());
     assert_eq!(

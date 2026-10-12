@@ -1,7 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
 
-use isocosm::legacy::campaign::{CampaignDraft, EntropyTape, GenValue, GeneratorRequest};
+use isometry_campaign::{CampaignDraft, EntropyTape, GenValue, GeneratorRequest};
 use isometry_campaign::LowerDraftMap;
 use isometry_core::{HeightSightRules, MoveRules, TokenId, reachable, visible_from_height};
 use isometry_system::{GeneratorCatalog, GeneratorLimits};
@@ -79,7 +79,7 @@ fn beast_at(campaign: &CampaignDraft) -> (i32, i32) {
 fn campaign_map<'a>(
     campaign: &'a CampaignDraft,
     id: &str,
-) -> &'a isocosm::legacy::campaign::DraftMap {
+) -> &'a isometry_campaign::DraftMap {
     campaign
         .maps
         .iter()
@@ -271,7 +271,7 @@ fn forest_region_links_sites_and_keeps_crossings_walkable() {
     assert_eq!(campaign.starting_map, "watchtower:ruined-watchtower");
 
     let region = campaign_map(&campaign, "watchtower:forest-region");
-    assert_eq!(region.scale, isocosm::legacy::campaign::MapScale::Region);
+    assert_eq!(region.scale, isometry_campaign::MapScale::Region);
     let region_ids: BTreeSet<_> = region
         .map
         .transitions

@@ -365,6 +365,7 @@ impl Founding {
                     place: i,
                     arrived: 0,
                     visits: vec![],
+                    journey: None,
                     born: 0,
                     alive: true,
                     body_revision: 1,
@@ -409,6 +410,7 @@ impl Founding {
                     place: random("habitat", group) % u64::from(self.sites),
                     arrived: 0,
                     visits: vec![],
+                    journey: None,
                     born: 0,
                     alive: true,
                     body_revision: 1,
@@ -437,6 +439,7 @@ impl Founding {
             group += 1;
         }
         let mut genesis = Genesis {
+            spreads: Default::default(),
             version: crate::VERSION,
             seed: self.seed,
             dynamics: None,

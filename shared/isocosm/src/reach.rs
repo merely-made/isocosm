@@ -21,7 +21,8 @@ impl Reach {
     /// Earliest arrival, then strongest route, then lowest predecessor id.
     /// Positive travel times make the predecessor graph acyclic.
     pub fn seed(&mut self, event: &Event, sites: &BTreeMap<Id, Site>) -> Result<()> {
-        if !sites.contains_key(&event.place) {
+        let Some(place) = event.place.site() else { return Ok(()); };
+        if !sites.contains_key(&place) {
             return Err("event has no site".into());
         }
         if event.legend {
@@ -29,7 +30,7 @@ impl Reach {
         }
         let mut entries = BTreeMap::new();
         let mut queue =
-            BTreeSet::from([(event.tick, u32::MAX - event.strength, event.place, None)]);
+            BTreeSet::from([(event.tick, u32::MAX - event.strength, place, None)]);
         while let Some((tick, inverse, place, source)) = queue.pop_first() {
             if entries.contains_key(&place) {
                 continue;
@@ -67,7 +68,7 @@ impl Reach {
         Ok(())
     }
     pub fn strength(&self, event: &Event, place: Id, tick: Tick, policy: &FieldPolicy) -> u32 {
-        if tick < event.tick {
+        if event.place.site().is_none() || tick < event.tick {
             return 0;
         }
         if event.legend {
@@ -116,6 +117,7 @@ impl Reach {
         until: Tick,
         policy: &FieldPolicy,
     ) -> u64 {
+        if event.place.site().is_none() { return 0; }
         let from = from.max(event.tick);
         if until <= from {
             return 0;

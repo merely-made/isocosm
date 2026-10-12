@@ -222,6 +222,10 @@ impl UiState {
     /// navigation, spends the time, and moves the party, or refuses if there is
     /// no route. The view never decides the outcome.
     pub fn request_travel(&mut self, node: String) {
+        if self.native.world.is_some() {
+            self.status = "choose the party's native members before travel".into();
+            return;
+        }
         self.overmap_travel_request = Some(node);
     }
 
@@ -241,12 +245,20 @@ impl UiState {
     /// Choose the party's travel pace (a percent of normal time). The host
     /// records it; the next trip travels at it.
     pub fn request_pace(&mut self, pace: i64) {
+        if self.native.world.is_some() {
+            self.status = "choose the party's native members before travel".into();
+            return;
+        }
         self.overmap_pace_request = Some(pace);
     }
 
     /// Choose the navigator's exploration stance (empty clears it). The host sets
     /// it on the lead token, and the travel rule reads it.
     pub fn request_stance(&mut self, stance: &str) {
+        if self.native.world.is_some() {
+            self.status = "choose the party's native members before exploration".into();
+            return;
+        }
         self.overmap_stance_request = Some(stance.to_owned());
     }
 
@@ -254,6 +266,10 @@ impl UiState {
     /// check that, on a pass, reveals the places just beyond the known ones. A
     /// party that cannot read a map learns nothing.
     pub fn request_map_read(&mut self) {
+        if self.native.world.is_some() {
+            self.status = "choose the party's native members before map reading".into();
+            return;
+        }
         self.overmap_read_request = true;
     }
 

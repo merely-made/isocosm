@@ -2,10 +2,15 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-10-10, Q2:** E3 is open in push mode (798); E2's native
+**Status, 2026-10-11, combined source:** E3 is open in push mode (798); E2's native
 world supplies its base. Play reaches native commands through
 `eponym-play::contract` (794), including the sortie receipt's social acts.
-Contract routing is not the completion of E3's played done-conditions.
+Native recipe development, compact first-life issuance (818/819), named
+contact fixture founding (825), and borrowed host commands are applied.
+Eponym and the shared host passed current all-target/all-feature compiler
+checks. Capacity, contact and replay checks remain pending. Contract routing
+does not complete E3's played done-conditions;
+§5.1's remaining material work and memory remain open.
 
 ### E3 next phases, 2026-10-10
 
@@ -538,6 +543,27 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-11, native fixture founding selected (825):** a named
+  native founding profile selected by a saved version tag retains the
+  two precise-contact recipes. The original root shapes, seeds, moves,
+  contact assertions and genuine archive fixtures remain unchanged.
+  The proposed generator5/GameSave8 source preserves current4 and the
+  finite earlier versions, with founding hash authentication before
+  replay and recorded native Revise/Arrive/Develop selection. Source
+  sealing, actual capacity/contact/replay controls and the original25
+  failure gates remain open; E3 is not certified.
+
+- **2026-10-11, native recipe and fresh issuance selected (818, 819):**
+  Eponym starts from the compact six-part recipe with intake, store, sense,
+  contract, support and grip. Fresh tissue fits the developed native capacity;
+  reserve 100 and energy 100 remain where admitted. Existing supplied stocks
+  stay conserved and overflow refuses atomically under 777. See the canonical
+  rulings in `mesocosm/design_docs/2026-09-18_wing_design_plan.md`.
+  Q10 is preparing native development, part-stock placement and an actual
+  anatomy snapshot admission. Nominal 860mg tissue/105mg reserve remains a
+  source calculation pending native verification. All twenty-five original
+  failures remain obligations; E3, replay and host certification remain open.
+
 - **2026-10-11, ruling 816:** an arriving or admitted body develops its
   physiology and geometry from a selected native recipe. The recipe choice
   remains open. Root-qualified diagnosis of all twenty-five original failures
@@ -712,3 +738,5 @@ Ruling 793 archived the genet document host plan to
   shipped route's greater-than-four-cell drop; the earlier complete
   trajectory and four-of-six result stand. Broader E3/calibration work,
   current save certification and pending allocation ruling remain open.
+
+- **2026-10-11, combined migration execution:** The compact recipe and named native fixture profile are now applied in primary as part of the combined host/journey/VTT migration. Generator5/GameSave8 remain proposed behavior until actual compilation, capacity, contact and replay tests pass. All 25 original test failures remain obligations; E3 stays open.

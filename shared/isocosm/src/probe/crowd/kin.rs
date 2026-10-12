@@ -13,7 +13,7 @@
 
 use super::{
     super::aggregate::{self, Pending},
-    Crowd, Who, normalize,
+    Crowd, Who,
 };
 use crate::{
     Result,
@@ -33,7 +33,7 @@ pub(super) fn relational(p: &Process) -> bool {
 }
 
 fn accepts(selector: &Target, actor: &Entity, e: &Entity) -> bool {
-    (!selector.same_place || e.place == actor.place)
+    (!selector.same_place || actor.resident_site().is_some_and(|site| e.resident_site() == Some(site)))
         && selector.alive.is_none_or(|alive| alive == e.alive)
         && selector.lineage.as_ref().is_none_or(|l| *l == e.lineage)
         && (selector.among.is_empty() || selector.among.contains(&e.lineage))
@@ -41,11 +41,12 @@ fn accepts(selector: &Target, actor: &Entity, e: &Entity) -> bool {
 
 impl Crowd<'_> {
     /// Lifts one member of the bin `e` out as kin; its identity.
-    fn lift(&mut self, e: &Entity) -> Id {
+    pub(super) fn lift(&mut self, e: &Entity) -> Id {
         let slot = self.bins.get_mut(e).expect("a lifted member's bin exists");
         *slot -= 1;
         if *slot == 0 {
             self.bins.remove(e);
+            self.remove_bin_index(e);
         }
         self.adopt(e.clone())
     }
@@ -53,7 +54,7 @@ impl Crowd<'_> {
     fn adopt(&mut self, e: Entity) -> Id {
         let id = self.next_kin;
         self.next_kin += 1;
-        self.kin.insert(id, e);
+        self.insert_kin(id, e);
         id
     }
 
@@ -112,8 +113,8 @@ impl Crowd<'_> {
             .filter(|id| !self.bonded(*id))
             .collect();
         for id in loose {
-            let e = self.kin.remove(&id).expect("listed above");
-            *self.bins.entry(normalize(e)).or_default() += 1;
+            let e = self.remove_kin(id).expect("listed above");
+            self.insert_bin(e, 1);
             self.relations.retain(|(s, _, o)| *s != id && *o != id);
             self.young.remove(&id);
         }
@@ -168,8 +169,8 @@ impl Crowd<'_> {
             }
             self.sites.insert(e.place, site);
             self.learn(&acted.lessons);
-            self.kin.insert(id, acted.member);
-            self.kin.insert(c, target);
+            self.insert_kin(id, acted.member);
+            self.insert_kin(c, target);
             self.work.accepted += 1;
         }
         Ok(())

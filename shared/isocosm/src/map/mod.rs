@@ -79,6 +79,10 @@ pub fn default_materials() -> Vec<Material> {
 /// used once and each met by its reverse; skeletons declared and present;
 /// materials named once each, of lineages the world has.
 pub(crate) fn validate(g: &Genesis) -> Result<()> {
+    validate_sites(g, &g.sites)
+}
+
+pub(crate) fn validate_sites(g: &Genesis, sites: &BTreeMap<Id, Site>) -> Result<()> {
     let mut named = BTreeSet::new();
     for material in &g.world.materials {
         if !named.insert(&material.key) || !g.lineages.contains_key(&material.lineage) {
@@ -98,9 +102,7 @@ pub(crate) fn validate(g: &Genesis) -> Result<()> {
     if g.world.materials.len() > 256 {
         return Err("more materials than a voxel can name".into());
     }
-    let bordered = g
-        .sites
-        .values()
+    let bordered = sites.values()
         .flat_map(|s| &s.routes)
         .any(|r| r.border.is_some());
     match g.world.footprint {
@@ -110,7 +112,7 @@ pub(crate) fn validate(g: &Genesis) -> Result<()> {
             if !(3..=12).contains(&f.sides) || f.side < u64::from(isometer_space::SPANS) {
                 return Err("invalid site footprint".into());
             }
-            for (&id, site) in &g.sites {
+            for (&id, site) in sites {
                 let mut used = BTreeSet::new();
                 for route in &site.routes {
                     let Some(b) = route.border else { continue };
@@ -125,7 +127,7 @@ pub(crate) fn validate(g: &Genesis) -> Result<()> {
                         enters: b.side,
                         flipped: b.flipped,
                     };
-                    let met = g.sites.get(&route.to).is_some_and(|to| {
+                    let met = sites.get(&route.to).is_some_and(|to| {
                         to.routes
                             .iter()
                             .any(|r| r.to == id && r.border == Some(reverse))
@@ -142,11 +144,11 @@ pub(crate) fn validate(g: &Genesis) -> Result<()> {
             if !g.rules.conditions.contains(key) {
                 return Err("an undeclared skeleton condition".into());
             }
-            if g.sites.values().any(|s| !s.conditions.contains_key(key)) {
+            if sites.values().any(|s| !s.conditions.contains_key(key)) {
                 return Err("a site without its skeleton".into());
             }
         }
-        if g.sites.values().any(|s| s.conditions[&skeleton.relief] < 0) {
+        if sites.values().any(|s| s.conditions[&skeleton.relief] < 0) {
             return Err("a site with negative relief".into());
         }
     }

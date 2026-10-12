@@ -432,6 +432,15 @@ Put to Mark on 2026-09-26 as eight forks; he ruled seven the same day.
 
 ## Progress
 
+- **2026-10-11, host core source applied:** CORE31's native attention
+  union and shared host command/admission/lifecycle source are applied
+  in primary, with source review qualified. The corrected guard source
+  and fresh resource readings under824 are reviewed, while actual
+  process cleanup, compilation and native lifecycle gates remain open.
+  The declared bounded plan has58 future steps. The larger product
+  binding/producer source packet and spatial/headed M3 acceptance stay
+  separate. Earlier dated source proposals below remain history.
+
 - **2026-10-11, Q14 core proposal source-qualified:** the isolated
   fifteen-path proposal keeps one native Session in a private shared handle,
   resolves each window's explicit participant through native plays, retains
@@ -691,3 +700,5 @@ when; the module is a mechanism it calls.
 - The composition plan, lines 17-20 and 49: a profile chooses its source
   bindings, and owns them for semantic projection; and lines 191-192: a
   first consumer cannot establish a source-binding schema.
+
+- **2026-10-11, combined migration execution:** CORE31 is applied together with the reviewed journey, native body and VTT source. The separate 58-step intermediate execution sequence is superseded by final-state compiler and product checks. The host inventory compiled and listed 24 tests, while the wrapper rejected process cleanup. Shared-world lifecycle, native attention, save compatibility and headed binding still require actual product tests.

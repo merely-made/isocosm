@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 
-use isocosm::legacy::campaign::{
+use isometry_campaign::{
     CampaignWorld, EquipmentSlot, GenValue, GenerationRecord, GeneratorChoice, Inventory, ItemId,
 };
 use isometry_campaign::CampaignMap;
@@ -57,6 +57,7 @@ fn point_selection(state: &mut SelectionState, index: usize) {
     state.selected = vec![index];
 }
 
+pub mod native;
 mod character;
 mod interaction;
 mod lanes;
@@ -254,6 +255,7 @@ pub struct UiState {
     pub party_cap: u32,
     pub active_map: Option<String>,
     pub world: CampaignWorld,
+    pub native: native::NativeUi,
     /// Generator preview state is local to the host until `Commit`; players
     /// receive only the resulting public record through a snapshot.
     pub generator_open: bool,
@@ -514,6 +516,7 @@ impl UiState {
             party_cap: isonetry::default_party_cap(),
             active_map: None,
             world: CampaignWorld::default(),
+            native: Default::default(),
             storylets: Vec::new(),
             storylet_open: false,
             storylet_selected: 0,

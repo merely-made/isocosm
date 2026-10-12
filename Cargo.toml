@@ -10,7 +10,7 @@ members = [
     "crates/isometry-system",
     "crates/isocosm-vtt",
 ]
-exclude = ["mesocosm", "eponym", "shared/isocosm", "shared/isocosm-overlay", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer", "shared/isomere"]
+exclude = ["host", "mesocosm", "eponym", "shared/isocosm", "shared/isocosm-overlay", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer", "shared/isomere"]
 
 # Keep interactive debug builds responsive; see the watchtower plan's M4 drag
 # receipt. Include the app where generic host/layout code is instantiated.
@@ -44,9 +44,8 @@ rust-version = "1.80"
 # Internal crates
 isometry-core = { path = "crates/isometry-core", version = "0.1.0" }
 isometry-campaign = { path = "crates/isometry-campaign", version = "0.1.0" }
-# The sim. Its own workspace, so excluded above and taken by path; the
-# campaign layer lives in it as `isocosm::legacy::campaign` (rulings 591,
-# 598, 599).
+# The sim owns accepted world state/history. VTT content and table projections
+# live in isometry-campaign; the separate sim workspace is taken by path.
 isocosm = { path = "shared/isocosm" }
 # The overlay contract; its own workspace, taken by path (wing ruling 795).
 isocosm-overlay = { path = "shared/isocosm-overlay" }

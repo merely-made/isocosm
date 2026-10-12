@@ -28,7 +28,7 @@ use crate::review::{Authored, Proposed, Review};
 use crate::succession::{self, Checkpoint};
 
 pub mod placing;
-mod translate;
+pub(crate) mod translate;
 pub use translate::Refusal;
 
 /// Default ceiling on rounds one `advance` call runs.
@@ -332,6 +332,25 @@ impl Runtime {
     /// What the player sees now, by mode (180, 691).
     pub fn view(&self) -> View {
         self.interim.view()
+    }
+
+    /// Native awareness refined by explicit in-site geometry, when the host
+    /// has actual eye/body cells. It never uses the scene's fallback spots.
+    pub fn sighted_view(&self, site: &crate::perception::InSite,
+        sight: &crate::perception::Sight) -> Result<View, String> {
+        if self.critter() != Some(sight.observer) {
+            return Err("sight observer is not the currently played critter".into());
+        }
+        site.refine(self.sim(), self.interim.mode, sight)
+    }
+
+    /// Current edited geometry at the played site. Call again after admitted
+    /// Edit/Patch commands or a round; departed critters have no site to lift.
+    pub fn in_site(&self) -> Result<crate::perception::InSite, String> {
+        let site = self.played().and_then(|e| e.resident_site())
+            .ok_or("played critter has no resident site")?;
+        let volume = placing::lift(self.sim(), site)?;
+        crate::perception::InSite::of(self.sim(), volume, Default::default())
     }
 
     pub fn windows(&self) -> &FlowWindows {

@@ -20,7 +20,8 @@ pub(super) fn harms(p: &Process) -> bool {
 }
 
 fn accepts(s: &Target, actor: &Entity, e: &Entity) -> bool {
-    (!s.same_place || actor.place == e.place)
+    e.resident_site().is_some()
+        && (!s.same_place || actor.resident_site().is_some_and(|site| e.resident_site() == Some(site)))
         && s.alive.is_none_or(|a| e.alive == a)
         && s.lineage.as_ref().is_none_or(|l| e.lineage == *l)
         && (s.among.is_empty() || s.among.contains(&e.lineage))
@@ -163,13 +164,13 @@ impl Crowd<'_> {
                 match who {
                     Who::Bin => self.moved(&target, after, 1),
                     Who::Kin(id) => {
-                        self.kin.insert(id, after);
+                        self.insert_kin(id, after);
                     },
                 }
                 match actor_who {
                     Who::Bin if acted.member != actor => self.moved(&actor, acted.member, 1),
                     Who::Kin(id) => {
-                        self.kin.insert(id, acted.member);
+                        self.insert_kin(id, acted.member);
                     },
                     _ => {},
                 }
@@ -177,7 +178,7 @@ impl Crowd<'_> {
                     let aggregate::Pending::Fragment { child } = born else {
                         return Err("the harm pass made a different birth".into());
                     };
-                    *self.bins.entry(normalize(child)).or_default() += 1;
+                    self.insert_bin(child, 1);
                 }
                 self.work.evaluations += 1;
                 self.work.represented += 1;

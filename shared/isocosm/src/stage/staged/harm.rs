@@ -7,6 +7,7 @@ use crate::harm;
 impl Staged<'_> {
     pub(super) fn wound(&mut self, who: Binding, cells: u64, slot: u8) -> Result<()> {
         let sim = self.sim;
+        if self.body(who)?.resident_site().is_none() { return Err("a wound outside any site".into()); }
         let total = harm::cells(self.body(who)?);
         if total == 0 {
             return Err("a body with no cells to wound".into());
@@ -47,6 +48,7 @@ impl Staged<'_> {
 
     pub(super) fn rot(&mut self, who: Binding, amount: u64) -> Result<()> {
         let sim = self.sim;
+        if self.body(who)?.resident_site().is_none() { return Err("a corpse outside any site".into()); }
         let moved = harm::rot::rot(self.body(who)?, &sim.genesis.rules, amount)?;
         harm::rot::deposit(&mut self.site()?.accounts, &moved)?;
         if sim.flowing() {

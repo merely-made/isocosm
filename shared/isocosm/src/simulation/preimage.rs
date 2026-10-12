@@ -8,6 +8,9 @@
 use crate::{asserted, population, schema::*};
 use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet};
+pub(crate) mod event;
+mod state;
+pub(super) use state::State;
 
 mod groups;
 pub(super) use groups::{Applied, Records};
@@ -56,6 +59,8 @@ pub(super) struct Entity<'a> {
     place: Id,
     arrived: Tick,
     visits: &'a Vec<Visit>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    journey: Option<&'a Journey>,
     born: Tick,
     alive: bool,
     body_revision: u64,
@@ -90,6 +95,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             place,
             arrived,
             visits,
+            journey,
             born,
             alive,
             body_revision,
@@ -115,6 +121,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             place: *place,
             arrived: *arrived,
             visits,
+            journey: journey.as_ref(),
             born: *born,
             alive: *alive,
             body_revision: *body_revision,

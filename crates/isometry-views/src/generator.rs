@@ -1,10 +1,12 @@
 //! Host-only preview surface for W2 generator records.
 
 use cambium::{clickable, el, text};
-use isocosm::legacy::campaign::GenValue;
+use isometry_campaign::GenValue;
 
 use crate::board::UiChild;
 use crate::state::UiState;
+
+mod founding;
 
 fn proposal_label(value: &GenValue) -> String {
     match value {
@@ -140,6 +142,9 @@ pub fn generator_overlay(ui: &UiState) -> Option<UiChild> {
                         .attr("class", "side-line"),
                 ),
             ];
+            if matches!(record.proposal, GenValue::Campaign { .. }) {
+                body.extend(founding::selection(ui));
+            }
             body.extend(
                 proposal_details(&record.proposal)
                     .into_iter()

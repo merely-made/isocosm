@@ -1,4 +1,4 @@
-//! Storylets, faction turns, and the host-event seam.
+//! Storylets, native downtime requests, and the host-event seam.
 //!
 //! The storylet surface refreshes through a gate: `refresh_storylet_rows`
 //! rebuilds only when `(world, secret_ids)` changed, because it runs after
@@ -147,145 +147,17 @@ impl App {
         }
     }
 
-    /// The downtime surface (C7). While the DM has it open, roll a faction tick
-    /// on request and hand the view its moves; when the DM commits, keep the
-    /// un-struck moves and apply them as replicated world events.
-    ///
-    /// Host-only, like storylets: rolling reads the world and spends host
-    /// entropy, gated on `can_edit_inventory` upstream. In a live session the DM
-    /// hosts (net_mode Remote), so the commit routes through the bridge; solo it
-    /// runs a local HostSession. Either way the moves land as ordinary events.
-    pub(crate) fn pump_faction_turn(&mut self, ctx: &mut Ctx<'_>) {
-        // Cheap flags first: neither a roll nor a commit pending is the ordinary
-        // case for every dispatch, and it must not cost a world clone.
-        let (roll, commit, tick, can_edit, remote) = {
-            let r = &*ctx.runner;
-            let s = r.state();
-            let tick = s
-                .active_map
-                .as_ref()
-                .and_then(|m| s.clocks.get(m))
-                .copied()
-                .unwrap_or(0) as i64;
-            (
-                s.downtime_roll_request,
-                s.downtime_commit_request,
-                tick,
-                s.can_edit_inventory,
-                s.net_mode == NetMode::Remote,
-            )
-        };
-        if !can_edit || (!roll && !commit) {
-            return;
-        }
-        let world = {
-            let r = &*ctx.runner;
-            r.state().world.clone()
-        };
-
-        // Roll a fresh tick: draw a move per faction (proportional to banked
-        // time) and hand the view display rows, keeping the real moves aligned.
-        if roll {
-            let moves = world.faction_turn(tick, &mut self.generation_tape);
-            let rows: Vec<FactionMoveRow> = moves
-                .iter()
-                .map(|m| FactionMoveRow {
-                    faction: world
-                        .factions()
-                        .get(&m.faction)
-                        .map(|f| f.authored.name.clone())
-                        .unwrap_or_else(|| m.faction.clone()),
-                    verb: m.verb.label().to_owned(),
-                    text: m.history.text.clone(),
-                    has_change: m.change.is_some(),
-                    struck: false,
-                })
-                .collect();
-            self.faction_turn_batch = moves;
-            {
-                let runner = &mut *ctx.runner;
-                runner.update(|ui| {
-                    ui.downtime_roll_request = false;
-                    ui.downtime_selected = 0;
-                    ui.status = if rows.is_empty() {
-                        "no factions to move".to_owned()
-                    } else {
-                        format!("rolled {} downtime move(s)", rows.len())
-                    };
-                    ui.faction_moves = rows;
-                });
-            }
-        }
-
-        if !commit {
-            return;
-        }
-
-        // Commit: keep the moves whose row the DM did not strike, drop the rest.
-        // The rows are index-aligned with the batch, so a struck row drops its
-        // move. Extra batch entries (should not happen) default to kept.
-        let struck: Vec<bool> = Some(&*ctx.runner)
-            .map(|r| r.state().faction_moves.iter().map(|m| m.struck).collect())
-            .unwrap_or_default();
-        let kept: Vec<FactionMove> = std::mem::take(&mut self.faction_turn_batch)
-            .into_iter()
-            .enumerate()
-            .filter(|(index, _)| !struck.get(*index).copied().unwrap_or(false))
-            .map(|(_, m)| m)
-            .collect();
-        {
-            let runner = &mut *ctx.runner;
-            runner.update(|ui| {
-                ui.downtime_commit_request = false;
-                ui.faction_moves.clear();
-                ui.downtime_open = false;
-            });
-        }
-        if kept.is_empty() {
-            return;
-        }
-
-        if remote {
-            if let Some(net) = self.net.as_mut() {
-                let request = net.commit_faction_turn(kept);
-                {
-                    let runner = &mut *ctx.runner;
-                    runner.update(|ui| {
-                        ui.status = match request {
-                            Some(request) => format!("downtime committed (request {request})"),
-                            None => "downtime authority actor stopped".to_owned(),
-                        };
-                    });
-                }
-            }
-        } else {
-            let snapshot = {
-                let r = &*ctx.runner;
-                self.snapshot_of(r.state())
-            };
-            self.ensure_history_origin(&snapshot);
-            let mut host =
-                HostSession::with_history(snapshot, self.campaign.clone(), self.history.clone());
-            match host.commit_faction_turn(kept) {
-                Ok(_) => {
-                    self.campaign = host.campaign().clone();
-                    self.history = host.history().clone();
-                    self.journal = host.state().journal.clone();
-                    let snapshot = host.state().clone();
-                    {
-                        let runner = &mut *ctx.runner;
-                        runner.update(|ui| {
-                            ui.apply_snapshot(snapshot);
-                            ui.status = "downtime committed".to_owned();
-                        });
-                    }
-                },
-                Err(error) => {
-                    let runner = &mut *ctx.runner;
-                    runner.update(|ui| ui.status = format!("downtime failed: {error}"));
-                },
-            }
-        }
+    /// Consume retired entropy-turn requests without manufacturing world acts.
+    /// Native downtime must pass unanimous consent through the native time contract.
+    pub(crate) fn pump_downtime(&mut self, ctx: &mut Ctx<'_>) {
+        let ui = ctx.runner.state();
+        if !ui.downtime_roll_request && !ui.downtime_commit_request { return; }
+        ctx.runner.update(|ui| {
+            ui.downtime_roll_request = false;
+            ui.downtime_commit_request = false;
+            ui.faction_moves.clear();
+            ui.status = "advance native downtime with every participant's consent".into();
+        });
     }
 
     /// Commit one host-authored game event: solo through a local `HostSession`
@@ -346,8 +218,8 @@ impl App {
 }
 
 /// A DM-facing reason a storylet is not yet playable.
-fn describe_storylet_error(error: &isocosm::legacy::campaign::StoryletError) -> String {
-    use isocosm::legacy::campaign::StoryletError::*;
+fn describe_storylet_error(error: &isometry_campaign::StoryletError) -> String {
+    use isometry_campaign::StoryletError::*;
     match error {
         MissingFactionTag(tag) => format!("needs a faction tagged '{tag}'"),
         MissingHiddenFact(id) => format!("needs the secret '{id}' to be true"),

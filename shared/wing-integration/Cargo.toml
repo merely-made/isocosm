@@ -12,6 +12,7 @@ description = "Live producer-to-consumer receipts for the games wing."
 
 [dependencies]
 isocosm = { path = "../isocosm" }
+isometry-campaign = { path = "../../crates/isometry-campaign" }
 isometer-core = { path = "../isometer/crates/isometer-core" }
 isometer-mesh = { path = "../isometer/crates/isometer-mesh" }
 

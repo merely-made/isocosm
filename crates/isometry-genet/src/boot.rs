@@ -194,7 +194,6 @@ impl App {
             generation_ordinal: 0,
             generator_catalog,
             last_generator_selection: None,
-            faction_turn_batch: Vec::new(),
             pack_emotes,
         }
     }

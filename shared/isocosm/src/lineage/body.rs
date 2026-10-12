@@ -126,6 +126,26 @@ impl DerefMut for LineageBody {
 }
 
 impl LineageBody {
+    /// A snapshot of native geometry and tissue mass; no geometry or stock writes.
+    pub fn snapshot(
+        species: SpeciesId, entity: &crate::schema::Entity, rules: &crate::rules::Rules,
+    ) -> crate::Result<Self> {
+        let doc = entity.body.as_ref().ok_or("a native body with no document")?;
+        let mut lineals = Vec::with_capacity(doc.parts.len());
+        for (index, geo) in doc.parts.iter().enumerate() {
+            if geo.id != PartId(index as u32) || geo.origin.is_some() {
+                return Err("native snapshot needs contiguous ids and resolved founding provenance".into());
+            }
+            let mass_mg = entity.parts.get(&geo.id).map(|part| {
+                part.matter.iter().filter(|(key, _)| matches!(rules.accounts.get(*key),
+                    Some(crate::rules::AccountKind::Matter { reserve: false, provision: false, .. })))
+                    .try_fold(0u64, |total, (_, n)| total.checked_add(*n).ok_or("part mass overflow"))
+            }).transpose()?.unwrap_or(0);
+            lineals.push(Lineal { mass_mg, provenance: Provenance::founding() });
+        }
+        Ok(Self { doc: doc.clone(), species, lineals })
+    }
+
     /// A body with a single founding root part.
     pub fn new(species: SpeciesId, volume: VolumeRef, mass_mg: u64, half_extent: [i32; 3]) -> Self {
         Self {

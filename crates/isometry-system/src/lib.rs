@@ -19,7 +19,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
-use isocosm::legacy::campaign::{
+use isometry_campaign::{
     CampaignDraft, ContentPackManifest, EncounterAnchor, EntropyTape, GenValue, GenerationRecord,
     GeneratorChoice, GeneratorFixture, GeneratorRequest, Inventory, ItemProposal, LocalMapProposal,
     MapCellProposal, MapPatchProposal, MapPoint, MapTransition, NpcProposal, SpawnZone,

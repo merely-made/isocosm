@@ -4,11 +4,13 @@
 //! owns Tokio and `HostNet` / `ClientNet`; it receives commands and emits
 //! snapshots, campaign state, and status updates for the kernel to drain.
 
+mod native;
+
 use std::sync::mpsc::{Receiver, TryRecvError};
 use std::time::Duration;
 
 use armillary::{ActorHandle, Correlated, Emitter, RequestId, RequestIds, Wake};
-use isocosm::legacy::campaign::GenerationRecord;
+use isometry_campaign::GenerationRecord;
 use isometry_campaign::CampaignStore;
 use isometry_core::TokenId;
 use isonetry::iroh_link::{ClientNet, HostNet};
@@ -28,6 +30,15 @@ pub enum Role {
 }
 
 enum BridgeCommand {
+    NativeSetup {
+        request: RequestId, setup: isometry_campaign::founding::Setup,
+        expected: isometry_campaign::founding::NativeWorld,
+        record: GenerationRecord, item_owner: Option<TokenId>,
+    },
+    NativeCampaign {
+        request: RequestId, profile: isocosm::Founding, mode: isocosm::Execution,
+        record: GenerationRecord, item_owner: Option<TokenId>,
+    },
     Event(GameEvent),
     Travel {
         request: RequestId,
@@ -47,10 +58,6 @@ enum BridgeCommand {
         request: RequestId,
         key: String,
         item_owner: Option<TokenId>,
-    },
-    FactionTurn {
-        request: RequestId,
-        moves: Vec<isocosm::legacy::campaign::FactionMove>,
     },
     Whisper {
         to: String,
@@ -250,18 +257,6 @@ impl NetBridge {
             .then_some(request)
     }
 
-    /// Ask the host to commit a downtime faction tick (session path). Each kept
-    /// move's world events replicate to every peer.
-    pub fn commit_faction_turn(
-        &mut self,
-        moves: Vec<isocosm::legacy::campaign::FactionMove>,
-    ) -> Option<RequestId> {
-        let request = self.request_ids.issue();
-        self.actor
-            .command(BridgeCommand::FactionTurn { request, moves })
-            .then_some(request)
-    }
-
     pub fn take_campaign_outcomes(&mut self) -> Vec<Correlated<Result<(), String>>> {
         std::mem::take(&mut self.campaign_outcomes)
     }
@@ -386,6 +381,14 @@ async fn run_host(
                         request, result,
                     )));
                 },
+                BridgeCommand::NativeSetup { request, setup, expected, record, item_owner } => {
+                    let result = host.commit_native_setup(&setup, &expected, &record, item_owner).await;
+                    out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
+                },
+                BridgeCommand::NativeCampaign { request, profile, mode, record, item_owner } => {
+                    let result = host.commit_native_campaign(&profile, &record, item_owner, mode).await;
+                    out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
+                },
                 BridgeCommand::Campaign {
                     request,
                     record,
@@ -411,13 +414,6 @@ async fn run_host(
                     // Reuse the campaign-outcome channel: both are one-shot
                     // "commit this, tell me if it took" results.
                     let result = host.commit_storylet(&key, item_owner).await;
-                    out.emit(BridgeUpdate::CampaignFinished(Correlated::new(
-                        request, result,
-                    )));
-                },
-                BridgeCommand::FactionTurn { request, moves } => {
-                    // Same one-shot "commit this, tell me if it took" channel.
-                    let result = host.commit_faction_turn(moves).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(
                         request, result,
                     )));
@@ -483,7 +479,8 @@ async fn run_client(
                         Err("travel is ruled by the host".to_owned()),
                     )));
                 },
-                BridgeCommand::Campaign { request, .. } => {
+                BridgeCommand::Campaign { request, .. } | BridgeCommand::NativeCampaign { request, .. }
+                    | BridgeCommand::NativeSetup { request, .. } => {
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(
                         request,
                         Err("campaign commits require the host".to_owned()),
@@ -493,12 +490,6 @@ async fn run_client(
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(
                         request,
                         Err("storylets are played by the host".to_owned()),
-                    )));
-                },
-                BridgeCommand::FactionTurn { request, .. } => {
-                    out.emit(BridgeUpdate::CampaignFinished(Correlated::new(
-                        request,
-                        Err("faction turns are run by the host".to_owned()),
                     )));
                 },
                 BridgeCommand::Whisper { .. } => {},

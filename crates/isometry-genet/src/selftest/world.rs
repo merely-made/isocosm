@@ -25,7 +25,7 @@ impl App {
         }
         self.storylet_fired = true;
 
-        use isocosm::legacy::campaign::{
+        use isometry_campaign::{
             StoryletEffect, StoryletProposal, StoryletRequirements, WorldFact,
         };
         // A ready storylet (no requirements, no roles) and a locked one (needs a
@@ -117,7 +117,7 @@ impl App {
         }
         self.overmap_fired = true;
 
-        use isocosm::legacy::campaign::{ItemId, ItemInstance};
+        use isometry_campaign::{ItemId, ItemInstance};
         {
             let runner = &mut *ctx.runner;
             runner.update(|ui| {

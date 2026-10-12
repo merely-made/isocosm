@@ -7,6 +7,9 @@
 //! reconstructing an older state from the current materialized snapshot would
 //! be a fiction.
 
+mod native;
+pub use native::NativeSiteVersion;
+
 use muniment::Journal;
 
 use crate::{apply_game, GameError, GameEvent, GameSnapshot};
@@ -14,6 +17,7 @@ use crate::{apply_game, GameError, GameEvent, GameSnapshot};
 /// A failure while materializing a source-time prefix.
 #[derive(Clone, Debug, PartialEq)]
 pub enum GameSourceTimeError {
+    Native { cursor: u64, reason: String },
     /// A prefix cursor must be between the empty origin and the live tail.
     CursorOutOfRange { requested: u64, live: u64 },
     /// The durable log is internally inconsistent with its declared origin.
@@ -103,7 +107,7 @@ impl GameSourceHistory {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::campaign::{CampaignWorld, WorldFact};
+    use isometry_campaign::{CampaignWorld, WorldFact};
     use isometry_core::{MapDocument, TurnList};
 
     fn snapshot() -> GameSnapshot {
@@ -117,6 +121,7 @@ mod tests {
             maps: Default::default(),
             active_map: None,
             world: CampaignWorld::default(),
+            native: None,
             clocks: Default::default(),
             party_cap: crate::default_party_cap(),
             last_beats: Vec::new(),

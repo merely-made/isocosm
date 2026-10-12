@@ -208,14 +208,14 @@ impl Simulation {
     /// The live mood of `actor` and the weights of the needs pressing it.
     pub(crate) fn minded(&self, actor: Id) -> (i64, Vec<&Need>) {
         let e = self.state.population.get(actor);
-        self.minded_in(e, e.and_then(|e| self.state.sites.get(&e.place)))
+        self.minded_in(e, e.and_then(|e| e.resident_site().and_then(|site| self.state.sites.get(&site))))
     }
 
     /// Scoring reads the same pass-start body and site as feasibility (454).
     /// Wellbeing keeps its live before/after readings for bond accounting.
     fn choice_minded(&self, actor: Id) -> (i64, Vec<&Need>) {
         let e = self.body_at_start(actor);
-        self.minded_in(e, e.and_then(|e| self.site_at_start(e.place)))
+        self.minded_in(e, e.and_then(|e| e.resident_site().and_then(|site| self.site_at_start(site))))
     }
 
     fn minded_in(&self, entity: Option<&Entity>, site: Option<&Site>) -> (i64, Vec<&Need>) {
@@ -252,7 +252,7 @@ impl Simulation {
 
     fn feasible(&self, actor: Id, target: Option<Id>, p: &Process, place: Id) -> bool {
         let part = self.bind_part(actor, p);
-        self.target_matches(actor, target, p)
+        self.route_ready(actor, p) && self.target_matches(actor, target, p)
             && p.requires
                 .iter()
                 .all(|q| self.query(actor, target, place, part, q).is_ok())
@@ -266,12 +266,13 @@ impl Simulation {
         let site = match n.toward {
             Toward::Thing(t) if n.aim == Aim::Act => return target == Some(t),
             Toward::Thing(t) => match self.body_at_start(t) {
-                Some(e) => e.place,
+                Some(e) => match e.resident_site() { Some(site) => site, None => return false },
                 None => return false,
             },
             Toward::Site(s) => s,
         };
         let goes = moves(p);
+        if self.body_at_start(n.critter).and_then(Entity::resident_site).is_none() { return false; }
         if place != site {
             let hops = |from| super::tier::hops(&self.state.sites, from, site);
             let here = hops(place);
@@ -390,7 +391,7 @@ impl Simulation {
             .state
             .population
             .get(actor)
-            .map_or(super::PLACELESS, |e| e.place);
+            .and_then(Entity::resident_site).unwrap_or(super::PLACELESS);
         if let Some(j) = &mut self.journal {
             j.nudges(&self.state.nudges);
         }

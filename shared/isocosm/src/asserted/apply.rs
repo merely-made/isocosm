@@ -203,7 +203,7 @@ impl Simulation {
         let event = Event {
             id: id.clone(),
             tick: self.state.tick,
-            place: place.map_or(placeless, |(id, _)| id),
+            place: EventPlace::Site(place.map_or(placeless, |(id, _)| id)),
             subject: subject.unwrap_or(placeless),
             object: None,
             process: h.kind.clone(),
@@ -229,6 +229,7 @@ fn authored_entity(c: &Character, tick: Tick) -> Entity {
         place: crate::directing::PLACELESS,
         arrived: tick,
         visits: vec![],
+        journey: None,
         born: tick,
         alive: true,
         body_revision: 1,

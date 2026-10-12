@@ -15,7 +15,8 @@ use crate::identity::{Control, ControlIntent, IdentityError, SubjectId, Tick};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
+    CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION,
+    NATIVE_RECIPE_GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
     GameState, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
     World,
 };
@@ -293,7 +294,7 @@ impl Session {
         {
             return Err(SessionError::Game(GameError::LegacyMovementProfileIntent));
         }
-        if save.game.version < GAME_STATE_VERSION
+        if save.game.version < CANON_GAME_STATE_VERSION
             && save
                 .game
                 .intents
@@ -301,6 +302,11 @@ impl Session {
                 .any(|intent| matches!(intent, GameIntent::ReviseCanon { .. }))
         {
             return Err(SessionError::Game(GameError::LegacyCanonIntent));
+        }
+        if save.game.version < NATIVE_RECIPE_GAME_STATE_VERSION
+            && save.game.intents.iter().any(|i| matches!(i, GameIntent::GenerateNativeRecipe { .. }))
+        {
+            return Err(SessionError::Game(GameError::LegacyNativeRecipeIntent));
         }
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents

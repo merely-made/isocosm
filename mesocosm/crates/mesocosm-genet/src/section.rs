@@ -17,6 +17,7 @@
 //! the hash.
 
 mod bodies;
+pub mod host_device;
 mod camera;
 mod capsules;
 mod tenant;
@@ -121,6 +122,7 @@ pub struct Section {
     /// Which way it looks. Presentation, beside the half-height and for the
     /// same reason: it frames the world and decides nothing in it.
     mode: CameraMode,
+    custom_forward: Option<[f32; 3]>,
     body_mode: BodyMode,
     body_budget: usize,
     /// The Mesocosm facts the scene is handed rather than the ones it derives.
@@ -157,6 +159,7 @@ impl Section {
             height,
             half_height: half_height_or_default(framing.half_height),
             mode: framing.mode,
+            custom_forward: None,
             body_mode: BodyMode::default(),
             body_budget: DEFAULT_BODY_BUDGET,
             host_bodies: bodies::HostBodies::new(),
@@ -202,6 +205,8 @@ impl Section {
             self.scene.bodies_mut().clear_inspection();
         }
     }
+
+    pub fn cached_bodies(&self) -> usize { self.scene.cached_bodies() }
 
     pub fn body_stats(&self) -> BodyFrameStats {
         self.scene.bodies().stats.clone()
@@ -308,6 +313,31 @@ impl Section {
     /// The completed terrain texture imported by Netrender's frame graph.
     pub fn display_texture(&self) -> &wgpu::Texture {
         self.scene.display_texture()
+    }
+
+    /// Replace departed/refused native input in display, capture and queries.
+    /// No substitute terrain or body is created for an off-site critter.
+    pub fn withdraw(&mut self, encoder: &mut wgpu::CommandEncoder, surface: Option<&wgpu::TextureView>) {
+        self.invalidate_query();
+        self.scene.bodies_mut().clear_inspection();
+        self.scene.bodies_mut().stats = BodyFrameStats::default();
+        self.host_bodies.fallback.clear();
+        self.host_bodies.played_fallback = None;
+        let terrain = self.scene.display_texture().create_view(&Default::default());
+        let bodies = self.body_tenant.view();
+        for (view, colour) in std::iter::once((&terrain, wgpu::Color::BLACK))
+            .chain(std::iter::once((&bodies, wgpu::Color::TRANSPARENT)))
+            .chain(surface.map(|view| (view, wgpu::Color::BLACK))) {
+            let _pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+                label: Some("Mesocosm withdrawn native view"),
+                color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                    view, depth_slice: None, resolve_target: None,
+                    ops: wgpu::Operations { load: wgpu::LoadOp::Clear(colour), store: wgpu::StoreOp::Store },
+                })],
+                depth_stencil_attachment: None, timestamp_writes: None,
+                occlusion_query_set: None, multiview_mask: None,
+            });
+        }
     }
 
     /// Reads the most recently traced frame back as RGBA8, with `overlay`

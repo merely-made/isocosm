@@ -36,7 +36,7 @@ pub fn site_biomass(sim: &Simulation) -> BTreeMap<Id, BTreeMap<Key, u128>> {
         .collect();
     for g in sim.state().population.groups.values() {
         let e = &g.entity;
-        let Some(site) = by.get_mut(&e.place).filter(|_| e.alive) else {
+        let Some(site) = e.resident_site().and_then(|site| by.get_mut(&site)).filter(|_| e.alive) else {
             continue;
         };
         let mass = crate::meaning::mass(&crate::anatomy::books(e), rules) * u128::from(g.count);
@@ -59,7 +59,7 @@ pub fn held(sim: &Simulation) -> BTreeMap<Id, BTreeSet<Key>> {
         let e = &g.entity;
         let levels = slots.keys().filter(|l| e.traits.contains(*l));
         for level in levels {
-            let places = std::iter::once(e.place).chain(e.visits.iter().map(|v| v.place));
+            let places = e.resident_site().into_iter().chain(e.visits.iter().map(|v| v.place));
             for place in places {
                 by.entry(place).or_default().insert(level.clone());
             }

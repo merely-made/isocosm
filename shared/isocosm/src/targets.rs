@@ -18,14 +18,14 @@ use std::collections::{BTreeMap, BTreeSet};
 /// Stored groups by their first identity, filed by place and lineage.
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Targets {
-    filed: BTreeMap<(Id, Key), BTreeSet<Id>>,
-    at: BTreeMap<Id, (Id, Key)>,
+    filed: BTreeMap<(Option<Id>, Key), BTreeSet<Id>>,
+    at: BTreeMap<Id, (Option<Id>, Key)>,
 }
 
 impl Targets {
     /// Files a lazily preserved body by its place and lineage at pass start.
     pub(crate) fn keep(&mut self, first: Id, entity: &Entity) {
-        let key = (entity.place, entity.lineage.clone());
+        let key = (entity.journey.is_none().then_some(entity.place), entity.lineage.clone());
         self.filed.entry(key.clone()).or_default().insert(first);
         self.at.insert(first, key);
     }
@@ -59,12 +59,12 @@ impl Targets {
 
     /// The filed groups a selector could accept from `place`, each list in
     /// identity order.
-    fn lists<'a>(
+    pub(crate) fn lists<'a>(
         &'a self,
         selector: &'a Target,
         place: Id,
     ) -> Box<dyn Iterator<Item = &'a BTreeSet<Id>> + 'a> {
-        let lineage = |key: &(Id, Key)| {
+        let lineage = |key: &(Option<Id>, Key)| {
             selector
                 .lineage
                 .as_ref()
@@ -72,8 +72,8 @@ impl Targets {
                 && (selector.among.is_empty() || selector.among.contains(&key.1))
         };
         if selector.same_place {
-            let at = (place, Key::new())..;
-            let here = self.filed.range(at).take_while(move |(k, _)| k.0 == place);
+            let at = (Some(place), Key::new())..;
+            let here = self.filed.range(at).take_while(move |(k, _)| k.0 == Some(place));
             Box::new(here.filter(move |(k, _)| lineage(k)).map(|(_, v)| v))
         } else {
             Box::new(

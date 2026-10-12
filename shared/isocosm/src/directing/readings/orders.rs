@@ -35,7 +35,7 @@ pub fn orders(sim: &Simulation, participant: Id, critter: Id) -> Orders {
     for n in s.nudges.iter().filter(mine) {
         let named = match n.toward {
             Toward::Site(site) => Some(site),
-            Toward::Thing(_) => n.answer.as_ref().map(|a| a.site),
+            Toward::Thing(_) => n.answer.as_ref().and_then(|a| a.resident_site()),
         };
         if let Some(site) = named {
             *attention.entry(site).or_default() += 1;
@@ -44,7 +44,7 @@ pub fn orders(sim: &Simulation, participant: Id, critter: Id) -> Orders {
             continue;
         };
         let went = if a.served { 1 } else { -1 };
-        *thrived.entry(a.site).or_default() += went;
+        if let Some(site) = a.resident_site() { *thrived.entry(site).or_default() += went; }
         if n.aim == Aim::Act {
             *o.priorities.entry(a.process.clone()).or_default() += went;
             if let Toward::Thing(t) = n.toward

@@ -32,7 +32,9 @@ use crate::{
 mod acts;
 mod combat;
 mod harm;
+mod legacy_body;
 mod motion;
+mod native_anatomy;
 mod save;
 
 #[derive(Clone, Debug)]

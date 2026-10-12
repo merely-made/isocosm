@@ -301,6 +301,16 @@ on Isocosm, both modes, receipts replaying.
 
 ## Progress
 
+- **2026-10-11, journey choices settled (820 to 823):** the traveller keeps
+  ageing and paying upkeep, carrying produced soil until a later site deposit.
+  Paid birth shares the remaining journey; transit events have a typed journey
+  location without site reach; death carries the corpse through the remaining
+  duration to the destination. The canonical choices are in the
+  [wing record](2026-09-18_wing_design_plan.md). Q3 is preparing native
+  residency, scheduling and saved replay. Rates and 454/683/813 stay fixed;
+  authentic old archives, the rejected candidate, eighty-world A1 and headed
+  certification remain open. Decisions do not constitute native acceptance.
+
 - **2026-10-11, Q3 bitten-part sharing qualified on main:** whole-prey and
   part quotas remain bounded across a pass (454, 459); zero accepted shares
   publish no flow, and partial consumption does not allocate a fractional
@@ -528,3 +538,5 @@ on Isocosm, both modes, receipts replaying.
 
 - **2026-10-08:** plan drafted from the directing survey; rulings 681 to
   691 taken in three rounds.
+
+- **2026-10-11, combined migration execution:** Route-duration journeys and competing-kernel updates are now applied in the combined migration. Native compiler repair precedes final-state reproduction and replay checks. The former A1 candidates and earlier Q8 statistics retain their historical evidence only; current reproduction and headed D5 remain open.

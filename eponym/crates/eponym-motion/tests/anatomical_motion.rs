@@ -4,7 +4,7 @@
 use eponym_play::identity::{BodyRevisionId, SubjectId};
 use eponym_play::{
     GameError, GameIntent, GameState, MotionEnvelope, MotionInput, MotionRules, MovementProfile,
-    Name, SupportBand, World, WorldConfig, fixtures::three_lives::wetland_body,
+    Name, SupportBand, World, WorldConfig,
 };
 use isometer_core::PartId;
 
@@ -51,7 +51,7 @@ fn state() -> GameState {
             tick: state.next_tick(),
             subject: SUBJECT,
             revision: BodyRevisionId(0),
-            document: Box::new(wetland_body()),
+            document: Box::new(state.native_anatomy(SUBJECT, isocosm::lineage::SpeciesId(71)).unwrap()),
         })
         .unwrap();
     state

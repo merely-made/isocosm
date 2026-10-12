@@ -57,7 +57,10 @@ pub fn follow_of(sim: &Simulation, followed: Id) -> Option<Follow> {
     Some(Follow {
         id: followed.to_string(),
         species: e.lineage.clone(),
-        at: format!("site {}", e.place),
+        at: match e.journey {
+            Some(j) => format!("journey {} to {}, arriving {}", j.from, j.to, j.arrives),
+            None => format!("site {}", e.place),
+        },
         reserve: format!("{ledger} mg"),
         substance: format!("{tissue} mg"),
         flows: String::new(),

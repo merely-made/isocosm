@@ -27,6 +27,7 @@
 
 pub mod app;
 pub mod chrome;
+pub mod borrowed_section;
 pub mod dev;
 pub mod hud;
 pub mod input;

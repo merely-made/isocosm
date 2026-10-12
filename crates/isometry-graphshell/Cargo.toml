@@ -12,6 +12,7 @@ graphshell-endpoint = { workspace = true, features = ["stdio"] }
 chirograph = { workspace = true }
 isocosm = { workspace = true }
 isometry-core = { workspace = true }
+isometry-campaign = { workspace = true }
 isometry-views = { workspace = true }
 sceno = { workspace = true }
 scenomise = { workspace = true }

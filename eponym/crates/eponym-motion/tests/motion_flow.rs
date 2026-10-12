@@ -4,7 +4,7 @@
 use eponym_play::identity::{BodyRevisionId, SubjectId};
 use eponym_play::{
     GameIntent, GameState, ItemLocation, MotionInput, MotionPose, MotionRules, Name, World,
-    WorldConfig, fixtures::three_lives::wetland_body,
+    WorldConfig,
 };
 
 const SUBJECT: SubjectId = SubjectId(1);
@@ -81,7 +81,7 @@ fn game() -> GameState {
         tick: game.next_tick(),
         subject: SUBJECT,
         revision: BodyRevisionId(0),
-        document: Box::new(wetland_body()),
+        document: Box::new(game.native_anatomy(SUBJECT, isocosm::lineage::SpeciesId(71)).unwrap()),
     })
     .unwrap();
     game

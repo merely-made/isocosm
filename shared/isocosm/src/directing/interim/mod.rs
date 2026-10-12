@@ -229,8 +229,8 @@ impl Interim {
             let e = &g.entity;
             e.alive && e.lineage == lineage && e.method == Method::Deliberative
         });
-        let ours: Vec<(Id, Id)> = ours.map(|(f, g)| (*f, g.entity.place)).collect();
-        let home = ours.iter().find(|(_, place)| homes.contains(place));
+        let ours: Vec<(Id, Option<Id>)> = ours.map(|(f, g)| (*f, g.entity.resident_site())).collect();
+        let home = ours.iter().find(|(_, place)| place.is_some_and(|place| homes.contains(&place)));
         home.or(ours.first()).map(|(f, _)| *f)
     }
 
@@ -240,7 +240,7 @@ impl Interim {
         let pop = &self.session.sim.state().population;
         let here = near
             .and_then(|n| pop.get(n))
-            .map(|e| (e.lineage.clone(), e.place));
+            .map(|e| (e.lineage.clone(), e.resident_site()));
         let mut best: Option<(bool, Id)> = None;
         for (first, g) in &pop.groups {
             let e = &g.entity;
@@ -248,7 +248,7 @@ impl Interim {
             if !e.alive || e.method != Method::Deliberative || !ours || Some(*first) == near {
                 continue;
             }
-            let away = here.as_ref().is_some_and(|(_, p)| *p != e.place);
+            let away = here.as_ref().is_some_and(|(_, p)| p.is_none() || *p != e.resident_site());
             if best.is_none_or(|b| (away, *first) < b) {
                 best = Some((away, *first));
             }
@@ -356,7 +356,7 @@ impl Interim {
         let Some(e) = pop.get(critter) else {
             return Ok(None);
         };
-        let Some(region) = readings::region_of(&regions, e.place)
+        let Some(region) = e.resident_site().and_then(|site| readings::region_of(&regions, site))
             .filter(|r| r.collapsed)
             .cloned()
         else {
@@ -374,7 +374,7 @@ impl Interim {
                         && g.entity.lineage == e.lineage
                         && g.entity.method == Method::Deliberative
                         && **first != critter
-                        && standing(g.entity.place)
+                        && g.entity.resident_site().is_some_and(standing)
                 })
                 .map(|(first, _)| *first);
             if let Some(next) = moved_to {
@@ -389,3 +389,6 @@ impl Interim {
 mod tests;
 #[cfg(test)]
 mod diag;
+
+#[cfg(test)]
+mod reproduction;

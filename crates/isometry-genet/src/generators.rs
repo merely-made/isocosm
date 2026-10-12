@@ -8,8 +8,11 @@
 
 use super::*;
 
+mod foundings;
+
 impl App {
     pub(crate) fn pump_generators(&mut self, ctx: &mut Ctx<'_>) {
+        self.pump_world_preview(ctx);
         let mut action = None;
         let mut locks = Default::default();
         let mut can_edit = false;
@@ -46,6 +49,7 @@ impl App {
                         maps: ui.campaign_maps.clone(),
                         active_map: ui.active_map.clone(),
                         world: ui.world.clone(),
+                        native: ui.native.world.clone(),
                         clocks: ui.clocks.clone(),
 
                         party_cap: ui.party_cap,
@@ -151,19 +155,19 @@ impl App {
                     return;
                 };
                 if matches!(record.proposal, GenValue::Campaign { .. }) {
-                    // Map-only packs need no regional identity. A world-backed
-                    // campaign starts the explicitly selected session party,
-                    // matching the overmap's viewer identity (including dm).
-                    let party = match &record.proposal {
-                        GenValue::Campaign { campaign } if !campaign.world.places().is_empty() => {
-                            Some(
-                                ctx.runner
-                                    .state()
-                                    .viewer
-                                    .clone()
-                                    .unwrap_or_else(|| "dm".to_owned()),
-                            )
+                    let selected = match ctx.runner.state().native.acceptance(&record) {
+                        Ok(selected) => selected,
+                        Err(error) => {
+                            ctx.runner.update(|ui| {
+                                ui.generator_preview = Some(record.clone());
+                                ui.status = error;
+                            });
+                            return;
                         },
+                    };
+                    let party = match &record.proposal {
+                        GenValue::Campaign { campaign } if !campaign.world.places().is_empty() =>
+                            Some(ctx.runner.state().viewer.clone().unwrap_or_else(|| "dm".to_owned())),
                         _ => None,
                     };
                     let item_owner = local_snapshot.as_ref().and_then(|snapshot| {
@@ -174,7 +178,12 @@ impl App {
                     });
                     if remote {
                         if let Some(net) = self.net.as_mut() {
-                            let request = net.commit_campaign(record, item_owner, party);
+                            let request = match selected {
+                                isometry_views::NativeAcceptance::Native(selected) =>
+                                    net.commit_native_setup(selected.setup, selected.preview, record, item_owner),
+                                isometry_views::NativeAcceptance::TableOnly =>
+                                    net.commit_campaign(record, item_owner, party),
+                            };
                             {
                                 let runner = &mut *ctx.runner;
                                 runner.update(|ui| match request {
@@ -196,11 +205,13 @@ impl App {
                             self.campaign.clone(),
                             self.history.clone(),
                         );
-                        let result = match party {
-                            Some(party) => {
-                                host.commit_campaign_for_party(record.clone(), item_owner, &party)
+                        let result = match selected {
+                            isometry_views::NativeAcceptance::Native(selected) =>
+                                host.commit_native_setup(&selected.setup, &selected.preview, &record, item_owner),
+                            isometry_views::NativeAcceptance::TableOnly => match party {
+                                Some(party) => host.commit_campaign_for_party(record.clone(), item_owner, &party),
+                                None => host.commit_campaign(record.clone(), item_owner),
                             },
-                            None => host.commit_campaign(record.clone(), item_owner),
                         };
                         match result {
                             Ok(_) => {

@@ -20,7 +20,7 @@ struct BeforeAgreement {
 }
 
 #[test]
-fn an_unassociated_event_keeps_its_encoding_and_hashes() {
+fn an_unassociated_event_keeps_its_json_and_native_witness_preimages() {
     let old = BeforeAgreement {
         id: "old-event".into(),
         tick: 0,
@@ -39,14 +39,15 @@ fn an_unassociated_event_keeps_its_encoding_and_hashes() {
     assert_eq!(serde_json::to_vec(&event).unwrap(), bytes);
     assert_eq!(crate::digest(&event), crate::digest(&old));
     assert_eq!(
-        state_witness::hash_value(&event).unwrap(),
-        state_witness::hash_value(&old).unwrap()
+        state_witness::hash_value(&crate::simulation::preimage::event::Event::from(&event)).unwrap(),
+        state_witness::hash_value(&old).unwrap(),
+        "numeric Site witness preimage remains unchanged"
     );
     let mut associated = event.clone();
     associated.agreement = Some(0);
     assert_ne!(
-        state_witness::hash_value(&associated).unwrap(),
-        state_witness::hash_value(&event).unwrap()
+        state_witness::hash_value(&crate::simulation::preimage::event::Event::from(&associated)).unwrap(),
+        state_witness::hash_value(&crate::simulation::preimage::event::Event::from(&event)).unwrap()
     );
     assert_eq!(
         serde_json::from_slice::<Event>(&serde_json::to_vec(&associated).unwrap()).unwrap(),

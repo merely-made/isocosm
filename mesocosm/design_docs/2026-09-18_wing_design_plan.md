@@ -10255,6 +10255,102 @@ what later sections derive from.
      rejected reproduction candidate nor changes food, reproduction rates,
      the committed choice for a tick, or the eighty-world A1 gate.
 
+818. **Eponym initially develops the compact six-part native recipe.**
+     2026-10-11, Q10's native body admission.
+     Question: "Which native recipe should initially develop Eponym’s driven sophont? The proposed compact recipe has six parts with intake, store, sense, contract, support and grip; its nominal capacities are 860mg tissue and 105mg reserve. The existing browser recipe with an explicit store tract has up to 33 parts and nominal capacities of 1324mg tissue and 387mg reserve. These are source calculations awaiting native verification; both replace the old authored seven-part starting body."
+     Mark chose "Compact six-part Eponym recipe (Recommended)."
+     So Native development supplies the selected intake, store, sense, contract,
+     support and grip parts under 816. The former authored seven-part
+     starting body is replaced by that native development.
+     *Reading, not ruled:* The nominal 860mg tissue and 105mg reserve
+     capacities are source calculations awaiting native measurement. The
+     answer selects a recipe, not a tested admission or E3 acceptance.
+
+819. **Fresh arrival tissue fits the developed native body.**
+     2026-10-11, Q10's native body admission.
+     Question: "How should fresh arrival tissue be chosen when the old 48,000–56,000mg request exceeds either recipe’s capacity? This applies to newly issued starting matter; existing supplied stocks remain conserved and overflow must refuse atomically."
+     Mark chose "Issue fresh tissue within the developed body’s native capacity (Recommended); retain reserve 100 and energy 100 where admitted."
+     So Newly issued tissue must fit the selected development. Reserve 100 and
+     energy 100 remain only where admitted. Supplied existing stocks stay
+     conserved and overflow refuses atomically under 777.
+     *Reading, not ruled:* Capacity measurement, stock placement and
+     logged admission require atomic refusal, conservation and replay
+     tests; this ruling does not alter existing supplied matter.
+
+820. **Upkeep continues during travel and carries its produced soil.**
+     2026-10-11, Q3's native journey semantics.
+     Question: "During a journey, how should native upkeep run? Current upkeep consumes tissue and deposits soil at the member’s site, but a departed member is absent from both sites until arrival. Age would continue under each option."
+     Mark chose "Continue upkeep and carry its produced soil until a later site deposit (Recommended)."
+     So Age and upkeep continue while the member is absent from both sites.
+     Soil produced by upkeep stays with the traveller until a later native
+     site deposit; the last residence tag cannot receive it during transit.
+     *Reading, not ruled:* The carried-soil ledger and deposit timing
+     require native conservation and replay checks. This ruling changes
+     neither process rates nor the committed choice within a tick.
+
+821. **A child born during travel shares the remaining journey.**
+     2026-10-11, Q3's native journey semantics.
+     Question: "What should happen if a travelling member can pay for a birth before arrival? Birth currently copies the parent’s site, so transit needs an explicit placement rule."
+     Mark chose "Allow birth; the child shares the parent’s remaining journey (Recommended)."
+     So Native birth may occur before arrival when its ordinary payment and
+     feasibility conditions hold. The child shares the parent's remaining
+     journey, rather than appearing at either site immediately.
+     *Reading, not ruled:* Native placement, stock payment and replay
+     must preserve the shared remaining duration under 817. This answer
+     does not certify the rejected reproduction candidate or A1.
+
+822. **Travel events have a typed journey location without site reach.**
+     2026-10-11, Q3's native journey semantics.
+     Question: "A travelling member has left both sites, but native age and birth notes require a site and currently spread their reach there. Where should an event during travel be located?"
+     Mark chose "Give it a typed journey location, with no site reach until a later native telling (Recommended)."
+     So An event during transit names the journey as its native location.
+     It gains no site reach from a departure or destination tag; a later
+     native telling establishes reach through the existing telling rules.
+     *Reading, not ruled:* The typed wire layout, handle translation
+     and backward reader need source review and native tests; the answer
+     does not select an invented site or certify saved histories.
+
+823. **A corpse completes the remaining journey before site availability.**
+     2026-10-11, Q3's native journey semantics.
+     Question: "If a member dies during a journey, what should happen to its body and conserved matter?"
+     Mark chose "Finish the remaining journey carrying the corpse, then make it available at the destination (Recommended)."
+     So Death preserves the body, its conserved matter and remaining journey.
+     The corpse completes that journey and becomes available at the
+     destination, without an immediate deposit at either site.
+     *Reading, not ruled:* Dead travellers remain absent from both site
+     populations until arrival. Representation, decay and conservation
+     require native verification without changing authored process rates.
+
+824. **A queue build may share resources with unrelated work when measured headroom permits.**
+     2026-10-11, the orchestrator's compiler custody.
+     Question: "Unrelated Mere builds keep restarting, and the queue plan’s “one cargo build at a time” rule has stopped our host-test setup twice. May our queue run its single Cargo job alongside unrelated builds, using its existing isolated Isometry target and keeping the three-task limit?"
+     Mark chose "look at the ram, the cpu, the gpu usage, and the ssd. if you can safely use those resources without blowing up the other agents' work, then sure"
+     So the orchestrator checks RAM, CPU, GPU and SSD use before granting
+     its single Cargo job alongside unrelated builds. The other agents
+     retain their source and output ownership; at most three queue
+     tasks run together. Separate targets alone do not establish spare
+     resources or excuse source, compiler and configuration verification.
+     *Reading, not ruled:* the proposed implementation uses one compiler
+     worker, lower build priority, fresh admission measurements and
+     monitored resource pressure. It may stop only its own bound child
+     family. Thresholds and process custody require independent review;
+     the initial measurements are not a permanent execution grant.
+
+825. **The precise-contact fixture has a named native founding profile.**
+     2026-10-11, Eponym's native fixture save owner.
+     Question: "Eponym’s precise-contact tests need two native fixture recipes that keep their original small root shapes while adding storage. World saves currently rebuild founding from a seed and version tag, then authenticate its hash. How should those fixture recipes be saved?"
+     Mark chose "Named native founding profile, selected by a saved version tag (Recommended)"
+     So a saved version tag selects the declared native founding
+     profile, which supplies the two fixture recipes and keeps their
+     original small root shapes while adding native storage. Restore
+     regenerates that founding and authenticates its hash before
+     replay. Native recipes and recorded selections retain authority
+     over physiology, geometry and conserved allocation.
+     *Reading, not ruled:* the source proposal uses generator5 and
+     GameSave8, preserves current4 and the earlier finite grammars,
+     and retains Canon's actual minimum7. Native capacity, contact,
+     complete replay and compiled refusal controls remain gates.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

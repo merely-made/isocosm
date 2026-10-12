@@ -136,7 +136,7 @@ impl UiState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::legacy::campaign::WorldFact;
+    use isometry_campaign::WorldFact;
     use muniment::Journal;
 
     #[test]
@@ -151,6 +151,7 @@ mod tests {
             maps: Default::default(),
             active_map: None,
             world: CampaignWorld::default(),
+            native: None,
             clocks: Default::default(),
             party_cap: isonetry::default_party_cap(),
             last_beats: Vec::new(),
@@ -167,7 +168,7 @@ mod tests {
         let mut ui = UiState::new(origin.map.clone());
         ui.campaign_maps.insert("live-only".into(), CampaignMap {
             id: "live-only".into(),
-            scale: isocosm::legacy::campaign::MapScale::Region,
+            scale: isometry_campaign::MapScale::Region,
             document: MapDocument::new("live terrain", 3, 4),
             spawn_zones: vec![], transitions: vec![], encounter_anchors: vec![],
         });

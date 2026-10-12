@@ -38,7 +38,7 @@ impl App {
             self.pump_sheets(ctx);
             self.pump_generators(ctx);
             self.pump_storylets(ctx);
-            self.pump_faction_turn(ctx);
+            self.pump_downtime(ctx);
             self.pump_overmap(ctx);
             self.pump_overmap_orders(ctx);
             self.pump_overmap_read(ctx);
@@ -70,6 +70,7 @@ impl App {
                                     maps: ui.campaign_maps.clone(),
                                     active_map: ui.active_map.clone(),
                                     world: ui.world.clone(),
+                                    native: ui.native.world.clone(),
                                     clocks: ui.clocks.clone(),
 
                                     party_cap: ui.party_cap,
@@ -186,7 +187,7 @@ impl App {
         self.pump_sheets(ctx);
         self.pump_generators(ctx);
         self.pump_storylets(ctx);
-        self.pump_faction_turn(ctx);
+        self.pump_downtime(ctx);
         self.pump_overmap(ctx);
         self.pump_overmap_orders(ctx);
         self.pump_overmap_read(ctx);
@@ -347,7 +348,7 @@ impl App {
 /// The door sweep needs it while a `&mut` borrow of the runner is live, which
 /// puts the whole-`self` method out of reach.
 pub(crate) fn snapshot_with_journal(
-    journal: Vec<isocosm::legacy::campaign::WorldFact>,
+    journal: Vec<isometry_campaign::WorldFact>,
     ui: &UiState,
 ) -> GameSnapshot {
     GameSnapshot {
@@ -360,6 +361,7 @@ pub(crate) fn snapshot_with_journal(
         maps: ui.campaign_maps.clone(),
         active_map: ui.active_map.clone(),
         world: ui.world.clone(),
+        native: ui.native.world.clone(),
         clocks: ui.clocks.clone(),
         party_cap: ui.party_cap,
         last_beats: Vec::new(),

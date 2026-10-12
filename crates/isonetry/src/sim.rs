@@ -57,17 +57,6 @@ impl Sim {
         Ok(())
     }
 
-    /// The DM runs and commits a downtime faction tick, broadcasting the batch.
-    pub fn host_faction_turn(
-        &mut self,
-        moves: Vec<isocosm::legacy::campaign::FactionMove>,
-    ) -> Result<(), String> {
-        let out = self.host.commit_faction_turn(moves)?;
-        self.enqueue_from_host(out);
-        self.settle();
-        Ok(())
-    }
-
     /// The DM reveals a hidden item modifier into the public inventory log.
     /// The DM's assertion through the contract (795), committed and settled.
     pub fn host_assertion(

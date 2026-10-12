@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
+
+mod borrowed;
 use crate::{WorldConfig, founding, vocabulary};
 use isocosm::arrival::Arrival;
 use isocosm::schema::Method;

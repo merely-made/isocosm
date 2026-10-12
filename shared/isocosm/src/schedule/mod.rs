@@ -90,6 +90,8 @@ fn framed(p: &Process) -> bool {
 
 impl Simulation {
     pub(crate) fn advance_to(&mut self, end: Tick) -> Result<Work> {
+        self.refresh_attention();
+        self.protect_attention();
         let mut queue = BTreeSet::new();
         let mut gated = BTreeMap::new();
         for p in self.genesis.rules.processes.values() {
@@ -125,15 +127,20 @@ impl Simulation {
                 &self.genesis.rules,
             ));
         }
+        self.journeys = (!self.state.movement.immediate())
+            .then(|| crate::journey::Journeys::new(&self.state.population));
         let mut work = Work::default();
         self.chosen = Default::default();
         let done = self.scheduled(queue, end, &mut work);
         self.targets = None;
+        self.journeys = None;
         self.filed = None;
         self.pass = None;
+        self.frame = None;
         self.chosen = Default::default();
         done?;
         self.state.tick = end;
+        self.refresh_attention();
         if self.mode == Execution::Grouped {
             let roots = self.kept();
             let population = &mut self.state.population;
@@ -154,8 +161,12 @@ impl Simulation {
         end: Tick,
         work: &mut Work,
     ) -> Result<()> {
-        while let Some((due, priority, id)) = queue.pop_first() {
+        loop {
+            let next = queue.first().map_or(end, |(tick, _, _)| *tick);
+            self.arrive_all_until(next, work)?;
+            let Some((due, priority, id)) = queue.pop_first() else { break; };
             self.state.tick = due;
+            self.refresh_attention();
             if let Some(filed) = &mut self.filed {
                 filed.ripen(&self.state.population, due, &self.genesis.rules);
             }
@@ -268,7 +279,8 @@ impl Simulation {
         }) {
             return None;
         }
-        let bulk = self.mode == Execution::Grouped && process.bulk_safe();
+        let bulk = self.mode == Execution::Grouped && process.bulk_safe()
+            && !self.state.attention.foreground(first, count);
         Some(if bulk { (1, count) } else { (count, 1) })
     }
 

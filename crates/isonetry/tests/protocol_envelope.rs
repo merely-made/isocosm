@@ -48,6 +48,7 @@ fn snapshot() -> GameSnapshot {
         maps: Default::default(),
         active_map: None,
         world: Default::default(),
+        native: None,
         clocks: Default::default(),
         party_cap: isonetry::default_party_cap(),
         last_beats: Vec::new(),

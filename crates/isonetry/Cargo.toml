@@ -39,6 +39,7 @@ isocosm = { workspace = true }
 isocosm-overlay = { workspace = true }
 muniment = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
 # Compact, no_std-friendly wire framing; also the byte form the portable
 # log hash folds over (so convergence is std-hash-independent).
 postcard = { version = "1", features = ["alloc"] }
@@ -65,7 +66,6 @@ tracing = { version = "0.1", optional = true }
 [dev-dependencies]
 isometry-core = { workspace = true }
 isometry-system = { workspace = true }
-serde_json = { workspace = true }
 pollster = "0.4"
 
 [[example]]

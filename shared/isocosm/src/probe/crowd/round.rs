@@ -171,7 +171,7 @@ impl Crowd<'_> {
                 let c = &world.competitions()[key];
                 let mut hungry: Vec<(Entity, u64, usize)> = Vec::new();
                 for (e, &n) in &self.bins {
-                    if !e.alive || e.place != site {
+                    if !e.alive || e.resident_site() != Some(site) {
                         continue;
                     }
                     let Some(k) = c.kinds.iter().position(|k| e.traits.contains(&k.identity))

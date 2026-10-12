@@ -56,10 +56,21 @@ pub fn part_bounds(document: &isometer_core::BodyDocument, id: PartId) -> Option
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct NativeAnatomySource {
+    pub entity: isocosm::schema::Id,
+    pub lineage: isocosm::schema::Key,
+    pub body_revision: u64,
+    pub tick: u64,
+    pub state_hash: u64,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AnatomyRecord {
     pub subject: SubjectId,
     pub revision: BodyRevisionId,
     pub document: BodyDocument,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub native_source: Option<NativeAnatomySource>,
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -86,6 +97,7 @@ pub enum AnatomyError {
     CoordinateOutOfBounds,
     TransformOverflow,
     MassOverflow,
+    NativeMismatch,
     DuplicateSubject,
     Missing(SubjectId),
     DuplicatePart(PartId),
@@ -126,8 +138,27 @@ impl Anatomies {
                 subject,
                 revision,
                 document,
+                native_source: None,
             },
         );
+        Ok(())
+    }
+
+    pub(crate) fn bind_native(
+        &mut self, subject: SubjectId, source: NativeAnatomySource,
+    ) -> Result<(), AnatomyError> {
+        self.records.get_mut(&subject).ok_or(AnatomyError::Missing(subject))?
+            .native_source = Some(source);
+        Ok(())
+    }
+
+    pub(crate) fn refresh_native(
+        &mut self, subject: SubjectId, document: BodyDocument, source: NativeAnatomySource,
+    ) -> Result<(), AnatomyError> {
+        validate(&document)?;
+        let record = self.records.get_mut(&subject).ok_or(AnatomyError::Missing(subject))?;
+        record.document = document;
+        record.native_source = Some(source);
         Ok(())
     }
 

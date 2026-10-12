@@ -99,6 +99,7 @@ fn fixture() -> (Genesis, Id, Id) {
 
 fn joined(g: Genesis, mode: Execution, actor: Id, nudge: Option<(Aim, Id)>) -> (Session, Id) {
     let mut s = Session::new(g, mode).unwrap();
+        s.sim.state.movement = Movement::ImmediateV3;
     let (participant, ours) = super::tests::played(&mut s);
     assert_eq!(ours, actor);
     if let Some((aim, thing)) = nudge {

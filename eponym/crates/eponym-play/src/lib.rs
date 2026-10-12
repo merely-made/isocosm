@@ -40,7 +40,7 @@ pub mod walking;
 mod world;
 
 pub use anatomy::{
-    Anatomies, AnatomyError, AnatomyRecord, MAX_ANATOMY_COORDINATE, MAX_ANATOMY_PARTS,
+    Anatomies, AnatomyError, AnatomyRecord, NativeAnatomySource, MAX_ANATOMY_COORDINATE, MAX_ANATOMY_PARTS,
     MAX_ANATOMY_WORLD_COORDINATE, part_bounds,
 };
 pub use bodies::{
@@ -51,6 +51,7 @@ pub use combat::{
     ResolvedStrike, StrikeOutcome,
 };
 pub use equipment::AttachmentView;
+pub use founding::fixture::{NativeFixtureProfile, NativeFixtureRecipe};
 pub use items::{Item, ItemError, ItemId, ItemKind, ItemLocation, ItemPlaces, Items};
 pub use motion::{
     MOTION_SCALE, MotionError, MotionInput, MotionOutcome, MotionPose, MotionRules, MotionSolver,
@@ -77,9 +78,9 @@ pub use technique::{
     SubjectBody, TechniqueId, TechniqueInputs, TechniqueKnowledge, arrest_fall,
 };
 pub use transitions::{
-    COMBAT_GAME_STATE_VERSION, CanonRevisionCause, DeathCause, GAME_STATE_VERSION, GameError,
+    CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, CanonRevisionCause, DeathCause, GAME_STATE_VERSION, GameError,
     GameEvent, GameIntent, GameSave, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION,
-    PROFILE_GAME_STATE_VERSION,
+    NATIVE_RECIPE_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
 };
 pub use world::{
     GENERATOR_VERSION, World, WorldConfig, WorldError, WorldEvent, WorldIntent, WorldSave,

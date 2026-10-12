@@ -62,7 +62,7 @@ pub struct BodyProfile {
 }
 
 impl BodyProfile {
-    /// The profile a body draws from its world, seed and subject.
+    /// The retained profile draw; current body mass is read from native tissue.
     pub fn draw(world_seed: u64, body_seed: u64, subject: SubjectId) -> Self {
         let bytes = snapshot::encode(&(world_seed, body_seed, subject)).expect("fixed-width genesis encodes");
         let draw = hash_bytes(&bytes);
@@ -111,10 +111,14 @@ impl Body {
             want.map_or(0, |w| w.deficit().min(u64::from(MAX_NEED)) as u16)
         };
         let wound = wound(e);
+        let mut profile = BodyProfile::draw(world.seed(), record.body_seed, subject);
+        if world.developed_bodies() {
+            profile.mass_mg = u32::try_from(isocosm::anatomy::held(e, rules, crate::founding::TISSUE)).ok()?;
+        }
         Some(Self {
             subject,
             revision: record.revision,
-            profile: BodyProfile::draw(world.seed(), record.body_seed, subject),
+            profile,
             name: sim.name_of(record.entity).map(|n| Name(n.into())),
             born_at: record.named_at,
             died_at: record.died_at,

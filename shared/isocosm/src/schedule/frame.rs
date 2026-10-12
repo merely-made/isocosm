@@ -276,6 +276,8 @@ pub(crate) fn merge(live: &mut Entity, base: &Entity, new: Entity) {
         place,
         arrived,
         visits,
+        journey,
+        patch,
         born,
         alive,
         tenets,

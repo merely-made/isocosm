@@ -25,9 +25,9 @@ use isometer_space::{Edit, Op, edit::Shape};
 use serde::{Deserialize, Serialize};
 
 use crate::identity::{SubjectId, Tick};
-use crate::{HistoryFactId, SiteKind, SlotId, WorldMap};
+use crate::{HistoryFactId, NativeFixtureProfile, NativeFixtureRecipe, SiteKind, SlotId, WorldMap};
 
-pub const GENERATOR_VERSION: u32 = 2;
+pub const GENERATOR_VERSION: u32 = 4;
 /// Rock held under the lifted window's lowest soil.
 const DEPTH: i64 = 8;
 
@@ -124,6 +124,8 @@ pub enum WorldError {
     Unbuilt(&'static str),
     /// Play offered at the founding door, which takes none (794).
     NotFounding,
+    /// A fixture recipe was offered outside its declared founding profile.
+    NotFixture,
     Encode,
     Decode,
 }
@@ -132,6 +134,7 @@ pub enum WorldError {
 pub struct World {
     seed: u64,
     config: WorldConfig,
+    generator_version: u32,
     base_hash: u64,
     session: Session,
     site: Id,
@@ -146,6 +149,24 @@ pub struct World {
 
 impl World {
     pub fn generate(seed: u64, config: WorldConfig) -> Result<Self, WorldError> {
+        Self::generate_version(seed, config, GENERATOR_VERSION)
+    }
+    pub fn generate_native_fixture(
+        seed: u64, config: WorldConfig, profile: NativeFixtureProfile,
+    ) -> Result<Self, WorldError> {
+        let version = match profile {
+            NativeFixtureProfile::PreciseCombatV1 => crate::founding::fixture::GENERATOR_VERSION,
+        };
+        Self::generate_version(seed, config, version)
+    }
+
+    // Version 3 is an explicit source proposal, not a claimed released archive format.
+    fn generate_version(seed: u64, config: WorldConfig, version: u32) -> Result<Self, WorldError> {
+        let movement = match version {
+            2 => isocosm::schema::Movement::ImmediateV3,
+            3 | GENERATOR_VERSION | crate::founding::fixture::GENERATOR_VERSION => isocosm::schema::Movement::Journey,
+            _ => return Err(WorldError::GeneratorDiverged { saved:version, current:GENERATOR_VERSION }),
+        };
         if !(2..=16).contains(&config.side) {
             return Err(WorldError::InvalidSide);
         }
@@ -153,11 +174,16 @@ impl World {
             return Err(WorldError::InvalidExtent);
         }
         let side = config.extent as u64 * 2;
-        let genesis = crate::founding::genesis(seed, u32::from(config.side), side)
+        let founding = match version {
+            GENERATOR_VERSION => crate::founding::genesis,
+            crate::founding::fixture::GENERATOR_VERSION => crate::founding::fixture_genesis,
+            _ => crate::founding::legacy_genesis_v2,
+        };
+        let genesis = founding(seed, u32::from(config.side), side)
             .map_err(|_| WorldError::InvalidExtent)?;
         let base_hash = hash_bytes(isocosm::digest(&genesis).as_bytes());
         let session =
-            Session::new(genesis, Execution::Individuals).map_err(|_| WorldError::Refused)?;
+            Session::new_with_movement(genesis, Execution::Individuals, movement).map_err(|_| WorldError::Refused)?;
         let map = WorldMap::generate(&session.sim);
         let site = map
             .slots_of_kind(SiteKind::Settlement)
@@ -172,6 +198,7 @@ impl World {
             seed,
             config,
             base_hash,
+            generator_version: version,
             session,
             site,
             volume,
@@ -183,6 +210,19 @@ impl World {
         })
     }
 
+    pub const fn generator_version(&self) -> u32 { self.generator_version }
+    pub(crate) const fn developed_bodies(&self) -> bool {
+        matches!(self.generator_version, GENERATOR_VERSION | crate::founding::fixture::GENERATOR_VERSION)
+    }
+    pub(crate) fn select_native_recipe(&mut self, recipe: Option<NativeFixtureRecipe>) -> Result<(), WorldError> {
+        if self.generator_version != crate::founding::fixture::GENERATOR_VERSION {
+            return if recipe.is_none() { Ok(()) } else { Err(WorldError::NotFixture) };
+        }
+        let development = crate::founding::fixture::development(self.sim().genesis(), recipe)
+            .ok_or(WorldError::Refused)?;
+        self.run(Command::Revise { lineage: crate::founding::SOPHONT.into(), development })?;
+        Ok(())
+    }
     pub const fn seed(&self) -> u64 {
         self.seed
     }
@@ -191,6 +231,10 @@ impl World {
     }
     pub const fn base_hash(&self) -> u64 {
         self.base_hash
+    }
+
+    pub(crate) fn borrowed_contract(&mut self) -> crate::contract::Borrowed<'_> {
+        crate::contract::Borrowed::over_volume(&mut self.session, self.site, &self.volume)
     }
     /// The native session the world runs in.
     pub fn session(&self) -> &Session {
@@ -242,7 +286,8 @@ impl World {
     /// content, never play, which crosses the contract (794).
     pub fn found(&mut self, command: Command) -> Result<String, WorldError> {
         match command {
-            Command::Arrive(_) | Command::Embody { .. } | Command::Assert(_) => self.run(command),
+            Command::Arrive(_) | Command::Embody { .. } | Command::Develop { .. }
+            | Command::Assert(_) => self.run(command),
             Command::Edit { by: None, .. } => self.run(command),
             _ => Err(WorldError::NotFounding),
         }
@@ -364,7 +409,7 @@ impl World {
 
     pub fn save_record(&self) -> WorldSave {
         WorldSave {
-            generator_version: GENERATOR_VERSION,
+            generator_version: self.generator_version,
             seed: self.seed,
             config: self.config,
             base_hash: self.base_hash,
@@ -382,13 +427,13 @@ impl World {
     }
 
     pub fn restore_record(save: WorldSave) -> Result<Self, WorldError> {
-        if save.generator_version != GENERATOR_VERSION {
+        if ![2, 3, GENERATOR_VERSION, crate::founding::fixture::GENERATOR_VERSION].contains(&save.generator_version) {
             return Err(WorldError::GeneratorDiverged {
                 saved: save.generator_version,
                 current: GENERATOR_VERSION,
             });
         }
-        let mut world = Self::generate(save.seed, save.config)?;
+        let mut world = Self::generate_version(save.seed, save.config, save.generator_version)?;
         if save.base_hash != world.base_hash {
             return Err(WorldError::BaseDiverged {
                 saved: save.base_hash,
@@ -401,3 +446,6 @@ impl World {
         Ok(world)
     }
 }
+
+#[cfg(test)]
+mod journey_tests;

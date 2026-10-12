@@ -323,6 +323,7 @@ impl BodyFounding {
         };
         let (site_map, population) = self.found(&rules, &lineages, sites, per_site)?;
         let genesis = Genesis {
+            spreads: Default::default(),
             version: crate::VERSION,
             seed: self.seed,
             dynamics: None,

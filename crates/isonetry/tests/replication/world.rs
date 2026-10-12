@@ -9,52 +9,6 @@
 use super::*;
 
 #[test]
-fn a_faction_turn_commits_and_every_peer_lives_in_the_changed_world() {
-    let mut snap = snapshot();
-    snap.world
-        .assert(Assertion::Faction(Faction {
-            authored: Authored {
-                key: "tide".into(),
-                name: "Tide Court".into(),
-                tags: ["river".into()].into(),
-                claims: [].into(),
-            },
-            ..Default::default()
-        }))
-        .unwrap();
-    let mut sim = Sim::new(HostSession::new(snap));
-    sim.connect(PeerId(10));
-
-    // The DM rolls a downtime tick from the host's own world and tape, then
-    // commits the batch. (A real DM edits it first; here we commit as rolled.)
-    let mut tape = EntropyTape::from_seed(7);
-    let moves = sim.host.state().world.faction_turn(4, &mut tape);
-    assert_eq!(moves.len(), 1, "one move for the one faction");
-    let logged: usize = moves.iter().map(|m| m.clone().into_events().len()).sum();
-    sim.host_faction_turn(moves).expect("the tick commits");
-
-    // Every peer holds the faction-turn history at the tick, identically: a
-    // faction acting on the world is ordinary replicated truth, not a host-only
-    // record. And the whole batch (each move's history plus its change) reached
-    // the ordered log.
-    let meanwhile = |s: &GameSnapshot| {
-        s.world
-            .history()
-            .iter()
-            .filter(|h| h.kind == "faction-turn" && h.time == 4)
-            .count()
-    };
-    assert_eq!(meanwhile(sim.host.state()), 1);
-    assert_eq!(meanwhile(sim.clients[&PeerId(10)].state().unwrap()), 1);
-    assert_eq!(
-        sim.host.seq() as usize,
-        logged,
-        "every move event entered the log"
-    );
-    assert_converged(&sim);
-}
-
-#[test]
 fn discovery_replicates_as_the_party_travels() {
     let mut snap = snapshot();
     snap.world
@@ -451,66 +405,6 @@ fn a_granted_player_plays_a_faction_and_a_stranger_may_not() {
         sim.host.state().last_beats,
         &[Beat::new(TokenId(2), "cheer")],
         "after revoke the channel is the DM's again, so the taunt never played"
-    );
-    assert_converged(&sim);
-}
-
-#[test]
-fn banked_time_makes_a_bigger_tick_and_the_commit_empties_the_bank() {
-    let mut snap = snapshot();
-    snap.world
-        .assert(Assertion::Faction(Faction {
-            authored: Authored {
-                key: "tide".into(),
-                name: "Tide Court".into(),
-                tags: ["river".into()].into(),
-                claims: [].into(),
-            },
-            ..Default::default()
-        }))
-        .unwrap();
-    // The table spent a long scene away: 25 units banked toward this faction.
-    snap.world.faction_sheets.insert(
-        "tide".to_owned(),
-        BTreeMap::from([("banked_time".to_owned(), 25)]),
-    );
-    let mut sim = Sim::new(HostSession::new(snap));
-    sim.connect(PeerId(10));
-
-    let mut tape = EntropyTape::from_seed(3);
-    let moves = sim.host.state().world.faction_turn(5, &mut tape);
-    assert_eq!(
-        moves.len(),
-        3,
-        "banked 25 => one baseline plus two earned moves"
-    );
-    sim.host_faction_turn(moves).expect("the tick commits");
-
-    // The tick was proportional (3 faction-turn history events), and acting
-    // emptied the bank -- on every peer, so the same time cannot be spent twice.
-    let banked = |s: &GameSnapshot| {
-        s.world
-            .faction_sheet("tide")
-            .and_then(|m| m.get("banked_time"))
-            .copied()
-    };
-    let logged = |s: &GameSnapshot| {
-        s.world
-            .history()
-            .iter()
-            .filter(|h| h.kind == "faction-turn" && h.time == 5)
-            .count()
-    };
-    assert_eq!(logged(sim.host.state()), 3);
-    assert_eq!(
-        banked(sim.host.state()),
-        Some(0),
-        "the bank emptied on the host"
-    );
-    assert_eq!(
-        banked(sim.clients[&PeerId(10)].state().unwrap()),
-        Some(0),
-        "and on the client -- the spend is replicated truth"
     );
     assert_converged(&sim);
 }

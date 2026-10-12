@@ -10,7 +10,7 @@
 //! what a peer is thereby spared from working out.
 
 use isocosm::asserted::{Assertion, Authored};
-use isocosm::legacy::campaign::{
+use isometry_campaign::{
     EquipmentSlot, Inventory, ItemId, ItemInstance, MapPoint, MapScale, MapTransition,
 };
 use isometry_campaign::CampaignMap;
@@ -122,6 +122,7 @@ fn origin() -> GameSnapshot {
         maps: Default::default(),
         active_map: Some("field".to_owned()),
         world: Default::default(),
+        native: None,
         clocks: Default::default(),
         party_cap: isonetry::default_party_cap(),
         last_beats: Vec::new(),

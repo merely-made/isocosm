@@ -44,8 +44,8 @@ pub struct Host {
     runtime: Runtime,
     /// The played site, lifted, with its placed bodies. Presentation only.
     scene: Option<SiteScene>,
-    /// What `scene`'s ground was lifted from: the site and the edit count.
-    scene_key: Option<(Id, usize)>,
+    /// Current native source of the site's derived picture.
+    scene_key: Option<(Id, String)>,
     /// Where the section sits relative to the body it follows. Presentation.
     pan: Pan,
     window: Option<Arc<Window>>,
@@ -180,13 +180,15 @@ impl Host {
         let sim = self.runtime.sim();
         let played = self.runtime.critter();
         let Some(site) = crate::played::scene::site_of(sim, played) else {
-            return false;
+            self.scene_key = None;
+            return self.scene.take().is_some();
         };
-        let key = (site, sim.state().edits.len());
-        if self.scene_key == Some(key)
+        let visible = self.runtime.view();
+        let key = (site, mesocosm_runtime::runtime::placing::terrain_key(sim));
+        if self.scene_key.as_ref() == Some(&key)
             && let Some(scene) = &mut self.scene
         {
-            scene.bodies = crate::played::scene::placed(sim, site, &scene.window);
+            scene.bodies = crate::played::scene::placed_visible(sim, site, &scene.window, &visible);
             scene.volumes = isometer::DeclaredExtentVolumes::from_documents(
                 scene.bodies.iter().map(|b| &b.document),
                 1,
@@ -194,7 +196,7 @@ impl Host {
             scene.played = played;
             return false;
         }
-        match crate::played::site_scene(sim, played) {
+        match crate::played::scene::site_scene_visible(sim, played, &visible) {
             Ok(scene) => {
                 self.scene = Some(scene);
                 self.scene_key = Some(key);
@@ -202,7 +204,8 @@ impl Host {
             },
             Err(why) => {
                 eprintln!("site: {why}");
-                false
+                self.scene_key = None;
+                self.scene.take().is_some()
             },
         }
     }

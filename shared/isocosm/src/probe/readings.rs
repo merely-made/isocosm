@@ -520,7 +520,7 @@ pub fn evaluate(
                     Field::Lineage => {
                         lineages.iter().position(|l| **l == e.lineage).unwrap_or(0) as u64
                     },
-                    Field::Place => e.place,
+                    Field::Place => e.resident_site().unwrap_or(crate::directing::PLACELESS),
                     Field::Alive => u64::from(e.alive),
                     Field::Born => e.born,
                     Field::LivingCells => crate::harm::cells(e),

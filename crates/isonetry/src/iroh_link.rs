@@ -11,6 +11,8 @@
 //! reverse half. Turn-based play means this single ordered stream per
 //! peer is all the ordering guarantee the protocol needs.
 
+mod native;
+
 use std::collections::HashMap;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr};
 use std::sync::Arc;
@@ -35,7 +37,7 @@ use muniment::Journal;
 /// stops an incompatible peer from dialing at all, while the version is the
 /// in-session handshake that refuses one which got through anyway (a same-ALPN
 /// build with a changed message shape).
-pub const ALPN: &[u8] = b"isometry/session/v5";
+pub const ALPN: &[u8] = b"isometry/session/v6";
 
 type PeerMap = Arc<Mutex<HashMap<PeerId, mpsc::UnboundedSender<NetMessage>>>>;
 
@@ -218,7 +220,7 @@ impl HostNet {
 
     pub async fn commit_campaign(
         &self,
-        record: isocosm::legacy::campaign::GenerationRecord,
+        record: isometry_campaign::GenerationRecord,
         item_owner: Option<isometry_core::TokenId>,
     ) -> Result<(), String> {
         let out = self
@@ -233,7 +235,7 @@ impl HostNet {
     /// Commit a campaign and seed the named party at its one starting place.
     pub async fn commit_campaign_for_party(
         &self,
-        record: isocosm::legacy::campaign::GenerationRecord,
+        record: isometry_campaign::GenerationRecord,
         item_owner: Option<isometry_core::TokenId>,
         party: &str,
     ) -> Result<(), String> {
@@ -270,16 +272,6 @@ impl HostNet {
         item_owner: Option<isometry_core::TokenId>,
     ) -> Result<(), String> {
         let out = self.session.lock().await.commit_storylet(key, item_owner)?;
-        dispatch(&self.peers, out).await;
-        Ok(())
-    }
-
-    /// Commit a downtime faction tick, broadcasting each move's world events.
-    pub async fn commit_faction_turn(
-        &self,
-        moves: Vec<isocosm::legacy::campaign::FactionMove>,
-    ) -> Result<(), String> {
-        let out = self.session.lock().await.commit_faction_turn(moves)?;
         dispatch(&self.peers, out).await;
         Ok(())
     }
@@ -478,6 +470,7 @@ mod tests {
             maps: Default::default(),
             active_map: None,
             world: Default::default(),
+            native: None,
             clocks: Default::default(),
 
             party_cap: crate::protocol::default_party_cap(),

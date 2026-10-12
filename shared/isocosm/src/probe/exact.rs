@@ -82,6 +82,7 @@ fn run_with(
         }
         work.evaluations += scheduled.evaluations;
         work.represented += scheduled.represented;
+        work.arrivals += scheduled.arrivals;
         work.accepted += scheduled.accepted;
         work.blocked += scheduled.blocked;
         round(&mut sim, world, order, dynamics, &mut work)?;
@@ -133,7 +134,7 @@ fn round(
             let mut hungry = Vec::new();
             for (&first, group) in &state.population.groups {
                 let e = &group.entity;
-                if !e.alive || e.place != site {
+                if !e.alive || e.resident_site() != Some(site) {
                     continue;
                 }
                 let Some(k) = c.kinds.iter().position(|k| e.traits.contains(&k.identity)) else {

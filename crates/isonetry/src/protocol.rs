@@ -1,6 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use isocosm::legacy::campaign::{
+use isometry_campaign::{
     CampaignWorld, GenerationRecord, Inventory, ItemId, ItemModifierReveal, WorldEvent, WorldFact,
 };
 use isometry_campaign::CampaignMap;
@@ -23,7 +23,7 @@ use serde::{Deserialize, Serialize};
 /// the space: a body that *does* decode and means something else. Bump it for
 /// any change to the wire shape, and move `iroh_link::ALPN` with it so an
 /// incompatible peer cannot even dial.
-pub const PROTOCOL_VERSION: u16 = 5;
+pub const PROTOCOL_VERSION: u16 = 6;
 
 /// A peer's identity within a session. For the iroh transport this wraps
 /// the remote node id; the pure-sync core only needs it to route.
@@ -110,6 +110,8 @@ pub struct GameSnapshot {
     /// Public world state. Secret fact bodies stay in `CampaignStore`.
     #[serde(default)]
     pub world: CampaignWorld,
+    #[serde(default)]
+    pub native: Option<isometry_campaign::founding::NativeWorld>,
     /// Each location's clock, keyed by stored-map id, in ticks (a tick is one
     /// full round of that location's turn order, or whatever the DM declares
     /// passed). Absolute, not elapsed: locations diverge while parties are
@@ -424,6 +426,8 @@ pub enum GameEvent {
     ///
     /// Appended deliberately: postcard tags enum variants by index.
     CharacterCreated { token: isometry_core::Token, sheet: SheetData },
+    NativePublished(crate::session::NativePublication),
+    NativeTravelResolved(crate::session::NativeTravelResolved),
 }
 
 /// One message on the wire. The host is the authority: clients send

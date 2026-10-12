@@ -1,0 +1,162 @@
+// Copyright 2026 Mark Alan Boykin
+// SPDX-License-Identifier: MPL-2.0
+
+use std::{collections::BTreeMap, path::PathBuf};
+use isocosm_overlay::{AttentionChange, AttentionSet, ParticipantHandle, PlaceHandle, Seat, WindowHandle};
+use serde::{Deserialize, Serialize};
+use crate::{binding::Binding, products::{self, Input, Mode, Rows}, window::Window, world::World};
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub(crate) struct Defaults { pub quarter_turn: u8 }
+impl Default for Defaults { fn default() -> Self { Self { quarter_turn: 0 } } }
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub(crate) struct Preferences { pub modes: BTreeMap<String, Defaults> }
+
+pub(crate) struct Local {
+    pub native: Window, pub rows: Rows, pub error: Option<String>,
+    pub preferences: Preferences, pub attention: BTreeMap<String, AttentionSet>,
+    pub input: Option<Input>, pub close_requested: bool,
+    #[cfg(feature = "mesocosm")]
+    pub scene: mesocosm_genet::borrowed_section::SceneHandle,
+}
+
+pub(crate) struct App {
+    pub world: World, pub windows: BTreeMap<u64, Local>,
+    pub next: u64, pub pending_open: Vec<u64>, pub save_path: Option<PathBuf>,
+}
+
+impl App {
+    pub fn new(world: World, save_path: Option<PathBuf>) -> Self {
+        Self { world, windows: BTreeMap::new(), next: 0, pending_open: Vec::new(), save_path }
+    }
+    pub fn open(&mut self, participant: ParticipantHandle, seat: Seat, mode: Mode,
+        preferences: Preferences, restore: Option<WindowHandle>) -> Result<u64, String> {
+        self.open_with_saved_preferences(participant, seat, mode, Some(preferences), restore)
+    }
+    pub fn open_with_saved_preferences(&mut self, participant: ParticipantHandle, seat: Seat, mode: Mode,
+        preferences: Option<Preferences>, restore: Option<WindowHandle>) -> Result<u64, String> {
+        let preferences = crate::mode_sections::preferences(&self.world, mode, participant, restore, preferences)?;
+        let key = self.next;
+        #[cfg(feature = "mesocosm")]
+        crate::viewport::key(key)?;
+        let next = key.checked_add(1).ok_or("local window identity exhausted")?;
+        let mut attention = AttentionSet::default();
+        if let Some(handle) = restore {
+            attention = self.world.read(|session| crate::native_attention::restored(session, participant, handle, mode.key()))??;
+        }
+        let binding = binding(mode, &preferences, attention)?;
+        let native = match restore {
+            Some(handle) => Window::restore(&self.world, participant, seat, handle, binding)?,
+            None => Window::attach(&self.world, participant, seat, binding)?,
+        };
+        self.next = next;
+        self.windows.insert(key, Local { native, rows: Rows::default(), error: None, preferences,
+            attention: BTreeMap::new(), input: None, close_requested: false,
+            #[cfg(feature = "mesocosm")]
+            scene: crate::viewport::handle(), });
+        self.refresh();
+        Ok(key)
+    }
+    pub fn switch(&mut self, key: u64, mode: Mode) -> Result<(), String> {
+        let local = self.windows.get_mut(&key).ok_or("window is closed")?;
+        let previous = local.native.binding().clone();
+        if previous.mode == mode.key() { return Ok(()); }
+        let access = local.native.projection()?.access;
+        let remembered = crate::mode_sections::recalled(&self.world, mode, access.participant, local.native.handle()?)?;
+        let mut preferences = local.preferences.clone();
+        if let Some((defaults, _)) = &remembered {
+            preferences.modes.entry(mode.key().into()).or_insert_with(|| defaults.clone());
+        }
+        let attention = local.attention.get(mode.key()).cloned()
+            .or_else(|| remembered.map(|(_, attention)| attention)).unwrap_or_default();
+        let requested = binding(mode, &preferences, attention)?;
+        let prepared = local.native.prepare_commit(requested)?;
+        local.native.commit_binding(prepared)?;
+        local.attention.insert(previous.mode, previous.attention);
+        local.preferences = preferences;
+        self.refresh();
+        Ok(())
+    }
+    pub fn turn(&mut self, key: u64) -> Result<(), String> {
+        let local = self.windows.get_mut(&key).ok_or("window is closed")?;
+        let mut defaults: Defaults = serde_json::from_slice(&local.native.binding().view_defaults)
+            .map_err(|e| e.to_string())?;
+        defaults.quarter_turn = (defaults.quarter_turn + 1) % 4;
+        let mode = local.native.binding().mode.clone();
+        local.native.set_view_defaults(serde_json::to_vec(&defaults).map_err(|e| e.to_string())?)?;
+        local.preferences.modes.insert(mode, defaults);
+        self.refresh();
+        Ok(())
+    }
+    pub fn examine(&mut self, key: u64, site: Option<u64>) -> Result<(), String> {
+        let local = self.windows.get_mut(&key).ok_or("window is closed")?;
+        let cut = local.native.projection()?;
+        if site.is_some_and(|s| !cut.visible.sites.contains(&s)) { return Err("region is outside the seat cut".into()); }
+        let change = site.map_or(AttentionChange::StopExamining, |s| AttentionChange::Examine(PlaceHandle(s)));
+        let request = local.native.window_attention_request(change)?;
+        local.native.apply_attention(request)?;
+        self.refresh();
+        Ok(())
+    }
+    pub fn send(&mut self, key: u64) -> Result<String, String> {
+        let local = self.windows.get_mut(&key).ok_or("window is closed")?;
+        let input = local.input.as_ref().ok_or("choose a product intent file first")?;
+        let accepted = local.native.submit_product(input)?;
+        self.refresh();
+        Ok(accepted)
+    }
+    pub fn step(&mut self) -> Result<(), String> { self.world.advance(1)?; self.refresh(); Ok(()) }
+    pub fn close(&mut self, key: u64) -> Result<(), String> {
+        let local = self.windows.get_mut(&key).ok_or("window is closed")?;
+        local.native.close()?;
+        self.windows.remove(&key);
+        self.refresh();
+        Ok(())
+    }
+    pub fn duplicate(&mut self, key: u64) -> Result<u64, String> {
+        let local = self.windows.get(&key).ok_or("window is closed")?;
+        let access = local.native.projection()?.access;
+        let mode = Mode::parse(&local.native.binding().mode)?;
+        let preferences = local.preferences.clone();
+        let input = local.input.clone();
+        let new = self.open(access.participant, access.seat, mode, preferences, None)?;
+        self.windows.get_mut(&new).ok_or("opened window is missing")?.input = input;
+        self.pending_open.push(new);
+        Ok(new)
+    }
+    pub fn snapshot(&self) -> Result<crate::save::WorldSave, String> {
+        crate::mode_sections::capture(self.world.save()?, &self.windows)
+    }
+    pub fn save(&self) -> Result<(), String> {
+        let path = self.save_path.as_ref().ok_or("choose a world save path at launch")?;
+        let bytes = self.snapshot()?.encode()?;
+        crate::file_save::replace(path, &bytes).map_err(|e| e.to_string())
+    }
+    pub fn refresh(&mut self) {
+        for local in self.windows.values_mut() {
+            let result = local.native.projection().and_then(|cut| {
+                let mode = Mode::parse(&local.native.binding().mode)?;
+                self.world.read(|session| products::read(session, &cut, mode))?
+            });
+            match result {
+                Ok(rows) => { local.rows = rows; local.error = None; },
+                Err(why) => { local.rows = Rows::default(); local.error = Some(why); },
+            }
+        }
+        self.refresh_viewport();
+    }
+    pub fn refresh_viewport(&mut self) {
+        #[cfg(feature = "mesocosm")]
+        crate::viewport::refresh(self);
+    }
+    pub fn record(&mut self, key: u64, result: Result<(), String>) {
+        if let Some(local) = self.windows.get_mut(&key) { local.error = result.err(); }
+    }
+}
+
+fn binding(mode: Mode, preferences: &Preferences, attention: AttentionSet) -> Result<Binding, String> {
+    let defaults = preferences.modes.get(mode.key()).cloned().unwrap_or_default();
+    if defaults.quarter_turn > 3 { return Err("quarter turn must be zero through three".into()); }
+    mode.binding(serde_json::to_vec(&defaults).map_err(|e| e.to_string())?, attention)
+}

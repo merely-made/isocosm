@@ -7,7 +7,7 @@ use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU64, Ordering};
 
 use isocosm::asserted::{Assertion, Authored, Character, Faction, HistoryLine, Law, Place, Route};
-use isocosm::legacy::campaign::{
+use isometry_campaign::{
     CampaignDraft, CampaignWorld, DraftMap, EncounterAnchor, EntropyTape, EquipmentSlot, GenValue,
     GenerationRecord, GeneratorRequest, HiddenItemModifier, Inventory, ItemId, ItemInstance,
     ItemModifier, ItemModifierKind, ItemProposal, LocalMapProposal, MapCellProposal, MapInhabitant,
@@ -73,6 +73,7 @@ fn snapshot() -> GameSnapshot {
         maps: Default::default(),
         active_map: None,
         world: Default::default(),
+        native: None,
         clocks: Default::default(),
 
         party_cap: isonetry::default_party_cap(),

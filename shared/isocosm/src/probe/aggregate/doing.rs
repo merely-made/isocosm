@@ -9,6 +9,7 @@
 use super::*;
 
 mod harm;
+mod journey;
 
 /// One state's members as their act leaves them, and what the act reads.
 pub(super) struct Doing<'a> {
@@ -17,6 +18,8 @@ pub(super) struct Doing<'a> {
     pub(super) lineages: Lineages<'a>,
     pub(super) member: Entity,
     pub(super) part: Option<PartId>,
+    /// The map key of the site bound when the act began.
+    pub(super) site_id: Id,
     /// The site as every member's writes leave it.
     pub(super) site: Site,
     /// The site as one member's act sees it: the pass's start and its own
@@ -49,7 +52,10 @@ impl Parties for Doing<'_> {
             Binding::Actor => Ok(crate::anatomy::held(&self.member, self.rules, key)),
             // One member's share of a shared site is the whole of it only
             // where the act stands for one member, the world's own.
-            Binding::Place if self.count == 1 => Ok(meaning::value(&self.seen.accounts, key)),
+            Binding::Place if self.count == 1 => {
+                self.site_reach()?;
+                Ok(meaning::value(&self.seen.accounts, key))
+            },
             Binding::Target => match &self.prey {
                 Some(prey) => Ok(crate::anatomy::held(prey, self.rules, key)),
                 None => Err("the crowd has no target".into()),
@@ -59,6 +65,7 @@ impl Parties for Doing<'_> {
     }
     fn reach(&mut self, who: Binding) -> Result<()> {
         match who {
+            Binding::Place => self.site_reach(),
             Binding::Target if self.prey.is_none() => Err("the crowd has no target".into()),
             _ => Ok(()),
         }
@@ -77,6 +84,7 @@ impl Parties for Doing<'_> {
             },
             // Shares make every take of the site whole (ruling 454).
             Binding::Place => {
+                self.site_reach()?;
                 let total = amount.checked_mul(self.count).ok_or("amount overflow")?;
                 debit(&mut self.site.accounts, key, total)?;
                 debit(&mut self.seen.accounts, key, amount)
@@ -106,6 +114,7 @@ impl Parties for Doing<'_> {
                 None => credit(&mut self.member.accounts, key, amount),
             },
             Binding::Place => {
+                self.site_reach()?;
                 let total = amount.checked_mul(self.count).ok_or("amount overflow")?;
                 credit(&mut self.site.accounts, key, total)?;
                 credit(&mut self.seen.accounts, key, amount)
@@ -134,6 +143,7 @@ impl Parties for Doing<'_> {
         Ok((&mut self.member, part))
     }
     fn shift(&mut self, key: &str, delta: i64) -> Result<()> {
+        self.site_reach()?;
         meaning::shift(&mut self.site.conditions, key, delta, self.count)?;
         meaning::shift(&mut self.seen.conditions, key, delta, 1)
     }
@@ -233,6 +243,7 @@ impl Doing<'_> {
             }
         };
         let (member, seen, prey, kept) = (&self.member, &self.seen, &self.prey, &self.kept);
+        let site_id = self.site_id;
         let (caps, bitten) = (&self.caps, self.bitten);
         let part = self
             .part
@@ -249,6 +260,7 @@ impl Doing<'_> {
                     .copied()
                     .ok_or_else(|| format!("no value {name} was kept")),
                 (Reading::Account { key, .. }, Binding::Place) => {
+                    if member.resident_site() != Some(site_id) { return Err("actor has no resident site".into()); }
                     i64::try_from(meaning::value(&seen.accounts, key)).map_err(|e| e.to_string())
                 },
                 (Reading::Account { key, .. }, Binding::Part) => {
@@ -309,6 +321,13 @@ impl Doing<'_> {
 
     fn one(&mut self, e: &Effect, rules: &Rules, how: &mut Run, left: &mut Ledger) -> Result<bool> {
         match e {
+            Effect::Move { destination } => {
+                match crate::journey::depart(&mut self.member, &self.seen, *destination, self.tick) {
+                    Ok(()) => Ok(true),
+                    Err(_) => Ok(false),
+                }
+            },
+            Effect::Birth { provision } => self.provisioned_birth(provision),
             Effect::Wound { who, cells, slot } => {
                 let resolved = self.compute(|r, d, p| cells.resolve(r, d, p))?;
                 self.wound(*who, resolved.resolved()?, *slot)
@@ -405,6 +424,7 @@ impl Doing<'_> {
                     },
                     false => e.clone(),
                 };
+                let Some(resolved) = self.carried(resolved) else { return Ok(true); };
                 let shared = share_out(&resolved, how, left, &self.seen)?;
                 let effect = shared.unwrap_or(resolved);
                 match meaning::effect(self, rules, &effect) {

@@ -40,7 +40,7 @@ pub fn readings(sim: &Simulation) -> Vec<Reading> {
         let t = lines.entry(&e.lineage).or_default();
         let mass = crate::meaning::mass(&crate::anatomy::books(e), rules);
         t.held += mass * u128::from(g.count);
-        t.sites.insert(e.place);
+        t.sites.extend(e.resident_site());
         t.oldest = t.oldest.max(s.tick.saturating_sub(e.born));
     }
     let mut out = vec![];

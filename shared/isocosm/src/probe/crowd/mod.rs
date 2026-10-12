@@ -12,6 +12,11 @@ mod average;
 mod harm;
 mod hunt;
 mod kin;
+mod journeys;
+#[cfg(test)]
+mod journey_tests;
+#[cfg(test)]
+mod journey_life_tests;
 mod round;
 #[cfg(test)]
 mod tests;
@@ -75,6 +80,8 @@ pub struct Crowd<'w> {
     /// have taught them (468).
     pub lineages: BTreeMap<Key, Lineage>,
     pub work: Work,
+    /// Derived clock, updated with exact bins/kin rather than expanded IDs.
+    journeys: journeys::Journeys,
     /// Prey a hunting pass shared out among eaters it could not cover.
     pub shortfalls: u64,
     /// Site accounts a pass shared out among takers they could not cover
@@ -86,6 +93,8 @@ pub struct Crowd<'w> {
 
 impl<'w> Crowd<'w> {
     pub fn new(world: &'w ProbeWorld, dynamics: u64, variant: Variant) -> Result<Self> {
+        world.genesis.validate()?;
+        world.movement_supported()?;
         let mut bins = BTreeMap::new();
         for group in world.genesis.population.groups.values() {
             *bins.entry(normalize(group.entity.clone())).or_default() += group.count;
@@ -106,10 +115,12 @@ impl<'w> Crowd<'w> {
             next_kin: 0,
             lineages: world.genesis.lineages.clone(),
             work: Work::default(),
+            journeys: Default::default(),
             shortfalls: 0,
             site_shortfalls: 0,
             meals: Default::default(),
         };
+        crowd.index_journeys();
         crowd.matter = crowd.total_matter();
         Ok(crowd)
     }
@@ -145,7 +156,9 @@ impl<'w> Crowd<'w> {
     }
 
     fn step(&mut self) -> Result<()> {
-        self.tick += 1;
+        let next = self.tick.checked_add(1).ok_or("crowd tick overflows")?;
+        self.arrive_until(next)?;
+        self.tick = next;
         let world = self.world;
         let mut due: Vec<&Process> = world
             .genesis
@@ -162,6 +175,7 @@ impl<'w> Crowd<'w> {
         self.round()?;
         if self.variant == Variant::Averaged {
             self.average();
+            self.index_journeys();
         }
         if self.total_matter() != self.matter {
             return Err(format!(
@@ -233,7 +247,7 @@ impl<'w> Crowd<'w> {
                     Some(young) => self.bond((&who, after), young, children),
                     None => {
                         for child in children {
-                            *self.bins.entry(normalize(child)).or_default() += 1;
+                            self.insert_bin(child, 1);
                         }
                     },
                 }
@@ -260,8 +274,9 @@ impl<'w> Crowd<'w> {
         *slot -= n;
         if *slot == 0 {
             self.bins.remove(from);
+            self.remove_bin_index(from);
         }
-        *self.bins.entry(to).or_default() += n;
+        self.insert_bin(to, n);
     }
 
     /// The core scheduler's pass, one evaluation per state instead of per
@@ -293,6 +308,8 @@ impl<'w> Crowd<'w> {
             {
                 continue;
             }
+            let site = self.sites.get(&e.place).ok_or("a bin at an unknown site")?;
+            if !journeys::route_ready(p, &e, e.place, site) { continue; }
             acting.push((e, n, who));
         }
         if harm::harms(p) {
@@ -420,7 +437,7 @@ impl<'w> Crowd<'w> {
                     match who {
                         Who::Bin => self.moved(&e, next.member, n),
                         Who::Kin(id) => {
-                            self.kin.insert(id, next.member);
+                            self.insert_kin(id, next.member);
                         },
                     }
                     self.hatch(next.born, (n, who, &after), &mut somas)?;

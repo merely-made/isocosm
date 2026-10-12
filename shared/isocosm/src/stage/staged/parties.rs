@@ -60,7 +60,8 @@ impl Parties for Staged<'_> {
     }
     fn reach(&mut self, who: Binding) -> Result<()> {
         if who == Binding::Place {
-            let site = self.sim.state.sites.get(&self.stage.place);
+            let site = self.stage.bodies[&self.stage.actor].resident_site()
+                .filter(|site| *site == self.stage.place).and_then(|site| self.sim.state.sites.get(&site));
             return site.map(|_| ()).ok_or_else(|| "site missing".into());
         }
         self.ledger(who).map(|_| ())

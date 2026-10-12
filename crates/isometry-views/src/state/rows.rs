@@ -276,10 +276,8 @@ pub struct StoryletRow {
     pub cast: Vec<(String, String)>,
 }
 
-/// One rolled faction move as the DM sees it in the downtime surface. Display
-/// only: the real `FactionMove` (its world events) lives in the host app, which
-/// commits the ones the DM keeps. `struck` is the DM's edit -- a kept move
-/// commits, a struck one drops from the tick.
+/// A retained display row from the table's downtime surface. It grants no
+/// native act, time advancement or faction turn; those require native consent.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct FactionMoveRow {
     pub faction: String,

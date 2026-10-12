@@ -4050,8 +4050,6 @@ dependencies = [
  "hagiograph",
  "isometer-core",
  "isometer-space",
- "muniment",
- "nisus",
  "postcard",
  "serde",
  "serde_json",
@@ -4164,10 +4162,13 @@ version = "0.1.0"
 dependencies = [
  "isocosm",
  "isocosm-overlay",
+ "isometer-space",
  "isometry-core",
  "postcard",
  "serde",
  "serde_json",
+ "wing-formats",
+ "wing-functions",
 ]
 
 [[package]]
@@ -4214,6 +4215,7 @@ dependencies = [
  "chirograph",
  "graphshell-endpoint",
  "isocosm",
+ "isometry-campaign",
  "isometry-core",
  "isometry-views",
  "sceno",

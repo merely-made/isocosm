@@ -26,6 +26,10 @@ use serde::Deserialize;
 use crate::founding::{DROP, SPENT};
 use crate::{World, WorldError};
 
+mod borrowed;
+mod owner;
+pub use borrowed::{Borrowed, Reading};
+
 /// The timed act that carves the ground at a region.
 pub const CARVE: &str = "eponym:carve";
 /// The term keys a proposal carries native work and terms by.
@@ -53,7 +57,7 @@ struct AsTold {
     proposition: Proposition,
 }
 
-impl World {
+impl Borrowed<'_> {
     /// Lowers one intent. With a participant who plays a sophont, only that
     /// sophont acts (152); with none, the host's scripted bodies do.
     pub fn submit(
@@ -61,9 +65,10 @@ impl World {
         participant: Option<Id>,
         intent: &EponymIntent,
     ) -> Result<Lowered, WorldError> {
-        let mut next = self.clone();
-        let lowered = next.submit_inner(participant, intent)?;
-        *self = next;
+        let mut next = (*self.session).clone();
+        let lowered = Borrowed::over_volume(&mut next, self.site, &self.volume)
+            .submit_inner(participant, intent)?;
+        *self.session = next;
         Ok(lowered)
     }
 
@@ -209,9 +214,10 @@ impl World {
         subject: Id,
         outcome: &EponymHandoff,
     ) -> Result<Lowered, WorldError> {
-        let mut next = self.clone();
-        let lowered = next.hand_back_inner(subject, outcome)?;
-        *self = next;
+        let mut next = (*self.session).clone();
+        let lowered = Borrowed::over_volume(&mut next, self.site, &self.volume)
+            .hand_back_inner(subject, outcome)?;
+        *self.session = next;
         Ok(lowered)
     }
 

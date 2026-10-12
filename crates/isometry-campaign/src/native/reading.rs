@@ -14,6 +14,11 @@ pub struct Reading<'a> {
     session: &'a Session,
 }
 
+mod geography;
+mod disclosure;
+pub use disclosure::Geography;
+mod space;
+
 impl<'a> Reading<'a> {
     pub(super) fn new(session: &'a Session) -> Self {
         Self { session }
@@ -49,5 +54,9 @@ impl<'a> Reading<'a> {
 
     pub fn authored_polity(&self, key: &str) -> Option<(Id, &'a Polity)> {
         self.session.sim.authored_polity(key)
+    }
+    /// Native event knowing, including its entity/event refusals; no place disclosure inferred.
+    pub fn knows(&self, entity: Id, event: &str) -> isocosm::Result<bool> {
+        self.session.sim.knows(entity, event)
     }
 }

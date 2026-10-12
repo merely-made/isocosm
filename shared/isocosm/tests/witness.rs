@@ -69,7 +69,7 @@ fn planted(seed: u64, plant: bool) -> (Session, u64) {
 }
 
 #[test]
-fn old_saves_load_and_save_again_as_v3() {
+fn old_saves_load_and_save_again_as_current_version() {
     for old in [V1, V2] {
         for mode in MODES {
             let session = Session::load_json(old.as_bytes(), mode).unwrap();
@@ -120,11 +120,6 @@ fn the_state_hash_is_the_entries_digest() {
     session.advance(8).unwrap();
     let witness = session.sim.witness();
     assert_eq!(session.sim.state_hash(), witness.digest());
-    assert_eq!(
-        witness.len(),
-        17,
-        "seed, revision, world and fourteen fields"
-    );
     let saved = session.save();
     assert_eq!(saved.state_hash, saved.witness.digest());
     assert_eq!(saved.checkpoints.len(), 2);

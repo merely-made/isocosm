@@ -1,21 +1,17 @@
-//! The VTT's half of the campaign layer (ruling 598): generated maps lowered
-//! into the substrate document peers replicate, and the host-private store and
-//! proposal lifecycle the sim's laws exclude, handed back (ruling 669). The
-//! campaign data, and every check lowering makes, live in the sim at
-//! `isocosm::legacy::campaign` (rulings 591, 599).
+//! VTT content proposals, maps, private stores and derived campaign readings.
+//! Native nouns, accepted history, knowing and polity acts belong to Isocosm.
 
 mod collaboration;
+mod content;
+pub use content::*;
 pub mod contract;
 pub mod native;
+pub mod founding;
 mod store;
 
 pub use collaboration::{CampaignProposal, CampaignProposalError, CampaignProposalMode};
 pub use store::CampaignStore;
 
-use isocosm::legacy::campaign::{
-    DraftMap, EncounterAnchor, LocalMapProposal, MapProposalError, MapScale, MapTransition,
-    SpawnZone,
-};
 use isometry_core::{Facing, MapDocument, SheetData, Token, TokenId};
 use serde::{Deserialize, Serialize};
 

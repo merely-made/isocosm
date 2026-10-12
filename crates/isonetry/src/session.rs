@@ -6,8 +6,8 @@
 
 use std::collections::HashMap;
 
-use isocosm::legacy::campaign::{
-    FactionMove, GenerationRecord, GenerationRecordError, InventoryError, ItemId, ItemInstance,
+use isometry_campaign::{
+    GenerationRecord, GenerationRecordError, InventoryError, ItemId, ItemInstance,
     ItemModifierReveal, MapScale, StoryletEffect, StoryletProposal, WorldError, WorldEvent,
     WorldFact,
 };
@@ -25,6 +25,9 @@ mod apply;
 mod client;
 mod host;
 mod messages;
+mod native;
+mod native_host;
+pub use native::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
 mod travel;
 
 // The 2026-07-24 split moved the bodies into the four modules above while this

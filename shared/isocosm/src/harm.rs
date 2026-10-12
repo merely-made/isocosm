@@ -68,12 +68,12 @@ impl Simulation {
         if !e.alive {
             return Err("a wound to the dead".into());
         }
+        let site = e.resident_site().ok_or("a wound outside any site")?;
         let part = match part {
             Some(p) if e.lives(p) => p,
             Some(_) => return Err("a wound to a part the body lacks".into()),
             None => self.drawn_part(entity, e)?,
         };
-        let site = e.place;
         if !self.state.sites.contains_key(&site) {
             return Err("a wound outside any site".into());
         }

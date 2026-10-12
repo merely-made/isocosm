@@ -30,6 +30,8 @@ pub(crate) struct Journal {
     events: BTreeSet<Key>,
     /// The nudges as they stood before an answer was written.
     nudges: Option<Vec<crate::directing::Nudge>>,
+    attention: crate::attention::Windows,
+    spreads: crate::spread::Spreads,
     /// Debug builds keep the whole world too, to check each rollback.
     #[cfg(debug_assertions)]
     before: Box<State>,
@@ -49,6 +51,8 @@ impl Journal {
             record: None,
             events: BTreeSet::new(),
             nudges: None,
+            attention: state.attention.clone(),
+            spreads: state.spreads.clone(),
             #[cfg(debug_assertions)]
             before: Box::new(state.clone()),
         }
@@ -84,6 +88,8 @@ impl Journal {
     /// Puts back everything the advance changed.
     pub(crate) fn rollback(self, s: &mut State) {
         s.tick = self.tick;
+        s.attention = self.attention;
+        s.spreads = self.spreads;
         s.next_action = self.next_action;
         s.population.next_id = self.next_id;
         for (first, was) in self.groups {

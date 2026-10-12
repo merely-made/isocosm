@@ -11,6 +11,8 @@
 //! character, asserted placeless (769), arrives by its key: the asserted
 //! entity takes up the body, keeping its fill and its faction (760).
 
+mod developed;
+
 use crate::{Result, meaning::credit, rules::AccountKind, schema::*, simulation::Simulation};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
@@ -70,6 +72,7 @@ impl Simulation {
             place: a.site,
             arrived: tick,
             visits: vec![],
+            journey: None,
             born: tick,
             alive: true,
             body_revision: 1,

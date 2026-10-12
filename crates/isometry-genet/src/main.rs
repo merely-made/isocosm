@@ -53,8 +53,8 @@ use std::collections::HashMap;
 use std::rc::Rc;
 use std::time::{Duration, Instant};
 
-use isocosm::legacy::campaign::{
-    CampaignWorld, EntropyTape, FactionMove, GenValue, GeneratorRequest, ItemId, ItemInstance,
+use isometry_campaign::{
+    CampaignWorld, EntropyTape, GenValue, GeneratorRequest, ItemId, ItemInstance,
     MapScale, WorldEvent, WorldFact,
 };
 use isometry_campaign::CampaignStore;
@@ -67,7 +67,7 @@ use isometry_system::{
     sheet_with_turn_counters, srd_5e, srd_bestiary, srd_items, srd_spells,
 };
 use isometry_views::{
-    ActionRow, EditMode, FactionMoveRow, GenerationRequest, InventoryRequest, ItemRow, MonsterRow,
+    ActionRow, EditMode, GenerationRequest, InventoryRequest, ItemRow, MonsterRow,
     NetMode, PANEL_W, SheetSchema, SpellRow, StoryletRow, UiChild, UiState, board_css, board_root,
     demo_map, synth_map,
 };
@@ -339,10 +339,6 @@ struct App {
     /// previews and commits continue through their normal Isometry path,
     /// while campaign state never contains this selection record.
     last_generator_selection: Option<generator_selection::GeneratorSelection>,
-    /// The real faction moves behind the downtime surface's display rows,
-    /// index-aligned with them. The DM strikes rows in the view; on commit the
-    /// host keeps the moves whose row survived. Rolled from `generation_tape`.
-    faction_turn_batch: Vec<FactionMove>,
 }
 
 /// Parsed session role from the command line.

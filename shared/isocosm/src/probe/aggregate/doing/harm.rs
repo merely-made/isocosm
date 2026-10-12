@@ -6,6 +6,7 @@ use crate::harm;
 
 impl Doing<'_> {
     pub(super) fn wound(&mut self, who: Binding, cells: u64, slot: u8) -> Result<bool> {
+        if self.body(who)?.resident_site().is_none() { return Ok(false); }
         let at = *self
             .draws
             .get(&slot)
@@ -33,6 +34,7 @@ impl Doing<'_> {
     }
 
     pub(super) fn rot(&mut self, who: Binding, amount: u64) -> Result<bool> {
+        if self.body(who)?.resident_site().is_none() { return Ok(false); }
         let rules = self.rules;
         let moved = harm::rot::rot(self.body(who)?, rules, amount)?;
         for (_, ledger) in moved {
