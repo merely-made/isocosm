@@ -17,8 +17,9 @@ use crate::{
     MovementProfile, ResolvedStrike, WorldError, WorldSave,
 };
 
-/// Version 8 adds recorded native fixture recipe choices.
-pub const GAME_STATE_VERSION: u32 = 8;
+/// Version 9 adds recorded item placement through native custody.
+pub const GAME_STATE_VERSION: u32 = 9;
+pub const ITEM_PLACEMENT_GAME_STATE_VERSION: u32 = 9;
 pub const NATIVE_RECIPE_GAME_STATE_VERSION: u32 = 8;
 pub const CANON_GAME_STATE_VERSION: u32 = 7;
 pub const PROFILE_GAME_STATE_VERSION: u32 = 6;
@@ -168,6 +169,12 @@ pub enum GameIntent {
         at: [i32; 3],
         recipe: crate::NativeFixtureRecipe,
     },
+    /// Place a carried item at the subject's accepted in-site position.
+    Drop {
+        tick: Tick,
+        subject: SubjectId,
+        item: ItemId,
+    },
 }
 
 impl GameIntent {
@@ -175,6 +182,7 @@ impl GameIntent {
         match self {
             Self::Generate { tick, .. }
             | Self::GenerateNativeRecipe { tick, .. }
+            | Self::Drop { tick, .. }
             | Self::Name { tick, .. }
             | Self::Move { tick, .. }
             | Self::Observe { tick, .. }
@@ -200,6 +208,7 @@ impl GameIntent {
         match self {
             Self::Generate { subject, .. }
             | Self::GenerateNativeRecipe { subject, .. }
+            | Self::Drop { subject, .. }
             | Self::Name { subject, .. }
             | Self::Move { subject, .. }
             | Self::Observe { subject, .. }
@@ -344,6 +353,12 @@ pub enum GameEvent {
         seed: u64,
         cause: CanonRevisionCause,
     },
+    Dropped {
+        tick: Tick,
+        subject: SubjectId,
+        item: ItemId,
+        at: [i32; 3],
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -368,6 +383,7 @@ pub enum GameError {
     LegacyMovementProfileIntent,
     LegacyCanonIntent,
     LegacyNativeRecipeIntent,
+    LegacyItemPlacementIntent,
     UnreceiptedPromotion,
     WrongTick { expected: Tick, actual: Tick },
     StateDiverged { saved: u64, restored: u64 },

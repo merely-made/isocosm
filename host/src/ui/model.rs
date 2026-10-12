@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use std::{collections::BTreeMap, path::PathBuf};
-use isocosm_overlay::{AttentionChange, AttentionSet, ParticipantHandle, PlaceHandle, Seat, WindowHandle};
+use isocosm_overlay::{AttentionChange, AttentionSet, EntityHandle, EventHandle, ParticipantHandle,
+    PlaceHandle, Pointable, Seat, WindowHandle, key_for_handle, key_handle};
 use serde::{Deserialize, Serialize};
 use crate::{binding::Binding, products::{self, Input, Mode, Rows}, window::Window, world::World};
 
@@ -12,6 +13,10 @@ impl Default for Defaults { fn default() -> Self { Self { quarter_turn: 0 } } }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub(crate) struct Preferences { pub modes: BTreeMap<String, Defaults> }
+
+pub(crate) struct PinChoice {
+    pub id: String, pub label: String, pub point: Pointable, pub pinned: bool,
+}
 
 pub(crate) struct Local {
     pub native: Window, pub rows: Rows, pub error: Option<String>,
@@ -94,6 +99,49 @@ impl App {
         let cut = local.native.projection()?;
         if site.is_some_and(|s| !cut.visible.sites.contains(&s)) { return Err("region is outside the seat cut".into()); }
         let change = site.map_or(AttentionChange::StopExamining, |s| AttentionChange::Examine(PlaceHandle(s)));
+        let request = local.native.window_attention_request(change)?;
+        local.native.apply_attention(request)?;
+        self.refresh();
+        Ok(())
+    }
+    pub fn pin_choices(&self, key: u64) -> Result<Vec<PinChoice>, String> {
+        let local = self.windows.get(&key).ok_or("window is closed")?;
+        let cut = local.native.projection()?;
+        self.world.read(|session| -> Result<Vec<PinChoice>, String> {
+            let mut choices = Vec::new();
+            let mut push = |id: String, label: String, point: Pointable| {
+                choices.push(PinChoice { id, label, point,
+                    pinned: local.native.binding().attention.pinned.contains(&point) });
+            };
+            for id in cut.visible.things.keys() {
+                push(format!("pin-entity-{id}"), format!("Entity {id}"), Pointable::Entity(EntityHandle(*id)));
+            }
+            for id in &cut.visible.sites {
+                push(format!("pin-site-{id}"), format!("Site {id}"), Pointable::Place(PlaceHandle(*id)));
+            }
+            for record in crate::stream::records(session, &cut)? {
+                let event: isocosm::schema::Event = serde_json::from_slice(&record.payload)
+                    .map_err(|e| e.to_string())?;
+                let handle = key_handle(&event.id);
+                if key_for_handle(session.sim.state().events.keys().map(String::as_str), handle)
+                    != Some(event.id.as_str()) { continue; }
+                push(format!("pin-event-{handle}"), format!("Event {}", event.id),
+                    Pointable::Event(EventHandle(handle)));
+            }
+            Ok(choices)
+        })?
+    }
+    pub fn pin(&mut self, key: u64, point: Pointable) -> Result<(), String> {
+        let local = self.windows.get_mut(&key).ok_or("window is closed")?;
+        let mut cut = local.native.projection()?;
+        let pinned = local.native.binding().attention.pinned.contains(&point);
+        if !pinned {
+            cut.attention.pinned.insert(point);
+            self.world.read(|session| crate::access::filter_attention(session, cut.access,
+                &cut.visible, &mut cut.attention))?;
+            if !cut.attention.pinned.contains(&point) { return Err("pin is outside the seat cut".into()); }
+        }
+        let change = if pinned { AttentionChange::Unpin(point) } else { AttentionChange::Pin(point) };
         let request = local.native.window_attention_request(change)?;
         local.native.apply_attention(request)?;
         self.refresh();

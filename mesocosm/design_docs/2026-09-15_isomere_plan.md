@@ -2,7 +2,15 @@
 
 **Date:** 2026-09-15
 
-**Status, 2026-10-11:** the mode host is implemented in `host/` over one
+**Current source, 2026-10-11 (826):** the live host now exposes Pin/Unpin
+controls for its seat-filtered entities, sites and attended events. They use
+the existing native per-window command path; a toggle changes that window's
+contribution while native retains the participant's union. Mode memory and
+existing save capture retain the contribution. This UI connection is placed
+in production source and awaits verification after the remaining migration
+pieces are in place. Opaque VTT product-game actuation remains unwired.
+
+**Earlier checkpoint, 2026-10-11:** the mode host is implemented in `host/` over one
 native session and shared rendering device. Borrowed VTT, Eponym and
 Mesocosm inputs, transactional saves and per-window attention are applied.
 Isomere and the combined host passed all-target/all-feature compiler checks;
@@ -317,6 +325,14 @@ in parallel (disjoint panels), then M4, then M5 and M6.
   confirms it holds.
 
 ## Progress
+
+- **2026-10-11, live pin connection placed:** `host/src/ui/model.rs` and
+  `host/src/ui/view.rs` connect Cambium controls to the existing logged native
+  window-attention command. Choices use the current seat-filtered native cut;
+  ambiguous event handles are withheld. Local pin state comes from that
+  window's binding, not the participant union. Accepted changes refresh all
+  windows and retain existing mode-memory/save behavior. Source only under
+  826: no compiler run, test, fixture adjustment, tuning or headed receipt.
 
 - **2026-10-11, native attention/host core prepared:** CORE31 is
   applied in the primary checkout, including the native union of active

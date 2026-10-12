@@ -72,4 +72,5 @@ intents! {
     ConfigureMovementProfile { tick:Tick, subject:SubjectId, revision:BodyRevisionId, profile:MovementProfile },
     ReviseCanon { tick:Tick, revision:u64, seed:u64, cause:CanonRevisionCause },
     GenerateNativeRecipe { tick:Tick, subject:SubjectId, body_seed:u64, at:[i32;3], recipe:NativeFixtureRecipe },
+    Drop { tick:Tick, subject:SubjectId, item:ItemId },
 }

@@ -35,6 +35,7 @@ mod harm;
 mod legacy_body;
 mod motion;
 mod native_anatomy;
+mod material;
 mod save;
 
 #[derive(Clone, Debug)]

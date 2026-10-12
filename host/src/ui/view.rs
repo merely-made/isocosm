@@ -57,6 +57,15 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
     }
     actions.push(button("stop-examining".into(), "Stop examining".into(), key,
         move |app| app.examine(key, None)));
+    let mut pins: Vec<Child> = vec![Box::new(el("h2", text("Pins in this window")))];
+    match state.pin_choices(key) {
+        Ok(choices) => for choice in choices {
+            let action = if choice.pinned { "Unpin" } else { "Pin" };
+            pins.push(button(choice.id, format!("{action} {}", choice.label), key,
+                move |app| app.pin(key, choice.point)));
+        },
+        Err(why) => pins.push(Box::new(el("p", text(why)).attr("role", "status"))),
+    }
     let controls_line = local.native.binding().controls.join(", ");
     let error = local.error.clone().unwrap_or_default();
     let mut children: Vec<Child> = vec![
@@ -66,6 +75,7 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
         Box::new(el("nav", actions)) as Child,
         list("Things", &local.rows.things), list("Sites", &local.rows.sites),
         list("Attended events", &local.rows.events),
+        Box::new(el("section", pins).attr("class", "panel")) as Child,
         Box::new(el("p", text(error)).attr("id", "error").attr("role", "status")) as Child,
     ];
     #[cfg(feature = "mesocosm")]

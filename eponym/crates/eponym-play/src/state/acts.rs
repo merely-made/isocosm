@@ -138,6 +138,7 @@ impl GameState {
                     }],
                 )?
             },
+            GameIntent::Drop { item, .. } => self.drop_item(tick, subject, *item)?,
             GameIntent::Eat { item, .. } => {
                 self.living(subject)?;
                 let food = *self.items.get(*item).ok_or(ItemError::Missing(*item))?;

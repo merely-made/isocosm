@@ -1191,3 +1191,12 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   founding/hash migration remains open and restore refuses. This completes
   the bounded fixture/wire work without opening a legacy simulation project.
   The four source choices and larger acceptance remain pending.
+- **2026-10-11, migration source continues under826:** T1's native item
+  custody release and game-owned placement are now connected through
+  Eponym's recorded Drop action and Session API, with appended GameSave9
+  vocabulary. The live host also exposes seat-filtered per-window pin controls
+  through its existing native attention door, preserving the participant union.
+  Both are production-source pieces awaiting later verification. No Cargo,
+  test/fixture changes, tuning or certification machinery accompanies them.
+  Four structural choices remain with Mark, next827. Material/work/app-selection
+  source and opaque VTT product-game actuation remain independent open seams.

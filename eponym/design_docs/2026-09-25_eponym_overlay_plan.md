@@ -2,7 +2,16 @@
 
 **Date:** 2026-09-25
 
-**Status, 2026-10-11, combined source:** E3 is open in push mode (798); E2's native
+**Current source, 2026-10-11 (826):** T1 now has a recorded item-drop action
+and `Session::drop_item`. Native DROP releases custody of the same item;
+Eponym owns its in-site placement. GameSave9 appends this vocabulary and
+refuses it under older version tags. This is an unverified production slice;
+tests and adjustments wait until the migration pieces are in place. Material
+founding/presentation, work/resumption, app item selection and the remaining
+E3 source still need placement or their unresolved design choices. Earlier
+compiler/test receipts below retain their earlier source scope.
+
+**Earlier checkpoint, 2026-10-11, combined source:** E3 is open in push mode (798); E2's native
 world supplies its base. Play reaches native commands through
 `eponym-play::contract` (794), including the sortie receipt's social acts.
 Native recipe development, compact first-life issuance (818/819), named
@@ -549,6 +558,19 @@ Ruling 793 archived the genet document host plan to
   no type to the core.
 
 ## Progress
+
+- **2026-10-11, material placement source:** T1 now has a subject-addressed
+  `GameIntent::Drop` and item-addressed `Session::drop_item`. Placement runs
+  the founding pack's existing native DROP process through actuation,
+  verifies that this carrier's relation ended, and records the same inert
+  item's in-site location while releasing its worn-part attachment (776).
+  Identity, provenance and native stock stay with that entity. The candidate
+  game-state cut admits custody and placement together; new vocabulary is
+  appended under GameSave9, with older vocabulary guards retained. Input
+  selection, material fabrication, interrupted work and the complete played
+  loop remain open. Source migration continues under Mark's direction;
+  tests, fixture changes, tuning and acceptance are deferred until the
+  pieces are in place.
 
 - **2026-10-11, combined product state:** implementation checkpoint
   `a4fea109` is committed and pushed; Eponym and the shared product host

@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION,
-    NATIVE_RECIPE_GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
+    ITEM_PLACEMENT_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
     GameState, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
     World,
 };
@@ -140,6 +140,16 @@ impl Session {
             });
         }
         Ok(self.game.apply(intent)?)
+    }
+
+    /// Place this life's carried item through native custody and the same
+    /// recorded action boundary used by any embodied subject.
+    pub fn drop_item(&mut self, item: crate::ItemId) -> Result<Vec<GameEvent>, SessionError> {
+        self.apply_game(GameIntent::Drop {
+            tick: self.game.next_tick(),
+            subject: self.control.played(),
+            item,
+        })
     }
 
     /// Continues after the current home body died through another existing life.
@@ -307,6 +317,11 @@ impl Session {
             && save.game.intents.iter().any(|i| matches!(i, GameIntent::GenerateNativeRecipe { .. }))
         {
             return Err(SessionError::Game(GameError::LegacyNativeRecipeIntent));
+        }
+        if save.game.version < ITEM_PLACEMENT_GAME_STATE_VERSION
+            && save.game.intents.iter().any(|intent| matches!(intent, GameIntent::Drop { .. }))
+        {
+            return Err(SessionError::Game(GameError::LegacyItemPlacementIntent));
         }
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents
