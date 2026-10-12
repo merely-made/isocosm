@@ -22,6 +22,7 @@ pub enum NativeFixtureRecipe { ProbeActorV1, ProbeTargetV1 }
 fn template(half_extent: [i32; 3], function: &str, cells: u32) -> Template {
     Template {
         half_extent, cells: BTreeMap::from([(function.into(), cells)]), shape: String::new(),
+        port: None,
     }
 }
 

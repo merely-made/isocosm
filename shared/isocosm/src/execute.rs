@@ -131,6 +131,13 @@ impl Simulation {
         // The part the act binds, read before any requirement so that each
         // reads the same one (ruling 338).
         let part = self.bind_part(actor, definition);
+        let intake = match self.bind_intake(actor, definition) {
+            Ok(part) => part,
+            Err(why) => return refused(receipt, Outcome::Blocked(why)),
+        };
+        if let Some(part) = intake {
+            receipt.facts_read.push(format!("declared intake organ: {part:?}"));
+        }
         for query in &definition.requires {
             match self.query(actor, target, place, part, query) {
                 Ok(fact) => receipt.facts_read.push(fact),
@@ -158,6 +165,9 @@ impl Simulation {
             Err(why) => return refused(receipt, Outcome::Blocked(why)),
         };
         let planning = matches!(run, Run::Plan);
+        stage.process = process.into();
+        stage.intake = intake;
+        stage.port_feeding = definition.port_feeding.clone();
         match run {
             Run::Plan => stage.demands = Some(Demands::default()),
             Run::Act(shares) => stage.shares = shares,
@@ -180,7 +190,12 @@ impl Simulation {
         for effect in &effects {
             match staged.effect(effect, &id) {
                 Ok(feat) => legend |= feat,
-                Err(why) => return refused(receipt, Outcome::Blocked(why)),
+                Err(why) => {
+                    let terrain = staged.stage.terrain.clone();
+                    drop(staged);
+                    self.capture_geometry(&terrain);
+                    return refused(receipt, Outcome::Blocked(why));
+                },
             }
         }
         // Only what the act bound can have changed, so weighing it alone
@@ -230,7 +245,10 @@ impl Simulation {
             let demands = stage.demands.take();
             return (receipt, demands);
         }
-        self.commit(stage, next, process);
+        if let Err(why) = self.commit_resolved(stage, next, process) {
+            return refused(receipt, Outcome::Blocked(why));
+        }
+        receipt.matter_after = self.conserved;
         debug_assert_eq!(
             self.matter(),
             self.conserved,

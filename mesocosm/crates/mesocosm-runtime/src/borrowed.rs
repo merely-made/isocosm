@@ -35,3 +35,13 @@ pub fn submit(session: &mut Session, participant: Id, round: u64,
     *session = candidate;
     Ok(accepted)
 }
+
+/// The shared host resolves operations against its named native Session.
+pub fn advance_geometry<R>(session: &mut Session, access: isocosm_overlay::OrdinaryAccess,
+    resolver: &mut R)
+    -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, Refusal>
+where R: FnMut(&isocosm::operations::Pending)
+    -> Result<isocosm_overlay::mesocosm::TerrainGeometry, String> + ?Sized
+{
+    crate::terrain::advance(session, access, resolver)
+}

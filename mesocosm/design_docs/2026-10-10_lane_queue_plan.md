@@ -37,7 +37,9 @@ independent ruled source work. This supersedes the earlier combined-state
 testing instruction below and the lane briefs' intermediate acceptance order.
 Record source checkpoints honestly as awaiting verification. The four
 capacity, overflow, feeding and native-edit choices are recorded as827 to830.
-The remaining zero-transmission-route eligibility question is asked; next831.
+Their independent source connections are placed, unverified. Three follow-up
+choices are asked: zero-transmission route eligibility, the ordinary founding
+jaw/process pair, and the owner of actual Mesocosm geometry inputs. Next831.
 
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
@@ -369,6 +371,25 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
 
+- **2026-10-11, 827 to830 source placed:** native capacity uses authored
+  lineage expressions and ordered modifier layers. Equal overflow offers
+  conserve transmitted and retained matter across site, finer-place and host
+  stocks; native acts and journey arrival invoke it before publication.
+  Declared port feeding binds an actual supported organ and checks native
+  matter provenance in ordinary and crowd meals. New founding recipes retain
+  their declared ports; unmarked recorded definitions retain their grammar.
+  Chosen terrain operations have finite, action-bound game resolution,
+  native pricing and same-Session recorded admission. Runtime and borrowed
+  APIs expose this door; the actual Mesocosm geometry provider remains unbound.
+  Three structural questions are pending: zero-rate route eligibility, the
+  new ordinary jaw/process pairing, and saved ownership of eye/focus/shape
+  inputs. No formula, rate, targeting expansion or display position was
+  promoted into an unruled default. Source review and ordinary Git hooks
+  accompany this checkpoint; no Cargo, compiler, tests, fixture repair or
+  tuning ran under826. Test constructor updates for the new Rules, Process
+  and Template fields also wait for assembled pieces. Earlier receipts
+  certify only their earlier source; full migration, M4 and acceptance remain
+  open. Material/work/app-selection and opaque VTT actuation still need source.
 - **2026-10-11, 827 to 830:** Mark chose trait-derived capacity plus an
   explicit modifier/manipulator, equal route shares before transmission,
   process-declared port feeding founded with its ports, and native-declared

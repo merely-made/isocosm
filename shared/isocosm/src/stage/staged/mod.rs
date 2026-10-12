@@ -21,6 +21,8 @@ use std::{
 };
 
 mod harm;
+mod meal;
+mod terrain;
 
 /// A stage read against the world it will be committed to.
 pub(crate) struct Staged<'a> {
@@ -275,6 +277,10 @@ impl Staged<'_> {
         // An ordered take and a conversion read the balances they take, so
         // their moves are worked out as they are applied.
         match e {
+            Effect::Terrain { change, cells, reach } => {
+                self.terrain(cause, change, cells, *reach)?;
+                return Ok(false);
+            },
             Effect::Wound { who, cells, slot } => {
                 self.wound(*who, cells.resolved()?, *slot)?;
                 return Ok(false);
@@ -480,106 +486,9 @@ impl Staged<'_> {
             // Eating binds another body, so it is applied here; what a meal
             // takes is `meaning::share`'s, of the accounts it names (ruling
             // 456), or its share of a prey its pass shared out (ruling 454).
-            Effect::Eat {
-                from,
-                amount,
-                into,
-                of,
-                whole,
-            } => {
-                if *from == Binding::Target && self.body(*from)?.journey.is_some() {
-                    return Err("travelling prey has no resident site".into());
-                }
-                let rules = &sim.genesis.rules;
-                let portion = self.stage.shares.as_mut().and_then(|s| s.meal.take());
-                // A bite lands on one part, drawn by what each holds (459).
-                let draw = crate::draw(sim.genesis.seed, "bite", &[self.stage.act]);
-                let accounts = if of.is_empty() {
-                    rules
-                        .accounts
-                        .iter()
-                        .filter_map(|(k, a)| {
-                            matches!(a, AccountKind::Matter { .. }).then_some(k.clone())
-                        })
-                        .collect::<Vec<_>>()
-                } else {
-                    of.clone()
-                };
-                let bitten = crate::anatomy::bitten(self.body(*from)?, &accounts, draw);
-                self.stage.bitten = bitten;
-                if let (Some(part), Some(Holder::Entity(body))) = (bitten, self.holder(*from)) {
-                    if let Some(d) = &mut self.stage.demands {
-                        if d.meal.as_ref().is_some_and(|(holder, ..)| *holder == Holder::Entity(body)) {
-                            d.meal_part = Some(Holder::Part(body, part));
-                        }
-                    }
-                }
-                let offered = match bitten {
-                    Some(part) => {
-                        let prey = self.body(*from)?;
-                        edible(
-                            &prey.parts.get(&part).ok_or("bitten part missing")?.matter,
-                            of,
-                        )
-                    },
-                    None => edible(&*self.ledger(*from)?, of),
-                };
-                // A bite that would take all of a part may take it whole.
-                if let (true, Some(part)) = (*whole, bitten) {
-                    let asked: u64 = match &portion {
-                        Some(p) => p.values().sum(),
-                        None => amount.resolved()?,
-                    };
-                    let all: u64 = offered.values().sum();
-                    if asked >= all && self.incorporate(*from, part)? {
-                        return Ok(false);
-                    }
-                }
-                let taken: Ledger = match portion {
-                    // A share is of the prey's whole; the bitten part gives
-                    // what it holds of it, the rest staying put (454).
-                    Some(portion) => portion
-                        .into_iter()
-                        .map(|(k, v)| {
-                            let held = offered.get(&k).copied().unwrap_or(0);
-                            (k, v.min(held))
-                        })
-                        .filter(|(_, v)| *v > 0)
-                        .collect(),
-                    None => meaning::share(&offered, rules, amount.resolved()?),
-                };
-                let prey = self.holder(*from);
-                let mut total = 0u64;
-                for (key, value) in &taken {
-                    match (bitten, prey) {
-                        (Some(part), Some(Holder::Entity(id))) => {
-                            let body = self.body(*from)?;
-                            let p = body.parts.get_mut(&part).ok_or("bitten part missing")?;
-                            debit(&mut p.matter, key, *value)?;
-                            let routed = flows::Routed {
-                                body: id,
-                                key: key.clone(),
-                                give: false,
-                                parts: vec![(part, *value)],
-                            };
-                            self.stage.routed.push(routed);
-                        },
-                        _ => debit(self.ledger(*from)?, key, *value)?,
-                    }
-                    total = total.checked_add(*value).ok_or("meal overflow")?;
-                }
-                self.give(Binding::Actor, into, total)?;
-                if let Some(prey) = self.holder(*from).filter(|_| sim.flowing()) {
-                    self.stage
-                        .legs
-                        .extend(taken.into_iter().map(|(key, amount)| Leg {
-                            from: (prey, key),
-                            to: (Holder::Entity(actor), into.clone()),
-                            amount,
-                        }));
-                }
+            Effect::Eat { from, amount, into, of, whole } => {
+                self.meal(*from, amount, into, of, *whole)?;
             },
-            // Every other effect has its meaning in `meaning::effect`.
             _ => unreachable!("shared effects return above"),
         }
         Ok(false)

@@ -270,6 +270,17 @@ impl Interim {
         &mut self,
         candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>,
     ) -> Result<(Vec<Happening>, Vec<crate::flows::Flow>)> {
+        self.round_with_flows_using(candidates, &mut |session| {
+            session.advance_tick_with_flows().map(|out| out.flows)
+        })
+    }
+
+    /// The game may resolve native-declared geometry through the same tick door.
+    pub fn round_with_flows_using(
+        &mut self,
+        candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>,
+        advance: &mut dyn FnMut(&mut Session) -> Result<Vec<crate::flows::Flow>>,
+    ) -> Result<(Vec<Happening>, Vec<crate::flows::Flow>)> {
         let mut out = Vec::new();
         let mut flows = Vec::new();
         let played = self.critter().ok_or("nobody is played")?;
@@ -291,7 +302,7 @@ impl Interim {
         let epoch = self.session.sim.genesis().rules.epoch_ticks;
         let from = self.session.sim.state().tick;
         for _ in 0..self.pace.round {
-            flows.extend(self.session.advance_tick_with_flows()?.flows);
+            flows.extend(advance(&mut self.session)?);
         }
         let now = self.session.sim.state().tick;
         // The player keeps the parent; the young are offered (183).

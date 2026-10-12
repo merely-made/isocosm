@@ -5,7 +5,10 @@
 **Current source, 2026-10-11 (830):** a chosen native process declares its
 carve/deposit operation; Mesocosm resolves actual cells and returns the edit
 to the same native Session. The action-bound preflight and publication path
-is being placed, retaining native costs, matter, revisions and history.
+is placed, unverified, retaining native costs, matter, revisions and history.
+Runtime and borrowed APIs share it. The actual provider of actor position,
+eye, focus and shape is unbound pending Mark's ownership choice; current
+display positions are advisory and cannot supply these inputs.
 All tests and subsequent adjustments wait until migration pieces are in
 place under826. This does not certify full M4.
 

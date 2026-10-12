@@ -79,6 +79,7 @@ pub(crate) fn process(id: &str, causation: Causation, effects: Vec<Effect>) -> P
         glyphs: BTreeSet::new(),
         invariants: set(&["sim:matter", "sim:nonnegative"]),
         note: false,
+        port_feeding: None,
     }
 }
 
@@ -271,6 +272,7 @@ impl Founding {
             carriage: None,
             directing: None,
             social: None,
+            spread_capacity: None,
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),

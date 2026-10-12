@@ -10,6 +10,7 @@ mod body;
 mod competition;
 mod directing;
 mod effect;
+mod feeding;
 mod graft;
 mod epoch;
 mod mind;
@@ -22,6 +23,7 @@ pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_
 pub use competition::{Competition, Competitor, Similitude};
 pub use directing::{Directing, Inheritance};
 pub use effect::{Conversion, Effect};
+pub use feeding::{FeedingSources, PortFeeding};
 pub use graft::{Compatibility, GraftReceipt, Raise, retained};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
@@ -174,6 +176,10 @@ pub struct Process {
     pub glyphs: BTreeSet<Key>,
     pub invariants: BTreeSet<Key>,
     pub note: bool,
+    /// Only declared port meals enforce organ and source admission (TG5).
+    /// Recorded unmarked processes keep their former grammar and witness.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub port_feeding: Option<PortFeeding>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -259,6 +265,10 @@ pub struct Rules {
     /// without them, which hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub social: Option<crate::social::Vocabulary>,
+    /// Trait-derived spread capacity and authored modifier layers (827).
+    /// Worlds without the declaration retain their recorded grammar.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub spread_capacity: Option<crate::spread::CapacityRules>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

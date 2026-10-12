@@ -314,6 +314,7 @@ impl ProbeFounding {
             carriage: None,
             directing: None,
             social: None,
+            spread_capacity: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

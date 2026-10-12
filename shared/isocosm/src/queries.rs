@@ -24,6 +24,9 @@ impl Simulation {
         let function = p.expresses()?;
         expressing(self.body_at_start(actor)?, function)
     }
+    pub(crate) fn bind_intake(&self, actor: Id, p: &Process) -> Result<Option<PartId>> {
+        p.feeding_part(self.body_at_start(actor).ok_or("actor is absent")?)
+    }
     /// Reads `query` for an act by `actor`, with `part` the part its process
     /// binds, against the world as the pass under way began (ruling 454).
     pub(crate) fn query(
@@ -83,5 +86,6 @@ impl Simulation {
                 .as_ref()
                 .is_none_or(|lineage| lineage == &b.lineage)
             && (selector.among.is_empty() || selector.among.contains(&b.lineage))
+            && p.admits_meal(a, b, &self.genesis.rules, &self.state.lineages)
     }
 }

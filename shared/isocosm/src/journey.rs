@@ -64,6 +64,7 @@ impl Simulation {
     /// The index is rebuilt per advance; accepted splits/births replace entries.
     pub(crate) fn arrive_until(&mut self, until: Tick, work: &mut Work) -> Result<()> {
         while let Some((tick, first)) = self.journeys.as_mut().and_then(|j| j.pop(until)) {
+            let before = self.genesis.rules.spread_capacity.as_ref().map(|_| self.state.clone());
             let group = self.state.population.groups.get(&first).ok_or("journey cohort vanished")?;
             let count = group.count;
             let journey = group.entity.journey.clone().ok_or("journey index lost its authority")?;
@@ -80,6 +81,7 @@ impl Simulation {
             entity.arrived = tick;
             entity.journey = None;
             entity.patch = None;
+            if let Some(before) = &before { self.overflow_resolved(before)?; }
             // Carried soil stays in its conserved body ledger until an authored deposit.
             // No arrival event, selected process, receipt, draw or invented site flow.
             work.arrivals = arrivals;

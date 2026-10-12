@@ -6,12 +6,14 @@ use crate::{Result, schema::{Key, Tick}, simulation::{Simulation, State, Work}};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
-/// Explicit authored identity and strain changes, recorded by Session.
-/// Overflow is intentionally absent until capacity and routing are ruled.
+/// Authored spread changes and native capacity-driven spill, recorded by Session.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Command {
     Register(Identity),
     ForkStrain { parent: Key, at: Substrate, amount: u64, traits: BTreeSet<Key> },
+    SetModifier(CapacityModifier),
+    RemoveModifier { key: Key },
+    Overflow { identity: Identity, at: Substrate },
 }
 
 fn validate_state(state: &State, rules: &crate::rules::Rules) -> Result<()> {
@@ -40,7 +42,23 @@ impl Simulation {
                 fork_strain(&mut candidate, rules, self.genesis.dynamics_seed(), parent,
                     *at, *amount, traits.clone())?
             },
+            Command::SetModifier(modifier) => {
+                candidate.spreads.modifiers.retain(|present| present.key != modifier.key);
+                candidate.spreads.modifiers.push(modifier.clone());
+                candidate.spreads.modifiers.sort_by(|a, b| a.key.cmp(&b.key));
+                "modified".into()
+            },
+            Command::RemoveModifier { key } => {
+                crate::validation::key(key)?;
+                candidate.spreads.modifiers.retain(|present| &present.key != key);
+                "modifier removed".into()
+            },
+            Command::Overflow { identity, at } => {
+                format!("dispatched:{}", resolved_overflow_at(&mut candidate, rules, identity, *at)?)
+            },
         };
+        validate_state(&candidate, rules)?;
+        dispatch_changed(&self.state, &mut candidate, rules)?;
         validate_state(&candidate, rules)?;
         if crate::simulation::matter(&candidate, rules) != before {
             return Err("spread change does not conserve matter".into());
@@ -69,6 +87,7 @@ impl Simulation {
         let before = self.matter();
         settle(&mut candidate, tick)?;
         candidate.tick = tick;
+        dispatch_changed(&self.state, &mut candidate, &self.genesis.rules)?;
         validate_state(&candidate, &self.genesis.rules)?;
         if crate::simulation::matter(&candidate, &self.genesis.rules) != before {
             return Err("spread arrival does not conserve matter".into());
@@ -79,6 +98,9 @@ impl Simulation {
                     let site = self.state.sites.get(&transfer.to).ok_or("spread destination absent")?;
                     journal.site(transfer.to, site);
                 }
+            }
+            for (id, site) in &self.state.sites {
+                if candidate.sites.get(id) != Some(site) { journal.site(*id, site); }
             }
         }
         self.state = candidate;

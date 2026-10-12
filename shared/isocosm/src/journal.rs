@@ -17,6 +17,8 @@ use std::collections::{BTreeMap, BTreeSet};
 pub(crate) struct Journal {
     tick: Tick,
     next_action: u64,
+    conserved: u128,
+    edits: usize,
     next_id: Id,
     notes: usize,
     /// Each stored group as it stood before its first change, by first
@@ -38,10 +40,12 @@ pub(crate) struct Journal {
 }
 
 impl Journal {
-    pub(crate) fn new(state: &State) -> Self {
+    pub(crate) fn new(state: &State, conserved: u128) -> Self {
         Self {
             tick: state.tick,
             next_action: state.next_action,
+            conserved,
+            edits: state.edits.len(),
             next_id: state.population.next_id,
             notes: state.notes.len(),
             groups: BTreeMap::new(),
@@ -61,6 +65,8 @@ impl Journal {
     pub(crate) fn group(&mut self, first: Id, was: Option<&Cohort>) {
         self.groups.entry(first).or_insert_with(|| was.cloned());
     }
+
+    pub(crate) fn conserved(&self) -> u128 { self.conserved }
     pub(crate) fn groups(&mut self, population: &Population, firsts: &[Id]) {
         for &first in firsts {
             self.group(first, population.groups.get(&first));
@@ -91,6 +97,7 @@ impl Journal {
         s.attention = self.attention;
         s.spreads = self.spreads;
         s.next_action = self.next_action;
+        s.edits.truncate(self.edits);
         s.population.next_id = self.next_id;
         for (first, was) in self.groups {
             match was {

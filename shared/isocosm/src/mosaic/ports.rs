@@ -13,7 +13,7 @@ use crate::schema::*;
 pub mod admission;
 
 /// The function a port's supporting definition binds, natively.
-fn supporting(port: IntakePort) -> Option<Key> {
+pub(crate) fn supporting(port: IntakePort) -> Option<Key> {
     let support = port.support()?;
     let def = Registry::native().resolve(support)?;
     Some(format!("function:{}", def.id.name))

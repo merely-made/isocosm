@@ -33,6 +33,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
             .map(|(f, n)| (format!("function:{f}"), *n))
             .collect(),
         shape: String::new(),
+        port: None,
     }
 }
 
@@ -87,7 +88,14 @@ impl BodyFounding {
             ),
             (EYE, template([1, 1, 1], &[("sense", capacity([1, 1, 1]))])),
         ];
-        kinds.map(|(k, t)| (k.to_string(), t)).into()
+        let mut kinds: BTreeMap<Key, Template> = kinds.map(|(k, t)| (k.to_string(), t)).into();
+        let support = crate::process::Registry::native()
+            .of_native(crate::process::Process::Intake).reference();
+        kinds.get_mut(LUMP).expect("the intake lump").port = Some(
+            crate::process::IntakePort::live(crate::process::NisKind::Producer)
+                .with_live(crate::process::NisKind::Consumer).supported_by(support)
+        );
+        kinds
     }
 
     /// Each lineage's development: its recipe with the variance and absence

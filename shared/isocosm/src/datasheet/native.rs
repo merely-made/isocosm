@@ -47,6 +47,7 @@ pub fn kinds_of(banks: &Banks) -> BTreeMap<Key, Template> {
                 half_extent: s.half_extent,
                 cells,
                 shape: String::new(),
+                port: None,
             };
             kinds.insert(kind(&s.name), template);
         }

@@ -23,6 +23,9 @@ impl Genesis {
             return Err("invalid world extent".into());
         }
         wing_glyphs::Canon::new(self.world.canon.clone())?;
+        if let Some(capacity) = &self.rules.spread_capacity {
+            capacity.validate_world(&self.world)?;
+        }
         for kind in self.rules.accounts.values() {
             if let AccountKind::Matter { lineage, .. } = kind
                 && !self.lineages.contains_key(lineage)
@@ -56,6 +59,7 @@ impl Genesis {
         crate::validation::conversions(&self.rules, &self.lineages)?;
         crate::validation::development(&self.rules, &self.lineages)?;
         for process in self.rules.processes.values() {
+            process.validate_feeding_sources(&self.lineages)?;
             if process.target.as_ref().is_some_and(|t| {
                 (t.lineage.iter().chain(&t.among)).any(|l| !self.lineages.contains_key(l))
             }) {

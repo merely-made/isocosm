@@ -19,6 +19,8 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod feeding;
+
 /// The life-history traits a lineage may carry (449, 520, 521, 527, 535).
 pub const BROOD: &str = "strategy:brood";
 pub const EGG: &str = "strategy:egg";
@@ -273,6 +275,18 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
             },
         };
         reproducing(&mut kinds, &mut recipe)?;
+        if !producer {
+            let function = feeding::declare(&mut kinds, &mut recipe, key)?;
+            if let Some(p) = g.rules.processes.get_mut(&format!(
+                "ecology:feed-{}", key.trim_start_matches("lineage:")
+            )) {
+                let sources = p.target.as_ref().map_or(FeedingSources::All, |t| {
+                    if t.among.is_empty() { FeedingSources::All }
+                    else { FeedingSources::Only(t.among.clone()) }
+                });
+                p.port_feeding = Some(PortFeeding { function, sources });
+            }
+        }
         let (traits, clutch, anamorphic) = life(g.seed, index, b);
         lineage.traits.extend(traits.iter().cloned());
         added.insert(key.clone(), traits);

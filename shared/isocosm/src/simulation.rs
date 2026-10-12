@@ -171,6 +171,7 @@ pub struct Simulation {
     /// advance (ruling 683).
     pub(crate) chosen: crate::directing::Chosen,
     pub(crate) journeys: Option<crate::journey::Journeys>,
+    pub(crate) geometry_resolutions: crate::operations::Resolutions,
 }
 
 impl Simulation {
@@ -218,6 +219,7 @@ impl Simulation {
             flows: Default::default(),
             chosen: Default::default(),
             journeys: None,
+            geometry_resolutions: Default::default(),
         })
     }
     pub fn state(&self) -> &State {
@@ -298,7 +300,7 @@ impl Simulation {
     pub(crate) fn begin(&mut self) -> bool {
         let fresh = self.journal.is_none();
         if fresh {
-            self.journal = Some(crate::journal::Journal::new(&self.state));
+            self.journal = Some(crate::journal::Journal::new(&self.state, self.conserved));
             self.watch_from();
             self.flows_from();
         }
@@ -312,6 +314,7 @@ impl Simulation {
         }
         let journal = self.journal.take().expect("an advance under way");
         if !accepted {
+            self.conserved = journal.conserved();
             journal.rollback(&mut self.state);
             self.unwatch();
             self.unflow();

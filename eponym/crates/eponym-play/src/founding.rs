@@ -66,6 +66,7 @@ fn process(id: &str, causation: Causation, effects: Vec<Effect>) -> Process {
         glyphs: BTreeSet::new(),
         invariants: set(&["sim:matter", "sim:nonnegative"]),
         note: false,
+        port_feeding: None,
     }
 }
 

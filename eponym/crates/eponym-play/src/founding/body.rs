@@ -15,6 +15,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
         half_extent,
         cells: cells.iter().map(|(name, cells)| (format!("function:{name}"), *cells)).collect(),
         shape: String::new(),
+        port: None,
     }
 }
 

@@ -110,4 +110,6 @@ pub enum Command {
     AttachSite { place: crate::asserted::Place, attachment: crate::site_authoring::Attachment },
     /// Native territory/surface identity and host/place strain selection.
     Spread(crate::spread::Command),
+    /// Exact game geometry inputs, consumed only by the native chosen actions.
+    AdvanceGeometry { ticks: Tick, resolutions: Vec<crate::operations::Resolution> },
 }

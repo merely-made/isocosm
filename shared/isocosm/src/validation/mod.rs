@@ -232,12 +232,16 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
     body::catalogue(rules)?;
     body::systems(rules)?;
     recipe::kinds(rules)?;
+    if let Some(capacity) = &rules.spread_capacity {
+        capacity.validate(rules)?;
+    }
     for (id, p) in &rules.processes {
         key(id)?;
         if id != &p.id {
             return Err("process key does not match identity".into());
         }
         body::process(p)?;
+        p.validate_feeding(rules)?;
         harm::draws(p)?;
         // A part's ledger holds only matter (ruling 504).
         for q in &p.requires {
@@ -349,6 +353,9 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         reads(rules, p, id, value)?;
     }
     match e {
+        Effect::Terrain { change, cells, reach } => {
+            crate::operations::validate(p, change, cells, *reach)?;
+        }
         Effect::Transfer { account: a, .. } => account(rules, a)?,
         Effect::Transform { take, give, .. } => {
             for a in take.keys().chain(give.keys()) {

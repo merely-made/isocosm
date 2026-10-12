@@ -166,20 +166,27 @@ impl Session {
         if self.entries.len() >= self.sim.genesis.rules.limits.history {
             return Err("command log limit".into());
         }
-        let outcome = run(&mut self.sim, &command)?;
+        let tick = self.sim.state.tick;
+        let outcome = self.recorded(&command)?;
         let order = self.entries.len() as u64;
         let id = format!(
             "intent:{}",
-            crate::digest(&(&self.branch, self.sim.state.tick, order, &command))
+            crate::digest(&(&self.branch, tick, order, &command))
         );
         self.entries.push(Entry {
             id,
-            tick: self.sim.state.tick,
+            tick,
             order,
             command,
             outcome: outcome.clone(),
         });
         Ok(outcome)
+    }
+    fn recorded(&mut self, command: &Command) -> Result<String> {
+        match command {
+            Command::AdvanceGeometry { ticks, resolutions } => self.advance_geometry(*ticks, resolutions),
+            _ => run(&mut self.sim, command),
+        }
     }
     /// Whether a dev placed matter or edited a volume in this run: the run is assisted
     /// (ruling 271), read from the history, which is the record (ruling 344).
@@ -301,7 +308,7 @@ impl Session {
                 return Err("invalid intent order or identity".into());
             }
             reach(&mut session, entry.tick)?;
-            let outcome = run(&mut session.sim, &entry.command)?;
+            let outcome = session.recorded(&entry.command)?;
             if outcome != entry.outcome {
                 return Err(format!("replay outcome mismatch for {}", entry.id));
             }
@@ -320,9 +327,12 @@ impl Session {
         let mut fork = Self::new(self.sim.genesis.as_ref().clone(), self.sim.mode)?;
         fork.sim.state.movement = self.sim.state.movement;
         fork.branch = branch;
-        for entry in self.entries.iter().filter(|e| e.tick <= tick) {
+        for entry in self.entries.iter().filter(|e| e.tick <= tick && match &e.command {
+            Command::AdvanceGeometry { ticks, .. } => e.tick.checked_add(*ticks).is_some_and(|end| end <= tick),
+            _ => true,
+        }) {
             fork.replay_until(entry.tick)?;
-            let outcome = run(&mut fork.sim, &entry.command)?;
+            let outcome = fork.recorded(&entry.command)?;
             if outcome != entry.outcome {
                 return Err("source replay changed".into());
             }
@@ -359,7 +369,7 @@ impl Session {
         let mut changes = Vec::new();
         for mut entry in entries {
             proposed.replay_until(entry.tick)?;
-            let outcome = run(&mut proposed.sim, &entry.command)?;
+            let outcome = proposed.recorded(&entry.command)?;
             if outcome != entry.outcome {
                 changes.push(Conflict {
                     entry: entry.id.clone(),
@@ -384,6 +394,7 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
 
 fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
     match command {
+        Command::AdvanceGeometry { .. } => Err("geometry advance needs its native Session".into()),
         Command::Window(change) => sim.change_window(change),
         Command::Spread(change) => sim.spread(change),
         Command::Develop { entity, seed } => {

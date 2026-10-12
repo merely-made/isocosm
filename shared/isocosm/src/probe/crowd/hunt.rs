@@ -115,6 +115,10 @@ impl Crowd<'_> {
             }
             self.work.evaluations += 1;
             self.work.represented += n;
+            if p.feeding_part(&e).is_err() {
+                self.work.blocked += n;
+                continue;
+            }
             let seen = Seen {
                 member: Some(&e),
                 site,
@@ -171,12 +175,29 @@ impl Crowd<'_> {
         let mut s = Stream::new(crate::draw(self.dynamics, &domain, &[self.tick, site]));
         // Each hunter's prey state, by weight, then which of its members.
         let mut landed: BTreeMap<(usize, u64), Vec<usize>> = BTreeMap::new();
-        for (h, (_, n, ..)) in hunters.iter().enumerate() {
+        for (h, (hunter, n, ..)) in hunters.iter().enumerate() {
+            // A single pass still combines coincident takes for its quotas.
+            // Each marked hunter draws over its own exact admitted pool;
+            // admitted prey retain their original whole-body weights.
+            let admitted: Vec<bool> = prey.iter().map(|(e, _)| {
+                p.admits_meal(hunter, e, rules, &self.lineages)
+            }).collect();
+            let admitted_total = if p.port_feeding.is_some() {
+                u64::try_from(weights.iter().zip(&admitted)
+                    .filter_map(|(w, yes)| yes.then_some(*w)).sum::<u128>())
+                    .map_err(|_| "admitted prey weigh too much to draw")?
+            } else { total };
+            if admitted_total == 0 {
+                self.work.blocked += *n;
+                continue;
+            }
             for _ in 0..*n {
-                let mut pick = u128::from(s.below(total));
+                let mut pick = u128::from(s.below(admitted_total));
                 let state = weights
                     .iter()
-                    .position(|w| {
+                    .zip(&admitted)
+                    .position(|(w, yes)| {
+                        if !yes { return false; }
                         let here = pick < *w;
                         if !here {
                             pick -= w;

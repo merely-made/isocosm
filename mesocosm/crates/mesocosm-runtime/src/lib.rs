@@ -25,6 +25,7 @@ pub mod review;
 pub mod runtime;
 pub mod succession;
 pub mod tactile;
+pub mod terrain;
 pub mod voxel_profile;
 
 pub use clock::{Advance, Clock};

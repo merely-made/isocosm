@@ -193,6 +193,12 @@ pub enum Effect {
     Heal {
         into: Key,
     },
+    /// A chosen terrain operation; its game returns bounded actual geometry.
+    Terrain {
+        change: crate::operations::Change,
+        cells: Amount,
+        reach: u64,
+    },
 }
 
 impl Effect {
@@ -207,7 +213,8 @@ impl Effect {
             | Self::Spend { amount, .. }
             | Self::Rot { amount, .. }
             | Self::Convert { amount, .. } => vec![amount],
-            Self::Allocate { cells, .. } | Self::Wound { cells, .. } => vec![cells],
+            Self::Allocate { cells, .. } | Self::Wound { cells, .. }
+                | Self::Terrain { cells, .. } => vec![cells],
             Self::Carry { ask, .. } => vec![ask],
             Self::When { .. } => self.branches().flat_map(Effect::amounts).collect(),
             _ => vec![],
@@ -281,7 +288,8 @@ impl Effect {
             | Self::Spend { amount, .. }
             | Self::Rot { amount, .. }
             | Self::Convert { amount, .. } => *amount = amount.resolve(read, draw, parts)?,
-            Self::Allocate { cells, .. } | Self::Wound { cells, .. } => {
+            Self::Allocate { cells, .. } | Self::Wound { cells, .. }
+                | Self::Terrain { cells, .. } => {
                 *cells = cells.resolve(read, draw, parts)?
             },
             Self::Carry { ask, .. } => *ask = ask.resolve(read, draw, parts)?,

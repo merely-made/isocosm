@@ -63,6 +63,7 @@ pub(crate) fn validate(spreads: &Spreads, rules: &Rules,
     population: &crate::population::Population,
     sites: &BTreeMap<crate::schema::Id, crate::schema::Site>,
     lineages: &BTreeMap<Key, crate::schema::Lineage>) -> Result<()> {
+    capacity::validate_modifiers(spreads, rules, population, sites)?;
     let mut keys = BTreeSet::new();
     for identity in &spreads.identities {
         let key = identity.key();

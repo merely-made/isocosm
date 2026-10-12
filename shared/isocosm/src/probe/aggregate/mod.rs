@@ -305,6 +305,10 @@ pub(super) fn act(
             return Ok(None);
         }
     }
+    let intake = match p.feeding_part(e) {
+        Ok(part) => part,
+        Err(_) => return Ok(None),
+    };
     let mut left = match &run {
         Run::Act(shares) => (*shares).clone(),
         Run::Plan(_) | Run::Free => Ledger::new(),
@@ -315,6 +319,8 @@ pub(super) fn act(
         lineages: a.lineages,
         member: e.clone(),
         part: p.expresses().and_then(|f| expressing(e, f)),
+        intake,
+        port_feeding: p.port_feeding.clone(),
         site_id: e.place,
         site: site.clone(),
         seen: a.start.clone(),
@@ -364,6 +370,9 @@ pub(super) fn holds_on(
     p.requires
         .iter()
         .all(|q| meaning::read(q, &scene).is_ok_and(|(held, _)| held))
+        && p.port_feeding.as_ref().is_none_or(|_| a.lineages.is_some_and(|lines| {
+            p.admits_meal(e, target, a.rules, lines)
+        }))
 }
 
 /// A related act (ruling 554): `p` for one member `e` on `target`, a body
@@ -387,12 +396,18 @@ pub(super) fn act_on(
         return Ok(None);
     }
     let part = p.expresses().and_then(|f| expressing(e, f));
+    let intake = match p.feeding_part(e) {
+        Ok(part) => part,
+        Err(_) => return Ok(None),
+    };
     let mut doing = Doing {
         tick: a.tick,
         rules: a.rules,
         lineages: a.lineages,
         member: e.clone(),
         part,
+        intake,
+        port_feeding: p.port_feeding.clone(),
         site_id: e.place,
         site: site.clone(),
         seen: a.start.clone(),
@@ -467,6 +482,8 @@ pub(super) fn mouthful(
         lineages,
         member: e.clone(),
         part: p.expresses().and_then(|f| expressing(e, f)),
+        intake: p.feeding_part(e)?,
+        port_feeding: p.port_feeding.clone(),
         site_id: e.place,
         site: start.clone(),
         seen: start.clone(),

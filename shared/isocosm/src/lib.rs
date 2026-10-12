@@ -38,6 +38,7 @@ pub mod mosaic;
 pub mod matter;
 mod meaning;
 pub mod needs;
+pub mod operations;
 pub mod population;
 pub mod preset;
 pub mod probe;

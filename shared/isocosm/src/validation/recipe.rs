@@ -21,6 +21,7 @@ const BOXES: [&str; 4] = [
 pub(super) fn kinds(rules: &Rules) -> Result<()> {
     for (id, kind) in &rules.kinds {
         key(id)?;
+        kind.validate_port(rules)?;
         if kind.half_extent == [0; 3] {
             return Err(format!("kind {id} has no box"));
         }

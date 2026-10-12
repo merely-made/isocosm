@@ -21,17 +21,23 @@ use crate::{
 use std::collections::BTreeMap;
 
 mod staged;
+mod publication;
 #[cfg(test)]
 mod tests;
 
 pub(crate) use staged::Staged;
 
 pub(crate) struct Stage {
+    pub(crate) process: Key,
+    pub(crate) terrain: Option<crate::operations::StagedTerrain>,
     actor: Id,
     target: Option<Id>,
     place: Id,
     /// The actor's part the act binds (ruling 338).
     part: Option<PartId>,
+    /// A declared meal binds its organ once, before any staged writes.
+    pub(crate) intake: Option<PartId>,
+    pub(crate) port_feeding: Option<crate::rules::PortFeeding>,
     /// The members the actor stands for: one, or a whole bulk cohort.
     count: u64,
     /// The bound bodies as the act leaves them. A target that is the actor
@@ -94,10 +100,14 @@ impl Simulation {
             bodies.entry(target).or_insert_with(|| body.clone());
         }
         Ok(Stage {
+            process: String::new(),
+            terrain: None,
             actor,
             target,
             place,
             part,
+            intake: None,
+            port_feeding: None,
             count,
             bodies,
             site: None,
@@ -196,7 +206,7 @@ impl Simulation {
             after += mass(&site.accounts, &self.genesis.rules);
         }
         after += stage.births.iter().map(weigh).sum::<u128>();
-        before != after
+        !crate::operations::balanced(&stage.terrain, before, after)
     }
 
     /// Adds the act's public event, seeding its reach, and the actor's note

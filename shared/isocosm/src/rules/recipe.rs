@@ -70,6 +70,9 @@ pub struct Template {
     pub cells: BTreeMap<Key, u32>,
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub shape: Key,
+    /// Explicit founding intake, retained by every descendant of this kind.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub port: Option<crate::process::IntakePort>,
 }
 
 /// Where a tagma's first segment joins the segments placed before it.

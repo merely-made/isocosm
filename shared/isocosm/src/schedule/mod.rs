@@ -182,6 +182,7 @@ impl Simulation {
             self.chosen.begin_pass();
             if process.takes_shared() {
                 self.plan(process, &id, gates.as_ref(), bound);
+                self.geometry_ready()?;
             }
             let mut from = 0;
             while let Some(found) = self
@@ -371,6 +372,7 @@ impl Simulation {
                     self.act(actor, id, multiplicity, plan).accepted(),
                 ),
             };
+            self.geometry_ready()?;
             if let (Some(answers), Some(before)) = (answering, before) {
                 self.answered(actor, id, answers, before, accepted);
             }

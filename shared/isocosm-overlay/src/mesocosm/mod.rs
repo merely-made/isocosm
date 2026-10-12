@@ -16,6 +16,7 @@ mod checkpoint;
 mod dev;
 mod handoff;
 mod nudge;
+mod terrain;
 
 pub use act::{PlayerAct, PlayerActKind};
 pub use checkpoint::{
@@ -24,6 +25,7 @@ pub use checkpoint::{
 pub use dev::DevIntent;
 pub use handoff::MesocosmHandoff;
 pub use nudge::{Nudge, NudgeMeaning, NudgeTarget};
+pub use terrain::{TerrainGeometry, TerrainShape};
 
 use serde::{Deserialize, Serialize};
 
@@ -51,6 +53,5 @@ impl MesocosmIntent {
 /// A Mesocosm intent, stamped for its tick.
 pub type MesocosmIntentEnvelope = IntentEnvelope<MesocosmIntent>;
 
-/// Mesocosm's handoff envelope. Uninhabited today (see [`MesocosmHandoff`]),
-/// so no value of this type can be constructed.
+/// Mesocosm's game-resolved geometry, tied to a native chosen operation.
 pub type MesocosmHandoffEnvelope = HandoffEnvelope<MesocosmHandoff>;

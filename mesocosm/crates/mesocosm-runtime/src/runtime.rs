@@ -108,6 +108,7 @@ pub struct Runtime {
     /// The sim's refusal of a round, which stops the run until replaced.
     fault: Option<String>,
     max_steps: u64,
+    terrain: Option<Box<crate::terrain::Resolver>>,
 }
 
 impl Runtime {
@@ -147,12 +148,19 @@ impl Runtime {
             dev_intents: 0,
             fault: None,
             max_steps: DEFAULT_MAX_STEPS_PER_ADVANCE,
+            terrain: None,
         }
     }
 
     pub fn with_max_steps(mut self, max_steps: u64) -> Self {
         assert!(max_steps > 0, "at least one step per advance");
         self.max_steps = max_steps;
+        self
+    }
+
+    /// Supplies actual geometry; render spots and native place anchors are not positions.
+    pub fn with_terrain_resolver(mut self, resolver: Box<crate::terrain::Resolver>) -> Self {
+        self.terrain = Some(resolver);
         self
     }
 
@@ -222,7 +230,19 @@ impl Runtime {
             }
         }
         let revisions = isocosm::lineage::revise::revisions;
-        match self.interim.round_with_flows(&revisions) {
+        let access = isocosm_overlay::OrdinaryAccess {
+            participant: isocosm_overlay::ParticipantHandle(self.interim.participant),
+            subject: self.critter().map(isocosm_overlay::EntityHandle),
+            seat: isocosm_overlay::Seat::Player,
+        };
+        let round = match &mut self.terrain {
+            Some(resolver) => self.interim.round_with_flows_using(&revisions, &mut |session| {
+                crate::terrain::advance(session, access, resolver.as_mut())
+                    .map(|out| out.flows).map_err(|why| format!("{why:?}"))
+            }),
+            None => self.interim.round_with_flows(&revisions),
+        };
+        match round {
             Ok((happenings, flows)) => {
                 self.absorb(happenings, &flows);
                 self.place_members();

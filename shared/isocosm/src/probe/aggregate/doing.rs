@@ -10,6 +10,7 @@ use super::*;
 
 mod harm;
 mod journey;
+mod meal;
 
 /// One state's members as their act leaves them, and what the act reads.
 pub(super) struct Doing<'a> {
@@ -18,6 +19,8 @@ pub(super) struct Doing<'a> {
     pub(super) lineages: Lineages<'a>,
     pub(super) member: Entity,
     pub(super) part: Option<PartId>,
+    pub(super) intake: Option<PartId>,
+    pub(super) port_feeding: Option<crate::rules::PortFeeding>,
     /// The map key of the site bound when the act began.
     pub(super) site_id: Id,
     /// The site as every member's writes leave it.
@@ -355,36 +358,7 @@ impl Doing<'_> {
             // or that part whole where the share would take all of it (516).
             Effect::Eat {
                 into, of, whole, ..
-            } => {
-                let Some(portion) = self.portion.take() else {
-                    return Err("the crowd eats only in a hunt".into());
-                };
-                if *whole && self.whole(of, &portion)? {
-                    return Ok(true);
-                }
-                let prey = self.prey.as_mut().ok_or("the crowd eats only in a hunt")?;
-                let held = match self.bitten.and_then(|id| prey.parts.get_mut(&id)) {
-                    Some(part) => &mut part.matter,
-                    None => &mut prey.accounts,
-                };
-                let offered = edible(held, of);
-                let taken: Ledger = portion
-                    .into_iter()
-                    .map(|(k, v)| {
-                        let v = v.min(offered.get(&k).copied().unwrap_or(0));
-                        (k, v)
-                    })
-                    .filter(|(_, v)| *v > 0)
-                    .collect();
-                let mut total = 0u64;
-                for (key, value) in &taken {
-                    debit(held, key, *value)?;
-                    total += value;
-                }
-                credit(&mut self.member.accounts, into, total)?;
-                self.took = Some(Took::Bite(taken));
-                Ok(true)
-            },
+            } => self.meal(into, of, *whole),
             // Births, for the crowd to make member by member (447, 448).
             Effect::Bear { clutch, young } => {
                 let Ok((lineal, shares)) = births::bear(self, rules, *clutch) else {

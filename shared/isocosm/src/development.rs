@@ -88,6 +88,7 @@ fn part(t: &Template, situs: [u8; 3], parent: Option<PartId>, offset: [i32; 3]) 
     let part = Part {
         functions: cells.keys().cloned().collect(),
         cells,
+        port: t.port,
         ..Default::default()
     };
     (frame, part)
