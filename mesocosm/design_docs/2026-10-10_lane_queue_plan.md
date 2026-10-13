@@ -1511,3 +1511,32 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   together864, next878. C9 has its historical exact-source certification;
   C10/C11/full V2/E3/M4 and final-state verification remain open. Source only:
   no compiler/tests/fixtures/probes/tuning under826.
+- **2026-10-13, eight pending choices together:** scheduled/spatial source is
+  pushed at029d65c3 (59 paths,51 Rust,max576; normal source hooks/whitespace
+  passed, no compiler/tests/tuning826). Native code defines regional collapse
+  but no total-world predicate: complementary regional losses can retain
+  every trophic level globally. This adds878 to the previous seven pending
+  choices, all presented together864; next unused879. Automatic WorldEnded
+  remains held. Independent standalone startup/pointer, VTT ordinary physical
+  storylet/attended-stream and Mesocosm played-loop/save continuation source
+  are in progress. No source placement certifies C10/C11 or full products.
+- **2026-10-13, actual played-loop and standalone consumer source:** Mesocosm
+  startup exposes explicit Start/mode and records the existing clock-sourced
+  unchosen seed. Completed native scene picks send Attend, while menu nudges
+  retain current native suggestion keys/targets. Both hosts expose exact
+  lifecycle choices. Game7 preserves participant/settings, held checkpoint,
+  review and actual authored expression source, flow windows, happenings,
+  pending owned envelopes and genuine owned founding metadata. Owned/borrowed
+  rounds share native machinery; candidate scoring uses the saved physical
+  driver. Answers pin current native/Game/question cuts, authenticate personal
+  origins against native history, and admit only actual offers. Stored prefix
+  extensions permit only real same-tick Window commands. Current Player
+  control gates ordinary clock/answers; validated same-player Watch can run
+  after death. VTT ordinary physical Storylet Play requires composed Quote/Apply
+  and its standalone pane reads actual participant-attended events. Protocol/
+  ALPN19 covers the new saved meaning. NewWorld requests retain this owner,
+  can explicitly return to Watch, and require separate startup. Borrowed mode
+  refuses an owned pending queue; missing physical inputs refuse. Automatic
+  global collapse awaits878. All eight871 to878 are pending together864;
+  next unused879. C9 remains historically certified; C10/C11/full products
+  and all final-state compiler/tests/fixtures/probes/tuning remain open826.

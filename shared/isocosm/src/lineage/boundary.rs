@@ -88,12 +88,22 @@ pub fn score(
     candidate: &Candidate,
     ticks: Tick,
 ) -> Result<Score> {
+    score_using(session, lineage, candidate, ticks, &mut |copy, ticks| {
+        copy.advance(ticks).map(|_| ())
+    })
+}
+
+/// Scores through the product's actual physical clock on a disposable fork.
+pub fn score_using(
+    session: &Session, lineage: &str, candidate: &Candidate, ticks: Tick,
+    advance: &mut dyn FnMut(&mut Session, Tick) -> Result<()>,
+) -> Result<Score> {
     let now = session.sim.state().tick;
     let mut copy = session.fork_at(now, format!("branch:score:{}", candidate.name))?;
     for command in &candidate.commands {
         copy.command(command.clone())?;
     }
-    copy.advance(ticks)?;
+    advance(&mut copy, ticks)?;
     let (held, members) = standing(&copy, lineage);
     Ok(Score {
         held,
@@ -110,6 +120,15 @@ pub fn adapt(
     played: Option<&str>,
     candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>,
     ticks: Tick,
+) -> Result<Vec<Turn>> {
+    adapt_using(session, played, candidates, ticks, &mut score)
+}
+
+/// Adaptation uses the same scoring door as the played line's review.
+pub fn adapt_using(
+    session: &mut Session, played: Option<&str>,
+    candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>, ticks: Tick,
+    score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>,
 ) -> Result<Vec<Turn>> {
     let mut lines: Vec<(usize, Key)> = session
         .sim

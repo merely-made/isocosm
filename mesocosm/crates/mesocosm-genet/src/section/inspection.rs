@@ -40,6 +40,17 @@ impl BodySelection {
 }
 
 impl Section {
+    pub fn pick_at_pixel(&self, pixel: [u32; 2]) -> Result<Option<isometer::Pick>, isometer::BodyPickError> {
+        self.scene.pick_at_pixel(pixel)
+    }
+
+    pub fn query_generation(&self) -> Option<u64> { self.scene.query_generation() }
+
+    pub fn validate_body_pick(&mut self, pick: isometer::BodyPick, scene: &SiteScene) -> bool {
+        self.query_generation() == Some(pick.frame)
+            && self.validate_selection(BodySelection::from_address(pick.address), scene)
+    }
+
     pub(super) fn invalidate_query(&mut self) {
         self.scene.invalidate_query();
     }

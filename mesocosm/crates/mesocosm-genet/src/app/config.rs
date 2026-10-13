@@ -13,6 +13,10 @@ use crate::section::{self, CameraMode};
 #[derive(Clone, Debug)]
 pub struct HostConfig {
     pub seed: u64,
+    /// Select the existing native clock-sourced founding seed instead of this explicit seed.
+    pub unchosen_seed: bool,
+    pub start: Option<isocosm::directing::interim::Start>,
+    pub mode: Option<isocosm::directing::readings::Mode>,
     /// The generated world's founding population.
     pub population: u64,
     pub ticks_per_second: u32,
@@ -55,6 +59,9 @@ impl Default for HostConfig {
     fn default() -> Self {
         Self {
             seed: 0x00A7_7AC4,
+            unchosen_seed: false,
+            start: None,
+            mode: None,
             population: isocosm::Founding::default().population,
             // The canonical played tempo (TD2, ruled 2026-08-29).
             ticks_per_second: 10,

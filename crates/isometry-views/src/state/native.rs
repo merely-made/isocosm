@@ -49,6 +49,7 @@ pub struct NativeUi {
     pub attachment_path: TextInput,
     pub preview_request: bool,
     pub selection: Option<Selection>,
+    pub events:crate::NativeEventUi,
 }
 
 #[derive(Clone, Copy, Debug)]

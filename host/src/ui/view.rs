@@ -40,7 +40,10 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
     }));
     let mut actions: Vec<Child> = vec![button("turn".into(), "Quarter turn".into(), key,
         move |app| app.turn(key))];
-    if mode != "vtt" {
+    let clock_available=mode != "vtt";
+    #[cfg(feature = "mesocosm")]
+    let clock_available=clock_available && (mode != "mesocosm" || super::mesocosm::can_step(state,key));
+    if clock_available {
         actions.push(button("step".into(), "Step world".into(), key, move |app| app.step(key)));
     }
     if local.input.as_ref().is_some_and(|i| i.mode.key() == mode) {
@@ -83,6 +86,8 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
     ];
     #[cfg(feature = "vtt")]
     if mode == "vtt" { children.push(super::vtt::panel(state, key)); }
+    #[cfg(feature = "mesocosm")]
+    if mode == "mesocosm" { children.push(super::mesocosm::panel(state, key)); }
     #[cfg(any(feature = "mesocosm", feature = "vtt", feature = "eponym"))]
     if crate::viewport::available(local) {
         let card = isomere::ViewportCard::new(crate::viewport::key(key).expect("admitted local slot"),

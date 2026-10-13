@@ -73,6 +73,7 @@ pub fn storylet_overlay(ui: &UiState) -> Option<UiChild> {
         }
     }
 
+    body.extend(crate::native_composed_storylet::controls(ui));
     Some(crate::widgets::overlay_panel(
         "storylet",
         "Storylets".to_owned(),

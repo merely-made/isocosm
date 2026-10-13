@@ -25,6 +25,8 @@ pub use native_pack::{PackUi,PackRequest,PackReading};
 mod native_overmap;
 pub use native_overmap::{native_overmap_atlas,native_overmap_swatch,native_overmap_cell_id};
 mod native_hooks;
+mod native_events;
+pub use native_events::{NativeEventStream,NativeEventUi};
 mod native_items;
 mod native_composed_storylet;
 pub use native_composed_storylet::{StoryletPhysicalFileAction, StoryletPhysicalRequest, StoryletPhysicalOutcome};

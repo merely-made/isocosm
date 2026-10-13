@@ -55,10 +55,24 @@ pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAcces
         || session.sim.plays(access.participant.0) != access.subject.map(|id| id.0)
     { return Err(Refusal::NotPlayed); }
     game.validate(session).map_err(Refusal::Sim)?;
+    if game.continuation.as_ref().is_some_and(|saved| !saved.queued.is_empty()) {
+        return Err(Refusal::Unbuilt("saved owned queue requires its original owned driver".into()));
+    }
     let mut candidate = session.clone();
+    if !matches!(input, Input::Loop(_)) && game.continuation.as_ref().is_some_and(|saved|
+        !matches!(saved.phase, crate::continuation::LoopPhase::Running | crate::continuation::LoopPhase::Watching)) {
+        return Err(Refusal::Sim("answer the exact saved loop question before ordinary input".into()));
+    }
     let accepted = match input {
-        Input::Graft(input) => crate::runtime::graft::submit(
-            &mut candidate, access, &mut game, input).map_err(Refusal::Sim)?,
+        Input::Loop(input) => crate::continuation::submit_loop(&mut candidate, &mut game, access, input)?,
+        Input::Graft(input) => {
+            let saved = game.continuation.take();
+            game.version = game.current_version();
+            let accepted = crate::runtime::graft::submit(&mut candidate, access, &mut game, input).map_err(Refusal::Sim)?;
+            game.continuation = saved;
+            crate::continuation::rebind(&candidate, &mut game);
+            accepted
+        },
         Input::Envelope(envelope) => {
             if matches!(&envelope.intent, Intent::Game(intent) if intent.is_dev()) {
                 return Err(Refusal::Sim("dev intents require the separate authored-run door".into()));
@@ -77,15 +91,22 @@ pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAcces
                     return Err(Refusal::Sim("dev geometry needs the separate authored-run door".into()));
                 }
                 accepted.push(submit(&mut candidate, access.participant.0, round, envelope)?);
+                crate::continuation::rebind(&candidate, &mut game);
             }
             if input.advance {
-                game.advance(&mut candidate, access)?;
-                accepted.push("advanced 1".into());
+                if game.continuation.is_some() {
+                    accepted.push(crate::continuation::advance_loop(&mut candidate, &mut game, access.participant.0)?);
+                } else {
+                    game.advance(&mut candidate, access)?;
+                    accepted.push("advanced 1".into());
+                }
             }
             accepted.join("\n")
         },
     };
     game.refresh(&mut candidate).map_err(Refusal::Sim)?;
+    crate::continuation::rebind(&candidate, &mut game);
+    game.validate(&candidate).map_err(Refusal::Sim)?;
     *session = candidate;
     Ok((accepted, game))
 }

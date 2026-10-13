@@ -79,6 +79,12 @@ impl Host {
             lanes
                 .board
                 .composite(&lanes.device, &mut encoder, &master_view, frame);
+            lanes
+                .directing
+                .composite(&lanes.device, &mut encoder, &master_view, frame);
+            lanes
+                .continuation
+                .composite(&lanes.device, &mut encoder, &master_view, frame);
             lanes.device.queue().submit(Some(encoder.finish()));
             gpu.section.capture_from(&master.texture, |_, _, _| {})
         } else {

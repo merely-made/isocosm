@@ -54,6 +54,10 @@ fn admit(session: &mut Session, access: OrdinaryAccess, game: &mut Game,
     check(session, access, input)?;
     game.validate(session)?;
     let mut native = session.clone();
+    if game.continuation.as_ref().is_some_and(|saved|
+        saved.phase != crate::continuation::LoopPhase::Running) {
+        return Err("graft waits for the actual saved loop hold or lifecycle choice".into());
+    }
     let mut physical = game.clone();
     let accepted = native.command_with_flows(Command::ActGraft {
         participant: input.participant.0, actor: input.actor.0, target: input.donor.0,
@@ -63,6 +67,7 @@ fn admit(session: &mut Session, access: OrdinaryAccess, game: &mut Game,
     // Rebind only existing exact cells. Obstructed/departed history stays
     // unavailable, without rolling back the native conserved operation.
     physical.refresh(&mut native)?;
+    crate::continuation::rebind(&native, &mut physical);
     physical.validate(&native)?;
     *session = native;
     *game = physical;
@@ -95,6 +100,7 @@ impl Runtime {
         let accepted = admit(&mut self.interim.session, access, &mut self.spatial, input)?;
         self.windows.absorb(&self.interim.session.sim, &[], &accepted.flows);
         if let Some(glyphs) = &mut self.glyphs { glyphs.absorb(&self.interim.session, &accepted.flows); }
+        self.sync_loop();
         Ok(accepted.result)
     }
 }

@@ -27,7 +27,7 @@ impl Host {
         }
 
         let attributes = Window::default_attributes()
-            .with_title("Mesocosm | E attend | Q act | S speciate | Enter/T answer")
+            .with_title("Mesocosm | click attend | Q/right click hints | Enter/T answer")
             .with_inner_size(winit::dpi::LogicalSize::new(
                 self.config.width,
                 self.config.height,
@@ -137,6 +137,8 @@ impl Host {
             checkpoint: crate::succession::SuccessionChrome::new(&device),
             board: crate::review::BoardChrome::new(&device),
             dev: crate::dev::DevChrome::new(&device),
+            directing: crate::succession::SuccessionChrome::new_with_root(&device,crate::directing::root),
+            continuation: crate::succession::SuccessionChrome::new_with_root(&device,continuation::root),
             device,
         });
 

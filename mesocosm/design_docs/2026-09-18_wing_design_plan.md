@@ -2,15 +2,30 @@
 
 **Date:** 2026-09-18
 
-**Latest source integration, 2026-10-13:** GameBindings15/AdmissionBatch4,
+**Latest caller/continuation assembly, 2026-10-13:** ordinary VTT physical
+storylet Play requires its complete composed supplement, and the standalone
+pane reads actual participant-attended events. Mesocosm startup/pointer
+consumers now name real mode, Start, clock-sourced seed and current native
+attention/suggestion inputs. Game7's finite saved holds, authored reviews,
+pending inputs and flow windows are connected to both hosts without another
+native owner. Scoring uses the saved physical driver; answers bind complete
+current cuts and authenticate personal origins from actual history. Read-only
+windows cannot answer or advance. Protocol/ALPN19 carries the saved meaning.
+Borrowed mode refuses owned pending queues, and missing physical inputs refuse.
+Automatic global collapse is held for878; a new-world request has no shared
+owner-replacement admission. Pending871 to878 remain together864, next879.
+C9 retains historical certification. C10/C11/full products and final-state
+compiler/tests/fixtures/tuning remain open under826.
+
+**Earlier source integration, 2026-10-13:** GameBindings15/AdmissionBatch4,
 composed input2 and protocol/ALPN18 connect explicitly supplied VTT physical
 eye/range/yaw, spatial storylet placement and held-item orientation. Mesocosm
 Profile4/spatial GameSave6 bind walking/destination templates only to actual
 reported children and authenticate that provenance on replay. Native bodies
 can propose, consent and apply through fixed authored scheduled institutional
 processes, using their real selected act/event/costs. This catalogue does not
-generate agendas. Accepted rulings end870; pending871 to877 remain together,
-next878. C9 is historically certified; C10/C11/full products and final state
+generate agendas. Accepted rulings end870; pending871 to878 remain together,
+next879. C9 is historically certified; C10/C11/full products and final state
 verification remain open. Compiler/tests/fixtures/tuning remain deferred826.
 
 **Earlier migration, 2026-10-13:** GameBindings14/protocol17 connect native

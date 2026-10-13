@@ -194,7 +194,10 @@ impl App {
         }
         #[cfg(feature = "mesocosm")]
         if local.native.binding().mode == "mesocosm" {
-            self.world.product_game(self.world.cut()?, Mode::Mesocosm, products::advance_mesocosm)?;
+            let access = local.native.projection()?.access;
+            if access.seat!=Seat::Player {return Err("use the player's window to advance this loop".into());}
+            self.world.product_game(self.world.cut()?, Mode::Mesocosm,
+                move |session, bytes| products::advance_mesocosm(session, bytes, access))?;
             self.refresh(); return Ok(());
         }
         self.world.advance(1)?; self.refresh(); Ok(())

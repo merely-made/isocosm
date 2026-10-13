@@ -107,6 +107,7 @@ mod native_items;
 mod native_composed_storylet;
 mod native_institutions;
 mod native_scene;
+mod native_events;
 mod native_time;
 mod overmap;
 mod product;

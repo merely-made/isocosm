@@ -11,25 +11,27 @@
 
 use isocosm::directing::interim::{Happening, Interim, Turn};
 use isocosm::schema::{Id, Method};
+use isocosm::Session;
+use serde::{Serialize, Deserialize};
 use isocosm_overlay::Intent;
 use isocosm_overlay::mesocosm::{CheckpointAnswerKind, MesocosmIntent};
 
 use crate::runtime::Envelope;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Birth {
     pub parent: Id,
     pub child: Id,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Loss {
     pub critter: Id,
     /// The life the loop took up already, if any.
     pub next: Option<Id>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Boundary {
     pub tick: u64,
     pub lineage: String,
@@ -37,14 +39,14 @@ pub struct Boundary {
     pub turns: Vec<Turn>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Occasion {
     Birth(Birth),
     Loss(Loss),
     Epoch(Boundary),
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Checkpoint {
     pub tick: u64,
     pub occasion: Occasion,
@@ -74,7 +76,11 @@ impl Checkpoint {
 /// The question a round opened, if any: a loss first, then a birth, then
 /// the boundary.
 pub(crate) fn opened(interim: &Interim, happenings: &[Happening]) -> Option<Checkpoint> {
-    let tick = interim.session.sim.state().tick;
+    opened_for(&interim.session, interim.participant, happenings)
+}
+
+pub(crate) fn opened_for(session: &Session, participant: Id, happenings: &[Happening]) -> Option<Checkpoint> {
+    let tick = session.sim.state().tick;
     let lost = happenings.iter().find_map(|h| match h {
         Happening::Died { critter, next } => Some(Loss {
             critter: *critter,
@@ -83,7 +89,7 @@ pub(crate) fn opened(interim: &Interim, happenings: &[Happening]) -> Option<Chec
         _ => None,
     });
     if let Some(loss) = lost {
-        let heirs = heirs(interim, loss.critter, loss.next);
+        let heirs = heirs(session, loss.critter, loss.next);
         return Some(Checkpoint {
             tick,
             occasion: Occasion::Loss(loss),
@@ -109,7 +115,7 @@ pub(crate) fn opened(interim: &Interim, happenings: &[Happening]) -> Option<Chec
             tick: *tick,
             occasion: Occasion::Epoch(Boundary {
                 tick: *tick,
-                lineage: played_lineage(interim).unwrap_or_default(),
+                lineage: played_lineage(session, participant).unwrap_or_default(),
                 turns: turns.clone(),
             }),
             heirs: vec![],
@@ -118,16 +124,16 @@ pub(crate) fn opened(interim: &Interim, happenings: &[Happening]) -> Option<Chec
     })
 }
 
-fn played_lineage(interim: &Interim) -> Option<String> {
-    let critter = interim.critter()?;
-    let pop = &interim.session.sim.state().population;
+fn played_lineage(session: &Session, participant: Id) -> Option<String> {
+    let critter = session.sim.plays(participant)?;
+    let pop = &session.sim.state().population;
     pop.get(critter).map(|e| e.lineage.clone())
 }
 
 /// The cohort as further lives: the life already taken up first, then the
 /// lost critter's living deliberative kin by identity.
-fn heirs(interim: &Interim, lost: Id, next: Option<Id>) -> Vec<Id> {
-    let pop = &interim.session.sim.state().population;
+pub(crate) fn heirs(session: &Session, lost: Id, next: Option<Id>) -> Vec<Id> {
+    let pop = &session.sim.state().population;
     let lineage = pop.get(lost).map(|e| e.lineage.clone());
     let mut heirs: Vec<Id> = next.into_iter().collect();
     for (first, group) in &pop.groups {

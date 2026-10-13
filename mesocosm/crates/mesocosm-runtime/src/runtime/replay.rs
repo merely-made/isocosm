@@ -51,6 +51,7 @@ impl GameSave {
             crate::spatial::SIGHT_VERSION => current == crate::spatial::SIGHT_VERSION,
             crate::spatial::BIRTH_SIGHT_VERSION => current == crate::spatial::BIRTH_SIGHT_VERSION,
             crate::spatial::VERSION => current == crate::spatial::VERSION,
+            crate::spatial::LOOP_VERSION => current == crate::spatial::LOOP_VERSION,
             _ => false,
         };
         if !supported {
@@ -67,7 +68,8 @@ impl Runtime {
     }
 
     pub fn save_game(&self) -> GameSave {
-        GameSave { version: self.spatial.current_version(), native: self.save(), spatial: self.spatial.clone() }
+        let spatial = self.loop_game();
+        GameSave { version: spatial.current_version(), native: self.save(), spatial }
     }
 
     pub fn replayed_game(saved: GameSave) -> Result<Replayed, String> {
@@ -79,9 +81,40 @@ impl Runtime {
 
     pub fn resume_game(saved: GameSave, mode: Mode, pace: Pace, ticks_per_second: u32) -> Result<Self, String> {
         saved.check()?;
+        if saved.spatial.continuation.is_some() {
+            return Self::resume_game_with_mode(saved, ticks_per_second, Some(mode));
+        }
         let mut runtime = Self::resume(saved.native, mode, pace, ticks_per_second)?;
         saved.spatial.validate_replay(&runtime.interim.session)?;
         runtime.spatial = saved.spatial;
+        Ok(runtime)
+    }
+
+    /// A marked save restores its own controller, pace and outstanding hold.
+    /// Only an explicitly supplied mode overrides its presentation mode.
+    pub fn resume_game_with_mode(saved: GameSave, ticks_per_second: u32,
+        mode: Option<Mode>) -> Result<Self, String> {
+        saved.check()?;
+        let Some(continuation) = &saved.spatial.continuation else {
+            // The old standalone resume grammar had these explicit settings;
+            // it contained no saved loop or question to recover.
+            return Self::resume_game(saved, mode.unwrap_or(Mode::Creative),
+                Pace { round: 1, scoring: 6 }, ticks_per_second);
+        };
+        let session = Session::load(saved.native, Execution::Grouped)?;
+        saved.spatial.validate_replay(&session)?;
+        let settings = continuation.settings;
+        let founded = Founded { genesis: session.sim.genesis().clone(),
+            start: continuation.origin.as_ref().map(|o| o.start).unwrap_or_default(),
+            mode: settings.mode, pace: settings.pace, on_collapse: settings.on_collapse };
+        let interim = Interim::resume_as(session, continuation.participant, settings.mode, settings.pace)?;
+        let mut runtime = Self::over(interim, founded, ticks_per_second);
+        runtime.spatial = saved.spatial;
+        runtime.restore_loop()?;
+        if let Some(mode) = mode {
+            runtime.interim.mode = mode; runtime.founded.mode = mode;
+            runtime.sync_loop();
+        }
         Ok(runtime)
     }
 

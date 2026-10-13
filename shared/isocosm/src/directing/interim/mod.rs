@@ -16,6 +16,8 @@ use serde::{Deserialize, Serialize};
 
 pub use crate::lineage::boundary;
 pub mod deep;
+mod borrowed;
+pub use borrowed::BorrowedInterim;
 
 pub use boundary::{Candidate, Score, Turn};
 pub use deep::{Handover, run_deep_time};
@@ -164,6 +166,15 @@ impl Interim {
             .find(|(_, g)| super::is_participant(&g.entity))
             .map(|(first, _)| *first)
             .ok_or("the session has no participant")?;
+        Self::resume_as(session, participant, mode, pace)
+    }
+
+    /// Restore the explicitly saved controller without selecting another one.
+    pub fn resume_as(session: Session, participant: Id, mode: Mode, pace: Pace) -> Result<Self> {
+        let state = session.sim.state();
+        if !state.population.get(participant).is_some_and(super::is_participant) {
+            return Err("saved interim participant absent".into());
+        }
         let tick = state.tick;
         let epoch = session.sim.genesis().rules.epoch_ticks.max(1);
         let handover = Handover {
@@ -234,28 +245,6 @@ impl Interim {
         home.or(ours.first()).map(|(f, _)| *f)
     }
 
-    /// The played lineage's next life: a living deliberative member, at
-    /// `near`'s site first, the lowest identity among equals (61).
-    fn next_life(&self, near: Option<Id>) -> Option<Id> {
-        let pop = &self.session.sim.state().population;
-        let here = near
-            .and_then(|n| pop.get(n))
-            .map(|e| (e.lineage.clone(), e.resident_site()));
-        let mut best: Option<(bool, Id)> = None;
-        for (first, g) in &pop.groups {
-            let e = &g.entity;
-            let ours = here.as_ref().is_none_or(|(l, _)| *l == e.lineage);
-            if !e.alive || e.method != Method::Deliberative || !ours || Some(*first) == near {
-                continue;
-            }
-            let away = here.as_ref().is_some_and(|(_, p)| p.is_none() || *p != e.resident_site());
-            if best.is_none_or(|b| (away, *first) < b) {
-                best = Some((away, *first));
-            }
-        }
-        best.map(|b| b.1)
-    }
-
     /// One round: the world runs, then births, deaths, boundaries and
     /// collapses are answered, in that order.
     pub fn round(
@@ -281,119 +270,18 @@ impl Interim {
         candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>,
         advance: &mut dyn FnMut(&mut Session) -> Result<Vec<crate::flows::Flow>>,
     ) -> Result<(Vec<Happening>, Vec<crate::flows::Flow>)> {
-        let mut out = Vec::new();
-        let mut flows = Vec::new();
-        let played = self.critter().ok_or("nobody is played")?;
-        let lineage = self
-            .session
-            .sim
-            .state()
-            .population
-            .get(played)
-            .map(|e| e.lineage.clone());
-        let children = |s: &Session| -> Vec<Id> {
-            let rs = &s.sim.state().relations;
-            rs.iter()
-                .filter(|r| r.subject == played && r.kind == "sim:child")
-                .map(|r| r.object)
-                .collect()
-        };
-        let before = children(&self.session);
-        let epoch = self.session.sim.genesis().rules.epoch_ticks;
-        let from = self.session.sim.state().tick;
-        for _ in 0..self.pace.round {
-            flows.extend(advance(&mut self.session)?);
-        }
-        let now = self.session.sim.state().tick;
-        // The player keeps the parent; the young are offered (183).
-        for child in children(&self.session)
-            .into_iter()
-            .filter(|c| !before.contains(c))
-        {
-            out.push(Happening::Born {
-                parent: played,
-                child,
-            });
-        }
-        if !self
-            .session
-            .sim
-            .state()
-            .population
-            .get(played)
-            .is_some_and(|e| e.alive)
-        {
-            let next = self.next_life(Some(played));
-            if let Some(next) = next {
-                self.take(next)?;
-            }
-            out.push(Happening::Died {
-                critter: played,
-                next,
-            });
-            if next.is_none() {
-                out.push(Happening::LineageEnded {
-                    lineage: lineage.clone().unwrap_or_default(),
-                });
-            }
-        }
-        if now / epoch > from / epoch {
-            let turns = boundary::adapt(
-                &mut self.session,
-                lineage.as_deref(),
-                candidates,
-                self.pace.scoring,
-            )?;
-            out.push(Happening::Boundary { tick: now, turns });
-        }
-        if let Some(c) = self.critter().filter(|c| {
-            self.session
-                .sim
-                .state()
-                .population
-                .get(*c)
-                .is_some_and(|e| e.alive)
-        }) {
-            out.extend(self.collapse(c)?);
-        }
-        Ok((out, flows))
+        self.round_with_flows_and_score(candidates, advance, &mut boundary::score)
     }
 
-    /// The played critter's region, if it has collapsed, and where play
-    /// went on.
-    fn collapse(&mut self, critter: Id) -> Result<Option<Happening>> {
-        let regions = readings::regions(&self.session.sim);
-        let pop = &self.session.sim.state().population;
-        let Some(e) = pop.get(critter) else {
-            return Ok(None);
-        };
-        let Some(region) = e.resident_site().and_then(|site| readings::region_of(&regions, site))
-            .filter(|r| r.collapsed)
-            .cloned()
-        else {
-            return Ok(None);
-        };
-        let mut moved_to = None;
-        if self.on_collapse == OnCollapse::Elsewhere {
-            let standing =
-                |site: Id| readings::region_of(&regions, site).is_some_and(|r| !r.collapsed);
-            moved_to = pop
-                .groups
-                .iter()
-                .find(|(first, g)| {
-                    g.entity.alive
-                        && g.entity.lineage == e.lineage
-                        && g.entity.method == Method::Deliberative
-                        && **first != critter
-                        && g.entity.resident_site().is_some_and(standing)
-                })
-                .map(|(first, _)| *first);
-            if let Some(next) = moved_to {
-                self.take(next)?;
-            }
-        }
-        Ok(Some(Happening::Collapsed { region, moved_to }))
+    pub fn round_with_flows_and_score(
+        &mut self, candidates: &dyn Fn(&Session, &str) -> Vec<Candidate>,
+        advance: &mut dyn FnMut(&mut Session) -> Result<Vec<crate::flows::Flow>>,
+        score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>,
+    ) -> Result<(Vec<Happening>, Vec<crate::flows::Flow>)> {
+        BorrowedInterim::new(&mut self.session, self.participant, self.mode,
+            self.pace, self.on_collapse)?.round(candidates, advance, score)
     }
+
 }
 
 #[cfg(test)]

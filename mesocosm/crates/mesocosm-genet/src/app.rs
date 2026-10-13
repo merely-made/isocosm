@@ -23,14 +23,17 @@ use crate::section::{self, Pan, Section, SiteScene};
 pub mod actions;
 pub mod bench;
 mod config;
+mod continuation;
 mod devtime;
 pub mod drive;
 mod follow;
 mod frame;
 mod graft;
 mod inspection;
+mod pointer;
 mod receipts;
 mod setup;
+mod startup;
 
 pub use config::HostConfig;
 
@@ -71,6 +74,8 @@ pub struct Host {
     /// A followed critter that stopped being one.
     follow_lost: Option<mesocosm_views::Lost>,
     inspection: inspection::Inspection,
+    pointer: pointer::Pointer,
+    continuation: continuation::Pane,
     /// The scenario driving this run, when `--scenario` gave it one (DT4).
     scenario: Option<taproot::Scenario>,
     /// Semantic events since the driver last drained them.
@@ -106,10 +111,20 @@ pub(crate) struct Lanes {
     checkpoint: crate::succession::SuccessionChrome,
     board: crate::review::BoardChrome,
     dev: crate::dev::DevChrome,
+    directing: crate::succession::SuccessionChrome,
+    continuation: crate::succession::SuccessionChrome,
 }
 
 impl Host {
     pub fn new(mut config: HostConfig) -> Self {
+        if config.spread.is_some() && (config.start.is_some() || config.mode.is_some() || config.unchosen_seed) {
+            eprintln!("authored spread supplies its own seed, start and viewing mode");
+            std::process::exit(1);
+        }
+        if config.watch.is_some() && (config.start.is_some() || config.unchosen_seed) {
+            eprintln!("a resumed run already has its native founding and start");
+            std::process::exit(1);
+        }
         let authored = mesocosm_runtime::Authored::load(&pack_root()).unwrap_or_else(|why| {
             eprintln!("pack admission: {why:?}");
             std::process::exit(1);
@@ -120,16 +135,15 @@ impl Host {
                 .and_then(|bytes| serde_json::from_slice::<mesocosm_runtime::author_spread::Setup>(&bytes)
                     .map_err(|why| why.to_string()))
                 .and_then(|setup| Runtime::from_authored_spread(&setup, config.ticks_per_second)),
-            (Some(path), None) => crate::played::resume(path, config.ticks_per_second),
-            (None, None) => Runtime::generated_with_affinity(config.seed, config.population,
-                config.ticks_per_second, authored.affinity().cloned()),
+            (Some(path), None) => crate::played::resume_with_mode(path, config.ticks_per_second,config.mode),
+            (None, None) => startup::generated(&config, authored.affinity().cloned()),
         }
         .unwrap_or_else(|why| {
             eprintln!("world: {why}");
             std::process::exit(1);
         });
+        config.seed = runtime.founded().genesis.seed;
         if config.spread.is_some() {
-            config.seed = runtime.founded().genesis.seed;
             if let Some(founding) = &runtime.founded().genesis.founding {
                 config.population = founding.population;
             }
@@ -189,6 +203,8 @@ impl Host {
             dev_manual_steps: 0,
             follow_lost: None,
             inspection: inspection::Inspection::default(),
+            pointer: pointer::Pointer::default(),
+            continuation: continuation::Pane::default(),
             scenario,
             events: Vec::new(),
             pump: None,
@@ -297,6 +313,10 @@ impl ApplicationHandler for Host {
             WindowEvent::Resized(size) => self.resize(size.width, size.height),
             WindowEvent::KeyboardInput { event, .. } if event.state == ElementState::Pressed => {
                 match &event.logical_key {
+                    key if !event.repeat && self.try_continuation_key(key) => {},
+                    Key::Named(NamedKey::ArrowUp | NamedKey::ArrowDown | NamedKey::Tab) if self.continuation_open() => {},
+                    key if !event.repeat && self.try_directing_key(key) => {},
+                    Key::Named(NamedKey::ArrowUp | NamedKey::ArrowDown) if self.directing_open() => {},
                     Key::Named(NamedKey::Escape) => self.finish(event_loop),
                     // Panning is presentation.
                     Key::Named(NamedKey::ArrowLeft) => self.pan.x -= section::PAN_STEP,
@@ -308,6 +328,9 @@ impl ApplicationHandler for Host {
                     _ => {},
                 }
             },
+            WindowEvent::CursorMoved { position, .. } => self.move_pointer([position.x as f32,position.y as f32]),
+            WindowEvent::MouseInput { state:ElementState::Pressed,button,.. } => self.press_pointer(button),
+            WindowEvent::Focused(false) | WindowEvent::CursorLeft { .. } => self.clear_pointer(),
             WindowEvent::RedrawRequested => {
                 self.frame(event_loop);
                 if let Some(window) = &self.window {

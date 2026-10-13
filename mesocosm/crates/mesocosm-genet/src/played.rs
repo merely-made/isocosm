@@ -166,13 +166,14 @@ pub fn read_game_trace(path: &Path) -> Result<mesocosm_runtime::GameSave, String
 
 /// Takes a recorded trace up where it stands, to play on (786).
 pub fn resume(path: &Path, ticks_per_second: u32) -> Result<Runtime, String> {
+    resume_with_mode(path,ticks_per_second,None)
+}
+
+/// An explicit viewing choice changes presentation; absent input preserves saved settings.
+pub fn resume_with_mode(path: &Path, ticks_per_second: u32,
+    mode: Option<isocosm::directing::readings::Mode>) -> Result<Runtime, String> {
     let saved = read_game_trace(path)?;
-    let pace = isocosm::directing::interim::Pace {
-        round: 1,
-        scoring: 6,
-    };
-    let mode = isocosm::directing::readings::Mode::Creative;
-    Runtime::resume_game(saved, mode, pace, ticks_per_second)
+    Runtime::resume_game_with_mode(saved,ticks_per_second,mode)
 }
 
 /// Replays a recorded trace; returns the recorded hash and the replayed one.

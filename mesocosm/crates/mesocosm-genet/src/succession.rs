@@ -97,10 +97,14 @@ pub struct SuccessionChrome {
 
 impl SuccessionChrome {
     pub fn new(chrome: &Chrome) -> Self {
+        Self::new_with_root(chrome, mesocosm_views::succession_root as fn(&Succession) -> SuccessionChild)
+    }
+
+    pub(crate) fn new_with_root(chrome: &Chrome, root: fn(&Succession) -> SuccessionChild) -> Self {
         let dom = Rc::new(RefCell::new(ScriptedDom::new()));
         let runner = Runner::new(
             dom,
-            mesocosm_views::succession_root as fn(&Succession) -> SuccessionChild,
+            root,
             Succession::loss(0, "", 0, None),
         );
         Self {
@@ -118,6 +122,10 @@ impl SuccessionChrome {
     /// clears the surface, which is what "play resumes" looks like.
     pub fn refresh(&mut self, chrome: &Chrome, sim: &Simulation, checkpoint: Option<&Checkpoint>) {
         let reading = checkpoint.map(|c| succession_of(sim, c));
+        self.refresh_reading(chrome, reading);
+    }
+
+    pub(crate) fn refresh_reading(&mut self, chrome: &Chrome, reading: Option<Succession>) {
         if self.shown == reading {
             return;
         }

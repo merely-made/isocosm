@@ -23,18 +23,10 @@
 //! queued. A checkpoint with nothing queued is quiet, because nothing about
 //! it resolves on its own and the script's next step is its answer.
 //!
-//! # Stack gaps found doing this, reported rather than built
+//! Pointer delivery uses the same current presented-frame attention route as
+//! actual window input. Existing chrome boxes block clicks through to the world.
 //!
-//! - **Pointer delivery.** `Automatable` requires `press`/`moved`/`release`,
-//!   and `mesocosm-genet` has nowhere to route a window point: DT2 already
-//!   found that click-to-select in the section needs picking machinery this
-//!   host does not have, and the chrome lanes are rasters composited over the
-//!   frame with no hit-test path back into cambium. So the three are
-//!   **attributed no-ops**: they record `pointer-unrouted x y` into the event
-//!   stream, which an `assert event` can catch, rather than silently swallowing
-//!   a click and letting the scenario believe it landed. `click` therefore
-//!   resolves a selector correctly and then goes nowhere, which is the honest
-//!   state of this host and not a defect in taproot.
+//! # Other limits
 //! - **No verb for founding a world.** The seed and the population are flags.
 //! - **No loop or repeat verb.** The demo is a host action taking a count
 //!   (`act demo 3100`).
@@ -238,19 +230,18 @@ impl Automatable for Host {
         self.run_action(label)
     }
 
-    // Attributed, not delivered. See the stack gap in the module docs: this
-    // host has no route from a window point to either the section or a chrome
-    // raster, and a silent swallow would let a scenario believe a click landed.
+    // The same presented-frame attention route as actual window pointer input.
     fn press(&mut self, x: f32, y: f32) {
-        self.events.push(format!("pointer-unrouted {x} {y}"));
+        self.move_pointer([x,y]);
+        self.press_pointer(winit::event::MouseButton::Left);
     }
 
     fn moved(&mut self, x: f32, y: f32) {
-        self.events.push(format!("pointer-unrouted {x} {y}"));
+        self.move_pointer([x,y]);
     }
 
     fn release(&mut self, x: f32, y: f32) {
-        self.events.push(format!("pointer-unrouted {x} {y}"));
+        self.move_pointer([x,y]);
     }
 
     /// See the module docs: scripted work in flight, and a checkpoint with

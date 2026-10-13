@@ -68,7 +68,12 @@ impl App {
                 let rows = offers.iter().map(|(key, storylet)| {
                     match reading.resolve_storylet(storylet, secret_ids.iter().map(String::as_str)) {
                         Ok(resolved) => StoryletRow { key:key.clone(), entry:storylet.entry.clone(),
-                            available:true, status:"ready".into(), cast:resolved.cast.into_iter().map(|(role, character)| {
+                            available:!resolved.effects.iter().any(|effect|matches!(effect,
+                                isometry_campaign::StoryletEffect::LocalMap {..}|isometry_campaign::StoryletEffect::Item {..})),
+                            status:if resolved.effects.iter().any(|effect|matches!(effect,
+                                isometry_campaign::StoryletEffect::LocalMap {..}|isometry_campaign::StoryletEffect::Item {..})) {
+                                "supply complete physical storylet input and use Quote/Apply".into()
+                            } else {"ready".into()}, cast:resolved.cast.into_iter().map(|(role, character)| {
                                 let name = reading.authored_entity(&character).and_then(|(_, entity)| entity.authored.as_ref())
                                     .map(|fill| fill.name.clone()).unwrap_or(character);
                                 (role, name)

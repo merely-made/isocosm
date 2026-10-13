@@ -18,6 +18,8 @@ impl Host {
         let rebound = self.refresh_scene();
         self.update_follow();
         self.update_inspection();
+        self.refresh_continuation();
+        self.refresh_directing();
 
         let at = self.follow_at();
         let half = section::half_height_or_default(self.config.slab_half_height);
@@ -35,6 +37,8 @@ impl Host {
         let dev = self.dev_reading();
         let focused = self.config.dev.then(|| self.followed()).flatten();
         let (steps, critter) = (self.steps, self.runtime.critter());
+        let directing = self.directing_reading();
+        let continuation = self.continuation_reading();
 
         let scene = self.scene.as_ref();
         let Some(gpu) = &mut self.gpu else { return };
@@ -101,8 +105,10 @@ impl Host {
             lanes
                 .board
                 .refresh(&lanes.device, review.as_ref(), &proposed, &trend, board_row);
-            let held = checkpoint.as_ref().filter(|_| !lanes.board.standing());
+            let held = checkpoint.as_ref().filter(|_| !lanes.board.standing() && continuation.is_none());
             lanes.checkpoint.refresh(&lanes.device, sim, held);
+            lanes.directing.refresh_reading(&lanes.device, directing);
+            lanes.continuation.refresh_reading(&lanes.device, continuation);
 
             let body_view = scene.and_then(|_| gpu.section.body_view());
             let framed = lanes.device.frame_master(
@@ -147,6 +153,8 @@ impl Host {
             gpu.queue.submit(Some(encoder.finish()));
         }
         gpu.queue.present(surface_texture);
+        self.mark_pointer_frame();
+        self.mark_continuation_frame();
 
         self.frames += 1;
         let hit_limit = self.config.frames.is_some_and(|limit| self.frames >= limit);
@@ -179,5 +187,7 @@ impl Lanes {
         self.checkpoint
             .composite(&self.device, encoder, master, frame);
         self.board.composite(&self.device, encoder, master, frame);
+        self.directing.composite(&self.device, encoder, master, frame);
+        self.continuation.composite(&self.device, encoder, master, frame);
     }
 }

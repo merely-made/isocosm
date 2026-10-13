@@ -197,12 +197,21 @@ pub(crate) fn advance_eponym(session: &mut Session, bytes: Vec<u8>) -> Result<((
     Ok(((),serde_json::to_vec(&mode).map_err(|e| e.to_string())?))
 }
 
-/// The trusted owner's clock retains Mesocosm geometry and birth publications.
+/// The trusted owner's played loop retains geometry, questions and birth publications.
 #[cfg(feature = "mesocosm")]
-pub(crate) fn advance_mesocosm(session: &mut Session, bytes: Vec<u8>) -> Result<((),Vec<u8>),String> {
+pub(crate) fn advance_mesocosm(session: &mut Session, bytes: Vec<u8>, access:isocosm_overlay::OrdinaryAccess)
+    -> Result<((),Vec<u8>),String> {
     let mut game: mesocosm_runtime::spatial::Game = if bytes.is_empty() { Default::default() }
         else { serde_json::from_slice(&bytes).map_err(|e| e.to_string())? };
     game.validate(session)?;
-    game.advance_clock(session)?;
+    if access.seat!=Seat::Player {return Err("use the player's window to advance this loop".into());}
+    let watching=game.continuation.as_ref().is_some_and(|saved|
+        saved.phase==mesocosm_runtime::continuation::LoopPhase::Watching && saved.participant==access.participant.0);
+    if !watching && (access.subject.is_none()
+        || session.sim.plays(access.participant.0)!=access.subject.map(|subject|subject.0)) {
+        return Err("played subject changed before this loop step".into());
+    }
+    mesocosm_runtime::continuation::advance_loop(session, &mut game, access.participant.0)
+        .map_err(|error| format!("{error:?}"))?;
     Ok(((),serde_json::to_vec(&game).map_err(|e| e.to_string())?))
 }

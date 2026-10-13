@@ -24,6 +24,10 @@ impl Game {
 
     fn validate_inner(&self, session: &Session, replay: bool) -> Result<(), String> {
         self.version()?;
+        if let Some(saved) = &self.continuation {
+            saved.validate_session(session, self)?;
+            if replay { crate::continuation::restore::validate_round(saved, session)?; }
+        }
         let Some(driver) = &self.driver else { return Ok(()); };
         let count = usize::try_from(driver.native_entries).map_err(|_| "spatial source entry count overflow")?;
         if count > session.entries.len() || driver.native_tick > session.sim.state().tick {
@@ -45,7 +49,8 @@ impl Game {
             for at in driver.initial.values() { at.check(&source.sim)?; }
         }
         let mut folded = Game { version: self.version, members: driver.initial.clone(),
-            driver: Some(driver.clone()), sight: self.sight.clone() };
+            driver: Some(driver.clone()), sight: self.sight.clone(), continuation: None };
+        folded.version = folded.current_version();
         // Generated child inputs are reconstructed from actual native birth
         // reports, not trusted as a second initial source of actor identities.
         if let Some(source) = &mut folded.driver { source.children.clear(); }

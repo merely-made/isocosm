@@ -45,12 +45,18 @@ pub struct Review {
 impl Review {
     /// Reads the review for `lineage`, each copy grown `scoring` ticks.
     pub fn of(session: &Session, lineage: &str, scoring: Tick) -> Result<Self> {
+        Self::of_using(session, lineage, scoring, &mut boundary::score)
+    }
+
+    /// Reads the same offers through an explicitly supplied scoring clock.
+    pub fn of_using(session: &Session, lineage: &str, scoring: Tick,
+        score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>) -> Result<Self> {
         Ok(Self {
             tick: session.sim.state().tick,
             lineage: lineage.into(),
             readings: reckon::readings(&session.sim),
             program: program::digest(&program::program(session, lineage)),
-            offers: offers(session, lineage, scoring)?,
+            offers: offers_using(session, lineage, scoring, score)?,
         })
     }
 
@@ -65,12 +71,18 @@ impl Review {
 /// offers (752), each scored; one the world would refuse scores as the
 /// world stands, beside its reason.
 pub fn offers(session: &Session, lineage: &str, scoring: Tick) -> Result<Vec<Offer>> {
+    offers_using(session, lineage, scoring, &mut boundary::score)
+}
+
+/// The offer repertoire is unchanged; only the fork's clock is supplied.
+pub fn offers_using(session: &Session, lineage: &str, scoring: Tick,
+    score: &mut dyn FnMut(&Session, &str, &Candidate, Tick) -> Result<Score>) -> Result<Vec<Offer>> {
     let sim = &session.sim;
     let stay = Candidate {
         name: "candidate:stay".into(),
         commands: vec![],
     };
-    let standing = boundary::score(session, lineage, &stay, scoring)?;
+    let standing = score(session, lineage, &stay, scoring)?;
     let mut out = vec![Offer {
         name: stay.name,
         score: standing,
@@ -97,7 +109,7 @@ pub fn offers(session: &Session, lineage: &str, scoring: Tick) -> Result<Vec<Off
             Ok(_) => None,
         };
         let score = match why_not {
-            None => boundary::score(session, lineage, &candidate, scoring)?,
+            None => score(session, lineage, &candidate, scoring)?,
             Some(_) => standing,
         };
         out.push(Offer {

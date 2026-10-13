@@ -91,6 +91,7 @@ impl Setup {
             outcomes.push(admit_step(&mut native, step)?);
         }
         spatial.refresh(&mut native)?;
+        crate::continuation::rebind(&native, &mut spatial);
         spatial.validate(&native)?;
         *session = native;
         *game = spatial;

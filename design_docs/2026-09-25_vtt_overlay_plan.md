@@ -2,7 +2,18 @@
 
 **Date:** 2026-09-25
 
-**Latest spatial source, 2026-10-13:** GameBindings15/AdmissionBatch4 and
+**Latest standalone consumers, 2026-10-13:** ordinary Storylet Play refuses
+new Map/Item metadata effects and exposes the complete composed Quote/Apply
+door. Fact/History and old recorded metadata retain their admission. The
+event pane binds the actual local endpoint or host to its saved participant,
+native PLAYS and existing attended/known events; party disclosures remain
+separate. Missing bindings refuse, and missing attention yields no events.
+This UI reading creates no knowing or windows and has no new saved schema.
+Protocol/ALPN19 also carries Mesocosm's Game7 continuation meaning.
+Choices871 to878 remain pending together864, next879. Source-only826;
+compiler/tests/fixtures/tuning and full V2 acceptance remain deferred.
+
+**Earlier spatial source, 2026-10-13:** GameBindings15/AdmissionBatch4 and
 protocol/ALPN18 retain complete authored eye, range and yaw on actual native
 character placements. Movement, held-item mounts and both native pictures
 read that same physical source. Survival sight refines native knowing with
@@ -12,7 +23,7 @@ edits; historical Patch cuts and the spatial save version guard authenticate
 it. Old unmarked saves retain their shape. Missing/stale inputs refuse.
 The scheduled institution catalogue adds fixed, explicitly authored native
 body proposal/consent/application processes; it supplies no generated agenda.
-Choices871 to877 remain pending together864, next878. Source-only826; final
+Choices871 to878 remain pending together864, next879. Source-only826; final
 V2 acceptance and compiler/tests/fixtures/tuning remain open.
 
 **Earlier authority and physical source, 2026-10-13:** GameBindings14 and

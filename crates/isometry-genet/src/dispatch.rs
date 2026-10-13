@@ -60,6 +60,7 @@ impl App {
             self.pump_native_packs(ctx);
             self.refresh_source_history(ctx);
             self.sync_native_choreography(ctx);
+            self.refresh_native_events(ctx);
             return;
         }
         let mut save: Option<(std::path::PathBuf, String, String, GameSnapshot)> = None;
@@ -216,6 +217,7 @@ impl App {
         self.pump_native_party(ctx);
         self.refresh_source_history(ctx);
         self.sync_native_choreography(ctx);
+        self.refresh_native_events(ctx);
     }
 
     /// In networked mode: ship the UI's queued game events to the
@@ -360,6 +362,7 @@ impl App {
                 }
             }
         }
+        self.refresh_native_events(ctx);
     }
 
     /// Evaluate or commit a host-owned generator preview. The view asks for a

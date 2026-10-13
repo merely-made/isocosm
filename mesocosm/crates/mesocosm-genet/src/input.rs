@@ -8,7 +8,7 @@
 //! the queue.
 //!
 //! The player directs and never drives (wing rulings 671, 679), so no key
-//! moves, eats or digs. Play keys send a nudge toward the played site or the
+//! moves, eats or digs. Q opens the host's current suggestion picker. Play keys send a nudge toward the played site or the
 //! picked thing, or speciate; at a checkpoint the keys narrow to its answers;
 //! the board has its own two keys. Everything here builds contract envelopes
 //! ([`isocosm_overlay::mesocosm::MesocosmIntent`]); whether one is admitted is
@@ -32,16 +32,13 @@ use isocosm_overlay::mesocosm::{
     NudgeMeaning, NudgeTarget, PlayerAct, PlayerActKind, RevisionAnswer,
 };
 use isocosm_overlay::{
-    ActKey, CandidateHandle, EntityHandle, Intent, ParticipantHandle, PlaceHandle, Tick,
+    CandidateHandle, EntityHandle, Intent, ParticipantHandle, PlaceHandle, Tick,
 };
 use mesocosm_runtime::{Checkpoint, Envelope, Occasion, Runtime};
 use winit::keyboard::{Key, NamedKey};
 
 /// Envelopes of backlog a new key tolerates before it is dropped.
 pub const QUEUE_CAP: usize = 10;
-
-/// The act key a host-side act nudge carries; at site grain native reads none (690).
-pub const ACT_KEY: &str = "act";
 
 /// Whether a new envelope should be queued, given the current backlog.
 pub fn admits(queued_len: usize) -> bool {
@@ -81,12 +78,6 @@ pub fn intent_for(runtime: &Runtime, picked: Option<Id>, key: &Key) -> Option<Me
     };
     match letter.as_str() {
         "e" => Some(nudge(critter, site, picked, NudgeMeaning::Attend)),
-        "q" => Some(nudge(
-            critter,
-            site,
-            picked,
-            NudgeMeaning::Act(ActKey(ACT_KEY.into())),
-        )),
         "s" => Some(MesocosmIntent::Act(PlayerAct {
             entity: EntityHandle(critter),
             kind: PlayerActKind::Speciate {

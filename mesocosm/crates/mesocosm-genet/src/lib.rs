@@ -29,6 +29,7 @@ pub mod app;
 pub mod chrome;
 pub mod borrowed_section;
 pub mod dev;
+mod directing;
 pub mod hud;
 pub mod input;
 pub mod maps;

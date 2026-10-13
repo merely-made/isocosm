@@ -500,6 +500,7 @@ pub fn side_panel(ui: &UiState) -> UiChild {
             .attr("class", "swatch-row"),
         ),
         turns_section(ui),
+        crate::native_events::panel(ui),
         // Dice and Measure share one heading and one line of the panel's width
         // (the diet's §3.3): two short sections stacked cost two headings and
         // the gap between them, and neither one fills 200px on its own. Every

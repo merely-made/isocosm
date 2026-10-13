@@ -37,6 +37,8 @@ impl Host {
     /// camera, inspection, dev, then the board, a standing question's
     /// answers, and the play keys.
     pub(super) fn press_key(&mut self, key: &Key) {
+        if self.try_continuation_key(key) { return; }
+        if self.try_directing_key(key) { return; }
         if self.try_camera_key(key) || self.try_inspection_key(key) || self.try_dev_key(key) {
             return;
         }
@@ -164,10 +166,12 @@ fn key_named(name: &str) -> Option<Key> {
         "space" => Some(Key::Named(NamedKey::Space)),
         "enter" => Some(Key::Named(NamedKey::Enter)),
         "tab" => Some(Key::Named(NamedKey::Tab)),
+        "up" => Some(Key::Named(NamedKey::ArrowUp)),
+        "down" => Some(Key::Named(NamedKey::ArrowDown)),
         // Play: E, Q, S; T at a checkpoint; R at the board; Z/V turn.
         // Dev: P . , [ ] N B M X F K G, and I J L U for inspection.
         "e" | "q" | "s" | "t" | "r" | "z" | "v" | "p" | "." | "," | "[" | "]" | "n" | "b" | "m"
-        | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" => Some(Key::Character(name.into())),
+        | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" | "w" => Some(Key::Character(name.into())),
         _ => None,
     }
 }

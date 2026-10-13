@@ -16,6 +16,7 @@
 //! delivery never reaches the simulation.
 
 pub mod clock;
+pub mod continuation;
 pub mod borrowed;
 pub mod effect_experiment;
 pub mod glyphs;

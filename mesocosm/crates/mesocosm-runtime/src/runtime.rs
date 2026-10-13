@@ -14,7 +14,6 @@ use std::collections::VecDeque;
 
 use isocosm::directing::interim::{Happening, Interim, OnCollapse, Pace, Start};
 use isocosm::directing::readings::{Mode, View};
-use isocosm::flows::Flow;
 use isocosm::schema::{Entity, Id};
 use isocosm::simulation::{Genesis, Simulation};
 use isocosm::{Execution, Session};
@@ -25,12 +24,13 @@ use crate::clock::Clock;
 use crate::glyphs::{GlyphReading, GlyphRules};
 use crate::readings::{FlowWindows, Trend};
 use crate::review::{Authored, Proposed, Review};
-use crate::succession::{self, Checkpoint};
+use crate::succession::Checkpoint;
 
 pub mod placing;
 pub mod author_spread;
 pub mod graft;
 pub(crate) mod translate;
+mod loop_state;
 pub use translate::Refusal;
 
 /// Default ceiling on rounds one `advance` call runs.
@@ -132,6 +132,7 @@ impl Runtime {
         interim.on_collapse = founded.on_collapse;
         let mut runtime = Self::over(interim, founded, ticks_per_second);
         runtime.place_members();
+        runtime.retain_origin();
         Ok(runtime)
     }
 
@@ -174,11 +175,15 @@ impl Runtime {
 
     /// Authored physical input; no display position supplies a missing value.
     pub fn set_spatial(&mut self, placements: &[crate::spatial::Placement]) -> Result<(), String> {
-        self.spatial.replace(&self.interim.session.sim, placements)
+        self.spatial.replace(&self.interim.session.sim, placements)?;
+        self.sync_loop();
+        Ok(())
     }
 
     pub fn setup_spatial(&mut self, setup: &crate::spatial::Setup) -> Result<(), String> {
-        self.spatial.setup(&self.interim.session, setup)
+        self.spatial.setup(&self.interim.session, setup)?;
+        self.sync_loop();
+        Ok(())
     }
 
     pub fn spatial(&self) -> &crate::spatial::Game { &self.spatial }
@@ -215,7 +220,8 @@ impl Runtime {
     }
 
     fn held(&self) -> bool {
-        self.checkpoint.is_some()
+        self.checkpoint.is_some() || self.spatial.continuation.as_ref()
+            .is_some_and(|saved| saved.phase == crate::continuation::LoopPhase::NewWorldRequested)
     }
 
     /// Applies queued answers while a question holds; anything else waits.
@@ -248,46 +254,28 @@ impl Runtime {
                 return true;
             }
         }
-        let revisions = isocosm::lineage::revise::revisions;
-        let spatial = &mut self.spatial;
-        // This is the runtime's existing native clock, including periods
-        // without a played member. It is not a player command or a new grant.
-        let round = self.interim.round_with_flows_using(&revisions, &mut |session| {
-            spatial.advance_clock(session).map(|out| out.flows)
-        });
+        self.sync_loop();
+        let round = crate::continuation::round::advance_with_flows(
+            &mut self.interim.session, &mut self.spatial, self.interim.participant);
         match round {
-            Ok((happenings, flows)) => {
-                self.absorb(happenings, &flows);
-                self.place_members();
-                // Refresh valid same-cell physical bindings after native
-                // placement/geometry changes; dormant history stays saved.
-                if let Err(why) = self.spatial.refresh(&mut self.interim.session) {
-                    self.fault = Some(why);
-                    return false;
+            Ok((_, flows)) => {
+                if let Err(why) = self.restore_loop() {
+                    self.fault = Some(why); return false;
                 }
+                if let Some(glyphs) = &mut self.glyphs { glyphs.absorb(&self.interim.session, &flows); }
+                // Preserve the old wholly unmarked run's patch placement only.
+                // Marked runs retain their actually admitted physical bindings.
+                if self.spatial.driver.is_none() && self.spatial.members.is_empty()
+                    && self.spatial.sight.is_none() { self.place_members(); }
+                self.sync_loop();
             },
             Err(why) => {
-                self.happenings.clear();
-                self.fault = Some(why);
+                self.fault = Some(format!("{why:?}"));
+                self.sync_loop();
                 return false;
             },
         }
         true
-    }
-
-    fn absorb(&mut self, happenings: Vec<Happening>, flows: &[Flow]) {
-        self.windows
-            .absorb(&self.interim.session.sim, &happenings, flows);
-        if let Some(glyphs) = &mut self.glyphs {
-            glyphs.absorb(&self.interim.session, flows);
-        }
-        self.checkpoint = succession::opened(&self.interim, &happenings);
-        self.review = match self.checkpoint.as_ref().map(|c| &c.occasion) {
-            Some(succession::Occasion::Epoch(_)) => crate::review::of(&self.interim),
-            _ => None,
-        };
-        self.proposed = self.authored_proposals();
-        self.happenings = happenings;
     }
 
     /// Starts reading glyphs from the bound critter's acts from here on.
@@ -310,6 +298,7 @@ impl Runtime {
         authored.validate_world(&self.founded.genesis)?;
         self.terms = authored.terms().clone();
         self.authored = Some(authored);
+        self.sync_loop();
         Ok(self)
     }
 
@@ -318,21 +307,6 @@ impl Runtime {
     /// What the scripts made of the open review's declared-tract offers.
     pub fn proposed(&self) -> &[Proposed] {
         &self.proposed
-    }
-
-    fn authored_proposals(&self) -> Vec<Proposed> {
-        let (Some(authored), Some(review), Some(body)) =
-            (&self.authored, &self.review, self.played())
-        else {
-            return Vec::new();
-        };
-        let lines = &self.sim().state().lineages;
-        let held: Vec<String> = lines
-            .get(&body.lineage)
-            .and_then(|l| l.development.as_ref())
-            .map(|d| d.tracts.iter().map(|t| crate::review::qualified(&t.function)).collect())
-            .unwrap_or_default();
-        authored.propose(review, body, &held, self.sim().genesis().seed)
     }
 
     /// The played line's turn, while holding at a boundary.

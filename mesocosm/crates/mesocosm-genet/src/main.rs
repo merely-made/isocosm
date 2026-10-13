@@ -14,8 +14,9 @@
 //! ```
 //!
 //! The player directs and never drives (wing rulings 671, 679): E nudges the
-//! critter to attend to its site or the picked body, Q nudges it to act
-//! there, S speciates its line. At a checkpoint the keys narrow to Enter
+//! critter to attend to its site or the picked body, Q chooses a current
+//! suggestion, S speciates its line. Click attends; right click chooses a hint.
+//! At a checkpoint the keys narrow to Enter
 //! (carry on) and T (take the body on offer); at the boundary the board's Tab
 //! and R pick and commit an offer. See `--help` for the rest.
 //!
@@ -37,6 +38,8 @@ fn main() {
     let mut bench = false;
     let mut size_explicit = false;
     let mut founding_explicit = false;
+    let mut seed_explicit = false;
+    let mut unchosen_explicit = false;
 
     while let Some(arg) = args.next() {
         match arg.as_str() {
@@ -89,10 +92,23 @@ fn main() {
             },
             "--seed" => {
                 founding_explicit = true;
-                if let Some(seed) = args.next().and_then(|v| v.parse().ok()) {
-                    config.seed = seed;
-                }
+                seed_explicit = true;
+                config.seed = args.next().and_then(|v| v.parse().ok())
+                    .unwrap_or_else(|| fail("--seed wants an explicit unsigned world seed"));
             },
+            "--unchosen-seed" => unchosen_explicit = true,
+            "--start" => {
+                let value = args.next().unwrap_or_default();
+                let (within, epochs) = value.split_once(':')
+                    .and_then(|(within, epochs)| Some((within.parse().ok()?, epochs.parse().ok()?)))
+                    .unwrap_or_else(|| fail("--start wants WITHIN:EPOCHS, both unsigned epoch counts"));
+                config.start = Some(isocosm::directing::interim::Start { within, epochs });
+            },
+            "--mode" => config.mode = Some(match args.next().as_deref() {
+                Some("survival") => isocosm::directing::readings::Mode::Survival,
+                Some("creative") => isocosm::directing::readings::Mode::Creative,
+                _ => fail("--mode wants survival or creative"),
+            }),
             "--population" => {
                 founding_explicit = true;
                 config.population = args
@@ -141,6 +157,18 @@ fn main() {
         }
     }
 
+    if seed_explicit && unchosen_explicit { fail("choose --seed or --unchosen-seed"); }
+    if unchosen_explicit && (config.watch.is_some() || config.spread.is_some() || replay.is_some() || bench) {
+        fail("--unchosen-seed requires an ordinary new generated world");
+    }
+    if config.start.is_some() && (config.watch.is_some() || config.spread.is_some() || replay.is_some() || bench) {
+        fail("--start requires an ordinary new generated world; authored spread declares its own start");
+    }
+    if config.mode.is_some() && (config.spread.is_some() || replay.is_some() || bench) {
+        fail("--mode applies to ordinary new or watched worlds; authored spread declares its own mode");
+    }
+    config.unchosen_seed = unchosen_explicit || (!seed_explicit && config.watch.is_none()
+        && config.spread.is_none() && replay.is_none() && !bench);
     if config.spread.is_some()
         && (config.watch.is_some() || replay.is_some() || bench || founding_explicit) {
         fail("--spread supplies its founding and cannot combine with --watch, --replay, --bench, --seed or --population");
@@ -204,6 +232,9 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --frames N      run N frames and exit
   --size WxH      initial window size in logical pixels (default 960x540)
   --seed N        world seed
+  --unchosen-seed use the native clock-sourced new-world seed (ordinary default)
+  --start W:E     wait at most W epochs for habitability, then add E epochs
+  --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)
   --bodies MODE   voxels (default) or capsules (comparison), presentation only
   --body-budget N maximum detailed bodies in the section
@@ -227,14 +258,22 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
 --capture, --trace and --receipt default to scratch names under
 <Code>/testing/mesocosm/, never the golden ps1_played.* fixture.
 
-controls: E/Space attend, Q act (toward the followed body, else the site),
+controls: click or E/Space attend, right click or Q choose a current hint,
   S speciate, arrows pan, Z/V turn a terrarium camera, Esc quit
+in the hint panel: Up/Down select, Enter or click the panel sends the hint,
+  Escape closes it; each hint shows its actual body/site topic
 at a checkpoint the keys narrow:
   Enter  carry on (keep the parent, take the first heir, close the boundary)
   T      take the body on offer
 at the boundary the trait board comes up:
   Tab    move among the offers
   R      commit the selected offer
+when the lineage ends, or while watching:
+  Up/Down or Tab select a native-visible other body, Watch, or New World
+  Enter or click the pane applies the selected choice; W watches, N requests
+  a new world. Esc saves the configured trace and quits; a new run starts
+  separately through the startup flags, and --watch PATH resumes this world.
+  At a pending new-world request, W cancels the request and keeps watching.
 with --dev, host-only keys (none reaches the session's log):
   P pause, . step, , step ten, [ ] speed, N/B follow next/previous, M follow
   the played body, I inspect parts, J/L walk them, U clear

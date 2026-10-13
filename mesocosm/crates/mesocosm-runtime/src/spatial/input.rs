@@ -8,7 +8,7 @@ use crate::runtime::Envelope;
 /// Existing envelopes remain readable beside explicit product operations.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum Input { Envelope(Envelope), Game(GameInput), Graft(crate::runtime::graft::GraftInput) }
+pub enum Input { Envelope(Envelope), Game(GameInput), Graft(crate::runtime::graft::GraftInput), Loop(crate::continuation::LoopInput) }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

@@ -7,8 +7,10 @@ catalogue adds fixed authored body proposal/consent/application producers,
 with genuine selected acts and existing participant histories preserved.
 Mesocosm actual-child templates and VTT complete eye/range/yaw/spatial
 storylet inputs are connected in their owning products. No Eponym companion
-or generated agenda law is inferred. Choices871 to877 remain pending
-together864, next878; Eponym death succession still awaits877. Final E3,
+or generated agenda law is inferred. The common host's Mesocosm played-loop
+and finite Game7 continuation, plus VTT ordinary storylet/event consumers,
+are source-assembled through protocol/ALPN19. Choices871 to878 remain pending
+together864, next879; Eponym death succession still awaits877. Final E3,
 C10/C11 and compiler/tests/fixtures/tuning remain open under826.
 
 **Earlier physical source, 2026-10-13:** mode4 retains explicit native clock

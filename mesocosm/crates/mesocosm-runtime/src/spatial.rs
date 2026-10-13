@@ -12,6 +12,7 @@ use isometer_space::places::PlaceId;
 use serde::{Deserialize, Serialize};
 
 pub const VERSION: u32 = 6;
+pub const LOOP_VERSION: u32 = 7;
 pub const BIRTH_SIGHT_VERSION: u32 = 5;
 pub const SIGHT_VERSION: u32 = 4;
 pub const UNMARKED_VERSION: u32 = 3;
@@ -76,10 +77,12 @@ pub struct Game {
     pub driver: Option<Driver>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sight: Option<SightConfig>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub continuation: Option<crate::continuation::Continuation>,
 }
 
 impl Default for Game {
-    fn default() -> Self { Self { version: 1, members: BTreeMap::new(), driver: None, sight: None } }
+    fn default() -> Self { Self { version: 1, members: BTreeMap::new(), driver: None, sight: None, continuation: None } }
 }
 
 impl Game {
@@ -93,9 +96,10 @@ impl Game {
             SIGHT_VERSION => self.sight.is_some() && !birth_sight && !birth_inputs,
             BIRTH_SIGHT_VERSION => birth_sight && !birth_inputs,
             VERSION => birth_inputs,
+            LOOP_VERSION => self.continuation.is_some(),
             _ => false,
         };
-        if !supported {
+        if !supported || (self.version != LOOP_VERSION && self.continuation.is_some()) {
             return Err("unsupported Mesocosm spatial version".into());
         }
         if let Some(sight) = &self.sight { sight.validate()?; }
@@ -111,7 +115,8 @@ impl Game {
     }
 
     pub(super) fn current_version(&self) -> u32 {
-        if self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_inputs()) { VERSION }
+        if self.continuation.is_some() { LOOP_VERSION }
+        else if self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_inputs()) { VERSION }
         else if self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_sight()) { BIRTH_SIGHT_VERSION }
         else if self.sight.is_some() { SIGHT_VERSION } else { UNMARKED_VERSION }
     }
