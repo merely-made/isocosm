@@ -11,7 +11,8 @@ use isometer_core::Yaw;
 use isometer_space::places::PlaceId;
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 4;
+pub const VERSION: u32 = 5;
+pub const SIGHT_VERSION: u32 = 4;
 pub const UNMARKED_VERSION: u32 = 3;
 
 mod input;
@@ -80,10 +81,13 @@ impl Default for Game {
 
 impl Game {
     pub fn version(&self) -> Result<(), String> {
+        let birth_sight = self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_sight());
+        if let Some(driver) = &self.driver { driver.profile.version()?; }
         let supported = match self.version {
             1 => self.driver.is_none() && self.sight.is_none(),
-            2 | UNMARKED_VERSION => self.sight.is_none(),
-            VERSION => self.sight.is_some(),
+            2 | UNMARKED_VERSION => self.sight.is_none() && !birth_sight,
+            SIGHT_VERSION => self.sight.is_some() && !birth_sight,
+            VERSION => birth_sight,
             _ => false,
         };
         if !supported {
@@ -97,7 +101,13 @@ impl Game {
     }
 
     pub(super) fn current_version(&self) -> u32 {
-        if self.sight.is_some() { VERSION } else { UNMARKED_VERSION }
+        if self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_sight()) { VERSION }
+        else if self.sight.is_some() { SIGHT_VERSION } else { UNMARKED_VERSION }
+    }
+
+    /// A birth range marks its source before any future child ID exists.
+    pub fn has_sight_source(&self) -> bool {
+        self.sight.is_some() || self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_sight())
     }
 
     /// Trusted authored geometry; this never moves or takes a native body.

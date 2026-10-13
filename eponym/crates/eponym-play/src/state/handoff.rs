@@ -14,7 +14,7 @@ pub struct NativeHandoff {
 impl GameState {
     pub(crate) fn handoff_products(&self) -> crate::contract::mode::actions::handoff::ProductRecords {
         use crate::contract::mode::actions::handoff::{ProductRecords, ImportedProjectPose,
-            MovementRoles, AnatomyLabel};
+            MovementRoles, AnatomyLabel, ImportedCapacity};
         let projects = self.project_places.iter().map(|(project, place)| ImportedProjectPose {
             project: *project, site: place.site, created_site: place.created_site,
             created_at: place.created_at, at: place.at,
@@ -28,7 +28,11 @@ impl GameState {
                 subject, revision: record.revision, species: record.document.species(),
                 native_source: record.native_source.clone(),
             })).collect();
-        ProductRecords { items: self.places.clone(), projects, movement, anatomies }
+        let carry_capacities = self.records.iter().filter_map(|(subject, record)|
+            self.bodies.get(*subject).map(|body| ImportedCapacity {
+                subject: *subject, entity: record.entity, capacity_mg: body.profile.carry_capacity_mg,
+            })).collect();
+        ProductRecords { items: self.places.clone(), projects, movement, anatomies, carry_capacities }
     }
 
     /// Failed admission returns the original owner, including its solver.

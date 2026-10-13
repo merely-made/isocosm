@@ -96,5 +96,8 @@ pub(crate) fn table_controls(ui: &UiState) -> Vec<UiChild> {
         body.push(Box::new(el("div", text(format!("Authenticated endpoint: {key}"))).attr("class", "side-line")));
     }
     body.extend(crate::native_items::controls(ui));
+    body.extend(crate::native_composed_storylet::controls(ui));
+    body.extend(crate::native_institutions::controls(ui));
+    body.extend(crate::native_scene::controls(ui));
     body
 }

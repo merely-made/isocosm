@@ -92,7 +92,8 @@ pub(super) fn perform(session:&mut Session,records:&[PhysicalItemRecord],positio
         return Ok((Some(binding),acted));
     }
     let record=PhysicalItemRecord {input:input.clone(),participant,actor_position:position.clone(),
-        entries:Vec::new(),outcomes:Vec::new(),binding:None,project:None};
+        entries:Vec::new(),outcomes:Vec::new(),binding:None,project:None,
+        project_custody:None,project_carrier_position:None};
     let pose=current::mounted(session,&record,position,&prior.item)?;
     collision_check(session,records,position,&pose)?;
     Ok((None,acted))

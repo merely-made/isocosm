@@ -54,7 +54,9 @@ pub(crate) fn push_roll(state: &mut GameSnapshot, record: &isometry_core::RollRe
 
 pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), GameError> {
     if state.native.is_some()
-        && matches!(event, GameEvent::World(_) | GameEvent::TravelResolved { .. } | GameEvent::TimeAdvanced { .. })
+        && matches!(event, GameEvent::World(_) | GameEvent::TravelResolved { .. } | GameEvent::TimeAdvanced { .. }
+            | GameEvent::ActionResolved(_) | GameEvent::TransitionResolved(_)
+            | GameEvent::Map(SessionEvent::TokenFaced { .. }))
     {
         return Err(GameError::Native("legacy world mutation on a native campaign".into()));
     }
@@ -69,6 +71,9 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
         GameEvent::NativePackResolved(result) => super::native_pack::apply_native_pack(state, result),
         GameEvent::NativePhysicalResolved(result) => super::native_physical::apply_native_physical(state, result),
         GameEvent::NativeItemsResolved(result) => super::native_items::apply_native_items(state, result),
+        GameEvent::NativeInstitutionsResolved(result) => super::native_institutions::apply_native_institutions(state, result),
+        GameEvent::NativeSecretResolved(result) => super::native_secret::apply_native_secret(state, result),
+        GameEvent::NativeComposedStoryletResolved(result) => super::native_composed_storylet::apply_native_composed_storylet(state, result),
         GameEvent::Map(e) => {
             apply(&mut state.map, e).map_err(GameError::Core)?;
             sync_active_map(state);
@@ -100,7 +105,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             // however many rounds the wrap crossed. Time is a campaign feature,
             // so a bare board with no stored map keeps no clock.
             let elapsed = state.turns.round().saturating_sub(before);
-            if elapsed > 0 {
+            if elapsed > 0 && state.native.is_none() {
                 if let Some(active) = state.active_map.clone() {
                     *state.clocks.entry(active).or_insert(0) += elapsed;
                 }

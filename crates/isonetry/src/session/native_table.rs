@@ -8,7 +8,7 @@ use isocosm::Execution;
 use isocosm_overlay::{EntityHandle, Intent, IntentEnvelope, OrdinaryAccess, ParticipantHandle, Seat, Tick,
     vtt::{TableAct, TableActKind, TableBatch, VttIntent}};
 
-fn preserve_time(old: Option<&NativeTable>, next: &NativeTable) -> Result<(), String> {
+fn preserve_time(old: Option<&NativeTable>, next: &NativeTable, carry_config:bool) -> Result<(), String> {
     let before = isometry_campaign::native::GameBindings::decode(
         old.map_or(&[][..], |table| table.game.as_slice()))?;
     let after = isometry_campaign::native::GameBindings::decode(&next.game)?;
@@ -17,6 +17,13 @@ fn preserve_time(old: Option<&NativeTable>, next: &NativeTable) -> Result<(), St
         || before.hooks()!=after.hooks() || before.catalogue()!=after.catalogue()
         || before.physical_edits()!=after.physical_edits() || before.item_records()!=after.item_records() {
         return Err("table authoring/movement cannot change native time, journey, hook, pack or physical edit records".into());
+    }
+    if before.project_carry().iter().any(|(key,policy)|after.project_carry().get(key)!=Some(policy))
+        || !carry_config && before.project_carry()!=after.project_carry() {
+        return Err("table movement/binding cannot replace its saved project carry policies".into());
+    }
+    if before.composed_storylets() != after.composed_storylets() {
+        return Err("table movement/binding cannot replace its accepted storylet composition records".into());
     }
     if after.roster_revision() != roster_revision(old, next)? {
         return Err("table result differs from its actual accepted player-roster revision".into());
@@ -83,7 +90,7 @@ pub(crate) fn apply_native_table(state: &mut GameSnapshot, result: &NativeTableR
     if table_digest(state.native_table.as_ref()) != result.expected_table {
         return Err(fail("native table result has stale binding metadata"));
     }
-    preserve_time(state.native_table.as_ref(), &result.table).map_err(GameError::Native)?;
+    preserve_time(state.native_table.as_ref(), &result.table, result.moves.is_empty()).map_err(GameError::Native)?;
     if !result.moves.is_empty() {
         let old = state.native_table.as_ref().ok_or_else(|| fail("native move has no original table binding"))?;
         if old.host_participant != result.table.host_participant || old.peers != result.table.peers
@@ -148,7 +155,7 @@ impl HostSession {
             version: 1, game: Vec::new(), host_participant: participant, peers: vec![], boards: vec![],
         });
         table.game = game;
-        preserve_time(self.state.native_table.as_ref(), &table)?;
+        preserve_time(self.state.native_table.as_ref(), &table, input.batch.project_carry.is_some())?;
         // Existing authored mappings never silently follow a changed pose.
         validate_binding_change(&self.state, admitted.table_session(), self.state.native_table.as_ref(), &table)?;
         let result = NativeTableResolved { expected_table: input.expected_table.clone(),
@@ -180,7 +187,7 @@ impl HostSession {
             game.record_roster_revision(revision);
             table.game = game.encode()?;
         }
-        preserve_time(self.state.native_table.as_ref(), &table)?;
+        preserve_time(self.state.native_table.as_ref(), &table, false)?;
         let result = NativeTableResolved { expected_table: input.expected_table.clone(),
             publication: NativePublication::update(world, &campaign)?, table, moves: vec![] };
         self.try_commit(GameEvent::NativeTableResolved(result))

@@ -69,7 +69,7 @@ impl Game {
             after.terrain_revision = input.request.terrain_revision.clone();
             // The final patch is re-derived from this same exact pose on refresh.
             changes.push(profile::Transition { actor: input.request.actor, before: Some(before), after: after.clone(),
-                admission: profile::Admission::Step { action: input.request.action.clone() } });
+                admission: profile::Admission::Step { action: input.request.action.clone() }, sight_range: None });
             self.members.insert(input.request.actor, after);
         }
         Ok(changes)
@@ -111,7 +111,8 @@ impl Game {
         Ok(game)
     }
 
-    pub(crate) fn advance_clock(&mut self, session: &mut Session)
+    /// Trusted owner clock. Ordinary played inputs use `advance` and its native access gate.
+    pub fn advance_clock(&mut self, session: &mut Session)
         -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, String> {
         self.version()?;
         let mut native_session = session.clone();

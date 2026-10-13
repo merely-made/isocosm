@@ -45,6 +45,12 @@ pub use native_physical::NativePhysicalResolved;
 mod native_items;
 mod native_item_metadata;
 pub use native_items::NativeItemsResolved;
+mod native_institutions;
+mod native_secret;
+pub use native_secret::NativeSecretResolved;
+mod native_composed_storylet;
+pub use native_composed_storylet::NativeComposedStoryletResolved;
+pub use native_institutions::{InstitutionSender,NativeInstitutionInput,NativeInstitutionQuote,NativeInstitutionsResolved};
 pub use native::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
 mod travel;
 

@@ -27,7 +27,7 @@ pub(super) fn advance(session:&mut Session, mode:&mut ModeState, actions:&Action
     }
     policy.rules.validate().map_err(debug)?;
     let rules = match &policy.profile {
-        Some(profile) => profile.project(&record,policy.rules.speed).map_err(debug)?
+        Some(profile) => profile.project_view(record,policy.rules.speed).map_err(debug)?
             .rules_for(policy.rules).map_err(debug)?,
         None => policy.rules,
     };
@@ -39,7 +39,7 @@ pub(super) fn advance(session:&mut Session, mode:&mut ModeState, actions:&Action
     if outcome.pose.step != step { return Err("Eponym solver returned another fixed step".into()); }
     outcome.pose.validate().map_err(debug)?;
     let site_cell = crate::walking::to_site(&volume,outcome.pose.cell().map_err(debug)?);
-    let patch = Places::derive(&volume,Default::default())?.place_at(site_cell)
+    let patch = Places::derive(&volume,actor.places.unwrap_or_default())?.place_at(site_cell)
         .ok_or("Eponym accepted contact has no native patch")?;
     let mut next = actor.clone(); next.pose = outcome.pose; next.patch = patch;
     // Validate the exact offered contact against current native geometry before
@@ -70,6 +70,7 @@ pub(super) fn advance(session:&mut Session, mode:&mut ModeState, actions:&Action
     }
     // Preserve the authentic pre-injury geometry stamp. A severed body withdraws
     // this picture until trusted current geometry/bindings are supplied.
+    clock::motion(mode,actor,&next)?;
     *mode.bindings.iter_mut().find(|b|b.subject == actor.subject).ok_or("missing Eponym actor binding")? = next;
     Ok(format!("motion {step}: {:?}\n{}",outcome.pose,receipts.join("\n")))
 }

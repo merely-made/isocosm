@@ -12,7 +12,13 @@ use crate::timed_action::{TimedAction,TimedActionRules};
 pub struct ProductRecords {
     pub items:ItemPlaces, pub projects:Vec<ImportedProjectPose>,
     pub movement:Vec<MovementRoles>, pub anatomies:Vec<AnatomyLabel>,
+    #[serde(default,skip_serializing_if="Vec::is_empty")]
+    pub carry_capacities:Vec<ImportedCapacity>,
 }
+
+#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ImportedCapacity {pub subject:SubjectId,pub entity:Id,pub capacity_mg:u32}
 
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -115,9 +121,16 @@ pub(crate) fn prepare(session:&Session, bytes:&[u8], config:&ActionConfig,
     let mut projects = Vec::new();
     for saved in &imported.products.projects {
         let held = session.sim.state().projects.get(saved.project).ok_or("imported native project is absent")?;
-        if saved.site != imported.site || saved.created_site != imported.site || held.site != saved.site
-            || held.carrier.is_some() || saved.at != saved.created_at {
-            return Err("handoff requires supported fixed native project creation locations; carried/relocated work is unavailable".into());
+        if saved.site != imported.site || saved.created_site != imported.site || held.site != saved.site {
+            return Err("handoff project cells lack their actual original site frame".into());
+        }
+        if let Some(carrier)=held.carrier {
+            let body=session.sim.state().population.get(carrier).ok_or("imported project carrier is absent")?;
+            let site=body.resident_site().ok_or("imported project carrier is in transit")?;
+            let binding=mode.bindings.iter().find(|binding|binding.entity==carrier)
+                .ok_or("imported project carrier has no explicit physical binding")?;
+            if binding.site!=site {return Err("imported project carrier has another native site".into());}
+            binding.current(session)?;
         }
         let entry = session.entries.iter().find(|entry| match &entry.command {
             Command::Project(Change::Act{..}) => serde_json::from_str::<Acted>(&entry.outcome)
@@ -127,10 +140,12 @@ pub(crate) fn prepare(session:&Session, bytes:&[u8], config:&ActionConfig,
             _=>false,
         }).ok_or("imported project lacks an actual accepted native project entry")?;
         projects.push(ProjectPose {project:saved.project,site:saved.site,window:actor.window.clone(),
-            at:imported.site_cell(saved.at)?,entry:entry.id.clone()});
+            at:imported.site_cell(saved.at)?,entry:entry.id.clone(),
+            origin:Some(super::projects::ProjectOrigin {site:saved.created_site,at:imported.site_cell(saved.created_at)?})});
     }
     let actions = mode.actions.as_mut().ok_or("missing Eponym action handoff")?;
     actions.charges = vec![charged]; actions.projects = projects; actions.imported = Some(imported);
-    mode.version = 3; mode.validate()?;
+    super::project_carry::validate(session,&mode,mode.actions.as_ref().ok_or("missing Eponym action handoff")?)?;
+    mode.version = mode.required_version(); mode.validate()?;
     serde_json::to_vec(&mode).map_err(|e|e.to_string())
 }

@@ -25,6 +25,8 @@ const CATALOGUE_VERSION: u32 = 9;
 const PHYSICAL_VERSION: u32 = 10;
 const ITEM_VERSION: u32 = 11;
 const CUSTODY_VERSION: u32 = 12;
+const PROJECT_CARRY_VERSION: u32 = 13;
+const COMPOSED_STORYLET_VERSION: u32 = 14;
 
 /// The actual host input after its DM/seat/current-subject checks. Assertions
 /// precede the character admissions, which name their existing authored keys.
@@ -38,6 +40,8 @@ pub struct AdmissionBatch {
     pub placements: Vec<CharacterPlacement>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub controls: Vec<CharacterControl>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub project_carry: Option<super::items::ProjectCarryConfig>,
 }
 
 #[derive(Deserialize)]
@@ -46,7 +50,9 @@ enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch), Play(VttInt
     SharedRoster(super::SharedRosterInput), Journey(super::joint_journey::JourneyEnvelope),
     Overmap(super::overmap::OvermapInput), Pack(super::pack::PackEnvelope), Storylet(super::storylets::StoryletInput),
     Physical(super::physical_map::PhysicalMapInput), Institution(super::institutions::InstitutionInput),
-    Item(super::items::ItemInput), Graft(super::graft::GraftInput) }
+    Item(super::items::ItemInput), Graft(super::graft::GraftInput),
+    ProjectCarry(super::items::ProjectCarryConfig),
+    ComposedStorylet(super::storylets::ComposedStoryletInput) }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -81,6 +87,10 @@ pub struct GameBindings {
     physical_edits: Vec<super::physical_map::PhysicalMapRecord>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     item_records: Vec<super::items::PhysicalItemRecord>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    project_carry: BTreeMap<Key, super::items::ProjectCarryPolicy>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    composed_storylets: Vec<super::storylets::ComposedStoryletRecord>,
 }
 
 fn is_zero(value: &u64) -> bool { *value == 0 }
@@ -90,7 +100,7 @@ impl GameBindings {
         if let Some(bytes) = bytes.strip_prefix(PREFIX) {
             let game: Self = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
             if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | HOLD_VERSION | SHARED_VERSION | JOURNEY_VERSION
-                | OVERMAP_VERSION | HOOK_VERSION | CATALOGUE_VERSION | PHYSICAL_VERSION | ITEM_VERSION | CUSTODY_VERSION)
+                | OVERMAP_VERSION | HOOK_VERSION | CATALOGUE_VERSION | PHYSICAL_VERSION | ITEM_VERSION | CUSTODY_VERSION | PROJECT_CARRY_VERSION | COMPOSED_STORYLET_VERSION)
                 || game.version == VERSION && (!game.positions.is_empty() || !game.controls.is_empty())
                 || game.version < TIME_VERSION && !game.downtime.is_empty()
                 || game.version < HOLD_VERSION && (!game.time_holds.is_empty() || game.roster_revision != 0)
@@ -103,6 +113,11 @@ impl GameBindings {
                 || game.version < ITEM_VERSION && !game.item_records.is_empty()
                 || game.version < CUSTODY_VERSION && game.item_records.iter().any(|record|
                     matches!(&record.input.action, super::items::ItemAction::Custody(_)))
+                || game.version < COMPOSED_STORYLET_VERSION && !game.composed_storylets.is_empty()
+                || game.version < PROJECT_CARRY_VERSION && (!game.project_carry.is_empty()
+                    || game.item_records.iter().any(|record| matches!(&record.input.action,
+                        super::items::ItemAction::ProjectCarry {..}) || record.project_custody.is_some()
+                        || record.project_carrier_position.is_some()))
             { return Err("unsupported VTT character binding version".into()); }
             Ok(game)
         } else {
@@ -111,7 +126,8 @@ impl GameBindings {
             Ok(Self { version:VERSION, characters:BTreeMap::new(), positions:BTreeMap::new(),
                 controls:BTreeMap::new(), payload:bytes.to_vec(), downtime:BTreeMap::new(),
                 time_holds:Vec::new(), roster_revision:0, shared_players:None, journeys:BTreeMap::new(),
-                overmap:None, hooks:Vec::new(), catalogue:None, physical_edits:Vec::new(), item_records:Vec::new() })
+                overmap:None, hooks:Vec::new(), catalogue:None, physical_edits:Vec::new(), item_records:Vec::new(),
+                project_carry:BTreeMap::new(), composed_storylets:Vec::new() })
         }
     }
 
@@ -135,8 +151,20 @@ impl GameBindings {
     pub fn catalogue(&self) -> Option<&super::pack::Catalogue> { self.catalogue.as_ref() }
     pub fn physical_edits(&self) -> &[super::physical_map::PhysicalMapRecord] { &self.physical_edits }
     pub fn item_records(&self) -> &[super::items::PhysicalItemRecord] { &self.item_records }
+    pub fn project_carry(&self) -> &BTreeMap<Key, super::items::ProjectCarryPolicy> { &self.project_carry }
+    pub fn composed_storylets(&self) -> &[super::storylets::ComposedStoryletRecord] { &self.composed_storylets }
+    pub(super) fn record_composed_storylet(&mut self, record: super::storylets::ComposedStoryletRecord) {
+        self.version = self.version.max(COMPOSED_STORYLET_VERSION);
+        self.composed_storylets.push(record);
+    }
+    pub(super) fn record_project_carry(&mut self, policies:BTreeMap<Key,super::items::ProjectCarryPolicy>) {
+        if !policies.is_empty() { self.version=self.version.max(PROJECT_CARRY_VERSION); }
+        self.project_carry=policies;
+    }
     pub(super) fn record_item(&mut self, record: super::items::PhysicalItemRecord) {
-        let version = if matches!(&record.input.action, super::items::ItemAction::Custody(_)) {
+        let version = if matches!(&record.input.action, super::items::ItemAction::ProjectCarry {..})
+            || record.project_carrier_position.is_some() { PROJECT_CARRY_VERSION }
+        else if matches!(&record.input.action, super::items::ItemAction::Custody(_)) {
             CUSTODY_VERSION
         } else { ITEM_VERSION };
         self.version = self.version.max(version);
@@ -159,27 +187,27 @@ impl GameBindings {
         self.catalogue = Some(catalogue);
     }
     pub(super) fn same_except_hooks(&self, other: &Self) -> bool {
-        self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
+        self.composed_storylets == other.composed_storylets && self.project_carry == other.project_carry && self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
             && self.payload == other.payload && self.downtime == other.downtime && self.time_holds == other.time_holds
             && self.roster_revision == other.roster_revision && self.shared_players == other.shared_players
             && self.journeys == other.journeys && self.overmap == other.overmap && self.catalogue == other.catalogue && self.physical_edits == other.physical_edits && self.item_records == other.item_records
     }
     pub(super) fn same_except_catalogue(&self, other: &Self) -> bool {
-        self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
+        self.composed_storylets == other.composed_storylets && self.project_carry == other.project_carry && self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
             && self.payload == other.payload && self.downtime == other.downtime && self.time_holds == other.time_holds
             && self.roster_revision == other.roster_revision && self.shared_players == other.shared_players
             && self.journeys == other.journeys && self.overmap == other.overmap && self.hooks == other.hooks
             && self.physical_edits == other.physical_edits && self.item_records == other.item_records
     }
     pub(super) fn same_except_physical_edits(&self, other: &Self) -> bool {
-        self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
+        self.composed_storylets == other.composed_storylets && self.project_carry == other.project_carry && self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
             && self.payload == other.payload && self.downtime == other.downtime && self.time_holds == other.time_holds
             && self.roster_revision == other.roster_revision && self.shared_players == other.shared_players
             && self.journeys == other.journeys && self.overmap == other.overmap && self.hooks == other.hooks
             && self.catalogue == other.catalogue && self.item_records == other.item_records
     }
     pub(super) fn same_except_items(&self, other: &Self) -> bool {
-        self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
+        self.composed_storylets == other.composed_storylets && self.project_carry == other.project_carry && self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
             && self.payload == other.payload && self.downtime == other.downtime && self.time_holds == other.time_holds
             && self.roster_revision == other.roster_revision && self.shared_players == other.shared_players
             && self.journeys == other.journeys && self.overmap == other.overmap && self.hooks == other.hooks
@@ -190,7 +218,7 @@ impl GameBindings {
         self.journeys.insert(key,proposal);
     }
     pub(super) fn same_except_journeys(&self, other: &Self) -> bool {
-        self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
+        self.composed_storylets == other.composed_storylets && self.project_carry == other.project_carry && self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
             && self.payload == other.payload && self.downtime == other.downtime && self.time_holds == other.time_holds
             && self.roster_revision == other.roster_revision && self.shared_players == other.shared_players
             && self.overmap == other.overmap && self.hooks == other.hooks && self.catalogue == other.catalogue && self.physical_edits == other.physical_edits && self.item_records == other.item_records
@@ -226,7 +254,7 @@ impl GameBindings {
     }
 
     pub(super) fn same_except_time(&self, other: &Self) -> bool {
-        self.characters == other.characters && self.positions == other.positions
+        self.composed_storylets == other.composed_storylets && self.project_carry == other.project_carry && self.characters == other.characters && self.positions == other.positions
             && self.controls == other.controls && self.payload == other.payload
             && self.roster_revision == other.roster_revision
             && self.shared_players == other.shared_players
@@ -240,6 +268,8 @@ impl GameBindings {
     }
 
     pub fn validate(&self, session: &Session) -> Result<(), String> {
+        super::storylets::validate_composed_records(session, &self.composed_storylets,
+            &self.physical_edits, &self.item_records)?;
         if self.shared_players.as_ref().is_some_and(|players| players.iter().any(|id|
             !session.sim.state().population.get(*id).is_some_and(isocosm::directing::is_participant))) {
             return Err("saved shared table roster names no actual native participant".into());
@@ -262,6 +292,7 @@ impl GameBindings {
         super::hooks::validate_bindings(session, &self.hooks)?;
         super::pack::validate_bindings(session, self.catalogue.as_ref())?;
         super::physical_map::validate_records(session, &self.physical_edits)?;
+        super::items::validate_policies(session, self)?;
         super::items::validate_item_records(session, &self.item_records)?;
         Ok(())
     }
@@ -311,6 +342,8 @@ fn submit_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: Ord
     super::movement::current_access(session, access)?;
     let input: Input = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
     match input {
+        Input::ProjectCarry(input) => Ok(("configured native project carry providers".into(),
+            super::items::submit_project_carry_config(session, game, access, &input)?)),
         Input::Graft(input) => super::graft::submit_graft(session, game, access, &input),
         Input::Item(input) => super::items::submit_item(session, game, access, &input),
         Input::Institution(input) => super::institutions::submit_institution(session, game, access, &input),
@@ -318,6 +351,7 @@ fn submit_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: Ord
         Input::Overmap(input) => super::overmap::submit_presentation(session, game, access, &input),
         Input::Pack(envelope) => super::pack::submit_pack(session, game, access, &BTreeSet::new(), &envelope),
         Input::Storylet(input) => super::storylets::submit_storylet(session, game, access, &input),
+        Input::ComposedStorylet(input) => super::storylets::submit_composed_storylet(session, game, access, &input),
         Input::Journey(envelope) => {
             let local;
             let roster = if let Some(roster) = roster { roster }
@@ -373,24 +407,35 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
         Input::Overmap(_) => return Err("overmap presentation authoring requires the actual DM seat cut".into()),
         Input::Pack(_) => return Err("pack activation requires the actual DM seat cut".into()),
         Input::Storylet(_) => return Err("storylet activation requires the actual DM seat cut".into()),
+        Input::ComposedStorylet(_) => return Err("storylet composition requires the actual DM seat cut".into()),
         Input::Physical(_) => return Err("physical map edits require the actual native seat and played body".into()),
         Input::Institution(_) => return Err("institution operations require the actual native seat and played body".into()),
         Input::Item(_) => return Err("physical item operations require the actual native seat and played body".into()),
         Input::Graft(_) => return Err("graft carrying requires the actual native seat and played body".into()),
+        Input::ProjectCarry(_) => return Err("project carry configuration requires the actual DM seat cut".into()),
     };
-    if !matches!(batch.version, VERSION | PLACEMENT_VERSION)
+    if !matches!(batch.version, VERSION | PLACEMENT_VERSION | TIME_VERSION)
         || batch.version == VERSION && (!batch.placements.is_empty() || !batch.controls.is_empty())
+        || batch.version < TIME_VERSION && batch.project_carry.is_some()
     { return Err("unsupported VTT admission input version".into()); }
-    if !batch.controls.is_empty() && dm.is_none() {
+    if (!batch.controls.is_empty() || batch.project_carry.is_some()) && dm.is_none() {
         return Err("native character control needs the admitted DM participant".into());
     }
     let mut candidate = session.clone();
+    let configured=if let Some(config)=&batch.project_carry {
+        let mut bindings=GameBindings::decode(&game)?;
+        if config.expected_game!=isocosm::digest(&game) {return Err("project carry admission has a stale game cut".into());}
+        bindings.validate(session)?;
+        super::items::configure_project_carry(session,&mut bindings,
+            dm.ok_or("project carry configuration has no actual DM participant")?,config)?;
+        Some(bindings)
+    } else {None};
     submit_contract_assertions(&mut candidate, &batch.assertions).map_err(|error| error.to_string())?;
-    if batch.characters.is_empty() && batch.placements.is_empty() && batch.controls.is_empty() {
+    if batch.characters.is_empty() && batch.placements.is_empty() && batch.controls.is_empty() && batch.project_carry.is_none() {
         *session = candidate;
         return Ok(("asserted".into(), game));
     }
-    let mut bindings = GameBindings::decode(&game)?;
+    let mut bindings=match configured {Some(bindings)=>bindings,None=>GameBindings::decode(&game)?};
     bindings.validate(session)?;
     let mut accepted = Vec::new();
     for (index, character) in batch.characters.iter().enumerate() {
@@ -425,6 +470,7 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
     bindings.validate(&candidate)?;
     let next = bindings.encode()?;
     *session = candidate;
-    let label = if batch.placements.is_empty() && batch.controls.is_empty() { "developed" } else { "accepted" };
+    if batch.project_carry.is_some() {accepted.push("configured native project carry providers".into());}
+    let label = if batch.placements.is_empty() && batch.controls.is_empty() && batch.project_carry.is_none() { "developed" } else { "accepted" };
     Ok((format!("{label}: {}", accepted.join(", ")), next))
 }

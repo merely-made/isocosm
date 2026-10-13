@@ -9,6 +9,8 @@ mod party;
 mod packs;
 mod physical;
 mod items;
+mod composed_storylet;
+mod institutions;
 mod commands;
 mod messages;
 use messages::{BridgeCommand, BridgeUpdate};
@@ -49,12 +51,15 @@ pub struct NetBridge {
     inbox: Vec<(String, String)>,
     players: Vec<String>,
     endpoints: Vec<[u8; 32]>,
+    local_sender: Option<isonetry::native_table::TableSender>,
     request_ids: RequestIds,
     campaign_outcomes: Vec<Correlated<Result<(), String>>>,
     party_readings: Vec<Correlated<Result<isometry_views::PartyView, String>>>,
     pack_readings: Vec<Correlated<Result<isometry_views::PackReading,String>>>,
     physical_results: Vec<Correlated<Result<isometry_views::PhysicalOutcome,String>>>,
     items_results: Vec<Correlated<Result<isometry_views::ItemsOutcome,String>>>,
+    storylet_physical_results: Vec<Correlated<Result<isometry_views::StoryletPhysicalOutcome,String>>>,
+    institution_results: Vec<Correlated<Result<isometry_views::InstitutionOutcome,String>>>,
     failure: Option<String>,
     action_intents: Vec<ActionIntent>,
 }
@@ -87,12 +92,15 @@ impl NetBridge {
             inbox: Vec::new(),
             players: Vec::new(),
             endpoints: Vec::new(),
+            local_sender: None,
             request_ids: RequestIds::default(),
             campaign_outcomes: Vec::new(),
             party_readings: Vec::new(),
             pack_readings: Vec::new(),
             physical_results: Vec::new(),
             items_results: Vec::new(),
+            storylet_physical_results: Vec::new(),
+            institution_results: Vec::new(),
             failure: None,
             action_intents: Vec::new(),
         }
@@ -104,9 +112,12 @@ impl NetBridge {
         let mut changed = false;
         loop {
             match self.updates.try_recv() {
+                Ok(BridgeUpdate::LocalSender(sender)) => { self.local_sender=sender; changed=true; },
                 Ok(BridgeUpdate::PackReading(read)) => { self.pack_readings.push(read); changed = true; },
                 Ok(BridgeUpdate::PhysicalResult(result)) => { self.physical_results.push(result); changed = true; },
                 Ok(BridgeUpdate::ItemsResult(result)) => { self.items_results.push(result); changed = true; },
+                Ok(BridgeUpdate::StoryletPhysicalResult(result)) => { self.storylet_physical_results.push(result); changed = true; },
+                Ok(BridgeUpdate::InstitutionResult(result)) => { self.institution_results.push(result); changed = true; },
                 Ok(BridgeUpdate::PartyReading(read)) => {
                     self.party_readings.push(read);
                     changed = true;
@@ -150,7 +161,8 @@ impl NetBridge {
                 Ok(BridgeUpdate::Whispers(mut whispers)) => self.inbox.append(&mut whispers),
                 Ok(BridgeUpdate::CampaignFinished(outcome)) => self.campaign_outcomes.push(outcome),
                 Ok(BridgeUpdate::Failed(error)) => self.failure = Some(error),
-                Err(TryRecvError::Empty) | Err(TryRecvError::Disconnected) => break,
+                Err(TryRecvError::Disconnected) => { self.local_sender=None; changed=true; break; },
+                Err(TryRecvError::Empty) => break,
             }
         }
         changed
@@ -247,6 +259,7 @@ impl NetBridge {
     }
 
     pub fn authenticated_endpoints(&self) -> Vec<[u8; 32]> { self.endpoints.clone() }
+    pub fn local_sender(&self) -> Option<isonetry::native_table::TableSender> { self.local_sender }
 
     /// The current change version; the UI redraws when it advances.
     pub fn version(&self) -> u64 {
@@ -299,11 +312,13 @@ async fn run_host(
     let host = match HostNet::bind_with_history(state, campaign, history).await {
         Ok(host) => host,
         Err(error) => {
+            out.emit(BridgeUpdate::LocalSender(None));
             out.emit(BridgeUpdate::Failed(format!("host bind failed: {error}")));
             return;
         },
     };
     host.spawn_accept();
+    out.emit(BridgeUpdate::LocalSender(Some(isonetry::native_table::TableSender::Host)));
     let ticket = host.ticket().await;
     println!("[isometry] hosting. share this ticket to join:\n\n  {ticket}\n");
     out.emit(BridgeUpdate::HostReady {
@@ -331,6 +346,10 @@ async fn run_host(
                     Correlated::new(request,physical::host_request(&host,input).await))); },
                 BridgeCommand::NativeItems { request,input } => { out.emit(BridgeUpdate::ItemsResult(
                     Correlated::new(request,items::host_request(&host,input).await))); },
+                BridgeCommand::NativeComposedStorylet { request,input } => { out.emit(BridgeUpdate::StoryletPhysicalResult(
+                    Correlated::new(request,composed_storylet::host_request(&host,input).await))); },
+                BridgeCommand::NativeInstitution { request,input } => { out.emit(BridgeUpdate::InstitutionResult(
+                    Correlated::new(request,institutions::host_request(&host,input).await))); },
                 BridgeCommand::NativeTime { request, intent } => {
                     let result = native::host_time(&host, intent).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
@@ -359,7 +378,11 @@ async fn run_host(
                 // system), so it never routes one through here. Handled anyway,
                 // as the same request a player would send.
                 BridgeCommand::Action(intent) => {
-                    out.emit(BridgeUpdate::ActionIntents(vec![intent]));
+                    if host.snapshot().await.native.is_some() {
+                        out.emit(BridgeUpdate::Failed("native actions require an admitted body or institution operation".into()));
+                    } else {
+                        out.emit(BridgeUpdate::ActionIntents(vec![intent]));
+                    }
                 },
                 BridgeCommand::Travel {
                     request,
@@ -439,6 +462,7 @@ async fn run_host(
         }
         tokio::time::sleep(Duration::from_millis(80)).await;
     }
+    out.emit(BridgeUpdate::LocalSender(None));
 }
 
 async fn run_client(
@@ -450,13 +474,17 @@ async fn run_client(
     let client = match ClientNet::join(&ticket, &name).await {
         Ok(client) => client,
         Err(error) => {
+            out.emit(BridgeUpdate::LocalSender(None));
             out.emit(BridgeUpdate::Failed(format!("join failed: {error}")));
             return;
         },
     };
     println!("[isometry] joined session as {name}; replaying host log.");
+    let sender=isonetry::native_table::TableSender::Endpoint(client.endpoint_key());
+    let mut sender_announced=false;
     let mut last_applied = u64::MAX;
     loop {
+        if client.connection_closed() { break; }
         let commands = match drain_commands(&commands) {
             Ok(commands) => commands,
             Err(()) => break,
@@ -469,6 +497,10 @@ async fn run_client(
                     Correlated::new(request,physical::client_request(&client,input).await))); },
                 BridgeCommand::NativeItems { request,input } => { out.emit(BridgeUpdate::ItemsResult(
                     Correlated::new(request,items::client_request(&client,input).await))); },
+                BridgeCommand::NativeComposedStorylet { request,input } => { out.emit(BridgeUpdate::StoryletPhysicalResult(
+                    Correlated::new(request,composed_storylet::client_request(&client,input).await))); },
+                BridgeCommand::NativeInstitution { request,input } => { out.emit(BridgeUpdate::InstitutionResult(
+                    Correlated::new(request,institutions::client_request(&client,input).await))); },
                 BridgeCommand::NativeTime { request, intent } => {
                     let result = native::client_time(&client, intent).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
@@ -517,6 +549,7 @@ async fn run_client(
         let applied = client.applied().await;
         if applied != last_applied {
             if let Some(snapshot) = client.state().await {
+                if !sender_announced {out.emit(BridgeUpdate::LocalSender(Some(sender)));sender_announced=true;}
                 last_applied = applied;
                 out.emit(BridgeUpdate::ClientState(snapshot));
             }
@@ -528,6 +561,7 @@ async fn run_client(
         for reason in client.take_rejections().await { out.emit(BridgeUpdate::Failed(reason)); }
         tokio::time::sleep(Duration::from_millis(60)).await;
     }
+    out.emit(BridgeUpdate::LocalSender(None));
 }
 
 #[cfg(test)]

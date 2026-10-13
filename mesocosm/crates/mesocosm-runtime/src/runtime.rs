@@ -392,7 +392,7 @@ impl Runtime {
     pub fn physical_view(&self) -> Result<View, String> {
         self.spatial.version()?;
         let visible = self.view();
-        if self.interim.mode == Mode::Creative || self.spatial.sight.is_none() { return Ok(visible); }
+        if self.interim.mode == Mode::Creative || !self.spatial.has_sight_source() { return Ok(visible); }
         let observer = self.critter().ok_or("marked sight requires the actual played observer")?;
         match self.spatial.sight(self.sim(), observer, &visible)? {
             Some((site, sight)) => self.sighted_view(&site, &sight),

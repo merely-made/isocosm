@@ -21,6 +21,8 @@ pub(super) fn refresh(app:&mut App) {
                 let reader=BorrowedReading::new(session,&cut.visible,&state)?;
                 let mut windows=Vec::new();
                 for binding in state.bindings.iter().filter(|b|b.site==site && cut.visible.shows(b.entity)) {
+                    if state.version>=4 && !session.sim.state().population.get(binding.entity)
+                        .is_some_and(|body|body.resident_site()==Some(site)) {continue;}
                     binding.current(session)?;
                     if !windows.contains(&binding.window) {windows.push(binding.window.clone());}
                 }

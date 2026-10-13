@@ -44,7 +44,12 @@ pub enum Setup { Placements(Vec<Placement>), Driver(Authored), Sighted(SightedSe
 pub enum Admission { Step { action: String }, Arrival, Birth { action: String, parent: Id, ordinal: u64 } }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Transition { pub actor: Id, pub before: Option<Placement>, pub after: Placement, pub admission: Admission }
+pub struct Transition {
+    pub actor: Id, pub before: Option<Placement>, pub after: Placement, pub admission: Admission,
+    /// The selected birth slot's authored range, bound to this actual child.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sight_range: Option<u64>,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Record {
@@ -71,10 +76,24 @@ pub struct Driver {
 }
 
 impl Profile {
-    pub fn validate(&self, sim: &Simulation) -> Result<(), String> {
-        if self.version != 2 && !(self.version == 1 && self.births.is_empty()) {
+    pub(super) fn has_birth_sight(&self) -> bool {
+        self.births.iter().any(|input| input.slots.iter().any(|slot| slot.sight_range.is_some()))
+    }
+
+    pub(super) fn version(&self) -> Result<(), String> {
+        if self.version != 3 && !(self.version == 2 && !self.has_birth_sight())
+            && !(self.version == 1 && self.births.is_empty()) {
             return Err("unsupported authored spatial profile".into());
         }
+        if self.births.iter().flat_map(|input| &input.slots)
+            .any(|slot| slot.sight_range.is_some_and(|range| range > i64::MAX as u64)) {
+            return Err("authored newborn sight range exceeds its bounded physical source".into());
+        }
+        Ok(())
+    }
+
+    pub fn validate(&self, sim: &Simulation) -> Result<(), String> {
+        self.version()?;
         for input in &self.births { input.validate(sim)?; }
         // Reject already-applicable selector overlap instead of choosing
         // entity versus lineage precedence. Future lineage changes are
@@ -124,11 +143,11 @@ impl Game {
         authored.profile.validate(&session.sim)?;
         let mut next = self.clone();
         next.replace(&session.sim, &authored.placements)?;
-        next.version = next.current_version();
         next.driver = Some(Driver { profile: authored.profile.clone(),
             native_source: native_source(session), native_entries: session.entries.len() as u64,
             native_prefix: native_prefix(session, session.entries.len(), session.sim.state().tick),
             native_tick: session.sim.state().tick, initial: next.members.clone(), records: Vec::new() });
+        next.version = next.current_version();
         *self = next;
         Ok(())
     }

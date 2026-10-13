@@ -4,6 +4,8 @@
 use super::*;
 
 pub(super) enum BridgeCommand {
+    NativeComposedStorylet { request:RequestId, input:isometry_views::StoryletPhysicalRequest },
+    NativeInstitution { request:RequestId, input:isometry_views::InstitutionRequest },
     NativeItems { request:RequestId, input:isometry_views::ItemsRequest },
     NativePhysical { request:RequestId, input:isometry_views::PhysicalRequest },
     NativePack { request:RequestId, intent:isometry_views::PackRequest, choreography:Vec<isometry_campaign::native::pack::Choreography> },
@@ -47,6 +49,9 @@ pub(super) enum BridgeCommand {
 }
 
 pub(super) enum BridgeUpdate {
+    StoryletPhysicalResult(Correlated<Result<isometry_views::StoryletPhysicalOutcome,String>>),
+    LocalSender(Option<isonetry::native_table::TableSender>),
+    InstitutionResult(Correlated<Result<isometry_views::InstitutionOutcome,String>>),
     ItemsResult(Correlated<Result<isometry_views::ItemsOutcome,String>>),
     PhysicalResult(Correlated<Result<isometry_views::PhysicalOutcome,String>>),
     PackReading(Correlated<Result<isometry_views::PackReading,String>>),

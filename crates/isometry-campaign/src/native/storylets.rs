@@ -10,7 +10,14 @@ use crate::StoryletEffect;
 use serde::{Serialize,Deserialize};
 use std::collections::BTreeSet;
 
-#[derive(Clone,Debug,Serialize,Deserialize)]
+mod types;
+mod composition;
+mod records;
+pub use types::*;
+pub use composition::{public_outputs,readmit_composed,submit_composed_storylet,prepare_composed_storylet};
+pub use records::validate_composed_records;
+
+#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct StoryletInput {
     pub participant:Id,pub tick:Tick,pub key:String,pub expected_native:String,pub expected_content:String,
@@ -26,7 +33,7 @@ fn resolve(session:&Session,storylet:&crate::StoryletProposal)->Result<crate::St
 
 fn supported(effects:&[StoryletEffect])->Result<(),String> {
     if effects.iter().any(|effect|matches!(effect,StoryletEffect::LocalMap{..}|StoryletEffect::Item{..})) {
-        return Err("This storylet needs map or item placement that is not available in this host yet.".into());
+        return Err("This storylet requires complete supplied physical storylet inputs.".into());
     }
     Ok(())
 }
@@ -64,7 +71,7 @@ pub fn submit_storylet(session:&mut Session,game:Vec<u8>,access:OrdinaryAccess,i
         StoryletEffect::History{event}=>Ok(Assertion::History(event)),
         StoryletEffect::Fact{fact}=>Ok(Assertion::Fact(Fact {about:fact.id,key:format!("{occurrence}:fact:{index}"),
             kind:fact.kind,text:fact.text,tags:fact.tags.into_iter().collect::<BTreeSet<_>>() })),
-        _=>Err("storylet effect requires unavailable placement".into()),
+        _=>Err("storylet effect requires complete supplied physical inputs".into()),
     }).collect::<Result<Vec<_>,String>>()?;
     let mut candidate=session.clone();
     let accepted=candidate.command(Command::Assert(Assertion::Storylet(Applied {key:occurrence,

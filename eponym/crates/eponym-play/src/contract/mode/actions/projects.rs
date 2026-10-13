@@ -7,9 +7,15 @@ use super::*;
 #[serde(deny_unknown_fields)]
 pub struct ProjectPose {
     pub project:ProjectId, pub site:Id, pub window:Window,
-    /// Fixed creation pose. This supplement neither moves nor owns native stock.
+    /// Current fixed pose; explicit drop and completion preserve the origin.
     pub at:[i64;3], pub entry:Key,
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    pub origin:Option<ProjectOrigin>,
 }
+
+#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ProjectOrigin { pub site:Id, pub at:[i64;3] }
 
 pub(super) fn act(session:&mut Session, mode:&ModeState, actions:&mut ActionState,
     actor:&PoseBinding, participant:Id, visible:&View, process:&str, target:Option<Id>,
@@ -32,12 +38,9 @@ pub(super) fn act(session:&mut Session, mode:&ModeState, actions:&mut ActionStat
     let at = crate::walking::to_site(&volume,actor.current(session)?.cell().map_err(debug)?);
     let previous: BTreeSet<_> = session.sim.state().projects.records.keys().copied().collect();
     if let Some(id) = project {
-        let held = session.sim.state().projects.get(id).ok_or("Eponym project is absent")?;
-        let pose = actions.projects.iter().find(|p|p.project == id)
-            .ok_or("Eponym project has no accepted physical location")?;
-        if session.sim.project_site(held) != Some(actor.site) || pose.site != actor.site
-            || pose.at != at || held.carrier.is_some() {
-            return Err("Eponym project work needs its fixed current creation position".into());
+        let location = super::project_carry::project_location(session,mode,actions,id)?;
+        if location.site != actor.site || location.at != at {
+            return Err("Eponym project work needs its actual fixed or explicitly carried position".into());
         }
     }
     let out = session.command(Command::Project(Change::ActOwned {participant,actor:actor.entity,target,
@@ -51,12 +54,17 @@ pub(super) fn act(session:&mut Session, mode:&ModeState, actions:&mut ActionStat
         if !actions.projects.iter().any(|p|p.project == id) {
             if previous.contains(&id) { return Err("Eponym existing project lacks an accepted pose".into()); }
             actions.projects.push(ProjectPose {project:id,site:actor.site,window:actor.window.clone(),at,
-                entry:session.entries.last().ok_or("missing accepted project entry")?.id.clone()});
+                entry:session.entries.last().ok_or("missing accepted project entry")?.id.clone(),
+                origin:Some(ProjectOrigin {site:actor.site,at})});
         }
         if let Some(output) = accepted.acted.output {
             if session.sim.state().population.get(output).and_then(|e|e.resident_site()) != Some(actor.site) {
-                return Err("native Eponym project output is not resident at its creation site".into());
+                return Err("native Eponym project output is not resident at its actual work site".into());
             }
+            let pose=actions.projects.iter_mut().find(|pose|pose.project==id)
+                .ok_or("completed Eponym project lost its physical record")?;
+            if pose.origin.is_none() {pose.origin=Some(ProjectOrigin {site:pose.site,at:pose.at});}
+            pose.site=actor.site; pose.at=at; pose.window=actor.window.clone();
         }
     } else if accepted.acted.output.is_some() { return Err("native project output lacks a project identity".into()); }
     Ok(out)

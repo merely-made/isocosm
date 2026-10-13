@@ -185,7 +185,9 @@ impl ClientSession {
             | NetMessage::Action(_)
             | NetMessage::NativeTime(_)
             | NetMessage::NativeParty(_)
-            | NetMessage::NativeJourney(_) => {}
+            | NetMessage::NativeJourney(_)
+            | NetMessage::NativeItem(_)
+            | NetMessage::NativeInstitution(_) => {}
         }
         Vec::new()
     }

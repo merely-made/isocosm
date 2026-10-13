@@ -13,6 +13,7 @@
 //! to the eater's lexicon (468), which is what a revision draws on.
 
 pub mod body;
+pub mod body_read;
 pub mod boundary;
 pub mod chronicle;
 pub mod program;
@@ -23,6 +24,7 @@ pub mod speciate;
 pub mod tree;
 
 pub use body::*;
+pub use body_read::{BodyRead, PartRead, StockRead};
 pub use chronicle::{Chronicle, Consequence};
 pub use program::Revision;
 pub use reckon::Reading;

@@ -37,7 +37,7 @@ native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-13: generator8/GameSave13 spread profile, actual logged founders and selected author steps, replay and strict version2 document startup source assembled. Exact future-output references placed863. Shared host borrowed actions, explicit pose/profile inputs and consuming standalone/timed owner transfer placed. Geometry clock providers and carried project imports remain open; full E3/C11 acceptance open, source unverified826. |
+| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-13: native physical clocks/anatomy/carry, institution/reveal/composed-storylet consumers and standalone native render/picks source assembled. GameBindings14/protocol17; Eponym modes4–6; Mesocosm Profile3/spatial GameSave5. Pending871–877 together, next878. Independent newborn-template/autonomous-institution/VTT-eye source gaps and final C10/C11/V2/E3/M4 certification open826. |
 | [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | 2026-10-10: reference charter; executable work belongs to the overlay plan, including folded functional and memory gates in E3. |
 
 ## Open items

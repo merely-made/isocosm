@@ -133,7 +133,8 @@ impl LineageBody {
         let doc = entity.body.as_ref().ok_or("a native body with no document")?;
         let mut lineals = Vec::with_capacity(doc.parts.len());
         for (index, geo) in doc.parts.iter().enumerate() {
-            if geo.id != PartId(index as u32) || geo.origin.is_some() {
+            if geo.id != PartId(index as u32) || geo.origin.is_some()
+                || entity.parts.get(&geo.id).is_some_and(|part| part.graft_origin.is_some()) {
                 return Err("native snapshot needs contiguous ids and resolved founding provenance".into());
             }
             let mass_mg = entity.parts.get(&geo.id).map(|part| {

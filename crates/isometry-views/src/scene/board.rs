@@ -37,6 +37,7 @@ use super::tokens::{TokenBodies, owner_tint, yaw_of};
 use super::view::BoardHandle;
 use super::world::BoardWorld;
 use crate::theme::{PANE_GROUND, hex_rgb};
+pub(super) mod native;
 
 /// The producer key the board pane's scene leaf is registered under. Shared so
 /// the view's `custom_leaf` and the host's `register` name one leaf, exactly as
@@ -104,6 +105,7 @@ pub enum BoardPick {
 
 /// One board snapshot as an [`isometer::SceneSource`].
 pub struct BoardSource {
+    native: native::Cache,
     view: BoardHandle,
     tokens: TokenBodies,
     scene: Option<Scene>,
@@ -132,6 +134,7 @@ pub type BoardProducer = SceneProducer<BoardSource>;
 impl BoardSource {
     pub fn new(view: BoardHandle) -> Self {
         Self {
+            native: Default::default(),
             view,
             tokens: TokenBodies::new(),
             scene: None,
@@ -193,16 +196,19 @@ impl BoardSource {
 
     /// The board's placement, once a frame has established it.
     pub fn world(&self) -> Option<BoardWorld> {
+        if self.view.borrow().native.is_some() {return None;}
         self.world
     }
 
     /// What the last ground change cost.
     pub fn ground_cost(&self) -> Option<GroundCost> {
+        if self.view.borrow().native.is_some() {return None;}
         self.ground.as_ref().map(BoardGround::cost)
     }
 
     /// The board's ground, once a frame has read it.
     pub fn ground(&self) -> Option<&BoardGround> {
+        if self.view.borrow().native.is_some() {return None;}
         self.ground.as_ref()
     }
 
@@ -220,6 +226,7 @@ impl BoardSource {
     /// `None` off the map. This is the scene half of the parity gate, and the
     /// seam B3 routes the pointer through.
     pub fn pick(&self, ndc: [f32; 2]) -> Option<BoardPick> {
+        if self.view.borrow().native.is_some() {return self.native_pick(ndc);}
         let scene = self.scene.as_ref()?;
         let world = self.world?;
         let view = self.view.borrow();
@@ -264,6 +271,7 @@ impl BoardSource {
         let size = [request.size[0].max(1), request.size[1].max(1)];
         match &mut self.scene {
             None => {
+                self.native.terrain = None;
                 self.scene = Some(Scene::new(
                     request.device.clone(),
                     request.queue.clone(),
@@ -355,6 +363,7 @@ fn pose_of(
 
 impl SceneSource for BoardSource {
     fn inputs(&mut self, request: &FrameRequest<'_>) -> Result<SceneSignature, String> {
+        if self.view.borrow().native.is_some() {return self.native_inputs(request);}
         let (camera, world) = self
             .framing(request)
             .ok_or("the board cannot frame this pane")?;
@@ -394,6 +403,8 @@ impl SceneSource for BoardSource {
     }
 
     fn frame(&mut self, request: &FrameRequest<'_>) -> Result<Option<wgpu::TextureView>, String> {
+        if self.view.borrow().native.is_some() {return self.native_frame(request);}
+        self.native.terrain=None;self.native.presented=None;self.native.error=None;
         let (camera, world) = self
             .framing(request)
             .ok_or("the board cannot frame this pane")?;
@@ -497,6 +508,7 @@ impl SceneSource for BoardSource {
     }
 
     fn presented_camera(&self) -> Option<SlabCamera> {
+        if self.view.borrow().native.is_some() {return self.native_camera();}
         self.scene.as_ref()?.presented_camera()
     }
 
@@ -510,6 +522,7 @@ impl SceneSource for BoardSource {
 
     /// Retirement is this source's whole GPU release.
     fn retire(&mut self) {
+        self.native=Default::default();
         self.scene = None;
         self.scene_size = [0; 2];
         self.ground = None;

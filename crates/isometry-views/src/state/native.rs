@@ -17,6 +17,8 @@ pub struct Selection {
 
 #[derive(Clone, Debug, Default)]
 pub struct NativeUi {
+    pub scene: crate::NativeSceneUi,
+    pub institutions: crate::InstitutionUi,
     pub packs: crate::PackUi,
     pub party: crate::native_party::PartyUi,
     pub world: Option<NativeWorld>,
@@ -34,6 +36,11 @@ pub struct NativeUi {
     pub items_file_request: Option<ItemsFileAction>,
     pub items_request: Option<ItemsRequest>,
     pub items_quote: Option<(isometry_campaign::native::items::ItemInput,isometry_campaign::native::items::ItemPreview)>,
+    pub storylet_physical_path: TextInput,
+    pub storylet_physical_file_request: Option<crate::StoryletPhysicalFileAction>,
+    pub storylet_physical_request: Option<crate::StoryletPhysicalRequest>,
+    pub storylet_physical_quote: Option<(isometry_campaign::native::storylets::ComposedStoryletInput,
+        isonetry::NativeComposedStoryletResolved)>,
     pub export_path: TextInput,
     pub file_request: Option<TableFileAction>,
     pub endpoints: Vec<[u8; 32]>,

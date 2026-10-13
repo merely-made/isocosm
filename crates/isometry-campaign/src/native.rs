@@ -40,6 +40,8 @@ pub mod storylets;
 pub mod physical_map;
 pub mod institutions;
 pub mod items;
+pub use items::{ProjectCarryPolicy,ProjectCarryConfig,ProjectCustodyWitness,ProjectLocation,
+    submit_project_carry_config,current_project};
 pub mod graft;
 
 mod reading;

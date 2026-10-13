@@ -9,6 +9,7 @@ use isometer::SlabCamera;
 use crate::producer::CameraPolicy;
 mod source;
 pub mod actions;
+pub mod life;
 pub mod handoff;
 pub use source::Producer;
 

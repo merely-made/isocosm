@@ -45,7 +45,7 @@ impl Game {
             at.realized(&session.sim)?;
         }
         self.sight = Some(config.clone());
-        self.version = VERSION;
+        self.version = self.current_version();
         Ok(())
     }
 
@@ -69,7 +69,12 @@ impl Game {
     pub fn sight(&self, sim: &Simulation, observer: Id, visible: &View)
         -> Result<Option<(InSite, Sight)>, String> {
         self.version()?;
-        let Some(config) = &self.sight else { return Ok(None); };
+        let Some(config) = &self.sight else {
+            if self.version == VERSION {
+                return Err("marked newborn sight source has no admitted observer range".into());
+            }
+            return Ok(None);
+        };
         let range = *config.ranges.get(&observer).ok_or("marked sight has no authored range for the current observer")?;
         let at = self.members.get(&observer).ok_or("marked sight observer has no current physical eye binding")?;
         at.realized(sim)?;

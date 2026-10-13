@@ -18,9 +18,8 @@ impl HostSession {
                 if existing != &fact {
                     return Err(format!("conflicting public campaign fact: {}", fact.id));
                 }
-            } else {
-                out.extend(self.try_commit(GameEvent::Fact(fact.clone()))?);
             }
+            out.extend(self.commit_reveal_fact(&fact)?);
             self.campaign.finish_reveal(&fact.id);
         }
         let pending_modifiers: Vec<ItemModifierReveal> =
@@ -103,6 +102,11 @@ impl HostSession {
             // costs -- is the rules system's, so the request is queued for the
             // host app to adjudicate and commit.
             NetMessage::Action(mut intent) => {
+                if self.state.native.is_some() {
+                    return vec![(Recipient::One(from), NetMessage::Rejected {
+                        reason: "native campaigns require an admitted native action".into(),
+                    })];
+                }
                 if !self.peer_owns(from, intent.actor) {
                     return vec![(
                         Recipient::One(from),
@@ -153,6 +157,15 @@ impl HostSession {
                 let accepted = self.peer_endpoints.get(&from).copied()
                     .ok_or_else(|| "native item request arrived without an authenticated endpoint".to_string())
                     .and_then(|endpoint| self.native_items(crate::native_table::TableSender::Endpoint(endpoint), &input));
+                match accepted {
+                    Ok(out) => out,
+                    Err(reason) => vec![(Recipient::One(from), NetMessage::Rejected { reason })],
+                }
+            }
+            NetMessage::NativeInstitution(input) => {
+                let accepted = self.peer_endpoints.get(&from).copied()
+                    .ok_or_else(|| "institution request arrived without an authenticated endpoint".to_string())
+                    .and_then(|endpoint| self.native_institution(crate::native_table::TableSender::Endpoint(endpoint), &input));
                 match accepted {
                     Ok(out) => out,
                     Err(reason) => vec![(Recipient::One(from), NetMessage::Rejected { reason })],
@@ -211,6 +224,10 @@ impl HostSession {
     ///   (reach and turn order are the rules', and the host does not re-derive
     ///   them here).
     fn intent_refusal(&self, from: PeerId, event: &GameEvent) -> Option<String> {
+        if self.state.native.is_some() && matches!(event, GameEvent::TurnAdvance
+            | GameEvent::Map(SessionEvent::TokenFaced { .. })) {
+            return Some("native campaigns require admitted time or physical actions".into());
+        }
         match event {
             // Verdicts. A peer cannot choose whether it hit and for how much,
             // what a condition means, or how its own journey went.
@@ -219,7 +236,9 @@ impl HostSession {
                 | GameEvent::NativeTableResolved(_) | GameEvent::NativeTimeResolved(_)
                 | GameEvent::NativePartyResolved(_) | GameEvent::NativeJourneyResolved(_)
                 | GameEvent::NativeHookResolved(_) | GameEvent::NativePackResolved(_)
-                | GameEvent::NativePhysicalResolved(_) | GameEvent::NativeItemsResolved(_) => {
+                | GameEvent::NativePhysicalResolved(_) | GameEvent::NativeItemsResolved(_)
+                | GameEvent::NativeInstitutionsResolved(_) | GameEvent::NativeSecretResolved(_)
+                | GameEvent::NativeComposedStoryletResolved(_) => {
                 Some("native results are admitted by the host".to_owned())
             },
             GameEvent::TravelResolved { .. } => {

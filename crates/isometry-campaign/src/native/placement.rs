@@ -57,7 +57,7 @@ pub struct ControlBinding {
 }
 
 impl CharacterPlacement {
-    fn check(&self, session: &Session, entity: Id, placed: bool) -> Result<(), String> {
+    pub(crate) fn check(&self, session: &Session, entity: Id, placed: bool) -> Result<(), String> {
         if self.window.depth < 0 || matches!(self.places.cap, Cap::Own(sides) if sides.contains(&0)) {
             return Err("character geometry contains an invalid authored depth or patch cap".into());
         }

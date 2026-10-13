@@ -2,7 +2,24 @@
 
 **Date:** 2026-09-25
 
-**Latest source, 2026-10-13:** GameBindings12 and protocol/ALPN14 add typed
+**Latest authority and physical source, 2026-10-13:** GameBindings14 and
+protocol/ALPN17 connect authenticated institution operations, paired native
+reveals and composed storylet quote/apply through the actual standalone host.
+Composed inputs name complete map edits, placements and resident item/project
+operations. Each map effect matches its unique native Place.map association;
+private eligibility stays in the host, and public results omit private
+requirements, cast and store contents. Old table fact/proposal history remains
+inert. GameBindings13 carry policies use explicitly named native capacities
+and actual conserved burden; carried work follows the authenticated carrier
+position, including eligible co-located workers. Missing/stale/transit inputs
+refuse. Native campaigns refuse legacy action/facing/time/door mutations.
+The standalone board now renders native terrain, body geometry and item poses
+with explicit token/cell pick mappings; unavailable inputs clear the picture.
+Character placement still has no actual-eye/range/nonzero-yaw producer.
+All seven choices871 to877 remain pending together864, next878. Source-only826;
+compiler/tests/fixtures/tuning and full V2 acceptance remain deferred.
+
+**Earlier source, 2026-10-13:** GameBindings12 and protocol/ALPN14 add typed
 Carry/Drop/Equip/Unequip records through declared native custody providers,
 complete authored processes, exact selected debits and allowed mounts. Native
 items follow their carrier's admitted journey and arrival without changing

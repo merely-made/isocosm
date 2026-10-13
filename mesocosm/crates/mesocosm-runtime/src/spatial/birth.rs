@@ -20,6 +20,9 @@ pub struct BirthSlot {
     pub offset_from_parent: [i64; 3], pub yaw_from_parent: Yaw,
     pub eye_from_child: [i64; 3], pub window: Window,
     pub operations: BTreeMap<String, Operation>,
+    /// Explicit range for this accepted child only; never inherited from its parent.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sight_range: Option<u64>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -38,6 +41,9 @@ impl BirthInput {
     pub(super) fn validate(&self, sim: &Simulation) -> Result<(), String> {
         if !sim.genesis().rules.birth_profiles.contains_key(&self.profile) {
             return Err("game birth input names no native birth profile".into());
+        }
+        if self.slots.iter().any(|slot| slot.sight_range.is_some_and(|range| range > i64::MAX as u64)) {
+            return Err("authored newborn sight range exceeds its bounded physical source".into());
         }
         match &self.parent {
             BirthParent::Entity(parent) if sim.state().population.get(parent.0).is_none() =>
@@ -107,10 +113,17 @@ impl Game {
                 patch: *patch, body_revision: r.child_revision, terrain_revision: r.terrain_revision.clone(),
                 pose: Pose { at: pose.at, yaw: pose.yaw }, eye, window: slot.window.clone(),
                 operations: slot.operations.clone(), places: Some(native.places), resident_since: Some(r.child_visit) };
+            let sight_range = slot.sight_range;
             if self.members.contains_key(&r.child) { return Err("biological birth reuses a saved physical identity".into()); }
             changes.push(profile::Transition { actor: r.child, before: None, after: after.clone(),
-                admission: profile::Admission::Birth { action: r.action.clone(), parent: r.parent, ordinal: r.ordinal } });
+                admission: profile::Admission::Birth { action: r.action.clone(), parent: r.parent, ordinal: r.ordinal },
+                sight_range });
             self.members.insert(r.child, after);
+            if let Some(range) = sight_range {
+                self.sight.get_or_insert_with(|| SightConfig { version: 1, ranges: BTreeMap::new() })
+                    .ranges.insert(r.child, range);
+                self.version = self.current_version();
+            }
         }
         Ok(changes)
     }

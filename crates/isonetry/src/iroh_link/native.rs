@@ -4,6 +4,15 @@
 use super::*;
 
 impl HostNet {
+    pub async fn quote_native_institution(&self,input:&crate::NativeInstitutionInput)
+        ->Result<crate::NativeInstitutionQuote,String> {
+        self.session.lock().await.quote_native_institution(crate::native_table::TableSender::Host,input)
+    }
+    pub async fn native_institution(&self,input:&crate::NativeInstitutionInput)->Result<(),String> {
+        let out=self.session.lock().await.native_institution(crate::native_table::TableSender::Host,input)?;
+        dispatch(&self.peers,out).await;
+        Ok(())
+    }
     pub async fn quote_native_items(&self,input:&isometry_campaign::native::items::ItemInput)
         ->Result<isometry_campaign::native::items::ItemPreview,String> {
         self.session.lock().await.quote_native_items(crate::native_table::TableSender::Host,input)
@@ -98,6 +107,9 @@ impl HostNet {
 }
 
 impl ClientNet {
+    pub async fn native_institution(&self,input:crate::NativeInstitutionInput)->Result<(),String> {
+        write_frame(&mut *self.send.lock().await,&crate::NetMessage::NativeInstitution(input)).await
+    }
     pub async fn native_items(&self,input:isometry_campaign::native::items::ItemInput)->Result<(),String> {
         write_frame(&mut *self.send.lock().await,&crate::NetMessage::NativeItem(input)).await
     }

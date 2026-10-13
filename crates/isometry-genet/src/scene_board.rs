@@ -172,7 +172,8 @@ impl SceneBoard {
                 ctx.ui_zoom
             );
         }
-        let error = self.producer.borrow().last_error().map(str::to_owned);
+        let producer=self.producer.borrow();
+        let error=producer.last_error().or_else(||producer.source().native_error()).map(str::to_owned);
         if self.reported != error {
             if let Some(why) = &error {
                 eprintln!("[isometry] scene board: {why}");

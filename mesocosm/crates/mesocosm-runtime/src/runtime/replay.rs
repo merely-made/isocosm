@@ -45,8 +45,14 @@ impl GameSave {
         Self { version: crate::spatial::UNMARKED_VERSION, native, spatial: crate::spatial::Game::default() }
     }
     pub fn check(&self) -> Result<(), String> {
-        if !(1..=crate::spatial::VERSION).contains(&self.version)
-            || (self.version == crate::spatial::VERSION) != self.spatial.sight.is_some() {
+        let current = self.spatial.current_version();
+        let supported = match self.version {
+            1..=crate::spatial::UNMARKED_VERSION => current == crate::spatial::UNMARKED_VERSION,
+            crate::spatial::SIGHT_VERSION => current == crate::spatial::SIGHT_VERSION,
+            crate::spatial::VERSION => current == crate::spatial::VERSION,
+            _ => false,
+        };
+        if !supported {
             return Err("unsupported Mesocosm game save".into());
         }
         self.spatial.version()

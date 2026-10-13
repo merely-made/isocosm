@@ -82,7 +82,7 @@ impl SceneHandle {
                 return Err("played critter is off-site; physical close-up withdrawn".into());
             }
             let mut visible = isocosm::directing::readings::view(&session.sim, subject.unwrap_or(Id::MAX), mode);
-            if mode == Mode::Survival && game.sight.is_some() {
+            if mode == Mode::Survival && game.has_sight_source() {
                 let observer = subject.ok_or("marked sight requires this window's actual played observer")?;
                 let (space, sight) = game.sight(&session.sim, observer, &visible)?
                     .ok_or("marked sight source is missing")?;

@@ -12,13 +12,19 @@ mod records;
 mod current;
 mod custody;
 mod metadata;
+mod project_carry;
 pub use types::{EntityRef,ItemPlacement,ItemBindingInput,ItemAction,ItemInput,BoundItem,
-    ProjectPosition,PhysicalItemRecord,ItemPreview,ItemCustodyInput,ItemMount,ItemDrop,ItemPose};
+    ProjectPosition,PhysicalItemRecord,ItemPreview,ItemCustodyInput,ItemMount,ItemDrop,ItemPose,
+    ProjectCarryPolicy,ProjectCarryConfig,ProjectCustodyWitness,ProjectLocation};
+pub use project_carry::{current_project,submit_project_carry_config,validate_policies};
 pub use records::validate_item_records;
 pub use current::current_item;
 pub use metadata::unmarked_inventory;
 
 pub fn source(session:&Session)->Key {super::physical_map::physical_source(session)}
+
+pub(super) fn configure_project_carry(session:&Session,game:&mut GameBindings,dm:Id,input:&ProjectCarryConfig)
+    ->Result<(),String> {project_carry::configure_rows(session,game,dm,input)}
 
 fn actor_position(session:&Session,game:&GameBindings,actor:Id)->Result<PositionBinding,String> {
     let (key,_)=game.characters().iter().find(|(_,binding)|binding.entity==actor)
@@ -31,7 +37,7 @@ fn actor_position(session:&Session,game:&GameBindings,actor:Id)->Result<Position
 fn check(session:&Session,game:&[u8],access:OrdinaryAccess,input:&ItemInput)
     ->Result<(GameBindings,PositionBinding),String> {
     super::movement::current_access(session,access)?;
-    let version=if matches!(&input.action,ItemAction::Custody(_)) {2} else {1};
+    let version=input_version(&input.action);
     if input.version!=version || input.expected_native!=source(session) || input.expected_game!=isocosm::digest(&game)
         || access.subject!=Some(EntityHandle(input.actor)) {
         return Err("item input differs from its actual native, game or controlled body cut".into());
@@ -60,6 +66,10 @@ fn check(session:&Session,game:&[u8],access:OrdinaryAccess,input:&ItemInput)
     let position=actor_position(session,&bindings,input.actor)?;
     target_here(session,&bindings,access,&position,input)?;
     Ok((bindings,position))
+}
+
+pub(super) fn input_version(action:&ItemAction)->u32 {
+    match action {ItemAction::ProjectCarry {..}=>3,ItemAction::Custody(_)=>2,_=>1}
 }
 
 fn target_here(session:&Session,game:&GameBindings,access:OrdinaryAccess,position:&PositionBinding,input:&ItemInput)
@@ -111,30 +121,32 @@ fn selected(input:&ItemInput)->&[DebitSelection] {
 
 fn project_position(session:&Session,game:&GameBindings,position:&PositionBinding,id:isocosm::projects::ProjectId,
     existing:bool)->Result<ProjectPosition,String> {
-    let project=session.sim.state().projects.get(id).ok_or("selected native project is absent")?;
-    if project.carrier.is_some() {return Err("carried VTT projects need a complete custody and capacity provider".into());}
     let at=position.current(session)?;
-    let place=if existing {game.item_records().iter().rev().filter_map(|record|record.project.as_ref())
-        .find(|held|held.project==id).cloned().ok_or("project has no accepted physical creation position")?}
+    let place=if existing {
+        let held=project_carry::location(session,game.item_records(),id,&|actor|actor_position(session,game,actor))?;
+        ProjectPosition {project:id,site:held.site,at:held.at,created_site:held.created_site,created_at:held.created_at}}
         else {ProjectPosition {project:id,site:position.placement.site,at,
             created_site:position.placement.site,created_at:at}};
-    if project.site!=place.site || place.site!=position.placement.site || place.at!=at {
-        return Err("project work is not at its fixed actual creation position".into());
+    let project=session.sim.state().projects.get(id).ok_or("selected native project is absent")?;
+    if session.sim.project_site(project)!=Some(place.site) || place.site!=position.placement.site || place.at!=at {
+        return Err("project work is not at its actual fixed or carried resident point".into());
     }
     Ok(place)
 }
 
 fn perform(session:&mut Session,game:&GameBindings,access:OrdinaryAccess,input:&ItemInput,position:&PositionBinding,
-    preview:&mut ItemPreview)->Result<(Option<BoundItem>,Option<ProjectPosition>),String> {
+    preview:&mut ItemPreview)->Result<(Option<BoundItem>,Option<ProjectPosition>,Option<ProjectCustodyWitness>,Option<PositionBinding>),String> {
     let participant=access.participant.0;
     match &input.action {
-        ItemAction::AuthorBind(binding)=>Ok((Some(placement::bind(session,game,binding,None)?),None)),
+        ItemAction::AuthorBind(binding)=>Ok((Some(placement::bind(session,game,binding,None)?),None,None,None)),
         ItemAction::AuthorOwn(lot)=>{
             session.command(Command::Assert(isocosm::asserted::Assertion::StockOwnership(lot.clone())))?;
-            Ok((None,None))
+            Ok((None,None,None,None))
         },
         ItemAction::Project {process,target,project,lots,selections,output}=>{
             let prior=project.map(|id|project_position(session,game,position,id,true)).transpose()?;
+            let carrier=project.and_then(|id|session.sim.state().projects.get(id)).and_then(|project|project.carrier)
+                .map(|actor|actor_position(session,game,actor)).transpose()?;
             let outcome=session.command(Command::Project(Change::ActOwned {participant,actor:input.actor,
                 target:*target,process:process.clone(),project:*project,cause:None,lots:lots.clone(),selections:selections.clone()}))?;
             let owned:OwnedProjectActed=serde_json::from_str(&outcome).map_err(|error|error.to_string())?;
@@ -151,24 +163,29 @@ fn perform(session:&mut Session,game:&GameBindings,access:OrdinaryAccess,input:&
             if binding.as_ref().is_some_and(|binding|binding.placement.site!=place.site || binding.placement.at!=place.at) {
                 return Err("completed item leaves the project's actual fixed position".into());
             }
-            Ok((binding,Some(place)))
+            Ok((binding,Some(place),None,carrier))
         },
         ItemAction::Consent {project,owner,worker,grant,process,cause}=>{
             session.command(Command::Project(Change::Consent {participant,actor:input.actor,project:*project,
                 owner:*owner,worker:*worker,grant:*grant,process:process.clone(),cause:cause.clone()}))?;
-            Ok((None,None))
+            Ok((None,None,None,None))
         },
         ItemAction::Act {process,target,cause,selections}=>{
             let outcome=session.command(Command::ActOwned {participant,actor:input.actor,target:*target,
                 process:process.clone(),cause:cause.clone(),selections:selections.clone()})?;
             let acted:OwnedActed=serde_json::from_str(&outcome).map_err(|error|error.to_string())?;
             if !acted.receipt.accepted() {return Err(format!("native item act was not admitted: {:?}",acted.receipt.outcome));}
-            Ok((None,None))
+            Ok((None,None,None,None))
         },
         ItemAction::Custody(_)=>{
             let (binding,acted)=custody::perform(session,game.item_records(),position,input,participant)?;
             preview.custody=Some(acted);
-            Ok((binding,None))
+            Ok((binding,None,None,None))
+        },
+        ItemAction::ProjectCarry {..}=>{
+            let (place,witness)=project_carry::perform(session,game.item_records(),position,input,
+                participant,project_carry::provider(game,input.actor)?)?;
+            Ok((None,Some(place),Some(witness),None))
         },
     }
 }
@@ -177,11 +194,12 @@ fn candidate(session:&Session,mut game:GameBindings,access:OrdinaryAccess,input:
     preview:&mut ItemPreview)->Result<(Session,Vec<u8>),String> {
     let mut next=session.clone();
     let start=next.entries.len();
-    let (binding,project)=perform(&mut next,&game,access,input,&position,preview)?;
+    let (binding,project,project_custody,project_carrier_position)=perform(&mut next,&game,access,input,&position,preview)?;
     preview.binding=binding.clone();
     let record=PhysicalItemRecord {input:input.clone(),participant:access.participant.0,actor_position:position,
         entries:next.entries[start..].iter().map(|entry|entry.id.clone()).collect(),
-        outcomes:next.entries[start..].iter().map(|entry|entry.outcome.clone()).collect(),binding,project};
+        outcomes:next.entries[start..].iter().map(|entry|entry.outcome.clone()).collect(),binding,project,
+        project_custody,project_carrier_position};
     game.record_item(record);
     game.validate(&next)?;
     let bytes=game.encode()?;

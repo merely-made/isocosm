@@ -47,7 +47,7 @@ impl Game {
             let input = inputs.iter().find(|r| r.request.actor == report.actor).ok_or("arrival input missing")?;
             let after = self.arrival_placement(input, *patch)?;
             changes.push(profile::Transition { actor: report.actor, before: self.members.get(&report.actor).cloned(),
-                after: after.clone(), admission: profile::Admission::Arrival });
+                after: after.clone(), admission: profile::Admission::Arrival, sight_range: None });
             self.members.insert(report.actor, after);
         }
         Ok(changes)

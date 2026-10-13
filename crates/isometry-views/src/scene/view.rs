@@ -27,6 +27,7 @@ use crate::state::UiState;
 
 /// The board as the producer sees it.
 pub struct BoardView {
+    pub(super) native: Option<Result<Rc<super::board::native::Picture>,String>>,
     pub map: MapDocument,
     pub geo: IsoGeometry,
     /// Board-origin offset inside the pane, logical px.
@@ -50,6 +51,7 @@ pub type BoardHandle = Rc<RefCell<BoardView>>;
 impl BoardView {
     pub fn new(map: MapDocument) -> Self {
         Self {
+            native: None,
             tallest: tallest(&map),
             map,
             geo: IsoGeometry::default(),
@@ -80,6 +82,7 @@ impl BoardView {
     /// for the overlays laid on top of it — a token step or a pan is not a
     /// regrow — and the map is cloned only when one of them differs.
     pub fn sync(&mut self, ui: &UiState) {
+        self.native=ui.native.world.as_ref().map(|_|super::board::native::read(ui));
         self.geo = ui.geo;
         self.camera = ui.camera;
         self.pane = ui.viewport;

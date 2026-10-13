@@ -2,31 +2,17 @@
 
 **Date:** 2026-09-18
 
-*Names, 2026-09-22 (wing design record, rulings 109 to 111): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. The rename landed on 2026-09-24; verbatim rulings, quotations and dated lines keep the old words as history (ruling 198).*
-
-**Current choices, 2026-10-13:** rulings through870 are the accepted record.
-Explicit process goal directives, support-backed institution operations and
-physical map quote/apply are source-assembled with actual host consumers.
-GameBindings12 and protocol/ALPN14 retain physical edits and item custody;
-borrowed Eponym actions/timed owner transfer, Mesocosm Carry callers and
-pack affinity/provenance admission are source-assembled. Choices871 to876
-are pending together864; next unused877.
-accepted choreography reaches runtime stylesheets. Source remains unverified826.
-865 requires explicit DM pack preview/acceptance;866 retains every served
-goal;867 keeps authored/member polity disagreements;868 configurable faction
-and biome layers;869 always sharp undisclosed clipping;870 optional thumbnails.
-All six were answered together864. Their bounded native records, saved
-catalogue and actual pack/Hook/disclosed-map callers are source-assembled,
-unverified826. Complete terrain/condition/claim disclosure is pending871;
-next unused872. Broader institution/process and physical map actuation remain
-source work, and full V2/E3/M4 acceptance stays open.
-
-**Source checkpoint, 2026-10-13:**
-863's exact produced-output references and C11's Eponym founding, replay and
-actual startup are source-assembled alongside Mesocosm's spread consumer.
-H0 current-Hello and connection-generation custody source is placed. All
-source remains uncompiled and untested under826. C9 is historically
-certified/merged; C10/C11 final certification and complete V2/E3/M4 stay open.
+**Latest migration, 2026-10-13:** GameBindings14/protocol17 connect native
+institution, paired reveal, composed physical storylet and project-carry
+consumers. Standalone VTT render/picks now use actual native geometry and
+explicit identity mappings. Eponym modes4/5 retain physical clock/project
+and actual-eye sight; mode6 initial-life receipts reference genuine Take,
+with death succession held for companion law877. Borrowed anatomy keeps
+native graft/stock identities. Shared Mesocosm clock uses its actual provider;
+Profile3/spatial GameSave5 add only explicitly supplied actual-child ranges.
+Accepted rulings end870; pending871 to877 remain together864, next878.
+C9 is historically certified; C10/C11/full products and all final migrated
+state verification remain open. Compiler/tests/fixtures/tuning are deferred826.
 
 **Earlier status, 2026-10-10:** living design record; the plan review
 rulings 793 to 804 are applied. The native migration push is integrated

@@ -28,8 +28,11 @@ impl App {
         ctx.runner.update(|ui| ui.sync_overmap_source_time());
         self.pump_native_time(ctx);
         self.pump_native_table(ctx);
+        self.pump_native_scene(ctx);
         self.pump_native_physical(ctx);
         self.pump_native_items(ctx);
+        self.pump_native_institutions(ctx);
+        self.pump_native_composed_storylet(ctx);
         self.pump_native_party(ctx);
         self.pump_native_packs(ctx);
         // Cheap flags first: this tail runs after every dispatch, and the save
@@ -51,6 +54,8 @@ impl App {
             self.pump_net(ctx);
             self.pump_native_physical(ctx);
             self.pump_native_items(ctx);
+            self.pump_native_institutions(ctx);
+            self.pump_native_composed_storylet(ctx);
             self.pump_native_party(ctx);
             self.pump_native_packs(ctx);
             self.refresh_source_history(ctx);
@@ -206,6 +211,8 @@ impl App {
         self.pump_net(ctx);
         self.pump_native_physical(ctx);
         self.pump_native_items(ctx);
+        self.pump_native_institutions(ctx);
+        self.pump_native_composed_storylet(ctx);
         self.pump_native_party(ctx);
         self.refresh_source_history(ctx);
         self.sync_native_choreography(ctx);
@@ -316,7 +323,7 @@ impl App {
                 // The actor rules each crossing against current authority state
                 // and commits its regional consequences under the same lock.
                 // Sequential commands also handle several players leaving at once.
-                if self.net_is_host {
+                if self.net_is_host && runner.state().native.world.is_none() {
                     let on_doors: Vec<TokenId> = {
                         let ui = runner.state();
                         ui.map

@@ -32,6 +32,7 @@ impl World {
             let state = eponym_play::contract::mode::ModeState::decode(&handoff.game)?
                 .ok_or("Eponym handoff lacks its marked mode state")?;
             for binding in &state.bindings { binding.current(&handoff.native)?; }
+            state.validate_native(&handoff.native)?;
             Ok::<(), String>(())
         })();
         if let Err(why) = checked { return Err((handoff, why)); }

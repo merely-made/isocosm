@@ -33,6 +33,7 @@ pub enum ItemAction {
     Act { process:Key,target:Option<Id>,cause:Option<Key>,selections:Vec<DebitSelection> },
     AuthorOwn(isocosm::projects::StockLot),
     Custody(ItemCustodyInput),
+    ProjectCarry { project:ProjectId,carried:bool },
 }
 
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
@@ -77,9 +78,35 @@ pub struct ProjectPosition {
 
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
 #[serde(deny_unknown_fields)]
+pub struct ProjectCarryPolicy {pub character:Key,pub entity:Id,pub provider:Key}
+
+#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ProjectCarryConfig {
+    pub kind:String,pub version:u32,pub expected_native:Key,pub expected_game:Key,
+    pub policies:Vec<ProjectCarryPolicy>,
+}
+
+#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ProjectCustodyWitness {pub provider:Key,pub receipt:isocosm::projects::Custody}
+
+/// A project's conserved ledger has a point, not an invented item body/mount.
+#[derive(Clone,Debug,PartialEq,Eq)]
+pub struct ProjectLocation {
+    pub project:ProjectId,pub site:Id,pub at:[i64;3],pub window:PlacementWindow,pub places:Rules,
+    pub carrier:Option<Id>,pub created_site:Id,pub created_at:[i64;3],
+}
+
+#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct PhysicalItemRecord {
     pub input:ItemInput,pub participant:Id,pub actor_position:PositionBinding,
     pub entries:Vec<Key>,pub outcomes:Vec<String>,pub binding:Option<BoundItem>,pub project:Option<ProjectPosition>,
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    pub project_custody:Option<ProjectCustodyWitness>,
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    pub project_carrier_position:Option<PositionBinding>,
 }
 
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]

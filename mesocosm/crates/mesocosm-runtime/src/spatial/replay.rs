@@ -94,6 +94,7 @@ impl Game {
             }
             if changes.len() != record.changes.len() || changes.iter().zip(&record.changes).any(|(actual, saved)| {
                 actual.actor != saved.actor || actual.admission != saved.admission
+                    || actual.sight_range != saved.sight_range
                     || !physical(&actual.after, &saved.after)
                     || match (&actual.before, &saved.before) {
                         (None, None) => false,

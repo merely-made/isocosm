@@ -6,7 +6,7 @@ use cambium_rootstock::{ProducedTexture,ProducerContext,TextureProducer};
 use isometer::{BodySignature,DeclaredExtentVolumes,FrameRequest,GroundTerrain,Scene,SceneBody,
     SceneFrame,SceneHost,SceneProducer,SceneSignature,SceneSource,SceneVolumes,SubjectKey,TerrainSource};
 use isometer::lens::{BrickMap,Grade};
-use crate::producer::{scene_pose,BODY_BUDGET,PALETTE};
+use crate::producer::{BODY_BUDGET,PALETTE};
 
 pub struct Producer {handle:SceneHandle,inner:SceneProducer<Source>}
 
@@ -89,7 +89,7 @@ impl SceneSource for Source {
         };
         let p=&input.picture.presentation;
         let bodies=input.picture.bodies.iter().map(|body|BodySignature {
-            subject:SubjectKey(body.entity),revision:body.revision,pose:scene_pose(&body.document,body.pose,p.scale),
+            subject:SubjectKey(body.entity),revision:body.revision,pose:feet_pose(body,p.scale),
             scale:p.scale,grounded:true,
             tint:if Some(body.entity)==input.picture.played {p.played_tint}else{p.other_tint},
             always_visible:Some(body.entity)==input.picture.played,
@@ -113,7 +113,7 @@ impl SceneSource for Source {
             }
             let volumes=DeclaredExtentVolumes::from_documents(picture.bodies.iter().map(|body|&body.document),p.material);
             let bodies:Vec<_>=picture.bodies.iter().map(|body|SceneBody {
-                subject:SubjectKey(body.entity),document:&body.document,pose:scene_pose(&body.document,body.pose,p.scale),
+                subject:SubjectKey(body.entity),document:&body.document,pose:feet_pose(body,p.scale),
                 scale:p.scale,grounded:true,tint:if Some(body.entity)==picture.played {p.played_tint}else{p.other_tint},
                 materials:&[],always_visible:Some(body.entity)==picture.played,
             }).collect();
@@ -134,4 +134,22 @@ impl SceneSource for Source {
     fn presented_camera(&self)->Option<SlabCamera> {self.presented}
     fn cached_bodies(&self)->usize {self.scene.as_ref().map_or(0,Scene::cached_bodies)}
     fn retire(&mut self) {self.scene=None;self.gpu=None;self.terrain=None;self.blank=None;self.presented=None;self.size=[0;2];}
+}
+
+/// MotionPose is the accepted feet centre. Rotate the document about its
+/// native root, then stand its rotated horizontal centre at those exact quanta.
+/// SceneBody's existing grounded lowering supplies the document's floor.
+fn feet_pose(body:&eponym_play::contract::mode::PictureBody,scale:f32)->isometer::Pose {
+    use isometer::core::Yaw;
+    let feet=body.pose.position.map(|n|n as f32/eponym_play::MOTION_SCALE as f32);
+    let bounds=body.document.aabb();
+    let x=(bounds.min[0] as f32+bounds.max[0] as f32)*0.5;
+    let z=(bounds.min[2] as f32+bounds.max[2] as f32)*0.5;
+    let (centre,yaw)=match body.yaw {
+        Yaw::Zero=>([x,z],0.0),
+        Yaw::Quarter=>([z,-x],std::f32::consts::FRAC_PI_2),
+        Yaw::Half=>([-x,-z],std::f32::consts::PI),
+        Yaw::ThreeQuarter=>([-z,x],-std::f32::consts::FRAC_PI_2),
+    };
+    isometer::Pose {position:[feet[0]-centre[0]*scale,feet[1],feet[2]-centre[1]*scale],yaw_radians:yaw}
 }

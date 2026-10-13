@@ -25,6 +25,9 @@ pub fn resolve_transition(
     token: TokenId,
     request: RequestId,
 ) -> Result<TransitionResolved, GameError> {
+    if state.native.is_some() {
+        return Err(GameError::Native("native doorway travel requires an admitted journey and arrival".into()));
+    }
     require_token(state, token)?;
     let at = state.map.token(token).map(|t| t.at).unwrap_or_default();
     let from_map = state

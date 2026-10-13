@@ -1469,3 +1469,29 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   is inferred from Proceed/Go ahead. Next unused874. Physical items, explicit
   graft carrying, host inspection and supplied live sight source proceed
   independently; all compiler/tests/fixtures/probes/tuning remain deferred826.
+
+- **2026-10-13, physical host/institution migration source:** protocol/ALPN15
+  carries authenticated native institution requests through both hosts and
+  refuses native campaigns' legacy action/facing/time mutation paths. Eponym
+  mode4 retains explicit clock geometry and carried/relocated project records;
+  mode5 adds supplied range/actual-eye sight and saved yaw rendering. The host
+  clock uses its single candidate Session and paired product bytes. Native
+  anatomy and succession callers are still being placed. Pending choices871
+  to876 remain one batch864; next877. Source is uncompiled and untested under826.
+  C9 remains historically certified; C10/C11/full V2/E3/M4 acceptance stays open.
+
+- **2026-10-13, combined physical host source checkpoint:** GameBindings14,
+  protocol/ALPN17, Eponym modes4–6 and Mesocosm Profile3/spatial GameSave5 now
+  connect actual clocks, supplied eye/ranges, borrowed native anatomy, carried
+  work, authenticated institutions, paired public reveals, complete physical
+  storylets and native standalone render/picks. Complete geometry, recipes,
+  material quantities/lots and identity mappings remain explicit author inputs.
+  Private storylet requirements/cast remain in the actual host. Legacy metadata
+  stays inert; native worlds refuse old action/facing/time/door mutations.
+  Initial existing-life selection is connected; death succession waits for its
+  companion eligibility/absence law877. All seven pending choices871 to877
+  were collected together864; next878. Further independent source gaps are
+  newborn walking/destination templates, native autonomous institution producers
+  and VTT actual-eye grammar. Wider binding adapters remain explicitly unbuilt346.
+  No compiler/tests/fixtures/probes/tuning826. C9 stays historically certified;
+  C10/C11/full V2/E3/M4 acceptance remains open.

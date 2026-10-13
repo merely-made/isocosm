@@ -6,6 +6,7 @@
 
 use super::*;
 use crate::timed_action::{TimedAction,Contribution,ContributionState,LimbBinding,StrikeReceipt};
+use crate::anatomy::AnatomyView;
 use wing_functions::{NodeKind,NodeId,PartRef,Operator,EvaluationRequest,EvaluationError,EffectReport};
 
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
@@ -49,7 +50,7 @@ impl ChargeState {
         Ok(())
     }
 
-    pub(super) fn prepare(&mut self, record:&AnatomyRecord, direction:Direction, now:Tick) -> Result<String,String> {
+    pub(super) fn prepare(&mut self, record:AnatomyView<'_>, direction:Direction, now:Tick) -> Result<String,String> {
         if self.action.is_some() { return Err("Eponym action already prepared".into()); }
         let (node,part) = self.network.nodes.iter().find_map(|(id,node)| match node.kind {
             NodeKind::Effect{part} if part.subject == self.subject.0 && record.document.part(PartId(part.part))
@@ -61,7 +62,7 @@ impl ChargeState {
         Ok(format!("prepared {direction:?}"))
     }
 
-    pub(super) fn join(&mut self, record:&AnatomyRecord, policy:&CombatPolicy, part:PartId) -> Result<String,String> {
+    pub(super) fn join(&mut self, record:AnatomyView<'_>, policy:&CombatPolicy, part:PartId) -> Result<String,String> {
         let action = self.action.as_mut().ok_or("Eponym action is not prepared")?;
         if action.contributors.contains_key(&part) || action.contributors.len() >= policy.timed.max_contributors
             || !record.document.part(part).is_some_and(|p|!p.severed) {
@@ -75,7 +76,7 @@ impl ChargeState {
         Ok(format!("joined part {}",part.0))
     }
 
-    pub(super) fn reconcile(&mut self, record:&AnatomyRecord) {
+    pub(super) fn reconcile(&mut self, record:AnatomyView<'_>) {
         if let Some(action) = &mut self.action {
             for contribution in action.contributors.values_mut() {
                 if record.document.part(contribution.binding.part).is_some_and(|p|!p.severed) {
@@ -85,7 +86,7 @@ impl ChargeState {
         }
     }
 
-    pub(super) fn charge(&mut self, record:&AnatomyRecord, policy:&CombatPolicy, tick:Tick) -> Result<String,String> {
+    pub(super) fn charge(&mut self, record:AnatomyView<'_>, policy:&CombatPolicy, tick:Tick) -> Result<String,String> {
         self.reconcile(record);
         let action = self.action.as_mut().ok_or("Eponym action is not prepared")?;
         if action.last_tick.0.checked_add(1) != Some(tick.0)
@@ -118,7 +119,7 @@ impl ChargeState {
         Ok(outcomes.join("\n"))
     }
 
-    pub(super) fn release(&mut self, record:&AnatomyRecord, policy:&CombatPolicy, tick:Tick) -> Result<Vec<StrikeReceipt>,String> {
+    pub(super) fn release(&mut self, record:AnatomyView<'_>, policy:&CombatPolicy, tick:Tick) -> Result<Vec<StrikeReceipt>,String> {
         self.reconcile(record);
         let action = self.action.take().ok_or("Eponym action is not prepared")?;
         if tick < action.last_tick || tick.0-action.started_at.0 > policy.timed.max_elapsed_ticks {
@@ -138,7 +139,7 @@ impl ChargeState {
     }
 }
 
-fn live(record:&AnatomyRecord) -> BTreeSet<PartRef> {
+fn live(record:AnatomyView<'_>) -> BTreeSet<PartRef> {
     record.document.parts.iter().filter(|p|!p.severed)
         .map(|p|PartRef {subject:record.subject.0,part:p.id.0}).collect()
 }

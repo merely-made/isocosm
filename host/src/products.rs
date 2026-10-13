@@ -161,6 +161,15 @@ pub(crate) fn submit_game(session: &mut Session, cut: &Projection, mode: Mode,
         },
         #[cfg(feature = "eponym")]
         Mode::Eponym => {
+            let value: serde_json::Value = serde_json::from_slice(&input.bytes).map_err(|e| e.to_string())?;
+            if value.get("kind").and_then(|kind| kind.as_str()) == Some(eponym_play::contract::mode::life::KIND) {
+                return eponym_play::contract::mode::life::submit_bytes(session, game, &input.bytes, cut.access);
+            }
+            if value.get("kind").and_then(|kind| kind.as_str()) == Some(eponym_play::contract::mode::clock::KIND) {
+                let input = serde_json::from_value(value).map_err(|e| e.to_string())?;
+                return eponym_play::contract::mode::clock::submit(
+                    session, game, &input, cut.access, &cut.visible);
+            }
             let configured = eponym_play::contract::mode::ModeState::decode(&game)?
                 .is_some_and(|state| state.actions.is_some());
             if configured {
@@ -172,4 +181,28 @@ pub(crate) fn submit_game(session: &mut Session, cut: &Projection, mode: Mode,
         },
         _ => Ok((submit(session, cut, mode, input)?, game)),
     }
+}
+
+/// The ordinary host clock preserves configured Eponym physical state.
+#[cfg(feature = "eponym")]
+pub(crate) fn advance_eponym(session: &mut Session, bytes: Vec<u8>) -> Result<((),Vec<u8>),String> {
+    let Some(mut mode) = eponym_play::contract::mode::ModeState::decode(&bytes)? else {
+        session.advance(1)?; return Ok(((),bytes));
+    };
+    mode.validate_native(session)?;
+    if mode.clock.is_none() { session.advance(1)?; return Ok(((),bytes)); }
+    let mut actions = mode.actions.take().ok_or("Eponym clock requires its configured action profiles")?;
+    eponym_play::contract::mode::clock::advance(session, &mut mode, &mut actions)?;
+    mode.actions = Some(actions); mode.validate()?;
+    Ok(((),serde_json::to_vec(&mode).map_err(|e| e.to_string())?))
+}
+
+/// The trusted owner's clock retains Mesocosm geometry and birth publications.
+#[cfg(feature = "mesocosm")]
+pub(crate) fn advance_mesocosm(session: &mut Session, bytes: Vec<u8>) -> Result<((),Vec<u8>),String> {
+    let mut game: mesocosm_runtime::spatial::Game = if bytes.is_empty() { Default::default() }
+        else { serde_json::from_slice(&bytes).map_err(|e| e.to_string())? };
+    game.validate(session)?;
+    game.advance_clock(session)?;
+    Ok(((),serde_json::to_vec(&game).map_err(|e| e.to_string())?))
 }

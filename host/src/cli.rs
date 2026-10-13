@@ -15,6 +15,7 @@ pub(crate) fn open(args: &[std::ffi::OsString]) -> Result<App, String> {
     let mut mesocosm_spread = None;
     let mut eponym_spatial = None;
     let mut eponym_actions = None;
+    let mut eponym_clock = None;
     let mut eponym_source = None;
     let mut eponym_timed_source = None;
     let mut round = 1;
@@ -42,6 +43,7 @@ pub(crate) fn open(args: &[std::ffi::OsString]) -> Result<App, String> {
             "--mesocosm-spread" => mesocosm_spread = Some(PathBuf::from(value)),
             "--eponym-spatial" => eponym_spatial = Some(PathBuf::from(value)),
             "--eponym-actions" => eponym_actions = Some(PathBuf::from(value)),
+            "--eponym-clock" => eponym_clock = Some(PathBuf::from(value)),
             "--round" => round = word()?.parse::<u64>().map_err(|e| e.to_string())?,
             _ => return Err("unknown mode-host option".into()),
         }
@@ -77,6 +79,9 @@ pub(crate) fn open(args: &[std::ffi::OsString]) -> Result<App, String> {
     }
     if let Some(path) = eponym_actions {
         crate::desktop::eponym_actions(&world, &path)?;
+    }
+    if let Some(path) = eponym_clock {
+        crate::desktop::eponym_clock(&world, &path)?;
     }
     let preferences: Option<Preferences> = read_json(preferences_path)?;
     let region: Option<SiteRegion> = read_json(region_path)?;

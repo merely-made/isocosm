@@ -8,6 +8,7 @@ repository.workspace = true
 description = "Isometry's Cambium view layer: board + chrome view fns and the CSS sheets, host-agnostic (desktop and, later, web)."
 
 [dependencies]
+serde = { workspace = true }
 serde_json = { workspace = true }
 isometry-core = { workspace = true }
 isometry-campaign = { workspace = true }

@@ -10,6 +10,9 @@ use isometer_space::places::PlaceId;
 mod binding;
 mod reading;
 pub mod actions;
+pub mod clock;
+pub mod life;
+pub mod sight;
 pub use reading::{BorrowedReading, Picture, PictureBody};
 
 const MARKER: &str = "eponym:mode-state";
@@ -20,6 +23,8 @@ pub struct PoseBinding {
     pub subject: SubjectId, pub entity: Id, pub pose: MotionPose,
     pub site: Id, pub patch: PlaceId, pub window: Window,
     pub body_revision: u64, pub terrain_revision: Key, pub resident_since: u64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub places: Option<isometer_space::places::Rules>,
 }
 
 /// Presentation numbers are supplied, not world position or control authority.
@@ -55,6 +60,10 @@ pub struct ModeState {
     pub prior: Vec<u8>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub actions: Option<actions::ActionState>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub clock: Option<clock::State>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub life: Vec<life::Record>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -69,6 +78,16 @@ pub fn source(session: &Session) -> Key {
 }
 
 impl ModeState {
+    pub(crate) fn required_version(&self) -> u32 {
+        if !self.life.is_empty() { 6 }
+        else if self.clock.as_ref().is_some_and(|clock| clock.sight.is_some()) { 5 }
+        else if self.clock.is_some() || self.actions.as_ref().is_some_and(|a|
+            !a.project_carry.is_empty() || a.projects.iter().any(|p| p.origin.is_some())
+            || a.imported.as_ref().is_some_and(|i| !i.products.carry_capacities.is_empty())) {
+            4
+        } else { self.actions.as_ref().map_or(1, |a| if a.imported.is_some() {3} else {2}) }
+    }
+
     /// Unmarked bytes remain opaque; only this available product's marker opens them.
     pub fn decode(bytes: &[u8]) -> Result<Option<Self>, String> {
         let Ok(value) = serde_json::from_slice::<serde_json::Value>(bytes) else { return Ok(None); };
@@ -79,11 +98,13 @@ impl ModeState {
     }
 
     pub fn validate(&self) -> Result<(), String> {
-        let version = self.actions.as_ref().map_or(1, |a| if a.imported.is_some() {3} else {2});
+        let version = self.required_version();
         if self.kind != MARKER || self.version != version {
             return Err("unsupported Eponym mode state".into());
         }
         if let Some(actions) = &self.actions { actions.validate(self)?; }
+        if let Some(clock) = &self.clock { clock.validate(self)?; }
+        life::validate(&self.life)?;
         self.presentation.validate()?;
         let mut subjects = std::collections::BTreeSet::new();
         let mut entities = std::collections::BTreeSet::new();
@@ -94,6 +115,11 @@ impl ModeState {
             binding.pose.validate().map_err(|e| format!("Eponym pose: {e:?}"))?;
         }
         Ok(())
+    }
+
+    pub fn validate_native(&self, session: &Session) -> Result<(), String> {
+        if let Some(clock) = &self.clock { clock.validate_native(session)?; }
+        life::validate_native(session, &self.life)
     }
 }
 
@@ -107,12 +133,14 @@ pub fn bind(session: &Session, previous: &[u8], input: &SpatialBindingInput) -> 
         return Err("Eponym bindings exceed the native entity limit".into());
     }
     let old = ModeState::decode(previous)?;
-    let (prior, actions) = old.map_or_else(|| (previous.to_vec(), None), |old| (old.prior,old.actions));
-    let version = actions.as_ref().map_or(1, |a| if a.imported.is_some() {3} else {2});
-    let mut state = ModeState { kind:MARKER.into(),version,bindings:input.bindings.clone(),
-        presentation:input.presentation.clone(),prior,actions };
+    let (prior, actions, clock, life) = old.map_or_else(|| (previous.to_vec(), None, None, vec![]),
+        |old| (old.prior,old.actions,old.clock,old.life));
+    let mut state = ModeState { kind:MARKER.into(),version:1,bindings:input.bindings.clone(),
+        presentation:input.presentation.clone(),prior,actions,clock,life };
+    state.version = state.required_version();
     state.bindings.sort_by_key(|binding| binding.subject);
     state.validate()?;
     for binding in &state.bindings { binding.current(session)?; }
+    state.validate_native(session)?;
     serde_json::to_vec(&state).map_err(|e| e.to_string())
 }

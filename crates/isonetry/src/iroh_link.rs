@@ -12,6 +12,7 @@
 //! peer is all the ordering guarantee the protocol needs.
 
 mod native;
+mod composed_storylet;
 mod peers;
 
 use std::collections::HashMap;
@@ -38,7 +39,7 @@ use muniment::Journal;
 /// stops an incompatible peer from dialing at all, while the version is the
 /// in-session handshake that refuses one which got through anyway (a same-ALPN
 /// build with a changed message shape).
-pub const ALPN: &[u8] = b"isometry/session/v14";
+pub const ALPN: &[u8] = b"isometry/session/v17";
 
 type PeerMap = Arc<Mutex<HashMap<PeerId, mpsc::UnboundedSender<NetMessage>>>>;
 
@@ -384,6 +385,7 @@ impl ClientNet {
     }
 
     pub fn endpoint_key(&self) -> [u8; 32] { *self._endpoint.id().as_bytes() }
+    pub fn connection_closed(&self) -> bool { self._conn.close_reason().is_some() }
 
     /// Ask the host to resolve an action. No verdict travels with it.
     pub async fn action(&self, intent: crate::protocol::ActionIntent) -> Result<(), String> {

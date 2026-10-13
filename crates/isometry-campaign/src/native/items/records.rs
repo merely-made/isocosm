@@ -37,13 +37,17 @@ pub fn validate_item_records(session:&Session,records:&[PhysicalItemRecord])->Re
         let first=record.entries.first().ok_or("physical item record has no native entry")?;
         let mut before=session.before_entry(first)?;
         let body=before.sim.state().population.get(input.actor).ok_or("historical item actor is absent")?;
-        let version=if matches!(&input.action,ItemAction::Custody(_)) {2} else {1};
+        let version=input_version(&input.action);
         if input.version!=version || record.entries.len()!=record.outcomes.len() || input.expected_native!=source(&before)
             || before.sim.plays(record.participant)!=Some(input.actor) || !body.alive
             || body.body_revision!=input.body_revision || record.actor_position.entity!=input.actor {
             return Err("physical item record differs from its actual native source, actor or control".into());
         }
         let actor_at=record.actor_position.current(&before)?;
+        if !matches!(&input.action,ItemAction::ProjectCarry {..}) && record.project_custody.is_some()
+            || !matches!(&input.action,ItemAction::Project {..}) && record.project_carrier_position.is_some() {
+            return Err("item record invents unrelated project custody or carrier geometry".into());
+        }
         let target=match &input.action {ItemAction::Project {target,..}|ItemAction::Act {target,..}=>*target,_=>None};
         if let Some(target)=target.filter(|target|*target!=input.actor) {
             let pose=current::from_records(&before,&records[..index],target,&|actor| {
@@ -67,6 +71,22 @@ pub fn validate_item_records(session:&Session,records:&[PhysicalItemRecord])->Re
                 }
             },
             ItemAction::Project {process,target,project,lots,selections,output}=>{
+                let prior=project.map(|id| {
+                    let native=before.sim.state().projects.get(id).ok_or("historical project is absent")?;
+                    if native.carrier.is_none() && record.project_carrier_position.is_some() {
+                        return Err("fixed project invents carrier geometry".into());
+                    }
+                    project_carry::location(&before,&records[..index],id,&|carrier| {
+                        let position=record.project_carrier_position.as_ref()
+                            .ok_or("carried work lacks its actual historical carrier position")?;
+                        if position.entity!=carrier {return Err("work names a different project carrier".into());}
+                        project_carry::historical_position(&before,position)?;
+                        Ok(position.clone())
+                    })
+                }).transpose()?;
+                if project.is_none() && record.project_carrier_position.is_some() {
+                    return Err("new project invents existing carrier geometry".into());
+                }
                 let outcome=before.command(Command::Project(Change::ActOwned {participant:record.participant,
                     actor:input.actor,target:*target,process:process.clone(),project:*project,cause:None,
                     lots:lots.clone(),selections:selections.clone()}))?;
@@ -74,12 +94,13 @@ pub fn validate_item_records(session:&Session,records:&[PhysicalItemRecord])->Re
                 let id=acted.acted.project.ok_or("historical project act names no project")?;
                 let place=record.project.as_ref().ok_or("historical project position is absent")?;
                 let native=before.sim.state().projects.get(id).ok_or("accepted project is absent")?;
-                if place.project!=id || native.site!=place.site || native.carrier.is_some()
+                if place.project!=id || before.sim.project_site(native)!=Some(place.site)
                     || place.site!=record.actor_position.placement.site || place.at!=actor_at
-                    || project.is_some_and(|prior|prior!=id || projects.get(&prior)!=Some(place))
+                    || prior.as_ref().is_some_and(|prior|prior.project!=id || prior.site!=place.site || prior.at!=place.at
+                        || prior.created_site!=place.created_site || prior.created_at!=place.created_at)
                     || project.is_none() && (projects.contains_key(&id)
                         || place.created_site!=place.site || place.created_at!=place.at) {
-                    return Err("project position differs from actual fixed creation or resumed work".into());
+                    return Err("project position differs from actual creation, carrier or resumed work".into());
                 }
                 match (acted.acted.output,output,&record.binding) {
                     (Some(entity),Some(input),Some(bound))=>{
@@ -112,6 +133,15 @@ pub fn validate_item_records(session:&Session,records:&[PhysicalItemRecord])->Re
                 if binding!=record.binding || record.project.is_some() {
                     return Err("custody record changes its exact native drop binding or unrelated project position".into());
                 }
+            },
+            ItemAction::ProjectCarry {project,..}=>{
+                let witness=record.project_custody.as_ref().ok_or("project carry witness is absent")?;
+                let (place,actual)=project_carry::perform(&mut before,&records[..index],&record.actor_position,
+                    input,record.participant,&witness.provider)?;
+                if &actual!=witness || record.project.as_ref()!=Some(&place) || record.binding.is_some() {
+                    return Err("project carry record differs from actual custody, capacity or physical location".into());
+                }
+                projects.insert(*project,place);
             },
         }
         let generated=&before.entries[start..];

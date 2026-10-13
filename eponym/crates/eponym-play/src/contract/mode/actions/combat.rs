@@ -20,9 +20,9 @@ pub(super) fn action(session:&mut Session, mode:&ModeState, actions:&mut ActionS
     let charge = &mut actions.charges[index];
     charge.validate(policy)?;
     match action {
-        Action::Prepare{direction} => charge.prepare(&record,*direction,Tick(session.sim.state().tick)),
-        Action::JoinLimb{part} => charge.join(&record,policy,*part),
-        Action::Charge{tick} => charge.charge(&record,policy,*tick),
+        Action::Prepare{direction} => charge.prepare(record,*direction,Tick(session.sim.state().tick)),
+        Action::JoinLimb{part} => charge.join(record,policy,*part),
+        Action::Charge{tick} => charge.charge(record,policy,*tick),
         Action::Gate{node,open} => charge.gate(*node,*open),
         Action::ReleaseAgainst{target,tick,wounds} => {
             let target = binding(mode,*target)?;
@@ -34,17 +34,17 @@ pub(super) fn action(session:&mut Session, mode:&ModeState, actions:&mut ActionS
             let target_record = anatomy(session,mode,target_profile)?;
             let volume = session.sim.volume(actor.site,actor.window.min,actor.window.max,actor.window.depth)?;
             let target_pose = target.in_frame(session,&volume)?;
-            let strikes = charge.release(&record,policy,*tick)?;
+            let strikes = charge.release(record,policy,*tick)?;
             if strikes.is_empty() {
                 if !wounds.is_empty() { return Err("uncharged Eponym release cannot carry wound payments".into()); }
                 return Ok("uncharged release".into());
             }
             let result = if policy.rules.revision == crate::COMBAT_RULES_REVISION {
-                precision::resolve(actor.subject,profile.revision,&record.document,actor.current(session)?,
-                    target.subject,&target_record.document,target_pose,&volume.ground(),&strikes,policy.rules)
+                precision::resolve(actor.subject,profile.revision,record.document,actor.current(session)?,
+                    target.subject,target_record.document,target_pose,&volume.ground(),&strikes,policy.rules)
             } else {
-                resolve(actor.subject,profile.revision,&record.document,actor.current(session)?.cell().map_err(debug)?,
-                    target.subject,&target_record.document,target_pose.cell().map_err(debug)?,
+                resolve(actor.subject,profile.revision,record.document,actor.current(session)?.cell().map_err(debug)?,
+                    target.subject,target_record.document,target_pose.cell().map_err(debug)?,
                     &volume.ground(),&strikes,policy.rules)
             }.map_err(debug)?;
             let receipts = injury(session,target.entity,result.harm,&result.severed_parts,wounds)?;

@@ -4257,6 +4257,7 @@ dependencies = [
  "sceno",
  "scenomise",
  "scenotime",
+ "serde",
  "serde_json",
  "sprigging",
  "wgpu",

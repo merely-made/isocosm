@@ -7,8 +7,20 @@ use isocosm::lineage::{LineageBody, SpeciesId};
 use crate::{AnatomyError, GameError, NativeAnatomySource};
 use crate::identity::SubjectId;
 use super::GameState;
+use crate::anatomy::NativeAnatomyRead;
 
 impl GameState {
+    /// Borrows exact current native facts; the product label is supplied.
+    pub fn native_anatomy_read(&self, subject: SubjectId, species: SpeciesId)
+        -> Result<NativeAnatomyRead<'_>, GameError> {
+        let entity = self.entity_of(subject)?;
+        let sim = self.world.sim();
+        let body = sim.state().population.get(entity).ok_or(GameError::Decode)?;
+        let revision = self.records.get(&subject).ok_or(GameError::Decode)?.revision;
+        NativeAnatomyRead::new(subject, revision, species, body, &sim.genesis().rules)
+            .map_err(|_| AnatomyError::NativeMismatch.into())
+    }
+
     /// A reading for admission, using the caller's existing species label.
     pub fn native_anatomy(&self, subject: SubjectId, species: SpeciesId) -> Result<LineageBody, GameError> {
         let entity = self.entity_of(subject)?;

@@ -8,6 +8,7 @@ use isometer_space::volume::Volume;
 pub struct PictureBody {
     pub subject: SubjectId, pub entity: Id, pub document: BodyDocument,
     pub revision: u64, pub pose: MotionPose, pub alive: bool,
+    pub yaw: isometer_core::Yaw,
 }
 
 /// A derived snapshot for the GPU consumer, containing no runtime or ledger.
@@ -21,6 +22,7 @@ pub struct BorrowedReading<'a> { session: &'a Session, visible: &'a View, state:
 impl<'a> BorrowedReading<'a> {
     pub fn new(session: &'a Session, visible: &'a View, state: &'a ModeState) -> Result<Self,String> {
         state.validate()?;
+        state.validate_native(session)?;
         Ok(Self {session,visible,state})
     }
 
@@ -46,13 +48,26 @@ impl<'a> BorrowedReading<'a> {
         let mut bodies = Vec::new();
         for binding in &self.state.bindings {
             if binding.site != site || !self.visible.shows(binding.entity) {continue;}
+            if self.state.version >= 4 && !self.session.sim.state().population.get(binding.entity)
+                .is_some_and(|body| body.resident_site() == Some(site)) {continue;}
             let pose = binding.in_frame(self.session,&volume)?;
+            let yaw = match &self.state.clock {
+                Some(clock) => clock.current(self.session,binding)?.yaw,
+                None => isometer_core::Yaw::Zero,
+            };
             let body = self.session.sim.state().population.get(binding.entity).ok_or("Eponym picture entity is absent")?;
             let document = body.body.clone().ok_or("Eponym picture has no actual native body geometry")?;
             let cell = crate::walking::to_site(&volume,pose.cell().map_err(|e|format!("Eponym framed pose: {e:?}"))?);
             if !volume.holds(cell[0],cell[2]) || cell[1] < volume.datum || cell[1] >= volume.ceiling() {continue;}
             bodies.push(PictureBody {subject:binding.subject,entity:binding.entity,document,
-                revision:body.body_revision,pose,alive:body.alive});
+                revision:body.body_revision,pose,alive:body.alive,yaw});
+        }
+        if require_played && self.state.version >= 4 {
+            let observer = played.ok_or("Eponym sight has no actual native played body")?;
+            let clock = self.state.clock.as_ref().ok_or("Eponym marked picture has no actual eye provider")?;
+            let config = clock.sight.as_ref().ok_or("Eponym marked picture has no authored sight ranges")?;
+            let seen = sight::refine(config,self.session,self.state,&volume,observer,&bodies)?;
+            bodies.retain(|body| seen.contains(&body.entity));
         }
         if bodies.is_empty() || require_played && played.is_none_or(|id|!bodies.iter().any(|body|body.entity == id)) {
             return Err("Eponym picture lacks current bindings for its admitted played region".into());

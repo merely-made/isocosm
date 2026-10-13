@@ -10,6 +10,7 @@ use crate::identity::BodyRevisionId;
 use serde::{Deserialize, Serialize};
 
 use crate::{AnatomyRecord, MOTION_SCALE, MotionError, MotionRules, part_bounds};
+use crate::anatomy::AnatomyView;
 
 pub const MOVEMENT_PROFILE_REVISION: u32 = 2;
 
@@ -49,6 +50,10 @@ pub struct MovementProjection {
 
 impl MovementProfile {
     pub fn validate_at(&self, record: &AnatomyRecord) -> Result<(), MotionError> {
+        self.validate_view(record.view())
+    }
+
+    pub fn validate_view(&self, record: AnatomyView<'_>) -> Result<(), MotionError> {
         if self.revision != MOVEMENT_PROFILE_REVISION
             || self.source_revision != record.revision
             || self.supports.is_empty()
@@ -64,6 +69,14 @@ impl MovementProfile {
     pub(crate) fn project(
         &self,
         record: &AnatomyRecord,
+        requested_speed: i64,
+    ) -> Result<MovementProjection, MotionError> {
+        self.project_view(record.view(), requested_speed)
+    }
+
+    pub(crate) fn project_view(
+        &self,
+        record: AnatomyView<'_>,
         requested_speed: i64,
     ) -> Result<MovementProjection, MotionError> {
         if self.revision != MOVEMENT_PROFILE_REVISION || record.revision < self.source_revision {
@@ -112,7 +125,7 @@ impl MovementProfile {
 
     fn validate_addresses(
         &self,
-        record: &AnatomyRecord,
+        record: AnatomyView<'_>,
         require_intact: bool,
     ) -> Result<(), MotionError> {
         let mut supports = BTreeSet::new();
@@ -152,11 +165,11 @@ impl MovementProjection {
     }
 }
 
-fn support_intersects(record: &AnatomyRecord, part: PartId, band: SupportBand) -> bool {
+fn support_intersects(record: AnatomyView<'_>, part: PartId, band: SupportBand) -> bool {
     let Some(found) = record.document.part(part) else {
         return false;
     };
     !found.severed
-        && part_bounds(&record.document, part)
+        && part_bounds(record.document, part)
             .is_some_and(|bounds| bounds.min[1] < band.max_y && band.min_y < bounds.max[1])
 }

@@ -90,6 +90,21 @@ pub(crate) fn eponym_actions(world: &crate::world::World, path: &std::path::Path
     { let _ = (world, path); Err("Eponym actions are absent from this build".into()) }
 }
 
+pub(crate) fn eponym_clock(world: &crate::world::World, path: &std::path::Path) -> Result<(), String> {
+    #[cfg(feature = "eponym")]
+    {
+        let bytes = std::fs::read(path).map_err(|why| why.to_string())?;
+        let config: eponym_play::contract::mode::clock::Config =
+            serde_json::from_slice(&bytes).map_err(|why| why.to_string())?;
+        world.product_game(world.cut()?, crate::products::Mode::Eponym, |session, game| {
+            let game = eponym_play::contract::mode::clock::configure(session, &game, &config)?;
+            Ok(((),game))
+        })
+    }
+    #[cfg(not(feature = "eponym"))]
+    { let _ = (world,path); Err("Eponym clock is absent from this build".into()) }
+}
+
 fn bind_routes(tree: &WindowTree<App, Logic, Child>, routes: &mut HashMap<ProjectionId, u64>, initial: &[u64]) {
     if !routes.is_empty() { return; }
     let ids: Vec<_> = tree.multi().projection_ids().collect();

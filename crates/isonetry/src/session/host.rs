@@ -157,7 +157,9 @@ impl HostSession {
             .campaign
             .begin_reveal(id)
             .ok_or_else(|| format!("unknown or pending campaign secret: {id}"))?;
-        match self.try_commit(GameEvent::Fact(fact)) {
+        let result = if self.state.native.is_some() { self.commit_reveal_fact(&fact) }
+            else { self.try_commit(GameEvent::Fact(fact)) };
+        match result {
             Ok(out) => {
                 self.campaign.finish_reveal(id);
                 Ok(out)
@@ -353,6 +355,9 @@ impl HostSession {
         request: RequestId,
         party: &str,
     ) -> Result<Vec<Outbound>, String> {
+        if self.state.native.is_some() {
+            return Err("native doorway travel requires an admitted journey and arrival".into());
+        }
         let events =
             super::travel::resolve_transition_for_party(&self.state, token, request, party)
                 .map_err(|error| format!("doorway transition rejected: {error:?}"))?;

@@ -569,6 +569,7 @@ impl App {
         self.sync_overmap_leaf(ctx);
         // After the viewport: the scene's camera is framed by the pane the
         // two calls above just settled.
+        self.pump_native_scene(ctx);
         if let Some(mut board) = self.scene_board.take() {
             board.sync(ctx);
             self.scene_board = Some(board);

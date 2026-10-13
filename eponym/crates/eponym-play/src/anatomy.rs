@@ -15,6 +15,17 @@ use isocosm::lineage::LineageBody as BodyDocument;
 use isometer_core::{Aabb, PartId, Yaw};
 use serde::{Deserialize, Serialize};
 
+pub mod native;
+pub use native::NativeAnatomyRead;
+
+/// Unsaved geometry/revision view shared by native and portable readers.
+#[derive(Clone, Copy, Debug)]
+pub struct AnatomyView<'a> {
+    pub subject: SubjectId,
+    pub revision: BodyRevisionId,
+    pub document: &'a isometer_core::BodyDocument,
+}
+
 /// A deliberately small bound: the authored three-lives fixture has seven
 /// parts, while 256 keeps validation and every parent walk bounded.
 pub const MAX_ANATOMY_PARTS: usize = 256;
@@ -71,6 +82,12 @@ pub struct AnatomyRecord {
     pub document: BodyDocument,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub native_source: Option<NativeAnatomySource>,
+}
+
+impl AnatomyRecord {
+    pub fn view(&self) -> AnatomyView<'_> {
+        AnatomyView { subject: self.subject, revision: self.revision, document: self.document.doc() }
+    }
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]

@@ -2,7 +2,24 @@
 
 **Date:** 2026-09-25
 
-**Latest borrowed actions, 2026-10-13:** version2 mode state admits canonical
+**Latest physical source, 2026-10-13:** mode4 retains explicit native clock
+profiles, actual geometry publication and carried/relocated project records.
+Step, terrain, arrival and birth inputs use the same host candidate Session.
+Missing child placement preserves native birth and conserved matter. Original
+Eponym carry capacity remains its genuine supplied product law; native
+capacity providers are selected explicitly. Mode5 adds supplied sight ranges
+over the actual saved eye/native cut, saved yaw and full-quanta rendering.
+Both host clock routes and `--eponym-clock` use the actual provider. Borrowed
+native anatomy preserves IDs, geometry, physiology, account source lineages
+and graft provenance for movement/combat/clock. Mode6 initial existing-life
+selection reaches genuine native Take; death input validates prior control
+and death but refuses until companion eligibility/absence law is declared
+(186/238, pending877). Legacy portable donor-provenance export and unsupported
+cross-frame historical project imports remain limited. Choices871 to877 are
+pending together864, next878. Source-only826; compiler/tests/fixtures/tuning
+and full E3/C10/C11 acceptance remain open.
+
+**Earlier borrowed actions, 2026-10-13:** version2 mode state admits canonical
 fixed movement, paid combat preparation/release, owned project work and
 explicit native clock requests through Root's candidate Session. Complete
 action profiles are trusted author inputs; ordinary requests cannot replace

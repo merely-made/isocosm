@@ -17,7 +17,7 @@ impl PoseBinding {
         }
         let volume = session.sim.volume(self.site,self.window.min,self.window.max,self.window.depth)?;
         let cell = walking::to_site(&volume,self.pose.cell().map_err(|e| format!("Eponym pose: {e:?}"))?);
-        let places = Places::derive(&volume,Default::default())?;
+        let places = Places::derive(&volume,self.places.unwrap_or_default())?;
         if !volume.holds(cell[0],cell[2]) || cell[1] < volume.datum || cell[1] >= volume.ceiling()
             || places.place_at(cell) != Some(self.patch)
             || !volume.material(cell).is_some_and(|m| m == volume.materials.air || m == volume.materials.water) {

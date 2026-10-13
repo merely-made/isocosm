@@ -6,9 +6,9 @@
 
 use super::*;
 use std::collections::BTreeSet;
-use crate::{AnatomyRecord, CombatRules, MotionInput, MotionRules, MotionSolver, MovementProfile};
+use crate::{CombatRules, MotionInput, MotionRules, MotionSolver, MovementProfile};
 use crate::identity::{BodyRevisionId, Tick};
-use isocosm::{Command, directing::readings::View, lineage::{LineageBody, SpeciesId}, projects::*};
+use isocosm::{Command, directing::readings::View, lineage::SpeciesId, projects::*};
 pub use isocosm_overlay::OrdinaryAccess;
 use isocosm_overlay::Seat;
 use isometer_core::PartId;
@@ -19,9 +19,11 @@ mod motion;
 mod combat;
 mod timed;
 mod projects;
+mod project_carry;
+pub use project_carry::{ProjectCarryPolicy, ProjectCapacity, ProjectLocation, project_location};
 pub mod handoff;
 pub use timed::ChargeState;
-pub use projects::ProjectPose;
+pub use projects::{ProjectPose, ProjectOrigin};
 pub use motion::FallPayment;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -50,6 +52,8 @@ pub struct ActionState {
     pub projects: Vec<ProjectPose>, pub records: Vec<ActionRecord>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub imported: Option<handoff::ImportedState>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub project_carry: Vec<ProjectCarryPolicy>,
 }
 
 /// Accepted product inputs retain actual native entry references, not another
@@ -65,6 +69,8 @@ pub struct ActionRecord {
 pub struct ActionConfig {
     pub version: u32, pub expected_native: Key, pub expected_game: Key,
     pub profiles: Vec<SubjectProfile>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub project_carry: Vec<ProjectCarryPolicy>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -86,12 +92,14 @@ pub enum Action {
     Consent { project: ProjectId, owner: Owner, worker: Id, grant: bool, process: Option<Key> },
     /// Native advancement is requested explicitly, never as an action side effect.
     Advance { ticks: u64 },
+    ProjectCarry { project: ProjectId, carried: bool },
 }
 
 pub fn game_source(bytes: &[u8]) -> Key { isocosm::digest(&bytes) }
 
 impl ActionState {
     pub fn validate(&self, mode: &ModeState) -> Result<(),String> {
+        project_carry::validate_shape(mode,self)?;
         let mut subjects = BTreeSet::new();
         for profile in &self.profiles {
             if !subjects.insert(profile.subject) || !mode.bindings.iter().any(|b|b.subject == profile.subject) {
@@ -129,8 +137,10 @@ impl ActionState {
 pub fn configure(session: &Session, bytes: &[u8], input: &ActionConfig) -> Result<Vec<u8>,String> {
     check_source(session,bytes,input.version,&input.expected_native,&input.expected_game)?;
     let mut mode = ModeState::decode(bytes)?.ok_or("Eponym actions need marked physical bindings")?;
+    mode.validate_native(session)?;
     let old = mode.actions.take();
-    let mut actions = ActionState { profiles:input.profiles.clone(), charges:vec![], projects:vec![], records:vec![], imported:None };
+    let mut actions = ActionState { profiles:input.profiles.clone(), charges:vec![], projects:vec![], records:vec![],
+        imported:None, project_carry:input.project_carry.clone() };
     if let Some(old) = old {
         for charge in &old.charges {
             let before = old.profiles.iter().find(|p|p.subject == charge.subject).and_then(|p|p.combat.as_ref());
@@ -138,15 +148,16 @@ pub fn configure(session: &Session, bytes: &[u8], input: &ActionConfig) -> Resul
             if before != after { return Err("reconfiguration cannot replace a paid combat network".into()); }
         }
         actions.charges = old.charges; actions.projects = old.projects; actions.records = old.records;
+        if actions.project_carry.is_empty() { actions.project_carry = old.project_carry; }
         actions.imported = old.imported;
     }
     for profile in &actions.profiles {
         let record = anatomy(session,&mode,profile)?;
         if let Some(policy) = &profile.motion {
-            if let Some(profile) = &policy.profile { profile.validate_at(&record).map_err(debug)?; }
+            if let Some(profile) = &policy.profile { profile.validate_view(record).map_err(debug)?; }
         }
     }
-    mode.version = if actions.imported.is_some() {3} else {2}; mode.actions = Some(actions); mode.validate()?;
+    mode.actions = Some(actions); mode.version = mode.required_version(); mode.validate()?;
     serde_json::to_vec(&mode).map_err(|e|e.to_string())
 }
 
@@ -157,6 +168,7 @@ pub fn submit(session: &mut Session, bytes: Vec<u8>, input: &ActionInput,
     if input.kind != "eponym:actions" { return Err("not an Eponym action envelope".into()); }
     check_source(session,&bytes,input.version,&input.expected_native,&input.expected_game)?;
     let mut mode = ModeState::decode(&bytes)?.ok_or("Eponym actions need marked mode state")?;
+    mode.validate_native(session)?;
     let mut actions = mode.actions.take().ok_or("Eponym actions need authored configuration")?;
     let binding = binding(&mode,input.subject)?.clone();
     let participant = access.participant.0;
@@ -169,13 +181,19 @@ pub fn submit(session: &mut Session, bytes: Vec<u8>, input: &ActionInput,
     let first_entry = session.entries.len();
     let outcome = match &input.action {
         Action::Advance { ticks } => {
+            if mode.clock.is_some() {
+                if *ticks != 1 { return Err("configured Eponym geometry advances one native tick per request".into()); }
+                clock::advance(session, &mut mode, &mut actions)?
+            } else {
             let work = session.advance(*ticks)?;
             format!("native advanced to {}: {work:?}",session.sim.state().tick)
+            }
         },
         action => {
             binding.current(session)?;
-            if !session.sim.state().population.get(binding.entity).is_some_and(|e|e.alive) {
-                return Err("Eponym physical act requires a living played body".into());
+            if !session.sim.state().population.get(binding.entity)
+                .is_some_and(|e|e.alive && e.method == isocosm::schema::Method::Normative) {
+                return Err("Eponym physical act requires a living normative played body".into());
             }
             match action {
                 Action::Motion {step,input,payment} => motion::advance(session,&mut mode,&actions,&binding,participant,*step,*input,payment,solver)?,
@@ -191,6 +209,8 @@ pub fn submit(session: &mut Session, bytes: Vec<u8>, input: &ActionInput,
                 },
                 Action::Project {process,target,project,lots,selections} => projects::act(
                     session,&mode,&mut actions,&binding,participant,visible,process,*target,*project,lots,selections)?,
+                Action::ProjectCarry {project,carried} => project_carry::act(
+                    session,&mode,&mut actions,&binding,participant,*project,*carried)?,
                 Action::Consent {project,owner,worker,grant,process} => session.command(Command::Project(Change::Consent {
                     participant,actor:binding.entity,project:*project,owner:*owner,worker:*worker,grant:*grant,
                     process:process.clone(),cause:None }))?,
@@ -198,12 +218,13 @@ pub fn submit(session: &mut Session, bytes: Vec<u8>, input: &ActionInput,
             }
         },
     };
+    clock::refresh(session, &mut mode, &mut actions)?;
     actions.records.push(ActionRecord {input:input.clone(),native_after:source(session),
         entries:session.entries[first_entry..].iter().map(|entry|entry.id.clone()).collect(),outcome:outcome.clone()});
     if actions.records.len() > session.sim.genesis().rules.limits.history {
         return Err("Eponym action receipts exceed native history limit".into());
     }
-    mode.version = if actions.imported.is_some() {3} else {2}; mode.actions = Some(actions); mode.validate()?;
+    mode.actions = Some(actions); mode.version = mode.required_version(); mode.validate()?;
     Ok((outcome,serde_json::to_vec(&mode).map_err(|e|e.to_string())?))
 }
 
@@ -223,13 +244,13 @@ fn debug(error: impl std::fmt::Debug) -> String { format!("{error:?}") }
 fn binding(mode:&ModeState, subject:SubjectId) -> Result<&PoseBinding,String> {
     mode.bindings.iter().find(|b|b.subject == subject).ok_or("Eponym subject has no explicit physical binding".into())
 }
-fn anatomy(session:&Session, mode:&ModeState, profile:&SubjectProfile) -> Result<AnatomyRecord,String> {
+fn anatomy<'a>(session:&'a Session, mode:&ModeState, profile:&SubjectProfile) -> Result<crate::anatomy::AnatomyView<'a>,String> {
     let binding = binding(mode,profile.subject)?;
     binding.current(session)?;
     let entity = session.sim.state().population.get(binding.entity).ok_or("Eponym body is absent")?;
     if profile.native_revision != entity.body_revision { return Err("Eponym authored anatomy profile is stale".into()); }
-    Ok(AnatomyRecord { subject:profile.subject,revision:profile.revision,
-        document:LineageBody::snapshot(profile.species,entity,&session.sim.genesis().rules)?,native_source:None })
+    Ok(crate::anatomy::NativeAnatomyRead::new(profile.subject,profile.revision,profile.species,
+        entity,&session.sim.genesis().rules)?.view())
 }
 fn check_target(session:&Session, mode:&ModeState, actor:&PoseBinding, target:Option<Id>, visible:&View) -> Result<(),String> {
     let Some(target) = target else { return Ok(()); };

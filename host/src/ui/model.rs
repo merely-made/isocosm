@@ -187,6 +187,16 @@ impl App {
         if local.native.binding().mode == "vtt" {
             return Err("choose a ready downtime proposal in the table's time controls".into());
         }
+        #[cfg(feature = "eponym")]
+        if local.native.binding().mode == "eponym" {
+            self.world.product_game(self.world.cut()?, Mode::Eponym, products::advance_eponym)?;
+            self.refresh(); return Ok(());
+        }
+        #[cfg(feature = "mesocosm")]
+        if local.native.binding().mode == "mesocosm" {
+            self.world.product_game(self.world.cut()?, Mode::Mesocosm, products::advance_mesocosm)?;
+            self.refresh(); return Ok(());
+        }
         self.world.advance(1)?; self.refresh(); Ok(())
     }
     pub fn close(&mut self, key: u64) -> Result<(), String> {
