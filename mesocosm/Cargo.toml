@@ -1,4 +1,5 @@
 [package]
+rust-version = "1.97.1"
 name = "mesocosm"
 version = "0.0.2"
 edition = "2024"
@@ -158,3 +159,6 @@ taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.g
 # copy (wing design record, ruling 648).
 [profile.dev.package.isocosm]
 opt-level = 1
+
+[workspace.package]
+rust-version = "1.97.1"

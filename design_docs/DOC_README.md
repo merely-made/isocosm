@@ -1,5 +1,7 @@
 # design_docs Index
 
+Rust policy (2026-10-13): working toolchain 1.99.0 and shared MSRV 1.97.1, qualified separately. Canonical policy: `mere/design_docs/2026-08-12_family_composition_thesis_brief.md`, section "Shared Rust toolchain and minimum version".
+
 The repository's entry index, and the VTT's documents. Per DOC_POLICY §5 this
 file is the canonical index for this directory, updated in the same session
 as any doc change. Each row is a link, what the doc is for and a dated status

@@ -1,4 +1,5 @@
 [package]
+rust-version = "1.97.1"
 name = "isometer"
 version = "0.1.0"
 edition = "2024"
@@ -75,3 +76,5 @@ vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-3
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
 taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "15713014e2e23b887360471552f75f60684f5384", version = "=0.14.0" }
 
+[workspace.package]
+rust-version = "1.97.1"
