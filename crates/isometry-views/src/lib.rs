@@ -62,6 +62,6 @@ pub use state::{
     WHEEL_BOARD_TILES, WHEEL_NOTCH_PX,
 };
 pub use state::{OvermapMotionState, OvermapMotionTick};
-pub use state::native::{Acceptance as NativeAcceptance, NativeUi, TableFileAction};
+pub use state::native::{Acceptance as NativeAcceptance, NativeUi, TableFileAction, PhysicalRequest, PhysicalOutcome};
 pub use state::{PACE_PCTS, STANCE_KEYS, mode_items, pace_items, stance_items};
 pub use theme::{board_css, tile_kind_colour};

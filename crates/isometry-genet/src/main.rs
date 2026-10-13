@@ -102,6 +102,7 @@ mod native_table;
 mod native_party;
 mod native_journey;
 mod native_pack;
+mod native_physical;
 mod native_time;
 mod overmap;
 mod product;
@@ -235,6 +236,7 @@ struct App {
     /// The stylesheet, from app CSS plus whatever the content packs declared.
     /// Handed to the host once, by `init`.
     sheet: String,
+    native_choreography: Vec<isometry_campaign::native::pack::Choreography>,
     /// The pane size last pushed into the view, so an unchanged frame does not
     /// rebuild the retained tree to write the same two floats.
     last_viewport: (f32, f32),

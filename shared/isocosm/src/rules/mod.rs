@@ -144,6 +144,7 @@ pub enum Query {
     },
     /// A real polity decision is evaluated only inside native consent admission.
     ProjectDecision,
+    InstitutionDecision,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -191,6 +192,9 @@ pub struct Process {
     /// Recorded unmarked processes keep their former grammar and witness.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub port_feeding: Option<PortFeeding>,
+    /// Explicit records for each accepted outcome; absent in unmarked saved grammar.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub goal_directives: Vec<crate::goals::Directive>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -300,6 +304,8 @@ pub struct Rules {
     /// Authored travel duration and native stock costs (860), with no default pace.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub pace_profiles: BTreeMap<Key, PaceProfile>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub institutions: BTreeMap<Key, crate::institutions::Definition>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -378,6 +384,7 @@ impl Process {
         self.risk.is_none()
             && self.target.is_none()
             && !self.note
+            && self.goal_directives.is_empty()
             && self.requires.iter().all(|q| {
                 matches!(
                     q,

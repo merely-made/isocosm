@@ -37,7 +37,7 @@ pub use body_menu::{
 pub use caption::{Caption, CaptionChild, caption_css, caption_root};
 pub use dev::{
     Dev, DevChild, Follow, Lost, PartInspection, PartReading, dev_css, dev_root, follow_of,
-    lost_of, lost_words, part_of, role_word,
+    lost_of, lost_words, part_of, part_of_with_terms, role_word,
 };
 pub use leaf::MinimapLeaf;
 pub use minimap::{
@@ -51,5 +51,5 @@ pub use review::{
 pub use succession::{Succession, SuccessionChild, succession_css, succession_root};
 pub use vitals::{
     Vitals, VitalsChild, compatibility_words, held_mg, kingdom_word, notice_in, refusal_words,
-    vitals_css, vitals_of, vitals_root,
+    vitals_css, vitals_of, vitals_of_with_terms, vitals_root,
 };

@@ -7,6 +7,9 @@
 mod native;
 mod party;
 mod packs;
+mod physical;
+mod commands;
+use commands::drain_commands;
 
 use std::sync::mpsc::{Receiver, TryRecvError};
 use std::time::Duration;
@@ -32,6 +35,7 @@ pub enum Role {
 }
 
 enum BridgeCommand {
+    NativePhysical { request:RequestId, input:isometry_views::PhysicalRequest },
     NativePack { request:RequestId, intent:isometry_views::PackRequest, choreography:Vec<isometry_campaign::native::pack::Choreography> },
     NativeParty { request:RequestId, intent:isometry_views::PartyRequest },
     NativeTime { request:RequestId, intent:isocosm_overlay::vtt::TimeIntent },
@@ -73,6 +77,7 @@ enum BridgeCommand {
 }
 
 enum BridgeUpdate {
+    PhysicalResult(Correlated<Result<isometry_views::PhysicalOutcome,String>>),
     PackReading(Correlated<Result<isometry_views::PackReading,String>>),
     PartyReading(Correlated<Result<isometry_views::PartyView, String>>),
     NativeEndpoints(Vec<[u8; 32]>),
@@ -114,6 +119,7 @@ pub struct NetBridge {
     campaign_outcomes: Vec<Correlated<Result<(), String>>>,
     party_readings: Vec<Correlated<Result<isometry_views::PartyView, String>>>,
     pack_readings: Vec<Correlated<Result<isometry_views::PackReading,String>>>,
+    physical_results: Vec<Correlated<Result<isometry_views::PhysicalOutcome,String>>>,
     failure: Option<String>,
     action_intents: Vec<ActionIntent>,
 }
@@ -150,6 +156,7 @@ impl NetBridge {
             campaign_outcomes: Vec::new(),
             party_readings: Vec::new(),
             pack_readings: Vec::new(),
+            physical_results: Vec::new(),
             failure: None,
             action_intents: Vec::new(),
         }
@@ -162,6 +169,7 @@ impl NetBridge {
         loop {
             match self.updates.try_recv() {
                 Ok(BridgeUpdate::PackReading(read)) => { self.pack_readings.push(read); changed = true; },
+                Ok(BridgeUpdate::PhysicalResult(result)) => { self.physical_results.push(result); changed = true; },
                 Ok(BridgeUpdate::PartyReading(read)) => {
                     self.party_readings.push(read);
                     changed = true;
@@ -344,17 +352,6 @@ async fn run(role: Role, commands: Receiver<BridgeCommand>, out: Emitter<BridgeU
     }
 }
 
-fn drain_commands(commands: &Receiver<BridgeCommand>) -> Result<Vec<BridgeCommand>, ()> {
-    let mut drained = Vec::new();
-    loop {
-        match commands.try_recv() {
-            Ok(command) => drained.push(command),
-            Err(TryRecvError::Empty) => return Ok(drained),
-            Err(TryRecvError::Disconnected) => return Err(()),
-        }
-    }
-}
-
 async fn run_host(
     state: GameSnapshot,
     campaign: CampaignStore,
@@ -393,6 +390,8 @@ async fn run_host(
                     let read = matches!(&intent,isometry_views::PackRequest::Read);
                     packs::deliver(&out,request,packs::host_request(&host,intent,choreography).await,read);
                 },
+                BridgeCommand::NativePhysical { request,input } => { out.emit(BridgeUpdate::PhysicalResult(
+                    Correlated::new(request,physical::host_request(&host,input).await))); },
                 BridgeCommand::NativeTime { request, intent } => {
                     let result = native::host_time(&host, intent).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
@@ -527,6 +526,8 @@ async fn run_client(
             match command {
                 BridgeCommand::NativePack { request,intent,choreography:_ } => packs::deliver(&out,request,
                     Err("adventure pack controls require the actual DM host".into()),matches!(&intent,isometry_views::PackRequest::Read)),
+                BridgeCommand::NativePhysical { request,input } => { out.emit(BridgeUpdate::PhysicalResult(
+                    Correlated::new(request,physical::client_request(&client,input).await))); },
                 BridgeCommand::NativeTime { request, intent } => {
                     let result = native::client_time(&client, intent).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));

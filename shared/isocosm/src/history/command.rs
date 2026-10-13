@@ -150,4 +150,5 @@ pub enum Command {
     Party(crate::party::Change),
     /// Explicit genuine-act consequential goals; arcs remain derived.
     Goal(crate::goals::Change),
+    Institution(crate::institutions::Change),
 }

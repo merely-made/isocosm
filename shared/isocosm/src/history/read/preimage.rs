@@ -113,7 +113,7 @@ impl<'a> State<'a> {
     fn new(sim: &'a Simulation, family: &Family) -> Result<Self> {
         let s = sim.state();
         if !sim.genesis().spreads.is_empty() || !s.spreads.is_empty()
-            || !s.projects.is_empty()
+            || !s.projects.is_empty() || !s.institutions.is_empty()
             || s.movement != Movement::ImmediateV3 || !s.edits.is_empty() || !s.nudges.is_empty()
             || !s.laws.is_empty() || !s.agreements.is_empty() || !s.asserted.is_empty()
             || !s.attention.is_empty() || s.relations.iter().any(|r| r.value != 0)

@@ -31,6 +31,10 @@ pub(crate) struct PinChoice {
 pub(crate) struct Local {
     #[cfg(feature = "vtt")]
     pub hook_note:cambium::TextInput,
+    #[cfg(feature = "vtt")]
+    pub authored_input:cambium::TextInput,
+    #[cfg(feature = "vtt")]
+    pub author_quote:Option<String>,
     pub native: Window, pub rows: Rows, pub error: Option<String>,
     pub preferences: Preferences, pub attention: BTreeMap<String, AttentionSet>,
     pub input: Option<Input>, pub close_requested: bool,
@@ -71,6 +75,10 @@ impl App {
         self.windows.insert(key, Local { native, rows: Rows::default(), error: None, preferences,
             #[cfg(feature = "vtt")]
             hook_note:Default::default(),
+            #[cfg(feature = "vtt")]
+            authored_input:Default::default(),
+            #[cfg(feature = "vtt")]
+            author_quote:None,
             attention: BTreeMap::new(), input: None, close_requested: false,
             #[cfg(any(feature = "mesocosm", feature = "vtt"))]
             scene: crate::viewport::handle(), });

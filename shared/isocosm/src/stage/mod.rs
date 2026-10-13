@@ -22,6 +22,7 @@ use std::collections::BTreeMap;
 
 mod staged;
 mod publication;
+mod goals;
 #[cfg(test)]
 mod tests;
 
@@ -34,6 +35,7 @@ pub(crate) struct Stage {
     pub(crate) terrain: Option<crate::operations::StagedTerrain>,
     pub(crate) step: Option<crate::spatial::StagedStep>,
     project_decision: Option<crate::projects::DecisionStamp>,
+    institution_decision: Option<crate::institutions::DecisionStamp>,
     project_debit: Option<(crate::projects::StockSource, Key, u64)>,
     projects: crate::projects::Writes,
     actor: Id,
@@ -112,6 +114,7 @@ impl Simulation {
             terrain: None,
             step: None,
             project_decision: None,
+            institution_decision: None,
             project_debit: None,
             projects: crate::projects::Writes::default(),
             actor,
@@ -148,6 +151,8 @@ impl Simulation {
         if !stage.projects.fits(&self.state.projects) { return false; }
         if stage.project_decision.as_ref().is_some_and(|stamp|
             self.project_decision_ready(stamp.decision.actor,Some(stamp.decision.worker)).is_err()) { return false; }
+        if stage.institution_decision.as_ref().is_some_and(|stamp|
+            self.institution_decision_ready(stamp.decision.actor,stamp.decision.target).is_err()) { return false; }
         let Some(frame) = &self.frame else {
             return true;
         };
@@ -370,6 +375,7 @@ impl Simulation {
             for (key, was) in &stage.projects.produced_before { frame.keep_produced(key, was.as_ref()); }
         }
         self.project_decision_stamp = stage.project_decision;
+        self.institution_decision_stamp = stage.institution_decision;
         let s = &mut self.state;
         if stage.count == 1 {
             s.population.lift(stage.actor).expect("the actor exists");

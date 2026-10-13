@@ -14,6 +14,9 @@ pub const END: &str = "goal:end";
 /// These kinds are authored vocabulary, never added to an older founding.
 pub const NOTE_KINDS: [&str; 3] = [ADOPT, PARTICIPATE, END];
 
+mod directives;
+pub use directives::Directive;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Ending { Met, Abandoned }
 
@@ -64,11 +67,17 @@ fn record(note: &Note) -> Option<Change> {
         && note.core.kind == kind && note.core.stance == wing_impresa::Stance::Associate).then_some(change)
 }
 
+fn records(notes: &[Note]) -> impl Iterator<Item = (&Note,Change)> {
+    notes.iter().filter_map(|note| record(note).map(|change| (note,change)))
+}
+
 impl Simulation {
-    fn goal_act(&self, actor: Id, event: &str) -> Result<&Event> {
-        let act = self.state.events.get(event).ok_or("goal names no retained native act")?;
+    fn goal_act_in<'a>(&'a self, actor: Id, event: &str, pending: Option<&'a Event>, framed: bool) -> Result<&'a Event> {
+        let act = pending.filter(|act| act.id == event).or_else(|| self.state.events.get(event))
+            .ok_or("goal names no retained native act")?;
+        let present = if framed { self.body_at_start(actor).is_some() } else { self.state.population.get(actor).is_some() };
         if act.authored.is_some() || act.subject != actor || act.tick > self.state.tick
-            || self.state.population.get(actor).is_none() {
+            || !present {
             return Err("goal witness is not that actual native actor's accepted event".into());
         }
         Ok(act)
@@ -76,12 +85,28 @@ impl Simulation {
 
     /// Admit an explicit goal record atomically. This grants no body control.
     pub(crate) fn goal_change(&mut self, change: &Change) -> Result<String> {
+        let notes = self.goal_change_notes(change,&self.state.notes,None,self.state.next_action,false)?;
+        let held = self.state.notes.len().checked_add(notes.len()).ok_or("goal note count overflow")?;
+        if held > self.genesis.rules.limits.notes { return Err("goal notes exceed native note budget".into()); }
+        let actor = match change { Change::Adopt { actor, .. } | Change::Participate { actor, .. }
+            | Change::End { actor, .. } => *actor };
+        let count = notes.len();
+        let mut candidate = self.clone();
+        candidate.inspect(actor)?;
+        candidate.state.notes.extend(notes);
+        self.publish_candidate(candidate)?;
+        Ok(format!("goals recorded: {count}"))
+    }
+
+    /// Prepare notes against the chosen read cut; only the caller's Stage publishes them.
+    fn goal_change_notes(&self, change: &Change, visible: &[Note], pending: Option<&Event>,
+        next_action: u64, framed: bool) -> Result<Vec<Note>> {
         let (actor,event,kind,goals) = match change {
             Change::Adopt { actor,goal,event, .. } => (*actor,event,ADOPT,BTreeSet::from([goal.clone()])),
             Change::Participate { actor,event,goals } => (*actor,event,PARTICIPATE,goals.clone()),
             Change::End { actor,goal,event, .. } => (*actor,event,END,BTreeSet::from([goal.clone()])),
         };
-        let act = self.goal_act(actor,event)?;
+        let act = self.goal_act_in(actor,event,pending,framed)?;
         if !self.genesis.rules.note_kinds.contains(kind) || goals.is_empty() {
             return Err("goal record requires its declared kind and every explicitly served goal".into());
         }
@@ -89,21 +114,25 @@ impl Simulation {
             crate::validation::key(goal)?;
             match change {
                 Change::Adopt { .. } => {
-                    if self.goal_notes().any(|(_,held)| matches!(held,Change::Adopt { goal:was, .. } if &was == goal)) {
+                    if records(visible).any(|(_,held)| matches!(held,Change::Adopt { goal:was, .. } if &was == goal)) {
                         return Err("goal identity already has an accepted adoption".into());
                     }
                 },
                 _ => {
-                    let thread = self.goal_thread(goal)?;
-                    let cut = self.goal_adoption_cut(goal)?;
+                    let thread = self.goal_thread_in(goal,visible,pending,next_action,framed)?;
+                    let cut = self.goal_adoption_cut_in(goal,visible,pending,next_action)?;
                     if (event != &thread.adoption.id && (act.tick < cut.tick || cut.events.contains(event)))
                         || thread.ending.is_some() || !thread.holder_alive {
                         return Err("participation names a not-yet-adopted or ended goal".into());
                     }
                     if let Change::End { .. } = change {
                         if thread.holder != actor { return Err("only its adopting actor ends this goal".into()); }
-                    } else if thread.holder != actor && !self.knows(actor,&thread.adoption.id)? {
-                        return Err("actor does not know the goal's actual adoption event".into());
+                    } else if thread.holder != actor {
+                        let body = if framed { self.body_at_start(actor) } else { self.state.population.get(actor) }
+                            .ok_or("goal participant is absent")?;
+                        if !self.known_in(actor,body,visible,&[],&thread.adoption.id)? {
+                            return Err("actor does not know the goal's actual adoption event".into());
+                        }
                     }
                     if matches!(change,Change::Participate { .. })
                         && thread.participation.iter().any(|held| held.event.id == *event) {
@@ -112,12 +141,12 @@ impl Simulation {
                 },
             }
         }
-        let held = self.state.notes.len().checked_add(goals.len()).ok_or("goal note count overflow")?;
-        if held > self.genesis.rules.limits.notes { return Err("goal notes exceed native note budget".into()); }
         let encoded = serde_json::to_string(change).map_err(|error| error.to_string())?;
         let cut = if matches!(change,Change::Adopt { .. }) {
-            Some(serde_json::to_string(&AdoptionCut { tick:self.state.tick,next_action:self.state.next_action,
-                events:self.state.events.keys().cloned().collect() }).map_err(|error| error.to_string())?)
+            let mut events: BTreeSet<_> = self.state.events.keys().cloned().collect();
+            events.extend(pending.map(|event| event.id.clone()));
+            Some(serde_json::to_string(&AdoptionCut { tick:self.state.tick,next_action,events })
+                .map_err(|error| error.to_string())?)
         } else { None };
         let mut notes = Vec::new();
         for goal in &goals {
@@ -127,15 +156,11 @@ impl Simulation {
             if let Some(cut) = &cut { note.extra.insert("goal-adoption-cut".into(),cut.clone()); }
             notes.push(note);
         }
-        let mut candidate = self.clone();
-        candidate.inspect(actor)?;
-        candidate.state.notes.extend(notes);
-        self.publish_candidate(candidate)?;
-        Ok(format!("goals recorded: {}",goals.len()))
+        Ok(notes)
     }
 
     fn goal_notes(&self) -> impl Iterator<Item = (&Note,Change)> {
-        self.state.notes.iter().filter_map(|note| record(note).map(|change| (note,change)))
+        records(&self.state.notes)
     }
 
     pub fn goal_threads(&self) -> Result<Vec<Thread>> {
@@ -147,16 +172,22 @@ impl Simulation {
 
     /// Trusted source witness. Knowledge-filtered hooks do not expose other event IDs.
     pub fn goal_adoption_cut(&self, goal: &str) -> Result<AdoptionCut> {
-        let mut notes = self.goal_notes().filter(|(_,change)| matches!(change,
+        self.goal_adoption_cut_in(goal,&self.state.notes,None,self.state.next_action)
+    }
+
+    fn goal_adoption_cut_in(&self, goal: &str, visible: &[Note], pending: Option<&Event>,
+        next_action: u64) -> Result<AdoptionCut> {
+        let mut notes = records(visible).filter(|(_,change)| matches!(change,
             Change::Adopt { goal:named, .. } if named == goal));
         let (note,change) = notes.next().ok_or("goal has no accepted adoption cut")?;
         if notes.next().is_some() { return Err("goal has ambiguous adoption cuts".into()); }
         let Change::Adopt { event, .. } = change else { unreachable!() };
         let cut: AdoptionCut = serde_json::from_str(note.extra.get("goal-adoption-cut")
             .ok_or("goal adoption has no exact native event cut")?).map_err(|error| error.to_string())?;
-        if cut.tick != note.core.tick || cut.tick > self.state.tick || cut.next_action > self.state.next_action
+        if cut.tick != note.core.tick || cut.tick > self.state.tick || cut.next_action > next_action
             || !cut.events.contains(&event) || cut.events.iter().any(|key|
-                self.state.events.get(key).is_none_or(|event| event.tick > cut.tick)) {
+                pending.filter(|event| &event.id == key).or_else(|| self.state.events.get(key))
+                    .is_none_or(|event| event.tick > cut.tick)) {
             return Err("goal adoption cut differs from its actual native record/events".into());
         }
         Ok(cut)
@@ -164,28 +195,33 @@ impl Simulation {
 
     /// Retained immediate cause edges and explicit goal service stay separate.
     pub fn goal_thread(&self, goal: &str) -> Result<Thread> {
+        self.goal_thread_in(goal,&self.state.notes,None,self.state.next_action,false)
+    }
+
+    fn goal_thread_in(&self, goal: &str, visible: &[Note], pending: Option<&Event>,
+        next_action: u64, framed: bool) -> Result<Thread> {
         let mut adopted = None;
         let mut participation = Vec::new();
         let mut ending = None;
-        for (note,change) in self.goal_notes().filter(|(note,_)| note.core.object == goal) {
+        for (note,change) in records(visible).filter(|(note,_)| note.core.object == goal) {
             match change {
                 Change::Adopt { actor,event,text, .. } => {
                     if adopted.is_some() { return Err("goal has ambiguous native adoption notes".into()); }
-                    let event = self.goal_act(actor,&event)?.clone();
+                    let event = self.goal_act_in(actor,&event,pending,framed)?.clone();
                     if note.core.tick < event.tick || note.djot != text { return Err("goal adoption note differs from its event/text".into()); }
                     adopted = Some((actor,event,text));
                 },
                 Change::Participate { actor,event, .. } => {
-                    participation.push(Participation { actor,event:self.goal_act(actor,&event)?.clone() });
+                    participation.push(Participation { actor,event:self.goal_act_in(actor,&event,pending,framed)?.clone() });
                 },
                 Change::End { actor,event,ending:why, .. } => {
                     if ending.is_some() { return Err("goal has multiple accepted endings".into()); }
-                    ending = Some(End { event:self.goal_act(actor,&event)?.clone(),ending:why });
+                    ending = Some(End { event:self.goal_act_in(actor,&event,pending,framed)?.clone(),ending:why });
                 },
             }
         }
         let (holder,adoption,text) = adopted.ok_or("no genuine consequential goal adoption")?;
-        let cut = self.goal_adoption_cut(goal)?;
+        let cut = self.goal_adoption_cut_in(goal,visible,pending,next_action)?;
         participation.sort_by(|a,b| (a.event.tick,&a.event.id).cmp(&(b.event.tick,&b.event.id)));
         let mut seen = BTreeSet::new();
         let before_cut = |event: &Event| event.id != adoption.id
@@ -208,7 +244,8 @@ impl Simulation {
             }
         }
         Ok(Thread { goal:goal.into(),holder,adoption,recorded_at:cut.tick,text,participation,ending,
-            holder_alive:self.state.population.get(holder).is_some_and(|entity| entity.alive),
+            holder_alive:if framed { self.body_at_start(holder).is_some_and(|entity| entity.alive) }
+                else { self.state.population.get(holder).is_some_and(|entity| entity.alive) },
             causes:causes.into_iter().map(|(event,cause)| CauseLink { event,cause }).collect() })
     }
 }

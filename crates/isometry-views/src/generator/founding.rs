@@ -50,6 +50,37 @@ pub(crate) fn table_controls(ui: &UiState) -> Vec<UiChild> {
     ))).attr("class", "sheet-row")));
     body.push(Box::new(clickable(el("div", text("Apply explicit table bindings")).attr("class", "btn"),
         |ui: &mut UiState, _| ui.request_native_table_file(TableFileAction::Bind))));
+    body.push(Box::new(el("div", (text("Physical map JSON file "), lens(
+        |field: &mut TextInput| caret_text_field(field, &[]),
+        |ui: &mut UiState| &mut ui.native.physical_path,
+    ))).attr("class", "sheet-row")));
+    body.push(Box::new(el("div", (
+        clickable(el("span", text("Quote supplied physical edit")).attr("class", "btn"),
+            |ui: &mut UiState, _| ui.request_native_table_file(TableFileAction::QuotePhysical)),
+        clickable(el("span", text("Apply supplied physical edit")).attr("class", "btn"),
+            |ui: &mut UiState, _| ui.request_native_table_file(TableFileAction::ApplyPhysical)),
+    )).attr("class", "btn-row")));
+    if let Some((input, quote)) = &ui.native.physical_quote {
+        body.push(Box::new(el("div", text(format!("Quoted physical edit {}", input.metadata.key)))
+            .attr("class", "side-line")));
+        body.push(Box::new(el("div", text(if quote.complete { "Physical quote is complete" }
+            else { "Physical quote needs exact supplied quantities and debit choices" })).attr("class", "side-line")));
+        for step in &quote.steps {
+            body.push(Box::new(el("div", text(format!("Cell {}: terrain {}; supplied {}",
+                step.index, step.terrain_before, step.supplied))).attr("class", "side-line")));
+            for material in &step.materials {
+                body.push(Box::new(el("div", text(format!("{}: {} cells, {} native units ({})",
+                    material.material.key, material.cells, material.quantity, material.material.account)))
+                    .attr("class", "side-line")));
+            }
+            for request in &step.debits.requests {
+                body.push(Box::new(el("div", text(format!("Native debit: {request:?}"))).attr("class", "side-line")));
+            }
+        }
+        if let Some(why) = &quote.refusal {
+            body.push(Box::new(el("div", text(why.clone())).attr("class", "side-line")));
+        }
+    }
     body.push(Box::new(el("div", (text("Authoring export file "), lens(
         |field: &mut TextInput| caret_text_field(field, &[]),
         |ui: &mut UiState| &mut ui.native.export_path,

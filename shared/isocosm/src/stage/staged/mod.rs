@@ -302,6 +302,15 @@ impl Staged<'_> {
                 });
                 return Ok(false);
             },
+            Effect::InstitutionDecision => {
+                self.sim.institution_decision_ready(self.stage.actor,self.stage.target)?;
+                let input = self.sim.institution_decision.as_ref().expect("institution decision checked above");
+                if input.process != self.stage.process { return Err("institution uses another authored deciding process".into()); }
+                self.stage.institution_decision = Some(crate::institutions::DecisionStamp {
+                    decision:input.clone(),action:cause.into(),
+                });
+                return Ok(false);
+            },
             Effect::ReserveProject { definition, from, lots, .. } => {
                 self.reserve_project(definition, *from, lots)?;
                 return Ok(false);

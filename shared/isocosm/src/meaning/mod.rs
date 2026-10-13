@@ -218,7 +218,7 @@ impl<'a> Scene<'a> {
 /// Whether a query holds, and the reading a receipt records for it.
 pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
     Ok(match q {
-        Query::Project { .. } | Query::ProjectDecision =>
+        Query::Project { .. } | Query::ProjectDecision | Query::InstitutionDecision =>
             return Err("project query requires its native simulation".into()),
         Query::Alive(Binding::Part) => {
             let v = s.part_lives()?;

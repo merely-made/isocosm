@@ -34,6 +34,30 @@ fn install(ui: &mut UiState, read: PackReading) -> Result<(), String> {
 }
 
 impl App {
+    pub(crate) fn sync_native_choreography(&mut self, ctx: &mut Ctx<'_>) {
+        let reading = (|| {
+            let ui = ctx.runner.state();
+            let Some(world) = &ui.native.world else { return Ok(Vec::new()); };
+            let Some(table) = &ui.native.table else { return Ok(Vec::new()); };
+            let campaign = world.load(isocosm::Execution::Grouped)?;
+            isometry_campaign::native::pack::accepted_choreography(campaign.table_session(), &table.game)
+        })();
+        let beats = match reading {
+            Ok(beats) => beats,
+            Err(reason) => { ctx.runner.update(|ui| ui.status = reason); return; }
+        };
+        if beats == self.native_choreography { return; }
+        let mut sheet = self.sheet.clone();
+        let mut emotes: std::collections::BTreeMap<_, _> = self.pack_emotes.iter().cloned().collect();
+        for beat in &beats {
+            sheet.push('\n'); sheet.push_str(&beat.css);
+            if let Some(label) = &beat.emote { emotes.insert(beat.name.clone(), label.clone()); }
+        }
+        *ctx.set_sheet = Some(sheet);
+        ctx.runner.update(|ui| ui.emotes = emotes.into_iter().collect());
+        self.native_choreography = beats;
+    }
+
     pub(crate) fn pump_native_packs(&mut self, ctx: &mut Ctx<'_>) {
         let mut request = None;
         ctx.runner.update(|ui| request = ui.native.packs.request.take());

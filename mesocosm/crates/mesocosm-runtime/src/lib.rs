@@ -33,6 +33,7 @@ pub use clock::{Advance, Clock};
 pub use runtime::author_spread;
 pub use readings::{FlowWindows, JUDGEMENT_TICKS, RETENTION_TICKS, Trend};
 pub use review::{Authored, Offer, Proposed, Reading, Review};
+pub use mesocosm_phenotype::TermTable;
 pub use runtime::{
     DEFAULT_MAX_STEPS_PER_ADVANCE, Envelope, Founded, GameSave, Receipt, Refusal, Replayed, Runtime,
 };

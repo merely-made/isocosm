@@ -33,6 +33,7 @@ pub(crate) fn of(interim: &Interim) -> Option<Review> {
 pub struct Authored {
     scripts: Vec<(String, String)>,
     policy: Policy,
+    terms: mesocosm_phenotype::TermTable,
 }
 
 /// What one script made of one offer: the cells it would change on the
@@ -78,8 +79,11 @@ impl Authored {
         Ok(Self {
             scripts,
             policy: Policy::default(),
+            terms: manifest.terms,
         })
     }
+
+    pub fn terms(&self) -> &mesocosm_phenotype::TermTable { &self.terms }
 
     pub fn is_empty(&self) -> bool {
         self.scripts.is_empty()

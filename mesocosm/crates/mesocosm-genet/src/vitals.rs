@@ -124,6 +124,7 @@ impl VitalsChrome {
         fresh: &[(E, Result<String, Refusal>)],
         steps: u64,
         trend: &Trend,
+        terms: &mesocosm_runtime::TermTable,
     ) {
         let held = critter
             .and_then(|c| sim.state().population.get(c))
@@ -145,12 +146,13 @@ impl VitalsChrome {
             self.notice = None;
         }
 
-        let reading = mesocosm_views::vitals_of(
+        let reading = mesocosm_views::vitals_of_with_terms(
             sim,
             critter,
             self.high_water,
             self.notice.as_ref().map(|(words, _)| words.clone()),
             Some(trend),
+            terms,
         );
         if self.shown.as_ref() == Some(&reading) {
             return;

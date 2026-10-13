@@ -26,6 +26,14 @@ pub struct Setup {
     /// Complete authored native processes; generated processes are not replaced.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub paced_processes: BTreeMap<String, Process>,
+    /// Complete caller-authored processes under new keys, never generated replacements.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub authored_processes: BTreeMap<String, Process>,
+    /// Goal and other note vocabulary is explicit; old profiles add nothing.
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
+    pub authored_note_kinds: BTreeSet<String>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub institutions: BTreeMap<String, isocosm::institutions::Definition>,
 }
 
 impl Setup {
@@ -61,6 +69,23 @@ impl Setup {
         genesis.rules.processes.extend(self.paced_processes.clone());
         Ok(())
     }
+
+    fn install_authored(&self, genesis: &mut Genesis) -> Result<(), String> {
+        for (name, process) in &self.authored_processes {
+            if name != &process.id || genesis.rules.processes.contains_key(name) {
+                return Err(format!("authored process key differs or replaces existing native process: {name}"));
+            }
+        }
+        genesis.rules.note_kinds.extend(self.authored_note_kinds.clone());
+        genesis.rules.processes.extend(self.authored_processes.clone());
+        for (key, definition) in &self.institutions {
+            if genesis.rules.institutions.contains_key(key) {
+                return Err(format!("institution method replaces existing founding method: {key}"));
+            }
+            genesis.rules.institutions.insert(key.clone(), definition.clone());
+        }
+        Ok(())
+    }
 }
 
 impl Campaign {
@@ -83,6 +108,8 @@ impl Campaign {
             genesis.rules.party_relations.insert(party.clone(), kind.clone());
         }
         setup.install_paces(&mut genesis).map_err(|reason|
+            FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
+        setup.install_authored(&mut genesis).map_err(|reason|
             FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
         let mut session = Session::new(table_genesis(genesis), setup.execution).map_err(|reason|
             FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;

@@ -64,6 +64,8 @@ fn bind_routes(tree: &WindowTree<App, Logic, Child>, routes: &mut HashMap<Projec
 }
 
 pub(crate) fn run(app: App) -> Result<(), String> {
+    let sheet = view::accepted_sheet(&app)?;
+    let accepted_sheet = Rc::new(RefCell::new(sheet.clone()));
     let keys: Vec<u64> = app.windows.keys().copied().collect();
     if keys.is_empty() { return Err("at least one explicitly bound window is required".into()); }
     let routes = Rc::new(RefCell::new(HashMap::<ProjectionId, u64>::new()));
@@ -94,8 +96,21 @@ pub(crate) fn run(app: App) -> Result<(), String> {
     });
     hooks.after_dispatch = Box::new({
         let routes = routes.clone(); let initial = initial.clone();
+        let accepted_sheet = accepted_sheet.clone();
         move |ctx| {
             bind_routes(ctx.runner, &mut routes.borrow_mut(), &initial);
+            match view::accepted_sheet(ctx.runner.state()) {
+                Ok(sheet) if sheet != *accepted_sheet.borrow() => {
+                    *accepted_sheet.borrow_mut() = sheet.clone();
+                    *ctx.set_sheet = Some(sheet);
+                },
+                Err(reason) => {
+                    if let Some(key) = routes.borrow().get(&ctx.runner.window()).copied() {
+                        ctx.runner.update(|app| app.record(key, Err(reason)));
+                    }
+                },
+                _ => {},
+            }
             let opened = ctx.runner.state().pending_open.clone();
             if !opened.is_empty() {
                 ctx.runner.update(|app| app.pending_open.clear());
@@ -130,6 +145,6 @@ pub(crate) fn run(app: App) -> Result<(), String> {
         else { CloseDisposition::KeepVisible }
     });
     let windows = keys.into_iter().map(|key| (view::lens(key), options())).collect();
-    run_windows(move |_| WindowsInit { state: app, sheet: view::sheet(),
+    run_windows(move |_| WindowsInit { state: app, sheet,
         fonts: Vec::new(), images: Vec::new(), windows }, hooks).map_err(|e| e.to_string())
 }

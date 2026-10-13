@@ -133,6 +133,7 @@ pub fn discover(root: &Path) -> Result<Manifest, Admission> {
             supported: SUPPORTED_ABI,
         });
     }
+    check_terms(&manifest)?;
     Ok(manifest)
 }
 
@@ -148,6 +149,7 @@ pub fn admit_dir(root: &Path) -> Result<Registry, Admission> {
 
 /// Admits a manifest already discovered at `root`.
 pub fn admit(root: &Path, manifest: &Manifest) -> Result<Registry, Admission> {
+    check_terms(manifest)?;
     if manifest.processes.is_empty() {
         return Err(Admission::EmptyPack {
             root: root.display().to_string(),
@@ -175,6 +177,12 @@ pub fn admit(root: &Path, manifest: &Manifest) -> Result<Registry, Admission> {
     undeclared(root, &declared)?;
 
     Registry::admit(defs).map_err(|id: ProcessId| Admission::DuplicateId { id: id.qualified() })
+}
+
+fn check_terms(manifest: &Manifest) -> Result<(), Admission> {
+    manifest.terms.validate().map_err(|why| Admission::MalformedSchema {
+        path: format!("{} display terms", manifest.pack), why,
+    })
 }
 
 /// One declared asset's path inside the pack. (PD4)

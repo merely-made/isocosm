@@ -2,6 +2,23 @@
 
 **Date:** 2026-09-25
 
+**Source assembly, 2026-10-13:** native processes now carry explicit goal
+directives, published with their genuine actor events and owned effects.
+Authored founding profiles supply new processes, note kinds and institution
+methods. Native constitutional proposals use declared decision strategies,
+actual member bodies and named support holdings; accepted institution acts
+retain separate polity/body/event identities. Amendments and dissolution
+use their authored methods. Member acts remain individual evidence.
+
+GameBindings10 records supplied physical map edits. The actual standalone
+file/quote/apply and shared VTT authoring doors admit exact native geometry,
+material quantities and owned debit selections on one candidate. Protocol
+and ALPN12 append its authenticated native publication. Unmarked MapEdit
+stays metadata; board tile maps and stale body poses are not silently updated.
+Accepted pack choreography reaches both hosts' runtime stylesheet APIs.
+All of this is source-only under826. Terrain/condition/claim disclosure871,
+physical item actuation and broader V2 completion remain open.
+
 **Current choices, 2026-10-13 (865 to870):** the DM previews and explicitly
 accepts compatible dormant packs. Each act participates in every goal it
 actually served; immediate event causality stays separate. Authored polity
@@ -990,3 +1007,27 @@ what each left open lands here, so it has a live owner.
   probes/tuning stay deferred826. Complete terrain/condition/claim disclosure
   is the sole collected pending question871; next unused872. Mark's Proceed
   continues the migration. Full V2/E3/M4/C10/C11 acceptance remains open.
+
+- **2026-10-13, native operations and consumers source assembly:** explicit
+  process goal directives publish with genuine actor events/owned effects;
+  Setup admits supplied new processes, note kinds and institution methods.
+  Native constitutional operations use real member bodies, exact support
+  holdings and authored deciding processes, keeping polity/body/event domains
+  distinct. Historical rollback/witness and journal paths retain their facts.
+  GameBindings10 and protocol/ALPN12 retain supplied physical map edits with
+  exact geometry, measured material quantities, owned selections and accepted
+  native history-prefix proof. Standalone file/quote/apply and shared VTT
+  authoring consumers use those doors. Accepted pack choreography updates both
+  hosts' actual stylesheets. Old metadata remains metadata; poses become stale
+  on changed terrain until explicitly placed. Source only: no Cargo/compiler,
+  tests, fixture/probe repairs or tuning826. Disclosure871 stays pending;
+  physical item actuation, S8-S10 source and final product/checkpoint acceptance
+  remain open. Ecology term-table work continues independently.
+
+- **2026-10-13, TG7 source placement:** optional pack-authored exact-ID display
+  forms now load through phenotype admission and the actual Authored/Runtime
+  pack door, reaching live Mesocosm vitals and part inspection. Missing forms
+  show exact IDs. Current kingdom/feeding words live in the shipped manifest;
+  native rules, Registry, Genesis and saved session hashes remain untouched.
+  This is source-only826. TG4 defensive biology, S9 ecological admission and
+  S10 assessed stabilization remain open; no tuning or acceptance is claimed.

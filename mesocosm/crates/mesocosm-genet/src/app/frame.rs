@@ -97,7 +97,7 @@ impl Host {
             lanes.hud.refresh(&lanes.device, sim, critter);
             lanes
                 .vitals
-                .refresh(&lanes.device, sim, critter, &fresh, steps, &trend);
+                .refresh(&lanes.device, sim, critter, &fresh, steps, &trend, self.runtime.terms());
             lanes
                 .board
                 .refresh(&lanes.device, review.as_ref(), &proposed, &trend, board_row);

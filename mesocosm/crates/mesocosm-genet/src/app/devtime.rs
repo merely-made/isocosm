@@ -156,10 +156,11 @@ impl Host {
                         notice: Some(self.inspection.notice.into()),
                     },
                     |selected| {
-                        mesocosm_views::part_of(
+                        mesocosm_views::part_of_with_terms(
                             self.runtime.sim(),
                             selected.organism,
                             selected.part,
+                            self.runtime.terms(),
                         )
                     },
                 )

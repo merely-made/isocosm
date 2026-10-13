@@ -85,6 +85,7 @@ fn framed(p: &Process) -> bool {
     p.target.is_some()
         || p.risk.is_some()
         || p.causation == Causation::Choice
+        || !p.goal_directives.is_empty()
         || p.takes_shared()
         || (reads_site && writes_site)
 }
@@ -179,7 +180,7 @@ impl Simulation {
             self.pass = Some(pass);
             // A pass keeps its start only where one act could read what
             // another writes (ruling 454).
-            self.frame = framed(process).then(Frame::default);
+            self.frame = framed(process).then(|| Frame::starting(self.state.notes.len()));
             self.chosen.begin_pass();
             if process.takes_shared() {
                 self.plan(process, &id, gates.as_ref(), bound);

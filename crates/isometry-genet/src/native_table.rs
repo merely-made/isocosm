@@ -43,6 +43,15 @@ fn export_context(ui: &UiState) -> Result<(), String> {
             if ui.active_map.as_ref() == Some(key) { &ui.map } else { &map.document }),
         "tokens": if ui.active_map.as_ref() == Some(key) { &ui.map.tokens } else { &map.document.tokens },
     })).collect();
+    let source_lots: Vec<_> = session.sim.source_lots().collect();
+    let physical_context = serde_json::json!({
+        "expected_source": isometry_campaign::native::physical_map::physical_source(session),
+        "expected_game": ui.native.table.as_ref().map(|table| isocosm::digest(&table.game)),
+        "expected_terrain": session.sim.terrain_revision(),
+        "materials": session.sim.genesis().world.materials,
+        "source_lots": source_lots,
+        "measured_quote": ui.native.physical_quote,
+    });
     let value = serde_json::json!({
         "purpose": "Author explicit inputs; null participant and missing cell mappings are incomplete, not defaults.",
         "admission_template": {"expected_native": expected_native, "expected_table": expected_table,
@@ -53,6 +62,7 @@ fn export_context(ui: &UiState) -> Result<(), String> {
         "accounts": session.sim.genesis().rules.accounts, "boards": boards,
         "party_relations": session.sim.genesis().rules.party_relations,
         "authenticated_endpoints": ui.native.endpoints,
+        "physical_context": physical_context,
     });
     let bytes = serde_json::to_vec_pretty(&value).map_err(|error| error.to_string())?;
     let mut file = std::fs::OpenOptions::new().write(true).create_new(true).open(path)
@@ -69,6 +79,14 @@ impl App {
                     ui.native.admission_request = Some(input)),
                 TableFileAction::Bind => read_input(ui.native.binding_path.text()).map(|input|
                     ui.native.binding_request = Some(input)),
+                TableFileAction::QuotePhysical => read_input(ui.native.physical_path.text()).map(|input| {
+                    ui.native.physical_quote = None;
+                    ui.native.physical_request = Some(isometry_views::PhysicalRequest::Quote(input));
+                }),
+                TableFileAction::ApplyPhysical => read_input(ui.native.physical_path.text()).map(|input| {
+                    ui.native.physical_quote = None;
+                    ui.native.physical_request = Some(isometry_views::PhysicalRequest::Apply(input));
+                }),
                 TableFileAction::Export => export_context(ui),
             };
             ui.status = match result {

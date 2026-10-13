@@ -17,7 +17,7 @@
 
 pub use isometry_campaign::founding::NativeWorld;
 pub use session::{NativePublication, NativeTravelResolved, NativeTimeResolved, NativePartyResolved,
-    NativeJourneyResolved, NativeHookResolved, NativePackResolved, TravelMember, TravelTableResult};
+    NativeJourneyResolved, NativeHookResolved, NativePackResolved, NativePhysicalResolved, TravelMember, TravelTableResult};
 mod mode_game;
 pub use mode_game::ModeGame;
 mod protocol;

@@ -327,6 +327,15 @@ impl Session {
         }
         Ok(session)
     }
+    /// Replays the exact accepted prefix before an entry, including earlier
+    /// entries at its tick. This read does not create another played branch.
+    pub fn before_entry(&self, key: &str) -> Result<Self> {
+        let index = self.entries.iter().position(|entry| entry.id == key)
+            .ok_or("history entry is absent")?;
+        Self::replay(self.sim.genesis.as_ref().clone(), self.branch.clone(),
+            self.entries[..index].to_vec(), self.entries[index].tick,
+            self.sim.mode, self.sim.state.movement, &[], |_, _| Ok(()))
+    }
     pub fn fork_at(&self, tick: Tick, branch: Key) -> Result<Self> {
         if tick > self.sim.state.tick {
             return Err("cannot fork an unplayed future".into());
@@ -519,6 +528,7 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
         },
         Command::Know(knowing) => sim.know(knowing),
         Command::Goal(change) => sim.goal_change(change),
+        Command::Institution(change) => sim.institution_change(change),
         Command::Social(act) => {
             let answer = sim.social(act)?;
             serde_json::to_string(&answer).map_err(|e| e.to_string())

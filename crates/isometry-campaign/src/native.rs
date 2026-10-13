@@ -37,6 +37,8 @@ pub mod hooks;
 pub use hooks::{goal_hooks, submit_hook};
 pub mod pack;
 pub mod storylets;
+pub mod physical_map;
+pub mod institutions;
 
 mod reading;
 pub use reading::{Geography, Reading, polity_readings};

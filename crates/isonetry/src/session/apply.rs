@@ -67,6 +67,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
         GameEvent::NativeJourneyResolved(result) => super::native_journey::apply_native_journey(state, result),
         GameEvent::NativeHookResolved(result) => super::native_hook::apply_native_hook(state, result),
         GameEvent::NativePackResolved(result) => super::native_pack::apply_native_pack(state, result),
+        GameEvent::NativePhysicalResolved(result) => super::native_physical::apply_native_physical(state, result),
         GameEvent::Map(e) => {
             apply(&mut state.map, e).map_err(GameError::Core)?;
             sync_active_map(state);

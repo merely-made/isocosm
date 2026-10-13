@@ -58,6 +58,9 @@ pub struct Manifest {
     /// otherwise depend on what was left in the directory.
     #[serde(default)]
     pub fixtures: Vec<String>,
+    /// Display-only forms, separate from native definitions and their digest.
+    #[serde(default, skip_serializing_if = "crate::TermTable::is_empty")]
+    pub terms: crate::TermTable,
 }
 
 /// One `processes/<name>.toml` (or `.json`).

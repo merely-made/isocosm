@@ -80,6 +80,7 @@ pub(crate) fn process(id: &str, causation: Causation, effects: Vec<Effect>) -> P
         invariants: set(&["sim:matter", "sim:nonnegative"]),
         note: false,
         port_feeding: None,
+        goal_directives: Vec::new(),
     }
 }
 
@@ -280,6 +281,7 @@ impl Founding {
             owned_stock: None,
             party_relations: BTreeMap::new(),
             pace_profiles: BTreeMap::new(),
+            institutions: BTreeMap::new(),
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),

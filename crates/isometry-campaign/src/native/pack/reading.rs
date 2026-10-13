@@ -45,6 +45,16 @@ pub fn active_content(session: &Session, game: &[u8], access: OrdinaryAccess) ->
     merge_content(bindings.catalogue().unwrap_or(&Catalogue::default()))
 }
 
+/// Public presentation from accepted packs, without exposing dormant proposals
+/// or private content through the DM catalogue reading.
+pub fn accepted_choreography(session: &Session, game: &[u8]) -> Result<Vec<Choreography>, String> {
+    let bindings = GameBindings::decode(game)?;
+    bindings.validate(session)?;
+    Ok(bindings.catalogue().into_iter().flat_map(|catalogue| catalogue.packs.values())
+        .filter(|pack| pack.activation.is_some())
+        .flat_map(|pack| pack.definition.choreography.iter().cloned()).collect())
+}
+
 pub(super) fn apply_definition(session: &mut Session, definition: &Definition, force: bool) -> Result<(), String> {
     if force {
         session.command(Command::Assert(Assertion::PackForced(Applied { key:definition.key.clone(),

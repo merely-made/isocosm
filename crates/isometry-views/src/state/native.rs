@@ -24,8 +24,12 @@ pub struct NativeUi {
     pub time_requests: Vec<isocosm_overlay::vtt::TimeIntent>,
     pub binding_request: Option<isonetry::NativeTableBindingInput>,
     pub admission_request: Option<isonetry::native_table::NativeTableAdmissionInput>,
+    pub physical_request: Option<PhysicalRequest>,
+    pub physical_quote: Option<(isometry_campaign::native::physical_map::PhysicalMapInput,
+        isometry_campaign::native::physical_map::PhysicalMapPreview)>,
     pub admission_path: TextInput,
     pub binding_path: TextInput,
+    pub physical_path: TextInput,
     pub export_path: TextInput,
     pub file_request: Option<TableFileAction>,
     pub endpoints: Vec<[u8; 32]>,
@@ -37,7 +41,20 @@ pub struct NativeUi {
 }
 
 #[derive(Clone, Copy, Debug)]
-pub enum TableFileAction { Admit, Bind, Export }
+pub enum TableFileAction { Admit, Bind, Export, QuotePhysical, ApplyPhysical }
+
+#[derive(Clone, Debug)]
+pub enum PhysicalRequest {
+    Quote(isometry_campaign::native::physical_map::PhysicalMapInput),
+    Apply(isometry_campaign::native::physical_map::PhysicalMapInput),
+}
+
+#[derive(Clone, Debug)]
+pub enum PhysicalOutcome {
+    Quote { input: isometry_campaign::native::physical_map::PhysicalMapInput,
+        preview: isometry_campaign::native::physical_map::PhysicalMapPreview },
+    Applied,
+}
 
 #[derive(Clone, Debug)]
 pub enum Acceptance { TableOnly, Native(Selection) }

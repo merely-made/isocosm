@@ -97,6 +97,19 @@ pub(crate) fn sheet() -> String {
     isomere::sheet(&seeds, EXTRA)
 }
 
+pub(crate) fn accepted_sheet(app: &App) -> Result<String, String> {
+    let mut css = sheet();
+    #[cfg(feature = "vtt")]
+    {
+        let beats = app.world.read_game(crate::products::Mode::Vtt, |session, game|
+            isometry_campaign::native::pack::accepted_choreography(session, game))?;
+        for beat in beats { css.push('\n'); css.push_str(&beat.css); }
+    }
+    #[cfg(not(feature = "vtt"))]
+    let _ = app;
+    Ok(css)
+}
+
 const EXTRA: &str = "
 main { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
 nav { display: flex; flex-direction: row; gap: 8px; flex-wrap: wrap; }

@@ -377,7 +377,7 @@ pub(crate) fn init(
     Init {
         state: ui,
         logic: board_root as Logic,
-        sheet: std::mem::take(&mut app.sheet),
+        sheet: app.sheet.clone(),
         fonts: Vec::new(),
         images: Vec::new(),
     }

@@ -15,3 +15,26 @@ fixtures = [
     "fixtures/gland_rich_ground.json",
     "fixtures/gland_lean_ground.json",
 ]
+
+# Display forms only. These never enter the native rules or world digest.
+[terms."kingdom:flora"]
+label = "producer"
+indefinite = "a producer"
+[terms."kingdom:fauna"]
+label = "consumer"
+indefinite = "a consumer"
+[terms."kingdom:myco"]
+label = "decomposer"
+indefinite = "a decomposer"
+[terms."intake:deadstock"]
+label = "deadstock"
+[terms."feeding:producer"]
+verb = "fixes its own"
+[terms."feeding:grazer"]
+verb = "grazes"
+[terms."feeding:predator"]
+verb = "hunts"
+[terms."feeding:omnivore"]
+verb = "eats what it finds"
+[terms."feeding:scavenger"]
+verb = "scavenges"

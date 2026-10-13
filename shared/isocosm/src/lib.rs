@@ -24,6 +24,7 @@ mod execute;
 pub mod flows;
 pub mod generate;
 pub mod goals;
+pub mod institutions;
 mod genesis;
 pub mod geometry;
 pub mod growth;

@@ -6,7 +6,8 @@
 //! lives, and where it came from.
 
 use isocosm::mosaic::ports::{active, feeding};
-use isocosm::process::{FeedingMode, IntakePort};
+use isocosm::process::{FeedingMode, IntakePort, NisKind};
+use mesocosm_runtime::TermTable;
 use isocosm::schema::{Id, PartId};
 use isocosm::simulation::Simulation;
 use isometer_core::classify;
@@ -41,6 +42,12 @@ fn unavailable(why: &str) -> PartInspection {
 }
 
 pub fn part_of(sim: &Simulation, critter: Id, part: PartId) -> PartInspection {
+    part_of_with_terms(sim, critter, part, &TermTable::default())
+}
+
+pub fn part_of_with_terms(
+    sim: &Simulation, critter: Id, part: PartId, terms: &TermTable,
+) -> PartInspection {
     let Some(e) = sim.state().population.get(critter) else {
         return unavailable("the selected critter is unavailable");
     };
@@ -62,8 +69,8 @@ pub fn part_of(sim: &Simulation, critter: Id, part: PartId) -> PartInspection {
             id: part.0.to_string(),
             role: super::follow::role_word(classify(geometry.half_extent)).into(),
             process: if cells.is_empty() { "none".into() } else { cells.join(", ") },
-            intake: active(p).map_or("not an intake".into(), port_words),
-            feeding: feeding_word(feeding(e)).into(),
+            intake: active(p).map_or("not an intake".into(), |port| port_words(port, terms)),
+            feeding: terms.form(feeding_word(feeding(e)), "verb").into(),
             condition: if e.lives(part) { "living" } else { "gone" }.into(),
             discovery_condition: String::new(),
             history_event: String::new(),
@@ -80,16 +87,23 @@ pub fn part_of(sim: &Simulation, critter: Id, part: PartId) -> PartInspection {
     }
 }
 
-fn port_words(port: IntakePort) -> String {
-    format!("{port:?}").to_lowercase()
+fn port_words(port: IntakePort, terms: &TermTable) -> String {
+    let mut admitted = Vec::new();
+    for (kind, id) in [(NisKind::Producer, "kingdom:flora"),
+        (NisKind::Consumer, "kingdom:fauna"), (NisKind::Decomposer, "kingdom:myco")] {
+        if port.admits_live(kind) { admitted.push(terms.form(id, "label")); }
+    }
+    if port.admits_deadstock() { admitted.push(terms.form("intake:deadstock", "label")); }
+    admitted.join(", ")
 }
 
+/// The reading's identity, separate from a pack's display form.
 pub fn feeding_word(mode: FeedingMode) -> &'static str {
     match mode {
-        FeedingMode::Producer => "fixes its own",
-        FeedingMode::Grazer => "grazes",
-        FeedingMode::Predator => "hunts",
-        FeedingMode::Omnivore => "eats what it finds",
-        FeedingMode::Scavenger => "scavenges",
+        FeedingMode::Producer => "feeding:producer",
+        FeedingMode::Grazer => "feeding:grazer",
+        FeedingMode::Predator => "feeding:predator",
+        FeedingMode::Omnivore => "feeding:omnivore",
+        FeedingMode::Scavenger => "feeding:scavenger",
     }
 }

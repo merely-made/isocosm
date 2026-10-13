@@ -99,6 +99,8 @@ pub struct Runtime {
     review: Option<Review>,
     /// A pack's expression scripts, and what they made of the review (781).
     authored: Option<Authored>,
+    /// Host display forms; absent from saved native and game state.
+    terms: mesocosm_phenotype::TermTable,
     proposed: Vec<Proposed>,
     /// What the last round brought.
     happenings: Vec<Happening>,
@@ -142,6 +144,7 @@ impl Runtime {
             checkpoint: None,
             review: None,
             authored: None,
+            terms: Default::default(),
             proposed: Vec::new(),
             happenings: Vec::new(),
             windows: FlowWindows::new(),
@@ -294,9 +297,12 @@ impl Runtime {
 
     /// Gives the review a pack's expression scripts as a second source.
     pub fn with_authored(mut self, authored: Authored) -> Self {
+        self.terms = authored.terms().clone();
         self.authored = Some(authored);
         self
     }
+
+    pub fn terms(&self) -> &mesocosm_phenotype::TermTable { &self.terms }
 
     /// What the scripts made of the open review's declared-tract offers.
     pub fn proposed(&self) -> &[Proposed] {

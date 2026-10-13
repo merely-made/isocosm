@@ -42,9 +42,10 @@ fn named_goal(intent: &HookIntent) -> Option<&str> {
 }
 
 fn adopted_before(session: &Session, thread: &goals::Thread, order: u64) -> bool {
-    session.entries.iter().any(|entry| entry.order < order && matches!(&entry.command,
-        Command::Goal(goals::Change::Adopt { goal,event, .. })
-            if goal == &thread.goal && event == &thread.adoption.id))
+    let Some(entry) = session.entries.iter().find(|entry| entry.order == order) else { return false; };
+    let Command::Assert(Assertion::History(line)) = &entry.command else { return false; };
+    session.sim.goal_adoption_cut(&thread.goal).is_ok_and(|cut|
+        cut.tick <= entry.tick && !cut.events.contains(&line.event_key()))
 }
 
 fn selected(session: &Session, intent: &HookIntent, order: Option<u64>) -> Result<goals::Thread,String> {

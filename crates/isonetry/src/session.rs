@@ -40,6 +40,8 @@ mod native_hook;
 pub use native_hook::NativeHookResolved;
 mod native_pack;
 pub use native_pack::NativePackResolved;
+mod native_physical;
+pub use native_physical::NativePhysicalResolved;
 pub use native::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
 mod travel;
 

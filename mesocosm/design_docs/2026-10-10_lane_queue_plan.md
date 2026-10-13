@@ -72,9 +72,11 @@ known questions together; all six VTT choices865 to870 are now answered in
 one batch. Explicit DM pack acceptance, every actually served goal, retained
 polity disagreements, configurable faction/biome layers, always sharp edges
 and optional thumbnails have bounded dependent source and actual callers
-placed. GameBindings9 and protocol/ALPN11 retain typed catalogue/Hook/map
-metadata. Automatic native goal directives, institutional polity acts and
-physical map/item actuation remain source work. Complete terrain/condition/
+placed. GameBindings10 and protocol/ALPN12 retain typed catalogue/Hook/map
+metadata and physical edit records. Explicit native process goal directives,
+institution operations under supplied methods/support and physical map
+quote/apply callers are source-assembled. Accepted choreography updates
+actual host stylesheets. Physical item actuation and complete terrain/condition/
 claim disclosure scope is the sole collected pending question871; next872.
 Verification and
 adjustments wait under826. C9 is historically certified/merged, C10 harm is
@@ -1429,3 +1431,27 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   probes/tuning stay deferred826. Complete terrain/condition/claim disclosure
   is the sole collected pending question871; next unused872. Mark's Proceed
   continues the migration. Full V2/E3/M4/C10/C11 acceptance remains open.
+
+- **2026-10-13, native operations and consumers source assembly:** explicit
+  process goal directives publish with genuine actor events/owned effects;
+  Setup admits supplied new processes, note kinds and institution methods.
+  Native constitutional operations use real member bodies, exact support
+  holdings and authored deciding processes, keeping polity/body/event domains
+  distinct. Historical rollback/witness and journal paths retain their facts.
+  GameBindings10 and protocol/ALPN12 retain supplied physical map edits with
+  exact geometry, measured material quantities, owned selections and accepted
+  native history-prefix proof. Standalone file/quote/apply and shared VTT
+  authoring consumers use those doors. Accepted pack choreography updates both
+  hosts' actual stylesheets. Old metadata remains metadata; poses become stale
+  on changed terrain until explicitly placed. Source only: no Cargo/compiler,
+  tests, fixture/probe repairs or tuning826. Disclosure871 stays pending;
+  physical item actuation, S8-S10 source and final product/checkpoint acceptance
+  remain open. Ecology term-table work continues independently.
+
+- **2026-10-13, TG7 source placement:** optional pack-authored exact-ID display
+  forms now load through phenotype admission and the actual Authored/Runtime
+  pack door, reaching live Mesocosm vitals and part inspection. Missing forms
+  show exact IDs. Current kingdom/feeding words live in the shipped manifest;
+  native rules, Registry, Genesis and saved session hashes remain untouched.
+  This is source-only826. TG4 defensive biology, S9 ecological admission and
+  S10 assessed stabilization remain open; no tuning or acceptance is claimed.

@@ -9,6 +9,7 @@ mod conversion;
 mod harm;
 mod material;
 mod note;
+mod process;
 mod recipe;
 
 pub(crate) use body::part;
@@ -243,9 +244,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         if id != &p.id {
             return Err("process key does not match identity".into());
         }
-        body::process(p)?;
-        p.validate_feeding(rules)?;
-        harm::draws(p)?;
+        process::contracts(p,rules)?;
         // A part's ledger holds only matter (ruling 504).
         for q in &p.requires {
             if let Query::Account {
@@ -310,7 +309,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         kept_first(p, id)?;
     }
     mind(rules)?;
-    competitions(rules)
+    crate::institutions::validate(rules)?; competitions(rules)
 }
 
 /// A kept value is read only after its act keeps it, and kept only at the

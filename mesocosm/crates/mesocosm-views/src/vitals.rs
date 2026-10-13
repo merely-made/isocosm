@@ -15,7 +15,7 @@ use isocosm::mosaic::ports::feeding;
 use isocosm::rules::retained;
 use isocosm::schema::{Entity, Id};
 use isocosm::simulation::Simulation;
-use mesocosm_runtime::{Refusal, Trend};
+use mesocosm_runtime::{Refusal, TermTable, Trend};
 
 mod graft;
 pub use graft::compatibility_words;
@@ -50,9 +50,9 @@ pub fn held_mg(e: &Entity) -> u64 {
 
 pub fn kingdom_word(kingdom: Kingdom) -> &'static str {
     match kingdom {
-        Kingdom::Producer => "a producer",
-        Kingdom::Consumer => "a consumer",
-        Kingdom::Decomposer => "a decomposer",
+        Kingdom::Producer => "kingdom:flora",
+        Kingdom::Consumer => "kingdom:fauna",
+        Kingdom::Decomposer => "kingdom:myco",
     }
 }
 
@@ -63,6 +63,13 @@ pub fn vitals_of(
     high_water: u64,
     notice: Option<String>,
     trend: Option<&Trend>,
+) -> Vitals {
+    vitals_of_with_terms(sim, critter, high_water, notice, trend, &TermTable::default())
+}
+
+pub fn vitals_of_with_terms(
+    sim: &Simulation, critter: Option<Id>, high_water: u64,
+    notice: Option<String>, trend: Option<&Trend>, terms: &TermTable,
 ) -> Vitals {
     let pop = &sim.state().population;
     let e = critter.and_then(|c| pop.get(c)).filter(|e| e.alive);
@@ -77,8 +84,9 @@ pub fn vitals_of(
         notice: notice.filter(|_| energy_mg.is_some()),
         replacement: trend.map(replacement_words),
         warning: trend.and_then(warning_words),
-        kingdom: e.and_then(kingdom::of).map(|k| kingdom_word(k).to_owned()),
-        feeding: e.map(|e| crate::dev::part::feeding_word(feeding(e)).to_owned()),
+        kingdom: e.and_then(kingdom::of)
+            .map(|k| terms.form(kingdom_word(k), "indefinite").to_owned()),
+        feeding: e.map(|e| terms.form(crate::dev::part::feeding_word(feeding(e)), "verb").to_owned()),
         graft: e.and_then(|e| allowance_words(sim, e)),
     }
 }

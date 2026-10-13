@@ -127,6 +127,7 @@ impl Product for Isometry {
         app.pump_generators(ctx);
         app.pump_storylets(ctx);
         app.refresh_source_history(ctx);
+        app.sync_native_choreography(ctx);
     }
 
     /// Nothing here outlives the window: the campaign checkpoint is written on

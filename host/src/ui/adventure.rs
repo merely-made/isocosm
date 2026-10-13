@@ -104,5 +104,6 @@ pub(super) fn panel(app:&App,key:u64)->Child {
     }
     rows.push(Box::new(el("h3",text("Current polity readings"))));
     for polity in polities {for line in isometry_views::native_polity_lines(&polity) {rows.push(Box::new(el("p",text(line))));}}
+    rows.push(super::authoring::panel(app,key));
     Box::new(el("section",rows).attr("class","panel"))
 }

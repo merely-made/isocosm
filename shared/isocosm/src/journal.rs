@@ -28,6 +28,7 @@ pub(crate) struct Journal {
     /// Whether each relation held before its first change.
     relations: BTreeMap<Relation, bool>,
     polities: BTreeSet<Id>,
+    changed_polities: BTreeMap<Id, Polity>,
     record: Option<hagiograph::Record<Key, Id>>,
     events: BTreeSet<Key>,
     /// The nudges as they stood before an answer was written.
@@ -35,6 +36,7 @@ pub(crate) struct Journal {
     attention: crate::attention::Windows,
     spreads: crate::spread::Spreads,
     projects: crate::projects::Projects,
+    institutions: crate::institutions::Records,
     /// Debug builds keep the whole world too, to check each rollback.
     #[cfg(debug_assertions)]
     before: Box<State>,
@@ -53,12 +55,14 @@ impl Journal {
             sites: BTreeMap::new(),
             relations: BTreeMap::new(),
             polities: BTreeSet::new(),
+            changed_polities: BTreeMap::new(),
             record: None,
             events: BTreeSet::new(),
             nudges: None,
             attention: state.attention.clone(),
             spreads: state.spreads.clone(),
             projects: state.projects.snapshot(),
+            institutions: state.institutions.clone(),
             #[cfg(debug_assertions)]
             before: Box::new(state.clone()),
         }
@@ -83,6 +87,11 @@ impl Journal {
     pub(crate) fn polity(&mut self, id: Id) {
         self.polities.insert(id);
     }
+    pub(crate) fn polity_before(&mut self, id: Id, was: &Polity) {
+        if !self.polities.contains(&id) {
+            self.changed_polities.entry(id).or_insert_with(|| was.clone());
+        }
+    }
     pub(crate) fn record(&mut self, was: &hagiograph::Record<Key, Id>) {
         self.record.get_or_insert_with(|| was.clone());
     }
@@ -99,6 +108,7 @@ impl Journal {
         s.attention = self.attention;
         s.spreads = self.spreads;
         s.projects = self.projects;
+        s.institutions = self.institutions;
         s.next_action = self.next_action;
         s.edits.truncate(self.edits);
         s.population.next_id = self.next_id;
@@ -119,6 +129,7 @@ impl Journal {
         for id in self.polities {
             s.polities.remove(&id);
         }
+        s.polities.extend(self.changed_polities);
         if let Some(record) = self.record {
             s.record = record;
         }

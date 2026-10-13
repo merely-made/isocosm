@@ -59,6 +59,7 @@ impl Simulation {
         if !s.attention.is_empty() { put(&mut w, "attention", &s.attention); }
         if !s.spreads.is_empty() { put(&mut w, "spreads", &s.spreads); }
         if !s.projects.is_empty() { put(&mut w, "projects", &s.projects); }
+        if !s.institutions.is_empty() { put(&mut w, "institutions", &s.institutions); }
         w
     }
     /// One entry per entity, every critter by id, its cohort's digest
@@ -152,6 +153,7 @@ impl Simulation {
         if !s.attention.is_empty() { put(&mut w, "attention", &s.attention); }
         if !s.spreads.is_empty() { put(&mut w, "spreads", &s.spreads); }
         if !s.projects.is_empty() { put(&mut w, "projects", &s.projects); }
+        if !s.institutions.is_empty() { put(&mut w, "institutions", &s.institutions); }
         w
     }
 }

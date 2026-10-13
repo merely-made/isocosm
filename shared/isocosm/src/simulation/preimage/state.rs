@@ -40,7 +40,7 @@ impl<'a> From<&'a simulation::State> for State<'a> {
     fn from(value: &'a simulation::State) -> Self {
         let simulation::State { tick, next_action, population, sites, lineages,
             locations, polities, relations, notes, roots, released, record, events,
-            reach, edits, nudges, laws, agreements, asserted, attention, movement, spreads: _, projects: _ } = value;
+            reach, edits, nudges, laws, agreements, asserted, attention, movement, spreads: _, projects: _, institutions: _ } = value;
         Self { tick:*tick, next_action:*next_action, population, sites, lineages,
             locations, polities, relations, notes, roots, released, record,
             events:Events(events), reach, edits, nudges, laws, agreements, asserted,

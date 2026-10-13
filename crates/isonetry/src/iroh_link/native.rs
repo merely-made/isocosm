@@ -4,6 +4,16 @@
 use super::*;
 
 impl HostNet {
+    pub async fn quote_native_physical(&self, input: &isometry_campaign::native::physical_map::PhysicalMapInput)
+        -> Result<isometry_campaign::native::physical_map::PhysicalMapPreview, String> {
+        self.session.lock().await.quote_native_physical(input)
+    }
+    pub async fn native_physical(&self, input: &isometry_campaign::native::physical_map::PhysicalMapInput)
+        -> Result<(), String> {
+        let out = self.session.lock().await.native_physical(input)?;
+        dispatch(&self.peers, out).await;
+        Ok(())
+    }
     pub async fn native_pack(&self,input:&isometry_campaign::native::pack::PackEnvelope)->Result<(),String> {
         let out=self.session.lock().await.native_pack(crate::native_table::TableSender::Host,input)?;
         dispatch(&self.peers,out).await;

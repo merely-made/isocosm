@@ -65,6 +65,8 @@ mod admit;
 mod data;
 pub mod express;
 mod pack;
+mod terms;
 
 pub use admit::{Admission, MANIFEST, MANIFEST_JSON, admit, admit_dir, asset, discover};
 pub use pack::{Manifest, ProcessFile, SUPPORTED_ABI};
+pub use terms::TermTable;

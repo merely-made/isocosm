@@ -28,7 +28,7 @@ pub mod part;
 pub use follow::{
     Follow, Lost, MAX_DISCOVERY_NAMES, MAX_PART_ROWS, follow_of, lost_of, lost_words, role_word,
 };
-pub use part::{PartInspection, PartReading, part_of};
+pub use part::{PartInspection, PartReading, part_of, part_of_with_terms};
 
 pub type DevChild = Box<dyn AnyView<Dev, (), GenetCtx, GenetElement>>;
 

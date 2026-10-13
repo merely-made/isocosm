@@ -131,6 +131,7 @@ impl App {
             own_requests: 0,
             beat_until: None,
             sheet,
+            native_choreography: Vec::new(),
             last_viewport: (0.0, 0.0),
             scene_board: None,
             profile: std::env::var_os("ISOMETRY_PROFILE").is_some(),

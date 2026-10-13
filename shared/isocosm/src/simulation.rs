@@ -87,6 +87,8 @@ pub struct State {
     pub spreads: crate::spread::Spreads,
     #[serde(default, skip_serializing_if = "crate::projects::Projects::is_empty")]
     pub projects: crate::projects::Projects,
+    #[serde(default, skip_serializing_if = "crate::institutions::Records::is_empty")]
+    pub institutions: crate::institutions::Records,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -167,6 +169,8 @@ pub struct Simulation {
     pub(crate) project_inputs: Option<(Id, Vec<Key>)>,
     pub(crate) project_decision: Option<crate::projects::DecisionContext>,
     pub(crate) project_decision_stamp: Option<crate::projects::DecisionStamp>,
+    pub(crate) institution_decision: Option<crate::institutions::DecisionContext>,
+    pub(crate) institution_decision_stamp: Option<crate::institutions::DecisionStamp>,
     pub(crate) owned_report: crate::projects::debit::Report,
     pub(crate) owned_planning: bool,
     /// What the advance under way has changed, to put back if it is refused.
@@ -211,6 +215,7 @@ impl Simulation {
             movement: Movement::Journey,
             spreads: genesis.spreads.clone(),
             projects: crate::projects::Projects::default(),
+            institutions: Default::default(),
         };
         let conserved = matter(&state, &genesis.rules);
         Ok(Self {
@@ -227,6 +232,8 @@ impl Simulation {
             project_inputs: None,
             project_decision: None,
             project_decision_stamp: None,
+            institution_decision: None,
+            institution_decision_stamp: None,
             owned_report: Default::default(),
             owned_planning: false,
             journal: None,
@@ -420,8 +427,12 @@ impl Simulation {
         staged: &[Note],
         event: &str,
     ) -> Result<bool> {
+        self.known_in(entity,e,&self.state.notes,staged,event)
+    }
+    /// Same native knowing, with the pass's retained note prefix when requested.
+    pub(crate) fn known_in(&self, entity: Id, e: &Entity, notes: &[Note], staged: &[Note], event: &str) -> Result<bool> {
         let event = self.state.events.get(event).ok_or("unknown event")?;
-        if self.state.notes.iter().chain(staged).any(|n| {
+        if notes.iter().chain(staged).any(|n| {
             n.core.subject == format!("entity:{entity}")
                 && n.core.object == event.id
                 && (n.core.kind == "sim:discover"

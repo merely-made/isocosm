@@ -16,7 +16,7 @@ mod reading;
 mod transition;
 pub use types::*;
 pub use admission::submit_pack;
-pub use reading::{read_packs, preview_pack, active_content, ActiveContent};
+pub use reading::{read_packs, preview_pack, active_content, accepted_choreography, ActiveContent};
 pub use records::validate_bindings;
 pub use transition::{Change, validate_transition};
 

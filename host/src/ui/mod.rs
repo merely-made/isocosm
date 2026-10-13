@@ -11,3 +11,5 @@ mod journey;
 mod overmap;
 #[cfg(feature = "vtt")]
 mod adventure;
+#[cfg(feature = "vtt")]
+mod authoring;

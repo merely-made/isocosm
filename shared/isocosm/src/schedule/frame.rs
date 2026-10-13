@@ -19,6 +19,7 @@ use std::collections::BTreeMap;
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Frame {
+    notes_bound: Option<usize>,
     sites: BTreeMap<Id, Site>,
     projects: BTreeMap<crate::projects::ProjectId, Option<crate::projects::Project>>,
     project_bindings: BTreeMap<Id, Option<crate::projects::ProjectId>>,
@@ -92,6 +93,8 @@ pub(crate) fn edible(ledger: &Ledger, of: &[Key]) -> Ledger {
 }
 
 impl Frame {
+    pub(crate) fn starting(notes_bound: usize) -> Self { Self { notes_bound:Some(notes_bound), ..Self::default() } }
+    pub(crate) fn notes_bound(&self) -> Option<usize> { self.notes_bound }
     pub(crate) fn produced_claims(&self) -> &BTreeMap<Key,Option<crate::projects::ProducedClaim>> { &self.produced }
     pub(crate) fn keep_produced(&mut self, key: &str, was: Option<&crate::projects::ProducedClaim>) {
         self.produced.entry(key.into()).or_insert_with(|| was.cloned());
