@@ -4,6 +4,15 @@
 use super::*;
 
 impl HostNet {
+    pub async fn quote_native_items(&self,input:&isometry_campaign::native::items::ItemInput)
+        ->Result<isometry_campaign::native::items::ItemPreview,String> {
+        self.session.lock().await.quote_native_items(crate::native_table::TableSender::Host,input)
+    }
+    pub async fn native_items(&self,input:&isometry_campaign::native::items::ItemInput)->Result<(),String> {
+        let out=self.session.lock().await.native_items(crate::native_table::TableSender::Host,input)?;
+        dispatch(&self.peers,out).await;
+        Ok(())
+    }
     pub async fn quote_native_physical(&self, input: &isometry_campaign::native::physical_map::PhysicalMapInput)
         -> Result<isometry_campaign::native::physical_map::PhysicalMapPreview, String> {
         self.session.lock().await.quote_native_physical(input)
@@ -85,5 +94,11 @@ impl HostNet {
             .commit_native_campaign(profile, record, item_owner, mode)?;
         dispatch(&self.peers, out).await;
         Ok(())
+    }
+}
+
+impl ClientNet {
+    pub async fn native_items(&self,input:isometry_campaign::native::items::ItemInput)->Result<(),String> {
+        write_frame(&mut *self.send.lock().await,&crate::NetMessage::NativeItem(input)).await
     }
 }

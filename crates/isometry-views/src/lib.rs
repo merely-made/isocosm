@@ -25,6 +25,7 @@ pub use native_pack::{PackUi,PackRequest,PackReading};
 mod native_overmap;
 pub use native_overmap::{native_overmap_atlas,native_overmap_swatch,native_overmap_cell_id};
 mod native_hooks;
+mod native_items;
 pub use native_hooks::{native_goal_lines,native_polity_lines};
 mod panel;
 mod projection;
@@ -62,6 +63,7 @@ pub use state::{
     WHEEL_BOARD_TILES, WHEEL_NOTCH_PX,
 };
 pub use state::{OvermapMotionState, OvermapMotionTick};
-pub use state::native::{Acceptance as NativeAcceptance, NativeUi, TableFileAction, PhysicalRequest, PhysicalOutcome};
+pub use state::native::{Acceptance as NativeAcceptance, NativeUi, TableFileAction, PhysicalRequest, PhysicalOutcome,
+    ItemsRequest, ItemsOutcome, ItemsFileAction};
 pub use state::{PACE_PCTS, STANCE_KEYS, mode_items, pace_items, stance_items};
 pub use theme::{board_css, tile_kind_colour};

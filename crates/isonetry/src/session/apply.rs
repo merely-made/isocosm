@@ -68,6 +68,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
         GameEvent::NativeHookResolved(result) => super::native_hook::apply_native_hook(state, result),
         GameEvent::NativePackResolved(result) => super::native_pack::apply_native_pack(state, result),
         GameEvent::NativePhysicalResolved(result) => super::native_physical::apply_native_physical(state, result),
+        GameEvent::NativeItemsResolved(result) => super::native_items::apply_native_items(state, result),
         GameEvent::Map(e) => {
             apply(&mut state.map, e).map_err(GameError::Core)?;
             sync_active_map(state);
@@ -241,6 +242,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             Ok(())
         },
         GameEvent::InventorySet { token, inventory } => {
+            super::native_item_metadata::inventory(state,*token,inventory)?;
             require_token(state, *token)?;
             inventory.validate().map_err(GameError::Inventory)?;
             for (owner, other) in &state.inventories {
@@ -257,7 +259,10 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             state.inventories.insert(*token, inventory.clone());
             Ok(())
         },
-        GameEvent::ItemTransfer { from, to, item } => transfer_item(state, *from, *to, item),
+        GameEvent::ItemTransfer { from, to, item } => {
+            super::native_item_metadata::transfer(state,item)?;
+            transfer_item(state,*from,*to,item)
+        },
         GameEvent::ItemModifierRevealed(reveal) => {
             apply_item_modifier_reveal(state, reveal)?;
             Ok(())

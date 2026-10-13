@@ -2,6 +2,18 @@
 
 **Date:** 2026-09-25
 
+**Source placement, 2026-10-13:** GameBindings11 and protocol/ALPN13 add
+authenticated resident item inputs and their paired native/game publication.
+Explicit ownership, project reservations, joint owner permission, work and
+exact output placement reach the standalone and shared hosts. Legacy item
+transfer/equipment doors refuse marked native items until a native custody
+provider exists. They do not manufacture carrying from table metadata.
+Selected graft inputs also reach the shared authoring door, with exact body
+revisions, complete attachment geometry, owned debits and genuine native
+event receipts. Host inspection reads native far, region and part views.
+These are uncompiled source under826. Physical carrying/equipment, complete
+disclosure871 and full V2 acceptance remain open.
+
 **Source assembly, 2026-10-13:** native processes now carry explicit goal
 directives, published with their genuine actor events and owned effects.
 Authored founding profiles supply new processes, note kinds and institution
@@ -27,7 +39,7 @@ explicit native change. Faction and biome colours use configurable layers;
 undisclosed boundaries always clip sharply. Thumbnails are optional per world
 or view. All six answers are recorded verbatim together864. Their dependent
 source and actual callers are placed, unverified. The complete-map disclosure
-scope is pending871; next unused872. Tests and tuning
+scope and TG4 threshold choices are pending together871 to873; next unused874. Tests and tuning
 remain deferred826, and full V2/V3 acceptance remains open.
 
 **Source checkpoint, 2026-10-13 (865 to870):** GameBindings7 retains explicit
@@ -1031,3 +1043,10 @@ what each left open lands here, so it has a live owner.
   native rules, Registry, Genesis and saved session hashes remain untouched.
   This is source-only826. TG4 defensive biology, S9 ecological admission and
   S10 assessed stabilization remain open; no tuning or acceptance is claimed.
+
+- **2026-10-13, consolidated migration choices871 to873:** remaining map
+  terrain/condition/claim disclosure, the explicitly defensive tissue threshold
+  law, and the actual bite comparator were presented together864. No option
+  is inferred from Proceed/Go ahead. Next unused874. Physical items, explicit
+  graft carrying, host inspection and supplied live sight source proceed
+  independently; all compiler/tests/fixtures/probes/tuning remain deferred826.

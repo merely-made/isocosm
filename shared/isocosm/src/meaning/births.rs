@@ -173,6 +173,7 @@ pub(crate) fn bud(p: &mut impl Parties, rules: &Rules, mark: &Key) -> Result<Bud
             };
             let part = Part {
                 traits: BTreeSet::from([mark.clone()]),
+                graft_origin: None,
                 functions: cells.keys().cloned().collect(),
                 cells,
                 ..Default::default()

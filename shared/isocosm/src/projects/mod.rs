@@ -10,7 +10,7 @@ use crate::{schema::*, simulation::Simulation, Result};
 mod definition;
 pub use definition::{Catalogue, Definition, Step};
 mod admission;
-pub use admission::{Acted, Change, Custody};
+pub use admission::{Acted, OwnedProjectActed, Change, Custody};
 mod readiness;
 mod ownership;
 mod balance;

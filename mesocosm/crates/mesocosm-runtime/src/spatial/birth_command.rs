@@ -36,7 +36,7 @@ impl Game {
                         driver.records.push(profile::Record { entry, changes, steps: BTreeSet::new(),
                             arrivals: Vec::new(), births: reports, order, command_outcome: Some(out.result.clone()) });
                     }
-                    game.version = VERSION;
+                    game.version = game.current_version();
                     game.refresh(&mut native)?;
                     *session = native;
                     *self = game;

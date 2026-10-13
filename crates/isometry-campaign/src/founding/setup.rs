@@ -9,6 +9,9 @@ use crate::{GenValue, GenerationRecord};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod materials;
+pub use materials::MaterialProfile;
+
 /// Named operator configuration. Execution belongs to the configured host runtime.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -34,6 +37,9 @@ pub struct Setup {
     pub authored_note_kinds: BTreeSet<String>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub institutions: BTreeMap<String, isocosm::institutions::Definition>,
+    /// Explicit additional native material/work declarations for fresh worlds.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub material_profile: Option<MaterialProfile>,
 }
 
 impl Setup {
@@ -103,6 +109,10 @@ impl Campaign {
         }
         let mut genesis = setup.founding.generate().map_err(|reason|
             FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
+        if let Some(profile)=&setup.material_profile {
+            profile.install(&mut genesis).map_err(|reason|
+                FoundingError::Native(ReplayError {phase:Phase::Founding,reason}))?;
+        }
         for (party, kind) in &setup.party_relations {
             genesis.rules.relations.insert(kind.clone());
             genesis.rules.party_relations.insert(party.clone(), kind.clone());

@@ -29,6 +29,7 @@ use crate::{World, WorldError};
 mod borrowed;
 mod owner;
 mod stock;
+pub mod mode;
 pub use borrowed::{Borrowed, Reading};
 
 /// The timed act that carves the ground at a region.

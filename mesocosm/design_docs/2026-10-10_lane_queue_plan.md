@@ -72,12 +72,15 @@ known questions together; all six VTT choices865 to870 are now answered in
 one batch. Explicit DM pack acceptance, every actually served goal, retained
 polity disagreements, configurable faction/biome layers, always sharp edges
 and optional thumbnails have bounded dependent source and actual callers
-placed. GameBindings10 and protocol/ALPN12 retain typed catalogue/Hook/map
+placed. GameBindings11 and protocol/ALPN13 retain typed catalogue/Hook/map
 metadata and physical edit records. Explicit native process goal directives,
 institution operations under supplied methods/support and physical map
 quote/apply callers are source-assembled. Accepted choreography updates
-actual host stylesheets. Physical item actuation and complete terrain/condition/
-claim disclosure scope is the sole collected pending question871; next872.
+actual host stylesheets. Resident owned items/projects and explicit graft
+carrying now reach supplied native inputs. Shared host native inspection,
+marked Mesocosm sight and Eponym borrowed reads/picture are placed. Physical
+carrying/equipment and Eponym's full action/clock lift remain open. Complete terrain/condition/
+claim disclosure scope and two TG4 threshold choices are pending together871 to873; next874.
 Verification and
 adjustments wait under826. C9 is historically certified/merged, C10 harm is
 implemented with final certification open, and C11 source connections are
@@ -1455,3 +1458,10 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   native rules, Registry, Genesis and saved session hashes remain untouched.
   This is source-only826. TG4 defensive biology, S9 ecological admission and
   S10 assessed stabilization remain open; no tuning or acceptance is claimed.
+
+- **2026-10-13, consolidated migration choices871 to873:** remaining map
+  terrain/condition/claim disclosure, the explicitly defensive tissue threshold
+  law, and the actual bite comparator were presented together864. No option
+  is inferred from Proceed/Go ahead. Next unused874. Physical items, explicit
+  graft carrying, host inspection and supplied live sight source proceed
+  independently; all compiler/tests/fixtures/probes/tuning remain deferred826.

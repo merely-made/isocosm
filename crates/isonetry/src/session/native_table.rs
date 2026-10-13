@@ -15,7 +15,7 @@ fn preserve_time(old: Option<&NativeTable>, next: &NativeTable) -> Result<(), St
     if before.downtime() != after.downtime() || before.time_holds() != after.time_holds()
         || before.shared_players() != after.shared_players() || before.journeys()!=after.journeys()
         || before.hooks()!=after.hooks() || before.catalogue()!=after.catalogue()
-        || before.physical_edits()!=after.physical_edits() {
+        || before.physical_edits()!=after.physical_edits() || before.item_records()!=after.item_records() {
         return Err("table authoring/movement cannot change native time, journey, hook, pack or physical edit records".into());
     }
     if after.roster_revision() != roster_revision(old, next)? {

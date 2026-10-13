@@ -77,13 +77,14 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
         Box::new(el("nav", actions)) as Child,
         list("Things", &local.rows.things), list("Sites", &local.rows.sites),
         list("Attended events", &local.rows.events),
+        super::inspection::panel(state, key),
         Box::new(el("section", pins).attr("class", "panel")) as Child,
         Box::new(el("p", text(error)).attr("id", "error").attr("role", "status")) as Child,
     ];
     #[cfg(feature = "vtt")]
     if mode == "vtt" { children.push(super::vtt::panel(state, key)); }
-    #[cfg(any(feature = "mesocosm", feature = "vtt"))]
-    if local.scene.snapshot().is_some() {
+    #[cfg(any(feature = "mesocosm", feature = "vtt", feature = "eponym"))]
+    if crate::viewport::available(local) {
         let card = isomere::ViewportCard::new(crate::viewport::key(key).expect("admitted local slot"),
             (720, 440), "Site view");
         children.insert(4, isomere::viewport_card(&card, None, None::<fn(&mut App, cambium::PointerEvent)>));

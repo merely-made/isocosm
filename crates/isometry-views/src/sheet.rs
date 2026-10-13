@@ -194,6 +194,7 @@ pub fn sheet_overlay(ui: &UiState) -> Option<UiChild> {
         }
     }
 
+    body.extend(crate::native_items::controls(ui));
     let close: Vec<UiChild> = vec![Box::new(clickable(
         el("span", text("close")).attr("class", "btn btn-mini"),
         |ui: &mut UiState, _| ui.close_sheet(),

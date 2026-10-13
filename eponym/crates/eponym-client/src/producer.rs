@@ -39,6 +39,7 @@ mod source;
 pub use handle::{Held, SceneHandle, SceneModel};
 pub use policy::{Appearance, BODY_MATERIAL, BODY_SCALE, CameraPolicy};
 pub use source::SceneModelSource;
+pub(crate) use source::{scene_pose, BODY_BUDGET, PALETTE};
 
 /// The producer rootstock registers: the shared skip and output contract over
 /// this host's own scene source.

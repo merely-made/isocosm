@@ -50,7 +50,14 @@ fn export_context(ui: &UiState) -> Result<(), String> {
         "expected_terrain": session.sim.terrain_revision(),
         "materials": session.sim.genesis().world.materials,
         "source_lots": source_lots,
+        "available_lots": session.sim.available_lots().collect::<Vec<_>>(),
         "measured_quote": ui.native.physical_quote,
+        "item_source": isometry_campaign::native::items::source(session),
+        "material_recipes": session.sim.genesis().rules.material_recipes,
+        "project_catalogue": session.sim.genesis().rules.projects,
+        "native_projects": state.projects.records,
+        "owned_stock": session.sim.genesis().rules.owned_stock,
+        "item_quote": ui.native.items_quote,
     });
     let value = serde_json::json!({
         "purpose": "Author explicit inputs; null participant and missing cell mappings are incomplete, not defaults.",

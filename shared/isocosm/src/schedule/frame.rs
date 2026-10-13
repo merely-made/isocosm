@@ -57,6 +57,8 @@ pub(crate) struct Shares {
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub(crate) struct Demands {
     pub(crate) accounts: Vec<(Holder, Key, u64)>,
+    /// Only explicit carrying joins generic part takes with bitten meals.
+    pub(crate) graft_parts: std::collections::BTreeSet<Holder>,
     /// A meal: of whom, how much, and of which accounts, none naming every
     /// matter account.
     pub(crate) meal: Option<(Holder, u64, Vec<Key>)>,
@@ -229,6 +231,8 @@ impl Frame {
         // Preserve whole-prey quotas. Where several bites land on one part,
         // share that part's shortfall before any act writes it (454, 459).
         let mut bitten: BTreeMap<(Holder, Key), u128> = BTreeMap::new();
+        let graft_parts: std::collections::BTreeSet<_> = plans.iter()
+            .flat_map(|p| p.demands.graft_parts.iter().copied()).collect();
         for (p, meal) in plans.iter().zip(&meals) {
             if let (Some(part), Some(meal)) = (p.demands.meal_part, meal) {
                 for (key, amount) in meal {
@@ -240,7 +244,9 @@ impl Frame {
             if let (Some(part), Some(meal)) = (p.demands.meal_part, meal) {
                 for (key, amount) in meal.iter_mut() {
                     let at = (part, key.clone());
-                    *amount = fraction(*amount, held(&at), bitten[&at]);
+                    let carrying = if graft_parts.contains(&part) { wanted.get(&at).copied().unwrap_or(0) } else { 0 };
+                    let shared = bitten[&at] + carrying;
+                    *amount = fraction(*amount, held(&at), shared);
                 }
                 meal.retain(|_, amount| *amount > 0);
             }
@@ -250,7 +256,11 @@ impl Frame {
             let accounts = takes
                 .into_iter()
                 .map(|(k, take)| {
-                    let g = fraction(take, held(&k), wanted[&k]);
+                    // Explicit carrying asks exact part stocks. Bites and
+                    // grafts share that one pass-start part/account budget.
+                    let meals = if graft_parts.contains(&k.0) { bitten.get(&k).copied().unwrap_or(0) } else { 0 };
+                    let shared = wanted[&k] + meals;
+                    let g = fraction(take, held(&k), shared);
                     (k, g)
                 })
                 .collect();

@@ -70,6 +70,22 @@ pub(crate) fn read(session: &Session, cut: &Projection, mode: Mode) -> Result<Ro
     Ok(rows)
 }
 
+/// Product-only saved bindings are read beside this same native cut.
+pub(crate) fn read_game(session: &Session, cut: &Projection, mode: Mode, bytes: &[u8]) -> Result<Rows, String> {
+    let mut rows = read(session, cut, mode)?;
+    #[cfg(feature = "eponym")]
+    if mode == Mode::Eponym {
+        if let Some(state) = eponym_play::contract::mode::ModeState::decode(bytes)? {
+            let reading = eponym_play::contract::mode::BorrowedReading::new(session, &cut.visible, &state)?;
+            rows.things.extend(reading.rows().into_iter().map(|(subject, entity, name)|
+                format!("{name}: Eponym subject {} bound to native body {entity}", subject.0)));
+        }
+    }
+    #[cfg(not(feature = "eponym"))]
+    let _ = bytes;
+    Ok(rows)
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub(crate) struct SiteRegion { pub site: u64, pub min: [i64; 2], pub max: [i64; 2], pub depth: i64 }
 

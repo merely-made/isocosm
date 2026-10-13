@@ -25,10 +25,10 @@ use isometer::{
 use super::handle::{SceneHandle, SceneModel};
 
 /// Palette depth of the retro grade the terrain is shaded with.
-const PALETTE: u32 = 3;
+pub(crate) const PALETTE: u32 = 3;
 /// Bodies one frame may project. The fixture worlds draw a handful; the cap
 /// exists so a populated settlement degrades by omission rather than by cost.
-const BODY_BUDGET: usize = 256;
+pub(crate) const BODY_BUDGET: usize = 256;
 
 /// Eponym keeps no host presentation beside the scene: no capsule roster, no
 /// substitute for a body that would not project, no second counter set.
@@ -192,7 +192,7 @@ fn drawable(game: &GameState) -> Vec<(SubjectId, &AnatomyRecord, MotionPose)> {
 /// is `grounded` on the [`SceneBody`], which stands the document's own floor on
 /// `position[1]`; the horizontal centring has no shared spelling and is applied
 /// to the position itself.
-fn scene_pose(document: &BodyDocument, pose: MotionPose, scale: f32) -> Pose {
+pub(crate) fn scene_pose(document: &BodyDocument, pose: MotionPose, scale: f32) -> Pose {
     let feet = [0, 1, 2].map(|i| pose.position[i] as f32 / MOTION_SCALE as f32);
     let aabb = document.aabb();
     let centred = |axis: usize| feet[axis] - (aabb.min[axis] + aabb.max[axis]) as f32 * 0.5 * scale;

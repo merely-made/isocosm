@@ -114,6 +114,7 @@ impl Genesis {
                     return Err("unknown part trait".into());
                 }
                 crate::validation::part(&self.rules, e, id)?;
+                crate::graft::validate_origin(part, &self.rules, &self.lineages)?;
                 // Laid-out cells agree with the counts (766).
                 if !part.tracts.is_empty() {
                     crate::mosaic::agrees(part, e.extent(id))?;

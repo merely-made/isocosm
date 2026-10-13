@@ -56,6 +56,25 @@ pub(crate) fn mesocosm_spatial(world: &crate::world::World, path: &std::path::Pa
 fn options() -> HostOptions { HostOptions { title: "Isocosm".into(),
     initial_logical_size: (960.0, 720.0), ..Default::default() } }
 
+/// Explicit mode-only Eponym poses over this existing native Session.
+pub(crate) fn eponym_spatial(world: &crate::world::World, path: &std::path::Path) -> Result<(), String> {
+    #[cfg(feature = "eponym")]
+    {
+        let bytes = std::fs::read(path).map_err(|why| why.to_string())?;
+        let input: eponym_play::contract::mode::SpatialBindingInput =
+            serde_json::from_slice(&bytes).map_err(|why| why.to_string())?;
+        world.product_game(world.cut()?, crate::products::Mode::Eponym, |session, game| {
+            let bytes = eponym_play::contract::mode::bind(session, &game, &input)?;
+            Ok(((), bytes))
+        })
+    }
+    #[cfg(not(feature = "eponym"))]
+    {
+        let _ = (world, path);
+        Err("Eponym spatial binding is absent from this build".into())
+    }
+}
+
 fn bind_routes(tree: &WindowTree<App, Logic, Child>, routes: &mut HashMap<ProjectionId, u64>, initial: &[u64]) {
     if !routes.is_empty() { return; }
     let ids: Vec<_> = tree.multi().projection_ids().collect();
@@ -71,7 +90,7 @@ pub(crate) fn run(app: App) -> Result<(), String> {
     let routes = Rc::new(RefCell::new(HashMap::<ProjectionId, u64>::new()));
     let initial = Rc::new(keys.clone());
     let core = Rc::new(RefCell::new(None));
-    #[cfg(any(feature = "mesocosm", feature = "vtt"))]
+    #[cfg(any(feature = "mesocosm", feature = "vtt", feature = "eponym"))]
     let registrations = Rc::new(RefCell::new(crate::viewport::Registrations::default()));
     let mut hooks: WindowHooks<App, Logic, Child> = HostHooks::inert();
     hooks.frame = Box::new({
@@ -84,7 +103,7 @@ pub(crate) fn run(app: App) -> Result<(), String> {
                     assert!(Arc::ptr_eq(first, actual), "all mode windows use the same real render core");
                 } else { *held = Some(actual.clone()); }
             }
-            #[cfg(any(feature = "mesocosm", feature = "vtt"))]
+            #[cfg(any(feature = "mesocosm", feature = "vtt", feature = "eponym"))]
             {
                 let errors = registrations.borrow_mut().sync(ctx.runner.state(), ctx.producers);
                 if !errors.is_empty() {

@@ -12,11 +12,13 @@ pub(crate) struct Defaults {
     pub quarter_turn: u8,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub party: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub inspection: Option<super::inspection::Selection>,
     #[cfg(feature = "vtt")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub overmap: Option<isometry_campaign::native::overmap::ViewSettings>,
 }
-impl Default for Defaults { fn default() -> Self { Self { quarter_turn: 0, party: None,
+impl Default for Defaults { fn default() -> Self { Self { quarter_turn: 0, party: None, inspection: None,
     #[cfg(feature = "vtt")]
     overmap: None,
 } } }
@@ -40,6 +42,8 @@ pub(crate) struct Local {
     pub input: Option<Input>, pub close_requested: bool,
     #[cfg(any(feature = "mesocosm", feature = "vtt"))]
     pub scene: mesocosm_genet::borrowed_section::SceneHandle,
+    #[cfg(feature = "eponym")]
+    pub eponym_scene: eponym_client::borrowed::SceneHandle,
 }
 
 pub(crate) struct App {
@@ -59,7 +63,7 @@ impl App {
         preferences: Option<Preferences>, restore: Option<WindowHandle>) -> Result<u64, String> {
         let preferences = crate::mode_sections::preferences(&self.world, mode, participant, restore, preferences)?;
         let key = self.next;
-        #[cfg(any(feature = "mesocosm", feature = "vtt"))]
+        #[cfg(any(feature = "mesocosm", feature = "vtt", feature = "eponym"))]
         crate::viewport::key(key)?;
         let next = key.checked_add(1).ok_or("local window identity exhausted")?;
         let mut attention = AttentionSet::default();
@@ -81,7 +85,9 @@ impl App {
             author_quote:None,
             attention: BTreeMap::new(), input: None, close_requested: false,
             #[cfg(any(feature = "mesocosm", feature = "vtt"))]
-            scene: crate::viewport::handle(), });
+            scene: crate::viewport::handle(),
+            #[cfg(feature = "eponym")]
+            eponym_scene: eponym_client::borrowed::SceneHandle::default(), });
         self.refresh();
         Ok(key)
     }
@@ -213,7 +219,7 @@ impl App {
         for local in self.windows.values_mut() {
             let result = local.native.projection().and_then(|cut| {
                 let mode = Mode::parse(&local.native.binding().mode)?;
-                self.world.read(|session| products::read(session, &cut, mode))?
+                self.world.read_game(mode, |session, game| products::read_game(session, &cut, mode, game))
             });
             match result {
                 Ok(rows) => { local.rows = rows; local.error = None; },
@@ -223,7 +229,7 @@ impl App {
         self.refresh_viewport();
     }
     pub fn refresh_viewport(&mut self) {
-        #[cfg(any(feature = "mesocosm", feature = "vtt"))]
+        #[cfg(any(feature = "mesocosm", feature = "vtt", feature = "eponym"))]
         crate::viewport::refresh(self);
     }
     pub fn record(&mut self, key: u64, result: Result<(), String>) {

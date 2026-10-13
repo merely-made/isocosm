@@ -212,6 +212,7 @@ pub enum Effect {
     /// A named authored pace pays its exact stocks before native departure.
     MovePaced { destination: Id, profile: Key },
     InstitutionDecision,
+    Graft { reserve: Key, soil: Key },
 }
 
 impl Effect {

@@ -27,6 +27,7 @@ mod projects;
 mod step;
 mod owned;
 mod pace;
+mod graft;
 
 /// A stage read against the world it will be committed to.
 pub(crate) struct Staged<'a> {
@@ -289,6 +290,10 @@ impl Staged<'_> {
         // An ordered take and a conversion read the balances they take, so
         // their moves are worked out as they are applied.
         match e {
+            Effect::Graft { reserve, soil } => {
+                self.graft(reserve, soil, cause)?;
+                return Ok(false);
+            },
             Effect::MovePaced { destination, profile } => {
                 self.paced_move(*destination, profile, cause)?;
                 return Ok(false);

@@ -365,6 +365,7 @@ impl Process {
                 | Effect::ReserveProject { from, .. } => shared(from),
                 Effect::Transform { who, take, .. } => shared(who) && !take.is_empty(),
                 Effect::Convert { who, .. } => shared(who),
+                Effect::Graft { .. } => true,
                 Effect::When { .. } => e.branches().any(takes),
                 _ => false,
             }

@@ -164,7 +164,7 @@ impl Game {
                         driver.records.push(profile::Record { entry, changes, steps: accepted, arrivals: reports,
                             births: born, order, command_outcome: None });
                     }
-                    game.version = VERSION;
+                    game.version = game.current_version();
                     game.refresh(&mut native_session)?;
                     *session = native_session;
                     *self = game;

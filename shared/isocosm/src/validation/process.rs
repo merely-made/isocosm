@@ -7,5 +7,6 @@ pub(super) fn contracts(process: &Process, rules: &Rules) -> Result<()> {
     super::body::process(process)?;
     process.validate_feeding(rules)?;
     super::harm::draws(process)?;
-    process.validate_goals(rules)
+    process.validate_goals(rules)?;
+    crate::graft::validate(process,rules)
 }

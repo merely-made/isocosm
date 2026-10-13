@@ -8,7 +8,10 @@ mod native;
 mod party;
 mod packs;
 mod physical;
+mod items;
 mod commands;
+mod messages;
+use messages::{BridgeCommand, BridgeUpdate};
 use commands::drain_commands;
 
 use std::sync::mpsc::{Receiver, TryRecvError};
@@ -34,75 +37,6 @@ pub enum Role {
     Client { ticket: String, name: String },
 }
 
-enum BridgeCommand {
-    NativePhysical { request:RequestId, input:isometry_views::PhysicalRequest },
-    NativePack { request:RequestId, intent:isometry_views::PackRequest, choreography:Vec<isometry_campaign::native::pack::Choreography> },
-    NativeParty { request:RequestId, intent:isometry_views::PartyRequest },
-    NativeTime { request:RequestId, intent:isocosm_overlay::vtt::TimeIntent },
-    NativeTableAdmission { request: RequestId, input: isonetry::native_table::NativeTableAdmissionInput },
-    NativeTableBinding { request: RequestId, input: isonetry::NativeTableBindingInput },
-    NativeSetup {
-        request: RequestId, setup: isometry_campaign::founding::Setup,
-        expected: isometry_campaign::founding::NativeWorld,
-        record: GenerationRecord, item_owner: Option<TokenId>,
-    },
-    NativeCampaign {
-        request: RequestId, profile: isocosm::Founding, mode: isocosm::Execution,
-        record: GenerationRecord, item_owner: Option<TokenId>,
-    },
-    Event(GameEvent),
-    Travel {
-        request: RequestId,
-        token: TokenId,
-        crossing: isonetry::RequestId,
-        party: String,
-    },
-    /// A *client* asking the host to resolve an action. Carries no verdict.
-    Action(ActionIntent),
-    Campaign {
-        request: RequestId,
-        record: GenerationRecord,
-        item_owner: Option<TokenId>,
-        party: Option<String>,
-    },
-    Storylet {
-        request: RequestId,
-        key: String,
-        item_owner: Option<TokenId>,
-    },
-    Whisper {
-        to: String,
-        text: String,
-    },
-}
-
-enum BridgeUpdate {
-    PhysicalResult(Correlated<Result<isometry_views::PhysicalOutcome,String>>),
-    PackReading(Correlated<Result<isometry_views::PackReading,String>>),
-    PartyReading(Correlated<Result<isometry_views::PartyView, String>>),
-    NativeEndpoints(Vec<[u8; 32]>),
-    HostReady {
-        ticket: String,
-        snapshot: GameSnapshot,
-        campaign: CampaignStore,
-        history: Journal<GameEvent>,
-    },
-    HostState {
-        snapshot: GameSnapshot,
-        campaign: CampaignStore,
-        history: Journal<GameEvent>,
-        players: Vec<String>,
-    },
-    ClientState(GameSnapshot),
-    /// Client action requests the host must adjudicate. They surface here rather
-    /// than being answered inside the session, because `isonetry` is
-    /// rules-blind: only the app holds a `System` that can say whether you hit.
-    ActionIntents(Vec<ActionIntent>),
-    Whispers(Vec<(String, String)>),
-    CampaignFinished(Correlated<Result<(), String>>),
-    Failed(String),
-}
-
 /// The winit-thread handle to the background session actor.
 pub struct NetBridge {
     actor: ActorHandle<BridgeCommand>,
@@ -120,6 +54,7 @@ pub struct NetBridge {
     party_readings: Vec<Correlated<Result<isometry_views::PartyView, String>>>,
     pack_readings: Vec<Correlated<Result<isometry_views::PackReading,String>>>,
     physical_results: Vec<Correlated<Result<isometry_views::PhysicalOutcome,String>>>,
+    items_results: Vec<Correlated<Result<isometry_views::ItemsOutcome,String>>>,
     failure: Option<String>,
     action_intents: Vec<ActionIntent>,
 }
@@ -157,6 +92,7 @@ impl NetBridge {
             party_readings: Vec::new(),
             pack_readings: Vec::new(),
             physical_results: Vec::new(),
+            items_results: Vec::new(),
             failure: None,
             action_intents: Vec::new(),
         }
@@ -170,6 +106,7 @@ impl NetBridge {
             match self.updates.try_recv() {
                 Ok(BridgeUpdate::PackReading(read)) => { self.pack_readings.push(read); changed = true; },
                 Ok(BridgeUpdate::PhysicalResult(result)) => { self.physical_results.push(result); changed = true; },
+                Ok(BridgeUpdate::ItemsResult(result)) => { self.items_results.push(result); changed = true; },
                 Ok(BridgeUpdate::PartyReading(read)) => {
                     self.party_readings.push(read);
                     changed = true;
@@ -392,6 +329,8 @@ async fn run_host(
                 },
                 BridgeCommand::NativePhysical { request,input } => { out.emit(BridgeUpdate::PhysicalResult(
                     Correlated::new(request,physical::host_request(&host,input).await))); },
+                BridgeCommand::NativeItems { request,input } => { out.emit(BridgeUpdate::ItemsResult(
+                    Correlated::new(request,items::host_request(&host,input).await))); },
                 BridgeCommand::NativeTime { request, intent } => {
                     let result = native::host_time(&host, intent).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
@@ -528,6 +467,8 @@ async fn run_client(
                     Err("adventure pack controls require the actual DM host".into()),matches!(&intent,isometry_views::PackRequest::Read)),
                 BridgeCommand::NativePhysical { request,input } => { out.emit(BridgeUpdate::PhysicalResult(
                     Correlated::new(request,physical::client_request(&client,input).await))); },
+                BridgeCommand::NativeItems { request,input } => { out.emit(BridgeUpdate::ItemsResult(
+                    Correlated::new(request,items::client_request(&client,input).await))); },
                 BridgeCommand::NativeTime { request, intent } => {
                     let result = native::client_time(&client, intent).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));

@@ -206,7 +206,8 @@ impl Host {
         };
         let visible = self.runtime.view();
         if self.config.spatial.is_some() || !self.runtime.spatial().members.is_empty() {
-            let result = crate::played::scene::site_scene_physical(sim, played, &visible, self.runtime.spatial());
+            let result = self.runtime.physical_view().and_then(|visible|
+                crate::played::scene::site_scene_physical(sim, played, &visible, self.runtime.spatial()));
             return match result {
                 Ok(scene) => {
                     let window = (&scene.window.min, &scene.window.max, scene.window.datum, scene.window.extent);

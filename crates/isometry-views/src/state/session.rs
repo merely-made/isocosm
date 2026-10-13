@@ -285,6 +285,7 @@ impl UiState {
             self.native.party.reading = None;
             self.native.packs.reading = None;
             self.native.physical_quote = None;
+            self.native.items_quote = None;
         }
         self.native.world = snap.native;
         self.native.table = snap.native_table;

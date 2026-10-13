@@ -23,6 +23,7 @@ use std::collections::BTreeMap;
 mod staged;
 mod publication;
 mod goals;
+mod graft;
 #[cfg(test)]
 mod tests;
 
@@ -46,6 +47,7 @@ pub(crate) struct Stage {
     /// A declared meal binds its organ once, before any staged writes.
     pub(crate) intake: Option<PartId>,
     pub(crate) port_feeding: Option<crate::rules::PortFeeding>,
+    graft: Option<crate::graft::Record>,
     /// The members the actor stands for: one, or a whole bulk cohort.
     count: u64,
     /// The bound bodies as the act leaves them. A target that is the actor
@@ -123,6 +125,7 @@ impl Simulation {
             part,
             intake: None,
             port_feeding: None,
+            graft: None,
             count,
             bodies,
             site: None,

@@ -151,4 +151,8 @@ pub enum Command {
     /// Explicit genuine-act consequential goals; arcs remain derived.
     Goal(crate::goals::Change),
     Institution(crate::institutions::Change),
+    ActGraft {
+        participant: Id, actor: Id, target: Id, process: Key, cause: Option<Key>,
+        carry: crate::graft::Carry, selections: Vec<crate::projects::DebitSelection>,
+    },
 }

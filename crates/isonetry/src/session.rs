@@ -42,6 +42,9 @@ mod native_pack;
 pub use native_pack::NativePackResolved;
 mod native_physical;
 pub use native_physical::NativePhysicalResolved;
+mod native_items;
+mod native_item_metadata;
+pub use native_items::NativeItemsResolved;
 pub use native::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
 mod travel;
 

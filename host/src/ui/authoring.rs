@@ -5,7 +5,7 @@
 
 use cambium::{el,text,lens,caret_text_field,TextInput};
 use isocosm_overlay::Seat;
-use isometry_campaign::native::{institutions,physical_map};
+use isometry_campaign::native::{institutions,physical_map,items,graft};
 use super::{model::App,view::{Child,button}};
 use crate::products::Mode;
 
@@ -13,14 +13,20 @@ impl App {
     fn author_input(&self,key:u64)->Result<Vec<u8>,String> {
         Ok(self.windows.get(&key).ok_or("window is closed")?.authored_input.text().as_bytes().to_vec())
     }
-    fn quote_author_input(&mut self,key:u64,physical:bool)->Result<(),String> {
+    fn quote_author_input(&mut self,key:u64,kind:u8)->Result<(),String> {
         let access=self.windows.get(&key).ok_or("window is closed")?.native.projection()?.access;
         let bytes=self.author_input(key)?;
         let quote=self.world.read_game(Mode::Vtt,|session,game| {
-            if physical {
+            if kind==1 {
                 let input:physical_map::PhysicalMapInput=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
                 serde_json::to_string_pretty(&physical_map::prepare_physical_map(session,game,access,&input)?)
                     .map_err(|e|e.to_string())
+            } else if kind==2 {
+                let input:items::ItemInput=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
+                serde_json::to_string_pretty(&items::prepare_item(session,game,access,&input)?).map_err(|e|e.to_string())
+            } else if kind==3 {
+                let input:graft::GraftInput=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
+                serde_json::to_string_pretty(&graft::prepare_graft(session,access,&input)?).map_err(|e|e.to_string())
             } else {
                 let input:institutions::InstitutionInput=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
                 serde_json::to_string_pretty(&institutions::prepare_institution(session,access,&input)?)
@@ -42,6 +48,7 @@ pub(super) fn panel(app:&App,key:u64)->Child {
                 session.sim.institution_reading(isocosm::institutions::PolityId(*id))).collect::<Result<Vec<_>,_>>()?;
             serde_json::to_string_pretty(&serde_json::json!({
                 "institution_source":institutions::source(session),"physical_source":physical_map::physical_source(session),
+                "item_source":items::source(session),"graft_source":institutions::source(session),
                 "game_source":isocosm::digest(&game),"terrain_revision":session.sim.terrain_revision(),
                 "tick":session.sim.state().tick,"participant":access.participant.0,"played_body":access.subject,
                 "institutions":institutions,
@@ -56,9 +63,10 @@ pub(super) fn panel(app:&App,key:u64)->Child {
     rows.push(Box::new(el("label",(text("Supplied operation JSON "),lens(
         |field:&mut TextInput|caret_text_field(field,&[]),move |app:&mut App|
             &mut app.windows.get_mut(&key).expect("the open window owns this field").authored_input)))));
-    for (physical,label) in [(false,"Preview institution operation"),(true,"Preview physical map edit")] {
-        rows.push(button(format!("operation-preview-{physical}"),label.into(),key,
-            move |app|app.quote_author_input(key,physical)));
+    for (kind,label) in [(0,"Preview institution operation"),(1,"Preview physical map edit"),
+        (2,"Preview item or project"),(3,"Preview graft carrying")] {
+        rows.push(button(format!("operation-preview-{kind}"),label.into(),key,
+            move |app|app.quote_author_input(key,kind)));
     }
     rows.push(button("operation-apply".into(),"Apply supplied operation".into(),key,move |app| {
         let bytes=app.author_input(key)?; app.vtt_bytes(key,bytes)

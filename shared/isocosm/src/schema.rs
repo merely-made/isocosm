@@ -68,6 +68,9 @@ pub struct Part {
     /// What this part admits as an intake organ, where it is one (766).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub port: Option<crate::process::IntakePort>,
+    /// Verified carried arrangement provenance survives recipient regrowth.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub graft_origin: Option<crate::graft::Origin>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]

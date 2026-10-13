@@ -171,6 +171,7 @@ pub struct Simulation {
     pub(crate) project_decision_stamp: Option<crate::projects::DecisionStamp>,
     pub(crate) institution_decision: Option<crate::institutions::DecisionContext>,
     pub(crate) institution_decision_stamp: Option<crate::institutions::DecisionStamp>,
+    pub(crate) graft_input: Option<crate::graft::Input>,
     pub(crate) owned_report: crate::projects::debit::Report,
     pub(crate) owned_planning: bool,
     /// What the advance under way has changed, to put back if it is refused.
@@ -234,6 +235,7 @@ impl Simulation {
             project_decision_stamp: None,
             institution_decision: None,
             institution_decision_stamp: None,
+            graft_input: None,
             owned_report: Default::default(),
             owned_planning: false,
             journal: None,

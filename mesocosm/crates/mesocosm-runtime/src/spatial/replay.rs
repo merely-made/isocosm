@@ -44,7 +44,8 @@ impl Game {
             driver.profile.validate(&source.sim)?;
             for at in driver.initial.values() { at.check(&source.sim)?; }
         }
-        let mut folded = Game { version: VERSION, members: driver.initial.clone(), driver: Some(driver.clone()) };
+        let mut folded = Game { version: self.version, members: driver.initial.clone(),
+            driver: Some(driver.clone()), sight: self.sight.clone() };
         let mut records = driver.records.iter();
         for entry in session.entries.iter().skip(count) {
             if !matches!(&entry.command, Command::AdvanceSpatial { .. }

@@ -3,6 +3,7 @@
 
 pub(crate) mod model;
 pub(crate) mod view;
+mod inspection;
 #[cfg(feature = "vtt")]
 mod vtt;
 #[cfg(feature = "vtt")]

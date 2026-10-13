@@ -14878,3 +14878,10 @@ to 2026-10-06 is archived as
   native rules, Registry, Genesis and saved session hashes remain untouched.
   This is source-only826. TG4 defensive biology, S9 ecological admission and
   S10 assessed stabilization remain open; no tuning or acceptance is claimed.
+
+- **2026-10-13, consolidated migration choices871 to873:** remaining map
+  terrain/condition/claim disclosure, the explicitly defensive tissue threshold
+  law, and the actual bite comparator were presented together864. No option
+  is inferred from Proceed/Go ahead. Next unused874. Physical items, explicit
+  graft carrying, host inspection and supplied live sight source proceed
+  independently; all compiler/tests/fixtures/probes/tuning remain deferred826.

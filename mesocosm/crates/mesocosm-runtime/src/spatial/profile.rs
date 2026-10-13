@@ -38,7 +38,7 @@ pub struct Authored { pub placements: Vec<Placement>, pub profile: Profile }
 /// Legacy placement arrays retain their original meaning.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum Setup { Placements(Vec<Placement>), Driver(Authored) }
+pub enum Setup { Placements(Vec<Placement>), Driver(Authored), Sighted(SightedSetup) }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Admission { Step { action: String }, Arrival, Birth { action: String, parent: Id, ordinal: u64 } }
@@ -124,7 +124,7 @@ impl Game {
         authored.profile.validate(&session.sim)?;
         let mut next = self.clone();
         next.replace(&session.sim, &authored.placements)?;
-        next.version = VERSION;
+        next.version = next.current_version();
         next.driver = Some(Driver { profile: authored.profile.clone(),
             native_source: native_source(session), native_entries: session.entries.len() as u64,
             native_prefix: native_prefix(session, session.entries.len(), session.sim.state().tick),
@@ -137,6 +137,7 @@ impl Game {
         match setup {
             Setup::Placements(placements) => self.replace(&session.sim, placements),
             Setup::Driver(authored) => self.configure(session, authored),
+            Setup::Sighted(authored) => self.setup_sighted(session, authored),
         }
     }
 }

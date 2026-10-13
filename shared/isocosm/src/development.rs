@@ -89,6 +89,7 @@ fn part(t: &Template, situs: [u8; 3], parent: Option<PartId>, offset: [i32; 3]) 
         functions: cells.keys().cloned().collect(),
         cells,
         port: t.port,
+        graft_origin: None,
         ..Default::default()
     };
     (frame, part)

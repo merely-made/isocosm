@@ -11,7 +11,8 @@ use isometer_core::Yaw;
 use isometer_space::places::PlaceId;
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 3;
+pub const VERSION: u32 = 4;
+pub const UNMARKED_VERSION: u32 = 3;
 
 mod input;
 pub use input::{GameInput, Input};
@@ -25,6 +26,8 @@ mod birth;
 mod birth_command;
 pub use birth::{BirthInput, BirthParent, BirthSlot};
 mod replay;
+mod sight;
+pub use sight::{SightConfig, SightedSetup};
 
 /// Exact root-pivot pose in the site's base cells; no presentation scale.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -66,21 +69,34 @@ pub struct Game {
     pub members: BTreeMap<Id, Placement>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub driver: Option<Driver>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sight: Option<SightConfig>,
 }
 
 impl Default for Game {
-    fn default() -> Self { Self { version: 1, members: BTreeMap::new(), driver: None } }
+    fn default() -> Self { Self { version: 1, members: BTreeMap::new(), driver: None, sight: None } }
 }
 
 impl Game {
     pub fn version(&self) -> Result<(), String> {
-        if !(self.version == 1 && self.driver.is_none() || self.version == 2 || self.version == VERSION) {
+        let supported = match self.version {
+            1 => self.driver.is_none() && self.sight.is_none(),
+            2 | UNMARKED_VERSION => self.sight.is_none(),
+            VERSION => self.sight.is_some(),
+            _ => false,
+        };
+        if !supported {
             return Err("unsupported Mesocosm spatial version".into());
         }
+        if let Some(sight) = &self.sight { sight.validate()?; }
         if self.members.iter().any(|(id, at)| *id != at.actor.0) {
             return Err("saved spatial identity differs from its native key".into());
         }
         Ok(())
+    }
+
+    pub(super) fn current_version(&self) -> u32 {
+        if self.sight.is_some() { VERSION } else { UNMARKED_VERSION }
     }
 
     /// Trusted authored geometry; this never moves or takes a native body.

@@ -269,6 +269,9 @@ impl Simulation {
         if let Err(why) = self.stage_goal_directives(&mut stage,definition,next) {
             return refused(receipt,Outcome::Blocked(why));
         }
+        if let Err(why) = self.stage_graft_receipt(&mut stage) {
+            return refused(receipt,Outcome::Blocked(why));
+        }
         receipt.effects = effects.into_iter().cloned().collect();
         if risky {
             receipt.outcome = Outcome::RiskOutcome;

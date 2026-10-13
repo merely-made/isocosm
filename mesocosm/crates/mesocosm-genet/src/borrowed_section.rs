@@ -81,7 +81,14 @@ impl SceneHandle {
                 session.sim.state().population.get(id).is_none_or(|e| e.resident_site() != Some(site))) {
                 return Err("played critter is off-site; physical close-up withdrawn".into());
             }
-            let visible = isocosm::directing::readings::view(&session.sim, subject.unwrap_or(Id::MAX), mode);
+            let mut visible = isocosm::directing::readings::view(&session.sim, subject.unwrap_or(Id::MAX), mode);
+            if mode == Mode::Survival && game.sight.is_some() {
+                let observer = subject.ok_or("marked sight requires this window's actual played observer")?;
+                let (space, sight) = game.sight(&session.sim, observer, &visible)?
+                    .ok_or("marked sight source is missing")?;
+                if space.site() != site { return Err("marked sight observer is outside this local region".into()); }
+                visible = space.refine(&session.sim, mode, &sight)?;
+            }
             let volume = if let Some(held) = subject.and_then(|id| game.members.get(&id))
                 .filter(|held| held.site.0 == site) {
                 held.realized(&session.sim)?;

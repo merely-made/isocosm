@@ -30,6 +30,10 @@ pub struct NativeUi {
     pub admission_path: TextInput,
     pub binding_path: TextInput,
     pub physical_path: TextInput,
+    pub items_path: TextInput,
+    pub items_file_request: Option<ItemsFileAction>,
+    pub items_request: Option<ItemsRequest>,
+    pub items_quote: Option<(isometry_campaign::native::items::ItemInput,isometry_campaign::native::items::ItemPreview)>,
     pub export_path: TextInput,
     pub file_request: Option<TableFileAction>,
     pub endpoints: Vec<[u8; 32]>,
@@ -54,6 +58,18 @@ pub enum PhysicalOutcome {
     Quote { input: isometry_campaign::native::physical_map::PhysicalMapInput,
         preview: isometry_campaign::native::physical_map::PhysicalMapPreview },
     Applied,
+}
+
+#[derive(Clone,Copy,Debug)]
+pub enum ItemsFileAction { Quote,Apply }
+
+#[derive(Clone,Debug)]
+pub enum ItemsRequest { Quote(isometry_campaign::native::items::ItemInput),Apply(isometry_campaign::native::items::ItemInput) }
+
+#[derive(Clone,Debug)]
+pub enum ItemsOutcome {
+    Quote {input:isometry_campaign::native::items::ItemInput,preview:isometry_campaign::native::items::ItemPreview},
+    Applied,Submitted,
 }
 
 #[derive(Clone, Debug)]
@@ -90,6 +106,13 @@ impl NativeUi {
 }
 
 impl super::UiState {
+    pub fn request_native_items_file(&mut self,action:ItemsFileAction) {
+        if self.native.world.is_none() || self.native.table.is_none() {
+            self.status="item actuation needs an admitted native world and table".into();
+            return;
+        }
+        self.native.items_file_request=Some(action);
+    }
     /// Identity and native tick are filled by the actual session transport,
     /// never by token owner, UI player names or this request queue.
     pub fn request_native_time(&mut self, intent: isocosm_overlay::vtt::TimeIntent) {

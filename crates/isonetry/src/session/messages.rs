@@ -149,6 +149,15 @@ impl HostSession {
                     Err(reason) => vec![(Recipient::One(from), NetMessage::Rejected { reason })],
                 }
             }
+            NetMessage::NativeItem(input) => {
+                let accepted = self.peer_endpoints.get(&from).copied()
+                    .ok_or_else(|| "native item request arrived without an authenticated endpoint".to_string())
+                    .and_then(|endpoint| self.native_items(crate::native_table::TableSender::Endpoint(endpoint), &input));
+                match accepted {
+                    Ok(out) => out,
+                    Err(reason) => vec![(Recipient::One(from), NetMessage::Rejected { reason })],
+                }
+            }
             NetMessage::Intent { event } => {
                 if self.state.native.is_some()
                     && let GameEvent::Map(SessionEvent::TokenMoved { id, to }) = &event
@@ -210,7 +219,7 @@ impl HostSession {
                 | GameEvent::NativeTableResolved(_) | GameEvent::NativeTimeResolved(_)
                 | GameEvent::NativePartyResolved(_) | GameEvent::NativeJourneyResolved(_)
                 | GameEvent::NativeHookResolved(_) | GameEvent::NativePackResolved(_)
-                | GameEvent::NativePhysicalResolved(_) => {
+                | GameEvent::NativePhysicalResolved(_) | GameEvent::NativeItemsResolved(_) => {
                 Some("native results are admitted by the host".to_owned())
             },
             GameEvent::TravelResolved { .. } => {

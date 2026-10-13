@@ -95,5 +95,6 @@ pub(crate) fn table_controls(ui: &UiState) -> Vec<UiChild> {
         let key: String = endpoint.iter().map(|byte| format!("{byte:02x}")).collect();
         body.push(Box::new(el("div", text(format!("Authenticated endpoint: {key}"))).attr("class", "side-line")));
     }
+    body.extend(crate::native_items::controls(ui));
     body
 }

@@ -2,6 +2,18 @@
 
 **Date:** 2026-09-25
 
+**Sight and Carry source, 2026-10-13:** marked saved spatial state carries
+explicit native sight ranges. Actual PLAYS, admitted eye/window, body/terrain
+revisions and arrival bindings refine the physical picture; absent or stale
+inputs withdraw it. Earlier unmarked saves keep their prior format. Whole
+branch graft Carry now requires an explicit logged input with exact revisions,
+complete attachment, full native pass grants and recipient-funded payment.
+Typed part origins retain cumulative allowances through regrowth and later
+transfers. No autonomous critter receives invented attachment geometry.
+Shared host far/region/part inspection borrows native readings. This is source
+placement only under826; defensive choices872/873 and full M4/C11 acceptance
+remain open.
+
 **Current source, 2026-10-13, produced owned matter (863):** explicit authored
 references name a genuine accepted producing operation and output with an
 exact quantity. Native resolution checks its current lot, holder, account,

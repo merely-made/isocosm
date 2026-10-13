@@ -430,6 +430,7 @@ impl Founding {
                         PartId(0),
                         Part {
                             traits: lineages[&lineage].traits.clone(),
+                            graft_origin: None,
                             ..Default::default()
                         },
                     )]),

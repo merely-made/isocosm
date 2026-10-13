@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use std::fmt;
 
 mod setup;
-pub use setup::Setup;
+pub use setup::{Setup, MaterialProfile};
 mod publication;
 pub use publication::{NativeCursor, NativeWorld};
 mod content;

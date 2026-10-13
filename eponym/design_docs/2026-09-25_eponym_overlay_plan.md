@@ -2,6 +2,18 @@
 
 **Date:** 2026-09-25
 
+**Borrowed host source, 2026-10-13:** an explicit saved mode profile maps
+subjects to native entities, admitted placements and full fixed-point poses.
+Supplied camera and appearance values drive the shared host's Eponym picture;
+native body geometry, stocks, custody and current PLAYS come from Root's
+borrowed Session. The facade neither restores nor ticks another Session.
+Its renderer preserves Eponym's feet-centre lowering and native window
+translation. Stale, departed or missing bindings withdraw the picture;
+resident corpses follow native visibility. `--eponym-spatial` supplies the
+complete author input before opening the host. Motion/combat/project action
+and clock migration, consuming standalone handoff and E3 acceptance remain
+open. This read/picture source has not been compiled or tested under826.
+
 **Current source, 2026-10-13, authored spread founding and replay:** a separate
 SpreadMaterialProfile selects native generator8 and GameSave13. Required
 founder recipes, lineages, ordinary source accounts, actual ledgers, capacity,

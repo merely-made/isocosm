@@ -42,10 +42,11 @@ pub struct GameSave {
 
 impl GameSave {
     pub fn from_native(native: Saved) -> Self {
-        Self { version: crate::spatial::VERSION, native, spatial: crate::spatial::Game::default() }
+        Self { version: crate::spatial::UNMARKED_VERSION, native, spatial: crate::spatial::Game::default() }
     }
     pub fn check(&self) -> Result<(), String> {
-        if self.version != 1 && self.version != 2 && self.version != crate::spatial::VERSION {
+        if !(1..=crate::spatial::VERSION).contains(&self.version)
+            || (self.version == crate::spatial::VERSION) != self.spatial.sight.is_some() {
             return Err("unsupported Mesocosm game save".into());
         }
         self.spatial.version()
@@ -59,7 +60,7 @@ impl Runtime {
     }
 
     pub fn save_game(&self) -> GameSave {
-        GameSave { version: crate::spatial::VERSION, native: self.save(), spatial: self.spatial.clone() }
+        GameSave { version: self.spatial.current_version(), native: self.save(), spatial: self.spatial.clone() }
     }
 
     pub fn replayed_game(saved: GameSave) -> Result<Replayed, String> {

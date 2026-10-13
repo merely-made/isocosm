@@ -51,7 +51,7 @@ impl Family {
         for (id, part) in &e.parts {
             if !part.functions.is_empty() || !part.cells.is_empty() || !part.matter.is_empty()
                 || !part.tracts.is_empty() || !part.lost.is_empty()
-                || !part.losses.is_empty() || part.port.is_some()
+                || !part.losses.is_empty() || part.port.is_some() || part.graft_origin.is_some()
             {
                 return Err("unsupported physiology in legacy replay part".into());
             }

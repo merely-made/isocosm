@@ -376,6 +376,19 @@ impl Runtime {
         site.refine(self.sim(), self.interim.mode, sight)
     }
 
+    /// Actual physical scene callbacks opt into the saved authored range.
+    /// Creative remains native truth; old unmarked saves keep their reading.
+    pub fn physical_view(&self) -> Result<View, String> {
+        self.spatial.version()?;
+        let visible = self.view();
+        if self.interim.mode == Mode::Creative || self.spatial.sight.is_none() { return Ok(visible); }
+        let observer = self.critter().ok_or("marked sight requires the actual played observer")?;
+        match self.spatial.sight(self.sim(), observer, &visible)? {
+            Some((site, sight)) => self.sighted_view(&site, &sight),
+            None => Err("marked sight source is missing".into()),
+        }
+    }
+
     /// Current edited geometry at the played site. Call again after admitted
     /// Edit/Patch commands or a round; departed critters have no site to lift.
     pub fn in_site(&self) -> Result<crate::perception::InSite, String> {
