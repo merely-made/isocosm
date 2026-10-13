@@ -2,14 +2,51 @@
 
 **Date:** 2026-09-25
 
+**Current choices, 2026-10-13 (865 to870):** the DM previews and explicitly
+accepts compatible dormant packs. Each act participates in every goal it
+actually served; immediate event causality stays separate. Authored polity
+attributes and member-derived readings keep their disagreement until an
+explicit native change. Faction and biome colours use configurable layers;
+undisclosed boundaries always clip sharply. Thumbnails are optional per world
+or view. All six answers are recorded verbatim together864. Their dependent
+source and actual callers are placed, unverified. The complete-map disclosure
+scope is pending871; next unused872. Tests and tuning
+remain deferred826, and full V2/V3 acceptance remains open.
+
+**Source checkpoint, 2026-10-13 (865 to870):** GameBindings7 retains explicit
+map presentation,8 typed Hook decisions,9 the witnessed adventure catalogue;
+protocol/ALPN11 append actual native Hook/Pack publication. Dormant packs
+require a fresh recorded preview and explicit DM Accept/Force. Public
+generator provenance redacts private secrets; standalone private custody
+keeps dormant secrets separate until activation. Both actual hosts use the
+same borrowed Session/game admission doors. The shared host has no private
+fact store and explicitly leaves private requirements unmet.
+
+Explicit native goals adopt/participate/end through genuine actor events,
+with an actual adoption cut rejecting different pre-adoption acts. Every
+supplied served goal records participation; immediate causes stay separate.
+Hook inputs may name an exact goal plus adoption event, while old event-only
+inputs require historical uniqueness. The actual DM panels retain both
+authored polity fill and member evidence/disagreement; those member acts are
+not the polity's institutionally admitted alignment under79.
+
+The native overmap reads retained disclosures, authored display cells and
+place-tag biome predicates. Paint and route ribbons always clip sharply to
+shown cells; thumbnails and colour layers have explicit world/view settings.
+An exact retained disclosure entry selects historical map facts while current
+access/membership still gate reads. Shared view settings survive saves.
+Live terrain, conditions and faction claims are not inferred from a site ID;
+their explicit disclosure admission remains pending871. Shared storylets
+admit supported native Fact/History effects with exact source freshness;
+map/item placement and broader institution/process actuation remain open.
+No compiler/tests/fixtures/probes/tuning ran826. Full V2 is not complete.
+
 **Current source, 2026-10-13, H0 connection admission:** only negotiation
 messages enter before accepted current-version Hello. Actual Iroh and
 in-process connections carry a generation; old readers, queued input and
 disconnects cannot act on a successor connection. Resetting live transport
 state leaves saved native bindings, player rosters, holds and history intact.
-Source is uncompiled and untested under826. The six known choices865 to870
-were delivered together under864 and remain pending: pack activation, goal
-participation, polity conflicts, map tint, edges and thumbnails. Full V2/V3
+Source is uncompiled and untested under826. Full V2/V3
 and headed acceptance remain open.
 
 **Earlier source, 2026-10-12 (859 to864):** joint journey proposals name an
@@ -935,3 +972,21 @@ what each left open lands here, so it has a live owner.
   player roster/holds and accepted history persist. Source is uncompiled and
   untested826. The full V2 source inventory is open; all six known choices
   865 to870 are pending as one collected round864, with next unused871.
+
+- **2026-10-13,865 to870 source and actual VTT callers:** all six answers
+  recorded verbatim together864. GameBindings7/8/9 retain map presentation,
+  typed Hook records and witnessed dormant catalogues; protocol/ALPN11 append
+  actual Hook/Pack publication. The DM previews then explicitly accepts or
+  forces; source freshness, native replay and unrelated metadata are guarded.
+  Exact goal+event selectors support multiple goals at one adoption act, and
+  internally captured adoption cuts reject earlier different acts. Authored
+  polity fill and actual member evidence remain separate under867/79.
+  Overmaps show retained disclosures with sharp paint/route clipping, explicit
+  world/view layers, optional thumbnails and an exact historical disclosure
+  cut. Both actual hosts consume these doors; shared supported storylet
+  Fact/History admission requires exact source freshness. Shared private
+  requirements, physical map/item actuation, automatic process goals and
+  institutional execution remain source gaps. All compiler/tests/fixtures/
+  probes/tuning stay deferred826. Complete terrain/condition/claim disclosure
+  is the sole collected pending question871; next unused872. Mark's Proceed
+  continues the migration. Full V2/E3/M4/C10/C11 acceptance remains open.

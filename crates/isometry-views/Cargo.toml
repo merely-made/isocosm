@@ -8,6 +8,7 @@ repository.workspace = true
 description = "Isometry's Cambium view layer: board + chrome view fns and the CSS sheets, host-agnostic (desktop and, later, web)."
 
 [dependencies]
+serde_json = { workspace = true }
 isometry-core = { workspace = true }
 isometry-campaign = { workspace = true }
 isocosm = { workspace = true }
@@ -27,7 +28,6 @@ sprigging = { workspace = true }
 scenotime = { workspace = true }
 
 [dev-dependencies]
-serde_json = { workspace = true }
 # The parity gate is a real GPU frame, so the receipts — and only the
 # receipts — turn the backends on. The library above links none.
 wgpu = { version = "30", default-features = false, features = [

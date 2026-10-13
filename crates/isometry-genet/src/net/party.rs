@@ -17,6 +17,19 @@ impl NetBridge {
 
 pub(super) async fn host_request(host: &HostNet, request: PartyRequest) -> Result<Option<PartyView>, String> {
     let snapshot = host.snapshot().await;
+    if let PartyRequest::Hook(intent)=request {
+        let input=crate::native_party::hook_envelope(&snapshot,intent)?;
+        host.native_hook(&input).await?;
+        return Ok(None);
+    }
+    if let PartyRequest::ReadAt { party,settings } = request {
+        return crate::native_party::read_with_settings(&snapshot,TableSender::Host,&party,Some(settings)).map(Some);
+    }
+    if let PartyRequest::Presentation(input) = &request {
+        let input = crate::native_party::presentation_input(&snapshot,input)?;
+        host.commit_native_table_binding(&input).await?;
+        return Ok(None);
+    }
     if let PartyRequest::Read { party } = request {
         return crate::native_party::read(&snapshot, TableSender::Host, &party).map(Some);
     }
@@ -34,8 +47,15 @@ pub(super) async fn host_request(host: &HostNet, request: PartyRequest) -> Resul
 }
 
 pub(super) async fn client_request(client: &ClientNet, request: PartyRequest) -> Result<Option<PartyView>, String> {
+    if matches!(&request,PartyRequest::Hook(_)) {return Err("hook decisions require the actual host".into());}
+    if matches!(&request,PartyRequest::Presentation(_)) {
+        return Err("map presentation authoring requires the actual host".into());
+    }
     let snapshot = client.state().await.ok_or("party request needs the authenticated host snapshot")?;
     let sender = TableSender::Endpoint(client.endpoint_key());
+    if let PartyRequest::ReadAt { party,settings } = request {
+        return crate::native_party::read_with_settings(&snapshot,sender,&party,Some(settings)).map(Some);
+    }
     if let PartyRequest::Read { party } = request {
         return crate::native_party::read(&snapshot, sender, &party).map(Some);
     }

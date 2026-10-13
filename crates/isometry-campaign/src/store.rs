@@ -26,6 +26,10 @@ pub struct CampaignStore {
     hidden_item_modifiers: BTreeMap<String, HiddenItemModifier>,
     #[serde(default)]
     pending_item_modifier_reveals: BTreeMap<String, HiddenItemModifier>,
+    /// Imported dormant adventure secrets remain private and inactive until
+    /// that pack's explicit accepted native activation is published.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    dormant_pack_secrets: BTreeMap<String, BTreeMap<String, SecretFact>>,
 }
 
 impl CampaignStore {
@@ -65,6 +69,39 @@ impl CampaignStore {
             && self.pending_reveals.is_empty()
             && self.hidden_item_modifiers.is_empty()
             && self.pending_item_modifier_reveals.is_empty()
+            && self.dormant_pack_secrets.is_empty()
+    }
+
+    pub fn stage_pack_secrets(&mut self, key: &str, facts: &[SecretFact]) -> Result<(), String> {
+        let mut staged = BTreeMap::new();
+        for fact in facts {
+            if fact.id.trim().is_empty() || staged.get(&fact.id).is_some_and(|old| old != fact)
+                || self.secrets.get(&fact.id).is_some_and(|old| old != fact)
+                || self.pending_reveals.get(&fact.id).is_some_and(|old| old != fact) {
+                return Err(format!("conflicting private pack secret {}",fact.id));
+            }
+            staged.insert(fact.id.clone(),fact.clone());
+        }
+        if self.dormant_pack_secrets.get(key).is_some_and(|old| old != &staged) {
+            return Err("dormant pack has different private secrets".into());
+        }
+        if !staged.is_empty() { self.dormant_pack_secrets.insert(key.into(),staged); }
+        Ok(())
+    }
+
+    pub fn activate_pack_secrets(&mut self, key: &str) -> Result<(), String> {
+        let mut candidate = self.clone();
+        if let Some(facts) = candidate.dormant_pack_secrets.remove(key) {
+            for (id,fact) in facts {
+                if candidate.secrets.get(&id).is_some_and(|old| old != &fact)
+                    || candidate.pending_reveals.get(&id).is_some_and(|old| old != &fact) {
+                    return Err(format!("conflicting active pack secret {id}"));
+                }
+                candidate.secrets.entry(id).or_insert(fact);
+            }
+        }
+        *self = candidate;
+        Ok(())
     }
 
     /// Move a secret into the recoverable pending state and return its public

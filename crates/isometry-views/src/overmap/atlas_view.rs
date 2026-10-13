@@ -25,7 +25,9 @@ pub(crate) struct AtlasTerrainCache {
 pub fn overmap_atlas(ui: &UiState) -> Option<GraphCanvasAtlas<String>> {
     // The native shared map has disclosed site/route records, not a legacy
     // region's terrain or a collectively selected current location.
-    if ui.native.world.is_some() { return None; }
+    if ui.native.world.is_some() {
+        return crate::native_overmap_atlas(ui.native_party_reading()?.overmap.as_ref()?,None);
+    }
     let party = ui.viewer.as_deref().unwrap_or("dm");
     let world = ui.overmap_source_world();
     let maps = ui.overmap_source_maps();

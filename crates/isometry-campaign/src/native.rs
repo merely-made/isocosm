@@ -32,9 +32,14 @@ pub mod joint_journey;
 mod table;
 pub mod time;
 pub use time::submit_time;
+pub mod overmap;
+pub mod hooks;
+pub use hooks::{goal_hooks, submit_hook};
+pub mod pack;
+pub mod storylets;
 
 mod reading;
-pub use reading::{Geography, Reading};
+pub use reading::{Geography, Reading, polity_readings};
 
 /// Where the native operation refused an input.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

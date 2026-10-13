@@ -34,7 +34,7 @@ pub(super) fn selection(ui: &UiState) -> Vec<UiChild> {
     body
 }
 
-pub(super) fn table_controls(ui: &UiState) -> Vec<UiChild> {
+pub(crate) fn table_controls(ui: &UiState) -> Vec<UiChild> {
     let mut body: Vec<UiChild> = vec![Box::new(el("div", text(
         "Native table: explicitly admit characters/control, then bind tokens, authenticated peers and authored cells."
     )).attr("class", "side-line"))];

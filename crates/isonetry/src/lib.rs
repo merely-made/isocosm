@@ -16,7 +16,8 @@
 //! log hash ([`HostSession::log_hash`]) makes divergence detectable.
 
 pub use isometry_campaign::founding::NativeWorld;
-pub use session::{NativePublication, NativeTravelResolved, NativeTimeResolved, NativePartyResolved, NativeJourneyResolved, TravelMember, TravelTableResult};
+pub use session::{NativePublication, NativeTravelResolved, NativeTimeResolved, NativePartyResolved,
+    NativeJourneyResolved, NativeHookResolved, NativePackResolved, TravelMember, TravelTableResult};
 mod mode_game;
 pub use mode_game::ModeGame;
 mod protocol;

@@ -33,7 +33,7 @@ pub struct Content {
 }
 
 impl Content {
-    pub(super) fn from_draft(draft: &CampaignDraft) -> Result<Self, FoundingError> {
+    pub(crate) fn from_draft(draft: &CampaignDraft) -> Result<Self, FoundingError> {
         let world = &draft.world;
         let content = Self {
             id: draft.id.clone(), name: draft.name.clone(), maps: draft.maps.clone(),

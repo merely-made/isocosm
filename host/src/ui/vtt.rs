@@ -11,17 +11,21 @@ use super::{model::{App, Defaults}, view::{Child, button}};
 use crate::products::{Input, Mode};
 
 impl App {
+    pub(super) fn vtt_bytes(&mut self, key:u64, bytes:Vec<u8>) -> Result<(), String> {
+        let local = self.windows.get(&key).ok_or("window is closed")?;
+        let input = Input { mode:Mode::Vtt, bytes, round:0, region:None };
+        local.native.submit_product(&input)?;
+        self.refresh();
+        Ok(())
+    }
+
     fn vtt_send(&mut self, key: u64, intent: VttIntent) -> Result<(), String> {
         let local = self.windows.get(&key).ok_or("window is closed")?;
         let access = local.native.projection()?.access;
         let tick = self.world.read(|session| session.sim.state().tick)?;
         let envelope = VttIntentEnvelope { participant:access.participant, tick:Tick(tick),
             intent:Intent::Game(intent) };
-        let input = Input { mode:Mode::Vtt, bytes:serde_json::to_vec(&envelope).map_err(|e| e.to_string())?,
-            round:0, region:None };
-        local.native.submit_product(&input)?;
-        self.refresh();
-        Ok(())
+        self.vtt_bytes(key, serde_json::to_vec(&envelope).map_err(|e| e.to_string())?)
     }
 
     fn vtt_roster(&mut self, key:u64, player:Option<u64>) -> Result<(), String> {
@@ -195,5 +199,7 @@ pub(super) fn panel(app:&App, key:u64) -> Child {
         }
     }
     rows.push(super::journey::panel(app,key));
+    rows.push(super::overmap::panel(app,key));
+    rows.push(super::adventure::panel(app,key));
     Box::new(el("section",rows).attr("class","panel"))
 }

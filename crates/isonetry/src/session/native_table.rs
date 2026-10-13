@@ -13,8 +13,9 @@ fn preserve_time(old: Option<&NativeTable>, next: &NativeTable) -> Result<(), St
         old.map_or(&[][..], |table| table.game.as_slice()))?;
     let after = isometry_campaign::native::GameBindings::decode(&next.game)?;
     if before.downtime() != after.downtime() || before.time_holds() != after.time_holds()
-        || before.shared_players() != after.shared_players() {
-        return Err("table authoring/movement cannot change native downtime proposal or consent records".into());
+        || before.shared_players() != after.shared_players() || before.journeys()!=after.journeys()
+        || before.hooks()!=after.hooks() || before.catalogue()!=after.catalogue() {
+        return Err("table authoring/movement cannot change native time, journey, hook or pack records".into());
     }
     if after.roster_revision() != roster_revision(old, next)? {
         return Err("table result differs from its actual accepted player-roster revision".into());

@@ -4,6 +4,23 @@
 use super::*;
 
 impl HostNet {
+    pub async fn native_pack(&self,input:&isometry_campaign::native::pack::PackEnvelope)->Result<(),String> {
+        let out=self.session.lock().await.native_pack(crate::native_table::TableSender::Host,input)?;
+        dispatch(&self.peers,out).await;
+        Ok(())
+    }
+    pub async fn register_generated_pack(&self,record:&isometry_campaign::GenerationRecord,
+        requirements:isometry_campaign::StoryletRequirements,roles:Vec<isometry_campaign::RoleSlot>,
+        choreography:Vec<isometry_campaign::native::pack::Choreography>,max_depth:usize)->Result<(),String> {
+        let out=self.session.lock().await.register_generated_pack(record,requirements,roles,choreography,max_depth)?;
+        dispatch(&self.peers,out).await;
+        Ok(())
+    }
+    pub async fn native_hook(&self,envelope:&isocosm_overlay::vtt::VttIntentEnvelope)->Result<(),String> {
+        let out=self.session.lock().await.native_hook(envelope)?;
+        dispatch(&self.peers,out).await;
+        Ok(())
+    }
     pub async fn native_journey(&self, input: &isometry_campaign::native::joint_journey::JourneyEnvelope) -> Result<(), String> {
         let out = self.session.lock().await.native_journey(crate::native_table::TableSender::Host, input)?;
         dispatch(&self.peers, out).await;

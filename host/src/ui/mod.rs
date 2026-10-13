@@ -7,3 +7,7 @@ pub(crate) mod view;
 mod vtt;
 #[cfg(feature = "vtt")]
 mod journey;
+#[cfg(feature = "vtt")]
+mod overmap;
+#[cfg(feature = "vtt")]
+mod adventure;

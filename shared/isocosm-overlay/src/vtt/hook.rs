@@ -22,4 +22,18 @@ pub enum HookIntent {
         arc: EventHandle,
         note: String,
     },
+    /// Exact goal identity when one genuine act adopted several goals.
+    TakeUpGoal {
+        arc: EventHandle,
+        goal: String,
+    },
+    DropGoal {
+        arc: EventHandle,
+        goal: String,
+    },
+    ReshapeGoal {
+        arc: EventHandle,
+        goal: String,
+        note: String,
+    },
 }

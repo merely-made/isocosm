@@ -12,8 +12,14 @@ pub(crate) struct Defaults {
     pub quarter_turn: u8,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub party: Option<String>,
+    #[cfg(feature = "vtt")]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub overmap: Option<isometry_campaign::native::overmap::ViewSettings>,
 }
-impl Default for Defaults { fn default() -> Self { Self { quarter_turn: 0, party: None } } }
+impl Default for Defaults { fn default() -> Self { Self { quarter_turn: 0, party: None,
+    #[cfg(feature = "vtt")]
+    overmap: None,
+} } }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub(crate) struct Preferences { pub modes: BTreeMap<String, Defaults> }
@@ -23,6 +29,8 @@ pub(crate) struct PinChoice {
 }
 
 pub(crate) struct Local {
+    #[cfg(feature = "vtt")]
+    pub hook_note:cambium::TextInput,
     pub native: Window, pub rows: Rows, pub error: Option<String>,
     pub preferences: Preferences, pub attention: BTreeMap<String, AttentionSet>,
     pub input: Option<Input>, pub close_requested: bool,
@@ -61,6 +69,8 @@ impl App {
         };
         self.next = next;
         self.windows.insert(key, Local { native, rows: Rows::default(), error: None, preferences,
+            #[cfg(feature = "vtt")]
+            hook_note:Default::default(),
             attention: BTreeMap::new(), input: None, close_requested: false,
             #[cfg(any(feature = "mesocosm", feature = "vtt"))]
             scene: crate::viewport::handle(), });

@@ -13,7 +13,20 @@ impl HostSession {
         -> Result<Vec<Outbound>, String> {
         let previous = self.state.native.as_ref().ok_or("no native campaign")?;
         let old = previous.load(Execution::Grouped)?;
-        let storylet = old.content().storylets.get(key).ok_or_else(|| format!("unknown native storylet: {key}"))?;
+        let mut offers = old.content().storylets.clone();
+        if let Some(table) = &self.state.native_table {
+            table.validate_history(old.table_session())?;
+            let access = isocosm_overlay::OrdinaryAccess {
+                participant:isocosm_overlay::ParticipantHandle(table.host_participant),seat:isocosm_overlay::Seat::Dm,
+                subject:old.table_session().sim.plays(table.host_participant).map(isocosm_overlay::EntityHandle) };
+            for (key,storylet) in isometry_campaign::native::pack::active_content(old.table_session(),&table.game,access)?.storylets {
+                if offers.get(&key).is_some_and(|existing| existing != &storylet) {
+                    return Err(format!("native campaign and accepted pack disagree about storylet {key}"));
+                }
+                offers.insert(key,storylet);
+            }
+        }
+        let storylet = offers.get(key).ok_or_else(|| format!("unknown native storylet: {key}"))?;
         let resolved = old.reading().resolve_storylet(storylet, self.campaign.secret_ids())
             .map_err(|error| format!("storylet does not match native state: {error:?}"))?;
         let occurrence = format!("storylet:{key}:{}", old.reading().entries().len());

@@ -29,6 +29,7 @@ impl App {
         self.pump_native_time(ctx);
         self.pump_native_table(ctx);
         self.pump_native_party(ctx);
+        self.pump_native_packs(ctx);
         // Cheap flags first: this tail runs after every dispatch, and the save
         // path below starts by cloning the journal. An ordinary click asks for
         // neither and must not pay for either.
@@ -47,6 +48,7 @@ impl App {
             self.pump_overmap_read(ctx);
             self.pump_net(ctx);
             self.pump_native_party(ctx);
+            self.pump_native_packs(ctx);
             self.refresh_source_history(ctx);
             return;
         }

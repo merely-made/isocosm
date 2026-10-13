@@ -208,7 +208,8 @@ impl HostSession {
             GameEvent::ActionResolved(_) => Some("actions are adjudicated by the host".to_owned()),
             GameEvent::NativePublished(_) | GameEvent::NativeTravelResolved(_)
                 | GameEvent::NativeTableResolved(_) | GameEvent::NativeTimeResolved(_)
-                | GameEvent::NativePartyResolved(_) | GameEvent::NativeJourneyResolved(_) => {
+                | GameEvent::NativePartyResolved(_) | GameEvent::NativeJourneyResolved(_)
+                | GameEvent::NativeHookResolved(_) | GameEvent::NativePackResolved(_) => {
                 Some("native results are admitted by the host".to_owned())
             },
             GameEvent::TravelResolved { .. } => {

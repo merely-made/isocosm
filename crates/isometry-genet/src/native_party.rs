@@ -37,28 +37,41 @@ pub(crate) fn envelope(snapshot: &GameSnapshot, sender: TableSender, request: Pa
             if access.subject != Some(EntityHandle(member)) { return Err("party disclosure names a changed played body".into()); }
             isometry_campaign::native::party::disclose_known(session, access.participant.0, party)?
         },
-        PartyRequest::Read { .. } => return Err("read-only party maps submit no command".into()),
+        PartyRequest::Read { .. } | PartyRequest::ReadAt { .. } => return Err("read-only party maps submit no command".into()),
         PartyRequest::Journey(_) => return Err("joint journey uses its separate actual native admission door".into()),
+        PartyRequest::Presentation(_) => return Err("overmap presentation uses the explicit host metadata door".into()),
+        PartyRequest::Hook(_) => return Err("hook decisions use the actual DM authoring door".into()),
     };
     Ok(IntentEnvelope { participant: access.participant, tick: Tick(session.sim.state().tick),
         intent: Intent::Game(VttIntent::Party(input)) })
 }
 
 pub(crate) fn read(snapshot: &GameSnapshot, sender: TableSender, party: &str) -> Result<PartyView, String> {
+    read_with_settings(snapshot,sender,party,None)
+}
+
+pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party:&str,
+    settings:Option<isometry_campaign::native::overmap::ViewSettings>) -> Result<PartyView,String> {
     let (campaign, access) = context(snapshot, sender)?;
     let session = campaign.table_session();
     let own = isocosm::party::members(&session.sim, party)?.into_iter()
         .filter(|m| m.participant == access.participant.0).collect::<Vec<_>>();
     let shared = access.seat != Seat::Player || !own.is_empty();
-    let map = if shared { isometry_campaign::native::party::read_party(session, access, party)? }
+    let mut map = if shared { isometry_campaign::native::party::read_party(session, access, party)? }
         else { isocosm::party::SharedMap { party: party.into(), members: own,
             places: Default::default(), routes: Default::default(), events: Default::default(), records: Vec::new() } };
+    let table = snapshot.native_table.as_ref().ok_or("journey read needs its admitted endpoint table")?;
+    let overmap = if shared { Some(isometry_campaign::native::overmap::read_overmap(session,
+        &table.game,access,party,settings)?) } else { None };
+    if let Some(read) = &overmap { map = read.map.clone(); }
     let events = map.events.iter().map(|key|
         (key.clone(), session.sim.state().events.get(key).cloned())).collect();
-    let table = snapshot.native_table.as_ref().ok_or("journey read needs its admitted endpoint table")?;
     let journeys = if shared { isometry_campaign::native::joint_journey::read_journeys(session,
         &table.game,access,&table.time_roster()?,party)? } else { Vec::new() };
     let dm = access.seat == Seat::Dm;
+    let hooks=if dm {isometry_campaign::native::goal_hooks(session,access.subject.map_or(u64::MAX,|id|id.0),
+        isocosm::directing::readings::Mode::Creative)?} else {Vec::new()};
+    let polities=if dm {isometry_campaign::native::polity_readings(session,access)?} else {Vec::new()};
     let mut journey_authoring = Vec::new();
     if dm {
         let roster = table.bound_players();
@@ -83,14 +96,36 @@ pub(crate) fn read(snapshot: &GameSnapshot, sender: TableSender, party: &str) ->
         }
     }
     // Only this viewer's actual residence may mark "here". No aggregate party location.
-    let here = access.subject.and_then(|id| session.sim.state().population.get(id.0))
+    let here = access.subject.filter(|_| overmap.as_ref().is_none_or(|read| read.disclosure.is_none()))
+        .and_then(|id| session.sim.state().population.get(id.0))
         .and_then(|body| body.resident_site()).filter(|site| map.places.contains_key(site));
     let view = PartyView { cursor: snapshot.native.as_ref().ok_or("no native campaign")?.cursor()?,
         source: isocosm::digest(snapshot.native.as_ref().ok_or("no native campaign")?),
         table: table_digest(snapshot.native_table.as_ref()), participant: access.participant.0,
         subject: access.subject.map(|id| id.0), shared, map, here, events,
-        dm,journeys,journey_authoring,journey_quote:None };
+        dm,journeys,journey_authoring,journey_quote:None,overmap,hooks,polities };
     Ok(view)
+}
+
+pub(crate) fn presentation_input(snapshot:&GameSnapshot,
+    input:&isometry_campaign::native::overmap::OvermapInput)
+    -> Result<isonetry::NativeTableBindingInput,String> {
+    let (campaign,access) = context(snapshot,TableSender::Host)?;
+    let mut session = campaign.table_session().clone();
+    let mut table = snapshot.native_table.as_ref().ok_or("map presentation needs native table bindings")?.clone();
+    let (_,game) = isometry_campaign::native::overmap::submit_presentation(&mut session,table.game.clone(),access,input)?;
+    table.game = game;
+    Ok(isonetry::NativeTableBindingInput {
+        expected_native:snapshot.native.as_ref().ok_or("map presentation needs native source")?.cursor()?,
+        expected_table:table_digest(snapshot.native_table.as_ref()),table,
+    })
+}
+
+pub(crate) fn hook_envelope(snapshot:&GameSnapshot,intent:isocosm_overlay::vtt::HookIntent)
+    -> Result<VttIntentEnvelope,String> {
+    let (campaign,access)=context(snapshot,TableSender::Host)?;
+    Ok(IntentEnvelope {participant:access.participant,tick:Tick(campaign.table_session().sim.state().tick),
+        intent:Intent::Game(VttIntent::Hook(intent))})
 }
 
 fn install(ui: &mut UiState, read: PartyView) -> Result<(), String> {
@@ -124,6 +159,30 @@ impl App {
             return;
         }
         let Some(request) = request else { return; };
+        if let PartyRequest::ReadAt { party,settings } = request {
+            let snapshot = self.snapshot_of(ctx.runner.state());
+            let result = read_with_settings(&snapshot,TableSender::Host,&party,Some(settings));
+            ctx.runner.update(|ui| ui.status = match result.and_then(|read| install(ui,read)) {
+                Ok(())=>"read exact disclosed history; current native authority retained".into(),Err(why)=>why,
+            });
+            return;
+        }
+        if let PartyRequest::Presentation(input) = request {
+            let before = self.snapshot_of(ctx.runner.state());
+            self.ensure_history_origin(&before);
+            let mut authority = HostSession::with_history(before,self.campaign.clone(),self.history.clone());
+            let result = presentation_input(authority.state(),&input)
+                .and_then(|input| authority.commit_native_table_binding(&input));
+            let accepted = authority.state().clone();
+            self.history = authority.history().clone();
+            self.journal = accepted.journal.clone();
+            ctx.runner.update(|ui| {
+                ui.apply_snapshot(accepted);
+                ui.native.party.reading=None;
+                ui.status=match result { Ok(_) => "saved native map presentation; read the party map".into(),Err(why)=>why };
+            });
+            return;
+        }
         if let PartyRequest::Journey(isometry_views::JourneyRequest::Quote { party,input }) = &request {
             let snapshot = self.snapshot_of(ctx.runner.state());
             let result = crate::native_journey::quote(&snapshot,TableSender::Host,party,input.clone());
@@ -144,6 +203,7 @@ impl App {
         self.ensure_history_origin(&before);
         let mut authority = HostSession::with_history(before, self.campaign.clone(), self.history.clone());
         let result = match request {
+            PartyRequest::Hook(intent)=>hook_envelope(authority.state(),intent).and_then(|input|authority.native_hook(&input)),
             PartyRequest::Journey(request) => crate::native_journey::envelope(authority.state(),TableSender::Host,request)
                 .and_then(|input| authority.native_journey(TableSender::Host,&input)),
             request => envelope(authority.state(),TableSender::Host,request)

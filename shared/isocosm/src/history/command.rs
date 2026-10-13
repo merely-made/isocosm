@@ -148,4 +148,6 @@ pub enum Command {
         births: Vec<crate::spatial::BirthResolution>,
     },
     Party(crate::party::Change),
+    /// Explicit genuine-act consequential goals; arcs remain derived.
+    Goal(crate::goals::Change),
 }

@@ -6,6 +6,12 @@ use isocosm::Session;
 use isocosm_overlay::OrdinaryAccess;
 
 impl Campaign {
+    pub fn with_table_pack(&self, game: Vec<u8>, access: OrdinaryAccess,
+        private: &std::collections::BTreeSet<isocosm::schema::Key>, input: &crate::native::pack::PackEnvelope)
+        -> Result<(Self, Vec<u8>, String), String> {
+        let (replay,game,accepted) = self.replay.with_table_pack(game,access,private,input)?;
+        Ok((Self { replay,..self.clone() },game,accepted))
+    }
     /// Borrow the same authenticated native replay; this creates no new owner.
     pub fn table_session(&self) -> &Session { self.replay.table_session() }
 

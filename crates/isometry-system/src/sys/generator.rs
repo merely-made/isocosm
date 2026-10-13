@@ -108,6 +108,16 @@ impl GeneratorCatalog {
         &self.diagnostics
     }
 
+    /// The selected generator's existing validated pack, with its own loaded
+    /// choreography. This never reads rule state or invents a beat.
+    pub fn pack_choreography(&self, generator: &str) -> Result<Vec<LoadedBeat>, String> {
+        let pack = self.packs.iter().find(|pack| pack.manifest().generator(generator).is_some())
+            .ok_or_else(|| format!("no loaded pack declares generator {generator}"))?;
+        pack.manifest().choreography.iter().map(|entry| Ok(LoadedBeat {
+            name:entry.name.clone(),emote:entry.emote.clone(),css:pack.read_asset(&entry.style)?,
+        })).collect()
+    }
+
     pub fn generate(
         &self,
         record_id: impl Into<String>,

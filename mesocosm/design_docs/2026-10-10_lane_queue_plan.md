@@ -68,8 +68,15 @@ explicit authored spread startup are assembled, unverified.863's exact
 authored producing-operation/output references and Eponym spread founding,
 logged author actions, save/replay and actual startup source are assembled.
 H0 actual-Hello/reconnect admission source is also placed.864 requires all
-known questions together; the six VTT choices865 to870 were delivered in one
-batch and remain pending. The next unused question is871. Verification and
+known questions together; all six VTT choices865 to870 are now answered in
+one batch. Explicit DM pack acceptance, every actually served goal, retained
+polity disagreements, configurable faction/biome layers, always sharp edges
+and optional thumbnails have bounded dependent source and actual callers
+placed. GameBindings9 and protocol/ALPN11 retain typed catalogue/Hook/map
+metadata. Automatic native goal directives, institutional polity acts and
+physical map/item actuation remain source work. Complete terrain/condition/
+claim disclosure scope is the sole collected pending question871; next872.
+Verification and
 adjustments wait under826. C9 is historically certified/merged, C10 harm is
 implemented with final certification open, and C11 source connections are
 advancing with final certification open.
@@ -1404,3 +1411,21 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   open; C11 source connections advancing, final certification open. No
   compiler/tests/fixtures/probes/tuning under826. The six known VTT choices
   865 to870 were delivered together864 and remain pending; next unused871.
+
+- **2026-10-13,865 to870 source and actual VTT callers:** all six answers
+  recorded verbatim together864. GameBindings7/8/9 retain map presentation,
+  typed Hook records and witnessed dormant catalogues; protocol/ALPN11 append
+  actual Hook/Pack publication. The DM previews then explicitly accepts or
+  forces; source freshness, native replay and unrelated metadata are guarded.
+  Exact goal+event selectors support multiple goals at one adoption act, and
+  internally captured adoption cuts reject earlier different acts. Authored
+  polity fill and actual member evidence remain separate under867/79.
+  Overmaps show retained disclosures with sharp paint/route clipping, explicit
+  world/view layers, optional thumbnails and an exact historical disclosure
+  cut. Both actual hosts consume these doors; shared supported storylet
+  Fact/History admission requires exact source freshness. Shared private
+  requirements, physical map/item actuation, automatic process goals and
+  institutional execution remain source gaps. All compiler/tests/fixtures/
+  probes/tuning stay deferred826. Complete terrain/condition/claim disclosure
+  is the sole collected pending question871; next unused872. Mark's Proceed
+  continues the migration. Full V2/E3/M4/C10/C11 acceptance remains open.

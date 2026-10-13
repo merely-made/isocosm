@@ -6,7 +6,7 @@ use isometry_campaign::GenValue;
 use crate::board::UiChild;
 use crate::state::UiState;
 
-mod founding;
+pub(crate) mod founding;
 
 fn proposal_label(value: &GenValue) -> String {
     match value {
@@ -109,10 +109,7 @@ pub fn generator_overlay(ui: &UiState) -> Option<UiChild> {
         return None;
     }
     if ui.native.world.is_some() {
-        return Some(crate::widgets::overlay_panel("generator", "Native table".into(), vec![
-            Box::new(clickable(el::<_, UiState, ()>("span", text("close")).attr("class", "btn btn-mini"),
-                |ui: &mut UiState, _| ui.close_generator())),
-        ], founding::table_controls(ui)));
+        return Some(crate::native_pack::overlay(ui));
     }
     let choice = ui.selected_generator()?;
     let preset = choice.lock_presets.first();

@@ -17,6 +17,7 @@ pub struct Selection {
 
 #[derive(Clone, Debug, Default)]
 pub struct NativeUi {
+    pub packs: crate::PackUi,
     pub party: crate::native_party::PartyUi,
     pub world: Option<NativeWorld>,
     pub table: Option<isonetry::NativeTable>,

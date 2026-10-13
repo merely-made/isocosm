@@ -6,6 +6,7 @@
 
 mod native;
 mod party;
+mod packs;
 
 use std::sync::mpsc::{Receiver, TryRecvError};
 use std::time::Duration;
@@ -31,6 +32,7 @@ pub enum Role {
 }
 
 enum BridgeCommand {
+    NativePack { request:RequestId, intent:isometry_views::PackRequest, choreography:Vec<isometry_campaign::native::pack::Choreography> },
     NativeParty { request:RequestId, intent:isometry_views::PartyRequest },
     NativeTime { request:RequestId, intent:isocosm_overlay::vtt::TimeIntent },
     NativeTableAdmission { request: RequestId, input: isonetry::native_table::NativeTableAdmissionInput },
@@ -71,6 +73,7 @@ enum BridgeCommand {
 }
 
 enum BridgeUpdate {
+    PackReading(Correlated<Result<isometry_views::PackReading,String>>),
     PartyReading(Correlated<Result<isometry_views::PartyView, String>>),
     NativeEndpoints(Vec<[u8; 32]>),
     HostReady {
@@ -110,6 +113,7 @@ pub struct NetBridge {
     request_ids: RequestIds,
     campaign_outcomes: Vec<Correlated<Result<(), String>>>,
     party_readings: Vec<Correlated<Result<isometry_views::PartyView, String>>>,
+    pack_readings: Vec<Correlated<Result<isometry_views::PackReading,String>>>,
     failure: Option<String>,
     action_intents: Vec<ActionIntent>,
 }
@@ -145,6 +149,7 @@ impl NetBridge {
             request_ids: RequestIds::default(),
             campaign_outcomes: Vec::new(),
             party_readings: Vec::new(),
+            pack_readings: Vec::new(),
             failure: None,
             action_intents: Vec::new(),
         }
@@ -156,6 +161,7 @@ impl NetBridge {
         let mut changed = false;
         loop {
             match self.updates.try_recv() {
+                Ok(BridgeUpdate::PackReading(read)) => { self.pack_readings.push(read); changed = true; },
                 Ok(BridgeUpdate::PartyReading(read)) => {
                     self.party_readings.push(read);
                     changed = true;
@@ -383,12 +389,16 @@ async fn run_host(
         };
         for command in commands {
             match command {
+                BridgeCommand::NativePack { request,intent,choreography } => {
+                    let read = matches!(&intent,isometry_views::PackRequest::Read);
+                    packs::deliver(&out,request,packs::host_request(&host,intent,choreography).await,read);
+                },
                 BridgeCommand::NativeTime { request, intent } => {
                     let result = native::host_time(&host, intent).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
                 },
                 BridgeCommand::NativeParty { request, intent } => {
-                    let read = matches!(&intent, isometry_views::PartyRequest::Read { .. });
+                    let read = matches!(&intent, isometry_views::PartyRequest::Read { .. } | isometry_views::PartyRequest::ReadAt { .. });
                     match party::host_request(&host, intent).await {
                         Ok(Some(view)) => { out.emit(BridgeUpdate::PartyReading(Correlated::new(request, Ok(view)))); },
                         Ok(None) => { out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, Ok(())))); },
@@ -515,12 +525,14 @@ async fn run_client(
         };
         for command in commands {
             match command {
+                BridgeCommand::NativePack { request,intent,choreography:_ } => packs::deliver(&out,request,
+                    Err("adventure pack controls require the actual DM host".into()),matches!(&intent,isometry_views::PackRequest::Read)),
                 BridgeCommand::NativeTime { request, intent } => {
                     let result = native::client_time(&client, intent).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
                 },
                 BridgeCommand::NativeParty { request, intent } => {
-                    let read = matches!(&intent, isometry_views::PartyRequest::Read { .. });
+                    let read = matches!(&intent, isometry_views::PartyRequest::Read { .. } | isometry_views::PartyRequest::ReadAt { .. });
                     match party::client_request(&client, intent).await {
                         Ok(Some(view)) => { out.emit(BridgeUpdate::PartyReading(Correlated::new(request, Ok(view)))); },
                         Ok(None) => { out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, Ok(())))); },

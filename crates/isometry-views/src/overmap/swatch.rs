@@ -12,6 +12,9 @@ use super::*;
 /// Source-derived homes; visual dragging never changes this placement.
 pub fn overmap_home_positions(ui: &UiState) -> BTreeMap<String, (f32, f32)> {
     if ui.native.world.is_some() {
+        if let Some(atlas) = overmap_atlas(ui) {
+            return atlas.fields.iter().map(|field| (field.id.clone(),atlas.normalize_world(field.anchor))).collect();
+        }
         return ui.native_party_reading().map(|read| overmap_positions(&read.layout())).unwrap_or_default();
     }
     if let Some(atlas) = overmap_atlas(ui) {
@@ -32,6 +35,18 @@ pub fn overmap_home_positions(ui: &UiState) -> BTreeMap<String, (f32, f32)> {
 /// `paint_leaf`) call this, so they agree on node identity, order, and layout.
 /// Returns `None` when the party has discovered nothing (no leaf to paint).
 pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapNodeKind>> {
+    if ui.native.world.is_some() {
+        let read = ui.native_party_reading()?;
+        if let Some(map) = &read.overmap && let Some(mut swatch) = crate::native_overmap_swatch(map) {
+            swatch.selected = read.here.map(|site| format!("site:{site}"));
+            for node in &mut swatch.graph.nodes {
+                if swatch.selected.as_ref() == Some(&node.id) { node.kind=OvermapNodeKind::Here; }
+            }
+            swatch.hovered=ui.overmap_hover.clone();
+            swatch.focus=ui.overmap_motion_selected.clone();
+            return Some(swatch);
+        }
+    }
     // Whose party? The viewer's; the DM (no viewer) watches the "dm" party.
     let party = ui.viewer.as_deref().unwrap_or("dm");
     // Only what the party has discovered (E6): the unfound map is not drawn.

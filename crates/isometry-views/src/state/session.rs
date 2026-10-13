@@ -283,6 +283,7 @@ impl UiState {
         self.world = snap.world;
         if self.native.world != snap.native || self.native.table != snap.native_table {
             self.native.party.reading = None;
+            self.native.packs.reading = None;
         }
         self.native.world = snap.native;
         self.native.table = snap.native_table;

@@ -15,7 +15,7 @@ use super::*;
 pub(crate) enum StoryletInputs {
     Table { world: CampaignWorld, secret_ids: Vec<String> },
     Native { cursor: isometry_campaign::founding::NativeCursor,
-        content_digest: String, secret_ids: Vec<String> },
+        content_digest: String, table: Option<String>, secret_ids: Vec<String> },
 }
 
 impl App {
@@ -47,11 +47,25 @@ impl App {
         if let Some(world) = &ctx.runner.state().native.world {
             let result = (|| {
                 let inputs = StoryletInputs::Native { cursor:world.cursor()?,
-                    content_digest:world.content_digest()?, secret_ids:secret_ids.clone() };
+                    content_digest:world.content_digest()?,table:isonetry::native_table::table_digest(ctx.runner.state().native.table.as_ref()),
+                    secret_ids:secret_ids.clone() };
                 if self.last_storylet_inputs.as_ref() == Some(&inputs) { return Ok(None); }
                 let campaign = world.load(isocosm::Execution::Grouped)?;
                 let reading = campaign.reading();
-                let rows = campaign.content().storylets.iter().map(|(key, storylet)| {
+                let mut offers = campaign.content().storylets.clone();
+                if let Some(table) = &ctx.runner.state().native.table {
+                    table.validate_history(campaign.table_session())?;
+                    let access = isocosm_overlay::OrdinaryAccess {
+                        participant:isocosm_overlay::ParticipantHandle(table.host_participant),seat:isocosm_overlay::Seat::Dm,
+                        subject:campaign.table_session().sim.plays(table.host_participant).map(isocosm_overlay::EntityHandle) };
+                    for (key,storylet) in isometry_campaign::native::pack::active_content(campaign.table_session(),&table.game,access)?.storylets {
+                        if offers.get(&key).is_some_and(|existing| existing != &storylet) {
+                            return Err(format!("native campaign and pack disagree about storylet {key}"));
+                        }
+                        offers.insert(key,storylet);
+                    }
+                }
+                let rows = offers.iter().map(|(key, storylet)| {
                     match reading.resolve_storylet(storylet, secret_ids.iter().map(String::as_str)) {
                         Ok(resolved) => StoryletRow { key:key.clone(), entry:storylet.entry.clone(),
                             available:true, status:"ready".into(), cast:resolved.cast.into_iter().map(|(role, character)| {

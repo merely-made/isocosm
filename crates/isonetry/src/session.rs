@@ -36,6 +36,10 @@ mod native_party;
 pub use native_party::NativePartyResolved;
 mod native_journey;
 pub use native_journey::NativeJourneyResolved;
+mod native_hook;
+pub use native_hook::NativeHookResolved;
+mod native_pack;
+pub use native_pack::NativePackResolved;
 pub use native::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
 mod travel;
 

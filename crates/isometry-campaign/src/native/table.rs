@@ -6,6 +6,13 @@ use isocosm::Session;
 use isocosm_overlay::OrdinaryAccess;
 
 impl Replay {
+    pub(crate) fn with_table_pack(&self, game: Vec<u8>, access: OrdinaryAccess,
+        private: &std::collections::BTreeSet<isocosm::schema::Key>, input: &super::pack::PackEnvelope)
+        -> Result<(Self, Vec<u8>, String), String> {
+        let mut session = self.session.clone();
+        let (accepted, game) = super::pack::submit_pack(&mut session,game,access,private,input)?;
+        Ok((Self { session },game,accepted))
+    }
     pub(crate) fn table_session(&self) -> &Session { &self.session }
 
     pub(crate) fn with_table_input(&self, game: Vec<u8>, access: OrdinaryAccess, bytes: &[u8])

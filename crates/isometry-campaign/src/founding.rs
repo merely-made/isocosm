@@ -21,7 +21,7 @@ pub use generation::GenerationOrigin;
 
 /// The VTT's declared vocabulary; other kinds remain the caller's founding choice.
 pub fn table_genesis(mut genesis: Genesis) -> Genesis {
-    for kind in ["reveal", "narration", "history"] {
+    for kind in ["reveal", "narration", "history", "vtt:hook"] {
         genesis.rules.note_kinds.insert(kind.into());
     }
     genesis

@@ -12,8 +12,11 @@ use crate::{UiState, UiChild};
 #[derive(Clone, Debug)]
 pub enum PartyRequest {
     Read { party: String }, Join { party: String, member: Id },
+    ReadAt { party:String,settings:isometry_campaign::native::overmap::ViewSettings },
     Leave { party: String, member: Id }, Disclose { party: String, member: Id },
     Journey(crate::JourneyRequest),
+    Presentation(isometry_campaign::native::overmap::OvermapInput),
+    Hook(isocosm_overlay::vtt::HookIntent),
 }
 
 #[derive(Clone, Debug)]
@@ -24,12 +27,23 @@ pub struct PartyView {
     pub events: std::collections::BTreeMap<String, Option<isocosm::schema::Event>>,
     pub dm: bool, pub journeys: Vec<isometry_campaign::native::joint_journey::JourneyView>,
     pub journey_authoring: Vec<String>, pub journey_quote: Option<crate::JourneyQuote>,
+    pub overmap: Option<isometry_campaign::native::overmap::OvermapReading>,
+    pub hooks: Vec<isometry_campaign::native::hooks::GoalHook>,
+    pub polities: Vec<isocosm::polities::PolityReading>,
 }
 
 impl PartyView {
     /// Only the legacy graph's node layout is reused. Native route labels keep
     /// their full u64 travel values in the Swatch, outside its u32 edge type.
     pub fn layout(&self) -> Overmap {
+        if let Some(read) = &self.overmap && !read.cells.is_empty() {
+            let nodes = read.cells.iter().map(|cell| OvermapNode {
+                id:crate::native_overmap_cell_id(cell),
+                name:if cell.anchor { cell.label.clone() } else { String::new() },
+                at:(cell.at[0] as i32,cell.at[1] as i32),site:None,
+            }).collect();
+            return Overmap { name:self.map.party.clone(),nodes,edges:Vec::new() };
+        }
         let nodes = self.map.places.values().map(|place| OvermapNode {
             id: format!("site:{}", place.site), name: place.authored.as_ref().map(|p| p.name.clone())
                 .unwrap_or_else(|| format!("Site {}", place.site)),
@@ -45,6 +59,8 @@ impl PartyView {
 pub struct PartyUi {
     pub handle: TextInput, pub request: Option<PartyRequest>, pub reading: Option<PartyView>,
     pub journey: crate::JourneyUi,
+    pub hook_note: TextInput,
+    pub presentation: TextInput,
 }
 
 impl UiState {
@@ -76,6 +92,8 @@ pub(crate) fn overlay(ui: &UiState) -> Option<UiChild> {
         |field: &mut TextInput| caret_text_field(field, &[]), |ui: &mut UiState| &mut ui.native.party.handle))))];
     if let Some(read) = ui.native_party_reading() {
         body.extend(crate::native_journey::panel(ui,read));
+        body.extend(crate::native_overmap::panel(ui,read));
+        body.extend(crate::native_hooks::panel(ui,read));
         if !read.shared {
             body.push(Box::new(el("div", text("Opt in before reading the shared party map."))
                 .attr("class", "side-hint")));
@@ -88,6 +106,16 @@ pub(crate) fn overlay(ui: &UiState) -> Option<UiChild> {
                 .attr("class", "btn"), move |ui: &mut UiState, _| ui.request_party(request.clone()))));
         }
         if let Some(swatch) = crate::overmap::overmap_swatch(ui) {
+            if swatch.atlas.is_some() {
+                body.push(Box::new(cambium::graph_atlas_swatch(&swatch,
+                    |ui:&mut UiState,event| match event {
+                        cambium::GraphAtlasEvent::Hover(id) => ui.hover_overmap(id),
+                        cambium::GraphAtlasEvent::Focus(Some(id)) => ui.overmap_motion_selected=Some(id),
+                        cambium::GraphAtlasEvent::Focus(None) => {},
+                        cambium::GraphAtlasEvent::Drag(_) => {},
+                        cambium::GraphAtlasEvent::Activate(id) => ui.status=format!("Disclosed display cell {id}; travel needs an explicit native proposal"),
+                    })));
+            } else {
             body.push(Box::new(graph_canvas_swatch_with_drag_and_relations(&swatch,
                 |ui: &mut UiState, id| ui.status = format!("Disclosed {id}; collective travel is not selected"),
                 |ui: &mut UiState, id| ui.hover_overmap(id),
@@ -95,6 +123,7 @@ pub(crate) fn overlay(ui: &UiState) -> Option<UiChild> {
                 |ui: &mut UiState, id| ui.select_overmap_relation(id),
                 |ui: &mut UiState, id| ui.hover_overmap_relation(id),
                 |_ui: &mut UiState| {})));
+            }
         }
         for (key, event) in &read.events {
             let Some(event) = event else {

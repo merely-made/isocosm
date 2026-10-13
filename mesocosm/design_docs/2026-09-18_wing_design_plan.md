@@ -4,12 +4,21 @@
 
 *Names, 2026-09-22 (wing design record, rulings 109 to 111): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. The rename landed on 2026-09-24; verbatim rulings, quotations and dated lines keep the old words as history (ruling 198).*
 
-**Current source, 2026-10-13:** rulings through864 remain the accepted record.
+**Current choices, 2026-10-13:** rulings through870 are the accepted record.
+865 requires explicit DM pack preview/acceptance;866 retains every served
+goal;867 keeps authored/member polity disagreements;868 configurable faction
+and biome layers;869 always sharp undisclosed clipping;870 optional thumbnails.
+All six were answered together864. Their bounded native records, saved
+catalogue and actual pack/Hook/disclosed-map callers are source-assembled,
+unverified826. Complete terrain/condition/claim disclosure is pending871;
+next unused872. Broader institution/process and physical map actuation remain
+source work, and full V2/E3/M4 acceptance stays open.
+
+**Source checkpoint, 2026-10-13:**
 863's exact produced-output references and C11's Eponym founding, replay and
 actual startup are source-assembled alongside Mesocosm's spread consumer.
 H0 current-Hello and connection-generation custody source is placed. All
-source remains uncompiled and untested under826. The six VTT choices865 to870
-are pending as one collected round under864; next unused871. C9 is historically
+source remains uncompiled and untested under826. C9 is historically
 certified/merged; C10/C11 final certification and complete V2/E3/M4 stay open.
 
 **Earlier status, 2026-10-10:** living design record; the plan review
@@ -10816,6 +10825,65 @@ what later sections derive from.
      the next collected round while independent authorized work continues.
      The next unused question is865.
 
+865. **A compatible dormant adventure pack activates by explicit DM acceptance.**
+     2026-10-13, dormant-pack activation in V2.
+     Question: "Here are the remaining VTT choices together. When a dormant adventure pack becomes compatible with the world, how should it activate?"
+     Options: (1) "The DM previews it and explicitly accepts it (Recommended)"; (2) "It activates automatically at the next native clock boundary".
+     Mark chose "The DM previews it and explicitly accepts it (Recommended)"
+     So compatibility makes the saved dormant pack available for preview;
+     the DM explicitly accepts its proposed native changes. Compatibility
+     alone does not activate it or publish changes at a clock boundary.
+     Native validation, preview freshness and atomic admission still apply.
+
+866. **A native act records participation in every goal it actually served.**
+     2026-10-13, goal participation beside immediate event causality.
+     Question: "When one native act serves several goals, which goal threads should record that participation? Its immediate causal event remains separate."
+     Options: (1) "Every goal it actually served (Recommended)"; (2) "One primary goal, selected by an explicit authored rule".
+     Mark chose "Every goal it actually served (Recommended)"
+     So an accepted act can participate in multiple genuine goal threads.
+     Each records its actual participation; no primary-goal choice discards
+     the other served goals. Its immediate causal event remains separately
+     validated. D31's derived arcs acquire no independent native Arc type.
+
+867. **Authored polity attributes and member-derived readings retain their disagreement.**
+     2026-10-13, presentation of disagreeing native polity facts.
+     Question: "When authored polity attributes disagree with readings derived from its actual members, how should the VTT present them?"
+     Options: (1) "Keep both and show the disagreement until an explicit native change (Recommended)"; (2) "Give the member-derived reading precedence"; (3) "Give the authored attributes precedence".
+     Mark chose "Keep both and show the disagreement until an explicit native change (Recommended)"
+     So the VTT retains both readings with their actual sources and shows
+     their disagreement. A derived reading does not overwrite authored
+     attributes, and authored attributes do not hide the member reading.
+     Reconciliation requires an explicit admitted native change.
+
+868. **Faction claims and biomes use configurable map layers.**
+     2026-10-13, overlapping meanings in known native map regions.
+     Question: "When a known map region has both a faction claim and a biome, how should its colouring work?"
+     Options: (1) "Configurable layers showing both meanings (Recommended)"; (2) "Faction colouring takes precedence"; (3) "Biome colouring takes precedence".
+     Mark chose "Configurable layers showing both meanings (Recommended)"
+     So independently configurable layers retain both native meanings.
+     The presentation settings grant neither knowledge nor faction control;
+     admitted facts and the player's disclosed map still bound the view.
+
+869. **Undisclosed edges of known map regions always clip sharply.**
+     2026-10-13, known-region boundary presentation.
+     Question: "How should undisclosed edges of known map regions appear?"
+     Options: (1) "Let each view choose hard clipping or fading (Recommended)"; (2) "Always clip them sharply"; (3) "Always fade them".
+     Mark chose "Always clip them sharply"
+     So the native overmap sharply clips undisclosed boundaries in every
+     view. A fade option is not introduced; colour layers or thumbnail
+     backdrops cannot expose undisclosed map geometry beyond that boundary.
+
+870. **Baked map thumbnails are optional per world or view.**
+     2026-10-13, native overmap backdrop presentation.
+     Question: "Should the native overmap use baked map thumbnails as a backdrop?"
+     Options: (1) "Optional per world or view (Recommended)"; (2) "Show native terrain without thumbnails"; (3) "Always use thumbnails".
+     Mark chose "Optional per world or view (Recommended)"
+     So a world or view may explicitly select a baked thumbnail backdrop.
+     Native terrain and disclosed facts remain authoritative; thumbnails
+     respect869's sharp clipping and do not reveal undisclosed regions.
+     All six answers were delivered together under864. No question remains
+     pending from this round; the next unused question is871.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -14764,3 +14832,21 @@ to 2026-10-06 is archived as
   uncompiled and untested826. C9's historical certificate stands; C10/C11
   final certification and full V2/E3/M4 stay open. All six known VTT choices
   865 to870 were delivered together864 and remain pending; next unused871.
+
+- **2026-10-13,865 to870 source and actual VTT callers:** all six answers
+  recorded verbatim together864. GameBindings7/8/9 retain map presentation,
+  typed Hook records and witnessed dormant catalogues; protocol/ALPN11 append
+  actual Hook/Pack publication. The DM previews then explicitly accepts or
+  forces; source freshness, native replay and unrelated metadata are guarded.
+  Exact goal+event selectors support multiple goals at one adoption act, and
+  internally captured adoption cuts reject earlier different acts. Authored
+  polity fill and actual member evidence remain separate under867/79.
+  Overmaps show retained disclosures with sharp paint/route clipping, explicit
+  world/view layers, optional thumbnails and an exact historical disclosure
+  cut. Both actual hosts consume these doors; shared supported storylet
+  Fact/History admission requires exact source freshness. Shared private
+  requirements, physical map/item actuation, automatic process goals and
+  institutional execution remain source gaps. All compiler/tests/fixtures/
+  probes/tuning stay deferred826. Complete terrain/condition/claim disclosure
+  is the sole collected pending question871; next unused872. Mark's Proceed
+  continues the migration. Full V2/E3/M4/C10/C11 acceptance remains open.

@@ -518,6 +518,7 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
             Ok("named".into())
         },
         Command::Know(knowing) => sim.know(knowing),
+        Command::Goal(change) => sim.goal_change(change),
         Command::Social(act) => {
             let answer = sim.social(act)?;
             serde_json::to_string(&answer).map_err(|e| e.to_string())

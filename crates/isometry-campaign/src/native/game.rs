@@ -19,6 +19,9 @@ const TIME_VERSION: u32 = 3;
 const HOLD_VERSION: u32 = 4;
 const SHARED_VERSION: u32 = 5;
 const JOURNEY_VERSION: u32 = 6;
+const OVERMAP_VERSION: u32 = 7;
+const HOOK_VERSION: u32 = 8;
+const CATALOGUE_VERSION: u32 = 9;
 
 /// The actual host input after its DM/seat/current-subject checks. Assertions
 /// precede the character admissions, which name their existing authored keys.
@@ -37,9 +40,10 @@ pub struct AdmissionBatch {
 #[derive(Deserialize)]
 #[serde(untagged)]
 enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch), Play(VttIntentEnvelope),
-    SharedRoster(super::SharedRosterInput), Journey(super::joint_journey::JourneyEnvelope) }
+    SharedRoster(super::SharedRosterInput), Journey(super::joint_journey::JourneyEnvelope),
+    Overmap(super::overmap::OvermapInput), Pack(super::pack::PackEnvelope), Storylet(super::storylets::StoryletInput) }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct GameBindings {
     version: u32,
@@ -62,6 +66,12 @@ pub struct GameBindings {
     shared_players: Option<BTreeSet<Id>>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     journeys: BTreeMap<Key, super::joint_journey::Proposal>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    overmap: Option<super::overmap::Presentation>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    hooks: Vec<super::hooks::HookRecord>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    catalogue: Option<super::pack::Catalogue>,
 }
 
 fn is_zero(value: &u64) -> bool { *value == 0 }
@@ -70,12 +80,16 @@ impl GameBindings {
     pub fn decode(bytes: &[u8]) -> Result<Self, String> {
         if let Some(bytes) = bytes.strip_prefix(PREFIX) {
             let game: Self = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
-            if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | HOLD_VERSION | SHARED_VERSION | JOURNEY_VERSION)
+            if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | HOLD_VERSION | SHARED_VERSION | JOURNEY_VERSION
+                | OVERMAP_VERSION | HOOK_VERSION | CATALOGUE_VERSION)
                 || game.version == VERSION && (!game.positions.is_empty() || !game.controls.is_empty())
                 || game.version < TIME_VERSION && !game.downtime.is_empty()
                 || game.version < HOLD_VERSION && (!game.time_holds.is_empty() || game.roster_revision != 0)
                 || game.version < SHARED_VERSION && game.shared_players.is_some()
                 || game.version < JOURNEY_VERSION && !game.journeys.is_empty()
+                || game.version < OVERMAP_VERSION && game.overmap.is_some()
+                || game.version < HOOK_VERSION && !game.hooks.is_empty()
+                || game.version < CATALOGUE_VERSION && game.catalogue.is_some()
             { return Err("unsupported VTT character binding version".into()); }
             Ok(game)
         } else {
@@ -83,7 +97,8 @@ impl GameBindings {
             // format. Preserve it without guessing its schema or migration.
             Ok(Self { version:VERSION, characters:BTreeMap::new(), positions:BTreeMap::new(),
                 controls:BTreeMap::new(), payload:bytes.to_vec(), downtime:BTreeMap::new(),
-                time_holds:Vec::new(), roster_revision:0, shared_players:None, journeys:BTreeMap::new() })
+                time_holds:Vec::new(), roster_revision:0, shared_players:None, journeys:BTreeMap::new(),
+                overmap:None, hooks:Vec::new(), catalogue:None })
         }
     }
 
@@ -102,6 +117,33 @@ impl GameBindings {
     pub fn roster_revision(&self) -> u64 { self.roster_revision }
     pub fn shared_players(&self) -> Option<&BTreeSet<Id>> { self.shared_players.as_ref() }
     pub fn journeys(&self) -> &BTreeMap<Key, super::joint_journey::Proposal> { &self.journeys }
+    pub fn overmap(&self) -> Option<&super::overmap::Presentation> { self.overmap.as_ref() }
+    pub fn hooks(&self) -> &[super::hooks::HookRecord] { &self.hooks }
+    pub fn catalogue(&self) -> Option<&super::pack::Catalogue> { self.catalogue.as_ref() }
+    pub(super) fn record_overmap(&mut self, presentation: super::overmap::Presentation) {
+        self.version = self.version.max(OVERMAP_VERSION);
+        self.overmap = Some(presentation);
+    }
+    pub(super) fn record_hook(&mut self, record: super::hooks::HookRecord) {
+        self.version = self.version.max(HOOK_VERSION);
+        self.hooks.push(record);
+    }
+    pub(super) fn record_catalogue(&mut self, catalogue: super::pack::Catalogue) {
+        self.version = self.version.max(CATALOGUE_VERSION);
+        self.catalogue = Some(catalogue);
+    }
+    pub(super) fn same_except_hooks(&self, other: &Self) -> bool {
+        self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
+            && self.payload == other.payload && self.downtime == other.downtime && self.time_holds == other.time_holds
+            && self.roster_revision == other.roster_revision && self.shared_players == other.shared_players
+            && self.journeys == other.journeys && self.overmap == other.overmap && self.catalogue == other.catalogue
+    }
+    pub(super) fn same_except_catalogue(&self, other: &Self) -> bool {
+        self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
+            && self.payload == other.payload && self.downtime == other.downtime && self.time_holds == other.time_holds
+            && self.roster_revision == other.roster_revision && self.shared_players == other.shared_players
+            && self.journeys == other.journeys && self.overmap == other.overmap && self.hooks == other.hooks
+    }
     pub(super) fn record_journey(&mut self, key: Key, proposal: super::joint_journey::Proposal) {
         self.version = self.version.max(JOURNEY_VERSION);
         self.journeys.insert(key,proposal);
@@ -110,6 +152,7 @@ impl GameBindings {
         self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
             && self.payload == other.payload && self.downtime == other.downtime && self.time_holds == other.time_holds
             && self.roster_revision == other.roster_revision && self.shared_players == other.shared_players
+            && self.overmap == other.overmap && self.hooks == other.hooks && self.catalogue == other.catalogue
     }
 
     pub fn shared_roster(&self) -> Option<super::time::Roster> {
@@ -147,6 +190,7 @@ impl GameBindings {
             && self.roster_revision == other.roster_revision
             && self.shared_players == other.shared_players
             && self.journeys == other.journeys
+            && self.overmap == other.overmap && self.hooks == other.hooks && self.catalogue == other.catalogue
     }
 
     pub(super) fn record_position(&mut self, character: Key, position: PositionBinding) {
@@ -173,6 +217,9 @@ impl GameBindings {
         }
         super::time::validate_bindings(session, &self.downtime, &self.time_holds)?;
         super::joint_journey::validate_bindings(session, &self.journeys)?;
+        if let Some(presentation) = &self.overmap { super::overmap::validate_presentation(session, presentation)?; }
+        super::hooks::validate_bindings(session, &self.hooks)?;
+        super::pack::validate_bindings(session, self.catalogue.as_ref())?;
         Ok(())
     }
 }
@@ -221,6 +268,9 @@ fn submit_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: Ord
     super::movement::current_access(session, access)?;
     let input: Input = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
     match input {
+        Input::Overmap(input) => super::overmap::submit_presentation(session, game, access, &input),
+        Input::Pack(envelope) => super::pack::submit_pack(session, game, access, &BTreeSet::new(), &envelope),
+        Input::Storylet(input) => super::storylets::submit_storylet(session, game, access, &input),
         Input::Journey(envelope) => {
             let local;
             let roster = if let Some(roster) = roster { roster }
@@ -245,6 +295,9 @@ fn submit_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: Ord
         Input::Play(envelope) if matches!(&envelope.intent,
             isocosm_overlay::Intent::Game(isocosm_overlay::vtt::VttIntent::Party(_))) =>
             super::party::submit_party(session, game, access, &envelope),
+        Input::Play(envelope) if matches!(&envelope.intent,
+            isocosm_overlay::Intent::Game(isocosm_overlay::vtt::VttIntent::Hook(_))) =>
+            super::hooks::submit_hook(session, game, access, &envelope),
         Input::Play(envelope) => super::submit_table(session, game, access, &envelope),
         Input::SharedRoster(input) if shared => super::shared_roster::submit(session, game, access, &input),
         Input::SharedRoster(_) => Err("standalone native table players are authored through its endpoint bindings".into()),
@@ -270,6 +323,9 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
         Input::Play(_) => return Err("table play requires a resolved native seat cut".into()),
         Input::SharedRoster(_) => return Err("shared roster authoring requires the actual DM seat cut".into()),
         Input::Journey(_) => return Err("joint journey requires actual native seat and player-roster admission".into()),
+        Input::Overmap(_) => return Err("overmap presentation authoring requires the actual DM seat cut".into()),
+        Input::Pack(_) => return Err("pack activation requires the actual DM seat cut".into()),
+        Input::Storylet(_) => return Err("storylet activation requires the actual DM seat cut".into()),
     };
     if !matches!(batch.version, VERSION | PLACEMENT_VERSION)
         || batch.version == VERSION && (!batch.placements.is_empty() || !batch.controls.is_empty())
