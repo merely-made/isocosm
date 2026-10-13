@@ -37,7 +37,7 @@ native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-13: native physical clocks/anatomy/carry, institution/reveal/composed-storylet consumers and standalone native render/picks source assembled. GameBindings14/protocol17; Eponym modes4–6; Mesocosm Profile3/spatial GameSave5. Pending871–877 together, next878. Independent newborn-template/autonomous-institution/VTT-eye source gaps and final C10/C11/V2/E3/M4 certification open826. |
+| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-13: fixed authored native scheduled institution producers, actual-child walking/destination templates and VTT eye/range/yaw/spatial-storylet source assembled. GameBindings15/AdmissionBatch4/composed input2/protocol18; Eponym modes4–6; Mesocosm Profile4/spatial GameSave6. Pending871–877 together, next878. Generated agendas and dependent disclosure/defence/S9/Location/companion laws remain open; final C10/C11/V2/E3/M4 certification deferred826. |
 | [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | 2026-10-10: reference charter; executable work belongs to the overlay plan, including folded functional and memory gates in E3. |
 
 ## Open items

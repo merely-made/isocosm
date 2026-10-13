@@ -367,7 +367,7 @@ impl Simulation {
                     let target = chosen.or_else(|| self.choose_target(actor, process));
                     (
                         target,
-                        self.apply(actor, target, id, None, multiplicity).accepted(),
+                        self.scheduled_apply(actor, target, id, multiplicity).accepted(),
                     )
                 },
                 Some(None) => (None, false),

@@ -19,7 +19,8 @@ mod characters;
 pub use characters::{CharacterAdmission, RecipeBinding, admit_character};
 mod placement;
 pub use placement::{CharacterControl, CharacterPlacement, ControlBinding, ParticipantInput,
-    PlacementWindow, PositionBinding};
+    PlacementWindow, PositionBinding,CharacterSpatialPlacement,SpatialSense};
+pub mod eye;
 mod game;
 pub use game::{AdmissionBatch, GameBindings, submit_game, submit_game_as, submit_game_access,
     submit_game_access_with_roster, submit_external_table_access};

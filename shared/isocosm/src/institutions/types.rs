@@ -51,7 +51,7 @@ pub enum Change {
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub enum ActKind { Decision, Operation, Amendment, Dissolution, Foundation }
+pub enum ActKind { Decision, Operation, Amendment, Dissolution, Foundation, Proposal }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -78,9 +78,19 @@ pub struct Proposal {
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Records { pub proposals: BTreeMap<Key, Proposal> }
+pub struct Records {
+    pub proposals: BTreeMap<Key, Proposal>,
+    #[serde(default, skip_serializing_if="BTreeMap::is_empty")]
+    pub body_proposals: BTreeMap<Key, BodyProposal>,
+    #[serde(default, skip_serializing_if="BTreeMap::is_empty")]
+    pub body_votes: BTreeMap<Key, BTreeMap<Id, BodyVote>>,
+    #[serde(default, skip_serializing_if="BTreeMap::is_empty")]
+    pub body_applied: BTreeMap<Key, BodyApplied>,
+}
 
-impl Records { pub fn is_empty(&self) -> bool { self.proposals.is_empty() } }
+impl Records { pub fn is_empty(&self) -> bool {
+    self.proposals.is_empty() && self.body_proposals.is_empty() && self.body_votes.is_empty() && self.body_applied.is_empty()
+} }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

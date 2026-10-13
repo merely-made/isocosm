@@ -42,6 +42,8 @@ pub struct Setup {
     pub material_profile: Option<MaterialProfile>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub item_custody: Option<isocosm::custody::Catalogue>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub institution_producers: BTreeMap<String, isocosm::institutions::BodyProducer>,
 }
 
 impl Setup {
@@ -91,6 +93,12 @@ impl Setup {
                 return Err(format!("institution method replaces existing founding method: {key}"));
             }
             genesis.rules.institutions.insert(key.clone(), definition.clone());
+        }
+        for (key, producer) in &self.institution_producers {
+            if genesis.rules.institution_producers.contains_key(key) {
+                return Err(format!("institution producer replaces an existing founding declaration: {key}"));
+            }
+            genesis.rules.institution_producers.insert(key.clone(),producer.clone());
         }
         Ok(())
     }

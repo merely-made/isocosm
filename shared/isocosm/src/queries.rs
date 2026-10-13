@@ -46,6 +46,9 @@ impl Simulation {
         if matches!(query, Query::InstitutionDecision) {
             return self.institution_decision_ready(actor,target);
         }
+        if let Query::Institution {producer}=query {
+            return self.institution_producer_ready(actor,target,producer);
+        }
         let related = |kind: &Key| -> Result<bool> {
             let object = target.ok_or("target required")?;
             Ok(related(&self.state.relations, actor, kind, object).is_some())

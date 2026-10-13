@@ -46,6 +46,9 @@ impl Game {
         }
         let mut folded = Game { version: self.version, members: driver.initial.clone(),
             driver: Some(driver.clone()), sight: self.sight.clone() };
+        // Generated child inputs are reconstructed from actual native birth
+        // reports, not trusted as a second initial source of actor identities.
+        if let Some(source) = &mut folded.driver { source.children.clear(); }
         let mut records = driver.records.iter();
         for entry in session.entries.iter().skip(count) {
             if !matches!(&entry.command, Command::AdvanceSpatial { .. }
@@ -106,6 +109,9 @@ impl Game {
         if records.next().is_some() || folded.members.len() != self.members.len()
             || folded.members.iter().any(|(id, held)| self.members.get(id).is_none_or(|saved| !physical(held, saved)))
         { return Err("saved final poses do not follow their native-admitted transitions".into()); }
+        if folded.driver.as_ref().is_none_or(|source| source.children != driver.children) {
+            return Err("saved child walking/destination inputs differ from actual native birth reports".into());
+        }
         Ok(())
     }
 }

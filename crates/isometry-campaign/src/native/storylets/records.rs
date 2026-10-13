@@ -81,6 +81,27 @@ pub fn validate_composed_records(session: &Session, records: &[ComposedStoryletR
                         }
                     }
                 },
+                StoryletStep::SpatialPlacement { expected_native,placements,.. }=>{
+                    let first=link.entries.first().ok_or("storylet spatial pose has no native entry")?;
+                    let source=session.before_entry(first)?;
+                    if *expected_native!=super::super::physical_map::physical_source(&source)
+                        || link.entity.is_some() || placements.len()!=link.entries.len() {
+                        return Err("storylet spatial poses differ from their actual native cut".into());
+                    }
+                    for (spatial,key) in placements.iter().zip(&link.entries) {
+                        let source=session.before_entry(key)?;
+                        let placement=&spatial.placement;
+                        let (entity,_)=source.sim.authored_entity(&placement.character)
+                            .ok_or("storylet spatial character is absent")?;
+                        placement.check(&source,entity,false)?;
+                        spatial.spatial.check(&source,placement)?;
+                        let entry=session.entries.iter().find(|entry|&entry.id==key)
+                            .ok_or("storylet spatial pose entry is absent")?;
+                        if entry.command!=(Command::Patch {entity,patch:Some(placement.patch)}) || entry.outcome!="placed" {
+                            return Err("storylet spatial pose differs from its exact native Patch admission".into());
+                        }
+                    }
+                },
             }
         }
         consumed.push(record.marker.clone());

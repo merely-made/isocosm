@@ -286,6 +286,7 @@ impl Founding {
             party_relations: BTreeMap::new(),
             pace_profiles: BTreeMap::new(),
             institutions: BTreeMap::new(),
+            institution_producers: BTreeMap::new(),
             item_custody: None,
             version: crate::VERSION,
             accounts,

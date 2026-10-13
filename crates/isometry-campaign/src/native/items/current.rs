@@ -25,15 +25,16 @@ pub(super) fn mounted(session:&Session,record:&PhysicalItemRecord,position:&Posi
             && relation.object==input.item && relation.kind==provider.relation) {
         return Err("item mount differs from its current native bodies, custody or authored provider".into());
     }
-    let root=position.current(session)?;
+    let root=position.current_pose(session)?;
     if actor.resident_site()!=item.resident_site() || item.patch.is_some() {
         return Err("held item does not share its carrier's actual native residence".into());
     }
     let local=isocosm::custody::mount_pose(actor,&mount.attachment)?;
+    let offset=super::super::placement::rotate(root.yaw,local.at)?;
     let mut at=[0;3];
-    for axis in 0..3 {at[axis]=root[axis].checked_add(local.at[axis]).ok_or("held item root overflows")?;}
+    for axis in 0..3 {at[axis]=root.at[axis].checked_add(offset[axis]).ok_or("held item root overflows")?;}
     let pose=ItemPose {item:item_id.clone(),entity:input.item,site:position.placement.site,
-        at,yaw:local.yaw,window:position.placement.window.clone(),places:position.placement.places,
+        at,yaw:root.yaw.compose(local.yaw),window:position.placement.window.clone(),places:position.placement.places,
         carrier:Some(record.input.actor),worn:input.action==Action::Equip};
     clearance(session,&pose)?;
     Ok(pose)

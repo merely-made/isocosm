@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::*;
-use isocosm::custody::{Action,Change,CustodyActed,MountPose,Yaw,item_bounds};
+use isocosm::custody::{Action,Change,CustodyActed,MountPose,item_bounds};
 
 pub(super) fn command(participant:Id,actor:Id,input:&ItemCustodyInput)->Command {
     Command::Custody(Change {participant,actor,item:input.item,provider:input.provider.clone(),action:input.action,
@@ -22,7 +22,7 @@ fn collision_check(session:&Session,records:&[PhysicalItemRecord],position:&Posi
     let actor=session.sim.state().population.get(position.entity).ok_or("item carrier is absent")?;
     let body=session.sim.state().population.get(pose.entity).ok_or("physical item is absent")?;
     let boxes=item_bounds(body,MountPose {at:pose.at,yaw:pose.yaw})?;
-    let carrier=item_bounds(actor,MountPose {at:position.current(session)?,yaw:Yaw::Zero})?;
+    let carrier=item_bounds(actor,position.current_pose(session)?)?;
     if boxes.iter().any(|ours|carrier.iter().any(|theirs|ours.overlaps(theirs))) {
         return Err("supplied whole-item mount intersects the carrier's actual native tissue".into());
     }

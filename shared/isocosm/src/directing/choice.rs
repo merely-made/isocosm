@@ -147,6 +147,15 @@ pub(crate) fn moves(p: &Process) -> Vec<Id> {
 }
 
 impl Simulation {
+    pub(crate) fn institution_chosen(&self,actor:Id,process:&str) -> bool {
+        if self.pass.is_none() {return false;}
+        match self.body_at_start(actor).map(|body|body.method) {
+            Some(Method::Deliberative)=>self.chosen.tick==self.state.tick
+                && self.chosen.by.get(&actor).is_some_and(|choice|choice.process.as_deref()==Some(process)),
+            Some(Method::Inert)|None=>false,
+            _=>true,
+        }
+    }
     /// Whether `actor` takes `process` now, by its methodology (683).
     pub(crate) fn deliberate(&mut self, actor: Id, process: &Process) -> Deliberated {
         let deliberative = self
@@ -256,7 +265,7 @@ impl Simulation {
             && self.owned_process_ready(actor,target,p)
             && p.requires
                 .iter()
-                .all(|q| self.query(actor, target, place, part, q).is_ok())
+                .all(|q| self.process_query(actor, target, place, part, p, q).is_ok())
     }
 
     /// Whether an act of `p` at `place` on `target` answers `n`.

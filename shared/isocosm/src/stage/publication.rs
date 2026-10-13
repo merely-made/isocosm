@@ -12,7 +12,8 @@ impl Simulation {
         let terrain = stage.terrain.take();
         let step = stage.step.take();
         let births = std::mem::take(&mut stage.birth_places);
-        if self.genesis.rules.spread_capacity.is_none() && self.genesis.rules.item_custody.is_none() {
+        let institution = stage.institution_producer.take();
+        if institution.is_none() && self.genesis.rules.spread_capacity.is_none() && self.genesis.rules.item_custody.is_none() {
             self.commit(stage, next, process);
             self.commit_geometry(terrain);
             self.commit_step(step);
@@ -24,6 +25,7 @@ impl Simulation {
         candidate.commit(stage, next, process);
         candidate.commit_geometry(terrain);
         candidate.commit_step(step);
+        if let Some(institution)=institution {candidate.publish_institution_producer(institution)?;}
         candidate.check_custody_changes(self)?;
         candidate.synchronize_custody()?;
         crate::spread::dispatch_changed(&before, &mut candidate.state, &candidate.genesis.rules)?;

@@ -28,6 +28,7 @@ pub fn validate(rules: &Rules) -> Result<()> {
         for (name,operation) in &definition.operations { crate::validation::key(name)?; operation.validate(rules,false)?; }
         for operation in [&definition.amend,&definition.end].into_iter().flatten() { operation.validate(rules,true)?; }
     }
+    super::producer::validate_producers(rules)?;
     Ok(())
 }
 
@@ -69,24 +70,24 @@ impl Simulation {
         if actors.is_empty() || approvals == 0 || approvals > actors.len() as u64
             || !actors.is_subset(members) { return Err("institution has no valid authored current-member electorate".into()); }
         for actor in actors.iter().filter(|_| !matches!(operation.decision,DecisionPolicy::Governance { .. })) {
-            if !self.state.population.get(*actor).is_some_and(|body| body.alive && !crate::directing::is_participant(body)) {
+            if !self.body_at_start(*actor).is_some_and(|body| body.alive && !crate::directing::is_participant(body)) {
                 return Err("institution electorate includes an unavailable native body".into());
             }
         }
         Ok((actors,approvals))
     }
 
-    pub(super) fn institution_current(&self, proposal: &Proposal) -> Result<()> {
+    pub(super) fn institution_current(&self, proposal: &ProposalCore) -> Result<()> {
         self.institution_shape(proposal)?;
-        let polity = &self.state.polities[&proposal.polity.0];
+        let polity = self.institution_polity_at_start(proposal.polity.0).ok_or("institution is absent")?;
         if self.institution_electorate(polity,&proposal.operation)? != (proposal.electorate.clone(),proposal.approvals) {
             return Err("institution electorate changed; propose again".into());
         }
         Ok(())
     }
 
-    pub(super) fn institution_shape(&self, proposal: &Proposal) -> Result<()> {
-        let polity = self.state.polities.get(&proposal.polity.0).filter(|p| p.ended_by.is_none())
+    pub(super) fn institution_shape(&self, proposal: &ProposalCore) -> Result<()> {
+        let polity = self.institution_polity_at_start(proposal.polity.0).filter(|p| p.ended_by.is_none())
             .ok_or("institution is absent or ended")?;
         if polity.constitution != proposal.constitution
             || self.institution_operation(polity,&proposal.request)? != proposal.operation {
@@ -98,9 +99,9 @@ impl Simulation {
     pub(super) fn institution_support(&self, operation: &Operation) -> Result<()> {
         for support in &operation.support {
             let held = match support.source {
-                Owner::Entity(id) => crate::anatomy::held(self.state.population.get(id)
+                Owner::Entity(id) => crate::anatomy::held(self.body_at_start(id)
                     .ok_or("institution support body is absent")?,&self.genesis.rules,&support.account),
-                Owner::Polity(id) => self.state.polities.get(&id).filter(|p| p.ended_by.is_none())
+                Owner::Polity(id) => self.institution_polity_at_start(id).filter(|p| p.ended_by.is_none())
                     .ok_or("institution support polity is absent or ended")?.accounts.get(&support.account).copied().unwrap_or(0),
             };
             if held < support.minimum { return Err("institution lacks the explicitly required native support".into()); }

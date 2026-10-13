@@ -27,6 +27,8 @@ const ITEM_VERSION: u32 = 11;
 const CUSTODY_VERSION: u32 = 12;
 const PROJECT_CARRY_VERSION: u32 = 13;
 const COMPOSED_STORYLET_VERSION: u32 = 14;
+const SPATIAL_VERSION: u32 = 15;
+const SPATIAL_ADMISSION_VERSION: u32 = 4;
 
 /// The actual host input after its DM/seat/current-subject checks. Assertions
 /// precede the character admissions, which name their existing authored keys.
@@ -42,6 +44,8 @@ pub struct AdmissionBatch {
     pub controls: Vec<CharacterControl>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub project_carry: Option<super::items::ProjectCarryConfig>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub spatial: Vec<super::placement::CharacterSpatialPlacement>,
 }
 
 #[derive(Deserialize)]
@@ -100,7 +104,7 @@ impl GameBindings {
         if let Some(bytes) = bytes.strip_prefix(PREFIX) {
             let game: Self = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
             if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | HOLD_VERSION | SHARED_VERSION | JOURNEY_VERSION
-                | OVERMAP_VERSION | HOOK_VERSION | CATALOGUE_VERSION | PHYSICAL_VERSION | ITEM_VERSION | CUSTODY_VERSION | PROJECT_CARRY_VERSION | COMPOSED_STORYLET_VERSION)
+                | OVERMAP_VERSION | HOOK_VERSION | CATALOGUE_VERSION | PHYSICAL_VERSION | ITEM_VERSION | CUSTODY_VERSION | PROJECT_CARRY_VERSION | COMPOSED_STORYLET_VERSION | SPATIAL_VERSION)
                 || game.version == VERSION && (!game.positions.is_empty() || !game.controls.is_empty())
                 || game.version < TIME_VERSION && !game.downtime.is_empty()
                 || game.version < HOLD_VERSION && (!game.time_holds.is_empty() || game.roster_revision != 0)
@@ -114,6 +118,11 @@ impl GameBindings {
                 || game.version < CUSTODY_VERSION && game.item_records.iter().any(|record|
                     matches!(&record.input.action, super::items::ItemAction::Custody(_)))
                 || game.version < COMPOSED_STORYLET_VERSION && !game.composed_storylets.is_empty()
+                || game.version < SPATIAL_VERSION && (game.positions.values().any(|position|position.spatial.is_some())
+                    || game.composed_storylets.iter().any(|record| record.input.steps.iter().any(|step|
+                        matches!(step, super::storylets::StoryletStep::SpatialPlacement {..})))
+                    || game.item_records.iter().any(|record|record.actor_position.spatial.is_some()
+                        || record.project_carrier_position.as_ref().is_some_and(|position|position.spatial.is_some())))
                 || game.version < PROJECT_CARRY_VERSION && (!game.project_carry.is_empty()
                     || game.item_records.iter().any(|record| matches!(&record.input.action,
                         super::items::ItemAction::ProjectCarry {..}) || record.project_custody.is_some()
@@ -154,7 +163,10 @@ impl GameBindings {
     pub fn project_carry(&self) -> &BTreeMap<Key, super::items::ProjectCarryPolicy> { &self.project_carry }
     pub fn composed_storylets(&self) -> &[super::storylets::ComposedStoryletRecord] { &self.composed_storylets }
     pub(super) fn record_composed_storylet(&mut self, record: super::storylets::ComposedStoryletRecord) {
-        self.version = self.version.max(COMPOSED_STORYLET_VERSION);
+        let version = if record.input.steps.iter().any(|step|
+            matches!(step, super::storylets::StoryletStep::SpatialPlacement {..})) { SPATIAL_VERSION }
+            else { COMPOSED_STORYLET_VERSION };
+        self.version = self.version.max(version);
         self.composed_storylets.push(record);
     }
     pub(super) fn record_project_carry(&mut self, policies:BTreeMap<Key,super::items::ProjectCarryPolicy>) {
@@ -162,7 +174,9 @@ impl GameBindings {
         self.project_carry=policies;
     }
     pub(super) fn record_item(&mut self, record: super::items::PhysicalItemRecord) {
-        let version = if matches!(&record.input.action, super::items::ItemAction::ProjectCarry {..})
+        let version = if record.actor_position.spatial.is_some()
+            || record.project_carrier_position.as_ref().is_some_and(|position|position.spatial.is_some()) {SPATIAL_VERSION}
+        else if matches!(&record.input.action, super::items::ItemAction::ProjectCarry {..})
             || record.project_carrier_position.is_some() { PROJECT_CARRY_VERSION }
         else if matches!(&record.input.action, super::items::ItemAction::Custody(_)) {
             CUSTODY_VERSION
@@ -263,7 +277,7 @@ impl GameBindings {
     }
 
     pub(super) fn record_position(&mut self, character: Key, position: PositionBinding) {
-        self.version = self.version.max(PLACEMENT_VERSION);
+        self.version = self.version.max(if position.spatial.is_some() {SPATIAL_VERSION} else {PLACEMENT_VERSION});
         self.positions.insert(character, position);
     }
 
@@ -414,11 +428,12 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
         Input::Graft(_) => return Err("graft carrying requires the actual native seat and played body".into()),
         Input::ProjectCarry(_) => return Err("project carry configuration requires the actual DM seat cut".into()),
     };
-    if !matches!(batch.version, VERSION | PLACEMENT_VERSION | TIME_VERSION)
+    if !matches!(batch.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | SPATIAL_ADMISSION_VERSION)
         || batch.version == VERSION && (!batch.placements.is_empty() || !batch.controls.is_empty())
         || batch.version < TIME_VERSION && batch.project_carry.is_some()
+        || batch.version < SPATIAL_ADMISSION_VERSION && !batch.spatial.is_empty()
     { return Err("unsupported VTT admission input version".into()); }
-    if (!batch.controls.is_empty() || batch.project_carry.is_some()) && dm.is_none() {
+    if (!batch.controls.is_empty() || batch.project_carry.is_some() || !batch.spatial.is_empty()) && dm.is_none() {
         return Err("native character control needs the admitted DM participant".into());
     }
     let mut candidate = session.clone();
@@ -431,7 +446,8 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
         Some(bindings)
     } else {None};
     submit_contract_assertions(&mut candidate, &batch.assertions).map_err(|error| error.to_string())?;
-    if batch.characters.is_empty() && batch.placements.is_empty() && batch.controls.is_empty() && batch.project_carry.is_none() {
+    if batch.characters.is_empty() && batch.placements.is_empty() && batch.controls.is_empty()
+        && batch.project_carry.is_none() && batch.spatial.is_empty() {
         *session = candidate;
         return Ok(("asserted".into(), game));
     }
@@ -450,12 +466,24 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
     let mut positioned = BTreeSet::new();
     for (index, placement) in batch.placements.iter().enumerate() {
         if !positioned.insert(&placement.character) { return Err("duplicate character placement".into()); }
+        if bindings.positions.get(&placement.character).is_some_and(|position|position.spatial.is_some()) {
+            return Err("marked spatial placement refresh requires its complete authored eye, range and yaw".into());
+        }
         let recipe = bindings.characters.get(&placement.character)
             .ok_or("placement needs an explicitly admitted character")?;
         let binding = place_character(&mut candidate, placement, recipe)
             .map_err(|reason| format!("placement {index} ({}): {reason}", placement.character))?;
         accepted.push(format!("placed {}", placement.character));
         bindings.positions.insert(placement.character.clone(), binding);
+    }
+    for (index, spatial) in batch.spatial.iter().enumerate() {
+        let key=&spatial.placement.character;
+        if !positioned.insert(key) {return Err("duplicate plain/spatial character placement".into());}
+        let recipe=bindings.characters.get(key).ok_or("spatial placement needs an explicitly admitted native character")?;
+        let binding=super::placement::place_spatial_character(&mut candidate,spatial,recipe)
+            .map_err(|reason|format!("spatial placement {index} ({key}): {reason}"))?;
+        accepted.push(format!("placed spatial {key}"));
+        bindings.record_position(key.clone(),binding);
     }
     for (index, control) in batch.controls.iter().enumerate() {
         let recipe = bindings.characters.get(&control.character)
@@ -471,6 +499,7 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
     let next = bindings.encode()?;
     *session = candidate;
     if batch.project_carry.is_some() {accepted.push("configured native project carry providers".into());}
-    let label = if batch.placements.is_empty() && batch.controls.is_empty() && batch.project_carry.is_none() { "developed" } else { "accepted" };
+    let label = if batch.placements.is_empty() && batch.controls.is_empty() && batch.project_carry.is_none()
+        && batch.spatial.is_empty() { "developed" } else { "accepted" };
     Ok((format!("{label}: {}", accepted.join(", ")), next))
 }

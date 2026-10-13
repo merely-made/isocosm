@@ -21,7 +21,8 @@ pub(super) fn assertions(public: &ComposedStoryletPublic, occurrence: &str) -> V
 }
 
 pub(super) fn shape(input: &ComposedStoryletInput, public: &ComposedStoryletPublic) -> Result<(), String> {
-    if input.version != 1 || input.storylet.key != public.key || public.source_digest.is_empty() {
+    let version=if input.steps.iter().any(|step|matches!(step,StoryletStep::SpatialPlacement {..})) {2} else {1};
+    if input.version != version || input.storylet.key != public.key || public.source_digest.is_empty() {
         return Err("composed storylet version or accepted public source differs".into());
     }
     let mut effects = BTreeSet::new();
@@ -31,6 +32,17 @@ pub(super) fn shape(input: &ComposedStoryletInput, public: &ComposedStoryletPubl
             StoryletStep::Map { effect, .. } | StoryletStep::Item { effect, .. } => *effect,
             StoryletStep::Placement { placements, .. } => {
                 if placements.is_empty() { return Err("storylet placement needs complete supplied existing-character poses".into()); }
+                continue;
+            },
+            StoryletStep::SpatialPlacement { placements, .. } => {
+                if placements.is_empty() {return Err("storylet spatial placement needs complete supplied native geometry".into());}
+                let mut characters=BTreeSet::new();
+                for placement in placements {
+                    if !characters.insert(&placement.placement.character) {
+                        return Err("storylet spatial placement repeats a native character".into());
+                    }
+                    placement.spatial.validate()?;
+                }
                 continue;
             },
         };
@@ -103,9 +115,18 @@ pub fn readmit_composed(session: &mut Session, game: Vec<u8>, access: OrdinaryAc
                     return Err("storylet supplied pose names a changed native/product cut".into());
                 }
                 let batch = AdmissionBatch { version: 2, assertions: Vec::new(), characters: Vec::new(),
-                    placements: placements.clone(), controls: Vec::new(), project_carry: None };
+                    placements: placements.clone(), controls: Vec::new(), project_carry: None, spatial: Vec::new() };
                 let bytes = serde_json::to_vec(&batch).map_err(|error| error.to_string())?;
                 game = submit_game_access(&mut candidate, game, &bytes, access)?.1;
+            },
+            StoryletStep::SpatialPlacement { expected_native, expected_game, placements } => {
+                if *expected_native != physical_map::physical_source(&candidate) || *expected_game != isocosm::digest(&game) {
+                    return Err("storylet supplied spatial pose names a changed native/product cut".into());
+                }
+                let batch=AdmissionBatch {version:4,assertions:Vec::new(),characters:Vec::new(),
+                    placements:Vec::new(),controls:Vec::new(),project_carry:None,spatial:placements.clone()};
+                let bytes=serde_json::to_vec(&batch).map_err(|error|error.to_string())?;
+                game=submit_game_access(&mut candidate,game,&bytes,access)?.1;
             },
         }
         links.push(StoryletLink { step: index, entity,

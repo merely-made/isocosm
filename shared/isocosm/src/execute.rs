@@ -12,7 +12,8 @@ use crate::{
 /// How an act runs: written to the world, with the shares of shared ground
 /// its pass gave it, or planned and written nowhere (ruling 454).
 enum Run {
-    Act(Option<Shares>),
+    Act,
+    Scheduled(Option<Shares>),
     Plan,
 }
 
@@ -26,14 +27,19 @@ impl Simulation {
         count: u64,
     ) -> Receipt {
         let act = self.state.next_action;
-        let run = Run::Act(None);
+        let run = Run::Act;
         self.run((actor, target), process, cause, (count, act), run)
             .0
     }
 
+    pub(crate) fn scheduled_apply(&mut self,actor:Id,target:Option<Id>,process:&str,count:u64) -> Receipt {
+        let act=self.state.next_action;
+        self.run((actor,target),process,None,(count,act),Run::Scheduled(None)).0
+    }
+
     /// A planned act, with the target, number and shares its pass gave it.
     pub(crate) fn act(&mut self, actor: Id, process: &str, count: u64, plan: Planned) -> Receipt {
-        let run = Run::Act(Some(plan.shares));
+        let run = Run::Scheduled(Some(plan.shares));
         let at = (actor, plan.target);
         self.run(at, process, None, (count, plan.act), run).0
     }
@@ -60,10 +66,24 @@ impl Simulation {
         sequence: (u64, u64),
         run: Run,
     ) -> (Receipt, Option<Demands>) {
+        let definition=self.genesis.rules.processes.get(process).cloned();
+        let producer=definition.as_ref().is_some_and(|p|p.requires.iter().any(|q|matches!(q,Query::Institution {..})))
+            && self.pass.is_some();
+        let mut cause=cause;
+        let prior=if producer {
+            let p=definition.as_ref().expect("producer definition is present");
+            if let Ok(declared)=self.institution_process_cause(at.0,at.1,p) {cause=declared;}
+            let scope=self.institution_process_scope(at.0,at.1,p).ok().flatten();
+            Some((std::mem::replace(&mut self.institution_decision,scope),self.institution_decision_stamp.take()))
+        } else {None};
         // Capture lives for this disposable stage and is cleared on every exit.
         let _ = self.begin_process_debits(at.0,at.1,process,sequence.1);
         let result = self.run_inner(at,process,cause,sequence,run);
         self.finish_process_debits(&result.0);
+        if let Some((decision,stamp))=prior {
+            self.institution_decision=decision;
+            self.institution_decision_stamp=stamp;
+        }
         result
     }
 
@@ -154,7 +174,7 @@ impl Simulation {
             receipt.facts_read.push(format!("declared intake organ: {part:?}"));
         }
         for query in &definition.requires {
-            match self.query(actor, target, place, part, query) {
+            match self.process_query(actor, target, place, part, definition, query) {
                 Ok(fact) => receipt.facts_read.push(fact),
                 Err(why) => return refused(receipt, Outcome::Blocked(why)),
             }
@@ -170,7 +190,7 @@ impl Simulation {
                     && self.owned_process_ready(actor,target,p)
                     && p.requires
                         .iter()
-                        .all(|q| self.query(actor, target, place, part, q).is_ok())
+                        .all(|q| self.process_query(actor, target, place, part, p, q).is_ok())
             })
             .map(|p| p.id.clone())
             .collect();
@@ -181,13 +201,15 @@ impl Simulation {
             Err(why) => return refused(receipt, Outcome::Blocked(why)),
         };
         let planning = matches!(run, Run::Plan);
+        stage.scheduled = matches!(run, Run::Scheduled(_));
         stage.process = process.into();
         stage.action = id.clone();
         stage.intake = intake;
         stage.port_feeding = definition.port_feeding.clone();
         match run {
             Run::Plan => stage.demands = Some(Demands::default()),
-            Run::Act(shares) => stage.shares = shares,
+            Run::Scheduled(shares) => stage.shares = shares,
+            Run::Act => {},
         }
         let risky = definition.risk.as_ref().is_some_and(|r| {
             crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
@@ -270,6 +292,9 @@ impl Simulation {
             return refused(receipt,Outcome::Blocked(why));
         }
         if let Err(why) = self.stage_graft_receipt(&mut stage) {
+            return refused(receipt,Outcome::Blocked(why));
+        }
+        if let Err(why) = self.finish_staged_institution(&mut stage,risky) {
             return refused(receipt,Outcome::Blocked(why));
         }
         receipt.effects = effects.into_iter().cloned().collect();

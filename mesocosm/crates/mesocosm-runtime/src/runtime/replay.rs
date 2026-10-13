@@ -49,6 +49,7 @@ impl GameSave {
         let supported = match self.version {
             1..=crate::spatial::UNMARKED_VERSION => current == crate::spatial::UNMARKED_VERSION,
             crate::spatial::SIGHT_VERSION => current == crate::spatial::SIGHT_VERSION,
+            crate::spatial::BIRTH_SIGHT_VERSION => current == crate::spatial::BIRTH_SIGHT_VERSION,
             crate::spatial::VERSION => current == crate::spatial::VERSION,
             _ => false,
         };

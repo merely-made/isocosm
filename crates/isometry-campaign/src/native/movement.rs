@@ -78,10 +78,14 @@ pub fn submit_table(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess
         let volume = candidate.sim.volume(placement.site, window.min, window.max, window.depth)?;
         placement.patch = Places::derive(&volume, placement.places)?.place_at(placement.at)
             .ok_or_else(|| format!("move {index}: destination has no derived native patch"))?;
-        let position = place_character(&mut candidate, &placement, &recipe)
+        let position = match &previous.spatial {
+            Some(spatial)=>super::placement::place_spatial_character(&mut candidate,
+                &super::placement::CharacterSpatialPlacement {placement,spatial:spatial.clone()},&recipe),
+            None=>place_character(&mut candidate,&placement,&recipe),
+        }
             .map_err(|reason| format!("move {index} ({character}): {reason}"))?;
+        accepted.push(format!("{character} at {:?}",position.placement.at));
         bindings.record_position(character.clone(), position);
-        accepted.push(format!("{character} at {:?}", placement.at));
     }
     bindings.validate(&candidate)?;
     let next = bindings.encode()?;

@@ -12,8 +12,8 @@ impl Game {
     fn resolve_step(&self, pending: &native::Pending) -> Result<native::Geometry, String> {
         let r = &pending.request;
         let profile = pending.sim.genesis().rules.step_profiles.get(&r.profile).ok_or("native step profile absent")?;
-        let input = self.driver.as_ref().and_then(|d| d.profile.steps.get(&r.actor))
-            .and_then(|steps| steps.get(&r.profile)).ok_or("chosen step has no authored game input")?;
+        let input = self.driver.as_ref().ok_or("chosen step has no authored driver")?
+            .step_input(r.actor, &r.profile)?;
         if input.target.map(|id| id.0) != r.target { return Err("step goal names another chosen target".into()); }
         let at = self.members.get(&r.actor).ok_or("step actor has no actual saved pose")?.rebound(&pending.sim)?;
         at.check(&pending.sim)?;

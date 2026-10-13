@@ -24,6 +24,7 @@ mod staged;
 mod publication;
 mod goals;
 mod graft;
+mod institutions;
 #[cfg(test)]
 mod tests;
 
@@ -32,11 +33,13 @@ pub(crate) use staged::Staged;
 pub(crate) struct Stage {
     pub(crate) process: Key,
     pub(crate) action: Key,
+    pub(crate) scheduled: bool,
     pub(crate) birth_places: Vec<crate::spatial::BirthMark>,
     pub(crate) terrain: Option<crate::operations::StagedTerrain>,
     pub(crate) step: Option<crate::spatial::StagedStep>,
     project_decision: Option<crate::projects::DecisionStamp>,
     institution_decision: Option<crate::institutions::DecisionStamp>,
+    institution_producer: Option<crate::institutions::BodyWrite>,
     project_debit: Option<(crate::projects::StockSource, Key, u64)>,
     projects: crate::projects::Writes,
     actor: Id,
@@ -112,11 +115,13 @@ impl Simulation {
         Ok(Stage {
             process: String::new(),
             action: String::new(),
+            scheduled: false,
             birth_places: Vec::new(),
             terrain: None,
             step: None,
             project_decision: None,
             institution_decision: None,
+            institution_producer: None,
             project_debit: None,
             projects: crate::projects::Writes::default(),
             actor,
@@ -151,6 +156,7 @@ impl Simulation {
     /// Whether what the act changed lands whole on bodies and a site that
     /// earlier acts of its pass changed too.
     pub(crate) fn fits(&self, stage: &Stage) -> bool {
+        if stage.institution_producer.as_ref().is_some_and(|input|!input.fits(self)) {return false;}
         if !stage.projects.fits(&self.state.projects) { return false; }
         if stage.project_decision.as_ref().is_some_and(|stamp|
             self.project_decision_ready(stamp.decision.actor,Some(stamp.decision.worker)).is_err()) { return false; }
@@ -365,6 +371,7 @@ impl Simulation {
             None => (None, None),
         };
         if let (Some(frame), Some(bases)) = (&mut self.frame, &bases) {
+            for (id,_) in &stage.polities {frame.keep_polity(*id,self.state.polities.get(id));}
             for (id, base) in stage.bodies.keys().zip(bases) {
                 let span = if *id == stage.actor { stage.count } else { 1 };
                 frame.keep_body(*id, span, base);

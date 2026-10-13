@@ -3,7 +3,7 @@
 
 use super::StoryletInput;
 use crate::{ItemId, StoryletEffect};
-use crate::native::{CharacterPlacement, items::ItemInput, physical_map::PhysicalMapInput};
+use crate::native::{CharacterPlacement,CharacterSpatialPlacement, items::ItemInput, physical_map::PhysicalMapInput};
 use isocosm::schema::{Id, Key};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -23,6 +23,7 @@ pub enum StoryletStep {
     Map { effect: u32, input: PhysicalMapInput },
     Item { effect: u32, item: ItemId, inputs: Vec<ItemInput> },
     Placement { expected_native: Key, expected_game: Key, placements: Vec<CharacterPlacement> },
+    SpatialPlacement { expected_native: Key, expected_game: Key, placements: Vec<CharacterSpatialPlacement> },
 }
 
 /// Accepted public outputs, never private requirements or secret-store contents.

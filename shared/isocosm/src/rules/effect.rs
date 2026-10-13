@@ -213,6 +213,7 @@ pub enum Effect {
     MovePaced { destination: Id, profile: Key },
     InstitutionDecision,
     Graft { reserve: Key, soil: Key },
+    Institution { producer: Key },
 }
 
 impl Effect {

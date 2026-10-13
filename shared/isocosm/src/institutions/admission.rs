@@ -6,12 +6,14 @@ use super::decision::DecisionPhase;
 use crate::{projects::{DebitSelection, DecisionPolicy, OwnedActed}, simulation::{Outcome as ActOutcome, Receipt}};
 
 impl Simulation {
-    pub(super) fn institution_ready(&self, proposal: &Proposal) -> bool {
-        if proposal.applied.is_some() || self.institution_current(proposal).is_err() { return false; }
-        let voters: BTreeSet<_> = proposal.votes.keys().copied().collect();
+    pub(super) fn institution_ready(&self, proposal: &ProposalCore) -> bool {
+        let records=self.institution_records_at_start();
+        if records.is_applied(&proposal.key).unwrap_or(true) || self.institution_current(proposal).is_err() { return false; }
+        let Ok(voters) = records.voters(&proposal.key) else {return false;};
         voters.is_subset(&proposal.electorate) && voters.len() as u64 >= proposal.approvals
             && (!matches!(proposal.operation.decision,DecisionPolicy::Governance { .. })
-                || proposal.votes.values().any(|vote| vote.act.is_some()))
+                || records.participant_votes(&proposal.key).is_ok_and(|votes| votes.values().any(|vote| vote.act.is_some()))
+                || records.body_votes.get(&proposal.key).is_some_and(|votes| !votes.is_empty()))
     }
 
     /// Logged native input. This external command publishes one complete
@@ -38,7 +40,9 @@ impl Simulation {
     fn propose_institution(&mut self, key:&str, participant:Id, actor:Id, id:PolityId, request:&Request) -> Result<Outcome> {
         crate::validation::key(key)?;
         self.institution_control(participant,actor)?;
-        if self.state.institutions.proposals.contains_key(key) { return Err("institution proposal key already exists".into()); }
+        if self.state.institutions.proposals.contains_key(key) || self.state.institutions.body_proposals.contains_key(key) {
+            return Err("institution proposal key already exists".into());
+        }
         let polity = self.state.polities.get(&id.0).filter(|p| p.ended_by.is_none()).ok_or("institution is absent or ended")?;
         if !polity.constitution.members.contains(&actor) { return Err("institution executor is not an actual constitutional member".into()); }
         let operation = self.institution_operation(polity,request)?;
@@ -54,10 +58,11 @@ impl Simulation {
     fn approve_institution(&mut self, participant:Id, actor:Id, key:&str, process:Option<&str>, target:Option<Id>,
         cause:Option<Key>, selections:&[DebitSelection]) -> Result<Outcome> {
         self.institution_control(participant,actor)?;
-        let mut proposal = self.state.institutions.proposals.get(key).ok_or("institution proposal is absent")?.clone();
+        let proposal = self.state.institutions.core(key)?;
         self.institution_current(&proposal)?;
         self.institution_support(&proposal.operation)?;
-        if proposal.applied.is_some() || !proposal.electorate.contains(&actor) || proposal.votes.contains_key(&actor) {
+        if self.state.institutions.is_applied(key)? || !proposal.electorate.contains(&actor)
+            || self.state.institutions.voters(key)?.contains(&actor) {
             return Err("institution consent names an unavailable proposal or another/already-voted native body".into());
         }
         let act = match &proposal.operation.decision {
@@ -75,15 +80,14 @@ impl Simulation {
                 None
             },
         };
-        proposal.votes.insert(actor,Approval { participant,actor,tick:self.state.tick,act:act.clone() });
+        self.state.institutions.store_vote(key,Approval { participant,actor,tick:self.state.tick,act:act.clone() })?;
         let ready = self.institution_ready(&proposal);
-        self.state.institutions.proposals.insert(key.into(),proposal);
         Ok(Outcome { proposal:key.into(),ready,applied:None,decision:act })
     }
 
     fn apply_institution(&mut self, participant:Id, actor:Id, key:&str, selections:&[DebitSelection]) -> Result<Outcome> {
         self.institution_control(participant,actor)?;
-        let mut proposal = self.state.institutions.proposals.get(key).ok_or("institution proposal is absent")?.clone();
+        let proposal = self.state.institutions.core(key)?;
         if proposal.actor != actor || !self.institution_ready(&proposal) {
             return Err("institution application requires its actual executor and current admitted decisions".into());
         }
@@ -109,8 +113,7 @@ impl Simulation {
         };
         let act = self.institution_witness(proposal.polity,&receipt,kind)?;
         let applied = Applied { participant,tick:self.state.tick,act };
-        proposal.applied = Some(applied.clone());
-        self.state.institutions.proposals.insert(key.into(),proposal);
+        self.state.institutions.store_applied(key,applied.clone())?;
         Ok(Outcome { proposal:key.into(),ready:false,applied:Some(applied),decision:None })
     }
 
@@ -138,7 +141,7 @@ impl Simulation {
         Ok(ActWitness { polity,actor:receipt.actor,event:event.id.clone(),process:event.process.clone(),kind })
     }
 
-    fn check_constitution(&self, old:&Constitution, offered:&Constitution) -> Result<()> {
+    pub(super) fn check_constitution(&self, old:&Constitution, offered:&Constitution) -> Result<()> {
         if offered.founded_by != old.founded_by { return Err("amendment cannot rewrite the institution's founding cause".into()); }
         crate::validation::key(&offered.governance)?;
         crate::validation::key(&offered.support_account)?;
@@ -148,7 +151,7 @@ impl Simulation {
         }
         for focus in &offered.focus { crate::validation::key(focus)?; }
         for member in &offered.members {
-            if !self.state.population.get(*member).is_some_and(|body| !crate::directing::is_participant(body)) {
+            if !self.body_at_start(*member).is_some_and(|body| !crate::directing::is_participant(body)) {
                 return Err("amendment names no actual native member body".into());
             }
         }

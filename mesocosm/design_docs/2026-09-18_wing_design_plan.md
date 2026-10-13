@@ -2,7 +2,18 @@
 
 **Date:** 2026-09-18
 
-**Latest migration, 2026-10-13:** GameBindings14/protocol17 connect native
+**Latest source integration, 2026-10-13:** GameBindings15/AdmissionBatch4,
+composed input2 and protocol/ALPN18 connect explicitly supplied VTT physical
+eye/range/yaw, spatial storylet placement and held-item orientation. Mesocosm
+Profile4/spatial GameSave6 bind walking/destination templates only to actual
+reported children and authenticate that provenance on replay. Native bodies
+can propose, consent and apply through fixed authored scheduled institutional
+processes, using their real selected act/event/costs. This catalogue does not
+generate agendas. Accepted rulings end870; pending871 to877 remain together,
+next878. C9 is historically certified; C10/C11/full products and final state
+verification remain open. Compiler/tests/fixtures/tuning remain deferred826.
+
+**Earlier migration, 2026-10-13:** GameBindings14/protocol17 connect native
 institution, paired reveal, composed physical storylet and project-carry
 consumers. Standalone VTT render/picks now use actual native geometry and
 explicit identity mappings. Eponym modes4/5 retain physical clock/project

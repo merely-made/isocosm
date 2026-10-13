@@ -7,6 +7,9 @@ use super::RecipeBinding;
 use isocosm::{Command, Session, schema::{Id, Key}};
 use isometer_space::places::{Cap, PlaceId, Places, Rules};
 use serde::{Deserialize, Serialize};
+mod spatial;
+pub use spatial::{CharacterSpatialPlacement,SpatialSense};
+pub(crate) use spatial::{place_spatial_character,rotate};
 
 /// Exact authored base-cell window, not a camera or identity-cell fallback.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -36,6 +39,8 @@ pub struct PositionBinding {
     /// before presenting a physical pose in a later or unknown visit.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resident_since: Option<isocosm::schema::Tick>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub spatial: Option<SpatialSense>,
 }
 
 /// Join is explicit and always creates a new native participant. Existing
@@ -87,6 +92,7 @@ impl PositionBinding {
         if self.entity != recipe.entity || self.placement.character != character {
             return Err("position binding differs from its admitted character".into());
         }
+        if let Some(spatial)=&self.spatial {spatial.validate()?;}
         let entry = session.entries.iter().find(|entry| entry.id == self.patch_entry)
             .ok_or("position binding's native patch entry is absent")?;
         let developed = session.entries.iter().find(|entry| entry.id == recipe.develop_entry)
@@ -106,6 +112,7 @@ impl PositionBinding {
         if self.resident_since != Some(native.arrived) {
             return Err("character position belongs to an unstamped or earlier native visit".into());
         }
+        if let Some(spatial)=&self.spatial {spatial.check(session,&self.placement)?;}
         Ok(self.placement.at)
     }
 }
@@ -147,7 +154,7 @@ pub(crate) fn place_character(session: &mut Session, input: &CharacterPlacement,
     let binding = PositionBinding { entity: recipe.entity, placement: input.clone(),
         patch_entry: session.entries.last().ok_or("native patch entry is absent")?.id.clone(),
         resident_since: Some(session.sim.state().population.get(recipe.entity)
-            .ok_or("position character is absent")?.arrived) };
+            .ok_or("position character is absent")?.arrived), spatial:None };
     binding.validate(session, &input.character, recipe)?;
     binding.current(session)?;
     Ok(binding)

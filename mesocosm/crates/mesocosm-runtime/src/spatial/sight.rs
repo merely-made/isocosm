@@ -70,7 +70,7 @@ impl Game {
         -> Result<Option<(InSite, Sight)>, String> {
         self.version()?;
         let Some(config) = &self.sight else {
-            if self.version == VERSION {
+            if self.has_sight_source() {
                 return Err("marked newborn sight source has no admitted observer range".into());
             }
             return Ok(None);

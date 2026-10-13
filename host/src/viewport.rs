@@ -86,24 +86,32 @@ fn vtt_picture(session: &isocosm::Session, cut: &crate::window::Projection,
     explicit: Option<&crate::products::SiteRegion>, handle: &SceneHandle) -> Result<(), String> {
     let game = isometry_campaign::native::GameBindings::decode(bytes)?;
     game.validate(session)?;
+    let mode = if cut.access.seat == Seat::Player { isocosm::directing::readings::Mode::Survival }
+        else { isocosm::directing::readings::Mode::Creative };
+    let sight = if mode == isocosm::directing::readings::Mode::Survival {
+        let observer = cut.access.subject.ok_or("VTT physical sight has no played native body")?.0;
+        if session.sim.plays(cut.access.participant.0) != Some(observer) {
+            return Err("VTT physical sight names a stale native played body".into());
+        }
+        isometry_campaign::native::eye::refine(session,&game,observer,mode,site)?
+    } else { None };
+    let shows = |id| cut.visible.shows(id) && sight.as_ref().is_none_or(|view| view.shows(id));
     let mut roots = std::collections::BTreeMap::new();
     let mut windows = Vec::new();
     for (key, character) in game.characters() {
-        if !cut.visible.shows(character.entity) { continue; }
+        if !shows(character.entity) { continue; }
         let held = session.sim.state().population.get(character.entity).ok_or("VTT picture character is absent")?;
         if held.resident_site() != Some(site) { continue; }
         let binding = game.positions().get(key).ok_or("visible VTT character has no admitted physical position")?;
-        let at = binding.current(session)?;
+        let pose = binding.current_pose(session)?;
         if !windows.contains(&binding.placement.window) { windows.push(binding.placement.window.clone()); }
         roots.insert(character.entity, mesocosm_runtime::spatial::Pose {
-            // PositionBinding v2 carries no orientation. Its body document
-            // is rendered unrotated; no table facing or inferred yaw is used.
-            at, yaw:mesocosm_genet::borrowed_section::RootYaw::Zero,
+            at:pose.at, yaw:pose.yaw,
         });
     }
     let mut item_entities = BTreeSet::new();
     for binding in game.item_records().iter().rev().filter_map(|record| record.binding.as_ref()) {
-        if !item_entities.insert(binding.entity) || !cut.visible.shows(binding.entity) { continue; }
+        if !item_entities.insert(binding.entity) || !shows(binding.entity) { continue; }
         let held = session.sim.state().population.get(binding.entity).ok_or("VTT picture item is absent")?;
         if held.resident_site() != Some(site) { continue; }
         let pose = isometry_campaign::native::items::current_item(session, &game, binding.entity)?;
@@ -132,8 +140,6 @@ fn vtt_picture(session: &isocosm::Session, cut: &crate::window::Projection,
         },
         None => return Err("VTT positions have different windows; author a --site-region for this picture".into()),
     };
-    let mode = if cut.access.seat == Seat::Player { isocosm::directing::readings::Mode::Survival }
-        else { isocosm::directing::readings::Mode::Creative };
     handle.update_roots(session, cut.access.participant.0, window.0, mode, site, turn, &frame, &roots)?;
     Ok(())
 }

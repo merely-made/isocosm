@@ -21,6 +21,8 @@ use std::collections::BTreeMap;
 pub(crate) struct Frame {
     notes_bound: Option<usize>,
     sites: BTreeMap<Id, Site>,
+    polities: BTreeMap<Id, Option<Polity>>,
+    institutions: Option<crate::institutions::Records>,
     projects: BTreeMap<crate::projects::ProjectId, Option<crate::projects::Project>>,
     project_bindings: BTreeMap<Id, Option<crate::projects::ProjectId>>,
     ownership: BTreeMap<Key, Option<crate::projects::OwnedLot>>,
@@ -95,6 +97,14 @@ pub(crate) fn edible(ledger: &Ledger, of: &[Key]) -> Ledger {
 }
 
 impl Frame {
+    pub(crate) fn institutions(&self) -> Option<&crate::institutions::Records> {self.institutions.as_ref()}
+    pub(crate) fn keep_institutions(&mut self,was:&crate::institutions::Records) {
+        if self.institutions.is_none() {self.institutions=Some(was.clone());}
+    }
+    pub(crate) fn polity(&self,id:Id) -> Option<&Option<Polity>> {self.polities.get(&id)}
+    pub(crate) fn keep_polity(&mut self,id:Id,was:Option<&Polity>) {
+        self.polities.entry(id).or_insert_with(||was.cloned());
+    }
     pub(crate) fn starting(notes_bound: usize) -> Self { Self { notes_bound:Some(notes_bound), ..Self::default() } }
     pub(crate) fn notes_bound(&self) -> Option<usize> { self.notes_bound }
     pub(crate) fn produced_claims(&self) -> &BTreeMap<Key,Option<crate::projects::ProducedClaim>> { &self.produced }

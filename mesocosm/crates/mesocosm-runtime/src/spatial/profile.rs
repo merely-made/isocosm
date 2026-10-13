@@ -46,7 +46,7 @@ pub enum Admission { Step { action: String }, Arrival, Birth { action: String, p
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Transition {
     pub actor: Id, pub before: Option<Placement>, pub after: Placement, pub admission: Admission,
-    /// The selected birth slot's authored range, bound to this actual child.
+    /// The selected birth slot's range installed with an accepted birth/arrival pose.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sight_range: Option<u64>,
 }
@@ -73,6 +73,8 @@ pub struct Driver {
     pub native_tick: u64,
     pub initial: BTreeMap<Id, Placement>,
     pub records: Vec<Record>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub children: BTreeMap<Id, ChildInputs>,
 }
 
 impl Profile {
@@ -80,8 +82,13 @@ impl Profile {
         self.births.iter().any(|input| input.slots.iter().any(|slot| slot.sight_range.is_some()))
     }
 
+    pub(super) fn has_birth_inputs(&self) -> bool {
+        self.births.iter().any(|input| input.slots.iter().any(|slot| slot.inputs.is_some()))
+    }
+
     pub(super) fn version(&self) -> Result<(), String> {
-        if self.version != 3 && !(self.version == 2 && !self.has_birth_sight())
+        if self.version != 4 && !(self.version == 3 && !self.has_birth_inputs())
+            && !(self.version == 2 && !self.has_birth_sight() && !self.has_birth_inputs())
             && !(self.version == 1 && self.births.is_empty()) {
             return Err("unsupported authored spatial profile".into());
         }
@@ -146,7 +153,8 @@ impl Game {
         next.driver = Some(Driver { profile: authored.profile.clone(),
             native_source: native_source(session), native_entries: session.entries.len() as u64,
             native_prefix: native_prefix(session, session.entries.len(), session.sim.state().tick),
-            native_tick: session.sim.state().tick, initial: next.members.clone(), records: Vec::new() });
+            native_tick: session.sim.state().tick, initial: next.members.clone(), records: Vec::new(),
+            children: BTreeMap::new() });
         next.version = next.current_version();
         *self = next;
         Ok(())

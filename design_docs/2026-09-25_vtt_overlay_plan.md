@@ -2,7 +2,20 @@
 
 **Date:** 2026-09-25
 
-**Latest authority and physical source, 2026-10-13:** GameBindings14 and
+**Latest spatial source, 2026-10-13:** GameBindings15/AdmissionBatch4 and
+protocol/ALPN18 retain complete authored eye, range and yaw on actual native
+character placements. Movement, held-item mounts and both native pictures
+read that same physical source. Survival sight refines native knowing with
+the played body's supplied eye and range; creative views retain their native
+mode. Composed input2 adds complete spatial placement after genuine map
+edits; historical Patch cuts and the spatial save version guard authenticate
+it. Old unmarked saves retain their shape. Missing/stale inputs refuse.
+The scheduled institution catalogue adds fixed, explicitly authored native
+body proposal/consent/application processes; it supplies no generated agenda.
+Choices871 to877 remain pending together864, next878. Source-only826; final
+V2 acceptance and compiler/tests/fixtures/tuning remain open.
+
+**Earlier authority and physical source, 2026-10-13:** GameBindings14 and
 protocol/ALPN17 connect authenticated institution operations, paired native
 reveals and composed storylet quote/apply through the actual standalone host.
 Composed inputs name complete map edits, placements and resident item/project

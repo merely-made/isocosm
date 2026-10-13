@@ -11,7 +11,8 @@ use isometer_core::Yaw;
 use isometer_space::places::PlaceId;
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 5;
+pub const VERSION: u32 = 6;
+pub const BIRTH_SIGHT_VERSION: u32 = 5;
 pub const SIGHT_VERSION: u32 = 4;
 pub const UNMARKED_VERSION: u32 = 3;
 
@@ -26,6 +27,8 @@ mod arrival;
 mod birth;
 mod birth_command;
 pub use birth::{BirthInput, BirthParent, BirthSlot};
+mod children;
+pub use children::{ArrivalTemplate, BirthTemplates, ChildInputs};
 mod replay;
 mod sight;
 pub mod graft;
@@ -82,18 +85,25 @@ impl Default for Game {
 impl Game {
     pub fn version(&self) -> Result<(), String> {
         let birth_sight = self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_sight());
+        let birth_inputs = self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_inputs());
         if let Some(driver) = &self.driver { driver.profile.version()?; }
         let supported = match self.version {
             1 => self.driver.is_none() && self.sight.is_none(),
-            2 | UNMARKED_VERSION => self.sight.is_none() && !birth_sight,
-            SIGHT_VERSION => self.sight.is_some() && !birth_sight,
-            VERSION => birth_sight,
+            2 | UNMARKED_VERSION => self.sight.is_none() && !birth_sight && !birth_inputs,
+            SIGHT_VERSION => self.sight.is_some() && !birth_sight && !birth_inputs,
+            BIRTH_SIGHT_VERSION => birth_sight && !birth_inputs,
+            VERSION => birth_inputs,
             _ => false,
         };
         if !supported {
             return Err("unsupported Mesocosm spatial version".into());
         }
         if let Some(sight) = &self.sight { sight.validate()?; }
+        if let Some(driver) = &self.driver
+            && ((!birth_inputs && !driver.children.is_empty())
+                || driver.children.iter().any(|(id, child)| *id != child.birth.child)) {
+            return Err("saved child inputs have no matching actual birth identity/source".into());
+        }
         if self.members.iter().any(|(id, at)| *id != at.actor.0) {
             return Err("saved spatial identity differs from its native key".into());
         }
@@ -101,7 +111,8 @@ impl Game {
     }
 
     pub(super) fn current_version(&self) -> u32 {
-        if self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_sight()) { VERSION }
+        if self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_inputs()) { VERSION }
+        else if self.driver.as_ref().is_some_and(|driver| driver.profile.has_birth_sight()) { BIRTH_SIGHT_VERSION }
         else if self.sight.is_some() { SIGHT_VERSION } else { UNMARKED_VERSION }
     }
 

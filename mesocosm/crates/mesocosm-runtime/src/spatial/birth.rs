@@ -23,6 +23,9 @@ pub struct BirthSlot {
     /// Explicit range for this accepted child only; never inherited from its parent.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sight_range: Option<u64>,
+    /// Complete authored inputs for this ordinal's actual child, never inherited.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub inputs: Option<BirthTemplates>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -45,6 +48,7 @@ impl BirthInput {
         if self.slots.iter().any(|slot| slot.sight_range.is_some_and(|range| range > i64::MAX as u64)) {
             return Err("authored newborn sight range exceeds its bounded physical source".into());
         }
+        for inputs in self.slots.iter().filter_map(|slot| slot.inputs.as_ref()) { inputs.validate(sim)?; }
         match &self.parent {
             BirthParent::Entity(parent) if sim.state().population.get(parent.0).is_none() =>
                 Err("authored birth parent is absent".into()),
@@ -56,7 +60,7 @@ impl BirthInput {
 }
 
 impl Game {
-    fn birth_slot<'a>(&'a self, r: &BirthRequest, sim: &Simulation)
+    pub(super) fn birth_slot<'a>(&'a self, r: &BirthRequest, sim: &Simulation)
         -> Result<(&'a BirthInput, &'a BirthSlot), String> {
         let driver = self.driver.as_ref().ok_or("birth has no authored spatial driver")?;
         let mut inputs = driver.profile.births.iter().filter(|input| input.applies(r, sim));
@@ -92,6 +96,7 @@ impl Game {
         -> Result<Vec<profile::Transition>, String> {
         let mut changes = Vec::new();
         for report in reports {
+            self.register_birth_inputs(report, sim)?;
             let Ok(patch) = &report.patch else { continue; };
             let r = &report.request;
             let resolution = inputs.iter().find(|input| input.request == *r).ok_or("accepted birth answer absent")?;

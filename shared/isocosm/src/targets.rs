@@ -110,6 +110,7 @@ impl Simulation {
     }
 
     pub(crate) fn choose_target(&self, actor: Id, p: &Process) -> Option<Id> {
+        if let Some(target)=self.institution_target(actor,p) {return target.ok().flatten();}
         let selector = p.target.as_ref()?;
         let entity = self.body_at_start(actor)?;
         // Reject an ineligible actor before searching the population for food.
@@ -134,7 +135,7 @@ impl Simulation {
                 && self.target_matches(actor, Some(candidate), p)
                 && p.requires
                     .iter()
-                    .all(|q| self.query(actor, Some(candidate), place, part, q).is_ok());
+                    .all(|q| self.process_query(actor, Some(candidate), place, part, p, q).is_ok());
             accepted.then_some(candidate)
         };
         let accepting = |first: &Id| offered(*first).is_some();

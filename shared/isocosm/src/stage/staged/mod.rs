@@ -21,6 +21,7 @@ use std::{
 };
 
 mod harm;
+mod institutions;
 mod meal;
 mod terrain;
 mod projects;
@@ -314,6 +315,10 @@ impl Staged<'_> {
                 self.stage.institution_decision = Some(crate::institutions::DecisionStamp {
                     decision:input.clone(),action:cause.into(),
                 });
+                return Ok(false);
+            },
+            Effect::Institution {producer} => {
+                self.institution(producer,cause)?;
                 return Ok(false);
             },
             Effect::ReserveProject { definition, from, lots, .. } => {

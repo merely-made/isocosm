@@ -39,10 +39,13 @@ pub(in crate::scene) fn read(ui:&UiState)->Result<Rc<Picture>,String> {
     let seat=if matches!(sender,isonetry::native_table::TableSender::Host) {Seat::Dm} else {Seat::Player};
     let mode=if seat==Seat::Player {isocosm::directing::readings::Mode::Survival}
         else {isocosm::directing::readings::Mode::Creative};
-    let visible=isocosm::directing::readings::view(&session.sim,played.unwrap_or(u64::MAX),mode);
+    let mut visible=isocosm::directing::readings::view(&session.sim,played.unwrap_or(u64::MAX),mode);
     if !visible.sites.contains(&input.site) {return Err("native scene site is outside actual native awareness".into());}
     let game=isometry_campaign::native::GameBindings::decode(&table.game)?;
     game.validate(session)?;
+    if let Some(refined)=isometry_campaign::native::eye::refine(session,&game,played.unwrap_or(u64::MAX),mode,input.site)? {
+        visible=refined;
+    }
     let active=ui.active_map.as_ref().ok_or("native scene needs an explicitly active table map")?;
     let mut matching=table.boards.iter().filter(|board|&board.map==active);
     let board=matching.next().ok_or("native scene map has no authored bindings")?;
@@ -58,8 +61,8 @@ pub(in crate::scene) fn read(ui:&UiState)->Result<Rc<Picture>,String> {
         if !visible.shows(character.entity) || !session.sim.state().population.get(character.entity)
             .is_some_and(|body|body.resident_site()==Some(input.site)) {continue;}
         let binding=game.positions().get(key).ok_or("visible native character has no admitted physical position")?;
-        // PositionBinding has no orientation grammar: its saved body is unrotated.
-        roots.insert(character.entity,(binding.current(session)?,Yaw::Zero));
+        let pose=binding.current_pose(session)?;
+        roots.insert(character.entity,(pose.at,pose.yaw));
     }
     let mut items=BTreeSet::new();
     for binding in game.item_records().iter().rev().filter_map(|record|record.binding.as_ref()) {

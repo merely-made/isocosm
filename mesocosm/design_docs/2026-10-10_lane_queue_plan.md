@@ -1495,3 +1495,19 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   and VTT actual-eye grammar. Wider binding adapters remain explicitly unbuilt346.
   No compiler/tests/fixtures/probes/tuning826. C9 stays historically certified;
   C10/C11/full V2/E3/M4 acceptance remains open.
+
+- **2026-10-13, scheduled institution and physical spatial source:** native
+  bodies have fixed authored proposal, consent and application producers in
+  their actual scheduled Choice pass. Foreground acts cannot fabricate that
+  witness. Actual process costs, live support, scoped decisions and the same
+  published event remain native; old participant records stay intact. The
+  catalogue generates no agendas. Mesocosm Profile4/spatial GameSave6 bind
+  authored walking/destination inputs to real birth reports, including later
+  destinations after declined initial placement or transit. Replay rebuilds
+  that provenance. VTT GameBindings15/AdmissionBatch4 and composed input2
+  retain complete eye/range/yaw, physical held-item frames and spatial
+  storylet placement; shared/standalone pictures use the actual native cut.
+  Protocol/ALPN18 covers these additive declarations. Pending871 to877 remain
+  together864, next878. C9 has its historical exact-source certification;
+  C10/C11/full V2/E3/M4 and final-state verification remain open. Source only:
+  no compiler/tests/fixtures/probes/tuning under826.

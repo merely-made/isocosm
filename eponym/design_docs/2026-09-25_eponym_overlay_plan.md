@@ -2,7 +2,16 @@
 
 **Date:** 2026-09-25
 
-**Latest physical source, 2026-10-13:** mode4 retains explicit native clock
+**Latest common source, 2026-10-13:** the native scheduled institutional
+catalogue adds fixed authored body proposal/consent/application producers,
+with genuine selected acts and existing participant histories preserved.
+Mesocosm actual-child templates and VTT complete eye/range/yaw/spatial
+storylet inputs are connected in their owning products. No Eponym companion
+or generated agenda law is inferred. Choices871 to877 remain pending
+together864, next878; Eponym death succession still awaits877. Final E3,
+C10/C11 and compiler/tests/fixtures/tuning remain open under826.
+
+**Earlier physical source, 2026-10-13:** mode4 retains explicit native clock
 profiles, actual geometry publication and carried/relocated project records.
 Step, terrain, arrival and birth inputs use the same host candidate Session.
 Missing child placement preserves native birth and conserved matter. Original

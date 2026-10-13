@@ -364,6 +364,7 @@ impl Simulation {
     pub fn kept(&self) -> BTreeSet<Id> {
         let mut roots = self.state.roots.clone();
         roots.extend(self.project_identity_roots());
+        roots.extend(self.institution_identity_roots());
         roots.extend(self.attention_roots());
         roots.extend(self.state.attention.buffered(self.state.tick));
         roots.extend(
