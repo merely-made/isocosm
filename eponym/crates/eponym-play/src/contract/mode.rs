@@ -119,6 +119,12 @@ impl ModeState {
 
     pub fn validate_native(&self, session: &Session) -> Result<(), String> {
         if let Some(clock) = &self.clock { clock.validate_native(session)?; }
+        for record in &self.life {
+            if !self.bindings.iter().any(|binding| binding.subject==record.input.subject
+                && binding.entity==record.target) {
+                return Err("life receipt lacks its explicit product subject/native body binding".into());
+            }
+        }
         life::validate_native(session, &self.life)
     }
 }

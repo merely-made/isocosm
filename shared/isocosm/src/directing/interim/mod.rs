@@ -73,6 +73,7 @@ pub enum Happening {
     LineageEnded {
         lineage: Key,
     },
+    WorldEnded { tick: Tick },
 }
 
 #[derive(Clone, Debug)]

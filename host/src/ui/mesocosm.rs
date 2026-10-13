@@ -53,6 +53,18 @@ pub(super) fn can_step(app:&App, key:u64) -> bool {
         && matches!(reading.phase,LoopPhase::Running|LoopPhase::Watching))
 }
 
+pub(super) fn can_send(app:&App, key:u64) -> bool {
+    let Some(input)=app.windows.get(&key).and_then(|local|local.input.as_ref()) else {return false;};
+    if input.mode!=Mode::Mesocosm {return false;}
+    let Ok(parsed)=serde_json::from_slice::<mesocosm_runtime::spatial::Input>(&input.bytes) else {return false;};
+    match parsed {
+        mesocosm_runtime::spatial::Input::Loop(_)=>return true,
+        mesocosm_runtime::spatial::Input::Game(input) if input.envelope.is_none()=>return true,
+        _=>{},
+    }
+    app.mesocosm_loop(key).is_ok_and(|reading|reading.phase==LoopPhase::Running)
+}
+
 pub(super) fn panel(app:&App, key:u64) -> Child {
     let mut rows:Vec<Child>=vec![Box::new(el("h2",text("Played turn")))];
     let reading=match app.mesocosm_loop(key) {
@@ -70,8 +82,12 @@ pub(super) fn panel(app:&App, key:u64) -> Child {
         LoopPhase::Running=>"Playing",LoopPhase::Held=>"Waiting for your answer",
         LoopPhase::LineageEnded=>"Your lineage has ended",LoopPhase::Watching=>"Watching",
         LoopPhase::NewWorldRequested=>"New world requested",
+        LoopPhase::WorldEnded=>"This world has ended",
     };
     rows.push(Box::new(el("p",text(phase))));
+    if let Some(tick)=reading.world_ended_at {
+        rows.push(Box::new(el("p",text(format!("This world's game ended at tick {tick}; its history remains watchable.")))));
+    }
     for happening in &reading.happenings {
         let label=match happening {
             Happening::Born {parent,child}=>format!("Birth: member {parent} had member {child}"),
@@ -79,6 +95,7 @@ pub(super) fn panel(app:&App, key:u64) -> Child {
             Happening::Boundary {tick,..}=>format!("Epoch boundary at tick {tick}"),
             Happening::Collapsed {moved_to,..}=>format!("A region collapsed; next life: {moved_to:?}"),
             Happening::LineageEnded {lineage}=>format!("Lineage {lineage} ended"),
+            Happening::WorldEnded {tick}=>format!("This world ended at tick {tick}"),
         };
         rows.push(Box::new(el("p",text(label))));
     }
@@ -123,12 +140,12 @@ pub(super) fn panel(app:&App, key:u64) -> Child {
             }
         }
     }
-    if matches!(reading.phase,LoopPhase::LineageEnded|LoopPhase::Watching) {
+    if matches!(reading.phase,LoopPhase::LineageEnded|LoopPhase::Watching|LoopPhase::WorldEnded) {
         for &member in &reading.lineages {
             rows.push(choice(key,&reading.cut,format!("mesocosm-lineage-{}",member.0),
                 format!("Play member {}",member.0),LoopAnswer::OtherLineage(member)));
         }
-        if reading.phase==LoopPhase::LineageEnded {
+        if matches!(reading.phase,LoopPhase::LineageEnded|LoopPhase::WorldEnded) {
             rows.push(choice(key,&reading.cut,"mesocosm-watch".into(),"Keep watching".into(),LoopAnswer::Watch));
         }
         rows.push(choice(key,&reading.cut,"mesocosm-new-world".into(),"Request a new world".into(),LoopAnswer::NewWorld));

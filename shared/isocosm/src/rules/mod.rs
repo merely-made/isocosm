@@ -9,6 +9,7 @@ mod amount;
 mod body;
 mod competition;
 mod directing;
+mod defence;
 mod effect;
 mod feeding;
 mod graft;
@@ -23,6 +24,7 @@ pub(crate) use body::expressing;
 pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
 pub use directing::{Directing, Inheritance};
+pub use defence::{Defence, DefenceLayer};
 pub use effect::{Conversion, Effect};
 pub use feeding::{FeedingSources, PortFeeding};
 pub use graft::{Compatibility, GraftReceipt, Raise, retained};
@@ -311,6 +313,14 @@ pub struct Rules {
     pub item_custody: Option<crate::custody::Catalogue>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub institution_producers: BTreeMap<Key, crate::institutions::BodyProducer>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub defence: Option<Defence>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub global_collapse: Option<crate::collapse::Predicate>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ecology_witness: Option<crate::ecology::JointSpec>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub companions: Option<crate::social::CompanionPolicy>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
@@ -346,7 +356,12 @@ impl Rules {
         deep_time_ceiling(self.epoch, self.epoch_ticks, self.deep_time)
     }
     pub fn validate(&self) -> crate::Result<()> {
-        crate::validation::rules(self)
+        crate::validation::rules(self)?;
+        if let Some(defence) = &self.defence { defence.validate(self)?; }
+        if let Some(collapse) = &self.global_collapse { collapse.validate(self)?; }
+        if let Some(witness) = &self.ecology_witness { witness.validate(self)?; }
+        if let Some(companions) = &self.companions { companions.validate(self)?; }
+        Ok(())
     }
 }
 

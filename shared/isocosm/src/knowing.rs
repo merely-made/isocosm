@@ -14,6 +14,9 @@ use crate::{Result, schema::*, simulation::Simulation};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
+pub mod statements;
+pub mod terrain;
+
 pub const OBSERVE: &str = "know:observe";
 pub const CLAIM: &str = "know:claim";
 pub const REPORT: &str = "know:report";
@@ -58,6 +61,10 @@ pub enum Knowing {
     Claim { claimant: Id, proposition: Proposition, supports: Vec<Key> },
     Report { reporter: Id, hearer: Id, claim: Key, proposition: Proposition },
     Correct { corrector: Id, claim: Key, replacement: Proposition, supports: Vec<Key> },
+    ObserveStatement { observer: Id, source_note: Key },
+    TellStatement { reporter: Id, hearer: Id, held_note: Key },
+    ObserveTerrain { observer: Id, observation: terrain::Observation },
+    TellTerrain { reporter: Id, hearer: Id, held_note: Key },
 }
 
 /// A claim as its holder holds it now.
@@ -98,6 +105,10 @@ impl Simulation {
     /// Writes one record of knowing; returns its id.
     pub(crate) fn know(&mut self, k: &Knowing) -> Result<Key> {
         match k {
+            Knowing::ObserveStatement { observer, source_note } => self.observe_statement(*observer, source_note),
+            Knowing::TellStatement { reporter, hearer, held_note } => self.tell_statement(*reporter, *hearer, held_note),
+            Knowing::ObserveTerrain { observer, observation } => self.observe_terrain(*observer, observation),
+            Knowing::TellTerrain { reporter, hearer, held_note } => self.tell_terrain(*reporter, *hearer, held_note),
             Knowing::Observe { observer, event } => self.observe(*observer, event),
             Knowing::Claim { claimant, proposition, supports } => {
                 let supports = self.supported(*claimant, proposition, supports)?;

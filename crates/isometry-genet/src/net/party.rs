@@ -17,6 +17,15 @@ impl NetBridge {
 
 pub(super) async fn host_request(host: &HostNet, request: PartyRequest) -> Result<Option<PartyView>, String> {
     let snapshot = host.snapshot().await;
+    if let PartyRequest::AuthorLocation(input) = request {
+        host.native_location(&input).await?;
+        return Ok(None);
+    }
+    if let PartyRequest::AuthorStatement(input) = request {
+        let input = crate::native_party::statement_admission(&snapshot, &input)?;
+        host.commit_native_table_admission(&input).await?;
+        return Ok(None);
+    }
     if let PartyRequest::Hook(intent)=request {
         let input=crate::native_party::hook_envelope(&snapshot,intent)?;
         host.native_hook(&input).await?;
@@ -47,6 +56,7 @@ pub(super) async fn host_request(host: &HostNet, request: PartyRequest) -> Resul
 }
 
 pub(super) async fn client_request(client: &ClientNet, request: PartyRequest) -> Result<Option<PartyView>, String> {
+    if matches!(&request, PartyRequest::AuthorStatement(_) | PartyRequest::AuthorLocation(_)) { return Err("sources require the actual host author door".into()); }
     if matches!(&request,PartyRequest::Hook(_)) {return Err("hook decisions require the actual host".into());}
     if matches!(&request,PartyRequest::Presentation(_)) {
         return Err("map presentation authoring requires the actual host".into());

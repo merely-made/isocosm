@@ -91,8 +91,11 @@ impl Presentation {
 pub(super) fn disclosure(session: &Session, key: &str) -> Result<isocosm::party::Disclosure, String> {
     let entry = session.entries.iter().find(|entry| entry.id == key)
         .ok_or("overmap source disclosure is absent")?;
-    let isocosm::Command::Party(isocosm::party::Change::Disclose { party, .. }) = &entry.command
-        else { return Err("overmap source is not an accepted native party disclosure".into()); };
+    let party = match &entry.command {
+        isocosm::Command::Party(isocosm::party::Change::Disclose { party, .. }
+            | isocosm::party::Change::DiscloseDetails { party, .. }) => party,
+        _ => return Err("overmap source is not an accepted native party disclosure".into()),
+    };
     let map = isocosm::party::shared_map(session, party)?;
     if !map.records.iter().any(|id| id == key) { return Err("overmap disclosure is not retained".into()); }
     let isocosm::party::Outcome::Disclosed(record) = serde_json::from_str(&entry.outcome)

@@ -412,6 +412,7 @@ pub(crate) fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
 
 fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
     match command {
+        Command::Location { location } => sim.author_location(location),
         Command::ActOwned { participant, actor, target, process, cause, selections } =>
             sim.owned_act(*participant,*actor,*target,process,cause.clone(),selections),
         Command::Owned { .. } => Err("owned direct command needs its native Session".into()),

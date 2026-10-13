@@ -1540,3 +1540,34 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   global collapse awaits878. All eight871 to878 are pending together864;
   next unused879. C9 remains historically certified; C10/C11/full products
   and all final-state compiler/tests/fixtures/probes/tuning remain open826.
+- **2026-10-13, answered map/defence/ecology/lifecycle round:**871,872,873,
+  875,876,877,878 are recorded verbatim in the wing record.874 remains OPEN;
+  answer expressed interest in both standards, not selection. Clarification879
+  gives the concrete difference between a changed mechanical effect and a
+  distinct native operation family; next unused880. Q3 owns held statements,
+  exact party disclosures and explicit Location identity/membership/extent.
+  Q14 owns final granted-bite defence and authored global-collapse lifecycle.
+  Q15 owns the actual finite joint native witness and new-world offer gate.
+  Root owns native social companion policy/Eponym succession, common fields,
+  actual shared-host callers, protocol20, canonical docs and durable status.
+  Missing declarations refuse. Fresh generated offers require the witness and
+  ecology admission;874 remains a gate. C9 historical certification is intact;
+  C10/C11/full V2/E3/M4 acceptance remains open. No Cargo/compiler/tests/fixtures/
+  probes/tuning826. Original seven retained resources keep their source/evidence
+  owners; no new worktree, target or Cargo home was created.
+  Actual Location creation now allocates a native shared identity with supplied
+  sites/claims/parent/ratio, through authenticated DM publication. Identity
+  observation/telling and membership/extent disclosure remain separate. Native
+  companion predicates require real agreements or deed-derived standing; a
+  stranger's implicit zero standing cannot establish a body-to-body fact186.
+
+- **2026-10-13, settled source packet frozen:**81 owned files,73 Rust,max576.
+  Native map/Location authoring and explicit knowledge, final-bite defence,
+  persistent global end and social companion succession reach actual product
+  callers. One actual finite joint witness and two explicit fresh startup paths
+  retain complete native/provider sources. Fresh generated offers refuse until
+  879 resolves874; old saved loads preserve their meaning. Staged source
+  whitespace passed. All source is uncompiled/untested; C10/C11/full V2/E3/M4
+  acceptance remains false. No compiler/tests/fixtures/probes/tuning826; no
+  new resources. Normal source-only commit hooks are the remaining placement
+  gate, followed by push and a committed-blob receipt.

@@ -58,6 +58,20 @@ impl Staged<'_> {
                     .all(|(k, n)| all.get(k) == Some(n));
             }
         }
+        // Demand planning must not test the requested bite: other takers and
+        // the selected part's shortage determine its final pass-granted quota.
+        if rules.defence.is_some() && self.stage.demands.is_none() && let Some(part) = bitten {
+            let granted = match &portion {
+                Some(portion) => portion.values().try_fold(0u64, |sum, value|
+                    sum.checked_add(*value).ok_or("granted bite overflow"))?,
+                None => meaning::share(&offered, rules, amount.resolved()?).values()
+                    .try_fold(0u64, |sum, value| sum.checked_add(*value).ok_or("granted bite overflow"))?,
+            };
+            if let Some(threshold) = crate::defence::threshold(rules, self.body(from)?, part)?
+                && granted < threshold {
+                return Err(format!("protected part {part:?}: final granted bite {granted} is below {threshold}"));
+            }
+        }
         if let (true, Some(part)) = (whole && whole_admitted, bitten) {
             let asked: u64 = match &portion {
                 Some(p) => p.values().sum(),

@@ -35,6 +35,24 @@ pub(crate) fn apply_native_party(state: &mut GameSnapshot, result: &NativePartyR
 }
 
 impl HostSession {
+    /// Local trusted DM input only. Peers have no Location author request door.
+    pub fn native_location(&mut self, input: &isometry_campaign::native::party::LocationInput)
+        -> Result<Vec<Outbound>, String> {
+        let world = self.state.native.as_ref().ok_or("Location input needs a native campaign")?;
+        let table = self.state.native_table.as_ref().ok_or("Location input needs admitted native participant bindings")?;
+        let campaign = world.load(Execution::Grouped)?;
+        let session = campaign.table_session();
+        table.validate_history(session)?;
+        let participant = table.participant(TableSender::Host)?;
+        let access = OrdinaryAccess { participant: ParticipantHandle(participant), seat: Seat::Dm,
+            subject: session.sim.plays(participant).map(EntityHandle) };
+        let bytes = serde_json::to_vec(input).map_err(|e| e.to_string())?;
+        let (accepted, game, _) = campaign.with_table_input(table.game.clone(), access, &bytes)?;
+        if game != table.game { return Err("Location authoring changes opaque game/time bytes".into()); }
+        let publication = NativePublication::update(world, &accepted)?;
+        self.try_commit(GameEvent::NativePublished(publication))
+    }
+
     pub fn native_party(&mut self, sender: TableSender, envelope: &VttIntentEnvelope)
         -> Result<Vec<Outbound>, String> {
         let world = self.state.native.as_ref().ok_or("party input needs a native campaign")?;

@@ -9,6 +9,8 @@ use isometry_campaign::{Overmap, OvermapNode, founding::NativeCursor};
 use isocosm::{party::SharedMap, schema::Id};
 use crate::{UiState, UiChild};
 
+mod knowledge;
+
 #[derive(Clone, Debug)]
 pub enum PartyRequest {
     Read { party: String }, Join { party: String, member: Id },
@@ -17,6 +19,9 @@ pub enum PartyRequest {
     Journey(crate::JourneyRequest),
     Presentation(isometry_campaign::native::overmap::OvermapInput),
     Hook(isocosm_overlay::vtt::HookIntent),
+    Decision { party: String, member: Id, action: isocosm_overlay::vtt::PartyAction },
+    AuthorStatement(isometry_campaign::native::party::StatementInput),
+    AuthorLocation(isometry_campaign::native::party::LocationInput),
 }
 
 #[derive(Clone, Debug)]
@@ -30,6 +35,8 @@ pub struct PartyView {
     pub overmap: Option<isometry_campaign::native::overmap::OvermapReading>,
     pub hooks: Vec<isometry_campaign::native::hooks::GoalHook>,
     pub polities: Vec<isocosm::polities::PolityReading>,
+    pub knowledge: Option<isometry_campaign::native::party::KnowledgeReading>,
+    pub location_authoring: std::collections::BTreeMap<Id, isocosm::schema::Location>,
 }
 
 impl PartyView {
@@ -61,6 +68,7 @@ pub struct PartyUi {
     pub journey: crate::JourneyUi,
     pub hook_note: TextInput,
     pub presentation: TextInput,
+    pub statement: TextInput, pub details: TextInput, pub location: TextInput,
 }
 
 impl UiState {
@@ -68,7 +76,14 @@ impl UiState {
         self.native.party.request = Some(request);
     }
     pub fn native_party_reading(&self) -> Option<&PartyView> {
-        self.native.party.reading.as_ref().filter(|read| read.map.party == self.native.party.handle.text().trim())
+        let actor = self.native.events.reading.as_ref()?;
+        self.native.party.reading.as_ref().filter(|read| read.map.party == self.native.party.handle.text().trim()
+            && self.native.world.as_ref().is_some_and(|world| world.cursor().is_ok_and(|cursor| cursor == read.cursor)
+                && isocosm::digest(world) == read.source)
+            && isonetry::native_table::table_digest(self.native.table.as_ref()) == read.table
+            && actor.cursor == read.cursor && actor.table == read.table
+            && actor.participant == read.participant && actor.subject == read.subject
+            && read.dm == (actor.seat == isocosm_overlay::Seat::Dm))
     }
 }
 
@@ -91,6 +106,7 @@ pub(crate) fn overlay(ui: &UiState) -> Option<UiChild> {
     let mut body: Vec<UiChild> = vec![Box::new(el("label", (text("Authored party handle "), lens(
         |field: &mut TextInput| caret_text_field(field, &[]), |ui: &mut UiState| &mut ui.native.party.handle))))];
     if let Some(read) = ui.native_party_reading() {
+        body.extend(knowledge::panel(ui,read));
         body.extend(crate::native_journey::panel(ui,read));
         body.extend(crate::native_overmap::panel(ui,read));
         body.extend(crate::native_hooks::panel(ui,read));

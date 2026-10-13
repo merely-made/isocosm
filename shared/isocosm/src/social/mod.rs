@@ -15,6 +15,7 @@ use serde::{Deserialize, Serialize};
 
 mod answer;
 mod asks;
+mod companions;
 mod deed;
 mod settlement;
 mod terms;
@@ -22,6 +23,7 @@ pub mod willing;
 
 pub use answer::{Premise, Response, Ruling, RulingKind, Standing, Verdict, cited_deeds};
 pub use asks::standing_in;
+pub use companions::{AgreementLife, CompanionPolicy, CompanionProof, CompanionRule, Direction, Range, StandingRule};
 pub use deed::{
     AGREEMENT_ENDED, AGREEMENT_FORMED, Deed, DeedKind, DeedRule, OFFER_ACCEPTED, OFFER_COUNTERED,
     OFFER_REFUSED, PERFORMED, RECORDED, RENEGOTIATED, Vocabulary, processes, vocabulary,

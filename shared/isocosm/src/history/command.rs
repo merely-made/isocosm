@@ -156,4 +156,6 @@ pub enum Command {
         carry: crate::graft::Carry, selections: Vec<crate::projects::DebitSelection>,
     },
     Custody(crate::custody::Change),
+    /// An explicit authored grouping; learning its identity is a separate act876.
+    Location { location: Location },
 }

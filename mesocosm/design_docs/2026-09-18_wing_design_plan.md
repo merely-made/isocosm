@@ -2,7 +2,26 @@
 
 **Date:** 2026-09-18
 
-**Latest caller/continuation assembly, 2026-10-13:** ordinary VTT physical
+**Current migration choices, 2026-10-13:** answers871,872,873,875,876,877
+and878 are settled and recorded verbatim.874 remains OPEN: neither standard
+was selected. Clarification879 presents the mechanical-effect and native
+operation-family distinction together; next unused880. Source placement
+adds explicit held map/Location statements and exact disclosure revisions,
+actual terrain observation and a native Location author door that grants no
+knowing, authored native defensive expressions over the
+final pass-granted bite, and a saved authenticated whole-world end that
+allows Watch or a separately requested world. Native social companion
+predicates use actual agreements or standing, with complete native absence
+required for Eponym's another-life fallback. One finite joint native ecology
+witness is required before a newly generated world is offered. Explicit
+supplied-candidate startup retains its complete authored rules; admission
+still waits for874. Protocol/ALPN20 carries the appended grammar. Missing
+authored inputs refuse; old unmarked saves retain their recorded meaning.
+C9 retains historical exact-source certification. C10/C11/full V2/E3/M4 and
+final-state verification remain open. Source only: no compiler, tests,
+fixtures, probes or tuning under826.
+
+**Earlier caller/continuation assembly, 2026-10-13:** ordinary VTT physical
 storylet Play requires its complete composed supplement, and the standalone
 pane reads actual participant-attended events. Mesocosm startup/pointer
 consumers now name real mode, Start, clock-sourced seed and current native
@@ -10902,6 +10921,91 @@ what later sections derive from.
      respect869's sharp clipping and do not reveal undisclosed regions.
      All six answers were delivered together under864. No question remains
      pending from this round; the next unused question is871.
+
+871. **Party map disclosures retain named known snapshots and their revisions.**
+     2026-10-13, collected migration reply under864.
+     Question: "How should terrain, conditions and faction claims enter the party’s recorded map?"
+     Options: (1) "Explicitly disclose named terrain windows and condition/claim snapshots the body knows; retain source revisions and require a new disclosure for changes (Recommended)"; (2) "Disclose a complete snapshot of a known site"; (3) "Use separate DM-authored cartographic disclosures".
+     Mark: "Explicitly disclose named terrain windows and condition/claim snapshots the body knows; retain source revisions and require a new disclosure for changes (Recommended)"
+     Disclose only explicitly named windows and snapshots supported by the body's native knowledge.
+     Keep authenticated source revisions; later native changes do not silently refresh the party's record.
+
+872. **Defensive tissue uses an authored native threshold expression.**
+     2026-10-13, collected migration reply under864.
+     Question: "Plate-shaped parts support fixation and are not necessarily armour. What determines the bite threshold for explicitly defensive tissue?"
+     Options: (1) "An authored native expression over designated defensive tissue and its modifiers (Recommended)"; (2) "A fixed authored threshold for each defensive kind"; (3) "An authored geometry law for designated armour".
+     Mark: "An authored native expression over designated defensive tissue and its modifiers (Recommended)"
+     Defence is explicitly designated and its threshold is an authored native expression.
+     Plate geometry alone establishes no armour; inputs and modifier layers remain declared.
+
+873. **Defence compares the final pass-granted bite on the protected part.**
+     2026-10-13, collected migration reply under864.
+     Question: "Several eaters can receive smaller bites than planned. Which amount should be compared with the protected part’s defensive threshold?"
+     Options: (1) "The final native pass-granted bite on that protected part (Recommended)"; (2) "The planned bite before sharing matter"; (3) "Each defensive profile declares its comparator and scope".
+     Mark: "The final native pass-granted bite on that protected part (Recommended)"
+     Compare the actual shared-pass grant on that protected part, rather than the planned request.
+     Admission and conserved matter must use that same resolved grant.
+
+874. **Ecological independence criterion remains unsettled.**
+     2026-10-13, collected migration reply under864; OPEN, not ruled.
+     Question: "Renaming a definition changes hashes and random draws without necessarily changing mechanics. What establishes that an extra ecological noun adds an independent mechanic?"
+     Options: (1) "Canonical native formulas and typed inputs, outputs and costs, ignoring rename-only differences (Recommended)"; (2) "Distinct fundamental evaluator families; parameterized copies do not add mechanics"; (3) "Measured responses across authored input and observable axes".
+     Mark: "1 and 2 both sound interesting... hmmm"
+     No independence criterion was selected; canonical formula signatures and evaluator families remain alternatives.
+     Explain their distinction using current native definitions before a grouped clarification; do not infer a combined rule.
+
+875. **Generated-world offers require one joint actual native witness.**
+     2026-10-13, collected migration reply under864.
+     Question: "Before a generated world is offered, must energy capture, matter return, reproduction and counterplay work together in one actual native witness?"
+     Options: (1) "One joint native witness with an authored finite horizon, followed by ecology admission (Recommended)"; (2) "Separate native witnesses from the same world, then joint ecology admission"; (3) "Verified reachability including guards, targets, bodies and costs, then ecology admission".
+     Mark: "One joint native witness with an authored finite horizon, followed by ecology admission (Recommended)"
+     Require one joint actual native witness over a supplied finite horizon, followed by ecology admission before offering the generated world.
+     Separate demonstrations or structural reachability alone do not satisfy the selected gate; running verification remains deferred826 during migration.
+
+876. **Location identity is learned explicitly, with membership and extent separate.**
+     2026-10-13, collected migration reply under864.
+     Question: "Survival knows sites but has no known Location IDs. How should a body learn the identity of a Location grouping several sites? Undisclosed boundaries still clip sharply."
+     Options: (1) "Explicit native observation or telling establishes identity; member sites and extent are disclosed separately (Recommended)"; (2) "Knowing any member site establishes Location identity; extent stays hidden"; (3) "Establish identity only after all member sites are known".
+     Mark: "Explicit native observation or telling establishes identity; member sites and extent are disclosed separately (Recommended)"
+     Use actual native observation or telling to establish Location identity.
+     Knowing a site does not infer its Location; identity does not reveal membership or extent, and unknown boundaries still clip sharply.
+
+877. **Companion succession uses an authored native social agreement or standing predicate.**
+     2026-10-13, collected migration reply under864.
+     Question: "Ruling186 requires a companion’s bond to the body that died. What native fact identifies an eligible bonded companion for Eponym succession?"
+     Options: (1) "An explicitly authored native body-to-body relation, with its key and direction specified (Recommended)"; (2) "An explicitly authored native social agreement or standing predicate".
+     Mark: "An explicitly authored native social agreement or standing predicate"
+     Companion eligibility is an explicitly authored native social agreement or standing predicate over the deceased body and candidate.
+     Do not substitute a body-to-body relation or participant-to-critter directing bond; fallback requires establishing absence under the declared predicate.
+
+878. **Total collapse uses an explicitly authored native global predicate.**
+     2026-10-13, collected migration reply under864.
+     Question: "Ruling230 governs total world collapse, but native code only defines regional collapse. What should count as total collapse? Complementary regional losses can leave every trophic level present globally."
+     Options: (1) "A historically occupied trophic level has no biomass anywhere in the world"; (2) "No living ecological biomass remains anywhere"; (3) "An explicitly authored native global collapse predicate".
+     Mark: "An explicitly authored native global collapse predicate"
+     Total collapse uses an explicit native global predicate; do not hardcode regional conjunction, missing trophic level or zero biomass.
+     Missing declaration does not invent a threshold; the chosen consequence remains230 and owner replacement still needs its actual caller.
+
+     Seven choices are settled;874 remains open. Next unused question879.
+     Source migration continues under826; no compiler/tests/fixtures/tuning
+     are authorised merely by answering these design questions.
+
+879. **Ecological independence clarification: pending, not ruled.**
+     Asked2026-10-13 following874's unresolved interest in both standards.
+     Question: "For 874, the two standards differ: changing costs, timing or
+     material flows can change mechanics while still using the same native
+     operation. Requiring a new operation family is stricter. Which should
+     establish that an extra ecological noun adds an independent mechanic?"
+     Options: "Require a distinct authored mechanical effect; record its
+     operation family too"; "Require a distinct native operation family";
+     "Make the standard an authored ecology setting, recording both kinds
+     of evidence". No answer yet. Source evidence: current processes share
+     the native Process/Effect/Amount interpreter; costs, cadence, typed
+     flows and provenance can vary within one operation family. Names,
+     hashes or changed random draws prove neither standard.874 remains OPEN.
+     Consequence: continue settled source; hold ecological independence
+     and generated-world admission until the authored criterion is decided.
+     Next unused880. Tests and tuning remain deferred826.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

@@ -133,6 +133,14 @@ fn main() {
                 Some(path) => config.spread = Some(path),
                 None => fail("--spread wants explicit authored founding and spread steps"),
             },
+            "--ecology-witness" => match args.next().map(PathBuf::from) {
+                Some(path) => config.ecology_witness = Some(path),
+                None => fail("--ecology-witness wants complete authored joint native witness inputs"),
+            },
+            "--ecology-candidate" => match args.next().map(PathBuf::from) {
+                Some(path) => config.ecology_candidate = Some(path),
+                None => fail("--ecology-candidate wants a complete explicit generated candidate and joint witness"),
+            },
             "--graft" => match args.next().map(PathBuf::from) {
                 Some(path) => config.graft = Some(path),
                 None => fail("--graft wants a complete native Carry input for the played normative body"),
@@ -161,6 +169,11 @@ fn main() {
     if unchosen_explicit && (config.watch.is_some() || config.spread.is_some() || replay.is_some() || bench) {
         fail("--unchosen-seed requires an ordinary new generated world");
     }
+    if config.ecology_candidate.is_some() && (config.watch.is_some() || config.spread.is_some()
+        || config.ecology_witness.is_some() || config.spatial.is_some() || replay.is_some() || bench
+        || founding_explicit || unchosen_explicit || config.start.is_some() || config.mode.is_some()) {
+        fail("--ecology-candidate supplies its full founding, lifecycle and physical provider; competing startup inputs refuse");
+    }
     if config.start.is_some() && (config.watch.is_some() || config.spread.is_some() || replay.is_some() || bench) {
         fail("--start requires an ordinary new generated world; authored spread declares its own start");
     }
@@ -168,10 +181,14 @@ fn main() {
         fail("--mode applies to ordinary new or watched worlds; authored spread declares its own mode");
     }
     config.unchosen_seed = unchosen_explicit || (!seed_explicit && config.watch.is_none()
-        && config.spread.is_none() && replay.is_none() && !bench);
+        && config.spread.is_none() && config.ecology_candidate.is_none() && replay.is_none() && !bench);
     if config.spread.is_some()
         && (config.watch.is_some() || replay.is_some() || bench || founding_explicit) {
         fail("--spread supplies its founding and cannot combine with --watch, --replay, --bench, --seed or --population");
+    }
+    if config.ecology_witness.is_some() && (config.watch.is_some() || config.spread.is_some()
+        || config.spatial.is_some() || replay.is_some() || bench) {
+        fail("--ecology-witness requires a new generated world and contains its own complete spatial provider");
     }
     if let Some(path) = replay {
         std::process::exit(match played::replay(&path) {
@@ -250,6 +267,8 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --spatial PATH  load explicit authored poses and operation geometry
   --graft PATH    apply an explicit native Carry input after spatial admission
   --spread PATH   found from explicit native stocks/rules and logged author spread steps
+  --ecology-witness PATH  require one authored joint native witness before a new-world offer
+  --ecology-candidate PATH  supply complete authored generated rules, lifecycle and joint witness
   --scenario PATH drive the run from a text scenario and exit 1 if it fails
   --bench         open the bench over a native session (1280x900)
   --dev           enable the dev lane and its keys (DT1, DT2, DT3)
@@ -268,7 +287,7 @@ at a checkpoint the keys narrow:
 at the boundary the trait board comes up:
   Tab    move among the offers
   R      commit the selected offer
-when the lineage ends, or while watching:
+when the lineage or authored global world ends, or while watching:
   Up/Down or Tab select a native-visible other body, Watch, or New World
   Enter or click the pane applies the selected choice; W watches, N requests
   a new world. Esc saves the configured trace and quits; a new run starts

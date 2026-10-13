@@ -18,11 +18,12 @@ pub(super) struct Pane {
 }
 
 fn active(phase: LoopPhase) -> bool {
-    matches!(phase, LoopPhase::LineageEnded | LoopPhase::Watching | LoopPhase::NewWorldRequested)
+    matches!(phase, LoopPhase::LineageEnded | LoopPhase::Watching | LoopPhase::NewWorldRequested | LoopPhase::WorldEnded)
 }
 
 fn choices(reading: &LoopReading) -> Vec<LoopAnswer> {
     if reading.phase == LoopPhase::NewWorldRequested { return vec![LoopAnswer::Watch]; }
+    if reading.phase == LoopPhase::WorldEnded { return vec![LoopAnswer::Watch, LoopAnswer::NewWorld]; }
     if !matches!(reading.phase, LoopPhase::LineageEnded | LoopPhase::Watching) {
         return Vec::new();
     }
@@ -97,14 +98,18 @@ impl Host {
         }
         let selected = self.continuation.selected.as_ref().map_or("Nothing selected".into(), |answer| self.continuation_label(answer));
         Some(Succession {
-            headline: if reading.phase == LoopPhase::Watching { "Watching this world" } else { "Your lineage has ended" }.into(),
+            headline: match reading.phase {
+                LoopPhase::Watching if reading.world_ended_at.is_some() => "Watching this ended world",
+                LoopPhase::Watching => "Watching this world",
+                LoopPhase::WorldEnded => "This world has ended as a game", _ => "Your lineage has ended" }.into(),
             facts: vec![("choose".into(), selected),
                 ("other bodies".into(), format!("{} offered in the current native view", reading.lineages.len())),
                 ("status".into(), self.continuation.notice.clone().unwrap_or_else(||
-                    if reading.phase == LoopPhase::Watching { "The native world keeps running.".into() }
+                    if let Some(tick) = reading.world_ended_at { format!("The authored world predicate ended the game at tick {tick}.") }
+                    else if reading.phase == LoopPhase::Watching { "The native world keeps running.".into() }
                     else { "The world waits for your choice.".into() }))],
             stay: "[Up/Down / Tab] select; [Enter / click panel] apply".into(),
-            take: Some(if reading.phase == LoopPhase::LineageEnded { "[W] watch; [N] request new world" }
+            take: Some(if matches!(reading.phase, LoopPhase::LineageEnded | LoopPhase::WorldEnded) { "[W] watch; [N] request new world" }
                 else { "[N] request new world" }.into()),
         })
     }

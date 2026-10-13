@@ -58,7 +58,19 @@ impl Simulation {
         if !visible.sites.contains(&site) { return Err("close-up site is outside native awareness".into()); }
         let watched = match held.examined {
             Some(Region::Site(id)) => id == site,
-            Some(Region::Location(id)) => self.state.locations.get(&id).is_some_and(|l| l.sites.contains(&site)),
+            Some(Region::Location(id)) => {
+                let actual = self.state.locations.get(&id).is_some_and(|l| l.sites.contains(&site));
+                if mode == Mode::Creative { actual } else {
+                    let observer = self.plays(participant).ok_or("Location close-up has no actual played observer")?;
+                    let known = self.known_locations(observer)?;
+                    let location = known.get(&id).ok_or("Location identity has not been observed or told to this body")?;
+                    actual && location.members.iter().chain(&location.extent).any(|record| match &record.statement {
+                        crate::knowing::statements::Statement::LocationMembers { sites, .. }
+                            | crate::knowing::statements::Statement::LocationExtent { sites, .. } => sites.contains(&site),
+                        _ => false,
+                    })
+                }
+            },
             None => false,
         };
         if !watched { return Err("close-up site is not this window's admitted region".into()); }

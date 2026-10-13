@@ -10,7 +10,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 mod read;
 mod types;
-pub use read::{OvermapReading, CellReading, BiomeReading, RouteReading, read_overmap};
+pub use read::{OvermapReading, CellReading, BiomeReading, ClaimReading, RouteReading, read_overmap};
 pub use types::{Presentation, ViewSettings, Cell, Biome, Thumbnail, OvermapInput, Color};
 
 pub fn validate_presentation(session: &Session, presentation: &Presentation) -> Result<(), String> {

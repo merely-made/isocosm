@@ -71,13 +71,34 @@ impl Parties for Staged<'_> {
         match self.routed(who, key, amount, false) {
             Some(done) => done,
             None => debit(self.ledger(who)?, key, amount),
+        }?;
+        if self.stage.scheduled && self.sim.ecology_spec(&self.stage.process).is_some() {
+            if let Some(holder) = self.holder(who) {
+                *self.stage.ecology_debits.entry((holder, key.into())).or_default() += u128::from(amount);
+            }
         }
+        Ok(())
     }
     fn give(&mut self, who: Binding, key: &str, amount: u64) -> Result<()> {
+        let holder = self.holder(who);
+        let start = self.stage.routed.len();
         match self.routed(who, key, amount, true) {
             Some(done) => done,
             None => credit(self.ledger(who)?, key, amount),
+        }?;
+        if amount > 0 && self.stage.scheduled && self.sim.ecology_spec(&self.stage.process).is_some() {
+            if let Some(holder) = holder {
+                let debit = self.stage.ecology_debits.entry((holder, key.into())).or_default();
+                let recycled = (*debit).min(u128::from(amount)) as u64;
+                *debit -= u128::from(recycled);
+                let parts = self.stage.routed[start..].iter().filter(|row| row.give && row.key == key)
+                    .flat_map(|row| row.parts.iter().copied()).collect();
+                self.stage.ecology_credits.push(crate::ecology::Credit {
+                    holder, account: key.into(), amount, fresh: amount - recycled, parts,
+                });
+            }
         }
+        Ok(())
     }
     fn body(&mut self, who: Binding) -> Result<&mut Entity> {
         let id = self.sim.bound(self.stage.actor, self.stage.target, who)?;

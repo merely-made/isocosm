@@ -7,11 +7,18 @@ use crate::{Result, Session, Command, Simulation, rules::Rules, schema::*, asser
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+mod details;
+pub use details::Details;
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Change {
     Join { participant: Id, party: Key, member: Id },
     Leave { participant: Id, party: Key, member: Id },
     Disclose { participant: Id, party: Key, member: Id, sites: BTreeSet<Id>, events: BTreeSet<Key> },
+    DiscloseDetails { participant: Id, party: Key, member: Id, sites: BTreeSet<Id>, events: BTreeSet<Key>, held: BTreeSet<Key> },
+    ObserveStatement { participant: Id, member: Id, source_note: Key },
+    Tell { participant: Id, member: Id, hearer: Id, held_note: Key },
+    ObserveTerrain { participant: Id, member: Id, observation: crate::knowing::terrain::Observation },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -27,16 +34,23 @@ pub struct Route { pub from: Id, pub to: Id, pub travel: Tick }
 pub struct Disclosure {
     pub participant: Id, pub party: Key, pub member: Id, pub tick: Tick,
     pub places: Vec<Place>, pub routes: Vec<Route>, pub events: BTreeSet<Key>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub details: Option<Details>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Outcome { Joined(Membership), Left(Membership), Disclosed(Disclosure) }
+pub enum Outcome {
+    Joined(Membership), Left(Membership), Disclosed(Disclosure),
+    Learned { member: Id, record: Key }, Told { member: Id, hearer: Id, record: Key },
+}
 
 /// A read of accepted records. No shared fact becomes a member's native knowing.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SharedMap {
     pub party: Key, pub members: Vec<Membership>, pub places: BTreeMap<Id, Place>,
     pub routes: BTreeSet<Route>, pub events: BTreeSet<Key>, pub records: Vec<Key>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub details: BTreeMap<Key, Details>,
 }
 
 pub fn validate(rules: &Rules) -> Result<()> {
@@ -83,9 +97,27 @@ pub fn knowledge(sim: &Simulation, member: Id) -> Result<crate::directing::readi
 
 impl Simulation {
     pub(crate) fn party_change(&mut self, change: &Change) -> Result<String> {
+        let learned = match change {
+            Change::ObserveStatement { participant, member, source_note } => {
+                self.participant_observer(*participant, *member)?;
+                Some(Outcome::Learned { member: *member, record: self.observe_statement(*member, source_note)? })
+            },
+            Change::ObserveTerrain { participant, member, observation } => {
+                self.participant_observer(*participant, *member)?;
+                Some(Outcome::Learned { member: *member, record: self.observe_terrain(*member, observation)? })
+            },
+            Change::Tell { participant, member, hearer, held_note } => {
+                self.participant_observer(*participant, *member)?;
+                Some(Outcome::Told { member: *member, hearer: *hearer, record: self.tell_detail(*member, *hearer, held_note)? })
+            },
+            _ => None,
+        };
+        if let Some(outcome) = learned { return serde_json::to_string(&outcome).map_err(|e| e.to_string()); }
         let (participant, party, member) = match change {
             Change::Join { participant, party, member } | Change::Leave { participant, party, member }
-            | Change::Disclose { participant, party, member, .. } => (*participant, party, *member),
+            | Change::Disclose { participant, party, member, .. }
+            | Change::DiscloseDetails { participant, party, member, .. } => (*participant, party, *member),
+            _ => unreachable!("knowledge variants returned above"),
         };
         let held = relation(self, participant, party, member)?;
         let outcome = match change {
@@ -99,7 +131,7 @@ impl Simulation {
                 if !self.state.relations.remove(&held) { return Err("participant has no such earlier party membership".into()); }
                 Outcome::Left(Membership { participant, member })
             },
-            Change::Disclose { sites, events, .. } => {
+            Change::Disclose { sites, events, .. } | Change::DiscloseDetails { sites, events, .. } => {
                 if self.plays(participant) != Some(member) || !self.state.relations.contains(&held) {
                     return Err("only the opted-in currently played body may disclose its map".into());
                 }
@@ -111,9 +143,11 @@ impl Simulation {
                 let places = sites.iter().map(|&site| Place { site, authored: self.state.sites[&site].authored.clone() }).collect();
                 let routes = sites.iter().flat_map(|from| self.state.sites[from].routes.iter()
                     .filter(|r| sites.contains(&r.to)).map(move |r| Route { from: *from, to: r.to, travel: r.travel })).collect();
+                let details = match change { Change::DiscloseDetails { held, .. } => Some(Details::held(self, member, held)?), _ => None };
                 Outcome::Disclosed(Disclosure { participant, party: party.clone(), member, tick: self.state.tick,
-                    places, routes, events: events.clone() })
+                    places, routes, events: events.clone(), details })
             },
+            _ => unreachable!("knowledge variants returned above"),
         };
         serde_json::to_string(&outcome).map_err(|error| error.to_string())
     }
@@ -122,9 +156,13 @@ impl Simulation {
 /// The caller borrows an already authenticated Session. This getter never replays another world.
 pub fn shared_map(session: &Session, party: &str) -> Result<SharedMap> {
     let mut map = SharedMap { party: party.into(), members: members(&session.sim, party)?,
-        places: BTreeMap::new(), routes: BTreeSet::new(), events: BTreeSet::new(), records: Vec::new() };
+        places: BTreeMap::new(), routes: BTreeSet::new(), events: BTreeSet::new(), records: Vec::new(), details: BTreeMap::new() };
     for entry in &session.entries {
-        let Command::Party(Change::Disclose { participant, party: declared, member, sites, events }) = &entry.command else { continue; };
+        let (participant, declared, member, sites, events, held) = match &entry.command {
+            Command::Party(Change::Disclose { participant, party, member, sites, events }) => (participant, party, member, sites, events, None),
+            Command::Party(Change::DiscloseDetails { participant, party, member, sites, events, held }) => (participant, party, member, sites, events, Some(held)),
+            _ => continue,
+        };
         if declared != party { continue; }
         let Outcome::Disclosed(record) = serde_json::from_str(&entry.outcome).map_err(|error| error.to_string())? else {
             return Err("party disclosure has no accepted native outcome".into());
@@ -134,6 +172,15 @@ pub fn shared_map(session: &Session, party: &str) -> Result<SharedMap> {
             || record.tick != entry.tick || named != *sites || record.places.len() != sites.len()
             || record.events != *events || record.routes.iter().any(|r| !sites.contains(&r.from) || !sites.contains(&r.to)) {
             return Err("party record differs from its accepted native disclosure".into());
+        }
+        match (&record.details, held) {
+            (Some(details), Some(held)) if details.ids()? == *held
+                && details.statements.iter().all(|r| r.holder == *member)
+                && details.terrain.iter().all(|r| r.holder == *member) => {
+                    map.details.insert(entry.id.clone(), details.clone());
+                },
+            (None, None) => {},
+            _ => return Err("rich party record differs from its named held sources".into()),
         }
         // 858: leaving withdraws membership, not already disclosed records.
         for place in record.places { map.places.insert(place.site, place); }

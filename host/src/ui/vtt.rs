@@ -19,7 +19,7 @@ impl App {
         Ok(())
     }
 
-    fn vtt_send(&mut self, key: u64, intent: VttIntent) -> Result<(), String> {
+    pub(super) fn vtt_send(&mut self, key: u64, intent: VttIntent) -> Result<(), String> {
         let local = self.windows.get(&key).ok_or("window is closed")?;
         let access = local.native.projection()?.access;
         let tick = self.world.read(|session| session.sim.state().tick)?;

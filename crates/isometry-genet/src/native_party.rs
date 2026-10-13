@@ -37,6 +37,11 @@ pub(crate) fn envelope(snapshot: &GameSnapshot, sender: TableSender, request: Pa
             if access.subject != Some(EntityHandle(member)) { return Err("party disclosure names a changed played body".into()); }
             isometry_campaign::native::party::disclose_known(session, access.participant.0, party)?
         },
+        PartyRequest::Decision { party, member, action } => {
+            if access.subject != Some(EntityHandle(member)) { return Err("knowledge input names a changed played body".into()); }
+            PartyIntent { party, member: EntityHandle(member), action }
+        },
+        PartyRequest::AuthorStatement(_) | PartyRequest::AuthorLocation(_) => return Err("sources use the actual DM author admission door".into()),
         PartyRequest::Read { .. } | PartyRequest::ReadAt { .. } => return Err("read-only party maps submit no command".into()),
         PartyRequest::Journey(_) => return Err("joint journey uses its separate actual native admission door".into()),
         PartyRequest::Presentation(_) => return Err("overmap presentation uses the explicit host metadata door".into()),
@@ -44,6 +49,18 @@ pub(crate) fn envelope(snapshot: &GameSnapshot, sender: TableSender, request: Pa
     };
     Ok(IntentEnvelope { participant: access.participant, tick: Tick(session.sim.state().tick),
         intent: Intent::Game(VttIntent::Party(input)) })
+}
+
+pub(crate) fn statement_admission(snapshot: &GameSnapshot,
+    input: &isometry_campaign::native::party::StatementInput) -> Result<isonetry::NativeTableAdmissionInput, String> {
+    let (campaign, access) = context(snapshot, TableSender::Host)?;
+    let table = snapshot.native_table.as_ref().ok_or("statement source needs the admitted native table")?;
+    let batch = isometry_campaign::native::party::statement_admission(campaign.table_session(), &table.game, access, input)?;
+    Ok(isonetry::NativeTableAdmissionInput {
+        expected_native: snapshot.native.as_ref().ok_or("statement source needs its actual native world")?.cursor()?,
+        expected_table: table_digest(Some(table)),
+        participant: isometry_campaign::native::ParticipantInput::Existing(access.participant.0), batch,
+    })
 }
 
 pub(crate) fn read(snapshot: &GameSnapshot, sender: TableSender, party: &str) -> Result<PartyView, String> {
@@ -59,8 +76,9 @@ pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party
     let shared = access.seat != Seat::Player || !own.is_empty();
     let mut map = if shared { isometry_campaign::native::party::read_party(session, access, party)? }
         else { isocosm::party::SharedMap { party: party.into(), members: own,
-            places: Default::default(), routes: Default::default(), events: Default::default(), records: Vec::new() } };
+            places: Default::default(), routes: Default::default(), events: Default::default(), records: Vec::new(), details: Default::default() } };
     let table = snapshot.native_table.as_ref().ok_or("journey read needs its admitted endpoint table")?;
+    let knowledge = isometry_campaign::native::party::read_knowledge(session, &table.game, access)?;
     let overmap = if shared { Some(isometry_campaign::native::overmap::read_overmap(session,
         &table.game,access,party,settings)?) } else { None };
     if let Some(read) = &overmap { map = read.map.clone(); }
@@ -103,7 +121,8 @@ pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party
         source: isocosm::digest(snapshot.native.as_ref().ok_or("no native campaign")?),
         table: table_digest(snapshot.native_table.as_ref()), participant: access.participant.0,
         subject: access.subject.map(|id| id.0), shared, map, here, events,
-        dm,journeys,journey_authoring,journey_quote:None,overmap,hooks,polities };
+        dm,journeys,journey_authoring,journey_quote:None,overmap,hooks,polities,knowledge,
+        location_authoring: if dm { session.sim.state().locations.clone() } else { Default::default() } };
     Ok(view)
 }
 
@@ -159,6 +178,37 @@ impl App {
             return;
         }
         let Some(request) = request else { return; };
+        if let PartyRequest::AuthorLocation(input) = request {
+            let before = self.snapshot_of(ctx.runner.state());
+            self.ensure_history_origin(&before);
+            let mut authority = HostSession::with_history(before, self.campaign.clone(), self.history.clone());
+            let result = authority.native_location(&input);
+            let accepted = authority.state().clone();
+            self.history = authority.history().clone();
+            self.journal = accepted.journal.clone();
+            ctx.runner.update(|ui| {
+                ui.apply_snapshot(accepted);
+                ui.native.party.reading = None;
+                ui.status = match result { Ok(_) => "admitted native Location; read its actual identity before authoring a learning source".into(), Err(why) => why };
+            });
+            return;
+        }
+        if let PartyRequest::AuthorStatement(input) = request {
+            let before = self.snapshot_of(ctx.runner.state());
+            self.ensure_history_origin(&before);
+            let mut authority = HostSession::with_history(before, self.campaign.clone(), self.history.clone());
+            let result = statement_admission(authority.state(), &input)
+                .and_then(|input| authority.commit_native_table_admission(&input));
+            let accepted = authority.state().clone();
+            self.history = authority.history().clone();
+            self.journal = accepted.journal.clone();
+            ctx.runner.update(|ui| {
+                ui.apply_snapshot(accepted);
+                ui.native.party.reading = None;
+                ui.status = match result { Ok(_) => "admitted native statement source; its holder must explicitly learn it".into(), Err(why) => why };
+            });
+            return;
+        }
         if let PartyRequest::ReadAt { party,settings } = request {
             let snapshot = self.snapshot_of(ctx.runner.state());
             let result = read_with_settings(&snapshot,TableSender::Host,&party,Some(settings));

@@ -42,6 +42,7 @@ impl Host {
         if self.try_camera_key(key) || self.try_inspection_key(key) || self.try_dev_key(key) {
             return;
         }
+        if self.continuation_open() { return; }
         let intent = match self.board_key(key) {
             Some(taken) => taken,
             None => match self.runtime.checkpoint() {

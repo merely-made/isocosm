@@ -29,6 +29,7 @@ use crate::succession::Checkpoint;
 pub mod placing;
 pub mod author_spread;
 pub mod graft;
+pub mod ecology;
 pub(crate) mod translate;
 mod loop_state;
 pub use translate::Refusal;
@@ -122,6 +123,7 @@ pub struct Runtime {
 
 impl Runtime {
     pub fn new(founded: Founded, ticks_per_second: u32) -> Result<Self, String> {
+        ecology::fresh_offer(&founded)?;
         let mut interim = Interim::found(
             founded.genesis.clone(),
             founded.start,
@@ -221,7 +223,8 @@ impl Runtime {
 
     fn held(&self) -> bool {
         self.checkpoint.is_some() || self.spatial.continuation.as_ref()
-            .is_some_and(|saved| saved.phase == crate::continuation::LoopPhase::NewWorldRequested)
+            .is_some_and(|saved| matches!(saved.phase,
+                crate::continuation::LoopPhase::NewWorldRequested | crate::continuation::LoopPhase::WorldEnded))
     }
 
     /// Applies queued answers while a question holds; anything else waits.

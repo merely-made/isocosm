@@ -68,6 +68,13 @@ impl<'a> BorrowedInterim<'a> {
         let mut out: Vec<_> = children(self.session).into_iter()
             .filter(|c| !before.contains(c))
             .map(|child| Happening::Born { parent: played, child }).collect();
+        if self.session.sim.global_collapse()?.is_some_and(|reading| reading.collapsed) {
+            if !self.session.sim.state().population.get(played).is_some_and(|e| e.alive) {
+                out.push(Happening::Died { critter: played, next: None });
+            }
+            out.push(Happening::WorldEnded { tick: now });
+            return Ok((out, flows));
+        }
         if !self.session.sim.state().population.get(played).is_some_and(|e| e.alive) {
             let next = self.next_life(played);
             if let Some(next) = next { self.take(next)?; }

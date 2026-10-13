@@ -7,6 +7,13 @@ use crate::{Founding, Result, generate::process, rules::*, simulation::Genesis};
 use std::collections::BTreeMap;
 
 mod admission;
+mod joint;
+mod validate;
+mod evidence;
+mod run;
+pub use joint::*;
+pub use run::run_joint;
+pub(crate) use evidence::JointCapture;
 pub(crate) use admission::validate_material_provenance;
 
 pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {

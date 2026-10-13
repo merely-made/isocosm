@@ -56,7 +56,8 @@ enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch), Play(VttInt
     Physical(super::physical_map::PhysicalMapInput), Institution(super::institutions::InstitutionInput),
     Item(super::items::ItemInput), Graft(super::graft::GraftInput),
     ProjectCarry(super::items::ProjectCarryConfig),
-    ComposedStorylet(super::storylets::ComposedStoryletInput) }
+    ComposedStorylet(super::storylets::ComposedStoryletInput), Statement(super::party::StatementInput),
+    Location(super::party::LocationInput) }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -356,6 +357,8 @@ fn submit_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: Ord
     super::movement::current_access(session, access)?;
     let input: Input = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
     match input {
+        Input::Location(input) => super::party::submit_location(session, game, access, &input),
+        Input::Statement(input) => super::party::submit_statement_source(session, game, access, &input),
         Input::ProjectCarry(input) => Ok(("configured native project carry providers".into(),
             super::items::submit_project_carry_config(session, game, access, &input)?)),
         Input::Graft(input) => super::graft::submit_graft(session, game, access, &input),
@@ -422,6 +425,8 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
         Input::Pack(_) => return Err("pack activation requires the actual DM seat cut".into()),
         Input::Storylet(_) => return Err("storylet activation requires the actual DM seat cut".into()),
         Input::ComposedStorylet(_) => return Err("storylet composition requires the actual DM seat cut".into()),
+        Input::Statement(_) => return Err("statement sources require the actual DM assertion seat cut".into()),
+        Input::Location(_) => return Err("Location authoring requires the actual DM seat cut".into()),
         Input::Physical(_) => return Err("physical map edits require the actual native seat and played body".into()),
         Input::Institution(_) => return Err("institution operations require the actual native seat and played body".into()),
         Input::Item(_) => return Err("physical item operations require the actual native seat and played body".into()),

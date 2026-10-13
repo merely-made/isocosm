@@ -42,7 +42,8 @@ pub fn configure_loop(session: &mut Session, game: &mut Game,
     let mut saved = Continuation { version: VERSION, participant: access.participant.0,
         settings: *settings, native: String::new(), native_entries: 0, native_tick: 0, physical: String::new(), phase: LoopPhase::Running,
         checkpoint: None, review: None, proposed: Vec::new(), happenings: Vec::new(),
-        windows: FlowWindows::new(), expression: None, ended_lineage: None, queued: Vec::new(), round: None, origin: None, fault: None };
+        windows: FlowWindows::new(), expression: None, ended_lineage: None, world_end: None,
+        queued: Vec::new(), round: None, origin: None, fault: None };
     saved.seal(session, game);
     game.continuation = Some(saved);
     game.version = game.current_version();
@@ -51,6 +52,11 @@ pub fn configure_loop(session: &mut Session, game: &mut Game,
 
 pub(crate) fn visible(session: &Session, game: &Game, access: OrdinaryAccess) -> Result<View, Refusal> {
     let observer = access.subject.ok_or(Refusal::NotPlayed)?.0;
+    // These global lifecycle controls reveal no bodies or inputs and need no
+    // fabricated eye when an otherwise living observer's binding is unavailable.
+    if game.continuation.as_ref().is_some_and(|saved| saved.world_end.is_some()) {
+        return Ok(View::default());
+    }
     let native = readings::view(&session.sim, observer, Mode::Survival);
     if !game.has_sight_source()
         || !session.sim.state().population.get(observer).is_some_and(|e| e.alive) {
@@ -112,13 +118,13 @@ pub fn answer_loop(session: &mut Session, game: &mut Game,
         },
         LoopAnswer::OtherLineage(critter) => {
             if !matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching)
-                || !offered.lineages.contains(critter) { return Err(Refusal::Unasked); }
+                || saved.world_end.is_some() || !offered.lineages.contains(critter) { return Err(Refusal::Unasked); }
             candidate.command(Command::Take { participant: saved.participant, critter: critter.0 }).map_err(Refusal::Sim)?;
             saved.ended_lineage = None;
             saved.phase = LoopPhase::Running;
         },
-        LoopAnswer::Watch if matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::NewWorldRequested) => saved.phase = LoopPhase::Watching,
-        LoopAnswer::NewWorld if matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching) =>
+        LoopAnswer::Watch if matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::NewWorldRequested | LoopPhase::WorldEnded) => saved.phase = LoopPhase::Watching,
+        LoopAnswer::NewWorld if matches!(saved.phase, LoopPhase::LineageEnded | LoopPhase::Watching | LoopPhase::WorldEnded) =>
             saved.phase = LoopPhase::NewWorldRequested,
         _ => return Err(Refusal::Unasked),
     }

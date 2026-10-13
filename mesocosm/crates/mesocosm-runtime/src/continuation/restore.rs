@@ -6,9 +6,28 @@ use crate::succession::{self, Occasion};
 use isocosm::{Session, Command, lineage::Review};
 
 pub(crate) fn validate_question(saved: &Continuation, session: &Session) -> Result<(), String> {
+    if let Some(stamp) = &saved.world_end {
+        if !matches!(saved.phase, LoopPhase::WorldEnded | LoopPhase::Watching | LoopPhase::NewWorldRequested) {
+            return Err("ended world cannot resume as a played game".into());
+        }
+        let entry = session.entries.iter().find(|entry| entry.id == stamp.entry)
+            .ok_or("saved world end's native entry is absent")?;
+        let ticks = match &entry.command {
+            Command::AdvanceGeometry { ticks, .. } | Command::AdvanceSpatial { ticks, .. }
+                | Command::AdvanceBirthSpatial { ticks, .. } => *ticks,
+            _ => return Err("saved world end must name its real clock entry".into()),
+        };
+        if entry.tick.checked_add(ticks) != Some(stamp.tick) || stamp.tick > session.sim.state().tick {
+            return Err("saved world end names another native clock cut".into());
+        }
+    }
     let held = matches!(saved.phase, LoopPhase::Held | LoopPhase::LineageEnded);
     if held != saved.checkpoint.is_some() {
         return Err("saved loop phase differs from its outstanding question".into());
+    }
+    if saved.phase == LoopPhase::WorldEnded {
+        world_ended(saved, session)?;
+        interval(saved, session)?;
     }
     let Some(checkpoint) = &saved.checkpoint else {
         if saved.review.is_some() || !saved.proposed.is_empty() {
@@ -106,6 +125,26 @@ fn interval(saved: &Continuation, session: &Session) -> Result<(), String> {
 /// Historical source verification occurs on resume or an actual answer,
 /// never by re-running a native world for each frame's borrowed read.
 pub(crate) fn validate_round(saved: &Continuation, session: &Session) -> Result<(), String> {
+    if let Some(stamp) = &saved.world_end {
+        let entry = session.entries.iter().find(|entry| entry.id == stamp.entry)
+            .ok_or("saved world end's native entry is absent")?;
+        let mut at_end = session.before_entry(&stamp.entry)?;
+        if at_end.command(entry.command.clone())? != entry.outcome
+            || at_end.sim.state().tick != stamp.tick
+            || !at_end.sim.global_collapse()?.is_some_and(|reading| reading.collapsed) {
+            return Err("saved world end differs from the accepted historical predicate".into());
+        }
+    }
+    if saved.phase == LoopPhase::WorldEnded {
+        world_ended(saved, session)?;
+        interval(saved, session)?;
+        let source = saved.round.as_ref().ok_or("saved world end has no native round source")?;
+        let before = session.before_entry(&source.first_entry)?;
+        if super::prefix(&before) != source.native || before.sim.plays(saved.participant) != source.played {
+            return Err("saved world end names another authentic native round".into());
+        }
+        return Ok(());
+    }
     let Some(checkpoint) = &saved.checkpoint else { return Ok(()); };
     interval(saved, session)?;
     let source = saved.round.as_ref().ok_or("saved round source absent")?;
@@ -132,6 +171,17 @@ pub(crate) fn validate_round(saved: &Continuation, session: &Session) -> Result<
         Occasion::Epoch(boundary) if before.sim.state().population.get(played)
             .is_some_and(|e| e.lineage == boundary.lineage) => {},
         _ => return Err("saved checkpoint does not belong to this round's actual played member".into()),
+    }
+    Ok(())
+}
+
+fn world_ended(saved: &Continuation, session: &Session) -> Result<(), String> {
+    let tick = session.sim.state().tick;
+    if saved.world_end.as_ref().is_none_or(|source| source.tick != tick)
+        || !session.sim.global_collapse()?.is_some_and(|reading| reading.collapsed)
+        || !saved.happenings.iter().any(|h| matches!(h,
+            isocosm::directing::interim::Happening::WorldEnded { tick: ended } if *ended == tick)) {
+        return Err("saved world end lacks its current authored native predicate".into());
     }
     Ok(())
 }

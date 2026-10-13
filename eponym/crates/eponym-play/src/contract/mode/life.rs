@@ -49,7 +49,7 @@ fn target(checkpoint: LifeCheckpoint) -> Result<Id, String> {
         },
         LifeCheckpoint::Death(death) => match death.next {
             Successor::Another(LifeChoice::Denizen(entity)) => Ok(entity.0),
-            Successor::Companion(_) => Err("companion succession needs an authored native body-to-body bond policy".into()),
+            Successor::Companion(entity) => Ok(entity.0),
             _ => Err("a new world, outsider or birth requires its separate admitted founding door".into()),
         },
     }
@@ -114,6 +114,31 @@ pub fn prepare(session: &Session, bytes: &[u8], subject: SubjectId, checkpoint: 
     Ok(input)
 }
 
+/// Current admitted, visible subjects only. Complete native eligibility decides
+/// fallback; a hidden or unbound companion never becomes an invented subject.
+pub fn death_choices(session: &Session, bytes: &[u8], access: OrdinaryAccess,
+    visible: &isocosm::directing::readings::View) -> Result<Vec<Input>, String> {
+    let prior = previous_take(session, access.participant.0).ok_or("no native life to succeed")?;
+    let Command::Take { critter: predecessor, .. } = &prior.command else { unreachable!() };
+    let predecessor = *predecessor;
+    let dead = session.sim.state().population.get(predecessor).ok_or("predecessor is absent")?;
+    if dead.alive { return Err("death choices require actual native death".into()); }
+    let eligible = eligible_companions(session, predecessor)?;
+    let mode = ModeState::decode(bytes)?.ok_or("life choices need admitted product bindings")?;
+    mode.validate_native(session)?;
+    let mut choices = Vec::new();
+    for binding in &mode.bindings {
+        if !visible.shows(binding.entity) { continue; }
+        let entity = isocosm_overlay::EntityHandle(binding.entity);
+        let next = if eligible.is_empty() { Successor::Another(LifeChoice::Denizen(entity)) }
+            else if eligible.contains(&binding.entity) { Successor::Companion(entity) } else { continue; };
+        let checkpoint = LifeCheckpoint::Death(isocosm_overlay::eponym::Succession {
+            of: isocosm_overlay::EntityHandle(predecessor), next });
+        if let Ok(input) = prepare(session, bytes, binding.subject, checkpoint, access) { choices.push(input); }
+    }
+    Ok(choices)
+}
+
 fn admit(session: &Session, mode: &ModeState, input: &Input, access: OrdinaryAccess) -> Result<Id, String> {
     let target = shape(input)?;
     let participant = access.participant.0;
@@ -146,9 +171,13 @@ fn admit(session: &Session, mode: &ModeState, input: &Input, access: OrdinaryAcc
             let dead = session.sim.state().population.get(death.of.0)
                 .ok_or("the predecessor's native death cannot be established from this cut")?;
             if dead.alive { return Err("the predecessor is still living; ordinary succession is unavailable".into()); }
-            // Another life requires absence of eligible companions (238).
-            // Missing companion vocabulary cannot establish that absence.
-            return Err("succession requires the world's companion eligibility and absence rules".into());
+            let eligible = eligible_companions(session, death.of.0)?;
+            match death.next {
+                Successor::Companion(entity) if eligible.contains(&entity.0) => {},
+                Successor::Another(_) if eligible.is_empty() => {},
+                Successor::Companion(_) => return Err("selected successor does not satisfy the world's native social companion predicate".into()),
+                _ => return Err("another life requires the actual absence of eligible living companions".into()),
+            }
         },
     }
     Ok(target)
@@ -196,7 +225,24 @@ pub fn validate_native(session: &Session, records: &[Record]) -> Result<(), Stri
                     || !matches!(&previous.command, Command::Take { critter, .. } if *critter == death.of.0) {
                     return Err("recorded succession names another native predecessor".into());
                 }
-                return Err("recorded succession has no supported companion eligibility and absence law".into());
+                let before = session.before_entry(&record.taken)?;
+                if source(&before) != record.input.expected_native
+                    || before.sim.plays(record.participant).is_some_and(|id| id != death.of.0) {
+                    return Err("recorded succession differs from its authenticated native source".into());
+                }
+                let dead = before.sim.state().population.get(death.of.0)
+                    .ok_or("recorded predecessor is absent at its exact source")?;
+                if dead.alive { return Err("recorded succession preceded native death".into()); }
+                if !before.sim.state().population.get(record.target)
+                    .is_some_and(|body|body.alive && body.method==Method::Normative) {
+                    return Err("recorded successor was not an existing living native sophont".into());
+                }
+                let eligible = eligible_companions(&before, death.of.0)?;
+                match death.next {
+                    Successor::Companion(entity) if eligible.contains(&entity.0) => {},
+                    Successor::Another(_) if eligible.is_empty() => {},
+                    _ => return Err("recorded successor lacks its source's native social eligibility or absence".into()),
+                }
             },
             _ => {},
         }
@@ -206,4 +252,24 @@ pub fn validate_native(session: &Session, records: &[Record]) -> Result<(), Stri
         return Err("Eponym life history exceeds the native limit".into());
     }
     Ok(())
+}
+
+/// The complete native population establishes absence, including companions
+/// that have no current product binding or are outside a player's awareness.
+/// Missing authored policy refuses; it cannot unlock another-life fallback.
+fn eligible_companions(session: &Session, predecessor: Id) -> Result<BTreeSet<Id>, String> {
+    let policy = session.sim.genesis().rules.companions.as_ref()
+        .ok_or("succession needs an authored native social companion predicate")?;
+    policy.validate(&session.sim.genesis().rules)?;
+    let mut eligible = BTreeSet::new();
+    for (&first, group) in &session.sim.state().population.groups {
+        if !group.entity.alive || group.entity.method != Method::Normative { continue; }
+        let end = first.checked_add(group.count).ok_or("companion identity interval overflows")?;
+        for candidate in first..end {
+            if candidate != predecessor && session.sim.companion(predecessor, candidate)?.eligible {
+                eligible.insert(candidate);
+            }
+        }
+    }
+    Ok(eligible)
 }

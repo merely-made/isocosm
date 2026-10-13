@@ -244,7 +244,9 @@ impl Staged<'_> {
     /// guard chooses (X5). Returns whether it set a feat.
     pub(crate) fn effect(&mut self, e: &Effect, cause: &str) -> Result<bool> {
         let owns = self.begin_owned_operation()?;
+        let prior_ecology = std::mem::take(&mut self.stage.ecology_debits);
         let result = self.effect_inner(e,cause);
+        self.stage.ecology_debits = prior_ecology;
         if owns && result.is_ok() { self.finish_owned_operation()?; }
         result
     }

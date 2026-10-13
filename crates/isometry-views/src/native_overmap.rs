@@ -50,6 +50,18 @@ pub fn native_overmap_atlas(read: &OvermapReading, settings: Option<&ViewSetting
                     cell.at[1] as f32 + 0.25), Size2::new(stripe, 0.5), biome.color);
             }
         }
+        if settings.factions {
+            let claims: Vec<_> = cell.claims.iter().filter(|claim| claim.present && claim.color.is_some()).collect();
+            if !claims.is_empty() {
+                let stripe = 1.0 / claims.len() as f32;
+                for (index, claim) in claims.iter().enumerate() {
+                    if let Some(color) = claim.color {
+                        rectangle(&mut paint, Vec2::new(cell.at[0] as f32 + stripe * (index as f32 + 0.5),
+                            cell.at[1] as f32 + 0.75), Size2::new(stripe, 0.5), color);
+                    }
+                }
+            }
+        }
         fields.push(GraphCanvasAtlasField { id:native_overmap_cell_id(cell), anchor,
             footprint:Footprint::Rect { size:Size2::new(1.0,1.0) }, priority:0,
             label:if cell.anchor { cell.label.clone() } else { String::new() } });
@@ -168,6 +180,30 @@ pub(crate) fn panel(ui:&crate::UiState, read:&crate::PartyView) -> Vec<crate::Ui
         for biome in &cell.biomes {
             body.push(Box::new(el("div",text(format!("Biome tag reading {} ({}) · source {}",biome.name,biome.key,biome.source)))
                 .attr("class","side-line")));
+        }
+        for held in &cell.conditions {
+            body.push(Box::new(el("div",text(format!("Held condition statement {:?} · {:?} · source {} · revision {}",
+                held.statement,held.meaning,held.source.hash,held.source.revision))).attr("class","side-line")));
+        }
+        for claim in &cell.claims {
+            body.push(Box::new(el("div",text(format!("Held claim statement polity {}: {} · {:?} · source {} · revision {}",
+                claim.polity,claim.present,claim.held.meaning,claim.held.source.hash,claim.held.source.revision)))
+                .attr("class","side-line")));
+        }
+        for held in &cell.terrain {
+            let source=&held.source;
+            let named=&source.observation.named;
+            body.push(Box::new(el("div",text(format!("Terrain {} · {:?}..{:?} · {} observed cells; other cells unknown · {:?} · tick {} · revision {} · hash {}",
+                named.name,named.min,named.max,source.cells.len(),held.meaning,source.tick,
+                source.observation.eye.terrain_revision,held.hash))).attr("class","side-line")));
+        }
+    }
+    for (id,location) in &map.locations {
+        body.push(Box::new(el("div",text(format!("Known Location {id} · {} identity sources · {} membership statements · {} extent statements",
+            location.identity.len(),location.members.len(),location.extent.len()))).attr("class","side-line")));
+        for held in location.members.iter().chain(&location.extent) {
+            body.push(Box::new(el("div",text(format!("Retained {:?} · {:?} · source {}",
+                held.statement,held.meaning,held.source.hash))).attr("class","side-hint")));
         }
     }
     body

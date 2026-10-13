@@ -63,6 +63,15 @@ pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAcces
         !matches!(saved.phase, crate::continuation::LoopPhase::Running | crate::continuation::LoopPhase::Watching)) {
         return Err(Refusal::Sim("answer the exact saved loop question before ordinary input".into()));
     }
+    let action = match input {
+        Input::Loop(_) => false,
+        Input::Game(input) => input.envelope.is_some(),
+        Input::Graft(_) | Input::Envelope(_) => true,
+    };
+    if action && game.continuation.as_ref().is_some_and(|saved|
+        saved.phase != crate::continuation::LoopPhase::Running) {
+        return Err(Refusal::Sim("ordinary game actions require the running played loop".into()));
+    }
     let accepted = match input {
         Input::Loop(input) => crate::continuation::submit_loop(&mut candidate, &mut game, access, input)?,
         Input::Graft(input) => {

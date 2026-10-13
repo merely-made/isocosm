@@ -4,7 +4,7 @@
 //! Life input through the existing borrowed native publication cut.
 
 use isocosm::Session;
-pub use eponym_play::contract::mode::life::{Input, Record, KIND, prepare, previous_take};
+pub use eponym_play::contract::mode::life::{Input, Record, KIND, prepare, previous_take, death_choices};
 use isocosm_overlay::OrdinaryAccess;
 
 pub fn submit(session: &mut Session, game: Vec<u8>, input: &[u8], access: OrdinaryAccess)

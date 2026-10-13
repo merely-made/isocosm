@@ -16,7 +16,7 @@ pub struct LoopSettings { pub mode: Mode, pub pace: Pace, pub on_collapse: OnCol
 pub struct LoopCut { pub native: String, pub game: String, pub question: Option<String> }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum LoopPhase { Running, Held, LineageEnded, Watching, NewWorldRequested }
+pub enum LoopPhase { Running, Held, LineageEnded, Watching, NewWorldRequested, WorldEnded }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -50,6 +50,8 @@ pub struct LoopReading {
     pub happenings: Vec<Happening>, pub lineages: Vec<EntityHandle>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub personal: Option<PersonalQuestion>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub world_ended_at: Option<u64>,
 }
 
 /// Only an owned run has these actual founding/deep-time facts.
@@ -81,6 +83,10 @@ pub struct RoundSource {
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
+pub struct WorldEndSource { pub entry: String, pub tick: u64 }
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Continuation {
     pub version: u32, pub participant: Id, pub settings: LoopSettings,
     pub native: String, pub native_entries: u64, pub native_tick: u64,
@@ -91,6 +97,8 @@ pub struct Continuation {
     pub expression: Option<SavedExpressionSource>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ended_lineage: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub world_end: Option<WorldEndSource>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub queued: Vec<crate::Envelope>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

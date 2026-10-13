@@ -53,6 +53,10 @@ pub struct HostConfig {
     pub graft: Option<PathBuf>,
     /// Explicit new founding and logged author spread startup; never a player packet.
     pub spread: Option<PathBuf>,
+    /// Complete authored joint witness over an exact generated candidate.
+    pub ecology_witness: Option<PathBuf>,
+    /// Complete explicit generated candidate; never stripped to regenerated rules.
+    pub ecology_candidate: Option<PathBuf>,
 }
 
 impl Default for HostConfig {
@@ -84,6 +88,8 @@ impl Default for HostConfig {
             spatial: None,
             graft: None,
             spread: None,
+            ecology_witness: None,
+            ecology_candidate: None,
         }
     }
 }

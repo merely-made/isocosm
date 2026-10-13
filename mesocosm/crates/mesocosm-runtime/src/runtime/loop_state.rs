@@ -21,6 +21,9 @@ impl Runtime {
         let phase = match prior.map(|p| p.phase) {
             Some(LoopPhase::Watching) => LoopPhase::Watching,
             Some(LoopPhase::NewWorldRequested) => LoopPhase::NewWorldRequested,
+            Some(LoopPhase::WorldEnded) => LoopPhase::WorldEnded,
+            _ if prior.is_some_and(|saved| saved.world_end.is_some()) => LoopPhase::WorldEnded,
+            _ if self.happenings.iter().any(|h| matches!(h, Happening::WorldEnded { .. })) => LoopPhase::WorldEnded,
             _ if self.checkpoint.as_ref().is_some_and(|c|
                 matches!(&c.occasion, Occasion::Loss(loss) if loss.next.is_none()) && c.heirs.is_empty()) =>
                 LoopPhase::LineageEnded,
@@ -40,6 +43,7 @@ impl Runtime {
             ended_lineage: self.happenings.iter().find_map(|h| match h {
                 Happening::LineageEnded { lineage } => Some(lineage.clone()), _ => None,
             }).or_else(|| prior.and_then(|p| p.ended_lineage.clone())),
+            world_end: prior.and_then(|p| p.world_end.clone()),
             queued: self.queued.iter().cloned().collect(),
             round: prior.and_then(|p| p.round.clone()),
             origin: prior.and_then(|p| p.origin.clone()), fault: self.fault.clone() };

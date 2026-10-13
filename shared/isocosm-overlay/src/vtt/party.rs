@@ -19,4 +19,8 @@ pub enum PartyAction {
     Join,
     Leave,
     Disclose { sites: Vec<PlaceHandle>, events: Vec<EventHandle> },
+    ObserveStatement { source_note: String },
+    Tell { hearer: EntityHandle, held_note: String },
+    DiscloseDetails { sites: Vec<PlaceHandle>, events: Vec<EventHandle>, held: Vec<String> },
+    ObserveTerrain { name: String, site: PlaceHandle, min: [i64; 3], max: [i64; 3] },
 }

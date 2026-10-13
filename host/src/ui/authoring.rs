@@ -27,6 +27,18 @@ impl App {
             } else if kind==3 {
                 let input:graft::GraftInput=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
                 serde_json::to_string_pretty(&graft::prepare_graft(session,access,&input)?).map_err(|e|e.to_string())
+            } else if kind==4 {
+                let input:isometry_campaign::native::party::StatementInput=
+                    serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
+                serde_json::to_string_pretty(&isometry_campaign::native::party::statement_admission(
+                    session,game,access,&input)?).map_err(|e|e.to_string())
+            } else if kind==5 {
+                let input:isometry_campaign::native::party::LocationInput=
+                    serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
+                let mut candidate=session.clone();
+                let (outcome,_)=isometry_campaign::native::party::submit_location(
+                    &mut candidate,game.to_vec(),access,&input)?;
+                Ok(outcome)
             } else {
                 let input:institutions::InstitutionInput=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
                 serde_json::to_string_pretty(&institutions::prepare_institution(session,access,&input)?)
@@ -64,7 +76,8 @@ pub(super) fn panel(app:&App,key:u64)->Child {
         |field:&mut TextInput|caret_text_field(field,&[]),move |app:&mut App|
             &mut app.windows.get_mut(&key).expect("the open window owns this field").authored_input)))));
     for (kind,label) in [(0,"Preview institution operation"),(1,"Preview physical map edit"),
-        (2,"Preview item or project"),(3,"Preview graft carrying")] {
+        (2,"Preview item or project"),(3,"Preview graft carrying"),(4,"Preview knowledge statement"),
+        (5,"Preview Location grouping")] {
         rows.push(button(format!("operation-preview-{kind}"),label.into(),key,
             move |app|app.quote_author_input(key,kind)));
     }

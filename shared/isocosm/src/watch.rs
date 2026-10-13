@@ -30,9 +30,28 @@ pub(crate) struct Watch {
     acts: Vec<Watched>,
     /// The acts kept when the advance under way began.
     kept: usize,
+    ecology: Option<crate::ecology::JointCapture>,
 }
 
 impl Simulation {
+    pub(crate) fn begin_ecology_witness(&mut self, spec: &crate::ecology::JointSpec) -> crate::Result<()> {
+        if self.watch.ecology.is_some() { return Err("joint witness capture is already active".into()); }
+        self.watch.ecology = Some(crate::ecology::JointCapture { spec: spec.clone(), acts: vec![], kept: 0 });
+        Ok(())
+    }
+
+    pub(crate) fn end_ecology_witness(&mut self) -> Vec<crate::ecology::ActionProof> {
+        self.watch.ecology.take().map_or_else(Vec::new, |capture| capture.acts)
+    }
+
+    pub(crate) fn ecology_spec(&self, process: &str) -> Option<&crate::ecology::JointSpec> {
+        self.watch.ecology.as_ref().filter(|capture|
+            capture.spec.selections().iter().any(|role| role.process == process)).map(|capture| &capture.spec)
+    }
+
+    pub(crate) fn record_ecology(&mut self, act: crate::ecology::ActionProof) {
+        if let Some(capture) = &mut self.watch.ecology { capture.acts.push(act); }
+    }
     /// Keeps each accepted scheduled act of `process` from now on.
     pub fn watch(&mut self, process: &str) {
         self.watch.processes.insert(process.into());
@@ -61,9 +80,11 @@ impl Simulation {
     /// Marks where an advance begins, to put its acts back if it is refused.
     pub(crate) fn watch_from(&mut self) {
         self.watch.kept = self.watch.acts.len();
+        if let Some(capture) = &mut self.watch.ecology { capture.kept = capture.acts.len(); }
     }
 
     pub(crate) fn unwatch(&mut self) {
         self.watch.acts.truncate(self.watch.kept);
+        if let Some(capture) = &mut self.watch.ecology { capture.acts.truncate(capture.kept); }
     }
 }

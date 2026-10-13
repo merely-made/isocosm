@@ -40,6 +40,10 @@ impl Runtime {
             Intent::Game(_) if envelope.participant.0 != self.interim.participant
                 || envelope.tick.0 != self.tick() =>
                 Err(Refusal::Sim("envelope names another participant or tick".into())),
+            Intent::Game(MesocosmIntent::Nudge(_) | MesocosmIntent::Act(_))
+                if self.spatial.continuation.as_ref().is_some_and(|saved|
+                    saved.phase != crate::continuation::LoopPhase::Running) =>
+                Err(Refusal::Sim("ordinary game actions require the running played loop".into())),
             Intent::Game(intent) => self.translate(intent),
         };
         if dev && outcome.is_ok() {

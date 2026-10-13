@@ -25,6 +25,7 @@ mod publication;
 mod goals;
 mod graft;
 mod institutions;
+mod ecology;
 #[cfg(test)]
 mod tests;
 
@@ -34,6 +35,8 @@ pub(crate) struct Stage {
     pub(crate) process: Key,
     pub(crate) action: Key,
     pub(crate) scheduled: bool,
+    ecology_credits: Vec<crate::ecology::Credit>,
+    ecology_debits: BTreeMap<(Holder, Key), u128>,
     pub(crate) birth_places: Vec<crate::spatial::BirthMark>,
     pub(crate) terrain: Option<crate::operations::StagedTerrain>,
     pub(crate) step: Option<crate::spatial::StagedStep>,
@@ -116,6 +119,8 @@ impl Simulation {
             process: String::new(),
             action: String::new(),
             scheduled: false,
+            ecology_credits: Vec::new(),
+            ecology_debits: BTreeMap::new(),
             birth_places: Vec::new(),
             terrain: None,
             step: None,

@@ -46,7 +46,10 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
     if clock_available {
         actions.push(button("step".into(), "Step world".into(), key, move |app| app.step(key)));
     }
-    if local.input.as_ref().is_some_and(|i| i.mode.key() == mode) {
+    let intent_available=local.input.as_ref().is_some_and(|i| i.mode.key() == mode);
+    #[cfg(feature = "mesocosm")]
+    let intent_available=intent_available && (mode!="mesocosm" || super::mesocosm::can_send(state,key));
+    if intent_available {
         actions.push(button("send-intent".into(), "Send chosen intent".into(), key,
             move |app| app.send(key).map(|_| ())));
     }
@@ -85,9 +88,14 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
         Box::new(el("p", text(error)).attr("id", "error").attr("role", "status")) as Child,
     ];
     #[cfg(feature = "vtt")]
-    if mode == "vtt" { children.push(super::vtt::panel(state, key)); }
+    if mode == "vtt" {
+        children.push(super::vtt::panel(state, key));
+        children.push(super::knowledge::panel(state,key));
+    }
     #[cfg(feature = "mesocosm")]
     if mode == "mesocosm" { children.push(super::mesocosm::panel(state, key)); }
+    #[cfg(feature = "eponym")]
+    if mode == "eponym" { children.push(super::eponym::panel(state, key)); }
     #[cfg(any(feature = "mesocosm", feature = "vtt", feature = "eponym"))]
     if crate::viewport::available(local) {
         let card = isomere::ViewportCard::new(crate::viewport::key(key).expect("admitted local slot"),

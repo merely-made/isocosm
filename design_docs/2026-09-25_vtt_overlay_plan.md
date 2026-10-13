@@ -2,7 +2,26 @@
 
 **Date:** 2026-09-25
 
-**Latest standalone consumers, 2026-10-13:** ordinary Storylet Play refuses
+**Current migration choices, 2026-10-13:** answers871,872,873,875,876,877
+and878 are settled and recorded verbatim.874 remains OPEN: neither standard
+was selected. Clarification879 presents the mechanical-effect and native
+operation-family distinction together; next unused880. Source placement
+adds explicit held map/Location statements and exact disclosure revisions,
+actual terrain observation and a native Location author door that grants no
+knowing, authored native defensive expressions over the
+final pass-granted bite, and a saved authenticated whole-world end that
+allows Watch or a separately requested world. Native social companion
+predicates use actual agreements or standing, with complete native absence
+required for Eponym's another-life fallback. One finite joint native ecology
+witness is required before a newly generated world is offered. Explicit
+supplied-candidate startup retains its complete authored rules; admission
+still waits for874. Protocol/ALPN20 carries the appended grammar. Missing
+authored inputs refuse; old unmarked saves retain their recorded meaning.
+C9 retains historical exact-source certification. C10/C11/full V2/E3/M4 and
+final-state verification remain open. Source only: no compiler, tests,
+fixtures, probes or tuning under826.
+
+**Earlier standalone consumers, 2026-10-13:** ordinary Storylet Play refuses
 new Map/Item metadata effects and exposes the complete composed Quote/Apply
 door. Fact/History and old recorded metadata retain their admission. The
 event pane binds the actual local endpoint or host to its saved participant,

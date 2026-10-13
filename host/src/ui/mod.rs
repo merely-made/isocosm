@@ -6,6 +6,8 @@ pub(crate) mod view;
 mod inspection;
 #[cfg(feature = "mesocosm")]
 mod mesocosm;
+#[cfg(feature = "eponym")]
+mod eponym;
 #[cfg(feature = "vtt")]
 mod vtt;
 #[cfg(feature = "vtt")]
@@ -16,3 +18,5 @@ mod overmap;
 mod adventure;
 #[cfg(feature = "vtt")]
 mod authoring;
+#[cfg(feature = "vtt")]
+mod knowledge;

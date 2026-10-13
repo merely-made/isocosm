@@ -9,6 +9,7 @@ use crate::simulation::State;
 
 impl Simulation {
     pub(crate) fn commit_resolved(&mut self, mut stage: Stage, next: u64, process: &str) -> Result<()> {
+        let ecology = self.ecology_publication(&stage);
         let terrain = stage.terrain.take();
         let step = stage.step.take();
         let births = std::mem::take(&mut stage.birth_places);
@@ -18,6 +19,7 @@ impl Simulation {
             self.commit_geometry(terrain);
             self.commit_step(step);
             self.place_births(&births);
+            self.published_ecology(ecology);
             return Ok(());
         }
         let before = self.state.clone();
@@ -31,6 +33,7 @@ impl Simulation {
         crate::spread::dispatch_changed(&before, &mut candidate.state, &candidate.genesis.rules)?;
         self.publish_candidate(candidate)?;
         self.place_births(&births);
+        self.published_ecology(ecology);
         Ok(())
     }
 
