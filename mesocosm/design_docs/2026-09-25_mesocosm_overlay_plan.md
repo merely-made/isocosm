@@ -2,7 +2,22 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-12, native spread title vocabulary:** marked native
+**Current source, 2026-10-12, authored spread consumer:** a strict versioned
+`author_spread::Setup` supplies actual Founded/Genesis, registered-identity
+ownership assertions and exact selected Overflow/ForkStrain steps. Genet
+`--spread` opens that authored world; `--spatial` may follow against its
+accepted native cut. Generated founding, watch/replay and bench flags are
+exclusive with this startup. The shared host's `--mesocosm-spread` requires
+matching Genesis and publishes native acceptance plus refreshed game bytes
+through `World::product_game`. Existing native logs and saved game bytes own
+restoration. Ordinary player/observer packets acquire no authoring command.
+`Setup.prepare_step` previews the same candidate after ownership and preceding
+selected steps, preserving real request identities and route/strain witnesses.
+No stocks, owners or quantities are guessed. Source is assembled, unverified.
+Future-lot references are ruled863, their dependent source is next. Full M4
+and checkpoint11 certification remain open; tests and tuning wait under826.
+
+**Earlier source, 2026-10-12, native spread title vocabulary:** marked native
 transfers carry stable IDs distinct from their checked queue indices.
 Explicit spread operation selectors retain or close exact input title
 portions against actual route/registered-strain outputs; arrival preserves

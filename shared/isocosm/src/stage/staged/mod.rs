@@ -26,6 +26,7 @@ mod terrain;
 mod projects;
 mod step;
 mod owned;
+mod pace;
 
 /// A stage read against the world it will be committed to.
 pub(crate) struct Staged<'a> {
@@ -288,6 +289,10 @@ impl Staged<'_> {
         // An ordered take and a conversion read the balances they take, so
         // their moves are worked out as they are applied.
         match e {
+            Effect::MovePaced { destination, profile } => {
+                self.paced_move(*destination, profile, cause)?;
+                return Ok(false);
+            },
             Effect::ProjectDecision => {
                 self.sim.project_decision_ready(self.stage.actor,self.stage.target)?;
                 let input = self.sim.project_decision.as_ref().expect("decision checked above");

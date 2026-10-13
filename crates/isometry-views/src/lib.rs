@@ -18,6 +18,8 @@ mod keymap;
 mod overmap;
 mod native_party;
 pub use native_party::{PartyUi, PartyRequest, PartyView};
+mod native_journey;
+pub use native_journey::{JourneyUi,JourneyRequest,JourneyQuote};
 mod panel;
 mod projection;
 mod scene;

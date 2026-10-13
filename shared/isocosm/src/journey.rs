@@ -49,17 +49,40 @@ impl Journeys {
 pub(crate) fn depart(entity: &mut Entity, site: &Site, to: Id, tick: Tick) -> Result<()> {
     if entity.journey.is_some() { return Err("member is already travelling".into()); }
     let travel = site.routes.iter().find(|r| r.to == to).ok_or("no route to destination")?.travel;
-    if travel == 0 { return Err("route travel must be positive".into()); }
-    let arrives = tick.checked_add(travel).ok_or("journey arrival tick overflows")?;
-    if entity.arrived < tick {
-        entity.visits.push(Visit { place: entity.place, from: entity.arrived, until: tick });
-    }
-    entity.journey = Some(Journey { from: entity.place, to, departed: tick, arrives });
-    entity.patch = None;
+    let journey = departure(entity, site, to, tick, travel)?;
+    leave(entity, journey);
     Ok(())
 }
 
+pub(crate) fn departure(entity: &Entity, site: &Site, to: Id, tick: Tick, travel: Tick) -> Result<Journey> {
+    if entity.journey.is_some() { return Err("member is already travelling".into()); }
+    if !site.routes.iter().any(|route| route.to == to) { return Err("no route to destination".into()); }
+    if travel == 0 { return Err("route travel must be positive".into()); }
+    let arrives = tick.checked_add(travel).ok_or("journey arrival tick overflows")?;
+    Ok(Journey { from: entity.place, to, departed: tick, arrives })
+}
+
+pub(crate) fn leave(entity: &mut Entity, journey: Journey) {
+    if entity.arrived < journey.departed {
+        entity.visits.push(Visit { place: entity.place, from: entity.arrived, until: journey.departed });
+    }
+    entity.journey = Some(journey);
+    entity.patch = None;
+}
+
 impl Simulation {
+    /// Quote a direct authored pace against actual current residence and clock.
+    /// This does not admit the process, its stock costs, or participant control.
+    pub fn paced_journey(&self, actor: Id, process: &str, to: Id) -> Result<Journey> {
+        if self.state.movement.immediate() { return Err("paced travel requires native journeys".into()); }
+        let entity = self.state.population.get(actor).ok_or("movement actor is absent")?;
+        let from = entity.resident_site().ok_or("movement actor has no resident site")?;
+        let site = self.state.sites.get(&from).ok_or("departure site absent")?;
+        let route = site.routes.iter().find(|route| route.to == to).ok_or("no route to destination")?;
+        let (_, profile) = self.genesis.rules.paced_movement(process, to)?;
+        departure(entity, site, to, self.state.tick, profile.duration(route.travel)?)
+    }
+
     /// Land exact cohorts, including corpses, before installing the next pass.
     /// The index is rebuilt per advance; accepted splits/births replace entries.
     pub(crate) fn arrive_until(&mut self, until: Tick, work: &mut Work) -> Result<()> {
@@ -99,7 +122,8 @@ impl Simulation {
     pub(crate) fn route_ready(&self, actor: Id, p: &crate::rules::Process) -> bool {
         if self.state.movement.immediate() { return true; }
         let moves = p.commitments.iter().chain(&p.effects).filter_map(|e| match e {
-            crate::rules::Effect::Move { destination } => Some(*destination), _ => None,
+            crate::rules::Effect::Move { destination }
+                | crate::rules::Effect::MovePaced { destination, .. } => Some(*destination), _ => None,
         }).collect::<Vec<_>>();
         if moves.is_empty() { return true; }
         let Some(from) = self.body_at_start(actor).and_then(Entity::resident_site) else { return false; };

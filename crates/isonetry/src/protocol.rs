@@ -23,7 +23,7 @@ use serde::{Deserialize, Serialize};
 /// the space: a body that *does* decode and means something else. Bump it for
 /// any change to the wire shape, and move `iroh_link::ALPN` with it so an
 /// incompatible peer cannot even dial.
-pub const PROTOCOL_VERSION: u16 = 9;
+pub const PROTOCOL_VERSION: u16 = 10;
 
 /// A peer's identity within a session. For the iroh transport this wraps
 /// the remote node id; the pure-sync core only needs it to route.
@@ -435,6 +435,7 @@ pub enum GameEvent {
     NativeTableResolved(crate::native_table::NativeTableResolved),
     NativeTimeResolved(crate::session::NativeTimeResolved),
     NativePartyResolved(crate::session::NativePartyResolved),
+    NativeJourneyResolved(crate::session::NativeJourneyResolved),
 }
 
 /// One message on the wire. The host is the authority: clients send
@@ -494,6 +495,7 @@ pub enum NetMessage {
     /// An individual native table time request, attributed by its transport.
     NativeTime(isocosm_overlay::vtt::VttIntentEnvelope),
     NativeParty(isocosm_overlay::vtt::VttIntentEnvelope),
+    NativeJourney(isometry_campaign::native::joint_journey::JourneyEnvelope),
 }
 
 /// A player asking to act. Everything about the outcome is the host's to say.

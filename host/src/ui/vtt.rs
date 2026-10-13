@@ -194,5 +194,6 @@ pub(super) fn panel(app:&App, key:u64) -> Child {
             Err(reason) => rows.push(Box::new(el("p",text(reason)))),
         }
     }
+    rows.push(super::journey::panel(app,key));
     Box::new(el("section",rows).attr("class","panel"))
 }

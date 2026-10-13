@@ -28,6 +28,7 @@ pub use shared_roster::SharedRosterInput;
 mod movement;
 pub use movement::submit_table;
 pub mod party;
+pub mod joint_journey;
 mod table;
 pub mod time;
 pub use time::submit_time;

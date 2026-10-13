@@ -25,4 +25,11 @@ impl Campaign {
         let (replay, game, accepted) = self.replay.with_table_time(game, access, roster, envelope)?;
         Ok((Self { replay, ..self.clone() }, game, accepted))
     }
+
+    pub fn with_table_journey(&self, game: Vec<u8>, access: OrdinaryAccess,
+        roster: &crate::native::time::Roster, input: &crate::native::joint_journey::JourneyEnvelope)
+        -> Result<(Self, Vec<u8>, String), String> {
+        let (replay, game, accepted) = self.replay.with_table_journey(game,access,roster,input)?;
+        Ok((Self { replay, ..self.clone() },game,accepted))
+    }
 }

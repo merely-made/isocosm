@@ -10757,6 +10757,57 @@ what later sections derive from.
      and available profiles remain author inputs; no recipe is guessed.
      Critter approval question861 remains pending; next unused question862.
 
+861. **Directed critters receive a travel goal, bounded by their impressions and motives.**
+     2026-10-12, deliberative bodies in859's joint journey.
+     Question: "A played deliberative critter still chooses its own process each tick. What should an approved party journey do for that body?"
+     Options: (1) "Set its native travel goal; it departs when its own choice allows, so the party can split (Recommended)"; (2) "Keep it out of joint departures; the player directs its journey separately".
+     Mark answered: "oh, for mesocosm? i mean, i guess a critter under the direction of a player would travel according to their impressions of the player  as best it could in macro level travel. like faction aligned animals in rimworld. although if it has its own motives, then... hell, your choices would be limited to what it trusts you to do or what you can motivate it to do. which is sort of charming and odd, depending on what it needs and is too. 1. in eponym, not even an issue: faction aligned animals are gonna follow the faction and their in game directors, who are much more suited to directly handle creatures and such"
+     So the accepted request supplies a native travel goal. Native impressions,
+     trust, motivation and the critter's own motives bound its available
+     following and scheduled choice; approval does not force a departure.
+     The party can split. Eponym's faction-aligned animals retain their
+     faction and in-world directors, without a new implicit player handle.
+     This applies wherever a player actually directs a native deliberative
+     animal, including the VTT case that prompted the question. No trust
+     threshold, motivation strength or new control grant is invented.
+     The next unused question is862.
+
+862. **The existing native bond suffices for directed travel in this migration.**
+     2026-10-12, reframing861's impression/motivation admission.
+     Question: "Native nudges already weigh a critter’s needs and bond, but don’t yet use its impressions of the director. Where should the trust and motivation rule apply?"
+     Options: (1) "Authored native rules limit which travel goals the director can offer; the critter still chooses when to follow (Recommended)"; (2) "Authored native rules weight the critter’s choice after any travel goal is offered"; (3) "Use both an offer limit and a choice weight, authored separately".
+     Mark answered: "the bond would suffice, no?"
+     The answer to the reframing is yes: the existing native BOND permits a
+     genuine nudge, and native bond sway already contributes alongside the
+     critter's own needs and motives. Use that existing bond and scheduled
+     chooser for861's travel goal. No additional impression filter, trust
+     threshold or motivation layer is required for this migration. Actual
+     body control and bond admission remain separate, and a goal is not a
+     promise that the animal departs. The next unused question is863.
+
+863. **Future produced lots are selected by explicit authored operation/output references.**
+     2026-10-12, subsequent autonomous use of849's named quantity lots.
+     Question: "An autonomous process can produce a new owned lot whose key did not exist at founding. How should a later process select that lot?"
+     Options: (1) "An explicit authored reference names the producing native operation and output, with an exact quantity (Recommended)"; (2) "Require a separate selection of the current named lot before the later process can use it".
+     Mark chose "An explicit authored reference names the producing native operation and output, with an exact quantity (Recommended)"
+     So a later selector may explicitly name the producing native operation
+     and its exact output, plus the selected quantity. Resolution must identify
+     that actual accepted output claim, current holder and remaining amount.
+     It grants no FIFO, broad descendant search, changing-account ownership
+     or automatic choice of a different produced lot. Ambiguous, missing,
+     spent or otherwise mismatched references refuse.
+
+864. **Collect the outstanding questions and deliver them together.**
+     2026-10-12, direct correction to the orchestrator's question cadence.
+     Mark said: "also, when I said sequentially, i didn't mean for you to split the questions up. i actually meant for you to put them all together. so i could blitz through them and you could just focus on working. i'm saying, don't trickle them."
+     So inspect independent work first, collect its known necessary forks
+     and present them together for one answer pass. Do not manufacture a
+     succession of isolated questions or pause ordinary migration work after
+     each answer. This current instruction supersedes an interpretation of
+     sequential as one question at a time. Newly discovered forks belong in
+     the next collected round while independent authorized work continues.
+     The next unused question is865.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -14691,3 +14742,5 @@ to 2026-10-06 is archived as
 - **2026-10-12, 851 to858, native table time and shared party source:** all eight answers are recorded verbatim. Individual persistent holds, original tick/roster revisions and explicit DM selection now reach standalone authenticated callers and the shared host's explicit saved native-player roster. Version5 game bindings retain opaque bytes and historical consents. Protocol/ALPN9 append party/time request and result grammar. Actual native party relations use explicit profile declarations; players join their current bodies, leave their own earlier bodies and deliberately disclose known facts retained after leaving. Native knowing and body control remain separate. No Cargo/compiler/tests/fixtures/tuning ran under826. Collective departure/pace questions859/860 are pending; complete V2/E3/M4 and the whole migration remain open.
 
 - **2026-10-12, 859/860:** player approval names each currently played body before the DM applies approved joint departures; authored native pace profiles supply duration and conserved stock costs. Exact answers are recorded. Their dependent source is next; question861 asks whether an approved deliberative critter receives a native travel goal and may split, or stays out of joint departure. The next unused question is862. Native spread title/transit source is assembled, with later dynamic/future-lot selectors and actual product spread authoring still open. No compiler/tests/fixtures/tuning ran under826.
+
+- **2026-10-12, 859 to864, pace/joint journey and spread authoring source:** native MovePaced uses authored fixed/route-scaled duration and full-quantity stock costs before staged departure. Actual Setup/preview/admission share supplied pace/process catalogues. Joint journey proposals use original tick/roster, explicit listed bodies, own-player approvals and exact named-lot terms; DM Apply atomically publishes real normative Journeys or genuine bonded critter Nudges, without advancing native time. GameBindings6 and protocol/ALPN10 connect standalone/shared-host callers. Mesocosm Genet --spread and shared --mesocosm-spread admit explicit matching-native founding, ownership and selected spread steps with real saved-game refresh. Source is assembled, unverified. C9 remains historically certified/merged; C10 final certification and C11 consumer completion/certification stay open. Future produced-lot selectors are ruled863, their source and Eponym spread founding/replay are next.864 requires all known outstanding questions together. No question is pending; next unused865. No Cargo/compiler/tests/fixtures/probes/tuning ran under826.

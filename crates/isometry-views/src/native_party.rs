@@ -13,6 +13,7 @@ use crate::{UiState, UiChild};
 pub enum PartyRequest {
     Read { party: String }, Join { party: String, member: Id },
     Leave { party: String, member: Id }, Disclose { party: String, member: Id },
+    Journey(crate::JourneyRequest),
 }
 
 #[derive(Clone, Debug)]
@@ -21,6 +22,8 @@ pub struct PartyView {
     pub subject: Option<Id>, pub shared: bool, pub map: SharedMap, pub here: Option<Id>,
     /// Only exact accepted disclosure keys are resolved into native facts.
     pub events: std::collections::BTreeMap<String, Option<isocosm::schema::Event>>,
+    pub dm: bool, pub journeys: Vec<isometry_campaign::native::joint_journey::JourneyView>,
+    pub journey_authoring: Vec<String>, pub journey_quote: Option<crate::JourneyQuote>,
 }
 
 impl PartyView {
@@ -39,7 +42,10 @@ impl PartyView {
 }
 
 #[derive(Clone, Debug, Default)]
-pub struct PartyUi { pub handle: TextInput, pub request: Option<PartyRequest>, pub reading: Option<PartyView> }
+pub struct PartyUi {
+    pub handle: TextInput, pub request: Option<PartyRequest>, pub reading: Option<PartyView>,
+    pub journey: crate::JourneyUi,
+}
 
 impl UiState {
     pub fn request_party(&mut self, request: PartyRequest) {
@@ -69,6 +75,7 @@ pub(crate) fn overlay(ui: &UiState) -> Option<UiChild> {
     let mut body: Vec<UiChild> = vec![Box::new(el("label", (text("Authored party handle "), lens(
         |field: &mut TextInput| caret_text_field(field, &[]), |ui: &mut UiState| &mut ui.native.party.handle))))];
     if let Some(read) = ui.native_party_reading() {
+        body.extend(crate::native_journey::panel(ui,read));
         if !read.shared {
             body.push(Box::new(el("div", text("Opt in before reading the shared party map."))
                 .attr("class", "side-hint")));

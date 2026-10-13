@@ -136,7 +136,7 @@ fn hunts(p: &Process) -> bool {
 /// The sites `p` moves its actor to.
 pub(crate) fn moves(p: &Process) -> Vec<Id> {
     let to = |e: &Effect| match e {
-        Effect::Move { destination } => Some(*destination),
+        Effect::Move { destination } | Effect::MovePaced { destination, .. } => Some(*destination),
         _ => None,
     };
     p.commitments

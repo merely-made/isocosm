@@ -4,6 +4,7 @@
 use super::{Campaign, Content, FoundingError, Prepared, table_genesis};
 use crate::{CampaignStore, native::{Replay, ReplayError, Phase}};
 use isocosm::{Command, Execution, Founding, Session, asserted::Assertion, site_authoring::Attachment};
+use isocosm::{rules::{Effect, PaceProfile, Process}, simulation::Genesis};
 use crate::{GenValue, GenerationRecord};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
@@ -19,6 +20,12 @@ pub struct Setup {
     /// Explicit handle -> declared membership kind. No generated/default party.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub party_relations: BTreeMap<String, String>,
+    /// Named native durations and costs supplied by this profile's author.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub pace_profiles: BTreeMap<String, PaceProfile>,
+    /// Complete authored native processes; generated processes are not replaced.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub paced_processes: BTreeMap<String, Process>,
 }
 
 impl Setup {
@@ -28,6 +35,30 @@ impl Setup {
     pub fn replace_attachments(&mut self, bytes: &[u8]) -> Result<(), String> {
         let value = serde_json::from_slice(bytes).map_err(|e| format!("site attachments: {e}"))?;
         self.attachments = value;
+        Ok(())
+    }
+
+    fn install_paces(&self, genesis: &mut Genesis) -> Result<(), String> {
+        fn paced(effect: &Effect) -> bool {
+            matches!(effect, Effect::MovePaced { .. }) || effect.branches().any(paced)
+        }
+        for (name, profile) in &self.pace_profiles {
+            if genesis.rules.pace_profiles.get(name).is_some_and(|existing| existing != profile) {
+                return Err(format!("pace profile conflicts with founding rules: {name}"));
+            }
+        }
+        for (name, process) in &self.paced_processes {
+            if genesis.rules.processes.get(name).is_some_and(|existing| existing != process) {
+                return Err(format!("paced process conflicts with founding rules: {name}"));
+            }
+            if !process.commitments.iter().chain(&process.effects)
+                .chain(process.risk.iter().flat_map(|risk| &risk.effects)).any(paced)
+            {
+                return Err(format!("authored paced process has no MovePaced effect: {name}"));
+            }
+        }
+        genesis.rules.pace_profiles.extend(self.pace_profiles.clone());
+        genesis.rules.processes.extend(self.paced_processes.clone());
         Ok(())
     }
 }
@@ -51,6 +82,8 @@ impl Campaign {
             genesis.rules.relations.insert(kind.clone());
             genesis.rules.party_relations.insert(party.clone(), kind.clone());
         }
+        setup.install_paces(&mut genesis).map_err(|reason|
+            FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
         let mut session = Session::new(table_genesis(genesis), setup.execution).map_err(|reason|
             FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
         let content = Content::from_draft(draft)?;

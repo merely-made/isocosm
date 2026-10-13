@@ -2,7 +2,27 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-12 (851 to858):** native downtime proposals bind
+**Current source, 2026-10-12 (859 to864):** joint journey proposals name an
+explicit ordered group of current played bodies, authored processes/pace
+profiles and exact stock terms. Each listed player approves their own body.
+The proposing DM applies the group on one private native candidate; every
+normative departure must produce the exact quoted native Journey, or the
+whole publication refuses. A bonded deliberative animal receives a genuine
+native nudge instead, preserving its own needs, bond sway and scheduled
+choice; a goal can split the party and does not promise departure. No extra
+trust layer is added under862. This moves no native clock.
+
+GameBindings6 retains accepted native proposal/approval/completion witnesses.
+Transient debit request IDs are re-previewed at Apply; the approved native
+source/account/quantity/lot terms remain exact. Standalone authenticated
+local/host/client callers and shared-host controls consume these doors.
+Setup accepts only explicitly authored pace/profile processes; no values
+are generated. Protocol/ALPN10 append the joint journey request/result.
+Source is assembled, unverified; tests/fixtures/tuning still wait under826.
+Full V2, calibrated V3, archive and headed acceptance remain open.
+Question rounds are delivered together under864.
+
+**Earlier source, 2026-10-12 (851 to858):** native downtime proposals bind
 their original tick and accepted saved-player roster revision. Every saved
 player holds time, including disconnected players, until their own accepted
 release; that release persists until they take the hold back. Consent and

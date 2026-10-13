@@ -108,15 +108,26 @@ pub(crate) struct Lanes {
 }
 
 impl Host {
-    pub fn new(config: HostConfig) -> Self {
-        let mut runtime = match &config.watch {
-            Some(path) => crate::played::resume(path, config.ticks_per_second),
-            None => Runtime::generated(config.seed, config.population, config.ticks_per_second),
+    pub fn new(mut config: HostConfig) -> Self {
+        let mut runtime = match (&config.watch, &config.spread) {
+            (Some(_), Some(_)) => Err("authored spread founding cannot replace a resumed run".into()),
+            (_, Some(path)) => std::fs::read(path).map_err(|why| why.to_string())
+                .and_then(|bytes| serde_json::from_slice::<mesocosm_runtime::author_spread::Setup>(&bytes)
+                    .map_err(|why| why.to_string()))
+                .and_then(|setup| Runtime::from_authored_spread(&setup, config.ticks_per_second)),
+            (Some(path), None) => crate::played::resume(path, config.ticks_per_second),
+            (None, None) => Runtime::generated(config.seed, config.population, config.ticks_per_second),
         }
         .unwrap_or_else(|why| {
             eprintln!("world: {why}");
             std::process::exit(1);
         });
+        if config.spread.is_some() {
+            config.seed = runtime.founded().genesis.seed;
+            if let Some(founding) = &runtime.founded().genesis.founding {
+                config.population = founding.population;
+            }
+        }
         if let Some(path) = &config.spatial {
             let authored = std::fs::read(path).map_err(|why| why.to_string())
                 .and_then(|bytes| serde_json::from_slice::<mesocosm_runtime::spatial::Setup>(&bytes)

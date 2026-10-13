@@ -56,6 +56,7 @@ pub(super) fn declared(rules: &Rules, id: &str, e: &Effect) -> Result<()> {
 
 /// What needs the lineages: which matter is the world's, and which living.
 pub(crate) fn kinds(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> Result<()> {
+    crate::rules::pace::validate_lineages(rules, lineages)?;
     // The lineage an account's matter is of, and whether it is the world's.
     let of = |key: &Key| match rules.accounts.get(key) {
         Some(AccountKind::Matter { lineage, .. }) => {

@@ -33,6 +33,8 @@ mod native_time;
 pub use native_time::NativeTimeResolved;
 mod native_party;
 pub use native_party::NativePartyResolved;
+mod native_journey;
+pub use native_journey::NativeJourneyResolved;
 pub use native::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
 mod travel;
 

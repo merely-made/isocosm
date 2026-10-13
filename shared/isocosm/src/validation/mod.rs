@@ -360,6 +360,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         reads(rules, p, id, value)?;
     }
     match e {
+        Effect::MovePaced { profile, .. } => crate::rules::pace::validate_effect(rules, p, profile)?,
         Effect::Step { profile } => {
             let step = rules.step_profiles.get(profile).ok_or_else(||
                 format!("unknown step profile {profile}"))?;

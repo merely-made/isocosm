@@ -12,6 +12,7 @@ pub(crate) fn open(args: &[std::ffi::OsString]) -> Result<App, String> {
         (None, None, None, None, None);
     let mut second = None;
     let mut mesocosm_spatial = None;
+    let mut mesocosm_spread = None;
     let mut round = 1;
     let mut index = 0;
     while index < args.len() {
@@ -32,6 +33,7 @@ pub(crate) fn open(args: &[std::ffi::OsString]) -> Result<App, String> {
             "--site-region" => region_path = Some(PathBuf::from(value)),
             "--preferences" => preferences_path = Some(PathBuf::from(value)),
             "--mesocosm-spatial" => mesocosm_spatial = Some(PathBuf::from(value)),
+            "--mesocosm-spread" => mesocosm_spread = Some(PathBuf::from(value)),
             "--round" => round = word()?.parse::<u64>().map_err(|e| e.to_string())?,
             _ => return Err("unknown mode-host option".into()),
         }
@@ -47,6 +49,9 @@ pub(crate) fn open(args: &[std::ffi::OsString]) -> Result<App, String> {
     let source = source.ok_or("name --open world-save.json")?;
     let bytes = std::fs::read(source).map_err(|e| e.to_string())?;
     let world = World::resume(WorldSave::decode(&bytes)?, isocosm::Execution::Grouped)?;
+    if let Some(path) = mesocosm_spread {
+        crate::desktop::mesocosm_spread(&world, &path)?;
+    }
     if let Some(path) = mesocosm_spatial {
         crate::desktop::mesocosm_spatial(&world, &path)?;
     }

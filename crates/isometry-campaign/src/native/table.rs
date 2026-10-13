@@ -22,4 +22,12 @@ impl Replay {
         let (accepted, game) = super::submit_time(&mut session, game, access, roster, envelope)?;
         Ok((Self { session }, game, accepted))
     }
+
+    pub(crate) fn with_table_journey(&self, game: Vec<u8>, access: OrdinaryAccess,
+        roster: &super::time::Roster, input: &super::joint_journey::JourneyEnvelope)
+        -> Result<(Self, Vec<u8>, String), String> {
+        let mut session = self.session.clone();
+        let (accepted, game) = super::joint_journey::submit_journey(&mut session,game,access,roster,input)?;
+        Ok((Self { session },game,accepted))
+    }
 }

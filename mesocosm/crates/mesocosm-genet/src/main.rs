@@ -36,6 +36,7 @@ fn main() {
     let (mut replay, mut trace, mut receipt, mut capture) = (None, None, None, None);
     let mut bench = false;
     let mut size_explicit = false;
+    let mut founding_explicit = false;
 
     while let Some(arg) = args.next() {
         match arg.as_str() {
@@ -87,11 +88,13 @@ fn main() {
                 }
             },
             "--seed" => {
+                founding_explicit = true;
                 if let Some(seed) = args.next().and_then(|v| v.parse().ok()) {
                     config.seed = seed;
                 }
             },
             "--population" => {
+                founding_explicit = true;
                 config.population = args
                     .next()
                     .and_then(|v| v.parse::<u64>().ok())
@@ -109,6 +112,10 @@ fn main() {
             "--spatial" => match args.next().map(PathBuf::from) {
                 Some(path) => config.spatial = Some(path),
                 None => fail("--spatial wants authored physical input for admitted native bodies"),
+            },
+            "--spread" => match args.next().map(PathBuf::from) {
+                Some(path) => config.spread = Some(path),
+                None => fail("--spread wants explicit authored founding and spread steps"),
             },
             "--scenario" => {
                 let path = args
@@ -130,6 +137,10 @@ fn main() {
         }
     }
 
+    if config.spread.is_some()
+        && (config.watch.is_some() || replay.is_some() || bench || founding_explicit) {
+        fail("--spread supplies its founding and cannot combine with --watch, --replay, --bench, --seed or --population");
+    }
     if let Some(path) = replay {
         std::process::exit(match played::replay(&path) {
             Ok((recorded, replayed)) if recorded == replayed => {
@@ -202,6 +213,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --replay PATH   replay a recorded save headlessly and check its hash
   --watch PATH    take a recorded save up and play on in the window
   --spatial PATH  load explicit authored poses and operation geometry
+  --spread PATH   found from explicit native stocks/rules and logged author spread steps
   --scenario PATH drive the run from a text scenario and exit 1 if it fails
   --bench         open the bench over a native session (1280x900)
   --dev           enable the dev lane and its keys (DT1, DT2, DT3)

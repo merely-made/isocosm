@@ -28,6 +28,7 @@ use crate::review::{Authored, Proposed, Review};
 use crate::succession::{self, Checkpoint};
 
 pub mod placing;
+pub mod author_spread;
 pub(crate) mod translate;
 pub use translate::Refusal;
 

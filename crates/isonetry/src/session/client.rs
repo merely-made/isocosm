@@ -112,6 +112,10 @@ impl ClientSession {
         (Recipient::Host, NetMessage::NativeParty(envelope))
     }
 
+    pub fn native_journey(&self, input: isometry_campaign::native::joint_journey::JourneyEnvelope) -> Outbound {
+        (Recipient::Host, NetMessage::NativeJourney(input))
+    }
+
     /// Ask the host to resolve an action. The client never decides the outcome,
     /// so this carries no roll, no damage and no verdict: only the request.
     ///
@@ -180,7 +184,8 @@ impl ClientSession {
             | NetMessage::Hello { .. }
             | NetMessage::Action(_)
             | NetMessage::NativeTime(_)
-            | NetMessage::NativeParty(_) => {}
+            | NetMessage::NativeParty(_)
+            | NetMessage::NativeJourney(_) => {}
         }
         Vec::new()
     }

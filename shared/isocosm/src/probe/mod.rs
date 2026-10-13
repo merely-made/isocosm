@@ -40,6 +40,12 @@ pub struct ProbeWorld {
 
 impl ProbeWorld {
     pub(crate) fn movement_supported(&self) -> Result<()> {
+        fn paced(e: &crate::rules::Effect) -> bool {
+            matches!(e, crate::rules::Effect::MovePaced { .. }) || e.branches().any(paced)
+        }
+        if self.genesis.rules.processes.values().any(|p| p.commitments.iter().chain(&p.effects)
+            .chain(p.risk.iter().flat_map(|r| &r.effects)).any(paced))
+        { return Err("paced travel requires the native individual stock and title interpreter".into()); }
         fn moved(e: &crate::rules::Effect) -> bool {
             matches!(e, crate::rules::Effect::Move { .. }) || e.branches().any(moved)
         }

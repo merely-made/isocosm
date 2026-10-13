@@ -100,6 +100,7 @@ mod host_zoom;
 mod net;
 mod native_table;
 mod native_party;
+mod native_journey;
 mod native_time;
 mod overmap;
 mod product;

@@ -30,6 +30,7 @@ pub mod terrain;
 pub mod voxel_profile;
 
 pub use clock::{Advance, Clock};
+pub use runtime::author_spread;
 pub use readings::{FlowWindows, JUDGEMENT_TICKS, RETENTION_TICKS, Trend};
 pub use review::{Authored, Offer, Proposed, Reading, Review};
 pub use runtime::{

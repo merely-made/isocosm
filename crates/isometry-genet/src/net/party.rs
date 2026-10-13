@@ -20,6 +20,14 @@ pub(super) async fn host_request(host: &HostNet, request: PartyRequest) -> Resul
     if let PartyRequest::Read { party } = request {
         return crate::native_party::read(&snapshot, TableSender::Host, &party).map(Some);
     }
+    if let PartyRequest::Journey(request) = request {
+        if let isometry_views::JourneyRequest::Quote { party,input } = request {
+            return crate::native_journey::quote(&snapshot,TableSender::Host,&party,input).map(Some);
+        }
+        let input = crate::native_journey::envelope(&snapshot,TableSender::Host,request)?;
+        host.native_journey(&input).await?;
+        return Ok(None);
+    }
     let envelope = crate::native_party::envelope(&snapshot, TableSender::Host, request)?;
     host.native_party(&envelope).await?;
     Ok(None)
@@ -30,6 +38,14 @@ pub(super) async fn client_request(client: &ClientNet, request: PartyRequest) ->
     let sender = TableSender::Endpoint(client.endpoint_key());
     if let PartyRequest::Read { party } = request {
         return crate::native_party::read(&snapshot, sender, &party).map(Some);
+    }
+    if let PartyRequest::Journey(request) = request {
+        if let isometry_views::JourneyRequest::Quote { party,input } = request {
+            return crate::native_journey::quote(&snapshot,sender,&party,input).map(Some);
+        }
+        let input = crate::native_journey::envelope(&snapshot,sender,request)?;
+        client.native_journey(input).await?;
+        return Ok(None);
     }
     let envelope = crate::native_party::envelope(&snapshot, sender, request)?;
     client.native_party(envelope).await?;

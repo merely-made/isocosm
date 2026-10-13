@@ -279,6 +279,7 @@ impl Founding {
             birth_profiles: BTreeMap::new(),
             owned_stock: None,
             party_relations: BTreeMap::new(),
+            pace_profiles: BTreeMap::new(),
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),

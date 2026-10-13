@@ -14,6 +14,7 @@ mod feeding;
 mod graft;
 mod epoch;
 mod mind;
+pub(crate) mod pace;
 mod recipe;
 mod systems;
 
@@ -27,6 +28,7 @@ pub use feeding::{FeedingSources, PortFeeding};
 pub use graft::{Compatibility, GraftReceipt, Raise, retained};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
 pub use mind::{Mind, Need};
+pub use pace::{PaceCost, PaceDuration, PaceProfile};
 pub use recipe::{Affinity, Anchor, Declared, Development, Facing, Policy, Recipe, Tagma, Template, Verdict};
 pub use systems::{Carriage, Fill, Role, System, default_systems};
 
@@ -295,6 +297,9 @@ pub struct Rules {
     /// Explicit party keys select distinct, declared membership relation kinds.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub party_relations: BTreeMap<Key, Key>,
+    /// Authored travel duration and native stock costs (860), with no default pace.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub pace_profiles: BTreeMap<Key, PaceProfile>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

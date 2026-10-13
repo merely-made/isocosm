@@ -18,6 +18,7 @@ const PLACEMENT_VERSION: u32 = 2;
 const TIME_VERSION: u32 = 3;
 const HOLD_VERSION: u32 = 4;
 const SHARED_VERSION: u32 = 5;
+const JOURNEY_VERSION: u32 = 6;
 
 /// The actual host input after its DM/seat/current-subject checks. Assertions
 /// precede the character admissions, which name their existing authored keys.
@@ -36,7 +37,7 @@ pub struct AdmissionBatch {
 #[derive(Deserialize)]
 #[serde(untagged)]
 enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch), Play(VttIntentEnvelope),
-    SharedRoster(super::SharedRosterInput) }
+    SharedRoster(super::SharedRosterInput), Journey(super::joint_journey::JourneyEnvelope) }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -59,6 +60,8 @@ pub struct GameBindings {
     /// is an authored roster with no player holds, never a transient seat cut.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     shared_players: Option<BTreeSet<Id>>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    journeys: BTreeMap<Key, super::joint_journey::Proposal>,
 }
 
 fn is_zero(value: &u64) -> bool { *value == 0 }
@@ -67,11 +70,12 @@ impl GameBindings {
     pub fn decode(bytes: &[u8]) -> Result<Self, String> {
         if let Some(bytes) = bytes.strip_prefix(PREFIX) {
             let game: Self = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
-            if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | HOLD_VERSION | SHARED_VERSION)
+            if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | HOLD_VERSION | SHARED_VERSION | JOURNEY_VERSION)
                 || game.version == VERSION && (!game.positions.is_empty() || !game.controls.is_empty())
                 || game.version < TIME_VERSION && !game.downtime.is_empty()
                 || game.version < HOLD_VERSION && (!game.time_holds.is_empty() || game.roster_revision != 0)
                 || game.version < SHARED_VERSION && game.shared_players.is_some()
+                || game.version < JOURNEY_VERSION && !game.journeys.is_empty()
             { return Err("unsupported VTT character binding version".into()); }
             Ok(game)
         } else {
@@ -79,7 +83,7 @@ impl GameBindings {
             // format. Preserve it without guessing its schema or migration.
             Ok(Self { version:VERSION, characters:BTreeMap::new(), positions:BTreeMap::new(),
                 controls:BTreeMap::new(), payload:bytes.to_vec(), downtime:BTreeMap::new(),
-                time_holds:Vec::new(), roster_revision:0, shared_players:None })
+                time_holds:Vec::new(), roster_revision:0, shared_players:None, journeys:BTreeMap::new() })
         }
     }
 
@@ -97,6 +101,16 @@ impl GameBindings {
     pub fn time_holds(&self) -> &[super::time::Hold] { &self.time_holds }
     pub fn roster_revision(&self) -> u64 { self.roster_revision }
     pub fn shared_players(&self) -> Option<&BTreeSet<Id>> { self.shared_players.as_ref() }
+    pub fn journeys(&self) -> &BTreeMap<Key, super::joint_journey::Proposal> { &self.journeys }
+    pub(super) fn record_journey(&mut self, key: Key, proposal: super::joint_journey::Proposal) {
+        self.version = self.version.max(JOURNEY_VERSION);
+        self.journeys.insert(key,proposal);
+    }
+    pub(super) fn same_except_journeys(&self, other: &Self) -> bool {
+        self.characters == other.characters && self.positions == other.positions && self.controls == other.controls
+            && self.payload == other.payload && self.downtime == other.downtime && self.time_holds == other.time_holds
+            && self.roster_revision == other.roster_revision && self.shared_players == other.shared_players
+    }
 
     pub fn shared_roster(&self) -> Option<super::time::Roster> {
         self.shared_players.as_ref().map(|players| super::time::Roster {
@@ -107,7 +121,7 @@ impl GameBindings {
         if self.shared_players.as_ref().is_some_and(|prior| prior != &players) {
             self.roster_revision = self.roster_revision.checked_add(1).ok_or("native time roster revision overflow")?;
         }
-        self.version = SHARED_VERSION;
+        self.version = self.version.max(SHARED_VERSION);
         self.shared_players = Some(players);
         Ok(())
     }
@@ -132,6 +146,7 @@ impl GameBindings {
             && self.controls == other.controls && self.payload == other.payload
             && self.roster_revision == other.roster_revision
             && self.shared_players == other.shared_players
+            && self.journeys == other.journeys
     }
 
     pub(super) fn record_position(&mut self, character: Key, position: PositionBinding) {
@@ -157,6 +172,7 @@ impl GameBindings {
             binding.validate(session, recipe)?;
         }
         super::time::validate_bindings(session, &self.downtime, &self.time_holds)?;
+        super::joint_journey::validate_bindings(session, &self.journeys)?;
         Ok(())
     }
 }
@@ -205,6 +221,16 @@ fn submit_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: Ord
     super::movement::current_access(session, access)?;
     let input: Input = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
     match input {
+        Input::Journey(envelope) => {
+            let local;
+            let roster = if let Some(roster) = roster { roster }
+                else if shared {
+                    local = GameBindings::decode(&game)?.shared_roster()
+                        .ok_or("DM must explicitly configure the saved native-player roster before joint travel")?;
+                    &local
+                } else { return Err("standalone joint travel requires its actual saved endpoint roster".into()); };
+            super::joint_journey::submit_journey(session,game,access,roster,&envelope)
+        },
         Input::Play(envelope) if matches!(&envelope.intent,
             isocosm_overlay::Intent::Game(isocosm_overlay::vtt::VttIntent::Time(_))) => {
                 let local;
@@ -243,6 +269,7 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
         Input::Admissions(batch) => batch,
         Input::Play(_) => return Err("table play requires a resolved native seat cut".into()),
         Input::SharedRoster(_) => return Err("shared roster authoring requires the actual DM seat cut".into()),
+        Input::Journey(_) => return Err("joint journey requires actual native seat and player-roster admission".into()),
     };
     if !matches!(batch.version, VERSION | PLACEMENT_VERSION)
         || batch.version == VERSION && (!batch.placements.is_empty() || !batch.controls.is_empty())

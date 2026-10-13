@@ -6,6 +6,7 @@ use crate::{Result, rules::{Query, Rules}};
 pub(super) fn catalogue(rules: &Rules) -> Result<()> {
     crate::spatial::validate(rules)?;
     crate::party::validate(rules)?;
+    crate::rules::pace::validate(rules)?;
     if let Some(stock) = &rules.owned_stock { stock.validate(rules)?; }
     for (name, material) in &rules.material_recipes {
         super::key(name)?;

@@ -4,6 +4,12 @@
 use super::*;
 
 impl HostNet {
+    pub async fn native_journey(&self, input: &isometry_campaign::native::joint_journey::JourneyEnvelope) -> Result<(), String> {
+        let out = self.session.lock().await.native_journey(crate::native_table::TableSender::Host, input)?;
+        dispatch(&self.peers, out).await;
+        Ok(())
+    }
+
     pub async fn native_party(&self, envelope: &isocosm_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
         let out = self.session.lock().await.native_party(crate::native_table::TableSender::Host, envelope)?;
         dispatch(&self.peers, out).await;

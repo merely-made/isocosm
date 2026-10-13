@@ -46,6 +46,8 @@ pub struct HostConfig {
     pub watch: Option<PathBuf>,
     /// Authored physical inputs for already admitted native bodies and patches.
     pub spatial: Option<PathBuf>,
+    /// Explicit new founding and logged author spread startup; never a player packet.
+    pub spread: Option<PathBuf>,
 }
 
 impl Default for HostConfig {
@@ -72,6 +74,7 @@ impl Default for HostConfig {
             follow: None,
             watch: None,
             spatial: None,
+            spread: None,
         }
     }
 }

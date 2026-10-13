@@ -8,6 +8,28 @@ use cambium_genet_winit_host::{CloseDisposition, HostHooks, HostOptions, WindowH
     WindowsInit, WindowTree, run_windows};
 use crate::ui::{model::App, view::{self, Child, Logic}};
 
+/// Operator-supplied author input over the opened world, before any seat packet.
+pub(crate) fn mesocosm_spread(world: &crate::world::World, path: &std::path::Path) -> Result<(), String> {
+    #[cfg(feature = "mesocosm")]
+    {
+        let authored = std::fs::read(path).map_err(|why| why.to_string())?;
+        let setup: mesocosm_runtime::author_spread::Setup =
+            serde_json::from_slice(&authored).map_err(|why| why.to_string())?;
+        world.product_game(world.cut()?, crate::products::Mode::Mesocosm, |session, bytes| {
+            let mut game: mesocosm_runtime::spatial::Game = if bytes.is_empty() {
+                Default::default()
+            } else { serde_json::from_slice(&bytes).map_err(|why| why.to_string())? };
+            setup.apply(session, &mut game)?;
+            Ok(((), serde_json::to_vec(&game).map_err(|why| why.to_string())?))
+        })
+    }
+    #[cfg(not(feature = "mesocosm"))]
+    {
+        let _ = (world, path);
+        Err("authored Mesocosm spread setup is absent from this build".into())
+    }
+}
+
 /// Explicit authored startup data, separate from ordinary player packets.
 pub(crate) fn mesocosm_spatial(world: &crate::world::World, path: &std::path::Path) -> Result<(), String> {
     #[cfg(feature = "mesocosm")]
