@@ -13,6 +13,15 @@ use crate::operations::Window;
 mod geometry;
 mod advance;
 mod arrival;
+mod birth;
+mod birth_geometry;
+mod birth_command;
+pub use birth::{BirthProfile, BirthMedium, BirthSupport, BirthRequest, BirthGeometry, BirthResolution, BirthReport, BirthPending, birth_pose};
+pub use birth_command::{BirthPreparation, PreparedBirth};
+pub(crate) use birth::BirthMark;
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Publication { Step(Key), Birth(Id) }
 pub use advance::{Preparation, Prepared};
 pub use geometry::{check_step, neighbours};
 
@@ -82,10 +91,22 @@ pub(crate) struct Resolutions {
     pub pending: Option<Pending>,
     arrivals: BTreeMap<Id, ArrivalResolution>, arrived: BTreeSet<Id>,
     reports: Vec<ArrivalReport>, enabled: bool,
+    births: BTreeMap<Id, BirthResolution>, born: BTreeSet<Id>,
+    birth_reports: Vec<BirthReport>, birth_enabled: bool,
+    order: Vec<Publication>,
+    pub birth_pending: Option<BirthPending>,
+    command_outcome: Option<String>,
     work: Option<crate::simulation::Work>,
 }
 
 pub fn validate(rules: &Rules) -> Result<()> {
+    for (key, profile) in &rules.birth_profiles {
+        crate::validation::key(key)?;
+        if !rules.processes.contains_key(&profile.process)
+            || (0..3).any(|k| profile.clearance[0][k] >= profile.clearance[1][k]) || profile.places.climb.run == 0
+            || matches!(profile.places.cap, isometer_space::places::Cap::Own(s) if s.contains(&0))
+        { return Err("birth profile needs its native process and authored clearance".into()); }
+    }
     for (key, profile) in &rules.step_profiles {
         crate::validation::key(key)?;
         let process = rules.processes.get(&profile.process).ok_or("step process absent")?;
@@ -108,8 +129,11 @@ impl Simulation {
         }
         if self.spatial_resolutions.pending.is_some() { return; }
         let mut sim = self.clone();
+        sim.clear_owned_capture();
         sim.spatial_resolutions = Resolutions { accepted: self.spatial_resolutions.accepted.clone(),
-            reports: self.spatial_resolutions.reports.clone(), ..Default::default() };
+            reports: self.spatial_resolutions.reports.clone(),
+            birth_reports: self.spatial_resolutions.birth_reports.clone(), ..Default::default() };
+        sim.spatial_resolutions.order = self.spatial_resolutions.order.clone();
         sim.geometry_resolutions = crate::operations::Resolutions::default();
         sim.journal = None;
         self.spatial_resolutions.pending = Some(Pending { request: step.request.clone(), sim: Box::new(sim) });
@@ -118,9 +142,11 @@ impl Simulation {
         if let Some(step) = step {
             debug_assert!(step.resolved);
             self.spatial_resolutions.accepted.insert(step.request.action.clone());
+            self.spatial_resolutions.order.push(Publication::Step(step.request.action.clone()));
             self.spatial_resolutions.used.insert(step.request.action);
         }
     }
     pub fn spatial_steps(&self) -> &BTreeSet<Key> { &self.spatial_resolutions.accepted }
     pub fn spatial_arrivals(&self) -> &[ArrivalReport] { &self.spatial_resolutions.reports }
+    pub fn spatial_order(&self) -> &[Publication] { &self.spatial_resolutions.order }
 }

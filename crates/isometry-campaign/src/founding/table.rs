@@ -16,4 +16,13 @@ impl Campaign {
         let (replay, game, accepted) = self.replay.with_table_input(game, access, bytes)?;
         Ok((Self { replay, ..self.clone() }, game, accepted))
     }
+
+    /// The roster comes from the trusted table host, separately from the
+    /// authenticated player's typed request and the immutable campaign content.
+    pub fn with_table_time(&self, game: Vec<u8>, access: OrdinaryAccess,
+        roster: &crate::native::time::Roster, envelope: &isocosm_overlay::vtt::VttIntentEnvelope)
+        -> Result<(Self, Vec<u8>, String), String> {
+        let (replay, game, accepted) = self.replay.with_table_time(game, access, roster, envelope)?;
+        Ok((Self { replay, ..self.clone() }, game, accepted))
+    }
 }

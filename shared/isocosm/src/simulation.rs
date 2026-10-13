@@ -167,6 +167,8 @@ pub struct Simulation {
     pub(crate) project_inputs: Option<(Id, Vec<Key>)>,
     pub(crate) project_decision: Option<crate::projects::DecisionContext>,
     pub(crate) project_decision_stamp: Option<crate::projects::DecisionStamp>,
+    pub(crate) owned_report: crate::projects::debit::Report,
+    pub(crate) owned_planning: bool,
     /// What the advance under way has changed, to put back if it is refused.
     pub(crate) journal: Option<crate::journal::Journal>,
     /// The scheduled acts a host asked to see.
@@ -225,6 +227,8 @@ impl Simulation {
             project_inputs: None,
             project_decision: None,
             project_decision_stamp: None,
+            owned_report: Default::default(),
+            owned_planning: false,
             journal: None,
             watch: Default::default(),
             flows: Default::default(),

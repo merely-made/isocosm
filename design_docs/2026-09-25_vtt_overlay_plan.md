@@ -548,6 +548,15 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
+- **2026-10-12, 847 and V2 storylet migration:** native resident corpse
+  poses now reach the same close-up while living movement/control admission
+  remains living. Native storylet requirements/casting and actual host
+  acceptance are being connected to the authenticated native reading and
+  saved content offers, bypassing stale table CampaignWorld truth. Table
+  local-map/item metadata publishes with the native asserted Storylet;
+  no native matter or role-to-token identity is inferred. Source unverified;
+  all compiler/tests/fixtures/probes/tuning remain deferred826. Full V2 open.
+
 - **2026-10-12, actual token/native bridge source assembling:** ordinary
   table moves read current native recipe/position/control bindings. The real
   standalone path explicitly binds map tokens to those characters, actual
@@ -855,3 +864,13 @@ what each left open lands here, so it has a live owner.
   is retained. Neither optional character owner metadata nor old `party_known`
   creates a native participant or knowing fact. Compiler, product/runtime,
   protocol/archive/save and headed qualification remain unrun for this source.
+
+- **2026-10-12, V2 native storylet caller source:** requirements and role
+  casting read native authored polity tags, law keys and character keys.
+  Offers/cache use accepted native history, saved content and private fact
+  IDs. Acceptance stages native Storylet assertions with table map/item
+  metadata in one host candidate; item recipients need explicit admitted
+  token/character bindings. Sim-off behavior stays. This source is unverified
+  under826. Protocol8 individual native time-request transport is assembling;
+  player roster and waiting-proposal choices851/852 are pending. No native
+  time advance is activated by an unanswered choice. Ruleset lowering is V3.

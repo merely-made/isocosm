@@ -24,7 +24,7 @@ pub struct StockLot {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum LotAt { Source, Project(ProjectId), Output(Id), Unresolved }
+pub enum LotAt { Source, Project(ProjectId), Output(Id), Unresolved, Closed }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct OwnedLot { pub lot: StockLot, pub at: LotAt }
@@ -34,7 +34,7 @@ impl OwnedLot {
         match self.at {
             LotAt::Source => Some(self.lot.source),
             LotAt::Output(id) => Some(StockSource::Entity(id)),
-            LotAt::Project(_) | LotAt::Unresolved => None,
+            LotAt::Project(_) | LotAt::Unresolved | LotAt::Closed => None,
         }
     }
 }
@@ -42,7 +42,7 @@ impl OwnedLot {
 impl Simulation {
     pub fn source_lots(&self) -> impl Iterator<Item = &StockLot> {
         self.state.projects.ownership.values().filter(move |held|
-            held.at == LotAt::Source && self.source_claims_sound(held.lot.source, &held.lot.account)
+            held.at == LotAt::Source && held.lot.amount > 0 && self.source_claims_sound(held.lot.source, &held.lot.account)
                 && held.lot.owners.iter().all(|owner| self.owner_exists(*owner).is_ok()))
             .map(|held| &held.lot)
     }
@@ -50,7 +50,7 @@ impl Simulation {
     pub fn available_lots(&self) -> impl Iterator<Item = (StockSource, &StockLot)> {
         self.state.projects.ownership.values().filter_map(move |held| {
             let source = held.current_source()?;
-            (self.source_claims_sound(source,&held.lot.account)
+            (held.lot.amount > 0 && self.source_claims_sound(source,&held.lot.account)
                 && held.lot.owners.iter().all(|owner| self.owner_exists(*owner).is_ok())).then_some((source,&held.lot))
         })
     }
@@ -130,7 +130,9 @@ impl Simulation {
         let mut collectives = BTreeMap::new();
         for key in selected {
             if !seen.insert(key) { return Err("selected stock lot is duplicated".into()); }
-            let held = self.stock_lot_at_start(key).ok_or("selected native stock lot is absent")?;
+            let held = self.state.projects.debit_capture.with(|context| Ok(context.shadow.get(key).cloned()))?
+                .flatten().or_else(|| self.stock_lot_at_start(key).cloned())
+                .ok_or("selected native stock lot is absent")?;
             if held.current_source() != Some(source) {
                 return Err("selected stock lot is not at this native source".into());
             }

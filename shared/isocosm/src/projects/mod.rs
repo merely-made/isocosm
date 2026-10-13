@@ -20,8 +20,11 @@ mod consent;
 pub use consent::{Consented, OwnerDecision, Permission};
 mod decision;
 pub(crate) use decision::{DecisionContext, DecisionStamp};
-mod debit;
+pub(crate) mod debit;
 pub use debit::guard_debit;
+pub use debit::{DebitOrigin, DebitRequest, DebitSelection, LotQuantity, DebitPreview,
+    OwnedActed, OwnedCommandResult, StockRules, SourceRule, DispositionRule,
+    OperationRule, DirectOperation, Disposition, OutputClaim, Destination};
 
 /// The accepted action that reserved the project, in its own identity domain.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -62,9 +65,17 @@ pub struct Projects {
     pub bindings: BTreeMap<Id, ProjectId>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub ownership: BTreeMap<Key, OwnedLot>,
+    /// Disposable admission evidence, excluded from every saved preimage.
+    #[serde(skip)]
+    pub(crate) debit_capture: debit::Capture,
 }
 
 impl Projects {
+    pub(crate) fn snapshot(&self) -> Self {
+        let copy = self.clone();
+        copy.debit_capture.set(None);
+        copy
+    }
     pub fn is_empty(&self) -> bool { self.records.is_empty() && self.bindings.is_empty() && self.ownership.is_empty() }
     pub fn get(&self, id: ProjectId) -> Option<&Project> { self.records.get(&id) }
     pub fn bound(&self, actor: Id) -> Option<(ProjectId, &Project)> {

@@ -284,3 +284,11 @@ appeared in all three, the VTT's as `ActionKey`; and `Harm`, `Wound`,
 `WoundSeverity` and `PartHandle` (`src/harm.rs`), harm in the sim's terms
 (ruling 123), which Eponym's and the VTT's handoffs had each carried. The
 game modules import them and define nothing of their own.
+
+Eponym's appended StockAct carries an explicitly chosen process/target and
+native DebitSelection bytes through the same controlled receiver. It depends
+on neither native implementation types nor product state. The receiver checks
+that the participant plays the submitted subject, decodes the exact request
+cut and selected quantities, and submits native ActOwned. The native operation
+owns admission, conserved stock and authored output-claim disposition. Current
+source placement awaits the combined migration verification under ruling826.

@@ -24,6 +24,7 @@ mod checkpoint;
 mod handoff;
 mod project;
 mod telling;
+mod stock;
 
 pub use act::{KnowingAct, PlayerAct, PlayerActKind};
 pub use actuation::{ActTarget, Actuation, Motion, TimedAct};
@@ -33,6 +34,7 @@ pub use checkpoint::{FirstLife, LifeCheckpoint, LifeChoice, StartTime, Successio
 pub use handoff::{Blow, EponymHandoff};
 pub use project::{ProjectAct, ProjectCarry, ProjectConsent, ProjectHandle, ProjectOwner};
 pub use telling::{Claim, Manner, Telling};
+pub use stock::StockAct;
 
 use serde::{Deserialize, Serialize};
 
@@ -55,6 +57,7 @@ pub enum EponymIntent {
     Project(ProjectAct),
     ProjectCarry(ProjectCarry),
     ProjectConsent(ProjectConsent),
+    StockAct(StockAct),
 }
 
 /// Creative mode's intents (ruling 187), and nothing else's: tag in to a

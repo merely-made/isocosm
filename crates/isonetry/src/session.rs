@@ -27,7 +27,10 @@ mod host;
 mod messages;
 mod native;
 mod native_host;
+mod native_storylet;
 pub mod native_table;
+mod native_time;
+pub use native_time::NativeTimeResolved;
 pub use native::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
 mod travel;
 

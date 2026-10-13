@@ -63,7 +63,7 @@ impl CharacterPlacement {
         }
         let native = session.sim.state().population.get(entity).ok_or("placement character is absent")?;
         if native.authored.as_ref().map(|fill| &fill.key) != Some(&self.character)
-            || !native.alive || native.body.is_none() || native.body_revision != self.body_revision
+            || (!placed && !native.alive) || native.body.is_none() || native.body_revision != self.body_revision
             || native.resident_site() != Some(self.site) || self.patch.site != self.site
             || session.sim.terrain_revision() != self.terrain_revision
             || placed && native.patch != Some(self.patch)
@@ -98,7 +98,8 @@ impl PositionBinding {
         Ok(())
     }
 
-    /// Historical metadata never supplies a departed or stale body's pose.
+    /// Current physical geometry includes a resident corpse (847). Admission
+    /// and moves still require a living actor; this read grants no control.
     pub fn current(&self, session: &Session) -> Result<[i64; 3], String> {
         self.placement.check(session, self.entity, true)?;
         let native = session.sim.state().population.get(self.entity).ok_or("position character is absent")?;

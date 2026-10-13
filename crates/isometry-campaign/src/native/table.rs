@@ -14,4 +14,12 @@ impl Replay {
         let (accepted, game) = super::submit_game_access(&mut session, game, bytes, access)?;
         Ok((Self { session }, game, accepted))
     }
+
+    pub(crate) fn with_table_time(&self, game: Vec<u8>, access: OrdinaryAccess,
+        roster: &super::time::Roster, envelope: &isocosm_overlay::vtt::VttIntentEnvelope)
+        -> Result<(Self, Vec<u8>, String), String> {
+        let mut session = self.session.clone();
+        let (accepted, game) = super::submit_time(&mut session, game, access, roster, envelope)?;
+        Ok((Self { session }, game, accepted))
+    }
 }

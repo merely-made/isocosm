@@ -210,6 +210,10 @@ fn equipment_panel(state: &SessionApp) -> Child {
                         move |state: &mut SessionApp| state.drop_item(id)));
                     controls.push(button("Use for work".into(), "equip",
                         move |state: &mut SessionApp| state.use_for_work(id)));
+                    if item.kind == ItemKind::Food && item.attached.is_none() {
+                        controls.push(button("Choose meal stocks".into(), "equip",
+                            move |state: &mut SessionApp| state.prepare_meal(id)));
+                    }
                 }
                 if at.is_some() && item.kind == ItemKind::Dressing { match item.attached {
                     Some(part) => controls.push(button(
@@ -345,6 +349,7 @@ pub(super) fn root(state: &SessionApp) -> Child {
                                 journal_panel(state),
                                 equipment_panel(state),
                                 super::projects::panel(state),
+                                super::stock::panel(state),
                             ),
                         )
                         .attr("class", "panel-column"),

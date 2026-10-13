@@ -58,7 +58,7 @@ impl Journal {
             nudges: None,
             attention: state.attention.clone(),
             spreads: state.spreads.clone(),
-            projects: state.projects.clone(),
+            projects: state.projects.snapshot(),
             #[cfg(debug_assertions)]
             before: Box::new(state.clone()),
         }

@@ -6,12 +6,14 @@
 use super::*;
 use crate::{Session, Command, operations, simulation::Work, flows::{Flow, FlowResult}};
 
-pub enum Preparation { Terrain(operations::Pending), Step(Pending), Ready(Prepared) }
+pub enum Preparation { Terrain(operations::Pending), Step(Pending), Ready(Prepared), Birth(BirthPending) }
 
 pub struct Prepared {
     candidate: Session, source: Key, pub work: Work,
     pub arrivals: Vec<ArrivalReport>, flows: Vec<Flow>,
     pub steps: BTreeSet<Key>,
+    pub births: Vec<BirthReport>,
+    pub order: Vec<Publication>,
 }
 
 impl Prepared {
@@ -26,20 +28,35 @@ impl Prepared {
 impl Session {
     pub fn prepare_spatial(&self, ticks: Tick, terrain: &[TerrainResolution],
         steps: &[Resolution], arrivals: &[ArrivalResolution]) -> Result<Preparation> {
-        let mut candidate = self.clone();
         let command = Command::AdvanceSpatial {
             ticks, terrain: terrain.to_vec(), steps: steps.to_vec(), arrivals: arrivals.to_vec(),
         };
+        self.prepare_spatial_command(command)
+    }
+
+    pub fn prepare_birth_spatial(&self, ticks: Tick, terrain: &[TerrainResolution],
+        steps: &[Resolution], arrivals: &[ArrivalResolution], births: &[BirthResolution]) -> Result<Preparation> {
+        self.prepare_spatial_command(Command::AdvanceBirthSpatial {
+            ticks, terrain: terrain.to_vec(), steps: steps.to_vec(), arrivals: arrivals.to_vec(), births: births.to_vec(),
+        })
+    }
+
+    fn prepare_spatial_command(&self, command: Command) -> Result<Preparation> {
+        let mut candidate = self.clone();
         match candidate.command_with_flows(command) {
             Ok(outcome) => {
                 let work = candidate.sim.spatial_resolutions.work.take().ok_or("spatial work absent")?;
                 Ok(Preparation::Ready(Prepared { source: operations::source(self), work,
                     arrivals: candidate.sim.spatial_resolutions.reports.clone(),
                     steps: candidate.sim.spatial_resolutions.accepted.clone(),
+                    births: candidate.sim.spatial_resolutions.birth_reports.clone(),
+                    order: candidate.sim.spatial_resolutions.order.clone(),
                     candidate, flows: outcome.flows }))
             },
             Err(why) => {
-                if let Some(pending) = candidate.sim.spatial_resolutions.pending.take() {
+                if let Some(pending) = candidate.sim.spatial_resolutions.birth_pending.take() {
+                    Ok(Preparation::Birth(pending))
+                } else if let Some(pending) = candidate.sim.spatial_resolutions.pending.take() {
                     Ok(Preparation::Step(pending))
                 } else if let Some(pending) = candidate.sim.geometry_resolutions.pending.take() {
                     Ok(Preparation::Terrain(pending))
@@ -50,6 +67,16 @@ impl Session {
 
     pub(crate) fn advance_spatial(&mut self, ticks: Tick, terrain: &[TerrainResolution],
         steps: &[Resolution], arrivals: &[ArrivalResolution]) -> Result<String> {
+        self.advance_spatial_inputs(ticks, terrain, steps, arrivals, None)
+    }
+
+    pub(crate) fn advance_birth_spatial(&mut self, ticks: Tick, terrain: &[TerrainResolution],
+        steps: &[Resolution], arrivals: &[ArrivalResolution], births: &[BirthResolution]) -> Result<String> {
+        self.advance_spatial_inputs(ticks, terrain, steps, arrivals, Some(births))
+    }
+
+    fn advance_spatial_inputs(&mut self, ticks: Tick, terrain: &[TerrainResolution],
+        steps: &[Resolution], arrivals: &[ArrivalResolution], births: Option<&[BirthResolution]>) -> Result<String> {
         let count = terrain.len().checked_add(steps.len()).and_then(|n| n.checked_add(arrivals.len()))
             .ok_or("spatial input count overflow")?;
         if ticks != 1 || count > self.sim.genesis().rules.limits.events_per_advance {
@@ -69,6 +96,17 @@ impl Session {
             }
         }
         let mut held = Resolutions { enabled: true, ..Default::default() };
+        if let Some(inputs) = births {
+            if inputs.len() as u128 > u128::from(self.sim.genesis().rules.limits.entities) {
+                return Err("birth placement inputs exceed the authored entity limit".into());
+            }
+            held.birth_enabled = true;
+            for input in inputs {
+                if held.births.insert(input.request.child, input.clone()).is_some() {
+                    return Err("duplicate biological child placement input".into());
+                }
+            }
+        }
         for step in steps {
             if held.inputs.insert(step.request.action.clone(), step.clone()).is_some()
                 || candidate.sim.geometry_resolutions.inputs.contains_key(&step.request.action)
@@ -86,6 +124,7 @@ impl Session {
             Err(why) => {
                 self.sim.geometry_resolutions.pending = candidate.sim.geometry_resolutions.pending.take();
                 self.sim.spatial_resolutions.pending = candidate.sim.spatial_resolutions.pending.take();
+                self.sim.spatial_resolutions.birth_pending = candidate.sim.spatial_resolutions.birth_pending.take();
                 return Err(why);
             },
         };
@@ -93,14 +132,21 @@ impl Session {
         let spatial = &candidate.sim.spatial_resolutions;
         if geometry.used.len() != geometry.inputs.len() + geometry.refused.len() || spatial.used.len() != spatial.inputs.len()
             || spatial.arrived.len() != spatial.arrivals.len()
+            || spatial.born.len() != spatial.births.len()
         { return Err("spatial input does not name an executed native action or arrival".into()); }
         let reports = spatial.reports.clone();
         let accepted = spatial.accepted.clone();
+        let born = spatial.birth_reports.clone();
+        let order = spatial.order.clone();
         candidate.sim.geometry_resolutions = Default::default();
         candidate.sim.spatial_resolutions = Resolutions { work: Some(work), reports: reports.clone(),
             accepted: accepted.clone(),
+            birth_reports: born.clone(),
+            order: order.clone(),
             ..Default::default() };
-        let outcome = format!("spatial advanced {ticks}; answers {}", crate::digest(&(reports, accepted)));
+        let outcome = if births.is_some() {
+            format!("birth spatial advanced {ticks}; answers {}", crate::digest(&(reports, accepted, born, order)))
+        } else { format!("spatial advanced {ticks}; answers {}", crate::digest(&(reports, accepted))) };
         *self = candidate;
         Ok(outcome)
     }

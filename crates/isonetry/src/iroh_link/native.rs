@@ -4,6 +4,11 @@
 use super::*;
 
 impl HostNet {
+    pub async fn native_time(&self, envelope: &isocosm_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
+        let out = self.session.lock().await.native_time(crate::native_table::TableSender::Host, envelope)?;
+        dispatch(&self.peers, out).await;
+        Ok(())
+    }
     pub async fn commit_native_table_admission(&self, input: &crate::native_table::NativeTableAdmissionInput) -> Result<(), String> {
         let out = self.session.lock().await.commit_native_table_admission(input)?;
         dispatch(&self.peers, out).await;

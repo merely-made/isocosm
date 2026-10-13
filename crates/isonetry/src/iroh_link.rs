@@ -37,7 +37,7 @@ use muniment::Journal;
 /// stops an incompatible peer from dialing at all, while the version is the
 /// in-session handshake that refuses one which got through anyway (a same-ALPN
 /// build with a changed message shape).
-pub const ALPN: &[u8] = b"isometry/session/v7";
+pub const ALPN: &[u8] = b"isometry/session/v8";
 
 type PeerMap = Arc<Mutex<HashMap<PeerId, mpsc::UnboundedSender<NetMessage>>>>;
 
@@ -413,6 +413,11 @@ impl ClientNet {
         let (_, msg) = self.session.lock().await.intent(event);
         let mut send = self.send.lock().await;
         write_frame(&mut send, &msg).await
+    }
+
+    pub async fn native_time(&self, envelope: isocosm_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
+        let (_, msg) = self.session.lock().await.native_time(envelope);
+        write_frame(&mut *self.send.lock().await, &msg).await
     }
 
     /// Ask the host to resolve an action. No verdict travels with it.

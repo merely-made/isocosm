@@ -20,6 +20,7 @@ use crate::{
     GameState, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
     PROJECT_GAME_STATE_VERSION,
     PROJECT_CUSTODY_GAME_STATE_VERSION,
+    OWNED_STOCK_GAME_STATE_VERSION,
     World,
 };
 
@@ -371,6 +372,10 @@ impl Session {
         {
             return Err(SessionError::Game(GameError::LegacyProjectCustodyIntent));
         }
+        if save.game.version < OWNED_STOCK_GAME_STATE_VERSION
+            && save.game.intents.iter().any(|intent| matches!(intent,
+                GameIntent::StockAct { .. } | GameIntent::EatOwned { .. }))
+        { return Err(SessionError::Game(GameError::LegacyOwnedStockIntent)); }
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents
         {

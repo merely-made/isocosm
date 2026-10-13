@@ -76,7 +76,11 @@ impl Simulation {
             credit(&mut ledger, account, *amount)?;
         }
         for (account, amount) in &paid {
-            crate::projects::guard_debit(&self.state,crate::projects::StockSource::Entity(actor),account,*amount)?;
+            let body = self.state.population.get(actor).ok_or("edit actor is absent")?;
+            let part_stock = crate::anatomy::books(body).get(account).copied().unwrap_or(0)
+                .checked_sub(body.accounts.get(account).copied().unwrap_or(0)).ok_or("edit source books mismatch")?;
+            let actual = part_stock.checked_add(ledger.get(account).copied().unwrap_or(0)).ok_or("edit stock overflow")?;
+            crate::projects::debit::guard_debit_at(&self.state,crate::projects::StockSource::Entity(actor),account,*amount,actual)?;
             debit(&mut ledger, account, *amount)?;
         }
         let sum = |legs: &[(Key, u64)]| legs.iter().map(|l| u128::from(l.1)).sum::<u128>();

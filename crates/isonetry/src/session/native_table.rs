@@ -8,6 +8,16 @@ use isocosm::Execution;
 use isocosm_overlay::{EntityHandle, Intent, IntentEnvelope, OrdinaryAccess, ParticipantHandle, Seat, Tick,
     vtt::{TableAct, TableActKind, TableBatch, VttIntent}};
 
+fn preserve_time(old: Option<&NativeTable>, next: &NativeTable) -> Result<(), String> {
+    let before = isometry_campaign::native::GameBindings::decode(
+        old.map_or(&[][..], |table| table.game.as_slice()))?;
+    let after = isometry_campaign::native::GameBindings::decode(&next.game)?;
+    if before.downtime() != after.downtime() {
+        return Err("table authoring/movement cannot change native downtime proposal or consent records".into());
+    }
+    Ok(())
+}
+
 pub fn resolve_native_move(state: &GameSnapshot, sender: TableSender, token: TokenId, to: TileCoord)
     -> Result<NativeTableResolved, String> {
     let world = state.native.as_ref().ok_or("table has no native campaign")?;
@@ -45,6 +55,7 @@ pub(crate) fn apply_native_table(state: &mut GameSnapshot, result: &NativeTableR
     if table_digest(state.native_table.as_ref()) != result.expected_table {
         return Err(fail("native table result has stale binding metadata"));
     }
+    preserve_time(state.native_table.as_ref(), &result.table).map_err(GameError::Native)?;
     if !result.moves.is_empty() {
         let old = state.native_table.as_ref().ok_or_else(|| fail("native move has no original table binding"))?;
         if old.host_participant != result.table.host_participant || old.peers != result.table.peers
@@ -104,6 +115,7 @@ impl HostSession {
             version: 1, game: Vec::new(), host_participant: participant, peers: vec![], boards: vec![],
         });
         table.game = game;
+        preserve_time(self.state.native_table.as_ref(), &table)?;
         // Existing authored mappings never silently follow a changed pose.
         table.validate(&self.state, admitted.table_session())?;
         let result = NativeTableResolved { expected_table: input.expected_table.clone(),
@@ -127,6 +139,7 @@ impl HostSession {
             return Err("table binding input names a stale native or table prefix".into());
         }
         let campaign = world.load(Execution::Grouped)?;
+        preserve_time(self.state.native_table.as_ref(), &input.table)?;
         input.table.validate(&self.state, campaign.table_session())?;
         let result = NativeTableResolved { expected_table: input.expected_table.clone(),
             publication: NativePublication::update(world, &campaign)?, table: input.table.clone(), moves: vec![] };

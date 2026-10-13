@@ -253,6 +253,7 @@ impl Simulation {
     fn feasible(&self, actor: Id, target: Option<Id>, p: &Process, place: Id) -> bool {
         let part = self.bind_part(actor, p);
         self.route_ready(actor, p) && self.target_matches(actor, target, p)
+            && self.owned_process_ready(actor,target,p)
             && p.requires
                 .iter()
                 .all(|q| self.query(actor, target, place, part, q).is_ok())

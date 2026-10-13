@@ -16,8 +16,8 @@ pub enum Mode {
     Creative,
 }
 
-/// What a mode shows: sites, living groups by first identity and count,
-/// and events.
+/// What a mode shows: sites, living groups and resident remains by first
+/// identity and count, and events. This read grants no control or living act.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct View {
     pub sites: BTreeSet<Id>,
@@ -28,15 +28,16 @@ pub struct View {
 /// What `critter`'s player sees in `mode`.
 pub fn view(sim: &Simulation, critter: Id, mode: Mode) -> View {
     let s = sim.state();
-    let living = s
+    let bodies = s
         .population
         .groups
         .iter()
-        .filter(|(_, g)| g.entity.alive && !crate::directing::is_participant(&g.entity));
+        .filter(|(_, g)| !crate::directing::is_participant(&g.entity)
+            && (g.entity.alive || g.entity.resident_site().is_some()));
     if mode == Mode::Creative {
         return View {
             sites: s.sites.keys().copied().collect(),
-            things: living.map(|(f, g)| (*f, g.count)).collect(),
+            things: bodies.map(|(f, g)| (*f, g.count)).collect(),
             events: s.events.keys().cloned().collect(),
         };
     }
@@ -54,7 +55,7 @@ pub fn view(sim: &Simulation, critter: Id, mode: Mode) -> View {
             subjects.insert(event.subject);
         }
     }
-    for (first, g) in living {
+    for (first, g) in bodies {
         let here = g.entity.colocated(e);
         let told = subjects.range(*first..*first + g.count).next().is_some();
         if here || told {

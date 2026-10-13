@@ -75,7 +75,15 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
         if !visible.shows(id) || bodies.iter().any(|b: &PlacedBody| b.id == id) { continue; }
         let e = sim.state().population.get(id).ok_or("sighted body disappeared")?;
         let Some(document) = e.body.clone() else { continue; };
-        bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical:None,
+        let physical = if e.alive { None } else {
+            let Some(held) = runtime.spatial().members.get(&id) else { continue; };
+            held.realized(sim)?;
+            if held.site.0 != site.site() || held.pose.at != cell {
+                return Err("corpse sight cell differs from its current saved physical pose".into());
+            }
+            Some(held.pose.clone())
+        };
+        bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical,
             tint:tint_of(kingdom::of(e)), alive:e.alive });
     }
     let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);

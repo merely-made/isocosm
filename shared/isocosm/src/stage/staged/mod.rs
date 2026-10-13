@@ -240,6 +240,13 @@ impl Staged<'_> {
     /// Applies one effect to the stage, a guarded one by the branch its
     /// guard chooses (X5). Returns whether it set a feat.
     pub(crate) fn effect(&mut self, e: &Effect, cause: &str) -> Result<bool> {
+        let owns = self.begin_owned_operation()?;
+        let result = self.effect_inner(e,cause);
+        if owns && result.is_ok() { self.finish_owned_operation()?; }
+        result
+    }
+
+    fn effect_inner(&mut self, e: &Effect, cause: &str) -> Result<bool> {
         if let Effect::Keep { name, value } = e {
             let value = self.compute(|read, draw, parts| value.eval_in(read, draw, parts))?;
             self.stage.kept.insert(name.clone(), value);
@@ -265,6 +272,7 @@ impl Staged<'_> {
         } else { resolved };
         let resolved = self.share_out(resolved)?;
         let e = resolved.as_ref();
+        self.owned_transfer(e)?;
         // 820: keep already produced soil in the actor's existing ledger.
         // Other site operations remain unavailable; no flow is fabricated.
         if matches!(e, Effect::Transfer { from: Binding::Actor, to: Binding::Place, account, .. }
@@ -285,7 +293,7 @@ impl Staged<'_> {
                 let input = self.sim.project_decision.as_ref().expect("decision checked above");
                 if input.process != self.stage.process { return Err("collective decision uses a different authored process".into()); }
                 self.stage.project_decision = Some(crate::projects::DecisionStamp {
-                    decision:input.clone(),action:self.stage.act,
+                    decision:input.clone(),action:cause.into(),
                 });
                 return Ok(false);
             },

@@ -50,6 +50,8 @@ impl Runtime {
     fn translate(&mut self, intent: &MesocosmIntent) -> Result<String, Refusal> {
         match intent {
             MesocosmIntent::Checkpoint(answer) => self.answer(answer.kind),
+            MesocosmIntent::Dev(isocosm_overlay::mesocosm::DevIntent::ForceBirth { organism }) =>
+                self.spatial.force_birth(&mut self.interim.session, organism.0).map_err(Refusal::Sim),
             MesocosmIntent::Dev(isocosm_overlay::mesocosm::DevIntent::EndEpoch) => {
                 let epoch = self.interim.session.sim.genesis().rules.epoch_ticks.max(1);
                 let left = epoch - self.interim.session.sim.state().tick % epoch;

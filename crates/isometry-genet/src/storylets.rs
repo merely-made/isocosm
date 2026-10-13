@@ -1,14 +1,22 @@
 //! Storylets, native downtime requests, and the host-event seam.
 //!
 //! The storylet surface refreshes through a gate: `refresh_storylet_rows`
-//! rebuilds only when `(world, secret_ids)` changed, because it runs after
-//! every dispatch while the surface is open (see the 2026-07-20 perf plan).
+//! rebuilds only when the authoritative world/content and secret IDs changed,
+//! because it runs after every dispatch while the surface is open (see the
+//! 2026-07-20 perf plan).
 //! `emit_host_events` lives here too, as the one place a burst of events
 //! becomes a single authority step.
 //!
 //! Split out of `main.rs` on 2026-07-24; behavior unchanged.
 
 use super::*;
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) enum StoryletInputs {
+    Table { world: CampaignWorld, secret_ids: Vec<String> },
+    Native { cursor: isometry_campaign::founding::NativeCursor,
+        content_digest: String, secret_ids: Vec<String> },
+}
 
 impl App {
     /// The storylet surface (C6). While the DM has it open, resolve each
@@ -32,24 +40,57 @@ impl App {
     /// revision counter. A counter is a new invariant every mutation site has to
     /// honor, and one missed bump leaves the surface silently stale, which is a
     /// worse failure than the cost it saves. `(world, secret_ids)` is the
-    /// complete input set (`resolve_storylet` reads factions, laws, and
-    /// characters, all of them world state), so a compare cannot go stale. It is
-    /// also the shape the overmap's leaf gate already uses.
+    /// complete input set for sim-off. Sim-on instead binds accepted native
+    /// cursor, saved Content and secret IDs, and never falls back to that fold.
     pub(crate) fn refresh_storylet_rows(&mut self, ctx: &mut Ctx<'_>) {
         let secret_ids: Vec<String> = self.campaign.secret_ids().map(str::to_owned).collect();
+        if let Some(world) = &ctx.runner.state().native.world {
+            let result = (|| {
+                let inputs = StoryletInputs::Native { cursor:world.cursor()?,
+                    content_digest:world.content_digest()?, secret_ids:secret_ids.clone() };
+                if self.last_storylet_inputs.as_ref() == Some(&inputs) { return Ok(None); }
+                let campaign = world.load(isocosm::Execution::Grouped)?;
+                let reading = campaign.reading();
+                let rows = campaign.content().storylets.iter().map(|(key, storylet)| {
+                    match reading.resolve_storylet(storylet, secret_ids.iter().map(String::as_str)) {
+                        Ok(resolved) => StoryletRow { key:key.clone(), entry:storylet.entry.clone(),
+                            available:true, status:"ready".into(), cast:resolved.cast.into_iter().map(|(role, character)| {
+                                let name = reading.authored_entity(&character).and_then(|(_, entity)| entity.authored.as_ref())
+                                    .map(|fill| fill.name.clone()).unwrap_or(character);
+                                (role, name)
+                            }).collect() },
+                        Err(error) => StoryletRow { key:key.clone(), entry:storylet.entry.clone(),
+                            available:false, status:describe_storylet_error(&error), cast:Vec::new() },
+                    }
+                }).collect();
+                Ok::<_, String>(Some((inputs, rows)))
+            })();
+            match result {
+                Ok(Some((inputs, rows))) => {
+                    self.last_storylet_inputs = Some(inputs);
+                    ctx.runner.update(|ui| {
+                        ui.storylets = rows;
+                        if ui.storylet_selected >= ui.storylets.len() { ui.storylet_selected = 0; }
+                    });
+                },
+                Ok(None) => {},
+                Err(why) => {
+                    self.last_storylet_inputs = None;
+                    ctx.runner.update(|ui| { ui.storylets.clear(); ui.status = why; });
+                },
+            }
+            return;
+        }
         let runner = &*ctx.runner;
         let world = &runner.state().world;
-        if self
-            .last_storylet_inputs
-            .as_ref()
-            .is_some_and(|(seen, ids)| seen == world && ids == &secret_ids)
-        {
+        if matches!(self.last_storylet_inputs.as_ref(), Some(StoryletInputs::Table { world:seen, secret_ids:ids })
+            if seen == world && ids == &secret_ids) {
             return;
         }
 
         let rows = storylet_rows(world, &secret_ids);
         // The one clone, on the path that actually changed something.
-        self.last_storylet_inputs = Some((world.clone(), secret_ids));
+        self.last_storylet_inputs = Some(StoryletInputs::Table { world:world.clone(), secret_ids });
 
         {
             let runner = &mut *ctx.runner;
@@ -88,18 +129,17 @@ impl App {
         }
 
         // Play a storylet: commit its effects. A storylet Item effect wants a
-        // recipient, so pass the active token (else the first), like campaign.
+        // recipient. Native play needs the explicitly selected bound token;
+        // table-only play retains its active-token/first-token behavior.
         let Some(key) = request else {
             return;
         };
         let (item_owner, snapshot, any_storylets) = {
             let r = &*ctx.runner;
             let s = r.state();
-            let owner = s
-                .turns
-                .active()
-                .or_else(|| s.map.tokens.first().map(|t| t.id));
-            (owner, self.snapshot_of(s), !s.world.storylets.is_empty())
+            let owner = if s.native.world.is_some() { s.selected_token }
+                else { s.turns.active().or_else(|| s.map.tokens.first().map(|t| t.id)) };
+            (owner, self.snapshot_of(s), s.native.world.is_some() || !s.world.storylets.is_empty())
         };
         {
             let runner = &mut *ctx.runner;

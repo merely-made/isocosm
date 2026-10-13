@@ -18,6 +18,7 @@ pub struct Crowd { pub site: Id, pub lineage: Key, pub count: u64 }
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct VisibleBody {
     pub id: Id, pub lineage: Key, pub kingdom: Key, pub revision: u64,
+    pub alive: bool,
     pub document: BodyDocument, pub patch: Option<isometer_space::places::PlaceId>,
 }
 
@@ -64,12 +65,13 @@ impl Simulation {
         let mut bodies = Vec::new();
         for (first, count) in visible.things {
             let Some(entity) = self.state.population.get(first) else { continue; };
-            if !entity.alive || entity.resident_site() != Some(site) { continue; }
+            if entity.resident_site() != Some(site) { continue; }
             let Some(document) = &entity.body else { continue; };
             let end = first.checked_add(count).ok_or("native identity interval overflow")?;
             for id in first..end {
                 bodies.push(VisibleBody { id, lineage: entity.lineage.clone(), kingdom: entity.kingdom.clone(),
-                    revision: entity.body_revision, document: document.clone(), patch: entity.patch });
+                    revision: entity.body_revision, alive:entity.alive,
+                    document: document.clone(), patch: entity.patch });
             }
         }
         Ok(RegionReading { site, played: self.plays(participant).filter(|id|

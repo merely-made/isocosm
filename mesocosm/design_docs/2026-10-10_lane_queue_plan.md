@@ -51,11 +51,12 @@ Rulings839 to845 now settle joint input-owner permission, fixed creation
 placement with chosen carrying, native-process step profiles, explicit
 destination placements, required ownership, selectable polity decision
 strategies and exact selected quantity lots. Those source connections are
-placed with Eponym's actual caller, unverified. Questions846 to848 are pending:
-lot disposition for ordinary stock debits, corpse visibility through native
-awareness and newborn physical placement. The help
+placed with Eponym's actual caller, unverified. Rulings846 to850 now require
+explicit named-lot portions, operation-authored output claim disposition,
+same-awareness resident corpse pictures and parent-pose birth profiles.
+These dependent native/caller sources are placed, unverified. The help
 action mentioned in843 is a separate idea with unspecified admission rules.
-Next unused question849; verification and adjustments still wait under826.
+Downtime choices851/852 and party membership/knowing choices853/854 are pending; next unused question855. Verification and adjustments still wait under826.
 
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
@@ -386,6 +387,18 @@ is never rewritten: later changes are annotations or new rulings naming what
 they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
+
+- **2026-10-12, 846 to850:** all five answers are recorded verbatim.
+  Native corpse visibility and current corpse-pose consumers are placed,
+  unverified. Explicit named-lot portion selection and per-operation retained
+  claims/consumed-claim closure are being connected at native debit boundaries
+  and the real Eponym caller. Authored parent-frame birth profiles and actual
+  biological child placement/replay are assembling; missing/refused geometry
+  still leaves conserved birth admitted. The V2 native storylet requirements
+  and acceptance consumer are being connected to native truth/content, with
+  sim-off table behavior preserved. No defaults, new matter, property retitle,
+  layout pose or control grant is inferred. All compiler/tests/fixtures/probes
+  and tuning remain deferred826. Whole migration/E3/V2/M4 remain open.
 
 - **2026-10-12, ownership/custody and spatial consumer source placed:**
   the three lanes returned stable production source. Native exact lots and
@@ -1333,3 +1346,28 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   test/fixture changes, tuning or certification machinery accompanies them.
   Four structural choices remain with Mark, next827. Material/work/app-selection
   source and opaque VTT product-game actuation remain independent open seams.
+
+- **2026-10-12, rulings846 to850 consumer source:** resident corpse reads
+  and the actual V2 native storylet caller are placed. Native exact owned
+  debit/disposition and parent-pose newborn sources are assembling with real
+  Eponym and Mesocosm callers. GameSave12 records stock portions; generator7
+  selects explicit stock-rule founding without changing earlier material
+  profile bytes. Protocol8 adds attributed native table time requests. Two
+  evidence-backed V2 consent choices851/852 are now pending: saved bound
+  players versus currently connected players, and original tick/roster versus
+  final-consent current state. Next unused question853. Full migration is
+  incomplete; every compiler/test/fixture/probe/tuning gate still waits826.
+
+- **2026-10-12, stock/birth/V2 source packet:** answered846 to850 are
+  recorded verbatim with native exact-lot debit admission, mixed retained and
+  closed portions, actual GameSave12 Eponym stock/partial-meal caller, resident
+  corpse reads and Mesocosm clock/dev biological placement/replay. Native
+  stock capture is operation-scoped and removed from disposable game geometry
+  snapshots. V2 storylets use native requirements/accepted content and one
+  host publication. Protocol8 adds attributed TimeIntent requests and a
+  dedicated historical-geometry time result; typed proposals/individual yes
+  records are placed, with advancement held for851/852. The overmap membership
+  and knowledge questions853/854 are also pending. Next unused855. Unsupported
+  owned spread transit refuses until its typed title/output vocabulary exists.
+  This packet is source-only, with every compiler/test/fixture/probe/tuning
+  gate deferred826. Full E3/V2/M4, migration and acceptance remain open.

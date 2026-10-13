@@ -287,6 +287,11 @@ pub struct Rules {
     pub projects: Option<crate::projects::Catalogue>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub step_profiles: BTreeMap<Key, crate::spatial::StepProfile>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub birth_profiles: BTreeMap<Key, crate::spatial::BirthProfile>,
+    /// Explicit autonomous lot selection and operation dispositions (846/850).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub owned_stock: Option<crate::projects::StockRules>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

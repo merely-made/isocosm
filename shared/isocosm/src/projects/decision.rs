@@ -10,7 +10,7 @@ pub(crate) struct DecisionContext {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct DecisionStamp { pub decision: DecisionContext, pub action: u64 }
+pub(crate) struct DecisionStamp { pub decision: DecisionContext, pub action: Key }
 
 impl Simulation {
     pub(crate) fn project_decision_ready(&self, actor:Id, target:Option<Id>) -> Result<String> {

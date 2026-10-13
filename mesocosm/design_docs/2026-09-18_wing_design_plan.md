@@ -10591,7 +10591,64 @@ what later sections derive from.
      exact quantity and owners. Reservation explicitly selects those lots;
      later incoming matter does not acquire an earlier quantity's owners.
      These ownership records do not issue or duplicate conserved matter.
-     The next ruling is846.
+
+846. **Owned-stock debits select their native quantity lots explicitly.**
+     2026-10-12, ordinary stock disposition after845.
+     Question: "Owned stock can already leave an account through eating, transfers, transformations or terrain work. How should those actions identify which quantity lots they use? Incoming matter must not inherit an earlier lot’s owners."
+     Options: (1) "Require explicit lot selection for debits of owned stock (Recommended)"; (2) "Use explicitly authored native allocation rules"; (3) "Leave ownership unresolved after an unselected debit until explicitly repaired".
+     Mark chose "Require explicit lot selection for debits of owned stock (Recommended)"
+     So native owned-stock debit admission identifies the selected quantity
+     lots at the actual source. A later credit cannot replace their identity
+     or acquire their owners. Unsupported or absent selection refuses;
+     automatic allocation and unresolved tagging are not selected.
+     The answer does not supply a property-transfer or consumption policy
+     beyond identifying the input lots.
+
+847. **Resident corpses remain visible through native awareness and close-up.**
+     2026-10-12, native body visibility after death and travel.
+     Question: "Native bodies and conserved matter survive death, including corpses that finish a journey. Current native views hide every dead body, so a close-up cannot show those corpses. How should visibility work?"
+     Options: (1) "Show resident corpses within the same native awareness and close-up (Recommended)"; (2) "Keep them outside ordinary views, with a separate native remains view".
+     Mark chose "Show resident corpses within the same native awareness and close-up (Recommended)"
+     So death alone does not hide a resident native corpse from the same
+     participant awareness and admitted close-up. In-transit corpses stay
+     absent from both sites until native arrival. Showing remains grants no
+     control or living action and does not add them to living crowd counts.
+     No decay duration or replacement physical pose is supplied.
+
+848. **Authored birth profiles use the parent's current physical pose.**
+     2026-10-12, Mesocosm physical placement after a native birth.
+     Question: "Native newborns inherit their parent’s site or remaining journey, but Mesocosm has no actual position for them. What should supply a newborn’s physical placement? Birth and its conserved matter would proceed even when placement is unavailable."
+     Options: (1) "Authored birth placement profiles using the parent’s current pose (Recommended)"; (2) "Explicit placement supplied for each newborn".
+     Mark chose "Authored birth placement profiles using the parent’s current pose (Recommended)"
+     So authored birth profiles resolve actual native newborn placement from
+     its parent's current admitted pose. Geometry, offset, window, clearance
+     and placement policy remain declared inputs. Missing/refused placement
+     does not delay or undo native birth or its conserved matter, and grants
+     no control. A travelling parent has no site pose to guess; the native
+     child still shares its remaining journey under821.
+
+849. **A debit may select an exact portion of a named native lot.**
+     2026-10-12, partial native stock selection under846.
+     Question: "Eating, transfers and terrain work can debit less than a declared lot contains. How should explicit selection handle a partial quantity?"
+     Options: (1) "Select an exact quantity from a named lot, leaving the rest at its source (Recommended)"; (2) "Require whole lots whose quantities exactly match the debit".
+     Mark chose "Select an exact quantity from a named lot, leaving the rest at its source (Recommended)"
+     So the caller identifies the lot and exact selected quantity. Native
+     admission checks that quantity against its actual current source and
+     remaining claim; the unselected portion stays there. No implicit split
+     across other lots, FIFO or proportional allocation is introduced.
+
+850. **Each operation authors retained output claims or consumed-claim closure.**
+     2026-10-12, property disposition after selected native conversion.
+     Question: "Consumption and transformation can merge stocks, produce several outputs or turn material into terrain. What should happen to the selected inputs’ ownership claims?"
+     Options: (1) "An authored disposition per operation declares retained output claims or closes consumed claims (Recommended)"; (2) "Always close claims on consumed or transformed inputs"; (3) "Preserve the input owners’ claims over all resulting matter".
+     Mark chose "An authored disposition per operation declares retained output claims or closes consumed claims (Recommended)"
+     So the operation explicitly declares which output quantities retain
+     the selected owners' claims, or closes the consumed input claims.
+     Native matter remains conserved independently of claim closure. Mixed
+     owners, byproducts and changed stock accounts need explicit allocation;
+     digestion does not infer ownership of another body's tissue. Missing
+     disposition or unavailable output vocabulary refuses that owned path.
+     The next unused question is851.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

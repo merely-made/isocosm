@@ -82,4 +82,8 @@ intents! {
     StockOwnership { tick:Tick, lot:isocosm::projects::StockLot },
     ProjectConsent { tick:Tick, subject:SubjectId, project:isocosm::projects::ProjectId,
         owner:isocosm::projects::Owner, worker:SubjectId, grant:bool, process:Option<String> },
+    StockAct { tick:Tick, subject:SubjectId, process:String,
+        target:Option<isocosm::schema::Id>, selections:Vec<isocosm::projects::DebitSelection> },
+    EatOwned { tick:Tick, subject:SubjectId, item:ItemId,
+        selections:Vec<isocosm::projects::DebitSelection> },
 }

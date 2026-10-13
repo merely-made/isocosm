@@ -40,6 +40,7 @@ mod projects;
 mod project_places;
 mod project_carry;
 mod project_consent;
+mod stock;
 pub use project_places::ProjectLocation;
 mod save;
 
@@ -346,6 +347,12 @@ impl GameState {
             .subject()
             .expect("every intent but a world-level revision names a subject");
         match intent {
+            GameIntent::StockAct { process, target, selections, .. } => {
+                self.stock_act(tick, subject, process, *target, selections)
+            },
+            GameIntent::EatOwned { item, selections, .. } => {
+                self.eat_owned(tick, subject, *item, selections)
+            },
             GameIntent::ProjectConsent { project, owner, worker, grant, process, .. } => {
                 self.project_consent(tick, subject, *project, *owner, *worker, *grant, process.as_deref())
             },

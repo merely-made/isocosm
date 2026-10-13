@@ -55,8 +55,8 @@ impl InSite {
             || at[1] >= self.volume.ceiling()
         { return Err("sight cell is outside the realized window".into()); }
         let e = sim.state().population.get(id).ok_or("sight names an absent member")?;
-        if !e.alive || e.resident_site() != Some(self.site()) {
-            return Err("sight member is not living at this site".into());
+        if e.resident_site() != Some(self.site()) {
+            return Err("sight member has no native residence at this site".into());
         }
         let patch = e.patch.ok_or("sight needs an admitted native patch")?;
         if patch.site != self.site() || !self.places.places.contains_key(&patch)
@@ -83,6 +83,9 @@ impl InSite {
             return Err("sight candidate bounds overflow".into());
         }
         self.cell(sim, sight.observer, sight.eye)?;
+        if !sim.state().population.get(sight.observer).is_some_and(|e| e.alive) {
+            return Err("sight observer is not living".into());
+        }
         let mut seen = BTreeSet::from([sight.observer]);
         for (&id, &at) in &sight.targets {
             self.cell(sim, id, at)?;

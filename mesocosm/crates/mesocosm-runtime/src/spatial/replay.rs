@@ -47,18 +47,50 @@ impl Game {
         let mut folded = Game { version: VERSION, members: driver.initial.clone(), driver: Some(driver.clone()) };
         let mut records = driver.records.iter();
         for entry in session.entries.iter().skip(count) {
-            let Command::AdvanceSpatial { ticks, steps, arrivals, .. } = &entry.command else { continue; };
+            if !matches!(&entry.command, Command::AdvanceSpatial { .. }
+                | Command::AdvanceBirthSpatial { .. } | Command::BirthSpatial { .. }) { continue; }
             let record = records.next().ok_or("native spatial entry has no saved game transition")?;
-            let outcome = format!("spatial advanced {ticks}; answers {}",
-                isocosm::digest(&(&record.arrivals, &record.steps)));
+            let (outcome, changes) = match &entry.command {
+                Command::BirthSpatial { command, births } => {
+                    if !matches!(command.as_ref(), Command::ForceBirth { .. })
+                        || !record.steps.is_empty() || !record.arrivals.is_empty()
+                    { return Err("birth command record names unsupported native work".into()); }
+                    let native = record.command_outcome.as_ref().ok_or("birth command outcome absent")?;
+                    let outcome = format!("birth spatial command; answers {}",
+                        isocosm::digest(&(native, &record.births, &record.order)));
+                    let changes = folded.apply_publications(&session.sim, &[], births, &record.births, &record.order)?;
+                    (outcome, changes)
+                },
+                Command::AdvanceSpatial { ticks, steps, arrivals, .. }
+                | Command::AdvanceBirthSpatial { ticks, steps, arrivals, .. } => {
+                    if record.command_outcome.is_some() {
+                        return Err("clock record cannot name a direct-command outcome".into());
+                    }
+                    if record.steps.iter().any(|action| !steps.iter().any(|step| &step.request.action == action)) {
+                        return Err("game names no native step answer".into());
+                    }
+                    let mut changes = folded.apply_arrivals(arrivals, &record.arrivals)?;
+                    let outcome = if let Command::AdvanceBirthSpatial { births, .. } = &entry.command {
+                        let ordered: BTreeSet<_> = record.order.iter().filter_map(|p|
+                            if let isocosm::spatial::Publication::Step(action) = p { Some(action.clone()) } else { None }).collect();
+                        if ordered != record.steps { return Err("saved step acceptance differs from native publication order".into()); }
+                        changes.extend(folded.apply_publications(&session.sim, steps, births, &record.births, &record.order)?);
+                        format!("birth spatial advanced {ticks}; answers {}",
+                            isocosm::digest(&(&record.arrivals, &record.steps, &record.births, &record.order)))
+                    } else {
+                        if !record.births.is_empty() || !record.order.is_empty() {
+                            return Err("legacy spatial outcome authenticates no birth/publication fields".into());
+                        }
+                        changes.extend(folded.apply_steps(steps, &record.steps)?);
+                        format!("spatial advanced {ticks}; answers {}", isocosm::digest(&(&record.arrivals, &record.steps)))
+                    };
+                    (outcome, changes)
+                }
+                _ => return Err("unsupported spatial command".into()),
+            };
             if record.entry != entry.id || outcome != entry.outcome {
                 return Err("game spatial admission differs from its authenticated native outcome".into());
             }
-            if record.steps.iter().any(|action| !steps.iter().any(|step| &step.request.action == action)) {
-                return Err("game names no native step answer".into());
-            }
-            let mut changes = folded.apply_arrivals(arrivals, &record.arrivals)?;
-            changes.extend(folded.apply_steps(steps, &record.steps)?);
             if changes.len() != record.changes.len() || changes.iter().zip(&record.changes).any(|(actual, saved)| {
                 actual.actor != saved.actor || actual.admission != saved.admission
                     || !physical(&actual.after, &saved.after)

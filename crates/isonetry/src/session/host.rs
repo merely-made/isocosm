@@ -212,6 +212,7 @@ impl HostSession {
         key: &str,
         item_owner: Option<TokenId>,
     ) -> Result<Vec<Outbound>, String> {
+        if self.state.native.is_some() { return self.commit_native_storylet(key, item_owner); }
         let storylet = self
             .state
             .world

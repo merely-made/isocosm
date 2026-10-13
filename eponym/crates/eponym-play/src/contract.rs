@@ -28,6 +28,7 @@ use crate::{World, WorldError};
 
 mod borrowed;
 mod owner;
+mod stock;
 pub use borrowed::{Borrowed, Reading};
 
 /// The timed act that carves the ground at a region.
@@ -85,6 +86,7 @@ impl Borrowed<'_> {
         };
         let mut out = Lowered::default();
         let social = match intent {
+            EponymIntent::StockAct(act) => return self.stock_act(participant, act),
             EponymIntent::ProjectConsent(act) => {
                 check(act.subject)?;
                 use isocosm_overlay::eponym::ProjectOwner;

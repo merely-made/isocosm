@@ -69,6 +69,11 @@ impl NativeWorld {
         Ok(NativeCursor::of(&self.saved()?.native))
     }
 
+    /// Read-only cache identity for the validated saved campaign content.
+    pub fn content_digest(&self) -> Result<String, String> {
+        Ok(isocosm::digest(&self.saved()?.content))
+    }
+
     /// A publication may append or advance, never replace an accepted prefix.
     pub fn validate_successor(&self, previous: &Self) -> Result<(), String> {
         let old = previous.saved()?;

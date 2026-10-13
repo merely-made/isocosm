@@ -296,6 +296,8 @@ impl BodyFounding {
             material_recipes: BTreeMap::new(),
             projects: None,
             step_profiles: BTreeMap::new(),
+            birth_profiles: BTreeMap::new(),
+            owned_stock: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

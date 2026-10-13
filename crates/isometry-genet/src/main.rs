@@ -215,7 +215,7 @@ struct App {
     /// open, so the rows re-resolve only when an answer could have changed. Kept
     /// across a close so reopening is free; the compare catches anything that
     /// moved while it was shut.
-    last_storylet_inputs: Option<(CampaignWorld, Vec<String>)>,
+    last_storylet_inputs: Option<storylets::StoryletInputs>,
     /// Host entropy for adjudication. Every die an action rolls comes from here,
     /// so a fixed seed replays a session's combat exactly; peers never roll.
     action_rng: Rng,

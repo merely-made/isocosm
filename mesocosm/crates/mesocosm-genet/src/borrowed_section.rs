@@ -132,7 +132,8 @@ impl SceneHandle {
                 let Some(pose) = roots.get(&body.id) else { continue; };
                 let member = session.sim.state().population.get(body.id).ok_or("native picture member is absent")?;
                 if member.resident_site() != Some(site) || member.body.as_ref() != Some(&body.document)
-                    || member.body_revision != body.revision || member.patch != body.patch {
+                    || member.body_revision != body.revision || member.patch != body.patch
+                    || member.alive != body.alive {
                     return Err("native picture body changed before root lowering".into());
                 }
                 if !volume.holds(pose.at[0], pose.at[2]) { continue; }
@@ -212,10 +213,14 @@ fn lower(session: &Session, region: RegionReading, fingerprint: [u64; 4], quarte
     let mut bodies = Vec::new();
     for (index, body) in region.bodies.into_iter().enumerate() {
         let entity = session.sim.state().population.get(body.id).ok_or("native body disappeared")?;
-        if !entity.alive || entity.resident_site() != Some(region.site) || entity.body.as_ref() != Some(&body.document)
-            || entity.body_revision != body.revision || entity.patch != body.patch {
+        if entity.resident_site() != Some(region.site) || entity.body.as_ref() != Some(&body.document)
+            || entity.body_revision != body.revision || entity.patch != body.patch
+            || entity.alive != body.alive {
             return Err("native close-up body changed before lowering".into());
         }
+        // This advisory path has no authenticated saved root. Resident
+        // remains are rendered by update_spatial/update_roots instead.
+        if !body.alive { continue; }
         let at = match geometry {
             Some((_, sight)) => {
                 let cell = if body.id == sight.observer { Some(sight.eye) }
@@ -229,7 +234,7 @@ fn lower(session: &Session, region: RegionReading, fingerprint: [u64; 4], quarte
                 .map(|p| volume.to_ground(p.cell)).unwrap_or_else(|| layout::spot(&ground, index)),
         };
         bodies.push(PlacedBody { id: body.id, document: body.document, at, physical:None,
-            tint: scene::tint_of(isocosm::kingdom::of(entity)), alive: true });
+            tint: scene::tint_of(isocosm::kingdom::of(entity)), alive: entity.alive });
     }
     let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|body| &body.document), 1);
     Ok(Snapshot { scene: SiteScene { site: region.site, ground, window: volume, bodies,

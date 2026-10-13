@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 pub const GENERATOR_VERSION: u32 = 6;
+pub const OWNED_GENERATOR_VERSION: u32 = 7;
 pub const PROFILE_VERSION: u32 = 1;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

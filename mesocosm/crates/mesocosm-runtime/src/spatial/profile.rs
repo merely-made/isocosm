@@ -27,6 +27,8 @@ pub struct Profile {
     pub version: u32,
     pub steps: BTreeMap<Id, BTreeMap<String, StepInput>>,
     pub arrivals: Vec<ArrivalInput>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub births: Vec<BirthInput>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -39,7 +41,7 @@ pub struct Authored { pub placements: Vec<Placement>, pub profile: Profile }
 pub enum Setup { Placements(Vec<Placement>), Driver(Authored) }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Admission { Step { action: String }, Arrival }
+pub enum Admission { Step { action: String }, Arrival, Birth { action: String, parent: Id, ordinal: u64 } }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Transition { pub actor: Id, pub before: Option<Placement>, pub after: Placement, pub admission: Admission }
@@ -48,6 +50,12 @@ pub struct Transition { pub actor: Id, pub before: Option<Placement>, pub after:
 pub struct Record {
     pub entry: String, pub changes: Vec<Transition>,
     pub steps: BTreeSet<String>, pub arrivals: Vec<isocosm::spatial::ArrivalReport>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub births: Vec<isocosm::spatial::BirthReport>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub order: Vec<isocosm::spatial::Publication>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub command_outcome: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -64,7 +72,29 @@ pub struct Driver {
 
 impl Profile {
     pub fn validate(&self, sim: &Simulation) -> Result<(), String> {
-        if self.version != 1 { return Err("unsupported authored spatial profile".into()); }
+        if self.version != 2 && !(self.version == 1 && self.births.is_empty()) {
+            return Err("unsupported authored spatial profile".into());
+        }
+        for input in &self.births { input.validate(sim)?; }
+        // Reject already-applicable selector overlap instead of choosing
+        // entity versus lineage precedence. Future lineage changes are
+        // checked again on the actual native birth request.
+        for (&id, group) in &sim.state().population.groups {
+            let mut processes = BTreeSet::new();
+            for input in self.births.iter().filter(|input| match &input.parent {
+                BirthParent::Entity(parent) => parent.0 >= id && parent.0 - id < group.count,
+                BirthParent::Lineage(lineage) => lineage == &group.entity.lineage,
+            }) {
+                let process = &sim.genesis().rules.birth_profiles[&input.profile].process;
+                // A lineage-wide selector conflicts with any matching
+                // entity selector in this group; two distinct entity
+                // identities do not select the same native parent.
+                let key = (process, match &input.parent { BirthParent::Entity(p) => Some(p.0), _ => None });
+                if processes.contains(&(process, None)) || key.1.is_none() && processes.iter().any(|(p, _)| *p == process)
+                    || !processes.insert(key)
+                { return Err("authored birth profile selectors overlap".into()); }
+            }
+        }
         for (actor, steps) in &self.steps {
             if sim.state().population.get(*actor).is_none() { return Err("step input actor absent".into()); }
             for (key, input) in steps {

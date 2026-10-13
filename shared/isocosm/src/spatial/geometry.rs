@@ -6,19 +6,19 @@
 use super::*;
 use isometer_space::{volume::Volume, places::Places};
 
-fn clear(volume: &Volume, cell: [i64; 3]) -> bool {
+pub(super) fn clear(volume: &Volume, cell: [i64; 3]) -> bool {
     volume.holds(cell[0], cell[2]) && cell[1] >= volume.datum && cell[1] < volume.ceiling()
         && volume.material(cell).is_some_and(|m| m == volume.materials.air || m == volume.materials.water)
 }
 
-fn stance(volume: &Volume, profile: &StepProfile, root: [i64; 3]) -> Option<[i64; 3]> {
+pub(super) fn stance(volume: &Volume, offset: [i64; 3], height: u32, root: [i64; 3]) -> Option<[i64; 3]> {
     let mut cell = root;
-    for k in 0..3 { cell[k] = cell[k].checked_add(profile.stance_offset[k])?; }
+    for k in 0..3 { cell[k] = cell[k].checked_add(offset[k])?; }
     let below = [cell[0], cell[1].checked_sub(1)?, cell[2]];
     let air = |at| volume.material(at) == Some(volume.materials.air);
     if !clear(volume, root) || !clear(volume, cell) || !air(cell)
         || !volume.material(below).is_some_and(|m| m != volume.materials.air && m != volume.materials.water)
-        || !(0..profile.body.height).all(|y| cell[1].checked_add(i64::from(y))
+        || !(0..height).all(|y| cell[1].checked_add(i64::from(y))
             .is_some_and(|h| air([cell[0], h, cell[2]])))
     { return None; }
     Some(cell)
@@ -27,14 +27,14 @@ fn stance(volume: &Volume, profile: &StepProfile, root: [i64; 3]) -> Option<[i64
 /// Existing one-column stances, filtered by the profile's actual passage clearance.
 pub fn neighbours(volume: &Volume, places: &Places, profile: &StepProfile, at: [i64; 3])
     -> Vec<[i64; 3]> {
-    let Some(foot) = stance(volume, profile, at) else { return Vec::new(); };
+    let Some(foot) = stance(volume, profile.stance_offset, profile.body.height, at) else { return Vec::new(); };
     let Some(from) = places.place_at(foot) else { return Vec::new(); };
     isometer_space::places::steps(volume, profile.places, foot).into_iter()
         .filter_map(|(next, rise)| {
             if rise > 0 && rise as u64 > u64::from(profile.body.climb) { return None; }
             let mut root = next;
             for k in 0..3 { root[k] = root[k].checked_sub(profile.stance_offset[k])?; }
-            stance(volume, profile, root)?;
+            stance(volume, profile.stance_offset, profile.body.height, root)?;
             let to = places.place_at(next)?;
             if from == to { return Some(root); }
             let key = if from < to { [from, to] } else { [to, from] };
@@ -54,7 +54,7 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
     let volume = sim.volume(request.site, geometry.window.min, geometry.window.max, geometry.window.depth)?;
     let places = Places::derive(&volume, profile.places)?;
     if places.place_at(geometry.path[0].at) != Some(request.patch)
-        || stance(&volume, profile, geometry.path[0].at).is_none() {
+        || stance(&volume, profile.stance_offset, profile.body.height, geometry.path[0].at).is_none() {
         return Err("step begins outside its admitted native patch".into());
     }
     for pair in geometry.path.windows(2) {

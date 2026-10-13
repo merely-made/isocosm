@@ -104,6 +104,10 @@ impl ClientSession {
         (Recipient::Host, NetMessage::Intent { event })
     }
 
+    pub fn native_time(&self, envelope: isocosm_overlay::vtt::VttIntentEnvelope) -> Outbound {
+        (Recipient::Host, NetMessage::NativeTime(envelope))
+    }
+
     /// Ask the host to resolve an action. The client never decides the outcome,
     /// so this carries no roll, no damage and no verdict: only the request.
     ///
@@ -170,7 +174,8 @@ impl ClientSession {
             }
             NetMessage::Intent { .. }
             | NetMessage::Hello { .. }
-            | NetMessage::Action(_) => {}
+            | NetMessage::Action(_)
+            | NetMessage::NativeTime(_) => {}
         }
         Vec::new()
     }

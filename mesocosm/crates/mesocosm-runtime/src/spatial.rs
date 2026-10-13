@@ -11,7 +11,7 @@ use isometer_core::Yaw;
 use isometer_space::places::PlaceId;
 use serde::{Deserialize, Serialize};
 
-pub const VERSION: u32 = 2;
+pub const VERSION: u32 = 3;
 
 mod input;
 pub use input::{GameInput, Input};
@@ -21,6 +21,9 @@ mod profile;
 pub use profile::{Authored, Setup, Profile, StepInput, ArrivalInput, Driver};
 mod driver;
 mod arrival;
+mod birth;
+mod birth_command;
+pub use birth::{BirthInput, BirthParent, BirthSlot};
 mod replay;
 
 /// Exact root-pivot pose in the site's base cells; no presentation scale.
@@ -71,7 +74,7 @@ impl Default for Game {
 
 impl Game {
     pub fn version(&self) -> Result<(), String> {
-        if !(self.version == 1 && self.driver.is_none() || self.version == VERSION) {
+        if !(self.version == 1 && self.driver.is_none() || self.version == 2 || self.version == VERSION) {
             return Err("unsupported Mesocosm spatial version".into());
         }
         if self.members.iter().any(|(id, at)| *id != at.actor.0) {

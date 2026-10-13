@@ -35,13 +35,15 @@ impl Staged<'_> {
         terrain.answered = true;
         self.stage.terrain = Some(terrain.clone());
         let (gained, paid) = crate::operations::geometry::price(self.sim, &request, &resolved.geometry)?;
-        for (key, amount) in &paid {
-            crate::projects::guard_debit(&self.sim.state,
-                crate::projects::StockSource::Entity(self.stage.actor), key, *amount)?;
+        for (key, amount) in gained {
+            credit(&mut self.stage.bodies.get_mut(&self.stage.actor).ok_or("terrain actor absent")?.accounts, &key, amount)?;
+            terrain.gained += u128::from(amount);
         }
-        let ledger = &mut self.stage.bodies.get_mut(&self.stage.actor).ok_or("terrain actor absent")?.accounts;
-        for (key, amount) in gained { credit(ledger, &key, amount)?; terrain.gained += u128::from(amount); }
-        for (key, amount) in paid { debit(ledger, &key, amount)?; terrain.paid += u128::from(amount); }
+        for (key, amount) in paid {
+            self.guard_owned_debit(Binding::Actor,&key,amount)?;
+            debit(&mut self.stage.bodies.get_mut(&self.stage.actor).ok_or("terrain actor absent")?.accounts,&key,amount)?;
+            terrain.paid += u128::from(amount);
+        }
         self.sim.conserved.checked_add(terrain.gained).and_then(|n| n.checked_sub(terrain.paid))
             .ok_or("terrain conserved mass overflow")?;
         terrain.edit = Some(resolved.geometry.edit.clone());

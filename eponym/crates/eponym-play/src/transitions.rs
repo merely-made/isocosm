@@ -17,8 +17,9 @@ use crate::{
     MovementProfile, ResolvedStrike, WorldError, WorldSave,
 };
 
-/// Version11 adds explicit custody and physical placement of native work.
-pub const GAME_STATE_VERSION: u32 = 11;
+/// Version12 records exact owned-stock debit selections.
+pub const GAME_STATE_VERSION: u32 = 12;
+pub const OWNED_STOCK_GAME_STATE_VERSION: u32 = 12;
 pub const PROJECT_CUSTODY_GAME_STATE_VERSION: u32 = 11;
 pub const PROJECT_GAME_STATE_VERSION: u32 = 10;
 pub const ITEM_PLACEMENT_GAME_STATE_VERSION: u32 = 9;
@@ -211,6 +212,19 @@ pub enum GameIntent {
         grant: bool,
         process: Option<String>,
     },
+    StockAct {
+        tick: Tick,
+        subject: SubjectId,
+        process: String,
+        target: Option<isocosm::schema::Id>,
+        selections: Vec<isocosm::projects::DebitSelection>,
+    },
+    EatOwned {
+        tick: Tick,
+        subject: SubjectId,
+        item: ItemId,
+        selections: Vec<isocosm::projects::DebitSelection>,
+    },
 }
 
 impl GameIntent {
@@ -224,6 +238,8 @@ impl GameIntent {
             | Self::ProjectReserve { tick, .. }
             | Self::StockOwnership { tick, .. }
             | Self::ProjectConsent { tick, .. }
+            | Self::StockAct { tick, .. }
+            | Self::EatOwned { tick, .. }
             | Self::Name { tick, .. }
             | Self::Move { tick, .. }
             | Self::Observe { tick, .. }
@@ -254,6 +270,8 @@ impl GameIntent {
             | Self::ProjectCarry { subject, .. }
             | Self::ProjectReserve { subject, .. }
             | Self::ProjectConsent { subject, .. }
+            | Self::StockAct { subject, .. }
+            | Self::EatOwned { subject, .. }
             | Self::Name { subject, .. }
             | Self::Move { subject, .. }
             | Self::Observe { subject, .. }
@@ -428,6 +446,12 @@ pub enum GameEvent {
         authorized: bool,
         round: u64,
     },
+    StockAct {
+        tick: Tick,
+        subject: SubjectId,
+        process: String,
+        result: isocosm::projects::OwnedActed,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -455,6 +479,7 @@ pub enum GameError {
     LegacyItemPlacementIntent,
     LegacyProjectIntent,
     LegacyProjectCustodyIntent,
+    LegacyOwnedStockIntent,
     UnreceiptedPromotion,
     WrongTick { expected: Tick, actual: Tick },
     StateDiverged { saved: u64, restored: u64 },

@@ -4,11 +4,28 @@
 use super::*;
 use crate::simulation::State;
 
-/// Refuses a missing disposition vocabulary; it neither allocates nor repairs lots.
+mod types;
+pub use types::*;
+mod capture;
+pub(crate) use capture::{Capture, Context, Mode, Balances};
+mod disposition;
+pub(crate) use disposition::state_balances;
+mod commands;
+mod runner;
+pub(crate) use runner::Report;
+
+/// A slot in the actual physical ledgers, rather than a rendered position.
+pub(crate) type Slot = (StockSource, Key);
+
 pub fn guard_debit(state: &State, source: StockSource, account: &str, amount: u64) -> Result<()> {
+    guard_debit_at(state,source,account,amount,capture::actual(state,source,account))
+}
+
+pub(crate) fn guard_debit_at(state: &State, source: StockSource, account: &str, amount:u64, actual:u64) -> Result<()> {
+    if state.projects.debit_capture.record(state, source, account, amount, actual)? { return Ok(()); }
     if amount > 0 && state.projects.ownership.values().any(|held|
         held.current_source() == Some(source) && held.lot.account == account) {
-        return Err("owned-account debit needs explicit native stock-lot disposition (846)".into());
+        return Err("owned-account debit needs exact selected lots and an authored disposition (846/849/850)".into());
     }
     Ok(())
 }
@@ -17,6 +34,7 @@ impl Simulation {
     pub(crate) fn project_identity_roots(&self) -> BTreeSet<Id> {
         let mut roots = BTreeSet::new();
         for held in self.state.projects.ownership.values() {
+            if held.at == LotAt::Closed { continue; }
             if let Some(StockSource::Entity(id)) = held.current_source() { roots.insert(id); }
             for owner in &held.lot.owners { if let Owner::Entity(id) = owner { roots.insert(*id); } }
         }
@@ -32,8 +50,8 @@ impl Simulation {
     pub(crate) fn guard_entity_debits(&self, id:Id, before:&Ledger, after:&Entity) -> Result<()> {
         let now = crate::anatomy::books(after);
         for (key,amount) in before {
-            guard_debit(&self.state,StockSource::Entity(id),key,
-                amount.saturating_sub(now.get(key).copied().unwrap_or(0)))?;
+            guard_debit_at(&self.state,StockSource::Entity(id),key,
+                amount.saturating_sub(now.get(key).copied().unwrap_or(0)),*amount)?;
         }
         Ok(())
     }

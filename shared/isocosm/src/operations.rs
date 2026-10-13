@@ -152,6 +152,7 @@ impl Simulation {
         }
         if self.geometry_resolutions.pending.is_some() { return; }
         let mut sim = self.clone();
+        sim.clear_owned_capture();
         sim.geometry_resolutions = Resolutions::default();
         sim.journal = None;
         self.geometry_resolutions.pending = Some(Pending {
@@ -160,7 +161,8 @@ impl Simulation {
     }
 
     pub(crate) fn geometry_ready(&self) -> Result<()> {
-        if self.geometry_resolutions.pending.is_some() || self.spatial_resolutions.pending.is_some() {
+        if self.geometry_resolutions.pending.is_some() || self.spatial_resolutions.pending.is_some()
+            || self.spatial_resolutions.birth_pending.is_some() {
             return Err("native operation needs game geometry".into());
         }
         Ok(())

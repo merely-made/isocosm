@@ -17,6 +17,14 @@ use crate::{
 };
 
 impl Staged<'_> {
+    fn spatial_birth(&mut self, child: Id) {
+        let mark = crate::spatial::BirthMark {
+            action: self.stage.action.clone(), process: self.stage.process.clone(), parent: self.stage.actor,
+            child, ordinal: self.stage.birth_places.len() as u64,
+            parent_alive: self.sim.body_at_start(self.stage.actor).is_some_and(|p| p.alive),
+        };
+        self.stage.birth_places.push(mark);
+    }
     /// The next child's identity.
     pub(super) fn next_child(&mut self) -> Result<Id> {
         let (sim, born) = (self.sim, self.stage.births.len() as u64);
@@ -89,6 +97,7 @@ impl Staged<'_> {
             }
         }
         self.relate(id);
+        self.spatial_birth(id);
         self.stage.births.push(child);
         Ok(())
     }
@@ -121,6 +130,7 @@ impl Staged<'_> {
                     });
                 }
             }
+            self.spatial_birth(id);
             self.stage.births.push(child);
         }
         Ok(())
@@ -142,6 +152,7 @@ impl Staged<'_> {
         let Some((bud, (frame, part))) = b.severed else {
             return Ok(false);
         };
+        self.guard_owned_severed(&part.matter)?;
         let id = self.next_child()?;
         if self.sim.flowing() {
             for (key, n) in part.matter.iter().filter(|(_, n)| **n > 0) {
@@ -162,6 +173,7 @@ impl Staged<'_> {
             tick,
         );
         self.relate(id);
+        self.spatial_birth(id);
         self.stage.births.push(child);
         Ok(true)
     }

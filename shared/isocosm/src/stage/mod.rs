@@ -29,6 +29,8 @@ pub(crate) use staged::Staged;
 
 pub(crate) struct Stage {
     pub(crate) process: Key,
+    pub(crate) action: Key,
+    pub(crate) birth_places: Vec<crate::spatial::BirthMark>,
     pub(crate) terrain: Option<crate::operations::StagedTerrain>,
     pub(crate) step: Option<crate::spatial::StagedStep>,
     project_decision: Option<crate::projects::DecisionStamp>,
@@ -105,6 +107,8 @@ impl Simulation {
         }
         Ok(Stage {
             process: String::new(),
+            action: String::new(),
+            birth_places: Vec::new(),
             terrain: None,
             step: None,
             project_decision: None,

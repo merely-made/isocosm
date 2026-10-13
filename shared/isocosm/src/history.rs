@@ -184,9 +184,13 @@ impl Session {
     }
     fn recorded(&mut self, command: &Command) -> Result<String> {
         match command {
+            Command::Owned { command, selections } => self.owned_command(command,selections),
             Command::AdvanceGeometry { ticks, resolutions } => self.advance_geometry(*ticks, resolutions),
             Command::AdvanceSpatial { ticks, terrain, steps, arrivals } =>
                 self.advance_spatial(*ticks, terrain, steps, arrivals),
+            Command::AdvanceBirthSpatial { ticks, terrain, steps, arrivals, births } =>
+                self.advance_birth_spatial(*ticks, terrain, steps, arrivals, births),
+            Command::BirthSpatial { command, births } => self.birth_spatial(command, births),
             _ => run(&mut self.sim, command),
         }
     }
@@ -201,7 +205,8 @@ impl Session {
                     | Command::ForceBirth { .. }
                     | Command::Kill { .. }
                     | Command::AttachSite { attachment: crate::site_authoring::Attachment::New { .. }, .. }
-            )
+            ) || matches!(&e.command, Command::BirthSpatial { command, .. }
+                if matches!(command.as_ref(), Command::ForceBirth { .. }))
         };
         self.entries.iter().any(placed)
     }
@@ -330,7 +335,8 @@ impl Session {
         fork.sim.state.movement = self.sim.state.movement;
         fork.branch = branch;
         for entry in self.entries.iter().filter(|e| e.tick <= tick && match &e.command {
-            Command::AdvanceGeometry { ticks, .. } | Command::AdvanceSpatial { ticks, .. } =>
+            Command::AdvanceGeometry { ticks, .. } | Command::AdvanceSpatial { ticks, .. }
+                | Command::AdvanceBirthSpatial { ticks, .. } =>
                 e.tick.checked_add(*ticks).is_some_and(|end| end <= tick),
             _ => true,
         }) {
@@ -388,7 +394,7 @@ impl Session {
     }
 }
 
-fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
+pub(crate) fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
     let outcome = dispatch(sim, command)?;
     sim.refresh_attention();
     sim.protect_attention();
@@ -397,8 +403,13 @@ fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
 
 fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
     match command {
+        Command::ActOwned { participant, actor, target, process, cause, selections } =>
+            sim.owned_act(*participant,*actor,*target,process,cause.clone(),selections),
+        Command::Owned { .. } => Err("owned direct command needs its native Session".into()),
         Command::AdvanceGeometry { .. } => Err("geometry advance needs its native Session".into()),
         Command::AdvanceSpatial { .. } => Err("spatial advance needs its native Session".into()),
+        Command::AdvanceBirthSpatial { .. } => Err("birth spatial advance needs its native Session".into()),
+        Command::BirthSpatial { .. } => Err("birth spatial command needs its native Session".into()),
         Command::Window(change) => sim.change_window(change),
         Command::Spread(change) => sim.spread(change),
         Command::Project(change) => sim.project_change(change),

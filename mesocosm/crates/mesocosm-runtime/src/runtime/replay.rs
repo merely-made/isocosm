@@ -45,7 +45,9 @@ impl GameSave {
         Self { version: crate::spatial::VERSION, native, spatial: crate::spatial::Game::default() }
     }
     pub fn check(&self) -> Result<(), String> {
-        if self.version != 1 && self.version != crate::spatial::VERSION { return Err("unsupported Mesocosm game save".into()); }
+        if self.version != 1 && self.version != 2 && self.version != crate::spatial::VERSION {
+            return Err("unsupported Mesocosm game save".into());
+        }
         self.spatial.version()
     }
 }

@@ -11,10 +11,12 @@ impl Simulation {
     pub(crate) fn commit_resolved(&mut self, mut stage: Stage, next: u64, process: &str) -> Result<()> {
         let terrain = stage.terrain.take();
         let step = stage.step.take();
+        let births = std::mem::take(&mut stage.birth_places);
         if self.genesis.rules.spread_capacity.is_none() {
             self.commit(stage, next, process);
             self.commit_geometry(terrain);
             self.commit_step(step);
+            self.place_births(&births);
             return Ok(());
         }
         let before = self.state.clone();
@@ -23,7 +25,9 @@ impl Simulation {
         candidate.commit_geometry(terrain);
         candidate.commit_step(step);
         crate::spread::dispatch_changed(&before, &mut candidate.state, &candidate.genesis.rules)?;
-        self.publish_candidate(candidate)
+        self.publish_candidate(candidate)?;
+        self.place_births(&births);
+        Ok(())
     }
 
     /// Clocked native arrival has already journaled its residency changes.

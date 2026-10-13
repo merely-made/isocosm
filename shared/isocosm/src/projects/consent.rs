@@ -9,7 +9,7 @@ pub struct OwnerDecision {
     pub owner: Owner,
     pub electorate: Electorate,
     pub actors: BTreeSet<Id>,
-    pub action: Option<u64>,
+    pub action: Option<Key>,
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -70,10 +70,10 @@ impl Simulation {
                 let stamp = candidate.project_decision_stamp.take();
                 candidate.project_decision = None;
                 if receipt.outcome != Outcome::Accepted || candidate.state.projects.get(id) != Some(&project)
-                    || stamp.as_ref().is_none_or(|s| s.decision != context || s.action != receipt.action) {
+                    || stamp.as_ref().is_none_or(|s| s.decision != context || s.action != receipt.id) {
                     return Err("collective decision was not admitted or changed the work it decides".into());
                 }
-                Some(receipt.action)
+                Some(receipt.id)
             },
         };
         if candidate.owner_electorate(&project, owner)? != electorate {

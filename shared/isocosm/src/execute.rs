@@ -54,6 +54,21 @@ impl Simulation {
 
     fn run(
         &mut self,
+        at: (Id, Option<Id>),
+        process: &str,
+        cause: Option<Key>,
+        sequence: (u64, u64),
+        run: Run,
+    ) -> (Receipt, Option<Demands>) {
+        // Capture lives for this disposable stage and is cleared on every exit.
+        let _ = self.begin_process_debits(at.0,at.1,process,sequence.1);
+        let result = self.run_inner(at,process,cause,sequence,run);
+        self.finish_process_debits(&result.0);
+        result
+    }
+
+    fn run_inner(
+        &mut self,
         (actor, target): (Id, Option<Id>),
         process: &str,
         cause: Option<Key>,
@@ -152,6 +167,7 @@ impl Simulation {
             .filter(|p| {
                 let part = self.bind_part(actor, p);
                 self.route_ready(actor, p) && self.target_matches(actor, target, p)
+                    && self.owned_process_ready(actor,target,p)
                     && p.requires
                         .iter()
                         .all(|q| self.query(actor, target, place, part, q).is_ok())
@@ -166,6 +182,7 @@ impl Simulation {
         };
         let planning = matches!(run, Run::Plan);
         stage.process = process.into();
+        stage.action = id.clone();
         stage.intake = intake;
         stage.port_feeding = definition.port_feeding.clone();
         match run {
@@ -199,6 +216,9 @@ impl Simulation {
                     return refused(receipt, Outcome::Blocked(why));
                 },
             }
+        }
+        if let Err(why) = self.complete_process_debits() {
+            return refused(receipt,Outcome::Blocked(why));
         }
         // A geometry answer was consumed even if a later conservation,
         // shared-ground or event check refuses the whole staged act.

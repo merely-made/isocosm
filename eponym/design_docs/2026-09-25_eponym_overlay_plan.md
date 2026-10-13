@@ -6,12 +6,14 @@
 supply new item stocks/quantities; new worlds keep distinct material stocks.
 Native projects reserve inputs, spend them as work progresses and retain
 unfinished work for any eligible natively authorized subject to resume.
-The dependent native/product source is the next migration slice. Existing
+That dependent native/product source and its actual caller are placed, unverified. Existing
 saved holdings are retained; no recipe quantities, yields or duration are
 chosen by these answers. Tests and adjustments remain deferred under826.
 Rulings839 to845 are recorded; selected native lots, joint-owner permission
-and explicit carrying are being connected to the actual caller. Ordinary
-stock-debit disposition is pending846. Full E3 remains open.
+and explicit carrying are placed in the actual caller, unverified.
+Rulings846/849/850 require exact selected lot portions and an authored
+operation disposition. GameSave12 and generator7 connect exact stock selection to the real Session/UI. Native debit/disposition connections
+are placed, unverified. Full E3 remains open.
 
 **Earlier source checkpoint, 2026-10-12 (826):** the client Items panel exposes explicit
 Take choices for actual items at the living played subject's current game
@@ -595,6 +597,14 @@ Ruling 793 archived the genet document host plan to
 
 ## Progress
 
+- **2026-10-12, 846/849/850:** actual native debit selection supplies exact
+  named-lot quantities. Remainder retains its original source; operation
+  declarations retain explicit output claims or close consumed input claims
+  without changing conserved matter. The native preflight/candidate and
+  ordinary controlled Eponym caller are being connected. No recipe default,
+  FIFO, proportional mixed-owner allocation or tissue ownership is inferred.
+  Source is unverified; compiler/tests/fixtures/probes/tuning remain deferred826.
+
 - **2026-10-12, joint permission/custody caller placed:** actual work controls
   select quantity lots and request the native process. Each eligible current
   input owner can grant/revoke for an explicitly selected worker through its
@@ -891,3 +901,13 @@ Ruling 793 archived the genet document host plan to
   current save certification and pending allocation ruling remain open.
 
 - **2026-10-11, combined migration execution:** The compact recipe and named native fixture profile are now applied in primary as part of the combined host/journey/VTT migration. Generator5/GameSave8 remain proposed behavior until actual compilation, capacity, contact and replay tests pass. All 25 original test failures remain obligations; E3 stays open.
+
+- **2026-10-12, exact owned stock caller source (846/849/850):** appended
+  GameSave12 StockAct/EatOwned vocabulary connects native debit previews and
+  explicit named-lot portions to the real controlled Session and stock panel.
+  Ordinary unmarked Eat keeps its recorded grammar. The new partial-meal path
+  marks food spent only after its actual native matter holdings are exhausted.
+  Stock rules enter newly authored worlds through generator7 and an appended
+  OwnedMaterialProfile marker; generator6's original profile shape remains
+  unchanged. Native admission and operation-authored retained/closed claims
+  are assembling. This is source placement, uncompiled and untested under826.

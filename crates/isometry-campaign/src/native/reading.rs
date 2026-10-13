@@ -18,6 +18,7 @@ mod geography;
 mod disclosure;
 pub use disclosure::Geography;
 mod space;
+mod storylets;
 
 impl<'a> Reading<'a> {
     pub(super) fn new(session: &'a Session) -> Self {

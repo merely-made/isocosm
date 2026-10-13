@@ -335,6 +335,13 @@ impl GameState {
             },
             GameIntent::AdvanceMotion { .. }
             | GameIntent::ResolveVolley { .. }
+            | GameIntent::ProjectAct { .. }
+            | GameIntent::ProjectCarry { .. }
+            | GameIntent::ProjectReserve { .. }
+            | GameIntent::ProjectConsent { .. }
+            | GameIntent::StockOwnership { .. }
+            | GameIntent::StockAct { .. }
+            | GameIntent::EatOwned { .. }
             | GameIntent::ReviseCanon { .. } => {
                 unreachable!("routed before acts")
             },

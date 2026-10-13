@@ -57,6 +57,8 @@ mod panels;
 mod projects;
 #[path = "project_permissions.rs"]
 mod project_permissions;
+#[path = "stock.rs"]
+mod stock;
 #[path = "probe.rs"]
 mod probe;
 #[path = "smoke.rs"]
@@ -200,6 +202,7 @@ pub(crate) struct SessionApp {
     pub(crate) target_item: ItemId,
     pub(crate) project_target: Option<ItemId>,
     pub(crate) project_lots: std::collections::BTreeSet<String>,
+    pub(crate) stock_selection: Option<stock::Selection>,
     pub(crate) combat_rules: CombatRules,
     pub(crate) direction: Direction,
     pub(crate) charging: bool,
@@ -398,6 +401,7 @@ pub fn run() -> i32 {
         target_item,
         project_target: None,
         project_lots: Default::default(),
+        stock_selection: None,
         combat_rules,
         direction: Direction::Right,
         charging: false,

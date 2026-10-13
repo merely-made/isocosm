@@ -19,6 +19,7 @@ use crate::{
     LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION, World,
     PROJECT_GAME_STATE_VERSION,
     PROJECT_CUSTODY_GAME_STATE_VERSION,
+    OWNED_STOCK_GAME_STATE_VERSION,
 };
 
 impl GameState {
@@ -119,6 +120,10 @@ impl GameState {
         {
             return Err(GameError::LegacyProjectCustodyIntent);
         }
+        if save.version < OWNED_STOCK_GAME_STATE_VERSION
+            && save.intents.iter().any(|intent| matches!(intent,
+                GameIntent::StockAct { .. } | GameIntent::EatOwned { .. }))
+        { return Err(GameError::LegacyOwnedStockIntent); }
         let world = World::restore_record(save.world)?;
         let mut state = Self::new(world).with_motion_solver(solver);
         for intent in save.intents {

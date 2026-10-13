@@ -21,10 +21,13 @@ mod placement;
 pub use placement::{CharacterControl, CharacterPlacement, ControlBinding, ParticipantInput,
     PlacementWindow, PositionBinding};
 mod game;
-pub use game::{AdmissionBatch, GameBindings, submit_game, submit_game_as, submit_game_access};
+pub use game::{AdmissionBatch, GameBindings, submit_game, submit_game_as, submit_game_access,
+    submit_game_access_with_roster};
 mod movement;
 pub use movement::submit_table;
 mod table;
+pub mod time;
+pub use time::submit_time;
 
 mod reading;
 pub use reading::{Geography, Reading};

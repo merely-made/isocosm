@@ -375,6 +375,14 @@ All three taken on 2026-09-25, the day the plan was drafted.
 
 ## Progress
 
+- **2026-10-12, 847/848:** resident corpses now enter the same native
+  awareness and admitted close-up. Real scene consumers use only current
+  accepted corpse poses; living observers/actions/crowd counts stay living.
+  Authored biological birth profiles select exact native children and resolve
+  explicit parent-relative slots, windows and clearance. Their clock/save
+  source is assembling; missing/refused placement never undoes conserved
+  native birth or inherited journey. Unverified; acceptance/tuning wait826.
+
 - **2026-10-12, 841/842:** authored step profiles bind actual chosen native
   movement processes; game geometry returns through exact native admission.
   Explicit destination poses/windows are checked at due arrival boundaries.
@@ -451,3 +459,19 @@ All three taken on 2026-09-25, the day the plan was drafted.
   proposed; no lane open.
 - 2026-09-25: plan drafted at Mark's word from rulings 174 to 193 and
   Mesocosm's plans. No lane open.
+
+- **2026-10-12, biological newborn source (848):** the new native
+  AdvanceBirthSpatial path and owned/borrowed/dev clocks resolve real newborn
+  IDs from the parent's admitted pose, with explicitly authored ordinal slots,
+  clearance, medium and support. Native Step/Birth publication order is kept
+  for the new saved path. Missing or refused geometry preserves conserved
+  birth and a travelling child's remaining journey. Resident corpse views847
+  use current admitted placement and native awareness. Source qualification
+  remains deferred under826; full M4 is open.
+
+- **2026-10-12, dev newborn consumer source (848):** real Runtime ForceBirth
+  now uses the same authored biological placement provider through an appended
+  ForceBirth-only BirthSpatial command. Its original native outcome is retained
+  in the new saved record; old ForceBirth wire and replay remain unchanged.
+  Unsupported geometry records absence without undoing conserved birth. This
+  completes that production consumer connection, not compiler/test acceptance.

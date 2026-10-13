@@ -120,4 +120,31 @@ pub enum Command {
         steps: Vec<crate::spatial::Resolution>,
         arrivals: Vec<crate::spatial::ArrivalResolution>,
     },
+    /// Explicit biological newborn geometry; legacy spatial grammar stays exact.
+    AdvanceBirthSpatial {
+        ticks: Tick,
+        terrain: Vec<crate::spatial::TerrainResolution>,
+        steps: Vec<crate::spatial::Resolution>,
+        arrivals: Vec<crate::spatial::ArrivalResolution>,
+        births: Vec<crate::spatial::BirthResolution>,
+    },
+    /// A controlled process with exact quantities selected from owned lots.
+    ActOwned {
+        participant: Id,
+        actor: Id,
+        target: Option<Id>,
+        process: Key,
+        cause: Option<Key>,
+        selections: Vec<crate::projects::DebitSelection>,
+    },
+    /// Exact owned debits for a supported direct native operation.
+    Owned {
+        command: Box<Command>,
+        selections: Vec<crate::projects::DebitSelection>,
+    },
+    /// Authored geometry for an exact dev biological birth, preserving its command.
+    BirthSpatial {
+        command: Box<Command>,
+        births: Vec<crate::spatial::BirthResolution>,
+    },
 }

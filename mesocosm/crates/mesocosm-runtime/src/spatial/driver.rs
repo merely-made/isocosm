@@ -75,11 +75,36 @@ impl Game {
         Ok(changes)
     }
 
-    fn preview(&self, sim: &Simulation, steps: &[native::Resolution], arrivals: &[native::ArrivalResolution])
+    pub(super) fn apply_publications(&mut self, sim: &Simulation, steps: &[native::Resolution],
+        births: &[native::BirthResolution], reports: &[native::BirthReport], order: &[native::Publication])
+        -> Result<Vec<profile::Transition>, String> {
+        let mut changes = Vec::new();
+        let mut used_steps = BTreeSet::new();
+        let mut used_births = BTreeSet::new();
+        for publication in order {
+            match publication {
+                native::Publication::Step(action) => {
+                    if !used_steps.insert(action.clone()) { return Err("duplicate native step publication".into()); }
+                    let input = steps.iter().find(|r| &r.request.action == action).ok_or("step publication answer absent")?;
+                    changes.extend(self.apply_steps(std::slice::from_ref(input), &BTreeSet::from([action.clone()]))?);
+                },
+                native::Publication::Birth(child) => {
+                    if !used_births.insert(*child) { return Err("duplicate biological birth publication".into()); }
+                    let report = reports.iter().find(|r| r.request.child == *child).ok_or("birth publication report absent")?;
+                    changes.extend(self.apply_births(births, std::slice::from_ref(report), sim)?);
+                },
+            }
+        }
+        if used_births.len() != reports.len() { return Err("birth report omitted from native publication order".into()); }
+        Ok(changes)
+    }
+
+    fn preview(&self, sim: &Simulation, steps: &[native::Resolution], arrivals: &[native::ArrivalResolution],
+        births: &[native::BirthResolution])
         -> Result<Self, String> {
         let mut game = self.clone();
         game.apply_arrivals(arrivals, sim.spatial_arrivals())?;
-        game.apply_steps(steps, sim.spatial_steps())?;
+        game.apply_publications(sim, steps, births, sim.spatial_births(), sim.spatial_order())?;
         for held in game.members.values_mut() {
             if let Ok(next) = held.rebound(sim) { *held = next; }
         }
@@ -95,14 +120,15 @@ impl Game {
         let arrivals = source.arrival_inputs(&native_session)?;
         let mut terrain: Vec<native::TerrainResolution> = Vec::new();
         let mut steps: Vec<native::Resolution> = Vec::new();
+        let mut births: Vec<native::BirthResolution> = Vec::new();
         let limit = native_session.sim.genesis().rules.limits.events_per_advance;
         loop {
-            match native_session.prepare_spatial(1, &terrain, &steps, &arrivals)? {
+            match native_session.prepare_birth_spatial(1, &terrain, &steps, &arrivals, &births)? {
                 Preparation::Terrain(pending) => {
                     if terrain.len() + steps.len() + arrivals.len() >= limit
                         || terrain.iter().any(|r| r.request.action == pending.request.action)
                     { return Err("spatial terrain request made no finite progress".into()); }
-                    let game = source.preview(&pending.sim, &steps, &arrivals)?;
+                    let game = source.preview(&pending.sim, &steps, &arrivals, &births)?;
                     let answer = game.resolve(&pending)
                         .and_then(|actual| crate::terrain::resolved(&pending, actual)).map(|r| r.geometry);
                     terrain.push(native::TerrainResolution { request: pending.request, geometry: answer });
@@ -111,20 +137,34 @@ impl Game {
                     if terrain.len() + steps.len() + arrivals.len() >= limit
                         || steps.iter().any(|r| r.request.action == pending.request.action)
                     { return Err("spatial step request made no finite progress".into()); }
-                    let answer = source.preview(&pending.sim, &steps, &arrivals)?.resolve_step(&pending);
+                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births)?.resolve_step(&pending);
                     steps.push(native::Resolution { request: pending.request, geometry: answer });
+                },
+                Preparation::Birth(pending) => {
+                    if births.len() as u128 >= u128::from(native_session.sim.genesis().rules.limits.entities)
+                        || births.iter().any(|r| r.request.child == pending.request.child)
+                    { return Err("biological placement request made no finite progress".into()); }
+                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births)?.resolve_birth(&pending);
+                    births.push(native::BirthResolution { request: pending.request, geometry: answer });
                 },
                 Preparation::Ready(prepared) => {
                     let accepted = prepared.steps.clone();
                     let reports = prepared.arrivals.clone();
+                    let born = prepared.births.clone();
+                    let order = prepared.order.clone();
                     let out = prepared.publish(&mut native_session)?;
                     let mut game = source;
                     let mut changes = game.apply_arrivals(&arrivals, &reports)?;
-                    changes.extend(game.apply_steps(&steps, &accepted)?);
+                    changes.extend(game.apply_publications(&native_session.sim, &steps, &births, &born, &order)?);
+                    let ordered: BTreeSet<_> = order.iter().filter_map(|p|
+                        if let native::Publication::Step(action) = p { Some(action.clone()) } else { None }).collect();
+                    if ordered != accepted { return Err("native accepted steps differ from publication order".into()); }
                     if let Some(driver) = &mut game.driver {
                         let entry = native_session.entries.last().ok_or("spatial native entry absent")?.id.clone();
-                        driver.records.push(profile::Record { entry, changes, steps: accepted, arrivals: reports });
+                        driver.records.push(profile::Record { entry, changes, steps: accepted, arrivals: reports,
+                            births: born, order, command_outcome: None });
                     }
+                    game.version = VERSION;
                     game.refresh(&mut native_session)?;
                     *session = native_session;
                     *self = game;
