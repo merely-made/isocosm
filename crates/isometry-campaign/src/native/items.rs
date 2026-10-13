@@ -9,9 +9,14 @@ use isocosm_overlay::{EntityHandle,OrdinaryAccess,Seat};
 mod types;
 mod placement;
 mod records;
+mod current;
+mod custody;
+mod metadata;
 pub use types::{EntityRef,ItemPlacement,ItemBindingInput,ItemAction,ItemInput,BoundItem,
-    ProjectPosition,PhysicalItemRecord,ItemPreview};
+    ProjectPosition,PhysicalItemRecord,ItemPreview,ItemCustodyInput,ItemMount,ItemDrop,ItemPose};
 pub use records::validate_item_records;
+pub use current::current_item;
+pub use metadata::unmarked_inventory;
 
 pub fn source(session:&Session)->Key {super::physical_map::physical_source(session)}
 
@@ -26,7 +31,8 @@ fn actor_position(session:&Session,game:&GameBindings,actor:Id)->Result<Position
 fn check(session:&Session,game:&[u8],access:OrdinaryAccess,input:&ItemInput)
     ->Result<(GameBindings,PositionBinding),String> {
     super::movement::current_access(session,access)?;
-    if input.version!=1 || input.expected_native!=source(session) || input.expected_game!=isocosm::digest(&game)
+    let version=if matches!(&input.action,ItemAction::Custody(_)) {2} else {1};
+    if input.version!=version || input.expected_native!=source(session) || input.expected_game!=isocosm::digest(&game)
         || access.subject!=Some(EntityHandle(input.actor)) {
         return Err("item input differs from its actual native, game or controlled body cut".into());
     }
@@ -38,6 +44,11 @@ fn check(session:&Session,game:&[u8],access:OrdinaryAccess,input:&ItemInput)
         return Err("item physical binding requires the actual DM author".into());
     }
     if let ItemAction::Act {process,..}=&input.action {
+        if session.sim.genesis().rules.item_custody.as_ref().is_some_and(|catalogue|
+            catalogue.providers.values().any(|provider|[&provider.carry,&provider.drop,&provider.equip,&provider.unequip]
+                .contains(&process))) {
+            return Err("physical carrying and equipment use their exact typed custody input".into());
+        }
         let process=session.sim.genesis().rules.processes.get(process).ok_or("item process is absent")?;
         if process.requires.iter().any(|query|matches!(query,
             isocosm::rules::Query::Project {..}|isocosm::rules::Query::ProjectDecision)) {
@@ -53,6 +64,12 @@ fn check(session:&Session,game:&[u8],access:OrdinaryAccess,input:&ItemInput)
 
 fn target_here(session:&Session,game:&GameBindings,access:OrdinaryAccess,position:&PositionBinding,input:&ItemInput)
     ->Result<(),String> {
+    if let ItemAction::Custody(carry)=&input.action {
+        if access.seat==Seat::Player && !isocosm::directing::readings::view(&session.sim,input.actor,
+            isocosm::directing::readings::Mode::Survival).shows(carry.item) {
+            return Err("custody item is outside actual native awareness".into());
+        }
+    }
     let target=match &input.action {ItemAction::Project {target,..}|ItemAction::Act {target,..}=>*target,_=>None};
     let Some(target)=target.filter(|target|*target!=input.actor) else {return Ok(());};
     if access.seat==Seat::Player && !isocosm::directing::readings::view(&session.sim,input.actor,
@@ -60,10 +77,10 @@ fn target_here(session:&Session,game:&GameBindings,access:OrdinaryAccess,positio
         return Err("item target is outside actual native awareness".into());
     }
     let at=position.current(session)?;
-    let target_at=game.item_records().iter().rev().filter_map(|record|record.binding.as_ref())
-        .find(|binding|binding.entity==target).ok_or("item target has no accepted physical item binding")?.current(session)?;
+    let pose=current_item(session,game,target)?;
+    let target_at=pose.at;
     let site=session.sim.state().population.get(target).and_then(|body|body.resident_site());
-    if target_at!=at || site!=Some(position.placement.site) {
+    if (target_at!=at && pose.carrier!=Some(input.actor)) || site!=Some(position.placement.site) {
         return Err("item target is not at the actor's actual resident position".into());
     }
     Ok(())
@@ -79,12 +96,17 @@ fn debit_quote(session:&Session,access:OrdinaryAccess,input:&ItemInput)->Result<
         ItemAction::Project {process,target,project,lots,..}=>Some(session.sim.prepare_owned_project(
             access.participant.0,input.actor,*target,process,*project,lots,None)?),
         ItemAction::Act {process,target,cause,..}=>Some(session.sim.prepare_owned_act(input.actor,*target,process,cause.clone())?),
+        ItemAction::Custody(carry)=>{
+            let Command::Custody(change)=custody::command(access.participant.0,input.actor,carry) else {unreachable!()};
+            Some(session.sim.prepare_owned_custody(&change)?)
+        },
         _=>None,
     })
 }
 
 fn selected(input:&ItemInput)->&[DebitSelection] {
-    match &input.action {ItemAction::Project {selections,..}|ItemAction::Act {selections,..}=>selections,_=>&[]}
+    match &input.action {ItemAction::Project {selections,..}|ItemAction::Act {selections,..}=>selections,
+        ItemAction::Custody(carry)=>&carry.selections,_=>&[]}
 }
 
 fn project_position(session:&Session,game:&GameBindings,position:&PositionBinding,id:isocosm::projects::ProjectId,
@@ -143,6 +165,11 @@ fn perform(session:&mut Session,game:&GameBindings,access:OrdinaryAccess,input:&
             if !acted.receipt.accepted() {return Err(format!("native item act was not admitted: {:?}",acted.receipt.outcome));}
             Ok((None,None))
         },
+        ItemAction::Custody(_)=>{
+            let (binding,acted)=custody::perform(session,game.item_records(),position,input,participant)?;
+            preview.custody=Some(acted);
+            Ok((binding,None))
+        },
     }
 }
 
@@ -165,7 +192,7 @@ pub fn prepare_item(session:&Session,game:&[u8],access:OrdinaryAccess,input:&Ite
     let (bindings,position)=check(session,game,access,input)?;
     let debits=debit_quote(session,access,input)?;
     let mut preview=ItemPreview {refusal:debits.as_ref().and_then(|quote|quote.refusal.clone()),
-        debits,complete:false,project:None,binding:None};
+        debits,complete:false,project:None,binding:None,custody:None};
     if preview.debits.as_ref().is_some_and(|quote|!selections(quote,selected(input))) {return Ok(preview);}
     match candidate(session,bindings,access,input,position,&mut preview) {
         Ok(_)=>preview.complete=true,Err(why)=>preview.refusal=Some(why),
@@ -179,7 +206,7 @@ pub fn submit_item(session:&mut Session,game:Vec<u8>,access:OrdinaryAccess,input
     if debits.as_ref().is_some_and(|quote|!selections(quote,selected(input))) {
         return Err("item action needs its exact native debit requests and explicit quantity-lot selections".into());
     }
-    let mut preview=ItemPreview {debits,complete:false,refusal:None,project:None,binding:None};
+    let mut preview=ItemPreview {debits,complete:false,refusal:None,project:None,binding:None,custody:None};
     let (next,game)=candidate(session,bindings,access,input,position,&mut preview)?;
     *session=next;
     Ok(("accepted native item/project input".into(),game))

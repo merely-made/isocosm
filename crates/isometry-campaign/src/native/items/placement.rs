@@ -44,6 +44,9 @@ pub(super) fn bind(session:&mut Session,game:&GameBindings,input:&ItemBindingInp
         return Err("item identity or native entity already has another physical binding".into());
     }
     let body=session.sim.state().population.get(entity).ok_or("item entity is absent")?;
+    if session.sim.item_carrier(entity)?.is_some() {
+        return Err("a held item uses its actual native custody and supplied mount, not a fresh ground binding".into());
+    }
     if body.method!=Method::Inert || body.lineage!=input.lineage || anatomy::books(body)!=input.stocks {
         return Err("item binding differs from its actual native lineage or retained stocks".into());
     }

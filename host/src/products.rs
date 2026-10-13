@@ -159,6 +159,17 @@ pub(crate) fn submit_game(session: &mut Session, cut: &Projection, mode: Mode,
         Mode::Vtt => {
             isometry_campaign::native::submit_game_access(session, game, &input.bytes, cut.access)
         },
+        #[cfg(feature = "eponym")]
+        Mode::Eponym => {
+            let configured = eponym_play::contract::mode::ModeState::decode(&game)?
+                .is_some_and(|state| state.actions.is_some());
+            if configured {
+                eponym_client::borrowed::actions::submit(
+                    session, game, &input.bytes, cut.access, &cut.visible)
+            } else {
+                Ok((submit(session, cut, mode, input)?, game))
+            }
+        },
         _ => Ok((submit(session, cut, mode, input)?, game)),
     }
 }

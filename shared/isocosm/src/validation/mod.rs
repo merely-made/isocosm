@@ -309,7 +309,7 @@ pub(crate) fn rules(rules: &Rules) -> Result<()> {
         kept_first(p, id)?;
     }
     mind(rules)?;
-    crate::institutions::validate(rules)?; competitions(rules)
+    competitions(rules)
 }
 
 /// A kept value is read only after its act keeps it, and kept only at the

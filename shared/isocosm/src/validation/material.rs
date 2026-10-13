@@ -4,6 +4,9 @@
 use crate::{Result, rules::{Query, Rules}};
 
 pub(super) fn catalogue(rules: &Rules) -> Result<()> {
+    crate::institutions::validate(rules)?;
+    if let Some(affinity) = &rules.affinity { affinity.validate()?; }
+    if let Some(catalogue) = &rules.item_custody { catalogue.validate(rules)?; }
     crate::spatial::validate(rules)?;
     crate::party::validate(rules)?;
     crate::rules::pace::validate(rules)?;

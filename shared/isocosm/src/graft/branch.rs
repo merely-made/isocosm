@@ -52,10 +52,7 @@ pub(crate) fn prepare(
         Verdict::Refused
     } else if verdicts.values().any(|v| *v == Verdict::Adapter) { Verdict::Adapter } else { Verdict::Native };
     let compatibility = if verdict == Verdict::Refused {
-        let rule = rules.compatibility.as_ref().ok_or("disfavoured carrying has no configured allowance")?;
-        Some(rule.evaluate(refused_tissue_mg, retained_tissue_mg,
-            anatomy::cell_mass(actor.extent(recipient.root), rules.body()),
-            |condition| actor.traits.contains(condition))?)
+        Some(super::provenance::allowance(actor, rules, refused_tissue_mg, retained_tissue_mg)?)
     } else { None };
     if !matches!(rules.accounts.get(reserve), Some(AccountKind::Matter {
         lineage, reserve: true, provision: false

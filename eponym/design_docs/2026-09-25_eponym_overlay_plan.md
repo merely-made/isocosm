@@ -2,6 +2,30 @@
 
 **Date:** 2026-09-25
 
+**Latest borrowed actions, 2026-10-13:** version2 mode state admits canonical
+fixed movement, paid combat preparation/release, owned project work and
+explicit native clock requests through Root's candidate Session. Complete
+action profiles are trusted author inputs; ordinary requests cannot replace
+rules or supply strike receipts. Version3 consuming timed handoff preserves
+actual paid preparation/network, item attachments, anatomy/movement labels
+and supported fixed project records as live product data, alongside opaque
+original archives. `--open-eponym-timed` restores once with the canonical
+solver and consumes the owner after complete spatial/action preflight.
+Refusal returns the original owner. Carried/relocated/cross-frame project
+imports and geometry clock providers still need source; no learned technique
+records are invented from caller DTOs. Compiler/tests/tuning stay deferred826,
+and full E3 acceptance remains open.
+
+**Consuming handoff source, 2026-10-13:** `GameState` and standalone `Session`
+can transfer their actual native owner into Root. Admission checks every
+existing subject/entity mapping, accepted pose and native volume frame; a
+refusal returns the original owner. The original versioned product/control
+archive stays opaque in the saved mode payload. Shared host `--open-eponym`
+restores once with the existing Eponym solver, then consumes that owner,
+requiring complete `--eponym-spatial` input. It does not run a second Session.
+The outer timed-action/equipment host remains separate from this standalone
+Session handoff. Source-only826; runtime acceptance remains open.
+
 **Borrowed host source, 2026-10-13:** an explicit saved mode profile maps
 subjects to native entities, admitted placements and full fixed-point poses.
 Supplied camera and appearance values drive the shared host's Eponym picture;

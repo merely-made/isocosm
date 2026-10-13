@@ -18,6 +18,7 @@ use wing_functions::{
 mod body_change;
 mod combat;
 mod routing;
+mod handoff;
 use routing::route_open;
 
 use crate::{GameEvent, GameIntent, Session, SessionError, SessionSave};

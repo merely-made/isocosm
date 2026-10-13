@@ -6,7 +6,7 @@ use isometry_views::{ItemsRequest,ItemsOutcome,ItemsFileAction};
 use isonetry::native_table::TableSender;
 
 fn read(path:&str)->Result<isometry_campaign::native::items::ItemInput,String> {
-    if path.trim().is_empty() {return Err("choose a complete item/project input file".into());}
+    if path.trim().is_empty() {return Err("choose a complete item/custody/project input file".into());}
     let bytes=std::fs::read(path.trim()).map_err(|error|format!("item input file: {error}"))?;
     serde_json::from_slice(&bytes).map_err(|error|format!("item input JSON: {error}"))
 }
@@ -21,11 +21,11 @@ fn install(ui:&mut UiState,outcome:ItemsOutcome)->Result<(),String> {
                 || input.expected_game!=isocosm::digest(&table.game) {
                 return Err("item quote names a changed native or product cut".into());
             }
-            ui.status=if preview.complete {"quoted complete native item/project input"}
+            ui.status=if preview.complete {"quoted complete native item/custody/project input"}
                 else {"native item quote requires complete supplied bindings and debit selections"}.into();
             ui.native.items_quote=Some((input,preview));
         },
-        ItemsOutcome::Applied=>{ui.native.items_quote=None;ui.status="accepted native item/project input".into();},
+        ItemsOutcome::Applied=>{ui.native.items_quote=None;ui.status="accepted native item/custody/project input".into();},
         ItemsOutcome::Submitted=>{ui.native.items_quote=None;ui.status="submitted native item input; awaiting host admission".into();},
     }
     Ok(())

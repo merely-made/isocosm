@@ -72,15 +72,19 @@ known questions together; all six VTT choices865 to870 are now answered in
 one batch. Explicit DM pack acceptance, every actually served goal, retained
 polity disagreements, configurable faction/biome layers, always sharp edges
 and optional thumbnails have bounded dependent source and actual callers
-placed. GameBindings11 and protocol/ALPN13 retain typed catalogue/Hook/map
+placed. GameBindings12 and protocol/ALPN14 retain typed catalogue/Hook/map
 metadata and physical edit records. Explicit native process goal directives,
 institution operations under supplied methods/support and physical map
 quote/apply callers are source-assembled. Accepted choreography updates
 actual host stylesheets. Resident owned items/projects and explicit graft
 carrying now reach supplied native inputs. Shared host native inspection,
-marked Mesocosm sight and Eponym borrowed reads/picture are placed. Physical
-carrying/equipment and Eponym's full action/clock lift remain open. Complete terrain/condition/
-claim disclosure scope and two TG4 threshold choices are pending together871 to873; next874.
+marked Mesocosm sight and Eponym borrowed actions/timed owner transfer are
+placed. Native item custody now follows carrier journeys and filters marked
+items from legacy equipment arithmetic. Pack affinity and priced material
+provenance admission are placed. Eponym geometry clock providers, carried
+project imports and remaining VTT authority/operation callers need source.
+Choices871 to876 are pending together864, next877: complete map disclosure,
+defensive threshold/comparator, S9 independence/witness and Location knowledge.
 Verification and
 adjustments wait under826. C9 is historically certified/merged, C10 harm is
 implemented with final certification open, and C11 source connections are

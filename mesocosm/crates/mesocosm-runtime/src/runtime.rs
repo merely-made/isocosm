@@ -29,6 +29,7 @@ use crate::succession::{self, Checkpoint};
 
 pub mod placing;
 pub mod author_spread;
+pub mod graft;
 pub(crate) mod translate;
 pub use translate::Refusal;
 
@@ -53,6 +54,10 @@ impl Founded {
     /// coordinates (783) and a played native lineage (682), one tick a
     /// round, so a host's fixed step is a tick.
     pub fn generated(seed: u64, population: u64) -> Result<Self, String> {
+        Self::generated_with_affinity(seed, population, None)
+    }
+    pub fn generated_with_affinity(seed: u64, population: u64,
+        affinity: Option<isocosm::rules::Affinity>) -> Result<Self, String> {
         let grid = isocosm::map::Grid {
             width: 3,
             height: 2,
@@ -60,6 +65,7 @@ impl Founded {
         };
         let genesis = isocosm::Founding {
             seed,
+            affinity,
             population,
             sites: grid.width * grid.height,
             map: Some(isocosm::map::Layout::Grid(grid)),
@@ -132,6 +138,10 @@ impl Runtime {
     /// A generated world from `seed` (682).
     pub fn generated(seed: u64, population: u64, ticks_per_second: u32) -> Result<Self, String> {
         Self::new(Founded::generated(seed, population)?, ticks_per_second)
+    }
+    pub fn generated_with_affinity(seed: u64, population: u64, ticks_per_second: u32,
+        affinity: Option<isocosm::rules::Affinity>) -> Result<Self, String> {
+        Self::new(Founded::generated_with_affinity(seed, population, affinity)?, ticks_per_second)
     }
 
     fn over(interim: Interim, founded: Founded, ticks_per_second: u32) -> Self {
@@ -296,10 +306,11 @@ impl Runtime {
     }
 
     /// Gives the review a pack's expression scripts as a second source.
-    pub fn with_authored(mut self, authored: Authored) -> Self {
+    pub fn with_authored(mut self, authored: Authored) -> Result<Self, String> {
+        authored.validate_world(&self.founded.genesis)?;
         self.terms = authored.terms().clone();
         self.authored = Some(authored);
-        self
+        Ok(self)
     }
 
     pub fn terms(&self) -> &mesocosm_phenotype::TermTable { &self.terms }

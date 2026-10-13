@@ -117,6 +117,10 @@ fn main() {
                 Some(path) => config.spread = Some(path),
                 None => fail("--spread wants explicit authored founding and spread steps"),
             },
+            "--graft" => match args.next().map(PathBuf::from) {
+                Some(path) => config.graft = Some(path),
+                None => fail("--graft wants a complete native Carry input for the played normative body"),
+            },
             "--scenario" => {
                 let path = args
                     .next()
@@ -213,6 +217,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --replay PATH   replay a recorded save headlessly and check its hash
   --watch PATH    take a recorded save up and play on in the window
   --spatial PATH  load explicit authored poses and operation geometry
+  --graft PATH    apply an explicit native Carry input after spatial admission
   --spread PATH   found from explicit native stocks/rules and logged author spread steps
   --scenario PATH drive the run from a text scenario and exit 1 if it fails
   --bench         open the bench over a native session (1280x900)

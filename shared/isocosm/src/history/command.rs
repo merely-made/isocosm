@@ -155,4 +155,5 @@ pub enum Command {
         participant: Id, actor: Id, target: Id, process: Key, cause: Option<Key>,
         carry: crate::graft::Carry, selections: Vec<crate::projects::DebitSelection>,
     },
+    Custody(crate::custody::Change),
 }

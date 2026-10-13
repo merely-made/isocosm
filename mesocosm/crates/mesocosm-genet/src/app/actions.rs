@@ -91,6 +91,8 @@ impl Host {
             return true;
         }
         match name {
+            "graft-preview" | "graft" if !rest.is_empty() =>
+                self.graft_file(std::path::Path::new(rest), name == "graft"),
             "follow" => match rest.parse::<u64>() {
                 Ok(id) => {
                     self.follow = Some(id);

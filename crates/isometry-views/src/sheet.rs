@@ -107,7 +107,11 @@ pub fn sheet_overlay(ui: &UiState) -> Option<UiChild> {
         body.push(Box::new(el("div", actions).attr("class", "sheet-actions")));
     }
 
-    if let Some(inventory) = ui.inventories.get(&id) {
+    let inventory = match ui.native.table_inventory(ui.inventories.get(&id)) {
+        Ok(inventory) => inventory,
+        Err(why) => { body.push(Box::new(el("div", text(why)).attr("class", "sheet-row"))); None },
+    };
+    if let Some(inventory) = inventory.as_ref() {
         body.push(Box::new(
             el("div", text("Equipment")).attr("class", "sheet-heading"),
         ));

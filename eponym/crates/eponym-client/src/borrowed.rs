@@ -8,6 +8,8 @@ use eponym_play::contract::mode::Picture;
 use isometer::SlabCamera;
 use crate::producer::CameraPolicy;
 mod source;
+pub mod actions;
+pub mod handoff;
 pub use source::Producer;
 
 pub(super) struct Snapshot { pub picture: Picture, pub turn: u8 }

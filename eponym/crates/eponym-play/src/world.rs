@@ -163,6 +163,9 @@ pub struct World {
 }
 
 impl World {
+    /// Move the sole native owner out; the old world can no longer run.
+    pub(crate) fn into_native(self) -> Session { self.session }
+
     pub fn generate(seed: u64, config: WorldConfig) -> Result<Self, WorldError> {
         Self::generate_version(seed, config, GENERATOR_VERSION)
     }

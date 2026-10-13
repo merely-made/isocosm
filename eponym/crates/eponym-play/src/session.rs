@@ -112,6 +112,25 @@ impl From<IdentityError> for SessionError {
 }
 
 impl Session {
+    /// Transfer the actual owner and preserve the original control archive.
+    /// Refusal returns this Session intact; success leaves only Root's owner.
+    pub fn into_native_mode(self, input: &crate::contract::mode::SpatialBindingInput)
+        -> Result<crate::NativeHandoff, (Self, String)> {
+        let prior = match self.save() {
+            Ok(bytes) => bytes,
+            Err(why) => return Err((self, format!("Eponym handoff save: {why:?}"))),
+        };
+        self.into_native_mode_with_prior(input, prior)
+    }
+
+    pub(crate) fn into_native_mode_with_prior(self,
+        input: &crate::contract::mode::SpatialBindingInput, prior: Vec<u8>)
+        -> Result<crate::NativeHandoff, (Self, String)> {
+        let Self { game, control } = self;
+        game.into_native_mode_with_prior(input, prior)
+            .map_err(|(game, why)| (Self { game, control }, why))
+    }
+
     /// Starts control at the current accepted game-intent cut.
     pub fn begin(mut game: GameState, subject: SubjectId) -> Result<Self, SessionError> {
         eligible(&game, subject)?;

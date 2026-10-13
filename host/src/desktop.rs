@@ -75,6 +75,21 @@ pub(crate) fn eponym_spatial(world: &crate::world::World, path: &std::path::Path
     }
 }
 
+pub(crate) fn eponym_actions(world: &crate::world::World, path: &std::path::Path) -> Result<(), String> {
+    #[cfg(feature = "eponym")]
+    {
+        let input = std::fs::read(path).map_err(|why| why.to_string())?;
+        let input: eponym_play::contract::mode::actions::ActionConfig =
+            serde_json::from_slice(&input).map_err(|why| why.to_string())?;
+        world.product_game(world.cut()?, crate::products::Mode::Eponym, |session, game| {
+            let game = eponym_play::contract::mode::actions::configure(session, &game, &input)?;
+            Ok(((), game))
+        })
+    }
+    #[cfg(not(feature = "eponym"))]
+    { let _ = (world, path); Err("Eponym actions are absent from this build".into()) }
+}
+
 fn bind_routes(tree: &WindowTree<App, Logic, Child>, routes: &mut HashMap<ProjectionId, u64>, initial: &[u64]) {
     if !routes.is_empty() { return; }
     let ids: Vec<_> = tree.multi().projection_ids().collect();

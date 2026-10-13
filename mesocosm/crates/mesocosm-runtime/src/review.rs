@@ -34,6 +34,7 @@ pub struct Authored {
     scripts: Vec<(String, String)>,
     policy: Policy,
     terms: mesocosm_phenotype::TermTable,
+    affinity: Option<isocosm::rules::Affinity>,
 }
 
 /// What one script made of one offer: the cells it would change on the
@@ -80,10 +81,26 @@ impl Authored {
             scripts,
             policy: Policy::default(),
             terms: manifest.terms,
+            affinity: manifest.affinity,
         })
     }
 
     pub fn terms(&self) -> &mesocosm_phenotype::TermTable { &self.terms }
+
+    /// The pack's explicit law, supplied before a NEW native founding.
+    pub fn affinity(&self) -> Option<&isocosm::rules::Affinity> { self.affinity.as_ref() }
+
+    /// Existing sessions retain their realized law. Expression/display
+    /// content can load only when its explicit law agrees with that world.
+    pub fn validate_world(&self, genesis: &isocosm::simulation::Genesis) -> Result<(), String> {
+        if let Some(affinity) = &self.affinity {
+            affinity.validate()?;
+            if affinity != &genesis.rules.affinity.clone().unwrap_or_default() {
+                return Err("pack affinity conflicts with the world's saved native law".into());
+            }
+        }
+        Ok(())
+    }
 
     pub fn is_empty(&self) -> bool {
         self.scripts.is_empty()

@@ -7,7 +7,10 @@
 **Current choices, 2026-10-13:** rulings through870 are the accepted record.
 Explicit process goal directives, support-backed institution operations and
 physical map quote/apply are source-assembled with actual host consumers.
-GameBindings10 and protocol/ALPN12 retain physical edit publications;
+GameBindings12 and protocol/ALPN14 retain physical edits and item custody;
+borrowed Eponym actions/timed owner transfer, Mesocosm Carry callers and
+pack affinity/provenance admission are source-assembled. Choices871 to876
+are pending together864; next unused877.
 accepted choreography reaches runtime stylesheets. Source remains unverified826.
 865 requires explicit DM pack preview/acceptance;866 retains every served
 goal;867 keeps authored/member polity disagreements;868 configurable faction

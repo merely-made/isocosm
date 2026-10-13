@@ -24,6 +24,7 @@ const HOOK_VERSION: u32 = 8;
 const CATALOGUE_VERSION: u32 = 9;
 const PHYSICAL_VERSION: u32 = 10;
 const ITEM_VERSION: u32 = 11;
+const CUSTODY_VERSION: u32 = 12;
 
 /// The actual host input after its DM/seat/current-subject checks. Assertions
 /// precede the character admissions, which name their existing authored keys.
@@ -89,7 +90,7 @@ impl GameBindings {
         if let Some(bytes) = bytes.strip_prefix(PREFIX) {
             let game: Self = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
             if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | HOLD_VERSION | SHARED_VERSION | JOURNEY_VERSION
-                | OVERMAP_VERSION | HOOK_VERSION | CATALOGUE_VERSION | PHYSICAL_VERSION | ITEM_VERSION)
+                | OVERMAP_VERSION | HOOK_VERSION | CATALOGUE_VERSION | PHYSICAL_VERSION | ITEM_VERSION | CUSTODY_VERSION)
                 || game.version == VERSION && (!game.positions.is_empty() || !game.controls.is_empty())
                 || game.version < TIME_VERSION && !game.downtime.is_empty()
                 || game.version < HOLD_VERSION && (!game.time_holds.is_empty() || game.roster_revision != 0)
@@ -100,6 +101,8 @@ impl GameBindings {
                 || game.version < CATALOGUE_VERSION && game.catalogue.is_some()
                 || game.version < PHYSICAL_VERSION && !game.physical_edits.is_empty()
                 || game.version < ITEM_VERSION && !game.item_records.is_empty()
+                || game.version < CUSTODY_VERSION && game.item_records.iter().any(|record|
+                    matches!(&record.input.action, super::items::ItemAction::Custody(_)))
             { return Err("unsupported VTT character binding version".into()); }
             Ok(game)
         } else {
@@ -133,7 +136,10 @@ impl GameBindings {
     pub fn physical_edits(&self) -> &[super::physical_map::PhysicalMapRecord] { &self.physical_edits }
     pub fn item_records(&self) -> &[super::items::PhysicalItemRecord] { &self.item_records }
     pub(super) fn record_item(&mut self, record: super::items::PhysicalItemRecord) {
-        self.version = self.version.max(ITEM_VERSION);
+        let version = if matches!(&record.input.action, super::items::ItemAction::Custody(_)) {
+            CUSTODY_VERSION
+        } else { ITEM_VERSION };
+        self.version = self.version.max(version);
         self.item_records.push(record);
     }
     pub(super) fn record_physical_edit(&mut self, record: super::physical_map::PhysicalMapRecord) {

@@ -32,6 +32,32 @@ pub enum ItemAction {
     Consent { project:ProjectId,owner:Owner,worker:Id,grant:bool,process:Option<Key>,cause:Option<Key> },
     Act { process:Key,target:Option<Id>,cause:Option<Key>,selections:Vec<DebitSelection> },
     AuthorOwn(isocosm::projects::StockLot),
+    Custody(ItemCustodyInput),
+}
+
+#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemMount {
+    pub attachment:isocosm::custody::Attachment,pub window:PlacementWindow,
+    pub places:Rules,pub terrain_revision:Key,
+}
+
+#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemDrop {pub placement:ItemPlacement,pub yaw:isocosm::custody::Yaw}
+
+#[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ItemCustodyInput {
+    pub provider:Key,pub item:Id,pub action:isocosm::custody::Action,pub cause:Option<Key>,
+    pub selections:Vec<DebitSelection>,pub item_body_revision:u64,
+    pub mount:Option<ItemMount>,pub drop:Option<ItemDrop>,
+}
+
+#[derive(Clone,Debug,PartialEq,Eq)]
+pub struct ItemPose {
+    pub item:ItemId,pub entity:Id,pub site:Id,pub at:[i64;3],pub yaw:isocosm::custody::Yaw,
+    pub window:PlacementWindow,pub places:Rules,pub carrier:Option<Id>,pub worn:bool,
 }
 
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
@@ -60,4 +86,6 @@ pub struct PhysicalItemRecord {
 pub struct ItemPreview {
     pub debits:Option<DebitPreview>,pub complete:bool,pub refusal:Option<String>,
     pub project:Option<Acted>,pub binding:Option<BoundItem>,
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    pub custody:Option<isocosm::custody::CustodyActed>,
 }

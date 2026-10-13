@@ -46,3 +46,4 @@ pub mod scene;
 
 pub use probe::{Probe, ProbeError, Save, TICKS, TRACE};
 pub use room::{Room, RoomError};
+pub use eponym_motion::SOLVER as MOTION_SOLVER;

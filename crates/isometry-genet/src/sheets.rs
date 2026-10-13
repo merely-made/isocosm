@@ -269,10 +269,14 @@ impl App {
                 let state = runner.state();
                 (
                     state.map.sheet(tok).cloned(),
-                    state.inventories.get(&tok).cloned(),
+                    state.native.table_inventory(state.inventories.get(&tok)),
                 )
             };
             if let Some(sheet) = sheet {
+                let inventory = match inventory {
+                    Ok(inventory) => inventory,
+                    Err(why) => { runner.update(|ui| ui.status = why); return; },
+                };
                 let effective = system.effective_sheet(&sheet, inventory.as_ref());
                 if let Some(expr) = system.action_expr(&key, &effective) {
                     let by = sheet.text("name").unwrap_or("?").to_owned();
@@ -410,10 +414,14 @@ impl App {
                 let state = runner.state();
                 (
                     state.map.sheet(tok).cloned(),
-                    state.inventories.get(&tok).cloned(),
+                    state.native.table_inventory(state.inventories.get(&tok)),
                 )
             };
             if let Some(sheet) = sheet {
+                let inventory = match inventory {
+                    Ok(inventory) => inventory,
+                    Err(why) => { runner.update(|ui| { ui.sheet_effective = None; ui.sheet_derived.clear(); ui.status = why; }); return; },
+                };
                 let effective = system.effective_sheet(&sheet, inventory.as_ref());
                 let derived = system.derived(&effective);
                 runner.update(|ui| {

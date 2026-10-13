@@ -12,7 +12,7 @@ impl Simulation {
         let terrain = stage.terrain.take();
         let step = stage.step.take();
         let births = std::mem::take(&mut stage.birth_places);
-        if self.genesis.rules.spread_capacity.is_none() {
+        if self.genesis.rules.spread_capacity.is_none() && self.genesis.rules.item_custody.is_none() {
             self.commit(stage, next, process);
             self.commit_geometry(terrain);
             self.commit_step(step);
@@ -24,6 +24,8 @@ impl Simulation {
         candidate.commit(stage, next, process);
         candidate.commit_geometry(terrain);
         candidate.commit_step(step);
+        candidate.check_custody_changes(self)?;
+        candidate.synchronize_custody()?;
         crate::spread::dispatch_changed(&before, &mut candidate.state, &candidate.genesis.rules)?;
         self.publish_candidate(candidate)?;
         self.place_births(&births);
@@ -32,13 +34,16 @@ impl Simulation {
 
     /// Clocked native arrival has already journaled its residency changes.
     pub(crate) fn overflow_resolved(&mut self, before: &State) -> Result<()> {
-        if self.genesis.rules.spread_capacity.is_none() { return Ok(()); }
+        if self.genesis.rules.spread_capacity.is_none() && self.genesis.rules.item_custody.is_none() { return Ok(()); }
         let mut candidate = self.clone();
+        candidate.synchronize_custody()?;
         crate::spread::dispatch_changed(before, &mut candidate.state, &candidate.genesis.rules)?;
         self.publish_candidate(candidate)
     }
 
     pub(crate) fn publish_candidate(&mut self, mut candidate: Simulation) -> Result<()> {
+        candidate.check_custody_changes(self)?;
+        candidate.synchronize_custody()?;
         if candidate.matter() != candidate.conserved {
             return Err("resolved overflow would change conserved native matter".into());
         }

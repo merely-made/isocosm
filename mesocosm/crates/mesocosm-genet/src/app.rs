@@ -27,6 +27,7 @@ mod devtime;
 pub mod drive;
 mod follow;
 mod frame;
+mod graft;
 mod inspection;
 mod receipts;
 mod setup;
@@ -109,6 +110,10 @@ pub(crate) struct Lanes {
 
 impl Host {
     pub fn new(mut config: HostConfig) -> Self {
+        let authored = mesocosm_runtime::Authored::load(&pack_root()).unwrap_or_else(|why| {
+            eprintln!("pack admission: {why:?}");
+            std::process::exit(1);
+        });
         let mut runtime = match (&config.watch, &config.spread) {
             (Some(_), Some(_)) => Err("authored spread founding cannot replace a resumed run".into()),
             (_, Some(path)) => std::fs::read(path).map_err(|why| why.to_string())
@@ -116,7 +121,8 @@ impl Host {
                     .map_err(|why| why.to_string()))
                 .and_then(|setup| Runtime::from_authored_spread(&setup, config.ticks_per_second)),
             (Some(path), None) => crate::played::resume(path, config.ticks_per_second),
-            (None, None) => Runtime::generated(config.seed, config.population, config.ticks_per_second),
+            (None, None) => Runtime::generated_with_affinity(config.seed, config.population,
+                config.ticks_per_second, authored.affinity().cloned()),
         }
         .unwrap_or_else(|why| {
             eprintln!("world: {why}");
@@ -138,15 +144,20 @@ impl Host {
                 std::process::exit(1);
             }
         }
-        // The shipped pack's expression scripts, the review's second source
-        // (781); a pack that will not load leaves the board one source.
-        let runtime = match mesocosm_runtime::Authored::load(&pack_root()) {
-            Ok(authored) => runtime.with_authored(authored),
-            Err(why) => {
-                eprintln!("pack expression: {why:?}");
-                runtime
-            },
-        };
+        if let Some(path) = &config.graft {
+            let admitted = std::fs::read(path).map_err(|why| why.to_string())
+                .and_then(|bytes| serde_json::from_slice::<mesocosm_runtime::runtime::graft::GraftInput>(&bytes)
+                    .map_err(|why| why.to_string()))
+                .and_then(|input| runtime.apply_graft(&input));
+            if let Err(why) = admitted {
+                eprintln!("graft {}: {why}", path.display());
+                std::process::exit(1);
+            }
+        }
+        let runtime = runtime.with_authored(authored).unwrap_or_else(|why| {
+            eprintln!("pack/native founding conflict: {why}");
+            std::process::exit(1);
+        });
         // Parsed once, so a typo stops the run before a window opens (DT4).
         let scenario = match config.scenario.as_deref().map(taproot::Scenario::parse) {
             Some(Ok(scenario)) => Some(scenario),

@@ -9,6 +9,7 @@ use crate::{MotionPose, identity::SubjectId};
 use isometer_space::places::PlaceId;
 mod binding;
 mod reading;
+pub mod actions;
 pub use reading::{BorrowedReading, Picture, PictureBody};
 
 const MARKER: &str = "eponym:mode-state";
@@ -52,6 +53,8 @@ pub struct ModeState {
     pub presentation: Presentation,
     /// The old unmarked mode payload stays byte-exact and uninterpreted.
     pub prior: Vec<u8>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub actions: Option<actions::ActionState>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -76,7 +79,11 @@ impl ModeState {
     }
 
     pub fn validate(&self) -> Result<(), String> {
-        if self.kind != MARKER || self.version != 1 { return Err("unsupported Eponym mode state".into()); }
+        let version = self.actions.as_ref().map_or(1, |a| if a.imported.is_some() {3} else {2});
+        if self.kind != MARKER || self.version != version {
+            return Err("unsupported Eponym mode state".into());
+        }
+        if let Some(actions) = &self.actions { actions.validate(self)?; }
         self.presentation.validate()?;
         let mut subjects = std::collections::BTreeSet::new();
         let mut entities = std::collections::BTreeSet::new();
@@ -99,9 +106,11 @@ pub fn bind(session: &Session, previous: &[u8], input: &SpatialBindingInput) -> 
     if input.bindings.len() as u64 > session.sim.genesis().rules.limits.entities {
         return Err("Eponym bindings exceed the native entity limit".into());
     }
-    let prior = ModeState::decode(previous)?.map_or_else(|| previous.to_vec(), |old| old.prior);
-    let mut state = ModeState { kind:MARKER.into(),version:1,bindings:input.bindings.clone(),
-        presentation:input.presentation.clone(),prior };
+    let old = ModeState::decode(previous)?;
+    let (prior, actions) = old.map_or_else(|| (previous.to_vec(), None), |old| (old.prior,old.actions));
+    let version = actions.as_ref().map_or(1, |a| if a.imported.is_some() {3} else {2});
+    let mut state = ModeState { kind:MARKER.into(),version,bindings:input.bindings.clone(),
+        presentation:input.presentation.clone(),prior,actions };
     state.bindings.sort_by_key(|binding| binding.subject);
     state.validate()?;
     for binding in &state.bindings { binding.current(session)?; }

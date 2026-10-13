@@ -2,6 +2,25 @@
 
 **Date:** 2026-09-25
 
+**Founding law source, 2026-10-13:** explicit pack affinity now enters fresh
+native founding before body/domain generation. Optional absent law preserves
+the existing default; resumed or supplied realized worlds retain their saved
+law and refuse a conflicting pack. Domain counts/crossings validate natively.
+Priced terrain material must bind to a Matter account of its declared source
+lineage; unpriced development material is unchanged. S9's independence and
+viability witness criteria are pending874/875; no unused preset pressure is
+claimed as a consumed ecological law. Source-only826, with full M4/C11 and
+ecological certification open.
+
+**Carry caller source, 2026-10-13:** explicit complete Graft inputs now reach
+the real Genet `--graft` startup, `graft-preview`/`graft` file actions and
+shared borrowed host input. Native and saved spatial candidates publish
+together, with genuine command flows reaching the runtime's readers. Existing
+poses refresh; missing geometry remains unavailable. Vitals reads the same
+origin-aware allowance as native Carry. Controlled Carry requires an already
+played normative body; deliberative critters retain their native chooser.
+Source-only826, without compiler/tests/fixtures/tuning.
+
 **Sight and Carry source, 2026-10-13:** marked saved spatial state carries
 explicit native sight ranges. Actual PLAYS, admitted eye/window, body/terrain
 revisions and arrival bindings refine the physical picture; absent or stale

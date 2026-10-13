@@ -61,6 +61,10 @@ pub struct Manifest {
     /// Display-only forms, separate from native definitions and their digest.
     #[serde(default, skip_serializing_if = "crate::TermTable::is_empty")]
     pub terms: crate::TermTable,
+    /// Explicit native world law for NEW founding. A restored world keeps
+    /// its saved law; a pack cannot replace that law after the session exists.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub affinity: Option<isocosm::rules::Affinity>,
 }
 
 /// One `processes/<name>.toml` (or `.json`).

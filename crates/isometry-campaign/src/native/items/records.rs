@@ -9,6 +9,7 @@ fn native_binding(session:&mut Session,input:&ItemBindingInput,output:Option<Id>
     let entity=match input.entity {EntityRef::Existing(id)=>id,
         EntityRef::SelectedProjectOutput=>output.ok_or("historical item has no selected project output")?};
     let body=session.sim.state().population.get(entity).ok_or("historical item entity is absent")?;
+    if session.sim.item_carrier(entity)?.is_some() {return Err("ground binding replaces an actually held item".into());}
     if bound.item!=input.item || bound.entity!=entity || bound.placement!=input.placement
         || body.lineage!=input.lineage || isocosm::anatomy::books(body)!=input.stocks
         || output.is_some_and(|output|output!=entity) {
@@ -31,12 +32,13 @@ pub fn validate_item_records(session:&Session,records:&[PhysicalItemRecord])->Re
     let mut items:BTreeMap<Id,BoundItem>=BTreeMap::new();
     let mut projects:BTreeMap<isocosm::projects::ProjectId,ProjectPosition>=BTreeMap::new();
     let mut last_order=None;
-    for record in records {
+    for (index,record) in records.iter().enumerate() {
         let input=&record.input;
         let first=record.entries.first().ok_or("physical item record has no native entry")?;
         let mut before=session.before_entry(first)?;
         let body=before.sim.state().population.get(input.actor).ok_or("historical item actor is absent")?;
-        if input.version!=1 || record.entries.len()!=record.outcomes.len() || input.expected_native!=source(&before)
+        let version=if matches!(&input.action,ItemAction::Custody(_)) {2} else {1};
+        if input.version!=version || record.entries.len()!=record.outcomes.len() || input.expected_native!=source(&before)
             || before.sim.plays(record.participant)!=Some(input.actor) || !body.alive
             || body.body_revision!=input.body_revision || record.actor_position.entity!=input.actor {
             return Err("physical item record differs from its actual native source, actor or control".into());
@@ -44,8 +46,11 @@ pub fn validate_item_records(session:&Session,records:&[PhysicalItemRecord])->Re
         let actor_at=record.actor_position.current(&before)?;
         let target=match &input.action {ItemAction::Project {target,..}|ItemAction::Act {target,..}=>*target,_=>None};
         if let Some(target)=target.filter(|target|*target!=input.actor) {
-            let bound=items.get(&target).ok_or("historical item target has no earlier physical binding")?;
-            if bound.current(&before)?!=actor_at || bound.placement.site!=record.actor_position.placement.site {
+            let pose=current::from_records(&before,&records[..index],target,&|actor| {
+                if actor!=input.actor {return Err("historical target has another actual carrier".into());}
+                Ok(record.actor_position.clone())
+            })?;
+            if (pose.at!=actor_at && pose.carrier!=Some(input.actor)) || pose.site!=record.actor_position.placement.site {
                 return Err("historical item target differs from the actual resident contact".into());
             }
         }
@@ -99,6 +104,13 @@ pub fn validate_item_records(session:&Session,records:&[PhysicalItemRecord])->Re
                 let acted:OwnedActed=serde_json::from_str(&outcome).map_err(|error|error.to_string())?;
                 if !acted.receipt.accepted() || record.binding.is_some() || record.project.is_some() {
                     return Err("historical item act was refused or changes unrelated placement".into());
+                }
+            },
+            ItemAction::Custody(_)=>{
+                let (binding,_)=custody::perform(&mut before,&records[..index],&record.actor_position,
+                    input,record.participant)?;
+                if binding!=record.binding || record.project.is_some() {
+                    return Err("custody record changes its exact native drop binding or unrelated project position".into());
                 }
             },
         }

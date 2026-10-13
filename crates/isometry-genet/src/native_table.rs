@@ -58,6 +58,7 @@ fn export_context(ui: &UiState) -> Result<(), String> {
         "native_projects": state.projects.records,
         "owned_stock": session.sim.genesis().rules.owned_stock,
         "item_quote": ui.native.items_quote,
+        "item_custody": session.sim.genesis().rules.item_custody,
     });
     let value = serde_json::json!({
         "purpose": "Author explicit inputs; null participant and missing cell mappings are incomplete, not defaults.",

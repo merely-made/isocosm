@@ -57,6 +57,8 @@ pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAcces
     game.validate(session).map_err(Refusal::Sim)?;
     let mut candidate = session.clone();
     let accepted = match input {
+        Input::Graft(input) => crate::runtime::graft::submit(
+            &mut candidate, access, &mut game, input).map_err(Refusal::Sim)?,
         Input::Envelope(envelope) => {
             if matches!(&envelope.intent, Intent::Game(intent) if intent.is_dev()) {
                 return Err(Refusal::Sim("dev intents require the separate authored-run door".into()));

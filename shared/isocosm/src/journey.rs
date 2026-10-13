@@ -87,7 +87,10 @@ impl Simulation {
     /// The index is rebuilt per advance; accepted splits/births replace entries.
     pub(crate) fn arrive_until(&mut self, until: Tick, work: &mut Work) -> Result<()> {
         while let Some((tick, first)) = self.journeys.as_mut().and_then(|j| j.pop(until)) {
-            let before = self.genesis.rules.spread_capacity.as_ref().map(|_| self.state.clone());
+            // A held item follows its carrier's accepted clock, never a second arrival.
+            if self.item_carrier(first)?.is_some() { continue; }
+            let before = (self.genesis.rules.spread_capacity.is_some()
+                || self.genesis.rules.item_custody.is_some()).then(|| self.state.clone());
             let group = self.state.population.groups.get(&first).ok_or("journey cohort vanished")?;
             let count = group.count;
             let journey = group.entity.journey.clone().ok_or("journey index lost its authority")?;

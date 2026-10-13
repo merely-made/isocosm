@@ -2,6 +2,20 @@
 
 **Date:** 2026-09-25
 
+**Latest source, 2026-10-13:** GameBindings12 and protocol/ALPN14 add typed
+Carry/Drop/Equip/Unequip records through declared native custody providers,
+complete authored processes, exact selected debits and allowed mounts. Native
+items follow their carrier's admitted journey and arrival without changing
+titles or ledgers. Capacity gates new acquisition; injury/death retain
+existing custody. Current pictures use native body geometry and admitted
+carrier frames. Missing or stale geometry refuses physical reads. Marked
+items are filtered from legacy table equipment rolls and sheet arithmetic;
+physical attachments infer no bonuses. Complete providers remain authored
+inputs. Unfinished carried projects and the remaining standalone institution
+operation/legacy-authority routing still need source. All six collected
+choices871 to876 remain pending, next877. Source-only826; full V2 acceptance
+is open.
+
 **Source placement, 2026-10-13:** GameBindings11 and protocol/ALPN13 add
 authenticated resident item inputs and their paired native/game publication.
 Explicit ownership, project reservations, joint owner permission, work and

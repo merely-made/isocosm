@@ -25,6 +25,25 @@ impl World {
     pub fn new(session: Session) -> Self {
         Self(Rc::new(RefCell::new(OpenWorld { session, sections: BTreeMap::new() })))
     }
+    #[cfg(all(feature = "desktop", feature = "eponym"))]
+    pub fn take_eponym(handoff: eponym_play::NativeHandoff)
+        -> Result<Self, (eponym_play::NativeHandoff, String)> {
+        let checked = (|| {
+            let state = eponym_play::contract::mode::ModeState::decode(&handoff.game)?
+                .ok_or("Eponym handoff lacks its marked mode state")?;
+            for binding in &state.bindings { binding.current(&handoff.native)?; }
+            Ok::<(), String>(())
+        })();
+        if let Err(why) = checked { return Err((handoff, why)); }
+        let sections = crate::mode_sections::with_game(&BTreeMap::new(),
+            crate::products::Mode::Eponym, handoff.game.clone());
+        match sections {
+            Err(why) => Err((handoff, why)),
+            Ok(sections) => Ok(Self(Rc::new(RefCell::new(OpenWorld {
+                session: handoff.native, sections,
+            })))),
+        }
+    }
     pub fn share(&self) -> Self { Self(self.0.clone()) }
     pub fn resume(saved: WorldSave, execution: Execution) -> Result<Self, String> {
         if saved.format != FORMAT_VERSION { return Err("unknown mode-host save format".into()); }

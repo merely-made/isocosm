@@ -306,6 +306,8 @@ pub struct Rules {
     pub pace_profiles: BTreeMap<Key, PaceProfile>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub institutions: BTreeMap<Key, crate::institutions::Definition>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub item_custody: Option<crate::custody::Catalogue>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

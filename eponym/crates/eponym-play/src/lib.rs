@@ -74,7 +74,7 @@ pub use session::{
     SessionError, SessionLimits, SessionSave,
 };
 pub use sites::{HistoryFactId, Layer, Site, SiteKind, SiteSource, SlotId, WorldMap};
-pub use state::{GameState, ProjectLocation};
+pub use state::{GameState, NativeHandoff, ProjectLocation};
 pub use subject_sheet::{
     ActionRow, CapabilityRow, EquipmentRow, PartRow, ResourceRow, SubjectSheet, SubjectSheetInput,
 };

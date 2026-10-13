@@ -251,7 +251,8 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
     let mut kinds = default_kinds();
     let authored = roster();
     let (mut producers, mut consumers) = (0, 0);
-    let affinity = Affinity::default();
+    let affinity = g.rules.affinity.clone().unwrap_or_default();
+    affinity.validate()?;
     let mut added: BTreeMap<Key, BTreeSet<Key>> = BTreeMap::new();
     // Kingdom/provenance facts do not change when recipes and life traits
     // are assigned below; keep them available during the mutable line walk.

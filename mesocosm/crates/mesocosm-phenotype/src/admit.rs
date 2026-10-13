@@ -134,6 +134,7 @@ pub fn discover(root: &Path) -> Result<Manifest, Admission> {
         });
     }
     check_terms(&manifest)?;
+    check_affinity(&manifest)?;
     Ok(manifest)
 }
 
@@ -150,6 +151,7 @@ pub fn admit_dir(root: &Path) -> Result<Registry, Admission> {
 /// Admits a manifest already discovered at `root`.
 pub fn admit(root: &Path, manifest: &Manifest) -> Result<Registry, Admission> {
     check_terms(manifest)?;
+    check_affinity(manifest)?;
     if manifest.processes.is_empty() {
         return Err(Admission::EmptyPack {
             root: root.display().to_string(),
@@ -183,6 +185,15 @@ fn check_terms(manifest: &Manifest) -> Result<(), Admission> {
     manifest.terms.validate().map_err(|why| Admission::MalformedSchema {
         path: format!("{} display terms", manifest.pack), why,
     })
+}
+
+fn check_affinity(manifest: &Manifest) -> Result<(), Admission> {
+    if let Some(affinity) = &manifest.affinity {
+        affinity.validate().map_err(|why| Admission::MalformedSchema {
+            path: format!("{} native affinity", manifest.pack), why,
+        })?;
+    }
+    Ok(())
 }
 
 /// One declared asset's path inside the pack. (PD4)

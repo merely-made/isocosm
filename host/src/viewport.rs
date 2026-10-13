@@ -106,19 +106,15 @@ fn vtt_picture(session: &isocosm::Session, cut: &crate::window::Projection,
         if !item_entities.insert(binding.entity) || !cut.visible.shows(binding.entity) { continue; }
         let held = session.sim.state().population.get(binding.entity).ok_or("VTT picture item is absent")?;
         if held.resident_site() != Some(site) { continue; }
-        // The item door requires actual Inert geometry, native patch and
-        // current visit/revisions. Token anchors and unfinished projects
-        // supply neither a root pose nor a substitute body document.
-        let at = binding.current(session)?;
-        if roots.get(&binding.entity).is_some_and(|pose|
-            pose.at != at || pose.yaw != mesocosm_genet::borrowed_section::RootYaw::Zero) {
+        let pose = isometry_campaign::native::items::current_item(session, &game, binding.entity)?;
+        let at = pose.at;
+        if roots.get(&binding.entity).is_some_and(|existing|
+            existing.at != at || existing.yaw != pose.yaw) {
             return Err("VTT item and character bindings disagree on the same native root pose".into());
         }
-        if !windows.contains(&binding.placement.window) { windows.push(binding.placement.window.clone()); }
+        if !windows.contains(&pose.window) { windows.push(pose.window.clone()); }
         roots.entry(binding.entity).or_insert(mesocosm_runtime::spatial::Pose {
-            // ItemPlacement has no orientation field, as with character
-            // positions; its actual native body is lowered unrotated.
-            at, yaw: mesocosm_genet::borrowed_section::RootYaw::Zero,
+            at, yaw: pose.yaw,
         });
     }
     if roots.is_empty() { return Err("VTT close-up has no current admitted physical body positions".into()); }

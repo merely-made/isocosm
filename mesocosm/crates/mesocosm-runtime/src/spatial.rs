@@ -27,6 +27,7 @@ mod birth_command;
 pub use birth::{BirthInput, BirthParent, BirthSlot};
 mod replay;
 mod sight;
+pub mod graft;
 pub use sight::{SightConfig, SightedSetup};
 
 /// Exact root-pivot pose in the site's base cells; no presentation scale.

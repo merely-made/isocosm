@@ -37,6 +37,8 @@ pub struct Founding {
     /// Absent in foundings without one, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub played: Option<crate::directing::Played>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub affinity: Option<Affinity>,
 }
 
 impl Default for Founding {
@@ -56,6 +58,7 @@ impl Default for Founding {
             preset: None,
             bodies: None,
             played: None,
+            affinity: None,
         }
     }
 }
@@ -86,6 +89,7 @@ pub(crate) fn process(id: &str, causation: Causation, effects: Vec<Effect>) -> P
 
 impl Founding {
     pub fn generate(&self) -> Result<Genesis> {
+        if let Some(affinity) = &self.affinity { affinity.validate()?; }
         if self.sites == 0
             || self.sites > 256
             || self.lineages == 0
@@ -267,7 +271,7 @@ impl Founding {
         let mut rules = Rules {
             body: None,
             kinds: BTreeMap::new(),
-            affinity: None,
+            affinity: self.affinity.clone(),
             compatibility: None,
             systems: Default::default(),
             carriage: None,
@@ -282,6 +286,7 @@ impl Founding {
             party_relations: BTreeMap::new(),
             pace_profiles: BTreeMap::new(),
             institutions: BTreeMap::new(),
+            item_custody: None,
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),

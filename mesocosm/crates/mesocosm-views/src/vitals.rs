@@ -12,7 +12,6 @@
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
 use isocosm::kingdom::{self, Kingdom};
 use isocosm::mosaic::ports::feeding;
-use isocosm::rules::retained;
 use isocosm::schema::{Entity, Id};
 use isocosm::simulation::Simulation;
 use mesocosm_runtime::{Refusal, TermTable, Trend};
@@ -87,25 +86,17 @@ pub fn vitals_of_with_terms(
         kingdom: e.and_then(kingdom::of)
             .map(|k| terms.form(kingdom_word(k), "indefinite").to_owned()),
         feeding: e.map(|e| terms.form(crate::dev::part::feeding_word(feeding(e)), "verb").to_owned()),
-        graft: e.and_then(|e| allowance_words(sim, e)),
+        graft: critter.filter(|_| e.is_some()).and_then(|id| allowance_words(sim, id)),
     }
 }
 
 /// What the world's graft rule allows this body beyond what it keeps.
-fn allowance_words(sim: &Simulation, e: &Entity) -> Option<String> {
-    let rules = &sim.genesis().rules;
-    let rule = rules.compatibility.as_ref()?;
-    let affinity = rules.affinity.clone().unwrap_or_default();
-    let lineages = &sim.state().lineages;
-    let line = lineages.get(&e.lineage)?;
-    let into = line.development.as_ref()?.domain;
-    let kept = retained(e, rules, lineages, &affinity, into);
-    let cell_mg = rules.body().reference_mass_mg;
-    let held = |condition: &str| e.traits.contains(condition);
-    Some(match rule.evaluate(0, kept, cell_mg, held) {
-        Ok(receipt) => compatibility_words(&receipt),
-        Err(why) => why,
-    })
+fn allowance_words(sim: &Simulation, id: Id) -> Option<String> {
+    match sim.graft_allowance(id) {
+        Ok(None) => None,
+        Ok(Some(receipt)) => Some(compatibility_words(&receipt)),
+        Err(why) => Some(format!("graft allowance unavailable: {why}")),
+    }
 }
 
 pub fn replacement_words(trend: &Trend) -> String {

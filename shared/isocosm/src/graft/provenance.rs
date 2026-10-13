@@ -80,3 +80,11 @@ pub(super) fn retained(actor: &Entity, rules: &Rules,
             .ok_or_else(|| "retained graft tissue mass overflows".into())
     })
 }
+
+pub(super) fn allowance(actor: &Entity, rules: &Rules,
+    incoming: u64, retained: u64) -> Result<crate::rules::GraftReceipt> {
+    let rule = rules.compatibility.as_ref().ok_or("disfavoured carrying has no configured allowance")?;
+    let body = actor.body.as_ref().ok_or("graft allowance has no actual recipient geometry")?;
+    rule.evaluate(incoming, retained, crate::anatomy::cell_mass(actor.extent(body.root), rules.body()),
+        |condition| actor.traits.contains(condition))
+}

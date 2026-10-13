@@ -33,6 +33,20 @@ impl Simulation {
             &self.genesis.rules, &self.state.lineages)
     }
 
+    /// The same current cumulative allowance and root-cell mass that Carry
+    /// uses. Unknown old imported arrangements remain explicitly unreadable.
+    pub fn graft_allowance(&self, actor: Id) -> Result<Option<crate::rules::GraftReceipt>> {
+        let rules = &self.genesis.rules;
+        if rules.compatibility.is_none() { return Ok(None); }
+        let body = self.state.population.get(actor).ok_or("graft allowance body is absent")?;
+        let development = self.state.lineages.get(&body.lineage)
+            .and_then(|line| line.development.as_ref()).ok_or("graft allowance has no declared development")?;
+        let affinity = rules.affinity.clone().unwrap_or_default();
+        if development.domain >= affinity.domains { return Err("graft allowance names an invalid domain".into()); }
+        let kept = super::provenance::retained(body, rules, &self.state.lineages, &affinity, development.domain)?;
+        super::provenance::allowance(body, rules, 0, kept).map(Some)
+    }
+
     pub(crate) fn act_graft(&mut self, participant: Id, actor: Id, target: Id, process: &str,
         cause: Option<Key>, carry: &Carry, selections: &[crate::projects::DebitSelection]) -> Result<String> {
         let mut candidate = self.graft_candidate(participant, actor, target, process, carry)?;

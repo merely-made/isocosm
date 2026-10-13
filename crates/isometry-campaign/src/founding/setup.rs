@@ -40,6 +40,8 @@ pub struct Setup {
     /// Explicit additional native material/work declarations for fresh worlds.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub material_profile: Option<MaterialProfile>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub item_custody: Option<isocosm::custody::Catalogue>,
 }
 
 impl Setup {
@@ -121,6 +123,13 @@ impl Campaign {
             FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
         setup.install_authored(&mut genesis).map_err(|reason|
             FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
+        if let Some(catalogue) = &setup.item_custody {
+            if genesis.rules.item_custody.is_some() {
+                return Err(FoundingError::Native(ReplayError { phase: Phase::Founding,
+                    reason: "custody profile replaces existing native declarations".into() }));
+            }
+            genesis.rules.item_custody = Some(catalogue.clone());
+        }
         let mut session = Session::new(table_genesis(genesis), setup.execution).map_err(|reason|
             FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
         let content = Content::from_draft(draft)?;

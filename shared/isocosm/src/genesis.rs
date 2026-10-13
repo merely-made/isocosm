@@ -10,6 +10,7 @@ impl Genesis {
             return Err("unsupported world version".into());
         }
         self.rules.validate()?;
+        crate::ecology::validate_material_provenance(self)?;
         self.population.validate(self.rules.limits.entities)?;
         crate::spread::validate(&self.spreads, &self.rules, &self.population,
             &self.sites, &self.lineages)?;

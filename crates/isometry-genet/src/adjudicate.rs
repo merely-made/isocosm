@@ -58,9 +58,9 @@ impl App {
                 let under_initiative = s.turns.active() == Some(actor);
                 (
                     s.map.sheet(actor).cloned(),
-                    s.inventories.get(&actor).cloned(),
+                    s.native.table_inventory(s.inventories.get(&actor)),
                     s.map.sheet(target).cloned(),
-                    s.inventories.get(&target).cloned(),
+                    s.native.table_inventory(s.inventories.get(&target)),
                     tiles,
                     turn_ok,
                     under_initiative,
@@ -74,6 +74,8 @@ impl App {
                 }
                 let actor_sheet = actor_sheet.ok_or_else(|| "attacker has no sheet".to_owned())?;
                 let target_sheet = target_sheet.ok_or_else(|| "target has no sheet".to_owned())?;
+                let actor_inv = actor_inv?;
+                let target_inv = target_inv?;
                 // Equipment counts: resolve against the effective sheets, so a
                 // magic sword's bonus lands and armour raises the AC it is
                 // compared against. Conditions ride along as boolean fields, so

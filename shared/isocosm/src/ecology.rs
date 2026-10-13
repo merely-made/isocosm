@@ -6,6 +6,9 @@
 use crate::{Founding, Result, generate::process, rules::*, simulation::Genesis};
 use std::collections::BTreeMap;
 
+mod admission;
+pub(crate) use admission::validate_material_provenance;
+
 pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     g.rules
         .processes

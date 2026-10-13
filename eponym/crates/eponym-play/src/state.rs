@@ -44,6 +44,8 @@ mod stock;
 mod spread;
 pub use project_places::ProjectLocation;
 mod save;
+mod handoff;
+pub use handoff::NativeHandoff;
 
 #[derive(Clone, Debug)]
 pub struct GameState {

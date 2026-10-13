@@ -529,6 +529,7 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
         Command::Know(knowing) => sim.know(knowing),
         Command::Goal(change) => sim.goal_change(change),
         Command::Institution(change) => sim.institution_change(change),
+        Command::Custody(change) => sim.custody_change(change),
         Command::ActGraft { participant, actor, target, process, cause, carry, selections } =>
             sim.act_graft(*participant, *actor, *target, process, cause.clone(), carry, selections),
         Command::Social(act) => {
