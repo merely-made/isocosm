@@ -46,6 +46,7 @@ pub mod preset;
 pub mod probe;
 pub mod process;
 pub mod projects;
+pub mod party;
 mod queries;
 pub mod reach;
 pub mod rng;

@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-//! Individual native downtime records (246), with explicit host roster input.
-//! Roster selection and advance validity remain gated on rulings 851/852.
+//! Individual native downtime, persistent self-released holds, and explicit
+//! DM selection (246,851,852,855,856). Native history owns every accepted input.
 
 use super::GameBindings;
 use isocosm::{Command, Session, asserted::{Assertion, HistoryLine}, schema::{Id, Key, Tick}};
@@ -11,11 +11,22 @@ use isocosm_overlay::{EventHandle, Intent, OrdinaryAccess, Seat,
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
+mod validation;
+pub use validation::{ready, validate_bindings};
+mod transition;
+pub use transition::validate_transition;
+
 /// The trusted host supplies this authenticated roster, never request bytes or
 /// player names. Its preimage identifies the actual declared roster source.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Roster { pub players: BTreeSet<Id>, pub preimage: String }
+pub struct Roster {
+    pub players: BTreeSet<Id>, pub preimage: String,
+    #[serde(default, skip_serializing_if="zero")]
+    pub revision: u64,
+}
+
+fn zero(value: &u64) -> bool { *value == 0 }
 
 impl Roster {
     pub fn validate(&self, session: &Session) -> Result<(), String> {
@@ -41,7 +52,22 @@ pub struct Consent { pub participant: Id, pub roster: Roster, pub witness: Witne
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Completion { pub from: Tick, pub to: Tick, pub roster: Roster, pub witness: Witness }
+pub struct Completion {
+    pub from: Tick, pub to: Tick, pub roster: Roster, pub witness: Witness,
+    #[serde(default, skip_serializing_if="Vec::is_empty")]
+    pub allowances: Vec<Allowance>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub enum Allowance {
+    Yes { participant:Id, witness:Witness },
+    Released { participant:Id, witness:Witness },
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Hold { pub participant:Id, pub released:bool, pub roster:Roster, pub witness:Witness }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -57,6 +83,9 @@ pub struct Proposal {
 enum Record {
     Proposed(Declaration),
     Consented { participant: Id, proposal: Key, event: EventHandle, roster: Roster },
+    Held { participant:Id, released:bool, roster:Roster },
+    Completed { participant:Id, proposal:Key, event:EventHandle, from:Tick, to:Tick,
+        roster:Roster, allowances:Vec<Allowance> },
 }
 
 impl Witness {
@@ -99,39 +128,8 @@ fn append(session: &mut Session, record: &Record) -> Result<Witness, String> {
     Ok(witness)
 }
 
-impl Proposal {
-    pub fn validate(&self, session: &Session, key: &str) -> Result<(), String> {
-        self.declaration.roster.validate(session)?;
-        if key != self.witness.event_key || self.declaration.tick != self.witness.tick
-            || self.declaration.roster.players.contains(&self.declaration.proposer)
-            || !session.sim.state().population.get(self.declaration.proposer)
-                .is_some_and(isocosm::directing::is_participant) {
-            return Err("downtime declaration differs from native participant/roster/tick".into());
-        }
-        self.witness.validate(session, &Record::Proposed(self.declaration.clone()))?;
-        let declared = session.entries.iter().find(|entry| entry.id == self.witness.entry)
-            .ok_or("downtime declaration entry absent")?.order;
-        let mut prior = declared;
-        for consent in &self.consents {
-            consent.roster.validate(session)?;
-            if !consent.roster.players.contains(&consent.participant)
-                || consent.roster.players.contains(&self.declaration.proposer) {
-                return Err("consent participant is absent from its authenticated roster".into());
-            }
-            consent.witness.validate(session, &Record::Consented { participant:consent.participant,
-                proposal:self.witness.event_key.clone(), event:self.witness.event, roster:consent.roster.clone() })?;
-            let order = session.entries.iter().find(|entry| entry.id == consent.witness.entry)
-                .ok_or("native consent entry absent")?.order;
-            if order <= prior { return Err("native consent records are out of order".into()); }
-            prior = order;
-        }
-        if self.completed.is_some() { return Err("downtime completion awaits its ruled activation policy".into()); }
-        Ok(())
-    }
-}
-
-/// Records only: no clock advance, inferred roster, expiry or reset policy.
-/// Actual callers supply the same admitted seat/participant and roster source.
+/// The host supplies actual access and the accepted saved-player roster.
+/// Only the DM's explicit Advance input selects a ready span to run.
 pub fn submit_time(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess, roster: &Roster,
     envelope: &VttIntentEnvelope) -> Result<(String, Vec<u8>), String> {
     super::movement::current_access(session, access)?;
@@ -144,6 +142,9 @@ pub fn submit_time(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess,
     };
     let mut bindings = GameBindings::decode(&game)?;
     bindings.validate(session)?;
+    if roster.revision != bindings.roster_revision() || roster.preimage != isocosm::digest(&roster.players) {
+        return Err("native time roster differs from its accepted revision or player-ID preimage".into());
+    }
     let mut candidate = session.clone();
     let accepted = match intent {
         TimeIntent::Downtime { ticks } => {
@@ -156,7 +157,7 @@ pub fn submit_time(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess,
             let key = witness.event_key.clone();
             let handle = witness.event.0;
             bindings.record_downtime(key.clone(), Proposal { declaration, witness, consents:Vec::new(), completed:None });
-            format!("downtime proposed: {key} ({handle}); activation awaits roster/time policy")
+            format!("downtime proposed: {key} ({handle})")
         },
         TimeIntent::Consent { downtime } => {
             if access.seat != Seat::Player || !roster.players.contains(&access.participant.0) {
@@ -166,6 +167,7 @@ pub fn submit_time(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess,
                 .ok_or("downtime handle has no unique actual native event")?.to_owned();
             let mut proposal = bindings.downtime().get(&key).ok_or("event is not a recorded downtime proposal")?.clone();
             if proposal.completed.is_some() { return Err("downtime already completed".into()); }
+            proposal.require_current(envelope.tick.0, roster)?;
             if roster.players.contains(&proposal.declaration.proposer) {
                 return Err("the proposing DM is distinct from consenting players".into());
             }
@@ -174,7 +176,38 @@ pub fn submit_time(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess,
             proposal.consents.push(Consent { participant:access.participant.0, roster:roster.clone(),
                 witness:append(&mut candidate, &record)? });
             bindings.record_downtime(key, proposal);
-            "individual consent recorded; activation awaits roster/time policy".into()
+            "individual consent recorded".into()
+        },
+        TimeIntent::ReleaseHold | TimeIntent::TakeHold => {
+            if access.seat != Seat::Player || !roster.players.contains(&access.participant.0) {
+                return Err("only a bound player may change their own time hold".into());
+            }
+            let released = matches!(intent, TimeIntent::ReleaseHold);
+            let record = Record::Held { participant:access.participant.0, released, roster:roster.clone() };
+            bindings.record_hold(Hold { participant:access.participant.0, released, roster:roster.clone(),
+                witness:append(&mut candidate, &record)? });
+            (if released { "your hold is released for current and future proposals" }
+                else { "your hold is taken back; accepted yeses remain" }).into()
+        },
+        TimeIntent::Advance { downtime } => {
+            if access.seat != Seat::Dm || roster.players.contains(&access.participant.0) {
+                return Err("only the distinct DM may choose a ready downtime".into());
+            }
+            let key = key_for_handle(candidate.sim.state().events.keys().map(String::as_str), downtime.0)
+                .ok_or("downtime handle has no unique actual native event")?.to_owned();
+            let mut proposal = bindings.downtime().get(&key).ok_or("event is not a recorded downtime proposal")?.clone();
+            let from = candidate.sim.state().tick;
+            proposal.require_current(from, roster)?;
+            let allowances = ready(&candidate, &proposal, roster, bindings.time_holds())?
+                .ok_or("each bound player must give their own yes or release their hold")?;
+            let to = from.checked_add(proposal.declaration.ticks).ok_or("clock overflow")?;
+            let record = Record::Completed { participant:access.participant.0, proposal:key.clone(),
+                event:*downtime, from, to, roster:roster.clone(), allowances:allowances.clone() };
+            let witness = append(&mut candidate, &record)?;
+            candidate.advance(proposal.declaration.ticks)?;
+            proposal.completed = Some(Completion { from, to, roster:roster.clone(), witness, allowances });
+            bindings.record_downtime(key, proposal);
+            format!("native downtime advanced from {from} to {to}")
         },
         TimeIntent::SimOff | TimeIntent::SimOn => return Err("simulation-mode changes use the separate founding/history boundary".into()),
     };
@@ -187,61 +220,4 @@ pub fn submit_time(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess,
 /// The caller identity of the one typed change admitted beside native history.
 /// Transport/seat admission remains the host's responsibility, not an authored
 /// history label or a discovery pass over arbitrary assertions.
-pub struct Change { pub participant: Id, pub seat: Seat }
-
-/// Verify the dedicated time publication, including its actual accepted event.
-/// Until 851/852 settle activation, this boundary admits records at the same
-/// native tick only. It never infers completion from history text or names.
-pub fn validate_transition(before: &Session, before_game: &[u8], after: &Session, after_game: &[u8])
-    -> Result<Change, String> {
-    let old = before.save();
-    let next = after.save();
-    if old.genesis != next.genesis || old.branch != next.branch || old.movement != next.movement
-        || old.tick != next.tick || old.checkpoints != next.checkpoints
-        || next.entries.len() != old.entries.len() + 1 || !next.entries.starts_with(&old.entries)
-    { return Err("native time result does not append one record at its actual current tick".into()); }
-    let entry = next.entries.last().ok_or("native time result has no new entry")?;
-    let Command::Assert(Assertion::History(line)) = &entry.command else {
-        return Err("native time result does not append its typed history record".into());
-    };
-    if line.key != format!("vtt:time:{}:{}", old.entries.len(), old.tick)
-        || entry.tick != old.tick || entry.order != old.entries.len() as u64 {
-        return Err("native time record has another append position or tick".into());
-    }
-    let record: Record = serde_json::from_str(&line.text).map_err(|error| error.to_string())?;
-    if before.sim.state().events.contains_key(&line.event_key()) {
-        return Err("native time result reuses a pre-existing event".into());
-    }
-    let a = GameBindings::decode(before_game)?;
-    let b = GameBindings::decode(after_game)?;
-    a.validate(before)?;
-    b.validate(after)?;
-    if !a.same_except_time(&b) { return Err("native time result changes character, placement, control or payload".into()); }
-    let witness = Witness { entry:entry.id.clone(), event_key:line.event_key(),
-        event:EventHandle(key_handle(&line.event_key())), tick:entry.tick };
-    witness.validate(after, &record)?;
-    let (key, expected, change) = match record {
-        Record::Proposed(declaration) => {
-            let key = witness.event_key.clone();
-            if a.downtime().contains_key(&key) || b.downtime().len() != a.downtime().len() + 1 {
-                return Err("native downtime proposal replaces a prior identity".into());
-            }
-            let change = Change { participant:declaration.proposer, seat:Seat::Dm };
-            (key, Proposal { declaration, witness, consents:Vec::new(), completed:None }, change)
-        },
-        Record::Consented { participant, proposal, event, roster } => {
-            let mut expected = a.downtime().get(&proposal).ok_or("consent has no prior accepted proposal")?.clone();
-            if expected.witness.event != event || expected.completed.is_some()
-                || b.downtime().len() != a.downtime().len() {
-                return Err("consent changes proposal identity or an already completed proposal".into());
-            }
-            expected.consents.push(Consent { participant, roster, witness });
-            (proposal, expected, Change { participant, seat:Seat::Player })
-        },
-    };
-    if b.downtime().get(&key) != Some(&expected) || a.downtime().iter().any(|(prior, proposal)|
-        prior != &key && b.downtime().get(prior) != Some(proposal)) {
-        return Err("native time result rewrites or drops earlier proposal/consent records".into());
-    }
-    Ok(change)
-}
+pub struct Change { pub participant: Id, pub seat: Seat, pub roster: Roster }

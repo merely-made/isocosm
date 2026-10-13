@@ -23,6 +23,7 @@ enum Assertion<'a> {
     Storylet(Applied<'a>),
     PackForced(Applied<'a>),
     StockOwnership(&'a crate::projects::StockLot),
+    SpreadOwnership { identity: &'a crate::spread::Identity, lot: &'a crate::projects::StockLot },
 }
 
 impl<'a> From<&'a asserted::Assertion> for Assertion<'a> {
@@ -40,6 +41,7 @@ impl<'a> From<&'a asserted::Assertion> for Assertion<'a> {
             Native::Storylet(v) => Self::Storylet(v.into()),
             Native::PackForced(v) => Self::PackForced(v.into()),
             Native::StockOwnership(v) => Self::StockOwnership(v),
+            Native::SpreadOwnership { identity, lot } => Self::SpreadOwnership { identity, lot },
         }
     }
 }
@@ -71,6 +73,8 @@ pub(crate) struct Records<'a> {
     maps: &'a BTreeMap<Key, asserted::MapEdit>,
     storylets: BTreeMap<&'a Key, Applied<'a>>,
     packs: BTreeMap<&'a Key, Applied<'a>>,
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    spread_ownership: &'a BTreeMap<Key, (crate::spread::Identity, crate::projects::StockLot)>,
 }
 
 impl<'a> From<&'a asserted::Records> for Records<'a> {
@@ -79,11 +83,13 @@ impl<'a> From<&'a asserted::Records> for Records<'a> {
             maps,
             storylets,
             packs,
+            spread_ownership,
         } = value;
         Self {
             maps,
             storylets: storylets.iter().map(|(key, a)| (key, a.into())).collect(),
             packs: packs.iter().map(|(key, a)| (key, a.into())).collect(),
+            spread_ownership,
         }
     }
 }

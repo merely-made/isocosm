@@ -5,6 +5,9 @@ use super::*;
 use crate::simulation::State;
 
 mod types;
+mod validate;
+mod spread;
+pub(crate) use spread::{substrate_source, transit_amount};
 pub use types::*;
 mod capture;
 pub(crate) use capture::{Capture, Context, Mode, Balances};
@@ -36,7 +39,14 @@ impl Simulation {
         for held in self.state.projects.ownership.values() {
             if held.at == LotAt::Closed { continue; }
             if let Some(StockSource::Entity(id)) = held.current_source() { roots.insert(id); }
+            if let Some(crate::spread::Identity::Territory(id)) = self.state.spreads.identities.iter()
+                .find(|identity| identity.key() == held.lot.account) { roots.insert(*id); }
             for owner in &held.lot.owners { if let Owner::Entity(id) = owner { roots.insert(*id); } }
+        }
+        for mark in &self.state.spreads.transit_marks {
+            if let crate::spread::Substrate::Host(id) = mark.source { roots.insert(id); }
+            if let Some(crate::spread::Transfer { identity:crate::spread::Identity::Territory(id), .. })
+                = self.state.spreads.transit.get(mark.index) { roots.insert(*id); }
         }
         for project in self.state.projects.records.values() {
             roots.insert(project.maker);

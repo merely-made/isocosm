@@ -99,6 +99,8 @@ mod host_routing;
 mod host_zoom;
 mod net;
 mod native_table;
+mod native_party;
+mod native_time;
 mod overmap;
 mod product;
 mod scene_board;

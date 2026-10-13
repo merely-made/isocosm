@@ -411,6 +411,7 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
         Command::AdvanceBirthSpatial { .. } => Err("birth spatial advance needs its native Session".into()),
         Command::BirthSpatial { .. } => Err("birth spatial command needs its native Session".into()),
         Command::Window(change) => sim.change_window(change),
+        Command::Party(change) => sim.party_change(change),
         Command::Spread(change) => sim.spread(change),
         Command::Project(change) => sim.project_change(change),
         Command::Develop { entity, seed } => {

@@ -11,6 +11,9 @@ use super::*;
 
 /// Source-derived homes; visual dragging never changes this placement.
 pub fn overmap_home_positions(ui: &UiState) -> BTreeMap<String, (f32, f32)> {
+    if ui.native.world.is_some() {
+        return ui.native_party_reading().map(|read| overmap_positions(&read.layout())).unwrap_or_default();
+    }
     if let Some(atlas) = overmap_atlas(ui) {
         return atlas
             .fields
@@ -33,11 +36,13 @@ pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapN
     let party = ui.viewer.as_deref().unwrap_or("dm");
     // Only what the party has discovered (E6): the unfound map is not drawn.
     let world = ui.overmap_source_world();
-    let overmap = world.overmap_for(party);
+    let (overmap, here) = if ui.native.world.is_some() {
+        let read = ui.native_party_reading()?;
+        (read.layout(), read.here.map(|site| format!("site:{site}")))
+    } else { (world.overmap_for(party), world.party_at(party).map(str::to_owned)) };
     if overmap.nodes.is_empty() {
         return None;
     }
-    let here = world.party_at(party).map(str::to_owned);
 
     // Shared score -> scene realization; the final viewport fit is local to the
     // Cambium swatch and does not alter campaign or scene data.
@@ -79,7 +84,20 @@ pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapN
             }
         })
         .collect();
-    let relations: Vec<GraphCanvasRelation<String>> = overmap
+    let relations: Vec<GraphCanvasRelation<String>> = if let Some(read) = ui.native_party_reading()
+        .filter(|_| ui.native.world.is_some()) {
+        read.map.routes.iter().map(|route| {
+            let from = format!("site:{}", route.from);
+            let to = format!("site:{}", route.to);
+            let id = format!("native-route:{}:{}:{}", route.from, route.to, route.travel);
+            let name = |key: &str| overmap.node(key).map(|node| node.name.clone()).unwrap_or_else(|| key.into());
+            GraphCanvasRelation { id: id.clone(), from: from.clone(), to: to.clone(), kind: "Native route".into(),
+                label: format!("{} to {}, disclosed native travel {} ticks", name(&from), name(&to), route.travel),
+                route: Vec::new(), visible: !ui.overmap_hidden_relations.contains(&id),
+                emphasized: ui.overmap_selected_relation.as_deref() == Some(id.as_str())
+                    || ui.overmap_hovered_relation.as_deref() == Some(id.as_str()) }
+        }).collect()
+    } else { overmap
         .edges
         .iter()
         .enumerate()
@@ -109,7 +127,7 @@ pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapN
                     || ui.overmap_hovered_relation.as_deref() == Some(id.as_str()),
             }
         })
-        .collect();
+        .collect() };
 
     let mut swatch = GraphCanvasSwatch::new(
         OVERMAP_LEAF_KEY,

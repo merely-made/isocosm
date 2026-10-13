@@ -17,6 +17,7 @@ impl Staged<'_> {
                 .and_then(|books| books.get(key).copied()).unwrap_or(0),
             StockSource::Site(id) => self.stage.site.as_ref().filter(|_| id == self.stage.place)
                 .or_else(|| self.sim.site_at_start(id)).and_then(|site| site.accounts.get(key).copied()).unwrap_or(0),
+            StockSource::Place(_) | StockSource::Transit(_) => return Err("body binding cannot invent a finer or transit holder".into()),
         };
         if self.stage.project_debit.as_ref().is_some_and(|(at,account,n)|
             *at == source && account == key && *n == amount) {

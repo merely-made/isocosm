@@ -29,7 +29,7 @@ impl Mode {
         if !self.available() { return Err("mode is absent from this build".into()); }
         let controls: &[&str] = match self {
             Self::Mesocosm => &["Attend", "Send Mesocosm intent"],
-            Self::Vtt => &["Read table", "Apply DM assertion batch"],
+            Self::Vtt => &["Read table", "Send native table intent", "Bind saved players", "Party map", "Downtime consent"],
             Self::Eponym => &["Read bodies", "Send Eponym intent"],
         };
         Ok(Binding { mode: self.key().into(), controls: controls.iter().map(|s| (*s).into()).collect(),

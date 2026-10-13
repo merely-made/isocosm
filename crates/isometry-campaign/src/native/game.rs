@@ -16,6 +16,8 @@ const PREFIX: &[u8] = b"ISOCOSM-VTT-CHARACTERS\n";
 const VERSION: u32 = 1;
 const PLACEMENT_VERSION: u32 = 2;
 const TIME_VERSION: u32 = 3;
+const HOLD_VERSION: u32 = 4;
+const SHARED_VERSION: u32 = 5;
 
 /// The actual host input after its DM/seat/current-subject checks. Assertions
 /// precede the character admissions, which name their existing authored keys.
@@ -33,7 +35,8 @@ pub struct AdmissionBatch {
 
 #[derive(Deserialize)]
 #[serde(untagged)]
-enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch), Play(VttIntentEnvelope) }
+enum Input { Assertions(Vec<Assertion>), Admissions(AdmissionBatch), Play(VttIntentEnvelope),
+    SharedRoster(super::SharedRosterInput) }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -48,22 +51,35 @@ pub struct GameBindings {
     payload: Vec<u8>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     downtime: BTreeMap<Key, super::time::Proposal>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    time_holds: Vec<super::time::Hold>,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    roster_revision: u64,
+    /// Absent is unconfigured, including historical games. Explicitly empty
+    /// is an authored roster with no player holds, never a transient seat cut.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    shared_players: Option<BTreeSet<Id>>,
 }
+
+fn is_zero(value: &u64) -> bool { *value == 0 }
 
 impl GameBindings {
     pub fn decode(bytes: &[u8]) -> Result<Self, String> {
         if let Some(bytes) = bytes.strip_prefix(PREFIX) {
             let game: Self = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
-            if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION)
+            if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | HOLD_VERSION | SHARED_VERSION)
                 || game.version == VERSION && (!game.positions.is_empty() || !game.controls.is_empty())
-                || game.version != TIME_VERSION && !game.downtime.is_empty()
+                || game.version < TIME_VERSION && !game.downtime.is_empty()
+                || game.version < HOLD_VERSION && (!game.time_holds.is_empty() || game.roster_revision != 0)
+                || game.version < SHARED_VERSION && game.shared_players.is_some()
             { return Err("unsupported VTT character binding version".into()); }
             Ok(game)
         } else {
             // The previous product payload has no bindings owned by this
             // format. Preserve it without guessing its schema or migration.
             Ok(Self { version:VERSION, characters:BTreeMap::new(), positions:BTreeMap::new(),
-                controls:BTreeMap::new(), payload:bytes.to_vec(), downtime:BTreeMap::new() })
+                controls:BTreeMap::new(), payload:bytes.to_vec(), downtime:BTreeMap::new(),
+                time_holds:Vec::new(), roster_revision:0, shared_players:None })
         }
     }
 
@@ -78,15 +94,44 @@ impl GameBindings {
     pub fn controls(&self) -> &BTreeMap<Id, ControlBinding> { &self.controls }
     pub fn payload(&self) -> &[u8] { &self.payload }
     pub fn downtime(&self) -> &BTreeMap<Key, super::time::Proposal> { &self.downtime }
+    pub fn time_holds(&self) -> &[super::time::Hold] { &self.time_holds }
+    pub fn roster_revision(&self) -> u64 { self.roster_revision }
+    pub fn shared_players(&self) -> Option<&BTreeSet<Id>> { self.shared_players.as_ref() }
+
+    pub fn shared_roster(&self) -> Option<super::time::Roster> {
+        self.shared_players.as_ref().map(|players| super::time::Roster {
+            players:players.clone(), preimage:isocosm::digest(players), revision:self.roster_revision })
+    }
+
+    pub(super) fn record_shared_players(&mut self, players: BTreeSet<Id>) -> Result<(), String> {
+        if self.shared_players.as_ref().is_some_and(|prior| prior != &players) {
+            self.roster_revision = self.roster_revision.checked_add(1).ok_or("native time roster revision overflow")?;
+        }
+        self.version = SHARED_VERSION;
+        self.shared_players = Some(players);
+        Ok(())
+    }
+
+    pub fn record_roster_revision(&mut self, revision: u64) {
+        if revision != 0 { self.version = self.version.max(HOLD_VERSION); }
+        self.roster_revision = revision;
+    }
+
+    pub(super) fn record_hold(&mut self, hold: super::time::Hold) {
+        self.version = self.version.max(HOLD_VERSION);
+        self.time_holds.push(hold);
+    }
 
     pub(super) fn record_downtime(&mut self, key: Key, proposal: super::time::Proposal) {
-        self.version = TIME_VERSION;
+        self.version = self.version.max(HOLD_VERSION);
         self.downtime.insert(key, proposal);
     }
 
     pub(super) fn same_except_time(&self, other: &Self) -> bool {
         self.characters == other.characters && self.positions == other.positions
             && self.controls == other.controls && self.payload == other.payload
+            && self.roster_revision == other.roster_revision
+            && self.shared_players == other.shared_players
     }
 
     pub(super) fn record_position(&mut self, character: Key, position: PositionBinding) {
@@ -95,6 +140,10 @@ impl GameBindings {
     }
 
     pub fn validate(&self, session: &Session) -> Result<(), String> {
+        if self.shared_players.as_ref().is_some_and(|players| players.iter().any(|id|
+            !session.sim.state().population.get(*id).is_some_and(isocosm::directing::is_participant))) {
+            return Err("saved shared table roster names no actual native participant".into());
+        }
         for (key, binding) in &self.characters { binding.validate(session, key)?; }
         for (key, binding) in &self.positions {
             let recipe = self.characters.get(key).ok_or("position has no admitted character binding")?;
@@ -107,7 +156,7 @@ impl GameBindings {
             recipe.validate(session, key)?;
             binding.validate(session, recipe)?;
         }
-        for (key, proposal) in &self.downtime { proposal.validate(session, key)?; }
+        super::time::validate_bindings(session, &self.downtime, &self.time_holds)?;
         Ok(())
     }
 }
@@ -141,14 +190,38 @@ pub fn submit_game_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], ac
 /// inputs retain their existing access and byte-preservation behavior.
 pub fn submit_game_access_with_roster(session: &mut Session, game: Vec<u8>, bytes: &[u8],
     access: OrdinaryAccess, roster: Option<&super::time::Roster>) -> Result<(String, Vec<u8>), String> {
+    submit_access(session, game, bytes, access, roster, roster.is_none())
+}
+
+/// Standalone table peers are the external authority. These inputs cannot
+/// author or fall back to the shared host's local roster metadata.
+pub fn submit_external_table_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: OrdinaryAccess)
+    -> Result<(String, Vec<u8>), String> {
+    submit_access(session, game, bytes, access, None, false)
+}
+
+fn submit_access(session: &mut Session, game: Vec<u8>, bytes: &[u8], access: OrdinaryAccess,
+    roster: Option<&super::time::Roster>, shared: bool) -> Result<(String, Vec<u8>), String> {
     super::movement::current_access(session, access)?;
     let input: Input = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
     match input {
         Input::Play(envelope) if matches!(&envelope.intent,
-            isocosm_overlay::Intent::Game(isocosm_overlay::vtt::VttIntent::Time(_))) =>
-            super::submit_time(session, game, access,
-                roster.ok_or("native time needs an explicitly authenticated player roster")?, &envelope),
+            isocosm_overlay::Intent::Game(isocosm_overlay::vtt::VttIntent::Time(_))) => {
+                let local;
+                let roster = if let Some(roster) = roster { roster }
+                    else if shared {
+                        local = GameBindings::decode(&game)?.shared_roster()
+                            .ok_or("DM must explicitly configure the saved shared table player roster")?;
+                        &local
+                    } else { return Err("standalone native time requires its actual external table roster".into()); };
+                super::submit_time(session, game, access, roster, &envelope)
+            },
+        Input::Play(envelope) if matches!(&envelope.intent,
+            isocosm_overlay::Intent::Game(isocosm_overlay::vtt::VttIntent::Party(_))) =>
+            super::party::submit_party(session, game, access, &envelope),
         Input::Play(envelope) => super::submit_table(session, game, access, &envelope),
+        Input::SharedRoster(input) if shared => super::shared_roster::submit(session, game, access, &input),
+        Input::SharedRoster(_) => Err("standalone native table players are authored through its endpoint bindings".into()),
         _ if access.seat != Seat::Dm => Err("native table assertions and admissions require the DM seat".into()),
         input => submit_decoded(session, game, input, Some(access.participant.0)),
     }
@@ -169,6 +242,7 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
         },
         Input::Admissions(batch) => batch,
         Input::Play(_) => return Err("table play requires a resolved native seat cut".into()),
+        Input::SharedRoster(_) => return Err("shared roster authoring requires the actual DM seat cut".into()),
     };
     if !matches!(batch.version, VERSION | PLACEMENT_VERSION)
         || batch.version == VERSION && (!batch.placements.is_empty() || !batch.controls.is_empty())

@@ -8,6 +8,9 @@ use crate::{history::Command, rules::{Binding, Rules}, simulation::Receipt};
 pub enum DebitOrigin {
     Process { process: Key, actor: Id, target: Option<Id> },
     Command(Box<Command>),
+    Clock { tick: Tick },
+    NativeSpread { parent:Box<DebitOrigin>, operation:SpreadDebit,
+        identity:crate::spread::Identity, at:crate::spread::Substrate },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -55,7 +58,26 @@ pub enum DirectOperation { Wound, Edit, SpreadOverflow, ForkStrain }
 pub enum OperationRule {
     Process { process: Key, ordinal: u64 },
     Command(DirectOperation),
+    Spread { operation:SpreadDebit, identity:crate::spread::Identity, at:crate::spread::Substrate },
 }
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub enum SpreadDebit { Overflow, ForkStrain }
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub enum SpreadOutput { Route(usize), GeneratedStrain }
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RetainedOutput { pub input:Key, pub amount:u64, pub output:SpreadOutput }
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SpreadOutputWitness {
+    pub action:Key, pub operation:u64, pub output:SpreadOutput,
+    pub source:StockSource, pub identity:crate::spread::Identity, pub amount:u64,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SpreadPreview { pub debits:DebitPreview, pub outputs:Vec<SpreadOutputWitness> }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Destination { Binding(Binding), Source(StockSource) }
@@ -75,6 +97,7 @@ pub enum Disposition {
     Retain { outputs: Vec<OutputClaim>,
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         closed: Vec<LotQuantity> },
+    Outputs { outputs:Vec<RetainedOutput>, closed:Vec<LotQuantity> },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -85,6 +108,8 @@ pub struct DispositionRule { pub operation: OperationRule, pub disposition: Disp
 pub enum SourceRule {
     Process { process: Key, operation: u64, from: Binding, account: Key,
         lots: Vec<LotQuantity>, unowned: u64 },
+    Spread { operation:SpreadDebit, identity:crate::spread::Identity, at:crate::spread::Substrate,
+        lots:Vec<LotQuantity>, unowned:u64 },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -92,57 +117,8 @@ pub enum SourceRule {
 pub struct StockRules { pub selections: Vec<SourceRule>, pub dispositions: Vec<DispositionRule> }
 
 impl StockRules {
-    pub fn validate(&self, rules: &Rules) -> Result<()> {
-        let mut dispositions = BTreeSet::new();
-        for rule in &self.dispositions {
-            if !dispositions.insert(rule.operation.clone()) { return Err("stock operation disposition is ambiguous".into()); }
-            if let OperationRule::Process { process, .. } = &rule.operation {
-                crate::validation::key(process)?;
-                if !rules.processes.contains_key(process) { return Err("stock disposition names no process".into()); }
-            }
-            if let Disposition::Retain { outputs, closed } = &rule.disposition {
-                if outputs.is_empty() { return Err("retained stock disposition has no explicit outputs".into()); }
-                for output in outputs {
-                    crate::validation::key(&output.input)?;
-                    matter_key(rules, &output.account)?;
-                    if output.amount == 0 { return Err("retained stock claim needs a positive exact quantity".into()); }
-                }
-                let mut seen = BTreeSet::new();
-                for portion in closed {
-                    crate::validation::key(&portion.key)?;
-                    if portion.amount == 0 || !seen.insert(&portion.key) {
-                        return Err("closed stock portion needs an exact positive nonduplicated input lot".into());
-                    }
-                }
-            }
-        }
-        let mut selections = BTreeSet::new();
-        for SourceRule::Process { process, operation, from, account, lots, unowned } in &self.selections {
-            crate::validation::key(process)?;
-            matter_key(rules, account)?;
-            if !rules.processes.contains_key(process) || *from == Binding::Part
-                || !selections.insert((process.clone(), *operation, format!("{from:?}"), account.clone())) {
-                return Err("stock source selection is absent, ambiguous or not a native body/site binding".into());
-            }
-            let mut seen = BTreeSet::new();
-            let mut amount = *unowned;
-            for lot in lots {
-                crate::validation::key(&lot.key)?;
-                if lot.amount == 0 || !seen.insert(&lot.key) { return Err("stock selector repeats a lot or names zero quantity".into()); }
-                amount = amount.checked_add(lot.amount).ok_or("stock selector quantity overflow")?;
-            }
-            if amount == 0 { return Err("stock selector needs an exact positive debit".into()); }
-        }
-        Ok(())
-    }
+    pub fn validate(&self, rules: &Rules) -> Result<()> { super::validate::stock_rules(self,rules) }
 }
-
-fn matter_key(rules: &Rules, key: &str) -> Result<()> {
-    crate::validation::key(key)?;
-    if !crate::meaning::matter(rules, key) { return Err("stock declaration names no native matter account".into()); }
-    Ok(())
-}
-
 pub(crate) fn direct_operation(command: &Command) -> Result<DirectOperation> {
     match command {
         Command::Wound { .. } => Ok(DirectOperation::Wound),

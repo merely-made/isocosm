@@ -17,8 +17,10 @@ pub struct Selection {
 
 #[derive(Clone, Debug, Default)]
 pub struct NativeUi {
+    pub party: crate::native_party::PartyUi,
     pub world: Option<NativeWorld>,
     pub table: Option<isonetry::NativeTable>,
+    pub time_requests: Vec<isocosm_overlay::vtt::TimeIntent>,
     pub binding_request: Option<isonetry::NativeTableBindingInput>,
     pub admission_request: Option<isonetry::native_table::NativeTableAdmissionInput>,
     pub admission_path: TextInput,
@@ -70,6 +72,14 @@ impl NativeUi {
 }
 
 impl super::UiState {
+    /// Identity and native tick are filled by the actual session transport,
+    /// never by token owner, UI player names or this request queue.
+    pub fn request_native_time(&mut self, intent: isocosm_overlay::vtt::TimeIntent) {
+        if self.native.world.is_none() { self.status = "native time needs an accepted world".into(); return; }
+        self.native.time_requests.push(intent);
+        self.status = "requested native time decision".into();
+    }
+
     pub fn request_native_table_file(&mut self, action: TableFileAction) {
         if !self.can_edit_inventory || self.native.world.is_none() {
             self.status = "native table authoring requires the host's existing world".into();

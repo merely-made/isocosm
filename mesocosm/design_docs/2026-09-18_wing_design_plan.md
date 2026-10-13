@@ -10650,6 +10650,113 @@ what later sections derive from.
      disposition or unavailable output vocabulary refuses that owned path.
      The next unused question is851.
 
+851. **Every bound table player holds downtime unless they release their own hold.**
+     2026-10-12, native downtime consent after246.
+     Question: "Ruling 246 requires each player’s individual consent before downtime advances native time. Which players should have to consent? Saved native table bindings include players who may currently be disconnected."
+     Options: (1) "All bound native table players, including disconnected players (Recommended)"; (2) "Only bound players currently connected".
+     Mark chose "1, but allow players to release their hold so others can proceed without constantly pinging them"
+     So the roster includes the saved bound native players, including those
+     disconnected. Each player's own release can waive their hold; connection
+     state, the DM and another player cannot release it for them. The release
+     duration is answered in855. Membership and native control stay separate.
+
+852. **A downtime proposal binds its original native tick and player roster.**
+     2026-10-12, waiting native consent validity.
+     Question: "While a downtime proposal awaits consent, native time or the table’s player bindings may change. What should happen to that proposal?"
+     Options: (1) "Bind it to its original tick and player roster; preserve consents, but require a new proposal if either changes (Recommended)"; (2) "Apply its duration at final consent, using the current tick and player roster".
+     Mark chose "Bind it to its original tick and player roster; preserve consents, but require a new proposal if either changes (Recommended)"
+     So a changed tick or roster makes that proposal unavailable for advance.
+     Its accepted declaration and consents remain history; a fresh proposal
+     must bind the new cut. Restoring an earlier roster must not silently
+     revive an invalidated proposal. Endpoint/connectivity changes alone do
+     not remove the same native player from the roster.
+
+853. **Players opt their played native bodies into or out of a party.**
+     2026-10-12, native party membership for the VTT overmap.
+     Question: "The VTT overmap needs a party’s actual native members. A party is a faction under ruling 8, and membership does not grant control. Who should define joining and leaving?"
+     Options: (1) "DM authors explicit native membership (Recommended)"; (2) "Each player opts their played body in or out".
+     Mark chose "Each player opts their played body in or out"
+     So actual player intents author membership of their played native body.
+     Party membership stays a native faction relation/record under8 and9;
+     it grants neither Take nor collective control. Token IDs, owner labels
+     and a table roster cannot stand in for native body/player identities.
+     Withdrawal after a body change is answered in857.
+
+854. **The overmap combines party members' disclosed knowledge in a shared view.**
+     2026-10-12, native knowing and party map presentation.
+     Question: "Native knowing belongs to individual bodies. Whose knowledge should supply a player’s overmap?"
+     Options: (1) "Their currently played body’s native knowledge (Recommended)"; (2) "A shared view combining party members’ disclosed knowledge".
+     Mark chose "A shared view combining party members’ disclosed knowledge"
+     So shared-map facts derive from disclosed native knowing of actual
+     party members. Sharing the view does not make each body natively know
+     every contributed fact, expose undisclosed knowledge or grant control.
+     Retention after leaving is answered in858.
+
+855. **A self-released downtime hold covers future proposals until explicitly retaken.**
+     2026-10-12, duration of851's release.
+     Question: "When a player releases their downtime hold, should that cover future proposals too, or only the proposal currently waiting?"
+     Options: (1) "Future proposals until they explicitly take the hold back (Recommended)"; (2) "Only the current proposal".
+     Mark chose "Future proposals until they explicitly take the hold back (Recommended)"
+     So release applies to the current and future proposals until that
+     player explicitly takes their hold back. Accepted self-release/retake
+     history survives saves. Disconnecting does not substitute for release;
+     retaking does not erase earlier declarations, consents or advances.
+
+856. **The DM explicitly chooses which ready downtime proposal advances.**
+     2026-10-12, simultaneous eligible spans after a release.
+     Question: "Releasing a hold can make several downtime proposals ready at the same native tick, with different durations. Which proposal should advance time?"
+     Options: (1) "The DM explicitly chooses a ready proposal (Recommended)"; (2) "The earliest accepted proposal advances automatically".
+     Mark chose "The DM explicitly chooses a ready proposal (Recommended)"
+     So a DM advance names the original eligible proposal. Declarations,
+     yeses and hold changes can make it ready but do not silently select a
+     span. Admission checks852 and an actual yes or active self-release for
+     each roster player, then publishes the chosen native advance atomically.
+
+857. **Players may withdraw their own earlier party memberships after changing bodies.**
+     2026-10-12, membership withdrawal under853.
+     Question: "Party membership can outlast a player changing to another body. May that player withdraw a body they previously opted in, even when they no longer play it? New joins and disclosures would still require their currently played body."
+     Options: (1) "Yes, let players withdraw their own earlier memberships (Recommended)"; (2) "Allow withdrawal only for the currently played body".
+     Mark chose "Yes, let players withdraw their own earlier memberships (Recommended)"
+     So the actual joining player's own prior membership authorizes its
+     withdrawal after a body change. New joins and disclosures still name
+     the currently played body. No automatic heir, replacement body, other
+     player's removal or control grant is inferred.
+
+858. **Disclosed map facts remain recorded after a member leaves.**
+     2026-10-12, retention of854's shared knowledge.
+     Question: "When a member leaves the party, should facts they already disclosed remain on the shared map?"
+     Options: (1) "Keep disclosed facts in the party’s recorded map (Recommended)"; (2) "Remove that member’s contributions from the current shared view".
+     Mark chose "Keep disclosed facts in the party’s recorded map (Recommended)"
+     So accepted disclosures remain available in that party's recorded map
+     after the contributor leaves. This retains the shared record, not an
+     ongoing window into the former member's undisclosed native knowledge.
+     The next unused question is859.
+
+859. **Each player approves their currently played body's joint departure.**
+     2026-10-12, collective travel after853's membership.
+     Question: "Party membership grants no control over its bodies. For a joint overmap departure, who should authorize each body’s movement?"
+     Options: (1) "Each player approves their currently played body; the DM applies the approved departures together (Recommended)"; (2) "Players depart individually through their native movement actions"; (3) "Players explicitly delegate party travel authority, with a way to revoke it".
+     Mark chose "Each player approves their currently played body; the DM applies the approved departures together (Recommended)"
+     So a joint departure carries each actual player's explicit approval
+     naming their currently played native body. The DM publishes the approved
+     departures together through native admission. Membership, old membership,
+     owner metadata and a shared map grant no travel control. Existing native
+     process choice, costs and journey admission still apply; this answer
+     supplies no pace effect or shortcut to advancing native time.
+     Pace question860 remains pending; the next unused question is861.
+
+860. **Authored native pace profiles supply duration and stock costs.**
+     2026-10-12, actual pace effects after817's journey duration.
+     Question: "Native journeys use the route’s authored travel time, while the VTT also requests a pace. What should give pace its actual effects?"
+     Options: (1) "Authored native pace profiles specify duration and stock costs (Recommended)"; (2) "Keep the route’s native duration; pace is descriptive until its mechanics are authored".
+     Mark chose "Authored native pace profiles specify duration and stock costs (Recommended)"
+     So requested pace resolves to an explicitly authored native profile
+     whose duration and stock costs undergo native process/journey admission.
+     The legacy percentage supplies neither a default cost nor an override
+     of native stock conservation, chosen processes or time consent. Values
+     and available profiles remain author inputs; no recipe is guessed.
+     Critter approval question861 remains pending; next unused question862.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -14580,3 +14687,7 @@ to 2026-10-06 is archived as
   Eponym commit), the founding record and descriptions amended (`d64e710`);
   W1 closed (ruling 31).
 - 2026-09-18: record written from the 2026-09-17 and 2026-09-18 conversation.
+
+- **2026-10-12, 851 to858, native table time and shared party source:** all eight answers are recorded verbatim. Individual persistent holds, original tick/roster revisions and explicit DM selection now reach standalone authenticated callers and the shared host's explicit saved native-player roster. Version5 game bindings retain opaque bytes and historical consents. Protocol/ALPN9 append party/time request and result grammar. Actual native party relations use explicit profile declarations; players join their current bodies, leave their own earlier bodies and deliberately disclose known facts retained after leaving. Native knowing and body control remain separate. No Cargo/compiler/tests/fixtures/tuning ran under826. Collective departure/pace questions859/860 are pending; complete V2/E3/M4 and the whole migration remain open.
+
+- **2026-10-12, 859/860:** player approval names each currently played body before the DM applies approved joint departures; authored native pace profiles supply duration and conserved stock costs. Exact answers are recorded. Their dependent source is next; question861 asks whether an approved deliberative critter receives a native travel goal and may split, or stays out of joint departure. The next unused question is862. Native spread title/transit source is assembled, with later dynamic/future-lot selectors and actual product spread authoring still open. No compiler/tests/fixtures/tuning ran under826.

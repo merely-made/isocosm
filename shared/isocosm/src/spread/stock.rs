@@ -112,5 +112,23 @@ pub(crate) fn validate(spreads: &Spreads, rules: &Rules,
             return Err("spread transit does not name an authored route duration".into());
         }
     }
+    let mut ids = BTreeSet::new();
+    let mut indexes = BTreeSet::new();
+    for mark in &spreads.transit_marks {
+        if !ids.insert(mark.id) || !indexes.insert(mark.index) || mark.id.0 >= spreads.next_transit {
+            return Err("native transit mark repeats or exceeds its accepted identity counter".into());
+        }
+        let transfer = spreads.transit.get(mark.index).ok_or("native transit mark points outside its queue")?;
+        match mark.source {
+            Substrate::Site(site) if site == transfer.from && sites.contains_key(&site) => {},
+            Substrate::Place(place) if place.site == transfer.from && spreads.places.iter().any(|p| p.place == place) => {},
+            Substrate::Host(host) if population.get(host).is_some() => {},
+            _ => return Err("native transit mark names no actual departure holder".into()),
+        }
+        let route = sites[&transfer.from].routes.get(mark.route).ok_or("native transit mark has no authored route ordinal")?;
+        if route.to != transfer.to || route.travel != transfer.arrives - transfer.departed {
+            return Err("native transit mark names a different physical route output".into());
+        }
+    }
     Ok(())
 }

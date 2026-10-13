@@ -2,7 +2,30 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-12 (834):** a sim-on character develops its own
+**Current source, 2026-10-12 (851 to858):** native downtime proposals bind
+their original tick and accepted saved-player roster revision. Every saved
+player holds time, including disconnected players, until their own accepted
+release; that release persists until they take the hold back. Consent and
+release make a proposal ready; only the DM's explicit selection advances it.
+Standalone authenticated endpoint bindings and the shared host's explicit
+saved native-player roster remain separate roster sources. GameBindings5
+preserves earlier payload/body/consent/hold records. The shared host and
+standalone solo/host/client UI use these actual native doors; protocol and
+ALPN both move to9 for the appended time/party messages and results.
+
+An explicitly authored party is a declared native relation kind. Each
+player opts their currently played body in, can withdraw their own earlier
+membership, and deliberately discloses native-known map facts. The shared
+map folds those accepted disclosures and retains them after withdrawal,
+without exposing later private knowing or granting body control. Setup
+profiles declare the party mapping; each host selects a party explicitly.
+Rulings859/860 require each player's current-body approval before the DM
+publishes joint departures, and authored native pace duration/stock costs.
+That dependent travel source is next; critter approval861 remains pending.
+The old sim-on collective travel path remains refused. Full V2 is open.
+All source here is unverified; compiler/tests/fixtures/tuning wait under826.
+
+**Earlier source, 2026-10-12 (834):** a sim-on character develops its own
 body from a selected native recipe, preserving the asserted native ID.
 Existing `Arrival.character` and `Develop` provide that admission; native
 placement/control remain separate. Product `native::submit_game` accepts

@@ -3,3 +3,5 @@
 
 pub(crate) mod model;
 pub(crate) mod view;
+#[cfg(feature = "vtt")]
+mod vtt;

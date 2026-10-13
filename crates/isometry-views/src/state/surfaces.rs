@@ -146,6 +146,11 @@ impl UiState {
     /// Host-only, like storylets: the roll reads the world and spends entropy
     /// the host owns, so a joined client never sees it.
     pub fn open_downtime(&mut self) {
+        if self.native.world.is_some() {
+            self.downtime_open = true;
+            self.status = "native downtime: each player chooses their own yes or hold".into();
+            return;
+        }
         if !self.can_edit_inventory {
             self.status = "downtime is the DM's".to_owned();
             return;
@@ -223,7 +228,7 @@ impl UiState {
     /// no route. The view never decides the outcome.
     pub fn request_travel(&mut self, node: String) {
         if self.native.world.is_some() {
-            self.status = "choose the party's native members before travel".into();
+            self.status = "collective native party travel has no selected admission policy".into();
             return;
         }
         self.overmap_travel_request = Some(node);
@@ -246,7 +251,7 @@ impl UiState {
     /// records it; the next trip travels at it.
     pub fn request_pace(&mut self, pace: i64) {
         if self.native.world.is_some() {
-            self.status = "choose the party's native members before travel".into();
+            self.status = "native travel pace has no selected admission policy".into();
             return;
         }
         self.overmap_pace_request = Some(pace);
@@ -256,7 +261,7 @@ impl UiState {
     /// it on the lead token, and the travel rule reads it.
     pub fn request_stance(&mut self, stance: &str) {
         if self.native.world.is_some() {
-            self.status = "choose the party's native members before exploration".into();
+            self.status = "native exploration stance requires its authored process".into();
             return;
         }
         self.overmap_stance_request = Some(stance.to_owned());
@@ -267,7 +272,7 @@ impl UiState {
     /// party that cannot read a map learns nothing.
     pub fn request_map_read(&mut self) {
         if self.native.world.is_some() {
-            self.status = "choose the party's native members before map reading".into();
+            self.status = "read the shared party map or deliberately disclose your known map".into();
             return;
         }
         self.overmap_read_request = true;

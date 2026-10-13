@@ -281,6 +281,9 @@ impl UiState {
         self.campaign_maps = snap.maps;
         self.active_map = snap.active_map;
         self.world = snap.world;
+        if self.native.world != snap.native || self.native.table != snap.native_table {
+            self.native.party.reading = None;
+        }
         self.native.world = snap.native;
         self.native.table = snap.native_table;
         // A joined client mirrors these too, or its panel shows the wrong split-

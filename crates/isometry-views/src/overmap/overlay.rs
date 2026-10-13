@@ -12,6 +12,7 @@ pub fn overmap_overlay(ui: &UiState) -> Option<UiChild> {
     if !ui.overmap_open {
         return None;
     }
+    if ui.native.world.is_some() { return crate::native_party::overlay(ui); }
     let party = ui.viewer.as_deref().unwrap_or("dm");
     let world = ui.overmap_source_world();
     let overmap = world.overmap_for(party);

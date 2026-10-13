@@ -5,6 +5,7 @@
 //! snapshots, campaign state, and status updates for the kernel to drain.
 
 mod native;
+mod party;
 
 use std::sync::mpsc::{Receiver, TryRecvError};
 use std::time::Duration;
@@ -30,6 +31,8 @@ pub enum Role {
 }
 
 enum BridgeCommand {
+    NativeParty { request:RequestId, intent:isometry_views::PartyRequest },
+    NativeTime { request:RequestId, intent:isocosm_overlay::vtt::TimeIntent },
     NativeTableAdmission { request: RequestId, input: isonetry::native_table::NativeTableAdmissionInput },
     NativeTableBinding { request: RequestId, input: isonetry::NativeTableBindingInput },
     NativeSetup {
@@ -68,6 +71,7 @@ enum BridgeCommand {
 }
 
 enum BridgeUpdate {
+    PartyReading(Correlated<Result<isometry_views::PartyView, String>>),
     NativeEndpoints(Vec<[u8; 32]>),
     HostReady {
         ticket: String,
@@ -105,6 +109,7 @@ pub struct NetBridge {
     endpoints: Vec<[u8; 32]>,
     request_ids: RequestIds,
     campaign_outcomes: Vec<Correlated<Result<(), String>>>,
+    party_readings: Vec<Correlated<Result<isometry_views::PartyView, String>>>,
     failure: Option<String>,
     action_intents: Vec<ActionIntent>,
 }
@@ -139,6 +144,7 @@ impl NetBridge {
             endpoints: Vec::new(),
             request_ids: RequestIds::default(),
             campaign_outcomes: Vec::new(),
+            party_readings: Vec::new(),
             failure: None,
             action_intents: Vec::new(),
         }
@@ -150,6 +156,10 @@ impl NetBridge {
         let mut changed = false;
         loop {
             match self.updates.try_recv() {
+                Ok(BridgeUpdate::PartyReading(read)) => {
+                    self.party_readings.push(read);
+                    changed = true;
+                },
                 Ok(BridgeUpdate::NativeEndpoints(endpoints)) => {
                     self.endpoints = endpoints;
                     changed = true;
@@ -373,6 +383,19 @@ async fn run_host(
         };
         for command in commands {
             match command {
+                BridgeCommand::NativeTime { request, intent } => {
+                    let result = native::host_time(&host, intent).await;
+                    out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
+                },
+                BridgeCommand::NativeParty { request, intent } => {
+                    let read = matches!(&intent, isometry_views::PartyRequest::Read { .. });
+                    match party::host_request(&host, intent).await {
+                        Ok(Some(view)) => { out.emit(BridgeUpdate::PartyReading(Correlated::new(request, Ok(view)))); },
+                        Ok(None) => { out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, Ok(())))); },
+                        Err(why) if read => { out.emit(BridgeUpdate::PartyReading(Correlated::new(request, Err(why)))); },
+                        Err(why) => { out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, Err(why)))); },
+                    }
+                },
                 BridgeCommand::Event(event) => {
                     if let Err(reason) = host.submit_event(event).await { out.emit(BridgeUpdate::Failed(reason)); }
                 },
@@ -492,6 +515,19 @@ async fn run_client(
         };
         for command in commands {
             match command {
+                BridgeCommand::NativeTime { request, intent } => {
+                    let result = native::client_time(&client, intent).await;
+                    out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
+                },
+                BridgeCommand::NativeParty { request, intent } => {
+                    let read = matches!(&intent, isometry_views::PartyRequest::Read { .. });
+                    match party::client_request(&client, intent).await {
+                        Ok(Some(view)) => { out.emit(BridgeUpdate::PartyReading(Correlated::new(request, Ok(view)))); },
+                        Ok(None) => { out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, Ok(())))); },
+                        Err(why) if read => { out.emit(BridgeUpdate::PartyReading(Correlated::new(request, Err(why)))); },
+                        Err(why) => { out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, Err(why)))); },
+                    }
+                },
                 BridgeCommand::Event(event) => {
                     let _ = client.intent(event).await;
                 },

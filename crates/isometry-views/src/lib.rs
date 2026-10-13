@@ -16,6 +16,8 @@ mod generator;
 mod governance;
 mod keymap;
 mod overmap;
+mod native_party;
+pub use native_party::{PartyUi, PartyRequest, PartyView};
 mod panel;
 mod projection;
 mod scene;

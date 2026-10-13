@@ -13,16 +13,15 @@ pub fn strain_key(seed: u64, parent: &str, at: Substrate, traits: &BTreeSet<Key>
 
 pub fn fork_strain(state: &mut State, rules: &Rules, seed: u64, parent: &str,
     at: Substrate, amount: u64, traits: BTreeSet<Key>) -> Result<Key> {
+    owned::operation(state,rules,crate::projects::SpreadDebit::ForkStrain,&Identity::Surface(parent.into()),at,
+        |candidate| fork_inner(candidate,rules,seed,parent,at,amount,traits))
+}
+
+fn fork_inner(state:&mut State, rules:&Rules, seed:u64, parent:&str, at:Substrate, amount:u64, traits:BTreeSet<Key>) -> Result<Key> {
     if !traits.is_subset(&rules.traits) { return Err("strain selects an unknown trait".into()); }
     let original = Identity::Surface(parent.into());
     if amount == 0 || held(state, at, &original)? < amount { return Err("strain has no selected local living matter".into()); }
-    match at {
-        Substrate::Site(id) => crate::projects::guard_debit(state,
-            crate::projects::StockSource::Site(id), &original.key(), amount)?,
-        Substrate::Host(id) => crate::projects::guard_debit(state,
-            crate::projects::StockSource::Entity(id), &original.key(), amount)?,
-        Substrate::Place(_) => {},
-    }
+    crate::projects::guard_debit(state,crate::projects::debit::substrate_source(at),&original.key(),amount)?;
     let before = state.lineages.get(parent).ok_or("unknown strain parent")?;
     let key = strain_key(seed, parent, at, &traits);
     if rules.accounts.contains_key(&key) { return Err("strain key aliases an ordinary account".into()); }
@@ -36,7 +35,8 @@ pub fn fork_strain(state: &mut State, rules: &Rules, seed: u64, parent: &str,
     crate::meaning::debit(stock::ledger_mut(&mut candidate, at)?, &original.key(), amount)?;
     crate::meaning::credit(stock::ledger_mut(&mut candidate, at)?, &target.key(), amount)?;
     candidate.lineages.insert(key.clone(), child);
-    candidate.spreads.identities.insert(target);
+    candidate.spreads.identities.insert(target.clone());
+    owned::strain_output(&candidate,at,target,amount)?;
     *state = candidate;
     Ok(key)
 }

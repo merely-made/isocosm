@@ -388,8 +388,8 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         } if !rules.traits.contains(key) => {
             return Err(format!("unknown trait {key}"));
         }
-        Effect::Relate { kind, .. } if !rules.relations.contains(kind) => {
-            return Err(format!("unknown relation {kind}"));
+        Effect::Relate { kind, .. } if !rules.relations.contains(kind) || rules.party_relations.values().any(|reserved| reserved == kind) => {
+            return Err(format!("unknown or player-reserved relation {kind}"));
         }
         Effect::Note { kind, .. } if !rules.note_kinds.contains(kind) => {
             return Err(format!("unknown note kind {kind}"));

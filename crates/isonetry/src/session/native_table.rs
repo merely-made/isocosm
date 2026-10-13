@@ -12,10 +12,36 @@ fn preserve_time(old: Option<&NativeTable>, next: &NativeTable) -> Result<(), St
     let before = isometry_campaign::native::GameBindings::decode(
         old.map_or(&[][..], |table| table.game.as_slice()))?;
     let after = isometry_campaign::native::GameBindings::decode(&next.game)?;
-    if before.downtime() != after.downtime() {
+    if before.downtime() != after.downtime() || before.time_holds() != after.time_holds()
+        || before.shared_players() != after.shared_players() {
         return Err("table authoring/movement cannot change native downtime proposal or consent records".into());
     }
+    if after.roster_revision() != roster_revision(old, next)? {
+        return Err("table result differs from its actual accepted player-roster revision".into());
+    }
     Ok(())
+}
+
+fn roster_revision(old: Option<&NativeTable>, next: &NativeTable) -> Result<u64, String> {
+    let Some(old) = old else { return Ok(0); };
+    let revision = isometry_campaign::native::GameBindings::decode(&old.game)?.roster_revision();
+    if old.bound_players() == next.bound_players() { Ok(revision) }
+    else { revision.checked_add(1).ok_or("native time roster revision overflow".into()) }
+}
+
+fn validate_binding_change(state: &GameSnapshot, session: &isocosm::Session,
+    old: Option<&NativeTable>, next: &NativeTable) -> Result<(), String> {
+    if let Some(old) = old {
+        let a = isometry_campaign::native::GameBindings::decode(&old.game)?;
+        let b = isometry_campaign::native::GameBindings::decode(&next.game)?;
+        if old.boards == next.boards && a.characters() == b.characters()
+            && a.positions() == b.positions() && a.controls() == b.controls() {
+            // Only metadata changes: departed/stale poses remain history.
+            // This grants no new placement or renewed physical availability.
+            return next.validate_history(session);
+        }
+    }
+    next.validate(state, session)
 }
 
 pub fn resolve_native_move(state: &GameSnapshot, sender: TableSender, token: TokenId, to: TileCoord)
@@ -76,7 +102,12 @@ pub(crate) fn apply_native_table(state: &mut GameSnapshot, result: &NativeTableR
     if let Some(active) = &next.active_map {
         next.maps.get_mut(active).ok_or_else(|| fail("active native board is absent"))?.document = next.map.clone();
     }
-    result.table.validate(&next, campaign.table_session()).map_err(GameError::Native)?;
+    if result.moves.is_empty() {
+        validate_binding_change(&next, campaign.table_session(), state.native_table.as_ref(), &result.table)
+            .map_err(GameError::Native)?;
+    } else {
+        result.table.validate(&next, campaign.table_session()).map_err(GameError::Native)?;
+    }
     next.native_table = Some(result.table.clone());
     *state = next;
     Ok(())
@@ -117,7 +148,7 @@ impl HostSession {
         table.game = game;
         preserve_time(self.state.native_table.as_ref(), &table)?;
         // Existing authored mappings never silently follow a changed pose.
-        table.validate(&self.state, admitted.table_session())?;
+        validate_binding_change(&self.state, admitted.table_session(), self.state.native_table.as_ref(), &table)?;
         let result = NativeTableResolved { expected_table: input.expected_table.clone(),
             publication: NativePublication::update(world, &admitted)?, table, moves: vec![] };
         self.try_commit(GameEvent::NativeTableResolved(result))
@@ -139,10 +170,21 @@ impl HostSession {
             return Err("table binding input names a stale native or table prefix".into());
         }
         let campaign = world.load(Execution::Grouped)?;
-        preserve_time(self.state.native_table.as_ref(), &input.table)?;
-        input.table.validate(&self.state, campaign.table_session())?;
+        validate_binding_change(&self.state, campaign.table_session(), self.state.native_table.as_ref(), &input.table)?;
+        let mut table = input.table.clone();
+        let prior = self.state.native_table.as_ref().map(|old|
+            isometry_campaign::native::GameBindings::decode(&old.game).map(|game| game.roster_revision()))
+            .transpose()?.unwrap_or(0);
+        let mut game = isometry_campaign::native::GameBindings::decode(&table.game)?;
+        if game.roster_revision() != prior { return Err("binding input rewrites its accepted roster revision".into()); }
+        let revision = roster_revision(self.state.native_table.as_ref(), &table)?;
+        if revision != prior {
+            game.record_roster_revision(revision);
+            table.game = game.encode()?;
+        }
+        preserve_time(self.state.native_table.as_ref(), &table)?;
         let result = NativeTableResolved { expected_table: input.expected_table.clone(),
-            publication: NativePublication::update(world, &campaign)?, table: input.table.clone(), moves: vec![] };
+            publication: NativePublication::update(world, &campaign)?, table, moves: vec![] };
         self.try_commit(GameEvent::NativeTableResolved(result))
     }
 

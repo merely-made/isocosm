@@ -344,7 +344,12 @@ fn turns_section(ui: &UiState) -> UiChild {
         Box::new(
             el(
                 "div",
-                text(if ui.active_map.is_some() {
+                text(if let Some(world) = &ui.native.world {
+                    match world.cursor() {
+                        Ok(cursor) => format!("round {} · native tick {}", ui.turns.round() + 1, cursor.tick),
+                        Err(_) => "native time reading unavailable".into(),
+                    }
+                } else if ui.active_map.is_some() {
                     format!(
                         "round {} · time {} ({})",
                         ui.turns.round() + 1,
@@ -392,7 +397,7 @@ fn turns_section(ui: &UiState) -> UiChild {
                     action_button("Bestiary", true, |ui| ui.open_compendium()),
                     action_button("Generate", ui.can_edit_inventory, |ui| ui.open_generator()),
                     action_button("Story", ui.can_edit_inventory, |ui| ui.open_storylets()),
-                    action_button("Downtime", ui.can_edit_inventory, |ui| ui.open_downtime()),
+                    action_button("Downtime", ui.can_edit_inventory || ui.native.world.is_some(), |ui| ui.open_downtime()),
                     action_button("Overmap", true, |ui| ui.open_overmap()),
                     action_button("Resolve", ui.governance_conflict.is_some(), |ui| {
                         ui.open_governance_conflict()

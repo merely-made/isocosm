@@ -47,22 +47,19 @@ pub fn overflow_at(state: &mut State, identity: &Identity, at: Substrate, capaci
         let arrives = state.tick.checked_add(route.travel).ok_or("spread arrival time overflows")?;
         sent = sent.checked_add(amount).ok_or("transmitted overflow sum overflows")?;
         if amount != 0 {
-            transfers.push(Transfer { identity: identity.clone(), from, to: route.to,
-                departed: state.tick, arrives, amount });
+            transfers.push((choice.route,Transfer { identity: identity.clone(), from, to: route.to,
+                departed: state.tick, arrives, amount }));
         }
     }
     if sent == 0 { return Ok(0); }
-    match at {
-        Substrate::Site(id) => crate::projects::guard_debit(state,
-            crate::projects::StockSource::Site(id), &identity.key(), sent)?,
-        Substrate::Host(id) => crate::projects::guard_debit(state,
-            crate::projects::StockSource::Entity(id), &identity.key(), sent)?,
-        // Patch stocks are a distinct ledger with no asserted StockSource variant.
-        Substrate::Place(_) => {},
-    }
+    crate::projects::guard_debit(state,crate::projects::debit::substrate_source(at),&identity.key(),sent)?;
     let mut candidate = state.clone();
     crate::meaning::debit(stock::ledger_mut(&mut candidate, at)?, &identity.key(), sent)?;
-    candidate.spreads.transit.extend(transfers);
+    for (route,transfer) in transfers {
+        let index = candidate.spreads.transit.len();
+        owned::mark_route(&mut candidate,at,route,index,&transfer.identity,transfer.amount)?;
+        candidate.spreads.transit.push(transfer);
+    }
     *state = candidate;
     Ok(sent)
 }
@@ -76,6 +73,11 @@ pub fn resolved_overflow(state: &mut State, rules: &crate::rules::Rules,
 
 pub fn resolved_overflow_at(state: &mut State, rules: &crate::rules::Rules,
     identity: &Identity, at: Substrate) -> Result<u64> {
+    owned::operation(state,rules,crate::projects::SpreadDebit::Overflow,identity,at,
+        |candidate| resolved_overflow_inner(candidate,rules,identity,at))
+}
+
+fn resolved_overflow_inner(state:&mut State, rules:&crate::rules::Rules, identity:&Identity, at:Substrate) -> Result<u64> {
     let limit = capacity(state, rules, at, identity)?;
     let excess = held(state, at, identity)?.saturating_sub(limit);
     if excess == 0 { return Ok(0); }
@@ -121,6 +123,7 @@ pub fn dispatch_changed(before: &State, state: &mut State, rules: &crate::rules:
     if rules.spread_capacity.is_none() { return Ok(0); }
     let mut candidate = state.clone();
     let mut sent = 0u64;
+    let result = (|| -> Result<()> {
     for (at, identity) in stocks(&candidate) {
         let current = held(&candidate, at, &identity)?;
         if current == 0 { continue; }
@@ -137,6 +140,14 @@ pub fn dispatch_changed(before: &State, state: &mut State, rules: &crate::rules:
                 .ok_or("dispatched spread work overflows")?;
         }
     }
+    Ok(())
+    })();
+    if let Err(why) = result {
+        if state.projects.debit_capture.active() {
+            state.projects.debit_capture.set(candidate.projects.debit_capture.take());
+        }
+        return Err(why);
+    }
     *state = candidate;
     Ok(sent)
 }
@@ -144,16 +155,40 @@ pub fn dispatch_changed(before: &State, state: &mut State, rules: &crate::rules:
 /// Every due destination credit succeeds before any arrival is published.
 /// Failed credits retain the entire original queue and every source ledger.
 pub fn settle(state: &mut State, until: Tick) -> Result<u64> {
+    let mut ids = BTreeSet::new();
+    let mut indexes = BTreeSet::new();
+    for mark in &state.spreads.transit_marks {
+        if mark.index >= state.spreads.transit.len() || mark.id.0 >= state.spreads.next_transit
+            || !ids.insert(mark.id) || !indexes.insert(mark.index) {
+            return Err("spread delivery needs unique checked transit identities".into());
+        }
+    }
     let mut candidate = state.clone();
     let mut pending = Vec::new();
+    let mut marks = Vec::new();
     let mut arrivals = 0u64;
-    for transfer in &state.spreads.transit {
-        if transfer.arrives > until { pending.push(transfer.clone()); continue; }
+    for (index,transfer) in state.spreads.transit.iter().enumerate() {
+        let named: Vec<_> = state.spreads.transit_marks.iter().filter(|mark| mark.index == index).collect();
+        if named.len() > 1 { return Err("native transit has ambiguous pointable identity".into()); }
+        if transfer.arrives > until {
+            if let Some(mark) = named.first() {
+                let mut mark = (**mark).clone();
+                mark.index = pending.len();
+                marks.push(mark);
+            }
+            pending.push(transfer.clone());
+            continue;
+        }
         if !state.spreads.identities.contains(&transfer.identity) { return Err("unregistered transit identity".into()); }
         crate::meaning::credit(stock::ledger_mut(&mut candidate, Substrate::Site(transfer.to))?,
             &transfer.identity.key(), transfer.amount)?;
+        if let Some(mark) = named.first() { owned::deliver_titles(&mut candidate,mark,transfer)?; }
         arrivals = arrivals.checked_add(1).ok_or("spread arrival work overflows")?;
     }
-    if arrivals != 0 { candidate.spreads.transit = pending; *state = candidate; }
+    if arrivals != 0 {
+        candidate.spreads.transit = pending;
+        candidate.spreads.transit_marks = marks;
+        *state = candidate;
+    }
     Ok(arrivals)
 }

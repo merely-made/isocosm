@@ -14,11 +14,14 @@ pub struct Records {
     pub maps: BTreeMap<Key, MapEdit>,
     pub storylets: BTreeMap<Key, Applied>,
     pub packs: BTreeMap<Key, Applied>,
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    pub spread_ownership: BTreeMap<Key, (crate::spread::Identity, crate::projects::StockLot)>,
 }
 
 impl Records {
     pub fn is_empty(&self) -> bool {
         self.maps.is_empty() && self.storylets.is_empty() && self.packs.is_empty()
+            && self.spread_ownership.is_empty()
     }
 }
 

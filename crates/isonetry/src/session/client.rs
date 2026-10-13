@@ -108,6 +108,10 @@ impl ClientSession {
         (Recipient::Host, NetMessage::NativeTime(envelope))
     }
 
+    pub fn native_party(&self, envelope: isocosm_overlay::vtt::VttIntentEnvelope) -> Outbound {
+        (Recipient::Host, NetMessage::NativeParty(envelope))
+    }
+
     /// Ask the host to resolve an action. The client never decides the outcome,
     /// so this carries no roll, no damage and no verdict: only the request.
     ///
@@ -175,7 +179,8 @@ impl ClientSession {
             NetMessage::Intent { .. }
             | NetMessage::Hello { .. }
             | NetMessage::Action(_)
-            | NetMessage::NativeTime(_) => {}
+            | NetMessage::NativeTime(_)
+            | NetMessage::NativeParty(_) => {}
         }
         Vec::new()
     }

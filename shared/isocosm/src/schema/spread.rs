@@ -50,6 +50,18 @@ pub struct Transfer {
     pub amount: u64,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+pub struct TransitId(pub u64);
+
+/// The index is a checked queue location; only the native ID names the transfer.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct TransitMark {
+    pub id: TransitId,
+    pub index: usize,
+    pub source: Substrate,
+    pub route: usize,
+}
+
 /// The source of an explicit capacity value; it is not another matter stock.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum CapacitySource { World, Substrate(Substrate) }
@@ -75,14 +87,20 @@ pub struct Spreads {
     pub transit: Vec<Transfer>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub modifiers: Vec<CapacityModifier>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub transit_marks: Vec<TransitMark>,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub next_transit: u64,
 }
 
 impl Spreads {
     pub fn is_empty(&self) -> bool {
         self.identities.is_empty() && self.places.is_empty() && self.transit.is_empty()
-            && self.modifiers.is_empty()
+            && self.modifiers.is_empty() && self.transit_marks.is_empty() && self.next_transit == 0
     }
     pub fn owns(&self, key: &str) -> bool {
         self.identities.iter().any(|identity| identity.key() == key)
     }
 }
+
+fn is_zero(n: &u64) -> bool { *n == 0 }

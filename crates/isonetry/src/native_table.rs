@@ -88,6 +88,19 @@ fn board<'a>(state: &'a GameSnapshot, map: &str) -> Result<&'a MapDocument, Stri
 }
 
 impl NativeTable {
+    /// Saved bindings, including disconnected players, define the time roster.
+    /// Endpoint aliases cannot count the same native player more than once.
+    pub fn bound_players(&self) -> BTreeSet<Id> {
+        self.peers.iter().map(|peer| peer.participant)
+            .filter(|participant| *participant != self.host_participant).collect()
+    }
+
+    pub fn time_roster(&self) -> Result<isometry_campaign::native::time::Roster, String> {
+        let players = self.bound_players();
+        Ok(isometry_campaign::native::time::Roster { preimage:isocosm::digest(&players), players,
+            revision:GameBindings::decode(&self.game)?.roster_revision() })
+    }
+
     pub fn participant(&self, sender: TableSender) -> Result<Id, String> {
         match sender {
             TableSender::Host => Ok(self.host_participant),

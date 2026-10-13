@@ -13,6 +13,7 @@ mod admission;
 pub use admission::{Acted, Change, Custody};
 mod readiness;
 mod ownership;
+mod balance;
 pub use ownership::{LotAt, OwnedLot, Owner, StockLot, StockSource};
 mod policy;
 pub use policy::{DecisionPolicy, Electorate};
@@ -25,6 +26,7 @@ pub use debit::guard_debit;
 pub use debit::{DebitOrigin, DebitRequest, DebitSelection, LotQuantity, DebitPreview,
     OwnedActed, OwnedCommandResult, StockRules, SourceRule, DispositionRule,
     OperationRule, DirectOperation, Disposition, OutputClaim, Destination};
+pub use debit::{SpreadDebit, SpreadOutput, RetainedOutput, SpreadOutputWitness, SpreadPreview};
 
 /// The accepted action that reserved the project, in its own identity domain.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]

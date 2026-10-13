@@ -298,6 +298,7 @@ impl BodyFounding {
             step_profiles: BTreeMap::new(),
             birth_profiles: BTreeMap::new(),
             owned_stock: None,
+            party_relations: BTreeMap::new(),
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),

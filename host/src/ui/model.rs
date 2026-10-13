@@ -8,8 +8,12 @@ use serde::{Deserialize, Serialize};
 use crate::{binding::Binding, products::{self, Input, Mode, Rows}, window::Window, world::World};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub(crate) struct Defaults { pub quarter_turn: u8 }
-impl Default for Defaults { fn default() -> Self { Self { quarter_turn: 0 } } }
+pub(crate) struct Defaults {
+    pub quarter_turn: u8,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub party: Option<String>,
+}
+impl Default for Defaults { fn default() -> Self { Self { quarter_turn: 0, party: None } } }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub(crate) struct Preferences { pub modes: BTreeMap<String, Defaults> }
@@ -154,7 +158,13 @@ impl App {
         self.refresh();
         Ok(accepted)
     }
-    pub fn step(&mut self) -> Result<(), String> { self.world.advance(1)?; self.refresh(); Ok(()) }
+    pub fn step(&mut self, key: u64) -> Result<(), String> {
+        let local = self.windows.get(&key).ok_or("window is closed")?;
+        if local.native.binding().mode == "vtt" {
+            return Err("choose a ready downtime proposal in the table's time controls".into());
+        }
+        self.world.advance(1)?; self.refresh(); Ok(())
+    }
     pub fn close(&mut self, key: u64) -> Result<(), String> {
         let local = self.windows.get_mut(&key).ok_or("window is closed")?;
         local.native.close()?;

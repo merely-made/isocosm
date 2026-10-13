@@ -33,6 +33,16 @@ impl Simulation {
         let mut candidate = self.state.clone();
         let before = self.matter();
         let rules = &self.genesis.rules;
+        let parent = self.state.projects.debit_capture.active();
+        if !parent && owned::command_scope(&candidate,rules) {
+            let origin = crate::projects::DebitOrigin::Command(Box::new(crate::history::Command::Spread(command.clone())));
+            let context = crate::projects::debit::Context::new(&candidate,rules,
+                crate::digest(&(&self.revision,&candidate)),origin,
+                format!("native-stock:{}",crate::digest(&(self.genesis.seed,&candidate,command))),
+                crate::projects::debit::Mode::Authored);
+            candidate.projects.debit_capture.set(Some(context));
+        }
+        let result = (|| -> Result<String> {
         let outcome = match command {
             Command::Register(identity) => {
                 candidate.spreads.identities.insert(identity.clone());
@@ -63,6 +73,18 @@ impl Simulation {
         if crate::simulation::matter(&candidate, rules) != before {
             return Err("spread change does not conserve matter".into());
         }
+        Ok(outcome)
+        })();
+        let outcome = match result {
+            Ok(outcome) => outcome,
+            Err(why) => {
+                if parent { self.state.projects.debit_capture.set(candidate.projects.debit_capture.take()); }
+                return Err(why);
+            },
+        };
+        if !parent {
+            if let Some(context) = candidate.projects.debit_capture.take() { context.complete()?; }
+        }
         self.state = candidate;
         Ok(outcome)
     }
@@ -85,6 +107,7 @@ impl Simulation {
         if !self.state.spreads.transit.iter().any(|t| t.arrives <= tick) { return Ok(()); }
         let mut candidate = self.state.clone();
         let before = self.matter();
+        validate(&candidate.spreads,&self.genesis.rules,&candidate.population,&candidate.sites,&candidate.lineages)?;
         settle(&mut candidate, tick)?;
         candidate.tick = tick;
         dispatch_changed(&self.state, &mut candidate, &self.genesis.rules)?;
@@ -92,18 +115,8 @@ impl Simulation {
         if crate::simulation::matter(&candidate, &self.genesis.rules) != before {
             return Err("spread arrival does not conserve matter".into());
         }
-        if let Some(journal) = &mut self.journal {
-            for transfer in &self.state.spreads.transit {
-                if transfer.arrives <= tick {
-                    let site = self.state.sites.get(&transfer.to).ok_or("spread destination absent")?;
-                    journal.site(transfer.to, site);
-                }
-            }
-            for (id, site) in &self.state.sites {
-                if candidate.sites.get(id) != Some(site) { journal.site(*id, site); }
-            }
-        }
-        self.state = candidate;
-        Ok(())
+        let mut accepted = self.clone();
+        accepted.state = candidate;
+        self.publish_candidate(accepted)
     }
 }

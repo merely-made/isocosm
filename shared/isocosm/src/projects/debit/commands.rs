@@ -62,12 +62,21 @@ impl Session {
         Ok(context)
     }
     pub fn prepare_owned_command(&self, command:&Command) -> Result<DebitPreview> {
+        self.direct_preview(command).map(|preview| preview.debits)
+    }
+    /// Actual route and generated-strain outputs of this exact native candidate.
+    pub fn prepare_owned_spread(&self, command:&Command) -> Result<SpreadPreview> {
+        if !matches!(command,Command::Spread(_)) { return Err("spread preview requires a real native spread command".into()); }
+        self.direct_preview(command)
+    }
+    fn direct_preview(&self, command:&Command) -> Result<SpreadPreview> {
         let context = self.direct_capture(command,Mode::Preview)?;
         let mut candidate = self.clone();
         candidate.sim.state.projects.debit_capture.set(Some(context));
         let result = crate::history::run(&mut candidate.sim,command);
         let context = candidate.sim.state.projects.debit_capture.take().ok_or("native direct preview lost its capture")?;
-        Ok(DebitPreview { requests:context.requests,receipt:None,refusal:result.err() })
+        Ok(SpreadPreview { debits:DebitPreview { requests:context.requests,receipt:None,refusal:result.err() },
+            outputs:context.output_report })
     }
     pub(crate) fn owned_command(&mut self, command:&Command, selections:&[DebitSelection]) -> Result<String> {
         if self.sim.state.projects.debit_capture.active() { return Err("owned native command cannot nest".into()); }
@@ -77,7 +86,7 @@ impl Session {
         let result = crate::history::run(&mut candidate.sim,command);
         let mut context = candidate.sim.state.projects.debit_capture.take().ok_or("native direct admission lost its capture")?;
         let outcome = result?;
-        context.finish(state_balances(&candidate.sim.state))?;
+        if context.active { context.finish(state_balances(&candidate.sim.state))?; }
         context.complete()?;
         for (key, held) in context.changes() { candidate.sim.state.projects.ownership.insert(key,held); }
         let result = OwnedCommandResult { outcome,debits:context.requests,claims:context.claims };

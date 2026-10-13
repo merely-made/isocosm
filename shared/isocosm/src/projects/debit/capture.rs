@@ -47,6 +47,8 @@ pub(crate) struct Context {
     pub rules: Option<StockRules>,
     pub matter: BTreeSet<Key>,
     pub claims: Vec<Key>,
+    pub outputs: BTreeMap<SpreadOutput,SpreadOutputWitness>,
+    pub output_report: Vec<SpreadOutputWitness>,
 }
 
 impl Capture {
@@ -82,7 +84,9 @@ impl Context {
             paid: Balances::new(), pieces: Vec::new(), bindings: Vec::new(), preserve: None,
             rules: rules.owned_stock.clone(),
             matter: rules.accounts.iter().filter_map(|(key, kind)|
-                matches!(kind, AccountKind::Matter { .. }).then_some(key.clone())).collect(), claims: Vec::new(),
+                matches!(kind, AccountKind::Matter { .. }).then_some(key.clone()))
+                .chain(state.spreads.identities.iter().map(|identity| identity.key())).collect(), claims: Vec::new(),
+            outputs: BTreeMap::new(), output_report: Vec::new(),
         }
     }
     pub fn begin(&mut self, mut balances: Balances, bindings: Vec<(Binding, StockSource)>, preserve: Option<Slot>) -> Result<()> {
@@ -95,6 +99,7 @@ impl Context {
         self.remaining = balances;
         self.paid.clear();
         self.pieces.clear();
+        self.outputs.clear();
         self.bindings = bindings;
         self.preserve = preserve;
         Ok(())
@@ -165,11 +170,17 @@ impl Context {
         Ok(true)
     }
     fn authored_selection(&self, request: &DebitRequest) -> Result<Option<DebitSelection>> {
-        let DebitOrigin::Process { process, .. } = &self.origin else { return Ok(None); };
         let matching: Vec<_> = self.rules.iter().flat_map(|rules| &rules.selections)
-            .filter_map(|SourceRule::Process { process: named, operation, from, account, lots, unowned }|
-                (named == process && *operation == request.operation && account == &request.account
-                    && self.bindings.iter().any(|(binding, at)| binding == from && *at == request.source)).then_some((lots, unowned))).collect();
+            .filter_map(|rule| match (rule,&self.origin) {
+                (SourceRule::Process { process:named,operation,from,account,lots,unowned }, DebitOrigin::Process { process, .. }) =>
+                    (named == process && *operation == request.operation && account == &request.account
+                        && self.bindings.iter().any(|(binding, at)| binding == from && *at == request.source)).then_some((lots,unowned)),
+                (SourceRule::Spread { operation:named,identity:selected,at:selected_at,lots,unowned },
+                    DebitOrigin::NativeSpread { operation,identity,at, .. }) =>
+                    (named == operation && selected == identity && selected_at == at
+                        && request.source == substrate_source(*at) && request.account == identity.key()).then_some((lots,unowned)),
+                _ => None,
+            }).collect();
         if matching.len() > 1 { return Err("authored stock selector is ambiguous at the actual native binding".into()); }
         Ok(matching.first().map(|(lots, unowned)| DebitSelection { request: request.clone(), lots: (*lots).clone(), unowned: **unowned }))
     }
@@ -187,6 +198,9 @@ pub(super) fn actual(state: &State, source: StockSource, account: &str) -> u64 {
         StockSource::Entity(id) => state.population.get(id).map(crate::anatomy::books)
             .and_then(|books| books.get(account).copied()).unwrap_or(0),
         StockSource::Site(id) => state.sites.get(&id).and_then(|site| site.accounts.get(account).copied()).unwrap_or(0),
+        StockSource::Place(id) => state.spreads.places.iter().find(|place| place.place == id)
+            .and_then(|place| place.accounts.get(account).copied()).unwrap_or(0),
+        StockSource::Transit(id) => transit_amount(state,id,account).unwrap_or(0),
     }
 }
 

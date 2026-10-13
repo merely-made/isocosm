@@ -17,11 +17,13 @@ impl Replay {
                 phase: Phase::Command { index },
                 reason,
             })?;
-            if matches!(command, Command::Act { .. }) {
-                let receipt: isocosm::simulation::Receipt = serde_json::from_str(&outcome)
-                    .map_err(|e| ReplayError {
-                        phase: Phase::Command { index }, reason: e.to_string(),
-                    })?;
+            let receipt = match command {
+                Command::Act { .. } => serde_json::from_str::<isocosm::simulation::Receipt>(&outcome).map(Some),
+                Command::ActOwned { .. } => serde_json::from_str::<isocosm::projects::OwnedActed>(&outcome)
+                    .map(|acted| Some(acted.receipt)),
+                _ => Ok(None),
+            }.map_err(|error| ReplayError { phase:Phase::Command { index }, reason:error.to_string() })?;
+            if let Some(receipt) = receipt {
                 if let isocosm::simulation::Outcome::Blocked(reason)
                     | isocosm::simulation::Outcome::Refused(reason) = receipt.outcome
                 {

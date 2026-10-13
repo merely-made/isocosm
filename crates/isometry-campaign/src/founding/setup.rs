@@ -16,6 +16,9 @@ pub struct Setup {
     pub founding: Founding,
     pub execution: Execution,
     pub attachments: BTreeMap<String, Attachment>,
+    /// Explicit handle -> declared membership kind. No generated/default party.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub party_relations: BTreeMap<String, String>,
 }
 
 impl Setup {
@@ -42,8 +45,12 @@ impl Campaign {
         if expected != setup.attachments.keys().cloned().collect() {
             return Err(FoundingError::Content("attach every authored place exactly once".into()));
         }
-        let genesis = setup.founding.generate().map_err(|reason|
+        let mut genesis = setup.founding.generate().map_err(|reason|
             FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
+        for (party, kind) in &setup.party_relations {
+            genesis.rules.relations.insert(kind.clone());
+            genesis.rules.party_relations.insert(party.clone(), kind.clone());
+        }
         let mut session = Session::new(table_genesis(genesis), setup.execution).map_err(|reason|
             FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
         let content = Content::from_draft(draft)?;

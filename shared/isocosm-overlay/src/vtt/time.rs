@@ -27,4 +27,9 @@ pub enum TimeIntent {
     },
     SimOff,
     SimOn,
+    /// This player's hold is released until they explicitly take it back.
+    ReleaseHold,
+    TakeHold,
+    /// The DM selects one ready original proposal, with consent still validated.
+    Advance { downtime: EventHandle },
 }

@@ -22,9 +22,12 @@ pub use placement::{CharacterControl, CharacterPlacement, ControlBinding, Partic
     PlacementWindow, PositionBinding};
 mod game;
 pub use game::{AdmissionBatch, GameBindings, submit_game, submit_game_as, submit_game_access,
-    submit_game_access_with_roster};
+    submit_game_access_with_roster, submit_external_table_access};
+mod shared_roster;
+pub use shared_roster::SharedRosterInput;
 mod movement;
 pub use movement::submit_table;
+pub mod party;
 mod table;
 pub mod time;
 pub use time::submit_time;

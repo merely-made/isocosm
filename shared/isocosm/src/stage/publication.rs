@@ -38,7 +38,7 @@ impl Simulation {
         self.publish_candidate(candidate)
     }
 
-    fn publish_candidate(&mut self, mut candidate: Simulation) -> Result<()> {
+    pub(crate) fn publish_candidate(&mut self, mut candidate: Simulation) -> Result<()> {
         if candidate.matter() != candidate.conserved {
             return Err("resolved overflow would change conserved native matter".into());
         }
@@ -49,6 +49,9 @@ impl Simulation {
             .collect();
         let sites: Vec<Id> = before.sites.iter().filter_map(|(id, site)|
             (candidate.state.sites.get(id) != Some(site)).then_some(*id)).collect();
+        let titles: BTreeSet<_> = before.projects.ownership.keys().chain(candidate.state.projects.ownership.keys())
+            .filter(|key| before.projects.ownership.get(*key) != candidate.state.projects.ownership.get(*key))
+            .cloned().collect();
         if let Some(journal) = &mut candidate.journal {
             journal.groups(&before.population, &changed.iter().copied().collect::<Vec<_>>());
             for id in &sites { journal.site(*id, &before.sites[id]); }
@@ -57,6 +60,7 @@ impl Simulation {
             for id in &changed { pass.lifting(&before.population, *id); }
         }
         if let Some(frame) = &mut candidate.frame {
+            for key in &titles { frame.keep_stock_lot(key,before.projects.ownership.get(key)); }
             for (&first, group) in &before.population.groups {
                 if changed.range(first..first + group.count).next().is_some() {
                     frame.keep_body(first, group.count, &group.entity);

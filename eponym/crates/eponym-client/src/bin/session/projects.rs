@@ -32,6 +32,7 @@ pub(super) fn panel(state: &SessionApp) -> Child {
     for (_, lot) in sim.available_lots().filter(|(source, _)| match *source {
         StockSource::Entity(id) => id == actor || Some(id) == selected,
         StockSource::Site(id) => Some(id) == site,
+        StockSource::Place(_) | StockSource::Transit(_) => false,
     }) {
         let key = lot.key.clone();
         rows.push(button(format!("{} {}: {}mg {}",

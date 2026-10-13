@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-//! Native time records with unchanged authored table geometry. Activation is
-//! held until the roster and final-consent timing policies (851/852) are ruled.
+//! Native time proposals, self-held consent and explicitly selected advances.
+//! Authenticated saved-player bindings own the roster, never connectivity.
 
 use super::*;
 use crate::native_table::{NativeTable, TableSender, table_digest};
@@ -48,6 +48,9 @@ pub(crate) fn apply_native_time(state: &mut GameSnapshot, result: &NativeTimeRes
     result.table.validate_history(after.table_session()).map_err(GameError::Native)?;
     let change = validate_transition(before.table_session(), &old.game,
         after.table_session(), &result.table.game).map_err(GameError::Native)?;
+    if change.roster != old.time_roster().map_err(GameError::Native)? {
+        return Err(fail("native time record differs from the actual saved player roster/revision"));
+    }
     match change.seat {
         Seat::Dm if change.participant == old.host_participant => {},
         Seat::Player if change.participant != old.host_participant
@@ -66,24 +69,20 @@ pub(crate) fn apply_native_time(state: &mut GameSnapshot, result: &NativeTimeRes
 impl HostSession {
     pub(crate) fn native_time(&mut self, sender: TableSender, envelope: &VttIntentEnvelope)
         -> Result<Vec<Outbound>, String> {
-        let world = self.state.native.as_ref().ok_or("no native campaign")?;
         let table = self.state.native_table.as_ref().ok_or("native time needs an admitted table")?;
-        caller(table, &world.load(Execution::Grouped)?, sender, envelope)?;
-        Err("native downtime activation awaits roster and final-consent timing rulings 851/852".into())
+        let roster = table.time_roster()?;
+        self.commit_native_time(sender, envelope, &roster)
     }
 
     /// The trusted host supplies its roster independently of request bytes.
-    /// This records proposals/individual yeses only; it cannot advance yet.
+    /// Its exact saved roster/revision must agree with the admitted table.
     pub fn commit_native_time(&mut self, sender: TableSender, envelope: &VttIntentEnvelope, roster: &Roster)
         -> Result<Vec<Outbound>, String> {
         let world = self.state.native.as_ref().ok_or("no native campaign")?;
         let table = self.state.native_table.as_ref().ok_or("native time needs an admitted table")?;
         let campaign = world.load(Execution::Grouped)?;
         let access = caller(table, &campaign, sender, envelope)?;
-        if roster.players.contains(&table.host_participant) || roster.players.iter().any(|participant|
-            !table.peers.iter().any(|peer| peer.participant == *participant)) {
-            return Err("downtime player roster differs from admitted native player identities".into());
-        }
+        if roster != &table.time_roster()? { return Err("downtime input differs from its accepted saved player roster".into()); }
         let (admitted, game, _) = campaign.with_table_time(table.game.clone(), access, roster, envelope)?;
         let mut next = table.clone();
         next.game = game;

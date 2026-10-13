@@ -7,13 +7,14 @@
 //! for matter already on a site, finer PlaceId, or host.
 
 pub use crate::schema::spread::{CapacityModifier, CapacitySource, Identity, PlaceLedger,
-    Spreads, Substrate, Transfer};
+    Spreads, Substrate, Transfer, TransitId, TransitMark};
 
 mod stock;
 mod transport;
 mod strain;
 mod native;
 mod capacity;
+mod owned;
 
 pub use stock::{functions, held, ledger_mass, provenance};
 pub(crate) use stock::validate;

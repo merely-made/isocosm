@@ -23,6 +23,9 @@ pub(crate) struct AtlasTerrainCache {
 /// be combined with live labels. A missing/ambiguous source leaves the graph
 /// fallback in charge.
 pub fn overmap_atlas(ui: &UiState) -> Option<GraphCanvasAtlas<String>> {
+    // The native shared map has disclosed site/route records, not a legacy
+    // region's terrain or a collectively selected current location.
+    if ui.native.world.is_some() { return None; }
     let party = ui.viewer.as_deref().unwrap_or("dm");
     let world = ui.overmap_source_world();
     let maps = ui.overmap_source_maps();

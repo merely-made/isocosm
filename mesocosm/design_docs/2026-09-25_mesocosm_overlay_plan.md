@@ -2,6 +2,17 @@
 
 **Date:** 2026-09-25
 
+**Current source, 2026-10-12, native spread title vocabulary:** marked native
+transfers carry stable IDs distinct from their checked queue indices.
+Explicit spread operation selectors retain or close exact input title
+portions against actual route/registered-strain outputs; arrival preserves
+each lot's owners and quantity at the native destination. Existing native
+command/clock candidate publication owns rollback and indexing. This source
+is assembled, unverified. Product spread ownership/work authoring and
+selectors for future-produced lots or later dynamic identities remain open;
+missing authored selections refuse. Full M4 remains open. All compiler,
+tests, fixture repair and tuning remain deferred under826.
+
 **Current source, 2026-10-12 (833):** actual spatial state is saved by
 Mesocosm and linked to native body/terrain revisions. It supplies830's native
 operation/game geometry door. The versioned provider, owned Runtime save/

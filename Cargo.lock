@@ -4189,6 +4189,7 @@ dependencies = [
  "cambium-genet-winit-host",
  "genet-scripted-dom",
  "isocosm",
+ "isocosm-overlay",
  "isomere",
  "isometer",
  "isometry-campaign",
@@ -4242,6 +4243,7 @@ version = "0.1.0"
 dependencies = [
  "cambium",
  "isocosm",
+ "isocosm-overlay",
  "isomere",
  "isometer",
  "isometer-core",

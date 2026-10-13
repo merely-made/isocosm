@@ -31,6 +31,8 @@ mod native_storylet;
 pub mod native_table;
 mod native_time;
 pub use native_time::NativeTimeResolved;
+mod native_party;
+pub use native_party::NativePartyResolved;
 pub use native::{NativePublication, NativeTravelResolved, TravelMember, TravelTableResult};
 mod travel;
 

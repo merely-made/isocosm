@@ -292,6 +292,9 @@ pub struct Rules {
     /// Explicit autonomous lot selection and operation dispositions (846/850).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub owned_stock: Option<crate::projects::StockRules>,
+    /// Explicit party keys select distinct, declared membership relation kinds.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub party_relations: BTreeMap<Key, Key>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

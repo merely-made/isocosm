@@ -11,7 +11,7 @@ impl Replay {
     pub(crate) fn with_table_input(&self, game: Vec<u8>, access: OrdinaryAccess, bytes: &[u8])
         -> Result<(Self, Vec<u8>, String), String> {
         let mut session = self.session.clone();
-        let (accepted, game) = super::submit_game_access(&mut session, game, bytes, access)?;
+        let (accepted, game) = super::submit_external_table_access(&mut session, game, bytes, access)?;
         Ok((Self { session }, game, accepted))
     }
 

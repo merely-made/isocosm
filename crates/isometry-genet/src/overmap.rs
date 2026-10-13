@@ -20,7 +20,7 @@ impl App {
                 ui.overmap_read_request = false;
                 ui.overmap_pace_request = None;
                 ui.overmap_stance_request = None;
-                ui.status = "choose the party's native members before travel or map reading".into();
+                ui.status = "collective native travel and exploration need their own admitted policy".into();
             });
         }
         true

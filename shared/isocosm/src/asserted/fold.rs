@@ -23,6 +23,8 @@ pub struct Asserted {
     /// Retained author assertions; native source/owner validation needs a Session.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub stock_ownership: BTreeMap<Key, crate::projects::StockLot>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub spread_ownership: BTreeMap<Key, (crate::spread::Identity, crate::projects::StockLot)>,
 }
 
 /// Why a fold refused an assertion.
@@ -100,6 +102,8 @@ impl Asserted {
             Assertion::Storylet(a) => self.group(a, false),
             Assertion::PackForced(a) => self.group(a, true),
             Assertion::StockOwnership(lot) => once(&mut self.stock_ownership, key, lot),
+            Assertion::SpreadOwnership { identity, lot } =>
+                once(&mut self.spread_ownership, key, &(identity.clone(), lot.clone())),
         }
     }
 

@@ -5,7 +5,9 @@ use super::*;
 use crate::rules::{AccountKind, Binding};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-pub enum StockSource { Entity(Id), Site(Id) }
+pub enum StockSource {
+    Entity(Id), Site(Id), Place(isometer_space::places::PlaceId), Transit(crate::spread::TransitId),
+}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Owner { Entity(Id), Polity(Id) }
@@ -24,7 +26,7 @@ pub struct StockLot {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum LotAt { Source, Project(ProjectId), Output(Id), Unresolved, Closed }
+pub enum LotAt { Source, Project(ProjectId), Output(Id), Unresolved, Closed, Held(StockSource) }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct OwnedLot { pub lot: StockLot, pub at: LotAt }
@@ -34,6 +36,7 @@ impl OwnedLot {
         match self.at {
             LotAt::Source => Some(self.lot.source),
             LotAt::Output(id) => Some(StockSource::Entity(id)),
+            LotAt::Held(source) => Some(source),
             LotAt::Project(_) | LotAt::Unresolved | LotAt::Closed => None,
         }
     }
@@ -76,10 +79,29 @@ impl Simulation {
         let ledger = match source {
             StockSource::Entity(id) => crate::anatomy::books(self.body_at_start(id).ok_or("stock body is absent")?),
             StockSource::Site(id) => self.site_at_start(id).ok_or("stock site is absent")?.accounts.clone(),
+            StockSource::Place(id) => self.state.spreads.places.iter().find(|p| p.place == id)
+                .ok_or("stock finer place is absent")?.accounts.clone(),
+            StockSource::Transit(id) => return crate::projects::debit::transit_amount(&self.state,id,account),
         };
         Ok(ledger.get(account).copied().unwrap_or(0))
     }
     pub(crate) fn assert_stock_ownership(&mut self, lot: &StockLot) -> Result<String> {
+        self.assert_ownership(lot,false)
+    }
+    pub(crate) fn assert_spread_ownership(&mut self, identity:&crate::spread::Identity, lot:&StockLot) -> Result<String> {
+        if let Some((named,was)) = self.state.asserted.spread_ownership.get(&lot.key) {
+            return if named == identity && was == lot { Ok(format!("stock-ownership:{}",lot.key)) }
+                else { Err("spread stock lot is already asserted otherwise".into()) };
+        }
+        if identity.key() != lot.account || !self.state.spreads.identities.contains(identity) {
+            return Err("spread ownership needs the exact registered native identity".into());
+        }
+        self.spread_balance(lot.source,identity)?;
+        let outcome = self.assert_ownership(lot,true)?;
+        self.state.asserted.spread_ownership.insert(lot.key.clone(),(identity.clone(),lot.clone()));
+        Ok(outcome)
+    }
+    fn assert_ownership(&mut self, lot:&StockLot, spread:bool) -> Result<String> {
         if let Some(was) = self.state.projects.ownership.get(&lot.key) {
             return if &was.lot == lot { Ok(format!("stock-ownership:{}", lot.key)) }
                 else { Err("stock lot is already asserted otherwise".into()) };
@@ -87,7 +109,7 @@ impl Simulation {
         crate::validation::key(&lot.key)?;
         crate::validation::key(&lot.account)?;
         if lot.amount == 0 || lot.owners.is_empty()
-            || !matches!(self.genesis.rules.accounts.get(&lot.account), Some(AccountKind::Matter { .. })) {
+            || (!spread && !matches!(self.genesis.rules.accounts.get(&lot.account), Some(AccountKind::Matter { .. }))) {
             return Err("stock ownership needs positive declared matter and native owners".into());
         }
         for owner in &lot.owners {

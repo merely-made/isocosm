@@ -43,6 +43,8 @@ pub enum Assertion {
     PackForced(Applied),
     /// Exact native property lots, distinct from custody and tenancy (845).
     StockOwnership(crate::projects::StockLot),
+    /// Exact title in a registered native spread identity, including marked transit.
+    SpreadOwnership { identity: crate::spread::Identity, lot: crate::projects::StockLot },
 }
 
 impl Assertion {
@@ -59,6 +61,7 @@ impl Assertion {
             Self::Edit(m) => &m.key,
             Self::Storylet(a) | Self::PackForced(a) => &a.key,
             Self::StockOwnership(lot) => &lot.key,
+            Self::SpreadOwnership { lot, .. } => &lot.key,
         }
     }
 }
@@ -220,6 +223,7 @@ impl Simulation {
             Assertion::Storylet(a) => self.assert_group(a, false),
             Assertion::PackForced(a) => self.assert_group(a, true),
             Assertion::StockOwnership(lot) => self.assert_stock_ownership(lot),
+            Assertion::SpreadOwnership { identity, lot } => self.assert_spread_ownership(identity, lot),
         }
     }
 }

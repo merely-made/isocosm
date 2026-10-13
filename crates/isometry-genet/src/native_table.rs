@@ -51,6 +51,7 @@ fn export_context(ui: &UiState) -> Result<(), String> {
         "binding_input": binding, "accepted_game": accepted_game, "participants": participants,
         "authored_characters": characters, "sites": state.sites, "lineages": state.lineages,
         "accounts": session.sim.genesis().rules.accounts, "boards": boards,
+        "party_relations": session.sim.genesis().rules.party_relations,
         "authenticated_endpoints": ui.native.endpoints,
     });
     let bytes = serde_json::to_vec_pretty(&value).map_err(|error| error.to_string())?;

@@ -5,7 +5,7 @@
 
 use cambium::{el, text};
 use eponym_play::{GameIntent, ItemId, identity::{SubjectId, Tick}};
-use isocosm::{projects::{DebitPreview, DebitSelection, LotQuantity, StockSource}, rules::{Causation, Query}};
+use isocosm::{projects::{DebitPreview, DebitSelection, LotQuantity}, rules::{Causation, Query}};
 use super::{SessionApp, view::{Child, button}};
 
 pub(super) struct Selection {
@@ -48,12 +48,7 @@ pub(super) fn panel(state: &SessionApp) -> Child {
                 rows.push(Box::new(el("p", text(format!("{}: chosen {}mg of {}mg", key, selected, lot.amount)))));
                 quantity_controls(&mut rows, index, Some(key), lot.amount);
             }
-            let actual = match row.request.source {
-                StockSource::Entity(id) => sim.state().population.get(id)
-                    .map(|body| isocosm::anatomy::books(body).get(&row.request.account).copied().unwrap_or(0)),
-                StockSource::Site(id) => sim.state().sites.get(&id)
-                    .map(|site| site.accounts.get(&row.request.account).copied().unwrap_or(0)),
-            }.unwrap_or(0);
+            let actual = sim.stock_balance(row.request.source, &row.request.account).unwrap_or(0);
             let claimed = sim.available_lots().filter(|(source, lot)|
                 *source == row.request.source && lot.account == row.request.account)
                 .fold(0u64, |sum, (_, lot)| sum.saturating_add(lot.amount));

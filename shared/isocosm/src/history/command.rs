@@ -147,4 +147,5 @@ pub enum Command {
         command: Box<Command>,
         births: Vec<crate::spatial::BirthResolution>,
     },
+    Party(crate::party::Change),
 }

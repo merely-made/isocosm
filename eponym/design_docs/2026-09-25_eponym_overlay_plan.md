@@ -2,6 +2,17 @@
 
 **Date:** 2026-09-25
 
+**Current source, 2026-10-12, native spread title vocabulary:** exact owned
+stock reads now address actual bodies, sites, finer places and marked native
+transfers through `stock_balance`; Eponym's stock-selection UI consumes that
+native reading. Physical project reservation still offers only its admitted
+entity/site sources. Native spread assertions, exact route/strain output
+claim dispositions and per-lot delivery are source-assembled, unverified.
+Product spread ownership/work authoring and selectors for future-produced
+lots or later dynamic identities remain open. GameSave12's actual stock/meal
+caller remains the material consumer; full E3 remains open. Compiler/tests,
+fixtures and tuning wait under826.
+
 **Current choices, 2026-10-12 (835 to838):** named native material recipes
 supply new item stocks/quantities; new worlds keep distinct material stocks.
 Native projects reserve inputs, spend them as work progresses and retain

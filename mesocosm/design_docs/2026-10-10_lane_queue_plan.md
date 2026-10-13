@@ -56,7 +56,14 @@ explicit named-lot portions, operation-authored output claim disposition,
 same-awareness resident corpse pictures and parent-pose birth profiles.
 These dependent native/caller sources are placed, unverified. The help
 action mentioned in843 is a separate idea with unspecified admission rules.
-Downtime choices851/852 and party membership/knowing choices853/854 are pending; next unused question855. Verification and adjustments still wait under826.
+Rulings851 to858 now settle saved-player downtime holds, persistent own
+release, original tick/roster binding, explicit DM selection, player party
+opt-in, old-own withdrawal and retained disclosed shared-map facts. Native
+time/party and standalone/shared-host callers are placed, unverified.
+Rulings859/860 now require each player's current-body approval before the
+DM publishes joint departures, and authored native pace duration/stock costs.
+Those dependent travel sources are next. Critter approval861 is pending;
+the next unused question is862. Verification and adjustments wait under826.
 
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
@@ -1371,3 +1378,7 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   owned spread transit refuses until its typed title/output vocabulary exists.
   This packet is source-only, with every compiler/test/fixture/probe/tuning
   gate deferred826. Full E3/V2/M4, migration and acceptance remain open.
+
+- **2026-10-12, 851 to858, native table time and shared party source:** all eight answers are recorded verbatim. Individual persistent holds, original tick/roster revisions and explicit DM selection now reach standalone authenticated callers and the shared host's explicit saved native-player roster. Version5 game bindings retain opaque bytes and historical consents. Protocol/ALPN9 append party/time request and result grammar. Actual native party relations use explicit profile declarations; players join their current bodies, leave their own earlier bodies and deliberately disclose known facts retained after leaving. Native knowing and body control remain separate. No Cargo/compiler/tests/fixtures/tuning ran under826. Collective departure/pace questions859/860 are pending; complete V2/E3/M4 and the whole migration remain open.
+
+- **2026-10-12, 859/860:** player approval names each currently played body before the DM applies approved joint departures; authored native pace profiles supply duration and conserved stock costs. Exact answers are recorded. Their dependent source is next; question861 asks whether an approved deliberative critter receives a native travel goal and may split, or stays out of joint departure. The next unused question is862. Native spread title/transit source is assembled, with later dynamic/future-lot selectors and actual product spread authoring still open. No compiler/tests/fixtures/tuning ran under826.

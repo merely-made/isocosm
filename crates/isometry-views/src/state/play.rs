@@ -167,6 +167,11 @@ impl UiState {
     /// beside the automatic round tick. In a session it routes to the host;
     /// solo it applies directly. No stored map means no clock to keep.
     pub fn pass_time(&mut self, ticks: u64) {
+        if self.native.world.is_some() {
+            self.request_native_time(isocosm_overlay::vtt::TimeIntent::Downtime { ticks });
+            self.downtime_open = true;
+            return;
+        }
         let Some(active) = self.active_map.clone() else {
             self.status = "no campaign clock without a stored map".to_owned();
             return;

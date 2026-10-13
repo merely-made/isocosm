@@ -10,7 +10,7 @@ pub(crate) type Logic = Box<dyn FnMut(&App) -> Child>;
 
 pub(crate) fn lens(key: u64) -> Logic { Box::new(move |state| root(state, key)) }
 
-fn button(id: String, label: String, key: u64,
+pub(super) fn button(id: String, label: String, key: u64,
     action: impl Fn(&mut App) -> Result<(), String> + 'static) -> Child {
     Box::new(focusable(clickable(el("button", text(label.clone())).attr("id", id)
         .attr("aria-label", label), move |state: &mut App, _| {
@@ -38,9 +38,11 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
     controls.push(button("close-window".into(), "Close window".into(), key, move |app| {
         app.windows.get_mut(&key).ok_or("window is closed")?.close_requested = true; Ok(())
     }));
-    let mut actions: Vec<Child> = vec![button("step".into(), "Step world".into(), key,
-        |app| app.step()), button("turn".into(), "Quarter turn".into(), key,
+    let mut actions: Vec<Child> = vec![button("turn".into(), "Quarter turn".into(), key,
         move |app| app.turn(key))];
+    if mode != "vtt" {
+        actions.push(button("step".into(), "Step world".into(), key, move |app| app.step(key)));
+    }
     if local.input.as_ref().is_some_and(|i| i.mode.key() == mode) {
         actions.push(button("send-intent".into(), "Send chosen intent".into(), key,
             move |app| app.send(key).map(|_| ())));
@@ -78,6 +80,8 @@ pub(crate) fn root(state: &App, key: u64) -> Child {
         Box::new(el("section", pins).attr("class", "panel")) as Child,
         Box::new(el("p", text(error)).attr("id", "error").attr("role", "status")) as Child,
     ];
+    #[cfg(feature = "vtt")]
+    if mode == "vtt" { children.push(super::vtt::panel(state, key)); }
     #[cfg(any(feature = "mesocosm", feature = "vtt"))]
     if local.scene.snapshot().is_some() {
         let card = isomere::ViewportCard::new(crate::viewport::key(key).expect("admitted local slot"),

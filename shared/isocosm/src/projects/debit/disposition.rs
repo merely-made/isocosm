@@ -35,16 +35,14 @@ impl Context {
                 })?;
             let mut closed = BTreeMap::new();
             if !remaining.is_empty() {
-                let operation = match &self.origin {
-                    DebitOrigin::Process { process, .. } => OperationRule::Process { process: process.clone(), ordinal: self.operation },
-                    DebitOrigin::Command(command) => OperationRule::Command(types::direct_operation(command)?),
-                };
-                if operation == OperationRule::Command(DirectOperation::SpreadOverflow) {
-                    return Err("unchanged owned spread transit needs an explicit native transit title vocabulary".into());
-                }
+                let operation = self.operation_rule()?;
                 let rules: Vec<_> = self.rules.iter().flat_map(|rules| &rules.dispositions)
                     .filter(|rule| rule.operation == operation).collect();
                 let [rule] = rules.as_slice() else { return Err("owned debit needs one exact authored operation disposition".into()); };
+                if matches!(operation,OperationRule::Spread { operation:SpreadDebit::Overflow, .. })
+                    && !matches!(&rule.disposition,Disposition::Outputs { closed, .. } if closed.is_empty()) {
+                    return Err("unchanged transported claims need exact authored route outputs".into());
+                }
                 match &rule.disposition {
                     Disposition::CloseConsumed => closed = remaining,
                     Disposition::Retain { outputs: retained, closed: portions } => {
@@ -56,6 +54,18 @@ impl Context {
                             }
                         }
                         outputs.extend(retained.clone());
+                    },
+                    Disposition::Outputs { outputs: retained,closed:portions } => {
+                        for portion in portions {
+                            let available = remaining.get(&portion.key).ok_or("closed spread portion names no selected input")?;
+                            if portion.amount == 0 || closed.insert(portion.key.clone(),portion.amount).is_some()
+                                || portion.amount > *available { return Err("closed spread portion differs from its selected input".into()); }
+                        }
+                        for retained in retained {
+                            let actual = self.outputs.get(&retained.output).ok_or("authored claim names no actual native spread output")?;
+                            outputs.push(OutputClaim { input:retained.input.clone(),amount:retained.amount,
+                                destination:Destination::Source(actual.source),account:actual.identity.key() });
+                        }
                     },
                 }
             }
@@ -118,8 +128,22 @@ pub(crate) fn state_balances(state: &State) -> Balances {
             balances.insert((StockSource::Entity(*id), key), amount);
         }
     }
+    for held in state.projects.ownership.values() {
+        if let Some(StockSource::Entity(id)) = held.current_source()
+            && let Some(body) = state.population.get(id) {
+            for (key,amount) in crate::anatomy::books(body) { balances.insert((StockSource::Entity(id),key),amount); }
+        }
+    }
     for (id, site) in &state.sites {
         for (key, amount) in &site.accounts { balances.insert((StockSource::Site(*id), key.clone()), *amount); }
+    }
+    for place in &state.spreads.places {
+        for (key,amount) in &place.accounts { balances.insert((StockSource::Place(place.place),key.clone()),*amount); }
+    }
+    for mark in &state.spreads.transit_marks {
+        if let Some(transfer) = state.spreads.transit.get(mark.index) {
+            balances.insert((StockSource::Transit(mark.id),transfer.identity.key()),transfer.amount);
+        }
     }
     balances
 }

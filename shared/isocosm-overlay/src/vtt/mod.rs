@@ -21,6 +21,7 @@ mod hook;
 mod table;
 mod time;
 mod travel;
+mod party;
 
 pub use assertion::{Assertion, CellEdit, Fact, MapEdit, NewCharacter};
 pub use handoff::{Calibration, Condition, RequestId, Resolved, RulesetKey, Transfer, VttHandoff};
@@ -28,6 +29,7 @@ pub use hook::HookIntent;
 pub use table::{Cell, TableAct, TableActKind, TableBatch};
 pub use time::TimeIntent;
 pub use travel::{Pace, Travel};
+pub use party::{PartyAction, PartyIntent};
 
 use serde::{Deserialize, Serialize};
 
@@ -43,6 +45,7 @@ pub enum VttIntent {
     Time(TimeIntent),
     Travel(Travel),
     Hook(HookIntent),
+    Party(PartyIntent),
 }
 
 impl VttIntent {
