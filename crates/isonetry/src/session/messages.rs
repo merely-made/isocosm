@@ -59,14 +59,20 @@ impl HostSession {
     /// the authority).
     ///
     /// The version is the first thing checked, and a peer that fails it is
-    /// refused for the session rather than partially served.
+    /// refused for that live connection rather than partially served.
     pub fn on_message(&mut self, from: PeerId, msg: NetMessage) -> Vec<Outbound> {
         // A peer whose dialect this host cannot read is answered with the same
-        // receipt for the rest of the session, and nothing it says is read. The
+        // receipt for the rest of that connection, and nothing it says is read. The
         // refusal is checked before the message is even matched, so there is no
         // arm through which a stranger's bytes can reach game state.
         if let Some(&offered) = self.refused.get(&from) {
             return vec![(Recipient::One(from), Self::version_receipt(offered))];
+        }
+        if !self.negotiated.contains(&from)
+            && !matches!(&msg,NetMessage::Hello { .. } | NetMessage::VersionRefused { .. }) {
+            return vec![(Recipient::One(from),NetMessage::Rejected {
+                reason:"send an accepted current-version Hello before session input".into(),
+            })];
         }
         match msg {
             // The handshake. A version this host cannot speak is refused here,
@@ -74,9 +80,12 @@ impl HostSession {
             // and can commit nothing.
             NetMessage::Hello { version, name } => {
                 if version != PROTOCOL_VERSION {
+                    self.negotiated.remove(&from);
+                    self.peer_names.remove(&from);
                     self.refused.insert(from, version);
                     return vec![(Recipient::One(from), Self::version_receipt(version))];
                 }
+                self.negotiated.insert(from);
                 self.peer_names.insert(from, name);
                 Vec::new()
             }
@@ -84,6 +93,7 @@ impl HostSession {
             // it the same way, recording the dialect it does speak.
             NetMessage::VersionRefused { supported, .. } => {
                 self.refused.insert(from, supported);
+                self.negotiated.remove(&from);
                 self.peer_names.remove(&from);
                 Vec::new()
             }

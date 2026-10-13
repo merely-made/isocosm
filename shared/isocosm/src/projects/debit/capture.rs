@@ -49,6 +49,10 @@ pub(crate) struct Context {
     pub claims: Vec<Key>,
     pub outputs: BTreeMap<SpreadOutput,SpreadOutputWitness>,
     pub output_report: Vec<SpreadOutputWitness>,
+    pub produced: BTreeMap<Key,ProducedClaim>,
+    pub initial_produced: BTreeMap<Key,ProducedClaim>,
+    pub identities: BTreeMap<Key,crate::spread::Identity>,
+    pub reference_scope: bool,
 }
 
 impl Capture {
@@ -87,6 +91,9 @@ impl Context {
                 matches!(kind, AccountKind::Matter { .. }).then_some(key.clone()))
                 .chain(state.spreads.identities.iter().map(|identity| identity.key())).collect(), claims: Vec::new(),
             outputs: BTreeMap::new(), output_report: Vec::new(),
+            produced:state.projects.produced.clone(), initial_produced:state.projects.produced.clone(),
+            identities:state.spreads.identities.iter().map(|identity| (identity.key(),identity.clone())).collect(),
+            reference_scope:references::declared(rules.owned_stock.as_ref()),
         }
     }
     pub fn begin(&mut self, mut balances: Balances, bindings: Vec<(Binding, StockSource)>, preserve: Option<Slot>) -> Result<()> {
@@ -168,21 +175,6 @@ impl Context {
         self.remaining.insert(slot.clone(), balance - amount);
         add(&mut self.paid, slot, amount)?;
         Ok(true)
-    }
-    fn authored_selection(&self, request: &DebitRequest) -> Result<Option<DebitSelection>> {
-        let matching: Vec<_> = self.rules.iter().flat_map(|rules| &rules.selections)
-            .filter_map(|rule| match (rule,&self.origin) {
-                (SourceRule::Process { process:named,operation,from,account,lots,unowned }, DebitOrigin::Process { process, .. }) =>
-                    (named == process && *operation == request.operation && account == &request.account
-                        && self.bindings.iter().any(|(binding, at)| binding == from && *at == request.source)).then_some((lots,unowned)),
-                (SourceRule::Spread { operation:named,identity:selected,at:selected_at,lots,unowned },
-                    DebitOrigin::NativeSpread { operation,identity,at, .. }) =>
-                    (named == operation && selected == identity && selected_at == at
-                        && request.source == substrate_source(*at) && request.account == identity.key()).then_some((lots,unowned)),
-                _ => None,
-            }).collect();
-        if matching.len() > 1 { return Err("authored stock selector is ambiguous at the actual native binding".into()); }
-        Ok(matching.first().map(|(lots, unowned)| DebitSelection { request: request.clone(), lots: (*lots).clone(), unowned: **unowned }))
     }
     pub fn exempt(&mut self, source: StockSource, key: &str, amount: u64, actual: u64) -> Result<()> {
         if amount == 0 || !self.matter.contains(key) { return Ok(()); }

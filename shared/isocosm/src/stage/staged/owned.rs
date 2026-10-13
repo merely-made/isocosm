@@ -68,6 +68,7 @@ impl Staged<'_> {
         capture.with(|context| {
             context.staged_titles = self.stage.projects.ownership.clone();
             context.shadow.extend(context.staged_titles.clone());
+            context.produced.extend(self.stage.projects.produced.clone());
             context.begin(self.owned_balances(),bindings,None)
         })?;
         Ok(true)
@@ -87,7 +88,7 @@ impl Staged<'_> {
     }
     pub(super) fn finish_owned_operation(&mut self) -> Result<()> {
         let after = self.owned_balances();
-        let changes = self.sim.state.projects.debit_capture.with(|context| {
+        let (changes,produced) = self.sim.state.projects.debit_capture.with(|context| {
             for (key, held) in &self.stage.projects.ownership {
                 if context.staged_titles.get(key) != Some(held) { context.shadow.insert(key.clone(),held.clone()); }
             }
@@ -95,12 +96,17 @@ impl Staged<'_> {
                 context.failed = true;
                 return Err(why);
             }
-            Ok(context.changes())
+            Ok((context.changes(),context.produced_changes()))
         })?.unwrap_or_default();
         for (key, held) in changes {
             self.stage.projects.ownership_before.entry(key.clone())
                 .or_insert_with(|| self.sim.stock_lot_at_start(&key).cloned());
             self.stage.projects.ownership.insert(key,held);
+        }
+        for (key,record) in produced {
+            self.stage.projects.produced_before.entry(key.clone())
+                .or_insert_with(|| self.sim.state.projects.produced.get(&key).cloned());
+            self.stage.projects.produced.insert(key,record);
         }
         Ok(())
     }

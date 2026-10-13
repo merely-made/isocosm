@@ -10,9 +10,11 @@ fn refusal(receipt: &Receipt) -> Option<String> {
 
 impl Simulation {
     fn supplied_process(&self, actor:Id, target:Option<Id>, process:&str, mode:Mode) -> Context {
-        Context::new(&self.state,&self.genesis.rules,crate::digest(&(&self.revision,&self.state)),
+        let mut context = Context::new(&self.state,&self.genesis.rules,crate::digest(&(&self.revision,&self.state)),
             DebitOrigin::Process { process:process.into(),actor,target },
-            self.owned_action(actor,process,self.state.next_action),mode)
+            self.owned_action(actor,process,self.state.next_action),mode);
+        context.produced = self.produced_at_start();
+        context
     }
     pub fn prepare_owned_act(&self, actor:Id, target:Option<Id>, process:&str, cause:Option<Key>) -> Result<DebitPreview> {
         let mut candidate = self.clone();
@@ -89,6 +91,7 @@ impl Session {
         if context.active { context.finish(state_balances(&candidate.sim.state))?; }
         context.complete()?;
         for (key, held) in context.changes() { candidate.sim.state.projects.ownership.insert(key,held); }
+        candidate.sim.state.projects.produced.extend(context.produced_changes());
         let result = OwnedCommandResult { outcome,debits:context.requests,claims:context.claims };
         let outcome = serde_json::to_string(&result).map_err(|e| e.to_string())?;
         *self = candidate;

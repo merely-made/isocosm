@@ -35,6 +35,7 @@ impl Context {
             return Err("native spread operation produced an ambiguous or empty output".into());
         }
         self.matter.insert(identity.key());
+        self.identities.insert(identity.key(),identity);
         self.output_report.push(witness);
         Ok(())
     }

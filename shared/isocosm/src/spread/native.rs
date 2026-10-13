@@ -14,6 +14,7 @@ pub enum Command {
     SetModifier(CapacityModifier),
     RemoveModifier { key: Key },
     Overflow { identity: Identity, at: Substrate },
+    Place(super::Placement),
 }
 
 fn validate_state(state: &State, rules: &crate::rules::Rules) -> Result<()> {
@@ -34,7 +35,8 @@ impl Simulation {
         let before = self.matter();
         let rules = &self.genesis.rules;
         let parent = self.state.projects.debit_capture.active();
-        if !parent && owned::command_scope(&candidate,rules) {
+        if !parent && (owned::command_scope(&candidate,rules)
+            || matches!(command,Command::Place(placement) if owned::placement_relevant(&candidate,rules,placement))) {
             let origin = crate::projects::DebitOrigin::Command(Box::new(crate::history::Command::Spread(command.clone())));
             let context = crate::projects::debit::Context::new(&candidate,rules,
                 crate::digest(&(&self.revision,&candidate)),origin,
@@ -66,6 +68,7 @@ impl Simulation {
             Command::Overflow { identity, at } => {
                 format!("dispatched:{}", resolved_overflow_at(&mut candidate, rules, identity, *at)?)
             },
+            Command::Place(placement) => format!("placed:{}", super::place_stock(&mut candidate,rules,placement)?),
         };
         validate_state(&candidate, rules)?;
         dispatch_changed(&self.state, &mut candidate, rules)?;
@@ -85,7 +88,9 @@ impl Simulation {
         if !parent {
             if let Some(context) = candidate.projects.debit_capture.take() { context.complete()?; }
         }
-        self.state = candidate;
+        let mut accepted = self.clone();
+        accepted.state = candidate;
+        self.publish_candidate(accepted)?;
         Ok(outcome)
     }
 

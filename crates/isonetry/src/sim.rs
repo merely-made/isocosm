@@ -11,8 +11,8 @@ use crate::session::{ClientSession, HostSession};
 
 /// One message in flight, already resolved to a concrete destination.
 enum Hop {
-    ToHost { from: PeerId, msg: NetMessage },
-    ToClient { to: PeerId, msg: NetMessage },
+    ToHost { from: PeerId, connection: u64, msg: NetMessage },
+    ToClient { to: PeerId, connection: u64, msg: NetMessage },
 }
 
 /// A host and its clients, routed in-process. Deliveries queue and flush
@@ -20,6 +20,7 @@ enum Hop {
 pub struct Sim {
     pub host: HostSession,
     pub clients: BTreeMap<PeerId, ClientSession>,
+    connections: BTreeMap<PeerId,u64>,
     queue: VecDeque<Hop>,
 }
 
@@ -28,6 +29,7 @@ impl Sim {
         Self {
             host,
             clients: BTreeMap::new(),
+            connections: BTreeMap::new(),
             queue: VecDeque::new(),
         }
     }
@@ -36,10 +38,25 @@ impl Sim {
     /// caller picks the `PeerId`; the iroh transport derives it from the
     /// node id.
     pub fn connect(&mut self, peer: PeerId) {
+        let _ = self.try_connect(peer);
+    }
+
+    /// A fresh connection must negotiate; stale queued traffic carries its
+    /// old generation and cannot be delivered to this new client.
+    pub fn try_connect(&mut self, peer: PeerId) -> Result<(),String> {
+        let (connection,out) = self.host.begin_connection(peer)?;
         self.clients.insert(peer, ClientSession::new());
-        let out = self.host.on_connect(peer);
+        self.connections.insert(peer,connection);
         self.enqueue_from_host(out);
         self.settle();
+        Ok(())
+    }
+
+    pub fn disconnect(&mut self, peer: PeerId) {
+        if let Some(connection) = self.connections.remove(&peer) {
+            self.host.disconnect_connection(peer,connection);
+        }
+        self.clients.remove(&peer);
     }
 
     /// The host proposes an event (the DM's own move).
@@ -117,14 +134,15 @@ impl Sim {
             match to {
                 Recipient::All => {
                     for &peer in self.clients.keys() {
-                        self.queue.push_back(Hop::ToClient {
-                            to: peer,
-                            msg: msg.clone(),
-                        });
+                        if let Some(&connection) = self.connections.get(&peer) {
+                            self.queue.push_back(Hop::ToClient { to:peer,connection,msg:msg.clone() });
+                        }
                     }
                 }
                 Recipient::One(peer) => {
-                    self.queue.push_back(Hop::ToClient { to: peer, msg });
+                    if let Some(&connection) = self.connections.get(&peer) {
+                        self.queue.push_back(Hop::ToClient { to:peer,connection,msg });
+                    }
                 }
                 // The host never addresses itself.
                 Recipient::Host => {}
@@ -135,7 +153,11 @@ impl Sim {
     fn enqueue_from_client(&mut self, from: PeerId, out: Vec<Outbound>) {
         for (to, msg) in out {
             match to {
-                Recipient::Host => self.queue.push_back(Hop::ToHost { from, msg }),
+                Recipient::Host => {
+                    if let Some(&connection) = self.connections.get(&from) {
+                        self.queue.push_back(Hop::ToHost { from,connection,msg });
+                    }
+                },
                 // Clients only ever address the host.
                 Recipient::All | Recipient::One(_) => {}
             }
@@ -146,11 +168,14 @@ impl Sim {
     pub fn settle(&mut self) {
         while let Some(hop) = self.queue.pop_front() {
             match hop {
-                Hop::ToHost { from, msg } => {
-                    let out = self.host.on_message(from, msg);
+                Hop::ToHost { from, connection, msg } => {
+                    if self.connections.get(&from) != Some(&connection) { continue; }
+                    let out = self.host.on_connection_message(from,connection,msg);
                     self.enqueue_from_host(out);
                 }
-                Hop::ToClient { to, msg } => {
+                Hop::ToClient { to, connection, msg } => {
+                    if self.connections.get(&to) != Some(&connection)
+                        || !self.host.current_connection(to,connection) { continue; }
                     if let Some(client) = self.clients.get_mut(&to) {
                         let out = client.on_message(msg);
                         self.enqueue_from_client(to, out);

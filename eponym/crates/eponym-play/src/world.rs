@@ -28,6 +28,10 @@ use crate::identity::{SubjectId, Tick};
 use crate::{HistoryFactId, NativeFixtureProfile, NativeFixtureRecipe, SiteKind, SlotId, WorldMap};
 use crate::founding::materials::{MaterialProfile, GENERATOR_VERSION as MATERIAL_GENERATOR_VERSION};
 use crate::founding::materials::OWNED_GENERATOR_VERSION;
+use crate::founding::spread::GENERATOR_VERSION as SPREAD_GENERATOR_VERSION;
+
+mod spread;
+mod restoring;
 
 pub const GENERATOR_VERSION: u32 = 4;
 /// Rock held under the lifted window's lowest soil.
@@ -68,13 +72,15 @@ pub enum WorldIntent {
     MaterialProfile { profile: Box<MaterialProfile> },
     /// A distinct founding grammar preserves earlier material-profile bytes.
     OwnedMaterialProfile { profile: Box<MaterialProfile>, stock: isocosm::projects::StockRules },
+    SpreadMaterialProfile { profile: Box<crate::SpreadMaterialProfile> },
 }
 
 impl WorldIntent {
     pub const fn tick(&self) -> Tick {
         match self {
             Self::Carve { tick, .. } | Self::InheritSite { tick, .. } => *tick,
-            Self::MaterialProfile { .. } | Self::OwnedMaterialProfile { .. } => Tick(0),
+            Self::MaterialProfile { .. } | Self::OwnedMaterialProfile { .. }
+                | Self::SpreadMaterialProfile { .. } => Tick(0),
         }
     }
 }
@@ -196,23 +202,16 @@ impl World {
         };
         let mut world = Self::from_genesis(seed, config, version, genesis,
             isocosm::schema::Movement::Journey, vec![marker])?;
-        for item in &profile.items {
-            let [x, _, z] = crate::walking::to_site(&world.volume, item.at);
-            if x < world.volume.min[0] || x >= world.volume.max[0]
-                || z < world.volume.min[1] || z >= world.volume.max[1]
-            { return Err(WorldError::InvalidMaterialProfile); }
-            let recipe = &world.sim().genesis().rules.material_recipes[&item.recipe];
-            let arrival = recipe.arrival(world.site).map_err(|_| WorldError::InvalidMaterialProfile)?;
-            world.found(Command::Arrive(arrival))?;
-        }
+        world.arrive_material_items(&profile)?;
         Ok(world)
     }
 
     pub fn material_profile(&self) -> Option<&MaterialProfile> {
-        if ![MATERIAL_GENERATOR_VERSION, OWNED_GENERATOR_VERSION].contains(&self.generator_version) { return None; }
+        if ![MATERIAL_GENERATOR_VERSION, OWNED_GENERATOR_VERSION, SPREAD_GENERATOR_VERSION].contains(&self.generator_version) { return None; }
         match self.intents.first()? {
             WorldIntent::MaterialProfile { profile }
-                | WorldIntent::OwnedMaterialProfile { profile, .. } => Some(profile), _ => None,
+                | WorldIntent::OwnedMaterialProfile { profile, .. } => Some(profile),
+            WorldIntent::SpreadMaterialProfile { profile } => Some(&profile.materials), _ => None,
         }
     }
 
@@ -305,7 +304,8 @@ impl World {
 
     pub const fn generator_version(&self) -> u32 { self.generator_version }
     pub(crate) const fn developed_bodies(&self) -> bool {
-        matches!(self.generator_version, GENERATOR_VERSION | MATERIAL_GENERATOR_VERSION | OWNED_GENERATOR_VERSION | crate::founding::fixture::GENERATOR_VERSION)
+        matches!(self.generator_version, GENERATOR_VERSION | MATERIAL_GENERATOR_VERSION | OWNED_GENERATOR_VERSION
+            | SPREAD_GENERATOR_VERSION | crate::founding::fixture::GENERATOR_VERSION)
     }
     pub(crate) fn select_native_recipe(&mut self, recipe: Option<NativeFixtureRecipe>) -> Result<(), WorldError> {
         if self.generator_version != crate::founding::fixture::GENERATOR_VERSION {
@@ -405,7 +405,7 @@ impl World {
             });
         }
         let event = match intent.clone() {
-            WorldIntent::MaterialProfile { .. } | WorldIntent::OwnedMaterialProfile { .. }
+            WorldIntent::MaterialProfile { .. } | WorldIntent::OwnedMaterialProfile { .. } | WorldIntent::SpreadMaterialProfile { .. }
                 => return Err(WorldError::InvalidMaterialProfile),
             WorldIntent::Carve {
                 tick,
@@ -521,39 +521,6 @@ impl World {
         Self::restore_record(save)
     }
 
-    pub fn restore_record(save: WorldSave) -> Result<Self, WorldError> {
-        if ![2, 3, GENERATOR_VERSION, MATERIAL_GENERATOR_VERSION, OWNED_GENERATOR_VERSION, crate::founding::fixture::GENERATOR_VERSION].contains(&save.generator_version) {
-            return Err(WorldError::GeneratorDiverged {
-                saved: save.generator_version,
-                current: GENERATOR_VERSION,
-            });
-        }
-        let material = [MATERIAL_GENERATOR_VERSION, OWNED_GENERATOR_VERSION].contains(&save.generator_version);
-        if save.intents.iter().filter(|i| matches!(i,
-            WorldIntent::MaterialProfile { .. } | WorldIntent::OwnedMaterialProfile { .. })).count()
-            != usize::from(material) { return Err(WorldError::InvalidMaterialProfile); }
-        let mut world = if material {
-            match save.intents.first() {
-                Some(WorldIntent::MaterialProfile { profile }) if save.generator_version == MATERIAL_GENERATOR_VERSION =>
-                    Self::generate_materials(save.seed, save.config, (**profile).clone())?,
-                Some(WorldIntent::OwnedMaterialProfile { profile, stock }) if save.generator_version == OWNED_GENERATOR_VERSION =>
-                    Self::generate_owned_materials(save.seed, save.config, (**profile).clone(), stock.clone())?,
-                _ => return Err(WorldError::InvalidMaterialProfile),
-            }
-        } else {
-            Self::generate_version(save.seed, save.config, save.generator_version)?
-        };
-        if save.base_hash != world.base_hash {
-            return Err(WorldError::BaseDiverged {
-                saved: save.base_hash,
-                regrown: world.base_hash,
-            });
-        }
-        for intent in save.intents.into_iter().skip(usize::from(material)) {
-            world.apply(intent)?;
-        }
-        Ok(world)
-    }
 }
 
 #[cfg(test)]

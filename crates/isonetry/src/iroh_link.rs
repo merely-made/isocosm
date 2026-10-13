@@ -12,6 +12,7 @@
 //! peer is all the ordering guarantee the protocol needs.
 
 mod native;
+mod peers;
 
 use std::collections::HashMap;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr};
@@ -183,36 +184,7 @@ impl HostNet {
     /// Spawn the accept loop. Each joiner gets the snapshot, then the
     /// live `Applied` tail; its intents flow back into the host session.
     pub fn spawn_accept(&self) {
-        let endpoint = self.endpoint.clone();
-        let session = self.session.clone();
-        let peers = self.peers.clone();
-        tokio::spawn(async move {
-            while let Some(connecting) = endpoint.accept().await {
-                let Ok(conn) = connecting.await else { continue };
-                let peer = peer_of(&conn);
-                let out = match session.lock().await.on_authenticated_connect(peer, *conn.remote_id().as_bytes()) {
-                    Ok(out) => out,
-                    Err(_) => continue,
-                };
-                // Host opens the stream and speaks first (the snapshot).
-                let Ok((send, recv)) = conn.open_bi().await else {
-                    continue;
-                };
-                let (tx, rx) = mpsc::unbounded_channel();
-                peers.lock().await.insert(peer, tx);
-                tokio::spawn(writer_task(send, rx));
-                // Snapshot handshake, then the live tail follows via the
-                // same per-peer channel as `Applied` broadcasts arrive.
-                dispatch(&peers, out).await;
-                tokio::spawn(reader_task_host(
-                    conn,
-                    recv,
-                    peer,
-                    session.clone(),
-                    peers.clone(),
-                ));
-            }
-        });
+        peers::spawn_accept(self);
     }
 
     /// The host's own move (the DM plays): validate, order, broadcast.
@@ -335,25 +307,6 @@ async fn writer_task(mut send: SendStream, mut rx: mpsc::UnboundedReceiver<NetMe
         }
     }
     let _ = send.finish();
-}
-
-async fn reader_task_host(
-    _conn: Connection,
-    mut recv: RecvStream,
-    peer: PeerId,
-    session: Arc<Mutex<HostSession>>,
-    peers: PeerMap,
-) {
-    loop {
-        match read_frame(&mut recv).await {
-            Ok(msg) => {
-                let out = session.lock().await.on_message(peer, msg);
-                dispatch(&peers, out).await;
-            },
-            Err(_) => break,
-        }
-    }
-    peers.lock().await.remove(&peer);
 }
 
 /// A player's endpoint: dials a host ticket and replays its stream.

@@ -27,6 +27,9 @@ pub use debit::{DebitOrigin, DebitRequest, DebitSelection, LotQuantity, DebitPre
     OwnedActed, OwnedCommandResult, StockRules, SourceRule, DispositionRule,
     OperationRule, DirectOperation, Disposition, OutputClaim, Destination};
 pub use debit::{SpreadDebit, SpreadOutput, RetainedOutput, SpreadOutputWitness, SpreadPreview};
+pub use debit::{ProducedOrigin, ProducedSpread, ProducedOperation, ProducedOutput,
+    OutputReference, ProducedQuantity, ProducedClaim, ResolvedOutput, ClaimInput,
+    ClaimQuantity, ReferencedOutputClaim, ReferencedRetainedOutput};
 
 /// The accepted action that reserved the project, in its own identity domain.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -70,6 +73,9 @@ pub struct Projects {
     /// Disposable admission evidence, excluded from every saved preimage.
     #[serde(skip)]
     pub(crate) debit_capture: debit::Capture,
+    /// Accepted producing operations for exact later authored references (863).
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub produced: BTreeMap<Key, ProducedClaim>,
 }
 
 impl Projects {
@@ -78,7 +84,7 @@ impl Projects {
         copy.debit_capture.set(None);
         copy
     }
-    pub fn is_empty(&self) -> bool { self.records.is_empty() && self.bindings.is_empty() && self.ownership.is_empty() }
+    pub fn is_empty(&self) -> bool { self.records.is_empty() && self.bindings.is_empty() && self.ownership.is_empty() && self.produced.is_empty() }
     pub fn get(&self, id: ProjectId) -> Option<&Project> { self.records.get(&id) }
     pub fn bound(&self, actor: Id) -> Option<(ProjectId, &Project)> {
         let id = *self.bindings.get(&actor)?;
@@ -184,6 +190,8 @@ pub(crate) struct Writes {
     pub bindings: BTreeMap<Id, ProjectId>,
     pub ownership_before: BTreeMap<Key, Option<OwnedLot>>,
     pub ownership: BTreeMap<Key, OwnedLot>,
+    pub produced_before: BTreeMap<Key, Option<ProducedClaim>>,
+    pub produced: BTreeMap<Key, ProducedClaim>,
 }
 
 impl Writes {
@@ -191,5 +199,6 @@ impl Writes {
         self.before.iter().all(|(id, was)| projects.records.get(id) == was.as_ref())
             && self.binding_before.iter().all(|(actor, was)| projects.bindings.get(actor).copied() == *was)
             && self.ownership_before.iter().all(|(key, was)| projects.ownership.get(key) == was.as_ref())
+            && self.produced_before.iter().all(|(key, was)| projects.produced.get(key) == was.as_ref())
     }
 }

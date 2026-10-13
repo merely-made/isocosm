@@ -2,7 +2,20 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-12, native spread title vocabulary:** exact owned
+**Current source, 2026-10-13, authored spread founding and replay:** a separate
+SpreadMaterialProfile selects native generator8 and GameSave13. Required
+founder recipes, lineages, ordinary source accounts, actual ledgers, capacity,
+modifiers and stock rules are explicit author input. Logged Arrive/optional
+Develop produces actual founder IDs; later author steps reference accepted
+founders or existing subjects rather than guessing future IDs. Conserved
+local placement, ownership, overflow and strain steps use native previews and
+admission. The actual document startup reads a separate strict version2 input
+before beginning controlled play. Controlled/borrowed player packets refuse
+these author actions. Existing profile shapes and version tags remain intact.
+Later exact produced-output references are source-assembled under863.
+Source is uncompiled and untested under826; full E3/C11 acceptance remains open.
+
+**Earlier source, 2026-10-12, native spread title vocabulary:** exact owned
 stock reads now address actual bodies, sites, finer places and marked native
 transfers through `stock_balance`; Eponym's stock-selection UI consumes that
 native reading. Physical project reservation still offers only its admitted
@@ -922,3 +935,16 @@ Ruling 793 archived the genet document host plan to
   OwnedMaterialProfile marker; generator6's original profile shape remains
   unchanged. Native admission and operation-authored retained/closed claims
   are assembling. This is source placement, uncompiled and untested under826.
+
+- **2026-10-13, authored spread founding and replay source:** separate
+  SpreadMaterialProfile/native generator8 and GameSave13 append required
+  native founder recipes/lineages/stocks/capacity/title rules. Logged Arrive
+  and optional Develop record actual founder IDs; alias resolution references
+  those accepted events or actual subjects. Selected Place/Overflow/ForkStrain
+  and ownership steps use native admission/previews; controlled sessions
+  refuse author actions. The actual document startup consumes strict input
+  version2 before Session::begin. Native local placement supports conserved
+  loose same-lineage matter and unchanged spread identity within one resident
+  site; anatomical part sources refuse pending allocation support. Old
+  material profile shapes and Session1 remain intact. Source uncompiled and
+  untested826; full E3/C11 acceptance remains open.

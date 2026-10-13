@@ -15,6 +15,8 @@ mod strain;
 mod native;
 mod capacity;
 mod owned;
+mod placement;
+pub use placement::{Placement, Supply, place_stock};
 
 pub use stock::{functions, held, ledger_mass, provenance};
 pub(crate) use stock::validate;

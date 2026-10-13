@@ -25,6 +25,10 @@ pub struct HostSession {
     pub(super) peer_names: HashMap<PeerId, String>,
     /// Transport-authenticated endpoint keys; names remain display metadata.
     pub(super) peer_endpoints: HashMap<PeerId, [u8; 32]>,
+    /// Actual accepted current-version Hello for this live connection only.
+    pub(super) negotiated: std::collections::HashSet<PeerId>,
+    pub(super) connections: HashMap<PeerId, u64>,
+    pub(super) next_connection: u64,
     /// Client action requests awaiting adjudication. They sit here because this
     /// crate is deliberately rules-blind: it can validate that you own the token
     /// you are swinging, but it has no `System` and so cannot say whether you
@@ -32,7 +36,7 @@ pub struct HostSession {
     /// commits the outcome back through `local_event`.
     pub(super) pending_actions: Vec<ActionIntent>,
     /// Peers whose protocol version this host cannot speak, and the version
-    /// each of them offered. A refused peer stays refused for the session: it
+    /// each of them offered. A refused peer stays refused for that connection: it
     /// is answered with the same receipt every time and nothing it sends
     /// reaches game state.
     pub(super) refused: HashMap<PeerId, u16>,
@@ -68,6 +72,9 @@ impl HostSession {
             history,
             peer_names: HashMap::new(),
             peer_endpoints: HashMap::new(),
+            negotiated: std::collections::HashSet::new(),
+            connections: HashMap::new(),
+            next_connection: 0,
             pending_actions: Vec::new(),
             refused: HashMap::new(),
         }

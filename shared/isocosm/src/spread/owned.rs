@@ -10,7 +10,7 @@ pub(super) fn command_scope(state:&State, rules:&Rules) -> bool {
     state.projects.ownership.values().any(|held| held.current_source().is_some()
         && state.spreads.owns(&held.lot.account))
         || rules.owned_stock.iter().flat_map(|rules| &rules.selections)
-            .any(|rule| matches!(rule,SourceRule::Spread { .. }))
+            .any(|rule| matches!(rule,SourceRule::Spread { .. } | SourceRule::ProducedSpread { .. } | SourceRule::Placement { .. }))
 }
 
 pub(super) fn relevant(state:&State, rules:&Rules, operation:SpreadDebit, identity:&Identity, at:Substrate) -> bool {
@@ -18,15 +18,31 @@ pub(super) fn relevant(state:&State, rules:&Rules, operation:SpreadDebit, identi
         Ok(matches!(context.mode,Mode::Preview | Mode::Admit(_)))).ok().flatten().unwrap_or(false);
     explicit || state.projects.ownership.values().any(|held|
         held.current_source() == Some(substrate_source(at)) && held.lot.account == identity.key())
-        || rules.owned_stock.iter().flat_map(|rules| &rules.selections).any(|rule|
-            matches!(rule,SourceRule::Spread { operation:named,identity:selected,at:source, .. }
-                if *named == operation && selected == identity && *source == at))
+        || rules.owned_stock.iter().flat_map(|rules| &rules.selections).any(|rule| match rule {
+            SourceRule::Spread { operation:named,identity:selected,at:source, .. } =>
+                *named == operation && selected == identity && *source == at,
+            SourceRule::ProducedSpread { origin,operation:named,at:source, .. } => {
+                let parent = match state.projects.debit_capture.with(|context|
+                    crate::projects::ProducedOrigin::of(&context.origin)) {
+                    Ok(Some(parent)) => Some(parent),
+                    // The uncaptured native clock kernel creates this exact origin below.
+                    Ok(None) => Some(crate::projects::ProducedOrigin::Clock { tick:state.tick }),
+                    Err(_) => None,
+                };
+                *named == operation && *source == at && parent.as_ref() == Some(origin)
+            }, _ => false,
+        })
 }
 
 /// Native stock and title writes share this candidate, including generated outputs.
 pub(super) fn operation<T>(state:&mut State, rules:&Rules, operation:SpreadDebit,
     identity:&Identity, at:Substrate, run:impl FnOnce(&mut State)->Result<T>) -> Result<T> {
-    if !relevant(state,rules,operation,identity,at) { return run(state); }
+    operation_inner(state,rules,operation,identity,at,false,run)
+}
+
+fn operation_inner<T>(state:&mut State, rules:&Rules, operation:SpreadDebit,
+    identity:&Identity, at:Substrate, force:bool, run:impl FnOnce(&mut State)->Result<T>) -> Result<T> {
+    if !force && !relevant(state,rules,operation,identity,at) { return run(state); }
     let mut candidate = state.clone();
     let existing = candidate.projects.debit_capture.take();
     let had_parent = existing.is_some();
@@ -43,7 +59,9 @@ pub(super) fn operation<T>(state:&mut State, rules:&Rules, operation:SpreadDebit
     let parent = context.origin.clone();
     context.origin = DebitOrigin::NativeSpread { parent:Box::new(parent.clone()),operation,
         identity:identity.clone(),at };
+    if operation == SpreadDebit::Place { context.reference_scope = true; }
     context.matter.extend(candidate.spreads.identities.iter().map(Identity::key));
+    context.identities.extend(candidate.spreads.identities.iter().map(|identity| (identity.key(),identity.clone())));
     context.shadow.extend(candidate.projects.ownership.clone());
     let mut balances = state_balances(&candidate);
     if let Substrate::Host(host) = at {
@@ -66,9 +84,50 @@ pub(super) fn operation<T>(state:&mut State, rules:&Rules, operation:SpreadDebit
         return outcome;
     }
     candidate.projects.ownership.extend(context.changes());
+    candidate.projects.produced.extend(context.produced_changes());
     if had_parent { candidate.projects.debit_capture.set(Some(context)); }
     *state = candidate;
     outcome
+}
+
+pub(super) fn placement_relevant(state:&State, rules:&Rules, placement:&super::Placement) -> bool {
+    let source = substrate_source(placement.source.from());
+    let account = placement.source.account();
+    state.projects.ownership.values().any(|held| held.current_source() == Some(source) && held.lot.account == account)
+        || rules.owned_stock.iter().flat_map(|rules| &rules.selections).any(|rule|
+            matches!(rule,SourceRule::Placement { identity,at,source:from,account:key, .. }
+                if identity == &placement.identity && *at == placement.at && *from == source && key == &account))
+}
+
+pub(super) fn placement_operation<T>(state:&mut State, rules:&Rules, placement:&super::Placement,
+    run:impl FnOnce(&mut State)->Result<T>) -> Result<T> {
+    let force = placement_relevant(state,rules,placement);
+    operation_inner(state,rules,SpreadDebit::Place,&placement.identity,placement.source.from(),force,run)
+}
+
+pub(super) fn placement_begin(state:&State, source:&super::Supply, at:Substrate, identity:&Identity) -> Result<()> {
+    state.projects.debit_capture.with(|context| {
+        if !matches!(context.origin,DebitOrigin::NativeSpread { operation:SpreadDebit::Place, .. }) {
+            return Err("placement input lacks its actual native operation".into());
+        }
+        context.preserve = match source {
+            super::Supply::Spread { identity:from, .. } if from == identity => Some((substrate_source(at),identity.key())),
+            super::Supply::Spread { .. } => return Err("placement cannot substitute another native identity".into()),
+            super::Supply::Matter { .. } => None,
+        };
+        Ok(())
+    })?;
+    Ok(())
+}
+
+pub(super) fn placement_output(state:&State, at:Substrate, identity:&Identity, amount:u64) -> Result<()> {
+    state.projects.debit_capture.with(|context| {
+        if !matches!(context.origin,DebitOrigin::NativeSpread { operation:SpreadDebit::Place, .. }) {
+            return Err("placement output lacks its actual native operation".into());
+        }
+        context.emit_spread(SpreadOutput::Placement,substrate_source(at),identity.clone(),amount)
+    })?;
+    Ok(())
 }
 
 pub(super) fn mark_route(state:&mut State, at:Substrate, route:usize, index:usize,

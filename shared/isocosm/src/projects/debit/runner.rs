@@ -14,8 +14,10 @@ impl Simulation {
         if self.state.projects.ownership.is_empty() { return Ok(()); }
         let action = self.owned_action(actor,process,act);
         let origin = DebitOrigin::Process { process:process.into(),actor,target };
-        self.state.projects.debit_capture.set(Some(Context::new(&self.state,&self.genesis.rules,
-            crate::digest(&(&self.revision,&self.state)),origin,action,Mode::Authored)));
+        let mut context = Context::new(&self.state,&self.genesis.rules,
+            crate::digest(&(&self.revision,&self.state)),origin,action,Mode::Authored);
+        context.produced = self.produced_at_start();
+        self.state.projects.debit_capture.set(Some(context));
         Ok(())
     }
     pub(crate) fn finish_process_debits(&mut self, receipt:&Receipt) {

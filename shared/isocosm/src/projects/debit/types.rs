@@ -52,20 +52,22 @@ pub struct OwnedActed { pub receipt: Receipt, pub debits: Vec<DebitRequest>, pub
 pub struct OwnedCommandResult { pub outcome: String, pub debits: Vec<DebitRequest>, pub claims: Vec<Key> }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-pub enum DirectOperation { Wound, Edit, SpreadOverflow, ForkStrain }
+pub enum DirectOperation { Wound, Edit, SpreadOverflow, ForkStrain, SpreadPlace }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum OperationRule {
     Process { process: Key, ordinal: u64 },
     Command(DirectOperation),
     Spread { operation:SpreadDebit, identity:crate::spread::Identity, at:crate::spread::Substrate },
+    ProducedSpread { origin:ProducedOrigin, operation:SpreadDebit, at:crate::spread::Substrate,
+        input:OutputReference },
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-pub enum SpreadDebit { Overflow, ForkStrain }
+pub enum SpreadDebit { Overflow, ForkStrain, Place }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
-pub enum SpreadOutput { Route(usize), GeneratedStrain }
+pub enum SpreadOutput { Route(usize), GeneratedStrain, Placement }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct RetainedOutput { pub input:Key, pub amount:u64, pub output:SpreadOutput }
@@ -98,6 +100,8 @@ pub enum Disposition {
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         closed: Vec<LotQuantity> },
     Outputs { outputs:Vec<RetainedOutput>, closed:Vec<LotQuantity> },
+    RetainReferenced { outputs:Vec<ReferencedOutputClaim>, closed:Vec<ClaimQuantity> },
+    OutputsReferenced { outputs:Vec<ReferencedRetainedOutput>, closed:Vec<ClaimQuantity> },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -110,6 +114,11 @@ pub enum SourceRule {
         lots: Vec<LotQuantity>, unowned: u64 },
     Spread { operation:SpreadDebit, identity:crate::spread::Identity, at:crate::spread::Substrate,
         lots:Vec<LotQuantity>, unowned:u64 },
+    ProducedProcess { process:Key, operation:u64, from:Binding, output:ProducedQuantity },
+    ProducedSpread { origin:ProducedOrigin, operation:SpreadDebit, at:crate::spread::Substrate,
+        output:ProducedQuantity },
+    Placement { identity:crate::spread::Identity, at:crate::spread::Substrate,
+        source:StockSource, account:Key, lots:Vec<LotQuantity>, unowned:u64 },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -125,6 +134,7 @@ pub(crate) fn direct_operation(command: &Command) -> Result<DirectOperation> {
         Command::Edit { by: Some(_), .. } => Ok(DirectOperation::Edit),
         Command::Spread(crate::spread::Command::Overflow { .. }) => Ok(DirectOperation::SpreadOverflow),
         Command::Spread(crate::spread::Command::ForkStrain { .. }) => Ok(DirectOperation::ForkStrain),
+        Command::Spread(crate::spread::Command::Place(_)) => Ok(DirectOperation::SpreadPlace),
         _ => Err("owned admission requires a real direct Wound, member Edit or debit-producing Spread command".into()),
     }
 }

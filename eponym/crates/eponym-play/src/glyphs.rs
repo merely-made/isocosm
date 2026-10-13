@@ -375,6 +375,8 @@ fn tick_of(event: &GameEvent) -> u64 {
         | GameEvent::ProjectCarried { tick, .. }
         | GameEvent::ProjectConsented { tick, .. }
         | GameEvent::StockAct { tick, .. }
+        | GameEvent::SpreadActorFounded { tick, .. }
+        | GameEvent::AuthoredSpread { tick, .. }
         | GameEvent::CanonRevised { tick, .. } => tick.0,
     }
 }

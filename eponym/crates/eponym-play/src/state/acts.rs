@@ -342,6 +342,9 @@ impl GameState {
             | GameIntent::StockOwnership { .. }
             | GameIntent::StockAct { .. }
             | GameIntent::EatOwned { .. }
+            | GameIntent::FoundSpreadActor { .. }
+            | GameIntent::SpreadOwnership { .. }
+            | GameIntent::AuthoredSpread { .. }
             | GameIntent::ReviseCanon { .. } => {
                 unreachable!("routed before acts")
             },

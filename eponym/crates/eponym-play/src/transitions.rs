@@ -17,8 +17,9 @@ use crate::{
     MovementProfile, ResolvedStrike, WorldError, WorldSave,
 };
 
-/// Version12 records exact owned-stock debit selections.
-pub const GAME_STATE_VERSION: u32 = 12;
+/// Version13 records author-only spread founding and selected native placement.
+pub const GAME_STATE_VERSION: u32 = 13;
+pub const SPREAD_GAME_STATE_VERSION: u32 = 13;
 pub const OWNED_STOCK_GAME_STATE_VERSION: u32 = 12;
 pub const PROJECT_CUSTODY_GAME_STATE_VERSION: u32 = 11;
 pub const PROJECT_GAME_STATE_VERSION: u32 = 10;
@@ -225,6 +226,9 @@ pub enum GameIntent {
         item: ItemId,
         selections: Vec<isocosm::projects::DebitSelection>,
     },
+    FoundSpreadActor { tick: Tick, key: String, recipe: String, site: isocosm::schema::Id },
+    SpreadOwnership { tick: Tick, identity: crate::IdentityRef, lot: crate::AuthorSpreadLot },
+    AuthoredSpread { tick: Tick, step: crate::AuthorSpreadStep },
 }
 
 impl GameIntent {
@@ -240,6 +244,9 @@ impl GameIntent {
             | Self::ProjectConsent { tick, .. }
             | Self::StockAct { tick, .. }
             | Self::EatOwned { tick, .. }
+            | Self::FoundSpreadActor { tick, .. }
+            | Self::SpreadOwnership { tick, .. }
+            | Self::AuthoredSpread { tick, .. }
             | Self::Name { tick, .. }
             | Self::Move { tick, .. }
             | Self::Observe { tick, .. }
@@ -287,8 +294,14 @@ impl GameIntent {
             | Self::ConfigureMovementProfile { subject, .. }
             | Self::Wait { subject, .. } => Some(*subject),
             Self::ResolveVolley { actor, .. } => Some(*actor),
-            Self::ReviseCanon { .. } | Self::StockOwnership { .. } => None,
+            Self::ReviseCanon { .. } | Self::StockOwnership { .. }
+                | Self::FoundSpreadActor { .. } | Self::SpreadOwnership { .. } | Self::AuthoredSpread { .. } => None,
         }
+    }
+
+    pub const fn is_author_only(&self) -> bool {
+        matches!(self, Self::StockOwnership { .. } | Self::FoundSpreadActor { .. }
+            | Self::SpreadOwnership { .. } | Self::AuthoredSpread { .. })
     }
 }
 
@@ -452,6 +465,9 @@ pub enum GameEvent {
         process: String,
         result: isocosm::projects::OwnedActed,
     },
+    SpreadActorFounded { tick: Tick, key: String, recipe: String, site: isocosm::schema::Id,
+        entity: isocosm::schema::Id },
+    AuthoredSpread { tick: Tick, outcome: String },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -486,6 +502,7 @@ pub enum GameError {
     VersionDiverged { saved: u32, current: u32 },
     Encode,
     Decode,
+    LegacySpreadIntent,
 }
 
 impl From<WorldError> for GameError {

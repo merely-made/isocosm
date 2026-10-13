@@ -25,6 +25,7 @@ mod apply;
 mod client;
 mod host;
 mod messages;
+mod connection;
 mod native;
 mod native_host;
 mod native_storylet;

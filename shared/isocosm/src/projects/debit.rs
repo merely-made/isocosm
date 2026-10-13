@@ -9,6 +9,11 @@ mod validate;
 mod spread;
 pub(crate) use spread::{substrate_source, transit_amount};
 pub use types::*;
+mod produced;
+pub use produced::{ProducedOrigin, ProducedSpread, ProducedOperation, ProducedOutput,
+    OutputReference, ProducedQuantity, ProducedClaim, ResolvedOutput, ClaimInput,
+    ClaimQuantity, ReferencedOutputClaim, ReferencedRetainedOutput};
+mod references;
 mod capture;
 pub(crate) use capture::{Capture, Context, Mode, Balances};
 mod disposition;

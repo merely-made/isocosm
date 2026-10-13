@@ -157,11 +157,7 @@ impl HostSession {
     /// Trusted transport supplies the actual authenticated endpoint, not Hello.
     /// A routing-hash collision must never inherit another endpoint's grant.
     pub fn on_authenticated_connect(&mut self, peer: PeerId, endpoint: [u8; 32]) -> Result<Vec<Outbound>, String> {
-        if matches!(peer, PeerId::HOST | PeerId::UNATTRIBUTED)
-            || self.peer_endpoints.get(&peer).is_some_and(|held| *held != endpoint)
-        { return Err("authenticated endpoint conflicts with a reserved or occupied routing identity".into()); }
-        self.peer_endpoints.insert(peer, endpoint);
-        Ok(self.on_connect(peer))
+        self.begin_authenticated_connection(peer,endpoint).map(|(_,out)| out)
     }
 
     pub fn commit_native_table_binding(&mut self, input: &NativeTableBindingInput) -> Result<Vec<Outbound>, String> {

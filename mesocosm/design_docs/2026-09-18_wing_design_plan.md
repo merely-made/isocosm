@@ -4,7 +4,15 @@
 
 *Names, 2026-09-22 (wing design record, rulings 109 to 111): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. The rename landed on 2026-09-24; verbatim rulings, quotations and dated lines keep the old words as history (ruling 198).*
 
-**Status, 2026-10-10:** living design record; the plan review
+**Current source, 2026-10-13:** rulings through864 remain the accepted record.
+863's exact produced-output references and C11's Eponym founding, replay and
+actual startup are source-assembled alongside Mesocosm's spread consumer.
+H0 current-Hello and connection-generation custody source is placed. All
+source remains uncompiled and untested under826. The six VTT choices865 to870
+are pending as one collected round under864; next unused871. C9 is historically
+certified/merged; C10/C11 final certification and complete V2/E3/M4 stay open.
+
+**Earlier status, 2026-10-10:** living design record; the plan review
 rulings 793 to 804 are applied. The native migration push is integrated
 under 732's compile gate. Certification is the after-pass's, not completion
 of W2 to W5.
@@ -14744,3 +14752,15 @@ to 2026-10-06 is archived as
 - **2026-10-12, 859/860:** player approval names each currently played body before the DM applies approved joint departures; authored native pace profiles supply duration and conserved stock costs. Exact answers are recorded. Their dependent source is next; question861 asks whether an approved deliberative critter receives a native travel goal and may split, or stays out of joint departure. The next unused question is862. Native spread title/transit source is assembled, with later dynamic/future-lot selectors and actual product spread authoring still open. No compiler/tests/fixtures/tuning ran under826.
 
 - **2026-10-12, 859 to864, pace/joint journey and spread authoring source:** native MovePaced uses authored fixed/route-scaled duration and full-quantity stock costs before staged departure. Actual Setup/preview/admission share supplied pace/process catalogues. Joint journey proposals use original tick/roster, explicit listed bodies, own-player approvals and exact named-lot terms; DM Apply atomically publishes real normative Journeys or genuine bonded critter Nudges, without advancing native time. GameBindings6 and protocol/ALPN10 connect standalone/shared-host callers. Mesocosm Genet --spread and shared --mesocosm-spread admit explicit matching-native founding, ownership and selected spread steps with real saved-game refresh. Source is assembled, unverified. C9 remains historically certified/merged; C10 final certification and C11 consumer completion/certification stay open. Future produced-lot selectors are ruled863, their source and Eponym spread founding/replay are next.864 requires all known outstanding questions together. No question is pending; next unused865. No Cargo/compiler/tests/fixtures/probes/tuning ran under826.
+
+- **2026-10-13, C11 and H0 source connections:** accepted863 now has exact
+  produced-operation/output references, atomic provenance/title publication
+  and pass-start views. Eponym generator8/GameSave13 supplies explicit spread
+  founding, logged actual founder IDs, selected author actions, replay and
+  strict version2 document startup. Native local placement conserves loose
+  same-lineage or same-Identity stock within one resident site; positive
+  anatomical sources refuse pending an admitted allocation path. H0 actual
+  Hello and connection generations guard live input/reconnect. Source remains
+  uncompiled and untested826. C9's historical certificate stands; C10/C11
+  final certification and full V2/E3/M4 stay open. All six known VTT choices
+  865 to870 were delivered together864 and remain pending; next unused871.

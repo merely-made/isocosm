@@ -26,7 +26,7 @@ use crate::identity::{SubjectId, Tick};
 use crate::items::{ItemPlaces, Items};
 use crate::{
     Anatomies, AnatomyError, AnatomyRecord, Bodies, GameError, GameEvent, GameIntent, Movement,
-    MovementProfile, MovementProjection, World,
+    MovementProfile, MovementProjection, World, WorldError,
 };
 
 mod acts;
@@ -41,6 +41,7 @@ mod project_places;
 mod project_carry;
 mod project_consent;
 mod stock;
+mod spread;
 pub use project_places::ProjectLocation;
 mod save;
 
@@ -322,6 +323,7 @@ impl GameState {
     }
 
     fn admit(&mut self, intent: &GameIntent) -> Result<Vec<GameEvent>, GameError> {
+        if let Some(events) = self.admit_spread_author(intent)? { return Ok(events); }
         let tick = intent.tick();
         if let GameIntent::StockOwnership { lot, .. } = intent {
             if self.participant.is_some() { return Err(WorldError::NotFounding.into()); }

@@ -367,6 +367,7 @@ impl Simulation {
             for (id, was) in &stage.projects.before { frame.keep_project(*id, was.as_ref()); }
             for (actor, was) in &stage.projects.binding_before { frame.keep_project_binding(*actor, *was); }
             for (key, was) in &stage.projects.ownership_before { frame.keep_stock_lot(key, was.as_ref()); }
+            for (key, was) in &stage.projects.produced_before { frame.keep_produced(key, was.as_ref()); }
         }
         self.project_decision_stamp = stage.project_decision;
         let s = &mut self.state;
@@ -412,6 +413,7 @@ impl Simulation {
         s.projects.records.extend(stage.projects.records);
         s.projects.bindings.extend(stage.projects.bindings);
         s.projects.ownership.extend(stage.projects.ownership);
+        s.projects.produced.extend(stage.projects.produced);
         for (axis, value) in stage.marks {
             s.record.reckon(&[hagiograph::Entry {
                 axis,

@@ -64,11 +64,15 @@ Rulings859 to862 now supply each player's current-body joint departure
 approval, authored native pace duration/stock costs and genuinely bonded
 critter goals, with the existing native chooser deciding their following.
 Those source connections, standalone/shared VTT callers and Mesocosm's
-explicit authored spread startup are assembled, unverified.863 permits exact
-authored producing-operation/output references for future lots; that source
-and Eponym spread founding/replay are next.864 requires collected question
-rounds rather than trickling questions. No question is pending; the next
-unused question is865. Verification and adjustments wait under826.
+explicit authored spread startup are assembled, unverified.863's exact
+authored producing-operation/output references and Eponym spread founding,
+logged author actions, save/replay and actual startup source are assembled.
+H0 actual-Hello/reconnect admission source is also placed.864 requires all
+known questions together; the six VTT choices865 to870 were delivered in one
+batch and remain pending. The next unused question is871. Verification and
+adjustments wait under826. C9 is historically certified/merged, C10 harm is
+implemented with final certification open, and C11 source connections are
+advancing with final certification open.
 
 **Execution update, 2026-10-11, combined migrations:** Mark identified
 excessive verification of intermediate states delaying the migrations. The
@@ -1389,3 +1393,14 @@ they amend. Carry each ruling into every plan it touches in the same commit.
 - **2026-10-12, 859/860:** player approval names each currently played body before the DM applies approved joint departures; authored native pace profiles supply duration and conserved stock costs. Exact answers are recorded. Their dependent source is next; question861 asks whether an approved deliberative critter receives a native travel goal and may split, or stays out of joint departure. The next unused question is862. Native spread title/transit source is assembled, with later dynamic/future-lot selectors and actual product spread authoring still open. No compiler/tests/fixtures/tuning ran under826.
 
 - **2026-10-12, 859 to864, pace/joint journey and spread authoring source:** native MovePaced uses authored fixed/route-scaled duration and full-quantity stock costs before staged departure. Actual Setup/preview/admission share supplied pace/process catalogues. Joint journey proposals use original tick/roster, explicit listed bodies, own-player approvals and exact named-lot terms; DM Apply atomically publishes real normative Journeys or genuine bonded critter Nudges, without advancing native time. GameBindings6 and protocol/ALPN10 connect standalone/shared-host callers. Mesocosm Genet --spread and shared --mesocosm-spread admit explicit matching-native founding, ownership and selected spread steps with real saved-game refresh. Source is assembled, unverified. C9 remains historically certified/merged; C10 final certification and C11 consumer completion/certification stay open. Future produced-lot selectors are ruled863, their source and Eponym spread founding/replay are next.864 requires all known outstanding questions together. No question is pending; next unused865. No Cargo/compiler/tests/fixtures/probes/tuning ran under826.
+
+- **2026-10-13, C11/Eponym and H0 source packet:** three source lanes froze
+  exact produced-output references/provenance, conserved local placement and
+  Eponym generator8/GameSave13 spread founding/actions/replay, plus actual
+  Hello/reconnect custody. Root connects strict version2 input to the actual
+  Eponym document startup before controlled play. Positive anatomical source
+  placement remains unsupported; local loose/partless placement is admitted.
+  C9 historically certified/merged; C10 harm implemented, final certification
+  open; C11 source connections advancing, final certification open. No
+  compiler/tests/fixtures/probes/tuning under826. The six known VTT choices
+  865 to870 were delivered together864 and remain pending; next unused871.

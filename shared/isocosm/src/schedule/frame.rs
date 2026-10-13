@@ -23,6 +23,7 @@ pub(crate) struct Frame {
     projects: BTreeMap<crate::projects::ProjectId, Option<crate::projects::Project>>,
     project_bindings: BTreeMap<Id, Option<crate::projects::ProjectId>>,
     ownership: BTreeMap<Key, Option<crate::projects::OwnedLot>>,
+    produced: BTreeMap<Key, Option<crate::projects::ProducedClaim>>,
     /// Bodies as the pass began, by their span then: a member lifted out of
     /// its group alone, a cohort written whole with its count.
     bodies: BTreeMap<Id, (u64, Entity)>,
@@ -91,6 +92,10 @@ pub(crate) fn edible(ledger: &Ledger, of: &[Key]) -> Ledger {
 }
 
 impl Frame {
+    pub(crate) fn produced_claims(&self) -> &BTreeMap<Key,Option<crate::projects::ProducedClaim>> { &self.produced }
+    pub(crate) fn keep_produced(&mut self, key: &str, was: Option<&crate::projects::ProducedClaim>) {
+        self.produced.entry(key.into()).or_insert_with(|| was.cloned());
+    }
     pub(crate) fn stock_lot(&self, key: &str) -> Option<&Option<crate::projects::OwnedLot>> {
         self.ownership.get(key)
     }

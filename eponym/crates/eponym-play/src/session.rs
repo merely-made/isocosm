@@ -21,6 +21,7 @@ use crate::{
     PROJECT_GAME_STATE_VERSION,
     PROJECT_CUSTODY_GAME_STATE_VERSION,
     OWNED_STOCK_GAME_STATE_VERSION,
+    SPREAD_GAME_STATE_VERSION,
     World,
 };
 
@@ -131,7 +132,7 @@ impl Session {
 
     /// Applies one ordinary game action for the one currently controlled body.
     pub fn apply_game(&mut self, intent: GameIntent) -> Result<Vec<GameEvent>, SessionError> {
-        if matches!(intent, GameIntent::StockOwnership { .. }) {
+        if intent.is_author_only() {
             return Err(GameError::World(crate::WorldError::NotFounding).into());
         }
         // A world-level intent names no subject, so control does not gate it.
@@ -376,6 +377,13 @@ impl Session {
             && save.game.intents.iter().any(|intent| matches!(intent,
                 GameIntent::StockAct { .. } | GameIntent::EatOwned { .. }))
         { return Err(SessionError::Game(GameError::LegacyOwnedStockIntent)); }
+        if save.game.version < SPREAD_GAME_STATE_VERSION
+            && (save.game.world.generator_version == crate::founding::spread::GENERATOR_VERSION
+                || save.game.intents.iter().any(|intent| matches!(intent,
+                    GameIntent::FoundSpreadActor { .. } | GameIntent::SpreadOwnership { .. }
+                    | GameIntent::AuthoredSpread { .. }))) {
+            return Err(SessionError::Game(GameError::LegacySpreadIntent));
+        }
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents
         {

@@ -20,6 +20,7 @@ use std::collections::{BTreeMap, BTreeSet};
 mod body;
 pub(crate) mod fixture;
 pub mod materials;
+pub mod spread;
 
 pub const SOPHONT: &str = "lineage:eponym";
 pub const TISSUE: &str = "eponym:tissue";

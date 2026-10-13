@@ -2,7 +2,17 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-12 (859 to864):** joint journey proposals name an
+**Current source, 2026-10-13, H0 connection admission:** only negotiation
+messages enter before accepted current-version Hello. Actual Iroh and
+in-process connections carry a generation; old readers, queued input and
+disconnects cannot act on a successor connection. Resetting live transport
+state leaves saved native bindings, player rosters, holds and history intact.
+Source is uncompiled and untested under826. The six known choices865 to870
+were delivered together under864 and remain pending: pack activation, goal
+participation, polity conflicts, map tint, edges and thumbnails. Full V2/V3
+and headed acceptance remain open.
+
+**Earlier source, 2026-10-12 (859 to864):** joint journey proposals name an
 explicit ordered group of current played bodies, authored processes/pace
 profiles and exact stock terms. Each listed player approves their own body.
 The proposing DM applies the group on one private native candidate; every
@@ -917,3 +927,11 @@ what each left open lands here, so it has a live owner.
   under826. Protocol8 individual native time-request transport is assembling;
   player roster and waiting-proposal choices851/852 are pending. No native
   time advance is activated by an unanswered choice. Ruleset lowering is V3.
+
+- **2026-10-13, H0 actual negotiation and reconnect source:** current-version
+  Hello is required before ordinary or native input. Actual Iroh/in-process
+  input and disconnects carry the installed connection generation; old readers
+  and queued traffic cannot mutate a successor. Saved native bindings,
+  player roster/holds and accepted history persist. Source is uncompiled and
+  untested826. The full V2 source inventory is open; all six known choices
+  865 to870 are pending as one collected round864, with next unused871.

@@ -11,6 +11,8 @@ use eponym_play::timed_action::{TimedActionRules, TimedActionSession};
 use serde::Deserialize;
 use wing_functions::NetworkSnapshot;
 
+mod input;
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Input {
@@ -55,14 +57,8 @@ pub(super) fn start() -> Result<Start, String> {
             combat_rules:fixture.combat_rules, glyphs });
     };
     let bytes = std::fs::read(path).map_err(|error| error.to_string())?;
-    let input: Input = serde_json::from_slice(&bytes).map_err(|error| error.to_string())?;
-    if input.version != 1 { return Err("unsupported Eponym material-world startup version".into()); }
-    let world = match input.owned_stock {
-        Some(stock) => World::generate_owned_materials(input.seed, input.config, input.materials, stock),
-        None => World::generate_materials(input.seed, input.config, input.materials),
-    }
-        .map_err(|error| format!("material founding: {error:?}"))?;
-    let mut game = GameState::new(world).with_motion_solver(eponym_motion::SOLVER);
+    let input = input::decode(&bytes)?;
+    let mut game = GameState::new(input.world).with_motion_solver(eponym_motion::SOLVER);
     for (index, intent) in input.initial_intents.into_iter().enumerate() {
         game.apply(intent).map_err(|error| format!("initial intent {index}: {error:?}"))?;
     }

@@ -32,6 +32,7 @@ mod session;
 mod sites;
 mod state;
 mod subject_sheet;
+pub mod author_spread;
 mod technique;
 pub mod timed_action;
 mod save_wire;
@@ -54,6 +55,9 @@ pub use combat::{
 pub use equipment::AttachmentView;
 pub use founding::fixture::{NativeFixtureProfile, NativeFixtureRecipe};
 pub use founding::materials::{MaterialProfile, MaterialStock, ItemRecipe, InitialMaterialItem};
+pub use founding::spread::{SpreadMaterialProfile, SpreadFounding, Founder};
+pub use author_spread::{ActorRef, HolderRef, IdentityRef, AuthorSupply, AuthorPlacement,
+    AuthorSpreadStep, AuthorSpreadLot};
 pub use items::{Item, ItemError, ItemHolding, ItemHoldingKind, ItemId, ItemKind,
     ItemLocation, ItemPlaces, ItemReading, ItemReadingError, Items, MakerProvenance, SourceLineage};
 pub use motion::{
@@ -87,6 +91,7 @@ pub use transitions::{
     PROJECT_GAME_STATE_VERSION,
     PROJECT_CUSTODY_GAME_STATE_VERSION,
     OWNED_STOCK_GAME_STATE_VERSION,
+    SPREAD_GAME_STATE_VERSION,
 };
 pub use world::{
     GENERATOR_VERSION, World, WorldConfig, WorldError, WorldEvent, WorldIntent, WorldSave,

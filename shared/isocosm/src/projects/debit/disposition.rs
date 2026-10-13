@@ -25,8 +25,8 @@ impl Context {
                 row.1 = row.1.checked_add(piece.amount).ok_or("selected claim quantity overflow")?;
             }
             let mut outputs: Vec<_> = self.pieces.iter().filter_map(|piece| piece.preserve.as_ref()
-                .map(|(source, account)| OutputClaim { input: piece.lot.key.clone(), amount: piece.amount,
-                    destination: Destination::Source(*source), account: account.clone() })).collect();
+                .map(|(source, account)| (OutputClaim { input: piece.lot.key.clone(), amount: piece.amount,
+                    destination: Destination::Source(*source), account: account.clone() },None))).collect();
             let remaining: BTreeMap<Key, u64> = self.pieces.iter().filter(|piece| piece.preserve.is_none())
                 .try_fold(BTreeMap::<Key, u64>::new(), |mut rows, piece| -> Result<_> {
                     let amount = rows.entry(piece.lot.key.clone()).or_default();
@@ -36,14 +36,17 @@ impl Context {
             let mut closed = BTreeMap::new();
             if !remaining.is_empty() {
                 let operation = self.operation_rule()?;
-                let rules: Vec<_> = self.rules.iter().flat_map(|rules| &rules.dispositions)
-                    .filter(|rule| rule.operation == operation).collect();
+                let mut rules = Vec::new();
+                for rule in self.rules.iter().flat_map(|rules| &rules.dispositions) {
+                    if self.disposition_matches(&rule.operation,&operation,&selected)? { rules.push(rule); }
+                }
                 let [rule] = rules.as_slice() else { return Err("owned debit needs one exact authored operation disposition".into()); };
+                let disposition = self.referenced_disposition(&rule.disposition,&selected)?;
                 if matches!(operation,OperationRule::Spread { operation:SpreadDebit::Overflow, .. })
-                    && !matches!(&rule.disposition,Disposition::Outputs { closed, .. } if closed.is_empty()) {
+                    && !matches!(&disposition,Disposition::Outputs { closed, .. } if closed.is_empty()) {
                     return Err("unchanged transported claims need exact authored route outputs".into());
                 }
-                match &rule.disposition {
+                match &disposition {
                     Disposition::CloseConsumed => closed = remaining,
                     Disposition::Retain { outputs: retained, closed: portions } => {
                         for portion in portions {
@@ -53,7 +56,7 @@ impl Context {
                                 return Err("closed portion exceeds or repeats its exact consumed input quantity".into());
                             }
                         }
-                        outputs.extend(retained.clone());
+                        outputs.extend(retained.iter().cloned().map(|output| (output,None)));
                     },
                     Disposition::Outputs { outputs: retained,closed:portions } => {
                         for portion in portions {
@@ -63,15 +66,19 @@ impl Context {
                         }
                         for retained in retained {
                             let actual = self.outputs.get(&retained.output).ok_or("authored claim names no actual native spread output")?;
-                            outputs.push(OutputClaim { input:retained.input.clone(),amount:retained.amount,
-                                destination:Destination::Source(actual.source),account:actual.identity.key() });
+                            outputs.push((OutputClaim { input:retained.input.clone(),amount:retained.amount,
+                                destination:Destination::Source(actual.source),account:actual.identity.key() },Some(actual.clone())));
                         }
                     },
+                    Disposition::RetainReferenced { .. } | Disposition::OutputsReferenced { .. } => unreachable!("references lower above"),
                 }
             }
             if !outputs.is_empty() {
                 let mut allocated = closed;
-                for (index, output) in outputs.iter().enumerate() {
+                for (index, (output,spread_output)) in outputs.iter().enumerate() {
+                    let spread_output = spread_output.clone().or_else(|| self.outputs.get(&SpreadOutput::Placement)
+                        .filter(|witness| matches!(output.destination,Destination::Source(source) if source == witness.source)
+                            && output.account == witness.identity.key()).cloned());
                     let (input, selected_amount) = selected.get(&output.input).ok_or("retained output names no selected input lot")?;
                     if output.amount == 0 { return Err("retained output claim has no quantity".into()); }
                     let to = match output.destination {
@@ -94,6 +101,17 @@ impl Context {
                     lot.account = output.account.clone();
                     lot.amount = output.amount;
                     self.shadow.insert(key.clone(), OwnedLot { lot, at: LotAt::Source });
+                    if self.reference_scope {
+                        if !self.matter.contains(&output.account) || self.produced.contains_key(&key) {
+                            return Err("produced claim account is undeclared or provenance already exists".into());
+                        }
+                        let producer = self.producer()?;
+                        self.produced.insert(key.clone(),ProducedClaim {
+                            producer,action:self.action.clone(),output:index as u64,input:output.input.clone(),
+                            source:to,account:output.account.clone(),amount:output.amount,
+                            identity:self.identities.get(&output.account).cloned(),spread_output,
+                        });
+                    }
                     self.claims.push(key);
                 }
                 if selected.iter().any(|(key, (_, amount))| allocated.get(key) != Some(amount)) {

@@ -20,6 +20,7 @@ use crate::{
     PROJECT_GAME_STATE_VERSION,
     PROJECT_CUSTODY_GAME_STATE_VERSION,
     OWNED_STOCK_GAME_STATE_VERSION,
+    SPREAD_GAME_STATE_VERSION,
 };
 
 impl GameState {
@@ -124,6 +125,13 @@ impl GameState {
             && save.intents.iter().any(|intent| matches!(intent,
                 GameIntent::StockAct { .. } | GameIntent::EatOwned { .. }))
         { return Err(GameError::LegacyOwnedStockIntent); }
+        if save.version < SPREAD_GAME_STATE_VERSION
+            && (save.world.generator_version == crate::founding::spread::GENERATOR_VERSION
+                || save.intents.iter().any(|intent| matches!(intent,
+                    GameIntent::FoundSpreadActor { .. } | GameIntent::SpreadOwnership { .. }
+                    | GameIntent::AuthoredSpread { .. }))) {
+            return Err(GameError::LegacySpreadIntent);
+        }
         let world = World::restore_record(save.world)?;
         let mut state = Self::new(world).with_motion_solver(solver);
         for intent in save.intents {

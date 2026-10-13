@@ -86,4 +86,7 @@ intents! {
         target:Option<isocosm::schema::Id>, selections:Vec<isocosm::projects::DebitSelection> },
     EatOwned { tick:Tick, subject:SubjectId, item:ItemId,
         selections:Vec<isocosm::projects::DebitSelection> },
+    FoundSpreadActor { tick:Tick, key:String, recipe:String, site:isocosm::schema::Id },
+    SpreadOwnership { tick:Tick, identity:crate::IdentityRef, lot:crate::AuthorSpreadLot },
+    AuthoredSpread { tick:Tick, step:crate::AuthorSpreadStep },
 }

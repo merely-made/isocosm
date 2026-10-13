@@ -2,7 +2,16 @@
 
 **Date:** 2026-09-25
 
-**Current source, 2026-10-12, authored spread consumer:** a strict versioned
+**Current source, 2026-10-13, produced owned matter (863):** explicit authored
+references name a genuine accepted producing operation and output with an
+exact quantity. Native resolution checks its current lot, holder, account,
+registered spread identity and physical remainder; ambiguous or spent claims
+refuse. Metadata stages atomically and remains pass-start aware. Unmarked old
+stock grammars do not acquire retrospective provenance. Source is assembled,
+uncompiled and untested under826. The existing authored startup remains the
+actual Mesocosm consumer; full M4/C11 acceptance remains open.
+
+**Earlier source, 2026-10-12, authored spread consumer:** a strict versioned
 `author_spread::Setup` supplies actual Founded/Genesis, registered-identity
 ownership assertions and exact selected Overflow/ForkStrain steps. Genet
 `--spread` opens that authored world; `--spatial` may follow against its
@@ -501,3 +510,11 @@ All three taken on 2026-09-25, the day the plan was drafted.
   in the new saved record; old ForceBirth wire and replay remain unchanged.
   Unsupported geometry records absence without undoing conserved birth. This
   completes that production consumer connection, not compiler/test acceptance.
+
+- **2026-10-13, exact produced-output native selectors (863):** references
+  name genuine accepted operation/output creation facts and exact quantities.
+  Current title, holder, registered identity and physical remainder must
+  agree; ambiguous or spent claims refuse. Provenance stages with titles and
+  respects pass-start state. Unmarked old rules receive no retrospective
+  metadata. Existing operator startup remains the consumer; source is
+  uncompiled and untested826, and full M4/C11 acceptance remains open.
