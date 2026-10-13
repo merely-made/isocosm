@@ -52,6 +52,8 @@ impl GameSave {
             crate::spatial::BIRTH_SIGHT_VERSION => current == crate::spatial::BIRTH_SIGHT_VERSION,
             crate::spatial::VERSION => current == crate::spatial::VERSION,
             crate::spatial::LOOP_VERSION => current == crate::spatial::LOOP_VERSION,
+            crate::spatial::ECOLOGY_VERSION => current == crate::spatial::ECOLOGY_VERSION
+                && self.spatial.continuation.is_some(),
             _ => false,
         };
         if !supported {
@@ -74,7 +76,10 @@ impl Runtime {
 
     pub fn replayed_game(saved: GameSave) -> Result<Replayed, String> {
         saved.check()?;
-        let replayed = Self::replayed(saved.native)?;
+        let execution=saved.spatial.ecology.as_ref().map(|seal|seal.witness.execution)
+            .unwrap_or(Execution::Grouped);
+        let session=Session::load(saved.native,execution)?;
+        let replayed=Replayed {state_hash:session.sim.state_hash(),session};
         saved.spatial.validate_replay(&replayed.session)?;
         Ok(replayed)
     }
@@ -101,7 +106,9 @@ impl Runtime {
             return Self::resume_game(saved, mode.unwrap_or(Mode::Creative),
                 Pace { round: 1, scoring: 6 }, ticks_per_second);
         };
-        let session = Session::load(saved.native, Execution::Grouped)?;
+        let execution=saved.spatial.ecology.as_ref().map(|seal|seal.witness.execution)
+            .unwrap_or(Execution::Grouped);
+        let session = Session::load(saved.native, execution)?;
         saved.spatial.validate_replay(&session)?;
         let settings = continuation.settings;
         let founded = Founded { genesis: session.sim.genesis().clone(),

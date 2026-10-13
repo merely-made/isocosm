@@ -16,11 +16,12 @@ use serde::{Deserialize, Serialize};
 
 pub use crate::lineage::boundary;
 pub mod deep;
+mod begin;
 mod borrowed;
 pub use borrowed::BorrowedInterim;
 
 pub use boundary::{Candidate, Score, Turn};
-pub use deep::{Handover, run_deep_time};
+pub use deep::{Handover, run_deep_time, run_deep_time_using};
 
 /// When the player steps in (179, 751): after the world's own deep time
 /// (452), at the first epoch boundary where a site is habitable for the

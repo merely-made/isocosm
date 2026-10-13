@@ -10,6 +10,7 @@ impl JointSpec {
             return Err("joint ecology witness requires version 1 and a positive authored horizon".into());
         }
         crate::validation::key(&self.key)?;
+        if let Some(independence) = &self.independence { independence.validate(rules)?; }
         for role in self.selections() {
             crate::validation::key(&role.actor_lineage)?;
             if let Some(lineage) = &role.target_lineage { crate::validation::key(lineage)?; }
@@ -46,6 +47,7 @@ impl JointSpec {
 
     pub fn validate_genesis(&self, genesis: &Genesis) -> Result<()> {
         self.validate(&genesis.rules)?;
+        if let Some(independence) = &self.independence { independence.validate_genesis(genesis)?; }
         for selection in self.selections() {
             if !genesis.lineages.contains_key(&selection.actor_lineage)
                 || selection.target_lineage.as_ref().is_some_and(|key| !genesis.lineages.contains_key(key)) {

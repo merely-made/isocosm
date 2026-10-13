@@ -24,6 +24,7 @@ impl Game {
 
     fn validate_inner(&self, session: &Session, replay: bool) -> Result<(), String> {
         self.version()?;
+        if let Some(seal)=&self.ecology {seal.validate(session,replay)?;}
         if let Some(saved) = &self.continuation {
             saved.validate_session(session, self)?;
             if replay { crate::continuation::restore::validate_round(saved, session)?; }
@@ -49,7 +50,7 @@ impl Game {
             for at in driver.initial.values() { at.check(&source.sim)?; }
         }
         let mut folded = Game { version: self.version, members: driver.initial.clone(),
-            driver: Some(driver.clone()), sight: self.sight.clone(), continuation: None };
+            driver: Some(driver.clone()), sight: self.sight.clone(), continuation: None, ecology: None };
         folded.version = folded.current_version();
         // Generated child inputs are reconstructed from actual native birth
         // reports, not trusted as a second initial source of actor identities.

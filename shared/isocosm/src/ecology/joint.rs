@@ -16,6 +16,8 @@ pub struct JointSpec {
     pub returned: ReturnRequirement,
     pub reproduction: BirthRequirement,
     pub counterplay: CounterRequirement,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub independence: Option<super::IndependenceSpec>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -114,6 +116,18 @@ impl Selection {
 }
 
 impl JointSpec {
+    pub(crate) fn observes(&self, process: &str) -> bool {
+        self.selections().iter().any(|role| role.process == process)
+            || self.independence.as_ref().is_some_and(|spec|
+                spec.extras.iter().any(|extra| extra.consumer.process == process))
+    }
+
+    pub(crate) fn selects(&self, act: &ActionProof) -> bool {
+        self.selections().iter().any(|role| role.matches(act))
+            || self.independence.as_ref().is_some_and(|spec|
+                spec.extras.iter().any(|extra| extra.consumer.matches(act)))
+    }
+
     pub(crate) fn selections(&self) -> [&Selection; 4] {
         [&self.capture.selection, &self.returned.selection,
             &self.reproduction.selection, &self.counterplay.selection]

@@ -336,6 +336,24 @@ impl Session {
             self.entries[..index].to_vec(), self.entries[index].tick,
             self.sim.mode, self.sim.state.movement, &[], |_, _| Ok(()))
     }
+    /// Read an exact accepted prefix, excluding later entries at the same tick.
+    /// This authenticates a finite witness without creating a played branch.
+    pub fn prefix(&self, entry_count: usize, tick: Tick) -> Result<Self> {
+        if entry_count > self.entries.len() || tick > self.sim.state.tick {
+            return Err("history prefix exceeds the accepted source".into());
+        }
+        if self.entries[..entry_count].last().is_some_and(|entry| entry.tick > tick)
+            || self.entries.get(entry_count).is_some_and(|entry| entry.tick < tick) {
+            return Err("history prefix and requested tick disagree".into());
+        }
+        let prefix = Self::replay(self.sim.genesis.as_ref().clone(), self.branch.clone(),
+            self.entries[..entry_count].to_vec(), tick, self.sim.mode,
+            self.sim.state.movement, &[], |_, _| Ok(()))?;
+        if prefix.sim.state.tick != tick {
+            return Err("history prefix splits a multi-tick command".into());
+        }
+        Ok(prefix)
+    }
     pub fn fork_at(&self, tick: Tick, branch: Key) -> Result<Self> {
         if tick > self.sim.state.tick {
             return Err("cannot fork an unplayed future".into());

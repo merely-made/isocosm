@@ -1571,3 +1571,26 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   acceptance remains false. No compiler/tests/fixtures/probes/tuning826; no
   new resources. Normal source-only commit hooks are the remaining placement
   gate, followed by push and a committed-blob receipt.
+
+- **2026-10-13,879 resolves874:** exact answer: "Require a distinct authored mechanical effect; record its operation family too". Distinct costs/timing/typed flows can qualify within one evaluator family. Name/hash/random-draw changes prove no mechanical independence. Native source comparison and the finite joint witness875 must compose before actual world offer. Q15 owns native criterion; Q14 native lifecycle source; Q3 reads S9 constraints; Root owns actual offer/callers/common fields/docs/receipts. No question pending,next880. No compiler/tests/fixtures/probes/tuning826 or new resources. Final C10/C11/V2/E3/M4 acceptance remains open.
+- **2026-10-13,879 native admission and actual offer source:** native comparisons
+  now derive complete added/changed catalogue coverage from the actual ordinary
+  producer basis, require real consumed supported scalar fields and retain
+  operation-family evidence. No family-difference gate, author-supplied baseline
+  or caller fingerprint is accepted. Saved validation uses captured basis
+  definitions instead of the current generator. Preset/affinity extensions,
+  definition removal, dynamic/guarded/indirect comparison fields and unsupported
+  law consumers remain explicit source gates. The default generated producer
+  lacks native energy/own-reserve credit875; complete supplied capture inputs
+  are required, and no tissue stock is relabelled as fuel.
+
+  The offered runtime restores the exact ended witness as its one live owner,
+  carries its physical Game through declared deep-time/Start clocks, then joins
+  and takes once under existing native policy. No new generated world replaces
+  that prefix. Game8 preserves witness/admission/basis/execution; resume checks
+  the exact historical cut while allowing later same-tick control entries.
+  Forecasts retain actual geometry and grant no admission. Protocol/ALPN21
+  carries this meaning. No question pending,next880. Source only; no compiler,
+  tests, fixtures, probes or tuning826. C9 keeps its old exact-source receipt;
+  C10/C11/full V2/E3/M4 acceptance and the entire queue remain open. Original
+  seven retained resource owners/evidence remain; no new resources.

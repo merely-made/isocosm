@@ -7,6 +7,10 @@ use isocosm::{Session, Result, lineage::{Review, boundary::{self, Candidate, Sco
 pub(crate) fn score(session: &Session, game: &Game, lineage: &str,
     candidate: &Candidate, ticks: u64) -> Result<Score> {
     let mut driver = physical(game);
+    // A forecast is an ephemeral trial, never an offered/admitted world.
+    // Keep its actual physical source while withdrawing the live branch's seal.
+    driver.ecology=None;
+    driver.version=driver.current_version();
     boundary::score_using(session, lineage, candidate, ticks, &mut |copy, ticks| {
         driver.refresh(copy)?;
         for _ in 0..ticks { driver.advance_clock(copy)?; }

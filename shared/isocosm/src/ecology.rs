@@ -11,6 +11,8 @@ mod joint;
 mod validate;
 mod evidence;
 mod run;
+mod independence;
+pub use independence::*;
 pub use joint::*;
 pub use run::run_joint;
 pub(crate) use evidence::JointCapture;

@@ -32,7 +32,7 @@ impl Simulation {
             target_lineage: target.map(|entity| entity.lineage.clone()), count: stage.count,
             site: actor.resident_site(), credits: stage.ecology_credits.clone(), births: vec![], counter: 0,
         };
-        if !spec.selections().iter().any(|role| role.matches(&act)) { return None; }
+        if !spec.selects(&act) { return None; }
         Some(EcologyPublication { act, target_before: target.cloned(),
             biological: stage.birth_places.iter().filter(|birth|
                 birth.parent == stage.actor && birth.action == stage.action && birth.process == stage.process)

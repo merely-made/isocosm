@@ -8,6 +8,10 @@ use crate::spatial::{Game, Setup as SpatialSetup};
 use isocosm::{Execution, ecology::{JointSpec, JointWitness, run_joint}};
 use serde::{Deserialize, Serialize};
 
+mod offer;
+mod seal;
+pub use seal::Seal;
+
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Setup {
@@ -43,7 +47,7 @@ impl Setup {
     }
 
     /// Runs the actual supplied clock provider over one native trajectory.
-    /// This is evidence, not admission under an invented independence standard.
+    /// The same trajectory supplies the native evidence required before admission.
     pub fn assess(&self) -> Result<Assessment, String> {
         self.check()?;
         let mut game = Game::default();
@@ -63,10 +67,15 @@ impl Setup {
         Ok(Assessment { witness, spatial: game })
     }
 
-    pub fn offer(&self, _ticks_per_second: u32) -> Result<Runtime, String> {
+    pub fn offer(&self, ticks_per_second: u32) -> Result<Runtime, String> {
+        let founding=self.founded.genesis.founding.as_ref().ok_or("generated candidate has no founding")?;
+        // This producer captures its real basis; authored JSON cannot replace it.
+        let basis=isocosm::ecology::GeneratedBasis::new(founding)?;
+        let criterion=self.specification.independence.as_ref()
+            .ok_or("generated-world offer needs explicit native mechanical-effect declarations879")?;
         let assessment = self.assess()?;
-        assessment.witness.require_roles()?;
-        Err("joint native witness complete; generated-world offer awaits ecological independence ruling 874/879".into())
+        let admission=isocosm::ecology::admit(&assessment.witness,criterion,&basis)?;
+        offer::accepted(self,assessment,admission,ticks_per_second)
     }
 }
 
@@ -76,7 +85,7 @@ pub(super) fn fresh_offer(founded: &Founded) -> Result<(), String> {
         return Err(if founded.genesis.rules.ecology_witness.is_none() {
             "new generated world requires an explicit joint ecology witness before it can be offered".into()
         } else {
-            "generated world must pass its joint witness and ecology admission; ruling 874/879 remains open".into()
+            "generated world must pass its joint witness and native mechanical-effect admission879".into()
         });
     }
     Ok(())

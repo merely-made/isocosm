@@ -46,7 +46,7 @@ impl Simulation {
 
     pub(crate) fn ecology_spec(&self, process: &str) -> Option<&crate::ecology::JointSpec> {
         self.watch.ecology.as_ref().filter(|capture|
-            capture.spec.selections().iter().any(|role| role.process == process)).map(|capture| &capture.spec)
+            capture.spec.observes(process)).map(|capture| &capture.spec)
     }
 
     pub(crate) fn record_ecology(&mut self, act: crate::ecology::ActionProof) {

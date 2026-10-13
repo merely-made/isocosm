@@ -2,7 +2,28 @@
 
 **Date:** 2026-09-18
 
-**Current migration choices, 2026-10-13:** answers871,872,873,875,876,877
+**Current ecology admission source, 2026-10-13:**879 resolves874: native
+admission requires a distinct authored mechanical effect; operation families
+are derived and recorded without a family-difference gate. Coverage uses a
+fresh producer-captured ordinary basis, complete added/changed definition
+inventory and real consumed fields. Unsupported preset/affinity extensions,
+removed definitions, Material/Kind consumers, dynamic/guarded comparisons
+and missing scalar bindings
+refuse. The default producer has no875 energy/own-reserve credit; a supplied
+candidate needs an actual capture process/account/body allocation. These
+are source-data/implementation gates, not new semantic questions.
+
+The finite joint witness's exact native prefix and physical Game are retained
+through admission and declared deep-time/Start clocks. Controller Join/Take
+happens once. Game8 saves admission, its frozen basis and witness prefix;
+restore authenticates those captured definitions without regenerating the
+current factory. Execution and authored providers persist; counterfactual
+scores retain their physical source and grant no admission. Protocol/ALPN21
+carries appended meaning. Source is placed, uncompiled/untested.
+No question pending; next unused880. C9 historical certification is intact;
+final C10/C11/V2/E3/M4 and compiler/tests/fixtures/probes/tuning stay open826.
+
+**Earlier migration choices, 2026-10-13:** answers871,872,873,875,876,877
 and878 are settled and recorded verbatim.874 remains OPEN: neither standard
 was selected. Clarification879 presents the mechanical-effect and native
 operation-family distinction together; next unused880. Source placement
@@ -10990,7 +11011,7 @@ what later sections derive from.
      Source migration continues under826; no compiler/tests/fixtures/tuning
      are authorised merely by answering these design questions.
 
-879. **Ecological independence clarification: pending, not ruled.**
+879. **Ecological independence requires a distinct authored mechanical effect; family is recorded.**
      Asked2026-10-13 following874's unresolved interest in both standards.
      Question: "For 874, the two standards differ: changing costs, timing or
      material flows can change mechanics while still using the same native
@@ -10999,12 +11020,16 @@ what later sections derive from.
      Options: "Require a distinct authored mechanical effect; record its
      operation family too"; "Require a distinct native operation family";
      "Make the standard an authored ecology setting, recording both kinds
-     of evidence". No answer yet. Source evidence: current processes share
+     of evidence". Answer: "Require a distinct authored mechanical effect;
+     record its operation family too". Source evidence: current processes share
      the native Process/Effect/Amount interpreter; costs, cadence, typed
      flows and provenance can vary within one operation family. Names,
-     hashes or changed random draws prove neither standard.874 remains OPEN.
-     Consequence: continue settled source; hold ecological independence
-     and generated-world admission until the authored criterion is decided.
+     hashes or changed random draws prove no independent mechanical effect.
+     Consequence:879 resolves874. Distinct costs, timing and typed material
+     flows can qualify within the same native operation family; record the
+     family without imposing an additional family-difference gate. Native
+     joint witness875 must precede ecological admission. Missing authored
+     comparisons cannot be replaced with names, hashes or random outcomes.
      Next unused880. Tests and tuning remain deferred826.
 
 Two earlier rulings this record relies on without restating: the founding
