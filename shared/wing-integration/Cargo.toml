@@ -3,6 +3,7 @@ members = ["."]
 resolver = "2"
 
 [package]
+rust-version = "1.97.1"
 name = "wing-integration"
 version = "0.0.1"
 edition = "2024"
@@ -21,3 +22,6 @@ isometer-mesh = { path = "../isometer/crates/isometer-mesh" }
 # copy (wing design record, ruling 648).
 [profile.dev.package.isocosm]
 opt-level = 1
+
+[workspace.package]
+rust-version = "1.97.1"

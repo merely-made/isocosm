@@ -1,4 +1,5 @@
 [package]
+rust-version = "1.97.1"
 name = "mesocosm-genet"
 default-run = "mesocosm-genet"
 version = "0.0.1"

@@ -1,4 +1,5 @@
 [package]
+rust-version = "1.97.1"
 name = "isocosm"
 version = "0.1.0"
 edition = "2024"
@@ -31,3 +32,6 @@ postcard = { version = "1", default-features = false, features = ["alloc"] }
 # copy (wing design record, ruling 648).
 [profile.dev.package.isocosm]
 opt-level = 1
+
+[workspace.package]
+rust-version = "1.97.1"

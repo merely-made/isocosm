@@ -1,4 +1,5 @@
 [package]
+rust-version = "1.97.1"
 name = "isocosm-host"
 version = "0.1.0"
 edition = "2024"
@@ -53,3 +54,6 @@ vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-3
 
 [profile.dev.package.isocosm]
 opt-level = 1
+
+[workspace.package]
+rust-version = "1.97.1"

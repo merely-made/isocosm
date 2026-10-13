@@ -1,4 +1,5 @@
 [package]
+rust-version = "1.97.1"
 name = "eponym"
 version = "0.0.2"
 edition = "2024"
@@ -75,3 +76,6 @@ paint_list_api = { git = "https://github.com/merely-made/netrender.git", rev = "
 paint_list_render = { git = "https://github.com/merely-made/netrender.git", rev = "9607d16f1907f6c2085648ae96abcaa30d7c3d41" }
 
 [dependencies]
+
+[workspace.package]
+rust-version = "1.97.1"
