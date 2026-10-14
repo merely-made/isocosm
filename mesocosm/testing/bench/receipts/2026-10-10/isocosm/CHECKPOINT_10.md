@@ -1,5 +1,27 @@
 # Checkpoint 10, 2026-10-10: independent slice
 
+**Current-pin verdict, 2026-10-14: REJECTED, valid measurement.** Frozen
+pushed source `6b5d00a0` completed the fixed1000 release run with native exit0
+and stable source. Independent recomputation exits1: grazer meal holdings
+`body:graze-1#meal-holdings` differ (distance0.036, exact mean11789.941,
+crowd mean12018.699, raw p0.0005, Holm p0.0245). Equivalence0.2 passes,
+but the unchanged no-detected-difference gate fails. Zero refusals; exact
+positive, starvation/unweighted controls, injury, conservation, seed/reading
+integrity and replay sanity pass. There is no statistical acceptance or
+parameter/seed/read-set adjustment. Root cause is unestablished; diagnosis
+belongs to the after-pass before any code change or new certification.
+
+Raw witness SHA256 `bfa4ace32f3ebbc0de20d71779af3a10bddc358c9b5683e8b701d61f2cf81f90`;
+independent verdict SHA256 `89b61e6569aa53c4ed1e671d6b14eb7155312c72381bf5802018205da7ec2cb9`.
+`certify-murm-completed-attempt.json` binds the receipts under
+`Code/testing/isometry/after-pass-2026-10-10/`. Ten compiler and five consumer
+runtime gates, current native harm32 and the independent C11 stock kernel
+pass separately. The nineteen older compiled faults retain previous-pin
+execution scope with unchanged source/fixture/raw hashes; this bridge is not
+nineteen new fault executions. The prior interrupted draw remains INVALID.
+Temporary owned Cargo home was removed after the recorded final verdict.
+
+
 **Certification resumed, 2026-10-13:** Mark's explicit "Certify" request
 opens the assembled-source acceptance pass. Current harm positives pass
 32/32. The strict reader passes five parser controls and source-audits

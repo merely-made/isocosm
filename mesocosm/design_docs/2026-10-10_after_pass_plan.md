@@ -2,17 +2,14 @@
 
 **Date:** 2026-10-10
 
-**Certification, 2026-10-14:** the Murm repin is merged at `1ba644f8`.
-Current native library236, harm32, independent C11 kernel17 and six compiled
-C11 faults pass. Its stock/clock domain excludes the autonomous aggregate
-chooser, titles and fine places. Previous-pin consumer gates and nineteen
-compiled C10 controls retain their exact execution scope; their fault and
-fixture bytes remain unchanged. The interrupted prior-pin fixed1000 draw
-has no verdict. Current consumer compiler/runtime gates and one unchanged
-fixed1000 comparison follow the assembled dependency pins. The
-[assembled certification record](2026-10-13_assembled_certification.md)
-owns the actual receipts and remaining done-conditions. Mark's "Certify"
-reopens acceptance after826; next unused880.
+**Certification, 2026-10-14:** assembled source `6b5d00a0` is pushed.
+All ten current-pin compiler and five consumer runtime gates pass. The fixed
+1000-draw C10 witness is valid but fails its unchanged no-detected-difference
+gate on grazer meal holdings; positive/starvation/unweighted controls pass.
+C11's independent stock/transit kernel17 and six compiled faults pass, with
+its autonomous chooser/title boundary open. C9 retains its historical
+exact-source certification. The [assembled certification record](2026-10-13_assembled_certification.md)
+owns hashes, qualifications and remaining done-conditions. Next unused880.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -138,7 +135,7 @@ lineages; healing and starvation in Eponym; DC5 colour and the critter
 review (default creatures residue); VB3 to VB5 visual acceptance.
 
 *Carried 2026-10-10 from the plans archived under ruling 793 (owner: the
-Mesocosm overlay plan, its M4):* the default creatures plan's Â§6.6, which
+Mesocosm overlay plan, its M4):* the default creatures plan's §6.6, which
 the roster must still satisfy on native bodies: every fauna body senses
 and contracts, the kingdom floor holds, and the captures read as critters;
 its CP1 clearing-and-burrow review, run beside the wing's default view at
@@ -842,3 +839,14 @@ in `q8-heal-v11b-root-runtime-review.json` (`55e8019b`). The earlier pending
 entries are dated preparation records. Full C10 conservation/statistics,
 fresh strict C10 controls and unrun 100/1000 stages remain open. Q3's bodied
 pilot, Q9 admission and Q10 discovery must bind the new integrated source.
+
+- **2026-10-14, valid C10 rejection:** frozen pushed source6b5d00a0 completed
+  the one fixed1000 release draw and independent reader. Grazer meal holdings
+  differ (distance0.036, Holm p0.0245) despite equivalence0.2; positive and
+  negative controls, refusal/injury/conservation/integrity gates pass. C10
+  remains open. Next owner task is to diagnose `body:graze-1#meal-holdings`
+  against the actual saved paired worlds and native/crowd feeding paths;
+  retain this dataset and criteria and identify a concrete defect before any
+  code adjustment or fresh certification. No seed/threshold tuning or reroll.
+  C11 stock-clock kernel passes independently; autonomous chooser/title scope
+  remains open. Full queue/headed/reproduction/ecology acceptance is separate.

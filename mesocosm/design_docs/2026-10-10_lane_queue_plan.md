@@ -2,17 +2,14 @@
 
 **Date:** 2026-10-10
 
-**Certification, 2026-10-14:** the Murm repin is merged at `1ba644f8`.
-Current native library236, harm32, independent C11 kernel17 and six compiled
-C11 faults pass. Its stock/clock domain excludes the autonomous aggregate
-chooser, titles and fine places. Previous-pin consumer gates and nineteen
-compiled C10 controls retain their exact execution scope; their fault and
-fixture bytes remain unchanged. The interrupted prior-pin fixed1000 draw
-has no verdict. Current consumer compiler/runtime gates and one unchanged
-fixed1000 comparison follow the assembled dependency pins. The
-[assembled certification record](2026-10-13_assembled_certification.md)
-owns the actual receipts and remaining done-conditions. Mark's "Certify"
-reopens acceptance after826; next unused880.
+**Certification, 2026-10-14:** assembled source `6b5d00a0` is pushed.
+All ten current-pin compiler and five consumer runtime gates pass. The fixed
+1000-draw C10 witness is valid but fails its unchanged no-detected-difference
+gate on grazer meal holdings; positive/starvation/unweighted controls pass.
+C11's independent stock/transit kernel17 and six compiled faults pass, with
+its autonomous chooser/title boundary open. C9 retains its historical
+exact-source certification. The [assembled certification record](2026-10-13_assembled_certification.md)
+owns hashes, qualifications and remaining done-conditions. Next unused880.
 
 The newest Progress entry below owns execution state. The following block
 records an earlier resumed snapshot; later checkpoints and parked lanes
@@ -40,7 +37,7 @@ Read with: the wing record's rulings 732 to 804
 
 **Earlier execution instruction, 2026-10-11 (826):** Mark clarified:
 "Ask what you need to, to continue the migration. Test and tune when things
-are in place. DonÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢t dust mid move." Then: "IÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢m saying: save the tests and
+are in place. Don’t dust mid move." Then: "I’m saying: save the tests and
 adjustments for when the pieces are in place". Finish migration source and
 its consumer connections before running tests or making test-driven
 adjustments. Defer focused tests as well as larger suites, fixture repair,
@@ -180,21 +177,21 @@ proposal uses the existing Isometry contracts target and one compiler
 worker. Source, configuration, tool and native acceptance gates remain
 required. This condition narrows the compiler rule for this execution.
 
-1. On start, read this plan's Ãƒâ€šÃ‚Â§4 queue and Progress, `git worktree list` in
+1. On start, read this plan's §4 queue and Progress, `git worktree list` in
    `Code/repos/isometry`, and each `lane-*` branch's `git log main..`. A lane
-   with commits and no merge is in flight or was cut off: resume it (Ãƒâ€šÃ‚Â§3).
+   with commits and no merge is in flight or was cut off: resume it (§3).
 2. Keep at most three tasks running (lanes, subagents and background jobs
-   together). Launch the next ready lane in Ãƒâ€šÃ‚Â§4 order whose dependencies have
+   together). Launch the next ready lane in §4 order whose dependencies have
    merged. Launch each as an Agent, `subagent_type: general-purpose`,
    `model: opus` (never Fable), `run_in_background: true`, its prompt being
-   the lane's brief plus Ãƒâ€šÃ‚Â§2 verbatim.
-3. When a lane reports: merge it (Ãƒâ€šÃ‚Â§3), record its forks, and append a dated
+   the lane's brief plus §2 verbatim.
+3. When a lane reports: merge it (§3), record its forks, and append a dated
    line to this plan's Progress.
 4. Forks: batch the lanes' structural forks into `AskUserQuestion` rounds of
    at most four, each with its evidence in a sentence or two with numbers,
    two to four options saying what each commits to, the recommendation first
    and marked "(Recommended)". Mark likes being asked; ask. Record each answer
-   as the next numbered ruling in the wing record (Ãƒâ€šÃ‚Â§5), then carry it into
+   as the next numbered ruling in the wing record (§5), then carry it into
    every plan it touches and send it to the lane that needs it (`SendMessage`
    to the lane's agent id, which resumes it with its context).
 5. A lane's behaviour, balance and test-outcome findings are not forks (761):
@@ -287,13 +284,13 @@ is the "Physics coordinator handoff" session.
 
 ## 4. The queue
 
-Each lane's brief is the paragraph under it plus Ãƒâ€šÃ‚Â§2. Dependencies are what
+Each lane's brief is the paragraph under it plus §2. Dependencies are what
 must have merged first.
 
 **Q1. Finish the plans rewrite** (resume `lane-plans`; 793 to 802). Six commits
 landed: the archive, the folds, the ecology phases, the plan split. Its last
 commit is a WIP rewriting live plans' stale text (place graph, presentation,
-sim plan). Finish: every LIVE plan in the plan review Ãƒâ€šÃ‚Â§1 gets a dated
+sim plan). Finish: every LIVE plan in the plan review §1 gets a dated
 "Current state, 2026-10-10" section or annotations replacing claims the push
 made false (paths to deleted crates, renderling as the body path, the legacy
 world as owner, "waits on M3"), its Status line, and its DOC_README row.
@@ -1493,7 +1490,7 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   C9 remains historically certified; C10/C11/full V2/E3/M4 acceptance stays open.
 
 - **2026-10-13, combined physical host source checkpoint:** GameBindings14,
-  protocol/ALPN17, Eponym modes4ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“6 and Mesocosm Profile3/spatial GameSave5 now
+  protocol/ALPN17, Eponym modes4–6 and Mesocosm Profile3/spatial GameSave5 now
   connect actual clocks, supplied eye/ranges, borrowed native anatomy, carried
   work, authenticated institutions, paired public reveals, complete physical
   storylets and native standalone render/picks. Complete geometry, recipes,
@@ -1629,3 +1626,15 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   pointer adapters compose with Netrender c74b7cb2. Source is frozen before
   the one fixed1000 release comparison; statistics/headed/ordinary ecology
   acceptance remains distinct. See assembled certification for raw bindings.
+
+- **2026-10-14, certification attempt complete:** source6b5d00a0 pushed;
+  ten stable current compiler and five consumer runtime gates pass. One fixed
+  1000-draw C10 release witness completed with stable source; independent
+  recomputation rejects its grazer meal-holdings difference (distance0.036,
+  Holm p0.0245). Main has zero refusals and equivalence0.2; exact positive,
+  starvation/unweighted controls and conservation/injury/integrity gates pass.
+  No parameter/seed/read-set tuning or reroll. C10 diagnosis belongs to the
+  after-pass. C11 unowned stock-clock17/six compiled faults pass, but its
+  independent autonomous chooser/title boundary and full products stay open.
+  Temporary owned Cargo home removed after recorded verdict; original seven
+  source/evidence/cache resources retained with owners. No question; next880.

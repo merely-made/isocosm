@@ -2,7 +2,8 @@
 
 **Date:** 2026-10-14
 
-**Status:** running; Murm repin integration precedes the final draw. Mark's
+**Status:** certification attempt completed; C10 rejected by its unchanged gate.
+Source `6b5d00a0` is pushed and the measurement stayed frozen. Mark's
 explicit "Certify" instruction opens acceptance
 after ruling826's intermediate-state deferral. This record qualifies the
 assembled source and its actual receipts; it does not close the whole queue.
@@ -11,29 +12,35 @@ No semantic question is pending; next unused880.
 ## Source and execution
 
 The passed packet was measured at `55f48769d7ccac51bf70160f785da616e5259690`
-plus repair commit `05057e41`. Current main `1ba644f8` merges the landed
-Murm supplier commit `983c0e7b`. Independent C11 source and bounded parallel probe
-execution are assembled; refreshed consumer gates precede the final draw. Raw records capture each gate's input and
+plus repair commit `05057e41`. Base `1ba644f8` merges the landed
+Murm supplier commit `983c0e7b`; pushed `6b5d00a0` adds independent C11,
+bounded parallel probing and host/renderer adapters. All ten refreshed
+compiler and five consumer runtime gates pass. Raw records capture each gate's input and
 output file hashes. They live in
 `Code/testing/isometry/after-pass-2026-10-10/` under `certify-*`; failed
 attempts and historical receipts are retained. Current-source stability is
 separate from historical exact-source certification.
 
-Root used one offline Cargo job at a time, with at most two compiler jobs,
-Rust1.99.0 and the reusable `C:/t/cargo-targets/isometry/contracts` target.
+Root's compiler/test gates used Rust1.99.0 and the reusable
+`C:/t/cargo-targets/isometry/contracts` target: one offline Cargo job at a
+time, with at most two compiler jobs. Dependency-cache resolution/setup is
+recorded separately.
 Both target and build-directory overrides were explicit. C10 fault controls
 used one compiler job. The final C10 gates pin Cargo, Rustc and Rustdoc's
 toolchain meaning and use a temporary checksum-verified Cargo home at
 `C:/t/cargo-homes/isometry-certification` to avoid an unrelated live package
 cache lock. Cache-blocked and mixed-toolchain attempts are INVALID, never
-caught controls. The temporary home is removed after its gates are recorded.
+caught controls. The temporary home was removed after its gates and independent verdict were
+recorded; `certify-murm-home-cleanup.json` verifies marker ownership, zero live
+owners, zero links and removal of only that exact approved cache path.
 
 Murm integration landed on remote main at `983c0e7b` while the previous-pin
 release draw was running. Root stopped only its verified probe child before
 a verdict, preserving the aborted execution as INVALID. Its source remained
 stable. The repin is now merged with this repair packet; final C11 source and
-refreshed gates precede the next draw;
-the passed gates below retain their previous-pin source scope. They grant no
+refreshed gates preceded the completed current-pin draw;
+the previous-pin table retains its original source scope; current-pin compiler,
+consumer and statistical outcomes are recorded separately below. They grant no
 acceptance to an unmeasured revision.
 
 ## Passed previous-pin gates
@@ -77,7 +84,7 @@ Eponym Game13 are separate archive versions.
 | Checkpoint | Current qualification |
 | --- | --- |
 | 9 | Historical exact-source certification remains at `df6f0527`. Current native preservation/system controls pass separately. |
-| 10 | Current-pin harm32 passes; nineteen previous-pin compiled faults retain unchanged source/fixture evidence. The interrupted draw has no statistical verdict; final fixed1000 is pending. |
+| 10 | Current-pin harm32 passes; nineteen previous-pin compiled faults retain unchanged source/fixture evidence. The interrupted draw is INVALID; current fixed1000 is a valid rejection on grazer meal holdings (distance 0.036, adjusted p 0.0245). |
 | 11 | Independent unowned site/host stock-clock kernel passes17 tests and six compiled faults; native directing/authorization10 passes separately. Independent autonomous chooser/title comparison remains open. |
 
 The numbered body checkpoint sequence ends at11.
@@ -85,7 +92,7 @@ The numbered body checkpoint sequence ends at11.
 ### Checkpoint10 statistical gate
 
 The declared release run uses seed2026101003, 1000 draws, 1999 permutations, alpha0.05
-and equivalence bound0.2. No seed, threshold or draw-count tuning precedes
+and equivalence bound0.2. No seed, threshold or draw-count tuning preceded
 the verdict. The interrupted previous-pin attempt preserved its execution
 record and log but produced no completed witness or verdict. Its reserved
 raw/verification paths are
@@ -100,6 +107,48 @@ matter over the declared native ticks. Its domain is stationary body founding
 without routes. It does not certify journeys, consumer reproduction or S9.
 Legacy mutation4 is excluded; coherent mutation19 replaces it. Interrupted
 and mixed-toolchain attempts remain recorded as INVALID.
+
+The current release artifact passed a locked/offline source-stable build
+(`certify-murm-c10-release-build.json`) at `6b5d00a0`. Its one fresh run uses
+`--harm --workers 4 --seed 2026101003 --draws 1000 --permutations 1999`.
+Current raw/independent-verdict paths are
+`certify-murm-c10-harm-full1000.json` and
+`certify-murm-c10-harm-full1000-verify.json`; execution and executable/source
+hashes are recorded in `certify-murm-c10-harm-full1000-run.json`. Native
+execution ended0 after 11,798.9 seconds with stable source; the independent
+reader ended1 with the single failure below. Exit0 alone is not acceptance.
+
+The nineteen earlier compiled controls' fault source, fixture and raw-record
+hashes still match (`certify-murm-c10-control-source-bridge.json`). A separate
+Mere source comparison proves native dependencies' runtime bytes unchanged;
+the new manifests add their Rust minimum version. These are source-scope
+bridges, not nineteen new current-pin fault executions. Fresh native harm32
+provides the restored current-pin positive gate.
+
+### Checkpoint10 completed verdict, 2026-10-14
+
+**REJECTED, valid measurement.** The independent reader recomputed all four
+comparisons from the actual 1000-draw raw dataset and confirmed the native
+summary. Main has zero refusals and meets equivalence 0.2, but detects
+`body:graze-1#meal-holdings`: distance 0.036, exact mean 11789.941, crowd
+mean 12018.699, raw permutation p 0.0005 and Holm-adjusted p 0.0245. Meeting
+the equivalence bound does not meet the separate no-detected-difference gate.
+The exact positive control passes; starvation and unweighted draw controls
+are detected. Injury coverage, 2000 native-arm conservation histories across
+60 ticks, fixed seeds and reading identities pass the reader's checks. Its
+only failure is "crowd is not certified equivalent without detected differences".
+
+| Completed witness | SHA256 |
+| --- | --- |
+| `certify-murm-c10-harm-full1000.json` | `bfa4ace32f3ebbc0de20d71779af3a10bddc358c9b5683e8b701d61f2cf81f90` |
+| `certify-murm-c10-harm-full1000-verify.json` | `89b61e6569aa53c4ed1e671d6b14eb7155312c72381bf5802018205da7ec2cb9` |
+
+`certify-murm-completed-attempt.json` binds compiler, consumer, native, C11,
+source-bridge, release, execution and independent-verdict receipts. No seed,
+threshold, horizon or read-set adjustment, reroll or statistical resampling
+followed the rejection. The cause of the grazer meal-holdings difference is
+not established. The after-pass owns diagnosis of that reading under the
+same declared gate; it does not turn this completed measurement into a pass.
 
 ### Checkpoint11 independent stock and clock kernel
 

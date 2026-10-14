@@ -3,7 +3,8 @@
 Rust policy (2026-10-13): working toolchain 1.99.0 and shared MSRV 1.97.1, qualified separately. Canonical policy: `mere/design_docs/2026-08-12_family_composition_thesis_brief.md`, section "Shared Rust toolchain and minimum version".
 
 Murm source adoption (2026-10-14) merges supplier commit `983c0e7b` with
-repair packet `05057e41` at pushed main `1ba644f8`. Mere `0b9b7a9b`, Genet
+repair packet `05057e41` at `1ba644f8`; assembled source is pushed at
+`6b5d00a0`. Mere `0b9b7a9b`, Genet
 `7a8c5b8c` and Murm `b49df894` compose with aligned Netrender `c74b7cb2`.
 All ten workspace/all-target compiler gates now pass on the assembled source;
 root/Eponym/Isomere/host include all features. Raw current-pin qualification is
