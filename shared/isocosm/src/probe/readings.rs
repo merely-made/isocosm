@@ -23,6 +23,8 @@ use crate::{
 use serde::Serialize;
 use std::collections::{BTreeMap, BTreeSet};
 
+pub mod spreads;
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub enum Field {
     Lineage,

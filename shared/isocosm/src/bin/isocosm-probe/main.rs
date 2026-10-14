@@ -15,14 +15,16 @@
 //! 262), where the draw control runs as it does with hunters.
 
 mod conservation;
+mod probe_draw_execution;
+mod probe_parallel;
 mod report;
 
 use isocosm::probe::{
-    BodyFounding, Crowd, HarmFounding, PredatorFounding, ProbeFounding, ProbeWorld, REFUSED,
+    BodyFounding, Crowd, HarmFounding, PredatorFounding, ProbeFounding, ProbeWorld,
     Variant,
     check::{self, Settings},
     readings::{self, Reading},
-    run_exact, run_exact_traced,
+    run_exact,
 };
 use report::*;
 use std::time::Instant;
@@ -121,6 +123,7 @@ struct Options {
     master: u64,
     draws: u64,
     permutations: u64,
+    workers: usize,
     output: Option<String>,
     trace: Option<String>,
     trace_entries: Option<String>,
@@ -144,6 +147,7 @@ fn options() -> Result<Options, String> {
             .as_nanos() as u64,
         draws: 64,
         permutations: 1999,
+        workers: 1,
         output: None,
         trace: None,
         trace_entries: None,
@@ -166,6 +170,7 @@ fn options() -> Result<Options, String> {
             "--seed" => o.master = number()?,
             "--draws" => o.draws = number()?,
             "--permutations" => o.permutations = number()?,
+            "--workers" => o.workers = probe_parallel::requested(number()?)?,
             // Print the time this run's pace projects for that many draws.
             "--project" => o.project = Some(number()?),
             "--members" => o.members = Some([number()?, number()?]),
@@ -236,9 +241,10 @@ fn run() -> Result<(), String> {
     if draw_control {
         arms.push(5);
     }
+    let execution = probe_parallel::Execution::new(o.workers, o.draws);
     eprintln!(
-        "Probe receipt: master seed {}, {} draws, arms {arms:?}",
-        o.master, o.draws
+        "Probe receipt: master seed {}, {} draws, arms {arms:?}, {} workers (requested {})",
+        o.master, o.draws, execution.workers, execution.requested_workers
     );
     let settings = Settings {
         alpha: 0.05,
@@ -255,78 +261,15 @@ fn run() -> Result<(), String> {
         exact_rerun_identical: false,
         collect_changes_no_outcome: false,
     };
-    for k in 0..o.draws {
-        let seed = isocosm::draw(o.master, "probe-world", &[k]);
-        let world = domain.generate(seed)?;
-        let derived = readings::derive(&world);
-        let similitude = world.similitude()?;
-        let these: Vec<ReadingInfo> = derived
-            .iter()
-            .map(|r| ReadingInfo::new(r, similitude.bound(&r.key)))
-            .collect();
-        let keys = |v: &[ReadingInfo]| {
-            v.iter()
-                .map(|r| (r.key.clone(), r.bound_per_mille))
-                .collect::<Vec<_>>()
-        };
-        match &infos {
-            None => infos = Some(these),
-            Some(first) if keys(first) != keys(&these) => {
-                let (a, b) = (keys(first), keys(&these));
-                let only = |x: &[(String, u32)], y: &[(String, u32)]| {
-                    x.iter()
-                        .filter(|r| !y.contains(r))
-                        .map(|r| r.0.clone())
-                        .collect::<Vec<_>>()
-                };
-                return Err(format!(
-                    "draw {k} reads differently from draw 0: only in draw 0 {:?}, only in draw {k} {:?}",
-                    only(&a, &b),
-                    only(&b, &a)
-                ));
-            },
-            Some(_) => {},
-        }
-        read_set.get_or_insert_with(|| readings::read_set(&world));
-        let mut draw = Draw::new(k, seed, &world)?;
-        for &index in &arms {
-            let dynamics = isocosm::draw(o.master, "probe-dynamics", &[k, index as u64]);
-            let a = match arm(&world, &derived, index, dynamics, o.harm) {
-                Ok(a) => a,
-                Err(why) if why.contains(REFUSED) => Arm::refused(ARMS[index], dynamics, why),
-                Err(why) => return Err(format!("draw {k}, {}: {why}", ARMS[index])),
-            };
+    probe_parallel::run(&o, &domain, &arms, |completed| {
+        let probe_draw_execution::Completed { draw, infos: these, read_set: set, checks: first } = completed;
+        let k = draw.k;
+        infos.get_or_insert(these);
+        read_set.get_or_insert(set);
+        for (&index, a) in arms.iter().zip(&draw.arms) {
             rows[index].push(a.refused.is_none().then(|| a.readings.clone()));
-            draw.arms.push(a);
         }
-        if k == 0 && !o.crowds {
-            let dynamics = draw.arms[0].dynamics;
-            let mut lines = String::new();
-            let mut entries = state_witness::Trace::new();
-            let mut line = |sim: &isocosm::Simulation| {
-                let tick = sim.state().tick;
-                lines += &format!("{tick} {:016x}\n", sim.state_hash());
-                if o.trace_entries.is_some() {
-                    entries
-                        .push(tick, sim.entity_witness())
-                        .expect("ticks advance");
-                }
-            };
-            let reference = run_exact_traced(&world, dynamics, true, &mut line)?
-                .sim
-                .state_hash();
-            if let Some(path) = &o.trace {
-                std::fs::write(path, &lines).map_err(|e| e.to_string())?;
-            }
-            if let Some(path) = &o.trace_entries {
-                let framed = entries.to_framed().map_err(|e| format!("{e:?}"))?;
-                std::fs::write(path, framed).map_err(|e| e.to_string())?;
-            }
-            checks.exact_rerun_identical =
-                reference == run_exact(&world, dynamics, true)?.sim.state_hash();
-            checks.collect_changes_no_outcome =
-                reference == run_exact(&world, dynamics, false)?.sim.state_hash();
-        }
+        if let Some(first) = first { checks = first; }
         out.push(draw);
         if (k + 1) % 25 == 0 || k + 1 == o.draws {
             let spent = began.elapsed().as_secs_f64();
@@ -336,7 +279,8 @@ fn run() -> Result<(), String> {
                 spent / (k + 1) as f64
             );
         }
-    }
+        Ok(())
+    })?;
     if let Some(n) = o.project {
         let per_draw = began.elapsed().as_secs_f64() / o.draws.max(1) as f64;
         let seconds = per_draw * n as f64;
@@ -454,10 +398,19 @@ fn run() -> Result<(), String> {
         note: NOTE,
         draws: out,
     };
+    let receipt = ExecutedReceipt { receipt, execution };
     let json = serde_json::to_string_pretty(&receipt).map_err(|e| e.to_string())?;
     match o.output {
         Some(path) => std::fs::write(path, json).map_err(|e| e.to_string())?,
         None => println!("{json}"),
     }
     Ok(())
+}
+
+/// Scheduling metadata is separate from the unchanged experiment fields.
+#[derive(serde::Serialize)]
+struct ExecutedReceipt {
+    #[serde(flatten)]
+    receipt: Receipt,
+    execution: probe_parallel::Execution,
 }

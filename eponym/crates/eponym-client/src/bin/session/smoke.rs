@@ -121,11 +121,10 @@ impl Lane {
 
     fn arm(&mut self, ctx: &mut Context<'_>) {
         let sink = self.readback.clone();
-        *ctx.capture = Some(Box::new(move |surface, view, width, height| {
-            *sink.borrow_mut() = Some(
-                read_frame(surface, view, width, height)
-                    .ok_or_else(|| "native frame readback failed".to_owned()),
-            );
+        *ctx.capture = Some(Box::new(move |result| {
+            *sink.borrow_mut() = Some(result.map_err(|refusal| refusal.to_string())
+                .and_then(|frame| read_frame(frame.surface, frame.view, frame.width, frame.height)
+                    .ok_or_else(|| "native frame readback failed".to_owned())));
         }));
         self.armed = self.frames;
     }

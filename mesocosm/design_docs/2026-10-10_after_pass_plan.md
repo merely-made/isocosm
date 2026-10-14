@@ -2,16 +2,17 @@
 
 **Date:** 2026-10-10
 
-**Certification, 2026-10-13:** all ten workspace compiler gates pass;
-native library236, Eponym play35 and VTT168 runtime tests pass with their
-explicit archive/unsupported-scope qualifications. All19 C10 compiled
-controls caught their intended faults and restored exact source; restored
-harm32 passes. The fixed1000 release verdict is running. C11's independent
-spread crowd is absent, so native site controls do not certify C11. The
+**Certification, 2026-10-14:** the Murm repin is merged at `1ba644f8`.
+Current native library236, harm32, independent C11 kernel17 and six compiled
+C11 faults pass. Its stock/clock domain excludes the autonomous aggregate
+chooser, titles and fine places. Previous-pin consumer gates and nineteen
+compiled C10 controls retain their exact execution scope; their fault and
+fixture bytes remain unchanged. The interrupted prior-pin fixed1000 draw
+has no verdict. Current consumer compiler/runtime gates and one unchanged
+fixed1000 comparison follow the assembled dependency pins. The
 [assembled certification record](2026-10-13_assembled_certification.md)
-owns the actual receipts, source qualifications and remaining done-conditions.
-Mark's "Certify" reopens this acceptance pass after826; earlier entries
-retain their historical scope.
+owns the actual receipts and remaining done-conditions. Mark's "Certify"
+reopens acceptance after826; next unused880.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -137,7 +138,7 @@ lineages; healing and starvation in Eponym; DC5 colour and the critter
 review (default creatures residue); VB3 to VB5 visual acceptance.
 
 *Carried 2026-10-10 from the plans archived under ruling 793 (owner: the
-Mesocosm overlay plan, its M4):* the default creatures plan's §6.6, which
+Mesocosm overlay plan, its M4):* the default creatures plan's Â§6.6, which
 the roster must still satisfy on native bodies: every fauna body senses
 and contracts, the kingdom floor holds, and the captures read as critters;
 its CP1 clearing-and-burrow review, run beside the wing's default view at

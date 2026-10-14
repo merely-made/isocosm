@@ -18,6 +18,7 @@ mod journey_tests;
 #[cfg(test)]
 mod journey_life_tests;
 mod round;
+mod spreads;
 #[cfg(test)]
 mod tests;
 
@@ -89,10 +90,19 @@ pub struct Crowd<'w> {
     pub site_shortfalls: u64,
     /// Each hunt's meals.
     pub meals: super::MealLog,
+    /// Explicit independent site-grain stock timeline, absent in C4–C10.
+    spreads: Option<spreads::Details>,
 }
 
 impl<'w> Crowd<'w> {
     pub fn new(world: &'w ProbeWorld, dynamics: u64, variant: Variant) -> Result<Self> {
+        if !world.genesis.spreads.is_empty() {
+            return Err("spread founding requires the independent spread crowd entrypoint".into());
+        }
+        Self::assemble(world, dynamics, variant)
+    }
+
+    fn assemble(world: &'w ProbeWorld, dynamics: u64, variant: Variant) -> Result<Self> {
         world.genesis.validate()?;
         world.movement_supported()?;
         let mut bins = BTreeMap::new();
@@ -119,6 +129,7 @@ impl<'w> Crowd<'w> {
             shortfalls: 0,
             site_shortfalls: 0,
             meals: Default::default(),
+            spreads: None,
         };
         crowd.index_journeys();
         crowd.matter = crowd.total_matter();
@@ -139,6 +150,9 @@ impl<'w> Crowd<'w> {
     }
 
     fn total_matter(&self) -> u128 {
+        if self.spreads.is_some() {
+            return self.spread_snapshot().expect("spread state exists").matter(&self.world.genesis.rules);
+        }
         let rules = &self.world.genesis.rules;
         let kin = self.kin.values().map(|e| (e, &1));
         let members: u128 = self
@@ -156,6 +170,7 @@ impl<'w> Crowd<'w> {
     }
 
     fn step(&mut self) -> Result<()> {
+        if self.spreads.is_some() { return self.advance_spreads(1); }
         let next = self.tick.checked_add(1).ok_or("crowd tick overflows")?;
         self.arrive_until(next)?;
         self.tick = next;

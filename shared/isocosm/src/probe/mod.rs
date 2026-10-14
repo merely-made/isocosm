@@ -39,6 +39,23 @@ pub struct ProbeWorld {
 }
 
 impl ProbeWorld {
+    /// This bench compares the ruled stock/arrival kernel independently.
+    /// Identity-bound biological and title interpreters retain their native
+    /// gates; unsupported founding must not silently lose those inputs.
+    pub(crate) fn spread_supported(&self) -> Result<()> {
+        let g = &self.genesis;
+        if !g.spreads.places.is_empty() || !g.spreads.transit_marks.is_empty()
+            || g.spreads.next_transit != 0 {
+            return Err("independent spread crowd supports site grain without titled transit".into());
+        }
+        if g.rules.owned_stock.is_some() || g.rules.item_custody.is_some()
+            || g.rules.processes.values().any(|p| p.period.is_some())
+            || !g.rules.competitions.is_empty() {
+            return Err("independent spread crowd requires a stock timeline without scheduled body or title processes".into());
+        }
+        Ok(())
+    }
+
     pub(crate) fn movement_supported(&self) -> Result<()> {
         fn paced(e: &crate::rules::Effect) -> bool {
             matches!(e, crate::rules::Effect::MovePaced { .. }) || e.branches().any(paced)

@@ -82,11 +82,18 @@ impl Capture {
         let every_frame = self.every_frame;
         let saved = self.saved.clone();
         let (file, prefix) = (self.names.file, self.names.log_prefix);
-        *ctx.capture = Some(Box::new(move |surface, view, width, height| {
+        *ctx.capture = Some(Box::new(move |result| {
             if !every_frame && saved.load(Ordering::Acquire) {
                 return;
             }
-            let Some(frame) = read_frame(surface, view, width, height) else {
+            let frame = match result {
+                Ok(frame) => frame,
+                Err(refusal) => {
+                    eprintln!("[{prefix}] capture failed: {refusal}");
+                    return;
+                },
+            };
+            let Some(frame) = read_frame(frame.surface, frame.view, frame.width, frame.height) else {
                 return;
             };
             let path = directory.join(file);

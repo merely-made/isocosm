@@ -414,8 +414,11 @@ fn board_pane(children: Vec<UiChild>) -> UiChild {
                 }
                 ui.board_press(event.local);
             },
-            (PointerPhase::Move, _) => ui.board_drag(event.local),
-            (PointerPhase::Up, _) => ui.board_release(event.local),
+            (PointerPhase::Move, PointerButton::Primary) => ui.board_drag(event.local),
+            (PointerPhase::Up, PointerButton::Primary) => ui.board_release(event.local),
+            (PointerPhase::Cancel, _) => ui.board_cancel(),
+            (PointerPhase::Down, PointerButton::Auxiliary) => {},
+            (PointerPhase::Move | PointerPhase::Up, _) => {},
         }
     }))
 }

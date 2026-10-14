@@ -118,17 +118,26 @@ pub fn capacity(state: &State, rules: &Rules, at: Substrate, identity: &Identity
     let policy = rules.spread_capacity.as_ref().ok_or("world has no declared spread capacity mechanic")?;
     let lineage = provenance(state, &identity.key()).ok_or("capacity has no native lineage")?;
     let traits = &state.lineages.get(&lineage).ok_or("capacity lineage is absent")?.traits;
-    let mut values: BTreeMap<Key, i64> = policy.trait_inputs.iter()
+    policy.resolve(traits, Some(at), identity, &state.spreads.modifiers)
+}
+
+impl CapacityRules {
+    /// Pure authored arithmetic shared by the independent stock interpreter.
+    /// An unnamed host has no substrate selector; explicitly selected hosts
+    /// remain named singletons in that interpreter.
+    pub(crate) fn resolve(&self, traits: &BTreeSet<Key>, at: Option<Substrate>,
+        identity: &Identity, modifiers: &[CapacityModifier]) -> Result<u64> {
+    let mut values: BTreeMap<Key, i64> = self.trait_inputs.iter()
         .map(|(name, key)| (name.clone(), i64::from(traits.contains(key)))).collect();
-    let mut result = evaluate(&policy.mechanic, &values)?.max(0);
-    values.insert(policy.key.clone(), result);
-    for layer in &policy.layers {
-        let modifiers: Vec<_> = state.spreads.modifiers.iter().filter(|modifier| {
+    let mut result = evaluate(&self.mechanic, &values)?.max(0);
+    values.insert(self.key.clone(), result);
+    for layer in &self.layers {
+        let modifiers: Vec<_> = modifiers.iter().filter(|modifier| {
             modifier.layer == layer.key
                 && modifier.identity.as_ref().is_none_or(|selected| selected == identity)
                 && match modifier.source {
                     CapacitySource::World => true,
-                    CapacitySource::Substrate(substrate) => substrate == at,
+                    CapacitySource::Substrate(substrate) => Some(substrate) == at,
                 }
         }).map(|modifier| modifier.milligrams).collect();
         if !modifiers.is_empty() {
@@ -139,6 +148,7 @@ pub fn capacity(state: &State, rules: &Rules, at: Substrate, identity: &Identity
         values.insert(layer.key.clone(), result);
     }
     Ok(result as u64)
+    }
 }
 
 pub(crate) fn validate_modifiers(spreads: &Spreads, rules: &Rules,

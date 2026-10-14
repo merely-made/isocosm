@@ -56,7 +56,7 @@ png = "0.17"
 isometer-core = { path = "../isometer-core", features = ["fixtures"] }
 isometer-mesh = { path = "../isometer-mesh" }
 isometer-render = { path = "../isometer-render" }
-netrender = { git = "https://github.com/merely-made/netrender.git", rev = "9607d16f1907f6c2085648ae96abcaa30d7c3d41" }
+netrender = { git = "https://github.com/merely-made/netrender.git", rev = "c74b7cb28090c28b1c6d80b08dcdea18aff48d3e" }
 serde_json = "1"
 winit = "0.30"
 

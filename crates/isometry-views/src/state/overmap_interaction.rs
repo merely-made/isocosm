@@ -37,6 +37,14 @@ impl UiState {
         const SLOP: f32 = 0.015;
         let atlas = crate::overmap::overmap_atlas(self).is_some();
         match event.phase {
+            cambium::PointerPhase::Cancel => {
+                if let Some((id, _)) = self.overmap_drag_start.take() {
+                    self.overmap_motion.end(&id);
+                }
+                self.overmap_drag_grab_offset = None;
+                self.overmap_dragged_node = None;
+                false
+            },
             cambium::PointerPhase::Down => {
                 self.overmap_drag_start = Some((event.id.clone(), event.position));
                 self.overmap_drag_grab_offset = None;

@@ -1,6 +1,6 @@
 # Assembled migration certification
 
-**Date:** 2026-10-13
+**Date:** 2026-10-14
 
 **Status:** running; Murm repin integration precedes the final draw. Mark's
 explicit "Certify" instruction opens acceptance
@@ -10,8 +10,10 @@ No semantic question is pending; next unused880.
 
 ## Source and execution
 
-The source is main at `55f48769d7ccac51bf70160f785da616e5259690` plus
-this certification repair packet. Raw records capture each gate's input and
+The passed packet was measured at `55f48769d7ccac51bf70160f785da616e5259690`
+plus repair commit `05057e41`. Current main `1ba644f8` merges the landed
+Murm supplier commit `983c0e7b`. Independent C11 source and bounded parallel probe
+execution are assembled; refreshed consumer gates precede the final draw. Raw records capture each gate's input and
 output file hashes. They live in
 `Code/testing/isometry/after-pass-2026-10-10/` under `certify-*`; failed
 attempts and historical receipts are retained. Current-source stability is
@@ -29,11 +31,12 @@ caught controls. The temporary home is removed after its gates are recorded.
 Murm integration landed on remote main at `983c0e7b` while the previous-pin
 release draw was running. Root stopped only its verified probe child before
 a verdict, preserving the aborted execution as INVALID. Its source remained
-stable. The repin must compose with this repair packet before the final draw;
+stable. The repin is now merged with this repair packet; final C11 source and
+refreshed gates precede the next draw;
 the passed gates below retain their previous-pin source scope. They grant no
 acceptance to an unmeasured revision.
 
-## Passed gates
+## Passed previous-pin gates
 
 | Gate | Actual result | Receipt |
 | --- | --- | --- |
@@ -74,8 +77,8 @@ Eponym Game13 are separate archive versions.
 | Checkpoint | Current qualification |
 | --- | --- |
 | 9 | Historical exact-source certification remains at `df6f0527`. Current native preservation/system controls pass separately. |
-| 10 | Previous-pin native positives and all19 compiled controls pass. The previous-pin draw was interrupted for the landed Murm repin, with no statistical verdict. |
-| 11 | Native Individuals/Grouped site-grain controls pass. Full exact-against-independent-crowd certification remains open. |
+| 10 | Current-pin harm32 passes; nineteen previous-pin compiled faults retain unchanged source/fixture evidence. The interrupted draw has no statistical verdict; final fixed1000 is pending. |
+| 11 | Independent unowned site/host stock-clock kernel passes17 tests and six compiled faults; native directing/authorization10 passes separately. Independent autonomous chooser/title comparison remains open. |
 
 The numbered body checkpoint sequence ends at11.
 
@@ -98,22 +101,68 @@ without routes. It does not certify journeys, consumer reproduction or S9.
 Legacy mutation4 is excluded; coherent mutation19 replaces it. Interrupted
 and mixed-toolchain attempts remain recorded as INVALID.
 
-### Checkpoint11 remaining implementation
+### Checkpoint11 independent stock and clock kernel
 
-Native `Execution::Grouped` is not the probe's independently implemented
-crowd. The latter has no spread registry, capacity modifiers or spread
-transit queue and cannot evaluate directed overflow. Its body-owned ledgers
-cannot establish independent territory ownership or account for in-flight
-spread matter. The ten native checkpoint controls and seven original spread
-controls cannot close that distinct done-condition. Actual source location:
-`shared/isocosm/src/probe/aggregate/doing.rs`, the `DirectOverflow` refusal.
+The independent crowd now retains spread identities, site and host stocks,
+capacity modifiers, named founding bodies and counted transit. It rounds
+each member's transmitted offer before multiplying a cohort, credits only
+at the authored arrival tick, resolves receiving overflow at that tick and
+counts pending matter once. Native `Execution::Grouped` remains distinct.
+The independent implementation uses its own histogram and transport kernel,
+with shared pure capacity expression arithmetic.
+
+On the current Murm pins, `certify-murm-c11-restored.json` records 17 passing
+tests, including 32 drawn stock histories compared with actual native
+Individuals and native JSON replay in both execution modes. All six compiled
+source faults reached their intended assertions and exact bytes were restored:
+zero-rate eligibility, early delivery, transmission rounding, pending mass,
+strain host and strain seed. `certify-murm-c11-faults.json` records the six
+caught controls and stable restoration. The actual native chosen-process and
+lot-authorization slice separately passes ten tests in
+`certify-murm-c11-native-direction.json`.
+
+This certifies the unowned site/host stock and clock kernel. The independent
+crowd explicitly refuses fine places, titled transit, owned-stock/custody
+rules, scheduled body processes and competitions. Autonomous chosen directing
+and title operations retain native tests; they have not been compared against
+an independent aggregate chooser. Full checkpoint11 remains open across that
+boundary. Its refusal is at `shared/isocosm/src/probe/aggregate/doing.rs`.
+
+### Current-pin execution checks
+
+The restored native library passes 236 tests with ten existing intentional
+ignores (`certify-murm-native-lib.json`), harm passes 32
+(`certify-murm-c10-harm.json`), and the probe binary passes seven
+(`certify-murm-probe-bin-tests.json`). Four probe controls compare actual
+native sequential/parallel draws and drain the real scoped pool on errors
+and panics. Parallel execution changes scheduling and timing, preserving
+seeds, ordered outputs and statistical criteria. The final draw requests
+four workers; the default remains one.
+
+All ten current workspaces pass locked/offline all-target compiler gates
+(`certify-murm-compiler-gates.json`). Root, Eponym, Isomere and unified host
+include all features. Frame capture results and primary/cancelled/auxiliary
+pointer gestures are adapted to the new host; Netrender/paint-list pins match
+Genet at `c74b7cb2`. Consumer-local ignored
+lockfiles were refreshed from their previous pins, with before/after copies
+and package differences preserved. Their metadata records intentionally show
+changed locks and are setup evidence. Refreshed runtime gates pass as follows; their aggregate source/log binding is
+`certify-murm-consumer-gates.json`.
+
+| Current-pin consumer | Result |
+| --- | --- |
+| Eponym play | 35 passed, one genuine historical archive-input ignore |
+| VTT campaign/session | 168 passed, zero ignored |
+| Overlay | 49 passed |
+| Mesocosm actual offer/save/replay/resume | Six passed at site grain |
+| Ecology879 mechanical independence/admission | Twelve passed |
 
 ## Remaining acceptance
 
 Ecology879's real authored witness is tested. Production founding still
 needs complete authored energy/own-reserve capture inputs; unsupported
 mechanical comparison axes refuse. The ordinary ecology, three-epoch played
-consumer reproduction, genuine archived saves, C11 independent crowd,
+consumer reproduction, genuine archived saves, C11 independent chosen-process crowd,
 physical in-site footprints and headed V2/E3/M4 acceptance remain open under
 their owning plans. Compiler and bounded consumer passes do not replace those
 done-conditions. Existing source-bearing worktrees, frozen probes and shared

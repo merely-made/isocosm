@@ -203,6 +203,12 @@ impl UiState {
         }
     }
 
+    /// Abandon the captured gesture without committing a token move.
+    pub fn board_cancel(&mut self) {
+        self.drag_tile = None;
+        self.drag_token = None;
+    }
+
     /// A secondary press in the board pane: a token under the pointer opens
     /// its context menu, anchored where the press landed.
     ///
