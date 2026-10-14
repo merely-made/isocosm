@@ -2,14 +2,18 @@
 
 **Date:** 2026-10-10
 
-**Certification, 2026-10-14:** assembled source `6b5d00a0` is pushed.
-All ten current-pin compiler and five consumer runtime gates pass. The fixed
-1000-draw C10 witness is valid but fails its unchanged no-detected-difference
-gate on grazer meal holdings; positive/starvation/unweighted controls pass.
-C11's independent stock/transit kernel17 and six compiled faults pass, with
-its autonomous chooser/title boundary open. C9 retains its historical
-exact-source certification. The [assembled certification record](2026-10-13_assembled_certification.md)
-owns hashes, qualifications and remaining done-conditions. Next unused880.
+**Certification, 2026-10-14, C10 diagnosed:** the valid fixed1000 rejection
+on grazer meal holdings has a concrete defect. The crowd hunt lacked the
+core's per-part bite sharing (454, 459; core `8548cd2d`): coincident bites on
+a short part were refused, so small prey dropped from the crowd's meal record
+(paired crowd minus exact +229 per world, z 6.4; traced refusals 425 to 0
+after the fix). The crowd fix, two tests and two caught planted faults are
+committed with this record; the native library (238), harm, probe binary and
+all-target check pass. Recertification runs under fresh seed 2026101401
+(880). C11's independent chooser covers autonomous territories (881); titles
+are outside C11 (882). C9 retains its historical exact-source certification.
+The [assembled certification record](2026-10-13_assembled_certification.md)
+owns hashes, qualifications and remaining done-conditions. Next unused884.
 
 The newest Progress entry below owns execution state. The following block
 records an earlier resumed snapshot; later checkpoints and parked lanes

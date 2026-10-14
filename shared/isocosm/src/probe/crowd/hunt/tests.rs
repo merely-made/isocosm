@@ -255,3 +255,83 @@ fn a_whole_meal_lands_alike_in_crowd_and_core() {
     }
     assert!(whole > 0 && bitten > 0, "{whole} whole, {bitten} bitten");
 }
+
+/// One producer whose two fronds hold `held` each and `grazers` alike
+/// grazers, the graze the only process: bites coinciding on one frond share
+/// what it held as the pass began (454, 459).
+fn crowded(seed: u64, held: u64, grazers: u64) -> ProbeWorld {
+    use crate::development::{Soma, develop};
+    let mut w = grazing(seed, held);
+    let g = &mut w.genesis;
+    let rules = g.rules.clone();
+    let d = g.lineages["lineage:0"].development.clone().unwrap();
+    let find = |lineage: &str| {
+        let groups = g.population.groups.values();
+        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        found.next().unwrap().clone()
+    };
+    let (world, mut frond, grazer) = (find("world:ground"), find("lineage:0"), find("lineage:1"));
+    let soma = Soma { segments: vec![2], absent: vec![], seed: 0 };
+    frond.embody(develop(&rules, &d, &soma).unwrap());
+    frond.soma = vec![2];
+    for part in frond.parts.values_mut() {
+        part.matter = BTreeMap::from([("tissue:0".into(), held)]);
+    }
+    let mut population = Population::default();
+    population.insert(world, 1).unwrap();
+    population.insert(frond, 1).unwrap();
+    population.insert(grazer, grazers).unwrap();
+    g.population = population;
+    w
+}
+
+/// Grazers coinciding on one frond are all fed in both runners, sharing the
+/// frond's shortfall rather than refusing the later bites.
+#[test]
+fn coincident_bites_share_their_part_as_the_core_does() {
+    let mut coincident = 0;
+    for seed in 0..6 {
+        for held in [2, 5, 9] {
+            let w = crowded(seed, held, 3);
+            let fronds = w.genesis.population.groups.values()
+                .find(|g| g.entity.lineage == "lineage:0").unwrap().entity.parts.len();
+            assert!(fronds >= 2, "the fixture's producer has {fronds} parts");
+            for dynamics in 0..4 {
+                let exact = run_exact(&w, dynamics, true).unwrap();
+                let crowd = Crowd::new(&w, dynamics, Variant::Histogram).unwrap().run().unwrap();
+                let fed = |m: &MealLog| m.get("body:graze-1").copied().unwrap_or_default().count;
+                assert_eq!(fed(&crowd.meals), fed(&exact.meals), "seed {seed}, frond {held}, dynamics {dynamics}");
+                assert_eq!(crowd.work.blocked, exact.work.blocked, "seed {seed}, frond {held}, dynamics {dynamics}");
+                coincident += usize::from(crowd.shortfalls > 0);
+            }
+        }
+    }
+    assert!(coincident > 0, "no grazers coincided on a frond short of their bites");
+}
+
+#[test]
+fn bites_on_one_part_share_its_shortfall() {
+    let part = |held: &[(&str, u64)]| Part {
+        matter: held.iter().map(|(k, v)| (k.to_string(), *v)).collect(),
+        ..Default::default()
+    };
+    let w = grazing(0, 1);
+    let mut prey = w.genesis.population.groups.values()
+        .find(|g| g.entity.lineage == "lineage:0").unwrap().entity.clone();
+    prey.parts = BTreeMap::from([(PartId(0), part(&[("a", 1)])), (PartId(1), part(&[("a", 5)]))]);
+    let bite = |v: u64, at: u32| (BTreeMap::from([("a".to_string(), v)]), Some(PartId(at)));
+    let quotas = |mut bites: Vec<(Ledger, Option<PartId>)>| {
+        super::part_quotas(&prey, &mut bites);
+        bites.into_iter().map(|(l, _)| value(&l, "a")).collect::<Vec<_>>()
+    };
+    // Coincident one-unit part: both floor to nothing, neither wins first.
+    assert_eq!(quotas(vec![bite(1, 0), bite(1, 0)]), [0, 0]);
+    // Separate parts keep their whole-prey grants.
+    assert_eq!(quotas(vec![bite(1, 0), bite(4, 1)]), [1, 4]);
+    // An oversubscribed part gives each bite the same fraction, floored.
+    assert_eq!(quotas(vec![bite(4, 1), bite(4, 1)]), [2, 2]);
+    // A prey without parts keeps its ledger bites whole.
+    let mut ledger = vec![(BTreeMap::from([("a".to_string(), 9)]), None)];
+    super::part_quotas(&prey, &mut ledger);
+    assert_eq!(value(&ledger[0].0, "a"), 9);
+}

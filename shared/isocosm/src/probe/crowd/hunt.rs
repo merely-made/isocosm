@@ -9,10 +9,12 @@
 //! Hunters landing on one prey share it: each takes its mouthful, computed
 //! of its own state, where the prey holds enough for all, or else the same
 //! fraction of it, floored, and the prey gives what they take as one share
-//! of the accounts the meal names. Each hunter's whole act then runs
-//! against its prey as the pass began, as the core's does: its bite lands on
-//! one part, drawn by what each holds, and takes what that part held of its
-//! share, or the part whole (459, 516). What it took lands on the prey as
+//! of the accounts the meal names. Each hunter's bite lands on one part,
+//! drawn by what each holds, and bites on one part share what it held as
+//! the pass began, each the same fraction, floored, as the core's plan
+//! shares a part's shortfall (454, 459). Each hunter's whole act then runs
+//! against its prey as the pass began, as the core's does, and takes what
+//! the part held of its share, or the part whole (459, 516). What it took lands on the prey as
 //! the hunters before it left it only where it fits, as a pass's acts land
 //! in the core: a bite of what the part still holds, a part taken whole
 //! only as the pass found it; otherwise the act is blocked.
@@ -231,17 +233,24 @@ impl Crowd<'_> {
                 self.shortfalls += 1;
             }
             let mut left = share(&offered, rules, given.iter().sum());
+            let mut bites: Vec<(Ledger, Option<PartId>)> = given
+                .into_iter()
+                .map(|g| {
+                    let portion = share(&left, rules, g);
+                    for (k, v) in &portion {
+                        *left.get_mut(k).expect("a portion of what is left") -= v;
+                    }
+                    // A prey with no parts to hold matter draws nothing.
+                    let bitten = match bodied(was) {
+                        true => anatomy::bitten(was, m.of, s.below(u64::MAX)),
+                        false => None,
+                    };
+                    (portion, bitten)
+                })
+                .collect();
+            part_quotas(was, &mut bites);
             let mut after = was.clone();
-            for (&h, g) in eaters.iter().zip(given) {
-                let portion = share(&left, rules, g);
-                for (k, v) in &portion {
-                    *left.get_mut(k).expect("a portion of what is left") -= v;
-                }
-                // A prey with no parts to hold matter draws nothing.
-                let bitten = match bodied(was) {
-                    true => anatomy::bitten(was, m.of, s.below(u64::MAX)),
-                    false => None,
-                };
+            for (&h, (portion, bitten)) in eaters.iter().zip(bites) {
                 let hunter = &hunters[h].0;
                 let live = self.sites.get(&site).ok_or("a bin at an unknown site")?;
                 let mut scratch = live.clone();
@@ -325,6 +334,30 @@ fn lands(took: &Option<Took>, was: &Entity, after: &mut Entity, bitten: Option<P
             }
             true
         },
+    }
+}
+
+/// Bites landing on one part of the prey share what that part held as the
+/// pass began, account by account: each its bite, or the same fraction of
+/// it, floored, as the core shares a part's shortfall (454, 459).
+fn part_quotas(was: &Entity, bites: &mut [(Ledger, Option<PartId>)]) {
+    let mut asked: BTreeMap<(PartId, Key), u128> = BTreeMap::new();
+    for (portion, part) in bites.iter() {
+        let Some(part) = part else { continue };
+        for (k, v) in portion {
+            *asked.entry((*part, k.clone())).or_default() += u128::from(*v);
+        }
+    }
+    for (portion, part) in bites.iter_mut() {
+        let Some(part) = part else { continue };
+        let held = |k: &Key| was.parts.get(part).and_then(|p| p.matter.get(k)).copied().unwrap_or(0);
+        for (k, v) in portion.iter_mut() {
+            let wanted = asked[&(*part, k.clone())];
+            if wanted > u128::from(held(k)) {
+                *v = (u128::from(*v) * u128::from(held(k)) / wanted) as u64;
+            }
+        }
+        portion.retain(|_, v| *v > 0);
     }
 }
 

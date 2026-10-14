@@ -2,14 +2,18 @@
 
 **Date:** 2026-10-10
 
-**Certification, 2026-10-14:** assembled source `6b5d00a0` is pushed.
-All ten current-pin compiler and five consumer runtime gates pass. The fixed
-1000-draw C10 witness is valid but fails its unchanged no-detected-difference
-gate on grazer meal holdings; positive/starvation/unweighted controls pass.
-C11's independent stock/transit kernel17 and six compiled faults pass, with
-its autonomous chooser/title boundary open. C9 retains its historical
-exact-source certification. The [assembled certification record](2026-10-13_assembled_certification.md)
-owns hashes, qualifications and remaining done-conditions. Next unused880.
+**Certification, 2026-10-14, C10 diagnosed:** the valid fixed1000 rejection
+on grazer meal holdings has a concrete defect. The crowd hunt lacked the
+core's per-part bite sharing (454, 459; core `8548cd2d`): coincident bites on
+a short part were refused, so small prey dropped from the crowd's meal record
+(paired crowd minus exact +229 per world, z 6.4; traced refusals 425 to 0
+after the fix). The crowd fix, two tests and two caught planted faults are
+committed with this record; the native library (238), harm, probe binary and
+all-target check pass. Recertification runs under fresh seed 2026101401
+(880). C11's independent chooser covers autonomous territories (881); titles
+are outside C11 (882). C9 retains its historical exact-source certification.
+The [assembled certification record](2026-10-13_assembled_certification.md)
+owns hashes, qualifications and remaining done-conditions. Next unused884.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -850,3 +854,25 @@ pilot, Q9 admission and Q10 discovery must bind the new integrated source.
   code adjustment or fresh certification. No seed/threshold tuning or reroll.
   C11 stock-clock kernel passes independently; autonomous chooser/title scope
   remains open. Full queue/headed/reproduction/ecology acceptance is separate.
+
+- **2026-10-14, C10 defect identified and fixed:** the saved paired worlds
+  show only `body:graze-1#meal-holdings` shifted (paired crowd minus exact
+  +229 per world, z 6.4; exact-control minus exact -2, z -0.06); the crowd
+  also blocked 246 more acts per world (z 6.1). Tracing every `graze-1`
+  attempt on four C10 worlds found the core accepting all but three
+  unplanned attempts and the crowd refusing 425, every one a coincident
+  bite, on prey of mean mass 33.5 against about 190 for accepted meals.
+  Cause: core `8548cd2d` (Q3, 454 and 459) shares a bitten part's shortfall
+  among the pass's bites before any act writes; the crowd hunt
+  (`shared/isocosm/src/probe/crowd/hunt.rs`) shared only the whole prey and
+  then refused bites its drawn part could no longer hold. The crowd now
+  draws every coincident bite's part first and shares each part's
+  pass-start holding (`part_quotas`). Traced refusals fell to zero and the
+  crowd's mean prey mass returned between the two exact arms. Two tests
+  were added (part quotas mirroring the core's four sharing cases; one-tick
+  coincident grazing counted against the core); two planted faults (no
+  part quotas; a per-bite cap) were each caught and exact bytes restored.
+  The diagnostic instrumentation was temporary and is not committed. Raw
+  traces and fault logs: `Code/testing/isometry/c10-diagnosis/`.
+  Recertification uses fresh seed 2026101401 (880) under unchanged
+  criteria; its harness is `Code/testing/isometry/c10-recert-2026-10-14/`.

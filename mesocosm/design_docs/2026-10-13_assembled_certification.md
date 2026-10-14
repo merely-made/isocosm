@@ -2,7 +2,12 @@
 
 **Date:** 2026-10-14
 
-**Status:** certification attempt completed; C10 rejected by its unchanged gate.
+**Status, 2026-10-14:** C10's rejection is diagnosed and its crowd defect
+fixed (see "Checkpoint10 diagnosis" below); recertification under fresh seed
+2026101401 (880) is the next C10 receipt. C11 closes on the autonomous
+chooser (881), titles outside (882). Next unused884.
+
+**Earlier status:** certification attempt completed; C10 rejected by its unchanged gate.
 Source `6b5d00a0` is pushed and the measurement stayed frozen. Mark's
 explicit "Certify" instruction opens acceptance
 after ruling826's intermediate-state deferral. This record qualifies the
@@ -84,7 +89,7 @@ Eponym Game13 are separate archive versions.
 | Checkpoint | Current qualification |
 | --- | --- |
 | 9 | Historical exact-source certification remains at `df6f0527`. Current native preservation/system controls pass separately. |
-| 10 | Current-pin harm32 passes; nineteen previous-pin compiled faults retain unchanged source/fixture evidence. The interrupted draw is INVALID; current fixed1000 is a valid rejection on grazer meal holdings (distance 0.036, adjusted p 0.0245). |
+| 10 | Rejection diagnosed and crowd part-quota defect fixed (below); recertification at seed 2026101401 pending. Earlier: current-pin harm32 passes; nineteen previous-pin compiled faults retain unchanged source/fixture evidence. The interrupted draw is INVALID; current fixed1000 is a valid rejection on grazer meal holdings (distance 0.036, adjusted p 0.0245). |
 | 11 | Independent unowned site/host stock-clock kernel passes17 tests and six compiled faults; native directing/authorization10 passes separately. Independent autonomous chooser/title comparison remains open. |
 
 The numbered body checkpoint sequence ends at11.
@@ -149,6 +154,25 @@ threshold, horizon or read-set adjustment, reroll or statistical resampling
 followed the rejection. The cause of the grazer meal-holdings difference is
 not established. The after-pass owns diagnosis of that reading under the
 same declared gate; it does not turn this completed measurement into a pass.
+
+### Checkpoint10 diagnosis, 2026-10-14
+
+The rejected witness's own paired worlds isolate the shift: crowd minus exact
+on `body:graze-1#meal-holdings` is +229 per world (z 6.4), exact-control
+minus exact is -2 (z -0.06), and no other reading moves beyond noise. The
+crowd blocked 246 more acts per world (z 6.1). Traced `graze-1` attempts on
+four worlds: the core accepted all but three unplanned, the crowd refused
+425, all coincident bites on prey of mean mass 33.5 (accepted meals about
+190). The core shares a bitten part's shortfall across a pass's bites
+(`8548cd2d`, 454 and 459); the crowd did not, so it dropped small-prey meals
+and its meal mean rose. The crowd's `part_quotas` now shares each part's
+pass-start holding as the core does; traced refusals fall to zero. Native
+library 238 passed with ten intentional ignores; harm, probe-binary and
+all-target gates pass; two planted faults were caught with exact bytes
+restored. The rejected 2026101003 witness stays a valid rejection of its
+source. Recertification: one fixed1000 run, seed 2026101401 (880),
+unchanged criteria, harness and receipts in
+`Code/testing/isometry/c10-recert-2026-10-14/`.
 
 ### Checkpoint11 independent stock and clock kernel
 

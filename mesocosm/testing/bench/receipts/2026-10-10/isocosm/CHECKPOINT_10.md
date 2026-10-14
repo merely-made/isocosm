@@ -1,5 +1,11 @@
 # Checkpoint 10, 2026-10-10: independent slice
 
+**Diagnosis, 2026-10-14:** the rejection's cause is a crowd defect: its hunt
+lacked the core's per-part bite sharing (454, 459; `8548cd2d`) and refused
+coincident bites, dropping small-prey meals. Fixed in the crowd with two
+tests and two caught faults; the assembled certification record has the
+evidence. Recertification uses fresh seed 2026101401 (880).
+
 **Current-pin verdict, 2026-10-14: REJECTED, valid measurement.** Frozen
 pushed source `6b5d00a0` completed the fixed1000 release run with native exit0
 and stable source. Independent recomputation exits1: grazer meal holdings

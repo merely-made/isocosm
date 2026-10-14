@@ -11032,6 +11032,58 @@ what later sections derive from.
      comparisons cannot be replaced with names, hashes or random outcomes.
      Next unused880. Tests and tuning remain deferred826.
 
+880. **C10 recertifies under a fresh declared seed.**
+     Asked 2026-10-14, after diagnosing the valid fixed1000 rejection: the
+     crowd hunt lacked the core's per-part bite sharing (454, 459; core
+     `8548cd2d`), so coincident bites on a short part were refused and small
+     prey dropped out of the crowd's meals. The diagnosis read worlds 0 to
+     199 of seed 2026101003 under separate dynamics seeds.
+     Question: "Which seed does the recertification use?"
+     Options: (1) "Fresh declared seed (Recommended)": same 1000 draws, 1999
+     permutations, alpha 0.05, bound 0.2, a new seed fixed in the record
+     before running; (2) "Same seed 2026101003": the gate as declared,
+     comparable to the rejected witness, its worlds overlapping the diagnosis.
+     Mark: "Fresh declared seed (Recommended)"
+     The recertification seed is 2026101401, declared here before any draw.
+     Draws, permutations, alpha, bound, arms and reader stay unchanged. The
+     rejected 2026101003 witness stays a valid rejection of its source.
+
+881. **C11's independent chooser covers autonomous territories only.**
+     Asked 2026-10-14. Evidence: natively, an un-nudged deliberative
+     territory scores each due Choice as needs plus sway plus priority;
+     DirectOverflow feeds no need and no nudge sways it, so it takes the
+     highest-priority feasible option (route valid, local excess), ties to
+     the first process id. Nudges add bond-weighted sway.
+     Question: "How far should the crowd's independent chooser go?"
+     Options: (1) "Autonomous only (Recommended)": un-nudged deliberative
+     and free territories at site grain, exact against crowd over drawn
+     worlds with planted faults, nudged directing native-tested and refused
+     by the crowd; (2) "Autonomous plus nudges"; (3) "Close at the kernel".
+     Mark: "Autonomous only (Recommended)"
+     The crowd implements its own chooser for autonomous territories and
+     refuses live nudges; nudged directing keeps its native tests.
+
+882. **Titles are outside C11.**
+     Asked 2026-10-14. Titled transit and owned-stock custody are host and
+     player commands; C11's done-condition predates them.
+     Question: "Are titles part of C11?"
+     Options: (1) "Outside C11 (Recommended)": native-tested, a separate
+     boundary owned by the stock/title plan; (2) "Inside C11".
+     Mark: "Outside C11 (Recommended)"
+     C11 closes without an independent title comparison; the crowd keeps
+     refusing owned stock, custody and titled transit.
+
+883. **The local checkout is `Code/repos/isocosm`.**
+     Asked 2026-10-14, after Mark's "feel free to rename the local
+     'isometry' directory to 'isocosm'" and the rename with lane worktrees
+     re-linked. Question: "What should follow the rename?" Options: (1)
+     "Ledger line only (Recommended)": record it in the naming ledger, leave
+     `worktrees/isometry-*` and `Code/testing/isometry` as receipts cite
+     them; (2) "Rename lanes and testing too"; (3) "Nothing more".
+     Mark: "Ledger line only (Recommended)"
+     Lane worktree directories and the testing tree keep their names.
+     Next unused884.
+
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
