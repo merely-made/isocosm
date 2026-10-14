@@ -2,10 +2,10 @@
 
 **Date:** 2026-10-14
 
-**Status, 2026-10-14:** C10's rejection is diagnosed and its crowd defect
-fixed (see "Checkpoint10 diagnosis" below); recertification under fresh seed
-2026101401 (880) is the next C10 receipt. C11 closes on the autonomous
-chooser (881), titles outside (882). Next unused884.
+**Status, 2026-10-14:** C10 and C11 are certified. C10's rejection was a
+crowd defect, fixed at `8cbe3e76`; the recertification under fresh seed
+2026101401 (880) passes. C11 is certified at site grain with the autonomous
+chooser (881); titles are outside (882). Next unused884.
 
 **Earlier status:** certification attempt completed; C10 rejected by its unchanged gate.
 Source `6b5d00a0` is pushed and the measurement stayed frozen. Mark's
@@ -89,7 +89,7 @@ Eponym Game13 are separate archive versions.
 | Checkpoint | Current qualification |
 | --- | --- |
 | 9 | Historical exact-source certification remains at `df6f0527`. Current native preservation/system controls pass separately. |
-| 10 | Rejection diagnosed and crowd part-quota defect fixed (below); recertification at seed 2026101401 pending. Earlier: current-pin harm32 passes; nineteen previous-pin compiled faults retain unchanged source/fixture evidence. The interrupted draw is INVALID; current fixed1000 is a valid rejection on grazer meal holdings (distance 0.036, adjusted p 0.0245). |
+| 10 | Certified 2026-10-14: fixed1000 recertification at seed 2026101401 passes the independent reader after the crowd part-quota fix (`8cbe3e76`); harm32 fresh; nineteen faults bridged. The 2026101003 rejection stays valid for its source. |
 | 11 | Certified at site grain 2026-10-14: stock-clock kernel plus the independent autonomous chooser (881), crowd suite 21, eleven caught faults, native directing 10; titles outside (882). |
 
 The numbered body checkpoint sequence ends at11.
@@ -173,6 +173,27 @@ restored. The rejected 2026101003 witness stays a valid rejection of its
 source. Recertification: one fixed1000 run, seed 2026101401 (880),
 unchanged criteria, harness and receipts in
 `Code/testing/isometry/c10-recert-2026-10-14/`.
+
+### Checkpoint10 recertification, 2026-10-14
+
+One fixed1000 release run at `8cbe3e76`, seed 2026101401 declared in 880,
+`--harm --workers 4 --draws 1000 --permutations 1999`, alpha 0.05, bound
+0.2: native exit 0 after 10,097 seconds, source stable, then the
+independent reader exit 0, certified, no failure. Exact against crowd is
+equivalent with no detected difference and zero refusals; grazer meal
+holdings read 12304.8 exact and 12319.0 crowd (p 0.733). The exact positive
+control passes; the averaged crowd fails its starvation check and the
+unweighted crowd is detected. Rerun identity and collection checks hold.
+
+| Witness | SHA256 |
+| --- | --- |
+| `certify-recert-c10-harm-full1000.json` | `bb54e8f9e4b323469a35a29614ccb638921d7f6259252da18d94a28db4fdf948` |
+| `certify-recert-c10-harm-full1000-verify.json` | `ca015d2e9b0eed828202f530da49ad12c5195f427abbf8c2bcf7e6a2b0f15b2b` |
+
+Scope: harm 32 passed fresh at `8cbe3e76`. Its nineteen compiled faults
+keep their source bridge; their thirteen target files are byte-unchanged
+since `6b5d00a0`. Main's later commits change only the spread crowd, which
+harm worlds never construct.
 
 ### Checkpoint11 independent stock and clock kernel
 
@@ -263,7 +284,7 @@ changed locks and are setup evidence. Refreshed runtime gates pass as follows; t
 Ecology879's real authored witness is tested. Production founding still
 needs complete authored energy/own-reserve capture inputs; unsupported
 mechanical comparison axes refuse. The ordinary ecology, three-epoch played
-consumer reproduction, genuine archived saves, C11 independent chosen-process crowd,
+consumer reproduction, genuine archived saves,
 physical in-site footprints and headed V2/E3/M4 acceptance remain open under
 their owning plans. Compiler and bounded consumer passes do not replace those
 done-conditions. Existing source-bearing worktrees, frozen probes and shared

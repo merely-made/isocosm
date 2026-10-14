@@ -2,15 +2,16 @@
 
 **Date:** 2026-10-10
 
-**Certification, 2026-10-14, C10 diagnosed:** the valid fixed1000 rejection
+**Certification, 2026-10-14, C10 and C11 certified:** the valid fixed1000 rejection
 on grazer meal holdings has a concrete defect. The crowd hunt lacked the
 core's per-part bite sharing (454, 459; core `8548cd2d`): coincident bites on
 a short part were refused, so small prey dropped from the crowd's meal record
 (paired crowd minus exact +229 per world, z 6.4; traced refusals 425 to 0
 after the fix). The crowd fix, two tests and two caught planted faults are
-committed with this record; the native library (238), harm, probe binary and
-all-target check pass. Recertification runs under fresh seed 2026101401
-(880). C11 is certified at site grain: the independent autonomous chooser (881)
+committed at `8cbe3e76`; the native library (238), harm, probe binary and
+all-target check pass. **C10 is certified:** the fixed1000 recertification
+under fresh seed 2026101401 (880) passes the independent reader with no
+failure (grazer meal holdings 12304.8 exact, 12319.0 crowd, p 0.73). C11 is certified at site grain: the independent autonomous chooser (881)
 joins the stock kernel, eleven compiled faults caught; titles are outside
 C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
@@ -887,3 +888,15 @@ pilot, Q9 admission and Q10 discovery must bind the new integrated source.
   and the all-target check pass at lane head `d795d758`. Titles stay outside
   C11 (882) and nudged directing native-tested. Receipts:
   `Code/testing/isometry/c11-chooser-2026-10-14/`.
+
+- **2026-10-14, C10 certified:** the fixed1000 recertification ran at
+  `8cbe3e76` under seed 2026101401 (880): native exit 0 after 10,097
+  seconds with stable source; the independent reader certifies it with no
+  failure. Main is equivalent with no detected difference and no refusal;
+  grazer meal holdings read 12304.8 exact against 12319.0 crowd (p 0.73);
+  the positive control passes and the averaged and unweighted controls are
+  detected. Raw SHA-256 `bb54e8f9e4b323469a35a29614ccb638921d7f6259252da18d94a28db4fdf948`, verdict `ca015d2e9b0eed828202f530da49ad12c5195f427abbf8c2bcf7e6a2b0f15b2b`, in
+  `Code/testing/isometry/c10-recert-2026-10-14/`. Main's later commits
+  (`d1b78f3d` to `77d73505`) touch only the spread crowd, which the harm
+  worlds never construct. The nineteen C10 fault targets are byte-unchanged
+  since `6b5d00a0`, so their source bridge holds with its earlier scope.

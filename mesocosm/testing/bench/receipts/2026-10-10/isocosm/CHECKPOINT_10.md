@@ -4,7 +4,9 @@
 lacked the core's per-part bite sharing (454, 459; `8548cd2d`) and refused
 coincident bites, dropping small-prey meals. Fixed in the crowd with two
 tests and two caught faults; the assembled certification record has the
-evidence. Recertification uses fresh seed 2026101401 (880).
+evidence. **Certified 2026-10-14:** the fixed1000 recertification at
+`8cbe3e76` under fresh seed 2026101401 (880) passes the independent reader
+(raw `bb54e8f9e4b323469a35a29614ccb638921d7f6259252da18d94a28db4fdf948`, verdict `ca015d2e9b0eed828202f530da49ad12c5195f427abbf8c2bcf7e6a2b0f15b2b`).
 
 **Current-pin verdict, 2026-10-14: REJECTED, valid measurement.** Frozen
 pushed source `6b5d00a0` completed the fixed1000 release run with native exit0
