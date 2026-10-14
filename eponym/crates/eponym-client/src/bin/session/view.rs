@@ -50,6 +50,7 @@ fn viewport(state: &SessionApp) -> Child {
                     state.begin_charge();
                 },
                 PointerPhase::Up => state.release(),
+                PointerPhase::Cancel => state.charging = false,
                 PointerPhase::Move => {},
             },
         ),
