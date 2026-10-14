@@ -50,6 +50,12 @@ impl Model {
     }
 
     pub(super) fn changed(&mut self, before:&Self, rules:&Rules) -> Result<()> {
+        self.changed_except(before,rules,None)
+    }
+
+    /// As `changed`, leaving out the stock a directed act just resolved.
+    pub(super) fn changed_except(&mut self, before:&Self, rules:&Rules,
+        handled:Option<&(Substrate,Identity)>) -> Result<()> {
         if rules.spread_capacity.is_none() { return Ok(()); }
         let identities:Vec<_> = self.details.identities.iter().cloned().collect();
         let mut sources = Vec::new();
@@ -70,6 +76,7 @@ impl Model {
         }
         sources.sort();
         for (at,identity) in sources {
+            if handled.is_some_and(|h| h.0 == at && h.1 == identity) { continue; }
             let current = self.held(at,&identity)?;
             let limit = self.capacity(rules,Some(at),&identity)?;
             if current <= limit { continue; }
@@ -122,8 +129,24 @@ impl Model {
         Ok(())
     }
 
+    /// Arrivals settle before each due direction pass, as the native
+    /// scheduler lands every arrival up to a pass's tick first.
     pub(super) fn advance(&mut self, ticks:Tick, rules:&Rules) -> Result<()> {
         let until = self.tick.checked_add(ticks).ok_or("independent spread clock overflows")?;
+        let mut done = self.tick;
+        while let Some(tick) = self.next_direction(rules,done,until) {
+            self.arrive(tick,rules)?;
+            self.tick = tick;
+            self.directions(rules,tick)?;
+            self.validate(rules)?;
+            done = tick;
+        }
+        self.arrive(until,rules)?;
+        self.tick = until;
+        self.validate(rules)
+    }
+
+    fn arrive(&mut self, until:Tick, rules:&Rules) -> Result<()> {
         loop {
             let bodies = self.bins.keys().chain(self.details.named.values())
                 .filter_map(|body| body.journey.map(|j| j.arrives));
@@ -140,7 +163,6 @@ impl Model {
             self.changed(&before_credit,rules)?;
             self.validate(rules)?;
         }
-        self.tick = until;
-        self.validate(rules)
+        Ok(())
     }
 }

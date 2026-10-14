@@ -49,7 +49,7 @@ impl ProbeWorld {
             return Err("independent spread crowd supports site grain without titled transit".into());
         }
         if g.rules.owned_stock.is_some() || g.rules.item_custody.is_some()
-            || g.rules.processes.values().any(|p| p.period.is_some())
+            || g.rules.processes.values().any(|p| p.period.is_some() && crowd::directing(p).is_none())
             || !g.rules.competitions.is_empty() {
             return Err("independent spread crowd requires a stock timeline without scheduled body or title processes".into());
         }

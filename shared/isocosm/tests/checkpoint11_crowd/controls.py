@@ -12,6 +12,7 @@ from pathlib import Path
 
 CRATE = Path(__file__).resolve().parents[2]
 TRANSPORT = "src/probe/crowd/spreads/transport.rs"
+DIRECTION = "src/probe/crowd/spreads/direction.rs"
 FAULTS = {
     "zero-route": (
         TRANSPORT,
@@ -50,6 +51,40 @@ FAULTS = {
         "spread::strain_key(seed,parent,at,&traits)",
         "spread::strain_key(seed.wrapping_add(1),parent,at,&traits)",
         "seeded_strain_forks_only_selected_host_and_retains_local_functions",
+    ),
+    "last-tie-wins": (
+        DIRECTION,
+        "if i64::from(p.priority) > top {",
+        "if i64::from(p.priority) >= top {",
+        "a_deliberative_territory_takes_the_first_feasible_option_of_highest_priority",
+    ),
+    "infeasible-choice": (
+        DIRECTION,
+        "if !admits(p, body) || self.ready(rules, actor, from, destinations)?.is_none() { continue; }",
+        "if !admits(p, body) { continue; }",
+        "a_deliberative_territory_takes_the_first_feasible_option_of_highest_priority",
+    ),
+    "unsplit-offer": (
+        DIRECTION,
+        "let offered = excess / routes.len() as u64;",
+        "let offered = excess;",
+        "autonomous_territory_direction_runs_exact_against_native_choice",
+    ),
+    "arrivals-after-direction": (
+        TRANSPORT,
+        "            self.arrive(tick,rules)?;\n"
+        "            self.tick = tick;\n"
+        "            self.directions(rules,tick)?;",
+        "            self.tick = tick;\n"
+        "            self.directions(rules,tick)?;\n"
+        "            self.arrive(tick,rules)?;",
+        "autonomous_territory_direction_runs_exact_against_native_choice",
+    ),
+    "respill-directed": (
+        DIRECTION,
+        "self.changed_except(&before, rules, Some(&handled))?;",
+        "let _ = handled; self.changed(&before, rules)?;",
+        "autonomous_territory_direction_runs_exact_against_native_choice",
     ),
 }
 

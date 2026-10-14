@@ -19,6 +19,7 @@ mod journey_tests;
 mod journey_life_tests;
 mod round;
 mod spreads;
+pub(crate) use spreads::directing;
 #[cfg(test)]
 mod tests;
 

@@ -6,6 +6,8 @@
 
 #[path="checkpoint11_crowd/fixtures.rs"]
 mod fixtures;
+#[path="checkpoint11_crowd/direction.rs"]
+mod direction;
 use fixtures::*;
 use isocosm::{Execution,Session,probe::{Crowd,Variant,readings::spreads},schema::Route,
     spread::{self,CapacitySource,Identity,Substrate,Supply,Placement}};
@@ -277,4 +279,50 @@ fn overlapping_replace_modifier_refuses_the_entire_candidate() {
     p.command(spread::Command::SetModifier(modifier("modifier:world",CapacitySource::World,None,100)));
     p.refused(spread::Command::SetModifier(modifier("modifier:site",
         CapacitySource::Substrate(Substrate::Site(w.from)),Some(w.surface.clone()),1)));
+}
+
+#[test]
+fn autonomous_territory_direction_runs_exact_against_native_choice() {
+    use isocosm::schema::Method;
+    let (mut deliberative,mut reactive) = (0,0);
+    for seed in 0..24 {
+        deliberative += direction::timeline(seed,Method::Deliberative).len();
+        reactive += direction::timeline(seed,Method::Reactive).len();
+    }
+    assert!(deliberative > 0 && reactive > deliberative,"{deliberative} chosen, {reactive} free");
+}
+
+#[test]
+fn a_deliberative_territory_takes_the_first_feasible_option_of_highest_priority() {
+    use isocosm::schema::Method;
+    // The zero-transmission route is infeasible, so its higher priority loses;
+    // of the two feasible options at one priority, the first identity runs.
+    let w = direction::fixed(Method::Deliberative,&[("c11:direct-a",1,1),("c11:direct-b",0,1),
+        ("c11:direct-c",2,5)],61);
+    let mut p = Pair::new(&w,&BTreeSet::new());
+    p.advance(1);
+    assert_eq!(direction::ran(&p),["c11:direct-a"]);
+    p.advance(2);
+    p.replay();
+}
+
+#[test]
+fn a_free_territory_runs_each_ready_direction_in_pass_order() {
+    use isocosm::schema::Method;
+    // The half-transmitting route leaves half its offer, which the next
+    // ready direction of the same tick then sends on.
+    let w = direction::fixed(Method::Reactive,&[("c11:direct-a",0,0),("c11:direct-b",1,0)],161);
+    let mut p = Pair::new(&w,&BTreeSet::new());
+    p.advance(1);
+    assert_eq!(direction::ran(&p),["c11:direct-a","c11:direct-b"]);
+    p.advance(2);
+    p.replay();
+}
+
+#[test]
+fn normative_and_unaddressed_direction_refuse_in_the_crowd() {
+    use isocosm::schema::Method;
+    let w = direction::fixed(Method::Normative,&[("c11:direct-a",1,0)],61);
+    let mut crowd = Crowd::for_spreads(&w.probe,w.probe.genesis.dynamics_seed(),&BTreeSet::new()).unwrap();
+    assert!(crowd.advance_spreads(1).err().unwrap().contains("882"));
 }

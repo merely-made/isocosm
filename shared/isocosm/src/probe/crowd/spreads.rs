@@ -4,10 +4,13 @@
 //! Independent C11 stock interpreter. Its candidates contain histogram and
 //! substrate data, never a native Simulation or reconstructed native State.
 
+mod direction;
 mod named;
 mod stocks;
 mod transport;
 mod strain;
+
+pub(crate) use direction::directing;
 
 use super::*;
 use crate::spread::{self, CapacityModifier, Identity, Substrate, Transfer};
