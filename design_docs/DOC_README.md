@@ -2,6 +2,16 @@
 
 Rust policy (2026-10-13): working toolchain 1.99.0 and shared MSRV 1.97.1, qualified separately. Canonical policy: `mere/design_docs/2026-08-12_family_composition_thesis_brief.md`, section "Shared Rust toolchain and minimum version".
 
+Murm source adoption (2026-10-13), reconciled onto `55f48769`, is tracked in
+`murm/design_docs/2026-10-13_murm_family_move_plan.md`. All eight independent
+consumer roots resolve the canonical imported supplier under locked,
+all-feature metadata, with coherent Mere/Dramatis/p2panda composition.
+The VTT, Eponym, Mesocosm and shared host compiler gates still fail on the
+same ten simulator errors reproduced by untouched upstream `55f48769`.
+The owner authorized this dependency migration after the baseline report;
+gameplay source, deferred acceptance and historical physical/headed receipts
+retain their existing scopes. Cutover receipts: `Code/targets/murm-isocosm-migration-qualification-20261013.json`.
+
 The repository's entry index, and the VTT's documents. Per DOC_POLICY §5 this
 file is the canonical index for this directory, updated in the same session
 as any doc change. Each row is a link, what the doc is for and a dated status
