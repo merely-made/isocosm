@@ -10,8 +10,9 @@ a short part were refused, so small prey dropped from the crowd's meal record
 after the fix). The crowd fix, two tests and two caught planted faults are
 committed with this record; the native library (238), harm, probe binary and
 all-target check pass. Recertification runs under fresh seed 2026101401
-(880). C11's independent chooser covers autonomous territories (881); titles
-are outside C11 (882). C9 retains its historical exact-source certification.
+(880). C11 is certified at site grain: the independent autonomous chooser (881)
+joins the stock kernel, eleven compiled faults caught; titles are outside
+C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Next unused884.
 

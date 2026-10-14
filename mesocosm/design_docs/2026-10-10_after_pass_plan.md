@@ -10,8 +10,9 @@ a short part were refused, so small prey dropped from the crowd's meal record
 after the fix). The crowd fix, two tests and two caught planted faults are
 committed with this record; the native library (238), harm, probe binary and
 all-target check pass. Recertification runs under fresh seed 2026101401
-(880). C11's independent chooser covers autonomous territories (881); titles
-are outside C11 (882). C9 retains its historical exact-source certification.
+(880). C11 is certified at site grain: the independent autonomous chooser (881)
+joins the stock kernel, eleven compiled faults caught; titles are outside
+C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Next unused884.
 
@@ -876,3 +877,13 @@ pilot, Q9 admission and Q10 discovery must bind the new integrated source.
   traces and fault logs: `Code/testing/isometry/c10-diagnosis/`.
   Recertification uses fresh seed 2026101401 (880) under unchanged
   criteria; its harness is `Code/testing/isometry/c10-recert-2026-10-14/`.
+
+- **2026-10-14, C11 certified at site grain:** the crowd's own territory
+  chooser (881) compares exact with native over 48 drawn deliberative and
+  free timelines, with priority, tie, feasibility, free-pass and refusal
+  cases; eleven compiled controls caught with exact restoration (a first
+  attempt caught nine, one blind fixture and one equivalent mutant, both
+  replaced). Native library 238, `checkpoint11_spread` 10, probe binary 7
+  and the all-target check pass at lane head `d795d758`. Titles stay outside
+  C11 (882) and nudged directing native-tested. Receipts:
+  `Code/testing/isometry/c11-chooser-2026-10-14/`.

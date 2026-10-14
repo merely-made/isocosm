@@ -90,7 +90,7 @@ Eponym Game13 are separate archive versions.
 | --- | --- |
 | 9 | Historical exact-source certification remains at `df6f0527`. Current native preservation/system controls pass separately. |
 | 10 | Rejection diagnosed and crowd part-quota defect fixed (below); recertification at seed 2026101401 pending. Earlier: current-pin harm32 passes; nineteen previous-pin compiled faults retain unchanged source/fixture evidence. The interrupted draw is INVALID; current fixed1000 is a valid rejection on grazer meal holdings (distance 0.036, adjusted p 0.0245). |
-| 11 | Independent unowned site/host stock-clock kernel passes17 tests and six compiled faults; native directing/authorization10 passes separately. Independent autonomous chooser/title comparison remains open. |
+| 11 | Certified at site grain 2026-10-14: stock-clock kernel plus the independent autonomous chooser (881), crowd suite 21, eleven caught faults, native directing 10; titles outside (882). |
 
 The numbered body checkpoint sequence ends at11.
 
@@ -196,10 +196,38 @@ lot-authorization slice separately passes ten tests in
 
 This certifies the unowned site/host stock and clock kernel. The independent
 crowd explicitly refuses fine places, titled transit, owned-stock/custody
-rules, scheduled body processes and competitions. Autonomous chosen directing
-and title operations retain native tests; they have not been compared against
-an independent aggregate chooser. Full checkpoint11 remains open across that
-boundary. Its refusal is at `shared/isocosm/src/probe/aggregate/doing.rs`.
+rules, scheduled body processes and competitions.
+
+### Checkpoint11 autonomous chooser, 2026-10-14
+
+Under 881 the crowd now directs territory overflow with its own chooser
+(`shared/isocosm/src/probe/crowd/spreads/direction.rs`): scheduled Choice
+processes whose only effect is DirectOverflow, arrivals settled before each
+due pass, an un-nudged deliberative territory taking the feasible due option
+of highest priority (first on a tie, an empty choice retried next pass, a
+chosen one kept for the tick), a free territory running each ready direction
+in pass order, equal excess shares over the selected routes transmitted in
+whole milligrams. Normative direction, owned stock, titles (882) and
+unaddressed directing bodies refuse.
+
+Lane head `d795d758` passes the C11 crowd suite (21 tests): 48 drawn
+deliberative and free timelines with mid-run placements and a return route
+compared tick by tick against native Individuals with Grouped replay, plus
+priority, tie, feasibility, free-pass and refusal cases. All eleven compiled
+controls were caught with exact bytes restored (the six kernel faults; tie
+order, infeasible choice, unsplit offer, arrivals after direction, choice
+of options not due). A first attempt caught nine: its drawn worlds never
+landed an arrival on a directing site, and its spill-exclusion mutant was
+equivalent; both were replaced, and the record keeps that attempt. Native
+library 238 (ten intentional ignores), native `checkpoint11_spread` 10,
+probe binary 7 and the isocosm all-target check pass. Receipts:
+`Code/testing/isometry/c11-chooser-2026-10-14/`. Nudged directing keeps its
+native tests and the crowd refuses it (881).
+
+With the kernel, this certifies checkpoint11's done-condition at site grain:
+a territory and a surface run exact against the crowd, overflow honours
+transmission and travel, strains fork deterministically by seed, and no
+milligram leaves the account. Titles are outside it (882).
 
 ### Current-pin execution checks
 
