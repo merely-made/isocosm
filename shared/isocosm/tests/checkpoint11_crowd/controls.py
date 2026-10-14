@@ -80,10 +80,10 @@ FAULTS = {
         "            self.arrive(tick,rules)?;",
         "autonomous_territory_direction_runs_exact_against_native_choice",
     ),
-    "respill-directed": (
+    "choice-ignores-due": (
         DIRECTION,
-        "self.changed_except(&before, rules, Some(&handled))?;",
-        "let _ = handled; self.changed(&before, rules)?;",
+        "if !p.period.is_some_and(|n| tick % n == 0) { continue; }",
+        "let _ = tick;",
         "autonomous_territory_direction_runs_exact_against_native_choice",
     ),
 }

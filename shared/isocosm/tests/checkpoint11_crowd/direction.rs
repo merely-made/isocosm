@@ -5,7 +5,7 @@
 //! actual native choice, for autonomous territories only (881).
 
 use super::fixtures::*;
-use isocosm::{rules::{Binding,Causation,Effect,Process,Query},schema::{Id,Method},
+use isocosm::{rules::{Binding,Causation,Effect,Process,Query},schema::{Id,Method,Route},
     spread::Substrate};
 use std::collections::BTreeSet;
 
@@ -46,6 +46,10 @@ pub fn directed(seed:u64, method:Method) -> World {
         g.rules.processes.insert(id,p);
     }
     g.sites.get_mut(&w.from).unwrap().accounts.insert(w.territory.key(),40+pick(seed,"stock",0,90));
+    // A return route lands spill back on the directing site, so arrivals
+    // and due directions meet at one tick.
+    g.sites.get_mut(&w.to[0]).unwrap().routes = vec![Route {to:w.from,travel:1+pick(seed,"return",0,2),
+        transmission:1_000_000,border:None,authored:None}];
     g.validate().unwrap();
     w
 }
