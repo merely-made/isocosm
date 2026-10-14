@@ -33,6 +33,10 @@ fn world() -> (Genesis, Id, Id) {
     for p in g.rules.processes.values_mut() {
         p.period = None;
     }
+    // This fixture covers unmarked Eat grammar, independent of generated ports.
+    let feed = g.rules.processes.get_mut("ecology:feed-1").unwrap();
+    feed.port_feeding = None;
+    feed.target.as_mut().unwrap().among = BTreeSet::from(["lineage:0".into()]);
     let member = |line: &str| {
         *g.population
             .groups
@@ -101,6 +105,8 @@ fn reconcile(before: Books, s: &Session, flows: &[Flow]) {
                 },
                 Holder::Site(_) => add(*holder, i128::from(flow.amount) * i128::from(flow.count)),
                 Holder::Dev => {},
+                Holder::ProjectReservation(_) | Holder::ProjectConstruction(_) =>
+                    panic!("ecology fixture unexpectedly used material project stock"),
             }
         }
     }

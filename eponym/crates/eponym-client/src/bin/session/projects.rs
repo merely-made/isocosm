@@ -61,7 +61,7 @@ pub(super) fn panel(state: &SessionApp) -> Child {
             rows.push(Box::new(el("p", text(format!("{}: {} / {}",
                 label(&project.recipe), project.progress, definition.total)))));
             let carrying = project.carrier == Some(actor);
-            rows.push(button(if carrying { "Put work down" } else { "Carry work" }, "control",
+            rows.push(button(if carrying { "Put work down" } else { "Carry work" }.into(), "control",
                 move |state| state.carry_work(id, !carrying)));
             for process in sim.genesis().rules.processes.values().filter(|process|
                 process.requires.iter().any(|query| matches!(query,

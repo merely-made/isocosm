@@ -261,7 +261,7 @@ impl Simulation {
 
     fn feasible(&self, actor: Id, target: Option<Id>, p: &Process, place: Id) -> bool {
         let part = self.bind_part(actor, p);
-        self.route_ready(actor, p) && self.target_matches(actor, target, p)
+        self.route_ready(actor, p) && self.direction_ready(actor, p).is_ok() && self.target_matches(actor, target, p)
             && self.owned_process_ready(actor,target,p)
             && p.requires
                 .iter()
@@ -282,6 +282,9 @@ impl Simulation {
             Toward::Site(s) => s,
         };
         let goes = moves(p);
+        if crate::spread::directions(p).iter().any(|(_, destinations)| destinations.contains(&site)) {
+            return true;
+        }
         if self.body_at_start(n.critter).and_then(Entity::resident_site).is_none() { return false; }
         if place != site {
             let hops = |from| super::tier::hops(&self.state.sites, from, site);

@@ -92,6 +92,7 @@ fn ordinary_stream_envelopes_follow_native_attention_and_the_current_seat() {
     genesis.rules.field.decay_per_tick = 1;
     let key = "process:host-stream-fixture";
     genesis.rules.processes.insert(key.into(), isocosm::rules::Process { id: key.into(),
+        port_feeding: None, goal_directives: Vec::new(),
         causation: isocosm::rules::Causation::Choice, requires: vec![], commitments: vec![],
         effects: vec![], risk: None, target: None, period: None, priority: 0,
         need_account: None, need_below: 0, glyphs: BTreeSet::new(), invariants: BTreeSet::new(), note: true });
@@ -107,7 +108,7 @@ fn ordinary_stream_envelopes_follow_native_attention_and_the_current_seat() {
     let site = *app.windows[&first].native.projection().unwrap().visible.sites.iter().next().unwrap();
     let request = app.windows[&first].native.window_attention_request(AttentionChange::Examine(PlaceHandle(site))).unwrap();
     app.windows.get_mut(&first).unwrap().native.apply_attention(request).unwrap();
-    app.step().unwrap();
+    app.step(first).unwrap();
     let cut = app.windows[&first].native.projection().unwrap();
     let records = app.world.read(|s| crate::stream::records(s, &cut)).unwrap().unwrap();
     let expected = app.world.read(|s| s.sim.attended_events(cut.access.participant.0,

@@ -14,7 +14,7 @@ use std::sync::Arc;
 use winit::event_loop::ActiveEventLoop;
 use winit::window::Window;
 
-use super::{Gpu, Host, Lanes};
+use super::{Gpu, Host, Lanes, continuation};
 use crate::chrome::Chrome;
 use crate::section::{Framing, Section};
 

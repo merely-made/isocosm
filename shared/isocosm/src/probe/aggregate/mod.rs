@@ -143,6 +143,8 @@ fn identity_bound(p: &Process, meal: bool) -> bool {
         || p.requires.iter().any(|q| {
             let reads = match q {
                 Query::Related { .. } => return true,
+                Query::Project { .. } | Query::ProjectDecision
+                | Query::InstitutionDecision | Query::Institution { .. } => return true,
                 Query::Alive(b) => target(b),
                 Query::Trait { who, .. }
                 | Query::Account { who, .. }

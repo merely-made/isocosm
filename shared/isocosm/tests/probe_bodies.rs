@@ -344,6 +344,7 @@ fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
                 part.cells.insert("function:fix".into(), fixing - cells);
                 part.cells.insert("function:secrete".into(), cells);
                 part.functions.insert("function:secrete".into());
+                frond.lay_out();
                 // The gland's cells bring the system they realize (587).
                 isocosm::systems::take_up(frond, &rules, &before);
             }

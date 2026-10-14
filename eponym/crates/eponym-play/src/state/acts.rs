@@ -432,7 +432,7 @@ impl GameState {
     }
 
     /// How far `subject` is below full in `account`.
-    fn need(&self, subject: SubjectId, account: &str) -> u16 {
+    pub(super) fn need(&self, subject: SubjectId, account: &str) -> u16 {
         let Some(e) = self
             .entity(subject)
             .and_then(|id| self.world.sim().state().population.get(id))

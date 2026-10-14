@@ -1,8 +1,19 @@
 # The VTT's overlay: the W5 plan
 
+**Certification resumed, 2026-10-13:** the explicit "Certify" request opens
+the assembled-source acceptance pass. Root workspace all-target/all-feature
+compiler gates pass after restoring Rust 2021-compatible conditions and
+updating test snapshot/profile constructors. The new native effect vocabulary
+uses protocol22 and `isometry/session/v22` together. VTT campaign/session168
+runtime tests pass with no ignores, using default features. Full V2 and
+headed acceptance remain open. The
+[assembled certification record](../mesocosm/design_docs/2026-10-13_assembled_certification.md)
+owns the actual receipts and source qualifications; historical results below
+keep their scope.
+
 **Date:** 2026-09-25
 
-**Current ecology admission source, 2026-10-13:**879 resolves874: native
+**Earlier ecology admission source, 2026-10-13:**879 resolves874: native
 admission requires a distinct authored mechanical effect; operation families
 are derived and recorded without a family-difference gate. Coverage uses a
 fresh producer-captured ordinary basis, complete added/changed definition

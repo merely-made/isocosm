@@ -11,7 +11,7 @@ mod material;
 mod note;
 mod process;
 mod recipe;
-
+mod direction;
 pub(crate) use body::part;
 pub(crate) use conversion::kinds as conversions;
 pub(crate) use recipe::development;
@@ -359,6 +359,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         reads(rules, p, id, value)?;
     }
     match e {
+        Effect::DirectOverflow { from, destinations } => direction::effect(rules, p, *from, destinations)?,
         Effect::MovePaced { profile, .. } => crate::rules::pace::validate_effect(rules, p, profile)?,
         Effect::Step { profile } => {
             let step = rules.step_profiles.get(profile).ok_or_else(||

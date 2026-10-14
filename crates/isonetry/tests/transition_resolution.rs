@@ -123,6 +123,7 @@ fn origin() -> GameSnapshot {
         active_map: Some("field".to_owned()),
         world: Default::default(),
         native: None,
+        native_table: None,
         clocks: Default::default(),
         party_cap: isonetry::default_party_cap(),
         last_beats: Vec::new(),

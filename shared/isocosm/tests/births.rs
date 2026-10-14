@@ -35,6 +35,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
             .map(|(f, n)| (format!("function:{f}"), *n))
             .collect(),
         shape: String::new(),
+        port: None,
     }
 }
 
@@ -84,6 +85,8 @@ fn act(id: &str, effects: Vec<Effect>) -> Process {
         glyphs: BTreeSet::new(),
         invariants: BTreeSet::new(),
         note: false,
+        port_feeding: None,
+        goal_directives: Vec::new(),
     }
 }
 
@@ -297,6 +300,8 @@ fn run_on(s: &mut Session, actor: Id, target: Option<Id>, process: &str) -> (Str
                     *claimed.entry(key(holder)).or_default() += amount * i128::from(f.count)
                 },
                 Holder::Dev => {},
+                Holder::ProjectReservation(_) | Holder::ProjectConstruction(_) =>
+                    panic!("birth fixture unexpectedly debited material project stock"),
             }
         }
     }

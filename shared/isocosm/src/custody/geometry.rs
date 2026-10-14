@@ -3,7 +3,6 @@
 
 use super::*;
 use crate::operations::Window;
-use isometer_space::Atlas;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct MountPose { pub at: [i64; 3], pub yaw: Yaw }

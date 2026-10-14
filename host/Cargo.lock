@@ -1384,6 +1384,7 @@ dependencies = [
  "eponym-play",
  "glam 0.30.10",
  "isocosm",
+ "isocosm-overlay",
  "isomere",
  "isometer",
  "mesquite",
@@ -2626,6 +2627,7 @@ version = "0.1.0"
 dependencies = [
  "cambium",
  "isocosm",
+ "isocosm-overlay",
  "isomere",
  "isometer",
  "isometer-core",
@@ -2638,6 +2640,8 @@ dependencies = [
  "sceno",
  "scenomise",
  "scenotime",
+ "serde",
+ "serde_json",
  "sprigging",
  "wgpu",
 ]

@@ -43,13 +43,15 @@ impl PartyView {
     /// Only the legacy graph's node layout is reused. Native route labels keep
     /// their full u64 travel values in the Swatch, outside its u32 edge type.
     pub fn layout(&self) -> Overmap {
-        if let Some(read) = &self.overmap && !read.cells.is_empty() {
+        if let Some(read) = &self.overmap {
+          if !read.cells.is_empty() {
             let nodes = read.cells.iter().map(|cell| OvermapNode {
                 id:crate::native_overmap_cell_id(cell),
                 name:if cell.anchor { cell.label.clone() } else { String::new() },
                 at:(cell.at[0] as i32,cell.at[1] as i32),site:None,
             }).collect();
             return Overmap { name:self.map.party.clone(),nodes,edges:Vec::new() };
+          }
         }
         let nodes = self.map.places.values().map(|place| OvermapNode {
             id: format!("site:{}", place.site), name: place.authored.as_ref().map(|p| p.name.clone())

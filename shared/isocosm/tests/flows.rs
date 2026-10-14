@@ -77,6 +77,8 @@ fn claimed(flows: &[Flow]) -> Books {
                 Holder::Site(_) => claim(*holder, amount * i128::from(f.count)),
                 // The dev source holds nothing (ruling 344).
                 Holder::Dev => {},
+                Holder::ProjectReservation(_) | Holder::ProjectConstruction(_) =>
+                    panic!("flow fixture unexpectedly used material project stock"),
             }
         }
     }

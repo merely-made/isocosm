@@ -39,9 +39,10 @@ pub fn native_overmap_atlas(read: &OvermapReading, settings: Option<&ViewSetting
     for cell in &read.cells {
         let anchor = Vec2::new(cell.at[0] as f32 + 0.5, cell.at[1] as f32 + 0.5);
         rectangle(&mut paint, anchor, Size2::new(1.0, 1.0), cell.color);
-        if settings.thumbnails.or(read.settings.as_ref().and_then(|settings| settings.thumbnails)) == Some(true)
-            && let Some(color) = cell.thumbnail {
-            rectangle(&mut paint, anchor, Size2::new(1.0, 1.0), color);
+        if settings.thumbnails.or(read.settings.as_ref().and_then(|settings| settings.thumbnails)) == Some(true) {
+            if let Some(color) = cell.thumbnail {
+                rectangle(&mut paint, anchor, Size2::new(1.0, 1.0), color);
+            }
         }
         if settings.biomes && !cell.biomes.is_empty() {
             let stripe = 1.0 / cell.biomes.len() as f32;

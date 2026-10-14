@@ -142,10 +142,10 @@ impl HostSession {
     }
 
     pub fn try_local_event(&mut self, event: GameEvent) -> Result<Vec<Outbound>, String> {
-        if self.state.native.is_some()
-            && let GameEvent::Map(isometry_core::SessionEvent::TokenMoved { id, to }) = &event
-        {
-            return self.native_move(crate::native_table::TableSender::Host, *id, *to);
+        if self.state.native.is_some() {
+            if let GameEvent::Map(isometry_core::SessionEvent::TokenMoved { id, to }) = &event {
+                return self.native_move(crate::native_table::TableSender::Host, *id, *to);
+            }
         }
         self.try_commit(event)
     }

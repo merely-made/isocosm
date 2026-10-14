@@ -29,6 +29,7 @@ mod step;
 mod owned;
 mod pace;
 mod graft;
+mod direction;
 
 /// A stage read against the world it will be committed to.
 pub(crate) struct Staged<'a> {
@@ -293,6 +294,10 @@ impl Staged<'_> {
         // An ordered take and a conversion read the balances they take, so
         // their moves are worked out as they are applied.
         match e {
+            Effect::DirectOverflow { from, destinations } => {
+                self.direct_overflow(*from, destinations)?;
+                return Ok(false);
+            },
             Effect::Graft { reserve, soil } => {
                 self.graft(reserve, soil, cause)?;
                 return Ok(false);

@@ -12,6 +12,7 @@ from pathlib import Path
 
 
 ARMS = ["exact", "exact-control", "crowd", "crowd-averaged", "crowd-unweighted"]
+ARM_INDEX = dict(zip(ARMS, [0, 1, 2, 3, 5]))
 PAIRS = {
     "exact against crowd": ("exact", "crowd"),
     "exact against exact (positive control)": ("exact", "exact-control"),
@@ -108,7 +109,158 @@ def close(a, b):
     return abs(a - b) <= 1e-9 * max(1.0, abs(a), abs(b))
 
 
+def require(ok, why):
+    if not ok:
+        raise ValueError(why)
+
+
+def exact(a, b):
+    """JSON equality must not admit bool/float substitutes for native integers."""
+    if type(a) is not type(b):
+        return False
+    if type(b) is dict:
+        return a.keys() == b.keys() and all(exact(a[k], b[k]) for k in b)
+    if type(b) is list:
+        return len(a) == len(b) and all(exact(x, y) for x, y in zip(a, b))
+    return a == b
+
+
+def uint(value, why, bits=64):
+    require(type(value) is int and 0 <= value < (1 << bits), why)
+
+
+def decode(raw):
+    def record(pairs):
+        result = {}
+        for key, value in pairs:
+            require(key not in result, "duplicate JSON field")
+            result[key] = value
+        return result
+    def nonfinite(value):
+        raise ValueError("nonfinite JSON number: " + value)
+    return json.loads(raw, object_pairs_hook=record, parse_constant=nonfinite)
+
+
+def validate_shape(receipt, draws, seed, pilot):
+    """Cheap native wire/declaration checks, before any permutation work."""
+    uint(seed, "invalid declared master seed")
+    uint(draws, "invalid declared draw count")
+    require(draws > 0 and type(pilot) is bool and (pilot or draws == 1000),
+            "certification needs the declared 1000 draws; pilot must be explicit")
+    require(type(receipt) is dict, "receipt is not a record")
+    require(exact(receipt.get("version"), 1), "unsupported native probe version")
+    require(receipt.get("kind") == "isocosm-probe", "not the full comparison probe")
+    require(exact(receipt.get("master_seed"), seed), "master seed differs from declaration")
+    require(exact(receipt.get("arms"), ARMS), "arms differ from declaration")
+    settings = dict(seed=draw_seed(seed, "probe-check", []), alpha=0.05, permutations=1999)
+    require(exact(receipt.get("settings"), settings), "statistical settings/types differ")
+    require(exact(receipt.get("domain"), DOMAIN), "founding domain/types differ")
+    require(exact(receipt.get("checks"), dict(exact_rerun_identical=True,
+                 collect_changes_no_outcome=True)), "native replay/collection checks differ")
+    read_set = receipt["read_set"]
+    require(type(read_set) is list and all(type(key) is str and key for key in read_set)
+            and read_set == sorted(set(read_set)), "invalid native read-set identities/order")
+    info = receipt["readings"]
+    require(type(info) is list and bool(info), "reading metadata is empty or not a list")
+    keys = []
+    for row in info:
+        require(type(row) is dict and type(row.get("key")) is str and bool(row["key"])
+                and type(row.get("source")) is str and bool(row["source"])
+                and type(row.get("probe")) is dict and bool(row["probe"]), "invalid reading identity/source")
+        require(type(row.get("starvation")) is bool and exact(row.get("bound_per_mille"), 200),
+                "reading flag/bound types differ")
+        keys.append(row["key"])
+    require(len(keys) == len(set(keys)), "duplicate reading keys")
+    require(INJURY <= set(keys) and TRAITS <= set(keys)
+            and any(k.startswith("inspect:cells:") for k in keys), "missing declared harm readings")
+    native_draws = receipt["draws"]
+    require(type(native_draws) is list and len(native_draws) == draws, "draw count differs")
+    refused = {arm: [] for arm in ARMS}
+    for k, draw in enumerate(native_draws):
+        require(type(draw) is dict and exact(draw.get("k"), k), "draw order/type differs")
+        require(exact(draw.get("seed"), draw_seed(seed, "probe-world", [k])), "world seed differs")
+        for field in ["sites", "members", "margin", "cost", "upset", "advantage"]:
+            uint(draw[field], f"draw{k}/{field}: invalid native counter")
+        require(type(draw["arms"]) is list and len(draw["arms"]) == len(ARMS)
+                and all(type(a) is dict for a in draw["arms"]), "draw arm count/type differs")
+        require([a.get("arm") for a in draw["arms"]] == ARMS, "draw arm identity/order differs")
+        native_matter = []
+        for arm, row in zip(ARMS, draw["arms"]):
+            require(type(row) is dict, "arm is not a record")
+            require(exact(row.get("dynamics"), draw_seed(seed, "probe-dynamics", [k, ARM_INDEX[arm]])),
+                    f"draw{k}/{arm}: dynamics seed differs")
+            for field in ["micros", "evaluations", "represented", "accepted", "blocked", "stored",
+                          "alive", "alive_states"]:
+                uint(row[field], f"draw{k}/{arm}/{field}: invalid native counter")
+            if "shortfalls" in row:
+                uint(row["shortfalls"], "invalid shortfall count")
+            why = row.get("refused")
+            require(why is None or (type(why) is str and bool(why)), "invalid refusal representation")
+            require(type(row["readings"]) is list, "arm readings are not a list")
+            if why is not None:
+                require(arm not in ARMS[:2] and row["readings"] == [] and row.get("matter") is None,
+                        "native refusal or nonempty refused arm")
+                refused[arm].append(k)
+                continue
+            require(len(row["readings"]) == len(keys), "arm reading width differs")
+            for value in row["readings"]:
+                uint(value, "invalid native reading scalar")
+            if arm in ARMS[:2]:
+                matter = row["matter"]
+                require(type(matter) is dict and set(matter) == {"initial", "final_total", "issued", "verified_ticks"},
+                        "native matter audit fields differ")
+                for field in ["initial", "final_total", "issued"]:
+                    uint(matter[field], "invalid native matter scalar", bits=128)
+                uint(matter["verified_ticks"], "invalid verified tick scalar")
+                require(matter["verified_ticks"] == DOMAIN["ticks"] and matter["issued"] == 0
+                        and matter["final_total"] == matter["initial"] + matter["issued"],
+                        "native matter conservation/span/issuance differs")
+                native_matter.append(matter["initial"])
+        require(len(native_matter) == 2 and native_matter[0] == native_matter[1], "native founding totals differ")
+    require(exact(receipt.get("refused", {}), {a: v for a, v in refused.items() if v}), "refusal indices/types differ")
+    comparisons = receipt["comparisons"]
+    require(type(comparisons) is list and len(comparisons) == len(PAIRS)
+            and all(type(c) is dict for c in comparisons), "comparison count/type differs")
+    require([c.get("name") for c in comparisons] == list(PAIRS), "comparison identity/order differs")
+    for comparison in comparisons:
+        name = comparison["name"]
+        right = PAIRS[name][1]
+        kept = draws - len(refused[right])
+        require(exact(comparison["settings"], settings) and exact(comparison["draws"], kept),
+                "comparison settings/count types differ")
+        bounded = right == "crowd"
+        within = not bounded or len(refused[right]) * 1000 <= 10 * draws
+        require(exact(comparison["refusals"], dict(refused=len(refused[right]), of=draws,
+                    within=within, bound_per_mille=10 if bounded else None)), "comparison refusal summary differs")
+        require(type(comparison["readings"]) is list and len(comparison["readings"]) == len(keys)
+                and all(type(r) is dict for r in comparison["readings"])
+                and [r.get("key") for r in comparison["readings"]] == keys, "comparison reading count/order differs")
+        for field in ["equivalent", "different", "pass"]:
+            require(type(comparison[field]) is bool, "invalid comparison flag type")
+        for row in comparison["readings"]:
+            for field in ["distance", "bound", "mean_a", "mean_b", "p_difference", "p_difference_holm",
+                          "p_equivalence", "p_equivalence_holm"]:
+                require(type(row[field]) is float and math.isfinite(row[field]) and row[field] >= 0,
+                        "invalid native statistical scalar")
+            require(row["bound"] == 0.2, "native comparison bound differs")
+            for field in ["distance", "p_difference", "p_difference_holm", "p_equivalence", "p_equivalence_holm"]:
+                require(row[field] <= 1, "native probability/distance outside bounds")
+            require(type(row["certified"]) is bool and type(row["detected"]) is bool, "invalid reading verdict types")
+    verdicts = receipt["verdicts"]
+    require(type(verdicts) is dict, "verdicts are not a record")
+    for field in ["main_pass", "main_equivalent", "main_different", "positive_control_pass",
+                  "negative_control_failed_starvation_check", "negative_control_detected_starvation_difference",
+                  "draw_control_detected"]:
+        require(type(verdicts[field]) is bool, "invalid top-level verdict flag")
+    require(exact(verdicts["starvation_readings"], [r["key"] for r in info if r["starvation"]]),
+            "top-level starvation columns differ")
+
+
 def verify(receipt, draws, seed, pilot):
+    try:
+        validate_shape(receipt, draws, seed, pilot)
+    except (KeyError, TypeError, ValueError, IndexError, OverflowError) as error:
+        return {"pass": False, "certified": False, "failures": [str(error)], "comparisons": []}
     failures = []
 
     def need(ok, why):
@@ -269,15 +421,18 @@ def main():
     parser.add_argument("--pilot", action="store_true")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
+    if args.output and args.output.exists():
+        parser.error("output already exists; use a fresh receipt name")
     raw = args.receipt.read_bytes()
     try:
-        result = verify(json.loads(raw), args.draws, args.seed, args.pilot)
+        result = verify(decode(raw), args.draws, args.seed, args.pilot)
     except (KeyError, TypeError, ValueError, ZeroDivisionError, IndexError) as error:
         result = {"pass": False, "certified": False, "failures": [str(error)]}
     result.update(receipt=str(args.receipt), receipt_sha256=hashlib.sha256(raw).hexdigest(),
                   verifier_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
     if args.output:
-        args.output.write_text(json.dumps(result, indent=2), encoding="utf-8")
+        with args.output.open("x", encoding="utf-8") as output:
+            output.write(json.dumps(result, indent=2))
     print(json.dumps({k: v for k, v in result.items() if k != "comparisons"}, indent=2))
     return 0 if result["pass"] else 1
 

@@ -56,7 +56,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
     if state.native.is_some()
         && matches!(event, GameEvent::World(_) | GameEvent::TravelResolved { .. } | GameEvent::TimeAdvanced { .. }
             | GameEvent::ActionResolved(_) | GameEvent::TransitionResolved(_)
-            | GameEvent::Map(SessionEvent::TokenFaced { .. }))
+            | GameEvent::Map(isometry_core::SessionEvent::TokenFaced { .. }))
     {
         return Err(GameError::Native("legacy world mutation on a native campaign".into()));
     }

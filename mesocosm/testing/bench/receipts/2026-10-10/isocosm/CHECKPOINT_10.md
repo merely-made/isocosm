@@ -1,5 +1,20 @@
 # Checkpoint 10, 2026-10-10: independent slice
 
+**Certification resumed, 2026-10-13:** Mark's explicit "Certify" request
+opens the assembled-source acceptance pass. Current harm positives pass
+32/32. The strict reader passes five parser controls and source-audits
+19 active mutations. All19 now compiled, failed at their intended assertion
+and restored exact original bytes, bound in `certify-c10-qualified-controls.json`
+(SHA256 `d6031ee04b1688f34ac3a8b8eebd3fce2d13f321b4bb1bd178f36afdaba997fe`).
+Legacy mutation4 remains historical; coherent mutation19 replaces it.
+Restored harm32 passed with stable source. Remote main's Murm repin983c0e7b
+landed during the fixed1000 draw; Root stopped its verified probe child
+before any verdict. That interrupted previous-pin attempt is INVALID and
+preserved. The final comparison/verdict must run after the repin is assembled.
+Alpha 0.05, bound 0.2, 1999 permutations and seed 2026101003 remain fixed.
+Current evidence lives under `Code/testing/isometry/after-pass-2026-10-10/`
+in `certify-*` records. Earlier receipts retain their original source scope.
+
 **Root bounded adapter integration, 2026-10-11:** ruling 812 is
 qualified by eight incorporation and 32 harm positives, two intended compiled
 faults, six restored positives and both native compiler checks. All 350

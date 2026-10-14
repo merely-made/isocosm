@@ -120,11 +120,17 @@ fn stocks(state: &State) -> Vec<(Substrate, Identity)> {
 /// publication. Growth/arrival or a lower resolved capacity triggers spill;
 /// unrelated commands and advance partitioning do not repeatedly send stocks.
 pub fn dispatch_changed(before: &State, state: &mut State, rules: &crate::rules::Rules) -> Result<u64> {
+    dispatch_changed_except(before, state, rules, &BTreeSet::new())
+}
+
+pub(crate) fn dispatch_changed_except(before: &State, state: &mut State, rules: &crate::rules::Rules,
+    handled: &BTreeSet<(Substrate, Identity)>) -> Result<u64> {
     if rules.spread_capacity.is_none() { return Ok(0); }
     let mut candidate = state.clone();
     let mut sent = 0u64;
     let result = (|| -> Result<()> {
     for (at, identity) in stocks(&candidate) {
+        if handled.contains(&(at, identity.clone())) { continue; }
         let current = held(&candidate, at, &identity)?;
         if current == 0 { continue; }
         let limit = capacity(&candidate, rules, at, &identity)?;

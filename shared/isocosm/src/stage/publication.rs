@@ -14,6 +14,8 @@ impl Simulation {
         let step = stage.step.take();
         let births = std::mem::take(&mut stage.birth_places);
         let institution = stage.institution_producer.take();
+        let direction = stage.direction.take();
+        let action = stage.action.clone();
         if institution.is_none() && self.genesis.rules.spread_capacity.is_none() && self.genesis.rules.item_custody.is_none() {
             self.commit(stage, next, process);
             self.commit_geometry(terrain);
@@ -30,7 +32,21 @@ impl Simulation {
         if let Some(institution)=institution {candidate.publish_institution_producer(institution)?;}
         candidate.check_custody_changes(self)?;
         candidate.synchronize_custody()?;
-        crate::spread::dispatch_changed(&before, &mut candidate.state, &candidate.genesis.rules)?;
+        let mut handled = BTreeSet::new();
+        let directed = direction.is_some();
+        let result = (|| -> Result<()> {
+            if let Some(direction) = direction {
+                candidate.publish_direction(&direction, process, &action)?;
+                handled.insert((crate::spread::Substrate::Site(direction.from), crate::spread::Identity::Territory(direction.actor)));
+            }
+            crate::spread::dispatch_changed_except(&before, &mut candidate.state, &candidate.genesis.rules, &handled)?;
+            if directed { candidate.complete_process_debits()?; }
+            Ok(())
+        })();
+        if let Err(why) = result {
+            self.state.projects.debit_capture.set(candidate.state.projects.debit_capture.take());
+            return Err(why);
+        }
         self.publish_candidate(candidate)?;
         self.place_births(&births);
         self.published_ecology(ecology);

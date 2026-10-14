@@ -44,7 +44,7 @@ pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Re
         for k in 0..3 { cell[k] = cell[k].checked_add(offset[k]).ok_or("birth clearance overflow")?; }
         Ok(cell)
     };
-    let fits = |cell| {
+    let fits = |cell: [i64; 3]| {
         volume.holds(cell[0], cell[2]) && cell[1] >= volume.datum && cell[1] < volume.ceiling()
             && volume.material(cell).is_some_and(|m| match profile.medium {
                 BirthMedium::Air => m == volume.materials.air,

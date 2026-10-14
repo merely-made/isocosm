@@ -140,7 +140,7 @@ fn a_selected_journey_process_stays_committed_with_its_explicit_nudge() {
 }
 
 #[test]
-fn an_explicit_travelling_prey_is_neither_replaced_nor_credited() {
+fn an_unavailable_nudged_prey_does_not_credit_an_autonomous_meal() {
     let (mut g,prey) = fixture(1);
     let hunter = neighbour(&mut g,prey,0);
     let spare = neighbour(&mut g,prey,0);
@@ -159,8 +159,13 @@ fn an_explicit_travelling_prey_is_neither_replaced_nor_credited() {
         let bond = s.sim.bond(participant,hunter);
         s.sim.watch("test:meal");
         s.advance(1).unwrap();
-        assert!(s.sim.take_watched().is_empty(),"explicit prey identity has no replacement");
-        assert_eq!(s.sim.state().population.get(spare).unwrap().accounts[OWN],32);
+        // The prey left before this tick's choice. The nudge cannot bind an
+        // infeasible target, and does not prohibit the critter's own meal.
+        let meals = s.sim.take_watched();
+        assert_eq!(meals.len(),1,"the critter chooses its available autonomous meal");
+        assert_eq!((meals[0].actor,meals[0].target),(hunter,Some(spare)));
+        assert_eq!(s.sim.state().population.get(spare).unwrap().accounts[OWN],31);
+        assert!(s.sim.state().nudges[0].answer.is_none(),"another prey cannot answer the named Thing");
         assert_eq!(s.sim.bond(participant,hunter),bond,"no credit from a different prey");
         replay(&s);
     }
@@ -249,6 +254,7 @@ fn aggregate_reactive_routes_are_supported_while_identity_choice_remains_native(
     let (mut g,id) = fixture(1);
     let p = g.rules.processes.get_mut("test:first").unwrap();
     p.period=Some(1); p.causation=Causation::Transition; p.note=false;
+    g.rules.processes.remove("test:next");
     let mut world = crate::probe::ProbeWorld { genesis:g, ticks:4 };
     let exact = crate::probe::run_exact(&world,7,true).unwrap();
     let crowd = crate::probe::Crowd::new(&world,7,crate::probe::Variant::Histogram).unwrap().run().unwrap();

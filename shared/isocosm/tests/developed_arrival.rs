@@ -23,7 +23,7 @@ fn world(stores: u32) -> Session {
         (ENERGY.into(), AccountKind::Energy),
     ]);
     g.rules.kinds.insert("kind:arrival-root".into(), Template {
-        half_extent: [4; 3], shape: String::new(), cells: BTreeMap::from([
+        half_extent: [4; 3], shape: String::new(), port: None, cells: BTreeMap::from([
             ("function:store".into(), stores), ("function:intake".into(), 27-stores),
         ]),
     });

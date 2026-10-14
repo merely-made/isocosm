@@ -72,7 +72,7 @@ impl SceneHandle {
     /// admitted native window and awareness cut. No advisory layout is used.
     pub fn update_spatial(&self, session: &Session, participant: Id, window: u64, mode: Mode,
         site: Id, quarter_turn: u8, game: &mesocosm_runtime::spatial::Game) -> Result<bool, String> {
-        let result = (|| {
+        let result: Result<bool, String> = (|| {
             if quarter_turn > 3 { return Err("quarter turn must be zero through three".into()); }
             game.version()?;
             let region = session.sim.region_reading(participant, window, mode, site)?;
@@ -146,7 +146,7 @@ impl SceneHandle {
                 if !volume.holds(pose.at[0], pose.at[2]) { continue; }
                 let cell = volume.to_ground(pose.at);
                 let base = [volume.min[0], volume.datum, volume.min[1]];
-                let offset = [i64::from(volume.extent), 0, i64::from(volume.extent)];
+                let offset = [i64::from(volume.ground().extent()), 0, i64::from(volume.ground().extent())];
                 if (0..3).any(|i| base[i].checked_add(offset[i]).and_then(|b|
                     b.checked_add(i64::from(cell[i]))) != Some(pose.at[i])) {
                     return Err("physical root exceeds Ground coordinate bounds".into());

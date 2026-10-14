@@ -36,7 +36,7 @@ pub struct Profile {
 pub struct Authored { pub placements: Vec<Placement>, pub profile: Profile }
 
 /// Legacy placement arrays retain their original meaning.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum Setup { Placements(Vec<Placement>), Driver(Authored), Sighted(SightedSetup) }
 

@@ -214,6 +214,8 @@ pub enum Effect {
     InstitutionDecision,
     Graft { reserve: Key, soil: Key },
     Institution { producer: Key },
+    /// A territory's native choice; destination IDs are authored, never body movement.
+    DirectOverflow { from: Id, destinations: std::collections::BTreeSet<Id> },
 }
 
 impl Effect {

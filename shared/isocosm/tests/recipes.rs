@@ -27,6 +27,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
             .map(|(f, n)| (format!("function:{f}"), *n))
             .collect(),
         shape: String::new(),
+        port: None,
     }
 }
 

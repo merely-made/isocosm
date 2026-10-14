@@ -122,6 +122,7 @@ mod tests {
             active_map: None,
             world: CampaignWorld::default(),
             native: None,
+            native_table: None,
             clocks: Default::default(),
             party_cap: crate::default_party_cap(),
             last_beats: Vec::new(),

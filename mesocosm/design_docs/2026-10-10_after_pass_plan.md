@@ -2,10 +2,21 @@
 
 **Date:** 2026-10-10
 
+**Certification, 2026-10-13:** all ten workspace compiler gates pass;
+native library236, Eponym play35 and VTT168 runtime tests pass with their
+explicit archive/unsupported-scope qualifications. All19 C10 compiled
+controls caught their intended faults and restored exact source; restored
+harm32 passes. The fixed1000 release verdict is running. C11's independent
+spread crowd is absent, so native site controls do not certify C11. The
+[assembled certification record](2026-10-13_assembled_certification.md)
+owns the actual receipts, source qualifications and remaining done-conditions.
+Mark's "Certify" reopens this acceptance pass after826; earlier entries
+retain their historical scope.
+
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
 
-**Current execution instruction, 2026-10-11 (826):** all tests and
+**Earlier execution instruction, 2026-10-11 (826):** all tests and
 test-driven adjustments wait until the migration pieces are in place.
 This includes focused tests, fixture repairs, fault controls and tuning.
 Remaining source and consumer connections proceed first, with structural

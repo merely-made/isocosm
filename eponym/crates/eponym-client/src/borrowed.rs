@@ -18,7 +18,7 @@ pub(super) struct Snapshot { pub picture: Picture, pub turn: u8 }
 impl Snapshot {
     fn camera(&self, aspect: f32) -> Result<SlabCamera,String> {
         let p = &self.picture.presentation;
-        let rotate = |[x,y,z]| match self.turn {
+        let rotate = |[x,y,z]: [f32; 3]| match self.turn {
             0 => [x,y,z], 1 => [-z,y,x], 2 => [-x,y,-z], _ => [z,y,-x],
         };
         CameraPolicy {forward:rotate(p.forward),half_height:p.half_height,depth:p.depth,pan:rotate(p.pan)}

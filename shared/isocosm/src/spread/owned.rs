@@ -47,8 +47,8 @@ fn operation_inner<T>(state:&mut State, rules:&Rules, operation:SpreadDebit,
     let existing = candidate.projects.debit_capture.take();
     let had_parent = existing.is_some();
     let mut context = existing.unwrap_or_else(|| Context::new(state,rules,
-        crate::digest(&(rules,state)),DebitOrigin::Clock { tick:state.tick },
-        format!("native-stock:{}",crate::digest(&(state,operation,identity,at))),Mode::Authored));
+        crate::digest(&(rules,&*state)),DebitOrigin::Clock { tick:state.tick },
+        format!("native-stock:{}",crate::digest(&(&*state,operation,identity,at))),Mode::Authored));
     // Owned direct commands begin a blank outer boundary; the real kernel owns it.
     if context.active {
         if context.requests.is_empty() && context.paid.is_empty() && context.pieces.is_empty() {

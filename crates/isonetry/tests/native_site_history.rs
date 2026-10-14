@@ -15,6 +15,7 @@ fn native_site_versions_replay_the_selected_prefix_and_preserve_the_live_source(
         map: MapDocument::new("empty", 4, 4), turns: TurnList::new(), roll_log: Vec::new(),
         journal: Vec::new(), inventories: BTreeMap::new(), generations: Vec::new(),
         maps: BTreeMap::new(), active_map: None, world: Default::default(), native: None,
+        native_table: None,
         clocks: BTreeMap::new(), party_cap: 4, last_beats: Vec::new(), beat_seq: 0,
         applied_actions: BTreeSet::new(),
     };

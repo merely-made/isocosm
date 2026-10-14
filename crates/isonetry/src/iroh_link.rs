@@ -39,7 +39,7 @@ use muniment::Journal;
 /// stops an incompatible peer from dialing at all, while the version is the
 /// in-session handshake that refuses one which got through anyway (a same-ALPN
 /// build with a changed message shape).
-pub const ALPN: &[u8] = b"isometry/session/v21";
+pub const ALPN: &[u8] = b"isometry/session/v22";
 
 type PeerMap = Arc<Mutex<HashMap<PeerId, mpsc::UnboundedSender<NetMessage>>>>;
 
@@ -455,6 +455,7 @@ mod tests {
             active_map: None,
             world: Default::default(),
             native: None,
+            native_table: None,
             clocks: Default::default(),
 
             party_cap: crate::protocol::default_party_cap(),

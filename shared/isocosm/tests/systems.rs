@@ -34,6 +34,7 @@ fn part(t: &Template, parent: Option<u32>, situs: [u8; 3]) -> isocosm::geometry:
         part: Part {
             functions: cells.keys().cloned().collect(),
             cells,
+            port: t.port,
             ..Default::default()
         },
         ..Default::default()
@@ -69,9 +70,8 @@ fn world(seed: u64, keep: &[&str], change: impl FnOnce(&mut Entity, &Rules)) -> 
         found.find(|e| e.lineage == lineage).unwrap().clone()
     };
     let (ground, mut frond, mut e) = (find("world:ground"), find("lineage:0"), find(GRAZER));
-    for p in frond.parts.values_mut() {
-        p.matter.insert("tissue:0".into(), 10_000);
-    }
+    let room = anatomy::room(&frond, &rules, "tissue:0");
+    anatomy::give(&mut frond, &rules, "tissue:0", room).unwrap().unwrap();
     let k = |name: &str| &rules.kinds[name];
     e.embody(isocosm::geometry::Body::sketch([
         (0, part(k("kind:lump"), None, [0, 0, 0])),
@@ -92,6 +92,7 @@ fn world(seed: u64, keep: &[&str], change: impl FnOnce(&mut Entity, &Rules)) -> 
         .unwrap();
     e.systems = isocosm::systems::founded(&e, &rules);
     change(&mut e, &rules);
+    e.lay_out();
     let tombstones: Vec<_> = e.parts.keys().copied().filter(|id| !e.lives(*id)).collect();
     let site = g.sites.get_mut(&e.place).unwrap();
     for id in tombstones {
@@ -238,7 +239,8 @@ fn the_limbs_share_of_a_bite_needs_muscular_routes() {
             e.parts.retain(|id, _| id.0 == 0 || id.0 == 3);
             e.systems = isocosm::systems::founded(e, r);
         });
-        let eaten = |w: &ProbeWorld| 10_000 - held(of(&run(w), "lineage:0"), "tissue:0");
+        let eaten = |w: &ProbeWorld| held(of(&founded(w), "lineage:0"), "tissue:0")
+            - held(of(&run(w), "lineage:0"), "tissue:0");
         let (a, b, c) = (eaten(&whole), eaten(&lamed), eaten(&limbless));
         assert_eq!(b, c, "seed {seed}: lamed {b} against limbless {c}");
         assert!(0 < b && b <= a, "seed {seed}: {b} against {a}");
@@ -259,7 +261,8 @@ fn the_limbs_share_needs_nerves_joining_them_to_intake() {
             e.parts.retain(|id, _| id.0 == 0 || id.0 == 3);
             e.systems = isocosm::systems::founded(e, r);
         });
-        let eaten = |w: &ProbeWorld| 10_000 - held(of(&run(w), "lineage:0"), "tissue:0");
+        let eaten = |w: &ProbeWorld| held(of(&founded(w), "lineage:0"), "tissue:0")
+            - held(of(&run(w), "lineage:0"), "tissue:0");
         let (a, b, c) = (eaten(&whole), eaten(&numb), eaten(&limbless));
         assert_eq!(b, c, "seed {seed}: numb {b} against limbless {c}");
         assert!(0 < b && b <= a, "seed {seed}: {b} against {a}");

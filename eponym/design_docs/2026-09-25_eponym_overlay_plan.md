@@ -1,8 +1,20 @@
 # Eponym's overlay: the W5 plan
 
+**Certification resumed, 2026-10-13:** the explicit "Certify" request opens
+the assembled-source acceptance pass. The Eponym workspace compiles with all
+targets and features after wiring its overlay dependency and host modules,
+restoring sibling-module access to the existing hunger reading, and typing
+the supplied camera rotation. Knowing payloads validate the declared observer
+or reporter for statement/terrain records before native admission. Eponym
+play35 runtime tests pass; one genuine historical archive input remains
+ignored. Full E3 and headed acceptance remain open. The
+[assembled certification record](../../mesocosm/design_docs/2026-10-13_assembled_certification.md)
+owns the actual receipts and source qualifications. Earlier evidence retains
+its exact source scope.
+
 **Date:** 2026-09-25
 
-**Current ecology admission source, 2026-10-13:**879 resolves874: native
+**Earlier ecology admission source, 2026-10-13:**879 resolves874: native
 admission requires a distinct authored mechanical effect; operation families
 are derived and recorded without a family-difference gate. Coverage uses a
 fresh producer-captured ordinary basis, complete added/changed definition

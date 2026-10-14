@@ -2,6 +2,16 @@
 
 **Date:** 2026-10-10
 
+**Certification, 2026-10-13:** all ten workspace compiler gates pass;
+native library236, Eponym play35 and VTT168 runtime tests pass with their
+explicit archive/unsupported-scope qualifications. All19 C10 compiled
+controls caught their intended faults and restored exact source; restored
+harm32 passes. The fixed1000 release verdict is running. C11's independent
+spread crowd is absent, so native site controls do not certify C11. The
+[assembled certification record](2026-10-13_assembled_certification.md)
+owns the actual receipts and remaining gates. Mark's "Certify" reopens
+acceptance after826. No new semantic ruling is inferred; next unused880.
+
 The newest Progress entry below owns execution state. The following block
 records an earlier resumed snapshot; later checkpoints and parked lanes
 are recorded in Progress without replacing that history.
@@ -26,7 +36,7 @@ Read with: the wing record's rulings 732 to 804
 
 ## 1. The orchestrator's loop
 
-**Current execution instruction, 2026-10-11 (826):** Mark clarified:
+**Earlier execution instruction, 2026-10-11 (826):** Mark clarified:
 "Ask what you need to, to continue the migration. Test and tune when things
 are in place. Don’t dust mid move." Then: "I’m saying: save the tests and
 adjustments for when the pieces are in place". Finish migration source and

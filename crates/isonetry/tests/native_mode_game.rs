@@ -18,6 +18,7 @@ fn vtt_mode_bytes_keep_table_data_but_borrow_native_authority_on_resume() {
         journal: Vec::new(), inventories: BTreeMap::new(), generations: vec![fixture::record()],
         maps: BTreeMap::new(), active_map: None, world: fixture::draft().world,
         native: Some(NativeWorld::from_campaign(&campaign).unwrap()),
+        native_table: None,
         clocks: BTreeMap::from([("inert".into(), 73)]), party_cap: 5,
         last_beats: Vec::new(), beat_seq: 19, applied_actions: BTreeSet::new(),
     };

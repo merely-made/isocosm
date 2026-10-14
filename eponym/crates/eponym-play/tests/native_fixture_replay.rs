@@ -61,8 +61,8 @@ fn mislabeled_or_modified_fixture_founding_is_refused_before_game_intents() {
     assert!(matches!(World::restore_record(wrong), Err(WorldError::BaseDiverged { .. })));
     let mut corrupt = world.save_record(); corrupt.base_hash ^= 1;
     assert!(matches!(World::restore_record(corrupt), Err(WorldError::BaseDiverged { .. })));
-    let mut unknown = world.save_record(); unknown.generator_version = 6;
-    assert!(matches!(World::restore_record(unknown), Err(WorldError::GeneratorDiverged { saved: 6, .. })));
+    let mut unknown = world.save_record(); unknown.generator_version = u32::MAX;
+    assert!(matches!(World::restore_record(unknown), Err(WorldError::GeneratorDiverged { saved: u32::MAX, .. })));
 }
 
 #[test]
@@ -86,7 +86,7 @@ fn recipe_choice_is_logged_before_develop_and_survives_game_replay() {
         assert!(matches!(entries[i + 2].command, Command::Develop { .. }));
     }
     let save = game.save_record().unwrap();
-    assert_eq!(save.version, 8);
+    assert_eq!(save.version, GAME_STATE_VERSION);
     assert!(matches!(save.intents[0], GameIntent::GenerateNativeRecipe { recipe: NativeFixtureRecipe::ProbeActorV1, .. }));
     assert!(matches!(save.intents[3], GameIntent::GenerateNativeRecipe { recipe: NativeFixtureRecipe::ProbeTargetV1, .. }));
     let restored = GameState::restore(&game.save().unwrap()).unwrap();

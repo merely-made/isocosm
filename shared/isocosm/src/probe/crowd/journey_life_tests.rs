@@ -166,16 +166,20 @@ fn target_harm_excludes_transit_until_the_native_arrival_pass() {
 
 #[test]
 fn competition_rounds_wait_for_residence_without_consuming_transit_food() {
-    let mut w=crate::probe::ProbeFounding { seed:3,ticks:3,lineages:1,sites:[2,2],
+    let mut w=crate::probe::ProbeFounding { seed:3,ticks:4,lineages:1,sites:[2,2],
         members:[4,4],cohort:4,regrowth:[0,0],..Default::default() }.generate().unwrap();
     for p in w.genesis.rules.processes.values_mut() { p.period=None; }
     for site in w.genesis.sites.values_mut() { site.accounts.insert("world:food".into(),1000); }
     for g in w.genesis.population.groups.values_mut() {
         if g.entity.kingdom!="kingdom:world" {
             g.entity.place=0;g.entity.arrived=0;g.entity.patch=None;
-            g.entity.journey=Some(Journey { from:0,to:1,departed:0,arrives:3 });
+            g.entity.traits.insert(ACTOR.into());
         }
     }
+    w.genesis.rules.traits.insert(ACTOR.into());
+    w.genesis.sites.get_mut(&0).unwrap().routes=vec![Route { to:1,travel:3,
+        transmission:1_000_000,border:None,authored:None }];
+    add(&mut w,"test:depart",vec![Effect::Move { destination:1 }],1,-100);
     let mut c=Crowd::new(&w,7,Variant::Histogram).unwrap();
     let matter=c.total_matter();
     let mut ticks=0;
@@ -189,9 +193,9 @@ fn competition_rounds_wait_for_residence_without_consuming_transit_food() {
         assert_eq!(n.matter(),matter);
         assert_eq!(c.sites[&0].accounts["world:food"],1000,
             "competition rounds cannot use the historical origin of transit members");
-        if ticks<3 { assert_eq!(c.sites[&1].accounts["world:food"],1000); }
+        if ticks<4 { assert_eq!(c.sites[&1].accounts["world:food"],1000); }
     }).unwrap();
-    assert_eq!(ticks,3);
+    assert_eq!(ticks,4);
     assert_eq!(c.work.arrivals,exact.work.arrivals);
     assert!(c.sites[&1].accounts["world:food"]<1000,"destination competition actually lands after arrival");
 }

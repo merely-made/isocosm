@@ -22,7 +22,7 @@ fn world() -> (Session, [Id; 2], [Id; 2]) {
     genesis.rules.processes.insert(key.into(), Process { id: key.into(), causation: Causation::Choice,
         requires: vec![], commitments: vec![], effects: vec![], risk: None, target: None,
         period: None, priority: 0, need_account: None, need_below: 0, glyphs: BTreeSet::new(),
-        invariants: BTreeSet::new(), note: true });
+        invariants: BTreeSet::new(), note: true, port_feeding: None, goal_directives: Vec::new() });
     let mut session = Session::new(genesis, Execution::Individuals).unwrap();
     for entry in base.entries { session.command(entry.command).unwrap(); }
     for index in 0..2 { assert_eq!(session.sim.plays(participants[index]), Some(subjects[index])); }

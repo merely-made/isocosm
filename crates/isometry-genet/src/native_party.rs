@@ -94,10 +94,11 @@ pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party
     if dm {
         let roster = table.bound_players();
         for member in &map.members {
-            if roster.contains(&member.participant) && session.sim.plays(member.participant) == Some(member.member)
-                && let Some(body) = session.sim.state().population.get(member.member) {
-                journey_authoring.push(format!("Current player {} · body {} · {:?} · resident {:?}",
-                    member.participant,member.member,body.method,body.resident_site()));
+            if roster.contains(&member.participant) && session.sim.plays(member.participant) == Some(member.member) {
+                if let Some(body) = session.sim.state().population.get(member.member) {
+                    journey_authoring.push(format!("Current player {} · body {} · {:?} · resident {:?}",
+                        member.participant,member.member,body.method,body.resident_site()));
+                }
             }
         }
         for (name,profile) in &session.sim.genesis().rules.pace_profiles {
@@ -106,9 +107,10 @@ pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party
         }
         for (name,process) in &session.sim.genesis().rules.processes {
             for effect in process.commitments.iter().chain(&process.effects) {
-                if let isocosm::rules::Effect::MovePaced { destination,profile } = effect
-                    && session.sim.genesis().rules.paced_movement(name,*destination).is_ok() {
-                    journey_authoring.push(format!("Authored process {name} · destination {destination} · profile {profile}"));
+                if let isocosm::rules::Effect::MovePaced { destination,profile } = effect {
+                    if session.sim.genesis().rules.paced_movement(name,*destination).is_ok() {
+                        journey_authoring.push(format!("Authored process {name} · destination {destination} · profile {profile}"));
+                    }
                 }
             }
         }

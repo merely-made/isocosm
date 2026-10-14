@@ -48,6 +48,7 @@ fn remote_mode_routes_moves_as_events_not_local_mutation() {
         active_map: None,
         world: Default::default(),
         native: None,
+        native_table: None,
         clocks: Default::default(),
 
         party_cap: isonetry::default_party_cap(),
@@ -210,6 +211,7 @@ fn apply_snapshot_mirrors_the_clock_and_the_cap() {
         active_map: None,
         world: Default::default(),
         native: None,
+        native_table: None,
         clocks: Default::default(),
         party_cap: 2,
         last_beats: Vec::new(),

@@ -34,6 +34,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
             .map(|(f, n)| (format!("function:{f}"), *n))
             .collect(),
         shape: String::new(),
+        port: None,
     }
 }
 
@@ -137,6 +138,8 @@ fn world(domain: u16, bite: u64, whole: bool) -> (Genesis, Id, Id) {
         glyphs: BTreeSet::new(),
         invariants: BTreeSet::new(),
         note: false,
+        port_feeding: None,
+        goal_directives: Vec::new(),
     };
     graze.target = Some(Target {
         same_place: false,

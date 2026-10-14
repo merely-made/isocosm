@@ -68,6 +68,8 @@ fn process(id: &str, causation: Causation, requires: Vec<Query>, effects: Vec<Ef
         glyphs: BTreeSet::new(),
         invariants: BTreeSet::new(),
         note: false,
+        port_feeding: None,
+        goal_directives: Vec::new(),
     }
 }
 

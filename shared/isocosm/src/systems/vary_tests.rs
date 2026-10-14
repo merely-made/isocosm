@@ -92,6 +92,7 @@ fn varied_cells_pass_down_where_their_parts_lie() {
     assert_eq!(parts[&PartId(2)], e.parts[&PartId(2)]);
     let mut limb = e.parts[&PartId(1)].clone();
     regrow(&mut limb, e.situs(PartId(1)), &varied);
+    crate::mosaic::sync(&mut limb, e.extent(PartId(1)));
     assert_eq!(limb, parts[&PartId(1)]);
 }
 

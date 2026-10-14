@@ -215,7 +215,11 @@ impl Borrowed<'_> {
                 let record: Knowing =
                     serde_json::from_slice(&k.record).map_err(|_| WorldError::Decode)?;
                 let subject = match &record {
-                    Knowing::Observe { observer, .. } => *observer,
+                    Knowing::Observe { observer, .. }
+                    | Knowing::ObserveStatement { observer, .. }
+                    | Knowing::ObserveTerrain { observer, .. } => *observer,
+                    Knowing::TellStatement { reporter, .. }
+                    | Knowing::TellTerrain { reporter, .. } => *reporter,
                     Knowing::Claim { claimant, .. } => *claimant,
                     Knowing::Correct { corrector, .. } => *corrector,
                     Knowing::Report { .. } => {

@@ -324,6 +324,7 @@ impl Doing<'_> {
 
     fn one(&mut self, e: &Effect, rules: &Rules, how: &mut Run, left: &mut Ledger) -> Result<bool> {
         match e {
+            Effect::DirectOverflow { .. } => Err("independent crowd has no place-owned territory direction or spread travel queue".into()),
             Effect::Move { destination } => {
                 match crate::journey::depart(&mut self.member, &self.seen, *destination, self.tick) {
                     Ok(()) => Ok(true),

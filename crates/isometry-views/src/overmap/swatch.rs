@@ -37,7 +37,8 @@ pub fn overmap_home_positions(ui: &UiState) -> BTreeMap<String, (f32, f32)> {
 pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapNodeKind>> {
     if ui.native.world.is_some() {
         let read = ui.native_party_reading()?;
-        if let Some(map) = &read.overmap && let Some(mut swatch) = crate::native_overmap_swatch(map) {
+        if let Some(map) = &read.overmap {
+          if let Some(mut swatch) = crate::native_overmap_swatch(map) {
             swatch.selected = read.here.map(|site| format!("site:{site}"));
             for node in &mut swatch.graph.nodes {
                 if swatch.selected.as_ref() == Some(&node.id) { node.kind=OvermapNodeKind::Here; }
@@ -45,6 +46,7 @@ pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapN
             swatch.hovered=ui.overmap_hover.clone();
             swatch.focus=ui.overmap_motion_selected.clone();
             return Some(swatch);
+          }
         }
     }
     // Whose party? The viewer's; the DM (no viewer) watches the "dm" party.

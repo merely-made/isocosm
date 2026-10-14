@@ -172,16 +172,16 @@ impl HostSession {
                 }
             }
             NetMessage::Intent { event } => {
-                if self.state.native.is_some()
-                    && let GameEvent::Map(SessionEvent::TokenMoved { id, to }) = &event
-                {
-                    let accepted = self.peer_endpoints.get(&from).copied()
-                        .ok_or_else(|| "native move arrived without an authenticated endpoint".to_string())
-                        .and_then(|endpoint| self.native_move(crate::native_table::TableSender::Endpoint(endpoint), *id, *to));
-                    return match accepted {
-                        Ok(out) => out,
-                        Err(reason) => vec![(Recipient::One(from), NetMessage::Rejected { reason })],
-                    };
+                if self.state.native.is_some() {
+                    if let GameEvent::Map(SessionEvent::TokenMoved { id, to }) = &event {
+                        let accepted = self.peer_endpoints.get(&from).copied()
+                            .ok_or_else(|| "native move arrived without an authenticated endpoint".to_string())
+                            .and_then(|endpoint| self.native_move(crate::native_table::TableSender::Endpoint(endpoint), *id, *to));
+                        return match accepted {
+                            Ok(out) => out,
+                            Err(reason) => vec![(Recipient::One(from), NetMessage::Rejected { reason })],
+                        };
+                    }
                 }
                 if let Some(reason) = self.intent_refusal(from, &event) {
                     return vec![(Recipient::One(from), NetMessage::Rejected { reason })];

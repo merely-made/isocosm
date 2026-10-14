@@ -11,6 +11,7 @@ use eponym_play::timed_action::{TimedActionRules, TimedActionSession};
 use serde::Deserialize;
 use wing_functions::NetworkSnapshot;
 
+#[path = "founding/input.rs"]
 mod input;
 
 #[derive(Deserialize)]

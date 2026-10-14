@@ -22,6 +22,7 @@ fn origin() -> GameSnapshot {
         map, turns: TurnList::new(), roll_log: Vec::new(), journal: Vec::new(),
         inventories: BTreeMap::new(), generations: Vec::new(), maps: BTreeMap::new(),
         active_map: None, world: Default::default(), native: None,
+        native_table: None,
         clocks: BTreeMap::new(), party_cap: 4, last_beats: Vec::new(),
         beat_seq: 0, applied_actions: BTreeSet::new(),
     }
@@ -104,6 +105,7 @@ fn travel_host() -> (HostSession, u64, u64) {
     let from = genesis.population.get(actor).unwrap().place;
     let to = genesis.sites[&from].routes[0].to;
     genesis.rules.processes.insert("test:travel".into(), Process {
+        port_feeding: None, goal_directives: Vec::new(),
         id: "test:travel".into(), causation: Causation::Choice, requires: Vec::new(),
         commitments: Vec::new(), effects: vec![Effect::Move { destination: to }],
         risk: None, target: None, period: None, priority: 0, need_account: None,

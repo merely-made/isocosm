@@ -62,7 +62,7 @@ fn actual_product_readings_share_the_seat_cut_and_new_world_changes() {
     let expected = app.world.read(|s| mesocosm_runtime::borrowed::Reading::new(s, &cut.visible).things()).unwrap();
     assert_eq!(app.windows[&first].rows.things.len(), expected.len(), "product rows must use the actual seat cut");
     let hash_before = app.world.cut().unwrap().state_hash;
-    app.step().unwrap();
+    app.step(first).unwrap();
     assert_ne!(app.world.cut().unwrap().state_hash, hash_before);
     assert_eq!(app.windows[&first].native.cut().unwrap(), app.windows[&second].native.cut().unwrap());
     for key in [first, second] {

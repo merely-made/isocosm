@@ -16,6 +16,9 @@ mod native;
 mod capacity;
 mod owned;
 mod placement;
+mod direction;
+pub(crate) use direction::{Direction, declarations as directions};
+pub use direction::resolved_overflow_routes;
 pub use placement::{Placement, Supply, place_stock};
 
 pub use stock::{functions, held, ledger_mass, provenance};
@@ -24,6 +27,7 @@ pub use native::Command;
 pub use capacity::{CapacityLayer, CapacityRules, Stacking, capacity};
 pub use transport::{Dispatch, dispatch_changed, overflow, overflow_at, resolved_overflow,
     resolved_overflow_at, settle};
+pub(crate) use transport::dispatch_changed_except;
 pub use strain::{fork_strain, strain_key};
 
 #[cfg(test)]

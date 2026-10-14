@@ -78,6 +78,8 @@ fn act(id: &str, requires: Vec<Query>, effects: Vec<Effect>) -> Process {
         glyphs: BTreeSet::new(),
         invariants: BTreeSet::new(),
         note: false,
+        port_feeding: None,
+        goal_directives: Vec::new(),
     }
 }
 

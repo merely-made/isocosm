@@ -20,7 +20,7 @@ fn world_save_wire_pins_its_movement_semantics() {
         assert_eq!(loaded.save().unwrap(),bytes);
         let mut mislabeled = record.clone(); mislabeled.generator_version = 5;
         assert!(matches!(World::restore_record(mislabeled),Err(WorldError::BaseDiverged {..})));
-        let mut wrong = record; wrong.generator_version = 6;
+        let mut wrong = record; wrong.generator_version = u32::MAX;
         assert!(matches!(World::restore_record(wrong),Err(WorldError::GeneratorDiverged {..})));
     }
 }

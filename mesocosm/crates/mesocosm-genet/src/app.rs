@@ -237,7 +237,7 @@ impl Host {
                 crate::played::scene::site_scene_physical(sim, played, &visible, self.runtime.spatial()));
             return match result {
                 Ok(scene) => {
-                    let window = (&scene.window.min, &scene.window.max, scene.window.datum, scene.window.extent);
+                    let window = (&scene.window.min, &scene.window.max, scene.window.datum, scene.window.ground().extent());
                     let key = (site, format!("{}:{}", sim.terrain_revision(), isocosm::digest(&window)));
                     let changed = self.scene_key.as_ref() != Some(&key);
                     self.scene = Some(scene); self.scene_key = Some(key); changed

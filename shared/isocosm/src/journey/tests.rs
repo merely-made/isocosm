@@ -10,7 +10,8 @@ pub(super) const ACTOR: &str = "test:traveller";
 pub(super) fn fixture(count: u64) -> (Genesis, Id) {
     let mut g = Founding { seed: 7, sites: 3, population: 12, lineages: 1,
         cohort_size: 3, ecology: true, ..Default::default() }.generate().unwrap();
-    let id = *g.population.groups.keys().next().unwrap();
+    let id = *g.population.groups.iter()
+        .find(|(_, group)| group.entity.lineage == "lineage:0").unwrap().0;
     g.population.groups.retain(|first, _| *first == id);
     let group = g.population.groups.get_mut(&id).unwrap();
     group.count = count;
@@ -231,7 +232,8 @@ pub(super) fn bodied_fixture() -> (Genesis,Id) {
     let mut g = Founding { seed:7, sites:3, population:12, lineages:1,
         cohort_size:3, ecology:true, bodies:Some(Default::default()),
         ..Default::default() }.generate().unwrap();
-    let id = *g.population.groups.keys().next().unwrap();
+    let id = *g.population.groups.iter().find(|(_, group)|
+        group.entity.lineage == "lineage:0" && group.entity.body.is_some()).unwrap().0;
     g.population.groups.retain(|first,_| *first==id);
     let group = g.population.groups.get_mut(&id).unwrap();
     group.count = 1; group.entity.place = 0; group.entity.method = Method::Reactive;

@@ -46,6 +46,7 @@ fn empty_snapshot() -> GameSnapshot {
         active_map: None,
         world: Default::default(),
         native: None,
+        native_table: None,
         clocks: BTreeMap::new(),
         party_cap: isonetry::default_party_cap(),
         last_beats: Vec::new(),

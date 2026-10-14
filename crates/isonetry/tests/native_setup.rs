@@ -18,6 +18,7 @@ fn origin() -> GameSnapshot {
     GameSnapshot { map, turns: TurnList::new(),
         roll_log: vec![], journal: vec![], inventories: BTreeMap::new(), generations: vec![],
         maps: BTreeMap::new(), active_map: None, world: Default::default(), native: None,
+        native_table: None,
         clocks: BTreeMap::new(), party_cap: 4, last_beats: vec![], beat_seq: 0,
         applied_actions: BTreeSet::new() }
 }

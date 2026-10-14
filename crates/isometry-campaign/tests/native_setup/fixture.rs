@@ -15,6 +15,10 @@ pub fn setup(mode: Execution) -> Setup {
     geometry.accounts.clear(); geometry.routes.clear(); geometry.authored = None;
     geometry.terrain_seed = 991;
     Setup { name: "River world".into(), founding, execution: mode,
+        party_relations: Default::default(), pace_profiles: Default::default(),
+        paced_processes: Default::default(), authored_processes: Default::default(),
+        authored_note_kinds: Default::default(), institutions: Default::default(),
+        material_profile: None, item_custody: None, institution_producers: Default::default(),
         attachments: BTreeMap::from([("ford".into(), Attachment::Existing(0)),
             ("shrine".into(), Attachment::New { site: 1000, geometry })]) }
 }

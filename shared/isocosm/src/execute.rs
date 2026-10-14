@@ -239,7 +239,7 @@ impl Simulation {
                 },
             }
         }
-        if let Err(why) = self.complete_process_debits() {
+        if stage.direction.is_none() && let Err(why) = self.complete_process_debits() {
             return refused(receipt,Outcome::Blocked(why));
         }
         // A geometry answer was consumed even if a later conservation,
@@ -303,6 +303,12 @@ impl Simulation {
         }
         if planning {
             let demands = stage.demands.take();
+            if stage.direction.is_some() {
+                let mut preview = self.clone();
+                let result = preview.commit_resolved(stage, next, process);
+                self.state.projects.debit_capture.set(preview.state.projects.debit_capture.take());
+                if let Err(why) = result { return refused(receipt, Outcome::Blocked(why)); }
+            }
             return (receipt, demands);
         }
         if let Err(why) = self.commit_resolved(stage, next, process) {

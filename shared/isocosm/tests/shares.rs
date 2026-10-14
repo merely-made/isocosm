@@ -88,6 +88,8 @@ fn due(id: &str, requires: Vec<Query>, effects: Vec<Effect>, target: Option<Targ
         glyphs: BTreeSet::new(),
         invariants: BTreeSet::new(),
         note: false,
+        port_feeding: None,
+        goal_directives: Vec::new(),
     }
 }
 

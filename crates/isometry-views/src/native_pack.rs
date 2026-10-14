@@ -102,7 +102,8 @@ pub(crate) fn overlay(ui: &UiState) -> UiChild {
                     body.push(Box::new(clickable(el("button",text(label)).attr("class","btn"),
                         move |ui: &mut UiState,_| ui.request_native_pack(request.clone()))));
                 }
-                if view.preview_current && let Some(preview) = view.pack.previews.last() {
+                if view.preview_current {
+                  if let Some(preview) = view.pack.previews.last() {
                     body.push(Box::new(el("div",text(format!("Preview: {} native assertions · {}",
                         view.pack.definition.assertions.len(),serde_json::to_string(&preview.prepared.probe)
                             .unwrap_or_else(|why| format!("preview display: {why}")))))));
@@ -131,6 +132,7 @@ pub(crate) fn overlay(ui: &UiState) -> UiChild {
                         body.push(Box::new(clickable(el("button",text(label)).attr("class","btn"),
                             move |ui: &mut UiState,_| ui.request_native_pack(PackRequest::Submit(intent.clone())))));
                     }
+                  }
                 }
             }
         }

@@ -152,7 +152,7 @@ pub fn placed_physical(sim: &Simulation, site: Id,
         if !volume.holds(at.pose.at[0], at.pose.at[2]) { continue; }
         let cell = volume.to_ground(at.pose.at);
         let base = [volume.min[0], volume.datum, volume.min[1]];
-        let offsets = [i64::from(volume.extent), 0, i64::from(volume.extent)];
+        let offsets = [i64::from(volume.ground().extent()), 0, i64::from(volume.ground().extent())];
         if (0..3).any(|i| base[i].checked_add(offsets[i]).and_then(|b|
             b.checked_add(i64::from(cell[i]))) != Some(at.pose.at[i])) {
             return Err("physical picture exceeds Ground coordinate bounds".into());

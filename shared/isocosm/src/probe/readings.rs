@@ -365,6 +365,8 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
             Query::Condition { key, .. } => format!("site-condition:{key}"),
             Query::Related { kind } => format!("relation:{kind}"),
             Query::Mood { .. } | Query::MoodBelow { .. } => "mood".into(),
+            Query::Project { .. } | Query::ProjectDecision => "project".into(),
+            Query::InstitutionDecision | Query::Institution { .. } => "institution".into(),
             Query::Holds { who, .. } => match who {
                 Binding::Place => "site:matter".into(),
                 _ => "matter".into(),

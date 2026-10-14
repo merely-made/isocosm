@@ -15,7 +15,7 @@ pub struct SightConfig { pub version: u32, pub ranges: BTreeMap<Id, u64> }
 
 /// A new marked setup beside the original placement-array/driver grammar.
 /// Empty placements with no profile update only sight on existing bindings.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct SightedSetup {
     pub version: u32, pub placements: Vec<Placement>,

@@ -18,6 +18,8 @@ pub(super) fn fixture(count: u64, bodies: bool) -> ProbeWorld {
     group.entity.traits.insert(ACTOR.into());
     if !bodies { group.entity.accounts=Ledger::from([(OWN.into(),32)]); }
     else {
+        assert!(group.entity.body.is_some(), "the selected lineage has a generated native body");
+        group.entity.accounts.remove("world:soil");
         let room=crate::anatomy::room(&group.entity,&g.rules,OWN);
         crate::anatomy::give(&mut group.entity,&g.rules,OWN,room).unwrap().unwrap();
         assert!(crate::anatomy::held(&group.entity,&g.rules,OWN)>2,
@@ -98,9 +100,11 @@ fn reactive_routes_land_at_authored_ticks_before_the_next_route() {
 #[test]
 fn split_bins_and_kin_land_without_authored_evaluations() {
     let mut w=fixture(4,false); w.genesis.rules.processes.clear();
-    let e=&mut w.genesis.population.groups.values_mut().next().unwrap().entity;
-    e.journey=Some(Journey { from:0,to:1,departed:0,arrives:3 });
     let mut c=Crowd::new(&w,7,Variant::Histogram).unwrap();
+    let resident=c.bins.keys().next().unwrap().clone();
+    let mut traveller=resident.clone();
+    crate::journey::depart(&mut traveller,&c.sites[&0],1,0).unwrap();
+    c.moved(&resident,traveller,4);
     let before=c.bins.keys().next().unwrap().clone();
     let mut varied=before.clone(); varied.accounts.insert(OWN.into(),31);
     varied.accounts.insert("world:soil".into(),1);
@@ -115,7 +119,9 @@ fn split_bins_and_kin_land_without_authored_evaluations() {
     assert!(c.bins.keys().chain(c.kin.values()).all(|e|e.resident_site()==Some(1)));
     assert!(!c.kin[&kin].alive);
     assert_eq!(c.total_matter(),matter);
-    paired(&w,true,|tick,_,c| if tick==3 { assert_eq!(c.work.arrivals,4); });
+    let mut scheduled=fixture(4,false);
+    scheduled.genesis.rules.processes.remove("test:next"); scheduled.ticks=4;
+    paired(&scheduled,true,|tick,_,c| if tick==4 { assert_eq!(c.work.arrivals,4); });
 }
 
 #[test]
