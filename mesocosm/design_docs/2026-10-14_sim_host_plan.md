@@ -3,8 +3,8 @@
 **Date:** 2026-10-14
 
 **Status, 2026-10-14:** in progress. Opened by rulings 884, 892 and 895;
-carries 887's first milestone; forks settled by 896 to 898. H0 landed; H1
-next.
+carries 887's first milestone; forks settled by 896 to 898. H0 and H1
+landed; H2 next.
 
 ## Why
 
@@ -124,6 +124,26 @@ starts.
 
 ## Progress
 
+- **2026-10-14, H1 landed:** `isocosm_host::founding::found(genesis,
+  execution, purpose, offered)` founds the core's world. A product builds
+  its own `Genesis`; the core owns the rule. A `Purpose::Head` founding a
+  generated genesis (`genesis.founding` set) needs an `Offered` witness and
+  admission whose `genesis_digest` names this genesis and whose
+  `Admission::validate` passes against the witness; `Purpose::Bench` (897)
+  and a genesis naming no generator need neither. *Reading, not ruled:* the
+  plan's "founding request: preset, seed, population" became "the product's
+  genesis", since presets are product data. Four tests: a head's refusal
+  without a witness; the bench's own inputs (seed 10975940, 256, 6 sites, 4
+  lineages) founded through the core match `Session::new` directly, at tick
+  0 and after five ticks; a genesis naming no generator founds without a
+  witness; a founded world round-trips through `WorldSave`. A planted fault
+  disabling the head gate was caught and exact bytes restored. Library 30
+  passed, 5 ignored; the all-target, all-feature check is clean.
+  Two parts wait: the bench's own call site (`mesocosm-genet`
+  `app/bench/sim.rs`) moves onto the core after H2 removes the package
+  cycle, and the admission-binding branch (accepting a binding admission,
+  refusing another genesis's) is unexercised until a real admitted witness
+  exists, which A1's 890 capture path brings.
 - **2026-10-14, H0 landed:** `isocosm-host` has a library (`host/src/lib.rs`)
   holding `access`, `binding`, `file_save`, `native_attention`, `save`,
   `spatial`, `stream`, `window` and `world`, with no product crate named in

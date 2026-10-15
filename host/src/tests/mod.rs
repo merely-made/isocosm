@@ -4,6 +4,7 @@
 mod access;
 mod binding;
 mod file_save;
+mod founding;
 mod lifecycle;
 mod save;
 mod spatial;
@@ -11,7 +12,7 @@ mod world;
 
 pub(crate) use crate::fixtures::*;
 pub(crate) use std::collections::BTreeSet;
-pub(crate) use isocosm::{Command, Execution};
+pub(crate) use isocosm::{Command, Execution, Session};
 pub(crate) use isocosm::schema::Id;
 pub(crate) use isocosm_overlay::{ParticipantHandle, Seat};
 pub(crate) use crate::window::Window;
