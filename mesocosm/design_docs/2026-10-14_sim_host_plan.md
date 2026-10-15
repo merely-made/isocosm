@@ -182,14 +182,25 @@ dependency left. The four shell tests that already fail on main go with
 the shell; any behaviour they meant to cover is carried by an endpoint
 test or recorded as dropped.
 
-**H3. Drive and pace.** The core's driver owns the envelope queue, the
-wall-clock pacing, the per-advance step ceiling and the envelope trace. A
-product supplies its translation from overlay envelopes to native commands
-and its own loop hooks. Mesocosm's `Runtime` is re-expressed on it, and its
-interim loop stays Mesocosm's.
-Done when `mesocosm-runtime`'s tests pass unchanged; a recorded Mesocosm
-trace replays to its recorded hash through the core; and a planted fault in
-the translation seam is caught.
+**H3. Drive and pace (925 to 928).** The core gains a driver over its
+`World`. A product trait names the product's envelope type and supplies
+its translation into native commands, its holds and its round (926); the
+driver owns the queue, the envelope trace, the per-advance step ceiling and
+the pacing: the core's `Clock`, Mesocosm's moved, for wall-clock products,
+and an explicit step for the rest (927). Mesocosm's `Runtime` becomes a thin
+product layer over the core's `World` and its `mesocosm` section, one door
+for the head and the endpoint (925); `Interim`'s founding stays a product
+step after H1's `found`, and the interim loop stays Mesocosm's. Three steps
+(928): (1) pin today's `Runtime` with tests of its queue order, holds and
+answer draining, step ceiling, trace outcomes, and save and resume, passing
+on today's code, and record an envelope trace from a generated world;
+(2) the core's driver and clock; (3) `Runtime` on the core.
+Done when the pinning tests pass unchanged before and after; the recorded
+trace replays through the core's driver to its recorded hash; a planted
+fault in the translation seam is caught; `mesocosm-runtime`'s and
+`mesocosm-genet`'s tests pass; and the endpoints' tests and the g4 receipt
+still pass. Eponym's motion adopting the clock, and the VTT on the
+explicit step, come later.
 
 **H4. Live input.** Keys and pointer arrive from the window host. The core
 dispatches them through a product keymap to envelopes, and resolves pointer
