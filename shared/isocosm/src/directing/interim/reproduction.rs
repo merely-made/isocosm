@@ -469,7 +469,9 @@ fn consumer_reproduction_arm_pilot() {
     let g = world(seed, form, original);
     eprintln!("ARM PILOT BEGIN form={} original={original} seed={seed} genesis={}", form.name(), crate::digest(&g));
     let rate = if original { "original" } else { "candidate" };
-    let out = played_named(g, Some(format!("{}-{rate}-seed{seed}", form.name())));
+    let tweak = std::env::var("ISOCOSM_REPRO_TWEAK").unwrap_or_default().replace([',', '='], "_");
+    let out = played_named(g, Some(format!("{}-{rate}{}-seed{seed}", form.name(),
+        if tweak.is_empty() { String::new() } else { format!("-{tweak}") })));
     eprintln!("ARM PILOT completed: {out:?} qualifies={}", out.qualifies());
 }
 
