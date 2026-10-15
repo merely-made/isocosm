@@ -17,7 +17,7 @@ C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture
-path landed on branch `a1-reproduction`, unmerged; 889 and 891 wait for a
+path landed on branch `a1-reproduction`, merged into local main 2026-10-15 (push pending); 889 and 891 wait for a
 generator lane. 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused929.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
@@ -254,6 +254,37 @@ headed meal choice feels tense rather than clerical.
   `JointSpec`, the independence criterion and the generated basis (879);
   that and 889/891 stay with the generator lane. Receipts total 16 GB in
   `q3-reproduction` (per-draw genesis, session, state, conservation).
+
+- **2026-10-15, review of `a1-reproduction` on Windows; merged into local
+  main as `3a338423` (ten commits rebased onto `9dbea601`), the push
+  waiting on Mark.** The suites ran on the rebased branch and on main side
+  by side (`Code/testing/isometry/a1-review-2026-10-15/`). The native
+  suite: 655 passed, 13 ignored, against main's 648 and 10, the
+  difference the branch's seven new tests, one renamed harness test and
+  three more ignored harness runs. The root VTT with every feature: 484
+  passed and 6 ignored on both, the same tests. Eponym and Mesocosm with
+  `--no-fail-fast`: the same 103 and 70 passing and the same 15 and 7
+  failing on both, the H3 pins among Mesocosm's passes. Those failures are
+  main's own, unseen because earlier gates stopped at the first failing
+  target or never ran these suites: in Eponym, `eponym-client`'s three
+  producer tests (a scene of 3,062 bricks against a 2,047 cap, a volley
+  that no longer severs, a camera search that finds no hidden body) and
+  `equipment_store`'s disk round trip (`StateDiverged`), its `session` and
+  `timed_action` binaries, three `eponym-motion` targets including both
+  motion-archive replays, and `eponym-sortie`; in Mesocosm,
+  `mesocosm-genet`'s four `borrowed_section` tests ("a world without a
+  footprint") and three `mesocosm-phenotype` admission tests. *The digest
+  moves.* A probe fingerprinted generated ecology worlds tick by tick with
+  `sim:energy` stripped (seeds 0 to 5, bare and bodied, 120 ticks): bare
+  worlds match main exactly, so there 890 moves nothing but energy. Bodied
+  worlds do not: from tick 3 the same tissue sits in different parts of the
+  same body. Removing the `ecology:sunlight` process, the producer's own
+  capture kept, makes every world match main again, and moving the capture
+  effects after the tissue changes nothing, so the sun process's presence
+  shifts which part receives new tissue. Over 240 ticks that moves one
+  death in three of five bodied seeds (ticks 25, 40 and 63), matter
+  conserved. 890's note that "the ecology is unchanged" holds for bare
+  worlds only. 905 to 907 are not in this branch.
 
 - **2026-10-11, Q3 fresh bare seed zero classified:** the original arm
   ends at tick 41 without births; the independently frozen 454/813 candidate
