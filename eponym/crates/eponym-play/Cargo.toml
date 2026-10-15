@@ -28,4 +28,9 @@ endpoint = ["dep:isocosm-host", "dep:chirograph", "dep:graphshell-endpoint"]
 
 [dev-dependencies]
 isocosm-host = { path = "../../../host", features = ["endpoint", "fixtures"] }
-graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", features = ["local"] }
+graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", features = ["local", "stdio"] }
+
+# A no-argument stdio endpoint for Graphshell's g4_sessions receipt (H2).
+[[example]]
+name = "eponym_endpoint"
+required-features = ["endpoint"]
