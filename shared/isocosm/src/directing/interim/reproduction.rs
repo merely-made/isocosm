@@ -6,133 +6,10 @@ use crate::{Founding, bodied::Bodies, directing::Played, rules::*};
 use std::sync::mpsc;
 
 mod matrix;
-
 const EPOCH: Tick = 60;
 
-#[derive(Clone, Copy)]
-enum Cadence {
-    Original,
-    Candidate,
-}
-
-impl Cadence {
-    fn birth(self) -> u64 {
-        match self {
-            Self::Original => 30,
-            Self::Candidate => 12,
-        }
-    }
-
-    fn birth_period(self, lineage: u64) -> Tick {
-        match (self, lineage) {
-            (Self::Candidate, 1) => 14,
-            _ => 7,
-        }
-    }
-
-    fn meal(self, lineage: u32) -> u64 {
-        match (self, lineage) {
-            (Self::Candidate, 1) => 3,
-            _ => 1,
-        }
-    }
-
-    fn lifespan(self, seed: u64, lineage: u64) -> Tick {
-        let base = match self {
-            Self::Original => 20,
-            Self::Candidate => 80,
-        };
-        base + crate::draw(seed, "lifespan", &[lineage]) % 41
-    }
-}
-
-fn world(seed: u64, bodied: bool, original: bool) -> Genesis {
-    let mut g = Founding {
-        seed,
-        sites: 3,
-        population: 60,
-        cohort_size: 2,
-        lineages: 3,
-        ecology: true,
-        bodies: bodied.then(Bodies::default),
-        played: Some(Played {
-            lineage: 1,
-            region_sites: 2,
-        }),
-        ..Default::default()
-    }
-    .generate()
-    .unwrap();
-    g.rules.epoch_ticks = EPOCH;
-    // Absolute profiles preserve the unchanged old control after any later
-    // promotion of generator defaults. These are the declared stock_min=8
-    // rates from ecology.rs. The candidate consumer has meal 3 and birth
-    // period 14; other birth periods, provision and upkeep stay fixed.
-    let cadence = if original {
-        Cadence::Original
-    } else {
-        Cadence::Candidate
-    };
-    for i in 0..3 {
-        let birth = g
-            .rules
-            .processes
-            .get_mut(&format!("ecology:birth-{i}"))
-            .unwrap();
-        birth.period = Some(cadence.birth_period(i));
-        for q in &mut birth.requires {
-            if let Query::Account { at_least, .. } = q {
-                *at_least = cadence.birth();
-            }
-        }
-        for q in &mut g
-            .rules
-            .processes
-            .get_mut(&format!("ecology:age-{i}"))
-            .unwrap()
-            .requires
-        {
-            if let Query::Age { at_least } = q {
-                *at_least = cadence.lifespan(seed, i);
-            }
-        }
-        if i > 0 {
-            for effect in &mut g
-                .rules
-                .processes
-                .get_mut(&format!("ecology:feed-{i}"))
-                .unwrap()
-                .effects
-            {
-                if let Effect::Eat { amount, .. } = effect {
-                    *amount = Amount::Fixed(cadence.meal(i as u32));
-                }
-            }
-        }
-    }
-    for i in 0..3 {
-        let birth = &g.rules.processes[&format!("ecology:birth-{i}")];
-        assert_eq!(birth.period, Some(cadence.birth_period(i)));
-        assert!(matches!(&birth.effects[..], [Effect::Birth { provision }]
-            if provision == &std::collections::BTreeMap::from([(format!("matter:{i}-0"), 8)])));
-        let upkeep = &g.rules.processes[&format!("ecology:upkeep-{i}")];
-        assert_eq!(upkeep.period, Some(5));
-        assert!(matches!(&upkeep.effects[0], Effect::Transform { take, .. }
-            if take == &std::collections::BTreeMap::from([(format!("matter:{i}-0"), 1)])));
-        if i > 0 {
-            let feed = &g.rules.processes[&format!("ecology:feed-{i}")];
-            assert_eq!(feed.period, Some(3));
-            assert!(matches!(
-                &feed.effects[..],
-                [Effect::Eat {
-                    amount: Amount::Fixed(amount),
-                    ..
-                }] if *amount == cadence.meal(i as u32)
-            ));
-        }
-    }
-    g
-}
+mod profile;
+use profile::{Form, world};
 
 #[derive(Default, Debug, serde::Serialize)]
 struct Outcome {
@@ -174,9 +51,10 @@ fn receipt_directory() -> std::path::PathBuf {
         std::env::var_os("ISOCOSM_REPRO_RECEIPT_DIR")
             .expect("set ISOCOSM_REPRO_RECEIPT_DIR to the existing receipt directory"),
     );
-    let owner = std::path::Path::new(
-        r"C:\Users\mark_\Code\testing\isometry\after-pass-2026-10-10\q3-reproduction",
-    );
+    // The same owner on each machine: `~/Code/testing/isometry/...` (883).
+    let home = std::env::var_os("USERPROFILE").or_else(|| std::env::var_os("HOME"));
+    let owner = std::path::PathBuf::from(home.expect("a home directory"))
+        .join("Code/testing/isometry/after-pass-2026-10-10/q3-reproduction");
     assert!(
         path == owner && path.is_absolute() && path.is_dir(),
         "ISOCOSM_REPRO_RECEIPT_DIR must name the existing primary reproduction owner"
@@ -203,10 +81,15 @@ fn retain<T: serde::Serialize>(name: &str, value: &T) {
 }
 
 fn played(g: Genesis, observe: bool) -> Outcome {
-    played_recorded(g, observe, None)
+    played_recorded(g, observe.then(|| "seed0".to_string()), None)
 }
 
-fn played_recorded(g: Genesis, observe: bool, draw: Option<matrix::Draw>) -> Outcome {
+fn played_named(g: Genesis, pilot: Option<String>) -> Outcome {
+    played_recorded(g, pilot, None)
+}
+
+fn played_recorded(g: Genesis, pilot_name: Option<String>, draw: Option<matrix::Draw>) -> Outcome {
+    let observe = pilot_name.is_some();
     let mut record = draw.map(|draw| matrix::Record::begin(draw, &g));
     // Generated founders also carry Born provenance. Identity, not that
     // label, distinguishes births occurring during this played run.
@@ -325,7 +208,12 @@ fn played_recorded(g: Genesis, observe: bool, draw: Option<matrix::Draw>) -> Out
     }
     let saved = i.session.save();
     if let Some(pilot) = pilot {
-        let prefix = format!("q3-primary-final-state-pilot-seed0-{}", out.genesis);
+        let name = pilot_name.unwrap();
+        let prefix = if name == "seed0" {
+            format!("q3-primary-final-state-pilot-seed0-{}", out.genesis)
+        } else {
+            format!("a1-pilot-{name}-seed0-{}", out.genesis)
+        };
         retain(&format!("{prefix}-session.json"), &saved);
         retain(&format!("{prefix}-readings.json"), &pilot);
         retain(&format!("{prefix}-state.json"), i.session.sim.state());
@@ -346,32 +234,33 @@ fn played_recorded(g: Genesis, observe: bool, draw: Option<matrix::Draw>) -> Out
     out
 }
 
-fn sweep(bodied: bool, original: bool, pilot: Option<Outcome>) -> Vec<(u64, Outcome)> {
+fn sweep(form: Form, original: bool, pilot: Option<Outcome>) -> Vec<(u64, Outcome)> {
     let skip_zero = pilot.is_some();
     if let Some(out) = &pilot {
         assert!(
-            !bodied && !original,
+            form == Form::Bare && !original,
             "pilot is the fresh bare candidate seed 0"
         );
-        assert_eq!(out.genesis, crate::digest(&world(0, false, false)));
+        assert_eq!(out.genesis, crate::digest(&world(0, Form::Bare, false)));
         assert!(out.qualifies());
     }
     let (send, receive) = mpsc::channel();
     let mut rows = std::thread::scope(|scope| {
-        for worker in 0..1 {
+        let workers = std::env::var("ISOCOSM_REPRO_WORKERS").map_or(1, |w| w.parse().unwrap());
+        for worker in 0..workers {
             let send = send.clone();
             scope.spawn(move || {
-                for seed in (worker..20).step_by(1) {
+                for seed in (worker..20).step_by(workers as usize) {
                     if skip_zero && seed == 0 {
                         continue;
                     }
-                    let g = world(seed, bodied, original);
+                    let g = world(seed, form, original);
                     eprintln!(
-                        "BEGIN bodied={bodied} original={original} seed={seed} genesis={}",
+                        "BEGIN form={} original={original} seed={seed} genesis={}", form.name(),
                         crate::digest(&g)
                     );
                     let out = played_recorded(
-                        g, false, Some(matrix::Draw { seed, bodied, original }),
+                        g, None, Some(matrix::Draw { seed, form, original }),
                     );
                     send.send((seed, out)).unwrap();
                 }
@@ -380,7 +269,7 @@ fn sweep(bodied: bool, original: bool, pilot: Option<Outcome>) -> Vec<(u64, Outc
         drop(send);
         let mut rows = Vec::new();
         for (seed, out) in receive {
-            eprintln!("completed bodied={bodied} original={original} seed={seed}: {out:?}");
+            eprintln!("completed form={} original={original} seed={seed}: {out:?}", form.name());
             rows.push((seed, out));
         }
         rows
@@ -392,12 +281,12 @@ fn sweep(bodied: bool, original: bool, pilot: Option<Outcome>) -> Vec<(u64, Outc
     assert_eq!(rows.len(), 20);
     for (seed, out) in &rows {
         eprintln!(
-            "SORTED bodied={bodied} original={original} seed={seed} genesis={}: {out:?}",
-            out.genesis
+            "SORTED form={} original={original} seed={seed} genesis={}: {out:?}",
+            form.name(), out.genesis
         );
     }
     eprintln!(
-        "TOTAL bodied={bodied} original={original}: {}/20",
+        "TOTAL form={} original={original}: {}/20", form.name(),
         rows.iter().filter(|(_, out)| out.qualifies()).count()
     );
     rows
@@ -405,7 +294,7 @@ fn sweep(bodied: bool, original: bool, pilot: Option<Outcome>) -> Vec<(u64, Outc
 
 fn candidate_pilot() -> Outcome {
     eprintln!("PILOT receipt_dir={}", receipt_directory().display());
-    let g = world(0, false, false);
+    let g = world(0, Form::Bare, false);
     eprintln!(
         "PILOT BEGIN profile=meal3-birth14 seed=0 genesis={}",
         crate::digest(&g)
@@ -429,7 +318,7 @@ fn consumer_reproduction_candidate_pilot() {
 #[ignore = "fresh bounded original-rate seed 0 negative control"]
 fn consumer_reproduction_original_pilot() {
     eprintln!("ORIGINAL receipt_dir={}", receipt_directory().display());
-    let g = world(0, false, true);
+    let g = world(0, Form::Bare, true);
     eprintln!("ORIGINAL BEGIN seed=0 genesis={}", crate::digest(&g));
     let out = played(g, true);
     eprintln!("ORIGINAL completed seed=0: {out:?}");
@@ -440,18 +329,18 @@ fn consumer_reproduction_original_pilot() {
 #[test]
 #[ignore = "declared cadence trial, Reading not ruled; run explicitly"]
 fn consumer_reproduction_profile_probe() {
-    for bodied in [false, true] {
-        let rows = sweep(bodied, false, None);
+    for form in [Form::Bare, Form::Bodied] {
+        let rows = sweep(form, false, None);
         assert!(
             rows.iter().all(|(_, out)| out.qualifies()),
-            "candidate bodied={bodied}"
+            "candidate form={form:?}"
         );
     }
     // Once a candidate qualifies in both forms, rerun its unchanged original
     // rate controls on the same native implementation and declared seeds.
-    for bodied in [false, true] {
-        for (seed, out) in sweep(bodied, true, None) {
-            assert!(!out.qualifies(), "original bodied={bodied} seed={seed}");
+    for form in [Form::Bare, Form::Bodied] {
+        for (seed, out) in sweep(form, true, None) {
+            assert!(!out.qualifies(), "original form={form:?} seed={seed}");
             assert_eq!(out.living, 0, "original lineage ends");
         }
     }
@@ -463,7 +352,7 @@ fn bodied_preparation_name(original: bool) -> String {
 }
 
 fn prepared_bodied(original: bool) -> Genesis {
-    let g = world(0, true, original);
+    let g = world(0, Form::Bodied, original);
     let path = receipt_directory().join(bodied_preparation_name(original));
     let prepared: Genesis = serde_json::from_slice(&std::fs::read(path).unwrap()).unwrap();
     assert_eq!(g, prepared, "fresh bodied Genesis must equal reviewed preparation");
@@ -475,7 +364,7 @@ fn prepared_bodied(original: bool) -> Genesis {
 fn consumer_reproduction_bodied_prepare() {
     eprintln!("BODIED PREP receipt_dir={}", receipt_directory().display());
     for original in [true, false] {
-        let g = world(0, true, original);
+        let g = world(0, Form::Bodied, original);
         assert_eq!(g.seed, 0);
         assert_eq!(g.founding.as_ref().unwrap().bodies, Some(Bodies::default()));
         assert_eq!(g.rules.body(), BodyRules::default());
@@ -532,4 +421,40 @@ fn consumer_reproduction_bodied_candidate_pilot() {
     let out = played(g, true);
     eprintln!("BODIED PILOT completed seed=0: {out:?}");
     assert!(out.qualifies(), "classify the failed seed 0 pilot before a matrix");
+}
+
+fn arm() -> (Form, bool) {
+    let arm = std::env::var("ISOCOSM_REPRO_ARM").expect("set ISOCOSM_REPRO_ARM, e.g. played-candidate");
+    let (form, rate) = arm.split_once('-').expect("form-rate");
+    let form = [Form::Bare, Form::Bodied, Form::Played].into_iter()
+        .find(|f| f.name() == form).expect("bare, bodied or played");
+    (form, match rate { "original" => true, "candidate" => false, _ => panic!("original or candidate") })
+}
+
+/// One declared arm of twenty draws. Candidate arms qualify on every draw;
+/// original arms are the negative control and end on every draw.
+#[test]
+#[ignore = "one declared A1 arm; ISOCOSM_REPRO_ARM names it"]
+fn consumer_reproduction_arm() {
+    let (form, original) = arm();
+    let rows = sweep(form, original, None);
+    for (seed, out) in &rows {
+        if original {
+            assert!(!out.qualifies() && out.living == 0, "original {form:?} seed={seed}");
+        }
+    }
+    if !original {
+        assert!(rows.iter().all(|(_, out)| out.qualifies()), "candidate {form:?}");
+    }
+}
+
+/// One seed-zero pilot of an arm, with full readings, before its twenty draws.
+#[test]
+#[ignore = "seed-0 pilot of one declared arm; ISOCOSM_REPRO_ARM names it"]
+fn consumer_reproduction_arm_pilot() {
+    let (form, original) = arm();
+    let g = world(0, form, original);
+    eprintln!("ARM PILOT BEGIN form={} original={original} genesis={}", form.name(), crate::digest(&g));
+    let out = played_named(g, Some(format!("{}-{}", form.name(), if original { "original" } else { "candidate" })));
+    eprintln!("ARM PILOT completed: {out:?} qualifies={}", out.qualifies());
 }
