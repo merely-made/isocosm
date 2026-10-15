@@ -8,13 +8,13 @@ use std::io::Write;
 #[derive(Clone, Copy, Debug, serde::Serialize)]
 pub(super) struct Draw {
     pub seed: u64,
-    pub bodied: bool,
+    pub form: Form,
     pub original: bool,
 }
 
 impl Draw {
     fn prefix(self, genesis: &str) -> String {
-        let form = if self.bodied { "bodied" } else { "bare" };
+        let form = self.form.name();
         let arm = if self.original { "original" } else { "candidate" };
         format!("q3-primary-final-state-matrix-{form}-{arm}-seed{}-{genesis}", self.seed)
     }
@@ -113,7 +113,7 @@ fn validate_bodied(g: &Genesis) {
 impl Record {
     pub fn begin(draw: Draw, g: &Genesis) -> Self {
         assert_eq!(draw.seed, g.seed, "actual matrix seed");
-        if draw.bodied {
+        if draw.form.bodied() {
             validate_bodied(g);
         } else {
             assert!(g.founding.as_ref().unwrap().bodies.is_none(), "bare matrix form");
@@ -170,22 +170,22 @@ impl Record {
             "replays": self.replays, "per_tick_replay_claimed": false,
         });
         retain_new(&format!("{}-evidence.json", self.prefix), &summary);
-        eprintln!("MATRIX SAVED bodied={} original={} seed={} genesis={} ticks={}",
-            self.draw.bodied, self.draw.original, self.draw.seed, out.genesis, sequence.ticks);
+        eprintln!("MATRIX SAVED form={} original={} seed={} genesis={} ticks={}",
+            self.draw.form.name(), self.draw.original, self.draw.seed, out.genesis, sequence.ticks);
     }
 }
 
 #[test]
-fn matrix_keys_separate_all_80_arms() {
+fn matrix_keys_separate_all_120_arms() {
     let mut keys = std::collections::BTreeSet::new();
-    for bodied in [false, true] {
+    for form in [Form::Bare, Form::Bodied, Form::Played] {
         for original in [false, true] {
             for seed in 0..20 {
-                assert!(keys.insert(Draw { seed, bodied, original }.prefix("same-genesis")));
+                assert!(keys.insert(Draw { seed, form, original }.prefix("same-genesis")));
             }
         }
     }
-    assert_eq!(keys.len(), 80);
+    assert_eq!(keys.len(), 120);
 }
 
 #[test]
