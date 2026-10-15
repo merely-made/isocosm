@@ -18,3 +18,14 @@ wing-glyphs = { path = "../../../shared/wing-glyphs" }
 wing-functions = { path = "../../../shared/wing-functions" }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 serde_json = "1"
+# The next-life Graphshell endpoint over the sim-host core (rulings 900, 903).
+isocosm-host = { path = "../../../host", optional = true, features = ["endpoint"] }
+chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
+graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
+
+[features]
+endpoint = ["dep:isocosm-host", "dep:chirograph", "dep:graphshell-endpoint"]
+
+[dev-dependencies]
+isocosm-host = { path = "../../../host", features = ["endpoint", "fixtures"] }
+graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", features = ["local"] }
