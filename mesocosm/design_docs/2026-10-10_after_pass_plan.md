@@ -16,8 +16,9 @@ joins the stock kernel, eleven compiled faults caught; titles are outside
 C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
-tuning ("Tuning's open."); A1 resumes first, with 890's producer capture
-path; 889 and 891 wait for a generator lane. 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused929.
+tuning ("Tuning's open."); A1 resumes first; 890's producer capture
+path landed on branch `a1-reproduction`, unmerged; 889 and 891 wait for a
+generator lane. 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused929.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -80,9 +81,12 @@ ticks (directing Findings, 2026-10-09). Rates are a world's; fix it as a
 generator or rules change and record the ruling it needs. Done when a played
 consumer lineage survives three epochs on draws.
 
-**Status, 2026-10-14:** in progress. Ruling 888 opens tuning ("Tuning's
+**Status, 2026-10-15:** in progress. Ruling 888 opens tuning ("Tuning's
 open."), ending 761's and 826's deferral; candidates are declared before
-they are drawn.
+they are drawn. Candidate 9 meets the matrix (bare 20/20, bodied 20/20,
+original controls 0/20) and is 19/20 on Mesocosm's played founding; it
+needs two generator rulings (draft questions) and reproduces its counts
+on 890's capture path (Findings, 2026-10-15).
 
 ## A2. The test baseline (owner: each workspace's plan)
 
@@ -157,6 +161,99 @@ From the phenotype plan, archived the same day: P0's judgment, whether the
 headed meal choice feels tense rather than clerical.
 
 ## Findings
+
+- **2026-10-14, A1 reopened under 888; the bodied arm fails on a drawn
+  mouth, not on rates.** Source: main `ce01da2d` plus the test-only harness
+  on branch `a1-reproduction` (`shared/isocosm/src/directing/interim/
+  reproduction{.rs,/}`; it gained a form-aware profile, Mesocosm's own
+  played founding, and per-arm runners). The 812 and 813 timing controls ran
+  first: 22 pass-start and journey positives, two planted 813 faults caught
+  (5 and 3 failures), 4 adapter positives and the planted 812 fault caught
+  (3 failures), each restored to exact bytes. Declared pilots, seed 0: bare
+  and played original-rate controls end at tick 41 with no births; the
+  bare candidate qualifies. Declaration 1's candidate (the 2026-10-10
+  meal-three/birth-fourteen profile) on seeds 0 to 19: **bare 20/20**,
+  conserved each tick and replayed in both modes; **bodied 10/20**. The ten
+  bodied failures are extinct at ticks 75 to 117.
+  Cause, checked on all twenty bodied genesis files: `bodied.rs::drawn`
+  gives a limbed consumer a jaw (`rod`) at its head instead of `block`, and
+  `bodied/feeding.rs::configure` then restricts its feed process to the
+  lineages that mouth's port admits (832): `function:contract` admits
+  fauna, `function:intake` admits producers. All eight jawed worlds
+  (seeds 3, 4, 5, 6, 11, 12, 13, 19) fed on `{lineage:1}`, their own
+  lineage, the only fauna there, and all eight died at ticks 75 to 100.
+  Eleven rate variants over two selection batteries (consumer meal, upkeep,
+  feed period, producer yield) were all at or below 1 of 8 on bodied
+  seeds 100 to 107: **rates are inert for that failure.** The unrated
+  fix is the opt-in flag `Bodies::grazing` (limbs stay, the mouth is
+  intake): grazer form, same rates, seeds 0 to 19: **15/20**; with the
+  consumer upkeep period 10 and birth gate 9, **16/20** (the battery's 8/8
+  was luck). The remaining failures die at ticks 117 to 176 after the last
+  births at ticks 70 to 89, with consumers boomed to 75 to 195 on one site,
+  feeding strong and births zero; a lineage's lifespan is one draw, so its
+  generations die together. Receipts, declarations 1 to 7 and their
+  SHA-256 are in the external `q3-reproduction` directory
+  (`a1-2026-10-14-declaration-hashes.txt`, `-arms.log`, `-battery.log`).
+  The pilot receipts of 2026-10-14 name pre-rebase source hashes `00fde080`
+  and `a796ae67`, which are `8c22e46a` and `8367a063` after rebasing onto
+  the reviewer's commits (same code). *Reading, not ruled:* the grazing
+  mouth, and then a per-individual lifespan or hazard, are generator
+  choices for Mark; no rate or default is promoted and A1 stays open.
+
+- **2026-10-15, A1's candidate 9 meets the matrix; the played founding
+  is 19/20 (source `7b330d02` on branch `a1-reproduction`).** After the
+  grazing mouth (15/20), the lockstep reading was tested: consumer upkeep
+  period 10 and birth gate 9 with the fixed lifespan gave 16/20 (gate seeds
+  0 to 19), its battery's 8/8 being luck (battery 4, sixteen fresh seeds:
+  13/16, and every producer or meal variant at or below it). Replacing the
+  fixed age by a post-maturity hazard (60 ticks, 25,000 per million per
+  tick, the engine's existing `Process.risk`, mean life held at 100) kept
+  the lineage alive to tick 180 in all 20 draws but left one founder
+  alive in seven (13/20 against the unchanged `living_founded == 0` and
+  `born_heirs > 0` terms). With the lineage's fixed age kept as a ceiling
+  at 120 (`hazardcap`): **grazer 20/20, bare 20/20, grazer original-rate
+  control 0/20, played-grazer (Mesocosm's own 6-site, 256-member bodied
+  founding) 19/20, played-grazer original 0/20.** Every draw conserved
+  matter each tick and replayed identically in Individuals and Grouped. The
+  one played miss is seed 15: extinct at tick 176 with two boundaries
+  (the same late-extinction shape as before). Played births by the played
+  body occur in all 20 draws, so the harness's played-births term and the
+  reading without it both give 19/20. The candidate's exact profile:
+  declaration 1's rates (threshold 12, meal 3 and birth period 14 for
+  consumers, provision 8, upkeep 1 per 5 ticks, drawn lifespans 80 to 120
+  now the ceiling), consumer upkeep period 10, consumer birth gate 9, the
+  grazing mouth and the hazard. Declarations 1 to 9 and their SHA-256 are
+  in `q3-reproduction/a1-2026-10-14-declaration-hashes.txt`. These
+  receipts predate ruling 890's capture path (below). *Reading, not ruled:* the grazing
+  mouth and individual hazard-plus-cap lifespans are generator choices for
+  Mark (draft questions in the notes folder); no rate or default is
+  promoted and A1 stays open until those rulings.
+- **2026-10-15, ruling 890 built: producers capture light (branch
+  `a1-reproduction`, `d873d320` in the receipts and `360ee3a9` after
+  rebasing onto main, unmerged), and candidate 9 reproduces on it.** The `sim:energy` variant, because a reserve-account credit only
+  counts when it lands in body parts (`evidence.rs`), which bare worlds
+  cannot. Every ecology site holds light (seeded, then topped up by an
+  agentless `ecology:sunlight` while below its cap; abundant by declaration,
+  it never binds). A producer's synthesis captures one unit and spends it in
+  an effect of its own, so the soil-to-tissue transform stays matter-only
+  and declarable as `Synthesis`; energy is not matter (879), tissue is not
+  relabelled as fuel. `tests/ecology_capture_890.rs`: default bare worlds
+  and grazing-bodied worlds pass all four joint-witness roles (capture,
+  return, birth, counterplay) in 60 ticks; a world without the capture
+  effects fails the capture role; light never moves the matter total.
+  Default bodied worlds always capture, but jawed ones can miss the
+  counterplay role against the producers (the diet finding above). The full
+  native suite on this source: 604 passed, 0 failed, 13 ignored (47
+  targets) after two fixes the first run found: sites needed light at
+  genesis (a tick-0 act was blocked "insufficient sim:energy") and a flows
+  test declared `Synthesis` on every producer transform. `mesocosm-runtime`:
+  21 and 6 passed. Candidate 9 rerun on this source (declaration 10),
+  seeds 0 to 19: grazer 20/20, bare 20/20, grazer original 0/20,
+  played-grazer 19/20 (seed 9 extinct at tick 176; the earlier miss was
+  seed 15), played original 0/20. The 875 offer also needs an authored
+  `JointSpec`, the independence criterion and the generated basis (879);
+  that and 889/891 stay with the generator lane. Receipts total 16 GB in
+  `q3-reproduction` (per-draw genesis, session, state, conservation).
 
 - **2026-10-11, Q3 fresh bare seed zero classified:** the original arm
   ends at tick 41 without births; the independently frozen 454/813 candidate
