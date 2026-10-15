@@ -317,6 +317,9 @@ pub struct Rules {
     pub defence: Option<Defence>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub global_collapse: Option<crate::collapse::Predicate>,
+    /// A generated world's declared spawn and arrival poses (889).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub spatial_templates: Option<crate::spatial::Templates>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ecology_witness: Option<crate::ecology::JointSpec>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

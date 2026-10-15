@@ -16,6 +16,8 @@ mod arrival;
 mod birth;
 mod birth_geometry;
 mod birth_command;
+mod templates;
+pub use templates::{Templates, Stand, Crossing, STANDS as STANDS_PER_SITE};
 pub use birth::{BirthProfile, BirthMedium, BirthSupport, BirthRequest, BirthGeometry, BirthResolution, BirthReport, BirthPending, birth_pose};
 pub use birth_command::{BirthPreparation, PreparedBirth};
 pub(crate) use birth::BirthMark;

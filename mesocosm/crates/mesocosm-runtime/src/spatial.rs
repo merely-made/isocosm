@@ -29,6 +29,7 @@ mod arrival;
 mod birth;
 mod birth_command;
 pub use birth::{BirthInput, BirthParent, BirthSlot};
+mod generated;
 mod children;
 pub use children::{ArrivalTemplate, BirthTemplates, ChildInputs};
 mod replay;

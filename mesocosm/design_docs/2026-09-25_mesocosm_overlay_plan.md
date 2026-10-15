@@ -2,11 +2,26 @@
 
 **Date:** 2026-09-25
 
-**Generated-world inputs, 2026-10-14:** ruling 885 has the generator supply
-spawn and arrival templates for generated worlds, movement staying
-template-driven; 891 has it declare each world's global collapse predicate.
-Both wait for a generator lane after A1's `generate.rs` changes land; 890's
-producer capture path is built (branch `a1-reproduction`, merged and pushed 2026-10-15, 929 and 930). Next unused933.
+**Generated-world inputs, 2026-10-15 (889, 891):** built on branch
+`lane-generator-templates`, under review and uncertified.
+A world founded with a map and bodies declares `rules.spatial_templates`: up to
+four spawn stands per site, derived from its realized terrain (root clear and
+resting on solid ground, eye clear, one realized patch), and one arrival stand
+per native route. `Game::found_generated` seats the first embodied member of
+each cohort on those stands (a logged `Command::Patch`) and registers every
+crossing through the ordinary authored `Profile`, so poses, saves and arrivals
+use the existing provider and door; a body without a template acquires no pose.
+Every generated world declares `rules.global_collapse`: no living organism
+(Reactive, Deliberative or Normative, all lineages) remains. Mark chose that
+condition on 2026-10-14 (932). Both are rules data, so they are saved and part of the
+digest. Native tests `generated_spatial_889` and `generated_collapse_891` and
+the runtime test `generated_templates` cover presence, consumption, firing, the
+digest and save/replay. Open: the generator declares no step, terrain or birth
+input. Birth (848) demands the child's whole collision box clear and flat, and
+generated bodies reach about 8 by 16 by 44 cells on steeply sloped site terrain,
+so no template can satisfy it; carve/deposit and walking need a declared
+process. 890's producer capture path is built (branch `a1-reproduction`,
+merged and pushed 2026-10-15, 929 and 930). Next unused933.
 
 **Founding law source, 2026-10-13:** explicit pack affinity now enters fresh
 native founding before body/domain generation. Optional absent law preserves

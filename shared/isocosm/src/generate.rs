@@ -87,6 +87,25 @@ pub(crate) fn process(id: &str, causation: Causation, effects: Vec<Effect>) -> P
     }
 }
 
+/// The world's declared total collapse (ruling 891): no living organism
+/// remains. World bodies and the participant seat are inert, so they never
+/// count, and no lineage is named, so speciation cannot dodge it.
+fn extinction() -> crate::collapse::Predicate {
+    use crate::collapse::{Lineages, PopulationFilter, Predicate, WorldReading};
+    let living: Key = "world:living".into();
+    Predicate {
+        inputs: BTreeMap::from([(living.clone(), WorldReading::Population {
+            selector: PopulationFilter {
+                lineages: Lineages::All,
+                methods: BTreeSet::from([Method::Reactive, Method::Deliberative, Method::Normative]),
+                alive: true,
+            },
+        })]),
+        // AtLeast(0, n) is one exactly while n is zero.
+        condition: Expr::AtLeast(Box::new(Expr::Const(0)), Box::new(Expr::Read(Reading::Kept { name: living }))),
+    }
+}
+
 impl Founding {
     pub fn generate(&self) -> Result<Genesis> {
         if let Some(affinity) = &self.affinity { affinity.validate()?; }
@@ -289,7 +308,8 @@ impl Founding {
             institution_producers: BTreeMap::new(),
             item_custody: None,
             defence: None,
-            global_collapse: None,
+            global_collapse: Some(extinction()),
+            spatial_templates: None,
             ecology_witness: None,
             companions: None,
             version: crate::VERSION,
@@ -503,6 +523,7 @@ impl Founding {
         if let Some(played) = self.played {
             crate::directing::found::found(self, &mut genesis, played)?;
         }
+        crate::spatial::Templates::declare(&mut genesis)?;
         genesis.validate()?;
         Ok(genesis)
     }
