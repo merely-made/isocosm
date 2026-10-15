@@ -5,7 +5,7 @@
 **Status, 2026-10-14:** C10 and C11 are certified. C10's rejection was a
 crowd defect, fixed at `8cbe3e76`; the recertification under fresh seed
 2026101401 (880) passes. C11 is certified at site grain with the autonomous
-chooser (881); titles are outside (882). Next unused888.
+chooser (881); titles are outside (882). Next unused896.
 
 **Earlier status:** certification attempt completed; C10 rejected by its unchanged gate.
 Source `6b5d00a0` is pushed and the measurement stayed frozen. Mark's

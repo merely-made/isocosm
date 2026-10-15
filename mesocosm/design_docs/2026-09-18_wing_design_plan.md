@@ -11136,7 +11136,47 @@ what later sections derive from.
      A generated world founded in the real Mesocosm head, a lineage reaching
      the epoch boundary and the trait board, captured. Under 885 it starts
      from 875's inputs; three epochs wait on A1.
-     Next unused888.
+     Numbers 888 to 891 are the A1 lane's (tuning open; spawn and arrival
+     templates; the generator's 875 capture path; the generator's declared
+     collapse predicate), recorded by that lane.
+
+892. **The embeddable sim host is `isocosm-host` as a library.**
+     Asked 2026-10-14, after 884. Evidence: `host/` is already the package
+     `isocosm-host`, a binary whose world, save and attention pieces are
+     about 350 lines; Mesocosm's session runtime (`mesocosm-runtime`) and
+     key-to-nudge mapping (`mesocosm-genet/src/input.rs`) hold the richer
+     generic parts. Question: "Where does the embeddable sim host (884)
+     live?" Options: (1) "isocosm-host as a library (Recommended)"; (2)
+     "Grow mesocosm-runtime"; (3) "New crate".
+     Mark: "isocosm-host as a library (Recommended)"
+     `isocosm-host` becomes the core library; its inspection shell becomes
+     a bin over it; generic pieces move in from the Mesocosm crates.
+
+893. **The society feature gates operations, not state.**
+     Asked 2026-10-14, after 886. Question: "How far does the feature
+     reach?" Options: (1) "Gate operations, keep state (Recommended)":
+     commands, effects and processing behind the feature, the `State`
+     fields kept and empty by default; (2) "Gate the state too".
+     Mark: "Gate operations, keep state (Recommended)"
+     Every build reads one save format; a featureless build carries the
+     society fields empty and refuses their operations.
+
+894. **The native-tests session tests the society layer and gates it.**
+     Asked 2026-10-14. Options: (1) "The native-tests session
+     (Recommended)"; (2) "The capabilities session"; (3) "A new lane".
+     Mark: "The native-tests session (Recommended)"
+     'Native tests for owned stock and projects' extends to institutions,
+     custody, party, goals and polities and places 886's feature under 893.
+     The consigliere session named in 886 is the capabilities session.
+
+895. **The core is built first, while 875's inputs are pending.**
+     Asked 2026-10-14. Options: (1) "Build the core first (Recommended)";
+     (2) "Review only"; (3) "Fix small breakage first".
+     Mark: "Build the core first (Recommended)"
+     The embeddable sim host is extracted and the Mesocosm head moved onto
+     it, proven on recorded native saves and the bench, under a dated plan
+     with done-conditions; the loop runs once 885's wait resolves.
+     Next unused896.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
