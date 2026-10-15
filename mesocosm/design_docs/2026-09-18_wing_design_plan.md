@@ -11140,6 +11140,40 @@ what later sections derive from.
      templates; the generator's 875 capture path; the generator's declared
      collapse predicate), recorded by that lane.
 
+888. **Tuning is open.**
+     2026-10-14, after C10 and C11 certified; Mark's "Certify" had already
+     lifted 826's deferral of tests.
+     Mark: "Tuning's open."
+     So 761's and 826's deferral of tuning ends. A1 (792) resumes first:
+     candidates are declared before they are drawn, and a rate or generator
+     change that A1 promotes still records the ruling it needs (after-pass
+     §A1).
+
+889. **Generated worlds get spawn and arrival templates from the generator.**
+     2026-10-14, the follow-up to 830 and 833, which chose no movement
+     solver, spawn coordinate, process or arrival pose.
+     Question: "A generated, unauthored world has no spawn pose and nothing driving continuous movement or arrival, so in-site carve/deposit/contact cannot happen there. Where should those inputs come from?"
+     Options: (a) "Mesocosm's runtime gets a trusted movement driver that spawns bodies from a native birth/placement rule and steps them through authored step profiles"; (b) "The generator supplies spawn and arrival templates for generated worlds; movement stays template-driven"; (c) "In-site acts stay limited to authored worlds; re-scope M4's unchosen-seed run".
+     Mark chose (b), confirming it directly: "the generator supplies spawn and arrival templates for generated worlds and movement stays template-driven".
+     A generator lane owns it after A1's generator changes land, one
+     writer at a time in `generate.rs`.
+
+890. **The generator gives producers a real capture path.**
+     2026-10-14, capture inputs for 875's joint witness.
+     Question: "The default generated producer synthesizes soil into ordinary body tissue: every generated matter account is reserve:false and nothing credits sim:energy, so only fixtures pass the 875 witness and no generated world can be offered. Who supplies capture?"
+     Options: (a) "The generator gives producers a real capture path (a producer reserve account that synthesis credits, or a process crediting sim:energy)"; (b) "Packs/authored worlds supply capture inputs; generated worlds stay unofferable until one does".
+     Mark chose (a), confirming it directly: "the generator gives producers a real capture path".
+     Tissue is not relabelled as fuel (879). The variant is chosen on
+     evidence with A1, which touches the same producer and consumer rates;
+     the goal is default generated worlds passing 875's witness.
+
+891. **The generator writes each world's global collapse predicate.**
+     2026-10-14, the follow-up to 878.
+     Question: "Nothing authors a global collapse predicate (generate.rs sets global_collapse: None), so no world can collapse. Who authors it?"
+     Options: (a) "The generator writes a declared predicate into each world's rules (visible, saved, part of the digest)"; (b) "Only packs/authored worlds carry one; generated worlds never collapse"; (c) "The player or DM authors one at founding".
+     Mark chose (a), confirming it directly: "the generator writes a declared collapse predicate into each world's rules".
+     The generator lane owns it with 889.
+
 892. **The embeddable sim host is `isocosm-host` as a library.**
      Asked 2026-10-14, after 884. Evidence: `host/` is already the package
      `isocosm-host`, a binary whose world, save and attention pieces are
