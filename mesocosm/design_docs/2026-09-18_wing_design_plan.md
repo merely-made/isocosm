@@ -11566,7 +11566,37 @@ what later sections derive from.
      never ran these suites. Options: (1) "A triage session (Recommended)":
      each sorted into stale test, real regression or needs-a-ruling, the
      stale fixed, the rest brought back as questions; (2) "Record only for
-     now". Mark: "A triage session (Recommended)" Next unused932.
+     now". Mark: "A triage session (Recommended)"
+
+932. **A generated world collapses when no organism is left (891's predicate).**
+     Asked 2026-10-14 by card in the generator lane session; recorded here
+     2026-10-15 from that session's verbatim report. The question as put:
+     "Which condition should the generator write as each generated world's
+     global collapse predicate (ruling 887, recorded in the brief as 891)? It
+     is generated rules data in the existing grammar: visible, saved and part
+     of the digest." Options: (1) "No organism left (Recommended)": "Collapse
+     when the living Reactive/Deliberative/Normative population over all
+     lineages is 0. It survives speciation and leaves out the Inert
+     world-ground bodies and participant seats. It means the same as 878's
+     rejected option (2), but here it is declared data rather than native
+     code."; (2) "Below a founding fraction": "Collapse when the living
+     population drops below a declared fraction of Founding.population, e.g.
+     1/16. That is a threshold, which 878 says we must not invent unless you
+     set it."; (3) "Under two founders left": "Collapse when fewer than two
+     founding lineages still have living members. Children of a new lineage
+     are not counted, so it can fire falsely after speciation."
+     Mark: "No organism left (Recommended)", with no note.
+     As built on `lane-generator-templates` (`b5d86d14`,
+     `shared/isocosm/src/generate.rs`, `extinction`): one input,
+     `world:living`, the living population of every lineage's Reactive,
+     Deliberative and Normative members (the bare key `living` failed key
+     validation), and the condition `AtLeast(Const(0), Read(Kept
+     world:living))`, which is 1 exactly while that count is 0, written to
+     every generated world's `rules.global_collapse`. Inert world-ground
+     bodies and participant seats never count, and no lineage is named.
+     *Reading, not ruled:* the question's "ruling 887" means this record's
+     891, the predicate the generator declares; 887 is the Mesocosm-loop
+     milestone. Next unused933.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
