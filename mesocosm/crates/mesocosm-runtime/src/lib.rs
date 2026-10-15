@@ -19,6 +19,8 @@ pub mod clock;
 pub mod continuation;
 pub mod borrowed;
 pub mod effect_experiment;
+#[cfg(feature = "endpoint")]
+pub mod endpoint;
 pub mod glyphs;
 pub mod perception;
 pub mod readings;
