@@ -342,6 +342,30 @@ FAULTS = {
         'if false {',
         "society_collective", "assertion::a_collective_owner_must_name_its_strategy_validly",
     ),
+    "placement-unguarded": (
+        "src/spread/owned.rs",
+        '    state.projects.ownership.values().any(|held| held.current_source() == Some(source) && held.lot.account == account)\n        || rules.owned_stock',
+        '    false\n        || rules.owned_stock',
+        "society_spread", "placement::placing_owned_stock_needs_an_exact_selection_and_a_disposition",
+    ),
+    "placement-claim-mislabelled": (
+        "src/projects/debit/disposition.rs",
+        'destination:Destination::Source(actual.source),account:actual.identity.key() },Some(actual.clone())));',
+        'destination:Destination::Source(actual.source),account:"test:timber".into() },Some(actual.clone())));',
+        "society_spread", "placement::placing_owned_stock_needs_an_exact_selection_and_a_disposition",
+    ),
+    "placement-unallocated": (
+        "src/projects/debit/disposition.rs",
+        'if selected.iter().any(|(key, (_, amount))| allocated.get(key) != Some(amount)) {',
+        'if false {',
+        "society_spread", "placement::a_placement_without_a_consistent_disposition_refuses",
+    ),
+    "claim-owners-lost": (
+        "src/projects/debit/disposition.rs",
+        '                    lot.source = to;\n',
+        '                    lot.source = to;\n                    lot.owners.clear();\n',
+        "society_spread", "placement::placing_owned_stock_needs_an_exact_selection_and_a_disposition",
+    ),
     "delivery-closes-title": (
         "src/spread/owned.rs",
         "held.at = LotAt::Held(StockSource::Site(transfer.to));",
