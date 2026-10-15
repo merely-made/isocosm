@@ -80,3 +80,20 @@ fn society_state_is_kept_and_reads_in_every_build() {
     assert!(plain.get("projects").is_none() && plain.get("institutions").is_none(),
         "unused society fields stay empty and out of the save");
 }
+
+/// Goal directives are processing: an act carrying one is refused, whole, without the feature.
+#[test]
+fn goal_directives_are_refused_without_the_feature() {
+    let mut w = world(94);
+    w.genesis.rules.note_kinds.extend(isocosm::goals::NOTE_KINDS.map(String::from));
+    let mut adopt = process("test:adopt", vec![], vec![]);
+    adopt.goal_directives = vec![isocosm::goals::Directive::Adopt { goal: "goal:x".into(), text: String::new() }];
+    w.genesis.rules.processes.insert(adopt.id.clone(), adopt);
+    w.genesis.validate().unwrap();
+    let mut s = Session::new(w.genesis.clone(), Execution::Individuals).unwrap();
+    let hash = s.sim.state_hash();
+    let receipt = s.command(Command::Act { actor: w.bodies[0], target: None, process: "test:adopt".into(), cause: None }).unwrap();
+    let receipt: isocosm::simulation::Receipt = serde_json::from_str(&receipt).unwrap();
+    assert_eq!(receipt.accepted(), SOCIETY, "{:?}", receipt.outcome);
+    if !SOCIETY { assert_eq!(s.sim.state_hash(), hash); }
+}
