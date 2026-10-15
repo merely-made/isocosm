@@ -10,7 +10,7 @@ use isocosm_overlay::{ParticipantHandle, PlayerAttention};
 use crate::{binding::Binding, native_attention, save::{WorldSave, FORMAT_VERSION}};
 
 #[derive(Clone)]
-struct OpenWorld { session: Session, sections: BTreeMap<String, Vec<u8>> }
+struct OpenWorld { session: Session, sections: BTreeMap<String, Vec<u8>>, revision: u64 }
 
 pub struct World(Rc<RefCell<OpenWorld>>);
 
@@ -23,18 +23,18 @@ fn cut(session: &Session) -> Cut {
 
 impl World {
     pub fn new(session: Session) -> Self {
-        Self(Rc::new(RefCell::new(OpenWorld { session, sections: BTreeMap::new() })))
+        Self::with_sections(session, BTreeMap::new())
     }
     /// A world whose session and per-mode sections arrive together, as a
     /// product handoff carries them.
     pub fn with_sections(session: Session, sections: BTreeMap<String, Vec<u8>>) -> Self {
-        Self(Rc::new(RefCell::new(OpenWorld { session, sections })))
+        Self(Rc::new(RefCell::new(OpenWorld { session, sections, revision: 0 })))
     }
     pub fn share(&self) -> Self { Self(self.0.clone()) }
     pub fn resume(saved: WorldSave, execution: Execution) -> Result<Self, String> {
         if saved.format != FORMAT_VERSION { return Err("unknown mode-host save format".into()); }
         let session = Session::load(saved.native, execution)?;
-        Ok(Self(Rc::new(RefCell::new(OpenWorld { session, sections: saved.sections }))))
+        Ok(Self::with_sections(session, saved.sections))
     }
     pub fn resume_native(saved: NativeSaved, execution: Execution) -> Result<Self, String> {
         Ok(Self::new(Session::load(saved, execution)?))
@@ -63,6 +63,11 @@ impl World {
         self.transaction(None, |session| session.advance(ticks).map(|_| ()))
     }
     pub fn cut(&self) -> Result<Cut, String> { self.read(cut) }
+    /// Changes accepted since this world opened, mode sections included,
+    /// which a cut alone misses. Endpoints sharing the world stale on it.
+    pub fn revision(&self) -> Result<u64, String> {
+        Ok(self.0.try_borrow().map_err(|_| "world is being advanced")?.revision)
+    }
 
     fn transaction<T>(&self, expected: Option<Cut>, admit: impl FnOnce(&mut Session) -> Result<T, String>)
         -> Result<T, String> {
@@ -73,6 +78,7 @@ impl World {
         let mut candidate = world.session.clone();
         let accepted = admit(&mut candidate)?;
         world.session = candidate;
+        world.revision += 1;
         Ok(accepted)
     }
 
@@ -93,6 +99,7 @@ impl World {
         let (value, sections) = admit(&mut candidate, &world.sections)?;
         world.session = candidate;
         world.sections = sections;
+        world.revision += 1;
         Ok(value)
     }
 

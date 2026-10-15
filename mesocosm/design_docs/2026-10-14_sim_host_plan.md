@@ -180,6 +180,23 @@ starts.
 
 ## Progress
 
+- **2026-10-15, 910 built:** `World` counts the changes it accepts,
+  game sections included (`World::revision`), since a change that rewrites
+  only a section (the VTT's roster) leaves the cut alone. `Cut` stays the
+  native position, which saves and resumes compare. The shared
+  `Disclosure` holds the world and catches up at each snapshot and intent:
+  if the world moved, through this endpoint or another, the revision
+  advances, so an intent made against the older snapshot is stale and the
+  next snapshot is a new revision. All four endpoints construct it with the
+  world. Two tests, one in the core (two endpoints over one world, a step
+  through one and a section-only change) and one in the VTT (a DM's roster
+  change stales the player's open table). Four planted faults caught
+  (`Code/testing/isometry/r910-staleness-2026-10-15/`); a first fault
+  against an explicit moved-world check was equivalent, since catching up
+  already advances the revision the ordinary check compares, so that
+  check went. Core 37 passed with every feature and 30 without; VTT 7,
+  Mesocosm 4, Eponym 3; the core's and the root workspace's all-target,
+  all-feature checks are clean.
 - **2026-10-15, rulings 909, 910 and 912:** main is pushed with H2 and the
   owned-stock-tests lane (909). Under 910 every endpoint's snapshot records
   the shared world's position and an intent made against an older position

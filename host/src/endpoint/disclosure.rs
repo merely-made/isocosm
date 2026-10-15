@@ -16,6 +16,7 @@ use chirograph::{
     ProjectionSnapshot, ProtocolVersion, ResourceRequest, ResourceResponse, Revision, SceneEpoch,
     SceneSnapshot, SemanticRole,
 };
+use crate::world::World;
 use sceno::{
     Arrangement, Footprint, InstanceId, Placement, Representation, RoutedRelation, Scene, Score,
     ScoreItem, Size2, SourceRef, Spiral,
@@ -93,17 +94,31 @@ pub fn scene(adapter: &str, items: &[Item], links: &[(String, String, &str)]) ->
     scene
 }
 
-/// One session's disclosure state: the last snapshot, its resources and the revision.
+/// One session's disclosure state: the last snapshot, its resources and the
+/// revision. The revision also moves when the shared world does, through
+/// this endpoint or any other (ruling 910).
 pub struct Disclosure {
     session: String,
+    world: World,
     revision: u64,
+    /// The world's revision the current revision reflects.
+    seen: Option<u64>,
     snapshot: Option<ProjectionSnapshot>,
     resources: BTreeMap<ContentHash, Vec<u8>>,
 }
 
 impl Disclosure {
-    pub fn new(session: &str) -> Self {
-        Self { session: session.into(), revision: 1, snapshot: None, resources: BTreeMap::new() }
+    pub fn new(session: &str, world: &World) -> Self {
+        Self { session: session.into(), world: world.share(), revision: 1, seen: None, snapshot: None,
+            resources: BTreeMap::new() }
+    }
+
+    /// A new revision if the world moved since the revision last caught up.
+    fn catch_up(&mut self) -> Result<(), String> {
+        let now = self.world.revision()?;
+        if self.seen.is_some_and(|seen| seen != now) { self.revision += 1; }
+        self.seen = Some(now);
+        Ok(())
     }
 
     pub fn session(&self) -> &str { &self.session }
@@ -120,6 +135,7 @@ impl Disclosure {
         if request.session.0 != self.session {
             return Err(format!("projection request names a session other than {}", self.session));
         }
+        self.catch_up()?;
         let scene = SceneSnapshot::from_dense(SceneEpoch(1), Revision(self.revision),
             scene(adapter, items, links)).map_err(|error| format!("invalid scene: {error:?}"))?;
         let presentation = self.presentations(items, &scene)?;
@@ -167,8 +183,10 @@ impl Disclosure {
 
     /// The targeted item's source id, or the result that refuses the intent:
     /// stale against the revision, or not advertised on its target.
-    pub fn admit(&self, intent: &IntentInvocation) -> Result<Result<String, IntentResult>, String> {
-        let snapshot = self.snapshot.as_ref().ok_or("intent arrived before a snapshot")?;
+    pub fn admit(&mut self, intent: &IntentInvocation) -> Result<Result<String, IntentResult>, String> {
+        if self.snapshot.is_none() { return Err("intent arrived before a snapshot".into()); }
+        self.catch_up()?;
+        let snapshot = self.snapshot.as_ref().expect("checked above");
         if intent.observed_epoch != snapshot.scene.epoch || intent.observed_revision.0 != self.revision {
             return Ok(Err(IntentResult::Stale { current_epoch: snapshot.scene.epoch,
                 current_revision: Revision(self.revision) }));
@@ -185,6 +203,7 @@ impl Disclosure {
     /// An accepted intent that changed what the next snapshot shows.
     pub fn accepted(&mut self) -> IntentResult {
         self.revision += 1;
+        self.seen = self.world.revision().ok();
         IntentResult::Accepted
     }
 }

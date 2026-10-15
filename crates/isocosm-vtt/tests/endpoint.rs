@@ -175,3 +175,19 @@ fn the_endpoint_survives_the_wire_encoding() {
         invoke(&first, "roster", "vtt.roster-empty", b""))).unwrap() else { panic!("an intent answers a result") };
     assert_eq!(result, IntentResult::Accepted);
 }
+
+#[test]
+fn a_dm_change_stales_a_players_open_snapshot() {
+    let t = table();
+    let mut dm = VttEndpoint::open(&t.world, t.dm, Seat::Dm).unwrap();
+    let mut player = VttEndpoint::open(&t.world, t.player, Seat::Player).unwrap();
+    let open = snapshot(&mut player, TABLE);
+    let party = format!("party:{BAND}");
+    // Configuring the roster rewrites only the VTT's section of the world.
+    let before = t.world.cut().unwrap();
+    assert_eq!(act(&mut dm, TABLE, "roster", "vtt.roster-empty", b""), IntentResult::Accepted);
+    assert_eq!(t.world.cut().unwrap(), before, "the roster lives in the game section");
+    assert!(matches!(player.invoke(invoke(&open, &party, "vtt.read-party", b"")).unwrap(),
+        IntentResult::Stale { .. }), "the player's snapshot predates the DM's change");
+    assert_eq!(act(&mut player, TABLE, &party, "vtt.read-party", b""), IntentResult::Accepted);
+}

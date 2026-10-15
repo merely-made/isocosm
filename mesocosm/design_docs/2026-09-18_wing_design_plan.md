@@ -11400,7 +11400,17 @@ what later sections derive from.
      into components." *Reading, not ruled:* a new objective that gets its
      own assessment; where each part lands (the sim, `isocosm-overlay`,
      `isocosm-vtt`, the stack) comes back as questions before anything
-     moves. Next unused914.
+     moves.
+
+914. **The crates stay publishable in principle.**
+     Given 2026-10-15 after 911 and 913, unasked. Mark: "If the rest of the
+     crates are able to be published in principle, i don't mind that."
+     *Reading, not ruled:* `isocosm-vtt` may depend on unpublished crates
+     so long as nothing makes them unpublishable in principle: licences and
+     metadata in order, and dependencies that could themselves be published.
+     The components 913 makes are built the same way; publishing any of
+     them stays its own decision. This reading goes back to Mark with 913's
+     assessment. Next unused915.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
