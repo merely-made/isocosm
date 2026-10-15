@@ -7,7 +7,7 @@ Each row names the test target and test that must fail while it is applied,
 and the extra cargo flags that run needs (the gate faults need the featureless build).
 Every replacement must stay unique in its file so that restore finds it. Guards the source
 enforces twice (custody contact and capacity, a repeated vote or application, a collective
-owner's ambiguous strategy) have no single-span fault: removing either alone changes nothing.
+owner's ambiguous strategy, a placement's owned-account guard) have no single-span fault: removing either alone changes nothing.
 """
 
 import argparse
@@ -314,12 +314,6 @@ FAULTS = {
         'let policy = lot.collectives.get(id).ok_or("collective owner needs an explicit decision policy")?;',
         'let policy = lot.collectives.get(id).unwrap_or(&DecisionPolicy::UnanimousMembers);',
         "society_collective", "assertion::a_collective_owner_must_name_its_strategy_validly",
-    ),
-    "placement-unguarded": (
-        "src/spread/owned.rs",
-        '    state.projects.ownership.values().any(|held| held.current_source() == Some(source) && held.lot.account == account)\n        || rules.owned_stock',
-        '    false\n        || rules.owned_stock',
-        "society_spread", "placement::placing_owned_stock_needs_an_exact_selection_and_a_disposition",
     ),
     "placement-claim-mislabelled": (
         "src/projects/debit/disposition.rs",

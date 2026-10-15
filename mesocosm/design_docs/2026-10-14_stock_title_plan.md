@@ -201,6 +201,15 @@ outside the society layer. Neither is tested here.
 - 2026-10-14: the existing C11 owned-quantity test cannot run in a build
   without the feature and is gated on it.
 
+- 2026-10-14: the source enforces six guards twice, so no single-span fault
+  can change behaviour and none is planted: custody's contact and capacity
+  (admission and `check_custody_changes`), a repeated vote and a repeated
+  application (admission and the `Records` store), a collective owner's
+  ambiguous strategy (`check_project_lots` and `reserve_project`), and a
+  placement's owned-account guard (`placement_relevant` and `guard_debit_at`).
+  The tests still assert each refusal. Proving one layer alone would take a
+  multi-span fault.
+
 ## Progress
 
 - 2026-10-14: plan drafted (882's stock/title boundary). T1 landed: 13
@@ -214,3 +223,12 @@ outside the society layer. Neither is tested here.
   since gated on the feature and passing in both builds). `cargo check
   --workspace` passes for the VTT root, Eponym and `host` with the feature,
   and for the whole Mesocosm workspace without it.
+- 2026-10-14: the full fault run applied 53 faults one at a time in a
+  detached worktree; 48 failed their named test and restored byte-exact. Five
+  on double-enforced guards were not caught (two of them also restored
+  wrongly, and a third fault's replacement was not unique in its file), and
+  they were dropped; every replacement must now restore uniquely (`restorable`
+  in `controls.py describe`). The nine faults on files the failed restores
+  had left changed, plus the four spread faults, were rerun on a clean tree:
+  eight caught and restored, and a sixth double-enforced guard
+  (`placement-unguarded`) dropped. 51 faults remain.
