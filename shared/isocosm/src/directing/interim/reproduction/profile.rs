@@ -146,7 +146,7 @@ pub(super) fn world(seed: u64, form: Form, original: bool) -> Genesis {
 
 /// Declared exploratory tweaks (declaration 2), after the base checks:
 /// `ISOCOSM_REPRO_TWEAK` is a comma list of `meal=N`, `upkeep=N`, `feed=N`,
-/// `yield=N`. Absent, the profile is exactly declaration 1's.
+/// `yield=N`, `gate=N` and `provision=N` (consumer birth gate and provision). Absent, the profile is exactly declaration 1's.
 fn tweak(g: &mut Genesis, lineages: u64) {
     let Ok(list) = std::env::var("ISOCOSM_REPRO_TWEAK") else { return };
     let processes = &mut g.rules.processes;
@@ -180,7 +180,21 @@ fn tweak(g: &mut Genesis, lineages: u64) {
                         }
                     }
                 },
-                ("meal" | "upkeep" | "feed" | "yield", _) => {},
+                ("gate", 1) => {
+                    for q in &mut processes.get_mut(&format!("ecology:birth-{i}")).unwrap().requires {
+                        if let Query::Account { at_least, .. } = q {
+                            *at_least = n;
+                        }
+                    }
+                },
+                ("provision", 1) => {
+                    for e in &mut processes.get_mut(&format!("ecology:birth-{i}")).unwrap().effects {
+                        if let Effect::Birth { provision } = e {
+                            provision.values_mut().for_each(|v| *v = n);
+                        }
+                    }
+                },
+                ("meal" | "upkeep" | "feed" | "yield" | "gate" | "provision", _) => {},
                 _ => panic!("unknown tweak {key}"),
             }
         }
