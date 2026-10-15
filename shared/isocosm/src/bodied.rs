@@ -55,9 +55,12 @@ pub struct Bodies {
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub roster: bool,
     /// Whether a drawn consumer's mouth always admits the ecology's
-    /// producers: its limbs stay, its head bears the grazing mouth. Without
-    /// it, a limbed consumer draws a jaw, which admits only fauna (832), and
-    /// in a one-fauna ecology that is its own lineage (A1, declaration 4).
+    /// producers: its limbs stay, its head bears the grazing mouth (ruling
+    /// 905, the default). Without it, a limbed consumer draws a jaw, which
+    /// admits only fauna (832), and in a one-fauna ecology that is its own
+    /// lineage. A saved founding that does not name it was founded without,
+    /// so it reads as `false`, is not rewritten with it, and keeps its
+    /// recorded meaning and digest.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub grazing: bool,
 }
@@ -70,7 +73,7 @@ impl Default for Bodies {
             absence: [12, 12],
             clutch: [1, 4],
             roster: false,
-            grazing: false,
+            grazing: true,
         }
     }
 }

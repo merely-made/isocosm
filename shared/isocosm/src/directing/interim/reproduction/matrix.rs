@@ -176,16 +176,16 @@ impl Record {
 }
 
 #[test]
-fn matrix_keys_separate_all_200_arms() {
+fn matrix_keys_separate_all_120_arms() {
     let mut keys = std::collections::BTreeSet::new();
-    for form in [Form::Bare, Form::Bodied, Form::Grazer, Form::Played, Form::PlayedGrazer] {
+    for form in [Form::Bare, Form::Bodied, Form::Played] {
         for original in [false, true] {
             for seed in 0..20 {
                 assert!(keys.insert(Draw { seed, form, original }.prefix("same-genesis")));
             }
         }
     }
-    assert_eq!(keys.len(), 200);
+    assert_eq!(keys.len(), 120);
 }
 
 #[test]
