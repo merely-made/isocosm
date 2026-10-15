@@ -48,7 +48,8 @@ pub struct SimEndpoint {
 
 impl SimEndpoint {
     pub fn new(world: World, save_to: Option<PathBuf>) -> Self {
-        Self { world, save_to, curation: Curation::default(), disclosure: Disclosure::new(SESSION) }
+        let disclosure = Disclosure::new(SESSION, &world);
+        Self { world, save_to, curation: Curation::default(), disclosure }
     }
 
     pub fn world(&self) -> &World { &self.world }

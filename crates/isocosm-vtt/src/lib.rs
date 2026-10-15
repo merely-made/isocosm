@@ -127,7 +127,7 @@ impl VttEndpoint {
             view_defaults: Vec::new(), attention: AttentionSet::default() };
         let window = Window::attach(world, participant, seat, binding)?;
         Ok(Self { world: world.share(), window, party: None, overmap: None, quote: None,
-            disclosures: SESSIONS.iter().map(|(s, _)| (*s, Disclosure::new(s))).collect(), acts: BTreeMap::new() })
+            disclosures: SESSIONS.iter().map(|(s, _)| (*s, Disclosure::new(s, world))).collect(), acts: BTreeMap::new() })
     }
 
     pub fn world(&self) -> &World { &self.world }
@@ -264,8 +264,9 @@ impl IntentSink for VttEndpoint {
     type Error = String;
 
     fn invoke(&mut self, intent: IntentInvocation) -> Result<IntentResult, Self::Error> {
-        let (&session, disclosure) = self.disclosures.get_key_value(intent.session.0.as_str())
+        let (&session, _) = self.disclosures.get_key_value(intent.session.0.as_str())
             .ok_or("intent names an unknown VTT session")?;
+        let disclosure = self.disclosures.get_mut(session).expect("known session");
         let source = match disclosure.admit(&intent)? {
             Ok(source) => source,
             Err(refused) => return Ok(refused),

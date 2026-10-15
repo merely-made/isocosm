@@ -78,7 +78,7 @@ impl EponymEndpoint {
         let binding = Binding { mode: MODE.into(), controls: vec!["Next life".into()],
             view_defaults: Vec::new(), attention: AttentionSet::default() };
         let window = Window::attach(world, participant, Seat::Player, binding)?;
-        Ok(Self { world: world.share(), window, disclosure: Disclosure::new(SESSION), lives: BTreeMap::new() })
+        Ok(Self { world: world.share(), window, disclosure: Disclosure::new(SESSION, world), lives: BTreeMap::new() })
     }
 
     pub fn world(&self) -> &World { &self.world }

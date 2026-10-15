@@ -140,7 +140,7 @@ impl MesocosmEndpoint {
         let binding = Binding { mode: MODE.into(), controls: vec!["Played turn".into()],
             view_defaults: Vec::new(), attention: AttentionSet::default() };
         let window = Window::attach(world, participant, Seat::Player, binding)?;
-        Ok(Self { world: world.share(), window, disclosure: Disclosure::new(SESSION),
+        Ok(Self { world: world.share(), window, disclosure: Disclosure::new(SESSION, world),
             answers: BTreeMap::new(), cut: None })
     }
 

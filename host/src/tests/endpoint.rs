@@ -141,3 +141,31 @@ fn the_endpoint_survives_the_wire_encoding() {
     assert_eq!(result, IntentResult::Accepted);
     assert_eq!(carrier.endpoint().world().cut().unwrap().tick, 1);
 }
+
+#[test]
+fn a_change_through_one_endpoint_stales_another_over_the_same_world() {
+    let world = bench();
+    let mut a = SimEndpoint::new(world.share(), None);
+    let mut b = SimEndpoint::new(world.share(), None);
+    snapshot(&mut a);
+    let seen = snapshot(&mut b);
+    let first = snapshot(&mut a);
+    assert_eq!(a.invoke(invoke(&first, "world", STEP, b"")).unwrap(), IntentResult::Accepted);
+    let IntentResult::Stale { current_revision, .. } = b.invoke(invoke(&seen, "world", STEP, b"")).unwrap()
+        else { panic!("a step through another endpoint stales this one") };
+    assert!(current_revision.0 > seen.scene.revision.0);
+    let fresh = snapshot(&mut b);
+    assert_eq!(fresh.scene.revision, current_revision);
+    assert_eq!(b.invoke(invoke(&fresh, "world", STEP, b"")).unwrap(), IntentResult::Accepted);
+    // A change that rewrites only a mode section leaves the cut alone and still stales.
+    let seen = snapshot(&mut a);
+    let before = world.cut().unwrap();
+    world.product_sections(before, |_, sections| {
+        let mut sections = sections.clone();
+        sections.insert("probe".into(), vec![1]);
+        Ok(((), sections))
+    }).unwrap();
+    assert_eq!(world.cut().unwrap(), before);
+    assert!(matches!(a.invoke(invoke(&seen, "world", STEP, b"")).unwrap(), IntentResult::Stale { .. }));
+    assert!(snapshot(&mut a).scene.revision.0 > seen.scene.revision.0, "the next snapshot is a new revision");
+}
