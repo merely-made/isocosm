@@ -613,6 +613,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e1b586273c5702936fe7b7d6896644d8be71e6314cfe09d3167c95f712589e8"
 
 [[package]]
+name = "base64"
+version = "0.22.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6"
+
+[[package]]
 name = "bit-set"
 version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -944,6 +950,20 @@ name = "cfg_aliases"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f079e83a288787bcd14a6aea84cee5c87a67c5a3e660c30f557a3d24761b3527"
+
+[[package]]
+name = "chirograph"
+version = "0.0.2"
+source = "git+https://www.github.com/merely-made/mere.git?rev=0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d#0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d"
+dependencies = [
+ "base64 0.22.1",
+ "blake3",
+ "sceno",
+ "scenotime",
+ "serde",
+ "serde_json",
+ "sha2 0.11.1",
+]
 
 [[package]]
 name = "cobs"
@@ -2131,7 +2151,7 @@ version = "1.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3ce1918195723ce6ac74e80542c5a96a40c2b26162c1957a5cd70799b8cacf7"
 dependencies = [
- "base64",
+ "base64 0.13.1",
  "byteorder",
  "gltf-json",
  "image",
@@ -2185,6 +2205,16 @@ dependencies = [
  "presser",
  "thiserror 2.0.21",
  "windows",
+]
+
+[[package]]
+name = "graphshell-endpoint"
+version = "0.0.2"
+source = "git+https://www.github.com/merely-made/mere.git?rev=0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d#0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d"
+dependencies = [
+ "chirograph",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -2603,8 +2633,10 @@ dependencies = [
  "cambium",
  "cambium-genet-winit-host",
  "cambium-rootstock",
+ "chirograph",
  "eponym-client",
  "eponym-play",
+ "graphshell-endpoint",
  "isocosm",
  "isocosm-overlay",
  "isomere",
@@ -2613,6 +2645,8 @@ dependencies = [
  "mesocosm-genet",
  "mesocosm-runtime",
  "mesocosm-views",
+ "sceno",
+ "scenomise",
  "serde",
  "serde_json",
  "tempfile",

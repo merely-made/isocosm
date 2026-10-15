@@ -15,6 +15,8 @@ resolver = "2"
 default = []
 # The library's test fixture, for the shell's product tests.
 fixtures = []
+# The core's Graphshell inspection endpoint (rulings 896 and 901).
+endpoint = ["dep:chirograph", "dep:sceno", "dep:scenomise", "dep:graphshell-endpoint"]
 desktop = ["dep:cambium", "dep:cambium-rootstock", "dep:cambium-genet-winit-host", "dep:isomere"]
 mesocosm = ["desktop", "dep:mesocosm-genet", "dep:mesocosm-runtime", "dep:mesocosm-views", "dep:isomere"]
 # Reuse the existing native-body Section producer on the same RenderCore;
@@ -26,6 +28,10 @@ eponym = ["desktop", "dep:eponym-play", "dep:eponym-client", "dep:isomere"]
 cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
 cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
 cambium-genet-winit-host = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
+chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
+graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true, features = ["stdio", "local"] }
+sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
+scenomise = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
 isocosm = { path = "../shared/isocosm" }
 isocosm-overlay = { path = "../shared/isocosm-overlay" }
 isomere = { path = "../shared/isomere", features = ["host"], optional = true }

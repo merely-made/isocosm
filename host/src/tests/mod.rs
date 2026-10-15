@@ -3,6 +3,8 @@
 
 mod access;
 mod binding;
+#[cfg(feature = "endpoint")]
+mod endpoint;
 mod file_save;
 mod founding;
 mod lifecycle;

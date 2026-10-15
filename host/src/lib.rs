@@ -7,6 +7,8 @@
 
 pub mod access;
 pub mod binding;
+#[cfg(feature = "endpoint")]
+pub mod endpoint;
 pub mod file_save;
 pub mod founding;
 pub mod native_attention;
