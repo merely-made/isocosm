@@ -173,6 +173,30 @@ fn tweak(g: &mut Genesis, lineages: u64) {
         if key == "mature" {
             continue;
         }
+        if key == "hazardcap" {
+            // Declaration 9: the hazard is a second process; the lineage's
+            // fixed age death stays as a ceiling at 120 for every lineage.
+            let mature = list.split(',').find_map(|p| p.strip_prefix("mature=")).map_or(60, |m| m.parse().unwrap());
+            for i in 0..lineages {
+                let mut hazard = processes[&format!("ecology:age-{i}")].clone();
+                hazard.id = format!("ecology:hazard-{i}");
+                hazard.priority += 1;
+                for q in &mut hazard.requires {
+                    if let Query::Age { at_least } = q {
+                        *at_least = mature;
+                    }
+                }
+                hazard.effects.clear();
+                hazard.risk = Some(Risk { per_million: n as u32, effects: vec![Effect::Death] });
+                processes.insert(hazard.id.clone(), hazard);
+                for q in &mut processes.get_mut(&format!("ecology:age-{i}")).unwrap().requires {
+                    if let Query::Age { at_least } = q {
+                        *at_least = 120;
+                    }
+                }
+            }
+            continue;
+        }
         for i in 0..lineages {
             match (key, i % 3) {
                 ("meal", 1) => {
