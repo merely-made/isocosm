@@ -438,8 +438,8 @@ fn consumer_reproduction_bodied_candidate_pilot() {
 fn arm() -> (Form, bool) {
     let arm = std::env::var("ISOCOSM_REPRO_ARM").expect("set ISOCOSM_REPRO_ARM, e.g. played-candidate");
     let (form, rate) = arm.split_once('-').expect("form-rate");
-    let form = [Form::Bare, Form::Bodied, Form::Played].into_iter()
-        .find(|f| f.name() == form).expect("bare, bodied or played");
+    let form = [Form::Bare, Form::Bodied, Form::Grazer, Form::Played, Form::PlayedGrazer]
+        .into_iter().find(|f| f.name() == form).expect("a declared form");
     (form, match rate { "original" => true, "candidate" => false, _ => panic!("original or candidate") })
 }
 
