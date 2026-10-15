@@ -17,13 +17,16 @@ default = []
 fixtures = []
 # The core's Graphshell inspection endpoint (rulings 896 and 901).
 endpoint = ["dep:chirograph", "dep:sceno", "dep:scenomise", "dep:graphshell-endpoint"]
+# The society layer's operations (886, 893), off here so a Mesocosm crate that
+# depends on the core keeps them off; the VTT and Eponym enable it through isocosm.
+society = ["isocosm/society"]
 
 [dependencies]
 chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
 graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true, features = ["stdio", "local"] }
 sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
 scenomise = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
-isocosm = { path = "../shared/isocosm" }
+isocosm = { path = "../shared/isocosm", default-features = false }
 isocosm-overlay = { path = "../shared/isocosm-overlay" }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
