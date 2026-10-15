@@ -11300,7 +11300,38 @@ what later sections derive from.
      order through a world-handle trait in `isocosm-overlay`.
      Mark: "The recommendation"
      H2 runs core endpoint, shell retirement, then the product panels.
-     Next unused905.
+
+909. **Main is pushed with the owned-stock-tests lane's commits.**
+     Asked 2026-10-15 in plain text. Evidence: local main stood 24 commits
+     ahead of origin, 11 from the owned-stock-tests lane (reviewed, then
+     fast-forwarded as `b2f6490d`) and 13 from H2; the standing push
+     permission covers this plan's own phases, not another lane's work.
+     Options: push both, or hold. Mark: "Push"
+
+910. **A change through any endpoint stales every endpoint's snapshot.**
+     Asked 2026-10-15 in plain text. Evidence: the core, Mesocosm, Eponym
+     and the VTT serve one shared world, but each endpoint kept its own
+     revision and none sends notices, so a DM's act left a player's open
+     snapshot current. Most acts recheck live state when they run, but a
+     VTT "Propose 1 tick" from an old snapshot would be accepted against a
+     newer world. Options: (1) each snapshot records the world's position
+     (tick, entry count and state hash) and an intent checks it, so any
+     change stales every endpoint (recommended); (2) endpoints send a
+     world-changed notice and staleness stays per endpoint; (3) wait for
+     the lifted reference-host capabilities (H2 step 4). Mark: "Yes"
+     *Reading, not ruled:* "Yes" takes the recommendation, option 1, built
+     in the shared disclosure code all four endpoints use.
+
+912. **The g4 build's output stays in mere's target directory.**
+     Asked 2026-10-15 in plain text. Evidence: building `g4_sessions` for
+     H2's receipt grew `repos/mere/target` from 17 GB to 28 GB, with debug
+     info on to match that folder's earlier builds; the receipt keeps its
+     own copy of the program; 1.1 TB was free. Options: (1) `cargo clean -p
+     graphshell`; (2) leave it to mere's own sessions. Mark: "I don't mind
+     leaving it if it is of use"
+     *Reading, not ruled:* it is of use, since a later receipt (H2 step 4,
+     a new endpoint) rebuilds g4 incrementally from it, so it stays.
+     905 to 908 and 911 are put and wait for Mark. Next unused913.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
