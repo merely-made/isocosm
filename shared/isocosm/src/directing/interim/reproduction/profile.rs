@@ -104,10 +104,12 @@ fn check(g: &Genesis, original: bool) {
 
 /// Declared exploratory tweaks, applied after the base checks and only to a
 /// run that names them: `ISOCOSM_REPRO_TWEAK` is a comma list of `meal=N`,
-/// `upkeep=N`, `feed=N`, `gate=N` and `provision=N` (consumer rates). Absent,
+/// `upkeep=N`, `feed=N`, `gate=N`, `provision=N`, `bperiod=N` (consumer rates) and
+/// `lifebase=N` (every lineage's lifespan ceiling is N plus a draw of 0 to 40). Absent,
 /// the world is exactly the generator's stock rates or its A1 preset.
 fn tweak(g: &mut Genesis, lineages: u64) {
     let Ok(list) = std::env::var("ISOCOSM_REPRO_TWEAK") else { return };
+    let seed = g.seed;
     let processes = &mut g.rules.processes;
     for pair in list.split(',').filter(|p| !p.is_empty()) {
         let (key, value) = pair.split_once('=').expect("key=value");
@@ -127,6 +129,19 @@ fn tweak(g: &mut Genesis, lineages: u64) {
                 ("feed", 1) => {
                     processes.get_mut(&format!("ecology:feed-{i}")).unwrap().period = Some(n);
                 },
+                // The lifespan ceiling's base (the preset draws base + 0 to 40);
+                // the hazard from 60 is the generator's and stays.
+                ("lifebase", _) => {
+                    let life = n + crate::draw(seed, "lifespan", &[i]) % 41;
+                    for q in &mut processes.get_mut(&format!("ecology:age-{i}")).unwrap().requires {
+                        if let Query::Age { at_least } = q {
+                            *at_least = life;
+                        }
+                    }
+                },
+                ("bperiod", 1) => {
+                    processes.get_mut(&format!("ecology:birth-{i}")).unwrap().period = Some(n);
+                },
                 ("gate", 1) => {
                     for q in &mut processes.get_mut(&format!("ecology:birth-{i}")).unwrap().requires {
                         if let Query::Account { at_least, .. } = q {
@@ -141,7 +156,7 @@ fn tweak(g: &mut Genesis, lineages: u64) {
                         }
                     }
                 },
-                ("meal" | "upkeep" | "feed" | "gate" | "provision", _) => {},
+                ("meal" | "upkeep" | "feed" | "gate" | "provision" | "bperiod", _) => {},
                 _ => panic!("unknown tweak {key}"),
             }
         }
