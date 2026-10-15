@@ -2948,6 +2948,7 @@ version = "0.0.2"
 source = "git+https://www.github.com/merely-made/mere.git?rev=0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d#0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d"
 dependencies = [
  "chirograph",
+ "serde",
  "serde_json",
 ]
 
@@ -4054,6 +4055,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "isocosm-host"
+version = "0.1.0"
+dependencies = [
+ "chirograph",
+ "graphshell-endpoint",
+ "isocosm",
+ "isocosm-overlay",
+ "sceno",
+ "scenomise",
+ "serde",
+ "serde_json",
+ "tempfile",
+]
+
+[[package]]
 name = "isocosm-overlay"
 version = "0.1.0"
 dependencies = [
@@ -4063,6 +4079,16 @@ dependencies = [
 [[package]]
 name = "isocosm-vtt"
 version = "0.0.2"
+dependencies = [
+ "chirograph",
+ "graphshell-endpoint",
+ "isocosm",
+ "isocosm-host",
+ "isocosm-overlay",
+ "isometry-campaign",
+ "serde",
+ "serde_json",
+]
 
 [[package]]
 name = "isomere"
