@@ -11301,6 +11301,57 @@ what later sections derive from.
      Mark: "The recommendation"
      H2 runs core endpoint, shell retirement, then the product panels.
 
+905. **A generated ecology's consumers graze.**
+     Asked 2026-10-15 in plain text, from the A1 lane's draft. Evidence: of
+     20 bodied gate worlds, 8 drew a limbed consumer with a jaw; a jaw eats
+     only fauna (832), and the only fauna in a generated ecology is the
+     consumer's own lineage, so all 8 ate themselves and were extinct by
+     tick 100. The 12 that drew an intake mouth fed on producers, and 10
+     qualified. Eleven rate variants never beat 1 in 8 on jaw worlds.
+     Options: (1) bodied ecology consumers always draw an intake mouth and
+     keep their limbs for movement, `Bodies::grazing` becoming the default,
+     which changes bodied recipes and their digests for new worlds
+     (recommended, by the lane and the reviewer); (2) predator mouths only
+     where other fauna exists; (3) the diet left to the drawn mouth.
+     Mark: "I accept the recommendations."
+
+906. **A lineage's lifespan is individual: a death hazard under an old-age ceiling.**
+     Asked 2026-10-15 in plain text, from the A1 lane's draft. Evidence:
+     with grazing and one fixed lifespan per lineage the best result is
+     16/20, whole generations dying together around ticks 172 to 176; a
+     hazard alone scores 13/20, founders outliving the run; hazard under the
+     lineage's age as a ceiling scores 20/20 with grazers and 20/20 bare,
+     the original-rate controls 0/20. Options: (1) from age 60 each
+     individual dies at 2.5% a tick, never past the lineage's drawn lifespan
+     of 80 to 120, a mean life near 100, through the engine's existing
+     `risk` (recommended, by the lane and the reviewer); (2) a fixed
+     lifespan per lineage; (3) the hazard only.
+     Mark: "I accept the recommendations."
+
+907. **The candidate rates become a named world preset, not the generator's defaults.**
+     Asked 2026-10-15 in plain text, then by card. Evidence: the candidate
+     (birth gate 12, consumers 9; consumer meal 3; consumer birth period 14;
+     provision 8; upkeep period 5, consumers 10; lifespans drawn from 80 to
+     120) against today's defaults (birth gate 30, upkeep 5, lifespans 20 to
+     60, meal 1, birth period 7) passes 19 of 20 draws on Mesocosm's played
+     founding, one late extinction near tick 176, where A1's gate asks for
+     20; the 60-tick epochs are a verification scope, not the stock
+     525,600-tick epoch. Options: (1) promote with 905 and 906, accepting
+     19/20 as an amendment to A1's gate (the lane's, if 19/20 is accepted);
+     (2) a named world preset (the reviewer's); (3) tune further on fresh
+     seeds first (the lane's otherwise). Mark: "A named preset is fine, to
+     this question." Default worlds keep today's rates, and A1's gate stands
+     unamended. *Reading, not ruled:* the preset's name is a plain
+     technical key the lane proposes; a player-facing name would come back
+     as a naming question.
+
+908. **The A1 lane pushes `a1-reproduction` for review.**
+     Asked 2026-10-15 in plain text. Evidence: the branch is rebased onto
+     origin and touches only `shared/isocosm`; the reviewer runs on Windows
+     the tests the Mac could not (root VTT, Eponym, Genet's
+     `borrowed_section`, the authentic archives) and merges it.
+     Mark: "Yeah." and, asked what it answered, "The yeah was for the push."
+
 909. **Main is pushed with the owned-stock-tests lane's commits.**
      Asked 2026-10-15 in plain text. Evidence: local main stood 24 commits
      ahead of origin, 11 from the owned-stock-tests lane (reviewed, then
@@ -11322,6 +11373,17 @@ what later sections derive from.
      *Reading, not ruled:* "Yes" takes the recommendation, option 1, built
      in the shared disclosure code all four endpoints use.
 
+911. **`isocosm-vtt`'s manifest stays as it is; publishing waits.**
+     Asked 2026-10-15 in plain text. Evidence: the name reservation (0.0.2)
+     now depends on `isocosm`, `isocosm-overlay` and `isocosm-host` (each
+     `publish = false`; crates.io's `isocosm` 0.0.1 is only the name
+     reservation), on `isometry-campaign` (never published), and on
+     `chirograph` and `graphshell-endpoint` by git revision, which crates.io
+     refuses; 902's reading already said publishing waits. Options: (1)
+     leave it, cargo refusing an accidental publish (recommended); (2)
+     `publish = false` now. Mark first asked "What unpublished crates?",
+     then: "I accept the recommendations." With it came 913.
+
 912. **The g4 build's output stays in mere's target directory.**
      Asked 2026-10-15 in plain text. Evidence: building `g4_sessions` for
      H2's receipt grew `repos/mere/target` from 17 GB to 28 GB, with debug
@@ -11331,7 +11393,14 @@ what later sections derive from.
      leaving it if it is of use"
      *Reading, not ruled:* it is of use, since a later receipt (H2 step 4,
      a new endpoint) rebuilds g4 incrementally from it, so it stays.
-     905 to 908 and 911 are put and wait for Mark. Next unused913.
+
+913. **`isometry-campaign` retires, its contents becoming components.**
+     Given 2026-10-15 with the answer to 911, unasked. Mark: "We should
+     retire isometry-campaign, which is unpublished, and make its contents
+     into components." *Reading, not ruled:* a new objective that gets its
+     own assessment; where each part lands (the sim, `isocosm-overlay`,
+     `isocosm-vtt`, the stack) comes back as questions before anything
+     moves. Next unused914.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
