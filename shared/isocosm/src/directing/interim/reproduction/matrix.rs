@@ -78,8 +78,8 @@ fn retain_new<T: serde::Serialize>(name: &str, value: &T) {
     file.sync_all().unwrap();
 }
 
-fn validate_bodied(g: &Genesis) {
-    assert_eq!(g.founding.as_ref().unwrap().bodies, Some(Bodies::default()));
+fn validate_bodied(g: &Genesis, form: Form) {
+    assert_eq!(g.founding.as_ref().unwrap().bodies, form.bodies());
     assert_eq!(g.rules.body(), BodyRules::default());
     assert!(!g.rules.kinds.is_empty() && !g.rules.functions.is_empty()
         && !g.rules.shapes.is_empty(), "native matrix body catalogue");
@@ -114,7 +114,7 @@ impl Record {
     pub fn begin(draw: Draw, g: &Genesis) -> Self {
         assert_eq!(draw.seed, g.seed, "actual matrix seed");
         if draw.form.bodied() {
-            validate_bodied(g);
+            validate_bodied(g, draw.form);
         } else {
             assert!(g.founding.as_ref().unwrap().bodies.is_none(), "bare matrix form");
         }
@@ -176,16 +176,16 @@ impl Record {
 }
 
 #[test]
-fn matrix_keys_separate_all_120_arms() {
+fn matrix_keys_separate_all_200_arms() {
     let mut keys = std::collections::BTreeSet::new();
-    for form in [Form::Bare, Form::Bodied, Form::Played] {
+    for form in [Form::Bare, Form::Bodied, Form::Grazer, Form::Played, Form::PlayedGrazer] {
         for original in [false, true] {
             for seed in 0..20 {
                 assert!(keys.insert(Draw { seed, form, original }.prefix("same-genesis")));
             }
         }
     }
-    assert_eq!(keys.len(), 120);
+    assert_eq!(keys.len(), 200);
 }
 
 #[test]

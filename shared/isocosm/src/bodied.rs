@@ -54,6 +54,12 @@ pub struct Bodies {
     /// than drawing (512).
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub roster: bool,
+    /// Whether a drawn consumer's mouth always admits the ecology's
+    /// producers: its limbs stay, its head bears the grazing mouth. Without
+    /// it, a limbed consumer draws a jaw, which admits only fauna (832), and
+    /// in a one-fauna ecology that is its own lineage (A1, declaration 4).
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub grazing: bool,
 }
 
 impl Default for Bodies {
@@ -64,6 +70,7 @@ impl Default for Bodies {
             absence: [12, 12],
             clutch: [1, 4],
             roster: false,
+            grazing: false,
         }
     }
 }
@@ -158,7 +165,7 @@ pub fn drawn(seed: u64, index: u64, producer: bool, b: &Bodies) -> Recipe {
     }
     let head = match producer {
         true => bare(1, "block"),
-        false => bearing(1, "block", if limbed { "rod" } else { "block" }, 1, MOUTH),
+        false => bearing(1, "block", if limbed && !b.grazing { "rod" } else { "block" }, 1, MOUTH),
     };
     tagmata.insert(0, head);
     let [v0, v1] = b.variance;

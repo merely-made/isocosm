@@ -13,7 +13,10 @@ use super::*;
 pub(super) enum Form {
     Bare,
     Bodied,
+    /// Bodied with consumers that graze (declaration 4).
+    Grazer,
     Played,
+    PlayedGrazer,
 }
 
 impl Form {
@@ -21,7 +24,9 @@ impl Form {
         match self {
             Self::Bare => "bare",
             Self::Bodied => "bodied",
+            Self::Grazer => "grazer",
             Self::Played => "played",
+            Self::PlayedGrazer => "playedgrazer",
         }
     }
 
@@ -29,16 +34,23 @@ impl Form {
         self != Self::Bare
     }
 
+    pub fn bodies(self) -> Option<Bodies> {
+        self.bodied().then(|| Bodies {
+            grazing: matches!(self, Self::Grazer | Self::PlayedGrazer),
+            ..Bodies::default()
+        })
+    }
+
     fn founding(self, seed: u64) -> Founding {
         let played = Some(Played { lineage: 1, region_sites: 2 });
-        if self == Self::Played {
+        if matches!(self, Self::Played | Self::PlayedGrazer) {
             let grid = crate::map::Grid { width: 3, height: 2, ..crate::map::Grid::drawn(seed) };
             return Founding {
                 seed,
                 sites: grid.width * grid.height,
                 map: Some(crate::map::Layout::Grid(grid)),
                 ecology: true,
-                bodies: Some(Bodies::default()),
+                bodies: self.bodies(),
                 played,
                 ..Default::default()
             };
@@ -50,7 +62,7 @@ impl Form {
             cohort_size: 2,
             lineages: 3,
             ecology: true,
-            bodies: self.bodied().then(Bodies::default),
+            bodies: self.bodies(),
             played,
             ..Default::default()
         }
