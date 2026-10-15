@@ -19,6 +19,8 @@ pub mod bodies;
 pub mod combat;
 pub mod contract;
 mod equipment;
+#[cfg(feature = "endpoint")]
+pub mod endpoint;
 pub mod fixtures;
 pub mod founding;
 pub mod glyphs;
