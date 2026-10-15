@@ -13,6 +13,9 @@ impl Genesis {
         if let Some(policy) = &self.rules.global_collapse {
             policy.validate_genesis(self)?;
         }
+        if let Some(templates) = &self.rules.spatial_templates {
+            templates.validate(self)?;
+        }
         if let Some(spec) = &self.rules.ecology_witness {
             spec.validate_genesis(self)?;
         }

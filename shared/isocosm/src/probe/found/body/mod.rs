@@ -305,6 +305,7 @@ impl BodyFounding {
             institution_producers: BTreeMap::new(),
             defence: None,
             global_collapse: None,
+            spatial_templates: None,
             ecology_witness: None,
             companions: None,
             version: crate::VERSION,
