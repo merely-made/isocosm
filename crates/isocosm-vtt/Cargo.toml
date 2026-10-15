@@ -10,4 +10,17 @@ readme = "README.md"
 keywords = ["vtt", "tabletop", "isometric", "p2p", "game"]
 categories = ["games"]
 
+# The VTT's Graphshell endpoint over the sim-host core (rulings 900, 902, 904).
 [dependencies]
+chirograph = { workspace = true }
+graphshell-endpoint = { workspace = true }
+isocosm = { workspace = true }
+isocosm-host = { path = "../../host", features = ["endpoint", "society"] }
+isocosm-overlay = { workspace = true }
+isometry-campaign = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+isocosm-host = { path = "../../host", features = ["endpoint", "society", "fixtures"] }
+graphshell-endpoint = { workspace = true, features = ["local"] }
