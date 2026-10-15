@@ -1,6 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
+use crate::mode_sections::Games as _;
+use crate::products::Submit as _;
 use std::{collections::BTreeMap, path::PathBuf};
 use isocosm_overlay::{AttentionChange, AttentionSet, EntityHandle, EventHandle, ParticipantHandle,
     PlaceHandle, Pointable, Seat, WindowHandle, key_for_handle, key_handle};

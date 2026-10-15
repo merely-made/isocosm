@@ -8,15 +8,15 @@ use isocosm_overlay::{AttentionChange, IntentEnvelope, OrdinaryAccess, Participa
 use crate::{access, binding::{self, Binding, BindingPlan}, native_attention,
     world::{canonical_binding, Cut, World}};
 
-pub(crate) struct Window {
+pub struct Window {
     world: World, participant: ParticipantHandle, seat: Seat, binding: Binding,
     active: Option<WindowId>, closed: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Projection { pub access: OrdinaryAccess, pub visible: View, pub attention: PlayerAttention }
+pub struct Projection { pub access: OrdinaryAccess, pub visible: View, pub attention: PlayerAttention }
 
-pub(crate) struct PreparedBinding {
+pub struct PreparedBinding {
     pub requested: Binding,
     before: Cut,
     window: WindowId,
@@ -112,17 +112,8 @@ impl Window {
         Ok(())
     }
 
-    #[cfg(feature = "desktop")]
-    pub fn submit_product(&self, input: &crate::products::Input) -> Result<String, String> {
-        let cut = self.projection()?;
-        let before = self.cut()?;
-        let window = self.active.ok_or("window has no active native attachment")?;
-        let mode = crate::products::Mode::parse(&self.binding.mode)?;
-        self.world.product_game(before, mode, |session, game| {
-            session.sim.attention_window(self.participant.0, window.id())?;
-            crate::products::submit_game(session, &cut, mode, input, game)
-        })
-    }
+    pub fn world(&self) -> &World { &self.world }
+    pub fn participant(&self) -> ParticipantHandle { self.participant }
 
     pub fn attention_request(&self, change: AttentionChange) -> Result<IntentEnvelope<()>, String> {
         Ok(binding::envelope(self.participant, self.cut()?.tick, change))

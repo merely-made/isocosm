@@ -3,6 +3,7 @@
 
 //! Supplied native operations on the actual shared VTT world.
 
+use crate::mode_sections::Games as _;
 use cambium::{el,text,lens,caret_text_field,TextInput};
 use isocosm_overlay::Seat;
 use isometry_campaign::native::{institutions,physical_map,items,graft};

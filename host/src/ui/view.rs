@@ -1,6 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
+use crate::mode_sections::Games as _;
 use cambium::{AnyView, GenetCtx, GenetElement, clickable, el, focusable, text};
 use super::model::App;
 use crate::products::Mode;

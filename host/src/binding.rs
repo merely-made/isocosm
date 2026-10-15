@@ -4,7 +4,7 @@
 use isocosm_overlay::{AttentionChange, AttentionSet, Intent, IntentEnvelope, ParticipantHandle, Tick};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct Binding {
+pub struct Binding {
     pub mode: String,
     pub controls: Vec<String>,
     pub view_defaults: Vec<u8>,
@@ -12,12 +12,12 @@ pub(crate) struct Binding {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub(crate) struct BindingPlan {
+pub struct BindingPlan {
     pub requested: Binding,
     pub changes: Vec<IntentEnvelope<()>>,
 }
 
-pub(crate) fn plan(
+pub fn plan(
     current: &Binding,
     requested: Binding,
     participant: ParticipantHandle,
@@ -42,7 +42,7 @@ pub(crate) fn plan(
     BindingPlan { requested, changes }
 }
 
-pub(crate) fn envelope(
+pub fn envelope(
     participant: ParticipantHandle,
     tick: u64,
     change: AttentionChange,

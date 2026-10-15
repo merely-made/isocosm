@@ -10,7 +10,7 @@ use isocosm_overlay::{AttentionSet, EntityHandle, EventHandle, FactionHandle,
     LineageHandle, ParticipantHandle, PlaceHandle, PlayerAttention, Pointable,
     key_for_handle, key_handle};
 
-pub(crate) fn lower(session: &Session, value: &AttentionSet) -> Result<attention::WindowAttention, String> {
+pub fn lower(session: &Session, value: &AttentionSet) -> Result<attention::WindowAttention, String> {
     let state = session.sim.state();
     let mut pinned = BTreeSet::new();
     for point in &value.pinned {
@@ -53,13 +53,13 @@ fn raise_target(session: &Session, target: Target) -> Result<Pointable, String> 
     })
 }
 
-pub(crate) fn care(session: &Session, participant: ParticipantHandle, profile: &str)
+pub fn care(session: &Session, participant: ParticipantHandle, profile: &str)
     -> Result<BTreeSet<Pointable>, String> {
     session.sim.profile_care(participant.0, profile)?.into_iter()
         .map(|target| raise_target(session, target)).collect()
 }
 
-pub(crate) fn effective(session: &Session, participant: ParticipantHandle) -> Result<PlayerAttention, String> {
+pub fn effective(session: &Session, participant: ParticipantHandle) -> Result<PlayerAttention, String> {
     let value = session.sim.player_attention(participant.0)?;
     let raise = |values: BTreeSet<Target>| values.into_iter()
         .map(|target| raise_target(session, target)).collect::<Result<BTreeSet<_>, _>>();
@@ -71,7 +71,7 @@ pub(crate) fn effective(session: &Session, participant: ParticipantHandle) -> Re
         pinned: raise(value.pinned)?, examined, care: raise(value.care)? })
 }
 
-pub(crate) fn restored(session: &Session, participant: ParticipantHandle,
+pub fn restored(session: &Session, participant: ParticipantHandle,
     handle: isocosm_overlay::WindowHandle, expected_profile: &str) -> Result<AttentionSet, String> {
     let (_, profile, held) = session.sim.attention_window(participant.0, handle.0)?;
     if profile != expected_profile { return Err("saved window belongs to another product mode".into()); }

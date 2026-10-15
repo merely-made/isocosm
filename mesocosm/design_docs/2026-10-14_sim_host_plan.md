@@ -2,8 +2,9 @@
 
 **Date:** 2026-10-14
 
-**Status, 2026-10-14:** plan. Opened by rulings 884, 892 and 895; carries
-887's first milestone; forks settled by 896 to 898. Nothing is built yet.
+**Status, 2026-10-14:** in progress. Opened by rulings 884, 892 and 895;
+carries 887's first milestone; forks settled by 896 to 898. H0 landed; H1
+next.
 
 ## Why
 
@@ -123,6 +124,28 @@ starts.
 
 ## Progress
 
+- **2026-10-14, H0 landed:** `isocosm-host` has a library (`host/src/lib.rs`)
+  holding `access`, `binding`, `file_save`, `native_attention`, `save`,
+  `spatial`, `stream`, `window` and `world`, with no product crate named in
+  its sources. `World` lost its three shell-only methods for generic section
+  access (`with_sections`, `read_sections`, `product_sections`); the shell's
+  `mode_sections::Games` and `products::Submit` wrap them, and the Eponym
+  handoff moved to `mode_sections::take_eponym`. The shared fixture is the
+  library's `fixtures` module (feature `fixtures`); the shell's product
+  tests live in `src/shell_tests/` and refuse to compile without it.
+  Gates in the lane worktree: library tests with no features 26 passed and
+  5 ignored; shell tests with all three products 9 passed, 4 failed, 2
+  ignored; `cargo check --all-targets --all-features` clean of new warnings;
+  `--validate-save` gives identical output to the unsplit binary on a gate
+  save, a non-save and no arguments. The unsplit baseline at `6d6ac1df` runs
+  the same 46 tests to the same 35 passed, 4 failed, 7 ignored, the four
+  failing at the same lines, so H0 changed no outcome.
+- **2026-10-14, finding:** four shell tests fail on main independently of
+  H0, unseen because the certification gates compiled the host and ran none
+  of its tests. Two refuse at `configure the explicit played loop before
+  stepping` (`shell_tests/products.rs:65`, `reading.rs:111`), two at viewport
+  registry assertions (`viewport.rs:21`, `:50`). The shell they test retires
+  at H2 (896); they are recorded, not repaired.
 - **2026-10-14:** plan written from the runtime check and the code read
   above; rulings 884 to 895 recorded. Forks settled by 896 to 898; the
   Graphshell endpoint (H2) now removes the package cycle, so no shell
