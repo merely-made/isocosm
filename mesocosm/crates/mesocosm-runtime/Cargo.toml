@@ -33,14 +33,15 @@ conatus = { workspace = true }
 # Opt-in disposable glyph progression; the world and its saves stay unchanged.
 wing-glyphs = { path = "../../../shared/wing-glyphs" }
 
-# The played-turn Graphshell endpoint over the sim-host core (rulings 900, 903).
-isocosm-host = { path = "../../../host", optional = true, features = ["endpoint"] }
+# The sim-host core: its clock now (H3, 927), its driver and world next; its
+# Graphshell endpoint, under `endpoint`, serves the played turn (900, 903).
+isocosm-host = { path = "../../../host" }
 chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
 graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
 serde_json = { version = "1", optional = true }
 
 [features]
-endpoint = ["dep:isocosm-host", "dep:chirograph", "dep:graphshell-endpoint", "dep:serde_json"]
+endpoint = ["isocosm-host/endpoint", "dep:chirograph", "dep:graphshell-endpoint", "dep:serde_json"]
 
 [dev-dependencies]
 isocosm-host = { path = "../../../host", features = ["endpoint", "fixtures"] }

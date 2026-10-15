@@ -251,6 +251,26 @@ starts.
 
 ## Progress
 
+- **2026-10-15, H3 step 2 (on the lane):** the core drives
+  (`host/src/drive.rs`). `Product` names the product's envelope and
+  refusal types and supplies `apply`, `held`, `answers` and `round` (926);
+  `Driver<P>` holds the world, the queue, the trace, the step ceiling
+  (default eight) and the fault, and paces by `Pacing::Clock`, the core's
+  `Clock`, or `Pacing::Explicit`, where rounds run only through `step`
+  (927). Its step keeps today's `Runtime` semantics, so step 3 can
+  re-express it: queued envelopes apply in order before the round, an
+  envelope that opens a question ends the step before its round, a held
+  advance drains the answers at the front of the queue and banks no time,
+  and a refused round stops the run until a restored fault clears it.
+  `Clock` moved from `mesocosm-runtime` with its six tests
+  (`host/src/drive/clock.rs`); `mesocosm-runtime` now depends on
+  `isocosm-host` outright and re-exports it, with society still off in
+  Mesocosm's graph. Five driver tests over a toy product on the fixture
+  world; six planted faults caught
+  (`Code/testing/isometry/h3-driver-2026-10-15/`). The core runs 48 tests
+  with every feature and 41 without; `mesocosm-runtime` 31, its pins
+  unchanged; Mesocosm's workspace, Eponym's `eponym-play` and the root's
+  `isocosm-vtt` check clean on all targets.
 - **2026-10-15, H3 step 1 (on the lane):** today's `Runtime` is pinned
   by `mesocosm-runtime/tests/runtime_pin.rs` (six tests), on two worlds
   from the native ecology fixture's generated candidate: `offered`, through

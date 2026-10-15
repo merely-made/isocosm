@@ -20,7 +20,7 @@ use isocosm::{Execution, Session};
 use isocosm_overlay::mesocosm::MesocosmIntentEnvelope;
 use serde::{Deserialize, Serialize};
 
-use crate::clock::Clock;
+use isocosm_host::drive::Clock;
 use crate::glyphs::{GlyphReading, GlyphRules};
 use crate::readings::{FlowWindows, Trend};
 use crate::review::{Authored, Proposed, Review};

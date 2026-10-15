@@ -7,6 +7,7 @@
 
 pub mod access;
 pub mod binding;
+pub mod drive;
 #[cfg(feature = "endpoint")]
 pub mod endpoint;
 pub mod file_save;

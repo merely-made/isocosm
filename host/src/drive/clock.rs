@@ -4,7 +4,8 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! The fixed-step clock.
+//! The core's fixed-step clock, moved from `mesocosm-runtime` (sim-host
+//! plan H3, ruling 927).
 //!
 //! A host measures elapsed wall time however it likes and hands it here. The
 //! clock converts it into a whole number of simulation steps and keeps the
