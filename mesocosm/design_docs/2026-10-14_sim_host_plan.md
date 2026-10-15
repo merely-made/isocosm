@@ -179,6 +179,27 @@ starts.
 
 ## Progress
 
+- **2026-10-15, H2 steps 1 and 3 (on the lane):** step 1 serves the core
+  as a Graphshell endpoint (`host/src/endpoint.rs`, `endpoint/cards.rs`)
+  behind the `endpoint` feature: a world card, site cards with route
+  relations, the examined site's group cards with residence relations,
+  parts on an inspected group; examine and inspect (curation), step (domain
+  truth), save (external effect); stale and undisclosed intents refused.
+  Six tests, one through `LocalCarrier`; two planted faults caught after
+  the refusal test gained step and save on a site card, which only the
+  advertisement stops. A stdio `Discover` against the binary answers the
+  World projection. Step 3 (904) retired the desktop shell: `ui/`,
+  `desktop`, `products`, `viewport`, `cli`, `mode_sections` and
+  `shell_tests` are gone, with the `desktop`, `mesocosm`, `vtt` and
+  `eponym` features, their eleven product and window dependencies, and 24
+  patch rows Cargo reported unused. `isocosm-host` now names no product
+  crate anywhere. Library 30 passed without features and 36 with them;
+  `--validate-save` gives the same hash on the H0 gate save. The four
+  shell tests that failed on main went with the shell: the two stepping
+  through product modes (`configure the explicit played loop before
+  stepping`) are re-covered by the product endpoints' tests in step 2, and
+  the two viewport-registration tests belong to the heads' `Assembly`
+  producers (H6), recorded here as dropped from H2.
 - **2026-10-14, H1 landed:** `isocosm_host::founding::found(genesis,
   execution, purpose, offered)` founds the core's world. A product builds
   its own `Genesis`; the core owns the rule. A `Purpose::Head` founding a
