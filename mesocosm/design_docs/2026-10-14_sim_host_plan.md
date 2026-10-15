@@ -87,6 +87,49 @@ as a library. Ruling 885 keeps generated worlds behind 875's witness. Under
   that the VTT, Eponym and host builds enable. Check with
   `cargo tree -e features -i isocosm --workspace` in `mesocosm/`.
 
+**H3 assessment, 2026-10-15.**
+
+- **Mesocosm drives one saved loop through two doors.** The owned
+  `mesocosm_runtime::Runtime` (`runtime.rs`, 422 lines, with `runtime/`)
+  keeps its own `Interim`, whose `Session` is not the core's `World`, plus
+  the `Clock`, a `VecDeque` of envelopes, an in-memory trace of each
+  envelope with its outcome, a step ceiling (default 8) and the review,
+  checkpoint and glyph state. The borrowed door (`borrowed::submit_game`,
+  `continuation::advance_loop`) runs the same saved loop over a host's
+  session, and is what Mesocosm's endpoint uses over the core's `World`
+  section. `runtime/loop_state.rs` says it: "The owned driver uses the same
+  saved loop as the borrowed product door." The borrowed door refuses a
+  save with an owned queue in it ("saved owned queue requires its original
+  owned driver").
+- **The generic parts are small.** `Clock` (`clock.rs`, 172 lines with six
+  tests) turns integer microseconds into whole steps in rational form, so
+  60 Hz never drifts, and a cap defers steps rather than dropping them. The
+  queue, the trace and the ceiling are about 60 lines of `Runtime`. The
+  translation seam is `runtime/translate.rs` and the shared
+  `translate/direct.rs` (a nudge to `Command::Nudge`, an act to
+  `Speciate`, dev intents native where native has a command); the loop's
+  hold and answer logic is Mesocosm's own.
+- **Founding is a product step on top of the core's.** `Interim::found`
+  creates the session, runs deep time until the played lineage has a
+  habitable site, then hands the player over; H1's `found` stops at the
+  session.
+- **Pacing differs across the products.** Mesocosm paces rounds by wall
+  clock through `Clock`. Eponym's session client paces motion at 60 Hz
+  with `Instant` and drops its backlog after eight catch-up steps
+  (`eponym-client/src/bin/session/actions.rs`); its native clock advances
+  a tick per recorded act. The VTT has no wall clock: native time moves by
+  consented downtime. The core's endpoint steps one tick on request.
+- **The driver is barely tested where it lives.** `mesocosm-runtime` runs
+  31 tests (21 unit, 6 ecology offer, 4 endpoint): the clock, the effect
+  experiment, tactile and the voxel profile. None drives `Runtime`'s
+  queue, holds, step ceiling, trace, save or resume. `mesocosm-genet` holds
+  28 tests, some through `Runtime`, and the head's bench scenarios. No
+  Mesocosm trace is recorded in today's format: the last headed save
+  (2026-09-08) no longer parses.
+- **Users.** `mesocosm-genet` drives `Runtime` (`queue`, `advance`, `step`,
+  `trace`, `submit_loop_input`, `save_game`, `receipt`,
+  `resume_game_with_mode`); `mesocosm-views` reads it.
+
 ## Phases
 
 Forks settled by 896 to 898: the inspection shell becomes a Graphshell
