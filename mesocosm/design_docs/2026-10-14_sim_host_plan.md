@@ -2,9 +2,10 @@
 
 **Date:** 2026-10-14
 
-**Status, 2026-10-14:** in progress. Opened by rulings 884, 892 and 895;
-carries 887's first milestone; forks settled by 896 to 898. H0 and H1
-landed; H2 assessed and its forks ruled (899 to 903).
+**Status, 2026-10-15:** in progress. Opened by rulings 884, 892 and 895;
+carries 887's first milestone; forks settled by 896 to 898. H0, H1 and H2
+landed (H2's forks ruled 899 to 904); H2's step 4 waits on the lifted
+reference-host capabilities (899).
 
 ## Why
 
@@ -179,6 +180,63 @@ starts.
 
 ## Progress
 
+- **2026-10-15, H2 landed (on the lane):** the done-conditions hold. Each
+  endpoint's projections, cards and actions pass `LocalCarrier` tests (core
+  36 library tests with every feature, Mesocosm 4, Eponym 3, VTT 6).
+  `isocosm-host` names no product crate. The four failing shell tests are
+  carried or recorded (step 3's entry below). Graphshell's `g4_sessions`
+  (mere `0aade866`; `chirograph`, `graphshell-endpoint` and `sessions.rs`
+  are unchanged from the pinned `0b9b7a9b`) mounted 9 sessions from the
+  four endpoint programs and rendered them: the core's World, Mesocosm's
+  played turn, Eponym's next life, and the VTT's six projections. g4
+  invokes each distinct advertised intent once, with an empty payload, at
+  the mount's revision. Each endpoint accepted its first intent (step,
+  roster configuration), later intents in a projection came back stale,
+  and intents needing a payload were refused for it (Mesocosm's configure,
+  the VTT's previews, apply and assert). Receipt, programs and their hashes:
+  `Code/testing/isometry/h2-vtt-2026-10-15/`. The receipt's static page
+  overlaps cards, since it places fixed-size cards at positions normalised
+  to the scene's bounds. While checking that, the shared disclosure code's
+  card footprint went from a radius-6 circle to the 260 by 136 rectangle
+  Graphshell's own card endpoints use. Step 4 waits on the capabilities
+  being lifted from the reference host (899).
+- **2026-10-15, H2 step 2 (on the lane):** every shell panel now lives in
+  a product endpoint. Mesocosm's played turn (`mesocosm-runtime`, module
+  `endpoint`, feature `endpoint`): a turn card and an answer card per
+  checkpoint question read through `continuation::read_loop`; configure,
+  step and answer; four tests, stepping included, which carries the two
+  shell tests that refused at `configure the explicit played loop before
+  stepping`. Eponym's next life (`eponym-play`, the same shape): an Eponym
+  card, a card per visible body and, once the taken body has died, a card
+  per eligible next life; step keeps a configured Eponym clock; three
+  tests. A successful take is untested, since the core fixture holds no
+  Eponym mode state. The VTT's six panels (`crates/isocosm-vtt`, 902): one
+  endpoint, six projections over one table seat. Table time and party, with
+  the shell's seat-cut reading (characters and authored sites); joint
+  journeys; the disclosed overmap, display cells as cards, routes between
+  anchored cells as relations, and examination through the window's
+  attention inside the seat cut; held map knowledge; adventures and goals,
+  with polity readings; native operation authoring, six preview kinds,
+  apply, and the shell's DM contract assertions. Card actions bind to acts;
+  world changes go through `submit_game_access` with the game bytes in the
+  world's `vtt` section, and an accepted act stales every projection. Six
+  tests on a table world with one authored party drive both seats: the
+  roster, a downtime proposal and a player's consent, party choice, joining
+  and withdrawing a body, refusal of malformed operations, and a
+  `LocalCarrier` pass. Five planted faults were caught
+  (`Code/testing/isometry/h2-vtt-2026-10-15/`). Paths this world cannot
+  reach are untested: journey approval, packs, storylets, goals, held
+  statements, overmap cells and examination, all of which need authored
+  content. The root workspace's all-target, all-feature check is clean.
+  *Reading, not ruled:* the done-condition's "bench world" is read as the
+  core fixture and the table world, small generated worlds founded without
+  a witness. The shell kept each window's chosen party and overmap
+  settings in its desktop preferences; that store retired with the shell,
+  and the VTT endpoint holds those choices as in-memory curation. Each
+  endpoint also gained a no-argument stdio example
+  (`core_endpoint`, `vtt_endpoint`, `mesocosm_endpoint`,
+  `eponym_endpoint`), because `g4_sessions` spawns endpoint programs
+  without arguments.
 - **2026-10-15, H2 steps 1 and 3 (on the lane):** step 1 serves the core
   as a Graphshell endpoint (`host/src/endpoint.rs`, `endpoint/cards.rs`)
   behind the `endpoint` feature: a world card, site cards with route
