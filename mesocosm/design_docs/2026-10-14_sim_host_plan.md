@@ -108,8 +108,9 @@ Done when one test refuses a witnessless generated founding for a head; the
 bench founds through the core to the same state hash as its existing path;
 and the founded world round-trips through `WorldSave`.
 
-**H2. The Graphshell inspection endpoint (896, 899 to 903).** Four steps,
-in order:
+**H2. The Graphshell inspection endpoint (896, 899 to 904).** Four steps;
+under 904 step 3 (the shell's retirement) runs before step 2, so the panels
+port onto the core's `World` without a package cycle:
 
 1. The core serves a Graphshell endpoint from an `endpoint` module behind a
    feature in `isocosm-host` (901). Sites, routes, crowds, bodies and parts

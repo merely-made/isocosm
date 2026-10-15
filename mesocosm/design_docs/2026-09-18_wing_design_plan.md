@@ -11286,7 +11286,21 @@ what later sections derive from.
      (Recommended)": an `endpoint` module in `mesocosm-runtime` and in
      `eponym-play`; (2) "New endpoint crates".
      Mark: "Modules in existing crates (Recommended)"
-     Next unused904.
+
+904. **The desktop shell retires before the product panels move.**
+     Asked 2026-10-15 in plain text. Evidence: the panels (about 850 lines in
+     eight files) read through each product crate's borrowed reading and
+     write through the shell's `World` transactions, so their endpoints want
+     the core's `World`; while `isocosm-host`'s product features depend on
+     `mesocosm-runtime`, `eponym-play` and `isometry-campaign`, those crates
+     depending back on `isocosm-host` is a package cycle. Options: (1) swap
+     H2's steps 2 and 3: retire the shell first, then port each panel onto
+     the core's `World` from git history (recommended); (2) keep the order,
+     product endpoints owning their own sessions until H3; (3) keep the
+     order through a world-handle trait in `isocosm-overlay`.
+     Mark: "The recommendation"
+     H2 runs core endpoint, shell retirement, then the product panels.
+     Next unused905.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
