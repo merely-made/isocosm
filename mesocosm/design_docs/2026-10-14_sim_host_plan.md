@@ -77,6 +77,15 @@ as a library. Ruling 885 keeps generated worlds behind 875's witness. Under
   the VTT's journey, overmap, knowledge, adventure, authoring and downtime
   panels belong to product endpoints under 896. Nothing plays them today.
 
+- **Society and feature unification, 2026-10-15.** The native-tests lane
+  puts the society layer behind an `isocosm` feature `society`, on by
+  default; Mesocosm opts out with `default-features = false` (893, 894).
+  Cargo unifies features across one build graph, so once a Mesocosm crate
+  depends on `isocosm-host`, `isocosm-host` must take `isocosm` with
+  `default-features = false` and pass `society` through a feature of its own
+  that the VTT, Eponym and host builds enable. Check with
+  `cargo tree -e features -i isocosm --workspace` in `mesocosm/`.
+
 ## Phases
 
 Forks settled by 896 to 898: the inspection shell becomes a Graphshell
