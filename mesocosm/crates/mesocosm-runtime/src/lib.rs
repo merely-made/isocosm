@@ -15,7 +15,6 @@
 //! [`Clock`] converts elapsed microseconds into whole fixed steps, so frame
 //! delivery never reaches the simulation.
 
-pub mod clock;
 pub mod continuation;
 pub mod borrowed;
 pub mod effect_experiment;
@@ -32,7 +31,7 @@ pub mod tactile;
 pub mod terrain;
 pub mod voxel_profile;
 
-pub use clock::{Advance, Clock};
+pub use isocosm_host::drive::{Advance, Clock};
 pub use runtime::author_spread;
 pub use readings::{FlowWindows, JUDGEMENT_TICKS, RETENTION_TICKS, Trend};
 pub use review::{Authored, Offer, Proposed, Reading, Review};
