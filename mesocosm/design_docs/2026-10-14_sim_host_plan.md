@@ -251,6 +251,33 @@ starts.
 
 ## Progress
 
+- **2026-10-15, H3 step 1 (on the lane):** today's `Runtime` is pinned
+  by `mesocosm-runtime/tests/runtime_pin.rs` (six tests), on two worlds
+  from the native ecology fixture's generated candidate: `offered`, through
+  the 879 offer gate, and `held`, the same candidate with a six-tick epoch
+  founded through `Interim` and resumed, where a birth question opens in
+  the first round. Pinned: queued envelopes apply first in, first out before
+  the round, each with its outcome in the trace (nudged, not played,
+  attention, another tick refused, unasked); a cap of three turns a second
+  at 30 Hz into ten calls of three, deferring and never dropping, and the
+  default cap is eight; a held run takes no round and banks no time; an
+  answer drains in a held call, an answer queued behind another envelope
+  waits with it, and an answer of another kind does not drain; save and
+  resume keep the question, the queue, the tick and the hash, and the trace
+  starts empty. Two envelope traces are recorded in
+  `tests/fixtures/runtime_trace_{offered,held}.json` (16 and 9 actions,
+  the offered one ending at tick 72 with 76 entries) and replay to their
+  recorded hashes; rerecord with `MESOCOSM_RECORD_TRACE=1` only when the
+  sim's behaviour is meant to change, as the A1 lane's merge may. Six
+  planted faults caught, the translation seam's among them
+  (`Code/testing/isometry/h3-pin-2026-10-15/`). `mesocosm-runtime` now runs
+  37 tests. Found while pinning, and not pinned: a dev Kill opens a loss
+  question that no answer satisfies ("saved lost member was not alive at
+  round start"), and a save taken there fails to resume with the same
+  message; a forced birth the sim refuses still reports success, carrying
+  the refused event; sealing the saved loop digests the whole session log
+  several times a round, so stepping slows as the log grows (3,000 rounds
+  of the offered world ran for minutes in a debug build).
 - **2026-10-15, H7 added (923, 924):** `isonetry` is remade as the
   family's session layer; the phase starts with its assessment.
 - **2026-10-15, 910 built:** `World` counts the changes it accepts,

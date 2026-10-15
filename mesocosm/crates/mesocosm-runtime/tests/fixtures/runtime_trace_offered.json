@@ -1,0 +1,233 @@
+{
+  "world": "offered",
+  "actions": [
+    {
+      "action": {
+        "Queue": {
+          "tick": 1,
+          "participant": 5,
+          "intent": {
+            "Game": {
+              "Nudge": {
+                "entity": 1,
+                "target": {
+                  "Place": 0
+                },
+                "meaning": "Attend"
+              }
+            }
+          }
+        }
+      },
+      "taken": null,
+      "tick": 1,
+      "queued": 1,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 1
+      },
+      "taken": 1,
+      "tick": 2,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Advance": 500000
+      },
+      "taken": 8,
+      "tick": 10,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Advance": 0
+      },
+      "taken": 7,
+      "tick": 17,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Queue": {
+          "tick": 17,
+          "participant": 5,
+          "intent": {
+            "Game": {
+              "Nudge": {
+                "entity": 1001,
+                "target": {
+                  "Place": 0
+                },
+                "meaning": "Attend"
+              }
+            }
+          }
+        }
+      },
+      "taken": null,
+      "tick": 17,
+      "queued": 1,
+      "held": false
+    },
+    {
+      "action": {
+        "Queue": {
+          "tick": 17,
+          "participant": 5,
+          "intent": {
+            "Attention": {
+              "Examine": 0
+            }
+          }
+        }
+      },
+      "taken": null,
+      "tick": 17,
+      "queued": 2,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 1
+      },
+      "taken": 1,
+      "tick": 18,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Queue": {
+          "tick": 18,
+          "participant": 5,
+          "intent": {
+            "Game": {
+              "Act": {
+                "entity": 1,
+                "kind": {
+                  "Speciate": {
+                    "name": "pin"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "taken": null,
+      "tick": 18,
+      "queued": 1,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 1
+      },
+      "taken": 1,
+      "tick": 19,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Queue": {
+          "tick": 19,
+          "participant": 5,
+          "intent": {
+            "Game": {
+              "Dev": {
+                "PlaceMatter": {
+                  "site": 0,
+                  "mass_mg": 1000
+                }
+              }
+            }
+          }
+        }
+      },
+      "taken": null,
+      "tick": 19,
+      "queued": 1,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 3
+      },
+      "taken": 3,
+      "tick": 22,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Advance": 1000000
+      },
+      "taken": 8,
+      "tick": 30,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Advance": 0
+      },
+      "taken": 8,
+      "tick": 38,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Advance": 0
+      },
+      "taken": 8,
+      "tick": 46,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Advance": 0
+      },
+      "taken": 6,
+      "tick": 52,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 20
+      },
+      "taken": 20,
+      "tick": 72,
+      "queued": 0,
+      "held": false
+    }
+  ],
+  "outcomes": [
+    {
+      "Ok": "nudged"
+    },
+    {
+      "Err": "NotPlayed"
+    },
+    {
+      "Ok": "attention"
+    },
+    {
+      "Ok": "lineage:pin"
+    },
+    {
+      "Ok": "placed"
+    }
+  ],
+  "tick": 72,
+  "entries": 76,
+  "state_hash": 2197200640810745611
+}

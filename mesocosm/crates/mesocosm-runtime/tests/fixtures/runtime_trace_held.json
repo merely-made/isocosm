@@ -1,0 +1,124 @@
+{
+  "world": "held",
+  "actions": [
+    {
+      "action": {
+        "Step": 1
+      },
+      "taken": 1,
+      "tick": 1,
+      "queued": 0,
+      "held": true
+    },
+    {
+      "action": {
+        "Queue": {
+          "tick": 1,
+          "participant": 3,
+          "intent": {
+            "Game": {
+              "Checkpoint": {
+                "entity": 1,
+                "kind": {
+                  "Birth": "KeepParent"
+                }
+              }
+            }
+          }
+        }
+      },
+      "taken": null,
+      "tick": 1,
+      "queued": 1,
+      "held": true
+    },
+    {
+      "action": {
+        "Advance": 0
+      },
+      "taken": 0,
+      "tick": 1,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 1
+      },
+      "taken": 1,
+      "tick": 2,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 1
+      },
+      "taken": 1,
+      "tick": 3,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 1
+      },
+      "taken": 1,
+      "tick": 4,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 1
+      },
+      "taken": 1,
+      "tick": 5,
+      "queued": 0,
+      "held": false
+    },
+    {
+      "action": {
+        "Queue": {
+          "tick": 5,
+          "participant": 3,
+          "intent": {
+            "Game": {
+              "Nudge": {
+                "entity": 1,
+                "target": {
+                  "Place": 0
+                },
+                "meaning": "Attend"
+              }
+            }
+          }
+        }
+      },
+      "taken": null,
+      "tick": 5,
+      "queued": 1,
+      "held": false
+    },
+    {
+      "action": {
+        "Step": 1
+      },
+      "taken": 1,
+      "tick": 6,
+      "queued": 0,
+      "held": true
+    }
+  ],
+  "outcomes": [
+    {
+      "Ok": "answered exact saved loop question"
+    },
+    {
+      "Ok": "nudged"
+    }
+  ],
+  "tick": 6,
+  "entries": 9,
+  "state_hash": 13183201977647073506
+}
