@@ -11241,7 +11241,52 @@ what later sections derive from.
      (window glue over cambium's host: viewport producers, scenario lane,
      capture, error and profile lines; Mesocosm's `SectionProducer` already
      exists), "naw, that was plenty, thank you".
-     Next unused899.
+
+899. **H2 proves the inspection endpoint with receipts until the lifted client lands.**
+     Asked 2026-10-15. Evidence: no Graphshell client mounts an arbitrary
+     endpoint live; the port's `g4_sessions` writes a static HTML receipt
+     that renders cards and actions; Turnstone hosts only Knot's endpoint.
+     Options: (1) "Receipts now, Turnstone later (Recommended)"; (2) "Keep
+     desktop shell until then"; (3) "Minimal viewer here".
+     Mark: "there is ongoing work: knot font-role adoption agent was dealing
+     with the same thing, as were several others, so we decided to lift some
+     capabilities out of the reference host. should see that coming down the
+     pipe sooon"
+     *Reading, not ruled:* H2 proves with `LocalCarrier` tests and a
+     `g4_sessions` receipt, and adopts the capabilities lifted from the
+     reference host when they land; no Turnstone session is proposed.
+
+900. **Every product panel moves to an endpoint in H2, with no new isometry names.**
+     Asked 2026-10-15. Options: (1) "Retire now, rebuild per product
+     (Recommended)"; (2) "Move all in H2".
+     Mark: "let's not make new isometry names, we're trying to obviate them
+     over time, no? but i'm more tempted to do it all in h2"
+     Answered: yes, the `isometry-` prefix is a plain technical name to
+     retire over time. The desktop shell's product panels move to
+     product-owned endpoints within H2.
+
+901. **The core's inspection endpoint sits in `isocosm-host` behind a feature.**
+     Asked 2026-10-15. Options: (1) "isocosm-host, behind a feature
+     (Recommended)", the binary becoming the stdio endpoint beside
+     `--validate-save`; (2) "Always in the core".
+     Mark: "isocosm-host, behind a feature (Recommended)"
+
+902. **The VTT's panels go to `isocosm-vtt`.**
+     Asked 2026-10-15. Evidence: `isocosm-vtt` is an empty crates.io name
+     reservation (0.0.2, MPL-2.0); the VTT's implementation crates are MIT
+     OR Apache-2.0. Options: (1) "isometry-graphshell (Recommended)"; (2)
+     "isocosm-vtt". Mark: "isocosm-vtt"
+     *Reading, not ruled:* the panels are MPL-2.0 code today in
+     `isocosm-host`, so `isocosm-vtt` keeps their grant, where
+     `isometry-graphshell` would have mixed it. Its next publish would ship
+     implementation over unpublished path crates, so publishing waits.
+
+903. **Mesocosm's and Eponym's panels become feature-gated modules in existing crates.**
+     Asked 2026-10-15. Options: (1) "Modules in existing crates
+     (Recommended)": an `endpoint` module in `mesocosm-runtime` and in
+     `eponym-play`; (2) "New endpoint crates".
+     Mark: "Modules in existing crates (Recommended)"
+     Next unused904.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

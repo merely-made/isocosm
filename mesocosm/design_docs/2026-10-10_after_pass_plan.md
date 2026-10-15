@@ -17,7 +17,7 @@ C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first, with 890's producer capture
-path; 889 and 891 wait for a generator lane. Next unused899.
+path; 889 and 891 wait for a generator lane. Next unused904.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
