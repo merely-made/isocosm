@@ -23,4 +23,8 @@ serde_json = { workspace = true }
 
 [dev-dependencies]
 isocosm-host = { path = "../../host", features = ["endpoint", "society", "fixtures"] }
-graphshell-endpoint = { workspace = true, features = ["local"] }
+graphshell-endpoint = { workspace = true, features = ["local", "stdio"] }
+
+# A no-argument stdio endpoint for Graphshell's g4_sessions receipt (H2).
+[[example]]
+name = "vtt_endpoint"
