@@ -11082,7 +11082,61 @@ what later sections derive from.
      them; (2) "Rename lanes and testing too"; (3) "Nothing more".
      Mark: "Ledger line only (Recommended)"
      Lane worktree directories and the testing tree keep their names.
-     Next unused884.
+
+884. **Three uniform product hosts over one embeddable sim host.**
+     Asked 2026-10-14 after a runtime check: no head plays today. Default
+     Mesocosm launch refuses a generated world without 875's witness, the
+     last headed save (2026-09-08) no longer parses, and only the dev bench
+     boots. Each product has two to four host paths; ruling 442 keeps
+     per-product hosts, and M4, E4 and V4 never name the headed host.
+     Question: "Which is the head?" Options: (1) "Per-product hosts
+     (Recommended)", the unified host staying an inspection shell; (2)
+     "Unified host", grown into the one player client; (3) "Per-product
+     now, unify later".
+     Mark: "if we do a unified host without having to load the capabilities
+     of each of the games, then that's cool. but otherwise, we should create,
+     like, three uniform product hosts and an embeddable sim host that
+     handles the world founding, live keys, pointer, save import, the stuff
+     all need and which can be abstracted into a core."
+     *Reading, not ruled:* a Rust binary compiles in every product it can
+     run, and `host/` selects products by cargo feature; runtime loading
+     would need dylibs or wasm components. So the second branch applies:
+     three uniform product hosts over one embeddable core that founds
+     worlds, routes live keys and pointer, and imports saves. Today's halves
+     are `isomere::host::Assembly` (window hooks, used by the VTT and
+     Eponym) and `host/` (resume, save, stream, spatial, access).
+
+885. **Generated worlds wait for 875's witness inputs.**
+     Asked 2026-10-14. Question: "While those inputs are pending, how may a
+     development head start a world?" Options: (1) "Dev flag, marked
+     unoffered (Recommended)"; (2) "Wait for 875's inputs"; (3) "Fixture
+     witness".
+     Mark: "Wait for 875's inputs"
+     No head founds a generated world without 875's authored witness;
+     integration of the Mesocosm loop starts from those inputs.
+
+886. **The society layer goes behind a feature and is tested in its own lane.**
+     Asked 2026-10-14. Evidence: projects, institutions, custody, party,
+     goals and polities are about 4.3k lines with no inline tests; projects
+     is used in 14 VTT and 21 Eponym files, institutions, custody, party and
+     polities by the VTT only, Mesocosm by none.
+     Question: "What's its status?" Options: (1) "Freeze until a head uses it
+     (Recommended)"; (2) "Test it all now"; (3) "Park behind a feature".
+     Mark: "park it behind a feature and then start testing it in another of
+     the consigliere's lanes; both eponym and the vtt would need it, right?"
+     Answered: yes, both need it. *Reading, not ruled:* the feature is on for
+     the VTT and Eponym and off for Mesocosm. Whether saves keep one shape
+     across builds is an open fork, since polities, projects and
+     institutions are `State` fields.
+
+887. **The first integration milestone is the Mesocosm loop.**
+     Asked 2026-10-14. Options: (1) "Mesocosm loop (Recommended)"; (2)
+     "Eponym session"; (3) "VTT over the sim".
+     Mark: "Mesocosm loop (Recommended)"
+     A generated world founded in the real Mesocosm head, a lineage reaching
+     the epoch boundary and the trait board, captured. Under 885 it starts
+     from 875's inputs; three epochs wait on A1.
+     Next unused888.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
