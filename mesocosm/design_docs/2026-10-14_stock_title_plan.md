@@ -209,3 +209,8 @@ outside the society layer. Neither is tested here.
 - 2026-10-14: after 893 and 894 the plan covers the whole society layer. The
   gate and T2 to T5 landed with 32 further tests in the new files; the
   featureless build runs `society_gate` only.
+- 2026-10-14: with the gate, `cargo test --no-default-features` passes 602
+  tests of 603 in 48 targets (the one failure was the C11 owned-quantity test,
+  since gated on the feature and passing in both builds). `cargo check
+  --workspace` passes for the VTT root, Eponym and `host` with the feature,
+  and for the whole Mesocosm workspace without it.
