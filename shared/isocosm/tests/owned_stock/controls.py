@@ -306,6 +306,42 @@ FAULTS = {
         "        if process.goal_directives.is_empty() { return Ok(()); }\n",
         "society_gate", "goal_directives_are_refused_without_the_feature",
     ),
+    "unanimity-by-one": (
+        "src/projects/policy.rs",
+        'Electorate::Individuals { approvals:actors.len() as u64, actors,',
+        'Electorate::Individuals { approvals:1, actors,',
+        "society_collective", "strategy::unanimous_members_must_each_consent_before_the_polity_grants",
+    ),
+    "anyone-represents": (
+        "src/projects/policy.rs",
+        'Electorate::Individuals { actors:actors.clone(), approvals:*approvals,',
+        'Electorate::Individuals { actors:self.state.polities[&id].constitution.members.clone(), approvals:1,',
+        "society_collective", "strategy::declared_representatives_grant_alone_and_others_cannot",
+    ),
+    "decision-unwitnessed": (
+        "src/projects/consent.rs",
+        'permission.decisions[index].action = action;',
+        'permission.decisions[index].action = None;',
+        "society_collective", "strategy::a_governance_decision_grants_through_its_authored_process_only",
+    ),
+    "dead-member-votes": (
+        "src/projects/policy.rs",
+        'Owner::Entity(id) => self.body_at_start(id).is_some_and(|e| e.alive && !crate::directing::is_participant(e)),',
+        'Owner::Entity(id) => self.body_at_start(id).is_some_and(|e| !crate::directing::is_participant(e)),',
+        "society_collective", "strategy::a_member_who_is_no_longer_available_blocks_unanimity",
+    ),
+    "default-strategy": (
+        "src/projects/ownership.rs",
+        'let policy = lot.collectives.get(id).ok_or("collective owner needs an explicit decision policy")?;',
+        'let policy = lot.collectives.get(id).unwrap_or(&DecisionPolicy::UnanimousMembers);',
+        "society_collective", "assertion::a_collective_owner_must_name_its_strategy_validly",
+    ),
+    "ambiguous-strategy-ok": (
+        "src/projects/ownership.rs",
+        'if collectives.get(owner).is_some_and(|was| was != policy) {',
+        'if false {',
+        "society_collective", "assertion::a_collective_owner_must_name_its_strategy_validly",
+    ),
     "delivery-closes-title": (
         "src/spread/owned.rs",
         "held.at = LotAt::Held(StockSource::Site(transfer.to));",
