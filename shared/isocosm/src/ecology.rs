@@ -18,6 +18,36 @@ pub use run::run_joint;
 pub(crate) use evidence::JointCapture;
 pub(crate) use admission::validate_material_provenance;
 
+/// The account a producer captures (890). Energy is not matter (879): tissue
+/// is never relabelled as fuel.
+const SUN: &str = "sim:energy";
+/// A site's light per tick, and the most it holds. Abundant by declaration:
+/// it never binds a producer, so capture is real and the ecology is unchanged.
+/// A limiting light is a later ruling.
+const LIGHT: u64 = 1_000_000;
+
+/// The sun: each site gains light while it holds less than its cap.
+fn sunlight() -> Process {
+    let mut sun = process(
+        "ecology:sunlight",
+        Causation::Agentless,
+        vec![Effect::Transform {
+            who: Binding::Place,
+            take: BTreeMap::new(),
+            give: BTreeMap::from([(SUN.into(), LIGHT)]),
+            conversion: None,
+        }],
+    );
+    sun.requires = vec![Query::Below {
+        who: Binding::Place,
+        key: SUN.into(),
+        amount: 2 * LIGHT,
+    }];
+    sun.period = Some(1);
+    sun.priority = -2;
+    sun
+}
+
 pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     g.rules
         .processes
@@ -32,7 +62,10 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             "world:soil".into(),
             supply + crate::draw(founding.seed, "soil", &[id]) % founding.stock_max,
         );
+        // Light from the first tick: acts before the sun's first pass work.
+        site.accounts.insert(SUN.into(), LIGHT);
     }
+    g.rules.processes.insert("ecology:sunlight".into(), sunlight());
     for group in g.population.groups.values_mut() {
         let e = &mut group.entity;
         if e.kingdom == "kingdom:world" {
@@ -152,6 +185,14 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 &format!("ecology:produce-{i}"),
                 Causation::Choice,
                 vec![
+                    // Capture (890): the producer takes the site's light, then
+                    // spends it with the soil it synthesizes into tissue.
+                    Effect::Transfer {
+                        from: Binding::Place,
+                        to: Binding::Actor,
+                        account: SUN.into(),
+                        amount: 1.into(),
+                    },
                     Effect::Transfer {
                         from: Binding::Place,
                         to: Binding::Actor,
@@ -162,6 +203,14 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                         who: Binding::Actor,
                         take: BTreeMap::from([("world:soil".into(), 2)]),
                         give: BTreeMap::from([(body, 2)]),
+                        conversion: None,
+                    },
+                    // The light is spent in the synthesis, in an effect of
+                    // its own so the matter transform stays matter-only.
+                    Effect::Transform {
+                        who: Binding::Actor,
+                        take: BTreeMap::from([(SUN.into(), 1)]),
+                        give: BTreeMap::new(),
                         conversion: None,
                     },
                 ],

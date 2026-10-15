@@ -61,8 +61,12 @@ pub(super) fn declared(seed: u64) -> Genesis {
             _ => None,
         };
         for e in &mut p.effects {
-            if let Effect::Transform { conversion, .. } = e {
-                *conversion = kind;
+            // A declared conversion moves matter only; the producer's light
+            // (890) is energy and stays undeclared.
+            if let Effect::Transform { conversion, take, .. } = e {
+                if !take.contains_key("sim:energy") {
+                    *conversion = kind;
+                }
             }
         }
     }
