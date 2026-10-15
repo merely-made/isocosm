@@ -2,6 +2,12 @@
 
 **Date:** 2026-09-25
 
+**Generated-world inputs, 2026-10-14:** ruling 885 has the generator supply
+spawn and arrival templates for generated worlds, movement staying
+template-driven; 891 has it declare each world's global collapse predicate.
+Both wait for a generator lane after A1's `generate.rs` changes land; 890's
+producer capture path is built with A1. Next unused899.
+
 **Founding law source, 2026-10-13:** explicit pack affinity now enters fresh
 native founding before body/domain generation. Optional absent law preserves
 the existing default; resumed or supplied realized worlds retain their saved

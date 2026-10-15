@@ -15,7 +15,9 @@ failure (grazer meal holdings 12304.8 exact, 12319.0 crowd, p 0.73). C11 is cert
 joins the stock kernel, eleven compiled faults caught; titles are outside
 C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
-owns hashes, qualifications and remaining done-conditions. Next unused899.
+owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
+tuning ("Tuning's open."); A1 resumes first, with 890's producer capture
+path; 889 and 891 wait for a generator lane. Next unused899.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -77,6 +79,10 @@ consumer nets about one unit every 7 to 8 ticks, and age takes it at 20 to 60
 ticks (directing Findings, 2026-10-09). Rates are a world's; fix it as a
 generator or rules change and record the ruling it needs. Done when a played
 consumer lineage survives three epochs on draws.
+
+**Status, 2026-10-14:** in progress. Ruling 888 opens tuning ("Tuning's
+open."), ending 761's and 826's deferral; candidates are declared before
+they are drawn.
 
 ## A2. The test baseline (owner: each workspace's plan)
 
