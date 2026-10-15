@@ -46,6 +46,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance for all three products. | The one copy since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |
+| [2026-10-15_campaign_retirement_plan.md](2026-10-15_campaign_retirement_plan.md) | Retiring `isometry-campaign` into its owning homes: the VTT's game layer into `isocosm-vtt`, map lowering into `isometry-core`, the world into the sim at V2. | 2026-10-15: plan; forks F1 to F4 with Mark (913, 915 to 917). |
 | [2026-09-25_vtt_overlay_plan.md](2026-09-25_vtt_overlay_plan.md) | The VTT's overlay (W5): rulesets over the sim. | 2026-10-13: all-target/all-feature compiler and default-feature campaign/session168 tests pass. Protocol22/ALPN move together. Full V2/headed acceptance remains open; shared assembled-certification record qualifies the receipts. |
 | [2026-09-15_board_on_isometer_plan.md](2026-09-15_board_on_isometer_plan.md) | The VTT's board on the isometer family. | 2026-10-10: authored board/paging implemented; sim-off MapTerrain retained, sim-on lifted-site integration belongs to V2 (799). |
 | [2026-08-08_stickleback_migration_plan.md](2026-08-08_stickleback_migration_plan.md) | Campaign sync onto Stickleback, gates K0 to K2. | 2026-10-10: K0 to K2 open; campaign_sync still assembles LogSync/SyncedSpace directly. |
