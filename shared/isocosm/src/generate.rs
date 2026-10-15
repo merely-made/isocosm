@@ -39,6 +39,10 @@ pub struct Founding {
     pub played: Option<crate::directing::Played>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub affinity: Option<Affinity>,
+    /// The rates a generated ecology runs at (ruling 907). Stock unless a
+    /// preset is named; stock foundings serialize and hash as before.
+    #[serde(default, skip_serializing_if = "crate::ecology::Rates::is_stock")]
+    pub ecology_rates: crate::ecology::Rates,
 }
 
 impl Default for Founding {
@@ -59,6 +63,7 @@ impl Default for Founding {
             bodies: None,
             played: None,
             affinity: None,
+            ecology_rates: Default::default(),
         }
     }
 }

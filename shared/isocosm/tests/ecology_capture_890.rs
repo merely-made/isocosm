@@ -77,9 +77,9 @@ fn witness(g: &Genesis, horizon: Tick) -> isocosm::Result<JointWitness> {
 
 #[test]
 fn default_generated_worlds_pass_the_joint_witness_with_real_capture() {
-    // Bare worlds and bodied worlds that graze pass all four roles.
-    let grazing = Bodies { grazing: true, ..Bodies::default() };
-    for (label, bodies) in [("bare", None), ("grazing", Some(grazing))] {
+    // Bare worlds and bodied worlds (which graze by default, 905) pass all
+    // four roles.
+    for (label, bodies) in [("bare", None), ("bodied", Some(Bodies::default()))] {
         for seed in 0..4 {
             let g = world_with(seed, bodies.clone(), 60);
             let w = witness(&g, 60).unwrap();
@@ -90,12 +90,13 @@ fn default_generated_worlds_pass_the_joint_witness_with_real_capture() {
 }
 
 #[test]
-fn every_default_bodied_world_captures_whatever_its_consumers_eat() {
-    // Capture is 890's claim. A jawed consumer (the A1 diet finding) eats its own
-    // lineage, so the counterplay role against the producers can be missing;
-    // the capture role never is.
+fn a_jawed_bodied_world_still_captures_though_its_consumers_eat_themselves() {
+    // Capture is 890's claim. With grazing off (a saved world's meaning), a
+    // jawed consumer eats its own lineage, so the counterplay role against the
+    // producers can be missing; the capture role never is.
+    let off = Bodies { grazing: false, ..Bodies::default() };
     for seed in 0..8 {
-        let g = world(seed, true, 60);
+        let g = world_with(seed, Some(off.clone()), 60);
         let w = witness(&g, 60).unwrap();
         assert!(w.totals.captured > 0, "seed {seed}: producers capture light");
         assert!(w.totals.returned > 0 && w.totals.births > 0, "seed {seed}");

@@ -12,7 +12,9 @@ mod validate;
 mod evidence;
 mod run;
 mod independence;
+mod rates;
 pub use independence::*;
+pub use rates::Rates;
 pub use joint::*;
 pub use run::run_joint;
 pub(crate) use evidence::JointCapture;
@@ -89,7 +91,9 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         e.traits.insert(role.into());
         g.rules.traits.insert(role.into());
     }
+    let rates = founding.ecology_rates;
     for i in 0..founding.lineages {
+        let consumer = i % 3 == 1;
         g.rules
             .traits
             .insert(["life:producer", "life:consumer", "life:decomposer"][i as usize % 3].into());
@@ -118,7 +122,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             who: Binding::Actor,
             key: own.clone(),
         });
-        upkeep.period = Some(5);
+        upkeep.period = Some(rates.upkeep_period(consumer));
         upkeep.priority = 20;
         g.rules.processes.insert(upkeep.id.clone(), upkeep);
         let mut death = process(
@@ -146,18 +150,39 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             Causation::Transition,
             vec![Effect::Death],
         );
+        let lifespan = rates.lifespan(crate::draw(founding.seed, "lifespan", &[u64::from(i)]));
         age.requires.extend([
             Query::Trait {
                 who: Binding::Actor,
                 key: own.clone(),
             },
             Query::Age {
-                at_least: 20 + crate::draw(founding.seed, "lifespan", &[u64::from(i)]) % 41,
+                at_least: lifespan,
             },
         ]);
         age.period = Some(1);
         age.priority = 31;
         age.note = true;
+        // An individual's life is its own (906): from maturity a hazard can take
+        // it, and the lineage's drawn lifespan stays the ceiling. Where the
+        // ceiling is not above maturity the hazard could never act, so it is
+        // not declared.
+        if lifespan > rates::MATURE {
+            let mut hazard = age.clone();
+            hazard.id = format!("ecology:hazard-{i}");
+            hazard.priority += 1;
+            for q in &mut hazard.requires {
+                if let Query::Age { at_least } = q {
+                    *at_least = rates::MATURE;
+                }
+            }
+            hazard.effects.clear();
+            hazard.risk = Some(Risk {
+                per_million: rates::HAZARD_PER_MILLION,
+                effects: vec![Effect::Death],
+            });
+            g.rules.processes.insert(hazard.id.clone(), hazard);
+        }
         g.rules.processes.insert(age.id.clone(), age);
         let child_mass = founding.stock_min.max(2);
         let mut birth = process(
@@ -175,10 +200,10 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             Query::Account {
                 who: Binding::Actor,
                 key: body.clone(),
-                at_least: (founding.stock_min + 2) * 3,
+                at_least: rates.birth_gate(founding.stock_min, consumer),
             },
         ]);
-        birth.period = Some(7);
+        birth.period = Some(rates.birth_period(consumer));
         birth.priority = 40;
         birth.note = true;
         g.rules.processes.insert(birth.id.clone(), birth);
@@ -243,7 +268,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 Causation::Choice,
                 vec![Effect::Eat {
                     from: Binding::Target,
-                    amount: 1.into(),
+                    amount: Amount::Fixed(rates.meal(consumer)),
                     into: body.clone(),
                     of: vec![],
                     whole: false,

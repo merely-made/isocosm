@@ -2,21 +2,21 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! The declared foundings and rate profiles A1 draws (after-pass §A1).
+//! The candidate is the generator's named preset (907); the original control
+//! is its stock rates.
 
 use super::*;
+use crate::ecology::Rates;
 
 /// What a draw founds. Bare and bodied are the 2026-10-10 declared three-site
 /// worlds; played is Mesocosm's own generated founding, copied from
 /// `mesocosm-runtime/src/runtime.rs` (`Founded::generated`), which this crate
-/// cannot depend on.
+/// cannot depend on. Bodied worlds graze by default (905).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, serde::Serialize)]
 pub(super) enum Form {
     Bare,
     Bodied,
-    /// Bodied with consumers that graze (declaration 4).
-    Grazer,
     Played,
-    PlayedGrazer,
 }
 
 impl Form {
@@ -24,9 +24,7 @@ impl Form {
         match self {
             Self::Bare => "bare",
             Self::Bodied => "bodied",
-            Self::Grazer => "grazer",
             Self::Played => "played",
-            Self::PlayedGrazer => "playedgrazer",
         }
     }
 
@@ -35,21 +33,19 @@ impl Form {
     }
 
     pub fn bodies(self) -> Option<Bodies> {
-        self.bodied().then(|| Bodies {
-            grazing: matches!(self, Self::Grazer | Self::PlayedGrazer),
-            ..Bodies::default()
-        })
+        self.bodied().then(Bodies::default)
     }
 
-    fn founding(self, seed: u64) -> Founding {
+    fn founding(self, seed: u64, rates: Rates) -> Founding {
         let played = Some(Played { lineage: 1, region_sites: 2 });
-        if matches!(self, Self::Played | Self::PlayedGrazer) {
+        if self == Self::Played {
             let grid = crate::map::Grid { width: 3, height: 2, ..crate::map::Grid::drawn(seed) };
             return Founding {
                 seed,
                 sites: grid.width * grid.height,
                 map: Some(crate::map::Layout::Grid(grid)),
                 ecology: true,
+                ecology_rates: rates,
                 bodies: self.bodies(),
                 played,
                 ..Default::default()
@@ -62,6 +58,7 @@ impl Form {
             cohort_size: 2,
             lineages: 3,
             ecology: true,
+            ecology_rates: rates,
             bodies: self.bodies(),
             played,
             ..Default::default()
@@ -69,134 +66,52 @@ impl Form {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(super) enum Cadence {
-    Original,
-    Candidate,
-}
-
-impl Cadence {
-    fn birth(self) -> u64 {
-        match self {
-            Self::Original => 30,
-            Self::Candidate => 12,
-        }
-    }
-
-    fn birth_period(self, lineage: u64) -> Tick {
-        match (self, lineage) {
-            (Self::Candidate, 1) => 14,
-            _ => 7,
-        }
-    }
-
-    fn meal(self, lineage: u64) -> u64 {
-        match (self, lineage) {
-            (Self::Candidate, 1) => 3,
-            _ => 1,
-        }
-    }
-
-    fn lifespan(self, seed: u64, lineage: u64) -> Tick {
-        let base = match self {
-            Self::Original => 20,
-            Self::Candidate => 80,
-        };
-        base + crate::draw(seed, "lifespan", &[lineage]) % 41
-    }
-}
-
 pub(super) fn world(seed: u64, form: Form, original: bool) -> Genesis {
-    let mut g = form.founding(seed).generate().unwrap();
+    let rates = if original { Rates::Stock } else { Rates::A1 };
+    let mut g = form.founding(seed, rates).generate().unwrap();
     g.rules.epoch_ticks = EPOCH;
-    // Absolute profiles preserve the unchanged old control after any later
-    // promotion of generator defaults. These are the declared stock_min=8
-    // rates from ecology.rs. The candidate consumer has meal 3 and birth
-    // period 14; other birth periods, provision and upkeep stay fixed.
-    let cadence = if original { Cadence::Original } else { Cadence::Candidate };
+    check(&g, original);
     let lineages = u64::from(g.founding.as_ref().unwrap().lineages);
-    let processes = &mut g.rules.processes;
-    for i in 0..lineages {
-        let birth = processes.get_mut(&format!("ecology:birth-{i}")).unwrap();
-        birth.period = Some(cadence.birth_period(i));
-        for q in &mut birth.requires {
-            if let Query::Account { at_least, .. } = q {
-                *at_least = cadence.birth();
-            }
-        }
-        let age = processes.get_mut(&format!("ecology:age-{i}")).unwrap();
-        for q in &mut age.requires {
-            if let Query::Age { at_least } = q {
-                *at_least = cadence.lifespan(seed, i);
-            }
-        }
-        if i % 3 != 0 {
-            let feed = processes.get_mut(&format!("ecology:feed-{i}")).unwrap();
-            for effect in &mut feed.effects {
-                if let Effect::Eat { amount, .. } = effect {
-                    *amount = Amount::Fixed(cadence.meal(i));
-                }
-            }
-        }
-    }
-    check(&g, cadence, lineages);
     tweak(&mut g, lineages);
     g
 }
 
-/// Declared exploratory tweaks (declaration 2), after the base checks:
-/// `ISOCOSM_REPRO_TWEAK` is a comma list of `meal=N`, `upkeep=N`, `feed=N`,
-/// `yield=N`, `gate=N` and `provision=N` (consumer birth gate and provision). Absent, the profile is exactly declaration 1's.
+/// The control must stay the stock rates and the candidate the preset's, so
+/// a later promotion of generator defaults cannot quietly change either arm.
+fn check(g: &Genesis, original: bool) {
+    let p = &g.rules.processes;
+    let (gate, consumer_gate, birth, upkeep, meal, low) =
+        if original { (30, 30, 7, 5, 1, 20) } else { (12, 9, 14, 10, 3, 80) };
+    for (i, want) in [(0, gate), (1, consumer_gate), (2, gate)] {
+        let birth_process = &p[&format!("ecology:birth-{i}")];
+        assert!(birth_process.requires.iter().any(|q| matches!(q, Query::Account { at_least, .. } if *at_least == want)));
+        assert_eq!(birth_process.period, Some(if i == 1 { birth } else { 7 }));
+        assert_eq!(p[&format!("ecology:upkeep-{i}")].period, Some(if i == 1 { upkeep } else { 5 }));
+        let ceiling = p[&format!("ecology:age-{i}")].requires.iter().find_map(|q| match q {
+            Query::Age { at_least } => Some(*at_least),
+            _ => None,
+        });
+        assert!((low..=low + 40).contains(&ceiling.unwrap()));
+        assert_eq!(p.contains_key(&format!("ecology:hazard-{i}")), !original);
+        if i != 0 {
+            // Producers have no feeding process.
+            assert!(matches!(&p[&format!("ecology:feed-{i}")].effects[..], [Effect::Eat {
+                amount: Amount::Fixed(m), ..
+            }] if *m == if i == 1 { meal } else { 1 }));
+        }
+    }
+}
+
+/// Declared exploratory tweaks, applied after the base checks and only to a
+/// run that names them: `ISOCOSM_REPRO_TWEAK` is a comma list of `meal=N`,
+/// `upkeep=N`, `feed=N`, `gate=N` and `provision=N` (consumer rates). Absent,
+/// the world is exactly the generator's stock rates or its A1 preset.
 fn tweak(g: &mut Genesis, lineages: u64) {
     let Ok(list) = std::env::var("ISOCOSM_REPRO_TWEAK") else { return };
     let processes = &mut g.rules.processes;
     for pair in list.split(',').filter(|p| !p.is_empty()) {
         let (key, value) = pair.split_once('=').expect("key=value");
         let n: u64 = value.parse().expect("integer");
-        if key == "hazard" {
-            // Declaration 8: death is a per-tick hazard of `n` per million once
-            // an individual is `mature` ticks old (default 60), not a fixed
-            // age shared by a lineage. Applies to every lineage.
-            let mature = list.split(',').find_map(|p| p.strip_prefix("mature=")).map_or(60, |m| m.parse().unwrap());
-            for i in 0..lineages {
-                let age = processes.get_mut(&format!("ecology:age-{i}")).unwrap();
-                for q in &mut age.requires {
-                    if let Query::Age { at_least } = q {
-                        *at_least = mature;
-                    }
-                }
-                age.effects.clear();
-                age.risk = Some(Risk { per_million: n as u32, effects: vec![Effect::Death] });
-            }
-            continue;
-        }
-        if key == "mature" {
-            continue;
-        }
-        if key == "hazardcap" {
-            // Declaration 9: the hazard is a second process; the lineage's
-            // fixed age death stays as a ceiling at 120 for every lineage.
-            let mature = list.split(',').find_map(|p| p.strip_prefix("mature=")).map_or(60, |m| m.parse().unwrap());
-            for i in 0..lineages {
-                let mut hazard = processes[&format!("ecology:age-{i}")].clone();
-                hazard.id = format!("ecology:hazard-{i}");
-                hazard.priority += 1;
-                for q in &mut hazard.requires {
-                    if let Query::Age { at_least } = q {
-                        *at_least = mature;
-                    }
-                }
-                hazard.effects.clear();
-                hazard.risk = Some(Risk { per_million: n as u32, effects: vec![Effect::Death] });
-                processes.insert(hazard.id.clone(), hazard);
-                for q in &mut processes.get_mut(&format!("ecology:age-{i}")).unwrap().requires {
-                    if let Query::Age { at_least } = q {
-                        *at_least = 120;
-                    }
-                }
-            }
-            continue;
-        }
         for i in 0..lineages {
             match (key, i % 3) {
                 ("meal", 1) => {
@@ -212,18 +127,6 @@ fn tweak(g: &mut Genesis, lineages: u64) {
                 ("feed", 1) => {
                     processes.get_mut(&format!("ecology:feed-{i}")).unwrap().period = Some(n);
                 },
-                ("yield", 0) => {
-                    for e in &mut processes.get_mut(&format!("ecology:produce-{i}")).unwrap().effects {
-                        match e {
-                            Effect::Transfer { amount, .. } => *amount = Amount::Fixed(n),
-                            Effect::Transform { take, give, .. } => {
-                                take.values_mut().for_each(|v| *v = n);
-                                give.values_mut().for_each(|v| *v = n);
-                            },
-                            _ => {},
-                        }
-                    }
-                },
                 ("gate", 1) => {
                     for q in &mut processes.get_mut(&format!("ecology:birth-{i}")).unwrap().requires {
                         if let Query::Account { at_least, .. } = q {
@@ -238,30 +141,9 @@ fn tweak(g: &mut Genesis, lineages: u64) {
                         }
                     }
                 },
-                ("meal" | "upkeep" | "feed" | "yield" | "gate" | "provision", _) => {},
+                ("meal" | "upkeep" | "feed" | "gate" | "provision", _) => {},
                 _ => panic!("unknown tweak {key}"),
             }
-        }
-    }
-}
-
-fn check(g: &Genesis, cadence: Cadence, lineages: u64) {
-    use std::collections::BTreeMap;
-    for i in 0..lineages {
-        let birth = &g.rules.processes[&format!("ecology:birth-{i}")];
-        assert_eq!(birth.period, Some(cadence.birth_period(i)));
-        assert!(matches!(&birth.effects[..], [Effect::Birth { provision }]
-            if provision == &BTreeMap::from([(format!("matter:{i}-0"), 8)])));
-        let upkeep = &g.rules.processes[&format!("ecology:upkeep-{i}")];
-        assert_eq!(upkeep.period, Some(5));
-        assert!(matches!(&upkeep.effects[0], Effect::Transform { take, .. }
-            if take == &BTreeMap::from([(format!("matter:{i}-0"), 1)])));
-        if i % 3 != 0 {
-            let feed = &g.rules.processes[&format!("ecology:feed-{i}")];
-            assert_eq!(feed.period, Some(3));
-            assert!(matches!(&feed.effects[..], [Effect::Eat {
-                amount: Amount::Fixed(amount), ..
-            }] if *amount == cadence.meal(i)));
         }
     }
 }
