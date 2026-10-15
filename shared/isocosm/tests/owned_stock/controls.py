@@ -20,7 +20,7 @@ DISPOSITION = "src/projects/debit/disposition.rs"
 STAGED = "src/stage/staged/projects.rs"
 FEATURELESS = "--no-default-features"
 # Faults that only a build without the society feature can catch (rulings 886, 893).
-FLAGS = {"gate-open": FEATURELESS, "command-ungated": FEATURELESS, "query-ungated": FEATURELESS}
+FLAGS = {name: FEATURELESS for name in ("gate-open", "command-ungated", "query-ungated", "directive-ungated")}
 FAULTS = {
     "claims-exceed-source": (
         OWNERSHIP,
@@ -203,6 +203,108 @@ FAULTS = {
         "if declared != party { continue; }",
         "if declared != party || !map.members.iter().any(|m| m.member == *member) { continue; }",
         "society_party", "disclosure::disclosed_places_and_routes_persist_after_the_member_leaves",
+    ),
+    "executor-anyone": (
+        "src/institutions/admission.rs",
+        'if proposal.actor != actor || !self.institution_ready(&proposal) {',
+        'if !self.institution_ready(&proposal) {',
+        "society_institutions", "operation::unanimous_members_decide_and_the_executor_applies_the_exact_operation",
+    ),
+    "unanimity-short": (
+        "src/institutions/policy.rs",
+        'DecisionPolicy::UnanimousMembers => (members.clone(),members.len() as u64),',
+        'DecisionPolicy::UnanimousMembers => (members.clone(),1),',
+        "society_institutions", "operation::unanimous_members_decide_and_the_executor_applies_the_exact_operation",
+    ),
+    "support-ignored": (
+        "src/institutions/policy.rs",
+        'if held < support.minimum {',
+        'if false {',
+        "society_institutions", "operation::unanimous_members_decide_and_the_executor_applies_the_exact_operation",
+    ),
+    "revote": (
+        "src/institutions/admission.rs",
+        '\n            || self.state.institutions.voters(key)?.contains(&actor) {',
+        ' {',
+        "society_institutions", "operation::unanimous_members_decide_and_the_executor_applies_the_exact_operation",
+    ),
+    "applied-twice": (
+        "src/institutions/admission.rs",
+        'records.is_applied(&proposal.key).unwrap_or(true) || ',
+        '',
+        "society_institutions", "operation::unanimous_members_decide_and_the_executor_applies_the_exact_operation",
+    ),
+    "stale-constitution-ok": (
+        "src/institutions/policy.rs",
+        'if polity.constitution != proposal.constitution\n',
+        'if false\n',
+        "society_institutions", "constitution::an_amendment_changes_only_what_the_deciding_process_applies",
+    ),
+    "ended-still-proposes": (
+        "src/institutions/admission.rs",
+        'self.state.polities.get(&id.0).filter(|p| p.ended_by.is_none()).ok_or("institution is absent or ended")?;',
+        'self.state.polities.get(&id.0).ok_or("institution is absent or ended")?;',
+        "society_institutions", "constitution::dissolution_ends_the_polity_by_its_deciding_event",
+    ),
+    "amend-forges-cause": (
+        "src/institutions/admission.rs",
+        'if offered.founded_by != old.founded_by {',
+        'if false {',
+        "society_institutions", "constitution::an_amendment_changes_only_what_the_deciding_process_applies",
+    ),
+    "dissolution-unwitnessed": (
+        "src/institutions/admission.rs",
+        'ended_by = Some(receipt.id.clone());',
+        'ended_by = Some("unwitnessed".into());',
+        "society_institutions", "constitution::dissolution_ends_the_polity_by_its_deciding_event",
+    ),
+    "phantom-disagreement": (
+        "src/polities.rs",
+        '.filter(|_| living > 0)',
+        '',
+        "society_institutions", "polity::an_authored_polity_without_members_claims_no_derived_disagreement",
+    ),
+    "goal-readopted": (
+        "src/goals.rs",
+        'if records(visible).any(|(_,held)| matches!(held,Change::Adopt { goal:was, .. } if &was == goal)) {',
+        'if false {',
+        "society_goals", "command::an_explicit_record_binds_to_that_actors_accepted_event",
+    ),
+    "ended-goal-served": (
+        "src/goals.rs",
+        '|| thread.ending.is_some() || !thread.holder_alive {',
+        '|| !thread.holder_alive {',
+        "society_goals", "directive::an_ended_goal_takes_no_further_participation",
+    ),
+    "stranger-ends-goal": (
+        "src/goals.rs",
+        'if thread.holder != actor { return Err("only its adopting actor ends this goal".into()); }',
+        'if false { return Err("only its adopting actor ends this goal".into()); }',
+        "society_goals", "command::an_explicit_record_binds_to_that_actors_accepted_event",
+    ),
+    "anothers-event-ok": (
+        "src/goals.rs",
+        'act.authored.is_some() || act.subject != actor || act.tick > self.state.tick',
+        'act.authored.is_some() || act.tick > self.state.tick',
+        "society_goals", "command::an_explicit_record_binds_to_that_actors_accepted_event",
+    ),
+    "primary-goal-only": (
+        "src/goals/directives.rs",
+        'Directive::Participate { goals } => Change::Participate { actor,event:event.id.clone(),goals:goals.clone() },',
+        'Directive::Participate { goals } => Change::Participate { actor,event:event.id.clone(),goals:goals.iter().take(1).cloned().collect() },',
+        "society_goals", "directive::one_act_participates_in_every_goal_it_served",
+    ),
+    "unknown-adoption-served": (
+        "src/goals.rs",
+        'if !self.known_in(actor,body,visible,&[],&thread.adoption.id)? {',
+        'if false {',
+        "society_goals", "command::only_a_body_that_knows_the_adoption_serves_anothers_goal",
+    ),
+    "directive-ungated": (
+        "src/stage/goals.rs",
+        "        if process.goal_directives.is_empty() { return Ok(()); }\n        crate::society()?;\n",
+        "        if process.goal_directives.is_empty() { return Ok(()); }\n",
+        "society_gate", "goal_directives_are_refused_without_the_feature",
     ),
     "delivery-closes-title": (
         "src/spread/owned.rs",
