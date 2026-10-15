@@ -11477,7 +11477,28 @@ what later sections derive from.
 922. **Publishing is a phase of the campaign retirement plan.**
      Asked 2026-10-15 by card (F4). Options: (1) "Own plan after R1
      (Recommended)"; (2) "In this plan". Mark: "In this plan"
-     The plan's R4. Next unused923.
+     The plan's R4.
+
+923. **`isonetry` is remade.**
+     Asked 2026-10-15 by card. Evidence: never published, the crates.io name
+     free; today the VTT's live session layer, about 5,000 lines, holding
+     the GM store and proposals until V2 (921), its campaign sync moving to
+     Stickleback under K0 to K2. Options: (1) "Keep its job, claim in R4
+     (Recommended)"; (2) "Claim the name now"; (3) "Plan a remake".
+     Mark: "Plan a remake"
+
+924. **`isonetry` becomes the Isocosm family's session layer.**
+     Asked 2026-10-15 by card. Evidence: it holds a turn-based
+     host-authority replication core (protocol, sessions, iroh behind a
+     feature), the VTT's campaign p2p pieces and VTT table bindings; the
+     sim-host plan had no multiplayer phase. Options: (1) "Family session
+     layer (Recommended)": the network seam for the sim-host core's `World`
+     in all three games, one peer hosting the world and others sending
+     intents and receiving the accepted log, on the stack's transport,
+     Stickleback and Graphshell's network carrier, its VTT-only parts moving
+     to `isocosm-vtt`; (2) "VTT adapter on Stickleback"; (3) "Retire it, bank
+     the name". Mark: "Family session layer (Recommended)"
+     The sim-host plan's H7. Next unused925.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

@@ -19,6 +19,10 @@ polities act, while campaign storage/collaboration are product-side.
 That ownership change must not create a second live world runtime or
 silently drop the authorization and privacy gates.
 
+*2026-10-15:* `isonetry` is being remade as the Isocosm family's session
+layer (wing rulings 923, 924; the sim-host plan's H7), whose assessment
+takes up this plan's K0 to K2.
+
 *The dated migration design and receipts below remain as written (793).*
 
 **Status: plan.** Founded from the 2026-08-08 wing audit. The
