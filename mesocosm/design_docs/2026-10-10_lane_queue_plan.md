@@ -17,8 +17,8 @@ C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture path
-landed on branch `a1-reproduction`, merged into local main 2026-10-15 (push pending); 889 and 891 wait for a
-generator lane. Next unused929.
+landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 wait for a
+generator lane. Next unused932.
 
 The newest Progress entry below owns execution state. The following block
 records an earlier resumed snapshot; later checkpoints and parked lanes

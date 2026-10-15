@@ -11536,7 +11536,37 @@ what later sections derive from.
      passing before and after, an envelope trace recorded now and replayed
      through the core to the same hash, a planted fault in the translation
      seam; (2) "Existing tests + log replay".
-     Mark: "Pin today's driver first (Recommended)" Next unused929.
+     Mark: "Pin today's driver first (Recommended)"
+
+929. **890's bodied shift is accepted, its note corrected, the coupling queued.**
+     Asked 2026-10-15 by card, after the Windows review of
+     `a1-reproduction`. Evidence: in bare ecology worlds 890's light moves
+     nothing but energy, identical to main over 240 ticks; in bodied ones
+     the `ecology:sunlight` process's presence shifts which body part
+     receives new tissue (the producers' own capture changes nothing), and
+     over 240 ticks that moves one death in three of five seeds (ticks 25,
+     40, 63), matter conserved; A1's numbers were measured on 890. Options:
+     (1) "Accept, correct the note (Recommended)": 890's "ecology is
+     unchanged" narrowed to bare worlds, the coupling (an unrelated process
+     moving part placement) queued for later study; (2) "Decouple before
+     pushing"; (3) "Push without 890". Mark: "Accept, correct the note
+     (Recommended)"
+
+930. **Main is pushed with the A1 lane's ten commits.**
+     Asked 2026-10-15 by card. Evidence: every suite passes on the merge
+     what main passes. Options: (1) "Push now (Recommended)"; (2) "Hold the
+     push". Mark: "Push now (Recommended)"
+
+931. **A triage session takes the 22 failures already on main.**
+     Asked 2026-10-15 by card. Evidence: Eponym 15 (producer tests, an
+     equipment-store restore that diverges, both motion-archive replays,
+     sortie, two binaries) and Mesocosm 7 (four `borrowed_section` tests
+     whose fixture world has no footprint, three phenotype admission tests),
+     unseen because earlier gates stopped at the first failing target or
+     never ran these suites. Options: (1) "A triage session (Recommended)":
+     each sorted into stale test, real regression or needs-a-ruling, the
+     stale fixed, the rest brought back as questions; (2) "Record only for
+     now". Mark: "A triage session (Recommended)" Next unused932.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
