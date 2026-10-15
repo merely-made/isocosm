@@ -11176,7 +11176,38 @@ what later sections derive from.
      The embeddable sim host is extracted and the Mesocosm head moved onto
      it, proven on recorded native saves and the bench, under a dated plan
      with done-conditions; the loop runs once 885's wait resolves.
-     Next unused896.
+
+896. **The inspection shell becomes a Graphshell endpoint over the core.**
+     Asked 2026-10-14 from the sim host plan's fork 1: a library-and-binary
+     `isocosm-host` cannot depend on products that depend on its library.
+     Options: (1) "Own package under host/ (Recommended)"; (2) "Retire the
+     shell"; (3) "Each product's dev lane". Mark: "own package under host/,
+     but is there anything in the stack reminiscent of this, which would
+     apply...? or like, what else serves a similar role?" Evidence: mere's
+     Graphshell session stack (`chirograph`, `graphshell-endpoint` with local,
+     stdio and network carriers, the client port `mere/ports/graphshell`)
+     already serves Cleromancy, Knot, mer3ly's repo-graph, Distillery and the
+     VTT's `isometry-graphshell`. Put back as "Graphshell endpoint" or "Own
+     package under host/". Mark: "oh, graphshell for sure"
+     The cross-product desktop shell retires in favour of a Graphshell
+     endpoint over the core; product-specific panels go to product-owned
+     endpoints, as the VTT's already is.
+
+897. **Bench worlds prove the Mesocosm head before 875's inputs land.**
+     Asked 2026-10-14, fork 2. Options: (1) "Bench worlds (Recommended)":
+     the bench is a dev instrument, not a head, so 885 does not bind it; (2)
+     "Authored fixture world"; (3) "Wait for 875's inputs".
+     Mark: "Bench worlds (Recommended)"
+
+898. **All three product hosts sit on isomere's `Assembly`.**
+     Asked 2026-10-14, fork 3. Options: (1) "Yes, all on Assembly
+     (Recommended)", moving `mesocosm-genet` off its own winit/wgpu loop;
+     (2) "Mesocosm keeps its loop". Mark: "Yes, all on Assembly
+     (Recommended)", then "tell me more about assembly"; given the account
+     (window glue over cambium's host: viewport producers, scenario lane,
+     capture, error and profile lines; Mesocosm's `SectionProducer` already
+     exists), "naw, that was plenty, thank you".
+     Next unused899.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

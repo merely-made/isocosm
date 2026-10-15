@@ -3,7 +3,7 @@
 **Date:** 2026-10-14
 
 **Status, 2026-10-14:** plan. Opened by rulings 884, 892 and 895; carries
-887's first milestone. Nothing is built yet. Forks are listed at the end.
+887's first milestone; forks settled by 896 to 898. Nothing is built yet.
 
 ## Why
 
@@ -50,22 +50,39 @@ as a library. Ruling 885 keeps generated worlds behind 875's witness. Under
 
 ## Phases
 
-**H0. Invert the dependency.** `isocosm-host` becomes a library holding
+Forks settled by 896 to 898: the inspection shell becomes a Graphshell
+endpoint, bench worlds prove the head before 875's inputs, and all three
+product hosts sit on isomere's `Assembly`.
+
+**H0. The core library.** `isocosm-host` gains a library target holding
 `World`, `WorldSave`, attention binding, file saves and streams, with no
-product crate in its graph. The inspection shell moves to a binary that
-depends on the core and the products (fork 1).
-Done when the core builds and tests with no product dependency; the shell
-builds with all three features and its existing tests pass; and
+product crate in the library's graph. The desktop shell stays the package's
+binary for now; nothing depends on the library yet, so there is no cycle.
+Done when the library builds and tests without any product feature; the
+binary builds with all three features and its existing tests pass; and
 `--validate-save` behaves as before.
 
 **H1. Founding.** The core founds a `Session` from a product's founding
 request: preset, seed, population and the generated world's 875 witness when
-there is one. Under 885 it refuses a generated world without the witness.
-Done when one test refuses a witnessless generated founding; one founds a
-fixture or bench world (fork 2) to the same state hash as the product's
-existing path; and one round-trips the founded world through `WorldSave`.
+there is one. Under 885 a head refuses a generated world without the
+witness; under 897 the bench, a dev instrument, founds its worlds.
+Done when one test refuses a witnessless generated founding for a head; the
+bench founds through the core to the same state hash as its existing path;
+and the founded world round-trips through `WorldSave`.
 
-**H2. Drive and pace.** The core's driver owns the envelope queue, the
+**H2. The Graphshell inspection endpoint (896).** The core serves a
+Graphshell endpoint: sites, individuals, stepping and saves as projections,
+and step, inspect and save as intents. It runs on the local and stdio
+carriers and is shown in mere's Graphshell port. Product-specific panels
+(Mesocosm checkpoints, VTT downtime) move to product-owned endpoints, as the
+VTT's `isometry-graphshell` already is. The bespoke desktop shell and its
+product features then retire from `isocosm-host`, so products can depend on
+the core without a cycle.
+Done when the endpoint serves a bench world over stdio and through the
+local carrier; the Graphshell port shows it, with a captured frame; and
+`isocosm-host` has no product dependency left.
+
+**H3. Drive and pace.** The core's driver owns the envelope queue, the
 wall-clock pacing, the per-advance step ceiling and the envelope trace. A
 product supplies its translation from overlay envelopes to native commands
 and its own loop hooks. Mesocosm's `Runtime` is re-expressed on it, and its
@@ -74,45 +91,39 @@ Done when `mesocosm-runtime`'s tests pass unchanged; a recorded Mesocosm
 trace replays to its recorded hash through the core; and a planted fault in
 the translation seam is caught.
 
-**H3. Live input.** Keys and pointer arrive from the window host. The core
+**H4. Live input.** Keys and pointer arrive from the window host. The core
 dispatches them through a product keymap to envelopes, and resolves pointer
-picks against the product's viewport.
+picks against the product's viewport leaf.
 Done when `mesocosm-genet`'s E, Space, click, Q, right-click and S, and the
 checkpoint and board keys, reach the session through the core; a headless
 input test drives them; and the bench scenarios still pass.
 
-**H4. Saves and import.** `WorldSave` is the one envelope. The core imports
+**H5. Saves and import.** `WorldSave` is the one envelope. The core imports
 a Mesocosm `GameSave`, and later Eponym Game13 and the VTT campaign, into it
 with the product section kept as opaque bytes.
 Done when a save written by the Mesocosm head loads in the core and resumes
-to the same hash, and an unknown section is carried untouched through a
-round trip.
+to the same hash, and an unknown section survives a round trip untouched.
 
-**H5. The Mesocosm head on the core.** `mesocosm-genet` founds, drives,
-takes input and saves through the core, on `isomere::host::Assembly` (fork 3).
-Done when the head boots on a bench or fixture world with a captured frame;
-`--watch` resumes a save written through the core; and once 885 resolves (the
-A1 lane's 890 capture path passes the joint witness) a default launch founds
-a generated world. For 887, a lineage reaches the epoch boundary and the
-trait board, captured.
+**H6. The Mesocosm head on the core and `Assembly` (898).** `mesocosm-genet`
+founds, drives, takes input and saves through the core, and its window moves
+onto `Assembly`. The terrarium section becomes a viewport producer (the
+existing `borrowed_section::SectionProducer` is the start), and its chrome
+becomes Cambium views.
+Done when the head boots on a bench world with a captured frame; `--watch`
+resumes a save written through the core; frame pacing and pointer picking
+in the viewport leaf are measured against today's loop; and once 885
+resolves (the A1 lane's 890 capture path passes the joint witness) a default
+launch founds a generated world. For 887, a lineage reaches the epoch
+boundary and the trait board, captured.
 
 **Later.** Eponym's `session` on the core (founding a generated world, asks
 through the UI, succession in the client), then the VTT over the sim
 (in-app campaign founding from a seeded draw). Each gets phases here when it
-starts. The unified inspection shell keeps working throughout.
-
-## Forks for Mark
-
-1. **The shell's package.** A library-and-binary package cannot depend on
-   products that depend on its library without a package cycle. *To verify
-   in H0.* The shell needs a package of its own, or each product hosts it.
-2. **Proving worlds before 875's inputs land.** Bench worlds (the dev bench
-   already founds generated worlds), an authored fixture world through
-   `--spread`, or wait for the inputs.
-3. **Uniform means isomere `Assembly`.** Whether all three product hosts sit
-   on `Assembly`, which moves `mesocosm-genet` off its own winit/wgpu loop.
+starts.
 
 ## Progress
 
 - **2026-10-14:** plan written from the runtime check and the code read
-  above; rulings 884 to 895 recorded.
+  above; rulings 884 to 895 recorded. Forks settled by 896 to 898; the
+  Graphshell endpoint (H2) now removes the package cycle, so no shell
+  package is needed.

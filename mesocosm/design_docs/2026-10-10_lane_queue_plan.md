@@ -15,7 +15,7 @@ failure (grazer meal holdings 12304.8 exact, 12319.0 crowd, p 0.73). C11 is cert
 joins the stock kernel, eleven compiled faults caught; titles are outside
 C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
-owns hashes, qualifications and remaining done-conditions. Next unused896.
+owns hashes, qualifications and remaining done-conditions. Next unused899.
 
 The newest Progress entry below owns execution state. The following block
 records an earlier resumed snapshot; later checkpoints and parked lanes
