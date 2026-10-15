@@ -6,29 +6,31 @@
 //! routes, and the stored groups of an examined site. Examining a site or
 //! inspecting a group is curation, stepping is domain truth, and saving is an
 //! external effect. It reads native state as a creative observer, so it is
-//! an inspection surface, never a player's view.
+//! an inspection surface, never a player's view. `disclosure` is what the
+//! product endpoints share with it.
 
 mod cards;
+pub mod disclosure;
 
-use std::collections::BTreeMap;
 use std::path::PathBuf;
 
 use chirograph::{
-    CachePolicy, CarrierNotice, ContentHash, EndpointDescriptor, IntentInvocation, IntentResult,
-    ProjectionOffer, ProjectionRequest, ProjectionSession, ProjectionSnapshot, ProtocolVersion,
-    ResourceRequest, ResourceResponse, Revision, SceneEpoch, SceneSnapshot,
+    CarrierNotice, EndpointDescriptor, IntentInvocation, IntentResult, ProjectionOffer,
+    ProjectionRequest, ProjectionSnapshot, ResourceRequest, ResourceResponse,
 };
 use graphshell_endpoint::{
     IntentSink, PresentationSource, ProjectionCatalog, ProjectionNoticeSource, ProjectionSource,
 };
 
 use crate::world::World;
+use disclosure::{Disclosure, rejected};
 
 pub const SESSION: &str = "isocosm:world";
 pub const EXAMINE: &str = "isocosm.examine-site";
 pub const INSPECT: &str = "isocosm.inspect-group";
 pub const STEP: &str = "isocosm.step";
 pub const SAVE: &str = "isocosm.save";
+const ADAPTER: &str = "isocosm.world";
 
 /// What the inspector has examined, kept between snapshots.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -41,46 +43,16 @@ pub struct SimEndpoint {
     world: World,
     save_to: Option<PathBuf>,
     curation: Curation,
-    revision: u64,
-    snapshot: Option<ProjectionSnapshot>,
-    resources: BTreeMap<ContentHash, Vec<u8>>,
+    disclosure: Disclosure,
 }
 
 impl SimEndpoint {
     pub fn new(world: World, save_to: Option<PathBuf>) -> Self {
-        Self { world, save_to, curation: Curation::default(), revision: 1, snapshot: None,
-            resources: BTreeMap::new() }
+        Self { world, save_to, curation: Curation::default(), disclosure: Disclosure::new(SESSION) }
     }
 
     pub fn world(&self) -> &World { &self.world }
     pub fn curation(&self) -> Curation { self.curation }
-
-    fn request(&self) -> ProjectionRequest {
-        ProjectionRequest {
-            version: ProtocolVersion::V1,
-            session: ProjectionSession(SESSION.into()),
-            score: sceno::Score::new(cards::arrangement()),
-        }
-    }
-
-    /// The targeted item's source id, when this snapshot advertised the intent on it.
-    fn advertised(&self, snapshot: &ProjectionSnapshot, intent: &IntentInvocation) -> Option<String> {
-        let item = snapshot.scene.active_item(intent.target)?;
-        let offers = snapshot.presentation.offers_for(intent.target)?;
-        offers.iter().any(|offer| offer.semantics.actions.iter().any(|a| a.intent.0 == intent.intent))
-            .then_some(())?;
-        let source = snapshot.scene.tables.sources.get(item.source.0 as usize)?.as_ref()?;
-        Some(source.id.clone())
-    }
-
-    fn accepted(&mut self) -> IntentResult {
-        self.revision += 1;
-        IntentResult::Accepted
-    }
-}
-
-fn rejected(reason: impl Into<String>) -> IntentResult {
-    IntentResult::Rejected { reason: reason.into() }
 }
 
 /// The ticks a step asks for: an empty payload is one, else `{"ticks": n}`.
@@ -97,7 +69,7 @@ impl ProjectionCatalog for SimEndpoint {
     fn describe(&self) -> EndpointDescriptor {
         EndpointDescriptor {
             label: "Isocosm".into(),
-            projections: vec![ProjectionOffer { label: "World".into(), request: self.request() }],
+            projections: vec![ProjectionOffer { label: "World".into(), request: disclosure::request(SESSION) }],
         }
     }
 }
@@ -106,29 +78,9 @@ impl ProjectionSource for SimEndpoint {
     type Error = String;
 
     fn snapshot(&mut self, request: ProjectionRequest) -> Result<ProjectionSnapshot, Self::Error> {
-        if request.version.major != ProtocolVersion::V1.major {
-            return Err("projection request uses an unsupported protocol".into());
-        }
-        if request.score.version != sceno::SCORE_VERSION {
-            return Err("projection request uses an unsupported score".into());
-        }
-        if request.session.0 != SESSION {
-            return Err("projection request names an unknown Isocosm session".into());
-        }
         let curation = self.curation;
-        let (items, scene) = self.world.read(|session| cards::world(session, curation))??;
-        let scene = SceneSnapshot::from_dense(SceneEpoch(1), Revision(self.revision), scene)
-            .map_err(|error| format!("invalid Isocosm scene: {error:?}"))?;
-        let presentation = cards::presentations(&items, &scene, &mut self.resources)?;
-        let snapshot = ProjectionSnapshot {
-            version: ProtocolVersion::V1,
-            session: request.session,
-            scene,
-            presentation,
-            cache_policy: CachePolicy::default(),
-        };
-        self.snapshot = Some(snapshot.clone());
-        Ok(snapshot)
+        let (items, links) = self.world.read(|s| (cards::items(s, curation), cards::links(s, curation)))?;
+        self.disclosure.snapshot(request, ADAPTER, &items, &links)
     }
 }
 
@@ -136,9 +88,7 @@ impl PresentationSource for SimEndpoint {
     type Error = String;
 
     fn resource(&mut self, request: ResourceRequest) -> Result<ResourceResponse, Self::Error> {
-        let bytes = self.resources.get(&request.resource).cloned()
-            .ok_or("resource was not disclosed by this Isocosm session")?;
-        Ok(ResourceResponse { session: request.session, resource: request.resource, bytes })
+        self.disclosure.resource(request)
     }
 }
 
@@ -146,34 +96,28 @@ impl IntentSink for SimEndpoint {
     type Error = String;
 
     fn invoke(&mut self, intent: IntentInvocation) -> Result<IntentResult, Self::Error> {
-        let snapshot = self.snapshot.as_ref().ok_or("intent arrived before an Isocosm snapshot")?;
-        if intent.observed_epoch != snapshot.scene.epoch || intent.observed_revision.0 != self.revision {
-            return Ok(IntentResult::Stale {
-                current_epoch: snapshot.scene.epoch,
-                current_revision: Revision(self.revision),
-            });
-        }
-        let Some(source) = self.advertised(snapshot, &intent) else {
-            return Ok(rejected("target or intent was not disclosed by this Isocosm snapshot"));
+        let source = match self.disclosure.admit(&intent)? {
+            Ok(source) => source,
+            Err(refused) => return Ok(refused),
         };
         let id = |prefix: &str| source.strip_prefix(prefix).and_then(|n| n.parse::<u64>().ok());
         Ok(match intent.intent.as_str() {
             EXAMINE => match id("site:") {
                 Some(site) => {
                     self.curation = Curation { site: Some(site), group: None };
-                    self.accepted()
+                    self.disclosure.accepted()
                 },
                 None => rejected("only a site is examined"),
             },
             INSPECT => match id("group:") {
                 Some(group) => {
                     self.curation.group = Some(group);
-                    self.accepted()
+                    self.disclosure.accepted()
                 },
                 None => rejected("only a stored group is inspected"),
             },
             STEP => match ticks(&intent.payload).and_then(|n| self.world.advance(n)) {
-                Ok(()) => self.accepted(),
+                Ok(()) => self.disclosure.accepted(),
                 Err(why) => rejected(why),
             },
             SAVE => match &self.save_to {
