@@ -117,3 +117,47 @@ pub(crate) fn with_game(
     next.insert(mode.key().into(), serde_json::to_vec(&section).map_err(|e| e.to_string())?);
     Ok(next)
 }
+
+/// The shell's per-mode game bytes over the core's sections: one available
+/// mode parsed, every other mode carried unread.
+pub(crate) trait Games {
+    fn read_game<T>(&self, mode: Mode, read: impl FnOnce(&isocosm::Session, &[u8]) -> Result<T, String>)
+        -> Result<T, String>;
+    fn product_game<T>(&self, before: crate::world::Cut, mode: Mode,
+        admit: impl FnOnce(&mut isocosm::Session, Vec<u8>) -> Result<(T, Vec<u8>), String>)
+        -> Result<T, String>;
+}
+
+impl Games for World {
+    fn read_game<T>(&self, mode: Mode, read: impl FnOnce(&isocosm::Session, &[u8]) -> Result<T, String>)
+        -> Result<T, String> {
+        self.read_sections(|session, sections| read(session, &game(sections, mode)?))?
+    }
+    fn product_game<T>(&self, before: crate::world::Cut, mode: Mode,
+        admit: impl FnOnce(&mut isocosm::Session, Vec<u8>) -> Result<(T, Vec<u8>), String>)
+        -> Result<T, String> {
+        self.product_sections(before, |session, sections| {
+            let (value, next) = admit(session, game(sections, mode)?)?;
+            Ok((value, with_game(sections, mode, next)?))
+        })
+    }
+}
+
+/// An Eponym handoff becomes a world only once its marked mode state checks
+/// against the native session it carries.
+#[cfg(feature = "eponym")]
+pub(crate) fn take_eponym(handoff: eponym_play::NativeHandoff)
+    -> Result<World, (eponym_play::NativeHandoff, String)> {
+    let checked = (|| {
+        let state = eponym_play::contract::mode::ModeState::decode(&handoff.game)?
+            .ok_or("Eponym handoff lacks its marked mode state")?;
+        for binding in &state.bindings { binding.current(&handoff.native)?; }
+        state.validate_native(&handoff.native)?;
+        Ok::<(), String>(())
+    })();
+    if let Err(why) = checked { return Err((handoff, why)); }
+    match with_game(&BTreeMap::new(), Mode::Eponym, handoff.game.clone()) {
+        Err(why) => Err((handoff, why)),
+        Ok(sections) => Ok(World::with_sections(handoff.native, sections)),
+    }
+}

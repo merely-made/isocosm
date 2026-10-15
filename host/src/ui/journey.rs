@@ -3,6 +3,8 @@
 
 //! Individual native journey approvals and explicit DM publication.
 
+use crate::mode_sections::Games as _;
+use crate::products::Submit as _;
 use cambium::{el, text};
 use isometry_campaign::native::{GameBindings,
     joint_journey::{self, JourneyEnvelope, JourneyInput, JourneyView, DepartureKind, DepartureResult}};

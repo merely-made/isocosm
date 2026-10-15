@@ -104,7 +104,7 @@ fn open_eponym(source: &std::path::Path, spatial: PathBuf) -> Result<World, Stri
         let standalone = eponym_play::Session::restore_solving(&bytes,
             eponym_client::MOTION_SOLVER).map_err(|e| format!("Eponym source: {e:?}"))?;
         let handoff = standalone.into_native_mode(&input).map_err(|(_,why)| why)?;
-        World::take_eponym(handoff).map_err(|(_,why)| why)
+        crate::mode_sections::take_eponym(handoff).map_err(|(_,why)| why)
     }
     #[cfg(not(feature = "eponym"))]
     { let _ = (source, spatial); Err("Eponym handoff is absent from this build".into()) }
@@ -129,7 +129,7 @@ fn open_eponym_timed(source: &std::path::Path, spatial: PathBuf, actions: PathBu
             eponym_client::MOTION_SOLVER).map_err(|e| format!("Eponym timed source: {e:?}"))?;
         let handoff = eponym_client::borrowed::handoff::take_timed(standalone, &spatial, &actions)
             .map_err(|(_,why)| why)?;
-        World::take_eponym(handoff).map_err(|(_,why)| why)
+        crate::mode_sections::take_eponym(handoff).map_err(|(_,why)| why)
     }
     #[cfg(not(feature = "eponym"))]
     { let _ = (source, spatial, actions); Err("Eponym timed handoff is absent from this build".into()) }

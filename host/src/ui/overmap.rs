@@ -3,6 +3,7 @@
 
 //! Per-window settings over the party's exact retained native disclosures.
 
+use crate::mode_sections::Games as _;
 use cambium::{el,text,graph_atlas_swatch,GraphAtlasEvent};
 use isometry_campaign::native::overmap::{self,ViewSettings};
 use super::{model::{App,Defaults},view::{Child,button}};

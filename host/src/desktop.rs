@@ -1,6 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
+use crate::mode_sections::Games as _;
 use std::{cell::RefCell, collections::HashMap, rc::Rc, sync::Arc};
 use cambium::ProjectionId;
 use cambium_rootstock::HostTree;

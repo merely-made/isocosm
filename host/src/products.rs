@@ -215,3 +215,23 @@ pub(crate) fn advance_mesocosm(session: &mut Session, bytes: Vec<u8>, access:iso
         .map_err(|error| format!("{error:?}"))?;
     Ok(((),serde_json::to_vec(&game).map_err(|e| e.to_string())?))
 }
+
+/// A window submits its product input through the shell's game bytes.
+pub(crate) trait Submit {
+    fn submit_product(&self, input: &Input) -> Result<String, String>;
+}
+
+impl Submit for crate::window::Window {
+    fn submit_product(&self, input: &Input) -> Result<String, String> {
+        use crate::mode_sections::Games;
+        let cut = self.projection()?;
+        let before = self.cut()?;
+        let window = self.handle()?;
+        let participant = self.participant();
+        let mode = Mode::parse(&self.binding().mode)?;
+        self.world().product_game(before, mode, |session, game| {
+            session.sim.attention_window(participant.0, window.0)?;
+            submit_game(session, &cut, mode, input, game)
+        })
+    }
+}

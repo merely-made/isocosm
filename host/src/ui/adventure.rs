@@ -3,6 +3,7 @@
 
 //! Actual DM pack, storylet and goal decisions on this host's native owner.
 
+use crate::mode_sections::Games as _;
 use cambium::{el,text,lens,caret_text_field,TextInput};
 use isocosm_overlay::{Intent,Seat,Tick,vtt::{VttIntent,VttIntentEnvelope,HookIntent}};
 use isometry_campaign::native::{pack::{self,PackEnvelope,PackInput},storylets};

@@ -3,6 +3,7 @@
 
 //! Deliberate single-record learning and sharing at the actual player's cut.
 
+use crate::mode_sections::Games as _;
 use cambium::{el,text};
 use isocosm_overlay::{EntityHandle,Seat,vtt::{PartyAction,PartyIntent,VttIntent}};
 use super::{model::{App,Defaults},view::{Child,button}};

@@ -3,6 +3,8 @@
 
 //! Exact offered played-loop answers over the host's current native owner.
 
+use crate::mode_sections::Games as _;
+use crate::products::Submit as _;
 use cambium::{el, text};
 use isocosm::directing::interim::Happening;
 use isocosm_overlay::{EntityHandle, Tick, mesocosm::{BirthAnswer, CheckpointAnswer,

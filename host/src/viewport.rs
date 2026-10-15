@@ -3,6 +3,7 @@
 
 //! One product picture per local window, using native admission and the real producer registry.
 
+use crate::mode_sections::Games as _;
 use std::collections::{BTreeMap,BTreeSet};
 use cambium_rootstock::ProducerRegistry;
 use isocosm_overlay::Seat;

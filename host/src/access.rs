@@ -6,7 +6,7 @@ use isocosm::directing::readings::{self, Mode, View};
 use isocosm::schema::Id;
 use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
 
-pub(crate) fn resolve(
+pub fn resolve(
     session: &Session,
     participant: ParticipantHandle,
     seat: Seat,
@@ -22,7 +22,7 @@ pub(crate) fn resolve(
     })
 }
 
-pub(crate) fn permitted(session: &Session, access: OrdinaryAccess) -> View {
+pub fn permitted(session: &Session, access: OrdinaryAccess) -> View {
     let subject = access.subject.map_or(Id::MAX, |id| id.0);
     let visibility = match access.seat {
         Seat::Player => Mode::Survival,
@@ -33,7 +33,7 @@ pub(crate) fn permitted(session: &Session, access: OrdinaryAccess) -> View {
 
 /// Filter ordinary attention publication as well as the native View. The
 /// native union remains complete for replay, collection and foreground.
-pub(crate) fn filter_attention(session: &Session, access: OrdinaryAccess, visible: &View,
+pub fn filter_attention(session: &Session, access: OrdinaryAccess, visible: &View,
     attention: &mut isocosm_overlay::PlayerAttention) {
     use isocosm_overlay::{Pointable, key_for_handle};
     if access.seat != Seat::Player { return; }
