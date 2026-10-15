@@ -4,7 +4,7 @@
 
 **Status, 2026-10-14:** in progress. Opened by rulings 884, 892 and 895;
 carries 887's first milestone; forks settled by 896 to 898. H0 and H1
-landed; H2 next.
+landed; H2 assessed and its forks ruled (899 to 903).
 
 ## Why
 
@@ -49,6 +49,34 @@ as a library. Ruling 885 keeps generated worlds behind 875's witness. Under
   files import `isocosm::` directly. The core is where the contract becomes
   the real boundary.
 
+**H2 assessment, 2026-10-15.**
+
+- **An endpoint is four traits** in `graphshell-endpoint` (mere `0b9b7a9b`):
+  `ProjectionCatalog::describe`, `ProjectionSource::snapshot`,
+  `PresentationSource::resource` and `IntentSink::invoke`. A snapshot is a
+  Scenograph `SceneSnapshot` plus a presentation manifest that binds scene
+  instances to offers: portable card, native glyph, image, editable text.
+  An advertised action carries an optional input form and an effect class:
+  `Curation`, `DomainTruth` or `ExternalEffect`.
+- **Inspection maps onto that directly.** Sites are scene instances, routes
+  are relations, and individuals sit under their sites. Each instance gets a
+  portable card (counts, accounts, traits, parts). Stepping and founding are
+  `DomainTruth` actions, examining a site or body is `Curation`, and saving
+  is `ExternalEffect`. The VTT's `isometry-graphshell` (576 lines) is the
+  in-repo pattern: a stdio binary over `serve_basic`, tested through the
+  traits.
+- **No live viewer mounts an arbitrary endpoint.** The Graphshell port's
+  `g4_sessions` mounts endpoint processes (`sessions::mount_endpoint_processes`)
+  but writes a static HTML session receipt, which renders cards and
+  actions. Turnstone hosts an endpoint process live, but only Knot's
+  (`src/knot_authoring.rs`). Knot and Cleromancy prove theirs through
+  `LocalCarrier` tests and receipts.
+- **The desktop shell's product panels** are about 1,400 lines in
+  `host/src/ui/`. Generic inspection (sites, crowds, bodies, parts, step,
+  examine) is the endpoint's. Mesocosm checkpoints, Eponym successors and
+  the VTT's journey, overmap, knowledge, adventure, authoring and downtime
+  panels belong to product endpoints under 896. Nothing plays them today.
+
 ## Phases
 
 Forks settled by 896 to 898: the inspection shell becomes a Graphshell
@@ -71,17 +99,34 @@ Done when one test refuses a witnessless generated founding for a head; the
 bench founds through the core to the same state hash as its existing path;
 and the founded world round-trips through `WorldSave`.
 
-**H2. The Graphshell inspection endpoint (896).** The core serves a
-Graphshell endpoint: sites, individuals, stepping and saves as projections,
-and step, inspect and save as intents. It runs on the local and stdio
-carriers and is shown in mere's Graphshell port. Product-specific panels
-(Mesocosm checkpoints, VTT downtime) move to product-owned endpoints, as the
-VTT's `isometry-graphshell` already is. The bespoke desktop shell and its
-product features then retire from `isocosm-host`, so products can depend on
-the core without a cycle.
-Done when the endpoint serves a bench world over stdio and through the
-local carrier; the Graphshell port shows it, with a captured frame; and
-`isocosm-host` has no product dependency left.
+**H2. The Graphshell inspection endpoint (896, 899 to 903).** Four steps,
+in order:
+
+1. The core serves a Graphshell endpoint from an `endpoint` module behind a
+   feature in `isocosm-host` (901). Sites, routes, crowds, bodies and parts
+   are scene instances with portable cards. Founding and stepping are
+   `DomainTruth` actions, examining a site or body is `Curation`, and saving
+   is `ExternalEffect`. The `isocosm-host` binary serves it over stdio,
+   beside `--validate-save`.
+2. Every desktop-shell product panel moves to a product-owned endpoint
+   (900), with no new `isometry` names. The VTT's journey, overmap,
+   knowledge, adventure, authoring and downtime panels go to `isocosm-vtt`
+   (902). Mesocosm's checkpoint and board answers go to an `endpoint`
+   module in `mesocosm-runtime`, and Eponym's successors to one in
+   `eponym-play` (903), each behind a feature.
+3. The desktop shell (`ui/`, `desktop`, `products`, `viewport`, `cli`,
+   `mode_sections`, `shell_tests`) and `isocosm-host`'s product features
+   retire, so products can depend on the core without a cycle.
+4. When the capabilities being lifted out of Graphshell's reference host
+   land (899), the endpoints adopt them for live viewing.
+
+Done when each endpoint's projections, cards and actions pass
+`LocalCarrier` tests against a bench world, with intents accepted and
+refused as the panels did; a `g4_sessions` receipt mounts the core and
+product endpoints and renders them; and `isocosm-host` has no product
+dependency left. The four shell tests that already fail on main go with
+the shell; any behaviour they meant to cover is carried by an endpoint
+test or recorded as dropped.
 
 **H3. Drive and pace.** The core's driver owns the envelope queue, the
 wall-clock pacing, the per-advance step ceiling and the envelope trace. A
