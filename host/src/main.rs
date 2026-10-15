@@ -2,20 +2,6 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use isocosm_host::{save, world};
-#[cfg(feature = "desktop")]
-use isocosm_host::{access, binding, file_save, native_attention, spatial, stream, window};
-#[cfg(feature = "desktop")]
-mod mode_sections;
-#[cfg(any(feature = "mesocosm", feature = "vtt", feature = "eponym"))]
-mod viewport;
-#[cfg(feature = "desktop")]
-mod cli;
-#[cfg(feature = "desktop")]
-mod desktop;
-#[cfg(feature = "desktop")]
-mod products;
-#[cfg(feature = "desktop")]
-mod ui;
 
 fn main() -> Result<(), String> {
     let args: Vec<_> = std::env::args_os().skip(1).collect();
@@ -30,10 +16,8 @@ fn main() -> Result<(), String> {
     if args.first().is_some_and(|a| a == "--endpoint") {
         return endpoint(&args[1..]);
     }
-    #[cfg(feature = "desktop")]
-    { desktop::run(cli::open(&args)?) }
-    #[cfg(not(feature = "desktop"))]
-    { Err("usage: --validate-save <save>; windowed play requires a product feature".into()) }
+    Err(concat!("usage: --validate-save SAVE | --endpoint (--bench SEED POPULATION SITES LINEAGES | SAVE) ",
+        "[--save PATH]; the endpoint needs the `endpoint` feature").into())
 }
 
 /// Serve the inspection endpoint over stdio (ruling 901): `--endpoint --bench
@@ -64,5 +48,3 @@ fn endpoint(args: &[std::ffi::OsString]) -> Result<(), String> {
         .map_err(|e| format!("{e:?}"))
 }
 
-#[cfg(all(test, feature = "mesocosm", feature = "vtt", feature = "eponym"))]
-mod shell_tests;
