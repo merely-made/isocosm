@@ -13,6 +13,8 @@ resolver = "2"
 
 [features]
 default = []
+# The library's test fixture, for the shell's product tests.
+fixtures = []
 desktop = ["dep:cambium", "dep:cambium-rootstock", "dep:cambium-genet-winit-host", "dep:isomere"]
 mesocosm = ["desktop", "dep:mesocosm-genet", "dep:mesocosm-runtime", "dep:mesocosm-views", "dep:isomere"]
 # Reuse the existing native-body Section producer on the same RenderCore;

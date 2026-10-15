@@ -6,10 +6,10 @@ use std::collections::BTreeMap;
 use isocosm::history::Saved as NativeSaved;
 use serde::{Deserialize, Serialize};
 
-pub(crate) const FORMAT_VERSION: u32 = 1;
+pub const FORMAT_VERSION: u32 = 1;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub(crate) struct WorldSave {
+pub struct WorldSave {
     pub format: u32,
     pub native: NativeSaved,
     // Unknown modes are carried as bytes, never parsed as JSON or native facts.

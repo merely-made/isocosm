@@ -12,10 +12,10 @@ use crate::{binding::Binding, native_attention, save::{WorldSave, FORMAT_VERSION
 #[derive(Clone)]
 struct OpenWorld { session: Session, sections: BTreeMap<String, Vec<u8>> }
 
-pub(crate) struct World(Rc<RefCell<OpenWorld>>);
+pub struct World(Rc<RefCell<OpenWorld>>);
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(crate) struct Cut { pub tick: u64, pub entries: usize, pub state_hash: u64 }
+pub struct Cut { pub tick: u64, pub entries: usize, pub state_hash: u64 }
 
 fn cut(session: &Session) -> Cut {
     Cut { tick: session.sim.state().tick, entries: session.entries.len(), state_hash: session.sim.state_hash() }
@@ -25,25 +25,10 @@ impl World {
     pub fn new(session: Session) -> Self {
         Self(Rc::new(RefCell::new(OpenWorld { session, sections: BTreeMap::new() })))
     }
-    #[cfg(all(feature = "desktop", feature = "eponym"))]
-    pub fn take_eponym(handoff: eponym_play::NativeHandoff)
-        -> Result<Self, (eponym_play::NativeHandoff, String)> {
-        let checked = (|| {
-            let state = eponym_play::contract::mode::ModeState::decode(&handoff.game)?
-                .ok_or("Eponym handoff lacks its marked mode state")?;
-            for binding in &state.bindings { binding.current(&handoff.native)?; }
-            state.validate_native(&handoff.native)?;
-            Ok::<(), String>(())
-        })();
-        if let Err(why) = checked { return Err((handoff, why)); }
-        let sections = crate::mode_sections::with_game(&BTreeMap::new(),
-            crate::products::Mode::Eponym, handoff.game.clone());
-        match sections {
-            Err(why) => Err((handoff, why)),
-            Ok(sections) => Ok(Self(Rc::new(RefCell::new(OpenWorld {
-                session: handoff.native, sections,
-            })))),
-        }
+    /// A world whose session and per-mode sections arrive together, as a
+    /// product handoff carries them.
+    pub fn with_sections(session: Session, sections: BTreeMap<String, Vec<u8>>) -> Self {
+        Self(Rc::new(RefCell::new(OpenWorld { session, sections })))
     }
     pub fn share(&self) -> Self { Self(self.0.clone()) }
     pub fn resume(saved: WorldSave, execution: Execution) -> Result<Self, String> {
@@ -62,14 +47,12 @@ impl World {
         let world = self.0.try_borrow().map_err(|_| "world is being advanced")?;
         Ok(read(&world.session))
     }
-    /// The requested available mode's opaque bytes and current native owner
-    /// are borrowed at one cut. Reading creates no Session or authority.
-    #[cfg(feature = "desktop")]
-    pub fn read_game<T>(&self, mode: crate::products::Mode,
-        read: impl FnOnce(&Session, &[u8]) -> Result<T, String>) -> Result<T, String> {
+    /// The session and every mode's opaque section bytes, borrowed at one
+    /// cut. Reading creates no Session or authority.
+    pub fn read_sections<T>(&self, read: impl FnOnce(&Session, &BTreeMap<String, Vec<u8>>) -> T)
+        -> Result<T, String> {
         let world = self.0.try_borrow().map_err(|_| "world is being advanced")?;
-        let game = crate::mode_sections::game(&world.sections, mode)?;
-        read(&world.session, &game)
+        Ok(read(&world.session, &world.sections))
     }
     // Only the admitted world driver calls these. A candidate also protects
     // compound native operations whose individual implementation can refuse.
@@ -98,18 +81,16 @@ impl World {
         self.transaction(Some(before), admit)
     }
 
-    /// Native admission and this mode's opaque game bytes publish together.
-    #[cfg(feature = "desktop")]
-    pub fn product_game<T>(
-        &self, before: Cut, mode: crate::products::Mode,
-        admit: impl FnOnce(&mut Session, Vec<u8>) -> Result<(T, Vec<u8>), String>,
+    /// Native admission and the mode sections it rewrites publish together.
+    pub fn product_sections<T>(
+        &self, before: Cut,
+        admit: impl FnOnce(&mut Session, &BTreeMap<String, Vec<u8>>)
+            -> Result<(T, BTreeMap<String, Vec<u8>>), String>,
     ) -> Result<T, String> {
         let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
         if cut(&world.session) != before { return Err("prepared binding is stale".into()); }
-        let game = crate::mode_sections::game(&world.sections, mode)?;
         let mut candidate = world.session.clone();
-        let (value, game) = admit(&mut candidate, game)?;
-        let sections = crate::mode_sections::with_game(&world.sections, mode, game)?;
+        let (value, sections) = admit(&mut candidate, &world.sections)?;
         world.session = candidate;
         world.sections = sections;
         Ok(value)
@@ -137,7 +118,7 @@ impl World {
     }
 }
 
-pub(crate) fn canonical_binding(session: &Session, participant: ParticipantHandle, mut binding: Binding)
+pub fn canonical_binding(session: &Session, participant: ParticipantHandle, mut binding: Binding)
     -> Result<Binding, String> {
     binding.attention.played = session.sim.plays(participant.0)
         .map(isocosm_overlay::EntityHandle).into_iter().collect();

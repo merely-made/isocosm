@@ -1,17 +1,11 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-mod access;
-mod binding;
-mod file_save;
-mod native_attention;
-mod save;
-mod stream;
-mod spatial;
+use isocosm_host::{save, world};
+#[cfg(feature = "desktop")]
+use isocosm_host::{access, binding, file_save, native_attention, spatial, stream, window};
 #[cfg(feature = "desktop")]
 mod mode_sections;
-mod window;
-mod world;
 #[cfg(any(feature = "mesocosm", feature = "vtt", feature = "eponym"))]
 mod viewport;
 #[cfg(feature = "desktop")]
@@ -38,5 +32,5 @@ fn main() -> Result<(), String> {
     { Err("usage: --validate-save <save>; windowed play requires a product feature".into()) }
 }
 
-#[cfg(test)]
-mod tests;
+#[cfg(all(test, feature = "mesocosm", feature = "vtt", feature = "eponym"))]
+mod shell_tests;

@@ -16,18 +16,18 @@ fn current(session: &Session, cut: &Projection, window: WindowHandle) -> Result<
     Ok(if access.seat == Seat::Player { Mode::Survival } else { Mode::Creative })
 }
 
-pub(crate) fn far(session: &Session, cut: &Projection, window: WindowHandle) -> Result<Vec<Crowd>, String> {
+pub fn far(session: &Session, cut: &Projection, window: WindowHandle) -> Result<Vec<Crowd>, String> {
     let mode = current(session, cut, window)?;
     session.sim.far_crowds(cut.access.participant.0, window.0, mode)
 }
 
-pub(crate) fn region(session: &Session, cut: &Projection, window: WindowHandle, site: u64)
+pub fn region(session: &Session, cut: &Projection, window: WindowHandle, site: u64)
     -> Result<RegionReading, String> {
     let mode = current(session, cut, window)?;
     session.sim.region_reading(cut.access.participant.0, window.0, mode, site)
 }
 
-pub(crate) fn inspect(session: &Session, cut: &Projection, window: WindowHandle, site: u64, body: u64)
+pub fn inspect(session: &Session, cut: &Projection, window: WindowHandle, site: u64, body: u64)
     -> Result<InspectedBody, String> {
     let mode = current(session, cut, window)?;
     session.sim.inspected_body(cut.access.participant.0, window.0, mode, site, body)

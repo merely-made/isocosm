@@ -3,6 +3,8 @@
 
 //! Existing native social successors at the actual paired product cut.
 
+use crate::mode_sections::Games as _;
+use crate::products::Submit as _;
 use cambium::{el,text};
 use isocosm_overlay::Seat;
 use super::{model::App,view::{Child,button}};
