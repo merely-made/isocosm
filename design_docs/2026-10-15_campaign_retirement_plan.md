@@ -67,8 +67,9 @@ published. Its consumers are all the VTT's: `isonetry` (110 uses),
 - **F3 (921).** `isonetry` holds the GM store and the proposal lifecycle
   until V2 replaces them with the sim's intent log and branches.
 - **F4 (922).** Publishing is this plan's R4.
-- **Open:** what to do with the `isonetry` name, which Mark likes. It was
-  never published and was free on crates.io on 2026-10-15.
+- **`isonetry` (923, 924).** It is remade as the Isocosm family's session
+  layer, the sim-host plan's H7. Until then it keeps its VTT job, and under
+  921 the GM store and proposals.
 
 ## Phases
 

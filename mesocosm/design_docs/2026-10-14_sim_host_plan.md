@@ -173,6 +173,23 @@ resolves (the A1 lane's 890 capture path passes the joint witness) a default
 launch founds a generated world. For 887, a lineage reaches the epoch
 boundary and the trait board, captured.
 
+**H7. `isonetry`, remade as the family's session layer (923, 924).** One
+peer hosts the core's `World`; other peers send intent envelopes and receive
+the accepted log, so a world is played from several machines in each of the
+three games. It starts with an assessment, whose forks go to Mark before
+code: what Graphshell's network carrier (`graphshell_endpoint::network`)
+already carries for the endpoints; Stickleback's joined spaces, which the
+[Stickleback plan](../../design_docs/2026-08-08_stickleback_migration_plan.md)
+adopts for campaign sync (K0 to K2); the stack's transport (murm,
+`mere-transport`); how much of `isonetry`'s replication core (protocol,
+host and client state machines, rolling log hash, iroh link) carries over;
+and where its VTT-only parts go (`isocosm-vtt`, with the GM store and
+proposals held in `isonetry` until V2 under 921). Draft done-condition, to
+be set by that assessment: a world hosted on one peer accepts intents from a
+second over the stack's transport through each product's endpoint, both
+peers reach the same world revision and state hash, and the VTT's table runs
+on it with the old DM-authority core retired.
+
 **Later.** Eponym's `session` on the core (founding a generated world, asks
 through the UI, succession in the client), then the VTT over the sim
 (in-app campaign founding from a seeded draw). Each gets phases here when it
@@ -180,6 +197,8 @@ starts.
 
 ## Progress
 
+- **2026-10-15, H7 added (923, 924):** `isonetry` is remade as the
+  family's session layer; the phase starts with its assessment.
 - **2026-10-15, 910 built:** `World` counts the changes it accepts,
   game sections included (`World::revision`), since a change that rewrites
   only a section (the VTT's roster) leaves the cut alone. `Cut` stays the
