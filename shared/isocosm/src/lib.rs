@@ -5,6 +5,14 @@
 //! Exact population grouping is optional; both execution modes use the same
 //! admitted processes. Unsupported bulk operations execute individually.
 
+/// Whether this build runs the society layer's operations (rulings 886 and 893).
+pub const SOCIETY: bool = cfg!(feature = "society");
+
+/// Refuses a society operation in a build without the feature; `State` is unchanged either way.
+pub(crate) fn society() -> Result<()> {
+    if SOCIETY { Ok(()) } else { Err("the society feature is off in this build".into()) }
+}
+
 pub mod aggregate;
 pub mod anatomy;
 pub mod arrival;

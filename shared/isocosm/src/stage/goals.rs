@@ -7,6 +7,7 @@ use crate::rules::Process;
 impl Simulation {
     pub(crate) fn stage_goal_directives(&self, stage: &mut Stage, process: &Process, next: u64) -> Result<()> {
         if process.goal_directives.is_empty() { return Ok(()); }
+        crate::society()?;
         if stage.count != 1 { return Err("consequential goal directives require an individual native act".into()); }
         let event = &stage.event.as_ref().ok_or("goal directives have no actual staged native event")?.0;
         if event.process != process.id || stage.process != process.id || stage.action != event.id {
