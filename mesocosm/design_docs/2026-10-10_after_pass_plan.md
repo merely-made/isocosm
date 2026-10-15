@@ -17,8 +17,8 @@ C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture
-path landed on branch `a1-reproduction`, merged into local main 2026-10-15 (push pending); 889 and 891 wait for a
-generator lane. 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused929.
+path landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 wait for a
+generator lane. 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused932.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -284,7 +284,11 @@ headed meal choice feels tense rather than clerical.
   shifts which part receives new tissue. Over 240 ticks that moves one
   death in three of five bodied seeds (ticks 25, 40 and 63), matter
   conserved. 890's note that "the ecology is unchanged" holds for bare
-  worlds only. 905 to 907 are not in this branch.
+  worlds only. 905 to 907 are not in this branch. Under 929 the note is
+  narrowed to bare worlds and the coupling is open: a process that moves
+  no part's matter still changes which part receives new tissue, so any
+  added process reseeds bodied trajectories. Under 931 a triage session
+  takes the 22 failures.
 
 - **2026-10-11, Q3 fresh bare seed zero classified:** the original arm
   ends at tick 41 without births; the independently frozen 454/813 candidate

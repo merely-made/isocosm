@@ -22,7 +22,9 @@ pub(crate) use admission::validate_material_provenance;
 /// is never relabelled as fuel.
 const SUN: &str = "sim:energy";
 /// A site's light per tick, and the most it holds. Abundant by declaration:
-/// it never binds a producer, so capture is real and the ecology is unchanged.
+/// it never binds a producer, so capture is real. Bare ecologies run as they
+/// did before 890; in bodied ones the sun process's presence reseeds which
+/// part receives new tissue, so their trajectories differ (wing ruling 929).
 /// A limiting light is a later ruling.
 const LIGHT: u64 = 1_000_000;
 
