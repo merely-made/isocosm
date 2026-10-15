@@ -229,8 +229,8 @@ headed meal choice feels tense rather than clerical.
   Mark (draft questions in the notes folder); no rate or default is
   promoted and A1 stays open until those rulings.
 - **2026-10-15, ruling 890 built: producers capture light (branch
-  `a1-reproduction`, `d873d320`, unmerged), and candidate 9 reproduces on
-  it.** The `sim:energy` variant, because a reserve-account credit only
+  `a1-reproduction`, `d873d320` in the receipts and `360ee3a9` after
+  rebasing onto main, unmerged), and candidate 9 reproduces on it.** The `sim:energy` variant, because a reserve-account credit only
   counts when it lands in body parts (`evidence.rs`), which bare worlds
   cannot. Every ecology site holds light (seeded, then topped up by an
   agentless `ecology:sunlight` while below its cap; abundant by declaration,
