@@ -158,6 +158,44 @@ headed meal choice feels tense rather than clerical.
 
 ## Findings
 
+- **2026-10-14, A1 reopened under 888; the bodied arm fails on a drawn
+  mouth, not on rates.** Source: main `ce01da2d` plus the test-only harness
+  on branch `a1-reproduction` (`shared/isocosm/src/directing/interim/
+  reproduction{.rs,/}`; it gained a form-aware profile, Mesocosm's own
+  played founding, and per-arm runners). The 812 and 813 timing controls ran
+  first: 22 pass-start and journey positives, two planted 813 faults caught
+  (5 and 3 failures), 4 adapter positives and the planted 812 fault caught
+  (3 failures), each restored to exact bytes. Declared pilots, seed 0: bare
+  and played original-rate controls end at tick 41 with no births; the
+  bare candidate qualifies. Declaration 1's candidate (the 2026-10-10
+  meal-three/birth-fourteen profile) on seeds 0 to 19: **bare 20/20**,
+  conserved each tick and replayed in both modes; **bodied 10/20**. The ten
+  bodied failures are extinct at ticks 75 to 117.
+  Cause, checked on all twenty bodied genesis files: `bodied.rs::drawn`
+  gives a limbed consumer a jaw (`rod`) at its head instead of `block`, and
+  `bodied/feeding.rs::configure` then restricts its feed process to the
+  lineages that mouth's port admits (832): `function:contract` admits
+  fauna, `function:intake` admits producers. All eight jawed worlds
+  (seeds 3, 4, 5, 6, 11, 12, 13, 19) fed on `{lineage:1}`, their own
+  lineage, the only fauna there, and all eight died at ticks 75 to 100.
+  Eleven rate variants over two selection batteries (consumer meal, upkeep,
+  feed period, producer yield) were all at or below 1 of 8 on bodied
+  seeds 100 to 107: **rates are inert for that failure.** The unrated
+  fix is the opt-in flag `Bodies::grazing` (limbs stay, the mouth is
+  intake): grazer form, same rates, seeds 0 to 19: **15/20**; with the
+  consumer upkeep period 10 and birth gate 9, **16/20** (the battery's 8/8
+  was luck). The remaining failures die at ticks 117 to 176 after the last
+  births at ticks 70 to 89, with consumers boomed to 75 to 195 on one site,
+  feeding strong and births zero; a lineage's lifespan is one draw, so its
+  generations die together. Receipts, declarations 1 to 7 and their
+  SHA-256 are in the external `q3-reproduction` directory
+  (`a1-2026-10-14-declaration-hashes.txt`, `-arms.log`, `-battery.log`).
+  The pilot receipts of 2026-10-14 name pre-rebase source hashes `00fde080`
+  and `a796ae67`, which are `8c22e46a` and `8367a063` after rebasing onto
+  the reviewer's commits (same code). *Reading, not ruled:* the grazing
+  mouth, and then a per-individual lifespan or hazard, are generator
+  choices for Mark; no rate or default is promoted and A1 stays open.
+
 - **2026-10-11, Q3 fresh bare seed zero classified:** the original arm
   ends at tick 41 without births; the independently frozen 454/813 candidate
   reaches tick 180 with three played births, eight played heirs and three
