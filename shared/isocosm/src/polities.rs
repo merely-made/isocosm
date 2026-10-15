@@ -43,6 +43,7 @@ pub struct PolityReading {
 impl Simulation {
     /// A trusted native read. Consumers must impose their own admitted knowledge cut.
     pub fn polity_reading(&self, id: Id) -> Result<PolityReading> {
+        crate::society()?;
         let polity = self.state.polities.get(&id).ok_or("unknown native polity")?;
         let related: BTreeSet<_> = self.state.relations.iter()
             .filter(|relation| relation.kind == "member" && relation.object == id)

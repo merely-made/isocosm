@@ -307,6 +307,7 @@ impl Staged<'_> {
                 return Ok(false);
             },
             Effect::ProjectDecision => {
+                crate::society()?;
                 self.sim.project_decision_ready(self.stage.actor,self.stage.target)?;
                 let input = self.sim.project_decision.as_ref().expect("decision checked above");
                 if input.process != self.stage.process { return Err("collective decision uses a different authored process".into()); }
@@ -316,6 +317,7 @@ impl Staged<'_> {
                 return Ok(false);
             },
             Effect::InstitutionDecision => {
+                crate::society()?;
                 self.sim.institution_decision_ready(self.stage.actor,self.stage.target)?;
                 let input = self.sim.institution_decision.as_ref().expect("institution decision checked above");
                 if input.process != self.stage.process { return Err("institution uses another authored deciding process".into()); }
@@ -325,10 +327,12 @@ impl Staged<'_> {
                 return Ok(false);
             },
             Effect::Institution {producer} => {
+                crate::society()?;
                 self.institution(producer,cause)?;
                 return Ok(false);
             },
             Effect::ReserveProject { definition, from, lots, .. } => {
+                crate::society()?;
                 self.reserve_project(definition, *from, lots)?;
                 return Ok(false);
             },
@@ -337,6 +341,7 @@ impl Staged<'_> {
                 return Ok(false);
             },
             Effect::WorkProject => {
+                crate::society()?;
                 self.work_project()?;
                 return Ok(false);
             },

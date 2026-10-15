@@ -6,6 +6,7 @@ use crate::rules::{Binding, Query};
 
 impl Simulation {
     pub fn project_reservation_readiness(&self, actor:Id, target:Option<Id>, process:&str, lots:&[Key]) -> Result<String> {
+        crate::society()?;
         if lots.is_empty() { return Err("reservation needs an explicit native lot selection".into()); }
         if !self.genesis.rules.processes.get(process).is_some_and(|p| p.requires.iter()
             .any(|q| matches!(q, Query::Project { phase:Phase::Reserve, .. }))) {
