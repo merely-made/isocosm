@@ -11498,7 +11498,42 @@ what later sections derive from.
      Stickleback and Graphshell's network carrier, its VTT-only parts moving
      to `isocosm-vtt`; (2) "VTT adapter on Stickleback"; (3) "Retire it, bank
      the name". Mark: "Family session layer (Recommended)"
-     The sim-host plan's H7. Next unused925.
+     The sim-host plan's H7.
+
+925. **Mesocosm's session lives in the core's `World`.**
+     Asked 2026-10-15 by card (H3). Evidence: Mesocosm drives one saved loop
+     through two doors, the owned `Runtime` with its own session and the
+     borrowed door over the core's `World` that its endpoint uses. Options:
+     (1) "The core's World (Recommended)": `Runtime` a thin product layer
+     over the `World` and its `mesocosm` section, one door for the head and
+     the endpoint, `Interim`'s founding a product step after H1's `found`;
+     (2) "Runtime keeps it", the core supplying parts only.
+     Mark: "The core's World (Recommended)"
+
+926. **The core's driver is typed through a product trait.**
+     Asked 2026-10-15 by card (H3). Options: (1) "Typed, via a product trait
+     (Recommended)": the product names its envelope type and supplies
+     translation, holds and its round; (2) "Opaque bytes".
+     Mark: "Typed, via a product trait (Recommended)"
+
+927. **The core owns the clock and an explicit step; products choose.**
+     Asked 2026-10-15 by card (H3). Evidence: Mesocosm's `Clock` is integer
+     and rational and defers capped steps; Eponym's 60 Hz motion drops its
+     backlog after eight catch-up steps; the VTT has no wall clock. Options:
+     (1) "Core clock + explicit step (Recommended)": each product picks
+     wall-clock or explicit pacing, the VTT explicit, Eponym's motion
+     adopting the clock later; (2) "Product-owned pacing".
+     Mark: "Core clock + explicit step (Recommended)"
+
+928. **H3 pins today's driver before moving it.**
+     Asked 2026-10-15 by card (H3). Evidence: `mesocosm-runtime`'s 31 tests
+     never drive `Runtime`'s queue, holds, step ceiling, trace, save or
+     resume, and no Mesocosm trace exists in today's format. Options: (1)
+     "Pin today's driver first (Recommended)": tests of today's behaviour
+     passing before and after, an envelope trace recorded now and replayed
+     through the core to the same hash, a planted fault in the translation
+     seam; (2) "Existing tests + log replay".
+     Mark: "Pin today's driver first (Recommended)" Next unused929.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
