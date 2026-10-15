@@ -3,7 +3,8 @@
 describe only reads. apply/restore require an exact current-file SHA, replace
 one declared byte span, and print the complete inverse and resulting hashes.
 This helper runs no subprocess and creates no directory or auxiliary file.
-Each row names the test target and test that must fail while it is applied.
+Each row names the test target and test that must fail while it is applied,
+and the extra cargo flags that run needs (the gate faults need the featureless build).
 """
 
 import argparse
@@ -17,6 +18,9 @@ CONSENT = "src/projects/consent.rs"
 CAPTURE = "src/projects/debit/capture.rs"
 DISPOSITION = "src/projects/debit/disposition.rs"
 STAGED = "src/stage/staged/projects.rs"
+FEATURELESS = "--no-default-features"
+# Faults that only a build without the society feature can catch (rulings 886, 893).
+FLAGS = {"gate-open": FEATURELESS, "command-ungated": FEATURELESS, "query-ungated": FEATURELESS}
 FAULTS = {
     "claims-exceed-source": (
         OWNERSHIP,
@@ -110,6 +114,96 @@ FAULTS = {
         "    #[serde(skip)]\n    pub carrier: Option<Id>,",
         "owned_stock", "placement::carried_work_follows_its_carrier_and_rests_where_dropped",
     ),
+    "gate-open": (
+        "src/lib.rs",
+        "    if SOCIETY { Ok(()) } else { Err(",
+        "    if true { Ok(()) } else { Err(",
+        "society_gate", "society_operations_are_refused_in_a_build_without_the_feature",
+    ),
+    "command-ungated": (
+        "src/history.rs",
+        "Command::Party(change) => crate::society().and_then(|()| sim.party_change(change)),",
+        "Command::Party(change) => sim.party_change(change),",
+        "society_gate", "society_operations_are_refused_in_a_build_without_the_feature",
+    ),
+    "query-ungated": (
+        "src/queries.rs",
+        "Query::Project { .. } | Query::ProjectDecision | Query::InstitutionDecision | Query::Institution { .. }) {\n            crate::society()?;\n        }",
+        "Query::Project { .. } | Query::ProjectDecision | Query::InstitutionDecision | Query::Institution { .. }) {\n        }",
+        "society_gate", "society_effects_and_queries_are_refused_without_the_feature",
+    ),
+    "state-gated": (
+        "src/projects/mod.rs",
+        '    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]\n    pub ownership: BTreeMap<Key, OwnedLot>,',
+        "    #[serde(skip)]\n    pub ownership: BTreeMap<Key, OwnedLot>,",
+        "society_gate", "society_state_is_kept_and_reads_in_every_build",
+    ),
+    "item-stays-behind": (
+        "src/custody/follow.rs",
+        "let changed = held.journey != source.journey || held.place != source.place || held.patch.is_some();",
+        "let changed = false;",
+        "society_custody", "carry::a_carried_item_rides_the_carriers_journey_and_rests_where_dropped",
+    ),
+    "burden-ignores-projects": (
+        "src/custody/burden.rs",
+        "if project.carrier.is_some_and(|carrier| carrier == actor || follows(carrier)) {",
+        "if false && project.carrier.is_some_and(|carrier| carrier == actor || follows(carrier)) {",
+        "society_custody", "refusal::burden_counts_every_carried_item_and_project_against_capacity",
+    ),
+    "capacity-unchecked": (
+        "src/custody/admission.rs",
+        "if change.action == Action::Carry && burden > u128::from(capacity) {",
+        "if change.action == Action::Carry && burden > u128::MAX {",
+        "society_custody", "refusal::burden_counts_every_carried_item_and_project_against_capacity",
+    ),
+    "double-carry": (
+        "src/custody/admission.rs",
+        'Action::Carry if carrier.is_some() => return Err("item already has native custody".into()),',
+        'Action::Carry if false => return Err("item already has native custody".into()),',
+        "society_custody", "refusal::custody_refuses_without_control_contact_provider_or_a_free_item",
+    ),
+    "drop-by-anyone": (
+        "src/custody/admission.rs",
+        "Action::Drop | Action::Equip | Action::Unequip if carrier != Some(change.actor) =>",
+        "Action::Drop | Action::Equip | Action::Unequip if false =>",
+        "society_custody", "refusal::custody_refuses_without_control_contact_provider_or_a_free_item",
+    ),
+    "no-contact": (
+        "src/custody/admission.rs",
+        "|| change.actor == change.item || !actor.colocated(item) {",
+        "|| change.actor == change.item {",
+        "society_custody", "refusal::custody_refuses_without_control_contact_provider_or_a_free_item",
+    ),
+    "stranger-opts-in": (
+        "src/party.rs",
+        'if self.plays(participant) != Some(member) { return Err("only the player\'s currently played body opts in".into()); }',
+        'if false { return Err("only the player\'s currently played body opts in".into()); }',
+        "society_party", "membership::only_a_players_currently_played_body_opts_in",
+    ),
+    "withdrawal-needs-current-body": (
+        "src/party.rs",
+        "// 857: the participant owns its earlier opt-in even after Take.\n",
+        "if self.plays(participant) != Some(member) { return Err(\"withdrawal needs the played body\".into()); }\n",
+        "society_party", "membership::a_player_withdraws_an_earlier_membership_after_changing_bodies",
+    ),
+    "disclose-unknown-facts": (
+        "src/party.rs",
+        "if !sites.is_subset(&known.sites) || !events.is_subset(&known.events)",
+        "if false",
+        "society_party", "disclosure::a_disclosure_is_bounded_by_the_bodys_native_knowledge",
+    ),
+    "stranger-discloses": (
+        "src/party.rs",
+        "if self.plays(participant) != Some(member) || !self.state.relations.contains(&held) {",
+        "if false {",
+        "society_party", "disclosure::a_disclosure_is_bounded_by_the_bodys_native_knowledge",
+    ),
+    "leaving-erases-records": (
+        "src/party.rs",
+        "if declared != party { continue; }",
+        "if declared != party || !map.members.iter().any(|m| m.member == *member) { continue; }",
+        "society_party", "disclosure::disclosed_places_and_routes_persist_after_the_member_leaves",
+    ),
     "delivery-closes-title": (
         "src/spread/owned.rs",
         "held.at = LotAt::Held(StockSource::Site(transfer.to));",
@@ -141,6 +235,7 @@ def main():
             raise ValueError("control source is outside its native crate")
         before = path.read_bytes()
         row = {"fault": name, "path": str(path), "target": target, "test": test,
+               "flags": FLAGS.get(name, ""),
                "source_sha256": digest(before), "original": original,
                "replacement": changed, "inverse": original,
                "original_matches": before.count(original.encode("utf-8"))}
