@@ -128,7 +128,51 @@ pub(super) fn world(seed: u64, form: Form, original: bool) -> Genesis {
         }
     }
     check(&g, cadence, lineages);
+    tweak(&mut g, lineages);
     g
+}
+
+/// Declared exploratory tweaks (declaration 2), after the base checks:
+/// `ISOCOSM_REPRO_TWEAK` is a comma list of `meal=N`, `upkeep=N`, `feed=N`,
+/// `yield=N`. Absent, the profile is exactly declaration 1's.
+fn tweak(g: &mut Genesis, lineages: u64) {
+    let Ok(list) = std::env::var("ISOCOSM_REPRO_TWEAK") else { return };
+    let processes = &mut g.rules.processes;
+    for pair in list.split(',').filter(|p| !p.is_empty()) {
+        let (key, value) = pair.split_once('=').expect("key=value");
+        let n: u64 = value.parse().expect("integer");
+        for i in 0..lineages {
+            match (key, i % 3) {
+                ("meal", 1) => {
+                    for e in &mut processes.get_mut(&format!("ecology:feed-{i}")).unwrap().effects {
+                        if let Effect::Eat { amount, .. } = e {
+                            *amount = Amount::Fixed(n);
+                        }
+                    }
+                },
+                ("upkeep", 1) => {
+                    processes.get_mut(&format!("ecology:upkeep-{i}")).unwrap().period = Some(n);
+                },
+                ("feed", 1) => {
+                    processes.get_mut(&format!("ecology:feed-{i}")).unwrap().period = Some(n);
+                },
+                ("yield", 0) => {
+                    for e in &mut processes.get_mut(&format!("ecology:produce-{i}")).unwrap().effects {
+                        match e {
+                            Effect::Transfer { amount, .. } => *amount = Amount::Fixed(n),
+                            Effect::Transform { take, give, .. } => {
+                                take.values_mut().for_each(|v| *v = n);
+                                give.values_mut().for_each(|v| *v = n);
+                            },
+                            _ => {},
+                        }
+                    }
+                },
+                ("meal" | "upkeep" | "feed" | "yield", _) => {},
+                _ => panic!("unknown tweak {key}"),
+            }
+        }
+    }
 }
 
 fn check(g: &Genesis, cadence: Cadence, lineages: u64) {

@@ -44,6 +44,8 @@ struct Pilot {
     flows: Vec<crate::flows::Flow>,
     accepted: Vec<crate::watch::Watched>,
     happenings: Vec<String>,
+    /// Every fifth tick: living members by (lineage, site).
+    census: Vec<(Tick, std::collections::BTreeMap<String, u64>)>,
 }
 
 fn receipt_directory() -> std::path::PathBuf {
@@ -157,6 +159,16 @@ fn played_recorded(g: Genesis, pilot_name: Option<String>, draw: Option<matrix::
                     .holdings
                     .push(serde_json::json!({ "tick": tick, "id": id, "own": own, "body": body }));
             }
+            if tick % 5 == 0 {
+                let mut by = std::collections::BTreeMap::new();
+                for g in i.session.sim.state().population.groups.values() {
+                    if g.entity.alive && g.entity.lineage.starts_with("lineage:") {
+                        *by.entry(format!("{}@{}", g.entity.lineage, g.entity.place))
+                            .or_insert(0u64) += g.count;
+                    }
+                }
+                pilot.census.push((tick, by));
+            }
             pilot.flows.extend(flows);
             pilot.accepted.extend(i.session.sim.take_watched());
         }
@@ -212,7 +224,7 @@ fn played_recorded(g: Genesis, pilot_name: Option<String>, draw: Option<matrix::
         let prefix = if name == "seed0" {
             format!("q3-primary-final-state-pilot-seed0-{}", out.genesis)
         } else {
-            format!("a1-pilot-{name}-{}", out.genesis)
+            format!("a1-pilot-v2-{name}-{}", out.genesis)
         };
         retain(&format!("{prefix}-session.json"), &saved);
         retain(&format!("{prefix}-readings.json"), &pilot);
@@ -459,4 +471,38 @@ fn consumer_reproduction_arm_pilot() {
     let rate = if original { "original" } else { "candidate" };
     let out = played_named(g, Some(format!("{}-{rate}-seed{seed}", form.name())));
     eprintln!("ARM PILOT completed: {out:?} qualifies={}", out.qualifies());
+}
+
+/// Exploratory selection pilots (declaration 2): seeds from
+/// `ISOCOSM_REPRO_SEEDS` ("100-107"), the tweak from `ISOCOSM_REPRO_TWEAK`.
+/// One line per seed; no per-draw receipts.
+#[test]
+#[ignore = "declared tuning battery; ISOCOSM_REPRO_ARM, _SEEDS, _TWEAK, _WORKERS"]
+fn consumer_reproduction_battery() {
+    let (form, original) = arm();
+    let spec = std::env::var("ISOCOSM_REPRO_SEEDS").unwrap();
+    let (lo, hi) = spec.split_once('-').unwrap();
+    let (lo, hi): (u64, u64) = (lo.parse().unwrap(), hi.parse().unwrap());
+    let workers: u64 = std::env::var("ISOCOSM_REPRO_WORKERS").map_or(1, |w| w.parse().unwrap());
+    let tweak = std::env::var("ISOCOSM_REPRO_TWEAK").unwrap_or_default();
+    let (send, receive) = mpsc::channel();
+    std::thread::scope(|scope| {
+        for worker in 0..workers {
+            let send = send.clone();
+            scope.spawn(move || {
+                for seed in (lo + worker..=hi).step_by(workers as usize) {
+                    send.send((seed, played_recorded(world(seed, form, original), None, None))).unwrap();
+                }
+            });
+        }
+        drop(send);
+    });
+    let mut rows: Vec<_> = receive.iter().collect();
+    rows.sort_by_key(|(seed, _)| *seed);
+    for (seed, out) in &rows {
+        eprintln!("BATTERY tweak=[{tweak}] seed={seed} tick={} births={} born_heirs={} boundaries={} living={} q={}",
+            out.tick, out.births, out.born_heirs, out.boundaries, out.living, out.qualifies());
+    }
+    eprintln!("BATTERY-TOTAL tweak=[{tweak}] form={} seeds={spec}: {}/{}", form.name(),
+        rows.iter().filter(|(_, o)| o.qualifies()).count(), rows.len());
 }
