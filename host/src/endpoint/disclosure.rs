@@ -18,7 +18,7 @@ use chirograph::{
 };
 use sceno::{
     Arrangement, Footprint, InstanceId, Placement, Representation, RoutedRelation, Scene, Score,
-    ScoreItem, SourceRef, Spiral,
+    ScoreItem, Size2, SourceRef, Spiral,
 };
 
 /// One disclosed thing: its source id, its card and the actions it offers.
@@ -52,6 +52,9 @@ pub fn action(intent: &str, label: &str, explanation: &str, schema: &str, effect
     }
 }
 
+/// A portable card's footprint, the size Graphshell's own card endpoints use.
+const CARD: [f32; 2] = [260.0, 136.0];
+
 pub fn arrangement() -> Arrangement { Arrangement::Spiral(Spiral::default()) }
 
 /// The request an endpoint offers for `session`.
@@ -66,7 +69,7 @@ pub fn scene(adapter: &str, items: &[Item], links: &[(String, String, &str)]) ->
     score.items = items.iter().enumerate().map(|(ordinal, item)| ScoreItem {
         source: SourceRef::new(adapter, &item.id),
         ordinal: ordinal as u32,
-        footprint: Footprint::Circle { radius: 6.0 },
+        footprint: Footprint::Rect { size: Size2::new(CARD[0], CARD[1]) },
         representation: Representation::Card,
         placement: Placement::Ordinal,
         layer: 0,

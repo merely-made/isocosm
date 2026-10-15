@@ -98,7 +98,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         }
         for name in session.sim.genesis().rules.party_relations.keys() {
             let selected = party.as_deref() == Some(name.as_str());
-            built.push(Item { id: format!("party:{name}"), card: card(format!("Party {name}"),
+            built.push(Item { id: format!("party:{name}"), card: card(name,
                 vec![value("Selected", selected)], &["party"]),
                 actions: vec![action("vtt.read-party", "Read this party", "Choose this party for this window.", NULL,
                     IntentEffect::Curation)] }, vec![Act::SelectParty(name.clone())]);

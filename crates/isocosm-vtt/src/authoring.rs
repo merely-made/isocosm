@@ -68,7 +68,10 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             return Ok(built);
         },
     };
-    let values = context.as_object().into_iter().flatten().map(|(key, field)| value(key, field)).collect();
+    let values = context.as_object().into_iter().flatten().map(|(key, field)| match field {
+        serde_json::Value::String(text) => value(key, text),
+        other => value(key, other),
+    }).collect();
     let mut actions: Vec<_> = KINDS.iter().enumerate().map(|(kind, label)| action(&format!("vtt.preview-{kind}"), label,
         "Quote what this supplied operation would do.", OPERATION, IntentEffect::Curation)).collect();
     let mut acts: Vec<_> = (0..KINDS.len() as u8).map(Act::Quote).collect();
