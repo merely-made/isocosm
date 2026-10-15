@@ -225,10 +225,11 @@ outside the society layer. Neither is tested here.
   and for the whole Mesocosm workspace without it.
 - 2026-10-14: the full fault run applied 53 faults one at a time in a
   detached worktree; 48 failed their named test and restored byte-exact. Five
-  on double-enforced guards were not caught (two of them also restored
-  wrongly, and a third fault's replacement was not unique in its file), and
-  they were dropped; every replacement must now restore uniquely (`restorable`
-  in `controls.py describe`). The nine faults on files the failed restores
-  had left changed, plus the four spread faults, were rerun on a clean tree:
-  eight caught and restored, and a sixth double-enforced guard
-  (`placement-unguarded`) dropped. 51 faults remain.
+  on double-enforced guards were not caught and were dropped. Two of those and
+  `phantom-disagreement` also restored wrongly, because their replacement was
+  not unique in its file, which left two scratch files changed under later
+  faults; every replacement must now restore uniquely (`restorable` in
+  `controls.py describe`). The five faults on those files and the four
+  spread faults, which the run predated, were rerun on a clean tree: eight
+  caught and restored, and `placement-unguarded` was missed, a sixth
+  double-enforced guard, and dropped. 51 faults remain.
