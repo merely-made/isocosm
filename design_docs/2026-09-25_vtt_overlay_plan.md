@@ -1,5 +1,9 @@
 # The VTT's overlay: the W5 plan
 
+**Ruling 913, 2026-10-15:** `isometry-campaign` retires and its contents
+become components (wing design record, 913). It gets its own assessment
+first; where each part lands comes back as questions before anything moves.
+
 **Certification resumed, 2026-10-13:** the explicit "Certify" request opens
 the assembled-source acceptance pass. Root workspace all-target/all-feature
 compiler gates pass after restoring Rust 2021-compatible conditions and
