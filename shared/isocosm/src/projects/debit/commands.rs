@@ -17,6 +17,7 @@ impl Simulation {
         context
     }
     pub fn prepare_owned_act(&self, actor:Id, target:Option<Id>, process:&str, cause:Option<Key>) -> Result<DebitPreview> {
+        crate::society()?;
         let mut candidate = self.clone();
         candidate.state.projects.debit_capture.set(Some(self.supplied_process(actor,target,process,Mode::Preview)));
         candidate.owned_planning = true;
@@ -26,6 +27,7 @@ impl Simulation {
     }
     pub fn owned_act(&mut self, participant:Id, actor:Id, target:Option<Id>, process:&str,
         cause:Option<Key>, selections:&[DebitSelection]) -> Result<String> {
+        crate::society()?;
         self.project_control(participant,actor)?;
         if self.state.projects.debit_capture.active() { return Err("owned native action cannot nest".into()); }
         let mut candidate = self.clone();
@@ -64,6 +66,7 @@ impl Session {
         Ok(context)
     }
     pub fn prepare_owned_command(&self, command:&Command) -> Result<DebitPreview> {
+        crate::society()?;
         self.direct_preview(command).map(|preview| preview.debits)
     }
     /// Actual route and generated-strain outputs of this exact native candidate.
@@ -72,6 +75,7 @@ impl Session {
         self.direct_preview(command)
     }
     fn direct_preview(&self, command:&Command) -> Result<SpreadPreview> {
+        crate::society()?;
         let context = self.direct_capture(command,Mode::Preview)?;
         let mut candidate = self.clone();
         candidate.sim.state.projects.debit_capture.set(Some(context));
@@ -81,6 +85,7 @@ impl Session {
             outputs:context.output_report })
     }
     pub(crate) fn owned_command(&mut self, command:&Command, selections:&[DebitSelection]) -> Result<String> {
+        crate::society()?;
         if self.sim.state.projects.debit_capture.active() { return Err("owned native command cannot nest".into()); }
         let context = self.direct_capture(command,Mode::Admit(selections.to_vec()))?;
         let mut candidate = self.clone();

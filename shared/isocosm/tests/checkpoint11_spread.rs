@@ -353,6 +353,7 @@ fn direct_author_input_cannot_force_a_deliberative_territory_or_duplicate_its_ef
     assert!(invalid.validate().is_err(), "one source must not spill twice in one native act");
 }
 
+#[cfg(feature = "society")]
 #[test]
 fn normative_direction_requires_exact_owned_quantities_and_retains_claims_through_delivery() {
     use isocosm::{asserted::Assertion, projects::{DebitSelection, Disposition, DispositionRule,

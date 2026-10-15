@@ -222,8 +222,9 @@ impl Simulation {
             Assertion::Edit(m) => self.assert_map(m).map(|()| format!("map:{}", m.key)),
             Assertion::Storylet(a) => self.assert_group(a, false),
             Assertion::PackForced(a) => self.assert_group(a, true),
-            Assertion::StockOwnership(lot) => self.assert_stock_ownership(lot),
-            Assertion::SpreadOwnership { identity, lot } => self.assert_spread_ownership(identity, lot),
+            Assertion::StockOwnership(lot) => crate::society().and_then(|()| self.assert_stock_ownership(lot)),
+            Assertion::SpreadOwnership { identity, lot } =>
+                crate::society().and_then(|()| self.assert_spread_ownership(identity, lot)),
         }
     }
 }
