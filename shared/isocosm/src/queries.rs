@@ -37,6 +37,9 @@ impl Simulation {
         part: Option<PartId>,
         query: &Query,
     ) -> Result<String> {
+        if matches!(query, Query::Project { .. } | Query::ProjectDecision | Query::InstitutionDecision | Query::Institution { .. }) {
+            crate::society()?;
+        }
         if let Query::Project { definition, phase, process } = query {
             return self.project_ready(actor, target, definition, *phase, process);
         }

@@ -10,6 +10,12 @@ publish = false
 
 [workspace]
 
+[features]
+# The society layer's operations (wing design record, rulings 886 and 893): its commands,
+# effects and processing. State fields stay in every build, so one save format is read.
+default = ["society"]
+society = []
+
 [dependencies]
 serde = { version = "1", features = ["derive", "rc"] }
 serde_json = "1"

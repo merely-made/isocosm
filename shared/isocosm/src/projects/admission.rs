@@ -91,6 +91,7 @@ impl Simulation {
     }
     pub fn prepare_owned_project(&self, participant:Id, actor:Id, target:Option<Id>, process:&str,
         project:Option<ProjectId>, lots:&[Key], cause:Option<Key>) -> Result<super::DebitPreview> {
+        crate::society()?;
         self.project_candidate(participant,actor,target,process,project,lots)?
             .prepare_owned_act(actor,target,process,cause)
     }

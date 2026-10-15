@@ -184,7 +184,7 @@ impl Session {
     }
     fn recorded(&mut self, command: &Command) -> Result<String> {
         match command {
-            Command::Owned { command, selections } => self.owned_command(command,selections),
+            Command::Owned { command, selections } => crate::society().and_then(|()| self.owned_command(command,selections)),
             Command::AdvanceGeometry { ticks, resolutions } => self.advance_geometry(*ticks, resolutions),
             Command::AdvanceSpatial { ticks, terrain, steps, arrivals } =>
                 self.advance_spatial(*ticks, terrain, steps, arrivals),
@@ -432,16 +432,16 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
     match command {
         Command::Location { location } => sim.author_location(location),
         Command::ActOwned { participant, actor, target, process, cause, selections } =>
-            sim.owned_act(*participant,*actor,*target,process,cause.clone(),selections),
+            crate::society().and_then(|()| sim.owned_act(*participant,*actor,*target,process,cause.clone(),selections)),
         Command::Owned { .. } => Err("owned direct command needs its native Session".into()),
         Command::AdvanceGeometry { .. } => Err("geometry advance needs its native Session".into()),
         Command::AdvanceSpatial { .. } => Err("spatial advance needs its native Session".into()),
         Command::AdvanceBirthSpatial { .. } => Err("birth spatial advance needs its native Session".into()),
         Command::BirthSpatial { .. } => Err("birth spatial command needs its native Session".into()),
         Command::Window(change) => sim.change_window(change),
-        Command::Party(change) => sim.party_change(change),
+        Command::Party(change) => crate::society().and_then(|()| sim.party_change(change)),
         Command::Spread(change) => sim.spread(change),
-        Command::Project(change) => sim.project_change(change),
+        Command::Project(change) => crate::society().and_then(|()| sim.project_change(change)),
         Command::Develop { entity, seed } => {
             sim.develop_arrival(*entity, *seed)?;
             Ok("developed".into())
@@ -546,9 +546,9 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
             Ok("named".into())
         },
         Command::Know(knowing) => sim.know(knowing),
-        Command::Goal(change) => sim.goal_change(change),
-        Command::Institution(change) => sim.institution_change(change),
-        Command::Custody(change) => sim.custody_change(change),
+        Command::Goal(change) => crate::society().and_then(|()| sim.goal_change(change)),
+        Command::Institution(change) => crate::society().and_then(|()| sim.institution_change(change)),
+        Command::Custody(change) => crate::society().and_then(|()| sim.custody_change(change)),
         Command::ActGraft { participant, actor, target, process, cause, carry, selections } =>
             sim.act_graft(*participant, *actor, *target, process, cause.clone(), carry, selections),
         Command::Social(act) => {
