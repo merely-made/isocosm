@@ -11143,6 +11143,9 @@ what later sections derive from.
 888. **Tuning is open.**
      2026-10-14, after C10 and C11 certified; Mark's "Certify" had already
      lifted 826's deferral of tests.
+     Question (put without options, as decision 1 of the reviewer's
+     scoping; it gates A1, S8 to S10, the century run and M4): "Is tuning
+     open?"
      Mark: "Tuning's open."
      So 761's and 826's deferral of tuning ends. A1 (792) resumes first:
      candidates are declared before they are drawn, and a rate or generator
