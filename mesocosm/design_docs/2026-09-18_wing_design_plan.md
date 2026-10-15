@@ -11446,7 +11446,38 @@ what later sections derive from.
      session was listed online. Options: (1) "You relay it (Recommended)",
      the reviewer watching origin for the branch once Mark says it is up;
      (2) Mark names the session. Mark: "You relay it (Recommended)"
-     Next unused919.
+
+919. **`isocosm-vtt` carries the VTT's licence, MIT OR Apache-2.0.**
+     Asked 2026-10-15 by card (the retirement plan's F1). Evidence: the
+     game layer moving in (6,400 lines) is MIT OR Apache-2.0, the VTT's
+     licence by the root `CLAUDE.md`; `isocosm-vtt` was MPL-2.0 because its
+     endpoint came from the retired shell's MPL panels (902). Options: (1)
+     "MIT OR Apache-2.0 (Recommended)", its MPL endpoint relicensed by its
+     author; (2) "MPL-2.0"; (3) "Per-file licences".
+     Mark: "MIT OR Apache-2.0 (Recommended)"
+
+920. **`isocosm-vtt`'s endpoint sits behind a feature.**
+     Asked 2026-10-15 by card (F2). Options: (1) "Endpoint behind a feature
+     (Recommended)", an `endpoint` feature as Mesocosm's and Eponym's have
+     (903), so the session lane and the host take the game layer alone;
+     (2) "Always on". Mark: "Endpoint behind a feature (Recommended)"
+
+921. **`isonetry` holds the GM store and the proposal lifecycle until V2.**
+     Asked 2026-10-15 by card (F3). Evidence: 915's summary put them in
+     `isonetry`; 247 turns a proposal's branch mode into the sim's branch
+     and the log into its intent log at V2. Options: (1) "isonetry until V2
+     (Recommended)"; (2) "isocosm-vtt"; (3) "Stay until V2".
+     Mark: "i do like isonetry as a name. did we publish it? if so, we can
+     remake it into something useful. 1"
+     Answered: `isonetry` was never published, and the crates.io name was
+     free on 2026-10-15; it is the VTT's live session layer (about 5,000
+     lines, DM-authority replication, iroh behind a feature). What to do
+     with the name goes back to Mark.
+
+922. **Publishing is a phase of the campaign retirement plan.**
+     Asked 2026-10-15 by card (F4). Options: (1) "Own plan after R1
+     (Recommended)"; (2) "In this plan". Mark: "In this plan"
+     The plan's R4. Next unused923.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

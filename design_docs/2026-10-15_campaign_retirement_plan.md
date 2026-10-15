@@ -2,10 +2,11 @@
 
 **Date:** 2026-10-15
 
-**Status, 2026-10-15:** plan. Opened by ruling 913 (wing design record),
-shaped by 915 (owning homes, no new crates), 916 (planned now, moves after
-the A1 lane merges) and 917 (the crates aim to be published). Forks F1 to F4
-below are with Mark. Nothing has moved.
+**Status, 2026-10-15:** plan; R0 done. Opened by ruling 913 (wing design
+record), shaped by 915 (owning homes, no new crates), 916 (planned now,
+moves after the A1 lane merges) and 917 (the crates aim to be published);
+its forks were ruled 919 to 922. R1 waits for the A1 lane's merge. Nothing
+has moved.
 
 ## Why
 
@@ -57,21 +58,17 @@ published. Its consumers are all the VTT's: `isonetry` (110 uses),
   mere by git revision, which crates.io refuses, and `isocosm`,
   `isocosm-overlay` and `isocosm-host` are `publish = false` (F4).
 
-## Forks for Mark
+## Forks, ruled 2026-10-15
 
-- **F1. The game layer's licence in `isocosm-vtt`.** (1) `isocosm-vtt`
-  becomes MIT OR Apache-2.0 like the VTT's other crates, its MPL endpoint
-  relicensed by its author (recommended); (2) the moved code becomes MPL;
-  (3) per-file licences in one crate.
-- **F2. `isocosm-vtt`'s endpoint behind a feature.** (1) an `endpoint`
-  feature, as Mesocosm's and Eponym's endpoints are (903), so the session
-  lane and the host take the game layer alone (recommended); (2) always on.
-- **F3. The store and proposals.** (1) `isonetry` holds them until V2
-  replaces them with the sim's intent log and branches (recommended);
-  (2) `isocosm-vtt`, with the game layer; (3) they stay until V2.
-- **F4. Publishing.** (1) its own plan once this one's R1 lands, listing
-  each crate's blockers, with mere's releases asked in mere (recommended);
-  (2) folded into this plan.
+- **F1 (919).** `isocosm-vtt` carries MIT OR Apache-2.0, the VTT's licence;
+  its MPL endpoint is relicensed by its author.
+- **F2 (920).** `isocosm-vtt`'s endpoint sits behind an `endpoint` feature,
+  so the session lane and the host take the game layer alone.
+- **F3 (921).** `isonetry` holds the GM store and the proposal lifecycle
+  until V2 replaces them with the sim's intent log and branches.
+- **F4 (922).** Publishing is this plan's R4.
+- **Open:** what to do with the `isonetry` name, which Mark likes. It was
+  never published and was free on crates.io on 2026-10-15.
 
 ## Phases
 
@@ -95,7 +92,26 @@ published. Its consumers are all the VTT's: `isonetry` (110 uses),
   sim plan's phases. Done when `isometry-campaign` is deleted from the
   workspace and every consumer builds and tests.
 
+- **R4. Publishing (917, 922).** Every crate in `isocosm-vtt`'s
+  normal-dependency closure reaches crates.io in dependency order. On
+  2026-10-15 that closure held 116 packages, 12 of them path crates (nine
+  `publish = false`: `isocosm`, `isocosm-host`, `isocosm-overlay`,
+  `isometer-core`, `isometer-space`, `wing-formats`, `wing-functions`,
+  `wing-glyphs`, `wing-impresa`) and 10 mere crates taken by git revision
+  (`chirograph`, `graphshell-endpoint`, `hagiograph`, `mere-curation`,
+  `mere-framing`, `sceno`, `scenograph`, `scenomise`, `scenotime`,
+  `state-witness`). On crates.io `isocosm` is our 0.0.1 reservation, nine of
+  mere's ten have earlier versions out, and `state-witness`, the
+  `isocosm-*`, `isometer-*` and `wing-*` names and `isometry-core` were free.
+  Done when every path dependency carries a version; no git dependency is
+  left in the closure, mere's crates released at the pinned revision (asked
+  in mere); each crate's licence, description, repository and readme are
+  set; each new name has gone through the naming ledger; and
+  `cargo publish --dry-run` passes for each crate in order. Each publish is
+  Mark's word, crate by crate.
+
 ## Progress
 
 - **2026-10-15:** plan written from the reading above; rulings 913 and 915
-  to 918 recorded.
+  to 918 recorded. R0 done: F1 to F4 ruled as 919 to 922, and R4 added with
+  the closure and crates.io names measured that day.
