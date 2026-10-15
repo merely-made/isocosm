@@ -153,6 +153,26 @@ fn tweak(g: &mut Genesis, lineages: u64) {
     for pair in list.split(',').filter(|p| !p.is_empty()) {
         let (key, value) = pair.split_once('=').expect("key=value");
         let n: u64 = value.parse().expect("integer");
+        if key == "hazard" {
+            // Declaration 8: death is a per-tick hazard of `n` per million once
+            // an individual is `mature` ticks old (default 60), not a fixed
+            // age shared by a lineage. Applies to every lineage.
+            let mature = list.split(',').find_map(|p| p.strip_prefix("mature=")).map_or(60, |m| m.parse().unwrap());
+            for i in 0..lineages {
+                let age = processes.get_mut(&format!("ecology:age-{i}")).unwrap();
+                for q in &mut age.requires {
+                    if let Query::Age { at_least } = q {
+                        *at_least = mature;
+                    }
+                }
+                age.effects.clear();
+                age.risk = Some(Risk { per_million: n as u32, effects: vec![Effect::Death] });
+            }
+            continue;
+        }
+        if key == "mature" {
+            continue;
+        }
         for i in 0..lineages {
             match (key, i % 3) {
                 ("meal", 1) => {
