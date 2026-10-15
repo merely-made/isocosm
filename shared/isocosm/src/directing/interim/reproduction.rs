@@ -212,7 +212,7 @@ fn played_recorded(g: Genesis, pilot_name: Option<String>, draw: Option<matrix::
         let prefix = if name == "seed0" {
             format!("q3-primary-final-state-pilot-seed0-{}", out.genesis)
         } else {
-            format!("a1-pilot-{name}-seed0-{}", out.genesis)
+            format!("a1-pilot-{name}-{}", out.genesis)
         };
         retain(&format!("{prefix}-session.json"), &saved);
         retain(&format!("{prefix}-readings.json"), &pilot);
@@ -453,8 +453,10 @@ fn consumer_reproduction_arm() {
 #[ignore = "seed-0 pilot of one declared arm; ISOCOSM_REPRO_ARM names it"]
 fn consumer_reproduction_arm_pilot() {
     let (form, original) = arm();
-    let g = world(0, form, original);
-    eprintln!("ARM PILOT BEGIN form={} original={original} genesis={}", form.name(), crate::digest(&g));
-    let out = played_named(g, Some(format!("{}-{}", form.name(), if original { "original" } else { "candidate" })));
+    let seed = std::env::var("ISOCOSM_REPRO_SEED").map_or(0, |s| s.parse().unwrap());
+    let g = world(seed, form, original);
+    eprintln!("ARM PILOT BEGIN form={} original={original} seed={seed} genesis={}", form.name(), crate::digest(&g));
+    let rate = if original { "original" } else { "candidate" };
+    let out = played_named(g, Some(format!("{}-{rate}-seed{seed}", form.name())));
     eprintln!("ARM PILOT completed: {out:?} qualifies={}", out.qualifies());
 }
