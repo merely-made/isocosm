@@ -180,6 +180,12 @@ starts.
 
 ## Progress
 
+- **2026-10-15, rulings 909, 910 and 912:** main is pushed with H2 and the
+  owned-stock-tests lane (909). Under 910 every endpoint's snapshot records
+  the shared world's position and an intent made against an older position
+  is stale, so a change through any endpoint stales the others; it is built
+  in `endpoint/disclosure.rs`, which all four endpoints share. The g4
+  build's output stays in mere's target directory for later receipts (912).
 - **2026-10-15, H2 landed (on the lane):** the done-conditions hold. Each
   endpoint's projections, cards and actions pass `LocalCarrier` tests (core
   36 library tests with every feature, Mesocosm 4, Eponym 3, VTT 6).
