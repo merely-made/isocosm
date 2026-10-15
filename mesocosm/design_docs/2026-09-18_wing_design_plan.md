@@ -11410,7 +11410,43 @@ what later sections derive from.
      metadata in order, and dependencies that could themselves be published.
      The components 913 makes are built the same way; publishing any of
      them stays its own decision. This reading goes back to Mark with 913's
-     assessment. Next unused915.
+     assessment. *Amended by 917.*
+
+915. **913's "components" are owning homes.**
+     Asked 2026-10-15 by card. Evidence: `isometry-campaign` is 10,764 lines
+     in three parts, the campaign world and content (3,400, which 247 moves
+     into the sim at V2), the VTT's game over the sim (5,500, used only by
+     VTT crates), and founding, store and proposals (about 1,400). Options:
+     (1) "Owning homes (Recommended)": no new crates, the world into the sim
+     per 247, the game layer into `isocosm-vtt` beside its endpoint, map
+     lowering into `isometry-core`, store and proposals into `isonetry`;
+     (2) "Small component crates", each family its own crate; (3) "Wasm
+     components", rung 3, against D18. Mark: "Owning homes (Recommended)"
+
+916. **The retirement is planned now and moves after the A1 lane merges.**
+     Asked 2026-10-15 by card. Options: (1) "Plan now, move after A1
+     (Recommended)", a dated plan with its forks, moves once A1 has merged so
+     nothing collides in `shared/isocosm`; (2) "Fold into V2"; (3) "Start
+     moving now". Mark: "Plan now, move after A1 (Recommended)"
+     The plan: `design_docs/2026-10-15_campaign_retirement_plan.md`.
+
+917. **The crates aim to be published.**
+     Asked 2026-10-15 by card, to confirm 914's reading. Options: (1) "Yes,
+     that reading (Recommended)": publishable in principle, nothing
+     published until asked; (2) "Aim to publish": work toward publishing
+     them, which also needs mere's `chirograph` and `graphshell-endpoint`
+     released at the pinned revision. Mark: "Aim to publish"
+     Amends 914's reading: publishing is an objective, not only a property
+     to keep. *Reading, not ruled:* releases in mere are mere's to decide,
+     and are asked there; the campaign retirement plan's F4 places the work.
+
+918. **Mark relays 908's go-ahead to the A1 lane.**
+     Asked 2026-10-15 by card. Evidence: the three lane addresses the
+     reviewer held were stale after the sessions restarted, and no A1
+     session was listed online. Options: (1) "You relay it (Recommended)",
+     the reviewer watching origin for the branch once Mark says it is up;
+     (2) Mark names the session. Mark: "You relay it (Recommended)"
+     Next unused919.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

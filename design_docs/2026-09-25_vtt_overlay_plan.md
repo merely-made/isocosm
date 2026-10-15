@@ -1,8 +1,9 @@
 # The VTT's overlay: the W5 plan
 
 **Ruling 913, 2026-10-15:** `isometry-campaign` retires and its contents
-become components (wing design record, 913). It gets its own assessment
-first; where each part lands comes back as questions before anything moves.
+move to their owning homes (wing design record, 913, 915 and 916), planned
+in the [campaign retirement plan](2026-10-15_campaign_retirement_plan.md),
+which carries §4's absorption as its phase R3.
 
 **Certification resumed, 2026-10-13:** the explicit "Certify" request opens
 the assembled-source acceptance pass. Root workspace all-target/all-feature
@@ -517,6 +518,10 @@ travel; `NodeRevealed` is knowledge arriving (ruling 84); `InventorySet` and
 is downtime.
 
 ## 4. Absorption: `isometry-campaign` into Isocosm
+
+*2026-10-15:* the [campaign retirement plan](2026-10-15_campaign_retirement_plan.md)
+carries this table as its R3 and retires the rest of the crate before it
+(913, 915).
 
 The record's §2 test puts whatever runs with nobody playing in the sim, and
 the substrate's own doctrine keeps geometry and turns here and rules in
