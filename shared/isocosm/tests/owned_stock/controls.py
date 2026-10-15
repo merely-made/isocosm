@@ -1,10 +1,13 @@
-"""Finite compiled owned-stock source faults. Root owns compilation and receipts.
+"""Finite compiled society-layer source faults. Root owns compilation and receipts.
 
 describe only reads. apply/restore require an exact current-file SHA, replace
 one declared byte span, and print the complete inverse and resulting hashes.
 This helper runs no subprocess and creates no directory or auxiliary file.
 Each row names the test target and test that must fail while it is applied,
 and the extra cargo flags that run needs (the gate faults need the featureless build).
+Every replacement must stay unique in its file so that restore finds it. Guards the source
+enforces twice (custody contact and capacity, a repeated vote or application, a collective
+owner's ambiguous strategy) have no single-span fault: removing either alone changes nothing.
 """
 
 import argparse
@@ -150,12 +153,6 @@ FAULTS = {
         "if false && project.carrier.is_some_and(|carrier| carrier == actor || follows(carrier)) {",
         "society_custody", "refusal::burden_counts_every_carried_item_and_project_against_capacity",
     ),
-    "capacity-unchecked": (
-        "src/custody/admission.rs",
-        "if change.action == Action::Carry && burden > u128::from(capacity) {",
-        "if change.action == Action::Carry && burden > u128::MAX {",
-        "society_custody", "refusal::burden_counts_every_carried_item_and_project_against_capacity",
-    ),
     "double-carry": (
         "src/custody/admission.rs",
         'Action::Carry if carrier.is_some() => return Err("item already has native custody".into()),',
@@ -166,12 +163,6 @@ FAULTS = {
         "src/custody/admission.rs",
         "Action::Drop | Action::Equip | Action::Unequip if carrier != Some(change.actor) =>",
         "Action::Drop | Action::Equip | Action::Unequip if false =>",
-        "society_custody", "refusal::custody_refuses_without_control_contact_provider_or_a_free_item",
-    ),
-    "no-contact": (
-        "src/custody/admission.rs",
-        "|| change.actor == change.item || !actor.colocated(item) {",
-        "|| change.actor == change.item {",
         "society_custody", "refusal::custody_refuses_without_control_contact_provider_or_a_free_item",
     ),
     "stranger-opts-in": (
@@ -222,18 +213,6 @@ FAULTS = {
         'if false {',
         "society_institutions", "operation::unanimous_members_decide_and_the_executor_applies_the_exact_operation",
     ),
-    "revote": (
-        "src/institutions/admission.rs",
-        '\n            || self.state.institutions.voters(key)?.contains(&actor) {',
-        ' {',
-        "society_institutions", "operation::unanimous_members_decide_and_the_executor_applies_the_exact_operation",
-    ),
-    "applied-twice": (
-        "src/institutions/admission.rs",
-        'records.is_applied(&proposal.key).unwrap_or(true) || ',
-        '',
-        "society_institutions", "operation::unanimous_members_decide_and_the_executor_applies_the_exact_operation",
-    ),
     "stale-constitution-ok": (
         "src/institutions/policy.rs",
         'if polity.constitution != proposal.constitution\n',
@@ -261,7 +240,7 @@ FAULTS = {
     "phantom-disagreement": (
         "src/polities.rs",
         '.filter(|_| living > 0)',
-        '',
+        '.filter(|_| true)',
         "society_institutions", "polity::an_authored_polity_without_members_claims_no_derived_disagreement",
     ),
     "goal-readopted": (
@@ -336,12 +315,6 @@ FAULTS = {
         'let policy = lot.collectives.get(id).unwrap_or(&DecisionPolicy::UnanimousMembers);',
         "society_collective", "assertion::a_collective_owner_must_name_its_strategy_validly",
     ),
-    "ambiguous-strategy-ok": (
-        "src/projects/ownership.rs",
-        'if collectives.get(owner).is_some_and(|was| was != policy) {',
-        'if false {',
-        "society_collective", "assertion::a_collective_owner_must_name_its_strategy_validly",
-    ),
     "placement-unguarded": (
         "src/spread/owned.rs",
         '    state.projects.ownership.values().any(|held| held.current_source() == Some(source) && held.lot.account == account)\n        || rules.owned_stock',
@@ -400,7 +373,9 @@ def main():
                "flags": FLAGS.get(name, ""),
                "source_sha256": digest(before), "original": original,
                "replacement": changed, "inverse": original,
-               "original_matches": before.count(original.encode("utf-8"))}
+               "original_matches": before.count(original.encode("utf-8")),
+               "restorable": before.replace(original.encode("utf-8"), changed.encode("utf-8"), 1)
+               .count(changed.encode("utf-8")) == 1}
         if args.action != "describe":
             if digest(before) != args.expected:
                 raise ValueError("current source does not match the explicitly supplied SHA")
