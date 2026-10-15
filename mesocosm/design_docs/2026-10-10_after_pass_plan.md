@@ -80,9 +80,12 @@ ticks (directing Findings, 2026-10-09). Rates are a world's; fix it as a
 generator or rules change and record the ruling it needs. Done when a played
 consumer lineage survives three epochs on draws.
 
-**Status, 2026-10-14:** in progress. Ruling 888 opens tuning ("Tuning's
+**Status, 2026-10-15:** in progress. Ruling 888 opens tuning ("Tuning's
 open."), ending 761's and 826's deferral; candidates are declared before
-they are drawn.
+they are drawn. Candidate 9 meets the matrix (bare 20/20, bodied 20/20,
+original controls 0/20) and is 19/20 on Mesocosm's played founding; it
+needs two generator rulings and a rerun on 890's capture path (Findings,
+2026-10-15).
 
 ## A2. The test baseline (owner: each workspace's plan)
 
@@ -195,6 +198,37 @@ headed meal choice feels tense rather than clerical.
   the reviewer's commits (same code). *Reading, not ruled:* the grazing
   mouth, and then a per-individual lifespan or hazard, are generator
   choices for Mark; no rate or default is promoted and A1 stays open.
+
+- **2026-10-15, A1's candidate 9 meets the matrix; the played founding
+  is 19/20 (source `7b330d02` on branch `a1-reproduction`).** After the
+  grazing mouth (15/20), the lockstep reading was tested: consumer upkeep
+  period 10 and birth gate 9 with the fixed lifespan gave 16/20 (gate seeds
+  0 to 19), its battery's 8/8 being luck (battery 4, sixteen fresh seeds:
+  13/16, and every producer or meal variant at or below it). Replacing the
+  fixed age by a post-maturity hazard (60 ticks, 25,000 per million per
+  tick, the engine's existing `Process.risk`, mean life held at 100) kept
+  the lineage alive to tick 180 in all 20 draws but left one founder
+  alive in seven (13/20 against the unchanged `living_founded == 0` and
+  `born_heirs > 0` terms). With the lineage's fixed age kept as a ceiling
+  at 120 (`hazardcap`): **grazer 20/20, bare 20/20, grazer original-rate
+  control 0/20, played-grazer (Mesocosm's own 6-site, 256-member bodied
+  founding) 19/20, played-grazer original 0/20.** Every draw conserved
+  matter each tick and replayed identically in Individuals and Grouped. The
+  one played miss is seed 15: extinct at tick 176 with two boundaries
+  (the same late-extinction shape as before). Played births by the played
+  body occur in all 20 draws, so the harness's played-births term and the
+  reading without it both give 19/20. The candidate's exact profile:
+  declaration 1's rates (threshold 12, meal 3 and birth period 14 for
+  consumers, provision 8, upkeep 1 per 5 ticks, drawn lifespans 80 to 120
+  now the ceiling), consumer upkeep period 10, consumer birth gate 9, the
+  grazing mouth and the hazard. Declarations 1 to 9 and their SHA-256 are
+  in `q3-reproduction/a1-2026-10-14-declaration-hashes.txt`. These
+  receipts predate ruling 890's capture path, which adds a sunlight inflow
+  and a producer cost to every ecology world, so the matrix reruns on the
+  890 source before anything is promoted. *Reading, not ruled:* the grazing
+  mouth and individual hazard-plus-cap lifespans are generator choices for
+  Mark (draft question in the notes folder); no rate or default is
+  promoted and A1 stays open until that ruling and the rerun.
 
 - **2026-10-11, Q3 fresh bare seed zero classified:** the original arm
   ends at tick 41 without births; the independently frozen 454/813 candidate
