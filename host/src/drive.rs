@@ -16,6 +16,8 @@ use crate::world::World;
 
 pub mod clock;
 pub use clock::{Advance, Clock};
+pub mod input;
+pub use input::{Button, Context, DEFAULT_MAX_BACKLOG, InputRefusal, Named, Pick, Pointed, Press};
 
 /// Default ceiling on rounds one advance runs.
 pub const DEFAULT_MAX_STEPS: u64 = 8;
@@ -42,6 +44,16 @@ pub trait Product {
     /// One round of the product's loop. An error stops the run until a
     /// restored fault clears it.
     fn round(&mut self, world: &World) -> Result<(), String>;
+    /// The product's keymap: the envelope a press makes, if it claims it.
+    fn press(&self, world: &World, press: &Press, context: &Context) -> Option<Self::Envelope> {
+        let _ = (world, press, context);
+        None
+    }
+    /// The envelope a current pick makes, if any.
+    fn point(&self, world: &World, pick: Pick, button: Button, context: &Context) -> Option<Self::Envelope> {
+        let _ = (world, pick, button, context);
+        None
+    }
 }
 
 pub struct Driver<P: Product> {
@@ -52,6 +64,7 @@ pub struct Driver<P: Product> {
     trace: Vec<(P::Envelope, Result<String, P::Refusal>)>,
     fault: Option<String>,
     max_steps: u64,
+    max_backlog: usize,
 }
 
 impl<P: Product> Driver<P> {
@@ -61,7 +74,7 @@ impl<P: Product> Driver<P> {
             Pacing::Explicit => None,
         };
         Self { world: world.share(), product, clock, queued: VecDeque::new(), trace: Vec::new(), fault: None,
-            max_steps: DEFAULT_MAX_STEPS }
+            max_steps: DEFAULT_MAX_STEPS, max_backlog: DEFAULT_MAX_BACKLOG }
     }
 
     pub fn with_max_steps(mut self, max_steps: u64) -> Self {
