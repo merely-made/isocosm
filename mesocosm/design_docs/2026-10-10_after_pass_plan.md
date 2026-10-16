@@ -92,7 +92,11 @@ draw (candidate 10, a change to the ruled preset awaiting a ruling) bare
 A1's gate stands unamended (907): the played founding must reach 20/20. The
 one miss, seed 9, is a herd-migration trap (Findings, 2026-10-15) that no
 rate reaches. *2026-10-16:* 935 rules the 100-base ceiling, and the branch
-is reviewed and merged into main (947).
+is reviewed and merged into main (947). *2026-10-16:* the miss is diagnosed
+(Findings): a hungry lineage moves as a herd on route-clock ticks when its
+feeding is not due. Feeding due every tick at the same mean intake made
+seed 9 qualify in one pilot; the choice between a rate change, a chooser
+change and accepting 19/20 is Mark's (question in Findings, not ruled).
 
 ## A2. The test baseline (owner: each workspace's plan)
 
@@ -285,6 +289,32 @@ headed meal choice feels tense rather than clerical.
   mouth, and then a per-individual lifespan or hazard, are generator
   choices for Mark; no rate or default is promoted and A1 stays open.
 
+- **2026-10-16, A1's last miss is the chooser, and it is cheap to see.**
+  Played seed 9 failed under every lifespan ceiling tried (extinct at ticks
+  142, 162, 176). Mechanism, from the code and one trace (pilot
+  `a1-pilot-v2-played-candidate-lifebase_100-seed9-*`): moves are generated
+  per route in `directing/found.rs::migrate` (`Causation::Choice`, priority
+  0, period the route's travel, open only while `MoodBelow 0`, so only to a
+  hungry member); the chooser (`directing/choice.rs::consider`) takes one
+  process per tick among those due that tick (683); feeding has priority
+  10 and period 3. A hungry consumer whose route clock fires on a tick when
+  feeding is not due has only the move to choose, with prey on the spot.
+  In the trace 44 of 45 consumer move ticks (40 to 140) are not feeding
+  ticks, no tick has both, and the whole lineage (88) moves on the same
+  ticks: a herd. Feeding falls from 523 to 102 accepted acts per 20 ticks,
+  births stop after tick 60. Hunger makes moves available and moves lower
+  intake. Test: consumer feed period 1 with meal 1 (the same mean intake as
+  period 3 with meal 3) makes seed 9 qualify (tick 180, three boundaries,
+  14 living born consumers); bare with that change is 20/20. The bodied and
+  played arms of it were stopped at the user's instruction, so there is no
+  matrix for it. A 10-minute pilot found this; the matrices did not.
+  *Question for Mark, not ruled:* (1) the preset's consumers feed every tick
+  (period 1, meal 1), a rates change in a named preset, evidence one pilot
+  plus bare 20/20; (2) a chooser change so a hungry member does not leave a
+  site that holds eligible prey, a behaviour change touching 813 and every
+  deliberative lineage; (3) accept 19/20 and amend A1's gate. The lane
+  recommends (1), with the gate matrix run once in the background on the
+  ruled preset.
 - **2026-10-15, 905 to 907 built; the ruled preset draws 20/19/18, and a
   100-base ceiling draws 20/20/19 (branch `a1-905-907`, unpushed; source
   heads in `q3-reproduction/a1-2026-10-15-*-head*.txt`).** `Bodies::grazing`
