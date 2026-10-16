@@ -81,12 +81,17 @@ ticks (directing Findings, 2026-10-09). Rates are a world's; fix it as a
 generator or rules change and record the ruling it needs. Done when a played
 consumer lineage survives three epochs on draws.
 
-**Status, 2026-10-15:** in progress. Ruling 888 opens tuning ("Tuning's
-open."), ending 761's and 826's deferral; candidates are declared before
-they are drawn. Candidate 9 meets the matrix (bare 20/20, bodied 20/20,
-original controls 0/20) and is 19/20 on Mesocosm's played founding; it
-needs two generator rulings (draft questions) and reproduces its counts
-on 890's capture path (Findings, 2026-10-15).
+**Status, 2026-10-15:** in progress; the gate is not met. Ruling 888 opens
+tuning ("Tuning's open."), ending 761's and 826's deferral; candidates are
+declared before they are drawn. 905 to 907 are built on branch `a1-905-907`
+(grazing default, hazard under the drawn-lifespan ceiling, the named preset
+`Rates::A1`; defaults unchanged). The preset as ruled (ceiling 80 to 120)
+draws bare 20/20, bodied 19/20, played 18/20; with the ceiling at 100 plus a
+draw (candidate 10, a change to the ruled preset awaiting a ruling) bare
+20/20, bodied 20/20, played **19/20** against the stock controls' 0/20.
+A1's gate stands unamended (907): the played founding must reach 20/20. The
+one miss, seed 9, is a herd-migration trap (Findings, 2026-10-15) that no
+rate reaches.
 
 ## A2. The test baseline (owner: each workspace's plan)
 
@@ -278,6 +283,46 @@ headed meal choice feels tense rather than clerical.
   the reviewer's commits (same code). *Reading, not ruled:* the grazing
   mouth, and then a per-individual lifespan or hazard, are generator
   choices for Mark; no rate or default is promoted and A1 stays open.
+
+- **2026-10-15, 905 to 907 built; the ruled preset draws 20/19/18, and a
+  100-base ceiling draws 20/20/19 (branch `a1-905-907`, unpushed; source
+  heads in `q3-reproduction/a1-2026-10-15-*-head*.txt`).** `Bodies::grazing`
+  is the default (an old saved founding that never named it reads off, is
+  not rewritten, and keeps its digest). The generator declares
+  `ecology:hazard-<i>` (2.5 percent a tick from age 60, the engine's
+  `risk`) beside `ecology:age-<i>`, whose drawn lifespan is the ceiling,
+  only where the ceiling is above 60, so stock worlds carry none.
+  `Founding.ecology_rates` names the preset (`a1`, written only when set);
+  `Rates::Stock` is the default and is the control. Stock/preset numbers
+  are pinned by `tests/ecology_rates_907.rs`; the A1 harness draws both
+  through the generator and refuses a drifted control.
+  *Candidate 9 tested a constant ceiling of 120 for every lineage; 906 as
+  ruled says the drawn lifespan.* Mark chose the drawn ceiling on a card
+  once told. Declaration 11, seeds 0 to 19, source `e360d1cb`: stock
+  0/20 in all three forms; preset bare 20/20, bodied 19/20 (seed 4 extinct
+  at tick 153), played 18/20 (seeds 9 at tick 142 and 15 at 176). Battery
+  5 (declaration 12, bodied, fresh seeds 300 to 315): preset 14/16,
+  ceiling base 90 14/16, **100 16/16**, 110 16/16, consumer birth period 10
+  11/16. Candidate 10 (declaration 13; base 100, the smaller departure on
+  the tie), seeds 0 to 19: bare 20/20, bodied 20/20, played 19/20 (seed 9
+  extinct at tick 162); the stock controls are declaration 11's receipts
+  (same worlds, same engine: the harness refuses to overwrite them).
+  Seed 9 of the played founding failed under every ceiling tried: the
+  constant 120 on the 890 source (extinct at tick 176), the drawn 80 to 120
+  (tick 142) and the drawn 100 to 140 (tick 162). Its census: two
+  cohorts of 32 consumers hop together between sites, feeding falls from
+  523 to 102 accepted acts per 20 ticks while 1,859 producers stand
+  elsewhere, births stop after tick 60, exhaustion deaths follow. That is
+  the choice and movement policy (empty-choice timing, 813; the chooser),
+  not a rate, so tuning stops there pending a ruling. Native suite on the
+  final base (`4c1c51fc` on `02f8f59e`): 670 passed, 0 failed, 13 ignored
+  across 59 targets; `mesocosm-runtime` 15, 6, 3 and 6 passed, including
+  H3's pinned traces, which run on the 879 fixture candidate, an
+  `ecology: false` founding that none of this touches. Attribution of
+  moved digests: sunlight and the bodied reseed are 890 (929); the
+  extinction predicate and spatial templates are 889 and 891 (932, 933);
+  grazing, the hazard and the preset are 905 to 907. The 80-to-100 change
+  needs a recorded ruling before the preset's numbers change on main.
 
 - **2026-10-15, A1's candidate 9 meets the matrix; the played founding
   is 19/20 (source `7b330d02` on branch `a1-reproduction`).** After the
