@@ -10,10 +10,10 @@ use isocosm::{Command, directing::is_participant};
 use isometer_space::places::Places;
 
 impl Game {
-    /// Seats the first living embodied cohort member of each site on that site's
-    /// declared stands, in id order, and registers every declared crossing for
-    /// them. A cohort with no declared stand left, and a site with none, stays at
-    /// site grain. Returns whether the world declares templates.
+    /// Seats the first living embodied member of each of a site's cohorts, in
+    /// id order, one per declared stand, and registers every declared crossing
+    /// for them. A cohort beyond the site's stands, and a site with none, stays
+    /// at site grain. Returns whether the world declares templates.
     pub fn found_generated(&mut self, session: &mut Session) -> Result<bool, String> {
         let Some(templates) = session.sim.genesis().rules.spatial_templates.clone() else { return Ok(false); };
         if self.driver.is_some() || !self.members.is_empty() {
