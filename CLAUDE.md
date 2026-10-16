@@ -193,7 +193,7 @@ The rules all three products share are above. For the tabletop:
 
 ## Workspace tooling
 
-sem and weave are wired into this repo. Both are described once in
+sem is wired into this repo. It is described once in
 `Code/CLAUDE.md`, which loads for any session at or below `Code`.
 
 ## Important Don'ts
