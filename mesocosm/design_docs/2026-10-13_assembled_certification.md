@@ -6,7 +6,7 @@
 crowd defect, fixed at `8cbe3e76`; the recertification under fresh seed
 2026101401 (880) passes. C11 is certified at site grain with the autonomous
 chooser (881); titles are outside (882). Ruling 888 opens tuning;
-A1 resumes; 889 to 891 recorded. Next unused947.
+A1 resumes; 889 to 891 recorded. Next unused948.
 
 **Earlier status:** certification attempt completed; C10 rejected by its unchanged gate.
 Source `6b5d00a0` is pushed and the measurement stayed frozen. Mark's

@@ -11714,7 +11714,21 @@ what later sections derive from.
      scarp (Recommended)", keeping the hazard a world fact; (2) "Wait for 704
      hazard"; (3) "Retire them". Mark: "Carve a native scarp (Recommended)"
      *Reading, not ruled:* F1 to F8 are each a piece of work for a later
-     lane; none is built by these rulings. Next unused947.
+     lane; none is built by these rulings.
+
+947. **`a1-905-907` is reviewed and merged into main.** Asked 2026-10-16 in
+     the closing message, after the triage push: whether to review and merge
+     the A1 branch. Evidence on Windows, rebased onto main `6e3d44f1`:
+     isocosm 670 passed, 0 failed, 13 ignored; root VTT (all features) 484,
+     0, 6; Eponym 105, 13, 4 and Mesocosm 77, 3, 3, the same failures as
+     main (F1 to F8). A stock-world probe (`Code/testing/isometry/
+     a1-907-review-2026-10-16/`) gives main's genesis digest and 240-tick
+     run exactly for plain, bare, `grazing: false` bodied and played worlds
+     and for a founding saved before 905; only default bodied worlds move,
+     by the grazing flag (genesis in 4 of 4 seeds, the run in 1 of 4), and
+     no stock world declares a hazard. Mark: "Review and merge". *Reading,
+     not ruled:* merge, not push; the push comes back as its own question.
+     Next unused948.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

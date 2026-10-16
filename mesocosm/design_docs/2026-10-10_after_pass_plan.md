@@ -18,7 +18,7 @@ The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture
 path landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 are built
-(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused947.
+(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused948.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -91,7 +91,8 @@ draw (candidate 10, a change to the ruled preset awaiting a ruling) bare
 20/20, bodied 20/20, played **19/20** against the stock controls' 0/20.
 A1's gate stands unamended (907): the played founding must reach 20/20. The
 one miss, seed 9, is a herd-migration trap (Findings, 2026-10-15) that no
-rate reaches.
+rate reaches. *2026-10-16:* 935 rules the 100-base ceiling, and the branch
+is reviewed and merged into main (947).
 
 ## A2. The test baseline (owner: each workspace's plan)
 
