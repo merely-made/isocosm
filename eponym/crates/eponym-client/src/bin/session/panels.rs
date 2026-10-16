@@ -431,7 +431,6 @@ fn describe_cause(cause: &CanonRevisionCause) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eponym_play::identity::BodyRevisionId;
     use eponym_play::GameIntent;
     use eponym_play::fixtures::session as session_fixture;
 
@@ -496,26 +495,22 @@ mod tests {
 
     #[test]
     fn a_reconciled_severance_shows_on_the_sheet_and_clears_the_blocker() {
-        let (mut game, played) = played_game();
-        let old = game.bodies().get(played).expect("body").revision;
-        fall(&mut game, played, 5);
-        let tick = game.next_tick();
-        game.apply(GameIntent::ReconcileAnatomy {
-            tick,
-            subject: played,
-            from_revision: old,
-            revision: BodyRevisionId(old.0 + 1),
-            severed_parts: vec![PartId(1)],
-        })
-        .expect("the injury cut's reconciliation is accepted");
+        // A native volley's cut reconciles the admitted anatomy itself (711,
+        // 717); an authored fall and reconciliation no longer severs.
+        let mut fixture = session_fixture::timed_action_world_solving(eponym_motion::SOLVER);
+        let severed = fixture.sever_target_limb();
+        assert!(!severed.is_empty(), "the fixture volley severs a limb");
+        let game = fixture.action.session().game();
 
-        let sheet = subject_sheet(&game, played, None).expect("sheet");
-        assert!(
-            sheet
-                .parts
-                .iter()
-                .any(|part| part.id == PartId(1) && part.severed)
-        );
+        let sheet = subject_sheet(game, fixture.target, None).expect("sheet");
+        for cut in &severed {
+            assert!(
+                sheet
+                    .parts
+                    .iter()
+                    .any(|part| part.id == *cut && part.severed)
+            );
+        }
         assert!(sheet.global_blockers.is_empty());
     }
 
