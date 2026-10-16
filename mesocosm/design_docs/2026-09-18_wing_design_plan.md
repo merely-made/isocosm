@@ -11788,7 +11788,44 @@ what later sections derive from.
      total (for example 100 MB), and exploratory runs keeping summaries
      only; (2) "Global rule too"; (3) "No rule". Mark: "Cap receipts in
      briefs (Recommended)". Carried into the lane-queue plan's rules (§2).
-     Next unused954.
+
+954. **H4: the core has its own press type and a keymap hook.** Asked
+     2026-10-16 by card, from H4's assessment. Evidence: `mesocosm-genet`
+     matches winit's `Key` in `input.rs` (224 lines) and builds Mesocosm's
+     envelopes there; `isocosm-host` is a window-free library; isomere's
+     generic `Keymap<Press, Command>` sits on cambium. Options: (1) "Core's
+     own press type (Recommended)": a plain `Press` (named keys and
+     characters) and a keymap hook on the driver's `Product` trait,
+     `mesocosm-genet` lowering winit's `Key` in one place and Mesocosm's
+     keymap moving to `mesocosm-runtime`; (2) "isomere's Keymap", pulling
+     cambium into the core; (3) "Envelopes only". Mark: "Core's own press
+     type (Recommended)"
+
+955. **H4: only keys that make an envelope go through the core.** Options:
+     (1) "World keys only (Recommended)": E, Space, S, the checkpoint answers
+     (Enter, T), the board's commit (R), a sent hint and the dev intents (X,
+     F, K, G); camera, inspection, dev clock, the board cursor and the hint
+     menu's navigation stay the window's; (2) "Every key via the core".
+     Mark: "World keys only (Recommended)". *Reading, not ruled:* the
+     continuation answers (W, N, Enter on the loop panel) go through
+     `submit_loop_input`, not the envelope queue, and are outside H4's
+     done-condition; they stay as they are.
+
+956. **H4: the core refuses a stale pick; the window still picks.** Options:
+     (1) "Core checks staleness (Recommended)": the window hands the core a
+     pick (body, site or nothing) stamped with the world revision of the
+     frame it came from, the core refuses a stale one as the endpoints do
+     (910), and the product turns it into a nudge, the geometry and identity
+     checks staying in the window; (2) "Wait for H6". Mark: "Core checks
+     staleness (Recommended)"
+
+957. **H4: the live-input backlog cap moves into the core's driver.** The
+     window drops a key once 10 envelopes are queued (`QUEUE_CAP`). Options:
+     (1) "In the core driver (Recommended)": live input through the core is
+     refused at a set backlog, configurable like the step ceiling, default
+     10, while a replay or script queueing directly is not capped; (2)
+     "Stays in the window". Mark: "In the core driver (Recommended)"
+     Next unused958.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
