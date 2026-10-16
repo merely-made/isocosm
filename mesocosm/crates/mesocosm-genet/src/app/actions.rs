@@ -43,41 +43,31 @@ impl Host {
             return;
         }
         if self.continuation_open() { return; }
-        let intent = match self.board_key(key) {
-            Some(taken) => taken,
-            None => match self.runtime.checkpoint() {
-                Some(checkpoint) => input::answer_for(checkpoint, self.runtime.critter(), key),
-                None => input::intent_for(&self.runtime, self.follow, key),
-            },
-        };
-        if let Some(intent) = intent
-            && input::admits(self.runtime.queued_len())
-        {
-            let envelope = input::envelope(&self.runtime, intent);
-            self.runtime.queue(envelope);
+        if self.move_board_cursor(key) { return; }
+        self.press_world(key);
+    }
+
+    /// What the keymap reads of host state: the followed thing, the board's
+    /// selected row, and whether dev keys are live.
+    pub(super) fn input_context(&self) -> mesocosm_runtime::Context {
+        mesocosm_runtime::Context { focus: self.follow, row: self.board_row, dev: self.config.dev }
+    }
+
+    /// A key that may ask something of the world goes through the core (H4).
+    pub(super) fn press_world(&mut self, key: &Key) {
+        let Some(press) = input::lower(key) else { return };
+        let context = self.input_context();
+        if let Err(why) = self.runtime.press(&press, &context) {
+            eprintln!("input: {why:?}");
         }
     }
 
-    /// The trait board's own keys while a review stands. `Some(None)` means
-    /// the board took the key and sends nothing: a cursor move is host state.
-    fn board_key(
-        &mut self,
-        key: &Key,
-    ) -> Option<Option<isocosm_overlay::mesocosm::MesocosmIntent>> {
-        let action = input::board_key(key)?;
-        let offers = &self.runtime.review()?.offers;
-        match action {
-            input::BoardKey::Commit => Some(
-                offers
-                    .get(self.board_row)
-                    .filter(|offer| offer.takeable())
-                    .map(|_| input::revision(self.runtime.critter(), self.board_row)),
-            ),
-            input::BoardKey::Next => {
-                self.board_row = (self.board_row + 1) % offers.len().max(1);
-                Some(None)
-            },
-        }
+    /// The trait board's cursor while a review stands: host state, sent nowhere.
+    fn move_board_cursor(&mut self, key: &Key) -> bool {
+        if !input::board_cursor(key) { return false; }
+        let Some(review) = self.runtime.review() else { return false };
+        self.board_row = (self.board_row + 1) % review.offers.len().max(1);
+        true
     }
 
     /// Runs one named action. `false` when there is no such name, which the

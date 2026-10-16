@@ -20,9 +20,9 @@ use isocosm::directing::readings::{Mode, View};
 use isocosm::schema::{Entity, Id, Tick};
 use isocosm::simulation::{Genesis, Simulation};
 use isocosm::{Execution, Session};
-use isocosm_host::drive::{Driver, Pacing, Product};
+use isocosm_host::drive::{Button, Context, Driver, InputRefusal, Pacing, Pick, Pointed, Press, Product};
 use isocosm_host::world::World;
-use isocosm_overlay::mesocosm::MesocosmIntentEnvelope;
+use isocosm_overlay::mesocosm::{MesocosmIntent, MesocosmIntentEnvelope};
 use serde::{Deserialize, Serialize};
 
 use crate::glyphs::{GlyphReading, GlyphRules};
@@ -35,6 +35,7 @@ pub mod author_spread;
 pub mod graft;
 pub mod ecology;
 pub(crate) mod translate;
+pub mod keymap;
 mod loop_state;
 pub use translate::Refusal;
 
@@ -205,6 +206,12 @@ impl Product for Mesocosm {
         self.checkpoint.as_ref().is_some_and(|c| c.answers(envelope))
     }
     fn round(&mut self, world: &World) -> Result<(), String> { self.round(world) }
+    fn press(&self, world: &World, press: &Press, context: &Context) -> Option<Envelope> {
+        self.keyed(world, press, context).map(|intent| self.envelope(world, intent))
+    }
+    fn point(&self, world: &World, pick: Pick, button: Button, _: &Context) -> Option<Envelope> {
+        self.pointed(world, pick, button).map(|intent| self.envelope(world, intent))
+    }
 }
 
 /// Drives the interim loop at a fixed rate from a host's uneven frames.
@@ -333,6 +340,35 @@ impl Runtime {
     pub fn queue(&mut self, envelope: Envelope) { self.driver.queue(envelope); }
 
     pub fn queued_len(&self) -> usize { self.driver.queued_len() }
+
+    /// Live input (H4): a press through Mesocosm's keymap, refused at the
+    /// backlog cap. `Ok(false)` when the keymap does not claim it.
+    pub fn press(&mut self, press: &Press, context: &Context) -> Result<bool, InputRefusal> {
+        self.refresh();
+        self.driver.press(press, context)
+    }
+    /// The keymap's intent for a press, for a script that queues directly.
+    pub fn keyed(&self, press: &Press, context: &Context) -> Option<MesocosmIntent> {
+        self.product().keyed(self.driver.world(), press, context)
+    }
+    /// A pick through the keymap, refused if its frame is stale.
+    pub fn point(&mut self, pointed: &Pointed, context: &Context) -> Result<bool, InputRefusal> {
+        self.refresh();
+        self.driver.point(pointed, context)
+    }
+    /// The pick, if its frame is still current.
+    pub fn current(&self, pointed: &Pointed) -> Result<Pick, InputRefusal> { self.driver.current(pointed) }
+    /// Live input the window composed itself, such as a chosen hint.
+    pub fn offer(&mut self, intent: MesocosmIntent) -> Result<(), InputRefusal> {
+        self.refresh();
+        let envelope = self.envelope(intent);
+        self.driver.offer(envelope)
+    }
+    /// Stamps an intent for the current tick and participant.
+    pub fn envelope(&self, intent: MesocosmIntent) -> Envelope { self.product().envelope(self.driver.world(), intent) }
+    /// The world revision a presented frame is stamped with.
+    pub fn revision(&self) -> Result<u64, String> { self.driver.world().revision() }
+    pub fn set_max_backlog(&mut self, max_backlog: usize) { self.driver.set_max_backlog(max_backlog); }
 
     /// Runs the rounds the elapsed time authorises; a held run banks none.
     pub fn advance(&mut self, elapsed_us: u64) -> u64 {

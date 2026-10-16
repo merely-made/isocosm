@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Current presented-frame topics become native nudges, never physical driving.
+//! The window picks and checks geometry; the core refuses a pick whose frame
+//! the world has moved past and the keymap makes the nudge (H4, 956).
 
 use super::Host;
 use isocosm::{schema::Id, directing::readings::Mode};
 use isocosm_overlay::{ActKey, EntityHandle, PlaceHandle, mesocosm::{MesocosmIntent, Nudge, NudgeMeaning, NudgeTarget}};
+use mesocosm_runtime::{Button, Pick, Pointed};
 use mesocosm_views::Succession;
 use winit::{event::MouseButton, keyboard::{Key, NamedKey}};
 
@@ -17,7 +20,7 @@ struct Menu { actor: Id, clicked: NudgeTarget, hints: Vec<Hint>, selected: Optio
 
 #[derive(Default)]
 pub(super) struct Pointer {
-    at: Option<[f32; 2]>, presented: Option<Source>, menu: Option<Menu>, notice: Option<String>,
+    at: Option<[f32; 2]>, presented: Option<Source>, revision: Option<u64>, menu: Option<Menu>, notice: Option<String>,
 }
 
 fn topic(target: NudgeTarget) -> String {
@@ -34,12 +37,13 @@ impl Host {
     pub(super) fn mark_pointer_frame(&mut self) {
         self.pointer.presented = self.gpu.as_ref().and_then(|gpu| gpu.section.query_generation())
             .filter(|_| self.scene.is_some()).map(|_| self.pointer_source());
+        self.pointer.revision = self.pointer.presented.as_ref().and_then(|_| self.runtime.revision().ok());
     }
     pub(super) fn move_pointer(&mut self, at: [f32;2]) {
         self.pointer.at = at.iter().all(|v| v.is_finite()).then_some(at);
     }
     pub(super) fn clear_pointer(&mut self) {
-        self.pointer.at = None; self.pointer.presented = None; self.pointer.menu = None;
+        self.pointer.at = None; self.pointer.presented = None; self.pointer.revision = None; self.pointer.menu = None;
     }
     pub(super) fn directing_open(&self) -> bool { self.pointer.menu.is_some() }
     fn pointer_topic(&mut self) -> Result<NudgeTarget,String> {
@@ -91,19 +95,31 @@ impl Host {
             lanes.directing.standing() && contains(lanes.directing.probe((gpu.config.width,gpu.config.height)).1,at))).unwrap_or(false);
         if button == MouseButton::Left && on_menu { self.send_selected_hint(); return; }
         if self.over_chrome(at) { return; }
-        let result = self.pointer_topic();
-        match (button,result) {
-            (MouseButton::Left,Ok(target)) => { self.pointer.menu = None; self.send_hint(target,NudgeMeaning::Attend); },
-            (MouseButton::Right,Ok(target)) => self.open_directing(target),
-            (MouseButton::Left | MouseButton::Right,Err(why)) => { self.pointer.notice = Some(why.clone()); eprintln!("attention: {why}"); },
-            _ => {},
-        }
+        let button = match button { MouseButton::Left => Button::Primary, MouseButton::Right => Button::Secondary, _ => return };
+        let result = self.pointer_topic().and_then(|target| self.pointed(target, button).map(|pointed| (target, pointed)));
+        let result = match result {
+            Ok((target, pointed)) if button == Button::Primary => {
+                self.pointer.menu = None;
+                let context = self.input_context();
+                self.runtime.point(&pointed, &context).map(|_| ()).map_err(|why| format!("{why:?}"))
+                    .map(|()| target)
+            },
+            Ok((target, pointed)) => self.runtime.current(&pointed).map(|_| target).map_err(|why| format!("{why:?}"))
+                .map(|target| { self.open_directing(target); target }),
+            Err(why) => Err(why),
+        };
+        if let Err(why) = result { self.pointer.notice = Some(why.clone()); eprintln!("attention: {why}"); }
+    }
+    /// The core's pick for a topic, stamped with the presented frame's revision.
+    fn pointed(&self, target: NudgeTarget, button: Button) -> Result<Pointed, String> {
+        let revision = self.pointer.revision.ok_or("the pointed frame has no world revision")?;
+        let pick = match target { NudgeTarget::Thing(id) => Pick::Thing(id.0), NudgeTarget::Place(id) => Pick::Place(id.0) };
+        Ok(Pointed { pick, button, revision })
     }
     fn send_hint(&mut self, target: NudgeTarget, meaning: NudgeMeaning) {
         let Some(actor) = self.runtime.critter() else { return; };
-        if !crate::input::admits(self.runtime.queued_len()) { return; }
         let intent = MesocosmIntent::Nudge(Nudge { entity:EntityHandle(actor),target,meaning });
-        self.runtime.queue(crate::input::envelope(&self.runtime,intent));
+        if let Err(why) = self.runtime.offer(intent) { eprintln!("input: {why:?}"); }
     }
     fn open_directing(&mut self, clicked: NudgeTarget) {
         if self.gpu.as_ref().and_then(|gpu| gpu.chrome.as_ref()).is_none() { return; }
