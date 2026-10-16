@@ -91,7 +91,7 @@ fn an_individual_can_die_from_maturity_and_never_outlives_its_lineages_ceiling()
     let p = &g.rules.processes;
     for i in 0..3 {
         let ceiling = age_of(&p[&format!("ecology:age-{i}")]);
-        assert!((80..=120).contains(&ceiling), "lineage {i}: {ceiling}");
+        assert!((100..=140).contains(&ceiling), "lineage {i}: {ceiling}");
         let hazard = &p[&format!("ecology:hazard-{i}")];
         assert_eq!(age_of(hazard), 60, "from maturity");
         let risk = hazard.risk.as_ref().expect("a risk");

@@ -23,7 +23,7 @@ pub enum Rates {
     Stock,
     /// Declared at `stock_min` 8: birth gate 12 (consumers 9), consumers
     /// eat 3, are born every 14 ticks and pay upkeep every 10, and every
-    /// lineage's lifespan is drawn from 80 to 120.
+    /// lineage's lifespan, the ceiling under its death hazard, is drawn from 100 to 140.
     A1,
 }
 
@@ -55,7 +55,7 @@ impl Rates {
     /// A lineage's lifespan: the base plus a draw of 0 to 40 (the ceiling the
     /// hazard works under).
     pub(super) fn lifespan(self, draw: u64) -> u64 {
-        let base = if self == Self::A1 { 80 } else { 20 };
+        let base = if self == Self::A1 { 100 } else { 20 };
         base + draw % 41
     }
 }
