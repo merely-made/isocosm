@@ -18,7 +18,7 @@ The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture
 path landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 are built
-(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused935.
+(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused947.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -138,6 +138,10 @@ motion archives stop at the generator check before any replay.
 | `actual_pre_combat_…`, `v4_native_…`, `real_v5_…` (`eponym-motion` combat_saves, motion_compat, precise_combat) | c, F2 | Generator-1 archives are refused, `GeneratorDiverged { saved: 1, current: 4 }`; `eponym-play`'s `save_wire` tests pin that refusal, so the tree asserts both. `8fb64d3f` left "authenticated generator-1 founding and continuation" open. | `8fb64d3f`; 755, 770 |
 | `a_tag_in_occurs_mid_action_under_the_pact`, `an_injury_persists_as_a_body_revision_fact` (`eponym-sortie`) | c, F8 | Nobody falls, so nobody is wounded or downed. Not a stale offset: 256 marches over offsets ±64 meet a largest one-tick drop of 1, and a drawn cliff (744) is 64, equal to the walker's `HEADROOM`, so no walker steps it. | `694a3f0e`, `1616dde2`; 744 |
 | `the_shipped_pack_admits_…`, `the_manifests_file_order_…`, `the_shipped_pack_is_toml_…` (`mesocosm-phenotype`) | c, F1 | The pack ships five definitions; the native registry carries fifteen. | `635bffa7`; 759 |
+
+*2026-10-16:* Mark took every recommendation: the six fixes merge (938),
+and F1 to F8 are ruled 939 to 946 as option (1) each. Each fork is now work
+for a later lane, not yet built.
 
 The forks, each with a recommendation first:
 
