@@ -3,7 +3,7 @@
 **Date:** 2026-09-25
 
 **Generated-world inputs, 2026-10-15 (889, 891):** built on branch
-`lane-generator-templates`, under review and uncertified.
+`lane-generator-templates`, merged into local main 2026-10-15 after review (push pending), uncertified.
 A world founded with a map and bodies declares `rules.spatial_templates`: up to
 four spawn stands per site, derived from its realized terrain (root clear and
 resting on solid ground, eye clear, one realized patch), and one arrival stand

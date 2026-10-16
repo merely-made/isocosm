@@ -17,8 +17,8 @@ C11 (882). C9 retains its historical exact-source certification.
 The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture
-path landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 are built on
-`lane-generator-templates`, under review (932). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused933.
+path landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 are built
+(`lane-generator-templates`, merged into local main 2026-10-15, push pending; 932). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused933.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -289,6 +289,30 @@ headed meal choice feels tense rather than clerical.
   no part's matter still changes which part receives new tissue, so any
   added process reseeds bodied trajectories. Under 931 a triage session
   takes the 22 failures.
+
+- **2026-10-15, review of `lane-generator-templates` (889, 891) on Windows;
+  merged into local main, the push waiting on Mark.** The one code commit
+  (`b5d86d14`) was rebased alone onto main (`4cccf7dd`); its base was A1's
+  pre-rebase tip, whose commits main already holds. The code applied
+  cleanly and four plan status lines were reconciled. Suites
+  (`Code/testing/isometry/gen-review-2026-10-15/`), against the A1 review's
+  branch run, whose code main matches: native 667 passed and 13 ignored,
+  the baseline's 655 plus the branch's twelve new tests; the core 48 and 5,
+  unchanged; the root VTT with every feature 484 and 6, the same tests;
+  Eponym the same 103 passing and 15 failing; Mesocosm the same set plus
+  the branch's three runtime tests, with one H3 pin failing. *The digest
+  moves.* A probe over fourteen generated worlds (plain, bare and bodied
+  ecologies, two played map worlds): every genesis digest moved, and with
+  `global_collapse` and `spatial_templates` removed each equals main's;
+  per-tick population, sites and event counts match main over 240 ticks
+  (30 for the map worlds), the worlds that die out included. The state hash
+  folds the genesis in, so it moves everywhere. The failing pin was that:
+  its fixture world now declares the collapse predicate, every recorded
+  action and outcome replayed unchanged, and the two traces were rerecorded
+  for their final hash alone. A small mismatch for the generator lane: its
+  overlay-plan text says `Game::found_generated` seats "the first embodied
+  member of each cohort", while the code seats up to four residents per
+  site in id order. Nothing calls `found_generated` yet but its tests.
 
 - **2026-10-11, Q3 fresh bare seed zero classified:** the original arm
   ends at tick 41 without births; the independently frozen 454/813 candidate
