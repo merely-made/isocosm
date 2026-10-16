@@ -5,7 +5,7 @@
 **Status, 2026-10-15:** in progress. Opened by rulings 884, 892 and 895;
 carries 887's first milestone; forks settled by 896 to 898. H0, H1, H2 and H3
 landed (H2's forks ruled 899 to 904); H2's step 4 waits on the lifted
-reference-host capabilities (899).
+reference-host capabilities (899). 2026-10-16: H4 landed (954 to 957).
 
 ## Why
 
@@ -255,6 +255,35 @@ through the UI, succession in the client), then the VTT over the sim
 starts.
 
 ## Progress
+
+- **2026-10-16, H4 landed (954 to 957):** the core's driver takes live
+  input (`host/src/drive/input.rs`): a plain `Press` and `Pick` the window
+  lowers, `press` and `point` hooks on `Product` that make envelopes,
+  `current` refusing a pick stamped with a world revision the world has
+  moved past, and `offer`, which refuses live input once the backlog reaches
+  its cap (default 10) while `queue` stays uncapped for replays and scripts.
+  Mesocosm's keymap moved to `mesocosm-runtime` (`runtime/keymap.rs`): E and
+  Space nudge toward the focused thing or the played site, S speciates,
+  Enter and T answer a question, R commits the board's selected takeable
+  offer, X, F, K and G are dev intents when dev keys are live, and a primary
+  click nudges toward the pick. `mesocosm-genet` lowers winit's `Key` once
+  (`input::lower`) and keeps the host-state keys; its clicks are stamped
+  with the revision of the frame they were drawn from, a right-click opens
+  the hint menu only on a current pick, hints go through `offer`, and the
+  demo script queues the keymap's intents directly. Gates: core 51 passed;
+  Mesocosm 81 passed and main's 3 (F1) failed; root `--all-features` and
+  Eponym check clean; four headless input tests (`tests/live_input.rs`)
+  drive E, Space, S, Enter, R, the dev keys, clicks, a stale pick and the
+  cap, and planted staleness and backlog faults fail them at the core and
+  in Mesocosm. Not rerun: the `--bench` scenarios, which drive the cambium
+  bench over a native session and touch none of this code. Not done: a
+  headed key run, since the played head boots only on a generated
+  candidate with its 875 witness (H6); at the six-tick test world's board no
+  offer is takeable, so R's commit of a takeable offer is exercised only
+  where one exists. The continuation panel's answers (W, N) stay on
+  `submit_loop_input` (955, reading). `World::put_section` moves the
+  revision even for identical bytes, so every published round stales a
+  pick; the window stamps after the frame's advance, so it holds.
 
 - **2026-10-15, H3 step 3 (on the lane), H3 landed:** Mesocosm's
   `Runtime` now owns a `Driver<Mesocosm>` over the core's `World`; the
