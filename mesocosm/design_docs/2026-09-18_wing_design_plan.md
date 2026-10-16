@@ -11330,6 +11330,8 @@ what later sections derive from.
      `risk` (recommended, by the lane and the reviewer); (2) a fixed
      lifespan per lineage; (3) the hazard only.
      Mark: "I accept the recommendations."
+     *2026-10-16:* the hazard is declared only where the drawn ceiling is
+     above maturity, so today only the A1 preset carries it (949).
 
 907. **The candidate rates become a named world preset, not the generator's defaults.**
      Asked 2026-10-15 in plain text, then by card. Evidence: the candidate
@@ -11728,7 +11730,24 @@ what later sections derive from.
      by the grazing flag (genesis in 4 of 4 seeds, the run in 1 of 4), and
      no stock world declares a hazard. Mark: "Review and merge". *Reading,
      not ruled:* merge, not push; the push comes back as its own question.
-     Next unused948.
+
+948. **Main is pushed with A1's 905 to 907.** Asked 2026-10-16 by card after
+     947's merge (main six commits ahead at `63e27de7`). Options: (1) "Push
+     now (Recommended)", then clean up the review worktree and build
+     directory; (2) "Hold the push". Mark: "Push now (Recommended)"
+
+949. **906's hazard acts only where the ceiling is above maturity: today, the
+     A1 preset.** Asked 2026-10-16 by card from 947's review. Evidence: the
+     generator declares `ecology:hazard-<i>` only where the drawn lifespan
+     exceeds 60; stock lifespans are 20 to 60, so no default world carries
+     it (the probe counts none), which fits 907 ("default worlds keep
+     today's rates") but not 906's "the generator's". Options: (1)
+     "Preset-only, say so (Recommended)", behaviour and digests unchanged;
+     (2) "Preset owns it outright", `Rates::A1` declaring it explicitly;
+     (3) "Every world gets it", maturity scaled to each ceiling, moving
+     stock digests. Mark: "Preset-only, say so (Recommended)". This amends
+     906's reading, not its words.
+     Next unused950.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
