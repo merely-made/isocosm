@@ -73,6 +73,7 @@ pub struct PlacedBody {
 }
 
 /// The section's native input: a lifted site, its bodies, and who is played.
+#[derive(Clone)]
 pub struct SiteScene {
     pub site: u64,
     pub ground: Ground,

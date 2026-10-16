@@ -74,6 +74,9 @@ impl Host {
         self.continuation.presented = self.gpu.as_ref().and_then(|gpu| gpu.chrome.as_ref())
             .filter(|lanes| lanes.continuation.standing()).and(self.continuation.reading.clone());
     }
+    pub(super) fn mark_continuation_presented(&mut self) {
+        self.continuation.presented = self.continuation.reading.clone();
+    }
 
     fn continuation_label(&self, answer: &LoopAnswer) -> String {
         match answer {

@@ -105,14 +105,18 @@ impl Interim {
         pace: Pace,
         execution: Execution,
     ) -> Result<Self> {
-        let played = genesis.founding.as_ref().and_then(|f| f.played);
+        Self::found_session(Session::new(genesis, execution)?, start, mode, pace)
+    }
+
+    /// Product founding after a host has created the native session.
+    pub fn found_session(mut session: Session, start: Start, mode: Mode, pace: Pace) -> Result<Self> {
+        let played = session.sim.genesis().founding.as_ref().and_then(|f| f.played);
         let lineage = format!(
             "lineage:{}",
             played
                 .ok_or("the interim plays a generated lineage (682)")?
                 .lineage
         );
-        let mut session = Session::new(genesis, execution)?;
         let epochs = |epochs| DeepTimeSpan { epochs };
         let span = session.sim.genesis().rules.deep_time;
         let first = run_deep_time(&mut session, span)?;

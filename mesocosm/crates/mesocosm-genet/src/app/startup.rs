@@ -6,6 +6,13 @@
 use super::{HostConfig, Runtime};
 
 pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Result<Runtime, String> {
+    if config.bench_world {
+        let mut founded = mesocosm_runtime::Founded::generated_with_affinity(config.seed, config.population, affinity)?;
+        founded.genesis.rules.epoch_ticks = config.bench_epoch;
+        if let Some(start) = config.start { founded.start = start; }
+        if let Some(mode) = config.mode { founded.mode = mode; }
+        return Runtime::bench(founded, config.ticks_per_second);
+    }
     if let Some(path) = &config.ecology_candidate {
         let setup = read_setup(path)?;
         return setup.offer(config.ticks_per_second);

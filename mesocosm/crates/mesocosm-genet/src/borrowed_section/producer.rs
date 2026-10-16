@@ -6,9 +6,31 @@ use isometer::{FrameRequest, SceneProducer, SceneSignature, SceneSource, SlabCam
 use crate::section::{self, BodyMode, Framing, Section, SectionFrame};
 use super::SceneHandle;
 
+#[cfg(test)]
+mod tests;
+
 pub struct SectionProducer { handle: SceneHandle, inner: Option<SceneProducer<Source>> }
 impl SectionProducer {
     pub fn new(handle: SceneHandle) -> Self { Self { handle, inner: None } }
+    pub(crate) fn renders(&self) -> u64 { self.inner.as_ref().map_or(0, |inner|inner.renders()) }
+    pub(crate) fn pick(&mut self, local: (f64, f64), size: (f64, f64)) -> Result<(Option<isometer::Pick>, u64), String> {
+        let source = self.inner.as_mut().ok_or("viewport has not rendered")?.source_mut();
+        let input = self.handle.snapshot().ok_or("viewport has no current picture")?;
+        if source.presented_input != Some(input.fingerprint) { return Err("the pointed picture changed before presentation".into()); }
+        let revision = input.revision.ok_or("viewport has no world revision")?;
+        if ![local.0,local.1,size.0,size.1].iter().all(|v|v.is_finite())
+            || size.0 <= 0.0 || size.1 <= 0.0 || local.0 < 0.0 || local.1 < 0.0
+            || local.0 >= size.0 || local.1 >= size.1 { return Err("pointer is outside the viewport".into()); }
+        let target = source.target.as_ref().ok_or("viewport has no target")?.3;
+        let pixel = [(local.0 / size.0 * target[0] as f64).floor() as u32,
+            (local.1 / size.1 * target[1] as f64).floor() as u32];
+        let section = source.section.as_mut().ok_or("viewport has no section")?;
+        let pick = section.pick_at_pixel(pixel).map_err(|why|format!("{why:?}"))?;
+        if let Some(isometer::Pick::Body(body)) = pick {
+            if !section.validate_body_pick(body, &input.scene) { return Err("pointed body geometry is stale".into()); }
+        }
+        Ok((pick, revision))
+    }
 }
 impl TextureProducer for SectionProducer {
     fn render(&mut self, cx: &ProducerContext<'_>) -> Option<ProducedTexture> {
@@ -36,11 +58,12 @@ pub(crate) struct Source {
     host: tenant::HostDevice, handle: SceneHandle, section: Option<Section>,
     ground: Option<[u64; 4]>, target: Option<(wgpu::Texture, wgpu::TextureView, wgpu::TextureView, [u32; 2])>,
     presented: Option<SlabCamera>,
+    presented_input: Option<[u64;4]>,
 }
 
 impl Source {
     pub(crate) fn new(host: tenant::HostDevice, handle: SceneHandle) -> Self {
-        Self { host, handle, section: None, ground: None, target: None, presented: None }
+        Self { host, handle, section: None, ground: None, target: None, presented: None, presented_input: None }
     }
     fn target(&mut self, size: [u32; 2]) {
         if self.target.as_ref().is_some_and(|t| t.3 == size) { return; }
@@ -94,7 +117,7 @@ impl SceneSource for Source {
         let size = [request.size[0].max(1), request.size[1].max(1)];
         self.target(size);
         let Some(input) = self.handle.snapshot() else {
-            self.section = None; self.ground = None; self.presented = None;
+            self.section = None; self.ground = None; self.presented = None; self.presented_input = None;
             let mut encoder = self.host.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
                 label: Some("Mesocosm withdrawn close-up clears previous image") });
             Self::clear(&mut encoder, &self.target.as_ref().unwrap().1);
@@ -114,21 +137,31 @@ impl SceneSource for Source {
                 self.ground = Some(input.fingerprint);
             }
             section.configure_bodies(BodyMode::Voxels, section::DEFAULT_BODY_BUDGET);
+            if let Some(view) = &input.presentation {
+                section.configure_bodies(view.bodies, view.budget);
+                section.set_half_height(view.half_height);
+                section.set_body_light(view.light);
+                section.configure_terrain(view.terrain, view.centre, view.centre[1]);
+                section.set_body_focus(view.focus, view.selection);
+            }
             section.set_forward(Some(camera.forward))?;
             let mut encoder = self.host.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
                 label: Some("Mesocosm section on the present device") });
             let draw = &self.target.as_ref().unwrap().1;
             Self::clear(&mut encoder, draw);
+            let pose = section::pose_of(&input.scene, 1.0).map(|(pose, _)|pose);
+            let roster = section::roster_of(&input.scene, section.slab_window(camera.centre), 1.0);
             section.draw(&mut encoder, draw, SectionFrame { scene: &input.scene, dirty: &[],
-                centre: camera.centre, pose: None, roster: &[] })?;
+                centre: camera.centre, pose: pose.as_ref(), roster: &roster })?;
             self.host.queue.submit([encoder.finish()]);
             self.presented = Some(camera);
+            self.presented_input = Some(input.fingerprint);
             self.handle.error.borrow_mut().take();
             Ok::<(), String>(())
         })();
         if let Err(why) = result {
             // A failed encode cannot keep pixels from an earlier native cut.
-            self.section = None; self.ground = None; self.presented = None;
+            self.section = None; self.ground = None; self.presented = None; self.presented_input = None;
             *self.handle.error.borrow_mut() = Some(why);
             let mut encoder = self.host.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
                 label: Some("Mesocosm refused frame clears previous image") });
@@ -139,6 +172,6 @@ impl SceneSource for Source {
     }
     fn presented_camera(&self) -> Option<SlabCamera> { self.presented }
     fn cached_bodies(&self) -> usize { self.section.as_ref().map_or(0, Section::cached_bodies) }
-    fn suspend(&mut self) { self.target = None; self.presented = None; }
+    fn suspend(&mut self) { self.target = None; self.presented = None; self.presented_input = None; }
     fn retire(&mut self) { self.suspend(); self.section = None; self.ground = None; }
 }

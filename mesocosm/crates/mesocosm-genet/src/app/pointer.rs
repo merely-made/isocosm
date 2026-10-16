@@ -123,6 +123,9 @@ impl Host {
     }
     fn open_directing(&mut self, clicked: NudgeTarget) {
         if self.gpu.as_ref().and_then(|gpu| gpu.chrome.as_ref()).is_none() { return; }
+        self.open_directing_in_view(clicked);
+    }
+    pub(super) fn open_directing_in_view(&mut self, clicked: NudgeTarget) {
         let Some(actor) = self.runtime.critter() else { return; };
         self.pointer.notice = None;
         self.pointer.menu = Some(Menu {actor,clicked,hints:Vec::new(),selected:None});

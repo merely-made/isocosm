@@ -19,6 +19,16 @@ pub struct Snapshot {
     pub(crate) scene: SiteScene,
     pub(crate) fingerprint: [u64; 4],
     pub(crate) quarter_turn: u8,
+    pub(crate) presentation: Option<Presentation>,
+    pub(crate) revision: Option<u64>,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct Presentation {
+    pub forward: [f32; 3], pub centre: [f32; 3], pub half_height: f32,
+    pub bodies: section::BodyMode, pub budget: usize, pub light: f32,
+    pub terrain: section::TerrainStyle,
+    pub focus: Option<Id>, pub selection: Option<section::BodySelection>,
 }
 
 impl Snapshot {
@@ -26,6 +36,10 @@ impl Snapshot {
     pub fn played(&self) -> Option<Id> { self.scene.played }
     pub fn body_ids(&self) -> Vec<Id> { self.scene.bodies.iter().map(|body| body.id).collect() }
     pub fn camera(&self, aspect: f32) -> SlabCamera {
+        if let Some(view) = &self.presentation {
+            return SlabCamera { centre: view.centre, forward: view.forward,
+                half_height: view.half_height, aspect, depth: section::SLAB_DEPTH, cutaway: None };
+        }
         let mode = CameraMode::default();
         let at = self.scene.played.and_then(|id| self.scene.at(id))
             .unwrap_or_else(|| layout::centre(&self.scene.ground));
@@ -48,6 +62,19 @@ pub struct SceneHandle {
 }
 
 impl SceneHandle {
+    /// A product's validated picture inputs, published without a second world.
+    pub(crate) fn present(&self, scene: SiteScene, revision: u64, presentation: Presentation) -> Result<(), String> {
+        let digest = isocosm::digest(&(revision, format!("{presentation:?}")));
+        let mut fingerprint = [0; 4];
+        for (i, word) in fingerprint.iter_mut().enumerate() {
+            *word = u64::from_str_radix(&digest[i * 16..(i + 1) * 16], 16).map_err(|why| why.to_string())?;
+        }
+        if self.input.borrow().as_ref().is_some_and(|old| old.fingerprint == fingerprint) { return Ok(()); }
+        *self.input.borrow_mut() = Some(Rc::new(Snapshot { scene, fingerprint,
+            quarter_turn: 0, presentation: Some(presentation), revision: Some(revision) }));
+        self.error.borrow_mut().take();
+        Ok(())
+    }
     pub fn snapshot(&self) -> Option<Rc<Snapshot>> { self.input.borrow().clone() }
     pub fn last_error(&self) -> Option<String> { self.error.borrow().clone() }
     pub fn clear(&self) -> bool {
@@ -109,7 +136,7 @@ impl SceneHandle {
             if self.input.borrow().as_ref().is_some_and(|old|
                 old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
             let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
-            let snapshot = Snapshot { scene:SiteScene { site, ground:volume.ground().clone(), window:volume,
+            let snapshot = Snapshot { presentation:None, revision:None, scene:SiteScene { site, ground:volume.ground().clone(), window:volume,
                 bodies, played:region.played, volumes }, fingerprint, quarter_turn };
             *self.input.borrow_mut() = Some(Rc::new(snapshot));
             self.error.borrow_mut().take();
@@ -163,7 +190,7 @@ impl SceneHandle {
             if self.input.borrow().as_ref().is_some_and(|old|
                 old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
             let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
-            let snapshot = Snapshot { scene:SiteScene { site, ground:volume.ground().clone(), window:volume,
+            let snapshot = Snapshot { presentation:None, revision:None, scene:SiteScene { site, ground:volume.ground().clone(), window:volume,
                 bodies, played:region.played, volumes }, fingerprint, quarter_turn };
             *self.input.borrow_mut() = Some(Rc::new(snapshot)); self.error.borrow_mut().take();
             Ok(true)
@@ -244,6 +271,6 @@ fn lower(session: &Session, region: RegionReading, fingerprint: [u64; 4], quarte
             tint: scene::tint_of(isocosm::kingdom::of(entity)), alive: entity.alive });
     }
     let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|body| &body.document), 1);
-    Ok(Snapshot { scene: SiteScene { site: region.site, ground, window: volume, bodies,
+    Ok(Snapshot { presentation:None, revision:None, scene: SiteScene { site: region.site, ground, window: volume, bodies,
         played: region.played, volumes }, fingerprint, quarter_turn })
 }

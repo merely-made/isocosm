@@ -22,6 +22,7 @@ use crate::section::{self, Pan, Section, SiteScene};
 
 pub mod actions;
 pub mod bench;
+mod assembly;
 mod config;
 mod continuation;
 mod devtime;
@@ -56,6 +57,8 @@ pub struct Host {
     gpu: Option<Gpu>,
     adapter: Option<wgpu::AdapterInfo>,
     last: Option<Instant>,
+    /// Bounded host callback intervals, before pause/speed scaling. Not GPU timings.
+    frame_intervals_us: Vec<u64>,
     frames: u32,
     steps: u64,
     finished: bool,
@@ -192,6 +195,7 @@ impl Host {
             gpu: None,
             adapter: None,
             last: None,
+            frame_intervals_us: Vec::new(),
             frames: 0,
             steps: 0,
             finished: false,
@@ -215,6 +219,7 @@ impl Host {
 
     /// Runs the host to completion. The `i32` is the process exit code.
     pub fn run(config: HostConfig) -> Result<i32, winit::error::EventLoopError> {
+        if config.bench_world { return Ok(assembly::run(config)); }
         let event_loop = EventLoop::new()?;
         event_loop.set_control_flow(ControlFlow::Poll);
         let mut host = Self::new(config);
@@ -297,6 +302,9 @@ impl Host {
             .map(|then| now.duration_since(then).as_micros() as u64)
             .unwrap_or(0);
         self.last = Some(now);
+        if elapsed_us > 0 && self.frame_intervals_us.len() < 10000 {
+            self.frame_intervals_us.push(elapsed_us);
+        }
         let elapsed_us = self.dev_paced_elapsed(elapsed_us);
         self.steps += self.runtime.advance(elapsed_us);
     }

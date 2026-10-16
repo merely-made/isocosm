@@ -12,6 +12,9 @@ use crate::section::{self, CameraMode};
 
 #[derive(Clone, Debug)]
 pub struct HostConfig {
+    /// H6's explicit dev world, played through the core and Assembly (897).
+    pub bench_world: bool,
+    pub bench_epoch: u64,
     pub seed: u64,
     /// Select the existing native clock-sourced founding seed instead of this explicit seed.
     pub unchosen_seed: bool,
@@ -62,6 +65,8 @@ pub struct HostConfig {
 impl Default for HostConfig {
     fn default() -> Self {
         Self {
+            bench_world: false,
+            bench_epoch: 60,
             seed: 0x00A7_7AC4,
             unchosen_seed: false,
             start: None,
