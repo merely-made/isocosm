@@ -8,19 +8,23 @@
 //! the interim loop at site grain, stepped a round at a time. A host queues
 //! contract envelopes, which this driver translates into native commands
 //! (686); it never touches world state, and the session's log is the record
-//! a replay reads back.
+//! a replay reads back. Since H3 (rulings 925 to 927) the session lives in
+//! the sim-host core's `World` and the core's `Driver` queues, traces, caps
+//! and paces; Mesocosm is the `Product` it drives, and the game sits in the
+//! world's `mesocosm` section, the door its endpoint uses too.
 
-use std::collections::VecDeque;
+use std::cell::Ref;
 
-use isocosm::directing::interim::{Happening, Interim, OnCollapse, Pace, Start};
+use isocosm::directing::interim::{Handover, Happening, Interim, OnCollapse, Pace, Start};
 use isocosm::directing::readings::{Mode, View};
-use isocosm::schema::{Entity, Id};
+use isocosm::schema::{Entity, Id, Tick};
 use isocosm::simulation::{Genesis, Simulation};
 use isocosm::{Execution, Session};
+use isocosm_host::drive::{Driver, Pacing, Product};
+use isocosm_host::world::World;
 use isocosm_overlay::mesocosm::MesocosmIntentEnvelope;
 use serde::{Deserialize, Serialize};
 
-use isocosm_host::drive::Clock;
 use crate::glyphs::{GlyphReading, GlyphRules};
 use crate::readings::{FlowWindows, Trend};
 use crate::review::{Authored, Proposed, Review};
@@ -35,7 +39,10 @@ mod loop_state;
 pub use translate::Refusal;
 
 /// Default ceiling on rounds one `advance` call runs.
-pub const DEFAULT_MAX_STEPS_PER_ADVANCE: u64 = 8;
+pub const DEFAULT_MAX_STEPS_PER_ADVANCE: u64 = isocosm_host::drive::DEFAULT_MAX_STEPS;
+
+/// The world section that holds Mesocosm's game.
+pub const MODE: &str = "mesocosm";
 
 /// One contract envelope, as a host queues it.
 pub type Envelope = MesocosmIntentEnvelope;
@@ -92,33 +99,119 @@ impl Founded {
     }
 }
 
+/// What `Interim` holds besides its session: who plays, how, and since when.
+#[derive(Clone, Debug)]
+pub struct Loop {
+    pub participant: Id,
+    pub mode: Mode,
+    pub pace: Pace,
+    pub on_collapse: OnCollapse,
+    pub handover: Handover,
+    /// The boundary at which the played lineage first had a habitable site.
+    pub habitable_at: Tick,
+}
+
+impl Loop {
+    fn split(interim: Interim) -> (Session, Self) {
+        let Interim { session, participant, mode, pace, on_collapse, handover, habitable_at } = interim;
+        (session, Self { participant, mode, pace, on_collapse, handover, habitable_at })
+    }
+}
+
+/// Mesocosm as the core driver's product: the loop's settings and saved
+/// state, with the game mirrored into the world's section at each publish.
+pub(crate) struct Mesocosm {
+    pub(crate) lp: Loop,
+    pub(crate) founded: Founded,
+    /// The question the run is holding at, if any.
+    pub(crate) checkpoint: Option<Checkpoint>,
+    /// The played line's turn, while holding at a boundary.
+    pub(crate) review: Option<Review>,
+    /// A pack's expression scripts, and what they made of the review (781).
+    pub(crate) authored: Option<Authored>,
+    /// Host display forms; absent from saved native and game state.
+    pub(crate) terms: mesocosm_phenotype::TermTable,
+    pub(crate) proposed: Vec<Proposed>,
+    /// What the last round brought.
+    pub(crate) happenings: Vec<Happening>,
+    pub(crate) windows: FlowWindows,
+    /// An opt-in glyph reading of the played critter's acts (774).
+    pub(crate) glyphs: Option<GlyphReading>,
+    pub(crate) dev_intents: u64,
+    /// The sim's refusal of a round, sealed into the saved loop; the driver
+    /// stops on the same refusal.
+    pub(crate) fault: Option<String>,
+    pub(crate) spatial: crate::spatial::Game,
+}
+
+/// The session lent for reading; a product never holds it across a commit.
+pub(crate) fn session(world: &World) -> Ref<'_, Session> {
+    world.session().expect("the world is borrowed only between transactions")
+}
+
+/// One native transaction, carrying a product refusal through unchanged.
+pub(crate) fn commit<T>(world: &World, admit: impl FnOnce(&mut Session) -> Result<T, Refusal>)
+    -> Result<T, Refusal> {
+    let before = world.cut().map_err(Refusal::Sim)?;
+    let mut refused = None;
+    world.product(before, |session| admit(session).map_err(|refusal| { refused = Some(refusal); String::new() }))
+        .map_err(|why| refused.unwrap_or(Refusal::Sim(why)))
+}
+
+impl Mesocosm {
+    fn held(&self) -> bool {
+        self.checkpoint.is_some() || self.spatial.continuation.as_ref()
+            .is_some_and(|saved| matches!(saved.phase,
+                crate::continuation::LoopPhase::NewWorldRequested | crate::continuation::LoopPhase::WorldEnded))
+    }
+
+    pub(crate) fn critter(&self, world: &World) -> Option<Id> { session(world).sim.plays(self.lp.participant) }
+
+    /// One round after the queued envelopes have applied.
+    fn round(&mut self, world: &World) -> Result<(), String> {
+        self.sync_loop(world);
+        let participant = self.lp.participant;
+        let mut game = self.spatial.clone();
+        let round = world.cut().and_then(|before| world.product(before, |session|
+            crate::continuation::round::advance_with_flows(session, &mut game, participant)
+                .map_err(|why| format!("{why:?}"))));
+        match round {
+            Ok((_, flows)) => {
+                self.spatial = game;
+                if let Err(why) = self.restore_loop(world) { self.fault = Some(why.clone()); return Err(why); }
+                if let Some(glyphs) = &mut self.glyphs { glyphs.absorb(&session(world), &flows); }
+                // Preserve the old wholly unmarked run's patch placement only.
+                // Marked runs retain their actually admitted physical bindings.
+                if self.spatial.driver.is_none() && self.spatial.members.is_empty()
+                    && self.spatial.sight.is_none() { self.place_members(world); }
+                self.sync_loop(world);
+                Ok(())
+            },
+            Err(why) => {
+                self.fault = Some(why.clone());
+                self.sync_loop(world);
+                Err(why)
+            },
+        }
+    }
+}
+
+impl Product for Mesocosm {
+    type Envelope = Envelope;
+    type Refusal = Refusal;
+    fn apply(&mut self, world: &World, envelope: &Envelope) -> Result<String, Refusal> { self.apply_envelope(world, envelope) }
+    fn held(&self, _: &World) -> bool { self.held() }
+    fn answers(&self, _: &World, envelope: &Envelope) -> bool {
+        self.checkpoint.as_ref().is_some_and(|c| c.answers(envelope))
+    }
+    fn round(&mut self, world: &World) -> Result<(), String> { self.round(world) }
+}
+
 /// Drives the interim loop at a fixed rate from a host's uneven frames.
 pub struct Runtime {
-    interim: Interim,
-    founded: Founded,
-    clock: Clock,
-    queued: VecDeque<Envelope>,
-    /// Every envelope applied, in order, with what it came to.
-    trace: Vec<(Envelope, Result<String, Refusal>)>,
-    /// The question the run is holding at, if any.
-    checkpoint: Option<Checkpoint>,
-    /// The played line's turn, while holding at a boundary.
-    review: Option<Review>,
-    /// A pack's expression scripts, and what they made of the review (781).
-    authored: Option<Authored>,
-    /// Host display forms; absent from saved native and game state.
-    terms: mesocosm_phenotype::TermTable,
-    proposed: Vec<Proposed>,
-    /// What the last round brought.
-    happenings: Vec<Happening>,
-    windows: FlowWindows,
-    /// An opt-in glyph reading of the played critter's acts (774).
-    glyphs: Option<GlyphReading>,
-    dev_intents: u64,
-    /// The sim's refusal of a round, which stops the run until replaced.
-    fault: Option<String>,
-    max_steps: u64,
-    spatial: crate::spatial::Game,
+    driver: Driver<Mesocosm>,
+    /// The world's revision when this runtime last published its game.
+    seen: u64,
 }
 
 impl Runtime {
@@ -133,8 +226,7 @@ impl Runtime {
         )?;
         interim.on_collapse = founded.on_collapse;
         let mut runtime = Self::over(interim, founded, ticks_per_second);
-        runtime.place_members();
-        runtime.retain_origin();
+        runtime.with_product(|product, world| { product.place_members(world); product.retain_origin(world); });
         Ok(runtime)
     }
 
@@ -148,12 +240,11 @@ impl Runtime {
     }
 
     fn over(interim: Interim, founded: Founded, ticks_per_second: u32) -> Self {
-        Self {
-            interim,
+        let (session, lp) = Loop::split(interim);
+        let world = World::new(session);
+        let product = Mesocosm {
+            lp,
             founded,
-            clock: Clock::new(ticks_per_second),
-            queued: VecDeque::new(),
-            trace: Vec::new(),
             checkpoint: None,
             review: None,
             authored: None,
@@ -164,194 +255,161 @@ impl Runtime {
             glyphs: None,
             dev_intents: 0,
             fault: None,
-            max_steps: DEFAULT_MAX_STEPS_PER_ADVANCE,
             spatial: crate::spatial::Game::default(),
+        };
+        let driver = Driver::new(&world, product, Pacing::Clock { ticks_per_second });
+        let mut runtime = Self { driver, seen: 0 };
+        runtime.publish();
+        runtime
+    }
+
+    /// The core's world this runtime drives; an endpoint over it shares the game.
+    pub fn world(&self) -> &World { self.driver.world() }
+
+    fn product(&self) -> &Mesocosm { self.driver.product() }
+
+    /// Runs `change` over the product and the world, adopting any game an
+    /// endpoint published since, then publishes the game for the next reader.
+    pub(crate) fn with_product<T>(&mut self, change: impl FnOnce(&mut Mesocosm, &World) -> T) -> T {
+        self.refresh();
+        let world = self.driver.world().share();
+        let out = change(self.driver.product_mut(), &world);
+        self.publish();
+        out
+    }
+
+    /// Writes the sealed game, the driver's queue and fault included, to the
+    /// world's section.
+    fn publish(&mut self) {
+        let world = self.driver.world().share();
+        let queued = self.driver.queued().cloned().collect();
+        let game = self.driver.product().loop_game(&world, queued);
+        if let Ok(bytes) = serde_json::to_vec(&game) {
+            let _ = world.put_section(MODE, bytes);
         }
+        self.seen = world.revision().unwrap_or(self.seen);
+    }
+
+    /// Adopts a game another door published since this runtime's last publish.
+    fn refresh(&mut self) {
+        let world = self.driver.world().share();
+        if world.revision().is_ok_and(|now| now == self.seen) { return; }
+        let Ok(Some(bytes)) = world.section(MODE) else { return };
+        let Ok(game) = serde_json::from_slice::<crate::spatial::Game>(&bytes) else { return };
+        let product = self.driver.product_mut();
+        product.spatial = game;
+        if let Err(why) = product.restore_loop(&world) {
+            product.fault = Some(why.clone());
+            self.driver.restore_fault(Some(why));
+        }
+        self.seen = world.revision().unwrap_or(self.seen);
     }
 
     pub fn with_max_steps(mut self, max_steps: u64) -> Self {
-        assert!(max_steps > 0, "at least one step per advance");
-        self.max_steps = max_steps;
+        self.driver.set_max_steps(max_steps);
         self
     }
 
     /// Authored physical input; no display position supplies a missing value.
     pub fn set_spatial(&mut self, placements: &[crate::spatial::Placement]) -> Result<(), String> {
-        self.spatial.replace(&self.interim.session.sim, placements)?;
-        self.sync_loop();
-        Ok(())
+        self.with_product(|product, world| {
+            product.spatial.replace(&session(world).sim, placements)?;
+            product.sync_loop(world);
+            Ok(())
+        })
     }
 
     pub fn setup_spatial(&mut self, setup: &crate::spatial::Setup) -> Result<(), String> {
-        self.spatial.setup(&self.interim.session, setup)?;
-        self.sync_loop();
-        Ok(())
+        self.with_product(|product, world| {
+            product.spatial.setup(&session(world), setup)?;
+            product.sync_loop(world);
+            Ok(())
+        })
     }
 
-    pub fn spatial(&self) -> &crate::spatial::Game { &self.spatial }
+    pub fn spatial(&self) -> &crate::spatial::Game { &self.product().spatial }
 
     /// Queues an envelope for the next step.
-    pub fn queue(&mut self, envelope: Envelope) {
-        self.queued.push_back(envelope);
-    }
+    pub fn queue(&mut self, envelope: Envelope) { self.driver.queue(envelope); }
 
-    pub fn queued_len(&self) -> usize {
-        self.queued.len()
-    }
+    pub fn queued_len(&self) -> usize { self.driver.queued_len() }
 
     /// Runs the rounds the elapsed time authorises; a held run banks none.
     pub fn advance(&mut self, elapsed_us: u64) -> u64 {
-        if self.held() {
-            self.drain_answers();
-            return 0;
-        }
-        let advance = self.clock.advance(elapsed_us, self.max_steps);
-        self.step(advance.steps)
+        self.refresh();
+        let taken = self.driver.advance(elapsed_us);
+        self.publish();
+        taken
     }
 
     /// Runs up to `steps` rounds off the clock; fewer while a question holds.
     pub fn step(&mut self, steps: u64) -> u64 {
-        let mut taken = 0;
-        for _ in 0..steps {
-            if !self.step_once() {
-                break;
-            }
-            taken += 1;
-        }
+        self.refresh();
+        let taken = self.driver.step(steps);
+        self.publish();
         taken
-    }
-
-    fn held(&self) -> bool {
-        self.checkpoint.is_some() || self.spatial.continuation.as_ref()
-            .is_some_and(|saved| matches!(saved.phase,
-                crate::continuation::LoopPhase::NewWorldRequested | crate::continuation::LoopPhase::WorldEnded))
-    }
-
-    /// Applies queued answers while a question holds; anything else waits.
-    fn drain_answers(&mut self) {
-        while let Some(front) = self.queued.front() {
-            let answers = self.checkpoint.as_ref().is_some_and(|c| c.answers(front));
-            if !answers {
-                return;
-            }
-            let envelope = self.queued.pop_front().expect("a front");
-            self.apply(envelope);
-        }
-    }
-
-    /// One round, after the queued envelopes: `false` while a question
-    /// holds that nothing queued answers.
-    fn step_once(&mut self) -> bool {
-        if self.fault.is_some() {
-            return false;
-        }
-        if self.held() {
-            self.drain_answers();
-            if self.held() {
-                return false;
-            }
-        }
-        while let Some(envelope) = self.queued.pop_front() {
-            self.apply(envelope);
-            if self.held() {
-                return true;
-            }
-        }
-        self.sync_loop();
-        let round = crate::continuation::round::advance_with_flows(
-            &mut self.interim.session, &mut self.spatial, self.interim.participant);
-        match round {
-            Ok((_, flows)) => {
-                if let Err(why) = self.restore_loop() {
-                    self.fault = Some(why); return false;
-                }
-                if let Some(glyphs) = &mut self.glyphs { glyphs.absorb(&self.interim.session, &flows); }
-                // Preserve the old wholly unmarked run's patch placement only.
-                // Marked runs retain their actually admitted physical bindings.
-                if self.spatial.driver.is_none() && self.spatial.members.is_empty()
-                    && self.spatial.sight.is_none() { self.place_members(); }
-                self.sync_loop();
-            },
-            Err(why) => {
-                self.fault = Some(format!("{why:?}"));
-                self.sync_loop();
-                return false;
-            },
-        }
-        true
     }
 
     /// Starts reading glyphs from the bound critter's acts from here on.
     pub fn read_glyphs(&mut self, rules: GlyphRules) -> Result<(), String> {
-        self.glyphs = Some(GlyphReading::new(rules, &self.interim.session)?);
-        Ok(())
+        self.with_product(|product, world| {
+            product.glyphs = Some(GlyphReading::new(rules, &session(world))?);
+            Ok(())
+        })
     }
 
-    pub fn glyphs(&self) -> Option<&GlyphReading> {
-        self.glyphs.as_ref()
-    }
+    pub fn glyphs(&self) -> Option<&GlyphReading> { self.product().glyphs.as_ref() }
 
     /// The question the run is holding at, if any.
-    pub fn checkpoint(&self) -> Option<&Checkpoint> {
-        self.checkpoint.as_ref()
-    }
+    pub fn checkpoint(&self) -> Option<&Checkpoint> { self.product().checkpoint.as_ref() }
 
     /// Gives the review a pack's expression scripts as a second source.
     pub fn with_authored(mut self, authored: Authored) -> Result<Self, String> {
-        authored.validate_world(&self.founded.genesis)?;
-        self.terms = authored.terms().clone();
-        self.authored = Some(authored);
-        self.sync_loop();
+        self.with_product(|product, world| {
+            authored.validate_world(&product.founded.genesis)?;
+            product.terms = authored.terms().clone();
+            product.authored = Some(authored);
+            product.sync_loop(world);
+            Ok::<_, String>(())
+        })?;
         Ok(self)
     }
 
-    pub fn terms(&self) -> &mesocosm_phenotype::TermTable { &self.terms }
+    pub fn terms(&self) -> &mesocosm_phenotype::TermTable { &self.product().terms }
 
     /// What the scripts made of the open review's declared-tract offers.
-    pub fn proposed(&self) -> &[Proposed] {
-        &self.proposed
-    }
+    pub fn proposed(&self) -> &[Proposed] { &self.product().proposed }
 
     /// The played line's turn, while holding at a boundary.
-    pub fn review(&self) -> Option<&Review> {
-        self.review.as_ref()
-    }
+    pub fn review(&self) -> Option<&Review> { self.product().review.as_ref() }
 
     /// What the last round brought.
-    pub fn happenings(&self) -> &[Happening] {
-        &self.happenings
-    }
+    pub fn happenings(&self) -> &[Happening] { &self.product().happenings }
 
-    pub fn interim(&self) -> &Interim {
-        &self.interim
-    }
+    /// The loop's settings: who plays, how, and since when.
+    pub fn interim(&self) -> &Loop { &self.product().lp }
 
-    pub fn session(&self) -> &Session {
-        &self.interim.session
-    }
+    pub fn session(&self) -> Ref<'_, Session> { session(self.driver.world()) }
 
-    pub fn sim(&self) -> &Simulation {
-        &self.interim.session.sim
-    }
+    pub fn sim(&self) -> Ref<'_, Simulation> { Ref::map(self.session(), |session| &session.sim) }
 
-    pub fn founded(&self) -> &Founded {
-        &self.founded
-    }
+    pub fn founded(&self) -> &Founded { &self.product().founded }
 
     /// The critter the participant plays, if any.
-    pub fn critter(&self) -> Option<Id> {
-        self.interim.critter()
-    }
+    pub fn critter(&self) -> Option<Id> { self.product().critter(self.driver.world()) }
 
     /// The played critter as the world holds it.
-    pub fn played(&self) -> Option<&Entity> {
+    pub fn played(&self) -> Option<Ref<'_, Entity>> {
         let critter = self.critter()?;
-        self.sim().state().population.get(critter)
+        Ref::filter_map(self.sim(), |sim| sim.state().population.get(critter)).ok()
     }
 
     /// What the player sees now, by mode (180, 691).
     pub fn view(&self) -> View {
-        self.interim.view()
+        let lp = &self.product().lp;
+        let session = self.session();
+        let critter = session.sim.plays(lp.participant).unwrap_or(isocosm::directing::PLACELESS);
+        isocosm::directing::readings::view(&session.sim, critter, lp.mode)
     }
 
     /// Native awareness refined by explicit in-site geometry, when the host
@@ -361,17 +419,19 @@ impl Runtime {
         if self.critter() != Some(sight.observer) {
             return Err("sight observer is not the currently played critter".into());
         }
-        site.refine(self.sim(), self.interim.mode, sight)
+        site.refine(&self.sim(), self.product().lp.mode, sight)
     }
 
     /// Actual physical scene callbacks opt into the saved authored range.
     /// Creative remains native truth; old unmarked saves keep their reading.
     pub fn physical_view(&self) -> Result<View, String> {
-        self.spatial.version()?;
+        let spatial = &self.product().spatial;
+        spatial.version()?;
         let visible = self.view();
-        if self.interim.mode == Mode::Creative || !self.spatial.has_sight_source() { return Ok(visible); }
+        if self.product().lp.mode == Mode::Creative || !spatial.has_sight_source() { return Ok(visible); }
         let observer = self.critter().ok_or("marked sight requires the actual played observer")?;
-        match self.spatial.sight(self.sim(), observer, &visible)? {
+        let sighted = spatial.sight(&self.sim(), observer, &visible)?;
+        match sighted {
             Some((site, sight)) => self.sighted_view(&site, &sight),
             None => Err("marked sight source is missing".into()),
         }
@@ -382,40 +442,27 @@ impl Runtime {
     pub fn in_site(&self) -> Result<crate::perception::InSite, String> {
         let site = self.played().and_then(|e| e.resident_site())
             .ok_or("played critter has no resident site")?;
-        let volume = placing::lift(self.sim(), site)?;
-        crate::perception::InSite::of(self.sim(), volume, Default::default())
+        let sim = self.sim();
+        let volume = placing::lift(&sim, site)?;
+        crate::perception::InSite::of(&sim, volume, Default::default())
     }
 
-    pub fn windows(&self) -> &FlowWindows {
-        &self.windows
-    }
+    pub fn windows(&self) -> &FlowWindows { &self.product().windows }
 
-    pub fn trend(&self) -> Trend {
-        self.windows.trend()
-    }
+    pub fn trend(&self) -> Trend { self.product().windows.trend() }
 
     /// Every envelope applied, with what it came to.
-    pub fn trace(&self) -> &[(Envelope, Result<String, Refusal>)] {
-        &self.trace
-    }
+    pub fn trace(&self) -> &[(Envelope, Result<String, Refusal>)] { self.driver.trace() }
 
     /// Why the sim refused a round, if it did: the run has stopped there.
-    pub fn fault(&self) -> Option<&str> {
-        self.fault.as_deref()
-    }
+    pub fn fault(&self) -> Option<&str> { self.driver.fault() }
 
     /// Dev intents this run applied (DT3).
-    pub fn dev_intents(&self) -> u64 {
-        self.dev_intents
-    }
+    pub fn dev_intents(&self) -> u64 { self.product().dev_intents }
 
-    pub fn tick(&self) -> u64 {
-        self.sim().state().tick
-    }
+    pub fn tick(&self) -> u64 { self.sim().state().tick }
 
-    pub fn state_hash(&self) -> u64 {
-        self.sim().state_hash()
-    }
+    pub fn state_hash(&self) -> u64 { self.sim().state_hash() }
 }
 
 mod replay;

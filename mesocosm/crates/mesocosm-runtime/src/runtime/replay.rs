@@ -66,11 +66,11 @@ impl GameSave {
 impl Runtime {
     /// The run's save: its genesis and its log.
     pub fn save(&self) -> Saved {
-        self.interim.session.save()
+        self.session().save()
     }
 
     pub fn save_game(&self) -> GameSave {
-        let spatial = self.loop_game();
+        let spatial = self.driver.product().loop_game(self.driver.world(), self.driver.queued().cloned().collect());
         GameSave { version: spatial.current_version(), native: self.save(), spatial }
     }
 
@@ -90,8 +90,8 @@ impl Runtime {
             return Self::resume_game_with_mode(saved, ticks_per_second, Some(mode));
         }
         let mut runtime = Self::resume(saved.native, mode, pace, ticks_per_second)?;
-        saved.spatial.validate_replay(&runtime.interim.session)?;
-        runtime.spatial = saved.spatial;
+        saved.spatial.validate_replay(&runtime.session())?;
+        runtime.with_product(|product, _| product.spatial = saved.spatial);
         Ok(runtime)
     }
 
@@ -116,25 +116,32 @@ impl Runtime {
             mode: settings.mode, pace: settings.pace, on_collapse: settings.on_collapse };
         let interim = Interim::resume_as(session, continuation.participant, settings.mode, settings.pace)?;
         let mut runtime = Self::over(interim, founded, ticks_per_second);
-        runtime.spatial = saved.spatial;
-        runtime.restore_loop()?;
-        if let Some(mode) = mode {
-            runtime.interim.mode = mode; runtime.founded.mode = mode;
-            runtime.sync_loop();
-        }
+        let (queued, fault) = runtime.with_product(|product, world| {
+            product.spatial = saved.spatial;
+            product.restore_loop(world)?;
+            if let Some(mode) = mode {
+                product.lp.mode = mode; product.founded.mode = mode;
+                product.sync_loop(world);
+            }
+            let queued: Vec<_> = product.spatial.continuation.as_ref().map(|c| c.queued.clone()).unwrap_or_default();
+            Ok::<_, String>((queued, product.fault.clone()))
+        })?;
+        runtime.driver.restore_queue(queued);
+        runtime.driver.restore_fault(fault);
+        runtime.publish();
         Ok(runtime)
     }
 
     pub fn receipt(&self) -> Receipt {
-        let session = &self.interim.session;
+        let session = self.session();
         Receipt {
             genesis: isocosm::digest(session.sim.genesis()),
-            tick: self.tick(),
+            tick: session.sim.state().tick,
             entries: session.entries.len() as u64,
-            envelopes: self.trace.len() as u64,
-            state_hash: self.state_hash(),
+            envelopes: self.trace().len() as u64,
+            state_hash: session.sim.state_hash(),
             assisted: session.assisted(),
-            dev_intents: self.dev_intents,
+            dev_intents: self.dev_intents(),
         }
     }
 
@@ -165,6 +172,6 @@ impl Runtime {
 
     /// The founding a run began from, beside its save.
     pub fn founding(&self) -> &Founded {
-        &self.founded
+        self.founded()
     }
 }

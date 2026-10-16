@@ -132,7 +132,7 @@ impl Host {
             crate::hud::SIDE,
         )
         .map(|device| Lanes {
-            hud: crate::hud::Hud::new(&device, self.runtime.sim(), self.runtime.critter()),
+            hud: crate::hud::Hud::new(&device, &self.runtime.sim(), self.runtime.critter()),
             vitals: crate::vitals::VitalsChrome::new(&device),
             checkpoint: crate::succession::SuccessionChrome::new(&device),
             board: crate::review::BoardChrome::new(&device),

@@ -65,9 +65,12 @@ impl<P: Product> Driver<P> {
     }
 
     pub fn with_max_steps(mut self, max_steps: u64) -> Self {
+        self.set_max_steps(max_steps);
+        self
+    }
+    pub fn set_max_steps(&mut self, max_steps: u64) {
         assert!(max_steps > 0, "at least one step per advance");
         self.max_steps = max_steps;
-        self
     }
 
     pub fn world(&self) -> &World { &self.world }

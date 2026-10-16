@@ -77,7 +77,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
         let Some(document) = e.body.clone() else { continue; };
         let physical = if e.alive { None } else {
             let Some(held) = runtime.spatial().members.get(&id) else { continue; };
-            held.realized(sim)?;
+            held.realized(&sim)?;
             if held.site.0 != site.site() || held.pose.at != cell {
                 return Err("corpse sight cell differs from its current saved physical pose".into());
             }

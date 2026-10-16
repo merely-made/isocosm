@@ -227,14 +227,14 @@ impl Host {
     fn refresh_scene(&mut self) -> bool {
         let sim = self.runtime.sim();
         let played = self.runtime.critter();
-        let Some(site) = crate::played::scene::site_of(sim, played) else {
+        let Some(site) = crate::played::scene::site_of(&sim, played) else {
             self.scene_key = None;
             return self.scene.take().is_some();
         };
         let visible = self.runtime.view();
         if self.config.spatial.is_some() || !self.runtime.spatial().members.is_empty() {
             let result = self.runtime.physical_view().and_then(|visible|
-                crate::played::scene::site_scene_physical(sim, played, &visible, self.runtime.spatial()));
+                crate::played::scene::site_scene_physical(&sim, played, &visible, self.runtime.spatial()));
             return match result {
                 Ok(scene) => {
                     let window = (&scene.window.min, &scene.window.max, scene.window.datum, scene.window.ground().extent());
@@ -247,11 +247,11 @@ impl Host {
                 },
             };
         }
-        let key = (site, mesocosm_runtime::runtime::placing::terrain_key(sim));
+        let key = (site, mesocosm_runtime::runtime::placing::terrain_key(&sim));
         if self.scene_key.as_ref() == Some(&key)
             && let Some(scene) = &mut self.scene
         {
-            scene.bodies = crate::played::scene::placed_visible(sim, site, &scene.window, &visible);
+            scene.bodies = crate::played::scene::placed_visible(&sim, site, &scene.window, &visible);
             scene.volumes = isometer::DeclaredExtentVolumes::from_documents(
                 scene.bodies.iter().map(|b| &b.document),
                 1,
@@ -259,7 +259,7 @@ impl Host {
             scene.played = played;
             return false;
         }
-        match crate::played::scene::site_scene_visible(sim, played, &visible) {
+        match crate::played::scene::site_scene_visible(&sim, played, &visible) {
             Ok(scene) => {
                 self.scene = Some(scene);
                 self.scene_key = Some(key);

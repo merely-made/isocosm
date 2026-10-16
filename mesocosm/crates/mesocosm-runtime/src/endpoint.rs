@@ -37,7 +37,7 @@ use crate::spatial::{Game, Input};
 
 pub const SESSION: &str = "mesocosm:played-turn";
 /// The world section that holds the saved game.
-pub const MODE: &str = "mesocosm";
+pub const MODE: &str = crate::runtime::MODE;
 pub const CONFIGURE: &str = "mesocosm.configure";
 pub const STEP: &str = "mesocosm.step";
 pub const ANSWER: &str = "mesocosm.answer";

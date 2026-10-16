@@ -98,15 +98,15 @@ impl Host {
             }
             gpu.queue.submit(Some(tenant.finish()));
 
-            lanes.hud.refresh(&lanes.device, sim, critter);
+            lanes.hud.refresh(&lanes.device, &sim, critter);
             lanes
                 .vitals
-                .refresh(&lanes.device, sim, critter, &fresh, steps, &trend, self.runtime.terms());
+                .refresh(&lanes.device, &sim, critter, &fresh, steps, &trend, self.runtime.terms());
             lanes
                 .board
                 .refresh(&lanes.device, review.as_ref(), &proposed, &trend, board_row);
             let held = checkpoint.as_ref().filter(|_| !lanes.board.standing() && continuation.is_none());
-            lanes.checkpoint.refresh(&lanes.device, sim, held);
+            lanes.checkpoint.refresh(&lanes.device, &sim, held);
             lanes.directing.refresh_reading(&lanes.device, directing);
             lanes.continuation.refresh_reading(&lanes.device, continuation);
 
@@ -152,6 +152,7 @@ impl Host {
             }
             gpu.queue.submit(Some(encoder.finish()));
         }
+        drop(sim);
         gpu.queue.present(surface_texture);
         self.mark_pointer_frame();
         self.mark_continuation_frame();

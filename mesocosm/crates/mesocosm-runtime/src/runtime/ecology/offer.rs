@@ -24,11 +24,13 @@ pub(super) fn accepted(setup:&Setup,assessment:Assessment,admission:Admission,
         setup.founded.pace,&mut advance)?;
     interim.on_collapse=setup.founded.on_collapse;
     let mut runtime=Runtime::over(interim,setup.founded.clone(),ticks_per_second);
-    runtime.spatial=game;
-    // No generated advisory pose overwrites the actual assessed physical source.
-    runtime.retain_origin();
-    runtime.spatial.ecology=Some(Seal {version:1,witness:assessment.witness,admission});
-    runtime.sync_loop();
-    runtime.spatial.validate_replay(runtime.session())?;
+    runtime.with_product(|product,world| {
+        product.spatial=game;
+        // No generated advisory pose overwrites the actual assessed physical source.
+        product.retain_origin(world);
+        product.spatial.ecology=Some(Seal {version:1,witness:assessment.witness,admission});
+        product.sync_loop(world);
+        product.spatial.validate_replay(&super::super::session(world))
+    })?;
     Ok(runtime)
 }

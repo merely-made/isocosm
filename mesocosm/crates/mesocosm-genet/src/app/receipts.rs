@@ -184,8 +184,7 @@ impl Host {
             body_parts: self
                 .runtime
                 .played()
-                .and_then(|e| e.body.as_ref())
-                .map_or(0, |body| body.parts.len()),
+                .map_or(0, |e| e.body.as_ref().map_or(0, |body| body.parts.len())),
             body_capsules_dropped: self.body_capsules_dropped,
             section_roster: section.map_or(0, |s| s.last_roster_members()),
             roster_capsules_dropped: section.map_or(0, |s| s.last_roster_capsules_dropped()),
