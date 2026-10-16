@@ -11614,7 +11614,78 @@ what later sections derive from.
      member of each of a site's cohorts, one per declared stand, as the code
      does. Options: merge and push, or hold. Mark: "Merge
      lane-generator-templates-text (665c1429) into main and push it."
-     Next unused935.
+
+935 to 937 are the A1 lane's, recorded on `a1-905-907` (`c647f694`,
+2026-10-16) and not yet on main: the preset's lifespan ceiling, the chooser
+diagnosis, and that branch's push.
+
+938. **The triage branch's six fixes go to main.** Asked 2026-10-16 by card,
+     after Mark asked for the open questions. Evidence: 931's triage on
+     `triage-931` (`a5b50ed2`) fixes six of the 22 failures on main with
+     test-only edits, Eponym 103/15 to 105/13 and Mesocosm 73/7 to 77/3,
+     cut before H3 step 3. Options: (1) "Review, merge, push (Recommended)":
+     rebase, rerun both workspaces, merge and push without asking again;
+     (2) "Merge locally, ask first"; (3) "Hold it". Mark: "Review, merge,
+     push (Recommended)"
+
+939. **F1: the shipped pack gets the other ten definitions.** The pack ships
+     five process definitions; the native registry carries fifteen, and the
+     pack's note claims admission equals native, so three parity tests fail.
+     Options: (1) "Ship the other ten (Recommended)"; (2) "Narrow the
+     receipt" to the five bound natives; (3) "Retire under 672". Mark: "Ship
+     the other ten (Recommended)"
+
+940. **F2: generator-1 motion archives stay as decode receipts.** They are
+     refused at generator 4 (`GeneratorDiverged`), the world that
+     authenticated them is gone, and `save_wire` already pins their bytes
+     and the refusal. Options: (1) "Decode receipts only (Recommended)": the
+     three restore-and-continue tests retire under 672; (2) "Build a gen-1
+     reader"; (3) "Ignore until Q5/Q11". Mark: "Decode receipts only
+     (Recommended)"
+
+941. **F3: fixtures are respaced for native bodies.** The shared session
+     fixture and the timed-action app still space bodies 12 cells apart, and
+     native limbs reach the next root. Options: (1) "Respace, recalibrate
+     (Recommended)": space them clear and recalibrate the direction, burial
+     and severance receipts; (2) "Small authored bodies"; (3) "Retire them".
+     Mark: "Respace, recalibrate (Recommended)". *Reading, not ruled:* the
+     card noted that nothing in movement keeps two bodies from overlapping;
+     whether it should is not decided here.
+
+942. **F4: the timed-action injure key strikes with a native volley.** The key
+     still applies an authored fall and `ReconcileAnatomy`, which 711 and 717
+     refuse. Options: (1) "Native volley (Recommended)": a practice striker,
+     `eponym-motion`'s `native_severing` fixture promoted to
+     `eponym_play::fixtures`; (2) "Wait for 704 hazard"; (3) "Remove the
+     key". Mark: "Native volley (Recommended)"
+
+943. **F5: worn items on a severed non-played part drop through the sim's
+     handoff.** A volley severing such a part is refused whole with
+     `NotPlayed`, because `release_worn` submits the drop under the player's
+     participant (`contract.rs:83-86`). Options: (1) "Sim handoff
+     (Recommended)": `EponymHandoff::Dropped` (`contract.rs:292`), which
+     carries no participant; (2) "No participant"; (3) "Refuse such
+     severing". Mark: "Sim handoff (Recommended)"
+
+944. **F6: the stale-anatomy panel test retires under 672.** No path through
+     harm leaves an anatomy stale, since a severing reconciles itself.
+     Options: (1) "Retire under 672 (Recommended)", self-reconciliation
+     checked by `native_severing`'s asserts; (2) "Find another path". Mark:
+     "Retire under 672 (Recommended)"
+
+945. **F7: the producer builds its terrain from the resident window.** The
+     native seed-7 world needs 3,062 bricks against modulus's cap of 2,047.
+     Options: (1) "Resident window (Recommended)": V1b's capacity-fixed cache
+     (`residency.rs`), unmeasured; (2) "Raise Mere's cap"; (3) "Smaller
+     fixture world". Mark: "Resident window (Recommended)"
+
+946. **F8: the sortie's scarp is carved as a native material edit.** Nobody
+     falls: a drawn cliff (744) is 64, equal to the walker's `HEADROOM`
+     (`lift::CLIFF`), so no walker steps off it. Options: (1) "Carve a native
+     scarp (Recommended)", keeping the hazard a world fact; (2) "Wait for 704
+     hazard"; (3) "Retire them". Mark: "Carve a native scarp (Recommended)"
+     *Reading, not ruled:* F1 to F8 are each a piece of work for a later
+     lane; none is built by these rulings. Next unused947.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

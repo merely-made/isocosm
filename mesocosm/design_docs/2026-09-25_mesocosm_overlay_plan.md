@@ -22,7 +22,7 @@ input. Birth (848) demands the child's whole collision box clear and flat, and
 generated bodies reach about 8 by 16 by 44 cells on steeply sloped site terrain,
 so no template can satisfy it; carve/deposit and walking need a declared
 process. 890's producer capture path is built (branch `a1-reproduction`,
-merged and pushed 2026-10-15, 929 and 930). Next unused935.
+merged and pushed 2026-10-15, 929 and 930). Next unused947.
 
 **Founding law source, 2026-10-13:** explicit pack affinity now enters fresh
 native founding before body/domain generation. Optional absent law preserves
