@@ -11747,7 +11747,48 @@ what later sections derive from.
      (3) "Every world gets it", maturity scaled to each ceiling, moving
      stock digests. Mark: "Preset-only, say so (Recommended)". This amends
      906's reading, not its words.
-     Next unused950.
+
+950. **The lane branches are reviewed and pruned.** Mark, 2026-10-16, after
+     "The lanes are done": "Review these branches and merge/prune them".
+     Evidence: by patch id and by rebased counterparts, main carries every
+     commit of `review-a1`, `owned-stock-tests`, `a1-reproduction`,
+     `a1-905-907`, `lane-generator-templates` and
+     `lane-generator-templates-text`; all were deleted, locally and on
+     origin, with the `isocosm-review` worktree and the build directories
+     of the merged lanes (heads listed in `Code/testing/isometry/
+     a1-907-review-2026-10-16/pruned-branches.txt`). The eight `archive/*`
+     branches stay, and `lane-sim-host-h2`, equal to main, stays for H4.
+
+951. **`lane-contracts` is deleted.** Asked by card. Evidence: local only, six
+     commits of 2026-10-10 ending "WIP: lane stopped for budget,
+     unverified"; its contracts work landed as `21edca66`, and what only it
+     held was about 1,270 lines of legacy campaign code main deleted in
+     `a4fea109` plus older copies of files main rewrote. Options: (1)
+     "Delete it (Recommended)", with its build directory; (2) "Archive, then
+     delete"; (3) "Keep it". Mark: "Delete it (Recommended)"
+
+952. **Uncited Q3 reproduction receipts are deleted; the cited are kept.**
+     Asked by card, first as the A1 lane's receipts: (1) "Keep cited, delete
+     rest (Recommended)"; (2) "Delete all of it"; (3) "Leave them". Mark:
+     "Keep cited, delete rest (Recommended)". The files proved to be the
+     Q3 reproduction work of 2026-10-10 and 11, not A1's, so the question
+     went back: (1) "Yes, keep cited 14 (Recommended)"; (2) "Leave the Q3
+     ones". Mark: "Yes, keep cited 14 (Recommended)". 1,655 entries (1.94
+     GiB) went; the 14 the docs name stay
+     (`after-pass-2026-10-10/q3-cited.txt`). The A1 receipts the after-pass
+     plan cites (`a1-2026-10-14-declaration-hashes.txt`,
+     `a1-2026-10-15-*-head*.txt`) were never on this laptop. Asked where the
+     A1 lane runs, so its receipts could be trimmed the same way: Mark "You
+     handle it there", then "Already handled".
+
+953. **Every lane brief carries a receipt budget.** Mark, 2026-10-16: "The a1
+     lane wasted basically half of today on 30 gb of receipts nobody will
+     use." Asked by card: (1) "Cap receipts in briefs (Recommended)", each
+     brief naming the receipts its done-conditions need, capping their
+     total (for example 100 MB), and exploratory runs keeping summaries
+     only; (2) "Global rule too"; (3) "No rule". Mark: "Cap receipts in
+     briefs (Recommended)". Carried into the lane-queue plan's rules (§2).
+     Next unused954.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
