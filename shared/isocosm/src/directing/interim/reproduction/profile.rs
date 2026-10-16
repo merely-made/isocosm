@@ -81,7 +81,7 @@ pub(super) fn world(seed: u64, form: Form, original: bool) -> Genesis {
 fn check(g: &Genesis, original: bool) {
     let p = &g.rules.processes;
     let (gate, consumer_gate, birth, upkeep, meal, low) =
-        if original { (30, 30, 7, 5, 1, 20) } else { (12, 9, 14, 10, 3, 80) };
+        if original { (30, 30, 7, 5, 1, 20) } else { (12, 9, 14, 10, 3, 100) };
     for (i, want) in [(0, gate), (1, consumer_gate), (2, gate)] {
         let birth_process = &p[&format!("ecology:birth-{i}")];
         assert!(birth_process.requires.iter().any(|q| matches!(q, Query::Account { at_least, .. } if *at_least == want)));
