@@ -3,7 +3,7 @@
 **Date:** 2026-09-25
 
 **Generated-world inputs, 2026-10-15 (889, 891):** built on branch
-`lane-generator-templates`, merged into local main 2026-10-15 after review (push pending), uncertified.
+`lane-generator-templates`, merged and pushed 2026-10-15 after review (933), uncertified.
 A world founded with a map and bodies declares `rules.spatial_templates`: up to
 four spawn stands per site, derived from its realized terrain (root clear and
 resting on solid ground, eye clear, one realized patch), and one arrival stand
@@ -21,7 +21,7 @@ input. Birth (848) demands the child's whole collision box clear and flat, and
 generated bodies reach about 8 by 16 by 44 cells on steeply sloped site terrain,
 so no template can satisfy it; carve/deposit and walking need a declared
 process. 890's producer capture path is built (branch `a1-reproduction`,
-merged and pushed 2026-10-15, 929 and 930). Next unused933.
+merged and pushed 2026-10-15, 929 and 930). Next unused934.
 
 **Founding law source, 2026-10-13:** explicit pack affinity now enters fresh
 native founding before body/domain generation. Optional absent law preserves
