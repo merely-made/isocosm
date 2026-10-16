@@ -8,6 +8,12 @@ use serde::{Deserialize, Serialize};
 
 pub const FORMAT_VERSION: u32 = 1;
 
+/// A product validates its old save and lowers it to opaque section bytes.
+/// The core never depends on the product's schema or crate.
+pub trait ImportSave {
+    fn into_world_save(self) -> Result<WorldSave, String>;
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct WorldSave {
     pub format: u32,

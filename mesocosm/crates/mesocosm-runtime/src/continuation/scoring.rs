@@ -13,7 +13,8 @@ pub(crate) fn score(session: &Session, game: &Game, lineage: &str,
     driver.version=driver.current_version();
     boundary::score_using(session, lineage, candidate, ticks, &mut |copy, ticks| {
         driver.refresh(copy)?;
-        for _ in 0..ticks { driver.advance_clock(copy)?; }
+        // Scoring reads the resulting trial state, not its transient matter moves.
+        for _ in 0..ticks { let _flows = driver.advance_clock(copy)?; }
         Ok(())
     })
 }

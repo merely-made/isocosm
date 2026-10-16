@@ -99,37 +99,8 @@ impl Runtime {
     /// Only an explicitly supplied mode overrides its presentation mode.
     pub fn resume_game_with_mode(saved: GameSave, ticks_per_second: u32,
         mode: Option<Mode>) -> Result<Self, String> {
-        saved.check()?;
-        let Some(continuation) = &saved.spatial.continuation else {
-            // The old standalone resume grammar had these explicit settings;
-            // it contained no saved loop or question to recover.
-            return Self::resume_game(saved, mode.unwrap_or(Mode::Creative),
-                Pace { round: 1, scoring: 6 }, ticks_per_second);
-        };
-        let execution=saved.spatial.ecology.as_ref().map(|seal|seal.witness.execution)
-            .unwrap_or(Execution::Grouped);
-        let session = Session::load(saved.native, execution)?;
-        saved.spatial.validate_replay(&session)?;
-        let settings = continuation.settings;
-        let founded = Founded { genesis: session.sim.genesis().clone(),
-            start: continuation.origin.as_ref().map(|o| o.start).unwrap_or_default(),
-            mode: settings.mode, pace: settings.pace, on_collapse: settings.on_collapse };
-        let interim = Interim::resume_as(session, continuation.participant, settings.mode, settings.pace)?;
-        let mut runtime = Self::over(interim, founded, ticks_per_second);
-        let (queued, fault) = runtime.with_product(|product, world| {
-            product.spatial = saved.spatial;
-            product.restore_loop(world)?;
-            if let Some(mode) = mode {
-                product.lp.mode = mode; product.founded.mode = mode;
-                product.sync_loop(world);
-            }
-            let queued: Vec<_> = product.spatial.continuation.as_ref().map(|c| c.queued.clone()).unwrap_or_default();
-            Ok::<_, String>((queued, product.fault.clone()))
-        })?;
-        runtime.driver.restore_queue(queued);
-        runtime.driver.restore_fault(fault);
-        runtime.publish();
-        Ok(runtime)
+        use isocosm_host::save::ImportSave;
+        Self::resume_world(saved.into_world_save()?, ticks_per_second, mode)
     }
 
     pub fn receipt(&self) -> Receipt {

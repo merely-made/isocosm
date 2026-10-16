@@ -2,10 +2,11 @@
 
 **Date:** 2026-10-14
 
-**Status, 2026-10-15:** in progress. Opened by rulings 884, 892 and 895;
+**Status, 2026-10-16:** in progress. Opened by rulings 884, 892 and 895;
 carries 887's first milestone; forks settled by 896 to 898. H0, H1, H2 and H3
 landed (H2's forks ruled 899 to 904); H2's step 4 waits on the lifted
-reference-host capabilities (899). 2026-10-16: H4 landed (954 to 957).
+reference-host capabilities (899). 2026-10-16: H4 (954 to 957) and H5
+landed. H6 is next; default launch remains behind A1's joint witness.
 
 ## Why
 
@@ -255,6 +256,39 @@ through the UI, succession in the client), then the VTT over the sim
 starts.
 
 ## Progress
+
+- **2026-10-16, H5 landed:** the core's
+  `save::ImportSave` lets a product validate its old grammar and lower it to
+  `WorldSave`, with `World::import` replaying native authority. Mesocosm's
+  adapter lives in `runtime/world_save.rs`, without a product dependency in
+  the core. The head's trace writer now uses the core's atomic file
+  replacement and `WorldSave`; watch and replay accept that envelope, GameSave
+  and native-only traces. Runtime resume restores the saved controller,
+  physical inputs, question, queue and fault, keeping unknown sections.
+  The grammar discriminator refuses malformed envelopes without falling back.
+  Identical `put_section` bytes now leave the revision alone. The three
+  must-use flow warnings were informational matter-move results, with errors
+  already propagated by `?`; their callers now explicitly retain and discard
+  those transient readings, with their purpose documented. No A1 draw or
+  threshold is changed. Receipt budget: 100 MB, only test summaries in this
+  plan; the writer test's temporary saves remove themselves.
+
+- **2026-10-16, H5 checks:** core tests with `--features endpoint`: 52
+  passed, five existing filesystem tests ignored; runtime `--lib --features
+  endpoint`: 15 passed; `runtime_pin`, `one_door`, `ecology_offer` and
+  `live_input`: 18 passed. The head's `tests/world_save.rs` drives its actual
+  atomic writer, replay and watch reader through a held birth question and
+  continued play: one passed. The runtime save tests also cover legacy
+  import, unchanged native hash, identical play after resume, unknown binary
+  sections, pending input, stored faults, invalid native witnesses and
+  malformed formats. Final combined run on the shared head/runtime graph:
+  the six runtime save tests and the one head writer/watch test passed,
+  including unrelated-section publication with pending input. No window was
+  launched; H6's captured bench play, pacing/picking comparison, epoch and
+  board remain open. This pass does not remeasure A1 or the F1 to F8 suites.
+  The stable `C:\t\cargo-targets\isometry` cache is retained for this
+  repository's H6 builds; no isolated target, Cargo home or worktree was
+  created.
 
 - **2026-10-16, H4 landed (954 to 957):** the core's driver takes live
   input (`host/src/drive/input.rs`): a plain `Press` and `Pick` the window

@@ -4,6 +4,20 @@
 use super::*;
 
 #[test]
+fn identical_section_bytes_preserve_revision() {
+    let f = fixture();
+    let native = f.world.cut().unwrap();
+    let before = f.world.revision().unwrap();
+    f.world.put_section("mesocosm", vec![0, 255]).unwrap();
+    assert_eq!(f.world.revision().unwrap(), before + 1);
+    f.world.put_section("mesocosm", vec![0, 255]).unwrap();
+    assert_eq!(f.world.revision().unwrap(), before + 1);
+    f.world.put_section("mesocosm", vec![0, 254]).unwrap();
+    assert_eq!(f.world.revision().unwrap(), before + 2);
+    assert_eq!(f.world.cut().unwrap(), native);
+}
+
+#[test]
 fn both_windows_read_one_accepted_world() {
     let f = fixture();
     let first = window(&f, 0, Seat::Player, "mesocosm");

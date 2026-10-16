@@ -36,6 +36,9 @@ impl World {
         let session = Session::load(saved.native, execution)?;
         Ok(Self::with_sections(session, saved.sections))
     }
+    pub fn import(saved: impl crate::save::ImportSave, execution: Execution) -> Result<Self, String> {
+        Self::resume(saved.into_world_save()?, execution)
+    }
     pub fn resume_native(saved: NativeSaved, execution: Execution) -> Result<Self, String> {
         Ok(Self::new(Session::load(saved, execution)?))
     }
@@ -74,11 +77,13 @@ impl World {
         Ok(self.0.try_borrow().map_err(|_| "world is being advanced")?.sections.get(mode).cloned())
     }
     /// Replaces one mode's section alone, for a product whose native admission
-    /// has already published; it counts as a change like any other.
+    /// has already published. Identical bytes leave the revision alone.
     pub fn put_section(&self, mode: &str, bytes: Vec<u8>) -> Result<(), String> {
         let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
-        world.sections.insert(mode.into(), bytes);
-        world.revision += 1;
+        if world.sections.get(mode) != Some(&bytes) {
+            world.sections.insert(mode.into(), bytes);
+            world.revision += 1;
+        }
         Ok(())
     }
     /// Changes accepted since this world opened, mode sections included,

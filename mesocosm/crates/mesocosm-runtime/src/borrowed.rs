@@ -106,7 +106,8 @@ pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAcces
                 if game.continuation.is_some() {
                     accepted.push(crate::continuation::advance_loop(&mut candidate, &mut game, access.participant.0)?);
                 } else {
-                    game.advance(&mut candidate, access)?;
+                    // This unmarked door has no flow reading; refusals still propagate.
+                    let _flows = game.advance(&mut candidate, access)?;
                     accepted.push("advanced 1".into());
                 }
             }

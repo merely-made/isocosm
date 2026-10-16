@@ -249,6 +249,10 @@ impl Runtime {
     fn over(interim: Interim, founded: Founded, ticks_per_second: u32) -> Self {
         let (session, lp) = Loop::split(interim);
         let world = World::new(session);
+        Self::over_world(world, lp, founded, ticks_per_second)
+    }
+
+    fn over_world(world: World, lp: Loop, founded: Founded, ticks_per_second: u32) -> Self {
         let product = Mesocosm {
             lp,
             founded,
@@ -502,4 +506,5 @@ impl Runtime {
 }
 
 mod replay;
+mod world_save;
 pub use replay::{GameSave, Receipt, Replayed};
