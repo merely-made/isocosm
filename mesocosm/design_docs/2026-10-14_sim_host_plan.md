@@ -208,6 +208,11 @@ picks against the product's viewport leaf.
 Done when `mesocosm-genet`'s E, Space, click, Q, right-click and S, and the
 checkpoint and board keys, reach the session through the core; a headless
 input test drives them; and the bench scenarios still pass.
+*Forks ruled 2026-10-16 (954 to 957):* the core defines its own `Press` and
+a keymap hook on the driver's `Product`; only keys that make an envelope go
+through it, host-state keys staying the window's; the window still picks and
+the core refuses a pick stamped with a stale world revision; the live-input
+backlog cap (default 10) moves into the driver.
 
 **H5. Saves and import.** `WorldSave` is the one envelope. The core imports
 a Mesocosm `GameSave`, and later Eponym Game13 and the VTT campaign, into it

@@ -18,7 +18,7 @@ The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture path
 landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 are built
-(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). Next unused954.
+(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). Next unused958.
 
 The newest Progress entry below owns execution state. The following block
 records an earlier resumed snapshot; later checkpoints and parked lanes
