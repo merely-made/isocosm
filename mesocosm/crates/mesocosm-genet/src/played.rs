@@ -145,23 +145,24 @@ pub fn write_json<T: Serialize>(path: &Path, value: &T) -> Result<(), String> {
     std::fs::write(path, json).map_err(|error| format!("{}: {error}", path.display()))
 }
 
+pub fn write_world_trace(path: &Path, runtime: &Runtime) -> Result<(), String> {
+    ensure_parent(path)?;
+    let bytes = runtime.save_world()?.encode()?;
+    isocosm_host::file_save::replace(path, &bytes).map_err(|error| format!("{}: {error}", path.display()))
+}
+
 pub fn read_trace(path: &Path) -> Result<PlayedTrace, String> {
     Ok(read_game_trace(path)?.native)
 }
 
 /// Older native-only traces have no physical inputs; none are manufactured.
 pub fn read_game_trace(path: &Path) -> Result<mesocosm_runtime::GameSave, String> {
-    #[derive(serde::Deserialize)]
-    #[serde(untagged)]
-    enum Recorded { Game(mesocosm_runtime::GameSave), Native(PlayedTrace) }
+    mesocosm_runtime::GameSave::from_world(&read_world_trace(path)?)
+}
+
+fn read_world_trace(path: &Path) -> Result<isocosm_host::save::WorldSave, String> {
     let bytes = std::fs::read(path).map_err(|error| format!("{}: {error}", path.display()))?;
-    let saved = match serde_json::from_slice(&bytes)
-        .map_err(|error| format!("{}: {error}", path.display()))? {
-        Recorded::Game(game) => game,
-        Recorded::Native(native) => mesocosm_runtime::GameSave::from_native(native),
-    };
-    saved.check()?;
-    Ok(saved)
+    Runtime::decode_world_save(&bytes).map_err(|error| format!("{}: {error}", path.display()))
 }
 
 /// Takes a recorded trace up where it stands, to play on (786).
@@ -172,8 +173,7 @@ pub fn resume(path: &Path, ticks_per_second: u32) -> Result<Runtime, String> {
 /// An explicit viewing choice changes presentation; absent input preserves saved settings.
 pub fn resume_with_mode(path: &Path, ticks_per_second: u32,
     mode: Option<isocosm::directing::readings::Mode>) -> Result<Runtime, String> {
-    let saved = read_game_trace(path)?;
-    Runtime::resume_game_with_mode(saved,ticks_per_second,mode)
+    Runtime::resume_world(read_world_trace(path)?,ticks_per_second,mode)
 }
 
 /// Replays a recorded trace; returns the recorded hash and the replayed one.

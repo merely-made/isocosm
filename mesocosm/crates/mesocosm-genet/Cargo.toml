@@ -18,6 +18,7 @@ publish = false
 # master and layers traced terrain with the transparent same-device body
 # tenant; the host still owns the final surface blit and presentation.
 [dependencies]
+isocosm-host = { path = "../../../host" }
 tenant = { workspace = true }
 mesocosm-runtime = { workspace = true }
 mesocosm-views = { workspace = true }
@@ -72,6 +73,7 @@ serde = { workspace = true }
 serde_json = "1"
 
 [dev-dependencies]
+tempfile = "=3.27.0"
 genet-render-host = { git = "https://github.com/merely-made/genet.git", rev = "7a8c5b8cb499f2d3b91083c2f7e38236599f98dc" }
 # The frame examples that moved here from isometer-lens (family plan step 1)
 # hash their own scene bytes, so they name the wire format directly.

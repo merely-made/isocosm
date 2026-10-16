@@ -79,7 +79,8 @@ impl Mesocosm {
                 // driver; it cannot bypass chosen-step geometry or arrival data.
                 let mut game = self.spatial.clone();
                 commit(world, |session| {
-                    for _ in 0..ticks { game.advance_clock(session).map_err(Refusal::Sim)?; }
+                    // This authored jump keeps native errors, but has no flow display.
+                    for _ in 0..ticks { let _flows = game.advance_clock(session).map_err(Refusal::Sim)?; }
                     Ok(())
                 })?;
                 self.spatial = game;

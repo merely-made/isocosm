@@ -2,11 +2,11 @@
 
 **Date:** 2026-10-15
 
-**Status, 2026-10-15:** plan; R0 done. Opened by ruling 913 (wing design
+**Status, 2026-10-16:** plan; R0 done. Opened by ruling 913 (wing design
 record), shaped by 915 (owning homes, no new crates), 916 (planned now,
 moves after the A1 lane merges) and 917 (the crates aim to be published);
-its forks were ruled 919 to 922. R1 waits for the A1 lane's merge. Nothing
-has moved.
+its forks were ruled 919 to 922. R1 is unblocked: A1's 905 to 907 merged
+into main (947, 948). Nothing has moved; the sim-host H5 pass proceeds first.
 
 ## Why
 
@@ -112,6 +112,9 @@ published. Its consumers are all the VTT's: `isonetry` (110 uses),
   Mark's word, crate by crate.
 
 ## Progress
+
+- **2026-10-16:** removed the stale A1 dependency from R1's current status.
+  The merge is on main; R1's move and its consumer gates remain open.
 
 - **2026-10-15:** plan written from the reading above; rulings 913 and 915
   to 918 recorded. R0 done: F1 to F4 ruled as 919 to 922, and R4 added with
