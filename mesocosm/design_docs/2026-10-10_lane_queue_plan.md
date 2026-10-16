@@ -18,7 +18,7 @@ The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture path
 landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 are built
-(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). Next unused950.
+(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). Next unused954.
 
 The newest Progress entry below owns execution state. The following block
 records an earlier resumed snapshot; later checkpoints and parked lanes
@@ -242,6 +242,11 @@ required. This condition narrows the compiler rule for this execution.
   two to four named options and a recommendation first; build around it.
   Behaviour, balance and test outcomes go under "after-pass" instead (761).
 - Keep scratch scripts in a scratchpad subfolder named for the lane.
+- **Receipt budget (953).** Keep only the receipts your brief's
+  done-conditions name, within the brief's cap (100 MB unless it says
+  otherwise). Exploratory runs, sweeps and mutants keep a summary line each,
+  not their logs; delete the rest before reporting, and cite every kept file
+  by name in the plan.
 - Annotate the owning plans' Progress, dated; never rewrite dated text.
 - Report in the length the brief asks: commits, what changed, check and test
   results, what is left, after-pass items, forks.
