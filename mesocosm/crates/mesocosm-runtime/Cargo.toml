@@ -38,10 +38,11 @@ wing-glyphs = { path = "../../../shared/wing-glyphs" }
 isocosm-host = { path = "../../../host" }
 chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
 graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
-serde_json = { version = "1", optional = true }
+# The game published to the world section (H3).
+serde_json = "1"
 
 [features]
-endpoint = ["isocosm-host/endpoint", "dep:chirograph", "dep:graphshell-endpoint", "dep:serde_json"]
+endpoint = ["isocosm-host/endpoint", "dep:chirograph", "dep:graphshell-endpoint"]
 
 [dev-dependencies]
 isocosm-host = { path = "../../../host", features = ["endpoint", "fixtures"] }

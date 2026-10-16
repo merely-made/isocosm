@@ -63,6 +63,24 @@ impl World {
         self.transaction(None, |session| session.advance(ticks).map(|_| ()))
     }
     pub fn cut(&self) -> Result<Cut, String> { self.read(cut) }
+    /// The session borrowed for reading, as a driver's accessors lend it.
+    /// Hold it no longer than a read: a transaction refuses while it lives.
+    pub fn session(&self) -> Result<std::cell::Ref<'_, Session>, String> {
+        let world = self.0.try_borrow().map_err(|_| "world is being advanced")?;
+        Ok(std::cell::Ref::map(world, |open| &open.session))
+    }
+    /// One mode's section bytes, if it has any.
+    pub fn section(&self, mode: &str) -> Result<Option<Vec<u8>>, String> {
+        Ok(self.0.try_borrow().map_err(|_| "world is being advanced")?.sections.get(mode).cloned())
+    }
+    /// Replaces one mode's section alone, for a product whose native admission
+    /// has already published; it counts as a change like any other.
+    pub fn put_section(&self, mode: &str, bytes: Vec<u8>) -> Result<(), String> {
+        let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
+        world.sections.insert(mode.into(), bytes);
+        world.revision += 1;
+        Ok(())
+    }
     /// Changes accepted since this world opened, mode sections included,
     /// which a cut alone misses. Endpoints sharing the world stale on it.
     pub fn revision(&self) -> Result<u64, String> {

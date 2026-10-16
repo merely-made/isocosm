@@ -81,26 +81,33 @@ pub fn submit(session: &mut Session, access: OrdinaryAccess, game: &mut Game,
 }
 
 impl Runtime {
-    pub fn graft_source(&self) -> String { crate::spatial::graft::source(self.session()) }
+    pub fn graft_source(&self) -> String { crate::spatial::graft::source(&self.session()) }
 
     fn graft_access(&self) -> Result<OrdinaryAccess, String> {
-        if self.fault.is_some() || self.checkpoint.is_some() || !self.queued.is_empty() {
+        if self.fault().is_some() || self.checkpoint().is_some() || self.queued_len() > 0 {
             return Err("graft input waits for the existing runtime question, fault or queued input".into());
         }
-        Ok(OrdinaryAccess { participant: ParticipantHandle(self.interim.participant), seat: Seat::Player,
+        Ok(OrdinaryAccess { participant: ParticipantHandle(self.interim().participant), seat: Seat::Player,
             subject: self.critter().map(EntityHandle) })
     }
 
     pub fn prepare_graft(&self, input: &GraftInput) -> Result<GraftQuote, String> {
-        prepare(self.session(), self.graft_access()?, self.spatial(), input)
+        prepare(&self.session(), self.graft_access()?, self.spatial(), input)
     }
 
     pub fn apply_graft(&mut self, input: &GraftInput) -> Result<String, String> {
         let access = self.graft_access()?;
-        let accepted = admit(&mut self.interim.session, access, &mut self.spatial, input)?;
-        self.windows.absorb(&self.interim.session.sim, &[], &accepted.flows);
-        if let Some(glyphs) = &mut self.glyphs { glyphs.absorb(&self.interim.session, &accepted.flows); }
-        self.sync_loop();
-        Ok(accepted.result)
+        self.with_product(|product, world| {
+            let mut game = product.spatial.clone();
+            let accepted = world.cut().and_then(|before| world.product(before, |session|
+                admit(session, access, &mut game, input)))?;
+            product.spatial = game;
+            let session = super::session(world);
+            product.windows.absorb(&session.sim, &[], &accepted.flows);
+            if let Some(glyphs) = &mut product.glyphs { glyphs.absorb(&session, &accepted.flows); }
+            drop(session);
+            product.sync_loop(world);
+            Ok(accepted.result)
+        })
     }
 }

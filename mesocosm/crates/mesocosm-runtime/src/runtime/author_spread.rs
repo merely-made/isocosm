@@ -115,7 +115,12 @@ impl Runtime {
     pub fn from_authored_spread(setup: &Setup, ticks_per_second: u32) -> Result<Self, String> {
         setup.check()?;
         let mut runtime = Self::new(setup.founded.clone(), ticks_per_second)?;
-        setup.apply(&mut runtime.interim.session, &mut runtime.spatial)?;
+        runtime.with_product(|product, world| {
+            let mut game = product.spatial.clone();
+            world.cut().and_then(|before| world.product(before, |session| setup.apply(session, &mut game)))?;
+            product.spatial = game;
+            Ok::<_, String>(())
+        })?;
         Ok(runtime)
     }
 }

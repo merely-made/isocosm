@@ -3,7 +3,7 @@
 **Date:** 2026-10-14
 
 **Status, 2026-10-15:** in progress. Opened by rulings 884, 892 and 895;
-carries 887's first milestone; forks settled by 896 to 898. H0, H1 and H2
+carries 887's first milestone; forks settled by 896 to 898. H0, H1, H2 and H3
 landed (H2's forks ruled 899 to 904); H2's step 4 waits on the lifted
 reference-host capabilities (899).
 
@@ -251,6 +251,40 @@ starts.
 
 ## Progress
 
+- **2026-10-15, H3 step 3 (on the lane), H3 landed:** Mesocosm's
+  `Runtime` now owns a `Driver<Mesocosm>` over the core's `World`; the
+  session lives in the world and the game in its `mesocosm` section, the
+  door the endpoint uses (925). `Mesocosm` is the `Product`: `apply` is the
+  translation seam, `held` and `answers` the checkpoint, `round` the saved
+  loop's round. `Interim`'s settings live in `runtime::Loop`, which
+  `interim()` returns, so field reads compile unchanged; every founding path
+  still goes through `Interim` and splits it. Each native change is one
+  core transaction (`commit` carries a product refusal through unchanged).
+  After every call that changes it the runtime publishes the sealed game,
+  the driver's queue and fault included, to the section, and before each it
+  adopts a game another door published since (the world's revision says
+  so). The core's `World` gained `session()` (a read borrow), `section` and
+  `put_section`, and the driver `set_max_steps`. *Readings, not ruled:*
+  `session()`, `sim()` and `played()` now lend borrow guards, so
+  `mesocosm-genet` passes `&` at 17 call sites and drops its frame's guard
+  before mutating; the in-memory loop seals an empty queue between
+  publishes, since the driver holds the queue; a refused round now leaves
+  the session and game as they were, where the old driver could leave them
+  part-way. Gates: the six pins pass unchanged, the two traces replaying to
+  their recorded hashes through the core's driver; two one-door tests
+  (`tests/one_door.rs`): the runtime and the endpoint carry on from each
+  other's rounds, the runtime's round stales the endpoint's snapshot (910),
+  the save replays both doors' rounds, and an answer through the endpoint
+  releases the runtime's hold. Six planted faults caught, the translation
+  seam's among them (`Code/testing/isometry/h3-step3-2026-10-15/`); the
+  first run missed "never adopts another door's game", which the
+  endpoint-answer test was added to catch. `mesocosm-runtime` 36 passed;
+  Mesocosm's workspace 73 passed with only the 7 failures 931's triage
+  holds; the core 41 and 48; Eponym's `eponym-play` and the root's
+  `isocosm-vtt` check clean. The g4 receipt was not rerun: the endpoints'
+  code is unchanged and their tests pass. Not measured: every runtime
+  change now clones the session for its transaction, where the old driver
+  mutated in place.
 - **2026-10-15, H3 step 2 (on the lane):** the core drives
   (`host/src/drive.rs`). `Product` names the product's envelope and
   refusal types and supplies `apply`, `held`, `answers` and `round` (926);

@@ -157,7 +157,7 @@ impl Host {
                     },
                     |selected| {
                         mesocosm_views::part_of_with_terms(
-                            self.runtime.sim(),
+                            &self.runtime.sim(),
                             selected.organism,
                             selected.part,
                             self.runtime.terms(),

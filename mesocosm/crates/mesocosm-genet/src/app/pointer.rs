@@ -57,13 +57,14 @@ impl Host {
             Some(isometer::Pick::Body(pick)) => {
                 let id = pick.address.subject.0;
                 let body = scene.body(id).ok_or("pointed body is not in the current picture")?;
-                let native = self.runtime.sim().state().population.get(id).ok_or("pointed native body disappeared")?;
+                let sim = self.runtime.sim();
+                let native = sim.state().population.get(id).ok_or("pointed native body disappeared")?;
                 if !visible.shows(id) || native.resident_site() != Some(scene.site) || native.body.as_ref() != Some(&body.document)
                     || native.alive != body.alive || !gpu.section.validate_body_pick(pick, scene) {
                     return Err("pointed body identity, geometry or awareness is stale".into());
                 }
                 if body.physical.is_some() {
-                    self.runtime.spatial().members.get(&id).ok_or("pointed body has no physical source")?.realized(self.runtime.sim())?;
+                    self.runtime.spatial().members.get(&id).ok_or("pointed body has no physical source")?.realized(&self.runtime.sim())?;
                 }
                 Ok(NudgeTarget::Thing(EntityHandle(id)))
             },
@@ -118,7 +119,7 @@ impl Host {
         let Some(site) = self.runtime.played().and_then(|body| body.resident_site()) else { return; };
         let clicked_visible = match menu.clicked { NudgeTarget::Thing(id) => visible.shows(id.0), NudgeTarget::Place(id) => visible.sites.contains(&id.0) };
         if !clicked_visible { return; }
-        menu.hints = visible.filter(isocosm::directing::readings::suggestions(self.runtime.sim(),menu.actor)).into_iter()
+        menu.hints = visible.filter(isocosm::directing::readings::suggestions(&self.runtime.sim(),menu.actor)).into_iter()
             .filter_map(|hint| {
                 let topic = match hint.target { Some(id) => NudgeTarget::Thing(EntityHandle(id)),
                     None if visible.sites.contains(&site) => NudgeTarget::Place(PlaceHandle(site)), None => return None };

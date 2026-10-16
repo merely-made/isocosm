@@ -37,8 +37,8 @@ impl Host {
         let from = self.followed();
         self.follow = match action {
             input::DevKey::FollowSelf => None,
-            input::DevKey::FollowNext => next_living(sim, from, false),
-            input::DevKey::FollowBack => next_living(sim, from, true),
+            input::DevKey::FollowNext => next_living(&sim, from, false),
+            input::DevKey::FollowBack => next_living(&sim, from, true),
             _ => self.follow,
         };
         self.follow_lost = None;
@@ -50,7 +50,8 @@ impl Host {
     /// Drops a followed body that is no longer alive, and says so.
     pub(super) fn update_follow(&mut self) {
         let Some(target) = self.follow else { return };
-        let pop = &self.runtime.sim().state().population;
+        let sim = self.runtime.sim();
+        let pop = &sim.state().population;
         if pop.get(target).is_some_and(|e| e.alive) {
             return;
         }
@@ -61,7 +62,7 @@ impl Host {
     pub(super) fn follow_reading(&self) -> (Option<mesocosm_views::Follow>, Option<Lost>) {
         let follow = self
             .followed()
-            .and_then(|id| mesocosm_views::follow_of(self.runtime.sim(), id));
+            .and_then(|id| mesocosm_views::follow_of(&self.runtime.sim(), id));
         (follow, self.follow_lost)
     }
 }
