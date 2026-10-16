@@ -107,6 +107,81 @@ Some of these pinned deleted shapes and retire under 672 rather than pass;
 each retirement names what the test meant and where its invariant is now
 checked. `Command::Express` (787) has its own tests since this baseline.
 
+### A2.1 The 22 already on main, triaged 2026-10-15 (931)
+
+Branch `triage-931`, cut from main `d0a5cbc4` (the brief named `8318f21a`;
+the five commits between move generator rules and docs, and the same 22
+fail on both). Logs out of tree in `Code/testing/isometry/triage-931/`,
+`cargo test --workspace --no-fail-fast` per workspace:
+
+| Workspace | Before (passed / failed / ignored) | After |
+|---|---|---|
+| `eponym` | 103 / 15 / 4 | 105 / 13 / 4 |
+| `mesocosm` | 73 / 7 / 3 | 77 / 3 / 3 |
+
+Six fixed (category a, stale test, test-only edits); sixteen brought back
+as eight forks, F1 to F8. No failure is a determinism defect: the one
+`StateDiverged` replays identically from its own log (below), and the
+motion archives stop at the generator check before any replay.
+
+| Test (target) | Class | Cause | Commit, ruling |
+|---|---|---|---|
+| `borrowed_section` ×4 (`mesocosm-genet` lib) | a, fixed | The fixture founded a world with no map; the close-up lifts terrain (`placing::lift` needs the atlas footprint). Played worlds are mapped (783). Written that way in `a4fea109`, so they never passed. Fix: a 2×2 grid, the smallest the domain admits (`map/grid.rs:57`). | `03f87b98`, `a4fea109`; 783 |
+| `disk_roundtrip_restores_attachment_into_a_fresh_game` (`eponym-client` lib) | a, fixed | `Session::begin` takes up the keeper through native `Take` (`GameState::take_up`, `state.rs:136`), a control fact the bare game log does not carry, so `GameState::save` of a taken-up game cannot restore. Replaying the 21 logged intents on a fresh and a restored world agree at every step; only the take differs. Fix: publish the `Session` save. | `e1cac333`; 779 |
+| `a_reconciled_severance_shows_on_the_sheet_and_clears_the_blocker` (`--bin session`) | a, fixed | An authored fall then `ReconcileAnatomy` is refused (`StaleRevision`): a wound no longer moves the revision and a severing reconciles itself (`state/harm.rs:86-95`). Fix: the fixture's own native volley (`sever_target_limb`), the same move `8fb64d3f` made in `eponym-motion`. | 711, 717 |
+| `a_stale_anatomy_stays_inspectable_and_says_so` (`--bin session`) | c, F6 | A stale anatomy is unreachable through harm: the record's revision moves only inside a severing that reconciles at once (`harm.rs:92`, `:157`). | 711, 717 |
+| `treatment_preserves_severance_…`, `native_support_loss_…` (`--bin timed_action`) | b, F4 | The bin's `injure` key (`timed_action/actions.rs:75`) still applies fall plus `ReconcileAnatomy`; it is refused and injures nobody. | 711, 717 |
+| `native_handler_lifecycle_keeps_authoritative_receipt` (`--bin timed_action`) | b, F5 | A volley severing a non-played target's part that wears an item is refused whole, `World(NotPlayed)`: `release_worn` (`state/acts.rs:466`, from `harm.rs:170`) submits the target's drop under the player's participant, which the contract check refuses (`contract.rs:83-86`). Without the prior motion step the volley severs nothing and resolves. | `21edca66` |
+| `wrong_direction_is_a_recorded_miss` (`--bin timed_action`) | c, F3 | Native anatomy (root 8 cells, limbs to ±12) replaced the authored bodies, still spaced 12 cells: the keeper's limb already overlaps the target's root, so a backward strike hits it. | `a4fea109` |
+| `terrain_hides_a_body_standing_behind_it`, `a_severed_part_leaves_…` (`eponym-client` lib, GPU) | c, F3 | Same geometry: no camera buries a whole native body; the volley now severs part 1, which only a later camera shows, so "the first frame builds geometry" no longer holds (trial edit reverted). | `a4fea109` |
+| `an_unchanged_frame_produces_nothing_…` (`eponym-client` lib, GPU) | b, F7 | The producer builds a whole-ground `BrickMap` (`producer/source.rs:276-279`); the native seed-7 world has 3,062 bricks against Mere modulus's 2,047. `terrain_hides` would meet it too once a camera qualifies. | `694a3f0e` |
+| `actual_pre_combat_…`, `v4_native_…`, `real_v5_…` (`eponym-motion` combat_saves, motion_compat, precise_combat) | c, F2 | Generator-1 archives are refused, `GeneratorDiverged { saved: 1, current: 4 }`; `eponym-play`'s `save_wire` tests pin that refusal, so the tree asserts both. `8fb64d3f` left "authenticated generator-1 founding and continuation" open. | `8fb64d3f`; 755, 770 |
+| `a_tag_in_occurs_mid_action_under_the_pact`, `an_injury_persists_as_a_body_revision_fact` (`eponym-sortie`) | c, F8 | Nobody falls, so nobody is wounded or downed. Not a stale offset: 256 marches over offsets ±64 meet a largest one-tick drop of 1, and a drawn cliff (744) is 64, equal to the walker's `HEADROOM`, so no walker steps it. | `694a3f0e`, `1616dde2`; 744 |
+| `the_shipped_pack_admits_…`, `the_manifests_file_order_…`, `the_shipped_pack_is_toml_…` (`mesocosm-phenotype`) | c, F1 | The pack ships five definitions; the native registry carries fifteen. | `635bffa7`; 759 |
+
+The forks, each with a recommendation first:
+
+- **F1, the shipped pack's parity (3).** (1) Ship the ten other catalogue
+  functions as pack definitions, so admission stays `==` native, as the
+  pack's own note claims (recommended); (2) narrow the receipt to the five
+  bound natives; (3) retire it under 672.
+- **F2, generator-1 motion archives (3).** The world that authenticated them
+  was deleted, so no native regrow can match their base hash. (1) Keep them
+  as decode receipts (bytes already pinned by `save_wire`) and retire the
+  three restore-and-continue tests under 672 (recommended); (2) build an
+  authenticated generator-1 reader; (3) ignore them until Q5/Q11's
+  authentic-fixture gate.
+- **F3, fixtures spaced for authored bodies (3).** (1) Space the shared
+  fixture and the timed-action app (`fixtures/session.rs`,
+  `timed_action/model.rs`) so native bodies stand clear, then recalibrate
+  the direction, burial and severance receipts (recommended); (2) give the
+  fixtures small authored bodies again; (3) retire those receipts.
+  *Reading, not ruled:* nothing in movement keeps two bodies from
+  overlapping.
+- **F4, the timed-action injure key (2).** (1) Injure through a native volley
+  from a practice striker, `eponym-motion`'s `tests/fixtures/native_severing.rs`
+  promoted to `eponym_play::fixtures` (recommended); (2) through 704's
+  hazard once built; (3) remove the key and its two tests.
+- **F5, worn items on a severed non-played part (1).** (1) Drop them through
+  the sim's own handoff, `EponymHandoff::Dropped` (`contract.rs:292`), which
+  carries no participant (recommended); (2) submit `release_worn` with no
+  participant; (3) refuse a severing that would drop a worn item.
+- **F6, the stale-anatomy panel (1).** (1) Retire it under 672, severing's
+  self-reconciliation checked by `native_severing`'s asserts (recommended);
+  (2) find a path that moves the revision without reconciling and rebuild
+  the test on it.
+- **F7, the producer's brick cap (1).** (1) Build the producer's terrain from
+  the resident window, V1b's capacity-fixed cache (`residency.rs`)
+  (recommended, unmeasured); (2) raise modulus's cap in Mere; (3) a smaller
+  fixture world.
+- **F8, the sortie's scarp (2).** (1) Carve the scarp as a native material
+  edit in the scene, so the hazard stays a world fact (recommended);
+  (2) wound through 704's hazard; (3) retire the fall-dependent receipts.
+
+One hazard seen in passing, not a failing test: `GameState::save` on a game
+whose participant has taken up a subject writes a save its own restore
+refuses (`StateDiverged`). Nothing in production calls it that way today.
+
 ## A3. Deferred done-conditions, by owner
 
 - **Families plan (all seven families):** each runs under process
