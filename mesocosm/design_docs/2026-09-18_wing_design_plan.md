@@ -11605,7 +11605,16 @@ what later sections derive from.
      `global_collapse` and `spatial_templates`, populations unchanged over
      240 ticks; the H3 traces were rerecorded for their final hash alone.
      Options: (1) "Push now (Recommended)"; (2) "Hold the push".
-     Mark: "Push now (Recommended)" Next unused934.
+     Mark: "Push now (Recommended)"
+
+934. **The generator lane's text fix for `found_generated` goes to main.**
+     Asked 2026-10-15 after review: `665c1429` (branch
+     `lane-generator-templates-text`) corrects the doc comment and the
+     overlay plan to say `found_generated` seats the first living embodied
+     member of each of a site's cohorts, one per declared stand, as the code
+     does. Options: merge and push, or hold. Mark: "Merge
+     lane-generator-templates-text (665c1429) into main and push it."
+     Next unused935.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
