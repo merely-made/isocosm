@@ -11596,7 +11596,16 @@ what later sections derive from.
      bodies and participant seats never count, and no lineage is named.
      *Reading, not ruled:* the question's "ruling 887" means this record's
      891, the predicate the generator declares; 887 is the Mesocosm-loop
-     milestone. Next unused933.
+     milestone.
+
+933. **Main is pushed with the generator lane's 889 and 891.**
+     Asked 2026-10-15 by card after the Windows review of
+     `lane-generator-templates`. Evidence: every suite matches main apart
+     from the branch's own new tests; its digest moves trace exactly to
+     `global_collapse` and `spatial_templates`, populations unchanged over
+     240 ticks; the H3 traces were rerecorded for their final hash alone.
+     Options: (1) "Push now (Recommended)"; (2) "Hold the push".
+     Mark: "Push now (Recommended)" Next unused934.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
