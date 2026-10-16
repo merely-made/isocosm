@@ -202,24 +202,22 @@ pub fn write_png(path: &Path, width: u32, height: u32, pixels: &[u8]) -> Result<
 /// otherwise nudge now and then, then take one round.
 pub fn demo_step(runtime: &mut Runtime, step: u64) {
     if let Some(intent) = demo_intent(runtime, step) {
-        let envelope = crate::input::envelope(runtime, intent);
+        let envelope = runtime.envelope(intent);
         runtime.queue(envelope);
     }
     runtime.step(1);
 }
 
 fn demo_intent(runtime: &Runtime, step: u64) -> Option<isocosm_overlay::mesocosm::MesocosmIntent> {
-    use winit::keyboard::{Key, NamedKey};
+    use mesocosm_runtime::{Context, Named, Press};
+    // A script, so it takes the keymap's intent and queues it directly (957).
+    let context = Context::default();
     if let Some(checkpoint) = runtime.checkpoint() {
-        let take = Key::Character("t".into());
-        let carry = Key::Named(NamedKey::Enter);
-        let key = match checkpoint.occasion {
-            mesocosm_runtime::Occasion::Loss(_) => &take,
-            _ => &carry,
+        let press = match checkpoint.occasion {
+            mesocosm_runtime::Occasion::Loss(_) => Press::Char('t'),
+            _ => Press::Named(Named::Enter),
         };
-        return crate::input::answer_for(checkpoint, runtime.critter(), key);
+        return runtime.keyed(&press, &context);
     }
-    (step % NUDGE_EVERY == 0)
-        .then(|| crate::input::intent_for(runtime, None, &Key::Character("e".into())))
-        .flatten()
+    (step % NUDGE_EVERY == 0).then(|| runtime.keyed(&Press::Char('e'), &context)).flatten()
 }

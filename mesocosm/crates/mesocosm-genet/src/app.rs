@@ -41,7 +41,7 @@ pub use config::HostConfig;
 pub const DEV_STEP_N: u64 = 10;
 
 /// Matter the dev `G` key places, in mg: a dev tool's dose, not a rule.
-pub const DEV_PLACE_MG: u64 = 5_000;
+pub const DEV_PLACE_MG: u64 = mesocosm_runtime::runtime::keymap::DEV_PLACE_MG;
 
 pub struct Host {
     config: HostConfig,

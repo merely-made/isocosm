@@ -94,9 +94,9 @@ impl Host {
             input::DevKey::FollowNext | input::DevKey::FollowBack | input::DevKey::FollowSelf => {
                 self.follow_key(action)
             },
-            // DT3: an ordinary intent, queued. The only arm here that can
-            // reach the world at all.
-            action if action.changes_the_world() => self.dev_world_key(action),
+            // DT3: an ordinary intent through the core's keymap. The only arm
+            // here that can reach the world at all.
+            action if action.changes_the_world() => self.press_world(key),
             _ => {},
         }
         true
@@ -109,31 +109,6 @@ impl Host {
         let taken = self.runtime.step(n);
         self.steps += taken;
         self.dev_manual_steps += taken;
-    }
-
-    /// A dev intent for one of DT3's four keys, about the followed critter.
-    fn dev_world_key(&mut self, action: input::DevKey) {
-        use isocosm_overlay::mesocosm::{DevIntent, MesocosmIntent};
-        use isocosm_overlay::{EntityHandle, PlaceHandle};
-        let followed = self.followed();
-        let dev = match action {
-            input::DevKey::EndEpoch => DevIntent::EndEpoch,
-            input::DevKey::ForceBirth => DevIntent::ForceBirth {
-                organism: EntityHandle(followed.unwrap_or_default()),
-            },
-            input::DevKey::Kill => DevIntent::Kill {
-                organism: EntityHandle(followed.unwrap_or_default()),
-            },
-            input::DevKey::PlaceMatter => {
-                let Some(site) = self.runtime.played().and_then(|e| e.resident_site()) else { return; };
-                DevIntent::PlaceMatter { site: PlaceHandle(site), mass_mg: super::DEV_PLACE_MG }
-            },
-            _ => return,
-        };
-        if input::admits(self.runtime.queued_len()) {
-            let envelope = input::envelope(&self.runtime, MesocosmIntent::Dev(dev));
-            self.runtime.queue(envelope);
-        }
     }
 
     /// The dev lane's reading, taken fresh each frame; `None` outside `--dev`.
