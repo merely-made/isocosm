@@ -4,6 +4,7 @@
 mod access;
 mod binding;
 mod drive;
+mod input;
 #[cfg(feature = "endpoint")]
 mod endpoint;
 mod file_save;
