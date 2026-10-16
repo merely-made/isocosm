@@ -7,8 +7,9 @@
 A world founded with a map and bodies declares `rules.spatial_templates`: up to
 four spawn stands per site, derived from its realized terrain (root clear and
 resting on solid ground, eye clear, one realized patch), and one arrival stand
-per native route. `Game::found_generated` seats the first embodied member of
-each cohort on those stands (a logged `Command::Patch`) and registers every
+per native route. `Game::found_generated` seats the first living embodied member of
+each of a site's cohorts, in id order and up to the site's four stands (a
+logged `Command::Patch`), and registers every
 crossing through the ordinary authored `Profile`, so poses, saves and arrivals
 use the existing provider and door; a body without a template acquires no pose.
 Every generated world declares `rules.global_collapse`: no living organism
