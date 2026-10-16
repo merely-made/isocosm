@@ -152,7 +152,7 @@ impl Host {
 
 /// The key a documented name stands for. `space`, `enter` and `tab` are
 /// spelled out because a scenario line is whitespace-delimited.
-fn key_named(name: &str) -> Option<Key> {
+pub(super) fn key_named(name: &str) -> Option<Key> {
     match name {
         "space" => Some(Key::Named(NamedKey::Space)),
         "enter" => Some(Key::Named(NamedKey::Enter)),

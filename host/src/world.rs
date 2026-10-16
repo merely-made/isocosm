@@ -31,6 +31,12 @@ impl World {
         Self(Rc::new(RefCell::new(OpenWorld { session, sections, revision: 0 })))
     }
     pub fn share(&self) -> Self { Self(self.0.clone()) }
+    /// Transfer an unshared world's session and opaque sections to a product's
+    /// founding step. Shared live worlds cannot be taken apart.
+    pub fn into_parts(self) -> Result<(Session, BTreeMap<String, Vec<u8>>), String> {
+        let world = Rc::try_unwrap(self.0).map_err(|_|"world has shared owners")?.into_inner();
+        Ok((world.session, world.sections))
+    }
     pub fn resume(saved: WorldSave, execution: Execution) -> Result<Self, String> {
         if saved.format != FORMAT_VERSION { return Err("unknown mode-host save format".into()); }
         let session = Session::load(saved.native, execution)?;

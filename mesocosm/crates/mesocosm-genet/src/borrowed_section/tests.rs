@@ -5,7 +5,7 @@ use super::*;
 use isocosm::{Command, Execution, Founding, attention::{Region, WindowAttention}, directing::Played, schema::Method};
 use isometer::{FrameRequest, SceneProducer};
 
-fn fixture() -> (Session, Id, Id, u64, Id) {
+pub(super) fn fixture() -> (Session, Id, Id, u64, Id) {
     // A played world is mapped (783): the close-up lifts its site's terrain.
     let grid = isocosm::map::Grid { width: 2, height: 2, ..isocosm::map::Grid::drawn(11) };
     let genesis = Founding { seed: 11, sites: 4, map: Some(isocosm::map::Layout::Grid(grid)),

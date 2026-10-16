@@ -36,6 +36,7 @@ fn main() {
     let mut args = std::env::args().skip(1);
     let (mut replay, mut trace, mut receipt, mut capture) = (None, None, None, None);
     let mut bench = false;
+    let mut bench_epoch_explicit = false;
     let mut size_explicit = false;
     let mut founding_explicit = false;
     let mut seed_explicit = false;
@@ -44,6 +45,9 @@ fn main() {
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--bench" => bench = true,
+            "--bench-world" => config.bench_world = true,
+            "--bench-epoch" => { bench_epoch_explicit=true; config.bench_epoch = args.next().and_then(|v|v.parse().ok())
+                .filter(|v|*v>0).unwrap_or_else(||fail("--bench-epoch wants positive ticks")); },
             "--frames" => config.frames = args.next().and_then(|v| v.parse().ok()),
             "--size" => {
                 let size = args.next().unwrap_or_default();
@@ -181,7 +185,7 @@ fn main() {
         fail("--mode applies to ordinary new or watched worlds; authored spread declares its own mode");
     }
     config.unchosen_seed = unchosen_explicit || (!seed_explicit && config.watch.is_none()
-        && config.spread.is_none() && config.ecology_candidate.is_none() && replay.is_none() && !bench);
+        && config.spread.is_none() && config.ecology_candidate.is_none() && replay.is_none() && !bench && !config.bench_world);
     if config.spread.is_some()
         && (config.watch.is_some() || replay.is_some() || bench || founding_explicit) {
         fail("--spread supplies its founding and cannot combine with --watch, --replay, --bench, --seed or --population");
@@ -209,6 +213,11 @@ fn main() {
         });
     }
 
+    if config.bench_world && (bench || config.spread.is_some() || config.ecology_candidate.is_some()
+        || config.ecology_witness.is_some() || unchosen_explicit || replay.is_some()) {
+        fail("--bench-world is an explicit dev world or watched save; it cannot combine with another founding path");
+    }
+    if bench_epoch_explicit && !config.bench_world { fail("--bench-epoch requires --bench-world"); }
     let stem = |default: PathBuf, bench_name: &str| {
         if bench {
             default.with_file_name(bench_name)
@@ -271,6 +280,8 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --ecology-candidate PATH  supply complete authored generated rules, lifecycle and joint witness
   --scenario PATH drive the run from a text scenario and exit 1 if it fails
   --bench         open the bench over a native session (1280x900)
+  --bench-world   play an explicit dev world through the core and Assembly
+  --bench-epoch N dev-world epoch ticks (default 60); requires --bench-world
   --dev           enable the dev lane and its keys (DT1, DT2, DT3)
   --follow ID     start the camera on this body (presentation only)
 

@@ -6,7 +6,9 @@
 carries 887's first milestone; forks settled by 896 to 898. H0, H1, H2 and H3
 landed (H2's forks ruled 899 to 904); H2's step 4 waits on the lifted
 reference-host capabilities (899). 2026-10-16: H4 (954 to 957) and H5
-landed. H6 is next; default launch remains behind A1's joint witness.
+landed. H6's explicit bench-world Assembly head renders and resumes a core
+save; the ordinary head still uses the old window loop. H6 remains in
+progress and default launch remains behind A1's joint witness.
 
 ## Why
 
@@ -256,6 +258,55 @@ through the UI, succession in the client), then the VTT over the sim
 starts.
 
 ## Progress
+
+- **2026-10-16, H6 bench slice, in progress:** `--bench-world` is an explicit
+  `Purpose::Bench` founding, through the core before native `Interim` setup;
+  it does not admit an ordinary generated head. `--bench-epoch N` gives this
+  bench's boundary. The new `app/assembly/` uses `isomere::host::Assembly`,
+  Mesocosm's existing Cambium vitals/board/checkpoint/dev views, and its actual
+  `SectionProducer` on the present device. Keys reuse the core path; leaf
+  clicks convert logical coordinates to the rendered target and carry its
+  world revision. New input before presentation is refused. The executable
+  needed an 8 MiB main stack on MSVC (configurable with
+  `MESOCOSM_STACK_BYTES`) and a leaf key in the registry's supported range.
+  The first stack/range failures are not successful headed receipts.
+  Seed 0, population 256, six-tick bench epoch reached the trait board:
+  `RESULT ok`, 26 frames, native hash `99c12f34e2e6eb94`. The frame contains
+  the actual terrain and bodies beside the board. `--bench-world --watch`
+  resumed its core save with the same tick, hash and standing board (10
+  frames, `RESULT ok`). The 3,072-pixel actual-device comparison against the
+  old loop's Section matched 137 body, 463 terrain and 2,472 empty picks;
+  independent frame tokens stay distinct, and an unpresented revision and
+  out-of-bounds coordinates refuse. In two bounded held-save pacing runs,
+  dropping five startup callback intervals, Assembly's median/p95 were
+  143,324/153,988 microseconds (56 samples), the old loop's
+  183,197/210,229 (54). Both preserve the same hash. These are debug host
+  callback intervals under concurrent A1/release work, not GPU timings or a
+  performance threshold; the old window was 710x590 logical and the new
+  window 1000x700, giving both sections 1420x1180 physical pixels.
+  Core ownership transfer 1 passed; bench founding/save 1, runtime pins 6
+  and save/import 6 passed; four borrowed-picture admission tests pass and
+  the head's all-target check passes. A selector click delivered through
+  Cambium's leaf picked native body 230 and queued its core input (13
+  frames, `RESULT ok`); the earlier run's zero-tick pause assertion was
+  invalid because pause arrives after startup work. Its failed receipt is
+  retained as `pause-assertion-*`, not counted as acceptance. Receipts:
+  `Code/testing/isometry/h6-2026-10-16/`; cap 100 MB, compact test summaries
+  and the named headed captures/saves only. **Still open:** ordinary window
+  migration, minimap and exact part-inspection integration, followed by
+  ordinary watch/input acceptance and A1's admitted default launch. H6 is
+  not closed by the bench capture.
+- **2026-10-16, workspace hygiene:** the receipt-budget rule now lives in
+  `Code/AGENTS.md` as well as the lane queue, so briefs in other repositories
+  inherit its 100 MB default. A read-only size inventory found Mere's target
+  at 499 GB, with 201 GB of inactive debug incremental data. After checking
+  Cargo markers, live owners, absolute paths and the exclusive debug profile
+  lock, only its two incremental directories were removed; sources, receipts,
+  binaries, libraries and active release output remain. The filesystem
+  recovered 182,078,619,648 bytes, reaching 505,574,342,656 free bytes.
+  `cache-cleanup.json` in the H6 receipt directory records both paths and the
+  free-byte readings. The stable Isocosm target remains for A1 and H6/F work;
+  no isolated target, Cargo home or worktree was created.
 
 - **2026-10-16, H5 landed:** the core's
   `save::ImportSave` lets a product validate its old grammar and lower it to

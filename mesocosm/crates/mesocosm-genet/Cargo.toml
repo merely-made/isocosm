@@ -62,7 +62,7 @@ isometer = { path = "../../../shared/isometer" }
 # shared rules under this product's seeds plus its own remaining rules. A
 # sibling path crate under the repository's `shared/`, like isometer, and it
 # names no scene and no voxel.
-isomere = { path = "../../../shared/isomere" }
+isomere = { path = "../../../shared/isomere", features = ["host"] }
 wgpu = { workspace = true }
 winit = "0.30"
 pollster = "0.4"

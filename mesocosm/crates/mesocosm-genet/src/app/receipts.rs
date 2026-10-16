@@ -223,6 +223,7 @@ impl Host {
                 .map(|p| p.display().to_string()),
             dev: self.config.dev,
             dev_intents: self.runtime.dev_intents(),
+            frame_intervals_us: self.frame_intervals_us.clone(),
         }
     }
 }

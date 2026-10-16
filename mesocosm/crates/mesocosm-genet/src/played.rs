@@ -97,6 +97,8 @@ pub struct PlayedReceipt {
     pub dev: bool,
     /// Dev intents the runtime applied (DT3); nonzero labels the run assisted.
     pub dev_intents: u64,
+    /// Host callback intervals, before pause/speed scaling; not GPU completion.
+    pub frame_intervals_us: Vec<u64>,
 }
 
 /// `Code/testing/<repo>/`, the workspace's headed-verify home.

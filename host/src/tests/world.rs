@@ -18,6 +18,18 @@ fn identical_section_bytes_preserve_revision() {
 }
 
 #[test]
+fn only_an_unshared_world_can_transfer_its_complete_contents() {
+    let f = fixture();
+    let shared = f.world.share();
+    assert!(shared.into_parts().is_err());
+    f.world.put_section("unknown", vec![0,255]).unwrap();
+    let before = f.world.save().unwrap();
+    let (session, sections) = f.world.into_parts().unwrap();
+    assert_eq!(session.save(), before.native);
+    assert_eq!(sections, before.sections);
+}
+
+#[test]
 fn both_windows_read_one_accepted_world() {
     let f = fixture();
     let first = window(&f, 0, Seat::Player, "mesocosm");
