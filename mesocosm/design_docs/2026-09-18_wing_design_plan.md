@@ -11615,9 +11615,38 @@ what later sections derive from.
      does. Options: merge and push, or hold. Mark: "Merge
      lane-generator-templates-text (665c1429) into main and push it."
 
-935 to 937 are the A1 lane's, recorded on `a1-905-907` (`c647f694`,
-2026-10-16) and not yet on main: the preset's lifespan ceiling, the chooser
-diagnosis, and that branch's push.
+935. **The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40.**
+     Asked 2026-10-15 by card, from the A1 lane. Evidence: the preset as
+     ruled in 906 and 907 (ceiling 80 to 120 under the hazard) draws bare
+     20/20, bodied 19/20, played 18/20 on seeds 0 to 19 against the stock
+     controls' 0/20; with the ceiling at 100 plus a draw (candidate 10) bare
+     20/20, bodied 20/20, played 19/20, and 16/16 against 14/16 on fresh
+     bodied seeds 300 to 315. Candidate 9's constant ceiling of 120 had
+     scored 20/20, 20/20 and 19/20. Options: (1) 100 to 140 (recommended by
+     the lane); (2) keep 80 to 120 as ruled; (3) a constant 120, amending
+     906's wording. Mark: "100 to 140 (Recommended)". It changes the
+     preset's numbers only (907): defaults, the hazard and the grazing
+     default are untouched.
+
+936. **A1's gate stands; the lane diagnoses the chooser before anything is built.**
+     Asked 2026-10-15 by card. Evidence: the played founding is 19/20 under
+     candidate 10, A1's gate asks for 20 (907 left it unamended), and the one
+     miss, seed 9, is a herd: two cohorts of 32 consumers hop together
+     between sites away from prey, accepted feeds falling from 523 to 102
+     per 20 ticks while 1,859 producers stand elsewhere, births stopping
+     after tick 60. It failed under every ceiling tried, so no rate reaches
+     it. Options: (1) diagnose the chooser, empty-choice timing (813) and the
+     movement chooser, any behaviour change coming back as a ruling
+     (recommended by the lane); (2) accept 19/20 and amend the gate; (3)
+     tune further first. Mark: "Diagnose the chooser (Recommended)".
+
+937. **The lane pushes `a1-905-907` for review.**
+     Asked 2026-10-15 by card, as 908 was for `a1-reproduction`. Evidence:
+     the branch is rebased onto origin and carries 905 to 907, the preset and
+     the A1 harness (shared/isocosm, tests and records), with the native
+     suite at 670 passed, 0 failed, 13 ignored and `mesocosm-runtime` green.
+     Options: push the branch, not main; or keep it local. Mark: "Yes, push
+     the branch".
 
 938. **The triage branch's six fixes go to main.** Asked 2026-10-16 by card,
      after Mark asked for the open questions. Evidence: 931's triage on
