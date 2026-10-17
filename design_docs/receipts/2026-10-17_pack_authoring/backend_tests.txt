@@ -1,0 +1,119 @@
+warning: method `syntax` is never used
+    --> src/formatter/mod.rs:1212:8
+     |
+1211 | trait FormattedItem {
+     |       ------------- method in this trait
+1212 |     fn syntax(&self) -> SyntaxElement;
+     |        ^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `taplo` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.11s
+     Running unittests src/lib.rs (target/pack-syntax-build/debug/deps/taplo-fcfa98761d6e5d43)
+
+running 101 tests
+test tests::comments_after_tables ... ok
+test tests::formatter::array_collapse ... ok
+test tests::formatter::comment_after_entry ... ok
+test tests::formatter::array_max_new_lines ... ok
+test tests::formatter::array_no_trailing_comma ... ok
+test tests::formatter::align_composite_entries ... ok
+test tests::formatter::no_trailing_newline ... ok
+test tests::formatter::single_comment_in_array ... ok
+test tests::formatter::comment_before_entry ... ok
+test tests::formatter::no_expand_inline_table ... ok
+test tests::formatter::table_entries_no_blank_space ... ok
+test tests::formatter::multiple_comments_indented ... ok
+test tests::formatter::table_entries_no_blank_space_indent_entries ... ok
+test tests::formatter::comment_indentation ... ok
+test tests::formatter::multiple_comments ... ok
+test tests::formatter::table_entries_no_blank_space_indent_entries_and_tables ... ok
+test tests::formatter::indent_entries ... ok
+test tests::formatter::table_indents ... ok
+test tests::formatter::test_align_entries_no_comments ... ok
+test tests::formatter::test_align_comments ... ok
+test tests::formatter::test_comment_after_entry ... ok
+test tests::formatter::test_comment_in_array ... ok
+test tests::formatter::test_comment_with_brackets ... ok
+test tests::formatter::test_comments_in_array ... ok
+test tests::formatter::test_compact_entries ... ok
+test tests::formatter::test_nested_arrays ... ok
+test tests::formatter::test_single_comment_alignment ... ok
+test tests::formatter::test_cargo_toml ... ok
+test tests::formatter::test_more_comment_alignments ... ok
+test tests::formatter::test_single_comment_no_alignment ... ok
+test tests::formatter::test_sorted_groupings_in_array ... ok
+test tests::formatter::test_sorted_inline_tables ... ok
+test tests::formatter::test_space_in_line ... ok
+test tests::formatter::test_too_long_array ... ok
+test tests::formatter::trailing_newline ... ok
+test tests::generated::invalid::array_of_tables_1 ... ok
+test tests::generated::invalid::array_of_tables_2 ... ok
+test tests::formatter::test_very_nested_arrays ... ok
+test tests::generated::invalid::bare_key_1 ... ok
+test tests::generated::invalid::bare_key_2 ... ok
+test tests::generated::invalid::bare_key_3 ... ok
+test dom::rewrite::tests::rename_keys ... ok
+test tests::generated::invalid::comment_control_2 ... ok
+test tests::generated::invalid::comment_control_1 ... ok
+test tests::generated::invalid::comment_control_3 ... ok
+test tests::generated::invalid::comment_control_4 ... ok
+test tests::generated::invalid::inline_table_imutable_1 ... ok
+test tests::generated::invalid::inline_table_imutable_2 ... ok
+test tests::generated::invalid::inline_table_trailing_comma ... ok
+test tests::generated::invalid::int_0_padded ... ok
+test tests::generated::invalid::int_signed_bin ... ok
+test tests::generated::invalid::int_signed_hex ... ok
+test tests::generated::invalid::int_signed_oct ... ok
+test tests::generated::invalid::key_value_pair_1 ... ok
+test tests::generated::invalid::key_value_pair_2 ... ok
+test tests::generated::invalid::multiple_key ... ok
+test tests::generated::invalid::no_key_name ... ok
+test tests::generated::invalid::multiple_dot_key ... ok
+test tests::generated::invalid::string_basic_control_1 ... ok
+test tests::generated::invalid::string_basic_control_2 ... ok
+test tests::generated::invalid::string_basic_control_4 ... ok
+test tests::generated::invalid::string_basic_control_3 ... ok
+test tests::generated::invalid::string_basic_multiline_control_1 ... ok
+test tests::generated::invalid::string_basic_multiline_control_2 ... ok
+test tests::generated::invalid::string_basic_multiline_control_3 ... ok
+test tests::generated::invalid::string_basic_multiline_control_4 ... ok
+test tests::generated::invalid::string_basic_multiline_invalid_backslash ... ok
+test tests::generated::invalid::string_basic_multiline_out_of_range_unicode_escape_1 ... ok
+test tests::generated::invalid::string_basic_multiline_out_of_range_unicode_escape_2 ... ok
+test tests::generated::invalid::string_basic_multiline_quotes ... ok
+test tests::generated::invalid::string_basic_multiline_unknown_escape ... ok
+test tests::generated::invalid::string_basic_out_of_range_unicode_escape_2 ... ok
+test tests::generated::invalid::string_basic_unknown_escape ... ok
+test tests::generated::invalid::string_basic_out_of_range_unicode_escape_1 ... ok
+test tests::generated::invalid::string_literal_control_1 ... ok
+test tests::generated::invalid::string_literal_control_2 ... ok
+test tests::generated::invalid::string_literal_control_3 ... ok
+test tests::generated::invalid::string_literal_control_4 ... ok
+test tests::generated::invalid::string_literal_multiline_control_1 ... ok
+test tests::generated::invalid::string_literal_multiline_control_2 ... ok
+test tests::generated::invalid::string_literal_multiline_control_3 ... ok
+test tests::generated::invalid::string_literal_multiline_control_4 ... ok
+test tests::generated::invalid::string_literal_multiline_quotes ... ok
+test tests::generated::invalid::table_1 ... ok
+test tests::generated::invalid::table_2 ... ok
+test tests::generated::invalid::table_4 ... ok
+test tests::generated::invalid::table_3 ... ok
+test tests::generated::invalid::table_invalid_2 ... ok
+test tests::generated::invalid::table_invalid_1 ... ok
+test tests::generated::invalid::table_invalid_3 ... ok
+test tests::generated::invalid::taplo_incomplete_inline_table ... ok
+test tests::generated::invalid::taplo_duplicate_keys ... ok
+test tests::generated::invalid::taplo_invalid_array ... ok
+test tests::generated::invalid::taplo_inner_key_conflict ... ok
+test tests::generated::invalid::taplo_invalid_array_comma_start ... ok
+test tests::generated::invalid::taplo_invalid_float ... ok
+test tests::generated::invalid::taplo_invalid_inline_table ... ok
+test tests::generated::invalid::taplo_table_before_array ... ok
+test tests::generated::invalid::taplo_invalid_padding ... ok
+test dom::rewrite::tests::rename_keys_array_of_tables ... ok
+test tests::time_in_arrays ... ok
+
+test result: ok. 101 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-17",
+  "base_revision": "d91a82907bba1a8159f8c32220c7dd9ada9de63d",
+  "state": "implemented and qualified in working tree; not committed/pushed",
+  "runtime_admission_and_format_owners_unchanged": true,
+  "shared_api": false,
+  "checks": {
+    "feature_tests": {
+      "passed": 68,
+      "failed": 0
+    },
+    "default_tests": {
+      "passed": 58,
+      "failed": 0
+    },
+    "final_binary_tests": {
+      "passed": 8,
+      "failed": 0
+    },
+    "backend_tests": {
+      "passed": 101,
+      "failed": 0
+    },
+    "all_targets": {
+      "status": "passed"
+    },
+    "msrv_1_97_1": {
+      "status": "passed"
+    },
+    "scoped_clippy": {
+      "status": "passed"
+    },
+    "default_backend_absent": true,
+    "vendor_excluded_from_workspace_members": true,
+    "existing_lock_package_versions_retained": true,
+    "actual_demo_cli_check": {
+      "valid": true,
+      "admitted": false,
+      "choices": 4
+    }
+  },
+  "scope": "Optional private pack-author binary; no GUI/sim/campaign/schema/loader changes",
+  "strict_lint_baseline": "Package-wide -D warnings stops at existing sys/generator.rs:301 needless_borrow. New binary/integration test deny clippy::all; scoped all-target Clippy passes with existing library/dependency warnings.",
+  "limits": [
+    "Local cooperating save leases; no compare-and-swap against uncooperative writers",
+    "No directory-fsync/crash-recovery/ACL-xattr qualification",
+    "2 MiB authoring input, lexical TOML bracket/brace depth 64, history 32 revisions",
+    "TOML 1.1/JSON typed validation preserved; source index can be partial",
+    "Private fork distribution is not qualified or published",
+    "No native GUI authoring surface added"
+  ],
+  "source_sha256": {
+    "crates/isometry-system/src/pack_author/save.rs": "3b181d4edbed2778ef337fd5d45023836bc1fca420fdea701a899e8db2e13c54",
+    "crates/isometry-system/src/pack_author/mod.rs": "68b4eaef05d0ab5535e9952940bf0b6de71d35ef1039ad7f91f7ad74ff015d83",
+    "crates/isometry-system/src/pack_author/tests.rs": "a3662d927e1fca161593539fbb15cfa5d2a3897a3028f9bc97cee94e0597dbd9",
+    "crates/isometry-system/src/pack_author/syntax.rs": "8b5da675249e528a7747fe79edf99b9d8e4a6d9d49791235bd592fb6e38700aa",
+    "crates/isometry-system/src/pack_author/cli.rs": "12be595bda5fa86717a8cecb8091f40b2fda301080d26b14ce6b55cf76061978",
+    "crates/isometry-system/src/bin/pack_author.rs": "1bf6b6e4c392dc108080cf11ecf2e436a86454efab973a15c8613e9cc993ccac",
+    "crates/isometry-system/tests/pack_author.rs": "b052684be48a53f9ccb4ad3efdd6ca7d79e27dedcb89bfa9af6a03689e2abc72",
+    "crates/isometry-system/tests/fixtures/annotated-pack.toml": "40cac2d5314dcbf410562199c873df0c4e574d967c097d12a61535d93f31467c",
+    "vendor/taplo/port.patch": "377fa6e3d90177a50c7c8447996fe009fdcc5bc037a571189a9118956f31a92d"
+  }
+}

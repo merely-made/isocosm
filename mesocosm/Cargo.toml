@@ -137,14 +137,10 @@ wgpu = { version = "30", default-features = false, features = [
 
 [dependencies]
 
-# Vello on wgpu 30, from the owned fork. Upstream vello 0.10 still requires
-# wgpu 29 and their migration PR is stalled, so netrender (and through it this
-# workspace's frame) takes vello from the v0.10.0 tag plus the API changes in
-# linebender/vello#1754. `[patch]` applies only from the top-level manifest
-# and is not inherited from netrender, so this workspace restates it. Retires
-# by deletion when upstream ships a wgpu-30 vello.
+# Nothing in this workspace reaches vello any more (the row for the owned
+# wgpu-30 fork went 2026-10-17, ruling 967, after cargo reported it unused);
+# netrender carries its own.
 [patch.crates-io]
-vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique patch row. Genet published its forks as `genet-parley`
 # and `genet-fontique` at 5ae30cad, so genet.git answers to neither name and a
 # row here would match no package and fail resolution. genet-livery reaches the

@@ -1,6 +1,6 @@
 # design_docs Index
 
-Rust policy (2026-10-13): working toolchain 1.99.0 and shared MSRV 1.97.1, qualified separately. Canonical policy: `mere/design_docs/2026-08-12_family_composition_thesis_brief.md`, section "Shared Rust toolchain and minimum version".
+Rust policy (2026-10-13, toolchain moved to 1.99.1 on 2026-10-17): working toolchain 1.99.1 and shared MSRV 1.97.1, qualified separately. Canonical policy: `mere/design_docs/2026-08-12_family_composition_thesis_brief.md`, section "Shared Rust toolchain and minimum version".
 
 Murm source adoption (2026-10-14) merges supplier commit `983c0e7b` with
 repair packet `05057e41` at `1ba644f8`; assembled source is pushed at
@@ -44,6 +44,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 | Doc | For | Status |
 | --- | --- | --- |
+| [2026-10-17_private_pack_authoring_plan.md](2026-10-17_private_pack_authoring_plan.md) | Private retained manifest authoring with the real pack schema and batched Rowan backend; no shared API. | 2026-10-17: implemented/qualified; 68 feature tests, 58 default tests, backend101 and fresh-process terminal/load/fixture checks pass. Optional private command; admission/format owners unchanged, no shared API. |
 | [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance for all three products. | The one copy since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |
 | [2026-10-15_campaign_retirement_plan.md](2026-10-15_campaign_retirement_plan.md) | Retiring `isometry-campaign` into its owning homes: the VTT's game layer into `isocosm-vtt`, map lowering into `isometry-core`, the world into the sim at V2. | 2026-10-17: R0 and R1 done (913, 915 to 922); source move and all-target/all-feature compiler check pass; runtime counts match at 492/0/6; endpoint g4 passes nine sessions and four endpoints; R2 to R4 remain; `isonetry` remade under the sim-host plan's H7 (923, 924). |
