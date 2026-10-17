@@ -36,6 +36,7 @@ campaign-murm = ["dep:murm", "dep:thiserror"]
 isometry-core = { workspace = true }
 isometry-campaign = { workspace = true }
 isocosm = { workspace = true }
+isocosm-host = { path = "../../host" }
 # The VTT's contract, whose assertions the host commits (wing ruling 795).
 isocosm-overlay = { workspace = true }
 muniment = { workspace = true }

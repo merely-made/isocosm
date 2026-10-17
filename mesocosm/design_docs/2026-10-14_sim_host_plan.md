@@ -271,7 +271,8 @@ shutdown; Murm's consumed `b49df894` transport supplies its endpoint and
 gossip. These are distinct seams. Current Mere `4523cb6` changes the carrier's
 line-framing calls, while `joined_space.rs` is unchanged at those pins.
 
-The assessment leaves two concrete forks before H7 code (923):
+The assessment brought these forks before H7 code (923). Mark chose the
+recommended path for both on 2026-10-17 (959, 960):
 
 | Fork | Recommended first slice | Other defensible path |
 |---|---|---|
@@ -295,9 +296,9 @@ refusal, duplicate/gap/out-of-order delivery, checkpoint resume, and an
 unknown section. The network gate then uses the actual consumed transport
 and endpoint before each product and the VTT table claim acceptance. Both
 peers must match accepted sequence, native hash, section digest and world
-revision. These are proposed done-conditions for Mark's fork, not a new
-protocol already accepted or implemented.
-No H7 code or network receipt is claimed by this assessment.
+revision. These are the first implementation gates for the chosen paths.
+The assessment itself claims no H7 code or network receipt. Implementation
+starts with the core's atomic replication boundary and serialized peer records.
 
 **Later.** Eponym's `session` on the core (founding a generated world, asks
 through the UI, succession in the client), then the VTT over the sim
@@ -305,6 +306,26 @@ through the UI, succession in the client), then the VTT over the sim
 starts.
 
 ## Progress
+
+- **2026-10-17, H7 serialized peer slice (959, 960):** `isonetry::family`
+  now carries versioned, bounded JSON checkpoints and accepted records over
+  the actual core `World`. One exclusively owned host accepts native
+  commands and opaque section changes atomically. The initial checkpoint
+  binds the record chain; sequence, predecessor digest, native suffix/time,
+  native hash, section digest and world revision verify before a replica
+  publishes. Unknown bytes survive and deletions are explicit. No-op and
+  refused requests consume neither accepted sequence nor revision. Core
+  transactions now leave the revision alone when durable authority and
+  sections are identical, with overflow refusal before publication.
+  Core/endpoint controls: 55 passed, five existing filesystem cases ignored.
+  Twelve serialized two-peer controls pass, covering actual native plus
+  section updates, time-only changes, failure after an earlier native command,
+  bad post-state with a valid digest, ordering, checkpoint resume, substituted
+  roots, shared-world refusal, versions and wire limits. Receipts:
+  `Code/testing/isometry/h7-2026-10-17/`, cap 100 MB. The real admitted-stream /
+  signed JoinedSpace integration is underway. This slice does not qualify
+  transport, products, crash-atomic World/log persistence or host restart
+  continuity. The VTT's existing protocol/store APIs remain separate under 921.
 
 - **2026-10-16, H6 ordinary window:** `Host::run` now always enters Assembly;
   the private legacy window/GPU loop and its frame/setup/receipt modules are

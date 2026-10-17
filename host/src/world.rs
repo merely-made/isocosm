@@ -9,6 +9,9 @@ use isocosm::history::Saved as NativeSaved;
 use isocosm_overlay::{ParticipantHandle, PlayerAttention};
 use crate::{binding::Binding, native_attention, save::{WorldSave, FORMAT_VERSION}};
 
+mod replication;
+pub use replication::ReplicationSnapshot;
+
 #[derive(Clone)]
 struct OpenWorld { session: Session, sections: BTreeMap<String, Vec<u8>>, revision: u64 }
 
@@ -21,6 +24,14 @@ fn cut(session: &Session) -> Cut {
     Cut { tick: session.sim.state().tick, entries: session.entries.len(), state_hash: session.sim.state_hash() }
 }
 
+// Compare durable authority directly, avoiding two full witness encodings
+// and genesis clones just to detect an unchanged product transaction.
+fn same_authority(a: &Session, b: &Session) -> bool {
+    a.sim.state() == b.sim.state()
+        && a.branch == b.branch && a.entries == b.entries && a.checkpoints == b.checkpoints
+        && (std::ptr::eq(a.sim.genesis(), b.sim.genesis()) || a.sim.genesis() == b.sim.genesis())
+}
+
 impl World {
     pub fn new(session: Session) -> Self {
         Self::with_sections(session, BTreeMap::new())
@@ -31,6 +42,12 @@ impl World {
         Self(Rc::new(RefCell::new(OpenWorld { session, sections, revision: 0 })))
     }
     pub fn share(&self) -> Self { Self(self.0.clone()) }
+    /// Give a session host sole ownership of this live world. Otherwise an
+    /// external handle could publish outside its accepted-record sequence.
+    pub fn into_exclusive(self) -> Result<Self, String> {
+        if Rc::strong_count(&self.0) != 1 { return Err("world has shared owners".into()); }
+        Ok(self)
+    }
     /// Transfer an unshared world's session and opaque sections to a product's
     /// founding step. Shared live worlds cannot be taken apart.
     pub fn into_parts(self) -> Result<(Session, BTreeMap<String, Vec<u8>>), String> {
@@ -87,8 +104,9 @@ impl World {
     pub fn put_section(&self, mode: &str, bytes: Vec<u8>) -> Result<(), String> {
         let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
         if world.sections.get(mode) != Some(&bytes) {
+            let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
             world.sections.insert(mode.into(), bytes);
-            world.revision += 1;
+            world.revision = revision;
         }
         Ok(())
     }
@@ -106,8 +124,11 @@ impl World {
         }
         let mut candidate = world.session.clone();
         let accepted = admit(&mut candidate)?;
-        world.session = candidate;
-        world.revision += 1;
+        if !same_authority(&candidate, &world.session) {
+            let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
+            world.session = candidate;
+            world.revision = revision;
+        }
         Ok(accepted)
     }
 
@@ -126,9 +147,12 @@ impl World {
         if cut(&world.session) != before { return Err("prepared binding is stale".into()); }
         let mut candidate = world.session.clone();
         let (value, sections) = admit(&mut candidate, &world.sections)?;
-        world.session = candidate;
-        world.sections = sections;
-        world.revision += 1;
+        if !same_authority(&candidate, &world.session) || sections != world.sections {
+            let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
+            world.session = candidate;
+            world.sections = sections;
+            world.revision = revision;
+        }
         Ok(value)
     }
 
