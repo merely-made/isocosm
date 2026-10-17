@@ -19,6 +19,8 @@ pub(super) enum Lane {
     CharacterName,
     /// The optional first-character token owner.
     CharacterOwner,
+    /// JSON input for the selected VTT endpoint action.
+    VttPayload,
 }
 
 /// Which lane holds the caret, and the text field node that carries it.
@@ -39,6 +41,7 @@ pub(super) fn focused_lane(runner: &Runner) -> Option<(NodeId, Lane)> {
         "search-field" => Lane::Search,
         "character-name" => Lane::CharacterName,
         "character-owner" => Lane::CharacterOwner,
+        "vtt-payload" => Lane::VttPayload,
         _ => return None,
     };
     Some((node, lane))
@@ -74,6 +77,11 @@ pub(crate) fn focused_text(runner: &Runner) -> Option<FocusedTextSlot<UiState>> 
             node,
             get: Box::new(|ui: &UiState| &ui.character_owner),
             get_mut: Box::new(|ui: &mut UiState| &mut ui.character_owner),
+        },
+        Lane::VttPayload => FocusedTextSlot {
+            node,
+            get: Box::new(|ui: &UiState| &ui.vtt_action_payload),
+            get_mut: Box::new(|ui: &mut UiState| &mut ui.vtt_action_payload),
         },
     })
 }

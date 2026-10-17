@@ -89,6 +89,12 @@ pub(crate) fn campaign_path(name: &str) -> std::path::PathBuf {
     std::path::PathBuf::from("campaigns").join(format!("{}.redb", document_slug(name)))
 }
 
+/// Accepted native/session records live beside, but separately from, the
+/// private GM store and the legacy public checkpoint.
+pub(crate) fn family_path(name: &str) -> std::path::PathBuf {
+    std::path::PathBuf::from("campaigns").join(format!("{}.family", document_slug(name)))
+}
+
 impl App {
     /// Everything the command line and the environment decided, before a window
     /// exists. The content packs are read here because the stylesheet the host
@@ -140,6 +146,9 @@ impl App {
             viewer_arg: parse_viewer(),
             campaign_arg: parse_campaign(),
             net: None,
+            family_table: None,
+            family_request_pumps: Vec::new(),
+            family_wake: None,
             last_net_version: 0,
             net_selftest: std::env::var_os("ISOMETRY_NET_SELFTEST").is_some(),
             travel_selftest: std::env::var_os("ISOMETRY_TRAVEL_SELFTEST").is_some(),
@@ -169,6 +178,7 @@ impl App {
             overlay_fired: false,
             turns_fired: false,
             terrain_receipt: crate::selftest::TerrainReceipt::from_env(),
+            family_selftest: selftest::FamilySelftest::from_env(),
             combat_selftest: std::env::var_os("ISOMETRY_COMBAT_SELFTEST").is_some(),
             combat_swings: 4,
             last_swing: None,

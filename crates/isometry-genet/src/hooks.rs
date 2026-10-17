@@ -77,6 +77,7 @@ pub(crate) fn key_intercept(runner: &mut Runner, press: &KeyPress) -> bool {
                 Lane::CharacterName | Lane::CharacterOwner => {
                     runner.update(|ui| ui.close_character())
                 },
+                Lane::VttPayload => {},
             }
             return true;
         }
@@ -90,6 +91,7 @@ pub(crate) fn key_intercept(runner: &mut Runner, press: &KeyPress) -> bool {
                 Lane::CharacterName | Lane::CharacterOwner => {
                     runner.update(|ui| ui.create_character())
                 },
+                Lane::VttPayload => {},
             }
             return true;
         }
@@ -124,6 +126,18 @@ pub(crate) fn key_intercept(runner: &mut Runner, press: &KeyPress) -> bool {
     let Some(command) = isometry_views::KEYMAP.command(&claimed).copied() else {
         return false;
     };
+    if !runner.state().vtt_projections.is_empty() {
+        match command {
+            BoardKey::Pan(dc, dr) => {
+                runner.update(|ui| ui.pan_tiles(f32::from(dc), f32::from(dr)));
+            },
+            BoardKey::FogView | BoardKey::Focus => {},
+            _ => runner.update(|ui| {
+                ui.status = "legacy board actions are unavailable; use an action shown by the VTT projection".into();
+            }),
+        }
+        return true;
+    }
     match command {
         // The command sigil opens the > line, the way `w` opens a whisper. The
         // draft starts empty; the ">" is the prompt.
@@ -173,6 +187,7 @@ pub(crate) fn init(
     wake: &HostWake,
 ) -> Init<UiState, Logic> {
     let mut app = app.borrow_mut();
+    app.family_wake = Some(wake.clone());
     // `ISOMETRY_SYNTH=<n>` loads an n x n synthetic stress board (n>1,
     // default 30 = the probe P2 board) instead of the demo skirmish;
     // large n exercises viewport windowing.
@@ -199,8 +214,10 @@ pub(crate) fn init(
     let can_restore = !matches!(app.net_intent.as_ref(), Some(NetIntent::Join(_)));
     let mut restore_status = None;
     let mut restored_public = None;
+    let mut restored_campaign_name = None;
     if can_restore {
         if let Some(name) = app.campaign_arg.take() {
+            restored_campaign_name = Some(name.clone());
             match CampaignRepository::open(campaign_path(&name))
                 .and_then(|repository| repository.load_checkpoint())
             {
@@ -222,6 +239,26 @@ pub(crate) fn init(
     let mut ui = UiState::new(map);
     if let Some(snapshot) = restored_public {
         ui.apply_snapshot(snapshot);
+    }
+    let family_ledger = restored_campaign_name.as_deref().map(crate::boot::family_path);
+    let has_family_ledger = family_ledger.as_ref().is_some_and(|path| path.exists());
+    if has_family_ledger || (ui.native.world.is_some() && ui.native.table.is_some()) {
+        match family_table::FamilyTable::open(
+            ui.native.world.as_ref(),
+            ui.native.table.as_ref(),
+            family_ledger.as_deref(),
+        ) {
+            Ok(mut table) => match table.projections() {
+                Ok(projections) => {
+                    ui.set_vtt_projections(projections);
+                    ui.net_mode = NetMode::Remote;
+                    app.family_table = Some(table);
+                    ui.status = "Native table ready".into();
+                },
+                Err(error) => ui.status = format!("family projections unavailable: {error}"),
+            },
+            Err(error) => ui.status = format!("family table unavailable: {error}"),
+        }
     }
     ui.generator_choices = app.generator_catalog.choices();
     for diagnostic in app.generator_catalog.diagnostics() {
@@ -280,61 +317,12 @@ pub(crate) fn init(
         app.source_history_attached = true;
     }
 
-    // Session setup: host publishes this board; a client starts from
-    // an empty view and fills in on the first snapshot. Either way the
-    // view is Remote, so play routes through the session.
-    //
-    // The bridge's actor wakes this application through the host's own wake
-    // handle, so a snapshot arriving on the network thread schedules one drain
-    // turn (`after_wake`) and one redraw rather than waiting on a poll.
-    match app.net_intent.take() {
-        Some(NetIntent::Host) => {
-            app.net_is_host = true;
-            ui.net_mode = NetMode::Remote;
-            let snapshot = GameSnapshot {
-                map: ui.map.clone(),
-                turns: ui.turns.clone(),
-                roll_log: Vec::new(),
-                journal: app.journal.clone(),
-                inventories: ui.inventories.clone(),
-                generations: ui.generations.clone(),
-                maps: ui.campaign_maps.clone(),
-                active_map: ui.active_map.clone(),
-                world: ui.world.clone(),
-                native: ui.native.world.clone(),
-                native_table: ui.native.table.clone(),
-                clocks: ui.clocks.clone(),
-
-                party_cap: ui.party_cap,
-                last_beats: Vec::new(),
-                beat_seq: 0,
-                applied_actions: Default::default(),
-            };
-            let campaign = app.campaign.clone();
-            let history = app.history.clone();
-            app.net = Some(NetBridge::spawn(
-                Role::Host {
-                    state: snapshot,
-                    campaign,
-                    history,
-                },
-                wake.callback(),
-            ));
-        },
-        Some(NetIntent::Join(ticket)) => {
-            ui.net_mode = NetMode::Remote;
-            ui.can_edit_inventory = false;
-            ui.status = "connecting...".to_owned();
-            let name = app
-                .viewer_arg
-                .clone()
-                .unwrap_or_else(|| "player".to_owned());
-            app.net = Some(NetBridge::spawn(
-                Role::Client { ticket, name },
-                wake.callback(),
-            ));
-        },
-        None => {},
+    if app.net_intent.take().is_some() {
+        ui.status = if app.family_table.is_some() {
+            "Peer hosting is not available here yet.".into()
+        } else {
+            "Open a native campaign with table participant bindings before inviting players.".into()
+        };
     }
     // Boot clock. The net selftest waits on it, and so does the combat
     // selftest, which runs solo (there is no session to wait for).
@@ -365,7 +353,7 @@ pub(crate) fn init(
     // B2's flag, read once here for the same reason every other `ISOMETRY_*`
     // hook is: the environment is the host's to read, and the view is handed a
     // field. With it unset nothing below is built and the DOM board stands.
-    if scene_board::enabled() {
+    if app.family_table.is_none() && scene_board::enabled() {
         ui.scene_board = true;
         let board = scene_board::SceneBoard::new(&mut ui);
         // B3: the board's gestures resolve through the frame this producer
@@ -526,6 +514,7 @@ impl App {
             || (self.compendium_selftest && !self.compendium_fired)
             || (self.whisper_selftest && !self.whisper_fired)
             || (self.turns_selftest && !self.turns_fired)
+            || self.family_selftest.as_ref().is_some_and(|test| !test.done())
             || (self.select_selftest && !self.select_fired)
             || (self.overlay_selftest.is_some() && !self.overlay_fired)
             || (self.net.is_some() && self.net_selftest && !self.selftest_fired)
@@ -546,6 +535,7 @@ impl App {
         self.maybe_turns_selftest(ctx);
         self.maybe_select_selftest(ctx);
         self.maybe_overlay_selftest(ctx);
+        self.maybe_family_selftest(ctx);
         if self.net.is_some() {
             self.maybe_selftest(ctx);
         }
@@ -561,6 +551,11 @@ impl App {
 /// and are the assembly's now, on either side of this call.
 impl App {
     pub(crate) fn frame_tick(&mut self, ctx: &mut Ctx<'_>) -> bool {
+        if self.family_table.is_some() {
+            // The endpoint page has no legacy scene leaf. In particular, do
+            // not rebuild that hidden board from the older campaign snapshot.
+            return self.selftests_pending();
+        }
         // Before the viewport: culling measures the pane against the board
         // geometry, and the two must agree on the same frame.
         self.sync_board_scale(ctx);

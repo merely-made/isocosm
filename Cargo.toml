@@ -87,6 +87,7 @@ muniment = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9
 # application owns its state on the winit thread and drains typed updates.
 armillary = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
 personae = { git = "https://github.com/merely-made/dramatis.git", rev = "0234e7eea6f2ddf2330a71b9425da01b06ae0391" }
+notochord = { git = "https://github.com/merely-made/dramatis.git", rev = "0234e7eea6f2ddf2330a71b9425da01b06ae0391" }
 mooting = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
 # Murm's peer-exchange replication foundation (SyncedSpace/MunimentStore/
 # processor). Split out of `mooting` by mere's murm peer-runtime work; mooting

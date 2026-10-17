@@ -42,6 +42,7 @@ mod sheet;
 mod state;
 mod storylet;
 mod theme;
+mod vtt_page;
 mod widgets;
 
 pub use board::{UiChild, board_root};
@@ -70,6 +71,7 @@ pub use state::{
     MESSAGES_CAP, MonsterRow, NetMode, PANEL_W, SheetSchema, SpellRow, StoryletRow, UiState,
     WHEEL_BOARD_TILES, WHEEL_NOTCH_PX,
 };
+pub use state::{VttActionRequest, VttActionView, VttCardValue, VttCardView, VttProjectionView};
 pub use state::{OvermapMotionState, OvermapMotionTick};
 pub use state::native::{Acceptance as NativeAcceptance, NativeUi, TableFileAction, PhysicalRequest, PhysicalOutcome,
     ItemsRequest, ItemsOutcome, ItemsFileAction};

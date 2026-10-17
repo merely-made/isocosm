@@ -48,6 +48,7 @@ fn overlay_stack_css() -> String {
 .generator {{ z-index: {generator}; }}\n\
 .governance {{ z-index: {governance}; }}\n\
 .overmap {{ z-index: {overmap}; }}\n\
+.vtt-page {{ z-index: {vtt}; }}\n\
 /* The token menu and its dismissal layer ride above the panels: the layer\n\
    must intercept a press anywhere, including over an open panel. */\n\
 .overlay-surface-dismiss-layer {{ z-index: {dismiss}; }}\n\
@@ -56,6 +57,7 @@ fn overlay_stack_css() -> String {
         generator = OVERLAY_Z + 1,
         governance = OVERLAY_Z + 2,
         overmap = OVERLAY_Z + 3,
+        vtt = OVERLAY_Z + 4,
         dismiss = OVERLAY_Z + 10,
         menu = OVERLAY_Z + 11,
     )
@@ -432,6 +434,7 @@ pub fn board_css() -> String {
     css.push_str(watchtower::css());
     css.push_str(&force_css());
     css.push_str(COMPENDIUM_CSS);
+    css.push_str(crate::vtt_page::CSS);
     // Structure from the catalog, palette from here. The swatch's own classes
     // (box, node buttons, focus ring, labels) were hand-copied into
     // COMPENDIUM_CSS and drifted from the component; adopting the exported

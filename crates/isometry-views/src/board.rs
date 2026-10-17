@@ -300,6 +300,14 @@ const SCENE_FALLBACK: (f32, f32) = (1180.0, 820.0);
 
 /// The screen root the runner diffs.
 pub fn board_root(ui: &UiState) -> UiChild {
+    // An accepted family table is a separate product surface. Keep the legacy
+    // map, turns and action controls out of its tree so they cannot present a
+    // second authority beside the endpoint's disclosed projections.
+    if !ui.vtt_projections.is_empty() {
+        let page = crate::vtt_page::overlay(ui)
+            .expect("a nonempty VTT projection set renders its table page");
+        return Box::new(el("div", page).attr("class", "app vtt-family"));
+    }
     // B2: behind `ISOMETRY_SCENE_BOARD` the board pane carries one scene leaf
     // instead of one element per tile, prop, marker and token. Everything
     // outside the `.board` container — the side panel, the overlays, the
@@ -370,6 +378,9 @@ pub fn board_root(ui: &UiState) -> UiChild {
         pane_children.push(overlay);
     }
     if let Some(overlay) = crate::governance::governance_overlay(ui) {
+        pane_children.push(overlay);
+    }
+    if let Some(overlay) = crate::vtt_page::overlay(ui) {
         pane_children.push(overlay);
     }
     // The token menu is the one overlay that is *not* a pane child: its
