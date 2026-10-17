@@ -6,6 +6,8 @@ use crate::{Founding, bodied::Bodies, directing::Played, rules::*};
 use std::sync::mpsc;
 
 mod matrix;
+mod chooser_diagnosis;
+mod chooser_window;
 const EPOCH: Tick = 60;
 
 mod profile;
