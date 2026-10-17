@@ -42,9 +42,6 @@ impl Host {
             return true;
         }
         self.config.camera = self.config.camera.quarter_turn(backwards);
-        if let Some(gpu) = self.gpu.as_mut() {
-            gpu.section.set_mode(self.config.camera);
-        }
         true
     }
 

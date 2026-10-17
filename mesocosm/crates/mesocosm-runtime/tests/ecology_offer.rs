@@ -28,6 +28,15 @@ fn actual_offer_retains_the_native_role_cut_before_same_tick_join_and_take() {
         assert_eq!(runtime.session().sim.mode(), execution);
         assert_eq!(runtime.session().sim.genesis(), &setup.founded.genesis);
         let native = &seal.witness.native;
+        let offered = isocosm_host::founding::Offered { witness: &seal.witness, admission: &seal.admission };
+        let core = isocosm_host::founding::from_admitted(execution, offered).unwrap();
+        assert_eq!(core.save().unwrap().native, *native, "the core resumes the actual admitted trajectory");
+        let other = if execution == Execution::Individuals { Execution::Grouped } else { Execution::Individuals };
+        assert!(isocosm_host::founding::from_admitted(other, offered).is_err(), "execution is bound to the witness");
+        let mut foreign = setup.founded.genesis.clone();
+        foreign.seed ^= 1;
+        assert!(isocosm_host::founding::found(foreign, execution,
+            isocosm_host::founding::Purpose::Head, Some(offered)).is_err(), "another generated candidate is refused");
         assert_eq!(runtime.session().prefix(native.entries.len(), native.tick).unwrap().save(), *native);
         assert_eq!(runtime.session().sim.state().tick, setup.specification.horizon);
         assert!(runtime.session().entries.starts_with(&native.entries));

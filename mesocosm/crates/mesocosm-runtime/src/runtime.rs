@@ -224,28 +224,22 @@ pub struct Runtime {
 impl Runtime {
     /// Explicit dev instrument (897), never the generated-world offer path.
     pub fn bench(founded: Founded, ticks_per_second: u32) -> Result<Self, String> {
+        Self::found_in_core(founded, ticks_per_second, isocosm_host::founding::Purpose::Bench)
+    }
+
+    pub fn new(founded: Founded, ticks_per_second: u32) -> Result<Self, String> {
+        ecology::fresh_offer(&founded)?;
+        Self::found_in_core(founded, ticks_per_second, isocosm_host::founding::Purpose::Head)
+    }
+
+    fn found_in_core(founded: Founded, ticks_per_second: u32, purpose: isocosm_host::founding::Purpose) -> Result<Self, String> {
         let world = isocosm_host::founding::found(founded.genesis.clone(), Execution::Grouped,
-            isocosm_host::founding::Purpose::Bench, None)?;
+            purpose, None)?;
         let (session, sections) = world.into_parts()?;
         let mut interim = Interim::found_session(session, founded.start, founded.mode, founded.pace)?;
         interim.on_collapse = founded.on_collapse;
         let mut runtime = Self::over(interim, founded, ticks_per_second);
         for (mode, bytes) in sections { runtime.world().put_section(&mode, bytes)?; }
-        runtime.with_product(|product, world| { product.place_members(world); product.retain_origin(world); });
-        Ok(runtime)
-    }
-
-    pub fn new(founded: Founded, ticks_per_second: u32) -> Result<Self, String> {
-        ecology::fresh_offer(&founded)?;
-        let mut interim = Interim::found(
-            founded.genesis.clone(),
-            founded.start,
-            founded.mode,
-            founded.pace,
-            Execution::Grouped,
-        )?;
-        interim.on_collapse = founded.on_collapse;
-        let mut runtime = Self::over(interim, founded, ticks_per_second);
         runtime.with_product(|product, world| { product.place_members(world); product.retain_origin(world); });
         Ok(runtime)
     }

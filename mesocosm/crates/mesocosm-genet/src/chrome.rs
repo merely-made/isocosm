@@ -4,7 +4,10 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! The chrome device: one physical wgpu device and the blend passes for the
+//! Compatibility raster adapter for the retained panel/GPU reference tests.
+//! The played head uses Assembly and its SectionProducer.
+//!
+//! One physical wgpu device and the blend passes for the
 //! frame master and host surface, shared by every chrome surface and the frame
 //! graph.
 //!
@@ -18,12 +21,12 @@
 //! frame graph share one rasterizer and use separate targets.
 
 use isometer::render::composite::Composite;
-use netrender::{
-    ColorLoad, Compositor, ExternalTextureComposite, ExternalTexturePlacement, OpaqueTenantInput,
-    OpaqueTenantMetadata, OpaqueTenantReceipt, PresentedFrame, Renderer as NetRenderer, Scene,
-    SurfaceKey, WgpuHandles, create_netrender_instance,
-};
+use netrender::{ColorLoad, Renderer as NetRenderer, Scene, WgpuHandles, create_netrender_instance};
+#[cfg(test)]
+use netrender::{Compositor, ExternalTextureComposite, ExternalTexturePlacement, OpaqueTenantInput,
+    OpaqueTenantMetadata, OpaqueTenantReceipt, PresentedFrame, SurfaceKey};
 
+#[cfg(test)]
 pub(crate) struct FrameMaster {
     pub texture: wgpu::Texture,
     pub receipt: OpaqueTenantReceipt,
@@ -31,11 +34,13 @@ pub(crate) struct FrameMaster {
 
 const FRAME_MASTER_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8Unorm;
 
+#[cfg(test)]
 #[derive(Default)]
 struct MasterCapture {
     texture: Option<wgpu::Texture>,
 }
 
+#[cfg(test)]
 impl Compositor for MasterCapture {
     fn declare_surface(&mut self, _key: SurfaceKey, _world_bounds: [f32; 4]) {}
 
@@ -158,6 +163,7 @@ impl Chrome {
 
     /// Records the terrain's opaque import, then layers lit bodies over it.
     /// Returns the final master and the terrain import's own boundary receipt.
+    #[cfg(test)]
     pub(crate) fn frame_master(
         &self,
         section: &wgpu::Texture,

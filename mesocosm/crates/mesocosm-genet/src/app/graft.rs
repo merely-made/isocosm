@@ -26,7 +26,6 @@ impl Host {
                 if apply {
                     self.scene_key = None;
                     self.refresh_scene();
-                    if let Some(window) = &self.window { window.request_redraw(); }
                 }
                 true
             },

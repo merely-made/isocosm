@@ -6,9 +6,9 @@
 carries 887's first milestone; forks settled by 896 to 898. H0, H1, H2 and H3
 landed (H2's forks ruled 899 to 904); H2's step 4 waits on the lifted
 reference-host capabilities (899). 2026-10-16: H4 (954 to 957) and H5
-landed. H6's explicit bench-world Assembly head renders and resumes a core
-save; the ordinary head still uses the old window loop. H6 remains in
-progress and default launch remains behind A1's joint witness.
+landed. The ordinary Mesocosm window now runs on Assembly, renders through
+the section producer and resumes core saves. Its native controls and replay
+pass. H6 remains in progress: default launch waits on A1's joint witness.
 
 ## Why
 
@@ -258,6 +258,32 @@ through the UI, succession in the client), then the VTT over the sim
 starts.
 
 ## Progress
+
+- **2026-10-16, H6 ordinary window:** `Host::run` now always enters Assembly;
+  the private legacy window/GPU loop and its frame/setup/receipt modules are
+  retired. The existing section producer owns the viewport; Cambium views
+  carry the trait board, checkpoints, hints, vitals and inspector, with the
+  existing minimap leaf. Pointer coordinates come from the viewport leaf.
+  Inspector selections validate against the actually presented body and
+  expire on an unpresented revision. Presentation retains camera, follow,
+  terrain height and dev focus independently of native world input.
+  Ordinary founding now enters the core; an admitted generated witness loads
+  its authenticated trajectory through the core without resetting its tick.
+  The witness checks execution, genesis and admission before product setup.
+  Nineteen runtime tests pass (bench, offer, pins and saves), and the native
+  producer picking/selection test passes. The all-target compiler gate passes.
+  `ordinary-controls-receipt.json` in
+  `Code/testing/isometry/h6-2026-10-16/` records 51 frames, two captures and
+  `RESULT ok`: pause, minimap/world pointer separation, actual body picking,
+  I/L/U inspection and hint buttons. Its saved core replay lands on the
+  recorded hash `7e8769106f020d48`. The ordinary watch run retains the earlier
+  six-tick board hash `99c12f34e2e6eb94`. Source declarations and failed runs
+  stay beside these receipts. One exploratory control run incorrectly
+  expected a trait board after EndEpoch on the stock long-epoch world; it
+  reached the legitimate loss checkpoint instead. Its artifacts retain the
+  `end-epoch-loss-` prefix. The short-epoch board run remains the board receipt.
+  Bench and resumed ordinary worlds play; generated default launch and the
+  complete H6 done-condition remain open under 875/885 and A1.
 
 - **2026-10-16, H6 bench slice, in progress:** `--bench-world` is an explicit
   `Purpose::Bench` founding, through the core before native `Interim` setup;

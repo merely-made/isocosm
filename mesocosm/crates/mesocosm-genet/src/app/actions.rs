@@ -39,7 +39,7 @@ impl Host {
     pub(super) fn press_key(&mut self, key: &Key) {
         if self.try_continuation_key(key) { return; }
         if self.try_directing_key(key) { return; }
-        if self.try_camera_key(key) || self.try_inspection_key(key) || self.try_dev_key(key) {
+        if self.try_camera_key(key) || self.try_dev_key(key) {
             return;
         }
         if self.continuation_open() { return; }
