@@ -97,7 +97,7 @@ impl Session {
 
     fn stage_spatial_command(&self, command: Command) -> Result<StagedAdvance> {
         let _span = crate::profile::Span::new("spatial.prepare");
-        let mut candidate = self.clone();
+        let mut candidate = { let _c = crate::profile::Span::new("spatial.prepare.clone"); self.clone() };
         match candidate.command_with_flows(command) {
             Ok(outcome) => {
                 let work = candidate.sim.spatial_resolutions.work.take().ok_or("spatial work absent")?;
@@ -133,7 +133,7 @@ impl Session {
         if ticks != 1 || count > self.sim.genesis().rules.limits.events_per_advance {
             return Err("spatial advance needs one tick within the authored input budget".into());
         }
-        let mut candidate = self.clone();
+        let mut candidate = { let _c = crate::profile::Span::new("spatial.command.clone"); self.clone() };
         candidate.sim.geometry_resolutions = operations::Resolutions { allow_refusals: true, ..Default::default() };
         let geometry = &mut candidate.sim.geometry_resolutions;
         for answer in terrain {
@@ -170,7 +170,7 @@ impl Session {
             }
         }
         candidate.sim.spatial_resolutions = held;
-        let work = match candidate.advance(ticks) {
+        let work = match { let _c = crate::profile::Span::new("spatial.command.advance"); candidate.advance(ticks) } {
             Ok(work) => work,
             Err(why) => {
                 self.sim.geometry_resolutions.pending = candidate.sim.geometry_resolutions.pending.take();
@@ -198,7 +198,7 @@ impl Session {
         let outcome = if births.is_some() {
             format!("birth spatial advanced {ticks}; answers {}", crate::digest(&(reports, accepted, born, order)))
         } else { format!("spatial advanced {ticks}; answers {}", crate::digest(&(reports, accepted))) };
-        *self = candidate;
+        { let _c = crate::profile::Span::new("spatial.command.assign"); *self = candidate; }
         Ok(outcome)
     }
 }

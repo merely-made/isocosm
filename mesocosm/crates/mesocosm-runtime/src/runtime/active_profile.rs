@@ -32,6 +32,19 @@ pub(super) fn saved_active_update() {
     let step_us = elapsed.elapsed().as_micros();
     assert_eq!(runtime.tick(), before + 1);
     assert!(runtime.fault().is_none());
+    // MESOCOSM_ACTIVE_STEPS=N runs N-1 further owner steps and reports each.
+    let more: u64 = std::env::var("MESOCOSM_ACTIVE_STEPS").ok().and_then(|n| n.parse().ok()).unwrap_or(1);
+    let mut step_times = vec![step_us];
+    for _ in 1..more {
+        let one = Instant::now();
+        assert_eq!(runtime.step(1), 1);
+        step_times.push(one.elapsed().as_micros());
+    }
+    if more > 1 {
+        assert!(runtime.fault().is_none());
+        eprintln!("[active-steps] n={more} total_us={} each_us={step_times:?} tick={} hash={:016x}",
+            step_times.iter().sum::<u128>(), runtime.tick(), runtime.state_hash());
+    }
     let reading = crate::profile::measure("case.after_reading", || runtime.loop_reading()).unwrap();
     let receipt = serde_json::json!({"input_bytes":bytes.len(), "before_tick":before,
         "tick":runtime.tick(), "step_us":step_us, "native_hash":runtime.state_hash(),

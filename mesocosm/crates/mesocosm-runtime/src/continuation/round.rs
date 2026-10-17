@@ -36,7 +36,7 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
     if saved.phase == LoopPhase::NewWorldRequested {
         return Ok(("new world requested; save and use the explicit founding caller".into(), Vec::new(), None));
     }
-    let mut candidate = session.clone();
+    let mut candidate = crate::profile::measure("round.clone_session", || session.clone());
     let start = session.entries.len();
     let before_native = super::prefix(session);
     let before_tick = session.sim.state().tick;
@@ -116,7 +116,6 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
     next.version = next.current_version();
     next.validate(&candidate).map_err(Refusal::Sim)?;
     let verified = VerifiedQuestion::after_validation(&next);
-    *session = candidate;
-    *game = next;
+    crate::profile::measure("round.assign", || { *session = candidate; *game = next; });
     Ok((format!("advanced {} loop ticks", settings.pace.round), flows, verified))
 }
