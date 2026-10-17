@@ -5,13 +5,16 @@ use std::time::Duration;
 
 use chirograph::{
     Carrier, CarrierRequestBody, CarrierResponseBody, IntentInvocation, IntentResult,
-    ProjectionRequest, ProjectionSnapshot, ProtocolVersion, SessionOpen,
+    ProjectionRequest, ProjectionSnapshot, ProtocolVersion, ResourceResponse, SessionOpen,
 };
 use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
 use isocosm::Execution;
 use isocosm_host::world::World;
 use isonetry::family::{AcceptedRecord, FamilyHost, FamilyReplica, SessionId, WireLimits};
-use isonetry::family_network::FamilyRecordLane;
+use isonetry::family_network::{
+    FamilyCheckpointDescriptor, FamilyCheckpointResource, FamilyRecordLane,
+    verify_checkpoint_resource,
+};
 use muniment::MemoryBackend;
 use murm_replication::MunimentStore;
 use p2panda_core::SigningKey;
@@ -25,7 +28,6 @@ use isonetry::family_network::stream::{
 
 pub const OPAQUE: &str = "family-network-opaque";
 pub const SENTINEL: &[u8] = &[0, 255, 17, 42, 88];
-
 #[derive(Clone)]
 pub struct ClientIntent {
     pub projection: ProjectionRequest,
@@ -37,6 +39,7 @@ pub struct ClientIntent {
 pub struct Harness {
     pub host: Rc<RefCell<FamilyHost>>,
     pub replica: FamilyReplica,
+    fresh_replica: Option<FamilyReplica>,
     owner_lane: FamilyRecordLane<MemoryBackend>,
     guest_lane: FamilyRecordLane<MemoryBackend>,
     owner_rx: tokio::sync::mpsc::Receiver<AcceptedRecord>,
@@ -121,6 +124,7 @@ impl Harness {
         Self {
             host,
             replica,
+            fresh_replica: None,
             owner_lane,
             guest_lane,
             owner_rx,
@@ -145,8 +149,13 @@ impl Harness {
                 "transported signed record decodes to exact world record"
             );
             self.replica
-                .apply(received)
+                .apply(received.clone())
                 .expect("replica applies host accepted record");
+            if let Some(fresh) = &mut self.fresh_replica {
+                fresh
+                    .apply(received)
+                    .expect("fresh peer applies signed accepted suffix");
+            }
         }
         self.assert_converged();
         records
@@ -161,12 +170,52 @@ impl Harness {
         );
         assert_eq!(replicated.revision, self.host.borrow().revision().unwrap());
         assert_eq!(self.replica.sequence(), self.host.borrow().sequence());
+        if let Some(fresh) = &self.fresh_replica {
+            assert_eq!(fresh.snapshot().unwrap().save, hosted);
+            assert_eq!(fresh.sequence(), self.host.borrow().sequence());
+        }
         assert_eq!(hosted.sections.get(OPAQUE).unwrap().as_slice(), SENTINEL);
         assert_eq!(self.host.borrow().outbox_bytes(), 0);
     }
 
-    pub async fn serve<E>(&self, mut endpoint: E, intents: Vec<ClientIntent>)
+    pub fn has_bootstrapped_peer(&self) -> bool {
+        self.fresh_replica.is_some()
+    }
+
+    pub fn bootstrap_resource(
+        &mut self,
+        projection_session: chirograph::ProjectionSession,
+    ) -> FamilyCheckpointResource {
+        let checkpoint = self
+            .host
+            .borrow_mut()
+            .checkpoint()
+            .expect("host checkpoint");
+        FamilyCheckpointResource::new(
+            &checkpoint,
+            &self.host_key,
+            projection_session,
+            WireLimits::default(),
+        )
+        .expect("host signs bounded checkpoint")
+    }
+
+    pub async fn serve<E>(&mut self, endpoint: E, intents: Vec<ClientIntent>)
     where
+        E: ProjectionCatalog + ProjectionSource + PresentationSource + IntentSink + 'static,
+        <E as ProjectionSource>::Error: Display,
+        <E as PresentationSource>::Error: Display,
+        <E as IntentSink>::Error: Display,
+    {
+        self.serve_with_bootstrap(endpoint, None, intents).await;
+    }
+
+    pub async fn serve_with_bootstrap<E>(
+        &mut self,
+        mut endpoint: E,
+        descriptor: Option<FamilyCheckpointDescriptor>,
+        intents: Vec<ClientIntent>,
+    ) where
         E: ProjectionCatalog + ProjectionSource + PresentationSource + IntentSink + 'static,
         <E as ProjectionSource>::Error: Display,
         <E as PresentationSource>::Error: Display,
@@ -209,6 +258,8 @@ impl Harness {
         let guest_side = Arc::clone(&self.guest);
         let runtime = tokio::runtime::Handle::current();
         let dial_peer = host_side.local_peer_id();
+        let host_key = self.host_key.verifying_key();
+        let expected_descriptor = descriptor.clone();
         let driven = tokio::task::spawn_blocking(move || {
             let stream = runtime
                 .block_on(network_carrier::dial_projection_session(
@@ -223,16 +274,30 @@ impl Harness {
                 stream,
                 network_carrier::CarrierRuntime::borrowed(runtime.clone()),
             );
-            run_client(&mut carrier, &intents);
+            let bootstrap = run_client(&mut carrier, &intents, descriptor);
             carrier
                 .shutdown()
                 .expect("client carrier shuts down cleanly");
             client_closed_tx
                 .send(())
                 .expect("host awaits clean client carrier shutdown");
+            bootstrap
         });
-        driven.await.expect("client driver task");
+        let bootstrap = driven.await.expect("client driver task");
         server.await.expect("host session task");
+        if let (Some(descriptor), Some(response)) = (expected_descriptor, bootstrap) {
+            let checkpoint = verify_checkpoint_resource(
+                &response,
+                &descriptor,
+                &host_key,
+                WireLimits::default(),
+            )
+            .expect("fresh peer verifies checkpoint from admitted resource stream");
+            self.fresh_replica = Some(
+                FamilyReplica::install(checkpoint, &[], Execution::Individuals)
+                    .expect("fresh peer installs authenticated checkpoint"),
+            );
+        }
     }
 
     pub async fn shutdown(self) {
@@ -251,7 +316,11 @@ impl Harness {
     }
 }
 
-fn run_client(carrier: &mut impl Carrier, intents: &[ClientIntent]) {
+fn run_client(
+    carrier: &mut impl Carrier,
+    intents: &[ClientIntent],
+    descriptor: Option<FamilyCheckpointDescriptor>,
+) -> Option<ResourceResponse> {
     let opened = carrier
         .request(CarrierRequestBody::Open(Box::new(SessionOpen {
             version: ProtocolVersion { major: 1, minor: 0 },
@@ -259,6 +328,15 @@ fn run_client(carrier: &mut impl Carrier, intents: &[ClientIntent]) {
         })))
         .expect("client opens admitted session");
     assert!(matches!(opened, CarrierResponseBody::Opened(_)));
+    let bootstrap = descriptor.map(|descriptor| {
+        let response = carrier
+            .request(CarrierRequestBody::Resource(descriptor.request()))
+            .expect("fetch join-invitation checkpoint by exact content address");
+        let CarrierResponseBody::Resource(response) = response else {
+            panic!("expected signed checkpoint resource");
+        };
+        response
+    });
     for action in intents {
         let projection = &action.projection;
         let response = carrier
@@ -290,6 +368,7 @@ fn run_client(carrier: &mut impl Carrier, intents: &[ClientIntent]) {
     carrier
         .request(CarrierRequestBody::Close)
         .expect("client closes admitted session");
+    bootstrap
 }
 
 fn item_id(snapshot: &ProjectionSnapshot, id: &str) -> sceno::InstanceId {

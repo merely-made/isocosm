@@ -2,10 +2,12 @@
 //! Isocosm products. Requests are resolved at the host; replicas apply the
 //! recorded native commands and never run a product adapter to decide again.
 //!
-//! This is the serialized in-process record layer. It does not claim a live
-//! Graphshell stream or Stickleback carrier. Digests detect corruption, not
-//! who authored a record; the eventual JoinedSpace layer must authenticate the
-//! sole host before records are applied.
+//! The core owns one accepted writer and replicas replay its native records
+//! without repeating product admission. With `family-net`, records are signed
+//! by the pinned host and travel over Stickleback; a bounded signed checkpoint
+//! can bootstrap a fresh peer through Graphshell's admitted resource stream.
+//! These mechanisms preserve a single-host authority model. They do not yet
+//! make the world and operation store crash-atomic.
 
 use std::collections::BTreeMap;
 use std::rc::Rc;
@@ -90,6 +92,18 @@ impl Checkpoint {
         let mut unsigned = self.clone();
         let digest = std::mem::take(&mut unsigned.digest);
         !digest.is_empty() && digest == isocosm::digest(&unsigned)
+    }
+
+    /// Check the digest and declared native/section cut before trusting this
+    /// checkpoint as a replica starting point.
+    pub fn validate(&self) -> Result<(), String> {
+        if self.format != FAMILY_FORMAT_VERSION {
+            return Err("unsupported family checkpoint format".into());
+        }
+        if !self.authentic() {
+            return Err("checkpoint digest mismatch".into());
+        }
+        verify_checkpoint(self)
     }
 }
 
@@ -280,13 +294,7 @@ impl FamilyHost {
         } else {
             self.journal.head_digest()
         };
-        let checkpoint = checkpoint(
-            self.session,
-            sequence,
-            parent_digest,
-            snapshot,
-        )
-        .seal();
+        let checkpoint = checkpoint(self.session, sequence, parent_digest, snapshot).seal();
         Ok(checkpoint)
     }
 
@@ -365,13 +373,7 @@ impl FamilyReplica {
         suffix: &[AcceptedRecord],
         execution: Execution,
     ) -> Result<Self, String> {
-        if checkpoint.format != FAMILY_FORMAT_VERSION {
-            return Err("unsupported family checkpoint format".into());
-        }
-        if !checkpoint.authentic() {
-            return Err("checkpoint digest mismatch".into());
-        }
-        verify_checkpoint(&checkpoint)?;
+        checkpoint.validate()?;
         let head_digest = if checkpoint.sequence == 0 {
             checkpoint.digest.clone()
         } else {

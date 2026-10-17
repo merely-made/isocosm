@@ -15,6 +15,11 @@ use transport::P2pandaTransport;
 
 use crate::family::{AcceptedRecord, FAMILY_FORMAT_VERSION, SessionId, WireLimits};
 
+mod bootstrap;
+pub use bootstrap::{
+    FamilyCheckpointDescriptor, FamilyCheckpointResource, verify_checkpoint_resource,
+};
+
 /// Signed extension used by the single-host accepted-record log.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct FamilyRecordExt {
