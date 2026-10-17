@@ -35,11 +35,15 @@ pub fn appearance() -> Appearance {
 pub struct Gpu {
     pub device: wgpu::Device,
     pub queue: wgpu::Queue,
+    _lease: std::sync::MutexGuard<'static, ()>,
 }
+
+static GPU_RECEIPT: std::sync::Mutex<()> = std::sync::Mutex::new(());
 
 /// `None` with a printed reason when this machine has no adapter, so the suite
 /// skips cleanly rather than failing for the absence of hardware.
 pub fn gpu(what: &str) -> Option<Gpu> {
+    let lease = GPU_RECEIPT.lock().unwrap_or_else(|poisoned| poisoned.into_inner());
     let instance = wgpu::Instance::new(wgpu::InstanceDescriptor::new_without_display_handle());
     let Ok(adapter) =
         pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
@@ -52,7 +56,7 @@ pub fn gpu(what: &str) -> Option<Gpu> {
         eprintln!("no device; skipping {what}");
         return None;
     };
-    Some(Gpu { device, queue })
+    Some(Gpu { device, queue, _lease: lease })
 }
 
 /// Which body a pixel belongs to. Anything else — terrain, the cleared

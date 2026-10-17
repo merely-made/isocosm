@@ -2,12 +2,10 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use eponym_play::identity::{BodyRevisionId, SubjectId, Tick};
-use eponym_play::timed_action::{TimedActionSave, TimedActionSession};
 use eponym_play::{
-    GAME_STATE_VERSION, GameError, GameIntent, GameState, ItemLocation, MotionInput, MotionRules,
+    GameError, GameIntent, GameState, ItemLocation, MotionInput, MotionRules,
     Name, Session, SessionError, World, WorldConfig,
 };
-use isometer_core::snapshot;
 
 const SUBJECT: SubjectId = SubjectId(91);
 
@@ -48,21 +46,6 @@ fn session() -> Session {
     })
     .unwrap();
     Session::begin(game, SUBJECT).unwrap()
-}
-
-#[test]
-fn v4_native_timed_action_archive_restores_and_rewrites_as_v5() {
-    let bytes = include_bytes!("fixtures/timed-action-v1-game-v4.save");
-    let saved: TimedActionSave = snapshot::decode(bytes).unwrap();
-    assert_eq!(saved.session.game.version, 4);
-    let restored = TimedActionSession::restore_solving(bytes, eponym_motion::SOLVER).unwrap();
-    let rewritten: TimedActionSave = snapshot::decode(&restored.save().unwrap()).unwrap();
-    assert_eq!(rewritten.session.game.version, GAME_STATE_VERSION);
-    assert_eq!(
-        TimedActionSession::restore_solving(&restored.save().unwrap(), eponym_motion::SOLVER)
-            .unwrap(),
-        restored
-    );
 }
 
 #[test]

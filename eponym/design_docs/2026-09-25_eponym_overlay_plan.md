@@ -1,5 +1,23 @@
 # Eponym's overlay: the W5 plan
 
+**F3/F4/F7 runtime closeout, 2026-10-17:** the native level-fixture union
+qualifies the repaired contact, severance, timed-action, worn-item and
+external-volley controls. The two remaining timed-action controls pass 2/2;
+the worn-item controls pass 3/3; external-volley controls pass 4/4; and the
+native-level contact panel passes 1/1. The producer receipt qualifies all six
+GPU tests across the level-suite run and the focused severance rerun: five
+passed in the broader run, whose only client-library failure was the earlier
+severance camera selection, and the updated severance test then passed with
+its before/after captures. The same broader run passed all three ordinary
+resident-producer tests. The final all-target/all-feature compiler check
+passes. This is a receipt union, not a clean aggregate runtime rerun; the
+interrupted `native-level-suite.log` remains as evidence of the earlier
+failure. Three far-window runtime gates under the existing `v1-proof` feature
+(paging, travel and retarget) remain open: the far native footprint requests
+6,901 bricks against 2,047 atlas slots (1,791 in the strict probe). The
+all-feature compiler result does not close them. Broader E3 and headed product
+acceptance remain open. See the [F receipt manifest](../../../../testing/isometry/f-2026-10-16/README.md).
+
 **Certification resumed, 2026-10-13:** the explicit "Certify" request opens
 the assembled-source acceptance pass. The Eponym workspace compiles with all
 targets and features after wiring its overlay dependency and host modules,
@@ -1064,3 +1082,24 @@ Ruling 793 archived the genet document host plan to
   site; anatomical part sources refuse pending allocation support. Old
   material profile shapes and Session1 remain intact. Source uncompiled and
   untested826; full E3/C11 acceptance remains open.
+
+- **2026-10-16, triage F2/F5/F6/F8 (940, 943, 944, 946):** the old
+  generator-1 continuation assertions retire with their bytes and refusal
+  controls preserved. The unreachable stale-anatomy panel case retires;
+  actual severance inspection remains a live gate. Worn-item release uses
+  native `Dropped` under its non-played wearer and updates the projection
+  only after acceptance; its same-item/feet/session-replay control passes.
+  The sortie's logged native six-cell trench produces the actual fall,
+  injury, pact tag-in, rescue and return: all six sortie tests plus the
+  material-edit/world-replay control pass, final hash `2b75f82c9bfe5c65`.
+  The play library passes 27 active tests with its genuine WorldSave2 input
+  still ignored. Receipts: `Code/testing/isometry/f-2026-10-16/`, cap 100 MB.
+  F3/F4 native fixture and F7 producer runtime gates remain in progress;
+  broader E3 and headed product acceptance are not closed.
+
+- **2026-10-16, native far-window boundary:** F7's ordinary producer uses
+  the existing V1b cache, while the original `v1-proof` module stays gated
+  as before. Its far native footprint requests 6,901 bricks against 2,047
+  available atlas slots (1,791 in the strict probe); three feature-only
+  paging/travel/retarget tests therefore remain open. They are retained,
+  and an all-feature compiler result does not certify their runtime.

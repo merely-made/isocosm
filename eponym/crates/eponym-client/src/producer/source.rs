@@ -14,15 +14,21 @@
 
 use eponym_play::identity::SubjectId;
 use eponym_play::{AnatomyRecord, GameState, MOTION_SCALE, MotionPose};
+#[cfg(not(feature = "r1-proof"))]
+use isometer::GroundTerrain;
+#[cfg(feature = "r1-proof")]
+use isometer::HostTerrain;
 use isometer::core::{BodyDocument, PartId};
-use isometer::lens::{BrickMap, Grade};
+use isometer::lens::Grade;
 use isometer::{
-    BodyFrameStats, BodySignature, DeclaredExtentVolumes, FrameRequest, GroundTerrain, Pose, Scene,
-    SceneBody, SceneFrame, SceneHost, SceneSignature, SceneSource, SceneVolumes, SlabCamera,
-    SubjectKey, TerrainSource,
+    BodyFrameStats, BodySignature, DeclaredExtentVolumes, FrameRequest, Pose, Scene, SceneBody,
+    SceneFrame, SceneHost, SceneSignature, SceneSource, SceneVolumes, SlabCamera, SubjectKey,
+    TerrainSource,
 };
 
 use super::handle::{SceneHandle, SceneModel};
+#[cfg(feature = "r1-proof")]
+use crate::residency::{StableResidency, camera_visible_range, selection_revision};
 
 /// Palette depth of the retro grade the terrain is shaded with.
 pub(crate) const PALETTE: u32 = 3;
@@ -148,7 +154,10 @@ impl SceneSource for SceneModelSource {
         let mut model = self.handle.borrow_mut();
         model.scene = None;
         model.scene_size = [0; 2];
-        model.terrain_map_revision = None;
+        #[cfg(feature = "r1-proof")]
+        {
+            model.terrain_residency = None;
+        }
     }
 }
 
@@ -234,11 +243,25 @@ impl SceneModel {
                 always_visible: subject == self.played(),
             })
             .collect();
+        #[cfg(feature = "r1-proof")]
+        let terrain_revision = if self.terrain {
+            let ground = game.world().ground();
+            let focus = resident_focus(camera.centre);
+            let range = camera_visible_range(camera);
+            Some(
+                selection_revision(ground, focus, range)
+                    .map_err(|error| format!("terrain residency: {error}"))?,
+            )
+        } else {
+            None
+        };
+        #[cfg(not(feature = "r1-proof"))]
+        let terrain_revision = self.terrain.then(|| game.world().ground().revision());
         Ok(SceneSignature {
             size: request.size,
             render_scale: request.render_scale,
             camera: Some(camera),
-            terrain_revision: self.terrain.then(|| game.world().ground().revision()),
+            terrain_revision,
             bodies,
             // The framed subject: the camera follows it, and which body wears
             // the played tint turns on it.
@@ -267,18 +290,39 @@ impl SceneModel {
         let SceneModel {
             held,
             scene,
-            terrain_map_revision,
+            #[cfg(feature = "r1-proof")]
+            terrain_residency,
             ..
         } = self;
         let scene = scene.as_mut().ok_or("the scene was not built")?;
         let game = held.session().game();
         let ground = game.world().ground();
-        if terrain_on && *terrain_map_revision != Some(ground.revision()) {
-            scene.set_terrain_map(
-                BrickMap::from_ground(ground).map_err(|error| format!("brick map: {error}"))?,
-            );
-            *terrain_map_revision = Some(ground.revision());
-        }
+        #[cfg(feature = "r1-proof")]
+        let focus = resident_focus(camera.centre);
+        #[cfg(feature = "r1-proof")]
+        let range = camera_visible_range(camera);
+        #[cfg(feature = "r1-proof")]
+        let terrain = if terrain_on {
+            if terrain_residency.is_none() {
+                *terrain_residency = Some(
+                    StableResidency::with_ground_limits(ground, scene.atlas_limits())
+                        .map_err(|error| format!("terrain residency: {error}"))?,
+                );
+            }
+            let residency = terrain_residency.as_mut().expect("cache initialized");
+            let changed = residency
+                .prepare_at(ground, focus, range)
+                .map_err(|error| format!("terrain residency: {error}"))?
+                .is_some();
+            let revision = selection_revision(ground, focus, range)
+                .map_err(|error| format!("terrain residency: {error}"))?;
+            let rebuilt = changed.then(|| isometer::lens::BrickMap::from(residency.map().clone()));
+            Some(HostTerrain::new(revision, rebuilt))
+        } else {
+            None
+        };
+        #[cfg(not(feature = "r1-proof"))]
+        let terrain = terrain_on.then(|| GroundTerrain(ground));
 
         let drawn = drawable(game);
         let volumes = DeclaredExtentVolumes::from_documents(
@@ -298,8 +342,6 @@ impl SceneModel {
                 always_visible: *subject == played,
             })
             .collect();
-        let terrain = terrain_on.then(|| GroundTerrain(ground));
-
         let mut encoder = request
             .device
             .create_command_encoder(&wgpu::CommandEncoderDescriptor {
@@ -337,7 +379,10 @@ impl SceneModel {
                     size[0],
                     size[1],
                 )?);
-                self.terrain_map_revision = None;
+                #[cfg(feature = "r1-proof")]
+                {
+                    self.terrain_residency = None;
+                }
             },
             Some(scene) if self.scene_size != size => scene.resize(size[0], size[1]),
             Some(_) => {},
@@ -345,4 +390,9 @@ impl SceneModel {
         self.scene_size = size;
         Ok(())
     }
+}
+
+#[cfg(feature = "r1-proof")]
+fn resident_focus(centre: [f32; 3]) -> [i32; 3] {
+    centre.map(|coordinate| coordinate.floor() as i32)
 }

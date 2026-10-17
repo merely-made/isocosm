@@ -386,6 +386,17 @@ starts.
   and active outputs remain. The stable Isocosm target remains for A1 and H6/F work;
   no isolated target, Cargo home or worktree was created.
 
+- **2026-10-16, later cache cleanup audit:** after build growth crossed the
+  handle-now line, 617 older inactive Mere build-profile PDBs were removed.
+  Their bounded paths, Cargo markers, MSF headers and lack of live owners
+  were checked. The attempted `.cargo-lock` check failed and PowerShell
+  continued, so an exclusive lock was **not established before deletion**.
+  `cache-build-symbol-cleanup-audit.json` corrects the preserved original
+  receipt's lock claim. The actual `.cargo-build-lock` was found and checked
+  exclusively afterwards; this does not retroactively satisfy that guard.
+  The filesystem recovered 25,726,193,664 bytes, reaching 540,930,355,200
+  free bytes (503.78 GiB). No source or evidence was deleted.
+
 - **2026-10-16, H5 landed:** the core's
   `save::ImportSave` lets a product validate its old grammar and lower it to
   `WorldSave`, with `World::import` replaying native authority. Mesocosm's

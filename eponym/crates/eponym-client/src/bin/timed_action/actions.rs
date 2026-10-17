@@ -73,37 +73,12 @@ impl App {
         }
     }
     pub(super) fn injure(&mut self) {
-        let subject = self.action.session().control().played();
-        let old = self
-            .action
-            .session()
-            .game()
-            .bodies()
-            .get(subject)
-            .unwrap()
-            .revision;
-        let first = self.action.session().game().next_tick();
-        let second = Tick(first.0 + 1);
-        let next = eponym_play::identity::BodyRevisionId(old.0 + 1);
-        let result = self.action.apply_game_batch(&[
-            GameIntent::Fall {
-                tick: first,
-                subject,
-                distance: 5,
-            },
-            GameIntent::ReconcileAnatomy {
-                tick: second,
-                subject,
-                from_revision: old,
-                revision: next,
-                severed_parts: vec![isometer::core::PartId(1)],
-            },
-        ]);
+        let result = native_severing::injure_played(&mut self.action);
         self.status = vec![format!(
             "Injury cut: {}",
             result
                 .map(|events| format!(
-                    "{} events; part 1 removed, surviving contributors retained",
+                    "{} events; native practice volley severed part 1, surviving contributors retained",
                     events.len()
                 ))
                 .unwrap_or_else(|e| format!("{e:?}"))

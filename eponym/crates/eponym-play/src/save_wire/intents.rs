@@ -3,8 +3,8 @@
 
 //! The stable intent discriminants, with only anatomy's wire parameterized.
 
-use crate::*;
 use crate::identity::{BodyRevisionId, SubjectId, Tick};
+use crate::*;
 use isocosm::lineage::LineageBody;
 use isometer_core::PartId;
 use serde::{Deserialize, Serialize};
@@ -89,4 +89,6 @@ intents! {
     FoundSpreadActor { tick:Tick, key:String, recipe:String, site:isocosm::schema::Id },
     SpreadOwnership { tick:Tick, identity:crate::IdentityRef, lot:crate::AuthorSpreadLot },
     AuthoredSpread { tick:Tick, step:crate::AuthorSpreadStep },
+    ExternalVolley { tick:Tick, actor:SubjectId, actor_revision:BodyRevisionId,
+        target:SubjectId, strikes:Vec<crate::timed_action::StrikeReceipt>, rules:CombatRules },
 }

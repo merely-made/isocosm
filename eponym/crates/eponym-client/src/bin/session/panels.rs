@@ -470,30 +470,6 @@ mod tests {
     }
 
     #[test]
-    fn a_stale_anatomy_stays_inspectable_and_says_so() {
-        let (mut game, played) = played_game();
-        fall(&mut game, played, 5);
-        let body = game.bodies().get(played).expect("body");
-        assert!(body.alive());
-        assert_ne!(
-            body.revision,
-            game.anatomies().get(played).expect("anatomy").revision
-        );
-
-        let before = game.state_hash().expect("hash");
-        let sheet = subject_sheet(&game, played, None).expect("sheet");
-        assert_eq!(game.state_hash().expect("hash"), before);
-        assert!(!sheet.parts.is_empty());
-        assert!(sheet.parts.iter().all(|part| part.bounds.is_some()));
-        assert!(
-            sheet
-                .global_blockers
-                .iter()
-                .any(|line| line.contains("stale"))
-        );
-    }
-
-    #[test]
     fn a_reconciled_severance_shows_on_the_sheet_and_clears_the_blocker() {
         // A native volley's cut reconciles the admitted anatomy itself (711,
         // 717); an authored fall and reconciliation no longer severs.

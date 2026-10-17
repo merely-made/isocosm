@@ -87,7 +87,8 @@ pub use technique::{
     SubjectBody, TechniqueId, TechniqueInputs, TechniqueKnowledge, arrest_fall,
 };
 pub use transitions::{
-    CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, CanonRevisionCause, DeathCause, GAME_STATE_VERSION, GameError,
+    CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, EXTERNAL_VOLLEY_GAME_STATE_VERSION,
+    CanonRevisionCause, DeathCause, GAME_STATE_VERSION, GameError,
     GameEvent, GameIntent, GameSave, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION,
     ITEM_PLACEMENT_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
     PROJECT_GAME_STATE_VERSION,

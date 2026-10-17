@@ -6,12 +6,12 @@
 //! anatomy and wearing an item.
 
 use isocosm::history::Command;
-use isocosm_overlay::eponym::{EponymIntent, PlayerAct, PlayerActKind};
+use isocosm_overlay::eponym::{EponymHandoff, EponymIntent, PlayerAct, PlayerActKind};
 use isocosm_overlay::{EntityHandle, Pointable};
 
 use crate::bodies::{BodyError, BodyRecord, SAFE_FALL};
 use crate::founding::{
-    self, DROP, EAT, ENERGY, FATIGUE, FULL, HUNGER, RESERVE, RESTS, SPENT, TAKE,
+    self, EAT, ENERGY, FATIGUE, FULL, HUNGER, RESERVE, RESTS, SPENT, TAKE,
 };
 use crate::identity::{BodyRevisionId, SubjectId, Tick};
 use crate::items::{ItemError, ItemKind, ItemLocation};
@@ -335,6 +335,7 @@ impl GameState {
             },
             GameIntent::AdvanceMotion { .. }
             | GameIntent::ResolveVolley { .. }
+            | GameIntent::ExternalVolley { .. }
             | GameIntent::ProjectAct { .. }
             | GameIntent::ProjectCarry { .. }
             | GameIntent::ProjectReserve { .. }
@@ -475,8 +476,14 @@ impl GameState {
             .filter(|i| matches!(i.location, ItemLocation::Attached { part, .. } if lost.contains(&part)))
             .map(|i| i.id)
             .collect();
+        if !fallen.is_empty() {
+            let wearer = self.entity_of(subject)?;
+            self.world.hand_back(
+                wearer,
+                &EponymHandoff::Dropped(fallen.iter().map(|item| EntityHandle(item.0)).collect()),
+            )?;
+        }
         for item in &fallen {
-            self.act(subject, Some(item.0), DROP)?;
             self.places.worn.remove(item);
             self.places.at.insert(*item, at);
         }

@@ -18,7 +18,7 @@ The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture
 path landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 are built
-(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused958.
+(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused959.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -90,8 +90,8 @@ draws bare 20/20, bodied 19/20, played 18/20; with the ceiling at 100 plus a
 draw (candidate 10, a change to the ruled preset awaiting a ruling) bare
 20/20, bodied 20/20, played **19/20** against the stock controls' 0/20.
 A1's gate stands unamended (907): the played founding must reach 20/20. The
-one miss, seed 9, is a herd-migration trap (Findings, 2026-10-15) that no
-rate reaches. *2026-10-16:* 935 rules the 100-base ceiling, and the branch
+one miss, seed 9, persists under the declared rates; the later chooser
+diagnosis below identifies its missed meals and synchronized movement. *2026-10-16:* 935 rules the 100-base ceiling, and the branch
 is reviewed and merged into main (947).
 
 ## A2. The test baseline (owner: each workspace's plan)
@@ -147,7 +147,8 @@ motion archives stop at the generator check before any replay.
 
 *2026-10-16:* Mark took every recommendation: the six fixes merge (938),
 and F1 to F8 are ruled 939 to 946 as option (1) each. Each fork is now work
-for implementation. F1 is built and verified below; F2 to F8 remain open.
+for implementation. F1 to F8 are built and their triaged failures are now
+verified or retired below. The separate far-window V1 obligations remain open.
 
 **F1, 2026-10-16, built (939):** the shipped pack now carries all fifteen
 native catalogue definitions, including the ten missing TOML files. Admission
@@ -201,6 +202,64 @@ The forks, each with a recommendation first:
 One hazard seen in passing, not a failing test: `GameState::save` on a game
 whose participant has taken up a subject writes a save its own restore
 refuses (`StateDiverged`). Nothing in production calls it that way today.
+
+**F2/F6, 2026-10-16, built (940, 944):** retired three generator-1
+continuation assertions and the unreachable stale-anatomy panel case.
+Historical archive bytes are preserved. Current `save_wire` tests retain
+byte preservation and explicit refusal of old anatomy/unknown generators;
+`motion_compat` and `precise_combat` retain current motion/contact replay.
+These retirement controls pass in `f-2026-10-16/eponym-runtime.log`.
+
+**F5, 2026-10-16, built (943):** involuntary worn-item release now hands the
+same item back through native `Dropped` under its actual wearer. Projection
+changes follow native acceptance. A non-played wearer loses the worn part,
+retains the controlled keeper, drops the exact item at its feet, and saves
+and restores exactly. All 27 active `eponym-play` library tests passed; the
+one genuine WorldSave2 archive-input obligation stays ignored.
+
+**F8, 2026-10-16, built (946):** the sortie founds a six-cell trench through
+one logged native material edit. Its real fall drives injury, pact tag-in,
+rescue and return. All six original sortie tests and the added native-edit /
+world-replay test pass; final sortie hash `2b75f82c9bfe5c65`, 125 ticks,
+22 events. No fall threshold or wound is fabricated. The world edit enum is
+appended so existing archive tags retain their order. Receipts:
+`Code/testing/isometry/f-2026-10-16/eponym-runtime.log` (100 MB lane cap).
+
+**F3/F4/F7, verified 2026-10-17 (941, 942, 945):** the shared practice
+fixture levels its real native ground before arrival and spaces bodies at their
+native bounds. The timed-action app consumes that fixture. Its injure key uses
+a native practice striker and a recorded external volley; public ordinary
+intent/batch paths refuse that marker. Save version 14 and its replay retain
+the accepted non-played actor, separate game/native body revisions and atomic
+refusals, including old-version marker rejection. Rest retains wounds under
+the existing zero-healing law. Three worn-item/native-source and four external
+volley controls pass after the final fixture changes.
+
+The six timed-action cases pass across `native-level-suite.log` and
+`remaining-client-controls.log`. All six GPU producer cases pass across that
+suite and `producer-silhouette.log`: actual terrain hides the target while its
+control remains visible; severing vacates visible leaf pixels and retains the
+remaining body without static reupload. Captures were visually inspected.
+The complete native workspace run before the final fixture changes qualified
+motion, current archive, play and sortie cases; final affected controls then
+passed separately. The last aggregate runtime invocation was interrupted and
+is not a green aggregate receipt. Final all-feature/all-target compilation
+passes in `all-feature-final-check.log`. Receipts and exact source hashes live
+under `Code/testing/isometry/f-2026-10-16` with a 100 MB retained-byte cap.
+
+**F7 boundary, 2026-10-16:** the ordinary producer now reuses the existing
+V1b fixed cache under `r1-proof`, choosing the real oriented camera footprint
+and refreshing retained slots after ground edits. Its original unchanged-frame
+case and three new CPU controls pass. The older `v1-proof` residency module
+retains its existing feature boundary. Its far native window selects 6,901
+bricks against the 2,047 atlas ceiling (1,791 under its stricter probe budget),
+so `one_budget_pages_a_region_that_cannot_be_wholly_resident`,
+`travel_within_one_page_band_advances_projection_identity` and
+`the_stable_cache_retargets_without_changing_its_extents` remain explicit
+open V1/V1b obligations. Exposing the residency implementation to the ordinary
+producer does not qualify that far window or all-feature runtime. The
+all-feature compiler receipt is separate. No atlas budget is enlarged and
+these three tests are not deleted or renamed.
 
 ## A3. Deferred done-conditions, by owner
 
@@ -256,6 +315,49 @@ From the phenotype plan, archived the same day: P0's judgment, whether the
 headed meal choice feels tense rather than clerical.
 
 ## Findings
+
+- **2026-10-16, A1 seed-9 diagnosis (936), unchanged preset:** native
+  Individuals reaches extinction at tick 162, conserving matter each round;
+  Individuals and Grouped replay to `b6e8c6fed1207e8f`. Its full-run
+  `decisions` arrays are empty because the observer read the chooser cache
+  after `advance_to` cleared it. That file proves accepted acts, census,
+  conservation and replay, not chooser menus. `births=1` counts the played
+  parent's `Happening::Born`; the native consumer birth count is 84.
+  The original file is preserved with this limitation explicitly recorded.
+
+  Three bounded windows observe choices where made, actual feeding-pass
+  feasibility and outcomes, and selected-prey residence. The 24-tick windows
+  both replay to `00001e60582e3964`; the 16-tick departure window to
+  `cf7e41b9090331c3`, in both native modes, with conservation each round.
+  At tick 14 consumer birth doubles 32 to 64; sample actor 70 holds 17 before
+  birth and 9 at tick 15, with mood -10. At 15 every consumer chooses feeding
+  while a resident producer is eligible. All 52 producers at site 5 then
+  depart 5 to 2 before priority 10 feeding. Every selected prey is still alive
+  and carries food, but its journey departed 15/arrives 16, so no resident
+  replacement is eligible and all 64 meals block. At 16 the consumers'
+  `move:5-2` and `move:5-4` both score 0; identity order selects 5 to 2 for all 64.
+  Producers continue ahead, and the consumers bounce 1 to 2 and back. Movement
+  has no destination-food term; non-played automatic producers also migrate
+  when hungry. This is a migration/cadence interaction, not proof of a
+  broken 813 cache or a rate fix.
+
+  All 13 pass-start and 5 feeding controls pass, including the intentional
+  selected-blocked-meal/no-fallback rule and replacement prey resolution.
+  Proposed next ruling: deterministic actor/seed/tick draws among equal
+  best movement options, keeping non-movement ties, scope, rates and the
+  20/20 gate unchanged. Mark approved seeded movement ties as 958; implementation and fresh
+  seed-9 acceptance follow. No successful candidate or gate is claimed yet.
+  Food-aware destination scoring remains a larger policy alternative.
+  Declarations, original-source files matching their declared SHA256,
+  compact windows and `a1-2026-10-16-seed9-analysis.json` live under
+  `Code/testing/isometry/after-pass-2026-10-10/q3-reproduction/`; the four
+  raw diagnostic JSON files total 2,988,360 bytes against the 100 MB cap.
+
+  Historical `a1-2026-10-14-declaration-hashes.txt` and
+  `a1-2026-10-15-*-head*.txt` citations below were absent on this laptop
+  before this pass. Their existence and hashes on the former machine remain
+  unverified. They stay historical citations; none is reconstructed or
+  promoted as current reproducible evidence.
 
 - **2026-10-14, A1 reopened under 888; the bodied arm fails on a drawn
   mouth, not on rates.** Source: main `ce01da2d` plus the test-only harness

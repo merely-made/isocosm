@@ -11,7 +11,11 @@
 //! which exact bricks its current camera needs and the budget that bounds that
 //! presentation working set.
 
-use std::{collections::BTreeSet, fmt};
+use std::{
+    collections::BTreeSet,
+    fmt,
+    hash::{Hash, Hasher},
+};
 
 use glam::Vec3;
 use eponym_play::walking::WALKER_HEIGHT;
@@ -289,6 +293,7 @@ pub struct StableResidency {
     current_range: Option<i32>,
     current_keys: BTreeSet<[i16; 3]>,
     projection_revision: BrickProjectionRevision,
+    ground_revision: Option<u64>,
     pointer_bytes: u64,
     atlas_bytes: u64,
 }
@@ -300,13 +305,21 @@ pub struct StableOutcome {
 
 impl StableResidency {
     pub fn new(scene: &ResidencyScene) -> Result<Self, ResidencyError> {
-        Self::with_limits(scene, AtlasLimits::DEFAULT)
+        Self::with_ground_limits(&scene.ground, AtlasLimits::DEFAULT)
     }
 
     /// Uses the host's enforced texture limit and atlas ceiling, while the
     /// pointer volume and atlas together still fit the V1 residency budget.
     pub fn with_limits(
         scene: &ResidencyScene,
+        limits: AtlasLimits,
+    ) -> Result<Self, ResidencyError> {
+        Self::with_ground_limits(&scene.ground, limits)
+    }
+
+    /// Builds the same V1b fixed cache for a live product ground.
+    pub fn with_ground_limits(
+        ground: &Ground,
         mut limits: AtlasLimits,
     ) -> Result<Self, ResidencyError> {
         // The fixed pointer box: the widest band's horizontal reach,
@@ -314,7 +327,7 @@ impl StableResidency {
         // (selection never filters by height).
         let mut low = [i16::MAX; 3];
         let mut high = [i16::MIN; 3];
-        for key in scene.ground.keys() {
+        for key in ground.keys() {
             for axis in 0..3 {
                 low[axis] = low[axis].min(key[axis]);
                 high[axis] = high[axis].max(key[axis]);
@@ -346,6 +359,7 @@ impl StableResidency {
             current_range: None,
             current_keys: BTreeSet::new(),
             projection_revision: BrickProjectionRevision(0),
+            ground_revision: None,
             pointer_bytes,
             atlas_bytes,
         })
@@ -357,6 +371,10 @@ impl StableResidency {
 
     pub fn capacity(&self) -> usize {
         self.map.capacity()
+    }
+
+    pub fn projection_revision(&self) -> BrickProjectionRevision {
+        self.projection_revision
     }
 
     /// The fixed allocation the budget bounds: pointer volume plus atlas.
@@ -372,6 +390,16 @@ impl StableResidency {
         scene: &ResidencyScene,
         visible_range: i32,
     ) -> Result<Option<StableOutcome>, ResidencyError> {
+        self.prepare_at(&scene.ground, scene.focus, visible_range)
+    }
+
+    /// Retargets the fixed cache around a live ground and camera focus.
+    pub fn prepare_at(
+        &mut self,
+        ground: &Ground,
+        focus: [i32; 3],
+        visible_range: i32,
+    ) -> Result<Option<StableOutcome>, ResidencyError> {
         let resident_range = PAGE_RANGES
             .into_iter()
             .find(|range| *range >= visible_range)
@@ -379,8 +407,12 @@ impl StableResidency {
                 actual: visible_range,
                 maximum: *PAGE_RANGES.last().expect("V1 has residency bands"),
             })?;
-        let keys = selected_keys(&scene.ground, scene.focus, resident_range);
-        if self.current_range == Some(resident_range) && self.current_keys == keys {
+        let keys = selected_keys(ground, focus, resident_range);
+        let selection_changed =
+            self.current_range != Some(resident_range) || self.current_keys != keys;
+        let ground_changed = self.ground_revision != Some(ground.revision());
+        let refresh_retained = self.ground_revision.is_some() && ground_changed;
+        if !selection_changed && !ground_changed {
             return Ok(None);
         }
         let projection_revision = BrickProjectionRevision(
@@ -389,17 +421,26 @@ impl StableResidency {
                 .checked_add(1)
                 .ok_or(ResidencyError::ProjectionRevisionOverflow)?,
         );
-        let delta = crate::brick::retarget_from_ground(
+        let mut delta = crate::brick::retarget_from_ground(
             &mut self.map,
-            &scene.ground,
+            ground,
             projection_revision,
             keys.iter().copied(),
         )?;
+        let loaded_bricks = delta.loaded_slots.len();
+        if refresh_retained && !keys.is_empty() {
+            let refreshed = self.map.refresh(keys.iter().copied(), |key| {
+                ground.brick_materials(key).map(|(brick, _)| brick.raw())
+            })?;
+            delta.loaded_slots.extend(refreshed);
+            delta.loaded_slots.sort_unstable();
+            delta.loaded_slots.dedup();
+        }
         let metrics = ResidencyMetrics {
             projection_revision,
             visible_range,
             resident_range,
-            loaded_bricks: delta.loaded_slots.len(),
+            loaded_bricks,
             evicted_bricks: delta.evicted,
             resident_bricks: keys.len(),
             pointer_bytes: self.pointer_bytes,
@@ -409,8 +450,55 @@ impl StableResidency {
         self.current_range = Some(resident_range);
         self.current_keys = keys;
         self.projection_revision = projection_revision;
+        self.ground_revision = Some(ground.revision());
         Ok(Some(StableOutcome { delta, metrics }))
     }
+}
+
+/// Stable stamp of the source revision and exact resident brick selection.
+/// This is cheap to compute in `inputs` and allocates no per-frame key set.
+pub fn selection_revision(
+    ground: &Ground,
+    focus: [i32; 3],
+    visible_range: i32,
+) -> Result<u64, ResidencyError> {
+    let resident_range = PAGE_RANGES
+        .into_iter()
+        .find(|range| *range >= visible_range)
+        .ok_or(ResidencyError::VisibleRange {
+            actual: visible_range,
+            maximum: *PAGE_RANGES.last().expect("V1 has residency bands"),
+        })?;
+    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+    ground.revision().hash(&mut hasher);
+    resident_range.hash(&mut hasher);
+    for key in ground.keys().filter(|key| {
+        [0, 2].into_iter().all(|axis| {
+            let low = i32::from(key[axis]) * BRICK;
+            let high = low + BRICK - 1;
+            high >= focus[axis] - resident_range && low <= focus[axis] + resident_range
+        })
+    }) {
+        key.hash(&mut hasher);
+    }
+    Ok(hasher.finish())
+}
+
+/// The greatest horizontal radius of the camera's oriented draw window.
+/// This uses the same slab reach as terrain rays and body culling.
+pub fn camera_visible_range(camera: isometer::SlabCamera) -> i32 {
+    let window = camera.window();
+    [0, 2]
+        .into_iter()
+        .map(|world_axis| {
+            (0..3)
+                .map(|camera_axis| {
+                    window.axes[camera_axis][world_axis].abs() * window.half[camera_axis]
+                })
+                .sum::<f32>()
+        })
+        .fold(0.0_f32, f32::max)
+        .ceil() as i32
 }
 
 fn selected_keys(ground: &Ground, focus: [i32; 3], range: i32) -> BTreeSet<[i16; 3]> {
@@ -426,5 +514,8 @@ fn selected_keys(ground: &Ground, focus: [i32; 3], range: i32) -> BTreeSet<[i16;
         .collect()
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "v1-proof"))]
 mod tests;
+#[cfg(all(test, feature = "r1-proof"))]
+#[path = "residency/producer_tests.rs"]
+mod producer_tests;

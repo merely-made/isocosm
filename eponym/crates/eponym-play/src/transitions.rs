@@ -17,8 +17,9 @@ use crate::{
     MovementProfile, ResolvedStrike, WorldError, WorldSave,
 };
 
-/// Version13 records author-only spread founding and selected native placement.
-pub const GAME_STATE_VERSION: u32 = 13;
+/// Version14 adds native external volleys with admitted actor revisions.
+pub const GAME_STATE_VERSION: u32 = 14;
+pub const EXTERNAL_VOLLEY_GAME_STATE_VERSION: u32 = 14;
 pub const SPREAD_GAME_STATE_VERSION: u32 = 13;
 pub const OWNED_STOCK_GAME_STATE_VERSION: u32 = 12;
 pub const PROJECT_CUSTODY_GAME_STATE_VERSION: u32 = 11;
@@ -203,7 +204,10 @@ pub enum GameIntent {
         lots: Vec<String>,
     },
     /// Founding-only author assertion; ordinary controlled play refuses it.
-    StockOwnership { tick: Tick, lot: isocosm::projects::StockLot },
+    StockOwnership {
+        tick: Tick,
+        lot: isocosm::projects::StockLot,
+    },
     ProjectConsent {
         tick: Tick,
         subject: SubjectId,
@@ -226,9 +230,31 @@ pub enum GameIntent {
         item: ItemId,
         selections: Vec<isocosm::projects::DebitSelection>,
     },
-    FoundSpreadActor { tick: Tick, key: String, recipe: String, site: isocosm::schema::Id },
-    SpreadOwnership { tick: Tick, identity: crate::IdentityRef, lot: crate::AuthorSpreadLot },
-    AuthoredSpread { tick: Tick, step: crate::AuthorSpreadStep },
+    FoundSpreadActor {
+        tick: Tick,
+        key: String,
+        recipe: String,
+        site: isocosm::schema::Id,
+    },
+    SpreadOwnership {
+        tick: Tick,
+        identity: crate::IdentityRef,
+        lot: crate::AuthorSpreadLot,
+    },
+    AuthoredSpread {
+        tick: Tick,
+        step: crate::AuthorSpreadStep,
+    },
+    /// A recorded world-sourced volley by an admitted, non-played actor.
+    /// Session replay requires the actor's accepted anatomy revision.
+    ExternalVolley {
+        tick: Tick,
+        actor: SubjectId,
+        actor_revision: BodyRevisionId,
+        target: SubjectId,
+        strikes: Vec<StrikeReceipt>,
+        rules: CombatRules,
+    },
 }
 
 impl GameIntent {
@@ -247,6 +273,7 @@ impl GameIntent {
             | Self::FoundSpreadActor { tick, .. }
             | Self::SpreadOwnership { tick, .. }
             | Self::AuthoredSpread { tick, .. }
+            | Self::ExternalVolley { tick, .. }
             | Self::Name { tick, .. }
             | Self::Move { tick, .. }
             | Self::Observe { tick, .. }
@@ -294,14 +321,23 @@ impl GameIntent {
             | Self::ConfigureMovementProfile { subject, .. }
             | Self::Wait { subject, .. } => Some(*subject),
             Self::ResolveVolley { actor, .. } => Some(*actor),
-            Self::ReviseCanon { .. } | Self::StockOwnership { .. }
-                | Self::FoundSpreadActor { .. } | Self::SpreadOwnership { .. } | Self::AuthoredSpread { .. } => None,
+            Self::ExternalVolley { .. }
+            | Self::ReviseCanon { .. }
+            | Self::StockOwnership { .. }
+            | Self::FoundSpreadActor { .. }
+            | Self::SpreadOwnership { .. }
+            | Self::AuthoredSpread { .. } => None,
         }
     }
 
     pub const fn is_author_only(&self) -> bool {
-        matches!(self, Self::StockOwnership { .. } | Self::FoundSpreadActor { .. }
-            | Self::SpreadOwnership { .. } | Self::AuthoredSpread { .. })
+        matches!(
+            self,
+            Self::StockOwnership { .. }
+                | Self::FoundSpreadActor { .. }
+                | Self::SpreadOwnership { .. }
+                | Self::AuthoredSpread { .. }
+        )
     }
 }
 
@@ -465,9 +501,17 @@ pub enum GameEvent {
         process: String,
         result: isocosm::projects::OwnedActed,
     },
-    SpreadActorFounded { tick: Tick, key: String, recipe: String, site: isocosm::schema::Id,
-        entity: isocosm::schema::Id },
-    AuthoredSpread { tick: Tick, outcome: String },
+    SpreadActorFounded {
+        tick: Tick,
+        key: String,
+        recipe: String,
+        site: isocosm::schema::Id,
+        entity: isocosm::schema::Id,
+    },
+    AuthoredSpread {
+        tick: Tick,
+        outcome: String,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -488,6 +532,7 @@ pub enum GameError {
     Combat(crate::CombatError),
     Motion(crate::MotionError),
     LegacyCombatIntent,
+    LegacyExternalVolleyIntent,
     LegacyMotionIntent,
     LegacyMovementProfileIntent,
     LegacyCanonIntent,

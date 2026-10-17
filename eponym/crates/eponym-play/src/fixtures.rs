@@ -12,3 +12,4 @@
 
 pub mod session;
 pub mod three_lives;
+pub mod native_severing;
