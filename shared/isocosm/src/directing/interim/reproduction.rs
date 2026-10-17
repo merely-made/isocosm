@@ -13,6 +13,20 @@ const EPOCH: Tick = 60;
 mod profile;
 use profile::{Form, world};
 
+// The dated 936 diagnostics retain the exact pre-958 world. New candidate
+// draws use the generated policy and a different declared genesis digest.
+fn diagnosed_seed9() -> Genesis {
+    let mut genesis = world(9, Form::Played, false);
+    genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
+    assert_eq!(crate::digest(&genesis), "d12cfd47322777b69ff1ba6639a54e8e4a1390286ab59a97a57d165e7f1802ee");
+    genesis
+}
+
+#[test]
+fn pre958_seed9_genesis_digest_is_preserved() {
+    let _ = diagnosed_seed9();
+}
+
 #[derive(Default, Debug, serde::Serialize)]
 struct Outcome {
     genesis: String,
@@ -76,6 +90,14 @@ fn retain<T: serde::Serialize>(name: &str, value: &T) {
             "preserve differing evidence"
         );
     } else {
+        let stem = ["-session.json", "-readings.json", "-state.json", "-outcome.json"]
+            .into_iter().find_map(|suffix| name.strip_suffix(suffix)).unwrap_or(name);
+        let retained: u64 = std::fs::read_dir(receipt_directory()).unwrap()
+            .map(|entry| entry.unwrap())
+            .filter(|entry| entry.file_name().to_string_lossy().starts_with(stem))
+            .map(|entry| entry.metadata().unwrap().len()).sum();
+        assert!(retained + bytes.len() as u64 <= 100_000_000,
+            "pilot receipt cap: use a compact declared matrix, not full observations");
         use std::io::Write;
         let mut file = std::fs::OpenOptions::new().write(true).create_new(true)
             .open(path).expect("fresh primary pilot receipt; never overwrite");

@@ -11825,7 +11825,34 @@ what later sections derive from.
      refused at a set backlog, configurable like the step ceiling, default
      10, while a replay or script queueing directly is not capped; (2)
      "Stays in the window". Mark: "In the core driver (Recommended)"
-     Next unused958.
+958. **Equal best movement choices use a seeded draw.** Asked 2026-10-16
+     after 936's unchanged seed-9 diagnosis: all 52 producers leave before
+     feeding at 15, all 64 meals block, and the next tick's two moves score 0
+     and take the same first process ID. Options: (1) deterministic movement
+     ties keyed by world seed, creature and tick (recommended); (2) design
+     food-aware route scoring; (3) keep movement unchanged. Mark:
+     "Seeded movement ties (Recommended)". The 20/20 gate stands. This changes
+     movement ties, not scores, due/feasible eligibility, non-movement ties,
+     food scope, selected-process commitment or rates. Implementation and
+     fresh seed 9/gate evidence follow; this ruling does not predict success.
+
+959. **The family session replicates accepted native authority and sections.**
+     H7's assessment was put to Mark on 2026-10-17 before code (923).
+     Options: (1) the accepted native log plus opaque section changes
+     (recommended); (2) accepted product envelopes replayed through a pinned
+     product adapter. Mark: "Accepted native log plus opaque section changes
+     (Recommended)". Section-only changes are accepted records; deletion is
+     explicit and unknown section bytes survive. A replica does not run a
+     product adapter to decide the intent again.
+960. **Requests and accepted records use their existing stack seams.**
+     Asked 2026-10-17 with 959: (1) admitted stream/Graphshell requests and
+     replies, with Stickleback joined spaces carrying host-authored accepted
+     records (recommended); (2) stream for both requests and log catch-up.
+     Mark: "Stream requests; Stickleback accepted records (Recommended)".
+     One host remains the sole accepting writer. The first serialized
+     in-process controls precede the actual transport and product gates.
+
+     Next unused 961.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

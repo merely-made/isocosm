@@ -23,6 +23,15 @@ pub enum Inheritance {
     Lineage,
 }
 
+/// How a deliberative critter resolves an equally scored movement menu.
+/// Older and hand-authored worlds keep identity order unless they opt in.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum MovementTies {
+    #[default]
+    Identity,
+    Seeded,
+}
+
 /// A world's directing rules. Absent means these defaults.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Directing {
@@ -46,6 +55,13 @@ pub struct Directing {
     /// The most recipe variants a line weighs at a boundary (752).
     #[serde(default = "four")]
     pub variants: u32,
+    /// How equally best movement acts are resolved (ruling 958).
+    #[serde(default, skip_serializing_if = "is_identity_movement_ties")]
+    pub movement_ties: MovementTies,
+}
+
+fn is_identity_movement_ties(value: &MovementTies) -> bool {
+    *value == MovementTies::Identity
 }
 
 fn four() -> u32 {
@@ -55,6 +71,7 @@ fn four() -> u32 {
 impl Default for Directing {
     fn default() -> Self {
         Self {
+            movement_ties: MovementTies::Identity,
             inheritance: Inheritance::Seeded,
             fresh: 250,
             seed: 500,

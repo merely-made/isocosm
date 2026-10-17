@@ -76,6 +76,7 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
     let rules = &mut g.rules;
     rules.directing = Some(Directing {
         slots,
+        movement_ties: MovementTies::Seeded,
         ..Directing::default()
     });
     Ok(())

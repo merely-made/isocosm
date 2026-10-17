@@ -15,7 +15,7 @@ fn a1_seed9_accepted_choices_and_moves() {
         std::env::var_os("ISOCOSM_REPRO_TWEAK").is_none(),
         "unchanged A1 preset"
     );
-    let g = world(9, Form::Played, false);
+    let g = diagnosed_seed9();
     let genesis = crate::digest(&g);
     let process_rules: BTreeMap<_, _> = g
         .rules
