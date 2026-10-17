@@ -252,6 +252,53 @@ second over the stack's transport through each product's endpoint, both
 peers reach the same world revision and state hash, and the VTT's table runs
 on it with the old DM-authority core retired.
 
+**Assessment, 2026-10-16, source only:** the authority is already settled by
+H7: one host accepts and orders intents. Adopting a multiwriter carrier does
+not reopen that ruling. Current `isonetry` protocol 22, `HostSession` and
+`ClientSession` supply useful sequencing, gap handling, request identities,
+compatibility refusal and rolling log-hash behavior. Their concrete
+`GameSnapshot`/`GameEvent` vocabulary, campaign store and table state remain
+VTT-specific. `campaign_sync.rs` still assembles `LogSync` and `SyncedSpace`
+directly, so Stickleback K0 is genuinely open. Under 921, the GM store and
+proposal lifecycle stay in `isonetry` until V2; they must sit outside its
+new family API.
+
+At consumed Mere `0b9b7a9`, Graphshell's `NetworkCarrier` carries Chirograph
+requests, responses and revision notices over an already admitted stream;
+it owns neither admission nor game-log replication. Stickleback's
+`JoinedSpace<E>` owns signed operation-log joining, publication, resync and
+shutdown; Murm's consumed `b49df894` transport supplies its endpoint and
+gossip. These are distinct seams. Current Mere `4523cb6` changes the carrier's
+line-framing calls, while `joined_space.rs` is unchanged at those pins.
+
+The assessment leaves two concrete forks before H7 code (923):
+
+| Fork | Recommended first slice | Other defensible path |
+|---|---|---|
+| Accepted record | Publish the accepted native log suffix and atomic opaque section updates. A client applies accepted authority without running a product adapter to decide again. | Publish accepted product envelopes and replay them through a pinned adapter. This is smaller when envelopes are small, but every replica needs the exact product adapter and its compatibility contract. |
+| Transport composition | Endpoint requests/replies use the admitted stream and Graphshell carrier; host-authored accepted records use Stickleback `JoinedSpace` for ordered catch-up and resync. One host remains the sole accepting writer. | Use the admitted stream for both requests and log catch-up first. This reuses less of Stickleback's existing operation-log lifecycle and leaves that convergence work in `isonetry`. |
+
+A live `World` revision resets when its save is resumed; native state hash
+alone also omits opaque product sections. Either record choice therefore
+needs an explicit session/checkpoint identity, monotonically ordered record
+sequence and parent digest, native-log cut, section digest, and recorded
+revision at the checkpoint. A section deletion must be an explicit update;
+unknown sections remain bytes. Reconnect installs one checkpoint and checks
+the contiguous accepted suffix before exposing the new cut. A rejected
+intent advances no accepted sequence. Pending client intent remains a
+proposal until its host record arrives. Host authority and 921's interim
+VTT ownership are already settled.
+
+The first implementation gate should exercise two in-process peers over
+serialized records: native plus section-only changes, unchanged bytes,
+refusal, duplicate/gap/out-of-order delivery, checkpoint resume, and an
+unknown section. The network gate then uses the actual consumed transport
+and endpoint before each product and the VTT table claim acceptance. Both
+peers must match accepted sequence, native hash, section digest and world
+revision. These are proposed done-conditions for Mark's fork, not a new
+protocol already accepted or implemented.
+No H7 code or network receipt is claimed by this assessment.
+
 **Later.** Eponym's `session` on the core (founding a generated world, asks
 through the UI, succession in the client), then the VTT over the sim
 (in-app campaign founding from a seeded draw). Each gets phases here when it
@@ -331,7 +378,12 @@ starts.
   binaries, libraries and active release output remain. The filesystem
   recovered 182,078,619,648 bytes, reaching 505,574,342,656 free bytes.
   `cache-cleanup.json` in the H6 receipt directory records both paths and the
-  free-byte readings. The stable Isocosm target remains for A1 and H6/F work;
+  free-byte readings. Later builds crossed below the handle-now line again;
+  after the same ownership/lock checks and individual MSF-header validation,
+  only 414 inactive Mere debug PDB files were removed, recovering another
+  51,586,351,104 bytes to reach 538,986,729,472 free bytes. Exact filenames,
+  byte counts and guards are in `cache-symbol-cleanup.json`. Source, receipts
+  and active outputs remain. The stable Isocosm target remains for A1 and H6/F work;
   no isolated target, Cargo home or worktree was created.
 
 - **2026-10-16, H5 landed:** the core's
