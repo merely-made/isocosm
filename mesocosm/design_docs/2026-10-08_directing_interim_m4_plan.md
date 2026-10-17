@@ -182,6 +182,16 @@ on Isocosm, both modes, receipts replaying.
 
 ## Findings
 
+- **2026-10-16, A1 seed9 (936):** actual pass-start observation confirms
+  the chosen feeding process stays committed while all resident producer
+  targets depart before its pass. Replacement prey resolution returns none;
+  all64 meals block. Next tick two moves tie at zero and all64 consumers
+  take the first process ID. All13 pass-start and5 feeding controls pass.
+  The unchanged full162-tick extinction and bounded-window replay receipts,
+  observer limitations and pending movement-policy fork are recorded once
+  in [the after-pass Findings](2026-10-10_after_pass_plan.md#findings).
+  No behavior, cadence, rate or acceptance gate changes here.
+
 - **2026-10-11, Q3 fresh bare seed zero classified:** the original arm
   ends at tick 41 without births; the independently frozen 454/813 candidate
   reaches tick 180 with three played births, eight played heirs and three

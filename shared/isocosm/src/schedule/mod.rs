@@ -182,6 +182,8 @@ impl Simulation {
             // another writes (ruling 454).
             self.frame = framed(process).then(|| Frame::starting(self.state.notes.len()));
             self.chosen.begin_pass();
+            #[cfg(test)]
+            self.record_food_pass(&id);
             if process.takes_shared() {
                 self.plan(process, &id, gates.as_ref(), bound);
                 self.geometry_ready()?;
@@ -377,6 +379,8 @@ impl Simulation {
                 ),
             };
             self.geometry_ready()?;
+            #[cfg(test)]
+            self.record_food_outcome(actor, id, accepted);
             if let (Some(answers), Some(before)) = (answering, before) {
                 self.answered(actor, id, answers, before, accepted);
             }

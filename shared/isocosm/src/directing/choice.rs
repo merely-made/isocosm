@@ -15,6 +15,10 @@ use crate::{
 };
 use std::collections::BTreeMap;
 
+#[cfg(test)]
+#[path = "choice/trace.rs"]
+pub(crate) mod trace;
+
 /// Each deliberative critter's choice at one tick, kept for an advance.
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Chosen {
@@ -147,6 +151,11 @@ pub(crate) fn moves(p: &Process) -> Vec<Id> {
 }
 
 impl Simulation {
+    #[cfg(test)]
+    pub(crate) fn recorded_choices(&self) -> (Tick, BTreeMap<Id, Choice>) {
+        (self.chosen.tick, self.chosen.by.clone())
+    }
+
     pub(crate) fn institution_chosen(&self,actor:Id,process:&str) -> bool {
         if self.pass.is_none() {return false;}
         match self.body_at_start(actor).map(|body|body.method) {
@@ -175,6 +184,8 @@ impl Simulation {
         // so planning and visiting share one decision within that pass.
         if !self.chosen.by.contains_key(&actor) {
             let choice = self.choose(actor);
+            #[cfg(test)]
+            self.record_choice_attempt(actor, &process.id, &choice);
             self.chosen.by.insert(actor, choice);
         }
         let c = &self.chosen.by[&actor];
