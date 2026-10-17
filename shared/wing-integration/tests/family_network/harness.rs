@@ -1,7 +1,7 @@
-use std::fmt::Display;
 use std::rc::Rc;
 use std::sync::Arc;
 use std::time::Duration;
+use std::{fmt::Display, path::Path};
 
 use chirograph::{
     Carrier, CarrierRequestBody, CarrierResponseBody, IntentInvocation, IntentResult,
@@ -10,7 +10,10 @@ use chirograph::{
 use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
 use isocosm::Execution;
 use isocosm_host::world::World;
-use isonetry::family::{AcceptedRecord, FamilyHost, FamilyReplica, SessionId, WireLimits};
+use isonetry::family::{
+    AcceptedRecord, FamilyHost, FamilyLedgerLimits, FamilyLimits, FamilyReplica, SessionId,
+    WireLimits,
+};
 use isonetry::family_network::{
     FamilyCheckpointDescriptor, FamilyCheckpointResource, FamilyRecordLane,
     verify_checkpoint_resource,
@@ -55,14 +58,43 @@ impl Harness {
         let (session, mut sections) = world.into_parts().expect("fixture world is unshared");
         sections.insert(OPAQUE.into(), SENTINEL.to_vec());
         let session_id = SessionId([seed; 16]);
+        let host = FamilyHost::new(session_id, World::with_sections(session, sections))
+            .expect("family host");
+        Self::from_host(
+            host,
+            seed,
+            SigningKey::from_bytes(&[seed.wrapping_add(2); 32]),
+        )
+        .await
+    }
+
+    pub async fn new_file(
+        world: World,
+        seed: u8,
+        path: impl AsRef<Path>,
+        host_key: SigningKey,
+    ) -> Self {
+        let (session, mut sections) = world.into_parts().expect("fixture world is unshared");
+        sections.insert(OPAQUE.into(), SENTINEL.to_vec());
+        let session_id = SessionId([seed; 16]);
+        let host = FamilyHost::create_file(
+            path,
+            session_id,
+            World::with_sections(session, sections),
+            FamilyLimits::default(),
+            FamilyLedgerLimits::default(),
+        )
+        .expect("durable family host");
+        Self::from_host(host, seed, host_key).await
+    }
+
+    pub async fn from_host(host: FamilyHost, seed: u8, host_key: SigningKey) -> Self {
+        let session_id = SessionId([seed; 16]);
         let topic = [seed.wrapping_add(1); 32];
-        let host = Rc::new(RefCell::new(
-            FamilyHost::new(session_id, World::with_sections(session, sections))
-                .expect("family host"),
-        ));
+        let host = Rc::new(RefCell::new(host));
         let checkpoint = host.borrow_mut().checkpoint().expect("family checkpoint");
         let replica = FamilyReplica::install(checkpoint, &[], Execution::Individuals)
-            .expect("replica installs same-world checkpoint");
+            .expect("replica installs current host checkpoint");
 
         let alpn = host_carrier::projection_alpn();
         let owner = Arc::new(
@@ -95,7 +127,6 @@ impl Harness {
             .unwrap();
         guest.set_topics(owner_id, &[overlay]).await.unwrap();
 
-        let host_key = SigningKey::from_bytes(&[seed.wrapping_add(2); 32]);
         let (owner_tx, owner_rx) = tokio::sync::mpsc::channel(8);
         let (guest_tx, guest_rx) = tokio::sync::mpsc::channel(8);
         let owner_lane = FamilyRecordLane::join(
@@ -134,6 +165,35 @@ impl Harness {
             host_key,
             seed,
         }
+    }
+
+    pub async fn republish_persisted_suffix(&mut self, after_sequence: u64) -> Vec<AcceptedRecord> {
+        let records = self
+            .host
+            .borrow()
+            .persisted_suffix_after(after_sequence)
+            .expect("file-backed host returns verified stored suffix");
+        for record in &records {
+            self.owner_lane
+                .publish(record, &self.host_key, WireLimits::default())
+                .await
+                .expect("recovered host key republishes stored accepted record");
+            let received = wait_for_record(&mut self.guest_rx, record.sequence).await;
+            assert_eq!(received, *record);
+            self.fresh_replica
+                .as_mut()
+                .expect("reconnect control bootstraps a fresh replica first")
+                .apply(received)
+                .expect("fresh replica applies republished suffix");
+        }
+        let pending = self.host.borrow().drain_records();
+        assert!(pending.iter().all(|pending| {
+            records.iter().any(|record| {
+                record.sequence == pending.sequence && record.digest == pending.digest
+            })
+        }));
+        self.assert_converged();
+        records
     }
 
     pub async fn sync_pending(&mut self) -> Vec<AcceptedRecord> {
