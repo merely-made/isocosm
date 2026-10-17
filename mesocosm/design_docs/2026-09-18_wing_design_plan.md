@@ -11956,7 +11956,32 @@ what later sections derive from.
      .gitattributes rule (Recommended)". It lands as its own commit after
      the merge, verified by the same test passing on this checkout.
 
-     Next unused 970.
+970. **Bodies get a fixed sun matching the tracer's; the field waits.**
+     Asked 2026-10-17 with the audit's evidence: the sim exposes no sun or
+     day/night field (`ecology.rs` holds only a constant per-site
+     `sim:energy` account, and the presets' schedules are read by nothing);
+     the tracer's sun is the literal `normalize(0.4, 0.8, 0.3)` with terrain
+     light 0.38 + 0.62 * max(0, N.L) (`tracer.wgsl`, `march.wgsl`); the
+     tenant lit bodies by ambient only, with `isometer::render::face_shade`
+     baked into vertex colours by the quad's local axis, so a rotated body
+     kept the wrong shade. Options for the slice: (a) a fixed sun, shadows
+     off (recommended); (b) a sun driven from a sim field, shadows on, which
+     needs the field admitted first; (c) leave ambient and wait. Mark on the
+     slice: "kick b up to the orchestrator"; the orchestrating session then
+     confirmed (a), with (b) staying its own assessment item. *Reading, not
+     ruled:* that confirmation is the orchestrator's, not Mark's words. Under
+     (a) Mark chose "Match the tracer (Recommended)", "Drop it on the tenant
+     path (Recommended)" and "Master multiplier, default 1 (Recommended)".
+     So the tenant carries a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38
+     and sun 0.62 (as kiss3d's albedo/pi diffuse, intensity 0.62 pi), shadows
+     off; `geometry.rs` stops applying `face_shade` on the tenant path only
+     (the VTT and Eponym `LiveBody` keep it); `--body-light` scales sun and
+     ambient together, 1 matching the terrain and 0 dark. The 0.38 and 0.62
+     are the tracer's constants, so terrain and bodies read under one sun
+     until the admitted field replaces both, and ruling 472's block stays
+     the destination. 749's torch shadows are untouched.
+
+     Next unused 971.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
