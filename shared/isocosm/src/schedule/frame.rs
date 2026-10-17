@@ -15,10 +15,32 @@ use crate::{
     rules::Rules,
     schema::*,
 };
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, sync::{Arc, Mutex}};
+
+/// Derivative pass-local view of a body's holdings. It is deliberately reset
+/// when a frame is cloned, since a clone may become a candidate world.
+#[derive(Debug, Default)]
+struct BooksCache(Mutex<BTreeMap<Id, Arc<Ledger>>>);
+
+impl Clone for BooksCache {
+    fn clone(&self) -> Self { Self::default() }
+}
+
+impl BooksCache {
+    fn get_or_insert(&self, id: Id, make: impl FnOnce() -> Ledger) -> Arc<Ledger> {
+        if let Some(ledger) = self.0.lock().unwrap_or_else(|p| p.into_inner()).get(&id).cloned() {
+            return ledger;
+        }
+        // Build outside the lock; callers never read a ledger while holding it.
+        let built = Arc::new(make());
+        let mut cache = self.0.lock().unwrap_or_else(|p| p.into_inner());
+        cache.entry(id).or_insert_with(|| built.clone()).clone()
+    }
+}
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Frame {
+    books: BooksCache,
     notes_bound: Option<usize>,
     sites: BTreeMap<Id, Site>,
     polities: BTreeMap<Id, Option<Polity>>,
@@ -97,6 +119,9 @@ pub(crate) fn edible(ledger: &Ledger, of: &[Key]) -> Ledger {
 }
 
 impl Frame {
+    pub(crate) fn books(&self, id: Id, body: &Entity) -> Arc<Ledger> {
+        self.books.get_or_insert(id, || crate::anatomy::books(body))
+    }
     pub(crate) fn institutions(&self) -> Option<&crate::institutions::Records> {self.institutions.as_ref()}
     pub(crate) fn keep_institutions(&mut self,was:&crate::institutions::Records) {
         if self.institutions.is_none() {self.institutions=Some(was.clone());}

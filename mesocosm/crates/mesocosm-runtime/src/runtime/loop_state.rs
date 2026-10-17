@@ -19,6 +19,7 @@ impl Mesocosm {
 
     /// The game with its saved loop sealed against the world's session.
     pub(crate) fn loop_game(&self, world: &World, queued: Vec<Envelope>) -> Game {
+        let _span = crate::profile::Span::new("loop_game.total");
         let mut game = self.spatial.clone();
         let prior = game.continuation.as_ref();
         let phase = match prior.map(|p| p.phase) {
@@ -70,6 +71,7 @@ impl Mesocosm {
     /// The saved loop's settings and state, adopted. Its queue is the
     /// driver's to restore; its fault is kept here and restored there.
     pub(crate) fn restore_loop(&mut self, world: &World) -> Result<(), String> {
+        let _span = crate::profile::Span::new("restore_loop.total");
         let Some(saved) = &self.spatial.continuation else { return Ok(()); };
         saved.validate_session(&session(world), &self.spatial)?;
         self.lp.participant = saved.participant;
@@ -131,14 +133,27 @@ impl Mesocosm {
                 expected: continuation::cut(&session, &self.spatial),
                 action: LoopAction::Answer(LoopAnswer::Checkpoint(answer)) }
         };
-        self.loop_input(world, &input, continuation::answer_loop)
+        let mut game = self.spatial.clone();
+        let out = commit(world, |session| continuation::answer_verified(
+            session, &mut game, access, &input, self.verified_question.as_ref()))?;
+        self.spatial = game;
+        self.verified_question = None;
+        self.restore_loop(world).map_err(Refusal::Sim)?;
+        Ok(out)
     }
 }
 
 impl Runtime {
+    /// A presentation filter over this driver's last successful publication or
+    /// validated restore. A changed shared World requires the full reading.
+    pub fn current_loop_phase(&self) -> Option<LoopPhase> {
+        (self.seen == Some(self.revision().ok()?)).then_some(self.published_phase).flatten()
+    }
+
     pub fn loop_settings(&self) -> LoopSettings { self.driver.product().loop_settings() }
 
     pub fn loop_reading(&self) -> Result<LoopReading, String> {
+        let _span = crate::profile::Span::new("loop_reading.total");
         let world = self.driver.world();
         let product = self.driver.product();
         let game = product.loop_game(world, self.driver.queued().cloned().collect());

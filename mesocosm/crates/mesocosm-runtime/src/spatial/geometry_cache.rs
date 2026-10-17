@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! One-call reuse of immutable site geometry. Native actor checks stay with callers.
+//! Bounded reuse of immutable site geometry. Native actor checks stay with callers.
 
 use isocosm::{operations::Window, schema::Id, simulation::Simulation};
 use isometer_space::{
@@ -23,17 +23,20 @@ struct Geometry {
     places: Places,
 }
 
-/// A single entry keeps temporary geometry bounded to one ordinary realization.
-/// It spans one refresh or atomic clock transaction and is never persisted.
+/// One exact geometry entry stays bounded across owner rounds, refreshes, and
+/// atomic clock transactions. Exact key checks gate reuse; this cache is never persisted.
 #[derive(Default)]
-pub(in crate::spatial) struct GeometryCache {
+pub(crate) struct GeometryCache {
     current: Option<Geometry>,
     #[cfg(test)]
     builds: usize,
 }
 
 impl GeometryCache {
-    pub(in crate::spatial) fn get(
+    #[cfg(test)]
+    pub(in crate::spatial) fn builds(&self) -> usize { self.builds }
+
+    pub(crate) fn get(
         &mut self,
         sim: &Simulation,
         site: Id,
@@ -47,6 +50,7 @@ impl GeometryCache {
             terrain_revision: sim.terrain_revision(),
         };
         if !self.current.as_ref().is_some_and(|entry| entry.key == key) {
+            let _span = crate::profile::Span::new("geometry.build");
             let volume = sim.volume(site, window.min, window.max, window.depth)?;
             let places = Places::derive(&volume, rules)?;
             self.current = Some(Geometry {

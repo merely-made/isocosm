@@ -143,6 +143,8 @@ pub(crate) struct Mesocosm {
     /// stops on the same refusal.
     pub(crate) fault: Option<String>,
     pub(crate) spatial: crate::spatial::Game,
+    verified_question: Option<crate::continuation::VerifiedQuestion>,
+    geometry: crate::spatial::GeometryCache,
 }
 
 /// The session lent for reading; a product never holds it across a commit.
@@ -170,15 +172,19 @@ impl Mesocosm {
 
     /// One round after the queued envelopes have applied.
     fn round(&mut self, world: &World) -> Result<(), String> {
+        let _span = crate::profile::Span::new("round.total");
         self.sync_loop(world);
         let participant = self.lp.participant;
         let mut game = self.spatial.clone();
-        let round = world.cut().and_then(|before| world.product(before, |session|
-            crate::continuation::round::advance_with_flows(session, &mut game, participant)
-                .map_err(|why| format!("{why:?}"))));
+        let round =
+            crate::profile::measure("round.transaction", || world.product_current(|session|
+                crate::continuation::round::advance_with_flows_cached(
+                    session, &mut game, participant, &mut self.geometry)
+                    .map_err(|why| format!("{why:?}"))));
         match round {
-            Ok((_, flows)) => {
+            Ok((_, flows, verified)) => {
                 self.spatial = game;
+                self.verified_question = verified;
                 if let Err(why) = self.restore_loop(world) { self.fault = Some(why.clone()); return Err(why); }
                 if let Some(glyphs) = &mut self.glyphs { glyphs.absorb(&session(world), &flows); }
                 // Preserve the old wholly unmarked run's patch placement only.
@@ -220,6 +226,7 @@ pub struct Runtime {
     /// The world's revision when this runtime last published its game.
     /// `None` means no successful mode-section publication/restore is known.
     seen: Option<u64>,
+    published_phase: Option<crate::continuation::LoopPhase>,
 }
 
 impl Runtime {
@@ -275,9 +282,11 @@ impl Runtime {
             dev_intents: 0,
             fault: None,
             spatial: crate::spatial::Game::default(),
+            verified_question: None,
+            geometry: crate::spatial::GeometryCache::default(),
         };
         let driver = Driver::new(&world, product, Pacing::Clock { ticks_per_second });
-        let mut runtime = Self { driver, seen: None };
+        let mut runtime = Self { driver, seen: None, published_phase: None };
         runtime.publish();
         runtime
     }
@@ -300,13 +309,16 @@ impl Runtime {
     /// Writes the sealed game, the driver's queue and fault included, to the
     /// world's section.
     fn publish(&mut self) {
+        let _span = crate::profile::Span::new("publish.total");
         self.seen = None;
+        self.published_phase = None;
         let world = self.driver.world().share();
         let queued = self.driver.queued().cloned().collect();
-        let game = self.driver.product().loop_game(&world, queued);
-        if let Ok(bytes) = serde_json::to_vec(&game) {
-            if world.put_section(MODE, bytes).is_ok() {
+        let game = crate::profile::measure("publish.loop_game", || self.driver.product().loop_game(&world, queued));
+        if let Ok(bytes) = crate::profile::measure("publish.json", || serde_json::to_vec(&game)) {
+            if crate::profile::measure("publish.section", || world.put_section(MODE, bytes)).is_ok() {
                 self.seen = world.revision().ok();
+                self.published_phase = game.continuation.as_ref().map(|saved| saved.phase);
             }
         }
     }
@@ -316,6 +328,7 @@ impl Runtime {
         let world = self.driver.world().share();
         if self.seen.is_some_and(|seen| world.revision().is_ok_and(|now| now == seen)) { return; }
         self.seen = None;
+        self.published_phase = None;
         let Ok(Some(bytes)) = world.section(MODE) else { return };
         let Ok(game) = serde_json::from_slice::<crate::spatial::Game>(&bytes) else { return };
         let product = self.driver.product_mut();
@@ -326,6 +339,7 @@ impl Runtime {
             return;
         }
         self.seen = world.revision().ok();
+        self.published_phase = self.product().spatial.continuation.as_ref().map(|saved| saved.phase);
     }
 
     pub fn with_max_steps(mut self, max_steps: u64) -> Self {
@@ -388,6 +402,7 @@ impl Runtime {
 
     /// Runs the rounds the elapsed time authorises; a held run banks none.
     pub fn advance(&mut self, elapsed_us: u64) -> u64 {
+        let _span = crate::profile::Span::new("advance.total");
         // While held, elapsed time is discarded. With no queued answer and
         // no shared-world revision since the last successful publication,
         // the saved game is already authoritative and remains unchanged.
@@ -523,7 +538,9 @@ impl Runtime {
 
     pub fn tick(&self) -> u64 { self.sim().state().tick }
 
-    pub fn state_hash(&self) -> u64 { self.sim().state_hash() }
+    pub fn state_hash(&self) -> u64 {
+        self.world().cut().expect("the world is read between transactions").state_hash
+    }
 }
 
 mod replay;
@@ -533,3 +550,11 @@ pub use replay::{GameSave, Receipt, Replayed};
 #[cfg(test)]
 #[path = "runtime/held_advance_tests.rs"]
 mod held_advance_tests;
+
+#[cfg(test)]
+#[path = "runtime/active_profile.rs"]
+mod active_profile;
+
+#[cfg(test)]
+#[path = "runtime/verified_question_tests.rs"]
+mod verified_question_tests;

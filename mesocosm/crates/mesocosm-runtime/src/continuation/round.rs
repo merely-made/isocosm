@@ -16,17 +16,25 @@ pub fn advance_loop(session: &mut Session, game: &mut Game, participant: Id)
 }
 
 pub(crate) fn advance_with_flows(session: &mut Session, game: &mut Game, participant: Id)
-    -> Result<(String, Vec<isocosm::flows::Flow>), Refusal> {
+    -> Result<(String, Vec<isocosm::flows::Flow>, Option<VerifiedQuestion>), Refusal> {
+    let mut geometry = crate::spatial::GeometryCache::default();
+    advance_with_flows_cached(session, game, participant, &mut geometry)
+}
+
+pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, participant: Id,
+    geometry: &mut crate::spatial::GeometryCache)
+    -> Result<(String, Vec<isocosm::flows::Flow>, Option<VerifiedQuestion>), Refusal> {
+    let _span = crate::profile::Span::new("round.borrowed");
     game.validate(session).map_err(Refusal::Sim)?;
     let mut saved = game.continuation.clone()
         .ok_or_else(|| Refusal::Unbuilt("configure the explicit played loop before stepping".into()))?;
     if saved.participant != participant { return Err(Refusal::NotPlayed); }
     if let Some(fault) = &saved.fault { return Err(Refusal::Sim(fault.clone())); }
     if matches!(saved.phase, LoopPhase::Held | LoopPhase::LineageEnded | LoopPhase::WorldEnded) {
-        return Ok(("held for an exact loop answer".into(), Vec::new()));
+        return Ok(("held for an exact loop answer".into(), Vec::new(), None));
     }
     if saved.phase == LoopPhase::NewWorldRequested {
-        return Ok(("new world requested; save and use the explicit founding caller".into(), Vec::new()));
+        return Ok(("new world requested; save and use the explicit founding caller".into(), Vec::new(), None));
     }
     let mut candidate = session.clone();
     let start = session.entries.len();
@@ -35,7 +43,7 @@ pub(crate) fn advance_with_flows(session: &mut Session, game: &mut Game, partici
     let driver = RefCell::new(physical(game));
     let settings = saved.settings;
     let mut world_end = saved.world_end.clone();
-    let mut advance = |session: &mut Session| driver.borrow_mut().advance_clock(session)
+    let mut advance = |session: &mut Session| driver.borrow_mut().advance_clock_with_geometry(session, geometry)
         .map(|out| out.flows);
     let mut score = |session: &Session, lineage: &str, choice: &boundary::Candidate, ticks|
         scoring::score(session, &driver.borrow(), lineage, choice, ticks);
@@ -62,14 +70,16 @@ pub(crate) fn advance_with_flows(session: &mut Session, game: &mut Game, partici
         }
         (out, flows)
     } else {
-        BorrowedInterim::new(&mut candidate, participant, settings.mode,
-            settings.pace, settings.on_collapse).map_err(Refusal::Sim)?
-            .round(&revise::revisions, &mut advance, &mut score).map_err(Refusal::Sim)?
+        crate::profile::measure("round.native_work", || {
+            BorrowedInterim::new(&mut candidate, participant, settings.mode,
+                settings.pace, settings.on_collapse).map_err(Refusal::Sim)?
+                .round(&revise::revisions, &mut advance, &mut score).map_err(Refusal::Sim)
+        })?
     };
     drop(advance);
     drop(score);
     let mut next = driver.into_inner();
-    next.refresh(&mut candidate).map_err(Refusal::Sim)?;
+    next.refresh_with(&mut candidate, geometry).map_err(Refusal::Sim)?;
     saved.windows.absorb(&candidate.sim, &happenings, &flows);
     if saved.phase != LoopPhase::Watching {
         let world_ended = happenings.iter().any(|h| matches!(h, Happening::WorldEnded { .. }));
@@ -105,7 +115,8 @@ pub(crate) fn advance_with_flows(session: &mut Session, game: &mut Game, partici
     next.continuation = Some(saved);
     next.version = next.current_version();
     next.validate(&candidate).map_err(Refusal::Sim)?;
+    let verified = VerifiedQuestion::after_validation(&next);
     *session = candidate;
     *game = next;
-    Ok((format!("advanced {} loop ticks", settings.pace.round), flows))
+    Ok((format!("advanced {} loop ticks", settings.pace.round), flows, verified))
 }

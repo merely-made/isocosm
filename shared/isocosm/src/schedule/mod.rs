@@ -92,6 +92,7 @@ fn framed(p: &Process) -> bool {
 
 impl Simulation {
     pub(crate) fn advance_to(&mut self, end: Tick) -> Result<Work> {
+        let _span = crate::profile::Span::new("schedule.total");
         self.refresh_attention();
         self.protect_attention();
         let mut queue = BTreeSet::new();
@@ -174,6 +175,7 @@ impl Simulation {
             }
             let genesis = std::sync::Arc::clone(&self.genesis);
             let process = &genesis.rules.processes[&id];
+            let _process_span = crate::profile::Span::new(&process.id);
             let gates = self.filed.as_ref().and_then(|f| f.gates(&id)).cloned();
             let pass = Pass::new(&self.state.population);
             let bound = pass.bound;

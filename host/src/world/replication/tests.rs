@@ -9,6 +9,7 @@ fn checkpoint_and_native_time_and_sections_publish_atomically() {
     host.put_section("unknown", vec![0, 255]).unwrap();
     let before = host.replication_snapshot().unwrap();
     let replica = World::resume_replica(before.clone(), Execution::Grouped).unwrap();
+    let original_cut = replica.cut().unwrap();
     host.product_sections(host.cut().unwrap(), |session, sections| {
         session.command(Command::Join)?;
         session.advance(2)?;
@@ -25,8 +26,10 @@ fn checkpoint_and_native_time_and_sections_publish_atomically() {
     };
     assert!(apply(|_, _, _| Err("planted final verification refusal".into())).is_err());
     assert_eq!(replica.replication_snapshot().unwrap(), before);
+    assert_eq!(replica.cut().unwrap(), original_cut);
     apply(|_, _, _| Ok(())).unwrap();
     assert_eq!(replica.replication_snapshot().unwrap(), after);
+    assert_eq!(replica.cut().unwrap(), host.cut().unwrap());
     assert!(apply(|_, _, _| Ok(())).is_err());
     let delete = BTreeMap::from([("unknown".into(), None)]);
     replica.apply_replica_record(after.revision, after.save.native.entries.len(), &[],

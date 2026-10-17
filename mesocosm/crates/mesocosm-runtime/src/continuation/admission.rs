@@ -70,13 +70,27 @@ pub(crate) fn visible(session: &Session, game: &Game, access: OrdinaryAccess) ->
 
 pub fn answer_loop(session: &mut Session, game: &mut Game,
     access: OrdinaryAccess, input: &LoopInput) -> Result<String, Refusal> {
+    answer_verified(session, game, access, input, None)
+}
+
+pub(crate) fn answer_verified(session: &mut Session, game: &mut Game,
+    access: OrdinaryAccess, input: &LoopInput, verified: Option<&VerifiedQuestion>)
+    -> Result<String, Refusal> {
     source(session, game, access, input)?;
     let LoopAction::Answer(answer) = &input.action else { return Err(Refusal::Unasked); };
     let view = visible(session, game, access)?;
     let offered = read_loop(session, game, access, &view).map_err(Refusal::Sim)?;
     let mut saved = game.continuation.clone().ok_or(Refusal::Unasked)?;
     if let Some(fault) = &saved.fault { return Err(Refusal::Sim(fault.clone())); }
-    super::restore::validate_round(&saved, session).map_err(Refusal::Sim)?;
+    // source/read_loop above still validate the current native prefix, exact
+    // product digest, question, access and input cut. This receipt replaces
+    // only historical reconstruction for the identical verified question.
+    if !verified.is_some_and(|proof| proof.matches(game)) {
+        crate::profile::measure("answer.historical_replay", ||
+            super::restore::validate_round(&saved, session)).map_err(Refusal::Sim)?;
+    } else {
+        crate::profile::measure("answer.verified_question", || ());
+    }
     if super::restore::proposals(&saved, session).map_err(Refusal::Sim)? != saved.proposed {
         return Err(Refusal::Sim("saved expression differs from its actual authored proposal".into()));
     }

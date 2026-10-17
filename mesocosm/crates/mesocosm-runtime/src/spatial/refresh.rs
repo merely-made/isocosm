@@ -12,8 +12,26 @@ use std::collections::BTreeMap;
 
 #[path = "geometry_cache.rs"]
 mod geometry_cache;
-pub(super) use geometry_cache::GeometryCache;
+pub(crate) use geometry_cache::GeometryCache;
 use geometry_cache::GeometryCache as LocalGeometryCache;
+
+/// Reuses one bounded geometry entry while checking placements against one
+/// immutable native simulation cut. Every call still performs actor, visit,
+/// pose, eye, patch, and revision validation.
+pub struct RealizedChecker<'a> {
+    sim: &'a Simulation,
+    geometry: GeometryCache,
+}
+
+impl<'a> RealizedChecker<'a> {
+    pub fn new(sim: &'a Simulation) -> Self {
+        Self { sim, geometry: LocalGeometryCache::default() }
+    }
+
+    pub fn check(&mut self, placement: &Placement) -> Result<(), String> {
+        placement.realized_with(self.sim, &mut self.geometry)
+    }
+}
 
 #[derive(Clone, Debug, Default)]
 pub struct Refresh {
@@ -56,7 +74,7 @@ impl Placement {
     /// The exact physical binding used for rendering, including a native
     /// corpse if that native seat cut supplies it. This grants no awareness.
     pub fn realized(&self, sim: &Simulation) -> Result<(), String> {
-        self.realized_with(sim, &mut LocalGeometryCache::default())
+        RealizedChecker::new(sim).check(self)
     }
 
     fn realized_with(&self, sim: &Simulation, cache: &mut GeometryCache) -> Result<(), String> {
@@ -77,11 +95,12 @@ impl Game {
         self.refresh_with(session, &mut LocalGeometryCache::default())
     }
 
-    pub(super) fn refresh_with(
+    pub(crate) fn refresh_with(
         &mut self,
         session: &mut Session,
         geometry: &mut GeometryCache,
     ) -> Result<Refresh, String> {
+        let _span = crate::profile::Span::new("physical.refresh");
         self.version()?;
         let mut game = self.clone();
         let mut native = session.clone();
@@ -167,12 +186,100 @@ mod tests {
         };
         held.realized_with(&session.sim, &mut geometry).unwrap();
 
+        let mut checker = RealizedChecker::new(&session.sim);
+        checker.check(&held).unwrap();
+        checker.check(&held).unwrap();
+        assert_eq!(checker.geometry.builds(), 1, "identical geometry should build once");
+
+        let uncached = |placement: &Placement| {
+            placement.realized_with(&session.sim, &mut LocalGeometryCache::default())
+        };
         let mut stale_body = held.clone();
         stale_body.body_revision = stale_body.body_revision.wrapping_add(1);
-        assert!(stale_body.realized_with(&session.sim, &mut geometry).unwrap_err().contains("stale"));
+        assert_eq!(checker.check(&stale_body), uncached(&stale_body));
 
-        let mut stale_visit = held;
+        let mut stale_visit = held.clone();
         stale_visit.resident_since = Some(member.arrived + 1);
-        assert!(stale_visit.rebound_with(&session.sim, &mut geometry).unwrap_err().contains("visit"));
+        assert_eq!(checker.check(&stale_visit), uncached(&stale_visit));
+
+        let mut stale_terrain = held.clone();
+        stale_terrain.terrain_revision.push_str(":stale");
+        assert_eq!(checker.check(&stale_terrain), uncached(&stale_terrain));
+
+        let mut stale_patch = held.clone();
+        stale_patch.patch.cell = [i64::MAX, i64::MAX, i64::MAX];
+        assert_eq!(checker.check(&stale_patch), uncached(&stale_patch));
+
+        let mut invalid_eye = held.clone();
+        invalid_eye.eye = [i64::MAX, i64::MAX, i64::MAX];
+        assert_eq!(checker.check(&invalid_eye), uncached(&invalid_eye));
+
+        let mut invalid_pose = held.clone();
+        invalid_pose.pose.at = [i64::MAX, i64::MAX, i64::MAX];
+        assert_eq!(checker.check(&invalid_pose), uncached(&invalid_pose));
+
+        let mut missing_actor = held;
+        missing_actor.actor = EntityHandle(u64::MAX);
+        assert_eq!(checker.check(&missing_actor), uncached(&missing_actor));
+
+        let departed = session.sim.state().population.groups.iter().find_map(|(&id, group)| {
+            (id != actor && (group.entity.body.is_none()
+                || group.entity.resident_site() != Some(site))).then_some(id)
+        }).expect("fixture has a member without a current body at this site");
+        let mut departed_actor = missing_actor;
+        departed_actor.actor = EntityHandle(departed);
+        assert_eq!(checker.check(&departed_actor), uncached(&departed_actor));
+    }
+
+    #[test]
+    fn realized_checker_rebuilds_when_its_exact_geometry_key_changes() {
+        let mut session = geometry_cache::physical_test_session();
+        let templates = session.sim.genesis().rules.spatial_templates.clone().unwrap();
+        let (site, stand) = templates.stands.iter().find_map(|(&site, stands)|
+            stands.first().map(|stand| (site, stand.clone())))
+            .expect("generated map declares at least one stand");
+        let actor = session.sim.state().population.groups.iter().find_map(|(&id, group)| {
+            let entity = &group.entity;
+            (entity.alive && entity.body.is_some() && entity.resident_site() == Some(site)).then_some(id)
+        }).expect("declared stand site has an embodied resident");
+        let member = session.sim.state().population.get(actor).unwrap().clone();
+        let window = Window { min: [stand.at[0] - 1, stand.at[2] - 1],
+            max: [stand.at[0] + 2, stand.at[2] + 2], depth: templates.window.depth };
+        let mut geometry = LocalGeometryCache::default();
+        let (volume, places) = geometry.get(&session.sim, site, &window, Rules::default()).unwrap();
+        let material = volume.materials;
+        let (at, patch) = (window.min[0]..window.max[0]).find_map(|x|
+            (window.min[1]..window.max[1]).find_map(|z|
+                (volume.datum..volume.ceiling()).find_map(|y| {
+                    let at = [x, y, z];
+                    let patch = places.place_at(at)?;
+                    (volume.material(at).is_some_and(|m| m == material.air || m == material.water))
+                        .then_some((at, patch))
+                }))).expect("window contains a clear patch cell");
+        let held = Placement { actor: EntityHandle(actor), site: PlaceHandle(site), patch,
+            body_revision: member.body_revision, terrain_revision: session.sim.terrain_revision(),
+            pose: super::super::Pose { at, yaw: isometer_core::Yaw::Zero }, eye: at,
+            window, operations: BTreeMap::new(), places: Some(Rules::default()),
+            resident_since: Some(member.arrived) };
+        session.command(Command::Patch { entity: actor, patch: Some(patch) }).unwrap();
+        let mut checker = RealizedChecker::new(&session.sim);
+        checker.check(&held).unwrap();
+        let mut changed_key = held.clone();
+        changed_key.window.max[0] = changed_key.window.max[0].saturating_add(1);
+        let actual = checker.check(&changed_key);
+        let expected = changed_key.realized_with(&session.sim, &mut LocalGeometryCache::default());
+        assert_eq!(actual, expected);
+        assert_eq!(checker.geometry.builds(), 2, "changed window key must rebuild geometry");
+
+        let mut changed_rules = held.clone();
+        changed_rules.places = Some(Rules { neck: None, ..Rules::default() });
+        let actual = checker.check(&changed_rules);
+        let expected = changed_rules.realized_with(&session.sim, &mut LocalGeometryCache::default());
+        assert_eq!(actual, expected);
+        assert_eq!(checker.geometry.builds(), 3, "changed rules key must rebuild geometry");
+
+        assert_eq!(checker.check(&held), held.realized_with(
+            &session.sim, &mut LocalGeometryCache::default()));
+        assert_eq!(checker.geometry.builds(), 4, "alternating keys evict the prior one-entry cache");
     }
 }

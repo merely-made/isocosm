@@ -66,6 +66,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
     -> Result<SiteScene, String> {
     let visible = runtime.sighted_view(site, sight)?;
     let sim = runtime.sim();
+    let mut realized = mesocosm_runtime::spatial::RealizedChecker::new(&sim);
     let volume = site.volume().clone();
     let ground = volume.ground().clone();
     let cells = std::iter::once((sight.observer, sight.eye))
@@ -77,7 +78,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
         let Some(document) = e.body.clone() else { continue; };
         let physical = if e.alive { None } else {
             let Some(held) = runtime.spatial().members.get(&id) else { continue; };
-            held.realized(&sim)?;
+            realized.check(held)?;
             if held.site.0 != site.site() || held.pose.at != cell {
                 return Err("corpse sight cell differs from its current saved physical pose".into());
             }
@@ -143,11 +144,12 @@ pub fn placed_physical(sim: &Simulation, site: Id,
     game: &mesocosm_runtime::spatial::Game) -> Result<Vec<PlacedBody>, String> {
     game.version()?;
     let mut bodies = Vec::new();
+    let mut realized = mesocosm_runtime::spatial::RealizedChecker::new(sim);
     for (&id, at) in &game.members {
         if at.site.0 != site || !visible.shows(id) { continue; }
         let entity = sim.state().population.get(id).ok_or("physical picture names an absent native member")?;
         if entity.resident_site() != Some(site) { continue; }
-        at.realized(sim)?;
+        realized.check(at)?;
         let Some(document) = entity.body.clone() else { continue; };
         if !volume.holds(at.pose.at[0], at.pose.at[2]) { continue; }
         let cell = volume.to_ground(at.pose.at);

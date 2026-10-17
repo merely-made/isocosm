@@ -316,6 +316,95 @@ starts.
 
 ## Progress
 
+- **2026-10-17, active-update performance lane:** profile the 32 to 50 second
+  active callbacks, remove redundant work while preserving native commands,
+  hashes, product section bytes, revision/refusal behavior and replay gates.
+  Required receipts are bounded before/after phase timings on the same qualified
+  A1 seed-9 save, matching native/product signatures, focused regression controls,
+  compiler checks and a final native head capture/profile. Owner:
+  `Code/testing/isometry/active-updates-2026-10-17/`, total cap 100 MB. Reuse the
+  existing save and stable target. One Cargo owner; the initial passes used one
+  compiler job. Subsequent native and head builds use two jobs while free RAM exceeds
+  10 GiB, reducing the independent library/test compilation wait without parallel
+  test or profiling workloads.
+  First measurements isolate redundant historical answer replay (23.552 s),
+  repeated native witness hashing and full loop readings used only as pane
+  predicates. A process-local receipt, minted only by the validated live round
+  or mandatory full restore, replaces historical reconstruction for the exact
+  same continuation. Changed continuations fall back to replay; current access,
+  native/product/question cut and refusal checks remain mandatory. World cuts
+  cache only accepted native authority, invalidated at all three native publish
+  paths. The phase hint is invalid after external publication or failed publish.
+  The same saved answer is 1.963 s and the following tick 1.670 s (formerly
+  2.250 s), with exact native save, section, reading, trace, tick and revision.
+  Controls: 56 host passes, five explicitly ignored atomic-file tests; 22 runtime
+  passes, two explicit profiling ignores; two additional geometry controls pass.
+  The first head repeats the prior clock seed explicitly: all 15 native steps
+  reach tick 75 and hash `90c45b8673d88264`. Active callbacks are 5.006, 25.962
+  and 21.458 s, still too slow. Scene/UI refresh is below 16 ms; the remaining
+  time is native clock preparation, including a 7.679 s single-tick spike.
+  Clock delivery groups the same steps differently after the speedup, producing
+  revision 21 rather than 20 through an additional accepted intermediate product
+  publication. This is not a claim of identical callback boundaries. Receipts:
+  `saved-update-comparison.json`, `first-head-comparison.json`, the bound profile
+  logs and native captures under the owner above. Deeper native pass timing
+  identifies repeated prey-ledger construction and two complete source hashes
+  per spatial tick. The owner clock now stages and publishes under one exclusive
+  Session borrow; the separate Prepared API retains its stale-source guard.
+  Prey holdings are cached only within the pass-start Frame, and immutable
+  admitted process definitions retain their content addresses. Three atomic
+  spatial controls and three target controls pass, including pending/refused
+  unchanged sources, exact guarded/atomic saves, and changed/split/dead/born
+  targets in both execution modes. Before the address cache, the seed-9 answer
+  is 1.896 s and its next tick 1.225 s, with every recorded signature exact
+  (`atomic-books-comparison.json`). The address lookup probe compares identical
+  ordered matches: 100,000 resolutions take 109,798 us freshly hashed versus
+  252 us with retained addresses. This microprobe does not predict head latency.
+  All 14 process controls, four port-admission controls and three target controls
+  pass against the final address-cache build. The release native test harness
+  takes 3m18s to compile, while those controls run in 0.03 s total.
+  A small `mesocosm-active-profile` executable reuses the shipping runtime's
+  dependency graph and the existing qualified save, avoiding a library test
+  harness rebuild for repeated measurements. Set `MESOCOSM_ACTIVE_SAVE` to
+  that save and `MESOCOSM_PROFILE_ACTIVE=1` for the bounded phase log;
+  `ISOCOSM_PROFILE_ACTIVE=1` adds native pass timing. The address-cache head
+  preserves tick 75/hash `90c45b8673d88264`, with active callbacks 4.817,
+  23.468 and 16.368 s and a 52.366 s full witness. The final saved answer
+  is 2.101 s, next tick 1.301 s and restore 57.012 s, with every signature
+  unchanged. These are still long callbacks. Its 15 active ticks spend
+  10.926 s in native scheduling, 8.314 s in three physical refreshes per tick,
+  4.391 s in immediate owner-cut hashing and repeated physical seals/validation.
+  The saved game's 8.1 MB ecology witness is unchanged admission evidence.
+  A subsequent pass shares that witness with copy-on-write mutation and caches
+  its exact encoded bytes for physical digests; the normal saved encoding and
+  all replay/validation gates remain intact. Immediate owner rounds use an
+  exclusive synchronous World transaction; delayed public Prepared/product
+  calls retain their original source-cut checks. A single exact-key geometry
+  cache now survives owner rounds; public wrappers retain fresh local caches.
+  The key covers all native volume inputs, site/window and placement rules;
+  body and visit checks run on every refresh. The final head builds geometry
+  five times across its 15 active ticks (142 ms total).
+  Final active callbacks are **2.817, 15.190 and 10.674 s**, a **64.95%**
+  reduction in total callback time from the original 32.192/49.634 s run.
+  The same 15 native steps reach tick 75/hash `90c45b8673d88264`; the final
+  capture shows the same legitimate loss checkpoint and 352 living descendants.
+  Revision 21 has the previously explained extra accepted intermediate product
+  publication. The final saved case answers in 1.668 s and steps in 0.962 s,
+  preserving every native/product/reading/trace/revision signature. Restore is
+  57.379 s and full default witness 51.428 s. All 58 host controls pass (five
+  explicit atomic-file ignores); the final real-witness controls prove exact
+  serialization/digest, COW isolation, cache invalidation and unknown-field
+  refusal. Warm physical digest is 7.2 ms. The rebuilt shipping head passes.
+  Receipts: `retained-geometry-binding.json`, `retained-geometry-head-comparison.json`,
+  `retained-geometry-saved-comparison.json`, phase logs and inspected PNG,
+  `current-world-controls.log` and `final-seal-controls.log` under the owner above.
+  Remaining active latency is substantial: native scheduling takes 9.948 s,
+  clock preparation 14.187 s and physical refresh 5.995 s across those 15 ticks
+  (nested totals overlap). Geometry construction accounts for little of that
+  refresh time; Session/Game copying and refresh checks need separate timings
+  before another optimization. This pass does not qualify an interactive frame
+  budget. The retained cache is one volume/Places entry, not saved authority.
+
 - **2026-10-17, H7 owner-thread bridge and lifecycle controls:** the shared
   family layer now provides a bounded admitted-stream request bridge with an
   owner wake callback, explicit authenticated-peer keys, response deadlines

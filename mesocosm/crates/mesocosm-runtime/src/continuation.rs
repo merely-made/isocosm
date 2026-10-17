@@ -9,6 +9,9 @@ pub(crate) mod admission;
 pub(crate) mod round;
 pub(crate) mod scoring;
 pub(crate) mod restore;
+mod verified;
+pub(crate) use verified::{VerifiedQuestion, validate_replayed_question};
+pub(crate) use admission::answer_verified;
 pub use types::*;
 pub use read::read_loop;
 pub use admission::{answer_loop, configure_loop, submit_loop};
@@ -34,10 +37,11 @@ pub fn cut(session: &Session, game: &Game) -> LoopCut {
 
 impl Continuation {
     pub(crate) fn seal(&mut self, session: &Session, game: &Game) {
-        self.native = prefix(session);
+        let _span = crate::profile::Span::new("continuation.seal");
+        self.native = crate::profile::measure("seal.native", || prefix(session));
         self.native_entries = session.entries.len() as u64;
         self.native_tick = session.sim.state().tick;
-        self.physical = isocosm::digest(&physical(game));
+        self.physical = crate::profile::measure("seal.physical", || game.physical_digest());
     }
 
     pub fn question(&self) -> Option<String> {
@@ -47,13 +51,14 @@ impl Continuation {
     }
 
     pub fn validate_session(&self, session: &Session, game: &Game) -> Result<(), String> {
+        let _span = crate::profile::Span::new("continuation.validate");
         let count = usize::try_from(self.native_entries).map_err(|_| "loop source count overflow")?;
         if self.version != VERSION || self.native_tick != session.sim.state().tick
             || count > session.entries.len()
             || self.native != isocosm::digest(&(&session.branch, session.sim.genesis(),
                 &session.entries[..count], self.native_tick))
             || session.entries[count..].iter().any(|entry| !matches!(&entry.command, isocosm::Command::Window(_)))
-            || self.physical != isocosm::digest(&physical(game)) {
+            || self.physical != game.physical_digest() {
             return Err("saved loop names another native/product cut".into());
         }
         if self.settings.pace.round == 0 || self.settings.pace.scoring == 0
@@ -62,6 +67,26 @@ impl Continuation {
             return Err("saved loop participant or explicit pace invalid".into());
         }
         restore::validate_question(self, session)
+    }
+}
+
+impl Game {
+    /// Exact digest of the existing physical Game encoding. The final ecology
+    /// field is unchanged admission evidence, so serialize it once per value.
+    /// Every mutable Seal access invalidates that derivative byte cache.
+    pub fn physical_digest(&self) -> String {
+        use sha2::{Digest,Sha256};
+        let mut physical = physical(self);
+        let ecology = physical.ecology.take();
+        let prefix = serde_json::to_vec(&physical).expect("physical game serializes");
+        let mut hash = Sha256::new();
+        hash.update(&prefix[..prefix.len()-1]);
+        if let Some(ecology) = ecology {
+            hash.update(b",\"ecology\":");
+            hash.update(ecology.json());
+        }
+        hash.update(b"}");
+        format!("{hash:x}",hash=hash.finalize())
     }
 }
 

@@ -76,6 +76,7 @@ pub enum Preparation { Pending(Pending), Ready(Prepared) }
 pub struct Prepared { candidate: Session, source: Key, pub work: Work, flows: Vec<crate::flows::Flow> }
 
 pub(crate) fn source(session: &Session) -> Key {
+    let _span = crate::profile::Span::new("prepared.source");
     crate::digest(&(&session.branch, &session.entries, session.sim.state_hash(),
         session.sim.genesis()))
 }

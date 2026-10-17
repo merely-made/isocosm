@@ -98,12 +98,25 @@ impl Process {
         &self, actor: &Entity, prey: &Entity, rules: &Rules,
         lineages: &std::collections::BTreeMap<Key, Lineage>,
     ) -> bool {
+        self.admits_meal_with(actor, prey, rules, lineages, || {
+            std::sync::Arc::new(crate::anatomy::books(prey))
+        })
+    }
+
+    /// Same eligibility check, with a lazy pass-start holdings source. Keep
+    /// the source lazy so non-feeding processes and actors without an intake
+    /// organ do not pay to construct the prey ledger.
+    pub(crate) fn admits_meal_with(
+        &self, actor: &Entity, prey: &Entity, rules: &Rules,
+        lineages: &std::collections::BTreeMap<Key, Lineage>,
+        holdings: impl FnOnce() -> std::sync::Arc<Ledger>,
+    ) -> bool {
         let Some(feeding) = &self.port_feeding else { return true };
         let Ok((_, intake)) = feeding.part(actor) else { return false };
-        let holdings = crate::anatomy::books(prey);
+        let holdings = holdings();
         let admits = |e: &Effect| match e {
             Effect::Eat { from: Binding::Target, of, .. } => {
-                let offered = crate::schedule::edible(&holdings, of);
+                let offered = crate::schedule::edible(holdings.as_ref(), of);
                 feeding.offered(intake, &offered, prey.alive, rules, lineages)
                     .is_ok_and(|held| !held.is_empty())
             },

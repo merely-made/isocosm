@@ -52,6 +52,16 @@ impl Simulation {
         if let Query::Institution {producer}=query {
             return self.institution_producer_ready(actor,target,producer);
         }
+        if let Query::Holds { who: Binding::Target, at_least } = query {
+            let id = target.ok_or_else(|| "target is required".to_owned())?;
+            let holdings = self.books_at_start(id).ok_or_else(|| "body missing".to_owned())?;
+            let reading = crate::meaning::mass(&holdings, &self.genesis.rules);
+            return if reading >= u128::from(*at_least) {
+                Ok(format!("{query:?} = {reading}"))
+            } else {
+                Err(format!("missing requirement: {query:?} = {reading}"))
+            };
+        }
         let related = |kind: &Key| -> Result<bool> {
             let object = target.ok_or("target required")?;
             Ok(related(&self.state.relations, actor, kind, object).is_some())
@@ -101,6 +111,7 @@ impl Simulation {
                 .as_ref()
                 .is_none_or(|lineage| lineage == &b.lineage)
             && (selector.among.is_empty() || selector.among.contains(&b.lineage))
-            && p.admits_meal(a, b, &self.genesis.rules, &self.state.lineages)
+            && p.admits_meal_with(a, b, &self.genesis.rules, &self.state.lineages,
+                || self.books_at_start(target).expect("target body exists"))
     }
 }
