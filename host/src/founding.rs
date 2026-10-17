@@ -6,7 +6,7 @@
 //! genesis only with the joint witness (875) and admission (879) that bind
 //! it, while the bench, a dev instrument, and authored worlds need neither.
 
-use isocosm::ecology::{Admission, JointWitness};
+use isocosm::ecology::{Admission, AdmittedJointRun, JointWitness};
 use isocosm::simulation::Genesis;
 use isocosm::{Execution, Session};
 
@@ -42,6 +42,18 @@ pub fn from_admitted(execution: Execution, offered: Offered<'_>) -> Result<World
     }
     World::resume(WorldSave { format: FORMAT_VERSION, native: offered.witness.native.clone(),
         sections: Default::default() }, execution)
+}
+
+/// Consume the exact run and admission produced in-process by the fresh
+/// native offer path. Decoded saves must continue through `from_admitted` and
+/// `World::resume`, which replay their saved native history.
+pub fn from_admitted_run(execution: Execution, run: AdmittedJointRun)
+    -> Result<(World, JointWitness, Admission), String> {
+    let (witness, admission, session) = run.into_parts();
+    if execution != witness.execution {
+        return Err("the offered execution differs from its admitted witness".into());
+    }
+    Ok((World::new(session), witness, admission))
 }
 
 fn validate(genesis: &Genesis, purpose: Purpose, offered: Option<Offered<'_>>) -> Result<(), String> {

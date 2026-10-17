@@ -6,6 +6,7 @@
 use super::*;
 use crate::{Command, Result, Session, flows::FlowResult,
     history::Saved, simulation::{Execution, Genesis, Work}};
+use super::ValidatedJointRun;
 
 fn clock_input(command: &Command) -> Result<()> {
     match command {
@@ -27,6 +28,14 @@ fn declared(genesis: &Genesis, spec: &JointSpec) -> Result<()> {
 /// No actor is forced to perform a role; missing chosen acts remain missing evidence.
 pub fn run_joint(genesis: &Genesis, spec: &JointSpec, execution: Execution,
     advance: &mut dyn FnMut(&mut Session) -> Result<FlowResult<Work>>) -> Result<JointWitness> {
+    Ok(run_joint_validated(genesis, spec, execution, advance)?.into_parts().0)
+}
+
+/// Runs and replays one trajectory, retaining its exact final Session for a
+/// trusted fresh-offer handoff. The returned capability cannot be decoded or
+/// mutated; callers with saved witness bytes must use `JointWitness::validate`.
+pub fn run_joint_validated(genesis: &Genesis, spec: &JointSpec, execution: Execution,
+    advance: &mut dyn FnMut(&mut Session) -> Result<FlowResult<Work>>) -> Result<ValidatedJointRun> {
     declared(genesis, spec)?;
     let mut session = Session::new(genesis.clone(), execution)?;
     session.sim.begin_ecology_witness(spec)?;
@@ -51,7 +60,7 @@ pub fn run_joint(genesis: &Genesis, spec: &JointSpec, execution: Execution,
     let witness = JointWitness { version: 1, spec: spec.clone(), execution,
         totals: spec.totals(&acts, &genesis.rules)?, native: session.save(), acts };
     witness.validate()?;
-    Ok(witness)
+    Ok(ValidatedJointRun::new(witness, session))
 }
 
 fn replay_acts(saved: &Saved, spec: &JointSpec, execution: Execution) -> Result<Vec<ActionProof>> {

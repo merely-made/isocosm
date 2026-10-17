@@ -13,7 +13,7 @@ mod admission;
 mod structural;
 pub use types::*;
 pub use inventory::GeneratedBasis;
-pub use admission::{Admission, admit};
+pub use admission::{Admission, admit, admit_validated};
 
 use crate::{Result, rules::Rules, simulation::Genesis};
 use std::collections::BTreeSet;

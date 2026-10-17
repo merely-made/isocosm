@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Site-grain offer/save/resume certification. No physical driver is asserted here.
+//! Offer/save/replay certification for site-grain fixtures and generated physical worlds.
 
 #[path = "../../../../shared/isocosm/tests/ecology_independence_879/fixture.rs"]
 mod native_fixture;
@@ -14,7 +14,38 @@ fn setup(execution: Execution) -> Setup {
     Setup { version: 1,
         founded: Founded { genesis: candidate.genesis, start: Start::default(), mode: Mode::Survival,
             pace: Pace { round: 1, scoring: 1 }, on_collapse: OnCollapse::Stay },
-        specification: candidate.spec, execution, spatial: None }
+        specification: candidate.spec, execution, spatial: None, generated_templates: false }
+}
+
+#[test]
+fn accepted_run_handoff_matches_public_replay_and_binds_execution() {
+    for execution in [Execution::Individuals, Execution::Grouped] {
+        let setup = setup(execution);
+        let run = || {
+            let verified = isocosm::ecology::run_joint_validated(
+                &setup.founded.genesis, &setup.specification, execution,
+                &mut |session| session.advance_tick_with_flows()).unwrap();
+            assert_eq!(verified.session().save(), verified.witness().native);
+            let basis = isocosm::ecology::GeneratedBasis::new(
+                setup.founded.genesis.founding.as_ref().unwrap()).unwrap();
+            isocosm::ecology::admit_validated(verified,
+                setup.specification.independence.as_ref().unwrap(), &basis).unwrap()
+        };
+        let (world, witness, admission) =
+            isocosm_host::founding::from_admitted_run(execution, run()).unwrap();
+        let replayed = isocosm_host::founding::from_admitted(execution,
+            isocosm_host::founding::Offered { witness: &witness, admission: &admission }).unwrap();
+        assert_eq!(world.save().unwrap(), replayed.save().unwrap());
+        assert_eq!(world.save().unwrap().native, witness.native);
+        world.advance(1).unwrap();
+        replayed.advance(1).unwrap();
+        assert_eq!(world.save().unwrap(), replayed.save().unwrap(),
+            "the live handoff and decoded replay continue through the same native clock");
+        let other = if execution == Execution::Individuals {
+            Execution::Grouped
+        } else { Execution::Individuals };
+        assert!(isocosm_host::founding::from_admitted_run(other, run()).is_err());
+    }
 }
 
 #[test]
@@ -121,4 +152,67 @@ fn fresh_generated_runtime_constructor_cannot_skip_joint_admission() {
     unmarked.genesis.rules.ecology_witness = None;
     let error = Runtime::new(unmarked, 30).err().expect("unmarked fresh generated constructor must refuse");
     assert!(error.contains("explicit joint ecology witness"), "{error}");
+}
+
+#[test]
+fn generated_a1_offer_authors_and_replays_one_physical_joint_witness() {
+    for execution in [Execution::Individuals, Execution::Grouped] {
+        eprintln!("generated physical witness: {execution:?}, declaring roles");
+        let mut founded = Founded::generated(9, 256).unwrap();
+        assert_eq!(founded.genesis.founding.as_ref().unwrap().ecology_rates,
+            isocosm::ecology::Rates::Stock);
+        let mut founding = founded.genesis.founding.clone().unwrap();
+        founding.ecology_rates = isocosm::ecology::Rates::A1;
+        founded.genesis = founding.generate().unwrap();
+        assert_eq!(founded.genesis.founding.as_ref().unwrap().ecology_rates,
+            isocosm::ecology::Rates::A1);
+        let setup = Setup::generated(founded, execution).unwrap();
+        let mut legacy = serde_json::to_value(&setup).unwrap();
+        legacy.as_object_mut().unwrap().remove("generated_templates");
+        let old_setup: Setup = serde_json::from_value(legacy).unwrap();
+        assert!(!old_setup.generated_templates, "older authored setup retains site-grain clock semantics");
+        let decoded: Setup = serde_json::from_slice(&serde_json::to_vec(&setup).unwrap()).unwrap();
+        assert!(decoded.generated_templates, "the generator-owned clock source survives setup persistence");
+        eprintln!("generated physical witness: {execution:?}, assessing 60 ticks");
+        let assessment = decoded.assess().unwrap();
+        eprintln!("generated physical witness: {execution:?}, assessment complete");
+        assessment.witness.require_roles().unwrap();
+        assert_eq!(assessment.witness.spec.horizon, 60);
+        assert_eq!(assessment.witness.spec.capture.selection.actor_lineage, "lineage:3");
+        assert_eq!(assessment.witness.spec.returned.selection.actor_lineage, "lineage:3");
+        assert_eq!(assessment.witness.spec.reproduction.selection.actor_lineage, "lineage:3");
+        assert_eq!(assessment.witness.spec.counterplay.selection.actor_lineage, "lineage:1");
+        assert_eq!(assessment.witness.spec.counterplay.selection.target_lineage.as_deref(), Some("lineage:3"));
+        assert!(assessment.spatial.driver.is_some(), "889 templates must be the physical witness source");
+        assessment.spatial.validate_replay(
+            &isocosm::Session::load(assessment.witness.native.clone(), execution).unwrap()).unwrap();
+
+        eprintln!("generated physical witness: {execution:?}, offering 60 ticks");
+        let runtime = decoded.offer(30).unwrap();
+        let saved = runtime.save_game();
+        assert!(saved.spatial.driver.is_some());
+        let controlled = runtime.session().sim.plays(runtime.interim().participant)
+            .expect("the admitted generated runtime controls a native body");
+        // Generated stands cover only their declared residents. Other native
+        // bodies remain at site grain, including newborns without a birth solver.
+        let physical = saved.spatial.members.get(&controlled)
+            .map(|placement| placement.realized(&runtime.session().sim));
+        eprintln!("generated physical witness: {execution:?}, controlled={controlled}, physical binding={physical:?}");
+        let replayed = Runtime::replayed_game(saved.clone()).unwrap();
+        assert_eq!(replayed.session.sim.mode(), execution);
+        assert_eq!(replayed.session.save(), saved.native);
+        eprintln!("generated physical witness: {execution:?}, offer/save/replay complete");
+    }
+}
+
+#[test]
+fn generated_a1_offer_refuses_when_founders_have_no_viable_trophic_pair() {
+    let mut founded = Founded::generated(9, 60).unwrap();
+    let mut founding = founded.genesis.founding.clone().unwrap();
+    founding.ecology_rates = isocosm::ecology::Rates::A1;
+    founded.genesis = founding.generate().unwrap();
+    let error = Setup::generated(founded, Execution::Individuals)
+        .err()
+        .expect("the two seed-9 cohorts contain neither a native producer nor consumer");
+    assert!(error.contains("living producer") && error.contains("native feed"), "{error}");
 }

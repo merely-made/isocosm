@@ -8,7 +8,9 @@ landed (H2's forks ruled 899 to 904); H2's step 4 waits on the lifted
 reference-host capabilities (899). 2026-10-16: H4 (954 to 957) and H5
 landed. The ordinary Mesocosm window now runs on Assembly, renders through
 the section producer and resumes core saves. Its native controls and replay
-pass. H6 remains in progress: default launch waits on A1's joint witness.
+pass. A1 and the generated physical joint-witness gate pass. Under 961,
+Mesocosm's ordinary new-world source now selects A1, retaining shared Stock
+defaults. H6 remains in progress until the actual generated launch is captured.
 
 ## Why
 
@@ -307,6 +309,56 @@ starts.
 
 ## Progress
 
+- **2026-10-17, H6 fresh-run handoff, headed qualification pending:** the
+  ordinary generated path retains the final Session from its actual witness
+  run after one full native witness replay. Non-serializable, privately
+  constructed validated/admitted run objects carry that immutable proof into
+  role admission and the core World. The fresh product handoff performs
+  structural checks; public decoded witness, admission, save and restore
+  validators retain full replay. This removes repeated validation and loading
+  of the same in-process witness without caching trust in saved bytes.
+  The Mesocosm workspace/all-target/all-feature compiler check passes, and
+  eight focused handoff, continuation, execution and tamper/refusal controls
+  pass across the running suite and separate negative-control logs. The full
+  seed-9 physical test in both execution modes is still running, and the
+  default headed capture and matching saved replay remain unqualified.
+  Two pre-optimization default trials were stopped without a capture; the
+  later trial's seed, source and binary hashes are preserved in
+  `cached-head-build-binding.json` and
+  `cached-head-repeated-validation-superseded.json`. The current trial uses
+  clock seed `1792226307408123200`; its preparation log is
+  `a1-validated-default-headed.log`. All are under the H6 receipt owner.
+
+- **2026-10-17, H7 bounded restart ledger:** `497644dd` adds an opt-in
+  single-writer file ledger containing the initial World checkpoint and all
+  accepted records, with a configurable 64 MiB default cap. It persists a
+  candidate record before publishing the World, journal or outbox. A failed
+  replacement or capacity refusal leaves those authorities unchanged. Resume
+  validates and replays the checkpoint and suffix. Twenty-seven generic
+  family/network controls pass, including writer exclusion, reopen, atomic
+  refusal, deterministic re-signing with the original host key and continuation
+  of the signed backlink. The all-workspace, all-targets, all-features check
+  passes. Receipts are `durable-ledger-receipt.json` and
+  `durable-family-compiler-qualification.json` under the H7 owner below.
+  The staged file is flushed and synced before replacement; parent-directory
+  sync and power-loss durability are unqualified. The later actual-product
+  restart control below qualifies its exercised harness; Genet's shipping VTT
+  authority migration and production reconnect lifecycle remain open.
+
+- **2026-10-17, H7 actual VTT restart control:** all five actual product-network
+  controls pass (73.23 seconds, zero failures or ignores). A file-backed VTT
+  host persists its endpoint-section and native join records, shuts down both
+  transports, reopens its ledger with the original signing key, bootstraps a
+  fresh peer with the original signed checkpoint over the admitted stream,
+  and republishes the complete stored suffix through JoinedSpace. A subsequent
+  offered `vtt.leave` produces native history and continues the signed family
+  sequence and parent digest. Both replicas converge on the full World, sections,
+  revision and native state. Failed test assumptions and the missing-import
+  retry remain in the receipt directory. The passing log is
+  `durable-product-reconnect-member-controls.log` under the H7 owner.
+  This is an actual endpoint/transport control, not a shipping Genet UI or
+  power-loss receipt.
+
 - **2026-10-17, H7 shared-World gate and live carrier (959, 960):** a
   core publication gate now journals real endpoint and window transactions
   before the same World publishes. It checks append-only history, unchanged
@@ -315,25 +367,36 @@ starts.
   A host can resume from a verified checkpoint and suffix. The family API can
   be built without the interim VTT layer; the default `vtt` feature preserves
   that API, while `family-net` enables its own stack dependencies.
-  Twenty family/network controls pass, including the real admitted
+  Twenty-two generic family/network controls pass, including the real admitted
   Graphshell stream, host-signed JoinedSpace records, opaque section updates,
-  verified stored-suffix recovery and clean carrier/lane shutdown. A negative
+  verified stored-suffix recovery, signed checkpoint-bootstrap verification,
+  and clean carrier/lane shutdown. A negative
   control caught cached signature verification trusting a mutated header;
   the trust boundary now decodes signed bytes and checks the fresh header
   hash before body/record checks. Failed controls remain in the receipt
   directory. Signed operations also require the family parent digest before
-  persistence and across recovery cursors. The actual Mesocosm configure,
-  Eponym step and VTT join each pass a three-product loopback over the
-  admitted stream and signed JoinedSpace records, with full native saves,
-  opaque sections, accepted sequence and World revision converging. The
-  Eponym endpoint persists an absent mode as empty bytes; its step has no
-  native command suffix. Each product's local endpoint control also passes.
-  The final three-product chain gate passes 3/3; `live-carrier-receipt.json`
-  binds the current source and logs. JoinedSpace shutdown cancels its receive
+  persistence and across recovery cursors. Four actual product-network
+  controls pass: Mesocosm configure, Eponym step, VTT join, and a fresh VTT
+  peer that fetches a signed checkpoint over the admitted resource stream
+  before applying a signed accepted-record suffix. They use the admitted
+  stream and host-signed JoinedSpace records, with full native saves, opaque
+  sections, accepted sequence and World revision converging. The Eponym
+  endpoint persists an absent mode as empty bytes; its step has no native
+  command suffix. Each product's local endpoint control also passes.
+  The checkpoint includes the full World and every opaque section; its
+  invitation descriptor must be issued only to peers authorized for full
+  World replication. Projection access alone does not grant that authority.
+  `signed-bootstrap-receipt.json` binds the current source and logs. The v1
+  `live-carrier-receipt.json` cited by `7dd450be` was overwritten; no exact
+  backup was found, while the underlying logs remain. The receipt-directory
+  audit is `Code/testing/isometry/h7-2026-10-17/receipt-manifest-audit.md`.
+  JoinedSpace shutdown cancels its receive
   drain; already indexed records remain recoverable, without promising that
-  every queued delivery completed. World/log persistence is still not
-  crash-atomic, and the old VTT
-  DM-authority core has not retired. Receipt owner and cap remain
+  every queued delivery completed. At this checkpoint World/log persistence
+  had no durable ledger; the later bounded restart slice above adds one.
+  Genet's shipping VTT UI still uses the old DM-authority
+  core. Product host restart and reconnect wiring remain open. Receipt owner
+  and cap remain
   `Code/testing/isometry/h7-2026-10-17/`, 100 MB.
 
 - **2026-10-17, A1 complete matrix (958), default choice (961):** played,
@@ -344,13 +407,31 @@ starts.
   under 100 MB and failed partial receipts preserved. The last thirteen
   Stock receipts use exact canonical replay recipes instead of duplicate
   Genesis bytes; current directing controls pass 52, fail 0, ignore 17.
-  Mark chooses Mesocosm's named A1 default after the physical gate, retaining
-  the shared generator's Stock default. The generated physical offer is
-  still running. Its role declaration comes from living founding populations
+  The generated physical offer now passes assessment, offer, GameSave and
+  exact native replay in Individuals and Grouped (1,182.93 seconds total).
+  `generated-physical-witness-gate.json` binds its source, executable and log
+  under the H6 receipt owner. Under 961, Mesocosm now selects A1 for ordinary
+  new worlds; the shared generator retains Stock. Authored witness inputs
+  retain their previous default declaration or their explicit named rates.
+  The first actual generated launch was stopped without a window capture or
+  saved trace. Its clock-sourced seed was not logged and cannot be recovered.
+  A replacement with explicit seed and witness-duration diagnostics remains
+  unqualified until captured and replayed.
+  The physical role declaration comes from living founding populations
   and their actual producer/consumer definitions before any witness Session
   exists; seed 9 has producer 3 and consumer 1, with no producer 0. A
   population-60 fixture has neither role and refuses rather than claiming
-  empty evidence. Default launch remains closed until the physical gate.
+  empty evidence. The product spatial driver and `isometer-space` are optimized
+  at level 1 in development builds; the unoptimized control was superseded and
+  retained. A one-entry transient geometry cache spans each atomic clock,
+  keyed by exact site, window, Places rules and native terrain revision.
+  Current body, visit, patch and eye checks still run, and the cache is absent
+  from saved authority. Two cache controls pass; the explicit seed-9 timing
+  probe also passes, with one physical member, two geometry requests and one
+  cache build (593.3728 ms uncached, 278.6069 ms cached in the optimized
+  geometry profile). This is a geometry measurement, not a startup speed claim.
+  Logs are `spatial-clock-cache-optimized-controls.log` and
+  `spatial-cache-seed9-optimized-geometry-controls.log` under the H6 owner.
 
 - **2026-10-17, H7 serialized peer slice (959, 960):** `isonetry::family`
   now carries versioned, bounded JSON checkpoints and accepted records over
@@ -366,11 +447,14 @@ starts.
   Twelve serialized two-peer controls pass, covering actual native plus
   section updates, time-only changes, failure after an earlier native command,
   bad post-state with a valid digest, ordering, checkpoint resume, substituted
-  roots, shared-world refusal, versions and wire limits. Receipts:
-  `Code/testing/isometry/h7-2026-10-17/`, cap 100 MB. The real admitted-stream /
-  signed JoinedSpace integration is underway. This slice does not qualify
-  transport, products, crash-atomic World/log persistence or host restart
-  continuity. The VTT's existing protocol/store APIs remain separate under 921.
+  roots, shared-world refusal, versions and wire limits. The generic family
+  and network controls now total 22. Receipts:
+  `Code/testing/isometry/h7-2026-10-17/`, cap 100 MB. The admitted-stream /
+  signed JoinedSpace integration passes for all three products, including a
+  fresh VTT peer's signed checkpoint and suffix. This does not qualify
+  crash-atomic World/log persistence, Genet UI authority retirement, or
+  product host restart continuity. The GM store and proposal lifecycle remain
+  in `isonetry` under 921.
 
 - **2026-10-16, H6 ordinary window:** `Host::run` now always enters Assembly;
   the private legacy window/GPU loop and its frame/setup/receipt modules are
