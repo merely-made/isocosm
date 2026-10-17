@@ -37,19 +37,12 @@ native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-17: F3/F4 native level-fixture union and F7's six GPU producer tests plus three ordinary resident-producer tests qualify; final all-target/all-feature compiler check passes. The broad native-level suite retains one earlier severance-camera failure, followed by a passing focused rerun. Three `v1-proof` far-window paging/travel/retarget runtime gates, broader E3 and headed acceptance remain open. One genuine historical archive input is ignored. See the [F receipt manifest](../../../../testing/isometry/f-2026-10-16/README.md). |
+| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-17: F3/F4 native level-fixture union, F7 producer checks, and the three formerly failing V1/V1b far-window paging/travel/retarget obligations qualify. Actual-camera V1/V1b headed runs pass 96 frames under 1 MiB; travel extents remain stable and completion-boundary V1b allocator growth is zero. Uncached view selection measured 1.3–1.8 seconds, so real-time zoom remains unqualified. Broader E3 and headed product acceptance remain open. See the [camera residency closeout](../../../../testing/isometry/f-2026-10-16/camera-residency-closeout.md) and [F receipt manifest](../../../../testing/isometry/f-2026-10-16/README.md). |
 | [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | 2026-10-10: reference charter; executable work belongs to the overlay plan, including folded functional and memory gates in E3. |
 
 ## Open items
 
-- **2026-10-17:** F3/F4's native fixture controls and F7's six GPU tests plus
-  three ordinary resident-producer tests qualify by receipt union; the final
-  all-target/all-feature compiler check passes. Three `v1-proof` far-window
-  runtime gates remain open. F8's six sortie cases and native-edit/world
-  replay control, F2/F6 archive and stale-panel retirement, and F5 worn-item
-  drop remain verified. Broader E3 and headed acceptance remain open. The wing
-  [after-pass](../../mesocosm/design_docs/2026-10-10_after_pass_plan.md)
-  owns the triage and exact receipt scope.
+- **2026-10-17:** F3/F4 fixture controls and F7 producer controls qualify by receipt union. The three formerly failing V1/V1b far-window obligations also pass on actual 1280×720 cameras. V1 and V1b pass 96 headed frames under 1 MiB with stable travel extents; V1b's GPU-completion-boundary allocator samples show zero growth. Uncached full-resolution view selection took 1.3–1.8 seconds, so real-time zoom remains open. F8's six sortie cases and native-edit/world replay control, F2/F6 archive and stale-panel retirement, and F5 worn-item drop remain verified. Broader E3 and headed acceptance remain open. See the [camera residency closeout](../../../../testing/isometry/f-2026-10-16/camera-residency-closeout.md). The wing [after-pass](../../mesocosm/design_docs/2026-10-10_after_pass_plan.md) owns the triage and exact receipt scope.
 
 ## Archive
 

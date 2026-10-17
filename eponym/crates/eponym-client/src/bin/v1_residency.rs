@@ -10,10 +10,8 @@
 //! Ground. The run records every page load and eviction, the bytes uploaded
 //! to the shared DDA, frame spans, and recovery after two abrupt zooms.
 
-use std::{path::Path, sync::Arc, time::Instant};
+use std::{path::PathBuf, sync::Arc, time::Instant};
 
-use isometer::core::ground::BRICK;
-use isometer::lens::{BrickDiagnostics, BrickRevision};
 use eponym_client::{
     gpu::{self, Composer, DdaTenant, SIZE},
     residency::{
@@ -22,6 +20,8 @@ use eponym_client::{
     },
     scene,
 };
+use isometer::core::ground::BRICK;
+use isometer::lens::{BrickDiagnostics, BrickRevision};
 use serde::Serialize;
 use winit::{
     application::ApplicationHandler,
@@ -31,11 +31,20 @@ use winit::{
     window::{Window, WindowId},
 };
 
-const CAPTURE: &str = r"C:\Users\mark_\Code\testing\paredros\v1_residency.png";
-const RECEIPT: &str = r"C:\Users\mark_\Code\testing\paredros\v1_residency.json";
 const TRAVEL_FRAME: u64 = 72;
 
+fn output_path(name: &str) -> PathBuf {
+    std::env::var_os("EPONYM_V1_OUTPUT_DIR")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from(r"C:\Users\mark_\Code\testing\paredros"))
+        .join(name)
+}
+
 fn main() {
+    for name in ["v1_residency.png", "v1_residency.json"] {
+        let path = output_path(name);
+        assert!(!path.exists(), "refusing to overwrite receipt {}", path.display());
+    }
     let scene = ResidencyScene::grow();
     println!(
         "V1 world: {} exact bricks, focus {:?}, revision {}",
@@ -104,11 +113,13 @@ impl ApplicationHandler for ResidencyApp {
         let adapter = handles.adapter.get_info().name;
 
         let aspect = SIZE[0] as f32 / SIZE[1] as f32;
-        let visible = visible_range(zoom_distance(0), aspect);
+        let distance = zoom_distance(0);
+        let visible = visible_range(distance, aspect);
+        let camera = self.scene.camera(distance, aspect);
         let began = Instant::now();
         let initial = self
             .policy
-            .prepare(&self.scene, visible)
+            .prepare_view(&self.scene, visible, camera, SIZE)
             .expect("initial V1 page")
             .expect("V1 starts without a resident page");
         let initial_prepare_us = began.elapsed().as_micros() as u64;
@@ -174,6 +185,8 @@ impl ResidencyApp {
             );
         }
 
+        let camera = self.scene.camera(distance, aspect);
+
         if frame == 0 {
             page_prepare_us = live.initial_prepare_us;
             loaded_bricks = live.current.loaded_bricks;
@@ -183,7 +196,7 @@ impl ResidencyApp {
             let page_began = Instant::now();
             let prepared = self
                 .policy
-                .prepare(&self.scene, visible)
+                .prepare_view(&self.scene, visible, camera, SIZE)
                 .expect("camera range has a V1 page");
             assert!(
                 !travel || prepared.is_some(),
@@ -201,7 +214,6 @@ impl ResidencyApp {
             }
         }
 
-        let camera = self.scene.camera(distance, aspect);
         let pose = scene::body_pose(self.scene.focus);
         let diagnostics = live.tenant.draw(camera, &pose).expect("V1 DDA frame");
         if travel {
@@ -416,7 +428,9 @@ fn report(
     samples: &[FrameSample],
 ) {
     let capture = composer.capture(master);
-    capture.write_png(Path::new(CAPTURE)).expect("V1 capture");
+    let capture_path = output_path("v1_residency.png");
+    let receipt_path = output_path("v1_residency.json");
+    capture.write_png(&capture_path).expect("V1 capture");
     assert!(
         !capture.is_trivial(),
         "V1 capture has only {} distinct colours",
@@ -480,12 +494,12 @@ fn report(
         steady_frame_us_median: median(&steady_spans),
         rapid_close_recovery,
         rapid_far_recovery,
-        capture: CAPTURE,
+        capture: capture_path.to_str().expect("V1 capture path is UTF-8"),
         capture_distinct_colours: capture.distinct,
         samples,
     };
     let json = serde_json::to_string_pretty(&receipt).expect("V1 receipt JSON");
-    std::fs::write(RECEIPT, &json).expect("write V1 receipt");
+    std::fs::write(receipt_path, &json).expect("write V1 receipt");
     println!("{json}");
 }
 

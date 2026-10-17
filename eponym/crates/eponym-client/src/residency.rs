@@ -17,12 +17,16 @@ use std::{
     hash::{Hash, Hasher},
 };
 
-use glam::Vec3;
 use eponym_play::walking::WALKER_HEIGHT;
 use eponym_play::{World, WorldConfig};
+use glam::Vec3;
 use isometer::core::ground::{BRICK, Ground};
 use isometer::lens::TraceCamera;
 use modulus::{AtlasLimits, BrickMap, BrickMapError, BrickProjectionRevision};
+
+mod camera_policy;
+mod footprint;
+use footprint::CameraFootprints;
 
 use crate::room::SEED;
 
@@ -34,6 +38,9 @@ const WORLD_SIDE: u16 = 16;
 pub const PAGE_RANGES: [i32; 3] = [40, 88, 128];
 /// One MiB for exact terrain pointers and material atlas at the far profile.
 pub const RESIDENT_BUDGET_BYTES: u64 = 1_048_576;
+/// Accounting ceiling for CPU source-map buffers and cached view-key vectors.
+/// Temporary key sets and allocator metadata are outside this byte estimate.
+pub const CPU_SOURCE_MAP_BUDGET_BYTES: usize = 64 * 1024 * 1024;
 /// The deterministic headed zoom and recovery trace.
 pub const V1_FRAMES: u64 = 96;
 pub const CLOSE_DISTANCE: f32 = 8.0;
@@ -52,7 +59,10 @@ pub struct ResidencyScene {
 
 impl ResidencyScene {
     pub fn grow() -> Self {
-        let config = WorldConfig { side: WORLD_SIDE, extent: WORLD_EXTENT };
+        let config = WorldConfig {
+            side: WORLD_SIDE,
+            extent: WORLD_EXTENT,
+        };
         let world = World::generate(SEED, config).expect("the planning region founds");
         let ground = world.ground().clone();
         let focus = (0_i32..=64)
@@ -172,6 +182,10 @@ pub struct PreparedWorkingSet {
 pub enum ResidencyError {
     VisibleRange { actual: i32, maximum: i32 },
     Budget { actual: u64, maximum: u64 },
+    CpuSourceBudget { actual: usize, maximum: usize },
+    InvalidViewport { size: [u32; 2] },
+    InvalidCameraRay { x: u32, y: u32 },
+    TraceExhausted { x: u32, y: u32 },
     ProjectionRevisionOverflow,
     BrickMap(BrickMapError),
 }
@@ -186,6 +200,20 @@ impl fmt::Display for ResidencyError {
             Self::Budget { actual, maximum } => write!(
                 formatter,
                 "working set uses {actual} bytes, over the {maximum}-byte V1 budget"
+            ),
+            Self::CpuSourceBudget { actual, maximum } => write!(
+                formatter,
+                "accounted camera residency source buffers and view cache use {actual} bytes, over the {maximum}-byte ceiling"
+            ),
+            Self::InvalidViewport { size } => {
+                write!(formatter, "invalid camera residency viewport {size:?}")
+            },
+            Self::InvalidCameraRay { x, y } => {
+                write!(formatter, "camera ray at pixel ({x},{y}) is invalid")
+            },
+            Self::TraceExhausted { x, y } => write!(
+                formatter,
+                "shared brick trace exhausted at camera pixel ({x},{y})"
             ),
             Self::ProjectionRevisionOverflow => {
                 write!(formatter, "brick projection revision overflow")
@@ -208,6 +236,10 @@ pub struct ResidencyPolicy {
     current_range: Option<i32>,
     current_keys: BTreeSet<[i16; 3]>,
     projection_revision: BrickProjectionRevision,
+    footprints: CameraFootprints,
+    near_anchor_keys: BTreeSet<[i16; 3]>,
+    camera_focus: Option<[i32; 3]>,
+    camera_ground_revision: Option<u64>,
 }
 
 impl ResidencyPolicy {
@@ -296,6 +328,9 @@ pub struct StableResidency {
     ground_revision: Option<u64>,
     pointer_bytes: u64,
     atlas_bytes: u64,
+    footprints: CameraFootprints,
+    near_anchor_keys: BTreeSet<[i16; 3]>,
+    camera_focus: Option<[i32; 3]>,
 }
 
 pub struct StableOutcome {
@@ -362,6 +397,9 @@ impl StableResidency {
             ground_revision: None,
             pointer_bytes,
             atlas_bytes,
+            footprints: CameraFootprints::default(),
+            near_anchor_keys: BTreeSet::new(),
+            camera_focus: None,
         })
     }
 
@@ -514,8 +552,18 @@ fn selected_keys(ground: &Ground, focus: [i32; 3], range: i32) -> BTreeSet<[i16;
         .collect()
 }
 
-#[cfg(all(test, feature = "v1-proof"))]
-mod tests;
+pub(super) fn page_range(visible_range: i32) -> Result<i32, ResidencyError> {
+    PAGE_RANGES
+        .into_iter()
+        .find(|range| *range >= visible_range)
+        .ok_or(ResidencyError::VisibleRange {
+            actual: visible_range,
+            maximum: *PAGE_RANGES.last().expect("V1 has residency bands"),
+        })
+}
+
 #[cfg(all(test, feature = "r1-proof"))]
 #[path = "residency/producer_tests.rs"]
 mod producer_tests;
+#[cfg(all(test, feature = "v1-proof"))]
+mod tests;

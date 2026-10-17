@@ -88,9 +88,11 @@ pub(super) fn report(
     allocator_after_first: Option<u64>,
     allocator_after_last: Option<u64>,
     device_max_texture_dimension_3d: u32,
+    capture_path: &Path,
+    receipt_path: &Path,
 ) {
     let capture = composer.capture(master);
-    capture.write_png(Path::new(CAPTURE)).expect("V1b capture");
+    capture.write_png(capture_path).expect("V1b capture");
     assert!(
         !capture.is_trivial(),
         "V1b capture has only {} distinct colours",
@@ -126,7 +128,7 @@ pub(super) fn report(
         vessel: "paredros",
         camera_profile: "third-person continuous zoom: near acts, mid leads, far plans",
         traversal_implementation: "modulus::BRICK_DDA_WGSL via isometer::lens::BrickTracer",
-        resident_measure: "fixed pointer plus atlas allocation, with wgpu allocator-report bytes",
+        resident_measure: "fixed pointer plus atlas allocation; wgpu allocator samples are taken after submitted GPU work completes at frames 0 and 95",
         publication_mode: "one capacity-fixed cache; retargets publish the pointer volume plus \
                            loaded slots only, retained slots never re-upload",
         adapter,
@@ -155,12 +157,12 @@ pub(super) fn report(
         steady_frame_us_median: median(&steady_spans),
         rapid_close_recovery,
         rapid_far_recovery,
-        capture: CAPTURE,
+        capture: capture_path.to_str().expect("V1b capture path is UTF-8"),
         capture_distinct_colours: capture.distinct,
         samples,
     };
     let json = serde_json::to_string_pretty(&receipt).expect("V1b receipt JSON");
-    std::fs::write(RECEIPT, &json).expect("write V1b receipt");
+    std::fs::write(receipt_path, &json).expect("write V1b receipt");
     println!("{json}");
 }
 

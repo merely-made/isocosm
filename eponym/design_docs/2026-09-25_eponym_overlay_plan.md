@@ -1,22 +1,19 @@
 # Eponym's overlay: the W5 plan
 
-**F3/F4/F7 runtime closeout, 2026-10-17:** the native level-fixture union
-qualifies the repaired contact, severance, timed-action, worn-item and
-external-volley controls. The two remaining timed-action controls pass 2/2;
-the worn-item controls pass 3/3; external-volley controls pass 4/4; and the
-native-level contact panel passes 1/1. The producer receipt qualifies all six
-GPU tests across the level-suite run and the focused severance rerun: five
-passed in the broader run, whose only client-library failure was the earlier
-severance camera selection, and the updated severance test then passed with
-its before/after captures. The same broader run passed all three ordinary
-resident-producer tests. The final all-target/all-feature compiler check
-passes. This is a receipt union, not a clean aggregate runtime rerun; the
-interrupted `native-level-suite.log` remains as evidence of the earlier
-failure. Three far-window runtime gates under the existing `v1-proof` feature
-(paging, travel and retarget) remain open: the far native footprint requests
-6,901 bricks against 2,047 atlas slots (1,791 in the strict probe). The
-all-feature compiler result does not close them. Broader E3 and headed product
-acceptance remain open. See the [F receipt manifest](../../../../testing/isometry/f-2026-10-16/README.md).
+**V1/V1b camera residency closeout, 2026-10-17:** all three formerly failing
+far-window runtime obligations pass with the actual 1280×720 camera and pixel
+size. V1 passes 96 headed frames at 933,888 resident bytes; V1b passes 96 at
+959,120 fixed resident bytes, with completion-boundary allocator growth of
+zero. Both stay below 1 MiB and retain fixed extents across travel. Nine
+focused camera/map controls pass; two explicit measurement controls remain
+ignored. Uncached full-resolution footprint selection measured 1.3–1.8 seconds
+per new view, so these results do not establish real-time zoom; close recovery
+was two frames in both runs. The earlier failed camera-ordering and allocator
+receipts remain preserved. The [camera residency closeout](../../../../testing/isometry/f-2026-10-16/camera-residency-closeout.md)
+binds source and evidence hashes. Broader E3 and headed product acceptance
+remain open.
+
+**Earlier F3/F4/F7 checkpoint, 2026-10-17:** the native level-fixture union qualifies the repaired contact, severance, timed-action, worn-item and external-volley controls. The two remaining timed-action controls pass 2/2; the worn-item controls pass 3/3; external-volley controls pass 4/4; and the native-level contact panel passes 1/1. The producer receipt qualifies all six GPU tests across the level-suite run and the focused severance rerun: five passed in the broader run, whose only client-library failure was the earlier severance camera selection, and the updated severance test then passed with its before/after captures. The same broader run passed all three ordinary resident-producer tests. The final all-target/all-feature compiler check passes. This is a receipt union, not a clean aggregate runtime rerun; the interrupted `native-level-suite.log` remains as evidence of the earlier failure. At that checkpoint, three far-window runtime gates under `v1-proof` remained open; the later V1/V1b camera residency closeout above supersedes that status. Broader E3 and headed product acceptance remain open. See the [F receipt manifest](../../../../testing/isometry/f-2026-10-16/README.md).
 
 **Certification resumed, 2026-10-13:** the explicit "Certify" request opens
 the assembled-source acceptance pass. The Eponym workspace compiles with all
