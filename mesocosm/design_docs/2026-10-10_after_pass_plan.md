@@ -147,7 +147,17 @@ motion archives stop at the generator check before any replay.
 
 *2026-10-16:* Mark took every recommendation: the six fixes merge (938),
 and F1 to F8 are ruled 939 to 946 as option (1) each. Each fork is now work
-for a later lane, not yet built.
+for implementation. F1 is built and verified below; F2 to F8 remain open.
+
+**F1, 2026-10-16, built (939):** the shipped pack now carries all fifteen
+native catalogue definitions, including the ten missing TOML files. Admission
+matches the native registry exactly. Four native catalogue functions have no
+box-role projection; only their canonical native ID and seeding admit an
+empty role list. Unknown definitions, changed seeding and emptied nonempty
+native roles still refuse. The native anatomy vocabulary is unchanged.
+`cargo test -p mesocosm-phenotype` passes all 25 integration tests, including
+the three original parity failures and the new refusal controls. The manifest
+distinguishes fifteen catalogue definitions from five bound `Process` variants.
 
 The forks, each with a recommendation first:
 

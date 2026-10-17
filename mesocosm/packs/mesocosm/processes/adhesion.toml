@@ -1,0 +1,4 @@
+namespace = "mesocosm"
+name = "adhesion"
+expressed_by = ["plate", "sensor"]
+seeding = "geometry"

@@ -311,11 +311,6 @@ fn lower(relative: &str, file: &ProcessFile) -> Result<ProcessDef, Admission> {
             path: relative.to_string(),
         });
     }
-    if file.expressed_by.is_empty() {
-        return Err(Admission::NoTract {
-            path: relative.to_string(),
-        });
-    }
     let mut expressed_by = Vec::with_capacity(file.expressed_by.len());
     for word in &file.expressed_by {
         let Some(role) = role_of(word) else {
@@ -334,6 +329,15 @@ fn lower(relative: &str, file: &ProcessFile) -> Result<ProcessDef, Admission> {
     };
 
     let id = ProcessId::new(&file.namespace, &file.name);
+    if expressed_by.is_empty()
+        && !Registry::native()
+            .get(&id)
+            .is_some_and(|native| native.expressed_by.is_empty() && native.seeding == seeding)
+    {
+        return Err(Admission::NoTract {
+            path: relative.to_string(),
+        });
+    }
     let native = Process::ALL.into_iter().find(|process| process.id() == &id);
     Ok(ProcessDef {
         id,

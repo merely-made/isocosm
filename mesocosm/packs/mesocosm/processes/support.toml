@@ -1,0 +1,4 @@
+namespace = "mesocosm"
+name = "support"
+expressed_by = ["limb"]
+seeding = "geometry"
