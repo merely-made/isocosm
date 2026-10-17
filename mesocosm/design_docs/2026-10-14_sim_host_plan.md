@@ -10,7 +10,10 @@ landed. The ordinary Mesocosm window now runs on Assembly, renders through
 the section producer and resumes core saves. Its native controls and replay
 pass. A1 and the generated physical joint-witness gate pass. Under 961,
 Mesocosm's ordinary new-world source now selects A1, retaining shared Stock
-defaults. H6 remains in progress until the actual generated launch is captured.
+defaults. H6's functional done-conditions now pass, including a captured
+ordinary clock-seeded launch. Active native updates remain slow. H7's local
+native UI and exact durable application restart pass; production stack
+admission and peer setup remain open.
 
 ## Why
 
@@ -344,6 +347,43 @@ starts.
   stack admission remain open; full-World authorization is separate, and
   power-loss durability is excluded.
 
+- **2026-10-17, H6 functional done-conditions complete:** the rebuilt ordinary
+  default selects clock seed `1792241946691427000` on its first structural
+  candidate and passes the full native witness in 85.731 seconds. The head
+  runs five frames, records two viewport renders, takes 15 native
+  steps and saves one inspected PNG without a fault or dev assistance.
+  Tick 75 has native hash `90c45b8673d88264`, World revision 20 and a legitimate
+  loss checkpoint with 352 living descendants. The captured terrarium is
+  withdrawn because this checkpoint has no current site; the UI offers body
+  103 after body 102. The earlier explicit seed-9 capture qualifies actual
+  terrain and body presentation separately. Held frames now take 23.0 to
+  25.4 ms, with two held callback intervals of 23.5 and 24.2 ms. Active callbacks
+  still take 32.2 to 49.6 seconds, so active simulation performance remains
+  open. The GPU readback deadline is unchanged. The earlier short-epoch bench
+  remains the trait-board receipt; this default run reaches a loss checkpoint,
+  not its epoch board. The default capture uses `--no-trace`; it claims no new
+  save/replay for this clock seed, retaining the earlier exact seed-9 core
+  save/replay qualification. All H6 functional conditions are now represented
+  by their named receipts, bound in `held-view-default-qualification.json`
+  and the earlier manifests. H6's retained receipt owner is 55,969,930 bytes,
+  below its 100 MB cap at qualification.
+
+- **2026-10-17, H6 capture-delay diagnosis:** the first bounded ordinary
+  clock draw, seed `1792241059404538200`, passes its full witness in 70.911
+  seconds and reaches a native birth checkpoint at tick 73, unassisted and
+  without a simulation fault. Its final capture fails the unchanged five-second
+  native readback deadline. `bounded-default-readback-failure.json` preserves
+  that failure. Profiling a separate existing seed-9 save gives valid pixels
+  but exposes 6.64 to 6.83 seconds in frame hooks, compared with 1.25 to 1.36
+  seconds inside product work. Three `Runner.update` calls rebuild the view,
+  including presentation bookkeeping before readback polling. The app now
+  defers bookkeeping and minimap transfer; unchanged held World cuts retain
+  their semantic view. Native changes, input handlers, pumps and expired
+  selections still refresh it. The new view-refresh control passes in 8.07
+  seconds, the all-target/all-feature head compiler check passes, and an
+  independent review finds no stale UI/pick issue. The capture deadline and
+  witness gate are unchanged. `held-readback-diagnosis.json` records the
+  evidence; a Probe hash cache was rejected because hashes run after readback.
 - **2026-10-17, H6 bounded default and held-frame controls:** under 963 the
   unchosen default tries at most eight structural candidates, configurable
   from 1 to 128. Each seed is disclosed; only the typed missing-consumer/food
@@ -405,7 +445,8 @@ starts.
   replay in both execution modes, handoff/continuation equality and
   tamper/refusal checks. `validated-run-release-qualification.json` binds the
   current runtime source, executable and log. The explicit seed-9 head and
-  saved replay pass above; the unchosen default remains unqualified.
+  saved replay pass above. At this checkpoint the unchosen default remained
+  unqualified; the later default-capture receipt above closes that condition.
   Two pre-optimization default trials were stopped without a capture; the
   later trial's seed, source and binary hashes are preserved in
   `cached-head-build-binding.json` and
@@ -482,8 +523,9 @@ starts.
   drain; already indexed records remain recoverable, without promising that
   every queued delivery completed. At this checkpoint World/log persistence
   had no durable ledger; the later bounded restart slice above adds one.
-  Genet's shipping VTT UI still uses the old DM-authority
-  core. Product host restart and reconnect wiring remain open. Receipt owner
+  At that checkpoint Genet still used the old DM-authority core. The later
+  headed native action and application-restart receipt above supersedes that
+  UI limitation; production peer setup remains open. Receipt owner
   and cap remain
   `Code/testing/isometry/h7-2026-10-17/`, 100 MB.
 
@@ -503,8 +545,8 @@ starts.
   retain their previous default declaration or their explicit named rates.
   The first actual generated launch was stopped without a window capture or
   saved trace. Its clock-sourced seed was not logged and cannot be recovered.
-  A replacement with explicit seed and witness-duration diagnostics remains
-  unqualified until captured and replayed.
+  The later explicit seed-9 capture and exact saved replay above supersede
+  that failed launch without qualifying its missing evidence.
   The physical role declaration comes from living founding populations
   and their actual producer/consumer definitions before any witness Session
   exists; seed 9 has producer 3 and consumer 1, with no producer 0. A
