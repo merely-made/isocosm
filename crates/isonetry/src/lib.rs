@@ -23,6 +23,7 @@ pub use session::NativeSecretResolved;
 pub use session::NativeComposedStoryletResolved;
 mod mode_game;
 pub use mode_game::ModeGame;
+pub mod family;
 mod protocol;
 pub mod native_table;
 pub use native_table::{NativeTable, NativeTableAdmissionInput, NativeTableBindingInput, NativeTableResolved,
