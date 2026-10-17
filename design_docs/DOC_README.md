@@ -44,6 +44,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 | Doc | For | Status |
 | --- | --- | --- |
+| [2026-10-17_private_pack_authoring_plan.md](2026-10-17_private_pack_authoring_plan.md) | Private retained manifest authoring with the real pack schema and batched Rowan backend; no shared API. | 2026-10-17: implemented/qualified; 68 feature tests, 58 default tests, backend101 and fresh-process terminal/load/fixture checks pass. Optional private command; admission/format owners unchanged, no shared API. |
 | [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance for all three products. | The one copy since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |
 | [2026-10-15_campaign_retirement_plan.md](2026-10-15_campaign_retirement_plan.md) | Retiring `isometry-campaign` into its owning homes: the VTT's game layer into `isocosm-vtt`, map lowering into `isometry-core`, the world into the sim at V2. | 2026-10-15: plan; R0 done (913, 915 to 922); R1 waits for the A1 lane's merge; R4 publishing; `isonetry` remade under the sim-host plan's H7 (923, 924). |
