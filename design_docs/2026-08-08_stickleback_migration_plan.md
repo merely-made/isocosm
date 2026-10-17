@@ -1,9 +1,11 @@
 # Stickleback Consumer Migration Plan (2026-08-08)
 
-**Status, 2026-10-10:** K0 to K2 remain unimplemented. The native migration
-does not adopt JoinedSpace; the no-second-runtime gate still governs.
+**Status, 2026-10-17:** K0 to K2 remain unimplemented. H7 uses JoinedSpace
+for the separate single-host family accepted-record lane; `campaign_sync`
+still assembles `LogSync` and `SyncedSpace` directly. The no-second-runtime
+gate still governs campaign sync.
 
-## Current state, 2026-10-10
+## Current state, 2026-10-17
 
 `crates/isonetry/src/campaign_sync.rs` still assembles `LogSync` and
 `SyncedSpace` directly. K0's JoinedSpace adoption is therefore open;
@@ -19,9 +21,22 @@ polities act, while campaign storage/collaboration are product-side.
 That ownership change must not create a second live world runtime or
 silently drop the authorization and privacy gates.
 
-*2026-10-15:* `isonetry` is being remade as the Isocosm family's session
-layer (wing rulings 923, 924; the sim-host plan's H7), whose assessment
-takes up this plan's K0 to K2.
+*2026-10-17:* H7's host-signed family-record lane uses JoinedSpace, but its
+scope is single-host World replication. It does not implement this plan's
+multi-writer campaign sync; K0 to K2 remain open.
+
+*2026-10-17, H7 local ledger:* `FamilyHost::create_file` and
+`FamilyHost::resume_file` now keep a bounded checkpoint and accepted-record
+history for process restart. The core World commit gate replaces the synced
+ledger before publishing a World change; a failed replacement or byte cap
+leaves the World and journal unchanged. Restart verifies and replays the
+stored suffix, and a signed-log control proves deterministic re-signing and
+the next sequence/backlink. The caller must retain the original host key and
+use the correct host-log backlink. This does not qualify JoinedSpace restart
+or product reconnect, and the file replacement does not claim power-loss
+durability because the parent directory is not synced. The shipping Genet VTT
+UI still uses the interim DM event authority. Receipt:
+`Code/testing/isometry/h7-2026-10-17/durable-ledger-receipt.json`.
 
 *The dated migration design and receipts below remain as written (793).*
 
