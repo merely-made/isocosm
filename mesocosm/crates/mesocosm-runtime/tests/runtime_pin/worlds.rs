@@ -25,7 +25,7 @@ pub fn offered() -> Runtime {
     Setup { version: 1,
         founded: Founded { genesis: candidate.genesis, start: Start::default(), mode: Mode::Survival,
             pace: PACE, on_collapse: OnCollapse::Stay },
-        specification: candidate.spec, execution: Execution::Grouped, spatial: None }.offer(RATE).unwrap()
+        specification: candidate.spec, execution: Execution::Grouped, spatial: None, generated_templates: false }.offer(RATE).unwrap()
 }
 
 /// The same candidate with a six-tick epoch, founded and resumed: a birth

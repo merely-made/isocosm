@@ -3,21 +3,18 @@
 
 //! Only a bound native admission can enter the actual offered runtime.
 
-use super::{Setup,Assessment,Seal,Runtime};
-use isocosm::{Session,ecology::Admission,directing::interim::Interim};
+use super::{Setup,Seal,Runtime};
+use crate::spatial::Game;
+use isocosm::{Session,ecology::AdmittedJointRun,directing::interim::Interim};
 
-pub(super) fn accepted(setup:&Setup,assessment:Assessment,admission:Admission,
+pub(super) fn accepted(setup:&Setup,mut game:Game,admitted:AdmittedJointRun,
     ticks_per_second:u32)->Result<Runtime,String> {
-    admission.validate(&assessment.witness)?;
     if ticks_per_second==0 {return Err("offered runtime requires a positive clock rate".into());}
-    // The runner has ended. Restore its exact authenticated state as the one
-    // live owner, retaining all matter, chosen acts and physical history.
-    let world=isocosm_host::founding::from_admitted(setup.execution,
-        isocosm_host::founding::Offered { witness:&assessment.witness, admission:&admission })?;
+    // Consume the exact Session and proof produced by the one validated run.
+    let (world,witness,admission)=isocosm_host::founding::from_admitted_run(setup.execution,admitted)?;
     let (session,sections)=world.into_parts()?;
-    let mut game=assessment.spatial;
-    game.validate_replay(&session)?;
-    let configured=setup.spatial.is_some();
+    game.validate(&session)?;
+    let configured=setup.spatial.is_some() || game.driver.is_some();
     let mut advance=|session:&mut Session| {
         if configured {game.advance_clock(session).map(|_|())}
         else {session.advance(1).map(|_|())}
@@ -31,9 +28,9 @@ pub(super) fn accepted(setup:&Setup,assessment:Assessment,admission:Admission,
         product.spatial=game;
         // No generated advisory pose overwrites the actual assessed physical source.
         product.retain_origin(world);
-        product.spatial.ecology=Some(Seal {version:1,witness:assessment.witness,admission});
+        product.spatial.ecology=Some(Seal {version:1,witness,admission});
         product.sync_loop(world);
-        product.spatial.validate_replay(&super::super::session(world))
+        product.spatial.validate(&super::super::session(world))
     })?;
     Ok(runtime)
 }

@@ -121,6 +121,11 @@ fn main() {
                     .filter(|v| *v > 0)
                     .unwrap_or_else(|| fail("--population wants a positive integer"));
             },
+            "--ecology-rates" => {
+                config.ecology_rates = Some(mesocosm_genet::HostConfig::parse_ecology_rates(
+                    &args.next().unwrap_or_default())
+                    .unwrap_or_else(|| fail("--ecology-rates wants stock or a1")));
+            },
             "--capture" => capture = args.next().map(PathBuf::from),
             "--trace" => trace = args.next().map(PathBuf::from),
             "--receipt" => receipt = args.next().map(PathBuf::from),
@@ -170,6 +175,12 @@ fn main() {
     }
 
     if seed_explicit && unchosen_explicit { fail("choose --seed or --unchosen-seed"); }
+    if config.ecology_rates.is_some()
+        && (config.bench_world || config.spread.is_some() || config.watch.is_some()
+            || config.ecology_candidate.is_some()
+            || config.spatial.is_some() || config.graft.is_some() || replay.is_some() || bench) {
+        fail("--ecology-rates requires an ordinary generated world without a bench, candidate, resume, spread, replay, spatial or graft input");
+    }
     if unchosen_explicit && (config.watch.is_some() || config.spread.is_some() || replay.is_some() || bench) {
         fail("--unchosen-seed requires an ordinary new generated world");
     }
@@ -262,6 +273,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --start W:E     wait at most W epochs for habitability, then add E epochs
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)
+  --ecology-rates RATE  a1 (ordinary default) or stock (requires an authored witness)
   --bodies MODE   voxels (default) or capsules (comparison), presentation only
   --body-budget N maximum detailed bodies in the section
   --body-light N  ambient body light intensity (default 1, zero is dark)

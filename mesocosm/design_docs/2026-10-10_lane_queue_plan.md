@@ -451,8 +451,10 @@ they amend. Carry each ruling into every plan it touches in the same commit.
   conservation and both final native replays. Exact receipt recovery stays
   below 100 MB and preserves every earlier byte. The after-pass records the
   earlier pilot overrun and unresolved historical citations. Under 961,
-  Mesocosm will default to A1 after its physical gate, while the shared
-  generator stays Stock. Next unused ruling: 962.
+  the generated physical offer/save/replay now passes in both execution
+  modes. Mesocosm's ordinary new-world source now selects A1, while the shared
+  generator stays Stock; actual generated headed capture is pending in H6.
+  Next unused ruling: 962.
 
 - **2026-10-12, 846 to850:** all five answers are recorded verbatim.
   Native corpse visibility and current corpse-pose consumers are placed,

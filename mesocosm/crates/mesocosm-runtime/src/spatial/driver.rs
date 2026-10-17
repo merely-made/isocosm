@@ -100,13 +100,13 @@ impl Game {
     }
 
     fn preview(&self, sim: &Simulation, steps: &[native::Resolution], arrivals: &[native::ArrivalResolution],
-        births: &[native::BirthResolution])
+        births: &[native::BirthResolution], geometry: &mut super::refresh::GeometryCache)
         -> Result<Self, String> {
         let mut game = self.clone();
         game.apply_arrivals(arrivals, sim.spatial_arrivals())?;
         game.apply_publications(sim, steps, births, sim.spatial_births(), sim.spatial_order())?;
         for held in game.members.values_mut() {
-            if let Ok(next) = held.rebound(sim) { *held = next; }
+            if let Ok(next) = held.rebound_with(sim, geometry) { *held = next; }
         }
         Ok(game)
     }
@@ -117,7 +117,8 @@ impl Game {
         self.version()?;
         let mut native_session = session.clone();
         let mut source = self.clone();
-        source.refresh(&mut native_session)?;
+        let mut geometry = super::refresh::GeometryCache::default();
+        source.refresh_with(&mut native_session, &mut geometry)?;
         let arrivals = source.arrival_inputs(&native_session)?;
         let mut terrain: Vec<native::TerrainResolution> = Vec::new();
         let mut steps: Vec<native::Resolution> = Vec::new();
@@ -129,7 +130,7 @@ impl Game {
                     if terrain.len() + steps.len() + arrivals.len() >= limit
                         || terrain.iter().any(|r| r.request.action == pending.request.action)
                     { return Err("spatial terrain request made no finite progress".into()); }
-                    let game = source.preview(&pending.sim, &steps, &arrivals, &births)?;
+                    let game = source.preview(&pending.sim, &steps, &arrivals, &births, &mut geometry)?;
                     let answer = game.resolve(&pending)
                         .and_then(|actual| crate::terrain::resolved(&pending, actual)).map(|r| r.geometry);
                     terrain.push(native::TerrainResolution { request: pending.request, geometry: answer });
@@ -138,14 +139,14 @@ impl Game {
                     if terrain.len() + steps.len() + arrivals.len() >= limit
                         || steps.iter().any(|r| r.request.action == pending.request.action)
                     { return Err("spatial step request made no finite progress".into()); }
-                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births)?.resolve_step(&pending);
+                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births, &mut geometry)?.resolve_step(&pending);
                     steps.push(native::Resolution { request: pending.request, geometry: answer });
                 },
                 Preparation::Birth(pending) => {
                     if births.len() as u128 >= u128::from(native_session.sim.genesis().rules.limits.entities)
                         || births.iter().any(|r| r.request.child == pending.request.child)
                     { return Err("biological placement request made no finite progress".into()); }
-                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births)?.resolve_birth(&pending);
+                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births, &mut geometry)?.resolve_birth(&pending);
                     births.push(native::BirthResolution { request: pending.request, geometry: answer });
                 },
                 Preparation::Ready(prepared) => {
@@ -166,7 +167,7 @@ impl Game {
                             births: born, order, command_outcome: None });
                     }
                     game.version = game.current_version();
-                    game.refresh(&mut native_session)?;
+                    game.refresh_with(&mut native_session, &mut geometry)?;
                     *session = native_session;
                     *self = game;
                     return Ok(out);

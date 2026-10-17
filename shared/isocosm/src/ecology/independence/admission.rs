@@ -3,6 +3,7 @@
 
 use super::*;
 use crate::{Result, ecology::JointWitness, schema::Key, simulation::Genesis};
+use crate::ecology::{AdmittedJointRun, ValidatedJointRun};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
@@ -70,14 +71,34 @@ fn evidence(witness: &JointWitness, spec: &IndependenceSpec, basis: &Genesis)
     Ok((coverage, rows, scalars::consumed(candidate, spec)?))
 }
 
-pub fn admit(witness: &JointWitness, spec: &IndependenceSpec, basis: &GeneratedBasis) -> Result<Admission> {
-    // Four actual roles in one source trajectory precede every criterion check.
-    witness.require_roles()?;
+fn complete_roles(witness: &JointWitness) -> Result<()> {
+    let missing = witness.spec.missing(&witness.totals);
+    if missing.is_empty() { Ok(()) }
+    else { Err(format!("joint ecology witness is incomplete: {}", missing.join("; "))) }
+}
+
+fn build(witness: &JointWitness, spec: &IndependenceSpec, basis: &GeneratedBasis) -> Result<Admission> {
     if witness.spec.independence.as_ref() != Some(spec) { return Err("independence input differs from the joint native declaration".into()); }
     let (coverage, evidence, scalars) = evidence(witness, spec, &basis.source)?;
     Ok(Admission { version: 1, basis: basis.source.clone(), basis_digest: basis.source_digest(),
         genesis_digest: crate::digest(&witness.native.genesis), specification_digest: crate::digest(spec),
         witness_digest: crate::digest(witness), coverage, evidence, scalars })
+}
+
+pub fn admit(witness: &JointWitness, spec: &IndependenceSpec, basis: &GeneratedBasis) -> Result<Admission> {
+    // Four actual roles in one source trajectory precede every criterion check.
+    witness.require_roles()?;
+    build(witness, spec, basis)
+}
+
+/// Admit the exact run already replayed by `run_joint_validated`. The proof
+/// object is unforgeable outside this crate and cannot survive serialization.
+pub fn admit_validated(run: ValidatedJointRun, spec: &IndependenceSpec,
+    basis: &GeneratedBasis) -> Result<AdmittedJointRun> {
+    let (witness, session) = run.into_parts();
+    complete_roles(&witness)?;
+    let admission = build(&witness, spec, basis)?;
+    Ok(AdmittedJointRun::new(witness, admission, session))
 }
 
 impl Admission {

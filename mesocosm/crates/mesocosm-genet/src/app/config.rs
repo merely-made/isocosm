@@ -60,6 +60,26 @@ pub struct HostConfig {
     pub ecology_witness: Option<PathBuf>,
     /// Complete explicit generated candidate; never stripped to regenerated rules.
     pub ecology_candidate: Option<PathBuf>,
+    /// Optional native ecology profile. New ordinary worlds default to A1;
+    /// an existing authored witness retains its historical Stock declaration.
+    pub ecology_rates: Option<isocosm::ecology::Rates>,
+}
+
+impl HostConfig {
+    pub fn ordinary_ecology_rates(&self) -> isocosm::ecology::Rates {
+        self.ecology_rates.unwrap_or_else(|| {
+            if self.ecology_witness.is_some() { isocosm::ecology::Rates::Stock }
+            else { isocosm::ecology::Rates::A1 }
+        })
+    }
+
+    pub fn parse_ecology_rates(value: &str) -> Option<isocosm::ecology::Rates> {
+        match value {
+            "stock" => Some(isocosm::ecology::Rates::Stock),
+            "a1" => Some(isocosm::ecology::Rates::A1),
+            _ => None,
+        }
+    }
 }
 
 impl Default for HostConfig {
@@ -95,6 +115,31 @@ impl Default for HostConfig {
             spread: None,
             ecology_witness: None,
             ecology_candidate: None,
+            ecology_rates: None,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn product_a1_default_preserves_explicit_stock_and_authored_witnesses() {
+        let mut config = HostConfig::default();
+        assert_eq!(config.ecology_rates, None);
+        assert_eq!(config.ordinary_ecology_rates(), isocosm::ecology::Rates::A1);
+        assert_eq!(isocosm::Founding::default().ecology_rates, isocosm::ecology::Rates::Stock);
+        config.ecology_witness = Some("authored-875.json".into());
+        assert_eq!(config.ordinary_ecology_rates(), isocosm::ecology::Rates::Stock);
+        config.ecology_rates = Some(isocosm::ecology::Rates::A1);
+        assert_eq!(config.ordinary_ecology_rates(), isocosm::ecology::Rates::A1);
+        config.ecology_rates = Some(isocosm::ecology::Rates::Stock);
+        assert_eq!(config.ordinary_ecology_rates(), isocosm::ecology::Rates::Stock);
+        assert_eq!(Some(HostConfig::parse_ecology_rates("stock").unwrap()),
+            Some(isocosm::ecology::Rates::Stock));
+        assert_eq!(Some(HostConfig::parse_ecology_rates("a1").unwrap()),
+            Some(isocosm::ecology::Rates::A1));
+        assert_eq!(HostConfig::parse_ecology_rates("A1"), None);
     }
 }

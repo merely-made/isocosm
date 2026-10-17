@@ -5,12 +5,105 @@
 
 use super::{Founded, Runtime};
 use crate::spatial::{Game, Setup as SpatialSetup};
-use isocosm::{Execution, ecology::{JointSpec, JointWitness, run_joint}};
+use isocosm::{Execution, directing::is_participant, ecology::{
+    BirthRequirement, CaptureRequirement, CaptureStock, CounterProof, CounterRequirement,
+    IndependenceSpec, JointSpec, JointWitness, ReturnRequirement, Selection, run_joint_validated,
+}};
 use serde::{Deserialize, Serialize};
 
 mod offer;
 mod seal;
 pub use seal::Seal;
+
+fn has_living_role(genesis: &isocosm::simulation::Genesis, lineage: &str, role: &str) -> bool {
+    genesis.population.groups.values().any(|group| {
+        group.count > 0
+            && group.entity.alive
+            && !is_participant(&group.entity)
+            && group.entity.lineage == lineage
+            && group.entity.traits.contains(role)
+    })
+}
+
+fn generated_specification(genesis: &isocosm::simulation::Genesis) -> Result<JointSpec, String> {
+    let founding = genesis.founding.as_ref().ok_or("generated ecology needs its founding")?;
+    let producers: Vec<u32> = (0..founding.lineages)
+        .filter(|index| {
+            let lineage = format!("lineage:{index}");
+            has_living_role(genesis, &lineage, "life:producer")
+                && genesis.rules.processes.contains_key(&format!("ecology:produce-{index}"))
+                && genesis.rules.processes.contains_key(&format!("ecology:upkeep-{index}"))
+                && genesis.rules.processes.contains_key(&format!("ecology:birth-{index}"))
+        })
+        .collect();
+
+    let played = founding.played.map(|played| played.lineage);
+    let mut viable = Vec::new();
+    for consumer in 0..founding.lineages {
+        let consumer_lineage = format!("lineage:{consumer}");
+        if !has_living_role(genesis, &consumer_lineage, "life:consumer") {
+            continue;
+        }
+        let Some(feed) = genesis.rules.processes.get(&format!("ecology:feed-{consumer}")) else {
+            continue;
+        };
+        let Some(target) = feed.target.as_ref().filter(|target| target.alive == Some(true)) else {
+            continue;
+        };
+        for &producer in &producers {
+            let producer_lineage = format!("lineage:{producer}");
+            if (target.among.is_empty() || target.among.contains(&producer_lineage))
+                && target.lineage.as_ref().is_none_or(|lineage| lineage == &producer_lineage)
+            {
+                viable.push((consumer != played.unwrap_or(u32::MAX), consumer, producer));
+            }
+        }
+    }
+    viable.sort_unstable();
+    let (_, consumer, producer) = viable.into_iter().next().ok_or(
+        "default generated ecology offer needs a living producer and a living consumer whose native feed targets it",
+    )?;
+    let selection = |process: String, actor: u32, target: Option<u32>| Selection {
+        process,
+        actor_lineage: format!("lineage:{actor}"),
+        target_lineage: target.map(|lineage| format!("lineage:{lineage}")),
+    };
+    Ok(JointSpec {
+        version: 1,
+        key: "mesocosm:default-875".into(),
+        horizon: 60,
+        capture: CaptureRequirement {
+            selection: selection(format!("ecology:produce-{producer}"), producer, None),
+            stock: CaptureStock::EnergyAccount("sim:energy".into()),
+            at_least: 1,
+        },
+        returned: ReturnRequirement {
+            selection: selection(format!("ecology:upkeep-{producer}"), producer, None),
+            account: "world:soil".into(),
+            at_least: 1,
+        },
+        reproduction: BirthRequirement {
+            selection: selection(format!("ecology:birth-{producer}"), producer, None),
+            at_least: 1,
+        },
+        counterplay: CounterRequirement {
+            selection: selection(format!("ecology:feed-{consumer}"), consumer, Some(producer)),
+            proof: CounterProof::TargetDebited {
+                account: format!("matter:{producer}-0"),
+                at_least: 1,
+            },
+        },
+        // The candidate is compared with a fresh basis from the same founding;
+        // no extra native definition is being claimed.
+        independence: Some(IndependenceSpec {
+            version: 1,
+            extras: vec![],
+            scalars: vec![],
+        }),
+    })
+}
+
+fn is_false(value: &bool) -> bool { !*value }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -20,8 +113,12 @@ pub struct Setup {
     pub founded: Founded,
     pub specification: JointSpec,
     pub execution: Execution,
-    /// Actual physical inputs; absent means only ordinary native site-grain execution.
+    /// Explicit physical inputs; absent retains the authored fixture's historical site-grain mode.
     pub spatial: Option<SpatialSetup>,
+    /// Realize generator-owned templates. Older setup files omit this field
+    /// and retain their historical site-grain meaning.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub generated_templates: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -31,12 +128,30 @@ pub struct Assessment {
 }
 
 impl Setup {
+    /// The product's bounded generator-authored 875 witness. The 60-tick
+    /// horizon is the existing native 890 qualification horizon, not an
+    /// inference from Mesocosm's much longer epoch length.
+    pub fn generated(founded: Founded, execution: Execution) -> Result<Self, String> {
+        if founded.genesis.founding.as_ref().is_none_or(|f| f.preset.is_some()
+            || f.affinity.is_some() || f.ecology_rates != isocosm::ecology::Rates::A1) {
+            return Err("default ecology offer requires an ordinary A1 founding without preset or affinity".into());
+        }
+        let specification = generated_specification(&founded.genesis)?;
+        let mut founded = founded;
+        founded.genesis.rules.ecology_witness = Some(specification.clone());
+        founded.genesis.validate()?;
+        Ok(Self { version: 1, founded, specification, execution, spatial: None, generated_templates: true })
+    }
+
     pub fn check(&self) -> Result<(), String> {
         if self.version != 1 || self.founded.genesis.founding.is_none() {
             return Err("ecology offer setup must name an exact generated candidate at version 1".into());
         }
         if self.founded.pace.round == 0 || self.founded.pace.scoring == 0 {
             return Err("ecology offer requires explicitly positive lifecycle pace".into());
+        }
+        if self.generated_templates && self.spatial.is_some() {
+            return Err("ecology offer must name one physical setup source".into());
         }
         self.founded.genesis.validate()?;
         self.specification.validate_genesis(&self.founded.genesis)?;
@@ -49,22 +164,36 @@ impl Setup {
     /// Runs the actual supplied clock provider over one native trajectory.
     /// The same trajectory supplies the native evidence required before admission.
     pub fn assess(&self) -> Result<Assessment, String> {
+        let (run, spatial) = self.assess_validated()?;
+        let (witness, _) = run.into_parts();
+        Ok(Assessment { witness, spatial })
+    }
+
+    fn assess_validated(&self) -> Result<(isocosm::ecology::ValidatedJointRun, Game), String> {
         self.check()?;
         let mut game = Game::default();
         let mut initialized = false;
-        let witness = run_joint(&self.founded.genesis, &self.specification, self.execution, &mut |session| {
+        let mut physical = false;
+        let run = run_joint_validated(&self.founded.genesis, &self.specification, self.execution, &mut |session| {
             if !initialized {
-                if let Some(setup) = &self.spatial { game.setup(session, setup)?; }
+                if let Some(setup) = &self.spatial {
+                    game.setup(session, setup)?;
+                    physical = true;
+                } else if self.generated_templates {
+                    // Ruling 889's generator-owned stands and routes provide
+                    // the default physical source; no coordinates are chosen here.
+                    if !game.found_generated(session)? {
+                        return Err("default generated ecology offer requires generator-declared physical templates".into());
+                    }
+                    physical = true;
+                }
                 initialized = true;
             }
-            if self.spatial.is_some() { game.advance_clock(session) }
+            if physical { game.advance_clock(session) }
             else { session.advance_tick_with_flows() }
         })?;
-        if self.spatial.is_some() {
-            let native = isocosm::Session::load(witness.native.clone(), self.execution)?;
-            game.validate_replay(&native)?;
-        }
-        Ok(Assessment { witness, spatial: game })
+        if physical { game.validate_replay(run.session())?; }
+        Ok((run, game))
     }
 
     pub fn offer(&self, ticks_per_second: u32) -> Result<Runtime, String> {
@@ -73,9 +202,9 @@ impl Setup {
         let basis=isocosm::ecology::GeneratedBasis::new(founding)?;
         let criterion=self.specification.independence.as_ref()
             .ok_or("generated-world offer needs explicit native mechanical-effect declarations879")?;
-        let assessment = self.assess()?;
-        let admission=isocosm::ecology::admit(&assessment.witness,criterion,&basis)?;
-        offer::accepted(self,assessment,admission,ticks_per_second)
+        let (run, spatial) = self.assess_validated()?;
+        let admitted = isocosm::ecology::admit_validated(run, criterion, &basis)?;
+        offer::accepted(self, spatial, admitted, ticks_per_second)
     }
 }
 

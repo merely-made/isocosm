@@ -107,10 +107,12 @@ bytes, partial failures and failed compile logs are preserved. Matrix plus
 recovery raw artifacts total 95,364,456 bytes; the complete retained scope is
 under 100 MB. Current release directing controls pass 52, fail 0, with 17
 deliberate ignores. No rates, seed set, extinction check or qualification
-criterion changed for recovery. Ruling 961 selects A1 for Mesocosm's default
-once its physical witness passes, retaining Stock as the shared generator
-default. The generated physical joint witness is still running; this matrix
-does not by itself open default head launch.
+criterion changed for recovery. The separate generated physical witness now
+passes in Individuals and Grouped, including offer, GameSave and exact replay
+(`h6-2026-10-16/generated-physical-witness-gate.json`). Under 961, ordinary
+Mesocosm new worlds now select A1, retaining Stock as the shared generator
+default. Actual generated headed launch and capture are still pending; the
+matrix alone was not used to open that path.
 
 **2026-10-17, 958 pilot:** new generated played worlds explicitly select
 seeded movement ties; absent/older rules retain identity order and omit the
@@ -185,7 +187,8 @@ motion archives stop at the generator check before any replay.
 *2026-10-16:* Mark took every recommendation: the six fixes merge (938),
 and F1 to F8 are ruled 939 to 946 as option (1) each. Each fork is now work
 for implementation. F1 to F8 are built and their triaged failures are now
-verified or retired below. The separate far-window V1 obligations remain open.
+verified or retired below. The separate far-window V1 correctness obligations
+close in the 2026-10-17 camera receipt below; smooth zoom performance remains open.
 
 **F1, 2026-10-16, built (939):** the shipped pack now carries all fifteen
 native catalogue definitions, including the ten missing TOML files. Admission
@@ -284,7 +287,7 @@ is not a green aggregate receipt. Final all-feature/all-target compilation
 passes in `all-feature-final-check.log`. Receipts and exact source hashes live
 under `Code/testing/isometry/f-2026-10-16` with a 100 MB retained-byte cap.
 
-**F7 boundary, 2026-10-16:** the ordinary producer now reuses the existing
+**F7 boundary, 2026-10-16, historical checkpoint:** the ordinary producer reuses the existing
 V1b fixed cache under `r1-proof`, choosing the real oriented camera footprint
 and refreshing retained slots after ground edits. Its original unchanged-frame
 case and three new CPU controls pass. The older `v1-proof` residency module
@@ -295,8 +298,36 @@ so `one_budget_pages_a_region_that_cannot_be_wholly_resident`,
 `the_stable_cache_retargets_without_changing_its_extents` remain explicit
 open V1/V1b obligations. Exposing the residency implementation to the ordinary
 producer does not qualify that far window or all-feature runtime. The
-all-feature compiler receipt is separate. A 2026-10-17 camera-frustum probe still selected 2,573 conservative near-camera and 5,078 far-camera AABB candidates, beyond both capacities. These are not exact per-ray visibility counts; the three controls still stop at page creation. The probe source was reverted and its failed log plus `v1-far-window-analysis.md` retained. No atlas budget is enlarged and
+all-feature compiler receipt is separate. A 2026-10-17 camera-frustum probe
+still selected 2,573 conservative near-camera and 5,078 far-camera AABB
+candidates, beyond both capacities. The probe source was reverted and its
+failed log plus `v1-far-window-analysis.md` retained. The subsequent exact
+1280 by 720 pixel-ray diagnostic counts 121 near and 634 far first-hit
+bricks, with no traversal exhaustion. Both fit 1,791 slots; each Ground walk
+takes about 3.4 seconds in the current build. Its passed log is
+`v1-exact-ray-measurement-controls.log`. This is measurement only: production
+selection is unchanged and those three controls still stop at page creation.
+A bounded CPU source-map diagnostic is being checked against the existing
+shared DDA before any selection change. No atlas budget is enlarged and
 these three tests are not deleted or renamed.
+
+**F camera controls, 2026-10-17:** the V1 and V1b callers now select the
+exact first-hit brick union for their actual camera and viewport using the
+shared CPU DDA. Their CPU source map and view cache have separate bounded
+budgets; GPU residency stays below the original 1 MiB cap. All nine affected
+CPU controls pass, including the three previously failing paging, travel and
+retarget cases, same-key Ground content refresh and atomic refusal/recovery.
+Both native RTX 4060 runs complete 96 frames with inspected captures and
+equal-extent travel. V1 holds 933,888 resident bytes; V1b holds 959,120 bytes,
+creates no replacement textures or bind groups after initialization, and
+reports zero allocator growth across samples taken after GPU completion.
+The close/far recovery measurements are two frames and one frame respectively.
+Uncached 1280 by 720 camera queries take roughly 1.3 to 1.8 seconds; this
+closes residency correctness, not smooth continuous-zoom performance or E3.
+The fresh receipt is
+`Code/testing/isometry/f-2026-10-16/camera-residency-closeout.md`, with source,
+binary, failed and successful log, JSON and capture bindings in its manifest.
+Older failed camera and allocator receipts remain intact under the same cap.
 
 ## A3. Deferred done-conditions, by owner
 

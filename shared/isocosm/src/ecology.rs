@@ -11,12 +11,14 @@ mod joint;
 mod validate;
 mod evidence;
 mod run;
+mod validated_run;
 mod independence;
 mod rates;
 pub use independence::*;
 pub use rates::Rates;
 pub use joint::*;
-pub use run::run_joint;
+pub use run::{run_joint, run_joint_validated};
+pub use validated_run::{AdmittedJointRun, ValidatedJointRun};
 pub(crate) use evidence::JointCapture;
 pub(crate) use admission::validate_material_provenance;
 

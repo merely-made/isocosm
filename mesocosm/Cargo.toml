@@ -160,6 +160,15 @@ taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.g
 [profile.dev.package.isocosm]
 opt-level = 1
 
+# Generated physical admission exercises the product's spatial driver too.
+# Keep that driver optimized in the ordinary development head.
+[profile.dev.package.mesocosm-runtime]
+opt-level = 1
+
+# Physical admission derives clear patches from the generated volume.
+[profile.dev.package.isometer-space]
+opt-level = 1
+
 [workspace.package]
 rust-version = "1.97.1"
 
