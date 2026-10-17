@@ -24,6 +24,10 @@ type Digest = String;
 mod journal;
 use journal::FamilyJournal;
 pub use journal::FamilyLimits;
+mod ledger;
+use ledger::DurableState;
+pub use ledger::{DEFAULT_MAX_LEDGER_BYTES, FamilyLedgerLimits};
+mod durable;
 
 /// Version of the family checkpoint and accepted-record envelope.
 pub const FAMILY_FORMAT_VERSION: u16 = 1;
@@ -210,7 +214,7 @@ impl FamilyHost {
         let world = world.into_exclusive()?;
         let snapshot = world.replication_snapshot()?;
         let checkpoint = checkpoint(session, 0, String::new(), snapshot).seal();
-        Self::attach_journal(session, world, 0, checkpoint.digest, limits)
+        Self::attach_journal(session, world, 0, checkpoint.digest, limits, None)
     }
 
     fn attach_journal(
@@ -219,6 +223,7 @@ impl FamilyHost {
         sequence: u64,
         head_digest: Digest,
         limits: FamilyLimits,
+        durable: Option<DurableState>,
     ) -> Result<Self, String> {
         let world = world.into_exclusive()?;
         let journal = Rc::new(FamilyJournal::new_at(
@@ -226,6 +231,7 @@ impl FamilyHost {
             sequence,
             head_digest,
             limits,
+            durable,
         ));
         world.install_commit_gate(journal.clone())?;
         Ok(Self {
@@ -250,7 +256,7 @@ impl FamilyHost {
             sequence,
             head_digest,
         } = replica;
-        Self::attach_journal(session, world, sequence, head_digest, limits)
+        Self::attach_journal(session, world, sequence, head_digest, limits, None)
     }
 
     /// Shared handle used to open existing product endpoints. Their World
@@ -283,6 +289,12 @@ impl FamilyHost {
     /// local outbox. The operation log remains the durable external layer.
     pub fn drain_records(&self) -> Vec<AcceptedRecord> {
         self.journal.drain_records()
+    }
+
+    /// Return persisted accepted records after a transport cursor so a
+    /// restarted host can republish its verified suffix.
+    pub fn persisted_suffix_after(&self, sequence: u64) -> Result<Vec<AcceptedRecord>, String> {
+        self.journal.persisted_suffix_after(sequence)
     }
 
     /// Current join point for a new or reconnecting replica.
@@ -545,3 +557,7 @@ fn section_diff(
 #[cfg(test)]
 #[path = "family/tests.rs"]
 mod tests;
+
+#[cfg(test)]
+#[path = "family/durable_tests.rs"]
+mod durable_tests;

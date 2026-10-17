@@ -6,7 +6,10 @@ use isocosm_host::{
     world::CommitGate,
 };
 
-use super::{AcceptedRecord, FAMILY_FORMAT_VERSION, SessionId, WireLimits, section_diff};
+use super::{
+    AcceptedRecord, FAMILY_FORMAT_VERSION, SessionId, WireLimits, ledger::DurableState,
+    section_diff,
+};
 
 /// Bounds both one serialized record and the total waiting host outbox.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -29,6 +32,7 @@ struct JournalState {
     head_digest: String,
     outbox: VecDeque<(AcceptedRecord, usize)>,
     outbox_bytes: usize,
+    durable: Option<DurableState>,
 }
 
 /// Commit gate installed on the one shared core World.
@@ -44,6 +48,7 @@ impl FamilyJournal {
         sequence: u64,
         head_digest: String,
         limits: FamilyLimits,
+        durable: Option<DurableState>,
     ) -> Self {
         Self {
             session,
@@ -53,6 +58,7 @@ impl FamilyJournal {
                 head_digest,
                 outbox: VecDeque::new(),
                 outbox_bytes: 0,
+                durable,
             }),
         }
     }
@@ -83,6 +89,41 @@ impl FamilyJournal {
         let drained = std::mem::take(&mut state.outbox);
         state.outbox_bytes = 0;
         drained.into_iter().map(|(record, _)| record).collect()
+    }
+
+    pub(super) fn attach_durable(&self, durable: DurableState) -> Result<(), String> {
+        let mut state = self
+            .state
+            .try_borrow_mut()
+            .map_err(|_| "family journal is already publishing")?;
+        let last = durable.snapshot.records.last();
+        let sequence = last.map_or(durable.snapshot.checkpoint.sequence, |record| {
+            record.sequence
+        });
+        let digest = last.map_or_else(
+            || durable.snapshot.checkpoint.digest.clone(),
+            |record| record.digest.clone(),
+        );
+        if sequence != state.sequence || digest != state.head_digest {
+            return Err("family ledger does not match the resumed journal head".into());
+        }
+        if state.durable.is_some() {
+            return Err("family journal already has a durable ledger".into());
+        }
+        state.durable = Some(durable);
+        Ok(())
+    }
+
+    pub(super) fn persisted_suffix_after(
+        &self,
+        sequence: u64,
+    ) -> Result<Vec<AcceptedRecord>, String> {
+        self.state
+            .borrow()
+            .durable
+            .as_ref()
+            .ok_or("family host has no file ledger")?
+            .suffix_after(sequence)
     }
 }
 
@@ -159,6 +200,10 @@ impl CommitGate for FamilyJournal {
             .ok_or("family outbox size overflow")?;
         if next_outbox_bytes > self.limits.max_outbox_bytes {
             return Err("family accepted-record outbox is full".into());
+        }
+
+        if let Some(durable) = state.durable.as_mut() {
+            durable.append(&record)?;
         }
 
         // Core publication is an infallible assignment after this callback.
