@@ -11861,7 +11861,27 @@ what later sections derive from.
      applies once the remaining receipt and physical-witness gates pass. The
      shared generator default and the unchanged A1 qualification gate remain.
 
-     Next unused 962.
+962. **The stack supplies identity and admitted connections to family games.**
+     Asked 2026-10-17 while wiring H7's shipping VTT owner: the recommended
+     split leaves protected identity and admission with the existing stack;
+     the game maps an authenticated peer to its native participant and seat.
+     Mark: "ah, go ahead. be mindful of sys resources, and of wait time."
+     This accepts the pending recommendation. Full-World replication access
+     remains a separate authorization from projection or seat access. The
+     product must not manufacture keys, grants or trust roots to fill a
+     missing stack configuration.
+
+963. **An unchosen Mesocosm seed may use a bounded candidate search.**
+     Asked with 962 after a clock draw contained no consumer cohort. Mark's
+     same "go ahead" accepts the recommended bounded search for an unchosen
+     seed. Explicit seeds remain exact. Reject structurally ineligible
+     candidates before the expensive witness, disclose the selected seed,
+     and retain the full native witness gate for that candidate. A failed
+     full witness is not a reason to silently try another world. The bound
+     is configurable; this does not select a known passing seed or change
+     the shared generator's Stock default.
+
+     Next unused 964.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

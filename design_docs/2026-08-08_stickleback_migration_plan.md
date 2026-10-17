@@ -2,8 +2,10 @@
 
 **Status, 2026-10-17:** K0 to K2 remain unimplemented. H7 uses JoinedSpace
 for the separate single-host family accepted-record lane; `campaign_sync`
-still assembles `LogSync` and `SyncedSpace` directly. The no-second-runtime
-gate still governs campaign sync.
+still assembles `LogSync` and `SyncedSpace` directly. The shipping Genet UI
+now qualifies one native VTT action and an exact same-campaign ledger restart;
+production peer admission/setup and power-loss durability remain open. The
+no-second-runtime gate still governs campaign sync.
 
 ## Current state, 2026-10-17
 
@@ -43,10 +45,24 @@ JoinedSpace lane installed the signed checkpoint and received the persisted
 suffix. A further offered `vtt.leave` intent produced the next native family
 record with the expected sequence and backlink. The focused family-network
 gate passed 5/5. This reconstructs host and transports inside the test
-process; it does not qualify process-kill recovery or power-loss durability.
-Production invitation/bootstrap lifecycle and the shipping Genet VTT UI
-remain open; the UI still uses the interim DM event authority. Receipt:
+process; it does not qualify production network process-kill recovery or
+power-loss durability.
+The headed Genet UI now exercises native endpoint authority with the durable
+family ledger, but production invitation/bootstrap and peer setup remain open.
+Receipt:
 `Code/testing/isometry/h7-2026-10-17/durable-product-restart-receipt.json`.
+
+*2026-10-17, H7 shipping native UI and file-ledger restart:* the headed Genet
+app accepted one native VTT action at sequence 2/revision 2, preserved the
+opaque VTT section, and verified an exact native suffix and ledger replica.
+Reopening the same campaign resumed durable mode at the same sequence,
+revision and native hash. The logs, binary binding, two inspected captures
+and `shipping-native-ui-restart-qualification.json` are under
+`Code/testing/isometry/h7-2026-10-17/`. This app-only dev opt-level 0 run is a
+functional UI receipt, not a performance or peer-admission qualification.
+The family stack still needs a production admission provider and shipping
+peer setup; full-World authorization remains separate, and power-loss
+durability is not claimed.
 
 *The dated migration design and receipts below remain as written (793).*
 

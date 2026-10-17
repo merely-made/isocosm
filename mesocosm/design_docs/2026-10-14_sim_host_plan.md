@@ -239,9 +239,13 @@ boundary and the trait board, captured.
 
 **H7. `isonetry`, remade as the family's session layer (923, 924).** One
 peer hosts the core's `World`; other peers send intent envelopes and receive
-the accepted log, so a world is played from several machines in each of the
-three games. It starts with an assessment, whose forks go to Mark before
-code: what Graphshell's network carrier (`graphshell_endpoint::network`)
+the accepted log. The family stack owns authenticated peer identity and
+admitted connections. Each game maps an authenticated peer to its native
+participant and seat. Projection/seat access does not grant full-World
+replication; that authorization remains a separate gate. This is the route
+for the VTT and later the other games, not evidence that all three have shipped
+peer play. It starts with an assessment, whose forks go to Mark before code:
+what Graphshell's network carrier (`graphshell_endpoint::network`)
 already carries for the endpoints; Stickleback's joined spaces, which the
 [Stickleback plan](../../design_docs/2026-08-08_stickleback_migration_plan.md)
 adopts for campaign sync (K0 to K2); the stack's transport (murm,
@@ -309,7 +313,85 @@ starts.
 
 ## Progress
 
-- **2026-10-17, H6 fresh-run handoff, headed qualification pending:** the
+- **2026-10-17, H7 owner-thread bridge and lifecycle controls:** the shared
+  family layer now provides a bounded admitted-stream request bridge with an
+  owner wake callback, explicit authenticated-peer keys, response deadlines
+  and cancellation checks. Its record queue reserves capacity before draining
+  the host, preserving accepted records on full or closed queues. Host and
+  replica lifecycle wrappers compose the supplied transport, protected key,
+  store, signed checkpoint and JoinedSpace; publication retry checks persisted
+  records and checkpoint signing requires the exact signed-log tail. All 34
+  library controls pass in `admitted-bridge-lifecycle-queue-controls.log`,
+  bound by `owner-thread-lifecycle-qualification.json`, including a real
+  two-peer lifecycle, section publication, exact replica
+  convergence, retry, stale-checkpoint refusal and clean leave. Identity and
+  admission remain caller supplied under 962. Full-World authorization is
+  separate from projection access. The standalone product admission provider,
+  shipping peer setup and full H7 acceptance remain open.
+
+- **2026-10-17, H7 headed native action and restart:** the shipping Isometry
+  Genet UI accepts a native VTT action through its family host, records one
+  accepted native suffix entry, and keeps the opaque VTT section unchanged.
+  The file ledger is an exact replica. Reopening the same campaign resumes
+  durable mode at sequence 2, revision 2 and native hash
+  `b05e9d08aaf0caadf7159b2d85d89c31e0b28734edd35fd07b9f9cfe301d1d91`.
+  Both headed captures were inspected. The run used the exact executable
+  bound by `profiled-native-action-binary-binding.json`; app-only dev opt-level
+  was 0 for functional UI responsiveness, so it makes no performance claim.
+  `shipping-native-ui-restart-qualification.json` and its logs/captures are
+  under `Code/testing/isometry/h7-2026-10-17/`. This qualifies the local VTT
+  action and application restart path. Production peer setup and standalone
+  stack admission remain open; full-World authorization is separate, and
+  power-loss durability is excluded.
+
+- **2026-10-17, H6 bounded default and held-frame controls:** under 963 the
+  unchosen default tries at most eight structural candidates, configurable
+  from 1 to 128. Each seed is disclosed; only the typed missing-consumer/food
+  preflight failure permits another draw. Explicit seeds get exactly one
+  candidate. Selection runs one full native witness; witness failure remains
+  terminal. All six startup controls pass in
+  `bounded-candidate-library-final-controls.log` (27.46 seconds). The earlier
+  binary-target invocation ran zero tests and is excluded by
+  `bounded-final-control-scope-audit.json`. The runtime also skips unchanged
+  held frames only when its last successful publication matches the current
+  World revision and its intent queue is empty. Three controls pass in
+  `held-advance-final-controls.log` (3.53 seconds), covering queued answers,
+  discarded held time, external revisions and publication refusal. Failed
+  publication never marks a revision clean. These remove redundant work,
+  without qualifying interactive performance.
+- **2026-10-17, H6 scene-source cache:** successful scene preparation is reused
+  only for the same World revision, played member, site and physical/coarse
+  branch. The borrowed producer checks its presentation fingerprint before
+  cloning the scene. Its invalidation control and all-feature compiler gate
+  pass. The optimized ordinary seed-9 watch resumes the exact saved native
+  hash, holds tick 70 with zero native steps, and captures the birth checkpoint
+  in seven frames without a fault. `--no-trace` avoids writing another full
+  save for capture-only work; its conflicting explicit trace control refuses.
+  `scene-cache-watch-qualification.json` binds the compact receipts. Held-frame
+  work remains 1.06 to 1.35 seconds, with callbacks 5.75 to 8.47 seconds apart;
+  this establishes correctness, not interactive performance.
+
+- **2026-10-17, H6 generated seed-9 head and exact replay:** the optimized
+  ordinary head, with explicit seed 9 and A1 selected by Mesocosm's default,
+  passes its native witness in 49.571 seconds. Five frames and three viewport
+  renders reach tick 70 and a native birth checkpoint, unassisted and without
+  a fault. The captured terrain, bodies, checkpoint and minimap were inspected.
+  The core save replays to the recorded hash `ae57d13f26b17f4f`. Controlled
+  member 70 has no saved physical placement, while member 102 does; the existing
+  native site view therefore supplies presentation without assigning the
+  controlled member another body's pose. The source, executable, save, PNG and
+  logs are bound by `release-seed9-head-replay-gate.json` under the H6 owner.
+  The generated run is slow: callback intervals range from 1.9 to 27.1 seconds,
+  with concurrent release compilation. This is a functional generated-head
+  receipt, not real-time performance or a generated epoch-board receipt.
+  The first actual unchosen release draw, seed `1792230697480612000`, correctly
+  refuses before its witness: its eight cohorts occupy lineages
+  `[0, 2, 2, 3, 2, 2, 2, 3]`, with no living consumer. The failure is preserved
+  in `release-default-ineligible-draw.json`. Ruling 963 now permits a bounded
+  structural candidate search for unchosen seeds; explicit seeds remain exact.
+  Explicit seed-9 success does not close the default-launch condition.
+
+- **2026-10-17, H6 fresh-run handoff qualified:** the
   ordinary generated path retains the final Session from its actual witness
   run after one full native witness replay. Non-serializable, privately
   constructed validated/admitted run objects carry that immutable proof into
@@ -317,17 +399,23 @@ starts.
   structural checks; public decoded witness, admission, save and restore
   validators retain full replay. This removes repeated validation and loading
   of the same in-process witness without caching trust in saved bytes.
-  The Mesocosm workspace/all-target/all-feature compiler check passes, and
-  eight focused handoff, continuation, execution and tamper/refusal controls
-  pass across the running suite and separate negative-control logs. The full
-  seed-9 physical test in both execution modes is still running, and the
-  default headed capture and matching saved replay remain unqualified.
+  The Mesocosm workspace/all-target/all-feature compiler check passes. The
+  final optimized offer/restore suite passes all nine controls in 346.62
+  seconds, including the full seed-9 physical assessment, offer, save and
+  replay in both execution modes, handoff/continuation equality and
+  tamper/refusal checks. `validated-run-release-qualification.json` binds the
+  current runtime source, executable and log. The explicit seed-9 head and
+  saved replay pass above; the unchosen default remains unqualified.
   Two pre-optimization default trials were stopped without a capture; the
   later trial's seed, source and binary hashes are preserved in
   `cached-head-build-binding.json` and
-  `cached-head-repeated-validation-superseded.json`. The current trial uses
-  clock seed `1792226307408123200`; its preparation log is
-  `a1-validated-default-headed.log`. All are under the H6 receipt owner.
+  `cached-head-repeated-validation-superseded.json`. The development trial
+  with clock seed `1792226307408123200` passed native admission in 1,207.771
+  seconds, then exposed the unplaced-controller view selection error. It was
+  stopped without a captured frame or saved trace;
+  `validated-debug-default-view-boundary.json` records that limit. The later
+  optimized seed-9 run above exercises the corrected view selection. All are
+  under the H6 receipt owner.
 
 - **2026-10-17, H7 bounded restart ledger:** `497644dd` adds an opt-in
   single-writer file ledger containing the initial World checkpoint and all
