@@ -17,6 +17,8 @@ use winit::keyboard::{Key, NamedKey};
 
 mod probe;
 mod view;
+#[cfg(test)]
+mod tests;
 
 const LEAF: u64 = 0x4d45_534f;
 const MAP: u64 = 0x4d45_4d50;
@@ -37,6 +39,8 @@ pub(super) struct State {
     commands: Option<isomere::host::WindowCommands>,
     map_key: Option<(u64, Option<u64>)>,
     minimap: Option<mesocosm_views::MinimapLeaf>,
+    refreshed_revision: Option<u64>,
+    refresh_required: bool,
 }
 
 impl State {
@@ -59,6 +63,8 @@ impl State {
             commands: None,
             map_key: None,
             minimap: None,
+            refreshed_revision: None,
+            refresh_required: true,
         }
     }
 
@@ -124,6 +130,38 @@ impl State {
         } else {
             self.picture.clear();
         }
+        self.refreshed_revision = r.revision().ok();
+        self.refresh_required = false;
+    }
+
+    /// A held unchanged world has no new semantic view. Input handlers refresh
+    /// immediately; selection expiry requests a refresh on the next frame.
+    fn frame_step(&mut self) -> bool {
+        let before = std::time::Instant::now();
+        let pumping = self.host.pump.is_some();
+        self.host.advance();
+        self.host.note_outcomes();
+        let revision = self.host.runtime.revision().ok();
+        let held = self.host.runtime.checkpoint().is_some()
+            || self.host.runtime.review().is_some();
+        let refresh = self.refresh_required || !held || pumping || self.host.pump.is_some()
+            || revision.is_none() || revision != self.refreshed_revision;
+        if refresh { self.refresh(); }
+        if self.frame_us.len() < 10000 {
+            self.frame_us.push(before.elapsed().as_micros() as u64);
+        }
+        refresh
+    }
+
+    fn presented(&mut self) {
+        self.host.frames += 1;
+        self.host.mark_continuation_presented();
+        let followed = self.host.followed();
+        let selected = self.host.inspection.selected;
+        self.host.inspection.update(followed, |selection| {
+            self.producer.borrow_mut().validate_selection(selection)
+        });
+        self.refresh_required |= selected != self.host.inspection.selected;
     }
 
     fn press(&mut self, key: &Key) {
@@ -278,31 +316,18 @@ impl Product for WindowProduct {
         ctx.runner.state().picture.last_error()
     }
     fn frame(&mut self, ctx: &mut Ctx<'_, Self>) -> bool {
-        ctx.runner.update(|s| {
-            let before = std::time::Instant::now();
-            s.host.advance();
-            s.host.note_outcomes();
-            s.refresh();
-            if s.frame_us.len() < 10000 {
-                s.frame_us.push(before.elapsed().as_micros() as u64);
-            }
-        });
-        let mut minimap = None;
-        ctx.runner.update(|s| minimap = s.minimap.take());
+        let refresh = ctx.runner.update_deferred(State::frame_step);
+        if refresh { ctx.runner.update(|_| {}); }
+        let minimap = ctx.runner.update_deferred(|s| s.minimap.take());
         if let Some(minimap) = minimap {
             ctx.leaves.insert(MAP, Box::new(minimap));
         }
         true
     }
     fn after_frame(&mut self, ctx: &mut Ctx<'_, Self>) {
-        ctx.runner.update(|s| {
-            s.host.frames += 1;
-            s.host.mark_continuation_presented();
-            let followed = s.host.followed();
-            s.host.inspection.update(followed, |selection| {
-                s.producer.borrow_mut().validate_selection(selection)
-            });
-        });
+        // Counters and the exact presented input cut do not change DOM content.
+        // Rebuilding here can consume the native readback deadline before poll.
+        ctx.runner.update_deferred(State::presented);
     }
     fn key(
         &mut self,
