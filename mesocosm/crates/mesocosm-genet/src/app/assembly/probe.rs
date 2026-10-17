@@ -20,17 +20,58 @@ impl mesquite::Product for Probe {
     fn snapshot(&self, ctx: &Context<'_>, captures: usize, _: f32) -> ProbeSnapshot {
         let s = ctx.runner.state();
         let r = &s.host.runtime;
+        let some = |id: Option<u64>| id.map_or_else(|| "none".into(), |id| id.to_string());
+        let yes_no = |value| if value { "yes" } else { "no" }.to_owned();
+        let dev_intents = r.dev_intents();
+        let living = r
+            .sim()
+            .state()
+            .population
+            .groups
+            .values()
+            .filter(|g| g.entity.alive)
+            .map(|g| g.count)
+            .sum::<u64>();
         ProbeSnapshot {
-            focused: None,
+            focused: s.host.followed().map(|id| format!("critter {id}")),
             fields: [
+                ("mode", "played".into()),
+                ("camera", s.host.config.camera.name().into()),
+                ("frames", s.host.frames.to_string()),
+                ("dev", s.host.config.dev.to_string()),
+                ("dev-intents", dev_intents.to_string()),
+                (
+                    "assisted",
+                    if dev_intents == 0 {
+                        "unassisted".into()
+                    } else {
+                        crate::played::assisted_label(dev_intents)
+                    },
+                ),
+                ("controlled", some(r.critter())),
+                ("follow", some(s.host.followed())),
+                ("site", some(s.host.scene.as_ref().map(|s| s.site))),
+                ("living", living.to_string()),
+                ("boundary", yes_no(r.review().is_some())),
+                ("fault", r.fault().unwrap_or("").to_owned()),
                 ("tick", r.tick().to_string()),
                 ("hash", format!("{:016x}", r.state_hash())),
                 ("revision", r.revision().unwrap_or(0).to_string()),
                 ("captures", captures.to_string()),
                 ("board", r.review().is_some().to_string()),
-                ("checkpoint", r.checkpoint().is_some().to_string()),
+                ("checkpoint", yes_no(r.checkpoint().is_some())),
                 ("queued", r.queued_len().to_string()),
                 ("steps", s.host.steps.to_string()),
+                ("renders", s.producer.borrow().renders().to_string()),
+                ("paused", yes_no(s.host.dev_paused)),
+                ("inspecting", yes_no(s.host.inspection.open)),
+                (
+                    "selected-part",
+                    s.host
+                        .inspection
+                        .selected
+                        .map_or_else(|| "none".into(), |p| p.part.0.to_string()),
+                ),
                 (
                     "pointed",
                     s.last_point
@@ -71,7 +112,7 @@ impl mesquite::Product for Probe {
     }
     fn complete(&mut self, ctx: &mut Context<'_>, _: &taproot::Outcome) -> Result<(), String> {
         let s = ctx.runner.state();
-        if s.producer.borrow().renders() == 0 || s.picture.snapshot().is_none() {
+        if s.host.scene.is_some() && s.producer.borrow().renders() == 0 {
             return Err("the core viewport never presented its native picture".into());
         }
         if let Some(why) = s.picture.last_error() {
@@ -87,7 +128,7 @@ impl mesquite::Product for Probe {
                 &serde_json::json!({"frame_work_us":s.frame_us,
                 "frame_intervals_us":s.host.frame_intervals_us,
                 "state_hash":s.host.runtime.state_hash(),"world_revision":s.host.runtime.revision()?,
-                "steps":s.host.steps,"frames":s.host.frames,"bench":true}),
+                "steps":s.host.steps,"frames":s.host.frames,"bench":s.host.config.bench_world}),
             )?;
         }
         Ok(())

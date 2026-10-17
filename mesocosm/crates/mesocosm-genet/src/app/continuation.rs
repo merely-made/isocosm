@@ -9,7 +9,7 @@ use isocosm_overlay::{ParticipantHandle, Tick};
 use mesocosm_runtime::continuation::{self, LoopAction, LoopAnswer, LoopInput,
     LoopPhase, LoopReading};
 use mesocosm_views::{Succession, SuccessionChild};
-use winit::{event::MouseButton, keyboard::{Key, NamedKey}};
+use winit::keyboard::{Key, NamedKey};
 
 #[derive(Default)]
 pub(super) struct Pane {
@@ -70,10 +70,6 @@ impl Host {
         }
     }
 
-    pub(super) fn mark_continuation_frame(&mut self) {
-        self.continuation.presented = self.gpu.as_ref().and_then(|gpu| gpu.chrome.as_ref())
-            .filter(|lanes| lanes.continuation.standing()).and(self.continuation.reading.clone());
-    }
     pub(super) fn mark_continuation_presented(&mut self) {
         self.continuation.presented = self.continuation.reading.clone();
     }
@@ -171,13 +167,4 @@ impl Host {
         true
     }
 
-    pub(super) fn press_continuation_pointer(&mut self, button: MouseButton, at: [f32; 2]) -> bool {
-        if !self.continuation_open() { return false; }
-        let on_panel = self.gpu.as_ref().and_then(|gpu| gpu.chrome.as_ref().map(|lanes| {
-            let [x,y,w,h] = lanes.continuation.probe((gpu.config.width,gpu.config.height)).1;
-            lanes.continuation.standing() && at[0] >= x && at[0] < x+w && at[1] >= y && at[1] < y+h
-        })).unwrap_or(false);
-        if button == MouseButton::Left && on_panel { self.submit_selected_continuation(); }
-        true
-    }
 }

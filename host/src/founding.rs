@@ -11,6 +11,7 @@ use isocosm::simulation::Genesis;
 use isocosm::{Execution, Session};
 
 use crate::world::World;
+use crate::save::{WorldSave, FORMAT_VERSION};
 
 /// Who founds: a product head, or the dev bench.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -28,13 +29,33 @@ pub struct Offered<'a> {
 
 pub fn found(genesis: Genesis, execution: Execution, purpose: Purpose, offered: Option<Offered<'_>>)
     -> Result<World, String> {
+    validate(&genesis, purpose, offered)?;
+    Ok(World::new(Session::new(genesis, execution)?))
+}
+
+/// Continue the exact admitted witness trajectory, rather than resetting it
+/// to the candidate's tick zero. Product setup happens after this core load.
+pub fn from_admitted(execution: Execution, offered: Offered<'_>) -> Result<World, String> {
+    validate_offered(&offered.witness.native.genesis, offered)?;
+    if execution != offered.witness.execution {
+        return Err("the offered execution differs from its admitted witness".into());
+    }
+    World::resume(WorldSave { format: FORMAT_VERSION, native: offered.witness.native.clone(),
+        sections: Default::default() }, execution)
+}
+
+fn validate(genesis: &Genesis, purpose: Purpose, offered: Option<Offered<'_>>) -> Result<(), String> {
     if genesis.founding.is_some() && purpose == Purpose::Head {
         let offered = offered
             .ok_or("a head founds a generated world only with its admitted joint witness (875, 885)")?;
-        if isocosm::digest(&genesis) != offered.admission.genesis_digest() {
-            return Err("the admitted joint witness names another generated genesis".into());
-        }
-        offered.admission.validate(offered.witness)?;
+        validate_offered(genesis, offered)?;
     }
-    Ok(World::new(Session::new(genesis, execution)?))
+    Ok(())
+}
+
+fn validate_offered(genesis: &Genesis, offered: Offered<'_>) -> Result<(), String> {
+    if isocosm::digest(genesis) != offered.admission.genesis_digest() {
+        return Err("the admitted joint witness names another generated genesis".into());
+    }
+    offered.admission.validate(offered.witness)
 }

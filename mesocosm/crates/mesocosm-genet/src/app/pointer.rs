@@ -1,129 +1,28 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Current presented-frame topics become native nudges, never physical driving.
-//! The window picks and checks geometry; the core refuses a pick whose frame
-//! the world has moved past and the keymap makes the nudge (H4, 956).
+//! Native suggestions for the current rendered topic. Leaf picking is in Assembly.
 
 use super::Host;
-use isocosm::{schema::Id, directing::readings::Mode};
+use isocosm::schema::Id;
 use isocosm_overlay::{ActKey, EntityHandle, PlaceHandle, mesocosm::{MesocosmIntent, Nudge, NudgeMeaning, NudgeTarget}};
-use mesocosm_runtime::{Button, Pick, Pointed};
 use mesocosm_views::Succession;
-use winit::{event::MouseButton, keyboard::{Key, NamedKey}};
+use winit::keyboard::{Key, NamedKey};
 
-#[derive(Clone, PartialEq, Eq)]
-struct Source { state: u64, spatial: String, mode: Mode }
 #[derive(Clone, PartialEq, Eq)]
 struct Hint { process: String, topic: NudgeTarget }
 struct Menu { actor: Id, clicked: NudgeTarget, hints: Vec<Hint>, selected: Option<Hint> }
-
 #[derive(Default)]
-pub(super) struct Pointer {
-    at: Option<[f32; 2]>, presented: Option<Source>, revision: Option<u64>, menu: Option<Menu>, notice: Option<String>,
-}
-
+pub(super) struct Pointer { menu: Option<Menu>, notice: Option<String> }
 fn topic(target: NudgeTarget) -> String {
     match target { NudgeTarget::Thing(id) => format!("body {}", id.0), NudgeTarget::Place(id) => format!("site {}", id.0) }
 }
-fn contains([x,y,w,h]: [f32;4], at: [f32;2]) -> bool {
-    at[0] >= x && at[0] < x+w && at[1] >= y && at[1] < y+h
-}
-
 impl Host {
-    fn pointer_source(&self) -> Source {
-        Source { state:self.runtime.state_hash(), spatial:isocosm::digest(self.runtime.spatial()), mode:self.runtime.interim().mode }
-    }
-    pub(super) fn mark_pointer_frame(&mut self) {
-        self.pointer.presented = self.gpu.as_ref().and_then(|gpu| gpu.section.query_generation())
-            .filter(|_| self.scene.is_some()).map(|_| self.pointer_source());
-        self.pointer.revision = self.pointer.presented.as_ref().and_then(|_| self.runtime.revision().ok());
-    }
-    pub(super) fn move_pointer(&mut self, at: [f32;2]) {
-        self.pointer.at = at.iter().all(|v| v.is_finite()).then_some(at);
-    }
-    pub(super) fn clear_pointer(&mut self) {
-        self.pointer.at = None; self.pointer.presented = None; self.pointer.revision = None; self.pointer.menu = None;
-    }
     pub(super) fn directing_open(&self) -> bool { self.pointer.menu.is_some() }
-    fn pointer_topic(&mut self) -> Result<NudgeTarget,String> {
-        if self.pointer.presented.as_ref() != Some(&self.pointer_source()) {
-            return Err("the pointed frame is no longer current".into());
-        }
-        let at = self.pointer.at.ok_or("pointer has no current window position")?;
-        let visible = self.runtime.physical_view()?;
-        let scene = self.scene.as_ref().ok_or("physical scene is unavailable")?;
-        let gpu = self.gpu.as_mut().ok_or("scene has no presented device")?;
-        if at[0] < 0.0 || at[1] < 0.0 || at[0] >= gpu.config.width as f32 || at[1] >= gpu.config.height as f32 {
-            return Err("pointer is outside the presented frame".into());
-        }
-        match gpu.section.pick_at_pixel([at[0].floor() as u32, at[1].floor() as u32]).map_err(|e| format!("pick: {e:?}"))? {
-            Some(isometer::Pick::Body(pick)) => {
-                let id = pick.address.subject.0;
-                let body = scene.body(id).ok_or("pointed body is not in the current picture")?;
-                let sim = self.runtime.sim();
-                let native = sim.state().population.get(id).ok_or("pointed native body disappeared")?;
-                if !visible.shows(id) || native.resident_site() != Some(scene.site) || native.body.as_ref() != Some(&body.document)
-                    || native.alive != body.alive || !gpu.section.validate_body_pick(pick, scene) {
-                    return Err("pointed body identity, geometry or awareness is stale".into());
-                }
-                if body.physical.is_some() {
-                    self.runtime.spatial().members.get(&id).ok_or("pointed body has no physical source")?.realized(&self.runtime.sim())?;
-                }
-                Ok(NudgeTarget::Thing(EntityHandle(id)))
-            },
-            Some(isometer::Pick::Terrain(_)) if visible.sites.contains(&scene.site) =>
-                Ok(NudgeTarget::Place(PlaceHandle(scene.site))),
-            _ => Err("the current view supplies no pointed body or site".into()),
-        }
-    }
-    fn over_chrome(&self, at: [f32;2]) -> bool {
-        let Some(gpu) = &self.gpu else { return true; };
-        let Some(lanes) = &gpu.chrome else { return false; };
-        let frame = (gpu.config.width,gpu.config.height);
-        let hud = crate::hud::placement(frame);
-        contains([hud.0,hud.1,hud.2,hud.3],at) || contains(lanes.vitals.probe(frame).1,at)
-            || (self.config.dev && contains(lanes.dev.probe(frame).1,at))
-            || (lanes.board.standing() && contains(lanes.board.probe(frame).1,at))
-            || (lanes.checkpoint.standing() && contains(lanes.checkpoint.probe(frame).1,at))
-            || (lanes.directing.standing() && contains(lanes.directing.probe(frame).1,at))
-    }
-    pub(super) fn press_pointer(&mut self, button: MouseButton) {
-        let Some(at) = self.pointer.at else { return; };
-        if self.press_continuation_pointer(button,at) || self.runtime.checkpoint().is_some() { return; }
-        let on_menu = self.gpu.as_ref().and_then(|gpu| gpu.chrome.as_ref().map(|lanes|
-            lanes.directing.standing() && contains(lanes.directing.probe((gpu.config.width,gpu.config.height)).1,at))).unwrap_or(false);
-        if button == MouseButton::Left && on_menu { self.send_selected_hint(); return; }
-        if self.over_chrome(at) { return; }
-        let button = match button { MouseButton::Left => Button::Primary, MouseButton::Right => Button::Secondary, _ => return };
-        let result = self.pointer_topic().and_then(|target| self.pointed(target, button).map(|pointed| (target, pointed)));
-        let result = match result {
-            Ok((target, pointed)) if button == Button::Primary => {
-                self.pointer.menu = None;
-                let context = self.input_context();
-                self.runtime.point(&pointed, &context).map(|_| ()).map_err(|why| format!("{why:?}"))
-                    .map(|()| target)
-            },
-            Ok((target, pointed)) => self.runtime.current(&pointed).map(|_| target).map_err(|why| format!("{why:?}"))
-                .map(|target| { self.open_directing(target); target }),
-            Err(why) => Err(why),
-        };
-        if let Err(why) = result { self.pointer.notice = Some(why.clone()); eprintln!("attention: {why}"); }
-    }
-    /// The core's pick for a topic, stamped with the presented frame's revision.
-    fn pointed(&self, target: NudgeTarget, button: Button) -> Result<Pointed, String> {
-        let revision = self.pointer.revision.ok_or("the pointed frame has no world revision")?;
-        let pick = match target { NudgeTarget::Thing(id) => Pick::Thing(id.0), NudgeTarget::Place(id) => Pick::Place(id.0) };
-        Ok(Pointed { pick, button, revision })
-    }
     fn send_hint(&mut self, target: NudgeTarget, meaning: NudgeMeaning) {
         let Some(actor) = self.runtime.critter() else { return; };
         let intent = MesocosmIntent::Nudge(Nudge { entity:EntityHandle(actor),target,meaning });
         if let Err(why) = self.runtime.offer(intent) { eprintln!("input: {why:?}"); }
-    }
-    fn open_directing(&mut self, clicked: NudgeTarget) {
-        if self.gpu.as_ref().and_then(|gpu| gpu.chrome.as_ref()).is_none() { return; }
-        self.open_directing_in_view(clicked);
     }
     pub(super) fn open_directing_in_view(&mut self, clicked: NudgeTarget) {
         let Some(actor) = self.runtime.critter() else { return; };
@@ -160,7 +59,7 @@ impl Host {
         if self.continuation_open() { return false; }
         if matches!(key,Key::Character(c) if c.eq_ignore_ascii_case("q")) && self.runtime.checkpoint().is_none() {
             let Some(site) = self.runtime.played().and_then(|body| body.resident_site()) else { return true; };
-            self.open_directing(NudgeTarget::Place(PlaceHandle(site))); return true;
+            self.open_directing_in_view(NudgeTarget::Place(PlaceHandle(site))); return true;
         }
         if self.pointer.menu.is_none() { return false; }
         match key {

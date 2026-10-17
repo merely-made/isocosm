@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use super::{LEAF, State};
+use super::{LEAF, MAP, State};
 use cambium::{AnyView, GenetCtx, GenetElement, clickable, el, focusable, lens, text};
 
 pub(super) type Child = Box<dyn AnyView<State, (), GenetCtx, GenetElement>>;
@@ -31,10 +31,18 @@ pub(super) fn root(state: &State) -> Child {
         None,
         Some(|s: &mut State, e: cambium::PointerEvent| s.point(e)),
     );
-    let mut panels: Vec<Child> = vec![Box::new(lens(
-        |v: &mut mesocosm_views::Vitals| mesocosm_views::vitals_root(v),
-        |s: &mut State| &mut s.vitals,
-    ))];
+    let mut readings: Vec<Child> = vec![
+        Box::new(
+            cambium::custom_leaf::<State, ()>(MAP, 160, 160)
+                .attr("role", "img")
+                .attr("aria-label", "World map"),
+        ),
+        Box::new(lens(
+            |v: &mut mesocosm_views::Vitals| mesocosm_views::vitals_root(v),
+            |s: &mut State| &mut s.vitals,
+        )),
+    ];
+    let mut panels: Vec<Child> = Vec::new();
     if state.host.runtime.review().is_some() {
         panels.push(Box::new(lens(
             |v: &mut mesocosm_views::Board| mesocosm_views::board_root(v),
@@ -56,14 +64,39 @@ pub(super) fn root(state: &State) -> Child {
         ));
     }
     if state.question_open {
+        let reading_root: fn(&mesocosm_views::Succession) -> mesocosm_views::SuccessionChild =
+            if state.host.continuation_open() {
+                super::super::continuation::root
+            } else if state.host.directing_open() {
+                crate::directing::root
+            } else {
+                mesocosm_views::succession_root
+            };
         panels.push(Box::new(lens(
-            |v: &mut mesocosm_views::Succession| mesocosm_views::succession_root(v),
+            move |v: &mut mesocosm_views::Succession| reading_root(v),
             |s: &mut State| &mut s.question,
         )));
+        let choosing = state.host.continuation_open() || state.host.directing_open();
+        if choosing {
+            panels.push(button(
+                "Next choice",
+                winit::keyboard::Key::Named(winit::keyboard::NamedKey::ArrowDown),
+            ));
+        }
         panels.push(button(
-            "Carry on",
+            if choosing {
+                "Use selected choice"
+            } else {
+                "Carry on"
+            },
             winit::keyboard::Key::Named(winit::keyboard::NamedKey::Enter),
         ));
+        if state.host.directing_open() {
+            panels.push(button(
+                "Close hints",
+                winit::keyboard::Key::Named(winit::keyboard::NamedKey::Escape),
+            ));
+        }
         if state.question.take.is_some() {
             panels.push(button(
                 "Take offered body",
@@ -71,7 +104,14 @@ pub(super) fn root(state: &State) -> Child {
             ));
         }
     }
-    if state.host.config.dev {
+    if state.host.config.dev && state.host.inspection.open {
+        panels.push(Box::new(lens(
+            |v: &mut mesocosm_views::Dev| mesocosm_views::dev_root(v),
+            |s: &mut State| &mut s.dev,
+        )));
+    }
+    panels.append(&mut readings);
+    if state.host.config.dev && !state.host.inspection.open {
         panels.push(Box::new(lens(
             |v: &mut mesocosm_views::Dev| mesocosm_views::dev_root(v),
             |s: &mut State| &mut s.dev,
@@ -81,7 +121,14 @@ pub(super) fn root(state: &State) -> Child {
         el(
             "main",
             vec![
-                Box::new(el("h1", text("Mesocosm · Bench world"))) as Child,
+                Box::new(el(
+                    "h1",
+                    text(if state.host.config.bench_world {
+                        "Mesocosm · Bench world"
+                    } else {
+                        "Mesocosm"
+                    }),
+                )) as Child,
                 Box::new(
                     el(
                         "div",

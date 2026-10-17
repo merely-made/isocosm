@@ -13,6 +13,29 @@ pub struct SectionProducer { handle: SceneHandle, inner: Option<SceneProducer<So
 impl SectionProducer {
     pub fn new(handle: SceneHandle) -> Self { Self { handle, inner: None } }
     pub(crate) fn renders(&self) -> u64 { self.inner.as_ref().map_or(0, |inner|inner.renders()) }
+    /// Walk body parts only when this producer presented the current admitted picture.
+    pub(crate) fn select_part(&mut self, subject: u64, current: Option<section::BodySelection>, backwards: bool)
+        -> Option<section::BodySelection> {
+        if !self.has_current_frame() { return None; }
+        let snapshot = self.handle.snapshot()?;
+        let section = self.inner.as_mut()?.source_mut().section.as_mut()?;
+        let selected = section.select_part(subject, current, backwards)?;
+        section.validate_selection(selected, &snapshot.scene).then_some(selected)
+    }
+    /// Validate against the exact current SceneHandle snapshot shown by this producer.
+    pub(crate) fn validate_selection(&mut self, selected: section::BodySelection) -> bool {
+        let Some(snapshot) = self.handle.snapshot() else { return false; };
+        if !self.has_current_frame() { return false; }
+        let Some(section) = self.inner.as_mut().and_then(|inner| inner.source_mut().section.as_mut()) else { return false; };
+        section.validate_selection(selected, &snapshot.scene)
+    }
+    fn has_current_frame(&mut self) -> bool {
+        let Some(input) = self.handle.snapshot() else { return false; };
+        self.inner.as_mut().is_some_and(|inner| {
+            let source = inner.source_mut();
+            source.presented_input == Some(input.fingerprint) && source.presented.is_some()
+        })
+    }
     pub(crate) fn pick(&mut self, local: (f64, f64), size: (f64, f64)) -> Result<(Option<isometer::Pick>, u64), String> {
         let source = self.inner.as_mut().ok_or("viewport has not rendered")?.source_mut();
         let input = self.handle.snapshot().ok_or("viewport has no current picture")?;
@@ -141,7 +164,7 @@ impl SceneSource for Source {
                 section.configure_bodies(view.bodies, view.budget);
                 section.set_half_height(view.half_height);
                 section.set_body_light(view.light);
-                section.configure_terrain(view.terrain, view.centre, view.centre[1]);
+                section.configure_terrain(view.terrain, view.centre, view.terrain_y);
                 section.set_body_focus(view.focus, view.selection);
             }
             section.set_forward(Some(camera.forward))?;

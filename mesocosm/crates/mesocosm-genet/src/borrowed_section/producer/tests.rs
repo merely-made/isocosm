@@ -30,6 +30,11 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
         budget: section::DEFAULT_BODY_BUDGET,
         light: 1.0,
         terrain: section::TerrainStyle::default(),
+        terrain_y: native
+            .scene
+            .played
+            .and_then(|id| native.scene.at(id))
+            .map_or(camera.centre[1], |at| at[1] as f32),
         focus: None,
         selection: None,
     };
@@ -54,6 +59,10 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
     };
     leaf.inner.as_mut().unwrap().render_scene(&request).unwrap();
     assert!(handle.last_error().is_none(), "{:?}", handle.last_error());
+    let selected = leaf
+        .select_part(native.played().unwrap(), None, false)
+        .expect("the presented played body has an exact part");
+    assert!(leaf.validate_selection(selected));
 
     // The original loop's Section, framing, pose and roster on the same device.
     let mut old = Section::new(
@@ -68,7 +77,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
     old.configure_bodies(BodyMode::Voxels, section::DEFAULT_BODY_BUDGET);
     old.set_half_height(camera.half_height);
     old.set_body_light(presentation.light);
-    old.configure_terrain(presentation.terrain, camera.centre, camera.centre[1]);
+    old.configure_terrain(presentation.terrain, camera.centre, presentation.terrain_y);
     let pose = section::pose_of(&native.scene, 1.0).map(|(pose, _)| pose);
     let roster = section::roster_of(&native.scene, old.slab_window(camera.centre), 1.0);
     let target = core.device().create_texture(&wgpu::TextureDescriptor {
@@ -137,6 +146,10 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
     handle
         .present(native.scene.clone(), 8, presentation)
         .unwrap();
+    assert!(
+        !leaf.validate_selection(selected),
+        "selection expires with the shown snapshot"
+    );
     assert!(
         leaf.pick((48.0, 36.0), (96.0, 72.0))
             .unwrap_err()

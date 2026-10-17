@@ -6,8 +6,8 @@
 
 //! Mesocosm's windowed host.
 //!
-//! Owns the window, the device, and the frame loop. Holds **no game state**:
-//! input becomes contract envelopes, the shared runtime steps a native
+//! The window, device and frame loop are isomere's Assembly. Input becomes
+//! core envelopes, the shared runtime steps a native
 //! Isocosm session at a fixed rate, and the world comes back out to be drawn.
 //! If a rule ever appears in this crate, it is in the wrong crate.
 //!
@@ -16,14 +16,12 @@
 //! the lens brick tracer's section over the played critter's lifted site.
 //! Camera motion is presentation only and never reaches the session's log.
 
-//! Five chrome lanes ride the frame, all through [`chrome`]: the painted
-//! minimap ([`hud`]), the cambium vitals panel ([`vitals`]), the individual
-//! checkpoint ([`succession`]), the trait board ([`review`]), and the dev lane
-//! ([`dev`]). None of them touches the world.
+//! The actual Section is a same-device viewport producer. Cambium owns the
+//! vitals, checkpoint, trait board and dev controls; the existing painted
+//! minimap is registered directly as a leaf. These views change no world state.
 
-//! **The harness is taproot's** (DT4): this host implements `Automatable`
-//! and `Driveable`, so a text `taproot::Scenario` drives a run; see
-//! [`app::drive`] and [`app::actions`].
+//! Mesquite drives taproot scenarios through that same document and viewport;
+//! keys and semantic actions share [`app::actions`].
 
 pub mod app;
 pub mod chrome;

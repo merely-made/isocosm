@@ -12,7 +12,9 @@ pub(super) fn accepted(setup:&Setup,assessment:Assessment,admission:Admission,
     if ticks_per_second==0 {return Err("offered runtime requires a positive clock rate".into());}
     // The runner has ended. Restore its exact authenticated state as the one
     // live owner, retaining all matter, chosen acts and physical history.
-    let session=Session::load(assessment.witness.native.clone(),setup.execution)?;
+    let world=isocosm_host::founding::from_admitted(setup.execution,
+        isocosm_host::founding::Offered { witness:&assessment.witness, admission:&admission })?;
+    let (session,sections)=world.into_parts()?;
     let mut game=assessment.spatial;
     game.validate_replay(&session)?;
     let configured=setup.spatial.is_some();
@@ -24,6 +26,7 @@ pub(super) fn accepted(setup:&Setup,assessment:Assessment,admission:Admission,
         setup.founded.pace,&mut advance)?;
     interim.on_collapse=setup.founded.on_collapse;
     let mut runtime=Runtime::over(interim,setup.founded.clone(),ticks_per_second);
+    for (mode,bytes) in sections { runtime.world().put_section(&mode,bytes)?; }
     runtime.with_product(|product,world| {
         product.spatial=game;
         // No generated advisory pose overwrites the actual assessed physical source.

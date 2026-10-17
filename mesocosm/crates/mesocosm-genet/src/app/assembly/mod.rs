@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! H6's explicit bench-world head: one core runtime in isomere's Assembly.
+//! One core runtime, one native picture, and Cambium controls in Assembly.
 
 use super::{Host, HostConfig};
 use crate::borrowed_section::{Presentation, SceneHandle, producer::SectionProducer};
@@ -19,6 +19,7 @@ mod probe;
 mod view;
 
 const LEAF: u64 = 0x4d45_534f;
+const MAP: u64 = 0x4d45_4d50;
 
 pub(super) struct State {
     host: Host,
@@ -34,6 +35,8 @@ pub(super) struct State {
     question_open: bool,
     frame_us: Vec<u64>,
     commands: Option<isomere::host::WindowCommands>,
+    map_key: Option<(u64, Option<u64>)>,
+    minimap: Option<mesocosm_views::MinimapLeaf>,
 }
 
 impl State {
@@ -54,6 +57,8 @@ impl State {
             question_open: false,
             frame_us: Vec::new(),
             commands: None,
+            map_key: None,
+            minimap: None,
         }
     }
 
@@ -65,6 +70,11 @@ impl State {
         host.refresh_directing();
         let r = &host.runtime;
         let sim = r.sim();
+        let map_key = (r.revision().unwrap_or(0), r.critter());
+        if self.map_key != Some(map_key) {
+            self.minimap = Some(mesocosm_views::minimap_leaf(&sim, r.critter()));
+            self.map_key = Some(map_key);
+        }
         self.vitals = mesocosm_views::vitals_of_with_terms(
             &sim,
             r.critter(),
@@ -101,7 +111,8 @@ impl State {
                 budget: host.config.body_budget,
                 light: host.config.body_light,
                 terrain: host.config.terrain_style,
-                focus: host.follow,
+                terrain_y: at[1] as f32,
+                focus: host.config.dev.then(|| host.followed()).flatten(),
                 selection: host.inspection.selected,
             };
             if let Err(why) =
@@ -116,19 +127,46 @@ impl State {
     }
 
     fn press(&mut self, key: &Key) {
+        if self.host.try_continuation_key(key) || self.host.try_directing_key(key) {
+            self.refresh();
+            return;
+        }
         if matches!(key, Key::Named(NamedKey::Escape)) && !self.host.directing_open() {
             if let Some(commands) = &self.commands {
                 commands.close();
             }
             return;
         }
+        if self.host.try_camera_key(key) {
+            self.refresh();
+            return;
+        }
+        let followed = self.host.followed();
+        if !matches!(
+            key,
+            Key::Named(
+                NamedKey::ArrowLeft
+                    | NamedKey::ArrowRight
+                    | NamedKey::ArrowUp
+                    | NamedKey::ArrowDown
+            )
+        ) && self.host.inspection.key(
+            key,
+            self.host.config.dev,
+            followed,
+            |id, current, backwards| {
+                self.producer
+                    .borrow_mut()
+                    .select_part(id, current, backwards)
+            },
+            |selection| self.producer.borrow_mut().validate_selection(selection),
+        ) {
+            self.refresh();
+            return;
+        }
         match key {
-            Key::Named(NamedKey::ArrowLeft) if !self.host.continuation_open() => {
-                self.host.pan.x -= crate::section::PAN_STEP
-            },
-            Key::Named(NamedKey::ArrowRight) if !self.host.continuation_open() => {
-                self.host.pan.x += crate::section::PAN_STEP
-            },
+            Key::Named(NamedKey::ArrowLeft) => self.host.pan.x -= crate::section::PAN_STEP,
+            Key::Named(NamedKey::ArrowRight) => self.host.pan.x += crate::section::PAN_STEP,
             Key::Named(NamedKey::ArrowUp)
                 if !self.host.continuation_open() && !self.host.directing_open() =>
             {
@@ -249,12 +287,21 @@ impl Product for WindowProduct {
                 s.frame_us.push(before.elapsed().as_micros() as u64);
             }
         });
+        let mut minimap = None;
+        ctx.runner.update(|s| minimap = s.minimap.take());
+        if let Some(minimap) = minimap {
+            ctx.leaves.insert(MAP, Box::new(minimap));
+        }
         true
     }
     fn after_frame(&mut self, ctx: &mut Ctx<'_, Self>) {
         ctx.runner.update(|s| {
             s.host.frames += 1;
             s.host.mark_continuation_presented();
+            let followed = s.host.followed();
+            s.host.inspection.update(followed, |selection| {
+                s.producer.borrow_mut().validate_selection(selection)
+            });
         });
     }
     fn key(
@@ -263,7 +310,15 @@ impl Product for WindowProduct {
         press: &KeyPress,
     ) -> bool {
         if press.repeat {
-            return true;
+            use cambium_genet_winit_host::{Key as K, NamedKey as N};
+            let host = &runner.state().host;
+            let pan = matches!(press.key, K::Named(N::ArrowLeft | N::ArrowRight))
+                || (matches!(press.key, K::Named(N::ArrowUp | N::ArrowDown))
+                    && !host.continuation_open()
+                    && !host.directing_open());
+            if !pan {
+                return true;
+            }
         }
         let key = match &press.key {
             cambium_genet_winit_host::Key::Character(c) => Key::Character(c.clone().into()),
@@ -296,7 +351,12 @@ pub(super) fn run(config: HostConfig) -> i32 {
     let capture = config.capture.clone();
     let receipt = config.receipt.clone();
     let options = HostOptions {
-        title: "Mesocosm · Bench world".into(),
+        title: if config.bench_world {
+            "Mesocosm · Bench world"
+        } else {
+            "Mesocosm"
+        }
+        .into(),
         initial_logical_size: (config.width as f64, config.height as f64),
         ..Default::default()
     };
