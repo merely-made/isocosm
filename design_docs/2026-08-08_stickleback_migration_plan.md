@@ -32,11 +32,21 @@ ledger before publishing a World change; a failed replacement or byte cap
 leaves the World and journal unchanged. Restart verifies and replays the
 stored suffix, and a signed-log control proves deterministic re-signing and
 the next sequence/backlink. The caller must retain the original host key and
-use the correct host-log backlink. This does not qualify JoinedSpace restart
-or product reconnect, and the file replacement does not claim power-loss
-durability because the parent directory is not synced. The shipping Genet VTT
-UI still uses the interim DM event authority. Receipt:
+use the correct host-log backlink. Same-directory replacement and file sync
+are qualified; the parent directory is not synced, so power-loss durability
+is not claimed. Receipt:
 `Code/testing/isometry/h7-2026-10-17/durable-ledger-receipt.json`.
+
+*2026-10-17, H7 product restart/reconnect control:* the actual VTT endpoint
+was reconstructed from the opt-in file ledger, then a fresh admitted
+JoinedSpace lane installed the signed checkpoint and received the persisted
+suffix. A further offered `vtt.leave` intent produced the next native family
+record with the expected sequence and backlink. The focused family-network
+gate passed 5/5. This reconstructs host and transports inside the test
+process; it does not qualify process-kill recovery or power-loss durability.
+Production invitation/bootstrap lifecycle and the shipping Genet VTT UI
+remain open; the UI still uses the interim DM event authority. Receipt:
+`Code/testing/isometry/h7-2026-10-17/durable-product-restart-receipt.json`.
 
 *The dated migration design and receipts below remain as written (793).*
 
