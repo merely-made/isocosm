@@ -13,7 +13,9 @@ Mesocosm's ordinary new-world source now selects A1, retaining shared Stock
 defaults. H6's functional done-conditions now pass, including a captured
 ordinary clock-seeded launch. Active native updates remain slow. H7's local
 native UI and exact durable application restart pass; production stack
-admission and peer setup remain open.
+admission and peer setup remain open. Audit 2026-10-17 (964 to 967): the
+H3 pins failed under 958's movement ties and are rerecorded; the next
+responsiveness lane aims at the core's tick cost (966).
 
 ## Why
 
@@ -315,6 +317,36 @@ through the UI, succession in the client), then the VTT over the sim
 starts.
 
 ## Progress
+
+- **2026-10-17, audit (964 to 967):** a read of the tree at `a7d02a7f` with
+  the compile gates rerun: the Mesocosm all-targets check and the root
+  all-features all-targets check pass, the whole tree is under the line
+  ceiling, and the Mesocosm workspace tests pass 113 with one failure, seven
+  explicit ignores and the release-only physical joint witness skipped (its
+  receipt is `generated-physical-witness-gate.json`, 1,182.93 s). The failure
+  is `runtime_pin`'s recorded traces: the offered trace replays its 16
+  actions and 5 outcomes to tick 72 and 76 entries, to a different state
+  hash. Bisected in place under 964: the suite passes at `c0c54a88` and
+  fails at `89db70a5` with HEAD's hash, so 958's seeded movement ties are
+  the cause and the later active-update commits changed neither world. Both
+  traces are rerecorded at `a7d02a7f` (offered `13219767039782569982` to
+  `4535962164617645755`, held `1305873899039827589` to
+  `11223436107781315567`) and the suite passes 6/6. The H5 receipt of
+  2026-10-16 was this suite's last run; no lane that moved the sim after it
+  reran the pins. Findings carried: the body tenant lights with ambient only
+  (`LightBlock { ambient, ..Default::default() }` leaves the sun `None` and
+  shadows off), so the seed-9 capture reads as flat boxes; the default
+  launch's first capture is a loss checkpoint with a withdrawn viewport, and
+  no capture with a visible site exists after 08:52, the five inspected PNGs
+  since being byte-identical copies of that frame; the configured tempo is
+  10 ticks per second against about 1.9 s per tick measured (15 ticks in
+  28.7 s of callbacks), the time inside the core. Under 966 the next
+  responsiveness lane aims there: time Session/Game copying and refresh
+  checks first, one physical refresh per tick, done when the seed-9 save
+  runs 15 ticks under 1.5 s on the shipping head, the host unchanged.
+  Mesocosm's manifest still patched vello with nothing depending on it; the
+  patch goes under 967 with the merge of origin's pack-authoring tool and the
+  1.99.1 toolchain (965).
 
 - **2026-10-17, active-update performance lane:** profile the 32 to 50 second
   active callbacks, remove redundant work while preserving native commands,
