@@ -176,7 +176,7 @@ fn a_bin_moves_as_its_members_move_one_by_one() {
         .iter()
         .find(|(_, g)| g.entity.kingdom != "kingdom:world" && g.count > 1)
         .unwrap();
-    let (entity, count) = (group.entity.clone(), group.count);
+    let (entity, count) = (group.entity.as_ref().clone(), group.count);
     let kind = world.competitions()["world:food"]
         .kinds
         .iter()
@@ -323,7 +323,7 @@ fn a_body_bin_moves_as_its_members_do() {
             .genesis;
             let rules = g.rules.clone();
             for group in g.population.groups.values_mut() {
-                let e = &mut group.entity;
+                let e = group.entity_mut();
                 let tail = e.parts.keys().copied().filter(|id| id.0 > 0).max();
                 if cut
                     && e.lineage == "lineage:0"
@@ -342,7 +342,7 @@ fn a_body_bin_moves_as_its_members_do() {
                 .groups
                 .iter()
                 .filter(|(_, c)| c.entity.kingdom != "kingdom:world")
-                .map(|(f, c)| (*f, c.entity.clone(), c.count))
+                .map(|(f, c)| (*f, c.entity.as_ref().clone(), c.count))
                 .collect();
             for (first, entity, count) in groups {
                 let i = &entity.lineage[8..];

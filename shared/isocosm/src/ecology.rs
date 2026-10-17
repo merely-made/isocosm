@@ -73,7 +73,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
     }
     g.rules.processes.insert("ecology:sunlight".into(), sunlight());
     for group in g.population.groups.values_mut() {
-        let e = &mut group.entity;
+        let e = group.entity_mut();
         if e.kingdom == "kingdom:world" {
             continue;
         }

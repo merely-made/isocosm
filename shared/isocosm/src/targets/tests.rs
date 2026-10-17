@@ -30,7 +30,7 @@ fn fixture(seed: u64, place: Id) -> (Genesis, Id, Id, Id) {
             .find(|c| c.entity.lineage == lineage)
             .unwrap()
             .entity
-            .clone()
+            .as_ref().clone()
     };
     let mut actor = body("lineage:1");
     let mut prey = body("lineage:0");

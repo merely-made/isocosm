@@ -19,7 +19,7 @@ fn session() -> Session {
     g.rules.shapes = default_shapes();
     let digestive = default_systems().remove("system:digestive").unwrap();
     for c in g.population.groups.values_mut() {
-        let e = &mut c.entity;
+        let e = c.entity_mut();
         if e.lineage == "lineage:1" {
             e.parts.get_mut(&PartId(0)).unwrap().functions =
                 BTreeSet::from(["function:intake".into(), "function:store".into()]);
@@ -31,7 +31,7 @@ fn session() -> Session {
     // Rebuild identities after shrinking the cohorts.
     let mut population = crate::population::Population::default();
     for c in g.population.groups.values() {
-        population.insert(c.entity.clone(), c.count).unwrap();
+        population.insert(c.entity.as_ref().clone(), c.count).unwrap();
     }
     g.population = population;
     Session::new(g, Execution::Individuals).unwrap()
@@ -89,7 +89,7 @@ fn complexity_counts_living_expression_and_realization_once() {
     );
     for c in s.sim.state.population.groups.values_mut() {
         if c.entity.lineage == "lineage:1" {
-            c.entity.alive = false;
+            c.entity_mut().alive = false;
         }
     }
     assert_eq!(
@@ -118,7 +118,7 @@ fn boundary_uses_complexity_before_members_and_key_breaks_ties() {
     assert!(!turns.iter().any(|t| t.lineage == "lineage:1"));
     for c in s.sim.state.population.groups.values_mut() {
         if c.entity.lineage == "lineage:2" {
-            c.entity.alive = false;
+            c.entity_mut().alive = false;
         }
     }
     let turns = adapt(&mut s, None, &offer, 0).unwrap();

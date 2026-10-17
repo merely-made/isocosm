@@ -33,7 +33,7 @@ fn declared_harm_traits_keep_columns_when_drawn_present_or_absent() {
             .groups
             .values()
             .filter(|c| c.entity.kingdom != "kingdom:world")
-            .map(|c| (&c.entity, c.count))
+            .map(|c| (c.entity.as_ref(), c.count))
             .collect();
         let values = readings::evaluate(
             &derived,

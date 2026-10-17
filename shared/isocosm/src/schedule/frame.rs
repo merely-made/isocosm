@@ -51,7 +51,7 @@ pub(crate) struct Frame {
     produced: BTreeMap<Key, Option<crate::projects::ProducedClaim>>,
     /// Bodies as the pass began, by their span then: a member lifted out of
     /// its group alone, a cohort written whole with its count.
-    bodies: BTreeMap<Id, (u64, Entity)>,
+    bodies: BTreeMap<Id, (u64, std::sync::Arc<Entity>)>,
     /// Changed bodies filed where they began, so an indexed target search
     /// can still find those the live index has moved elsewhere.
     pub(crate) targets: crate::targets::Targets,
@@ -159,6 +159,10 @@ impl Frame {
     }
 
     pub(crate) fn body(&self, id: Id) -> Option<&Entity> {
+        self.body_shared(id).map(|e| e.as_ref())
+    }
+
+    pub(crate) fn body_shared(&self, id: Id) -> Option<&std::sync::Arc<Entity>> {
         let (&first, (count, e)) = self.bodies.range(..=id).next_back()?;
         (id < first + count).then_some(e)
     }
@@ -169,10 +173,10 @@ impl Frame {
     }
 
     /// Keeps a body as the pass began, over the span the act writes.
-    pub(crate) fn keep_body(&mut self, id: Id, span: u64, e: &Entity) {
+    pub(crate) fn keep_body(&mut self, id: Id, span: u64, e: std::sync::Arc<Entity>) {
         if self.body(id).is_none() {
-            self.bodies.insert(id, (span, e.clone()));
-            self.targets.keep(id, e);
+            self.targets.keep(id, &e);
+            self.bodies.insert(id, (span, e));
         }
     }
 

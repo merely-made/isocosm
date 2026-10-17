@@ -56,7 +56,7 @@ fn spend_upkeep_and_age_continue_then_corpse_arrives_conserved() {
 fn hunters(first: bool) -> ProbeWorld {
     let mut w=fixture(1,false); w.ticks=4;
     w.genesis.rules.processes.remove("test:next");
-    let prey=w.genesis.population.groups.values().next().unwrap().entity.clone();
+    let prey=w.genesis.population.groups.values().next().unwrap().entity.as_ref().clone();
     let mut hunter=prey.clone();hunter.traits.remove(ACTOR);hunter.traits.insert("test:hunter".into());
     hunter.lineage="lineage:1".into();hunter.accounts.clear();
     let mut destination=hunter.clone();destination.place=1;
@@ -105,7 +105,7 @@ fn nursing_journey() -> ProbeWorld {
         riff:[0,0],vary:[0,0],semelparous:0,..Default::default() }.generate().unwrap();
     let g=&mut w.genesis;
     g.rules.processes.retain(|id,_|["body:bear-1","body:nurse-1","body:wean-1"].contains(&id.as_str()));
-    let parent=g.population.groups.values().find(|g|g.entity.lineage=="lineage:1").unwrap().entity.clone();
+    let parent=g.population.groups.values().find(|g|g.entity.lineage=="lineage:1").unwrap().entity.as_ref().clone();
     let mut parent=parent;
     parent.traits.insert(ACTOR.into());parent.method=Method::Reactive;
     for key in ["tissue:1","reserve:1","provision:1"] {
@@ -145,7 +145,7 @@ fn target_harm_excludes_transit_until_the_native_arrival_pass() {
     let mut w=nursing_journey();w.ticks=4;
     w.genesis.rules.processes.retain(|id,_|id=="test:depart");
     let mut ground=BodyFounding { seed:1,sites:[1,1],..Default::default() }.generate().unwrap()
-        .genesis.population.groups.values().find(|g|g.entity.kingdom=="kingdom:world").unwrap().entity.clone();
+        .genesis.population.groups.values().find(|g|g.entity.kingdom=="kingdom:world").unwrap().entity.as_ref().clone();
     ground.place=99;ground.accounts.clear();
     ground.traits.insert("test:hazard".into());
     w.genesis.rules.traits.insert("test:hazard".into());
@@ -172,8 +172,8 @@ fn competition_rounds_wait_for_residence_without_consuming_transit_food() {
     for site in w.genesis.sites.values_mut() { site.accounts.insert("world:food".into(),1000); }
     for g in w.genesis.population.groups.values_mut() {
         if g.entity.kingdom!="kingdom:world" {
-            g.entity.place=0;g.entity.arrived=0;g.entity.patch=None;
-            g.entity.traits.insert(ACTOR.into());
+            g.entity_mut().place=0;g.entity_mut().arrived=0;g.entity_mut().patch=None;
+            g.entity_mut().traits.insert(ACTOR.into());
         }
     }
     w.genesis.rules.traits.insert(ACTOR.into());
@@ -185,7 +185,7 @@ fn competition_rounds_wait_for_residence_without_consuming_transit_food() {
     let mut ticks=0;
     let exact=crate::probe::run_exact_traced(&w,7,true,&mut |n| {
         c.step().unwrap();ticks+=1;
-        let native=super::journey_tests::states(n.state().population.groups.values().map(|g|(&g.entity,g.count)));
+        let native=super::journey_tests::states(n.state().population.groups.values().map(|g|(g.entity.as_ref(),g.count)));
         let histogram=super::journey_tests::states(c.bins.iter().map(|(e,&n)|(e,n)));
         assert_eq!(histogram,native,"per-tick native/histogram competition states after journey clock");
         assert_eq!(c.sites,n.state().sites);

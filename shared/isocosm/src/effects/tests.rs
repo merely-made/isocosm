@@ -59,7 +59,7 @@ fn producer() -> Entity {
         .into_values()
         .next()
         .expect("an entity")
-        .entity;
+        .entity.as_ref().clone();
     let body = Body::of([part(None, &["intake"]), part(Some(0), &["fix"])]);
     e.embody(body.expect("a body"));
     e

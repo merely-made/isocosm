@@ -93,7 +93,7 @@ impl Simulation {
             for key in &produced { frame.keep_produced(key,before.projects.produced.get(key)); }
             for (&first, group) in &before.population.groups {
                 if changed.range(first..first + group.count).next().is_some() {
-                    frame.keep_body(first, group.count, &group.entity);
+                    frame.keep_body(first, group.count, std::sync::Arc::clone(&group.entity));
                 }
             }
             for id in &sites { frame.keep_site(*id, &before.sites[id]); }

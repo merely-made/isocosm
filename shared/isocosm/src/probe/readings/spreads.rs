@@ -74,7 +74,7 @@ pub fn native(state:&State, rules:&Rules, selected:&BTreeSet<Id>) -> Result<Read
     for (&first,group) in &state.population.groups {
         let excluded = names.range(first..first+group.count).count() as u64;
         let n = group.count.checked_sub(excluded).ok_or("comparison counted a host twice")?;
-        if n != 0 { *hosts.entry(aggregate::normalize(group.entity.clone())).or_default() += n; }
+        if n != 0 { *hosts.entry(aggregate::normalize(group.entity.as_ref().clone())).or_default() += n; }
     }
     let hosts:Vec<_> = hosts.into_iter().collect();
     let mut stocks = Vec::new();

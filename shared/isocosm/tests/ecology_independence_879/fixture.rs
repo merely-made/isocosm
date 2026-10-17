@@ -57,8 +57,8 @@ fn build(process_name: &str, extra_quantity: u64, account_alias: bool, played: b
     if account_alias {
         genesis.rules.accounts.insert(input.clone(), genesis.rules.accounts[&source].clone());
         for group in genesis.population.groups.values_mut().filter(|g| g.entity.lineage == "lineage:0") {
-            let quantity = group.entity.accounts.remove(&source).unwrap();
-            group.entity.accounts.insert(input.clone(), quantity);
+            let quantity = group.entity_mut().accounts.remove(&source).unwrap();
+            group.entity_mut().accounts.insert(input.clone(), quantity);
         }
         let Query::Account { key, .. } = &mut process.requires[2] else { panic!("native gate changed"); };
         *key = input.clone();

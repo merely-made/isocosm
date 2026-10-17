@@ -148,7 +148,7 @@ fn authored_harm_columns_preserve_absent_and_present_counts() {
             let derived = readings::derive(&w);
             let members: Vec<_> = w.genesis.population.groups.values()
                 .filter(|c| c.entity.kingdom != "kingdom:world")
-                .map(|c| (&c.entity, c.count)).collect();
+                .map(|c| (c.entity.as_ref(), c.count)).collect();
             let values = readings::evaluate(
                 &derived, &w, &members, &w.genesis.sites, 0,
                 readings::inspect(&members, 10), &Default::default(),

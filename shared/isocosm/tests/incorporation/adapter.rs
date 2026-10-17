@@ -68,7 +68,7 @@ fn injured(domain: u16) -> Fixture {
         .find(|c| c.entity.lineage == "world:ground" && c.entity.place == producer.place)
         .unwrap()
         .entity
-        .clone();
+        .as_ref().clone();
     let mut population = Population::default();
     population.insert(ground, 1).unwrap();
     let prey = population.insert(producer, 1).unwrap();
@@ -198,7 +198,7 @@ fn native_states(s: &Session) -> BTreeMap<Entity, u64> {
             .population
             .groups
             .values()
-            .map(|c| (&c.entity, c.count))
+            .map(|c| (c.entity.as_ref(), c.count))
             .collect(),
     )
 }

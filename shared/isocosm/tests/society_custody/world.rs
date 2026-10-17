@@ -37,7 +37,7 @@ pub fn custody_world(seed: u64) -> World {
     let matter: BTreeSet<_> = g.rules.accounts.iter()
         .filter(|(_, kind)| matches!(kind, AccountKind::Matter { .. })).map(|(key, _)| key.clone()).collect();
     for id in w.bodies {
-        let e = &mut g.population.groups.get_mut(&id).unwrap().entity;
+        let e = g.population.groups.get_mut(&id).unwrap().entity_mut();
         let mut part = isocosm::schema::Part::default();
         for key in &matter { if let Some(held) = e.accounts.remove(key) { part.matter.insert(key.clone(), held); } }
         e.embody(Body { doc: body(), parts: BTreeMap::from([(root, part)]) });

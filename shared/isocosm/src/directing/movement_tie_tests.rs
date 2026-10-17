@@ -85,7 +85,7 @@ fn movement_fixture(seed: u64) -> (crate::simulation::Genesis, Id, Vec<Key>) {
         .conditions
         .insert(home_key.clone(), 1);
     genesis.rules.conditions.insert(home_key.clone());
-    let entity = &mut genesis.population.groups.get_mut(&actor).unwrap().entity;
+    let entity = genesis.population.groups.get_mut(&actor).unwrap().entity_mut();
     let stock = entity.accounts.insert("matter:1-0".into(), 4).unwrap_or(4);
     *entity.accounts.entry("world:soil".into()).or_default() += stock.saturating_sub(4);
     genesis

@@ -255,6 +255,11 @@ impl Simulation {
         let kept = self.frame.as_ref().and_then(|f| f.body(id));
         kept.or_else(|| self.state.population.get(id))
     }
+    /// The shared handle to a body as the pass began, or as it is.
+    pub(crate) fn body_shared_at_start(&self, id: Id) -> Option<&std::sync::Arc<Entity>> {
+        let kept = self.frame.as_ref().and_then(|f| f.body_shared(id));
+        kept.or_else(|| self.state.population.get_shared(id))
+    }
     /// A body's pass-start holdings, memoized only for this immutable frame.
     pub(crate) fn books_at_start(&self, id: Id) -> Option<std::sync::Arc<Ledger>> {
         let body = self.body_at_start(id)?;

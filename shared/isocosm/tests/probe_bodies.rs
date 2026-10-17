@@ -190,7 +190,7 @@ fn set(g: &mut Genesis, lineage: &str, (tissue, reserve): (u64, u64)) -> (u64, u
     let rules = g.rules.clone();
     let mut held = None;
     for group in g.population.groups.values_mut() {
-        let e = &mut group.entity;
+        let e = group.entity_mut();
         if e.lineage != lineage {
             continue;
         }

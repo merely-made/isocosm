@@ -108,7 +108,7 @@ impl<'w> Crowd<'w> {
         world.movement_supported()?;
         let mut bins = BTreeMap::new();
         for group in world.genesis.population.groups.values() {
-            *bins.entry(normalize(group.entity.clone())).or_default() += group.count;
+            *bins.entry(normalize(group.entity.as_ref().clone())).or_default() += group.count;
         }
         let mut crowd = Self {
             world,

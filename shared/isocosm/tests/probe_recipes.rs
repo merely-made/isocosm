@@ -25,7 +25,7 @@ fn members<'a>(g: &'a Genesis, lineage: &'a str) -> impl Iterator<Item = &'a Ent
     g.population
         .groups
         .values()
-        .map(|c| &c.entity)
+        .map(|c| c.entity.as_ref())
         .filter(move |e| e.lineage == lineage)
 }
 
@@ -191,7 +191,7 @@ fn the_probe_sets_its_own_life_history_and_draws_semelparity_by_cohort() {
         for t in ["strategy:brood", "strategy:egg", "care:milk"] {
             assert!(traits("lineage:1").contains(t), "{t}");
         }
-        for e in g.population.groups.values().map(|c| &c.entity) {
+        for e in g.population.groups.values().map(|c| c.entity.as_ref()) {
             if e.lineage == "world:ground" {
                 continue;
             }
