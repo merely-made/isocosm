@@ -64,14 +64,14 @@ pub struct SceneHandle {
 
 impl SceneHandle {
     /// A product's validated picture inputs, published without a second world.
-    pub(crate) fn present(&self, scene: SiteScene, revision: u64, presentation: Presentation) -> Result<(), String> {
+    pub(crate) fn present(&self, scene: &SiteScene, revision: u64, presentation: Presentation) -> Result<(), String> {
         let digest = isocosm::digest(&(revision, format!("{presentation:?}")));
         let mut fingerprint = [0; 4];
         for (i, word) in fingerprint.iter_mut().enumerate() {
             *word = u64::from_str_radix(&digest[i * 16..(i + 1) * 16], 16).map_err(|why| why.to_string())?;
         }
         if self.input.borrow().as_ref().is_some_and(|old| old.fingerprint == fingerprint) { return Ok(()); }
-        *self.input.borrow_mut() = Some(Rc::new(Snapshot { scene, fingerprint,
+        *self.input.borrow_mut() = Some(Rc::new(Snapshot { scene: scene.clone(), fingerprint,
             quarter_turn: 0, presentation: Some(presentation), revision: Some(revision) }));
         self.error.borrow_mut().take();
         Ok(())

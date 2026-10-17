@@ -117,7 +117,7 @@ impl State {
             };
             if let Err(why) =
                 self.picture
-                    .present(scene.clone(), r.revision().unwrap_or(0), presentation)
+                    .present(scene, r.revision().unwrap_or(0), presentation)
             {
                 self.error = Some(why);
             }

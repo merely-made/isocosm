@@ -18,6 +18,8 @@ pub struct HostConfig {
     pub seed: u64,
     /// Select the existing native clock-sourced founding seed instead of this explicit seed.
     pub unchosen_seed: bool,
+    /// Maximum deterministic seed candidates for the ordinary A1 default.
+    pub candidate_attempts: u32,
     pub start: Option<isocosm::directing::interim::Start>,
     pub mode: Option<isocosm::directing::readings::Mode>,
     /// The generated world's founding population.
@@ -89,6 +91,7 @@ impl Default for HostConfig {
             bench_epoch: 60,
             seed: 0x00A7_7AC4,
             unchosen_seed: false,
+            candidate_attempts: 8,
             start: None,
             mode: None,
             population: isocosm::Founding::default().population,

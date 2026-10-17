@@ -35,6 +35,7 @@ fn main() {
     let mut config = HostConfig::default();
     let mut args = std::env::args().skip(1);
     let (mut replay, mut trace, mut receipt, mut capture) = (None, None, None, None);
+    let mut no_trace = false;
     let mut bench = false;
     let mut bench_epoch_explicit = false;
     let mut size_explicit = false;
@@ -101,6 +102,11 @@ fn main() {
                     .unwrap_or_else(|| fail("--seed wants an explicit unsigned world seed"));
             },
             "--unchosen-seed" => unchosen_explicit = true,
+            "--candidate-attempts" => {
+                config.candidate_attempts = args.next().and_then(|v| v.parse::<u32>().ok())
+                    .filter(|v| (1..=128).contains(v))
+                    .unwrap_or_else(|| fail("--candidate-attempts wants an integer from 1 to 128"));
+            },
             "--start" => {
                 let value = args.next().unwrap_or_default();
                 let (within, epochs) = value.split_once(':')
@@ -127,7 +133,13 @@ fn main() {
                     .unwrap_or_else(|| fail("--ecology-rates wants stock or a1")));
             },
             "--capture" => capture = args.next().map(PathBuf::from),
-            "--trace" => trace = args.next().map(PathBuf::from),
+            "--trace" => {
+                let Some(path) = args.next().filter(|path| !path.starts_with("--")) else {
+                    fail("--trace wants a path");
+                };
+                trace = Some(PathBuf::from(path));
+            },
+            "--no-trace" => no_trace = true,
             "--receipt" => receipt = args.next().map(PathBuf::from),
             "--replay" => replay = args.next().map(PathBuf::from),
             "--watch" => match args.next().map(PathBuf::from) {
@@ -175,6 +187,7 @@ fn main() {
     }
 
     if seed_explicit && unchosen_explicit { fail("choose --seed or --unchosen-seed"); }
+    if no_trace && trace.is_some() { fail("--trace and --no-trace cannot be combined"); }
     if config.ecology_rates.is_some()
         && (config.bench_world || config.spread.is_some() || config.watch.is_some()
             || config.ecology_candidate.is_some()
@@ -240,7 +253,7 @@ fn main() {
         Some(capture.unwrap_or_else(|| stem(played::default_capture_path(), "scratch_bench.png")));
     config.receipt =
         Some(receipt.unwrap_or_else(|| stem(played::default_receipt_path(), "scratch_bench.json")));
-    if !bench {
+    if !bench && !no_trace {
         config.trace = Some(trace.unwrap_or_else(played::default_trace_path));
     }
     if bench && !size_explicit {
@@ -269,6 +282,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --frames N      run N frames and exit
   --size WxH      initial window size in logical pixels (default 960x540)
   --seed N        world seed
+  --candidate-attempts N  cap unchosen A1 structural candidates (default 8, max 128)
   --unchosen-seed use the native clock-sourced new-world seed (ordinary default)
   --start W:E     wait at most W epochs for habitability, then add E epochs
   --mode MODE     survival or creative, using the native view
@@ -282,6 +296,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --slab H        section slab half-height in voxels (presentation only, default 28)
   --capture PATH  write the final frame as a PNG
   --trace PATH    write the session's save as the trace
+  --no-trace      omit the session save (default behavior remains enabled)
   --receipt PATH  write the run's receipt
   --replay PATH   replay a recorded save headlessly and check its hash
   --watch PATH    take a recorded save up and play on in the window
@@ -299,6 +314,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
 
 --capture, --trace and --receipt default to scratch names under
 <Code>/testing/mesocosm/, never the golden ps1_played.* fixture.
+--no-trace omits the save output; it cannot be combined with --trace.
 
 controls: click or E/Space attend, right click or Q choose a current hint,
   S speciate, arrows pan, Z/V turn a terrarium camera, Esc quit

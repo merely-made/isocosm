@@ -56,7 +56,7 @@ impl Runtime {
         let mut saved = self.world().save()?;
         // An endpoint may have published since this driver last acted. Its
         // section is then newer than the local product mirror.
-        if self.world().revision()? == self.seen {
+        if self.seen == Some(self.world().revision()?) {
             let game = self
                 .product()
                 .loop_game(self.world(), self.driver.queued().cloned().collect());
