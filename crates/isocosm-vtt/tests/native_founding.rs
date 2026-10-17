@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use isocosm::{Command, Execution, asserted::{Applied, Assertion, Fact, Place}};
-use isometry_campaign::{LowerDraftMap, founding::{Campaign, CampaignSaved, FoundingError}};
+use isometry_campaign::LowerDraftMap;
+use isocosm_vtt::founding::{Campaign, CampaignSaved, FoundingError};
 #[path = "native_founding/fixture.rs"]
 mod fixture;
 
@@ -10,7 +11,7 @@ mod fixture;
 fn native_founding_preserves_authored_content_and_keeps_table_authority_separate() {
     let draft = fixture::draft();
     let before = draft.clone();
-    let proposed = Campaign::from_draft(fixture::genesis(), &draft, Execution::Grouped);
+    let proposed = Campaign::from_draft_bench(fixture::genesis(), &draft, Execution::Grouped);
     assert!(proposed.is_ok(), "VTT founding must declare the authored history kind");
     let prepared = proposed.unwrap();
     let campaign = &prepared.campaign;
@@ -58,8 +59,8 @@ fn native_founding_preserves_authored_content_and_keeps_table_authority_separate
 fn native_founding_modes_save_replay_and_generation_provenance_agree() {
     let record = fixture::record();
     let before = record.clone();
-    let a = Campaign::from_generation(fixture::genesis(), &record, 16, Execution::Individuals).unwrap();
-    let b = Campaign::from_generation(fixture::genesis(), &record, 16, Execution::Grouped).unwrap();
+    let a = Campaign::from_generation_bench(fixture::genesis(), &record, 16, Execution::Individuals).unwrap();
+    let b = Campaign::from_generation_bench(fixture::genesis(), &record, 16, Execution::Grouped).unwrap();
     assert_eq!(record, before);
     assert_eq!(a.campaign.save(), b.campaign.save());
     let origin = a.campaign.origin().unwrap();
@@ -89,26 +90,26 @@ fn native_founding_modes_save_replay_and_generation_provenance_agree() {
 fn native_founding_refuses_bad_content_genesis_history_and_unknown_note_kind() {
     let mut draft = fixture::draft();
     draft.maps.push(draft.maps[0].clone());
-    assert!(matches!(Campaign::from_draft(fixture::genesis(), &draft, Execution::Grouped), Err(FoundingError::Content(_))));
+    assert!(matches!(Campaign::from_draft_bench(fixture::genesis(), &draft, Execution::Grouped), Err(FoundingError::Content(_))));
     let mut secrets = fixture::draft();
     let mut conflicting = secrets.secrets[0].clone();
     conflicting.text = "Different private oath".into();
     secrets.secrets.push(conflicting);
-    assert!(matches!(Campaign::from_draft(fixture::genesis(), &secrets, Execution::Grouped), Err(FoundingError::Content(_))));
+    assert!(matches!(Campaign::from_draft_bench(fixture::genesis(), &secrets, Execution::Grouped), Err(FoundingError::Content(_))));
     let mut record = fixture::record();
     record.id.clear();
-    assert_eq!(Campaign::from_generation(fixture::genesis(), &record, 16, Execution::Grouped).unwrap_err(),
+    assert_eq!(Campaign::from_generation_bench(fixture::genesis(), &record, 16, Execution::Grouped).unwrap_err(),
         FoundingError::Content("generation record id is required".into()));
     record.id = "wrong-value".into();
     record.proposal = isometry_campaign::GenValue::Text { value: "text".into() };
-    assert_eq!(Campaign::from_generation(fixture::genesis(), &record, 16, Execution::Grouped).unwrap_err(),
+    assert_eq!(Campaign::from_generation_bench(fixture::genesis(), &record, 16, Execution::Grouped).unwrap_err(),
         FoundingError::Content("generation is not a campaign draft".into()));
     let mut g = fixture::genesis();
     g.rules.conditions.remove("weather:storm");
-    let err = Campaign::from_draft(g, &fixture::draft(), Execution::Grouped).unwrap_err();
-    assert_eq!(err, FoundingError::Native(isometry_campaign::native::ReplayError {
-        phase: isometry_campaign::native::Phase::Founding, reason: "unknown site condition".into() }));
-    let campaign = Campaign::from_draft(fixture::genesis(), &fixture::draft(), Execution::Grouped).unwrap().campaign;
+    let err = Campaign::from_draft_bench(g, &fixture::draft(), Execution::Grouped).unwrap_err();
+    assert_eq!(err, FoundingError::Native(isocosm_vtt::native::ReplayError {
+        phase: isocosm_vtt::native::Phase::Founding, reason: "unknown site condition".into() }));
+    let campaign = Campaign::from_draft_bench(fixture::genesis(), &fixture::draft(), Execution::Grouped).unwrap().campaign;
     let before = campaign.save();
     let mut bad_content = before.clone();
     bad_content.content.starting_map = "absent-map".into();
@@ -120,13 +121,13 @@ fn native_founding_refuses_bad_content_genesis_history_and_unknown_note_kind() {
     let mut saved = before;
     saved.native.genesis.seed ^= 1;
     assert_eq!(Campaign::load(saved, Execution::Individuals).unwrap_err(), FoundingError::Native(
-        isometry_campaign::native::ReplayError { phase: isometry_campaign::native::Phase::Load,
+        isocosm_vtt::native::ReplayError { phase: isocosm_vtt::native::Phase::Load,
             reason: "save version or genesis digest mismatch".into() }));
 }
 
 #[test]
 fn native_founding_forced_pack_is_atomic_and_keeps_its_native_record() {
-    let campaign = Campaign::from_draft(fixture::genesis(), &fixture::draft(), Execution::Grouped).unwrap().campaign;
+    let campaign = Campaign::from_draft_bench(fixture::genesis(), &fixture::draft(), Execution::Grouped).unwrap().campaign;
     let before = campaign.save();
     let applied = Applied { key: "river-extension".into(), source: "river-pack".into(),
         asserts: vec![Assertion::Place(Place { key: "dock".into(), name: "Dock".into(), ..Default::default() }),

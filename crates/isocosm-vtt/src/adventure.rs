@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! Adventures and current goals: the DM's pack, storylet and goal decisions
 //! on the shared world, with live polity readings beside them.
@@ -10,10 +10,10 @@ use chirograph::IntentEffect;
 use isocosm::{directing::readings::Mode, polities::PolityReading};
 use isocosm_host::endpoint::disclosure::{Item, NULL, action, card, value};
 use isocosm_overlay::{Seat, vtt::HookIntent};
-use isometry_campaign::native::{goal_hooks, hooks::GoalHook, pack::{self, PackInput, PackView}, polity_readings,
+use crate::native::{goal_hooks, hooks::GoalHook, pack::{self, PackInput, PackView}, polity_readings,
     storylets};
 
-use crate::{Act, Built, Cx, VttEndpoint};
+use super::{Act, Built, Cx, VttEndpoint};
 
 const DOMAIN: IntentEffect = IntentEffect::DomainTruth;
 const NOTE: &str = r#"{"type":"string"}"#;

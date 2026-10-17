@@ -9,8 +9,8 @@ impl crate::state::native::NativeUi {
         ->Result<Option<isometry_campaign::Inventory>,String> {
         let Some(inventory)=inventory else {return Ok(None);};
         let Some(table)=&self.table else {return Ok(Some(inventory.clone()));};
-        let game=isometry_campaign::native::GameBindings::decode(&table.game)?;
-        Ok(Some(isometry_campaign::native::items::unmarked_inventory(&game,inventory)))
+        let game=isocosm_vtt::native::GameBindings::decode(&table.game)?;
+        Ok(Some(isocosm_vtt::native::items::unmarked_inventory(&game,inventory)))
     }
 }
 

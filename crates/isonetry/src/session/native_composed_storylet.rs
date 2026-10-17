@@ -7,7 +7,8 @@ use super::*;
 use crate::native_table::{NativeTable, table_digest};
 use isocosm::Execution;
 use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
-use isometry_campaign::{StoryletProposal, founding::{Campaign, NativeWorld}, native::{GameBindings, storylets::*}};
+use isometry_campaign::StoryletProposal;
+use isocosm_vtt::{founding::{Campaign, NativeWorld}, native::{GameBindings, storylets::*}};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -30,7 +31,7 @@ fn access(campaign: &Campaign, table: &NativeTable) -> OrdinaryAccess {
 fn offers(campaign: &Campaign, table: &NativeTable) -> Result<BTreeMap<String, StoryletProposal>, String> {
     table.validate_history(campaign.table_session())?;
     let mut offers = campaign.content().storylets.clone();
-    for (key, storylet) in isometry_campaign::native::pack::active_content(
+    for (key, storylet) in isocosm_vtt::native::pack::active_content(
         campaign.table_session(), &table.game, access(campaign, table))?.storylets {
         if offers.get(&key).is_some_and(|old| old != &storylet) {
             return Err(format!("native campaign and accepted pack disagree about storylet {key}"));

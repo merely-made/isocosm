@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use cambium::TextInput;
-use isometry_campaign::founding::{Campaign, NativeWorld, Setup};
+use isocosm_vtt::founding::{Campaign, NativeWorld, Offered, Purpose, Setup};
 use isometry_campaign::GenerationRecord;
 
 #[derive(Clone, Debug)]
@@ -27,19 +27,19 @@ pub struct NativeUi {
     pub binding_request: Option<isonetry::NativeTableBindingInput>,
     pub admission_request: Option<isonetry::native_table::NativeTableAdmissionInput>,
     pub physical_request: Option<PhysicalRequest>,
-    pub physical_quote: Option<(isometry_campaign::native::physical_map::PhysicalMapInput,
-        isometry_campaign::native::physical_map::PhysicalMapPreview)>,
+    pub physical_quote: Option<(isocosm_vtt::native::physical_map::PhysicalMapInput,
+        isocosm_vtt::native::physical_map::PhysicalMapPreview)>,
     pub admission_path: TextInput,
     pub binding_path: TextInput,
     pub physical_path: TextInput,
     pub items_path: TextInput,
     pub items_file_request: Option<ItemsFileAction>,
     pub items_request: Option<ItemsRequest>,
-    pub items_quote: Option<(isometry_campaign::native::items::ItemInput,isometry_campaign::native::items::ItemPreview)>,
+    pub items_quote: Option<(isocosm_vtt::native::items::ItemInput,isocosm_vtt::native::items::ItemPreview)>,
     pub storylet_physical_path: TextInput,
     pub storylet_physical_file_request: Option<crate::StoryletPhysicalFileAction>,
     pub storylet_physical_request: Option<crate::StoryletPhysicalRequest>,
-    pub storylet_physical_quote: Option<(isometry_campaign::native::storylets::ComposedStoryletInput,
+    pub storylet_physical_quote: Option<(isocosm_vtt::native::storylets::ComposedStoryletInput,
         isonetry::NativeComposedStoryletResolved)>,
     pub export_path: TextInput,
     pub file_request: Option<TableFileAction>,
@@ -57,14 +57,14 @@ pub enum TableFileAction { Admit, Bind, Export, QuotePhysical, ApplyPhysical }
 
 #[derive(Clone, Debug)]
 pub enum PhysicalRequest {
-    Quote(isometry_campaign::native::physical_map::PhysicalMapInput),
-    Apply(isometry_campaign::native::physical_map::PhysicalMapInput),
+    Quote(isocosm_vtt::native::physical_map::PhysicalMapInput),
+    Apply(isocosm_vtt::native::physical_map::PhysicalMapInput),
 }
 
 #[derive(Clone, Debug)]
 pub enum PhysicalOutcome {
-    Quote { input: isometry_campaign::native::physical_map::PhysicalMapInput,
-        preview: isometry_campaign::native::physical_map::PhysicalMapPreview },
+    Quote { input: isocosm_vtt::native::physical_map::PhysicalMapInput,
+        preview: isocosm_vtt::native::physical_map::PhysicalMapPreview },
     Applied,
 }
 
@@ -72,11 +72,11 @@ pub enum PhysicalOutcome {
 pub enum ItemsFileAction { Quote,Apply }
 
 #[derive(Clone,Debug)]
-pub enum ItemsRequest { Quote(isometry_campaign::native::items::ItemInput),Apply(isometry_campaign::native::items::ItemInput) }
+pub enum ItemsRequest { Quote(isocosm_vtt::native::items::ItemInput),Apply(isocosm_vtt::native::items::ItemInput) }
 
 #[derive(Clone,Debug)]
 pub enum ItemsOutcome {
-    Quote {input:isometry_campaign::native::items::ItemInput,preview:isometry_campaign::native::items::ItemPreview},
+    Quote {input:isocosm_vtt::native::items::ItemInput,preview:isocosm_vtt::native::items::ItemPreview},
     Applied,Submitted,
 }
 
@@ -92,9 +92,17 @@ impl NativeUi {
     /// A refusal cannot replace an earlier validated preview.
     pub fn preview(&mut self, bytes: &[u8], attachments: Option<&[u8]>, record: &GenerationRecord)
         -> Result<(), String> {
+        self.preview_for(bytes, attachments, record, Purpose::Head, None)
+    }
+    /// Found a preview only under the caller's explicit head or bench policy.
+    pub fn preview_for(
+        &mut self, bytes: &[u8], attachments: Option<&[u8]>, record: &GenerationRecord,
+        purpose: Purpose, offered: Option<Offered<'_>>,
+    ) -> Result<(), String> {
         let mut setup = Setup::decode(bytes)?;
         if let Some(bytes) = attachments { setup.replace_attachments(bytes)?; }
-        let prepared = Campaign::from_setup(&setup, record, 16).map_err(|e| e.to_string())?;
+        let prepared = Campaign::from_setup_for(&setup, record, 16, purpose, offered)
+            .map_err(|e| e.to_string())?;
         let preview = NativeWorld::from_campaign(&prepared.campaign)?;
         let sites = prepared.campaign.reading().authored_places().iter().map(|(key, (id, place))|
             format!("{}: site {id} ({key})", place.name)).collect();

@@ -4343,8 +4343,10 @@ dependencies = [
  "isocosm",
  "isocosm-host",
  "isocosm-overlay",
+ "isometer-space",
  "isometry-campaign",
  "isonetry",
+ "postcard",
  "serde",
  "serde_json",
 ]
@@ -4466,6 +4468,7 @@ dependencies = [
  "genet-scripted-dom",
  "isocosm",
  "isocosm-overlay",
+ "isocosm-vtt",
  "isomere",
  "isometer",
  "isometry-campaign",
@@ -4505,6 +4508,7 @@ name = "isometry-system"
 version = "0.1.0"
 dependencies = [
  "isocosm",
+ "isocosm-vtt",
  "isometry-campaign",
  "isometry-core",
  "piccolo",
@@ -4520,6 +4524,7 @@ dependencies = [
  "cambium",
  "isocosm",
  "isocosm-overlay",
+ "isocosm-vtt",
  "isomere",
  "isometer",
  "isometer-core",
@@ -4553,6 +4558,7 @@ dependencies = [
  "isocosm",
  "isocosm-host",
  "isocosm-overlay",
+ "isocosm-vtt",
  "isometry-campaign",
  "isometry-core",
  "isometry-system",

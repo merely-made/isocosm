@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! Native operation authoring: the DM's context for writing an operation,
 //! previews of a supplied operation of each kind, and its application
@@ -8,10 +8,10 @@
 use chirograph::IntentEffect;
 use isocosm_host::endpoint::disclosure::{Item, action, card, value};
 use isocosm_overlay::Seat;
-use isometry_campaign::native::{GameBindings, graft, institutions, items, party, physical_map};
+use crate::native::{GameBindings, graft, institutions, items, party, physical_map};
 use serde::de::DeserializeOwned;
 
-use crate::{Act, Built, Cx, VttEndpoint};
+use super::{Act, Built, Cx, VttEndpoint};
 
 const OPERATION: &str = r#"{"type":"object"}"#;
 const ASSERTIONS: &str = r#"{"type":"array"}"#;

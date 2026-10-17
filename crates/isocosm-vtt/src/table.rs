@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! Table time and party: the saved roster, downtime proposals and holds,
 //! and the chosen party's members and shared map, at this window's seat.
@@ -7,9 +7,9 @@
 use chirograph::IntentEffect;
 use isocosm_host::endpoint::disclosure::{Item, NULL, action, card, value};
 use isocosm_overlay::{EntityHandle, Seat, vtt::{PartyAction, PartyIntent, TimeIntent, VttIntent}};
-use isometry_campaign::native::{GameBindings, SharedRosterInput, WindowReading, time};
+use crate::native::{GameBindings, SharedRosterInput, WindowReading, time};
 
-use crate::{Act, Built, Cx, VttEndpoint};
+use super::{Act, Built, Cx, VttEndpoint};
 
 const DOMAIN: IntentEffect = IntentEffect::DomainTruth;
 
@@ -126,7 +126,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                         action: PartyAction::Leave }))]);
             }
         }
-        match isometry_campaign::native::party::read_party(session, access, &party) {
+        match crate::native::party::read_party(session, access, &party) {
             Err(reason) => built.push(Item { id: "map".into(), card: card("Party map", vec![value("Refused", reason)], &["map"]),
                 actions: Vec::new() }, Vec::new()),
             Ok(map) => {

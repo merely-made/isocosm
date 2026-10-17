@@ -241,7 +241,7 @@ struct App {
     /// The stylesheet, from app CSS plus whatever the content packs declared.
     /// Handed to the host once, by `init`.
     sheet: String,
-    native_choreography: Vec<isometry_campaign::native::pack::Choreography>,
+    native_choreography: Vec<isocosm_vtt::native::pack::Choreography>,
     /// The pane size last pushed into the view, so an unchanged frame does not
     /// rebuild the retained tree to write the same two floats.
     last_viewport: (f32, f32),

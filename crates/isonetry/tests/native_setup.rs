@@ -1,12 +1,12 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-#[path = "../../isometry-campaign/tests/native_founding/fixture.rs"]
+#[path = "../../isocosm-vtt/tests/native_founding/fixture.rs"]
 mod fixture;
-#[path = "../../isometry-campaign/tests/native_setup/fixture.rs"]
+#[path = "../../isocosm-vtt/tests/native_setup/fixture.rs"]
 mod setup_fixture;
 use isocosm::Execution;
-use isometry_campaign::founding::{Campaign, NativeWorld};
+use isocosm_vtt::founding::{Campaign, NativeWorld};
 use isometry_core::{Facing, MapDocument, Token, TokenId, TurnList};
 use isonetry::{GameSnapshot, HostSession, ClientSession, PeerId, NetMessage};
 use std::collections::{BTreeMap, BTreeSet};
@@ -27,9 +27,17 @@ fn origin() -> GameSnapshot {
 fn inspected_setup_is_one_native_host_publication_wire_and_saved_replay() {
     let setup = setup_fixture::setup(Execution::Grouped);
     let record = fixture::record();
-    let expected = NativeWorld::from_campaign(&Campaign::from_setup(&setup, &record, 16).unwrap().campaign).unwrap();
+    let expected = NativeWorld::from_campaign(&Campaign::from_setup_bench(&setup, &record, 16).unwrap().campaign).unwrap();
     let mut host = HostSession::new(origin());
-    host.commit_native_setup(&setup, &expected, &record, Some(TokenId(1))).unwrap();
+    host.commit_native_setup_for(
+        &setup,
+        &expected,
+        &record,
+        Some(TokenId(1)),
+        isocosm_host::founding::Purpose::Bench,
+        None,
+    )
+    .unwrap();
     assert_eq!(host.state().native.as_ref().unwrap(), &expected, "host published a different world from the preview");
     assert!(host.state().world.assertions().is_empty());
     assert_eq!(host.state().maps["river-map"].document.ground.width(), 4, "inert authored board was discarded");
@@ -46,17 +54,33 @@ fn inspected_setup_is_one_native_host_publication_wire_and_saved_replay() {
 fn changed_preview_and_late_native_attachment_refuse_without_any_host_commit() {
     let setup = setup_fixture::setup(Execution::Individuals);
     let record = fixture::record();
-    let expected = NativeWorld::from_campaign(&Campaign::from_setup(&setup, &record, 16).unwrap().campaign).unwrap();
+    let expected = NativeWorld::from_campaign(&Campaign::from_setup_bench(&setup, &record, 16).unwrap().campaign).unwrap();
     let mut host = HostSession::new(origin());
     let before = host.state().clone(); let before_hash = host.log_hash(); let before_seq = host.seq();
     let mut changed = setup.clone(); changed.founding.seed ^= 1;
-    let error = host.commit_native_setup(&changed, &expected, &record, Some(TokenId(1)))
+    let error = host.commit_native_setup_for(
+        &changed,
+        &expected,
+        &record,
+        Some(TokenId(1)),
+        isocosm_host::founding::Purpose::Bench,
+        None,
+    )
         .expect_err("uninspected native preview was published");
     assert!(error.contains("preview changed"));
     assert_eq!(host.state(), &before); assert_eq!(host.log_hash(), before_hash); assert_eq!(host.seq(), before_seq);
     let mut invalid = setup.clone();
     invalid.attachments.insert("shrine".into(), isocosm::site_authoring::Attachment::Existing(0));
-    let error = host.commit_native_setup(&invalid, &expected, &record, Some(TokenId(1))).unwrap_err();
+    let error = host
+        .commit_native_setup_for(
+            &invalid,
+            &expected,
+            &record,
+            Some(TokenId(1)),
+            isocosm_host::founding::Purpose::Bench,
+            None,
+        )
+        .unwrap_err();
     assert!(error.contains("another authored place"));
     assert_eq!(host.state(), &before, "late attachment refusal mutated host snapshot");
     assert_eq!(host.log_hash(), before_hash); assert_eq!(host.seq(), before_seq);

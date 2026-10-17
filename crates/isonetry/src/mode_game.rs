@@ -6,7 +6,7 @@
 use crate::GameSnapshot;
 use isocosm::Session;
 use isometry_campaign::GenerationRecord;
-use isometry_campaign::founding::{Content, GenerationOrigin, NativeWorld};
+use isocosm_vtt::founding::{Content, GenerationOrigin, NativeWorld};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 use isometry_core::{Beat, MapDocument, RollRecord, TokenId, TurnList};

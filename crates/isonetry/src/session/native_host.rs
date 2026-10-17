@@ -3,7 +3,8 @@
 
 use super::*;
 use isocosm::Execution;
-use isometry_campaign::founding::{Campaign, NativeWorld};
+use isocosm_vtt::founding::{Campaign, NativeWorld};
+use isocosm_host::founding::{Offered, Purpose};
 use std::collections::BTreeMap;
 
 impl HostSession {
@@ -15,19 +16,54 @@ impl HostSession {
         item_owner: Option<TokenId>,
         mode: Execution,
     ) -> Result<Vec<Outbound>, String> {
+        self.commit_native_campaign_for(
+            profile,
+            record,
+            item_owner,
+            mode,
+            Purpose::Head,
+            None,
+        )
+    }
+
+    pub fn commit_native_campaign_for(
+        &mut self,
+        profile: &isocosm::Founding,
+        record: &GenerationRecord,
+        item_owner: Option<TokenId>,
+        mode: Execution,
+        purpose: Purpose,
+        offered: Option<Offered<'_>>,
+    ) -> Result<Vec<Outbound>, String> {
         if self.state.native.is_some() { return Err("native campaign already founded".into()); }
-        let prepared = Campaign::from_profile(profile, record, 16, mode)
+        let prepared = Campaign::from_profile_for(profile, record, 16, mode, purpose, offered)
             .map_err(|e| e.to_string())?;
         self.publish_native_founding(prepared, item_owner)
     }
 
     /// Only the inspected native preview may be published by this host.
     pub fn commit_native_setup(
-        &mut self, setup: &isometry_campaign::founding::Setup, expected: &NativeWorld,
+        &mut self, setup: &isocosm_vtt::founding::Setup, expected: &NativeWorld,
         record: &GenerationRecord, item_owner: Option<TokenId>,
     ) -> Result<Vec<Outbound>, String> {
+        self.commit_native_setup_for(
+            setup,
+            expected,
+            record,
+            item_owner,
+            Purpose::Head,
+            None,
+        )
+    }
+
+    pub fn commit_native_setup_for(
+        &mut self, setup: &isocosm_vtt::founding::Setup, expected: &NativeWorld,
+        record: &GenerationRecord, item_owner: Option<TokenId>,
+        purpose: Purpose, offered: Option<Offered<'_>>,
+    ) -> Result<Vec<Outbound>, String> {
         if self.state.native.is_some() { return Err("native campaign already founded".into()); }
-        let prepared = Campaign::from_setup(setup, record, 16).map_err(|e| e.to_string())?;
+        let prepared = Campaign::from_setup_for(setup, record, 16, purpose, offered)
+            .map_err(|e| e.to_string())?;
         if &NativeWorld::from_campaign(&prepared.campaign)? != expected {
             return Err("native founding preview changed before acceptance".into());
         }
@@ -35,7 +71,7 @@ impl HostSession {
     }
 
     fn publish_native_founding(
-        &mut self, prepared: isometry_campaign::founding::Prepared, item_owner: Option<TokenId>,
+        &mut self, prepared: isocosm_vtt::founding::Prepared, item_owner: Option<TokenId>,
     ) -> Result<Vec<Outbound>, String> {
         let mut private = self.campaign.clone();
         for secret in prepared.private.secrets() {

@@ -7,7 +7,7 @@ use isocosm::{
     schema::{Id, Route as SiteRoute, Tick},
     simulation::{Genesis, Outcome, Receipt},
 };
-use isometry_campaign::native::Replay;
+use isocosm_vtt::native::Replay;
 use std::collections::BTreeSet;
 
 fn genesis(sites: u32) -> Genesis {
@@ -49,7 +49,7 @@ fn native_geography_borrows_authored_labels_and_deduplicates_route_fill() {
             ..Default::default()
         }),
     ];
-    let replay = Replay::from_assertions(genesis(2), &inputs, Execution::Grouped).unwrap();
+    let replay = Replay::from_bench_assertions(genesis(2), &inputs, Execution::Grouped).unwrap();
     let before = replay.save();
     for mode in [Execution::Grouped, Execution::Individuals] {
         let loaded = Replay::load(before.clone(), mode).unwrap();
@@ -86,7 +86,7 @@ fn native_path_uses_weighted_generated_routes_without_narrowing_ticks() {
     g.sites.get_mut(&0).unwrap().routes = vec![route(1, 2), route(2, wide + 100)];
     g.sites.get_mut(&1).unwrap().routes = vec![route(2, wide)];
     g.sites.get_mut(&2).unwrap().routes = vec![route(3, 1)];
-    let replay = Replay::from_assertions(g, &[], Execution::Grouped).unwrap();
+    let replay = Replay::from_bench_assertions(g, &[], Execution::Grouped).unwrap();
     let before = replay.save();
     let read = replay.reading();
     assert_eq!(read.travel_path(0, 3), Some((vec![0, 1, 2, 3], wide + 3)));
@@ -100,7 +100,7 @@ fn native_path_keeps_one_way_edges_and_refuses_unknown_sites() {
     let mut g = genesis(3);
     empty_routes(&mut g);
     g.sites.get_mut(&0).unwrap().routes = vec![route(1, 5)];
-    let replay = Replay::from_assertions(g, &[], Execution::Individuals).unwrap();
+    let replay = Replay::from_bench_assertions(g, &[], Execution::Individuals).unwrap();
     let before = replay.save();
     let read = replay.reading();
     assert_eq!(read.travel_path(1, 0), None);
@@ -118,7 +118,7 @@ fn native_path_refuses_overflow_without_losing_exact_maximum_cost() {
     empty_routes(&mut g);
     g.sites.get_mut(&0).unwrap().routes = vec![route(1, u64::MAX - 5), route(3, u64::MAX)];
     g.sites.get_mut(&1).unwrap().routes = vec![route(2, 10)];
-    let replay = Replay::from_assertions(g, &[], Execution::Grouped).unwrap();
+    let replay = Replay::from_bench_assertions(g, &[], Execution::Grouped).unwrap();
     let before = replay.save();
     let read = replay.reading();
     assert_eq!(read.travel_path(0, 2), None);
@@ -134,7 +134,16 @@ fn native_knowing_keeps_field_answers_refusals_and_replayed_memory() {
     for (entity, site) in [(3, 0), (4, 1), (5, 2)] {
         g.population.lift(entity).unwrap().place = site;
     }
-    let mut session = Session::new(g, Execution::Grouped).unwrap();
+    let mut session = isocosm_host::founding::found(
+        g,
+        Execution::Grouped,
+        isocosm_host::founding::Purpose::Bench,
+        None,
+    )
+    .unwrap()
+    .into_parts()
+    .unwrap()
+    .0;
     let result = session.command(Command::Act {
         actor: 3, target: None, process: "sim:remember".into(), cause: None,
     }).unwrap();

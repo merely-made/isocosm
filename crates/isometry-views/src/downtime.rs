@@ -109,7 +109,7 @@ fn native_downtime(ui: &UiState) -> Option<UiChild> {
         let campaign = ui.native.world.as_ref().ok_or("no native world")?.load(isocosm::Execution::Grouped)?;
         let table = ui.native.table.as_ref().ok_or("admit explicit player bindings before native downtime")?;
         table.validate_history(campaign.table_session())?;
-        let game = isometry_campaign::native::GameBindings::decode(&table.game)?;
+        let game = isocosm_vtt::native::GameBindings::decode(&table.game)?;
         Ok((campaign, table.time_roster()?, game))
     };
     match read() {
@@ -131,7 +131,7 @@ fn native_downtime(ui: &UiState) -> Option<UiChild> {
             }
             for (key, proposal) in game.downtime() {
                 let current = proposal.require_current(session.sim.state().tick, &roster).is_ok();
-                let ready = current && isometry_campaign::native::time::ready(session, proposal, &roster, game.time_holds())
+                let ready = current && isocosm_vtt::native::time::ready(session, proposal, &roster, game.time_holds())
                     .is_ok_and(|ready| ready.is_some());
                 let status = if let Some(done) = &proposal.completed { format!("advanced {} → {}", done.from, done.to) }
                     else if !current { "stale; declare a new proposal".into() }

@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! The VTT endpoint at the DM's seat over stdio on the table world, taking no
 //! arguments, so Graphshell's `g4_sessions` receipt can mount it (H2).

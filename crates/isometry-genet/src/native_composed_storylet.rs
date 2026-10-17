@@ -4,7 +4,7 @@
 use super::*;
 use isometry_views::{StoryletPhysicalRequest, StoryletPhysicalOutcome, StoryletPhysicalFileAction};
 
-fn read(path: &str) -> Result<isometry_campaign::native::storylets::ComposedStoryletInput, String> {
+fn read(path: &str) -> Result<isocosm_vtt::native::storylets::ComposedStoryletInput, String> {
     if path.trim().is_empty() { return Err("choose a complete physical storylet input file".into()); }
     let bytes = std::fs::read(path.trim()).map_err(|error| format!("storylet input file: {error}"))?;
     serde_json::from_slice(&bytes).map_err(|error| format!("storylet input JSON: {error}"))

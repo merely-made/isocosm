@@ -3,7 +3,7 @@
 
 use super::{GameSourceHistory, GameSourceTimeError};
 use isocosm::{Execution, schema::Id};
-use isometry_campaign::founding::{Campaign, NativeCursor, NativeWorld};
+use isocosm_vtt::founding::{Campaign, NativeCursor, NativeWorld};
 
 /// One native site at an exact public history prefix, never the live world's geometry.
 #[derive(Clone, Debug, PartialEq, Eq)]

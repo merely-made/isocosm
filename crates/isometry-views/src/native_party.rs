@@ -5,7 +5,8 @@
 
 use cambium::{TextInput, caret_text_field, clickable, el, lens, text,
     graph_canvas_swatch_with_drag_and_relations};
-use isometry_campaign::{Overmap, OvermapNode, founding::NativeCursor};
+use isometry_campaign::{Overmap, OvermapNode};
+use isocosm_vtt::founding::NativeCursor;
 use isocosm::{party::SharedMap, schema::Id};
 use crate::{UiState, UiChild};
 
@@ -14,14 +15,14 @@ mod knowledge;
 #[derive(Clone, Debug)]
 pub enum PartyRequest {
     Read { party: String }, Join { party: String, member: Id },
-    ReadAt { party:String,settings:isometry_campaign::native::overmap::ViewSettings },
+    ReadAt { party:String,settings:isocosm_vtt::native::overmap::ViewSettings },
     Leave { party: String, member: Id }, Disclose { party: String, member: Id },
     Journey(crate::JourneyRequest),
-    Presentation(isometry_campaign::native::overmap::OvermapInput),
+    Presentation(isocosm_vtt::native::overmap::OvermapInput),
     Hook(isocosm_overlay::vtt::HookIntent),
     Decision { party: String, member: Id, action: isocosm_overlay::vtt::PartyAction },
-    AuthorStatement(isometry_campaign::native::party::StatementInput),
-    AuthorLocation(isometry_campaign::native::party::LocationInput),
+    AuthorStatement(isocosm_vtt::native::party::StatementInput),
+    AuthorLocation(isocosm_vtt::native::party::LocationInput),
 }
 
 #[derive(Clone, Debug)]
@@ -30,12 +31,12 @@ pub struct PartyView {
     pub subject: Option<Id>, pub shared: bool, pub map: SharedMap, pub here: Option<Id>,
     /// Only exact accepted disclosure keys are resolved into native facts.
     pub events: std::collections::BTreeMap<String, Option<isocosm::schema::Event>>,
-    pub dm: bool, pub journeys: Vec<isometry_campaign::native::joint_journey::JourneyView>,
+    pub dm: bool, pub journeys: Vec<isocosm_vtt::native::joint_journey::JourneyView>,
     pub journey_authoring: Vec<String>, pub journey_quote: Option<crate::JourneyQuote>,
-    pub overmap: Option<isometry_campaign::native::overmap::OvermapReading>,
-    pub hooks: Vec<isometry_campaign::native::hooks::GoalHook>,
+    pub overmap: Option<isocosm_vtt::native::overmap::OvermapReading>,
+    pub hooks: Vec<isocosm_vtt::native::hooks::GoalHook>,
     pub polities: Vec<isocosm::polities::PolityReading>,
-    pub knowledge: Option<isometry_campaign::native::party::KnowledgeReading>,
+    pub knowledge: Option<isocosm_vtt::native::party::KnowledgeReading>,
     pub location_authoring: std::collections::BTreeMap<Id, isocosm::schema::Location>,
 }
 

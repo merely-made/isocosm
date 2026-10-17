@@ -13,6 +13,7 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 isometry-core = { workspace = true }
 isometry-campaign = { workspace = true }
+isocosm-vtt = { workspace = true, default-features = false }
 isocosm = { workspace = true }
 isocosm-overlay = { workspace = true }
 isonetry = { workspace = true }

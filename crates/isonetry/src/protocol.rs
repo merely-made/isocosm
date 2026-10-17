@@ -111,7 +111,7 @@ pub struct GameSnapshot {
     #[serde(default)]
     pub world: CampaignWorld,
     #[serde(default)]
-    pub native: Option<isometry_campaign::founding::NativeWorld>,
+    pub native: Option<isocosm_vtt::founding::NativeWorld>,
     /// Each location's clock, keyed by stored-map id, in ticks (a tick is one
     /// full round of that location's turn order, or whatever the DM declares
     /// passed). Absolute, not elapsed: locations diverge while parties are
@@ -502,8 +502,8 @@ pub enum NetMessage {
     /// An individual native table time request, attributed by its transport.
     NativeTime(isocosm_overlay::vtt::VttIntentEnvelope),
     NativeParty(isocosm_overlay::vtt::VttIntentEnvelope),
-    NativeJourney(isometry_campaign::native::joint_journey::JourneyEnvelope),
-    NativeItem(isometry_campaign::native::items::ItemInput),
+    NativeJourney(isocosm_vtt::native::joint_journey::JourneyEnvelope),
+    NativeItem(isocosm_vtt::native::items::ItemInput),
     NativeInstitution(crate::session::NativeInstitutionInput),
 }
 

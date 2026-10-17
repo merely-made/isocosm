@@ -4,7 +4,7 @@
 //! Authored storylet conditions over accepted native nouns, not a table fold.
 
 use super::Reading;
-use crate::{StoryletError, StoryletProposal, StoryletResolution};
+use isometry_campaign::{StoryletError, StoryletProposal, StoryletResolution};
 use std::collections::{BTreeMap, BTreeSet};
 
 impl Reading<'_> {

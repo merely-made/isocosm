@@ -2,11 +2,12 @@
 
 **Date:** 2026-10-15
 
-**Status, 2026-10-16:** plan; R0 done. Opened by ruling 913 (wing design
-record), shaped by 915 (owning homes, no new crates), 916 (planned now,
-moves after the A1 lane merges) and 917 (the crates aim to be published);
-its forks were ruled 919 to 922. R1 is unblocked: A1's 905 to 907 merged
-into main (947, 948). Nothing has moved; the sim-host H5 pass proceeds first.
+**Status, 2026-10-17:** R0 and R1 done; R2 to R4 remain. Opened by ruling
+913 (wing design record), shaped by 915 (owning homes, no new crates), 916
+(planned now, moves after the A1 lane merges) and 917 (the crates aim to be
+published); its forks were ruled 919 to 922. A1's 905 to 907 merged into main
+(947, 948), and sim-host H5 is complete. R1's source move, all-target/all-
+feature compiler check, runtime count parity, and endpoint g4 receipt pass.
 
 ## Why
 
@@ -112,6 +113,21 @@ published. Its consumers are all the VTT's: `isonetry` (110 uses),
   Mark's word, crate by crate.
 
 ## Progress
+
+- **2026-10-17:** R1 is complete. The root all-target, all-feature compiler
+  check passes. The serial post-move runtime passes 492, fails zero, and
+  ignores six across 40 targets, matching the pre-move test counts (492/0/6).
+  The endpoint g4 runner passes all nine sessions and four endpoints using
+  the freshly built VTT endpoint. The retained receipt is
+  `Code/testing/isometry/r1-2026-10-17/post-move-serial-runtime-controls.log`
+  (SHA-256 `60D65C7D0206C3F91B3732E40FA1F2FBD9B1DD3ACF33877D5031CCAA8637959E`);
+  `Code/testing/isometry/r1-2026-10-17/retirement-gate.json` records the
+  complete gate. Its frozen VTT executable is 28,294,656 bytes, SHA-256
+  `e7c7d2016d157e5cb6e8f9ea8fa3bf37583e44756e863c45dfc89455584373dd`;
+  the run's HTML is `g4-sessions.html`. The receipt directory retains
+  28,662,608 bytes against its 100 MB cap. The H7 family endpoint/network
+  implementation is a separate change; the Genet app still uses the old VTT
+  event authority, and GM store and proposals stay under 921 until V2.
 
 - **2026-10-16:** removed the stale A1 dependency from R1's current status.
   The merge is on main; R1's move and its consumer gates remain open.

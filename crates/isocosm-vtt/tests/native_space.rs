@@ -4,7 +4,7 @@
 #[path = "native_founding/fixture.rs"]
 mod fixture;
 use isocosm::{Command, Execution, Founding, Session, map::{Grid, Layout}};
-use isometry_campaign::founding::Campaign;
+use isocosm_vtt::founding::Campaign;
 use isometer_space::{Edit, Op, Shape};
 
 #[test]
@@ -14,7 +14,7 @@ fn native_space_lifts_admitted_edits_and_replays_exact_site_bytes() {
         seed: 59, sites: grid.width * grid.height, population: 8, cohort_size: 2,
         lineages: 2, map: Some(Layout::Grid(grid)), ..Default::default()
     };
-    let campaign = Campaign::from_profile(&profile, &fixture::record(), 16, Execution::Grouped)
+    let campaign = Campaign::from_profile_bench(&profile, &fixture::record(), 16, Execution::Grouped)
         .unwrap().campaign;
     let before = campaign.reading().lift(0, 0, [0, 0]).unwrap();
     let y = before.surface[0];
@@ -38,7 +38,7 @@ fn native_space_lifts_admitted_edits_and_replays_exact_site_bytes() {
 
 #[test]
 fn native_space_refuses_authored_board_position_as_native_geometry() {
-    let campaign = Campaign::from_draft(fixture::genesis(), &fixture::draft(), Execution::Grouped)
+    let campaign = Campaign::from_draft_bench(fixture::genesis(), &fixture::draft(), Execution::Grouped)
         .unwrap().campaign;
     let (site, authored) = campaign.reading().authored_site("ford").unwrap();
     assert_eq!(authored.authored.as_ref().unwrap().position, Some((-3, 8)));

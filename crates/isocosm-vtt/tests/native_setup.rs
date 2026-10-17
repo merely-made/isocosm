@@ -6,7 +6,7 @@ mod fixture;
 #[path = "native_setup/fixture.rs"]
 mod setup_fixture;
 use isocosm::{Command, Execution, site_authoring::Attachment};
-use isometry_campaign::founding::{Campaign, Setup};
+use isocosm_vtt::founding::{Campaign, Setup};
 
 #[test]
 fn named_setup_attaches_native_sites_retains_table_metadata_and_replays_both_modes() {
@@ -15,7 +15,7 @@ fn named_setup_attaches_native_sites_retains_table_metadata_and_replays_both_mod
         let bytes = serde_json::to_vec(&setup).unwrap();
         assert_eq!(Setup::decode(&bytes).unwrap(), setup);
         let record = fixture::record();
-        let prepared = Campaign::from_setup(&setup, &record, 16).unwrap();
+        let prepared = Campaign::from_setup_bench(&setup, &record, 16).unwrap();
         let campaign = prepared.campaign;
         let reading = campaign.reading();
         assert_eq!(reading.authored_site("ford").unwrap().0, 0, "configured existing site was ignored");
@@ -42,16 +42,16 @@ fn setup_refuses_missing_or_ambiguous_attachments_and_retains_native_phase() {
     let record = fixture::record();
     let mut setup = setup_fixture::setup(Execution::Grouped);
     setup.attachments.remove("shrine");
-    let error = Campaign::from_setup(&setup, &record, 16).unwrap_err().to_string();
+    let error = Campaign::from_setup_bench(&setup, &record, 16).unwrap_err().to_string();
     assert!(error.contains("attach every authored place exactly once"), "missing attachment was ignored");
     let mut setup = setup_fixture::setup(Execution::Grouped);
     setup.attachments.insert("shrine".into(), Attachment::Existing(0));
-    let error = Campaign::from_setup(&setup, &record, 16).unwrap_err().to_string();
+    let error = Campaign::from_setup_bench(&setup, &record, 16).unwrap_err().to_string();
     assert!(error.contains("Assertion") && error.contains("another authored place"),
         "late native attachment refusal lost its assertion index: {error}");
     let mut setup = setup_fixture::setup(Execution::Grouped);
     setup.name.clear();
-    assert!(Campaign::from_setup(&setup, &record, 16).unwrap_err().to_string().contains("has no name"));
+    assert!(Campaign::from_setup_bench(&setup, &record, 16).unwrap_err().to_string().contains("has no name"));
 }
 
 #[test]
@@ -59,7 +59,7 @@ fn attachment_file_override_is_validated_as_the_exact_selected_configuration() {
     let mut setup = setup_fixture::setup(Execution::Individuals);
     let attachments = serde_json::to_vec(&setup.attachments).unwrap();
     setup.attachments.clear(); setup.replace_attachments(&attachments).unwrap();
-    let prepared = Campaign::from_setup(&setup, &fixture::record(), 16).unwrap();
+    let prepared = Campaign::from_setup_bench(&setup, &fixture::record(), 16).unwrap();
     assert_eq!(prepared.campaign.reading().authored_site("shrine").unwrap().0, 1000);
     let before = setup.clone();
     assert!(setup.replace_attachments(b"{bad").is_err());

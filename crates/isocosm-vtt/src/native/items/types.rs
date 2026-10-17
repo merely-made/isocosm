@@ -4,7 +4,7 @@
 use isocosm::{projects::{Acted, DebitPreview, DebitSelection, Owner, ProjectId}, schema::{Id,Key,Ledger}};
 use isometer_space::places::{PlaceId,Rules};
 use serde::{Deserialize,Serialize};
-use crate::ItemId;
+use isometry_campaign::ItemId;
 use super::super::{PlacementWindow,PositionBinding};
 
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]

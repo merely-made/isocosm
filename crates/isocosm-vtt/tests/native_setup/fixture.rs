@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use isocosm::{Execution, Founding, map::{Grid, Layout}, site_authoring::Attachment};
-use isometry_campaign::founding::Setup;
+use isocosm_vtt::founding::Setup;
 use std::collections::BTreeMap;
 
 pub fn setup(mode: Execution) -> Setup {

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::GameBindings;
-use crate::Inventory;
+use isometry_campaign::Inventory;
 use std::collections::BTreeSet;
 
 /// Explicit physical item identities leave legacy slot/modifier arithmetic.

@@ -1,9 +1,9 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-#[path = "../../isometry-campaign/tests/native_founding/fixture.rs"]
+#[path = "../../isocosm-vtt/tests/native_founding/fixture.rs"]
 mod fixture;
-#[path = "../../isometry-campaign/tests/native_setup/fixture.rs"]
+#[path = "../../isocosm-vtt/tests/native_setup/fixture.rs"]
 mod setup_fixture;
 use cambium::TextInput;
 use isocosm::Execution;
@@ -20,7 +20,14 @@ fn ordinary_table_acceptance_needs_no_native_profile_and_native_acceptance_requi
         "native acceptance fabricated an unselected world");
     let setup = setup_fixture::setup(Execution::Grouped);
     ui.profile_path = TextInput::new("world-profile.json");
-    ui.preview(&serde_json::to_vec(&setup).unwrap(), None, &record).unwrap();
+    ui.preview_for(
+        &serde_json::to_vec(&setup).unwrap(),
+        None,
+        &record,
+        isocosm_vtt::founding::Purpose::Bench,
+        None,
+    )
+    .unwrap();
     let Acceptance::Native(selected) = ui.acceptance(&record).unwrap() else { panic!("selected world was ignored") };
     assert_eq!(selected.setup, setup);
     assert_eq!(selected.preview.load(Execution::Individuals).unwrap().reading().authored_site("ford").unwrap().0, 0);
@@ -33,9 +40,24 @@ fn malformed_preview_and_stale_path_or_draft_cannot_replace_an_inspected_world()
     let mut ui = NativeUi::default(); ui.enabled = true;
     ui.profile_path = TextInput::new("world-profile.json");
     let bytes = serde_json::to_vec(&setup_fixture::setup(Execution::Individuals)).unwrap();
-    ui.preview(&bytes, None, &record).unwrap();
+    ui.preview_for(
+        &bytes,
+        None,
+        &record,
+        isocosm_vtt::founding::Purpose::Bench,
+        None,
+    )
+    .unwrap();
     let before = ui.selection.as_ref().unwrap().preview.clone();
-    assert!(ui.preview(b"{}", None, &record).is_err());
+    assert!(ui
+        .preview_for(
+            b"{}",
+            None,
+            &record,
+            isocosm_vtt::founding::Purpose::Bench,
+            None,
+        )
+        .is_err());
     assert_eq!(ui.selection.as_ref().unwrap().preview, before, "refused profile replaced native preview");
     let mut rerolled = record.clone(); rerolled.entropy ^= 1;
     assert!(ui.acceptance(&rerolled).unwrap_err().contains("another generated draft"),

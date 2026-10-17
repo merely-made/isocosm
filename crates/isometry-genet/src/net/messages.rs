@@ -8,14 +8,14 @@ pub(super) enum BridgeCommand {
     NativeInstitution { request:RequestId, input:isometry_views::InstitutionRequest },
     NativeItems { request:RequestId, input:isometry_views::ItemsRequest },
     NativePhysical { request:RequestId, input:isometry_views::PhysicalRequest },
-    NativePack { request:RequestId, intent:isometry_views::PackRequest, choreography:Vec<isometry_campaign::native::pack::Choreography> },
+    NativePack { request:RequestId, intent:isometry_views::PackRequest, choreography:Vec<isocosm_vtt::native::pack::Choreography> },
     NativeParty { request:RequestId, intent:isometry_views::PartyRequest },
     NativeTime { request:RequestId, intent:isocosm_overlay::vtt::TimeIntent },
     NativeTableAdmission { request: RequestId, input: isonetry::native_table::NativeTableAdmissionInput },
     NativeTableBinding { request: RequestId, input: isonetry::NativeTableBindingInput },
     NativeSetup {
-        request: RequestId, setup: isometry_campaign::founding::Setup,
-        expected: isometry_campaign::founding::NativeWorld,
+        request: RequestId, setup: isocosm_vtt::founding::Setup,
+        expected: isocosm_vtt::founding::NativeWorld,
         record: GenerationRecord, item_owner: Option<TokenId>,
     },
     NativeCampaign {

@@ -7,7 +7,7 @@ use super::*;
 use crate::native_table::{NativeTable,TableSender,table_digest};
 use isocosm::Execution;
 use isocosm_overlay::{EntityHandle,OrdinaryAccess,ParticipantHandle,Seat};
-use isometry_campaign::native::joint_journey::{JourneyEnvelope,validate_transition};
+use isocosm_vtt::native::joint_journey::{JourneyEnvelope,validate_transition};
 use serde::{Deserialize,Serialize};
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]

@@ -11,7 +11,7 @@ use isocosm::{
     schema::{Id, Method, related},
     simulation::Genesis,
 };
-use isometry_campaign::native::{Phase, Replay};
+use isocosm_vtt::native::{Phase, Replay};
 use std::collections::{BTreeMap, BTreeSet};
 
 fn genesis(seed: u64) -> Genesis {
@@ -139,7 +139,7 @@ fn json_saved(replay: &Replay) -> Saved {
 #[test]
 fn native_reading_carries_all_nouns_and_groups() {
     let inputs = assertions();
-    let replay = Replay::from_assertions(genesis(7), &inputs, Execution::Grouped).unwrap();
+    let replay = Replay::from_bench_assertions(genesis(7), &inputs, Execution::Grouped).unwrap();
     let reading = replay.reading();
     let (ford, site) = reading.authored_site("ford").unwrap();
     let (shrine, reverse) = reading.authored_site("shrine").unwrap();
@@ -202,8 +202,8 @@ fn individual_and_grouped_native_hashes_and_json_replay_agree() {
         let g = genesis(seed);
         let inputs = assertions();
         let individual =
-            Replay::from_assertions(g.clone(), &inputs, Execution::Individuals).unwrap();
-        let grouped = Replay::from_assertions(g, &inputs, Execution::Grouped).unwrap();
+            Replay::from_bench_assertions(g.clone(), &inputs, Execution::Individuals).unwrap();
+        let grouped = Replay::from_bench_assertions(g, &inputs, Execution::Grouped).unwrap();
         assert_eq!(
             individual.reading().state_hash(),
             grouped.reading().state_hash()
@@ -223,7 +223,7 @@ fn individual_and_grouped_native_hashes_and_json_replay_agree() {
 
 #[test]
 fn duplicate_native_assertions_stay_in_the_ordered_command_log() {
-    let replay = Replay::from_assertions(
+    let replay = Replay::from_bench_assertions(
         genesis(1),
         &[place("ford"), place("ford")],
         Execution::Grouped,
@@ -256,7 +256,7 @@ fn drawn_site_edit_uses_native_admission_not_the_sim_off_fold() {
     let g = genesis(3);
     assert!(g.sites.contains_key(&0));
     let sites = g.sites.clone();
-    let replay = Replay::from_assertions(g, &inputs, Execution::Grouped).unwrap();
+    let replay = Replay::from_bench_assertions(g, &inputs, Execution::Grouped).unwrap();
     assert_eq!(
         replay.reading().state().asserted.maps["drawn-edit"].place,
         "site:0"
@@ -288,7 +288,7 @@ fn controlled() -> (Saved, Id, Id) {
     }
     .generate()
     .unwrap();
-    let mut session = Session::new(g, Execution::Grouped).unwrap();
+    let mut session = isocosm_host::founding::found(g, Execution::Grouped, isocosm_host::founding::Purpose::Bench, None).unwrap().into_parts().unwrap().0;
     let participant = session
         .command(Command::Join)
         .unwrap()
@@ -366,7 +366,7 @@ fn late_assertion_failure_is_atomic_and_metadata_keeps_taken_control() {
 
 #[test]
 fn a_failed_nested_group_cannot_publish_earlier_top_level_assertions() {
-    let original = Replay::from_assertions(genesis(2), &[], Execution::Grouped).unwrap();
+    let original = Replay::from_bench_assertions(genesis(2), &[], Execution::Grouped).unwrap();
     let before = original.save();
     let batch = [
         place("earlier"),
@@ -389,8 +389,15 @@ fn a_failed_nested_group_cannot_publish_earlier_top_level_assertions() {
 fn errors_retain_native_text_and_typed_calling_context() {
     let mut invalid = genesis(1);
     invalid.version = 0;
-    let native = Session::new(invalid.clone(), Execution::Grouped).unwrap_err();
-    let err = Replay::from_assertions(invalid, &[], Execution::Grouped).unwrap_err();
+    let native = isocosm_host::founding::found(
+        invalid.clone(),
+        Execution::Grouped,
+        isocosm_host::founding::Purpose::Bench,
+        None,
+    )
+    .err()
+    .expect("invalid native founding is refused");
+    let err = Replay::from_bench_assertions(invalid, &[], Execution::Grouped).unwrap_err();
     assert_eq!(err.phase, Phase::Founding);
     assert_eq!(err.reason, native);
     let invalid_order = [
@@ -403,10 +410,10 @@ fn errors_retain_native_text_and_typed_calling_context() {
         }),
         place("ford"),
     ];
-    let err = Replay::from_assertions(genesis(1), &invalid_order, Execution::Grouped).unwrap_err();
+    let err = Replay::from_bench_assertions(genesis(1), &invalid_order, Execution::Grouped).unwrap_err();
     assert_eq!(err.phase, Phase::Assertion { index: 0 });
     assert_eq!(err.reason, "route early names an unasserted place");
-    let replay = Replay::from_assertions(genesis(1), &assertions(), Execution::Grouped).unwrap();
+    let replay = Replay::from_bench_assertions(genesis(1), &assertions(), Execution::Grouped).unwrap();
     let saved = replay.save();
     let mut version = saved.clone();
     version.version = 0;
@@ -450,7 +457,16 @@ fn unknown_loss() -> (Genesis, Id, isocosm::schema::PartId) {
                 .map(|(&part, _)| (id, part))
         })
         .unwrap();
-    let mut session = Session::new(g, Execution::Individuals).unwrap();
+    let mut session = isocosm_host::founding::found(
+        g,
+        Execution::Individuals,
+        isocosm_host::founding::Purpose::Bench,
+        None,
+    )
+    .unwrap()
+    .into_parts()
+    .unwrap()
+    .0;
     session
         .command(Command::Wound {
             entity,
@@ -486,7 +502,7 @@ fn unknown_loss_allocation_survives_native_replay_without_becoming_free_pool() {
     assert!(older.losses.is_empty());
     let lost = older.lost.clone();
     for mode in [Execution::Individuals, Execution::Grouped] {
-        let replay = Replay::from_assertions(g.clone(), &[place("ford")], mode).unwrap();
+        let replay = Replay::from_bench_assertions(g.clone(), &[place("ford")], mode).unwrap();
         let loaded = Replay::load(json_saved(&replay), mode).unwrap();
         let reading = loaded.reading();
         let wounded = &reading.state().population.get(entity).unwrap().parts[&part];

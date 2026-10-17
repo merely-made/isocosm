@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::*;
-use crate::{GenerationRecord, GenValue, RoleSlot, SecretFact, StoryletRequirements};
+use isometry_campaign::{GenerationRecord, GenValue, RoleSlot, SecretFact, StoryletRequirements};
 use isocosm::asserted::Assertion;
 
 /// Loaded pack choreography is presentation, never a compatibility condition.

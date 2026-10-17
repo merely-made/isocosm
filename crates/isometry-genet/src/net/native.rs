@@ -17,8 +17,8 @@ impl NetBridge {
         self.actor.command(BridgeCommand::NativeTableBinding { request, input }).then_some(request)
     }
     pub fn commit_native_setup(
-        &mut self, setup: isometry_campaign::founding::Setup,
-        expected: isometry_campaign::founding::NativeWorld,
+        &mut self, setup: isocosm_vtt::founding::Setup,
+        expected: isocosm_vtt::founding::NativeWorld,
         record: GenerationRecord, item_owner: Option<TokenId>,
     ) -> Option<RequestId> {
         let request = self.request_ids.issue();

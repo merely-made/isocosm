@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::*;
-use isometry_campaign::native::storylets::ComposedStoryletInput;
+use isocosm_vtt::native::storylets::ComposedStoryletInput;
 
 impl HostNet {
     pub async fn quote_composed_storylet(&self, input: &ComposedStoryletInput, item_owner: Option<isometry_core::TokenId>)

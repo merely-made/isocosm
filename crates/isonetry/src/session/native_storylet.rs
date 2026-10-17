@@ -17,7 +17,7 @@ impl HostSession {
             let access = isocosm_overlay::OrdinaryAccess {
                 participant:isocosm_overlay::ParticipantHandle(table.host_participant),seat:isocosm_overlay::Seat::Dm,
                 subject:old.table_session().sim.plays(table.host_participant).map(isocosm_overlay::EntityHandle) };
-            for (key,storylet) in isometry_campaign::native::pack::active_content(old.table_session(),&table.game,access)?.storylets {
+            for (key,storylet) in isocosm_vtt::native::pack::active_content(old.table_session(),&table.game,access)?.storylets {
                 if offers.get(&key).is_some_and(|existing| existing != &storylet) {
                     return Err(format!("native campaign and accepted pack disagree about storylet {key}"));
                 }

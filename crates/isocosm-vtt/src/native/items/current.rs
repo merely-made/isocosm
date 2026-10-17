@@ -10,7 +10,7 @@ fn clearance(session:&Session,pose:&ItemPose)->Result<(),String> {
     Ok(())
 }
 
-pub(super) fn mounted(session:&Session,record:&PhysicalItemRecord,position:&PositionBinding,item_id:&crate::ItemId)
+pub(super) fn mounted(session:&Session,record:&PhysicalItemRecord,position:&PositionBinding,item_id:&isometry_campaign::ItemId)
     ->Result<ItemPose,String> {
     let ItemAction::Custody(input)=&record.input.action else {return Err("item record has no mount".into());};
     let mount=input.mount.as_ref().ok_or("held item has no supplied mount")?;

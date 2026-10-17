@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 use chirograph::{IntentInvocation, IntentResult, ProjectionSnapshot};
 use graphshell_endpoint::{IntentSink, ProjectionCatalog, ProjectionSource};

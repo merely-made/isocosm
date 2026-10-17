@@ -10,7 +10,7 @@
 //! Their concrete game-event protocol is separate from the family record API.
 
 #[cfg(feature = "vtt")]
-pub use isometry_campaign::founding::NativeWorld;
+pub use isocosm_vtt::founding::NativeWorld;
 #[cfg(feature = "vtt")]
 pub use session::{NativePublication, NativeTravelResolved, NativeTimeResolved, NativePartyResolved,
     NativeJourneyResolved, NativeHookResolved, NativePackResolved, NativePhysicalResolved, NativeItemsResolved, TravelMember, TravelTableResult};

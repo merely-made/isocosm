@@ -21,7 +21,7 @@ isocosm-overlay = { path = "../isocosm-overlay" }
 isonetry = { path = "../../crates/isonetry", default-features = false, features = ["family-net"] }
 mesocosm-runtime = { path = "../../mesocosm/crates/mesocosm-runtime", features = ["endpoint"] }
 eponym-play = { path = "../../eponym/crates/eponym-play", features = ["endpoint"] }
-isocosm-vtt = { path = "../../crates/isocosm-vtt" }
+isocosm-vtt = { path = "../../crates/isocosm-vtt", features = ["endpoint"] }
 chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
 graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", features = ["network"] }
 graphshell-native = { package = "graphshell", git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", default-features = false, features = ["native"] }

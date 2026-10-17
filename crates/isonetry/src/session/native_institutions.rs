@@ -7,7 +7,7 @@ use super::*;
 use crate::native_table::{NativeTable,TableSender,table_digest};
 use isocosm::{Command,Execution,projects::DebitPreview};
 use isocosm_overlay::{EntityHandle,OrdinaryAccess,ParticipantHandle,Seat};
-use isometry_campaign::native::institutions::{InstitutionInput,prepare_institution};
+use isocosm_vtt::native::institutions::{InstitutionInput,prepare_institution};
 use serde::{Deserialize,Serialize};
 
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
@@ -43,7 +43,7 @@ pub struct NativeInstitutionsResolved {
     pub input:InstitutionInput, pub participant:u64, pub sender:InstitutionSender,
 }
 
-fn access(campaign:&isometry_campaign::founding::Campaign,table:&NativeTable,sender:TableSender)
+fn access(campaign:&isocosm_vtt::founding::Campaign,table:&NativeTable,sender:TableSender)
     ->Result<OrdinaryAccess,String> {
     let participant=table.participant(sender)?;
     Ok(OrdinaryAccess {participant:ParticipantHandle(participant),

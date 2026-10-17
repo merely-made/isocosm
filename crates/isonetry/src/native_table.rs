@@ -5,7 +5,8 @@
 
 use crate::{GameSnapshot, NativePublication};
 use isocosm::{Session, schema::{Id, Key}};
-use isometry_campaign::{CampaignMap, native::{AdmissionBatch, GameBindings, ParticipantInput}, founding::NativeCursor};
+use isometry_campaign::CampaignMap;
+use isocosm_vtt::{founding::NativeCursor, native::{AdmissionBatch, GameBindings, ParticipantInput}};
 use isometry_core::{MapDocument, TileCoord, TokenId};
 use isocosm_overlay::vtt::Cell;
 use serde::{Deserialize, Serialize};
@@ -95,9 +96,9 @@ impl NativeTable {
             .filter(|participant| *participant != self.host_participant).collect()
     }
 
-    pub fn time_roster(&self) -> Result<isometry_campaign::native::time::Roster, String> {
+    pub fn time_roster(&self) -> Result<isocosm_vtt::native::time::Roster, String> {
         let players = self.bound_players();
-        Ok(isometry_campaign::native::time::Roster { preimage:isocosm::digest(&players), players,
+        Ok(isocosm_vtt::native::time::Roster { preimage:isocosm::digest(&players), players,
             revision:GameBindings::decode(&self.game)?.roster_revision() })
     }
 

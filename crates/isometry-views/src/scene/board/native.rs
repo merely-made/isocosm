@@ -41,9 +41,9 @@ pub(in crate::scene) fn read(ui:&UiState)->Result<Rc<Picture>,String> {
         else {isocosm::directing::readings::Mode::Creative};
     let mut visible=isocosm::directing::readings::view(&session.sim,played.unwrap_or(u64::MAX),mode);
     if !visible.sites.contains(&input.site) {return Err("native scene site is outside actual native awareness".into());}
-    let game=isometry_campaign::native::GameBindings::decode(&table.game)?;
+    let game=isocosm_vtt::native::GameBindings::decode(&table.game)?;
     game.validate(session)?;
-    if let Some(refined)=isometry_campaign::native::eye::refine(session,&game,played.unwrap_or(u64::MAX),mode,input.site)? {
+    if let Some(refined)=isocosm_vtt::native::eye::refine(session,&game,played.unwrap_or(u64::MAX),mode,input.site)? {
         visible=refined;
     }
     let active=ui.active_map.as_ref().ok_or("native scene needs an explicitly active table map")?;
@@ -68,7 +68,7 @@ pub(in crate::scene) fn read(ui:&UiState)->Result<Rc<Picture>,String> {
     for binding in game.item_records().iter().rev().filter_map(|record|record.binding.as_ref()) {
         if !items.insert(binding.entity) || !visible.shows(binding.entity) || !session.sim.state().population
             .get(binding.entity).is_some_and(|body|body.resident_site()==Some(input.site)) {continue;}
-        let pose=isometry_campaign::native::items::current_item(session,&game,binding.entity)?;
+        let pose=isocosm_vtt::native::items::current_item(session,&game,binding.entity)?;
         if roots.get(&binding.entity).is_some_and(|at|*at!=(pose.at,pose.yaw)) {
             return Err("native item and character placements disagree on the same entity".into());
         }

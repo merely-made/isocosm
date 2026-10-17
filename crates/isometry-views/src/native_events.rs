@@ -5,7 +5,7 @@
 
 use crate::{UiState,UiChild};
 use cambium::{el,text};
-use isometry_campaign::founding::NativeCursor;
+use isocosm_vtt::founding::NativeCursor;
 use isocosm_overlay::Seat;
 
 #[derive(Clone,Debug)]

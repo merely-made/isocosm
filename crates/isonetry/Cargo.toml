@@ -15,6 +15,7 @@ default = ["vtt"]
 vtt = [
     "dep:isometry-core",
     "dep:isometry-campaign",
+    "dep:isocosm-vtt",
     "dep:isocosm-overlay",
     "dep:muniment",
     "dep:postcard",
@@ -60,6 +61,7 @@ family-net = [
 [dependencies]
 isometry-core = { workspace = true, optional = true }
 isometry-campaign = { workspace = true, optional = true }
+isocosm-vtt = { workspace = true, optional = true, default-features = false }
 isocosm = { path = "../../shared/isocosm", default-features = false }
 isocosm-host = { path = "../../host" }
 # This pin predates the graphshell-host extraction. Its admitted native
