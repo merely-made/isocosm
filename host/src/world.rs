@@ -11,9 +11,16 @@ use crate::{binding::Binding, native_attention, save::{WorldSave, FORMAT_VERSION
 
 mod replication;
 pub use replication::ReplicationSnapshot;
+mod commit_gate;
+pub use commit_gate::CommitGate;
 
 #[derive(Clone)]
-struct OpenWorld { session: Session, sections: BTreeMap<String, Vec<u8>>, revision: u64 }
+struct OpenWorld {
+    session: Session,
+    sections: BTreeMap<String, Vec<u8>>,
+    revision: u64,
+    commit_gate: Option<Rc<dyn CommitGate>>,
+}
 
 pub struct World(Rc<RefCell<OpenWorld>>);
 
@@ -39,7 +46,12 @@ impl World {
     /// A world whose session and per-mode sections arrive together, as a
     /// product handoff carries them.
     pub fn with_sections(session: Session, sections: BTreeMap<String, Vec<u8>>) -> Self {
-        Self(Rc::new(RefCell::new(OpenWorld { session, sections, revision: 0 })))
+        Self(Rc::new(RefCell::new(OpenWorld {
+            session,
+            sections,
+            revision: 0,
+            commit_gate: None,
+        })))
     }
     pub fn share(&self) -> Self { Self(self.0.clone()) }
     /// Give a session host sole ownership of this live world. Otherwise an
@@ -47,6 +59,16 @@ impl World {
     pub fn into_exclusive(self) -> Result<Self, String> {
         if Rc::strong_count(&self.0) != 1 { return Err("world has shared owners".into()); }
         Ok(self)
+    }
+    /// Install the single publication gate for this shared world. The gate is
+    /// called with the old and candidate authority before each durable publish.
+    pub fn install_commit_gate(&self, gate: Rc<dyn CommitGate>) -> Result<(), String> {
+        let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
+        if world.commit_gate.is_some() {
+            return Err("world already has a commit gate".into());
+        }
+        world.commit_gate = Some(gate);
+        Ok(())
     }
     /// Transfer an unshared world's session and opaque sections to a product's
     /// founding step. Shared live worlds cannot be taken apart.
@@ -105,7 +127,19 @@ impl World {
         let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
         if world.sections.get(mode) != Some(&bytes) {
             let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
-            world.sections.insert(mode.into(), bytes);
+            let mut sections = world.sections.clone();
+            sections.insert(mode.into(), bytes);
+            if let Some(gate) = world.commit_gate.clone() {
+                gate.before_publish(
+                    &world.session,
+                    &world.sections,
+                    world.revision,
+                    &world.session,
+                    &sections,
+                    revision,
+                )?;
+            }
+            world.sections = sections;
             world.revision = revision;
         }
         Ok(())
@@ -126,6 +160,16 @@ impl World {
         let accepted = admit(&mut candidate)?;
         if !same_authority(&candidate, &world.session) {
             let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
+            if let Some(gate) = world.commit_gate.clone() {
+                gate.before_publish(
+                    &world.session,
+                    &world.sections,
+                    world.revision,
+                    &candidate,
+                    &world.sections,
+                    revision,
+                )?;
+            }
             world.session = candidate;
             world.revision = revision;
         }
@@ -149,6 +193,16 @@ impl World {
         let (value, sections) = admit(&mut candidate, &world.sections)?;
         if !same_authority(&candidate, &world.session) || sections != world.sections {
             let revision = world.revision.checked_add(1).ok_or("world revision overflow")?;
+            if let Some(gate) = world.commit_gate.clone() {
+                gate.before_publish(
+                    &world.session,
+                    &world.sections,
+                    world.revision,
+                    &candidate,
+                    &sections,
+                    revision,
+                )?;
+            }
             world.session = candidate;
             world.sections = sections;
             world.revision = revision;

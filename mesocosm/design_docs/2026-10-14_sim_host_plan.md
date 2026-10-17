@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-14
 
-**Status, 2026-10-16:** in progress. Opened by rulings 884, 892 and 895;
+**Status, 2026-10-17:** in progress. Opened by rulings 884, 892 and 895;
 carries 887's first milestone; forks settled by 896 to 898. H0, H1, H2 and H3
 landed (H2's forks ruled 899 to 904); H2's step 4 waits on the lifted
 reference-host capabilities (899). 2026-10-16: H4 (954 to 957) and H5
@@ -306,6 +306,51 @@ through the UI, succession in the client), then the VTT over the sim
 starts.
 
 ## Progress
+
+- **2026-10-17, H7 shared-World gate and live carrier (959, 960):** a
+  core publication gate now journals real endpoint and window transactions
+  before the same World publishes. It checks append-only history, unchanged
+  genesis/branch, exact native suffix replay, section changes, revision and a
+  configurable bounded outbox. Refusal leaves both World and journal alone.
+  A host can resume from a verified checkpoint and suffix. The family API can
+  be built without the interim VTT layer; the default `vtt` feature preserves
+  that API, while `family-net` enables its own stack dependencies.
+  Twenty family/network controls pass, including the real admitted
+  Graphshell stream, host-signed JoinedSpace records, opaque section updates,
+  verified stored-suffix recovery and clean carrier/lane shutdown. A negative
+  control caught cached signature verification trusting a mutated header;
+  the trust boundary now decodes signed bytes and checks the fresh header
+  hash before body/record checks. Failed controls remain in the receipt
+  directory. Signed operations also require the family parent digest before
+  persistence and across recovery cursors. The actual Mesocosm configure,
+  Eponym step and VTT join each pass a three-product loopback over the
+  admitted stream and signed JoinedSpace records, with full native saves,
+  opaque sections, accepted sequence and World revision converging. The
+  Eponym endpoint persists an absent mode as empty bytes; its step has no
+  native command suffix. Each product's local endpoint control also passes.
+  The final three-product chain gate passes 3/3; `live-carrier-receipt.json`
+  binds the current source and logs. JoinedSpace shutdown cancels its receive
+  drain; already indexed records remain recoverable, without promising that
+  every queued delivery completed. World/log persistence is still not
+  crash-atomic, and the old VTT
+  DM-authority core has not retired. Receipt owner and cap remain
+  `Code/testing/isometry/h7-2026-10-17/`, 100 MB.
+
+- **2026-10-17, A1 complete matrix (958), default choice (961):** played,
+  bare and bodied A1 each qualify 20/20; all three Stock controls are 0/20
+  with extinction. All 120 actual-round conservation streams and both final
+  native replay modes are independently checked. The complete Q3 summary
+  binds 95,364,456 raw matrix/recovery bytes, with the full retained scope
+  under 100 MB and failed partial receipts preserved. The last thirteen
+  Stock receipts use exact canonical replay recipes instead of duplicate
+  Genesis bytes; current directing controls pass 52, fail 0, ignore 17.
+  Mark chooses Mesocosm's named A1 default after the physical gate, retaining
+  the shared generator's Stock default. The generated physical offer is
+  still running. Its role declaration comes from living founding populations
+  and their actual producer/consumer definitions before any witness Session
+  exists; seed 9 has producer 3 and consumer 1, with no producer 0. A
+  population-60 fixture has neither role and refuses rather than claiming
+  empty evidence. Default launch remains closed until the physical gate.
 
 - **2026-10-17, H7 serialized peer slice (959, 960):** `isonetry::family`
   now carries versioned, bounded JSON checkpoints and accepted records over

@@ -202,6 +202,103 @@ fn family_host_rejects_a_world_with_an_external_owner() {
 }
 
 #[test]
+fn direct_endpoint_world_commits_are_journaled_and_drain_frees_capacity() {
+    let mut host = host();
+    let initial = host.checkpoint().unwrap();
+    let endpoint_world = host.world().share();
+    let before = endpoint_world.cut().unwrap();
+    endpoint_world
+        .product_sections(before, |_, sections| {
+            let mut sections = sections.clone();
+            sections.insert("mesocosm".into(), vec![4, 5]);
+            Ok(((), sections))
+        })
+        .unwrap();
+    assert_eq!(host.sequence(), 1);
+    assert!(host.outbox_bytes() > 0);
+    let records = host.drain_records();
+    assert_eq!(records.len(), 1);
+    assert_eq!(records[0].parent_digest, initial.digest);
+    assert_eq!(host.outbox_bytes(), 0);
+
+    let replica = FamilyReplica::install(initial, &records, Execution::Individuals).unwrap();
+    assert_eq!(
+        replica.snapshot().unwrap(),
+        host.world().replication_snapshot().unwrap()
+    );
+}
+
+#[test]
+fn hosted_world_refuses_branch_replacement_and_unreplayable_native_history() {
+    let host = host();
+    let before = host.world().replication_snapshot().unwrap();
+    let error = host
+        .world()
+        .product(cut(&before.save), |session| {
+            session.branch = "branch:replacement".into();
+            Ok(())
+        })
+        .unwrap_err();
+    assert!(error.contains("branch or genesis"));
+    assert_eq!(host.world().replication_snapshot().unwrap(), before);
+    assert_eq!(host.sequence(), 0);
+
+    let error = host
+        .world()
+        .product(cut(&before.save), |session| {
+            session.entries.push(Entry {
+                id: "intent:forged".into(),
+                tick: session.sim.state().tick,
+                order: session.entries.len() as u64,
+                command: Command::Join,
+                outcome: "forged outcome".into(),
+            });
+            Ok(())
+        })
+        .unwrap_err();
+    assert!(error.contains("native suffix entry differs from replay"));
+    assert_eq!(host.world().replication_snapshot().unwrap(), before);
+    assert_eq!(host.sequence(), 0);
+    assert_eq!(host.outbox_bytes(), 0);
+}
+
+#[test]
+fn bounded_outbox_refuses_publication_and_hosted_world_refuses_replica_writes() {
+    let host = FamilyHost::new_with_limits(
+        SessionId([9; 16]),
+        world(),
+        FamilyLimits {
+            wire: WireLimits::default(),
+            max_outbox_bytes: 1,
+        },
+    )
+    .unwrap();
+    let before = host.world().replication_snapshot().unwrap();
+    let write_error = host
+        .world()
+        .put_section("new-section", vec![1])
+        .unwrap_err();
+    assert!(write_error.contains("outbox is full"));
+    assert_eq!(host.world().replication_snapshot().unwrap(), before);
+    assert_eq!(host.sequence(), 0);
+    assert_eq!(host.outbox_bytes(), 0);
+
+    let replay_error = host
+        .world()
+        .apply_replica_record(
+            before.revision,
+            before.save.native.entries.len(),
+            &[],
+            before.save.native.tick,
+            &BTreeMap::new(),
+            |_, _, _| Ok(()),
+        )
+        .unwrap_err();
+    assert!(replay_error.contains("hosted world refuses replica replay"));
+    assert_eq!(host.world().replication_snapshot().unwrap(), before);
+}
+
+#[test]
 fn native_time_only_acceptance_is_a_replicated_record() {
     let mut host = host();
     let checkpoint = host.checkpoint().unwrap();
@@ -248,6 +345,33 @@ fn duplicate_gapped_reordered_and_checkpoint_resumed_records_are_checked() {
     )
     .unwrap();
     assert_converged(&host, &resumed);
+}
+
+#[test]
+fn writer_can_resume_from_a_verified_checkpoint_and_suffix() {
+    let mut original = host();
+    let checkpoint = original.checkpoint().unwrap();
+    let first = join(&mut original);
+    let mut resumed = FamilyHost::resume(
+        checkpoint.clone(),
+        std::slice::from_ref(&first),
+        Execution::Individuals,
+        FamilyLimits::default(),
+    )
+    .unwrap();
+    assert_eq!(resumed.sequence(), 1);
+    assert_eq!(
+        resumed.world().replication_snapshot().unwrap(),
+        original.world().replication_snapshot().unwrap()
+    );
+
+    let second = join(&mut resumed);
+    let replica =
+        FamilyReplica::install(checkpoint, &[first, second], Execution::Individuals).unwrap();
+    assert_eq!(
+        replica.snapshot().unwrap(),
+        resumed.world().replication_snapshot().unwrap()
+    );
 }
 
 #[test]

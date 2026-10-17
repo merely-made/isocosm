@@ -6,15 +6,23 @@ edition.workspace = true
 license.workspace = true
 authors.workspace = true
 repository.workspace = true
-description = "Isometry's session layer: DM-authority replication of the SessionEvent log over a transport seam. Pure-sync protocol core; iroh QUIC binding behind the `iroh` feature."
+description = "Isocosm-family accepted-record replication with an optional VTT session layer and transport features."
 
 [features]
-# The core (protocol + session state machines + in-memory routing) is
-# dep-light and always built. The iroh transport pulls the QUIC stack
-# and a tokio runtime, so it is opt-in.
-default = []
-iroh = ["dep:iroh", "dep:iroh-tickets", "dep:tokio", "dep:tracing"]
+# Keep the established VTT API as the default. Family-only consumers can turn
+# it off and depend on the host-owned Isocosm family without campaign storage.
+default = ["vtt"]
+vtt = [
+    "dep:isometry-core",
+    "dep:isometry-campaign",
+    "dep:isocosm-overlay",
+    "dep:muniment",
+    "dep:postcard",
+    "isocosm/society",
+]
+iroh = ["vtt", "dep:iroh", "dep:iroh-tickets", "dep:tokio", "dep:tracing"]
 campaign-p2p = [
+    "vtt",
     "dep:personae",
     "dep:mooting",
     "dep:murm-replication",
@@ -30,21 +38,46 @@ campaign-p2p-net = [
     "dep:tokio",
 ]
 campaign-moot = ["campaign-p2p", "dep:gemot", "dep:tokio"]
-campaign-murm = ["dep:murm", "dep:thiserror"]
+campaign-murm = ["vtt", "dep:murm", "dep:thiserror"]
+family-net = [
+    "dep:muniment",
+    "dep:murm-replication",
+    "dep:personae",
+    "dep:p2panda-core",
+    "dep:p2panda-store",
+    "dep:p2panda-net",
+    "dep:p2panda-sync",
+    "dep:transport",
+    "dep:tokio",
+    "dep:graphshell-native",
+    "dep:graphshell-endpoint",
+    "dep:chirograph",
+    "dep:sceno",
+    "dep:insigne",
+    "dep:notochord",
+]
 
 [dependencies]
-isometry-core = { workspace = true }
-isometry-campaign = { workspace = true }
-isocosm = { workspace = true }
+isometry-core = { workspace = true, optional = true }
+isometry-campaign = { workspace = true, optional = true }
+isocosm = { path = "../../shared/isocosm", default-features = false }
 isocosm-host = { path = "../../host" }
+# This pin predates the graphshell-host extraction. Its admitted native
+# stream APIs are still exported by the Graphshell port at this revision.
+graphshell-native = { package = "graphshell", git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", default-features = false, features = ["native"], optional = true }
+graphshell-endpoint = { workspace = true, optional = true }
+chirograph = { workspace = true, optional = true }
+sceno = { workspace = true, optional = true }
+insigne = { git = "https://github.com/merely-made/dramatis.git", rev = "0234e7eea6f2ddf2330a71b9425da01b06ae0391", optional = true }
+notochord = { git = "https://github.com/merely-made/dramatis.git", rev = "0234e7eea6f2ddf2330a71b9425da01b06ae0391", optional = true }
 # The VTT's contract, whose assertions the host commits (wing ruling 795).
-isocosm-overlay = { workspace = true }
-muniment = { workspace = true }
+isocosm-overlay = { workspace = true, optional = true }
+muniment = { workspace = true, optional = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 # Compact, no_std-friendly wire framing; also the byte form the portable
 # log hash folds over (so convergence is std-hash-independent).
-postcard = { version = "1", features = ["alloc"] }
+postcard = { version = "1", features = ["alloc"], optional = true }
 personae = { workspace = true, optional = true }
 mooting = { workspace = true, optional = true }
 murm-replication = { workspace = true, optional = true }
@@ -77,3 +110,27 @@ required-features = ["iroh"]
 [[example]]
 name = "forest_session"
 required-features = ["iroh"]
+
+[[test]]
+name = "native_mode_game"
+required-features = ["vtt"]
+
+[[test]]
+name = "native_publication"
+required-features = ["vtt"]
+
+[[test]]
+name = "native_setup"
+required-features = ["vtt"]
+
+[[test]]
+name = "native_site_history"
+required-features = ["vtt"]
+
+[[test]]
+name = "protocol_envelope"
+required-features = ["vtt"]
+
+[[test]]
+name = "transition_resolution"
+required-features = ["vtt"]

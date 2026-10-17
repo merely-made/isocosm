@@ -41,6 +41,9 @@ impl World {
         verify: impl FnOnce(&Session, &BTreeMap<String, Vec<u8>>, u64) -> Result<(), String>,
     ) -> Result<(), String> {
         let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
+        if world.commit_gate.is_some() {
+            return Err("hosted world refuses replica replay mutation".into());
+        }
         if world.revision != expected_revision || world.session.entries.len() != expected_native_cut {
             return Err("replica predecessor is stale".into());
         }
