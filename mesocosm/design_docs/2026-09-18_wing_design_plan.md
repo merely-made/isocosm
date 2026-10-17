@@ -11981,7 +11981,12 @@ what later sections derive from.
      until the admitted field replaces both, and ruling 472's block stays
      the destination. 749's torch shadows are untouched.
 
-     Next unused 971.
+     The light field itself is ruled separately (971 to 974): a derived
+     function in the sim over (rules, tick, site), read by the tracer and the
+     tenant, with a 1,440-tick day and night as sun None. Until that lane
+     lands this fixed sun stays the block's default.
+
+     Next unused 975.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
