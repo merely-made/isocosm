@@ -11933,7 +11933,30 @@ what later sections derive from.
      in its subject (recommended); (2) a separate commit after; (3) note
      only. Mark: "Into the merge commit (Recommended)".
 
-     Next unused 968.
+968. **The merge pushes with the pack-authoring test's line-ending failure recorded.**
+     Asked 2026-10-17 after the merge's gates: the root all-features
+     all-targets check, the Mesocosm all-targets check, the pin suite 6/6
+     and `isometry-system`'s library (49) and `pack_author` integration (2)
+     tests pass; one `pack-author` bin unit test,
+     `nested_presets_real_validation_and_no_implicit_runtime_change`, fails
+     because this Windows checkout (autocrlf, no attributes rule) converts
+     its two TOML fixtures to CRLF and the test's needle carries a bare
+     newline. It passes on LF copies and fails the same on plain
+     origin/main here, so the merge did not cause it. Options: (1) push
+     with the finding recorded (recommended); (2) hold until the fix
+     lands; (3) fold the fix into the merge. Mark: "Push, record the
+     finding (Recommended)".
+
+969. **The pack-authoring fixtures are pinned LF by a narrow attributes rule.**
+     Asked with 968. Options: (1) `crates/isometry-system/tests/fixtures/*.toml`
+     and `crates/isometry-system/examples/packs/**` as `text eol=lf`,
+     renormalized and re-checked out (recommended); (2) repo-wide
+     `* text=auto eol=lf`; (3) make the test newline-agnostic in the lane's
+     own code; (4) leave it to the pack-authoring lane. Mark: "Narrow
+     .gitattributes rule (Recommended)". It lands as its own commit after
+     the merge, verified by the same test passing on this checkout.
+
+     Next unused 970.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

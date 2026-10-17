@@ -346,7 +346,17 @@ starts.
   runs 15 ticks under 1.5 s on the shipping head, the host unchanged.
   Mesocosm's manifest still patched vello with nothing depending on it; the
   patch goes under 967 with the merge of origin's pack-authoring tool and the
-  1.99.1 toolchain (965).
+  1.99.1 toolchain (965). Merge gates: the root all-features all-targets
+  check (3m09s), the Mesocosm all-targets check (2m45s), the pin suite 6/6
+  and `isometry-system`'s library (49) and `pack_author` integration (2)
+  tests pass; the `pack-author` bin's
+  `nested_presets_real_validation_and_no_implicit_runtime_change` fails on
+  this Windows checkout because autocrlf converts its two TOML fixtures to
+  CRLF and its needle carries a bare newline; it passes on LF copies and
+  fails the same on plain origin/main. Pushed with that recorded (968); the
+  fixtures are pinned LF by a narrow attributes rule in the following commit
+  (969). The merged lock adds exactly origin's pack-authoring closure at
+  origin's versions.
 
 - **2026-10-17, active-update performance lane:** profile the 32 to 50 second
   active callbacks, remove redundant work while preserving native commands,
