@@ -358,7 +358,7 @@ fn pass_world(seed: u64, asks: [u64; 2]) -> (Genesis, [Id; 2], Id) {
     let mut population = isocosm::population::Population::default();
     for c in g.population.groups.values() {
         if c.entity.lineage == "world:ground" {
-            population.insert(c.entity.clone(), 1).unwrap();
+            population.insert(c.entity.as_ref().clone(), 1).unwrap();
         }
     }
     let prey = population.insert(producer, 1).unwrap();

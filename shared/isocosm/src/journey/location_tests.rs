@@ -262,7 +262,7 @@ fn aggregate_reactive_routes_are_supported_while_identity_choice_remains_native(
     assert_eq!(crowd.work.arrivals,1,"reactive migration is actual aggregate support");
     assert_eq!(exact.sim.state().population.get(id).unwrap().resident_site(),Some(1));
     assert!(crowd.bins.keys().all(|e| e.resident_site()==Some(1)));
-    world.genesis.population.groups.get_mut(&id).unwrap().entity.method=Method::Deliberative;
+    world.genesis.population.groups.get_mut(&id).unwrap().entity_mut().method=Method::Deliberative;
     assert_eq!(crate::probe::Crowd::new(&world,7,crate::probe::Variant::Histogram).err().unwrap(),
         "moving aggregate worlds require the native deliberative chooser");
     world.genesis.rules.processes.clear();

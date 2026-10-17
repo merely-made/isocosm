@@ -40,7 +40,7 @@ fn world(ledgers: [&[(&str, u64)]; 3], processes: Vec<Process>) -> Genesis {
     }
     .generate()
     .unwrap();
-    let ground = g.population.groups[&0].entity.clone();
+    let ground = g.population.groups[&0].entity.as_ref().clone();
     let template = g.population.get(1).unwrap().clone();
     let mut population = Population::default();
     population.insert(ground, 1).unwrap();

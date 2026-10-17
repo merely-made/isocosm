@@ -51,7 +51,7 @@ fn duel(seed: u64) -> ProbeWorld {
     site.accounts.insert(WATER.into(), rations[1]);
     let pair = w.genesis.population.groups.get_mut(&1).unwrap();
     assert_eq!(pair.count, 2);
-    let e = &mut pair.entity;
+    let e = pair.entity_mut();
     e.traits.remove("leaning:scramble");
     e.traits.insert("leaning:contest".into());
     e.accounts.insert("matter:0-0".into(), 4);

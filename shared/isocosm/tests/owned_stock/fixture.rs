@@ -51,12 +51,12 @@ pub fn world(seed: u64) -> World {
     let bodies = [critters[0], critters[1], critters[2]];
     let lineage = g.population.groups[&bodies[0]].entity.lineage.clone();
     for (id, at) in bodies.into_iter().zip([home, home, away]) {
-        let body = &mut g.population.groups.get_mut(&id).unwrap().entity;
+        let body = g.population.groups.get_mut(&id).unwrap().entity_mut();
         body.place = at;
         body.method = Method::Normative;
     }
     g.rules.accounts.insert(TIMBER.into(), AccountKind::Matter { lineage: lineage.clone(), reserve: false, provision: false });
-    g.population.groups.get_mut(&bodies[0]).unwrap().entity.accounts.insert(TIMBER.into(), BODY_MG);
+    g.population.groups.get_mut(&bodies[0]).unwrap().entity_mut().accounts.insert(TIMBER.into(), BODY_MG);
     g.sites.get_mut(&home).unwrap().accounts.insert(TIMBER.into(), SITE_MG);
     for site in g.sites.values_mut() { site.routes.clear(); }
     g.sites.get_mut(&home).unwrap().routes =

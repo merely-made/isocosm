@@ -14,14 +14,14 @@ pub(super) fn fixture(count: u64, bodies: bool) -> ProbeWorld {
     let first = *g.population.groups.iter().find(|(_,group)|group.entity.lineage=="lineage:0").unwrap().0;
     g.population.groups.retain(|id,_| *id==first);
     let group = g.population.groups.get_mut(&first).unwrap();
-    group.count=count; group.entity.place=0; group.entity.method=Method::Reactive;
-    group.entity.traits.insert(ACTOR.into());
-    if !bodies { group.entity.accounts=Ledger::from([(OWN.into(),32)]); }
+    group.count=count; group.entity_mut().place=0; group.entity_mut().method=Method::Reactive;
+    group.entity_mut().traits.insert(ACTOR.into());
+    if !bodies { group.entity_mut().accounts=Ledger::from([(OWN.into(),32)]); }
     else {
         assert!(group.entity.body.is_some(), "the selected lineage has a generated native body");
-        group.entity.accounts.remove("world:soil");
+        group.entity_mut().accounts.remove("world:soil");
         let room=crate::anatomy::room(&group.entity,&g.rules,OWN);
-        crate::anatomy::give(&mut group.entity,&g.rules,OWN,room).unwrap().unwrap();
+        crate::anatomy::give(group.entity_mut(),&g.rules,OWN,room).unwrap().unwrap();
         assert!(crate::anatomy::held(&group.entity,&g.rules,OWN)>2,
             "the bodily unit fixture actually provisions upkeep and a paid child");
     }
@@ -64,7 +64,7 @@ pub(super) fn paired(w: &ProbeWorld, collect: bool,
         native_arrivals+=native.advance_tick_with_flows().unwrap().result.arrivals;
         if collect { native.command(Command::Collect).unwrap(); }
         crowd.step().unwrap();
-        let n=states(native.sim.state().population.groups.values().map(|g|(&g.entity,g.count)));
+        let n=states(native.sim.state().population.groups.values().map(|g|(g.entity.as_ref(),g.count)));
         let h=states(crowd.bins.iter().map(|(e,&n)|(e,n)).chain(crowd.kin.values().map(|e|(e,1))));
         assert_eq!(h,n,"kernel journey agrees with native at every actual tick");
         assert_eq!(crowd.sites,native.sim.state().sites,"pass-start site ledgers at tick {tick}");
@@ -180,10 +180,10 @@ fn averaging_never_pools_travellers_with_origin_residents() {
 #[test]
 fn moving_deliberative_and_identity_worlds_keep_a_named_native_boundary() {
     let mut w=fixture(1,false);
-    w.genesis.population.groups.values_mut().next().unwrap().entity.method=Method::Deliberative;
+    w.genesis.population.groups.values_mut().next().unwrap().entity_mut().method=Method::Deliberative;
     assert_eq!(Crowd::new(&w,7,Variant::Histogram).err().unwrap(),
         "moving aggregate worlds require the native deliberative chooser");
-    w.genesis.population.groups.values_mut().next().unwrap().entity.method=Method::Reactive;
+    w.genesis.population.groups.values_mut().next().unwrap().entity_mut().method=Method::Reactive;
     w.genesis.rules.processes.get_mut("test:first").unwrap().note=true;
     assert_eq!(Crowd::new(&w,7,Variant::Histogram).err().unwrap(),"identity-bound migration runs individually");
     w.genesis.rules.processes.clear();

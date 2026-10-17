@@ -56,7 +56,7 @@ fn member(w: &ProbeWorld, reserve: u64, strain: u64) -> Entity {
     let c = &w.competitions()["world:food"];
     let group = w.genesis.population.groups.values();
     let mut e = group
-        .map(|g| g.entity.clone())
+        .map(|g| g.entity.as_ref().clone())
         .find(|e| e.traits.contains(&c.kinds[0].identity))
         .unwrap();
     e.traits.insert(c.contest.clone());

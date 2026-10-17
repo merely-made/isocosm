@@ -152,7 +152,7 @@ impl<'a> From<&'a population::Cohort> for Cohort<'a> {
         let population::Cohort { count, entity } = value;
         Self {
             count: *count,
-            entity: entity.into(),
+            entity: entity.as_ref().into(),
         }
     }
 }

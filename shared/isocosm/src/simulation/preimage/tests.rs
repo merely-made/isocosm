@@ -159,7 +159,7 @@ fn former_character_bytes_survive_in_population_entity_and_every_nested_group() 
     let entities = session.sim.entity_witness();
     for (id, group) in &pop.groups {
         let former = former_entity(&group.entity);
-        assert_eq!(bytes(&Entity::from(&group.entity)), former);
+        assert_eq!(bytes(&Entity::from(group.entity.as_ref())), former);
         let digest = hash_bytes(&former);
         assert_eq!(
             entities.get(&label("entity", [id])),
@@ -277,7 +277,7 @@ fn all_unchanged_entity_fields_and_assertion_variants_keep_their_native_encoding
         .find(|group| group.entity.body.is_some())
         .unwrap()
         .entity
-        .clone();
+        .as_ref().clone();
     assert!(entity.body.is_some());
     assert!(!entity.parts.is_empty());
     entity.patch = Some(isometer_space::places::PlaceId {

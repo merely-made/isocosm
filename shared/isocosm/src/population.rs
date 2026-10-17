@@ -3,14 +3,23 @@
 
 use crate::{Result, schema::*};
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, BTreeSet};
+use std::{collections::{BTreeMap, BTreeSet}, sync::Arc};
 
 /// A contiguous identity interval sharing the complete causal state. No means,
 /// rounded bins or lost tails: different reserves/traits remain different rows.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Cohort {
     pub count: u64,
-    pub entity: Entity,
+    /// Shared between Session copies; a write copies the one entity
+    /// (`Arc::make_mut`), so a clone of the population copies only the map.
+    pub entity: Arc<Entity>,
+}
+
+impl Cohort {
+    /// The cohort's entity for writing: copied first if a Session copy shares it.
+    pub fn entity_mut(&mut self) -> &mut Entity {
+        Arc::make_mut(&mut self.entity)
+    }
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -23,17 +32,21 @@ impl Population {
     pub fn count(&self) -> u64 {
         self.groups.values().map(|g| g.count).sum()
     }
+    pub fn get_shared(&self, id: Id) -> Option<&Arc<Entity>> {
+        let (&first, group) = self.groups.range(..=id).next_back()?;
+        (id - first < group.count).then_some(&group.entity)
+    }
     pub fn get(&self, id: Id) -> Option<&Entity> {
         let (&first, group) = self.groups.range(..=id).next_back()?;
         (id - first < group.count).then_some(&group.entity)
     }
-    pub fn insert(&mut self, entity: Entity, count: u64) -> Result<Id> {
+    pub fn insert(&mut self, entity: impl Into<Arc<Entity>>, count: u64) -> Result<Id> {
         if count == 0 {
             return Err("empty cohort".into());
         }
         let first = self.next_id;
         self.next_id = first.checked_add(count).ok_or("identity exhausted")?;
-        self.groups.insert(first, Cohort { count, entity });
+        self.groups.insert(first, Cohort { count, entity: entity.into() });
         Ok(first)
     }
     pub fn lift(&mut self, id: Id) -> Result<&mut Entity> {
@@ -73,7 +86,7 @@ impl Population {
                 entity: group.entity,
             },
         );
-        Ok(&mut self.groups.get_mut(&id).unwrap().entity)
+        Ok(self.groups.get_mut(&id).unwrap().entity_mut())
     }
     pub fn restrict(&mut self, protected: &BTreeSet<Id>) {
         self.restrict_logged(protected, &mut |_, _| {});

@@ -33,7 +33,7 @@ fn table(groups: &[Group], processes: Vec<Process>) -> Genesis {
     }
     .generate()
     .unwrap();
-    let world = g.population.groups[&0].entity.clone();
+    let world = g.population.groups[&0].entity.as_ref().clone();
     let mut body = g.population.get(1).unwrap().clone();
     body.traits.clear();
     let mut population = Population::default();

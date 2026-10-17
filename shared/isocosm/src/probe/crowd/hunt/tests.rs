@@ -37,7 +37,7 @@ fn table(prey: &[u64], hunters: &[u64], bite: u64) -> ProbeWorld {
     g.rules.processes.retain(|id, _| id == "probe:hunt-2");
     let find = |lineage: &str| {
         let groups = g.population.groups.values();
-        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        let mut found = groups.map(|c| c.entity.as_ref()).filter(|e| e.lineage == lineage);
         found.next().unwrap().clone()
     };
     let (world, member, hunter) = (find("world:ground"), find("lineage:0"), find("lineage:2"));
@@ -81,7 +81,7 @@ fn outcome<'a>(members: impl Iterator<Item = (&'a Entity, u64)>, meals: &MealLog
 fn exact(w: &ProbeWorld, dynamics: u64) -> Outcome {
     let run = run_exact(w, dynamics, true).unwrap();
     let groups = run.sim.state().population.groups.values();
-    outcome(groups.map(|g| (&g.entity, g.count)), &run.meals)
+    outcome(groups.map(|g| (g.entity.as_ref(), g.count)), &run.meals)
 }
 
 fn crowd(w: &ProbeWorld, dynamics: u64) -> crate::Result<Outcome> {
@@ -180,7 +180,7 @@ fn grazing(seed: u64, held: u64) -> ProbeWorld {
     let rules = g.rules.clone();
     let find = |lineage: &str| {
         let groups = g.population.groups.values();
-        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        let mut found = groups.map(|c| c.entity.as_ref()).filter(|e| e.lineage == lineage);
         found.next().unwrap().clone()
     };
     let (world, mut frond, mut grazer) =
@@ -267,7 +267,7 @@ fn crowded(seed: u64, held: u64, grazers: u64) -> ProbeWorld {
     let d = g.lineages["lineage:0"].development.clone().unwrap();
     let find = |lineage: &str| {
         let groups = g.population.groups.values();
-        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        let mut found = groups.map(|c| c.entity.as_ref()).filter(|e| e.lineage == lineage);
         found.next().unwrap().clone()
     };
     let (world, mut frond, grazer) = (find("world:ground"), find("lineage:0"), find("lineage:1"));
@@ -317,7 +317,7 @@ fn bites_on_one_part_share_its_shortfall() {
     };
     let w = grazing(0, 1);
     let mut prey = w.genesis.population.groups.values()
-        .find(|g| g.entity.lineage == "lineage:0").unwrap().entity.clone();
+        .find(|g| g.entity.lineage == "lineage:0").unwrap().entity.as_ref().clone();
     prey.parts = BTreeMap::from([(PartId(0), part(&[("a", 1)])), (PartId(1), part(&[("a", 5)]))]);
     let bite = |v: u64, at: u32| (BTreeMap::from([("a".to_string(), v)]), Some(PartId(at)));
     let quotas = |mut bites: Vec<(Ledger, Option<PartId>)>| {

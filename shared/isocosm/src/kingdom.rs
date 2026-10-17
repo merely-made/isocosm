@@ -114,7 +114,7 @@ mod tests {
             .into_values()
             .next()
             .unwrap()
-            .entity;
+            .entity.as_ref().clone();
         let body = Body::sketch(parts.into_iter().enumerate().map(|(i, s)| (i as u32, s)));
         e.embody(body);
         of(&e)

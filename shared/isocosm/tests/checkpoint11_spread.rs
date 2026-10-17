@@ -38,7 +38,7 @@ fn world(seed: u64) -> World {
     genesis.rules.functions = isocosm::rules::default_functions();
     for cohort in genesis.population.groups.values_mut() {
         assert!(cohort.entity.parts.values().all(|part| part.matter.is_empty() && part.cells.is_empty()));
-        cohort.entity.parts.clear();
+        cohort.entity_mut().parts.clear();
     }
     let (&host, cohort) = genesis.population.groups.iter()
         .find(|(_, group)| group.entity.kingdom != "kingdom:world").unwrap();

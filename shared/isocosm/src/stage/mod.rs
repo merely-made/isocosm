@@ -360,11 +360,11 @@ impl Simulation {
         // the pass reads; without one, the act's copies replace them.
         let (bases, site_base) = match &self.frame {
             Some(_) => {
-                let bases: Vec<Entity> = stage
+                let bases: Vec<std::sync::Arc<Entity>> = stage
                     .bodies
                     .keys()
                     .map(|id| {
-                        self.body_at_start(*id)
+                        self.body_shared_at_start(*id)
                             .expect("staged bodies exist")
                             .clone()
                     })
@@ -381,7 +381,7 @@ impl Simulation {
             for (id,_) in &stage.polities {frame.keep_polity(*id,self.state.polities.get(id));}
             for (id, base) in stage.bodies.keys().zip(bases) {
                 let span = if *id == stage.actor { stage.count } else { 1 };
-                frame.keep_body(*id, span, base);
+                frame.keep_body(*id, span, std::sync::Arc::clone(base));
             }
             if let Some(base) = &site_base {
                 frame.keep_site(stage.place, base);
@@ -402,7 +402,7 @@ impl Simulation {
         }
         for (k, (id, body)) in stage.bodies.into_iter().enumerate() {
             let group = s.population.groups.get_mut(&id);
-            let live = &mut group.expect("staged bodies were lifted").entity;
+            let live = group.expect("staged bodies were lifted").entity_mut();
             match &bases {
                 Some(bases) => merge(live, &bases[k], body),
                 None => *live = body,

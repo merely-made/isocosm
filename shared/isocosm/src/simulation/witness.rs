@@ -76,7 +76,7 @@ impl Simulation {
         put(&mut w, "next_id", &s.population.next_id);
         for (&first, cohort) in &s.population.groups {
             let digest =
-                hash_value(&preimage::Entity::from(&cohort.entity)).expect("sim schema encodes");
+                hash_value(&preimage::Entity::from(cohort.entity.as_ref())).expect("sim schema encodes");
             for id in first..first + cohort.count {
                 put(&mut w, label("entity", [id]), &digest);
             }

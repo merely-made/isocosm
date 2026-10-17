@@ -323,7 +323,7 @@ fn drawn(seed: u64, slice: usize) -> (Genesis, BTreeSet<usize>) {
             p.parent = (k > 0).then(|| (random("parent", at) % k) as u32);
             parts.insert(k as u32, p);
         }
-        let e = &mut g.population.groups.get_mut(&member).unwrap().entity;
+        let e = g.population.groups.get_mut(&member).unwrap().entity_mut();
         e.embody(Body::sketch(parts));
         e.accounts
             .insert(ENERGY.into(), 100 + random("energy", member) % 100);
@@ -338,7 +338,7 @@ fn drawn(seed: u64, slice: usize) -> (Genesis, BTreeSet<usize>) {
         let shape = shapes[(random("home-shape", i as u64) % shapes.len() as u64) as usize];
         let mut functions = g.rules.grown(shape);
         functions.insert(f.clone());
-        let e = &mut g.population.groups.get_mut(&home).unwrap().entity;
+        let e = g.population.groups.get_mut(&home).unwrap().entity_mut();
         let mut all = sketched(e);
         let id = all.keys().last().map_or(0, |k| k + 1);
         all.insert(id, part(shape, functions, false));

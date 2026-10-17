@@ -43,9 +43,9 @@ fn fixture() -> (Genesis, Id, Id) {
         .groups
         .retain(|id, _| *id == actor || producers.contains(id));
     for group in g.population.groups.values_mut() {
-        group.entity.place = 0;
+        group.entity_mut().place = 0;
         if group.entity.lineage == "lineage:1" {
-            group.entity.accounts.insert("matter:1-0".into(), 3);
+            group.entity_mut().accounts.insert("matter:1-0".into(), 3);
         }
     }
     g.rules

@@ -82,7 +82,7 @@ fn members<'a>(session: &'a Session, lineage: &'a str) -> impl Iterator<Item = (
     let groups = session.sim.state().population.groups.values();
     groups
         .filter(move |g| g.entity.alive && g.entity.lineage == lineage)
-        .map(|g| (&g.entity, g.count))
+        .map(|g| (g.entity.as_ref(), g.count))
 }
 
 /// Tracts the line's members express by acquisition on a part of some

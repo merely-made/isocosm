@@ -24,7 +24,7 @@ impl Simulation {
                     if let Some(journal) = &mut self.journal { journal.groups(&self.state.population, &reached); }
                 }
                 self.state.population.lift(r.actor)?;
-                self.state.population.groups.get_mut(&r.actor).ok_or("arrival member absent")?.entity.patch = Some(*patch);
+                self.state.population.groups.get_mut(&r.actor).ok_or("arrival member absent")?.entity_mut().patch = Some(*patch);
                 let touched: Vec<_> = self.state.population.groups.range(first..end).map(|(id, _)| *id).collect();
                 if let Some(targets) = &mut self.targets { targets.touch(&self.state.population, touched.iter().copied()); }
                 if let Some(filed) = &mut self.filed {

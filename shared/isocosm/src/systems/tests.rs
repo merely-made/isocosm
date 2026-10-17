@@ -50,7 +50,7 @@ pub(super) fn grazer() -> Entity {
         .into_values()
         .find(|c| c.entity.lineage == "lineage:1")
         .expect("a grazer")
-        .entity;
+        .entity.as_ref().clone();
     let body = Body::of([
         part(
             None,

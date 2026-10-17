@@ -15,10 +15,10 @@ pub(super) fn fixture(count: u64) -> (Genesis, Id) {
     g.population.groups.retain(|first, _| *first == id);
     let group = g.population.groups.get_mut(&id).unwrap();
     group.count = count;
-    group.entity.place = 0;
-    group.entity.method = Method::Reactive;
-    group.entity.accounts = Ledger::from([(OWN.into(), 32)]);
-    group.entity.traits.insert(ACTOR.into());
+    group.entity_mut().place = 0;
+    group.entity_mut().method = Method::Reactive;
+    group.entity_mut().accounts = Ledger::from([(OWN.into(), 32)]);
+    group.entity_mut().traits.insert(ACTOR.into());
     g.rules.traits.insert(ACTOR.into());
     g.rules.processes.clear();
     g.rules.epoch_ticks = 2;
@@ -236,8 +236,8 @@ pub(super) fn bodied_fixture() -> (Genesis,Id) {
         group.entity.lineage == "lineage:0" && group.entity.body.is_some()).unwrap().0;
     g.population.groups.retain(|first,_| *first==id);
     let group = g.population.groups.get_mut(&id).unwrap();
-    group.count = 1; group.entity.place = 0; group.entity.method = Method::Reactive;
-    group.entity.traits.insert(ACTOR.into());
+    group.count = 1; group.entity_mut().place = 0; group.entity_mut().method = Method::Reactive;
+    group.entity_mut().traits.insert(ACTOR.into());
     assert!(group.entity.body.is_some());
     assert!(!group.entity.parts.is_empty());
     assert!(crate::anatomy::held(&group.entity,&g.rules,OWN)>=1);

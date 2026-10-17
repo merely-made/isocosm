@@ -28,7 +28,7 @@ fn world(soil: u64, members: &[(&str, &[(&str, u64)])], processes: Vec<Process>)
     }
     .generate()
     .unwrap();
-    let world = g.population.groups[&0].entity.clone();
+    let world = g.population.groups[&0].entity.as_ref().clone();
     let mut body = g.population.get(1).unwrap().clone();
     body.traits.clear();
     let mut population = Population::default();
@@ -272,7 +272,7 @@ fn draws(process: Process, gut: u64) -> BTreeSet<Option<Id>> {
             let mut alone = all.clone();
             for (&first, group) in alone.population.groups.iter_mut() {
                 if first != one && group.entity.lineage == "lineage:0" {
-                    group.entity.traits.remove(TAKER);
+                    group.entity_mut().traits.remove(TAKER);
                 }
             }
             let mut sim = Simulation::new(alone, Execution::Individuals).unwrap();

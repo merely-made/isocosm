@@ -416,7 +416,7 @@ pub fn exact_members(run: &ExactRun) -> Vec<(&Entity, u64)> {
         .groups
         .values()
         .filter(|g| g.entity.kingdom != "kingdom:world")
-        .map(|g| (&g.entity, g.count))
+        .map(|g| (g.entity.as_ref(), g.count))
         .collect()
 }
 

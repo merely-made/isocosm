@@ -26,7 +26,7 @@ fn world() -> Genesis {
 fn grazer(g: &Genesis) -> Entity {
     let groups = g.population.groups.values();
     groups
-        .map(|c| &c.entity)
+        .map(|c| c.entity.as_ref())
         .find(|e| e.lineage == "lineage:1")
         .unwrap()
         .clone()
@@ -103,7 +103,7 @@ fn the_reserve_lives_only_in_what_stores() {
         assert!(p.matter.get("reserve:1").copied().unwrap_or(0) <= bound);
     }
     // A producer stores nothing, so it can be given no reserve at all.
-    let mut bodies = g.population.groups.values().map(|c| &c.entity);
+    let mut bodies = g.population.groups.values().map(|c| c.entity.as_ref());
     let mut producer = bodies.find(|e| e.lineage == "lineage:0").unwrap().clone();
     assert_eq!(anatomy::room(&producer, &g.rules, "reserve:0"), 0);
     assert!(

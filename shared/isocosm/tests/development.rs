@@ -216,7 +216,7 @@ fn tagged(body: &Body) -> Entity {
         .next()
         .unwrap()
         .entity
-        .clone();
+        .as_ref().clone();
     e.embody(body.clone());
     e
 }

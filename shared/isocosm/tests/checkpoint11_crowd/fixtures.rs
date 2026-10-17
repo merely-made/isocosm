@@ -32,7 +32,7 @@ pub fn world(seed:u64) -> World {
     genesis.rules.functions = isocosm::rules::default_functions();
     for group in genesis.population.groups.values_mut() {
         assert!(group.entity.parts.values().all(|p| p.matter.is_empty() && p.cells.is_empty()));
-        group.entity.parts.clear();
+        group.entity_mut().parts.clear();
     }
     let (&host,group) = genesis.population.groups.iter().find(|(_,g)| g.entity.kingdom != "kingdom:world").unwrap();
     let cohort = group.count;

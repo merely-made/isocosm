@@ -66,7 +66,7 @@ fn world(seed: u64, keep: &[&str], change: impl FnOnce(&mut Entity, &Rules)) -> 
         .retain(|id, _| keep.contains(&id.as_str()));
     let rules = g.rules.clone();
     let find = |lineage: &str| {
-        let mut found = g.population.groups.values().map(|c| &c.entity);
+        let mut found = g.population.groups.values().map(|c| c.entity.as_ref());
         found.find(|e| e.lineage == lineage).unwrap().clone()
     };
     let (ground, mut frond, mut e) = (find("world:ground"), find("lineage:0"), find(GRAZER));
@@ -135,7 +135,7 @@ fn run(w: &ProbeWorld) -> Vec<Entity> {
 /// The world's bodies as founded.
 fn founded(w: &ProbeWorld) -> Vec<Entity> {
     let groups = w.genesis.population.groups.values();
-    groups.map(|c| c.entity.clone()).collect()
+    groups.map(|c| c.entity.as_ref().clone()).collect()
 }
 
 fn of<'a>(bodies: &'a [Entity], lineage: &str) -> &'a Entity {

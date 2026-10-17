@@ -102,7 +102,7 @@ impl Simulation {
             if !self.state.sites.contains_key(&journey.to) { return Err("journey destination absent".into()); }
             self.state.tick = tick;
             if let Some(j) = &mut self.journal { j.group(first, Some(group)); }
-            let entity = &mut self.state.population.groups.get_mut(&first).unwrap().entity;
+            let entity = self.state.population.groups.get_mut(&first).unwrap().entity_mut();
             entity.place = journey.to;
             entity.arrived = tick;
             entity.journey = None;

@@ -32,7 +32,7 @@ fn breeding(seed: u64) -> ProbeWorld {
     let rules = g.rules.clone();
     let find = |lineage: &str| {
         let groups = g.population.groups.values();
-        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        let mut found = groups.map(|c| c.entity.as_ref()).filter(|e| e.lineage == lineage);
         found.next().unwrap().clone()
     };
     let fill = |e: &mut Entity, key: &str| {
@@ -117,7 +117,7 @@ fn nursing(seed: u64) -> ProbeWorld {
     let rules = g.rules.clone();
     let find = |lineage: &str| {
         let groups = g.population.groups.values();
-        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        let mut found = groups.map(|c| c.entity.as_ref()).filter(|e| e.lineage == lineage);
         found.next().unwrap().clone()
     };
     let (world, mut frond, mut parent) =
@@ -203,7 +203,7 @@ fn a_crowd_bite_takes_what_its_part_held() {
     let rules = &g.rules;
     let find = |lineage: &str| {
         let groups = g.population.groups.values();
-        let mut found = groups.map(|c| &c.entity).filter(|e| e.lineage == lineage);
+        let mut found = groups.map(|c| c.entity.as_ref()).filter(|e| e.lineage == lineage);
         found.next().unwrap().clone()
     };
     let (mut prey, mut grazer) = (find("lineage:0"), find("lineage:1"));

@@ -334,7 +334,7 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
     let rules = g.rules.clone();
     let seed = g.seed;
     for (first, group) in g.population.groups.iter_mut() {
-        let e = &mut group.entity;
+        let e = group.entity_mut();
         let lineage = g.lineages.get(&e.lineage);
         let Some(d) = lineage.and_then(|l| l.development.clone()) else {
             continue;

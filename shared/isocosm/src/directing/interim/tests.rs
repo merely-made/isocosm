@@ -139,7 +139,7 @@ fn a_collapse_happens_only_where_a_level_is_gone() {
     let mut g = genesis(5);
     for c in g.population.groups.values_mut() {
         if c.entity.traits.contains("life:producer") {
-            c.entity.alive = false;
+            c.entity_mut().alive = false;
         }
     }
     let mut i = Interim::found(

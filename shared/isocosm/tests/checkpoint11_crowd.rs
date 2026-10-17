@@ -73,8 +73,8 @@ fn independent_host_stock_is_local_and_not_a_second_site_ledger() {
 fn counted_hosts_round_each_offer_before_multiplying_the_bin() {
     let mut w = world(17);
     let original = w.probe.genesis.population.get(w.host).unwrap().clone();
-    w.probe.genesis.population.groups.values_mut().find(|g| g.entity == original).unwrap()
-        .entity.accounts.insert(w.surface.key(),51);
+    w.probe.genesis.population.groups.values_mut().find(|g| *g.entity == original).unwrap()
+        .entity_mut().accounts.insert(w.surface.key(),51);
     w.probe.genesis.spreads.modifiers.push(modifier("modifier:world",CapacitySource::World,None,100));
     w.probe.genesis.validate().unwrap();
     let mut p = Pair::new(&w,&BTreeSet::new());
@@ -91,8 +91,8 @@ fn counted_hosts_round_each_offer_before_multiplying_the_bin() {
 fn addressed_host_modifier_does_not_average_over_equal_hosts() {
     let mut w = world(17);
     let original = w.probe.genesis.population.get(w.host).unwrap().clone();
-    w.probe.genesis.population.groups.values_mut().find(|g| g.entity == original).unwrap()
-        .entity.accounts.insert(w.surface.key(),51);
+    w.probe.genesis.population.groups.values_mut().find(|g| *g.entity == original).unwrap()
+        .entity_mut().accounts.insert(w.surface.key(),51);
     w.probe.genesis.spreads.modifiers = vec![
         modifier("modifier:host",CapacitySource::Substrate(Substrate::Host(w.host+1)),Some(w.surface.clone()),100),
         modifier("modifier:world",CapacitySource::World,None,100),

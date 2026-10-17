@@ -28,7 +28,7 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
     let lineage = format!("lineage:{i}");
     for group in g.population.groups.values_mut() {
         if group.entity.lineage == lineage {
-            group.entity.method = Method::Deliberative;
+            group.entity_mut().method = Method::Deliberative;
         }
     }
     let rules = &mut g.rules;

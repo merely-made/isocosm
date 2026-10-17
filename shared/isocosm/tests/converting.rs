@@ -38,7 +38,7 @@ fn world(own: &[(&str, u64)], site: &[(&str, u64)], processes: Vec<Process>) -> 
     }
     .generate()
     .unwrap();
-    let ground = g.population.groups[&0].entity.clone();
+    let ground = g.population.groups[&0].entity.as_ref().clone();
     let mut body = g.population.get(1).unwrap().clone();
     body.lineage = "lineage:0".into();
     body.accounts = ledger(own);

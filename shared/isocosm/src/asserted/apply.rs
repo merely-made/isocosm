@@ -101,7 +101,7 @@ impl Simulation {
         let named = |e: &Entity| e.authored.as_ref().is_some_and(|a| a.key == key);
         let groups = self.state.population.groups.iter();
         let mut found = groups.filter(|(_, g)| named(&g.entity));
-        found.next().map(|(id, g)| (*id, &g.entity))
+        found.next().map(|(id, g)| (*id, g.entity.as_ref()))
     }
 
     /// The native id an authored key names: a polity, site or entity.

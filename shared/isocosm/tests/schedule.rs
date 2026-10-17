@@ -27,7 +27,7 @@ fn rousing() -> Genesis {
     }
     .generate()
     .unwrap();
-    let world = g.population.groups[&0].entity.clone();
+    let world = g.population.groups[&0].entity.as_ref().clone();
     let mut body = g.population.get(1).unwrap().clone();
     body.accounts = BTreeMap::from([("world:soil".into(), 4)]);
     let mut population = Population::default();
@@ -136,7 +136,7 @@ fn a_member_without_a_required_trait_is_not_evaluated() {
     for mode in [Execution::Individuals, Execution::Grouped] {
         let mut g = founding.generate().unwrap();
         for group in g.population.groups.values_mut() {
-            group.entity.traits.clear();
+            group.entity_mut().traits.clear();
         }
         let mut sim = Simulation::new(g, mode).unwrap();
         let work = sim.advance(10).unwrap();
