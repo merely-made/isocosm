@@ -1,0 +1,4 @@
+namespace = "mesocosm"
+name = "gate"
+expressed_by = []
+seeding = "geometry"

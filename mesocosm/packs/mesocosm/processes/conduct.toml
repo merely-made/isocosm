@@ -1,0 +1,4 @@
+namespace = "mesocosm"
+name = "conduct"
+expressed_by = []
+seeding = "geometry"

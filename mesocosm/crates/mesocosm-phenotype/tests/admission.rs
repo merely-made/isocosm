@@ -17,7 +17,7 @@
 use std::path::{Path, PathBuf};
 
 use isometer_core::Role;
-use isocosm::process::{Registry, Seeding};
+use isocosm::process::{ProcessId, Registry, Seeding};
 
 use mesocosm_phenotype::*;
 
@@ -371,6 +371,69 @@ fn a_definition_no_shape_can_express_is_refused() {
         &GLAND.replace("[\"plate\"]", "[]"),
     );
     scratch.write(MANIFEST_JSON, &manifest(&["processes/secrete.json"]));
+    assert!(matches!(
+        admit_dir(scratch.path()),
+        Err(Admission::NoTract { .. })
+    ));
+}
+
+#[test]
+fn a_native_definition_with_no_box_role_admits_unchanged() {
+    let scratch = Scratch::new("native_empty_roles");
+    scratch.write(
+        "processes/conduct.json",
+        r#"{
+  "namespace": "mesocosm",
+  "name": "conduct",
+  "expressed_by": [],
+  "seeding": "geometry"
+}"#,
+    );
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/conduct.json"]));
+
+    let admitted = admit_dir(scratch.path()).expect("the canonical native definition admits");
+    let id = ProcessId::new("mesocosm", "conduct");
+    assert_eq!(admitted.get(&id), Registry::native().get(&id));
+    assert_eq!(
+        admitted.get(&id).expect("the definition is present").seeding,
+        Seeding::Grown
+    );
+}
+
+#[test]
+fn an_empty_native_definition_with_different_seeding_is_refused() {
+    let scratch = Scratch::new("native_empty_roles_wrong_seeding");
+    scratch.write(
+        "processes/conduct.json",
+        r#"{
+  "namespace": "mesocosm",
+  "name": "conduct",
+  "expressed_by": [],
+  "seeding": "acquired"
+}"#,
+    );
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/conduct.json"]));
+
+    assert!(matches!(
+        admit_dir(scratch.path()),
+        Err(Admission::NoTract { .. })
+    ));
+}
+
+#[test]
+fn an_unknown_definition_with_no_box_role_is_refused() {
+    let scratch = Scratch::new("unknown_empty_roles");
+    scratch.write(
+        "processes/filter.json",
+        r#"{
+  "namespace": "reef",
+  "name": "filter",
+  "expressed_by": [],
+  "seeding": "geometry"
+}"#,
+    );
+    scratch.write(MANIFEST_JSON, &manifest(&["processes/filter.json"]));
+
     assert!(matches!(
         admit_dir(scratch.path()),
         Err(Admission::NoTract { .. })

@@ -1,0 +1,4 @@
+namespace = "mesocosm"
+name = "circulate"
+expressed_by = ["mass"]
+seeding = "geometry"

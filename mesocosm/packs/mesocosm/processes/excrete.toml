@@ -1,0 +1,4 @@
+namespace = "mesocosm"
+name = "excrete"
+expressed_by = []
+seeding = "geometry"

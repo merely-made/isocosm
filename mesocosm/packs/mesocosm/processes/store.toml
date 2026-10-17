@@ -1,0 +1,4 @@
+namespace = "mesocosm"
+name = "store"
+expressed_by = ["mass"]
+seeding = "geometry"

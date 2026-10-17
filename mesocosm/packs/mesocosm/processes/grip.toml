@@ -1,0 +1,4 @@
+namespace = "mesocosm"
+name = "grip"
+expressed_by = ["limb"]
+seeding = "geometry"

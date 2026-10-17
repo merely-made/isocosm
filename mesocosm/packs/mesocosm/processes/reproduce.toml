@@ -1,0 +1,4 @@
+namespace = "mesocosm"
+name = "reproduce"
+expressed_by = ["mass"]
+seeding = "geometry"
