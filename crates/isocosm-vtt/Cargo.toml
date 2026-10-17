@@ -22,6 +22,7 @@ serde = { workspace = true }
 serde_json = { workspace = true }
 
 [dev-dependencies]
+isonetry = { path = "../isonetry", version = "0.1.0", default-features = false }
 isocosm-host = { path = "../../host", features = ["endpoint", "society", "fixtures"] }
 graphshell-endpoint = { workspace = true, features = ["local", "stdio"] }
 

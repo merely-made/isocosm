@@ -8,6 +8,7 @@
 //! sole host before records are applied.
 
 use std::collections::BTreeMap;
+use std::rc::Rc;
 
 use isocosm::{Command, Execution, Session, history::Entry};
 use isocosm_host::{
@@ -17,6 +18,10 @@ use isocosm_host::{
 use serde::{Deserialize, Serialize};
 
 type Digest = String;
+
+mod journal;
+use journal::FamilyJournal;
+pub use journal::FamilyLimits;
 
 /// Version of the family checkpoint and accepted-record envelope.
 pub const FAMILY_FORMAT_VERSION: u16 = 1;
@@ -170,29 +175,74 @@ pub struct HostAdmission<T> {
     pub section_updates: BTreeMap<String, Option<Vec<u8>>>,
 }
 
-/// The sole accepting writer. Its `World` stays private so callers cannot
-/// publish changes outside the sequenced admission path.
+/// The single accepted writer. Its commit gate journals every core World
+/// publication, including writes made through endpoint World handles.
 pub struct FamilyHost {
     session: SessionId,
     world: World,
-    sequence: u64,
-    head_digest: Digest,
-    checkpoint: Option<Checkpoint>,
+    journal: Rc<FamilyJournal>,
 }
 
 impl FamilyHost {
     pub fn new(session: SessionId, world: World) -> Result<Self, String> {
+        Self::new_with_limits(session, world, FamilyLimits::default())
+    }
+
+    pub fn new_with_limits(
+        session: SessionId,
+        world: World,
+        limits: FamilyLimits,
+    ) -> Result<Self, String> {
         let world = world.into_exclusive()?;
         let snapshot = world.replication_snapshot()?;
         let checkpoint = checkpoint(session, 0, String::new(), snapshot).seal();
+        Self::attach_journal(session, world, 0, checkpoint.digest, limits)
+    }
+
+    fn attach_journal(
+        session: SessionId,
+        world: World,
+        sequence: u64,
+        head_digest: Digest,
+        limits: FamilyLimits,
+    ) -> Result<Self, String> {
+        let world = world.into_exclusive()?;
+        let journal = Rc::new(FamilyJournal::new_at(
+            session,
+            sequence,
+            head_digest,
+            limits,
+        ));
+        world.install_commit_gate(journal.clone())?;
         Ok(Self {
             session,
             world,
-            sequence: 0,
-            // Bind the accepted-record chain to this exact initial state.
-            head_digest: checkpoint.digest.clone(),
-            checkpoint: Some(checkpoint),
+            journal,
         })
+    }
+
+    /// Reopen the sole host from a verified checkpoint and accepted suffix.
+    /// Authentication of those records belongs to the transport layer.
+    pub fn resume(
+        checkpoint: Checkpoint,
+        suffix: &[AcceptedRecord],
+        execution: Execution,
+        limits: FamilyLimits,
+    ) -> Result<Self, String> {
+        let replica = FamilyReplica::install(checkpoint, suffix, execution)?;
+        let FamilyReplica {
+            session,
+            world,
+            sequence,
+            head_digest,
+        } = replica;
+        Self::attach_journal(session, world, sequence, head_digest, limits)
+    }
+
+    /// Shared handle used to open existing product endpoints. Their World
+    /// transactions still publish through the installed commit gate.
+    pub fn world(&self) -> &World {
+        &self.world
     }
 
     /// Reads the native session and opaque sections together at one world cut.
@@ -208,25 +258,35 @@ impl FamilyHost {
     }
 
     pub fn sequence(&self) -> u64 {
-        self.sequence
+        self.journal.sequence()
+    }
+
+    pub fn outbox_bytes(&self) -> usize {
+        self.journal.outbox_bytes()
+    }
+
+    /// Remove accepted records ready for transport, freeing the bounded
+    /// local outbox. The operation log remains the durable external layer.
+    pub fn drain_records(&self) -> Vec<AcceptedRecord> {
+        self.journal.drain_records()
     }
 
     /// Current join point for a new or reconnecting replica.
     pub fn checkpoint(&mut self) -> Result<Checkpoint, String> {
-        if let Some(checkpoint) = &self.checkpoint {
-            return Ok(checkpoint.clone());
-        }
         let snapshot = self.world.replication_snapshot()?;
+        let sequence = self.journal.sequence();
+        let parent_digest = if sequence == 0 {
+            String::new()
+        } else {
+            self.journal.head_digest()
+        };
         let checkpoint = checkpoint(
             self.session,
-            self.sequence,
-            self.head_digest.clone(),
+            sequence,
+            parent_digest,
             snapshot,
         )
         .seal();
-        // A later checkpoint is a join point at the preceding accepted log
-        // record, so its parent digest is already the chain head.
-        self.checkpoint = Some(checkpoint.clone());
         Ok(checkpoint)
     }
 
@@ -239,11 +299,7 @@ impl FamilyHost {
     ) -> Result<(T, Vec<String>, Option<AcceptedRecord>), String> {
         let before = self.world.replication_snapshot()?;
         let before_cut = cut(&before.save);
-        let next_sequence = self.sequence.checked_add(1).ok_or("sequence overflow")?;
-        let next_revision = before
-            .revision
-            .checked_add(1)
-            .ok_or("world revision overflow")?;
+        let previous_sequence = self.journal.sequence();
         let (value, outcomes) = self
             .world
             .product_sections(before_cut, |session, sections| {
@@ -277,37 +333,18 @@ impl FamilyHost {
         if after.save.native == before.save.native && after.save.sections == before.save.sections {
             return Ok((value, outcomes, None));
         }
-        if after.revision != next_revision {
-            return Err("world revision moved outside the accepted record".into());
-        }
-        if !after
-            .save
-            .native
-            .entries
-            .starts_with(&before.save.native.entries)
+        let sequence = self.journal.sequence();
+        if sequence
+            != previous_sequence
+                .checked_add(1)
+                .ok_or("sequence overflow")?
         {
-            return Err("accepted native history did not append".into());
+            return Err("world commit was not journaled".into());
         }
-        let native_suffix = after.save.native.entries[before.save.native.entries.len()..].to_vec();
-        let section_updates = section_diff(&before.save.sections, &after.save.sections);
-        let record = AcceptedRecord {
-            format: FAMILY_FORMAT_VERSION,
-            session: self.session,
-            sequence: next_sequence,
-            parent_digest: self.head_digest.clone(),
-            native_cut: after.save.native.entries.len(),
-            final_tick: after.save.native.tick,
-            native_hash: after.save.native.state_hash,
-            section_updates,
-            section_digest: isocosm::digest(&after.save.sections),
-            revision: after.revision,
-            native_suffix,
-            digest: String::new(),
-        }
-        .seal();
-        self.sequence = next_sequence;
-        self.head_digest = record.digest.clone();
-        self.checkpoint = None;
+        let record = self
+            .journal
+            .record(sequence)
+            .ok_or("accepted record left the bounded outbox during admission")?;
         Ok((value, outcomes, Some(record)))
     }
 }
