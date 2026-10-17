@@ -33,18 +33,18 @@ mod acts;
 mod combat;
 mod harm;
 mod legacy_body;
+mod material;
 mod motion;
 mod native_anatomy;
-mod material;
-mod projects;
-mod project_places;
 mod project_carry;
 mod project_consent;
-mod stock;
+mod project_places;
+mod projects;
 mod spread;
+mod stock;
 pub use project_places::ProjectLocation;
-mod save;
 mod handoff;
+mod save;
 pub use handoff::NativeHandoff;
 
 #[derive(Clone, Debug)]
@@ -325,11 +325,46 @@ impl GameState {
     }
 
     fn admit(&mut self, intent: &GameIntent) -> Result<Vec<GameEvent>, GameError> {
-        if let Some(events) = self.admit_spread_author(intent)? { return Ok(events); }
+        if let Some(events) = self.admit_spread_author(intent)? {
+            return Ok(events);
+        }
         let tick = intent.tick();
+        if let GameIntent::ExternalVolley {
+            actor,
+            actor_revision,
+            target,
+            strikes,
+            rules,
+            ..
+        } = intent
+        {
+            let accepted = self.current_anatomy(*actor)?;
+            let Some(native) = accepted.native_source.as_ref() else {
+                return Err(crate::AnatomyError::NativeMismatch.into());
+            };
+            if accepted.revision != *actor_revision {
+                return Err(crate::AnatomyError::StaleRevision {
+                    known: *actor_revision,
+                    current: accepted.revision,
+                }
+                .into());
+            }
+            let entity = self.entity_of(*actor)?;
+            let current = self.world.sim().state().population.get(entity).ok_or(GameError::Decode)?;
+            if native.entity != entity || native.body_revision != current.body_revision
+                || self.native_anatomy(*actor, accepted.document.species())? != accepted.document
+            {
+                return Err(crate::AnatomyError::NativeMismatch.into());
+            }
+            return self.resolve_volley(tick, *actor, *target, strikes, *rules);
+        }
         if let GameIntent::StockOwnership { lot, .. } = intent {
-            if self.participant.is_some() { return Err(WorldError::NotFounding.into()); }
-            self.world.found(Command::Assert(isocosm::asserted::Assertion::StockOwnership(lot.clone())))?;
+            if self.participant.is_some() {
+                return Err(WorldError::NotFounding.into());
+            }
+            self.world.found(Command::Assert(
+                isocosm::asserted::Assertion::StockOwnership(lot.clone()),
+            ))?;
             return Ok(vec![]);
         }
         if let GameIntent::ReviseCanon {
@@ -351,24 +386,46 @@ impl GameState {
             .subject()
             .expect("every intent but a world-level revision names a subject");
         match intent {
-            GameIntent::StockAct { process, target, selections, .. } => {
-                self.stock_act(tick, subject, process, *target, selections)
-            },
-            GameIntent::EatOwned { item, selections, .. } => {
-                self.eat_owned(tick, subject, *item, selections)
-            },
-            GameIntent::ProjectConsent { project, owner, worker, grant, process, .. } => {
-                self.project_consent(tick, subject, *project, *owner, *worker, *grant, process.as_deref())
-            },
-            GameIntent::ProjectCarry { project, carried, .. } => {
-                self.project_carry(tick, subject, *project, *carried)
-            },
-            GameIntent::ProjectAct { process, target, project, .. } => {
-                self.project_act(tick, subject, process, *target, *project, &[])
-            },
-            GameIntent::ProjectReserve { process, target, lots, .. } => {
-                self.project_act(tick, subject, process, *target, None, lots)
-            },
+            GameIntent::StockAct {
+                process,
+                target,
+                selections,
+                ..
+            } => self.stock_act(tick, subject, process, *target, selections),
+            GameIntent::EatOwned {
+                item, selections, ..
+            } => self.eat_owned(tick, subject, *item, selections),
+            GameIntent::ProjectConsent {
+                project,
+                owner,
+                worker,
+                grant,
+                process,
+                ..
+            } => self.project_consent(
+                tick,
+                subject,
+                *project,
+                *owner,
+                *worker,
+                *grant,
+                process.as_deref(),
+            ),
+            GameIntent::ProjectCarry {
+                project, carried, ..
+            } => self.project_carry(tick, subject, *project, *carried),
+            GameIntent::ProjectAct {
+                process,
+                target,
+                project,
+                ..
+            } => self.project_act(tick, subject, process, *target, *project, &[]),
+            GameIntent::ProjectReserve {
+                process,
+                target,
+                lots,
+                ..
+            } => self.project_act(tick, subject, process, *target, None, lots),
             GameIntent::AdvanceMotion {
                 revision,
                 step,

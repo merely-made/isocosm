@@ -14,13 +14,11 @@ use isometer_core::snapshot;
 
 use super::GameState;
 use crate::{
-    CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION,
-    ITEM_PLACEMENT_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION, GameError, GameIntent, GameSave,
-    LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION, World,
-    PROJECT_GAME_STATE_VERSION,
-    PROJECT_CUSTODY_GAME_STATE_VERSION,
-    OWNED_STOCK_GAME_STATE_VERSION,
-    SPREAD_GAME_STATE_VERSION,
+    CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, EXTERNAL_VOLLEY_GAME_STATE_VERSION,
+    GAME_STATE_VERSION, GameError, GameIntent, GameSave, ITEM_PLACEMENT_GAME_STATE_VERSION,
+    LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION,
+    OWNED_STOCK_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION, PROJECT_CUSTODY_GAME_STATE_VERSION,
+    PROJECT_GAME_STATE_VERSION, SPREAD_GAME_STATE_VERSION, World,
 };
 
 impl GameState {
@@ -41,10 +39,7 @@ impl GameState {
         Self::restore_solving(bytes, crate::MotionSolver::NONE)
     }
     /// Restores a save, replaying its motion with `solver`.
-    pub fn restore_solving(
-        bytes: &[u8],
-        solver: crate::MotionSolver,
-    ) -> Result<Self, GameError> {
+    pub fn restore_solving(bytes: &[u8], solver: crate::MotionSolver) -> Result<Self, GameError> {
         let save: GameSave = snapshot::decode(bytes).map_err(|_| GameError::Decode)?;
         Self::restore_record_solving(save, solver)
     }
@@ -68,6 +63,14 @@ impl GameState {
                 .any(|intent| matches!(intent, GameIntent::ResolveVolley { .. }))
         {
             return Err(GameError::LegacyCombatIntent);
+        }
+        if save.version < EXTERNAL_VOLLEY_GAME_STATE_VERSION
+            && save
+                .intents
+                .iter()
+                .any(|intent| matches!(intent, GameIntent::ExternalVolley { .. }))
+        {
+            return Err(GameError::LegacyExternalVolleyIntent);
         }
         if save.version < MOTION_GAME_STATE_VERSION
             && save
@@ -100,36 +103,63 @@ impl GameState {
             return Err(GameError::LegacyCanonIntent);
         }
         if save.version < NATIVE_RECIPE_GAME_STATE_VERSION
-            && save.intents.iter().any(|i| matches!(i, GameIntent::GenerateNativeRecipe { .. }))
+            && save
+                .intents
+                .iter()
+                .any(|i| matches!(i, GameIntent::GenerateNativeRecipe { .. }))
         {
             return Err(GameError::LegacyNativeRecipeIntent);
         }
         if save.version < ITEM_PLACEMENT_GAME_STATE_VERSION
-            && save.intents.iter().any(|intent| matches!(intent, GameIntent::Drop { .. }))
+            && save
+                .intents
+                .iter()
+                .any(|intent| matches!(intent, GameIntent::Drop { .. }))
         {
             return Err(GameError::LegacyItemPlacementIntent);
         }
         if save.version < PROJECT_GAME_STATE_VERSION
-            && save.intents.iter().any(|intent| matches!(intent, GameIntent::ProjectAct { .. }))
+            && save
+                .intents
+                .iter()
+                .any(|intent| matches!(intent, GameIntent::ProjectAct { .. }))
         {
             return Err(GameError::LegacyProjectIntent);
         }
         if save.version < PROJECT_CUSTODY_GAME_STATE_VERSION
-            && save.intents.iter().any(|intent| matches!(intent,
-                GameIntent::ProjectCarry { .. } | GameIntent::ProjectReserve { .. }
-                | GameIntent::StockOwnership { .. } | GameIntent::ProjectConsent { .. }))
+            && save.intents.iter().any(|intent| {
+                matches!(
+                    intent,
+                    GameIntent::ProjectCarry { .. }
+                        | GameIntent::ProjectReserve { .. }
+                        | GameIntent::StockOwnership { .. }
+                        | GameIntent::ProjectConsent { .. }
+                )
+            })
         {
             return Err(GameError::LegacyProjectCustodyIntent);
         }
         if save.version < OWNED_STOCK_GAME_STATE_VERSION
-            && save.intents.iter().any(|intent| matches!(intent,
-                GameIntent::StockAct { .. } | GameIntent::EatOwned { .. }))
-        { return Err(GameError::LegacyOwnedStockIntent); }
+            && save.intents.iter().any(|intent| {
+                matches!(
+                    intent,
+                    GameIntent::StockAct { .. } | GameIntent::EatOwned { .. }
+                )
+            })
+        {
+            return Err(GameError::LegacyOwnedStockIntent);
+        }
         if save.version < SPREAD_GAME_STATE_VERSION
             && (save.world.generator_version == crate::founding::spread::GENERATOR_VERSION
-                || save.intents.iter().any(|intent| matches!(intent,
-                    GameIntent::FoundSpreadActor { .. } | GameIntent::SpreadOwnership { .. }
-                    | GameIntent::AuthoredSpread { .. }))) {
+                || save.intents.iter().any(|intent| {
+                    matches!(
+                        intent,
+                        GameIntent::FoundSpreadActor { .. }
+                            | GameIntent::SpreadOwnership { .. }
+                            | GameIntent::AuthoredSpread { .. }
+                    )
+                }))
+        {
             return Err(GameError::LegacySpreadIntent);
         }
         let world = World::restore_record(save.world)?;

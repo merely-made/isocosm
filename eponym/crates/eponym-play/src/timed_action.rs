@@ -16,6 +16,7 @@ use wing_functions::{
 };
 
 mod body_change;
+mod batch;
 mod combat;
 mod routing;
 mod handoff;
@@ -407,28 +408,6 @@ impl TimedActionSession {
             })
             .collect())
     }
-    /// Applies a whole injury/reconciliation cut before action repair. A failed
-    /// member leaves both the session and action untouched.
-    pub fn apply_game_batch(
-        &mut self,
-        intents: &[GameIntent],
-    ) -> Result<Vec<GameEvent>, TimedActionError> {
-        if intents
-            .iter()
-            .any(|intent| matches!(intent, GameIntent::ResolveVolley { .. }))
-        {
-            return Err(TimedActionError::DirectVolleyForbidden);
-        }
-        let mut candidate = self.clone();
-        let mut events = Vec::new();
-        for intent in intents {
-            events.extend(candidate.session.apply_game(intent.clone())?);
-        }
-        candidate.reconcile_action()?;
-        *self = candidate;
-        Ok(events)
-    }
-
     pub fn save_record(&self) -> Result<TimedActionSave, TimedActionError> {
         Ok(TimedActionSave {
             version: TIMED_ACTION_VERSION,

@@ -2,15 +2,12 @@
 // SPDX-License-Identifier: MPL-2.0
 //! Native input receipt for Eponym's bounded timed limb action.
 use self::hud::Hud;
-use isocosm::lineage::{LineageBody as BodyDocument, Provenance, SpeciesId};
-use isometer::core::{Attachment, VolumeRef, Yaw};
 use eponym_client::gpu::Composer;
+use eponym_play::fixtures::native_severing;
 use eponym_play::identity::Tick;
-use eponym_play::fixtures::three_lives;
-use eponym_play::timed_action::{Direction, TimedActionRules, TimedActionSession};
+use eponym_play::timed_action::{Direction, TimedActionSession};
 use eponym_play::{
-    CombatRules, GameEvent, GameIntent, GameState, ItemKind, ItemLocation, Session, World,
-    WorldConfig,
+    CombatRules, GameEvent, GameIntent, ItemKind, ItemLocation,
 };
 use std::{
     env,
@@ -18,14 +15,13 @@ use std::{
     sync::Arc,
     time::{Duration, Instant},
 };
-use wing_functions::{
-    Edge, FunctionalNetwork, Node, NodeId, NodeKind, Operator, PartRef, WorldRules,
-};
 use winit::{
     event_loop::{ActiveEventLoop, ControlFlow, EventLoop},
     keyboard::KeyCode,
     window::Window,
 };
+#[path = "persistence.rs"]
+mod persistence;
 #[path = "actions.rs"]
 mod actions;
 #[path = "host.rs"]
@@ -78,219 +74,21 @@ pub(crate) struct Live {
     pub(crate) hud: Hud,
 }
 
-fn target_body() -> BodyDocument {
-    let mut body = BodyDocument::new(SpeciesId(73), VolumeRef::from_tag(73), 48_000, [2; 3]);
-    for (tag, offset) in [(1, [3, 0, 0]), (2, [-3, 2, 0])] {
-        body.attach(
-            VolumeRef::from_tag(tag),
-            2_000,
-            [1; 3],
-            Attachment {
-                parent: body.root,
-                offset,
-                yaw: Yaw::Zero,
-            },
-            Provenance::founding(),
-        )
-        .expect("authored target limb attaches");
-    }
-    body
-}
-
 impl App {
     fn new() -> Self {
-        let subject = three_lives::KEEPER;
-        let mut game = GameState::new(World::generate(7, WorldConfig::default()).unwrap())
-            .with_motion_solver(eponym_motion::SOLVER);
-        let at = game
-            .items()
-            .all()
-            .find_map(|item| match item.location {
-                eponym_play::ItemLocation::At(at) if item.kind == ItemKind::Dressing => Some(at),
-                _ => None,
-            })
-            .unwrap();
-        let tick = game.next_tick();
-        game.apply(GameIntent::Generate {
-            tick,
-            subject,
-            body_seed: 1,
-            at,
-        })
-        .unwrap();
-        let tick = game.next_tick();
-        game.apply(GameIntent::Name {
-            tick,
-            subject,
-            name: eponym_play::Name::new("Keeper").unwrap(),
-        })
-        .unwrap();
-        let tick = game.next_tick();
-        game.apply(GameIntent::AdmitAnatomy {
-            tick,
-            subject,
-            revision: eponym_play::identity::BodyRevisionId(0),
-            document: Box::new(game.native_anatomy(subject, three_lives::WETLAND_LINE).unwrap()),
-        })
-        .unwrap();
-        support::configure_keeper(&mut game, subject);
-        let target = eponym_play::identity::SubjectId(702);
-        let target_item = game
-            .items()
-            .all()
-            .find(|item| {
-                matches!(item.kind, ItemKind::Dressing) && item.location == ItemLocation::At(at)
-            })
-            .copied()
-            .expect("generated world has a reachable forward dressing for the target");
-        let target_spawn = match target_item.location {
-            ItemLocation::At(at) => at,
-            _ => unreachable!(),
-        };
-        let tick = game.next_tick();
-        game.apply(GameIntent::Generate {
-            tick,
-            subject: target,
-            body_seed: 2,
-            at: target_spawn,
-        })
-        .unwrap();
-        let tick = game.next_tick();
-        game.apply(GameIntent::Name {
-            tick,
-            subject: target,
-            name: eponym_play::Name::new("Target").unwrap(),
-        })
-        .unwrap();
-        let tick = game.next_tick();
-        game.apply(GameIntent::AdmitAnatomy {
-            tick,
-            subject: target,
-            revision: eponym_play::identity::BodyRevisionId(0),
-            document: Box::new(game.native_anatomy(target, SpeciesId(73)).unwrap()),
-        })
-        .unwrap();
-        let tick = game.next_tick();
-        game.apply(GameIntent::Take {
-            tick,
-            subject: target,
-            item: target_item.id,
-        })
-        .unwrap();
-        for _ in 0..12 {
-            game.apply(GameIntent::Move {
-                tick: game.next_tick(),
-                subject: target,
-                toward: [target_spawn[0] + 12, target_spawn[1], target_spawn[2]],
-            })
-            .unwrap();
-        }
-        let target_at = game.movement().position(target).unwrap();
-        assert!(
-            target_at[0] - at[0] >= 9,
-            "fixture bodies must be spatially separated"
-        );
-        assert!(
-            game.world().ground().sees(
-                [at[0] + 4, at[1] + 2, at[2] + 2],
-                [target_at[0] + 4, target_at[1] + 2, target_at[2] + 2],
-            ),
-            "fixture requires a clear limb-height ray"
-        );
-        let tick = game.next_tick();
-        game.apply(GameIntent::AttachItem {
-            tick,
-            subject: target,
-            item: target_item.id,
-            part: isometer::core::PartId(2),
-            revision: eponym_play::identity::BodyRevisionId(0),
-        })
-        .unwrap();
-        let part = PartRef {
-            subject: subject.0,
-            part: 0,
-        };
-        let network = FunctionalNetwork::new(
-            vec![
-                Node {
-                    id: NodeId(1),
-                    kind: NodeKind::Source {
-                        part,
-                        capacity: 24,
-                        charge: 24,
-                    },
-                },
-                Node {
-                    id: NodeId(2),
-                    kind: NodeKind::Effect {
-                        part: PartRef {
-                            subject: subject.0,
-                            part: 1,
-                        },
-                    },
-                },
-                Node {
-                    id: NodeId(3),
-                    kind: NodeKind::Source {
-                        part,
-                        capacity: 24,
-                        charge: 24,
-                    },
-                },
-                Node {
-                    id: NodeId(4),
-                    kind: NodeKind::Effect {
-                        part: PartRef {
-                            subject: subject.0,
-                            part: 2,
-                        },
-                    },
-                },
-            ],
-            vec![
-                Edge {
-                    from: NodeId(1),
-                    to: NodeId(2),
-                    capacity: 24,
-                },
-                Edge {
-                    from: NodeId(3),
-                    to: NodeId(4),
-                    capacity: 24,
-                },
-            ],
-        )
-        .unwrap();
-        let rules = TimedActionRules {
-            max_contributors: 8,
-            max_elapsed_ticks: 60,
-            charge_per_tick: 2,
-            max_charge_per_limb: 12,
-            evaluation: WorldRules {
-                allowed_operators: [Operator::Strengthen].into_iter().collect(),
-                allowed_costs: [1, 2, 3, 5, 8, 12].into_iter().collect(),
-                max_range: 0,
-                max_hops: 4,
-            },
-        };
+        let fixture = eponym_play::fixtures::session::timed_action_world_solving_with_practice_striker(eponym_motion::SOLVER);
         let path = env::var_os("PAREDROS_TIMED_ACTION_SAVE")
             .map(PathBuf::from)
             .unwrap_or_else(|| PathBuf::from("timed_action.save"));
-        let session = Session::begin(game, subject).unwrap();
-        let combat_rules = CombatRules {
-            max_reach: 64,
-            sever_threshold: 12,
-            ..CombatRules::default()
-        };
         let mut app = Self {
             instance: wgpu::Instance::new(
                 wgpu::InstanceDescriptor::new_without_display_handle_from_env(),
             ),
             live: None,
-            action: TimedActionSession::begin(session, network, rules).unwrap(),
-            target,
-            combat_rules,
-            target_item: target_item.id,
+            action: fixture.action,
+            target: fixture.target,
+            combat_rules: fixture.combat_rules,
+            target_item: fixture.target_item,
             attack_direction: Direction::Right,
             held: false,
             movement_keys: [false; 4],
@@ -310,6 +108,7 @@ impl App {
     fn smoke_sequence(&mut self) {
         self.move_player([1, 0, 0]);
         assert!(self.action.prepare(self.attack_direction).is_ok());
+        // Prepare selects part 1; add the other native limb to the volley.
         assert!(self.action.join(isometer::core::PartId(2)).is_ok());
         let start = self.action.action().unwrap().last_tick;
         assert_eq!(self.action.charge(Tick(start.0 + 1)).unwrap().len(), 2);
@@ -362,10 +161,25 @@ impl App {
         );
         self.take_dressing();
         self.injure();
+        let wound_before_rest = self
+            .action
+            .session()
+            .game()
+            .bodies()
+            .get(self.action.session().control().played())
+            .unwrap()
+            .wound;
         self.rest();
         let player = self.action.session().control().played();
         let game = self.action.session().game();
-        assert_eq!(game.bodies().get(player).unwrap().wound, 0);
+        let wound_after_rest = game.bodies().get(player).unwrap().wound;
+        assert!(
+            wound_after_rest == wound_before_rest,
+            "current Rest law recovers no wound: before={wound_before_rest}, after={wound_after_rest}"
+        );
+        assert!(game.events().iter().any(|event| matches!(event,
+            GameEvent::Rested { subject, recovered: 0, .. } if *subject == player
+        )), "rest records zero wound recovery under the current law");
         assert!(
             game.current_anatomy(player)
                 .unwrap()
@@ -554,42 +368,6 @@ impl App {
                 _ => None,
             })
             .unwrap_or_else(|| vec!["No volley resolution recorded".into()])
-    }
-    fn save(&mut self) {
-        self.status = match self
-            .action
-            .save()
-            .map_err(|e| format!("{e:?}"))
-            .and_then(|bytes| {
-                let pending = self.save_path.with_extension("pending");
-                std::fs::write(&pending, bytes).map_err(|e| e.to_string())?;
-                std::fs::rename(&pending, &self.save_path).map_err(|e| e.to_string())
-            }) {
-            Ok(()) => vec![format!("Saved {}", self.save_path.display())],
-            Err(e) => vec![format!("Save failed: {e}")],
-        };
-        self.redraw();
-    }
-    fn load(&mut self) {
-        self.status = match std::fs::read(&self.save_path)
-            .map_err(|e| e.to_string())
-            .and_then(|bytes| TimedActionSession::restore_solving(&bytes, eponym_motion::SOLVER).map_err(|e| format!("{e:?}")))
-        {
-            Ok(action) => {
-                if action.session().game().bodies().get(self.target).is_none() {
-                    vec!["Load failed: saved session has no selected target".into()]
-                } else {
-                    self.action = action;
-                    self.held = false;
-                    self.movement_keys = [false; 4];
-                    self.last_motion = Instant::now();
-                    self.last_charge = Instant::now();
-                    vec![format!("Loaded {}", self.save_path.display())]
-                }
-            },
-            Err(e) => vec![format!("Load failed: {e}")],
-        };
-        self.redraw();
     }
     fn redraw(&self) {
         if let Some(live) = &self.live {

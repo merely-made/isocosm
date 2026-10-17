@@ -37,7 +37,7 @@ pub mod probe;
 // facade carries unconditionally, so the module is unconditional too.
 pub mod producer;
 pub mod borrowed;
-#[cfg(feature = "v1-proof")]
+#[cfg(feature = "r1-proof")]
 pub mod residency;
 pub mod room;
 pub mod scene;

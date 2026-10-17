@@ -68,10 +68,9 @@ pub struct SceneModel {
     /// What [`Self::scene`] was last sized for. `Scene` keeps its own width and
     /// height privately, so the resize decision is made here.
     pub(super) scene_size: [u32; 2],
-    /// The ground revision the bound brick map was built from. The map is
-    /// rebuilt wholesale when this moves, so an ordinary frame costs no CPU
-    /// walk of the world.
-    pub(super) terrain_map_revision: Option<u64>,
+    /// Eponym's capacity-fixed V1b brick cache for the resident terrain page.
+    #[cfg(feature = "r1-proof")]
+    pub(super) terrain_residency: Option<crate::residency::StableResidency>,
 }
 
 impl SceneModel {
@@ -94,7 +93,8 @@ impl SceneModel {
             terrain: true,
             scene: None,
             scene_size: [0; 2],
-            terrain_map_revision: None,
+            #[cfg(feature = "r1-proof")]
+            terrain_residency: None,
         }
     }
 

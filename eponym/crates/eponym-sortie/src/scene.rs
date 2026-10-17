@@ -14,17 +14,16 @@
 //! this expedition as a fresh bounded agreement; Sela's part rides her
 //! standing settlement agreement, which also carries the tag-in pact.
 //!
-//! The site direction is calibrated against the real terrain, not authored
-//! terrain: the march has to cross ground whose own law produces a fall
-//! past comfort on the way out. The receipt asserts the fall, the tag-in,
-//! the tend, and the return, so a regrown world that stopped having that
-//! cliff fails loudly rather than silently passing a tamer sortie.
+//! The sortie authors a native material scarp in the grown site. Its walk
+//! crosses a six-cell drop, so the fall remains a world fact that the receipt
+//! can replay alongside the tag-in, tend, and return.
 
 use eponym_client::room::{Room, SEED};
 use eponym_play::identity::{Control, SubjectId, Tick};
 use eponym_play::vocabulary::{ABANDONED, HEALING, SCOUTING};
+use eponym_play::{WorldIntent, walking};
 use isocosm::social::{DeedKind, Response, Terms, Work};
-use isometer_space::volume::Volume;
+use isometer_space::{Edit, Op, edit::Shape, volume::Volume};
 
 use crate::march;
 use crate::party::{self, Pact};
@@ -55,9 +54,24 @@ pub const DEPART: Tick = Tick(13);
 /// sits in the trench below it.
 pub const SITE_OFFSET: [i32; 2] = [-15, -8];
 
+/// A six-cell drop across the departure route, cut into the native site.
+const SCARP_DROP: i32 = 6;
+
 /// The settled society: S2's people, homes formed, twelve deeds deep.
 pub fn settled_society() -> Society {
-    let room = Room::grow(SEED).expect("S0's seed has a hillside");
+    let mut room = Room::grow(SEED).expect("S0's seed has a hillside");
+    let home = march::stand(room.world.volume(), room.centre[0], room.centre[2])
+        .expect("the hill above the room has a surface to stand on");
+    let edit = Edit {
+        op: Op::Carve,
+        shape: Shape::Box {
+            min: walking::to_site(room.world.volume(), [home[0] - 12, home[1] - SCARP_DROP, home[2] - 11]),
+            max: walking::to_site(room.world.volume(), [home[0] - 5, home[1] + 16, home[2] - 3]),
+        },
+    };
+    room.world.apply(WorldIntent::MaterialEdit { tick: Tick(0), edit })
+        .expect("the scarp is an authored native material edit");
+    room.ground = room.world.ground().clone();
     let mut society = Society::on(room.world);
     settled::admit(&mut society).expect("the four arrive and Aud's record is laid");
     settled::answers(&mut society).expect("the settling scene admits everyone");
@@ -140,7 +154,7 @@ pub fn home_stance(volume: &Volume) -> [i32; 3] {
         .expect("the hill above the room has a surface to stand on")
 }
 
-/// The far site, standing on the real surface at the calibrated offset.
+/// The far site, standing on the edited surface at the scarp's far side.
 pub fn site_stance(volume: &Volume) -> [i32; 3] {
     let home = home_stance(volume);
     march::stand(volume, home[0] + SITE_OFFSET[0], home[2] + SITE_OFFSET[1])

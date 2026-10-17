@@ -3,6 +3,15 @@
 
 use super::*;
 
+fn assert_practice_striker_hit(app: &App, target: eponym_play::identity::SubjectId) {
+    assert!(app.action.session().game().events().iter().any(|event| matches!(event,
+        GameEvent::VolleyResolved { actor, target: struck, strikes, .. }
+        if *actor != target && *struck == target && strikes.iter().any(|strike|
+            matches!(strike.outcome, eponym_play::StrikeOutcome::Hit { part: isometer::core::PartId(1), .. })
+        )
+    )), "injury must come from a native practice-striker hit on part 1");
+}
+
 #[test]
 fn treatment_preserves_severance_and_paid_surviving_action_after_resume() {
     let mut app = App::new();
@@ -22,11 +31,27 @@ fn treatment_preserves_severance_and_paid_surviving_action_after_resume() {
     let tick = app.action.action().unwrap().last_tick;
     app.action.charge(Tick(tick.0 + 1)).unwrap();
     app.injure();
+    assert_practice_striker_hit(&app, subject);
     let before = app.action.action().unwrap().contributors[&isometer::core::PartId(2)].charge;
     assert!(before > 0);
+    let wound_before_rest = app
+        .action
+        .session()
+        .game()
+        .bodies()
+        .get(subject)
+        .unwrap()
+        .wound;
     app.rest();
     let game = app.action.session().game();
-    assert_eq!(game.bodies().get(subject).unwrap().wound, 0);
+    let wound_after_rest = game.bodies().get(subject).unwrap().wound;
+    assert!(
+        wound_after_rest == wound_before_rest,
+        "current Rest law recovers no wound: before={wound_before_rest}, after={wound_after_rest}"
+    );
+    assert!(game.events().iter().any(|event| matches!(event,
+        GameEvent::Rested { subject: rested, recovered: 0, .. } if *rested == subject
+    )), "rest records zero wound recovery under the current law");
     assert_eq!(
         game.items()
             .carried_by(subject)
@@ -99,8 +124,7 @@ fn ordinary_fall_refreshes_charged_bindings_and_death_cancels_them() {
             .unwrap()
             .contributors
             .values()
-            .all(|c| c.state
-                == eponym_play::timed_action::ContributionState::Cancelled)
+            .all(|c| c.state == eponym_play::timed_action::ContributionState::Cancelled)
     );
     let before = app.action.clone();
     assert!(app.action.rest().is_err());
@@ -135,10 +159,11 @@ fn wrong_direction_is_a_recorded_miss() {
             _ => None,
         })
         .unwrap();
-    assert!(strikes.iter().all(|strike| matches!(
-        strike.outcome,
-        eponym_play::StrikeOutcome::Miss
-    )));
+    assert!(
+        strikes
+            .iter()
+            .all(|strike| matches!(strike.outcome, eponym_play::StrikeOutcome::Miss))
+    );
 }
 
 #[test]
@@ -186,6 +211,7 @@ fn native_support_loss_slows_movement_and_is_visible_after_resume() {
         .unwrap();
     assert_eq!(before.active_supports.len(), 4);
     app.injure();
+    assert_practice_striker_hit(&app, subject);
     app.action =
         TimedActionSession::restore_solving(&app.action.save().unwrap(), eponym_motion::SOLVER)
             .unwrap();

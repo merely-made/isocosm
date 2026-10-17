@@ -154,6 +154,10 @@ impl BrickMap {
     }
 }
 
+impl From<SharedBrickMap> for BrickMap {
+    fn from(map: SharedBrickMap) -> Self { Self(map) }
+}
+
 impl Deref for BrickMap {
     type Target = SharedBrickMap;
 

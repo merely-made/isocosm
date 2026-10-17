@@ -73,12 +73,15 @@ pub enum WorldIntent {
     /// A distinct founding grammar preserves earlier material-profile bytes.
     OwnedMaterialProfile { profile: Box<MaterialProfile>, stock: isocosm::projects::StockRules },
     SpreadMaterialProfile { profile: Box<crate::SpreadMaterialProfile> },
+    /// An authored native material edit, appended to preserve archive tags.
+    MaterialEdit { tick: Tick, edit: Edit },
 }
 
 impl WorldIntent {
     pub const fn tick(&self) -> Tick {
         match self {
-            Self::Carve { tick, .. } | Self::InheritSite { tick, .. } => *tick,
+            Self::Carve { tick, .. } | Self::InheritSite { tick, .. }
+            | Self::MaterialEdit { tick, .. } => *tick,
             Self::MaterialProfile { .. } | Self::OwnedMaterialProfile { .. }
                 | Self::SpreadMaterialProfile { .. } => Tick(0),
         }
@@ -101,6 +104,7 @@ pub enum WorldEvent {
         kind: SiteKind,
         fact: HistoryFactId,
     },
+    MaterialEdited { tick: Tick, moved: u32, ground_revision: u64 },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -467,6 +471,15 @@ impl World {
                     ground_revision,
                 }
             },
+            WorldIntent::MaterialEdit { tick, edit } => {
+                let atlas = self.session.sim.atlas().map_err(|_| WorldError::Refused)?;
+                let mut projection = self.volume.clone();
+                let moved = projection.apply(&atlas, self.site, &edit).map_err(|_| WorldError::Refused)?;
+                self.found(Command::Edit { site: self.site, edit, by: None })?;
+                let ground_revision = projection.revision();
+                self.volume = projection;
+                WorldEvent::MaterialEdited { tick, moved, ground_revision }
+            }
             WorldIntent::InheritSite {
                 tick,
                 slot,

@@ -37,18 +37,19 @@ native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-13: all-target/all-feature compiler and play35 runtime tests pass. One genuine historical archive input is ignored; full E3/headed acceptance remains open. Shared assembled-certification record qualifies the receipts. |
+| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-17: F3/F4 native level-fixture union and F7's six GPU producer tests plus three ordinary resident-producer tests qualify; final all-target/all-feature compiler check passes. The broad native-level suite retains one earlier severance-camera failure, followed by a passing focused rerun. Three `v1-proof` far-window paging/travel/retarget runtime gates, broader E3 and headed acceptance remain open. One genuine historical archive input is ignored. See the [F receipt manifest](../../../../testing/isometry/f-2026-10-16/README.md). |
 | [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | 2026-10-10: reference charter; executable work belongs to the overlay plan, including folded functional and memory gates in E3. |
 
 ## Open items
 
-- **`eponym-sortie` fails two tests**, found 2026-10-06 while verifying the
-  [wing datasheets plan](../../mesocosm/design_docs/archive_docs/2026-10-06/2026-10-06_wing_datasheets_plan.md),
-  and not that plan's: `a_tag_in_occurs_mid_action_under_the_pact` ("the
-  pact never fired") and `an_injury_persists_as_a_body_revision_fact` ("the
-  played body was never wounded"). Both fail the same way on the sources
-  before its founding change (`d6ffaf20`). The crate last moved the same day
-  (`68844aa9`, `f4a40613`). Log: `Code/testing/isometry-datasheets-p3b-eponym.log`.
+- **2026-10-17:** F3/F4's native fixture controls and F7's six GPU tests plus
+  three ordinary resident-producer tests qualify by receipt union; the final
+  all-target/all-feature compiler check passes. Three `v1-proof` far-window
+  runtime gates remain open. F8's six sortie cases and native-edit/world
+  replay control, F2/F6 archive and stale-panel retirement, and F5 worn-item
+  drop remain verified. Broader E3 and headed acceptance remain open. The wing
+  [after-pass](../../mesocosm/design_docs/2026-10-10_after_pass_plan.md)
+  owns the triage and exact receipt scope.
 
 ## Archive
 

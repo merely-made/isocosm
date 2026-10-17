@@ -10,22 +10,14 @@
 //! A control change is stamped at a game-intent cut, so restore can validate
 //! who was alive when they were selected rather than guessing from final state.
 
-use isometer_core::snapshot::{self, hash_bytes};
 use crate::identity::{Control, ControlIntent, IdentityError, SubjectId, Tick};
+use isometer_core::snapshot::{self, hash_bytes};
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    CANON_GAME_STATE_VERSION, COMBAT_GAME_STATE_VERSION, GAME_STATE_VERSION,
-    ITEM_PLACEMENT_GAME_STATE_VERSION, NATIVE_RECIPE_GAME_STATE_VERSION, GameError, GameEvent, GameIntent, GameSave,
-    GameState, LEGACY_GAME_STATE_VERSION, MOTION_GAME_STATE_VERSION, PROFILE_GAME_STATE_VERSION,
-    PROJECT_GAME_STATE_VERSION,
-    PROJECT_CUSTODY_GAME_STATE_VERSION,
-    OWNED_STOCK_GAME_STATE_VERSION,
-    SPREAD_GAME_STATE_VERSION,
-    World,
-};
+use crate::{GameError, GameEvent, GameIntent, GameSave, GameState, World};
 
 mod body_change;
+mod versions;
 
 pub const SESSION_VERSION: u32 = 1;
 pub const MAX_SESSION_BYTES: usize = 64 * 1024 * 1024;
@@ -78,6 +70,8 @@ pub enum SessionError {
     SuccessorIsCurrent(SubjectId),
     HomeStillAlive(SubjectId),
     UnsupportedControlIntent,
+    ExternalEventForbidden,
+    ExternalActorIsPlayed(SubjectId),
     ControlOutOfOrder {
         previous: Tick,
         next: Tick,
@@ -114,8 +108,10 @@ impl From<IdentityError> for SessionError {
 impl Session {
     /// Transfer the actual owner and preserve the original control archive.
     /// Refusal returns this Session intact; success leaves only Root's owner.
-    pub fn into_native_mode(self, input: &crate::contract::mode::SpatialBindingInput)
-        -> Result<crate::NativeHandoff, (Self, String)> {
+    pub fn into_native_mode(
+        self,
+        input: &crate::contract::mode::SpatialBindingInput,
+    ) -> Result<crate::NativeHandoff, (Self, String)> {
         let prior = match self.save() {
             Ok(bytes) => bytes,
             Err(why) => return Err((self, format!("Eponym handoff save: {why:?}"))),
@@ -123,9 +119,11 @@ impl Session {
         self.into_native_mode_with_prior(input, prior)
     }
 
-    pub(crate) fn into_native_mode_with_prior(self,
-        input: &crate::contract::mode::SpatialBindingInput, prior: Vec<u8>)
-        -> Result<crate::NativeHandoff, (Self, String)> {
+    pub(crate) fn into_native_mode_with_prior(
+        self,
+        input: &crate::contract::mode::SpatialBindingInput,
+        prior: Vec<u8>,
+    ) -> Result<crate::NativeHandoff, (Self, String)> {
         let Self { game, control } = self;
         game.into_native_mode_with_prior(input, prior)
             .map_err(|(game, why)| (Self { game, control }, why))
@@ -151,6 +149,9 @@ impl Session {
 
     /// Applies one ordinary game action for the one currently controlled body.
     pub fn apply_game(&mut self, intent: GameIntent) -> Result<Vec<GameEvent>, SessionError> {
+        if matches!(&intent, GameIntent::ExternalVolley { .. }) {
+            return Err(SessionError::ExternalEventForbidden);
+        }
         if intent.is_author_only() {
             return Err(GameError::World(crate::WorldError::NotFounding).into());
         }
@@ -166,6 +167,31 @@ impl Session {
             });
         }
         Ok(self.game.apply(intent)?)
+    }
+
+    /// Records one world-sourced volley by an admitted body outside the
+    /// currently played life. This narrow seam is crate-private; player
+    /// intents continue through `apply_game` and its subject check.
+    pub(crate) fn apply_external_volley(
+        &mut self,
+        actor: SubjectId,
+        actor_revision: crate::identity::BodyRevisionId,
+        target: SubjectId,
+        strikes: Vec<crate::timed_action::StrikeReceipt>,
+        rules: crate::CombatRules,
+    ) -> Result<Vec<GameEvent>, SessionError> {
+        let played = self.game.played().unwrap_or(self.control.played());
+        if actor == played {
+            return Err(SessionError::ExternalActorIsPlayed(actor));
+        }
+        Ok(self.game.apply(GameIntent::ExternalVolley {
+            tick: self.game.next_tick(),
+            actor,
+            actor_revision,
+            target,
+            strikes,
+            rules,
+        })?)
     }
 
     /// Place this life's carried item through native custody and the same
@@ -195,18 +221,38 @@ impl Session {
         })
     }
 
-    pub fn carry_project(&mut self, project: isocosm::projects::ProjectId, carried: bool)
-        -> Result<Vec<GameEvent>, SessionError> {
-        self.apply_game(GameIntent::ProjectCarry { tick:self.game.next_tick(),
-            subject:self.game.played().ok_or(GameError::World(crate::WorldError::NotPlayed))?,
-            project, carried })
+    pub fn carry_project(
+        &mut self,
+        project: isocosm::projects::ProjectId,
+        carried: bool,
+    ) -> Result<Vec<GameEvent>, SessionError> {
+        self.apply_game(GameIntent::ProjectCarry {
+            tick: self.game.next_tick(),
+            subject: self
+                .game
+                .played()
+                .ok_or(GameError::World(crate::WorldError::NotPlayed))?,
+            project,
+            carried,
+        })
     }
 
-    pub fn reserve_project(&mut self, process:String, target:Option<isocosm::schema::Id>,
-        lots:Vec<String>) -> Result<Vec<GameEvent>, SessionError> {
-        self.apply_game(GameIntent::ProjectReserve { tick:self.game.next_tick(),
-            subject:self.game.played().ok_or(GameError::World(crate::WorldError::NotPlayed))?,
-            process, target, lots })
+    pub fn reserve_project(
+        &mut self,
+        process: String,
+        target: Option<isocosm::schema::Id>,
+        lots: Vec<String>,
+    ) -> Result<Vec<GameEvent>, SessionError> {
+        self.apply_game(GameIntent::ProjectReserve {
+            tick: self.game.next_tick(),
+            subject: self
+                .game
+                .played()
+                .ok_or(GameError::World(crate::WorldError::NotPlayed))?,
+            process,
+            target,
+            lots,
+        })
     }
 
     /// Continues after the current home body died through another existing life.
@@ -296,7 +342,10 @@ impl Session {
     }
 
     /// Restores a session, replaying its motion with `solver`.
-    pub fn restore_solving(bytes: &[u8], solver: crate::MotionSolver) -> Result<Self, SessionError> {
+    pub fn restore_solving(
+        bytes: &[u8],
+        solver: crate::MotionSolver,
+    ) -> Result<Self, SessionError> {
         let limits = SessionLimits::default();
         if bytes.len() > limits.max_bytes {
             return Err(SessionError::TooLarge);
@@ -323,86 +372,7 @@ impl Session {
                 current: SESSION_VERSION,
             });
         }
-        if !(LEGACY_GAME_STATE_VERSION..=GAME_STATE_VERSION).contains(&save.game.version) {
-            return Err(SessionError::Game(GameError::VersionDiverged {
-                saved: save.game.version,
-                current: GAME_STATE_VERSION,
-            }));
-        }
-        if save.game.version < COMBAT_GAME_STATE_VERSION
-            && save
-                .game
-                .intents
-                .iter()
-                .any(|intent| matches!(intent, GameIntent::ResolveVolley { .. }))
-        {
-            return Err(SessionError::Game(GameError::LegacyCombatIntent));
-        }
-        if save.game.version < MOTION_GAME_STATE_VERSION
-            && save
-                .game
-                .intents
-                .iter()
-                .any(|intent| matches!(intent, GameIntent::AdvanceMotion { .. }))
-        {
-            return Err(SessionError::Game(GameError::LegacyMotionIntent));
-        }
-        if save.game.version < PROFILE_GAME_STATE_VERSION
-            && save.game.intents.iter().any(|intent| {
-                matches!(
-                    intent,
-                    GameIntent::ConfigureMovementProfile { .. }
-                        | GameIntent::AdvanceMotion {
-                            rules: crate::MotionRules { revision: 2, .. },
-                            ..
-                        }
-                )
-            })
-        {
-            return Err(SessionError::Game(GameError::LegacyMovementProfileIntent));
-        }
-        if save.game.version < CANON_GAME_STATE_VERSION
-            && save
-                .game
-                .intents
-                .iter()
-                .any(|intent| matches!(intent, GameIntent::ReviseCanon { .. }))
-        {
-            return Err(SessionError::Game(GameError::LegacyCanonIntent));
-        }
-        if save.game.version < NATIVE_RECIPE_GAME_STATE_VERSION
-            && save.game.intents.iter().any(|i| matches!(i, GameIntent::GenerateNativeRecipe { .. }))
-        {
-            return Err(SessionError::Game(GameError::LegacyNativeRecipeIntent));
-        }
-        if save.game.version < ITEM_PLACEMENT_GAME_STATE_VERSION
-            && save.game.intents.iter().any(|intent| matches!(intent, GameIntent::Drop { .. }))
-        {
-            return Err(SessionError::Game(GameError::LegacyItemPlacementIntent));
-        }
-        if save.game.version < PROJECT_GAME_STATE_VERSION
-            && save.game.intents.iter().any(|intent| matches!(intent, GameIntent::ProjectAct { .. }))
-        {
-            return Err(SessionError::Game(GameError::LegacyProjectIntent));
-        }
-        if save.game.version < PROJECT_CUSTODY_GAME_STATE_VERSION
-            && save.game.intents.iter().any(|intent| matches!(intent,
-                GameIntent::ProjectCarry { .. } | GameIntent::ProjectReserve { .. }
-                | GameIntent::StockOwnership { .. } | GameIntent::ProjectConsent { .. }))
-        {
-            return Err(SessionError::Game(GameError::LegacyProjectCustodyIntent));
-        }
-        if save.game.version < OWNED_STOCK_GAME_STATE_VERSION
-            && save.game.intents.iter().any(|intent| matches!(intent,
-                GameIntent::StockAct { .. } | GameIntent::EatOwned { .. }))
-        { return Err(SessionError::Game(GameError::LegacyOwnedStockIntent)); }
-        if save.game.version < SPREAD_GAME_STATE_VERSION
-            && (save.game.world.generator_version == crate::founding::spread::GENERATOR_VERSION
-                || save.game.intents.iter().any(|intent| matches!(intent,
-                    GameIntent::FoundSpreadActor { .. } | GameIntent::SpreadOwnership { .. }
-                    | GameIntent::AuthoredSpread { .. }))) {
-            return Err(SessionError::Game(GameError::LegacySpreadIntent));
-        }
+        versions::validate_game_version(&save)?;
         if save.game.intents.len() > limits.max_game_intents
             || save.control.len() > limits.max_control_intents
         {
@@ -431,7 +401,14 @@ impl Session {
             }
             if cut < save.game.intents.len() {
                 let intent = save.game.intents[cut].clone();
-                if let (Some(played), Some(subject)) = (game.played(), intent.subject())
+                if let GameIntent::ExternalVolley { actor, .. } = &intent {
+                    let played = game.played().ok_or(SessionError::Game(GameError::World(
+                        crate::WorldError::NotPlayed,
+                    )))?;
+                    if *actor == played {
+                        return Err(SessionError::ExternalActorIsPlayed(*actor));
+                    }
+                } else if let (Some(played), Some(subject)) = (game.played(), intent.subject())
                     && subject != played
                 {
                     return Err(SessionError::NotControlled {
