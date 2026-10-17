@@ -1964,6 +1964,40 @@ and belongs in L1's genet plan as a named consumer.
 
 ## Progress
 
+- **2026-10-17, tenant sun (970):** the body tenant now carries a fixed
+  sun toward (0.4, 0.8, 0.3) with ambient 0.38 and sun 0.62, shadows off,
+  the tracer's own constants (`tracer.wgsl`: light = 0.38 + 0.62 * max(0,
+  N.L)), so terrain and bodies read under one sun. The sun's intensity is
+  0.62 pi because kiss3d's diffuse is albedo / pi * N.L. `--body-light` now
+  scales sun and ambient together (default 1 matches the terrain, 0 is
+  dark). `section/tenant/geometry.rs` no longer applies `face_shade` to
+  tenant faces: it was baked by each quad's local axis, so under a real sun
+  it would shade twice, and a rotated body kept the wrong tint (before the
+  change, faces that point up in the world but carry a bottom-facing local
+  axis rendered dark; after, they are lit as tops). The VTT and Eponym
+  `LiveBody` path keeps `face_shade`. Both constants move to the admitted
+  sim field when one exists (ruling 472); nothing here reads a sim value.
+  Receipt, `Code/testing/isometry/tenant-sun-2026-10-17/`: the seed-9 save
+  of the earlier receipt (`a1-release-seed9-world.json`, sha256 prefix
+  87b5f527, native hash ae57d13f26b17f4f, tick 70) resumed with
+  `--watch seed9-world.json --frames 6 --no-trace`, release, before
+  (`before.png`, base `285821ad`) and after (`after.png`, this change), both
+  PASS 7 frames, one capture. Of 42,154 changed pixels none lies outside the
+  body hue band, so terrain is unchanged; body faces went from six baked
+  tints to sun levels (top 132 to 125 in sRGB red, matching 0.906 of the
+  base; a +x face 114 to 103; faces facing up with a bottom-facing local
+  axis 82 to 125). The dither-like hatch on one cube's front face is gone;
+  not diagnosed, most likely coplanar quads of different baked tint that
+  now share a colour.
+  `before.png` is byte-identical (sha256 a17052f8) to the earlier
+  receipt's `scene-cache-seed9-watch.png`, so the base reproduces it; the two
+  executables were removed for the 100 MB cap, their hashes are in
+  `manifest.sha256`. Inspected by eye, `before-after-crop.png` side by side. Not claimed: the
+  tonemap stays kiss3d's default (Neutral), unmeasured above 0.76; no
+  performance or upload claim. `cargo test --release -p mesocosm-genet
+  --lib section::tenant` and `cargo check --workspace --all-targets` in
+  `mesocosm/`: passed (3 tests; clean, no errors, no warnings in the touched files); logs `tenant-controls.log` and `workspace-check.log`.
+
 - **2026-10-10, Q7 CPU controls:** `cargo test -p mesocosm-genet --lib
   section::tenant::geometry::tests --offline -j 1` passed 2/2, with 20 other
   tests filtered. `transformed_face_crossing_the_slab_is_clipped_and_outside_faces_vanish`

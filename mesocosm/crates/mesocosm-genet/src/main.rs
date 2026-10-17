@@ -290,7 +290,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --ecology-rates RATE  a1 (ordinary default) or stock (requires an authored witness)
   --bodies MODE   voxels (default) or capsules (comparison), presentation only
   --body-budget N maximum detailed bodies in the section
-  --body-light N  ambient body light intensity (default 1, zero is dark)
+  --body-light N  body light scale, sun and ambient (default 1 matches terrain, zero is dark)
   --terrain-style MODE  auto (classic), classic or habitat
   --camera MODE   oblique (default), side, across, terrarium-east/south/west/north
   --slab H        section slab half-height in voxels (presentation only, default 28)
