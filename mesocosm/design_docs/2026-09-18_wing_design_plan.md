@@ -11881,7 +11881,59 @@ what later sections derive from.
      is configurable; this does not select a known passing seed or change
      the shared generator's Stock default.
 
-     Next unused 964.
+964. **The failing H3 pin is bisected in place before anything is rerecorded.**
+     Asked 2026-10-17 during the audit of main at `a7d02a7f`, after
+     `runtime_pin`'s offered trace replayed its 16 actions and 5 outcomes to
+     tick 72 and 76 entries but to a different state hash. The fixtures were
+     last rerecorded 2026-10-15; since then 89db70a5 (seeded movement ties,
+     958, a meant change) and a7d02a7f (active-update reductions, claimed
+     signature-preserving) moved the sim. Options: (1) bisect in place in
+     the clean checkout, rerecord only if 958 explains it (recommended);
+     (2) bisect in a worktree with its own target; (3) rerecord now under
+     958; (4) leave it. Mark: "Bisect in place (Recommended)". Result: the
+     suite passes at `c0c54a88` and fails at `89db70a5` with HEAD's hash,
+     so 958 explains it and the later commits changed neither world. Both
+     traces are rerecorded at `a7d02a7f`: offered `13219767039782569982`
+     to `4535962164617645755`, held `1305873899039827589` to
+     `11223436107781315567`. *Reading, not ruled:* a lane that changes the
+     sim on purpose reruns the pins or rerecords them in the same commit;
+     the H5 receipt of 2026-10-16 was this suite's last run before the audit.
+
+965. **Local main merges origin and pushes once the gates are green.**
+     Asked 2026-10-17: main stood 24 commits ahead of origin and 3 behind
+     (the private pack-authoring tool with its vendored taplo fork, and the
+     toolchain at 1.99.1); a dry-run merge conflicted only in `Cargo.lock`
+     and `crates/isometry-system/Cargo.toml`, both sides of the manifest
+     additive. Options: (1) merge, gate, push (recommended); (2) merge and
+     gate, hold the push; (3) rebase the 24 onto origin; (4) leave the merge
+     to Mark. Mark: "Merge, gate, push (Recommended)". The manifest keeps
+     both sides; the lock is ours plus the pack-authoring closure; the gates
+     are the root all-features all-targets check, the Mesocosm check, the
+     pin suite and the pack-authoring tests; the push uses the standing
+     permission.
+
+966. **The next responsiveness lane aims at the core's tick cost.**
+     Asked 2026-10-17 with the audit's numbers: the configured tempo is 10
+     ticks per second (TD2); the final active-update receipt runs 15 ticks
+     in 28.7 s of callbacks, about 1.9 s per tick, the time inside the core
+     (clock prepare, spatial prepare and command, scheduling, three
+     physical refreshes per tick). Options: (1) a lane on the core's tick
+     cost in `shared/isocosm` (recommended); (2) decouple the sim onto its
+     own thread first and keep the window at held-frame rate; (3) measure
+     first, rule after. Mark: "Core tick cost (Recommended)". The lane times
+     Session/Game copying and refresh checks first, as the plan already
+     asks, cuts physical refresh to once per tick, and is done when the
+     seed-9 save runs 15 ticks under 1.5 s on the shipping head. The host
+     stays as it is.
+
+967. **The audit's two hygiene fixes ride in the merge commit.**
+     Asked 2026-10-17: Mesocosm's manifest still patched vello with nothing
+     in its graph depending on it, and origin's toolchain bump left the root
+     index's policy line at 1.99.0. Options: (1) in the merge commit, named
+     in its subject (recommended); (2) a separate commit after; (3) note
+     only. Mark: "Into the merge commit (Recommended)".
+
+     Next unused 968.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
