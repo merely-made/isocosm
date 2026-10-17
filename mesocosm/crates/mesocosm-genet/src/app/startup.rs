@@ -7,16 +7,58 @@ use super::{HostConfig, Runtime};
 
 fn a1_setup(mut founded: mesocosm_runtime::Founded,
     affinity: Option<isocosm::rules::Affinity>)
-    -> Result<mesocosm_runtime::runtime::ecology::Setup, String> {
+    -> Result<mesocosm_runtime::runtime::ecology::Setup, mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
     if affinity.is_some() {
-        return Err("--ecology-rates a1 cannot be combined with the authored pack affinity; remove that affinity before selecting A1".into());
+        return Err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("--ecology-rates a1 cannot be combined with the authored pack affinity; remove that affinity before selecting A1".into()));
     }
     let mut founding = founded.genesis.founding.clone()
-        .ok_or("--ecology-rates a1 requires an ordinary generated founding")?;
+        .ok_or_else(|| mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("--ecology-rates a1 requires an ordinary generated founding".into()))?;
     founding.ecology_rates = isocosm::ecology::Rates::A1;
-    founded.genesis = founding.generate()?;
-    mesocosm_runtime::runtime::ecology::Setup::generated(
+    founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
+    mesocosm_runtime::runtime::ecology::Setup::generated_classified(
         founded, isocosm::Execution::Individuals)
+}
+
+fn candidate_seed(base: u64, attempt: u32) -> u64 {
+    let mut value = base.wrapping_add(u64::from(attempt).wrapping_mul(0x9E37_79B9_7F4A_7C15));
+    value = (value ^ (value >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+    value = (value ^ (value >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+    value ^ (value >> 31)
+}
+
+#[derive(Debug)]
+struct SelectedA1 { setup: mesocosm_runtime::runtime::ecology::Setup, seed: u64, attempts: u32 }
+
+fn select_a1_candidate(
+    base_seed: u64,
+    attempt_cap: u32,
+    permit_search: bool,
+    population: u64,
+    mut prepare: impl FnMut(u64) -> Result<mesocosm_runtime::runtime::ecology::Setup,
+        mesocosm_runtime::runtime::ecology::GeneratedSetupError>,
+) -> Result<SelectedA1, mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
+    use mesocosm_runtime::runtime::ecology::GeneratedSetupError as CandidateError;
+    if permit_search && !(1..=128).contains(&attempt_cap) {
+        return Err(CandidateError::Invalid("A1 candidate cap must be from 1 to 128".into()));
+    }
+    let attempts = if permit_search { attempt_cap } else { 1 };
+    for index in 0..attempts {
+        let seed = if index == 0 { base_seed } else { candidate_seed(base_seed, index) };
+        eprintln!("A1 candidate {}/{attempts}: seed {seed}, population {population}.", index + 1);
+        match prepare(seed) {
+            Ok(setup) => return Ok(SelectedA1 { setup, seed, attempts: index + 1 }),
+            Err(CandidateError::MissingViableConsumerFood) => {
+                if index + 1 < attempts {
+                    eprintln!("A1 candidate seed {seed} lacks a viable consumer and food target; trying the next candidate.");
+                } else {
+                    eprintln!("A1 candidate seed {seed} lacks a viable consumer and food target; candidate limit reached.");
+                }
+            }
+            Err(error @ CandidateError::Invalid(_)) => return Err(error),
+        }
+    }
+    Err(CandidateError::Invalid(format!(
+        "no A1 candidate had viable consumer food after {attempts} candidate(s)")))
 }
 
 pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Result<Runtime, String> {
@@ -42,17 +84,35 @@ pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Af
         std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)
             .map_err(|why| why.to_string())?.as_nanos() as u64
     } else { config.seed };
-    let mut founded = mesocosm_runtime::Founded::generated_with_affinity(seed, config.population, affinity.clone())?;
-    if let Some(start) = config.start { founded.start = start; }
-    if let Some(mode) = config.mode { founded.mode = mode; }
     if config.ecology_witness.is_none()
         && config.ordinary_ecology_rates() == isocosm::ecology::Rates::A1 {
-        eprintln!("Preparing A1 ecology witness: seed {seed}, population {}.", config.population);
         let began = std::time::Instant::now();
-        let runtime = a1_setup(founded, affinity)?.offer(config.ticks_per_second)?;
+        let selected = select_a1_candidate(seed, config.candidate_attempts, config.unchosen_seed, config.population,
+            |candidate| {
+            let mut founded = mesocosm_runtime::Founded::generated_with_affinity(candidate, config.population, affinity.clone())
+                .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
+            if let Some(start) = config.start { founded.start = start; }
+            if let Some(mode) = config.mode { founded.mode = mode; }
+            a1_setup(founded, affinity.clone())
+        }).map_err(|error| match error {
+            mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message) => message,
+            mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingViableConsumerFood =>
+                "candidate search ended unexpectedly".into(),
+        })?;
+        eprintln!("A1 preflight accepted seed {} after {} candidate(s); running full ecology witness.", selected.seed, selected.attempts);
+        let runtime = selected.setup.offer_with_progress(config.ticks_per_second,
+            &mut |tick, horizon| {
+                if tick % 10 == 0 || tick == horizon {
+                    eprintln!("A1 ecology witness: live tick {tick}/{horizon} completed.");
+                }
+                if tick == horizon { eprintln!("A1 ecology witness: validating native history."); }
+            })?;
         eprintln!("A1 ecology witness accepted in {:.3}s.", began.elapsed().as_secs_f64());
         return Ok(runtime);
     }
+    let mut founded = mesocosm_runtime::Founded::generated_with_affinity(seed, config.population, affinity.clone())?;
+    if let Some(start) = config.start { founded.start = start; }
+    if let Some(mode) = config.mode { founded.mode = mode; }
     let path = config.ecology_witness.as_ref()
         .ok_or("new generated world requires --ecology-witness with complete authored witness inputs")?;
     let setup = read_setup(path)?;
@@ -94,6 +154,62 @@ mod tests {
     fn explicit_a1_reports_authored_pack_affinity_instead_of_stripping_it() {
         let founded = mesocosm_runtime::Founded::generated(9, 256).unwrap();
         let error = a1_setup(founded, Some(isocosm::rules::Affinity::default())).unwrap_err();
-        assert!(error.contains("authored pack affinity"), "{error}");
+        assert!(matches!(error, mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message)
+            if message.contains("authored pack affinity")));
+    }
+
+    #[test]
+    fn invalid_search_bounds_refuse_before_generation() {
+        for cap in [0, 129, u32::MAX] {
+            assert!(select_a1_candidate(9, cap, true, 256,
+                |_| panic!("invalid cap must refuse before generation")).is_err());
+        }
+    }
+
+    #[test]
+    fn explicit_bad_seed_stops_after_one_candidate_even_with_search_cap() {
+        let mut tried = Vec::new();
+        let error = select_a1_candidate(1_792_230_697_480_612_000, 12, false, 256, |seed| {
+            tried.push(seed);
+            let founded = mesocosm_runtime::Founded::generated(seed, 256).unwrap();
+            a1_setup(founded, None)
+        }).unwrap_err();
+        assert_eq!(tried, [1_792_230_697_480_612_000]);
+        assert!(matches!(error, mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(_)));
+    }
+
+    #[test]
+    fn unchosen_search_selects_first_viable_derived_candidate_and_cap_one_exhausts() {
+        let base = 1_792_230_697_480_612_000;
+        let mut tried = Vec::new();
+        let selected = select_a1_candidate(base, 12, true, 256, |seed| {
+            tried.push(seed);
+            a1_setup(mesocosm_runtime::Founded::generated(seed, 256).unwrap(), None)
+        }).unwrap();
+        assert!(tried.len() > 1);
+        assert_eq!(selected.seed, tried[tried.len() - 1]);
+        assert_eq!(selected.seed, candidate_seed(base, selected.attempts - 1));
+        assert_ne!(selected.seed, base);
+
+        let mut capped = Vec::new();
+        let error = select_a1_candidate(base, 1, true, 256, |seed| {
+            capped.push(seed);
+            a1_setup(mesocosm_runtime::Founded::generated(seed, 256).unwrap(), None)
+        }).unwrap_err();
+        assert_eq!(capped, [base]);
+        assert!(matches!(error, mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(_)));
+    }
+
+    #[test]
+    fn authored_affinity_is_terminal_and_never_hidden_by_retry() {
+        let mut tried = Vec::new();
+        let error = select_a1_candidate(1_792_230_697_480_612_000, 12, true, 256, |seed| {
+            tried.push(seed);
+            a1_setup(mesocosm_runtime::Founded::generated(seed, 256).unwrap(),
+                Some(isocosm::rules::Affinity::default()))
+        }).unwrap_err();
+        assert_eq!(tried, [1_792_230_697_480_612_000]);
+        assert!(matches!(error, mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message)
+            if message.contains("authored pack affinity")));
     }
 }

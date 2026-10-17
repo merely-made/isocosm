@@ -218,7 +218,8 @@ impl Product for Mesocosm {
 pub struct Runtime {
     driver: Driver<Mesocosm>,
     /// The world's revision when this runtime last published its game.
-    seen: u64,
+    /// `None` means no successful mode-section publication/restore is known.
+    seen: Option<u64>,
 }
 
 impl Runtime {
@@ -276,7 +277,7 @@ impl Runtime {
             spatial: crate::spatial::Game::default(),
         };
         let driver = Driver::new(&world, product, Pacing::Clock { ticks_per_second });
-        let mut runtime = Self { driver, seen: 0 };
+        let mut runtime = Self { driver, seen: None };
         runtime.publish();
         runtime
     }
@@ -299,19 +300,22 @@ impl Runtime {
     /// Writes the sealed game, the driver's queue and fault included, to the
     /// world's section.
     fn publish(&mut self) {
+        self.seen = None;
         let world = self.driver.world().share();
         let queued = self.driver.queued().cloned().collect();
         let game = self.driver.product().loop_game(&world, queued);
         if let Ok(bytes) = serde_json::to_vec(&game) {
-            let _ = world.put_section(MODE, bytes);
+            if world.put_section(MODE, bytes).is_ok() {
+                self.seen = world.revision().ok();
+            }
         }
-        self.seen = world.revision().unwrap_or(self.seen);
     }
 
     /// Adopts a game another door published since this runtime's last publish.
     fn refresh(&mut self) {
         let world = self.driver.world().share();
-        if world.revision().is_ok_and(|now| now == self.seen) { return; }
+        if self.seen.is_some_and(|seen| world.revision().is_ok_and(|now| now == seen)) { return; }
+        self.seen = None;
         let Ok(Some(bytes)) = world.section(MODE) else { return };
         let Ok(game) = serde_json::from_slice::<crate::spatial::Game>(&bytes) else { return };
         let product = self.driver.product_mut();
@@ -319,8 +323,9 @@ impl Runtime {
         if let Err(why) = product.restore_loop(&world) {
             product.fault = Some(why.clone());
             self.driver.restore_fault(Some(why));
+            return;
         }
-        self.seen = world.revision().unwrap_or(self.seen);
+        self.seen = world.revision().ok();
     }
 
     pub fn with_max_steps(mut self, max_steps: u64) -> Self {
@@ -383,6 +388,15 @@ impl Runtime {
 
     /// Runs the rounds the elapsed time authorises; a held run banks none.
     pub fn advance(&mut self, elapsed_us: u64) -> u64 {
+        // While held, elapsed time is discarded. With no queued answer and
+        // no shared-world revision since the last successful publication,
+        // the saved game is already authoritative and remains unchanged.
+        if self.driver.product().held()
+            && self.driver.queued_len() == 0
+            && self.seen.is_some_and(|seen| self.driver.world().revision().is_ok_and(|now| now == seen))
+        {
+            return 0;
+        }
         self.refresh();
         let taken = self.driver.advance(elapsed_us);
         self.publish();
@@ -515,3 +529,7 @@ impl Runtime {
 mod replay;
 mod world_save;
 pub use replay::{GameSave, Receipt, Replayed};
+
+#[cfg(test)]
+#[path = "runtime/held_advance_tests.rs"]
+mod held_advance_tests;

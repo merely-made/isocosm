@@ -25,8 +25,11 @@ fn has_living_role(genesis: &isocosm::simulation::Genesis, lineage: &str, role: 
     })
 }
 
-fn generated_specification(genesis: &isocosm::simulation::Genesis) -> Result<JointSpec, String> {
-    let founding = genesis.founding.as_ref().ok_or("generated ecology needs its founding")?;
+#[derive(Debug)]
+pub enum GeneratedSetupError { MissingViableConsumerFood, Invalid(String) }
+
+fn generated_specification(genesis: &isocosm::simulation::Genesis) -> Result<JointSpec, GeneratedSetupError> {
+    let founding = genesis.founding.as_ref().ok_or_else(|| GeneratedSetupError::Invalid("generated ecology needs its founding".into()))?;
     let producers: Vec<u32> = (0..founding.lineages)
         .filter(|index| {
             let lineage = format!("lineage:{index}");
@@ -60,9 +63,8 @@ fn generated_specification(genesis: &isocosm::simulation::Genesis) -> Result<Joi
         }
     }
     viable.sort_unstable();
-    let (_, consumer, producer) = viable.into_iter().next().ok_or(
-        "default generated ecology offer needs a living producer and a living consumer whose native feed targets it",
-    )?;
+    let (_, consumer, producer) = viable.into_iter().next()
+        .ok_or(GeneratedSetupError::MissingViableConsumerFood)?;
     let selection = |process: String, actor: u32, target: Option<u32>| Selection {
         process,
         actor_lineage: format!("lineage:{actor}"),
@@ -132,14 +134,21 @@ impl Setup {
     /// horizon is the existing native 890 qualification horizon, not an
     /// inference from Mesocosm's much longer epoch length.
     pub fn generated(founded: Founded, execution: Execution) -> Result<Self, String> {
+        Self::generated_classified(founded, execution).map_err(|error| match error {
+            GeneratedSetupError::MissingViableConsumerFood => "default generated ecology offer needs a living producer and a living consumer whose native feed targets it".into(),
+            GeneratedSetupError::Invalid(message) => message,
+        })
+    }
+
+    pub fn generated_classified(founded: Founded, execution: Execution) -> Result<Self, GeneratedSetupError> {
         if founded.genesis.founding.as_ref().is_none_or(|f| f.preset.is_some()
             || f.affinity.is_some() || f.ecology_rates != isocosm::ecology::Rates::A1) {
-            return Err("default ecology offer requires an ordinary A1 founding without preset or affinity".into());
+            return Err(GeneratedSetupError::Invalid("default ecology offer requires an ordinary A1 founding without preset or affinity".into()));
         }
         let specification = generated_specification(&founded.genesis)?;
         let mut founded = founded;
         founded.genesis.rules.ecology_witness = Some(specification.clone());
-        founded.genesis.validate()?;
+        founded.genesis.validate().map_err(GeneratedSetupError::Invalid)?;
         Ok(Self { version: 1, founded, specification, execution, spatial: None, generated_templates: true })
     }
 
@@ -164,12 +173,13 @@ impl Setup {
     /// Runs the actual supplied clock provider over one native trajectory.
     /// The same trajectory supplies the native evidence required before admission.
     pub fn assess(&self) -> Result<Assessment, String> {
-        let (run, spatial) = self.assess_validated()?;
+        let (run, spatial) = self.assess_validated(&mut |_, _| {})?;
         let (witness, _) = run.into_parts();
         Ok(Assessment { witness, spatial })
     }
 
-    fn assess_validated(&self) -> Result<(isocosm::ecology::ValidatedJointRun, Game), String> {
+    fn assess_validated(&self, progress: &mut dyn FnMut(u64, u64))
+        -> Result<(isocosm::ecology::ValidatedJointRun, Game), String> {
         self.check()?;
         let mut game = Game::default();
         let mut initialized = false;
@@ -189,20 +199,29 @@ impl Setup {
                 }
                 initialized = true;
             }
-            if physical { game.advance_clock(session) }
-            else { session.advance_tick_with_flows() }
+            let result = if physical { game.advance_clock(session)? }
+                else { session.advance_tick_with_flows()? };
+            progress(result.tick, self.specification.horizon);
+            Ok(result)
         })?;
         if physical { game.validate_replay(run.session())?; }
         Ok((run, game))
     }
 
     pub fn offer(&self, ticks_per_second: u32) -> Result<Runtime, String> {
+        self.offer_with_progress(ticks_per_second, &mut |_, _| {})
+    }
+
+    /// Reports completed live clocks. The final clock precedes native replay
+    /// validation; returning successfully still requires the full admission.
+    pub fn offer_with_progress(&self, ticks_per_second: u32,
+        progress: &mut dyn FnMut(u64, u64)) -> Result<Runtime, String> {
         let founding=self.founded.genesis.founding.as_ref().ok_or("generated candidate has no founding")?;
         // This producer captures its real basis; authored JSON cannot replace it.
         let basis=isocosm::ecology::GeneratedBasis::new(founding)?;
         let criterion=self.specification.independence.as_ref()
             .ok_or("generated-world offer needs explicit native mechanical-effect declarations879")?;
-        let (run, spatial) = self.assess_validated()?;
+        let (run, spatial) = self.assess_validated(progress)?;
         let admitted = isocosm::ecology::admit_validated(run, criterion, &basis)?;
         offer::accepted(self, spatial, admitted, ticks_per_second)
     }

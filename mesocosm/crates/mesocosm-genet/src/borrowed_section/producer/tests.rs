@@ -39,7 +39,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
         selection: None,
     };
     handle
-        .present(native.scene.clone(), 7, presentation.clone())
+        .present(&native.scene, 7, presentation.clone())
         .unwrap();
     let core = genet_render_host::RenderCore::boot(netrender::NetrenderOptions::default()).unwrap();
     let host = section::host_device::from_renderer(core.renderer());
@@ -144,7 +144,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
     );
     assert!(leaf.pick((-1.0, 2.0), (96.0, 72.0)).is_err());
     handle
-        .present(native.scene.clone(), 8, presentation)
+        .present(&native.scene, 8, presentation)
         .unwrap();
     assert!(
         !leaf.validate_selection(selected),

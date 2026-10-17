@@ -34,6 +34,20 @@ pub const DEV_STEP_N: u64 = 10;
 /// Matter the dev `G` key places, in mg: a dev tool's dose, not a rule.
 pub const DEV_PLACE_MG: u64 = mesocosm_runtime::runtime::keymap::DEV_PLACE_MG;
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum SceneBranch {
+    Physical,
+    Coarse,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+struct SceneSourceKey {
+    revision: u64,
+    played: Option<Id>,
+    site: Id,
+    branch: SceneBranch,
+}
+
 pub struct Host {
     config: HostConfig,
     runtime: Runtime,
@@ -41,6 +55,8 @@ pub struct Host {
     scene: Option<SiteScene>,
     /// Current native source of the site's derived picture.
     scene_key: Option<(Id, String)>,
+    /// Exact successful world cut from which the current scene was built.
+    scene_source_key: Option<SceneSourceKey>,
     /// Where the section sits relative to the body it follows. Presentation.
     pan: Pan,
     last: Option<Instant>,
@@ -158,6 +174,7 @@ impl Host {
             runtime,
             scene: None,
             scene_key: None,
+            scene_source_key: None,
             pan: Pan::default(),
             last: None,
             frame_intervals_us: Vec::new(),
@@ -183,17 +200,37 @@ impl Host {
         Ok(assembly::run(config))
     }
 
-    /// Re-lifts the played site when it or its edits changed, and re-places
-    /// its bodies every frame. Returns whether the ground was rebound.
+    /// Re-lifts the played site when its successful source cut changes.
+    /// Camera and pan are presentation inputs. Returns whether the ground was rebound.
     fn refresh_scene(&mut self) -> bool {
         let sim = self.runtime.sim();
         let played = self.runtime.critter();
         let Some(site) = crate::played::scene::site_of(&sim, played) else {
             self.scene_key = None;
+            self.scene_source_key = None;
             return self.scene.take().is_some();
         };
+        // A partial physical world can contain an unplaced controlled member.
+        // Its ordinary site view supplies presentation, not a physical binding.
+        let physical = self.config.spatial.is_some()
+            || played.is_some_and(|id| self.runtime.spatial().members.contains_key(&id));
+        let branch = if physical {
+            SceneBranch::Physical
+        } else {
+            SceneBranch::Coarse
+        };
+        let source_key = self.runtime.revision().ok().map(|revision| SceneSourceKey {
+            revision,
+            played,
+            site,
+            branch,
+        });
+        if source_key.is_some() && self.scene_source_key == source_key && self.scene.is_some() {
+            return false;
+        }
+
         let visible = self.runtime.view();
-        if self.config.spatial.is_some() || !self.runtime.spatial().members.is_empty() {
+        if physical {
             let result = self.runtime.physical_view().and_then(|visible| {
                 crate::played::scene::site_scene_physical(
                     &sim,
@@ -217,11 +254,13 @@ impl Host {
                     let changed = self.scene_key.as_ref() != Some(&key);
                     self.scene = Some(scene);
                     self.scene_key = Some(key);
+                    self.scene_source_key = source_key;
                     changed
                 },
                 Err(why) => {
                     eprintln!("physical site: {why}");
                     self.scene_key = None;
+                    self.scene_source_key = None;
                     self.scene.take().is_some()
                 },
             };
@@ -233,21 +272,25 @@ impl Host {
             scene.bodies =
                 crate::played::scene::placed_visible(&sim, site, &scene.window, &visible);
             scene.volumes = isometer::DeclaredExtentVolumes::from_documents(
-                scene.bodies.iter().map(|b| &b.document),
+                scene.bodies.iter().map(|body| &body.document),
                 1,
             );
             scene.played = played;
+            self.scene_source_key = source_key;
             return false;
         }
         match crate::played::scene::site_scene_visible(&sim, played, &visible) {
             Ok(scene) => {
+                let changed = self.scene_key.as_ref() != Some(&key);
                 self.scene = Some(scene);
                 self.scene_key = Some(key);
-                true
+                self.scene_source_key = source_key;
+                changed
             },
             Err(why) => {
                 eprintln!("site: {why}");
                 self.scene_key = None;
+                self.scene_source_key = None;
                 self.scene.take().is_some()
             },
         }
@@ -273,6 +316,10 @@ impl Host {
         self.steps += self.runtime.advance(elapsed_us);
     }
 }
+
+#[cfg(test)]
+#[path = "app/scene_cache_tests.rs"]
+mod scene_cache_tests;
 
 /// The shipped pack's root, from this crate's own location.
 fn pack_root() -> std::path::PathBuf {
