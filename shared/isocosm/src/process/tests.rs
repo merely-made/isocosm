@@ -245,6 +245,27 @@ fn a_reference_resolves_to_the_definition_it_addresses() {
 }
 
 #[test]
+fn cached_addresses_match_fresh_definitions_after_admission() {
+    let mut defs: Vec<_> = Registry::native().all().cloned().collect();
+    defs.reverse();
+    defs[0].expressed_by = vec![Role::Limb];
+    let registry = Registry::admit(defs).unwrap();
+    for def in registry.all() {
+        let reference = def.reference();
+        assert_eq!(registry.resolve(reference), registry.all()
+            .find(|candidate| candidate.digest() == reference.definition));
+    }
+    assert_eq!(registry.clone(), registry);
+    assert!(registry.resolve(ProcessRef { definition: DefinitionDigest(0) }).is_none());
+    // The ruleset address remains the original sorted-digest fold.
+    let mut digests: Vec<_> = registry.all().map(ProcessDef::digest).collect();
+    digests.sort_unstable();
+    let mut bytes = (digests.len() as u64).to_le_bytes().to_vec();
+    for digest in digests { bytes.extend_from_slice(&digest.0.to_le_bytes()); }
+    assert_eq!(registry.digest().0, isometer_core::snapshot::hash_bytes(&bytes));
+}
+
+#[test]
 fn a_rule_bearing_byte_changes_the_digest() {
     let registry = Registry::native();
     let contract = registry.of_native(Process::Contract);

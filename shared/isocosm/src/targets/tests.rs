@@ -139,6 +139,31 @@ fn start(s: &mut Simulation) {
 }
 
 #[test]
+fn pass_books_are_reused_for_start_state_then_reset_for_next_pass() {
+    let (g, _, first, _) = fixture(17, 0);
+    let mut s = Simulation::new(g, Execution::Grouped).unwrap();
+    start(&mut s);
+
+    let expected = crate::anatomy::books(s.body_at_start(first).unwrap());
+    let cached = s.books_at_start(first).unwrap();
+    let again = s.books_at_start(first).unwrap();
+    assert!(std::sync::Arc::ptr_eq(&cached, &again), "same pass should reuse one ledger");
+    assert_eq!(cached.as_ref(), &expected, "cache agrees with uncached holdings");
+
+    assert!(s.apply(first, None, "test:spend", None, 1).accepted());
+    let after_mutation = s.books_at_start(first).unwrap();
+    assert!(std::sync::Arc::ptr_eq(&cached, &after_mutation));
+    assert_eq!(after_mutation.as_ref(), &expected);
+    assert_ne!(crate::anatomy::books(s.state.population.get(first).unwrap()), expected);
+
+    start(&mut s);
+    let next_uncached = crate::anatomy::books(s.body_at_start(first).unwrap());
+    let next = s.books_at_start(first).unwrap();
+    assert_eq!(next.as_ref(), &next_uncached);
+    assert!(!std::sync::Arc::ptr_eq(&cached, &next), "next pass must not reuse an old ledger");
+}
+
+#[test]
 fn moved_split_cohort_dead_and_born_candidates_keep_original_spans() {
     let mut draws = BTreeSet::new();
     for seed in 0..12 {
@@ -151,6 +176,8 @@ fn moved_split_cohort_dead_and_born_candidates_keep_original_spans() {
                 let p = s.genesis.rules.processes["ecology:feed-1"].clone();
                 let expected = expanded(&s, actor, &p, bound).unwrap();
                 assert_eq!(s.choose_target(actor, &p), Some(expected));
+                let pass_books = crate::anatomy::books(s.body_at_start(first).unwrap());
+                let cached_pass_books = s.books_at_start(first).unwrap();
                 let matter = s.matter();
                 for (id, process, count) in [
                     (first + 1, "test:move", 1),
@@ -166,12 +193,21 @@ fn moved_split_cohort_dead_and_born_candidates_keep_original_spans() {
                     );
                     assert_eq!(s.matter(), matter);
                     assert_eq!(
+                        s.books_at_start(first).unwrap().as_ref(),
+                        &pass_books,
+                        "cached pass-start holdings after {process}"
+                    );
+                    assert_eq!(
                         s.choose_target(actor, &p),
                         Some(expected),
                         "seed{seed}/{place}/{process}"
                     );
                     assert_eq!(expanded(&s, actor, &p, bound), Some(expected));
                 }
+                assert!(std::sync::Arc::ptr_eq(
+                    &cached_pass_books,
+                    &s.books_at_start(first).unwrap()
+                ));
                 assert_eq!(
                     s.state.population.next_id,
                     bound + 1,

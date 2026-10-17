@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::collections::BTreeMap;
 use std::rc::Rc;
 use isocosm::{Command, Execution, Session, attention::WindowId};
@@ -20,6 +20,7 @@ struct OpenWorld {
     sections: BTreeMap<String, Vec<u8>>,
     revision: u64,
     commit_gate: Option<Rc<dyn CommitGate>>,
+    native_cut: Cell<Option<Cut>>,
 }
 
 pub struct World(Rc<RefCell<OpenWorld>>);
@@ -29,6 +30,15 @@ pub struct Cut { pub tick: u64, pub entries: usize, pub state_hash: u64 }
 
 fn cut(session: &Session) -> Cut {
     Cut { tick: session.sim.state().tick, entries: session.entries.len(), state_hash: session.sim.state_hash() }
+}
+
+impl OpenWorld {
+    fn cut(&self) -> Cut {
+        if let Some(cut) = self.native_cut.get() { return cut; }
+        let cut = cut(&self.session);
+        self.native_cut.set(Some(cut));
+        cut
+    }
 }
 
 // Compare durable authority directly, avoiding two full witness encodings
@@ -51,6 +61,7 @@ impl World {
             sections,
             revision: 0,
             commit_gate: None,
+            native_cut: Cell::new(None),
         })))
     }
     pub fn share(&self) -> Self { Self(self.0.clone()) }
@@ -110,7 +121,9 @@ impl World {
     pub fn advance(&self, ticks: u64) -> Result<(), String> {
         self.transaction(None, |session| session.advance(ticks).map(|_| ()))
     }
-    pub fn cut(&self) -> Result<Cut, String> { self.read(cut) }
+    pub fn cut(&self) -> Result<Cut, String> {
+        Ok(self.0.try_borrow().map_err(|_| "world is being advanced")?.cut())
+    }
     /// The session borrowed for reading, as a driver's accessors lend it.
     /// Hold it no longer than a read: a transaction refuses while it lives.
     pub fn session(&self) -> Result<std::cell::Ref<'_, Session>, String> {
@@ -153,7 +166,7 @@ impl World {
     fn transaction<T>(&self, expected: Option<Cut>, admit: impl FnOnce(&mut Session) -> Result<T, String>)
         -> Result<T, String> {
         let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
-        if expected.is_some_and(|before| cut(&world.session) != before) {
+        if expected.is_some_and(|before| world.cut() != before) {
             return Err("prepared binding is stale".into());
         }
         let mut candidate = world.session.clone();
@@ -171,6 +184,7 @@ impl World {
                 )?;
             }
             world.session = candidate;
+            world.native_cut.set(None);
             world.revision = revision;
         }
         Ok(accepted)
@@ -181,6 +195,16 @@ impl World {
         self.transaction(Some(before), admit)
     }
 
+    /// Performs synchronous owner work against the current accepted world.
+    /// Use this only when the owner holds the world exclusively for the
+    /// operation; deferred work must keep using `product` with its saved cut.
+    pub fn product_current<T>(
+        &self,
+        admit: impl FnOnce(&mut Session) -> Result<T, String>,
+    ) -> Result<T, String> {
+        self.transaction(None, admit)
+    }
+
     /// Native admission and the mode sections it rewrites publish together.
     pub fn product_sections<T>(
         &self, before: Cut,
@@ -188,7 +212,7 @@ impl World {
             -> Result<(T, BTreeMap<String, Vec<u8>>), String>,
     ) -> Result<T, String> {
         let mut world = self.0.try_borrow_mut().map_err(|_| "world is being read")?;
-        if cut(&world.session) != before { return Err("prepared binding is stale".into()); }
+        if world.cut() != before { return Err("prepared binding is stale".into()); }
         let mut candidate = world.session.clone();
         let (value, sections) = admit(&mut candidate, &world.sections)?;
         if !same_authority(&candidate, &world.session) || sections != world.sections {
@@ -204,6 +228,7 @@ impl World {
                 )?;
             }
             world.session = candidate;
+            world.native_cut.set(None);
             world.sections = sections;
             world.revision = revision;
         }

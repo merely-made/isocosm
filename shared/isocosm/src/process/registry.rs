@@ -57,6 +57,9 @@ impl RulesetDigest {
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Registry {
     defs: Vec<ProcessDef>,
+    // Definitions are immutable after admission; retain their content addresses
+    // in the same canonical order instead of rehashing on every intake query.
+    digests: Vec<DefinitionDigest>,
 }
 
 /// The definitions this build ships, lowered onto the function catalogue
@@ -131,7 +134,8 @@ impl Registry {
         if let Some(pair) = defs.windows(2).find(|pair| pair[0].id == pair[1].id) {
             return Err(pair[0].id.clone());
         }
-        Ok(Self { defs })
+        let digests = defs.iter().map(ProcessDef::digest).collect();
+        Ok(Self { defs, digests })
     }
 
     pub fn all(&self) -> impl Iterator<Item = &ProcessDef> {
@@ -159,7 +163,9 @@ impl Registry {
     pub fn resolve(&self, reference: ProcessRef) -> Option<&ProcessDef> {
         self.defs
             .iter()
-            .find(|def| def.digest() == reference.definition)
+            .zip(&self.digests)
+            .find(|(_, digest)| **digest == reference.definition)
+            .map(|(def, _)| def)
     }
 
     /// The definition a native binding resolves to. Total for the natives
@@ -190,7 +196,7 @@ impl Registry {
     /// listed its files the other way round" provably not a rule change, while
     /// one flipped role or seeding byte in any one definition still moves this.
     pub fn digest(&self) -> RulesetDigest {
-        let mut digests: Vec<DefinitionDigest> = self.defs.iter().map(|def| def.digest()).collect();
+        let mut digests = self.digests.clone();
         digests.sort_unstable();
         let mut bytes = (digests.len() as u64).to_le_bytes().to_vec();
         for digest in digests {

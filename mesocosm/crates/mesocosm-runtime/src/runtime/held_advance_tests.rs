@@ -53,7 +53,9 @@ fn held_advance_discards_time_but_drains_a_queued_answer() {
 fn held_advance_adopts_external_world_revision() {
     let mut runtime = held();
     let before = runtime.seen.expect("runtime published initial state");
+    assert!(runtime.current_loop_phase().is_some());
     runtime.world().put_section("held-advance-control", vec![1]).unwrap();
+    assert_eq!(runtime.current_loop_phase(), None);
     let changed = runtime.world().revision().unwrap();
     assert_ne!(changed, before);
 
@@ -61,6 +63,7 @@ fn held_advance_adopts_external_world_revision() {
     assert_eq!(runtime.seen, Some(runtime.world().revision().unwrap()));
     assert_eq!(runtime.seen, Some(changed));
     assert!(runtime.checkpoint().is_some());
+    assert!(runtime.current_loop_phase().is_some());
 }
 
 #[test]
@@ -92,6 +95,7 @@ fn failed_publish_does_not_mark_world_revision_clean() {
     runtime.borrow_mut().publish();
     assert_eq!(calls.get(), 1);
     assert_eq!(runtime.borrow().seen, None);
+    assert_eq!(runtime.borrow().current_loop_phase(), None);
     assert_eq!(world.section(super::MODE).unwrap(), before);
     rejected.set(false);
     runtime.borrow_mut().publish();

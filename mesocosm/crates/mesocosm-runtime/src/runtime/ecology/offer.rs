@@ -28,7 +28,7 @@ pub(super) fn accepted(setup:&Setup,mut game:Game,admitted:AdmittedJointRun,
         product.spatial=game;
         // No generated advisory pose overwrites the actual assessed physical source.
         product.retain_origin(world);
-        product.spatial.ecology=Some(Seal {version:1,witness,admission});
+        product.spatial.ecology=Some(Seal::new(witness,admission));
         product.sync_loop(world);
         product.spatial.validate(&super::super::session(world))
     })?;

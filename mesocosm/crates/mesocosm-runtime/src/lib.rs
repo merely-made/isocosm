@@ -25,6 +25,7 @@ pub mod perception;
 pub mod readings;
 pub mod review;
 pub mod runtime;
+mod profile;
 pub mod succession;
 pub mod spatial;
 pub mod tactile;

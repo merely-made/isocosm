@@ -4,7 +4,7 @@
 //! Actual production clocks resolve chosen steps; input never directly moves a body.
 
 use super::*;
-use isocosm::spatial::{self as native, Preparation};
+use isocosm::spatial::{self as native, SpatialAdvance};
 use isometer_space::places::Places;
 use std::collections::VecDeque;
 
@@ -102,6 +102,7 @@ impl Game {
     fn preview(&self, sim: &Simulation, steps: &[native::Resolution], arrivals: &[native::ArrivalResolution],
         births: &[native::BirthResolution], geometry: &mut super::refresh::GeometryCache)
         -> Result<Self, String> {
+        let _span = crate::profile::Span::new("clock.preview");
         let mut game = self.clone();
         game.apply_arrivals(arrivals, sim.spatial_arrivals())?;
         game.apply_publications(sim, steps, births, sim.spatial_births(), sim.spatial_order())?;
@@ -114,47 +115,53 @@ impl Game {
     /// Trusted owner clock. Ordinary played inputs use `advance` and its native access gate.
     pub fn advance_clock(&mut self, session: &mut Session)
         -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, String> {
+        self.advance_clock_with_geometry(session, &mut super::refresh::GeometryCache::default())
+    }
+
+    pub(crate) fn advance_clock_with_geometry(&mut self, session: &mut Session,
+        geometry: &mut super::refresh::GeometryCache)
+        -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, String> {
+        let _span = crate::profile::Span::new("clock.total");
         self.version()?;
         let mut native_session = session.clone();
         let mut source = self.clone();
-        let mut geometry = super::refresh::GeometryCache::default();
-        source.refresh_with(&mut native_session, &mut geometry)?;
+        source.refresh_with(&mut native_session, geometry)?;
         let arrivals = source.arrival_inputs(&native_session)?;
         let mut terrain: Vec<native::TerrainResolution> = Vec::new();
         let mut steps: Vec<native::Resolution> = Vec::new();
         let mut births: Vec<native::BirthResolution> = Vec::new();
         let limit = native_session.sim.genesis().rules.limits.events_per_advance;
         loop {
-            match native_session.prepare_birth_spatial(1, &terrain, &steps, &arrivals, &births)? {
-                Preparation::Terrain(pending) => {
+            match crate::profile::measure("clock.prepare", ||
+                native_session.try_advance_birth_spatial_with_flows(1, &terrain, &steps, &arrivals, &births))? {
+                SpatialAdvance::Terrain(pending) => {
                     if terrain.len() + steps.len() + arrivals.len() >= limit
                         || terrain.iter().any(|r| r.request.action == pending.request.action)
                     { return Err("spatial terrain request made no finite progress".into()); }
-                    let game = source.preview(&pending.sim, &steps, &arrivals, &births, &mut geometry)?;
+                    let game = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?;
                     let answer = game.resolve(&pending)
                         .and_then(|actual| crate::terrain::resolved(&pending, actual)).map(|r| r.geometry);
                     terrain.push(native::TerrainResolution { request: pending.request, geometry: answer });
                 },
-                Preparation::Step(pending) => {
+                SpatialAdvance::Step(pending) => {
                     if terrain.len() + steps.len() + arrivals.len() >= limit
                         || steps.iter().any(|r| r.request.action == pending.request.action)
                     { return Err("spatial step request made no finite progress".into()); }
-                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births, &mut geometry)?.resolve_step(&pending);
+                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?.resolve_step(&pending);
                     steps.push(native::Resolution { request: pending.request, geometry: answer });
                 },
-                Preparation::Birth(pending) => {
+                SpatialAdvance::Birth(pending) => {
                     if births.len() as u128 >= u128::from(native_session.sim.genesis().rules.limits.entities)
                         || births.iter().any(|r| r.request.child == pending.request.child)
                     { return Err("biological placement request made no finite progress".into()); }
-                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births, &mut geometry)?.resolve_birth(&pending);
+                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?.resolve_birth(&pending);
                     births.push(native::BirthResolution { request: pending.request, geometry: answer });
                 },
-                Preparation::Ready(prepared) => {
-                    let accepted = prepared.steps.clone();
-                    let reports = prepared.arrivals.clone();
-                    let born = prepared.births.clone();
-                    let order = prepared.order.clone();
-                    let out = prepared.publish(&mut native_session)?;
+                SpatialAdvance::Advanced(out) => {
+                    let accepted = native_session.sim.spatial_steps().clone();
+                    let reports = native_session.sim.spatial_arrivals().to_vec();
+                    let born = native_session.sim.spatial_births().to_vec();
+                    let order = native_session.sim.spatial_order().to_vec();
                     let mut game = source;
                     let mut changes = game.apply_arrivals(&arrivals, &reports)?;
                     changes.extend(game.apply_publications(&native_session.sim, &steps, &births, &born, &order)?);
@@ -167,7 +174,7 @@ impl Game {
                             births: born, order, command_outcome: None });
                     }
                     game.version = game.current_version();
-                    game.refresh_with(&mut native_session, &mut geometry)?;
+                    game.refresh_with(&mut native_session, geometry)?;
                     *session = native_session;
                     *self = game;
                     return Ok(out);

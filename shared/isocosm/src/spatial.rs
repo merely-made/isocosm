@@ -24,7 +24,7 @@ pub(crate) use birth::BirthMark;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Publication { Step(Key), Birth(Id) }
-pub use advance::{Preparation, Prepared};
+pub use advance::{Preparation, Prepared, SpatialAdvance};
 pub use geometry::{check_step, neighbours};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 
 mod offer;
 mod seal;
-pub use seal::Seal;
+pub use seal::{Seal,SealData};
 
 fn has_living_role(genesis: &isocosm::simulation::Genesis, lineage: &str, role: &str) -> bool {
     genesis.population.groups.values().any(|group| {

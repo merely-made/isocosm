@@ -65,7 +65,7 @@ pub(super) fn root(state: &State) -> Child {
     }
     if state.question_open {
         let reading_root: fn(&mesocosm_views::Succession) -> mesocosm_views::SuccessionChild =
-            if state.host.continuation_open() {
+            if state.host.continuation_shown() {
                 super::super::continuation::root
             } else if state.host.directing_open() {
                 crate::directing::root
@@ -76,7 +76,7 @@ pub(super) fn root(state: &State) -> Child {
             move |v: &mut mesocosm_views::Succession| reading_root(v),
             |s: &mut State| &mut s.question,
         )));
-        let choosing = state.host.continuation_open() || state.host.directing_open();
+        let choosing = state.host.continuation_shown() || state.host.directing_open();
         if choosing {
             panels.push(button(
                 "Next choice",

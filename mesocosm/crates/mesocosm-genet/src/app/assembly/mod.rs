@@ -69,11 +69,15 @@ impl State {
     }
 
     fn refresh(&mut self) {
+        let start = std::time::Instant::now();
         let host = &mut self.host;
         host.refresh_scene();
+        let scene_us = start.elapsed().as_micros();
         host.update_follow();
         host.refresh_continuation();
+        let continuation_us = start.elapsed().as_micros();
         host.refresh_directing();
+        let directing_us = start.elapsed().as_micros();
         let r = &host.runtime;
         let sim = r.sim();
         let map_key = (r.revision().unwrap_or(0), r.critter());
@@ -106,6 +110,7 @@ impl State {
         if let Some(dev) = host.dev_reading() {
             self.dev = dev;
         }
+        let readings_us = start.elapsed().as_micros();
         let half = crate::section::half_height_or_default(host.config.slab_half_height);
         let at = host.follow_at();
         if let Some(scene) = &host.scene {
@@ -132,6 +137,11 @@ impl State {
         }
         self.refreshed_revision = r.revision().ok();
         self.refresh_required = false;
+        if std::env::var_os("MESOCOSM_PROFILE_ACTIVE").is_some_and(|value| value == "1") {
+            eprintln!("[mesocosm-view] scene={}us continuation={}us directing={}us readings={}us picture={}us",
+                scene_us, continuation_us - scene_us, directing_us - continuation_us,
+                readings_us - directing_us, start.elapsed().as_micros() - readings_us);
+        }
     }
 
     /// A held unchanged world has no new semantic view. Input handlers refresh

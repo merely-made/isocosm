@@ -47,11 +47,22 @@ pub(super) fn root(state: &Succession) -> SuccessionChild {
 }
 
 impl Host {
+    /// View construction reads the already refreshed pane. Native submission
+    /// still obtains and checks the current complete loop cut below.
+    pub(super) fn continuation_shown(&self) -> bool {
+        self.continuation.reading.is_some()
+    }
+
     pub(super) fn continuation_open(&self) -> bool {
+        if self.runtime.current_loop_phase().is_some_and(|phase| !active(phase)) { return false; }
         self.runtime.loop_reading().is_ok_and(|reading| active(reading.phase))
     }
 
     pub(super) fn refresh_continuation(&mut self) {
+        if self.runtime.current_loop_phase().is_some_and(|phase| !active(phase)) {
+            self.continuation = Pane::default();
+            return;
+        }
         match self.runtime.loop_reading() {
             Ok(reading) if active(reading.phase) => {
                 if self.continuation.selected.as_ref().is_some_and(|selected| !choices(&reading).contains(selected)) {

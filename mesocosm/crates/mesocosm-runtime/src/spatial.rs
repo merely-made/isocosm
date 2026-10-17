@@ -21,7 +21,8 @@ pub const UNMARKED_VERSION: u32 = 3;
 mod input;
 pub use input::{GameInput, Input};
 mod refresh;
-pub use refresh::Refresh;
+pub use refresh::{RealizedChecker, Refresh};
+pub(crate) use refresh::GeometryCache;
 mod profile;
 pub use profile::{Authored, Setup, Profile, StepInput, ArrivalInput, Driver};
 mod driver;
@@ -81,6 +82,7 @@ pub struct Game {
     pub sight: Option<SightConfig>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub continuation: Option<crate::continuation::Continuation>,
+    // Keep last: physical_digest appends this cached field to the JSON prefix.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ecology: Option<crate::runtime::ecology::Seal>,
 }

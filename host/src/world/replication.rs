@@ -73,6 +73,7 @@ impl World {
         }
         verify(&candidate, &sections, revision)?;
         world.session = candidate;
+        world.native_cut.set(None);
         world.sections = sections;
         world.revision = revision;
         Ok(())

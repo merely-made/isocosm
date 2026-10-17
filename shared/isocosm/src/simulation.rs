@@ -255,6 +255,14 @@ impl Simulation {
         let kept = self.frame.as_ref().and_then(|f| f.body(id));
         kept.or_else(|| self.state.population.get(id))
     }
+    /// A body's pass-start holdings, memoized only for this immutable frame.
+    pub(crate) fn books_at_start(&self, id: Id) -> Option<std::sync::Arc<Ledger>> {
+        let body = self.body_at_start(id)?;
+        Some(self.frame.as_ref().map_or_else(
+            || std::sync::Arc::new(crate::anatomy::books(body)),
+            |frame| frame.books(id, body),
+        ))
+    }
     /// A site as the pass under way began, or as it is.
     pub(crate) fn site_at_start(&self, id: Id) -> Option<&Site> {
         let kept = self.frame.as_ref().and_then(|f| f.site(id));

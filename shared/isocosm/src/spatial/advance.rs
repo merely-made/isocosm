@@ -8,6 +8,23 @@ use crate::{Session, Command, operations, simulation::Work, flows::{Flow, FlowRe
 
 pub enum Preparation { Terrain(operations::Pending), Step(Pending), Ready(Prepared), Birth(BirthPending) }
 
+/// One spatial clock attempt. Pending requests leave the supplied Session
+/// unchanged; Advanced publishes its private candidate synchronously.
+#[must_use]
+pub enum SpatialAdvance {
+    Terrain(operations::Pending),
+    Step(Pending),
+    Birth(BirthPending),
+    Advanced(FlowResult<Work>),
+}
+
+enum StagedAdvance {
+    Terrain(operations::Pending),
+    Step(Pending),
+    Birth(BirthPending),
+    Ready { candidate: Session, work: Work, flows: Vec<Flow> },
+}
+
 pub struct Prepared {
     candidate: Session, source: Key, pub work: Work,
     pub arrivals: Vec<ArrivalReport>, flows: Vec<Flow>,
@@ -36,30 +53,63 @@ impl Session {
 
     pub fn prepare_birth_spatial(&self, ticks: Tick, terrain: &[TerrainResolution],
         steps: &[Resolution], arrivals: &[ArrivalResolution], births: &[BirthResolution]) -> Result<Preparation> {
-        self.prepare_spatial_command(Command::AdvanceBirthSpatial {
+        let command = Command::AdvanceBirthSpatial {
             ticks, terrain: terrain.to_vec(), steps: steps.to_vec(), arrivals: arrivals.to_vec(), births: births.to_vec(),
-        })
+        };
+        self.prepare_spatial_command(command)
+    }
+
+    /// Prepares and publishes one owned spatial tick without hashing the
+    /// source Session: the exclusive borrow makes it impossible to change
+    /// between staging and publication. Pending requests do not mutate it.
+    pub fn try_advance_birth_spatial_with_flows(&mut self, ticks: Tick,
+        terrain: &[TerrainResolution], steps: &[Resolution], arrivals: &[ArrivalResolution],
+        births: &[BirthResolution]) -> Result<SpatialAdvance> {
+        let command = Command::AdvanceBirthSpatial {
+            ticks, terrain: terrain.to_vec(), steps: steps.to_vec(), arrivals: arrivals.to_vec(), births: births.to_vec(),
+        };
+        match self.stage_spatial_command(command)? {
+            StagedAdvance::Terrain(pending) => Ok(SpatialAdvance::Terrain(pending)),
+            StagedAdvance::Step(pending) => Ok(SpatialAdvance::Step(pending)),
+            StagedAdvance::Birth(pending) => Ok(SpatialAdvance::Birth(pending)),
+            StagedAdvance::Ready { candidate, work, flows } => {
+                let tick = candidate.sim.state().tick;
+                *self = candidate;
+                Ok(SpatialAdvance::Advanced(FlowResult { tick, result: work, flows }))
+            },
+        }
     }
 
     fn prepare_spatial_command(&self, command: Command) -> Result<Preparation> {
+        match self.stage_spatial_command(command)? {
+            StagedAdvance::Terrain(pending) => Ok(Preparation::Terrain(pending)),
+            StagedAdvance::Step(pending) => Ok(Preparation::Step(pending)),
+            StagedAdvance::Birth(pending) => Ok(Preparation::Birth(pending)),
+            StagedAdvance::Ready { candidate, work, flows } => Ok(Preparation::Ready(Prepared {
+                source: operations::source(self), work,
+                arrivals: candidate.sim.spatial_resolutions.reports.clone(),
+                steps: candidate.sim.spatial_resolutions.accepted.clone(),
+                births: candidate.sim.spatial_resolutions.birth_reports.clone(),
+                order: candidate.sim.spatial_resolutions.order.clone(), candidate, flows,
+            })),
+        }
+    }
+
+    fn stage_spatial_command(&self, command: Command) -> Result<StagedAdvance> {
+        let _span = crate::profile::Span::new("spatial.prepare");
         let mut candidate = self.clone();
         match candidate.command_with_flows(command) {
             Ok(outcome) => {
                 let work = candidate.sim.spatial_resolutions.work.take().ok_or("spatial work absent")?;
-                Ok(Preparation::Ready(Prepared { source: operations::source(self), work,
-                    arrivals: candidate.sim.spatial_resolutions.reports.clone(),
-                    steps: candidate.sim.spatial_resolutions.accepted.clone(),
-                    births: candidate.sim.spatial_resolutions.birth_reports.clone(),
-                    order: candidate.sim.spatial_resolutions.order.clone(),
-                    candidate, flows: outcome.flows }))
+                Ok(StagedAdvance::Ready { candidate, work, flows: outcome.flows })
             },
             Err(why) => {
                 if let Some(pending) = candidate.sim.spatial_resolutions.birth_pending.take() {
-                    Ok(Preparation::Birth(pending))
+                    Ok(StagedAdvance::Birth(pending))
                 } else if let Some(pending) = candidate.sim.spatial_resolutions.pending.take() {
-                    Ok(Preparation::Step(pending))
+                    Ok(StagedAdvance::Step(pending))
                 } else if let Some(pending) = candidate.sim.geometry_resolutions.pending.take() {
-                    Ok(Preparation::Terrain(pending))
+                    Ok(StagedAdvance::Terrain(pending))
                 } else { Err(why) }
             },
         }
@@ -77,6 +127,7 @@ impl Session {
 
     fn advance_spatial_inputs(&mut self, ticks: Tick, terrain: &[TerrainResolution],
         steps: &[Resolution], arrivals: &[ArrivalResolution], births: Option<&[BirthResolution]>) -> Result<String> {
+        let _span = crate::profile::Span::new("spatial.command");
         let count = terrain.len().checked_add(steps.len()).and_then(|n| n.checked_add(arrivals.len()))
             .ok_or("spatial input count overflow")?;
         if ticks != 1 || count > self.sim.genesis().rules.limits.events_per_advance {

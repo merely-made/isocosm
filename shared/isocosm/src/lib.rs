@@ -60,6 +60,7 @@ pub mod polities;
 pub mod preset;
 pub mod probe;
 pub mod process;
+mod profile;
 pub mod projects;
 pub mod party;
 mod queries;

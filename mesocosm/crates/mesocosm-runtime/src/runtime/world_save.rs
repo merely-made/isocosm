@@ -113,8 +113,8 @@ impl Runtime {
             .map(|seal| seal.witness.execution)
             .unwrap_or(Execution::Grouped);
         let world = World::resume(saved, execution)?;
-        let (lp, founded) = world.read(|session| {
-            game.spatial.validate_replay(session)?;
+        let (lp, founded, verified) = world.read(|session| {
+            let verified = crate::continuation::validate_replayed_question(session, &game.spatial)?;
             // Interim restores the controller metadata without issuing native
             // commands. Its temporary session is discarded; the core owns play.
             let continuation = game.spatial.continuation.as_ref();
@@ -140,7 +140,7 @@ impl Runtime {
                 pace,
                 on_collapse: settings.map(|s| s.on_collapse).unwrap_or(OnCollapse::Stay),
             };
-            Ok::<_, String>((Loop::split(interim).1, founded))
+            Ok::<_, String>((Loop::split(interim).1, founded, verified))
         })??;
         let mut runtime = Self::over_world(world, lp, founded, ticks_per_second);
         let (queued, fault) = runtime.with_product(|product, world| {
@@ -162,6 +162,7 @@ impl Runtime {
         runtime.driver.restore_queue(queued);
         runtime.driver.restore_fault(fault);
         runtime.publish();
+        runtime.driver.product_mut().verified_question = verified;
         Ok(runtime)
     }
 }

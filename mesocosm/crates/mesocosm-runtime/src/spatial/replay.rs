@@ -23,6 +23,7 @@ impl Game {
     }
 
     fn validate_inner(&self, session: &Session, replay: bool) -> Result<(), String> {
+        let _span = crate::profile::Span::new("game.validate");
         self.version()?;
         if let Some(seal)=&self.ecology {seal.validate(session,replay)?;}
         if let Some(saved) = &self.continuation {

@@ -77,7 +77,8 @@ impl Game {
         };
         let range = *config.ranges.get(&observer).ok_or("marked sight has no authored range for the current observer")?;
         let at = self.members.get(&observer).ok_or("marked sight observer has no current physical eye binding")?;
-        at.realized(sim)?;
+        let mut realized = super::RealizedChecker::new(sim);
+        realized.check(at)?;
         let volume = sim.volume(at.site.0, at.window.min, at.window.max, at.window.depth)?;
         let site = InSite::of(sim, volume, at.places.unwrap_or_default())?;
         let mut targets = BTreeMap::new();
@@ -85,7 +86,7 @@ impl Game {
             if id == observer || !visible.shows(id) || held.site != at.site { continue; }
             let Some(member) = sim.state().population.get(id) else { continue; };
             if member.body.is_none() || member.resident_site() != Some(at.site.0) { continue; }
-            held.realized(sim)?;
+            realized.check(held)?;
             let cell = held.pose.at;
             if !site.volume().holds(cell[0], cell[2]) || cell[1] < site.volume().datum
                 || cell[1] >= site.volume().ceiling() { continue; }
