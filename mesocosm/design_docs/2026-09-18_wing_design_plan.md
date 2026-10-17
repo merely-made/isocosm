@@ -11852,7 +11852,16 @@ what later sections derive from.
      One host remains the sole accepting writer. The first serialized
      in-process controls precede the actual transport and product gates.
 
-     Next unused 961.
+961. **Mesocosm defaults to the named A1 preset; the shared generator stays Stock.**
+     Asked 2026-10-17 after the three A1 candidate forms reached 20/20, since
+     907 kept default rates at Stock while H6 needs a playable default launch.
+     Options: (1) Mesocosm defaults to A1, generator stays Stock; (2) keep
+     Stock in Mesocosm and require explicit A1 selection. Mark: "Mesocosm
+     defaults to A1; generator stays Stock". This product-specific exception
+     applies once the remaining receipt and physical-witness gates pass. The
+     shared generator default and the unchanged A1 qualification gate remain.
+
+     Next unused 962.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

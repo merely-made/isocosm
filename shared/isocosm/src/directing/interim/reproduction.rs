@@ -296,7 +296,7 @@ fn sweep(form: Form, original: bool, pilot: Option<Outcome>) -> Vec<(u64, Outcom
                         crate::digest(&g)
                     );
                     let out = played_recorded(
-                        g, None, Some(matrix::Draw { seed, form, original }),
+                        g, None, Some(matrix::Draw { seed, form, original, recovery: false }),
                     );
                     send.send((seed, out)).unwrap();
                 }
@@ -385,6 +385,12 @@ fn consumer_reproduction_profile_probe() {
 fn bodied_preparation_name(original: bool) -> String {
     let arm = if original { "original" } else { "candidate" };
     format!("q3-primary-final-state-bodied-seed0-prepared-{arm}-genesis.json")
+}
+
+#[test]
+#[ignore = "recovery writes only missing bodied-stock draws under a separately capped receipt prefix"]
+fn consumer_reproduction_bodied_original_receipt_recovery() {
+    matrix::run_recovery();
 }
 
 fn prepared_bodied(original: bool) -> Genesis {

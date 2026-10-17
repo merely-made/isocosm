@@ -18,7 +18,7 @@ The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture
 path landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 are built
-(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused959.
+(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). 905 and 906 make grazing consumers and a death hazard under an old-age ceiling the generator's; 907 keeps A1's candidate rates as a named world preset, defaults unchanged; the A1 lane carries them on `a1-reproduction` (908). Next unused962.
 
 **Status, 2026-10-10:** in progress. Opened by ruling 789; this plan is 790's
 single home for every deferred done-condition.
@@ -93,6 +93,24 @@ A1's gate stands unamended (907): the played founding must reach 20/20. The
 one miss, seed 9, persists under the declared rates; the later chooser
 diagnosis below identifies its missed meals and synchronized movement. *2026-10-16:* 935 rules the 100-base ceiling, and the branch
 is reviewed and merged into main (947).
+
+**2026-10-17, 958 complete matrix: A1 qualifies.** Played, bare and bodied
+candidates each pass the unchanged 20/20 gate; all three Stock controls are
+0/20 with extinction. Every actual round conserves matter, and final native
+saves replay exactly in Individuals and Grouped for all 120 draws. The
+independent complete read is `a1-2026-10-17-seeded-complete-matrix-summary.json`
+in the Q3 receipt directory, pointing at six per-arm verification summaries.
+The last Stock arm hit the prewrite receipt cap after seven completed draws;
+its thirteen missing receipts were recovered with canonical generator inputs
+and exact native saved history, omitting duplicate Genesis bytes. Original
+bytes, partial failures and failed compile logs are preserved. Matrix plus
+recovery raw artifacts total 95,364,456 bytes; the complete retained scope is
+under 100 MB. Current release directing controls pass 52, fail 0, with 17
+deliberate ignores. No rates, seed set, extinction check or qualification
+criterion changed for recovery. Ruling 961 selects A1 for Mesocosm's default
+once its physical witness passes, retaining Stock as the shared generator
+default. The generated physical joint witness is still running; this matrix
+does not by itself open default head launch.
 
 **2026-10-17, 958 pilot:** new generated played worlds explicitly select
 seeded movement ties; absent/older rules retain identity order and omit the
@@ -277,7 +295,7 @@ so `one_budget_pages_a_region_that_cannot_be_wholly_resident`,
 `the_stable_cache_retargets_without_changing_its_extents` remain explicit
 open V1/V1b obligations. Exposing the residency implementation to the ordinary
 producer does not qualify that far window or all-feature runtime. The
-all-feature compiler receipt is separate. No atlas budget is enlarged and
+all-feature compiler receipt is separate. A 2026-10-17 camera-frustum probe still selected 2,573 conservative near-camera and 5,078 far-camera AABB candidates, beyond both capacities. These are not exact per-ray visibility counts; the three controls still stop at page creation. The probe source was reverted and its failed log plus `v1-far-window-analysis.md` retained. No atlas budget is enlarged and
 these three tests are not deleted or renamed.
 
 ## A3. Deferred done-conditions, by owner
@@ -374,9 +392,11 @@ headed meal choice feels tense rather than clerical.
 
   Historical `a1-2026-10-14-declaration-hashes.txt` and
   `a1-2026-10-15-*-head*.txt` citations below were absent on this laptop
-  before this pass. Their existence and hashes on the former machine remain
-  unverified. They stay historical citations; none is reconstructed or
-  promoted as current reproducible evidence.
+  before this pass. On 2026-10-17 a read-only filename search of `~/Code/testing`
+  on both `imac-intel` and `imac-m4` also found neither pattern. Archive contents
+  and other locations were not searched, so deletion history remains unknown.
+  `h6-2026-10-16/historical-a1-receipt-audit.json` records that scope. These
+  unresolved historical citations are not promoted as reproducible evidence.
 
 - **2026-10-14, A1 reopened under 888; the bodied arm fails on a drawn
   mouth, not on rates.** Source: main `ce01da2d` plus the test-only harness

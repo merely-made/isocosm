@@ -12,7 +12,7 @@ use crate::ecology::Rates;
 /// worlds; played is Mesocosm's own generated founding, copied from
 /// `mesocosm-runtime/src/runtime.rs` (`Founded::generated`), which this crate
 /// cannot depend on. Bodied worlds graze by default (905).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, serde::Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub(super) enum Form {
     Bare,
     Bodied,
@@ -36,7 +36,7 @@ impl Form {
         self.bodied().then(Bodies::default)
     }
 
-    fn founding(self, seed: u64, rates: Rates) -> Founding {
+    pub(super) fn founding(self, seed: u64, rates: Rates) -> Founding {
         let played = Some(Played { lineage: 1, region_sites: 2 });
         if self == Self::Played {
             let grid = crate::map::Grid { width: 3, height: 2, ..crate::map::Grid::drawn(seed) };
@@ -68,11 +68,20 @@ impl Form {
 
 pub(super) fn world(seed: u64, form: Form, original: bool) -> Genesis {
     let rates = if original { Rates::Stock } else { Rates::A1 };
-    let mut g = form.founding(seed, rates).generate().unwrap();
+    let founding = form.founding(seed, rates);
+    world_from_founding(founding, original, std::env::var("ISOCOSM_REPRO_TWEAK").ok().as_deref())
+}
+
+pub(super) fn world_from_founding(
+    founding: Founding,
+    original: bool,
+    adjustment: Option<&str>,
+) -> Genesis {
+    let mut g = founding.generate().unwrap();
     g.rules.epoch_ticks = EPOCH;
     check(&g, original);
     let lineages = u64::from(g.founding.as_ref().unwrap().lineages);
-    tweak(&mut g, lineages);
+    tweak(&mut g, lineages, adjustment);
     g
 }
 
@@ -107,8 +116,8 @@ fn check(g: &Genesis, original: bool) {
 /// `upkeep=N`, `feed=N`, `gate=N`, `provision=N`, `bperiod=N` (consumer rates) and
 /// `lifebase=N` (every lineage's lifespan ceiling is N plus a draw of 0 to 40). Absent,
 /// the world is exactly the generator's stock rates or its A1 preset.
-fn tweak(g: &mut Genesis, lineages: u64) {
-    let Ok(list) = std::env::var("ISOCOSM_REPRO_TWEAK") else { return };
+fn tweak(g: &mut Genesis, lineages: u64, list: Option<&str>) {
+    let Some(list) = list else { return };
     let seed = g.seed;
     let processes = &mut g.rules.processes;
     for pair in list.split(',').filter(|p| !p.is_empty()) {

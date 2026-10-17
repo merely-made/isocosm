@@ -18,7 +18,7 @@ The [assembled certification record](2026-10-13_assembled_certification.md)
 owns hashes, qualifications and remaining done-conditions. Ruling 888 opens
 tuning ("Tuning's open."); A1 resumes first; 890's producer capture path
 landed on branch `a1-reproduction`, merged and pushed 2026-10-15 (929, 930); 889 and 891 are built
-(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). Next unused958.
+(`lane-generator-templates`, merged and pushed 2026-10-15; 932, 933). Next unused962.
 
 The newest Progress entry below owns execution state. The following block
 records an earlier resumed snapshot; later checkpoints and parked lanes
@@ -442,6 +442,17 @@ is never rewritten: later changes are annotations or new rulings naming what
 they amend. Carry each ruling into every plan it touches in the same commit.
 
 ## Progress
+
+- **2026-10-17, session handoff:** this session owns A1 and F1 to F8.
+  The receipt budget also lives in `Code/AGENTS.md`, applying across repos.
+  F triage is recorded in the after-pass; H5/H6 and H7's ruled choices
+  (959, 960) are recorded in the sim-host plan. A1's complete 120-draw read
+  qualifies all three candidates at 20/20 against Stock 0/20, with actual
+  conservation and both final native replays. Exact receipt recovery stays
+  below 100 MB and preserves every earlier byte. The after-pass records the
+  earlier pilot overrun and unresolved historical citations. Under 961,
+  Mesocosm will default to A1 after its physical gate, while the shared
+  generator stays Stock. Next unused ruling: 962.
 
 - **2026-10-12, 846 to850:** all five answers are recorded verbatim.
   Native corpse visibility and current corpse-pose consumers are placed,
