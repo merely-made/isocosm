@@ -14,7 +14,7 @@
 //! frame, exact per-transition upload accounting, retained one-frame
 //! recovery, and records wgpu's allocator report beside the logical bytes.
 
-use std::{sync::Arc, time::Instant};
+use std::{path::PathBuf, sync::Arc, time::Instant};
 
 #[path = "v1b_residency/receipt.rs"]
 mod receipt;
@@ -42,11 +42,24 @@ use winit::{
     window::{Window, WindowId},
 };
 
-const CAPTURE: &str = r"C:\Users\mark_\Code\testing\paredros\v1b_residency.png";
-const RECEIPT: &str = r"C:\Users\mark_\Code\testing\paredros\v1b_residency.json";
 const TRAVEL_FRAME: u64 = 72;
 
+fn output_path(name: &str) -> PathBuf {
+    std::env::var_os("EPONYM_V1_OUTPUT_DIR")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| PathBuf::from(r"C:\Users\mark_\Code\testing\paredros"))
+        .join(name)
+}
+
 fn main() {
+    for name in ["v1b_residency.png", "v1b_residency.json"] {
+        let path = output_path(name);
+        assert!(
+            !path.exists(),
+            "refusing to overwrite receipt {}",
+            path.display()
+        );
+    }
     let scene = ResidencyScene::grow();
     let event_loop = EventLoop::new().expect("winit event loop");
     event_loop.set_control_flow(ControlFlow::Poll);
@@ -259,10 +272,11 @@ impl StableApp {
             );
         }
 
+        let camera = self.scene.camera(distance, aspect);
         let page_began = Instant::now();
         let outcome = live
             .stable
-            .prepare(&self.scene, visible)
+            .prepare_view(&self.scene, visible, camera, SIZE)
             .expect("camera range has a V1b page");
         let page_prepare_us = page_began.elapsed().as_micros() as u64;
         let page_transition = outcome.is_some();
@@ -278,7 +292,6 @@ impl StableApp {
             live.current = outcome.metrics;
         }
 
-        let camera = self.scene.camera(distance, aspect);
         let pose = scene::body_pose(self.scene.focus);
         let diagnostics = live
             .tenant
@@ -340,6 +353,7 @@ impl StableApp {
         }
 
         if frame == 0 {
+            wait_for_gpu(&live.device);
             self.allocator_after_first = allocated_bytes(&live.device);
         }
         let sample = FrameSample {
@@ -382,6 +396,7 @@ impl StableApp {
         self.samples.push(sample);
 
         if self.samples.len() == V1_FRAMES as usize {
+            wait_for_gpu(&live.device);
             let allocator_after_last = allocated_bytes(&live.device);
             report(
                 &live.composer,
@@ -393,6 +408,8 @@ impl StableApp {
                 self.allocator_after_first,
                 allocator_after_last,
                 live.device.limits().max_texture_dimension_3d,
+                &output_path("v1b_residency.png"),
+                &output_path("v1b_residency.json"),
             );
             event_loop.exit();
         } else {
@@ -405,6 +422,12 @@ fn allocated_bytes(device: &wgpu::Device) -> Option<u64> {
     device
         .generate_allocator_report()
         .map(|report| report.total_allocated_bytes)
+}
+
+fn wait_for_gpu(device: &wgpu::Device) {
+    device
+        .poll(wgpu::PollType::wait_indefinitely())
+        .expect("V1b allocator sample waits for submitted GPU work");
 }
 
 fn configure(live: &mut Live) {
