@@ -259,6 +259,20 @@ mod stored_suffix;
 
 pub use stored_suffix::{StoredSuffix, read_stored_suffix};
 
+mod endpoint_bridge;
+pub use endpoint_bridge::{
+    AdmittedEndpointRequest, AdmittedRequestPump, AuthenticatedPeerKey, BridgeEndpoint,
+    EndpointAnswer, EndpointBridgeError, EndpointBridgeLimits, EndpointCall,
+    MAX_ENDPOINT_BRIDGE_QUEUE, MAX_ENDPOINT_MESSAGE_BYTES, MAX_ENDPOINT_RESPONSE_TIMEOUT,
+    MissingAuthenticatedPeer,
+};
+mod record_outbox;
+pub use record_outbox::{
+    FamilyRecordBatch, FamilyRecordOutbox, MAX_FAMILY_RECORD_BATCH_BYTES, MAX_FAMILY_RECORD_BATCHES,
+};
+mod lifecycle;
+pub use lifecycle::{FamilyHostNetwork, FamilyReplicaNetwork, MAX_REPLICA_RECORD_QUEUE};
+
 /// Graphshell's admitted stream path, re-exported at the Isocosm family seam.
 ///
 /// Admission and request semantics remain owned by Graphshell. Isocosm owns

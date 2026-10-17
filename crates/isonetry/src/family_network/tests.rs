@@ -577,3 +577,6 @@ fn test_grant() -> insigne::delegation::SignedDelegationCertificate {
 
 #[path = "validation.rs"]
 mod validation;
+
+#[path = "lifecycle_tests.rs"]
+mod lifecycle_tests;
