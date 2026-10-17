@@ -335,7 +335,7 @@ starts.
   2026-10-16 was this suite's last run; no lane that moved the sim after it
   reran the pins. Findings carried: the body tenant lights with ambient only
   (`LightBlock { ambient, ..Default::default() }` leaves the sun `None` and
-  shadows off), so the seed-9 capture reads as flat boxes; the default
+  shadows off), so the seed-9 capture lights its bodies only by the per-face tint isometer bakes in (face_shade), with no sun; the default
   launch's first capture is a loss checkpoint with a withdrawn viewport, and
   no capture with a visible site exists after 08:52, the five inspected PNGs
   since being byte-identical copies of that frame; the configured tempo is
