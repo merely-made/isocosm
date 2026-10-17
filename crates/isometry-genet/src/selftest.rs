@@ -14,10 +14,12 @@ use layout_dom_api::{LayoutDom as _, LocalName, Namespace};
 
 use super::*;
 
+pub(crate) use family::FamilySelftest;
 pub(crate) use overlays::OverlayArm;
 
 mod adjudicate;
 mod board;
+mod family;
 mod overlays;
 mod session;
 mod surfaces;

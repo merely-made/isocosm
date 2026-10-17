@@ -11,11 +11,16 @@ description = "Isometry's desktop application over the shared Cambium desktop ho
 [dependencies]
 isometry-core = { workspace = true }
 isometry-campaign = { workspace = true }
-isocosm-vtt = { workspace = true, default-features = false }
+isocosm-vtt = { workspace = true, default-features = false, features = ["endpoint"] }
 isocosm = { workspace = true }
+isocosm-host = { path = "../../host" }
 isocosm-overlay = { workspace = true }
 isometry-views = { workspace = true }
-isonetry = { workspace = true, features = ["iroh"] }
+isonetry = { workspace = true, features = ["iroh", "family-net"] }
+notochord = { workspace = true }
+# Direct endpoint contract use in the Genet-owned FamilyTable adapter.
+chirograph = { workspace = true }
+graphshell-endpoint = { workspace = true }
 isometry-system = { workspace = true }
 tokio = { version = "1", features = ["rt-multi-thread", "sync", "macros", "time"] }
 cambium = { workspace = true }

@@ -98,6 +98,10 @@ impl CampaignRepository {
 }
 
 #[cfg(test)]
+#[path = "campaign_store/h7_bench_fixture.rs"]
+mod h7_bench_fixture;
+
+#[cfg(test)]
 mod tests {
     use super::*;
     use isometry_campaign::{
@@ -106,6 +110,7 @@ mod tests {
     };
     use isometry_core::{MapDocument, TokenId, TurnList};
     use isonetry::GameEvent;
+
 
     #[test]
     fn campaign_checkpoint_survives_reopen() {

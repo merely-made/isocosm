@@ -12,6 +12,102 @@ impl App {
     /// Consume one-shot state requests (save/load) and repaint: the
     /// tail of every dispatch.
     pub(crate) fn after_dispatch(&mut self, ctx: &mut Ctx<'_>) {
+        if self.family_table.is_some() {
+            let mut network_processed = false;
+            let mut network_error = None;
+            let mut closed_pumps = Vec::new();
+            let mut budget = 4;
+            if let Some(table) = self.family_table.as_mut() {
+                for (index, pump) in self.family_request_pumps.iter().enumerate() {
+                    if budget == 0 {
+                        break;
+                    }
+                    match table.pump_admitted_requests(pump, budget) {
+                        Ok(count) => {
+                            network_processed |= count > 0;
+                            budget -= count;
+                        },
+                        Err(error) => {
+                            closed_pumps.push(index);
+                            network_error.get_or_insert(error);
+                        },
+                    }
+                }
+            }
+            for index in closed_pumps.into_iter().rev() {
+                self.family_request_pumps.remove(index);
+            }
+            let network_projections = if network_processed {
+                self.family_table.as_mut().map(family_table::FamilyTable::projections)
+            } else {
+                None
+            };
+            let mut action = None;
+            let mut legacy_events = Vec::new();
+            let mut save_or_load = false;
+            let mut load_requested = false;
+            ctx.runner.update(|ui| {
+                action = ui.take_vtt_action_request();
+                legacy_events = std::mem::take(&mut ui.net_outbox);
+                let save = std::mem::take(&mut ui.save_requested);
+                load_requested = std::mem::take(&mut ui.load_requested);
+                save_or_load = save || load_requested;
+            });
+            if let Some(error) = network_error {
+                ctx.runner.update(|ui| {
+                    ui.status = format!("Peer session ended: {error}");
+                });
+            }
+            if let Some(result) = network_projections {
+                ctx.runner.update(|ui| match result {
+                    Ok(projections) => ui.set_vtt_projections(projections),
+                    Err(error) => ui.status = format!("VTT projection refresh failed: {error}"),
+                });
+            }
+            if let Some(request) = action {
+                let table = self.family_table.as_mut().expect("checked above");
+                let outcome = table.invoke(request);
+                let projections = table.projections();
+                ctx.runner.update(|ui| {
+                    ui.status = match outcome {
+                        Ok(chirograph::IntentResult::Accepted) => "Action accepted".into(),
+                        Ok(chirograph::IntentResult::Rejected { reason }) => {
+                            format!("Action refused: {reason}")
+                        },
+                        Ok(chirograph::IntentResult::Stale { .. }) => {
+                            "That view changed before the action was applied. Review the refreshed table.".into()
+                        },
+                        Err(error) => format!("Action failed: {error}"),
+                    };
+                    match projections {
+                        Ok(projections) => ui.set_vtt_projections(projections),
+                        Err(error) => {
+                            ui.status = format!("family projection refresh failed: {error}")
+                        },
+                    }
+                });
+            } else if !legacy_events.is_empty() {
+                ctx.runner.update(|ui| {
+                    ui.status = "legacy table events are disabled; use an action shown by the VTT projection".into();
+                });
+            }
+            if save_or_load {
+                ctx.runner.update(|ui| {
+                    let table_status = if self.family_table.as_ref().is_some_and(|table| table.is_durable()) {
+                        "Table changes are saved automatically. Private GM data remains in its separate campaign store."
+                    } else {
+                        "This table has no saved campaign. Changes will be lost when the app closes."
+                    };
+                    let load_status = if load_requested {
+                        " To switch tables, restart the app with the other campaign."
+                    } else {
+                        ""
+                    };
+                    ui.status = format!("{table_status}{load_status}");
+                });
+            }
+            return;
+        }
         if let Some(board) = &mut self.scene_board {
             board.save_preferences(ctx);
         }

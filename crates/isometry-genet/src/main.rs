@@ -32,11 +32,13 @@
 //! `on_hover` and `on_wheel` handlers on the board pane in `isometry-views`,
 //! which is where the tile-under-a-pointer projection already lived.
 //!
-//! Sessions (I4): `--host` binds an iroh session and prints a join ticket;
-//! `--join <ticket>` dials it. `--campaign <name>` restores that campaign's
-//! durable checkpoint before a host accepts peers. In a session the view is
-//! Remote — play routes through the host authority (`net` bridges the async
-//! session to this sync loop). Env hooks: `ISOMETRY_PROFILE=1` (frame timers +
+//! The legacy `--host` / `--join` mutable GameSnapshot path is retired.
+//! `--campaign <name>` restores the local/private checkpoint and paired family
+//! ledger when native table bindings are present. The family page renders
+//! disclosed VTT projections and routes actions through its owner-thread
+//! endpoint. Peer transport remains disabled until configured peer identity
+//! and admission authority are available. Env hooks:
+//! `ISOMETRY_PROFILE=1` (frame timers +
 //! net trace), `ISOMETRY_CAPTURE_DIR` (one final self-capture),
 //! `ISOMETRY_CAPTURE_EVERY_FRAME=1` (continuous diagnostic self-capture),
 //! `ISOMETRY_SYNTH=1` (stress board), `ISOMETRY_NET_SELFTEST=1` (fire one
@@ -71,6 +73,7 @@ use isometry_views::{
     NetMode, PANEL_W, SheetSchema, SpellRow, StoryletRow, UiChild, UiState, board_css, board_root,
     demo_map, synth_map,
 };
+use isonetry::family_network::AdmittedRequestPump;
 use isonetry::{
     ActionIntent, ActionResolved, GameEvent, GameSnapshot, HostSession, RequestId, apply_game,
 };
@@ -89,6 +92,7 @@ mod catalog;
 mod seeded_selection;
 use seeded_selection as generator_selection;
 mod dispatch;
+mod family_table;
 mod generators;
 mod hooks;
 // Host-routing receipts, driven through the shared host with no window.
@@ -130,7 +134,7 @@ mod watchtower_tests;
 pub(crate) use boot::{campaign_path, map_path};
 use campaign_store::{CampaignCheckpoint, CampaignRepository};
 use catalog::{bestiary_of, items_of, schema_of, spells_of};
-use net::{NetBridge, Role};
+use net::NetBridge;
 use sprigging::ColorF;
 
 /// The view logic the runner diffs: one screen root over one state.
@@ -263,6 +267,15 @@ struct App {
     campaign_arg: Option<String>,
     /// The live session bridge in networked mode.
     net: Option<NetBridge>,
+    /// Native VTT projections and single-writer FamilyHost on the UI thread.
+    family_table: Option<family_table::FamilyTable>,
+    /// Bounded requests from already-admitted Graphshell sessions. The
+    /// transport setup remains unavailable until the app has proper identity
+    /// and admission configuration.
+    family_request_pumps: Vec<AdmittedRequestPump>,
+    /// Coalesced winit wake callback, retained for the future admitted-stream
+    /// adapter so queued requests can schedule an owner-thread drain.
+    pub(crate) family_wake: Option<cambium_genet_winit_host::HostWake>,
     /// Last session version pulled into the UI; a bump means redraw.
     last_net_version: u64,
     /// `ISOMETRY_NET_SELFTEST=1`: fire one end-turn from inside the app a
@@ -317,6 +330,9 @@ struct App {
     turns_selftest: bool,
     terrain_receipt: Option<selftest::TerrainReceipt>,
     turns_fired: bool,
+    /// `ISOMETRY_H7_FAMILY_SELFTEST`: drive the admitted table page through
+    /// party selection and native join, then verify the accepted replay.
+    family_selftest: Option<selftest::FamilySelftest>,
     /// `ISOMETRY_SELECT_SELFTEST`: B3's headed receipt. Press on raised ground
     /// and right-press a token, both through the board's own pointer path, and
     /// leave the selection and the menu standing for a capture.
