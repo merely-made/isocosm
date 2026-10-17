@@ -12007,7 +12007,35 @@ what later sections derive from.
      now, in parallel; (3) record only. Mark: "After 966, on a cheaper model
      (Recommended)".
 
-     Next unused 975.
+975. **The core's tick cost is cut by sharing cohorts, copy on write.**
+     Asked 2026-10-17 with the split of step 1 (966): on the seed-9 save 15
+     ticks take 26.3 s profiled and 20.6 s unprofiled; Session clones and
+     drops are 13.25 s (50%), seven clones per tick at about 62 ms to clone
+     and 36 ms to drop, 95% of each in `state.population` (2,000+ cohorts,
+     28.5 MB serialised); native scheduling is 7.75 s (29%); the refresh
+     member checks cost 0.008 s and the Game clone 1.5 ms; one refresh per
+     tick saves only about 3.9 s. Options: (1) share cohorts behind an Arc,
+     copying on write, serialisation and hashes unchanged (recommended); (2)
+     cut the clone count only; (3) both, in that order; (4) re-aim first.
+     Mark: "Share cohorts, copy on write (Recommended)". Reading, not ruled:
+     the refresh stays three per tick unless the measurement afterwards
+     still points at it; 966's "once per tick" was premised on checks that
+     measure as free.
+
+976. **966's done-condition is relaxed to a measured figure: under 8 s.**
+     Asked 2026-10-17 with the scheduling floor (about 5 s unprofiled,
+     spiky) that copying cannot remove: Mark: "Relax to a measured figure",
+     and, asked for the number (options under 8 s, under 5 s, or whatever
+     copying yields): "Under 8 s for 15 ticks (Recommended)". This amends
+     966's 1.5 s: the lane is done when the seed-9 save runs its 15 ticks in
+     under 8 s on the shipping head, unchanged hashes. The 1.5 s tempo
+     question (10 ticks per second against about 0.5 s per tick) stays open
+     for a later ruling. Reading, not ruled: "the seed-9 save" and the head
+     run are both measured, the saved game by `mesocosm-active-profile`
+     (tick 70 to 85) and the head by `mesocosm-genet` (tick 75, hash
+     `90c45b8673d88264` or the current main's receipt).
+
+     Next unused 977.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
