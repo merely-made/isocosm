@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::FoundingError;
-use crate::{CampaignMap, LowerDraftMap};
-use crate::{CampaignDraft, DraftMap, ItemProposal, StoryletProposal};
+use isometry_campaign::{CampaignMap, LowerDraftMap};
+use isometry_campaign::{CampaignDraft, DraftMap, ItemProposal, StoryletProposal};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 

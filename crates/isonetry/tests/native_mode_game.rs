@@ -1,17 +1,17 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-#[path = "../../isometry-campaign/tests/native_founding/fixture.rs"]
+#[path = "../../isocosm-vtt/tests/native_founding/fixture.rs"]
 mod fixture;
 use isocosm::{Execution, Session};
-use isometry_campaign::founding::{Campaign, NativeWorld};
+use isocosm_vtt::founding::{Campaign, NativeWorld};
 use isometry_core::{MapDocument, TurnList};
 use isonetry::{GameSnapshot, ModeGame};
 use std::collections::{BTreeMap, BTreeSet};
 
 #[test]
 fn vtt_mode_bytes_keep_table_data_but_borrow_native_authority_on_resume() {
-    let campaign = Campaign::from_draft(fixture::genesis(), &fixture::draft(), Execution::Grouped)
+    let campaign = Campaign::from_draft_bench(fixture::genesis(), &fixture::draft(), Execution::Grouped)
         .unwrap().campaign;
     let state = GameSnapshot {
         map: MapDocument::new("inert", 3, 3), turns: TurnList::new(), roll_log: Vec::new(),

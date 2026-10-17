@@ -3,7 +3,7 @@
 
 use super::*;
 use super::super::{GameBindings, AdmissionBatch, items, physical_map, submit_game_access};
-use crate::{StoryletProposal, StoryletResolution};
+use isometry_campaign::{StoryletProposal, StoryletResolution};
 
 pub fn public_outputs(source: &StoryletProposal, resolved: StoryletResolution) -> ComposedStoryletPublic {
     ComposedStoryletPublic { key: source.key.clone(), source_digest: isocosm::digest(source),

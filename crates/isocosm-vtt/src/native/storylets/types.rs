@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::StoryletInput;
-use crate::{ItemId, StoryletEffect};
+use isometry_campaign::{ItemId, StoryletEffect};
 use crate::native::{CharacterPlacement,CharacterSpatialPlacement, items::ItemInput, physical_map::PhysicalMapInput};
 use isocosm::schema::{Id, Key};
 use serde::{Deserialize, Serialize};

@@ -1,10 +1,10 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-#[path = "../../isometry-campaign/tests/native_founding/fixture.rs"]
+#[path = "../../isocosm-vtt/tests/native_founding/fixture.rs"]
 mod fixture;
 use isocosm::{Command, Execution, Founding, rules::{Causation, Effect, Process}};
-use isometry_campaign::founding::{Campaign, NativeWorld};
+use isocosm_vtt::founding::{Campaign, NativeWorld};
 use isometry_core::{Facing, MapDocument, Token, TokenId, TurnList};
 use isonetry::{
     GameEvent, GameSnapshot, HostSession, NativePublication, NativeTravelResolved,
@@ -32,8 +32,15 @@ fn founded() -> HostSession {
     let profile = Founding { seed: 59, sites: 2, population: 4, lineages: 2,
         cohort_size: 2, ..Default::default() };
     let mut host = HostSession::new(origin());
-    host.commit_native_campaign(&profile, &fixture::record(), Some(TokenId(1)),
-        Execution::Grouped).unwrap();
+    host.commit_native_campaign_for(
+        &profile,
+        &fixture::record(),
+        Some(TokenId(1)),
+        Execution::Grouped,
+        isocosm_host::founding::Purpose::Bench,
+        None,
+    )
+    .unwrap();
     host
 }
 
@@ -111,7 +118,7 @@ fn travel_host() -> (HostSession, u64, u64) {
         risk: None, target: None, period: None, priority: 0, need_account: None,
         need_below: 0, glyphs: BTreeSet::new(), invariants: BTreeSet::new(), note: false,
     });
-    let campaign = Campaign::from_draft(genesis, &fixture::draft(), Execution::Grouped)
+    let campaign = Campaign::from_draft_bench(genesis, &fixture::draft(), Execution::Grouped)
         .unwrap().campaign;
     let mut host = HostSession::new(origin());
     let publication = NativePublication {

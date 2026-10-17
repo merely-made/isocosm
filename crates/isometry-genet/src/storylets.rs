@@ -14,7 +14,7 @@ use super::*;
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) enum StoryletInputs {
     Table { world: CampaignWorld, secret_ids: Vec<String> },
-    Native { cursor: isometry_campaign::founding::NativeCursor,
+    Native { cursor: isocosm_vtt::founding::NativeCursor,
         content_digest: String, table: Option<String>, secret_ids: Vec<String> },
 }
 
@@ -58,7 +58,7 @@ impl App {
                     let access = isocosm_overlay::OrdinaryAccess {
                         participant:isocosm_overlay::ParticipantHandle(table.host_participant),seat:isocosm_overlay::Seat::Dm,
                         subject:campaign.table_session().sim.plays(table.host_participant).map(isocosm_overlay::EntityHandle) };
-                    for (key,storylet) in isometry_campaign::native::pack::active_content(campaign.table_session(),&table.game,access)?.storylets {
+                    for (key,storylet) in isocosm_vtt::native::pack::active_content(campaign.table_session(),&table.game,access)?.storylets {
                         if offers.get(&key).is_some_and(|existing| existing != &storylet) {
                             return Err(format!("native campaign and pack disagree about storylet {key}"));
                         }

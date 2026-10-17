@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! The disclosed overmap: the chosen party's exact retained disclosures,
 //! read through this window's map settings. Display cells are cards and
@@ -8,9 +8,9 @@
 
 use chirograph::IntentEffect;
 use isocosm_host::endpoint::disclosure::{Item, NULL, action, card, value};
-use isometry_campaign::native::overmap::{self, CellReading, ViewSettings};
+use crate::native::overmap::{self, CellReading, ViewSettings};
 
-use crate::{Act, Built, Cx, VttEndpoint};
+use super::{Act, Built, Cx, VttEndpoint};
 
 const CURATION: IntentEffect = IntentEffect::Curation;
 

@@ -72,7 +72,7 @@ fn a_contract_character_replicates_as_its_native_entry() {
     let original_map = snap.map.clone();
     let mut sim = Sim::new(HostSession::new(snap));
     sim.connect(PeerId(10));
-    let site = PlaceHandle(isometry_campaign::contract::handle("ford"));
+    let site = PlaceHandle(isocosm_vtt::contract::handle("ford"));
     let mira = Contract::Character(NewCharacter {
         key: "mira".into(),
         name: "Mira".into(),
@@ -146,7 +146,7 @@ fn a_contract_character_announcement_retains_metadata_through_wire_delivery() {
         name: "Mira".into(),
         faction: None,
         at: Cell {
-            site: PlaceHandle(isometry_campaign::contract::handle("ford")),
+            site: PlaceHandle(isocosm_vtt::contract::handle("ford")),
             at: WorldPoint([-7, 2, 13]),
         },
         owner: Some(ParticipantHandle(10)),

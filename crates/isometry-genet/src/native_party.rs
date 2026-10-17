@@ -10,7 +10,7 @@ use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat, Int
 use isonetry::native_table::{TableSender, table_digest};
 
 pub(crate) fn context(snapshot: &GameSnapshot, sender: TableSender)
-    -> Result<(isometry_campaign::founding::Campaign, OrdinaryAccess), String> {
+    -> Result<(isocosm_vtt::founding::Campaign, OrdinaryAccess), String> {
     let world = snapshot.native.as_ref().ok_or("party map needs a native campaign")?;
     let table = snapshot.native_table.as_ref().ok_or("party map needs explicit native participant bindings")?;
     let campaign = world.load(isocosm::Execution::Grouped)?;
@@ -35,7 +35,7 @@ pub(crate) fn envelope(snapshot: &GameSnapshot, sender: TableSender, request: Pa
         PartyRequest::Leave { party, member } => PartyIntent { party, member: EntityHandle(member), action: PartyAction::Leave },
         PartyRequest::Disclose { party, member } => {
             if access.subject != Some(EntityHandle(member)) { return Err("party disclosure names a changed played body".into()); }
-            isometry_campaign::native::party::disclose_known(session, access.participant.0, party)?
+            isocosm_vtt::native::party::disclose_known(session, access.participant.0, party)?
         },
         PartyRequest::Decision { party, member, action } => {
             if access.subject != Some(EntityHandle(member)) { return Err("knowledge input names a changed played body".into()); }
@@ -52,14 +52,14 @@ pub(crate) fn envelope(snapshot: &GameSnapshot, sender: TableSender, request: Pa
 }
 
 pub(crate) fn statement_admission(snapshot: &GameSnapshot,
-    input: &isometry_campaign::native::party::StatementInput) -> Result<isonetry::NativeTableAdmissionInput, String> {
+    input: &isocosm_vtt::native::party::StatementInput) -> Result<isonetry::NativeTableAdmissionInput, String> {
     let (campaign, access) = context(snapshot, TableSender::Host)?;
     let table = snapshot.native_table.as_ref().ok_or("statement source needs the admitted native table")?;
-    let batch = isometry_campaign::native::party::statement_admission(campaign.table_session(), &table.game, access, input)?;
+    let batch = isocosm_vtt::native::party::statement_admission(campaign.table_session(), &table.game, access, input)?;
     Ok(isonetry::NativeTableAdmissionInput {
         expected_native: snapshot.native.as_ref().ok_or("statement source needs its actual native world")?.cursor()?,
         expected_table: table_digest(Some(table)),
-        participant: isometry_campaign::native::ParticipantInput::Existing(access.participant.0), batch,
+        participant: isocosm_vtt::native::ParticipantInput::Existing(access.participant.0), batch,
     })
 }
 
@@ -68,28 +68,28 @@ pub(crate) fn read(snapshot: &GameSnapshot, sender: TableSender, party: &str) ->
 }
 
 pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party:&str,
-    settings:Option<isometry_campaign::native::overmap::ViewSettings>) -> Result<PartyView,String> {
+    settings:Option<isocosm_vtt::native::overmap::ViewSettings>) -> Result<PartyView,String> {
     let (campaign, access) = context(snapshot, sender)?;
     let session = campaign.table_session();
     let own = isocosm::party::members(&session.sim, party)?.into_iter()
         .filter(|m| m.participant == access.participant.0).collect::<Vec<_>>();
     let shared = access.seat != Seat::Player || !own.is_empty();
-    let mut map = if shared { isometry_campaign::native::party::read_party(session, access, party)? }
+    let mut map = if shared { isocosm_vtt::native::party::read_party(session, access, party)? }
         else { isocosm::party::SharedMap { party: party.into(), members: own,
             places: Default::default(), routes: Default::default(), events: Default::default(), records: Vec::new(), details: Default::default() } };
     let table = snapshot.native_table.as_ref().ok_or("journey read needs its admitted endpoint table")?;
-    let knowledge = isometry_campaign::native::party::read_knowledge(session, &table.game, access)?;
-    let overmap = if shared { Some(isometry_campaign::native::overmap::read_overmap(session,
+    let knowledge = isocosm_vtt::native::party::read_knowledge(session, &table.game, access)?;
+    let overmap = if shared { Some(isocosm_vtt::native::overmap::read_overmap(session,
         &table.game,access,party,settings)?) } else { None };
     if let Some(read) = &overmap { map = read.map.clone(); }
     let events = map.events.iter().map(|key|
         (key.clone(), session.sim.state().events.get(key).cloned())).collect();
-    let journeys = if shared { isometry_campaign::native::joint_journey::read_journeys(session,
+    let journeys = if shared { isocosm_vtt::native::joint_journey::read_journeys(session,
         &table.game,access,&table.time_roster()?,party)? } else { Vec::new() };
     let dm = access.seat == Seat::Dm;
-    let hooks=if dm {isometry_campaign::native::goal_hooks(session,access.subject.map_or(u64::MAX,|id|id.0),
+    let hooks=if dm {isocosm_vtt::native::goal_hooks(session,access.subject.map_or(u64::MAX,|id|id.0),
         isocosm::directing::readings::Mode::Creative)?} else {Vec::new()};
-    let polities=if dm {isometry_campaign::native::polity_readings(session,access)?} else {Vec::new()};
+    let polities=if dm {isocosm_vtt::native::polity_readings(session,access)?} else {Vec::new()};
     let mut journey_authoring = Vec::new();
     if dm {
         let roster = table.bound_players();
@@ -129,12 +129,12 @@ pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party
 }
 
 pub(crate) fn presentation_input(snapshot:&GameSnapshot,
-    input:&isometry_campaign::native::overmap::OvermapInput)
+    input:&isocosm_vtt::native::overmap::OvermapInput)
     -> Result<isonetry::NativeTableBindingInput,String> {
     let (campaign,access) = context(snapshot,TableSender::Host)?;
     let mut session = campaign.table_session().clone();
     let mut table = snapshot.native_table.as_ref().ok_or("map presentation needs native table bindings")?.clone();
-    let (_,game) = isometry_campaign::native::overmap::submit_presentation(&mut session,table.game.clone(),access,input)?;
+    let (_,game) = isocosm_vtt::native::overmap::submit_presentation(&mut session,table.game.clone(),access,input)?;
     table.game = game;
     Ok(isonetry::NativeTableBindingInput {
         expected_native:snapshot.native.as_ref().ok_or("map presentation needs native source")?.cursor()?,

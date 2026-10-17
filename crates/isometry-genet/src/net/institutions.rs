@@ -31,7 +31,7 @@ pub(super) async fn client_request(client:&ClientNet,input:InstitutionRequest)->
             if isonetry::native_table::table_digest(Some(table)).as_deref()!=Some(input.expected_table.as_str()) {
                 return Err("institution quote names another authenticated table cut".into());
             }
-            let preview=isometry_campaign::native::institutions::prepare_institution(campaign.table_session(),access,&input.input)?;
+            let preview=isocosm_vtt::native::institutions::prepare_institution(campaign.table_session(),access,&input.input)?;
             Ok(InstitutionOutcome::Quote(isonetry::NativeInstitutionQuote {
                 expected_table:input.expected_table,input:input.input,preview}))
         },

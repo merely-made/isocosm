@@ -10,7 +10,7 @@ use isocosm_overlay::{
     EntityHandle, EventHandle, FactionHandle, ParticipantHandle, PlaceHandle, Pointable, WorldPoint,
     vtt::{Assertion, Cell, CellEdit, Fact, MapEdit, NewCharacter},
 };
-use isometry_campaign::{contract, native::{ContractError, Replay}};
+use isocosm_vtt::{contract, native::{ContractError, Replay}};
 use std::collections::BTreeSet;
 
 fn replay(mode: Execution) -> Replay {
@@ -24,7 +24,7 @@ fn replay(mode: Execution) -> Replay {
     }
     .generate()
     .unwrap();
-    Replay::from_assertions(genesis, &[
+    Replay::from_bench_assertions(genesis, &[
         Native::Faction(Faction {
             authored: Authored {
                 key: "eels".into(), name: "The Eels".into(),
@@ -207,7 +207,7 @@ fn native_contract_declared_table_kinds_survive_modes_and_replay() {
     let mut hash = None;
     for (mode, reload_mode) in [(Execution::Individuals, Execution::Grouped),
         (Execution::Grouped, Execution::Individuals)] {
-        let original = Replay::from_assertions(genesis.clone(), &[], mode).unwrap();
+        let original = Replay::from_bench_assertions(genesis.clone(), &[], mode).unwrap();
         let before = original.save();
         let accepted = original.with_contract_assertions(&inputs).unwrap();
         assert_eq!(original.save(), before);

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::*;
-use crate::{DraftMap, ItemProposal, StoryletProposal};
+use isometry_campaign::{DraftMap, ItemProposal, StoryletProposal};
 use isocosm::asserted::{Applied, Assertion};
 
 #[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]

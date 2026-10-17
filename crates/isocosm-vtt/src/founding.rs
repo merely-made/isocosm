@@ -3,9 +3,11 @@
 
 //! Native campaign founding; portable table content stays beside its history.
 
-use crate::{CampaignStore, native::{ContractError, Reading, Replay, ReplayError}};
+use isometry_campaign::CampaignStore;
+use crate::native::{ContractError, Reading, Replay, ReplayError};
 use isocosm::{Execution, asserted::{Applied, Assertion}, history::Saved, simulation::Genesis};
-use crate::CampaignDraft;
+pub use isocosm_host::founding::{Offered, Purpose};
+use isometry_campaign::CampaignDraft;
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -71,6 +73,14 @@ impl Campaign {
     pub fn from_draft(
         genesis: Genesis, draft: &CampaignDraft, mode: Execution,
     ) -> Result<Prepared, FoundingError> {
+        Self::from_draft_for(genesis, draft, mode, Purpose::Head, None)
+    }
+
+    /// Found a campaign under the host's explicit head or bench policy.
+    pub fn from_draft_for(
+        genesis: Genesis, draft: &CampaignDraft, mode: Execution,
+        purpose: Purpose, offered: Option<Offered<'_>>,
+    ) -> Result<Prepared, FoundingError> {
         let content = Content::from_draft(draft)?;
         let mut private = CampaignStore::new();
         for secret in &draft.secrets {
@@ -79,9 +89,15 @@ impl Campaign {
             }
             private.insert_secret(secret.clone());
         }
-        let replay = Replay::from_assertions(table_genesis(genesis), draft.world.assertions(), mode)
+        let replay = Replay::from_assertions_for(table_genesis(genesis), draft.world.assertions(),
+            mode, purpose, offered)
             .map_err(FoundingError::Native)?;
         Ok(Prepared { campaign: Self { replay, content, origin: None }, private })
+    }
+
+    pub fn from_draft_bench(genesis: Genesis, draft: &CampaignDraft, mode: Execution)
+        -> Result<Prepared, FoundingError> {
+        Self::from_draft_for(genesis, draft, mode, Purpose::Bench, None)
     }
 
     pub fn load(saved: CampaignSaved, mode: Execution) -> Result<Self, FoundingError> {

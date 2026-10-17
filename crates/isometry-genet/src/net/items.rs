@@ -28,7 +28,7 @@ pub(super) async fn client_request(client:&ClientNet,input:ItemsRequest)->Result
             let (campaign,access)=crate::native_party::context(&snapshot,
                 isonetry::native_table::TableSender::Endpoint(client.endpoint_key()))?;
             let table=snapshot.native_table.as_ref().ok_or("item quote has no actual native table")?;
-            let preview=isometry_campaign::native::items::prepare_item(campaign.table_session(),&table.game,access,&input)?;
+            let preview=isocosm_vtt::native::items::prepare_item(campaign.table_session(),&table.game,access,&input)?;
             Ok(ItemsOutcome::Quote {input,preview})
         },
         ItemsRequest::Apply(input)=>{client.native_items(input).await?;Ok(ItemsOutcome::Submitted)},

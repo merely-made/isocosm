@@ -4,7 +4,7 @@
 //! Explicit authored departures, own-body approvals and selected DM publication.
 
 use cambium::{TextInput,caret_text_field,clickable,el,lens,text};
-use isometry_campaign::native::joint_journey::{DepartureInput,DepartureResult};
+use isocosm_vtt::native::joint_journey::{DepartureInput,DepartureResult};
 use isocosm_overlay::EventHandle;
 use crate::{UiChild,UiState,PartyRequest,PartyView};
 

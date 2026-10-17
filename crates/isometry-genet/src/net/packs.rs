@@ -3,7 +3,7 @@
 
 use super::*;
 use isometry_views::{PackReading, PackRequest};
-use isometry_campaign::native::pack::Choreography;
+use isocosm_vtt::native::pack::Choreography;
 use isometry_system::GeneratorLimits;
 
 impl NetBridge {
@@ -29,7 +29,7 @@ pub(super) async fn host_request(host: &HostNet, request: PackRequest, choreogra
         PackRequest::CurrentContent => {
             let (campaign,_) = crate::native_party::context(&snapshot,isonetry::native_table::TableSender::Host)?;
             let input = crate::native_pack::envelope(&snapshot,
-                isometry_campaign::native::pack::PackInput::Content { content:campaign.content().clone() })?;
+                isocosm_vtt::native::pack::PackInput::Content { content:campaign.content().clone() })?;
             host.native_pack(&input).await?;
             Ok(None)
         },

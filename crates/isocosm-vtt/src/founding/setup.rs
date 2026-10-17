@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::{Campaign, Content, FoundingError, Prepared, table_genesis};
-use crate::{CampaignStore, native::{Replay, ReplayError, Phase}};
-use isocosm::{Command, Execution, Founding, Session, asserted::Assertion, site_authoring::Attachment};
+use isometry_campaign::CampaignStore;
+use crate::native::{Replay, ReplayError, Phase};
+use isocosm::{Command, Execution, Founding, asserted::Assertion, site_authoring::Attachment};
+use isocosm_host::founding::{Offered, Purpose};
 use isocosm::{rules::{Effect, PaceProfile, Process}, simulation::Genesis};
-use crate::{GenValue, GenerationRecord};
+use isometry_campaign::{GenValue, GenerationRecord};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -108,6 +110,11 @@ impl Campaign {
     /// Inspect the selected profile and every attachment before publishing any state.
     pub fn from_setup(setup: &Setup, record: &GenerationRecord, depth: usize)
         -> Result<Prepared, FoundingError> {
+        Self::from_setup_for(setup, record, depth, Purpose::Head, None)
+    }
+
+    pub fn from_setup_for(setup: &Setup, record: &GenerationRecord, depth: usize,
+        purpose: Purpose, offered: Option<Offered<'_>>) -> Result<Prepared, FoundingError> {
         if setup.name.trim().is_empty() { return Err(FoundingError::Content("world profile has no name".into())); }
         record.validate(depth).map_err(|e| FoundingError::Content(e.to_string()))?;
         let GenValue::Campaign { campaign: draft } = &record.proposal else {
@@ -138,8 +145,9 @@ impl Campaign {
             }
             genesis.rules.item_custody = Some(catalogue.clone());
         }
-        let mut session = Session::new(table_genesis(genesis), setup.execution).map_err(|reason|
-            FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
+        let world = isocosm_host::founding::found(table_genesis(genesis), setup.execution,
+            purpose, offered).map_err(|reason|
+                FoundingError::Native(ReplayError { phase: Phase::Founding, reason }))?;
         let content = Content::from_draft(draft)?;
         let mut private = CampaignStore::new();
         for secret in &draft.secrets {
@@ -148,19 +156,20 @@ impl Campaign {
             }
             private.insert_secret(secret.clone());
         }
-        for (index, assertion) in draft.world.assertions().iter().enumerate() {
-            let command = match assertion {
+        let commands = draft.world.assertions().iter().map(|assertion| match assertion {
                 Assertion::Place(place) => Command::AttachSite {
                     place: place.clone(), attachment: setup.attachments[&place.key].clone(),
                 },
                 other => Command::Assert(other.clone()),
-            };
-            session.command(command).map_err(|reason|
-                FoundingError::Native(ReplayError { phase: Phase::Assertion { index }, reason }))?;
-        }
-        let replay = Replay::load(session.save(), setup.execution).map_err(FoundingError::Native)?;
+            }).collect::<Vec<_>>();
+        let replay = Replay::from_world_commands(world, commands).map_err(FoundingError::Native)?;
         let origin = Some(super::GenerationOrigin { id: record.id.clone(), request: record.request.clone(),
             entropy: record.entropy, max_value_depth: depth });
         Ok(Prepared { campaign: Self { replay, content, origin }, private })
+    }
+
+    pub fn from_setup_bench(setup: &Setup, record: &GenerationRecord, depth: usize)
+        -> Result<Prepared, FoundingError> {
+        Self::from_setup_for(setup, record, depth, Purpose::Bench, None)
     }
 }

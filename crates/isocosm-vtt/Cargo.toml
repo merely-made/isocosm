@@ -3,29 +3,42 @@ rust-version = "1.97.1"
 name = "isocosm-vtt"
 version = "0.0.2"
 edition = "2024"
-license = "MPL-2.0"
-description = "Name reservation. Isocosm: VTT is the pixel-art, peer-to-peer virtual tabletop of the Isocosm family, over the Isocosm simulator; implemented by the isometry-* crates."
+license = "MIT OR Apache-2.0"
+description = "The Isocosm VTT game layer: native campaign founding, table actions and an optional Graphshell endpoint."
 repository = "https://github.com/merely-made/isocosm"
 readme = "README.md"
 keywords = ["vtt", "tabletop", "isometric", "p2p", "game"]
 categories = ["games"]
 
-# The VTT's Graphshell endpoint over the sim-host core (rulings 900, 902, 904).
+[features]
+default = []
+endpoint = ["dep:chirograph", "dep:graphshell-endpoint", "isocosm-host/endpoint"]
+
 [dependencies]
-chirograph = { workspace = true }
-graphshell-endpoint = { workspace = true }
+chirograph = { workspace = true, optional = true }
+graphshell-endpoint = { workspace = true, optional = true, features = ["local", "stdio"] }
 isocosm = { workspace = true }
-isocosm-host = { path = "../../host", features = ["endpoint", "society"] }
+isocosm-host = { path = "../../host", features = ["society"] }
 isocosm-overlay = { workspace = true }
 isometry-campaign = { workspace = true }
+isometer-space = { path = "../../shared/isometer/crates/isometer-space" }
 serde = { workspace = true }
 serde_json = { workspace = true }
 
 [dev-dependencies]
 isonetry = { path = "../isonetry", version = "0.1.0", default-features = false }
 isocosm-host = { path = "../../host", features = ["endpoint", "society", "fixtures"] }
-graphshell-endpoint = { workspace = true, features = ["local", "stdio"] }
+postcard = { workspace = true }
 
 # A no-argument stdio endpoint for Graphshell's g4_sessions receipt (H2).
 [[example]]
 name = "vtt_endpoint"
+required-features = ["endpoint"]
+
+[[test]]
+name = "endpoint"
+required-features = ["endpoint"]
+
+[[test]]
+name = "family_endpoint"
+required-features = ["endpoint"]

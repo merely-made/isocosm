@@ -37,7 +37,7 @@ fn export_context(ui: &UiState) -> Result<(), String> {
         expected_native: expected_native.clone(), expected_table: expected_table.clone(), table: table.clone(),
     });
     let accepted_game = ui.native.table.as_ref().map(|table|
-        isometry_campaign::native::GameBindings::decode(&table.game)).transpose()?;
+        isocosm_vtt::native::GameBindings::decode(&table.game)).transpose()?;
     let boards: Vec<_> = ui.campaign_maps.iter().map(|(key, map)| serde_json::json!({
         "map": key, "ground_digest": isonetry::native_table::ground_digest(
             if ui.active_map.as_ref() == Some(key) { &ui.map } else { &map.document }),
@@ -45,14 +45,14 @@ fn export_context(ui: &UiState) -> Result<(), String> {
     })).collect();
     let source_lots: Vec<_> = session.sim.source_lots().collect();
     let physical_context = serde_json::json!({
-        "expected_source": isometry_campaign::native::physical_map::physical_source(session),
+        "expected_source": isocosm_vtt::native::physical_map::physical_source(session),
         "expected_game": ui.native.table.as_ref().map(|table| isocosm::digest(&table.game)),
         "expected_terrain": session.sim.terrain_revision(),
         "materials": session.sim.genesis().world.materials,
         "source_lots": source_lots,
         "available_lots": session.sim.available_lots().collect::<Vec<_>>(),
         "measured_quote": ui.native.physical_quote,
-        "item_source": isometry_campaign::native::items::source(session),
+        "item_source": isocosm_vtt::native::items::source(session),
         "material_recipes": session.sim.genesis().rules.material_recipes,
         "project_catalogue": session.sim.genesis().rules.projects,
         "native_projects": state.projects.records,

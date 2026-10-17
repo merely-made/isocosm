@@ -3,7 +3,7 @@
 
 use super::*;
 use isometry_views::{PackReading, PackRequest};
-use isometry_campaign::native::pack::{self, Choreography, PackEnvelope, PackInput};
+use isocosm_vtt::native::pack::{self, Choreography, PackEnvelope, PackInput};
 use isonetry::native_table::{TableSender, table_digest};
 use std::collections::BTreeSet;
 
@@ -40,7 +40,7 @@ impl App {
             let Some(world) = &ui.native.world else { return Ok(Vec::new()); };
             let Some(table) = &ui.native.table else { return Ok(Vec::new()); };
             let campaign = world.load(isocosm::Execution::Grouped)?;
-            isometry_campaign::native::pack::accepted_choreography(campaign.table_session(), &table.game)
+            isocosm_vtt::native::pack::accepted_choreography(campaign.table_session(), &table.game)
         })();
         let beats = match reading {
             Ok(beats) => beats,

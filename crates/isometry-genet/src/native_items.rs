@@ -5,7 +5,7 @@ use super::*;
 use isometry_views::{ItemsRequest,ItemsOutcome,ItemsFileAction};
 use isonetry::native_table::TableSender;
 
-fn read(path:&str)->Result<isometry_campaign::native::items::ItemInput,String> {
+fn read(path:&str)->Result<isocosm_vtt::native::items::ItemInput,String> {
     if path.trim().is_empty() {return Err("choose a complete item/custody/project input file".into());}
     let bytes=std::fs::read(path.trim()).map_err(|error|format!("item input file: {error}"))?;
     serde_json::from_slice(&bytes).map_err(|error|format!("item input JSON: {error}"))
@@ -17,7 +17,7 @@ fn install(ui:&mut UiState,outcome:ItemsOutcome)->Result<(),String> {
             let world=ui.native.world.as_ref().ok_or("item quote has no current native world")?;
             let table=ui.native.table.as_ref().ok_or("item quote has no current admitted table")?;
             let campaign=world.load(isocosm::Execution::Grouped)?;
-            if input.expected_native!=isometry_campaign::native::items::source(campaign.table_session())
+            if input.expected_native!=isocosm_vtt::native::items::source(campaign.table_session())
                 || input.expected_game!=isocosm::digest(&table.game) {
                 return Err("item quote names a changed native or product cut".into());
             }

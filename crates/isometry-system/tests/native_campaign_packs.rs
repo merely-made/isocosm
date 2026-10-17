@@ -3,7 +3,8 @@
 
 use isocosm::{Command, Execution, Founding};
 use isometry_campaign::{EntropyTape, GenValue, GeneratorRequest};
-use isometry_campaign::{LowerDraftMap, founding::Campaign};
+use isometry_campaign::LowerDraftMap;
+use isocosm_vtt::founding::Campaign;
 use isometry_system::{GeneratorLimits, GeneratorPack};
 use std::{collections::BTreeMap, path::Path};
 
@@ -22,7 +23,7 @@ fn found_pack(pack_id: &str, generator: &str) {
         ..Default::default() }.generate().unwrap();
     let mut first = None;
     for mode in [Execution::Individuals, Execution::Grouped] {
-        let prepared = Campaign::from_generation(genesis.clone(), &record, limits.max_value_depth, mode).unwrap();
+        let prepared = Campaign::from_generation_bench(genesis.clone(), &record, limits.max_value_depth, mode).unwrap();
         let campaign = &prepared.campaign;
         assert_eq!(campaign.content().maps, draft.maps);
         assert_eq!(campaign.content().storylets, draft.world.storylets);

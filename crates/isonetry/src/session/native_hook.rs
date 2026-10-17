@@ -32,7 +32,7 @@ pub(crate) fn apply_native_hook(state:&mut GameSnapshot,result:&NativeHookResolv
     }
     old.validate_history(before.table_session()).map_err(GameError::Native)?;
     result.table.validate_history(after.table_session()).map_err(GameError::Native)?;
-    let record=isometry_campaign::native::hooks::validate_transition(before.table_session(),&old.game,
+    let record=isocosm_vtt::native::hooks::validate_transition(before.table_session(),&old.game,
         after.table_session(),&result.table.game).map_err(GameError::Native)?;
     if record.participant!=old.host_participant { return Err(fail("hook has no authenticated native DM")); }
     let mut next=state.clone();

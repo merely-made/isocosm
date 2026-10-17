@@ -379,7 +379,7 @@ impl ClientNet {
         write_frame(&mut *self.send.lock().await, &msg).await
     }
 
-    pub async fn native_journey(&self, input: isometry_campaign::native::joint_journey::JourneyEnvelope) -> Result<(), String> {
+    pub async fn native_journey(&self, input: isocosm_vtt::native::joint_journey::JourneyEnvelope) -> Result<(), String> {
         let (_, msg) = self.session.lock().await.native_journey(input);
         write_frame(&mut *self.send.lock().await, &msg).await
     }

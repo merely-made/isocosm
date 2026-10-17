@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! Joint journeys: each recorded proposal for the chosen party, approval by
 //! a player's own body and the DM's publication once all have approved.
@@ -7,9 +7,9 @@
 use chirograph::IntentEffect;
 use isocosm::projects::StockSource;
 use isocosm_host::endpoint::disclosure::{Item, NULL, action, card, value};
-use isometry_campaign::native::{GameBindings, joint_journey::{self, DepartureKind, DepartureResult, JourneyInput}};
+use crate::native::{GameBindings, joint_journey::{self, DepartureKind, DepartureResult, JourneyInput}};
 
-use crate::{Act, Built, Cx, VttEndpoint};
+use super::{Act, Built, Cx, VttEndpoint};
 
 fn source(source: StockSource) -> String {
     match source {

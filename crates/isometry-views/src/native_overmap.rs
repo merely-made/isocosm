@@ -4,7 +4,7 @@
 //! Exact disclosed display cells, with all paint sharply clipped to them.
 
 use cambium::{GraphCanvasAtlas, GraphCanvasAtlasField, GraphCanvasAtlasPaint};
-use isometry_campaign::native::overmap::{CellReading, OvermapReading, ViewSettings, Color};
+use isocosm_vtt::native::overmap::{CellReading, OvermapReading, ViewSettings, Color};
 use sceno::{Footprint, Rect, Size2, Vec2};
 use sprigging::ColorF;
 use std::sync::Arc;

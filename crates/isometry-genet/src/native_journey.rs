@@ -6,7 +6,7 @@
 use super::*;
 use isometry_views::{JourneyRequest,JourneyQuote,PartyView};
 use isonetry::native_table::TableSender;
-use isometry_campaign::native::joint_journey::{JourneyEnvelope,JourneyInput,preview_departure};
+use isocosm_vtt::native::joint_journey::{JourneyEnvelope,JourneyInput,preview_departure};
 
 pub(crate) fn envelope(snapshot: &GameSnapshot, sender: TableSender, request: JourneyRequest)
     -> Result<JourneyEnvelope,String> {
@@ -21,7 +21,7 @@ pub(crate) fn envelope(snapshot: &GameSnapshot, sender: TableSender, request: Jo
 }
 
 pub(crate) fn quote(snapshot: &GameSnapshot, sender: TableSender, party: &str,
-    input: isometry_campaign::native::joint_journey::DepartureInput) -> Result<PartyView,String> {
+    input: isocosm_vtt::native::joint_journey::DepartureInput) -> Result<PartyView,String> {
     let (campaign,access) = crate::native_party::context(snapshot,sender)?;
     let table = snapshot.native_table.as_ref().ok_or("native departure quote needs its admitted table")?;
     let native = preview_departure(campaign.table_session(),access,&table.time_roster()?,party,&input)?;

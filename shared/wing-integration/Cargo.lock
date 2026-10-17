@@ -2914,6 +2914,7 @@ dependencies = [
  "isocosm",
  "isocosm-host",
  "isocosm-overlay",
+ "isometer-space",
  "isometry-campaign",
  "serde",
  "serde_json",

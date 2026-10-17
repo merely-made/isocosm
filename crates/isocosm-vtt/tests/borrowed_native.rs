@@ -3,13 +3,13 @@
 
 use isocosm::{Execution, Founding, Session, asserted::{Assertion as Native, Place}};
 use isocosm_overlay::{PlaceHandle, WorldPoint, vtt::{Assertion, Cell, NewCharacter}};
-use isometry_campaign::native::{Replay, submit_contract_assertions};
+use isocosm_vtt::native::{Replay, submit_contract_assertions};
 
 // The already declared campaign seed-7/site-2/pop-4/cohort-2 founding.
 fn base() -> Replay {
     let genesis = Founding { seed: 7, sites: 2, population: 4, lineages: 2, cohort_size: 2,
         ..Default::default() }.generate().unwrap();
-    Replay::from_assertions(genesis, &[Native::Place(Place { key: "ford".into(), name: "Ford".into(),
+    Replay::from_bench_assertions(genesis, &[Native::Place(Place { key: "ford".into(), name: "Ford".into(),
         ..Default::default() })], Execution::Grouped).unwrap()
 }
 

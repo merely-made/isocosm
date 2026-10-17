@@ -8,7 +8,7 @@ use super::*;
 use crate::native_table::{NativeTable, TableSender, table_digest};
 use isocosm::Execution;
 use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat, vtt::VttIntentEnvelope};
-use isometry_campaign::{founding::Campaign, native::time::{Roster, validate_transition}};
+use isocosm_vtt::{founding::Campaign, native::time::{Roster, validate_transition}};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]

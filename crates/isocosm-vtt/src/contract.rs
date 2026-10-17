@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! The VTT's assertions through its contract (ruling 795): the table's
 //! vocabulary, `isocosm_overlay::vtt::Assertion`, lowered onto native
@@ -11,7 +11,7 @@ use std::collections::BTreeSet;
 
 use isocosm::Simulation;
 use isocosm::asserted as native;
-use crate::{CampaignWorld, WorldEvent};
+use isometry_campaign::{CampaignWorld, WorldEvent};
 use isocosm_overlay::Pointable;
 use isocosm_overlay::vtt::Assertion;
 
@@ -415,11 +415,16 @@ mod tests {
 
     #[test]
     fn native_event_facts_use_the_shared_event_key_mapping() {
-        let mut session = isocosm::Session::new(
+        let mut session = isocosm_host::founding::found(
             isocosm::Founding::default().generate().unwrap(),
             isocosm::Execution::Individuals,
+            isocosm_host::founding::Purpose::Bench,
+            None,
         )
-        .unwrap();
+        .unwrap()
+        .into_parts()
+        .unwrap()
+        .0;
         let history = native::Assertion::History(native::HistoryLine {
             key: "arrival".into(),
             ..Default::default()

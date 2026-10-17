@@ -6,7 +6,7 @@
 use super::{pack,reading::Reading,movement::current_access};
 use isocosm::{Session,Command,asserted::{Assertion,Applied,Fact},schema::{Id,Tick}};
 use isocosm_overlay::{OrdinaryAccess,Seat};
-use crate::StoryletEffect;
+use isometry_campaign::StoryletEffect;
 use serde::{Serialize,Deserialize};
 use std::collections::BTreeSet;
 
@@ -26,7 +26,7 @@ pub struct StoryletInput {
 #[derive(Clone,Debug)]
 pub struct StoryletView {pub input:StoryletInput,pub label:String,pub refusal:Option<String>,pub cast:Vec<(String,String)>}
 
-fn resolve(session:&Session,storylet:&crate::StoryletProposal)->Result<crate::StoryletResolution,String> {
+fn resolve(session:&Session,storylet:&isometry_campaign::StoryletProposal)->Result<isometry_campaign::StoryletResolution,String> {
     Reading::new(session).resolve_storylet(storylet,std::iter::empty::<&str>())
         .map_err(|error|format!("{error:?}"))
 }

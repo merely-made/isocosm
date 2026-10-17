@@ -207,7 +207,7 @@ impl HostSession {
         if self.state.native.is_some() {
             return self.commit_native_assertions(std::slice::from_ref(assertion));
         }
-        let event = isometry_campaign::contract::translate(&self.state.world, assertion)
+        let event = isocosm_vtt::contract::translate(&self.state.world, assertion)
             .map_err(|refusal| format!("assertion refused: {refusal:?}"))?;
         self.try_commit(GameEvent::World(event))
     }

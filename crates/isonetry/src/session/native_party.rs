@@ -36,7 +36,7 @@ pub(crate) fn apply_native_party(state: &mut GameSnapshot, result: &NativePartyR
 
 impl HostSession {
     /// Local trusted DM input only. Peers have no Location author request door.
-    pub fn native_location(&mut self, input: &isometry_campaign::native::party::LocationInput)
+    pub fn native_location(&mut self, input: &isocosm_vtt::native::party::LocationInput)
         -> Result<Vec<Outbound>, String> {
         let world = self.state.native.as_ref().ok_or("Location input needs a native campaign")?;
         let table = self.state.native_table.as_ref().ok_or("Location input needs admitted native participant bindings")?;

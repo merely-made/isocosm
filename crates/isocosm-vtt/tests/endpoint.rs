@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! The VTT endpoint's six projections over a table world: one authored
 //! party, a DM and a player, each playing one embodied subject.

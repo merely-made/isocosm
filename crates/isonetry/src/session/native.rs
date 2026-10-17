@@ -3,7 +3,7 @@
 
 use super::*;
 use isocosm::{Execution, schema::{Id, Ledger}};
-use isometry_campaign::founding::{Campaign, NativeCursor, NativeWorld};
+use isocosm_vtt::founding::{Campaign, NativeCursor, NativeWorld};
 use isometry_campaign::Inventory;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};

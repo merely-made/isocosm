@@ -5,7 +5,7 @@
 
 use super::*;
 use isometry_views::{PhysicalRequest, PhysicalOutcome};
-use isometry_campaign::native::physical_map::physical_source;
+use isocosm_vtt::native::physical_map::physical_source;
 
 fn install(ui: &mut UiState, outcome: PhysicalOutcome) -> Result<(), String> {
     if !ui.can_edit_inventory { return Err("physical map authoring requires the actual host".into()); }

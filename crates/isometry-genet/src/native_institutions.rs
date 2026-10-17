@@ -19,7 +19,7 @@ fn install(ui:&mut UiState,outcome:InstitutionOutcome)->Result<(),String> {
             let campaign=world.load(isocosm::Execution::Grouped)?;
             table.validate_history(campaign.table_session())?;
             if table_digest(Some(table)).as_deref()!=Some(quote.expected_table.as_str())
-                || quote.input.expected_native!=isometry_campaign::native::institutions::source(campaign.table_session())
+                || quote.input.expected_native!=isocosm_vtt::native::institutions::source(campaign.table_session())
                 || quote.input.tick!=campaign.table_session().sim.state().tick {
                 return Err("institution quote names a changed native/product cut".into());
             }

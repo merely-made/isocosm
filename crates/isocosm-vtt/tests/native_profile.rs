@@ -4,8 +4,8 @@
 #[path = "native_founding/fixture.rs"]
 mod fixture;
 use isocosm::{Execution, Founding};
-use isometry_campaign::founding::{Campaign, FoundingError, table_genesis};
-use isometry_campaign::native::Phase;
+use isocosm_vtt::founding::{Campaign, FoundingError, table_genesis};
+use isocosm_vtt::native::Phase;
 
 #[test]
 fn native_profile_is_the_callers_world_and_keeps_pack_entropy_separate() {
@@ -16,7 +16,7 @@ fn native_profile_is_the_callers_world_and_keeps_pack_entropy_separate() {
     let record = fixture::record();
     let mut saves = Vec::new();
     for mode in [Execution::Individuals, Execution::Grouped] {
-        let prepared = Campaign::from_profile(&profile, &record, 16, mode).unwrap();
+        let prepared = Campaign::from_profile_bench(&profile, &record, 16, mode).unwrap();
         let saved = prepared.campaign.save();
         assert_eq!(saved.native.genesis, table_genesis(profile.generate().unwrap()),
             "caller native founding was replaced");
@@ -34,9 +34,9 @@ fn native_profile_is_the_callers_world_and_keeps_pack_entropy_separate() {
 fn native_profile_refusal_keeps_the_generator_reason_and_phase() {
     let profile = Founding { sites: 0, ..Default::default() };
     let expected = profile.generate().unwrap_err();
-    let error = Campaign::from_profile(&profile, &fixture::record(), 16, Execution::Grouped)
+    let error = Campaign::from_profile_bench(&profile, &fixture::record(), 16, Execution::Grouped)
         .unwrap_err();
-    assert_eq!(error, FoundingError::Native(isometry_campaign::native::ReplayError {
+    assert_eq!(error, FoundingError::Native(isocosm_vtt::native::ReplayError {
         phase: Phase::Founding, reason: expected,
     }));
 }

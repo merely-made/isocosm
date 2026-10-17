@@ -1,5 +1,5 @@
 // Copyright 2026 Mark Alan Boykin
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! Held map knowledge: deliberate single-record learning and sharing by the
 //! played body, at the player's own cut.
@@ -7,9 +7,9 @@
 use chirograph::IntentEffect;
 use isocosm_host::endpoint::disclosure::{Item, NULL, action, card, value};
 use isocosm_overlay::{EntityHandle, Seat, vtt::{PartyAction, PartyIntent, VttIntent}};
-use isometry_campaign::native::party;
+use crate::native::party;
 
-use crate::{Act, Built, Cx, VttEndpoint};
+use super::{Act, Built, Cx, VttEndpoint};
 
 pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
     let mut built = Built::new();

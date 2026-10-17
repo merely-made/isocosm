@@ -1,10 +1,10 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-#[path = "../../isometry-campaign/tests/native_founding/fixture.rs"]
+#[path = "../../isocosm-vtt/tests/native_founding/fixture.rs"]
 mod fixture;
 use isocosm::Execution;
-use isometry_campaign::founding::{Campaign, NativeWorld};
+use isocosm_vtt::founding::{Campaign, NativeWorld};
 use isometry_core::{MapDocument, TurnList};
 use isonetry::{GameEvent, GameSnapshot, GameSourceHistory, HostSession, NativePublication};
 use std::collections::{BTreeMap, BTreeSet};
@@ -19,7 +19,7 @@ fn native_site_versions_replay_the_selected_prefix_and_preserve_the_live_source(
         clocks: BTreeMap::new(), party_cap: 4, last_beats: Vec::new(), beat_seq: 0,
         applied_actions: BTreeSet::new(),
     };
-    let first = Campaign::from_draft(fixture::genesis(), &fixture::draft(), Execution::Grouped)
+    let first = Campaign::from_draft_bench(fixture::genesis(), &fixture::draft(), Execution::Grouped)
         .unwrap().campaign;
     let mut host = HostSession::new(origin.clone());
     host.local_event(GameEvent::NativePublished(NativePublication {

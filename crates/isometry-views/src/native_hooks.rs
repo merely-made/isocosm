@@ -5,7 +5,7 @@
 
 use cambium::{el,text,lens,clickable,caret_text_field,TextInput};
 use isocosm_overlay::vtt::HookIntent;
-use isometry_campaign::native::hooks::GoalHook;
+use isocosm_vtt::native::hooks::GoalHook;
 use isocosm::polities::PolityReading;
 use crate::{UiState,UiChild,PartyRequest,PartyView};
 

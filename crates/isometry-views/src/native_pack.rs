@@ -4,7 +4,7 @@
 use cambium::{TextInput, caret_text_field, clickable, el, lens, text};
 use crate::{board::UiChild, state::UiState};
 use isometry_campaign::{GenerationRecord, RoleSlot, StoryletRequirements};
-use isometry_campaign::native::pack::{PackInput, PackView, ActiveContent};
+use isocosm_vtt::native::pack::{PackInput, PackView, ActiveContent};
 
 #[derive(Clone, Debug)]
 pub enum PackRequest {
@@ -16,7 +16,7 @@ pub enum PackRequest {
 
 #[derive(Clone, Debug)]
 pub struct PackReading {
-    pub cursor: isometry_campaign::founding::NativeCursor,
+    pub cursor: isocosm_vtt::founding::NativeCursor,
     pub source: String, pub table: Option<String>, pub packs: Vec<PackView>, pub active: ActiveContent,
 }
 

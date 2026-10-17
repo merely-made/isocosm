@@ -112,7 +112,7 @@ impl ClientSession {
         (Recipient::Host, NetMessage::NativeParty(envelope))
     }
 
-    pub fn native_journey(&self, input: isometry_campaign::native::joint_journey::JourneyEnvelope) -> Outbound {
+    pub fn native_journey(&self, input: isocosm_vtt::native::joint_journey::JourneyEnvelope) -> Outbound {
         (Recipient::Host, NetMessage::NativeJourney(input))
     }
 

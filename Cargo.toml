@@ -45,6 +45,7 @@ rust-version = "1.97.1"
 # Internal crates
 isometry-core = { path = "crates/isometry-core", version = "0.1.0" }
 isometry-campaign = { path = "crates/isometry-campaign", version = "0.1.0" }
+isocosm-vtt = { path = "crates/isocosm-vtt", version = "0.0.2", default-features = false }
 # The sim owns accepted world state/history. VTT content and table projections
 # live in isometry-campaign; the separate sim workspace is taken by path.
 isocosm = { path = "shared/isocosm" }

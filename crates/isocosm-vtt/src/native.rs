@@ -6,6 +6,7 @@
 use isocosm::{
     Command, Execution, Session, asserted::Assertion, history::Saved, simulation::Genesis,
 };
+use isocosm_host::{founding::{Offered, Purpose}, world::World};
 use std::fmt;
 
 mod commands;
@@ -89,11 +90,38 @@ impl Replay {
         assertions: &[Assertion],
         mode: Execution,
     ) -> Result<Self, ReplayError> {
-        let session = Session::new(genesis, mode).map_err(|reason| ReplayError {
-            phase: Phase::Founding,
-            reason,
+        Self::from_assertions_for(genesis, assertions, mode, Purpose::Head, None)
+    }
+
+    /// Explicit dev/bench path for fixtures that found a generated candidate
+    /// without a product-head admission.
+    pub fn from_bench_assertions(
+        genesis: Genesis, assertions: &[Assertion], mode: Execution,
+    ) -> Result<Self, ReplayError> {
+        Self::from_assertions_for(genesis, assertions, mode, Purpose::Bench, None)
+    }
+
+    pub(crate) fn from_assertions_for(
+        genesis: Genesis, assertions: &[Assertion], mode: Execution,
+        purpose: Purpose, offered: Option<Offered<'_>>,
+    ) -> Result<Self, ReplayError> {
+        let world = isocosm_host::founding::found(genesis, mode, purpose, offered)
+            .map_err(|reason| ReplayError { phase: Phase::Founding, reason })?;
+        Self::from_world_commands(world, assertions.iter().cloned().map(Command::Assert))
+    }
+
+    pub(crate) fn from_world_commands(
+        world: World, commands: impl IntoIterator<Item = Command>,
+    ) -> Result<Self, ReplayError> {
+        for (index, command) in commands.into_iter().enumerate() {
+            world.command(command).map_err(|reason| ReplayError {
+                phase: Phase::Assertion { index }, reason,
+            })?;
+        }
+        let (session, _) = world.into_parts().map_err(|reason| ReplayError {
+            phase: Phase::Founding, reason,
         })?;
-        Self::apply(session, assertions)
+        Ok(Self { session })
     }
 
     /// Load through native replay, digest and witness validation.

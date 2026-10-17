@@ -3,7 +3,7 @@
 
 use cambium::{TextInput, caret_text_field, clickable, el, lens, text};
 use crate::{UiState, board::UiChild};
-use isometry_campaign::native::storylets::ComposedStoryletInput;
+use isocosm_vtt::native::storylets::ComposedStoryletInput;
 use isometry_core::TokenId;
 
 #[derive(Clone, Copy, Debug)]
