@@ -102,9 +102,9 @@ impl Game {
     ) -> Result<Refresh, String> {
         let _span = crate::profile::Span::new("physical.refresh");
         self.version()?;
-        let mut game = self.clone();
-        let mut native = session.clone();
+        let (mut game, mut native) = crate::profile::measure("refresh.clone", || (self.clone(), session.clone()));
         let mut report = Refresh::default();
+        let members = crate::profile::Span::new("refresh.members");
         for (&id, held) in &self.members {
             let Some(member) = native.sim.state().population.get(id) else {
                 report.inactive.push(id); continue;
@@ -133,8 +133,8 @@ impl Game {
                 Err(why) => { report.stale.insert(id, why); },
             }
         }
-        *session = native;
-        *self = game;
+        drop(members);
+        crate::profile::measure("refresh.assign", || { *session = native; *self = game; });
         Ok(report)
     }
 }

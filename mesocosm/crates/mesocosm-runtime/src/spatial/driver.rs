@@ -123,8 +123,8 @@ impl Game {
         -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, String> {
         let _span = crate::profile::Span::new("clock.total");
         self.version()?;
-        let mut native_session = session.clone();
-        let mut source = self.clone();
+        let mut native_session = crate::profile::measure("clock.clone_session", || session.clone());
+        let mut source = crate::profile::measure("clock.clone_game", || self.clone());
         source.refresh_with(&mut native_session, geometry)?;
         let arrivals = source.arrival_inputs(&native_session)?;
         let mut terrain: Vec<native::TerrainResolution> = Vec::new();
@@ -139,22 +139,24 @@ impl Game {
                         || terrain.iter().any(|r| r.request.action == pending.request.action)
                     { return Err("spatial terrain request made no finite progress".into()); }
                     let game = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?;
-                    let answer = game.resolve(&pending)
-                        .and_then(|actual| crate::terrain::resolved(&pending, actual)).map(|r| r.geometry);
+                    let answer = crate::profile::measure("clock.answer.terrain", || game.resolve(&pending)
+                        .and_then(|actual| crate::terrain::resolved(&pending, actual)).map(|r| r.geometry));
                     terrain.push(native::TerrainResolution { request: pending.request, geometry: answer });
                 },
                 SpatialAdvance::Step(pending) => {
                     if terrain.len() + steps.len() + arrivals.len() >= limit
                         || steps.iter().any(|r| r.request.action == pending.request.action)
                     { return Err("spatial step request made no finite progress".into()); }
-                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?.resolve_step(&pending);
+                    let game = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?;
+                    let answer = crate::profile::measure("clock.answer.step", || game.resolve_step(&pending));
                     steps.push(native::Resolution { request: pending.request, geometry: answer });
                 },
                 SpatialAdvance::Birth(pending) => {
                     if births.len() as u128 >= u128::from(native_session.sim.genesis().rules.limits.entities)
                         || births.iter().any(|r| r.request.child == pending.request.child)
                     { return Err("biological placement request made no finite progress".into()); }
-                    let answer = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?.resolve_birth(&pending);
+                    let game = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?;
+                    let answer = crate::profile::measure("clock.answer.birth", || game.resolve_birth(&pending));
                     births.push(native::BirthResolution { request: pending.request, geometry: answer });
                 },
                 SpatialAdvance::Advanced(out) => {
@@ -175,8 +177,7 @@ impl Game {
                     }
                     game.version = game.current_version();
                     game.refresh_with(&mut native_session, geometry)?;
-                    *session = native_session;
-                    *self = game;
+                    crate::profile::measure("clock.assign", || { *session = native_session; *self = game; });
                     return Ok(out);
                 },
             }
