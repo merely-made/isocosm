@@ -185,9 +185,9 @@ on Isocosm, both modes, receipts replaying.
 - **2026-10-16, A1 seed9 (936):** actual pass-start observation confirms
   the chosen feeding process stays committed while all resident producer
   targets depart before its pass. Replacement prey resolution returns none;
-  all64 meals block. Next tick two moves tie at zero and all64 consumers
-  take the first process ID. All13 pass-start and5 feeding controls pass.
-  The unchanged full162-tick extinction and bounded-window replay receipts,
+  all 64 meals block. Next tick two moves tie at zero and all 64 consumers
+  take the first process ID. All 13 pass-start and 5 feeding controls pass.
+  The unchanged full 162-tick extinction and bounded-window replay receipts,
   observer limitations and pending movement-policy fork are recorded once
   in [the after-pass Findings](2026-10-10_after_pass_plan.md#findings).
   No behavior, cadence, rate or acceptance gate changes here.
@@ -550,3 +550,14 @@ on Isocosm, both modes, receipts replaying.
   691 taken in three rounds.
 
 - **2026-10-11, combined migration execution:** Route-duration journeys and competing-kernel updates are now applied in the combined migration. Native compiler repair precedes final-state reproduction and replay checks. The former A1 candidates and earlier Q8 statistics retain their historical evidence only; current reproduction and headed D5 remain open.
+
+- **2026-10-17, movement ties (958):** generated played worlds now persist
+  `MovementTies::Seeded`; old/absent policies retain identity order and their
+  exact prior seed-9 genesis digest. Only equally best due/feasible pure moves
+  draw by dynamics seed, creature, tick and tied menu. All 51 directing controls
+  pass, including actual cohort movement and per-tick Individual/Grouped hash
+  parity. The seed-9 pilot reaches three boundaries with one born consumer
+  living and no founders; its two native replay modes match hash
+  `c4a092289dd96a06`. A fresh compact played matrix is running; the 20/20 gate
+  is unchanged. The after-pass plan records the pilot observer's receipt-cap
+  overrun and the enforced compact retention used for the new matrix.

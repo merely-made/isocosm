@@ -29,7 +29,7 @@ fn window(receipt: &str, limit: u64) {
     let path = receipt_directory().join(receipt);
     assert!(!path.exists(), "diagnosis requires a fresh receipt path before running");
     assert!(std::env::var_os("ISOCOSM_REPRO_TWEAK").is_none());
-    let genesis = world(9, Form::Played, false);
+    let genesis = diagnosed_seed9();
     let digest = crate::digest(&genesis);
     assert!(genesis.population.groups.values().filter(|g| g.entity.lineage == "lineage:1")
         .all(|g| g.entity.method == Method::Deliberative));

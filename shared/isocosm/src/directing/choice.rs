@@ -150,6 +150,21 @@ pub(crate) fn moves(p: &Process) -> Vec<Id> {
         .collect()
 }
 
+fn movement_only(p: &Process) -> bool {
+    fn movement(effect: &Effect) -> bool {
+        match effect {
+            Effect::Move { .. } | Effect::MovePaced { .. } => true,
+            Effect::When { .. } => {
+                let branches: Vec<_> = effect.branches().collect();
+                !branches.is_empty() && branches.into_iter().all(movement)
+            }
+            _ => false,
+        }
+    }
+    let effects: Vec<_> = p.commitments.iter().chain(&p.effects).collect();
+    !effects.is_empty() && effects.into_iter().all(movement)
+}
+
 impl Simulation {
     #[cfg(test)]
     pub(crate) fn recorded_choices(&self) -> (Tick, BTreeMap<Id, Choice>) {
@@ -326,6 +341,7 @@ impl Simulation {
         let (mood, pressing) = self.choice_minded(actor);
         let mut best = Choice::default();
         let mut top = i64::MIN;
+        let mut candidates = Vec::new();
         let due = |p: &&Process| p.period.is_some_and(|n| tick % n == 0);
         let choices = rules
             .processes
@@ -387,6 +403,7 @@ impl Simulation {
                 .sum();
             let score = needs + sway + i64::from(p.priority);
             best.options.insert(p.id.clone(), (score, target));
+            candidates.push((score, p.id.clone(), target, nudged.is_some(), answers.clone()));
             if score > top {
                 top = score;
                 best.process = Some(p.id.clone());
@@ -394,6 +411,25 @@ impl Simulation {
                 best.explicit_target = nudged.is_some();
                 best.answers = answers;
             }
+        }
+        let ties: Vec<_> = candidates.iter().filter(|(score, _, _, _, _)| *score == top).collect();
+        if due_only
+            && directing.movement_ties == MovementTies::Seeded
+            && ties.len() >= 2
+            && ties.iter().all(|(_, id, _, _, _)| {
+                rules.processes.get(id).is_some_and(movement_only)
+            })
+        {
+            let tied_ids: Vec<_> = ties.iter().map(|(_, id, _, _, _)| id.clone()).collect();
+            let set_fingerprint = crate::digest(&tied_ids);
+            let set_key = u64::from_str_radix(&set_fingerprint[..16], 16)
+                .expect("digest begins with hexadecimal digits");
+            let draw = crate::draw(self.genesis.dynamics_seed(), "directing:movement-tie", &[actor, tick, set_key]);
+            let (_, process, target, explicit_target, answers) = ties[(draw % ties.len() as u64) as usize];
+            best.process = Some(process.clone());
+            best.target = *target;
+            best.explicit_target = *explicit_target;
+            best.answers = answers.clone();
         }
         best
     }

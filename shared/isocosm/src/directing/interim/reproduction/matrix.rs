@@ -16,8 +16,13 @@ impl Draw {
     fn prefix(self, genesis: &str) -> String {
         let form = self.form.name();
         let arm = if self.original { "original" } else { "candidate" };
-        format!("q3-primary-final-state-matrix-{form}-{arm}-seed{}-{genesis}", self.seed)
+        let owner = if compact() { "a1-seeded-958-matrix" } else { "q3-primary-final-state-matrix" };
+        format!("{owner}-{form}-{arm}-seed{}-{genesis}", self.seed)
     }
+}
+
+fn compact() -> bool {
+    std::env::var("ISOCOSM_REPRO_COMPACT").as_deref() == Ok("1")
 }
 
 #[derive(Debug)]
@@ -72,7 +77,17 @@ fn new_file(name: &str) -> File {
 }
 
 fn retain_new<T: serde::Serialize>(name: &str, value: &T) {
+    static RETAIN: std::sync::Mutex<()> = std::sync::Mutex::new(());
+    let _guard = RETAIN.lock().unwrap();
     let bytes = serde_json::to_vec_pretty(value).unwrap();
+    if compact() {
+        let retained: u64 = std::fs::read_dir(receipt_directory()).unwrap()
+            .map(|entry| entry.unwrap())
+            .filter(|entry| entry.file_name().to_string_lossy().starts_with("a1-seeded-958-matrix-"))
+            .map(|entry| entry.metadata().unwrap().len()).sum();
+        // Reserve 4 MB for all 120 bounded conservation streams and run logs.
+        assert!(retained + bytes.len() as u64 <= 96_000_000, "compact matrix receipt cap");
+    }
     let mut file = new_file(name);
     file.write_all(&bytes).unwrap();
     file.sync_all().unwrap();
@@ -161,13 +176,20 @@ impl Record {
             vec!["Individuals", "Grouped"]);
         self.stream.sync_all().unwrap();
         retain_new(&format!("{}-session.json", self.prefix), saved);
-        retain_new(&format!("{}-state.json", self.prefix), state);
+        // A native save plus its two verified replays reproduces the state.
+        // Full explored states can be hundreds of MB; a declared compact gate
+        // keeps the replay recipe and exact witness without duplicating it.
+        let compact = compact();
+        if !compact {
+            retain_new(&format!("{}-state.json", self.prefix), state);
+        }
         retain_new(&format!("{}-outcome.json", self.prefix), out);
         let summary = serde_json::json!({
             "schema": "q3-matrix-draw-complete-v1", "draw": self.draw,
             "genesis": self.genesis, "baseline_tick": sequence.initial_tick,
             "baseline_matter": sequence.matter, "actual_ticks": sequence.ticks,
             "replays": self.replays, "per_tick_replay_claimed": false,
+            "full_state_retained": !compact,
         });
         retain_new(&format!("{}-evidence.json", self.prefix), &summary);
         eprintln!("MATRIX SAVED form={} original={} seed={} genesis={} ticks={}",

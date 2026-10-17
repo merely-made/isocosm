@@ -94,6 +94,25 @@ one miss, seed 9, persists under the declared rates; the later chooser
 diagnosis below identifies its missed meals and synchronized movement. *2026-10-16:* 935 rules the 100-base ceiling, and the branch
 is reviewed and merged into main (947).
 
+**2026-10-17, 958 pilot:** new generated played worlds explicitly select
+seeded movement ties; absent/older rules retain identity order and omit the
+new field on serialization. Equal best due/feasible pure moves draw from
+world dynamics seed, creature, tick and the tied process IDs; scores and
+selected-process commitment stay unchanged. The declared seed-9 pilot reaches
+180 with three boundaries, no living founders, seven born heirs and one living
+born consumer. Its native hash is `c4a092289dd96a06`; Individuals and Grouped
+saved replay both match, and every actual round conserves matter. At tick 16,
+the 32 founded consumers split 15/17 between routes 5–2 and 5–4. This single
+pilot does not close the unchanged played 20/20 gate.
+
+The old full pilot observer unexpectedly retained 277,375,108 raw bytes,
+exceeding its declared 100 MB cap. Those receipts remain preserved and the
+overrun is explicit in `a1-2026-10-17-seeded-seed9-summary.json`. Pilot retention
+now refuses an over-cap write. The fresh matrix uses a separate declared
+compact receipt prefix, retains native replay saves and exact actual
+conservation/replay summaries, and omits duplicate whole-state JSON. Its
+100 MB total cap is enforced before writes; existing evidence is untouched.
+
 ## A2. The test baseline (owner: each workspace's plan)
 
 Full runs on main `b7669871`'s predecessor, 2026-10-10, logs out of tree in

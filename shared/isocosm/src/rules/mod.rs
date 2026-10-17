@@ -23,7 +23,7 @@ pub use amount::{Amount, Draw, Expr, MAX_DRAW, MAX_NODES, Measure, PartsOf, Read
 pub(crate) use body::expressing;
 pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_shapes};
 pub use competition::{Competition, Competitor, Similitude};
-pub use directing::{Directing, Inheritance};
+pub use directing::{Directing, Inheritance, MovementTies};
 pub use defence::{Defence, DefenceLayer};
 pub use effect::{Conversion, Effect};
 pub use feeding::{FeedingSources, PortFeeding};

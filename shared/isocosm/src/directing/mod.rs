@@ -270,6 +270,8 @@ impl Simulation {
 #[cfg(test)]
 mod choice_tests;
 #[cfg(test)]
+mod movement_tie_tests;
+#[cfg(test)]
 mod feeding_tests;
 #[cfg(test)]
 mod pass_start_tests;
