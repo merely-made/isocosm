@@ -11956,7 +11956,58 @@ what later sections derive from.
      .gitattributes rule (Recommended)". It lands as its own commit after
      the merge, verified by the same test passing on this checkout.
 
-     Next unused 970.
+970. *Taken by the tenant-sun lane on branch `tenant-sun` (the fixed sun
+     matching the tracer's constants; the field waits). Its text lands with
+     that branch.*
+
+971. **The light field is a derived function in the sim.**
+     Asked 2026-10-17 in the assessment of the tenant-sun round's option (b),
+     which Mark kicked up to the orchestrator. Evidence: ruling 472 already
+     reads the light block from sim fields; the sim's only light is the
+     `sim:energy` constant, 1,000,000 credited per site per tick by
+     `ecology:sunlight` and never limiting; the clock has a minute tick and
+     a 525,960-tick year but no day; no plane is stored anywhere; the
+     presets' energy schedules are read by nothing; the tracer's sun is a
+     WGSL literal with no host input and the tenant's sun is `None`.
+     Options: (1) a pure query in `shared/isocosm` over (rules, tick, site)
+     returning sun direction, intensity, colour and ambient, nothing stored,
+     the presets' schedules becoming parameters (recommended); (2) a stored
+     per-site condition written each tick by an agentless process, like
+     `world:weather`; (3) host-side from the tick alone. Mark: "Derived
+     function in the sim (Recommended)". The card is in the resident views
+     plan's field admission section.
+
+972. **Presentation and ecology both read the light block in the first slice.**
+     Asked with 971. Options: (1) presentation only: the tracer gains a
+     light slot replacing its literal and the tenant gets its sun, the
+     ecology constant stays abundant by declaration, zero hash change
+     (recommended); (2) presentation and ecology: the sunlight credit scales
+     by intensity, meaningful once light limits growth, which changes every
+     trajectory (pins rerecorded, the A1 20/20 matrix rerun); (3) ecology
+     first. Mark: "Presentation and ecology". *Reading, not ruled:* the
+     limiting amount is a tuning fork under 888 that the lane brings back
+     with evidence before the credit changes; the H3 pins and the A1 matrix
+     are the gate for that change.
+
+973. **Honest units, with night.**
+     Asked with 971: the tick is a minute and the year 525,960 ticks, with no
+     day constant; at the configured 10 ticks per second a 1,440-tick day is
+     2.4 minutes of play and a year 14.6 hours. Options: (1) day 1,440
+     ticks, season from the existing year, sun `None` below the horizon with
+     the block's ambient carrying night, tidal lock and season amplitude from
+     the preset (recommended); (2) a shorter play-day decoupled from the
+     year; (3) arc only, no night yet. Mark: "Honest units, with night
+     (Recommended)".
+
+974. **The light-field lane runs after 966, on a cheaper model.**
+     Asked with 971, since two lanes in `shared/isocosm` at once would
+     collide and Mark asked for cheaper models where they serve. Options:
+     (1) record the card and these rulings now and start the lane as a
+     Sonnet session once the core tick-cost lane lands (recommended); (2)
+     now, in parallel; (3) record only. Mark: "After 966, on a cheaper model
+     (Recommended)".
+
+     Next unused 975.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

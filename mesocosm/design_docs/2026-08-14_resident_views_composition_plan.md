@@ -1,6 +1,8 @@
 # Resident Views Composition Plan (2026-08-14)
 
-**Status, 2026-10-10:** retained/resident foundations remain bounded
+**Status, 2026-10-17:** the first admitted field is carded, the sun (rulings
+971 to 974, field admission boundary below), its lane queued after the core
+tick-cost lane. 2026-10-10: retained/resident foundations remain bounded
 receipts. Ground and the lift are isometer's; Mere's `modulus` owns the
 brick ABI/DDA. Field admission and SP6's nisus join remain open.
 
@@ -172,6 +174,66 @@ admission contract separately defines restriction, refinement, conserved
 integrals, boundary flux, residual state, zero-tick round trips, and the
 comparison envelope for reduced evolution. Camera movement and allocation
 pressure cannot select that simulation path.
+
+### The first admitted field: the sun (2026-10-17, rulings 971 to 974)
+
+The light block of ruling 472 gets its field. Evidence at `285821ad`: the
+sim's only light is `sim:energy`, a constant 1,000,000 credited per site per
+tick by `ecology:sunlight` and drawn 1 per grow, never limiting
+(`shared/isocosm/src/ecology.rs`, whose comment calls a limiting light a
+later ruling); the clock counts minutes with a 525,960-tick year and no day;
+processes are periodic with no phase; the presets name energy schedules read
+by nothing (`shared/isocosm/src/preset.rs`); the tracer's sun is the WGSL
+literal `normalize(0.4, 0.8, 0.3)` with `0.38 + 0.62 * max(0, N.L)` and
+`TraceParams` has no light slot; the tenant's `LightBlock.sun` is `None`
+(mere `crates/conatus/tenant/src/light.rs`, whose doc already says the sun
+comes from the sim's day and night fields).
+
+Admission card:
+
+- Authority class: derived. A pure function of world rules, tick and site in
+  `shared/isocosm`; nothing stored, so the field itself moves neither replay
+  nor the state hash (971).
+- Consumer: the tracer and the tenant, one block for terrain and bodies; and
+  the ecology's sunlight credit, scaled by intensity (972).
+- Domain and resolution: one value per world per tick, with a site term only
+  where a world's grid carries latitude. Occlusion and shadow are the
+  renderer's derived planes, not this field.
+- Cadence and interpolation: continuous in tick, read per frame. A day of
+  1,440 ticks from the minute tick, season from the year, tidal lock and
+  season amplitude from the preset (973).
+- Sources and sinks: an external source, no sink.
+- Boundary conditions: sun `None` below the horizon and underground; the
+  block's ambient carries night.
+- Numeric range: intensity 0 to 1, colour linear RGB, direction a unit vector.
+- Conservation rule: not conserved and not matter (879); the account it
+  credits stays the ecology's and the "energy is not matter" control stands.
+- Scale reduction: a world-scale scalar with no per-cell storage; the
+  limiting amount is tuned at site grain.
+- Acceptance evidence: dawn, noon, dusk and night captures of the seed-9 cut
+  with terrain and bodies under one sun; a CPU control that tracer and
+  tenant receive identical block values; VTT and Eponym captures
+  byte-identical under the slot's default; and, for the credit change, the
+  H3 pins rerecorded under its ruling and the A1 matrix 20/20 against Stock
+  0/20 rerun.
+
+Lane (974), after the core tick-cost lane lands, on a cheaper model:
+
+1. The function and its parameters in the sim, with tests: periodicity over a
+   day and a year, tidal lock constant, noon maximum, night `None`,
+   determinism across replays. The presets' schedule strings become the
+   parameters.
+2. The tracer gains a light slot defaulting to today's literal; the Mesocosm
+   section passes the block from the presented cut's tick to both consumers;
+   the fixed sun of ruling 970 becomes the bench default.
+3. The ecology credit: measure what producers draw per day on the seed-9
+   world, bring the limiting amount back as a tuning fork (888) before the
+   credit changes, then scale the credit by intensity, rerecord the pins
+   under that ruling and rerun the A1 matrix.
+4. Receipts under `Code/testing/isometry/light-field-<date>/`, 100 MB cap.
+
+Done when the four captures are inspected, the CPU control and the compile
+gates pass, the A1 gate holds and the record carries the tuning ruling.
 
 ## The first proof (partially closed)
 
@@ -811,6 +873,12 @@ allocator-observed resident and transition bytes is proven by the Paredros
   field-resolution transition has its own conservation and fidelity contract.
 
 ## Progress
+
+- **2026-10-17, the sun carded (971 to 974):** the first field passes the
+  admission boundary on paper: a derived function in the sim over (rules,
+  tick, site), read by the tracer, the tenant and the sunlight credit, with a
+  1,440-tick day and night as sun `None`. Its lane waits for the core
+  tick-cost lane (966) and runs on a cheaper model. No code yet.
 
 - **2026-10-10, Q1:** current ownership and status checked against the lane
   tree under 793; dated prose retained. Documentation verification only;
