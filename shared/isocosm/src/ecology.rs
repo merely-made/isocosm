@@ -25,29 +25,32 @@ pub(crate) use admission::validate_material_provenance;
 /// The account a producer captures (890). Energy is not matter (879): tissue
 /// is never relabelled as fuel.
 const SUN: &str = "sim:energy";
-/// A site's light per tick, and the most it holds. Abundant by declaration:
-/// it never binds a producer, so capture is real. Bare ecologies run as they
-/// did before 890; in bodied ones the sun process's presence reseeds which
-/// part receives new tissue, so their trajectories differ (wing ruling 929).
-/// A limiting light is a later ruling.
-const LIGHT: u64 = 1_000_000;
+/// A site's light credit per tick at full sun, and the most it holds (rulings
+/// 982 and 983). The credit is scaled by the sun's intensity at the tick
+/// (`light::at`), so it is nothing at night; the store holds a night's light,
+/// half a day of full credit, so producers draw a reserve down while it is
+/// dark. 500 is about the burst the seed-9 A1 producers drew at one site in
+/// one tick, so light limits when they crowd and not otherwise. In bodied
+/// ecologies the sun process's presence reseeds which part receives new
+/// tissue, so their trajectories differ (wing ruling 929).
+const LIGHT: u64 = 500;
+const STORE: u64 = 720 * LIGHT;
 
-/// The sun: each site gains light while it holds less than its cap.
+/// The sun: each site gains light while it holds less than its store.
 fn sunlight() -> Process {
     let mut sun = process(
         "ecology:sunlight",
         Causation::Agentless,
-        vec![Effect::Transform {
+        vec![Effect::Sunlight {
             who: Binding::Place,
-            take: BTreeMap::new(),
-            give: BTreeMap::from([(SUN.into(), LIGHT)]),
-            conversion: None,
+            account: SUN.into(),
+            full: LIGHT,
         }],
     );
     sun.requires = vec![Query::Below {
         who: Binding::Place,
         key: SUN.into(),
-        amount: 2 * LIGHT,
+        amount: STORE,
     }];
     sun.period = Some(1);
     sun.priority = -2;
@@ -68,8 +71,8 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             "world:soil".into(),
             supply + crate::draw(founding.seed, "soil", &[id]) % founding.stock_max,
         );
-        // Light from the first tick: acts before the sun's first pass work.
-        site.accounts.insert(SUN.into(), LIGHT);
+        // A full store from the first tick: acts before the sun's first pass work.
+        site.accounts.insert(SUN.into(), STORE);
     }
     g.rules.processes.insert("ecology:sunlight".into(), sunlight());
     for group in g.population.groups.values_mut() {
