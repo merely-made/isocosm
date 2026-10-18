@@ -29,6 +29,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
         bodies: BodyMode::Voxels,
         budget: section::DEFAULT_BODY_BUDGET,
         light: 1.0,
+        sky: section::SkyBlock::fixed(),
         terrain: section::TerrainStyle::default(),
         terrain_y: native
             .scene
@@ -77,6 +78,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
     old.configure_bodies(BodyMode::Voxels, section::DEFAULT_BODY_BUDGET);
     old.set_half_height(camera.half_height);
     old.set_body_light(presentation.light);
+    old.set_sky(presentation.sky);
     old.configure_terrain(presentation.terrain, camera.centre, presentation.terrain_y);
     let pose = section::pose_of(&native.scene, 1.0).map(|(pose, _)| pose);
     let roster = section::roster_of(&native.scene, old.slab_window(camera.centre), 1.0);

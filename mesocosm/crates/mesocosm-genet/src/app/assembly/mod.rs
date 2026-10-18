@@ -121,6 +121,7 @@ impl State {
                 bodies: host.config.body_mode,
                 budget: host.config.body_budget,
                 light: host.config.body_light,
+                sky: host.config.sun.block(&sim.genesis().rules, r.tick()),
                 terrain: host.config.terrain_style,
                 terrain_y: at[1] as f32,
                 focus: host.config.dev.then(|| host.followed()).flatten(),

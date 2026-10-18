@@ -38,6 +38,7 @@ fn main() {
     let mut no_trace = false;
     let mut bench = false;
     let mut bench_epoch_explicit = false;
+    let mut sun_explicit = false;
     let mut size_explicit = false;
     let mut founding_explicit = false;
     let mut seed_explicit = false;
@@ -79,6 +80,11 @@ fn main() {
                     .and_then(|v| v.parse::<f32>().ok())
                     .filter(|v| v.is_finite() && *v >= 0.0)
                     .unwrap_or_else(|| fail("--body-light wants a finite nonnegative intensity"));
+            },
+            "--sun" => {
+                sun_explicit = true;
+                config.sun = args.next().as_deref().and_then(mesocosm_genet::section::SunSource::parse)
+                    .unwrap_or_else(|| fail("--sun wants fixed, sim, or a tick number"));
             },
             "--terrain-style" => {
                 config.terrain_style = TerrainStyle::parse(&args.next().unwrap_or_default())
@@ -237,6 +243,7 @@ fn main() {
         });
     }
 
+    if (bench || config.bench_world) && !sun_explicit { config.sun = mesocosm_genet::section::SunSource::Fixed; }
     if config.bench_world && (bench || config.spread.is_some() || config.ecology_candidate.is_some()
         || config.ecology_witness.is_some() || unchosen_explicit || replay.is_some()) {
         fail("--bench-world is an explicit dev world or watched save; it cannot combine with another founding path");
@@ -291,6 +298,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --bodies MODE   voxels (default) or capsules (comparison), presentation only
   --body-budget N maximum detailed bodies in the section
   --body-light N  body light scale, sun and ambient (default 1 matches terrain, zero is dark)
+  --sun S         sky light: fixed (bench default), sim (play default) or a tick number
   --terrain-style MODE  auto (classic), classic or habitat
   --camera MODE   oblique (default), side, across, terrarium-east/south/west/north
   --slab H        section slab half-height in voxels (presentation only, default 28)

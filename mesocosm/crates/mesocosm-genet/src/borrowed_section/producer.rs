@@ -164,6 +164,7 @@ impl SceneSource for Source {
                 section.configure_bodies(view.bodies, view.budget);
                 section.set_half_height(view.half_height);
                 section.set_body_light(view.light);
+                section.set_sky(view.sky);
                 section.configure_terrain(view.terrain, view.centre, view.terrain_y);
                 section.set_body_focus(view.focus, view.selection);
             }

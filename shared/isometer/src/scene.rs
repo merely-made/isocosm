@@ -17,6 +17,7 @@
 use isometer_lens::{
     AtlasLimits, BrickChange, BrickDiagnostics, BrickFrameInput, BrickMap, BrickRevision,
     BrickTracer, CritterPose, FRAME_FORMAT, Grade, TerrainAppearance, TerrainPalette,
+    TraceLight,
 };
 
 use crate::bodies::{BodyFrameStats, BodyLayer, SceneBody, SceneVolumes};
@@ -132,6 +133,9 @@ pub struct Scene {
     /// tileset or a biome names it once and the frames after it inherit it.
     /// `None` keeps the tracer's fixed soil, rock and unknown arithmetic.
     terrain_palette: Option<TerrainPalette>,
+    /// The terrain's light, host state like the palette. Default: the
+    /// tracer's literal sun, so hosts that never set it are unchanged.
+    light: TraceLight,
     /// A CPU map change that has not reached a successful terrain encode.
     /// Isolated previews and failed frames must not consume its upload.
     terrain_upload_pending: bool,
@@ -176,6 +180,7 @@ impl Scene {
             tracer,
             map: None,
             terrain_palette: None,
+            light: TraceLight::default(),
             terrain_upload_pending: true,
             terrain_diagnostics: None,
             bodies,
@@ -284,6 +289,11 @@ impl Scene {
         self.terrain_palette = palette;
     }
 
+    /// Lights the traced terrain with `light` from the next frame on.
+    pub fn set_light(&mut self, light: TraceLight) {
+        self.light = light;
+    }
+
     /// Binds a map the host built itself, pending a full upload.
     pub fn set_terrain_map(&mut self, map: BrickMap) {
         self.map = Some(map);
@@ -368,6 +378,7 @@ impl Scene {
                 bodies,
                 traced_view,
                 terrain_palette,
+                light,
                 ..
             } = &mut *self;
             let mut input = BrickFrameInput::for_camera(
@@ -381,6 +392,7 @@ impl Scene {
             .with_roster(host.roster());
             input.terrain_appearance = frame.terrain_appearance;
             input.terrain_palette = terrain_palette.as_ref();
+            input.light = *light;
             if let Some(pose) = host.played() {
                 input = input.with_pose(pose);
             }
@@ -400,6 +412,7 @@ impl Scene {
                 map,
                 traced_view,
                 terrain_palette,
+                light,
                 ..
             } = &mut *self;
             let mut input = BrickFrameInput::for_camera(
@@ -412,6 +425,7 @@ impl Scene {
             .with_roster(capsules.roster);
             input.terrain_appearance = frame.terrain_appearance;
             input.terrain_palette = terrain_palette.as_ref();
+            input.light = *light;
             if let Some(pose) = capsules.played {
                 input = input.with_pose(pose);
             }
