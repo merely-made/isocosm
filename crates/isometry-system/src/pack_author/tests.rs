@@ -2,6 +2,8 @@ use super::*;
 use std::{fs, path::Path};
 #[path = "preset_tests.rs"]
 mod preset_tests;
+#[path = "shared_tests.rs"]
+mod shared_tests;
 struct Fixture(PathBuf);
 impl Fixture {
     fn new() -> Self {

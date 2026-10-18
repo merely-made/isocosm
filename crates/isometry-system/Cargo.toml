@@ -25,7 +25,14 @@ isocosm-vtt = { workspace = true, default-features = false }
 
 # App-local terminal authoring; normal runtime builds do not carry syntax tooling.
 [features]
-pack-authoring = ["dep:taplo", "dep:sha2", "dep:logos"]
+pack-authoring = ["dep:taplo", "dep:sha2", "dep:logos", "dep:mere-source-edit"]
+
+# Shared source-edit kernel, optional to private authoring; canonical Git source.
+[dependencies.mere-source-edit]
+git = "https://github.com/merely-made/mere.git"
+branch = "main"
+version = "0.1.0"
+optional = true
 
 [dependencies.taplo]
 path = "../../vendor/taplo"

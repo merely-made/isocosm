@@ -1,9 +1,12 @@
 # Private generator-pack authoring
 
-**Date:** 2026-10-17. **Status:** implemented and bounded-qualified; private
-terminal consumer in `isometry-system`, verified against baseline `d91a8290`.
-No shared API or runtime/session changes. The verification receipt records the
-pre-commit source state; Git history records publication.
+**Date:** 2026-10-17, updated 2026-10-18. **Status:** private terminal consumer
+and shared edit/undo adapter implemented; receiving the published
+[`mere-source-edit` supplier at `70deef2c`](https://github.com/merely-made/mere/commit/70deef2c8cf3d3410ae35b496a9396514070b24f)
+without local overrides is qualified in the working tree at `183a2f67`.
+The consumer is not committed or pushed. Runtime/session ownership is unchanged.
+P5/P6 receipts retain their original local-supplier baselines; P7 records the
+Git-only receiving checks. Git history records consumer publication separately.
 
 ## Ownership and policies
 
@@ -35,6 +38,13 @@ there is no new product identity encoding.
 - P4 implemented and qualified (2026-10-17, initial baseline `1dcbe606`): private reviewable lock-preset
   insertion. Proposal/explicit edit/save separation, typed ownership,
   conflict/stale/index refusals and the real scratch-pack workflow pass.
+
+- P5 implemented and locally qualified (2026-10-18, baseline `183a2f67`):
+  route private edits and preset previews through `mere-source-edit`; keep the
+  existing CLI JSON, parser/schema/layout checks, explicit saving and admission
+  ownership. Done-conditions: host-stamp/receipt regression tests, default and
+  authoring gates, real scratch-pack workflow, scoped lock diff and explicit
+  unpublished-supplier limitation recorded below.
 
 ## Findings
 
@@ -133,7 +143,8 @@ local generator ID and a new valid preset key. Generator/preset descendant heade
 partial TOML 1.1 indexes, JSON, missing or ambiguous targets, invalid presets
 and conflicting keys refuse without mutation. Some other layouts may also
 refuse if candidate validation cannot prove ownership; ordinary text edits
-remain available. A proposal does not admit data or add a shared API.
+remain available. A proposal does not admit data. The shared edit-plan kernel
+does not own these format-specific rules.
 
 ## Backend provenance and distribution
 
@@ -220,3 +231,109 @@ changes to the qualified private source. All 71 feature-enabled tests pass;
 the rebuilt CLI/example repeat the 59-command, five-process workflow with actual
 fixture execution. Logs and receipt remain under
 `Code/testing/pack-author-preset-20261017/publication/`. Shared API remains deferred.
+
+
+## P5 shared edit-plan adapter — 2026-10-18
+
+This phase supersedes the earlier shared-API deferral for the small source-edit
+operation. `Session::source_stamp` supplies the canonical-root manifest path,
+open-instance counter and current revision to `mere_source_edit::Proposal`.
+`Session::edit` prepares and checks an application in its serialized command
+handler, then uses the existing `publish` path: preflight limits, parser/schema
+diagnostics and immutable history publication stay local. Shared changed ranges
+map into the unchanged flat CLI receipt (`document`, `base`, `result`,
+`operation`, `ranges`). Revision exhaustion retains the legacy error wording.
+Undo and all filesystem save/conflict behavior remain local and unchanged.
+
+Preset insertion now gets both preview and serialized edits from that same
+validated plan. The real expected-manifest validation, reparse/equality check,
+batched TOML index, generator ownership and unknown-descendant/layout refusals
+stay in Isocosm. The shared helper has no typed application state. Its internal
+stamp and exact-source guard do not change the private protocol into a durable
+cross-process proposal format; clients still submit the existing session's
+expected `base` and text edits.
+
+The canonical new dependency is optional `mere-source-edit` 0.1.0 from
+`https://github.com/merely-made/mere.git`, `branch = "main"`, enabled only by
+`pack-authoring`. Qualification uses the explicit config
+`Code/testing/shared-source-edit-20261018/isocosm/local-source-edit.toml`,
+patching **only** that new package to
+`/Users/markik/Code/repos/mere/crates/system/source-edit`. Existing Mere supplier
+pins/patches and other package versions/sources are untouched. Normal runtime
+dependency traversal contains none of `mere-source-edit`, Taplo or Rowan.
+
+Seventy-four authoring-enabled package tests (14 binary tests), 58 default tests,
+all-feature/all-target package checking, scoped all-target Clippy, a separate
+Rust 1.97.1 binary check and formatting pass with the explicit patch. Three
+adapter tests cover host identity/reopen binding and source guards, exact legacy
+receipt JSON/strict edit input and transactional overflow refusal; the existing
+parser, schema, layout and save tests pass unchanged.
+
+`Code/testing/shared-source-edit-20261018/isocosm/REPORT.md`, `checks.json` and
+`workflow/qualification.json` retain commands, process exit statuses, source and
+binary hashes and the real scratch-pack transcript. The workflow again passes
+59 commands across five processes: reviewed insertion and explicit apply/save,
+stale/duplicate/partial-index refusal, unknown-content preservation, invalid-draft
+save/reopen/repair, external-conflict recovery and actual loader/fixture execution.
+Original real-pack files and scratch assets are hash-checked unchanged.
+
+Unpatched remote resolution was actually attempted and fails because the new
+package is not yet on Mere main. The lockfile records the locally patched new
+package without a Git source; it is an assembled-source qualification, not a
+portable remote lock or publication receipt. After supplier publication the
+owning integration must regenerate only this package's remote lock entry and
+rerun unpatched checks. No commits, pushes, GUI qualification, crash-recovery
+claims, runtime admission changes or broader supplier repins are part of P5.
+
+## P6 duplication removal — 2026-10-18
+
+Edit and undo now share one `apply_edits` path and one publication boundary.
+Undo supplies a full-source replacement; it no longer constructs range receipts
+by hand. Publication takes the checked result revision and ranges from the
+shared application instead of incrementing the revision a second time. Format
+preflight and syntax construction still finish before current/history mutation.
+Save, schema, admission, stale-base precedence and CLI receipt shape are unchanged.
+
+Seventy-five feature-enabled tests (15 authoring), 58 default tests, scoped
+all-target Clippy, Rust 1.97.1 binary checking and build pass with the same
+explicit only-new-package local override. The 59-command/five-process real
+workflow passes, and all 64 ready/command records match the prior shared-adapter
+workflow after scratch-path normalization. New controls cover undo's exact range
+receipt, stale and no-op undo, and both edit/undo revision-exhaustion refusal
+without publication or save. The report and logs remain in
+`Code/testing/source-edit-dedup-20261018/isocosm/`. Publication is still separate;
+this pass does not commit, push, or change source dependencies.
+
+
+## P7 published supplier receiving checks — 2026-10-18
+
+The supplier is published on canonical Mere main at
+[`70deef2c8cf3d3410ae35b496a9396514070b24f`](https://github.com/merely-made/mere/commit/70deef2c8cf3d3410ae35b496a9396514070b24f).
+The optional manifest remains Git `branch = "main"`; no URL spelling trick,
+local patch/config, environment override or other supplier repin is used.
+Scoped `cargo update -p mere-source-edit` could not select the prior locally
+patched package after removing the explicit override. A normal unpatched
+`cargo check -p isometry-system --features pack-authoring --bin pack-author`
+generated the remote lock entry instead. Its source is
+`git+https://github.com/merely-made/mere.git?branch=main#70deef2c8cf3d3410ae35b496a9396514070b24f`.
+Every existing lock package/version/source remains unchanged; the only existing
+dependency-list change is `isometry-system`'s new optional edge. No broader
+source coupling was required.
+
+Receiving checks pass without overrides: 75 feature tests (15 authoring),
+58 default tests, all-feature/all-target package checking, scoped all-target
+Clippy, Rust 1.97.1 binary check, build, formatting and diff checks. Resolved
+Cargo metadata points the shared package into Cargo's Git checkout at the
+published source; no filesystem patch provides it. The default normal dependency
+tree still excludes `mere-source-edit`, Taplo and Rowan.
+
+The rebuilt Git-backed CLI repeats the real scratch-pack workflow: 59 commands
+in five processes, exact save/reopen, invalid-draft repair, explicit proposal/
+edit/save, stale/duplicate/index refusals, external-conflict recovery and actual
+fixture execution. All 64 ready/command records match the previous deduplicated
+workflow after replacing only scratch-directory paths. New source/binary hashes,
+commands, metadata and receipts are retained under
+`Code/testing/source-edit-publication-20261018/isocosm/`; earlier receipts are
+unchanged. This consumer commit records the qualified Git-backed adapter.
+Publication does not extend the evidence to a GUI or additional admission
+authority.

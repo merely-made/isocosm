@@ -8,6 +8,9 @@ mod tests;
 
 use isometry_campaign::ContentPackManifest;
 use isometry_system::GeneratorPack;
+use mere_source_edit::{
+    Application, ChangedRange, EditError, Proposal, SourceStamp, TextEdit as Edit,
+};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
@@ -80,19 +83,11 @@ fn decode(format: Format, text: &str) -> Result<ContentPackManifest, String> {
 fn fingerprint(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(deny_unknown_fields)]
-struct Edit {
-    start: usize,
-    end: usize,
-    text: String,
-}
-#[derive(Debug, Serialize)]
-struct ChangedRange {
-    base_start: usize,
-    base_end: usize,
-    result_start: usize,
-    result_end: usize,
+fn edit_error(error: EditError) -> String {
+    match error {
+        EditError::RevisionExhausted => "revision overflow".into(),
+        other => other.to_string(),
+    }
 }
 #[derive(Debug, Serialize)]
 struct Receipt {
@@ -164,19 +159,18 @@ impl Session {
     }
     fn publish(
         &mut self,
-        text: String,
+        application: Application,
         operation: &'static str,
-        ranges: Vec<ChangedRange>,
     ) -> Result<Receipt, String> {
-        let base = self.current.revision;
-        let revision = base.checked_add(1).ok_or("revision overflow")?;
-        let next = Snapshot::build(revision, text, self.format)?;
+        let base = application.receipt.base.revision;
+        let revision = application.receipt.result.revision;
+        let next = Snapshot::build(revision, application.text, self.format)?;
         let receipt = Receipt {
             document: self.path.display().to_string(),
             base,
             result: revision,
             operation,
-            ranges,
+            ranges: application.receipt.ranges,
         };
         self.current = next.clone();
         self.history.insert(revision, next);
@@ -185,53 +179,43 @@ impl Session {
         }
         Ok(receipt)
     }
-    fn edit(&mut self, base: u64, mut edits: Vec<Edit>) -> Result<Receipt, String> {
+    fn source_stamp(&self) -> SourceStamp {
+        SourceStamp {
+            document: self.path.display().to_string(),
+            instance: self.instance,
+            revision: self.current.revision,
+        }
+    }
+    fn edit(&mut self, base: u64, edits: Vec<Edit>) -> Result<Receipt, String> {
         self.check_base(base)?;
-        if edits.is_empty() {
-            return Err("empty edit batch".into());
-        }
-        edits.sort_by_key(|e| (e.start, e.end));
-        let src = &self.current.text;
-        for (i, e) in edits.iter().enumerate() {
-            if e.start > e.end
-                || e.end > src.len()
-                || !src.is_char_boundary(e.start)
-                || !src.is_char_boundary(e.end)
-            {
-                return Err("edit range must use UTF-8 byte boundaries".into());
-            }
-            if i > 0 && (e.start < edits[i - 1].end || e.start == edits[i - 1].start) {
-                return Err("overlapping or same-start edits".into());
-            }
-        }
-        let mut result = src.to_string();
-        let mut shift = 0isize;
-        let mut ranges = vec![];
-        for e in &edits {
-            let start = (e.start as isize + shift) as usize;
-            ranges.push(ChangedRange {
-                base_start: e.start,
-                base_end: e.end,
-                result_start: start,
-                result_end: start + e.text.len(),
-            });
-            shift += e.text.len() as isize - (e.end - e.start) as isize;
-        }
-        for e in edits.into_iter().rev() {
-            result.replace_range(e.start..e.end, &e.text);
-        }
-        self.publish(result, "edit", ranges)
+        self.apply_edits(edits, "edit")
+    }
+    fn apply_edits(
+        &mut self,
+        edits: Vec<Edit>,
+        operation: &'static str,
+    ) -> Result<Receipt, String> {
+        let stamp = self.source_stamp();
+        let proposal =
+            Proposal::prepare(stamp.clone(), &self.current.text, edits).map_err(edit_error)?;
+        let application = proposal
+            .application(&stamp, &self.current.text)
+            .map_err(edit_error)?;
+        // The host still parses, checks its limits and publishes atomically. The
+        // flat CLI receipt and save/undo ownership remain app-local.
+        self.publish(application, operation)
     }
     fn undo(&mut self, base: u64, target: u64) -> Result<Receipt, String> {
         self.check_base(base)?;
         let snapshot = self.snapshot(target)?;
-        let ranges = vec![ChangedRange {
-            base_start: 0,
-            base_end: self.current.text.len(),
-            result_start: 0,
-            result_end: snapshot.text.len(),
-        }];
-        self.publish(snapshot.text.to_string(), "undo", ranges)
+        self.apply_edits(
+            vec![Edit {
+                start: 0,
+                end: self.current.text.len(),
+                text: snapshot.text.to_string(),
+            }],
+            "undo",
+        )
     }
     fn handle(&self, node: &taplo::syntax::SyntaxNode) -> Handle {
         Handle {
