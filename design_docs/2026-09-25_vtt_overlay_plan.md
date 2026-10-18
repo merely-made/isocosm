@@ -210,7 +210,7 @@ under the 600-line ceiling as it goes, this repository's own rule
 | The campaign world | `world` 1,223 | factions and polities derived from their members (rulings 63 to 68); places and routes as the place graph (ruling 72); characters as denizens with a faction (rulings 36, 200); laws as world-scope rules (ruling 41); history as the record (the record's §3.4); storylets as a pack's requirements and role slots (rulings 89, 190); a party's known places as knowledge (ruling 84) and its stores as the ledger (ruling 38) |
 | The faction turn | `faction` 459 | faction acts derived from members and the world's seed (rulings 15, 63); the entropy tape's far-rung stand-in retires entirely at V2, once the sim's factions run (ruling 247) |
 | Facts and items | `item` 311, `fact` 78 | notes and secrets (rulings 80, 87); items bearing their provenance, a hidden modifier a note revealed, an item of note a relic (rulings 143, 157) |
-| Generator and packs | `generator` 491, `pack` 340 | the generator's declared space (sim plan §5, ruling 89) and packs as authored content (rulings 89, 190); cleromancy's selection stays host-local by its own decision record |
+| Generator and packs | `generator` 491, `pack` 340 | the generator's declared space (sim plan §5, ruling 89) and packs as authored content (rulings 89, 190); Cleromancy left the VTT (case 600) |
 | Campaign maps | `map` 258 | the battlemap as a projection of a site's generated volume with the DM's map an edit over it (rulings 12, 18, 89, 243), and its transitions as nesting steps (ruling 74) |
 | Chronicle | `chronicle` 380 | arrivals from other games as crossings and descent (rulings 105, 126); `wing-formats` keeps the wire |
 | Construction | `construction` 284 | world edits as asserted facts (the record's §1) |
@@ -233,8 +233,8 @@ conatus's docs, built when Mark says.)*
 
 ## 5. Phases and done-conditions
 
-Proposed, not opened. Done-conditions are draws, never fixtures (ruling
-15).
+V0 and V1 are done and V2 is open (case 798). Done-conditions are draws,
+never fixtures (case 15).
 
 - **V0, the profile ruled.** Done when §6's decisions are taken; everything
   else in §1 to §4 rests on rulings already made. **Done 2026-09-26**
@@ -299,8 +299,8 @@ V2's.
   from the payload, never from peer derivation; a late joiner rebuilds the
   same state from the log alone; and a headed two-peer receipt exists. H0
   and H1's laws stand: no peer derives a consequence, and version
-  negotiation refuses, never degrades. The wire is at `PROTOCOL_VERSION` 5
-  with ALPN `isometry/session/v5`, qualified by Q6 for 768's `WorldEvent`
+  negotiation refuses, never degrades. The wire is at `PROTOCOL_VERSION` 22
+  with ALPN `isometry/session/v22`, Q6 having qualified 768's `WorldEvent`
   reshaping; H2 requires its own later break and qualification. Still open
   from H0: a peer that never sends `Hello` is not version-gated and can
   push `Rolled`.
@@ -324,14 +324,13 @@ V2's.
   undiscovered edges clip hard or fade; and whether baked map thumbnails
   are worth a backdrop.
 
-The whole proceeds after Mesocosm's M3, side by side with Eponym's plan
-(ruling 231).
+V2 opened without waiting for Mesocosm's M3 (case 798, amending 231), side
+by side with Eponym's plan.
 
 ## 6. Decisions for Mark
 
 All eight taken: the eighth by ruling 231 on 2026-09-25; the first to
-seventh by rulings 243 to 250 on 2026-09-26. V0 is done on paper; opening
-V1 is Mark's.
+seventh by rulings 243 to 250 on 2026-09-26. V0 and V1 are done.
 
 1. **The battlemap under the sim.** When the sim is on, a battlemap is the
    DM's authored map asserted over the site's volume (ruling 89), a
@@ -454,64 +453,9 @@ what each left open lands here, so it has a live owner.
 
 ## Progress
 
-- **2026-10-12, V2 native storylet caller source:** requirements and role
-  casting read native authored polity tags, law keys and character keys.
-  Offers/cache use accepted native history, saved content and private fact
-  IDs. Acceptance stages native Storylet assertions with table map/item
-  metadata in one host candidate; item recipients need explicit admitted
-  token/character bindings. Sim-off behavior stays. This source is unverified
-  under826. Protocol8 individual native time-request transport is assembling;
-  player roster and waiting-proposal choices851/852 are pending. No native
-  time advance is activated by an unanswered choice. Ruleset lowering is V3.
-
-- **2026-10-13, H0 actual negotiation and reconnect source:** current-version
-  Hello is required before ordinary or native input. Actual Iroh/in-process
-  input and disconnects carry the installed connection generation; old readers
-  and queued traffic cannot mutate a successor. Saved native bindings,
-  player roster/holds and accepted history persist. Source is uncompiled and
-  untested826. The full V2 source inventory is open; all six known choices
-  865 to870 are pending as one collected round864.
-
-- **2026-10-13,865 to870 source and actual VTT callers:** all six answers
-  recorded verbatim together864. GameBindings7/8/9 retain map presentation,
-  typed Hook records and witnessed dormant catalogues; protocol/ALPN11 append
-  actual Hook/Pack publication. The DM previews then explicitly accepts or
-  forces; source freshness, native replay and unrelated metadata are guarded.
-  Exact goal+event selectors support multiple goals at one adoption act, and
-  internally captured adoption cuts reject earlier different acts. Authored
-  polity fill and actual member evidence remain separate under867/79.
-  Overmaps show retained disclosures with sharp paint/route clipping, explicit
-  world/view layers, optional thumbnails and an exact historical disclosure
-  cut. Both actual hosts consume these doors; shared supported storylet
-  Fact/History admission requires exact source freshness. Shared private
-  requirements, physical map/item actuation, automatic process goals and
-  institutional execution remain source gaps. All compiler/tests/fixtures/
-  probes/tuning stay deferred826. Complete terrain/condition/claim disclosure
-  is the sole collected pending question871. Mark's Proceed
-  continues the migration. Full V2/E3/M4/C10/C11 acceptance remains open.
-
-- **2026-10-13, native operations and consumers source assembly:** explicit
-  process goal directives publish with genuine actor events/owned effects;
-  Setup admits supplied new processes, note kinds and institution methods.
-  Native constitutional operations use real member bodies, exact support
-  holdings and authored deciding processes, keeping polity/body/event domains
-  distinct. Historical rollback/witness and journal paths retain their facts.
-  GameBindings10 and protocol/ALPN12 retain supplied physical map edits with
-  exact geometry, measured material quantities, owned selections and accepted
-  native history-prefix proof. Standalone file/quote/apply and shared VTT
-  authoring consumers use those doors. Accepted pack choreography updates both
-  hosts' actual stylesheets. Old metadata remains metadata; poses become stale
-  on changed terrain until explicitly placed. Source only: no Cargo/compiler,
-  tests, fixture/probe repairs or tuning826. Disclosure871 stays pending;
-  physical item actuation, S8-S10 source and final product/checkpoint acceptance
-  remain open. Ecology term-table work continues independently.
+- **2026-10-18:** the progress entries of 2026-10-12 and 2026-10-13 moved to
+  [the archive](archive_docs/2026-10-18/2026-09-25_vtt_overlay_plan_retired.md#progress-entries-matched-to-their-cases-2026-10-18);
+  the choices they call pending were decided as cases 851, 852 and 865 to 873.
 
 - **2026-10-13, TG7 source placement:** Mesocosm's entry; it lives in the [sim
   plan](../mesocosm/design_docs/2026-09-22_sim_plan.md)'s Progress.
-
-- **2026-10-13, consolidated migration choices871 to873:** remaining map
-  terrain/condition/claim disclosure, the explicitly defensive tissue threshold
-  law, and the actual bite comparator were presented together864. No option
-  is inferred from Proceed/Go ahead. Physical items, explicit
-  graft carrying, host inspection and supplied live sight source proceed
-  independently; all compiler/tests/fixtures/probes/tuning remain deferred826.

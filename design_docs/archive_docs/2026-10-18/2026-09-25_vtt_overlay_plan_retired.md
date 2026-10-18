@@ -712,3 +712,78 @@ read as follows; the phrase "Next unused874." is gone from the live entry:
   law, and the actual bite comparator were presented together864. No option
   is inferred from Proceed/Go ahead. Next unused874. Physical items, explicit
 ```
+
+## Lines matched to their cases, 2026-10-18
+
+cleromancy's selection stays host-local by its own decision record |
+Proposed, not opened. Done-conditions are draws, never fixtures (ruling
+15).
+The wire is at `PROTOCOL_VERSION` 5
+  with ALPN `isometry/session/v5`, qualified by Q6 for 768's `WorldEvent`
+  reshaping;
+The whole proceeds after Mesocosm's M3, side by side with Eponym's plan
+(ruling 231).
+V0 is done on paper; opening
+V1 is Mark's.
+
+## Progress entries matched to their cases, 2026-10-18
+
+- **2026-10-12, V2 native storylet caller source:** requirements and role
+  casting read native authored polity tags, law keys and character keys.
+  Offers/cache use accepted native history, saved content and private fact
+  IDs. Acceptance stages native Storylet assertions with table map/item
+  metadata in one host candidate; item recipients need explicit admitted
+  token/character bindings. Sim-off behavior stays. This source is unverified
+  under826. Protocol8 individual native time-request transport is assembling;
+  player roster and waiting-proposal choices851/852 are pending. No native
+  time advance is activated by an unanswered choice. Ruleset lowering is V3.
+
+- **2026-10-13, H0 actual negotiation and reconnect source:** current-version
+  Hello is required before ordinary or native input. Actual Iroh/in-process
+  input and disconnects carry the installed connection generation; old readers
+  and queued traffic cannot mutate a successor. Saved native bindings,
+  player roster/holds and accepted history persist. Source is uncompiled and
+  untested826. The full V2 source inventory is open; all six known choices
+  865 to870 are pending as one collected round864.
+
+- **2026-10-13,865 to870 source and actual VTT callers:** all six answers
+  recorded verbatim together864. GameBindings7/8/9 retain map presentation,
+  typed Hook records and witnessed dormant catalogues; protocol/ALPN11 append
+  actual Hook/Pack publication. The DM previews then explicitly accepts or
+  forces; source freshness, native replay and unrelated metadata are guarded.
+  Exact goal+event selectors support multiple goals at one adoption act, and
+  internally captured adoption cuts reject earlier different acts. Authored
+  polity fill and actual member evidence remain separate under867/79.
+  Overmaps show retained disclosures with sharp paint/route clipping, explicit
+  world/view layers, optional thumbnails and an exact historical disclosure
+  cut. Both actual hosts consume these doors; shared supported storylet
+  Fact/History admission requires exact source freshness. Shared private
+  requirements, physical map/item actuation, automatic process goals and
+  institutional execution remain source gaps. All compiler/tests/fixtures/
+  probes/tuning stay deferred826. Complete terrain/condition/claim disclosure
+  is the sole collected pending question871. Mark's Proceed
+  continues the migration. Full V2/E3/M4/C10/C11 acceptance remains open.
+
+- **2026-10-13, native operations and consumers source assembly:** explicit
+  process goal directives publish with genuine actor events/owned effects;
+  Setup admits supplied new processes, note kinds and institution methods.
+  Native constitutional operations use real member bodies, exact support
+  holdings and authored deciding processes, keeping polity/body/event domains
+  distinct. Historical rollback/witness and journal paths retain their facts.
+  GameBindings10 and protocol/ALPN12 retain supplied physical map edits with
+  exact geometry, measured material quantities, owned selections and accepted
+  native history-prefix proof. Standalone file/quote/apply and shared VTT
+  authoring consumers use those doors. Accepted pack choreography updates both
+  hosts' actual stylesheets. Old metadata remains metadata; poses become stale
+  on changed terrain until explicitly placed. Source only: no Cargo/compiler,
+  tests, fixture/probe repairs or tuning826. Disclosure871 stays pending;
+  physical item actuation, S8-S10 source and final product/checkpoint acceptance
+  remain open. Ecology term-table work continues independently.
+
+- **2026-10-13, consolidated migration choices871 to873:** remaining map
+  terrain/condition/claim disclosure, the explicitly defensive tissue threshold
+  law, and the actual bite comparator were presented together864. No option
+  is inferred from Proceed/Go ahead. Physical items, explicit
+  graft carrying, host inspection and supplied live sight source proceed
+  independently; all compiler/tests/fixtures/probes/tuning remain deferred826.
+

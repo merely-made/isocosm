@@ -23,3 +23,7 @@ feature compiler check, runtime count parity, and endpoint g4 receipt pass.
 
 - **2026-10-16:** removed the stale A1 dependency from R1's current status.
   The merge is on main; R1's move and its consumer gates remain open.
+
+## Lines matched to their cases, 2026-10-18
+
+map lowering to `isometry-core` (598) |

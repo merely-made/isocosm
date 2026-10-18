@@ -37,7 +37,7 @@ published. Its consumers are all the VTT's: `isonetry` (110 uses),
 | `native/` | 5,464 | the VTT's game over the native sim: game bindings, party, time and holds, joint journeys, overmap presentation, packs, storylets, items, physical maps, institutions, grafts, hooks, placement, eye, readings | isocosm-vtt, isonetry, isometry-genet, isometry-views | `isocosm-vtt` |
 | `contract.rs` | 468 | the VTT's assertions lowered onto native entries in one place (795) | isonetry | `isocosm-vtt` |
 | `founding/` | 489 | native campaign founding from a `Setup` | isonetry, isometry-genet, isometry-views | `isocosm-vtt`, founding through the sim-host core (H1) |
-| `content/` | 3,418 | the campaign world, generator, packs, items, facts, chronicle, construction, maps, overmap data | the VTT's crates | the sim at V2, per 247's table; map lowering to `isometry-core` (598) |
+| `content/` | 3,418 | the campaign world, generator, packs, items, facts, chronicle, construction, maps, overmap data | the VTT's crates | the sim at V2, per 247's table; map lowering to `isometry-core` (915) |
 | `lib.rs` | 109 | `CampaignMap` and lowering a map proposal into a `MapDocument` | isometry-genet, isometry-system, isometry-views, isonetry | `isometry-core` |
 | `store.rs`, `collaboration.rs` | 396 | the host-private GM store and the proposal lifecycle | isonetry, isometry-genet | F3 |
 

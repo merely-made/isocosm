@@ -178,6 +178,11 @@ the later sections derive from, not rules; new rules are numbered by Mark.
    lineage as "a historical entity comprised of kith and kin". A settlement
    is a faction until it has a methodology, then a polity. A region is not
    an entity; it is terrain.
+
+   *2026-10-18, Mark:* "A relation acting through members (Recommended)".
+   A faction holds no state of its own and acts when its members do, as the
+   sim plan reads cases 9 and 63 and the code holds it; "agent kind" here
+   names a kind of grouping.
 9. **State follows methodology.** A thing has its own state exactly when it
    has its own way of turning a situation into an action. Everything else is
    a relation, a record or a field over the things that do.
@@ -198,6 +203,11 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     is a far-rung view of that volume, not the truth.
 13. **Cell size may differ,** "that's more a question of what we can do. I
     would prefer arbitrary cell sizes."
+
+    *2026-10-18, Mark:* "Free base unit, power-of-two cells (Recommended)".
+    Any base unit per world; cells within a chunk at power-of-two multiples
+    of it. Case 396's evidence had read this case as allowing power-of-two
+    cells per chunk.
 14. **A graph over the bricks drives processes,** at the rung above the
     bricks, derived from them. Above the near rung, "there could be derived
     candidate locations that are asserted when persisted."
@@ -7214,6 +7224,9 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      its game crate, presentation adapters go to the host or isometer,
      `effect_experiment` is deleted and fixtures become draws (15), each when
      its family is reached.
+
+     *2026-10-18, Mark:* "775 stands (Recommended)". Case 775 keeps
+     `effect_experiment` in mesocosm-runtime, amending this case's deletion of it.
 670. **In-site space is isometer's; the sim takes it through isometer.**
      2026-10-08, the families plan's second round. Question: legacy
      `places` gives Mesocosm its space inside a site and Eponym uses it,

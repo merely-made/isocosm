@@ -240,8 +240,8 @@ legibility surface.
 
 ## 5. Phases and done-conditions
 
-Proposed, not opened. Done-conditions are draws, never fixtures (ruling
-15).
+E0 and E1 are done and E3 is open (case 798). Done-conditions are draws,
+never fixtures (case 15).
 
 - **E0, the profile ruled.** Done when §6's decisions are taken; everything
   else in §1 to §4 rests on rulings already made. **Done 2026-09-26**
@@ -376,15 +376,15 @@ over it, held as notes on the knower (771; `shared/isocosm/src/reach.rs`,
   first recall budgets, and the minimum stable reference vocabulary shared
   with the hagiograph.
 
-The whole proceeds after Mesocosm's M3, side by side with the VTT's plan
-(ruling 231).
+E3 opened without waiting for Mesocosm's M3 (case 798, amending 231), side
+by side with the VTT's plan.
 
 ## 6. Decisions for Mark
 
 All seven taken: the seventh by ruling 231 and the first and second by
 rulings 232 to 235 on 2026-09-25; the third's last half, the fourth, the
-fifth and the sixth by rulings 238, 239, 241 and 242 on 2026-09-26. E0 is
-done on paper; opening E1 is Mark's.
+fifth and the sixth by rulings 238, 239, 241 and 242 on 2026-09-26. E0 and E1
+are done.
 
 1. **The handoff and the solver.** Two halves. (a) Eponym's blows: the
    foreground strike system keeps resolving them geometrically and hands
