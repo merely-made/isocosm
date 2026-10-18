@@ -27,6 +27,8 @@ pub struct Snapshot {
 pub(crate) struct Presentation {
     pub forward: [f32; 3], pub centre: [f32; 3], pub half_height: f32,
     pub bodies: section::BodyMode, pub budget: usize, pub light: f32,
+    /// The sky at the presented tick, from the sim (971).
+    pub sky: section::SkyBlock,
     pub terrain: section::TerrainStyle,
     pub terrain_y: f32,
     pub focus: Option<Id>, pub selection: Option<section::BodySelection>,
