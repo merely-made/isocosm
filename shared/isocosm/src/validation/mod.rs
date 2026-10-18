@@ -370,7 +370,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         Effect::Terrain { change, cells, reach } => {
             crate::operations::validate(p, change, cells, *reach)?;
         }
-        Effect::Transfer { account: a, .. } => account(rules, a)?,
+        Effect::Transfer { account: a, .. } | Effect::Sunlight { account: a, .. } => account(rules, a)?,
         Effect::Transform { take, give, .. } => {
             for a in take.keys().chain(give.keys()) {
                 account(rules, a)?;

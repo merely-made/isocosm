@@ -12088,7 +12088,59 @@ what later sections derive from.
      1,440-tick day is then 12 minutes of play. The same round archived both
      merged lane sessions.
 
-     Next unused 979.
+979. **The sun's parameters are an optional `Rules.sun`, absent meaning the default.**
+     Asked 2026-10-17 at the light-field lane's start. Evidence: presets are
+     applied at founding only as site conditions (`generate.rs`,
+     `Preset::apply`), their schedule strings are prose read by nothing, and
+     Rules fields skip serialising when absent so hashes stay. Options: (1)
+     an optional `Rules.sun: Option<SunRules>`, presets setting it at
+     founding (recommended); (2) site conditions written by the preset; (3)
+     caller-passed preset, nothing stored. Mark: "Optional Rules field,
+     absent = default (Recommended)". *Reading, not ruled:* the parameters
+     are integers (the rules are `Eq`): tidal lock, tilt in hundredths of a
+     degree, intensity percent, colour in thousandths; latitude is the site
+     condition `light:latitude`, default 40 degrees.
+
+980. **A world with no sun rules gets a real day.**
+     Asked with 979. Options: (1) a 1,440-tick day and a mild 23.5 degree
+     season (recommended); (2) the fixed 970 sun unless a preset sets a
+     schedule. Mark: "Default day: 1,440-tick day, mild season
+     (Recommended)". Tidal-locked worlds take 970's fixed sun exactly.
+
+981. **Names: `isocosm::light`, `light::at`, `Light`, `Sun`, `SunRules`.**
+     Asked with 979; the tracer side is `TraceParams` plus a light slot fed
+     from `BrickFrameInput`. Mark: "Use those names (Recommended)".
+
+982. **The light credit is 500 per site per tick at full sun.**
+     Asked 2026-10-17 as 888's tuning fork, with the lane's evidence: on the
+     seed-9 A1 world (offered runtime, Grouped) producers drew 605, 227, 465,
+     315, 11 and 0 per site over the 10 ticks it ran before a question held
+     it, peak 463 at one site in one tick, against a credit of 1,000,000 per
+     tick (levels near 3,000,000). *This is a 10-tick rate, not a measured
+     day.* Options: (1) 500, about the observed burst, limiting when
+     producers crowd or the sun is low (recommended); (2) 100, limiting
+     broadly; (3) 2,000; (4) measure the whole A1 horizon first. Mark: "500
+     per site per tick (Recommended)". Receipt: `Code/testing/isometry/
+     light-field-2026-10-17/light-draw.log`.
+
+983. **The site's light store holds a night.**
+     Asked with 982: the credit is nothing at night and the old account
+     capped at two ticks of credit. Options: (1) a store of about 12 hours of
+     full credit, 720 x 500 = 360,000, so producers draw a reserve down in
+     the dark (recommended); (2) keep the two-tick cap, producers stop at
+     night; (3) a 10 percent starlight credit. Mark: "Cap holds a night's
+     light (Recommended)".
+
+984. **The credit scales through a new `Effect::Sunlight`.**
+     Asked with 982 when implementation found `Effect::Transform`'s `give`
+     a fixed ledger of integers. Options: (1) a new effect `Sunlight { who,
+     account, full }`, resolved at staging into the transform it comes to
+     (recommended); (2) computed amounts in `give` with a sun reading; (3) a
+     native step before the tick. Mark: "New effect: Effect::Sunlight
+     (Recommended)". Reading, not ruled: the intensity is read at world scale
+     (no site latitude) at the act's tick.
+
+     Next unused 985.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

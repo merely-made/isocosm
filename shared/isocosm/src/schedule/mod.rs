@@ -70,6 +70,10 @@ fn framed(p: &Process) -> bool {
                     who: Binding::Place,
                     ..
                 }
+                | Effect::Sunlight {
+                    who: Binding::Place,
+                    ..
+                }
                 | Effect::Condition { .. }
                 | Effect::Spend { .. }
                 | Effect::MovePaced { .. }

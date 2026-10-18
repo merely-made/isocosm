@@ -47,6 +47,8 @@ pub struct HostConfig {
     pub body_budget: usize,
     /// Presentation-only scale of the body tenant's sun and ambient (1 matches the terrain).
     pub body_light: f32,
+    /// Where the sky's light comes from; a bench reads the fixed sun unless told otherwise.
+    pub sun: section::SunSource,
     /// Off by default (DT1); recorded in the receipt either way.
     pub dev: bool,
     /// Which body the camera starts on (DT2); presentation only.
@@ -113,6 +115,7 @@ impl Default for HostConfig {
             body_mode: section::BodyMode::default(),
             body_budget: section::DEFAULT_BODY_BUDGET,
             body_light: 1.0,
+            sun: section::SunSource::Sim,
             dev: false,
             follow: None,
             watch: None,

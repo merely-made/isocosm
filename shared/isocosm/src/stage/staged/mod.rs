@@ -170,6 +170,17 @@ impl Staged<'_> {
 
     /// The effect with its amounts resolved against the stage as it stands.
     fn resolve<'e>(&mut self, e: &'e Effect) -> Result<Cow<'e, Effect>> {
+        if let Effect::Sunlight { who, account, full } = e {
+            let light = crate::light::at(&self.sim.genesis.rules, self.sim.state().tick, None);
+            let intensity = light.sun.map_or(0.0, |sun| f64::from(sun.intensity));
+            let credit = (*full as f64 * intensity).round() as u64;
+            return Ok(Cow::Owned(Effect::Transform {
+                who: *who,
+                take: Default::default(),
+                give: [(account.clone(), credit)].into(),
+                conversion: None,
+            }));
+        }
         if !e.computes() {
             return Ok(Cow::Borrowed(e));
         }

@@ -35,6 +35,10 @@ struct TraceParams {
     terrain: array<vec4<f32>, TERRAIN_ENTRIES>,
     // Column-major world-to-clip for the depth join; identity when unused.
     clip_from_world: mat4x4<f32>,
+    // Terrain light: [0] toward the sun (xyz) and ambient (w); [1] the sun's
+    // per-channel weight. Today's literal by default. Ahead of the pose,
+    // whose declared length here is shorter than the host's buffer.
+    light: array<vec4<f32>, 2>,
     critter: CritterParams,
 };
 
@@ -459,8 +463,8 @@ fn trace_sample(in: VsOut) -> TraceSample {
         );
         return TraceSample(vec4(colour, 1.0), ray.origin + ray.direction * params.camera.far);
     }
-    let sun = normalize(vec3(0.4, 0.8, 0.3));
-    let light = 0.38 + 0.62 * max(0.0, dot(hit.normal, sun));
+    let sun = normalize(params.light[0].xyz);
+    let light = vec3(params.light[0].w) + params.light[1].xyz * max(0.0, dot(hit.normal, sun));
     // Where the section's own wall stands inside solid ground.
     //
     // The DDA seeds its normal to `+y` and returns that seed unchanged for a
