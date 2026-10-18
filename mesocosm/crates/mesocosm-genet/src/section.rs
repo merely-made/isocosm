@@ -20,7 +20,9 @@ mod bodies;
 pub mod host_device;
 mod camera;
 mod capsules;
+mod light;
 mod tenant;
+pub use light::{Block as SkyBlock, SunSource};
 pub use capsules::{pose_of, roster_of};
 mod terrain;
 pub use terrain::TerrainStyle;
@@ -217,6 +219,13 @@ impl Section {
 
     pub fn set_body_light(&mut self, intensity: f32) {
         self.body_tenant.set_light(intensity);
+    }
+
+    /// One light block for terrain and bodies (472), from the sim's sun at
+    /// the presented tick. Unset, both read ruling 970's fixed sun.
+    pub fn set_sky(&mut self, block: SkyBlock) {
+        self.scene.set_light(block.trace());
+        self.body_tenant.set_block(block);
     }
 
     /// Transparent lit bodies, layered over the terrain by Netrender.

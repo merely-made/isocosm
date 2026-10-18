@@ -70,6 +70,25 @@ impl Preset {
             .map_or(0, |(_, s)| *s)
     }
 
+    /// How this world's sun moves and shines (971 to 973): its energy
+    /// schedule as rules data, which the strings in [`Self::parameters`]
+    /// described.
+    pub fn sun_rules(self) -> crate::light::SunRules {
+        use crate::light::SunRules;
+        match self {
+            // Tidally locked; a fixed terminator.
+            Self::TidalShelf => SunRules { tidal_lock: true, ..SunRules::default() },
+            // A dim red sun, most light scattered before it lands.
+            Self::HeavyDeep => SunRules {
+                intensity_percent: 35,
+                colour: [1_000, 450, 300],
+                ..SunRules::default()
+            },
+            // An eccentric orbit: a fierce summer and a deep winter.
+            Self::LongYear => SunRules { tilt: 4_000, ..SunRules::default() },
+        }
+    }
+
     /// The world's plain name, as Mesocosm authored it.
     pub fn name(self) -> &'static str {
         match self {

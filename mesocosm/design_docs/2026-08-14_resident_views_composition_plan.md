@@ -201,7 +201,7 @@ Admission card:
   renderer's derived planes, not this field.
 - Cadence and interpolation: continuous in tick, read per frame. A day of
   1,440 ticks from the minute tick, season from the year, tidal lock and
-  season amplitude from the preset (973).
+  season amplitude from the preset (973). At the default tempo of 2 ticks per second (978) a day is 12 minutes of play.
 - Sources and sinks: an external source, no sink.
 - Boundary conditions: sun `None` below the horizon and underground; the
   block's ambient carries night.
@@ -873,6 +873,32 @@ allocator-observed resident and transition bytes is proven by the Paredros
   field-resolution transition has its own conservation and fidelity contract.
 
 ## Progress
+
+- **2026-10-18, the sun lands (971 to 984), branch `light-field-971`:**
+  `isocosm::light` (`at`, `Light`, `Sun`, `SunRules`) is the derived sun:
+  a 1,440-tick day from the minute tick, season from the year, `Rules.sun`
+  optional (979, absent means the default day), tidal lock and tilt and
+  dimness from `Preset::sun_rules`, sun `None` below the horizon with the
+  ambient carrying night; 6 tests, stock hashes unchanged. The tracer's
+  `TraceParams` has a light slot defaulting to the old literal (placed ahead
+  of the pose, whose WGSL length is shorter than the host buffer, a finding:
+  a trailing field read zeros); the Mesocosm section builds one block per
+  presented tick and projects it to the tracer and the tenant, and a CPU
+  control shows both receive identical values across three presets, a day
+  and a season. `--sun fixed|sim|TICK`; benches read ruling 970's fixed sun.
+  Dawn, noon, dusk, night and fixed captures of the seed-9 save are in
+  `Code/testing/isometry/light-field-2026-10-17/`; terrain tops shift hue
+  from grey to blue at low light under the grade's ladder, which the lane
+  flags for a look. The credit: 982 to 984, `Effect::Sunlight` credits 500
+  times the intensity per tick with a 360,000 store; on the seed-9 world a
+  10-tick measure drew at most 463 per site per tick (a rate, not a day).
+  The H3 pins re-record to identical content (their worlds carry no
+  ecology); one genesis digest pin moves; the A1 battery holds, candidates
+  20/20 in bare, bodied and played against 0/20 for every original arm. Not
+  rerun: the retained-receipt matrix with replay and conservation checks.
+  VTT and Eponym frames take the default slot and are unchanged; the two
+  `isometer-lens` tests `roster` and `unlit` fail identically before and
+  after (pre-existing).
 
 - **2026-10-17, the sun carded (971 to 974):** the first field passes the
   admission boundary on paper: a derived function in the sim over (rules,

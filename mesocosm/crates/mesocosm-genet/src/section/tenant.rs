@@ -8,16 +8,10 @@ mod geometry;
 use std::collections::{BTreeMap, BTreeSet};
 
 use isometer::{BodyLayer, SlabCamera, SubjectKey};
-use tenant::{BodyId, HostDevice, LightBlock, Palette, PaletteMesh, Pose, Sun};
+use super::light::Block;
+use tenant::{BodyId, HostDevice, Palette, PaletteMesh, Pose};
 
 const FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8UnormSrgb;
-
-// The tracer's sun, so bodies and terrain read under one light (tracer.wgsl:
-// `normalize(vec3(0.4, 0.8, 0.3))`, light = 0.38 + 0.62 * max(0, N.L)). Both
-// move to the sim's day and night field when it is admitted (ruling 472).
-const TOWARD_SUN: [f32; 3] = [0.4, 0.8, 0.3];
-const AMBIENT: f32 = 0.38;
-const SUN: f32 = 0.62;
 
 struct CachedBody {
     id: BodyId,
@@ -30,6 +24,7 @@ pub(super) struct BodyTenant {
     target: wgpu::Texture,
     cached: BTreeMap<SubjectKey, CachedBody>,
     light: f32,
+    block: Block,
 }
 
 impl BodyTenant {
@@ -42,6 +37,7 @@ impl BodyTenant {
             target: target(&host.device, size),
             cached: BTreeMap::new(),
             light: 1.0,
+            block: Block::fixed(),
         }
     }
 
@@ -55,6 +51,10 @@ impl BodyTenant {
 
     pub fn set_light(&mut self, intensity: f32) {
         self.light = intensity;
+    }
+
+    pub fn set_block(&mut self, block: Block) {
+        self.block = block;
     }
 
     pub fn encode(
@@ -110,7 +110,7 @@ impl BodyTenant {
         if !self.inner.set_camera(&camera) {
             return Err("invalid body tenant camera".into());
         }
-        if !self.inner.set_lights(&light_block(self.light)) {
+        if !self.inner.set_lights(&self.block.tenant(self.light)) {
             return Err("invalid body tenant lighting".into());
         }
         self.inner.set_depth_prepass(Some(layer.depth_texture()));
@@ -128,26 +128,6 @@ impl BodyTenant {
             return Err("body tenant submitted outside the caller encoder".into());
         }
         Ok(())
-    }
-}
-
-/// The fixed sun and ambient, both scaled by `--body-light` (1 matches the
-/// terrain, 0 is dark). kiss3d's diffuse is albedo / pi * N.L * intensity, so
-/// the sun's intensity carries the pi that makes it the tracer's Lambert term.
-fn light_block(scale: f32) -> LightBlock {
-    let toward = TOWARD_SUN;
-    LightBlock {
-        sun: Some(Sun {
-            direction: toward.map(|c| -c),
-            color: [1.0; 3],
-            intensity: SUN * std::f32::consts::PI * scale,
-            casts_shadows: false,
-        }),
-        ambient: tenant::Ambient {
-            color: [1.0; 3],
-            intensity: AMBIENT * scale,
-        },
-        ..Default::default()
     }
 }
 
@@ -171,26 +151,4 @@ fn target(device: &wgpu::Device, size: [u32; 2]) -> wgpu::Texture {
         usage: wgpu::TextureUsages::RENDER_ATTACHMENT | wgpu::TextureUsages::TEXTURE_BINDING,
         view_formats: &[FORMAT.remove_srgb_suffix()],
     })
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn the_sun_is_the_tracers_and_scales_with_body_light() {
-        let block = light_block(1.0);
-        assert!(block.is_valid());
-        let sun = block.sun.expect("sun");
-        assert!(!sun.casts_shadows);
-        // The light travels away from the sun the tracer's N.L reads toward.
-        assert!(sun.direction.iter().zip(TOWARD_SUN).all(|(d, t)| *d == -t));
-        // At 1 the diffuse peak (N.L = 1) is the tracer's 0.38 + 0.62.
-        let peak = block.ambient.intensity + sun.intensity / std::f32::consts::PI;
-        assert!((peak - 1.0).abs() < 1e-6);
-        let dark = light_block(0.0);
-        assert!(dark.is_valid());
-        assert_eq!(dark.ambient.intensity, 0.0);
-        assert_eq!(dark.sun.expect("sun").intensity, 0.0);
-    }
 }
