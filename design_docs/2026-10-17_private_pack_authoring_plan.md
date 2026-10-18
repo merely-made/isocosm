@@ -32,6 +32,10 @@ there is no new product identity encoding.
   existing fixture execution after authoring, and default/feature compiler and
   focused regression gates. Record implementation and verification separately.
 
+- P4 implemented and qualified (2026-10-17, initial baseline `1dcbe606`): private reviewable lock-preset
+  insertion. Proposal/explicit edit/save separation, typed ownership,
+  conflict/stale/index refusals and the real scratch-pack workflow pass.
+
 ## Findings
 
 2026-10-17 at `d91a8290`: `GeneratorPack::load` already accepts TOML 1.x and
@@ -106,6 +110,31 @@ A crash can leave the lease; inspect it before manually removing it. The
 single-owner command loop serializes edits and saves; there is no background
 save to mark a newer revision saved accidentally.
 
+## Reviewable preset insertion
+
+`propose_lock_preset` is a private read-only command. Example JSON-line request:
+
+```json
+{"op":"propose_lock_preset","base":1,"generator":"forge_item","preset":{"key":"quality","label":"Heirloom quality","value":{"type":"text","value":"heirloom"}}}
+```
+
+It returns the document, expected `base`, UTF-8 `edits`, full proposed text in
+`preview`, the preset and target, and `applied:false`/`admitted:false`. Review the
+proposal, then submit its `base` and `edits` using the existing `edit` command.
+Saving remains a separate explicit `save`. An intervening edit makes the old
+proposal's base stale. The operation accepts the real `GeneratorLockPreset`
+and full `GenValue` schema, validates the intended manifest, and reparses the
+proposed source to require exact typed equality with that manifest.
+
+The supported first slice requires a valid typed TOML manifest with a complete
+source index, canonical unquoted `[[generators]]` and
+`[[generators.lock_presets]]` headers (header whitespace is accepted), a unique
+local generator ID and a new valid preset key. Generator/preset descendant headers and alternate/inline/quoted layouts,
+partial TOML 1.1 indexes, JSON, missing or ambiguous targets, invalid presets
+and conflicting keys refuse without mutation. Some other layouts may also
+refuse if candidate validation cannot prove ownership; ordinary text edits
+remain available. A proposal does not admit data or add a shared API.
+
 ## Backend provenance and distribution
 
 `vendor/taplo` retains the upstream MIT notice and a reviewable patch from
@@ -158,3 +187,36 @@ survive authoring. No probe-local schema or hash is used.
   authoring surface or broader product certification claimed. Publishing the
   private fork, GUI adoption, durable history and crash-recovery guarantees
   remain outside this pass. Shared API extraction remains deferred.
+
+## P4 qualification — 2026-10-17
+
+The private insertion addition was initially qualified on `1dcbe606`. Seventy-one
+feature-enabled package tests (including 11 binary tests), 58 default tests,
+scoped all-target Clippy, Rust 1.97.1 binary compilation and formatting pass.
+Existing library/dependency warnings remain separate; no package-wide strict
+lint claim is made.
+
+`Code/testing/pack-author-preset-20261017/REPORT.md` records the current binary's
+59-command, five-process real-pack workflow. Proposal preview is read-only;
+explicit `edit` matches the preview and leaves disk unchanged until `save`.
+Stale proposals/applications, duplicate keys and valid TOML 1.1 with a partial
+index refuse without mutation. The existing invalid-draft save/reopen/repair,
+external-conflict export/reopen/reapply and actual loader/fixture steps pass.
+
+Focused tests additionally cover middle/last generators, CRLF and final-line
+comments, nested real GenValue values, quoted/newline/Unicode labels, missing
+and duplicate targets, invalid presets, JSON/quoted layouts and unknown preset
+descendant tables. The latter refuse because typed equality alone cannot prove
+that unknown content remains attached to the original array element.
+
+No loader, schema, runtime, save policy, dependency or admission changes are
+made. This completes only the small private slice; shared API extraction stays
+deferred. A mature second consumer such as Knot or Woodshed can establish the
+next lifecycle need independently of Isocosm's development schedule. Artifacts
+remain in testing; Git history records publication separately from qualification.
+
+Publication recheck, 2026-10-17: fetched and fast-forwarded to `b918c8a0` without
+changes to the qualified private source. All 71 feature-enabled tests pass;
+the rebuilt CLI/example repeat the 59-command, five-process workflow with actual
+fixture execution. Logs and receipt remain under
+`Code/testing/pack-author-preset-20261017/publication/`. Shared API remains deferred.
