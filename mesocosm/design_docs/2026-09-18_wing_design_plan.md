@@ -5208,63 +5208,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it holds there in place of cells and measurements, so a mold's decay at
      a place grows with its mass there.
 
-501. **S2's bodies family is four checkpoints, in order.** Asked on
-     2026-10-02, opening the bodies family's brief as 487 ordered: "How is
-     S2's bodies family cut into checkpoints (see the preview)? Evidence:
-     the anatomy brief holds 32 rulings. 490 has the natives read their
-     systems on bodies founded by the recipe, so development comes before
-     systems; wounds narrow routes (477), so harm comes after systems.
-     Earlier briefs gave graft compatibility to bodies (§9, step 4) and
-     reproduction's strategies to the bodies and lineages families (447 to
-     450). Checkpoint 6 certified its step exact against the crowd on 1,000
-     draws with three controls." The preview, as put:
-
-     | Checkpoint | Builds | Rulings |
-     | --- | --- | --- |
-     | 7, matter in parts | tissue in parts, reserve in stores, spread in proportion; cells derived; measurements by cell share; names read, no gate | 459, 460, 463, 464, 492 to 494 |
-     | 8, development | the lineage's recipe and policy; births by the filial body and the seed; growth toward the recipe once full; segment growth by trait; incorporation teaching the lexicon, with graft compatibility | 447 to 449, 468, 478, 479, 495 |
-     | 9, systems | networks read from the tree along attachment offsets, working by degree; the ten defaults, read by the natives | 462, 465, 477, 489, 490 |
-     | 10, harm and loss | wounds as lost cells, healed first; severing into bodies; regrowth where the lineage heals; fragments | 469, 470, 485, 486, 496 |
-
-     Options, recommended first: (A) "Four, in this order: matter in parts,
-     development, systems, then harm and loss, each certified exact against
-     the crowd as checkpoint 6 was. Reproduction's further axes (450) wait
-     for the lineages family (recommended)." (B) "Two larger ones: matter in
-     parts with development as one checkpoint, and systems with harm and
-     loss as the other. Fewer certifications, larger steps." (C) "One: the
-     whole family as a single checkpoint, certified once at the end." Mark
-     chose A, "Four, in this order". So the bodies family is checkpoint 7,
-     matter in parts; 8, development; 9, systems; and 10, harm and loss,
-     each with the rulings the table lists and each certified exact against
-     the crowd as checkpoint 6 was; reproduction's further axes (450) wait
-     for the lineages family.
-
-502. **Territories and surfaces are built in the bodies family, last.**
-     Asked on 2026-10-02, with 501: "Where are territories and surfaces
-     built? Evidence: 488 makes a mold a territory and micro life a surface.
-     They lie in places' ledgers under their keys (497), spread by overflow
-     along routes (498), and germs fork strains (499). Sites' ledgers and
-     routes exist now. Places, the finer grain of 422, come with the places
-     family, after the record in 195's order." Options, recommended first:
-     (A) "In the bodies family, last: a fifth checkpoint after harm and
-     loss, built at site grain on the ledgers and routes that exist. Strains
-     fork lineages as Isocosm already can, and places' finer grain follows
-     with the places family (recommended)." (B) "With the places family:
-     territories and surfaces wait until places exist, and are built there
-     at their finer grain." (C) "A family of their own: mold and micro life
-     get their own family, briefed after the bodies family." Mark answered:
-     "1 is also possibly important for the concept of aura, if we're doing
-     magical systems... so definitely in the bodies family, last". So a
-     fifth checkpoint, 11, builds territories and surfaces after harm and
-     loss, at site grain on the ledgers and routes that exist, strains
-     forking lineages as Isocosm already can, and places' finer grain
-     follows with the places family. *Reading, not ruled:* an aura may be a
-     territory or a surface applying conditions on its places, within the
-     place and site scopes 433 gave modifiers; whether magic uses one is the
-     magic design's (404).
-     *Given a reference 2026-10-03 by ruling 522:* Ars Magica's realm
-     auras, which modify casting where they lie.
-
 504. **Each part keeps its own ledger and is a holder.** Asked on
      2026-10-02, opening checkpoint 7 (501): "Where does a part's matter
      live in the sim's books (459)? Evidence: an account's holder is a site,
@@ -5325,30 +5268,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      averages the body each kind is sized by, is unchanged; and what an
      average cannot fit in one member's parts passes to classmates with
      room, so the control loses no matter.
-
-510. **Attachment offsets are built in checkpoint 8.** Asked on 2026-10-03,
-     opening checkpoint 8 (501): "Checkpoint 8 places grown and incorporated
-     parts at a plan-resolved attachment (468, 479). Where does that
-     placement come from? Evidence: Isocosm's Part keeps its parent but no
-     offset, because ruling 462's offsets are scheduled for checkpoint 9.
-     Mesocosm's development sets each part's pivot-to-pivot offset: a
-     segment sits flush behind the last, and appendages sit in mirrored
-     flank sockets. Its growth::resolve tries the plan's facings in turn and
-     takes the first box that overlaps no living part, which needs those
-     offsets." Options, recommended first: (A) "Offsets in checkpoint 8:
-     462's offsets move forward. Development sets each part's offset as
-     Mesocosm does, and growth and incorporation find a free box by
-     isometer's search. Checkpoint 9 then reads the offsets for routes
-     (recommended)." (B) "The tree alone, for now: a grown or incorporated
-     part joins the parent its role's preferred facing picks, with no
-     position or overlap check. Checkpoint 9's offsets place what already
-     exists." (C) "Births only in 8: checkpoint 8 builds recipes and births.
-     Growth in life and incorporation wait for checkpoint 9's offsets." Mark
-     chose A, "Offsets in checkpoint 8". So 462's offsets are built in
-     checkpoint 8: development sets each part's offset as Mesocosm does, a
-     grown or incorporated part takes the first free box isometer's search
-     finds along the placement policy's facings, and checkpoint 9 reads the
-     offsets for routes.
 
 511. **A recipe's kinds are part templates.** Asked on 2026-10-03, with 510:
      "How does the sim's recipe name what a segment bears? Evidence:
@@ -5519,27 +5438,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      its parts first comes to breed only once whole, so its maturity
      emerges with no age threshold; one that provisions first breeds while
      still incomplete.
-
-521. **Semelparity and parental care come with development; mating and
-     horizontal transfer wait for the boundary family.** Asked on
-     2026-10-03, with 519: "Where are 450's axes built? Evidence: 450 ruled
-     mating, semelparity or iteroparity, parental care and horizontal
-     transfer. The bodies family's brief places 447 to 449 in checkpoint 8
-     and does not place 450. Mating needs two genotypes to meet and spreads
-     57's reroll, which lives at the epoch boundary. Semelparity is a trait
-     (one brood, then death). Parental care is a feeding transfer, and
-     horizontal transfer a symbiont's edge counted as eating." Options,
-     recommended first: (A) "Split by home: semelparity and parental care in
-     checkpoint 8, since they're body-level. Mating and horizontal transfer
-     go with the boundary family, where genotypes and the reroll live
-     (recommended)." (B) "All in checkpoint 8: all four are built and
-     certified with development." (C) "All with the boundary: all four wait
-     for the boundary family." Mark chose A, "Split by home". So
-     semelparity or iteroparity and parental care are built and certified
-     in checkpoint 8, and mating and horizontal transfer are built with the
-     boundary family, where genotypes and 57's reroll live.
-     *Drawn in the probe 2026-10-03 by ruling 529:* a share of each
-     lineage's cohorts are semelparous.
 
 522. **Ars Magica's open text becomes a VTT ruleset and a reference for the
      wing's magic.** Raised by Mark on 2026-10-03 ("this is probably good
@@ -7906,21 +7804,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      members. *Reading, not ruled:* once members join, readings derived
      from them sit beside the authored attributes rather than replacing
      them, and where the two disagree is a later question.
-761. **Don't play during a migration; tuning waits.** 2026-10-09, from
-     directing's second pass (merged at `5a29f8c5`), which found that
-     generated consumers cannot reproduce (a birth needs 30 units, a
-     consumer nets about one per 7 to 8 ticks, age takes it at 20 to 60)
-     and asked whether to play a bodied founding, lower the birth
-     threshold or raise consumer feeding. Mark: "Don't play during a
-     migration feels like a fair thing to say. Why the obsession with
-     remaining perfectly functional while refactoring?" So during 732's push
-     nothing is tuned or kept playable; behaviour and balance findings go
-     to the after-pass list, consumer reproduction first among them.
-     Asked the same round whether 754's second clause ("or that the world
-     holds within reach") stays, every reading of it bringing back the
-     first-round collapses, Mark chose "Keep it, sharpened" with no wording
-     yet. So the clause stands unbuilt, to be sharpened in the after-pass;
-     only "levels it once held" is built.
 762. **The review and succession lanes re-point at the switch.** 2026-10-10,
      from the lineages family (merged at `fe1f7178`). Question: every
      consumer reads lineages through a driver holding the legacy `World`.
