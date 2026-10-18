@@ -18,7 +18,7 @@ use isometer_core::ground::{Ground, Terrain};
 
 use crate::{
     BrickFrameInput, BrickMap, BrickRevision, BrickTracer, Grade, TerrainAppearance,
-    TerrainPalette, TraceCamera,
+    TerrainPalette, TraceCamera, TraceLight,
 };
 
 /// Bands two columns wide, one material each. 0..=15 are palette entries
@@ -233,4 +233,40 @@ fn an_unbound_palette_keeps_the_classic_and_habitat_colours_exact() {
         [0.0, 0.8, 0.4],
         "habitat soil repainted",
     );
+}
+
+/// The light slot: the default is the shader's old literal (the receipts
+/// above), and a named light replaces both terms. A top face straight under
+/// a sun at the zenith reads `ambient + sun`; with the sun out, `ambient`.
+#[test]
+fn the_light_slot_replaces_the_literal_sun() {
+    let ground = Ground::grow(&Bands, EXTENT);
+    let map = BrickMap::from_ground(&ground).expect("atlas capacity");
+    let Some(mut tracer) = BrickTracer::headless(WIDTH, HEIGHT) else {
+        eprintln!("no adapter; skipping light slot receipt");
+        return;
+    };
+    let grade = unfogged();
+    let at = probe(0.5);
+    let input =
+        BrickFrameInput::for_camera(&map, BrickRevision(ground.revision()), overhead(), &grade);
+    let soil = [0.38, 0.24, 0.13];
+    let read = |tracer: &mut BrickTracer, light| {
+        let frame = tracer.capture(input.with_light(light)).expect("lit frame");
+        frame.pixels[at..at + 3].to_vec()
+    };
+    let default = tracer.capture(input).expect("default frame");
+    assert_eq!(read(&mut tracer, TraceLight::default()), default.pixels[at..at + 3]);
+
+    let zenith = |ambient, sun| TraceLight { toward_sun: [0.0, 1.0, 0.0], ambient, sun };
+    for (light, level, what) in [
+        (zenith(0.2, [0.5; 3]), 0.7, "ambient and sun"),
+        (zenith(0.1, [0.0; 3]), 0.1, "night: ambient only"),
+    ] {
+        let got = read(&mut tracer, light);
+        for channel in 0..3 {
+            let expected = (soil[channel] * level * 255.0_f32).round() as i32;
+            assert!((expected - got[channel] as i32).abs() <= 2, "{what}: channel {channel}");
+        }
+    }
 }

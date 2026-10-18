@@ -41,6 +41,10 @@ pub(super) struct TraceParams {
     pub terrain: [[f32; 4]; TERRAIN_ENTRIES],
     /// Column-major, identity when the frame carries no depth join.
     pub clip_from_world: [[f32; 4]; 4],
+    /// Terrain light: toward the sun and ambient, then the sun's weight.
+    /// Ahead of the pose, which the shader declares shorter than the host
+    /// buffer, so a field after it would not line up.
+    pub light: [[f32; 4]; 2],
     pub critter: CritterParams,
 }
 
@@ -92,6 +96,7 @@ impl TraceParams {
             ],
             terrain: terrain_of(input),
             clip_from_world: input.clip_from_world.unwrap_or(IDENTITY),
+            light: input.light.packed(),
             critter: CritterParams::from_pose(input.pose),
         }
     }
@@ -401,7 +406,7 @@ mod tests {
         // Both bindings are live at once, and each has to fit the same limit
         // on its own. The frame uniform (header 1 360 B + pose, the slab wall and
         // the 1 KiB material palette included) spends 58.7%, the roster 93.8%.
-        assert_eq!(size_of::<TraceParams>(), 9616);
+        assert_eq!(size_of::<TraceParams>(), 9648);
         assert_eq!(ROSTER_BUFFER_BYTES * 100 / limit, 93);
         // The budget §3 writes as `M × (C + 1) ≤ 511`, checked rather than
         // recited: 40 members at 11 capsules is 480, and one more capsule each
