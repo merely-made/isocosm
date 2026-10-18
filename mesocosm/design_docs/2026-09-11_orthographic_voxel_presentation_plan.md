@@ -1477,6 +1477,31 @@ selecting its place. Fields evaluated over a place stay consumer-pull.
 The VTT's overmap readings that camera draws are its overlay plan's V2
 (§5.1 there).
 
+## Carried from the retired process plans (2026-10-18)
+
+- Mesocosm's lit bodies against the traced terrain have not yet been seen on a
+  GPU: look at occlusion, palette and selection under each camera and after a
+  resize in a headed run. (from after-pass plan §A4)
+- Compare the captured final layered master with the window, including the
+  chromeless route. (from after-pass plan §A4)
+- Measure the presentation-only `--body-light` setting, the per-frame CPU
+  palette reconstruction and per-face pose validation, mesh uploads on motion
+  and camera cuts, marked-face subdivision and the retained terrain receipt's
+  extra import. The body receipt's mesh-byte estimates omit the tenant's
+  camera and light uploads, so no upload-silence claim stands until counters
+  are measured. (from after-pass plan §A4)
+- `LiveBody` still serves the VTT board, Eponym's producer and the posed-face
+  queries; migrate those consumers to the tenant before retiring it. (from
+  after-pass plan §A4)
+- Two `isometer-lens` tests still fail in the 2026-10-17 run
+  (`Code/testing/isometry/light-field-2026-10-17/isometer-tests.log`): the
+  tracer roster test ("the second body is drawn beside the first, not instead
+  of it") and the unlit first-rung test ("no unfogged ambient-lit rock face in
+  either frame"). The baseline's third,
+  `eating_changes_mass_balance_collision_and_geometry` in `isometer-mesh`, has
+  no later run; fix each, or retire it under case 672 naming where its
+  invariant is now checked. (from after-pass plan §A2)
+
 ## CSS features and standards to earmark
 
 Fast-track candidates for genet's

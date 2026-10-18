@@ -469,6 +469,29 @@ Ruling 793 archived the genet document host plan to
 - **The session bin's name** (`crates/eponym-client/src/bin/session.rs`)
   is a naming round, not a session default.
 
+## Carried from the retired process plans (2026-10-18)
+
+- The torch's brightness is untuned (`TORCH_INTENSITY` was set against the CPU
+  falloff it replaced) and its shadows stay off until the testing pass (case
+  749); both are still to be tuned in a headed run. (from after-pass plan §A4)
+- Healing and starvation in Eponym are headed findings still to be looked at
+  and tuned; rest currently keeps wounds under the existing zero-healing law.
+  (from after-pass plan §A4)
+- `GameState::save` on a game whose participant has taken up a subject writes
+  a save its own restore refuses (`StateDiverged`), because the take is a
+  control fact the bare game log does not carry (the Session save does).
+  Nothing in production calls it that way today, and the fix is not yet
+  chosen. (from after-pass plan §A2.1)
+- An arrived outsider's own reserve sits on its entity ledger: `anatomy::held`
+  counts it but `take_within` spends only anatomical parts, so Eponym's hunger
+  command refuses insufficient reserve for an embodied arrival. The
+  arrival-to-embodiment accounting decision belongs to E3's body admission
+  gate, and generated-body receipts do not cover it. (from after-pass plan
+  §Findings)
+- Nothing in movement keeps two bodies from overlapping (a reading, not
+  ruled); the shared fixtures space bodies at their native bounds instead
+  (case 941). (from after-pass plan §A2.1)
+
 ## Findings
 
 - **2026-10-12, native material/work inventory:** `ItemKind::mass_mg`

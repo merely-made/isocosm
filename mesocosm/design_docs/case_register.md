@@ -36,7 +36,7 @@ on 2026-10-18 as operational or replaced.
 | 92 | The named scopes (world, region, area, battlemap) must not hardcode Isometry's paradigm into the sim. | none |
 | 96 | Abilities, skills and techniques are defined (a technique is an ability with a skill precondition); kleptoplasty is conditional; nis is a scale, not a material. | none |
 | 98 | The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world. | none |
-| 100 | World is a kingdom with macro scale; meso and micro worlds are left open. | [sim](2026-09-22_sim_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
+| 100 | World is a kingdom with macro scale; meso and micro worlds are left open. | [sim](2026-09-22_sim_plan.md) |
 | 139 | Law A is amended for materials: a lineage's traits may travel as what things are made of, beside shapes becoming relics. | [sim](2026-09-22_sim_plan.md), [games wing founding](2026-07-30_games_wing_founding.md) |
 | 144 | An item can be a sophont: made so, awakened by its story, or inhabited. | [sim](2026-09-22_sim_plan.md) |
 | 145 | A sophont item acts through its wielder, by its own powers, and can take over its wielder. | [sim](2026-09-22_sim_plan.md) |
@@ -80,7 +80,7 @@ on 2026-10-18 as operational or replaced.
 | 436 | A thing holds at most one record per key; a second application combines magnitudes by the key's stacking and the end becomes the later. | [sim](2026-09-22_sim_plan.md) |
 | 538 | Each world chooses whether the sim leads and rulesets calibrate, or the ruleset leads and the sim's background follows; the ledger and record stay inviolable. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
 | 591 | Legacy game sims move into Isocosm first, legacy crates deleted, games playing as today; families are re-expressed as process definitions afterwards. (amended by 655) | [families reexpression](2026-10-08_families_reexpression_plan.md), [sim](2026-09-22_sim_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
-| 608 | Version-1 saves are verified with their SHA-256 hash as a v1 reader only; saving again writes v2 with the FNV witness. | [after pass](2026-10-10_after_pass_plan.md) |
+| 608 | Version-1 saves are verified with their SHA-256 hash as a v1 reader only; saving again writes v2 with the FNV witness. | none |
 | 623 | Rosters and rulesets move into datasheets through a dated plan; authored pack manifests and process records become TOML, SRD data stays JSON import. | [private pack authoring](../../design_docs/2026-10-17_private_pack_authoring_plan.md) |
 | 624 | Packs load from TOML or JSON, TOML preferred; this repository's own packs are TOML; manifest abi stays 1. | none |
 | 625 | Every Founding variant, instrument variants included, becomes a datasheet and the enum a list read from them; state hashes unchanged. | [forms of life](2026-08-29_forms_of_life_brief.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
@@ -92,18 +92,18 @@ on 2026-10-18 as operational or replaced.
 | 632 | Archetype names stay in code as one-line lookups into the datasheets, so no caller changes and a test proves each accessor resolves. | none |
 | 634 | A v2 save stores the witness as a u64; v1 saves are read through a separate struct carrying their string. | none |
 | 641 | A v1 save is checked at every epoch checkpoint with the SHA-256 as well as its final hash, proved by a v1 fixture with checkpoints. | none |
-| 651 | Save version becomes 3 with per-field entries required; v2 and v1 stay as kept readers checked by their own hashes. | [after pass](2026-10-10_after_pass_plan.md) |
-| 669 | Game-owned code the sim's laws exclude returns to its game crate or host; effect_experiment is deleted and fixtures become draws. (amended by 775) | [families reexpression](2026-10-08_families_reexpression_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 672 | Legacy tests become draws or controls in their family's certification, or retire with the legacy copy. | [after pass](2026-10-10_after_pass_plan.md), [lane queue](2026-10-10_lane_queue_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
+| 651 | Save version becomes 3 with per-field entries required; v2 and v1 stay as kept readers checked by their own hashes. | none |
+| 669 | Game-owned code the sim's laws exclude returns to its game crate or host; effect_experiment is deleted and fixtures become draws. (amended by 775) | [families reexpression](2026-10-08_families_reexpression_plan.md) |
+| 672 | Legacy tests become draws or controls in their family's certification, or retire with the legacy copy. | [orthographic voxel presentation](2026-09-11_orthographic_voxel_presentation_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
 | 739 | An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
 | 740 | Entity gains an optional patch field, set only for members split out of their cohort. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
 | 758 | The datasheet loader lowers onto native Recipe and Template; roster() reads the sheets; legacy Founding becomes a name into them. | [sim](2026-09-22_sim_plan.md) |
 | 772 | A new line's name is its key, lineage:<name>, with no schema change. | none |
-| 791 | Families certify against each plan's invariants (conservation, replay, controls), not legacy parity. | [after pass](2026-10-10_after_pass_plan.md), [sim](2026-09-22_sim_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
+| 791 | Families certify against each plan's invariants (conservation, replay, controls), not legacy parity. | [sim](2026-09-22_sim_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
 | 836 | Newly founded worlds give each declared material a distinct native stock, preserved through carve, deposit and fabrication. | none |
 | 886 | The society layer (projects, institutions, custody, party, goals, polities) is parked behind a feature, on for VTT and Eponym, off for Mesocosm, tested separately. | [stock title](2026-10-14_stock_title_plan.md) |
 | 893 | The society feature gates operations, not state: State fields stay and are empty by default, so every build reads one save format. | [stock title](2026-10-14_stock_title_plan.md), [sim host](2026-10-14_sim_host_plan.md) |
-| 939 | F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen. | [after pass](2026-10-10_after_pass_plan.md) |
+| 939 | F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen. | none |
 | 975 | The core's tick cost is cut by sharing cohorts behind an Arc, copying on write, with serialisation and hashes unchanged. | [sim host](2026-10-14_sim_host_plan.md), [resident views composition](2026-08-14_resident_views_composition_plan.md) |
 | 979 | The sun's parameters are an optional Rules.sun: Option<SunRules>, set by presets at founding; absent means the default. | [resident views composition](2026-08-14_resident_views_composition_plan.md) |
 
@@ -168,7 +168,7 @@ on 2026-10-18 as operational or replaced.
 | 221 | In an escalated fight each round adds strain to both sides, plus what the round costs them; a side whose strain passes its bearing breaks. | [sim](2026-09-22_sim_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
 | 222 | A break in a fight advantages or disadvantages a side in later rounds; it decides nothing automatically. | [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
 | 223 | A fight ends when a side yields on re-sizing or is spent (vigour or reserve out), whichever comes first. | [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
-| 227 | The core reads mood from needs now (low reserve, hunger, wounds); strain builds whenever mood stays low; memory and situation wait for S1. | [sim](2026-09-22_sim_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
+| 227 | The core reads mood from needs now (low reserve, hunger, wounds); strain builds whenever mood stays low; memory and situation wait for S1. 2026-10-18: a hazard wounds, a core wound share feeds mood, healing or rest answers it, strain builds and vitals shows it. | [sim](2026-09-22_sim_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 236 | Competitions are keyed by what is contested, and each member enters one competition per tick, for its most pressing need. (amended by 240) | [sim](2026-09-22_sim_plan.md) |
 | 240 | Competitions run concurrently in a tick against the tick-start state, with costs summed and applied at the tick's end, capped at what a member holds. | [sim](2026-09-22_sim_plan.md) |
 | 241 | Posing is a telling's manner, the fourth thing a hearer weighs, carried on the telling and not as an intent of its own. | [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
@@ -201,7 +201,7 @@ on 2026-10-18 as operational or replaced.
 | 440 | Rate models are calibrated on the bench once per rules digest and ship with the rules; uncalibrated worlds stay on the exact crowd. | [sim](2026-09-22_sim_plan.md) |
 | 451 | An epoch ends by Timed, Gated or PlayerTriggered rule; Timed counts the world's unit and defaults to a year. | [sim](2026-09-22_sim_plan.md) |
 | 452 | Deep time's span counts epochs in the world's rules, as Mesocosm does; under the default year a century is 100 epochs. | [sim](2026-09-22_sim_plan.md) |
-| 454 | Shared ground is shared out from the pass's start; short supply gives each taker the same floored fraction; identity order decides nothing. | [sim](2026-09-22_sim_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
+| 454 | Shared ground is shared out from the pass's start; short supply gives each taker the same floored fraction; identity order decides nothing. | [sim](2026-09-22_sim_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 507 | From checkpoint 7 on, the averaged negative-control crowd averages each lineage's tissue and reserve together and must still fail the starvation check. | [sim](2026-09-22_sim_plan.md) |
 | 554 | A parent and its unweaned young run as individuals in the crowd until the young is weaned; nursing reads only unweaned young. | [sim](2026-09-22_sim_plan.md) |
 | 605 | When shards land, one shard and N shards give the same state hash at more than one thread count, as a standing test. | [balaur wing](2026-10-06_balaur_wing_brief.md), [scenevm wing](2026-10-06_scenevm_wing_brief.md) |
@@ -213,9 +213,9 @@ on 2026-10-18 as operational or replaced.
 | 823 | A member dying during a journey leaves a corpse that completes the journey and becomes available at the destination. | [stock title](2026-10-14_stock_title_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 829 | Port feeding applies to processes that declare it, migrated with their founding ports; unmarked saved grammars are preserved. | none |
 | 830 | Native declares a terrain operation, the game resolves its geometry, and the same native Session admits and records the edit. | none |
-| 832 | New ordinary feeding processes derive their target and source selector from the actual declared intake port; unmarked saves unchanged. | [after pass](2026-10-10_after_pass_plan.md) |
-| 881 | The crowd implements its own chooser for autonomous (un-nudged) territories and refuses live nudges; nudged directing keeps native tests. | [assembled certification](2026-10-13_assembled_certification.md), [after pass](2026-10-10_after_pass_plan.md) |
-| 958 | Equal best movement choices use a deterministic seeded draw keyed by world seed, creature and tick; scores and eligibility are unchanged. | [directing interim m4](2026-10-08_directing_interim_m4_plan.md), [sim](2026-09-22_sim_plan.md), [sim host](2026-10-14_sim_host_plan.md) |
+| 832 | New ordinary feeding processes derive their target and source selector from the actual declared intake port; unmarked saves unchanged. | none |
+| 881 | The crowd implements its own chooser for autonomous (un-nudged) territories and refuses live nudges; nudged directing keeps native tests. | none |
+| 958 | Equal best movement choices use a deterministic seeded draw keyed by world seed, creature and tick; scores and eligibility are unchanged. | [sim](2026-09-22_sim_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md), [sim host](2026-10-14_sim_host_plan.md) |
 | 971 | The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored. | [resident views composition](2026-08-14_resident_views_composition_plan.md) |
 | 973 | Honest units with night: a 1,440-tick day, season from the existing year, sun None below the horizon with ambient carrying night. | [resident views composition](2026-08-14_resident_views_composition_plan.md), [sim host](2026-10-14_sim_host_plan.md) |
 | 980 | A world with no sun rules gets a 1,440-tick day and a mild 23.5 degree season; tidal-locked worlds take 970's fixed sun. | [resident views composition](2026-08-14_resident_views_composition_plan.md) |
@@ -239,9 +239,9 @@ on 2026-10-18 as operational or replaced.
 | 684 | The interim boundary ports grow-a-copy adaptation scoring natively over fork_at, ahead of the lineages family; 195's order stands. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 687 | At site grain a region groups sites by biomass: each trophic level fills its slot until over capacity, then spills; regions merge as biomass falls. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
 | 689 | Regions are derived each round from site biomass and routes, never kept; a world rule sets each trophic level's slot capacity. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
-| 718 | A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
+| 718 | A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later. | [sim](2026-09-22_sim_plan.md) |
 | 752 | A minimal native lineage revision comes forward: development-recipe variants from what the lineage has learned. | none |
-| 754 | A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt. | [directing interim m4](2026-10-08_directing_interim_m4_plan.md), [after pass](2026-10-10_after_pass_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 754 | A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt. | [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 762 | The review and succession lanes re-point at the switch: review becomes lineage::Review over the native Session. | [families reexpression](2026-10-08_families_reexpression_plan.md) |
 | 763 | The boundary and revision move into lineage/, with directing re-exporting. | [sim](2026-09-22_sim_plan.md) |
 | 764 | Native lessons from eating a part whole are discovery; legacy discovery's condition table retires with the world. | [sim](2026-09-22_sim_plan.md) |
@@ -251,7 +251,7 @@ on 2026-10-18 as operational or replaced.
 | 828 | Overflow above capacity is divided equally among eligible routes before each route's transmission rate applies; untransmitted matter stays at source. | none |
 | 831 | Zero-transmission routes are excluded from the overflow split; if none are eligible the excess stays at the source. | none |
 | 878 | Total collapse uses an explicitly authored native global predicate; no hardcoded regional conjunction, missing level or zero biomass. | none |
-| 879 | Ecological independence requires a distinct authored mechanical effect (costs, timing, typed flows may qualify); the operation family is recorded. | [after pass](2026-10-10_after_pass_plan.md), [resident views composition](2026-08-14_resident_views_composition_plan.md) |
+| 879 | Ecological independence requires a distinct authored mechanical effect (costs, timing, typed flows may qualify); the operation family is recorded. | [resident views composition](2026-08-14_resident_views_composition_plan.md), [sim](2026-09-22_sim_plan.md) |
 | 906 | A lineage's lifespan is individual: from age 60 each dies at 2.5% a tick, never past the lineage's drawn lifespan of 80 to 120. (amended by 935, 949) | none |
 | 949 | 906's hazard acts only where the drawn ceiling is above maturity, so today only the A1 preset carries it; stock digests unchanged. | none |
 | 972 | Presentation and ecology both read the light block: the sunlight credit scales by intensity, with the limiting amount a tuning fork brought back with evidence. | [resident views composition](2026-08-14_resident_views_composition_plan.md) |
@@ -316,7 +316,7 @@ on 2026-10-18 as operational or replaced.
 | 518 | A birth spends the provision its reproduce cells fill; the body bears when the provision is full; no birth fraction or interval is set. | [sim](2026-09-22_sim_plan.md), [anatomy](2026-10-02_anatomy_brief.md) |
 | 519 | Hunger switches a grazer between strategies: a fed grazer broods and a hungry one lays an egg. | [sim](2026-09-22_sim_plan.md) |
 | 520 | Whether a body with full parts first grows a missing part or fills its provision is a lineage trait. | [sim](2026-09-22_sim_plan.md), [anatomy](2026-10-02_anatomy_brief.md) |
-| 523 | A body starves when its tissue and reserve cannot pay its rent; the fixed 20 mg starvation line goes. | [sim](2026-09-22_sim_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
+| 523 | A body starves when its tissue and reserve cannot pay its rent; the fixed 20 mg starvation line goes. | [sim](2026-09-22_sim_plan.md) |
 | 524 | A bud grows as a part at its parent's reproducing part and severs into a body of its own once full. | [sim](2026-09-22_sim_plan.md), [anatomy](2026-10-02_anatomy_brief.md) |
 | 526 | A caring parent gives a hungry child one of its own mouthfuls a tick from its reserve while the parent is not hungry. (amended by 527) | [sim](2026-09-22_sim_plan.md) |
 | 527 | What a caring parent gives its hungry young, milk or mouthfuls, is a lineage trait. | [sim](2026-09-22_sim_plan.md) |
@@ -356,31 +356,31 @@ on 2026-10-18 as operational or replaced.
 | 661 | Without nerves systems work alone; only the joint effect is lost, a nerve cut costing coordination, not life. | [sim](2026-09-22_sim_plan.md) |
 | 663 | A sense reaching both systems' parts connects them; a grazer with no eye has no joint bite. | [sim](2026-09-22_sim_plan.md) |
 | 664 | The joint effect is by degree, scaling with the share of the second system's parts the nerves reach. | [sim](2026-09-22_sim_plan.md) |
-| 674 | A body's geometry is isometer's body document; the sim keeps physiology keyed by isometer's part ids. | [after pass](2026-10-10_after_pass_plan.md) |
+| 674 | A body's geometry is isometer's body document; the sim keeps physiology keyed by isometer's part ids. | none |
 | 699 | The sim keys physiology by PartId; BodyDocument gains situs and shape name; mass_mg becomes a reading of the sim's ledger. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
-| 704 | Checkpoint 10's wounds come from an agentless hazard at a per-world drawn rate; rate zero is the negative control. | [after pass](2026-10-10_after_pass_plan.md), [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 705 | A wound is its own Effect with its own part draw; Eat stays tissue only. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 706 | A part keeps a lost-cells field that capacity and ceiling subtract; physiology never writes geometry. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 707 | Severing tombstones the whole subtree, keeps ids, never takes the root, and moves the tombstones' matter out. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 708 | A wound spills tissue, reserve and provision over their lowered bounds, so no account sits above its bound. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 709 | Free (unallocated) cells count in a wound's proportion and cushion it. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 710 | A non-root part with no cells left is severed; a root with none dies. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 711 | Severing comes only from losing every cell; a game's strikes reach it by wounding hard enough. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 712 | Healing lands just before tissue: hungry bodies land reserve, heal, tissue, grow, provision; fed ones heal first. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
-| 713 | Regrowing from a fragment is a second trait drawn per lineage, separate from healing. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
-| 714 | A living fragment re-roots as a seedling does: its top part becomes part 0 at situs [0,0,0] and grows its recipe from there. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
-| 715 | A living fragment is a birth without provision, counted among births and the living with a parent relation, systems dormant where unrealizable. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
-| 716 | A hazard's wound lands on a part drawn by living cells, so bigger parts are hit more often. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 717 | Severing bumps the body's revision and re-resolves bindings; a wound does not. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 719 | A regrown part revives its tombstone: healing clears the severed flag at that situs and gives it new cells. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 704 | Checkpoint 10's wounds come from an agentless hazard at a per-world drawn rate; rate zero is the negative control. | [sim](2026-09-22_sim_plan.md) |
+| 705 | A wound is its own Effect with its own part draw; Eat stays tissue only. | [sim](2026-09-22_sim_plan.md) |
+| 706 | A part keeps a lost-cells field that capacity and ceiling subtract; physiology never writes geometry. | [sim](2026-09-22_sim_plan.md) |
+| 707 | Severing tombstones the whole subtree, keeps ids, never takes the root, and moves the tombstones' matter out. | [sim](2026-09-22_sim_plan.md) |
+| 708 | A wound spills tissue, reserve and provision over their lowered bounds, so no account sits above its bound. | [sim](2026-09-22_sim_plan.md) |
+| 709 | Free (unallocated) cells count in a wound's proportion and cushion it. | [sim](2026-09-22_sim_plan.md) |
+| 710 | A non-root part with no cells left is severed; a root with none dies. | [sim](2026-09-22_sim_plan.md) |
+| 711 | Severing comes only from losing every cell; a game's strikes reach it by wounding hard enough. | [sim](2026-09-22_sim_plan.md) |
+| 712 | Healing lands just before tissue: hungry bodies land reserve, heal, tissue, grow, provision; fed ones heal first. | [sim](2026-09-22_sim_plan.md) |
+| 713 | Regrowing from a fragment is a second trait drawn per lineage, separate from healing. | [sim](2026-09-22_sim_plan.md) |
+| 714 | A living fragment re-roots as a seedling does: its top part becomes part 0 at situs [0,0,0] and grows its recipe from there. | [sim](2026-09-22_sim_plan.md) |
+| 715 | A living fragment is a birth without provision, counted among births and the living with a parent relation, systems dormant where unrealizable. | [sim](2026-09-22_sim_plan.md) |
+| 716 | A hazard's wound lands on a part drawn by living cells, so bigger parts are hit more often. | [sim](2026-09-22_sim_plan.md) |
+| 717 | Severing bumps the body's revision and re-resolves bindings; a wound does not. | [sim](2026-09-22_sim_plan.md) |
+| 719 | A regrown part revives its tombstone: healing clears the severed flag at that situs and gives it new cells. | [sim](2026-09-22_sim_plan.md) |
 | 759 | The registry carries all fifteen functions, arriving with the world move. | [families reexpression](2026-10-08_families_reexpression_plan.md) |
 | 766 | Native parts gain cell identity: tracts as cell sets beside the counts, intake ports as part data. | none |
-| 787 | Authored cells reach the world by native Command::Express placing cells through mosaic::propose. | [glyph expression](2026-09-15_glyph_expression_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
-| 810 | A loss records the cell's previous function or free-pool status, and healing restores that allocation rather than recomputing the lineage recipe. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 811 | Legacy losses of unknown allocation stay admissible and wait for explicit repair; healing selects only losses with recorded allocations. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 812 | Healing after an adapter transfer restores lost cells as free-pool cells, retaining the lost cell IDs. | [after pass](2026-10-10_after_pass_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 872 | Defensive tissue is explicitly designated and its bite threshold is an authored native expression; plate geometry alone establishes no armour. | none |
-| 873 | Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant. | none |
+| 787 | Authored cells reach the world by native Command::Express placing cells through mosaic::propose. | [glyph expression](2026-09-15_glyph_expression_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
+| 810 | A loss records the cell's previous function or free-pool status, and healing restores that allocation rather than recomputing the lineage recipe. | [sim](2026-09-22_sim_plan.md) |
+| 811 | Legacy losses of unknown allocation stay admissible and wait for explicit repair; healing selects only losses with recorded allocations. | [sim](2026-09-22_sim_plan.md) |
+| 812 | Healing after an adapter transfer restores lost cells as free-pool cells, retaining the lost cell IDs. | none |
+| 872 | Defensive tissue is explicitly designated and its bite threshold is an authored native expression; plate geometry alone establishes no armour. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
+| 873 | Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
 
 ## Record and history
 
@@ -397,9 +397,9 @@ on 2026-10-18 as operational or replaced.
 | 105 | Option A for shared-world time is ruled; related worlds share a context without merging, as branched worldlines or celestial neighbours. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
 | 125 | Noting and promotion belong to the world; collection and merging belong to the record. | [sim](2026-09-22_sim_plan.md), [forms of life](2026-08-29_forms_of_life_brief.md) |
 | 126 | A fork founds a new world with its own history that never merges back; a branch is the same world played apart and merged back. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
-| 127 | Everything fades at a rate the holder's memory sets, unless renewed; physical notes (journal, diary) do not fade; legend never fades. | [sim](2026-09-22_sim_plan.md), [after pass](2026-10-10_after_pass_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
+| 127 | Everything fades at a rate the holder's memory sets, unless renewed; physical notes (journal, diary) do not fade; legend never fades. | [sim](2026-09-22_sim_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 | 129 | A thing stays of note only while some mind remembers it or some bearer records it; when the last copy goes it returns to ambient. | [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
-| 130 | A player keeps things of note through who they play and what they pin; Eponym's notes are diegetic, the VTT's and Mesocosm's are not. | [sim](2026-09-22_sim_plan.md), [after pass](2026-10-10_after_pass_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
+| 130 | A player keeps things of note through who they play and what they pin; Eponym's notes are diegetic, the VTT's and Mesocosm's are not. | [sim](2026-09-22_sim_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 | 131 | A mind remembers what was new to it, mattered to it, was intense, or kept happening. | [sim](2026-09-22_sim_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 | 274 | When a merge changes lived outcomes the player chooses: keep their fork, let the replay adjust around them, or let it win, making them tales. | [sim](2026-09-22_sim_plan.md) |
 | 444 | The world save holds the sim's history plus an opaque section per mode, which builds without that mode carry through unchanged. | [isomere](2026-09-15_isomere_plan.md) |
@@ -412,7 +412,7 @@ on 2026-10-18 as operational or replaced.
 | 652 | state_hash is Witness::digest over the per-field entries; H1's whole-state hash survives only to read v2 saves. | none |
 | 653 | Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines. | none |
 | 770 | Legacy history, record and snapshot leave with the world move; the moved world writes native history, journal and witness. | [families reexpression](2026-10-08_families_reexpression_plan.md) |
-| 940 | F2: generator-1 motion archives stay as decode receipts only; the restore-and-continue tests retire. | [after pass](2026-10-10_after_pass_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
+| 940 | F2: generator-1 motion archives stay as decode receipts only; the restore-and-continue tests retire. | [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 
 ## World generation
 
@@ -428,7 +428,7 @@ on 2026-10-18 as operational or replaced.
 | 90 | A world is realigned to another ruleset by a generative round that advances time. | none |
 | 91 | History depth is the founder's choice; the generated timeline can be revisited; the client is not overwhelmed and may zoom in and edit. | none |
 | 99 | What kind of entity a world is (inert, sentient, sophont, god, turtle, flora, fauna, dead) stays open to the world. | none |
-| 101 | A world has traits and its timeline is a lineage; the world is generative; glyphs are broad; a magic system generator feeding divinity is wanted. | [sim](2026-09-22_sim_plan.md), [after pass](2026-10-10_after_pass_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
+| 101 | A world has traits and its timeline is a lineage; the world is generative; glyphs are broad; a magic system generator feeding divinity is wanted. | [sim](2026-09-22_sim_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 | 102 | A world's magic, like other characteristics, is suggested from the seed, configurable, and either a static profile or fluid over time under conditions. | [sim](2026-09-22_sim_plan.md) |
 | 124 | The first scale target is a region (hundreds of sites, tens of thousands of critters); larger scales are not precluded. | [sim](2026-09-22_sim_plan.md), [place graph engine](2026-08-05_place_graph_engine_plan.md), [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
 | 140 | A world's materials lie on a spectrum from a normal base matching a ruleset, through variants, to completely generated; a founding setting. | [sim](2026-09-22_sim_plan.md) |
@@ -441,7 +441,7 @@ on 2026-10-18 as operational or replaced.
 | 394 | A site's skeleton is keyed entries in its conditions (elevation, relief, water level by default), named by the world's rules; Site's shape is unchanged. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
 | 396 | The lift works in power-of-two-sized chunks from the start, taking a chunk key and cell size, so a site costs only what is lifted. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
 | 399 | SP1's seeded draws are scale-free (grids 2x2 to 16x16, site sides 256 to 2,048 base units), choosing no product default until a game founds. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
-| 400 | A lifted site gives its skeleton back exactly where it can: mean surface equals its elevation, water fills to its level, relief bounds interior detail. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 400 | A lifted site gives its skeleton back exactly where it can: mean surface equals its elevation, water fills to its level, relief bounds interior detail. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
 | 401 | A site's interior surface is a Coons patch: transfinite interpolation from the four border profiles plus windowed correction and detail from its seed. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
 | 402 | A lift returns columns per chunk (surface height and material-by-depth rule) at its cell size; dense voxels are lowered only when a store needs them. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
 | 403 | A lift's voxel materials are world-local ids into a table saved with the world, seeded with air, water, soil and rock as the world's nis. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
@@ -456,14 +456,14 @@ on 2026-10-18 as operational or replaced.
 | 549 | In worlds that ask for bodies, flora and fauna draw recipes; myco and micro stay bodiless until territories and surfaces exist. | [sim](2026-09-22_sim_plan.md) |
 | 550 | The generator draws within Mesocosm's bounds by default: variance 1 to 2, absence odds 1 in 12, clutch 1 to 4, each widenable. | [sim](2026-09-22_sim_plan.md) |
 | 573 | Each recipe draws its system-riff odds between 1 in 12 and 1 in 100, a range a world may widen. | [sim](2026-09-22_sim_plan.md), [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
-| 744 | Cliff spans are drawn from both sites' skeletons and the pair seed, and the lift steps its surface there. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
+| 744 | Cliff spans are drawn from both sites' skeletons and the pair seed, and the lift steps its surface there. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [sim](2026-09-22_sim_plan.md) |
 | 875 | A generated world is offered only after one joint actual native witness over a finite horizon, then ecology admission. | [sim host](2026-10-14_sim_host_plan.md), [sim](2026-09-22_sim_plan.md) |
-| 889 | The generator supplies spawn and arrival templates for generated worlds; movement stays template-driven. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
-| 890 | The generator gives producers a real capture path so default generated worlds pass 875's witness; tissue is not relabelled as fuel. (amended by 929) | [after pass](2026-10-10_after_pass_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
-| 891 | The generator writes a declared global collapse predicate into each world's rules, visible, saved and part of the digest. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
+| 889 | The generator supplies spawn and arrival templates for generated worlds; movement stays template-driven. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
+| 890 | The generator gives producers a real capture path so default generated worlds pass 875's witness; tissue is not relabelled as fuel. (amended by 929) | [sim](2026-09-22_sim_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
+| 891 | The generator writes a declared global collapse predicate into each world's rules, visible, saved and part of the digest. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
 | 905 | Bodied generated-ecology consumers always draw an intake mouth and keep limbs for movement; Bodies::grazing becomes the default. | none |
-| 907 | The candidate rates become a named world preset, not the generator's defaults; default worlds keep today's rates and A1's gate stands unamended. (amended by 935, 961) | [after pass](2026-10-10_after_pass_plan.md) |
-| 932 | A generated world collapses when the living Reactive, Deliberative and Normative population over all lineages is 0, declared as rules data. | [after pass](2026-10-10_after_pass_plan.md) |
+| 907 | The candidate rates become a named world preset, not the generator's defaults; default worlds keep today's rates and A1's gate stands unamended. (amended by 935, 961) | none |
+| 932 | A generated world collapses when the living Reactive, Deliberative and Normative population over all lineages is 0, declared as rules data. | none |
 | 935 | The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40; defaults, the hazard and the grazing default are untouched. | none |
 | 963 | An unchosen Mesocosm seed may use a bounded configurable candidate search; explicit seeds stay exact and the full native witness gate is kept. | none |
 
@@ -507,15 +507,15 @@ on 2026-10-18 as operational or replaced.
 | 686 | The runtime over Session translates contract envelopes into native commands; Isocosm and the contract stay independent; a nudge is a new logged command. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 688 | A participant is a placeless entity and Relation gains a value; each player's bond is its own weighted relation to the critter. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 690 | Standing orders are derived from logged nudges and their outcomes, replaying exactly, not kept on the entity. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
-| 691 | Survival mode filters through what the critter knows and the reach field; the interim M4 ships both modes. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
+| 691 | Survival mode filters through what the critter knows and the reach field; the interim M4 ships both modes. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 742 | The tier line goes to directing, moving with the directing plan's D2, not to the host now. | none |
 | 751 | A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there. | [sim](2026-09-22_sim_plan.md) |
 | 753 | After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available. | none |
-| 779 | Native Take also admits a sapient critter for driving: one native path takes up a life in both games. | [sim](2026-09-22_sim_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 813 | An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick. | [directing interim m4](2026-10-08_directing_interim_m4_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 779 | Native Take also admits a sapient critter for driving: one native path takes up a life in both games. | [sim](2026-09-22_sim_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
+| 813 | An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick. | [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 861 | A player-directed deliberative critter gets a native travel goal from an approved journey; it departs when its own choice allows, so the party can split. (amended by 862) | none |
 | 862 | The existing native bond and scheduled chooser suffice for directed travel; no extra impression filter, trust threshold or motivation layer. | none |
-| 866 | A native act records participation in every goal it actually served; no primary goal discards the others. | [stock title](2026-10-14_stock_title_plan.md) |
+| 866 | A native act records participation in every goal it actually served; no primary goal discards the others. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [stock title](2026-10-14_stock_title_plan.md) |
 | 876 | Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately. | none |
 
 ## Presentation
@@ -534,13 +534,13 @@ on 2026-10-18 as operational or replaced.
 | 432 | A far mark shows the glyphs of the effects on a thing, or per-glyph member shares for a group, through a player-set filter. (amended by 434) | [orthographic voxel presentation](2026-09-11_orthographic_voxel_presentation_plan.md), [sim](2026-09-22_sim_plan.md) |
 | 437 | Minimap and overmap become second cameras on the ladder held at the world-map rung; the separate canvas and HUD renderers retire. | [orthographic voxel presentation](2026-09-11_orthographic_voxel_presentation_plan.md), [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
 | 438 | Each glyph's display is rasterised once into a pixel-icon atlas; far marks draw from it at integer scale with the scene's depth. | [orthographic voxel presentation](2026-09-11_orthographic_voxel_presentation_plan.md) |
-| 736 | Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow. | [lane queue](2026-10-10_lane_queue_plan.md) |
-| 749 | eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing. | [orthographic voxel presentation](2026-09-11_orthographic_voxel_presentation_plan.md), [after pass](2026-10-10_after_pass_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 736 | Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow. | none |
+| 749 | eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing. | [orthographic voxel presentation](2026-09-11_orthographic_voxel_presentation_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 | 847 | Resident corpses stay visible in the same native awareness and close-up; in-transit corpses stay absent; showing grants no control. | none |
-| 868 | Faction claims and biomes use independently configurable map layers showing both meanings; settings grant no knowledge. | none |
-| 869 | Undisclosed edges of known map regions always clip sharply in every view; no fade option. | none |
-| 870 | Baked map thumbnails are an optional backdrop per world or view and respect sharp clipping. | none |
-| 945 | F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap. | [after pass](2026-10-10_after_pass_plan.md) |
+| 868 | Faction claims and biomes use independently configurable map layers showing both meanings; settings grant no knowledge. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
+| 869 | Undisclosed edges of known map regions always clip sharply in every view; no fade option. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
+| 870 | Baked map thumbnails are an optional backdrop per world or view and respect sharp clipping. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
+| 945 | F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap. | none |
 | 970 | Bodies on the tenant get a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38, sun 0.62, shadows off, matching the tracer; --body-light scales both. | [resident views composition](2026-08-14_resident_views_composition_plan.md), [orthographic voxel presentation](2026-09-11_orthographic_voxel_presentation_plan.md) |
 
 ## Stack and engine
@@ -576,7 +576,7 @@ on 2026-10-18 as operational or replaced.
 | 349 | The binding module binds bodies only, on a world shared with T2's terrain collider. | [body binding](2026-09-26_body_binding_plan.md) |
 | 350 | Accepted state arrives both as a whole-set reconcile and per key; cold and incremental must agree. | [body binding](2026-09-26_body_binding_plan.md) |
 | 351 | A moved body keeps its id; it respawns only when the entity's shape revision changes. | [body binding](2026-09-26_body_binding_plan.md) |
-| 352 | conatus gains a query-refresh call, replacing the workaround tiny step. | [body binding](2026-09-26_body_binding_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 352 | conatus gains a query-refresh call, replacing the workaround tiny step. | [body binding](2026-09-26_body_binding_plan.md) |
 | 361 | isometer calls modulus's public exact CPU walk instead of keeping a hand copy. | none |
 | 362 | The traversal's start voxel clamps into the box and reports the entry face, landing with the traversal fix. | none |
 | 377 | The pre.4 allocation guard compares service ID as a sixth value beside the existing five, with the rejection case verified by a deliberate-fault control. | none |
@@ -612,13 +612,13 @@ on 2026-10-18 as operational or replaced.
 | 701 | Lifting a site into voxels moves to isometer beside SP4 and SP5; site grain and the world map stay the sim's. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
 | 702 | Isometer's walking, routing and sight are built over SP5's passages and travel cost, not raw voxels; legacy searches retire with their family. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
 | 703 | Soil and its diffusion stay the sim's keyed by isometer's columns; the tier line goes to host or directing; SP5 places replace the coarse partition. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [sim](2026-09-22_sim_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
-| 720 | Isometer's fixtures are rebuilt from its own ground and body documents so its tests no longer depend on the sim. | [after pass](2026-10-10_after_pass_plan.md) |
+| 720 | Isometer's fixtures are rebuilt from its own ground and body documents so its tests no longer depend on the sim. | none |
 | 721 | Lineage vocabulary leaves isometer-core with the bodies family; provenance and species ids move to the sim keyed by PartId. | none |
 | 724 | The folded probe stays a standalone isometry probe in its own workspace under crates/probes, pinned to mere by rev. | none |
 | 735 | The kiss3d fork is v0.47.0 at crates/kiss3d (mark-ik fork, pinned by rev), with a mere crate over it owning device, targets, lights, depth pre-pass. | none |
 | 737 | A room is roofed air: caves, tunnels and lintelled doorways are places with clearance on edges, and Cover::Roofed is the default. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
 | 738 | A patch splits where walkable width drops below a world-rule width. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
-| 741 | Sight is a voxel ray with the place graph choosing candidates. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 741 | Sight is a voxel ray with the place graph choosing candidates. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
 | 743 | The patch neck width defaults to 2, so any 1-wide neck splits. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
 | 746 to 748 | The tenant keeps the scoped context slot, reports submissions only, and defines 472's water field with its reader; recorded in mere's conatus plan. | none |
 | 750 | The flow record stays in legacy until the record family; the registry converges with bodies, lowered onto the function catalogue. | [sim](2026-09-22_sim_plan.md) |
@@ -650,8 +650,8 @@ on 2026-10-18 as operational or replaced.
 | 955 | H4: only world keys that make an envelope go through the core; camera, inspection, dev clock and menu navigation stay the window's. | [sim host](2026-10-14_sim_host_plan.md) |
 | 956 | H4: the window hands the core a pick stamped with the world revision and the core refuses a stale one. | [sim host](2026-10-14_sim_host_plan.md) |
 | 957 | H4: the live-input backlog cap moves into the core driver, configurable, default 10; replays and scripts are not capped. | [sim host](2026-10-14_sim_host_plan.md) |
-| 959 | The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents. | [lane queue](2026-10-10_lane_queue_plan.md), [sim host](2026-10-14_sim_host_plan.md) |
-| 960 | Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer. | [lane queue](2026-10-10_lane_queue_plan.md), [sim host](2026-10-14_sim_host_plan.md) |
+| 959 | The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents. | [sim host](2026-10-14_sim_host_plan.md) |
+| 960 | Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer. | [sim host](2026-10-14_sim_host_plan.md) |
 | 962 | The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots. | none |
 
 ## Mesocosm
@@ -678,17 +678,17 @@ on 2026-10-18 as operational or replaced.
 | 230 | A total ecological collapse ends the world as a game, but the world stays watchable. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
 | 677 | Overlay M2 is the families plan's Mesocosm share and keeps its own condition: the web stays alive in most draws. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
 | 678 | Mesocosm's world family moves last, with M3, so Mesocosm keeps playing on the legacy world until directing on Isocosm is ready. (amended by 681, 755) | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
-| 680 | An interim M4 at site grain gives a first played loop on Isocosm without in-site space; the full M4 follows when places land. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md), [after pass](2026-10-10_after_pass_plan.md) |
+| 680 | An interim M4 at site grain gives a first played loop on Isocosm without in-site space; the full M4 follows when places land. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 681 | The interim M4 is the switch: genet's runtime moves onto a native Session and the legacy world family retires then. (amended by 755) | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 682 | M3 plays a native generated lineage; the founders join when the bodies family and fork 9 land. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
 | 755 | The world families come forward in the migration push; Mesocosm's and Eponym's worlds move onto native, the switch with them, legacy bodies deleted. | [families reexpression](2026-10-08_families_reexpression_plan.md) |
-| 780 to 786 | Deeds stay events with agreements in State::agreements; tract offers via Allocation::commit; native dev commands; Patch placement; Nudge act key; one review commit; Runtime::resume. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 780 to 786 | Deeds stay events with agreements in State::agreements; tract offers via Allocation::commit; native dev commands; Patch placement; Nudge act key; one review commit; Runtime::resume. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
 | 833 | Mesocosm owns and saves actual spatial state, bound to native body and terrain revisions; missing or stale inputs refuse. | none |
 | 841 | Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission. | none |
 | 842 | Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback. | none |
 | 848 | Authored birth profiles resolve a newborn's physical placement from its parent's current pose; refused placement never undoes the birth. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
-| 961 | Mesocosm defaults to the named A1 preset once receipt and physical-witness gates pass; the shared generator default stays Stock. | [sim](2026-09-22_sim_plan.md), [after pass](2026-10-10_after_pass_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 978 | Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops. | [resident views composition](2026-08-14_resident_views_composition_plan.md), [sim host](2026-10-14_sim_host_plan.md) |
+| 961 | Mesocosm defaults to the named A1 preset once receipt and physical-witness gates pass; the shared generator default stays Stock. | [sim](2026-09-22_sim_plan.md), [sim host](2026-10-14_sim_host_plan.md) |
+| 978 | Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops. | [resident views composition](2026-08-14_resident_views_composition_plan.md), [sim host](2026-10-14_sim_host_plan.md), [sim](2026-09-22_sim_plan.md) |
 
 ## Eponym
 
@@ -706,10 +706,10 @@ on 2026-10-18 as operational or replaced.
 | 597 | Eponym's motion and contact stay game-side as eponym-motion; other Eponym crates move into Isocosm, which never depends on Rapier. | none |
 | 767 | Eponym's hunger and fatigue become native accounts read by Needs; its wound is checkpoint 10's cell loss, built with Eponym's world move. | [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
 | 771 | Eponym's epistemic layer becomes notes held by the observer plus the reach field's knowing; its simulation record leaves with its world move. | [sim](2026-09-22_sim_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
-| 776 | Eponym's items are inert entities of item lineages carried by relation, with position and worn part game-side. | [lane queue](2026-10-10_lane_queue_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
-| 777 | Eponym keeps its admitted anatomy snapshot beside native geometry, with a game revision moving only on severing. | [lane queue](2026-10-10_lane_queue_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
-| 778 | Crafts and deed weights are keys a rules pack declares, not closed native enums; other games can declare their own. | [sim](2026-09-22_sim_plan.md), [lane queue](2026-10-10_lane_queue_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
-| 808 | A deed's agreement link is a typed optional agreement id on its native event; agreements stay in State::agreements. | [families reexpression](2026-10-08_families_reexpression_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 776 | Eponym's items are inert entities of item lineages carried by relation, with position and worn part game-side. | [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
+| 777 | Eponym keeps its admitted anatomy snapshot beside native geometry, with a game revision moving only on severing. | [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
+| 778 | Crafts and deed weights are keys a rules pack declares, not closed native enums; other games can declare their own. | [sim](2026-09-22_sim_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
+| 808 | A deed's agreement link is a typed optional agreement id on its native event; agreements stay in State::agreements. | [families reexpression](2026-10-08_families_reexpression_plan.md) |
 | 816 | Eponym develops admitted bodies from a selected native recipe supplying physiology and geometry, retaining conserved stocks. | none |
 | 818 | Eponym initially develops the compact six-part native recipe (intake, store, sense, contract, support, grip), replacing the authored seven-part body. | none |
 | 819 | Fresh arrival tissue is issued within the developed native body's capacity; reserve 100 and energy 100 where admitted. | none |
@@ -727,7 +727,7 @@ on 2026-10-18 as operational or replaced.
 | 850 | Each operation declares which outputs retain the selected owners' claims or closes consumed claims; matter stays conserved regardless. | [stock title](2026-10-14_stock_title_plan.md) |
 | 863 | A later process selects a future produced lot by an explicit authored reference naming the producing operation, output and exact quantity. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md), [stock title](2026-10-14_stock_title_plan.md) |
 | 877 | Companion succession eligibility is an explicitly authored native social agreement or standing predicate over deceased body and candidate. | none |
-| 943 | F5: worn items on a severed non-played part drop through the sim's EponymHandoff::Dropped, which carries no participant. | [after pass](2026-10-10_after_pass_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
+| 943 | F5: worn items on a severed non-played part drop through the sim's EponymHandoff::Dropped, which carries no participant. | [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 
 ## The VTT
 
@@ -759,19 +759,19 @@ on 2026-10-18 as operational or replaced.
 | 541 | The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
 | 542 | An edition's own state persists beside the body, each fact marked world fact, native state or derived display, with the ruleset declaring their relations. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
 | 543 | Unattended, a ruleset-led world runs the ruleset's own procedures with each player or GM choice replaced by a declared decision policy. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [sim](2026-09-22_sim_plan.md) |
-| 598 | The campaign world moves into Isocosm as its legacy campaign tree; the map wrapper and token/sheet adapters stay in a slim VTT crate. (amended by 599, 913, 915) | [campaign retirement](../../design_docs/2026-10-15_campaign_retirement_plan.md) |
+| 598 | The campaign world moves into Isocosm as its legacy campaign tree; the map wrapper and token/sheet adapters stay in a slim VTT crate. (amended by 599, 913, 915) | none |
 | 599 | The overmap moves into the sim as a sim noun; travel and discovery stay sim-side; the VTT imports Overmap from Isocosm. | none |
-| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | none |
+| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
 | 757 | Authored content enters by Command::Assert with the record family; the campaign world becomes a reading of native state. | none |
 | 760 | An authored faction is a polity with no members yet, asserted with authored name, tags, claims, governance and focus as facts. | [families reexpression](2026-10-08_families_reexpression_plan.md) |
-| 768 | A campaign's session carries its assertions; CampaignWorld folds from them and a native Session replays from them when the sim switches on. | [lane queue](2026-10-10_lane_queue_plan.md), [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
-| 769 | Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills. | [families reexpression](2026-10-08_families_reexpression_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
-| 807 | Event handles are an adapter reading of native event keys, one mapping shared with the VTT, validated to agree before a telling is admitted. | [lane queue](2026-10-10_lane_queue_plan.md) |
-| 809 | Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 768 | A campaign's session carries its assertions; CampaignWorld folds from them and a native Session replays from them when the sim switches on. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
+| 769 | Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills. | [families reexpression](2026-10-08_families_reexpression_plan.md) |
+| 807 | Event handles are an adapter reading of native event keys, one mapping shared with the VTT, validated to agree before a telling is admitted. | none |
+| 809 | Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
 | 814 | The VTT declares its note kinds (reveal, narration, history) in the world's founding rules; native admission still refuses undeclared kinds. | none |
 | 834 | A sim-on VTT character develops its own native body from a selected recipe and keeps its ID; placement and control are admitted separately. | none |
-| 851 | Every saved bound table player, disconnected included, holds downtime unless they release their own hold. | [stock title](2026-10-14_stock_title_plan.md) |
-| 852 | A downtime proposal binds its original tick and player roster; a change makes it unavailable and requires a new proposal. | [stock title](2026-10-14_stock_title_plan.md) |
+| 851 | Every saved bound table player, disconnected included, holds downtime unless they release their own hold. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [stock title](2026-10-14_stock_title_plan.md) |
+| 852 | A downtime proposal binds its original tick and player roster; a change makes it unavailable and requires a new proposal. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [stock title](2026-10-14_stock_title_plan.md) |
 | 853 | Each player opts their played native body into or out of a party; membership grants no control. | [stock title](2026-10-14_stock_title_plan.md) |
 | 854 | The overmap is a shared view combining party members' disclosed native knowledge; sharing grants no control or undisclosed knowledge. | [stock title](2026-10-14_stock_title_plan.md) |
 | 855 | A self-released downtime hold covers current and future proposals until the player explicitly retakes it. | [stock title](2026-10-14_stock_title_plan.md) |
@@ -780,9 +780,9 @@ on 2026-10-18 as operational or replaced.
 | 858 | Disclosed map facts remain in the party's recorded map after the contributing member leaves. | [stock title](2026-10-14_stock_title_plan.md) |
 | 859 | Each player approves their currently played body's departure and the DM applies approved departures together through native admission. | none |
 | 860 | Requested pace resolves to an explicitly authored native pace profile giving duration and stock costs; no default from the legacy percentage. | [stock title](2026-10-14_stock_title_plan.md) |
-| 865 | A compatible dormant adventure pack activates only when the DM previews and explicitly accepts it. | none |
-| 867 | Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change. | [stock title](2026-10-14_stock_title_plan.md) |
-| 871 | Party map disclosures name explicit terrain windows and condition or claim snapshots the body knows, with source revisions; changes need a new disclosure. | none |
+| 865 | A compatible dormant adventure pack activates only when the DM previews and explicitly accepts it. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
+| 867 | Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [stock title](2026-10-14_stock_title_plan.md) |
+| 871 | Party map disclosures name explicit terrain windows and condition or claim snapshots the body knows, with source revisions; changes need a new disclosure. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
 | 902 | The VTT's panels go to the isocosm-vtt crate, keeping their MPL-2.0 grant; publishing waits. (amended by 919) | [sim host](2026-10-14_sim_host_plan.md), [campaign retirement](../../design_docs/2026-10-15_campaign_retirement_plan.md) |
 | 913 | isometry-campaign retires, its contents becoming components; where each part lands comes back as questions. | [campaign retirement](../../design_docs/2026-10-15_campaign_retirement_plan.md), [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
 | 915 | isometry-campaign's components are owning homes, no new crates: world into the sim, game layer into isocosm-vtt, map lowering into isometry-core, store into isonetry. | [campaign retirement](../../design_docs/2026-10-15_campaign_retirement_plan.md), [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md) |
@@ -819,7 +819,7 @@ on 2026-10-18 as operational or replaced.
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
-| 15 | Tests are draws from the generator under an unchosen seed, not hand-picked instances, since only draws are evidence about the space. | none |
+| 15 | Tests are draws from the generator under an unchosen seed, not hand-picked instances, since only draws are evidence about the space. | [vtt overlay](../../design_docs/2026-09-25_vtt_overlay_plan.md), [eponym overlay](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 | 193 | Moved modules are decomposed under the 600-line ceiling along seams the code already has. | [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
 | 198 | The consistency pass is applied; a dated line keeps the words of its date and a later name reaches it only as a note. | [sim](2026-09-22_sim_plan.md) |
 | 255 | Raw receipts live out of tree in Code/testing/isometry/; the repository keeps their summaries, sources and scripts. | [sim](2026-09-22_sim_plan.md) |
@@ -838,4 +838,4 @@ on 2026-10-18 as operational or replaced.
 | 790 | One dated after-pass plan holds every deferred done-condition, each item with its owning plan. | none |
 | 793 to 804 | Plan review accepted: stale plans archive, contracts map to native, Mesocosm onto the tenant, V2 and E3 open now (amends 231), boundary turns by complexity. | [resident views composition](2026-08-14_resident_views_composition_plan.md), [glyph expression](2026-09-15_glyph_expression_plan.md), [body binding](2026-09-26_body_binding_plan.md) |
 | 864 | Collect outstanding questions from independent work and deliver them together in one pass; do not trickle isolated questions. | none |
-| 953 | Every lane brief names the receipts its done-conditions need and caps their total (for example 100 MB); exploratory runs keep summaries only. | [lane queue](2026-10-10_lane_queue_plan.md) |
+| 953 | Every lane brief names the receipts its done-conditions need and caps their total (for example 100 MB); exploratory runs keep summaries only. | none |

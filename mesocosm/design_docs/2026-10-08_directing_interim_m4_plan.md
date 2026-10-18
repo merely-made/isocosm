@@ -138,6 +138,12 @@ on Isocosm, both modes, receipts replaying.
   sites, against starting again elsewhere by `Take` (`OnCollapse`); and
   whether a region that never held a level has collapsed.
 
+## Carried from the retired process plans (2026-10-18)
+
+- Remove the test-only scratch diagnostic `directing/interim/diag.rs` (a
+  consumer's income, upkeep and age, left by the reproduction lane), or move
+  it to an example. (from lane queue plan §4)
+
 ## Findings
 
 - **2026-10-16, A1 seed9 (936):** actual pass-start observation confirms
@@ -147,10 +153,10 @@ on Isocosm, both modes, receipts replaying.
   take the first process ID. All 13 pass-start and 5 feeding controls pass.
   The unchanged full 162-tick extinction and bounded-window replay receipts,
   observer limitations and pending movement-policy fork are recorded once
-  in [the after-pass Findings](2026-10-10_after_pass_plan.md#findings).
+  in [the after-pass Findings](archive_docs/2026-10-18/2026-10-10_after_pass_plan.md#findings).
   No behavior, cadence, rate or acceptance gate changes here.
 
-- **2026-10-11, Q3 fresh bare seed zero classified:** recorded once, in [the after-pass Findings](2026-10-10_after_pass_plan.md#findings).
+- **2026-10-11, Q3 fresh bare seed zero classified:** recorded once, in [the after-pass Findings](archive_docs/2026-10-18/2026-10-10_after_pass_plan.md#findings).
 
 - **2026-10-10, Q3 actual Choice/Plan/Act diagnostic, verified:** unchanged
   bare meal3/birth14 seed0 reproduces the rejected125-tick baseline exactly,
@@ -269,7 +275,7 @@ on Isocosm, both modes, receipts replaying.
   two intended compiled faults, exact restoration and its all-target check.
   All nine consumer workspace compilers passed after the six-path main
   application. Complete root reviews and the preserved reader-format failure
-  are recorded in [lane queue Progress](2026-10-10_lane_queue_plan.md#progress).
+  are recorded in [lane queue Progress](archive_docs/2026-10-18/2026-10-10_lane_queue_plan.md#progress).
   Route-duration journeys still await transit upkeep/birth choices. The
   rejected reproduction candidate, eighty-world A1 and headed certification
   remain open.

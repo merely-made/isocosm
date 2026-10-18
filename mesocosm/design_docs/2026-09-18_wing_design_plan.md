@@ -1973,6 +1973,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      strain builds whenever that mood stays low (ruling 159), fights adding
      theirs; memory and situation, mood's other sources (ruling 158), wait
      for S1.
+
+     *2026-10-18, Mark, on how wounds feed mood:* "The hazard joins generated
+     worlds (Recommended)": case 704's agentless hazard wounds parts in
+     generated Mesocosm worlds at a drawn rate. "A wound share in the core
+     (Recommended)": lost and severed cells over all cells, out of a hundred,
+     read by a core query Eponym also uses; played worlds get a need of
+     weight -10 from a quarter lost. "1 + 2": paid healing and a new rest act
+     that heals slowly without paying both answer it. "Strain and the vitals
+     panel (Recommended)": played worlds gain strain and relief, and
+     Mesocosm's vitals panel shows wounds and mood.
 228. **A right click shows a ring of acts.** Put to Mark on 2026-09-25: how
      does a right click show its meanings (ruling 214): a ring of acts around
      the cursor, a cycle in place, or the critter's glance surfacing glyphs

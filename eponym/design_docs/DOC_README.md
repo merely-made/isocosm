@@ -42,7 +42,7 @@ native package is `eponym-client`.
 
 ## Open items
 
-- **2026-10-17:** F3/F4 fixture controls and F7 producer controls qualify by receipt union. The three formerly failing V1/V1b far-window obligations also pass on actual 1280×720 cameras. V1 and V1b pass 96 headed frames under 1 MiB with stable travel extents; V1b's GPU-completion-boundary allocator samples show zero growth. Uncached full-resolution view selection took 1.3–1.8 seconds, so real-time zoom remains open. F8's six sortie cases and native-edit/world replay control, F2/F6 archive and stale-panel retirement, and F5 worn-item drop remain verified. Broader E3 and headed acceptance remain open. See the [camera residency closeout](../../../../testing/isometry/f-2026-10-16/camera-residency-closeout.md). The wing [after-pass](../../mesocosm/design_docs/2026-10-10_after_pass_plan.md) owns the triage and exact receipt scope.
+- **2026-10-17:** F3/F4 fixture controls and F7 producer controls qualify by receipt union. The three formerly failing V1/V1b far-window obligations also pass on actual 1280×720 cameras. V1 and V1b pass 96 headed frames under 1 MiB with stable travel extents; V1b's GPU-completion-boundary allocator samples show zero growth. Uncached full-resolution view selection took 1.3–1.8 seconds, so real-time zoom remains open. F8's six sortie cases and native-edit/world replay control, F2/F6 archive and stale-panel retirement, and F5 worn-item drop remain verified. Broader E3 and headed acceptance remain open. See the [camera residency closeout](../../../../testing/isometry/f-2026-10-16/camera-residency-closeout.md). The wing [after-pass](../../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-10_after_pass_plan.md) owns the triage and exact receipt scope.
 
 ## Archive
 
