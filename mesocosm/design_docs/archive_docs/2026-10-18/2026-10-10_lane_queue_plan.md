@@ -1,5 +1,11 @@
 # The lane queue: orchestrating the work after the push
 
+**Retired 2026-10-18.** Mark retired this process plan. Its open items
+that concern how the sim or a game behaves were carried into the plans
+that own them, each under "Carried from the retired process plans
+(2026-10-18)"; its certification and receipt items stay here. Relative
+links below resolve from `mesocosm/design_docs/`.
+
 **Date:** 2026-10-10
 
 **Status, 2026-10-18:** in progress. Q1, Q2, Q6, Q7 and Q15 are done, and the combined migration source is pushed. C10 is certified (fixed1000 recertification under seed 2026101401, after a crowd bite-sharing defect was fixed, cases 454 and 459) and C11 is certified at site grain, titles excluded; the [assembled certification record](2026-10-13_assembled_certification.md) owns hashes and remaining done-conditions. Tuning is open (case 888). A1's 120-draw read qualifies all three candidates at 20/20 against Stock 0/20, and the generated offer, save and replay pass in both modes (case 961). Open: A1 and F1 to F8, owned by this session, and the headed capture of the generated world, pending in H6 of the sim-host plan. Next: A1 and F1 to F8.

@@ -298,6 +298,30 @@ All three taken on 2026-09-25, the day the plan was drafted.
 3. **The played slice plan's future.** Ruled 196: it retires into this
    plan when M3 lands.
 
+## Carried from the retired process plans (2026-10-18)
+
+- Body voxel scale against the ground cells is a headed finding still to be
+  looked at and tuned. (from after-pass plan §A4)
+- Flow windows' births and deaths (the `mesocosm-runtime` readings) are still
+  to be compared with the members' actual births and deaths in a real run.
+  (from after-pass plan §A4)
+- The generated 3x2 map layout is a headed finding still to be looked at in a
+  real run. (from after-pass plan §A4)
+- Forced births on bodied lineages (the dev ForceBirth) are a headed finding
+  still to be tried in a real run. (from after-pass plan §A4)
+- DC5's colour and the critter review, the default creatures plan's residue,
+  are still open. (from after-pass plan §A4)
+- VB3 to VB5's visual acceptance is still to be judged on native bodies:
+  pointing to a body and reading what happened, a life changing the picture so
+  a descendant grows, and the integrated roster with its cost. (from
+  after-pass plan §A4)
+- The default roster must still meet its three conditions on native bodies:
+  every fauna body senses and contracts, the kingdom floor holds, and the
+  captures read as critters. The habitat's canopy, contact and dressing, which
+  CP1 left open, are open too. (from after-pass plan §A4)
+- P0's judgment is open: whether the headed meal choice feels tense rather
+  than clerical. (from after-pass plan §A4)
+
 ## Findings
 
 - **2026-10-11, Q16 source integration:** `mesocosm-runtime::perception`

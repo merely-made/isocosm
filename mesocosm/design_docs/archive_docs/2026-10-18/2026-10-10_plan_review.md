@@ -1,5 +1,11 @@
 # Plan review after the migration push
 
+**Retired 2026-10-18.** Mark retired this process plan. Its open items
+that concern how the sim or a game behaves were carried into the plans
+that own them, each under "Carried from the retired process plans
+(2026-10-18)"; its certification and receipt items stay here. Relative
+links below resolve from `mesocosm/design_docs/`.
+
 **Date:** 2026-10-10
 
 **Status, 2026-10-10, after the rulings:** classifications accepted by
