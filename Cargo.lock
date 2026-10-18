@@ -4551,6 +4551,7 @@ dependencies = [
  "isometry-campaign",
  "isometry-core",
  "logos",
+ "mere-source-edit",
  "piccolo",
  "serde",
  "serde_json",
@@ -5245,6 +5246,14 @@ dependencies = [
  "blake3",
  "serde",
  "thiserror 1.0.69",
+]
+
+[[package]]
+name = "mere-source-edit"
+version = "0.1.0"
+source = "git+https://github.com/merely-made/mere.git?branch=main#70deef2c8cf3d3410ae35b496a9396514070b24f"
+dependencies = [
+ "serde",
 ]
 
 [[package]]

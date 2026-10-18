@@ -89,10 +89,19 @@ pub(super) fn propose(
     let text = format!(
         "{newline}[[generators.lock_presets]]{newline}key = {key}{newline}label = {label}{newline}value = {value}{newline}"
     );
-    let mut preview = src.to_string();
-    preview.insert_str(start, &text);
-    let proposed = Snapshot::build(base, preview.clone(), session.format)?;
-    if proposed.index_note.is_some() || decode(session.format, &preview)? != expected {
+    let plan = Proposal::prepare(
+        session.source_stamp(),
+        src,
+        vec![Edit {
+            start,
+            end: start,
+            text,
+        }],
+    )
+    .map_err(edit_error)?;
+    let preview = plan.preview();
+    let proposed = Snapshot::build(base, preview.to_string(), session.format)?;
+    if proposed.index_note.is_some() || decode(session.format, preview)? != expected {
         return Err(
             "unsupported insertion layout or value; proposed text does not match intended manifest"
                 .into(),
@@ -100,7 +109,7 @@ pub(super) fn propose(
     }
     Ok(serde_json::json!({
         "document":session.path, "base":base, "generator":generator, "preset":preset,
-        "edits":[Edit { start, end:start, text }], "preview":preview,
+        "edits":plan.edits(), "preview":preview,
         "valid":true, "applied":false, "admitted":false,
     }))
 }
