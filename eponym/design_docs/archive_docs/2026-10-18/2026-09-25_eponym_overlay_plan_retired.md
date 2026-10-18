@@ -565,3 +565,12 @@ two peers in E4.
 
 - **2026-10-11, combined migration execution:** The compact recipe and named native fixture profile are now applied in primary as part of the combined host/journey/VTT migration. Generator5/GameSave8 remain proposed behavior until actual compilation, capacity, contact and replay tests pass. All 25 original test failures remain obligations; E3 stays open.
 
+
+## Lines matched to their cases, 2026-10-18
+
+Proposed, not opened. Done-conditions are draws, never fixtures (ruling
+15).
+The whole proceeds after Mesocosm's M3, side by side with the VTT's plan
+(ruling 231).
+E0 is
+done on paper; opening E1 is Mark's.

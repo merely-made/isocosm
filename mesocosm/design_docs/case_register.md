@@ -6,15 +6,14 @@ it. Cases are the decisions Mark made from 2026-09-17 to 2026-10-17, kept as
 precedent; new rules are numbered by Mark alone. The one-line summaries are
 an index, not the case: the record holds the words. A number missing here
 moved to the [archive](archive_docs/2026-10-18/2026-09-18_wing_design_plan_retired.md)
-on 2026-10-18 as operational or replaced. *In question* marks a case in a
-contradiction with another that is with Mark.
+on 2026-10-18 as operational or replaced.
 
 ## The sim's schema and saves
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
 | 1 | The thing is one configurable, extensible world, history and entity generator playable several ways; views and perspectives are distinctions made on top of the sim. | [games wing founding](2026-07-30_games_wing_founding.md) |
-| 8 | Four agent kinds: creature, faction (relational entity), polity (faction-composed, with collective action methodology), lineage; a region is terrain, not an entity. | none |
+| 8 | Four compositions: creature, faction, polity, lineage; a faction is a relation acting through its members, holding no state of its own (2026-10-18); a region is terrain. | none |
 | 9 | A thing has its own state exactly when it has its own way of turning situations into action; all else is relation, record or field. | none |
 | 36 | Critter carries genotype and conditioned phenotype and kingdom; borg adds naming and relationships; character emerges contingent on group and resolves as borg and critter. | [anatomy](2026-10-02_anatomy_brief.md) |
 | 37 | Methodology by tier: reactive critters, belief-desire-intention borgs, normative characters; a creature becomes a borg when the record keeps it; disposition is five-factor. | [anatomy](2026-10-02_anatomy_brief.md) |
@@ -94,7 +93,7 @@ contradiction with another that is with Mark.
 | 634 | A v2 save stores the witness as a u64; v1 saves are read through a separate struct carrying their string. | none |
 | 641 | A v1 save is checked at every epoch checkpoint with the SHA-256 as well as its final hash, proved by a v1 fixture with checkpoints. | none |
 | 651 | Save version becomes 3 with per-field entries required; v2 and v1 stay as kept readers checked by their own hashes. | [after pass](2026-10-10_after_pass_plan.md) |
-| 669 | Game-owned code the sim's laws exclude returns to its game crate or host; effect_experiment is deleted and fixtures become draws. (amended by 775; *in question*) | [families reexpression](2026-10-08_families_reexpression_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
+| 669 | Game-owned code the sim's laws exclude returns to its game crate or host; effect_experiment is deleted and fixtures become draws. (amended by 775) | [families reexpression](2026-10-08_families_reexpression_plan.md), [lane queue](2026-10-10_lane_queue_plan.md) |
 | 672 | Legacy tests become draws or controls in their family's certification, or retire with the legacy copy. | [after pass](2026-10-10_after_pass_plan.md), [lane queue](2026-10-10_lane_queue_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
 | 739 | An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger. | [place graph engine](2026-08-05_place_graph_engine_plan.md) |
 | 740 | Entity gains an optional patch field, set only for members split out of their cohort. | [place graph engine](2026-08-05_place_graph_engine_plan.md), [mesocosm overlay](2026-09-25_mesocosm_overlay_plan.md) |
@@ -206,7 +205,7 @@ contradiction with another that is with Mark.
 | 507 | From checkpoint 7 on, the averaged negative-control crowd averages each lineage's tissue and reserve together and must still fail the starvation check. | [sim](2026-09-22_sim_plan.md) |
 | 554 | A parent and its unweaned young run as individuals in the crowd until the young is weaned; nursing reads only unweaned young. | [sim](2026-09-22_sim_plan.md) |
 | 605 | When shards land, one shard and N shards give the same state hash at more than one thread count, as a standing test. | [balaur wing](2026-10-06_balaur_wing_brief.md), [scenevm wing](2026-10-06_scenevm_wing_brief.md) |
-| 773 to 775 | Embodiment keys on function:<name>; GlyphReading moves onto the native Journal at the switch; effect_experiment stays in mesocosm-runtime. (*in question*) | [glyph expression](2026-09-15_glyph_expression_plan.md), [sim](2026-09-22_sim_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
+| 773 to 775 | Embodiment keys on function:<name>; GlyphReading moves onto the native Journal at the switch; effect_experiment stays in mesocosm-runtime. | [glyph expression](2026-09-15_glyph_expression_plan.md), [sim](2026-09-22_sim_plan.md), [families reexpression](2026-10-08_families_reexpression_plan.md) |
 | 817 | Migration departs and arrives after the traversed route's authored travel time; no next route before arrival. | [stock title](2026-10-14_stock_title_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 820 | Age and upkeep continue during travel; soil produced by upkeep is carried until a later native site deposit. | [stock title](2026-10-14_stock_title_plan.md), [board on isometer](../../design_docs/2026-09-15_board_on_isometer_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
 | 821 | A birth during travel is allowed under ordinary conditions and the child shares the parent's remaining journey. | [stock title](2026-10-14_stock_title_plan.md), [directing interim m4](2026-10-08_directing_interim_m4_plan.md) |
@@ -421,7 +420,7 @@ contradiction with another that is with Mark.
 | --- | --- | --- |
 | 11 | Terrain runs from region to planetary system, configurable in complexity, size, climate, composition and world effects including glyphs and anatomy constraints. | none |
 | 12 | Terrain always has a destructible, constructible interior for all three games; Isometry's height-and-kind per cell is a far-rung view of that volume. | none |
-| 13 | Cell size may differ; arbitrary cell sizes are preferred as far as capability allows. | none |
+| 13 | The base unit is free per world; cells within a chunk are power-of-two multiples of it (2026-10-18, correcting 396's reading). | none |
 | 72 | A world map is a grid of sites in any shape; defines region, location, wilderness, biome and environment. | none |
 | 73 | A world has one shape, any shape, not switchable. | none |
 | 88 | Nesting is allocated dynamically as locations are generated, not fixed at founding. | none |
