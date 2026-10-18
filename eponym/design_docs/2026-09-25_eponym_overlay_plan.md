@@ -28,7 +28,7 @@ binds the evidence.
    require native capabilities rather than a game-side authority.
 3. **Folded loops and memory.** Build T1 over inert items, T2's product
    receipt when Mere's T2 lands, T3 work and F3b1 to F3b4 (801). Draw-based
-   and headed certification remain the after-pass's work.
+   and headed certification are not done-conditions of this phase.
 
 *Reading, not ruled:* until native vigour exists, the handoff's
 `vigour_drained` is calibrated to lost cells by the foreground, preserving

@@ -6,7 +6,7 @@
 unbuilt (346 to 352). Q15 replaces the remaining query-only settle steps
 with upstream query refresh under 352 and 804. Both consumer compile gates,
 tactile tests and contact tests pass; existing Eponym fixture/archive
-failures remain in the after-pass's Q5.
+failures remain open.
 `TactileWorld` stays.
 
 ## Current state, 2026-10-10

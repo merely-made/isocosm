@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-11
 
-**Status, 2026-10-18:** L2, L7 and L9 have landed, L7 on mere's kiss3d tenant rather than the DOM path this plan first drew (case 749). Mesocosm's tenant migration is implemented, with the terrain depth pre-pass, ordered Netrender layers and a fixed sun shared with the tracer (case 970); four workspace compile gates and both CPU controls pass. LiveBody stays for the VTT board, Eponym's producer and the posed-face queries. Open: GPU runtime and headed certification; L7's done-conditions and the L3 and L5 re-proof, which are the after-pass's; L6, L8 and L10; the terrain's per-axis scale (case 23). Next: the after-pass's headed tenant certification.
+**Status, 2026-10-18:** L2, L7 and L9 have landed, L7 on mere's kiss3d tenant rather than the DOM path this plan first drew (case 749). Mesocosm's tenant migration is implemented, with the terrain depth pre-pass, ordered Netrender layers and a fixed sun shared with the tracer (case 970); four workspace compile gates and both CPU controls pass. LiveBody stays for the VTT board, Eponym's producer and the posed-face queries. Open: GPU runtime and headed certification, whose checks are carried below; L7's done-conditions and the L3 and L5 re-proof; L6, L8 and L10; the terrain's per-axis scale (case 23). Next: the headed tenant certification.
 
 **W1, 2026-09-18:** keep. Tier: stack, rendering. Its benches are the
 product bench W4 lifts out. Evaluated against the wing design record; see

@@ -10,7 +10,7 @@ spawn and arrival templates (case 889) and a global-collapse predicate (case
 (case 890) is built. Open: full M4, where chosen in-site acts and contact
 reach the same accepted world, and a declared process for generated bodies'
 step, terrain and birth inputs, which no template can satisfy. Next:
-certification, in the after-pass plan.
+certification, and the headed findings carried below.
 
 ## Current state, 2026-10-10
 
