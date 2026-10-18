@@ -18,6 +18,7 @@ use web_time::Instant;
 #[cfg(test)]
 mod counters;
 mod lease;
+mod light;
 mod params;
 mod residency;
 mod types;
@@ -32,6 +33,7 @@ use params::{
 use residency::ResidentMap;
 
 pub use lease::LeasedAtlas;
+pub use light::TraceLight;
 pub use types::{
     BrickCapture, BrickChange, BrickDiagnostics, BrickFrameInput, BrickRevision, BrickTraceError,
     SlabWall, TraceCamera,

@@ -10,7 +10,7 @@
 use bytemuck::{Pod, Zeroable};
 use modulus::BrickMap;
 
-use super::LeasedAtlas;
+use super::{LeasedAtlas, TraceLight};
 use crate::{CritterPose, Flight, Grade, TerrainAppearance, TerrainPalette};
 
 const PERSPECTIVE: u32 = 0;
@@ -351,6 +351,8 @@ pub struct BrickFrameInput<'a> {
     /// from a producer promise into a tracer-validated identity: a lease
     /// at any other epoch is refused and the CPU path fills the frame.
     pub expected_read_epoch: Option<u64>,
+    /// The terrain's light; the default is the old literal sun, byte for byte.
+    pub light: TraceLight,
 }
 
 impl<'a> BrickFrameInput<'a> {
@@ -383,7 +385,13 @@ impl<'a> BrickFrameInput<'a> {
             leased_atlas: None,
             clip_from_world: None,
             expected_read_epoch: None,
+            light: TraceLight::default(),
         }
+    }
+
+    pub fn with_light(mut self, light: TraceLight) -> Self {
+        self.light = light;
+        self
     }
 
     pub fn changed(mut self, change: BrickChange<'a>) -> Self {
