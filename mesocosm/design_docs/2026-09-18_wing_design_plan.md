@@ -12074,7 +12074,30 @@ what later sections derive from.
      lane's 975 and 976, and this ruling; the lanes' worktrees and branches
      are removed after the push.
 
-     Next unused 978.
+978. **The sun's parameters are an optional `Rules.sun`, absent meaning the default.**
+     Asked 2026-10-17 at the light-field lane's start. Evidence: presets are
+     applied at founding only as site conditions (`generate.rs`,
+     `Preset::apply`), their schedule strings are prose read by nothing, and
+     Rules fields skip serialising when absent so hashes stay. Options: (1)
+     an optional `Rules.sun: Option<SunRules>`, presets setting it at
+     founding (recommended); (2) site conditions written by the preset; (3)
+     caller-passed preset, nothing stored. Mark: "Optional Rules field,
+     absent = default (Recommended)". *Reading, not ruled:* the parameters
+     are integers (the rules are `Eq`): tidal lock, tilt in hundredths of a
+     degree, intensity percent, colour in thousandths; latitude is the site
+     condition `light:latitude`, default 40 degrees.
+
+979. **A world with no sun rules gets a real day.**
+     Asked with 978. Options: (1) a 1,440-tick day and a mild 23.5 degree
+     season (recommended); (2) the fixed 970 sun unless a preset sets a
+     schedule. Mark: "Default day: 1,440-tick day, mild season
+     (Recommended)". Tidal-locked worlds take 970's fixed sun exactly.
+
+980. **Names: `isocosm::light`, `light::at`, `Light`, `Sun`, `SunRules`.**
+     Asked with 978; the tracer side is `TraceParams` plus a light slot fed
+     from `BrickFrameInput`. Mark: "Use those names (Recommended)".
+
+     Next unused 981.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
