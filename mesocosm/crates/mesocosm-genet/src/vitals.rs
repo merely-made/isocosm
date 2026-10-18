@@ -57,15 +57,16 @@ const MARGIN: f32 = 12.0;
 
 /// How many steps a notice stays up.
 ///
-/// Presentation-timed, in the world's own ticks: at the host's canonical ten
-/// ticks a second this is about two and a half seconds, and it stays put
-/// across a replay because it counts what the world counted rather than wall
-/// time. Nothing about it reaches the world, the trace, or the hash.
+/// Presentation-timed, in the world's own ticks: at the host's default two
+/// ticks a second (wing ruling 978) this is about two and a half seconds, and
+/// it stays put across a replay because it counts what the world counted
+/// rather than wall time. Nothing about it reaches the world, the trace, or
+/// the hash.
 ///
-/// Retimed with the tempo (TD2: 150 steps at 60 t/s was the same 2.5s). A
-/// constant counted in ticks is only a duration relative to a tick rate, so it
-/// moves whenever the rate does.
-const NOTICE_STEPS: u64 = 25;
+/// Retimed with the tempo (TD2: 150 steps at 60 t/s, then 25 at 10 t/s, were
+/// the same 2.5 s). A constant counted in ticks is only a duration relative to
+/// a tick rate, so it moves whenever the rate does.
+const NOTICE_STEPS: u64 = 5;
 
 type Runner = GenetAppRunner<Vitals, fn(&Vitals) -> VitalsChild, VitalsChild>;
 

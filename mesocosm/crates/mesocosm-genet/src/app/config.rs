@@ -95,8 +95,11 @@ impl Default for HostConfig {
             start: None,
             mode: None,
             population: isocosm::Founding::default().population,
-            // The canonical played tempo (TD2, ruled 2026-08-29).
-            ticks_per_second: 10,
+            // The default tempo follows the measured tick (wing ruling 978,
+            // 2026-10-17): about 0.45 s per tick after the core tick lane, so 2
+            // ticks per second keeps the clock from deferring without limit.
+            // TD2's 10 (2026-08-29) stays the aspiration.
+            ticks_per_second: 2,
             width: 960,
             height: 540,
             frames: None,
