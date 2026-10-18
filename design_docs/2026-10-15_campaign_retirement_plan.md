@@ -2,12 +2,15 @@
 
 **Date:** 2026-10-15
 
-**Status, 2026-10-17:** R0 and R1 done; R2 to R4 remain. Opened by ruling
-913 (wing design record), shaped by 915 (owning homes, no new crates), 916
-(planned now, moves after the A1 lane merges) and 917 (the crates aim to be
-published); its forks were ruled 919 to 922. A1's 905 to 907 merged into main
-(947, 948), and sim-host H5 is complete. R1's source move, all-target/all-
-feature compiler check, runtime count parity, and endpoint g4 receipt pass.
+**Status, 2026-10-18:** R0 and R1 are done: `native/`, `contract.rs` and
+`founding/` now sit in `isocosm-vtt`, and the root all-target, all-feature
+check, the runtime counts (492 passed, 0 failed, 6 ignored, matching the
+baseline) and the endpoint g4 receipt pass. R2 (map lowering into
+`isometry-core`, the store and proposals), R3 (the world into the sim at V2,
+then the crate retires) and R4 (publishing) remain, and R2 is next. The GM
+store and proposals stay under case 921 until V2; the H7 family endpoint work
+is a separate change, and the Genet app still uses the old VTT event authority.
+Opened by case 913 and shaped by cases 915 and 917.
 
 ## Why
 
@@ -128,9 +131,6 @@ published. Its consumers are all the VTT's: `isonetry` (110 uses),
   28,662,608 bytes against its 100 MB cap. The H7 family endpoint/network
   implementation is a separate change; the Genet app still uses the old VTT
   event authority, and GM store and proposals stay under 921 until V2.
-
-- **2026-10-16:** removed the stale A1 dependency from R1's current status.
-  The merge is on main; R1's move and its consumer gates remain open.
 
 - **2026-10-15:** plan written from the reading above; rulings 913 and 915
   to 918 recorded. R0 done: F1 to F4 ruled as 919 to 922, and R4 added with
