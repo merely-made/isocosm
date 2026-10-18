@@ -330,6 +330,7 @@ impl ProbeFounding {
             spatial_templates: None,
             ecology_witness: None,
             companions: None,
+            sun: None,
             version: crate::VERSION,
             accounts,
             conditions: BTreeSet::new(),
