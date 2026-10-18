@@ -5,7 +5,7 @@
 
 use isometer::SlabCamera;
 use isometer::render::live_body::posed_quad;
-use isometer::render::{ClipSlab, LiveBody, face_shade, material_colour};
+use isometer::render::{ClipSlab, LiveBody, material_colour};
 use tenant::{Palette, PaletteMesh};
 
 pub(super) fn camera(slab: SlabCamera) -> tenant::Camera {
@@ -56,9 +56,9 @@ pub(super) fn mesh(
                 .palette
                 .and_then(|p| p.linear(quad.material))
                 .unwrap_or_else(|| material_colour(quad.material));
-            let shade = face_shade(quad.axis, quad.positive);
+            // No baked face tint: the tenant's sun shades by the world normal.
             let colour = [0, 1, 2]
-                .map(|i| base[i] * shade * body.tint[i] * if body.focused { 1.08 } else { 1.0 });
+                .map(|i| base[i] * body.tint[i] * if body.focused { 1.08 } else { 1.0 });
             let selected = body.selected_part == Some(placement.part);
             if fractions.iter().all(|v| *v == 0.0) {
                 append(
