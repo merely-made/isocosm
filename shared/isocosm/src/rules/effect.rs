@@ -25,6 +25,15 @@ pub enum Effect {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         conversion: Option<Conversion>,
     },
+    /// Light credited to `who`'s `account`: `full` scaled by the sun's
+    /// intensity at the act's tick (rulings 972 and 982), nothing at night.
+    /// Resolved at staging into the transform it comes to, so everything
+    /// downstream sees an ordinary credit.
+    Sunlight {
+        who: Binding,
+        account: Key,
+        full: u64,
+    },
     Condition {
         key: Key,
         delta: i64,

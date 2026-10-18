@@ -15,10 +15,12 @@ use profile::{Form, world};
 
 // The dated 936 diagnostics retain the exact pre-958 world. New candidate
 // draws use the generated policy and a different declared genesis digest.
+// Rerecorded 2026-10-17 under 982 to 984: the sunlight process became
+// `Effect::Sunlight`, so every ecology world's rules, and this digest, moved.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "d12cfd47322777b69ff1ba6639a54e8e4a1390286ab59a97a57d165e7f1802ee");
+    assert_eq!(crate::digest(&genesis), "15db160dafcd480fe6d503429580cca873ee54dba602b0f5ff0fafb0a01980a3");
     genesis
 }
 
