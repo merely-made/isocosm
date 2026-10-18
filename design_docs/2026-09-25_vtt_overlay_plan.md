@@ -10,7 +10,7 @@ as do V3 and V4. Next are the V2 phases below and `isometry-campaign`'s
 retirement into its owning homes (cases 913 and 915), planned in the [campaign
 retirement plan](2026-10-15_campaign_retirement_plan.md), whose R3 carries
 section 4's absorption. The [assembled certification
-record](../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-13_assembled_certification.md) owns the
+record](../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-13_assembled_certification.md) keeps the
 receipts.
 
 ### V2 next phases, 2026-10-10
@@ -37,7 +37,7 @@ delivery, late joining and control-preservation checks now pass, including a
 compiled discarded-metadata control. The later scoped root and Eponym
 workspace/all-target/all-feature compile checks passed offline. Eponym's
 preserved 4/6 sortie result is qualified by the unchanged scene's absent
-hazard, which Q5 must recalibrate. Native placement/control remains V2's work.
+hazard, which must be recalibrated. Native placement/control remains V2's work.
 
 **2026-10-03, rulings 538 to 541:** the VTT plays recognized editions
 faithfully as versioned rulesets, keeping the GM's decision points and
@@ -408,9 +408,9 @@ what each left open lands here, so it has a live owner.
   party, and their tactical doorway updates (W9); independent per-party
   map views and party-membership editing (W7). Each waits on V2's campaign
   over a drawn world, since parties and their knowledge then come from the
-  sim. The watchtower's five failing atlas and door tests are in the
-  [after-pass plan](../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-10_after_pass_plan.md)'s
-  A2.
+  sim. The watchtower's five failing atlas and door tests stay open here
+  (from the [after-pass plan](../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-10_after_pass_plan.md)
+  §A2).
 
 ## Findings
 

@@ -1,6 +1,6 @@
 # Re-expressing the legacy families in Isocosm
 
-**Status, 2026-10-18:** the migration push is integrated: the families are re-expressed on native Isocosm, legacy Mesocosm and Eponym are deleted, and only `legacy/campaign` remains until V2. The Progress entries record compile-gated implementation, not certification. Open: each family's certification by conservation, replay and controls (case 791, which replaced legacy parity), owned by the after-pass plan; V2 and E3 (cases 798, 794 and 795), which retire the campaign copy; and the plan itself, live until all seven families certify. Next: the after-pass's deferred runs, consumer reproduction first.
+**Status, 2026-10-18:** the migration push is integrated: the families are re-expressed on native Isocosm, legacy Mesocosm and Eponym are deleted, and only `legacy/campaign` remains until V2. The Progress entries record compile-gated implementation, not certification. Open: each family's certification by conservation, replay and controls (case 791, which replaced legacy parity); V2 and E3 (cases 798, 794 and 795), which retire the campaign copy; and the plan itself, live until all seven families certify. A1 consumer reproduction passed its unchanged gate on 2026-10-17 (see the sim plan's Status). Next: each family's certification runs.
 
 Ruling 192 had Isocosm absorb `mesocosm-core`, "piece by piece re-expressed
 in its process definitions (ruling 32)", Mesocosm's core shrinking to

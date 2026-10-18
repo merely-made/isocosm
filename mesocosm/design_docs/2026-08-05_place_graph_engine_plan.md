@@ -1,6 +1,6 @@
 # Place-Graph Engine Plan (2026-08-05): the spatial spine
 
-**Status, 2026-10-18:** SP1 to SP5 are built, SP4 and SP5 in `isometer-space` on `Ground`, and merged with the migration push; their re-certification is the after-pass's, since the lift's bytes moved with drawn cliffs. SP6 waits on mere's T2. SP7's joins now belong to the overlays: Mesocosm's full M4 in-site, Eponym's E3 and the VTT's battlemap as a lifted site with the sim on. SP8, the region, is open. §A.13 says who owns what now and supersedes §A.3 and §A.4's rows where they differ. Open obligations from the resident surface query: Eponym's one-budget, fixed atlas, host-limit and terrain-occlusion work. Next: the after-pass's re-certification of SP4 and SP5.
+**Status, 2026-10-18:** SP1 to SP5 are built, SP4 and SP5 in `isometer-space` on `Ground`, and merged with the migration push; their re-certification is open, since the lift's bytes moved with drawn cliffs. SP6 waits on mere's T2. SP7's joins now belong to the overlays: Mesocosm's full M4 in-site, Eponym's E3 and the VTT's battlemap as a lifted site with the sim on. SP8, the region, is open. §A.13 says who owns what now and supersedes §A.3 and §A.4's rows where they differ. Open obligations from the resident surface query: Eponym's one-budget, fixed atlas, host-limit and terrain-occlusion work. Next: the re-certification of SP4 and SP5.
 
 **Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
 this plan a rewrite verdict: the sim's spatial half, on which W2 could not

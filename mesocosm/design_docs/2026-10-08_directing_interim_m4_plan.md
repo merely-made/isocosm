@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-08
 
-**Status, 2026-10-18:** D1 to D5 are built on native Isocosm and the switch has landed (`91f2e050`). Integrated since: native metabolic boundary order (case 806), pass-start prey resolution (case 454), the empty-choice retry (case 813) and seeded movement ties (case 958). All nine workspace compilers and all 51 directing controls pass, and the seed-9 pilot reaches three boundaries with one born consumer living. Open: consumer reproduction, with the 20/20 gate on a fresh compact played matrix now running; the D1 to D5 invariant certification; and the headed three-epoch run in both modes (case 680). Next: reproduction, then the after-pass's certification.
+**Status, 2026-10-18:** D1 to D5 are built on native Isocosm and the switch has landed (`91f2e050`). Integrated since: native metabolic boundary order (case 806), pass-start prey resolution (case 454), the empty-choice retry (case 813) and seeded movement ties (case 958). All nine workspace compilers and all 51 directing controls pass, and the seed-9 pilot reaches three boundaries with one born consumer living. A1 consumer reproduction passed its unchanged 20/20 gate on 2026-10-17 (see the sim plan's Status). Open: the D1 to D5 invariant certification; and the headed three-epoch run in both modes (case 680). Next: that certification.
 
 Rulings live in the [wing design record](2026-09-18_wing_design_plan.md);
 this plan cites them by number and does not restate their reasoning.
