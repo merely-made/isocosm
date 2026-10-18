@@ -2,18 +2,13 @@
 
 **Date:** 2026-10-14
 
-**Status, 2026-10-14:** C10 and C11 are certified. C10's rejection was a
-crowd defect, fixed at `8cbe3e76`; the recertification under fresh seed
-2026101401 (880) passes. C11 is certified at site grain with the autonomous
-chooser (881); titles are outside (882). Ruling 888 opens tuning;
-A1 resumes; 889 to 891 recorded. Next unused958.
-
-**Earlier status:** certification attempt completed; C10 rejected by its unchanged gate.
-Source `6b5d00a0` is pushed and the measurement stayed frozen. Mark's
-explicit "Certify" instruction opens acceptance
-after ruling826's intermediate-state deferral. This record qualifies the
-assembled source and its actual receipts; it does not close the whole queue.
-No semantic question is pending; next unused880.
+**Status, 2026-10-18:** C10 and C11 are certified (2026-10-14). C10's
+rejection was a crowd defect, fixed at `8cbe3e76`; the recertification under
+fresh seed 2026101401 (case 880) passes. C11 is certified at site grain with
+the autonomous chooser (case 881); titles are outside (case 882). Case 888
+opens tuning. Open: the items under Remaining acceptance, each owned by
+another plan. Next: those owning plans close them; this record keeps the
+hashes and qualifications.
 
 ## Source and execution
 

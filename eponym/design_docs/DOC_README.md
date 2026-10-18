@@ -37,7 +37,7 @@ native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-17: F3/F4 native level-fixture union, F7 producer checks, and the three formerly failing V1/V1b far-window paging/travel/retarget obligations qualify. Actual-camera V1/V1b headed runs pass 96 frames under 1 MiB; travel extents remain stable and completion-boundary V1b allocator growth is zero. Uncached view selection measured 1.3–1.8 seconds, so real-time zoom remains unqualified. Broader E3 and headed product acceptance remain open. See the [camera residency closeout](../../../../testing/isometry/f-2026-10-16/camera-residency-closeout.md) and [F receipt manifest](../../../../testing/isometry/f-2026-10-16/README.md). |
+| [2026-09-25_eponym_overlay_plan.md](2026-09-25_eponym_overlay_plan.md) | Eponym's overlay (W5), its executable plan. | 2026-10-18: E0 and E1 done and E2's families native; E3 and headed E4 acceptance open. |
 | [2026-07-30_paredros_founding_plan.md](2026-07-30_paredros_founding_plan.md) | Eponym's founding record: one embodied life among autonomous named creatures. | 2026-10-10: reference charter; executable work belongs to the overlay plan, including folded functional and memory gates in E3. |
 
 ## Open items
