@@ -324,6 +324,10 @@ pub struct Rules {
     pub ecology_witness: Option<crate::ecology::JointSpec>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub companions: Option<crate::social::CompanionPolicy>,
+    /// How the sun moves and shines (971 to 973); absent means the default
+    /// sun, and worlds without it hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sun: Option<crate::light::SunRules>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

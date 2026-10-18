@@ -317,6 +317,7 @@ impl Founding {
             spatial_templates: None,
             ecology_witness: None,
             companions: None,
+            sun: None,
             version: crate::VERSION,
             accounts,
             conditions: set(&["world:habitable", "world:weather"]),
@@ -397,6 +398,7 @@ impl Founding {
         }
         if let Some(preset) = self.preset {
             preset.apply(&mut rules.conditions, &mut sites);
+            rules.sun = Some(preset.sun_rules());
         }
         let mut population = Population::default();
         // The world has a body at each site for its agentless processes.

@@ -53,6 +53,7 @@ pub mod spatial;
 pub mod mosaic;
 pub mod matter;
 mod meaning;
+pub mod light;
 pub mod needs;
 pub mod operations;
 pub mod population;
