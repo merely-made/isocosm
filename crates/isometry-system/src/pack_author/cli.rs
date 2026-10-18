@@ -17,6 +17,11 @@ enum Command {
     },
     Check,
     Inspect,
+    ProposeLockPreset {
+        base: u64,
+        generator: String,
+        preset: Box<isometry_campaign::GeneratorLockPreset>,
+    },
     Save {
         base: u64,
     },
@@ -43,6 +48,11 @@ fn execute(session: &mut Session, command: Command) -> Result<serde_json::Value,
             serde_json::json!({"revision":session.current.revision,"valid":true,"manifest":manifest,"choices":manifest.generator_choices().into_iter().map(|c|serde_json::json!({"id":c.id,"name":c.name,"default_args":c.default_args,"lock_presets":c.lock_presets})).collect::<Vec<_>>(),"admitted":false})
         },
         Command::Inspect => syntax::inspect(session),
+        Command::ProposeLockPreset {
+            base,
+            generator,
+            preset,
+        } => preset::propose(session, base, &generator, *preset)?,
         Command::Save { base } => session.save(base)?,
         Command::Quit => unreachable!("handled by command loop"),
     })

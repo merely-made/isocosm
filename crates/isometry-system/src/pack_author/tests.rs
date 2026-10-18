@@ -1,5 +1,7 @@
 use super::*;
 use std::{fs, path::Path};
+#[path = "preset_tests.rs"]
+mod preset_tests;
 struct Fixture(PathBuf);
 impl Fixture {
     fn new() -> Self {

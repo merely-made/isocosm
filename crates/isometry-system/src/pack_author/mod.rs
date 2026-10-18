@@ -1,5 +1,6 @@
 //! App-local authoring session. No runtime catalogue or session mutation.
 mod cli;
+mod preset;
 mod save;
 mod syntax;
 #[cfg(test)]
@@ -79,7 +80,7 @@ fn decode(format: Format, text: &str) -> Result<ContentPackManifest, String> {
 fn fingerprint(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 struct Edit {
     start: usize,

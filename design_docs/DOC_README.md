@@ -44,7 +44,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 | Doc | For | Status |
 | --- | --- | --- |
-| [2026-10-17_private_pack_authoring_plan.md](2026-10-17_private_pack_authoring_plan.md) | Private retained manifest authoring with the real pack schema and batched Rowan backend; no shared API. | 2026-10-17: implemented/qualified; 68 feature tests, 58 default tests, backend101 and fresh-process terminal/load/fixture checks pass. Optional private command; admission/format owners unchanged, no shared API. |
+| [2026-10-17_private_pack_authoring_plan.md](2026-10-17_private_pack_authoring_plan.md) | Private retained manifest authoring with the real pack schema and batched Rowan backend; no shared API. | 2026-10-17: private reviewable preset proposal implemented/qualified; 71 feature/58 default tests, scoped Clippy/MSRV and 59-command/five-process real workflow pass. Earlier backend101 evidence retained; explicit edit/save and admission owners unchanged, shared API deferred. |
 | [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance for all three products. | The one copy since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |
 | [2026-10-15_campaign_retirement_plan.md](2026-10-15_campaign_retirement_plan.md) | Retiring `isometry-campaign` into its owning homes: the VTT's game layer into `isocosm-vtt`, map lowering into `isometry-core`, the world into the sim at V2. | 2026-10-17: R0 and R1 done (913, 915 to 922); source move and all-target/all-feature compiler check pass; runtime counts match at 492/0/6; endpoint g4 passes nine sessions and four endpoints; R2 to R4 remain; `isonetry` remade under the sim-host plan's H7 (923, 924). |
