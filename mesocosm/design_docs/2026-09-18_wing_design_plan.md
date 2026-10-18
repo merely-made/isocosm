@@ -12074,7 +12074,21 @@ what later sections derive from.
      lane's 975 and 976, and this ruling; the lanes' worktrees and branches
      are removed after the push.
 
-     Next unused 978.
+978. **Mesocosm's default tempo follows the measured tick: 2 ticks per second.**
+     Asked 2026-10-17 after 976 left the tempo open. Evidence: the configured
+     10 ticks per second (TD2, 2026-08-29) against about 0.45 s per tick after
+     the tick lane, native scheduling alone 0.3 s; at 10 the core's clock
+     defers steps without limit, so every active callback runs the full
+     8-step ceiling, about 3.6 s, and the sim falls further behind each
+     round. Options: (1) the default follows measurement, 2 ticks per second,
+     TD2's 10 the aspiration revisited when scheduling drops (recommended);
+     (2) keep 10 and open a scheduling lane; (3) decouple the sim onto its
+     own thread with held frames. Mark: "Tempo follows measurement: 2
+     ticks/s (Recommended)". `mesocosm-genet`'s config default moves to 2; a
+     1,440-tick day is then 12 minutes of play. The same round archived both
+     merged lane sessions.
+
+     Next unused 979.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
