@@ -11956,9 +11956,35 @@ what later sections derive from.
      .gitattributes rule (Recommended)". It lands as its own commit after
      the merge, verified by the same test passing on this checkout.
 
-970. *Taken by the tenant-sun lane on branch `tenant-sun` (the fixed sun
-     matching the tracer's constants; the field waits). Its text lands with
-     that branch.*
+970. **Bodies get a fixed sun matching the tracer's; the field waits.**
+     Asked 2026-10-17 with the audit's evidence: the sim exposes no sun or
+     day/night field (`ecology.rs` holds only a constant per-site
+     `sim:energy` account, and the presets' schedules are read by nothing);
+     the tracer's sun is the literal `normalize(0.4, 0.8, 0.3)` with terrain
+     light 0.38 + 0.62 * max(0, N.L) (`tracer.wgsl`, `march.wgsl`); the
+     tenant lit bodies by ambient only, with `isometer::render::face_shade`
+     baked into vertex colours by the quad's local axis, so a rotated body
+     kept the wrong shade. Options for the slice: (a) a fixed sun, shadows
+     off (recommended); (b) a sun driven from a sim field, shadows on, which
+     needs the field admitted first; (c) leave ambient and wait. Mark on the
+     slice: "kick b up to the orchestrator"; the orchestrating session then
+     confirmed (a), with (b) staying its own assessment item. *Reading, not
+     ruled:* that confirmation is the orchestrator's, not Mark's words. Under
+     (a) Mark chose "Match the tracer (Recommended)", "Drop it on the tenant
+     path (Recommended)" and "Master multiplier, default 1 (Recommended)".
+     So the tenant carries a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38
+     and sun 0.62 (as kiss3d's albedo/pi diffuse, intensity 0.62 pi), shadows
+     off; `geometry.rs` stops applying `face_shade` on the tenant path only
+     (the VTT and Eponym `LiveBody` keep it); `--body-light` scales sun and
+     ambient together, 1 matching the terrain and 0 dark. The 0.38 and 0.62
+     are the tracer's constants, so terrain and bodies read under one sun
+     until the admitted field replaces both, and ruling 472's block stays
+     the destination. 749's torch shadows are untouched.
+
+     The light field itself is ruled separately (971 to 974): a derived
+     function in the sim over (rules, tick, site), read by the tracer and the
+     tenant, with a 1,440-tick day and night as sun None. Until that lane
+     lands this fixed sun stays the block's default.
 
 971. **The light field is a derived function in the sim.**
      Asked 2026-10-17 in the assessment of the tenant-sun round's option (b),
@@ -12035,7 +12061,20 @@ what later sections derive from.
      (tick 70 to 85) and the head by `mesocosm-genet` (tick 75, hash
      `90c45b8673d88264` or the current main's receipt).
 
-     Next unused 977.
+977. **Both lane branches merge into main and push; the light-field lane restarts.**
+     Asked 2026-10-17 after both lanes reported: `core-tick-966` (five
+     commits, no conflicts; the seed-9 save's 15 steps fall from 20.6 s to
+     6.7 to 6.9 s with every hash and the capture byte-identical, all five
+     gates green, 966's 1.5 s open under 976) and `tenant-sun` (two commits,
+     a before/after capture pair showing one sun on every body, one conflict
+     on this record's ruling block). Options: (1) merge both, push, restart
+     the light-field lane (recommended); (2) merge core-tick only; (3) hold
+     both. Mark: "Merge both, push, restart light-field (Recommended)". The
+     record resolves as the tenant-sun lane's 970, then 971 to 974, the tick
+     lane's 975 and 976, and this ruling; the lanes' worktrees and branches
+     are removed after the push.
+
+     Next unused 978.
 
 Two earlier rulings this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

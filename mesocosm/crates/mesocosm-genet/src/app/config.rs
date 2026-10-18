@@ -45,7 +45,7 @@ pub struct HostConfig {
     /// Voxel anatomy or the capsule comparison, presentation only.
     pub body_mode: section::BodyMode,
     pub body_budget: usize,
-    /// Presentation-only ambient intensity for the body tenant.
+    /// Presentation-only scale of the body tenant's sun and ambient (1 matches the terrain).
     pub body_light: f32,
     /// Off by default (DT1); recorded in the receipt either way.
     pub dev: bool,
