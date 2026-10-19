@@ -12,6 +12,12 @@ use std::collections::BTreeSet;
 
 pub const ID: &str = "body:hazard";
 
+/// The probe's per-world draws, inclusive (704): the odds a tick as a
+/// numerator over 64, and the cells a hit takes. Mesocosm's founding takes
+/// them; the generator's own default is no hazard.
+pub const RATE: [u64; 2] = [2, 8];
+pub const CELLS: [u32; 2] = [1, 8];
+
 /// The hazard hitting for `cells` cells, on bodies of `among` lineages, or
 /// of any where `among` is empty.
 pub fn process(rate: i64, cells: u64, among: BTreeSet<Key>) -> Process {

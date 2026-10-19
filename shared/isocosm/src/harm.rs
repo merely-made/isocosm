@@ -27,6 +27,7 @@ use std::collections::BTreeMap;
 mod fragments;
 pub(crate) mod healing;
 pub mod hazard;
+pub mod rest;
 pub(crate) mod rot;
 pub(crate) use fragments::{Fragment, detach};
 

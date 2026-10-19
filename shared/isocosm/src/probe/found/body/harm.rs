@@ -18,8 +18,8 @@ pub struct HarmFounding {
 impl Default for HarmFounding {
     fn default() -> Self {
         Self {
-            hazard: [2, 8],
-            cells: [1, 8],
+            hazard: crate::harm::hazard::RATE,
+            cells: crate::harm::hazard::CELLS,
             rot: [1, 8],
             heals: 500,
             fragments: 500,

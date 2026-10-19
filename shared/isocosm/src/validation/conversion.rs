@@ -93,7 +93,7 @@ pub(crate) fn kinds(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> Result<
                 } => (*conversion, keys(from), keys(std::slice::from_ref(to))),
                 // Growth's hand fits its conversion, and its price returns
                 // living matter as the world's (479, 446).
-                Effect::Heal { into } => {
+                Effect::Heal { into, .. } => {
                     if !keys(std::slice::from_ref(into)).iter().all(|(_, w)| *w) {
                         return Err(format!(
                             "{} heals into matter that is not the world's",

@@ -79,8 +79,8 @@ fn unset<T: Default + PartialEq>(value: &T) -> bool {
 }
 
 impl Default for Bodies {
-    /// Mesocosm's bounds where it has them, and a clutch of 1 to 4 (550);
-    /// the hazard the probe's (704).
+    /// Mesocosm's bounds where it has them, and a clutch of 1 to 4 (550); no
+    /// hazard, which Mesocosm's own founding turns on.
     fn default() -> Self {
         Self {
             variance: [1, 2],
@@ -88,8 +88,8 @@ impl Default for Bodies {
             clutch: [1, 4],
             roster: false,
             grazing: true,
-            hazard: [2, 8],
-            wound: [1, 8],
+            hazard: [0, 0],
+            wound: [0, 0],
         }
     }
 }
@@ -357,9 +357,12 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
             .accounts
             .insert(format!("provision:{name}"), provision);
     }
-    // A lineage without a body has no cells to wound.
+    // A lineage without a body has no cells to wound. A world that wounds
+    // also rests.
     if let Some(hazard) = b.drawn_hazard(g.seed, bodied) {
         g.rules.processes.insert(hazard.id.clone(), hazard);
+        let rest = crate::harm::rest::process("world:soil");
+        g.rules.processes.insert(rest.id.clone(), rest);
     }
     // Bodies need the catalogue their kinds name (466) and the shapes (276).
     if g.rules.functions.is_empty() {

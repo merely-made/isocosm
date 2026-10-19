@@ -389,8 +389,8 @@ impl Staged<'_> {
                 }
                 return Ok(false);
             },
-            Effect::Heal { into } => {
-                let paid = meaning::heal(self, &sim.genesis.rules, into)?;
+            Effect::Heal { into, rest } => {
+                let paid = meaning::heal(self, &sim.genesis.rules, into, *rest)?;
                 let ends = (self.holder(Binding::Actor), self.holder(Binding::Place));
                 if let (true, (Some(start), Some(end))) = (sim.flowing(), ends) {
                     for (key, amount) in paid {
