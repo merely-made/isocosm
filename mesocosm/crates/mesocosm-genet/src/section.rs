@@ -87,6 +87,15 @@ pub struct SiteScene {
     pub volumes: DeclaredExtentVolumes,
 }
 
+/// One neutral material for every native scene path; kingdom tint supplies
+/// the colour while declared dimensions supply the current box geometry.
+pub(crate) fn body_volumes(bodies: &[PlacedBody]) -> DeclaredExtentVolumes {
+    DeclaredExtentVolumes::from_documents(
+        bodies.iter().map(|body| &body.document),
+        isometer::render::geometry::NEUTRAL_MATERIAL,
+    )
+}
+
 impl SiteScene {
     /// Where body `id` stands in this scene, if it is here.
     pub fn at(&self, id: u64) -> Option<[i32; 3]> {
@@ -281,6 +290,7 @@ impl Section {
         encoder: &mut wgpu::CommandEncoder,
         frame: SectionFrame<'_>,
     ) -> Result<(), String> {
+        self.bind_terrain_materials(frame.scene.window.materials);
         let terrain = GroundTerrain(&frame.scene.ground);
         let camera = self.view(frame.centre);
         let voxels = self.body_mode == BodyMode::Voxels;

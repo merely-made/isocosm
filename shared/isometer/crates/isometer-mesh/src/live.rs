@@ -97,17 +97,17 @@ impl LiveBodyProjector {
             let Some(yaw) = body.world_yaw(part.id) else {
                 return Err(MeshError::Unplaceable { part: part.id });
             };
-            let Some(volume) = source.volume(part.volume) else {
+            let Some((reference, volume)) = source.resolve_part(part) else {
                 return Err(MeshError::MissingVolume {
                     part: part.id,
                     volume: part.volume,
                 });
             };
 
-            volumes.entry(part.volume).or_insert(volume);
+            volumes.entry(reference).or_insert(volume);
             placements.push(Placement {
                 part: part.id,
-                volume: part.volume,
+                volume: reference,
                 pivot_at,
                 pivot: part.pivot,
                 yaw,
