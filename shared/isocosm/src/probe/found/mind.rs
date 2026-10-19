@@ -9,7 +9,7 @@
 //! lineage and leaning.
 
 use super::super::{Mind, Need};
-use crate::{generate::process, rules::*};
+use crate::rules::*;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -48,9 +48,9 @@ impl Default for MindFounding {
             hungry: [1, 3],
             low: [1, 3],
             starving: [2, 5],
-            low_mood: [1, 4],
-            build: [1, 3],
-            bleed: [1, 3],
+            low_mood: Mind::LOW_MOOD,
+            build: Mind::BUILD,
+            bleed: Mind::BLEED,
             bearing: [4, 16],
             lineage_bearing: [-3, 3],
             leaning_bearing: [-2, 2],
@@ -158,40 +158,11 @@ impl MindFounding {
             rise_traits,
             stake: signed("mind-stake", 0, self.stake),
         };
-        let low_mood = -(pick("mind-low-mood", 0, self.low_mood) as i64);
-        let mut build = process(
-            "mind:strain",
-            Causation::Transition,
-            vec![Effect::Transform {
-                who: Binding::Actor,
-                take: BTreeMap::new(),
-                give: BTreeMap::from([(STRAIN.into(), pick("mind-build", 0, self.build))]),
-                conversion: None,
-            }],
+        let processes = mind.strain_processes(
+            pick("mind-low-mood", 0, self.low_mood),
+            pick("mind-build", 0, self.build),
+            pick("mind-bleed", 0, self.bleed),
         );
-        build.requires.push(Query::MoodBelow { amount: low_mood });
-        let mut bleed = process(
-            "mind:relief",
-            Causation::Transition,
-            vec![Effect::Ease {
-                who: Binding::Actor,
-                key: STRAIN.into(),
-                amount: pick("mind-bleed", 0, self.bleed).into(),
-            }],
-        );
-        bleed.requires.extend([
-            Query::Mood { at_least: low_mood },
-            Query::Account {
-                who: Binding::Actor,
-                key: STRAIN.into(),
-                at_least: 1,
-            },
-        ]);
-        // Mood is read once the tick's upkeep and starvation are settled.
-        for p in [&mut build, &mut bleed] {
-            p.period = Some(1);
-            p.priority = 2;
-        }
-        (mind, [build, bleed])
+        (mind, processes)
     }
 }

@@ -12,7 +12,7 @@
 
 use std::collections::BTreeMap;
 
-use isocosm::schema::{Entity, Id};
+use isocosm::schema::Id;
 use isometer_core::snapshot::{self, hash_bytes};
 use serde::{Deserialize, Serialize};
 
@@ -110,7 +110,7 @@ impl Body {
             let want = isocosm::needs::want(rules, e, account);
             want.map_or(0, |w| w.deficit().min(u64::from(MAX_NEED)) as u16)
         };
-        let wound = wound(e);
+        let wound = isocosm::harm::wound_share(e) as u16;
         let mut profile = BodyProfile::draw(world.seed(), record.body_seed, subject);
         if world.developed_bodies() {
             profile.mass_mg = u32::try_from(isocosm::anatomy::held(e, rules, crate::founding::TISSUE)).ok()?;
@@ -140,18 +140,6 @@ impl Body {
     pub fn can_carry(&self, carried_mg: u32, added_mg: u32) -> bool {
         carried_mg.saturating_add(added_mg) <= self.profile.carry_capacity_mg
     }
-}
-
-/// The share of a body's cells it has lost, out of a hundred: lost cells
-/// and every severed part's whole lattice.
-fn wound(e: &Entity) -> u16 {
-    let (mut lost, mut all) = (0u64, 0u64);
-    for (id, p) in &e.parts {
-        let cells = u64::from(isocosm::anatomy::capacity(e.extent(*id)));
-        all += cells;
-        lost += if e.lives(*id) { p.lost.len() as u64 } else { cells };
-    }
-    (lost * 100).checked_div(all).unwrap_or(0).min(100) as u16
 }
 
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]

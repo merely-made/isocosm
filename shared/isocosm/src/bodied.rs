@@ -63,10 +63,24 @@ pub struct Bodies {
     /// recorded meaning and digest.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub grazing: bool,
+    /// The agentless hazard of ruling 704, drawn per world (the 2026-10-18
+    /// note to ruling 227): its odds a tick as a numerator over 64, and the
+    /// cells a hit takes. Odds of nought never wound: the control. A saved
+    /// founding that does not name them was founded without, so they read as
+    /// nought and are not rewritten with them.
+    #[serde(default, skip_serializing_if = "unset")]
+    pub hazard: [u64; 2],
+    #[serde(default, skip_serializing_if = "unset")]
+    pub wound: [u32; 2],
+}
+
+fn unset<T: Default + PartialEq>(value: &T) -> bool {
+    *value == T::default()
 }
 
 impl Default for Bodies {
-    /// Mesocosm's bounds where it has them, and a clutch of 1 to 4 (550).
+    /// Mesocosm's bounds where it has them, and a clutch of 1 to 4 (550); no
+    /// hazard, which Mesocosm's own founding turns on.
     fn default() -> Self {
         Self {
             variance: [1, 2],
@@ -74,6 +88,8 @@ impl Default for Bodies {
             clutch: [1, 4],
             roster: false,
             grazing: true,
+            hazard: [0, 0],
+            wound: [0, 0],
         }
     }
 }
@@ -82,11 +98,29 @@ impl Bodies {
     pub fn check(&self) -> Result<()> {
         let ordered = self.variance[0] <= self.variance[1]
             && self.absence[0] <= self.absence[1]
-            && self.clutch[0] <= self.clutch[1];
+            && self.clutch[0] <= self.clutch[1]
+            && self.hazard[0] <= self.hazard[1]
+            && self.hazard[1] <= MAX_DRAW
+            && self.wound[0] <= self.wound[1];
         if !ordered || self.absence[0] == 0 || self.clutch[0] == 0 {
             return Err("body bounds outside the declared generator domain".into());
         }
+        if self.hazard[1] > 0 && self.wound[0] == 0 {
+            return Err("a hazard that hits for no cells".into());
+        }
         Ok(())
+    }
+
+    /// The hazard a world draws, on the bodied lineages `among`, where its
+    /// odds are not all nought.
+    fn drawn_hazard(&self, seed: u64, among: BTreeSet<Key>) -> Option<Process> {
+        if self.hazard[1] == 0 || among.is_empty() {
+            return None;
+        }
+        let pick = |domain: &str, r: [u64; 2]| r[0] + crate::draw(seed, domain, &[0]) % (r[1] - r[0] + 1);
+        let rate = pick("body-hazard", self.hazard) as i64;
+        let cells = pick("body-wound-cells", self.wound.map(u64::from));
+        Some(crate::harm::hazard::process(rate, cells, among))
     }
 }
 
@@ -264,6 +298,7 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
     let affinity = g.rules.affinity.clone().unwrap_or_default();
     affinity.validate()?;
     let mut added: BTreeMap<Key, BTreeSet<Key>> = BTreeMap::new();
+    let mut bodied: BTreeSet<Key> = BTreeSet::new();
     // Kingdom/provenance facts do not change when recipes and life traits
     // are assigned below; keep them available during the mutable line walk.
     let source_lineages = g.lineages.clone();
@@ -274,6 +309,7 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
             "kingdom:fauna" => false,
             _ => continue,
         };
+        bodied.insert(key.clone());
         let mut recipe = match b.roster {
             false => drawn(g.seed, index, producer, b),
             true => {
@@ -320,6 +356,13 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
         g.rules
             .accounts
             .insert(format!("provision:{name}"), provision);
+    }
+    // A lineage without a body has no cells to wound. A world that wounds
+    // also rests.
+    if let Some(hazard) = b.drawn_hazard(g.seed, bodied) {
+        g.rules.processes.insert(hazard.id.clone(), hazard);
+        let rest = crate::harm::rest::process("world:soil");
+        g.rules.processes.insert(rest.id.clone(), rest);
     }
     // Bodies need the catalogue their kinds name (466) and the shapes (276).
     if g.rules.functions.is_empty() {

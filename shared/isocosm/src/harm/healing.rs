@@ -15,7 +15,7 @@ use std::collections::BTreeMap;
 /// The next known lost cell, nearest the root first. A tombstone must
 /// have a living parent and its original box must still be free.
 pub(crate) fn next(e: &Entity) -> Option<(PartId, CellId)> {
-    if !e.alive {
+    if !e.alive || !e.parts.values().any(|p| p.lost.iter().any(|c| p.losses.contains_key(c))) {
         return None;
     }
     let doc = e.body.as_ref()?;

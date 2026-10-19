@@ -68,20 +68,42 @@ impl Deliberated {
     }
 }
 
-/// The account a need reads, where it reads one of the actor's.
-fn need_account(q: &Query) -> Option<&Key> {
+/// What serves a need: its own account where it reads one of the actor's,
+/// paid healing where it reads wounds (the 2026-10-18 note to ruling 227),
+/// and otherwise any matter gained.
+enum Serves<'a> {
+    Account(&'a Key),
+    Healing,
+    Matter,
+}
+
+fn serves(q: &Query) -> Serves<'_> {
     match q {
         Query::Below {
             who: Binding::Actor,
             key,
             ..
-        } => Some(key),
-        _ => None,
+        } => Serves::Account(key),
+        Query::Wounded { .. } => Serves::Healing,
+        _ => Serves::Matter,
     }
 }
 
-/// Whether `e` gives the actor `key`, or any matter where `key` is none.
-fn feeds(e: &Effect, key: Option<&Key>) -> bool {
+/// Whether `e` serves a need: gives the actor its account, or any matter
+/// where it names none, or heals where the need is a wound. A meal does not
+/// heal, so eating alone never serves a wound.
+fn feeds(e: &Effect, need: &Serves) -> bool {
+    let key = match need {
+        Serves::Account(key) => Some(*key),
+        Serves::Healing => {
+            return match e {
+                Effect::Heal { .. } => true,
+                Effect::When { .. } => e.branches().any(|b| feeds(b, need)),
+                _ => false,
+            };
+        },
+        Serves::Matter => None,
+    };
     let is = |k: &Key| key.is_none_or(|key| key == k);
     match e {
         Effect::Transform {
@@ -100,7 +122,7 @@ fn feeds(e: &Effect, key: Option<&Key>) -> bool {
             to,
             ..
         } => is(to),
-        Effect::When { .. } => e.branches().any(|b| feeds(b, key)),
+        Effect::When { .. } => e.branches().any(|b| feeds(b, need)),
         _ => false,
     }
 }
@@ -238,6 +260,14 @@ impl Simulation {
             target: c.target,
             answers: c.answers.clone(),
         }
+    }
+
+    /// The live mood of `actor`, read from the world's needs (ruling 227);
+    /// none where the world keeps no mind or the actor is absent.
+    pub fn mood(&self, actor: Id) -> Option<i64> {
+        self.genesis.rules.mind.as_ref()?;
+        self.state.population.get(actor)?;
+        Some(self.minded(actor).0)
     }
 
     /// The live mood of `actor` and the weights of the needs pressing it.
@@ -383,7 +413,7 @@ impl Simulation {
             let effects = || p.commitments.iter().chain(&p.effects);
             let needs: i64 = pressing
                 .iter()
-                .filter(|n| effects().any(|e| feeds(e, need_account(&n.query))))
+                .filter(|n| effects().any(|e| feeds(e, &serves(&n.query))))
                 .map(|n| -n.weight.min(0))
                 .sum();
             // Low mood weighs needs harder.
