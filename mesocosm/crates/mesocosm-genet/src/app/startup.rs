@@ -158,11 +158,16 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
         })?;
     let mut founded = selected.setup.founded.clone();
     founded.genesis.rules.epoch_ticks = config.play_epoch;
+    for site in founded.genesis.sites.values_mut() {
+        if let Some(soil) = site.accounts.get_mut("world:soil") { *soil = *soil * config.play_soil / 100; }
+    }
     let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
     founded.genesis.rules.sun = Some(isocosm::light::SunRules { start_hour: config.play_hour, ..sun });
-    eprintln!("play: seed {}, epoch {} ticks, {} ticks a second, starting at {}:00; no ecology witness.",
-        selected.seed, config.play_epoch, config.ticks_per_second, config.play_hour);
-    Runtime::bench(founded, config.ticks_per_second)
+    eprintln!("play: seed {}, epoch {} ticks, {} ticks a second, starting at {}:00, soil {}%; no ecology witness.",
+        selected.seed, config.play_epoch, config.ticks_per_second, config.play_hour, config.play_soil);
+    // One tick at a time, on a worker: a world too big for the clock falls
+    // behind it while the window keeps drawing the last tick.
+    Runtime::bench(founded, config.ticks_per_second).map(|runtime| runtime.with_max_steps(1).with_background())
 }
 
 fn read_setup(path: &std::path::Path) -> Result<mesocosm_runtime::runtime::ecology::Setup, String> {

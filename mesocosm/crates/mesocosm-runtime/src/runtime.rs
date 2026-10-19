@@ -37,6 +37,7 @@ pub mod ecology;
 pub(crate) mod translate;
 pub mod keymap;
 mod loop_state;
+mod background;
 pub use translate::Refusal;
 
 /// Default ceiling on rounds one `advance` call runs.
@@ -151,6 +152,9 @@ pub(crate) struct Mesocosm {
     pub(crate) spatial: crate::spatial::Game,
     verified_question: Option<crate::continuation::VerifiedQuestion>,
     geometry: crate::spatial::GeometryCache,
+    /// Rounds from the clock run on a worker thread (`with_background`).
+    background: bool,
+    pending: Option<background::Pending>,
 }
 
 /// The session lent for reading; a product never holds it across a commit.
@@ -178,6 +182,7 @@ impl Mesocosm {
 
     /// One round after the queued envelopes have applied.
     fn round(&mut self, world: &World) -> Result<(), String> {
+        if self.background { return self.begin_round(world); }
         let _span = crate::profile::Span::new("round.total");
         self.sync_loop(world);
         let participant = self.lp.participant;
@@ -188,24 +193,30 @@ impl Mesocosm {
                     session, &mut game, participant, &mut self.geometry)
                     .map_err(|why| format!("{why:?}"))));
         match round {
-            Ok((_, flows, verified)) => {
-                self.spatial = game;
-                self.verified_question = verified;
-                if let Err(why) = self.restore_loop(world) { self.fault = Some(why.clone()); return Err(why); }
-                if let Some(glyphs) = &mut self.glyphs { glyphs.absorb(&session(world), &flows); }
-                // Preserve the old wholly unmarked run's patch placement only.
-                // Marked runs retain their actually admitted physical bindings.
-                if self.spatial.driver.is_none() && self.spatial.members.is_empty()
-                    && self.spatial.sight.is_none() { self.place_members(world); }
-                self.sync_loop(world);
-                Ok(())
-            },
-            Err(why) => {
-                self.fault = Some(why.clone());
-                self.sync_loop(world);
-                Err(why)
-            },
+            Ok((_, flows, verified)) => self.finish_round(world, game, flows, verified),
+            Err(why) => self.refused(world, why),
         }
+    }
+
+    /// A round's game adopted after its session committed.
+    fn finish_round(&mut self, world: &World, game: crate::spatial::Game,
+        flows: Vec<isocosm::flows::Flow>, verified: Option<crate::continuation::VerifiedQuestion>) -> Result<(), String> {
+        self.spatial = game;
+        self.verified_question = verified;
+        if let Err(why) = self.restore_loop(world) { self.fault = Some(why.clone()); return Err(why); }
+        if let Some(glyphs) = &mut self.glyphs { glyphs.absorb(&session(world), &flows); }
+        // Preserve the old wholly unmarked run's patch placement only.
+        // Marked runs retain their actually admitted physical bindings.
+        if self.spatial.driver.is_none() && self.spatial.members.is_empty()
+            && self.spatial.sight.is_none() { self.place_members(world); }
+        self.sync_loop(world);
+        Ok(())
+    }
+
+    fn refused(&mut self, world: &World, why: String) -> Result<(), String> {
+        self.fault = Some(why.clone());
+        self.sync_loop(world);
+        Err(why)
     }
 }
 
@@ -233,6 +244,8 @@ pub struct Runtime {
     /// `None` means no successful mode-section publication/restore is known.
     seen: Option<u64>,
     published_phase: Option<crate::continuation::LoopPhase>,
+    /// Clock time that passed while a worker round was out.
+    banked_us: u64,
 }
 
 impl Runtime {
@@ -290,9 +303,11 @@ impl Runtime {
             spatial: crate::spatial::Game::default(),
             verified_question: None,
             geometry: crate::spatial::GeometryCache::default(),
+            background: false,
+            pending: None,
         };
         let driver = Driver::new(&world, product, Pacing::Clock { ticks_per_second });
-        let mut runtime = Self { driver, seen: None, published_phase: None };
+        let mut runtime = Self { driver, seen: None, published_phase: None, banked_us: 0 };
         runtime.publish();
         runtime
     }
@@ -409,6 +424,8 @@ impl Runtime {
     /// Runs the rounds the elapsed time authorises; a held run banks none.
     pub fn advance(&mut self, elapsed_us: u64) -> u64 {
         let _span = crate::profile::Span::new("advance.total");
+        if let Some(taken) = self.advance_pending(elapsed_us) { return taken; }
+        let elapsed_us = elapsed_us.saturating_add(std::mem::take(&mut self.banked_us));
         // While held, elapsed time is discarded. With no queued answer and
         // no shared-world revision since the last successful publication,
         // the saved game is already authoritative and remains unchanged.
@@ -421,13 +438,18 @@ impl Runtime {
         self.refresh();
         let taken = self.driver.advance(elapsed_us);
         self.publish();
-        taken
+        // A round out on the worker counts when it lands.
+        if self.driver.product().pending.is_some() { taken.saturating_sub(1) } else { taken }
     }
 
     /// Runs up to `steps` rounds off the clock; fewer while a question holds.
     pub fn step(&mut self, steps: u64) -> u64 {
         self.refresh();
+        let product = self.driver.product_mut();
+        product.pending = None;
+        let background = std::mem::replace(&mut product.background, false);
         let taken = self.driver.step(steps);
+        self.driver.product_mut().background = background;
         self.publish();
         taken
     }
