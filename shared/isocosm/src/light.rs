@@ -47,7 +47,13 @@ pub struct SunRules {
     pub intensity_percent: u32,
     /// The sun's colour in thousandths, linear RGB.
     pub colour: [u32; 3],
+    /// The hour of day at tick 0, 0 to 23: a world may begin in the morning
+    /// rather than at midnight. Absent reads as midnight.
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub start_hour: u32,
 }
+
+fn is_zero(hour: &u32) -> bool { *hour == 0 }
 
 impl Default for SunRules {
     fn default() -> Self {
@@ -56,6 +62,7 @@ impl Default for SunRules {
             tilt: 2_350,
             intensity_percent: 100,
             colour: [1_000; 3],
+            start_hour: 0,
         }
     }
 }
@@ -100,6 +107,7 @@ pub fn at(rules: &Rules, tick: Tick, site: Option<&Site>) -> Light {
         let day = (DAY_MICROSECONDS / unit).max(1);
         let year = year_ticks(unit);
         // Hour angle: 0 at noon, negative in the morning.
+        let tick = tick + u64::from(sun_rules.start_hour % 24) * day / 24;
         let hour = TAU * ((tick % day) as f64 / day as f64 - 0.5);
         let season = TAU * ((tick % year) as f64 / year as f64);
         let declination = (f64::from(sun_rules.tilt) / 100.0).to_radians() * season.sin();

@@ -318,6 +318,22 @@ impl Host {
 #[path = "app/scene_cache_tests.rs"]
 mod scene_cache_tests;
 
+/// A play world stepped headless with the demo's answers, printing the
+/// living count every `every` ticks: a quick look at how far a world booms.
+pub fn curve(config: &HostConfig, ticks: u64, every: u64) -> Result<(), String> {
+    let authored = mesocosm_runtime::Authored::load(&pack_root()).map_err(|why| format!("{why:?}"))?;
+    let mut runtime = startup::generated(config, authored.affinity().cloned())?;
+    for step in 0..ticks {
+        crate::played::demo_step(&mut runtime, step);
+        if step % every == 0 || step + 1 == ticks {
+            let sim = runtime.sim();
+            let living: u64 = sim.state().population.groups.values().filter(|g| g.entity.alive).map(|g| g.count).sum();
+            println!("curve: soil {}% tick {} living {}", config.play_soil, sim.state().tick, living);
+        }
+    }
+    Ok(())
+}
+
 /// The shipped pack's root, from this crate's own location.
 fn pack_root() -> std::path::PathBuf {
     std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
