@@ -1983,6 +1983,19 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      that heals slowly without paying both answer it. "Strain and the vitals
      panel (Recommended)": played worlds gain strain and relief, and
      Mesocosm's vitals panel shows wounds and mood.
+
+     *2026-10-18, Mark, second round, after the build showed paid healing out
+     of reach (12 mg a cell against a 10 mg founder):* "Mesocosm's generated
+     worlds only (Recommended)": the hazard runs there and the default body
+     founding keeps rate zero. On healing: "Maybe rest heals if you can pay
+     the price, and some creatures can invoke that process without rest?",
+     then "Rest pays part": resting heals at a fraction of the cell price,
+     with a quarter (3 mg a cell, about one meal) as the option put, and
+     growth:heal lineages pay the full price without resting. "One cell a
+     tick (Recommended)" and "Any lineage": every lineage can rest, one cell
+     a tick. *Reading, not ruled:* how a growth:heal lineage heals without
+     resting, given that every act takes the tick's one choice, comes back
+     as its own question.
 228. **A right click shows a ring of acts.** Put to Mark on 2026-09-25: how
      does a right click show its meanings (ruling 214): a ring of acts around
      the cursor, a cycle in place, or the critter's glance surfacing glyphs
