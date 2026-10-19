@@ -15,6 +15,9 @@ use winit::keyboard::{Key, NamedKey};
 pub(super) struct Pane {
     reading: Option<LoopReading>, presented: Option<LoopReading>,
     selected: Option<LoopAnswer>, notice: Option<String>,
+    /// The world revision the reading was taken at: an unchanged world keeps
+    /// it, since a loop reading can replay history and cost seconds.
+    read_at: Option<u64>,
 }
 
 fn active(phase: LoopPhase) -> bool {
@@ -63,6 +66,11 @@ impl Host {
             self.continuation = Pane::default();
             return;
         }
+        let revision = self.runtime.revision().ok();
+        if revision.is_some() && self.continuation.read_at == revision {
+            return;
+        }
+        self.continuation.read_at = revision;
         match self.runtime.loop_reading() {
             Ok(reading) if active(reading.phase) => {
                 if self.continuation.selected.as_ref().is_some_and(|selected| !choices(&reading).contains(selected)) {

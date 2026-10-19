@@ -448,14 +448,19 @@ impl Simulation {
     /// Same native knowing, with the pass's retained note prefix when requested.
     pub(crate) fn known_in(&self, entity: Id, e: &Entity, notes: &[Note], staged: &[Note], event: &str) -> Result<bool> {
         let event = self.state.events.get(event).ok_or("unknown event")?;
+        let subject = format!("entity:{entity}");
         if notes.iter().chain(staged).any(|n| {
-            n.core.subject == format!("entity:{entity}")
+            n.core.subject == subject
                 && n.core.object == event.id
                 && (n.core.kind == "sim:discover"
                     || (event.place.site().is_none() && n.core.kind == "sim:act"))
         }) {
             return Ok(true);
         }
+        Ok(self.exposed(entity, e, event))
+    }
+    /// The reach half of knowing: whether `event`'s field reached `entity`.
+    pub(crate) fn exposed(&self, entity: Id, e: &Entity, event: &Event) -> bool {
         let field = &self.genesis.rules.field;
         let mut exposure = e.resident_site().map_or(0, |site| self.state.reach.exposure(
             event, site, e.arrived, self.state.tick.saturating_add(1), field,
@@ -469,12 +474,12 @@ impl Simulation {
                 field,
             ));
         }
-        Ok(crate::draw(
+        crate::draw(
             self.genesis.dynamics_seed(),
             &format!("knowing:{}", event.id),
             &[entity],
         ) % 1_000_000
-            < exposure.min(1_000_000))
+            < exposure.min(1_000_000)
     }
     pub fn learn(&mut self, entity: Id, event: &str) -> Result<bool> {
         if !self.knows(entity, event)? {
