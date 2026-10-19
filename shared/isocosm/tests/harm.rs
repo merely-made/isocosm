@@ -22,6 +22,10 @@ mod crowd_tests;
 mod healing_legacy_tests;
 #[path = "harm/healing.rs"]
 mod healing_tests;
+#[path = "harm/generated.rs"]
+mod generated_tests;
+#[path = "harm/share.rs"]
+mod share_tests;
 
 fn fixture(fragment: bool) -> Genesis {
     let mut g = BodyFounding {

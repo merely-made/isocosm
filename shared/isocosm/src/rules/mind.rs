@@ -4,8 +4,8 @@
 //! What the core reads of minds: needs and the mind (rulings 158, 159, 163,
 //! 164 and 227).
 
-use super::Query;
-use crate::schema::*;
+use super::{Binding, Causation, Effect, Process, Query};
+use crate::{generate::process, schema::*};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -33,4 +33,54 @@ pub struct Mind {
     pub rise_traits: BTreeMap<Key, i64>,
     /// The moment: per mille added to the rise for each point of mood.
     pub stake: i64,
+}
+
+impl Mind {
+    /// Strain's per-world ranges, inclusive (ruling 159), each drawn from the
+    /// world's seed: minus the mood a low mood lies below, and the strain
+    /// built and bled a tick. The probe's minds and the played lineages share
+    /// them.
+    pub const LOW_MOOD: [u64; 2] = [1, 4];
+    pub const BUILD: [u64; 2] = [1, 3];
+    pub const BLEED: [u64; 2] = [1, 3];
+
+    /// The two processes that keep strain (ruling 159): one builds `build` a
+    /// tick while mood is below minus `low_mood`, one bleeds `bleed` while it
+    /// is not. Mood is read once the tick's upkeep and starvation are settled.
+    pub fn strain_processes(&self, low_mood: u64, build: u64, bleed: u64) -> [Process; 2] {
+        let low = -(low_mood as i64);
+        let mut builds = process(
+            "mind:strain",
+            Causation::Transition,
+            vec![Effect::Transform {
+                who: Binding::Actor,
+                take: BTreeMap::new(),
+                give: BTreeMap::from([(self.strain.clone(), build)]),
+                conversion: None,
+            }],
+        );
+        builds.requires.push(Query::MoodBelow { amount: low });
+        let mut bleeds = process(
+            "mind:relief",
+            Causation::Transition,
+            vec![Effect::Ease {
+                who: Binding::Actor,
+                key: self.strain.clone(),
+                amount: bleed.into(),
+            }],
+        );
+        bleeds.requires.extend([
+            Query::Mood { at_least: low },
+            Query::Account {
+                who: Binding::Actor,
+                key: self.strain.clone(),
+                at_least: 1,
+            },
+        ]);
+        for p in [&mut builds, &mut bleeds] {
+            p.period = Some(1);
+            p.priority = 2;
+        }
+        [builds, bleeds]
+    }
 }

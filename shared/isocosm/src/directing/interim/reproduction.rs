@@ -17,10 +17,12 @@ use profile::{Form, world};
 // draws use the generated policy and a different declared genesis digest.
 // Rerecorded 2026-10-17 under 982 to 984: the sunlight process became
 // `Effect::Sunlight`, so every ecology world's rules, and this digest, moved.
+// Rerecorded 2026-10-18 under the note to 227: the hazard joined generated
+// worlds, and a played world gained its wound need and its strain processes.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "15db160dafcd480fe6d503429580cca873ee54dba602b0f5ff0fafb0a01980a3");
+    assert_eq!(crate::digest(&genesis), "251654f7676ae726bb66f1fa5d3ac740803e2fae092f5e72392d1610c2119d54");
     genesis
 }
 
