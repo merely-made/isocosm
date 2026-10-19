@@ -32,8 +32,14 @@ impl Form {
         self != Self::Bare
     }
 
+    /// Mesocosm's bodies: the default with the probe's hazard, as the
+    /// product's founding has them (the 2026-10-18 note to ruling 227).
     pub fn bodies(self) -> Option<Bodies> {
-        self.bodied().then(Bodies::default)
+        self.bodied().then(|| Bodies {
+            hazard: crate::harm::hazard::RATE,
+            wound: crate::harm::hazard::CELLS,
+            ..Bodies::default()
+        })
     }
 
     pub(super) fn founding(self, seed: u64, rates: Rates) -> Founding {

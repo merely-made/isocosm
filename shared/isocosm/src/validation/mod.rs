@@ -423,7 +423,7 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         }
         // Growth turns matter in hand into the actor's new parts, their
         // price returned to the place (rulings 479 and 510).
-        Effect::Heal { into } => matter(rules, into)?,
+        Effect::Heal { into, .. } => matter(rules, into)?,
         Effect::Grow {
             from,
             into,

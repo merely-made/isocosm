@@ -24,7 +24,7 @@ pub(crate) use effects::{convert, effect, shift, spend};
 mod grow;
 pub(crate) use grow::grow;
 mod heal;
-pub(crate) use heal::heal;
+pub(crate) use heal::{REST_LEAVES, heal, price};
 
 /// The needs a world's minds read their mood from; none without a mind.
 pub(crate) fn needs(rules: &Rules) -> &[Need] {
@@ -54,6 +54,20 @@ pub(crate) fn body_reading(
         },
         // Read outside an act, a carriage knows no bite and a room no bound.
         Reading::Carried { .. } => return carried(body, r, rules, d(), heals, None),
+        // What resting the next lost cell would cost, where it can be paid.
+        Reading::Healing { rest: true, .. } => {
+            let own = crate::anatomy::own(rules, &body.lineage);
+            let funds = own
+                .reserve
+                .iter()
+                .chain(&own.tissue)
+                .map(|k| crate::anatomy::held(body, rules, k))
+                .fold(0, u64::saturating_add);
+            let cost = crate::harm::healing::next(body)
+                .map(|(id, _)| price(body.extent(id), rules, true))
+                .filter(|cost| *cost + REST_LEAVES <= funds);
+            return i64::try_from(cost.unwrap_or(0)).unwrap_or(i64::MAX);
+        },
         Reading::Healing { .. } => {
             let own = crate::anatomy::own(rules, &body.lineage);
             let lands: Vec<_> = own
