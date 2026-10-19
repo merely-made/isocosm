@@ -4,7 +4,8 @@
 
 **Status, 2026-10-19:** plan, nothing built. Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
-three are kept apart below. The open questions at the end are his.
+three are kept apart below. Mark answered the four open questions the same
+day (Decisions, below); E1 is next when he opens it.
 
 ## Why
 
@@ -132,7 +133,7 @@ How each phase is known to be right, fixed before it is built.
 - **Speed** is read from the same runs: ms per played tick in a grown world,
   once per phase.
 
-## Open questions for Mark
+## Questions put to Mark
 
 1. **Draw keys.** Keep act-number-keyed draws, so evaluation runs in parallel
    but draws resolve at the serial commit (less speedup, no hash change), or
@@ -144,6 +145,22 @@ How each phase is known to be right, fixed before it is built.
    site, as the tier line's hysteresis has it, or a different reach.
 4. **Order.** Speed first (E1 to E3, exact, no design risk) or the tier first
    (E4, E5, where the largest saving lies once worlds grow).
+
+## Decisions, 2026-10-19
+
+Mark's answers, unnumbered until he numbers them:
+
+- **Draw keys:** "Actor, tick and process (Recommended)". Amount, bite, risk
+  and soma draws are keyed by actor, tick and process, so evaluation is
+  order-free; one deliberate hash move, outcomes the same in distribution.
+  E2 is in.
+- **Exactness:** "Statistical (Recommended)". Mesocosm's far sites run as the
+  crowd; the played critter and every noted member always run as
+  individuals.
+- **Near:** "Roots plus one hop (Recommended)". Attention roots and everything
+  within one hop of the played critter's site; promote within one hop, demote
+  at two or more.
+- **Order:** "Speed first (Recommended)". E1, E2, E3, then E4 and E5.
 
 ## Findings
 
@@ -169,4 +186,4 @@ How each phase is known to be right, fixed before it is built.
 
 ## Progress
 
-- **2026-10-19:** specced; nothing built.
+- **2026-10-19:** specced; Mark answered its four questions; nothing built.
