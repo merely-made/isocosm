@@ -79,7 +79,13 @@ impl Founded {
             sites: grid.width * grid.height,
             map: Some(isocosm::map::Layout::Grid(grid)),
             ecology: true,
-            bodies: Some(isocosm::bodied::Bodies::default()),
+            // Mesocosm's worlds wound and rest at the probe's rates (704, the
+            // 2026-10-18 note to ruling 227); the generator's default does not.
+            bodies: Some(isocosm::bodied::Bodies {
+                hazard: isocosm::harm::hazard::RATE,
+                wound: isocosm::harm::hazard::CELLS,
+                ..Default::default()
+            }),
             played: Some(isocosm::directing::Played {
                 lineage: 1,
                 region_sites: 2,
