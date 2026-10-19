@@ -1996,6 +1996,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a tick. *Reading, not ruled:* how a growth:heal lineage heals without
      resting, given that every act takes the tick's one choice, comes back
      as its own question.
+
+     *2026-10-18, Mark, third round, after rest was built:* "Accept the
+     measured rate (Recommended)": A1's bar for worlds with the hazard is the
+     measured rate (bodied 19 of 20 and 39 of 40 in the first runs), not 20
+     of 20; nothing is tuned for it. "The starving line, 2 mg": a rest never
+     leaves a body below 2 mg. "As built (Recommended)": every wounded body
+     that can pay rests, reactive ones included. "A cheaper rest
+     (Recommended)": growth:heal lineages rest at an eighth of the cell price
+     rather than a quarter; no full-price healing outside rest is built.
 228. **A right click shows a ring of acts.** Put to Mark on 2026-09-25: how
      does a right click show its meanings (ruling 214): a ring of acts around
      the cursor, a cycle in place, or the critter's glance surfacing glyphs
