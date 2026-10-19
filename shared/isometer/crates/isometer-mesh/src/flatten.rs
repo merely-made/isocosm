@@ -164,12 +164,10 @@ fn resolve<'a>(
         .world_yaw(part)
         .ok_or(MeshError::Unplaceable { part })?;
     let entry = body.part(part).ok_or(MeshError::Unplaceable { part })?;
-    let volume = source
-        .volume(entry.volume)
-        .ok_or(MeshError::MissingVolume {
-            part,
-            volume: entry.volume,
-        })?;
+    let (_, volume) = source.resolve_part(entry).ok_or(MeshError::MissingVolume {
+        part,
+        volume: entry.volume,
+    })?;
     Ok((pivot_at, entry.pivot, yaw, volume))
 }
 

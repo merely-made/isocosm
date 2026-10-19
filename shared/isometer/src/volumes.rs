@@ -14,25 +14,24 @@
 //! declared box and nothing finer, and two parts of one body are told apart
 //! geometrically, never by colour.
 //!
-//! **Second declared limit.** Geometry is cached by `VolumeRef` bytes, so two
-//! bodies that reuse one tag for parts of *different* declared extents would
-//! share the first box. That is counted by [`DeclaredExtentVolumes::conflicts`]
-//! rather than drawn wrong silently.
+//! Boxes are addressed by their actual content. An unresolved tag may occur
+//! at several extents, so resolving a part reads its dimensions rather than
+//! treating the tag as a shared shape. The native document is never rewritten.
 //!
 //! Lifted from `eponym-client/src/producer/bodies.rs` as part of the
 //! isometer extraction; the producer keeps its own `BODY_MATERIAL` choice,
 //! because the palette is presentation.
 
-use std::collections::{BTreeMap, btree_map::Entry};
+use std::collections::BTreeMap;
 
 use isometer_core::{BodyDocument, VolumeRef};
 use isometer_mesh::{Volume, VolumeMap, VolumeSource};
 
-/// One solid box per volume reference a set of documents addresses.
+/// One solid box per distinct declared extent, shared across documents.
 #[derive(Clone, Debug, Default)]
 pub struct DeclaredExtentVolumes {
     volumes: VolumeMap,
-    conflicts: usize,
+    extents: BTreeMap<[u32; 3], VolumeRef>,
 }
 
 impl DeclaredExtentVolumes {
@@ -44,37 +43,26 @@ impl DeclaredExtentVolumes {
         docs: impl IntoIterator<Item = &'a BodyDocument>,
         material: u8,
     ) -> Self {
-        let mut extents: BTreeMap<VolumeRef, [u32; 3]> = BTreeMap::new();
-        let mut conflicts = 0;
+        let mut extents = BTreeMap::new();
+        let mut volumes = VolumeMap::new();
         for document in docs {
             for part in document.living() {
                 let extent = part.half_extent.map(|half| (half.max(0) as u32) * 2);
                 if extent.iter().any(|d| *d == 0) {
                     continue;
                 }
-                match extents.entry(part.volume) {
-                    Entry::Vacant(slot) => {
-                        slot.insert(extent);
-                    },
-                    Entry::Occupied(slot) => {
-                        conflicts += usize::from(*slot.get() != extent);
-                    },
-                }
+                extents.entry(extent).or_insert_with(|| {
+                    let volume = Volume::solid(extent, material);
+                    let reference = volume.content_ref();
+                    volumes.insert(reference, volume);
+                    reference
+                });
             }
         }
-        let mut volumes = VolumeMap::new();
-        for (reference, extent) in extents {
-            volumes.insert(reference, Volume::solid(extent, material));
-        }
-        Self { volumes, conflicts }
+        Self { volumes, extents }
     }
 
-    /// One tag declared at two extents: counted, never drawn wrong silently.
-    pub fn conflicts(&self) -> usize {
-        self.conflicts
-    }
-
-    /// Distinct boxes built, one per addressed reference.
+    /// Distinct boxes built, one per extent and material.
     pub fn len(&self) -> usize {
         self.volumes.len()
     }
@@ -93,11 +81,18 @@ impl VolumeSource for DeclaredExtentVolumes {
     fn volume(&self, reference: VolumeRef) -> Option<&Volume> {
         self.volumes.volume(reference)
     }
+
+    fn resolve_part(&self, part: &isometer_core::Part) -> Option<(VolumeRef, &Volume)> {
+        let extent = part.half_extent.map(|half| (half.max(0) as u32) * 2);
+        let reference = *self.extents.get(&extent)?;
+        self.volume(reference).map(|volume| (reference, volume))
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use isometer_core::{Attachment, BodyDocument, VolumeRef, Yaw};
+    use isometer_mesh::{LiveBodyProjector, flatten, mesh_body};
 
     use super::*;
 
@@ -106,7 +101,83 @@ mod tests {
     }
 
     #[test]
-    fn one_solid_per_addressed_tag_at_twice_its_declared_half_extent() {
+    fn unresolved_parts_keep_their_own_dimensions_in_both_mesh_paths() {
+        let tag = VolumeRef::from_tag(0);
+        let mut body = document(tag, [2, 2, 2]);
+        body.attach(
+            tag,
+            [4, 1, 1],
+            Attachment {
+                parent: body.root,
+                offset: [0, 6, 0],
+                yaw: Yaw::Zero,
+            },
+            None,
+        )
+        .unwrap();
+        let original = body.clone();
+        let volumes = DeclaredExtentVolumes::from_documents([&body], 1);
+        let mut projector = LiveBodyProjector::new();
+        let (live, _) = projector.project_body(&body, &volumes).unwrap();
+        let once = mesh_body(&body, &volumes).unwrap();
+        assert_eq!(flatten(&body, &volumes).unwrap().volume.solid_count(), 96);
+        for mesh in [&live, &once] {
+            for placed in &mesh.placements {
+                let quads = &mesh.mesh_for(placed.volume).unwrap().quads;
+                let extent = [0, 1, 2].map(|axis| {
+                    quads
+                        .iter()
+                        .flat_map(|q| q.corners())
+                        .map(|p| p[axis])
+                        .max()
+                        .unwrap()
+                });
+                assert_eq!(
+                    extent,
+                    body.part(placed.part).unwrap().half_extent.map(|h| h * 2)
+                );
+            }
+        }
+        assert_eq!(
+            body, original,
+            "projection must not rewrite the saved anatomy"
+        );
+    }
+
+    #[test]
+    fn changed_extents_do_not_reuse_an_old_cached_box() {
+        let first = document(VolumeRef::from_tag(0), [1, 1, 1]);
+        let second = document(VolumeRef::from_tag(0), [2, 1, 1]);
+        let mut projector = LiveBodyProjector::new();
+        let (before, revision) = projector
+            .project_body(&first, &DeclaredExtentVolumes::from_documents([&first], 1))
+            .unwrap();
+        let (after, changed) = projector
+            .project_body(
+                &second,
+                &DeclaredExtentVolumes::from_documents([&second], 1),
+            )
+            .unwrap();
+        assert_eq!(before.bounds(), Some(([-1, -1, -1], [1, 1, 1])));
+        assert_eq!(after.bounds(), Some(([-2, -1, -1], [2, 1, 1])));
+        assert_ne!(revision, changed);
+        assert_eq!(projector.cached_mesh_count(), 2);
+    }
+
+    #[test]
+    fn different_tags_with_identical_boxes_share_content() {
+        let first = document(VolumeRef::from_tag(1), [1, 2, 3]);
+        let second = document(VolumeRef::from_tag(2), [1, 2, 3]);
+        let volumes = DeclaredExtentVolumes::from_documents([&first, &second], 1);
+        assert_eq!(volumes.len(), 1);
+        assert_eq!(
+            volumes.resolve_part(&first.parts[0]),
+            volumes.resolve_part(&second.parts[0])
+        );
+    }
+
+    #[test]
+    fn one_solid_per_extent_at_twice_its_declared_half_extent() {
         let mut body = document(VolumeRef::from_tag(1), [1, 2, 3]);
         body.attach(
             VolumeRef::from_tag(2),
@@ -123,12 +194,11 @@ mod tests {
         let volumes = DeclaredExtentVolumes::from_documents([&body], 245);
 
         assert_eq!(volumes.len(), 2);
-        assert_eq!(volumes.conflicts(), 0);
-        let root = volumes.volume(VolumeRef::from_tag(1)).unwrap();
+        let (_, root) = volumes.resolve_part(&body.parts[0]).unwrap();
         assert_eq!(root.size, [2, 4, 6]);
         assert_eq!(root.get(0, 0, 0), 245);
         assert_eq!(
-            volumes.volume(VolumeRef::from_tag(2)).unwrap().size,
+            volumes.resolve_part(&body.parts[1]).unwrap().1.size,
             [4, 4, 4]
         );
         assert!(volumes.volume(VolumeRef::from_tag(9)).is_none());
@@ -156,24 +226,25 @@ mod tests {
         let volumes = DeclaredExtentVolumes::from_documents([&first, &second], 1);
 
         assert_eq!(volumes.len(), 1);
-        assert_eq!(volumes.conflicts(), 0);
-        assert!(volumes.volume(VolumeRef::from_tag(7)).is_none());
+        assert!(volumes.resolve_part(&second.parts[1]).is_none());
     }
 
-    /// One tag declared at two extents is counted once per disagreement, and
-    /// the first declaration is the one drawn.
+    /// An undrawn tag shared by different bodies must not alias their geometry.
     #[test]
-    fn one_tag_at_two_extents_is_counted_rather_than_drawn_wrong() {
+    fn one_tag_at_two_extents_resolves_two_boxes() {
         let first = document(VolumeRef::from_tag(4), [1, 1, 1]);
         let second = document(VolumeRef::from_tag(4), [3, 3, 3]);
 
         let volumes = DeclaredExtentVolumes::from_documents([&first, &second], 1);
 
-        assert_eq!(volumes.len(), 1);
-        assert_eq!(volumes.conflicts(), 1);
+        assert_eq!(volumes.len(), 2);
         assert_eq!(
-            volumes.volume(VolumeRef::from_tag(4)).unwrap().size,
+            volumes.resolve_part(&first.parts[0]).unwrap().1.size,
             [2, 2, 2]
+        );
+        assert_eq!(
+            volumes.resolve_part(&second.parts[0]).unwrap().1.size,
+            [6, 6, 6]
         );
         assert!(DeclaredExtentVolumes::from_documents(std::iter::empty(), 1).is_empty());
     }

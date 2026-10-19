@@ -271,10 +271,7 @@ impl Host {
         {
             scene.bodies =
                 crate::played::scene::placed_visible(&sim, site, &scene.window, &visible);
-            scene.volumes = isometer::DeclaredExtentVolumes::from_documents(
-                scene.bodies.iter().map(|body| &body.document),
-                1,
-            );
+            scene.volumes = crate::section::body_volumes(&scene.bodies);
             scene.played = played;
             self.scene_source_key = source_key;
             return false;

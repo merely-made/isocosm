@@ -10,7 +10,7 @@ mod tests;
 
 use std::{cell::RefCell, rc::Rc};
 use isocosm::{Session, attention::spatial::RegionReading, directing::readings::Mode, schema::Id};
-use isometer::{DeclaredExtentVolumes, SlabCamera};
+use isometer::SlabCamera;
 use mesocosm_runtime::perception::{InSite, Sight};
 pub use isometer::core::Yaw as RootYaw;
 use crate::{played::{layout, scene}, section::{self, CameraMode, Pan, PlacedBody, SiteScene}};
@@ -138,7 +138,7 @@ impl SceneHandle {
             }
             if self.input.borrow().as_ref().is_some_and(|old|
                 old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
-            let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
+            let volumes = section::body_volumes(&bodies);
             let snapshot = Snapshot { presentation:None, revision:None, scene:SiteScene { site, ground:volume.ground().clone(), window:volume,
                 bodies, played:region.played, volumes }, fingerprint, quarter_turn };
             *self.input.borrow_mut() = Some(Rc::new(snapshot));
@@ -192,7 +192,7 @@ impl SceneHandle {
             }
             if self.input.borrow().as_ref().is_some_and(|old|
                 old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
-            let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
+            let volumes = section::body_volumes(&bodies);
             let snapshot = Snapshot { presentation:None, revision:None, scene:SiteScene { site, ground:volume.ground().clone(), window:volume,
                 bodies, played:region.played, volumes }, fingerprint, quarter_turn };
             *self.input.borrow_mut() = Some(Rc::new(snapshot)); self.error.borrow_mut().take();
@@ -273,7 +273,7 @@ fn lower(session: &Session, region: RegionReading, fingerprint: [u64; 4], quarte
         bodies.push(PlacedBody { id: body.id, document: body.document, at, physical:None,
             tint: scene::tint_of(isocosm::kingdom::of(entity)), alive: entity.alive });
     }
-    let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|body| &body.document), 1);
+    let volumes = section::body_volumes(&bodies);
     Ok(Snapshot { presentation:None, revision:None, scene: SiteScene { site: region.site, ground, window: volume, bodies,
         played: region.played, volumes }, fingerprint, quarter_turn })
 }
