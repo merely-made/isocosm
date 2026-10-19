@@ -17,6 +17,8 @@ use isocosm::simulation::Simulation;
 use mesocosm_runtime::{Refusal, TermTable, Trend};
 
 mod graft;
+#[cfg(test)]
+mod tests;
 pub use graft::compatibility_words;
 
 pub type VitalsChild = Box<dyn AnyView<Vitals, (), GenetCtx, GenetElement>>;
@@ -27,6 +29,11 @@ const BAR_WIDTH: f32 = 168.0;
 pub struct Vitals {
     pub energy_mg: Option<u64>,
     pub fullness: f32,
+    /// The share of its cells the critter has lost, out of a hundred, and
+    /// its mood: what the world's needs make of it (the 2026-10-18 note to
+    /// ruling 227). Mood is absent in a world with no mind.
+    pub wound: Option<u64>,
+    pub mood: Option<i64>,
     pub notice: Option<String>,
     pub replacement: Option<String>,
     pub warning: Option<String>,
@@ -80,6 +87,8 @@ pub fn vitals_of_with_terms(
     Vitals {
         energy_mg,
         fullness,
+        wound: e.map(isocosm::harm::wound_share),
+        mood: critter.filter(|_| e.is_some()).and_then(|id| sim.mood(id)),
         notice: notice.filter(|_| energy_mg.is_some()),
         replacement: trend.map(replacement_words),
         warning: trend.and_then(warning_words),
@@ -134,25 +143,39 @@ pub fn notice_in<E>(applied: &[(E, Result<String, Refusal>)]) -> Option<String> 
     newest.find_map(|(_, outcome)| outcome.as_ref().err().map(refusal_words))
 }
 
-pub fn vitals_root(vitals: &Vitals) -> VitalsChild {
-    let mut children: Vec<VitalsChild> = Vec::new();
-
-    // The catalog's labelled-facts component, which is exactly what a vital
-    // sign is: an inert key and its value. Not a hand-rolled row.
+/// The labelled facts the panel states, in order. A dead critter states its
+/// state alone; a living one its holdings, wounds and mood, and what it is.
+pub fn vital_rows(vitals: &Vitals) -> Vec<(&'static str, String)> {
     let mut rows = match vitals.energy_mg {
-        Some(energy) => vec![DetailRow::new("holds", format!("{energy} mg"))],
-        None => vec![DetailRow::new("state", "dead")],
+        Some(energy) => vec![("holds", format!("{energy} mg"))],
+        None => vec![("state", "dead".to_owned())],
     };
+    let wounded = vitals.wound.map(|share| format!("{share} of 100"));
+    let mood = vitals.mood.map(|mood| mood.to_string());
     for (key, value) in [
+        ("wounded", &wounded),
+        ("mood", &mood),
         ("body", &vitals.kingdom),
         ("feeds", &vitals.feeding),
         ("graft", &vitals.graft),
         ("replacement", &vitals.replacement),
     ] {
         if let Some(value) = value {
-            rows.push(DetailRow::new(key, value.clone()));
+            rows.push((key, value.clone()));
         }
     }
+    rows
+}
+
+pub fn vitals_root(vitals: &Vitals) -> VitalsChild {
+    let mut children: Vec<VitalsChild> = Vec::new();
+
+    // The catalog's labelled-facts component, which is exactly what a vital
+    // sign is: an inert key and its value. Not a hand-rolled row.
+    let rows = vital_rows(vitals)
+        .into_iter()
+        .map(|(key, value)| DetailRow::new(key, value))
+        .collect::<Vec<_>>();
     children.push(Box::new(detail_panel::<Vitals, ()>(&[DetailSection::new(
         "vitals", rows,
     )])));
