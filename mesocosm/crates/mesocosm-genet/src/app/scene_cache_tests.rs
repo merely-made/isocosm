@@ -13,6 +13,39 @@ fn bench_host() -> Host {
 }
 
 #[test]
+fn drawn_and_authored_native_anatomies_project_without_capsule_fallback() {
+    for roster in [false, true] {
+        let mut founded = mesocosm_runtime::Founded::generated(16_003_851_315_348_448_882, 60).unwrap();
+        let mut domain = founded.genesis.founding.clone().unwrap();
+        domain.bodies.as_mut().unwrap().roster = roster;
+        domain.ecology_rates = isocosm::ecology::Rates::A1;
+        founded.genesis = domain.generate().unwrap();
+        let runtime = mesocosm_runtime::Runtime::bench_placed(founded, 2).unwrap();
+        let sim = runtime.sim();
+        let documents: Vec<_> = sim.state().population.groups.values()
+            .filter_map(|group| group.entity.body.as_ref()).collect();
+        assert!(!documents.is_empty());
+        let volumes = isometer::DeclaredExtentVolumes::generated_from_documents(documents.iter().copied()).unwrap();
+        let mut projector = isometer::mesh::LiveBodyProjector::new();
+        for document in documents { projector.project_body(document, &volumes).unwrap(); }
+    }
+}
+
+#[test]
+fn a_marked_physical_world_does_not_replace_a_missing_pose_with_a_grid_spot() {
+    let mut host = bench_host();
+    host.refresh_scene();
+    assert!(host.scene.is_some());
+    host.runtime = mesocosm_runtime::Runtime::bench_placed(
+        mesocosm_runtime::Founded::generated(2_814_468_213_915_169_548, 60).unwrap(), 2).unwrap();
+    host.scene_source_key = None;
+    assert!(host.runtime.spatial().driver.is_some());
+    assert!(!host.runtime.spatial().members.contains_key(&host.runtime.critter().unwrap()));
+    host.refresh_scene();
+    assert!(host.scene.is_none(), "an unavailable physical pose must withdraw the old picture");
+}
+
+#[test]
 fn successful_scene_is_reused_only_for_the_same_world_cut() {
     let mut host = bench_host();
     assert!(host.refresh_scene());

@@ -4,17 +4,14 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! The declared-extent volume fallback.
+//! Solid or generated voxel forms resolved from declared part envelopes.
 //!
-//! **Declared limit.** An anatomy may address volumes by [`VolumeRef`] and
-//! carry no voxel data at all — every Eponym body today, and any product
-//! whose bodies are boxes before they are sculpture. Each intact part is then
-//! drawn as one [`Volume::solid`] of the part's own declared extent
-//! (`half_extent * 2`) in a single neutral material. A part's shape is its
-//! declared box and nothing finer, and two parts of one body are told apart
-//! geometrically, never by colour.
+//! An anatomy may address volumes by [`VolumeRef`] and carry no voxel data.
+//! Consumers choose a solid box or the existing version-one voxel grammar
+//! within each intact part's declared extent (`half_extent * 2`). Generated
+//! forms remain presentation; they do not add native anatomy or tissue law.
 //!
-//! Boxes are addressed by their actual content. An unresolved tag may occur
+//! Forms are addressed by their actual content. An unresolved tag may occur
 //! at several extents, so resolving a part reads its dimensions rather than
 //! treating the tag as a shared shape. The native document is never rewritten.
 //!
@@ -25,9 +22,9 @@
 use std::collections::BTreeMap;
 
 use isometer_core::{BodyDocument, VolumeRef};
-use isometer_mesh::{Volume, VolumeMap, VolumeSource};
+use isometer_mesh::{ContentEntry, ContentError, Volume, VolumeMap, VolumeSource};
 
-/// One solid box per distinct declared extent, shared across documents.
+/// One immutable form per distinct declared extent, shared across documents.
 #[derive(Clone, Debug, Default)]
 pub struct DeclaredExtentVolumes {
     volumes: VolumeMap,
@@ -37,32 +34,55 @@ pub struct DeclaredExtentVolumes {
 impl DeclaredExtentVolumes {
     /// Builds the fallback for every living part of every document supplied.
     ///
-    /// A part whose declared extent is zero on any axis is skipped: it has no
-    /// box to draw, and a zero-sized [`Volume`] would only mesh to nothing.
+    /// A zero-thickness part resolves to empty geometry: it draws nothing but
+    /// remains a valid attachment point, rather than refusing the whole body.
     pub fn from_documents<'a>(
         docs: impl IntoIterator<Item = &'a BodyDocument>,
         material: u8,
     ) -> Self {
+        Self::build(docs, |half| {
+            let volume = Volume::solid(half.map(|h| h as u32 * 2), material);
+            Ok::<_, std::convert::Infallible>((volume.content_ref(), volume))
+        })
+        .unwrap_or_else(|never| match never {})
+    }
+
+    /// Presentation-only anatomy from the existing version-one voxel grammar.
+    /// Declared envelopes, attachment frames and native documents stay intact.
+    pub fn generated_from_documents<'a>(
+        docs: impl IntoIterator<Item = &'a BodyDocument>,
+    ) -> Result<Self, ContentError> {
+        Self::build(docs, |half| {
+            let entry = ContentEntry::generate(isometer_core::classify(half), 0, half)?;
+            Ok((entry.reference, entry.volume))
+        })
+    }
+
+    fn build<'a, E>(
+        docs: impl IntoIterator<Item = &'a BodyDocument>,
+        mut generate: impl FnMut([i32; 3]) -> Result<(VolumeRef, Volume), E>,
+    ) -> Result<Self, E> {
         let mut extents = BTreeMap::new();
         let mut volumes = VolumeMap::new();
         for document in docs {
             for part in document.living() {
                 let extent = part.half_extent.map(|half| (half.max(0) as u32) * 2);
-                if extent.iter().any(|d| *d == 0) {
-                    continue;
-                }
-                extents.entry(extent).or_insert_with(|| {
-                    let volume = Volume::solid(extent, material);
-                    let reference = volume.content_ref();
+                if let std::collections::btree_map::Entry::Vacant(slot) = extents.entry(extent) {
+                    let (reference, volume) = if extent.contains(&0) {
+                        let volume = Volume::empty(extent);
+                        (volume.content_ref(), volume)
+                    } else {
+                        generate(part.half_extent)?
+                    };
                     volumes.insert(reference, volume);
-                    reference
-                });
+                    slot.insert(reference);
+                }
             }
         }
-        Self { volumes, extents }
+        Ok(Self { volumes, extents })
     }
 
-    /// Distinct boxes built, one per extent and material.
+    /// Distinct forms built, one per extent and selected construction.
     pub fn len(&self) -> usize {
         self.volumes.len()
     }
@@ -98,6 +118,22 @@ mod tests {
 
     fn document(root: VolumeRef, half_extent: [i32; 3]) -> BodyDocument {
         BodyDocument::new(root, half_extent)
+    }
+
+    #[test]
+    fn generated_native_parts_use_the_existing_grammar_without_rewriting_anatomy() {
+        let plate = document(VolumeRef::from_tag(0), [4, 4, 1]);
+        let original = plate.clone();
+        let generated = DeclaredExtentVolumes::generated_from_documents([&plate]).unwrap();
+        let (reference, volume) = generated.resolve_part(&plate.parts[0]).unwrap();
+        let expected = ContentEntry::generate(isometer_core::Role::Plate, 0, [4, 4, 1]).unwrap();
+        assert_eq!((reference, volume), (expected.reference, &expected.volume));
+        assert_eq!(volume.size, [8, 8, 2]);
+        assert!(volume.solid_count() < 8 * 8 * 2);
+        assert_eq!(plate, original);
+        let mut projector = LiveBodyProjector::new();
+        let (mesh, _) = projector.project_body(&plate, &generated).unwrap();
+        assert_eq!(mesh.bounds(), Some(([-4, -4, -1], [4, 4, 1])));
     }
 
     #[test]
@@ -204,13 +240,12 @@ mod tests {
         assert!(volumes.volume(VolumeRef::from_tag(9)).is_none());
     }
 
-    /// The same reference across two bodies is one box, and a part with no
-    /// declared extent is skipped rather than meshed to nothing.
+    /// A flat attachment point must not force its whole body into fallback.
     #[test]
-    fn a_shared_tag_is_one_box_and_a_flat_part_is_skipped() {
+    fn a_shared_tag_is_one_box_and_a_flat_part_keeps_its_children_drawable() {
         let first = document(VolumeRef::from_tag(1), [1, 1, 1]);
         let mut second = document(VolumeRef::from_tag(1), [1, 1, 1]);
-        second
+        let flat = second
             .attach(
                 VolumeRef::from_tag(7),
                 [1, 0, 1],
@@ -222,11 +257,41 @@ mod tests {
                 None,
             )
             .unwrap();
+        second
+            .attach(
+                VolumeRef::from_tag(1),
+                [1, 1, 1],
+                Attachment {
+                    parent: flat,
+                    offset: [0, 3, 0],
+                    yaw: Yaw::Zero,
+                },
+                None,
+            )
+            .unwrap();
 
-        let volumes = DeclaredExtentVolumes::from_documents([&first, &second], 1);
-
-        assert_eq!(volumes.len(), 1);
-        assert!(volumes.resolve_part(&second.parts[1]).is_none());
+        for volumes in [
+            DeclaredExtentVolumes::from_documents([&first, &second], 1),
+            DeclaredExtentVolumes::generated_from_documents([&first, &second]).unwrap(),
+        ] {
+            assert_eq!(volumes.len(), 2);
+            assert!(volumes.resolve_part(&second.parts[1]).unwrap().1.is_empty());
+            let mut projector = LiveBodyProjector::new();
+            let (mesh, _) = projector.project_body(&second, &volumes).unwrap();
+            let once = mesh_body(&second, &volumes).unwrap();
+            assert_eq!(mesh.placements, once.placements);
+            for placed in &mesh.placements {
+                assert_eq!(mesh.mesh_for(placed.volume), once.mesh_for(placed.volume));
+            }
+            assert!(
+                mesh.mesh_for(mesh.placements[1].volume)
+                    .unwrap()
+                    .quads
+                    .is_empty()
+            );
+            assert_eq!(mesh.placements[2].pivot_at, [4, 3, 0]);
+            assert!(flatten(&second, &volumes).unwrap().volume.solid_count() > 0);
+        }
     }
 
     /// An undrawn tag shared by different bodies must not alias their geometry.

@@ -2,6 +2,71 @@
 
 **Date:** 2026-09-11
 
+**2026-10-19 connection slice, verified:** connect native play founding to
+the existing generator-declared stands and spatial clock, and connect native
+part envelopes to Isometer's version-one voxel grammar. Keep coarse benches,
+box comparison, old-save placement, and ecological admission distinct.
+Done when generated stands survive clock/save/replay, voxel forms preserve
+native anatomy and bounds, missing stands refuse without invented poses, and
+headed new-play plus old-save comparison captures pass. Retain at most 100 MB
+under `Code/testing/mesocosm/connected-play-2026-10-19/`.
+
+**Findings, 2026-10-19:** `--play` existed only on `playable-loop`; its two
+implementation commits are now merged into main. Its `Runtime::bench` path
+skipped `Game::found_generated`, whereas ecology admission already invoked
+that provider. Native bodies were always resolved as solids despite the
+implemented `ContentPack` voxel grammar. Authored body recipes already exist
+behind `Bodies::roster`; expose them explicitly rather than silently changing
+ordinary ecological founding. Generated stands currently provide roots,
+eyes and route arrivals, not whole-body clearance, continuous walking or
+offspring slots. Birth-slot and step providers exist, but this generator
+declares neither; a missing child placement must not acquire a display pose.
+
+The authored roster also exposed zero-thickness native parts: the observed
+consumer has one and its producer has sixteen. Omitting those volumes made
+`LiveBodyProjector` refuse both whole bodies, invoking the capsule fallback.
+They now resolve to content-addressed empty geometry, retaining attachments
+and descendants without inventing thickness. One `ContentEntry::generate`
+implementation supplies both palette packs and native declared-envelope
+appearance. `--bodies boxes` retains the solid comparison; `--body-roster`
+selects the existing authored recipes before native development and is saved
+as a founding choice. Generated surface details do not change native tissue
+law or collision geometry; native per-cell tissue materials remain unbound.
+
+The generated provider seats at most one representative per cohort and four
+cohorts per site. Other members remain at site grain. A configured physical
+view omits unplaced bodies and withdraws when its controlled member lacks a
+pose; it never scatters those members onto a presentation grid. A stand only
+checks root and eye clearance. Native attachment bounds can still intersect
+a slope or extend past the declared terrain window. Full-body support and
+clearance, walking inputs, child slots, richer terrain windows and continuous
+multi-generation play remain open.
+
+**Connection receipts, 2026-10-19:** release gates passed: 84 mesh tests,
+62 shared-scene tests (including GPU depth/picking/palette), 41 host tests
+(four pre-existing explicit GPU gates ignored), three generated-template
+tests and three placed-play tests, plus the release executable build.
+`placed-connected.json` records seed 16003851315348448882, two physical
+representatives, two voxel bodies and 27 projected parts. Selecting the
+authored recipes in the same terrain gives 77 projected parts in
+`roster-connected.json`; both report zero projection failures and capsule
+fallbacks. `roster-resume-connected.json` preserves native hash
+`7e8b8c04b8665d63`; headless replay matches it and the drawn founding's
+`d8a12b59f8b81c1e`. These captures pause the host at tick zero, with zero dev
+intents, and qualify founding/presentation and restoration, not sustained play.
+
+`original-boxes.json` and `original-voxels-connected.json` preserve the old
+tick-120 hash `2698906e7fd7bb51`, with no physical members manufactured on
+resume. The latter reports 20 projected voxel bodies and no fallback. An
+explicit new play world at that flooded seed refuses its missing controlled
+stand. Preserve `roster.png` as the observed capsule-fallback failure before
+the flat-part repair, and `scenario-refusal.json` as the rejected exploratory
+scenario syntax. Receipts, saves and captures occupy under 5 MB of the 100 MB
+cap. The executable and its stable existing target stay at the user's named
+`worktrees/isocosm-playable/mesocosm/target`; no isolated target or Cargo home
+was created. Main includes the playable branch and the connection changes;
+the existing playable checkout is fast-forwarded to that source.
+
 **2026-10-19 repair slice, verified:** preserve each native part's declared
 extent when its volume tag is unresolved; bind terrain colours through the
 lift's material ids. Done when aliasing and reordered-material controls pass,

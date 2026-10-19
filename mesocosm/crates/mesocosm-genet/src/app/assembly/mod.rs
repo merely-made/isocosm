@@ -113,6 +113,7 @@ impl State {
         let readings_us = start.elapsed().as_micros();
         let half = crate::section::half_height_or_default(host.config.slab_half_height);
         let at = host.follow_at();
+        self.error = None;
         if let Some(scene) = &host.scene {
             let presentation = Presentation {
                 forward: host.config.camera.forward(),
@@ -135,6 +136,9 @@ impl State {
             }
         } else {
             self.picture.clear();
+            if host.runtime.spatial().driver.is_some() {
+                self.error = Some("This body has no current physical placement in the view.".into());
+            }
         }
         self.refreshed_revision = r.revision().ok();
         self.refresh_required = false;

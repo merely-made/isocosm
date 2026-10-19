@@ -83,17 +83,15 @@ pub struct SiteScene {
     pub window: isometer::space::volume::Volume,
     pub bodies: Vec<PlacedBody>,
     pub played: Option<u64>,
-    /// Declared-extent boxes for the bodies, which carry no voxel content.
+    /// Generated, envelope-preserving voxel forms for native body documents.
     pub volumes: DeclaredExtentVolumes,
 }
 
-/// One neutral material for every native scene path; kingdom tint supplies
-/// the colour while declared dimensions supply the current box geometry.
-pub(crate) fn body_volumes(bodies: &[PlacedBody]) -> DeclaredExtentVolumes {
-    DeclaredExtentVolumes::from_documents(
-        bodies.iter().map(|body| &body.document),
-        isometer::render::geometry::NEUTRAL_MATERIAL,
-    )
+/// Every native scene uses the same voxel grammar and structural material
+/// table; kingdom tint supplies colour without changing native geometry.
+pub(crate) fn body_volumes(bodies: &[PlacedBody]) -> Result<DeclaredExtentVolumes, String> {
+    DeclaredExtentVolumes::generated_from_documents(bodies.iter().map(|body| &body.document))
+        .map_err(|why| format!("native body appearance: {why:?}"))
 }
 
 impl SiteScene {
@@ -239,7 +237,7 @@ impl Section {
 
     /// Transparent lit bodies, layered over the terrain by Netrender.
     pub fn body_view(&self) -> Option<wgpu::TextureView> {
-        (self.body_mode == BodyMode::Voxels).then(|| self.body_tenant.view())
+        (self.body_mode != BodyMode::Capsules).then(|| self.body_tenant.view())
     }
 
     /// How much world the section frames, in voxels of half-height.
@@ -267,7 +265,7 @@ impl Section {
     /// the section shows the ecology rather than one body.
     pub fn last_roster_members(&self) -> u32 {
         let stats = &self.scene.bodies().stats;
-        if self.body_mode == BodyMode::Voxels {
+        if self.body_mode != BodyMode::Capsules {
             return (stats.voxel_bodies + stats.fallback_bodies)
                 .saturating_sub(usize::from(stats.controlled_drawn)) as u32;
         }
@@ -293,7 +291,7 @@ impl Section {
         self.bind_terrain_materials(frame.scene.window.materials);
         let terrain = GroundTerrain(&frame.scene.ground);
         let camera = self.view(frame.centre);
-        let voxels = self.body_mode == BodyMode::Voxels;
+        let voxels = self.body_mode != BodyMode::Capsules;
         let scene_bodies = if voxels {
             self.scene_bodies(frame.scene)
         } else {
@@ -311,12 +309,18 @@ impl Section {
             scene: frame.scene,
             tenant: body_tenant,
         };
+        let boxes;
+        let volumes = if self.body_mode == BodyMode::Boxes {
+            boxes = DeclaredExtentVolumes::from_documents(frame.scene.bodies.iter().map(|body| &body.document),
+                isometer::render::geometry::NEUTRAL_MATERIAL);
+            &boxes
+        } else { &frame.scene.volumes };
         scene.render(
             encoder,
             SceneFrame {
                 camera,
                 bodies: &scene_bodies,
-                volumes: SceneVolumes::DeclaredSolid(&frame.scene.volumes),
+                volumes: SceneVolumes::DeclaredSolid(volumes),
                 terrain: Some(&terrain),
                 dirty: frame.dirty,
                 grade,

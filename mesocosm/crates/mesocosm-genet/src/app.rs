@@ -210,9 +210,9 @@ impl Host {
             self.scene_source_key = None;
             return self.scene.take().is_some();
         };
-        // A partial physical world can contain an unplaced controlled member.
-        // Its ordinary site view supplies presentation, not a physical binding.
-        let physical = self.config.spatial.is_some()
+        // A marked physical world never fills a missing native pose with a
+        // presentation grid spot, including after birth or a refused arrival.
+        let physical = self.config.spatial.is_some() || self.runtime.spatial().driver.is_some()
             || played.is_some_and(|id| self.runtime.spatial().members.contains_key(&id));
         let branch = if physical {
             SceneBranch::Physical
@@ -271,7 +271,15 @@ impl Host {
         {
             scene.bodies =
                 crate::played::scene::placed_visible(&sim, site, &scene.window, &visible);
-            scene.volumes = crate::section::body_volumes(&scene.bodies);
+            scene.volumes = match crate::section::body_volumes(&scene.bodies) {
+                Ok(volumes) => volumes,
+                Err(why) => {
+                    eprintln!("site appearance: {why}");
+                    self.scene_key = None;
+                    self.scene_source_key = None;
+                    return self.scene.take().is_some();
+                },
+            };
             scene.played = played;
             self.scene_source_key = source_key;
             return false;

@@ -18,6 +18,7 @@ pub struct HostConfig {
     /// A playable A1 world: the cheap structural check, no full witness, and
     /// an epoch short enough to reach the board in a sitting.
     pub play: bool,
+    pub body_roster: bool,
     pub play_epoch: u64,
     /// The hour of day a play world begins at.
     pub play_hour: u32,
@@ -51,7 +52,7 @@ pub struct HostConfig {
     /// Which way the section looks (DC4). Presentation only.
     pub camera: CameraMode,
     pub terrain_style: section::TerrainStyle,
-    /// Voxel anatomy or the capsule comparison, presentation only.
+    /// Generated voxels, declared boxes or capsules, presentation only.
     pub body_mode: section::BodyMode,
     pub body_budget: usize,
     /// Presentation-only scale of the body tenant's sun and ambient (1 matches the terrain).
@@ -101,6 +102,7 @@ impl Default for HostConfig {
             bench_world: false,
             bench_epoch: 60,
             play: false,
+            body_roster: false,
             play_epoch: 60,
             play_hour: 7,
             play_soil: 100,

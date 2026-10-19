@@ -66,7 +66,7 @@ fn main() {
             },
             "--bodies" => {
                 config.body_mode = BodyMode::parse(&args.next().unwrap_or_default())
-                    .unwrap_or_else(|| fail("--bodies wants voxels or capsules"));
+                    .unwrap_or_else(|| fail("--bodies wants voxels, boxes or capsules"));
             },
             "--body-budget" => {
                 config.body_budget = args
@@ -186,6 +186,7 @@ fn main() {
             "--dev" => config.dev = true,
             "--follow" => config.follow = args.next().and_then(|v| v.parse().ok()),
             "--play" => config.play = true,
+            "--body-roster" => config.body_roster = true,
             "--curve" => curve = args.next().and_then(|v| v.parse().ok()),
             "--hour" => config.play_hour = args.next().and_then(|v| v.parse().ok())
                 .filter(|hour: &u32| *hour < 24).unwrap_or_else(|| fail("--hour wants 0 to 23")),
@@ -202,6 +203,16 @@ fn main() {
     }
 
     if seed_explicit && unchosen_explicit { fail("choose --seed or --unchosen-seed"); }
+    if config.body_roster && (!config.play || config.watch.is_some() || config.spread.is_some()
+        || config.bench_world || config.ecology_candidate.is_some() || config.ecology_witness.is_some()
+        || config.spatial.is_some() || config.graft.is_some() || replay.is_some() || bench) {
+        fail("--body-roster requires a new --play world without another startup input");
+    }
+    if config.play && config.watch.is_none() && (config.spread.is_some() || config.bench_world
+        || config.ecology_candidate.is_some() || config.ecology_witness.is_some()
+        || config.spatial.is_some() || config.graft.is_some() || replay.is_some() || bench) {
+        fail("--play uses generated physical placement and cannot combine with another startup input");
+    }
     if no_trace && trace.is_some() { fail("--trace and --no-trace cannot be combined"); }
     if config.ecology_rates.is_some()
         && (config.bench_world || config.spread.is_some() || config.watch.is_some()
@@ -305,6 +316,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --size WxH      initial window size in logical pixels (default 960x540)
   --seed N        world seed
   --play          a playable world: founds at once, no ecology witness
+  --body-roster   use the authored native body recipes for a new play world
   --epoch N       play epoch ticks (default 60)
   --hour H        play world's starting hour, 0 to 23 (default 7)
   --soil P        play world's founding soil, percent (default 100)
@@ -314,7 +326,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)
   --ecology-rates RATE  a1 (ordinary default) or stock (requires an authored witness)
-  --bodies MODE   voxels (default) or capsules (comparison), presentation only
+  --bodies MODE   voxels (default), boxes or capsules; presentation only
   --body-budget N maximum detailed bodies in the section
   --body-light N  body light scale, sun and ambient (default 1 matches terrain, zero is dark)
   --sun S         sky light: fixed (bench default), sim (play default) or a tick number
