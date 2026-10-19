@@ -184,6 +184,11 @@ fn main() {
             },
             "--dev" => config.dev = true,
             "--follow" => config.follow = args.next().and_then(|v| v.parse().ok()),
+            "--play" => config.play = true,
+            "--hour" => config.play_hour = args.next().and_then(|v| v.parse().ok())
+                .filter(|hour: &u32| *hour < 24).unwrap_or_else(|| fail("--hour wants 0 to 23")),
+            "--epoch" => config.play_epoch = args.next().and_then(|v| v.parse().ok())
+                .filter(|ticks: &u64| *ticks > 0).unwrap_or_else(|| fail("--epoch wants a tick count above zero")),
             "--help" | "-h" => {
                 println!("{HELP}");
                 return;

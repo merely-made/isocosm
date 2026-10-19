@@ -68,6 +68,9 @@ pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Af
             || config.spread.is_some() || config.spatial.is_some() || config.graft.is_some()) {
         return Err("--ecology-rates requires an ordinary generated world without a bench, candidate, resume, spread, spatial or graft input".into());
     }
+    if config.play {
+        return play(config, affinity);
+    }
     if config.bench_world {
         let mut founded = mesocosm_runtime::Founded::generated_with_affinity(config.seed, config.population, affinity)?;
         founded.genesis.rules.epoch_ticks = config.bench_epoch;
@@ -128,6 +131,38 @@ pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Af
         return Err("ecology witness names another generated candidate, seed, or lifecycle configuration".into());
     }
     setup.offer(config.ticks_per_second)
+}
+
+/// A world to play rather than to admit: the A1 candidate search keeps its
+/// cheap structural check (a living consumer with food), the full ecology
+/// witness is skipped, and the epoch is short enough to reach the board.
+fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Result<Runtime, String> {
+    let seed = if config.unchosen_seed {
+        std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)
+            .map_err(|why| why.to_string())?.as_nanos() as u64
+    } else { config.seed };
+    // A1 was qualified on 60 founders; the generator's default of 256 booms
+    // past a thousand within an epoch. An explicit --population still wins.
+    let population = if config.population == isocosm::Founding::default().population { 60 } else { config.population };
+    let selected = select_a1_candidate(seed, config.candidate_attempts, config.unchosen_seed, population,
+        |candidate| {
+            let mut founded = mesocosm_runtime::Founded::generated_with_affinity(candidate, population, affinity.clone())
+                .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
+            if let Some(start) = config.start { founded.start = start; }
+            if let Some(mode) = config.mode { founded.mode = mode; }
+            a1_setup(founded, affinity.clone())
+        }).map_err(|error| match error {
+            mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message) => message,
+            mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingViableConsumerFood =>
+                "no candidate had a living consumer with food".into(),
+        })?;
+    let mut founded = selected.setup.founded.clone();
+    founded.genesis.rules.epoch_ticks = config.play_epoch;
+    let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
+    founded.genesis.rules.sun = Some(isocosm::light::SunRules { start_hour: config.play_hour, ..sun });
+    eprintln!("play: seed {}, epoch {} ticks, {} ticks a second, starting at {}:00; no ecology witness.",
+        selected.seed, config.play_epoch, config.ticks_per_second, config.play_hour);
+    Runtime::bench(founded, config.ticks_per_second)
 }
 
 fn read_setup(path: &std::path::Path) -> Result<mesocosm_runtime::runtime::ecology::Setup, String> {
