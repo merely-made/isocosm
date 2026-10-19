@@ -39,8 +39,10 @@ impl Vertex {
     };
 }
 
-/// Maps a material id to a base colour. A placeholder until materials become
-/// real content; deliberately deterministic so a body looks the same each run.
+/// White material for geometry whose colour comes entirely from its host tint.
+pub const NEUTRAL_MATERIAL: u8 = 245;
+
+/// Maps a material id to a base colour; neutral leaves a host tint unchanged.
 pub fn material_colour(material: u8) -> [f32; 3] {
     // Generated surfaces carry structural contrast. The host's existing guise
     // tint supplies organism colour; a plate does not assert active fixation.
@@ -50,7 +52,7 @@ pub fn material_colour(material: u8) -> [f32; 3] {
         242 => Some(0.95),
         243 => Some(0.12),
         244 => Some(0.35),
-        245 => Some(1.0),
+        NEUTRAL_MATERIAL => Some(1.0),
         _ => None,
     };
     if let Some(tone) = tone {

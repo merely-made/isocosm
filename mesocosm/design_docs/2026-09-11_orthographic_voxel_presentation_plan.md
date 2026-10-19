@@ -2,6 +2,60 @@
 
 **Date:** 2026-09-11
 
+**2026-10-19 repair slice, verified:** preserve each native part's declared
+extent when its volume tag is unresolved; bind terrain colours through the
+lift's material ids. Done when aliasing and reordered-material controls pass,
+the playable host builds, and the same tick-120 save renders with unchanged
+native hash before and after. Receipts capped at 100 MB under
+`Code/testing/mesocosm/render-evaluation-2026-10-19/`.
+
+**Progress, 2026-10-19:** the unresolved-tag control failed before repair
+(`[4,4,4]` drawn for an `[8,2,2]` part), then passed with the shared
+`VolumeSource::resolve_part` path used by live meshes, one-shot meshes and
+flattening. Declared boxes now share content addresses by actual dimensions
+and material; native documents remain unchanged. Eight Mesocosm scene builds
+share one neutral-material helper. Terrain binds the existing shared palette
+through the lift's material table for both looks, including water.
+
+Release gates passed: 84 mesh tests; 61 shared-scene tests, including GPU
+palette/depth/picking; 18 Mesocosm section tests (3 independently owned GPU
+gates remain ignored); and the playable binary build. Native captures
+`classic-oblique-after.png` and `habitat-east-after.png` preserve tick 120,
+hash `2698906e7fd7bb51`, and report no fault. The former is the same-camera
+comparison against `original.png`; the latter shows the across orientation
+with the habitat look. These receipts qualify this exact saved world, not
+the broader after-pass certification. Two `stale-executable` runs remain as
+failed experimental receipts: the inherited target-dir environment initially
+left the executable at the requested launch path unchanged. The accepted
+build explicitly used `--target-dir ./target`.
+
+### Findings, 2026-10-19
+
+- The exact played save (seed 2814468213915169548, tick 120, native hash
+  `2698906e7fd7bb51`) has no physical members. The coarse site view supplies
+  patch or presentation placement, rather than saved physical poses.
+- Native founding bodies carry the all-zero undrawn volume tag for every
+  part (`shared/isocosm/src/geometry.rs`). The consumer has 10 parts with
+  half-extents `[2,2,2]` and `[4,1,1]`; the producer has 39, including
+  `[4,4,1]` plates. `DeclaredExtentVolumes` keyed only on that shared tag,
+  causing the mesh paths to reuse the first 4-by-4-by-4 cube. Projection must
+  resolve declared boxes by their actual content without rewriting native
+  body documents, and live meshes, one-shot meshes and flattening must agree.
+- The saved material table is air 0, water 1, soil 2, rock 3. The unbound
+  tracer assumes soil 3, rock 2 and unknown otherwise. Both host looks left
+  that semantic mapping unbound, so water was magenta and soil/rock swapped.
+  The existing `TerrainPalette` binding is the shared correction point.
+- Site 1 declares elevation 183 and water level 234. The lift fills to water
+  level and the tracer treats water as opaque. Palette correction does not
+  provide transparency, underwater visibility, or physical water behaviour.
+- Declared solids remain boxes; `HostBodies::scene_body` supplies no tissue
+  materials. The oblique camera compresses the body's longitudinal axis.
+  These are current presentation limits, separate from the two binding bugs.
+- The neutral fallback had been material 1, which is hash-coloured before
+  multiplying by kingdom tint. All native scene paths now use the renderer's
+  white material through one helper. The generated founding uses drawn
+  recipes (`Bodies::roster == false`), rather than the authored roster.
+
 **Status, 2026-10-18:** L2, L7 and L9 have landed, L7 on mere's kiss3d tenant rather than the DOM path this plan first drew (case 749). Mesocosm's tenant migration is implemented, with the terrain depth pre-pass, ordered Netrender layers and a fixed sun shared with the tracer (case 970); four workspace compile gates and both CPU controls pass. LiveBody stays for the VTT board, Eponym's producer and the posed-face queries. Open: GPU runtime and headed certification, whose checks are carried below; L7's done-conditions and the L3 and L5 re-proof; L6, L8 and L10; the terrain's per-axis scale (case 23). Next: the headed tenant certification.
 
 **W1, 2026-09-18:** keep. Tier: stack, rendering. Its benches are the

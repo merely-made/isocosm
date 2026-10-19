@@ -164,6 +164,13 @@ impl Volume {
 /// Resolves the volumes a body's parts refer to.
 pub trait VolumeSource {
     fn volume(&self, reference: VolumeRef) -> Option<&Volume>;
+
+    /// Resolve a part to immutable geometry and its actual cache address.
+    /// Authored volumes keep their address; declared-solid sources may resolve
+    /// an undrawn tag using the part's dimensions without changing the document.
+    fn resolve_part(&self, part: &isometer_core::Part) -> Option<(VolumeRef, &Volume)> {
+        self.volume(part.volume).map(|volume| (part.volume, volume))
+    }
 }
 
 /// An in-memory source. Ordered so iteration never depends on hashing.
