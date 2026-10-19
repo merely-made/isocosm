@@ -127,8 +127,8 @@ on Isocosm, both modes, receipts replaying.
   habitability reading for the critter; neither exists.
 - Playing on after a regional collapse needs some generated process to use
   `Effect::Move`; which acts move a body between sites is unruled.
-- Wounds feeding mood (227) wait on checkpoint 10; D2 reads needs and
-  mood without them.
+- Wounds feed mood (227) since 2026-10-18: played worlds carry a wound need,
+  strain and relief, and rest; see the sim plan's Progress.
 - Whether a participant entity can be shared by games beyond Mesocosm
   (the VTT's players, Eponym's sophont player).
 - **2026-10-09, D4's forks, put back by the directing lane:** what
