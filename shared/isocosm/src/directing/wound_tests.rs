@@ -182,54 +182,70 @@ fn run(s: &mut Session, c: Id, process: &str) {
     s.command(Command::Act { actor: c, target: None, process: process.into(), cause: None }).unwrap();
 }
 
-/// What restoring the critter's next lost cell costs, in full and at rest.
+/// What restoring the critter's next lost cell costs, in full and at rest:
+/// a quarter of it, or an eighth where its lineage heals.
 fn prices(s: &Session, c: Id) -> Option<(u64, u64)> {
     let e = s.sim.state().population.get(c).unwrap();
     let (id, _) = healing::next(e)?;
     let mass = crate::anatomy::cell_mass(e.extent(id), s.sim.genesis().rules.body());
-    Some((mass, mass.div_ceil(4).max(1)))
+    let heals = s.sim.state().lineages["lineage:1"].traits.contains(harm::HEAL);
+    Some((mass, mass.div_ceil(if heals { 8 } else { 4 }).max(1)))
+}
+
+/// Gives or takes the critter's lineage the healing trait.
+fn heals(s: &mut Session, with: bool) {
+    let traits = &mut s.sim.state.lineages.get_mut("lineage:1").unwrap().traits;
+    if with {
+        traits.insert(harm::HEAL.into());
+    } else {
+        traits.remove(harm::HEAL);
+    }
 }
 
 #[test]
-fn rest_restores_the_nearest_cell_for_a_quarter_of_its_mass_and_serves_a_wound() {
-    let (mut s, c) = world(calm(), vec![harm::rest::process("world:soil")], true);
-    wound(&mut s, c);
-    assert_eq!(s.sim.mood(c), Some(-10), "only the wound presses");
-    // It serves the wound as paid healing does, and wins the slot.
-    assert_eq!(s.sim.consider(c, false).options["body:rest"].0, 1100);
-    assert_eq!(s.sim.choose(c).process.as_deref(), Some("body:rest"));
-    let (id, cell) = healing::next(s.sim.state().population.get(c).unwrap()).unwrap();
-    let (_, price) = prices(&s, c).unwrap();
-    let before = (lost(&s, c), held(&s, c), soil(&s, c));
-    let matter = s.sim.matter();
-    run(&mut s, c, "body:rest");
-    assert!(!s.sim.state().population.get(c).unwrap().parts[&id].lost.contains(&cell), "the nearest recorded cell");
-    assert_eq!((lost(&s, c), held(&s, c), soil(&s, c)), (before.0 - 1, before.1 - price, before.2 + price));
-    assert_eq!(s.sim.matter(), matter, "the payment goes to the soil");
-    // It rests while it can pay for a cell, one a time, and no longer.
-    let mut rests = 1;
-    while s.sim.consider(c, false).options.contains_key("body:rest") {
+fn rest_restores_the_nearest_cell_for_a_fraction_of_its_mass_and_serves_a_wound() {
+    let mut paid = vec![];
+    for with in [true, false] {
+        let (mut s, c) = world(calm(), vec![harm::rest::process("world:soil")], true);
+        heals(&mut s, with);
+        wound(&mut s, c);
+        assert_eq!(s.sim.mood(c), Some(-10), "only the wound presses");
+        // It serves the wound as paid healing does, and wins the slot.
+        assert_eq!(s.sim.consider(c, false).options["body:rest"].0, 1100);
+        assert_eq!(s.sim.choose(c).process.as_deref(), Some("body:rest"));
+        let (id, cell) = healing::next(s.sim.state().population.get(c).unwrap()).unwrap();
+        let (_, price) = prices(&s, c).unwrap();
+        let before = (lost(&s, c), held(&s, c), soil(&s, c));
+        let matter = s.sim.matter();
         run(&mut s, c, "body:rest");
-        rests += 1;
-        assert!(rests < 200, "rest ends");
+        assert!(!s.sim.state().population.get(c).unwrap().parts[&id].lost.contains(&cell), "the nearest recorded cell");
+        assert_eq!((lost(&s, c), held(&s, c), soil(&s, c)), (before.0 - 1, before.1 - price, before.2 + price));
+        assert_eq!(s.sim.matter(), matter, "the payment goes to the soil");
+        // It rests while it can pay for a cell, one a time, and no longer.
+        let mut rests = 1;
+        while s.sim.consider(c, false).options.contains_key("body:rest") {
+            run(&mut s, c, "body:rest");
+            rests += 1;
+            assert!(rests < 200, "rest ends");
+        }
+        assert!(
+            prices(&s, c).is_none_or(|(_, rest)| rest + 2 > held(&s, c)),
+            "for want of a cell or its price and the starving line"
+        );
+        paid.push(price);
     }
-    assert!(prices(&s, c).is_none_or(|(_, quarter)| quarter + 1 > held(&s, c)), "for want of a cell or its price and a milligram");
+    assert!(paid[0] <= paid[1], "a lineage that heals rests for no more than one that does not");
 }
 
 #[test]
 fn rest_needs_no_healing_trait_and_never_more_than_a_cell() {
     for trait_present in [true, false] {
         let (mut s, c) = world(calm(), vec![harm::rest::process("world:soil"), mend()], true);
-        let traits = &mut s.sim.state.lineages.get_mut("lineage:1").unwrap().traits;
-        if trait_present {
-            traits.insert(harm::HEAL.into());
-        } else {
-            traits.remove(harm::HEAL);
-        }
+        heals(&mut s, trait_present);
         wound(&mut s, c);
         let before = lost(&s, c);
-        let (full, quarter) = prices(&s, c).unwrap();
-        assert!(quarter < held(&s, c), "it can pay a quarter and keep a milligram");
+        let (full, rest) = prices(&s, c).unwrap();
+        assert!(rest + 2 <= held(&s, c), "it can pay for a rest and keep the starving line");
         run(&mut s, c, "body:rest");
         assert_eq!(lost(&s, c), before - 1, "rest heals one cell, trait or none ({trait_present})");
         if !trait_present {
@@ -243,9 +259,10 @@ fn rest_needs_no_healing_trait_and_never_more_than_a_cell() {
 }
 
 #[test]
-fn rest_never_pays_a_bodys_last_milligram() {
-    // A body at nought dies (`ecology:death`), so it needs the price and one more.
-    for (spare, rests) in [(0, false), (1, true)] {
+fn rest_never_takes_a_body_below_the_starving_line() {
+    // A body at nought dies (`ecology:death`), and 2 mg is the starving line: it needs the price and that.
+    let line = 2;
+    for (spare, rests) in [(line - 1, false), (line, true)] {
         let (mut s, c) = world(calm(), vec![harm::rest::process("world:soil")], true);
         wound(&mut s, c);
         let (_, price) = prices(&s, c).unwrap();
@@ -259,7 +276,7 @@ fn rest_never_pays_a_bodys_last_milligram() {
         assert_eq!(s.sim.consider(c, false).options.contains_key("body:rest"), rests, "holding {} for a price of {price}", price + spare);
         if rests {
             run(&mut s, c, "body:rest");
-            assert_eq!(held(&s, c), 1, "it keeps a milligram");
+            assert_eq!(held(&s, c), line, "it keeps the starving line");
         }
     }
 }

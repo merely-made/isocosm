@@ -3,7 +3,8 @@
 
 //! Rest (the 2026-10-18 note to ruling 227): an ordinary Choice act of every
 //! lineage that takes the tick's choice and heals one recorded cell, nearest
-//! the root first, for a quarter of its mass. It is feasible only while a
+//! the root first, for a quarter of its mass (an eighth where the lineage
+//! heals). It is feasible only while a
 //! lost cell can be restored and paid, and in the chooser it serves a wound
 //! as paid healing does.
 
