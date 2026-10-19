@@ -34,6 +34,7 @@ use mesocosm_genet::{Host, HostConfig, played};
 fn main() {
     let mut config = HostConfig::default();
     let mut args = std::env::args().skip(1);
+    let mut curve: Option<u64> = None;
     let (mut replay, mut trace, mut receipt, mut capture) = (None, None, None, None);
     let mut no_trace = false;
     let mut bench = false;
@@ -185,8 +186,11 @@ fn main() {
             "--dev" => config.dev = true,
             "--follow" => config.follow = args.next().and_then(|v| v.parse().ok()),
             "--play" => config.play = true,
+            "--curve" => curve = args.next().and_then(|v| v.parse().ok()),
             "--hour" => config.play_hour = args.next().and_then(|v| v.parse().ok())
                 .filter(|hour: &u32| *hour < 24).unwrap_or_else(|| fail("--hour wants 0 to 23")),
+            "--soil" => config.play_soil = args.next().and_then(|v| v.parse().ok())
+                .filter(|percent: &u64| *percent > 0).unwrap_or_else(|| fail("--soil wants a percent above zero")),
             "--epoch" => config.play_epoch = args.next().and_then(|v| v.parse().ok())
                 .filter(|ticks: &u64| *ticks > 0).unwrap_or_else(|| fail("--epoch wants a tick count above zero")),
             "--help" | "-h" => {
@@ -228,6 +232,12 @@ fn main() {
     if config.ecology_witness.is_some() && (config.watch.is_some() || config.spread.is_some()
         || config.spatial.is_some() || replay.is_some() || bench) {
         fail("--ecology-witness requires a new generated world and contains its own complete spatial provider");
+    }
+    if let Some(ticks) = curve {
+        std::process::exit(match mesocosm_genet::app::curve(&config, ticks, 20) {
+            Ok(()) => 0,
+            Err(why) => { eprintln!("curve: {why}"); 1 },
+        });
     }
     if let Some(path) = replay {
         std::process::exit(match played::replay(&path) {
@@ -294,6 +304,10 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --frames N      run N frames and exit
   --size WxH      initial window size in logical pixels (default 960x540)
   --seed N        world seed
+  --play          a playable world: founds at once, no ecology witness
+  --epoch N       play epoch ticks (default 60)
+  --hour H        play world's starting hour, 0 to 23 (default 7)
+  --soil P        play world's founding soil, percent (default 100)
   --candidate-attempts N  cap unchosen A1 structural candidates (default 8, max 128)
   --unchosen-seed use the native clock-sourced new-world seed (ordinary default)
   --start W:E     wait at most W epochs for habitability, then add E epochs

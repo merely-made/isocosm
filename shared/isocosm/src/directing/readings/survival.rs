@@ -47,9 +47,22 @@ pub fn view(sim: &Simulation, critter: Id, mode: Mode) -> View {
     let mut v = View::default();
     v.sites.extend(e.resident_site());
     v.sites.extend(e.visits.iter().map(|visit| visit.place));
+    // The same knowing as `Simulation::knows`, with the critter's notes read
+    // once rather than once per event.
+    let subject = format!("entity:{critter}");
+    let (mut discovered, mut acted) = (BTreeSet::new(), BTreeSet::new());
+    for n in s.notes.iter().filter(|n| n.core.subject == subject) {
+        match n.core.kind.as_str() {
+            "sim:discover" => { discovered.insert(n.core.object.as_str()); },
+            "sim:act" => { acted.insert(n.core.object.as_str()); },
+            _ => {},
+        }
+    }
     let mut subjects = BTreeSet::new();
     for (key, event) in &s.events {
-        if sim.knows(critter, key).unwrap_or(false) {
+        let id = event.id.as_str();
+        let noted = discovered.contains(id) || (event.place.site().is_none() && acted.contains(id));
+        if noted || sim.exposed(critter, e, event) {
             v.events.insert(key.clone());
             v.sites.extend(event.place.site());
             subjects.insert(event.subject);
