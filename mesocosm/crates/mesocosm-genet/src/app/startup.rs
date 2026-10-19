@@ -27,16 +27,16 @@ fn candidate_seed(base: u64, attempt: u32) -> u64 {
 }
 
 #[derive(Debug)]
-struct SelectedA1 { setup: mesocosm_runtime::runtime::ecology::Setup, seed: u64, attempts: u32 }
+struct SelectedA1<T> { setup: T, seed: u64, attempts: u32 }
 
-fn select_a1_candidate(
+fn select_a1_candidate<T>(
     base_seed: u64,
     attempt_cap: u32,
     permit_search: bool,
     population: u64,
-    mut prepare: impl FnMut(u64) -> Result<mesocosm_runtime::runtime::ecology::Setup,
+    mut prepare: impl FnMut(u64) -> Result<T,
         mesocosm_runtime::runtime::ecology::GeneratedSetupError>,
-) -> Result<SelectedA1, mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
+) -> Result<SelectedA1<T>, mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
     use mesocosm_runtime::runtime::ecology::GeneratedSetupError as CandidateError;
     if permit_search && !(1..=128).contains(&attempt_cap) {
         return Err(CandidateError::Invalid("A1 candidate cap must be from 1 to 128".into()));
@@ -54,11 +54,15 @@ fn select_a1_candidate(
                     eprintln!("A1 candidate seed {seed} lacks a viable consumer and food target; candidate limit reached.");
                 }
             }
+            Err(CandidateError::MissingPlayedPlacement) => {
+                if !permit_search { return Err(CandidateError::MissingPlayedPlacement); }
+                eprintln!("A1 candidate seed {seed} has no declared stand for its controlled body.");
+            }
             Err(error @ CandidateError::Invalid(_)) => return Err(error),
         }
     }
     Err(CandidateError::Invalid(format!(
-        "no A1 candidate had viable consumer food after {attempts} candidate(s)")))
+        "no A1 candidate met the requested food/placement conditions after {attempts} candidate(s)")))
 }
 
 pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Result<Runtime, String> {
@@ -101,6 +105,8 @@ pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Af
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message) => message,
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingViableConsumerFood =>
                 "candidate search ended unexpectedly".into(),
+            mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingPlayedPlacement =>
+                "candidate has no declared physical stand".into(),
         })?;
         eprintln!("A1 preflight accepted seed {} after {} candidate(s); running full ecology witness.", selected.seed, selected.attempts);
         let runtime = selected.setup.offer_with_progress(config.ticks_per_second,
@@ -150,24 +156,35 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
                 .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
             if let Some(start) = config.start { founded.start = start; }
             if let Some(mode) = config.mode { founded.mode = mode; }
-            a1_setup(founded, affinity.clone())
+            if config.body_roster {
+                founded.genesis.founding.as_mut().and_then(|f| f.bodies.as_mut())
+                    .ok_or_else(|| mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("body roster needs a bodied founding".into()))?.roster = true;
+            }
+            let mut founded = a1_setup(founded, affinity.clone())?.founded;
+            founded.genesis.rules.epoch_ticks = config.play_epoch;
+            for site in founded.genesis.sites.values_mut() {
+                if let Some(soil) = site.accounts.get_mut("world:soil") { *soil = *soil * config.play_soil / 100; }
+            }
+            let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
+            founded.genesis.rules.sun = Some(isocosm::light::SunRules { start_hour: config.play_hour, ..sun });
+            let runtime = Runtime::bench_placed(founded, config.ticks_per_second)
+                .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
+            if runtime.critter().is_none_or(|id| !runtime.spatial().members.contains_key(&id)) {
+                return Err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingPlayedPlacement);
+            }
+            Ok(runtime)
         }).map_err(|error| match error {
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message) => message,
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingViableConsumerFood =>
                 "no candidate had a living consumer with food".into(),
+            mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingPlayedPlacement =>
+                "the controlled body has no generator-declared stand; choose another world seed".into(),
         })?;
-    let mut founded = selected.setup.founded.clone();
-    founded.genesis.rules.epoch_ticks = config.play_epoch;
-    for site in founded.genesis.sites.values_mut() {
-        if let Some(soil) = site.accounts.get_mut("world:soil") { *soil = *soil * config.play_soil / 100; }
-    }
-    let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
-    founded.genesis.rules.sun = Some(isocosm::light::SunRules { start_hour: config.play_hour, ..sun });
     eprintln!("play: seed {}, epoch {} ticks, {} ticks a second, starting at {}:00, soil {}%; no ecology witness.",
         selected.seed, config.play_epoch, config.ticks_per_second, config.play_hour, config.play_soil);
     // One tick at a time, on a worker: a world too big for the clock falls
     // behind it while the window keeps drawing the last tick.
-    Runtime::bench(founded, config.ticks_per_second).map(|runtime| runtime.with_max_steps(1).with_background())
+    Ok(selected.setup.with_max_steps(1).with_background())
 }
 
 fn read_setup(path: &std::path::Path) -> Result<mesocosm_runtime::runtime::ecology::Setup, String> {
@@ -201,7 +218,7 @@ mod tests {
     #[test]
     fn invalid_search_bounds_refuse_before_generation() {
         for cap in [0, 129, u32::MAX] {
-            assert!(select_a1_candidate(9, cap, true, 256,
+            assert!(select_a1_candidate::<mesocosm_runtime::runtime::ecology::Setup>(9, cap, true, 256,
                 |_| panic!("invalid cap must refuse before generation")).is_err());
         }
     }
@@ -251,5 +268,24 @@ mod tests {
         assert_eq!(tried, [1_792_230_697_480_612_000]);
         assert!(matches!(error, mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message)
             if message.contains("authored pack affinity")));
+    }
+
+    #[test]
+    fn only_unchosen_search_can_skip_a_missing_physical_stand() {
+        use mesocosm_runtime::runtime::ecology::GeneratedSetupError as Error;
+        let mut attempts = 0;
+        let explicit = select_a1_candidate::<()>(7, 8, false, 60, |_| {
+            attempts += 1;
+            Err(Error::MissingPlayedPlacement)
+        });
+        assert!(matches!(explicit, Err(Error::MissingPlayedPlacement)));
+        assert_eq!(attempts, 1);
+        let mut attempts = 0;
+        let selected = select_a1_candidate(7, 8, true, 60, |_| {
+            attempts += 1;
+            if attempts == 1 { Err(Error::MissingPlayedPlacement) } else { Ok(()) }
+        }).unwrap();
+        assert_eq!(selected.attempts, 2);
+        assert_eq!(selected.seed, candidate_seed(7, 1));
     }
 }

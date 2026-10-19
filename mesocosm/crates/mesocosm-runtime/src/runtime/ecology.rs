@@ -26,7 +26,7 @@ fn has_living_role(genesis: &isocosm::simulation::Genesis, lineage: &str, role: 
 }
 
 #[derive(Debug)]
-pub enum GeneratedSetupError { MissingViableConsumerFood, Invalid(String) }
+pub enum GeneratedSetupError { MissingViableConsumerFood, MissingPlayedPlacement, Invalid(String) }
 
 fn generated_specification(genesis: &isocosm::simulation::Genesis) -> Result<JointSpec, GeneratedSetupError> {
     let founding = genesis.founding.as_ref().ok_or_else(|| GeneratedSetupError::Invalid("generated ecology needs its founding".into()))?;
@@ -136,6 +136,7 @@ impl Setup {
     pub fn generated(founded: Founded, execution: Execution) -> Result<Self, String> {
         Self::generated_classified(founded, execution).map_err(|error| match error {
             GeneratedSetupError::MissingViableConsumerFood => "default generated ecology offer needs a living producer and a living consumer whose native feed targets it".into(),
+            GeneratedSetupError::MissingPlayedPlacement => "generated play needs a declared physical stand for its controlled body".into(),
             GeneratedSetupError::Invalid(message) => message,
         })
     }

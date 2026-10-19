@@ -61,7 +61,7 @@ impl Section {
         current: Option<BodySelection>,
         backwards: bool,
     ) -> Option<BodySelection> {
-        if self.body_mode != super::BodyMode::Voxels {
+        if self.body_mode == super::BodyMode::Capsules {
             return None;
         }
         self.scene
@@ -74,7 +74,7 @@ impl Section {
     }
 
     pub fn validate_selection(&mut self, selection: BodySelection, scene: &SiteScene) -> bool {
-        if self.body_mode != super::BodyMode::Voxels {
+        if self.body_mode == super::BodyMode::Capsules {
             return false;
         }
         let Some(body) = scene.body(selection.organism) else {

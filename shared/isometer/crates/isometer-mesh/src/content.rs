@@ -94,6 +94,25 @@ pub struct ContentEntry {
     pub volume: Volume,
 }
 
+impl ContentEntry {
+    /// One versioned part form, using the same grammar as a saved palette pack.
+    pub fn generate(role: Role, slot: u8, half_extent: [i32; 3]) -> Result<Self, ContentError> {
+        let actual = classify(half_extent);
+        if actual != role {
+            return Err(ContentError::WrongRole { role, actual });
+        }
+        let volume = generate_volume(role, slot, half_extent)?;
+        let reference = content_ref(VOXEL_GRAMMAR_V1, role, slot, half_extent, &volume);
+        Ok(Self {
+            role,
+            slot,
+            half_extent,
+            reference,
+            volume,
+        })
+    }
+}
+
 /// A pack that cannot truthfully resolve its palette.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ContentError {
@@ -165,16 +184,9 @@ impl<P: Palette + PartialEq> ContentPack<P> {
 
         for role in Role::ALL {
             for (slot, shape) in palette.admitted(role) {
-                let volume = generate_volume(role, slot, shape.half_extent)?;
-                let reference =
-                    content_ref(VOXEL_GRAMMAR_V1, role, slot, shape.half_extent, &volume);
-                entries.push(ContentEntry {
-                    role,
-                    slot,
-                    half_extent: shape.half_extent,
-                    reference,
-                    volume,
-                });
+                let entry = ContentEntry::generate(role, slot, shape.half_extent)?;
+                let reference = entry.reference;
+                entries.push(entry);
                 palette.admit(
                     role,
                     slot,

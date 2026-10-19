@@ -90,7 +90,7 @@ impl SceneBody<'_> {
 pub enum SceneVolumes<'a> {
     /// Authored voxel data, addressed by [`crate::VolumeRef`].
     Voxels(&'a VolumeMap),
-    /// The declared-extent boxes, for anatomies that carry no voxel data.
+    /// Declared-extent forms, solid or generated, for anatomies with no voxel data.
     DeclaredSolid(&'a DeclaredExtentVolumes),
 }
 

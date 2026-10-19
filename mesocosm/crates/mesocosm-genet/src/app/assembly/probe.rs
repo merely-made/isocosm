@@ -23,6 +23,7 @@ impl mesquite::Product for Probe {
         let some = |id: Option<u64>| id.map_or_else(|| "none".into(), |id| id.to_string());
         let yes_no = |value| if value { "yes" } else { "no" }.to_owned();
         let dev_intents = r.dev_intents();
+        let body_stats = s.producer.borrow_mut().body_stats().unwrap_or_default();
         let living = r
             .sim()
             .state()
@@ -52,6 +53,18 @@ impl mesquite::Product for Probe {
                 ("follow", some(s.host.followed())),
                 ("site", some(s.host.scene.as_ref().map(|s| s.site))),
                 ("living", living.to_string()),
+                ("physical-members", r.spatial().members.len().to_string()),
+                ("controlled-placement", yes_no(r.critter().is_some_and(|id| r.spatial().members.contains_key(&id)))),
+                ("bodies", s.host.config.body_mode.name().into()),
+                ("voxel-bodies", body_stats.voxel_bodies.to_string()),
+                ("voxel-parts", body_stats.voxel_parts.to_string()),
+                ("fallback-bodies", body_stats.fallback_bodies.to_string()),
+                ("projection-failures", body_stats.projection_failures.to_string()),
+                ("body-projection-error", body_stats.last_error.clone().unwrap_or_default()),
+                ("scene-physical-bodies", s.host.scene.as_ref().map_or(0, |scene|
+                    scene.bodies.iter().filter(|body| body.physical.is_some()).count()).to_string()),
+                ("scene-parts", s.host.scene.as_ref().map_or(0, |scene|
+                    scene.bodies.iter().map(|body| body.document.living().count()).sum::<usize>()).to_string()),
                 ("boundary", yes_no(r.review().is_some())),
                 ("fault", r.fault().unwrap_or("").to_owned()),
                 ("tick", r.tick().to_string()),

@@ -38,7 +38,7 @@ pub fn site_scene(sim: &Simulation, played: Option<Id>) -> Result<SiteScene, Str
     let volume = lift(sim, site)?;
     let ground = volume.ground().clone();
     let bodies = placed(sim, site, &volume);
-    let volumes = body_volumes(&bodies);
+    let volumes = body_volumes(&bodies)?;
     Ok(SiteScene {
         site,
         ground,
@@ -54,7 +54,7 @@ pub fn site_scene_visible(sim: &Simulation, played: Option<Id>, visible: &View)
     -> Result<SiteScene, String> {
     let mut scene = site_scene(sim, played)?;
     scene.bodies.retain(|b| visible.shows(b.id));
-    scene.volumes = body_volumes(&scene.bodies);
+    scene.volumes = body_volumes(&scene.bodies)?;
     Ok(scene)
 }
 
@@ -86,7 +86,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
         bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical,
             tint:tint_of(kingdom::of(e)), alive:e.alive });
     }
-    let volumes = body_volumes(&bodies);
+    let volumes = body_volumes(&bodies)?;
     Ok(SiteScene { site:site.site(), ground, window:volume, bodies,
         played:runtime.critter(), volumes })
 }
@@ -174,6 +174,6 @@ pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
     let site = held.site.0;
     let volume = sim.volume(site, held.window.min, held.window.max, held.window.depth)?;
     let bodies = placed_physical(sim, site, &volume, visible, game)?;
-    let volumes = body_volumes(&bodies);
+    let volumes = body_volumes(&bodies)?;
     Ok(SiteScene { site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })
 }

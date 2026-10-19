@@ -13,6 +13,10 @@ pub struct SectionProducer { handle: SceneHandle, inner: Option<SceneProducer<So
 impl SectionProducer {
     pub fn new(handle: SceneHandle) -> Self { Self { handle, inner: None } }
     pub(crate) fn renders(&self) -> u64 { self.inner.as_ref().map_or(0, |inner|inner.renders()) }
+    pub(crate) fn body_stats(&mut self) -> Option<section::BodyFrameStats> {
+        if !self.has_current_frame() { return None; }
+        self.inner.as_mut()?.source_mut().section.as_ref().map(Section::body_stats)
+    }
     /// Walk body parts only when this producer presented the current admitted picture.
     pub(crate) fn select_part(&mut self, subject: u64, current: Option<section::BodySelection>, backwards: bool)
         -> Option<section::BodySelection> {
