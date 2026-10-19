@@ -64,7 +64,7 @@ pub(crate) fn body_reading(
                 .map(|k| crate::anatomy::held(body, rules, k))
                 .fold(0, u64::saturating_add);
             let cost = crate::harm::healing::next(body)
-                .map(|(id, _)| price(body.extent(id), rules, true))
+                .map(|(id, _)| price(body.extent(id), rules, true, heals))
                 .filter(|cost| *cost + REST_LEAVES <= funds);
             return i64::try_from(cost.unwrap_or(0)).unwrap_or(i64::MAX);
         },

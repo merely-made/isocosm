@@ -3,8 +3,8 @@
 
 //! Healing pays growth's cell price from reserve then tissue, before the
 //! meal fills tissue or develops new parts (496, 712 and 810). A rest heals
-//! one cell at a time, in any lineage, for a quarter of that price (the
-//! 2026-10-18 note to ruling 227).
+//! one cell at a time, in any lineage, for a quarter of that price, or an
+//! eighth where the lineage heals (the 2026-10-18 note to ruling 227).
 
 use super::{Parties, spend};
 use crate::{
@@ -14,21 +14,27 @@ use crate::{
     schema::*,
 };
 
-/// What a rest leaves its body: a body with nought of its own matter dies
-/// (`ecology:death`), so a rest never pays the last milligram.
-pub(crate) const REST_LEAVES: u64 = 1;
+/// What a rest leaves its body: the starving line, 2 mg, which the probe's
+/// mind reads as a body one tick from death (below 1 it dies, `ecology:death`).
+pub(crate) const REST_LEAVES: u64 = 2;
 
-/// What restoring a cell of half-extent `h` costs: its mass, or at rest a
-/// quarter of it, rounded up, a milligram at least.
-pub(crate) fn price(h: anatomy::Half, rules: &Rules, rest: bool) -> u64 {
+/// What restoring a cell of half-extent `h` costs: its mass; at rest a
+/// quarter of it, or an eighth where the lineage `heals`, rounded up, a
+/// milligram at least.
+pub(crate) fn price(h: anatomy::Half, rules: &Rules, rest: bool, heals: bool) -> u64 {
     let mass = anatomy::cell_mass(h, rules.body());
-    if rest { mass.div_ceil(4).max(1) } else { mass }
+    match (rest, heals) {
+        (false, _) => mass,
+        (true, false) => mass.div_ceil(4).max(1),
+        (true, true) => mass.div_ceil(8).max(1),
+    }
 }
 
 pub(crate) fn heal(p: &mut impl Parties, rules: &Rules, into: &Key, rest: bool) -> Result<Ledger> {
     let mut paid = Ledger::new();
     let lineage = p.body(Binding::Actor)?.lineage.clone();
-    if !rest && !p.lineage_trait(&lineage, HEAL) {
+    let heals = p.lineage_trait(&lineage, HEAL);
+    if !rest && !heals {
         return Ok(paid);
     }
     let anatomy::Own {
@@ -40,7 +46,7 @@ pub(crate) fn heal(p: &mut impl Parties, rules: &Rules, into: &Key, rest: bool) 
         let Some((id, cell)) = healing::next(body) else {
             break;
         };
-        let price = price(body.extent(id), rules, rest);
+        let price = price(body.extent(id), rules, rest, heals);
         let funds = pay
             .iter()
             .map(|k| anatomy::held(body, rules, k))
