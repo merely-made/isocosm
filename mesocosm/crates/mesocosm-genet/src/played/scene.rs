@@ -11,10 +11,9 @@ use isocosm::kingdom::{self, Kingdom};
 use isocosm::schema::Id;
 use isocosm::simulation::Simulation;
 use isocosm::directing::readings::View;
-use isometer::DeclaredExtentVolumes;
 use isometer::render::kingdom_colour;
 
-use crate::section::{PlacedBody, SiteScene};
+use crate::section::{PlacedBody, SiteScene, body_volumes};
 
 pub use mesocosm_runtime::runtime::placing::{DEPTH, WINDOW_HALF};
 
@@ -39,7 +38,7 @@ pub fn site_scene(sim: &Simulation, played: Option<Id>) -> Result<SiteScene, Str
     let volume = lift(sim, site)?;
     let ground = volume.ground().clone();
     let bodies = placed(sim, site, &volume);
-    let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
+    let volumes = body_volumes(&bodies);
     Ok(SiteScene {
         site,
         ground,
@@ -55,7 +54,7 @@ pub fn site_scene_visible(sim: &Simulation, played: Option<Id>, visible: &View)
     -> Result<SiteScene, String> {
     let mut scene = site_scene(sim, played)?;
     scene.bodies.retain(|b| visible.shows(b.id));
-    scene.volumes = DeclaredExtentVolumes::from_documents(scene.bodies.iter().map(|b| &b.document), 1);
+    scene.volumes = body_volumes(&scene.bodies);
     Ok(scene)
 }
 
@@ -87,7 +86,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
         bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical,
             tint:tint_of(kingdom::of(e)), alive:e.alive });
     }
-    let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
+    let volumes = body_volumes(&bodies);
     Ok(SiteScene { site:site.site(), ground, window:volume, bodies,
         played:runtime.critter(), volumes })
 }
@@ -175,6 +174,6 @@ pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
     let site = held.site.0;
     let volume = sim.volume(site, held.window.min, held.window.max, held.window.depth)?;
     let bodies = placed_physical(sim, site, &volume, visible, game)?;
-    let volumes = DeclaredExtentVolumes::from_documents(bodies.iter().map(|b| &b.document), 1);
+    let volumes = body_volumes(&bodies);
     Ok(SiteScene { site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })
 }

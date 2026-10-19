@@ -49,6 +49,9 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
   derived rather than a third simulation.
 - For visual anatomy, verify developed geometry and the captured silhouette:
   disjoint part envelopes can still merge from the game's camera.
+- Resolve declared body boxes by actual dimensions and terrain colours by the
+  world's material ids. An undrawn volume tag is not a shared shape, and a
+  compact material id has no universal colour (2026-10-19 play-view repair).
 - A voxel material is a compact id into saved world-local definitions. Dynamic
   scalar fields remain separately admitted planes, and each field names its
   consumer, honest dimension, cadence, sources/sinks, conservation rule, and
@@ -82,7 +85,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-09-26_wing_organs_plan.md](2026-09-26_wing_organs_plan.md) | The wing's two organs no single game owns: the hagioglyph and the impresa. | 2026-10-10: shared kernels and native effects; higher rungs parked, 406 carryover refinement still partly designed. |
 | [2026-09-26_body_binding_plan.md](2026-09-26_body_binding_plan.md) | One binding adapter keeping critters and tokens against conatus bodies. | 2026-10-11: source applied; native and headed certification open. |
 | [2026-09-15_isomere_plan.md](2026-09-15_isomere_plan.md) | isomere: the wing's GUI layer and mode host. | 2026-10-18: M0 to M5 landed and M6 deferred; the mode host awaits runtime and headed two-window acceptance. |
-| [2026-09-11_orthographic_voxel_presentation_plan.md](2026-09-11_orthographic_voxel_presentation_plan.md) | The wing's orthographic voxel presentation, lanes L1 to L10. | 2026-10-18: L2, L7 and L9 landed, L7 on mere's kiss3d tenant; GPU and headed certification, L6, L8 and L10 open. |
+| [2026-09-11_orthographic_voxel_presentation_plan.md](2026-09-11_orthographic_voxel_presentation_plan.md) | The wing's orthographic voxel presentation, lanes L1 to L10. | 2026-10-19: declared-body, neutral tint and terrain-material bindings repaired with same-world native captures; broader GPU/headed certification, L6, L8 and L10 open. |
 | [2026-09-15_glyph_expression_plan.md](2026-09-15_glyph_expression_plan.md) | How a canon's glyphs come to be expressed by traits. | 2026-10-10: effects native, trait catalogue folded into §10 (801); higher glyph/divinity rungs parked (279, 673). |
 | [2026-09-09_functional_generation_plan.md](2026-09-09_functional_generation_plan.md) | Functional networks, operators and generation: constructions, cantrips, exchange costs. | 2026-09-28: composition designed (404 to 407); no implementation lane open. |
 | [2026-08-05_place_graph_engine_plan.md](2026-08-05_place_graph_engine_plan.md) | The spatial spine: places derived from the volume. | 2026-10-18: SP1 to SP5 built; SP6 waits on mere's T2, SP7's joins are the overlays', SP8 open. |
