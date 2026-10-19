@@ -48,8 +48,8 @@ const WIDTH: u32 = 300;
 /// evidence, which wraps. The box is sized for the panel's fullest state
 /// (a gland, a discovery and a live warning at once) rather than its usual
 /// one, because a row that ran off the bottom would be worse than an empty
-/// margin.
-const HEIGHT: u32 = 320;
+/// margin. Two rows taller since the wound share and the mood joined it.
+const HEIGHT: u32 = 360;
 
 /// Distance from the frame's corner. Matches the minimap's, so the two chrome
 /// surfaces sit on one margin.
