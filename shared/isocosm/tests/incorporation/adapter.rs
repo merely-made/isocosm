@@ -95,6 +95,7 @@ fn injured(domain: u16) -> Fixture {
     heal.id = "test:heal".into();
     heal.effects = vec![Effect::Heal {
         into: "world:soil".into(),
+        rest: false,
     }];
     heal.target = None;
     heal.period = Some(2);

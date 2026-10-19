@@ -198,9 +198,14 @@ pub enum Effect {
         lands: Vec<Key>,
     },
     /// Recorded lost cells restored at their cell mass, reserve then
-    /// tissue paying the place's `into`, only where the lineage heals.
+    /// tissue paying the place's `into`, only where the lineage heals. A
+    /// `rest` restores one cell in any lineage, at a quarter of its mass, or
+    /// an eighth where the lineage heals, rounded up, at least a milligram
+    /// (the 2026-10-18 note to ruling 227).
     Heal {
         into: Key,
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        rest: bool,
     },
     /// A chosen terrain operation; its game returns bounded actual geometry.
     Terrain {

@@ -354,6 +354,7 @@ pub fn read_set(world: &ProbeWorld) -> BTreeSet<String> {
                 who: Binding::Part, ..
             }
             | Query::Part { .. }
+            | Query::Wounded { .. }
             | Query::Expresses { .. }
             | Query::Routes { .. } => "parts".into(),
             Query::Computed(_) => "computed".into(),

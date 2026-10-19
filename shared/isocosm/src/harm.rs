@@ -26,6 +26,8 @@ use std::collections::BTreeMap;
 
 mod fragments;
 pub(crate) mod healing;
+pub mod hazard;
+pub mod rest;
 pub(crate) mod rot;
 pub(crate) use fragments::{Fragment, detach};
 
@@ -147,6 +149,19 @@ pub(crate) fn cells(e: &Entity) -> u64 {
     e.living()
         .map(|(id, p)| u64::from(anatomy::living_cells(e.extent(id), p)))
         .sum()
+}
+
+/// The share of a body's cells it has lost, out of a hundred: its lost cells
+/// and every severed part's whole lattice, over all its cells (the
+/// 2026-10-18 note to ruling 227). A body with no cells shows none.
+pub fn wound_share(e: &Entity) -> u64 {
+    let (mut lost, mut all) = (0u64, 0u64);
+    for (id, p) in &e.parts {
+        let n = u64::from(anatomy::capacity(e.extent(*id)));
+        all = all.saturating_add(n);
+        lost = lost.saturating_add(if e.lives(*id) { p.lost.len() as u64 } else { n });
+    }
+    lost.saturating_mul(100).checked_div(all).unwrap_or(0).min(100)
 }
 
 pub(crate) fn part_at(e: &Entity, mut at: u64) -> Option<PartId> {

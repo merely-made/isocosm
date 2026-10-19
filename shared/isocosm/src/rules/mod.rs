@@ -119,6 +119,12 @@ pub enum Query {
         who: Binding,
         at_least: u64,
     },
+    /// A body's wound share, out of a hundred, is at least `at_least`
+    /// (`harm::wound_share`; the 2026-10-18 note to ruling 227).
+    Wounded {
+        who: Binding,
+        at_least: u64,
+    },
     /// The actor has a live part expressing `function` (ruling 338). A
     /// process requires at most one, and binds the lowest-numbered such part
     /// as `Binding::Part`; its receipt reads that part's address.

@@ -17,10 +17,12 @@ use profile::{Form, world};
 // draws use the generated policy and a different declared genesis digest.
 // Rerecorded 2026-10-17 under 982 to 984: the sunlight process became
 // `Effect::Sunlight`, so every ecology world's rules, and this digest, moved.
+// Rerecorded 2026-10-18 under the note to 227: Mesocosm's worlds gained the
+// hazard and rest, and a played world its wound need and its strain processes.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "15db160dafcd480fe6d503429580cca873ee54dba602b0f5ff0fafb0a01980a3");
+    assert_eq!(crate::digest(&genesis), "aaa9f3b38794fa877e56f4b46965912b8c263674993e45534e241c019c4a5a84");
     genesis
 }
 
@@ -410,7 +412,7 @@ fn consumer_reproduction_bodied_prepare() {
     for original in [true, false] {
         let g = world(0, Form::Bodied, original);
         assert_eq!(g.seed, 0);
-        assert_eq!(g.founding.as_ref().unwrap().bodies, Some(Bodies::default()));
+        assert_eq!(g.founding.as_ref().unwrap().bodies, Form::Bodied.bodies());
         assert_eq!(g.rules.body(), BodyRules::default());
         assert!(!g.rules.kinds.is_empty() && !g.rules.functions.is_empty()
             && !g.rules.shapes.is_empty(), "native body catalogue");

@@ -220,6 +220,7 @@ pub(super) fn room(i: u32) -> Expr {
         }),
         Expr::Read(Reading::Healing {
             who: Binding::Actor,
+            rest: false,
         }),
         lacking,
     ])
@@ -254,7 +255,7 @@ pub(super) fn landing(i: u32, hand: &str, conversion: Conversion) -> Vec<Effect>
     };
     let tissue_in = || into(tissue(i), gap(&tissue(i), false));
     let reserve_in = || into(reserve(i), gap(&reserve(i), true));
-    let healed = || Effect::Heal { into: SOIL.into() };
+    let healed = || Effect::Heal { into: SOIL.into(), rest: false };
     // With the parts full, growth builds what the recipe lacks and then
     // fills the provision, before the reserve: the probe's lineages grow
     // their parts first and breed from income (520, 535).

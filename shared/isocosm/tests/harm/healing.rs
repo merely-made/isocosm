@@ -18,6 +18,7 @@ fn healer(fragment: bool, heals: bool) -> Genesis {
     p.id = "test:heal".into();
     p.effects = vec![Effect::Heal {
         into: "world:soil".into(),
+        rest: false,
     }];
     g.rules.processes.insert(p.id.clone(), p);
     g
@@ -415,6 +416,7 @@ fn full_wounded_parts_request_healing_income() {
     p.effects = vec![Effect::When {
         guard: Expr::Read(Reading::Healing {
             who: Binding::Actor,
+            rest: false,
         }),
         then: vec![Effect::Trait {
             who: Binding::Actor,

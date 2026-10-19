@@ -17,6 +17,10 @@ pub struct Played {
     pub region_sites: u32,
 }
 
+/// The share of its cells, out of a hundred, a body loses before its wounds
+/// weigh on its mood.
+const WOUNDED: u64 = 25;
+
 /// The trophic levels generated ecologies name (ruling 39).
 pub const LEVELS: [&str; 3] = ["life:producer", "life:consumer", "life:decomposer"];
 
@@ -58,6 +62,27 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         stake: 0,
     });
     mind.needs.extend((0..f.lineages).map(hunger));
+    // A body that has lost a quarter of its cells is wounded (the 2026-10-18
+    // note to ruling 227); paid healing serves it, and eating does not.
+    mind.needs.push(Need {
+        traits: BTreeSet::new(),
+        query: Query::Wounded {
+            who: Binding::Actor,
+            at_least: WOUNDED,
+        },
+        weight: -10,
+    });
+    // Strain builds while mood stays low and eases when it recovers, as a
+    // probe mind's does, from the same ranges and draws.
+    let pick = |domain: &str, r: [u64; 2]| r[0] + crate::draw(f.seed, domain, &[0]) % (r[1] - r[0] + 1);
+    let keeping = mind.strain_processes(
+        pick("mind-low-mood", Mind::LOW_MOOD),
+        pick("mind-build", Mind::BUILD),
+        pick("mind-bleed", Mind::BLEED),
+    );
+    rules
+        .processes
+        .extend(keeping.into_iter().map(|p| (p.id.clone(), p)));
     let mut slots = BTreeMap::new();
     for level in LEVELS.into_iter().filter(|l| rules.traits.contains(*l)) {
         let founded: u128 = g

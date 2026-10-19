@@ -225,9 +225,13 @@ pub enum Reading {
         key: Key,
     },
     /// Room for paid healing and the capacity it reopens, nought where
-    /// the lineage cannot heal or allocations are unknown.
+    /// the lineage cannot heal or allocations are unknown. A `rest` reads
+    /// instead what resting the next lost cell would cost, nought where
+    /// there is none or the body cannot pay it.
     Healing {
         who: Binding,
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        rest: bool,
     },
 }
 
@@ -291,7 +295,7 @@ impl Reading {
             | Self::Measured { who, .. }
             | Self::Carried { who, .. }
             | Self::Room { who, .. }
-            | Self::Healing { who } => *who,
+            | Self::Healing { who, .. } => *who,
             // What an act keeps is its own.
             Self::Kept { .. } => Binding::Actor,
         }
