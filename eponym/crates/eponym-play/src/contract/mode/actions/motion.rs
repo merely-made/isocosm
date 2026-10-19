@@ -77,14 +77,7 @@ pub(super) fn advance(session:&mut Session, mode:&mut ModeState, actions:&Action
 
 fn mobile(session:&Session,entity:Id) -> Result<bool,String> {
     let body = session.sim.state().population.get(entity).ok_or("Eponym body is absent")?;
-    let (mut lost,mut all) = (0u64,0u64);
-    for (id,part) in &body.parts {
-        let cells = u64::from(isocosm::anatomy::capacity(body.extent(*id)));
-        all = all.checked_add(cells).ok_or("Eponym cell count overflow")?;
-        lost = lost.checked_add(if body.lives(*id) {part.lost.len() as u64} else {cells})
-            .ok_or("Eponym wound count overflow")?;
-    }
-    let wound = lost.checked_mul(100).ok_or("Eponym wound ratio overflow")?.checked_div(all).unwrap_or(0).min(100);
+    let wound = isocosm::harm::wound_share(body);
     let fatigue = isocosm::needs::want(&session.sim.genesis().rules,body,ENERGY)
         .map_or(0,|want|want.deficit().min(u64::from(crate::MAX_NEED)));
     Ok(body.alive && session.sim.name_of(entity).is_some()
