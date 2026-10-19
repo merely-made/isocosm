@@ -15,6 +15,12 @@ pub struct HostConfig {
     /// H6's explicit dev world, played through the core and Assembly (897).
     pub bench_world: bool,
     pub bench_epoch: u64,
+    /// A playable A1 world: the cheap structural check, no full witness, and
+    /// an epoch short enough to reach the board in a sitting.
+    pub play: bool,
+    pub play_epoch: u64,
+    /// The hour of day a play world begins at.
+    pub play_hour: u32,
     pub seed: u64,
     /// Select the existing native clock-sourced founding seed instead of this explicit seed.
     pub unchosen_seed: bool,
@@ -91,6 +97,9 @@ impl Default for HostConfig {
         Self {
             bench_world: false,
             bench_epoch: 60,
+            play: false,
+            play_epoch: 60,
+            play_hour: 7,
             seed: 0x00A7_7AC4,
             unchosen_seed: false,
             candidate_attempts: 8,
