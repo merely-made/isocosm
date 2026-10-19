@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use super::physiology::{c, due};
+use super::physiology::due;
 use super::*;
 
 /// Inclusive per-world draws. Hazard is a numerator over 64 ticks;
@@ -41,35 +41,7 @@ impl HarmFounding {
     pub(super) fn processes(&self, f: &BodyFounding) -> [Process; 2] {
         let rate = f.pick("body-hazard", 0, self.hazard) as i64;
         let cells = f.pick("body-wound-cells", 0, self.cells.map(u64::from));
-        let hits = Effect::When {
-            guard: Expr::AtLeast(
-                Box::new(c(rate - 1)),
-                Box::new(Expr::Draw {
-                    below: MAX_DRAW,
-                    slot: 0,
-                }),
-            ),
-            then: vec![Effect::Wound {
-                who: Binding::Target,
-                cells: cells.into(),
-                slot: 1,
-            }],
-            otherwise: vec![],
-        };
-        let mut hazard = due("body:hazard", Causation::Agentless, vec![hits], 0);
-        hazard.target = Some(Target {
-            same_place: true,
-            alive: Some(true),
-            lineage: None,
-            among: BTreeSet::new(),
-            weighted: true,
-        });
-        hazard.requires.push(Query::Computed(Expr::AtLeast(
-            Box::new(Expr::Read(Reading::LivingCells {
-                who: Binding::Target,
-            })),
-            Box::new(c(1)),
-        )));
+        let hazard = crate::harm::hazard::process(rate, cells, BTreeSet::new());
         let effect = Effect::Rot {
             who: Binding::Target,
             amount: f.pick("body-rot", 0, self.rot).into(),
