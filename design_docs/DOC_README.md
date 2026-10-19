@@ -73,3 +73,5 @@ to `archive_docs/<YYYY-MM-DD>/`.
 - [`2026-08-08/2026-07-14_gameplay_roadmap_plan.md`](archive_docs/2026-08-08/2026-07-14_gameplay_roadmap_plan.md): the audit pass; residues in the extracted-receipts ledger.
 - [`2026-08-08/2026-07-17_tile_geometry_seam_plan.md`](archive_docs/2026-08-08/2026-07-17_tile_geometry_seam_plan.md): the audit pass; residues in the extracted-receipts ledger.
 - [`2026-08-08/2026-07-18_exploration_mode_plan.md`](archive_docs/2026-08-08/2026-07-18_exploration_mode_plan.md): the audit pass; residues in the extracted-receipts ledger.
+
+Foundation source adoption (2026-10-19): canonical promoted-family revisions and consumer source validation are recorded in `mere/design_docs/mere_docs/implementation_strategy/2026-10-19_family_promotion_plan.md`. Existing application and domain authority remain with their owning components.
