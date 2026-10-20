@@ -109,6 +109,15 @@ fn whole(device: f32) -> bool {
 /// A maximum over the panel's own rows rather than a named last row, because
 /// which row is last is a matter of state now — the key hints stand only while
 /// a target pick is armed.
+/// The panel is set in the platform's `sans-serif` (the theme names no other
+/// face and the harness registers none). The figures below are the native
+/// Windows host's, in Segoe UI; elsewhere only their relations are asserted.
+fn windows_figure(measured: f32, windows: f32, what: &str) {
+    if cfg!(windows) {
+        assert!((measured - windows).abs() < 0.5, "{what}: {measured}");
+    }
+}
+
 fn panel_bottom(harness: &BoardHarness) -> f32 {
     let rows = harness.with_dom(|dom| {
         let side = taproot::matching(dom, &Selector::class("side"))
@@ -452,17 +461,16 @@ fn collapsing_turns_takes_the_section_off_the_panel() {
     let mut harness = board(DESIGN_SIZE, false);
     assert_eq!(harness.ui_zoom(), 1.0, "the plan's figure is a zoom-1 one");
     let expanded = panel_bottom(&harness);
-    assert!(
-        (expanded - 768.0).abs() < 0.5,
-        "expanded is the rounded line boxes' figure: {expanded}"
+    windows_figure(
+        expanded,
+        768.0,
+        "expanded is the rounded line boxes' figure",
     );
 
     collapse_turns(&mut harness);
     let collapsed = panel_bottom(&harness);
-    assert!(
-        (collapsed - 533.0).abs() < 0.5,
-        "collapsed drops the whole section: {collapsed}"
-    );
+    windows_figure(collapsed, 533.0, "collapsed drops the whole section");
+    assert!(collapsed < expanded, "{collapsed} vs {expanded}");
 
     let panel = harness
         .with_dom(|dom| {
@@ -548,30 +556,36 @@ fn a_turn_row_inside_the_disclosure_still_selects_its_token() {
 fn collapsing_turns_brings_the_transient_states_inside_the_design() {
     let mut composing = composing_a_whisper(DESIGN_SIZE);
     let open = panel_bottom(&composing);
-    assert!(
-        (open - 790.0).abs() < 0.5,
-        "composing fits the design expanded: {open}"
-    );
+    windows_figure(open, 790.0, "composing fits the design expanded");
     collapse_turns(&mut composing);
     let shut = panel_bottom(&composing);
-    assert!(
-        (shut - 555.0).abs() < 0.5 && shut <= 800.0,
-        "and collapsed it is well inside the 800 target: {shut}"
+    windows_figure(
+        shut,
+        555.0,
+        "and collapsed it is well inside the 800 target",
     );
+    assert!(
+        open <= DESIGN_SIZE.1 && shut <= 800.0,
+        "composing: {open} / {shut}"
+    );
+    let freed = open - shut;
 
     let mut picking = board(DESIGN_SIZE, false);
     picking.update(|ui| ui.action_pick = Some((TokenId(1), "attack".to_owned())));
     picking.relayout();
     assert!(picking.state().picking_target());
     let open = panel_bottom(&picking);
-    assert!(
-        (open - 802.0).abs() < 0.5,
-        "a target pick fits the design expanded: {open}"
-    );
+    windows_figure(open, 802.0, "a target pick fits the design expanded");
     collapse_turns(&mut picking);
     let shut = panel_bottom(&picking);
+    windows_figure(shut, 567.0, "and collapsed it is inside as well");
     assert!(
-        (shut - 567.0).abs() < 0.5 && shut <= 800.0,
-        "and collapsed it is inside as well: {shut}"
+        open <= DESIGN_SIZE.1 && shut <= 800.0,
+        "a target pick: {open} / {shut}"
+    );
+    let picked = open - shut;
+    assert!(
+        (picked - freed).abs() < 0.5,
+        "one section either way: {picked} vs {freed}"
     );
 }
