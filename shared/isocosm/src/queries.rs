@@ -88,6 +88,11 @@ impl Simulation {
         }
     }
     pub(crate) fn target_matches(&self, actor: Id, target: Option<Id>, p: &Process) -> bool {
+        self.target_matches_without_reach(actor, target, p)
+            && target.is_none_or(|target| self.feeding_reachable(actor, target, p))
+    }
+
+    pub(crate) fn target_matches_without_reach(&self, actor: Id, target: Option<Id>, p: &Process) -> bool {
         let Some(selector) = &p.target else {
             return true;
         };

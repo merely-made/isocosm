@@ -54,6 +54,14 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
     let volume = sim.volume(request.site, geometry.window.min, geometry.window.max, geometry.window.depth)?;
     let places = Places::derive(&volume, profile.places)?;
     let whole = embodiment::enabled(sim);
+    if sim.foraging_enabled() && sim.state().spatial_poses.get(&request.actor)
+        .is_none_or(|at| at.site != request.site || at.arrived != actor.arrived || at.pose != geometry.path[0]) {
+        return Err("step begins away from its native resident pose".into());
+    }
+    if sim.foraging_enabled() && sim.genesis().rules.spatial_templates.as_ref()
+        .is_some_and(|t| t.window != geometry.window) {
+        return Err("step differs from the native resident terrain window".into());
+    }
     let document = actor.body.as_ref().ok_or("step body absent")?;
     if places.place_at(geometry.path[0].at) != Some(request.patch)
         || if whole { embodiment::check(&volume, document, &geometry.path[0]).is_err() }
@@ -61,6 +69,9 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
         return Err("step begins outside its admitted native patch".into());
     }
     for pair in geometry.path.windows(2) {
+        if sim.foraging_enabled() && !sim.spatial_destination_clear(request.actor, request.site, &pair[1]) {
+            return Err("step destination intersects a current native resident".into());
+        }
         let available = if whole {
             embodiment::neighbours(&volume, &places, profile, document, &pair[0]).contains(&pair[1])
         } else { neighbours(&volume, &places, profile, pair[0].at).contains(&pair[1].at) };

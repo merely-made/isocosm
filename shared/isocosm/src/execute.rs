@@ -157,6 +157,9 @@ impl Simulation {
             let why = "no target satisfies the declared scope".into();
             return refused(receipt, Outcome::Blocked(why));
         }
+        if !self.foraging_walk_matches(actor, target, definition) {
+            return refused(receipt, Outcome::Blocked("walking has no eligible food serving a current need".into()));
+        }
         if cause
             .as_ref()
             .is_some_and(|id| !self.state.events.contains_key(id))
@@ -187,6 +190,7 @@ impl Simulation {
             .filter(|p| {
                 let part = self.bind_part(actor, p);
                 self.route_ready(actor, p) && self.target_matches(actor, target, p)
+                    && self.foraging_walk_matches(actor, target, p)
                     && self.owned_process_ready(actor,target,p)
                     && p.requires
                         .iter()

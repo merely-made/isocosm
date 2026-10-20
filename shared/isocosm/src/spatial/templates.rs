@@ -48,11 +48,13 @@ pub struct Templates {
     pub eye: [i64; 3],
     pub stands: BTreeMap<Id, Vec<Stand>>,
     pub crossings: Vec<Crossing>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub foraging: BTreeMap<Key, super::foraging::Foraging>,
 }
 
 impl Templates {
     pub fn validate(&self, genesis: &Genesis) -> Result<()> {
-        if !matches!(self.version, VERSION | 2) || self.window.max[0] <= self.window.min[0]
+        if !matches!(self.version, VERSION | 2 | 3) || self.window.max[0] <= self.window.min[0]
             || self.window.max[1] <= self.window.min[1] || self.window.depth <= 0 {
             return Err("unsupported or empty spatial templates".into());
         }
@@ -64,11 +66,12 @@ impl Templates {
         let mut actors = BTreeSet::new();
         for (&site, stands) in &self.stands { for stand in stands {
             if self.version == 1 && stand.actor.is_some() { return Err("legacy stand has an actor binding".into()); }
-            if self.version == 2 && stand.actor.is_none_or(|id| !actors.insert(id)
+            if self.version >= 2 && stand.actor.is_none_or(|id| !actors.insert(id)
                 || genesis.population.get(id).is_none_or(|e| e.body.is_none() || e.resident_site() != Some(site))) {
                 return Err("whole-body stand has no unique native resident".into());
             }
         } }
+        super::foraging::validate(self, &genesis.rules)?;
         for crossing in &self.crossings {
             let routed = genesis.sites.get(&crossing.from)
                 .is_some_and(|site| site.routes.iter().any(|r| r.to == crossing.to));
@@ -101,7 +104,7 @@ impl Templates {
                 .map(|stand| Crossing { from, to: r.to, stand: stand.clone() }))
             .collect::<Vec<_>>()).collect();
         genesis.rules.spatial_templates = Some(Templates { version: VERSION, window, places, eye: EYE,
-            stands, crossings });
+            stands, crossings, foraging: BTreeMap::new() });
         Ok(())
     }
 }

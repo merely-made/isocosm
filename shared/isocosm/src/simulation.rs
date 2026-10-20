@@ -89,6 +89,9 @@ pub struct State {
     pub projects: crate::projects::Projects,
     #[serde(default, skip_serializing_if = "crate::institutions::Records::is_empty")]
     pub institutions: crate::institutions::Records,
+    /// Exact resident roots published by native spatial acts in opt-in worlds.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub spatial_poses: BTreeMap<Id, crate::spatial::foraging::Resident>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -217,6 +220,7 @@ impl Simulation {
             spreads: genesis.spreads.clone(),
             projects: crate::projects::Projects::default(),
             institutions: Default::default(),
+            spatial_poses: crate::spatial::foraging::founding_poses(&genesis),
         };
         let conserved = matter(&state, &genesis.rules);
         Ok(Self {

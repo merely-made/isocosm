@@ -41,6 +41,16 @@ pub struct Refresh {
 }
 
 impl Placement {
+    pub(super) fn check_native_pose(&self, sim: &Simulation) -> Result<(), String> {
+        if sim.foraging_enabled() && (sim.state().spatial_poses.get(&self.actor.0)
+            .is_none_or(|at| at.site != self.site.0 || Some(at.arrived) != self.resident_since
+                || at.pose.at != self.pose.at || at.pose.yaw != self.pose.yaw)
+            || sim.genesis().rules.spatial_templates.as_ref().is_none_or(|t|
+                t.window != self.window || t.places != self.places.unwrap_or_default())) {
+            return Err("game placement differs from its native resident pose".into());
+        }
+        Ok(())
+    }
     /// Read current native body/terrain at this unchanged pose and eye.
     /// Both cells must remain clear and belong to the same realized patch.
     pub(super) fn rebound(&self, sim: &Simulation) -> Result<Self, String> {
@@ -55,6 +65,7 @@ impl Placement {
         if self.resident_since != Some(member.arrived) {
             return Err("saved pose is not bound to this native visit".into());
         }
+        self.check_native_pose(sim)?;
         let window = &self.window;
         let (volume, places) = cache.get(sim, self.site.0, window, self.places.unwrap_or_else(Rules::default))?;
         if isocosm::spatial::embodiment::enabled(sim) {

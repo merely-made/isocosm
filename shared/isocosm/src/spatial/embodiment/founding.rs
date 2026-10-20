@@ -3,12 +3,12 @@
 
 use super::*;
 use crate::{
-    rules::{Binding, Causation, Effect, Query},
+    rules::{Binding, Causation, Effect, Expr, Query, Reading},
     simulation::Genesis,
     terrain::View,
 };
 
-pub const GENERATED_VERSION: u32 = 2;
+pub const GENERATED_VERSION: u32 = 3;
 
 /// Explicit new-play founding transformation, before the native Session exists.
 /// Loading an existing world never regenerates its declared rules or placements.
@@ -16,7 +16,7 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
     let Some(mut templates) = genesis.rules.spatial_templates.clone() else {
         return Err("placed play needs generator-declared physical templates".into());
     };
-    if templates.version == GENERATED_VERSION {
+    if templates.version >= 2 {
         return Ok(());
     }
     let view = View::of(genesis)?;
@@ -165,6 +165,27 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
         if !cycles.insert(cycle.clone()) {
             continue;
         }
+        let Some(feed) = genesis.rules.processes.values().find(|p| p.port_feeding.is_some()
+            && p.target.is_some() && p.period.is_some() && p.requires.iter().any(|q|
+                matches!(q, Query::Trait { who: Binding::Actor, key } if key == cycle))).cloned() else {
+            continue;
+        };
+        // New placed worlds read appetite from actual fillable body capacity.
+        // Keep the world's existing need weight and consumer-cycle applicability.
+        if let Some(mind) = &mut genesis.rules.mind {
+            for need in &mut mind.needs {
+                if need.traits.contains(cycle)
+                    && let Query::Below { who: Binding::Actor, key, .. } = &need.query
+                    && feed.commitments.iter().chain(&feed.effects).any(|e|
+                        matches!(e, Effect::Eat { into, .. } if into == key))
+                {
+                    need.query = Query::Computed(Expr::AtLeast(
+                        Box::new(Expr::Read(Reading::Room { who: Binding::Actor, key: key.clone() })),
+                        Box::new(Expr::Const(1)),
+                    ));
+                }
+            }
+        }
         let key = format!("body:walk:{cycle}");
         let mut process = crate::generate::process(
             &key,
@@ -183,7 +204,8 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
                 key: "life:consumer".into(),
             },
         ]);
-        process.period = Some(3);
+        process.period = Some(1);
+        process.target = feed.target.clone();
         process.note = true;
         genesis.rules.step_profiles.insert(
             key.clone(),
@@ -200,6 +222,9 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
                 stance_offset: [0; 3],
             },
         );
+        templates.foraging.insert(key.clone(), super::super::foraging::Foraging {
+            feed: feed.id, reach: 0, search: 32, nodes: 256,
+        });
         genesis.rules.processes.insert(key, process);
     }
     genesis.rules.spatial_templates = Some(templates);

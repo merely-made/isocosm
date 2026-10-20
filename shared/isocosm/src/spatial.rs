@@ -18,6 +18,7 @@ mod birth_geometry;
 mod birth_command;
 mod templates;
 pub mod embodiment;
+pub mod foraging;
 pub use templates::{Templates, Stand, Crossing, STANDS as STANDS_PER_SITE};
 pub use birth::{BirthProfile, BirthMedium, BirthSupport, BirthRequest, BirthGeometry, BirthResolution, BirthReport, BirthPending, birth_pose};
 pub use birth::rotate as rotate_offset;
@@ -111,7 +112,7 @@ pub fn validate(rules: &Rules) -> Result<()> {
             || matches!(profile.places.cap, isometer_space::places::Cap::Own(s) if s.contains(&0))
         { return Err("birth profile needs its native process and authored clearance".into()); }
         if profile.support == BirthSupport::BodyGround && (profile.medium != BirthMedium::Air
-            || rules.spatial_templates.as_ref().is_none_or(|t| t.version != 2)) {
+            || rules.spatial_templates.as_ref().is_none_or(|t| t.version < 2)) {
             return Err("part-floor birth support needs whole-body templates and air".into());
         }
     }
@@ -149,6 +150,11 @@ impl Simulation {
     pub(crate) fn commit_step(&mut self, step: Option<StagedStep>) {
         if let Some(step) = step {
             debug_assert!(step.resolved);
+            if self.foraging_enabled() {
+                let pose = self.spatial_resolutions.inputs[&step.request.action].geometry.as_ref()
+                    .expect("accepted geometry").path.last().expect("accepted path").clone();
+                self.keep_spatial_pose(step.request.actor, step.request.site, pose);
+            }
             self.spatial_resolutions.accepted.insert(step.request.action.clone());
             self.spatial_resolutions.order.push(Publication::Step(step.request.action.clone()));
             self.spatial_resolutions.used.insert(step.request.action);

@@ -22,7 +22,7 @@ pub fn enabled(sim: &Simulation) -> bool {
         .rules
         .spatial_templates
         .as_ref()
-        .is_some_and(|t| t.version == 2)
+        .is_some_and(|t| t.version >= 2)
 }
 
 /// Exact half-open boxes, including each attachment's yaw and the root yaw.
@@ -90,7 +90,10 @@ pub fn air(volume: &Volume, at: [i64; 3]) -> bool {
 /// Every occupied part cell must fit; at least one actual part floor touches
 /// non-water ground. Empty attachment points have no collision volume.
 pub fn check(volume: &Volume, document: &BodyDocument, pose: &Pose) -> Result<()> {
-    let occupied = boxes(document, pose)?;
+    check_occupied(volume, boxes(document, pose)?)
+}
+
+fn check_occupied(volume: &Volume, occupied: Vec<Box3>) -> Result<()> {
     let mut supported = false;
     for [lo, hi] in occupied {
         if !volume.holds(lo[0], lo[2]) || !volume.holds(hi[0] - 1, hi[2] - 1) {
@@ -122,6 +125,23 @@ pub fn check(volume: &Volume, document: &BodyDocument, pose: &Pose) -> Result<()
     Ok(())
 }
 
+pub(crate) fn translated(local: &[Box3], at: [i64; 3]) -> Result<Vec<Box3>> {
+    local
+        .iter()
+        .map(|bounds| {
+            let mut placed = *bounds;
+            for corner in &mut placed {
+                for k in 0..3 {
+                    corner[k] = corner[k]
+                        .checked_add(at[k])
+                        .ok_or("body translation overflow")?;
+                }
+            }
+            Ok(placed)
+        })
+        .collect()
+}
+
 /// Highest terrain cells are read from Ground, including edits and water.
 /// Reused across a bounded stand/path search, never persisted as authority.
 pub struct Grounding<'a> {
@@ -138,7 +158,12 @@ impl<'a> Grounding<'a> {
     }
 
     pub fn at(&mut self, document: &BodyDocument, x: i64, z: i64, yaw: Yaw) -> Result<Pose> {
-        let local = boxes(document, &Pose { at: [x, 0, z], yaw })?;
+        let local = boxes(document, &Pose { at: [0; 3], yaw })?;
+        self.at_boxes(&local, x, z, yaw)
+    }
+
+    pub(crate) fn at_boxes(&mut self, relative: &[Box3], x: i64, z: i64, yaw: Yaw) -> Result<Pose> {
+        let local = translated(relative, [x, 0, z])?;
         let mut y = i64::MIN;
         for [lo, hi] in &local {
             if !self.volume.holds(lo[0], lo[2]) || !self.volume.holds(hi[0] - 1, hi[2] - 1) {
@@ -164,7 +189,7 @@ impl<'a> Grounding<'a> {
             }
         }
         let pose = Pose { at: [x, y, z], yaw };
-        check(self.volume, document, &pose)?;
+        check_occupied(self.volume, translated(relative, pose.at)?)?;
         Ok(pose)
     }
 
@@ -179,6 +204,7 @@ impl<'a> Grounding<'a> {
         cap: usize,
         blocked: &[Box3],
     ) -> Result<Pose> {
+        let local = boxes(document, &Pose { at: [0; 3], yaw })?;
         let mut tried = 0;
         for ring in (0..=reach).step_by(stride.max(1)) {
             for x in (centre[0] - ring..=centre[0] + ring).step_by(stride.max(1)) {
@@ -190,8 +216,8 @@ impl<'a> Grounding<'a> {
                     if tried > cap {
                         return Err("body placement candidate budget exhausted".into());
                     }
-                    if let Ok(pose) = self.at(document, x, z, yaw)
-                        && !intersects(&boxes(document, &pose)?, blocked)
+                    if let Ok(pose) = self.at_boxes(&local, x, z, yaw)
+                        && !intersects(&translated(&local, pose.at)?, blocked)
                     {
                         return Ok(pose);
                     }
@@ -212,6 +238,25 @@ pub fn neighbours(
     pose: &Pose,
 ) -> Vec<Pose> {
     let mut grounding = Grounding::new(volume);
+    let Ok(local) = boxes(
+        document,
+        &Pose {
+            at: [0; 3],
+            yaw: pose.yaw,
+        },
+    ) else {
+        return Vec::new();
+    };
+    neighbours_from_boxes(places, profile, &local, pose, &mut grounding)
+}
+
+pub(crate) fn neighbours_from_boxes(
+    places: &Places,
+    profile: &StepProfile,
+    local: &[Box3],
+    pose: &Pose,
+    grounding: &mut Grounding<'_>,
+) -> Vec<Pose> {
     let Some(from) = places.place_at(pose.at) else {
         return Vec::new();
     };
@@ -219,8 +264,8 @@ pub fn neighbours(
         .into_iter()
         .filter_map(|[dx, dz]| {
             let next = grounding
-                .at(
-                    document,
+                .at_boxes(
+                    local,
                     pose.at[0].checked_add(dx)?,
                     pose.at[2].checked_add(dz)?,
                     pose.yaw,

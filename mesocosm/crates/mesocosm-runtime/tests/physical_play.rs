@@ -57,7 +57,21 @@ fn founded() -> Founded {
     {
         process.requires.push(Query::Age { at_least: u64::MAX });
     }
+    let mind = founded.genesis.rules.mind.clone();
     body::declare(&mut founded.genesis).unwrap();
+    founded.genesis.rules.mind = mind;
+    let periods: std::collections::BTreeMap<_, _> = founded.genesis.rules.spatial_templates
+        .as_ref().unwrap().foraging.iter().map(|(walk, f)|
+            (walk.clone(), founded.genesis.rules.processes[&f.feed].period)).collect();
+    // This suite retains the version-two locomotion controls. Food-directed
+    // version-three ordinary choices have their own acceptance suite.
+    let templates = founded.genesis.rules.spatial_templates.as_mut().unwrap();
+    templates.version = 2;
+    templates.foraging.clear();
+    for process in founded.genesis.rules.processes.values_mut().filter(|p| p.id.starts_with("body:walk:")) {
+        process.target = None;
+        process.period = periods[&process.id];
+    }
     founded
 }
 

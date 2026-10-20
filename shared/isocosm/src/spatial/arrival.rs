@@ -18,6 +18,9 @@ impl Simulation {
                 Err("arrival offer names another native journey".into())
             } else { geometry::check_arrival(self, r, &input.geometry) };
             if let Ok(patch) = &patch {
+                if self.foraging_enabled() {
+                    self.keep_spatial_pose(r.actor, r.to, input.geometry.pose.clone());
+                }
                 if let Some((&base, group)) = self.state.population.groups.range(..=r.actor).next_back() {
                     let last = base.checked_add(group.count).ok_or("arrival identity overflow")?;
                     let reached = [base, r.actor, r.actor.checked_add(1).filter(|id| *id < last).unwrap_or(base)];

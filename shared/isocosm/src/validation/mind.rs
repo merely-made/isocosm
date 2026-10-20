@@ -51,7 +51,14 @@ pub(super) fn mind(rules: &Rules) -> Result<()> {
                     ..
                 }
         );
-        if !own {
+        // Capacity appetite is an actor-only, deterministic account reading.
+        // Other computed queries still cannot introduce target/action/mood reads.
+        let capacity = matches!(need.query, Query::Computed(_))
+            && crate::needs::account(&need.query).is_some();
+        if capacity {
+            account(rules, crate::needs::account(&need.query).unwrap())?;
+        }
+        if !own && !capacity {
             return Err("a need reads only its member and its site's conditions".into());
         }
     }

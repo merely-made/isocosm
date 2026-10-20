@@ -111,6 +111,7 @@ impl Simulation {
 
     pub(crate) fn choose_target(&self, actor: Id, p: &Process) -> Option<Id> {
         if let Some(target)=self.institution_target(actor,p) {return target.ok().flatten();}
+        if let Some(target) = self.foraging_target(actor, p) { return target; }
         let selector = p.target.as_ref()?;
         let entity = self.body_at_start(actor)?;
         // Reject an ineligible actor before searching the population for food.
