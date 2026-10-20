@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isometer_space::places::Places;
 use std::collections::VecDeque;
 
 /// A bounded route to contact with the actual chosen food. The first step
@@ -28,8 +27,8 @@ pub fn geometry(sim: &Simulation, request: &Request, window: &Window) -> Result<
         .current_placed_boxes(target, request.site)
         .ok_or("chosen food pose absent")?;
     let profile = &sim.genesis.rules.step_profiles[&request.profile];
-    let volume = sim.volume(request.site, window.min, window.max, window.depth)?;
-    let places = Places::derive(&volume, profile.places)?;
+    let terrain = sim.site_geometry(request.site, window, profile.places)?;
+    let (volume, places) = (&terrain.volume, &terrain.places);
     embodiment::check(&volume, document, before)?;
     let local = embodiment::boxes(
         document,

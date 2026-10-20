@@ -1,72 +1,29 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Bounded reuse of immutable site geometry. Native actor checks stay with callers.
+//! Retains one native geometry entry across product publications.
+use isocosm::{operations::Window, schema::Id, simulation::Simulation, spatial::SiteGeometry};
+use isometer_space::{places::{Places, Rules}, volume::Volume};
+use std::sync::Arc;
 
-use isocosm::{operations::Window, schema::Id, simulation::Simulation};
-use isometer_space::{
-    places::{Places, Rules},
-    volume::Volume,
-};
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-struct Key {
-    site: Id,
-    window: Window,
-    rules: Rules,
-    terrain_revision: String,
-}
-
-struct Geometry {
-    key: Key,
-    volume: Volume,
-    places: Places,
-}
-
-/// One exact geometry entry stays bounded across owner rounds, refreshes, and
-/// atomic clock transactions. Exact key checks gate reuse; this cache is never persisted.
 #[derive(Default)]
 pub(crate) struct GeometryCache {
-    current: Option<Geometry>,
+    current: Option<Arc<SiteGeometry>>,
     #[cfg(test)]
     builds: usize,
 }
-
 impl GeometryCache {
     #[cfg(test)]
     pub(in crate::spatial) fn builds(&self) -> usize { self.builds }
 
-    pub(crate) fn get(
-        &mut self,
-        sim: &Simulation,
-        site: Id,
-        window: &Window,
-        rules: Rules,
-    ) -> Result<(&Volume, &Places), String> {
-        let key = Key {
-            site,
-            window: window.clone(),
-            rules,
-            terrain_revision: sim.terrain_revision(),
-        };
-        if !self.current.as_ref().is_some_and(|entry| entry.key == key) {
+    pub(crate) fn get(&mut self, sim: &Simulation, site: Id, window: &Window, rules: Rules)
+        -> Result<(&Volume, &Places), String> {
+        if !self.current.as_ref().is_some_and(|entry| entry.matches(sim, site, window, rules)) {
             let _span = crate::profile::Span::new("geometry.build");
-            let volume = sim.volume(site, window.min, window.max, window.depth)?;
-            let places = Places::derive(&volume, rules)?;
-            self.current = Some(Geometry {
-                key,
-                volume,
-                places,
-            });
-            #[cfg(test)]
-            {
-                self.builds += 1;
-            }
+            self.current = Some(sim.site_geometry(site, window, rules)?);
+            #[cfg(test)] { self.builds += 1; }
         }
-        let geometry = self
-            .current
-            .as_ref()
-            .ok_or("native geometry cache was not populated")?;
+        let geometry = self.current.as_ref().ok_or("native geometry cache was not populated")?;
         Ok((&geometry.volume, &geometry.places))
     }
 }
@@ -318,5 +275,37 @@ mod tests {
             uncached,
             cached
         );
+    }
+}
+
+#[cfg(test)]
+mod shared_tests {
+    use super::*;
+
+    #[test]
+    fn native_and_product_reads_share_exact_immutable_geometry_across_clones() {
+        let session = super::physical_test_session();
+        let t = session.sim.genesis().rules.spatial_templates.as_ref().unwrap();
+        let (&site, stands) = t.stands.iter().find(|(_, v)| !v.is_empty()).unwrap();
+        let at = stands[0].at;
+        let window = Window { min: [at[0]-1, at[2]-1], max: [at[0]+1, at[2]+1], depth: t.window.depth };
+        let native = session.sim.site_geometry(site, &window, t.places).unwrap();
+        let clone = session.sim.clone();
+        assert!(Arc::ptr_eq(&native, &clone.site_geometry(site, &window, t.places).unwrap()));
+        let mut product = GeometryCache::default();
+        product.get(&clone, site, &window, t.places).unwrap();
+        assert!(Arc::ptr_eq(&native, product.current.as_ref().unwrap()));
+        let mut changed = window.clone();
+        changed.depth += 1;
+        assert!(!Arc::ptr_eq(&native, &clone.site_geometry(site, &changed, t.places).unwrap()));
+        for shift in 0..10 {
+            let w = Window { min: [at[0]-1+shift, at[2]-1],
+                max: [at[0]+1+shift, at[2]+1], depth: t.window.depth };
+            clone.site_geometry(site, &w, t.places).unwrap();
+        }
+        let rebuilt = clone.site_geometry(site, &window, t.places).unwrap();
+        assert!(!Arc::ptr_eq(&native, &rebuilt), "bounded native cache evicts older entries");
+        assert!(native.volume.same_cells(&rebuilt.volume));
+        assert_eq!(native.places, rebuilt.places);
     }
 }

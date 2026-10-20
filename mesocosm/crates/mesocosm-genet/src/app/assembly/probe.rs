@@ -65,7 +65,8 @@ impl mesquite::Product for Probe {
                 ("food-directed-walking", yes_no(r.sim().foraging_enabled())),
                 ("native-poses", r.sim().state().spatial_poses.len().to_string()),
                 ("placed-offspring", children.to_string()),
-                ("controlled-placement", yes_no(r.critter().is_some_and(|id| physical.members.contains_key(&id)))),
+                ("controlled-placement", yes_no(r.critter().is_some_and(|id| physical.members.get(&id).is_some_and(|at| at.realized(&r.sim()).is_ok()
+                    && physical.placement_unoccupied(&r.sim(), id).is_ok())))),
                 ("bodies", s.host.config.body_mode.name().into()),
                 ("voxel-bodies", body_stats.voxel_bodies.to_string()),
                 ("terrain-bricks", terrain_stats.resident.to_string()),

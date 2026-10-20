@@ -2,6 +2,57 @@
 
 **Date:** 2026-09-11
 
+**Ordinary generation audit, 2026-10-20, verified:** the clock-selected
+world `15681609907537121240` reaches tick 64 and four parent-child levels after
+founding, with 393 reported biological children, 142 accepted walks, three
+accepted offspring placements and its natural tick-60 review answered through
+the ordinary keymap. Control passes from 6 to cohort member 8 at tick 20.
+This qualifies biological generations across the world and one cohort succession;
+it does not qualify a direct parent-to-offspring control transfer.
+
+The first startup exhausted the old eight-candidate search bound. The bounded,
+configurable default is now 32; the exact failed base seed passes a regression.
+The subsequent run exposed a blank viewport during travel, a false current-pose
+probe, an unseen traveling newborn offered for takeover, and a fatal arrival
+recovery that compared the new journey with an older historical pose.
+
+The view now retains generator-declared terrain during travel or missing physical
+placement, shows its status, and draws only currently admitted bodies. Both the
+question and keymap use the existing native loop reading. An unseen offspring
+leaves the personal Keep Parent answer available. The native arrival report
+validates identity and the actual journey; the product keeps its window/rule
+checks while allowing recovery from older visits. Initially unplaced founding
+cohort members can acquire real geometry through their actual native arrivals.
+
+Arrival batches reuse terrain and the existing Grounding surface cache per
+destination, retaining actor order and reservations. Identical failed rotated
+part-box shapes can be skipped while those reservations only grow. The former
+product-only geometry cache now retains a native `SiteGeometry` entry. Native
+walking, birth, arrival and route validation share at most eight immutable entries
+across simulation clones, keyed by complete terrain revision, site, window and
+place rules. Every actor, visit, body, eye and occupancy check remains current.
+Cache data is absent from saved state and witnesses. Tests cover exact cells,
+clones, eviction, edits, source-window mismatch and stale physical bindings.
+
+**Receipts:** `Code/testing/mesocosm/generations-2026-10-20/summary.json`, capped
+at 100 MB. The exact default launch executable is rebuilt. Seventy-eight release
+tests pass, with six existing profiling/GPU controls ignored. The headed tick-45
+and tick-64 captures show controlled member 8 physically placed; at tick 64 the
+scene has 35 checked physical bodies, zero projection failures and zero terrain
+overflow. Dev intent count remains zero. Headed reload preserves native and mode
+section bytes, and headless replay preserves `b24aeceecfd0a64a`. The earlier
+version-three, whole-body, root-only and coarse receipts retain their hashes.
+A separate short replay counts the actual automatic cohort takeover once,
+rather than mistaking its subsequent confirmation for a second change.
+
+**Limits:** this is one generated world, not ecological balance or a frame-budget
+gate. The live rounds have a roughly 4.17-second median in this loaded diagnostic;
+the natural boundary takes roughly 159.6 seconds including forecasts. Individual
+reused geometry reads have a 9-microsecond median, but physical searches, native
+work and per-candidate historical forecast replay still cost time. Bodies remain
+rigid and unsupported placements remain absent. Independent execution/doctrine
+documentation work was preserved.
+
 **2026-10-20 food-directed walking, verified:** native choice needs exact
 positions to distinguish reachable meals from nearby food. New play foundings
 opt into saved foraging rules and native resident poses, updated by the

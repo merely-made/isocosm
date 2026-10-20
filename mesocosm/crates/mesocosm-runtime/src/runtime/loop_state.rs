@@ -104,6 +104,15 @@ impl Mesocosm {
         Ok(())
     }
 
+    pub(super) fn question_reading(&self, world: &World, queued: Vec<Envelope>) -> Result<LoopReading, String> {
+        let game = self.loop_game(world, queued);
+        let access = self.loop_access(world);
+        let session = session(world);
+        let visible = continuation::admission::visible(&session, &game, access)
+            .map_err(|why| format!("{why:?}"))?;
+        continuation::read_loop(&session, &game, access, &visible)
+    }
+
     pub(crate) fn loop_access(&self, world: &World) -> OrdinaryAccess {
         OrdinaryAccess { participant: ParticipantHandle(self.lp.participant),
             seat: Seat::Player, subject: self.critter(world).map(EntityHandle) }
@@ -154,14 +163,7 @@ impl Runtime {
 
     pub fn loop_reading(&self) -> Result<LoopReading, String> {
         let _span = crate::profile::Span::new("loop_reading.total");
-        let world = self.driver.world();
-        let product = self.driver.product();
-        let game = product.loop_game(world, self.driver.queued().cloned().collect());
-        let access = product.loop_access(world);
-        let session = session(world);
-        let visible = continuation::admission::visible(&session, &game, access)
-            .map_err(|why| format!("{why:?}"))?;
-        continuation::read_loop(&session, &game, access, &visible)
+        self.driver.product().question_reading(self.driver.world(), self.driver.queued().cloned().collect())
     }
 
     pub fn submit_loop_input(&mut self, input: &LoopInput) -> Result<String, Refusal> {

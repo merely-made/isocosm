@@ -6,6 +6,7 @@ use isocosm::spatial::{ArrivalRequest, ArrivalGeometry, ArrivalResolution, Arriv
 
 impl Game {
     pub(super) fn arrival_inputs(&self, session: &Session) -> Result<Vec<ArrivalResolution>, String> {
+        let _span = crate::profile::Span::new("arrival.inputs");
         if self.generated_driver() { return self.generated_arrivals(session); }
         let Some(driver) = &self.driver else { return Ok(Vec::new()); };
         let end = session.sim.state().tick.checked_add(1).ok_or("spatial clock overflows")?;
@@ -30,11 +31,13 @@ impl Game {
         if self.generated_driver() {
             let driver = self.driver.as_ref().ok_or("generated arrival driver absent")?;
             let held = self.members.get(&input.request.actor);
-            if held.is_none() && !driver.children.contains_key(&input.request.actor) {
-                return Err("generated arrival has no admitted source identity".into());
-            }
+            // The native report validates actual identity and journey, including
+            // an initially unplaced founding member taken up at a death hold.
             let source = held.or_else(|| driver.initial.values().next()).ok_or("generated arrival source absent")?;
-            if held.is_some_and(|held| held.site.0 != input.request.from) || source.window != input.geometry.window
+            // A failed physical landing can leave a historical pose several
+            // native visits behind. Native arrival admission validates the
+            // actual journey; this projection retains only its input contract.
+            if source.window != input.geometry.window
                 || source.places.unwrap_or_default() != input.geometry.places {
                 return Err("generated arrival differs from its source window and route".into());
             }
@@ -75,5 +78,39 @@ impl Game {
             }
         }
         Ok(changes)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn admitted_arrival_can_replace_history_from_before_an_unplaced_visit() {
+        let runtime = crate::Runtime::bench_placed(
+            crate::Founded::generated(16_003_851_315_348_448_882, 60).unwrap(), 2).unwrap();
+        let game = runtime.spatial();
+        let held = game.members.values().next().expect("generated physical resident");
+        let input = ArrivalResolution {
+            request: ArrivalRequest { actor: held.actor.0, from: held.site.0 + 1,
+                to: held.site.0, departed: 12, arrives: 16,
+                body_revision: held.body_revision, terrain_revision: held.terrain_revision.clone() },
+            geometry: ArrivalGeometry { window: held.window.clone(),
+                pose: isocosm::spatial::Pose { at: held.pose.at, yaw: held.pose.yaw },
+                eye: held.eye, places: held.places.unwrap_or_default() },
+        };
+        let next = game.arrival_placement(&input, held.patch).unwrap();
+        assert_eq!(next.resident_since, Some(16));
+        assert_eq!(next.pose, held.pose);
+        let founder = runtime.sim().genesis().population.groups.iter()
+            .filter(|(_, group)| group.entity.body.is_some())
+            .flat_map(|(&first, group)| first..first + group.count)
+            .find(|id| !game.members.contains_key(id)).expect("unplaced native founding member");
+        let mut founding_arrival = input.clone();
+        founding_arrival.request.actor = founder;
+        assert_eq!(game.arrival_placement(&founding_arrival, held.patch).unwrap().actor.0, founder);
+        let mut mismatched = input;
+        mismatched.geometry.window.depth += 1;
+        assert!(game.arrival_placement(&mismatched, held.patch).is_err());
     }
 }

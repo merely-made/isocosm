@@ -189,6 +189,7 @@ pub struct Simulation {
     pub(crate) journeys: Option<crate::journey::Journeys>,
     pub(crate) geometry_resolutions: crate::operations::Resolutions,
     pub(crate) spatial_resolutions: crate::spatial::Resolutions,
+    pub(crate) spatial_geometry: crate::spatial::GeometryCache,
 }
 
 impl Simulation {
@@ -249,6 +250,7 @@ impl Simulation {
             journeys: None,
             geometry_resolutions: Default::default(),
             spatial_resolutions: Default::default(),
+            spatial_geometry: Default::default(),
         })
     }
     pub fn state(&self) -> &State {

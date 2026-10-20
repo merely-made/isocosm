@@ -21,7 +21,7 @@ pub use mesocosm_runtime::runtime::placing::{DEPTH, WINDOW_HALF};
 pub fn site_of(sim: &Simulation, played: Option<Id>) -> Option<Id> {
     let pop = &sim.state().population;
     match played {
-        Some(id) => pop.get(id).and_then(|e| e.resident_site()),
+        Some(id) => pop.get(id).and_then(|e| e.resident_site().or_else(|| e.journey.as_ref().map(|j| j.from))),
         None => sim.state().sites.keys().next().copied(),
     }
 }
@@ -164,16 +164,21 @@ pub fn placed_physical(sim: &Simulation, site: Id,
     Ok(bodies)
 }
 
-/// The played body's authored physical window. This is never a first-body
-/// fallback or the old layout's manufactured ground placement.
+/// The admitted body window, or the generator's declared terrain window while
+/// the played body travels or lacks a supported pose. Only checked bodies draw.
 pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
     game: &mesocosm_runtime::spatial::Game) -> Result<SiteScene, String> {
     let id = played.ok_or("physical scene has no played native member")?;
-    let held = game.members.get(&id).ok_or("played member has no saved physical window or pose")?;
-    held.realized(sim)?;
-    game.placement_unoccupied(sim, id)?;
-    let site = held.site.0;
-    let volume = sim.volume(site, held.window.min, held.window.max, held.window.depth)?;
+    let admitted = game.members.get(&id).filter(|held|
+        held.realized(sim).is_ok() && game.placement_unoccupied(sim, id).is_ok());
+    let (site, window) = if let Some(held) = admitted {
+        (held.site.0, &held.window)
+    } else {
+        let templates = sim.genesis().rules.spatial_templates.as_ref()
+            .filter(|t| t.version >= 2).ok_or("played member has no current physical window")?;
+        (site_of(sim, played).ok_or("played member has no native site or journey")?, &templates.window)
+    };
+    let volume = sim.volume(site, window.min, window.max, window.depth)?;
     let bodies = placed_physical(sim, site, &volume, visible, game)?;
     let volumes = body_volumes(&bodies)?;
     Ok(SiteScene { site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })

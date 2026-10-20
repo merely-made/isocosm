@@ -11,6 +11,9 @@ use isometer_space::places::{Body, PlaceId};
 use crate::operations::Window;
 
 mod geometry;
+mod site_geometry;
+pub use site_geometry::SiteGeometry;
+pub(crate) use site_geometry::Cache as GeometryCache;
 mod advance;
 mod arrival;
 mod birth;

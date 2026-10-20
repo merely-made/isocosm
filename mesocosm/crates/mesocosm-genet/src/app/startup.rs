@@ -288,4 +288,21 @@ mod tests {
         assert_eq!(selected.attempts, 2);
         assert_eq!(selected.seed, candidate_seed(7, 1));
     }
+    #[test]
+    fn default_search_recovers_the_observed_eight_candidate_exhaustion() {
+        use mesocosm_runtime::runtime::ecology::GeneratedSetupError as Error;
+        let selected = select_a1_candidate(1_792_522_317_758_004_600,
+            HostConfig::default().candidate_attempts, true, 60, |seed| {
+                let founded = mesocosm_runtime::Founded::generated(seed, 60).map_err(Error::Invalid)?;
+                let founded = a1_setup(founded, None)?.founded;
+                let runtime = Runtime::bench_placed(founded, 2).map_err(Error::Invalid)?;
+                if runtime.critter().is_none_or(|id| !runtime.spatial().members.contains_key(&id)) {
+                    return Err(Error::MissingPlayedPlacement);
+                }
+                Ok(runtime)
+            }).unwrap();
+        assert!(selected.attempts > 8);
+        assert!(selected.attempts <= HostConfig::default().candidate_attempts);
+    }
+
 }

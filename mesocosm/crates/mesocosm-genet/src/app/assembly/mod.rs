@@ -101,9 +101,8 @@ impl State {
             .continuation_reading()
             .or_else(|| host.directing_reading())
             .or_else(|| {
-                r.checkpoint()
-                    .filter(|_| r.review().is_none())
-                    .map(|c| crate::succession::succession_of(&sim, c))
+                r.checkpoint().filter(|_| r.review().is_none()).and_then(|_| r.loop_reading().ok())
+                    .and_then(|reading| crate::succession::ordinary_of(&sim, &reading))
             });
         self.question_open = question.is_some();
         self.question = question.unwrap_or_else(empty_question);
@@ -115,6 +114,12 @@ impl State {
         let at = host.follow_at();
         self.error = None;
         if let Some(scene) = &host.scene {
+            if host.runtime.spatial().driver.is_some()
+                && host.runtime.critter().is_some_and(|id| !scene.bodies.iter().any(|b| b.id == id)) {
+                self.error = Some(host.runtime.played().as_ref().and_then(|e| e.journey.as_ref()).map_or_else(
+                    || "This body has no supported standing place here. The terrain remains visible.".into(),
+                    |j| format!("Traveling from site {} to site {}, arriving at tick {}.", j.from, j.to, j.arrives)));
+            }
             let presentation = Presentation {
                 forward: host.config.camera.forward(),
                 centre: crate::section::centre_on(at, host.pan, half, host.config.camera),

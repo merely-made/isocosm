@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isometer_space::places::Places;
 
 pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Result<PlaceId> {
     let parent = sim.state().population.get(r.parent).ok_or("birth parent absent")?;
@@ -20,8 +19,8 @@ pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Re
         || sim.terrain_revision() != r.terrain_revision || sim.state().tick != r.tick
         || sim.genesis().rules.revision() != r.revision
     { return Err("biological birth geometry source changed or is unavailable".into()); }
-    let volume = sim.volume(site, g.parent_window.min, g.parent_window.max, g.parent_window.depth)?;
-    let places = Places::derive(&volume, g.parent_places)?;
+    let terrain = sim.site_geometry(site, &g.parent_window, g.parent_places)?;
+    let (volume, places) = (&terrain.volume, &terrain.places);
     if embodiment::enabled(sim) {
         if sim.foraging_enabled() && sim.state().spatial_poses.get(&r.parent)
             .is_none_or(|at| at.site != site || at.arrived != r.parent_visit || at.pose != g.parent_pose) {
@@ -37,8 +36,8 @@ pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Re
         }
     }
     let (pose, eye) = birth_pose(g)?;
-    let volume = sim.volume(site, g.window.min, g.window.max, g.window.depth)?;
-    let places = Places::derive(&volume, profile.places)?;
+    let terrain = sim.site_geometry(site, &g.window, profile.places)?;
+    let (volume, places) = (&terrain.volume, &terrain.places);
     let patch = places.place_at(pose.at).ok_or("authored child pose has no realized patch")?;
     let document = child.body.as_ref().ok_or("child geometry absent")?;
     let bounds = document.aabb();
