@@ -40,6 +40,7 @@ impl BooksCache {
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Frame {
+    pub(crate) spatial_poses: BTreeMap<Id, Option<crate::spatial::foraging::Resident>>,
     books: BooksCache,
     notes_bound: Option<usize>,
     sites: BTreeMap<Id, Site>,

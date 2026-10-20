@@ -78,12 +78,10 @@ enum Serves<'a> {
 }
 
 fn serves(q: &Query) -> Serves<'_> {
+    if let Some(key) = crate::needs::account(q) {
+        return Serves::Account(key);
+    }
     match q {
-        Query::Below {
-            who: Binding::Actor,
-            key,
-            ..
-        } => Serves::Account(key),
         Query::Wounded { .. } => Serves::Healing,
         _ => Serves::Matter,
     }
@@ -125,6 +123,12 @@ fn feeds(e: &Effect, need: &Serves) -> bool {
         Effect::When { .. } => e.branches().any(|b| feeds(b, need)),
         _ => false,
     }
+}
+
+fn need_score(process: &Process, mood: i64, pressing: &[&Need]) -> i64 {
+    let needs: i64 = pressing.iter().filter(|n| process.commitments.iter().chain(&process.effects)
+        .any(|e| feeds(e, &serves(&n.query)))).map(|n| -n.weight.min(0)).sum();
+    needs * 100 * (100 + (-mood).max(0)) / 100
 }
 
 /// Whether `p` acts on its site's ground or conditions.
@@ -318,6 +322,7 @@ impl Simulation {
     fn feasible(&self, actor: Id, target: Option<Id>, p: &Process, place: Id) -> bool {
         let part = self.bind_part(actor, p);
         self.route_ready(actor, p) && self.direction_ready(actor, p).is_ok() && self.target_matches(actor, target, p)
+            && self.foraging_walk_matches(actor, target, p)
             && self.owned_process_ready(actor,target,p)
             && p.requires
                 .iter()
@@ -358,6 +363,11 @@ impl Simulation {
         self.consider(actor, true)
     }
 
+    pub(crate) fn food_need_score(&self, actor: Id, process: &Process) -> i64 {
+        let (mood, pressing) = self.choice_minded(actor);
+        need_score(process, mood, &pressing)
+    }
+
     /// What `actor` weighs: the Choice processes due now, or all of them
     /// where `due_only` is false, as readings ask.
     pub(crate) fn consider(&self, actor: Id, due_only: bool) -> Choice {
@@ -369,6 +379,7 @@ impl Simulation {
         };
         let live = self.live_nudges(actor, tick);
         let (mood, pressing) = self.choice_minded(actor);
+        let waiting = self.foraging_wait_score(actor);
         let mut best = Choice::default();
         let mut top = i64::MIN;
         let mut candidates = Vec::new();
@@ -410,14 +421,8 @@ impl Simulation {
             if !self.feasible(actor, target, p, place) {
                 continue;
             }
-            let effects = || p.commitments.iter().chain(&p.effects);
-            let needs: i64 = pressing
-                .iter()
-                .filter(|n| effects().any(|e| feeds(e, &serves(&n.query))))
-                .map(|n| -n.weight.min(0))
-                .sum();
-            // Low mood weighs needs harder.
-            let needs = needs * 100 * (100 + (-mood).max(0)) / 100;
+            let serves = self.foraging_policy(&p.id).and_then(|f| rules.processes.get(&f.feed)).unwrap_or(p);
+            let needs = need_score(serves, mood, &pressing);
             let answers: Vec<usize> = live
                 .iter()
                 .copied()
@@ -432,6 +437,9 @@ impl Simulation {
                 })
                 .sum();
             let score = needs + sway + i64::from(p.priority);
+            if waiting > 0 && movement_only(p) && score < waiting {
+                continue;
+            }
             best.options.insert(p.id.clone(), (score, target));
             candidates.push((score, p.id.clone(), target, nudged.is_some(), answers.clone()));
             if score > top {

@@ -62,6 +62,8 @@ impl mesquite::Product for Probe {
                 ("physical-members", physical.members.len().to_string()),
                 ("whole-body-placement", yes_no(isocosm::spatial::embodiment::enabled(&r.sim()))),
                 ("accepted-walks", walks.to_string()),
+                ("food-directed-walking", yes_no(r.sim().foraging_enabled())),
+                ("native-poses", r.sim().state().spatial_poses.len().to_string()),
                 ("placed-offspring", children.to_string()),
                 ("controlled-placement", yes_no(r.critter().is_some_and(|id| physical.members.contains_key(&id)))),
                 ("bodies", s.host.config.body_mode.name().into()),

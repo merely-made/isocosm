@@ -37,6 +37,7 @@ pub(crate) struct Journal {
     spreads: crate::spread::Spreads,
     projects: crate::projects::Projects,
     institutions: crate::institutions::Records,
+    spatial_poses: BTreeMap<Id, crate::spatial::foraging::Resident>,
     /// Debug builds keep the whole world too, to check each rollback.
     #[cfg(debug_assertions)]
     before: Box<State>,
@@ -63,6 +64,7 @@ impl Journal {
             spreads: state.spreads.clone(),
             projects: state.projects.snapshot(),
             institutions: state.institutions.clone(),
+            spatial_poses: state.spatial_poses.clone(),
             #[cfg(debug_assertions)]
             before: Box::new(state.clone()),
         }
@@ -105,6 +107,7 @@ impl Journal {
     /// Puts back everything the advance changed.
     pub(crate) fn rollback(self, s: &mut State) {
         s.tick = self.tick;
+        s.spatial_poses = self.spatial_poses;
         s.attention = self.attention;
         s.spreads = self.spreads;
         s.projects = self.projects;

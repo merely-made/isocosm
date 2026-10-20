@@ -255,6 +255,11 @@ impl Game {
             .get(&r.actor)
             .ok_or("walking actor has no admitted pose")?
             .rebound_with(&pending.sim, cache)?;
+        if pending.sim.foraging_policy(&r.profile).is_some() {
+            let geometry = native::foraging::geometry(&pending.sim, r, &at.window)?;
+            native::check_step(&pending.sim, r, &geometry)?;
+            return Ok(geometry);
+        }
         let actor = pending
             .sim
             .state()

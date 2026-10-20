@@ -2,6 +2,99 @@
 
 **Date:** 2026-09-11
 
+**2026-10-20 food-directed walking, verified:** native choice needs exact
+positions to distinguish reachable meals from nearby food. New play foundings
+opt into saved foraging rules and native resident poses, updated by the
+existing step/birth/arrival publications. Mesocosm keeps its placement bindings
+as a checked projection of those poses. Native food selectors, organ admission,
+pressing needs, scoring and ordinary choice remain the decision machinery.
+Done when hungry critters approach edible placed food, feed only within declared
+reach, decline walking when satisfied or without eligible food, respect blocked
+routes and current visits, and ordinary-play plus save/replay controls pass.
+Keep earlier saves' semantics and preserve the separate execution-plan WIP.
+Retain at most 100 MB under `Code/testing/mesocosm/foraging-play-2026-10-20/`.
+
+**Food connection findings, 2026-10-20:** previous walking had no target and
+therefore no feeding need to score. Site-level feeding also admitted targets
+beyond physical contact, so increasing walking's priority would only conceal
+the missing spatial reading. New template version three records exact native
+`spatial_poses`, including site and visit; accepted step, birth and arrival
+publications update them. The native witness covers these poses and advance
+rollback restores them. Pass frames preserve poses alongside pass-start bodies.
+Mesocosm checks its saved bindings against that native pose record.
+
+Each saved foraging entry connects one walking profile to an existing feeding
+process. It declares food-search distance (32 base cells by default), contact
+reach (zero occupied-box gap by default) and route work (256 supported root
+positions by default, with a validated maximum). Native selectors, intake-port
+admission, requirements and negative need weights identify useful food. Walking
+inherits the feeding act's existing need score, keeps its ordinary priority,
+binds an actual target, and is eligible each tick. Feeding retains its existing
+three-tick cadence. A reachable meal suppresses weaker intersite departures
+while it waits for that cadence; stronger native nudges and other useful acts
+remain eligible. It does not earn an unconditional priority
+bonus. Already reachable food remains a feeding choice; satisfied actors and
+actors without eligible placed food have no food-seeking walk.
+
+New placed consumer needs use the existing `Room` account reading, retaining
+their original trait filters and weights. The former fixed hunger threshold
+stayed quiet until after reproduction in the first ordinary control. Reading
+actual unfilled capacity makes a supported meal useful before that threshold.
+The wants projection and need scorer share the same account-query recognizer.
+
+Weighted physical meals draw only among actual placed identities, rather than
+letting the representative's cohort inherit its pose. Unplaced actors retain
+their coarse feeding semantics. A bounded breadth-first route uses existing
+Ground/Places support and whole-part occupancy checks; the accepted act publishes
+one adjacent step. Old template versions one and two retain their prior rules
+and hashes. This does not add sensory organs, continuous dynamics, automatic
+resettling, or the separate execution plan's near/far implementation. Future
+persistent waking must account for pose and food-target reads as well as bodies.
+
+**Native acceptance, 2026-10-20:** ten food-connection controls pass in release.
+An ordinary A1 world, seed `16003851315348448884`, chooses an accepted walk at
+tick 5 with its population, needs, terrain and competing processes unedited;
+WorldSave restore preserves its native hash, spatial projection and saved bytes.
+Seed `16003851315348448882` instead starts with reachable food and feeds by tick
+6, so it correctly supplies no approach in that interval. These are bounded
+ordinary-play receipts, not a multi-generation or ecology-balance qualification.
+Current founder stock is small relative to anatomical capacity (the walking
+case reads 10 held against 2184 capacity at tick 3), so capacity appetite exerts
+pressure earlier than the former fixed threshold.
+
+The other controls cover remote-meal refusal then contact intake, a satisfied
+need, ineligible food, waiting for feeding cadence with migration available,
+a terrain wall, an exhausted route budget, unplaced cohort identities, stale
+publication, and projection tampering. In-site route fixtures use small flat
+populations and disable intersite departures; the ordinary control retains them.
+Need validation accepts only the canonical actor-capacity predicate among
+computed queries, checking its account; target and unrelated computed needs
+remain rejected. Geometry searches reuse precomputed rotated boxes and a common
+Grounding surface cache rather than rewalking attachments for every neighbour.
+The earlier version-two movement/birth suite explicitly retains its original
+mind and walking cadence.
+
+**Final receipt, 2026-10-20:** 73 selected release tests pass, with two profiling
+controls ignored. The added version-three child control observes actual native
+reproduction, checks each placed child's own resident pose, and validates replay.
+The headed six-tick ordinary run and its headed reload both pass, preserving
+hash `1adf0afe1092eb30`: one accepted walk, two native poses, controlled placement,
+zero dev intents, zero projection failures and zero terrain overflow. Its native
+record places actor 6 on arrival at site 2, then records a tick-5 step toward
+food 38 from `[560, 964, 560]` to `[560, 963, 559]`. The actual arrival and step
+therefore both exercise native pose publication. The new trace also passes
+headless replay. The earlier whole-body, root-only and coarse traces retain
+hashes `a9b8975e814376ab`, `7e8b8c04b8665d63` and `2698906e7fd7bb51` respectively.
+
+Receipts and captures: `Code/testing/mesocosm/foraging-play-2026-10-20/summary.json`.
+The original playable checkout and its stable target remain the owner of the
+launch executable. Shared Cargo cache contention required the marked temporary
+home `C:/t/cargo-homes/isocosm-foraging`; it contains links to existing pinned
+sources, not copied credentials. After all build owners exited, tool policy
+rejected removal of those links and the temporary diagnostic executables/PDBs.
+They remain explicitly listed in the receipt, within the 100 MB evidence cap.
+This receipt makes no interactive frame-budget or broad ecological claim.
+
 **2026-10-19 physical continuation, verified:** new playable foundings
 declare whole-body stands and bounded walking/birth placement through native
 spatial profiles. Shared Isocosm owns rotated part-box clearance and terrain

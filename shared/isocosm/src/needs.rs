@@ -7,7 +7,7 @@
 //! reads the matter reserve and its fatigue `Energy`; any world may declare
 //! others the same way.
 
-use crate::{anatomy, rules::Rules, schema::*};
+use crate::{anatomy, rules::{Binding, Expr, Query, Reading, Rules}, schema::*};
 use serde::{Deserialize, Serialize};
 
 /// One need as a body stands toward it.
@@ -30,6 +30,20 @@ impl Want {
     }
 }
 
+/// The actor account read by a fixed level or an unfilled-capacity need.
+pub fn account(query: &Query) -> Option<&Key> {
+    match query {
+        Query::Below { who: Binding::Actor, key, .. } => Some(key),
+        Query::Computed(Expr::AtLeast(left, right)) if **right == Expr::Const(1) => {
+            match left.as_ref() {
+                Expr::Read(Reading::Room { who: Binding::Actor, key }) => Some(key),
+                _ => None,
+            }
+        }
+        _ => None,
+    }
+}
+
 /// Every need of the world's mind that reads a level of `e`'s own account
 /// and whose traits `e` carries, in declared order.
 pub fn wants(rules: &Rules, e: &Entity) -> Vec<Want> {
@@ -39,18 +53,14 @@ pub fn wants(rules: &Rules, e: &Entity) -> Vec<Want> {
     mind.needs
         .iter()
         .filter(|n| n.traits.is_subset(&e.traits))
-        .filter_map(|n| match &n.query {
-            crate::rules::Query::Below {
-                who: crate::rules::Binding::Actor,
-                key,
-                amount,
-            } => Some(Want {
-                account: key.clone(),
-                below: *amount,
-                held: anatomy::held(e, rules, key),
-                weight: n.weight,
-            }),
-            _ => None,
+        .filter_map(|n| {
+            let key = account(&n.query)?;
+            let held = anatomy::held(e, rules, key);
+            let below = match &n.query {
+                Query::Below { amount, .. } => *amount,
+                _ => held.saturating_add(anatomy::room(e, rules, key)),
+            };
+            Some(Want { account: key.clone(), below, held, weight: n.weight })
         })
         .collect()
 }

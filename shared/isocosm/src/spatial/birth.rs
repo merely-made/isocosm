@@ -101,6 +101,11 @@ impl Simulation {
                     else { input.geometry.as_ref().map_err(|why| why.clone())
                         .and_then(|g| super::birth_geometry::check(self, &request, g)) };
                 if let Ok(patch) = &patch {
+                    if self.foraging_enabled() {
+                        let (pose, _) = birth_pose(input.geometry.as_ref().expect("accepted birth geometry"))
+                            .expect("accepted birth pose");
+                        self.keep_spatial_pose(mark.child, request.site.expect("accepted birth site"), pose);
+                    }
                     self.state.population.lift(mark.child).expect("accepted child identity exists").patch = Some(*patch);
                     if let Some(targets) = &mut self.targets { targets.touch(&self.state.population, [mark.child]); }
                     if let Some(filed) = &mut self.filed {

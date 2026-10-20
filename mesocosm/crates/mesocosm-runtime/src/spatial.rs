@@ -198,6 +198,7 @@ impl Game {
 
 impl Placement {
     fn check(&self, sim: &Simulation) -> Result<(), String> {
+        self.check_native_pose(sim)?;
         let member = sim.state().population.get(self.actor.0).ok_or("spatial actor is absent")?;
         if !member.alive || member.body.is_none() || member.body_revision != self.body_revision
             || member.resident_site() != Some(self.site.0) || member.patch != Some(self.patch)

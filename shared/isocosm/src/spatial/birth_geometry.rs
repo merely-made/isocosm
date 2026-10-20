@@ -23,6 +23,10 @@ pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Re
     let volume = sim.volume(site, g.parent_window.min, g.parent_window.max, g.parent_window.depth)?;
     let places = Places::derive(&volume, g.parent_places)?;
     if embodiment::enabled(sim) {
+        if sim.foraging_enabled() && sim.state().spatial_poses.get(&r.parent)
+            .is_none_or(|at| at.site != site || at.arrived != r.parent_visit || at.pose != g.parent_pose) {
+            return Err("birth parent differs from its native resident pose".into());
+        }
         embodiment::check(&volume, parent.body.as_ref().ok_or("parent geometry absent")?, &g.parent_pose)?;
     }
     let patch = r.parent_patch.ok_or("parent has no admitted native place")?;
