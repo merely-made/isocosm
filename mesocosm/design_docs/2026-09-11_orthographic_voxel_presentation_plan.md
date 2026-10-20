@@ -2,6 +2,90 @@
 
 **Date:** 2026-09-11
 
+**2026-10-19 physical continuation, verified:** new playable foundings
+declare whole-body stands and bounded walking/birth placement through native
+spatial profiles. Shared Isocosm owns rotated part-box clearance and terrain
+support; Mesocosm supplies generated geometry to the existing atomic spatial
+clock. Recorded older foundings retain their placement semantics.
+Done when terrain intersections and out-of-window limbs refuse, accepted
+native walking changes saved poses, actual biological children gain checked
+placements and future inputs, and save/replay plus headed captures pass.
+Retain at most 100 MB under `Code/testing/mesocosm/physical-play-2026-10-19/`.
+
+The continuation explicitly declares native template version two for new
+`bench_placed`/play foundings. Each founding stand binds its actual actor,
+rotated occupied part boxes and yaw; the window grows with founding anatomy.
+Empty attachment parts remain empty. The provider checks every occupied cell
+against Ground, requires actual non-water part-floor contact, keeps all parts
+inside the saved window, and avoids other physically admitted residents.
+It still seats at most four cohort representatives per site.
+
+Mesocosm generated profile five supplies geometry to the existing native
+prepare/resolve/publish clock. Consumer cycle traits share walking processes:
+one adjacent horizontal column per accepted act, every three ticks when native
+choice selects it, with a one-cell height change limit and Place passage
+admission. The generated direction is deterministic. This connects walking
+without adding direct input-driven movement or continuous locomotion.
+
+Birth profiles declare `BodyGround` support. The actual native newborn's
+document and identity select a bounded nearby supported, unoccupied pose.
+The existing child-input registry records biological provenance for accepted
+and refused placements, so children can receive later walking/arrival inputs.
+Physical refusal does not reverse biology. Route arrivals use the same body
+checks and reserve space against simultaneous arrivals. Recorded version-one
+templates, authored profiles and old saves keep their original semantics.
+
+Growth or terrain edits can invalidate a saved pose; refresh retains that
+history and the view omits invalid neighbors or withdraws an invalid controlled
+body. Automatic resettling, gravity, articulated gait, aquatic/flight support,
+all-individual placement and sustained ordinary multi-generation ecological
+qualification remain open. Conatus tactile queries retain their advisory role.
+
+The first whole-body capture exposed a separate renderer limit: its larger
+terrain contained 6,258 bricks, while the section's old packed map admitted
+only 2,047. Preserve `standing.json`/`standing.png` as the failure. GroundTerrain
+now also implements Isometer's existing BrickSource seam, and the playable
+section uses its existing camera-framed Residency/PagedTerrain with actual
+device limits. Terrain resident/capacity/overflow counters make that boundary
+visible in receipts. The adapter test pages a Ground exceeding the packed
+limit, pans it, and compares all resident material cells with Ground.
+
+**Physical continuation receipts, 2026-10-19:** release gates passed: 33
+runtime tests (two existing profiling tests ignored), 41 host tests (four
+existing explicit GPU gates ignored), 63 shared-scene tests and 20 native
+birth/generated-template/spatial-clock compatibility tests. The four new
+physical controls use flat, provisioned native bodies and disable competing
+choice processes: they verify terrain penetration and rotated window refusal,
+walking, actual biological child placement and subsequent walking, native
+route arrivals, a refused newborn later seated by arrival, save/replay and
+tamper refusal. An initial eight-tick refusal control stopped before native
+reproduction; the eighteen-tick control passes. These fixtures qualify the
+physical connection, not ordinary ecological independence.
+
+The rebuilt original executable's `standing-paged.json` captures two physical
+voxel bodies and 77 parts, zero fallback/projection failures and zero terrain
+overflow. Its camera holds 1,343 resident bricks of a 16,383-brick capacity.
+`resume.json` and headless replay preserve native hash `a9b8975e814376ab`.
+`step.json` reaches tick one and replays hash `4dbe9a957c853f11`; this one-tick
+capture has no accepted walk or offspring and does not qualify reproduction.
+`old-coarse.json` retains tick-120 hash `2698906e7fd7bb51` and no physical
+members. `old-physical.json` retains root-only hash `7e8b8c04b8665d63` and two
+members. All five captures pass their scenario checks and were visually
+inspected. The new placement raises the previously buried consumer clear of
+the slope without changing its anatomy. Body silhouettes and terrain shapes
+remain the native generator's output.
+
+The extra `walk.json` ordinary-world control reaches tick six with both bodies
+valid, but fails its exploratory `accepted-walks >= 1` assertion. Its native
+entries contain no requested step answers: current food acts have priority ten
+and walking has priority zero. Preserve this receipt as a behavior limitation,
+not a passing walking capture. Routine wandering needs a choice/need policy;
+the controlled native tests prove the connected step and offspring machinery.
+The captures do not establish sustained ordinary reproduction or a frame budget.
+All retained receipts occupy under 3 MB of the 100 MB cap. The existing
+user-owned playable worktree and its reusable target remain for the named
+launch path; this slice creates no isolated target, Cargo home or worktree.
+
 **2026-10-19 connection slice, verified:** connect native play founding to
 the existing generator-declared stands and spatial clock, and connect native
 part envelopes to Isometer's version-one voxel grammar. Keep coarse benches,
@@ -11,13 +95,14 @@ native anatomy and bounds, missing stands refuse without invented poses, and
 headed new-play plus old-save comparison captures pass. Retain at most 100 MB
 under `Code/testing/mesocosm/connected-play-2026-10-19/`.
 
-**Findings, 2026-10-19:** `--play` existed only on `playable-loop`; its two
+**Connection findings before the physical continuation, 2026-10-19:**
+`--play` existed only on `playable-loop`; its two
 implementation commits are now merged into main. Its `Runtime::bench` path
 skipped `Game::found_generated`, whereas ecology admission already invoked
 that provider. Native bodies were always resolved as solids despite the
 implemented `ContentPack` voxel grammar. Authored body recipes already exist
 behind `Bodies::roster`; expose them explicitly rather than silently changing
-ordinary ecological founding. Generated stands currently provide roots,
+ordinary ecological founding. Version-one generated stands provide roots,
 eyes and route arrivals, not whole-body clearance, continuous walking or
 offspring slots. Birth-slot and step providers exist, but this generator
 declares neither; a missing child placement must not acquire a display pose.
@@ -38,9 +123,9 @@ cohorts per site. Other members remain at site grain. A configured physical
 view omits unplaced bodies and withdraws when its controlled member lacks a
 pose; it never scatters those members onto a presentation grid. A stand only
 checks root and eye clearance. Native attachment bounds can still intersect
-a slope or extend past the declared terrain window. Full-body support and
-clearance, walking inputs, child slots, richer terrain windows and continuous
-multi-generation play remain open.
+a slope or extend past the declared terrain window. These were the support,
+clearance, walking, child-placement and terrain-window gaps addressed by the
+physical continuation above. Continuous multi-generation play remains open.
 
 **Connection receipts, 2026-10-19:** release gates passed: 84 mesh tests,
 62 shared-scene tests (including GPU depth/picking/palette), 41 host tests

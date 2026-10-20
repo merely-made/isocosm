@@ -53,18 +53,25 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
     { return Err("step source, profile, path or native binding changed".into()); }
     let volume = sim.volume(request.site, geometry.window.min, geometry.window.max, geometry.window.depth)?;
     let places = Places::derive(&volume, profile.places)?;
+    let whole = embodiment::enabled(sim);
+    let document = actor.body.as_ref().ok_or("step body absent")?;
     if places.place_at(geometry.path[0].at) != Some(request.patch)
-        || stance(&volume, profile.stance_offset, profile.body.height, geometry.path[0].at).is_none() {
+        || if whole { embodiment::check(&volume, document, &geometry.path[0]).is_err() }
+            else { stance(&volume, profile.stance_offset, profile.body.height, geometry.path[0].at).is_none() } {
         return Err("step begins outside its admitted native patch".into());
     }
     for pair in geometry.path.windows(2) {
-        if !neighbours(&volume, &places, profile, pair[0].at).contains(&pair[1].at) {
+        let available = if whole {
+            embodiment::neighbours(&volume, &places, profile, document, &pair[0]).contains(&pair[1])
+        } else { neighbours(&volume, &places, profile, pair[0].at).contains(&pair[1].at) };
+        if !available {
             return Err("step crosses an unavailable cell or authored clearance".into());
         }
     }
     let last = geometry.path.last().ok_or("empty step path")?;
     let patch = places.place_at(last.at).ok_or("step ends outside realized places")?;
-    if !clear(&volume, geometry.eye) || places.place_at(geometry.eye) != Some(patch) {
+    if !(if whole { embodiment::air(&volume, geometry.eye) } else { clear(&volume, geometry.eye) })
+        || places.place_at(geometry.eye) != Some(patch) {
         return Err("step eye is outside its realized clear patch".into());
     }
     Ok(patch)
@@ -79,7 +86,11 @@ pub(super) fn check_arrival(sim: &Simulation, request: &ArrivalRequest, geometry
     let volume = sim.volume(request.to, geometry.window.min, geometry.window.max, geometry.window.depth)?;
     let places = Places::derive(&volume, geometry.places)?;
     let patch = places.place_at(geometry.pose.at).ok_or("arrival pose has no realized patch")?;
-    if !clear(&volume, geometry.pose.at) || !clear(&volume, geometry.eye)
+    let fits = if embodiment::enabled(sim) {
+        embodiment::check(&volume, actor.body.as_ref().ok_or("arrival body absent")?, &geometry.pose)?;
+        embodiment::air(&volume, geometry.eye)
+    } else { clear(&volume, geometry.pose.at) && clear(&volume, geometry.eye) };
+    if !fits
         || places.place_at(geometry.eye) != Some(patch)
     { return Err("arrival pose or eye is outside its explicit clear patch".into()); }
     Ok(patch)

@@ -72,6 +72,11 @@ impl Game {
     }
 
     pub(super) fn resolve_birth(&self, pending: &BirthPending) -> Result<BirthGeometry, String> {
+        self.resolve_birth_with_geometry(pending, &mut GeometryCache::default())
+    }
+
+    pub(super) fn resolve_birth_with_geometry(&self, pending: &BirthPending, cache: &mut GeometryCache) -> Result<BirthGeometry, String> {
+        if self.generated_driver() { return self.generated_birth(pending, cache); }
         let r = &pending.request;
         if !r.parent_alive || r.site.is_none() || r.child_journey.is_some() {
             return Err("birth has no living-at-action-start resident parent pose".into());
@@ -96,6 +101,21 @@ impl Game {
         -> Result<Vec<profile::Transition>, String> {
         let mut changes = Vec::new();
         for report in reports {
+            if self.generated_driver() {
+                let driver = self.driver.as_mut().ok_or("generated birth driver absent")?;
+                let child = ChildInputs { birth: report.request.clone(),
+                    inputs: BirthTemplates { steps: BTreeMap::new(), arrivals: Vec::new() }, sight_range: None };
+                if driver.initial.contains_key(&report.request.child)
+                    || driver.children.get(&report.request.child).is_some_and(|old| *old != child) {
+                    return Err("generated biological child reuses a physical source identity".into());
+                }
+                driver.children.insert(report.request.child, child);
+                if report.patch.is_ok() {
+                    let resolution = inputs.iter().find(|r| r.request == report.request).ok_or("generated birth answer absent")?;
+                    changes.push(self.apply_generated_birth(resolution, report, sim)?);
+                }
+                continue;
+            }
             self.register_birth_inputs(report, sim)?;
             let Ok(patch) = &report.patch else { continue; };
             let r = &report.request;

@@ -78,16 +78,17 @@ pub struct Driver {
 }
 
 impl Profile {
+    pub(super) fn generated(&self) -> bool { self.version == 5 }
     pub(super) fn has_birth_sight(&self) -> bool {
         self.births.iter().any(|input| input.slots.iter().any(|slot| slot.sight_range.is_some()))
     }
 
     pub(super) fn has_birth_inputs(&self) -> bool {
-        self.births.iter().any(|input| input.slots.iter().any(|slot| slot.inputs.is_some()))
+        self.generated() || self.births.iter().any(|input| input.slots.iter().any(|slot| slot.inputs.is_some()))
     }
 
     pub(super) fn version(&self) -> Result<(), String> {
-        if self.version != 4 && !(self.version == 3 && !self.has_birth_inputs())
+        if self.version != 5 && self.version != 4 && !(self.version == 3 && !self.has_birth_inputs())
             && !(self.version == 2 && !self.has_birth_sight() && !self.has_birth_inputs())
             && !(self.version == 1 && self.births.is_empty()) {
             return Err("unsupported authored spatial profile".into());
@@ -101,6 +102,10 @@ impl Profile {
 
     pub fn validate(&self, sim: &Simulation) -> Result<(), String> {
         self.version()?;
+        if self.generated() && (!isocosm::spatial::embodiment::enabled(sim)
+            || !self.steps.is_empty() || !self.births.is_empty() || !self.arrivals.is_empty()) {
+            return Err("generated spatial driver needs whole-body templates without competing authored inputs".into());
+        }
         for input in &self.births { input.validate(sim)?; }
         // Reject already-applicable selector overlap instead of choosing
         // entity versus lineage precedence. Future lineage changes are

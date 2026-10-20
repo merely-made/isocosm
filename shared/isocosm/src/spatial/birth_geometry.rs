@@ -22,9 +22,13 @@ pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Re
     { return Err("biological birth geometry source changed or is unavailable".into()); }
     let volume = sim.volume(site, g.parent_window.min, g.parent_window.max, g.parent_window.depth)?;
     let places = Places::derive(&volume, g.parent_places)?;
+    if embodiment::enabled(sim) {
+        embodiment::check(&volume, parent.body.as_ref().ok_or("parent geometry absent")?, &g.parent_pose)?;
+    }
     let patch = r.parent_patch.ok_or("parent has no admitted native place")?;
     for cell in [g.parent_pose.at, g.parent_eye] {
-        if !geometry::clear(&volume, cell) || places.place_at(cell) != Some(patch) {
+        if !(if embodiment::enabled(sim) { embodiment::air(&volume, cell) } else { geometry::clear(&volume, cell) })
+            || places.place_at(cell) != Some(patch) {
             return Err("parent pose is outside its current admitted clear patch".into());
         }
     }
@@ -37,6 +41,16 @@ pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Re
     if (0..3).any(|k| profile.clearance[0][k] > i64::from(bounds.min[k])
         || profile.clearance[1][k] < i64::from(bounds.max[k])) {
         return Err("authored birth clearance does not cover the current native child geometry".into());
+    }
+    if profile.support == BirthSupport::BodyGround {
+        if !embodiment::enabled(sim) || profile.medium != BirthMedium::Air {
+            return Err("part-floor support needs a declared whole-body air world".into());
+        }
+        embodiment::check(&volume, document, &pose)?;
+        if !embodiment::air(&volume, eye) || places.place_at(eye) != Some(patch) {
+            return Err("whole-body child eye leaves its current clear patch".into());
+        }
+        return Ok(patch);
     }
     let at = |local| -> Result<[i64; 3]> {
         let offset = birth::rotate(pose.yaw, local)?;

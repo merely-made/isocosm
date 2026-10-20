@@ -54,6 +54,9 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
   compact material id has no universal colour (2026-10-19 play-view repair).
 - Once a physical provider is configured, missing root poses withdraw that
   body's picture. A presentation grid may not fill a missing physical binding.
+- New whole-body play checks rotated occupied parts, window bounds, actual
+  ground contact and other admitted bodies. Native births supply actual child
+  identities; a refused placement keeps the biology without inventing a pose.
 - A zero-thickness anatomy part is empty geometry with valid attachments;
   it must not turn every drawable part of that organism into a fallback.
 - A voxel material is a compact id into saved world-local definitions. Dynamic
@@ -87,12 +90,12 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [2026-09-25_mesocosm_overlay_plan.md](2026-09-25_mesocosm_overlay_plan.md) | Mesocosm as the first overlay (W5). | 2026-10-18: M0 and M1 done, M3 and the interim M4 are the directing plan's; full M4 open. |
 | [2026-10-08_directing_interim_m4_plan.md](2026-10-08_directing_interim_m4_plan.md) | Directing (M3) and the interim M4 at site grain: the bond, the deliberative choice, the readings, the switch. | 2026-10-18: D1 to D5 built on native Isocosm; consumer reproduction, certification and the headed three-epoch run remain. |
 | [2026-09-26_wing_organs_plan.md](2026-09-26_wing_organs_plan.md) | The wing's two organs no single game owns: the hagioglyph and the impresa. | 2026-10-10: shared kernels and native effects; higher rungs parked, 406 carryover refinement still partly designed. |
-| [2026-09-26_body_binding_plan.md](2026-09-26_body_binding_plan.md) | One binding adapter keeping critters and tokens against conatus bodies. | 2026-10-11: source applied; native and headed certification open. |
+| [2026-09-26_body_binding_plan.md](2026-09-26_body_binding_plan.md) | One binding adapter keeping critters and tokens against conatus bodies. | 2026-10-19: native whole-body play connection uses the spatial clock; generic Conatus binding remains unbuilt. |
 | [2026-09-15_isomere_plan.md](2026-09-15_isomere_plan.md) | isomere: the wing's GUI layer and mode host. | 2026-10-18: M0 to M5 landed and M6 deferred; the mode host awaits runtime and headed two-window acceptance. |
-| [2026-09-11_orthographic_voxel_presentation_plan.md](2026-09-11_orthographic_voxel_presentation_plan.md) | The wing's orthographic voxel presentation, lanes L1 to L10. | 2026-10-19: native play stands, shared voxel grammar and optional authored anatomy connected; flat-part fallback repaired; founding/save/replay and headed captures pass. Whole-body clearance, walking/child inputs and broader certification remain open. |
+| [2026-09-11_orthographic_voxel_presentation_plan.md](2026-09-11_orthographic_voxel_presentation_plan.md) | The wing's orthographic voxel presentation, lanes L1 to L10. | 2026-10-19: whole-body play stands, bounded native walking, actual child placement and terrain paging connected; verification recorded in the plan. Continuous locomotion and ordinary multi-generation qualification remain open. |
 | [2026-09-15_glyph_expression_plan.md](2026-09-15_glyph_expression_plan.md) | How a canon's glyphs come to be expressed by traits. | 2026-10-10: effects native, trait catalogue folded into §10 (801); higher glyph/divinity rungs parked (279, 673). |
 | [2026-09-09_functional_generation_plan.md](2026-09-09_functional_generation_plan.md) | Functional networks, operators and generation: constructions, cantrips, exchange costs. | 2026-09-28: composition designed (404 to 407); no implementation lane open. |
-| [2026-08-05_place_graph_engine_plan.md](2026-08-05_place_graph_engine_plan.md) | The spatial spine: places derived from the volume. | 2026-10-18: SP1 to SP5 built; SP6 waits on mere's T2, SP7's joins are the overlays', SP8 open. |
+| [2026-08-05_place_graph_engine_plan.md](2026-08-05_place_graph_engine_plan.md) | The spatial spine: places derived from the volume. | 2026-10-19: narrow Mesocosm whole-body SP7 connection; SP1 to SP5 built, SP6 waits on T2, broader SP7 and SP8 remain open. |
 | [2026-08-14_resident_views_composition_plan.md](2026-08-14_resident_views_composition_plan.md) | How the voxel world composes with Burn/CubeCL, the tracer, collision and admitted fields on one device. | 2026-10-18: the sun is the first admitted field, built and merged (cases 971 to 984); SP6's nisus join open. |
 | [2026-08-18_vessel_briefs_and_presentation.md](2026-08-18_vessel_briefs_and_presentation.md) | The ratified vessel briefs and camera rulings. | Ratified 2026-08-18; direct control superseded by directing (rulings 60, 175). |
 | [2026-08-18_engine_ecology_rulings_and_review.md](2026-08-18_engine_ecology_rulings_and_review.md) | Engine and ecology rulings, reviewed against the live code. | Review through 2026-08-26; sharing audit 2026-09-09 (§7). |

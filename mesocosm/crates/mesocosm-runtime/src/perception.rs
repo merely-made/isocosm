@@ -52,7 +52,7 @@ impl InSite {
 
     pub(crate) fn cell(&self, sim: &Simulation, id: Id, at: [i64; 3]) -> Result<(), String> {
         if !self.volume.holds(at[0], at[2]) || at[1] < self.volume.datum
-            || at[1] >= self.volume.ceiling()
+            || (!isocosm::spatial::embodiment::enabled(sim) && at[1] >= self.volume.ceiling())
         { return Err("sight cell is outside the realized window".into()); }
         let e = sim.state().population.get(id).ok_or("sight names an absent member")?;
         if e.resident_site() != Some(self.site()) {

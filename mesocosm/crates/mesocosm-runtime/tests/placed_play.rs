@@ -54,7 +54,13 @@ fn placed_play_refuses_missing_templates_and_does_not_invent_water_stands() {
             .unwrap()
             .contains("physical templates")
     );
-    let flooded = Runtime::bench_placed(founded(2_814_468_213_915_169_548), 2).unwrap();
+    let mut water = founded(2_814_468_213_915_169_548);
+    for site in water.genesis.sites.values_mut() {
+        for (key, value) in [("terrain:elevation", 0), ("terrain:relief", 0), ("terrain:water", 8)] {
+            site.conditions.insert(key.into(), value);
+        }
+    }
+    let flooded = Runtime::bench_placed(water, 2).unwrap();
     let played = flooded.critter().unwrap();
     assert!(!flooded.spatial().members.contains_key(&played));
     assert!(flooded.spatial().driver.is_some());
