@@ -9,6 +9,8 @@ mod lease_tests;
 mod preset_tests;
 #[path = "shared_tests.rs"]
 mod shared_tests;
+#[path = "structure_tests.rs"]
+mod structure_tests;
 struct Fixture(PathBuf);
 impl Fixture {
     fn new() -> Self {

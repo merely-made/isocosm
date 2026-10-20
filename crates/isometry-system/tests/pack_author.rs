@@ -144,3 +144,53 @@ fn stale_commands_refuse_without_changing_disk_or_live_catalogue() {
     assert_eq!(fs::read(path).unwrap(), old);
     assert_eq!(loaded.manifest().name, "Demo Generator Pack");
 }
+#[test]
+fn structural_commands_edit_by_id_without_caller_offsets() {
+    let f = Fixture::new();
+    let manifest = f.0.join(GeneratorPack::MANIFEST_FILE);
+    fs::write(&manifest, include_str!("fixtures/annotated-pack.toml")).unwrap();
+    let preset = json!({"key":"quality","label":"Heirloom quality","value":{"type":"text","value":"heirloom"}});
+    let r = run(
+        &f.0,
+        vec![
+            json!({"op":"set_generator_field","base":1,"generator":"forge_item","field":"name","value":"Forge a river heirloom"}),
+            json!({"op":"insert_lock_preset","base":2,"generator":"forge_item","preset":preset}),
+            json!({"op":"insert_lock_preset","base":2,"generator":"forge_item","preset":preset}),
+            json!({"op":"remove_lock_preset","base":3,"generator":"forge_item","key":"culture"}),
+            json!({"op":"replace_lock_preset","base":4,"generator":"forge_item","key":"quality",
+                "preset":{"key":"quality","label":"Heirloom","value":{"type":"text","value":"old"}}}),
+            json!({"op":"remove_lock_preset","base":5,"generator":"npc","key":"culture"}),
+            json!({"op":"check"}),
+            json!({"op":"save","base":5}),
+            json!({"op":"quit"}),
+        ],
+    );
+    for (i, operation) in [
+        (1, "set_generator_field"),
+        (2, "insert_lock_preset"),
+        (4, "remove_lock_preset"),
+        (5, "replace_lock_preset"),
+    ] {
+        let receipt = &r[i]["result"]["receipt"];
+        assert_eq!(receipt["operation"], operation, "{}", r[i]);
+        assert_eq!(receipt["result"], receipt["base"].as_u64().unwrap() + 1);
+        assert!(!r[i]["result"]["edits"].as_array().unwrap().is_empty());
+        assert_eq!(r[i]["result"]["state"]["admitted"], false);
+    }
+    assert!(r[3]["error"].as_str().unwrap().contains("stale"));
+    assert!(r[6]["error"].as_str().unwrap().contains("no preset"));
+    let forge = &r[7]["result"]["manifest"]["generators"][0];
+    assert_eq!(forge["name"], "Forge a river heirloom");
+    assert_eq!(forge["lock_presets"][0]["label"], "Heirloom");
+    assert_eq!(forge["lock_presets"].as_array().unwrap().len(), 1);
+    let saved = fs::read_to_string(&manifest).unwrap();
+    assert!(saved.contains("# display name") && saved.contains("literal string"));
+    GeneratorPack::load(&f.0)
+        .unwrap()
+        .run_fixture(
+            "demo:forge_item",
+            "fixtures/forge_item.json",
+            GeneratorLimits::default(),
+        )
+        .unwrap();
+}

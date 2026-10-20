@@ -22,6 +22,28 @@ enum Command {
         generator: String,
         preset: Box<isometry_campaign::GeneratorLockPreset>,
     },
+    InsertLockPreset {
+        base: u64,
+        generator: String,
+        preset: Box<isometry_campaign::GeneratorLockPreset>,
+    },
+    RemoveLockPreset {
+        base: u64,
+        generator: String,
+        key: String,
+    },
+    ReplaceLockPreset {
+        base: u64,
+        generator: String,
+        key: String,
+        preset: Box<isometry_campaign::GeneratorLockPreset>,
+    },
+    SetGeneratorField {
+        base: u64,
+        generator: String,
+        field: String,
+        value: serde_json::Value,
+    },
     Save {
         base: u64,
     },
@@ -33,6 +55,19 @@ fn state(session: &Session, text: bool) -> serde_json::Value {
         "source_fingerprint":session.current.fingerprint,"valid":session.current.validation.is_none(),
         "diagnostics":session.current.diagnostics(),"retained_revisions":session.history.len(),
         "text":text.then_some(session.current.text.as_ref()),"admitted":false})
+}
+/// Plan a structural edit against the current revision, then publish it.
+fn structural(
+    session: &mut Session,
+    base: u64,
+    operation: &'static str,
+    plan: impl FnOnce(&Session) -> Result<(Vec<Edit>, isometry_campaign::ContentPackManifest), String>,
+) -> Result<serde_json::Value, String> {
+    session.check_base(base)?;
+    let plan = plan(session)?;
+    let mut result = structure::publish(session, base, plan, operation)?;
+    result["state"] = state(session, false);
+    Ok(result)
 }
 fn execute(session: &mut Session, command: Command) -> Result<serde_json::Value, String> {
     Ok(match command {
@@ -53,6 +88,36 @@ fn execute(session: &mut Session, command: Command) -> Result<serde_json::Value,
             generator,
             preset,
         } => preset::propose(session, base, &generator, *preset)?,
+        Command::InsertLockPreset {
+            base,
+            generator,
+            preset,
+        } => structural(session, base, "insert_lock_preset", |s| {
+            structure::insert(s, &generator, &preset)
+        })?,
+        Command::RemoveLockPreset {
+            base,
+            generator,
+            key,
+        } => structural(session, base, "remove_lock_preset", |s| {
+            structure::remove(s, &generator, &key)
+        })?,
+        Command::ReplaceLockPreset {
+            base,
+            generator,
+            key,
+            preset,
+        } => structural(session, base, "replace_lock_preset", |s| {
+            structure::replace(s, &generator, &key, &preset)
+        })?,
+        Command::SetGeneratorField {
+            base,
+            generator,
+            field,
+            value,
+        } => structural(session, base, "set_generator_field", |s| {
+            structure::set_field(s, &generator, &field, &value)
+        })?,
         Command::Save { base } => session.save(base)?,
         Command::Quit => unreachable!("handled by command loop"),
     })
