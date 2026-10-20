@@ -1,5 +1,6 @@
 //! App-local authoring session. No runtime catalogue or session mutation.
 mod cli;
+mod lease;
 mod preset;
 mod save;
 mod syntax;
