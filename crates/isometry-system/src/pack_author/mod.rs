@@ -6,6 +6,7 @@ mod lease;
 mod meter;
 mod preset;
 mod save;
+mod structure;
 mod syntax;
 #[cfg(test)]
 mod tests;

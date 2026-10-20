@@ -32,7 +32,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 | Doc | For | Status |
 | --- | --- | --- |
-| [2026-10-17_private_pack_authoring_plan.md](2026-10-17_private_pack_authoring_plan.md) | Private retained manifest authoring with real schema, batched Rowan and shared edit/undo publication. | 2026-10-17: implemented as an optional private command over the real pack schema; no shared API. |
+| [2026-10-17_private_pack_authoring_plan.md](2026-10-17_private_pack_authoring_plan.md) | Private retained manifest authoring with real schema, the merely-made/taplo fork (Rowan 0.17, TOML 1.1), shared edit/undo publication and structure-aware generator/preset commands. | 2026-10-19: P8 landed (stale-lease reclaim, text-only history default, fork, TOML 1.1, structural commands). |
 | [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance for all three products. | The one copy since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |
 | [2026-10-15_campaign_retirement_plan.md](2026-10-15_campaign_retirement_plan.md) | Retiring `isometry-campaign` into its owning homes: the VTT's game layer into `isocosm-vtt`, map lowering into `isometry-core`, the world into the sim at V2. | 2026-10-18: R0 and R1 done; R2 (map lowering, store), R3 (world into the sim at V2) and R4 (publishing) remain. |
