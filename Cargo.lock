@@ -4561,6 +4561,7 @@ dependencies = [
  "isocosm-vtt",
  "isometry-campaign",
  "isometry-core",
+ "libc",
  "logos",
  "mere-source-edit",
  "piccolo",

@@ -25,7 +25,13 @@ isocosm-vtt = { workspace = true, default-features = false }
 
 # App-local terminal authoring; normal runtime builds do not carry syntax tooling.
 [features]
-pack-authoring = ["dep:taplo", "dep:sha2", "dep:logos", "dep:mere-source-edit"]
+pack-authoring = [
+    "dep:taplo",
+    "dep:sha2",
+    "dep:logos",
+    "dep:mere-source-edit",
+    "dep:libc",
+]
 
 # Shared source-edit kernel, optional to private authoring; canonical Git source.
 [dependencies.mere-source-edit]
@@ -45,6 +51,11 @@ optional = true
 
 [dependencies.logos]
 version = "=0.12.1"
+optional = true
+
+# Save-lease host name and PID liveness for stale-lease reclaim.
+[target.'cfg(unix)'.dependencies.libc]
+version = "0.2.189"
 optional = true
 
 [[bin]]

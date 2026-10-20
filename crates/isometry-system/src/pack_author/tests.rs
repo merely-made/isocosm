@@ -1,5 +1,8 @@
 use super::*;
 use std::{fs, path::Path};
+#[cfg(unix)]
+#[path = "lease_tests.rs"]
+mod lease_tests;
 #[path = "preset_tests.rs"]
 mod preset_tests;
 #[path = "shared_tests.rs"]
