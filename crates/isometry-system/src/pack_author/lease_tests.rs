@@ -61,6 +61,15 @@ fn a_killed_savers_lease_is_reclaimed() {
         "{held}"
     );
     assert!(held.contains(&lease::hostname().unwrap()));
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    {
+        assert!(
+            held.contains(&format!(" boot={} ", lease::boot_id().unwrap())),
+            "{held}"
+        );
+        let start = lease::start_time(child.id()).unwrap();
+        assert!(held.contains(&format!(" start={start} ")), "{held}");
+    }
     child.kill().unwrap();
     child.wait().unwrap();
     assert!(lock(&f).exists());
@@ -125,4 +134,45 @@ fn foreign_host_and_unrecognized_leases_still_refuse() {
     fs::write(lock(&f), format!("pid={pid} host={host} source=x\n")).unwrap();
     s.save(2).unwrap();
     assert!(!lock(&f).exists());
+}
+// A live stand-in process plays a holder whose PID was reused, or that predates a reboot.
+#[cfg(any(target_os = "linux", target_os = "macos"))]
+#[test]
+fn reused_pids_and_earlier_boots_are_reclaimed_but_a_matching_holder_blocks() {
+    let f = Fixture::new();
+    let mut s = f.session();
+    replace(&mut s, "Demo Generator Pack", "After reuse");
+    let mut live = Command::new("sleep").arg("60").spawn().unwrap();
+    let pid = live.id();
+    let host = lease::hostname().unwrap();
+    let boot = lease::boot_id().unwrap();
+    let start = lease::start_time(pid).unwrap();
+    let matching = format!("pid={pid} host={host} boot={boot} start={start} source=x\n");
+    fs::write(lock(&f), &matching).unwrap();
+    let error = s.save(2).unwrap_err();
+    assert!(error.contains("live pid"), "{error}");
+    assert_eq!(fs::read_to_string(lock(&f)).unwrap(), matching);
+    assert_eq!(s.saved_revision, 1);
+    let mut name = "After reuse".to_string();
+    for (case, stale) in [
+        format!("pid={pid} host={host} boot={boot} start=0.000001 source=x\n"),
+        format!("pid={pid} host={host} boot=0.000001 start={start} source=x\n"),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let next = format!("Reclaimed {case}");
+        replace(&mut s, &name, &next);
+        name = next;
+        fs::write(lock(&f), &stale).unwrap();
+        let revision = s.current.revision;
+        s.save(revision).unwrap();
+        assert!(!lock(&f).exists(), "{stale}");
+        assert_eq!(s.saved_revision, revision);
+        assert!(fs::read_to_string(&s.path).unwrap().contains(&name));
+    }
+    // The stand-in itself is untouched: reclaim removes files, never signals processes.
+    assert!(live.try_wait().unwrap().is_none());
+    live.kill().unwrap();
+    live.wait().unwrap();
 }
