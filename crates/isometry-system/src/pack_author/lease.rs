@@ -1,4 +1,5 @@
-//! Cooperative save lease. A lease left by a dead process on this host is reclaimed;
+//! Cooperative save lease. A lease left on this host by a dead process, by a process
+//! from an earlier boot, or under a PID now reused by another process is reclaimed;
 //! a live holder, another host or an unreadable lease still refuses.
 use std::{
     fs,
@@ -26,6 +27,9 @@ impl Drop for Lease {
 struct Holder {
     pid: u32,
     host: String,
+    // Absent in leases written before boot and start identity were recorded.
+    boot: Option<String>,
+    start: Option<String>,
 }
 impl Holder {
     fn parse(text: &str) -> Option<Self> {
@@ -39,17 +43,22 @@ impl Holder {
                 .ok()
                 .filter(|&pid| pid > 0 && pid <= i32::MAX as u32)?,
             host: field("host")?.to_string(),
+            boot: field("boot").map(str::to_string),
+            start: field("start").map(str::to_string),
         })
     }
 }
 impl Lease {
     pub(super) fn acquire(path: PathBuf, source: &str) -> Result<Self, String> {
         let host = hostname();
-        let body = format!(
-            "pid={} host={} source={source}\n",
-            std::process::id(),
-            host.as_deref().unwrap_or("unknown")
-        );
+        let pid = std::process::id();
+        let mut body = format!("pid={pid} host={}", host.as_deref().unwrap_or("unknown"));
+        for (name, value) in [("boot", boot_id()), ("start", start_time(pid))] {
+            if let Some(value) = value {
+                body.push_str(&format!(" {name}={value}"));
+            }
+        }
+        body.push_str(&format!(" source={source}\n"));
         match create(&path, &body) {
             Err(e) if e.kind() == io::ErrorKind::AlreadyExists => {
                 reclaim(&path, host.as_deref())?;
@@ -90,7 +99,13 @@ fn reclaim(path: &Path, host: Option<&str>) -> Result<(), String> {
             holder.pid, holder.host
         )));
     }
-    if holder.pid == std::process::id() || alive(holder.pid) {
+    let ours = holder.pid == std::process::id();
+    let earlier_boot = matches!((&holder.boot, boot_id()), (Some(then), Some(now)) if *then != now);
+    let reused = matches!(
+        (&holder.start, start_time(holder.pid)),
+        (Some(then), Some(now)) if *then != now
+    );
+    if ours || !(earlier_boot || reused || !alive(holder.pid)) {
         return Err(unavailable(&format!(
             "held by live pid {} on this host",
             holder.pid
@@ -157,7 +172,7 @@ pub(super) fn hostname() -> Option<String> {
 pub(super) fn hostname() -> Option<String> {
     None
 }
-// A PID that is reused by an unrelated process reads as alive and keeps refusing.
+// Alive means the PID exists; `reclaim` uses boot and start identity to tell a reused PID.
 #[cfg(unix)]
 fn alive(pid: u32) -> bool {
     // SAFETY: signal 0 only checks existence and permission; Holder::parse keeps pid in 1..=i32::MAX.
@@ -167,4 +182,78 @@ fn alive(pid: u32) -> bool {
 #[cfg(not(unix))]
 fn alive(_: u32) -> bool {
     true
+}
+// Identifies this boot, so a lease from before a reboot reads as stale whatever its PID.
+#[cfg(target_os = "linux")]
+pub(super) fn boot_id() -> Option<String> {
+    let id = fs::read_to_string("/proc/sys/kernel/random/boot_id").ok()?;
+    token(id.trim())
+}
+#[cfg(target_os = "macos")]
+pub(super) fn boot_id() -> Option<String> {
+    let mut boot = libc::timeval {
+        tv_sec: 0,
+        tv_usec: 0,
+    };
+    let mut size = std::mem::size_of::<libc::timeval>();
+    let mut name = [libc::CTL_KERN, libc::KERN_BOOTTIME];
+    // SAFETY: `name` names KERN_BOOTTIME, whose value is one timeval; `boot` and `size`
+    // describe a writable timeval owned by this frame, and no new value is supplied.
+    let status = unsafe {
+        libc::sysctl(
+            name.as_mut_ptr(),
+            name.len() as libc::c_uint,
+            (&raw mut boot).cast(),
+            &mut size,
+            std::ptr::null_mut(),
+            0,
+        )
+    };
+    (status == 0 && size == std::mem::size_of::<libc::timeval>())
+        .then(|| format!("{}.{:06}", boot.tv_sec, boot.tv_usec))
+}
+#[cfg(not(any(target_os = "linux", target_os = "macos")))]
+pub(super) fn boot_id() -> Option<String> {
+    None
+}
+// When a process started; a different value under the same PID means the PID was reused.
+#[cfg(target_os = "linux")]
+pub(super) fn start_time(pid: u32) -> Option<String> {
+    let stat = fs::read_to_string(format!("/proc/{pid}/stat")).ok()?;
+    // Field 22, starttime; fields after the parenthesized command name start at field 3.
+    let rest = &stat[stat.rfind(')')? + 1..];
+    token(rest.split_whitespace().nth(19)?)
+}
+#[cfg(target_os = "macos")]
+pub(super) fn start_time(pid: u32) -> Option<String> {
+    let mut info = std::mem::MaybeUninit::<libc::proc_bsdinfo>::zeroed();
+    let size = std::mem::size_of::<libc::proc_bsdinfo>() as libc::c_int;
+    // SAFETY: PROC_PIDTBSDINFO writes at most `size` bytes into `info`, a zeroed
+    // proc_bsdinfo owned by this frame; the struct is plain data, so zeroed is valid.
+    let written = unsafe {
+        libc::proc_pidinfo(
+            pid as libc::c_int,
+            libc::PROC_PIDTBSDINFO,
+            0,
+            info.as_mut_ptr().cast(),
+            size,
+        )
+    };
+    if written != size {
+        return None;
+    }
+    // SAFETY: proc_pidinfo filled all `size` bytes, and zeroed bytes were already valid.
+    let info = unsafe { info.assume_init() };
+    Some(format!(
+        "{}.{:06}",
+        info.pbi_start_tvsec, info.pbi_start_tvusec
+    ))
+}
+#[cfg(not(any(target_os = "linux", target_os = "macos")))]
+pub(super) fn start_time(_: u32) -> Option<String> {
+    None
+}
+#[cfg(target_os = "linux")]
+fn token(value: &str) -> Option<String> {
+    (!value.is_empty() && !value.contains(char::is_whitespace)).then(|| value.to_string())
 }
