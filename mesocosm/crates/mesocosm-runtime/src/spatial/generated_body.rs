@@ -159,7 +159,6 @@ impl Game {
             .checked_add(1)
             .ok_or("arrival clock overflow")?;
         let mut out = Vec::new();
-        let mut reserved: BTreeMap<Id, Vec<body::Box3>> = BTreeMap::new();
         let driver = self
             .driver
             .as_ref()
@@ -167,73 +166,84 @@ impl Game {
         if driver.initial.is_empty() {
             return Ok(out);
         }
-        let ids: BTreeSet<_> = self
+        let mut ids: BTreeSet<_> = self
             .members
             .keys()
             .chain(driver.children.keys())
             .copied()
             .collect();
+        // An unplaced founding cohort can become controlled at a death hold.
+        // Its actual native journey is also a source for later physical landing.
+        ids.extend(session.sim.genesis().population.groups.iter()
+            .filter(|(_, group)| group.entity.body.is_some())
+            .flat_map(|(&first, group)| first..first + group.count));
+        let mut destinations: BTreeMap<Id, Vec<Id>> = BTreeMap::new();
         for id in ids {
-            let Some(member) = session.sim.state().population.get(id) else {
-                continue;
-            };
-            let Some(journey) = &member.journey else {
-                continue;
-            };
-            if journey.arrives < session.sim.state().tick || journey.arrives > end {
-                continue;
+            let Some(member) = session.sim.state().population.get(id) else { continue; };
+            let Some(journey) = &member.journey else { continue; };
+            if member.body.is_some() && journey.arrives >= session.sim.state().tick && journey.arrives <= end {
+                destinations.entry(journey.to).or_default().push(id);
             }
-            let Some(document) = &member.body else {
-                continue;
-            };
-            let volume =
-                session
-                    .sim
-                    .volume(journey.to, t.window.min, t.window.max, t.window.depth)?;
-            let mut blocked = self.occupied(&session.sim, journey.to, Some(id))?;
-            blocked.extend(reserved.get(&journey.to).into_iter().flatten().copied());
-            let centre = [
-                (t.window.min[0] + t.window.max[0]) / 2,
-                0,
-                (t.window.min[1] + t.window.max[1]) / 2,
-            ];
-            let yaw = self
-                .members
-                .get(&id)
-                .map_or(Yaw::Zero, |held| held.pose.yaw);
-            let Ok(pose) = body::Grounding::new(&volume).find(
-                document,
-                centre,
-                yaw,
-                body::SEARCH_REACH,
-                body::SEARCH_STRIDE,
-                body::SEARCH_CANDIDATES,
-                &blocked,
-            ) else {
-                continue;
-            };
-            reserved
-                .entry(journey.to)
-                .or_default()
-                .extend(body::boxes(document, &pose)?);
-            out.push(native::ArrivalResolution {
-                request: native::ArrivalRequest {
-                    actor: id,
-                    from: journey.from,
-                    to: journey.to,
-                    departed: journey.departed,
-                    arrives: journey.arrives,
-                    body_revision: member.body_revision,
-                    terrain_revision: session.sim.terrain_revision(),
-                },
-                geometry: native::ArrivalGeometry {
-                    eye: std::array::from_fn(|k| pose.at[k] + t.eye[k]),
-                    pose,
-                    window: t.window.clone(),
-                    places: t.places,
-                },
-            });
         }
+        // Each destination keeps one terrain and surface lookup for this cut.
+        // Actors retain their original id order within each destination.
+        for (destination, ids) in destinations {
+            let volume = session.sim.volume(destination, t.window.min, t.window.max, t.window.depth)?;
+            let mut grounding = body::Grounding::new(&volume);
+            let mut blocked = self.occupied(&session.sim, destination, None)?;
+            let mut refused = BTreeSet::new();
+            for id in ids {
+                let member = session.sim.state().population.get(id).ok_or("arrival actor absent")?;
+                let journey = member.journey.as_ref().ok_or("arrival journey absent")?;
+                let Some(document) = &member.body else {
+                    continue;
+                };
+                let centre = [
+                    (t.window.min[0] + t.window.max[0]) / 2,
+                    0,
+                    (t.window.min[1] + t.window.max[1]) / 2,
+                ];
+                let yaw = self
+                    .members
+                    .get(&id)
+                    .map_or(Yaw::Zero, |held| held.pose.yaw);
+                let Ok(shape) = body::boxes(document, &native::Pose { at: [0; 3], yaw }) else { continue; };
+                // The terrain and search stay fixed, and reservations only grow.
+                // An identical shape already refused here cannot become feasible.
+                if refused.contains(&shape) { continue; }
+                let Ok(pose) = grounding.find(
+                    document,
+                    centre,
+                    yaw,
+                    body::SEARCH_REACH,
+                    body::SEARCH_STRIDE,
+                    body::SEARCH_CANDIDATES,
+                    &blocked,
+                ) else {
+                    if refused.len() < 64 { refused.insert(shape); }
+                    continue;
+                };
+                blocked.extend(body::boxes(document, &pose)?);
+                out.push(native::ArrivalResolution {
+                    request: native::ArrivalRequest {
+                        actor: id,
+                        from: journey.from,
+                        to: journey.to,
+                        departed: journey.departed,
+                        arrives: journey.arrives,
+                        body_revision: member.body_revision,
+                        terrain_revision: session.sim.terrain_revision(),
+                    },
+                    geometry: native::ArrivalGeometry {
+                        eye: std::array::from_fn(|k| pose.at[k] + t.eye[k]),
+                        pose,
+                        window: t.window.clone(),
+                        places: t.places,
+                    },
+                });
+            }
+        }
+        out.sort_by_key(|input| input.request.actor);
         Ok(out)
     }
 

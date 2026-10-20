@@ -51,7 +51,8 @@ impl Mesocosm {
                 .map(|_| revision(critter, context.row));
         }
         if let Some(checkpoint) = &self.checkpoint {
-            return answer(checkpoint, critter, press);
+            let reading = self.question_reading(world, Vec::new()).ok()?;
+            return offered_answer(checkpoint, &reading, critter, press);
         }
         let (critter, site) = (critter?, self.site(world)?);
         match press {
@@ -116,6 +117,17 @@ fn answer(checkpoint: &Checkpoint, critter: Option<Id>, press: &Press) -> Option
     Some(MesocosmIntent::Checkpoint(CheckpointAnswer { entity: EntityHandle(entity), kind }))
 }
 
+/// Apply the same disclosure projection used by native checkpoint admission.
+fn offered_answer(saved: &Checkpoint, reading: &crate::continuation::LoopReading,
+    critter: Option<Id>, press: &Press) -> Option<MesocosmIntent> {
+    if let Some(checkpoint) = &reading.checkpoint { return answer(checkpoint, critter, press); }
+    if matches!(reading.personal, Some(crate::continuation::PersonalQuestion::Birth { .. }))
+        && *press == Press::Named(Named::Enter) {
+        return answer(saved, critter, press);
+    }
+    None
+}
+
 /// Offer `index` of the boundary's review as an answer; offer 0 is the status quo.
 pub fn revision(critter: Option<Id>, index: usize) -> MesocosmIntent {
     MesocosmIntent::Checkpoint(CheckpointAnswer {
@@ -126,4 +138,30 @@ pub fn revision(critter: Option<Id>, index: usize) -> MesocosmIntent {
 
 fn review_answer(index: usize) -> CheckpointAnswerKind {
     CheckpointAnswerKind::EpochReview(RevisionAnswer { revision: CandidateHandle(index as u64) })
+}
+
+#[cfg(test)]
+mod offered_tests {
+    use super::*;
+    use crate::{Birth, continuation::{LoopReading, LoopCut, LoopPhase, PersonalQuestion}};
+
+    #[test]
+    fn hidden_offspring_keeps_personal_enter_without_offering_take() {
+        let checkpoint = Checkpoint { tick: 14,
+            occasion: Occasion::Birth(Birth { parent: 6, child: 149 }), heirs: vec![149] };
+        let mut reading = LoopReading {
+            cut: LoopCut { native: String::new(), game: String::new(), question: None },
+            settings: None, phase: LoopPhase::Held, checkpoint: None, offers: Vec::new(),
+            happenings: Vec::new(), lineages: Vec::new(),
+            personal: Some(PersonalQuestion::Birth { parent: 6 }), world_ended_at: None,
+        };
+        assert_eq!(offered_answer(&checkpoint, &reading, Some(6), &Press::Char('t')), None);
+        assert!(matches!(offered_answer(&checkpoint, &reading, Some(6), &Press::Named(Named::Enter)),
+            Some(MesocosmIntent::Checkpoint(CheckpointAnswer {
+                kind: CheckpointAnswerKind::Birth(BirthAnswer::KeepParent), .. }))));
+        reading.checkpoint = Some(checkpoint.clone());
+        assert!(matches!(offered_answer(&checkpoint, &reading, Some(6), &Press::Char('t')),
+            Some(MesocosmIntent::Checkpoint(CheckpointAnswer {
+                kind: CheckpointAnswerKind::Birth(BirthAnswer::TakeOffspring), .. }))));
+    }
 }

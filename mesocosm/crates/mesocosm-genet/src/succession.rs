@@ -82,6 +82,22 @@ pub fn succession_of(sim: &Simulation, checkpoint: &Checkpoint) -> Succession {
     }
 }
 
+/// Show the same offered question as the ordinary native answer door.
+pub fn ordinary_of(sim: &Simulation, reading: &mesocosm_runtime::continuation::LoopReading)
+    -> Option<Succession> {
+    if let Some(checkpoint) = &reading.checkpoint { return Some(succession_of(sim, checkpoint)); }
+    use mesocosm_runtime::continuation::PersonalQuestion;
+    match reading.personal {
+        Some(PersonalQuestion::Birth { parent }) => Some(Succession {
+            headline: "Your body has reproduced".into(),
+            facts: vec![("parent".into(), parent.to_string()),
+                ("offspring".into(), "Outside the current physical view".into())],
+            stay: "[Enter] keep the parent".into(), take: None,
+        }),
+        _ => None,
+    }
+}
+
 pub struct SuccessionChrome {
     runner: Runner,
     raster: Raster,

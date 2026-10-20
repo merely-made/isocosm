@@ -51,8 +51,8 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
         || profile.process != request.process || sim.terrain_revision() != request.terrain_revision
         || geometry.path.is_empty() || geometry.path.len() as u128 > u128::from(request.cells) + 1
     { return Err("step source, profile, path or native binding changed".into()); }
-    let volume = sim.volume(request.site, geometry.window.min, geometry.window.max, geometry.window.depth)?;
-    let places = Places::derive(&volume, profile.places)?;
+    let terrain = sim.site_geometry(request.site, &geometry.window, profile.places)?;
+    let (volume, places) = (&terrain.volume, &terrain.places);
     let whole = embodiment::enabled(sim);
     if sim.foraging_enabled() && sim.state().spatial_poses.get(&request.actor)
         .is_none_or(|at| at.site != request.site || at.arrived != actor.arrived || at.pose != geometry.path[0]) {
@@ -94,8 +94,8 @@ pub(super) fn check_arrival(sim: &Simulation, request: &ArrivalRequest, geometry
     if actor.body.is_none() || actor.resident_site() != Some(request.to) || actor.arrived != request.arrives
         || actor.body_revision != request.body_revision || sim.terrain_revision() != request.terrain_revision
     { return Err("arrival placement source changed".into()); }
-    let volume = sim.volume(request.to, geometry.window.min, geometry.window.max, geometry.window.depth)?;
-    let places = Places::derive(&volume, geometry.places)?;
+    let terrain = sim.site_geometry(request.to, &geometry.window, geometry.places)?;
+    let (volume, places) = (&terrain.volume, &terrain.places);
     let patch = places.place_at(geometry.pose.at).ok_or("arrival pose has no realized patch")?;
     let fits = if embodiment::enabled(sim) {
         embodiment::check(&volume, actor.body.as_ref().ok_or("arrival body absent")?, &geometry.pose)?;

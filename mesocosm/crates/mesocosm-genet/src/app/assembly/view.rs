@@ -167,7 +167,7 @@ pub(super) fn root(state: &State) -> Child {
 
 pub(super) fn sheet() -> String {
     let mut css = String::from(
-        "body{margin:0;background:#17211d;color:#e6eee8;font:14px sans-serif} .mesocosm{padding:12px} h1{font-size:18px;margin:0 0 8px} .play{display:flex;gap:12px;align-items:flex-start} aside{width:250px;overflow:auto} .viewport{display:block;background:#050a07} button{padding:8px;margin:4px;color:#e6eee8;background:#304d3a;border:1px solid #668875} .status{margin:8px 0} #viewport-error{color:#ffb080} .board{max-width:250px}",
+        "body{margin:0;background:#17211d;color:#e6eee8;font:14px sans-serif} .mesocosm{padding:12px} h1{font-size:18px;margin:0 0 8px} .play{display:flex;gap:12px;align-items:flex-start} aside{width:250px;max-height:calc(100vh - 110px);overflow:auto} .viewport{display:block;background:#050a07} button{padding:8px;margin:4px;color:#e6eee8;background:#304d3a;border:1px solid #668875} .status{margin:8px 0} #viewport-error{color:#ffb080} .board{max-width:250px}",
     );
     css.push_str(mesocosm_views::vitals_css());
     css.push_str(mesocosm_views::board_css());

@@ -7,9 +7,13 @@ use mesocosm_runtime::{Runtime, runtime::MODE};
 mod profile;
 #[path = "../runtime/active_profile.rs"]
 mod active_profile;
+#[path = "mesocosm-active-profile/play.rs"]
+mod play;
 
 fn main() {
-    if std::env::var_os("MESOCOSM_PROFILE_SEAL").is_some_and(|v| v == "1") {
+    if std::env::var_os("MESOCOSM_PLAY_STEPS").is_some() {
+        play::run();
+    } else if std::env::var_os("MESOCOSM_PROFILE_SEAL").is_some_and(|v| v == "1") {
         seal();
     } else if std::env::var_os("ISOCOSM_PROFILE_REGISTRY").is_some_and(|v| v == "1") {
         registry();

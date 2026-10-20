@@ -47,7 +47,9 @@ fn a_marked_physical_world_does_not_replace_a_missing_pose_with_a_grid_spot() {
     assert!(host.runtime.spatial().driver.is_some());
     assert!(!host.runtime.spatial().members.contains_key(&host.runtime.critter().unwrap()));
     host.refresh_scene();
-    assert!(host.scene.is_none(), "an unavailable physical pose must withdraw the old picture");
+    let scene = host.scene.as_ref().expect("declared native terrain remains visible");
+    assert!(scene.bodies.is_empty(), "an unavailable pose must never acquire a grid body");
+    assert_eq!(Some(scene.site), host.runtime.played().unwrap().resident_site());
 }
 
 #[test]
