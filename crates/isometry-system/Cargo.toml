@@ -41,10 +41,10 @@ version = "0.1.0"
 optional = true
 
 # MIT taplo 0.14 fork (github.com/merely-made/taplo, branch merely/rowan-0.17):
-# Rowan 0.17, batched DOM construction and parse_with_cache.
+# Rowan 0.17, batched DOM construction, parse_with_cache and TOML 1.1 parsing.
 [dependencies.taplo]
 git = "https://github.com/merely-made/taplo.git"
-rev = "118aae39a3f599ac6efd6d4def0ab095a736d189"
+rev = "aa6d784f235a67a4a1963e644e0c6d956686c50f"
 version = "=0.14.0"
 optional = true
 

@@ -114,7 +114,7 @@ fn revisions_comments_handles_drafts_and_undo() {
     assert_eq!(fs::read_to_string(&s.path).unwrap(), source);
 }
 #[test]
-fn full_schema_and_toml11_do_not_inherit_probe_restrictions() {
+fn full_schema_and_toml11_are_indexed_without_probe_restrictions() {
     let f = Fixture::new();
     let mut manifest = GeneratorPack::load(&f.0).unwrap().manifest().clone();
     manifest.generators[0].default_args = Some(isometry_campaign::GenValue::Object {
@@ -132,15 +132,23 @@ fn full_schema_and_toml11_do_not_inherit_probe_restrictions() {
     f.write(&source);
     let mut s = f.session();
     assert_eq!(decode(s.format, &s.current.text).unwrap(), manifest);
-    assert!(s.current.index_note.is_some());
+    assert!(s.current.index_note.is_none());
     assert!(s.current.validation.is_none());
     assert_eq!(GeneratorPack::load(&f.0).unwrap().manifest(), &manifest);
-    assert!(
-        s.current
-            .diagnostics()
-            .iter()
-            .all(|d| d.phase == "source-index")
-    );
+    assert!(s.current.diagnostics().is_empty());
+    let paths = syntax::inspect(&s)["occurrences"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|o| o["path"].as_str().unwrap().to_string())
+        .collect::<Vec<_>>();
+    for path in [
+        "vendor.modern.escape",
+        "vendor.modern.time",
+        "vendor.modern.inline.b",
+    ] {
+        assert!(paths.iter().any(|p| p == path), "{path}: {paths:?}");
+    }
     s.edit(
         1,
         vec![Edit {
