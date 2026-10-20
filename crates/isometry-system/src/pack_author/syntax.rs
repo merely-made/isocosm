@@ -26,6 +26,7 @@ pub(super) fn preflight(text: &str, format: Format) -> Result<(), String> {
 pub(super) fn parse(
     text: &str,
     format: Format,
+    cache: Option<&mut NodeCache>,
 ) -> Result<(Option<taplo::parser::Parse>, Option<String>), String> {
     if matches!(format, Format::Json) {
         return Ok((
@@ -33,7 +34,10 @@ pub(super) fn parse(
             Some("external JSON is retained and validated; source indexing is TOML-only".into()),
         ));
     }
-    let parsed = taplo::parser::parse(text);
+    let parsed = match cache {
+        Some(cache) => taplo::parser::parse_with_cache(text, cache),
+        None => taplo::parser::parse(text),
+    };
     if parsed.clone().into_syntax().to_string() != text {
         return Err("syntax reconstruction mismatch; revision not published".into());
     }

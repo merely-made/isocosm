@@ -100,7 +100,7 @@ pub(super) fn propose(
     )
     .map_err(edit_error)?;
     let preview = plan.preview();
-    let proposed = Snapshot::build(base, preview.to_string(), session.format)?;
+    let proposed = Snapshot::build(base, preview.to_string(), session.format, None)?;
     if proposed.index_note.is_some() || decode(session.format, preview)? != expected {
         return Err(
             "unsupported insertion layout or value; proposed text does not match intended manifest"

@@ -1,5 +1,7 @@
 use super::*;
 use std::{fs, path::Path};
+#[path = "history_tests.rs"]
+mod history_tests;
 #[cfg(unix)]
 #[path = "lease_tests.rs"]
 mod lease_tests;
@@ -254,7 +256,7 @@ fn ranges_batches_limits_and_eviction_are_transactional() {
         .is_err()
     );
     assert!(Arc::ptr_eq(&current, &s.current));
-    s.limit = 2;
+    s.history.policy.limit = 2;
     for i in 0..5 {
         s.edit(
             s.current.revision,
