@@ -9342,6 +9342,7 @@ dependencies = [
 [[package]]
 name = "taplo"
 version = "0.14.0"
+source = "git+https://github.com/merely-made/taplo.git?rev=118aae39a3f599ac6efd6d4def0ab095a736d189#118aae39a3f599ac6efd6d4def0ab095a736d189"
 dependencies = [
  "ahash",
  "arc-swap",
