@@ -6,7 +6,7 @@ use crate::{
     util::{allowed_chars, check_escape},
 };
 use logos::{Lexer, Logos};
-use rowan::{GreenNode, GreenNodeBuilder, TextRange, TextSize};
+use rowan::{GreenNode, GreenNodeBuilder, NodeCache, TextRange, TextSize};
 use std::convert::TryInto;
 
 #[macro_use]
@@ -42,6 +42,17 @@ impl std::error::Error for Error {}
 /// This does not check for semantic errors such as duplicate keys.
 pub fn parse(source: &str) -> Parse {
     Parser::new(source).parse()
+}
+
+/// Parse like [`parse`], interning green tokens and nodes in a caller-owned
+/// [`NodeCache`].
+///
+/// Reparsing edited sources with one cache lets the resulting trees share
+/// unchanged tokens and small nodes (Rowan interns nodes with at most three
+/// children). The cache never evicts: it keeps every element it has interned
+/// alive until it is dropped, so the caller decides how long it lives.
+pub fn parse_with_cache(source: &str, cache: &mut NodeCache) -> Parse {
+    Parser::with_builder(source, GreenNodeBuilder::with_cache(cache)).parse()
 }
 
 /// A hand-written parser that uses the Logos lexer
@@ -100,13 +111,17 @@ type ParserResult<T> = Result<T, ()>;
 // that contains minimal function calls.
 impl<'p> Parser<'p> {
     pub(crate) fn new(source: &'p str) -> Self {
+        Self::with_builder(source, Default::default())
+    }
+
+    fn with_builder(source: &'p str, builder: GreenNodeBuilder<'p>) -> Self {
         Parser {
             current_token: None,
             skip_whitespace: true,
             key_pattern_syntax: false,
             error_whitelist: 0,
             lexer: SyntaxKind::lexer(source),
-            builder: Default::default(),
+            builder,
             errors: Default::default(),
         }
     }

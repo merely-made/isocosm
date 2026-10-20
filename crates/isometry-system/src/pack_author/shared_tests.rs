@@ -99,7 +99,7 @@ fn shared_revision_overflow_does_not_publish_or_save() {
     let f = Fixture::new();
     let mut s = f.session();
     let disk = fs::read(&s.path).unwrap();
-    s.current = Snapshot::build(u64::MAX, s.current.text.to_string(), s.format).unwrap();
+    s.current = Snapshot::build(u64::MAX, s.current.text.to_string(), s.format, None).unwrap();
     let before = s.current.clone();
     assert_eq!(
         s.edit(

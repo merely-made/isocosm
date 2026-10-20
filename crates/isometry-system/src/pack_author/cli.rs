@@ -58,19 +58,26 @@ fn execute(session: &mut Session, command: Command) -> Result<serde_json::Value,
     })
 }
 pub(crate) fn run() -> Result<(), String> {
+    const USAGE: &str =
+        "usage: pack-author <pack-directory> [--check] [--history full|text|cached]";
     let mut args = std::env::args_os().skip(1);
-    let root = args
-        .next()
-        .ok_or("usage: pack-author <pack-directory> [--check]")?;
-    let check_only = match args.next() {
-        None => false,
-        Some(arg) if arg == "--check" => true,
-        _ => return Err("usage: pack-author <pack-directory> [--check]".into()),
-    };
-    if args.next().is_some() {
-        return Err("too many arguments".into());
+    let root = args.next().ok_or(USAGE)?;
+    let (mut check_only, mut mode) = (false, history::Mode::DEFAULT);
+    while let Some(arg) = args.next() {
+        match arg.to_str() {
+            Some("--check") if !check_only => check_only = true,
+            Some("--history") => {
+                mode = args
+                    .next()
+                    .and_then(|m| m.into_string().ok())
+                    .ok_or(USAGE)?
+                    .parse()?;
+            },
+            _ => return Err(USAGE.into()),
+        }
     }
-    let mut session = Session::open(std::path::Path::new(&root), 32)?;
+    let policy = history::Policy::new(mode, history::Policy::DEFAULT_LIMIT);
+    let mut session = Session::open_with(std::path::Path::new(&root), policy)?;
     if check_only {
         println!("{}", execute(&mut session, Command::Check)?);
         return Ok(());
