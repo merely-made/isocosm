@@ -9,7 +9,8 @@ use isometer_space::places::Places;
 use std::collections::VecDeque;
 
 impl Game {
-    fn resolve_step(&self, pending: &native::Pending) -> Result<native::Geometry, String> {
+    fn resolve_step(&self, pending: &native::Pending, cache: &mut GeometryCache) -> Result<native::Geometry, String> {
+        if self.generated_driver() { return self.generated_step(pending, cache); }
         let r = &pending.request;
         let profile = pending.sim.genesis().rules.step_profiles.get(&r.profile).ok_or("native step profile absent")?;
         let input = self.driver.as_ref().ok_or("chosen step has no authored driver")?
@@ -148,7 +149,7 @@ impl Game {
                         || steps.iter().any(|r| r.request.action == pending.request.action)
                     { return Err("spatial step request made no finite progress".into()); }
                     let game = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?;
-                    let answer = crate::profile::measure("clock.answer.step", || game.resolve_step(&pending));
+                    let answer = crate::profile::measure("clock.answer.step", || game.resolve_step(&pending, geometry));
                     steps.push(native::Resolution { request: pending.request, geometry: answer });
                 },
                 SpatialAdvance::Birth(pending) => {
@@ -156,7 +157,7 @@ impl Game {
                         || births.iter().any(|r| r.request.child == pending.request.child)
                     { return Err("biological placement request made no finite progress".into()); }
                     let game = source.preview(&pending.sim, &steps, &arrivals, &births, geometry)?;
-                    let answer = crate::profile::measure("clock.answer.birth", || game.resolve_birth(&pending));
+                    let answer = crate::profile::measure("clock.answer.birth", || game.resolve_birth_with_geometry(&pending, geometry));
                     births.push(native::BirthResolution { request: pending.request, geometry: answer });
                 },
                 SpatialAdvance::Advanced(out) => {

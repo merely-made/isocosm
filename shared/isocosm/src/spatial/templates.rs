@@ -27,7 +27,11 @@ const EYE: [i64; 3] = [0, 1, 0];
 /// A root pivot standing on solid ground, and its facing, in the site's base cells.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Stand { pub at: [i64; 3], pub yaw: Yaw }
+pub struct Stand {
+    pub at: [i64; 3], pub yaw: Yaw,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub actor: Option<Id>,
+}
 
 /// The stand a member takes on arriving by this route.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -48,7 +52,7 @@ pub struct Templates {
 
 impl Templates {
     pub fn validate(&self, genesis: &Genesis) -> Result<()> {
-        if self.version != VERSION || self.window.max[0] <= self.window.min[0]
+        if !matches!(self.version, VERSION | 2) || self.window.max[0] <= self.window.min[0]
             || self.window.max[1] <= self.window.min[1] || self.window.depth <= 0 {
             return Err("unsupported or empty spatial templates".into());
         }
@@ -57,6 +61,14 @@ impl Templates {
             || stands.len() > STANDS || !stands.iter().all(inside)) {
             return Err("spatial template stands name an absent site or leave the window".into());
         }
+        let mut actors = BTreeSet::new();
+        for (&site, stands) in &self.stands { for stand in stands {
+            if self.version == 1 && stand.actor.is_some() { return Err("legacy stand has an actor binding".into()); }
+            if self.version == 2 && stand.actor.is_none_or(|id| !actors.insert(id)
+                || genesis.population.get(id).is_none_or(|e| e.body.is_none() || e.resident_site() != Some(site))) {
+                return Err("whole-body stand has no unique native resident".into());
+            }
+        } }
         for crossing in &self.crossings {
             let routed = genesis.sites.get(&crossing.from)
                 .is_some_and(|site| site.routes.iter().any(|r| r.to == crossing.to));
@@ -125,7 +137,7 @@ fn stands_of(volume: &Volume, rules: PlaceRules, seed: u64, site: Id) -> Result<
                 let patch = places.as_ref().and_then(|p| p.place_at(root));
                 if patch.is_some() && patch == places.as_ref().and_then(|p| p.place_at(eye)) {
                     let quarters = crate::draw(seed, "stand-yaw", &[site, (x as u64) << 20 ^ z as u64]) % 4;
-                    found.push(Stand { at: root, yaw: (0..quarters).fold(Yaw::Zero, |y, _| y.compose(Yaw::Quarter)) });
+                    found.push(Stand { at: root, yaw: (0..quarters).fold(Yaw::Zero, |y, _| y.compose(Yaw::Quarter)), actor: None });
                 }
             }
         }

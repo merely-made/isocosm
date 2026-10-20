@@ -36,8 +36,13 @@ fn a_marked_physical_world_does_not_replace_a_missing_pose_with_a_grid_spot() {
     let mut host = bench_host();
     host.refresh_scene();
     assert!(host.scene.is_some());
-    host.runtime = mesocosm_runtime::Runtime::bench_placed(
-        mesocosm_runtime::Founded::generated(2_814_468_213_915_169_548, 60).unwrap(), 2).unwrap();
+    let mut water = mesocosm_runtime::Founded::generated(2_814_468_213_915_169_548, 60).unwrap();
+    for site in water.genesis.sites.values_mut() {
+        for (key, value) in [("terrain:elevation", 0), ("terrain:relief", 0), ("terrain:water", 8)] {
+            site.conditions.insert(key.into(), value);
+        }
+    }
+    host.runtime = mesocosm_runtime::Runtime::bench_placed(water, 2).unwrap();
     host.scene_source_key = None;
     assert!(host.runtime.spatial().driver.is_some());
     assert!(!host.runtime.spatial().members.contains_key(&host.runtime.critter().unwrap()));

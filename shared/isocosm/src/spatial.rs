@@ -17,8 +17,10 @@ mod birth;
 mod birth_geometry;
 mod birth_command;
 mod templates;
+pub mod embodiment;
 pub use templates::{Templates, Stand, Crossing, STANDS as STANDS_PER_SITE};
 pub use birth::{BirthProfile, BirthMedium, BirthSupport, BirthRequest, BirthGeometry, BirthResolution, BirthReport, BirthPending, birth_pose};
+pub use birth::rotate as rotate_offset;
 pub use birth_command::{BirthPreparation, PreparedBirth};
 pub(crate) use birth::BirthMark;
 
@@ -108,6 +110,10 @@ pub fn validate(rules: &Rules) -> Result<()> {
             || (0..3).any(|k| profile.clearance[0][k] >= profile.clearance[1][k]) || profile.places.climb.run == 0
             || matches!(profile.places.cap, isometer_space::places::Cap::Own(s) if s.contains(&0))
         { return Err("birth profile needs its native process and authored clearance".into()); }
+        if profile.support == BirthSupport::BodyGround && (profile.medium != BirthMedium::Air
+            || rules.spatial_templates.as_ref().is_none_or(|t| t.version != 2)) {
+            return Err("part-floor birth support needs whole-body templates and air".into());
+        }
     }
     for (key, profile) in &rules.step_profiles {
         crate::validation::key(key)?;

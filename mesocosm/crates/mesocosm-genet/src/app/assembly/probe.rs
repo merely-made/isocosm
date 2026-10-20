@@ -24,6 +24,12 @@ impl mesquite::Product for Probe {
         let yes_no = |value| if value { "yes" } else { "no" }.to_owned();
         let dev_intents = r.dev_intents();
         let body_stats = s.producer.borrow_mut().body_stats().unwrap_or_default();
+        let terrain_stats = s.producer.borrow_mut().terrain_stats().unwrap_or_default();
+        let physical = r.spatial();
+        let (walks, children) = physical.driver.as_ref().map_or((0, 0), |driver| (
+            driver.records.iter().map(|record| record.steps.len()).sum::<usize>(),
+            driver.records.iter().flat_map(|record| &record.changes)
+                .filter(|change| matches!(change.admission, mesocosm_runtime::spatial::Admission::Birth { .. })).count()));
         let living = r
             .sim()
             .state()
@@ -53,10 +59,16 @@ impl mesquite::Product for Probe {
                 ("follow", some(s.host.followed())),
                 ("site", some(s.host.scene.as_ref().map(|s| s.site))),
                 ("living", living.to_string()),
-                ("physical-members", r.spatial().members.len().to_string()),
-                ("controlled-placement", yes_no(r.critter().is_some_and(|id| r.spatial().members.contains_key(&id)))),
+                ("physical-members", physical.members.len().to_string()),
+                ("whole-body-placement", yes_no(isocosm::spatial::embodiment::enabled(&r.sim()))),
+                ("accepted-walks", walks.to_string()),
+                ("placed-offspring", children.to_string()),
+                ("controlled-placement", yes_no(r.critter().is_some_and(|id| physical.members.contains_key(&id)))),
                 ("bodies", s.host.config.body_mode.name().into()),
                 ("voxel-bodies", body_stats.voxel_bodies.to_string()),
+                ("terrain-bricks", terrain_stats.resident.to_string()),
+                ("terrain-capacity", terrain_stats.capacity.to_string()),
+                ("terrain-overflow", terrain_stats.overflow.to_string()),
                 ("voxel-parts", body_stats.voxel_parts.to_string()),
                 ("fallback-bodies", body_stats.fallback_bodies.to_string()),
                 ("projection-failures", body_stats.projection_failures.to_string()),

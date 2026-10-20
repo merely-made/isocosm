@@ -48,6 +48,40 @@ pub trait TerrainSource {
 /// incrementally from the host's drained dirty bricks.
 pub struct GroundTerrain<'a>(pub &'a Ground);
 
+impl super::residency::BrickSource for GroundTerrain<'_> {
+    fn bounds(&self) -> Option<[[i16; 3]; 2]> {
+        let mut keys = self.0.keys();
+        let first = keys.next()?;
+        Some(keys.fold([first, first], |mut bounds, key| {
+            for axis in 0..3 {
+                bounds[0][axis] = bounds[0][axis].min(key[axis]);
+                bounds[1][axis] = bounds[1][axis].max(key[axis]);
+            }
+            bounds
+        }))
+    }
+
+    fn layers(&self, column: [i16; 2]) -> std::ops::Range<i16> {
+        let mut layers = self
+            .0
+            .keys()
+            .filter(|key| [key[0], key[2]] == column)
+            .map(|key| key[1]);
+        let Some(first) = layers.next() else {
+            return 0..0;
+        };
+        let (low, high) = layers.fold((first, first), |(lo, hi), y| (lo.min(y), hi.max(y)));
+        low..high.saturating_add(1)
+    }
+
+    fn fill(&self, key: [i16; 3], out: &mut [u8]) {
+        out.fill(0);
+        if let Some((brick, _)) = self.0.brick_materials(key) {
+            out.copy_from_slice(brick.raw());
+        }
+    }
+}
+
 impl TerrainSource for GroundTerrain<'_> {
     fn revision(&self) -> u64 {
         self.0.revision()
@@ -106,6 +140,68 @@ impl TerrainSource for HostTerrain {
                 Ok(TerrainRefresh::Full)
             },
             None => Ok(TerrainRefresh::Current),
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{PagedTerrain, Residency, ResidencySettings, SlabCamera, framed_bricks};
+    use isometer_core::ground::{BRICK, Terrain};
+    use isometer_lens::bricks::AtlasLimits;
+
+    #[test]
+    fn a_ground_larger_than_the_packed_atlas_pages_and_preserves_materials() {
+        struct Flat;
+        impl Terrain for Flat {
+            fn sea_level(&self, _: i32) -> i32 {
+                -1
+            }
+            fn surface(&self, _: i32, _: i32, _: i32) -> i32 {
+                15
+            }
+        }
+        let ground = Ground::grow_with(&Flat, 128, |x, z, depth| {
+            ((x + z + depth).rem_euclid(62) + 1) as u8
+        });
+        assert!(
+            BrickMap::from_ground(&ground).is_err(),
+            "exceeds the legacy packed atlas"
+        );
+        let source = GroundTerrain(&ground);
+        let residency = RefCell::new(Residency::new(
+            ResidencySettings::default(),
+            AtlasLimits::DEFAULT,
+        ));
+        let mut map = None;
+        for x in [-80.0, 80.0] {
+            let camera = SlabCamera::dimetric_2_1([x, 8.0, 0.0], 16.0, 1.5, 64.0).unwrap();
+            let framed =
+                framed_bricks(camera, BRICK as f32, &source, residency.borrow().capacity());
+            assert_eq!(framed.overflow, 0);
+            let paged = PagedTerrain::new(&residency, &source, &framed, ground.revision());
+            if let Some(map) = &mut map {
+                paged.refresh(map, &[]).unwrap();
+            } else {
+                map = Some(paged.brick_map().unwrap());
+            }
+            let map = map.as_ref().unwrap();
+            assert!(residency.borrow().stats().resident > 0);
+            for key in residency.borrow().resident() {
+                for y in 0..BRICK {
+                    for z in 0..BRICK {
+                        for x in 0..BRICK {
+                            let at = [
+                                i32::from(key[0]) * BRICK + x,
+                                i32::from(key[1]) * BRICK + y,
+                                i32::from(key[2]) * BRICK + z,
+                            ];
+                            assert_eq!(map.material_at(at), ground.material(at).unwrap_or(0));
+                        }
+                    }
+                }
+            }
         }
     }
 }

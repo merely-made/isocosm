@@ -19,6 +19,7 @@ impl Game {
         if self.driver.is_some() || !self.members.is_empty() {
             return Err("generated templates seat a world with no saved physical members".into());
         }
+        if templates.version == 2 { return self.found_embodied(session, &templates); }
         let mut native = session.clone();
         let mut placements = Vec::new();
         let mut arrivals = Vec::new();

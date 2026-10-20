@@ -2,6 +2,13 @@
 
 **Date:** 2026-09-26
 
+**2026-10-19 native play connection:** new Mesocosm play foundings use native
+rotated part boxes, Ground support and the existing atomic spatial clock for
+stands, walking, actual births and route arrivals. This does not implement
+the generic Conatus binding adapter below. `TactileWorld` remains advisory;
+native integer placement admits the saved poses. See the
+[presentation continuation](2026-09-11_orthographic_voxel_presentation_plan.md).
+
 **Status, 2026-10-10:** the generic binding shape remains documented and
 unbuilt (346 to 352). Q15 replaces the remaining query-only settle steps
 with upstream query refresh under 352 and 804. Both consumer compile gates,

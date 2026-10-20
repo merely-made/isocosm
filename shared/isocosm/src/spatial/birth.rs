@@ -18,7 +18,11 @@ pub enum BirthMedium { Air, Water, AirOrWater }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 /// Ground support is an authored child-root-local offset, rotated with its yaw.
-pub enum BirthSupport { Free, Ground { stance_offset: [i64; 3] } }
+pub enum BirthSupport {
+    Free, Ground { stance_offset: [i64; 3] },
+    /// Ground contact by an occupied part floor in a whole-body world.
+    BodyGround,
+}
 
 #[derive(Clone, Debug)]
 pub(crate) struct BirthMark {
@@ -57,7 +61,7 @@ pub struct BirthReport {
 #[derive(Clone, Debug)]
 pub struct BirthPending { pub request: BirthRequest, pub sim: Box<Simulation> }
 
-pub(super) fn rotate(yaw: Yaw, [x, y, z]: [i64; 3]) -> Result<[i64; 3]> {
+pub fn rotate(yaw: Yaw, [x, y, z]: [i64; 3]) -> Result<[i64; 3]> {
     Ok(match yaw {
         Yaw::Zero => [x, y, z], Yaw::Quarter => [z, y, x.checked_neg().ok_or("birth offset overflow")?],
         Yaw::Half => [x.checked_neg().ok_or("birth offset overflow")?, y, z.checked_neg().ok_or("birth offset overflow")?],

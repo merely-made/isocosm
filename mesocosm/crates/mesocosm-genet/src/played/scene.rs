@@ -148,7 +148,7 @@ pub fn placed_physical(sim: &Simulation, site: Id,
         if at.site.0 != site || !visible.shows(id) { continue; }
         let entity = sim.state().population.get(id).ok_or("physical picture names an absent native member")?;
         if entity.resident_site() != Some(site) { continue; }
-        realized.check(at)?;
+        if realized.check(at).is_err() || game.placement_unoccupied(sim, id).is_err() { continue; }
         let Some(document) = entity.body.clone() else { continue; };
         if !volume.holds(at.pose.at[0], at.pose.at[2]) { continue; }
         let cell = volume.to_ground(at.pose.at);
@@ -171,6 +171,7 @@ pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
     let id = played.ok_or("physical scene has no played native member")?;
     let held = game.members.get(&id).ok_or("played member has no saved physical window or pose")?;
     held.realized(sim)?;
+    game.placement_unoccupied(sim, id)?;
     let site = held.site.0;
     let volume = sim.volume(site, held.window.min, held.window.max, held.window.depth)?;
     let bodies = placed_physical(sim, site, &volume, visible, game)?;

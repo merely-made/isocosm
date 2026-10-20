@@ -6,6 +6,7 @@ use isocosm::spatial::{ArrivalRequest, ArrivalGeometry, ArrivalResolution, Arriv
 
 impl Game {
     pub(super) fn arrival_inputs(&self, session: &Session) -> Result<Vec<ArrivalResolution>, String> {
+        if self.generated_driver() { return self.generated_arrivals(session); }
         let Some(driver) = &self.driver else { return Ok(Vec::new()); };
         let end = session.sim.state().tick.checked_add(1).ok_or("spatial clock overflows")?;
         let mut out = Vec::new();
@@ -26,6 +27,23 @@ impl Game {
     }
 
     pub(super) fn arrival_placement(&self, input: &ArrivalResolution, patch: PlaceId) -> Result<Placement, String> {
+        if self.generated_driver() {
+            let driver = self.driver.as_ref().ok_or("generated arrival driver absent")?;
+            let held = self.members.get(&input.request.actor);
+            if held.is_none() && !driver.children.contains_key(&input.request.actor) {
+                return Err("generated arrival has no admitted source identity".into());
+            }
+            let source = held.or_else(|| driver.initial.values().next()).ok_or("generated arrival source absent")?;
+            if held.is_some_and(|held| held.site.0 != input.request.from) || source.window != input.geometry.window
+                || source.places.unwrap_or_default() != input.geometry.places {
+                return Err("generated arrival differs from its source window and route".into());
+            }
+            return Ok(Placement { actor: EntityHandle(input.request.actor), site: PlaceHandle(input.request.to), patch,
+                body_revision: input.request.body_revision, terrain_revision: input.request.terrain_revision.clone(),
+                pose: Pose { at: input.geometry.pose.at, yaw: input.geometry.pose.yaw }, eye: input.geometry.eye,
+                window: input.geometry.window.clone(), operations: BTreeMap::new(), places: Some(input.geometry.places),
+                resident_since: Some(input.request.arrives) });
+        }
         let authored = self.driver.as_ref().ok_or("arrival driver absent")?.arrival_inputs()?;
         let held = authored.iter().find(|held| held.actor.0 == input.request.actor && held.from.0 == input.request.from
             && held.to.0 == input.request.to).ok_or("accepted arrival has no authored destination")?;

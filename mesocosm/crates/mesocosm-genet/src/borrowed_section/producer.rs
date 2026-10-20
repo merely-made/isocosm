@@ -17,6 +17,10 @@ impl SectionProducer {
         if !self.has_current_frame() { return None; }
         self.inner.as_mut()?.source_mut().section.as_ref().map(Section::body_stats)
     }
+    pub(crate) fn terrain_stats(&mut self) -> Option<isometer::ResidencyStats> {
+        if !self.has_current_frame() { return None; }
+        self.inner.as_mut()?.source_mut().section.as_ref().map(Section::terrain_stats)
+    }
     /// Walk body parts only when this producer presented the current admitted picture.
     pub(crate) fn select_part(&mut self, subject: u64, current: Option<section::BodySelection>, backwards: bool)
         -> Option<section::BodySelection> {

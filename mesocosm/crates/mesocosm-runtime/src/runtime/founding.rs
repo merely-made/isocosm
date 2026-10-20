@@ -14,7 +14,8 @@ impl Runtime {
 
     /// Play instrument using the generator's saved stands and spatial clock.
     /// This does not supply the independent ecological admission witness.
-    pub fn bench_placed(founded: Founded, ticks_per_second: u32) -> Result<Self, String> {
+    pub fn bench_placed(mut founded: Founded, ticks_per_second: u32) -> Result<Self, String> {
+        isocosm::spatial::embodiment::declare(&mut founded.genesis)?;
         Self::found_in_core(founded, ticks_per_second, Purpose::Bench, true)
     }
 

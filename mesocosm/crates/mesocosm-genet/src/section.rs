@@ -40,10 +40,11 @@ pub use isometer::SlabWindow;
 
 use isometer::core::BodyDocument;
 use isometer::core::ground::Ground;
-use isometer::lens::{BrickMap, CritterPose, Grade};
+use isometer::lens::{CritterPose, Grade};
 use isometer::render::composite::Composite;
 use isometer::{
-    CapsuleFrame, DeclaredExtentVolumes, GroundTerrain, Scene, SceneFrame, SceneVolumes,
+    CapsuleFrame, DeclaredExtentVolumes, GroundTerrain, PagedTerrain, Residency, ResidencySettings,
+    Scene, SceneFrame, SceneVolumes, framed_bricks,
 };
 
 /// The default slab half-height, ruled 2026-08-29; a host may carry another.
@@ -123,6 +124,7 @@ pub struct Section {
     queue: wgpu::Queue,
     /// Shared projection, queries and traced terrain.
     scene: Scene,
+    residency: std::cell::RefCell<Residency>,
     body_tenant: tenant::BodyTenant,
     grade: Grade,
     terrain_appearance: Option<isometer::lens::TerrainAppearance>,
@@ -151,19 +153,19 @@ impl Section {
         width: u32,
         height: u32,
         format: wgpu::TextureFormat,
-        ground: &Ground,
+        _ground: &Ground,
         framing: Framing,
     ) -> Result<Self, String> {
         let (device, queue) = (host.device.clone(), host.queue.clone());
-        let map = BrickMap::from_ground(ground).map_err(|error| error.to_string())?;
         let composite = Composite::new(&device, format);
         let mut scene = Scene::new(device.clone(), queue.clone(), width, height)?;
-        scene.set_terrain_map(map);
+        let residency = std::cell::RefCell::new(Residency::new(ResidencySettings::default(), scene.atlas_limits()));
         scene.bodies_mut().preview_depth = SLAB_DEPTH;
         Ok(Self {
             device,
             queue,
             scene,
+            residency,
             body_tenant: tenant::BodyTenant::new(host, [width, height]),
             grade: Grade::retro(PALETTE),
             terrain_appearance: None,
@@ -180,9 +182,8 @@ impl Section {
     }
 
     /// Rebinds the terrain to another lifted Ground: a new site, or new edits.
-    pub fn set_ground(&mut self, ground: &Ground) -> Result<(), String> {
-        let map = BrickMap::from_ground(ground).map_err(|error| error.to_string())?;
-        self.scene.set_terrain_map(map);
+    pub fn set_ground(&mut self, _ground: &Ground) -> Result<(), String> {
+        self.residency.borrow_mut().rebuild();
         self.invalidate_query();
         Ok(())
     }
@@ -222,6 +223,10 @@ impl Section {
 
     pub fn body_stats(&self) -> BodyFrameStats {
         self.scene.bodies().stats.clone()
+    }
+
+    pub fn terrain_stats(&self) -> isometer::ResidencyStats {
+        self.residency.borrow().stats()
     }
 
     pub fn set_body_light(&mut self, intensity: f32) {
@@ -289,7 +294,7 @@ impl Section {
         frame: SectionFrame<'_>,
     ) -> Result<(), String> {
         self.bind_terrain_materials(frame.scene.window.materials);
-        let terrain = GroundTerrain(&frame.scene.ground);
+        let source = GroundTerrain(&frame.scene.ground);
         let camera = self.view(frame.centre);
         let voxels = self.body_mode != BodyMode::Capsules;
         let scene_bodies = if voxels {
@@ -300,10 +305,14 @@ impl Section {
         let (grade, appearance, budget) = (self.grade, self.terrain_appearance, self.body_budget);
         let Self {
             scene,
+            residency,
             host_bodies,
             body_tenant,
             ..
         } = self;
+        let framed = framed_bricks(camera, isometer::core::ground::BRICK as f32, &source,
+            residency.borrow().capacity());
+        let terrain = PagedTerrain::new(residency, &source, &framed, frame.scene.ground.revision());
         let mut host = SectionHost {
             bodies: host_bodies,
             scene: frame.scene,

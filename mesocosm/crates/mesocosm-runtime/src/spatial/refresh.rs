@@ -57,10 +57,15 @@ impl Placement {
         }
         let window = &self.window;
         let (volume, places) = cache.get(sim, self.site.0, window, self.places.unwrap_or_else(Rules::default))?;
+        if isocosm::spatial::embodiment::enabled(sim) {
+            isocosm::spatial::embodiment::check(volume, member.body.as_ref().ok_or("native body absent")?,
+                &isocosm::spatial::Pose { at: self.pose.at, yaw: self.pose.yaw })?;
+        }
         let mut next = self.clone();
         let patch = places.place_at(self.pose.at).ok_or("saved pose has no current realized patch")?;
         for cell in [self.pose.at, self.eye] {
-            if !volume.holds(cell[0], cell[2]) || cell[1] < volume.datum || cell[1] >= volume.ceiling()
+            if !volume.holds(cell[0], cell[2]) || cell[1] < volume.datum
+                || (!isocosm::spatial::embodiment::enabled(sim) && cell[1] >= volume.ceiling())
                 || places.place_at(cell) != Some(patch)
                 || !volume.material(cell).is_some_and(|m| m == volume.materials.air || m == volume.materials.water)
             { return Err("saved pose or eye no longer admits in the current realized clear patch".into()); }
@@ -114,6 +119,7 @@ impl Game {
             }
             let result = (|| {
                 let next = held.rebound_with(&native.sim, geometry)?;
+                game.placement_unoccupied(&native.sim, id)?;
                 let candidate = if member.patch == Some(next.patch) {
                     next.realized_with(&native.sim, geometry)?;
                     None
