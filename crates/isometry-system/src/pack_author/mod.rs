@@ -1,7 +1,12 @@
 //! App-local authoring session. No runtime catalogue or session mutation.
 mod cli;
+mod history;
+mod lease;
+#[cfg(test)]
+mod meter;
 mod preset;
 mod save;
+mod structure;
 mod syntax;
 #[cfg(test)]
 mod tests;
@@ -14,7 +19,7 @@ use mere_source_edit::{
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
-use taplo::rowan::ast::SyntaxNodePtr;
+use taplo::rowan::{NodeCache, ast::SyntaxNodePtr};
 
 pub(super) use cli::run;
 #[derive(Clone, Copy, Debug, Serialize)]
@@ -37,13 +42,21 @@ struct Snapshot {
     syntax: Option<taplo::parser::Parse>,
     index_note: Option<String>,
     validation: Option<String>,
+    /// Estimated retained bytes, charged against the history budget.
+    bytes: usize,
 }
 impl Snapshot {
-    fn build(revision: u64, text: String, format: Format) -> Result<Arc<Self>, String> {
+    fn build(
+        revision: u64,
+        text: String,
+        format: Format,
+        cache: Option<&mut NodeCache>,
+    ) -> Result<Arc<Self>, String> {
         syntax::preflight(&text, format)?;
-        let (syntax, index_note) = syntax::parse(&text, format)?;
+        let (syntax, index_note) = syntax::parse(&text, format, cache)?;
         let validation = decode(format, &text).err();
         Ok(Arc::new(Self {
+            bytes: history::estimate(&text, syntax.as_ref()),
             revision,
             fingerprint: fingerprint(text.as_bytes()),
             text: Arc::from(text),
@@ -108,14 +121,17 @@ struct Session {
     instance: u64,
     format: Format,
     current: Arc<Snapshot>,
-    history: BTreeMap<u64, Arc<Snapshot>>,
-    limit: usize,
+    history: history::History,
     disk_fingerprint: String,
     saved_revision: u64,
 }
 static INSTANCES: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
 impl Session {
+    #[cfg(test)]
     fn open(root: &std::path::Path, limit: usize) -> Result<Self, String> {
+        Self::open_with(root, history::Policy::new(history::Mode::DEFAULT, limit))
+    }
+    fn open_with(root: &std::path::Path, policy: history::Policy) -> Result<Self, String> {
         let root = root
             .canonicalize()
             .map_err(|e| format!("open pack root: {e}"))?;
@@ -132,23 +148,26 @@ impl Session {
         };
         let bytes = std::fs::read(&path).map_err(|e| e.to_string())?;
         let text = String::from_utf8(bytes).map_err(|_| "authoring requires UTF-8 input")?;
-        let current = Snapshot::build(1, text, format)?;
+        let mut history = history::History::new(policy);
+        let current = Snapshot::build(1, text, format, history.cache())?;
+        history.publish(None, current.clone());
         Ok(Self {
             disk_fingerprint: current.fingerprint.clone(),
-            history: BTreeMap::from([(1, current.clone())]),
+            history,
             current,
             path,
             format,
-            limit: limit.clamp(1, 256),
             saved_revision: 1,
             instance: INSTANCES.fetch_add(1, std::sync::atomic::Ordering::Relaxed),
         })
     }
+    #[cfg(test)]
     fn snapshot(&self, revision: u64) -> Result<Arc<Snapshot>, String> {
-        self.history
-            .get(&revision)
-            .cloned()
-            .ok_or("revision no longer retained".into())
+        self.history.snapshot(revision, self.format)
+    }
+    #[cfg(test)]
+    fn release_history(&mut self) {
+        self.history.release(&self.current);
     }
     fn check_base(&self, base: u64) -> Result<(), String> {
         if base != self.current.revision {
@@ -164,7 +183,12 @@ impl Session {
     ) -> Result<Receipt, String> {
         let base = application.receipt.base.revision;
         let revision = application.receipt.result.revision;
-        let next = Snapshot::build(revision, application.text, self.format)?;
+        let next = Snapshot::build(
+            revision,
+            application.text,
+            self.format,
+            self.history.cache(),
+        )?;
         let receipt = Receipt {
             document: self.path.display().to_string(),
             base,
@@ -172,11 +196,8 @@ impl Session {
             operation,
             ranges: application.receipt.ranges,
         };
-        self.current = next.clone();
-        self.history.insert(revision, next);
-        while self.history.len() > self.limit {
-            self.history.pop_first();
-        }
+        let previous = std::mem::replace(&mut self.current, next.clone());
+        self.history.publish(Some(&previous), next);
         Ok(receipt)
     }
     fn source_stamp(&self) -> SourceStamp {
@@ -207,12 +228,15 @@ impl Session {
     }
     fn undo(&mut self, base: u64, target: u64) -> Result<Receipt, String> {
         self.check_base(base)?;
-        let snapshot = self.snapshot(target)?;
+        let text = self
+            .history
+            .text(target)
+            .ok_or("revision no longer retained")?;
         self.apply_edits(
             vec![Edit {
                 start: 0,
                 end: self.current.text.len(),
-                text: snapshot.text.to_string(),
+                text: text.to_string(),
             }],
             "undo",
         )

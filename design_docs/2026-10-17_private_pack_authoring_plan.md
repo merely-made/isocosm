@@ -1,12 +1,12 @@
 # Private generator-pack authoring
 
-**Date:** 2026-10-17, updated 2026-10-18. **Status:** private terminal consumer
-and shared edit/undo adapter implemented; receiving the published
-[`mere-source-edit` supplier at `70deef2c`](https://github.com/merely-made/mere/commit/70deef2c8cf3d3410ae35b496a9396514070b24f)
-without local overrides is qualified in the working tree at `183a2f67`.
-The consumer is not committed or pushed. Runtime/session ownership is unchanged.
-P5/P6 receipts retain their original local-supplier baselines; P7 records the
-Git-only receiving checks. Git history records consumer publication separately.
+**Date:** 2026-10-17, updated 2026-10-19. **Status:** private terminal consumer
+landed on the published
+[`mere-source-edit` supplier at `70deef2c`](https://github.com/merely-made/mere/commit/70deef2c8cf3d3410ae35b496a9396514070b24f);
+P8 hardening (stale-lease reclaim, measured text-only history, the
+[`merely-made/taplo`](https://github.com/merely-made/taplo) fork, TOML 1.1
+indexing and structure-aware commands) landed 2026-10-19. Runtime/session
+ownership is unchanged. Earlier receipts keep their own baselines.
 
 ## Ownership and policies
 
@@ -39,6 +39,14 @@ there is no new product identity encoding.
   insertion. Proposal/explicit edit/save separation, typed ownership,
   conflict/stale/index refusals and the real scratch-pack workflow pass.
 
+- P8 landed (2026-10-19, baseline `c3ad4b97`): reclaim a dead saver's lease
+  on the same host; measure full, text-only and node-cached history and pick a
+  default with a byte budget; move the taplo backend to a GitHub fork pinned
+  by revision; index TOML 1.1; add generator/preset commands by id. Done
+  conditions: each step's gates on rustc 1.97.1, the fork's inherited tests
+  and differential corpus, the unchanged and the offset-free workflows, and a
+  fresh-clone check of pushed main. See "P8 hardening" below.
+
 - P5 implemented and locally qualified (2026-10-18, baseline `183a2f67`):
   route private edits and preset previews through `mere-source-edit`; keep the
   existing CLI JSON, parser/schema/layout checks, explicit saving and admission
@@ -64,6 +72,9 @@ or canonical-JSON domain hash is introduced outside the private syntax tool.
 - 2026-10-17: fetched and fast-forwarded clean Isocosm main, inspected active
   retirement/format rules, and scoped the terminal consumer to optional system
   tooling. Qualification pending.
+- 2026-10-19: P8 landed in five gated steps (lease reclaim, text-only history
+  default with a byte budget, the merely-made/taplo fork, TOML 1.1 indexing,
+  structure-aware commands); see "P8 hardening".
 
 ## Using the private command
 
@@ -90,15 +101,19 @@ from those responses. Example commands (byte offsets, current base required):
 
 `check` returns the real typed manifest and declared generator choices; it
 opens no assets and admits nothing. `inspect` exposes ordered source ranges
-only when the older taplo grammar can index the complete TOML document.
-TOML 1.1 index errors and JSON's absent index are advisory; the existing product
-decoder/validator remains authoritative. `read` preserves foreign content that
+when the TOML 1.1 source index covers the complete document. Invalid TOML
+gets an advisory partial-index note and JSON has no index; the existing
+product decoder/validator remains authoritative. `read` preserves foreign content that
 is not represented in the typed manifest. Failed commands return `ok:false`
 and the session continues; one-shot `--check` exits unsuccessfully on refusal.
 
 Edits and undo publish new revisions; no implicit save or application occurs.
-The session retains the latest 32 revisions. Reopening starts a new local
-revision sequence; this is not durable history or a serializable handle API.
+The session retains the latest 32 revisions within a 64 MiB budget of
+estimated retained bytes; the current revision is always kept. By default
+older revisions keep only their text (`--history text`); `--history full`
+keeps every tree and `--history cached` keeps trees parsed through one
+document node cache. Reopening starts a new local revision sequence; this is
+not durable history or a serializable handle API.
 UTF-8 byte ranges must end at character boundaries; overlap and same-start
 batch edits are refused. The authoring tool has a 2 MiB source and 64 lexical
 TOML bracket/brace nesting limit; these are tool limits, not new loader rules.
@@ -108,15 +123,19 @@ loader until repaired. Files retain their original TOML/JSON format, comments,
 foreign content, literal strings and line endings. Saving checks for external
 changes and a newly added second manifest; conflicts require explicit reopen.
 A cooperating writer's `.isometry-pack.toml.author.lock` (or JSON equivalent)
-blocks another save. The tool preserves file permissions, syncs a temporary
+blocks another save. The lease records `pid`, `host` and `source`. A lease
+left by a process that no longer exists on this host is reclaimed, with that
+saver's temporary file; a live PID, another host or an unreadable lease
+still refuses. The tool preserves file permissions, syncs a temporary
 file, then renames it in the same directory. Symlink manifests can be inspected
 but are not replaced by save. A failure before replacement leaves the target
 and saved marker intact.
 
 The final content-check/rename gap is not compare-and-swap against an
-uncooperative writer. Directory-fsync durability, ACL/xattr preservation,
-stale-lease recovery after crashes and nonlocal filesystems are not qualified.
-A crash can leave the lease; inspect it before manually removing it. The
+uncooperative writer. Directory-fsync durability, ACL/xattr preservation and
+nonlocal filesystems are not qualified. A lease from another host, or one whose
+PID was reused by a live process (for example after a reboot), still needs
+inspection and manual removal. The
 single-owner command loop serializes edits and saves; there is no background
 save to mark a newer revision saved accidentally.
 
@@ -146,20 +165,51 @@ refuse if candidate validation cannot prove ownership; ordinary text edits
 remain available. A proposal does not admit data. The shared edit-plan kernel
 does not own these format-specific rules.
 
+## Structure-aware commands
+
+These name a generator by local id and, for presets, a key; the tool finds
+ownership in the syntax tree and computes the text edits. Each takes the
+current `base`, publishes through the same shared proposal path as `edit`, and
+returns the flat receipt (with its `operation`), the applied `edits` and the
+new state. Saving stays explicit.
+
+```json
+{"op":"insert_lock_preset","base":1,"generator":"forge_item","preset":{"key":"quality","label":"Heirloom quality","value":{"type":"text","value":"heirloom"}}}
+{"op":"replace_lock_preset","base":2,"generator":"forge_item","key":"quality","preset":{"key":"quality","label":"Heirloom","value":{"type":"text","value":"old"}}}
+{"op":"remove_lock_preset","base":3,"generator":"forge_item","key":"culture"}
+{"op":"set_generator_field","base":4,"generator":"forge_item","field":"name","value":"Forge a river heirloom"}
+```
+
+Insertion matches `propose_lock_preset`'s edits exactly. Replacement rewrites
+only the `key`, `label` and `value` values, so comments and other entries in
+the block stay. Removal takes the preset block and the blank line insertion
+adds, so insert then remove restores the bytes. `set_generator_field` sets
+`id`, `name`, `default_args`, `script` or `fixtures` (JSON values); it replaces
+an existing bare entry's value, keeping a trailing comment, or adds the entry
+after the generator's own entries. Every command validates the intended
+manifest and requires its preview to have a complete index and decode to
+exactly that manifest. The layout rules of the preset proposal apply:
+canonical `[[generators]]` and `[[generators.lock_presets]]` headers,
+no generator descendant tables; removal and replacement also need every
+preset of the target as an explicit block. Anything else refuses without
+mutation; ordinary text edits remain available.
+
 ## Backend provenance and distribution
 
-`vendor/taplo` retains the upstream MIT notice and a reviewable patch from
-published taplo 0.14 to Rowan 0.17 plus construction-time batching. It is an
-excluded standalone workspace and an optional dependency of this command,
-not a new shared API. Parser Rust file layout is preserved by six explicit
-vendor-only line-ceiling exceptions; first-party files remain below 600 lines.
-No counters or scratch hash format from testing is shipped. The root lockfile
-keeps existing package versions; additions are the optional backend closure.
+The backend is [`merely-made/taplo`](https://github.com/merely-made/taplo), a
+GitHub fork of tamasfe/taplo that keeps upstream history (MIT). Branch
+`merely/rowan-0.17` starts at the `release-taplo-0.14.0` tag, whose crate
+source equals published taplo 0.14.0, and adds four reviewable commits: the
+Rowan 0.17 bump, batched DOM construction, `parse_with_cache`, and TOML 1.1
+parsing behind `TomlVersion::V1_1`. TOML 1.0 stays the fork's default, so its
+101 inherited tests still pass. Isocosm takes it as an optional dependency of
+this command by exact Git revision; `vendor/taplo` and its six line-ceiling
+exceptions are gone. Upstream master's newer commits (2025-05 to 2026-07) are
+not merged; upstreaming would rebase onto them.
 
-The fork is unpublished and is not registry taplo 0.14. Distributing/publishing
-the authoring feature requires a qualified fork source; this private integration
-does not claim the publishing lane is complete. The original probes remain in
-`Code/testing`; no test artifact is a product admission or identity authority.
+The fork is not registry taplo 0.14 and is not published to crates.io. The
+original probes remain in `Code/testing`; no test artifact is a product
+admission or identity authority.
 
 ## Verification, 2026-10-17
 
@@ -337,3 +387,112 @@ commands, metadata and receipts are retained under
 unchanged. This consumer commit records the qualified Git-backed adapter.
 Publication does not extend the evidence to a GUI or additional admission
 authority.
+
+## P8 hardening — 2026-10-19
+
+Five steps, each landed and gated before the next, on baseline `c3ad4b97`.
+Gates compile and test with rustc and rustdoc 1.97.1 under cargo 1.99.1:
+cargo 1.97.1 cannot resolve this workspace since `c3ad4b97`, because Eidetic
+`de6b1dce`'s chartulary manifest overrides a workspace dependency's
+`default-features` (a cargo 1.98+ manifest form) while declaring
+`rust-version = "1.97.1"`. That supplier issue is outside this plan. The
+baseline was 75 feature and 58 default package tests.
+
+**1. Stale save lease** (`lease.rs`). The lease records `pid`, `host` and
+`source`. On contention it reads the lease; a lease naming this host and a
+PID with no process (`kill(pid, 0)` reports `ESRCH`) is renamed aside,
+checked to be the same file (device, inode and bytes), and removed with that
+saver's synced temporary files before one retry. A live PID, another host,
+an old-format or unreadable lease, and `pid=0` refuse unchanged; Drop removes
+only the lease its own save created. Tests re-run the test binary as a saver
+held between syncing its temporary file and the rename, then SIGKILL it: the
+next save succeeds and leaves no lease or temporary file. A live holder
+blocks until it dies. libc is an optional unix dependency of the feature.
+Not covered: a PID reused by a live process still refuses; and when a third
+saver arrives while another reclaims, the restore step can still leave two
+holders.
+
+**2. History memory** (`history.rs`). Measured with a per-thread
+requested-heap meter in the test binary (`meter.rs`), the method of
+`Code/testing/retained-document-20261016`: the annotated pack, 1/16/64
+renames, history release keeping the current revision, then document drop.
+Three release runs gave identical bytes:
+
+| Retained revisions | full | text | cached | probe baseline |
+|---:|---:|---:|---:|---:|
+| 2 | 26,632 | 14,896 | 23,424 | 26,796 |
+| 17 | 222,584 | 34,928 | 145,672 | 224,742 |
+| 65 | 849,544 | 98,944 | 537,240 | 859,206 |
+
+After history release 13,608 bytes remain in every mode, and 0 after
+document drop. Against the previous revision and against the original, the
+cached mode's final tree shares 90 of 152 green nodes and 323 of 324 tokens;
+full and text share none (fresh builder caches). Rowan interns only tokens
+and nodes of at most three children, so wide nodes (entries, tables, root)
+are never shared. Median process-mean edit publication (µs, full / text /
+cached): real pack 69.18 / 68.95 / 65.11, annotated 80.57 / 81.22 / 75.57,
+4,096 keys 5,983 / 6,221 / 5,249, 65,536 keys 113,429 / 120,652 / 98,521. The
+byte estimate costs 2–5% of that. Under the 64 MiB budget the 65,536-key
+document keeps 3 revisions in full and cached modes and all 32 in text mode.
+The estimate counts each interned element once (813,406 estimated against
+849,544 requested at 65 full revisions).
+
+**Default: text.** It retains 88% less than full at 65 revisions and
+44% less at 2, publishes within noise of full, and keeps the full count
+cap's depth for large documents. No command reads an old revision's tree:
+undo needs only text, and a pinned snapshot keeps its tree. Cached is about
+6–13% faster to publish but retains 5.4× text's bytes at 65 revisions; its
+document cache is replaced after every 32 parses and on history release,
+since `NodeCache` never evicts. Combining text retention with a long-lived
+cache would retain the old trees' nodes through the cache instead.
+
+**3. Fork.** [`merely-made/taplo`](https://github.com/merely-made/taplo)
+(public GitHub fork, confirmed by Mark), branch `merely/rowan-0.17` from
+`release-taplo-0.14.0` (`15963fc`): `8ad7de4` Rowan 0.17 (the whole upstream
+workspace checks, no source changes), `c316724` DOM batching (files equal the
+evaluated optimized backend apart from rustfmt), `118aae3` `parse_with_cache`,
+`aa6d784` TOML 1.1. Isocosm pinned `118aae39` for step 3 and `aa6d784f` for
+step 4; the lock change each time is only the package source. From a fresh
+clone the fork passes 102 tests at `118aae3` (101 inherited plus one) and 107
+at `aa6d784`. The 2026-10-16 differential corpus (20 named cases, 3,075
+prefixes, 360 edits, five wide tables; 3,460 documents) matches the
+unchanged control through both `parse` and `parse_with_cache` at both pins.
+
+**4. TOML 1.1.** `parse_with(source, TomlVersion::V1_1, cache)` accepts the
+`\e` and `\xHH` escapes, newlines, comments and a trailing comma in inline
+tables, and times without seconds; the DOM decodes `HH:MM` as `HH:MM:00`.
+TOML 1.0 stays the default, so the two inherited tests that assert a
+trailing comma and a multiline inline table are invalid still pass. Against
+toml 1.1.8 (and Isocosm's locked 1.1.6), 33 named cases and their 914
+prefixes agree on acceptance, and accepted documents agree on typed values
+(datetimes compared by field, integers and floats distinguished): 167
+accepted, 780 rejected, 0 disagreements. All four 2026-10-15 spot checks are
+accepted with equal values. pack-author indexes with 1.1, so valid 1.1 source
+no longer gets the advisory partial-index diagnostic. Not covered: the fork's
+formatter keeps comments and values in multiline inline tables but does not
+lay them out.
+
+**5. Structure-aware commands** (`structure.rs`, described above). The
+existing workflow script ran unchanged against the new binary and stopped at
+its assertion that TOML 1.1 source makes `propose_lock_preset` refuse for a
+partial index: after step 4 that proposal refuses because the preset key
+already exists. A copy differing only in that assertion passes: 59 commands
+in five processes, with 60 of 64 ready/command records identical to the
+2026-10-18 transcript after scratch-path normalization. The other four
+differ only by the removed partial-index diagnostic (three) and the refusal
+reason (one). A new scripted workflow drives the same river-heirloom change
+through the structural commands alone, on the annotated pack with a TOML 1.1
+tail: 66 commands in five processes, no `edit` and no caller offsets,
+including stale and duplicate refusals, undo and reapply, an external
+conflict with explicit reopen, exact-byte reopening and two passing
+loader/fixture runs.
+
+Package tests: 85 with `pack-authoring` (75 before, plus three lease, three
+history and three structure unit tests and one binary test; two ignored
+helpers, the lease child process and the measurement) and 58 default.
+Scoped all-target Clippy, rustfmt and `git diff --check` pass. Receipts:
+[`receipts/2026-10-19_pack_authoring/`](receipts/2026-10-19_pack_authoring/)
+here; raw logs, transcripts and harnesses are in
+`Code/testing/pack-author-hardening-20261019/` and
+`Code/testing/taplo-fork-20261019/`, together with the fresh-clone check of
+pushed main.
