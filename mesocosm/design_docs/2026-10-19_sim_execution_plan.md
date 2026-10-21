@@ -11,8 +11,11 @@ day (Decisions, below); E1 is next when he opens it.
 
 Judging mechanics in combination means watching generations across several
 seeds, so the sim's speed bounds the design loop itself. A played tick costs
-about 0.45 s in the head's seed-9 game (about a hundred members) and about
-1.2 s in a played A1 world grown to tick 180 (a few hundred), against the
+about 0.45 s in the head's seed-9 game (about a hundred members). In the
+played A1 battery (seed 0, release, measured 2026-10-20) the 180 played
+rounds average 0.46 s a tick (median 0.38 s, p90 1.14 s, max 1.76 s): about
+0.8 s over ticks 31 to 90, falling to 48 ms over ticks 151 to 180. All of it
+stands against the
 design tempo of 0.1 s (TD2; the head runs at 2 ticks a second under case 978).
 Cost grows with population because every member is reconsidered for every due
 act, and every mechanic added raises it: strain, relief and rest made the
@@ -161,6 +164,18 @@ Mark's answers, unnumbered until he numbers them:
   within one hop of the played critter's site; promote within one hop, demote
   at two or more.
 - **Order:** "Speed first (Recommended)". E1, E2, E3, then E4 and E5.
+- **Stage bodies by `Arc` (2026-10-20):** "Accept A, you number it". The
+  stage holds the `Arc<Entity>` that `body_shared_at_start` returns and
+  copies a body only on its first write, so planned and blocked acts copy
+  nothing and commit installs the staged `Arc` instead of copying again in
+  `Population::lift`. Carries ruling 975 into the stage; ruling 338's reads
+  are unchanged; serialisation, hashes and saves unchanged. Whether `Part`
+  also goes behind an `Arc` comes back once this is measured.
+- **`foregone` only on direct acts (2026-10-20):** "Accept B, you number it".
+  `run_inner` fills `Receipt.foregone` for `Run::Act` only; scheduled and
+  planned receipts, whose callers keep only `.accepted()`, carry an empty
+  list. Law A's record and ruling 685's reading are kept receipts, which
+  still carry it.
 
 ## Findings
 
@@ -184,6 +199,33 @@ Mark's answers, unnumbered until he numbers them:
   society checks, terrain revision, geometry readiness. All are commit-side or
   can move there.
 
+- **2026-10-20, where a played tick goes** (run at `30e5d97d`; receipts and
+  proposals in `Code/testing/isometry/sim-profile-2026-10-19/`). An ETW
+  sampling trace of the played A1 battery, seed 0, release: hashing is not
+  the cost (SHA-256, serde_json and `digest`/`draw` together 0.3% of process
+  CPU; the event-id digest is 1.4% of `run_inner`). Inside `run_inner`,
+  commit 35%, staging 28%, the `foregone` re-check 16%, queries 7%. The
+  biggest single cost is copying bodies: `stage` deep-clones each actor's
+  and target's `Entity` (its part map, each part's cells, tracts and losses)
+  before any check runs, 15.6% of process CPU, and `Arc::make_mut` copies one
+  again on write, 7.5%; about 10 of `String::clone`'s 12.5 points are inside
+  these copies. The battery's two replays (75 s and 76 s) cost more than its
+  played rounds (84 s); the plan's earlier 1.2 s figure was battery wall time
+  over 180 ticks with the replays included. Under the `cargo test` profile
+  the same seed takes 10,150 s, 41 times release. Dependencies at opt 2
+  recover 18% of that and isocosm at opt 3 35%; debug assertions off, opt
+  levels unchanged, brings it to 493 s, twice release. The debug-only
+  whole-world checks (the journal's full `State` clone to verify each rollback,
+  `journal.rs:66`; `passed_by`'s population rescan, `schedule/mod.rs:314`) are
+  the likely source, not strictly separated from dependencies' assertions.
+
 ## Progress
 
 - **2026-10-19:** specced; Mark answered its four questions; nothing built.
+- **2026-10-20:** a played tick profiled and timed (Findings); the baseline
+  above replaced with the measured figures; Mark accepted staging bodies by
+  `Arc` and `foregone` only on direct acts (Decisions), not yet numbered or
+  built. Mark then held all six decisions until the decision-links plan
+  settles how decisions are keyed and linked
+  ([2026-10-20_decision_links_plan.md](2026-10-20_decision_links_plan.md));
+  they enter there as plan keys.
