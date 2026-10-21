@@ -16,8 +16,14 @@ pub fn is_record(path: &str) -> bool {
     path.ends_with(RECORD) && !path.contains("archive_docs/")
 }
 
+/// Files this tool writes; they cite everything, so they cite nothing.
+pub const GENERATED: &[&str] = &["case_register.md"];
+
 pub fn is_doc(path: &str) -> bool {
-    path.ends_with(".md") && path.contains("design_docs/") && !path.contains("archive_docs/")
+    path.ends_with(".md")
+        && path.contains("design_docs/")
+        && !path.contains("archive_docs/")
+        && !GENERATED.iter().any(|g| path.ends_with(&format!("/{g}")))
 }
 
 pub fn is_rust(path: &str) -> bool {

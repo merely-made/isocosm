@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-21:** in progress: L1, L2 and L1b done. Shaped with Mark the same day in
+**Status, 2026-10-21:** in progress: L1, L2, L1b and L3 done; L4 next. Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -383,3 +383,12 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   links that resolve to nothing, the same 59 as before the move: old
   breakage, mostly in archived copies that kept relative links from where
   they used to live. Not repaired here.
+- **2026-10-21, later still:** L3 done. Each of the record's 743 cases
+  carries a fields line with its area and one-line summary, taken from the
+  hand-kept register (all 743 rows matched one to one), and the register is
+  now generated from them. Areas and summaries come out identical on every
+  row; the Cited by column now counts every design doc that cites a case,
+  not only plans, so cases cited by nothing fall from 212 to 176. Generated
+  files no longer count as citing (the register cited itself). The journal
+  was rebuilt under that rule: 1,068 commits, 9,246 records. Next: L4, the
+  area rounds with Mark, and the budget pass.

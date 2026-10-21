@@ -140,6 +140,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
    Isometric, dimetric, trimetric, military, cavalier, top down, first
    person, turn based, real time, these are distinctions you make on top of
    this sim."
+
+   Links: area The sim's schema and saves · summary The thing is one configurable, extensible world, history and entity generator playable several ways; views and perspectives are distinctions made on top of the sim.
 2. **Three layers run in the background at all times:** adapting ecology in
    a world with history; society adapting and reforming according to the
    goals and abilities of its inhabitants; polities, narratives and arcs
@@ -147,30 +149,42 @@ the later sections derive from, not rules; new rules are numbered by Mark.
    underneath them: "define the taxonomy of an ecology, civilization, or
    campaign so you can generate each in enough mechanical depth and systemic
    quality that you can get unpredictable results."
+
+   Links: area Processes and rules · summary Three layers run in the background always: adapting ecology, adapting society, and polities and arcs that change the world if left unattended. (amended by 978)
 3. **One world, one clock, unbounded time.** Each game foregrounds an
    aspect; "all the background world simming happens, the base profile
    needed for all the games, and you pull forward what is relevant to the
    current game." Mesocosm's natural period is when ecology dominates;
    Paredros needs sapient people and society, not polities; Isometry is
    bound by arcs and narratives.
+
+   Links: area Processes and rules · summary One world, one clock, unbounded time; each game foregrounds an aspect while all background simming runs and relevant parts are pulled forward.
 4. **What is never lossy is the record of significant events.** The test is
    "unprecedented, legendary, or narratively significant, same test
    everywhere"; the promotion gates are novelty, quality and relevance. The
    hagiograph is the organ that judges.
+
+   Links: area Record and history · summary The record of significant events (unprecedented, legendary or narratively significant) is never lossy; promotion gates are novelty, quality, relevance; the hagiograph judges.
 5. **Memory is not global.** Things can be forgotten. Propagation is the
    derived form: an event's reach is a field on the place graph rather than
    per-entity simulated knowledge ("the derived form seems fair").
+
+   Links: area Record and history · summary Memory is not global and things can be forgotten; propagation is an event's reach as a field on the place graph.
 6. **Foregrounding is choosing** a domain, a generated ensemble, mechanics,
    controls, a perspective and a timescale. "Empires rise and fall in the
    time it takes a critter's lineage to change a trait." An ensemble is "the
    roster of relevant creatures in the relevant scope in the world" and can
    change within one game.
+
+   Links: area Directing and play · summary Foregrounding is choosing a domain, ensemble, mechanics, controls, perspective and timescale; the ensemble can change within one game.
 7. **Worlds are forkable and branchable, like a moot.** Any world state can
    found a world; continuity of game state across a branch is not promised;
    the source world keeps going. Persistence across epochs and branches is
    divinity (immortality, resurrection, avatars in a chain of heirs, becoming
    a motif of the world) or longevity by traits (elves, dwarves, sharks,
    tortoises). Creative mode may move specific things between worlds by hand.
+
+   Links: area Record and history · summary Worlds are forkable and branchable; any state can found a world, the source keeps going, and persistence across branches is divinity or longevity traits.
 8. **The agent kinds are four compositions.** A creature; a faction as "a
    relational entity comprised of many creatures" (a faction defined by a
    person is a party); a polity as "a political entity comprised of multiple
@@ -183,14 +197,20 @@ the later sections derive from, not rules; new rules are numbered by Mark.
    A faction holds no state of its own and acts when its members do, as the
    sim plan reads cases 9 and 63 and the code holds it; "agent kind" here
    names a kind of grouping.
+
+   Links: area The sim's schema and saves · summary Four compositions: creature, faction, polity, lineage; a faction is a relation acting through its members, holding no state of its own (2026-10-18); a region is terrain.
 9. **State follows methodology.** A thing has its own state exactly when it
    has its own way of turning a situation into an action. Everything else is
    a relation, a record or a field over the things that do.
+
+   Links: area The sim's schema and saves · summary A thing has its own state exactly when it has its own way of turning situations into action; all else is relation, record or field.
 10. **Processes are one shape at every rung, choices under scarcity,** and
     that is not enough on its own: agentless processes (fields evolving) and
     rung transitions (founding, splitting, incorporation, collapse) are the
     two further shapes. The sim has verbs; a game has handles on them and
     its own verbs on top, "icing on the cake".
+
+    Links: area Processes and rules · summary Processes are choices under scarcity, plus agentless field processes and rung transitions as two further shapes; games add handles and verbs on the sim's verbs.
 11. **Terrain in the sim runs from region to planetary system:** continents
     of any count or exotic structure, oceans including water worlds, a
     region alone when no whole world is needed, a world that may be inert or
@@ -198,9 +218,13 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     other. Configurable in complexity, size, population, temperature,
     rainfall, mountainousness, material composition and world effects,
     including glyphs, suggested anatomy and constraints.
+
+    Links: area World generation · summary Terrain runs from region to planetary system, configurable in complexity, size, climate, composition and world effects including glyphs and anatomy constraints.
 12. **Terrain always has an interior, destructible and constructible,** for
     all three games. The height-and-kind-per-cell that Isometry holds today
     is a far-rung view of that volume, not the truth.
+
+    Links: area World generation · summary Terrain always has a destructible, constructible interior for all three games; Isometry's height-and-kind per cell is a far-rung view of that volume.
 13. **Cell size may differ,** "that's more a question of what we can do. I
     would prefer arbitrary cell sizes."
 
@@ -208,67 +232,101 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     Any base unit per world; cells within a chunk at power-of-two multiples
     of it. Case 396's evidence had read this case as allowing power-of-two
     cells per chunk.
+
+    Links: area World generation · summary The base unit is free per world; cells within a chunk are power-of-two multiples of it (2026-10-18, correcting 396's reading).
 14. **A graph over the bricks drives processes,** at the rung above the
     bricks, derived from them. Above the near rung, "there could be derived
     candidate locations that are asserted when persisted."
+
+    Links: area Processes and rules · summary A graph derived from the bricks, at the rung above them, drives processes; derived candidate locations are asserted when persisted.
 15. **Tests are draws, not picks.** A hand-chosen instance proves nothing;
     an instance drawn from the generator under a seed nobody chose is
     evidence about the space. "Unless it were literally random. Then it
     would be useful."
+
+    Links: area Method and documents · summary Tests are draws from the generator under an unchosen seed, not hand-picked instances, since only draws are evidence about the space.
 16. **Stack placement:** cambium sits under isomere; rendering is isometer
     over genet and netrender; generation is isoscape with esp, dramatis and
     cleromancy beside it; persistence, branching and networking are moot,
     muniment and murm; formats hew to open standards and a wing format is
     made only when no standard holds the thing. (dramatis is re-placed under
     the trust plane in §4 after reading it; the rest stands as ruled.)
+
+    Links: area Stack and engine · summary Stack placement: cambium under isomere, isometer over genet and netrender, generation in isoscape beside esp, dramatis, cleromancy; moot, muniment, murm persist; open standards first.
 18. **A game's grid is a projection.** The sim's volume is cubic; a tile
     with three, four or six sides is a region of voxels its overlay lays
     over that volume, the way a circle is in any voxel game. Ruled
     2026-09-18 ("hex as projection").
+
+    Links: area Presentation · summary A game's grid is a projection: the sim volume is cubic, and any tile shape is a voxel region an overlay lays over it. (amended by 604)
 20. **One bench for everything generated and reviewed:** the sim bench for
     processes and effects including magic, the world bench, the specimen
     bench, the item bench, the effect bench, as lanes of one bench, which is
     also the dev tools. Ruled 2026-09-18.
+
+    Links: area Stack and engine · summary One bench for everything generated and reviewed, with sim, world, specimen, item and effect lanes, which is also the dev tools.
 21. **Gamepads are a genet and standards concern** to be addressed, and
     **keymapping is a capability wanted across the stack**, not only in
     isomere. Ruled 2026-09-18.
+
+    Links: area Stack and engine · summary Gamepads are a genet and standards concern; keymapping is a capability wanted across the stack, not only in isomere.
 22. **Lighting, all five rows wanted:** shadows, ambient occlusion, global
     illumination, point lights with day and night, and transparency with
     water. Ruled 2026-09-18.
+
+    Links: area Presentation · summary Lighting wants all five rows: shadows, ambient occlusion, global illumination, point lights with day and night, transparency with water.
 23. **The terrain gets a per-axis scale,** y and z as well as x, under W3
     ("add the y scale. hell, why not a z scale too"), and **paging is fixed
     one way or another** in every consumer. Ruled 2026-09-18.
+
+    Links: area Presentation · summary Terrain gets per-axis scale (x, y, z) under W3, and paging is fixed one way or another in every consumer.
 24. **genet implements the full W3C animation surface,** the Web Animations
     API included; the earlier deferral was a stopgap from the stylo
     migration and never a design choice. formal-web (gterzian and Taym
     Haddadi) is the architectural reference. Ruled 2026-09-18.
+
+    Links: area Stack and engine · summary genet implements the full W3C animation surface including Web Animations API; formal-web is the architectural reference.
 26. **glTF is the body's render, animation and interchange model,
     generated from the part tree.** "The tree is data, seems to not be
     the correct render/animation/interchange model." The sim's body stays
     a part tree; a projection generates glTF from it, and an imported
     glTF's node hierarchy is read into a tree the same way. One body kind
     at the render tier, not two. Ruled 2026-09-18.
+
+    Links: area Bodies and anatomy · summary glTF is the body's render, animation and interchange model, generated from the part tree; the sim body stays a part tree.
 27. **kiss3d, provided it composes with the stack,** and **the renderer
     is swappable** behind the scene contract, so a 2D game from the sim,
     or renderling and nexus far later, remain possible. Ruled 2026-09-18.
+
+    Links: area Stack and engine · summary Use kiss3d provided it composes with the stack, and keep the renderer swappable behind the scene contract.
 28. **Water is salva, and nondeterministic water is legitimate when a
     field directs it,** because water worlds must be possible and because
     outcomes read the field, not the particles. Ruled 2026-09-18; the
     technical reading is in §4.6.
+
+    Links: area Processes and rules · summary Water is salva; nondeterministic water is legitimate when a field directs it, since outcomes read the field, not particles.
 29. **Desktop first-class; the web a supported tier with a stated floor.**
     Ruled 2026-09-18 ("agreed, I suppose"), replacing ruling 19's
     first-class web.
+
+    Links: area Stack and engine · summary Desktop is first-class; the web is a supported tier with a stated floor.
 30. **genet's references are the other Rust and browser engines in the
     same lane,** blitz and formal-web specifically, with servo, Firefox,
     WebKit, Chrome and the webviews as the more sophisticated efforts
     with a few key architectural distinctions. Ruled 2026-09-18.
+
+    Links: area Stack and engine · summary genet's references are blitz and formal-web, with servo, Firefox, WebKit, Chrome and webviews as the more sophisticated efforts.
 32. **The sim's process definition is founded from Paredros's
     world-conditions schema,** its stop rule lifted, with Law A's record
     fields added; Mesocosm's `ProcessDef` shapes become expressions in
     it. Ruled 2026-09-18.
+
+    Links: area Processes and rules · summary The sim's process definition is founded from Paredros's world-conditions schema with its stop rule lifted and Law A record fields added.
 34. **dramatis absorbs paredros-identity under W3:** its types move to
     the stack's trust plane and the sim's provenance noun, and Paredros
     consumes them back. Ruled 2026-09-18.
+
+    Links: area Stack and engine · summary dramatis absorbs paredros-identity under W3; its types move to the stack's trust plane and Paredros consumes them back.
 35. **Each game foregrounds one rung of the agent ladder; the others are
     simmed and weakly expressed.** In Mark's words, 2026-09-18: "the
     primary pillar for mesocosm is the critter being refined over the ages
@@ -284,6 +342,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     founding record's critter, borg, character continuity read as the
     games' domains: Mesocosm plays the critter and its lineage, Paredros
     the borg and its factions, Isometry the character inside its polities.
+
+    Links: area Directing and play · summary Each game foregrounds one rung of the agent ladder (critter, borg, character); the other rungs are simmed and weakly expressed.
 36. **What a creature carries at each level of identity,** in Mark's
     words, 2026-09-18, the first W2 answer. *Critter:* "genotype
     (collection of traits in relation. We wanted to use a mosaic scene for
@@ -309,6 +369,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     system, but should also be resolvable as a critter and individual
     (borg)." Mark added: "I feel like I missed some things"; §3.2.1
     carries the answer and the gaps as open questions.
+
+    Links: area The sim's schema and saves · summary Critter carries genotype and conditioned phenotype and kingdom; borg adds naming and relationships; character emerges contingent on group and resolves as borg and critter.
 37. **Methodology by tier, and the borg line.** Ruled 2026-09-18: the
     agent literature's tiering stands as the sim's, reactive agents for
     critters, belief-desire-intention agents for borgs, normative agents
@@ -320,6 +382,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     relationships with antagonists. Disposition is the five-factor axes,
     and "a significant event causing a personality trait sounds cool
     too".
+
+    Links: area The sim's schema and saves · summary Methodology by tier: reactive critters, belief-desire-intention borgs, normative characters; a creature becomes a borg when the record keeps it; disposition is five-factor.
 38. **State is one ledger, read more coarsely up the levels, and the
     coarsening is provided by the collective.** In Mark's words: "most of
     that stuff matters for critters trying to manage a nutrition budget
@@ -335,6 +399,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     of body concern matters less the more factions and polities there
     are; people figure out the essentials and it becomes produced,
     commoditized, etc." Ruled 2026-09-18.
+
+    Links: area The sim's schema and saves · summary State is one ledger read more coarsely up the levels, the coarsening provided by the collective; body needs matter less as factions and polities grow.
 39. **Kingdom is class, and scale is orthogonal to it.** Mark, 2026-09-18:
     beside plant, animal and fungus, "playing as germs (micro: still at
     animal scale, perhaps like a paint that can spread, inhabit a creature,
@@ -342,12 +408,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     substrate, a bit like being a plant but in a creature, and decomposes
     corpses), and huge creatures (macro) existing too. I actually love the
     notion of the lion turtles from Avatar." Consequences in §3.2.1.
+
+    Links: area Bodies and anatomy · summary Kingdom is class and scale is orthogonal to it; micro (germs) and macro (huge creatures) are playable alongside plant, animal, fungus.
 40. **The licence rule for rulesets:** "As long as someone won't sue me or
     hate on me for putting the ruleset in my game, I'm happy to include
     it." Ruled 2026-09-18. Applied the same day by reading the licences
     (§5.1): Daggerheart's is a no, Lancer's is a yes with attribution,
     ICON and CAIN have no licence for implementation and are a question to
     Massif Press.
+
+    Links: area Licensing and sources · summary Include a ruleset if nobody will sue or object: Daggerheart no, Lancer yes with attribution, ICON and CAIN need a question to Massif Press.
 41. **One language at two scopes, ruled; effects from world composition
     deferred; the space scope is the extension Lancer waits on.** Mark,
     2026-09-18: "Agreed. I would also expect more general effects through
@@ -366,6 +436,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     *Built out 2026-10-03 by rulings 538 to 541:* faithful editions, a
     toolkit grown from them, hybrids by named profile, and a direction
     of authority each world chooses.
+
+    Links: area The sim's schema and saves · summary World rules and game rulesets are one binding language at founding and play scopes; composition-entailed effects deferred; space scope with Lancer is a later extension.
 42. **Divinity is intrinsic provenance; constructs are a tier; the second
     tier's word is in question.** Mark, 2026-09-18: "To become divine is
     to become intrinsic to the provenance of the world; once something
@@ -379,6 +451,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     mean that and instead make the 2nd tier something more... like a
     person? Or a sapient?" §3.2.1 carries the reading and the naming
     question.
+
+    Links: area The sim's schema and saves · summary Divinity is intrinsic provenance and persists across forks and branches; anything can become divine; constructs are a tier; second tier's word in question. (amended by 45)
 43. **How a divine thing is present, and how it ends.** Mark, 2026-09-18:
     "something divine could have an omnipresent instance, where there is
     one, and it's the same anywhere and everywhere. It could also
@@ -386,6 +460,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     through prophesied conditions related to its ascent. So maybe you get
     the chain of avatars, maybe you get the one true god of lightning,
     maybe you get a worldtree that the world depends on and likewise."
+
+    Links: area The sim's schema and saves · summary A divine thing is omnipresent as one instance or cycles through reincarnation or recreation, destroyed only through prophesied conditions tied to its ascent.
 44. **The quality of divinity is the quality of the journey.** Mark,
     2026-09-18: "perhaps the quality of divinity you can attain is related
     to your journey. If you fulfill the most difficult conditions for
@@ -393,6 +469,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     immortal but vulnerable life (demigod), reincarnation on death
     (avatar) and immortality otherwise (avatar+), straight up unable to
     be killed immortality (greater divinity)."
+
+    Links: area Organs: glyphs, impresa, hagiograph · summary Quality of divinity depends on the journey: the difficulty of acquiring each glyph yields demigod, avatar, avatar-plus, or unkillable greater divinity.
 45. **Provenance and identity are two axes.** Mark, 2026-09-18: "I agree
     with the provenance and identity axes." Provenance is born of a
     lineage, made by a maker, or intrinsic to the world; identity is
@@ -402,12 +480,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     finds sophont and denizen both good; the choice is still his.
     **Settled by ruling 200:** sophont is the term of art for a sapient
     entity, and a denizen is a named entity; every sophont is a denizen.
+
+    Links: area The sim's schema and saves · summary Provenance (lineage, maker, intrinsic) and identity (unnamed, named and sapient, factional) are two axes; constructs are made, divine is intrinsic.
 46. **Grades per glyph by the form sacrificed.** Mark, 2026-09-18: "I was
     just thinking of like assigning a point tier to what form of glyph is
     sacrificed for ascension. Item vs technique/skill/ability vs embodied
     trait. So depending on if you represent, or learned, or acquired the
     gnostic knowledge of the world in the glyphs, you get more leverage
     out of the ascension, grades per glyph."
+
+    Links: area Organs: glyphs, impresa, hagiograph · summary Glyph grade depends on the form sacrificed for ascension: item, technique or skill, or embodied trait, giving more leverage.
 47. **Sacrifice is destruction, and the domain of a divinity is how its
     forms were acquired.** Mark, 2026-09-18: "Maybe destroying a thing
     counts as sacrificing it? Like you could literally carve each world
@@ -420,6 +502,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     that was sacrificed/destroyed? What's the mix of forms you're
     sacrificing, because you could also mix items, skills, and your own
     body."
+
+    Links: area Organs: glyphs, impresa, hagiograph · summary Sacrifice is destruction, and a divinity's domain is how its sacrificed forms were acquired; mixed forms mix the domain. (amended by 107)
 48. **Divine places, placement, rooms and alignment.** Mark, 2026-09-18:
     "For a place, all the glyphs existing there is enough to make it a
     divine environment; a glyph being in a place has an influence on the
@@ -429,6 +513,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     rimworld? And an alignment system, where things can relate to the
     glyphs/symbols/factions/polities positively and/or negatively
     depending on tenets associated with effects?)"
+
+    Links: area Organs: glyphs, impresa, hagiograph · summary A place with all the glyphs existing there is a divine environment; placement durability and quality matter; alignment relates things to glyphs, factions and polities.
 49. **The domain is named freely; the acts fuel it; power is the
     frequency of the domain's process; anatomy is the other road to long
     life.** Mark, 2026-09-18: "you can name your domain when you ascend.
@@ -448,6 +534,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     like becoming a vampire, a lich, fey, eldritch... but those revolve
     around instantiating particular anatomies, magical, conditional
     (phylactery) or otherwise."
+
+    Links: area Organs: glyphs, impresa, hagiograph · summary The domain is named freely; acts fuel it; power is the frequency of its process; anatomy (vampire, lich) is the other road to long life.
 50. **A tenet.** Mark, 2026-09-18: "A tenet ought to be that relation:
     that process yields that effect, and here's our opinion of that, and
     the trust people have in it for their survival/fulfillment
@@ -455,6 +543,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     on how things turned out in the past, and that's a cohort opinion
     with variance possible? Idk. Feels a little complex, and we're missing
     attitude towards how things happened)".
+
+    Links: area The sim's schema and saves · summary A tenet is the relation that a process yields an effect, with an opinion of that and the trust people place in it.
 51. **Who holds tenets, and how alignment is taken at each rung.** Mark,
     2026-09-18: "Factions align with tenets, multiple, through a weighting
     of each sophont's own alignments by each sophont's respective faction
@@ -469,6 +559,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     choose a domain; some effects lend themselves to certain acts."
     **Amended by ruling 79:** a polity's alignment is derived from its acts
     too, its decisions among them.
+
+    Links: area The sim's schema and saves · summary Factions align with multiple tenets by weighting each sophont's alignments by faction influence; polities align constitutionally in addition to their factions. (amended by 79)
 52. **The referent by tier, and impact against frequency.** Mark,
     2026-09-18: "choosing a referent is a privilege of the greater
     divinities and greater avatars, but even they are subject to the
@@ -476,6 +568,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     mitigated if it is high impact... like if the outcome of the effect
     being applied is unprecedented, or causes something significant to
     happen."
+
+    Links: area Organs: glyphs, impresa, hagiograph · summary Choosing a referent is a privilege of greater divinities and avatars, still subject to process frequency; high-impact unprecedented effects can mitigate rarity.
 53. **Holding.** Mark, 2026-09-18: "The squirrels in my backyard tell me
     critters can gather, and can hold depending on their biology (big
     cheeks, pouch, pocket space if eldritch or whatever) but have very
@@ -487,6 +581,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     or nonsentient/nonsapient. Any sophont, faction, polity can have
     possessions; a critter can collect, hide items, and use them as
     needed, but they don't really own them."
+
+    Links: area The sim's schema and saves · summary Critters gather and hold by biology with limited capacity; sophonts carry gear; mechs are borgs holding pilots; any sophont, faction or polity can have possessions.
 54. **Place.** Mark, 2026-09-18: "a critter has habitats, habits,
     memories, but not really a home that it possesses except through
     presence and defense. Even just being named is enough to be able to
@@ -495,15 +591,21 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     you're just living where you can, as a critter." And the sentence
     that states it: "a human can give a dog a home, but they can't make
     the dog own the home."
+
+    Links: area The sim's schema and saves · summary A critter has habitats, habits and memories but no home it owns; being named lets a sapient assert a home one-sidedly.
 55. **One memory, graded, over one history.** Asked on 2026-09-18 whether
     a critter's memory of habit and habitat and a sophont's memory of
     events are two things or one at different ends, Mark ruled "the
     latter" (2026-09-19).
+
+    Links: area Record and history · summary One memory, graded, over one history: critter habit and habitat and sophont event memory are the same thing at different ends.
 56. **Standing is three things the record already has.** A sophont's
     alignment, derived from its acts (ruling 51); its reputation, the
     reach of its deeds among those who know of it (§3.4); and its rank,
     which a polity asserts: a title, an office, a membership. Mark,
     2026-09-19: "Yeah, sounds about right."
+
+    Links: area The sim's schema and saves · summary Standing is three things: alignment derived from acts, reputation as reach of deeds, and rank asserted by a polity.
 57. **Two doors: reproduction rerolls expression, the epoch boundary
     changes the lineage; NPC lineages adapt there by default and so does
     yours.** Mark, 2026-09-19: "the question is how do npc lineages
@@ -524,6 +626,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     at birth, and the epoch boundary folds the variants that prospered into
     the lineage.
 
+    Links: area Ecology · summary Reproduction rerolls expression and the epoch boundary changes the lineage; NPC lineages adapt at the epoch boundary by default, as does the player's.
+
 58. **A spread is a body; a fungus is one body and a germ is many.**
     Mark, 2026-09-19: "For fungus, one body, even separate. Germs are
     many bodies. You literally burn generations spreading as germs,
@@ -538,6 +642,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     a territory, and germs are a surface, their lineage their identity.
     *Strained 2026-10-02 by ruling 499:* a germ lineage revises its genes on
     the fly by forking strains where a host or place selects.
+
+    Links: area Bodies and anatomy · summary A spread is a body; a fungus is one body even when separate and germs are many bodies that revise genes on the fly. (amended by 488)
 59. **Play is directing, not driving; a creature's senses are its own.**
     Mark, 2026-09-19, asked about senses: "How do you perceive and react
     to the world without fauna sense organs, like most critters? And
@@ -557,12 +663,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     herbivore, or hunting for a predator, or scavenging...? Idk. All I
     know is, it's a terrarium, behavior I shape is more interesting than
     just making things do things outright usually."
+
+    Links: area Directing and play · summary Play is directing, not driving; a creature suggests its own perceptions and the player schedules behavior, with players not limited by diegetic senses.
 60. **Driving is Paredros; directing composes on top of it.** Mark,
     2026-09-19: "Driving is paredros. You're one sophont, with
     relationships sure, but you are one. I'm just saying you can give
     directives as that sophont to your friends and that can work a bit
     like directing mesocosm's critters, with an opinion modifier for
     command/request efficacy? So the systems compose, it seems to me."
+
+    Links: area Directing and play · summary Driving is Paredros (one sophont); directing composes on top by giving directives as that sophont, with an opinion modifier for efficacy.
 61. **Death is final across the board; each game has its own trick.**
     Mark, 2026-09-19: "death is final across the board, but mesocosm's
     trick is that you have extra lives because of your cohort, paredros's
@@ -571,11 +681,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     a clone. And isometry, death is understood to be a state that could
     almost be defeated if only we know more of the sciences and magics...
     revivify, resurrection, wishes..."
+
+    Links: area Directing and play · summary Death is final across the board; each game's trick: extra lives via cohort in Mesocosm and Paredros, and Isometry treats death as nearly defeatable.
 62. **The significant dead go to the planes after life, and summoning
     them back is a costly possibility.** Mark, 2026-09-19: "things that
     die that are significant should go to the planes after life, right?
     So being summoned back from there sorta makes sense as a possible,
     costly thing to do." And: "Let's keep going down. Let's plan it all."
+
+    Links: area The sim's schema and saves · summary Significant dead go to the planes after life, and summoning them back is a possible, costly act.
 63. **A faction acts by consent, peer to peer; a polity adds a constitution
     on top; forms of governance are ranked by alignment.** Mark, 2026-09-20:
     "my instinct: factions take collective action by organizing into
@@ -601,6 +715,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     a rogue really believes in kleptocracy, but nobody else does, but they
     believe in individualism, so their support goes there next... like
     preference-ordered rank choice voting for the sim?"
+
+    Links: area Processes and rules · summary A faction acts by consent, peer to peer; a polity adds a constitution; all governance forms are considered and ranked by alignment.
 64. **A polity's state needs efficacious means of enforcement, not
     necessarily violent; a polity has a focus, not a size; polities may be
     contingent on polities, and that is building on an institution.** Mark,
@@ -615,6 +731,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     others, like factions comprised a polity. If you can make a durable
     agreement that works within another polity, congrats, you've built on an
     institution".
+
+    Links: area The sim's schema and saves · summary A polity's state needs efficacious, not necessarily violent, enforcement; a polity has a focus, not a size, and may be contingent on other polities.
 65. **A polity without support does nothing; it dies only when people agree
     it has.** Mark, 2026-09-20: "when a polity lacks support to do its
     operations, then it essentially does nothing. But they only die when
@@ -623,6 +741,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     and/or means became pointless". **Extended by ruling 136:** a polity
     dies by either route, its own dissolution or nothing holding it any
     more.
+
+    Links: area Processes and rules · summary A polity without support does nothing and dies only when people agree it has. (amended by 136)
 66. **Any means may stand behind a constitution; short of death, a polity's
     condition may change automatically.** Asked on 2026-09-20 what stands
     behind a constitution in the sim, "force, faith, money, habit, a god?",
@@ -630,12 +750,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     (corrected by ruling 65): "I would be ok with a polity automatically
     becoming suppressed or inactive or superseded or subordinated to a
     faction."
+
+    Links: area Processes and rules · summary Any means may stand behind a constitution; short of death a polity may automatically become suppressed, inactive, superseded or subordinated to a faction.
 67. **Polities under no host are a faction among themselves.** Put to Mark
     on 2026-09-20 as a corollary of rulings 63 and 64: "polities dealing
     with each other under no host have only consent, so among themselves
     they are a faction. A treaty is then Paredros's standing agreement at
     scale, until an empire, a church or a federation hosts them." Mark:
     "Also i agree with this."
+
+    Links: area The sim's schema and saves · summary Polities under no host are a faction among themselves; a treaty is Paredros's standing agreement at scale.
 68. **A polity's goals are derived from its own alignment, as an
     individual's are; it has no will to continue beyond finding a new use;
     an inactive polity can be revived.** On the reading that an inactive
@@ -649,6 +773,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     own alignment/values? And then derive goals from that, like individuals
     have? If an institution outlived its use, why would it want to continue
     if it didn't find a new use? Polities change like that".
+
+    Links: area The sim's schema and saves · summary A polity's goals derive from its own alignment, as an individual's do; it has no will to continue beyond a new use; inactive polities revive.
 69. **What is of note persists; the rest is regenerated. "Of note" is a tier
     between the soup and legend, for every kind of thing.** Asked what makes
     a location a place and what keeps it the same place, Mark, 2026-09-20:
@@ -658,6 +784,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     terms for locations, possibly more..." And: "Like, a tier between
     primordial sim soup things generate from and legendary things. Just
     stuff of note".
+
+    Links: area Record and history · summary What is of note persists and the rest is regenerated; "of note" is a tier between ambient soup and legend, for every kind of thing. (amended by 200)
 70. **The soup is the ambient tier; things of note return to it by becoming
     irrelevant to the player, which is garbage collection, and the criteria
     for invalidation are crucial.** Mark, 2026-09-20, on *site* being used
@@ -671,6 +799,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     used. Things can indeed return to the soup by being made irrelevant to
     the player in some manner; that's garbage collection, right? So the
     criteria for invalidation is crucial..."
+
+    Links: area Record and history · summary The soup is the ambient tier; things of note return to it by becoming irrelevant to the player (garbage collection), so invalidation criteria are crucial.
 71. **The roots of collection are the entities players care about, and
     examination counts as play; collection is graded, down to just the
     event.** Asked who "the player" is that a thing must become irrelevant
@@ -682,6 +812,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     You wouldn't trash a colonist's relative that has appeared before. But
     you would trash most of a raider that got killed with little incident;
     at a certain point just the event."
+
+    Links: area Record and history · summary Collection roots are the entities players care about; examination counts as play; collection is graded down to just the event.
 72. **The place words: a world map is a grid of sites in any shape; region,
     location, wilderness, biome and environment defined.** Asked whether a
     place's kind is stored or read, Mark, 2026-09-21: "I guess i envisioned
@@ -699,10 +831,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     location but from which locations could be generated according to their
     terrain, biome as the characteristic environmental pattern for a site,
     environment meaning the weather and climate conditions".
+
+    Links: area World generation · summary A world map is a grid of sites in any shape; defines region, location, wilderness, biome and environment.
 73. **A world has one shape, any shape.** Mark, 2026-09-21, on ruling 72's
     "any shape works": "i mean a world could be any shape, but just one. Not
     like switch between them. I mean to enable strange scenarios like a
     world resting on a critter".
+
+    Links: area World generation · summary A world has one shape, any shape, not switchable.
 74. **Nesting is one composable, expandable mechanism; world, region, area
     and battlemap are its defaults.** Asked whether the nesting of maps is
     one mechanism repeated or a fixed set of levels, Mark, 2026-09-21: "I
@@ -710,6 +846,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     instead of the order and tiering of the nesting being predetermined. But
     yeah, those are good defaults." **Qualified by ruling 92:** the four
     are the VTT overlay's default scopes, not levels the sim hardcodes.
+
+    Links: area The VTT · summary Nesting is one composable, expandable mechanism; world, region, area and battlemap are its defaults. (amended by 92)
 75. **Background and foreground agree; the background is cheaper by
     aggregation; losses at transitions preserve similitude; things of no
     note are fungible, behind a configurable buffer.** Asked whether one
@@ -729,11 +867,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     Should this be organized in the manner that wasi/wasm/wit processes are,
     like with workers and a thread pool... and have i properly understood
     your point?"
+
+    Links: area Processes and rules · summary Background and foreground agree; the background is cheaper by aggregation; transition losses preserve similitude; things of no note are fungible behind a configurable buffer.
 77. **Two bindings, and the best capabilities each platform has, if that
     costs nothing on mobile or the web.** Mark, 2026-09-21, on §5.2's fork:
     "The two bindings does seem appropriate, too, though. Honestly if there
     is no cost on mobile or the web, i could see myself preferring to use
     the best capabilities available to improve performance".
+
+    Links: area Stack and engine · summary Two bindings, using the best capabilities each platform has if that costs nothing on mobile or the web.
 78. **A clean boundary either way.** Mark, 2026-09-21: "there are perhaps
     parts that would be good to componentize and parts that might not be. So
     further optimization is possible. But the lack of a clear boundary would
@@ -742,6 +884,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     componetization cause us to have ridiculous workarounds and inefficient
     methods, or does it buy architectural ergonomics that are as valuable as
     the performance the clean boundary costs?"
+
+    Links: area Stack and engine · summary Favor a clean boundary between componentized parts either way, since lack of one would bite later and performance improves with hardware.
 79. **A polity has its own alignment from its acts, as factions and
     individuals do.** On docket D8, Mark, 2026-09-21: "i think the idea is
     that you want to let the polity determine what it stands for by
@@ -751,42 +895,60 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     second is really what the sim's other entity tiers provides, and the
     first is a repeat of that theme. it's more accurate to say: just like
     factions and individuals, a polity has its own alignment from its acts."
+
+    Links: area The sim's schema and saves · summary A polity has its own alignment from its acts, as factions and individuals do.
 80. **"Of note" is literal: a note on the thing, made by the sim as a player
     would make one.** On docket D10, Mark, 2026-09-21: "i think of it as
     like literally a note on the site/item/entity. the sim just makes notes
     in the way a player would too, generating the note from the event/thing
     that makes it 'of note.'" On D19 and D20: "idk!", so both stay held.
     **Both since ruled: D19 by ruling 154, D20 by ruling 152.**
+
+    Links: area Record and history · summary Of note is literal: a note on the thing, made by the sim as a player would make one.
 81. **Asserting a constitution is itself an act, the definitive one.** On
     ruling 79, Mark, 2026-09-21: "isn't asserting a constitution of a polity
     itself an act? indeed, a definitive one."
+
+    Links: area The sim's schema and saves · summary Asserting a constitution is itself an act, the definitive one.
 82. **The note is the impresa record, with a freeform text field beside the
     generated details.** Mark, 2026-09-21: "i'm alright with the impresa
     record! ah, but... maybe a lil markdown/djot/gemtxt/txt-formatted
     (sounds like a setting, i guess i'd prefer djot) field, wysiwyg for just
     freeform notes? if we can enumerate the generated details, sure, lovely,
     but something simple, accessible, and interpretable is also nice."
+
+    Links: area Organs: glyphs, impresa, hagiograph · summary The note is the impresa record, with a freeform text field (djot preferred) beside the generated details.
 84. **Information spread is to be modelled, cheaply and distributionally,
     with how a person learned a thing resolved on demand.** Asked what a
     thing knows, Mark, 2026-09-21: "didn't we want to model information
     spread? is there a way to do that cheaply and distributionally, so that
     we can resolve how a person learned a thing without mapping each step
     ahead of time necessarily? is that the best way?"
+
+    Links: area Processes and rules · summary Information spread is to be modelled cheaply and distributionally, with how a person learned a thing resolved on demand.
 85. **For the impresa: a closed subset inside an open superset.** Mark,
     2026-09-21, on where the freeform text goes: "For impresa... closed
     subset, open superset?"
+
+    Links: area Organs: glyphs, impresa, hagiograph · summary For the impresa, a closed subset inside an open superset.
 86. **The five points of how knowledge resolves are agreed.** Mark,
     2026-09-21: "And agreed on the five points!"
+
+    Links: area Processes and rules · summary Agrees five points on how knowledge resolves, listed elsewhere in the record.
 87. **A secret is valuable, leverage, kept by a taboo; telling it turns on
     relation, opinion and goals, and perhaps personality.** Mark,
     2026-09-21: "A secret is valuable... it is tremendous leverage, often,
     or there wouldn't be rules against its propagation. So for relation,
     opinion, and goals to factor in makes sense to me. I wonder about
     personality, too." And then: "Or perhaps not rule, but 'taboo'".
+
+    Links: area Processes and rules · summary A secret is valuable leverage kept by a taboo; telling it turns on relation, opinion, goals and perhaps personality.
 88. **Nesting is allocated as locations are generated, not fixed at
     founding.** Mark, 2026-09-21, on this record's list of what founding
     fixes: "Elaborate on the last two points. Shouldn't the nesting be
     dynamically allocated as locations are generated?"
+
+    Links: area World generation · summary Nesting is allocated dynamically as locations are generated, not fixed at founding.
 89. **Founding is a short flow of crucial details and a seed; authoring is
     as deep as anyone likes, and authored content fills or displaces
     generated content; a world editor is owed.** Mark, 2026-09-21: "I feel
@@ -800,12 +962,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     editor, which i guess we have to make? Ok. But yeah, authored content
     should fill blank content or displace generated content to the extent
     people are willing to do so."
+
+    Links: area World generation · summary Founding is a flow of key details plus a seed; authoring may go as deep as wanted, displacing generated content; a world editor is owed.
 90. **A world is realigned to another ruleset by a generative round that
     advances time.** Mark, 2026-09-21: "I would imagine that worlds can be
     converted to align with different rulesets by having them go through
     another generative round advancing time and realigning the world to a
     new ruleset (e.g. from hexploration to freeform piloting of a ship in a
     planet's orbit, or some other abstraction)..."
+
+    Links: area World generation · summary A world is realigned to another ruleset by a generative round that advances time.
 91. **How much history is the founder's choice; the generated timeline can
     be gone back into; the client is not overwhelmed and may zoom in and
     edit.** Mark, 2026-09-21: "How much history is a complexity and size
@@ -815,6 +981,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     with, right? Stands to reason we'd take care to not overwhelm the client
     with information, but kinda offer them the opportunity to zoom in and
     edit stuff".
+
+    Links: area World generation · summary History depth is the founder's choice; the generated timeline can be revisited; the client is not overwhelmed and may zoom in and edit.
 92. **The named scopes must not hardcode Isometry's paradigm into the sim.**
     Mark, 2026-09-21, on this record's "Founding supplies only the
     vocabulary: which kinds of step exist, and the default scopes of world,
@@ -822,9 +990,13 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     hardcoding an isometry paradigm into the sim. Like does mesocosm or
     paredros need those distinctions? Does each game get a different
     tiering? Or does each tier mean different things to different games?"
+
+    Links: area The sim's schema and saves · summary The named scopes (world, region, area, battlemap) must not hardcode Isometry's paradigm into the sim.
 93. **Deep time is the same sim.** Asked whether a world's past is run by
     the same sim at a coarser grain or written by a separate history
     generator, Mark, 2026-09-21: "Same sim".
+
+    Links: area Processes and rules · summary Deep time is the same sim, not a separate history generator.
 94. **Value bears on scarcity, capability and material need; need is derived
     from alignment, acts and predilection.** Asked how things are exchanged
     and what value is, Mark, 2026-09-21: "Items, value, crafting, services,
@@ -833,6 +1005,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     are likely to do (predilection, personality?). But why do people take
     certain actions? Needs, like sims? And at the sim layer, how's that
     aggregate to give trade trends?"
+
+    Links: area Processes and rules · summary Value bears on scarcity, capability and material need; need derives from alignment, acts and predilection.
 95. **Taking an action is analogous to crafting; crafting is incorporating
     materials into an act; values, abilities and needs shape what is made; a
     fey mood may be a triggered need.** Mark, 2026-09-22: "How do we link
@@ -848,6 +1022,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     question of materials, rarities, recipes, technique, skill, hybridizing
     abilities or items, improving abilities and items, and triggered
     conditions for other sorts of acts beyond crafting".
+
+    Links: area Processes and rules · summary Taking an action is analogous to crafting; values, abilities and needs shape what is made; a fey mood may be a triggered need.
 96. **Abilities, skills and techniques defined; kleptoplasty is conditional;
     nis is a scale, not a material; the question was quality, not rarity.**
     Mark, 2026-09-22: "I'm not sure kleptoplasty is as important as it once
@@ -873,12 +1049,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     what is 'better'? Tiers could gate techniques, within a bucket... and if
     you can improve your sword over time, that feels fairer than 'can't
     swing that sword, it's too shitty' too..."
+
+    Links: area The sim's schema and saves · summary Abilities, skills and techniques are defined (a technique is an ability with a skill precondition); kleptoplasty is conditional; nis is a scale, not a material.
 97. **The materials of a world are its critters, across all the kingdoms.**
     Mark, 2026-09-22, on the question of the typology of kinds of nis:
     "whoa, so like, whatever critters exist, across all the kingdoms, those
     are the things stuff can be made of??? holy shit. that's way better than
     steel! it gives you a reason to learn the ecology, what stuff is,
     familiarize yourself with things to see what you can use... oh my god"
+
+    Links: area Ecology · summary The materials of a world are its critters across all kingdoms.
 98. **The world is an entity made of stuff, a world-class entity, the basic
     macro kingdom; stuff can be made out of the world, even critters.**
     Mark, 2026-09-22, on inert matter: "although, presumably the world has
@@ -888,14 +1068,20 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     out of stuff, too? a special sort of entity, world-class. and that's the
     basic macro kingdom. then stuff can be made out of the world, even
     critters!"
+
+    Links: area The sim's schema and saves · summary The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world.
 99. **What kind of entity a world is stays open to the world.** Mark,
     2026-09-22: "maybe the world is inert, or sentient, or a sophont, or a
     god, or a turtle, or whatever. maybe it's flora, or fauna. maybe it's
     dead. who knows!"
+
+    Links: area World generation · summary What kind of entity a world is (inert, sentient, sophont, god, turtle, flora, fauna, dead) stays open to the world.
 100. **World is a kingdom; its scale is macro; meso and micro worlds are
      left open.** Mark, 2026-09-22: "world is a kingdom, the scale is macro.
      this leaves open meso (small moon? satellite? asteroid? ship?) and
      micro worlds :3"
+
+     Links: area The sim's schema and saves · summary World is a kingdom with macro scale; meso and micro worlds are left open.
 101. **The world has traits and its timeline is a lineage; the world should
      be generative; glyphs are broad; a magic system generator is wanted
      that feeds divinity without hardcoded assumptions.** Mark, 2026-09-22:
@@ -917,6 +1103,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      we design a magic system generator that can feed into the divinity
      system without hardcoding assumptions? I'm ok with changing the
      divinity system to fit"
+
+     Links: area World generation · summary A world has traits and its timeline is a lineage; the world is generative; glyphs are broad; a magic system generator feeding divinity is wanted.
 102. **A world's magic, like its other characteristics, is suggested from
      the seed, configurable, and either a static profile or fluid over time
      under conditions.** Mark, 2026-09-22: "I think it ought to be a bit
@@ -925,6 +1113,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      magic or magic to start or no apocalypses or banned traits). But a
      suggested set from the seed is a fine default that could then be
      configured, much like the world's other characteristics."
+
+     Links: area World generation · summary A world's magic, like other characteristics, is suggested from the seed, configurable, and either a static profile or fluid over time under conditions.
 103. **The sim knows the parts of an arc and lets entities pursue
      consequential goals for real reasons; the game makes the statement; the
      world is a bit like RimWorld's storyteller.** Mark, 2026-09-22: "Might
@@ -934,6 +1124,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      for themselves for real reasons, and in the sim's terms. But the game
      is what takes that vocab and makes a coherent game statement out of it.
      So both, with the second being what gives the first its shape."
+
+     Links: area Processes and rules · summary The sim knows the parts of an arc and lets entities pursue consequential goals; the game makes the statement; the world is like a storyteller.
 104. **Time in a shared world: asynchronous play merged like git, or a clock
      that runs only when played; Mark leans to the second and asks.** Mark,
      2026-09-22: "It would be nice if people could play together
@@ -944,6 +1136,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      started the clock, and people can review what happened since, but time
      proceeds when the game is played. That feels more honest, predictable,
      and easy, but eh."
+
+     Links: area Host and network · summary Shared-world time: asynchronous play merged like git, or a clock running only when played; Mark leans to the second and asks (A ruled in 105).
 105. **Option A is ruled; related worlds should share a context without
      merging, as branched worldlines or as neighbours in a celestial
      neighbourhood.** Mark, 2026-09-22: "A, then. And also... it would be
@@ -952,6 +1146,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      branched, or for entirely different worlds, they could become a
      neighboring world in the celestial neighborhood...? That way you could
      manage a set of related worlds".
+
+     Links: area Record and history · summary Option A for shared-world time is ruled; related worlds share a context without merging, as branched worldlines or celestial neighbours.
 107. **The change to ruling 47 is agreed; a sacrifice's grade is the depth
      of the entity's relation to that magic in its story; collecting all the
      magics is favoured, as a setting.** Mark, 2026-09-22: "agreed. hmm. if
@@ -966,6 +1162,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      collect all the magics, perhaps that can be a setting too. but i do
      favor collecting all the magics, even trinkets plus your main magic.
      links ya to the world."
+
+     Links: area Organs: glyphs, impresa, hagiograph · summary A sacrifice's grade is the depth of the entity's relation to that magic in its story; collecting all magics is favoured, possibly as a setting.
 110. **The family and the sim are Isocosm; the tabletop is Isocosm: VTT; the
      rename is planned.** Mark, 2026-09-22: "Let's do it, isocosm, eponym,
      isocosm-vtt, etc. Let's plan the rename too". The reservations
@@ -976,6 +1174,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      means Eponym. (The clause first written here, "the tabletop keeps
      Isometry as its subtitle", was this record's inference and not Mark's
      word; ruling 111 settles it.)
+
+     Links: area Naming · summary The family and sim are Isocosm; the tabletop is Isocosm: VTT; reservations eponym, isocosm, isocosm-vtt published to crates.io; the rename is planned.
 111. **Isometry is retired as a product word and kept as the plain technical
      prefix of the tabletop's crates.** Put to Mark on 2026-09-22 as three
      options after this record's author had inferred, without a ruling, that
@@ -986,6 +1186,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      although, you know, i did once wonder if there were an appropriate bird
      name for the wing". The bird is a musing, not a reopening; Isocosm
      stands.
+
+     Links: area Naming · summary Isometry is retired as a product word and kept as the plain technical prefix of the tabletop's crates; the tabletop is Isocosm: VTT only.
 112. **Mesocosm keeps its name; Eponym stays; the family is settled.** On
      2026-09-23 Mark reopened Mesocosm's name ("a little terrarium of
      anything kinda outstrips it") and two batches were checked (coppice,
@@ -998,6 +1200,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      111: Isocosm the sim and the family, Isocosm: VTT, Isocosm: Mesocosm,
      Isocosm: Eponym. The reservations claimed at his word on 2026-09-24,
      hagiograph, redshank and ortet, are in the ledger.
+
+     Links: area Naming · summary Mesocosm keeps its name; Eponym stays; the family is settled as Isocosm with Isocosm: VTT, Mesocosm and Eponym.
 113. **Similitude: the noted always run as individuals; the fungible agree
      in distribution over whatever a later process reads; what was watched
      is logged; exact agreement is a world setting, statistical the
@@ -1028,6 +1232,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      only, Mark: "Accept as recommended." This settles §3.3's "a host's
      setting" against §3.12's "never of the machine" in the second's
      favour, and gives the aggregation research its acceptance criterion.
+
+     Links: area Processes and rules · summary Similitude: noted things always run as individuals; the fungible agree in distribution; what was watched is logged; exact agreement is a world setting, statistical default.
 114. **A game's ruleset is held to ruling 113's test: rulesets calibrate to
      the sim.** Put to Mark on 2026-09-24: two armies meet and a duke
      falls; at a VTT table 5e resolves the battle, and with nobody playing
@@ -1044,6 +1250,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Amended 2026-10-03 by ruling 538:* this holds in a world the sim
      leads; a world may choose instead that its ruleset leads, the sim's
      background following it.
+
+     Links: area Processes and rules · summary A game's ruleset is held to ruling 113's test: rulesets calibrate to the sim, matching it in distribution when no player choices are made. (amended by 538)
 115. **Competition: each side chooses.** Put to Mark on 2026-09-24, after
      ruling 114 left the sim owing a model of a fight and the aggregation
      research had found shared-resource competition to be a world rule
@@ -1056,6 +1264,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the choices, and whether a lineage leans to contest or scramble is a
      trait. A fight is what a contest becomes; how it resolves is the next
      question.
+
+     Links: area Processes and rules · summary Competition: each side's methodology chooses among contest, yield, share or trade, and the sim resolves the choices; lineage leaning is a trait.
 116. **Most contests never reach blows.** Put to Mark on 2026-09-24,
      following ruling 115: once both sides choose to contest, what ends
      the fight? Three options were put: one side breaks, will deciding as
@@ -1066,6 +1276,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      **Refined by rulings 221 to 223:** an escalated fight builds strain
      against bearing, a break shifts the advantage without deciding, and
      the fight ends when a side yields on re-sizing or is spent.
+
+     Links: area Processes and rules · summary Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223)
 117. **Any belief can be wrong, through wrong or stale information, and
      entities act on what they believe.** Mark, 2026-09-24, on ruling
      116's bluff: "Deception potentially leads people to make the wrong
@@ -1080,6 +1292,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      like charisma in dnd terms, posing as an action to
      intimidate/persuade/deceive? But in the sim's terms, it's 'wrong'
      information or stale information, i suppose".
+
+     Links: area Processes and rules · summary Any belief can be wrong through deceit, honest mistake or a changing rumour; entities act on what they believe; reach carries versions of an event.
 118. **Whether a belief takes: what the receiver can check, who's telling,
      what it wants to hear, and how it's told, all four.** Put to Mark on
      2026-09-24, following ruling 117: when someone is shown or told
@@ -1093,6 +1307,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      skill to intimidate, persuade or deceive, which a ruleset reads as
      charisma. Mark picked all four. How they are weighed against each
      other is the next question.
+
+     Links: area Processes and rules · summary Whether a belief takes depends on all four: what the receiver can check, who is telling, what it wants to hear, how it is told.
 119. **Both: each entity's disposition shifts a world baseline, and the
      baseline is drawn from the world entity's disposition, a neutral
      median by default.** Put to Mark on 2026-09-24, following ruling 118:
@@ -1102,6 +1318,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "Both. World baselines can be more like aggregate baselines
      drawn from the world entity disposition? Then a neutral median
      default for the sim is the world's normal way".
+
+     Links: area Processes and rules · summary Each entity's disposition shifts a world baseline for weighing beliefs; the baseline is drawn from the world entity's disposition, a neutral median by default.
 120. **The world's disposition seeds the founders only.** Put to Mark on
      2026-09-24, following ruling 119: is the world entity's disposition
      the baseline for every inhabitant's disposition, not just for how
@@ -1110,6 +1328,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Founders only." So the world's disposition seeds the first lineages;
      after that, dispositions are inherited and lived, and the world's
      pull fades.
+
+     Links: area Processes and rules · summary The world's disposition seeds the founders only; afterwards dispositions are inherited and lived and the world's pull fades.
 121. **The world shapes its people's dispositions through trait and
      through condition; people drift from the world's temperament, and the
      world's temperament may not be static either.** Put to Mark on
@@ -1128,6 +1348,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      baseline for weighing beliefs is the population's own, free to drift.
      Whether and how the world's temperament changes is his question, put
      back to him.
+
+     Links: area Processes and rules · summary The world shapes people's dispositions through trait and condition; people drift from the world's temperament, and that temperament may not be static.
 122. **A fluid world's temperament is moved by what happens to it, by its
      own cycles, and at its epoch boundary, not by its people's
      temperament.** Ruling 121's "Should it not change…?" was answered from
@@ -1142,6 +1364,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it, it turns with its seasons and ages, and it changes in its shop
      between rounds. Leaving out the second reads as: its people move it
      only through what they do to it, never by what they are.
+
+     Links: area Processes and rules · summary A fluid world's temperament is moved by what happens to it, its own cycles and its epoch boundary, not by its people's temperament.
 123. **Harm is both vigour and wounds.** Put to Mark on 2026-09-24,
      returning to the fight after ruling 116: when a blow lands, what does
      it change in the body? Three options were put: the part it hits, a
@@ -1153,6 +1377,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-02 by ruling 469:* a wound loses cells from the part
      it lands on, regrown at a price where the lineage's traits allow, or
      never.
+
+     Links: area Bodies and anatomy · summary Harm is both vigour (a reserve drained first) and wounds (to parts); vigour returns with rest and wounds heal slowly or never.
 124. **The first scale target is a region; larger scales are not
      precluded.** Put to Mark on 2026-09-24, after the finding that the
      generator's declared space had parameters and no ranges and that no
@@ -1164,6 +1390,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      minutes; or a whole world, millions of things, ages of history,
      overnight if need be. Mark: "We can start with the region, not
      precluding the larger scales of course."
+
+     Links: area World generation · summary The first scale target is a region (hundreds of sites, tens of thousands of critters); larger scales are not precluded.
 125. **Noting and promotion belong to the world; collection and merging
      belong to the record.** Put to Mark on 2026-09-24, from the review's
      finding that the sim plan's table of world transitions listed noting,
@@ -1172,6 +1400,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      record about it? Three options were put: record work; world events;
      or a split, noting and promotion the world's, since something became
      remarkable, and collection and merging the record's. Mark: "Split."
+
+     Links: area Record and history · summary Noting and promotion belong to the world; collection and merging belong to the record.
 126. **A fork founds a new world; a branch is the same world played apart
      and merged back.** Put to Mark on 2026-09-24: ruling 7 says worlds
      are "forkable and branchable"; should a fork be the new world that
@@ -1180,6 +1410,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a world with its own history from that point, related by descent
      (D33), and a branch is ruling 104's play branch. D23's edit to the
      past, which may never rewrite, reads as a fork.
+
+     Links: area Record and history · summary A fork founds a new world with its own history that never merges back; a branch is the same world played apart and merged back.
 127. **Everything fades, at a rate the holder's memory sets; physical
      notes do not.** Put to Mark on 2026-09-24, from ruling 70's "the
      criteria for invalidation is crucial" and RimWorld's caution: does a
@@ -1189,6 +1421,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      each kind its own rate. Mark: "Everything fades, moderated by, i
      guess in dnd terms, intelligence? Plus you can keep physical notes
      that don't fade, like a journal, notebook, diary, etc."
+
+     Links: area Record and history · summary Everything fades at a rate the holder's memory sets, unless renewed; physical notes (journal, diary) do not fade; legend never fades.
 129. **A thing stays of note only while some mind remembers it or some
      bearer records it.** Put to Mark on 2026-09-24, from ruling 127:
      ruling 80 has the sim write notes "the way a player would", and a
@@ -1199,6 +1433,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it." So each mind's copy fades at its own rate, a bearer's lasts with
      the bearer, and when the last copy is gone the thing returns to the
      ambient; legend never fades.
+
+     Links: area Record and history · summary A thing stays of note only while some mind remembers it or some bearer records it; when the last copy goes it returns to ambient.
 130. **A player keeps things of note through who they play and what they
      pin; in Eponym a player's notes are diegetic.** Put to Mark on
      2026-09-24, from ruling 129's open case: a player remembers from
@@ -1209,6 +1445,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      play, What they pin, Notes the player makes in eponym should be
      diegetic. Not so for the vtt or mesocosm. Notes external to the game
      could be embedded in the app via knot editor later."
+
+     Links: area Record and history · summary A player keeps things of note through who they play and what they pin; Eponym's notes are diegetic, the VTT's and Mesocosm's are not.
 131. **A mind remembers what was new to it, mattered to it, was intense,
      or kept happening.** Put to Mark on 2026-09-24, closing §3.4.1's
      open item on what ruling 71's "little incident" measures: what makes
@@ -1217,6 +1455,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      mattered to them; it was intense; it kept happening. Mark picked all
      four. So a little incident is one that was none of these to anyone
      who saw it, and no mind keeps it.
+
+     Links: area Record and history · summary A mind remembers what was new to it, mattered to it, was intense, or kept happening.
 132. **An unpractised skill decays slowly, to a floor it never drops
      below.** Put to Mark on 2026-09-24, from ruling 127's "everything
      fades" and the open question of whether a skill decays: does that
@@ -1225,6 +1465,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      keep; or slowly, to a floor. Mark: "Slowly, to a floor." So a craft
      left unpractised slips toward a floor it never loses, and doing is
      kept better than knowing.
+
+     Links: area Processes and rules · summary An unpractised skill decays slowly, to a floor it never drops below.
 133. **Factions are never gated by disagreement; a polity is, where its
      ultimate authority is vested in a group.** Put to Mark on 2026-09-24,
      from §3.2.2's open "which protocols": when a faction can't agree,
@@ -1237,6 +1479,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Polities' collective processes, insofar as they vest ultimate
      authority in a group rather than an individual, do gate polity acts
      on disagreements."
+
+     Links: area Processes and rules · summary Factions are never gated by disagreement; a polity is, where its ultimate authority is vested in a group.
 134. **A constitution changes by the polity's own way or its amendment
      rule; force outside the constitution founds a new polity and never
      takes over the old.** Put to Mark on 2026-09-24, from §3.2.2's open
@@ -1249,6 +1493,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      wanting the full sweep of a nation's power needs to acquire it
      legitimately or claim it quickly after the dissolution of the
      previous polity."
+
+     Links: area Processes and rules · summary A constitution changes by the polity's own way or its amendment rule; force outside it founds a new polity and never takes over the old.
 135. **Secession is the seceders' own act.** Put to Mark on 2026-09-24:
      can members leave a polity and take part of it with them, a town, a
      province, a guild chapter? Three options were put: only if it
@@ -1256,6 +1502,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      own act." So the seceders act as a faction and found their own
      polity, and the old one may accept it or contest it, the contest
      running like any other (rulings 115 and 116).
+
+     Links: area Processes and rules · summary Secession is the seceders' own act; they found their own polity and the old one may accept or contest.
 136. **A polity dies by either route: its own dissolution, or when nothing
      holds it any more.** Put to Mark on 2026-09-24, from §3.2.2's open
      "who must agree": a polity dies only when people agree it has (ruling
@@ -1263,6 +1511,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      dissolution decided like reform; whoever still holds it, dying when
      no member keeps it, no mind remembers it and no bearer records it; or
      either route. Mark: "Either route."
+
+     Links: area Processes and rules · summary A polity dies by either route: its own dissolution, or when nothing holds it any more.
 137. **The way of deciding suggests the means of enforcing by default and
      never binds them.** Put to Mark on 2026-09-24, from §3.2.2's open
      link between a polity's deciding act and its means: rule by buying
@@ -1271,6 +1521,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      generator suggests means from the way of deciding, and a polity may
      enforce by any means it has: a theocracy that fines, a merchant
      republic with an army.
+
+     Links: area Processes and rules · summary The way of deciding suggests the means of enforcing by default and never binds them.
 138. **Deadlock is per act, not a condition.** Put to Mark on 2026-09-24,
      from §3.2.2's open "whether more conditions are wanted", with ruling
      133's deadlock as the candidate: is a deadlocked polity a fifth
@@ -1279,6 +1531,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "Per act only." So deadlock blocks one act at a time, the
      polity stays active for everything its group does agree on, and the
      conditions stay four.
+
+     Links: area Processes and rules · summary Deadlock is per act, not a polity condition; conditions stay four.
 139. **Law A is amended for materials.** Put to Mark on 2026-09-24, from
      D28's check left open for him: does materials-as-lineages satisfy Law
      A, which says morphology doesn't travel between games as foreign rule
@@ -1290,6 +1544,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      word before it touches the founding record. Shown the draft, Mark:
      "Apply both as drafted", so it stands in the founding record's Law A
      and in Mesocosm's CLAUDE.md pipeline-laws line.
+
+     Links: area The sim's schema and saves · summary Law A is amended for materials: a lineage's traits may travel as what things are made of, beside shapes becoming relics.
 140. **A world's materials lie on a spectrum, from a normal base that
      matches a ruleset to completely generated.** Put to Mark on
      2026-09-24: are a world's own materials, its rock, metal, water and
@@ -1300,6 +1556,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      spectrum between that and a normal base world which matches a
      ruleset is probably good". Where a world sits on that spectrum reads
      as a founding setting, as its magic is (ruling 102).
+
+     Links: area World generation · summary A world's materials lie on a spectrum from a normal base matching a ruleset, through variants, to completely generated; a founding setting.
 141. **A skill rises by doing, being taught, studying and breakthroughs.**
      Put to Mark on 2026-09-24, from §3.3.1's open "how a skill
      accumulates": what raises a skill? Four options were put, to pick all
@@ -1307,6 +1565,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      taught by someone more skilled; studying from bearers, books, manuals,
      a master's notes; and breakthroughs, a fey mood, a near-death, a
      masterwork. Mark picked all four.
+
+     Links: area Processes and rules · summary A skill rises by doing, being taught, studying, and breakthroughs.
 142. **Techniques are both discovered and invented.** Put to Mark on
      2026-09-24, from the open "what a technique is made of": where do new
      techniques come from? Three options were put: invented, a skilled
@@ -1314,6 +1574,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the world's canon; or both. Mark: "Both." So the canon holds known
      techniques to be found, and masters can invent new ones beyond it,
      which spread by teaching and by bearers.
+
+     Links: area Processes and rules · summary Techniques are both discovered in the world's canon and invented by masters, spreading by teaching and bearers.
 143. **An item's improvement is limited by its maker's skill and its
      story, not its material.** Put to Mark on 2026-09-24, from the open
      "improving an item": what limits how far an item can be improved?
@@ -1323,6 +1585,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the maker's skill and its story. So only a better maker takes an item
      further, an item of note grows with its deeds as well as its work,
      and its material is no ceiling.
+
+     Links: area Processes and rules · summary An item's improvement is limited by its maker's skill and its story, not its material.
 144. **An item can be a sophont: made so, awakened by its story, or
      inhabited.** Mark, 2026-09-24, while ruling 143 was being recorded:
      "We should also probably consider items that are sophont". Put to him
@@ -1333,6 +1597,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      own; or inhabited, a mind moving into it, a bound spirit, a soul in a
      phylactery, one of the dead summoned into a vessel. Mark picked all
      three.
+
+     Links: area The sim's schema and saves · summary An item can be a sophont: made so, awakened by its story, or inhabited.
 145. **A sophont item acts through its wielder, by its own powers, and can
      take over.** Put to Mark on 2026-09-24, following ruling 144: how
      does a sophont item act in the world? Three options were put, to pick
@@ -1342,10 +1608,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      magic allow; and taking over, a strong enough item possessing its
      wielder, the reverse of ruling 53's pilot possessing the mech. Mark
      picked all three.
+
+     Links: area The sim's schema and saves · summary A sophont item acts through its wielder, by its own powers, and can take over its wielder.
 146. **A sophont item is never owned.** Put to Mark on 2026-09-24: can a
      sophont item be owned? Three options were put: like any item; only by
      agreement; or never owned. Mark: "Never owned." So it can be held but
      never owned; it is a companion, and it can own things itself.
+
+     Links: area The sim's schema and saves · summary A sophont item is never owned; it can be held, is a companion, and can own things itself.
 147. **A site and a paged chunk are independent.** Put to Mark on
      2026-09-24, from §3.7.1's open "how large a site is, in voxels and
      against the paged chunk": how does a site, the world map's unit,
@@ -1353,6 +1623,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      independent, or one site paging as one chunk. Mark: "Independent." So
      a site is the unit for generating and playing, a chunk the unit for
      paging, and a site spans as many chunks as its volume needs.
+
+     Links: area World generation · summary A site (generating and playing unit) and a paged chunk (paging unit) are independent; a site spans as many chunks as its volume needs.
 148. **When a location's ground changes or moves, its kind decides what
      it follows.** Put to Mark on 2026-09-24, from §3.7.1's open anchor of
      a place when the ground itself moves: eroded, flooded, carried off on
@@ -1360,6 +1632,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      its site; its ground; its people and works; or its kind deciding.
      Mark: "Its kind decides." So a camp follows its people, a ruin its
      ground, a battlefield its site.
+
+     Links: area World generation · summary When a location's ground changes or moves, its kind decides what it follows: a camp its people, a ruin its ground, a battlefield its site.
 149. **Neighbouring worlds keep their own clocks and are synced at
      crossings.** Put to Mark on 2026-09-24, from §3.12's open question:
      do neighbouring worlds share one played clock? Three options were
@@ -1368,6 +1642,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      synced at crossings. Mark: "Synced at crossings." So each world keeps
      its own clock until something crosses, and the crossing brings the
      two into step, as realignment does.
+
+     Links: area Processes and rules · summary Neighbouring worlds keep their own clocks and are synced at crossings.
 150. **A planetary system can be a host.** Put to Mark on 2026-09-24,
      from ruling 100's open item and §3.12: can a planetary system be an
      entity in its own right, a host for its worlds? Three options were
@@ -1375,6 +1651,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Yes, a host." So a system is an entity above the world, a sun with a
      provenance and founding ruleset of its own, hosting its worlds as a
      polity hosts others.
+
+     Links: area The sim's schema and saves · summary A planetary system can be a host: an entity above the world with its own provenance and founding ruleset, hosting its worlds.
 151. **Owning a person is slavery, and treating people as chattel is
      itself a tenet.** Put to Mark on 2026-09-24: ruling 146 says a sophont
      item is never owned; does that hold for every sophont? Two options
@@ -1388,6 +1666,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      held or rejected by sophonts, factions and polities like any other,
      and how one judges a slavery turns on whether one is the same kind of
      thing as the enslaved.
+
+     Links: area The sim's schema and saves · summary Whether a person may be owned is a tenet, held or rejected like any other; owning a person is slavery.
 152. **Outside the world, a player directs only who they play.** Put to
      Mark on 2026-09-24, from held item D20: outside the world, who may a
      player direct, given that inside it anyone can ask anyone through the
@@ -1397,11 +1677,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      who they play." So everything else is asked in the world, through the
      entity a player plays, and D20's provider over `mere-capability`
      implements that in W3.
+
+     Links: area Directing and play · summary Outside the world, a player directs only who they play; everything else is asked in the world through that entity.
 153. **Two players may direct the same entity.** Put to Mark on
      2026-09-24, co-op being a core taste in every vessel: can two players
      direct the same entity? Three options were put: yes, both, the
      entity weighing conflicting directives by its opinion of each; one at
      a time; or no. Mark: "Yes, both."
+
+     Links: area Directing and play · summary Two players may direct the same entity, which weighs conflicting directives by its opinion of each.
 154. **D19's contract is ruled.** Put to Mark on 2026-09-24: D19's
      contract, a game submitting intents, the sim returning events and a
      read-only view of each tick, and outcomes a game settles coming back
@@ -1409,6 +1693,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      now, or keep it held for W5? Mark: "Rule it." So §5.2's points 2 to 5
      stand as the contract's shape, and W5 designs the details against
      them.
+
+     Links: area Processes and rules · summary D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff.
 155. **What a Mesocosm player plays depends on the lineage's traits.** Put
      to Mark on 2026-09-24, from ruling 152 against ruling 59's "direct one
      or a cohort of critters": what does a Mesocosm player play? Two
@@ -1418,10 +1704,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      critters in your lineage can be ecological competitors or direct
      extensions of your own critter (fungus monocreature, swarmlike
      entities like germs, etc.)"
+
+     Links: area Mesocosm · summary What a Mesocosm player plays depends on the lineage's traits; other lineage critters may be competitors or direct extensions.
 156. **A DM may take up any unclaimed entity to play, and may edit the
      world.** Put to Mark on 2026-09-24, from ruling 152: what can a DM do
      from outside the world? Three options were put: play any NPC; edit,
      not direct; or both. Mark: "Both."
+
+     Links: area The VTT · summary A DM may take up any unclaimed entity to play, and may edit the world.
 157. **A thing of note is a relic, an event of note a tale, and
      Mesocosm's body site a tract.** Put to Mark on 2026-09-24 as the
      of-note naming round open since ruling 69, places of note being
@@ -1432,6 +1722,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      deed or none; tract, situs or keeping *site*. Mark picked relic, tale
      and tract. The body-site rename is a lane, about 104 occurrences in
      26 files by the 2026-09-20 count.
+
+     Links: area Naming · summary A thing of note is a relic, an event of note a tale, and Mesocosm's body site a tract.
 158. **A mind's mood is fed by what it remembers, needs and lives
      through; personality traits are a class of traits of their own.** Put
      to Mark on 2026-09-24, opening mood and breaks: what is a mind's mood
@@ -1445,12 +1737,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      as they develop... some maybe preclude aspects of play for special
      bonuses? (like brawler in rimworld) idk. i like being able to invest
      in traits with significant activity".
+
+     Links: area The sim's schema and saves · summary A mind's mood is fed by what it remembers, needs and lives through; personality traits are an inheritable, developable class of traits of their own.
 159. **Mood is read; strain is kept.** Put to Mark on 2026-09-24: is mood
      kept, or read? Three options were put: read, never kept; kept as a
      level, as vigour is; or read, with strain kept. Mark: "Read, with kept
      strain." So mood is derived on demand from its sources, while strain
      builds as a kept level whenever mood stays low, and only rest or
      relief bleeds it off.
+
+     Links: area The sim's schema and saves · summary Mood is read on demand from its sources; strain is a kept level that builds while mood stays low and eases with rest or relief.
 160. **Personality traits sit on the five factors.** Put to Mark on
      2026-09-24, from ruling 158 against ruling 37: how do personality
      traits stand to the five-factor disposition? Three options were put:
@@ -1458,6 +1754,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      traits. Mark: "Traits on the factors." So the five factors stay the
      continuous temperament, and personality traits are discrete features
      grown on top, their seeds drawn from the factors.
+
+     Links: area The sim's schema and saves · summary Personality traits are discrete features grown on top of the five-factor continuous temperament, their seeds drawn from the factors.
 161. **Past what it can bear, a mind stops heeding, acts out, or rises,
      and the break leaves a mark.** Put to Mark on 2026-09-24: what
      happens when strain passes what a mind can bear? Four options were
@@ -1466,57 +1764,77 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it may rise instead, a breakthrough such as the fey mood or a last
      stand; and it leaves a mark, seeding or feeding a personality trait.
      Mark picked all four.
+
+     Links: area Processes and rules · summary Past what it can bear a mind stops heeding directives, acts out, or rises; the break leaves a mark seeding or feeding a personality trait.
 162. **Breaking does not spread.** Put to Mark on 2026-09-24: does
      breaking spread from one mind to others? Two options were put: it
      spreads, a panic or a riot running through a crowd; or it doesn't.
      Mark: "It doesn't." So each mind breaks alone, and a riot is many
      minds breaking for the same reasons.
+
+     Links: area Processes and rules · summary Breaking does not spread; each mind breaks alone and a riot is many minds breaking for the same reasons.
 163. **Whether a break goes down or up turns on traits, the moment and
      chance.** Put to Mark on 2026-09-24: when strain breaks a mind, what
      decides whether it breaks down or rises? Three options were put, to
      pick all that should count: its traits; the moment, what is at stake
      and who depends on it; and chance, a seeded draw weighted by the rest.
      Mark picked all three.
+
+     Links: area Processes and rules · summary Whether a break goes down or up turns on traits, the moment, and seeded chance.
 164. **What a mind can bear is set by its traits, its support and what it
      has been through.** Put to Mark on 2026-09-24: what sets how much
      strain a mind can bear? Three options were put, to pick all that
      should: its traits; its support, company, faith, a home and what it
      believes in; and what it has been through, strain survived hardening
      it and past breaks scarring it. Mark picked all three.
+
+     Links: area Processes and rules · summary What a mind can bear is set by its traits, its support, and what it has been through.
 165. **A culture is read from its people, and named when noted.** Put to
      Mark on 2026-09-24, opening language and culture: what is a culture
      in the sim? Three options were put: read from people, with no state
      of its own; a thing of its own, kept like a polity without a
      constitution; or read, and named and remembered once minds hold it as
      a thing. Mark: "Read, named when noted."
+
+     Links: area The sim's schema and saves · summary A culture is read from its people, with no state of its own, and named when noted.
 166. **Languages divide.** Put to Mark on 2026-09-24: do sophonts speak
      languages that can divide them? Three options were put: languages
      divide, understanding needing a shared tongue learned like a skill;
      names only, languages as the generated flavour of names; or no
      languages. Mark: "Languages divide." So telling, posing and exchange
      across tongues come harder, and interpreters matter.
+
+     Links: area The sim's schema and saves · summary Languages divide: understanding needs a shared tongue learned like a skill, and interpreters matter.
 167. **Tongues and cultures descend like lineages.** Put to Mark on
      2026-09-24: do tongues and cultures descend like lineages? Three
      options were put: like lineages, splitting into dialects when their
      speakers part and drifting over deep time; fixed per people; or
      generated with no descent. Mark: "Like lineages."
+
+     Links: area Processes and rules · summary Tongues and cultures descend like lineages, splitting into dialects when speakers part and drifting over deep time.
 168. **Names come from the tongue, from tales, and from the namer.** Put to
      Mark on 2026-09-24: how are names made? Three options were put, to
      pick all that should: from the tongue, generated from a language's
      sounds and words; from tales, epithets earned by deeds and stories;
      and given by the namer, ruling 36's naming being a sapient's own act.
      Mark picked all three.
+
+     Links: area Processes and rules · summary Names come from the tongue, from tales, and from the namer.
 169. **Culture spreads by contact, prestige and imposition, and drifts
      apart out of touch.** Put to Mark on 2026-09-24: how does culture
      spread between peoples? Four options were put, to pick all that
      should: contact, neighbours growing alike faster the more they share;
      prestige, copying those admired or powerful; imposition by a polity's
      means; and drift apart when out of touch. Mark picked all four.
+
+     Links: area Processes and rules · summary Culture spreads by contact, prestige and imposition, and drifts apart out of touch.
 170. **Art and ritual are crafts, and any craft or pursuit can be
      politicized or ritualized.** Offered on 2026-09-24 as a next thread,
      "whether sophonts make art and hold rites, and what those do", Mark:
      "I view art and ritual as crafts. A craft/pursuit can be
      politicized/ritualized too. Let's proceed to tech".
+
+     Links: area The sim's schema and saves · summary Art and ritual are crafts, and any craft or pursuit can be politicized or ritualized.
 171. **Technology is both a world's generated tree and what is known.** Put
      to Mark on 2026-09-24, opening technology: what is technology in the
      sim? Three options were put: what is known, read from the techniques
@@ -1526,6 +1844,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      read from minds and bearers. Mark: "Both." Put with it as a reading
      from rulings 129 and 142, unobjected: a technique no mind or bearer
      holds is lost, and can be found again.
+
+     Links: area The sim's schema and saves · summary Technology is both a world's generated tree and what is known, read from minds and bearers; an unheld technique is lost and can be refound.
 172. **Ages are read and named, capped by the founder, can realign the
      world, and are the epochs of cultures and society.** Put to Mark on
      2026-09-24: does a world have ages of technology? Four options were
@@ -1535,12 +1855,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      go; and ages that realign the world to a new scope. Mark picked the
      first, third and fourth and, in place of the second: "Ages are the
      epochs of cultures/society."
+
+     Links: area The sim's schema and saves · summary Ages are read and named, capped by the founder, can realign the world, and are the epochs of cultures and society.
 173. **Invention is driven by need, contact, temperament and mastery.** Put
      to Mark on 2026-09-24: what drives invention, a master going beyond
      the canon (ruling 142)? Four options were put, to pick all that
      should: need; contact, ideas combining when peoples meet; temperament,
      curious and open minds; and mastery, deep skill making breakthroughs
      possible. Mark picked all four.
+
+     Links: area Processes and rules · summary Invention is driven by need, contact, temperament and mastery.
 175. **The first Mesocosm overlay directs, as ruling 60 has it; the played
      slice's direct control is rewritten.** Put to Mark on 2026-09-25, from
      the finding that the played slice plan gives direct control of the
@@ -1552,6 +1876,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      needs and senses, which suggest to the player, and the player shapes
      it with standing orders and priorities. **The rewrite is owed now,
      and the plan retires into W5 at M3 (rulings 196 and 199).**
+
+     Links: area Mesocosm · summary The first Mesocosm overlay directs, as ruling 60 has it; the played slice's direct control is rewritten.
 176. **A Mesocosm player directs with priorities, places, stances and
      nudges.** Put to Mark on 2026-09-25: what does a Mesocosm player
      direct with? Four options were put, to pick all that should be in the
@@ -1561,11 +1887,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the critter weighs. Mark picked all four. **How, by rulings 214 to
      216:** the player gives the nudge by click, and the other three grow
      from the nudges' history as desire paths.
+
+     Links: area Mesocosm · summary A Mesocosm player directs with priorities, places, stances and nudges.
 177. **A critter follows its player's directing by its bond.** Put to Mark
      on 2026-09-25: does your own critter always follow your directing?
      Three options were put: within its body; when its needs allow; or by
      its bond, built from how well your orders have served it, as ruling
      60 weighs directives by opinion. Mark: "By its bond."
+
+     Links: area Mesocosm · summary A critter follows its player's directing by its bond, built from how well the player's orders have served it.
 178. **Whether the bond carries across generations is a setting, seeded
      by default.** Put to Mark on 2026-09-25: when your critter dies and
      you take up the next of your lineage (ruling 61), does the bond carry
@@ -1573,12 +1903,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineage, inherited in seed form as personality traits are; or it is
      the lineage's, carrying whole. Mark: "All three should be options; my
      default would be seeded".
+
+     Links: area Mesocosm · summary Whether the bond carries across generations is a setting (fresh, seeded by lineage, or whole); seeded is the default.
 179. **A Mesocosm player chooses when to start, from the world's
      habitability for their critter onward.** Put to Mark on 2026-09-25:
      does the first played loop start in a world with a past, deep time
      first or a bare world first? Mark: "You may choose to start at the
      start of the world's habitability for your critter, or add as much
      time as you'd like".
+
+     Links: area Mesocosm · summary A Mesocosm player chooses when to start, from the start of the world's habitability for their critter or with as much added time as wanted.
 180. **What a Mesocosm player sees is a mode: survival shows what the
      critter knows, creative shows the truth.** Put to Mark on 2026-09-25,
      from the playable ecology plan's open ruling 6: how much of the
@@ -1586,6 +1920,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      at the epoch review? Three options were put: what it knows; truth at
      the review; or truth anytime. Mark: "Creative vs survival mode, if you
      ask me. Both worthy and necessary, debug-wise."
+
+     Links: area Mesocosm · summary What a Mesocosm player sees is a mode: survival shows what the critter knows, creative shows the truth.
 181. **A trophic collapse may be local or global, and losing is not the
      end.** Put to Mark on 2026-09-25, from the playable ecology plan's
      open ruling 7: what makes a trophic collapse terminal in the game?
@@ -1602,6 +1938,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the world's biomass falls, so a global collapse is the one region's;
      a player whose lineage ends picks another here or a new world; and a
      total collapse ends the world as a game, still watchable.
+
+     Links: area Mesocosm · summary A trophic collapse may be local or global, and losing is not the end: play can continue or restart elsewhere. (amended by 225, 226, 229, 230)
 182. **Unplayed lineages adapt, inherit and develop, weighing their
      adaptation against the rest of the web; that is what an epoch is
      about.** Put to Mark on 2026-09-25, from the playable ecology plan's
@@ -1616,6 +1954,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (individual variance?)". Asked whether "troposphere" meant the rest of
      the trophic web, the ecosystem the lineage lives in, Mark: "That is
      correct".
+
+     Links: area Ecology · summary Unplayed lineages adapt, inherit and develop, weighing their adaptation against the rest of the trophic web; that is what an epoch is about.
 183. **At a birth, the player keeps the parent by default.** Put to Mark on
      2026-09-25, from the playable ecology plan's open ruling 1: when your
      critter reproduces, do you keep playing the parent or move to the
@@ -1624,15 +1964,21 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      player keeps the parent unless they take the offspring, and the
      choice can be taken back, which is the placeholder the plan already
      built.
+
+     Links: area Mesocosm · summary At a birth the player keeps the parent by default and may take the offspring; the choice can be taken back.
 184. **Creative mode shows the truth and does not edit.** Put to Mark on
      2026-09-25: does creative mode (ruling 180) also let the player change
      the world? Two options were put: see and edit; or see only, editing
      belonging to the world editor (ruling 89). Mark: "See only."
+
+     Links: area Mesocosm · summary Creative mode shows the truth and does not edit; editing belongs to the world editor.
 185. **Eponym's co-op is each player living their own creature.** Put to
      Mark on 2026-09-25, opening Eponym's overlay: what does co-op look
      like, given that ruling 153 lets two players direct one entity? Three
      options were put: each their own; one life, shared; or both as a
      setting. Mark: "Each their own."
+
+     Links: area Eponym · summary Eponym's co-op is each player living their own creature.
 186. **At a death in Eponym, the player chooses who to become, among
      bonded companions.** Put to Mark on 2026-09-25: when the creature you
      live dies and a companion becomes the one you play, who decides which
@@ -1640,15 +1986,21 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      companions with a bond to the one who died; the closest bond; or
      whoever takes up the role by the world's rules. Mark: "The player
      chooses."
+
+     Links: area Eponym · summary At a death in Eponym the player chooses who to become, among bonded companions.
 187. **Survival and creative modes hold for Eponym as for Mesocosm.** Put
      to Mark on 2026-09-25: do rulings 180 and 184 hold for Eponym? Two
      options were put: the same, creative also being where tag-in lives;
      or survival only. Mark: "The same."
+
+     Links: area Eponym · summary Survival and creative modes hold for Eponym as for Mesocosm; creative is also where tag-in lives.
 188. **A VTT campaign may run with the sim off.** Put to Mark on
      2026-09-25, opening the VTT's overlay: can a campaign run with the sim
      switched off, as a plain board with no world beneath? Three options
      were put: always a world; sim off allowed; or a dial of how much the
      world moves on its own. Mark: "Sim off allowed."
+
+     Links: area The VTT · summary A VTT campaign may run with the sim off, as a plain board.
 189. **An uncalibrated ruleset may play in a debug or experimental mode,
      with a warning.** Put to Mark on 2026-09-25: what happens to a system
      plugin that cannot pass ruling 114's check? Three options were put:
@@ -1657,6 +2009,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      warning)".
      *Bounded 2026-10-03 by ruling 538:* calibration, and so this mode,
      applies in worlds the sim leads.
+
+     Links: area The VTT · summary An uncalibrated ruleset may play in a debug or experimental mode, with a warning. (amended by 538)
 190. **An adventure pack whose requirements the world lacks waits, or the
      GM forces it.** Put to Mark on 2026-09-25: an adventure pack names
      what it needs from a world, a ruin, a faction at war, a missing heir;
@@ -1664,12 +2018,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      waits, dormant until the world meets it; the DM forces it, asserting
      its content and displacing generated content (ruling 89); or the
      world bends at founding. Mark: "Wait or the gm forces it".
+
+     Links: area The VTT · summary An adventure pack whose requirements the world lacks waits dormant, or the GM forces it, displacing generated content.
 191. **The VTT offers the sim's running arcs to the DM as suggested
      hooks.** Put to Mark on 2026-09-25: the sim knows the parts of the
      arcs it is running (ruling 103); does the VTT offer them to the DM?
      Three options were put: as suggested hooks, which the DM may take up,
      drop or reshape; on request; or not at all. Mark: "As suggested
      hooks."
+
+     Links: area The VTT · summary The VTT offers the sim's running arcs to the DM as suggested hooks to take up, drop or reshape.
 192. **Isocosm absorbs mesocosm-core; the first overlay plays on
      Isocosm.** Put to Mark on 2026-09-25, before drafting the Mesocosm
      overlay plan, with the sizes measured: `mesocosm-core` 44,901 lines
@@ -1684,6 +2042,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Amended 2026-10-05 by ruling 591:* the legacy sims move first and are
      re-expressed in place.
 
+     Links: area Stack and engine · summary Isocosm absorbs mesocosm-core: its sim moves in piece by piece re-expressed in process definitions, and the first overlay plays on Isocosm. (amended by 591)
+
 193. **Moved modules are decomposed under the 600-line ceiling.** Mark,
      2026-09-25, while the Mesocosm overlay plan was being drafted: "Feel
      free to decompose them under the 600 Loc limit". So every family that
@@ -1691,6 +2051,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      has.
      *Enforced 2026-10-05 by ruling 592:* every tracked source file, by
      script, exceptions listed with their reason.
+
+     Links: area Method and documents · summary Moved modules are decomposed under the 600-line ceiling along seams the code already has.
 
 197. **The overlay contract is one shared crate, `isocosm-overlay`.** Put
      to Mark on 2026-09-25, opening M1: does the contract crate live as one
@@ -1700,6 +2062,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "isocosm-overlay". So it sits in `shared/`, game-neutral, with
      Mesocosm's directives as its first game's module and Eponym and the
      VTT to add theirs.
+
+     Links: area Stack and engine · summary The overlay contract is one shared game-neutral crate, isocosm-overlay, in shared/, with each game's directives as its own module.
 198. **The consistency pass is applied, and a dated line keeps its date's
      words.** Put to Mark on 2026-09-25, with the RPG systems session's
      read-only pass over this record, the sim plan and the overlay plan at
@@ -1714,6 +2078,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      keep Isocosm with a note? Mark: "Restore isotropy." So a dated line
      keeps the words of its date, as a verbatim ruling keeps its own, and a
      later name reaches it only as a note.
+
+     Links: area Method and documents · summary The consistency pass is applied; a dated line keeps the words of its date and a later name reaches it only as a note.
 200. **Of note is identified, a denizen is named, and a sophont is
      sapient.** Put to Mark on 2026-09-25, from the pass's item 9: is
      sophont settled as the second identity word, which ruling 45 left to
@@ -1729,6 +2095,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      sophont is a denizen. The tier is "of note", and denizen no longer
      names it. At his word ("Amend as drafted"), Mesocosm's CLAUDE.md
      denizen line is rewritten to match and a sophont line added.
+
+     Links: area Naming · summary Of note means identified, denizen means named, sophont means sapient (every sophont is a denizen); denizen no longer names the of-note tier.
 201. **The organ words are components, not crates, and a `denizen` crate
      needs a reason of its own.** Mark, 2026-09-24, in the RPG systems
      session, on hagioglyph, impresa, denizen, isoscape and isostasy: "Ehh,
@@ -1741,6 +2109,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      potentially embedded contexts, that could be good". So no crate is
      published for an organ word, and a `denizen` crate is made only if it
      becomes the way entity information moves between contexts.
+
+     Links: area Organs: glyphs, impresa, hagiograph · summary Organ words are components, not crates; no crate is published for one, and a denizen crate needs a reason such as moving entity information.
 202. **Speciating stays the player's act; expressing becomes the
      critter's own.** Put to Mark on 2026-09-25, from M1, where
      `mesocosm-core`'s `Speciate`, splitting the played line and naming it,
@@ -1751,10 +2121,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it, "the name is the doing", as a player's act beside directives and
      checkpoint answers; and expressing a candidate is the critter's own
      development, chosen by its methodology and steered by priorities.
+
+     Links: area Mesocosm · summary Speciating (splitting and naming the played line) stays the player's act; expressing a candidate becomes the critter's own development.
 203. **The tick stamp is a newtype over the sim's count.** Put to Mark on
      2026-09-25, the first of three forks from building M1: a newtype over
      `u64`, a plain `u64` as the sim uses, or an epoch and an offset, a
      structure the sim does not store? Mark: "Newtype over u64."
+
+     Links: area Stack and engine · summary The tick stamp is a newtype over the sim's u64 count.
 204. **Subscription derives from the attention set, whose type M1
      designs.** Put to Mark on 2026-09-25, the second fork: §5.2's point 4,
      in the contract's shape since ruling 154, has one attention set per
@@ -1763,11 +2137,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      explicit topic keys or a structured filter, or does M1 type the
      attention set? Mark: "Type the attention set." So M1 is not done
      until the attention set has its type and subscription derives from it.
+
+     Links: area Stack and engine · summary Subscription derives from the attention set, which M1 types; the contract carries no separate topic keys.
 205. **A PLACES directive names a node of the place graph.** Put to Mark on
      2026-09-25, the third fork: an opaque handle to a place-graph node
      (rulings 72, 147), a site, or raw coordinates? Mark: "Place-graph
      handle." Dev intents keep raw coordinates, since they reach the grid
      directly.
+
+     Links: area Mesocosm · summary A PLACES directive names a place-graph node by opaque handle; dev intents keep raw coordinates.
 206. **When food is short, the sim resolves the crowd's choices in
      pairwise encounters.** Put to Mark on 2026-09-25, from the sim plan's
      S2 probe, which stopped at its first fork on finding no exact
@@ -1780,6 +2158,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      cost to both (rulings 115, 116). The margin and the cost are world
      data drawn per seed; escalation costs body reserve until vigour is in
      the ledger (ruling 123); and trade waits for something to trade.
+
+     Links: area Processes and rules · summary When food is short, the sim resolves the crowd's choices in pairwise encounters: contesters take from yielders, sharers split, two contesters size up by reserve. (amended by 217)
 207. **The crowd runner keeps a histogram of exact states.** Put to Mark
      on 2026-09-25, with 206: a histogram of exact states, coarsened
      states, moment closure, or super-individuals? Mark: "Exact-state
@@ -1787,6 +2167,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      read it, with random count draws each round, and the pairing draw is
      the only approximation; a field is coarsened only where the rules show
      it safe, and savings are reported in evaluations.
+
+     Links: area Processes and rules · summary The crowd runner keeps a histogram of exact states, with random count draws; the pairing draw is the only approximation.
 208. **What later processes read is the rules' own thresholds.** Put to
      Mark on 2026-09-25, from ruling 113's test: the fungible must agree in
      distribution over what later processes read, so what counts, counts
@@ -1797,6 +2179,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, 2026-09-26, not ruled:* the check compares readings one at a
      time, so any conjunction of thresholds one rule tests together, hungry
      and strained say, is a reading of its own.
+
+     Links: area Processes and rules · summary What later processes read is the rules' own thresholds, read mechanically from the process definitions, plus a distribution per field for anything inspection shows.
 209. **The first tolerance is 0.2 per reading, certified with controls.**
      Put to Mark on 2026-09-25, with 208: a first bound of 0.2 or 0.1? Mark:
      "0.2, with controls." So each reading's bound sits in the world's
@@ -1809,12 +2193,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Amended 2026-10-02 by ruling 507:* in a body world the averaged crowd
      averages each lineage's own matter, tissue and reserve, since a
      lineage that keeps no store (506) has no reserve to average.
+
+     Links: area Processes and rules · summary The first tolerance is 0.2 per reading (Kolmogorov-Smirnov), certified with positive and negative controls and tightened later. (amended by 507)
 210. **A player may pin any pointable thing.** Put to Mark on 2026-09-25,
      typing the attention set (ruling 204): what can a player pin, which
      ruling 130 keeps on the player's account? Three options were put: any
      pointable thing, entities and places, or entities only. Mark: "Any
      pointable thing." So entities, places, items, lineages, factions and
      events, anything that can have an impresa, can be pinned.
+
+     Links: area Directing and play · summary A player may pin any pointable thing: entities, places, items, lineages, factions and events.
 211. **An attended group runs its noted members exactly and the rest as a
      crowd.** Put to Mark on 2026-09-25, with 210: when what a player cares
      about is a group, such as Mesocosm's lineage, does every member run
@@ -1823,6 +2211,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      exact, rest crowd." So caring for a group keeps it, its noted members
      run as individuals (ruling 113), and its fungible members run as a
      crowd within the world's tolerance.
+
+     Links: area Processes and rules · summary An attended group runs its noted members exactly as individuals and its fungible members as a crowd within tolerance.
 212. **Examining is what the view shows up close.** Put to Mark on
      2026-09-25, with 210: what counts as examining, which ruling 71 makes
      play and ruling 113 logs: everything in view, what the view shows at
@@ -1839,6 +2229,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a battlemap, is watched and runs in detail, and the watch is logged
      when that region changes; far views, an overmap or the minimap, stay
      crowd, and the camera stays presentation inside a region.
+
+     Links: area Directing and play · summary Examining is what the view shows at full detail up close; that is watched, runs in detail and is logged; far views stay crowd.
 213. **A player's event stream carries what is attended.** Put to Mark on
      2026-09-25, with 212: events touching anything in the attention set,
      or everything the collector keeps from it? Mark: "Depends on the co-op
@@ -1851,6 +2243,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      what they pin, what they examine and the game's own care, with record
      entries reaching the played entity, and in survival mode only what the
      played critter can know (ruling 180).
+
+     Links: area Directing and play · summary A player's event stream carries what is attended: who they play, what they pin and examine, and the game's own care.
 214. **A click draws the critter's attention; attending is the default, and
      a right click picks another meaning.** Put to Mark on 2026-09-25, from
      the played slice plan's open question of how a player gives directives
@@ -1866,12 +2260,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      those meanings are the critter's own acts toward the target, what its
      biology can do with it (ruling 59), and each is still a nudge the
      critter weighs.
+
+     Links: area Mesocosm · summary A click draws the critter's attention as a nudge it weighs by its bond; attending is the default and a right click picks another meaning.
 215. **A click never warns.** Put to Mark on 2026-09-25, with 214: can a
      click warn as well as invite, by a second gesture, or does the critter
      read the pointing through its own sense of the thing? Mark: "One
      gesture only." So no gesture warns: the critter reads what it is shown
      by its own sense of it, and avoidance comes from its experience and its
      stance.
+
+     Links: area Mesocosm · summary A click never warns; the critter reads what it is shown by its own sense, and avoidance comes from experience and stance.
 216. **Standing orders grow from attention.** Put to Mark on 2026-09-25,
      with 214: where do the standing orders come from, places to range and
      make home, priorities and stances: grown from attention, set at the
@@ -1884,6 +2282,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stances grow the same way, from how the encounters the player's
      attention led it into turned out, and places to avoid from what went
      badly there (215).
+
+     Links: area Mesocosm · summary Standing orders (ranges, homes, priorities, stances) grow from the player's attention as desire paths; the only directive sent is the nudge.
 217. **The larger reserve does not win an escalated fight; the probe's
      other readings stand.** Put to Mark on 2026-09-25, with the S2 probe's
      four readings of ruling 206: each member's choice follows its lineage's
@@ -1895,16 +2295,22 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      all four, revisit the fight, or walk through each? Mark: "Revisit the
      fight." So the first, second and fourth stand as readings of ruling
      206, and the fight is reworked around strain (rulings 221 to 223).
+
+     Links: area Processes and rules · summary The larger reserve does not win an escalated fight; the probe's other readings of ruling 206 stand and the fight is reworked around strain.
 218. **Each reading's bound and the competition's definition sit in the
      world's rules.** Put to Mark on 2026-09-25, from the probe's deviation:
      it kept both beside the core's `Rules`, moving them in being a schema
      change; move both in now, or wait for S1? Mark: "Move both in now."
+
+     Links: area The sim's schema and saves · summary Each reading's bound and the competition's definition move into the world's rules now.
 219. **The interpreter's meanings exist once.** Put to Mark on 2026-09-25:
      the probe's `aggregate.rs` restates the interpreter's query and effect
      meanings for counts of members, the core refusing counted shared
      writes by design; fold both into shared functions now, or during M2?
      Mark: "Fold now." So the crowd and the individual runner call the same
      code.
+
+     Links: area Processes and rules · summary The interpreter's query and effect meanings exist once, in shared functions called by both the crowd and the individual runner.
 221. **In an escalated fight, strain builds against bearing, and cost adds
      to it.** Put to Mark on 2026-09-25, reworking the fight (217), the core
      having no strain yet: each round adds strain to both sides and the
@@ -1917,6 +2323,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      history joining when the core has them, and strain is kept, bleeding
      off only with rest or relief (ruling 159). This is the core's first
      strain.
+
+     Links: area Processes and rules · summary In an escalated fight each round adds strain to both sides, plus what the round costs them; a side whose strain passes its bearing breaks.
 222. **A break in a fight advantages or disadvantages; it decides
      nothing.** Put to Mark on 2026-09-25, with 221: in a fight, does a
      break down yield and a break up prevail, or does any break yield?
@@ -1925,6 +2333,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      that follow and a break down a disadvantage, the direction turning on
      traits, the moment and a seeded draw (ruling 163), and neither ends the
      fight.
+
+     Links: area Processes and rules · summary A break in a fight advantages or disadvantages a side in later rounds; it decides nothing automatically.
 223. **A fight ends when a side yields on re-sizing or is spent, whichever
      comes first.** Put to Mark on 2026-09-25, with 222: if a break only
      shifts the advantage, what ends a fight: re-sizing, being spent, or
@@ -1933,12 +2343,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      now reads itself outmatched yields (ruling 116); or a side whose
      vigour, its reserve until vigour is in the ledger (ruling 123), runs
      out is spent.
+
+     Links: area Processes and rules · summary A fight ends when a side yields on re-sizing or is spent (vigour or reserve out), whichever comes first.
 225. **A region has collapsed when one of its trophic levels is gone.** Put
      to Mark on 2026-09-25, from ruling 181's open item, what measures a
      collapse: in one region, its producers gone, any trophic level gone, or
      its living biomass below a floor? Mark: "A level gone." So a region has
      collapsed when producers, consumers or decomposers (ruling 39) are
      empty there.
+
+     Links: area Ecology · summary A region has collapsed when one of its trophic levels (producers, consumers, decomposers) is gone there.
 226. **Ecological regions follow the world's biomass; a collapse is global
      when the world has become one region.** Put to Mark on 2026-09-25, with
      225: when is a collapse global, everywhere, when no refuge is in reach,
@@ -1964,6 +2378,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      global. A collapse spreads by its cause; what threatens at that scale,
      a pandemic, a meteor, polities killing the world, one overperforming
      lineage or magic, is open. The world's ends are rulings 229 and 230.
+
+     Links: area Ecology · summary Ecological regions follow world biomass, filling by trophic level and spilling over; they merge as biomass falls, and a collapse is global when one remains.
 227. **The core reads mood from needs now.** Put to Mark on 2026-09-25, as
      Lane A gives the core its first strain, from fights: should the core
      read mood from needs now, so hunger and wounds build strain too, or
@@ -2005,16 +2421,22 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      that can pay rests, reactive ones included. "A cheaper rest
      (Recommended)": growth:heal lineages rest at an eighth of the cell price
      rather than a quarter; no full-price healing outside rest is built.
+
+     Links: area Processes and rules · summary The core reads mood from needs now (low reserve, hunger, wounds); strain builds whenever mood stays low; memory and situation wait for S1. 2026-10-18: a hazard wounds, a core wound share feeds mood, healing or rest answers it, strain builds and vitals shows it.
 228. **A right click shows a ring of acts.** Put to Mark on 2026-09-25: how
      does a right click show its meanings (ruling 214): a ring of acts around
      the cursor, a cycle in place, or the critter's glance surfacing glyphs
      on the target? Mark: "A ring of acts." So the critter's possible acts
      toward the target appear around the cursor, and a click picks one.
+
+     Links: area Mesocosm · summary A right click shows a ring of acts around the cursor, the critter's possible acts toward the target, and a click picks one.
 229. **When a player's lineage ends, they pick another here or a new world,
      their call.** Put to Mark on 2026-09-25, from 226's "the world isn't
      done until your lineage is done and you need to pick a new one": pick
      another lineage in the same world, a new world, or either? Mark:
      "Either, player's call."
+
+     Links: area Mesocosm · summary When a player's lineage ends, they pick another lineage in the same world or a new world, their call.
 230. **A total collapse ends the world as a game, and it stays watchable.**
      Put to Mark on 2026-09-25, from 226's "or until the world's ecology is
      collapsed entirely", ruling 181 having had no collapse end play: after a
@@ -2022,6 +2444,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "Done, but watchable." So ruling 181's play going on after a loss
      holds, and a total collapse is the one loss that ends the game while the
      world can still be watched.
+
+     Links: area Mesocosm · summary A total ecological collapse ends the world as a game, but the world stays watchable.
 232. **Eponym's blows are resolved in the foreground and handed back.** Put
      to Mark on 2026-09-25, from the Eponym overlay plan's §6 decision 1:
      Eponym's strike system resolves each blow geometrically and hands the
@@ -2031,6 +2455,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      back." So Eponym's handoff carries vigour drained and wounds to parts,
      which must pass the sim's invariants and agree with the sim's own fight
      in distribution (rulings 114, 123, 154), as the record's §3.8 has it.
+
+     Links: area Eponym · summary Eponym's blows are resolved in the foreground and handed back as vigour drained and wounds to parts, agreeing with the sim's fight in distribution.
 233. **Eponym's motion and contact solver runs on the game side.** Put to
      Mark on 2026-09-25, from the same decision's second half: on the game
      side over the stack's conatus, the accepted transition for each tick
@@ -2039,16 +2465,22 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Carried out 2026-10-05 by ruling 597:* motion and contact move to
      `eponym-motion`; the sim is handed the solver.
 
+     Links: area Eponym · summary Eponym's motion and contact solver runs on the game side over the stack's conatus.
+
 234. **Where a first Eponym life begins in time is the player's pick, with
      society the default.** Put to Mark on 2026-09-25, from decision 2: from
      the world's habitability for the creature onward, as ruling 179 gives
      Mesocosm, only once settlements stand, or the player's pick with the
      second as the default? Mark: "Player's pick, society default."
+
+     Links: area Eponym · summary Where a first Eponym life begins in time is the player's pick, with society the default.
 235. **How a first Eponym life begins is the player's call among three.**
      Put to Mark on 2026-09-25, from decision 3: a newly generated outsider
      arriving, a birth into one of the world's lineages, a named creature
      chosen among the drawn world's denizens, or any, the player's call?
      Mark: "Any, player's call."
+
+     Links: area Eponym · summary How a first Eponym life begins is the player's call among a new outsider, a birth into a lineage, or a named drawn denizen.
 236. **Competitions are keyed by what is contested, and share a round one
      per member per tick, by need.** Put to Mark on 2026-09-26, from S2's
      checkpoint 1, which stored competitions as a map keyed by id, ruling 115
@@ -2060,6 +2492,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      most pressing need that tick, set by its needs and priorities, and each
      competition resolves over its own entrants. **Amended by ruling 240:**
      competitions run concurrently in a tick and settle at its end.
+
+     Links: area Processes and rules · summary Competitions are keyed by what is contested, and each member enters one competition per tick, for its most pressing need. (amended by 240)
 238. **At an Eponym death with no bonded companion, what follows is the
      player's call.** Put to Mark on 2026-09-26, from the Eponym overlay
      plan's decision 3: an outsider arriving, the execution plan's F8
@@ -2068,6 +2502,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      another life in that world, any of ruling 235's three, or goes to a new
      world. *Reading, not ruled:* going to a new world is how a line ends in
      one, so the plan needs no separate answer that lets it end.
+
+     Links: area Eponym · summary At an Eponym death with no bonded companion, what follows is the player's call: another life in that world or a new world.
 239. **Isocosm absorbs Eponym's simulation, and driving is built only on
      Isocosm.** Put to Mark on 2026-09-26, from the plan's decision 4: with
      Isocosm absorbing `eponym-world`'s and `eponym-social`'s simulation as
@@ -2077,6 +2513,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      had Mesocosm's directing, or first over today's `Session`? Mark: "Only
      on Isocosm." So the absorption goes in that order, and driving has no
      prototype over `Session`.
+
+     Links: area Eponym · summary Isocosm absorbs Eponym's simulation in the plan's order, and driving is built only on Isocosm with no prototype over Session.
 240. **Competitions run concurrently in a tick and settle at its end.**
      Reopened by Mark on 2026-09-26, after ruling 236: "Although i imagine
      that might slow things down... is it better to allow for concurrent
@@ -2093,6 +2531,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      at the tick's start, and the costs, reserve spent and strain, are summed
      and applied at the tick's end, capped at what it holds. This amends
      236's one per tick; its map keyed by what is contested stands.
+
+     Links: area Processes and rules · summary Competitions run concurrently in a tick against the tick-start state, with costs summed and applied at the tick's end, capped at what a member holds.
 241. **Posing is a telling's manner.** Put to Mark on 2026-09-26, from the
      Eponym overlay plan's decision 5: posing to intimidate, persuade or
      deceive, his own idea at ruling 117 and flagged since as a reading, is a
@@ -2101,27 +2541,37 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      claim is told, the fourth thing a hearer weighs (ruling 118), carried
      on the telling and not as an intent of its own; display and bluff in a
      contest stay sizing up (ruling 116).
+
+     Links: area Processes and rules · summary Posing is a telling's manner, the fourth thing a hearer weighs, carried on the telling and not as an intent of its own.
 243. **With the sim on, a battlemap is projected from the generated volume,
      the DM's map an edit over it.** Put to Mark on 2026-09-26, from the VTT
      overlay plan's decision 1: the DM's own map asserted over the site's
      volume (ruling 89), a projection of the generated volume in the game's
      grid (rulings 12, 18), or both, the map an edit over what was generated?
      Mark: "Both: an edit."
+
+     Links: area The VTT · summary With the sim on, a battlemap is projected from the generated volume and the DM's map is an edit over it.
 244. **Moves within a battlemap reach the sim.** Put to Mark on 2026-09-26,
      from the VTT plan's decision 2: only outcomes, assertions and travel,
      a token's position staying the table's, or moves within a battlemap
      too, as per-tick batches, so a character's place in the site follows
      its token? Mark: "Moves too." The contract stays coarse, batches per
      tick and never a call per token (§5.2 point 1).
+
+     Links: area The VTT · summary Moves within a battlemap reach the sim as per-tick batches, never a call per token.
 245. **At a VTT table, sharing a character and the DM playing the unclaimed
      are on by default.** Put to Mark on 2026-09-26, from the VTT overlay
      plan's decision 3: two players directing one character (ruling 153) and
      the DM playing any unclaimed one (ruling 156), on by default, or each a
      campaign setting the DM chooses? Mark: "On by default."
+
+     Links: area The VTT · summary At a VTT table, sharing a character and the DM playing the unclaimed are on by default.
 246. **Downtime needs each player's yes.** Put to Mark on 2026-09-26, from
      decision 4: the players' consent to downtime (rulings 63, 104, 105)
      gathered as each player's yes, a majority, or the DM's declaration with
      a veto? Mark: "Each player's yes."
+
+     Links: area The VTT · summary Downtime needs each player's yes.
 247. **The tape-drawn faction turn retires at V2.** Put to Mark on
      2026-09-26, from decision 5: with Isocosm absorbing
      `isometry-campaign`'s world as it did Mesocosm's and Eponym's (rulings
@@ -2133,22 +2583,30 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Carried out 2026-10-06 by ruling 598:* the campaign world moves, its
      `isometry-core` adapters staying with the VTT.
 
+     Links: area The VTT · summary The tape-drawn faction turn retires at V2 once Isocosm absorbs the campaign world.
+
 248. **A sim-off campaign still writes its facts as notes.** Put to Mark on
      2026-09-26, from decision 7: does a campaign played with the sim off
      still write its facts as notes, so the sim can be switched on later over
      the same history, or does switching it on found a world from that point
      (ruling 126)? Mark: "Writes notes."
+
+     Links: area The VTT · summary A sim-off campaign still writes its facts as notes, so the sim can be switched on later over the same history.
 250. **An uncalibrated campaign warns when it opens and marks its
      receipts.** Put to Mark on 2026-09-26, with 249: what does the table see
      of ruling 189's debug or experimental mode, a warning when the campaign
      opens with every receipt and save marked uncalibrated, or a standing
      banner as well? Mark: "Warn at open, mark receipts."
+
+     Links: area The VTT · summary An uncalibrated campaign warns when it opens and marks every receipt and save as uncalibrated.
 251. **Where an incoming part attaches is its attachment.** Put to Mark on
      2026-09-26, from the tract rename lane (ruling 224), which left alone a
      sense of *site* that is neither the world map's cell nor the tract: the
      point where an incoming part attaches to a body in growth or a graft
      (`growth::attachment()`, "landing site"). Attachment, placement, or
      tract? Mark: "Attachment."
+
+     Links: area Naming · summary Where an incoming part attaches to a body is its attachment.
 252. **An organ's position in a body plan's template is its situs.** Put to
      Mark on 2026-09-26, with 251: an organ's position in a plan's template,
      a (tagma, segment) coordinate, the archetype's "organ sites": slot,
@@ -2161,6 +2619,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `situs` is free; its other common sense, the legal situs of property,
      lies far from this domain. So *situs* it is, and with 251, *site* keeps
      only the world map's meaning.
+
+     Links: area Naming · summary An organ's position in a body plan's template is its situs; site keeps only the world map's meaning.
 254. **The contract's shared shapes live once, in its core.** Put to Mark on
      2026-09-26, here and in the RPG systems session: E1 and V1 left
      `WorldPoint` in three game modules, the act key in three, and `Harm`,
@@ -2170,6 +2630,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      either." Done there at 269ffc5: `point.rs`, `act_key.rs`, the VTT's
      `ActionKey` renamed, and `harm.rs` are core exports, and no game module
      defines its own.
+
+     Links: area Stack and engine · summary The contract's shared shapes (WorldPoint, act key, Harm, Wound, WoundSeverity, PartHandle) live once, in the crate's core.
 255. **Raw receipts live out of tree; the repository keeps their summaries,
      sources and scripts.** Put to Mark on 2026-09-26, S2's checkpoint 2
      bringing 14 MB of raw JSON against a repository pack of 9 MB: commit
@@ -2178,6 +2640,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Keep raw out of tree." *Reading, not ruled:* the repository keeps a
      manifest naming each raw file's out-of-tree path and hash, so a copy can
      be checked; receipts already committed stay where they are.
+
+     Links: area Method and documents · summary Raw receipts live out of tree in Code/testing/isometry/; the repository keeps their summaries, sources and scripts.
 256. **The sim's clock counts a fine unit, and each process runs on its own
      period.** Put to Mark on 2026-09-26, from an outside review's first
      finding: nothing said what a tick is in world time, so ruling 124's
@@ -2188,6 +2652,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      feeding daily, lineages yearly, polities by season; the due-event queue
      skips idle time; and ruling 124's target reads as a century of world
      time at those periods.
+
+     Links: area Processes and rules · summary The sim's clock counts a fine unit and each process runs on its own period in world time.
 257. **The clock's unit is a world setting, a minute by default.** Put to
      Mark on 2026-09-26, with 256: a second, a minute, or a world setting?
      Mark: "World setting, a minute default (a round in d&d and a few other
@@ -2195,6 +2661,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      six-second round in newer tabletop systems or Eponym's real time, is the
      foreground game's to resolve, as rulings 232 and 233 and the VTT's
      handoff already have it.
+
+     Links: area Processes and rules · summary The clock's unit is a world setting, a minute by default; finer resolution is the foreground game's to resolve.
 258. **The scheduler indexes processes by the traits they require now;
      queuing due events per entity is decided before M2's first receipts.**
      Put to Mark on 2026-09-26, from the review's second finding, confirmed
@@ -2206,6 +2674,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "Fix now, results identical." Asked which part, the trait index
      being byte-identical while per-entity queues reorder acts within a tick
      and change every result: Mark: "Index now, per-entity later."
+
+     Links: area Processes and rules · summary The scheduler indexes processes by the traits they require now, with results identical; per-entity due-event queues are decided before M2's first receipts.
 259. **The operation budget counts only the evaluations that run.** Put to
      Mark on 2026-09-26, with 258: the budget counts evaluations, so skipping
      blocked ones changes what a budget allows; count the skipped too, staying
@@ -2213,6 +2683,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      budgeted sessions? Mark: "Count only what runs." So budgeted sessions take
      a new baseline, and six tight-budget saves that failed to load in the
      other mode are checked again.
+
+     Links: area Processes and rules · summary The operation budget counts only the evaluations that run; budgeted sessions take a new baseline.
 260. **Viability gates are staged with the absorption, family by family.**
      Put to Mark on 2026-09-26, from the review's fourth finding, that no
      phase gates on behaviour while no core the wing has run keeps an ecology
@@ -2226,6 +2698,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      loop. Put back, Mark: "Staged, per family." So each of M2's families is
      done only when the level of the web it enables stays alive in most
      draws.
+
+     Links: area Method and documents · summary Viability gates are staged with the absorption, family by family: producers, then consumers, then decomposers.
 261. **The background is hybrid: derived where effects commute, a calibrated
      rate model where they do not.** Put to Mark on 2026-09-26, from the
      review's third finding, that exact grouping folds only identical members
@@ -2235,12 +2709,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      where effects commute, by lossless grouping, and where they share
      resources, targets or relationships it is a rate model per site and
      lineage, calibrated against the exact runner on the bench.
+
+     Links: area Processes and rules · summary The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266)
 263. **Each family is built and certified in Isocosm, and `mesocosm-core`'s
      copies retire together at M3.** Put to Mark on 2026-09-26, with 262: how
      is "`mesocosm-core` no longer owns it" met while Mesocosm's consumers
      still use the core: build and retire together, consume Isocosm's types
      per family, or move matter and processes with bodies? Mark: "Build,
      retire together." The duplication is temporary and no adapter is built.
+
+     Links: area Stack and engine · summary Each family is built and certified in Isocosm and mesocosm-core's copies retire together at M3; duplication is temporary and no adapter is built. (amended by 666)
 264. **Part roles are open keys in the world's rules with a default set, and
      that set is examined before it is fixed.** Put to Mark on 2026-09-26,
      with 262: part roles from `isometer-core`'s closed four, open keys, or
@@ -2254,6 +2732,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      which axis wants more: Mark: "Examine first." A survey of both axes, in
      the code and in biology, comes back to him before the default set is
      ruled.
+
+     Links: area Bodies and anatomy · summary Part roles are open keys in the world's rules with a default set, and that set is surveyed before it is fixed.
 265. **The thirty shapes are expressed as data with the used mechanics, and
      the definition widens with the fields the probe proves.** Put to Mark on
      2026-09-26, with 262: the shapes as data (X1), those plus the extensions
@@ -2266,6 +2746,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the probe's evidence, and an overlap with composing tracts on a body;
      and offered widening with the fields the probe proves. Mark: "Wider,
      fields from the probe."
+
+     Links: area Processes and rules · summary The thirty shapes are expressed as data with the used mechanics, and the process definition widens with the fields the probe proves.
 266. **Rate models take over where grouping stops paying.** Put to Mark on
      2026-09-26, from a second review, which found that the certified crowd
      handled a shared resource's competition exactly in distribution: move
@@ -2274,12 +2756,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      still finds identical members, shared-resource competition included, as
      certified, and calibrated rate models take the ground where diverse
      bodies and relationships defeat grouping. This amends 261.
+
+     Links: area Processes and rules · summary Rate models take over where grouping stops paying; the exact crowd runs wherever it still finds identical members, shared-resource competition included.
 267. **A level of the web stays alive by four measures.** Put to Mark on
      2026-09-26, from the second review's caution that births balancing deaths
      could certify a lifeless world: ruling 260's "stays alive in most draws",
      by births balancing deaths, or by persistence, turnover, collapse and the
      web's response to an intervention? Mark: "The four measures." Each has a
      bound in the world's rules.
+
+     Links: area Ecology · summary A level of the web stays alive by four measures (persistence, turnover, collapse, response to intervention), each bounded in the world's rules.
 268. **Computed amounts are bounded expression trees, with a default set
      easy to group and calibrate.** Put to Mark on 2026-09-26, from S2's
      checkpoint 3 plan, decision 5: linear in one reading, clamped, with a
@@ -2289,6 +2775,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      default expressions are ones the crowd groups and the bench calibrates
      easily. *Reading, not ruled:* the linear, clamped form with a draw term
      is among the defaults.
+
+     Links: area The sim's schema and saves · summary Computed amounts are bounded expression trees, with a default set of expressions easy to group and calibrate.
 269. **Shared ground is scrambled for by what cannot decide and competed for
      by what can.** Put to Mark on 2026-09-26, from decision 6, ruling 266
      keeping the exact crowd while grouping pays: a shared site resource
@@ -2303,20 +2791,28 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      115, 236 and 240. *Specified 2026-10-01 by ruling 454:* a pass reads
      the world as it began, and a short site or prey gives each taker the
      same fraction of its take, floored, the remainder staying put.
+
+     Links: area Processes and rules · summary Shared ground is scrambled for proportionally by members that cannot decide and competed for by those that can.
 270. **The flow record is buffered outside state.** Put to Mark on
      2026-09-26, from decision 7: each tick's matter receipts, reconciling
      every compartment, buffered outside the state hash, kept in state under
      the history cap, or no stream? Mark: "Buffered outside state."
+
+     Links: area The sim's schema and saves · summary The flow record (per-tick matter receipts) is buffered outside the state hash.
 271. **Matter a dev places comes from a dev source.** Put to Mark on
      2026-09-26, from decision 8: a dev intent placing matter breaks the
      conservation invariant; a dev source outside the conserved total,
      creative mode only, or refused? Mark: "A dev source." So it enters from
      outside the conserved total, as Mesocosm's DT3 does, and the run is
      labelled assisted.
+
+     Links: area Processes and rules · summary Matter a dev places comes from a dev source outside the conserved total, creative mode only, and the run is labelled assisted.
 272. **Pressure profiles become founding presets.** Put to Mark on
      2026-09-26, from decision 9: `mesocosm-core`'s pressure profiles, which
      nothing in the sim reads: founding presets, authoring reference, or
      retired? Mark: "Founding presets."
+
+     Links: area World generation · summary mesocosm-core's pressure profiles become founding presets.
 273. **Checkpoint 3's four readings stand.** Put to Mark on 2026-09-26: R1,
      untyped matter becomes the world's own, living matter accounts typed by
      lineage, digestion yielding the eater's matter; R2, a shape's identity is
@@ -2324,6 +2820,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the crowd per exact state, so only opaque run-time scripts stay
      foreground-only; R4, until bodies move, seeding's only consumer is the
      founding generator. Mark: "Accept all four."
+
+     Links: area The sim's schema and saves · summary Checkpoint 3's four readings stand: untyped matter becomes the world's own, living matter is lineage-typed, shape identity is its roles, native readings run in crowds.
 274. **At a merge that changes lived outcomes, the player chooses.** Put to
      Mark on 2026-09-26, from both reviews: a merge by replay can change
      outcomes a player already lived through; show and choose, lived history
@@ -2334,6 +2832,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      outcomes asserted so the replay works around them, and a tale (ruling
      157), and that two players' lived histories can collide. *Reading, not
      ruled:* when they do, each keeps their own fork by default.
+
+     Links: area Record and history · summary When a merge changes lived outcomes the player chooses: keep their fork, let the replay adjust around them, or let it win, making them tales.
 276. **Shapes are eight: lump, rod, sheet, point, tube, branch, shell and
      joint.** Put to Mark on 2026-09-26, from the survey of both axes that
      ruling 264 asked for: keep the four read from geometry, add joint and
@@ -2346,6 +2846,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Read 2026-10-02 by ruling 494:* lump, rod, sheet and point from the
      box, branch and joint from the tree, tube and shell declared from the
      body's voxels.
+
+     Links: area Bodies and anatomy · summary Shapes are eight: lump, rod, sheet, point, tube, branch, shell and joint. (amended by 492)
 277. **A body's functions assemble into organ systems, and new systems are
      riffed from them.** Put to Mark on 2026-09-26, with 276: which functions
      join contract, intake, sense, fix and secrete: structure and control,
@@ -2372,11 +2874,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and seeding are tabled.
      *Tabled 2026-10-02 by rulings 489 and 491:* ten default systems, and
      new ones riffed by substitution.
+
+     Links: area Bodies and anatomy · summary A body's functions assemble into organ systems, parts are shapes expressing functions, and new systems are riffed by mixing functions.
 278. **The function vocabularies become one catalogue in the sim.** Put to
      Mark on 2026-09-26, from the survey, which found four that never meet,
      Mesocosm's processes, `wing-functions`' kinds, Eponym's grip and
      adhesion, and its contact probe's impairments: one catalogue every game
      reads, or separate for now? Mark: "One catalogue."
+
+     Links: area The sim's schema and saves · summary The function vocabularies become one catalogue in the sim that every game reads.
 283. **The first disturbances are disease, an overperformer and a keystone
      lost; catastrophe follows.** Put to Mark on 2026-09-26: which
      disturbances the sim models first, serving both as the viability gate's
@@ -2387,18 +2893,24 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      density, one lineage outcompeting the web, and a top consumer or key
      producer removed come first, and meteor, drought, flood and fire follow
      once the gate's criteria stand, to test the web's resilience as a whole.
+
+     Links: area Ecology · summary The first disturbances modelled are disease, an overperformer and a keystone lost; catastrophe follows once the gate's criteria stand.
 284. **An advance's limit guards work, not ticks.** Put to Mark on
      2026-09-26, from the scheduler index's report: at a minute's unit a
      century is 52.6 million ticks against a default advance limit of
      100,000, while the due-event queue skips idle time; guard work, raise the
      tick limit, or run many advances? Mark: "Work, not ticks." So the limit
      guards evaluations, and an advance may span any stretch of idle time.
+
+     Links: area Processes and rules · summary An advance's limit guards work (evaluations), not ticks, so an advance may span any stretch of idle time.
 285. **The budget counts the members an evaluation stands for.** Put to Mark
      on 2026-09-26, with 284: individual mode evaluates a cohort member by
      member, so a history that fits a budget grouped can exceed it
      individually, as seven saves showed; count members, or let a budget
      belong to its mode? Mark: "Count members." So a budget means the same in
      both modes.
+
+     Links: area Processes and rules · summary The budget counts the members an evaluation stands for, so a budget means the same in grouped and individual modes.
 286. **Due events are kept per group.** Put to Mark on 2026-09-26, with 284:
      84 to 96% of the remaining evaluations did nothing, death and age
      processes visiting every member each period to be blocked by thresholds,
@@ -2407,25 +2919,35 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      events per group." So a group knows when its next threshold falls due,
      an age at death or a reserve running out, and is scheduled for then;
      grouping is kept, and the changed results are certified again.
+
+     Links: area Processes and rules · summary Due events are kept per group; a group knows when its next threshold falls due and is scheduled then.
 287. **Each consumer lineage has one feeding process, choosing among its
      prey.** Put to Mark on 2026-09-26, with 284: the ecology generator made
      one feeding process per pair of predator and prey lineages, so feeding
      multiplied with lineages; one per consumer, or keep the pairs? Mark:
      "One per consumer." Its choice among prey is the definition's target
      selection.
+
+     Links: area Processes and rules · summary Each consumer lineage has one feeding process, choosing among its prey, rather than one per predator-prey pair.
 289. **mere's atlas is sized to the card.** Put to Mark on 2026-09-26, with
      288: the resident cap of 2,047 bricks does not cover a 256-tile board
      with relief in the headed pane; a card-sized cap, or 2,047 for now?
      Mark: "Card-sized cap." It rides with the defect's fix.
+
+     Links: area Stack and engine · summary mere's atlas is sized to the card, riding with the retarget defect's fix.
 290. **The board's CPU side is paged too.** Put to Mark on 2026-09-26, with
      288: every overlay change regrows the whole map, seconds a click at 256;
      page it too, computing bricks from the map on demand, or atlas only?
      Mark: "Page it too."
+
+     Links: area The VTT · summary The board's CPU side is paged too, computing bricks from the map on demand.
 291. **Residency follows the view, in an isometer helper.** Put to Mark on
      2026-09-26, with 288: which bricks are loaded, and where the code lives?
      Mark: "View, isometer helper." So the bricks overlapping the pane plus a
      one-brick margin, a pure function of view and map; the mechanics in a
      product-neutral helper in `shared/isometer`, the board's rule in the VTT.
+
+     Links: area Stack and engine · summary Residency follows the view (pane bricks plus one-brick margin), with mechanics in a product-neutral helper in shared/isometer and the board's rule in the VTT. (amended by 425)
 293. **Per-group phases run in the foreground; the background keeps a shared
      grid.** Put to Mark on 2026-09-26, from ruling 286 as built, which left
      results identical by visiting a group only once it is ready, while each
@@ -2434,6 +2956,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      nearby, baseline as built?" Answered yes: members in the foreground and
      nearby run as individuals anyway (rulings 113, 212), so phases there cost
      no grouping. They come with the sim's attention sets.
+
+     Links: area Processes and rules · summary Per-group phases run in the foreground and nearby; the background keeps a shared period grid as built.
 294. **A consumer eats across its prey's matter, once a period, choosing its
      prey by a weighted draw.** Put to Mark on 2026-09-26, from ruling 287's
      fork, one feeding process being unable to name one account to take
@@ -2443,6 +2967,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and credited to the eater (X4 with R1's digestion); a consumer feeds
      once a period, the certification showing the new balance; and its prey
      is a seeded draw weighted by what each eligible prey holds.
+
+     Links: area Processes and rules · summary A consumer eats across its prey's matter once a period, choosing prey by a draw weighted by holdings.
 295. **mere's atlas is sized by limits the host fills in.** Put to Mark on
      2026-09-26, from the mere lane's assessment for ruling 289: a plain-data
      `AtlasLimits`, the 3D texture dimension and an atlas byte budget, filled
@@ -2452,11 +2978,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      unchanged; no limits-aware `from_keys` yet. Mark: "Accept the shape." The
      retarget fix lands beside it, with `modulus`'s tests moved out of its
      777-line `lib.rs` into a sibling file ("Keep it").
+
+     Links: area Stack and engine · summary mere's atlas is sized by plain-data AtlasLimits that the host fills in from device limits; MAX_BRICKS stays the default cap.
 296. **The host's atlas budget defaults to 8 MiB.** Put to Mark on
      2026-09-26, with 295, video memory being unreportable in wgpu: a
      default budget of 8 MiB, 32 MiB, or as the texture allows? Mark: "8
      MiB." So a host asks for up to 16,383 bricks by default, enough for a
      1920 by 1080 pane over the 256-tile relief board, 6,391 with its margin.
+
+     Links: area Stack and engine · summary The host's atlas budget defaults to 8 MiB.
 298. **Cleromancy is an optional feature of the VTT's host, off by
      default.** Put to Mark on 2026-09-26, from the bump's finding that the
      host depends on cleromancy unconditionally while cleromancy still pins
@@ -2471,11 +3001,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      repository on its own schedule.
      *Amended 2026-10-06 by ruling 600:* Cleromancy is removed from the
      VTT, a stale dependency of marginal benefit.
+
+     Links: area The VTT · summary Cleromancy is an optional feature of the VTT's host, off by default, with the VTT's own seeded draw used without it. (amended by 600)
 300. **The VTT's crates keep their prefix.** Put to Mark on 2026-09-26, after
      he called `isometry-genet` a stale name: rename the VTT's crates after
      the bump, during it, or keep ruling 111's `isometry-` prefix? Mark: "Eh.
      If they're within the ambit of isocosm vtt, then fair enough." So ruling
      111 stands.
+
+     Links: area Naming · summary The VTT's crates keep their isometry- prefix; ruling 111 stands.
 302. **The pointer volume reserves headroom above the board's tallest
      point.** Put to Mark on 2026-09-26, with 301: the volume's height
      follows the terrain, so an edit that lifts the tallest point into a new
@@ -2484,11 +3018,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      headroom." Only an edit past the headroom rebuilds. *Reading, not
      ruled:* the spare count is a setting, one layer by default until its
      memory cost comes back to Mark.
+
+     Links: area The VTT · summary The pointer volume reserves headroom above the board's tallest point, one spare layer by default.
 307. **The draw control stays in the check.** Put to Mark on 2026-09-26,
      with 304: Lane A added the crowd drawing prey by headcount as a control
      arm of its own accord; keep it or keep the check to the arms the
      rulings named? Mark: "Keep it." It is the control that shows whether
      the check sees prey choice at all.
+
+     Links: area Processes and rules · summary The draw control (a crowd drawing prey by headcount) stays in the check as the arm showing whether the check sees prey choice.
 317. **A refused draw is recorded and left out, and the check fails past a
      1% bound.** Put to Mark on 2026-09-26, with 316: when the crowd cannot
      group a hunt, prey running out part way through hunters in different
@@ -2500,6 +3038,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      1% of its draws. *Reading, not ruled:* the arms under test are the
      crowds being certified or qualified, the approximate crowd included,
      and the controls record their refusals unbounded.
+
+     Links: area Processes and rules · summary A refused draw is recorded and left out of comparisons, and the check fails if an arm under test refuses more than 1% of draws.
 320. **The sim core keeps an observation hook.** Put to Mark on 2026-09-26,
      from checkpoint 4b: to read prey choice in the exact runner, Lane A
      added `Simulation::watch(process)`, which keeps each accepted act of a
@@ -2507,12 +3047,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `take_watched()`, changes nothing the world does, and drops the watched
      acts of a refused advance; keep the hook, carry the holdings in the
      act's event, or snapshot in the probe? Mark: "Keep the hook."
+
+     Links: area Processes and rules · summary The sim core keeps its observation hook, Simulation::watch.
 323. **With Cleromancy off, `>choose` seeds its draw from the command.** Put
      to Mark on 2026-09-26, with 321: the VTT's own seeded draw of ruling
      298 takes the command's seed and domain, so a command always makes the
      same choice, or the host's generation tape? Mark: "The command's seed."
      So the choice replays from the command alone, as Cleromancy's derived
      selection does.
+
+     Links: area The VTT · summary With Cleromancy off, the VTT's >choose seeds its draw from the command's seed and domain, so the choice replays from the command alone.
 330. **nisus grows into the voxel authority.** Put to Mark on 2026-09-26,
      from Lane J's assessment under ruling 326: two voxel stores exist,
      mere's nisus, with revisioned chunks, a patch that refuses stale
@@ -2526,11 +3070,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      log and additive writes, and `Ground` becomes a thin layer over it or
      retires; the save hashes that encode `Ground`'s bytes migrate or keep
      its wire format.
+
+     Links: area Stack and engine · summary nisus grows into the voxel authority and world store; Ground becomes a thin layer over it or retires.
 331. **One edit reaches its consumers through a revision log.** Put to Mark
      on 2026-09-26, with 330: a log of changes keyed by revision at 8³-brick
      grain, each consumer reading what changed since its own last read and
      rebuilding when too far behind; per-consumer queues; or a product-side
      conductor? Mark: "A revision log."
+
+     Links: area Stack and engine · summary One edit reaches its consumers through a revision log of changes keyed by revision at 8-cubed brick grain.
 332. **conatus carries the source's stamp; the barrier stays with the
      product.** Put to Mark on 2026-09-26, with 330: conatus stamps colliders
      with its own counter, which cannot be compared with the source's, and
@@ -2540,12 +3088,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "conatus carries the source stamp." Its voxel edits take an optional
      source stamp that queries report, and the barrier lives in the product
      until a second consumer proves it.
+
+     Links: area Stack and engine · summary conatus carries the source's stamp via an optional stamp on voxel edits; the barrier stays in the product until a second consumer proves it.
 333. **Navigation stays a search per query, each result stamped.** Put to
      Mark on 2026-09-26, with 330: no product caches navigation, each
      searching the current terrain per query, never stale but never saying
      which revision it read; stamp each query, a cached walkability product,
      or wait for the place graph? Mark: "Stamp each query." A cached product
      comes only when a measured query cost forces it.
+
+     Links: area Stack and engine · summary Navigation stays a search per query with each result stamped by revision; a cached product comes only when measured cost forces it.
 338. **A process's shape requirement and seeding live on the function
      catalogue.** Put to Mark on 2026-09-26, from Lane A's Part B, whose
      step 1 was planned before rulings 276 to 278 put shapes and functions
@@ -2564,6 +3116,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      each place it covers, so the one binding serves a part tree. *Amended
      by ruling 492:* no shape gates a function; the catalogue's shapes are
      each function's fits.
+
+     Links: area The sim's schema and saves · summary A process's shape requirement and seeding live on the function catalogue; a process requires a live part expressing a function, bound to the lowest-numbered qualifier. (amended by 480, 492)
 339. **The catalogue starts with the five functions in use.** Put to Mark on
      2026-09-26, with 338: the five, all fifteen of ruling 277, or those
      with the other vocabularies folded in? Mark: "The five in use."
@@ -2572,6 +3126,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      acquired; the keys stay open, the rest arriving with the anatomy brief
      (281) and the probe's evidence. *Widened 2026-10-02 by ruling 461:*
      all fifteen of 277, the other vocabularies folded in.
+
+     Links: area The sim's schema and saves · summary The function catalogue starts with the five functions in use: contract, intake, sense, fix, secrete; keys stay open. (amended by 461)
 340. **The process's causal kind gives up the name `Shape`.** Put to Mark on
      2026-09-26, with 338: `isocosm::rules::Shape`, a process's causal kind
      (choice, agentless, transition), collides with ruling 276's part
@@ -2579,11 +3135,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the process one." *Reading, not ruled:* it becomes `Causation`, the
      name offered, its saved field keeping the name `shape` so old worlds
      load.
+
+     Links: area Naming · summary The process's causal kind gives up the name Shape and is renamed (offered: Causation); its saved field keeps the name shape.
 341. **Seeding's two values are Grown and Acquired.** Put to Mark on
      2026-09-26, with 338: Grown and Acquired, or Mesocosm's Geometry and
      Acquired? Mark: "Grown and Acquired." *Reading, not ruled:* the names
      put with it stand, `Binding::Part`, the catalogue `functions` in the
      world's rules, and a part's `shape` and `functions`.
+
+     Links: area Naming · summary Seeding's two values are Grown and Acquired.
 342. **Declared conversions are checked.** Put to Mark on 2026-09-26, with
      338: the sim admits any mass-balanced transform while Mesocosm admits
      three, synthesis, digestion into the eater's own matter, and
@@ -2591,64 +3151,90 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      nothing, or refuse all else? Mark: "Check declared ones." A transform
      declaring a conversion kind is checked against the three, and the rest
      pass as before, the certified probe's grazing and drinking included.
+
+     Links: area Processes and rules · summary Declared conversions are checked: a transform declaring a conversion kind is checked against synthesis, digestion and mineralization; the rest pass as before.
 344. **The dev source's issue and the assisted label live in the history.**
      Put to Mark on 2026-09-26, with ruling 271: in the history, in the
      world's state, or both? Mark: "In the history." The command in the log
      is the record, the world hashes as the matter it holds, as Mesocosm's
      DT3 does, and receipts show the issued amount beside the conserved
      total.
+
+     Links: area Processes and rules · summary The dev source's issue and assisted label live in the history; the logged command is the record; receipts show issued amount beside the conserved total.
 345. **The flow record holds every move, when asked.** Put to Mark on
      2026-09-26, with ruling 270: every move switched on when wanted, every
      move always on, or a net change per tick? Mark: "Every move, when
      asked." Each accepted act's matter moves, from, to, amount and the
      members it stands for, handed over each tick, every ledger reconciling
      from it in both runners.
+
+     Links: area The sim's schema and saves · summary The flow record holds every move, when asked, handed over each tick, with every ledger reconciling from it in both runners. (amended by 359)
 347. **isometer alone answers a pointer pick.** Put to Mark on 2026-09-26,
      with 346: isometer only, conatus through the bindings as T1 was ruled,
      or both? Mark: "isometer only." The player clicks what was drawn, and
      isometer answers per part and per frame, as the VTT board already does;
      the bindings answer other queries.
+
+     Links: area Stack and engine · summary isometer alone answers a pointer pick, per part and per frame; bindings answer other queries.
 348. **The binding module, when built, lives in mere's conatus, generic over
      the key.** Put to Mark on 2026-09-26, with 346: conatus, a new crate
      under `shared/`, isometer, or `mesocosm-runtime`? Mark: "A module in
      mere's conatus." Three mere doc passages are amended with the shape,
      one of them the line placing bindings "not to Conatus".
+
+     Links: area Stack and engine · summary The binding module, when built, lives in mere's conatus, generic over the key.
 349. **It binds bodies only, on a world shared with T2's terrain collider.**
      Put to Mark on 2026-09-26, with 346: bodies on a borrowed world, bodies
      on its own world, or bodies and terrain? Mark: "Bodies only, shared
      world." Terrain arrives through T2's one path (rulings 330 to 335).
+
+     Links: area Stack and engine · summary The binding module binds bodies only, on a world shared with T2's terrain collider.
 350. **Accepted state arrives both whole and per key.** Put to Mark on
      2026-09-26, with 346: a whole-set reconcile and per-key set and remove,
      reconcile only, or per key only? Mark: "Both." The reconcile is the cold
      rebuild and carries the VTT's per-event accepted map; per-key updates
      carry a critter changing alone; cold and incremental must agree.
+
+     Links: area Stack and engine · summary Accepted state arrives both as a whole-set reconcile and per key; cold and incremental must agree.
 351. **A moved body keeps its id.** Put to Mark on 2026-09-26, with 346: move
      it and keep its id, respawning only when the entity's shape revision
      changes, or always respawn? Mark: "Move it, keep its id."
+
+     Links: area Stack and engine · summary A moved body keeps its id; it respawns only when the entity's shape revision changes.
 352. **conatus gains a query-refresh call.** Put to Mark on 2026-09-26, with
      346: conatus's queries miss a topology change until the world steps, so
      `TactileWorld` and Eponym each run a tiny step; a refresh call in
      conatus, the tiny step kept, or left to the world's owner? Mark: "A
      refresh call in conatus." It is a small mere edit, independent of the
      bindings, that both workarounds become.
+
+     Links: area Stack and engine · summary conatus gains a query-refresh call, replacing the workaround tiny step.
 357. **A declared synthesis produces the actor's own lineage's matter.** Put
      to Mark on 2026-09-27, from Part B's step 2 under ruling 342: the sim's
      core has no notion of a producer; the actor's own lineage, a flora
      kingdom, or kingdoms the rules declare? Mark: "The actor's own
      lineage." Whatever has a synthesis process is a producer, mirroring
      digestion, and no producer classification enters the core.
+
+     Links: area Processes and rules · summary A declared synthesis produces the actor's own lineage's matter; whatever has a synthesis process is a producer, with no producer classification in the core.
 358. **A dev placement may fill any declared matter account.** Put to Mark
      on 2026-09-27, with 357: any declared matter account, or world matter
      only? Mark: "Any declared matter account." Mesocosm's overlay chooses
      soil.
+
+     Links: area Processes and rules · summary A dev placement may fill any declared matter account; Mesocosm's overlay chooses soil.
 359. **Each flow names the process that moved it.** Put to Mark on
      2026-09-27, with 357: add the act's process as the reason, or leave it
      out as ruling 345 had it? Mark: "Add the process."
+
+     Links: area The sim's schema and saves · summary Each flow names the process that moved it.
 360. **Part shapes take their own key prefix.** Put to Mark on 2026-09-27,
      with 357: X1 keyed part shapes as `shape:*`, the namespace the world's
      own `shape:graph` uses; separate them or share it? Mark: "Part shapes
      get their own prefix." *Reading, not ruled:* `part-shape:*`, the
      example offered.
+
+     Links: area The sim's schema and saves · summary Part shapes take their own key prefix (part-shape:*), separate from the world's shape:graph namespace.
 361. **isometer calls modulus's CPU walk instead of copying it.** Put to
      Mark on 2026-09-27, from Lane K's traversal fix under ruling 336, each
      crossing now computed as the boundary less the eye over the direction,
@@ -2658,6 +3244,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a hand copy; call modulus's walk, or keep the copy? Mark: "Call
      modulus's walk." modulus makes its exact CPU mirror public and isometer
      wraps it.
+
+     Links: area Stack and engine · summary isometer calls modulus's public exact CPU walk instead of keeping a hand copy.
 362. **The traversal's start clamps into the box.** Put to Mark on
      2026-09-27, with 361: the shader's 1e-4 start offset is too small in
      f32 beyond t of about 1,000, so a first-voxel hit reports its entry face
@@ -2665,6 +3253,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      rays and none on the board; clamp the start voxel into the box, report
      the entry face, or leave it? Mark: "Adopt the clamp." It lands with the
      traversal fix.
+
+     Links: area Stack and engine · summary The traversal's start voxel clamps into the box and reports the entry face, landing with the traversal fix.
 364. **X1's defaults are copied in explicitly.** Put to Mark on 2026-09-27,
      from Part B's step 1: the eight shapes and five functions are constants
      a world copies in, the generator not yet copying them, and the crowd
@@ -2672,6 +3262,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      that, or have the generator copy them now? Mark: "Keep as built." Were
      the defaults implicit, growing the set later (281) would change what old
      worlds mean without changing their digest.
+
+     Links: area The sim's schema and saves · summary X1's defaults (eight shapes, five functions) are constants a world copies in explicitly, so growing the set later does not silently change old worlds.
 
 366. **The three method refinements are accepted.** On 2026-09-27 the
      assistant offered three additions: distinguish measured evidence from
@@ -2683,6 +3275,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      preserved method in session notes §8.2. *Reading, not ruled:* the
      assistant chose a narrow traversal audit before the already-authorized
      repin. This answer does not identify ruling 365's coordination target.
+
+     Links: area Method and documents · summary Three method refinements accepted: separate measured evidence from lane reports, order questions by what they unblock, and name each control's detectable fault, keeping failing results.
 
 368. **Centre-first overflow remains, with the current omitted count.**
      Asked on 2026-09-27: "1. When visible terrain exceeds the atlas budget,
@@ -2701,6 +3295,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      different camera-distance rule. The review's stale-count case needs
      a regression test with unchanged keys and changing omitted counts.
 
+     Links: area The VTT · summary When visible terrain exceeds the atlas budget, keep the nearest terrain and report the current number of omitted bricks.
+
 369. **The host exposes a device-bounded atlas budget setting.** Asked on
      2026-09-27: "2. Should the player be able to change the terrain atlas
      budget? The host currently fixes it at 8 MiB, although the library
@@ -2715,6 +3311,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      upfront versus growth remains a separate unanswered question.
      *Reading, not ruled:* use the existing host preference machinery and
      test one rebuild after a settings change, then an unchanged-frame skip.
+
+     Links: area The VTT · summary The host exposes a terrain atlas budget setting, default 8 MiB, bounded by device limits, with changes rebuilding the atlas. (amended by 372)
 
 371. **Checkpoint 5 requires a per-tick flow handoff API.** Asked on
      2026-09-27: "4. How should requested sim flow records be handed over?
@@ -2733,6 +3331,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      that successive tick results cannot accumulate or mix records, in both
      execution modes, with ledger reconciliation retained.
 
+     Links: area Processes and rules · summary Checkpoint 5 requires a per-tick flow handoff API so successive tick results cannot accumulate or mix records.
+
 372. **The atlas budget is saved locally per device.** Asked on 2026-09-27:
      "Should the atlas budget survive restarting the app? The existing
      pixel-grid preference lasts only for the session, and there is
@@ -2747,6 +3347,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* persist the requested preference and apply the
      current device's enforced bounds when using it; missing or malformed
      local data falls back to the ruled default without changing campaigns.
+
+     Links: area The VTT · summary The atlas budget is saved locally per device in a small local preference store, outside campaign storage; malformed data falls back to the default.
 
 374. **Allocate the chosen terrain atlas budget upfront.** Asked on
      2026-09-27: "Which allocation policy should paging use? Independent
@@ -2768,6 +3370,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      device (372). A changed budget still rebuilds the atlas; filling its
      available capacity does not trigger growth. Copy experiments remain
      research evidence, with their stated timing and hardware limits.
+
+     Links: area The VTT · summary Allocate the chosen terrain atlas budget upfront (8 MiB default, device-bounded); a changed budget rebuilds the atlas but filling capacity does not trigger growth.
 
 377. **The pre.4 allocation guard also compares service identity.** Asked
      on 2026-09-27: "How should we carry the GPU allocation guard into
@@ -2791,6 +3395,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      differs, and show that deliberately removing the service predicate
      makes the rejection check fail. Never submit the artificial mismatched
      handle to a GPU client; the control exercises the guard itself.
+
+     Links: area Stack and engine · summary The pre.4 allocation guard compares service ID as a sixth value beside the existing five, with the rejection case verified by a deliberate-fault control.
 
 381. **One host carries the three games as modes over one world save.**
      Asked on 2026-09-28, in the session on Mark's hypothesis that the wing
@@ -2824,6 +3430,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stays whole; the mode switch belongs to isomere's host assembly under
      W3; Eponym's renderling patches retire with §4.2's debt; W5's order
      (231) stands.
+
+     Links: area Stack and engine · summary One host carries the three games as modes over one world save; each product is a build profile; different-mode players may share a trunk.
 
 382. **The wing has one default view, isometric with quarter turns, and it
      precludes no other view.** Asked on 2026-09-28, in the same session:
@@ -2860,6 +3468,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      quarter-turn default, and its amendment waits on his word, drafted in
      the session notes' §9.4.
 
+     Links: area Presentation · summary The wing has one default view, isometric with quarter turns, and it precludes no other view (free-yaw isometric, first person, over the shoulder).
+
 383. **Harmony, order and chaos are ecological states.** Asked on
      2026-09-28: "What is harmony → order → chaos in sim terms? It appears
      nowhere in the 380 rulings, the sim plan, or the workspace." Options,
@@ -2884,6 +3494,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      provisioning its people (ruling 38), so harmony is a web held by
      agentless processes and unchoosing members alone; option A's social
      reading is not adopted.
+
+     Links: area Ecology · summary Harmony, order and chaos are ecological states read from balance: harmony is balanced and unmaintained, order balanced and maintained, chaos unbalanced; never stored.
 
 384. **Some divine figures can peek behind the curtain: an awareness of the
      sim beyond an organism's capabilities is magic that bends the rules.**
@@ -2915,6 +3527,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      trait a divine figure may have, not one its tier confers; option A's
      world seat is not adopted.
 
+     Links: area Organs: glyphs, impresa, hagiograph · summary Some divine figures can peek behind the curtain: awareness of the sim beyond an organism's capabilities is magic bending the rules, parked with divinity.
+
 387. **The default view's pitch is the 2:1 dimetric, 30°.** Asked on
      2026-09-28: "What pitch is the wing's default view?" Evidence as put:
      "camera.rs:108: the VTT's 2:1 lens is a 30° pitch; true isometric's
@@ -2928,6 +3542,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      30°". This answers ruling 382's reading: the default view is
      `SlabCamera::dimetric_2_1` (`shared/isometer/src/camera.rs:136`) turned
      in quarter steps, and true isometric is one of the other views.
+
+     Links: area Presentation · summary The default view's pitch is the 2:1 dimetric at 30 degrees, turned in quarter steps; true isometric stays available as another view.
 
 391. **Neighbouring sites meet through edge profiles.** Asked on 2026-09-28:
      "How do neighbouring sites meet without seams? Ruling 73 allows any
@@ -2950,6 +3566,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      gives way between sites, where crossing an edge changes frame (D15's
      across) without ever reading as a scene transition.
 
+     Links: area World generation · summary Neighbouring sites meet through edge profiles: a top-down skeleton gives coarse facts, and each adjacency's boundary profile is computed identically from shared facts.
+
 392. **Isocosm owns the lift from site to volume.** Asked on 2026-09-28: "Who
      owns the lift from site to volume? Isoscape ruling 11 puts terrain
      models beside isometer's Terrain seam and the seeded pipeline in
@@ -2971,6 +3589,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `wing-formats`, `serde` and `postcard`). Which clause gives way is the
      spine plan's decision 1 (§A.6).
 
+     Links: area World generation · summary Isocosm owns the lift from site to volume (skeleton, edge profiles, lift, derived places); isoscape keeps founding presets; the sim depends on no render crate. (amended by 393)
+
 393. **The terrain models live in Isocosm.** Asked on 2026-09-28, as the
      spine plan's decision 1: "Where do the terrain models the lift calls
      live? Ruling 392's two clauses meet here: models 'beside the Terrain
@@ -2991,6 +3611,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      is amended: the relief and brick description move into Isocosm, not
      beside isometer's seam.
 
+     Links: area World generation · summary The terrain models (relief, detail noise, cavity shapes) live in Isocosm as verb-free modules; isometer-core keeps only the Terrain trait and Ground.
+
 394. **A site's skeleton is keyed entries in its conditions.** Asked on
      2026-09-28, decision 2: "How is a site's skeleton held? Evidence:
      Site.conditions is already an asserted BTreeMap<Key, i64> per site;
@@ -3004,6 +3626,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Condition keys". So the skeleton adds no field to `Site`: the world's
      rules name the keys the lift reads, elevation, relief and water level
      by default.
+
+     Links: area World generation · summary A site's skeleton is keyed entries in its conditions (elevation, relief, water level by default), named by the world's rules; Site's shape is unchanged.
 
 396. **The lift works in chunks at power-of-two cell sizes from the start.**
      Asked on 2026-09-28, decision 4: "At what grain does the lift work in
@@ -3019,6 +3643,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      border (recommended)." (B) "Whole small sites at one cell size, with
      chunking arriving at T2." Mark chose A, "Chunks from the start". With
      rulings 393 to 396 the spine plan's SP0 is done.
+
+     Links: area World generation · summary The lift works in power-of-two-sized chunks from the start, taking a chunk key and cell size, so a site costs only what is lifted.
 
 397. **Each route carries its border.** Asked on 2026-09-28, in SP1's
      brief: "Where does each adjacency's frame relation live (which side a
@@ -3037,6 +3663,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      flipped, false on planes, rings and tori and reserved for
      non-orientable shapes, skipped when false.
 
+     Links: area The sim's schema and saves · summary Each route optionally carries its border naming the side it leaves by and the side it enters, validated both ways and skipped when absent.
+
 398. **The map family is an optional part of Founding.** Asked on
      2026-09-28: "How does the map family enter founding? Evidence: Founding
      is 'saved with every bench receipt' (generate.rs); the ecology places
@@ -3051,6 +3679,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      times its height is the site count, and a founding whose `sites`
      disagrees is refused rather than reconciled.
 
+     Links: area The sim's schema and saves · summary The map family is an optional part of Founding, skipped when absent so old receipts and digests stay byte-identical.
+
 399. **SP1's draws are scale-free.** Asked on 2026-09-28: "What space do
      SP1's seeded draws cover? Evidence: no product default exists yet
      (Isocosm's base unit default is a 1,000 µm placeholder); the VTT's
@@ -3061,6 +3691,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      come when a game founds on the spine (SP7) (recommended)." (B) "Fix a
      default now, a 7.5-inch base unit and 256-tile sites (2,048 voxels)."
      Mark chose A, "Scale-free draws".
+
+     Links: area World generation · summary SP1's seeded draws are scale-free (grids 2x2 to 16x16, site sides 256 to 2,048 base units), choosing no product default until a game founds.
 
 400. **A lifted site gives its skeleton back exactly where it can.** Asked on
      2026-09-28, the first of SP2's forks: "What must a lifted site give back
@@ -3079,6 +3711,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      column, by holding the surface as the exact interpolation of a lattice
      whose sums have closed forms (the spine plan's §A.9).
 
+     Links: area World generation · summary A lifted site gives its skeleton back exactly where it can: mean surface equals its elevation, water fills to its level, relief bounds interior detail.
+
 401. **A site's interior is a Coons patch.** Asked on 2026-09-28: "How is a
      site's interior surface built between its four borders? Evidence: SP1
      gives each site four profiles meeting exactly at shared corners; the
@@ -3090,6 +3724,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      seed; integer, one evaluation per column (recommended)." (B) "Harmonic
      fill, solved iteratively." (C) "Distance blend, which creases along the
      diagonals." Mark chose A, "Coons patch".
+
+     Links: area World generation · summary A site's interior surface is a Coons patch: transfinite interpolation from the four border profiles plus windowed correction and detail from its seed.
 
 402. **A lift returns columns per chunk.** Asked on 2026-09-28: "What does a
      lift return? Evidence: SP2's volumes are heightfields with materials by
@@ -3103,6 +3739,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Ground directly (recommended)." (B) "Dense voxel chunks from the start."
      Mark chose A, "Columns per chunk".
 
+     Links: area World generation · summary A lift returns columns per chunk (surface height and material-by-depth rule) at its cell size; dense voxels are lowered only when a store needs them.
+
 403. **A lift's materials are world-local ids.** Asked on 2026-09-28: "What do
      a lift's voxels name as their material? Evidence: the wing index's
      working principle, 'A voxel material is a compact id into saved
@@ -3114,6 +3752,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      grows the world's generated kinds; the bench adapter maps ids to
      Ground's palette (recommended)." (B) "Palette indices for now." Mark
      chose A, "World-local ids".
+
+     Links: area World generation · summary A lift's voxel materials are world-local ids into a table saved with the world, seeded with air, water, soil and rock as the world's nis.
 
 404. **Magic composes fundamental effects, paid for through equivalent
      exchange, with world-dependent scripts.** Asked on 2026-09-28, after
@@ -3158,6 +3798,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      magic, Techniques composed with Forms at levels its guidelines set,
      informs the design, nothing of it copied into the sim.
 
+     Links: area Processes and rules · summary Magic composes fundamental effects, each a combinable cantrip, each level of combining costing a magnitude more energy; effect scripts hook other generators; explainable surprises welcome.
+
 405. **Construction declares function; geometry measures what a mechanic
      needs.** Asked in the same review: "When does geometric detail affect
      the rules?" The recommendation was: "construction declares functional
@@ -3171,6 +3813,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      part attaches and measures reach, clearance and contact itself.
      *Applied to the catalogue 2026-10-02 by ruling 492:* each function's
      mechanic names the measurement that scales it.
+
+     Links: area Bodies and anatomy · summary Construction declares functional properties; geometry supplies measurements where a mechanic needs them, and a declared property depending on a measurement must name it.
 
 406. **A new life selects conditions to carry forward, with granular player
      configuration or randomization.** Asked: "How are consequences
@@ -3193,6 +3837,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      change the existing rules for gaining reincarnation. Mapping choices,
      their costs or restrictions, and default selection remain to be designed.
 
+     Links: area Directing and play · summary A new life selects which conditions to carry forward, granular by the player's configuration or randomized; unselected conditions keep their historical event.
+
 407. **Construction and action distinctions from the design discussion are
      consolidated.** This records earlier answers in this conversation,
      rather than presenting them as new choices made on 2026-09-28. Mark
@@ -3213,6 +3859,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      behavior need not be learned from zero. These decisions refine the
      body and functional plans; they do not certify the current single-part
      bindings or three-operator evaluator as the complete composition system.
+
+     Links: area Bodies and anatomy · summary Forms are mostly generated from geometric and functional primitives by nested composition; construction determines capabilities and limits; capability, repertoire and proficiency differ.
 
 412. **Earth is matter: the volume is the world's own body.** Asked on
      2026-09-30, the spatial spine's SP4 design (Mark: "We'll design things
@@ -3236,6 +3884,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      return matter through the dev source outside the conserved total and
      label the run assisted, as ruling 271 has it for placed matter.
 
+     Links: area World generation · summary Earth is matter: the volume is the world's own body; carving moves each cell's mass to the carver, filling draws from them; soil stays separate.
+
 413. **Edits are stored as shape operations.** Asked on 2026-09-30: "What is
      stored when the volume is edited? Evidence: Ground's own edits are
      shapes (carve at a point with a radius; cavities as rooms and a route);
@@ -3248,6 +3898,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      grain." (C) "Shapes, compacted into cells when they grow too many."
      Mark chose A, "Shape operations".
 
+     Links: area World generation · summary Volume edits are stored as ordered shape operations per site (carve a sphere, fill a box, dig a route), replayed onto any chunk they overlap.
+
 414. **An edit reaching across a border is one fact, read across.** Asked on
      2026-09-30: "How does an edit that reaches across a border belong to the
      sites? Evidence: SP1 gives every border a frame relation both sites
@@ -3257,6 +3909,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      extent; any neighbour it reaches reads it through the border's frame
      relation (recommended)." (B) "Split when made, one part per site." Mark
      chose A, "One fact, read across".
+
+     Links: area World generation · summary An edit reaching across a border is stored once, in its origin site's frame, and neighbours read it through the border's frame relation.
 
 415. **A lift carries caves as columns plus exceptions.** Asked on
      2026-09-30: "How does a lift carry caves and overhangs? Evidence: SP2's
@@ -3269,6 +3923,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      changes (recommended)." (B) "Dense when edited." (C) "Surface edits
      only for now." Mark chose A, "Columns plus exceptions".
 
+     Links: area World generation · summary A lift carries caves and overhangs as columns plus a sparse list of exception cells that differ from the column rule.
+
 416. **What a carver cannot hold is heaped beside the cut.** Asked on
      2026-09-30: "When a carve yields more earth than the carver can hold,
      where does the rest go? Evidence: ruling 53 makes holding containment by
@@ -3280,6 +3936,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      can be dug again. Until capacity exists, the carver holds all of it
      (recommended)." (B) "The site's stock, invisible in the volume." (C)
      "Refused whole." Mark chose A, "Heaped beside the cut".
+
+     Links: area Processes and rules · summary Earth a carver cannot hold is heaped beside the cut as an automatic fill edit, conserved and diggable; until capacity exists the carver holds all.
 
 417. **The outdoors divides into walkable patches, capped.** Asked on
      2026-09-30, the first of SP5's forks: "How is open air divided into
@@ -3295,6 +3953,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Drainage basins." (C) "Chunk grid." Mark chose A, "Walkable patches,
      capped". The cap's form is ruling 420's.
 
+     Links: area The sim's schema and saves · summary Open air divides into walkable patches split by cliffs or water; a patch larger than a cap is cut on the chunk grid.
+
 418. **Places are derived at the base grain, clearance recorded on
      edges.** Asked on 2026-09-30: "At what grain are places derived, and for
      which body? Evidence: Mesocosm's P9 and P10 showed live body geometry
@@ -3306,6 +3966,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      body filters by it, so one graph serves every body (recommended)." (B)
      "A graph per body class." (C) "One declared walker." Mark chose A,
      "Base grain, clearance on edges".
+
+     Links: area The sim's schema and saves · summary Places are derived once at base grain; each passage records its clearance so one graph serves every body by filtering.
 
 419. **A world-rule climb splits walkable patches.** Asked on 2026-09-30:
      "What steepness splits one walkable patch from the next? Evidence:
@@ -3319,6 +3981,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (recommended)." (B) "From the roster, the least climb any living lineage
      can manage." (C) "No slope split, steepness only an edge's cost." Mark
      chose A, "World-rule climb".
+
+     Links: area The sim's schema and saves · summary A world-rule climb (default one unit of rise per unit of run, 45 degrees) splits walkable patches; each edge records its step.
 
 420. **The patch cap is a world rule with stepped presets.** Asked on
      2026-09-30: "How large may an outdoor patch grow before it is cut on the
@@ -3341,6 +4005,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      128, large 256 and extra large 512, and a founder may set their own x by
      y.
 
+     Links: area The sim's schema and saves · summary The patch cap is a world rule with stepped presets (16 to 512 base units a side) and founder-set x by y cells.
+
 421. **A world picks the large preset, 256, by default.** Asked on
      2026-09-30: "Which preset does a world take when its founder picks none?
      Evidence: a largest drawn site (2,048 units) holds 64 patches at 256,
@@ -3348,6 +4014,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      places, not ten million, and only lifted sites have places below the
      site." Options, recommended first: (A) "Large, 256 (recommended)." (B)
      "Extra medium, 128." (C) "Medium, 64." Mark chose A, "Large, 256".
+
+     Links: area The sim's schema and saves · summary A world takes the large preset, 256 base units, by default when its founder picks none.
 
 422. **An entity names its site until its game places it.** Asked on
      2026-09-30: "Once a site has places, what does an entity's location
@@ -3361,6 +4029,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      foreground's (recommended)." (B) "Always the site." (C) "Coordinates up
      close." Mark chose A, "Site until placed". Ruling 275's measurement
      still decides who moves a body within a place.
+
+     Links: area The sim's schema and saves · summary An entity names its site until its game places it, then its patch or room; places are the finest location the sim holds.
 
 423. **The detail ladder has five rungs in one camera, and its far marks
      show modifiers.** Asked on 2026-09-30: "What rungs does the ladder
@@ -3402,6 +4072,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      draw; the answer joins them, so a thing's mark at those rungs shows
      what modifies it.
 
+     Links: area Presentation · summary The detail ladder has five rungs in one isometric camera, world map included; far marks show modifiers and aggregate modifiers, not only glyphs.
+
 424. **A thing shows the finest rung its size warrants among those the sim
      holds.** Asked on 2026-09-30: "What decides which rung a thing shows?
      Evidence: the stop rule forbids render LOD or residency choosing the
@@ -3420,6 +4092,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      cohort held as a histogram (207) shows aggregate marks however close
      the camera comes until examining lifts it, and the renderer never
      draws an individual the sim does not hold.
+
+     Links: area Presentation · summary A thing shows the finest rung its projected size warrants among those the sim holds; finer rungs arrive only through the log.
 
 425. **Terrain fits the budget in nested rings.** Asked on 2026-09-30: "How
      does terrain fit the budget across a zoom? Evidence: ruling 296's host
@@ -3440,6 +4114,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      default of 2,047 for the host's budget. A ring's grain is residency and
      never selects the sim's representation, since every level lifts from
      the same exact surface.
+
+     Links: area Presentation · summary Terrain residency uses nested rings: base grain where the view examines, each ring outward coarser, all inside the host's 8 MiB device budget.
 
 426. **A thing changes rung seamlessly where the rungs share geometry, and
      by dither where they do not.** Asked on 2026-09-30, after the session
@@ -3474,6 +4150,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* neither per-part bakes nor a chain of halved
      bakes is needed under this ruling.
 
+     Links: area Presentation · summary Rung changes are seamless where rungs share geometry (sprites, live parts, terrain grains) and ordered dither with hysteresis where they do not.
+
 427. **Every modification applies effects from the world's one vocabulary,
      and a glyph is one source among many.** Asked on 2026-09-30: "Is every
      modification built from the one effect vocabulary? Evidence:
@@ -3504,6 +4182,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      effects' glyphs. A ruleset's own arithmetic over readings, such as the
      SRD's `s_speed`, stays the ruleset's, which the sim never sees (§5).
 
+     Links: area The sim's schema and saves · summary Every modification applies effects from the world's one vocabulary; a glyph is one source beside traits, parts, items, places, conditions and relations.
+
 428. **An entity holds a condition as a record: key, magnitude, cause and
      an optional end.** Asked on 2026-09-30: "How does an entity hold a
      condition? Evidence: sites keep keyed conditions and VTT tokens keyed
@@ -3532,6 +4212,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ruling 430:* the record stands beside the ledger, and §3.5's rule is
      narrowed to the environment's conditions.
 
+     Links: area The sim's schema and saves · summary An entity holds a condition as a record of key, magnitude, cause and optional end; a status is a condition with an end. (amended by 430)
+
 429. **Modifiers combine in layers the world orders.** Asked on 2026-09-30:
      "How do modifiers that read other modifiers combine? Evidence:
      Balatro's jokers apply left to right, each reading the running score;
@@ -3555,6 +4237,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      computed amounts stay bounded expression trees (268). *Reading, not
      ruled:* the mosaic's adjacency (36) sits in such a layer, reading its
      neighbouring tracts.
+
+     Links: area The sim's schema and saves · summary Modifiers combine in layers the world orders, reading only earlier layers; each reading declares stacking: sum, highest, lowest, product or replace.
 
 430. **The environment's conditions live on places; a thing's own
      condition record sits beside its ledger.** Asked on 2026-10-01,
@@ -3587,6 +4271,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      scheduled event, never a countdown. 406's carryover chooses among
      records and wounds alike.
 
+     Links: area The sim's schema and saves · summary Environmental conditions live on places; a thing's own condition record sits beside its ledger, wounds and vigour staying the ledger's.
+
 431. **A modifier declares whether it applies to each member or to the
      group.** Asked on 2026-10-01: "How does a modifier apply to a group?
      Evidence: 207 groups a crowd by each member's exact state as the rules
@@ -3610,6 +4296,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      not ruled:* a fungus, one body however far it spreads (58), takes
      collective modifiers on that body, and germs, many bodies, distributive
      ones.
+
+     Links: area The sim's schema and saves · summary Each modifier declares itself distributive (applies to each member) or collective (belongs to the group); collective splits no crowd.
 
 432. **A far mark shows the glyphs of the effects on a thing, through a
      lens the player sets.** Asked on 2026-10-01: "What does a far mark show
@@ -3637,6 +4325,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      this filter is Mark's. *Named 2026-10-01 by ruling 434:* the player's
      filter.
 
+     Links: area Presentation · summary A far mark shows the glyphs of the effects on a thing, or per-glyph member shares for a group, through a player-set filter. (amended by 434)
+
 433. **A modifier reaches only the scopes the sim holds.** Asked on
      2026-10-01: "How far does a modifier reach beyond its bearer?
      Evidence: the sim never pathfinds or checks line of sight (§3.8) and
@@ -3660,6 +4350,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Noted 2026-10-02 with ruling 502:* Mark sees territories and surfaces
      as possibly important for auras in magical systems.
 
+     Links: area The sim's schema and saves · summary A modifier declares its scope among bearer, body, relation, group, place and site; board adjacency belongs to the game's ruleset.
+
 434. **The player's choice of which glyphs far marks show is a filter.**
      Asked on 2026-10-01: "What do we call the player's choice of which
      glyphs the far marks show? Evidence: "lens" already names the wing's
@@ -3673,6 +4365,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark chose A, "Filter". So 432's choice is the player's filter, each
      mode supplying a default filter, and "lens" keeps one meaning, a
      projection.
+
+     Links: area Naming · summary The player's choice of which glyphs far marks show is called a filter; lens keeps one meaning, a projection.
 
 435. **A cohort keeps a tally of its members' condition causes beside its
      state.** Asked on 2026-10-01, a fork found writing the sim plan's
@@ -3700,6 +4394,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the rest of the tally by a seeded draw, since no member has an identity
      until looked at (113).
 
+     Links: area The sim's schema and saves · summary A cohort keeps a tally of members per condition cause outside its equality; merging adds tallies and lifting draws a cause by seed.
+
 436. **A second application of a key combines into one record by the key's
      stacking.** Asked on 2026-10-01, a fork found writing §3.6: "How does a
      second application of a key combine with the first, a spider's poison
@@ -3723,6 +4419,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      application's end with its magnitude, which is the refresh of option C
      available to a world that wants it.
 
+     Links: area The sim's schema and saves · summary A thing holds at most one record per key; a second application combines magnitudes by the key's stacking and the end becomes the later.
+
 437. **A minimap or overmap is a second camera on the ladder.** Asked on
      2026-10-01, a fork found writing the presentation plan's lane L10:
      "What becomes of the VTT's overmap and Mesocosm's minimap? Evidence:
@@ -3741,6 +4439,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      cameras as a game wants, and the VTT's overmap on sprigging's canvas
      and Mesocosm's minimap hulls retire once a second camera held at R4
      replaces each.
+
+     Links: area Presentation · summary Minimap and overmap become second cameras on the ladder held at the world-map rung; the separate canvas and HUD renderers retire.
 
 438. **A far mark draws a glyph's display as a pixel icon.** Asked on
      2026-10-01, a fork found writing L10: "How does a far mark draw a
@@ -3767,6 +4467,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (netrender's), run once per glyph and cached, so no font draws at frame
      time.
 
+     Links: area Presentation · summary Each glyph's display is rasterised once into a pixel-icon atlas; far marks draw from it at integer scale with the scene's depth.
+
 439. **Grouping stops paying where members per state fall below a world
      rule.** Asked on 2026-10-01, opening time at scale after a remeasure of
      the 09-25 scale points on today's core (`SCALE_REMEASURE.md`): "How is
@@ -3792,6 +4494,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and every switch either way is receipted. The century's time is not
      guaranteed by this; the budget stays a guard on work (284).
 
+     Links: area Processes and rules · summary A site-lineage moves to its rate model when members per distinct state fall below a world-rule bound; every switch is receipted.
+
 440. **A rate model is calibrated on the bench, once per rules digest.**
      Asked on 2026-10-01: "Where is a rate model calibrated against the
      exact runner? Evidence: 261 says on the bench; 207's crowd was
@@ -3809,6 +4513,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      carries its rate models' fitted rates and their certificate, and a
      world under rules without a certified model keeps every site and
      lineage on the exact crowd, whatever 439's bound says.
+
+     Links: area Processes and rules · summary Rate models are calibrated on the bench once per rules digest and ship with the rules; uncalibrated worlds stay on the exact crowd.
 
 442. **The all-modes build lives in a host workspace of its own.** Asked on
      2026-10-01, opening the mode host after its assessment found that no
@@ -3836,6 +4542,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Eponym's renderling, with its patches to paths outside the repository,
      retires before Eponym's mode can join the host's build.
 
+     Links: area Stack and engine · summary The all-modes build lives in a fourth host workspace holding only the mode host binary, depending on the products' crates by path.
+
 443. **A window plays one mode and switches in place.** Asked on
      2026-10-01: "How does a host switch modes? Evidence: isomere's
      Assembly runs one Product in one window over cambium's winit host; 381
@@ -3857,6 +4565,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ruled by this. Two modes over one world on one machine are two
      windows.
 
+     Links: area Host and network · summary A window plays one mode and switches in place, keeping world, subject and embodiment; a second window can play another mode.
+
 444. **The world save holds the sim's history and a section per mode.**
      Asked on 2026-10-01: "What does the one world save hold? Evidence: the
      sim saves its genesis, history and checkpoints (history.rs's Saved);
@@ -3877,6 +4587,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      guard applied to saves. *Reading, not ruled:* how a mode's section
      branches and merges with the trunk (104) is the mode's own, the sim's
      history merging as ruled.
+
+     Links: area Record and history · summary The world save holds the sim's history plus an opaque section per mode, which builds without that mode carry through unchanged.
 
 445. **What a window may know follows its seat and subject, never its
      mode.** Asked on 2026-10-01, the mode host's last open item, the
@@ -3908,6 +4620,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      type belongs in `isocosm-overlay` beside the attention set, since every
      mode shares it; and it shapes play only, every peer holding the whole
      world under replay.
+
+     Links: area Directing and play · summary What a window may know follows its participant's seat, the entity played and awareness granted in play, never its mode.
 
 446. **A body keeps its lineage's matter as tissue and reserve.** Asked on
      2026-10-01, opening checkpoint 6 with the question the checkpoint 5
@@ -3950,6 +4664,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      what its cells can and a body without one keeps none, and rent, growth
      and a landing meal reach the parts in proportion.
 
+     Links: area Bodies and anatomy · summary A body keeps its lineage's matter as two accounts, tissue and reserve; one meal-routing rule for every kingdom, reserve drawn first, overflow spills to ground. (amended by 463, 464, 523)
+
 447. **Reproduction is several strategies, governed by traits.** Asked on
      2026-10-01, with 446, filial cost being the other physiology the
      checkpoint 5 review left out: "What does a birth take from the parent,
@@ -3983,6 +4699,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      parent's reproduce cells fill, not a fraction of the parent's body,
      and comes when that provision is full.
 
+     Links: area Bodies and anatomy · summary Reproduction is several strategies governed by lineage traits; every birth is a transfer of matter, never a spawn. (amended by 518)
+
 448. **The default set holds four reproductive strategies.** Asked on
      2026-10-01, putting 447 back: "Which reproductive strategies does the
      default set hold? Evidence: the forms-of-life brief's reproduction axis
@@ -4013,6 +4731,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-03 by ruling 530:* how many eggs a birth lays is a
      lineage trait.
 
+     Links: area Bodies and anatomy · summary The default reproductive set holds four strategies: brood, seed or egg, budding and fission, and spores.
+
 449. **A lineage's traits name its strategies, the body must support the one
      used, and the phenotype switches by circumstance.** Asked on
      2026-10-01, with 448: "What decides how a body reproduces? Evidence:
@@ -4033,6 +4753,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      boundary (57); which one a body uses is phenotype, switching by
      circumstance; and a body uses a strategy only when its reproductive
      functions express it (405, 277).
+
+     Links: area Bodies and anatomy · summary A lineage's traits name its reproductive strategies; the body must support the one used; phenotype switches by circumstance.
 
 450. **Reproduction also carries mating, semelparity or iteroparity,
      parental care and horizontal transfer.** Asked on 2026-10-01, with 448:
@@ -4061,6 +4783,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      refilling provision or its own mouthfuls from its reserve, as the
      lineage's trait says.
 
+     Links: area Bodies and anatomy · summary Reproduction also carries mating, semelparity or iteroparity, parental care and horizontal transfer, each governed by traits.
+
 451. **An epoch ends by one of three rules, a year by default.** Asked on
      2026-10-01, opening checkpoint 6's step 4: "What ends an epoch in
      Isocosm, and how long is one by default? Evidence: Isocosm's epoch is a
@@ -4085,6 +4809,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      demand. The boundary where every lineage adapts (57) falls with the
      lineages' yearly process (256), and checkpoints fall on boundaries.
 
+     Links: area Processes and rules · summary An epoch ends by Timed, Gated or PlayerTriggered rule; Timed counts the world's unit and defaults to a year.
+
 452. **Deep time's span counts epochs, as Mesocosm counts it.** Asked on
      2026-10-01, with 451: "How is deep time's span counted? Evidence:
      Mesocosm counts it in epochs (DeepTimeSpan, a world rule in the digest,
@@ -4106,6 +4832,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      PlayerTriggered, is refused before any tick, and a run that stops
      closing epochs within one epoch more than its span is refused as
      stalled.
+
+     Links: area Processes and rules · summary Deep time's span counts epochs in the world's rules, as Mesocosm does; under the default year a century is 100 epochs.
 
 453. **The probe's minimal body is optional fields on the core part.**
      Asked on 2026-10-01, building checkpoint 6's step 5, after its step 4
@@ -4133,6 +4861,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the minimal body lives in the probe's world. *Reshaped 2026-10-02 by
      rulings 459 to 462:* matter in parts, capacity and cell mass derived
      from extents, and each part's attachment kept.
+
+     Links: area Bodies and anatomy · summary The probe's minimal body is optional fields on the core part: half-extents, cell capacity, cells per function and cell mass. (amended by 459, 460, 461, 462)
 
 454. **Shared ground is shared out from the pass's start.** Asked on
      2026-10-01, building checkpoint 6's step 5, ruling 306 having moved
@@ -4171,6 +4901,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      240 keep their rounds against the tick's start, being how what can
      decide competes (269).
 
+     Links: area Processes and rules · summary Shared ground is shared out from the pass's start; short supply gives each taker the same floored fraction; identity order decides nothing.
+
 455. **A body's ceiling is read part by part.** Asked on 2026-10-01, with
      454: "How is a body's ceiling read? Evidence: Mesocosm prices each part
      at its voxels × 100/125, floored and at least 1 mg, then sums the
@@ -4187,6 +4919,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      summing an expression over a body's living parts, each bound in turn as
      the part, and the probe's ceilings match Mesocosm's to the milligram,
      the reference mass and segment entering as the expression's constants.
+
+     Links: area Bodies and anatomy · summary A body's ceiling is read part by part, summing a formula over living parts, matching Mesocosm to the milligram.
 
 456. **The probe's meal takes tissue, and where matter sits in a body goes
      to the anatomy brief.** Asked on 2026-10-01, with 454: "What does a meal
@@ -4232,6 +4966,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      accounts is ruling 294's, decided from 287's fork; 287 gave each
      consumer one feeding process.
 
+     Links: area Bodies and anatomy · summary The probe's meal takes tissue only; where tissue and reserve sit in a body goes to the anatomy brief.
+
 459. **Tissue sits in parts, and the reserve in parts that store.** Asked
      on 2026-10-02, opening the anatomy brief (458): "Where does a body's
      matter sit? Evidence: Mesocosm keeps tissue part by part, each part
@@ -4262,6 +4998,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Booked 2026-10-02 by ruling 504:* each part keeps its own ledger and
      is a holder; the body's totals are readings.
 
+     Links: area Bodies and anatomy · summary Each part holds its own tissue and parts expressing store hold the reserve; a bite lands on one part of the prey. (amended by 463)
+
 460. **A part's cells are derived from its extents.** Asked on 2026-10-02,
      with 459: "How many cells does a part hold? Evidence: Mesocosm derives
      a part's cells from its extents: along each axis, one cell per two
@@ -4280,6 +5018,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      declared fields give way to them.
      *Wounded 2026-10-02 by ruling 469:* a part keeps the cells a wound has
      lost, so its living cells are its derived capacity less them.
+
+     Links: area Bodies and anatomy · summary A part's capacity and cell mass are derived from its extents by Mesocosm's rule; the declared fields give way.
 
 461. **The catalogue takes all fifteen functions, the other vocabularies
      folded in.** Asked on 2026-10-02, with 459: "How far does the function
@@ -4305,6 +5045,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      reader, with wing-functions' source and store onto store, its gate onto
      gate and its actuator onto contract.
 
+     Links: area Bodies and anatomy · summary The function catalogue holds all fifteen functions, with the other vocabularies folded into it.
+
 462. **The sim keeps where each part attaches.** Asked on 2026-10-02, with
      459: "Who measures a body's geometry for the sim? Evidence: Isocosm's
      part keeps only its parent and extents, and the sim depends on no
@@ -4329,6 +5071,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Brought forward 2026-10-03 by ruling 510:* the offsets are built in
      checkpoint 8, where growth and incorporation place parts by them.
 
+     Links: area Bodies and anatomy · summary Each part records where it attaches to its parent so the sim measures reach, clearance and contact; pivots and yaw stay isometer's.
+
 463. **A store holds the reserve its cells can, and a body without one keeps
      none.** Asked on 2026-10-02, the anatomy brief's second round: "How
      much can a body's stores hold, and what of a body with none? Evidence:
@@ -4352,6 +5096,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Founded 2026-10-02 by ruling 506:* the probe's grazers store in their
      lumps, and its producers stay lean.
 
+     Links: area Bodies and anatomy · summary A store holds reserve up to its store cells times a cell's mass; a body without a store keeps no reserve.
+
 464. **Rent, growth and a landing meal reach a body's parts in proportion.**
      Asked on 2026-10-02, with 463: "Which parts do rent, growth and a
      landing meal reach, now that every part holds its own tissue? Evidence:
@@ -4371,6 +5117,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      corrected 2026-10-02, on recording:* the option's "287's share rule" is
      ruling 294's proportional take, decided from 287's fork; 287 itself
      gave each consumer one feeding process.
+
+     Links: area Bodies and anatomy · summary Rent draws from parts in proportion to tissue; growth and a landing meal fill each part in proportion to its room.
 
 465. **Organ systems are named networks of functions.** Asked on 2026-10-02,
      with 463: "Are organ systems data in the sim? Evidence: ruling 277
@@ -4398,6 +5146,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      through the capacities.
      *Tabled 2026-10-02 by ruling 489:* the ten default systems, which the
      natives read from the bodies family on (490).
+
+     Links: area Bodies and anatomy · summary Organ systems are data in the world's rules: named networks of functions connected along the body's tree.
 
 466. **The fifteen functions take the proposed shapes and seeding.** Asked
      on 2026-10-02, with 463: "Do the fifteen functions take the shapes and
@@ -4445,6 +5195,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Measured 2026-10-02 by ruling 493:* each function's measurement is
      tabled, taken by its share of the cells.
 
+     Links: area Bodies and anatomy · summary The fifteen functions take the proposed shape table and seeding; secrete alone is acquired; wing-functions' kinds map onto store, gate and contract. (amended by 492)
+
 467. **One part model serves every body form, a part attaching to a parent
      or lying on a site.** Asked on 2026-10-02, the anatomy brief's third
      round: "Do the spread and the terrain-body use the part tree's model?
@@ -4477,6 +5229,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      territory and micro life a surface, so the part model serves trees and
      terrain-bodies.
 
+     Links: area Bodies and anatomy · summary One part model serves every body form: a part attaches to a parent or lies on a site. (amended by 488)
+
 468. **A lineage carries a recipe, and its bodies also grow parts in life.**
      Asked on 2026-10-02, with 467: "Where does a body's part tree come
      from? Evidence: ruling 447 grows a filial child from its lineage's
@@ -4507,6 +5261,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mesocosm's axial recipe and the placement policy, a child draws its own
      soma, and a maturing body grows toward the lineage's recipe once its
      parts are full, at PD2's price.
+
+     Links: area Bodies and anatomy · summary A lineage carries a recipe and placement policy; children develop parts from them and maturing bodies grow recipe parts they lack.
 
 469. **A wound loses a part's cells, regrown at a price where the lineage
      can.** Asked on 2026-10-02, with 467: "What is a wound to a part, and
@@ -4539,6 +5295,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      to each function's, and a healing lineage regrows them before tissue or
      new parts.
 
+     Links: area Bodies and anatomy · summary A wound loses a part's cells; lineages whose traits allow it regrow them at a price, others never heal. (amended by 485)
+
 470. **A severed part becomes a body of its own, alive where its lineage
      regrows from fragments.** Asked on 2026-10-02, with 467: "Where does a
      severed part's matter go? Evidence: severing takes a part and
@@ -4567,6 +5325,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Joined 2026-10-03 by ruling 524:* a bud severs from its parent as a
      fragment does, once full.
 
+     Links: area Bodies and anatomy · summary A severed part becomes a body of its own, alive where its lineage regrows from fragments, otherwise dead.
+
 471. **kiss3d, reshaped, is the lit body tenant.** Asked on 2026-10-02 in
      the Conatus/physics session, after Mark asked how renderling's five
      features compare with kiss3d "or other alternative prospective pieces
@@ -4590,6 +5350,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Annotated 2026-10-06 by ruling 606:* the reshape starts from upstream
      kiss3d, taking balaur's commits by name.
 
+     Links: area Stack and engine · summary kiss3d, reshaped with an explicit context handle and windowless render entry, is the stack's lit body renderer. (amended by 606)
+
 472. **Lighting is a stack-owned light and environment block.** Asked the
      same day. Evidence: terrain is traced and bodies rasterised, joined by
      depth (L3), so a renderer's shadow maps and lights never reach the
@@ -4600,6 +5362,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (recommended)." (B) The renderer owns lighting and the tracer keeps its
      own sun and fog. Mark chose A, carrying ruling 22's rows across both
      consumers.
+
+     Links: area Stack and engine · summary Lighting is a stack-owned light and environment block read by both tracer and rasteriser.
 473. **WGSL/WESL for raster, CubeCL for compute.** Asked the same day.
      Evidence: all five wing render shaders are WGSL
      (`isometer-lens/src/{tracer,march,grade}.wgsl`,
@@ -4609,11 +5373,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      compute (recommended). (B) wgsl-rs once on wgpu 30. (C) rust-gpu 0.10
      for raster too. Mark chose A. This amends the 2026-08-16 line; rust-gpu
      stays for Nexus-derived compute only.
+
+     Links: area Stack and engine · summary WGSL/WESL for raster shaders and CubeCL for compute; rust-gpu stays for Nexus-derived compute only.
 476. **vello for documents, kiss3d 2D for lit games.** Asked the same day.
      Evidence: kiss3d's lit 2D (16 lights), radiance-cascade 2D GI and 2D
      skinning would be a second 2D renderer beside vello. Mark chose "vello
      for documents, kiss3d 2D for lit games": kiss3d's 2D only behind the
      scene contract for a lit 2D game. The alternative was vello only.
+
+     Links: area Stack and engine · summary vello serves documents; kiss3d 2D is used only behind the scene contract for lit 2D games.
 
 477. **A body's system network is read from its tree, and a system works by
      degree.** Asked on 2026-10-02, the anatomy brief's fourth round: "How
@@ -4649,6 +5417,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by rulings 560 to 562:* every cell carries, a
      conduct cell more; an intact body carries all its natives ask; and a
      process reads its system part by part.
+
+     Links: area Bodies and anatomy · summary A body's system network is read from its tree on demand, and a system works to the degree its routes carry what a process asks.
 
 478. **The lineage keeps Mesocosm's recipe, and a body grows toward it.**
      Asked on 2026-10-02, with 477: "What does Isocosm's lineage keep as its
@@ -4688,6 +5458,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Varied 2026-10-03 by ruling 531:* each recipe carries its absence odds
      beside its variance.
 
+     Links: area Bodies and anatomy · summary The lineage keeps Mesocosm's axial recipe and placement policy as world data; children draw their own soma; maturing bodies grow toward the lineage's recipe. (amended by 485, 495)
+
 479. **A body grows a part it lacks once its parts are full, at PD2's
      price.** Asked on 2026-10-02, with 477: "When does a maturing body grow
      a part it lacks, and what does the part cost? Evidence: Mesocosm grows
@@ -4719,6 +5491,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Placed against the reserve 2026-10-03 by ruling 535:* before it or
      after it, as the lineage breeds from income or from capital.
 
+     Links: area Bodies and anatomy · summary A body whose parts are full grows the next part it lacks, nearest the root first, at PD2's price of a cell's mass per cell.
+
 480. **A spread acts wherever a patch lies.** Asked on 2026-10-02, with 477:
      "Where is a spread body present? Evidence: under 467 a fungus is one
      body whose patches lie on many sites. Isocosm ties everything to a
@@ -4742,6 +5516,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      each place it covers; an act still reads and writes the site of the
      part it binds.
 
+     Links: area Bodies and anatomy · summary A spread body acts and can be targeted wherever a live patch lies; its place for record and moves stays its root's site. (amended by 488)
+
 481. **hecs stays the ECS.** Asked on 2026-10-02 in the Conatus/physics
      session, after Mark said of the ECS "Not bevy, but can we compare the
      potential of the other two?" Evidence: a local bench (Ryzen 9 7940HS,
@@ -4754,18 +5530,24 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      first: (A) "hecs, as ruled (recommended)." (B) shipyard, for cheap
      add/remove and built-in tracking. (C) Prototype both first. Mark chose
      A, keeping 2026-08-16's "hecs, placed".
+
+     Links: area Stack and engine · summary hecs stays the ECS, keeping the 2026-08-16 placement.
 482. **The mode host and armillary schedule; the ECS is storage.** Asked
      the same day. Evidence: armillary actors per shard, Rayon inside a
      shard and an ordered merge already give the wing its scheduling and
      determinism (§4.7). Options: (A) "Mode host and armillary; ECS is
      storage (recommended)." (B) ECS workloads inside each actor, which
      needs shipyard. Mark chose A: no second scheduler inside the first.
+
+     Links: area Stack and engine · summary The mode host and armillary schedule; the ECS is storage only, with no second scheduler inside.
 483. **The projection's diff comes from the record's receipts.** Asked the
      same day: where does the record-to-scene-contract projection learn what
      changed? Options: (A) "The record's receipts (recommended)", which the
      authoritative record already emits per tick, so the ECS never becomes a
      second source of truth. (B) hecs `ChangeTracker`, exact but scanning
      every tracked entity. (C) A dirty-flag component. Mark chose A.
+
+     Links: area Stack and engine · summary The record-to-scene projection learns what changed from the record's per-tick receipts, not from ECS change tracking.
 484. **A boundary crate in Mere holds the ECS.** Asked the same day.
      Options: (A) "Boundary crate in mere (recommended)": a thin crate owning
      the `BodyId`-to-`Entity` side table (keeping the ECS disposable, never
@@ -4775,6 +5557,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      crate in Mesocosm until a second consumer appears. (C) No boundary
      crate. (D) A full trait over ECSes. Mark chose A, since the projection
      serves every mode.
+
+     Links: area Stack and engine · summary A thin boundary crate in mere holds the ECS: BodyId-to-Entity table, receipt-tied spawn and despawn, command buffer, scene-contract diff emitter.
 
 485. **Growth toward the recipe regrows a severed part only where the
      lineage can heal.** Asked on 2026-10-02, the anatomy brief's fifth
@@ -4800,6 +5584,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineage without it keeps its losses, and what development left absent
      still grows in (478).
 
+     Links: area Bodies and anatomy · summary Growth toward the recipe regrows a severed part only in a lineage whose traits let it heal.
+
 486. **Every fragment of a lineage that regrows from fragments lives, and
      physiology decides which last.** Asked on 2026-10-02, with 485: "What
      does a fragment need in order to live (470)? Evidence: a severed part
@@ -4821,6 +5607,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineage that regrows from fragments lives on as a body, and one with no
      way to feed starves by rent in time; no new rule decides which
      fragments live.
+
+     Links: area Bodies and anatomy · summary Every severed part of a fragment-regrowing lineage lives on as a body; physiology decides which last, with no new rule.
 
 488. **A mold is a territory, and micro life a surface.** Asked on
      2026-10-02, opening the anatomy brief's fifth round: "Is a body a
@@ -4896,6 +5684,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Placed 2026-10-02 by ruling 502:* built as the bodies family's last
      checkpoint, at site grain.
 
+     Links: area Bodies and anatomy · summary A mold is a territory (one entity, matter on each place covered) and micro life a surface; terrain-bodies stay part trees.
+
 489. **The default systems take the proposed table.** Asked on 2026-10-02,
      the anatomy brief's sixth round: "Do the default systems take the
      proposed table (see the preview)? Evidence: 277 names the
@@ -4946,6 +5736,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by rulings 588 and 589:* the biting parts are the
      parts bitten, and the mouthful reads muscular for the limbs' share.
 
+     Links: area Bodies and anatomy · summary The default systems are ten, each its functions in roles, routes along attachments with capacities from cells; the integument works by living-cell share. (amended by 657)
+
 490. **The natives read their systems from the bodies family on.** Asked on
      2026-10-02, with 489: "When do the natives start reading their systems?
      Evidence: the probe's natives are certified on bodies founded before
@@ -4966,6 +5758,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      systems the table lists from S2's bodies family on, which founds bodies
      by the recipe (478) with 466's functions and certifies them again;
      until then nothing certified changes.
+
+     Links: area Bodies and anatomy · summary The natives read their systems from S2's bodies family on; until then nothing certified changes.
 
 491. **The generator riffs systems by substitution.** Asked on 2026-10-02,
      with 489: "How does the generator riff new systems? Evidence: in 277
@@ -4997,6 +5791,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      reproduction, certified as a mechanism.
      *Specified 2026-10-05 by ruling 580:* within a run, half of riffs swap
      and half add.
+
+     Links: area Bodies and anatomy · summary The generator riffs new systems by substitution, swapping or adding a role's function, kept only if a body can realize its routes. (amended by 492, 563)
 
 492. **No shape gates a function; what a part does scales with the
      measurement its mechanic names.** Raised by Mark on 2026-10-02, the
@@ -5040,6 +5836,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-02 by rulings 493 and 494:* each function's
      measurement, by its share of the cells, and how the eight names are
      read.
+
+     Links: area Bodies and anatomy · summary No shape gates a function; any part can express any function and its effect scales with the measurement its mechanic names.
 
 493. **Each function scales with one measurement, by its share of the
      cells.** Asked on 2026-10-02, the anatomy brief's eighth round: "What
@@ -5092,6 +5890,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Applied 2026-10-02 by ruling 505:* income and the mouthful read their
      measurements alone, calibrated to the domain's median body.
 
+     Links: area Bodies and anatomy · summary Each function scales with one measurement (length, presented area, cross-section or volume), taken in proportion to its share of a part's cells.
+
 494. **The eight names are read from the box and the tree, and hollows
      declared.** Asked on 2026-10-02, with 493: "How are tube, branch, shell
      and joint read, now that shapes only name parts (492)? Evidence:
@@ -5116,6 +5916,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      construction from the body's voxels, naming that measurement (405),
      since the sim keeps no volumes.
 
+     Links: area Bodies and anatomy · summary Lump, rod, sheet and point are read from the box, branch and joint from the tree, tube and shell declared at construction.
+
 495. **Whether segments grow toward the recipe's count is a lineage trait.**
      Asked on 2026-10-02, with 493: "Does a body's segment count grow toward
      the recipe's (478)? Evidence: Mesocosm's soma draws each tagma's
@@ -5135,6 +5937,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      recipe's count as it matures, anamorphic, or keeps its drawn count,
      epimorphic, is a trait of its lineage, epimorphic by default; absent
      appendages grow in either way (478).
+
+     Links: area Bodies and anatomy · summary Whether segments grow toward the recipe's count is a lineage trait, epimorphic by default; absent appendages grow in either way.
 
 496. **A wound takes cells in proportion, and healing comes first.** Asked
      on 2026-10-02, with 493: "Which cells does a wound take, and when do
@@ -5158,6 +5962,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      healing lineage's growth regrows lost cells before it fills tissue or
      grows new parts, paying each cell's mass.
 
+     Links: area Bodies and anatomy · summary A wound takes cells from a part's functions in proportion; a healing lineage regrows lost cells before filling tissue or growing parts.
+
 497. **A territory's and a surface's matter lies in each place's ledger,
      under their keys.** Asked on 2026-10-02, the anatomy brief's ninth
      round: "Where does a territory's and a surface's matter sit (488)?
@@ -5180,6 +5986,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      they lie by whatever acts at the place, a grazer, a fire or
      mineralization; a host's ledger holds a surface's matter the same way;
      and the territory entity keeps its identity, record and mind.
+
+     Links: area Bodies and anatomy · summary A territory's and a surface's matter lies in each place's ledger under their keys; the territory entity keeps identity, record and mind.
 
 498. **Territories and surfaces spread by overflow along routes.** Asked on
      2026-10-02, with 497: "How do territories and surfaces spread (488)?
@@ -5207,6 +6015,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      overflow among its neighbours; mold creeps where the ground feeds it,
      and a plague follows the routes.
 
+     Links: area Ecology · summary Territories and surfaces spread by overflow along routes: growth beyond substrate capacity moves to neighbours by route transmission after travel.
+
 499. **A germ lineage revises its genes by forking strains.** Asked on
      2026-10-02, with 497: "What carries a germ lineage's genes as it
      revises them? Evidence: 58 has germs revise their genes on the fly by
@@ -5227,6 +6037,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      forking strains, child lineages, where a host or place selects, each
      strain a surface of its own carrying its revised genes, so a plague
      drifts and diverges as it spreads.
+
+     Links: area Bodies and anatomy · summary A germ lineage revises its genes by forking strains, child lineages, selected by host or place.
 
 500. **A territory or surface expresses its functions by the matter at each
      place.** Asked on 2026-10-02, with 497: "What of the catalogue does a
@@ -5249,6 +6061,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineage's traits name at each place where it lies, scaled by the matter
      it holds there in place of cells and measurements, so a mold's decay at
      a place grows with its mass there.
+
+     Links: area Bodies and anatomy · summary A territory or surface expresses its lineage's functions at each place, scaled by the matter it holds there.
 
 504. **Each part keeps its own ledger and is a holder.** Asked on
      2026-10-02, opening checkpoint 7 (501): "Where does a part's matter
@@ -5276,6 +6090,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Kept 2026-10-03 by ruling 525:* the ecology family's extentless bodies
      stay, the scale control, and only worlds that ask for bodies found
      from recipes.
+
+     Links: area Bodies and anatomy · summary Each part keeps its own ledger and is a holder; the body's totals are readings; bodies without parts keep their entity ledger.
 
 507. **The averaged crowd averages all of a lineage's own matter.** Asked on
      2026-10-02, when checkpoint 7's 1,000-draw check (master seed
@@ -5311,6 +6127,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      average cannot fit in one member's parts passes to classmates with
      room, so the control loses no matter.
 
+     Links: area Processes and rules · summary From checkpoint 7 on, the averaged negative-control crowd averages each lineage's tissue and reserve together and must still fail the starvation check.
+
 511. **A recipe's kinds are part templates.** Asked on 2026-10-03, with 510:
      "How does the sim's recipe name what a segment bears? Evidence:
      Mesocosm's tagma names an appendage kind (limb, feeler, plate, mouth,
@@ -5331,6 +6149,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      name a segment template and the kind each segment bears, with their
      counts; a lineage's lexicon is a set of kinds; and Mesocosm's five
      appendages and its palette become the default templates.
+
+     Links: area Bodies and anatomy · summary A recipe's kinds are part templates: a box and the share of cells each function takes; the lexicon is a set of kinds.
 
 512. **A founded lineage's recipe is drawn by its kingdom, the roster kept
      as presets.** Asked on 2026-10-03, with 510: "What recipe does a
@@ -5356,6 +6176,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      within what its body allows. *And by 549 and 550:* flora and fauna
      alone draw recipes, within Mesocosm's bounds by default.
 
+     Links: area World generation · summary The generator draws each founded lineage's recipe by its kingdom; the eight authored Mesocosm bodies ship as founding presets.
+
 515. **A body's reproduce volume scales what a birth spends, and neither
      the budget nor the timing is hardcoded.** Asked on 2026-10-03, with
      514: "What does a body's reproduce volume scale (492, 493)? Evidence:
@@ -5378,6 +6200,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      scales what a birth spends, and neither Mesocosm's quarter nor its
      gestation is taken as a fixed value; where the budget and the timing
      come from was put back the same day (518).
+
+     Links: area Bodies and anatomy · summary A body's reproduce volume scales what a birth spends, and neither the budget nor the timing is hardcoded. (amended by 518)
 
 516. **A whole part is incorporated, as affinity decides.** Asked on
      2026-10-03, with 514: "How does a probe body incorporate (468)?
@@ -5404,6 +6228,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a refused one burnt as a meal.
      *Specified 2026-10-03 by ruling 544:* the landed part keeps its
      donor's matter.
+
+     Links: area Bodies and anatomy · summary A body that is not hungry lands a part whole at the first free box, teaching its lineage the kind; affinity decides how it lands.
 
 518. **A birth spends the provision its reproduce cells fill.** Asked on
      2026-10-03, putting 515 back: "You chose what a birth spends, and said
@@ -5439,6 +6265,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      growth fills the provision or a missing part first is a lineage
      trait.
 
+     Links: area Bodies and anatomy · summary A birth spends the provision its reproduce cells fill; the body bears when the provision is full; no birth fraction or interval is set.
+
 519. **Hunger switches a grazer between an egg and a brood.** Asked on
      2026-10-03, checkpoint 8's third round: "Under 518 every birth spends
      the provision. What switches a grazer between laying an egg and
@@ -5457,6 +6285,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      of 449 read from the hunger TD5 already reads.
      *Specified 2026-10-04 by ruling 551:* a body whose stores are full is
      fed, TD5's horizon capped by what its stores may hold.
+
+     Links: area Bodies and anatomy · summary Hunger switches a grazer between strategies: a fed grazer broods and a hungry one lays an egg.
 
 520. **Whether growth builds a missing part or fills the provision first is
      a lineage trait.** Asked on 2026-10-03, with 519: "With its parts full,
@@ -5480,6 +6310,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      its parts first comes to breed only once whole, so its maturity
      emerges with no age threshold; one that provisions first breeds while
      still incomplete.
+
+     Links: area Bodies and anatomy · summary Whether a body with full parts first grows a missing part or fills its provision is a lineage trait.
 
 522. **Ars Magica's open text becomes a VTT ruleset and a reference for the
      wing's magic.** Raised by Mark on 2026-10-03 ("this is probably good
@@ -5516,6 +6348,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      scheduled by this ruling; and any lane that reads the prior art's code
      checks each project's licence first, none having been checked here.
 
+     Links: area Licensing and sources · summary The VTT gains an Ars Magica 5e system pack under CC BY-SA 4.0 with Atlas credit; its magic and auras inform the wing's design.
+
 523. **A body starves when its rent fails, not below a fixed mass.** Asked
      on 2026-10-03, checkpoint 8's fourth round, returning evidence against
      513 and 518: "Under 513 and 518 a grazer's provision is one cell, 12
@@ -5537,6 +6371,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      body starves when its tissue and reserve cannot pay its rent, and
      Mesocosm's fixed 20 mg line goes from the sim as its quarter did (515);
      a newborn of any size lives while it can pay, and must feed.
+
+     Links: area Bodies and anatomy · summary A body starves when its tissue and reserve cannot pay its rent; the fixed 20 mg starvation line goes.
 
 524. **A bud is a part grown off its parent.** Asked on 2026-10-03, with
      523: "What is a producer's bud under 518, which has every birth spend
@@ -5561,6 +6397,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-04 by ruling 552:* "once full" is once it holds a
      provision's worth, its parent's reproduce cells' mass.
 
+     Links: area Bodies and anatomy · summary A bud grows as a part at its parent's reproducing part and severs into a body of its own once full.
+
 525. **Only worlds that ask for bodies found their lineages from
      recipes.** Asked on 2026-10-03, with 523: "Which generated worlds
      found their lineages from recipes (512)? Evidence: Isocosm's generator
@@ -5577,6 +6415,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the generator draws recipes for the body family and any world founded
      with bodies, and the ecology family keeps its extentless bodies as the
      scale control.
+
+     Links: area World generation · summary Only worlds that ask for bodies found lineages from recipes; the ecology family keeps extentless bodies as the scale control.
 
 526. **Parental care feeds hungry young a parent's own mouthfuls.** Asked on
      2026-10-03, with 523: "How does parental care feed the young (450,
@@ -5601,6 +6441,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-04 by ruling 554:* care reads only unweaned young,
      a young weaned the first time it is fed, its stores full; the crowd
      runs a parent and its unweaned young as individuals.
+
+     Links: area Bodies and anatomy · summary A caring parent gives a hungry child one of its own mouthfuls a tick from its reserve while the parent is not hungry. (amended by 527)
 
 527. **What a caring parent gives, milk or mouthfuls, is a lineage trait.**
      Asked on 2026-10-03, putting 526 back at Mark's question ("Mouthfuls,
@@ -5630,6 +6472,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      one the probe's grazers give goes back to Mark. *Answered 2026-10-03
      by ruling 528:* milk.
 
+     Links: area Bodies and anatomy · summary What a caring parent gives its hungry young, milk or mouthfuls, is a lineage trait.
+
 530. **How many eggs a birth lays is a lineage trait.** Asked on
      2026-10-03, with 528: "How many eggs does a birth lay (448: many
      offspring, most lost)? Evidence: under 518 an egg spends the
@@ -5649,6 +6493,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the clutch as a take is (464), units left over to the largest
      remainders, and the probe draws its grazers' clutch per world as it
      draws their other traits.
+
+     Links: area Bodies and anatomy · summary How many eggs a birth splits its provision into is a lineage trait, drawn by the generator and revised at the epoch boundary.
 
 531. **A recipe carries its absence odds beside its variance.** Asked on
      2026-10-03, with 528: "How much do children vary, without Mesocosm's
@@ -5676,6 +6522,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      parent's varied cells, and one of its cells may vary to any grown
      function at odds its recipe draws.
 
+     Links: area Bodies and anatomy · summary Each recipe carries its appendage absence odds beside its segment variance, both drawn by the generator with the recipe.
+
 532. **One stack helper runs the wasm constructors once, for every web
      module.** Asked on 2026-10-03 in the Burn migration session, after
      509's lane: the raw pre.4 module's `__wasm_call_ctors` calls 8,166
@@ -5699,6 +6547,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ends, which the one-run test guards; and Isometry's web build calls
      the same helper when it takes pre.4.
 
+     Links: area Stack and engine · summary One stack helper runs the wasm constructors once, called first from every web module's start, with a run-once guard and test.
+
 535. **Whether a lineage breeds from income or from capital is its trait.**
      Asked on 2026-10-03, building checkpoint 8's step 8c: "Where do the
      provision (518) and a missing part (479) take growth, against the
@@ -5721,6 +6571,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      reserve, breeding from income, or after it, breeding from capital, is
      a trait of the lineage, drawn by the generator and revised at the
      epoch boundary (57).
+
+     Links: area Bodies and anatomy · summary Whether a lineage's growth goes to missing part or provision before the reserve (income) or after it (capital) is a lineage trait.
 
 536. **The constructor helper lives in cambium-genet-web-host.** Asked on
      2026-10-03 in the Burn migration session, carrying out 532: where the
@@ -5753,6 +6605,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      there when this record took it, at mere `9f5a73f6`. Mere's migration
      lane owns the work.
 
+     Links: area Stack and engine · summary The shared wasm constructor helper lives in cambium-genet-web-host.
+
 537. **The web modules take the newest wasm-bindgen they can.** Asked on
      2026-10-03 in the Burn migration session, when ruling 536 met a pin
      conflict: Distillery's model probe pins `wasm-bindgen = "=0.2.122"`
@@ -5781,6 +6635,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      recorded there. Mere's migration lane owns the work.
      *Widened 2026-10-04 by ruling 556:* every wasm module, and the newest
      wasm-bindgen as a standing posture.
+
+     Links: area Stack and engine · summary The web modules take the newest wasm-bindgen they can, shared as one exact pin. (amended by 556)
 
 538. **Each world chooses whether the sim or its ruleset leads.** Raised by
      Mark on 2026-10-03 with research into rulesets over the sim ("I guess
@@ -5818,6 +6674,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      persists beside the body, its relations declared, and unattended its
      procedures run under declared decision policies.
 
+     Links: area The sim's schema and saves · summary Each world chooses whether the sim leads and rulesets calibrate, or the ruleset leads and the sim's background follows; the ledger and record stay inviolable.
+
 539. **Rules are built as faithful editions, a shared toolkit grown from
      them.** Asked on 2026-10-03, with 538: "What do we build for rules?
      Evidence: editions differ in sequencing, interruptions, stacking,
@@ -5842,6 +6700,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      what the editions repeat; and a house ruleset is made only if those
      experiments show a need.
 
+     Links: area The VTT · summary Rules are built as faithful versioned editions with GM decision points kept; a shared toolkit is extracted from what repeats; house ruleset only if needed.
+
 540. **Rulesets mix freely in content and subsystems, and meet in an
      encounter only under a named hybrid profile.** Asked on 2026-10-03,
      with 538: "How far can rulesets mix? Evidence: sharing content
@@ -5860,6 +6720,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and subsystems combine freely across rulesets, and a cross-system
      encounter runs under a named hybrid profile that documents each
      crossing and each departure from either edition.
+
+     Links: area The VTT · summary Rulesets mix freely in content and subsystems; a cross-system encounter runs under a named hybrid profile documenting each crossing.
 
 541. **The VTT plays faithful editions; Eponym and Mesocosm keep their own
      mechanics.** Asked on 2026-10-03, with 538: "How do the products
@@ -5880,6 +6742,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mesocosm keep their native mechanics and share the toolkit's effects
      and procedures; and a published ruleset may govern Eponym's
      progression, magic or costs as a selectable mode.
+
+     Links: area The VTT · summary The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode.
 
 542. **An edition's own state persists beside the body, its relations to it
      declared.** Asked on 2026-10-03, following 538: "In a world its
@@ -5905,6 +6769,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      wound to hit points does to the body and what death in either does to
      the other.
 
+     Links: area The VTT · summary An edition's own state persists beside the body, each fact marked world fact, native state or derived display, with the ruleset declaring their relations.
+
 543. **Unattended, a ruleset-led world runs the ruleset's procedures under
      declared decision policies.** Asked on 2026-10-03, with 542: "With
      nobody playing, how does a ruleset-led world's background resolve
@@ -5927,6 +6793,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      make replaced by a declared decision policy for that kind of actor,
      simplified only as far as the bench shows the outcomes survive.
 
+     Links: area The VTT · summary Unattended, a ruleset-led world runs the ruleset's own procedures with each player or GM choice replaced by a declared decision policy.
+
 544. **An incorporated part keeps its donor's matter.** Asked on 2026-10-03,
      building checkpoint 8's step 8f: "When a grazer incorporates a whole
      frond (516), whose matter does the frond hold? Evidence: 504 keys a
@@ -5948,6 +6816,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it; and the part's room for the eater's own tissue counts the matter
      it already holds.
 
+     Links: area Bodies and anatomy · summary An incorporated part keeps its donor's matter under its provenance; the eater can neither spend it on rent nor grow from it.
+
 547. **A generated recipe reproduces in one cell of its root.** Asked on
      2026-10-04, building checkpoint 8's step 8g: "Where do generated
      recipes express reproduce (449)? Evidence: Mesocosm's seeding gives
@@ -5967,6 +6837,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ruled:* the default templates otherwise follow Mesocosm's seeding, all
      of a part's cells to its role's process, so a lump takes in, a rod
      contracts, a point senses and a sheet fixes (511).
+
+     Links: area World generation · summary The generator gives reproduce one cell of each recipe's root segment kind, drawn and authored recipes alike.
 
 548. **A founded lineage's life history is drawn, within what its body
      allows.** Asked on 2026-10-04, with 547: "How does the generator draw
@@ -5990,6 +6862,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a world-rule bound, and each of its other traits either way; the
      probe sets its own.
 
+     Links: area World generation · summary The generator draws each founded lineage's life history by the founding seed, within what its body supports; the probe sets its own.
+
 549. **Flora and fauna draw recipes; myco and micro wait for territories
      and surfaces.** Asked on 2026-10-04, with 547: "In a world that asks
      for bodies, which kingdoms get recipes (512, 525)? Evidence: Isocosm
@@ -6010,6 +6884,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineages stay bodiless until checkpoint 11 makes them territories and
      surfaces.
 
+     Links: area World generation · summary In worlds that ask for bodies, flora and fauna draw recipes; myco and micro stay bodiless until territories and surfaces exist.
+
 550. **The generator draws within Mesocosm's bounds where it has them.**
      Asked on 2026-10-04, with 547: "What bounds does the generator draw
      within, by default? Evidence: 548 draws a lineage's clutch within a
@@ -6027,6 +6903,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      generator draws a recipe's variance from 1 to 2 and its absence odds
      at 1 in 12, and a lineage's clutch from 1 to 4, by default, each a
      range the founding states and a world may widen.
+
+     Links: area World generation · summary The generator draws within Mesocosm's bounds by default: variance 1 to 2, absence odds 1 in 12, clutch 1 to 4, each widenable.
 
 551. **Full stores count as fed.** Asked on 2026-10-04, building checkpoint
      8's step 8h: "Under TD5, when is a probe grazer fed? Evidence: TD5
@@ -6055,6 +6933,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mesocosm's horizon stands wherever a store can reach it, a body whose
      stores are full is fed, and a body that stores nothing counts as fed.
 
+     Links: area Bodies and anatomy · summary A body is hungry while its reserve is below the lesser of 100 ticks of rent and its stores' capacity; full stores count as fed.
+
 552. **A bud severs once it holds a provision's worth.** Asked on
      2026-10-04, building checkpoint 8's step 8h: "When is a producer's bud
      full enough to sever (524)? Evidence: 524 has a bud sever 'once full',
@@ -6075,6 +6955,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      once its tissue reaches what its parent's reproduce cells hold, or its
      kind's adult mass if that is less, and the severed seedling grows the
      rest of its frond and recipe by 479 and 520.
+
+     Links: area Bodies and anatomy · summary A bud severs once its tissue reaches what its parent's reproduce cells hold, or its kind's adult mass if less.
 
 554. **Bonds run individually until the young is weaned.** Asked on
      2026-10-04, opening checkpoint 8's step 8i: "How does the crowd run
@@ -6104,6 +6986,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      their relation kept, returning them to its counts once the young is
      weaned, the mechanism by which the crowd will hold any relation.
 
+     Links: area Processes and rules · summary A parent and its unweaned young run as individuals in the crowd until the young is weaned; nursing reads only unweaned young.
+
 556. **Every wasm module moves to the newest wasm-bindgen, 0.2.129.**
      Asked on 2026-10-04 in the Burn migration session, widening 537 and
      545: the muniment OPFS probe's page-error gate control is unproven.
@@ -6125,6 +7009,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      CLI install, leaving the gate unproven, or moving the probe to
      0.2.129; Mark's answer was relayed by the migration session on
      2026-10-04, for mere's plan to record.
+
+     Links: area Stack and engine · summary Every wasm module in mere moves to wasm-bindgen 0.2.129; 'stay with the newest' stands for later pins.
 
 560. **Every cell carries along a system's route, and conduits more.** Asked
      on 2026-10-05, opening checkpoint 9: "Which cells carry along a
@@ -6149,6 +7035,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by ruling 565:* a conduct cell's multiple is its
      part's cross-section over the reference segment's.
 
+     Links: area Bodies and anatomy · summary Each cell of a part on a route carries a world-rule capacity and a conduct cell a multiple of it; probe recipes unchanged.
+
 561. **An intact body carries all its natives ask.** Asked on 2026-10-05,
      with 560: "How much does a route carry? Evidence: an intact founded
      body asks 2 to 16 mg a tick to fix (median 5) and 2 to 54 to graze
@@ -6169,6 +7057,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      certifies on cut-route controls and the riff.
      *Specified 2026-10-05 by ruling 564:* each world draws the capacity,
      about 7 to 14 mg a cell a tick.
+
+     Links: area Bodies and anatomy · summary Per-cell route capacity is a world rule set so an intact body carries all its natives ask; only cuts, absences or missing sources lower degree.
 
 562. **A process reads its system part by part.** Asked on 2026-10-05, with
      560: "How does a process read a system whose effects are every living
@@ -6192,6 +7082,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by rulings 581 and 582:* a process's parts
      share a route's capacity, and a native reads the systems routing its
      function as one network.
+
+     Links: area Bodies and anatomy · summary A process reads its system part by part: each part takes its share only as far as its route carries; degree is reached over asked.
 
 563. **No single riff is picked; riffing is to be systemic.** Asked on
      2026-10-05, checkpoint 9's second round: "Which riffed system does
@@ -6229,6 +7121,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      561's inert systems manage outcomes, while conservation, the runners'
      equivalence and the planted faults constrain the instrument.
 
+     Links: area Bodies and anatomy · summary No single riff is picked to calibrate or certify; a riff is a latent capability becoming ability through variation, certified as a mechanism.
+
 564. **Each world draws its per-cell capacity.** Asked on 2026-10-05, with
      563: "How tight is the per-cell capacity that lets an intact body carry
      all (561)? Evidence: an intact grazer's mouthful needs a median of 1.0
@@ -6246,6 +7140,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stretched and slack bodies. *Reading, not ruled:* the range is a
      founding range a world may widen, 7 to 14 by default.
 
+     Links: area Bodies and anatomy · summary Each world draws its per-cell route capacity between about 7 and 14 mg a tick, a range a world may widen.
+
 565. **A conduct part carries by its cross-section.** Asked on 2026-10-05,
      with 563: "How much more does a conduct cell carry than an ordinary
      cell (560)? Evidence: no probe or generated body has a conducting part
@@ -6261,6 +7157,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      segment's, a wide tube carrying more than a thin one, with no fixed
      number. *Reading, not ruled:* the reference segment's cross-section is
      its face, 25 voxels (505's evidence).
+
+     Links: area Bodies and anatomy · summary A conduct cell's capacity multiple is its part's cross-section over the reference segment's, with no fixed number.
 
 566. **Nursing reads the young's digestive system.** Asked on 2026-10-05,
      with 563: "What does nursing read? Evidence: the table gives the meal
@@ -6279,6 +7177,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      digestive". So milk lands in the young part by part along the young's
      digestive routes, as a meal would, and leaves the parent's reproduce
      part directly.
+
+     Links: area Bodies and anatomy · summary Nursing reads the young's digestive system: milk lands in the young part by part along its digestive routes, leaving the parent's reproduce part directly.
 
 567. **The pre.4 runners build with the repo's pinned toolchain.** Asked on
      2026-10-05 in the Burn migration session, from pre.4's findings while
@@ -6304,6 +7204,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      burn plan §13.45 on `burn-pre4-repin`.
      *Checked 2026-10-05:* mere's burn plan records it as §13.45 on main
      (`07db35e2`), its question, options and answer as here.
+
+     Links: area Stack and engine · summary The pre.4 probe, repro and OPFS runners build with the repo's pinned toolchain from mere's rust-toolchain.toml; bundles are rebuilt once.
 
 568. **Systems vary at birth, and the epoch boundary folds in what
      prospered.** Asked on 2026-10-05, putting 563 back: "Where do systems
@@ -6343,6 +7245,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by ruling 583:* an inherited system the child
      cannot realize is carried dormant.
 
+     Links: area Bodies and anatomy · summary Each body carries its systems; a child may swap one role's function at recipe-drawn odds, and the epoch boundary folds prospering variants into the lineage.
+
 569. **The natives act by capability.** Asked on 2026-10-05, with 568: "Do
      the natives act by capability? Evidence: the probe's natives belong to
      lineages: producers fix, grazers graze, each process keyed to a
@@ -6367,6 +7271,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by ruling 590:* a body that takes in grazes any
      living body of another lineage at its site.
 
+     Links: area Bodies and anatomy · summary A native acts for any body whose carried systems route its function; a lineage's natives are whatever its bodies can do.
+
 571. **The rates are drawn per world, not calibrated to earlier medians.**
      Asked on 2026-10-05, with 568: "When bodies change, do we keep
      calibrating rates to earlier medians? Evidence: 505 calibrated income
@@ -6388,6 +7294,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      runs from half to twice today's rates, 11 mg per 144 faces and 12 per
      269 voxels; 505's calibration test retires, its receipts kept.
 
+     Links: area Bodies and anatomy · summary Income and mouthful rates are world rules each world draws within half to twice today's values; outcomes are measured, not tuned to earlier medians.
+
 573. **Each recipe draws its riff odds between 1 in 12 and 1 in 100.** Asked
      on 2026-10-05, with 572: "At what odds does a child's system vary
      (568)? Evidence: 568 puts the odds in the lineage's recipe beside its
@@ -6407,6 +7315,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      to 100". So each recipe draws its riff odds between 1 in 12 and 1 in
      100, a range a world may widen, and the check covers worlds that riff
      often and rarely.
+
+     Links: area World generation · summary Each recipe draws its system-riff odds between 1 in 12 and 1 in 100, a range a world may widen.
 
 574. **A body carries the systems it realizes.** Asked on 2026-10-05,
      checkpoint 9's fourth round: "Which systems does a body carry at
@@ -6431,6 +7341,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Extended 2026-10-05 by ruling 587:* cells a development allocates in
      life bring the default system they realize.
 
+     Links: area Bodies and anatomy · summary A founded body carries each default system whose roles its parts fill; functions expressed outside them are latent until a riff routes them.
+
 575. **A native acts on any system that routes its function.** Asked with
      574: "Which native reads a riffed system? Evidence: 489's table pairs
      each native with a system: the meal with digestive, income with
@@ -6447,6 +7359,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      function, and 489's pairing of natives with systems names the defaults
      that route them, not a limit; a gut with fix added earns income
      through its digestive routes.
+
+     Links: area Bodies and anatomy · summary A native acts on any carried system that routes its function; 489's pairing names the defaults, not a limit.
 
 576. **Latent capability arises as cells vary at birth.** Asked with 574:
      "Where does latent capability come from in the probe? Evidence: probe
@@ -6476,6 +7390,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      12 to 1 in 100; to any grown function; and a riff swaps or adds at
      even odds.
 
+     Links: area Bodies and anatomy · summary Latent capability arises as a child's part may give a cell to another function at birth, at odds.
+
 577. **A varied cell is inherited.** Asked on 2026-10-05, checkpoint 9's
      fifth round: "Is a varied cell inherited (576)? Evidence: a child draws
      its soma from its lineage's recipe by its own seed (531): segment
@@ -6498,6 +7414,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      develops that part; a segment the child's drift drops, or a borne kind
      it lacks, takes its varied cell with it.
 
+     Links: area Bodies and anatomy · summary A varied cell is inherited: a child takes its parent's varied cells on top of its own recipe draw.
+
 578. **A child's cell varies at odds each recipe draws.** Asked with 577:
      "How often does a child's cell vary? Evidence: founded producers have
      4 to 27 cells (median 8) in 1 to 3 parts; grazers have 9 to 45
@@ -6518,6 +7436,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      uniformly among the child's cells.
      *Specified 2026-10-05 by ruling 584:* any cell may vary, the last of a
      function that feeds, senses or fixes included.
+
+     Links: area Bodies and anatomy · summary One cell of one of a child's parts varies, at odds each recipe draws between 1 in 12 and 1 in 100.
 
 579. **A cell may vary to any grown function.** Asked with 577: "Which
      functions can a cell vary to? Evidence: under 492 no shape gates a
@@ -6540,6 +7460,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      own, drawn uniformly, and does what the measurement its mechanic names
      gives it, so a lump's fix cell fixes poorly by its area.
 
+     Links: area Bodies and anatomy · summary A varied cell takes any grown catalogue function other than its own, drawn uniformly, and performs by the measurement its mechanic names.
+
 580. **A riff swaps or adds, at even odds.** Asked with 577: "Does a riff
      swap a role's function or add one? Evidence: 491 says either, 'a
      role's function swapped for another, or one added', but 568's text
@@ -6557,6 +7479,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ability, and selection decides. *Reading, not ruled:* the system, its
      role and the new function are drawn uniformly, the function among
      those the child's body expresses that the role does not already name.
+
+     Links: area Bodies and anatomy · summary Half of riffs swap a role's function for another and half add one; a swap may cost an ability and selection decides.
 
 581. **A process's parts share a route's capacity.** Asked on 2026-10-05,
      checkpoint 9's sixth round: "Do a body's parts share a route's
@@ -6580,6 +7504,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      wing-functions' partial-carriage query routes a process to one sink
      that each effect part feeds by its share, so capacity is shared within
      the operation and resets between processes.
+
+     Links: area Bodies and anatomy · summary A process routes in one operation: a part carries everything bound beyond it, so a narrowed trunk shorts every part behind it.
 
 582. **A native reads the systems routing its function as one network.**
      Asked with 581: "When several carried systems route a native's
@@ -6605,6 +7531,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      latent cell would be routed already through a system whose sources are
      every living part, and nothing would be latent (574).
 
+     Links: area Bodies and anatomy · summary A native reads the carried systems routing its function as one network: all their sources, all their effects, the process landing across them.
+
 583. **An inherited system the body cannot realize is carried dormant.**
      Asked with 581: "What happens to an inherited system the child's body
      doesn't realize? Evidence: absence takes a borne kind at 1 in 12 per
@@ -6622,6 +7550,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      body cannot realize routing nothing, and passes it on, so a descendant
      whose body realizes it again has it back.
 
+     Links: area Bodies and anatomy · summary A child carries every system its parent carried; one its body cannot realize routes nothing (dormant) and is passed on.
+
 584. **Any cell may vary.** Asked with 581: "Can a cell vary out of the
      last cell of a function that feeds, senses or fixes? Evidence: a
      grazer's lump can hold a single intake cell (its 8 cells less store and
@@ -6638,6 +7568,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a child born unable to feed starves. The sparing of those kinds from
      absence, 531's reading, is not touched.
 
+     Links: area Bodies and anatomy · summary Any cell may vary, even the last of a feeding, sensing or fixing function; a child born unable to feed starves.
+
 585. **Knot's CubeCL persistence mirrors 375 through mere's git.** Asked on
      2026-10-05 in Knot's repin onto pre.4, 557's first handoff:
      "pristine `cubecl-runtime 0.11.0-pre.4` turns `persistence` on by
@@ -6653,6 +7585,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      via mere's git (Recommended)". So Knot's root patch table takes
      `cubecl-runtime` from mere.git at the rev its mere rows pin, and the
      row moves with them at every repin.
+
+     Links: area Stack and engine · summary Knot's root patch table takes cubecl-runtime from mere.git at the rev its mere rows pin, moving with every repin (mirrors 375).
 
 587. **A development brings the system its cells realize.** Asked on
      2026-10-05, checkpoint 9's seventh round: "Does a gland that develops
@@ -6675,6 +7609,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      routes them; a frond's gland brings the glandular system, and the dose
      goes on.
 
+     Links: area Bodies and anatomy · summary Cells a development allocates during life bring the default system they realize; cells varied at birth stay latent until a riff routes them.
+
 588. **The biting parts are the parts bitten.** Asked with 587: "What are
      'the biting parts' the glandular system feeds (489)? Evidence: the
      table names them as the glandular system's effects but never defines
@@ -6692,6 +7628,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      system's effects are whichever part a bite lands on, the dose being
      what its routes carry there, and intact fronds dose as now.
 
+     Links: area Bodies and anatomy · summary The glandular system's effects are whichever part a bite lands on; the dose is what its routes carry there.
+
 589. **The muscular system carries the limbs' share of the mouthful.** Asked
      with 587: "How does the mouthful read the muscular system? Evidence:
      221 of 4,501 founded grazers (4.9%, in 35 of 300 worlds) have no
@@ -6707,6 +7645,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      system carries the span's part of the mouthful, TD9's build multiple,
      to the contracting parts, and a limbless grazer bites by its intake as
      now.
+
+     Links: area Bodies and anatomy · summary The muscular system carries the span's part (build multiple) of the mouthful to contracting parts; a limbless grazer bites by intake.
 
 590. **A body grazes other lineages.** Asked with 587: "What does a body
      that comes to take in eat (569)? Evidence: under 569 every lineage
@@ -6724,6 +7664,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      at its site, weighted by what each holds (287): grazers eat producers
      as now, and a frond that comes to take in eats grazers.
 
+     Links: area Ecology · summary A body whose systems route intake grazes any living body of another lineage at its site, weighted by what each holds.
+
 591. **The games move onto the sim first; families are refined in place.**
      2026-10-05. Question: how do the games move onto the sim, given that
      192 re-expresses each family before it moves and Isocosm has no space
@@ -6738,6 +7680,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      process definitions inside Isocosm afterwards. Amends 192. Bodies stop
      at checkpoint 8: checkpoint 9 is parked on its branch, unmerged.
 
+     Links: area The sim's schema and saves · summary Legacy game sims move into Isocosm first, legacy crates deleted, games playing as today; families are re-expressed as process definitions afterwards. (amended by 655)
+
 592. **No source file over 600 lines without a technical reason.** 2026-10-05,
      Mark, unprompted: "enforce the 600 loc limit. there is no file that
      should be bigger than that without a technical reason." So the
@@ -6748,12 +7692,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a pre-commit hook, `field-bake` retired; the splits landed at
      `bb92f2e`.
 
+     Links: area Method and documents · summary No tracked source file over 600 lines without a listed technical reason; a script checks it and oversize files are split.
+
 593. **Docs are outside the ceiling, and deduplicated.** 2026-10-05. Question:
      do markdown docs fall under the 600-line ceiling (36 over it, the wing
      record 13,725 lines)? Options: active docs too (recommended); every
      doc; source code only. Mark chose "Source code only", then "but
      deduplicate the docs." So the ceiling covers source code, and the docs
      are deduplicated: each result one home, other mentions a link.
+
+     Links: area Method and documents · summary The 600-line ceiling covers source code only; docs are deduplicated, each result having one home and other mentions linking to it.
 
 594. **A pre-commit hook enforces the ceiling.** 2026-10-05. Options: a
      pre-commit hook (recommended); by hand. Mark chose "Pre-commit hook".
@@ -6762,6 +7710,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      hook checks only what a commit stages, so branches made before the
      splits are not blocked by files they did not touch, and it says so
      and passes where no PowerShell exists.
+
+     Links: area Method and documents · summary A pre-commit hook runs the line-ceiling script on staged files to enforce the ceiling.
 
 597. **Eponym's motion stays game-side.** 2026-10-05. Question: how does
      Eponym's world move onto the sim, given that 233 keeps motion and
@@ -6778,6 +7728,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      position; fixtures that need motion recorded but not solved use a
      solver that does not move.
 
+     Links: area Eponym · summary Eponym's motion and contact stay game-side as eponym-motion; other Eponym crates move into Isocosm, which never depends on Rapier.
+
 598. **The campaign world's adapters stay with the VTT.** 2026-10-06.
      Question: how does the VTT's campaign world move onto the sim, given
      that `isometry-campaign` depends on `isometry-core`, the VTT's
@@ -6790,6 +7742,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (597).
      *Amended 2026-10-06 by ruling 599:* the overmap projection is not an
      adapter; the overmap itself moves into the sim.
+
+     Links: area The VTT · summary The campaign world moves into Isocosm as its legacy campaign tree; the map wrapper and token/sheet adapters stay in a slim VTT crate. (amended by 599, 913, 915)
 
 599. **The overmap moves into the sim.** 2026-10-06. Question, on new
      evidence against 598: the campaign world's `travel_cost` and
@@ -6808,6 +7762,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `LocalMapProposal::validate` and `DraftMap::validate`, so a draft is
      refused sim-side before any VTT document is built; the VTT's lowering
      is a pair of extension traits in the slim `isometry-campaign`.
+
+     Links: area The VTT · summary The overmap moves into the sim as a sim noun; travel and discovery stay sim-side; the VTT imports Overmap from Isocosm.
 
 600. **The VTT builds on the stack we have; Cleromancy leaves it.**
      2026-10-06. Question: main's root lock pins ten crates.io packages
@@ -6834,6 +7790,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      decision record moves to the VTT's archive; with Cleromancy gone the
      repo `CLAUDE.md`'s `--all-features` gate runs whole again, unchanged.
 
+     Links: area The VTT · summary The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched.
+
 604. **Game-side physics replays bit for bit across machines.** 2026-10-06,
      from the balaur read (603). Question: Isocosm's sim is integer-only, and
      floats live game-side, in Eponym's motion over conatus, whose rapier
@@ -6851,6 +7809,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Windows, macOS and Linux. This turns D18's libm note into a
      requirement. *Reading, not ruled:* until G8 lands it, a save promises
      same-machine replay only.
+
+     Links: area Stack and engine · summary Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest.
 605. **The shards carry a shard-count equality check.** 2026-10-06, from
      the balaur read. Question: §4.7 designs the ordered merge before the
      shards, which are not built; balaur asserts one-thread and
@@ -6860,6 +7820,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (recommended); leave it to the shard plan. Mark chose "Make it a
      done-condition". So when the shards land, one shard and N shards give
      the same state hash, at more than one thread count, as a standing test.
+
+     Links: area Processes and rules · summary When shards land, one shard and N shards give the same state hash at more than one thread count, as a standing test.
 606. **471's kiss3d reshape starts from upstream.** 2026-10-06, from the
      balaur read. Question: balaur's kiss3d is Ughuuu/kiss3d#1 (branch
      `balaur-wrapped-surface` at `4522a762`), 82 commits and 125 files over
@@ -6872,6 +7834,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      by name". So the reshape forks upstream kiss3d at a pinned commit and
      takes balaur's commits one at a time as it needs them, each reviewed,
      so the fork's own diff stays readable.
+
+     Links: area Stack and engine · summary The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed.
 
 607. **Isocosm's state hash joins the family's witness, in balaur's
      shape.** 2026-10-06, from the balaur read. Question: Isocosm's
@@ -6892,6 +7856,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      not touch; FNV is an equality witness, not a cryptographic digest, so
      anything peers must trust stays on a standard cryptographic hash.
 
+     Links: area Record and history · summary Isocosm's state hash becomes the family's 64-bit FNV-1a witness with labelled entries, first-divergence report and per-tick trace; SHA-256 stays for content addresses.
+
 608. **Version-1 saves still load.** 2026-10-06, carrying out 607.
      Question: Isocosm's version-1 saves store the SHA-256 state hash and
      recheck it on load, and `tests/data/pre-causation-world.json` proves a
@@ -6900,6 +7866,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      v1, write v2". So a v1 save is verified with the SHA-256 hash it
      carries, kept only as a v1 reader, and saving again writes v2 with the
      FNV witness; the fixture's guarantee holds.
+
+     Links: area The sim's schema and saves · summary Version-1 saves are verified with their SHA-256 hash as a v1 reader only; saving again writes v2 with the FNV witness.
 609. **The labelled digest is built once, in mere.** 2026-10-06. Question:
      FNV `hash_bytes` sits in `isometer_core::snapshot`, shared by Mesocosm,
      Eponym and the legacy trees, and mere's physics lane put fork E to Mark
@@ -6912,6 +7880,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      replay), and Isocosm. *Reading, not ruled:* G8 shapes the crate;
      Isocosm's switch to the FNV witness need not wait for it, and its
      labels and first-divergence report follow when the crate exists.
+
+     Links: area Stack and engine · summary One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm.
 610. **Labelled checkpoints per epoch; a per-tick trace on demand.**
      2026-10-06. Question: Isocosm advances only through ticks with due
      events (ruling 284), and its saves already record a checkpoint, tick
@@ -6922,6 +7892,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ticks on demand". So saves keep one labelled checkpoint per epoch and
      a mismatch names the first diverging entry; the bench and probe tools
      write a full per-tick trace when asked.
+
+     Links: area Record and history · summary Saves keep one labelled checkpoint per epoch and a mismatch names the first diverging entry; bench and probe tools write a per-tick trace on demand.
 612. **An index row is a pointer, a purpose and a status.** 2026-10-06,
      carrying out 593. Question: the wing index's rows hold 11,819 of its
      13,367 words, the design record's row alone 2,737 words of ruling
@@ -6930,6 +7902,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      latest-rulings line; leave the indexes. Mark chose "Pointer, purpose,
      status". So each row is the link, one line of what the doc is for and
      a dated status; ruling summaries live only in this record.
+
+     Links: area Method and documents · summary An index row is the link, one line of purpose and a dated status; ruling summaries live only in the record.
 613. **Progress logs record landings, past entries included.** 2026-10-06,
      carrying out 593. Question: this record's Progress log is 1,679 lines,
      largely one-line restatements of rulings already in §0, and plans' logs
@@ -6940,6 +7914,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      built or verified, with its commit, and names rulings by number without
      restating them; past entries are cut to that shape, being logs and not
      rulings, and the rulings keep their words.
+
+     Links: area Method and documents · summary A progress entry records what was built or verified with its commit, naming rulings by number; past entries are cut to that shape.
 614. **Session notes are archived; briefs cite rulings by number.**
      2026-10-06, carrying out 593. Question: the sim design session notes
      (1,921 lines) tabulate each round's questions and answers, which this
@@ -6950,6 +7926,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      anything still open is extracted into a live doc, the notes move to
      `archive_docs/2026-10-06/`, and briefs keep their design text but cite
      rulings by number instead of re-tabulating rounds.
+
+     Links: area Method and documents · summary Design session notes are archived; briefs keep design text but cite rulings by number instead of re-tabulating rounds.
 615. **One `DOC_POLICY.md`, and shared `CLAUDE.md` rules at the root.**
      2026-10-06, carrying out 593. Question: `DOC_POLICY.md` exists three
      times (root, Mesocosm, Eponym), one canonical core with stale local
@@ -6962,6 +7940,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `CLAUDE.md` files share move to the root `CLAUDE.md`, the product files
      linking; the `LICENSES.md` files, per-product legal records, stay.
 
+     Links: area Method and documents · summary One root DOC_POLICY.md with a three-product addendum; rules the product CLAUDE.md files share move to the root CLAUDE.md; LICENSES.md files stay.
+
 616. **A plan holds the spec, the record the decision.** 2026-10-06,
      carrying out 593. Question: after the dedup's first four phases the
      largest overlap left is this record against the sim plan (827 ten-word
@@ -6972,12 +7952,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      spec's home and cites ruling numbers, this record is the decision's home,
      neither restates the other's rationale, and the overlap a spec shares
      with the ruling that set it stays.
+
+     Links: area Method and documents · summary A plan is its spec's home and cites ruling numbers; the record is the decision's home; neither restates the other's rationale.
 618. **A doc's own status line is current.** 2026-10-06. Question: about
      twenty plans' own status lines are older than the status their index
      row carries; where does current status live? Options: update the doc's
      line (recommended); the index row only. Mark chose "Update the doc's
      line". So each plan's status line carries its newest dated status, and
      the index row repeats a short version of it.
+
+     Links: area Method and documents · summary Each plan's status line carries its newest dated status; the index row repeats a short version of it.
 622. **scenevm is a donor of techniques only.** 2026-10-06, from Mark's
      question whether Eldiron's `scenevm` (MIT, 0.95.0) would be "of use for
      the isocosm wing", how it "compares with kiss3d as a tenant, or composes
@@ -6997,6 +7981,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      are taken by name under MIT, with a licence row, when a lane needs them.
      Asked whether to record the read, Mark chose "Write a brief, like
      Balaur's".
+
+     Links: area Stack and engine · summary scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a licence row.
 623. **Rosters and rulesets move into datasheets, through a plan.**
      2026-10-06. Mark asked whether the TOML used for generated datasheets
      suits Isocosm's entity rosters and rulesets. Evidence:
@@ -7017,6 +8003,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      datasheet shape, and receipts showing worlds and state hashes unchanged
      by the move. Under F1, the wing's authored pack manifests and process
      records become TOML; the SRD data stays a JSON import.
+
+     Links: area The sim's schema and saves · summary Rosters and rulesets move into datasheets through a dated plan; authored pack manifests and process records become TOML, SRD data stays JSON import.
 624. **Packs load from TOML or JSON.** 2026-10-06, for the move of the
      pack files to TOML. Question: after the migration, should packs still
      load from JSON? Options: TOML only, with a JSON pack refused by a
@@ -7027,6 +8015,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      polices this repository only; a pack written elsewhere in JSON still
      loads. *Reading, not ruled:* the manifest's `abi` stays 1, since the
      schema does not change, only the syntax.
+
+     Links: area The sim's schema and saves · summary Packs load from TOML or JSON, TOML preferred; this repository's own packs are TOML; manifest abi stays 1.
 625. **Every founding becomes data, instrument variants too.** 2026-10-06,
      for 623's plan. Question: which rosters move into datasheets? Options:
      the shipping rosters and kinds, with the instrument-only variants
@@ -7039,6 +8029,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      list read from them, beside `SEEDED_KINDS`. Recorded worlds must
      reproduce: every founding's state hash is unchanged by the move. The
      plan is `2026-10-06_wing_datasheets_plan.md`.
+
+     Links: area The sim's schema and saves · summary Every Founding variant, instrument variants included, becomes a datasheet and the enum a list read from them; state hashes unchanged.
 626. **The founding datasheets are embedded in isocosm.** 2026-10-06, at
      the datasheets plan's P3 checkpoint. Question: where do the founding
      datasheets live? Options: embedded in isocosm, parsed once, with
@@ -7047,6 +8039,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      admission wired into genesis at 71 sites and a ruling on the ruleset
      digest. Mark chose "Embedded in isocosm". So the datasheets compile into
      isocosm, and moving them into a pack waits for W2's founding ruleset.
+
+     Links: area The sim's schema and saves · summary Founding datasheets are embedded in isocosm and parsed once; moving them into a pack waits for W2's founding ruleset.
 627. **Datasheets name shapes and selector encodings in words.** 2026-10-06,
      the same checkpoint. Question: how do datasheets name shapes and the
      encodings in their selectors (`SHAPE_SKIRT = ARMOUR_SHAPE + SHAPE_PAD`,
@@ -7055,12 +8049,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `shape = "pad"`, `worn = "covering"`, `mouth = "jaw"`,
      `chain = "leaf"`. The loader computes today's selectors, and a test
      proves every computed recipe equals the code's.
+
+     Links: area The sim's schema and saves · summary Datasheets name shapes and selector encodings in words; the loader computes the selectors and a test proves they equal the code's.
 628. **The rationale prose moves into the datasheets.** 2026-10-06, the same
      checkpoint. Question: where does the prose go (why each body and shape
      exists, the DC findings and rulings)? Options: into the datasheets as
      TOML comments (recommended); stay in the Rust docs. Mark chose "Into
      the datasheets". So the reasons sit beside the data people edit, and
      the Rust keeps only loader documentation.
+
+     Links: area Method and documents · summary Rationale prose for bodies and shapes moves into the datasheets as TOML comments; Rust keeps only loader documentation.
 629. **Founding datasheets are laid out by roster set.** 2026-10-06, P3a of
      the datasheets plan. Question: one self-contained sheet per founding,
      as the plan worded it, or sheets by roster set? The eight foundings
@@ -7071,6 +8069,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      reference (recommended); one sheet per founding. Mark chose "By roster
      set (Recommended)". So each body is written once, and the plan's
      "one TOML datasheet per founding" is amended.
+
+     Links: area The sim's schema and saves · summary Founding datasheets are laid out by roster set plus one foundings sheet, not one self-contained sheet per founding.
 630. **Palettes extend one another.** 2026-10-06, the same round. Question:
      are the four palettes written in full or by extension? Options: each
      extends another, listing the slots it adds or replaces, with the
@@ -7079,6 +8079,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      slot in selector order. Mark chose "Each extends another
      (Recommended)". So "no default moves" stays visible in the sheet, and a
      shared shape is edited once.
+
+     Links: area The sim's schema and saves · summary Palettes each extend another, listing slots added or replaced; the primitive palette is written in full and pinned by a test.
 631. **The two unnamed primitive shapes are "block" and "rod".** 2026-10-06,
      the same round. Question: what are mass slot 0 (`[2,2,2]`, tag 1) and
      limb slot 0 (`[4,1,1]`, tag 2) called, which the code names only as
@@ -7086,6 +8088,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      them unnamed. Mark chose "\"block\" and \"rod\" (Recommended)". So
      every palette slot has a name; plate's and sensor's defaults keep the
      code's "frond" and "eye".
+
+     Links: area The sim's schema and saves · summary The two unnamed primitive shapes, mass slot 0 and limb slot 0, are called "block" and "rod".
 632. **Archetype names stay in code as lookups into the sheets.** 2026-10-06,
      P3b of the datasheets plan. Question: once the code-built bodies go,
      how do the 34 lines outside the founding code reach a body or palette?
@@ -7099,6 +8103,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      bodies up by string. Mark chose "Keep names as lookups (Recommended)".
      So no caller changes, and a test proves every accessor resolves.
 
+     Links: area The sim's schema and saves · summary Archetype names stay in code as one-line lookups into the datasheets, so no caller changes and a test proves each accessor resolves.
+
 633. **Saves keep fields; traces keep entities.** 2026-10-06, the state
      *(Recorded at `c0091aa8` as 622 to 625, numbers already taken by the
      datasheets rulings on main; renumbered 633 to 636 the same day.)*
@@ -7109,14 +8115,20 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      only. Mark chose "Fields in saves, entities in traces". So a load names
      the collection that diverged, and the on-demand per-tick trace names the
      entity.
+
+     Links: area Record and history · summary Saved checkpoints carry labelled entries per top-level State field; the on-demand per-tick trace carries entities.
 634. **A v2 save stores the witness as a u64.** 2026-10-06. Options: u64
      (recommended); a hex string in the existing `Key`. Mark chose "u64". So
      v2 stores the family witness's own type, and v1 saves are read through a
      separate struct carrying their string.
+
+     Links: area The sim's schema and saves · summary A v2 save stores the witness as a u64; v1 saves are read through a separate struct carrying their string.
 636. **The witness hashes postcard bytes.** 2026-10-06. Options: postcard
      (recommended); JSON into FNV. Mark chose "Postcard". So Isocosm hashes
      through `isometer_core::snapshot::encode`, one encoding across the
      family.
+
+     Links: area Record and history · summary The witness hashes postcard bytes through isometer_core::snapshot::encode, one encoding across the family.
 641. **A v1 save is still checked at every checkpoint.** 2026-10-07,
      reading 608 for H1. Question: 608 verifies a v1 save "with the SHA-256
      hash it carries", and today's load also checks each epoch checkpoint's
@@ -7126,6 +8138,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Final hash and checkpoints (Recommended)". So the v1 reader takes the
      SHA-256 at each epoch boundary while replaying and compares it, and a
      v1 fixture with checkpoints, made by the pre-H1 code, proves it.
+
+     Links: area The sim's schema and saves · summary A v1 save is checked at every epoch checkpoint with the SHA-256 as well as its final hash, proved by a v1 fixture with checkpoints.
 642. **The probe traces draw 0's exact run.** 2026-10-07, for H1's
      `--trace` (610). Question: `isocosm-probe` runs many drawn worlds,
      each four ways, and already reruns draw 0's exact run as a reference;
@@ -7134,6 +8148,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      arm of every draw. Mark chose "Draw 0's exact run (Recommended)". So
      `run_exact` takes an optional per-tick sink, and both tools write the
      same line format.
+
+     Links: area Record and history · summary The probe's trace records draw 0's exact run in the bench's tick-witness line format.
 643. **The repo shares a build-dir, not a target-dir.** 2026-10-07,
      assessing 638. Question: cargo 1.98 has `build-dir` (stable since
      1.91), and two throwaway workspaces under one shared build-dir reused
@@ -7142,6 +8158,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Options: shared build-dir (recommended); shared target-dir. Mark chose
      "Shared build-dir (Recommended)". So intermediates are shared per
      checkout and each workspace's binaries stay where they are.
+
+     Links: area Stack and engine · summary The repo shares a cargo build-dir, not a target-dir; intermediates are shared per checkout and binaries stay per workspace.
 644. **The setting is machine-local.** 2026-10-07. Question: the root
      `.cargo/config.toml` is gitignored on purpose as the machine-local
      override file, and every workspace inherits it; where does the
@@ -7149,6 +8167,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      un-ignore and commit it; `wing.ps1` passes it. Mark chose
      "Machine-local root config (Recommended)". So nothing is committed but
      the plan, and each worktree or machine opts in by the plan's recipe.
+
+     Links: area Stack and engine · summary The shared build-dir setting lives in the machine-local root cargo config; nothing is committed but the plan.
 648. **Isocosm builds at opt-level 1 in every workspace.** 2026-10-08, from
      646's measurement. Question: isocosm at opt-level 1 cut its suite from
      84 to 27 minutes for 29 s more compile, and a profile set in only some
@@ -7159,6 +8179,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      So each workspace manifest that builds isocosm carries
      `[profile.dev.package.isocosm] opt-level = 1`; Eponym's whole dev
      profile is already 1.
+
+     Links: area Stack and engine · summary Every workspace manifest that builds isocosm carries a committed profile.dev.package.isocosm opt-level of 1.
 649. **Traces label every critter.** 2026-10-08, briefing H2 (633 said
      entities in traces). Question: population is stored as cohorts, runs
      of identical critters with consecutive ids that both execution modes
@@ -7168,12 +8190,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)". So a divergence names the exact critter, and a trace
      line holds as many entries as the world has critters. Notes needed no
      ruling: the list is append-only, so `note:<index>` is stable.
+
+     Links: area Record and history · summary Traces carry one entry per critter, each cohort's digest reused for its members, so a divergence names the exact critter.
 651. **H2's saves move to v3.** 2026-10-08, briefing H2 on mere's
      `state-witness` (`329d60d0`). Question: a v2 checkpoint stores a tick
      and a u64; how do saves carry the per-field entries (633) at each
      epoch? Options: extend v2 with an optional field (recommended); move to
      v3. Mark chose "Move to v3". So `SAVE_VERSION` becomes 3 with entries
      required, and v2 joins v1 as a kept reader, checked by its own hashes.
+
+     Links: area The sim's schema and saves · summary Save version becomes 3 with per-field entries required; v2 and v1 stay as kept readers checked by their own hashes.
 652. **The state hash is the entries' digest.** 2026-10-08. Question: H1's
      hash is one FNV over the whole state's postcard bytes, while the
      crate's `Witness::digest` is balaur's fold over the entries, a
@@ -7184,6 +8210,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      whole-state hash survives only to read v2 saves. *Reading, not ruled:*
      the entries include the world's seed, revision and traits beside the
      state's fields, so the digest covers what H1's covered.
+
+     Links: area Record and history · summary state_hash is Witness::digest over the per-field entries; H1's whole-state hash survives only to read v2 saves.
 653. **Per-tick entries go in a framed trace.** 2026-10-08. Question: how do
      the bench and probe write per-tick entries (610), a line holding one
      entry per critter (649)? Options: framed postcard under a new flag
@@ -7191,6 +8219,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)". So `--trace` keeps its text lines and
      `--trace-entries <file>` writes the crate's framed `Trace` (MERETRC,
      version 1), compared by `first_trace_divergence`.
+
+     Links: area Record and history · summary Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines.
 657. **The nervous system carries no matter.** 2026-10-08, finishing
      checkpoint 9 (amends 489's table). Question: checkpoint 9's control for
      589 (the muscular system carries the limbs' share of the bite) failed:
@@ -7212,6 +8242,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      digestive, respiratory, and neurological systems to communicate." That
      is its purpose, replacing the reading first written here (that it would
      carry perception's signal), and 658 takes up how.
+
+     Links: area Bodies and anatomy · summary The nervous and respiratory systems name no effects in the default table; the muscular system is the only route to the contracting parts.
 659. **The nervous system joins systems for a process.** 2026-10-08, 658's
      design round. Question: what does its communication do, given that
      each system carries milligrams from sources through gates to effects,
@@ -7222,17 +8254,23 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      systems for a process (Recommended)". So a process reading several
      systems gets their joint effect only where nervous routes connect those
      systems' parts, and each system still works alone.
+
+     Links: area Bodies and anatomy · summary The nervous system joins systems for a process: a process reading several systems gets their joint effect only where nervous routes connect their parts.
 660. **Any gated system can be joined.** 2026-10-08. Question: which systems
      does it connect? Options: the four Mark named, muscular, digestive,
      respiratory and nervous (recommended); every system with gates. Mark
      chose "Every system with gates". So the joining is not limited to a
      list: any process reading two or more gated systems is joined by nerves.
+
+     Links: area Bodies and anatomy · summary Any process reading two or more gated systems is joined by nerves; the joining is not limited to a list of systems.
 661. **Without nerves, systems work alone.** 2026-10-08. Question: what
      happens to a body with no nerves, or with them cut, such as the probe's
      fronds? Options: systems work alone (recommended); local reflex only;
      those systems stop. Mark chose "Systems work alone (Recommended)". So
      only the joint effect is lost: a frond is unaffected, and a nerve cut
      costs coordination, not life.
+
+     Links: area Bodies and anatomy · summary Without nerves systems work alone; only the joint effect is lost, a nerve cut costing coordination, not life.
 663. **A sense reaching both systems connects them.** 2026-10-08. Question:
      what counts as the nerves connecting two systems' parts, routes running
      along attachments through live parts (477) and the senses being the
@@ -7241,11 +8279,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      reaches both (Recommended)". So a body joins its systems through what it
      senses: a nervous route from a sense source must reach a part of each,
      and a grazer with no eye has no joint bite.
+
+     Links: area Bodies and anatomy · summary A sense reaching both systems' parts connects them; a grazer with no eye has no joint bite.
 664. **The joint effect is by degree.** 2026-10-08. Question: all or nothing,
      or by degree? Options: by degree, as systems work (477) (recommended);
      all or nothing. Mark chose "By degree (Recommended)". So the joint share
      scales with the share of the second system's parts the nerves reach: one
      limb innervated of two gives about half the limbs' share.
+
+     Links: area Bodies and anatomy · summary The joint effect is by degree, scaling with the share of the second system's parts the nerves reach.
 669. **What the sim's laws exclude is handed back or deleted.** 2026-10-08.
      Question: the sim neither renders nor resolves a blow; what becomes of
      `voxel_profile`, Eponym's sheets, techniques, timed actions, strike
@@ -7259,6 +8301,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
      *2026-10-18, Mark:* "775 stands (Recommended)". Case 775 keeps
      `effect_experiment` in mesocosm-runtime, amending this case's deletion of it.
+
+     Links: area The sim's schema and saves · summary Game-owned code the sim's laws exclude returns to its game crate or host; effect_experiment is deleted and fixtures become draws. (amended by 775)
 670. **In-site space is isometer's; the sim takes it through isometer.**
      2026-10-08, the families plan's second round. Question: legacy
      `places` gives Mesocosm its space inside a site and Eponym uses it,
@@ -7270,6 +8314,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      confirmed: "Yes, that's it". So isometer owns in-site space, and
      Isocosm's places family consumes it through isometer rather than
      keeping a copy, re-expressed after SP3 to SP5.
+
+     Links: area Stack and engine · summary In-site space is isometer's; Isocosm's places family consumes it through isometer rather than keeping a copy.
 671. **Non-sapient critters are never driven; Mesocosm's driving ends with
      its world family's move.** 2026-10-08. Question: directing is built
      only on Isocosm (194, the overlay plan's M3), while legacy Mesocosm
@@ -7282,12 +8328,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the move". So driving is the sapient player's mode, a critter that is
      not sapient is directed, the legacy driving does not carry over, and
      Mesocosm is not playable between its world family's move and M3.
+
+     Links: area Directing and play · summary Driving is the sapient player's mode; a non-sapient critter is directed; legacy Mesocosm driving ends with its world family's move.
 672. **Legacy tests become draws or retire.** 2026-10-08. Question: what of
      the 13,738 lines of legacy integration tests and 25 examples? Options:
      draws, or retire (recommended); port them all. Mark chose "Draws, or
      retire (Recommended)". So behaviour a test pins becomes a draw or
      control in its family's certification (667, 15), the rest retires with
      the family's legacy copy, and receipt examples move to the receipts.
+
+     Links: area The sim's schema and saves · summary Legacy tests become draws or controls in their family's certification, or retire with the legacy copy.
 673. **Parked rungs' code moves; the rungs stay parked.** 2026-10-08.
      Question: glyphs, magic and neighbouring worlds pull no code lane yet
      (279); do Eponym's glyphs and the chronicles move with their families?
@@ -7295,6 +8345,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      unparked. Mark chose "Move as code; rungs stay parked (Recommended)".
      So that code re-expresses with its family, unchanged in behaviour, and
      279 still bars new design on those rungs.
+
+     Links: area Organs: glyphs, impresa, hagiograph · summary Parked rungs' code (Eponym glyphs, chronicles) re-expresses with its family unchanged in behaviour; the rungs stay parked.
 674. **A body's geometry goes through isometer; its physiology stays the
      sim's.** 2026-10-08, from Mark after 670: "I would figure that's how
      the sim would relate to movement, reach, and bodies too." Question:
@@ -7307,6 +8359,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      through isometer (Recommended)". So a body's shape is isometer's body
      document, and the sim keeps its physiology keyed by isometer's part
      ids, one geometry for every game and the lens.
+
+     Links: area Bodies and anatomy · summary A body's geometry is isometer's body document; the sim keeps physiology keyed by isometer's part ids.
 675. **Movement and physical reach go through isometer; the reach field stays
      the sim's.** 2026-10-08. Question: a body's movement in a site and its
      physical reach would read isometer's in-site space, while the sim's
@@ -7314,6 +8368,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the record's; does that split hold? Options: space through isometer,
      news the sim's (recommended); everything spatial through isometer.
      Mark chose "Yes: space through isometer, news the sim's (Recommended)".
+
+     Links: area Stack and engine · summary Movement and physical reach read isometer's space; the reach field (when news arrives at a site) stays the sim's.
 677. **The overlay's M2 is the families plan's Mesocosm share.** 2026-10-08,
      the Mesocosm overlay plan's design round. Question: M2 ("absorption by
      family") predates 591 and 666 to 676, and the families re-expression
@@ -7324,6 +8380,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      families and keeps its own condition: the web each level enables stays
      alive in most draws (260), measured by persistence, turnover, collapse
      and response to intervention (267, 283).
+
+     Links: area Mesocosm · summary Overlay M2 is the families plan's Mesocosm share and keeps its own condition: the web stays alive in most draws.
 678. **Mesocosm's world family moves last, with M3.** 2026-10-08. Question:
      671 ends Mesocosm's driving when its world family moves, leaving it
      unplayable until M3; how is the gap handled? Options: the world family
@@ -7332,6 +8390,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      So Mesocosm keeps playing on the legacy world until directing on
      Isocosm is ready, and the world family's re-expression is the switch
      itself: the gap closes to nothing.
+
+     Links: area Mesocosm · summary Mesocosm's world family moves last, with M3, so Mesocosm keeps playing on the legacy world until directing on Isocosm is ready. (amended by 681, 755)
 679. **The driving intents become the critter's own acts; `Idle` goes.**
      2026-10-08, ruling the overlay plan §3's two readings. Question: the
      old `Move`, `Metabolize`, `Consume`, `Graft`, `Deposit` and `Carve`
@@ -7340,6 +8400,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark chose "Rule both as read (Recommended)". So the six are the
      critter's own acts under directing, chosen by its methodology, and
      `Idle` has no role.
+
+     Links: area Directing and play · summary The six old driving intents become the critter's own acts chosen by its methodology; Idle has no role.
 680. **An interim M4 at site grain.** 2026-10-08. Question: M4 now waits for
      in-site space through isometer (670, after SP3 to SP5) and for bodies
      after checkpoints 10 and 11; is there an earlier milestone? Options: an
@@ -7348,6 +8410,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Isocosm runs without in-site space, rounds, births, boundaries and a
      collapse at site grain with its receipts replaying, and the full M4
      follows when places land.
+
+     Links: area Mesocosm · summary An interim M4 at site grain gives a first played loop on Isocosm without in-site space; the full M4 follows when places land.
 681. **The interim M4 is the switch; amends 678.** 2026-10-08, the directing
      survey's first round. Question: 678 makes Mesocosm's world family's
      move the switch, last, after places, while 680 puts a played loop on
@@ -7360,6 +8424,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      until the full M4. *Reading, not ruled:* M3 lands with the interim M4,
      so 671's gap still closes to nothing; Mesocosm's legacy world family
      retires at that switch rather than after places.
+
+     Links: area Mesocosm · summary The interim M4 is the switch: genet's runtime moves onto a native Session and the legacy world family retires then. (amended by 755)
 682. **M3 plays a native generated lineage.** 2026-10-08. Question: native
      generation (`bodied.rs`) makes lineages today, while re-expressing
      Mesocosm's founders waits on the bodies family and the families plan's
@@ -7367,6 +8433,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (recommended); the founders, re-expressed. Mark chose "Native lineage
      (Recommended)". So M3 does not wait on the bodies family, and the
      founders join when it and fork 9 land.
+
+     Links: area Mesocosm · summary M3 plays a native generated lineage; the founders join when the bodies family and fork 9 land.
 683. **The critter's choice is a deliberative methodology.** 2026-10-08.
      Question: the scheduler runs every due process for each ready group, so
      nothing chooses one act over another and a nudge has nowhere to be
@@ -7376,6 +8444,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      method (Recommended)". So a deliberative critter chooses one Choice
      process, weighing needs, mood, nudges and bond, which is 679's "chosen
      by its methodology", and `Receipt.foregone` records what it passed over.
+
+     Links: area Directing and play · summary A deliberative critter chooses one Choice process weighing needs, mood, nudges and bond; Receipt.foregone records what it passed over. (amended by 813)
 684. **The interim boundary ports grow-a-copy scoring.** 2026-10-08.
      Question: the interim M4's boundaries adapt every lineage (57, 182),
      while adaptation belongs to the lineages family, fifth, after places;
@@ -7385,6 +8455,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      without adapting. Mark chose "Port grow-a-copy (Recommended)". So
      adaptation's scoring lands natively ahead of its family, and 195 and
      668's order stands.
+
+     Links: area Ecology · summary The interim boundary ports grow-a-copy adaptation scoring natively over fork_at, ahead of the lineages family; 195's order stands.
 685. **A suggestion is a derived reading.** 2026-10-08, the directing
      survey's second round. Question: what is a suggestion that surfaces
      (the contract's `EventRecord` is a generic topic and a byte payload;
@@ -7394,6 +8466,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chose "Derived reading (Recommended)". So a suggestion is what the
      critter considered and could act on, read from its receipts and what
      it knows, and nothing new is kept.
+
+     Links: area Directing and play · summary A suggestion is a derived reading over foregone and knows; nothing new is kept.
 686. **The runtime translates the contract.** 2026-10-08. Question: which
      way does the contract dependency run (Isocosm does not depend on
      `isocosm-overlay`, 1,256 lines and used by nothing, and the overlay
@@ -7403,6 +8477,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      translates (Recommended)". So Isocosm and the contract stay
      independent, and the nudge enters the sim as a new logged native
      command.
+
+     Links: area Directing and play · summary The runtime over Session translates contract envelopes into native commands; Isocosm and the contract stay independent; a nudge is a new logged command.
 687. **A region at site grain groups sites by biomass.** 2026-10-08.
      Question: what is a region at site grain, for the local collapse
      played on (225, 226)? Options: one site (recommended); sites grouped by
@@ -7411,6 +8487,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      trophic level fills its slot in a region of sites until over capacity,
      then spills into a new one, and the regions merge as biomass falls.
      The grouping rule is put as its own question.
+
+     Links: area Ecology · summary At site grain a region groups sites by biomass: each trophic level fills its slot until over capacity, then spills; regions merge as biomass falls.
 688. **The bond is a weighted relation to a participant.** 2026-10-08.
      Question: what is the bond (177, 178)? Options: an account
      (recommended); `Tenet.trust`; a relation to a participant outside the
@@ -7425,6 +8503,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      gains a value, and each player's bond is its own weighted relation to
      the critter, moving with outcomes, which serves coop. *Reading, not
      ruled:* 178's setting seeds the weight at birth.
+
+     Links: area Directing and play · summary A participant is a placeless entity and Relation gains a value; each player's bond is its own weighted relation to the critter.
 689. **Regions are derived each round.** 2026-10-08, with 687. Question: how
      are 226's regions held at site grain? Options: derived each round from
      site biomass and site routes, never kept (recommended); kept and
@@ -7432,6 +8512,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a reading, as mood is (227): a world rule sets each trophic level's
      slot capacity, and a region grows along adjacent sites, so geography
      counts.
+
+     Links: area Ecology · summary Regions are derived each round from site biomass and routes, never kept; a world rule sets each trophic level's slot capacity.
 690. **Standing orders are derived from the history.** 2026-10-08.
      Question: where do 216's standing orders live? Options: derived from
      the logged nudges and their outcomes (recommended); kept on the
@@ -7439,12 +8521,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      home, priorities and stances are desire paths (59) read from the log,
      replaying exactly, and at site grain a contract `PlaceHandle` names a
      site.
+
+     Links: area Directing and play · summary Standing orders are derived from logged nudges and their outcomes, replaying exactly, not kept on the entity.
 691. **Survival mode filters through what the critter knows.** 2026-10-08.
      Question: how does survival mode (180, 184) filter at site grain, with
      the sense function still running nothing? Options: through `knows` and
      the reach field (recommended); defer until senses. Mark chose "Through
      knows (Recommended)". So the interim M4 ships both modes, and senses
      refine the filter when they run.
+
+     Links: area Directing and play · summary Survival mode filters through what the critter knows and the reach field; the interim M4 ships both modes.
 695. **parry-ground folds into conatus.** 2026-10-08. Question: the probe
      is a 481-line binary with no consumers, `GroundCollision` already
      wraps `Voxels` privately, and mesocosm-runtime's `tactile.rs` already
@@ -7456,6 +8542,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      objective with its own assessment: what conatus exposes for the
      probe's ray, point and manifold checks, and whether the receipt's
      figures survive the move.
+
+     Links: area Stack and engine · summary parry-ground folds into conatus: its checks run through conatus's voxel collider and the direct parry dependency retires.
 696. **The sim records edits; isometer applies them and derives places.**
      2026-10-08, the in-site space survey's round, under 670. Question: SP4
      and SP5 have no code; 413 stores edits as shape operations, "an
@@ -7466,6 +8554,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the sim keeps each edit as an asserted fact and an entity's place id,
      and isometer applies edits to its volume and derives places, passages
      and travel cost.
+
+     Links: area Stack and engine · summary The sim records each edit as an asserted fact and an entity's place id; isometer applies edits and derives places, passages and travel cost.
 697. **nisus is the store behind isometer, now.** 2026-10-08. Question: 330
      made mere's nisus the voxel authority, and 670 gives in-site space to
      isometer, whose `Ground` stores it today; how do they fit? Options:
@@ -7475,6 +8565,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      in behind isometer with SP4 rather than waiting for SP6.
      *Annotation, 2026-10-08:* put back as 700 with T2 still unbuilt; it
      stands.
+
+     Links: area Stack and engine · summary Nisus is the store behind isometer now, with SP4; 670 governs the interface and 330 the storage.
 698. **SP4 and SP5 are built in isometer.** 2026-10-08. Question: the lift
      lives in isocosm (`src/terrain`, `src/map`, 1,040 lines) and SP3's
      adapter in genet's bench; where are SP4 and SP5 built? Options: in
@@ -7482,6 +8574,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "In isometer (Recommended)". So edit application and places are an
      isometer-core module or a product-neutral isometer crate without wgpu,
      consumed by the sim directly.
+
+     Links: area Stack and engine · summary SP4 and SP5 (edit application and places) are built in isometer without wgpu and consumed by the sim directly.
 699. **The seam keys by `PartId`, and situs joins the body document.**
      2026-10-08, under 674. Question: isometer's `PartId(u32)` is a vector
      index with tombstones and native ids are `u64` map keys; situs and
@@ -7492,12 +8586,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)". So the sim keys physiology by `PartId`, `BodyDocument`
      gains situs and the shape name as product-neutral fields, and
      `mass_mg` becomes a reading of the sim's ledger, not a second store.
+
+     Links: area Bodies and anatomy · summary The sim keys physiology by PartId; BodyDocument gains situs and shape name; mass_mg becomes a reading of the sim's ledger.
 701. **The lift moves to isometer.** 2026-10-08. Question: does the lift
      (isocosm's `src/terrain` and `src/map`, 1,040 lines) move? Options: the
      lift to isometer, the world map and skeleton staying the sim's
      (recommended); it stays, with an adapter; everything moves. Mark chose
      "Lift moves to isometer (Recommended)". So site grain stays the sim's,
      and lifting a site into voxels is isometer's, beside SP4 and SP5 (698).
+
+     Links: area Stack and engine · summary Lifting a site into voxels moves to isometer beside SP4 and SP5; site grain and the world map stay the sim's.
 702. **Walking, routing and sight are rewritten over SP5.** 2026-10-08.
      Question: legacy `near.rs` (369 lines) uses only `Ground` and `Aabb`;
      675 sends movement and physical reach through isometer and 597 keeps
@@ -7507,6 +8605,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      built over SP5's passages and travel cost, not raw voxels, and the
      legacy searches retire with their family. *Reading, not ruled:*
      Eponym's conatus motion stays game-side (597).
+
+     Links: area Stack and engine · summary Isometer's walking, routing and sight are built over SP5's passages and travel cost, not raw voxels; legacy searches retire with their family.
 703. **Soil, the tier line and the coarse partition split now.** 2026-10-08.
      Question: where do legacy soil, the tier line and the coarse `Places`
      partition go? Options: split now (recommended); decide at the family.
@@ -7514,6 +8614,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the sim's, keyed by isometer's columns, which settles 343's "whether
      columns are sites"; the tier line goes to the host or directing; and
      SP5's places supersede the coarse partition.
+
+     Links: area Stack and engine · summary Soil and its diffusion stay the sim's keyed by isometer's columns; the tier line goes to host or directing; SP5 places replace the coarse partition.
 704. **Checkpoint 10's wounds come from an agentless hazard.** 2026-10-08,
      checkpoint 10's brief, first round. Question: what inflicts a wound in
      the probe before 123's fights exist (the probe's fights are between
@@ -7523,6 +8625,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      joined to bodies. Mark chose "Agentless hazard (Recommended)". So a
      drawn hazard wounds a part, rate zero is the negative control, and
      123's fights reuse the same wound effect when they come.
+
+     Links: area Bodies and anatomy · summary Checkpoint 10's wounds come from an agentless hazard at a per-world drawn rate; rate zero is the negative control.
 705. **A wound is its own effect.** 2026-10-08. Question: how is a wound
      told from a bite (469: a bite takes tissue, a wound takes cells; 496
      passed on "a bite to the gut takes intake")? Options: its own `Effect`
@@ -7530,12 +8634,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chose "Its own Effect (Recommended)". So `Eat` stays tissue only, and
      in the flow record a spill goes from part to site in the part's own
      matter while a bite goes from part to eater.
+
+     Links: area Bodies and anatomy · summary A wound is its own Effect with its own part draw; Eat stays tissue only.
 706. **A part keeps its lost cells.** 2026-10-08. Question: capacity and
      adult mass read only from `half_extent` today, which 674 makes the
      body document's; how does a wound shrink them? Options: a lost-cells
      field that capacity and ceiling subtract (recommended); shrink
      `half_extent`. Mark chose "A lost-cells field (Recommended)". So
      physiology never writes geometry, and 674's move stays mechanical.
+
+     Links: area Bodies and anatomy · summary A part keeps a lost-cells field that capacity and ceiling subtract; physiology never writes geometry.
 707. **Severing follows isometer's semantics.** 2026-10-08. Question:
      native flags only the cut part (its children still count in `held`),
      isometer tombstones the whole subtree with stable ids and refuses the
@@ -7546,6 +8654,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      root, and moves the tombstones' matter out, closing the gap where
      `anatomy::books` counts a tombstone's matter that `held` and `room`
      skip.
+
+     Links: area Bodies and anatomy · summary Severing tombstones the whole subtree, keeps ids, never takes the root, and moves the tombstones' matter out.
 708. **A wound spills everything over its lowered bound.** 2026-10-08,
      checkpoint 10's second round. Question: 469 spills "tissue it can no
      longer hold", but the store and reproduce bounds (`anatomy::bound`)
@@ -7553,17 +8663,23 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (recommended); tissue only. Mark chose "All over its bound
      (Recommended)". So tissue, reserve and provision each spill what
      exceeds their lowered bound, and no account sits above its bound.
+
+     Links: area Bodies and anatomy · summary A wound spills tissue, reserve and provision over their lowered bounds, so no account sits above its bound.
 709. **Free cells count in a wound's proportion.** 2026-10-08. Question:
      do unallocated cells count in 496's proportion? Options: free cells
      count (recommended); allocated only. Mark chose "Free cells count
      (Recommended)". So a wound takes cells across every function and the
      free pool together, and free cells cushion it.
+
+     Links: area Bodies and anatomy · summary Free (unallocated) cells count in a wound's proportion and cushion it.
 710. **Losing every cell severs a part, or kills at the root.**
      2026-10-08. Question: what happens when a wound takes all of a part's
      cells? Options: it severs, the root killing (recommended); a
      zero-capacity stub. Mark chose "Severs; root kills (Recommended)". So
      a non-root part with no cells left is severed under 707, and a root
      with none dies.
+
+     Links: area Bodies and anatomy · summary A non-root part with no cells left is severed; a root with none dies.
 711. **Severing comes only from losing every cell.** 2026-10-08. Question:
      Eponym's strike severs past `sever_threshold` (24), and 669 hands
      strike resolution to the game; can a wound sever before all cells are
@@ -7571,6 +8687,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      threshold; a cause that names it. Mark chose "Only at all cells
      (Recommended)". So severing has one mechanism, and a game's strikes
      reach it by wounding hard enough.
+
+     Links: area Bodies and anatomy · summary Severing comes only from losing every cell; a game's strikes reach it by wounding hard enough.
 712. **Healing lands just before tissue.** 2026-10-08, checkpoint 10's
      third round. Question: 496 heals "before it fills tissue or grows new
      parts"; a hungry body lands reserve, tissue, grow, provision and a fed
@@ -7579,6 +8697,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      before tissue (Recommended)". So a hungry body lands reserve, heal,
      tissue, grow, provision, and a fed one heal, tissue, grow, provision,
      reserve.
+
+     Links: area Bodies and anatomy · summary Healing lands just before tissue: hungry bodies land reserve, heal, tissue, grow, provision; fed ones heal first.
 713. **Regrowing from a fragment is a second trait.** 2026-10-08.
      Question: 485 makes healing and regrowing parts one trait; is
      regrowing from a fragment (470) its own? Options: a second trait,
@@ -7586,6 +8706,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark chose "A second trait (Recommended)". So a lineage can heal
      without its fragments living, and the anatomy brief §7's reading is
      ruled.
+
+     Links: area Bodies and anatomy · summary Regrowing from a fragment is a second trait drawn per lineage, separate from healing.
 714. **A living fragment re-roots as a seedling does.** 2026-10-08.
      Question: a limb's subtree holds no recipe root, so `lacking()` grows
      nothing; how does a living fragment grow? Options: re-root like a
@@ -7593,6 +8715,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark chose "Re-root like a seedling (Recommended)". So the fragment's
      top part becomes part 0 at situs `[0,0,0]`, as a bud does, and it
      grows its recipe from there.
+
+     Links: area Bodies and anatomy · summary A living fragment re-roots as a seedling does: its top part becomes part 0 at situs [0,0,0] and grows its recipe from there.
 715. **A living fragment is a birth, unprovisioned.** 2026-10-08. Question:
      a bud is `Born(lineage)`, spends provision (518) and counts among
      births and the living; is a fragment a birth? Options: a birth without
@@ -7601,12 +8725,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      counted among births and the living with a parent relation (554),
      carrying its own matter, its systems dormant where it cannot realize
      them (583).
+
+     Links: area Bodies and anatomy · summary A living fragment is a birth without provision, counted among births and the living with a parent relation, systems dormant where unrealizable.
 716. **A hazard's wound lands on a part drawn by cells.** 2026-10-08,
      checkpoint 10's fourth round. Question: bites draw by edible holdings
      (`anatomy::bitten`) and 705 gives the wound its own draw; which part?
      Options: by living cells (recommended); by tissue; uniform. Mark chose
      "By cells (Recommended)". So bigger parts are hit more often, structure
      for structure, apart from where the food is.
+
+     Links: area Bodies and anatomy · summary A hazard's wound lands on a part drawn by living cells, so bigger parts are hit more often.
 717. **Severing bumps the body's revision; a wound does not.** 2026-10-08.
      Question: Allocate and trait marks bump `body_revision`, invalidating
      `Query::Part` bindings, and Eponym's `injure` bumps its own; do harms?
@@ -7614,6 +8742,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chose "Severing bumps, wounds don't (Recommended)". So a severing
      re-resolves bindings, and a bound process keeps its wounded part and
      reads its new capacity.
+
+     Links: area Bodies and anatomy · summary Severing bumps the body's revision and re-resolves bindings; a wound does not.
 718. **Checkpoint 10 builds rot; eating carrion comes later.** 2026-10-08.
      Question: 470's dead fragments are "eaten, incorporated or left to
      rot", but nothing eats or rots a dead body today; what does checkpoint
@@ -7622,6 +8752,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a dead body's matter returns to the site at a drawn rate, closing the
      conservation loop, and eating carrion comes with 123's scavenging or
      the lineages family.
+
+     Links: area Ecology · summary A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later.
 719. **A regrown part revives its tombstone.** 2026-10-08. Question: under
      707 a tombstone keeps its id and situs, and `lacking()` refuses a
      situs held, severed or not; what id does a regrown part take? Options:
@@ -7632,6 +8764,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the subtree regrows the same way, part by part from the top, and
      isometer gains the matching operation (it has `sever` and no revival)
      with the bodies family's move (676).
+
+     Links: area Bodies and anatomy · summary A regrown part revives its tombstone: healing clears the severed flag at that situs and gives it new cells.
 720. **Isometer's fixtures become its own.** 2026-10-08, the in-site space
      survey's last round. Question: isometer-lens, -mesh and -render
      dev-depend on isocosm, and 16 of their files import `isocosm::legacy`
@@ -7640,6 +8774,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      isocosm draws. Mark chose "Isometer-local fixtures (Recommended)". So
      the fixtures are rebuilt from isometer's own ground and body documents,
      and isometer's tests no longer depend on the sim it serves.
+
+     Links: area Stack and engine · summary Isometer's fixtures are rebuilt from its own ground and body documents so its tests no longer depend on the sim.
 721. **Lineage vocabulary leaves isometer-core with the bodies family.**
      2026-10-08. Question: isometer-core carries Mesocosm's lineage words 39
      times (`SpeciesId`, `Origin::Incorporated{from_species}`,
@@ -7650,12 +8786,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ids move to the sim, keyed by `PartId` (699), isometer keeping geometry
      and an opaque origin tag, and `BodyPlan`'s shape classes stay as
      product-neutral geometry.
+
+     Links: area Stack and engine · summary Lineage vocabulary leaves isometer-core with the bodies family; provenance and species ids move to the sim keyed by PartId.
 724. **The folded probe stays a standalone isometry probe.** 2026-10-08.
      Question: where does it live? Options: its own workspace under
      `crates/probes`, pinned to mere by rev (recommended); `TactileWorld`'s
      tests; a receipt in mere, losing every `Ground` figure. Mark chose
      "Standalone isometry probe (Recommended)". *Reading, not ruled:* its
      name no longer fits once parry goes, and a rename is a naming round.
+
+     Links: area Stack and engine · summary The folded probe stays a standalone isometry probe in its own workspace under crates/probes, pinned to mere by rev.
 735. **The kiss3d fork: v0.47.0, a mark-ik fork, a mere crate over it.**
      2026-10-09. Evidence: cargo's git cache holds dimforge/kiss3d at
      `28cdddd` (2026-08-29, past v0.46.0); v0.47.0 (2026-10-04), which
@@ -7668,6 +8808,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      directly. So one fetch of upstream kiss3d is allowed, 606's
      commit-by-name rule governs what comes in from balaur, and the mere
      crate takes a plain working name until a naming round.
+
+     Links: area Stack and engine · summary The kiss3d fork is v0.47.0 at crates/kiss3d (mark-ik fork, pinned by rev), with a mere crate over it owning device, targets, lights, depth pre-pass.
 736. **Palette colours reach kiss3d as a texture addressed by UV.**
      2026-10-09, from the renderling inventory. Evidence: kiss3d's meshes
      carry no vertex colours (`resource/mesh3d.rs:143`), while Eponym's room
@@ -7684,6 +8826,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      renderling-specific counts are rewritten against that report after
      the push (732). The inventory also found `field-bake` already retired
      (`bb92f2e8`), leaving `ambience-lease` the one probe 474 archives.
+
+     Links: area Presentation · summary Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow.
 737. **A room is roofed air.** 2026-10-09, the places lane's forks (merged
      at `2a26c625`). Question: 417's "air cut off from the sky", read as no
      air path to the sky, floods an open-mouthed cave into the outdoor patch;
@@ -7691,38 +8835,52 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Options: roofed (recommended); sealed; a world rule. Mark chose "Roofed
      (Recommended)". So caves, tunnels and lintelled doorways are places
      with clearance on their edges, and `Cover::Roofed` is the default.
+
+     Links: area Stack and engine · summary A room is roofed air: caves, tunnels and lintelled doorways are places with clearance on edges, and Cover::Roofed is the default.
 738. **A patch splits at narrow necks.** 2026-10-09. Question: clearance
      lives only on edges (418), so a 1-wide gap inside one large patch lets
      a 2-wide body through. Options: split where walkable width drops below
      a world-rule width (recommended); accept it; record each patch's
      narrowest width. Mark chose "Split at narrow necks (Recommended)".
+
+     Links: area Stack and engine · summary A patch splits where walkable width drops below a world-rule width.
 739. **An edit's mass is credited by material.** 2026-10-09. Question: 412's
      density and matter account have no defaults and the sim names no
      carver. Options: density and account on `Material`, set at founding,
      crediting the acting entity's ledger, dev source only until set
      (recommended); one density; cells, not mass. Mark chose "Density and
      account per material (Recommended)".
+
+     Links: area The sim's schema and saves · summary An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger.
 740. **An entity names its patch through an optional field.** 2026-10-09.
      Question: `Entity.place` is a site id, and a cohort's members share a
      record. Options: `patch: Option<PlaceId>` on `Entity`, set only for
      members split out of their cohort (recommended); a `State` map; wait on
      275. Mark chose "Optional patch on Entity (Recommended)".
+
+     Links: area The sim's schema and saves · summary Entity gains an optional patch field, set only for members split out of their cohort.
 741. **Sight is a voxel ray scoped by places.** 2026-10-09. Question: no
      ruling defines sight over SP5's passages (702). Options: a voxel ray,
      the place graph choosing candidates (recommended); visible sets per
      pair of places; same or adjacent places only. Mark chose "Voxel ray,
      place-scoped (Recommended)".
+
+     Links: area Stack and engine · summary Sight is a voxel ray with the place graph choosing candidates.
 742. **The tier line goes to directing.** 2026-10-09. Question: 703 sends it
      to the host or directing. Options: directing, with the family's
      re-expression (recommended); the host now. Mark chose "Directing
      (Recommended)". So it moves with the directing plan's D2.
      *Noted 2026-10-09:* the places lane coined `isometer-space` and
      `Atlas` mid-session; both are working names awaiting a naming round.
+
+     Links: area Directing and play · summary The tier line goes to directing, moving with the directing plan's D2, not to the host now.
 743. **The neck width defaults to 2.** 2026-10-09, the places lane's
      second pass (merged at `af3a0fc4`). Question: 738's split has no
      default, so nothing splits until a world sets one. Options: 2, so any
      1-wide neck splits (recommended); the roster's widest body; unset.
      Mark chose "Default 2 (Recommended)".
+
+     Links: area Stack and engine · summary The patch neck width defaults to 2, so any 1-wide neck splits.
 744. **Cliff spans are drawn, and the lift steps its surface there.**
      2026-10-09. Question: spans derived from the lift never stop at a
      cliff, two sites meeting on one continuous profile, so only water
@@ -7733,6 +8891,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)". So the lift's bytes change on drawn worlds, which 732
      lets land without re-certifying the lift's receipts until after the
      push.
+
+     Links: area World generation · summary Cliff spans are drawn from both sites' skeletons and the pair seed, and the lift steps its surface there.
 746 to 748. **The tenant's context slot, report and water field.**
      2026-10-09. Mark chose "Keep the scoped slot (Recommended)" for 471's
      handle, "Submissions only (Recommended)" for the frame report, and
@@ -7752,6 +8912,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      draws bodies onto a transparent target that netrender layers over the
      traced colour, the torch casts no shadow until the testing pass tunes
      it, and the CLAUDE.md names the tenant.
+
+     Links: area Presentation · summary eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing.
 750. **The flow record moves with the record family; the registry
      converges with bodies.** 2026-10-09, the matter-and-processes family
      (merged at `14eb2dfb`: the five natives, typed matter and the registry
@@ -7764,6 +8926,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)" and "Converge with bodies (Recommended)". So `flow`
      stays in legacy until the record family, and the bodies lane lowers
      the registry onto the function catalogue with phenotype allocation.
+
+     Links: area Stack and engine · summary The flow record stays in legacy until the record family; the registry converges with bodies, lowered onto the function catalogue.
 751. **A site is habitable when the lineage's conditions hold and a member
      lives there.** 2026-10-09, directing D1 to D4 (merged at `d852ceb0`).
      Question: what habitability means natively for a player-picked start
@@ -7771,12 +8935,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      every condition the lineage's processes require and a member lives
      there (recommended); mood at least zero; habitable from founding. Mark
      chose "Conditions met, member lives (Recommended)".
+
+     Links: area Directing and play · summary A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there.
 752. **A minimal native lineage revision comes forward.** 2026-10-09.
      Question: native has no lineage revision, so 684's grow-a-copy boundary
      has nothing to commit. Options: a minimal revision now, development-
      recipe variants from what the lineage has learned (recommended); wait
      for the lineages family; trait-set candidates. Mark chose "A minimal
      revision now (Recommended)".
+
+     Links: area Ecology · summary A minimal native lineage revision comes forward: development-recipe variants from what the lineage has learned.
 753. **After a regional collapse, members migrate and the player may start
      again elsewhere.** 2026-10-09. Question: `Effect::Move` takes a fixed
      destination, so migration needs a generated process per route; or the
@@ -7784,6 +8952,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      start again elsewhere (recommended); generated move acts; both. Mark
      chose "Both". So founding generates a move process per route, and
      `OnCollapse::Elsewhere` stays available.
+
+     Links: area Directing and play · summary After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available.
 754. **A region has collapsed only in a level it once held.** 2026-10-09.
      Question: regions that never held a trophic level read as collapsed
      from the first round, while 225 says "a level gone". Options: only
@@ -7797,6 +8967,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      sophonts through gemot's tulpa lane; denoising in the tenant. Any of
      them must infer bit-identically or log its outputs, for replay.
      Parked as research for after 732's push.
+
+     Links: area Ecology · summary A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt.
 755. **The world families come forward; amends 678 and 681's order.**
      2026-10-09, from the bodies lane (first pass merged at `417a2e2c`).
      Question: deleting legacy bodies is blocked, `organism` imported by 59
@@ -7810,6 +8982,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      native once native serves what they need (kingdom reading, mosaics,
      graft compatibility, Eponym's needs and wounds), the switch (681, D5)
      with them, and legacy bodies delete with the worlds.
+
+     Links: area Mesocosm · summary The world families come forward in the migration push; Mesocosm's and Eponym's worlds move onto native, the switch with them, legacy bodies deleted.
 756. **Lineage data moves into isocosm; isometer keeps an opaque tag.**
      2026-10-09. Question: about 218 provenance and 200 `mass_mg` sites
      store lineage and mass in isometer's document. Options: `SpeciesId`,
@@ -7817,6 +8991,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `PartId`, a per-part opaque tag in isometer (recommended); defer. Mark
      chose "Into isocosm, opaque tag (Recommended)". This carries 721 and
      699's mass reading.
+
+     Links: area Stack and engine · summary Lineage and provenance data (SpeciesId, Origin, Provenance) move into isocosm as sidecars keyed by PartId; isometer keeps an opaque tag.
 757. **Authored content enters by `Command::Assert`, with the record.**
      2026-10-09, from the campaign lane (merged at `b37d7e91`). Question:
      native asserts no faction, place, character, law, fact or history
@@ -7824,6 +9000,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      built with the record family, the campaign world becoming a reading of
      native state (recommended); build it now; the campaign stays authored
      until V2. Mark chose "Command::Assert with the record (Recommended)".
+
+     Links: area The VTT · summary Authored content enters by Command::Assert with the record family; the campaign world becomes a reading of native state.
 758. **The datasheets feed native; families-plan fork 9 closes.**
      2026-10-09. Question: legacy `Founding`'s eight bodies come from 1,198
      embedded TOML lines (625, 626) while `bodied::roster()` hand-codes the
@@ -7831,10 +9009,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and `Template`, `roster()` reading the sheets, legacy `Founding` a name
      into them (recommended); keep both; native code authoritative. Mark
      chose "Sheets feed native (Recommended)".
+
+     Links: area The sim's schema and saves · summary The datasheet loader lowers onto native Recipe and Template; roster() reads the sheets; legacy Founding becomes a name into them.
 759. **The registry carries all fifteen functions, with the world move.**
      2026-10-09. Options: all fifteen with the world move (recommended); the
      five natives for good. Mark chose "All fifteen, with the world move
      (Recommended)".
+
+     Links: area Bodies and anatomy · summary The registry carries all fifteen functions, arriving with the world move.
 760. **An authored faction is a polity with no members yet.** 2026-10-09.
      Question: campaign factions are authored without members while native
      derives factions from membership (63 to 68). Options: a polity whose
@@ -7849,6 +9031,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      members. *Reading, not ruled:* once members join, readings derived
      from them sit beside the authored attributes rather than replacing
      them, and where the two disagree is a later question.
+
+     Links: area The VTT · summary An authored faction is a polity with no members yet, asserted with authored name, tags, claims, governance and focus as facts.
 762. **The review and succession lanes re-point at the switch.** 2026-10-10,
      from the lineages family (merged at `fe1f7178`). Question: every
      consumer reads lineages through a driver holding the legacy `World`.
@@ -7856,21 +9040,29 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the native `Session` and succession the interim loop's happenings
      (recommended); now, beside legacy; only the views board now. Mark chose
      "At the switch (Recommended)".
+
+     Links: area Ecology · summary The review and succession lanes re-point at the switch: review becomes lineage::Review over the native Session.
 763. **The boundary and revision move into `lineage/`.** 2026-10-10.
      Question: directing built them, while 684 names adaptation as the
      lineages family's. Options: into `lineage/`, directing re-exporting
      (recommended); stay in directing. Mark chose "Into lineage/
      (Recommended)".
+
+     Links: area Ecology · summary The boundary and revision move into lineage/, with directing re-exporting.
 764. **Lexicon lessons are discovery.** 2026-10-10. Question: legacy
      discovery's condition table, with its endurance route, against native's
      lessons from eating a part whole (468). Options: native lessons are
      discovery and the table retires with the world (recommended);
      conditions as rules data; port the full model. Mark chose "Lexicon
      lessons are discovery (Recommended)".
+
+     Links: area Ecology · summary Native lessons from eating a part whole are discovery; legacy discovery's condition table retires with the world.
 765. **The native revision grows to tracts and systems.** 2026-10-10.
      Options: legacy's declared tracts and 568's folding of systems at the
      boundary, built in the lineages family (recommended); recipe variants
      only. Mark chose "Grow to tracts and systems (Recommended)".
+
+     Links: area Ecology · summary The native revision grows to tracts and systems at the boundary, built in the lineages family.
 766. **Native parts gain cell identity.** 2026-10-10, from the bodies
      lane's second pass (merged at `5f3fe18b`). Question: legacy `Mosaic`
      gives each part a cell graph (ids, adjacency, tracts as connected cell
@@ -7879,12 +9071,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      tracts as cell sets beside the counts and intake ports as part data
      (recommended); counts only; a presentation projection. Mark chose "Cell
      identity in native (Recommended)".
+
+     Links: area Bodies and anatomy · summary Native parts gain cell identity: tracts as cell sets beside the counts, intake ports as part data.
 767. **Eponym's needs become native accounts; its wound, checkpoint 10's
      cell loss.** 2026-10-10. Options: hunger and fatigue as native
      accounts (the matter reserve and `Energy`) read by `Need`s, the wound
      built as checkpoint 10's cell loss with Eponym's world move
      (recommended); Eponym-shaped counters in native; counters stay
      Eponym's. Mark chose "Native accounts and wounds (Recommended)".
+
+     Links: area Eponym · summary Eponym's hunger and fatigue become native accounts read by Needs; its wound is checkpoint 10's cell loss, built with Eponym's world move.
 768. **A campaign's session carries its assertions.** 2026-10-10, from the
      record lane (merged at `b9e0f967`). Question: `CampaignWorld` is a field
      of isonetry's replicated snapshot, and a native `Session` needs a
@@ -7894,26 +9090,36 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `Session`; wait for native founding. Mark chose "Session carries
      assertions (Recommended)", 248's "switched on later over the same
      history".
+
+     Links: area The VTT · summary A campaign's session carries its assertions; CampaignWorld folds from them and a native Session replays from them when the sim switches on.
 769. **Authored places, characters, laws and history lines are native nouns
      with authored fills.** 2026-10-10. Options: each its native noun with
      authored attributes filling placeholders as 760 did (a place a `Site`,
      a character a placeless `Entity`, a law an asserted rule record, a
      history line an `Event`) (recommended); an asserted-records map; all
      as notes. Mark chose "Native nouns, authored fill (Recommended)".
+
+     Links: area The VTT · summary Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills.
 770. **The legacy record leaves with the world move.** 2026-10-10.
      Question: legacy `history`, `record` and `snapshot` are the legacy
      `World`'s own record, shaped unlike native's. Options: they leave with
      the world move, the moved world writing native history, journal and
      witness (recommended); lower them now. Mark chose "Leave with the world
      move (Recommended)".
+
+     Links: area Record and history · summary Legacy history, record and snapshot leave with the world move; the moved world writes native history, journal and witness.
 771. **Eponym's epistemic layer becomes notes plus knowing.** 2026-10-10.
      Options: its simulation record leaves with Eponym's world move and the
      epistemic layer becomes notes held by the observer plus the reach
      field's knowing (84, 117) (recommended); a native noun of its own. Mark
      chose "Notes plus knowing (Recommended)".
+
+     Links: area Eponym · summary Eponym's epistemic layer becomes notes held by the observer plus the reach field's knowing; its simulation record leaves with its world move.
 772. **A new line's name is its key.** 2026-10-10. Options: `lineage:<name>`,
      no schema change (recommended); a generated key and a name field. Mark
      chose "Its name is its key (Recommended)".
+
+     Links: area The sim's schema and saves · summary A new line's name is its key, lineage:<name>, with no schema change.
 773 to 775. **Effects keys, glyph reading and the experiment.** 2026-10-10,
      from the effects family (merged at `a8570817`). Mark chose "Native
      function keys (Recommended)": embodiment keys on `function:<name>`,
@@ -7929,21 +9135,29 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      entities of item lineages carried by relation, position and worn part
      game-side (recommended, built); a native item noun; game-side. Mark
      chose "Inert entities, carried by relation (Recommended)".
+
+     Links: area Eponym · summary Eponym's items are inert entities of item lineages carried by relation, with position and worn part game-side.
 777. **Eponym keeps its admitted anatomy snapshot.** 2026-10-10. Options:
      keep it beside the native geometry with a game revision moving only on
      severing (recommended, built); read everything from the native
      document. Mark chose "Keep the snapshot (Recommended)".
+
+     Links: area Eponym · summary Eponym keeps its admitted anatomy snapshot beside native geometry, with a game revision moving only on severing.
 778. **Crafts and deed weights are keys in the rules pack.** 2026-10-10.
      Question: Eponym's social vocabulary, built as closed native enums.
      Options: closed native enums (recommended, built); keys in the rules
      pack. Mark chose "Keys in the rules pack". So the enums become keys a
      rules pack declares, and other games can declare their own.
+
+     Links: area Eponym · summary Crafts and deed weights are keys a rules pack declares, not closed native enums; other games can declare their own.
 779. **Native `Take` admits a sophont for driving.** 2026-10-10. Question:
      who is played in Eponym, built with control game-side. Options: control
      stays game-side (recommended, built); native `Take` (directing's) also
      admits a sapient critter for driving. Mark chose "Native Take admits a
      sophont". So one native path takes up a life in both games: directing
      for a critter that is not sapient, driving for a sophont (671).
+
+     Links: area Directing and play · summary Native Take also admits a sapient critter for driving: one native path takes up a life in both games.
 780 to 786. **Eponym's shape kept; the switch's follow-ups.** 2026-10-10,
      from the two world moves (Mesocosm's merged at `d3b90c6c`, the switch,
      legacy Mesocosm 40,645 lines to 2,016). Mark chose "Keep as built
@@ -7969,18 +9183,24 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `Command::Express { entity, part, tracts }` placing cells through
      `mosaic::propose` (recommended); a reading beside the offer; folded
      into `Revise` as counts. Mark chose "Command::Express (Recommended)".
+
+     Links: area Bodies and anatomy · summary Authored cells reach the world by native Command::Express placing cells through mosaic::propose.
 790. **One after-pass plan holds every deferred done-condition.** 2026-10-10,
      from the plan review. Question: the after-pass list was scattered (732,
      761, the directing plan, the CLAUDE.md files). Options: one dated
      after-pass plan, each item with its owning plan (recommended); each plan
      keeps its own; the families plan. Mark chose "One after-pass plan
      (Recommended)".
+
+     Links: area Method and documents · summary One dated after-pass plan holds every deferred done-condition, each item with its owning plan.
 791. **Families certify against invariants, not legacy parity; amends 667.**
      2026-10-10. Question: 667's parity draws against legacy readings have
      no control now legacy is deleted. Options: each plan's invariants
      (conservation, replay, its controls) (recommended); a pinned pre-push
      worktree; parity only where sim-certified. Mark chose "Invariants, no
      legacy parity (Recommended)".
+
+     Links: area The sim's schema and saves · summary Families certify against each plan's invariants (conservation, replay, controls), not legacy parity.
 793 to 804. **The plan review's rulings.** 2026-10-10, from
      `2026-10-10_plan_review.md`, put in three rounds. Mark chose:
      - 793, "Accept it (Recommended)": the review's classification stands;
@@ -8033,6 +9253,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* native living-part and system-realization predicates
      supply the count; equal counts use the stable lineage key, and member
      count remains an extinction filter.
+
+     Links: area Ecology · summary A lineage's metabolic complexity counts distinct functions and systems across all living members; native boundary turns use descending counts.
 807. **Event handles are an adapter reading of native event keys.**
      2026-10-10, Q2's telling-identity fork under 794. Question: "The contracts
      lane found another identity gap: the contract names an event with a
@@ -8047,6 +9269,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      event key must agree before the native knowing command is admitted.
      Native event keys retain their authority. *Reading, not ruled:* reverse
      lookup refuses ambiguous matches rather than choosing the first.
+
+     Links: area The VTT · summary Event handles are an adapter reading of native event keys, one mapping shared with the VTT, validated to agree before a telling is admitted.
 
 808. **A deed's agreement link is typed on its native event.** 2026-10-10,
      Q2's agreement/causal-event fork under 780. Question: "Native agreement
@@ -8066,6 +9290,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the native social owner attaches it after an accepted deed and reads
      it when deriving deeds. Q2 verifies association and save/replay.
 
+     Links: area Eponym · summary A deed's agreement link is a typed optional agreement id on its native event; agreements stay in State::agreements.
+
 809. **Native characters retain optional table metadata.** 2026-10-10,
      Q2's character-assertion fork under 795. Question: "The VTT character
      contract supplies a map cell and an owner, but native Character stores
@@ -8083,6 +9309,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      remains governed by 152 and 153. Q2 implements and verifies retention.
      *Reading, not ruled:* absence preserves the existing non-table character
      path; the contract's cell and participant handle retain their types.
+
+     Links: area The VTT · summary Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body.
 
 810. **Healing restores a lost cell's recorded allocation.** 2026-10-10,
      Q8's healing-allocation fork under 469 and 496. Question: "When healing
@@ -8104,6 +9332,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and save/replay. Q8 verifies allocation, accounting and restoration;
      these consequences do not by themselves certify checkpoint 10.
 
+     Links: area Bodies and anatomy · summary A loss records the cell's previous function or free-pool status, and healing restores that allocation rather than recomputing the lineage recipe.
+
 811. **Unknown legacy losses remain while recorded losses can heal.**
      2026-10-10, Q8's legacy-loss fork after 810. Question: "Older body saves
      retain lost cell IDs but omit their former function or free-pool
@@ -8122,6 +9352,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      an archive actually loading and replaying; serialization/migration
      compatibility remains a verification gate, not supplied by this ruling.
 
+     Links: area Bodies and anatomy · summary Legacy losses of unknown allocation stay admissible and wait for explicit repair; healing selects only losses with recorded allocations.
+
 812. **Healing after adapter transfer restores free-pool cells.**
      2026-10-11, Q8's transfer-allocation fork after 810. Question: "When an
      injured whole part is taken as an adapter, the adapter clears its donor
@@ -8136,6 +9368,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Healing does not recreate donor functions. Q8 verifies normal and crowd
      transfer, paid healing and save/replay. Ruling 811 still governs unknown
      legacy allocations; these are not silently reconstructed.
+
+     Links: area Bodies and anatomy · summary Healing after an adapter transfer restores lost cells as free-pool cells, retaining the lost cell IDs.
 
 813. **An empty choice can be reconsidered at a later pass start.**
      2026-10-11, Q3's receipt-backed timing fork under 683. Question: "Ruling
@@ -8152,6 +9386,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Pass-start readings under 454 and an explicit nudge's named identity
      remain intact. Q3 qualifies the timing, one-process and replay controls
      on a fresh envelope before any reproduction pilot or rate promotion.
+
+     Links: area Directing and play · summary An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick.
 
 814. **The VTT declares its note kinds in the world's founding rules.**
      2026-10-11, Q9's native contract-admission source audit. Question: "The
@@ -8170,6 +9406,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      vocabulary with the rest of its native Genesis. This ruling does not
      choose that product attachment or complete V2's hosted integration.
 
+     Links: area The VTT · summary The VTT declares its note kinds (reveal, narration, history) in the world's founding rules; native admission still refuses undeclared kinds.
+
 815. **Active windows contribute to one player's attention set.**
      2026-10-11, Q14's shared-session host. Question: "Ruling 204 gives each
      player one attention set; ruling 443 lets two windows show different
@@ -8184,6 +9422,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* window identities, admission commands and
      transactional host publication must implement this union and retain
      native replay; the answer does not certify the proposed host.
+
+     Links: area Host and network · summary Each active window contributes to one player's single attention set, taken as their union; closing a window withdraws only its contribution.
 
 816. **Eponym develops admitted bodies from a selected native recipe.**
      2026-10-11, Q10's original-test diagnosis. Question: "Eponym’s 25 failing
@@ -8201,6 +9441,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stock placement, capacity refusal, conservation and replay must be
      verified before the original twenty-five failures can be closed.
 
+     Links: area Eponym · summary Eponym develops admitted bodies from a selected native recipe supplying physiology and geometry, retaining conserved stocks.
+
 817. **Migration arrives after the traversed route's travel time.**
      2026-10-11, Q3's feeding diagnosis. Question: "Q3 traced all 117 missed
      feeds to producers moving away earlier in the tick. Routes have authored
@@ -8215,6 +9457,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      rejected reproduction candidate nor changes food, reproduction rates,
      the committed choice for a tick, or the eighty-world A1 gate.
 
+     Links: area Processes and rules · summary Migration departs and arrives after the traversed route's authored travel time; no next route before arrival.
+
 818. **Eponym initially develops the compact six-part native recipe.**
      2026-10-11, Q10's native body admission.
      Question: "Which native recipe should initially develop Eponym’s driven sophont? The proposed compact recipe has six parts with intake, store, sense, contract, support and grip; its nominal capacities are 860mg tissue and 105mg reserve. The existing browser recipe with an explicit store tract has up to 33 parts and nominal capacities of 1324mg tissue and 387mg reserve. These are source calculations awaiting native verification; both replace the old authored seven-part starting body."
@@ -8225,6 +9469,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* The nominal 860mg tissue and 105mg reserve
      capacities are source calculations awaiting native measurement. The
      answer selects a recipe, not a tested admission or E3 acceptance.
+
+     Links: area Eponym · summary Eponym initially develops the compact six-part native recipe (intake, store, sense, contract, support, grip), replacing the authored seven-part body.
 
 819. **Fresh arrival tissue fits the developed native body.**
      2026-10-11, Q10's native body admission.
@@ -8237,6 +9483,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      logged admission require atomic refusal, conservation and replay
      tests; this ruling does not alter existing supplied matter.
 
+     Links: area Eponym · summary Fresh arrival tissue is issued within the developed native body's capacity; reserve 100 and energy 100 where admitted.
+
 820. **Upkeep continues during travel and carries its produced soil.**
      2026-10-11, Q3's native journey semantics.
      Question: "During a journey, how should native upkeep run? Current upkeep consumes tissue and deposits soil at the member’s site, but a departed member is absent from both sites until arrival. Age would continue under each option."
@@ -8247,6 +9495,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* The carried-soil ledger and deposit timing
      require native conservation and replay checks. This ruling changes
      neither process rates nor the committed choice within a tick.
+
+     Links: area Processes and rules · summary Age and upkeep continue during travel; soil produced by upkeep is carried until a later native site deposit.
 
 821. **A child born during travel shares the remaining journey.**
      2026-10-11, Q3's native journey semantics.
@@ -8259,6 +9509,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      must preserve the shared remaining duration under 817. This answer
      does not certify the rejected reproduction candidate or A1.
 
+     Links: area Processes and rules · summary A birth during travel is allowed under ordinary conditions and the child shares the parent's remaining journey.
+
 822. **Travel events have a typed journey location without site reach.**
      2026-10-11, Q3's native journey semantics.
      Question: "A travelling member has left both sites, but native age and birth notes require a site and currently spread their reach there. Where should an event during travel be located?"
@@ -8270,6 +9522,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and backward reader need source review and native tests; the answer
      does not select an invented site or certify saved histories.
 
+     Links: area Processes and rules · summary An event during travel names the journey as its native location and gains no site reach until a later native telling.
+
 823. **A corpse completes the remaining journey before site availability.**
      2026-10-11, Q3's native journey semantics.
      Question: "If a member dies during a journey, what should happen to its body and conserved matter?"
@@ -8280,6 +9534,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* Dead travellers remain absent from both site
      populations until arrival. Representation, decay and conservation
      require native verification without changing authored process rates.
+
+     Links: area Processes and rules · summary A member dying during a journey leaves a corpse that completes the journey and becomes available at the destination.
 
 825. **The precise-contact fixture has a named native founding profile.**
      2026-10-11, Eponym's native fixture save owner.
@@ -8296,6 +9552,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and retains Canon's actual minimum7. Native capacity, contact,
      complete replay and compiled refusal controls remain gates.
 
+     Links: area Eponym · summary A saved version tag selects a declared native founding profile supplying the two precise-contact fixture recipes; restore regenerates and authenticates it.
+
 827. **Spread capacity is a lineage mechanic with an explicit modifier or manipulator.**
      2026-10-11, fungal and microbial substrate capacity.
      Question: "Fungal and microbial spread can overflow into other places, but its native capacity is still unspecified. What determines how much biomass a substrate can hold?"
@@ -8310,6 +9568,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      additive, multiplicative or replacement default. World definitions
      supply those choices; missing declarations do not invent a capacity.
 
+     Links: area Ecology · summary Spread capacity is a lineage-trait mechanic, with explicit capacity values acting as modifier or manipulator at the substrate, all in native rules.
+
 828. **Overflow is split equally before each route transmits its share.**
      2026-10-11, native spread route allocation.
      Question: "When spread exceeds capacity and several routes are available, how should the excess be allocated? Routes already have transmission rates, and untransmitted matter must stay at the source."
@@ -8323,6 +9583,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      source. Whether a zero-transmission route is eligible is asked as
      a separate fork; neither interpretation is silently selected.
 
+     Links: area Ecology · summary Overflow above capacity is divided equally among eligible routes before each route's transmission rate applies; untransmitted matter stays at source.
+
 829. **Port feeding is declared by its process and founded with its ports.**
      2026-10-11, native intake migration scope.
      Question: "Native intake ports can restrict which living or dead matter a body eats. How broadly should that restriction apply during this migration?"
@@ -8335,6 +9597,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* native descendants retain their recipe's port
      declaration; per-body port differences retain distinct admissible
      prey pools without changing the existing draw, weights or quotas.
+
+     Links: area Processes and rules · summary Port feeding applies to processes that declare it, migrated with their founding ports; unmarked saved grammars are preserved.
 
 830. **Native declares a terrain operation and the game resolves its geometry.**
      2026-10-11, chosen-process carve/deposit ownership.
@@ -8350,6 +9614,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      command. Geometry refusal must not leave process costs committed;
      replay uses recorded resolutions and the native admission rules.
 
+     Links: area Processes and rules · summary Native declares a terrain operation, the game resolves its geometry, and the same native Session admits and records the edit.
+
 831. **Zero-transmission routes do not participate in the overflow split.**
      2026-10-12, the routing follow-up to828.
      Question: "Overflow is divided equally before each route’s transmission rate is applied. Should a route with zero transmission receive a share of that split?"
@@ -8360,6 +9626,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      If none are eligible, the excess remains at the source. Existing native
      route validation, travel duration and conserved remainders still apply.
      This settles the explicit eligibility fork left by828.
+
+     Links: area Ecology · summary Zero-transmission routes are excluded from the overflow split; if none are eligible the excess stays at the source.
 
 832. **New ordinary feeding processes target what their declared ports admit.**
      2026-10-12, the ordinary founding follow-up to829.
@@ -8373,6 +9641,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* prospective eligibility and actual admission read
      offered matter provenance, including mixed-source parts, rather than
      require the current holder's lineage to equal the admitted source.
+
+     Links: area Processes and rules · summary New ordinary feeding processes derive their target and source selector from the actual declared intake port; unmarked saves unchanged.
 
 833. **Mesocosm saves actual spatial state beside native body and terrain revisions.**
      2026-10-12, the actual geometry provider follow-up to830.
@@ -8389,6 +9659,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      invent a position, eye, target or shape. This answer does not choose a
      movement solver, spawn coordinate, process or travel-arrival pose.
 
+     Links: area Mesocosm · summary Mesocosm owns and saves actual spatial state, bound to native body and terrain revisions; missing or stale inputs refuse.
+
 834. **A sim-on VTT character develops its own native body and keeps its ID.**
      2026-10-12, native body admission at the table.
      Question: "An authored VTT character currently has table metadata but no developed native body. With simulation on, should that same character develop a body, or bind to an existing body? Placement and control still require separate native admission."
@@ -8403,6 +9675,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      supplies no default recipe, stock quantities, ruleset calibration or
      participant/party control policy. The next ruling is835.
 
+     Links: area The VTT · summary A sim-on VTT character develops its own native body from a selected recipe and keeps its ID; placement and control are admitted separately.
+
 835. **Named native material recipes specify new item stocks and quantities.**
      2026-10-12, Eponym's material founding after776/801.
      Question: "For newly founded material items, what should specify their actual native stocks? Current food gets 40mg, dressing and scrap get none, while their declared weights are 250/100/900mg. Existing saves would retain their recorded holdings."
@@ -8413,6 +9687,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      item-kind weights do not silently replace their ledgers. This answer
      names the construction owner but supplies no recipe quantities or costs.
 
+     Links: area Eponym · summary Named native material recipes specify source stocks and quantities for newly founded material items; existing saves keep recorded holdings.
+
 836. **Each declared material has a distinct native stock in new worlds.**
      2026-10-12, material identity before fabrication.
      Question: "Soil and rock currently both credit `world:soil` when carved, which loses their material distinction. How should newly founded worlds retain material identity for later crafting?"
@@ -8422,6 +9698,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      materials; carve, deposit and fabrication preserve that identity through
      their admitted ledgers. This does not reconstruct the composition of
      an older pooled `world:soil` balance or rewrite its saved founding.
+
+     Links: area The sim's schema and saves · summary Newly founded worlds give each declared material a distinct native stock, preserved through carve, deposit and fabrication.
 
 837. **A native project reserves inputs and spends from that ledger as work progresses.**
      2026-10-12, interrupted material work under E3's T1/T3.
@@ -8436,6 +9714,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      progress units and output; this answer supplies no duration, yield,
      refund/cancellation policy or scripted autonomous decision.
 
+     Links: area Eponym · summary A native project ledger reserves inputs and work spends from it; interruption preserves remaining inputs and progress, matter counted once.
+
 838. **Any eligible natively authorized subject may resume a project.**
      2026-10-12, resumed work admission.
      Question: "Who should be allowed to resume an interrupted project? Craft requirements and native control still apply."
@@ -8446,6 +9726,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      to the original maker or one assigned worker. Existing social agreement
      acceptance alone does not complete a material operation or grant an
      unrelated project's access.
+
+     Links: area Eponym · summary Any subject with current craft eligibility, native project authorization and ordinary control may resume a project.
 
 839. **Native owners of reserved inputs grant project access together.**
      2026-10-12, native project grant/revoke authority under838.
@@ -8459,6 +9741,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* ownership of unowned site stocks and changes to
      the joint owner roster need their actual native semantics before grants.
 
+     Links: area Eponym · summary The native owners of a project's reserved inputs, acting together, grant and revoke project access.
+
 840. **Interrupted work stays at creation by default, with carrying chosen.**
      2026-10-12, physical project placement under837/838.
      Question: "The native project ledger retains reserved matter and progress, but Eponym needs a physical location for interrupted work. Where should that work remain?"
@@ -8470,6 +9754,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* the player chooses carrying through an admitted
      action; this is not permission for an adapter to relocate work silently.
 
+     Links: area Eponym · summary Interrupted work stays at its creation position by default; carrying by the current worker is an explicit choice with capacity checks.
+
 841. **Authored step profiles tie physical movement to native processes.**
      2026-10-12, Mesocosm's actual in-site movement source.
      Question: "Mesocosm now saves actual positions, but its current physics world is advisory and cannot drive a body. How should a chosen native movement process produce an actual step?"
@@ -8479,6 +9765,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      its chosen act drives game-resolved geometry through native admission.
      Advisory layout is not an actual step. Step values, cost, timing and
      collision parameters remain authored rather than supplied by this answer.
+
+     Links: area Mesocosm · summary Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission.
 
 842. **Destinations supply explicit authored arrival placements and windows.**
      2026-10-12, actual geometry after a native journey.
@@ -8491,6 +9779,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      refused destination binding remains unavailable. The answer supplies
      no coordinates or window dimensions.
 
+     Links: area Mesocosm · summary Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback.
+
 843. **Ordinary reservation requires explicit native ownership.**
      2026-10-12, ownerless material under839.
      Question: "Native code distinguishes ownership from carrying and tenancy, but currently records no stock owners. For stocks without an asserted owner, including new items and site matter, what should reservation require?"
@@ -8501,6 +9791,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      none. A help action is a separate possible pathway, whose admission,
      inputs and permissions this answer does not define. It is not an
      inferred bypass of the ordinary ownership requirement.
+
+     Links: area Eponym · summary Ordinary reservation requires an explicit native ownership assertion; holding, tenancy and maker provenance supply none; a help action is a separate pathway.
 
 844. **Polities may author any of the three collective approval strategies.**
      2026-10-12, a polity's share of joint project permission under839.
@@ -8514,6 +9806,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* the applicable strategy and its required inputs
      are authored native state, checked when permission is given or revoked.
 
+     Links: area Eponym · summary Polities authorize via an explicitly authored choice among governance decisions, member unanimity or declared representatives; none is selected silently.
+
 845. **Stock ownership names exact quantity lots selected for reservation.**
      2026-10-12, native property quantity boundary under839/843.
      Question: "Native ownership also needs a stock boundary: incoming matter can refill the same account after some has been reserved. Should an ownership assertion cover a specific quantity, or the account's whole changing balance?"
@@ -8523,6 +9817,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      exact quantity and owners. Reservation explicitly selects those lots;
      later incoming matter does not acquire an earlier quantity's owners.
      These ownership records do not issue or duplicate conserved matter.
+
+     Links: area Eponym · summary Stock ownership names exact quantity lots selected explicitly for reservation; later incoming matter does not acquire earlier owners.
 
 846. **Owned-stock debits select their native quantity lots explicitly.**
      2026-10-12, ordinary stock disposition after845.
@@ -8536,6 +9832,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      The answer does not supply a property-transfer or consumption policy
      beyond identifying the input lots.
 
+     Links: area Eponym · summary Debits of owned stock must explicitly select their native quantity lots; absent selection refuses and no automatic allocation applies.
+
 847. **Resident corpses remain visible through native awareness and close-up.**
      2026-10-12, native body visibility after death and travel.
      Question: "Native bodies and conserved matter survive death, including corpses that finish a journey. Current native views hide every dead body, so a close-up cannot show those corpses. How should visibility work?"
@@ -8546,6 +9844,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      absent from both sites until native arrival. Showing remains grants no
      control or living action and does not add them to living crowd counts.
      No decay duration or replacement physical pose is supplied.
+
+     Links: area Presentation · summary Resident corpses stay visible in the same native awareness and close-up; in-transit corpses stay absent; showing grants no control.
 
 848. **Authored birth profiles use the parent's current physical pose.**
      2026-10-12, Mesocosm physical placement after a native birth.
@@ -8559,6 +9859,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      no control. A travelling parent has no site pose to guess; the native
      child still shares its remaining journey under821.
 
+     Links: area Mesocosm · summary Authored birth profiles resolve a newborn's physical placement from its parent's current pose; refused placement never undoes the birth.
+
 849. **A debit may select an exact portion of a named native lot.**
      2026-10-12, partial native stock selection under846.
      Question: "Eating, transfers and terrain work can debit less than a declared lot contains. How should explicit selection handle a partial quantity?"
@@ -8568,6 +9870,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      admission checks that quantity against its actual current source and
      remaining claim; the unselected portion stays there. No implicit split
      across other lots, FIFO or proportional allocation is introduced.
+
+     Links: area Eponym · summary A debit selects an exact quantity from a named lot, the unselected portion staying at source; no FIFO or proportional split.
 
 850. **Each operation authors retained output claims or consumed-claim closure.**
      2026-10-12, property disposition after selected native conversion.
@@ -8582,6 +9886,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      disposition or unavailable output vocabulary refuses that owned path.
      The next unused question is851.
 
+     Links: area Eponym · summary Each operation declares which outputs retain the selected owners' claims or closes consumed claims; matter stays conserved regardless.
+
 851. **Every bound table player holds downtime unless they release their own hold.**
      2026-10-12, native downtime consent after246.
      Question: "Ruling 246 requires each player’s individual consent before downtime advances native time. Which players should have to consent? Saved native table bindings include players who may currently be disconnected."
@@ -8591,6 +9897,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      disconnected. Each player's own release can waive their hold; connection
      state, the DM and another player cannot release it for them. The release
      duration is answered in855. Membership and native control stay separate.
+
+     Links: area The VTT · summary Every saved bound table player, disconnected included, holds downtime unless they release their own hold.
 
 852. **A downtime proposal binds its original native tick and player roster.**
      2026-10-12, waiting native consent validity.
@@ -8603,6 +9911,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      revive an invalidated proposal. Endpoint/connectivity changes alone do
      not remove the same native player from the roster.
 
+     Links: area The VTT · summary A downtime proposal binds its original tick and player roster; a change makes it unavailable and requires a new proposal.
+
 853. **Players opt their played native bodies into or out of a party.**
      2026-10-12, native party membership for the VTT overmap.
      Question: "The VTT overmap needs a party’s actual native members. A party is a faction under ruling 8, and membership does not grant control. Who should define joining and leaving?"
@@ -8614,6 +9924,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and a table roster cannot stand in for native body/player identities.
      Withdrawal after a body change is answered in857.
 
+     Links: area The VTT · summary Each player opts their played native body into or out of a party; membership grants no control.
+
 854. **The overmap combines party members' disclosed knowledge in a shared view.**
      2026-10-12, native knowing and party map presentation.
      Question: "Native knowing belongs to individual bodies. Whose knowledge should supply a player’s overmap?"
@@ -8623,6 +9935,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      party members. Sharing the view does not make each body natively know
      every contributed fact, expose undisclosed knowledge or grant control.
      Retention after leaving is answered in858.
+
+     Links: area The VTT · summary The overmap is a shared view combining party members' disclosed native knowledge; sharing grants no control or undisclosed knowledge.
 
 855. **A self-released downtime hold covers future proposals until explicitly retaken.**
      2026-10-12, duration of851's release.
@@ -8634,6 +9948,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      history survives saves. Disconnecting does not substitute for release;
      retaking does not erase earlier declarations, consents or advances.
 
+     Links: area The VTT · summary A self-released downtime hold covers current and future proposals until the player explicitly retakes it.
+
 856. **The DM explicitly chooses which ready downtime proposal advances.**
      2026-10-12, simultaneous eligible spans after a release.
      Question: "Releasing a hold can make several downtime proposals ready at the same native tick, with different durations. Which proposal should advance time?"
@@ -8643,6 +9959,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      yeses and hold changes can make it ready but do not silently select a
      span. Admission checks852 and an actual yes or active self-release for
      each roster player, then publishes the chosen native advance atomically.
+
+     Links: area The VTT · summary The DM explicitly chooses which ready downtime proposal advances; the earliest does not advance automatically.
 
 857. **Players may withdraw their own earlier party memberships after changing bodies.**
      2026-10-12, membership withdrawal under853.
@@ -8654,6 +9972,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the currently played body. No automatic heir, replacement body, other
      player's removal or control grant is inferred.
 
+     Links: area The VTT · summary Players may withdraw their own earlier party memberships after changing bodies; new joins and disclosures name the current body.
+
 858. **Disclosed map facts remain recorded after a member leaves.**
      2026-10-12, retention of854's shared knowledge.
      Question: "When a member leaves the party, should facts they already disclosed remain on the shared map?"
@@ -8663,6 +9983,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      after the contributor leaves. This retains the shared record, not an
      ongoing window into the former member's undisclosed native knowledge.
      The next unused question is859.
+
+     Links: area The VTT · summary Disclosed map facts remain in the party's recorded map after the contributing member leaves.
 
 859. **Each player approves their currently played body's joint departure.**
      2026-10-12, collective travel after853's membership.
@@ -8677,6 +9999,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      supplies no pace effect or shortcut to advancing native time.
      Pace question860 remains pending; the next unused question is861.
 
+     Links: area The VTT · summary Each player approves their currently played body's departure and the DM applies approved departures together through native admission.
+
 860. **Authored native pace profiles supply duration and stock costs.**
      2026-10-12, actual pace effects after817's journey duration.
      Question: "Native journeys use the route’s authored travel time, while the VTT also requests a pace. What should give pace its actual effects?"
@@ -8688,6 +10012,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      of native stock conservation, chosen processes or time consent. Values
      and available profiles remain author inputs; no recipe is guessed.
      Critter approval question861 remains pending; next unused question862.
+
+     Links: area The VTT · summary Requested pace resolves to an explicitly authored native pace profile giving duration and stock costs; no default from the legacy percentage.
 
 861. **Directed critters receive a travel goal, bounded by their impressions and motives.**
      2026-10-12, deliberative bodies in859's joint journey.
@@ -8704,6 +10030,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      threshold, motivation strength or new control grant is invented.
      The next unused question is862.
 
+     Links: area Directing and play · summary A player-directed deliberative critter gets a native travel goal from an approved journey; it departs when its own choice allows, so the party can split. (amended by 862)
+
 862. **The existing native bond suffices for directed travel in this migration.**
      2026-10-12, reframing861's impression/motivation admission.
      Question: "Native nudges already weigh a critter’s needs and bond, but don’t yet use its impressions of the director. Where should the trust and motivation rule apply?"
@@ -8717,6 +10045,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      body control and bond admission remain separate, and a goal is not a
      promise that the animal departs. The next unused question is863.
 
+     Links: area Directing and play · summary The existing native bond and scheduled chooser suffice for directed travel; no extra impression filter, trust threshold or motivation layer.
+
 863. **Future produced lots are selected by explicit authored operation/output references.**
      2026-10-12, subsequent autonomous use of849's named quantity lots.
      Question: "An autonomous process can produce a new owned lot whose key did not exist at founding. How should a later process select that lot?"
@@ -8729,6 +10059,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      or automatic choice of a different produced lot. Ambiguous, missing,
      spent or otherwise mismatched references refuse.
 
+     Links: area Eponym · summary A later process selects a future produced lot by an explicit authored reference naming the producing operation, output and exact quantity.
+
 864. **Collect the outstanding questions and deliver them together.**
      2026-10-12, direct correction to the orchestrator's question cadence.
      Mark said: "also, when I said sequentially, i didn't mean for you to split the questions up. i actually meant for you to put them all together. so i could blitz through them and you could just focus on working. i'm saying, don't trickle them."
@@ -8740,6 +10072,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the next collected round while independent authorized work continues.
      The next unused question is865.
 
+     Links: area Method and documents · summary Collect outstanding questions from independent work and deliver them together in one pass; do not trickle isolated questions.
+
 865. **A compatible dormant adventure pack activates by explicit DM acceptance.**
      2026-10-13, dormant-pack activation in V2.
      Question: "Here are the remaining VTT choices together. When a dormant adventure pack becomes compatible with the world, how should it activate?"
@@ -8749,6 +10083,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the DM explicitly accepts its proposed native changes. Compatibility
      alone does not activate it or publish changes at a clock boundary.
      Native validation, preview freshness and atomic admission still apply.
+
+     Links: area The VTT · summary A compatible dormant adventure pack activates only when the DM previews and explicitly accepts it.
 
 866. **A native act records participation in every goal it actually served.**
      2026-10-13, goal participation beside immediate event causality.
@@ -8760,6 +10096,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the other served goals. Its immediate causal event remains separately
      validated. D31's derived arcs acquire no independent native Arc type.
 
+     Links: area Directing and play · summary A native act records participation in every goal it actually served; no primary goal discards the others.
+
 867. **Authored polity attributes and member-derived readings retain their disagreement.**
      2026-10-13, presentation of disagreeing native polity facts.
      Question: "When authored polity attributes disagree with readings derived from its actual members, how should the VTT present them?"
@@ -8770,6 +10108,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      attributes, and authored attributes do not hide the member reading.
      Reconciliation requires an explicit admitted native change.
 
+     Links: area The VTT · summary Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change.
+
 868. **Faction claims and biomes use configurable map layers.**
      2026-10-13, overlapping meanings in known native map regions.
      Question: "When a known map region has both a faction claim and a biome, how should its colouring work?"
@@ -8779,6 +10119,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      The presentation settings grant neither knowledge nor faction control;
      admitted facts and the player's disclosed map still bound the view.
 
+     Links: area Presentation · summary Faction claims and biomes use independently configurable map layers showing both meanings; settings grant no knowledge.
+
 869. **Undisclosed edges of known map regions always clip sharply.**
      2026-10-13, known-region boundary presentation.
      Question: "How should undisclosed edges of known map regions appear?"
@@ -8787,6 +10129,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      So the native overmap sharply clips undisclosed boundaries in every
      view. A fade option is not introduced; colour layers or thumbnail
      backdrops cannot expose undisclosed map geometry beyond that boundary.
+
+     Links: area Presentation · summary Undisclosed edges of known map regions always clip sharply in every view; no fade option.
 
 870. **Baked map thumbnails are optional per world or view.**
      2026-10-13, native overmap backdrop presentation.
@@ -8799,6 +10143,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      All six answers were delivered together under864. No question remains
      pending from this round; the next unused question is871.
 
+     Links: area Presentation · summary Baked map thumbnails are an optional backdrop per world or view and respect sharp clipping.
+
 871. **Party map disclosures retain named known snapshots and their revisions.**
      2026-10-13, collected migration reply under864.
      Question: "How should terrain, conditions and faction claims enter the party’s recorded map?"
@@ -8806,6 +10152,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "Explicitly disclose named terrain windows and condition/claim snapshots the body knows; retain source revisions and require a new disclosure for changes (Recommended)"
      Disclose only explicitly named windows and snapshots supported by the body's native knowledge.
      Keep authenticated source revisions; later native changes do not silently refresh the party's record.
+
+     Links: area The VTT · summary Party map disclosures name explicit terrain windows and condition or claim snapshots the body knows, with source revisions; changes need a new disclosure.
 
 872. **Defensive tissue uses an authored native threshold expression.**
      2026-10-13, collected migration reply under864.
@@ -8815,6 +10163,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Defence is explicitly designated and its threshold is an authored native expression.
      Plate geometry alone establishes no armour; inputs and modifier layers remain declared.
 
+     Links: area Bodies and anatomy · summary Defensive tissue is explicitly designated and its bite threshold is an authored native expression; plate geometry alone establishes no armour.
+
 873. **Defence compares the final pass-granted bite on the protected part.**
      2026-10-13, collected migration reply under864.
      Question: "Several eaters can receive smaller bites than planned. Which amount should be compared with the protected part’s defensive threshold?"
@@ -8822,6 +10172,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "The final native pass-granted bite on that protected part (Recommended)"
      Compare the actual shared-pass grant on that protected part, rather than the planned request.
      Admission and conserved matter must use that same resolved grant.
+
+     Links: area Bodies and anatomy · summary Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant.
 
 875. **Generated-world offers require one joint actual native witness.**
      2026-10-13, collected migration reply under864.
@@ -8831,6 +10183,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Require one joint actual native witness over a supplied finite horizon, followed by ecology admission before offering the generated world.
      Separate demonstrations or structural reachability alone do not satisfy the selected gate; running verification remains deferred826 during migration.
 
+     Links: area World generation · summary A generated world is offered only after one joint actual native witness over a finite horizon, then ecology admission.
+
 876. **Location identity is learned explicitly, with membership and extent separate.**
      2026-10-13, collected migration reply under864.
      Question: "Survival knows sites but has no known Location IDs. How should a body learn the identity of a Location grouping several sites? Undisclosed boundaries still clip sharply."
@@ -8839,6 +10193,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Use actual native observation or telling to establish Location identity.
      Knowing a site does not infer its Location; identity does not reveal membership or extent, and unknown boundaries still clip sharply.
 
+     Links: area Directing and play · summary Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately.
+
 877. **Companion succession uses an authored native social agreement or standing predicate.**
      2026-10-13, collected migration reply under864.
      Question: "Ruling186 requires a companion’s bond to the body that died. What native fact identifies an eligible bonded companion for Eponym succession?"
@@ -8846,6 +10202,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "An explicitly authored native social agreement or standing predicate"
      Companion eligibility is an explicitly authored native social agreement or standing predicate over the deceased body and candidate.
      Do not substitute a body-to-body relation or participant-to-critter directing bond; fallback requires establishing absence under the declared predicate.
+
+     Links: area Eponym · summary Companion succession eligibility is an explicitly authored native social agreement or standing predicate over deceased body and candidate.
 
 878. **Total collapse uses an explicitly authored native global predicate.**
      2026-10-13, collected migration reply under864.
@@ -8858,6 +10216,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Seven choices are settled;874 remains open. Next unused question879.
      Source migration continues under826; no compiler/tests/fixtures/tuning
      are authorised merely by answering these design questions.
+
+     Links: area Ecology · summary Total collapse uses an explicitly authored native global predicate; no hardcoded regional conjunction, missing level or zero biomass.
 
 879. **Ecological independence requires a distinct authored mechanical effect; family is recorded.**
      Asked2026-10-13 following874's unresolved interest in both standards.
@@ -8880,6 +10240,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      comparisons cannot be replaced with names, hashes or random outcomes.
      Next unused880. Tests and tuning remain deferred826.
 
+     Links: area Ecology · summary Ecological independence requires a distinct authored mechanical effect (costs, timing, typed flows may qualify); the operation family is recorded.
+
 881. **C11's independent chooser covers autonomous territories only.**
      Asked 2026-10-14. Evidence: natively, an un-nudged deliberative
      territory scores each due Choice as needs plus sway plus priority;
@@ -8895,6 +10257,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      The crowd implements its own chooser for autonomous territories and
      refuses live nudges; nudged directing keeps its native tests.
 
+     Links: area Processes and rules · summary The crowd implements its own chooser for autonomous (un-nudged) territories and refuses live nudges; nudged directing keeps native tests.
+
 883. **The local checkout is `Code/repos/isocosm`.**
      Asked 2026-10-14, after Mark's "feel free to rename the local
      'isometry' directory to 'isocosm'" and the rename with lane worktrees
@@ -8904,6 +10268,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      them; (2) "Rename lanes and testing too"; (3) "Nothing more".
      Mark: "Ledger line only (Recommended)"
      Lane worktree directories and the testing tree keep their names.
+
+     Links: area Naming · summary The local checkout is Code/repos/isocosm; a naming-ledger line records it and lane worktrees and the testing tree keep their isometry names.
 
 884. **Three uniform product hosts over one embeddable sim host.**
      Asked 2026-10-14 after a runtime check: no head plays today. Default
@@ -8928,6 +10294,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      are `isomere::host::Assembly` (window hooks, used by the VTT and
      Eponym) and `host/` (resume, save, stream, spatial, access).
 
+     Links: area Host and network · summary Three uniform product hosts over one embeddable sim host handling world founding, live keys, pointer and save import.
+
 886. **The society layer goes behind a feature and is tested in its own lane.**
      Asked 2026-10-14. Evidence: projects, institutions, custody, party,
      goals and polities are about 4.3k lines with no inline tests; projects
@@ -8942,6 +10310,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      across builds is an open fork, since polities, projects and
      institutions are `State` fields.
 
+     Links: area The sim's schema and saves · summary The society layer (projects, institutions, custody, party, goals, polities) is parked behind a feature, on for VTT and Eponym, off for Mesocosm, tested separately.
+
 889. **Generated worlds get spawn and arrival templates from the generator.**
      2026-10-14, the follow-up to 830 and 833, which chose no movement
      solver, spawn coordinate, process or arrival pose.
@@ -8950,6 +10320,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark chose (b), confirming it directly: "the generator supplies spawn and arrival templates for generated worlds and movement stays template-driven".
      A generator lane owns it after A1's generator changes land, one
      writer at a time in `generate.rs`.
+
+     Links: area World generation · summary The generator supplies spawn and arrival templates for generated worlds; movement stays template-driven.
 
 890. **The generator gives producers a real capture path.**
      2026-10-14, capture inputs for 875's joint witness.
@@ -8960,12 +10332,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      evidence with A1, which touches the same producer and consumer rates;
      the goal is default generated worlds passing 875's witness.
 
+     Links: area World generation · summary The generator gives producers a real capture path so default generated worlds pass 875's witness; tissue is not relabelled as fuel. (amended by 929)
+
 891. **The generator writes each world's global collapse predicate.**
      2026-10-14, the follow-up to 878.
      Question: "Nothing authors a global collapse predicate (generate.rs sets global_collapse: None), so no world can collapse. Who authors it?"
      Options: (a) "The generator writes a declared predicate into each world's rules (visible, saved, part of the digest)"; (b) "Only packs/authored worlds carry one; generated worlds never collapse"; (c) "The player or DM authors one at founding".
      Mark chose (a), confirming it directly: "the generator writes a declared collapse predicate into each world's rules".
      The generator lane owns it with 889.
+
+     Links: area World generation · summary The generator writes a declared global collapse predicate into each world's rules, visible, saved and part of the digest.
 
 892. **The embeddable sim host is `isocosm-host` as a library.**
      Asked 2026-10-14, after 884. Evidence: `host/` is already the package
@@ -8979,6 +10355,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `isocosm-host` becomes the core library; its inspection shell becomes
      a bin over it; generic pieces move in from the Mesocosm crates.
 
+     Links: area Host and network · summary The embeddable sim host is isocosm-host as a library; its inspection shell becomes a bin over it; generic pieces move in from Mesocosm crates.
+
 893. **The society feature gates operations, not state.**
      Asked 2026-10-14, after 886. Question: "How far does the feature
      reach?" Options: (1) "Gate operations, keep state (Recommended)":
@@ -8987,6 +10365,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "Gate operations, keep state (Recommended)"
      Every build reads one save format; a featureless build carries the
      society fields empty and refuses their operations.
+
+     Links: area The sim's schema and saves · summary The society feature gates operations, not state: State fields stay and are empty by default, so every build reads one save format.
 
 896. **The inspection shell becomes a Graphshell endpoint over the core.**
      Asked 2026-10-14 from the sim host plan's fork 1: a library-and-binary
@@ -9004,6 +10384,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      endpoint over the core; product-specific panels go to product-owned
      endpoints, as the VTT's already is.
 
+     Links: area Host and network · summary The cross-product desktop inspection shell retires in favour of a Graphshell endpoint over the core; product panels go to product-owned endpoints.
+
 898. **All three product hosts sit on isomere's `Assembly`.**
      Asked 2026-10-14, fork 3. Options: (1) "Yes, all on Assembly
      (Recommended)", moving `mesocosm-genet` off its own winit/wgpu loop;
@@ -9012,6 +10394,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (window glue over cambium's host: viewport producers, scenario lane,
      capture, error and profile lines; Mesocosm's `SectionProducer` already
      exists), "naw, that was plenty, thank you".
+
+     Links: area Host and network · summary All three product hosts sit on isomere's Assembly, moving mesocosm-genet off its own winit and wgpu loop.
 
 900. **Every product panel moves to an endpoint in H2, with no new isometry names.**
      Asked 2026-10-15. Options: (1) "Retire now, rebuild per product
@@ -9022,11 +10406,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      retire over time. The desktop shell's product panels move to
      product-owned endpoints within H2.
 
+     Links: area Host and network · summary Every product panel moves to a product-owned endpoint within H2, and no new isometry- names are made (the prefix retires over time).
+
 901. **The core's inspection endpoint sits in `isocosm-host` behind a feature.**
      Asked 2026-10-15. Options: (1) "isocosm-host, behind a feature
      (Recommended)", the binary becoming the stdio endpoint beside
      `--validate-save`; (2) "Always in the core".
      Mark: "isocosm-host, behind a feature (Recommended)"
+
+     Links: area Host and network · summary The core's inspection endpoint sits in isocosm-host behind a feature; the binary becomes the stdio endpoint.
 
 902. **The VTT's panels go to `isocosm-vtt`.**
      Asked 2026-10-15. Evidence: `isocosm-vtt` is an empty crates.io name
@@ -9038,11 +10426,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `isometry-graphshell` would have mixed it. Its next publish would ship
      implementation over unpublished path crates, so publishing waits.
 
+     Links: area The VTT · summary The VTT's panels go to the isocosm-vtt crate, keeping their MPL-2.0 grant; publishing waits. (amended by 919)
+
 903. **Mesocosm's and Eponym's panels become feature-gated modules in existing crates.**
      Asked 2026-10-15. Options: (1) "Modules in existing crates
      (Recommended)": an `endpoint` module in `mesocosm-runtime` and in
      `eponym-play`; (2) "New endpoint crates".
      Mark: "Modules in existing crates (Recommended)"
+
+     Links: area Host and network · summary Mesocosm's and Eponym's panels become feature-gated endpoint modules in mesocosm-runtime and eponym-play, not new crates.
 
 905. **A generated ecology's consumers graze.**
      Asked 2026-10-15 in plain text, from the A1 lane's draft. Evidence: of
@@ -9058,6 +10450,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      where other fauna exists; (3) the diet left to the drawn mouth.
      Mark: "I accept the recommendations."
 
+     Links: area World generation · summary Bodied generated-ecology consumers always draw an intake mouth and keep limbs for movement; Bodies::grazing becomes the default.
+
 906. **A lineage's lifespan is individual: a death hazard under an old-age ceiling.**
      Asked 2026-10-15 in plain text, from the A1 lane's draft. Evidence:
      with grazing and one fixed lifespan per lineage the best result is
@@ -9072,6 +10466,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "I accept the recommendations."
      *2026-10-16:* the hazard is declared only where the drawn ceiling is
      above maturity, so today only the A1 preset carries it (949).
+
+     Links: area Ecology · summary A lineage's lifespan is individual: from age 60 each dies at 2.5% a tick, never past the lineage's drawn lifespan of 80 to 120. (amended by 935, 949)
 
 907. **The candidate rates become a named world preset, not the generator's defaults.**
      Asked 2026-10-15 in plain text, then by card. Evidence: the candidate
@@ -9090,6 +10486,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      technical key the lane proposes; a player-facing name would come back
      as a naming question.
 
+     Links: area World generation · summary The candidate rates become a named world preset, not the generator's defaults; default worlds keep today's rates and A1's gate stands unamended. (amended by 935, 961)
+
 910. **A change through any endpoint stales every endpoint's snapshot.**
      Asked 2026-10-15 in plain text. Evidence: the core, Mesocosm, Eponym
      and the VTT serve one shared world, but each endpoint kept its own
@@ -9104,6 +10502,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* "Yes" takes the recommendation, option 1, built
      in the shared disclosure code all four endpoints use.
 
+     Links: area Host and network · summary Each endpoint snapshot records tick, entry count and state hash and intents check it, so a change through any endpoint stales every endpoint.
+
 913. **`isometry-campaign` retires, its contents becoming components.**
      Given 2026-10-15 with the answer to 911, unasked. Mark: "We should
      retire isometry-campaign, which is unpublished, and make its contents
@@ -9111,6 +10511,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      own assessment; where each part lands (the sim, `isocosm-overlay`,
      `isocosm-vtt`, the stack) comes back as questions before anything
      moves.
+
+     Links: area The VTT · summary isometry-campaign retires, its contents becoming components; where each part lands comes back as questions.
 
 914. **The crates stay publishable in principle.**
      Given 2026-10-15 after 911 and 913, unasked. Mark: "If the rest of the
@@ -9121,6 +10523,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      The components 913 makes are built the same way; publishing any of
      them stays its own decision. This reading goes back to Mark with 913's
      assessment. *Amended by 917.*
+
+     Links: area Licensing and sources · summary The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917)
 
 915. **913's "components" are owning homes.**
      Asked 2026-10-15 by card. Evidence: `isometry-campaign` is 10,764 lines
@@ -9133,6 +10537,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (2) "Small component crates", each family its own crate; (3) "Wasm
      components", rung 3, against D18. Mark: "Owning homes (Recommended)"
 
+     Links: area The VTT · summary isometry-campaign's components are owning homes, no new crates: world into the sim, game layer into isocosm-vtt, map lowering into isometry-core, store into isonetry.
+
 917. **The crates aim to be published.**
      Asked 2026-10-15 by card, to confirm 914's reading. Options: (1) "Yes,
      that reading (Recommended)": publishable in principle, nothing
@@ -9143,6 +10549,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      to keep. *Reading, not ruled:* releases in mere are mere's to decide,
      and are asked there; the campaign retirement plan's F4 places the work.
 
+     Links: area Licensing and sources · summary The crates aim to be published, not only publishable in principle.
+
 919. **`isocosm-vtt` carries the VTT's licence, MIT OR Apache-2.0.**
      Asked 2026-10-15 by card (the retirement plan's F1). Evidence: the
      game layer moving in (6,400 lines) is MIT OR Apache-2.0, the VTT's
@@ -9152,11 +10560,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      author; (2) "MPL-2.0"; (3) "Per-file licences".
      Mark: "MIT OR Apache-2.0 (Recommended)"
 
+     Links: area Licensing and sources · summary isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author.
+
 920. **`isocosm-vtt`'s endpoint sits behind a feature.**
      Asked 2026-10-15 by card (F2). Options: (1) "Endpoint behind a feature
      (Recommended)", an `endpoint` feature as Mesocosm's and Eponym's have
      (903), so the session lane and the host take the game layer alone;
      (2) "Always on". Mark: "Endpoint behind a feature (Recommended)"
+
+     Links: area Host and network · summary isocosm-vtt's endpoint sits behind an endpoint feature, so the session lane and host take the game layer alone.
 
 921. **`isonetry` holds the GM store and the proposal lifecycle until V2.**
      Asked 2026-10-15 by card (F3). Evidence: 915's summary put them in
@@ -9170,6 +10582,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lines, DM-authority replication, iroh behind a feature). What to do
      with the name goes back to Mark.
 
+     Links: area The VTT · summary isonetry holds the GM store and the proposal lifecycle until V2.
+
 923. **`isonetry` is remade.**
      Asked 2026-10-15 by card. Evidence: never published, the crates.io name
      free; today the VTT's live session layer, about 5,000 lines, holding
@@ -9177,6 +10591,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Stickleback under K0 to K2. Options: (1) "Keep its job, claim in R4
      (Recommended)"; (2) "Claim the name now"; (3) "Plan a remake".
      Mark: "Plan a remake"
+
+     Links: area Host and network · summary isonetry is remade, planned as a remake rather than kept for its job or just claimed.
 
 924. **`isonetry` becomes the Isocosm family's session layer.**
      Asked 2026-10-15 by card. Evidence: it holds a turn-based
@@ -9191,6 +10607,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the name". Mark: "Family session layer (Recommended)"
      The sim-host plan's H7.
 
+     Links: area Host and network · summary isonetry becomes the Isocosm family's session layer: host-authority replication for the core World on the stack's transport; VTT-only parts move to isocosm-vtt.
+
 925. **Mesocosm's session lives in the core's `World`.**
      Asked 2026-10-15 by card (H3). Evidence: Mesocosm drives one saved loop
      through two doors, the owned `Runtime` with its own session and the
@@ -9201,11 +10619,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (2) "Runtime keeps it", the core supplying parts only.
      Mark: "The core's World (Recommended)"
 
+     Links: area Host and network · summary Mesocosm's session lives in the core's World, Runtime becoming a thin product layer: one door for the head and the endpoint.
+
 926. **The core's driver is typed through a product trait.**
      Asked 2026-10-15 by card (H3). Options: (1) "Typed, via a product trait
      (Recommended)": the product names its envelope type and supplies
      translation, holds and its round; (2) "Opaque bytes".
      Mark: "Typed, via a product trait (Recommended)"
+
+     Links: area Host and network · summary The core's driver is typed through a product trait naming its envelope type and supplying translation, holds and round.
 
 927. **The core owns the clock and an explicit step; products choose.**
      Asked 2026-10-15 by card (H3). Evidence: Mesocosm's `Clock` is integer
@@ -9215,6 +10637,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      wall-clock or explicit pacing, the VTT explicit, Eponym's motion
      adopting the clock later; (2) "Product-owned pacing".
      Mark: "Core clock + explicit step (Recommended)"
+
+     Links: area Host and network · summary The core owns the clock and an explicit step; each product picks wall-clock or explicit pacing.
 
 932. **A generated world collapses when no organism is left (891's predicate).**
      Asked 2026-10-14 by card in the generator lane session; recorded here
@@ -9246,6 +10670,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      891, the predicate the generator declares; 887 is the Mesocosm-loop
      milestone.
 
+     Links: area World generation · summary A generated world collapses when the living Reactive, Deliberative and Normative population over all lineages is 0, declared as rules data.
+
 935. **The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40.**
      Asked 2026-10-15 by card, from the A1 lane. Evidence: the preset as
      ruled in 906 and 907 (ceiling 80 to 120 under the hazard) draws bare
@@ -9259,12 +10685,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      preset's numbers only (907): defaults, the hazard and the grazing
      default are untouched.
 
+     Links: area World generation · summary The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40; defaults, the hazard and the grazing default are untouched.
+
 939. **F1: the shipped pack gets the other ten definitions.** The pack ships
      five process definitions; the native registry carries fifteen, and the
      pack's note claims admission equals native, so three parity tests fail.
      Options: (1) "Ship the other ten (Recommended)"; (2) "Narrow the
      receipt" to the five bound natives; (3) "Retire under 672". Mark: "Ship
      the other ten (Recommended)"
+
+     Links: area The sim's schema and saves · summary F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen.
 
 940. **F2: generator-1 motion archives stay as decode receipts.** They are
      refused at generator 4 (`GeneratorDiverged`), the world that
@@ -9274,6 +10704,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      reader"; (3) "Ignore until Q5/Q11". Mark: "Decode receipts only
      (Recommended)"
 
+     Links: area Record and history · summary F2: generator-1 motion archives stay as decode receipts only; the restore-and-continue tests retire.
+
 943. **F5: worn items on a severed non-played part drop through the sim's
      handoff.** A volley severing such a part is refused whole with
      `NotPlayed`, because `release_worn` submits the drop under the player's
@@ -9282,11 +10714,15 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      carries no participant; (2) "No participant"; (3) "Refuse such
      severing". Mark: "Sim handoff (Recommended)"
 
+     Links: area Eponym · summary F5: worn items on a severed non-played part drop through the sim's EponymHandoff::Dropped, which carries no participant.
+
 945. **F7: the producer builds its terrain from the resident window.** The
      native seed-7 world needs 3,062 bricks against modulus's cap of 2,047.
      Options: (1) "Resident window (Recommended)": V1b's capacity-fixed cache
      (`residency.rs`), unmeasured; (2) "Raise Mere's cap"; (3) "Smaller
      fixture world". Mark: "Resident window (Recommended)"
+
+     Links: area Presentation · summary F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap.
 
 949. **906's hazard acts only where the ceiling is above maturity: today, the
      A1 preset.** Asked 2026-10-16 by card from 947's review. Evidence: the
@@ -9300,6 +10736,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stock digests. Mark: "Preset-only, say so (Recommended)". This amends
      906's reading, not its words.
 
+     Links: area Ecology · summary 906's hazard acts only where the drawn ceiling is above maturity, so today only the A1 preset carries it; stock digests unchanged.
+
 953. **Every lane brief carries a receipt budget.** Mark, 2026-10-16: "The a1
      lane wasted basically half of today on 30 gb of receipts nobody will
      use." Asked by card: (1) "Cap receipts in briefs (Recommended)", each
@@ -9307,6 +10745,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      total (for example 100 MB), and exploratory runs keeping summaries
      only; (2) "Global rule too"; (3) "No rule". Mark: "Cap receipts in
      briefs (Recommended)". Carried into the lane-queue plan's rules (§2).
+
+     Links: area Method and documents · summary Every lane brief names the receipts its done-conditions need and caps their total (for example 100 MB); exploratory runs keep summaries only.
 
 954. **H4: the core has its own press type and a keymap hook.** Asked
      2026-10-16 by card, from H4's assessment. Evidence: `mesocosm-genet`
@@ -9320,6 +10760,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      cambium into the core; (3) "Envelopes only". Mark: "Core's own press
      type (Recommended)"
 
+     Links: area Host and network · summary H4: the core has its own plain Press type and a keymap hook on the driver's Product trait; mesocosm-genet lowers winit's Key in one place.
+
 955. **H4: only keys that make an envelope go through the core.** Options:
      (1) "World keys only (Recommended)": E, Space, S, the checkpoint answers
      (Enter, T), the board's commit (R), a sent hint and the dev intents (X,
@@ -9330,6 +10772,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `submit_loop_input`, not the envelope queue, and are outside H4's
      done-condition; they stay as they are.
 
+     Links: area Host and network · summary H4: only world keys that make an envelope go through the core; camera, inspection, dev clock and menu navigation stay the window's.
+
 956. **H4: the core refuses a stale pick; the window still picks.** Options:
      (1) "Core checks staleness (Recommended)": the window hands the core a
      pick (body, site or nothing) stamped with the world revision of the
@@ -9338,12 +10782,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      checks staying in the window; (2) "Wait for H6". Mark: "Core checks
      staleness (Recommended)"
 
+     Links: area Host and network · summary H4: the window hands the core a pick stamped with the world revision and the core refuses a stale one.
+
 957. **H4: the live-input backlog cap moves into the core's driver.** The
      window drops a key once 10 envelopes are queued (`QUEUE_CAP`). Options:
      (1) "In the core driver (Recommended)": live input through the core is
      refused at a set backlog, configurable like the step ceiling, default
      10, while a replay or script queueing directly is not capped; (2)
      "Stays in the window". Mark: "In the core driver (Recommended)"
+
+     Links: area Host and network · summary H4: the live-input backlog cap moves into the core driver, configurable, default 10; replays and scripts are not capped.
 958. **Equal best movement choices use a seeded draw.** Asked 2026-10-16
      after 936's unchanged seed-9 diagnosis: all 52 producers leave before
      feeding at 15, all 64 meals block, and the next tick's two moves score 0
@@ -9355,6 +10803,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      food scope, selected-process commitment or rates. Implementation and
      fresh seed 9/gate evidence follow; this ruling does not predict success.
 
+     Links: area Processes and rules · summary Equal best movement choices use a deterministic seeded draw keyed by world seed, creature and tick; scores and eligibility are unchanged.
+
 959. **The family session replicates accepted native authority and sections.**
      H7's assessment was put to Mark on 2026-10-17 before code (923).
      Options: (1) the accepted native log plus opaque section changes
@@ -9363,6 +10813,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)". Section-only changes are accepted records; deletion is
      explicit and unknown section bytes survive. A replica does not run a
      product adapter to decide the intent again.
+
+     Links: area Host and network · summary The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents.
 960. **Requests and accepted records use their existing stack seams.**
      Asked 2026-10-17 with 959: (1) admitted stream/Graphshell requests and
      replies, with Stickleback joined spaces carrying host-authored accepted
@@ -9370,6 +10822,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "Stream requests; Stickleback accepted records (Recommended)".
      One host remains the sole accepting writer. The first serialized
      in-process controls precede the actual transport and product gates.
+
+     Links: area Host and network · summary Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer.
 
 961. **Mesocosm defaults to the named A1 preset; the shared generator stays Stock.**
      Asked 2026-10-17 after the three A1 candidate forms reached 20/20, since
@@ -9379,6 +10833,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      defaults to A1; generator stays Stock". This product-specific exception
      applies once the remaining receipt and physical-witness gates pass. The
      shared generator default and the unchanged A1 qualification gate remain.
+
+     Links: area Mesocosm · summary Mesocosm defaults to the named A1 preset once receipt and physical-witness gates pass; the shared generator default stays Stock.
 
 962. **The stack supplies identity and admitted connections to family games.**
      Asked 2026-10-17 while wiring H7's shipping VTT owner: the recommended
@@ -9390,6 +10846,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      product must not manufacture keys, grants or trust roots to fill a
      missing stack configuration.
 
+     Links: area Host and network · summary The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots.
+
 963. **An unchosen Mesocosm seed may use a bounded candidate search.**
      Asked with 962 after a clock draw contained no consumer cohort. Mark's
      same "go ahead" accepts the recommended bounded search for an unchosen
@@ -9400,6 +10858,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      is configurable; this does not select a known passing seed or change
      the shared generator's Stock default.
 
+     Links: area World generation · summary An unchosen Mesocosm seed may use a bounded configurable candidate search; explicit seeds stay exact and the full native witness gate is kept.
+
 969. **The pack-authoring fixtures are pinned LF by a narrow attributes rule.**
      Asked with 968. Options: (1) `crates/isometry-system/tests/fixtures/*.toml`
      and `crates/isometry-system/examples/packs/**` as `text eol=lf`,
@@ -9408,6 +10868,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      own code; (4) leave it to the pack-authoring lane. Mark: "Narrow
      .gitattributes rule (Recommended)". It lands as its own commit after
      the merge, verified by the same test passing on this checkout.
+
+     Links: area Stack and engine · summary Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide.
 
 970. **Bodies get a fixed sun matching the tracer's; the field waits.**
      Asked 2026-10-17 with the audit's evidence: the sim exposes no sun or
@@ -9439,6 +10901,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      tenant, with a 1,440-tick day and night as sun None. Until that lane
      lands this fixed sun stays the block's default.
 
+     Links: area Presentation · summary Bodies on the tenant get a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38, sun 0.62, shadows off, matching the tracer; --body-light scales both.
+
 971. **The light field is a derived function in the sim.**
      Asked 2026-10-17 in the assessment of the tenant-sun round's option (b),
      which Mark kicked up to the orchestrator. Evidence: ruling 472 already
@@ -9456,6 +10920,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      function in the sim (Recommended)". The card is in the resident views
      plan's field admission section.
 
+     Links: area Processes and rules · summary The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored.
+
 972. **Presentation and ecology both read the light block in the first slice.**
      Asked with 971. Options: (1) presentation only: the tracer gains a
      light slot replacing its literal and the tenant gets its sun, the
@@ -9468,6 +10934,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      with evidence before the credit changes; the H3 pins and the A1 matrix
      are the gate for that change.
 
+     Links: area Ecology · summary Presentation and ecology both read the light block: the sunlight credit scales by intensity, with the limiting amount a tuning fork brought back with evidence.
+
 973. **Honest units, with night.**
      Asked with 971: the tick is a minute and the year 525,960 ticks, with no
      day constant; at the configured 10 ticks per second a 1,440-tick day is
@@ -9477,6 +10945,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the preset (recommended); (2) a shorter play-day decoupled from the
      year; (3) arc only, no night yet. Mark: "Honest units, with night
      (Recommended)".
+
+     Links: area Processes and rules · summary Honest units with night: a 1,440-tick day, season from the existing year, sun None below the horizon with ambient carrying night.
 
 975. **The core's tick cost is cut by sharing cohorts, copy on write.**
      Asked 2026-10-17 with the split of step 1 (966): on the seed-9 save 15
@@ -9493,6 +10963,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      still points at it; 966's "once per tick" was premised on checks that
      measure as free.
 
+     Links: area The sim's schema and saves · summary The core's tick cost is cut by sharing cohorts behind an Arc, copying on write, with serialisation and hashes unchanged.
+
 978. **Mesocosm's default tempo follows the measured tick: 2 ticks per second.**
      Asked 2026-10-17 after 976 left the tempo open. Evidence: the configured
      10 ticks per second (TD2, 2026-08-29) against about 0.45 s per tick after
@@ -9507,6 +10979,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      1,440-tick day is then 12 minutes of play. The same round archived both
      merged lane sessions.
 
+     Links: area Mesocosm · summary Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops.
+
 979. **The sun's parameters are an optional `Rules.sun`, absent meaning the default.**
      Asked 2026-10-17 at the light-field lane's start. Evidence: presets are
      applied at founding only as site conditions (`generate.rs`,
@@ -9520,15 +10994,21 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      degree, intensity percent, colour in thousandths; latitude is the site
      condition `light:latitude`, default 40 degrees.
 
+     Links: area The sim's schema and saves · summary The sun's parameters are an optional Rules.sun: Option<SunRules>, set by presets at founding; absent means the default.
+
 980. **A world with no sun rules gets a real day.**
      Asked with 979. Options: (1) a 1,440-tick day and a mild 23.5 degree
      season (recommended); (2) the fixed 970 sun unless a preset sets a
      schedule. Mark: "Default day: 1,440-tick day, mild season
      (Recommended)". Tidal-locked worlds take 970's fixed sun exactly.
 
+     Links: area Processes and rules · summary A world with no sun rules gets a 1,440-tick day and a mild 23.5 degree season; tidal-locked worlds take 970's fixed sun.
+
 981. **Names: `isocosm::light`, `light::at`, `Light`, `Sun`, `SunRules`.**
      Asked with 979; the tracer side is `TraceParams` plus a light slot fed
      from `BrickFrameInput`. Mark: "Use those names (Recommended)".
+
+     Links: area Processes and rules · summary The light code names are isocosm::light, light::at, Light, Sun and SunRules.
 
 982. **The light credit is 500 per site per tick at full sun.**
      Asked 2026-10-17 as 888's tuning fork, with the lane's evidence: on the
@@ -9542,6 +11022,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      per site per tick (Recommended)". Receipt: `Code/testing/isometry/
      light-field-2026-10-17/light-draw.log`.
 
+     Links: area Ecology · summary The light credit is 500 per site per tick at full sun.
+
 983. **The site's light store holds a night.**
      Asked with 982: the credit is nothing at night and the old account
      capped at two ticks of credit. Options: (1) a store of about 12 hours of
@@ -9549,6 +11031,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the dark (recommended); (2) keep the two-tick cap, producers stop at
      night; (3) a 10 percent starlight credit. Mark: "Cap holds a night's
      light (Recommended)".
+
+     Links: area Ecology · summary The site's light store holds a night: about 720 x 500 = 360,000 of full credit, so producers draw a reserve down in the dark.
 
 984. **The credit scales through a new `Effect::Sunlight`.**
      Asked with 982 when implementation found `Effect::Transform`'s `give`
@@ -9558,6 +11042,8 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      native step before the tick. Mark: "New effect: Effect::Sunlight
      (Recommended)". Reading, not ruled: the intensity is read at world scale
      (no site latitude) at the act's tick.
+
+     Links: area Processes and rules · summary The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
