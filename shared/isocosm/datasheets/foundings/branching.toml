@@ -20,7 +20,7 @@ doc = "mesocosm/design_docs/2026-07-31_phenotype_plan.md"
 note = "VB2 arrangement slice, 2026-09-04: branching layouts"
 
 [sources.wing_record]
-doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+doc = "design_docs/2026-09-18_wing_design_plan.md"
 note = "rulings 625 to 631: foundings as data, embedded, named, by roster set"
 
 # A raised shrub with two lateral, leaf-bearing branches and a crown.

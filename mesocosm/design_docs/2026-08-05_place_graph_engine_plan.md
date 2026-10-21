@@ -45,7 +45,7 @@ authoritative. Evaluated against the wing design record; see
 
 ### A.1 What it rests on
 
-Rulings of the [wing design record](2026-09-18_wing_design_plan.md), quoted
+Rulings of the [wing design record](../../design_docs/2026-09-18_wing_design_plan.md), quoted
 there in full:
 
 | Ruling | What it fixes for the spine |

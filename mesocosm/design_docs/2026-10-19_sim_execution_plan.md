@@ -243,5 +243,5 @@ in when that plan's generator exists (its L5).
   `Arc` and `foregone` only on direct acts (Decisions), not yet numbered or
   built. Mark then held all six decisions until the decision-links plan
   settles how decisions are keyed and linked
-  ([2026-10-20_decision_links_plan.md](2026-10-20_decision_links_plan.md)),
+  ([2026-10-20_decision_links_plan.md](../../design_docs/2026-10-20_decision_links_plan.md)),
   then had them keyed D1 to D6 the same evening so D5 and D6 can be briefed.

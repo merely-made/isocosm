@@ -5,7 +5,7 @@ archived (wing design record rulings 793 and 801).** DT0 to DT4 landed in
 Mesocosm's host. Its §6 already said it retires into the bench; its
 principles, stop rules and the bench's done-condition for its verbs are the
 annotation under W4 in the [wing design
-record](../../2026-09-18_wing_design_plan.md)'s §11.
+record](../../../../design_docs/2026-09-18_wing_design_plan.md)'s §11.
 
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280): the tools move to the bench (W4). *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*

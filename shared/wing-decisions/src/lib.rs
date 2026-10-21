@@ -3,7 +3,7 @@
 
 //! The wing's decisions as linked structure (isocosm `DOC_POLICY.md`,
 //! "Decisions and doctrine"; plan
-//! `mesocosm/design_docs/2026-10-20_decision_links_plan.md`). Reads the design
+//! `design_docs/2026-10-20_decision_links_plan.md`). Reads the design
 //! record's cases, plans' keyed decisions, fields lines and citations; writes
 //! the manifest and register; keeps the link journal; answers lookups; checks
 //! anchors against rust-analyzer's index.

@@ -18,7 +18,7 @@ doc = "mesocosm/design_docs/2026-07-31_phenotype_plan.md"
 note = "VB2 appendage chains, 2026-09-04: paid chains for jointed legs and stalked leaves"
 
 [sources.wing_record]
-doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+doc = "design_docs/2026-09-18_wing_design_plan.md"
 note = "rulings 625 to 631: foundings as data, embedded, named, by roster set"
 
 # The base palette plus two directional limb links. It changes only the

@@ -19,8 +19,8 @@ native package is `eponym-client`.
 - Plans carry done-conditions, not time estimates.
 - `PROJECT_DESCRIPTION.md` is maintainer-owned; surface contradictions, do
   not edit unasked.
-- Wing-level architecture lives in the Mesocosm repo at
-  `mesocosm/design_docs/2026-07-30_games_wing_founding.md` and is cited, never
+- Wing-level architecture lives in the repository root's
+  `design_docs/2026-07-30_games_wing_founding.md` and is cited, never
   copied. The three pipeline laws there govern anything crossing between
   games.
 - **The invariant is care granularity, not metaphysical person purity**

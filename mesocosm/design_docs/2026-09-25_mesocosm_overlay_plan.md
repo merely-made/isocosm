@@ -61,7 +61,7 @@ rulings are now answered (rulings 180 to 183 and two readings); the
 ## 0. Done-conditions
 
 W5's done-conditions are the record's
-[§11](2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for Mesocosm, they are
+[§11](../../design_docs/2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for Mesocosm, they are
 met by §1 (the profile), §3 (the core and the contract) and §2's phase M4
 (the played loop).
 

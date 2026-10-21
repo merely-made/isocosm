@@ -13,7 +13,7 @@ and year so they can be checked; nothing was verified against source today
 except where the status column says.
 
 **Owns:** the prior-art map for the
-[wing design record](2026-09-18_wing_design_plan.md)'s sim tier (§3) and its
+[wing design record](../../design_docs/2026-09-18_wing_design_plan.md)'s sim tier (§3) and its
 parallelism section (§4.7), and the genre question Mark raised for Mesocosm.
 
 **Does not own:** the influence set for the games' overlays, which is the

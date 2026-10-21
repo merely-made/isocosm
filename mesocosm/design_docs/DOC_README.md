@@ -1,7 +1,8 @@
 # design_docs Index
 
-Mesocosm's documents, and the wing's shared ones, which live here once. The
-[wing index](../../design_docs/DOC_README.md) links all three products. Per
+Mesocosm's documents, and the wing's shared plans and briefs. The wing's
+records (founding record, design record, case register, doctrine) live at the
+[wing index](../../design_docs/DOC_README.md), which links all three products. Per
 DOC_POLICY §5 this file is the canonical index for this directory, updated in
 the same session as any doc change. Each row is a link, what the doc is for
 and a dated status (wing design record, ruling 612); the docs hold the rest.
@@ -76,14 +77,10 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Mesocosm's goals and pillars. | Maintainer-owned. |
-| [2026-07-30_games_wing_founding.md](2026-07-30_games_wing_founding.md) | The wing's founding record: the vessels and their care granularities, the pipeline laws, the shared vocabulary, the game tastes. | Founding record, 2026-07-30; wing-level, cited by every product. |
-| [2026-09-18_wing_design_plan.md](2026-09-18_wing_design_plan.md) | The wing as a simulator: its cases (§0) and the design they ground (§1 to §11). | 2026-10-18: cases kept as precedent, new rules numbered by Mark; operational and replaced cases archived. |
-| [case_register.md](case_register.md) | Every live case in one line, by area, with the plans that cite it. | 2026-10-18: 747 cases; one pair with Mark. |
 | [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md) | W1: every plan evaluated against the design record. | Ruled and applied 2026-09-18 (ruling 31). |
 | [2026-09-18_sim_prior_art_brief.md](2026-09-18_sim_prior_art_brief.md) | Prior art for the simulator, by design question. | Brief for W2, 2026-09-18. |
 | [2026-09-22_sim_plan.md](2026-09-22_sim_plan.md) | The sim, W2: Isocosm's schema, processes, record and phases S1 to S10. | 2026-10-18: checkpoints 9 to 11 certified and A1 consumer reproduction passes; the ecology phases S8 to S10 and tuning are next. |
 | [2026-10-19_sim_execution_plan.md](2026-10-19_sim_execution_plan.md) | The sim's execution model: waking only what changed, parallel evaluation, and the near/far crowd tier, with design, implementation and qualification kept apart. | 2026-10-19: specced and decided (draws by actor, statistical far tier, roots plus one hop, speed first); nothing built. |
-| [2026-10-20_decision_links_plan.md](2026-10-20_decision_links_plan.md) | A doctrine that refines itself: short statements by area over the cases as evidence, every answer recorded as applies, refines, contradicts or new, with typed links, a generated manifest and register, and a lookup. | 2026-10-21: L1 (the rule) in force and L2 (`shared/wing-decisions`: manifest, journal, lookup, anchor check, run by the pre-commit hook) built; L1b, L3, L4 and the per-area budget next. |
 | [2026-10-14_sim_host_plan.md](2026-10-14_sim_host_plan.md) | One embeddable sim host (`isocosm-host` as a library) under three uniform product hosts: founding, drive and pace, live input, saves; the Mesocosm head first. | 2026-10-20: shared geometry, authenticated forecast sources and batched birth refusals verified; crowded round 34.1 to 10.1 s, resumed epoch 110.1 to 82.6 s; ordinary median 5.34 s and active-update latency remain open. |
 | [2026-10-14_stock_title_plan.md](2026-10-14_stock_title_plan.md) | Native tests for the society layer (owned stock, projects, custody, party, institutions, polities, goals) and its `society` feature gate (886, 893, 894): phases with done-conditions and planted faults. | 2026-10-14: gate and T1 to T6 (placement) landed locally (48 tests, 51 planted faults); party statements, strain and produced titles, and direct-command consumers open. |
 | [2026-10-08_families_reexpression_plan.md](2026-10-08_families_reexpression_plan.md) | Re-expressing the legacy sims in Isocosm's process definitions, family by family (rulings 192, 591, 656). | 2026-10-18: migration integrated and legacy Mesocosm and Eponym deleted; only legacy/campaign remains until V2. |

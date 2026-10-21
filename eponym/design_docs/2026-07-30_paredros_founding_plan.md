@@ -4,7 +4,7 @@
 receipts are implemented; the phase section is superseded by the execution
 plan. Vessel 2 of the games wing. Shared architecture, the three pipeline
 laws, and the wing vocabulary live in the wing founding record at
-`mesocosm/design_docs/2026-07-30_games_wing_founding.md` (sibling repo; cited
+`design_docs/2026-07-30_games_wing_founding.md` (sibling repo; cited
 by path because relative links do not cross repos). They are not repeated
 here.
 
@@ -47,7 +47,7 @@ administer is Isometry's granularity, not this one.
 
 **Permitted 2026-07-30; narrowed 2026-08-13** by the care-granularity
 relaxation (see
-`mesocosm/design_docs/2026-07-30_games_wing_founding.md` §1, which replaced a
+`design_docs/2026-07-30_games_wing_founding.md` §1, which replaced a
 strict person-purity rule with a home-person rule). The earlier wording
 forbade the player any influence over a companion's conduct, which was too
 strict and left the deployment queue as the only lever. Two mechanics are now
@@ -353,7 +353,7 @@ professions and traditions supplying recognizable starting practices,
 equipment, contacts, and livelihoods. A profession is an acquired social and
 practical history; it does not prohibit another body from learning a technique.
 The wing's historical-entry and inheritance direction lives once in
-`mesocosm/design_docs/2026-07-30_games_wing_founding.md`, under
+`design_docs/2026-07-30_games_wing_founding.md`, under
 "Historical entry and lineage-shaped lives". The rules below are Paredros's
 reading of those facts, not a universal wing character schema.
 

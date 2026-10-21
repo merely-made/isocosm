@@ -9,7 +9,7 @@ authoritative. Evaluated against the wing design record; see
 [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
 §2.
 
-The [games wing founding record](2026-07-30_games_wing_founding.md) remains
+The [games wing founding record](../../design_docs/2026-07-30_games_wing_founding.md) remains
 authority for settled laws. Mesocosm's local body rules live in the
 [phenotype plan](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md). The
 [dependency ledger](archive_docs/2026-09-26/2026-08-07_dependency_ledger.md) owns current ordering;

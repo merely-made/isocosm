@@ -21,7 +21,7 @@ consumer. R4 and R5 remain lanes Mark opens.
 ruled on 2026-09-22 (wing design record, rulings 109 and 110), across
 documents, crates, packages, indexes and the naming ledger. **Does not
 own:** the names themselves, which are Mark's rounds, or any product's
-design. **Consumes:** the [wing design record](../../2026-09-18_wing_design_plan.md)
+design. **Consumes:** the [wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md)
 and the naming ledger's family naming round of 2026-09-22.
 
 ## 1. The names

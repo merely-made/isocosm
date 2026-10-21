@@ -245,7 +245,7 @@ contract is smaller than both product-local profiles.
 
 ## Retired 2026-09-18
 
-**W1 verdict: retire.** Evaluated against the [wing design record](../../../mesocosm/design_docs/2026-09-18_wing_design_plan.md) and recorded
+**W1 verdict: retire.** Evaluated against the [wing design record](../../2026-09-18_wing_design_plan.md) and recorded
 in [mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) §1;
 accepted by Mark under the record's ruling 31 of 2026-09-18, which takes
 W1's recommendations in full.

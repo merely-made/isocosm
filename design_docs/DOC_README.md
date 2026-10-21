@@ -13,10 +13,10 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 ## Games wing entry points
 
 - [doctrine.md](doctrine.md): the wing's doctrine, what it holds and why, by area, over the cases as evidence (DOC_POLICY, "Decisions and doctrine"). 2026-10-20: started empty; areas are filled as each is reviewed.
-- [Mesocosm index](../mesocosm/design_docs/DOC_README.md): Mesocosm's index, and the wing's shared documents.
+- [Mesocosm index](../mesocosm/design_docs/DOC_README.md): Mesocosm's index. The wing's shared documents are here, in this directory (since 2026-10-21).
 - [Eponym index](../eponym/design_docs/DOC_README.md): Eponym's index.
-- [2026-07-30_games_wing_founding.md](../mesocosm/design_docs/2026-07-30_games_wing_founding.md): the wing founding record: vessels, pipeline laws, shared vocabulary.
-- [2026-09-18_wing_design_plan.md](../mesocosm/design_docs/2026-09-18_wing_design_plan.md): the wing design record: every ruling (§0), the current architecture, and the W0 to W5 plan.
+- [2026-07-30_games_wing_founding.md](2026-07-30_games_wing_founding.md): the wing founding record: vessels, pipeline laws, shared vocabulary.
+- [2026-09-18_wing_design_plan.md](2026-09-18_wing_design_plan.md): the wing design record: every ruling (§0), the current architecture, and the W0 to W5 plan.
 - [2026-09-22_sim_plan.md](../mesocosm/design_docs/2026-09-22_sim_plan.md): the sim, Isocosm.
 
 ## Working principles for AI assistants
@@ -33,6 +33,10 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 | Doc | For | Status |
 | --- | --- | --- |
+| [2026-07-30_games_wing_founding.md](2026-07-30_games_wing_founding.md) | The wing's founding record: the vessels and their care granularities, the pipeline laws, the shared vocabulary, the game tastes. | Founding record, 2026-07-30; wing-level, cited by every product. |
+| [2026-09-18_wing_design_plan.md](2026-09-18_wing_design_plan.md) | The wing as a simulator: its cases (§0) and the design they ground (§1 to §11). | 2026-10-18: cases kept as precedent, new rules numbered by Mark; operational and replaced cases archived. |
+| [case_register.md](case_register.md) | Every live case in one line, by area, with the plans that cite it. | 2026-10-18: 747 cases; one pair with Mark. |
+| [2026-10-20_decision_links_plan.md](2026-10-20_decision_links_plan.md) | A doctrine that refines itself: short statements by area over the cases as evidence, every answer recorded as applies, refines, contradicts or new, with typed links, a generated manifest and register, and a lookup. | 2026-10-21: L1 (the rule) in force and L2 (`shared/wing-decisions`: manifest, journal, lookup, anchor check, run by the pre-commit hook) built; L1b, L3, L4 and the per-area budget next. |
 | [2026-10-17_private_pack_authoring_plan.md](2026-10-17_private_pack_authoring_plan.md) | Private retained manifest authoring with real schema, the merely-made/taplo fork (Rowan 0.17, TOML 1.1), shared edit/undo publication and structure-aware generator/preset commands. | 2026-10-19: P8 landed (stale-lease reclaim, text-only history default, fork, TOML 1.1, structural commands). |
 | [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance for all three products. | The one copy since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |

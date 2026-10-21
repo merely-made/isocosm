@@ -1074,7 +1074,7 @@ slice arrives. Listed here verbatim rather than re-litigated.
 
 ## Retired 2026-09-18
 
-**W1 verdict: retire.** Evaluated against the [wing design record](../../2026-09-18_wing_design_plan.md) and
+**W1 verdict: retire.** Evaluated against the [wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md) and
 recorded in [2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2; accepted by Mark under the record's ruling 31 of 2026-09-18,
 which takes W1's recommendations in full.

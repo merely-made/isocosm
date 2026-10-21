@@ -59,7 +59,7 @@ speculation, so unclaimed lineages exist to be met, adopted, or competed
 with. Mesocosm is standalone-complete; inheritance into the others is
 enrichment, never homework.
 
-See [`2026-07-30_games_wing_founding.md`](2026-07-30_games_wing_founding.md).
+See [`2026-07-30_games_wing_founding.md`](../../design_docs/2026-07-30_games_wing_founding.md).
 
 ## Speculative
 
