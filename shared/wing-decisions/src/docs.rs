@@ -23,6 +23,7 @@ pub struct Entry {
 }
 
 static CASE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(\d{1,4})\. \*\*(.+?)(?:\*\*|$)").unwrap());
+static STATEMENT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^### (.+?) (\d{1,3})\. (.+)$").unwrap());
 static DECISION: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^- \*\*D(\d{1,3})\b[,:]?\s*(.*?)(?::?\*\*|$)").unwrap());
 
 /// The case numbers a design record's §0 holds, cheaply, for the citer.
@@ -46,6 +47,21 @@ pub fn plan_decisions(path: &str, text: &str, keyword: &str, citer: &Citer) -> V
     entries(path, &lines, citer, |l| {
         DECISION.captures(l).and_then(|c| Some((Key::Plan(keyword.to_string(), c[1].parse().ok()?), title(&c[2]))))
     })
+}
+
+/// The doctrine's statements, `### Naming 1. The family`, keyed `naming.1`.
+pub fn doctrine_statements(path: &str, text: &str, citer: &Citer) -> Vec<Entry> {
+    let lines: Vec<(usize, &str)> = text.lines().enumerate().map(|(i, l)| (i + 1, l)).collect();
+    let mut found = entries(path, &lines, citer, |l| {
+        STATEMENT.captures(l).and_then(|c| Some((Key::Statement(model::slug(&c[1]), c[2].parse().ok()?), title(&c[3]))))
+    });
+    // A statement's text ends at the next heading of any level.
+    for e in &mut found {
+        if e.links.area.is_none() {
+            e.links.area = lines.iter().take(e.line).rev().find_map(|(_, l)| l.strip_prefix("## ")).map(|a| a.trim().to_string());
+        }
+    }
+    found
 }
 
 /// Lines from the heading starting `from` to the next heading starting

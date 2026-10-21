@@ -12,6 +12,8 @@ use std::fmt;
 pub enum Key {
     Case(u32),
     Plan(String, u32),
+    /// A doctrine statement: its area's slug and number, `naming.1`.
+    Statement(String, u32),
 }
 
 impl Key {
@@ -20,6 +22,10 @@ impl Key {
         let s = s.trim();
         if let Ok(n) = s.parse::<u32>() {
             return Some(Key::Case(n));
+        }
+        if let Some((area, n)) = s.rsplit_once('.') {
+            let n = n.parse().ok()?;
+            return valid_keyword(area).then(|| Key::Statement(area.to_string(), n));
         }
         let (plan, d) = s.rsplit_once(' ')?;
         let n = d.strip_prefix('D')?.parse().ok()?;
@@ -31,6 +37,7 @@ impl Key {
         match self {
             Key::Case(n) => format!("case:{n}"),
             Key::Plan(p, n) => format!("decision:{p}.D{n}"),
+            Key::Statement(a, n) => format!("statement:{a}.{n}"),
         }
     }
 }
@@ -40,6 +47,7 @@ impl fmt::Display for Key {
         match self {
             Key::Case(n) => write!(f, "{n}"),
             Key::Plan(p, n) => write!(f, "{p} D{n}"),
+            Key::Statement(a, n) => write!(f, "{a}.{n}"),
         }
     }
 }
@@ -155,6 +163,8 @@ mod tests {
         assert_eq!(Key::parse("975"), Some(Key::Case(975)));
         assert_eq!(Key::parse("sim-execution D5"), Some(Key::Plan("sim-execution".into(), 5)));
         assert_eq!(Key::parse("Sim D5"), None);
+        assert_eq!(Key::parse("naming.1"), Some(Key::Statement("naming".into(), 1)));
+        assert_eq!(Key::Statement("naming".into(), 1).id(), "statement:naming.1");
         assert_eq!(Key::Plan("sim-execution".into(), 5).id(), "decision:sim-execution.D5");
     }
 

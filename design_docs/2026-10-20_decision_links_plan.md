@@ -392,3 +392,12 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   files no longer count as citing (the register cited itself). The journal
   was rebuilt under that rule: 1,068 commits, 9,246 records. Next: L4, the
   area rounds with Mark, and the budget pass.
+- **2026-10-21, L4 begun: Naming.** Its 12 cases became four statements in
+  `doctrine.md` (the family; the of-note ladder; one word, one sense; the rule
+  catalogue's names), all recorded as *new*; Naming 3 is a principle drawn
+  from five cases and adopted by Mark; Naming 1 lost its old-name aliases at
+  his word; 340's and 341's readings were confirmed. Eleven typed links went
+  onto the cases' fields lines (two amends, nine draws on). A review answer
+  is recorded on the statement it shaped, not as a new case, so a round adds
+  statements, not chits. The tool now reads doctrine statements (`naming.1`);
+  the anchor check found Naming 4's two governed types present.
