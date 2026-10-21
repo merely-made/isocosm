@@ -9,7 +9,8 @@ workspace; Mesocosm uses `mesocosm/`; Eponym uses `eponym/`. Read each
 product's `CLAUDE.md` before editing it. Licenses remain unchanged; Eponym's
 native package is now `eponym-client`. Build workspaces remain separate to preserve source/patch policy.
 `design_docs/DOC_README.md` is the wing entry index and links product indexes.
-Shared wing design currently lives in `mesocosm/design_docs/` within this repo.
+Shared wing design lives in `design_docs/` at the root, beside the index (moved
+from `mesocosm/design_docs/` on 2026-10-21, decision-links plan L1b).
 
 Use `./scripts/wing.ps1 isometry <cargo arguments>` (or mesocosm/eponym) to
 select a product. Tabletop-only machine overrides live in the ignored
@@ -35,7 +36,7 @@ links here.
 Authoritative design material lives in each product's `design_docs/`: read
 its `DOC_README.md` first. One `DOC_POLICY.md`, at `design_docs/`, governs all
 three; follow it for documentation changes. Wing-level material lives once, in
-`mesocosm/design_docs/`, and is cited by path, never copied.
+the root `design_docs/`, and is cited by path, never copied.
 
 | Path, in each product's `design_docs/` | What's there |
 | ---- | ----------- |

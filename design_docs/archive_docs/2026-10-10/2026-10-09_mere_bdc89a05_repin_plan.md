@@ -10,7 +10,7 @@ renderling under 749. Nothing was left open.
 **Status, 2026-10-09:** landed.
 
 Wing design record rulings 692 to 695 and 726 to 728
-(`mesocosm/design_docs/2026-09-18_wing_design_plan.md`). mere's
+(`design_docs/2026-09-18_wing_design_plan.md`). mere's
 `rapier-036` landed on mere main at `bdc89a05`: rapier 0.36, parry 0.31.1
 with `enhanced-determinism`, seiche and conatus ported, and D2's ten
 compatible updates. The previous repin is

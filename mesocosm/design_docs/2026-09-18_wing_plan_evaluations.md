@@ -12,7 +12,7 @@ directories. Read-only evaluations; nothing in any plan has been
 edited by this document's lanes.
 
 **Owns:** W1 of the
-[wing design record](2026-09-18_wing_design_plan.md): one row per active
+[wing design record](../../design_docs/2026-09-18_wing_design_plan.md): one row per active
 plan in each product's index, its tier by the record's §2 test, whether
 the record confirms or contradicts its load-bearing assumption, and a
 recommendation. Corrections the evaluations made to the record itself are

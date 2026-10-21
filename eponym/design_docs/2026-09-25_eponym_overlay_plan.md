@@ -71,7 +71,7 @@ host that stays Eponym's; and the
 ## 0. Done-conditions
 
 W5's done-conditions are the record's
-[§11](../../mesocosm/design_docs/2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for Eponym, they are
+[§11](../../design_docs/2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for Eponym, they are
 met by §1 (the profile), §3 (the core and the contract) and §2's phase E4
 (the played loop).
 

@@ -213,7 +213,7 @@ What the frame decides, and why it is here rather than only in the review:
 
 ### Isometry as an umbrella home (2026-09-09 discussion)
 
-**Historical discussion, accepted later on 2026-09-09.** See the [completed consolidation](../../design_docs/archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md) for the current layout. The discussion below records its rationale. Mark was considering Isometry as
+**Historical discussion, accepted later on 2026-09-09.** See the [completed consolidation](archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md) for the current layout. The discussion below records its rationale. Mark was considering Isometry as
 the repository home for Mesocosm and Eponym to make interdependency easier,
 and explicitly welcomes use of all three projects. Distinguish repository
 organization, library dependency direction, and product runtime integration.
@@ -673,7 +673,7 @@ world operations are particularly interesting mod contributions.
 
 **Where these directions meet current work.** Vessel mechanics and receipts
 stay in their domain plans. Mesocosm's
-[playable ecology plan](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns embodied
+[playable ecology plan](../mesocosm/design_docs/archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md) owns embodied
 discovery and lineage development. Eponym's
 `eponym/design_docs/archive_docs/2026-10-10/2026-09-09_functional_loops_plan.md`,
 `eponym/design_docs/archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md`, and
@@ -683,7 +683,7 @@ laws, and remembered social consequences respectively; they are not completion
 receipts for this taste record. Isometry's own rulesets decide item and surface
 consequences. Shared
 identity and history do not require a wing-wide combat, item-growth, or culture
-evaluator. The [vessel briefs](2026-08-18_vessel_briefs_and_presentation.md)
+evaluator. The [vessel briefs](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
 retain the distinct game and presentation directions.
 
 ---
@@ -712,9 +712,9 @@ A vessel may absolutely have its own renderer, event loop, ECS, camera, or
 physics dimensionality. What it may never do is mint a second, private answer
 to *who this creature is, where it came from, and what happened to it*. The
 sharing rules per layer are tabulated in the
-[engine and render lane landscape](archive_docs/2026-09-18/2026-07-30_engine_and_render_lane_landscape.md)
+[engine and render lane landscape](../mesocosm/design_docs/archive_docs/2026-09-18/2026-07-30_engine_and_render_lane_landscape.md)
 §5, and the shared organ that follows from them is planned in the
-[body pipeline plan](archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md).
+[body pipeline plan](../mesocosm/design_docs/archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md).
 
 Consequently: **"shared world model" is too strong** — Mesocosm's live
 ecology, Eponym' settlement, and Isometry's campaign state will never be one
@@ -805,7 +805,7 @@ foreign rule authority: the portable tree is topology and provenance, exact
 geometry is an optional projection, and a descendant is still regrown under
 Mesocosm's rules rather than restored voxel for voxel. The full contract and
 proof gates live in the
-[wing phenotype plan](2026-07-31_wing_phenotype_contract_plan.md).
+[wing phenotype plan](../mesocosm/design_docs/2026-07-31_wing_phenotype_contract_plan.md).
 
 ---
 
@@ -960,7 +960,7 @@ the body document and a geometry renderer projects a token *live*, with
 procedural articulation; a peer holding only an image decoder shows the baked
 sheet. Neither is privileged, the document is canonical, and sheets are
 optional derived artifacts riding beside it. Detail in the
-[body pipeline plan](archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md) §3.
+[body pipeline plan](../mesocosm/design_docs/archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md) §3.
 
 **Protocol keystone: additive facts, opaque preservation, deferred
 interpretation.** Games append history in their own vocabulary and never
@@ -1079,7 +1079,7 @@ rather than agreeing types. Two schemas ride one framing: `mesocosm.body/v0`
 carries appearance to `isometry-voxel`, and `mesocosm.chronicle/v0` carries the
 record to `isometry-campaign` and back. Neither repo depends on the other.
 Receipts and findings in the
-[execution waves plan](archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) §1.4 and §2.4.
+[execution waves plan](../mesocosm/design_docs/archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) §1.4 and §2.4.
 
 Three things the build settled that this section had not:
 
@@ -1114,7 +1114,7 @@ portable artifact. Its implemented fields are a flattened voxel projection,
 per-cell part attribution, flat **per-part provenance**, species, mass, and
 collision hints. The fuller topology once proposed for v0 is now the scoped v1
 contract in the
-[wing phenotype plan](2026-07-31_wing_phenotype_contract_plan.md): stable
+[wing phenotype plan](../mesocosm/design_docs/2026-07-31_wing_phenotype_contract_plan.md): stable
 subject and body-revision identity, primitive parent links, source addresses,
 and optional projection data.
 
@@ -1197,7 +1197,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    a `LICENSES.md` scope record so the permissive library texts cannot be
    mistaken for a dual license on MPL game code.
 2. **Render and engine stack.** Given its own research doc:
-   [`2026-07-30_engine_and_render_lane_landscape.md`](archive_docs/2026-09-18/2026-07-30_engine_and_render_lane_landscape.md).
+   [`2026-07-30_engine_and_render_lane_landscape.md`](../mesocosm/design_docs/archive_docs/2026-09-18/2026-07-30_engine_and_render_lane_landscape.md).
    The earlier framing here (Bevy versus custom wgpu) was a false binary and
    is superseded. Short version: Fyrox is the forkable engine and the only
    Rust one with an editor; "custom" is an **assembly over an existing host
@@ -1218,7 +1218,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    plan there rather than arriving as a side effect.
 
    **Closed 2026-08-18.** The camera decisions are ruled in
-   [the vessel briefs and presentation record](2026-08-18_vessel_briefs_and_presentation.md):
+   [the vessel briefs and presentation record](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md):
    Mesocosm is a side-on terrarium section with a trait-graph board for
    the epoch review; Eponym is third-person 3D on one continuous
    Kenshi-style zoom, with first person composable as a Eponym-only
@@ -1234,7 +1234,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    rust-gpu requirement rather than on staleness; vello stays a live option if
    the look settles 2.5D, since it has no depth buffer and would change the
    rendering approach rather than the host. Reasons and costs in the
-   [execution waves plan](archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) §1.3.
+   [execution waves plan](../mesocosm/design_docs/archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) §1.3.
 
    **Eponym is not bound by this.** Renderers are per-vessel, and a close
    camera with real lighting is the case where an engine, or Renderling, would
@@ -1309,7 +1309,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    branch while preserving the other continuation. This is a domain
    materializer applying **adopt or branch**, not evidence for a universal
    CRDT. The detailed rule belongs to the
-   [epoch-boundary plan](2026-08-01_epoch_boundary_plan.md).
+   [epoch-boundary plan](../mesocosm/design_docs/2026-08-01_epoch_boundary_plan.md).
 
    Honest caveats: whole-heap snapshotting scales with heap size and an ecology
    is a large-mutable-state profile; cross-platform float determinism is the

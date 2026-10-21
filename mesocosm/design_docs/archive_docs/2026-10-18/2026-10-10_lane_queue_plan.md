@@ -26,7 +26,7 @@ on 2026-10-18.
 - Work ONLY in the worktree named in the brief. The Bash tool's cwd resets
   between calls: anchor every command with `cd <worktree> && ...`.
 - Read `design_docs/DOC_POLICY.md` before writing docs. Rulings live in
-  `mesocosm/design_docs/2026-09-18_wing_design_plan.md`; read the ones the
+  `design_docs/2026-09-18_wing_design_plan.md`; read the ones the
   brief names before acting on them.
 - **Gate.** A realignment step commits once `cargo check --workspace
   --all-targets --offline` passes in every workspace it touches: root `.`

@@ -7,7 +7,7 @@ in section 0 are cases: the decisions Mark made from 2026-09-17 to
 2026-10-17, kept as precedent. New rules are numbered by Mark alone. On
 2026-10-18 the operational and replaced cases, the stacked status banners,
 and the Findings and Progress logs moved verbatim to
-[the archive](archive_docs/2026-10-18/2026-09-18_wing_design_plan_retired.md);
+[the archive](../mesocosm/design_docs/archive_docs/2026-10-18/2026-09-18_wing_design_plan_retired.md);
 their numbers stay unused here. [The case register](case_register.md) lists
 every live case in one line with the plans that cite it.
 
@@ -41,7 +41,7 @@ retired against this record.
 **Method annotation, 2026-09-27:** Mark restated the question, ruling and
 verification method and invited improvements. The preserved method and
 explicitly unruled refinements are in the [session notes,
-§8.2](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
+§8.2](../mesocosm/design_docs/archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#82-the-method-as-practised).
 
 **Does not own:** any tier's internal design below the level ruled here, any
 product's verbs, the hagiograph's implementation (mere's eidetic family), or
@@ -50,12 +50,12 @@ naming rounds.
 
 **Consumes:** the [founding record](2026-07-30_games_wing_founding.md),
 whose laws and nouns this record sits under; the
-[place-graph engine plan](2026-08-05_place_graph_engine_plan.md) §0 rulings;
-the [resident views composition plan](2026-08-14_resident_views_composition_plan.md)
+[place-graph engine plan](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) §0 rulings;
+the [resident views composition plan](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md)
 for "Burn proposes, the record disposes"; the
-[isoscape family plan](archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md) for the
+[isoscape family plan](../mesocosm/design_docs/archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md) for the
 generation bucket; the
-[board-on-isometer plan](../../design_docs/2026-09-15_board_on_isometer_plan.md)
+[board-on-isometer plan](2026-09-15_board_on_isometer_plan.md)
 at the repository root as the worked example of a plan designed to the wrong
 target.
 
@@ -98,14 +98,14 @@ construction supports coordinated functional readings, geometry, collision,
 animation bindings and descriptions. These derived products cite the source
 revision; one body may require many runtime objects. Runtime handles and
 render parts are disposable and do not define the continuing individual.
-The [body contract's current refinement](2026-07-31_wing_phenotype_contract_plan.md#current-contract-refinement-2026-09-28)
+The [body contract's current refinement](../mesocosm/design_docs/2026-07-31_wing_phenotype_contract_plan.md#current-contract-refinement-2026-09-28)
 separates subject, incarnation, recipe, body revision and projection.
 
 Capability is what current construction and circumstances support; repertoire
 is the procedures an entity can attempt; proficiency is how well it performs
 them. Maturation and practice can change these separately. Perception, belief,
 self-belief and tenets inform choices; actual circumstances resolve effects.
-The [sim plan](2026-09-22_sim_plan.md#25-capabilities-and-knowledge) owns these
+The [sim plan](../mesocosm/design_docs/2026-09-22_sim_plan.md#25-capabilities-and-knowledge) owns these
 distinctions. Material and conceptual operations share composition machinery,
 with mundane and magical meanings supplied by the world's rules (407).
 
@@ -113,7 +113,7 @@ Magic composes fundamental effects with strongly escalating energy costs,
 and its scripts may read world conditions and other generators' accepted
 outputs (404). Rulesets categorize those effects and supply distinctive
 exemplars; generated spells can extend their catalogues. The
-[functional generation plan](2026-09-09_functional_generation_plan.md#composition-design-2026-09-28)
+[functional generation plan](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md#composition-design-2026-09-28)
 owns this design, including its open cost and execution questions. Explainable
 surprise and powerful combinations are wanted; fairness does not mean every
 build is equally strong.
@@ -971,7 +971,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      isocosm-vtt, etc. Let's plan the rename too". The reservations
      `eponym`, `isocosm` and `isocosm-vtt` were published to crates.io at
      0.0.1 the same day, and the rename is the [family rename
-     plan](archive_docs/2026-10-10/2026-09-22_family_rename_plan.md). Where this record says
+     plan](../mesocosm/design_docs/archive_docs/2026-10-10/2026-09-22_family_rename_plan.md). Where this record says
      "isotropy" it means the sim, now Isocosm; where it says "Paredros" it
      means Eponym. (The clause first written here, "the tabletop keeps
      Isometry as its subtitle", was this record's inference and not Mark's
@@ -1002,7 +1002,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      in distribution over whatever a later process reads; what was watched
      is logged; exact agreement is a world setting, statistical the
      default.** Put to Mark on 2026-09-24, after the [aggregation
-     research](2026-09-22_aggregation_research.md) found that its lossless
+     research](../mesocosm/design_docs/2026-09-22_aggregation_research.md) found that its lossless
      runner cut evaluations 5.93 times in independent worlds and not at all
      in ecological ones: run one world twice from one seed, with a village
      of 300 going into a hard winter, watched once with every person run
@@ -3395,7 +3395,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and fourth rungs mark modifiers and aggregate modifiers, of which a
      glyph's effect is one kind. How conditions, statuses and modifiers are
      held on entities, singly and in aggregate, opens as its own question
-     ([session notes, §10](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30)).
+     ([session notes, §10](../mesocosm/design_docs/archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30)).
      *Reading, not ruled:* the question used "mark" in two senses, the
      effect experiment's drawn glyph effects (`mesocosm-core`'s
      `effect_experiment`) and a symbol standing for a thing too small to
@@ -10614,7 +10614,7 @@ run as a crowd, and they agree in distribution rather than identity: the
 same toll, falling the same way across whatever a later process reads. The
 first check above is a consistency check and no more; restriction returning
 its aggregate says nothing about the evolution that follows (the
-[aggregation research](2026-09-22_aggregation_research.md), reading
+[aggregation research](../mesocosm/design_docs/2026-09-22_aggregation_research.md), reading
 Kevrekidis). The second is the test, and it is collection's observational
 test run forward in time: the distribution of everything a later process, a
 player or the hagiograph can read is the same either way beyond chance, over
@@ -11056,7 +11056,7 @@ choice is reactive, so whether a lineage leans to contest or scramble is a
 trait that moves at the epoch boundary (ruling 57); a denizen or sophont
 scores it like any act, by need, trust and approval (D26), with its
 disposition and its opinion of the other. This is the competition semantics
-the [aggregation research](2026-09-22_aggregation_research.md) found missing
+the [aggregation research](../mesocosm/design_docs/2026-09-22_aggregation_research.md) found missing
 for shared resources, and it makes the mix a population statistic: a crowd's
 share of contests follows from how its members lean. Prior art, known:
 Nicholson's scramble and contest competition (1954), under which scramble
@@ -11671,7 +11671,7 @@ ignores height (`places.rs:170-181`), and interiors are asserted counts
 
 **The spine (rulings 389 to 392, 2026-09-28).** What connects the world
 map's sites to the voxels under them is planned whole in the
-[place-graph engine plan](2026-08-05_place_graph_engine_plan.md), rewritten
+[place-graph engine plan](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), rewritten
 as the spine's plan (390). A top-down skeleton gives each site coarse facts,
 each adjacency carries an edge profile both sides compute alike (391), and
 Isocosm lifts a site's volume from those facts and its seed (392). The first
@@ -11986,7 +11986,7 @@ and savagery, and its legends mode is a timeline to browse and not to edit.
 **2026-09-28 refinement:** ruling 404 makes fundamental effects composable,
 gives them cantrip expressions and escalating exchange costs, and admits
 world-dependent scripts authored by modders or generated by the sim. The
-[functional generation plan](2026-09-09_functional_generation_plan.md#composition-design-2026-09-28)
+[functional generation plan](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md#composition-design-2026-09-28)
 owns the current model and open questions; the six axes below remain useful
 dimensions. Ruling 407 adds the construction and learning distinctions.
 
@@ -13048,7 +13048,7 @@ on a receipt.
 
 ### 5.5 The first overlay: Mesocosm (rulings 174 to 184, 192 and 193)
 
-The [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md) compiles
+The [Mesocosm overlay plan](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) compiles
 this section, with rulings 192 and 193 on `mesocosm-core`'s absorption into
 Isocosm, into W5's phases.
 
@@ -13086,7 +13086,7 @@ variance of expression rerolled at reproduction (ruling 57).
 
 ### 5.6 Eponym's overlay (rulings 185 to 187)
 
-The [Eponym overlay plan](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) compiles this section, with rulings 60, 130
+The [Eponym overlay plan](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) compiles this section, with rulings 60, 130
 and 152 to 156, into W5's phases. Eponym's own plans already hold most of its profile: one named creature,
 driven, until death (ruling 60); companions configured in advance and never
 commanded, peers who may refuse; succession, "Death, and a companion
@@ -13102,7 +13102,7 @@ is where tag-in lives (ruling 187).
 
 ### 5.7 The VTT's overlay (rulings 188 to 191)
 
-The [VTT overlay plan](../../design_docs/2026-09-25_vtt_overlay_plan.md) compiles this section, with rulings 114, 154
+The [VTT overlay plan](2026-09-25_vtt_overlay_plan.md) compiles this section, with rulings 114, 154
 and 189, into W5's phases. The VTT's product description holds its profile: a substrate for tabletop
 systems over the Isocosm sim, systems as plugins, the substrate tracking
 geometry and turns and never a hit point. A campaign may switch the sim off
@@ -13355,7 +13355,7 @@ still open under it.
 ## 10. W1 evaluations
 
 The evaluations of every active plan against this record live in
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md),
+[2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md),
 one section per product, so this record stays the design and that document
 carries the rulings as they are made.
 
@@ -13375,7 +13375,7 @@ carries the rulings as they are made.
   under this record, with the taxonomy of §3 as a schema, the three process
   shapes as definitions, the record and reach field specified, and a
   generator whose declared space is the source of every receipt. Drafted
-  2026-09-22 as the [sim plan](2026-09-22_sim_plan.md): met on paper, the
+  2026-09-22 as the [sim plan](../mesocosm/design_docs/2026-09-22_sim_plan.md): met on paper, the
   docket items its §8 lists being ruled or moved (ruling 106; D19 and D20
   by rulings 154 and 152).
 - **W3, the stack re-derived.** Done when each stack component's plan
@@ -13415,11 +13415,11 @@ carries the rulings as they are made.
   receipts drawn from the generator. **Ruled 2026-09-24 (ruling 174):
   Mesocosm goes first,** and its played loop directs, as ruling 60 has it
   (ruling 175, 2026-09-25). Planned as the
-  [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), phases M0
+  [Mesocosm overlay plan](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), phases M0
   to M4, M0 and M1 done on 2026-09-25 and M2 to M4 proposed. Eponym's and
   the VTT's overlays were planned on 2026-09-25 as the
-  [Eponym overlay plan](../../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), E0 to E4,
-  and the [VTT overlay plan](../../design_docs/2026-09-25_vtt_overlay_plan.md), V0 to
+  [Eponym overlay plan](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), E0 to E4,
+  and the [VTT overlay plan](2026-09-25_vtt_overlay_plan.md), V0 to
   V4, proposed and not opened; they go side by side after Mesocosm's M3
   (ruling 231).
 

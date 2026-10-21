@@ -14,7 +14,7 @@ doc = "mesocosm/design_docs/2026-07-31_phenotype_plan.md"
 note = "VB2 feet and canopy spacing, 2026-09-05"
 
 [sources.wing_record]
-doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+doc = "design_docs/2026-09-18_wing_design_plan.md"
 note = "rulings 625 to 631: foundings as data, embedded, named, by roster set"
 
 # The jointed vocabulary, with only its local leaf slot widened. The mat and

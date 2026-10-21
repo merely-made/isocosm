@@ -3,7 +3,7 @@
 **Why this moved.** On 2026-10-18 Mark made the record's numbered rulings
 cases, kept as precedent, with new rules numbered by him alone, and asked
 for the record to be cleaned. This file holds, verbatim, what left the live
-[record](../../2026-09-18_wing_design_plan.md): its stacked status banners,
+[record](../../../../design_docs/2026-09-18_wing_design_plan.md): its stacked status banners,
 the operational cases (one-off merges, pushes, orders, lane and receipt
 choices) and the explicitly replaced ones, and its Findings and Progress logs.
 A case cited by number elsewhere and absent from the record is here.

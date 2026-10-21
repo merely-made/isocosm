@@ -15,7 +15,7 @@ kept as written.
 fantastical mechanics. It refines the founding record's call for structurally
 different worlds; it does not make a shared games-wing rules engine. Wing-wide
 identity and pipeline vocabulary remain at
-`mesocosm/design_docs/2026-07-30_games_wing_founding.md`.
+`design_docs/2026-07-30_games_wing_founding.md`.
 
 **W1, 2026-09-18:** rewrite. Tier: sim, §3.3 first shape and fields,
 written as product-owned. Only the tier is wrong; the best answer in the

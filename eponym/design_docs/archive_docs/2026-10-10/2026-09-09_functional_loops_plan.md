@@ -89,7 +89,7 @@ Individual memory and Hagiograph live in
 [memory and remembrance](2026-09-09_memory_and_remembrance_plan.md). These are
 Paredros consumer plans; any promoted shared contract needs its own owning-repo
 review and a second consumer. Wing architecture remains in
-`mesocosm/design_docs/2026-07-30_games_wing_founding.md`.
+`design_docs/2026-07-30_games_wing_founding.md`.
 
 ## J: join the existing owners
 

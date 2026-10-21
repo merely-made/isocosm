@@ -35,7 +35,7 @@ history). Facts of the world cross via the pipeline. Platform organs
 are shared upward, into the stack that owns them. Verbs never cross.
 
 Recorded in the wing founding record
-(`mesocosm/design_docs/2026-07-30_games_wing_founding.md`, §1, "Each
+(`design_docs/2026-07-30_games_wing_founding.md`, §1, "Each
 vessel is a mode of the same peopled history") on 2026-08-10.
 
 ## Seam verdicts
@@ -156,7 +156,7 @@ place identity, mesh already shared).
 
 ## Retired 2026-09-18
 
-**W1 verdict: retire.** Evaluated against the [wing design record](../../../../mesocosm/design_docs/2026-09-18_wing_design_plan.md) and
+**W1 verdict: retire.** Evaluated against the [wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md) and
 recorded in [2026-09-18_wing_plan_evaluations.md](../../../../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
 §3; accepted by Mark under the record's ruling 31 of 2026-09-18,
 which takes W1's recommendations in full.

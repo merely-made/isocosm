@@ -846,7 +846,7 @@ exploration from extending the crossing toward borg generation and RPG growth.
 The [founding plan](../../2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)
 owns the proposed rules and three-lives fixture. Historical entry and the
 distinct inheritance routes live in
-`mesocosm/design_docs/2026-07-30_games_wing_founding.md`, under
+`design_docs/2026-07-30_games_wing_founding.md`, under
 "Historical entry and lineage-shaped lives". Neither adds a mandatory
 Mesocosm-to-Paredros-to-Isometry progression sequence.
 

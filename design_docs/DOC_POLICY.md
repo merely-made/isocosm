@@ -129,15 +129,15 @@ own index; no area roots have been promoted yet. This one policy governs all
 three (wing design record, ruling 615); the product directories link here.
 
 Games-wing material (shared architecture, the pipeline laws, the shared
-vocabulary) is governed by core §2 and lives once, in
-`mesocosm/design_docs/`: the founding record
+vocabulary) is governed by core §2 and lives once, in this
+`design_docs/` (moved from `mesocosm/design_docs/` on 2026-10-21): the founding record
 `2026-07-30_games_wing_founding.md` and the design record
-`2026-09-18_wing_design_plan.md`. Cite it by path; never copy it into another
+`2026-09-18_wing_design_plan.md`, the case register and the doctrine. Cite it by path; never copy it into another
 product's docs.
 
 ### Decisions and doctrine
 
-Ruled 2026-10-20 (`mesocosm/design_docs/2026-10-20_decision_links_plan.md`).
+Ruled 2026-10-20 (`design_docs/2026-10-20_decision_links_plan.md`).
 Mark's answers to design questions are *cases*: the design record's §0 and
 each plan's Decisions section, in his words. What is read during work is the
 *doctrine*, `design_docs/doctrine.md`, one document by area of short

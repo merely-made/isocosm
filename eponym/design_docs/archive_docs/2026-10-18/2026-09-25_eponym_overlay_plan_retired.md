@@ -382,7 +382,7 @@ two peers in E4.
   contract, support and grip. Fresh tissue fits the developed native capacity;
   reserve 100 and energy 100 remain where admitted. Existing supplied stocks
   stay conserved and overflow refuses atomically under 777. See the canonical
-  rulings in `mesocosm/design_docs/2026-09-18_wing_design_plan.md`.
+  rulings in `design_docs/2026-09-18_wing_design_plan.md`.
   Q10 is preparing native development, part-stock placement and an actual
   anatomy snapshot admission. Nominal 860mg tissue/105mg reserve remains a
   source calculation pending native verification. All twenty-five original

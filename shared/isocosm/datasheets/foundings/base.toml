@@ -72,7 +72,7 @@ doc = "mesocosm/design_docs/2026-08-30_default_creatures_plan.md"
 note = "DC1 to DC4: the wider palette, the roster of eight, founding from it"
 
 [sources.wing_record]
-doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+doc = "design_docs/2026-09-18_wing_design_plan.md"
 note = "rulings 625 to 631: foundings as data, embedded, named, by roster set"
 
 # The current world's baseline admitted part vocabulary, and all a drawn

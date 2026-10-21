@@ -66,7 +66,7 @@ pointer picking, which is isometer's alone (347); the sim's entities and
 places (the [sim plan](2026-09-22_sim_plan.md)); what a token or a critter
 means (each product's); or naming.
 
-**Consumes:** the [wing design record](2026-09-18_wing_design_plan.md)
+**Consumes:** the [wing design record](../../design_docs/2026-09-18_wing_design_plan.md)
 rulings 233, 299, 324, 326, 330 to 335, 346 to 352 and 363, and §4.1; the
 retired
 [runtime profile plan](../../design_docs/archive_docs/2026-09-18/2026-08-23_runtime_profile_plan.md);

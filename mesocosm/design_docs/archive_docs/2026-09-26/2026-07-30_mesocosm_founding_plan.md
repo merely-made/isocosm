@@ -28,7 +28,7 @@ material/lineage provenance — and claims must name which kind they mean. The d
 body pipeline, host, epoch lab, and first Isometry projection are implemented;
 the repeated phenotype loop and later M-phases remain open. Vessel 1 of the
 games wing. Shared architecture, the three pipeline laws, and the wing vocabulary
-live in [the games wing founding record](../../2026-07-30_games_wing_founding.md)
+live in [the games wing founding record](../../../../design_docs/2026-07-30_games_wing_founding.md)
 and are not repeated here.
 
 **W1, 2026-09-18:** rewrite. Tier: mixed, sim world grammar and game

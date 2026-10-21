@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-21:** in progress: L1 and L2 done. Shaped with Mark the same day in
+**Status, 2026-10-21:** in progress: L1, L2 and L1b done. Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -375,3 +375,11 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   budget's form and size remain; nothing built.
 - **2026-10-21:** L1 in force (DOC_POLICY), the six keyed, L2 built and its
   done-conditions met (Findings); the hook runs it. Next: L1b, L3, then L4.
+- **2026-10-21, later:** L1b done. The founding record, the design record,
+  the case register and this plan moved from `mesocosm/design_docs/` to
+  `design_docs/` with `git mv`; 1,661 links in 51 files were recomputed
+  against the old tree, and the root `CLAUDE.md`, DOC_POLICY's addendum and
+  the three indexes say where they live. A link check finds 59 Markdown
+  links that resolve to nothing, the same 59 as before the move: old
+  breakage, mostly in archived copies that kept relative links from where
+  they used to live. Not repaired here.

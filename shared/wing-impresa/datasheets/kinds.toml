@@ -15,7 +15,7 @@ doc = "mesocosm/design_docs/archive_docs/2026-09-26/2026-08-06_general_model_pla
 note = "G7, impresa (Mark, 2026-09-15): kinds are a world-configured closed set, seeded from six"
 
 [sources.wing_record]
-doc = "mesocosm/design_docs/2026-09-18_wing_design_plan.md"
+doc = "design_docs/2026-09-18_wing_design_plan.md"
 note = "ruling 625: every founding becomes data, beside the seeded kinds"
 
 # The six the ruling names, for a world that has authored none of its own.

@@ -8,7 +8,7 @@ left to W3. The record and the sim plan carry every ruling.
 
 **Docket for Mark, opened 2026-09-21. Eighteen of twenty items ruled the same
 day; two held; D21 to D33 opened since and ruled 2026-09-22, D32 by ruling 105 and the rest by ruling 106.** It gathered every reading, recommendation and verdict the
-[wing design record](../../2026-09-18_wing_design_plan.md) had flagged as its own,
+[wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md) had flagged as its own,
 so they could be ruled in one pass, the way W1 was. It is archived when the
 held items are ruled or moved into their phases' plans.
 

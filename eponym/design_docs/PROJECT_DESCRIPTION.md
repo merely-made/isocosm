@@ -56,7 +56,7 @@ a trust plane, one clock and the simulator's own verbs, reached as handles
 each owns the verbs it lays on top: Mesocosm (first person), Eponym
 (second person), the VTT (third person).
 
-See `mesocosm/design_docs/2026-07-30_games_wing_founding.md`.
+See `design_docs/2026-07-30_games_wing_founding.md`.
 
 ## Speculative
 
