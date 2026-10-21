@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-19",
+  "baseline": "c3ad4b97",
+  "toolchain": {
+    "rustc": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "note": "cargo 1.97.1 cannot resolve the workspace: eidetic de6b1dce chartulary overrides a workspace dependency default-features; rustc/rustdoc 1.97.1 compile and test under cargo 1.99.1"
+  },
+  "gates": {
+    "baseline": {
+      "commit": "c3ad4b97",
+      "feature": {
+        "passed": 75,
+        "failed": 0,
+        "ignored": 0,
+        "exit": "exit 0"
+      },
+      "default": {
+        "passed": 58,
+        "failed": 0,
+        "ignored": 0,
+        "exit": "exit 0"
+      }
+    },
+    "step1": {
+      "commit": "80137113",
+      "feature": {
+        "passed": 78,
+        "failed": 0,
+        "ignored": 1,
+        "exit": "exit 0"
+      },
+      "default": {
+        "passed": 58,
+        "failed": 0,
+        "ignored": 0,
+        "exit": "exit 0"
+      }
+    },
+    "step2": {
+      "commit": "8d6499c1",
+      "feature": {
+        "passed": 81,
+        "failed": 0,
+        "ignored": 2,
+        "exit": "exit 0"
+      },
+      "default": {
+        "passed": 58,
+        "failed": 0,
+        "ignored": 0,
+        "exit": "exit 0"
+      }
+    },
+    "step3": {
+      "commit": "b0f9988a",
+      "feature": {
+        "passed": 81,
+        "failed": 0,
+        "ignored": 2,
+        "exit": "exit 0"
+      },
+      "default": {
+        "passed": 58,
+        "failed": 0,
+        "ignored": 0,
+        "exit": "exit 0"
+      }
+    },
+    "step4": {
+      "commit": "5dd01ab8",
+      "feature": {
+        "passed": 81,
+        "failed": 0,
+        "ignored": 2,
+        "exit": "exit 0"
+      },
+      "default": {
+        "passed": 58,
+        "failed": 0,
+        "ignored": 0,
+        "exit": "exit 0"
+      }
+    },
+    "step5": {
+      "commit": "this commit",
+      "feature": {
+        "passed": 85,
+        "failed": 0,
+        "ignored": 2,
+        "exit": "exit 0"
+      },
+      "default": {
+        "passed": 58,
+        "failed": 0,
+        "ignored": 0,
+        "exit": "exit 0"
+      }
+    }
+  },
+  "existing_workflow_unchanged": {
+    "status": "stopped at its TOML 1.1 partial-index assertion (by design after step 4)",
+    "commands_before_stop": 20,
+    "stop_response": {
+      "error": "preset key already exists in target generator",
+      "ok": false
+    }
+  },
+  "existing_workflow_one_assertion_changed": {
+    "status": "passed",
+    "commands": 59,
+    "sessions": 5,
+    "records_compared": 64,
+    "identical": 60,
+    "differing": {
+      "18 edit": "state.diagnostics (partial-index note removed)",
+      "19 read": "diagnostics",
+      "20 propose_lock_preset": "error: preset key already exists",
+      "21 read": "diagnostics"
+    }
+  },
+  "structural_workflow": {
+    "status": "passed",
+    "commands": 66,
+    "sessions": 5,
+    "caller_offsets": 0
+  },
+  "fork": {
+    "repository": "https://github.com/merely-made/taplo",
+    "branch": "merely/rowan-0.17",
+    "base": "15963fc release-taplo-0.14.0",
+    "commits": {
+      "8ad7de4": "Bump rowan to 0.17.0",
+      "c316724": "Batch consecutive entries during DOM construction",
+      "118aae3": "Add parse_with_cache",
+      "aa6d784": "Parse TOML 1.1 when asked"
+    },
+    "fresh_clone_tests": {
+      "118aae39": 102,
+      "aa6d784f": 107
+    },
+    "inherited_tests": 101,
+    "differential_corpus_documents": 3460,
+    "toml11": {
+      "named": 33,
+      "prefixes": 914,
+      "accepted_equal": 167,
+      "rejected_by_both": 780,
+      "disagreements": 0,
+      "references": [
+        "toml 1.1.8",
+        "toml 1.1.6"
+      ]
+    }
+  },
+  "history_default": "text",
+  "budget_bytes": 67108864,
+  "count_cap": 32
+}

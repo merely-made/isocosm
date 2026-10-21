@@ -22,6 +22,28 @@ enum Command {
         generator: String,
         preset: Box<isometry_campaign::GeneratorLockPreset>,
     },
+    InsertLockPreset {
+        base: u64,
+        generator: String,
+        preset: Box<isometry_campaign::GeneratorLockPreset>,
+    },
+    RemoveLockPreset {
+        base: u64,
+        generator: String,
+        key: String,
+    },
+    ReplaceLockPreset {
+        base: u64,
+        generator: String,
+        key: String,
+        preset: Box<isometry_campaign::GeneratorLockPreset>,
+    },
+    SetGeneratorField {
+        base: u64,
+        generator: String,
+        field: String,
+        value: serde_json::Value,
+    },
     Save {
         base: u64,
     },
@@ -33,6 +55,19 @@ fn state(session: &Session, text: bool) -> serde_json::Value {
         "source_fingerprint":session.current.fingerprint,"valid":session.current.validation.is_none(),
         "diagnostics":session.current.diagnostics(),"retained_revisions":session.history.len(),
         "text":text.then_some(session.current.text.as_ref()),"admitted":false})
+}
+/// Plan a structural edit against the current revision, then publish it.
+fn structural(
+    session: &mut Session,
+    base: u64,
+    operation: &'static str,
+    plan: impl FnOnce(&Session) -> Result<(Vec<Edit>, isometry_campaign::ContentPackManifest), String>,
+) -> Result<serde_json::Value, String> {
+    session.check_base(base)?;
+    let plan = plan(session)?;
+    let mut result = structure::publish(session, base, plan, operation)?;
+    result["state"] = state(session, false);
+    Ok(result)
 }
 fn execute(session: &mut Session, command: Command) -> Result<serde_json::Value, String> {
     Ok(match command {
@@ -53,24 +88,61 @@ fn execute(session: &mut Session, command: Command) -> Result<serde_json::Value,
             generator,
             preset,
         } => preset::propose(session, base, &generator, *preset)?,
+        Command::InsertLockPreset {
+            base,
+            generator,
+            preset,
+        } => structural(session, base, "insert_lock_preset", |s| {
+            structure::insert(s, &generator, &preset)
+        })?,
+        Command::RemoveLockPreset {
+            base,
+            generator,
+            key,
+        } => structural(session, base, "remove_lock_preset", |s| {
+            structure::remove(s, &generator, &key)
+        })?,
+        Command::ReplaceLockPreset {
+            base,
+            generator,
+            key,
+            preset,
+        } => structural(session, base, "replace_lock_preset", |s| {
+            structure::replace(s, &generator, &key, &preset)
+        })?,
+        Command::SetGeneratorField {
+            base,
+            generator,
+            field,
+            value,
+        } => structural(session, base, "set_generator_field", |s| {
+            structure::set_field(s, &generator, &field, &value)
+        })?,
         Command::Save { base } => session.save(base)?,
         Command::Quit => unreachable!("handled by command loop"),
     })
 }
 pub(crate) fn run() -> Result<(), String> {
+    const USAGE: &str =
+        "usage: pack-author <pack-directory> [--check] [--history full|text|cached]";
     let mut args = std::env::args_os().skip(1);
-    let root = args
-        .next()
-        .ok_or("usage: pack-author <pack-directory> [--check]")?;
-    let check_only = match args.next() {
-        None => false,
-        Some(arg) if arg == "--check" => true,
-        _ => return Err("usage: pack-author <pack-directory> [--check]".into()),
-    };
-    if args.next().is_some() {
-        return Err("too many arguments".into());
+    let root = args.next().ok_or(USAGE)?;
+    let (mut check_only, mut mode) = (false, history::Mode::DEFAULT);
+    while let Some(arg) = args.next() {
+        match arg.to_str() {
+            Some("--check") if !check_only => check_only = true,
+            Some("--history") => {
+                mode = args
+                    .next()
+                    .and_then(|m| m.into_string().ok())
+                    .ok_or(USAGE)?
+                    .parse()?;
+            },
+            _ => return Err(USAGE.into()),
+        }
     }
-    let mut session = Session::open(std::path::Path::new(&root), 32)?;
+    let policy = history::Policy::new(mode, history::Policy::DEFAULT_LIMIT);
+    let mut session = Session::open_with(std::path::Path::new(&root), policy)?;
     if check_only {
         println!("{}", execute(&mut session, Command::Check)?);
         return Ok(());

@@ -97,10 +97,6 @@ fn uncertain_invalid_or_conflicting_inputs_refuse_without_mutation() {
             source.replace("[[generators]]", "[[\"generators\"]]"),
             "forge_item",
         ),
-        (
-            format!("{source}\n[extension]\ntime = 12:34\n"),
-            "forge_item",
-        ),
         ("name = \"broken".into(), "forge_item"),
         (
             source.replace(
@@ -117,6 +113,16 @@ fn uncertain_invalid_or_conflicting_inputs_refuse_without_mutation() {
         assert!(Arc::ptr_eq(&before, &s.current));
         assert_eq!(fs::read_to_string(&s.path).unwrap(), text);
     }
+    // TOML 1.1 source is fully indexed, so it no longer blocks a proposal.
+    let modern = format!("{source}\n[extension]\ntime = 12:34\nescape = \"\\e\"\n");
+    f.write(&modern);
+    let proposal = propose(&f.session(), "forge_item").unwrap();
+    assert!(
+        proposal["preview"]
+            .as_str()
+            .unwrap()
+            .ends_with("time = 12:34\nescape = \"\\e\"\n")
+    );
     f.write(&source);
     let s = f.session();
     let mut bad = preset();

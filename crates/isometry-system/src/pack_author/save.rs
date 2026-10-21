@@ -1,8 +1,9 @@
 //! Sequential CLI ownership serializes local edits/saves; leases cover cooperating processes.
+use super::lease::Lease;
 use super::*;
 use std::{fs, io::Write, path::Path};
 struct Files {
-    lock: PathBuf,
+    _lease: Lease,
     temporary: Option<PathBuf>,
 }
 impl Drop for Files {
@@ -10,17 +11,23 @@ impl Drop for Files {
         if let Some(p) = &self.temporary {
             let _ = fs::remove_file(p);
         }
-        let _ = fs::remove_file(&self.lock);
     }
+}
+/// Test-only interruptions between syncing the temporary file and replacing the target.
+#[cfg_attr(not(test), allow(dead_code))]
+pub(super) enum Inject {
+    Nothing,
+    FailBeforeReplace,
+    HoldBeforeReplace,
 }
 impl Session {
     pub(super) fn save(&mut self, base: u64) -> Result<serde_json::Value, String> {
-        self.save_inner(base, false)
+        self.save_inner(base, Inject::Nothing)
     }
-    fn save_inner(
+    pub(super) fn save_inner(
         &mut self,
         base: u64,
-        fail_before_replace: bool,
+        inject: Inject,
     ) -> Result<serde_json::Value, String> {
         self.check_base(base)?;
         check_manifest_set(&self.path)?;
@@ -31,26 +38,10 @@ impl Session {
             .ok_or("manifest has no filename")?
             .to_string_lossy();
         let lock = parent.join(format!(".{name}.author.lock"));
-        let mut lease = fs::OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(&lock)
-            .map_err(|e| {
-                format!(
-                    "save lease unavailable ({e}); inspect any stale author lock before removing it"
-                )
-            })?;
         let mut files = Files {
-            lock,
+            _lease: Lease::acquire(lock, &self.disk_fingerprint)?,
             temporary: None,
         };
-        writeln!(
-            lease,
-            "pid={} source={}",
-            std::process::id(),
-            self.disk_fingerprint
-        )
-        .map_err(|e| e.to_string())?;
         let metadata = fs::symlink_metadata(&self.path).map_err(|e| e.to_string())?;
         if metadata.file_type().is_symlink() || !metadata.is_file() {
             return Err("save requires a regular non-symlink manifest".into());
@@ -73,8 +64,12 @@ impl Session {
             .map_err(|e| e.to_string())?;
         file.sync_all().map_err(|e| e.to_string())?;
         drop(file);
-        if fail_before_replace {
-            return Err("injected failure before replacement".into());
+        match inject {
+            Inject::Nothing => {},
+            Inject::FailBeforeReplace => return Err("injected failure before replacement".into()),
+            Inject::HoldBeforeReplace => loop {
+                std::thread::park();
+            },
         }
         check_disk(&self.path, &self.disk_fingerprint)?;
         check_manifest_set(&self.path)?;
@@ -105,5 +100,5 @@ fn check_disk(path: &Path, expected: &str) -> Result<(), String> {
 }
 #[cfg(test)]
 pub(super) fn fail_save(session: &mut Session) -> Result<serde_json::Value, String> {
-    session.save_inner(session.current.revision, true)
+    session.save_inner(session.current.revision, Inject::FailBeforeReplace)
 }

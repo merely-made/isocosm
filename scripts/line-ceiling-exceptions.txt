@@ -1,8 +1,2 @@
 # Source files allowed over the 600-line ceiling (ruling 592), one per line:
 # the tracked path, a tab, and the technical reason it cannot be split.
-vendor/taplo/src/dom/from_syntax.rs	Vendored MIT taplo: preserve published source layout for reviewable Rowan/batching patch and upstream updates.
-vendor/taplo/src/dom/node/nodes.rs	Vendored MIT taplo: preserve published source layout for reviewable Rowan/batching patch and upstream updates.
-vendor/taplo/src/dom/node.rs	Vendored MIT taplo: preserve published source layout for reviewable Rowan/batching patch and upstream updates.
-vendor/taplo/src/formatter/mod.rs	Vendored MIT taplo: preserve published source layout for reviewable Rowan/batching patch and upstream updates.
-vendor/taplo/src/parser/mod.rs	Vendored MIT taplo: preserve published source layout for reviewable Rowan/batching patch and upstream updates.
-vendor/taplo/src/tests/formatter.rs	Vendored MIT taplo: preserve published source layout for reviewable Rowan/batching patch and upstream updates.
