@@ -46,6 +46,8 @@ pub fn facts(path: &str, text: &str, citer: &Citer) -> Facts {
     let mut f = Facts::default();
     if is_record(path) {
         f.entries = docs::record_cases(path, text, citer);
+    } else if path.ends_with("/doctrine.md") && is_doc(path) {
+        f.entries = docs::doctrine_statements(path, text, citer);
     } else if let Some(k) = model::plan_keyword(path).filter(|_| is_doc(path)) {
         f.entries = docs::plan_decisions(path, text, &k, citer);
     }
@@ -55,7 +57,7 @@ pub fn facts(path: &str, text: &str, citer: &Citer) -> Facts {
                 f.cites.extend(citer.cite(c).into_iter().map(|k| (k, i + 1)));
             }
         }
-    } else if is_doc(path) && !is_record(path) {
+    } else if is_doc(path) && !is_record(path) && !path.ends_with("/doctrine.md") {
         for (i, line) in text.lines().enumerate() {
             f.cites.extend(citer.cite(line).into_iter().map(|k| (k, i + 1)));
         }

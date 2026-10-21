@@ -608,12 +608,14 @@ title = "Isometry is retired as a product word and kept as the plain technical p
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "Isometry is retired as a product word and kept as the plain technical prefix of the tabletop's crates; the tabletop is Isocosm: VTT only."
+amends = ["110"]
 
 [cases."112"]
 title = "Mesocosm keeps its name; Eponym stays; the family is settled"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "Mesocosm keeps its name; Eponym stays; the family is settled as Isocosm with Isocosm: VTT, Mesocosm and Eponym."
+draws_on = ["110", "111"]
 
 [cases."113"]
 title = "Similitude: the noted always run as individuals; the fungible agree in distribution over whatever a later process reads; what was watched is logged; exact agreement is a world setting, statistical the default"
@@ -878,6 +880,7 @@ title = "A thing of note is a relic, an event of note a tale, and Mesocosm's bod
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "A thing of note is a relic, an event of note a tale, and Mesocosm's body site a tract."
+draws_on = ["69"]
 
 [cases."158"]
 title = "A mind's mood is fed by what it remembers, needs and lives through; personality traits are a class of traits of their own"
@@ -1106,6 +1109,7 @@ title = "Of note is identified, a denizen is named, and a sophont is sapient"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "Of note means identified, denizen means named, sophont means sapient (every sophont is a denizen); denizen no longer names the of-note tier."
+amends = ["69"]
 
 [cases."201"]
 title = "The organ words are components, not crates, and a `denizen` crate needs a reason of its own"
@@ -1376,12 +1380,14 @@ title = "Where an incoming part attaches is its attachment"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "Where an incoming part attaches to a body is its attachment."
+draws_on = ["157"]
 
 [cases."252"]
 title = "An organ's position in a body plan's template is its situs"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "An organ's position in a body plan's template is its situs; site keeps only the world map's meaning."
+draws_on = ["157", "251"]
 
 [cases."254"]
 title = "The contract's shared shapes live once, in its core"
@@ -1604,6 +1610,7 @@ title = "The VTT's crates keep their prefix"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "The VTT's crates keep their isometry- prefix; ruling 111 stands."
+draws_on = ["111"]
 
 [cases."302"]
 title = "The pointer volume reserves headroom above the board's tallest point"
@@ -1676,12 +1683,14 @@ title = "The process's causal kind gives up the name `Shape`"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "The process's causal kind gives up the name Shape and is renamed (offered: Causation); its saved field keeps the name shape."
+draws_on = ["276", "338"]
 
 [cases."341"]
 title = "Seeding's two values are Grown and Acquired"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "Seeding's two values are Grown and Acquired."
+draws_on = ["338"]
 
 [cases."342"]
 title = "Declared conversions are checked"
@@ -2084,6 +2093,7 @@ title = "The player's choice of which glyphs far marks show is a filter"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "The player's choice of which glyphs far marks show is called a filter; lens keeps one meaning, a projection."
+amends = ["432"]
 
 [cases."435"]
 title = "A cohort keeps a tally of its members' condition causes beside its state"
@@ -4100,6 +4110,7 @@ title = "The local checkout is `Code/repos/isocosm`"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Naming"
 summary = "The local checkout is Code/repos/isocosm; a naming-ledger line records it and lane worktrees and the testing tree keep their isometry names."
+draws_on = ["110"]
 
 [cases."884"]
 title = "Three uniform product hosts over one embeddable sim host"
@@ -4484,3 +4495,32 @@ source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
 [decisions."sim-execution D6"]
 title = "`foregone` only on direct acts (2026-10-20)"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+
+[statements."naming.1"]
+title = "The family"
+source = "design_docs/doctrine.md"
+area = "Naming"
+summary = "Isocosm is the family and the sim; Isometry is only a technical prefix."
+draws_on = ["110", "111", "112", "300", "883"]
+
+[statements."naming.2"]
+title = "The of-note ladder"
+source = "design_docs/doctrine.md"
+area = "Naming"
+summary = "Of note is identified, a denizen named, a sophont sapient; relics, tales and locations are things, events and places of note."
+draws_on = ["157", "200"]
+
+[statements."naming.3"]
+title = "One word, one sense"
+source = "design_docs/doctrine.md"
+area = "Naming"
+summary = "A word carries one sense; a second sense takes a new word, not a qualifier."
+draws_on = ["157", "251", "252", "340", "434"]
+
+[statements."naming.4"]
+title = "The rule catalogue's names"
+source = "design_docs/doctrine.md"
+area = "Naming"
+summary = "Causation, Grown and Acquired, and Binding::Part are the rule catalogue's names."
+draws_on = ["340", "341"]
+governs = ["isocosm::rules::Causation", "isocosm::rules::body::Seeding"]

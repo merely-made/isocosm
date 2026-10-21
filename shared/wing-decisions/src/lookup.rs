@@ -11,6 +11,7 @@ use toml::{Table, Value};
 pub struct Lookup {
     pub cases: Table,
     pub decisions: Table,
+    pub statements: Table,
 }
 
 const FIELDS: &[&str] = &[
@@ -40,13 +41,14 @@ impl Lookup {
             Some(Value::Table(x)) => x,
             _ => Table::new(),
         };
-        Ok(Lookup { cases: take(&mut t, "cases"), decisions: take(&mut t, "decisions") })
+        Ok(Lookup { cases: take(&mut t, "cases"), decisions: take(&mut t, "decisions"), statements: take(&mut t, "statements") })
     }
 
     fn item(&self, key: &Key) -> Option<&Table> {
         match key {
             Key::Case(n) => self.cases.get(&n.to_string()),
             Key::Plan(..) => self.decisions.get(&key.to_string()),
+            Key::Statement(..) => self.statements.get(&key.to_string()),
         }
         .and_then(Value::as_table)
     }
@@ -54,7 +56,8 @@ impl Lookup {
     fn all(&self) -> impl Iterator<Item = (String, &Table)> {
         let c = self.cases.iter().map(|(k, v)| (k.clone(), v));
         let d = self.decisions.iter().map(|(k, v)| (k.clone(), v));
-        c.chain(d).filter_map(|(k, v)| v.as_table().map(|t| (k, t)))
+        let st = self.statements.iter().map(|(k, v)| (k.clone(), v));
+        c.chain(d).chain(st).filter_map(|(k, v)| v.as_table().map(|t| (k, t)))
     }
 
     /// One decision, its declared links and everything pointing back.

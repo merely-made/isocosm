@@ -1187,7 +1187,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      name for the wing". The bird is a musing, not a reopening; Isocosm
      stands.
 
-     Links: area Naming · summary Isometry is retired as a product word and kept as the plain technical prefix of the tabletop's crates; the tabletop is Isocosm: VTT only.
+     Links: area Naming · amends 110 · summary Isometry is retired as a product word and kept as the plain technical prefix of the tabletop's crates; the tabletop is Isocosm: VTT only.
 112. **Mesocosm keeps its name; Eponym stays; the family is settled.** On
      2026-09-23 Mark reopened Mesocosm's name ("a little terrarium of
      anything kinda outstrips it") and two batches were checked (coppice,
@@ -1201,7 +1201,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Isocosm: Eponym. The reservations claimed at his word on 2026-09-24,
      hagiograph, redshank and ortet, are in the ledger.
 
-     Links: area Naming · summary Mesocosm keeps its name; Eponym stays; the family is settled as Isocosm with Isocosm: VTT, Mesocosm and Eponym.
+     Links: area Naming · draws on 110, 111 · summary Mesocosm keeps its name; Eponym stays; the family is settled as Isocosm with Isocosm: VTT, Mesocosm and Eponym.
 113. **Similitude: the noted always run as individuals; the fungible agree
      in distribution over whatever a later process reads; what was watched
      is logged; exact agreement is a world setting, statistical the
@@ -1723,7 +1723,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and tract. The body-site rename is a lane, about 104 occurrences in
      26 files by the 2026-09-20 count.
 
-     Links: area Naming · summary A thing of note is a relic, an event of note a tale, and Mesocosm's body site a tract.
+     Links: area Naming · draws on 69 · summary A thing of note is a relic, an event of note a tale, and Mesocosm's body site a tract.
 158. **A mind's mood is fed by what it remembers, needs and lives
      through; personality traits are a class of traits of their own.** Put
      to Mark on 2026-09-24, opening mood and breaks: what is a mind's mood
@@ -2096,7 +2096,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      names it. At his word ("Amend as drafted"), Mesocosm's CLAUDE.md
      denizen line is rewritten to match and a sophont line added.
 
-     Links: area Naming · summary Of note means identified, denizen means named, sophont means sapient (every sophont is a denizen); denizen no longer names the of-note tier.
+     Links: area Naming · amends 69 · summary Of note means identified, denizen means named, sophont means sapient (every sophont is a denizen); denizen no longer names the of-note tier.
 201. **The organ words are components, not crates, and a `denizen` crate
      needs a reason of its own.** Mark, 2026-09-24, in the RPG systems
      session, on hagioglyph, impresa, denizen, isoscape and isostasy: "Ehh,
@@ -2606,7 +2606,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (`growth::attachment()`, "landing site"). Attachment, placement, or
      tract? Mark: "Attachment."
 
-     Links: area Naming · summary Where an incoming part attaches to a body is its attachment.
+     Links: area Naming · draws on 157 · summary Where an incoming part attaches to a body is its attachment.
 252. **An organ's position in a body plan's template is its situs.** Put to
      Mark on 2026-09-26, with 251: an organ's position in a plan's template,
      a (tagma, segment) coordinate, the archetype's "organ sites": slot,
@@ -2620,7 +2620,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lies far from this domain. So *situs* it is, and with 251, *site* keeps
      only the world map's meaning.
 
-     Links: area Naming · summary An organ's position in a body plan's template is its situs; site keeps only the world map's meaning.
+     Links: area Naming · draws on 157, 251 · summary An organ's position in a body plan's template is its situs; site keeps only the world map's meaning.
 254. **The contract's shared shapes live once, in its core.** Put to Mark on
      2026-09-26, here and in the RPG systems session: E1 and V1 left
      `WorldPoint` in three game modules, the act key in three, and `Harm`,
@@ -3009,7 +3009,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      If they're within the ambit of isocosm vtt, then fair enough." So ruling
      111 stands.
 
-     Links: area Naming · summary The VTT's crates keep their isometry- prefix; ruling 111 stands.
+     Links: area Naming · draws on 111 · summary The VTT's crates keep their isometry- prefix; ruling 111 stands.
 302. **The pointer volume reserves headroom above the board's tallest
      point.** Put to Mark on 2026-09-26, with 301: the volume's height
      follows the terrain, so an edit that lifts the tallest point into a new
@@ -3136,14 +3136,18 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      name offered, its saved field keeping the name `shape` so old worlds
      load.
 
-     Links: area Naming · summary The process's causal kind gives up the name Shape and is renamed (offered: Causation); its saved field keeps the name shape.
+     Reading confirmed 2026-10-21 (doctrine Naming 4): Mark, "Confirm the readings".
+
+     Links: area Naming · draws on 276, 338 · summary The process's causal kind gives up the name Shape and is renamed (offered: Causation); its saved field keeps the name shape.
 341. **Seeding's two values are Grown and Acquired.** Put to Mark on
      2026-09-26, with 338: Grown and Acquired, or Mesocosm's Geometry and
      Acquired? Mark: "Grown and Acquired." *Reading, not ruled:* the names
      put with it stand, `Binding::Part`, the catalogue `functions` in the
      world's rules, and a part's `shape` and `functions`.
 
-     Links: area Naming · summary Seeding's two values are Grown and Acquired.
+     Reading confirmed 2026-10-21 (doctrine Naming 4): Mark, "Confirm the readings".
+
+     Links: area Naming · draws on 338 · summary Seeding's two values are Grown and Acquired.
 342. **Declared conversions are checked.** Put to Mark on 2026-09-26, with
      338: the sim admits any mass-balanced transform while Mesocosm admits
      three, synthesis, digestion into the eater's own matter, and
@@ -4366,7 +4370,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      mode supplying a default filter, and "lens" keeps one meaning, a
      projection.
 
-     Links: area Naming · summary The player's choice of which glyphs far marks show is called a filter; lens keeps one meaning, a projection.
+     Links: area Naming · amends 432 · summary The player's choice of which glyphs far marks show is called a filter; lens keeps one meaning, a projection.
 
 435. **A cohort keeps a tally of its members' condition causes beside its
      state.** Asked on 2026-10-01, a fork found writing the sim plan's
@@ -10269,7 +10273,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "Ledger line only (Recommended)"
      Lane worktree directories and the testing tree keep their names.
 
-     Links: area Naming · summary The local checkout is Code/repos/isocosm; a naming-ledger line records it and lane worktrees and the testing tree keep their isometry names.
+     Links: area Naming · draws on 110 · summary The local checkout is Code/repos/isocosm; a naming-ledger line records it and lane worktrees and the testing tree keep their isometry names.
 
 884. **Three uniform product hosts over one embeddable sim host.**
      Asked 2026-10-14 after a runtime check: no head plays today. Default
