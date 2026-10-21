@@ -508,3 +508,5 @@ fn consumer_reproduction_battery() {
     eprintln!("BATTERY-TOTAL tweak=[{tweak}] form={} seeds={spec}: {}/{}", form.name(),
         rows.iter().filter(|(_, o)| o.qualifies()).count(), rows.len());
 }
+
+mod diagnosis;
