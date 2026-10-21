@@ -12,6 +12,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 ## Games wing entry points
 
+- [doctrine.md](doctrine.md): the wing's doctrine, what it holds and why, by area, over the cases as evidence (DOC_POLICY, "Decisions and doctrine"). 2026-10-20: started empty; areas are filled as each is reviewed.
 - [Mesocosm index](../mesocosm/design_docs/DOC_README.md): Mesocosm's index, and the wing's shared documents.
 - [Eponym index](../eponym/design_docs/DOC_README.md): Eponym's index.
 - [2026-07-30_games_wing_founding.md](../mesocosm/design_docs/2026-07-30_games_wing_founding.md): the wing founding record: vessels, pipeline laws, shared vocabulary.
