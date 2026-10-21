@@ -13,7 +13,7 @@ workspace:
 
 The wing's design lives in [design_docs/](design_docs/DOC_README.md) and
 `mesocosm/design_docs/`, where the
-[wing design record](mesocosm/design_docs/2026-09-18_wing_design_plan.md)
+[wing design record](design_docs/2026-09-18_wing_design_plan.md)
 and the [sim plan](mesocosm/design_docs/2026-09-22_sim_plan.md) sit. The
 family took these names on 2026-09-22 (rulings 109 to 112 of the record).
 
