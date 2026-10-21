@@ -149,29 +149,32 @@ How each phase is known to be right, fixed before it is built.
 4. **Order.** Speed first (E1 to E3, exact, no design risk) or the tier first
    (E4, E5, where the largest saving lies once worlds grow).
 
-## Decisions, 2026-10-19
+## Decisions
 
-Mark's answers, unnumbered until he numbers them:
+Mark's answers, keyed `sim-execution D1` to `D6` in the order he gave them
+(keys are mechanical under the decision-links plan, Mark 2026-10-20: "Key
+the six now, build L1–L2 next"). Their typed links and outcomes are filled
+in when that plan's generator exists (its L5).
 
-- **Draw keys:** "Actor, tick and process (Recommended)". Amount, bite, risk
+- **D1, draw keys (2026-10-19):** "Actor, tick and process (Recommended)". Amount, bite, risk
   and soma draws are keyed by actor, tick and process, so evaluation is
   order-free; one deliberate hash move, outcomes the same in distribution.
   E2 is in.
-- **Exactness:** "Statistical (Recommended)". Mesocosm's far sites run as the
+- **D2, exactness (2026-10-19):** "Statistical (Recommended)". Mesocosm's far sites run as the
   crowd; the played critter and every noted member always run as
   individuals.
-- **Near:** "Roots plus one hop (Recommended)". Attention roots and everything
+- **D3, near (2026-10-19):** "Roots plus one hop (Recommended)". Attention roots and everything
   within one hop of the played critter's site; promote within one hop, demote
   at two or more.
-- **Order:** "Speed first (Recommended)". E1, E2, E3, then E4 and E5.
-- **Stage bodies by `Arc` (2026-10-20):** "Accept A, you number it". The
+- **D4, order (2026-10-19):** "Speed first (Recommended)". E1, E2, E3, then E4 and E5.
+- **D5, stage bodies by `Arc` (2026-10-20):** "Accept A, you number it". The
   stage holds the `Arc<Entity>` that `body_shared_at_start` returns and
   copies a body only on its first write, so planned and blocked acts copy
   nothing and commit installs the staged `Arc` instead of copying again in
   `Population::lift`. Carries ruling 975 into the stage; ruling 338's reads
   are unchanged; serialisation, hashes and saves unchanged. Whether `Part`
   also goes behind an `Arc` comes back once this is measured.
-- **`foregone` only on direct acts (2026-10-20):** "Accept B, you number it".
+- **D6, `foregone` only on direct acts (2026-10-20):** "Accept B, you number it".
   `run_inner` fills `Receipt.foregone` for `Run::Act` only; scheduled and
   planned receipts, whose callers keep only `.accepted()`, carry an empty
   list. Law A's record and ruling 685's reading are kept receipts, which
@@ -219,6 +222,19 @@ Mark's answers, unnumbered until he numbers them:
   `journal.rs:66`; `passed_by`'s population rescan, `schedule/mod.rs:314`) are
   the likely source, not strictly separated from dependencies' assertions.
 
+- **2026-10-20, two checks the decisions owe** (read, not run). D1: a key of
+  actor, tick and process is unique only if one actor cannot run one process
+  twice in a tick; a grouped cohort running with multiplicity may, so E2
+  settles that first (an occurrence index in the key if so) and brings a
+  fork back if it is real. D3: `TierLine::default()` is promote at 1 hop,
+  demote at 2 (`shared/isocosm/src/directing/tier.rs`), and hops are whole
+  numbers, so the band its doc comment calls memory is empty: a member
+  stepping between one and two hops changes tier every tick, each change a
+  crossing (E5). The comment's reason stands (a 3x3 enclosure has diameter
+  two); the test named `the_band_between_promotion_and_demotion_is_memory`
+  tests no band. To put to Mark before E5: keep 1 and 2, widen where worlds
+  are larger, or a band in ticks.
+
 ## Progress
 
 - **2026-10-19:** specced; Mark answered its four questions; nothing built.
@@ -227,5 +243,5 @@ Mark's answers, unnumbered until he numbers them:
   `Arc` and `foregone` only on direct acts (Decisions), not yet numbered or
   built. Mark then held all six decisions until the decision-links plan
   settles how decisions are keyed and linked
-  ([2026-10-20_decision_links_plan.md](2026-10-20_decision_links_plan.md));
-  they enter there as plan keys.
+  ([2026-10-20_decision_links_plan.md](2026-10-20_decision_links_plan.md)),
+  then had them keyed D1 to D6 the same evening so D5 and D6 can be briefed.
