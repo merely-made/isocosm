@@ -1,6 +1,7 @@
 #!/bin/sh
 # Checked on what each commit stages: the 600-line ceiling (ruling 592), and
-# no hand-written JSON in a pack (data formats brief F1, ruling 624).
+# no hand-written JSON in a pack (data formats brief F1, ruling 624). Then the
+# decisions manifest is regenerated (below).
 # Enabled per clone with `git config core.hooksPath .githooks`.
 root=$(git rev-parse --show-toplevel) || exit 1
 if command -v pwsh >/dev/null 2>&1; then
@@ -14,4 +15,22 @@ fi
 status=0
 "$shell" -NoProfile -File "$root/scripts/line-ceiling.ps1" -Staged || status=1
 "$shell" -NoProfile -File "$root/scripts/pack-json.ps1" -Staged || status=1
+
+# The decisions manifest (DOC_POLICY, "Decisions and doctrine"), regenerated and
+# staged when a design doc or Rust source is staged. Built once, rebuilt when
+# its own source is newer. It never blocks a commit: it is generated, not authority.
+if git diff --cached --name-only | grep -qE '(design_docs/.*\.md|\.rs)$'; then
+    crate="$root/shared/wing-decisions"
+    tool="$crate/target/release/wing-decisions"
+    [ -f "$tool.exe" ] && tool="$tool.exe"
+    if command -v cargo >/dev/null 2>&1 && { [ ! -f "$tool" ] || [ -n "$(find "$crate/src" "$crate/Cargo.toml" -newer "$tool" 2>/dev/null | head -1)" ]; }; then
+        cargo build -q --release --manifest-path "$crate/Cargo.toml" || echo "pre-commit: wing-decisions did not build" >&2
+        [ -f "$crate/target/release/wing-decisions.exe" ] && tool="$crate/target/release/wing-decisions.exe"
+    fi
+    if [ -f "$tool" ]; then
+        (cd "$root" && "$tool" regen --stage >/dev/null) || echo "pre-commit: decisions manifest not regenerated" >&2
+    else
+        echo "pre-commit: wing-decisions not built (no cargo); decisions manifest not regenerated" >&2
+    fi
+fi
 exit $status

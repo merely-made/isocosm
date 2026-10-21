@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-20:** plan, nothing built. Shaped with Mark the same day in
+**Status, 2026-10-21:** in progress: L1 and L2 done. Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -105,6 +105,16 @@ Mark's answers, recorded as given.
   founding record, the design record, the case register and this plan move
   to the umbrella as their own step (L1b), with every citing link repaired
   (42 files cite the design record by path, 21 the founding record).
+- **L2's shape, 2026-10-21:** "shared/wing-decisions (Recommended)"; "Local
+  cache; commit the manifest and register (Recommended)"; "Build once, run
+  the binary (Recommended)".
+- **What the manifest commits, 2026-10-21:** "Commit what's declared, cache
+  what's cited (Recommended)". Measured first: 57 of the last 100 and 208 of
+  the last 300 first-parent commits changed the link set, mostly code
+  comments citing rulings, so a manifest carrying citations would have
+  conflicted on nearly every merge. `design_docs/decisions.toml` holds each
+  decision's title, source and declared links only, without line numbers;
+  mentions, back-links and citations are derived into the local cache.
 - **Budget form:** not settled. Mark weighed all three: a share of cases
   draws him but may need distinctions (active against resolved cases,
   inflation, its relation to fading); a count invites poorly merged
@@ -341,9 +351,27 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   `merge.conflictStyle`, no `rerere`, no Mergiraf in git config, so the
   "zdiff3 + rerere" settings the record calls global are the Mac's only.
 
+- **2026-10-21, L2 built** (`shared/wing-decisions`, on `wing-impresa` and
+  muniment `738ef159`). On isocosm main it reads 1,558 files from the index
+  and finds 899 decisions: 749 declared (the record's 743 cases and
+  `sim-execution` D1 to D6) and 150 numbers cited but declared nowhere
+  (archived cases, and bare parenthesised numbers in comments that are not
+  rulings). The first journal build folds 1,065 first-parent commits into
+  8,479 impresa records in 8 s; later runs fold only new commits. `regen`
+  takes 2 s and is byte-identical run to run; `lookup` takes 0.7 s. The
+  register is not written yet: no case carries an area and summary in a
+  fields line until L3. The anchor resolver, replaying the probe's answer
+  key against its index of `afbce8a0`, judges 2,479 of 2,480 right
+  (`examples/answer_key.rs`) and finds `Effect::Sunlight` and
+  `Receipt.foregone`; the miss is a function and a module with one path
+  (`isocosm::history::command`), since anchors carry no kind. The citer
+  ignores single-digit parentheses, which the record uses for option lists.
+
 ## Progress
 
 - **2026-10-20:** shaped in four card rounds; then the stack's pieces
   checked, the link store and fading settled, and the anchor instrument
   chosen after a probe (rust-analyzer component installed for 1.99.1). The
   budget's form and size remain; nothing built.
+- **2026-10-21:** L1 in force (DOC_POLICY), the six keyed, L2 built and its
+  done-conditions met (Findings); the hook runs it. Next: L1b, L3, then L4.
