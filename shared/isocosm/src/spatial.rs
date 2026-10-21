@@ -17,6 +17,8 @@ pub(crate) use site_geometry::Cache as GeometryCache;
 mod advance;
 mod arrival;
 mod birth;
+mod birth_fallback;
+pub use birth_fallback::BirthFallback;
 mod birth_geometry;
 mod birth_command;
 mod templates;
@@ -101,6 +103,7 @@ pub(crate) struct Resolutions {
     reports: Vec<ArrivalReport>, enabled: bool,
     births: BTreeMap<Id, BirthResolution>, born: BTreeSet<Id>,
     birth_reports: Vec<BirthReport>, birth_enabled: bool,
+    birth_fallback: Option<BirthFallback>, auto_births: Vec<BirthResolution>,
     order: Vec<Publication>,
     pub birth_pending: Option<BirthPending>,
     command_outcome: Option<String>,

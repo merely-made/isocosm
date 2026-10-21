@@ -28,6 +28,48 @@ fn birth_source() -> Session {
 }
 
 #[test]
+fn default_birth_refusals_expand_to_the_same_explicit_native_history() {
+    let mut explicit = birth_source();
+    let source = explicit.clone();
+    let mut inputs = Vec::new();
+    let expected = loop {
+        match explicit.try_advance_birth_spatial_with_flows(1, &[], &[], &[], &inputs).unwrap() {
+            SpatialAdvance::Birth(pending) => inputs.push(BirthResolution {
+                request: pending.request, geometry: Err("test: unbound parent".into()),
+            }),
+            SpatialAdvance::Advanced(out) => break out,
+            _ => panic!("fixture needs only birth answers"),
+        }
+        assert!(inputs.len() <= 16);
+    };
+    assert!(!inputs.is_empty());
+    let mut batched = source.clone();
+    let fallback = isocosm::spatial::BirthFallback {
+        known_parents: Default::default(), refusal: "test: unbound parent".into(),
+    };
+    let (SpatialAdvance::Advanced(actual), automatic) = batched.try_advance_birth_spatial_with_fallback(
+        1, &[], &[], &[], &[], &fallback).unwrap() else { panic!("all refusals should expand") };
+    assert_eq!(actual, expected);
+    assert_eq!(automatic, inputs);
+    assert_eq!(batched.save(), explicit.save(), "ordinary receipts, order, ids and witnesses");
+    let restored = Session::load(batched.save(), Execution::Grouped).unwrap();
+    assert_eq!(restored.save(), batched.save(), "replay requires no fallback policy");
+
+    let mut known = source;
+    let before = known.save();
+    let fallback = isocosm::spatial::BirthFallback {
+        known_parents: [inputs[0].request.parent].into(), refusal: "test: unbound parent".into(),
+    };
+    let (SpatialAdvance::Birth(pending), automatic) = known.try_advance_birth_spatial_with_fallback(
+        1, &[], &[], &[], &[], &fallback).unwrap() else { panic!("known parent requires its provider") };
+    assert_eq!(pending.request, inputs[0].request);
+    assert!(automatic.is_empty());
+    assert_eq!(known.save(), before);
+    assert!(known.try_advance_birth_spatial_with_fallback(0, &[], &[], &[], &[], &fallback).is_err());
+    assert_eq!(known.save(), before, "failed discovery cannot publish");
+}
+
+#[test]
 fn atomic_advance_matches_guarded_preparation_and_publish() {
     let source = source();
     let mut guarded = source.clone();

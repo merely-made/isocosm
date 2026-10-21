@@ -178,7 +178,7 @@ pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
             .filter(|t| t.version >= 2).ok_or("played member has no current physical window")?;
         (site_of(sim, played).ok_or("played member has no native site or journey")?, &templates.window)
     };
-    let volume = sim.volume(site, window.min, window.max, window.depth)?;
+    let volume = sim.site_volume(site, window)?.as_ref().clone();
     let bodies = placed_physical(sim, site, &volume, visible, game)?;
     let volumes = body_volumes(&bodies)?;
     Ok(SiteScene { site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })

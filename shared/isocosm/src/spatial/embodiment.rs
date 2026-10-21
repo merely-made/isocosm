@@ -10,6 +10,8 @@ use isometer_core::BodyDocument;
 use isometer_space::{places::Places, volume::Volume};
 
 mod founding;
+#[cfg(test)]
+mod tests;
 pub use founding::declare;
 
 pub type Box3 = [[i64; 3]; 2];
@@ -147,6 +149,9 @@ pub(crate) fn translated(local: &[Box3], at: [i64; 3]) -> Result<Vec<Box3>> {
 pub struct Grounding<'a> {
     volume: &'a Volume,
     tops: BTreeMap<[i64; 2], i64>,
+    // Exact terrain-only answers. Occupancy is always tested again by find.
+    stands: BTreeMap<Vec<Box3>, BTreeMap<[i64; 2], Option<[i64; 3]>>>,
+    stand_count: usize,
 }
 
 impl<'a> Grounding<'a> {
@@ -154,6 +159,8 @@ impl<'a> Grounding<'a> {
         Self {
             volume,
             tops: BTreeMap::new(),
+            stands: BTreeMap::new(),
+            stand_count: 0,
         }
     }
 
@@ -216,7 +223,7 @@ impl<'a> Grounding<'a> {
                     if tried > cap {
                         return Err("body placement candidate budget exhausted".into());
                     }
-                    if let Ok(pose) = self.at_boxes(&local, x, z, yaw)
+                    if let Some(pose) = self.stand(&local, x, z, yaw)
                         && !intersects(&translated(&local, pose.at)?, blocked)
                     {
                         return Ok(pose);
@@ -225,6 +232,19 @@ impl<'a> Grounding<'a> {
             }
         }
         Err("no supported whole-body placement in the declared search".into())
+    }
+
+    fn stand(&mut self, local: &[Box3], x: i64, z: i64, yaw: Yaw) -> Option<Pose> {
+        if let Some(at) = self.stands.get(local).and_then(|stands| stands.get(&[x, z])) {
+            return at.map(|at| Pose { at, yaw });
+        }
+        let pose = self.at_boxes(local, x, z, yaw).ok();
+        // Bounded for the whole immutable terrain window, including refusals.
+        if local.len() <= 64 && self.stand_count < 4096 {
+            self.stands.entry(local.to_vec()).or_default().insert([x, z], pose.as_ref().map(|p| p.at));
+            self.stand_count += 1;
+        }
+        pose
     }
 }
 

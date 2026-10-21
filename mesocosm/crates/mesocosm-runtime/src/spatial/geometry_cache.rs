@@ -290,8 +290,13 @@ mod shared_tests {
         let at = stands[0].at;
         let window = Window { min: [at[0]-1, at[2]-1], max: [at[0]+1, at[2]+1], depth: t.window.depth };
         let native = session.sim.site_geometry(site, &window, t.places).unwrap();
+        let volume = session.sim.site_volume(site, &window).unwrap();
+        assert!(Arc::ptr_eq(&volume, &native.volume), "arrival searches share the native volume");
         let clone = session.sim.clone();
         assert!(Arc::ptr_eq(&native, &clone.site_geometry(site, &window, t.places).unwrap()));
+        let replayed = session.fork_at(session.sim.state().tick, "branch:cache-test".into()).unwrap();
+        assert!(Arc::ptr_eq(&native, &replayed.sim.site_geometry(site, &window, t.places).unwrap()),
+            "history replay retains immutable terrain, not actor or admission results");
         let mut product = GeometryCache::default();
         product.get(&clone, site, &window, t.places).unwrap();
         assert!(Arc::ptr_eq(&native, product.current.as_ref().unwrap()));

@@ -95,6 +95,15 @@ impl Simulation {
         if !self.spatial_resolutions.birth_enabled { return; }
         for mark in marks {
             let request = self.birth_request(mark);
+            let available = request.site.is_some() && request.child_journey.is_none()
+                && self.genesis.rules.birth_profiles.values().any(|p| p.process == request.process);
+            if available && self.spatial_resolutions.birth_pending.is_none()
+                && !self.spatial_resolutions.births.contains_key(&mark.child)
+                && let Some(answer) = self.spatial_resolutions.birth_fallback.as_ref()
+                    .and_then(|fallback| fallback.answer(&request, &self.spatial_resolutions)) {
+                self.spatial_resolutions.auto_births.push(answer.clone());
+                self.spatial_resolutions.births.insert(mark.child, answer);
+            }
             if let Some(input) = self.spatial_resolutions.births.get(&mark.child).cloned() {
                 let profile = input.geometry.as_ref().ok().map(|g| g.profile.clone());
                 let patch = if input.request != request { Err("birth answer names another accepted native source".into()) }

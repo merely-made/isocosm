@@ -14,6 +14,14 @@ scheduling profile; the head's tempo is 2 ticks per second (case 978).
 
 ## Why
 
+**2026-10-20, rounds and forecasts, implemented.** Profile the same unchosen
+world's ordinary rounds and natural epoch boundary, reuse authenticated forecast
+sources and repeated physical searches where measurements justify it. Done when
+before/after timings, native histories, scores, product sections, replay controls
+and the rebuilt playable agree. Receipts: `Code/testing/mesocosm/rounds-forecasts-2026-10-20/`,
+100 MB total cap. Reuse the existing playable target and temporary marked Cargo
+home; preserve the separate simulation-execution plan's concurrent work.
+
 A runtime check on 2026-10-14 found no head that plays. A default Mesocosm
 launch refuses a generated world without 875's witness. The last headed save
 (2026-09-08) no longer parses. Only the dev bench boots: `--bench --frames
@@ -312,6 +320,41 @@ through the UI, succession in the client), then the VTT over the sim
 starts.
 
 ## Progress
+
+- **2026-10-20, ordinary round and forecast profile, verified:** the same
+  unchosen world reaches the same tick-60 review, with byte-identical native
+  history, mode sections and scores, hash `f5767ede7effce0f`. It offers only
+  the status quo. `world:weather`
+  changes every three ticks and invalidated volumes despite not being read by
+  the terrain skeleton. Derived geometry now keys the skeleton's actual
+  conditions; full native admission revisions remain unchanged. Arrival searches,
+  walking validators, replay and the physical scene share bounded immutable
+  volumes. Independent candidates reuse one replay-authenticated source per
+  unchanged native cut.
+  The crowded tick-56 tail repeats native preparation 164 times, with 140
+  birth questions; 133 immediately refuse an absent physical parent. An
+  optional native fallback now batches only that refusal prefix before the
+  next ordinary birth question. It returns concrete receipts on pending
+  attempts, preserves callback order, and publishes through the existing
+  explicit spatial command. Newly bound parents still use physical providers.
+  Normal release runs reduce that crowded round from 34.13 s to 10.06 s and
+  preparation calls from 164 to 31. The resumed tick-59 boundary falls from
+  110.14 s to 82.63 s; continuous play reaches its review in 54.98 s. Across
+  ticks 46 to 59, total round time falls from 94.89 s to 81.24 s, but median
+  time rises from 3.75 s to 5.34 s. These are shared-machine wall samples,
+  not a controlled hardware benchmark or a frame-budget receipt. Walking
+  preparation and physical forecasts remain expensive: the resumed boundary's
+  seven clocks spend 35.22 s in preparation and 14.12 s in step answers; its
+  one source replay costs 15.08 s and six forecast clocks cost 48.94 s.
+  Controls pass 337 tests, 24 ignored, using unoptimized subject crates over
+  release dependencies; the saved-world timings use the normal release build.
+  Both continuous and resumed production runs pass save/reload equality.
+  The rebuilt head passes 16 frames at tick 60 with 35 visible physical bodies,
+  zero projection failures and unchanged native and mode sections. All five
+  legacy saves replay to their recorded hashes, including tick 64 and the
+  coarse, root-only, whole-body and foraging formats.
+  Receipts: `Code/testing/mesocosm/rounds-forecasts-2026-10-20/` (`summary.json`,
+  `comparison.json`, `final.png`), 33.2 MB retained of the 100 MB cap.
 
 - **2026-10-17, tempo (978):** with a tick at about 0.45 s after the core
   tick lane (975, 976) and native scheduling alone at 0.3 s, the configured

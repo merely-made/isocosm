@@ -128,13 +128,25 @@ impl Game {
         let mut source = crate::profile::measure("clock.clone_game", || self.clone());
         source.refresh_with(&mut native_session, geometry)?;
         let arrivals = source.arrival_inputs(&native_session)?;
+        let fallback = source.generated_driver().then(|| native::BirthFallback {
+            known_parents: source.members.keys().copied().collect(),
+            refusal: super::generated_body::UNPLACED_PARENT.into(),
+        });
         let mut terrain: Vec<native::TerrainResolution> = Vec::new();
         let mut steps: Vec<native::Resolution> = Vec::new();
         let mut births: Vec<native::BirthResolution> = Vec::new();
         let limit = native_session.sim.genesis().rules.limits.events_per_advance;
         loop {
             match crate::profile::measure("clock.prepare", ||
-                native_session.try_advance_birth_spatial_with_flows(1, &terrain, &steps, &arrivals, &births))? {
+                match &fallback {
+                    Some(fallback) => {
+                        let (attempt, automatic) = native_session.try_advance_birth_spatial_with_fallback(
+                            1, &terrain, &steps, &arrivals, &births, fallback)?;
+                        births.extend(automatic);
+                        Ok(attempt)
+                    },
+                    None => native_session.try_advance_birth_spatial_with_flows(1, &terrain, &steps, &arrivals, &births),
+                })? {
                 SpatialAdvance::Terrain(pending) => {
                     if terrain.len() + steps.len() + arrivals.len() >= limit
                         || terrain.iter().any(|r| r.request.action == pending.request.action)
@@ -161,6 +173,9 @@ impl Game {
                     births.push(native::BirthResolution { request: pending.request, geometry: answer });
                 },
                 SpatialAdvance::Advanced(out) => {
+                    // Fallback refusals are ordinary explicit native receipts.
+                    if let Some(isocosm::history::Entry { command: isocosm::Command::AdvanceBirthSpatial { births: recorded, .. }, .. })
+                        = native_session.entries.last() { births = recorded.clone(); }
                     let accepted = native_session.sim.spatial_steps().clone();
                     let reports = native_session.sim.spatial_arrivals().to_vec();
                     let born = native_session.sim.spatial_births().to_vec();

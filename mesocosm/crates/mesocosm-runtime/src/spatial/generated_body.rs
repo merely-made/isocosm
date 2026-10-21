@@ -11,6 +11,8 @@ use isocosm::{
 };
 use isometer_space::places::Places;
 
+pub(super) const UNPLACED_PARENT: &str = "biological parent has no physical pose";
+
 impl Game {
     /// Current native part boxes, including growth, must clear other admitted
     /// residents. Historical poses remain saved even when this check refuses.
@@ -188,7 +190,9 @@ impl Game {
         // Each destination keeps one terrain and surface lookup for this cut.
         // Actors retain their original id order within each destination.
         for (destination, ids) in destinations {
-            let volume = session.sim.volume(destination, t.window.min, t.window.max, t.window.depth)?;
+            let volume_span = crate::profile::Span::new("arrival.volume");
+            let volume = session.sim.site_volume(destination, &t.window)?;
+            drop(volume_span);
             let mut grounding = body::Grounding::new(&volume);
             let mut blocked = self.occupied(&session.sim, destination, None)?;
             let mut refused = BTreeSet::new();
@@ -211,7 +215,8 @@ impl Game {
                 // The terrain and search stay fixed, and reservations only grow.
                 // An identical shape already refused here cannot become feasible.
                 if refused.contains(&shape) { continue; }
-                let Ok(pose) = grounding.find(
+                let search_span = crate::profile::Span::new("arrival.search");
+                let result = grounding.find(
                     document,
                     centre,
                     yaw,
@@ -219,7 +224,9 @@ impl Game {
                     body::SEARCH_STRIDE,
                     body::SEARCH_CANDIDATES,
                     &blocked,
-                ) else {
+                );
+                drop(search_span);
+                let Ok(pose) = result else {
                     if refused.len() < 64 { refused.insert(shape); }
                     continue;
                 };
@@ -322,7 +329,7 @@ impl Game {
         let parent = self
             .members
             .get(&r.parent)
-            .ok_or("biological parent has no physical pose")?
+            .ok_or(UNPLACED_PARENT)?
             .rebound_with(&pending.sim, cache)?;
         if !r.parent_alive
             || r.site != Some(parent.site.0)
