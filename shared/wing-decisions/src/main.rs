@@ -52,7 +52,9 @@ fn regen(repo: &Repo, stage: bool) -> Result<ExitCode, String> {
     let cache = repo.root.join("target").join("wing-decisions");
     std::fs::create_dir_all(&cache).map_err(|e| e.to_string())?;
     write(&cache.join("derived.toml"), &m.to_toml(false))?;
-    match (m.register(&snap.areas()), register_path(&snap)) {
+    let reg_path = register_path(&snap);
+    let reg_dir = reg_path.as_deref().and_then(|p| p.rsplit_once('/')).map_or("", |(d, _)| d);
+    match (m.register(&snap.areas(), reg_dir), reg_path.clone()) {
         (Some(reg), Some(path)) => {
             write(&repo.root.join(&path), &reg)?;
             written.push(path);

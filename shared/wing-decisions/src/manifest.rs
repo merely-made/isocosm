@@ -133,7 +133,7 @@ impl Manifest {
 
     /// The register, once every live case carries an area and a summary;
     /// None until then (the migration is L3).
-    pub fn register(&self, areas: &[String]) -> Option<String> {
+    pub fn register(&self, areas: &[String], dir: &str) -> Option<String> {
         let live: Vec<&Entry> =
             self.items.iter().filter(|(k, _)| matches!(k, Key::Case(_))).filter_map(|(_, i)| i.entry.as_ref()).collect();
         if live.is_empty() || live.iter().any(|e| e.links.area.is_none() || e.links.summary.is_none()) {
@@ -150,7 +150,7 @@ impl Manifest {
             let _ = write!(s, "\n## {area}\n\n| Case | Decides | Cited by |\n| --- | --- | --- |\n");
             for e in rows {
                 let cited = &self.items[&e.key].cited_in_docs;
-                let by: Vec<String> = cited.iter().take(3).map(|p| doc_link(p)).collect();
+                let by: Vec<String> = cited.iter().take(3).map(|p| doc_link(p, dir)).collect();
                 let by = if by.is_empty() { "none".to_string() } else { by.join(", ") };
                 let _ = writeln!(s, "| {} | {} | {} |", e.key, e.links.summary.as_deref().unwrap_or(""), by);
             }
@@ -159,9 +159,22 @@ impl Manifest {
     }
 }
 
-fn doc_link(path: &str) -> String {
+/// A citing doc as a link relative to the register's directory, labelled by
+/// its keyword: `2026-09-22_sim_plan.md` reads "sim".
+fn doc_link(path: &str, dir: &str) -> String {
     let name = path.rsplit('/').next().unwrap_or(path);
-    format!("[{}]({})", name.trim_end_matches(".md"), path)
+    let stem = name.trim_end_matches(".md");
+    let stem = stem.get(11..).filter(|_| stem.as_bytes().get(10) == Some(&b'_')).unwrap_or(stem);
+    let label = stem.trim_end_matches("_plan").trim_end_matches("_brief").replace('_', " ");
+    format!("[{label}]({})", relative(path, dir))
+}
+
+fn relative(path: &str, dir: &str) -> String {
+    let (p, d): (Vec<&str>, Vec<&str>) = (path.split('/').collect(), dir.split('/').filter(|s| !s.is_empty()).collect());
+    let common = p.iter().zip(&d).take_while(|(a, b)| a == b).count();
+    let mut out: Vec<&str> = vec![".."; d.len() - common];
+    out.extend(&p[common..]);
+    out.join("/")
 }
 
 fn esc(v: &str) -> String {
@@ -226,6 +239,8 @@ mod tests {
         assert!(d.contains("draws_on = [\"1\"]") && !d.contains("cited_in_code") && !d.contains(".md:"));
         let parsed: toml::Table = t.parse().unwrap();
         assert!(parsed["cases"]["1"]["drawn_on_by"].as_array().is_some());
-        assert!(m.register(&["A".to_string()]).is_none());
+        assert!(m.register(&["A".to_string()], "d").is_none());
+        assert_eq!(relative("design_docs/a.md", "design_docs"), "a.md");
+        assert_eq!(relative("mesocosm/design_docs/b.md", "design_docs"), "../mesocosm/design_docs/b.md");
     }
 }
