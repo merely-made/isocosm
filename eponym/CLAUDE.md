@@ -117,7 +117,7 @@ playtester acceptance remain open in the Eponym overlay plan's E3 and E4.
 See `design_docs/PROJECT_DESCRIPTION.md` for the product description,
 `design_docs/DOC_README.md` for the doc index, and the wing-level
 architecture in the sibling repo at
-`mesocosm/design_docs/2026-07-30_games_wing_founding.md`.
+`design_docs/2026-07-30_games_wing_founding.md`.
 
 ## Terminology
 
