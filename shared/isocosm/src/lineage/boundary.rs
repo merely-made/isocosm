@@ -12,6 +12,9 @@ use crate::{Result, Session, schema::*};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
+mod source;
+pub use source::ScoringSource;
+
 /// Distinct catalogue functions expressed and carried systems realized by
 /// living members. Each name counts once across the lineage (797, 806).
 pub fn complexity(session: &Session, lineage: &str) -> usize {
@@ -99,7 +102,12 @@ pub fn score_using(
     advance: &mut dyn FnMut(&mut Session, Tick) -> Result<()>,
 ) -> Result<Score> {
     let now = session.sim.state().tick;
-    let mut copy = session.fork_at(now, format!("branch:score:{}", candidate.name))?;
+    let copy = session.fork_at(now, format!("branch:score:{}", candidate.name))?;
+    grow_score(copy, lineage, candidate, ticks, advance)
+}
+
+fn grow_score(mut copy: Session, lineage: &str, candidate: &Candidate, ticks: Tick,
+    advance: &mut dyn FnMut(&mut Session, Tick) -> Result<()>) -> Result<Score> {
     for command in &candidate.commands {
         copy.command(command.clone())?;
     }

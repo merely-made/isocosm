@@ -18,7 +18,7 @@ pub enum SpatialAdvance {
     Advanced(FlowResult<Work>),
 }
 
-enum StagedAdvance {
+pub(super) enum StagedAdvance {
     Terrain(operations::Pending),
     Step(Pending),
     Birth(BirthPending),
@@ -96,23 +96,32 @@ impl Session {
     }
 
     fn stage_spatial_command(&self, command: Command) -> Result<StagedAdvance> {
+        self.stage_spatial_with(command, None).map(|out| out.0)
+    }
+
+    pub(super) fn stage_spatial_with(&self, command: Command, fallback: Option<&BirthFallback>)
+        -> Result<(StagedAdvance, Vec<BirthResolution>)> {
         let _span = crate::profile::Span::new("spatial.prepare");
         let mut candidate = { let _c = crate::profile::Span::new("spatial.prepare.clone"); self.clone() };
-        match candidate.command_with_flows(command) {
+        candidate.sim.spatial_resolutions.birth_fallback = fallback.cloned();
+        let attempted = candidate.command_with_flows(command);
+        let automatic = std::mem::take(&mut candidate.sim.spatial_resolutions.auto_births);
+        let out = match attempted {
             Ok(outcome) => {
                 let work = candidate.sim.spatial_resolutions.work.take().ok_or("spatial work absent")?;
-                Ok(StagedAdvance::Ready { candidate, work, flows: outcome.flows })
+                StagedAdvance::Ready { candidate, work, flows: outcome.flows }
             },
             Err(why) => {
                 if let Some(pending) = candidate.sim.spatial_resolutions.birth_pending.take() {
-                    Ok(StagedAdvance::Birth(pending))
+                    StagedAdvance::Birth(pending)
                 } else if let Some(pending) = candidate.sim.spatial_resolutions.pending.take() {
-                    Ok(StagedAdvance::Step(pending))
+                    StagedAdvance::Step(pending)
                 } else if let Some(pending) = candidate.sim.geometry_resolutions.pending.take() {
-                    Ok(StagedAdvance::Terrain(pending))
-                } else { Err(why) }
+                    StagedAdvance::Terrain(pending)
+                } else { return Err(why); }
             },
-        }
+        };
+        Ok((out, automatic))
     }
 
     pub(crate) fn advance_spatial(&mut self, ticks: Tick, terrain: &[TerrainResolution],
@@ -146,7 +155,8 @@ impl Session {
                 Err(why) => { geometry.refused.insert(answer.request.action.clone(), (answer.request.clone(), why.clone())); },
             }
         }
-        let mut held = Resolutions { enabled: true, ..Default::default() };
+        let mut held = Resolutions { enabled: true,
+            birth_fallback: candidate.sim.spatial_resolutions.birth_fallback.clone(), ..Default::default() };
         if let Some(inputs) = births {
             if inputs.len() as u128 > u128::from(self.sim.genesis().rules.limits.entities) {
                 return Err("birth placement inputs exceed the authored entity limit".into());
@@ -176,6 +186,7 @@ impl Session {
                 self.sim.geometry_resolutions.pending = candidate.sim.geometry_resolutions.pending.take();
                 self.sim.spatial_resolutions.pending = candidate.sim.spatial_resolutions.pending.take();
                 self.sim.spatial_resolutions.birth_pending = candidate.sim.spatial_resolutions.birth_pending.take();
+                self.sim.spatial_resolutions.auto_births = std::mem::take(&mut candidate.sim.spatial_resolutions.auto_births);
                 return Err(why);
             },
         };
@@ -189,10 +200,12 @@ impl Session {
         let accepted = spatial.accepted.clone();
         let born = spatial.birth_reports.clone();
         let order = spatial.order.clone();
+        let auto_births = spatial.auto_births.clone();
         candidate.sim.geometry_resolutions = Default::default();
         candidate.sim.spatial_resolutions = Resolutions { work: Some(work), reports: reports.clone(),
             accepted: accepted.clone(),
             birth_reports: born.clone(),
+            auto_births,
             order: order.clone(),
             ..Default::default() };
         let outcome = if births.is_some() {

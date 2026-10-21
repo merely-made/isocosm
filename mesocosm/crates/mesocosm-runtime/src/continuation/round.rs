@@ -45,8 +45,9 @@ pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, 
     let mut world_end = saved.world_end.clone();
     let mut advance = |session: &mut Session| driver.borrow_mut().advance_clock_with_geometry(session, geometry)
         .map(|out| out.flows);
+    let mut scorer = scoring::Scorer::default();
     let mut score = |session: &Session, lineage: &str, choice: &boundary::Candidate, ticks|
-        scoring::score(session, &driver.borrow(), lineage, choice, ticks);
+        scorer.score(session, &driver.borrow(), lineage, choice, ticks);
     let (happenings, flows) = if saved.phase == LoopPhase::Watching {
         let before = candidate.sim.state().tick;
         let epoch = candidate.sim.genesis().rules.epoch_ticks;

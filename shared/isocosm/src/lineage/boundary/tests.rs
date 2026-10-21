@@ -38,6 +38,40 @@ fn session() -> Session {
 }
 
 #[test]
+fn scoring_source_matches_replayed_trials_and_keeps_them_independent() {
+    let mut s = session();
+    s.command(crate::Command::Join).unwrap();
+    s.advance(3).unwrap();
+    let before = s.save();
+    let source = ScoringSource::new(&s).unwrap();
+    for commands in [vec![], vec![crate::Command::Join], vec![crate::Command::Collect]] {
+        let c = Candidate { name: format!("candidate:{}", commands.len()), commands };
+        let mut reference = None;
+        let expected = score_using(&s, "lineage:0", &c, 2, &mut |copy, ticks| {
+            copy.advance(ticks)?;
+            reference = Some(copy.save());
+            Ok(())
+        }).unwrap();
+        let mut actual = None;
+        let got = source.score_using("lineage:0", &c, 2, &mut |copy, ticks| {
+            copy.advance(ticks)?;
+            actual = Some(copy.save());
+            Ok(())
+        }).unwrap();
+        assert_eq!(got, expected);
+        assert_eq!(actual, reference, "branch, entries, outcomes, witness and checkpoints");
+    }
+    assert_eq!(s.save(), before);
+    assert!(source.matches(&s));
+    s.command(crate::Command::Join).unwrap();
+    assert!(!source.matches(&s));
+    let updated = ScoringSource::new(&s).unwrap();
+    s.entries[0].outcome.push_str(" forged");
+    assert!(!updated.matches(&s));
+    assert!(ScoringSource::new(&s).is_err(), "changed history still goes through replay");
+}
+
+#[test]
 fn complexity_counts_living_expression_and_realization_once() {
     let mut s = session();
     assert_eq!(complexity(&s, "lineage:1"), 3);

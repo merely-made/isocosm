@@ -9,46 +9,86 @@ use std::sync::{Arc, Mutex};
 const CAPACITY: usize = 8;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-struct Key { site: Id, window: Window, rules: Rules, terrain: String }
+struct Key { site: Id, window: Window, terrain: String }
 impl Key {
-    fn of(sim: &Simulation, site: Id, window: &Window, rules: Rules) -> Self {
-        Self { site, window: window.clone(), rules, terrain: sim.terrain_revision() }
+    fn of(sim: &Simulation, site: Id, window: &Window) -> Self {
+        // View::over reads only the skeleton's three conditions. Weather and
+        // other biological conditions still change the full admission revision,
+        // but cannot change this derived volume or its places.
+        let g = sim.genesis();
+        let sites: Vec<_> = sim.state().sites.iter().map(|(id, site)|
+            (id, site.terrain_seed, g.rules.skeleton.as_ref().map(|s| [
+                site.conditions.get(&s.elevation), site.conditions.get(&s.relief),
+                site.conditions.get(&s.water)]), &site.routes)).collect();
+        let terrain = crate::digest(&(g.seed, &g.world, &g.rules.skeleton, sites, &sim.state().edits));
+        Self { site, window: window.clone(), terrain }
     }
 }
 
 #[derive(Debug)]
-pub struct SiteGeometry { key: Key, pub volume: Volume, pub places: Places }
+pub struct SiteGeometry { key: Key, rules: Rules, pub volume: Arc<Volume>, pub places: Places }
 impl SiteGeometry {
     pub fn matches(&self, sim: &Simulation, site: Id, window: &Window, rules: Rules) -> bool {
-        self.key == Key::of(sim, site, window, rules)
+        self.rules == rules && self.key == Key::of(sim, site, window)
     }
 }
 
-/// Clones share at most eight immutable entries. This is never saved or hashed.
+#[derive(Debug)]
+struct Entry { key: Key, volume: Arc<Volume>, places: Vec<Arc<SiteGeometry>> }
+
+/// Clones share eight terrain windows, each with at most four place rule sets.
+/// Volume-only arrival searches and native validators use the same terrain.
 #[derive(Clone, Debug, Default)]
-pub(crate) struct Cache(Arc<Mutex<Vec<Arc<SiteGeometry>>>>);
+pub(crate) struct Cache(Arc<Mutex<Vec<Entry>>>);
 impl Simulation {
-    /// Only the exact terrain/window/place rules are reused. Actor, visit,
-    /// body, eye and collision admission remain the caller's current checks.
-    pub fn site_geometry(&self, site: Id, window: &Window, rules: Rules) -> Result<Arc<SiteGeometry>> {
-        let key = Key::of(self, site, window, rules);
+    pub fn site_volume(&self, site: Id, window: &Window) -> Result<Arc<Volume>> {
+        let key = Key::of(self, site, window);
         {
             let mut entries = self.spatial_geometry.0.lock().map_err(|_| "spatial geometry cache poisoned")?;
             if let Some(index) = entries.iter().position(|entry| entry.key == key) {
                 let found = entries.remove(index);
-                entries.push(found.clone());
-                return Ok(found);
+                let volume = found.volume.clone();
+                entries.push(found);
+                return Ok(volume);
             }
         }
-        let volume = self.volume(site, window.min, window.max, window.depth)?;
-        let places = Places::derive(&volume, rules)?;
-        let found = Arc::new(SiteGeometry { key, volume, places });
+        let volume = Arc::new(self.volume(site, window.min, window.max, window.depth)?);
         let mut entries = self.spatial_geometry.0.lock().map_err(|_| "spatial geometry cache poisoned")?;
-        if let Some(existing) = entries.iter().find(|entry| entry.key == found.key) {
-            return Ok(existing.clone());
+        if let Some(existing) = entries.iter().find(|entry| entry.key == key) {
+            return Ok(existing.volume.clone());
         }
         if entries.len() == CAPACITY { entries.remove(0); }
-        entries.push(found.clone());
+        entries.push(Entry { key, volume: volume.clone(), places: Vec::new() });
+        Ok(volume)
+    }
+
+    /// Only the exact terrain/window/place rules are reused. Actor, visit,
+    /// body, eye and collision admission remain the caller's current checks.
+    pub fn site_geometry(&self, site: Id, window: &Window, rules: Rules) -> Result<Arc<SiteGeometry>> {
+        let key = Key::of(self, site, window);
+        {
+            let mut entries = self.spatial_geometry.0.lock().map_err(|_| "spatial geometry cache poisoned")?;
+            if let Some(index) = entries.iter().position(|entry| entry.key == key) {
+                let entry = entries.remove(index);
+                let found = entry.places.iter().find(|p| p.rules == rules).cloned();
+                entries.push(entry);
+                if let Some(found) = found { return Ok(found); }
+            }
+        }
+        let volume = self.site_volume(site, window)?;
+        let places = Places::derive(&volume, rules)?;
+        let found = Arc::new(SiteGeometry { key: key.clone(), rules, volume, places });
+        let mut entries = self.spatial_geometry.0.lock().map_err(|_| "spatial geometry cache poisoned")?;
+        if let Some(entry) = entries.iter_mut().find(|entry| entry.key == key) {
+            if let Some(existing) = entry.places.iter().find(|p| p.rules == rules) {
+                return Ok(existing.clone());
+            }
+            if entry.places.len() == 4 { entry.places.remove(0); }
+            entry.places.push(found.clone());
+        } else {
+            if entries.len() == CAPACITY { entries.remove(0); }
+            entries.push(Entry { key, volume: found.volume.clone(), places: vec![found.clone()] });
+        }
         Ok(found)
     }
 }

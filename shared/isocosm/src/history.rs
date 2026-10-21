@@ -359,6 +359,9 @@ impl Session {
             return Err("cannot fork an unplayed future".into());
         }
         let mut fork = Self::new(self.sim.genesis.as_ref().clone(), self.sim.mode)?;
+        // Replaying still authenticates every command. Only immutable terrain
+        // windows, keyed by their actual terrain inputs, survive between forks.
+        fork.sim.spatial_geometry = self.sim.spatial_geometry.clone();
         fork.sim.state.movement = self.sim.state.movement;
         fork.branch = branch;
         for entry in self.entries.iter().filter(|e| e.tick <= tick && match &e.command {
