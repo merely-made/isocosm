@@ -1648,6 +1648,7 @@ title = "mere's atlas is sized by limits the host fills in"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "mere's atlas is sized by plain-data AtlasLimits that the host fills in from device limits; MAX_BRICKS stays the default cap."
+amends = ["289"]
 
 [cases."296"]
 title = "The host's atlas budget defaults to 8 MiB"
@@ -1837,6 +1838,7 @@ title = "The traversal's start clamps into the box"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The traversal's start voxel clamps into the box and reports the entry face, landing with the traversal fix."
+draws_on = ["361"]
 
 [cases."364"]
 title = "X1's defaults are copied in explicitly"
@@ -2216,6 +2218,7 @@ title = "The all-modes build lives in a host workspace of its own"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The all-modes build lives in a fourth host workspace holding only the mode host binary, depending on the products' crates by path."
+draws_on = ["381"]
 
 [cases."443"]
 title = "A window plays one mode and switches in place"
@@ -2381,12 +2384,14 @@ title = "kiss3d, reshaped, is the lit body tenant"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "kiss3d, reshaped with an explicit context handle and windowless render entry, is the stack's lit body renderer. (amended by 606)"
+draws_on = ["27"]
 
 [cases."472"]
 title = "Lighting is a stack-owned light and environment block"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Lighting is a stack-owned light and environment block read by both tracer and rasteriser."
+draws_on = ["22"]
 
 [cases."473"]
 title = "WGSL/WESL for raster, CubeCL for compute"
@@ -2660,12 +2665,14 @@ title = "The constructor helper lives in cambium-genet-web-host"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The shared wasm constructor helper lives in cambium-genet-web-host."
+draws_on = ["532"]
 
 [cases."537"]
 title = "The web modules take the newest wasm-bindgen they can"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The web modules take the newest wasm-bindgen they can, shared as one exact pin. (amended by 556)"
+amends = ["536"]
 
 [cases."538"]
 title = "Each world chooses whether the sim or its ruleset leads"
@@ -2765,6 +2772,7 @@ title = "Every wasm module moves to the newest wasm-bindgen, 0.2.129"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Every wasm module in mere moves to wasm-bindgen 0.2.129; 'stay with the newest' stands for later pins."
+amends = ["537"]
 
 [cases."560"]
 title = "Every cell carries along a system's route, and conduits more"
@@ -3009,6 +3017,7 @@ title = "471's kiss3d reshape starts from upstream"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed."
+amends = ["471"]
 
 [cases."607"]
 title = "Isocosm's state hash joins the family's witness, in balaur's shape"
@@ -3083,6 +3092,7 @@ title = "scenevm is a donor of techniques only"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a licence row."
+draws_on = ["471", "606"]
 
 [cases."623"]
 title = "Rosters and rulesets move into datasheets, through a plan"
@@ -3189,6 +3199,7 @@ title = "The setting is machine-local"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The shared build-dir setting lives in the machine-local root cargo config; nothing is committed but the plan."
+draws_on = ["643"]
 
 [cases."648"]
 title = "Isocosm builds at opt-level 1 in every workspace"
@@ -3563,12 +3574,14 @@ title = "The kiss3d fork: v0.47.0, a mark-ik fork, a mere crate over it"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The kiss3d fork is v0.47.0 at crates/kiss3d (mark-ik fork, pinned by rev), with a mere crate over it owning device, targets, lights, depth pre-pass."
+draws_on = ["471", "606"]
 
 [cases."736"]
 title = "Palette colours reach kiss3d as a texture addressed by UV"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow."
+draws_on = ["735"]
 
 [cases."737"]
 title = "A room is roofed air"
@@ -3629,6 +3642,7 @@ title = "L7 lands on the tenant; D1 layers; the torch's shadows wait"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing."
+draws_on = ["471"]
 
 [cases."750"]
 title = "The flow record moves with the record family; the registry converges with bodies"
@@ -5058,14 +5072,14 @@ title = "Terrain fits the view"
 source = "design_docs/doctrine.md"
 area = "Presentation"
 summary = "Terrain residency is nested rings inside a device-bounded atlas budget; overflow keeps the nearest and reports the rest; grain is residency, never representation."
-draws_on = ["23", "368", "369", "372", "374", "425"]
+draws_on = ["23", "296", "368", "369", "372", "374", "425"]
 
 [statements."presentation.6"]
 title = "Lighting"
 source = "design_docs/doctrine.md"
 area = "Presentation"
 summary = "The sun is the sim's light field; the fixed sun is the bench fallback; shadows wait on testing."
-draws_on = ["22", "970"]
+draws_on = ["22", "749", "970"]
 
 [statements."presentation.7"]
 title = "Maps and remains"
@@ -5187,6 +5201,38 @@ source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "Physics is conatus's, replaying bit for bit across machines; isometer answers picks; bindings, when built, are generic conatus modules."
 draws_on = ["332", "347", "348", "349", "350", "351", "352", "604", "609", "695", "724"]
+stack = true
+
+[statements."stack.8"]
+title = "Lit bodies over traced terrain"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Bodies are lit by the reshaped kiss3d under mere's tenant crate; one light block for tracer and rasteriser; WGSL raster, CubeCL compute."
+draws_on = ["361", "362", "471", "472", "473", "476", "606", "622", "735", "736", "749"]
+stack = true
+
+[statements."stack.9"]
+title = "The atlas and residency"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "The atlas is sized by device limits the host fills; residency is an isometer helper; the CPU side pages; headroom avoids rebuilds."
+draws_on = ["289", "290", "291", "295", "302"]
+stack = true
+
+[statements."stack.10"]
+title = "Workspaces and builds"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Separate product workspaces plus a host workspace; one machine-local build-dir per checkout; isocosm at opt-level 1; narrow LF pins."
+draws_on = ["442", "643", "644", "648", "969"]
+stack = true
+
+[statements."stack.11"]
+title = "Platforms and the web"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Desktop first-class, the web a floored tier; best capabilities where free; gamepads are the stack's; web modules share one helper and pin."
+draws_on = ["21", "29", "77", "532", "536", "537", "556", "567"]
 stack = true
 
 [statements."vtt.1"]

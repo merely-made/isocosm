@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation and the VTT reviewed, with Processes 1 to 3 and Schema 1; Stack and engine is under review (Stack 1 to 7); the other areas are empty. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation and the VTT reviewed, with Processes 1 to 3 and Schema 1; Stack and engine is under review (Stack 1 to 11, the ECS reopened); the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -620,7 +620,7 @@ the device, saved per device and allocated upfront. Past it, the nearest
 terrain stays and the view reports how much it omits. A ring's grain is
 residency, never the sim's representation.
 
-Links: draws on 23, 425, 368, 369, 372, 374 · summary Terrain residency is nested rings inside a device-bounded atlas budget; overflow keeps the nearest and reports the rest; grain is residency, never representation.
+Links: draws on 23, 296, 425, 368, 369, 372, 374 · summary Terrain residency is nested rings inside a device-bounded atlas budget; overflow keeps the nearest and reports the rest; grain is residency, never representation.
 
 *Reviewed 2026-10-22, new. Mark dropped the draft's line on worlds past a fixed cap (945, one fixture's decision), which stays a case.*
 *Refined 2026-10-22 in the VTT review: the budget's cases cited (Mark:
@@ -629,12 +629,14 @@ Links: draws on 23, 425, 368, 369, 372, 374 · summary Terrain residency is nest
 ### Presentation 6. Lighting
 
 The sun comes from the sim's light field (971 to 973). Case 970's fixed sun,
-matching the tracer, stays as the bench's default and a host option. Shadows
-wait on their testing pass. Case 22 records the lighting the wing aims for.
+matching the tracer, stays as the bench's default and a host option. Shadows,
+the torch's included, wait on their testing pass. Case 22 records the
+lighting the wing aims for.
 
-Links: draws on 970, 22 · summary The sun is the sim's light field; the fixed sun is the bench fallback; shadows wait on testing.
+Links: draws on 970, 22, 749 · summary The sun is the sim's light field; the fixed sun is the bench fallback; shadows wait on testing.
 
 *Reviewed 2026-10-22, new. Mark: "971 amends 970: fixed sun is the bench fallback"; and the draft's wish list dropped, 22 kept as the aim.*
+*Refined 2026-10-22 in the Stack and engine review: 749's torch line cited.*
 
 ### Presentation 7. Maps and remains
 
@@ -761,6 +763,68 @@ Links: draws on 332, 347, 348, 349, 350, 351, 352, 604, 609, 695, 724 · stack �
 *Reviewed 2026-10-22, new. Built: parry private inside conatus, rapier's
 enhanced determinism, the query refresh, isometer's pick. Not yet built: the
 binding module, the labelled-digest crate, the cross-OS digest. Mark: "As
+drafted, tagged stack".*
+
+### Stack 8. Lit bodies over traced terrain
+
+Terrain is traced and bodies rasterised, joined by depth. Bodies are lit by
+kiss3d, reshaped as the stack's tenant: a fork of upstream (v0.47.0) taking
+balaur's commits one at a time by name, under mere's `tenant` crate, which owns
+the device, targets, light block and depth pre-pass, so games never touch
+kiss3d. One stack-owned light and environment block is read by tracer and
+rasteriser alike. Bodies draw onto a transparent target that netrender layers
+over the traced colour; palette colours reach kiss3d as a texture by UV.
+Raster shaders are WGSL/WESL, compute is CubeCL; vello draws documents,
+kiss3d's 2D only lit 2D games. Isometer calls modulus's exact CPU walk, its
+start clamped into the box, rather than copying it. Other engines (scenevm)
+are donors of techniques, taken by name with a licence row.
+
+Links: draws on 361, 362, 471, 472, 473, 476, 606, 622, 735, 736, 749 · stack · summary Bodies are lit by the reshaped kiss3d under mere's tenant crate; one light block for tracer and rasteriser; WGSL raster, CubeCL compute.
+
+*Reviewed 2026-10-22, new. Built: the fork under mere's `tenant` crate with its
+light block, bodies drawn through it in Eponym and Mesocosm, modulus's walk.
+Unconfirmed: that the tracer reads the tenant's light block (isometer-lens
+does not depend on `tenant`). Mark: "As drafted, tagged stack".*
+
+### Stack 9. The atlas and residency
+
+mere's atlas is sized by plain-data limits the host fills from the device, so
+modulus stays GPU-free. Residency mechanics are a product-neutral isometer
+helper, each product's rule its own. The CPU side pages too, computing bricks
+from the map on demand, and the pointer volume keeps spare layers above the
+tallest point, so only an edit past them rebuilds.
+
+Links: draws on 289, 290, 291, 295, 302 · stack · summary The atlas is sized by device limits the host fills; residency is an isometer helper; the CPU side pages; headroom avoids rebuilds.
+
+*Reviewed 2026-10-22, new; checked built. 296, the 8 MiB default, is cited by
+Presentation 5, which states it. Mark: "Both, 296 to Pres. 5".*
+
+### Stack 10. Workspaces and builds
+
+The products keep separate workspaces with their own patch policies; the
+all-modes host builds in a workspace of its own, over them by path. A
+checkout shares one cargo build-dir, set in the machine-local root config,
+binaries staying per workspace. Every workspace that builds isocosm sets it to
+opt-level 1. Line endings are pinned narrowly, where a test depends on them.
+
+Links: draws on 442, 643, 644, 648, 969 · stack · summary Separate product workspaces plus a host workspace; one machine-local build-dir per checkout; isocosm at opt-level 1; narrow LF pins.
+
+*Reviewed 2026-10-22, new; checked built. Mark: "Both, 296 to Pres. 5".*
+
+### Stack 11. Platforms and the web
+
+Desktop is first-class; the web is a supported tier with a stated floor. Two
+bindings take each platform's best capabilities where that costs nothing on
+mobile or the web. Gamepads and keymapping are stack capabilities, genet's and
+the standards', not isomere's alone. Web modules run their wasm constructors
+once, through cambium-genet-web-host's helper, and take the newest
+wasm-bindgen as one exact pin; runners build with the repo's pinned
+toolchain.
+
+Links: draws on 21, 29, 77, 532, 536, 537, 556, 567 · stack · summary Desktop first-class, the web a floored tier; best capabilities where free; gamepads are the stack's; web modules share one helper and pin.
+
+*Reviewed 2026-10-22, new. 532 to 567 are mere's burn-migration rulings,
+which mere's burn plan records; the wing's web build follows them. Mark: "As
 drafted, tagged stack".*
 
 ## Host and network

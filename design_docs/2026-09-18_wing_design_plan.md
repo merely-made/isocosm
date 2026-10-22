@@ -2971,7 +2971,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      retarget fix lands beside it, with `modulus`'s tests moved out of its
      777-line `lib.rs` into a sibling file ("Keep it").
 
-     Links: area Stack and engine · summary mere's atlas is sized by plain-data AtlasLimits that the host fills in from device limits; MAX_BRICKS stays the default cap.
+     Links: area Stack and engine · amends 289 · summary mere's atlas is sized by plain-data AtlasLimits that the host fills in from device limits; MAX_BRICKS stays the default cap.
 296. **The host's atlas budget defaults to 8 MiB.** Put to Mark on
      2026-09-26, with 295, video memory being unreportable in wgpu: a
      default budget of 8 MiB, 32 MiB, or as the texture allows? Mark: "8
@@ -3234,7 +3234,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the entry face, or leave it? Mark: "Adopt the clamp." It lands with the
      traversal fix.
 
-     Links: area Stack and engine · summary The traversal's start voxel clamps into the box and reports the entry face, landing with the traversal fix.
+     Links: area Stack and engine · draws on 361 · summary The traversal's start voxel clamps into the box and reports the entry face, landing with the traversal fix.
 364. **X1's defaults are copied in explicitly.** Put to Mark on 2026-09-27,
      from Part B's step 1: the eight shapes and five functions are constants
      a world copies in, the generator not yet copying them, and the crowd
@@ -4522,7 +4522,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Eponym's renderling, with its patches to paths outside the repository,
      retires before Eponym's mode can join the host's build.
 
-     Links: area Stack and engine · summary The all-modes build lives in a fourth host workspace holding only the mode host binary, depending on the products' crates by path.
+     Links: area Stack and engine · draws on 381 · summary The all-modes build lives in a fourth host workspace holding only the mode host binary, depending on the products' crates by path.
 
 443. **A window plays one mode and switches in place.** Asked on
      2026-10-01: "How does a host switch modes? Evidence: isomere's
@@ -5330,7 +5330,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Annotated 2026-10-06 by ruling 606:* the reshape starts from upstream
      kiss3d, taking balaur's commits by name.
 
-     Links: area Stack and engine · summary kiss3d, reshaped with an explicit context handle and windowless render entry, is the stack's lit body renderer. (amended by 606)
+     Links: area Stack and engine · draws on 27 · summary kiss3d, reshaped with an explicit context handle and windowless render entry, is the stack's lit body renderer. (amended by 606)
 
 472. **Lighting is a stack-owned light and environment block.** Asked the
      same day. Evidence: terrain is traced and bodies rasterised, joined by
@@ -5343,7 +5343,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      own sun and fog. Mark chose A, carrying ruling 22's rows across both
      consumers.
 
-     Links: area Stack and engine · summary Lighting is a stack-owned light and environment block read by both tracer and rasteriser.
+     Links: area Stack and engine · draws on 22 · summary Lighting is a stack-owned light and environment block read by both tracer and rasteriser.
 473. **WGSL/WESL for raster, CubeCL for compute.** Asked the same day.
      Evidence: all five wing render shaders are WGSL
      (`isometer-lens/src/{tracer,march,grade}.wgsl`,
@@ -6585,7 +6585,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      there when this record took it, at mere `9f5a73f6`. Mere's migration
      lane owns the work.
 
-     Links: area Stack and engine · summary The shared wasm constructor helper lives in cambium-genet-web-host.
+     Links: area Stack and engine · draws on 532 · summary The shared wasm constructor helper lives in cambium-genet-web-host.
 
 537. **The web modules take the newest wasm-bindgen they can.** Asked on
      2026-10-03 in the Burn migration session, when ruling 536 met a pin
@@ -6616,7 +6616,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Widened 2026-10-04 by ruling 556:* every wasm module, and the newest
      wasm-bindgen as a standing posture.
 
-     Links: area Stack and engine · summary The web modules take the newest wasm-bindgen they can, shared as one exact pin. (amended by 556)
+     Links: area Stack and engine · amends 536 · summary The web modules take the newest wasm-bindgen they can, shared as one exact pin. (amended by 556)
 
 538. **Each world chooses whether the sim or its ruleset leads.** Raised by
      Mark on 2026-10-03 with research into rulesets over the sim ("I guess
@@ -6990,7 +6990,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      0.2.129; Mark's answer was relayed by the migration session on
      2026-10-04, for mere's plan to record.
 
-     Links: area Stack and engine · summary Every wasm module in mere moves to wasm-bindgen 0.2.129; 'stay with the newest' stands for later pins.
+     Links: area Stack and engine · amends 537 · summary Every wasm module in mere moves to wasm-bindgen 0.2.129; 'stay with the newest' stands for later pins.
 
 560. **Every cell carries along a system's route, and conduits more.** Asked
      on 2026-10-05, opening checkpoint 9: "Which cells carry along a
@@ -7815,7 +7815,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      takes balaur's commits one at a time as it needs them, each reviewed,
      so the fork's own diff stays readable.
 
-     Links: area Stack and engine · summary The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed.
+     Links: area Stack and engine · amends 471 · summary The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed.
 
 607. **Isocosm's state hash joins the family's witness, in balaur's
      shape.** 2026-10-06, from the balaur read. Question: Isocosm's
@@ -7962,7 +7962,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Asked whether to record the read, Mark chose "Write a brief, like
      Balaur's".
 
-     Links: area Stack and engine · summary scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a licence row.
+     Links: area Stack and engine · draws on 471, 606 · summary scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a licence row.
 623. **Rosters and rulesets move into datasheets, through a plan.**
      2026-10-06. Mark asked whether the TOML used for generated datasheets
      suits Isocosm's entity rosters and rulesets. Evidence:
@@ -8148,7 +8148,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Machine-local root config (Recommended)". So nothing is committed but
      the plan, and each worktree or machine opts in by the plan's recipe.
 
-     Links: area Stack and engine · summary The shared build-dir setting lives in the machine-local root cargo config; nothing is committed but the plan.
+     Links: area Stack and engine · draws on 643 · summary The shared build-dir setting lives in the machine-local root cargo config; nothing is committed but the plan.
 648. **Isocosm builds at opt-level 1 in every workspace.** 2026-10-08, from
      646's measurement. Question: isocosm at opt-level 1 cut its suite from
      84 to 27 minutes for 29 s more compile, and a profile set in only some
@@ -8755,7 +8755,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      commit-by-name rule governs what comes in from balaur, and the mere
      crate takes a plain working name until a naming round.
 
-     Links: area Stack and engine · summary The kiss3d fork is v0.47.0 at crates/kiss3d (mark-ik fork, pinned by rev), with a mere crate over it owning device, targets, lights, depth pre-pass.
+     Links: area Stack and engine · draws on 471, 606 · summary The kiss3d fork is v0.47.0 at crates/kiss3d (mark-ik fork, pinned by rev), with a mere crate over it owning device, targets, lights, depth pre-pass.
 736. **Palette colours reach kiss3d as a texture addressed by UV.**
      2026-10-09, from the renderling inventory. Evidence: kiss3d's meshes
      carry no vertex colours (`resource/mesh3d.rs:143`), while Eponym's room
@@ -8773,7 +8773,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the push (732). The inventory also found `field-bake` already retired
      (`bb92f2e8`), leaving `ambience-lease` the one probe 474 archives.
 
-     Links: area Stack and engine · summary Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow.
+     Links: area Stack and engine · draws on 735 · summary Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow.
 737. **A room is roofed air.** 2026-10-09, the places lane's forks (merged
      at `2a26c625`). Question: 417's "air cut off from the sky", read as no
      air path to the sky, floods an open-mouthed cave into the outdoor patch;
@@ -8859,7 +8859,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      traced colour, the torch casts no shadow until the testing pass tunes
      it, and the CLAUDE.md names the tenant.
 
-     Links: area Stack and engine · summary eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing.
+     Links: area Stack and engine · draws on 471 · summary eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing.
 750. **The flow record moves with the record family; the registry
      converges with bodies.** 2026-10-09, the matter-and-processes family
      (merged at `14eb2dfb`: the five natives, typed matter and the registry
