@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, the sim's schema, and Processes and rules reviewed; Bodies and anatomy remains. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, the sim's schema, and Processes and rules reviewed; Bodies and anatomy is under review (Bodies 1 to 5). Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -611,6 +611,88 @@ Mark's word ("Matter to Ecology"). Built: per-material stocks, and density
 and account on `Material`.*
 
 ## Bodies and anatomy
+
+
+### Bodies 1. Forms
+
+Kingdom is class, and scale is orthogonal to it: micro and macro forms play
+beside plant, animal and fungus. A body is a part tree, each part attaching to
+its parent; a terrain-body is a tree whose parts are big enough to carry
+places. A mold or fungus is one entity whose body is a territory: its matter
+in each covered place's ledger under its key, acting and spreading there.
+Micro life is a surface: its matter on places and in hosts under its
+lineage's key, its lineage its only identity, revising its genes by forking
+strains where a host or place selects. A territory or surface expresses its
+lineage's functions at each place, scaled by the matter it holds there.
+
+Links: draws on 39, 58, 467, 480, 488, 497, 499, 500 · summary Kingdom is class, scale orthogonal; bodies are part trees; molds are territories and micro life surfaces, expressing functions by matter per place.
+
+*Reviewed 2026-10-22, new; checked built (territories, surfaces and strains
+at site grain). Mark: "As drafted".*
+
+### Bodies 2. Geometry is isometer's, physiology the sim's
+
+A body's geometry is isometer's body document, one for every game and the
+lens, rendered and exchanged as glTF generated from the part tree. The sim
+keeps physiology keyed by isometer's part ids; the body document carries situs
+and the shape name, and its mass is a reading of the sim's ledger (Stack 5).
+Construction declares function and geometry measures what a mechanic needs,
+each reading naming its measurement: the sim keeps where each part attaches,
+for reach, clearance and contact, and physiology never writes geometry.
+
+*Not yet built:* glTF.
+
+Links: draws on 26, 405, 462, 674, 699, 706, stack.5 · summary Geometry is isometer's body document (glTF for render and interchange); physiology is the sim's, keyed by part id; measurements are named.
+
+*Reviewed 2026-10-22, new. Mark: "As drafted, glTF marked".*
+
+### Bodies 3. Functions
+
+Functions are one catalogue every game reads: contract, intake, sense, fix,
+secrete, support, conduct, gate, store, circulate, respire, excrete,
+reproduce, grip and adhesion, the other vocabularies folded in, each grown but
+secrete. No shape gates a function: any part can express any, each scaling
+with one measurement (length, presented area, cross-section or volume) by its
+share of the part's cells, so form decides how well; the table of fits is
+what the generator draws by default. Living matter is typed by lineage, and a
+shape's identity is its roles. Forms are generated from geometric and
+functional primitives by nested composition, construction setting
+capabilities and limits; capability, repertoire and proficiency differ.
+
+Links: draws on 273, 277, 278, 338, 339, 407, 461, 466, 492, 493 · summary Fifteen functions in one catalogue; no shape gates a function, each scaling with one measurement by cell share; forms compose from primitives.
+
+*Reviewed 2026-10-22, new; checked built. Mark: "Split the shape names".*
+
+### Bodies 4. Shape names
+
+Eight names (lump, rod, sheet and point read from a part's box; branch and
+joint from the tree; tube and shell declared at construction from the body's
+voxels) name parts and never gate a function (Bodies 3). Part shapes take
+their own key prefix, `part-shape:*`.
+
+Links: draws on 276, 360, 494, bodies.3 · summary Eight shape names, read from the box and the tree or declared, name parts and never gate functions; part shapes have their own prefix.
+
+*Reviewed 2026-10-22, new: split from functions at Mark's word ("Split the
+shape names").*
+
+### Bodies 5. Matter in the body
+
+A body keeps its lineage's matter as tissue in each part and reserve in the
+parts that store; each part keeps its own ledger, the body's totals readings.
+A part's cells and cell mass derive from its extents, and native parts have
+cell identity (tracts as cell sets, intake ports as part data), authored
+cells entering by `Command::Express`. A store holds reserve up to its store
+cells; a body without one keeps none. A meal lands by hunger (full stores
+count as fed); rent draws reserve then tissue; rent, growth and a landing
+meal reach parts in proportion; what a body can't hold spills to the ground.
+A body starves when its tissue and reserve can't pay its rent. A bite lands
+on one part, drawn by holdings; an incorporated part keeps its donor's
+matter, which the eater cannot spend.
+
+Links: draws on 446, 455, 459, 460, 463, 464, 504, 523, 544, 551, 766, 787 · summary Tissue in parts, reserve in stores, a ledger per part; meals land by hunger, rent in proportion; starvation when rent fails; donors' matter kept.
+
+*Reviewed 2026-10-22, new; checked built. Mark: "As drafted, archive 453
+and 456".*
 
 ## Record and history
 

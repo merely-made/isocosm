@@ -258,9 +258,7 @@ three design docs that cite it. The record holds the words.
 | 448 | The default reproductive set holds four strategies: brood, seed or egg, budding and fission, and spores. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 449 | A lineage's traits name its reproductive strategies; the body must support the one used; phenotype switches by circumstance. | none |
 | 450 | Reproduction also carries mating, semelparity or iteroparity, parental care and horizontal transfer, each governed by traits. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 453 | The probe's minimal body is optional fields on the core part: half-extents, cell capacity, cells per function and cell mass. (amended by 459, 460, 461, 462) | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 455 | A body's ceiling is read part by part, summing a formula over living parts, matching Mesocosm to the milligram. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 456 | The probe's meal takes tissue only; where tissue and reserve sit in a body goes to the anatomy brief. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 459 | Each part holds its own tissue and parts expressing store hold the reserve; a bite lands on one part of the prey. (amended by 463) | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 460 | A part's capacity and cell mass are derived from its extents by Mesocosm's rule; the declared fields give way. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 461 | The function catalogue holds all fifteen functions, with the other vocabularies folded into it. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |

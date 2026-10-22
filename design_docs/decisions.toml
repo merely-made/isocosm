@@ -1616,12 +1616,14 @@ title = "Shapes are eight: lump, rod, sheet, point, tube, branch, shell and join
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Shapes are eight: lump, rod, sheet, point, tube, branch, shell and joint. (amended by 492)"
+draws_on = ["264"]
 
 [cases."277"]
 title = "A body's functions assemble into organ systems, and new systems are riffed from them"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body's functions assemble into organ systems, parts are shapes expressing functions, and new systems are riffed by mixing functions."
+draws_on = ["276"]
 
 [cases."278"]
 title = "The function vocabularies become one catalogue in the sim"
@@ -1778,12 +1780,14 @@ title = "A process's shape requirement and seeding live on the function catalogu
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A process's shape requirement and seeding live on the function catalogue; a process requires a live part expressing a function, bound to the lowest-numbered qualifier. (amended by 480, 492)"
+draws_on = ["276", "277", "278"]
 
 [cases."339"]
 title = "The catalogue starts with the five functions in use"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The function catalogue starts with the five functions in use: contract, intake, sense, fix, secrete; keys stay open. (amended by 461)"
+draws_on = ["338"]
 
 [cases."340"]
 title = "The process's causal kind gives up the name `Shape`"
@@ -2314,6 +2318,7 @@ title = "A body keeps its lineage's matter as tissue and reserve"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body keeps its lineage's matter as two accounts, tissue and reserve; one meal-routing rule for every kingdom, reserve drawn first, overflow spills to ground. (amended by 463, 464, 523)"
+draws_on = ["273", "342"]
 
 [cases."447"]
 title = "Reproduction is several strategies, governed by traits"
@@ -2353,12 +2358,6 @@ area = "Record and history"
 summary = "Deep time's span counts epochs in the world's rules, as Mesocosm does; under the default year a century is 100 epochs."
 draws_on = ["451"]
 
-[cases."453"]
-title = "The probe's minimal body is optional fields on the core part"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Bodies and anatomy"
-summary = "The probe's minimal body is optional fields on the core part: half-extents, cell capacity, cells per function and cell mass. (amended by 459, 460, 461, 462)"
-
 [cases."454"]
 title = "Shared ground is shared out from the pass's start"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -2372,47 +2371,47 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body's ceiling is read part by part, summing a formula over living parts, matching Mesocosm to the milligram."
 
-[cases."456"]
-title = "The probe's meal takes tissue, and where matter sits in a body goes to the anatomy brief"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Bodies and anatomy"
-summary = "The probe's meal takes tissue only; where tissue and reserve sit in a body goes to the anatomy brief."
-
 [cases."459"]
 title = "Tissue sits in parts, and the reserve in parts that store"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Each part holds its own tissue and parts expressing store hold the reserve; a bite lands on one part of the prey. (amended by 463)"
+draws_on = ["446"]
 
 [cases."460"]
 title = "A part's cells are derived from its extents"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A part's capacity and cell mass are derived from its extents by Mesocosm's rule; the declared fields give way."
+draws_on = ["459"]
 
 [cases."461"]
 title = "The catalogue takes all fifteen functions, the other vocabularies folded in"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The function catalogue holds all fifteen functions, with the other vocabularies folded into it."
+amends = ["339"]
 
 [cases."462"]
 title = "The sim keeps where each part attaches"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Each part records where it attaches to its parent so the sim measures reach, clearance and contact; pivots and yaw stay isometer's."
+draws_on = ["405"]
 
 [cases."463"]
 title = "A store holds the reserve its cells can, and a body without one keeps none"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A store holds reserve up to its store cells times a cell's mass; a body without a store keeps no reserve."
+draws_on = ["459"]
 
 [cases."464"]
 title = "Rent, growth and a landing meal reach a body's parts in proportion"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Rent draws from parts in proportion to tissue; growth and a landing meal fill each part in proportion to its room."
+draws_on = ["294", "459"]
 
 [cases."465"]
 title = "Organ systems are named networks of functions"
@@ -2425,12 +2424,14 @@ title = "The fifteen functions take the proposed shapes and seeding"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The fifteen functions take the proposed shape table and seeding; secrete alone is acquired; wing-functions' kinds map onto store, gate and contract. (amended by 492)"
+draws_on = ["461"]
 
 [cases."467"]
 title = "One part model serves every body form, a part attaching to a parent or lying on a site"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "One part model serves every body form: a part attaches to a parent or lies on a site. (amended by 488)"
+draws_on = ["58"]
 
 [cases."468"]
 title = "A lineage carries a recipe, and its bodies also grow parts in life"
@@ -2499,6 +2500,7 @@ title = "A spread acts wherever a patch lies"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A spread body acts and can be targeted wherever a live patch lies; its place for record and moves stays its root's site. (amended by 488)"
+draws_on = ["467"]
 
 [cases."483"]
 title = "The projection's diff comes from the record's receipts"
@@ -2523,6 +2525,7 @@ title = "A mold is a territory, and micro life a surface"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A mold is a territory (one entity, matter on each place covered) and micro life a surface; terrain-bodies stay part trees."
+amends = ["58", "467", "480"]
 
 [cases."489"]
 title = "The default systems take the proposed table"
@@ -2547,18 +2550,21 @@ title = "No shape gates a function; what a part does scales with the measurement
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "No shape gates a function; any part can express any function and its effect scales with the measurement its mechanic names."
+amends = ["276", "338", "466"]
 
 [cases."493"]
 title = "Each function scales with one measurement, by its share of the cells"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Each function scales with one measurement (length, presented area, cross-section or volume), taken in proportion to its share of a part's cells."
+draws_on = ["492"]
 
 [cases."494"]
 title = "The eight names are read from the box and the tree, and hollows declared"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Lump, rod, sheet and point are read from the box, branch and joint from the tree, tube and shell declared at construction."
+draws_on = ["276", "492"]
 
 [cases."495"]
 title = "Whether segments grow toward the recipe's count is a lineage trait"
@@ -2577,6 +2583,7 @@ title = "A territory's and a surface's matter lies in each place's ledger, under
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A territory's and a surface's matter lies in each place's ledger under their keys; the territory entity keeps identity, record and mind."
+draws_on = ["488"]
 
 [cases."498"]
 title = "Territories and surfaces spread by overflow along routes"
@@ -2590,18 +2597,21 @@ title = "A germ lineage revises its genes by forking strains"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A germ lineage revises its genes by forking strains, child lineages, selected by host or place."
+draws_on = ["58", "488"]
 
 [cases."500"]
 title = "A territory or surface expresses its functions by the matter at each place"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A territory or surface expresses its lineage's functions at each place, scaled by the matter it holds there."
+draws_on = ["466", "488", "493"]
 
 [cases."504"]
 title = "Each part keeps its own ledger and is a holder"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Each part keeps its own ledger and is a holder; the body's totals are readings; bodies without parts keep their entity ledger."
+draws_on = ["459"]
 
 [cases."507"]
 title = "The averaged crowd averages all of a lineage's own matter"
@@ -2664,6 +2674,7 @@ title = "A body starves when its rent fails, not below a fixed mass"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body starves when its tissue and reserve cannot pay its rent; the fixed 20 mg starvation line goes."
+draws_on = ["446", "518"]
 
 [cases."524"]
 title = "A bud is a part grown off its parent"
@@ -2775,6 +2786,7 @@ title = "An incorporated part keeps its donor's matter"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "An incorporated part keeps its donor's matter under its provenance; the eater can neither spend it on rent nor grow from it."
+draws_on = ["504", "516"]
 
 [cases."547"]
 title = "A generated recipe reproduces in one cell of its root"
@@ -2809,6 +2821,7 @@ title = "Full stores count as fed"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body is hungry while its reserve is below the lesser of 100 ticks of rent and its stores' capacity; full stores count as fed."
+draws_on = ["463"]
 
 [cases."552"]
 title = "A bud severs once it holds a provision's worth"
@@ -3309,6 +3322,7 @@ title = "A body's geometry goes through isometer; its physiology stays the sim's
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body's geometry is isometer's body document; the sim keeps physiology keyed by isometer's part ids."
+draws_on = ["670"]
 
 [cases."675"]
 title = "Movement and physical reach go through isometer; the reach field stays the sim's"
@@ -3431,6 +3445,7 @@ title = "The seam keys by `PartId`, and situs joins the body document"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The sim keys physiology by PartId; BodyDocument gains situs and shape name; mass_mg becomes a reading of the sim's ledger."
+draws_on = ["674"]
 
 [cases."701"]
 title = "The lift moves to isometer"
@@ -3470,6 +3485,7 @@ title = "A part keeps its lost cells"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A part keeps a lost-cells field that capacity and ceiling subtract; physiology never writes geometry."
+draws_on = ["469", "674"]
 
 [cases."707"]
 title = "Severing follows isometer's semantics"
@@ -3786,6 +3802,7 @@ title = "Authored cells reach the world by `Command::Express`"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Authored cells reach the world by native Command::Express placing cells through mosaic::propose."
+draws_on = ["766"]
 
 [cases."790"]
 title = "One after-pass plan holds every deferred done-condition"
@@ -4717,6 +4734,41 @@ source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
 [decisions."sim-execution D6"]
 title = "`foregone` only on direct acts (2026-10-20)"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+
+[statements."bodies.1"]
+title = "Forms"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Kingdom is class, scale orthogonal; bodies are part trees; molds are territories and micro life surfaces, expressing functions by matter per place."
+draws_on = ["39", "58", "467", "480", "488", "497", "499", "500"]
+
+[statements."bodies.2"]
+title = "Geometry is isometer's, physiology the sim's"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Geometry is isometer's body document (glTF for render and interchange); physiology is the sim's, keyed by part id; measurements are named."
+draws_on = ["26", "405", "462", "674", "699", "706", "stack.5"]
+
+[statements."bodies.3"]
+title = "Functions"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Fifteen functions in one catalogue; no shape gates a function, each scaling with one measurement by cell share; forms compose from primitives."
+draws_on = ["273", "277", "278", "338", "339", "407", "461", "466", "492", "493"]
+
+[statements."bodies.4"]
+title = "Shape names"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Eight shape names, read from the box and the tree or declared, name parts and never gate functions; part shapes have their own prefix."
+draws_on = ["276", "360", "494", "bodies.3"]
+
+[statements."bodies.5"]
+title = "Matter in the body"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Tissue in parts, reserve in stores, a ledger per part; meals land by hunger, rent in proportion; starvation when rent fails; donors' matter kept."
+draws_on = ["446", "455", "459", "460", "463", "464", "504", "523", "544", "551", "766", "787"]
 
 [statements."directing.1"]
 title = "Surfaces derive from knowledge and control"
