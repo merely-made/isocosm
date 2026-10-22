@@ -129,12 +129,6 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "Terrain gets per-axis scale (x, y, z) under W3, and paging is fixed one way or another in every consumer."
 
-[cases."24"]
-title = "genet implements the full W3C animation surface,"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "genet implements the full W3C animation surface including Web Animations API; formal-web is the architectural reference."
-
 [cases."26"]
 title = "glTF is the body's render, animation and interchange model, generated from the part tree"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -159,23 +153,11 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Desktop is first-class; the web is a supported tier with a stated floor."
 
-[cases."30"]
-title = "genet's references are the other Rust and browser engines in the same lane,"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "genet's references are blitz and formal-web, with servo, Firefox, WebKit, Chrome and webviews as the more sophisticated efforts."
-
 [cases."32"]
 title = "The sim's process definition is founded from Paredros's world-conditions schema,"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The sim's process definition is founded from Paredros's world-conditions schema with its stop rule lifted and Law A record fields added."
-
-[cases."34"]
-title = "dramatis absorbs paredros-identity under W3"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "dramatis absorbs paredros-identity under W3; its types move to the stack's trust plane and Paredros consumes them back."
 
 [cases."35"]
 title = "Each game foregrounds one rung of the agent ladder; the others are simmed and weakly expressed"
@@ -1653,7 +1635,7 @@ amends = ["289"]
 [cases."296"]
 title = "The host's atlas budget defaults to 8 MiB"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
+area = "Presentation"
 summary = "The host's atlas budget defaults to 8 MiB."
 
 [cases."300"]
@@ -1884,16 +1866,10 @@ area = "Presentation"
 summary = "Allocate the chosen terrain atlas budget upfront (8 MiB default, device-bounded); a changed budget rebuilds the atlas but filling capacity does not trigger growth."
 draws_on = ["369", "372"]
 
-[cases."377"]
-title = "The pre.4 allocation guard also compares service identity"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "The pre.4 allocation guard compares service ID as a sixth value beside the existing five, with the rejection case verified by a deliberate-fault control."
-
 [cases."381"]
 title = "One host carries the three games as modes over one world save"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
+area = "Host and network"
 summary = "One host carries the three games as modes over one world save; each product is a build profile; different-mode players may share a trunk."
 
 [cases."382"]
@@ -2429,29 +2405,11 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A spread body acts and can be targeted wherever a live patch lies; its place for record and moves stays its root's site. (amended by 488)"
 
-[cases."481"]
-title = "hecs stays the ECS"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "hecs stays the ECS, keeping the 2026-08-16 placement."
-
-[cases."482"]
-title = "The mode host and armillary schedule; the ECS is storage"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "The mode host and armillary schedule; the ECS is storage only, with no second scheduler inside."
-
 [cases."483"]
 title = "The projection's diff comes from the record's receipts"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The record-to-scene projection learns what changed from the record's per-tick receipts, not from ECS change tracking."
-
-[cases."484"]
-title = "A boundary crate in Mere holds the ECS"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "A thin boundary crate in mere holds the ECS: BodyId-to-Entity table, receipt-tied spawn and despawn, command buffer, scene-contract diff emitter."
 
 [cases."485"]
 title = "Growth toward the recipe regrows a severed part only where the lineage can heal"
@@ -2912,12 +2870,6 @@ title = "Any cell may vary"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Any cell may vary, even the last of a feeding, sensing or fixing function; a child born unable to feed starves."
-
-[cases."585"]
-title = "Knot's CubeCL persistence mirrors 375 through mere's git"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "Knot's root patch table takes cubecl-runtime from mere.git at the rev its mere rows pin, moving with every repin (mirrors 375)."
 
 [cases."587"]
 title = "A development brings the system its cells realize"
@@ -3643,12 +3595,6 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing."
 draws_on = ["471"]
-
-[cases."750"]
-title = "The flow record moves with the record family; the registry converges with bodies"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "The flow record stays in legacy until the record family; the registry converges with bodies, lowered onto the function catalogue."
 
 [cases."751"]
 title = "A site is habitable when the lineage's conditions hold and a member lives there"
@@ -4826,7 +4772,7 @@ title = "One sim host under three product hosts"
 source = "design_docs/doctrine.md"
 area = "Host and network"
 summary = "The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it."
-draws_on = ["884", "892", "896", "898", "901", "925", "926", "927"]
+draws_on = ["381", "884", "892", "896", "898", "901", "925", "926", "927"]
 
 [statements."host.2"]
 title = "Inspection is endpoints"
@@ -5157,6 +5103,7 @@ source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "Build on the stack we have: unneeded crates stay out, stale ones leave, own crates when the abstraction earns one."
 draws_on = ["600", "organs.5"]
+stack = true
 
 [statements."stack.2"]
 title = "The stack supplies identity and trust"
@@ -5179,7 +5126,7 @@ title = "One sim, one contract, one bench"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools."
-draws_on = ["20", "192", "197", "203", "204", "254"]
+draws_on = ["20", "192", "197", "203", "204", "254", "483"]
 
 [statements."stack.5"]
 title = "Isometer owns in-site space"
