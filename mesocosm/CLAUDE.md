@@ -1,189 +1,46 @@
-# CLAUDE.md — Mesocosm Repository Role
+# CLAUDE.md — Mesocosm
 
-**Repository location, 2026-09-09:** this product now lives in Isometry's
-`mesocosm/` directory, with its existing Cargo workspace and package names.
-Read `../CLAUDE.md` for umbrella guidance. The root repository index is
-`../design_docs/DOC_README.md`; this product's local index remains below.
-Git operations from here affect the whole Isometry repository. Preserve
-other products' WIP and stage only the intended paths.
+Derived, not authoritative (doctrine, Method 7): where the records are and
+how to work here. Read `../CLAUDE.md` first; it loads with this file.
 
-This file defines how Claude Code should behave in this repository. Read it
-first when starting any session.
+Mesocosm lives in `mesocosm/` with its own Cargo workspace. Git operations
+from here affect the whole repository: preserve other products' work and
+stage only the intended paths.
 
----
+## Where the records are
 
-## Project Identity
+- What Mesocosm is: `design_docs/PROJECT_DESCRIPTION.md` and
+  `design_docs/2026-08-18_vessel_briefs_and_presentation.md`.
+- Where it stands: `design_docs/DOC_README.md` and the plans it lists (the
+  overlay plan, the directing plan, the sim plans).
+- The wing's records (doctrine, design record, founding record): the root
+  `design_docs/`, listed in `../CLAUDE.md`.
 
-**Mesocosm** is an ecological roguelike of lineages: you are a critter in an
-enclosed mid-scale ecosystem, presented as a terrarium section seen at a
-shallow oblique (ruled 2026-08-18 as side-on; tilted to oblique by Mark
-2026-09-04 after a measured three-camera slice; first person names the
-agency, never the camera). You
-grow only by incorporating other organisms, and you try to increase your
-lineage's share of the world's biomass without triggering a trophic
-collapse. Play runs in epochs: live the round in the terrarium, then
-review and revise your organism on the trait board, in initiative order
-by biomass. Rogue Legacy's generational loop pointed at an ecosystem
-rather than a castle. See
-`design_docs/2026-08-18_vessel_briefs_and_presentation.md`.
+## Vocabulary
 
-Vessel 1 of the Isocosm family, Mesocosm (first person), Eponym (second
-person) and the VTT (third person), over one simulator, Isocosm, sharing a
-world substrate, a lineage model, and a trust plane. Sharing engine organs is encouraged where the
-organ stays verb-neutral (ruled 2026-08-05); the vessels still do not share
-a genre or their verbs.
+Terms are the founding record's (§7) and the doctrine's (Naming 2, Naming 3);
+the case or doc that set each one:
 
-**Early implementation.** The simulation core, body pipeline and record are
-native Isocosm (`shared/isocosm`); legacy Mesocosm is deleted (wing rulings
-755 and 770, 2026-10-10). This repo holds the game's four crates:
-`mesocosm-runtime`, `mesocosm-views`, `mesocosm-phenotype` and the windowed
-host `mesocosm-genet`, all running on a native `Session` (the switch, D5), plus
-the parry-ground probe. The player directs the critter through nudges and
-answers at checkpoints; driving is gone (671, 679) and so is the
-sixteen-variant `Intent`. The main host draws bodies through Mere's lit
-`tenant` on its shared wgpu device and caller encoder, layered by Netrender
-over Isometer's traced terrain depth (Q7, 2026-10-10). Its four workspace
-compile gates passed; GPU runtime/headed acceptance remains the after-pass's.
-The two CPU clipping/projection controls passed.
-A critter that is not sapient is taken up through
-native `Take`, directing; a sophont would be driven (671, 779). The body
-section is lifted through isometer's in-site space (`isometer-space`). The
-repeated game loop and phenotype bridge are still under design and playtest;
-680's headed condition is the after-pass's.
+- critter, metabolize, kleptoplasty, deme (banked, unspent: ask before using),
+  fili, animula (in-product only; **never title anything Animula**, a live
+  Tencent mark), *flora* (spoken for platform-side; never a game word):
+  founding record §7.
+- denizen, sophont, relic, tale: Naming 2 (cases 157, 200).
+- tract, attachment, situs: Naming 3 (cases 157, 251, 252).
+- nis (case 98) and scruple: the design record and the playable ecology plan
+  (archived 2026-10-10), §6 ruling 4. Never "element" for nis.
+- hagiograph (and the retired memorial sense of tulpa), hagioglyph,
+  impresa: the design record and the wing organs plan.
 
-See `design_docs/PROJECT_DESCRIPTION.md` for the product description,
-`design_docs/DOC_README.md` for the doc index, and
-`design_docs/2026-07-30_games_wing_founding.md` for the wing-level
-architecture that Paredros and Isometry also depend on.
+## Guardrails
 
-## Terminology
+Each is held in the founding record:
 
-- **critter**: the plain organism word, wing-wide, and the default. Not
-  "creature".
-- **denizen**: a named entity. An entity of note, one the simulation
-  identifies and remembers individually, becomes a denizen when people name
-  it, as they need to refer to it. Naming requires sapience, so every
-  sophont is a denizen, but a denizen need not be a sophont. Ruled
-  2026-09-25 (wing design record ruling 200), amending the 2026-09-20
-  line that made denizen the of-note tier's word and implied no name; the
-  tier is "of note". Notability itself still needs no sapience, name,
-  faction or costly foreground simulation. It supersedes the provisional
-  `borg`; historical rulings and quotes keep `borg` with supersession
-  pointers. A `denizen` crate needs a reason beyond a sim component, such
-  as carrying entity information into other contexts (ruling 201).
-- **sophont**: the term of art for a sapient entity; every sophont is a
-  denizen (ruling 200).
-- **relic**: a thing of note, an item some mind remembers or some bearer
-  records; the founding record's "things (relics with provenance)" and Law
-  A's "shapes become relics". Ruled 2026-09-24 (wing design record ruling
-  157).
-- **tale**: an event of note, one some mind remembers and tells; tales fade
-  and legends do not. Ruled 2026-09-24 (ruling 157). Eponym's `deed` stays
-  its record of an act.
-- **tract**: one expressed process on a patch of a part's tissue, the body
-  sense of what the code called a site; *site* now means one cell of the
-  world map. Ruled 2026-09-24 (ruling 157); the rename landed 2026-09-26,
-  `Tract` and `TractId`, with old serialized names still read (ruling 224).
-  Today the native `isocosm::mosaic::Tract` holds a part's tract; `TractId`
-  went with the legacy bodies.
-- **attachment**: the point where an incoming part joins a body, in growth
-  or a graft (isometer's `Attachment`, `isocosm::geometry::attach`). Ruled
-  2026-09-26 (ruling 251).
-- **situs**: an organ's position in a body plan's template, a (tagma,
-  segment) coordinate. Ruled 2026-09-26 (ruling 252).
-- **animula**: the played soul — the little soul that guests in a body,
-  across generations. In-product term only. **Never title anything Animula**;
-  ANIMULA NOOK is a live Tencent mark in Class 9 game software.
-- **metabolize**: the single verb. World into self, self into world.
-- **kleptoplasty**: the incorporation mechanic, named for the real biology
-  (an organism eats algae and keeps the working chloroplasts).
-- **deme**: banked, unspent. Biology's local interbreeding population; the
-  leading candidate if a unit word is wanted. Do not spend it without asking.
-- **fili**: lineage across worlds (forks, campaign descent, cross-moot
-  grafts). Not event history, not in-world biological descent.
-- **hagiograph**: the history organ, rescoped by Mark 2026-09-16 and kept in
-  mere's eidetic core (`mere/crates/eidetic/hagiograph`). It judges which
-  events were significant, through standing marks along this game's feats and
-  scales and the feat rule (a feat beats a mark that stood before the
-  reckoning); it gives a generated world its past through **deep time**,
-  which runs this game's own simulation for a span set in the world rules
-  before anyone steps in; and later it promotes, retells and memorializes,
-  handing memorials to the stack's procedural voxel engine. Storage of what
-  happened stays in the history log. History is the third of three generation
-  buckets: terrain models beside isometer's seam, world generation in
-  isoscape, history here (isoscape family plan). Named 2026-09-02; design docs
-  before then call it "tulpa" in a retired, memorial sense.
-- **tulpa**: gemot's federated adapter-training lane (personal LoRA). Not the
-  memorial organ; see **hagiograph** above. Renamed 2026-09-02; do not use
-  it in the old sense going forward.
-- **nis**: living substance that still carries where it came from, matter
-  typed by provenance, kingdom first and lineage under it. One form for
-  singular and plural. From nisus, striving: a nis is a lot of matter that
-  still bears its line's endeavour, and matter fully returned to soil has
-  returned to the world's nis (ruling 98 of the wing design record,
-  2026-09-22: the world is itself an entity of the world kingdom and the
-  root of every provenance, so there is no untyped matter). Ruled by Mark
-  2026-09-04 after a
-  naming round (figment failed: Rocket's config crate, a live Bedtime
-  Digital title, and the wrong sense). See the
-  [playable ecology plan](design_docs/archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md)
-  §6 ruling 4. Do not write "element" for this concept.
-- **scruple**: a part's stable heterogeneous mix, a measured lot of nis; the
-  part layer of composition. The apothecaries' weight of twenty grains, free
-  on crates.io, only a plural board-game mark nearby. Ruled by Mark
-  2026-09-04 with nis.
-- **hagioglyph**: the divinity organ, ruled 2026-09-15: the glyph canon, the
-  journey, ascension, the chosen referent and its periods, and canon
-  revisions. Mirrors hagiograph, which it consumes (a promotion is one cause
-  of a revision) and never feeds. A glyph whose live effect follows a
-  revision is "a glyph under revision" or "the canon revision", not a
-  hagioglyph. Kernel: `shared/wing-glyphs`. General model §7.4.
-- **impresa** (plural imprese): the association organ, ruled 2026-09-15.
-  What any pointable thing, a glyph, a critter, a denizen, a character, a
-  faction, a place, an item, a lot of nis, has come to be associated with
-  and what has lapsed, as records citing accepted events, read as fact,
-  belief or legend. "A god's associations are their impresa, but other
-  things could have theirs too." General model §7.4, G7. Crate name stays
-  plain per the naming ledger's tier rule.
-
-**Collision to respect**: the bare word *flora* is spoken for platform-side
-(a moot's accumulated codicils). Game vocabulary must not reuse it.
-
-## Shared rules
-
-Documents, guidelines, the pipeline laws and the licensing boundary are
-the repository's, in the root [`CLAUDE.md`](../CLAUDE.md) under "Rules for all
-three products" (wing design record, ruling 615); it loads with this file.
-
-## Important Don'ts
-
-- **Do not let a stage grow its own engine.** All stages are rule-dressings
-  over one substrate. This is the anti-Spore insurance and the wing's single
-  most load-bearing rule.
-- **Do not describe world nouns as "chartulary-typed."** Chartulary is
-  generic (containers, facets, nesting, attributed edits). Factions, places,
-  characters, and history are Isometry types today. A portable profile is
-  extracted after two real consumers, never declared in advance. The
-  simulator is the exception by ruling of 2026-09-18, as in the federation
-  line below: its schema of world nouns is designed from the games' systems
-  in combination (the sim plan's S1), and this rule still holds elsewhere.
-- **Do not build the federation platform first.** It is extracted from
-  shipped games. Mesocosm is a candidate for that proof, not yet a consumer.
-  The simulator is the exception by ruling of 2026-09-18: it is designed
-  from the games' systems in combination, not extracted from a shipped game.
-  See the wing design record.
-- Do not add rollback netcode or a universal CRDT world state speculatively.
-  Signed multi-writer authoring is already real in Isometry and is permitted:
-  additive operations converge without erasing concurrent claims. Each domain
-  still names its materializer and conflict rule; introduce a true CRDT only
-  when that domain proves it needs mergeable concurrent values. Live action
-  remains separately ordered or authoritative.
-- **The invariant is care granularity, not person purity** (relaxed
-  2026-07-30; wing founding record §1). Mesocosm is
-  care for a **species**. Person may shift — the adaptation phase is
-  deliberately third person — provided first person stays home, the shift is
-  bounded and diegetic, and each layer could be removed with the game still
-  standing. Refuse any shift that needs a second simulation **authority**, or
-  that duplicates functionality the stack already owns (narrowed 2026-08-05):
-  parallel authorities are the multiplier that actually hollowed Spore.
-  Projections stay plural and cheap; see the place-graph engine plan §0.
+- No stage grows its own engine (§2, the anti-Spore rule).
+- World nouns are not "chartulary-typed"; the sim's schema is the exception
+  (§5).
+- The federation platform is extracted from shipped games, not built first;
+  the sim is the exception (§5).
+- The invariant is care granularity, not person purity (§1).
+- No rollback netcode or universal CRDT world state speculatively (the
+  shared-authority plan, root `design_docs/`).

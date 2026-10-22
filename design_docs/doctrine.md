@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming and Licensing reviewed; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing and Method reviewed; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -138,3 +138,85 @@ this statement holds the rule, resting on 919 and the products' LICENSES.md,
 and CLAUDE.md points here.*
 
 ## Method and documents
+
+### Method 1. Evidence is drawn, not picked
+
+A test instance comes from the generator under a seed nobody chose.
+Measured evidence is kept apart from lane reports and unknowns; each control
+names the fault it would detect, and passing and deliberately failing results
+are both kept. A gate is staged with what it gates: viability per family, as
+each brings its mechanics (producers, then consumers, then decomposers).
+
+Links: draws on 15, 260, 366 · summary Tests draw under an unchosen seed; evidence is kept apart from reports; controls name their fault; gates are staged with what they gate.
+
+*Reviewed 2026-10-21, new. Mark: "Both as drafted".*
+
+### Method 2. Questions are collected
+
+Forks found in independent work are put together in one round while
+authorised work continues; a fork found later joins the next round.
+
+Links: draws on 864 · summary Forks are collected into one round while authorised work continues.
+
+*Reviewed 2026-10-21, new. Mark: "Both as drafted".*
+
+### Method 3. Source size
+
+No source file exceeds 600 lines without a listed technical reason; the
+pre-commit hook checks what each commit stages. Oversize and moved files are
+split along seams the code already has. Docs are outside the ceiling and are
+deduplicated instead.
+
+Links: draws on 193, 592, 593, 594 · summary No source file over 600 lines without a listed reason, hook-checked; splits follow existing seams.
+
+*Reviewed 2026-10-21, new. Mark: "Both as drafted".*
+
+### Method 4. Receipts
+
+Raw receipts live out of tree, under `Code/testing/<repo>/`; the repository
+keeps their summaries, sources and scripts. Each lane brief names the receipts
+its done-conditions need and caps their total; exploratory runs keep
+summaries only.
+
+Links: draws on 255, 953 · summary Raw receipts live out of tree; briefs name and cap the receipts they need.
+
+*Reviewed 2026-10-21, new. Mark: "Both as drafted".*
+
+### Method 5. One home per fact
+
+Each fact has one home; every other mention links to it. Decisions live in
+the record and the doctrine distils them; specs live in plans; grants in
+`LICENSES.md`; rationale beside the data it explains (datasheet comments);
+deferred done-conditions in the one after-pass plan. An index row is a
+pointer, a purpose and a dated status, and a doc's own status line is the
+current one. Progress entries record landings with their commits and cite
+rulings by number; session notes are archived.
+
+Links: draws on 593, 612, 613, 614, 615, 616, 618, 628, 790 · summary Each fact has one home and every other mention links to it.
+
+*Reviewed 2026-10-21, new. Mark: "Both as drafted".*
+
+### Method 6. Dated words
+
+A dated line keeps the words of its date; a later name or ruling reaches it
+only as a note. Logs are not rulings: past progress entries are cut to
+landings.
+
+Links: draws on 198, 613 · summary A dated line keeps its date's words; logs are not rulings.
+
+*Reviewed 2026-10-21, new. Mark: "Both as drafted".*
+
+### Method 7. CLAUDE.md is derived
+
+CLAUDE.md is derived, not authoritative. It points to the records (doctrine,
+record, plans, `LICENSES.md`) and holds only what an agent needs to find them
+and to work in this repository; a rule it states lives in a record, and
+CLAUDE.md links there.
+
+Links: draws on 615 · summary CLAUDE.md points to the records and holds only what an agent needs to find them and work here.
+
+*Reviewed 2026-10-21, refines 615 (which moved shared rules into the root
+CLAUDE.md). Mark, during the Licensing round: "claude.md should be derived,
+not authoritative ... it should be a reference to an authoritative record, so
+the claude.md points ya to the records instead of bloating claude.md"; then
+"Adopt; slim them all now".*

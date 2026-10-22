@@ -1,206 +1,93 @@
-# CLAUDE.md — Isometry Repository Role
+# CLAUDE.md — Isocosm repository
 
-## Umbrella repository (2026-09-09)
+This file is derived, not authoritative (doctrine, Method 7): it says where
+the records are and how to work here. A rule it mentions lives in a record,
+linked.
 
-This Git repository contains three products. The family is Isocosm; the
-products are Isocosm: VTT, Isocosm: Mesocosm and Isocosm: Eponym, over one
-simulator (wing design record, rulings 110 and 111, 2026-09-22). The tabletop uses the root Cargo
-workspace; Mesocosm uses `mesocosm/`; Eponym uses `eponym/`. Read each
-product's `CLAUDE.md` before editing it. Licenses remain unchanged; Eponym's
-native package is now `eponym-client`. Build workspaces remain separate to preserve source/patch policy.
-`design_docs/DOC_README.md` is the wing entry index and links product indexes.
-Shared wing design lives in `design_docs/` at the root, beside the index (moved
-from `mesocosm/design_docs/` on 2026-10-21, decision-links plan L1b).
+## The repository
 
-Use `./scripts/wing.ps1 isometry <cargo arguments>` (or mesocosm/eponym) to
-select a product. Tabletop-only machine overrides live in the ignored
+Three products over one simulator: Isocosm: VTT at the root, Isocosm:
+Mesocosm in `mesocosm/`, Isocosm: Eponym in `eponym/` (doctrine, Naming 1).
+Each has its own Cargo workspace, kept separate to preserve source and patch
+policy; read the product's `CLAUDE.md` before editing it. Shared sim and wing
+crates are under `shared/`.
+
+Use `./scripts/wing.ps1 isometry <cargo arguments>` (or `mesocosm`/`eponym`)
+to select a product. Tabletop-only machine overrides live in the ignored
 `.cargo/tabletop-local.toml`, supplied explicitly by that command. Do not put
-product-specific patches in `.cargo/config.toml`: children inherit it.
-Direct Cargo commands from product directories also work without local
-tabletop overrides. Product runtime separation does not prohibit shared
-libraries or atomic changes across products.
+product-specific patches in `.cargo/config.toml`: children inherit it. Direct
+Cargo commands from product directories also work. Runtime separation does
+not prohibit shared libraries or atomic changes across products.
 
-This file defines how Claude Code should behave in this repository. Read
-it first when starting any session.
+## Where the records are
 
----
+| Record | Holds |
+| --- | --- |
+| `design_docs/doctrine.md` | What the wing holds and why, by area; read first |
+| `design_docs/2026-09-18_wing_design_plan.md` | Every case (§0), Mark's words; `wing-decisions lookup <n>` finds one |
+| `design_docs/2026-07-30_games_wing_founding.md` | Vessels, care granularity (§1), the pipeline laws (§3), vocabulary (§7) |
+| `design_docs/DOC_README.md` and each product's | Indexes, working principles |
+| `design_docs/DOC_POLICY.md` | How docs and decisions are kept (one policy for all three) |
+| each product's `design_docs/PROJECT_DESCRIPTION.md` | Goals and pillars (maintainer-owned) |
+| each product's `LICENSES.md` | The licence grants (doctrine, Licensing 3) |
 
-## Rules for all three products
+`shared/wing-decisions` reads the records: `lookup <case | plan D-key |
+statement | path>`, `lookup --area <name>`, `lookup --history <key>`. The
+pre-commit hook keeps `design_docs/decisions.toml` and the case register
+current.
 
-Gathered here on 2026-10-06 from the three products' `CLAUDE.md` files (wing
-design record, ruling 615). This file loads with each product's own, which
-links here.
-
-### Documents
-
-Authoritative design material lives in each product's `design_docs/`: read
-its `DOC_README.md` first. One `DOC_POLICY.md`, at `design_docs/`, governs all
-three; follow it for documentation changes. Wing-level material lives once, in
-the root `design_docs/`, and is cited by path, never copied.
-
-| Path, in each product's `design_docs/` | What's there |
-| ---- | ----------- |
-| `DOC_README.md` | Index and AI working principles |
-| `PROJECT_DESCRIPTION.md` | Product goals and pillars (maintainer-owned) |
-| `<date>_<keyword>_plan.md` | Active plans |
-| `archive_docs/<date>/` | Retired plans |
-
-### Guidelines
+## Working here
 
 - Rust: standard idioms. No `unsafe` without documented justification.
-- 600-LOC ceiling per source file, tests included, enforced by the
-  pre-commit hook (wing design record, rulings 592 to 594). Split before
-  adding when approaching it, and trim comment volume while splitting. A file
-  over the ceiling grows into a directory module with focused siblings, the
-  shape `state/`, `board/`, `overmap/`, `selftest/`, `campaign_space/` and
-  `session/` already use: shared imports and fixtures at the roof, children
-  on `use super::*`, and visibility widened no further than `pub(super)`.
-  **Split along seams the code already has, not by line count**, and for a
-  test file that means the module boundaries of the subject it drives, one
-  file per subject. Ruled 2026-09-04, when the last seven over-ceiling files
-  came down; the pass is recorded in
-  `design_docs/archive_docs/2026-09-04/2026-07-20_perf_and_cambification_plan.md`.
-- Plans go in `design_docs/` per the date-keyword-plan convention with
-  done-conditions, not time estimates. Never `.claude/plans/`.
-- Check the Merely ecosystem before writing a new module: mere, genet,
-  netrender, woodshed, the wgpu-* repos and the sibling products may already
-  have the piece or the pattern. Name the owning layer before building
-  anything app-local.
-- Prefer runtime verification over extended static code tracing. If runtime
-  diagnostics are blocked, surface that blocker early.
-- Do not coin new names for a product's concepts mid-session. Naming rounds
-  are deliberate: candidates get crates.io, game, studio and trademark checks
-  before adoption, and the receipts are recorded.
-- Do not add features beyond the active plan's current target without
-  surfacing the scope change first.
-- **Do not violate the three pipeline laws** (games wing founding record §3).
-  What crosses between games is choices under scarcity, not morphology, save
-  that a lineage's traits cross as material (amended 2026-09-24); inheritance
-  must be pointable; player history displaces procedural content and never
-  gates it.
+- Source files stay under 600 lines (doctrine, Method 3; the hook checks).
+  A file over grows into a directory module with focused siblings (shared
+  imports and fixtures at the roof, children on `use super::*`, visibility no
+  wider than `pub(super)`), split along seams the code already has; a test
+  file splits by the module boundaries of the subject it drives.
+- Plans follow DOC_POLICY §8: dated, with done-conditions, in `design_docs/`.
+  Never `.claude/plans/`.
+- Check the Merely stack (mere, genet, netrender, woodshed, the wgpu-* repos,
+  the sibling products) before writing a new module; name the owning layer
+  before building anything app-local.
+- Prefer runtime verification over long static tracing; surface a blocked
+  diagnostic early.
+- Names are not coined mid-session; naming rounds are deliberate (doctrine,
+  Naming 3).
+- Surface a scope change before adding features beyond the active plan's
+  target.
+- The three pipeline laws (founding record §3) bind every product.
+- Licences: doctrine, Licensing 3; content that may ship: Licensing 1.
 
-### Licensing, for Mesocosm and Eponym
+## The VTT
 
-The rule is the doctrine's Licensing 3 (`design_docs/doctrine.md`); the grants
-are each product's `LICENSES.md`. Do not blur code, library, and asset grants.
-
----
-
-## Project Identity
-
-**Isocosm: VTT** (formerly Isometry; renamed 2026-09-22, wing design record
-rulings 110 and 111) is a pixel-art isometric virtual tabletop over the
-Isocosm simulator: a P2P map editor and turn-based play substrate for D&D,
-Pathfinder, and other systems. Its crates keep the `isometry-` prefix as a
-plain technical name. The
-DM prepares maps ahead of time and hosts a session; players join over p2p
-and move through the maps in turns. The look and feel target is GBA-era
-tactics games (Tactics Ogre: The Knight of Lodis, Final Fantasy Tactics
-Advance): a locked isometric 2D lens first, 2:1 diamond tiles, quantized
-height steps, low internal resolution integer-scaled with nearest-neighbor
-sampling, and voxel-sourced appearance that keeps later 2.5D / 3D lenses open.
-
-The substrate knows tiles, tokens, turns, facing, elevation, and area
-templates. Game rules live in system plugins (schema plus scripts). The
-substrate never knows what a hit point is.
-
-Isometry is a standalone consumer of the Merely stack (Cambium,
-Genet Livery, Netrender), with Git dependencies on the owned remotes and a
-patch mirror at the workspace root. Machine-local path overrides use the
-explicitly supplied, gitignored `.cargo/tabletop-local.toml`.
-
-See `design_docs/PROJECT_DESCRIPTION.md` for the product description and
-`design_docs/DOC_README.md` for the doc index.
-
-## Terminology
-
-- **map**: a prepared board: tile layers, height field, props, spawn
-  points. Authored in the editor, played in sessions.
-- **tile**: one diamond cell of a map layer. Rendered as a DOM element.
-- **token**: a playing piece on the map with position, facing, and an
-  owner. May bind to a character sheet.
-- **tileset**: a folder of sprites plus a manifest naming tile kinds.
-  Appearance binds through CSS class vocabulary, so a campaign can reskin
-  by swapping sheets.
-- **voxel appearance**: token, prop, and tile art can be sourced from
-  MagicaVoxel-style volumes and recipes, then baked to the locked isometric
-  pixel lens. Voxels are asset/generation substrate, not map storage.
-- **campaign**: maps, tilesets, sheets, and system choice bundled as a
-  distributable pack.
-- **system plugin**: a game system: character/item schemas plus scripted
-  rules (Lua, via piccolo). 5e SRD and Pathfinder 2e are the first-party
-  candidates, and Ars Magica 5th Edition's open text joins them (wing
-  design record, ruling 522).
-- **session**: a hosted play instance: the DM's app is the authority,
-  players replicate an ordered event log over p2p (iroh). "The DM" means
-  whoever holds edit mode, not necessarily one person; see the
-  shared-authority design doc.
-
-Documents follow "Rules for all three products" above.
-
-## Workspace Layout
+A pixel-art isometric virtual tabletop over the Isocosm sim: a P2P map
+editor and turn-based play substrate for tabletop systems. Product
+description: `design_docs/PROJECT_DESCRIPTION.md`; vocabulary (map, tile,
+token, tileset, campaign, system plugin, session): `README.md` and the board
+plan. The substrate never knows what a hit point is; rules live in system
+plugins (PROJECT_DESCRIPTION). The session model is DM authority plus an
+ordered event log, with no CRDTs (`design_docs/2026-07-09_shared_authority_and_collaborative_building_plan.md`).
+The wing's default view is isometric with quarter turns (case 382).
 
 ```text
 crates/
-  isometry-core/    Pure-Rust substrate model: grids, iso math, map
-                    documents, session events. No I/O, no UI, no net,
-                    no genet deps.
-  isometry-views/   Cambium view fns + CSS sheets (tilesets are
-                    stylesheets). Host-agnostic.
-  isometry-genet/  Native winit host: window, input, netrender present.
-                    ISOMETRY_PROFILE=1 prints frame timers.
-  isonetry/        DM-authority replication over a pure protocol seam, with
-                    iroh behind a feature.
-  isometry-system/  System plugin lane: schemas plus piccolo Lua rules, with
-                    the 5e SRD content pack.
-  (voxel appearance) Recipes, palettes, .vox ingest and the isometric
-                    sprite bake moved to the isometer family on 2026-09-15:
-                    `shared/isometer/crates/isometer-mesh`, reached as
-                    `isometer_mesh::bake` and `isometer_mesh::voxel`.
+  isometry-core/    Pure substrate model: grids, iso math, map documents,
+                    session events. No I/O, UI, net or genet deps.
+  isometry-views/   Cambium view fns + CSS sheets (tilesets are stylesheets).
+  isometry-genet/   Native winit host; ISOMETRY_PROFILE=1 prints frame timers.
+  isonetry/         DM-authority replication over a pure protocol seam, iroh
+                    behind a feature.
+  isometry-system/  System plugins: schemas plus piccolo Lua rules, with the
+                    5e SRD pack.
 ```
 
-Planned (phase-gated, see the bootstrap and horizon plans): `isometry-web`
-(browser host), richer campaign packs, generator/worldbuilding tools, and
-later live 2.5D / 3D voxel lenses.
+Voxel appearance lives in `shared/isometer/crates/isometer-mesh`. Keep
+`isometry-core` pure: no `wgpu`, `iroh`, genet crates or file I/O.
 
-Keep `isometry-core` pure: no `wgpu`, no `iroh`, no genet crates, no
-file I/O. Event log semantics live in core; transport lives in
-`isonetry`.
+**Guard the feature-gated code.** Every campaign feature is `default = []`,
+so a plain `cargo test` compiles none of them; run
+`cargo check --workspace --all-features --all-targets` after touching a
+sibling repo and before committing anything in `isonetry`. On 2026-07-17 all
+four campaign features were found uncompilable behind the default build.
 
-## General Guidelines
-
-The rules all three products share are above. For the tabletop:
-
-- **Guard the feature-gated code**: run
-  `cargo check --workspace --all-features --all-targets` after touching a
-  sibling repo, and before committing anything in `isonetry`. Every
-  campaign feature is `default = []`, so a plain `cargo test` compiles
-  neither them nor their tests: `--all-features` runs 363 tests where the
-  default runs 354 (counts of 2026-09-15; the gap is the nine gated tests). They rot silently whenever mere moves, and nothing else
-  will tell you. This is not hypothetical — 2026-07-17 found all four
-  campaign features uncompilable (a removed `mooting` re-export, a
-  duplicate `muniment`, and a de-async'd `MootStore::in_memory`), broken for
-  days behind the default build.
-
-## Workspace tooling
-
-sem is wired into this repo. It is described once in
-`Code/CLAUDE.md`, which loads for any session at or below `Code`.
-
-## Important Don'ts
-
-- Do not hard-code any single game system into the substrate. Rules
-  belong in system plugins; the substrate stays geometry and turns.
-- Do not add rollback netcode, CRDTs, or real-time sync machinery. The
-  session model is DM-authority plus an ordered event log; that is a
-  deliberate simplification, revisit only through a plan. (The revisit
-  plan exists: `design_docs/2026-07-09_shared_authority_and_collaborative_building_plan.md`.
-  Its conclusion: shared and DM-less authority still need no CRDTs; the
-  guardrail stands.)
-- Do not ship copyrighted game content: only rulesets the doctrine's
-  Licensing 1 admits, with attribution.
-- The wing's default view is isometric with quarter turns (wing design
-  record, ruling 382). The tabletop ships its locked 2:1 lens today and
-  reaches quarter turns through a plan and render lane of its own; free yaw,
-  first person and over-the-shoulder views are not precluded and each needs
-  the same.
+sem is described once in `Code/CLAUDE.md`.
