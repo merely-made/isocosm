@@ -2,7 +2,8 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-19:** plan, nothing built. Specced at Mark's request after a
+**Status, 2026-10-22:** plan, nothing built; its six decisions are linked to
+the doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
 day (Decisions, below); E1 is next when he opens it.
@@ -153,32 +154,50 @@ How each phase is known to be right, fixed before it is built.
 
 Mark's answers, keyed `sim-execution D1` to `D6` in the order he gave them
 (keys are mechanical under the decision-links plan, Mark 2026-10-20: "Key
-the six now, build L1–L2 next"). Their typed links and outcomes are filled
-in when that plan's generator exists (its L5).
+the six now, build L1–L2 next"). Their links and outcomes were recorded on
+2026-10-22 (that plan's L5), Mark choosing each outcome in one card round;
+each title names its outcome against the doctrine.
 
-- **D1, draw keys (2026-10-19):** "Actor, tick and process (Recommended)". Amount, bite, risk
+- **D1, draw keys (2026-10-19), refines Processes 7:** "Actor, tick and process (Recommended)". Amount, bite, risk
   and soma draws are keyed by actor, tick and process, so evaluation is
   order-free; one deliberate hash move, outcomes the same in distribution.
   E2 is in.
-- **D2, exactness (2026-10-19):** "Statistical (Recommended)". Mesocosm's far sites run as the
+
+  Links: area Processes and rules · draws on 454, 958 · governs isocosm::execute, isocosm::stage · summary Amount, bite, risk and soma draws are keyed by actor, tick and process, never by commit order, so evaluation is order-free; one deliberate hash move.
+
+- **D2, exactness (2026-10-19), applies Processes 6, refines Mesocosm 5:** "Statistical (Recommended)". Mesocosm's far sites run as the
   crowd; the played critter and every noted member always run as
   individuals.
-- **D3, near (2026-10-19):** "Roots plus one hop (Recommended)". Attention roots and everything
+
+  Links: area Processes and rules · draws on 75, 113, 211 · governs isocosm::probe::crowd · summary Mesocosm's worlds are statistical: far sites run as the crowd, the played critter and every noted member as individuals.
+
+- **D3, near (2026-10-19), refines Directing 5:** "Roots plus one hop (Recommended)". Attention roots and everything
   within one hop of the played critter's site; promote within one hop, demote
   at two or more.
-- **D4, order (2026-10-19):** "Speed first (Recommended)". E1, E2, E3, then E4 and E5.
-- **D5, stage bodies by `Arc` (2026-10-20):** "Accept A, you number it". The
+
+  Links: area Directing and play · draws on 212, 742 · governs isocosm::directing::tier · summary Near is the attention roots and everything within one hop of the played critter's site; the band is owed before E5.
+
+- **D4, order (2026-10-19), refines Processes 7:** "Speed first (Recommended)". E1, E2, E3, then E4 and E5.
+
+  Links: area Processes and rules · draws on 978 · governs isocosm::schedule · summary Speed first: waking, draw keys and parallel evaluation (E1 to E3) before the crowd and the tier line (E4, E5).
+
+- **D5, stage bodies by `Arc` (2026-10-20), applies Schema 9:** "Accept A, you number it". The
   stage holds the `Arc<Entity>` that `body_shared_at_start` returns and
   copies a body only on its first write, so planned and blocked acts copy
   nothing and commit installs the staged `Arc` instead of copying again in
   `Population::lift`. Carries ruling 975 into the stage; ruling 338's reads
   are unchanged; serialisation, hashes and saves unchanged. Whether `Part`
   also goes behind an `Arc` comes back once this is measured.
-- **D6, `foregone` only on direct acts (2026-10-20):** "Accept B, you number it".
+
+  Links: area The sim's schema and saves · draws on 338, 975 · governs isocosm::stage::Stage, isocosm::population::Population · summary The stage holds each body by the Arc it starts with and copies it only on its first write; serialisation, hashes and saves unchanged.
+
+- **D6, `foregone` only on direct acts (2026-10-20), applies Directing 4:** "Accept B, you number it".
   `run_inner` fills `Receipt.foregone` for `Run::Act` only; scheduled and
   planned receipts, whose callers keep only `.accepted()`, carry an empty
   list. Law A's record and ruling 685's reading are kept receipts, which
   still carry it.
+
+  Links: area Directing and play · draws on 685 · governs isocosm::execute, isocosm::simulation::Receipt · summary A receipt's foregone list is filled for direct acts only; scheduled and planned receipts carry an empty one.
 
 ## Findings
 
@@ -245,3 +264,9 @@ in when that plan's generator exists (its L5).
   settles how decisions are keyed and linked
   ([2026-10-20_decision_links_plan.md](../../design_docs/2026-10-20_decision_links_plan.md)),
   then had them keyed D1 to D6 the same evening so D5 and D6 can be briefed.
+- **2026-10-22:** the six decisions linked under the decision-links plan's
+  L5. D1 and D4 refine Processes 7 (waking, parallel evaluation and
+  order-free draws, not yet built); D2 is filed under Processes 6 and named
+  in Mesocosm 5; D3 refines Directing 5 with the reach only, the band
+  staying owed before E5; D5 and D6 are filed under Schema 9 and
+  Directing 4 unchanged. `wing-decisions lookup sim-execution` lists them.

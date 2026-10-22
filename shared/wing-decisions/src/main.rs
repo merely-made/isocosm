@@ -3,7 +3,7 @@
 
 //! `wing-decisions regen [--stage]` rebuilds the manifest, the register (once
 //! the fields lines carry areas and summaries) and the journal cache.
-//! `wing-decisions lookup <key | path | --area NAME | --history KEY>`.
+//! `wing-decisions lookup <key | plan keyword | path | --area NAME | --history KEY>`.
 //! `wing-decisions anchors (--index FILE.scip | --scip CRATE_DIR)...`.
 //! `wing-decisions check` fails when the committed manifest is stale, and
 //! reports the doctrine's budget overruns without failing.
@@ -36,7 +36,7 @@ fn run(args: &[String]) -> Result<ExitCode, String> {
         Some("check") => check(&repo),
         Some("lookup") => lookup(&repo, rest),
         Some("anchors") => anchors(&repo, rest),
-        _ => Err("usage: wing-decisions regen [--stage] | check | lookup <key|path|--area NAME|--history KEY> | anchors (--index FILE | --scip DIR)...".into()),
+        _ => Err("usage: wing-decisions regen [--stage] | check | lookup <key|plan|path|--area NAME|--history KEY> | anchors (--index FILE | --scip DIR)...".into()),
     }
 }
 
@@ -116,7 +116,7 @@ fn lookup(repo: &Repo, rest: &[String]) -> Result<ExitCode, String> {
             let q = q.join(" ");
             match Key::parse(&q) {
                 Some(k) => l.decision(&k).unwrap_or_else(|| format!("{k}: neither declared nor cited\n")),
-                None => l.path(&q),
+                None => l.plan(&q).unwrap_or_else(|| l.path(&q)),
             }
         }
         _ => return Err("lookup what?".into()),

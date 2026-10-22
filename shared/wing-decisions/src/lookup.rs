@@ -91,6 +91,25 @@ impl Lookup {
         Some(s)
     }
 
+    /// A plan's decisions by its keyword, `sim-execution`, in D-number order;
+    /// `None` when the keyword declares none.
+    pub fn plan(&self, keyword: &str) -> Option<String> {
+        let mut found: Vec<(u32, &str)> = self
+            .decisions
+            .iter()
+            .filter_map(|(k, v)| match Key::parse(k)? {
+                Key::Plan(p, n) if p == keyword => Some((n, v.get("title").and_then(Value::as_str).unwrap_or(""))),
+                _ => None,
+            })
+            .collect();
+        found.sort();
+        let mut s = String::new();
+        for (n, title) in &found {
+            let _ = writeln!(s, "{keyword} D{n}: {title}");
+        }
+        (!found.is_empty()).then_some(s)
+    }
+
     /// What cites, or is governed in, a file or directory.
     pub fn path(&self, path: &str) -> String {
         let p = path.replace('\\', "/");
@@ -122,5 +141,20 @@ impl Lookup {
             }
         }
         if s.is_empty() { format!("no decision declares area {area:?} yet\n") } else { s }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn a_bare_plan_keyword_lists_its_decisions_in_number_order() {
+        let l = Lookup::parse(
+            "[decisions.\"p D10\"]\ntitle = \"ten\"\n[decisions.\"p D2\"]\ntitle = \"two\"\n[decisions.\"q D1\"]\ntitle = \"other\"\n",
+        )
+        .unwrap();
+        assert_eq!(l.plan("p").as_deref(), Some("p D2: two\np D10: ten\n"));
+        assert_eq!(l.plan("r"), None);
     }
 }

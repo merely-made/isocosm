@@ -4963,28 +4963,52 @@ draws_on = ["511", "512", "531", "758"]
 governs = ["isocosm::datasheet::native", "isocosm::development", "mesocosm-genet::section"]
 
 [decisions."sim-execution D1"]
-title = "draw keys (2026-10-19)"
+title = "draw keys (2026-10-19), refines Processes 7"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Amount, bite, risk and soma draws are keyed by actor, tick and process, never by commit order, so evaluation is order-free; one deliberate hash move."
+draws_on = ["454", "958"]
+governs = ["isocosm::execute", "isocosm::stage"]
 
 [decisions."sim-execution D2"]
-title = "exactness (2026-10-19)"
+title = "exactness (2026-10-19), applies Processes 6, refines Mesocosm 5"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Mesocosm's worlds are statistical: far sites run as the crowd, the played critter and every noted member as individuals."
+draws_on = ["75", "113", "211"]
+governs = ["isocosm::probe::crowd"]
 
 [decisions."sim-execution D3"]
-title = "near (2026-10-19)"
+title = "near (2026-10-19), refines Directing 5"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Directing and play"
+summary = "Near is the attention roots and everything within one hop of the played critter's site; the band is owed before E5."
+draws_on = ["212", "742"]
+governs = ["isocosm::directing::tier"]
 
 [decisions."sim-execution D4"]
-title = "order (2026-10-19)"
+title = "order (2026-10-19), refines Processes 7"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Speed first: waking, draw keys and parallel evaluation (E1 to E3) before the crowd and the tier line (E4, E5)."
+draws_on = ["978"]
+governs = ["isocosm::schedule"]
 
 [decisions."sim-execution D5"]
-title = "stage bodies by `Arc` (2026-10-20)"
+title = "stage bodies by `Arc` (2026-10-20), applies Schema 9"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "The sim's schema and saves"
+summary = "The stage holds each body by the Arc it starts with and copies it only on its first write; serialisation, hashes and saves unchanged."
+draws_on = ["338", "975"]
+governs = ["isocosm::population::Population", "isocosm::stage::Stage"]
 
 [decisions."sim-execution D6"]
-title = "`foregone` only on direct acts (2026-10-20)"
+title = "`foregone` only on direct acts (2026-10-20), applies Directing 4"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Directing and play"
+summary = "A receipt's foregone list is filled for direct acts only; scheduled and planned receipts carry an empty one."
+draws_on = ["685"]
+governs = ["isocosm::execute", "isocosm::simulation::Receipt"]
 
 [statements."bodies.1"]
 title = "Forms"
@@ -5110,14 +5134,14 @@ title = "The chooser and the bond"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
 summary = "One choice a tick weighing needs, mood, nudges and bond; bonds are weighted relations; suggestions and standing orders are derived."
-draws_on = ["683", "685", "686", "688", "690", "813", "861", "862"]
+draws_on = ["683", "685", "686", "688", "690", "813", "861", "862", "sim-execution D6"]
 
 [statements."directing.5"]
 title = "Attention"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
-summary = "Attention is play, pins, examining and the game's care; examining is full detail up close; streams carry what is attended."
-draws_on = ["210", "212", "213", "691", "742", "876"]
+summary = "Attention is play, pins, examining and the game's care; near is the roots plus one hop of the played critter's site; streams carry what is attended."
+draws_on = ["210", "212", "213", "691", "742", "876", "sim-execution D3"]
 
 [statements."directing.6"]
 title = "Death and new lives"
@@ -5291,8 +5315,8 @@ draws_on = ["833", "841", "842", "848", "method.8"]
 title = "Defaults"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "Mesocosm defaults to A1 and to 2 ticks a second, following measurement."
-draws_on = ["961", "978"]
+summary = "Mesocosm defaults to A1, to statistical agreement and to 2 ticks a second, following measurement."
+draws_on = ["961", "978", "sim-execution D2"]
 
 [statements."method.1"]
 title = "Evidence is drawn, not picked"
@@ -5517,14 +5541,14 @@ title = "Similitude and the crowd"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying."
-draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881", "999"]
+draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881", "999", "sim-execution D2"]
 
 [statements."processes.7"]
 title = "Time"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
-summary = "A fine world-set unit, periods per process; the scheduler skips idle time and budgets guard work; worlds sync at crossings."
-draws_on = ["149", "256", "257", "258", "259", "284", "285", "286", "293", "605", "958", "record.7"]
+summary = "A fine world-set unit, periods per process; the scheduler skips idle time and unchanged members; a pass evaluates at once with draws keyed order-free; worlds sync at crossings."
+draws_on = ["149", "256", "257", "258", "259", "284", "285", "286", "293", "605", "958", "sim-execution D1", "sim-execution D4", "record.7"]
 
 [statements."processes.8"]
 title = "Competition"
@@ -5720,7 +5744,7 @@ title = "Saves stay readable"
 source = "design_docs/doctrine.md"
 area = "The sim's schema and saves"
 summary = "Older save versions stay readers checked by their own hashes; the flow record sits outside state; shared state never changes hashes."
-draws_on = ["270", "320", "345", "359", "371", "608", "634", "641", "651", "975", "record.5"]
+draws_on = ["270", "320", "345", "359", "371", "608", "634", "641", "651", "975", "sim-execution D5", "record.5"]
 
 [statements."schema.10"]
 title = "New rules are optional"
