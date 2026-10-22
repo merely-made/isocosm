@@ -96,19 +96,25 @@ Links: draws on 50, 51, 56, 79, 151 · summary A tenet relates a process to its 
 
 ### Schema 5. Polities
 
-A polity's state needs efficacious enforcement, not necessarily violence. A
-polity has a focus, not a size (a smiths' guild is one), and may build on
-another as an institution; polities under no host are a faction among
-themselves, a treaty their standing agreement. Asserting its constitution is
-a polity's definitive act. Its goals derive from its alignment; it has no
-will to continue beyond finding a new use, and an inactive one can be revived
-by whoever brings it support.
+A polity enforces with what it provides and asserts, withholding provision or
+revoking rank, office, membership, property, home or borders; force is one
+means among any, and its way of deciding suggests its means. Efficacy is read
+as a track record, never asserted, and the gap between the constitution and
+its members' preference is its legitimacy. A polity has a focus, not a size (a
+smiths' guild is one); a contingent one borrows its host's enforcement, so it
+is cheap to found, and a host's failure cascades through what rests on it.
+Polities under no host are a faction among themselves, a treaty their standing
+agreement. Asserting its constitution is a polity's definitive act. Its goals
+derive from its alignment, and no will to continue is built in: an institution
+seen clinging on is subordinated to its own officers, and an inactive one can
+be revived by whoever brings it support.
 
-Links: draws on 64, 67, 68, 81, 988, 989, 991, 992 · summary A polity needs efficacious enforcement, has a focus not a size, may build on another; its constitution is its definitive act; goals follow alignment.
+*Not verified:* enforcement. Polities are built behind the society feature.
 
-*Reviewed 2026-10-22, new: split from tenets at Mark's word ("Polities
-apart"). Polities are built behind the society feature (886); enforcement
-is not verified.*
+Links: draws on 64, 67, 68, 81, 988, 989, 991, 992 · summary A polity enforces with what it provides and asserts; efficacy is read; a focus not a size; contingency borrows enforcement; no will to continue.
+
+*Refined 2026-10-22 from cases 988, 989, 991 and 992 (Mark: "Both refined as
+drafted").*
 
 ### Schema 6. Minds
 
@@ -347,14 +353,18 @@ its budget guard work, counting the members an evaluation stands for.
 Per-group phases run in the foreground; the background keeps a shared grid.
 Epochs and deep time are the record's (Record 7). Neighbouring worlds keep
 their own clocks, synced at crossings. Equal best moves break by a seeded
-draw. Shards, when built, give the same state hash at any count.
+draw. The sim is sharded by the place graph: each shard an armillary actor
+with its own due-event queue, field passes data-parallel inside a shard, and
+an ordered merge of cross-shard effects designed before the shards, so one
+shard and N give the same state hash at any thread count. On the web the sim
+runs in one Worker, scaling down by shard count.
 
 *Not yet built:* shards, and worlds syncing at crossings.
 
 Links: draws on 149, 256, 257, 258, 259, 284, 285, 286, 293, 605, 958, record.7 · summary A fine world-set unit, periods per process; the scheduler skips idle time and budgets guard work; worlds sync at crossings.
 
-*Reviewed 2026-10-22, new. Mark: "Epochs to Record" (451 and 452 moved to
-Record 7).*
+*Refined 2026-10-22: sharding by the place graph, from the design record's
+§4.7 (Mark: "Into Processes 7").*
 
 ### Processes 8. Competition
 
@@ -424,23 +434,27 @@ Links: draws on 84, 86, 87, 117, 118, 119, 241, 1001 · summary Spread is modell
 ### Processes 12. Collective action
 
 A faction acts by consent, peer to peer, and is never gated by disagreement:
-its members fall back on the way of deciding their alignments rank highest. A
-polity adds a constitution (Schema 5); where it vests ultimate authority in a
-group, disagreement gates its acts, one act at a time. Any means may stand
-behind a constitution, and the way of deciding suggests the means of
-enforcing without binding them. A constitution changes by the polity's own
-way or its amendment rule; force outside it founds a new polity and never
-takes over the old; secession is the seceders' own act. A polity without
-support does nothing; short of death it may become suppressed, inactive,
-superseded or subordinated, and it dies by its own dissolution or when nothing
-holds it any more.
+its members fall back on the way of deciding their alignments rank highest,
+and its general protocols belong to the world's ruleset. A polity adds a
+constitution (Schema 5). A form of governance is who qualifies to decide and
+by what act, data and never an enum, and the form a polity takes is chosen at
+its founding by ranked preference over its members' alignments, weighted by
+influence, ties on the seed. Where a polity vests ultimate authority in a
+group, disagreement gates its acts, one act at a time. A constitution changes
+by the polity's own way or its amendment rule; force outside it founds a new
+polity and never takes over the old; secession is the seceders' own act.
+Short of death a polity may be inactive (lacking support), suppressed (stopped
+by another's enforcement), superseded (another binding its focus) or
+subordinated (one faction's will running its methods), each read from the
+record; it dies by its own dissolution or when nothing holds it any more.
 
 *Not yet built:* secession, the four polity conditions, death when nothing
 holds a polity. Constitutions are built behind the society feature.
 
 Links: draws on 63, 65, 66, 133, 134, 135, 136, 137, 138, schema.5, 985, 986, 987, 990 · summary Factions act by consent, never gated; a group-vested polity is gated per act; constitutions change by their own way; force founds anew.
 
-*Reviewed 2026-10-22, new. Mark: "Processes statement".*
+*Refined 2026-10-22 from cases 985, 986, 987 and 990 (Mark: "Both refined as
+drafted").*
 
 ### Processes 13. Making and learning
 
@@ -1594,6 +1608,37 @@ Links: draws on 10, 114, processes.1 · summary Runs unattended: the sim; needed
 
 *Reviewed 2026-10-22, new: from the design record's §2 and §3.8 (Mark, on
 §3.8: "sounds pretty right to me"), then "One Stack statement".*
+
+### Stack 13. The contract's discipline
+
+Grain comes before mechanism: the contract is coarse, batches per tick, never
+a call per entity. It is shaped as WIT forces (values copied, opaque handles
+the host mints, no pointer into the sim, capabilities by grant) and bound
+natively first, a component binding built when the first outside consumer
+exists, so that day needs no redesign. Every contract type round-trips
+through bytes, and the contract crate depends on none of the sim's internals;
+between the sim and its own cores there is no component boundary (Stack 4).
+
+Links: draws on 78, 154, 1000, stack.4 · summary The contract is coarse batches per tick, WIT-shaped, bound natively first; its types round-trip through bytes; it depends on no sim internals.
+
+*Reviewed 2026-10-22, new: from the design record's §5.2, carried by case
+1000 (Mark: "Its own Stack statement").*
+
+### Stack 14. Extension rungs
+
+Extension rides four rungs: data (open sets such as kinds of location, forms
+of governance, catalogues and canons), piccolo (rulesets and world packs,
+lowered to definitions by digest), components (outside code, a resolver, a
+generator or a director, on Wasmtime where a platform allows), and native
+crates (the first-party cores and the sim). Total componentisation is not
+worth it applied totally: by call frequency times data volume, cold and
+narrow goes behind a component when it wants to be pluggable, and hot or wide
+stays native.
+
+Links: draws on 76, 77, 78, 1000, stack.3 · stack · summary Data, piccolo, components and native crates; cold and narrow goes behind a component when pluggable, hot or wide stays native.
+
+*Reviewed 2026-10-22, new: from the design record's §5.3 and §5.4, carried
+by case 1000 (Mark: "A Stack statement, tagged stack").*
 
 ## Host and network
 
