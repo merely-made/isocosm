@@ -1058,7 +1058,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     steel! it gives you a reason to learn the ecology, what stuff is,
     familiarize yourself with things to see what you can use... oh my god"
 
-    Links: area Ecology · summary The materials of a world are its critters across all kingdoms.
+    Links: area The sim's schema and saves · summary The materials of a world are its critters across all kingdoms.
 98. **The world is an entity made of stuff, a world-class entity, the basic
     macro kingdom; stuff can be made out of the world, even critters.**
     Mark, 2026-09-22, on inert matter: "although, presumably the world has
@@ -1955,7 +1955,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the trophic web, the ecosystem the lineage lives in, Mark: "That is
      correct".
 
-     Links: area Ecology · summary Unplayed lineages adapt, inherit and develop, weighing their adaptation against the rest of the trophic web; that is what an epoch is about.
+     Links: area Ecology · draws on 57 · summary Unplayed lineages adapt, inherit and develop, weighing their adaptation against the rest of the trophic web; that is what an epoch is about.
 183. **At a birth, the player keeps the parent by default.** Put to Mark on
      2026-09-25, from the playable ecology plan's open ruling 1: when your
      critter reproduces, do you keep playing the parent or move to the
@@ -2379,7 +2379,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a pandemic, a meteor, polities killing the world, one overperforming
      lineage or magic, is open. The world's ends are rulings 229 and 230.
 
-     Links: area Ecology · summary Ecological regions follow world biomass, filling by trophic level and spilling over; they merge as biomass falls, and a collapse is global when one remains.
+     Links: area Ecology · draws on 225, 181 · summary Ecological regions follow world biomass, filling by trophic level and spilling over; they merge as biomass falls, and a collapse is global when one remains.
 227. **The core reads mood from needs now.** Put to Mark on 2026-09-25, as
      Lane A gives the core its first strain, from fights: should the core
      read mood from needs now, so hunger and wounds build strain too, or
@@ -2765,7 +2765,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      web's response to an intervention? Mark: "The four measures." Each has a
      bound in the world's rules.
 
-     Links: area Ecology · summary A level of the web stays alive by four measures (persistence, turnover, collapse, response to intervention), each bounded in the world's rules.
+     Links: area Ecology · draws on 260 · summary A level of the web stays alive by four measures (persistence, turnover, collapse, response to intervention), each bounded in the world's rules.
 268. **Computed amounts are bounded expression trees, with a default set
      easy to group and calibrate.** Put to Mark on 2026-09-26, from S2's
      checkpoint 3 plan, decision 5: linear in one reading, clamped, with a
@@ -2894,7 +2894,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      producer removed come first, and meteor, drought, flood and fire follow
      once the gate's criteria stand, to test the web's resilience as a whole.
 
-     Links: area Ecology · summary The first disturbances modelled are disease, an overperformer and a keystone lost; catastrophe follows once the gate's criteria stand.
+     Links: area Ecology · draws on 267, 226 · summary The first disturbances modelled are disease, an overperformer and a keystone lost; catastrophe follows once the gate's criteria stand.
 284. **An advance's limit guards work, not ticks.** Put to Mark on
      2026-09-26, from the scheduler index's report: at a minute's unit a
      century is 52.6 million ticks against a default advance limit of
@@ -3499,7 +3499,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      agentless processes and unchoosing members alone; option A's social
      reading is not adopted.
 
-     Links: area Ecology · summary Harmony, order and chaos are ecological states read from balance: harmony is balanced and unmaintained, order balanced and maintained, chaos unbalanced; never stored.
+     Links: area Ecology · draws on 267 · summary Harmony, order and chaos are ecological states read from balance: harmony is balanced and unmaintained, order balanced and maintained, chaos unbalanced; never stored.
 
 384. **Some divine figures can peek behind the curtain: an awareness of the
      sim beyond an organism's capabilities is magic that bends the rules.**
@@ -6019,7 +6019,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      overflow among its neighbours; mold creeps where the ground feeds it,
      and a plague follows the routes.
 
-     Links: area Ecology · summary Territories and surfaces spread by overflow along routes: growth beyond substrate capacity moves to neighbours by route transmission after travel.
+     Links: area Ecology · draws on 488 · summary Territories and surfaces spread by overflow along routes: growth beyond substrate capacity moves to neighbours by route transmission after travel.
 
 499. **A germ lineage revises its genes by forking strains.** Asked on
      2026-10-02, with 497: "What carries a germ lineage's genes as it
@@ -7668,7 +7668,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      at its site, weighted by what each holds (287): grazers eat producers
      as now, and a frond that comes to take in eats grazers.
 
-     Links: area Ecology · summary A body whose systems route intake grazes any living body of another lineage at its site, weighted by what each holds.
+     Links: area Ecology · draws on 569, 287 · summary A body whose systems route intake grazes any living body of another lineage at its site, weighted by what each holds.
 
 591. **The games move onto the sim first; families are refined in place.**
      2026-10-05. Question: how do the games move onto the sim, given that
@@ -8426,7 +8426,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      adaptation's scoring lands natively ahead of its family, and 195 and
      668's order stands.
 
-     Links: area Ecology · summary The interim boundary ports grow-a-copy adaptation scoring natively over fork_at, ahead of the lineages family; 195's order stands.
+     Links: area Ecology · draws on 57, 182 · summary The interim boundary ports grow-a-copy adaptation scoring natively over fork_at, ahead of the lineages family; 195's order stands.
 685. **A suggestion is a derived reading.** 2026-10-08, the directing
      survey's second round. Question: what is a suggestion that surfaces
      (the contract's `EventRecord` is a generic topic and a byte payload;
@@ -8458,7 +8458,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      then spills into a new one, and the regions merge as biomass falls.
      The grouping rule is put as its own question.
 
-     Links: area Ecology · summary At site grain a region groups sites by biomass: each trophic level fills its slot until over capacity, then spills; regions merge as biomass falls.
+     Links: area Ecology · draws on 226 · summary At site grain a region groups sites by biomass: each trophic level fills its slot until over capacity, then spills; regions merge as biomass falls.
 688. **The bond is a weighted relation to a participant.** 2026-10-08.
      Question: what is the bond (177, 178)? Options: an account
      (recommended); `Tenet.trust`; a relation to a participant outside the
@@ -8483,7 +8483,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      slot capacity, and a region grows along adjacent sites, so geography
      counts.
 
-     Links: area Ecology · summary Regions are derived each round from site biomass and routes, never kept; a world rule sets each trophic level's slot capacity.
+     Links: area Ecology · draws on 226, 687 · summary Regions are derived each round from site biomass and routes, never kept; a world rule sets each trophic level's slot capacity.
 690. **Standing orders are derived from the history.** 2026-10-08.
      Question: where do 216's standing orders live? Options: derived from
      the logged nudges and their outcomes (recommended); kept on the
@@ -8723,7 +8723,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      conservation loop, and eating carrion comes with 123's scavenging or
      the lineages family.
 
-     Links: area Ecology · summary A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later.
+     Links: area Ecology · draws on 470 · summary A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later.
 719. **A regrown part revives its tombstone.** 2026-10-08. Question: under
      707 a tombstone keeps its id and situs, and `lacking()` refuses a
      situs held, severed or not; what id does a regrown part take? Options:
@@ -8907,14 +8907,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chose "Conditions met, member lives (Recommended)".
 
      Links: area Mesocosm · draws on 179 · summary A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there.
-752. **A minimal native lineage revision comes forward.** 2026-10-09.
-     Question: native has no lineage revision, so 684's grow-a-copy boundary
-     has nothing to commit. Options: a minimal revision now, development-
-     recipe variants from what the lineage has learned (recommended); wait
-     for the lineages family; trait-set candidates. Mark chose "A minimal
-     revision now (Recommended)".
-
-     Links: area Ecology · summary A minimal native lineage revision comes forward: development-recipe variants from what the lineage has learned.
 753. **After a regional collapse, members migrate and the player may start
      again elsewhere.** 2026-10-09. Question: `Effect::Move` takes a fixed
      destination, so migration needs a generated process per route; or the
@@ -8938,7 +8930,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      them must infer bit-identically or log its outputs, for replay.
      Parked as research for after 732's push.
 
-     Links: area Ecology · summary A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt.
+     Links: area Ecology · amends 225 · summary A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt.
 756. **Lineage data moves into isocosm; isometer keeps an opaque tag.**
      2026-10-09. Question: about 218 provenance and 200 `mass_mg` sites
      store lineage and mass in isometer's document. Options: `SpeciesId`,
@@ -8988,22 +8980,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      them, and where the two disagree is a later question.
 
      Links: area The VTT · summary An authored faction is a polity with no members yet, asserted with authored name, tags, claims, governance and focus as facts.
-762. **The review and succession lanes re-point at the switch.** 2026-10-10,
-     from the lineages family (merged at `fe1f7178`). Question: every
-     consumer reads lineages through a driver holding the legacy `World`.
-     Options: at the switch (755, D5), review becoming `lineage::Review` over
-     the native `Session` and succession the interim loop's happenings
-     (recommended); now, beside legacy; only the views board now. Mark chose
-     "At the switch (Recommended)".
-
-     Links: area Ecology · summary The review and succession lanes re-point at the switch: review becomes lineage::Review over the native Session.
-763. **The boundary and revision move into `lineage/`.** 2026-10-10.
-     Question: directing built them, while 684 names adaptation as the
-     lineages family's. Options: into `lineage/`, directing re-exporting
-     (recommended); stay in directing. Mark chose "Into lineage/
-     (Recommended)".
-
-     Links: area Ecology · summary The boundary and revision move into lineage/, with directing re-exporting.
 764. **Lexicon lessons are discovery.** 2026-10-10. Question: legacy
      discovery's condition table, with its endurance route, against native's
      lessons from eating a part whole (468). Options: native lessons are
@@ -9011,13 +8987,13 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      conditions as rules data; port the full model. Mark chose "Lexicon
      lessons are discovery (Recommended)".
 
-     Links: area Ecology · summary Native lessons from eating a part whole are discovery; legacy discovery's condition table retires with the world.
+     Links: area Ecology · draws on 468 · summary Native lessons from eating a part whole are discovery; legacy discovery's condition table retires with the world.
 765. **The native revision grows to tracts and systems.** 2026-10-10.
      Options: legacy's declared tracts and 568's folding of systems at the
      boundary, built in the lineages family (recommended); recipe variants
      only. Mark chose "Grow to tracts and systems (Recommended)".
 
-     Links: area Ecology · summary The native revision grows to tracts and systems at the boundary, built in the lineages family.
+     Links: area Ecology · draws on 568, 684 · summary The native revision grows to tracts and systems at the boundary, built in the lineages family.
 766. **Native parts gain cell identity.** 2026-10-10, from the bodies
      lane's second pass (merged at `5f3fe18b`). Question: legacy `Mosaic`
      gives each part a cell graph (ids, adjacency, tracts as connected cell
@@ -9201,7 +9177,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      supply the count; equal counts use the stable lineage key, and member
      count remains an extinction filter.
 
-     Links: area Ecology · summary A lineage's metabolic complexity counts distinct functions and systems across all living members; native boundary turns use descending counts.
+     Links: area Ecology · draws on 797 · summary A lineage's metabolic complexity counts distinct functions and systems across all living members; native boundary turns use descending counts.
 807. **Event handles are an adapter reading of native event keys.**
      2026-10-10, Q2's telling-identity fork under 794. Question: "The contracts
      lane found another identity gap: the contract names an event with a
@@ -9515,7 +9491,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      additive, multiplicative or replacement default. World definitions
      supply those choices; missing declarations do not invent a capacity.
 
-     Links: area Ecology · summary Spread capacity is a lineage-trait mechanic, with explicit capacity values acting as modifier or manipulator at the substrate, all in native rules.
+     Links: area Ecology · draws on 498 · summary Spread capacity is a lineage-trait mechanic, with explicit capacity values acting as modifier or manipulator at the substrate, all in native rules.
 
 828. **Overflow is split equally before each route transmits its share.**
      2026-10-11, native spread route allocation.
@@ -9530,7 +9506,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      source. Whether a zero-transmission route is eligible is asked as
      a separate fork; neither interpretation is silently selected.
 
-     Links: area Ecology · summary Overflow above capacity is divided equally among eligible routes before each route's transmission rate applies; untransmitted matter stays at source.
+     Links: area Ecology · draws on 827 · summary Overflow above capacity is divided equally among eligible routes before each route's transmission rate applies; untransmitted matter stays at source.
 
 829. **Port feeding is declared by its process and founded with its ports.**
      2026-10-11, native intake migration scope.
@@ -9574,7 +9550,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      route validation, travel duration and conserved remainders still apply.
      This settles the explicit eligibility fork left by828.
 
-     Links: area Ecology · summary Zero-transmission routes are excluded from the overflow split; if none are eligible the excess stays at the source.
+     Links: area Ecology · amends 828 · summary Zero-transmission routes are excluded from the overflow split; if none are eligible the excess stays at the source.
 
 832. **New ordinary feeding processes target what their declared ports admit.**
      2026-10-12, the ordinary founding follow-up to829.
@@ -10164,7 +10140,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Source migration continues under826; no compiler/tests/fixtures/tuning
      are authorised merely by answering these design questions.
 
-     Links: area Ecology · summary Total collapse uses an explicitly authored native global predicate; no hardcoded regional conjunction, missing level or zero biomass.
+     Links: area Ecology · amends 226 · draws on 230 · summary Total collapse uses an explicitly authored native global predicate; no hardcoded regional conjunction, missing level or zero biomass.
 
 879. **Ecological independence requires a distinct authored mechanical effect; family is recorded.**
      Asked2026-10-13 following874's unresolved interest in both standards.
@@ -10187,7 +10163,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      comparisons cannot be replaced with names, hashes or random outcomes.
      Next unused880. Tests and tuning remain deferred826.
 
-     Links: area Ecology · summary Ecological independence requires a distinct authored mechanical effect (costs, timing, typed flows may qualify); the operation family is recorded.
+     Links: area Ecology · draws on 874 · summary Ecological independence requires a distinct authored mechanical effect (costs, timing, typed flows may qualify); the operation family is recorded.
 
 881. **C11's independent chooser covers autonomous territories only.**
      Asked 2026-10-14. Evidence: natively, an un-nudged deliberative
@@ -10673,7 +10649,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stock digests. Mark: "Preset-only, say so (Recommended)". This amends
      906's reading, not its words.
 
-     Links: area Ecology · summary 906's hazard acts only where the drawn ceiling is above maturity, so today only the A1 preset carries it; stock digests unchanged.
+     Links: area Ecology · amends 906 · summary 906's hazard acts only where the drawn ceiling is above maturity, so today only the A1 preset carries it; stock digests unchanged.
 
 953. **Every lane brief carries a receipt budget.** Mark, 2026-10-16: "The a1
      lane wasted basically half of today on 30 gb of receipts nobody will
@@ -10871,7 +10847,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      with evidence before the credit changes; the H3 pins and the A1 matrix
      are the gate for that change.
 
-     Links: area Ecology · summary Presentation and ecology both read the light block: the sunlight credit scales by intensity, with the limiting amount a tuning fork brought back with evidence.
+     Links: area Ecology · draws on 971 · summary Presentation and ecology both read the light block: the sunlight credit scales by intensity, with the limiting amount a tuning fork brought back with evidence.
 
 973. **Honest units, with night.**
      Asked with 971: the tick is a minute and the year 525,960 ticks, with no
@@ -10959,7 +10935,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      per site per tick (Recommended)". Receipt: `Code/testing/isometry/
      light-field-2026-10-17/light-draw.log`.
 
-     Links: area Ecology · summary The light credit is 500 per site per tick at full sun.
+     Links: area Ecology · draws on 972, 888 · summary The light credit is 500 per site per tick at full sun.
 
 983. **The site's light store holds a night.**
      Asked with 982: the credit is nothing at night and the old account
@@ -10969,7 +10945,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      night; (3) a 10 percent starlight credit. Mark: "Cap holds a night's
      light (Recommended)".
 
-     Links: area Ecology · summary The site's light store holds a night: about 720 x 500 = 360,000 of full credit, so producers draw a reserve down in the dark.
+     Links: area Ecology · draws on 982 · summary The site's light store holds a night: about 720 x 500 = 360,000 of full credit, so producers draw a reserve down in the dark.
 
 984. **The credit scales through a new `Effect::Sunlight`.**
      Asked with 982 when implementation found `Effect::Transform`'s `give`

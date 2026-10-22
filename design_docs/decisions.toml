@@ -548,7 +548,7 @@ summary = "Abilities, skills and techniques are defined (a technique is an abili
 [cases."97"]
 title = "The materials of a world are its critters, across all the kingdoms"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Ecology"
+area = "The sim's schema and saves"
 summary = "The materials of a world are its critters across all kingdoms."
 
 [cases."98"]
@@ -1047,6 +1047,7 @@ title = "Unplayed lineages adapt, inherit and develop, weighing their adaptation
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Unplayed lineages adapt, inherit and develop, weighing their adaptation against the rest of the trophic web; that is what an epoch is about."
+draws_on = ["57"]
 
 [cases."183"]
 title = "At a birth, the player keeps the parent by default"
@@ -1285,6 +1286,7 @@ title = "Ecological regions follow the world's biomass; a collapse is global whe
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Ecological regions follow world biomass, filling by trophic level and spilling over; they merge as biomass falls, and a collapse is global when one remains."
+draws_on = ["181", "225"]
 
 [cases."227"]
 title = "The core reads mood from needs now"
@@ -1500,6 +1502,7 @@ title = "A level of the web stays alive by four measures"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "A level of the web stays alive by four measures (persistence, turnover, collapse, response to intervention), each bounded in the world's rules."
+draws_on = ["260"]
 
 [cases."268"]
 title = "Computed amounts are bounded expression trees, with a default set easy to group and calibrate"
@@ -1567,6 +1570,7 @@ title = "The first disturbances are disease, an overperformer and a keystone los
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "The first disturbances modelled are disease, an overperformer and a keystone lost; catastrophe follows once the gate's criteria stand."
+draws_on = ["226", "267"]
 
 [cases."284"]
 title = "An advance's limit guards work, not ticks"
@@ -1883,6 +1887,7 @@ title = "Harmony, order and chaos are ecological states"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Harmony, order and chaos are ecological states read from balance: harmony is balanced and unmaintained, order balanced and maintained, chaos unbalanced; never stored."
+draws_on = ["267"]
 
 [cases."384"]
 title = "Some divine figures can peek behind the curtain: an awareness of the sim beyond an organism's capabilities is magic that bends the rules"
@@ -2489,6 +2494,7 @@ title = "Territories and surfaces spread by overflow along routes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Territories and surfaces spread by overflow along routes: growth beyond substrate capacity moves to neighbours by route transmission after travel."
+draws_on = ["488"]
 
 [cases."499"]
 title = "A germ lineage revises its genes by forking strains"
@@ -2886,6 +2892,7 @@ title = "A body grazes other lineages"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "A body whose systems route intake grazes any living body of another lineage at its site, weighted by what each holds."
+draws_on = ["287", "569"]
 
 [cases."591"]
 title = "The games move onto the sim first; families are refined in place"
@@ -3280,6 +3287,7 @@ title = "The interim boundary ports grow-a-copy scoring"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "The interim boundary ports grow-a-copy adaptation scoring natively over fork_at, ahead of the lineages family; 195's order stands."
+draws_on = ["57", "182"]
 
 [cases."685"]
 title = "A suggestion is a derived reading"
@@ -3299,6 +3307,7 @@ title = "A region at site grain groups sites by biomass"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "At site grain a region groups sites by biomass: each trophic level fills its slot until over capacity, then spills; regions merge as biomass falls."
+draws_on = ["226"]
 
 [cases."688"]
 title = "The bond is a weighted relation to a participant"
@@ -3312,6 +3321,7 @@ title = "Regions are derived each round"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Regions are derived each round from site biomass and routes, never kept; a world rule sets each trophic level's slot capacity."
+draws_on = ["226", "687"]
 
 [cases."690"]
 title = "Standing orders are derived from the history"
@@ -3464,6 +3474,7 @@ title = "Checkpoint 10 builds rot; eating carrion comes later"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later."
+draws_on = ["470"]
 
 [cases."719"]
 title = "A regrown part revives its tombstone"
@@ -3569,12 +3580,6 @@ area = "Mesocosm"
 summary = "A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there."
 draws_on = ["179"]
 
-[cases."752"]
-title = "A minimal native lineage revision comes forward"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Ecology"
-summary = "A minimal native lineage revision comes forward: development-recipe variants from what the lineage has learned."
-
 [cases."753"]
 title = "After a regional collapse, members migrate and the player may start again elsewhere"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -3587,6 +3592,7 @@ title = "A region has collapsed only in a level it once held"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt."
+amends = ["225"]
 
 [cases."756"]
 title = "Lineage data moves into isocosm; isometer keeps an opaque tag"
@@ -3618,29 +3624,19 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "An authored faction is a polity with no members yet, asserted with authored name, tags, claims, governance and focus as facts."
 
-[cases."762"]
-title = "The review and succession lanes re-point at the switch"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Ecology"
-summary = "The review and succession lanes re-point at the switch: review becomes lineage::Review over the native Session."
-
-[cases."763"]
-title = "The boundary and revision move into `lineage/`"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Ecology"
-summary = "The boundary and revision move into lineage/, with directing re-exporting."
-
 [cases."764"]
 title = "Lexicon lessons are discovery"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Native lessons from eating a part whole are discovery; legacy discovery's condition table retires with the world."
+draws_on = ["468"]
 
 [cases."765"]
 title = "The native revision grows to tracts and systems"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "The native revision grows to tracts and systems at the boundary, built in the lineages family."
+draws_on = ["568", "684"]
 
 [cases."766"]
 title = "Native parts gain cell identity"
@@ -3726,6 +3722,7 @@ title = "A lineage's metabolic complexity counts its collective repertoire"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "A lineage's metabolic complexity counts distinct functions and systems across all living members; native boundary turns use descending counts."
+draws_on = ["797"]
 
 [cases."807"]
 title = "Event handles are an adapter reading of native event keys"
@@ -3842,12 +3839,14 @@ title = "Spread capacity is a lineage mechanic with an explicit modifier or mani
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Spread capacity is a lineage-trait mechanic, with explicit capacity values acting as modifier or manipulator at the substrate, all in native rules."
+draws_on = ["498"]
 
 [cases."828"]
 title = "Overflow is split equally before each route transmits its share"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Overflow above capacity is divided equally among eligible routes before each route's transmission rate applies; untransmitted matter stays at source."
+draws_on = ["827"]
 
 [cases."829"]
 title = "Port feeding is declared by its process and founded with its ports"
@@ -3866,6 +3865,7 @@ title = "Zero-transmission routes do not participate in the overflow split"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Zero-transmission routes are excluded from the overflow split; if none are eligible the excess stays at the source."
+amends = ["828"]
 
 [cases."832"]
 title = "New ordinary feeding processes target what their declared ports admit"
@@ -4149,12 +4149,15 @@ title = "Total collapse uses an explicitly authored native global predicate"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Total collapse uses an explicitly authored native global predicate; no hardcoded regional conjunction, missing level or zero biomass."
+draws_on = ["230"]
+amends = ["226"]
 
 [cases."879"]
 title = "Ecological independence requires a distinct authored mechanical effect; family is recorded"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Ecological independence requires a distinct authored mechanical effect (costs, timing, typed flows may qualify); the operation family is recorded."
+draws_on = ["874"]
 
 [cases."881"]
 title = "C11's independent chooser covers autonomous territories only"
@@ -4393,6 +4396,7 @@ title = "906's hazard acts only where the ceiling is above maturity: today, the 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "906's hazard acts only where the drawn ceiling is above maturity, so today only the A1 preset carries it; stock digests unchanged."
+amends = ["906"]
 
 [cases."953"]
 title = "Every lane brief carries a receipt budget"
@@ -4493,6 +4497,7 @@ title = "Presentation and ecology both read the light block in the first slice"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Presentation and ecology both read the light block: the sunlight credit scales by intensity, with the limiting amount a tuning fork brought back with evidence."
+draws_on = ["971"]
 
 [cases."973"]
 title = "Honest units, with night"
@@ -4536,12 +4541,14 @@ title = "The light credit is 500 per site per tick at full sun"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "The light credit is 500 per site per tick at full sun."
+draws_on = ["888", "972"]
 
 [cases."983"]
 title = "The site's light store holds a night"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "The site's light store holds a night: about 720 x 500 = 360,000 of full credit, so producers draw a reserve down in the dark."
+draws_on = ["982"]
 
 [cases."984"]
 title = "The credit scales through a new `Effect::Sunlight`"
@@ -4630,6 +4637,41 @@ source = "design_docs/doctrine.md"
 area = "Directing and play"
 summary = "Death is final, each game with its trick; a new life chooses which conditions to carry forward."
 draws_on = ["61", "406"]
+
+[statements."ecology.1"]
+title = "Two doors change a lineage"
+source = "design_docs/doctrine.md"
+area = "Ecology"
+summary = "Reproduction rerolls expression; the epoch boundary changes the lineage; every lineage adapts against the web."
+draws_on = ["57", "182", "684", "764", "765", "806"]
+
+[statements."ecology.2"]
+title = "Regions follow biomass"
+source = "design_docs/doctrine.md"
+area = "Ecology"
+summary = "Regions are derived from biomass by trophic slot; a region collapses when a level it held is gone; total collapse is authored."
+draws_on = ["225", "226", "687", "689", "754", "878"]
+
+[statements."ecology.3"]
+title = "The web's health"
+source = "design_docs/doctrine.md"
+area = "Ecology"
+summary = "Four measures keep a level alive; disease, overperformer and keystone first; harmony, order and chaos are readings."
+draws_on = ["267", "283", "383", "879"]
+
+[statements."ecology.4"]
+title = "Spread is overflow along routes"
+source = "design_docs/doctrine.md"
+area = "Ecology"
+summary = "Overflow splits equally across transmitting routes; capacity is a lineage mechanic; bodies graze other lineages; the dead rot."
+draws_on = ["498", "590", "718", "827", "828", "831"]
+
+[statements."ecology.5"]
+title = "Light and life"
+source = "design_docs/doctrine.md"
+area = "Ecology"
+summary = "Light credit scales with the sun and a store holds a night; life spans are individual hazards under a drawn ceiling."
+draws_on = ["906", "949", "972", "982", "983"]
 
 [statements."host.1"]
 title = "One sim host under three product hosts"
