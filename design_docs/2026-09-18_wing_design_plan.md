@@ -734,7 +734,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     becoming suppressed or inactive or superseded or subordinated to a
     faction."
 
-    Links: area Processes and rules · summary Any means may stand behind a constitution; short of death a polity may automatically become suppressed, inactive, superseded or subordinated to a faction.
+    Links: area Processes and rules · draws on 65 · summary Any means may stand behind a constitution; short of death a polity may automatically become suppressed, inactive, superseded or subordinated to a faction.
 67. **Polities under no host are a faction among themselves.** Put to Mark
     on 2026-09-20 as a corollary of rulings 63 and 64: "polities dealing
     with each other under no host have only consent, so among themselves
@@ -917,7 +917,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 86. **The five points of how knowledge resolves are agreed.** Mark,
     2026-09-21: "And agreed on the five points!"
 
-    Links: area Processes and rules · summary Agrees five points on how knowledge resolves, listed elsewhere in the record.
+    Links: area Processes and rules · draws on 84 · summary Agrees five points on how knowledge resolves, listed elsewhere in the record.
 87. **A secret is valuable, leverage, kept by a taboo; telling it turns on
     relation, opinion and goals, and perhaps personality.** Mark,
     2026-09-21: "A secret is valuable... it is tremendous leverage, often,
@@ -1006,7 +1006,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     abilities or items, improving abilities and items, and triggered
     conditions for other sorts of acts beyond crafting".
 
-    Links: area Processes and rules · summary Taking an action is analogous to crafting; values, abilities and needs shape what is made; a fey mood may be a triggered need.
+    Links: area Processes and rules · draws on 94 · summary Taking an action is analogous to crafting; values, abilities and needs shape what is made; a fey mood may be a triggered need.
 96. **Abilities, skills and techniques defined; kleptoplasty is conditional;
     nis is a scale, not a material; the question was quality, not rarity.**
     Mark, 2026-09-22: "I'm not sure kleptoplasty is as important as it once
@@ -1276,7 +1276,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      intimidate/persuade/deceive? But in the sim's terms, it's 'wrong'
      information or stale information, i suppose".
 
-     Links: area Processes and rules · summary Any belief can be wrong through deceit, honest mistake or a changing rumour; entities act on what they believe; reach carries versions of an event.
+     Links: area Processes and rules · draws on 116 · summary Any belief can be wrong through deceit, honest mistake or a changing rumour; entities act on what they believe; reach carries versions of an event.
 118. **Whether a belief takes: what the receiver can check, who's telling,
      what it wants to hear, and how it's told, all four.** Put to Mark on
      2026-09-24, following ruling 117: when someone is shown or told
@@ -1291,7 +1291,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      charisma. Mark picked all four. How they are weighed against each
      other is the next question.
 
-     Links: area Processes and rules · summary Whether a belief takes depends on all four: what the receiver can check, who is telling, what it wants to hear, how it is told.
+     Links: area Processes and rules · draws on 117 · summary Whether a belief takes depends on all four: what the receiver can check, who is telling, what it wants to hear, how it is told.
 119. **Both: each entity's disposition shifts a world baseline, and the
      baseline is drawn from the world entity's disposition, a neutral
      median by default.** Put to Mark on 2026-09-24, following ruling 118:
@@ -1302,7 +1302,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      drawn from the world entity disposition? Then a neutral median
      default for the sim is the world's normal way".
 
-     Links: area Processes and rules · summary Each entity's disposition shifts a world baseline for weighing beliefs; the baseline is drawn from the world entity's disposition, a neutral median by default.
+     Links: area Processes and rules · draws on 118 · summary Each entity's disposition shifts a world baseline for weighing beliefs; the baseline is drawn from the world entity's disposition, a neutral median by default.
 120. **The world's disposition seeds the founders only.** Put to Mark on
      2026-09-24, following ruling 119: is the world entity's disposition
      the baseline for every inhabitant's disposition, not just for how
@@ -1312,7 +1312,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      after that, dispositions are inherited and lived, and the world's
      pull fades.
 
-     Links: area Processes and rules · summary The world's disposition seeds the founders only; afterwards dispositions are inherited and lived and the world's pull fades.
+     Links: area World generation · draws on 119 · summary The world's disposition seeds the founders only; afterwards dispositions are inherited and lived and the world's pull fades.
 121. **The world shapes its people's dispositions through trait and
      through condition; people drift from the world's temperament, and the
      world's temperament may not be static either.** Put to Mark on
@@ -1332,7 +1332,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Whether and how the world's temperament changes is his question, put
      back to him.
 
-     Links: area Processes and rules · summary The world shapes people's dispositions through trait and condition; people drift from the world's temperament, and that temperament may not be static.
+     Links: area World generation · draws on 119, 120 · summary The world shapes people's dispositions through trait and condition; people drift from the world's temperament, and that temperament may not be static.
 122. **A fluid world's temperament is moved by what happens to it, by its
      own cycles, and at its epoch boundary, not by its people's
      temperament.** Ruling 121's "Should it not change…?" was answered from
@@ -1348,7 +1348,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      between rounds. Leaving out the second reads as: its people move it
      only through what they do to it, never by what they are.
 
-     Links: area Processes and rules · summary A fluid world's temperament is moved by what happens to it, its own cycles and its epoch boundary, not by its people's temperament.
+     Links: area World generation · draws on 121, 102 · summary A fluid world's temperament is moved by what happens to it, its own cycles and its epoch boundary, not by its people's temperament.
 123. **Harm is both vigour and wounds.** Put to Mark on 2026-09-24,
      returning to the fight after ruling 116: when a blow lands, what does
      it change in the body? Three options were put: the part it hits, a
@@ -1449,7 +1449,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      left unpractised slips toward a floor it never loses, and doing is
      kept better than knowing.
 
-     Links: area Processes and rules · summary An unpractised skill decays slowly, to a floor it never drops below.
+     Links: area Processes and rules · draws on 127 · summary An unpractised skill decays slowly, to a floor it never drops below.
 133. **Factions are never gated by disagreement; a polity is, where its
      ultimate authority is vested in a group.** Put to Mark on 2026-09-24,
      from §3.2.2's open "which protocols": when a faction can't agree,
@@ -1463,7 +1463,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      authority in a group rather than an individual, do gate polity acts
      on disagreements."
 
-     Links: area Processes and rules · summary Factions are never gated by disagreement; a polity is, where its ultimate authority is vested in a group.
+     Links: area Processes and rules · draws on 63 · summary Factions are never gated by disagreement; a polity is, where its ultimate authority is vested in a group.
 134. **A constitution changes by the polity's own way or its amendment
      rule; force outside the constitution founds a new polity and never
      takes over the old.** Put to Mark on 2026-09-24, from §3.2.2's open
@@ -1486,7 +1486,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      polity, and the old one may accept it or contest it, the contest
      running like any other (rulings 115 and 116).
 
-     Links: area Processes and rules · summary Secession is the seceders' own act; they found their own polity and the old one may accept or contest.
+     Links: area Processes and rules · draws on 115, 116 · summary Secession is the seceders' own act; they found their own polity and the old one may accept or contest.
 136. **A polity dies by either route: its own dissolution, or when nothing
      holds it any more.** Put to Mark on 2026-09-24, from §3.2.2's open
      "who must agree": a polity dies only when people agree it has (ruling
@@ -1495,7 +1495,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      no member keeps it, no mind remembers it and no bearer records it; or
      either route. Mark: "Either route."
 
-     Links: area Processes and rules · summary A polity dies by either route: its own dissolution, or when nothing holds it any more.
+     Links: area Processes and rules · amends 65 · summary A polity dies by either route: its own dissolution, or when nothing holds it any more.
 137. **The way of deciding suggests the means of enforcing by default and
      never binds them.** Put to Mark on 2026-09-24, from §3.2.2's open
      link between a polity's deciding act and its means: rule by buying
@@ -1515,7 +1515,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      polity stays active for everything its group does agree on, and the
      conditions stay four.
 
-     Links: area Processes and rules · summary Deadlock is per act, not a polity condition; conditions stay four.
+     Links: area Processes and rules · draws on 133 · summary Deadlock is per act, not a polity condition; conditions stay four.
 139. **Law A is amended for materials.** Put to Mark on 2026-09-24, from
      D28's check left open for him: does materials-as-lineages satisfy Law
      A, which says morphology doesn't travel between games as foreign rule
@@ -1748,14 +1748,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stand; and it leaves a mark, seeding or feeding a personality trait.
      Mark picked all four.
 
-     Links: area Processes and rules · summary Past what it can bear a mind stops heeding directives, acts out, or rises; the break leaves a mark seeding or feeding a personality trait.
+     Links: area Processes and rules · draws on 159 · summary Past what it can bear a mind stops heeding directives, acts out, or rises; the break leaves a mark seeding or feeding a personality trait.
 162. **Breaking does not spread.** Put to Mark on 2026-09-24: does
      breaking spread from one mind to others? Two options were put: it
      spreads, a panic or a riot running through a crowd; or it doesn't.
      Mark: "It doesn't." So each mind breaks alone, and a riot is many
      minds breaking for the same reasons.
 
-     Links: area Processes and rules · summary Breaking does not spread; each mind breaks alone and a riot is many minds breaking for the same reasons.
+     Links: area Processes and rules · draws on 161 · summary Breaking does not spread; each mind breaks alone and a riot is many minds breaking for the same reasons.
 163. **Whether a break goes down or up turns on traits, the moment and
      chance.** Put to Mark on 2026-09-24: when strain breaks a mind, what
      decides whether it breaks down or rises? Three options were put, to
@@ -1763,7 +1763,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and who depends on it; and chance, a seeded draw weighted by the rest.
      Mark picked all three.
 
-     Links: area Processes and rules · summary Whether a break goes down or up turns on traits, the moment, and seeded chance.
+     Links: area Processes and rules · draws on 161 · summary Whether a break goes down or up turns on traits, the moment, and seeded chance.
 164. **What a mind can bear is set by its traits, its support and what it
      has been through.** Put to Mark on 2026-09-24: what sets how much
      strain a mind can bear? Three options were put, to pick all that
@@ -1771,7 +1771,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      believes in; and what it has been through, strain survived hardening
      it and past breaks scarring it. Mark picked all three.
 
-     Links: area Processes and rules · summary What a mind can bear is set by its traits, its support, and what it has been through.
+     Links: area Processes and rules · draws on 161 · summary What a mind can bear is set by its traits, its support, and what it has been through.
 165. **A culture is read from its people, and named when noted.** Put to
      Mark on 2026-09-24, opening language and culture: what is a culture
      in the sim? Three options were put: read from people, with no state
@@ -1802,7 +1802,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and given by the namer, ruling 36's naming being a sapient's own act.
      Mark picked all three.
 
-     Links: area Processes and rules · summary Names come from the tongue, from tales, and from the namer.
+     Links: area Processes and rules · draws on 36 · summary Names come from the tongue, from tales, and from the namer.
 169. **Culture spreads by contact, prestige and imposition, and drifts
      apart out of touch.** Put to Mark on 2026-09-24: how does culture
      spread between peoples? Four options were put, to pick all that
@@ -1847,7 +1847,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      curious and open minds; and mastery, deep skill making breakthroughs
      possible. Mark picked all four.
 
-     Links: area Processes and rules · summary Invention is driven by need, contact, temperament and mastery.
+     Links: area Processes and rules · draws on 142 · summary Invention is driven by need, contact, temperament and mastery.
 175. **The first Mesocosm overlay directs, as ruling 60 has it; the played
      slice's direct control is rewritten.** Put to Mark on 2026-09-25, from
      the finding that the played slice plan gives direct control of the
@@ -2405,7 +2405,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)": growth:heal lineages rest at an eighth of the cell price
      rather than a quarter; no full-price healing outside rest is built.
 
-     Links: area Processes and rules · summary The core reads mood from needs now (low reserve, hunger, wounds); strain builds whenever mood stays low; memory and situation wait for S1. 2026-10-18: a hazard wounds, a core wound share feeds mood, healing or rest answers it, strain builds and vitals shows it.
+     Links: area Bodies and anatomy · draws on 158, 159 · summary The core reads mood from needs now (low reserve, hunger, wounds); strain builds whenever mood stays low; memory and situation wait for S1. 2026-10-18: a hazard wounds, a core wound share feeds mood, healing or rest answers it, strain builds and vitals shows it.
 228. **A right click shows a ring of acts.** Put to Mark on 2026-09-25: how
      does a right click show its meanings (ruling 214): a ring of acts around
      the cursor, a cycle in place, or the critter's glance surfacing glyphs
@@ -2525,7 +2525,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      on the telling and not as an intent of its own; display and bluff in a
      contest stay sizing up (ruling 116).
 
-     Links: area Processes and rules · summary Posing is a telling's manner, the fourth thing a hearer weighs, carried on the telling and not as an intent of its own.
+     Links: area Processes and rules · draws on 117, 118 · summary Posing is a telling's manner, the fourth thing a hearer weighs, carried on the telling and not as an intent of its own.
 243. **With the sim on, a battlemap is projected from the generated volume,
      the DM's map an edit over it.** Put to Mark on 2026-09-26, from the VTT
      overlay plan's decision 1: the DM's own map asserted over the site's
