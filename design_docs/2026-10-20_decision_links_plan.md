@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-22:** in progress: L1, L2, L1b, L3, L4 and L5 done; L6 next. Shaped with Mark the same day in
+**Status, 2026-10-22:** in progress: L1 to L5 done; L6 under way (L6a done, L6b next). Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -129,6 +129,17 @@ Mark's answers, recorded as given.
   "doctrine_budget.toml"; "Check reports; next round consolidates". Review
   notes: "Latest outcome only", one note per statement, status moved into
   the body. DOC_POLICY's rules 5 and 6 carry these.
+- **L6's shape, 2026-10-22,** one card round. What goes to the stack: "Five
+  move, four stay": Stack 1, 2, 3, 11 and 14 bind any product on the stack
+  and seed a doctrine in mere; Stack 7 to 10, how the wing uses conatus,
+  kiss3d, isometer and its workspaces, stay, still tagged. The tool:
+  "Generalise, then move it": its paths become per-repo configuration, then
+  it moves into the stack beside muniment in eidetic, keeping its name until
+  a naming round (Naming 3). Other repositories: "Core v2, one section for
+  all": the rule becomes the canonical core's section 11, copied verbatim to
+  every repository carrying the core. The global `CLAUDE.md`: "Replace with
+  the draft", its numbering paragraph replaced the same day, then reworded
+  not to name anyone ("You don't have to name me specifically").
 
 ## Design
 
@@ -218,8 +229,8 @@ written when the outcome is recorded.
 
 Statements tagged *stack* (mere, genet, netrender, formats, the build) are
 the candidates for a stack-level doctrine in mere's `design_docs/` once the
-shape works here. Going global then means Mark's `CLAUDE.md` and the other
-repositories' doc policies, each text approved by him.
+shape works here. Going global then means the global `CLAUDE.md` and the
+other repositories' doc policies, each text approved (L6).
 
 ## Implementation
 
@@ -253,9 +264,25 @@ repositories' doc policies, each text approved by him.
   and B entered under their plan keys, each recorded with its outcome against
   the Execution area's doctrine. Done when the lookup for `sim-execution`
   shows them.
-- **L6. Global.** When L1 to L5 hold: stack-tagged statements moved to a
-  stack doctrine in mere, and the rule carried into Mark's `CLAUDE.md` and the
-  other repositories' doc policies, with his approval of each text.
+- **L6. Global.** When L1 to L5 hold, in five steps (shaped 2026-10-22):
+  - **L6a. The global `CLAUDE.md`.** Its numbering paragraph becomes
+    "Answers feed a doctrine". Done 2026-10-22.
+  - **L6b. The tool generalised.** Its paths (record, register, doctrine,
+    budget, manifest) come from a per-repo configuration, and a link may
+    name a statement in another repository. Done when isocosm's `check`
+    and lookups read as before and the tests pass.
+  - **L6c. The core's section 11.** The rule, written for any repository
+    (no isocosm paths), approved as text, then isocosm's addendum keeps
+    only its local paths and budget. Done when the text is approved.
+  - **L6d. A stack doctrine in mere.** Stack 1, 2, 3, 11 and 14 move to
+    `mere/design_docs/doctrine.md` with their own budget; isocosm cites them
+    across. Done when both repositories' checks are current and no isocosm
+    citation names the old keys.
+  - **L6e. To the stack and to every repository.** The tool moves beside
+    muniment in eidetic with the record types it uses, isocosm and mere pin
+    it, and core v2 is copied to every repository carrying the core, each
+    committed by pathspec. Done when both checks run from the pinned tool
+    and every repository carries core v2.
 
 ## L1 draft: the rule, for `design_docs/DOC_POLICY.md`'s local addendum
 
@@ -461,3 +488,6 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   Schema 9 and Directing 4 ("Both apply, as filed"). A bare plan keyword
   now lists the plan's decisions: `wing-decisions lookup sim-execution`.
   Next: L6, global.
+- **2026-10-22, L6 shaped and begun.** One card round settled what goes to
+  mere, the tool's move, core v2 and the global `CLAUDE.md` (Decisions);
+  L6a, that file's paragraph, is done. Next: L6b, the tool generalised.
