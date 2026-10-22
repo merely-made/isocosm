@@ -335,13 +335,17 @@ attended group runs its noted members exactly; a parent and its unweaned young
 run as individuals. Where members per state fall below a world-rule bound, a
 site and lineage moves to a rate model calibrated on the bench once per rules
 digest, every switch receipted; with no certified model it stays exact. The
-crowd's own chooser covers autonomous territories only.
+crowd's own chooser covers autonomous territories only. Lifting samples
+individuals from an aggregate by seed, conditioned on every asserted fact;
+restriction conserves the accounts back. A process is declarative enough for
+its aggregate to derive from its one definition, so scripted hooks run only in
+the foreground.
 
 *Not yet built:* rate models.
 
 Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999 · summary The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying.
 
-*Reviewed 2026-10-22, new. Mark: "As drafted, rate models marked".*
+*Refined 2026-10-22 from case 999 (Mark: "Both as drafted").*
 
 ### Processes 7. Time
 
@@ -415,21 +419,24 @@ way.*
 
 ### Processes 11. Belief
 
-Information spread is modelled cheaply and distributionally, how someone
-learned a thing resolved on demand. Any belief can be wrong (deceit, honest
+How knowledge spreads and resolves is Processes 19. Any belief can be wrong (deceit, honest
 mistake, a rumour retold), and entities act on what they believe; reach
 carries versions of an event. Whether a belief takes turns on what the
 receiver can check, who is telling, what it wants to hear and how it is told
 (posing is a telling's manner); each entity's disposition shifts a baseline
-drawn from the world entity's disposition. A secret is leverage kept by a
-taboo, its telling turning on relation, opinion and goals.
+drawn from the world entity's disposition. A secret is a taboo on telling, a
+norm whose sanction is reputational, held as an explicit set of knowers' notes
+rather than a field; its value is what release would do to its subject's
+standing, its telling a choice by relation, opinion and goals, and it ends by
+leaking into rumour.
 
 *Not yet built:* false beliefs, the four-way weighing, secrets and taboos.
 Knowing is notes plus reach, and tellings are built.
 
-Links: draws on 84, 86, 87, 117, 118, 119, 241, 1001 · summary Spread is modelled distributionally; any belief can be wrong; whether it takes weighs checking, teller, wish and manner; secrets are taboo leverage.
+Links: draws on 87, 117, 118, 119, 241, 1001, processes.19 · summary Any belief can be wrong; whether it takes weighs checking, teller, wish and manner; a secret is a taboo's set of knowers, ending by leaking.
 
-*Reviewed 2026-10-22, new. Mark: "Belief here, temperament to World 4".*
+*Refined 2026-10-22 from case 1001, its spread and resolution moved to
+Processes 19 (Mark: "Five points apart").*
 
 ### Processes 12. Collective action
 
@@ -458,10 +465,14 @@ drafted").*
 
 ### Processes 13. Making and learning
 
-Value bears on scarcity, capability and material need, need derived from
-alignment, acts and predilection. Taking an action is like crafting: values,
-abilities and needs shape what is made, and a fey mood can be a triggered
-need. A skill rises by doing, teaching, study and breakthroughs and decays
+Value bears on scarcity, capability and material need, a reading at a place
+and a time, never stored, and money is an asserted claim; need is derived from
+alignment, acts and predilection. Taking an action is like crafting: an act's
+score is need times trust times approval, every factor derived, and what gets
+made follows the same score; a fungible act folds into its cohort and leaves
+no note, so grinding yields competence and never a legend, and a fey mood is a
+triggered need. In aggregate, exchange is flow along routes from cheap to
+dear. A skill rises by doing, teaching, study and breakthroughs and decays
 slowly to a floor (Schema 6). Techniques are found in the canon and invented
 by masters, invention driven by need, contact, temperament and mastery. An
 item improves as far as its maker's skill and its story allow, never capped
@@ -472,7 +483,7 @@ improvement. Skills are held on every entity.
 
 Links: draws on 94, 95, 132, 141, 142, 143, 173, schema.6, 1005, 1006 · summary Value tracks scarcity, capability and need; acting is like crafting; skills rise four ways and decay to a floor; masters invent; items grow with maker and story.
 
-*Reviewed 2026-10-22, new. Mark: "Split: making, culture".*
+*Refined 2026-10-22 from cases 1005 and 1006 (Mark: "Both as drafted").*
 
 ### Processes 14. How culture moves
 
@@ -553,6 +564,26 @@ Links: draws on 124, 430, schema.12, processes.4, processes.6, processes.7 · su
 
 *Reviewed 2026-10-22, new: from the design record's §3.5, ruled with the
 record; split from the derivation rule at Mark's word ("Split them").*
+
+### Processes 19. How knowledge resolves
+
+Information spread is modelled cheaply and distributionally. The reach field
+stores arrivals, not histories: when an event reached a place, from where, at
+what strength, later reach being that strength decayed. Whether someone knows
+is a seeded draw over where they have been and how much it matters to them,
+the same question always answered alike; how they learned it is sampled
+backward on demand, a teller lifted from the carrier cohort only if someone
+must meet them; once resolved for something cared about, the answer is a
+note. Carriers, bearers and rank know more than their place; a secret, known
+to few, spreads as notes along relations, never as a field (Processes 11).
+
+*Not each verified:* the seeded draw and the backward sampling. Knowing is
+notes plus reach.
+
+Links: draws on 5, 84, 86, record.3 · summary Reach stores arrivals; knowing is a seeded draw over where one has been; how one learned is sampled backward; resolved answers become notes.
+
+*Reviewed 2026-10-22, new: case 86's five points, from the design record's
+§3.4, set apart from belief at Mark's word ("Five points apart").*
 
 ## Ecology
 
@@ -644,13 +675,15 @@ made of stuff, the basic macro kingdom (meso and micro worlds left open), and
 nis is a scale, not a material. A lineage's traits may travel between games as
 what things are made of (Law A, amended). Each declared material keeps a
 distinct native stock, and an edit's mass is credited by material, at a
-density and into an account set at founding.
+density and into an account set at founding. A material's properties are its
+lineage's traits and its interactions are effects, never a table of pairs;
+what a thing is made of is a note, and a sophont with no note on a lineage
+cannot use it; a rare material is a rare critter, and an extinction ends a
+material.
 
 Links: draws on 96, 97, 98, 100, 139, 739, 836, 1007 · summary A world's materials are its creatures; the world is an entity of stuff; each material keeps its own stock, edits credited by density.
 
-*Reviewed 2026-10-22, new: drafted in the schema review and placed here at
-Mark's word ("Matter to Ecology"). Built: per-material stocks, and density
-and account on `Material`.*
+*Refined 2026-10-22 from case 1007 (Mark: "Both as drafted").*
 
 ## Bodies and anatomy
 
@@ -919,16 +952,20 @@ carries a note, made by the sim as a player would make one; legend never
 fades. The record of significant events (unprecedented, legendary or
 narratively significant) is never lossy, and the hagiograph judges promotion
 by novelty, quality and relevance. Noting and promotion are world events;
-collection and merging are work on the record. Collection is garbage
-collection rooted in what players care about; examining counts as play; it is
-graded, down to just the event.
+collection and merging are work on the record. Collection is roots and
+reachability: a thing of note is kept while something reaches it from a root
+(what players attend, asserted facts a live thing relies on, pending due
+events, legend), and collected only when nothing reachable could tell it from
+its regenerated self, counts and masses conserved. It sheds in steps: the full
+individual, a stub an event names it by, then the event alone. Examining
+counts as play.
 
 *Not yet built (sim plan, S4):* graded collection. Today collection folds
 only exactly equivalent state.
 
 Links: draws on 4, 69, 70, 71, 80, 125, 993, 994 · summary Ambient, of note, legend; the significant record is never lossy; collection is graded GC rooted in what players care about.
 
-*Reviewed 2026-10-22, new. Mark: "Mark the unbuilt rules as a reading" (marked above), and the gap became an owed item in the sim plan's S4.*
+*Refined 2026-10-22 from cases 993 and 994 (Mark: "As drafted").*
 
 ### Record 3. Memory is local and fades
 
@@ -1060,12 +1097,15 @@ materials run from a normal base matching a ruleset to fully generated. Its
 disposition seeds its founders only; after them dispositions are inherited and
 lived, the world shaping its people through their conditions, and a fluid
 temperament moves by what happens to the world, its cycles and its epoch
-boundaries, never by what its people are.
+boundaries, never by what its people are. Each kind a world may be is a
+position on a ruled axis (inert, a body without agency; sentient, a macro
+critter; a sophont; a god; dead, its entity on the planes); its agentless
+processes are its own metabolism, chosen where it is a critter or a sophont;
+its geology is its anatomy.
 
 Links: draws on 99, 101, 102, 120, 121, 122, 140, 1008 · summary A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid.
 
-*Refined 2026-10-22 in the Processes review: how its temperament moves (120 to
-122; Mark: "Belief here, temperament to World 4").*
+*Refined 2026-10-22 from case 1008 (Mark: "Both as drafted").*
 
 ### World 5. Founding and authoring
 
