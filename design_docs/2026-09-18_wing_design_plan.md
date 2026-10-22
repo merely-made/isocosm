@@ -10976,6 +10976,22 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
      Links: area World generation · draws on 105, 126, 11 · summary Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges.
 
+1012. **Quality is affordance, not a number.** Docketed as D27 in the design
+      record's §3.3.1 and accepted with the docket's remaining items on
+      2026-09-22 (ruling 106, Mark: "accept all as suggested"); made a case on
+      2026-10-22 (Mark: "Dockets become cases"). The reading: what a weapon
+      lets its wielder do, read by the strike system, and never a stat to
+      compare. Four sources vary it: sort, the shape, which sets which strikes
+      exist at all; material, its lineage's traits; make, the maker's skill
+      and the act it came from; and condition, what has happened to it since.
+      They resolve into which techniques the weapon affords, cleanly, poorly
+      or not at all, so no weapon is one a skilled hand cannot swing, only one
+      that affords less. Improvement is fair because it is an act, a recipe
+      with the item as an input, and a blade that has done things of note may
+      afford a technique of its own.
+
+      Links: area Processes and rules · draws on 96, 95, 143 · summary An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -12370,7 +12386,7 @@ combat/strike quality system", whether Mount & Blade's stats and tiers are a
 good method or there is one with "less number comparison", and notes that
 tiers could gate techniques within a bucket and that improving a sword over
 time is fairer than "can't swing that sword". *Recommendation, docketed as
-D27, Mark's to rule.* Quality as **affordance**, not as a number: what a
+D27 (case 1012), accepted by ruling 106.* Quality as **affordance**, not as a number: what a
 weapon lets its wielder do, read by the strike system, and never a stat to
 compare.
 

@@ -4939,6 +4939,13 @@ area = "World generation"
 summary = "Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges."
 draws_on = ["11", "105", "126"]
 
+[cases."1012"]
+title = "Quality is affordance, not a number"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act."
+draws_on = ["95", "96", "143"]
+
 [decisions."orthographic-voxel-presentation D1"]
 title = "surface camera (2026-10-21), applies 382"
 source = "mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md"
@@ -5559,7 +5566,7 @@ title = "Making and learning"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "Value tracks scarcity, capability and need; acting is like crafting; skills rise four ways and decay to a floor; masters invent; items grow with maker and story."
-draws_on = ["94", "95", "132", "141", "142", "143", "173", "1005", "1006", "schema.6"]
+draws_on = ["94", "95", "132", "141", "142", "143", "173", "1005", "1006", "1012", "schema.6"]
 
 [statements."processes.14"]
 title = "How culture moves"

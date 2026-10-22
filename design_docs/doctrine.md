@@ -481,7 +481,7 @@ by its material.
 *Not yet built:* value, fey moods, skill decay, techniques, invention, item
 improvement. Skills are held on every entity.
 
-Links: draws on 94, 95, 132, 141, 142, 143, 173, schema.6, 1005, 1006 · summary Value tracks scarcity, capability and need; acting is like crafting; skills rise four ways and decay to a floor; masters invent; items grow with maker and story.
+Links: draws on 94, 95, 132, 141, 142, 143, 173, schema.6, 1005, 1006, 1012 · summary Value tracks scarcity, capability and need; acting is like crafting; skills rise four ways and decay to a floor; masters invent; items grow with maker and story.
 
 *Refined 2026-10-22 from cases 1005 and 1006 (Mark: "Both as drafted").*
 
