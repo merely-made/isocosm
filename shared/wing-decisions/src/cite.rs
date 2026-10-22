@@ -21,9 +21,11 @@ static NUM: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\d+|\bto\b").unwrap(
 
 /// What a body of text cites, restricted to case numbers up to `max_case`
 /// and to plan keywords in `plans`. Ranges ("971 to 974") expand when short.
+/// `record` is the file name of the repository's case record, if it has one.
 pub struct Citer<'a> {
     pub max_case: u32,
     pub plans: &'a BTreeSet<String>,
+    pub record: Option<&'a str>,
 }
 
 impl Citer<'_> {
@@ -81,7 +83,7 @@ mod tests {
 
     fn cites(text: &str) -> Vec<String> {
         let plans = BTreeSet::from(["sim-execution".to_string()]);
-        let c = Citer { max_case: 984, plans: &plans };
+        let c = Citer { max_case: 984, plans: &plans, record: Some("2026-09-18_wing_design_plan.md") };
         c.cite(text).iter().map(|k| k.to_string()).collect()
     }
 

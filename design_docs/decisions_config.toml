@@ -1,0 +1,6 @@
+# Read by wing-decisions (DOC_POLICY, "Decisions and doctrine"): what this
+# repository keeps beyond the standard design_docs names.
+
+# The design record holding the numbered cases, by file name, matched
+# wherever it lives outside archive_docs/.
+record = "2026-09-18_wing_design_plan.md"

@@ -222,7 +222,7 @@ mod tests {
     #[test]
     fn back_links_and_citations_meet_in_one_item() {
         let plans = BTreeSet::from(["x".to_string()]);
-        let c = Citer { max_case: 984, plans: &plans };
+        let c = Citer { max_case: 984, plans: &plans, record: Some("2026-09-18_wing_design_plan.md") };
         let record = "## 0.\n\n1. **One.**\n\n2. **Two.** Per ruling 1.\n\n   Links: draws on 1 · summary Two\n\n## 1.\n";
         let files = vec![
             ("d/2026-09-18_wing_design_plan.md".to_string(), facts("d/2026-09-18_wing_design_plan.md", record, &c)),
