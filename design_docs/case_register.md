@@ -31,6 +31,7 @@ three design docs that cite it. The record holds the words.
 | 81 | Asserting a constitution is itself an act, the definitive one. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 92 | The named scopes (world, region, area, battlemap) must not hardcode Isometry's paradigm into the sim. | none |
 | 96 | Abilities, skills and techniques are defined (a technique is an ability with a skill precondition); kleptoplasty is conditional; nis is a scale, not a material. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 97 | The materials of a world are its critters across all kingdoms. | [games wing founding](2026-07-30_games_wing_founding.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 98 | The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world. | [environmental surfaces](2026-07-08_environmental_surfaces_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 100 | World is a kingdom with macro scale; meso and micro worlds are left open. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 139 | Law A is amended for materials: a lineage's traits may travel as what things are made of, beside shapes becoming relics. | [games wing founding](2026-07-30_games_wing_founding.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
@@ -223,7 +224,6 @@ three design docs that cite it. The record holds the words.
 | Case | Decides | Cited by |
 | --- | --- | --- |
 | 57 | Reproduction rerolls expression and the epoch boundary changes the lineage; NPC lineages adapt at the epoch boundary by default, as does the player's. | [epoch boundary](../mesocosm/design_docs/2026-08-01_epoch_boundary_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
-| 97 | The materials of a world are its critters across all kingdoms. | [games wing founding](2026-07-30_games_wing_founding.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 182 | Unplayed lineages adapt, inherit and develop, weighing their adaptation against the rest of the trophic web; that is what an epoch is about. | [epoch boundary](../mesocosm/design_docs/2026-08-01_epoch_boundary_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 225 | A region has collapsed when one of its trophic levels (producers, consumers, decomposers) is gone there. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 226 | Ecological regions follow world biomass, filling by trophic level and spilling over; they merge as biomass falls, and a collapse is global when one remains. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
@@ -236,10 +236,7 @@ three design docs that cite it. The record holds the words.
 | 687 | At site grain a region groups sites by biomass: each trophic level fills its slot until over capacity, then spills; regions merge as biomass falls. | none |
 | 689 | Regions are derived each round from site biomass and routes, never kept; a world rule sets each trophic level's slot capacity. | none |
 | 718 | A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 752 | A minimal native lineage revision comes forward: development-recipe variants from what the lineage has learned. | none |
 | 754 | A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt. | none |
-| 762 | The review and succession lanes re-point at the switch: review becomes lineage::Review over the native Session. | none |
-| 763 | The boundary and revision move into lineage/, with directing re-exporting. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 764 | Native lessons from eating a part whole are discovery; legacy discovery's condition table retires with the world. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 765 | The native revision grows to tracts and systems at the boundary, built in the lineages family. | none |
 | 806 | A lineage's metabolic complexity counts distinct functions and systems across all living members; native boundary turns use descending counts. | [epoch boundary](../mesocosm/design_docs/2026-08-01_epoch_boundary_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |

@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing and Mesocosm reviewed; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm and Ecology reviewed; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -16,6 +16,81 @@ remain the authority.
 ## Processes and rules
 
 ## Ecology
+
+
+### Ecology 1. Two doors change a lineage
+
+Reproduction rerolls expression, a lottery set by the heterogeneity of its
+genes; the epoch boundary changes the lineage itself, like the shop between
+rounds, folding in the variants that prospered (tracts and systems). Every
+lineage, played or not, adapts, inherits and develops there, weighing its
+adaptation against the rest of the web by growing a copy forward. Discovery is
+the lessons learned from eating a part whole. Lineages take their boundary
+turns by metabolic complexity: distinct functions and systems across all
+living members. A player may branch or fork a line, with a plan to compete or
+cooperate with its origin.
+
+Links: draws on 57, 182, 684, 764, 765, 806 · summary Reproduction rerolls expression; the epoch boundary changes the lineage; every lineage adapts against the web.
+
+*Reviewed 2026-10-22, new; drafted beside a materials statement Mark sent to
+the schema's area (case 97).*
+
+### Ecology 2. Regions follow biomass
+
+Each trophic level fills its slot in a region until it reads over capacity,
+then spills into a new one; regions are derived each round from site biomass
+and routes, and merge as biomass falls. A region has collapsed when a level it
+once held is gone there. Total collapse is the world's own authored predicate;
+nothing is hardcoded, and a world that declares none has no total collapse
+(Method 8).
+
+Links: draws on 225, 226, 687, 689, 754, 878 · summary Regions are derived from biomass by trophic slot; a region collapses when a level it held is gone; total collapse is authored.
+
+*Reviewed 2026-10-22, new. Mark: "Both as drafted, 878 amends 226". 754's
+clause on levels "the world holds within reach" stays unbuilt, to be
+sharpened.*
+
+### Ecology 3. The web's health
+
+A level of the web stays alive by four measures (persistence, turnover,
+collapse, response to an intervention), each bounded in the world's rules. The
+first disturbances are disease, an overperformer and a keystone lost;
+catastrophe follows. Harmony, order and chaos are readings of balance:
+unmaintained, maintained, unbalanced. An added ecological noun counts as
+independent only through a distinct authored mechanical effect.
+
+Links: draws on 267, 283, 383, 879 · summary Four measures keep a level alive; disease, overperformer and keystone first; harmony, order and chaos are readings.
+
+*Reviewed 2026-10-22, new. Mark: "Both as drafted".*
+
+### Ecology 4. Spread is overflow along routes
+
+Growth beyond what its substrate holds (soil, a host's tissue) moves to
+neighbours: the excess splits equally among routes with positive
+transmission, each route transmits its share after its travel, and what is
+not transmitted stays. Capacity is a lineage-trait mechanic, with authored
+values modifying it at the substrate. A chooser (a player's mold) directs its
+overflow. A body that takes in grazes any living body of another lineage at
+its site, weighted by what each holds; a dead body rots back to its site;
+carrion comes later.
+
+Links: draws on 498, 590, 718, 827, 828, 831 · summary Overflow splits equally across transmitting routes; capacity is a lineage mechanic; bodies graze other lineages; the dead rot.
+
+*Reviewed 2026-10-22, new. Mark: "Structure in doctrine, numbers into world
+rules".*
+
+### Ecology 5. Light and life
+
+The sun's credit scales with the light field's intensity, and a site's store
+holds a night, so producers draw down in the dark; both amounts are the
+world's rules. A life span is individual: a death hazard under the lineage's
+drawn ceiling, acting only where the ceiling is above maturity.
+
+Links: draws on 906, 949, 972, 982, 983 · summary Light credit scales with the sun and a store holds a night; life spans are individual hazards under a drawn ceiling.
+
+*Reviewed 2026-10-22, new. Mark: "Structure in doctrine, numbers into world
+rules". The credit and store are constants in `ecology.rs` today (500 and
+360,000, A1's values); making them world rules is owed in the sim plan.*
 
 ## Bodies and anatomy
 
