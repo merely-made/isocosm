@@ -667,13 +667,9 @@ three design docs that cite it. The record holds the words.
 | 229 | When a player's lineage ends, they pick another lineage in the same world or a new world, their call. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 230 | A total ecological collapse ends the world as a game, but the world stays watchable. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 677 | Overlay M2 is the families plan's Mesocosm share and keeps its own condition: the web stays alive in most draws. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
-| 678 | Mesocosm's world family moves last, with M3, so Mesocosm keeps playing on the legacy world until directing on Isocosm is ready. (amended by 681, 755) | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
-| 680 | An interim M4 at site grain gives a first played loop on Isocosm without in-site space; the full M4 follows when places land. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
-| 681 | The interim M4 is the switch: genet's runtime moves onto a native Session and the legacy world family retires then. (amended by 755) | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 682 | M3 plays a native generated lineage; the founders join when the bodies family and fork 9 land. | none |
 | 751 | A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 753 | After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available. | none |
-| 755 | The world families come forward in the migration push; Mesocosm's and Eponym's worlds move onto native, the switch with them, legacy bodies deleted. | none |
 | 833 | Mesocosm owns and saves actual spatial state, bound to native body and terrain revisions; missing or stale inputs refuse. | none |
 | 841 | Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission. | none |
 | 842 | Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback. | none |

@@ -1001,24 +1001,28 @@ title = "The first Mesocosm overlay directs, as ruling 60 has it; the played sli
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "The first Mesocosm overlay directs, as ruling 60 has it; the played slice's direct control is rewritten."
+draws_on = ["60"]
 
 [cases."176"]
 title = "A Mesocosm player directs with priorities, places, stances and nudges 216"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "A Mesocosm player directs with priorities, places, stances and nudges."
+draws_on = ["59"]
 
 [cases."177"]
 title = "A critter follows its player's directing by its bond"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "A critter follows its player's directing by its bond, built from how well the player's orders have served it."
+draws_on = ["60"]
 
 [cases."178"]
 title = "Whether the bond carries across generations is a setting, seeded by default"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "Whether the bond carries across generations is a setting (fresh, seeded by lineage, or whole); seeded is the default."
+draws_on = ["61", "177"]
 
 [cases."179"]
 title = "A Mesocosm player chooses when to start, from the world's habitability for their critter onward"
@@ -1055,6 +1059,7 @@ title = "Creative mode shows the truth and does not edit"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "Creative mode shows the truth and does not edit; editing belongs to the world editor."
+draws_on = ["89", "180"]
 
 [cases."185"]
 title = "Eponym's co-op is each player living their own creature"
@@ -1159,6 +1164,7 @@ title = "A PLACES directive names a node of the place graph"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "A PLACES directive names a place-graph node by opaque handle; dev intents keep raw coordinates."
+draws_on = ["72", "147"]
 
 [cases."206"]
 title = "When food is short, the sim resolves the crowd's choices in pairwise encounters"
@@ -1216,18 +1222,21 @@ title = "A click draws the critter's attention; attending is the default, and a 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "A click draws the critter's attention as a nudge it weighs by its bond; attending is the default and a right click picks another meaning."
+draws_on = ["176", "177"]
 
 [cases."215"]
 title = "A click never warns"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "A click never warns; the critter reads what it is shown by its own sense, and avoidance comes from experience and stance."
+draws_on = ["214"]
 
 [cases."216"]
 title = "Standing orders grow from attention"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "Standing orders (ranges, homes, priorities, stances) grow from the player's attention as desire paths; the only directive sent is the nudge."
+draws_on = ["59", "214"]
 
 [cases."217"]
 title = "The larger reserve does not win an escalated fight; the probe's other readings stand"
@@ -1288,18 +1297,21 @@ title = "A right click shows a ring of acts"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "A right click shows a ring of acts around the cursor, the critter's possible acts toward the target, and a click picks one."
+draws_on = ["214"]
 
 [cases."229"]
 title = "When a player's lineage ends, they pick another here or a new world, their call"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "When a player's lineage ends, they pick another lineage in the same world or a new world, their call."
+draws_on = ["226"]
 
 [cases."230"]
 title = "A total collapse ends the world as a game, and it stays watchable"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "A total ecological collapse ends the world as a game, but the world stays watchable."
+draws_on = ["181", "226"]
 
 [cases."232"]
 title = "Eponym's blows are resolved in the foreground and handed back"
@@ -3241,12 +3253,7 @@ title = "The overlay's M2 is the families plan's Mesocosm share"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "Overlay M2 is the families plan's Mesocosm share and keeps its own condition: the web stays alive in most draws."
-
-[cases."678"]
-title = "Mesocosm's world family moves last, with M3"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Mesocosm"
-summary = "Mesocosm's world family moves last, with M3, so Mesocosm keeps playing on the legacy world until directing on Isocosm is ready. (amended by 681, 755)"
+draws_on = ["260", "591"]
 
 [cases."679"]
 title = "The driving intents become the critter's own acts; `Idle` goes"
@@ -3254,18 +3261,6 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "The six old driving intents become the critter's own acts chosen by its methodology; Idle has no role."
 draws_on = ["671"]
-
-[cases."680"]
-title = "An interim M4 at site grain"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Mesocosm"
-summary = "An interim M4 at site grain gives a first played loop on Isocosm without in-site space; the full M4 follows when places land."
-
-[cases."681"]
-title = "The interim M4 is the switch; amends 678"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Mesocosm"
-summary = "The interim M4 is the switch: genet's runtime moves onto a native Session and the legacy world family retires then. (amended by 755)"
 
 [cases."682"]
 title = "M3 plays a native generated lineage"
@@ -3572,6 +3567,7 @@ title = "A site is habitable when the lineage's conditions hold and a member liv
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there."
+draws_on = ["179"]
 
 [cases."752"]
 title = "A minimal native lineage revision comes forward"
@@ -3584,18 +3580,13 @@ title = "After a regional collapse, members migrate and the player may start aga
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available."
+draws_on = ["181"]
 
 [cases."754"]
 title = "A region has collapsed only in a level it once held"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt."
-
-[cases."755"]
-title = "The world families come forward; amends 678 and 681's order"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Mesocosm"
-summary = "The world families come forward in the migration push; Mesocosm's and Eponym's worlds move onto native, the switch with them, legacy bodies deleted."
 
 [cases."756"]
 title = "Lineage data moves into isocosm; isometer keeps an opaque tag"
@@ -3935,12 +3926,14 @@ title = "Authored step profiles tie physical movement to native processes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission."
+draws_on = ["833"]
 
 [cases."842"]
 title = "Destinations supply explicit authored arrival placements and windows"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback."
+draws_on = ["833"]
 
 [cases."843"]
 title = "Ordinary reservation requires explicit native ownership"
@@ -3977,6 +3970,7 @@ title = "Authored birth profiles use the parent's current physical pose"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "Authored birth profiles resolve a newborn's physical placement from its parent's current pose; refused placement never undoes the birth."
+draws_on = ["821", "833"]
 
 [cases."849"]
 title = "A debit may select an exact portion of a named native lot"
@@ -4460,6 +4454,7 @@ title = "Mesocosm defaults to the named A1 preset; the shared generator stays St
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "Mesocosm defaults to the named A1 preset once receipt and physical-witness gates pass; the shared generator default stays Stock."
+draws_on = ["907"]
 
 [cases."962"]
 title = "The stack supplies identity and admitted connections to family games"
@@ -4516,6 +4511,7 @@ title = "Mesocosm's default tempo follows the measured tick: 2 ticks per second"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Mesocosm"
 summary = "Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops."
+draws_on = ["976"]
 
 [cases."979"]
 title = "The sun's parameters are an optional `Rules.sun`, absent meaning the default"
@@ -4598,7 +4594,7 @@ title = "Surfaces derive from knowledge and control"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
 summary = "Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known."
-draws_on = ["432", "445", "847", "868", "869", "870"]
+draws_on = ["180", "184", "432", "445", "847", "868", "869", "870"]
 
 [statements."directing.2"]
 title = "Each game foregrounds one rung"
@@ -4691,12 +4687,47 @@ area = "Licensing and sources"
 summary = "Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0."
 draws_on = ["919"]
 
+[statements."mesocosm.1"]
+title = "What the player plays"
+source = "design_docs/doctrine.md"
+area = "Mesocosm"
+summary = "The player plays a critter whose lineage relates by its traits; keeps the parent at a birth; speciating is the player's act."
+draws_on = ["155", "175", "183", "202", "682"]
+
+[statements."mesocosm.2"]
+title = "The only directive is a nudge"
+source = "design_docs/doctrine.md"
+area = "Mesocosm"
+summary = "The only directive is a nudge by click; standing orders grow from attention; the bond carries by world setting."
+draws_on = ["176", "177", "178", "205", "214", "215", "216", "228"]
+
+[statements."mesocosm.3"]
+title = "Starting, losing and going on"
+source = "design_docs/doctrine.md"
+area = "Mesocosm"
+summary = "Start from habitability or later; a regional collapse is survivable; a total collapse ends the game, still watchable."
+draws_on = ["179", "181", "229", "230", "751", "753"]
+
+[statements."mesocosm.4"]
+title = "Physical space is the game's"
+source = "design_docs/doctrine.md"
+area = "Mesocosm"
+summary = "Mesocosm owns its spatial state; authored profiles bind movement, arrival and birth placement; missing inputs refuse."
+draws_on = ["833", "841", "842", "848", "method.8"]
+
+[statements."mesocosm.5"]
+title = "Defaults"
+source = "design_docs/doctrine.md"
+area = "Mesocosm"
+summary = "Mesocosm defaults to A1 and to 2 ticks a second, following measurement."
+draws_on = ["961", "978"]
+
 [statements."method.1"]
 title = "Evidence is drawn, not picked"
 source = "design_docs/doctrine.md"
 area = "Method and documents"
 summary = "Tests draw under an unchosen seed; evidence is kept apart from reports; controls name their fault; gates are staged with what they gate."
-draws_on = ["15", "260", "366"]
+draws_on = ["15", "260", "366", "677"]
 
 [statements."method.2"]
 title = "Questions are collected"
@@ -4739,6 +4770,13 @@ source = "design_docs/doctrine.md"
 area = "Method and documents"
 summary = "CLAUDE.md points to the records and holds only what an agent needs to find them and work here."
 draws_on = ["615"]
+
+[statements."method.8"]
+title = "Refuse, never invent"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "A missing or stale input refuses; nothing invents a value to fill it."
+draws_on = ["833", "842", "848", "962"]
 
 [statements."naming.1"]
 title = "The family"
