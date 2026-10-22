@@ -2943,7 +2943,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      once a period, the certification showing the new balance; and its prey
      is a seeded draw weighted by what each eligible prey holds.
 
-     Links: area Processes and rules · summary A consumer eats across its prey's matter once a period, choosing prey by a draw weighted by holdings.
+     Links: area Processes and rules · draws on 287 · summary A consumer eats across its prey's matter once a period, choosing prey by a draw weighted by holdings.
 295. **mere's atlas is sized by limits the host fills in.** Put to Mark on
      2026-09-26, from the mere lane's assessment for ruling 289: a plain-data
      `AtlasLimits`, the 3D texture dimension and an atlas byte budget, filled
@@ -3007,7 +3007,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      acts of a refused advance; keep the hook, carry the holdings in the
      act's event, or snapshot in the probe? Mark: "Keep the hook."
 
-     Links: area Processes and rules · summary The sim core keeps its observation hook, Simulation::watch.
+     Links: area The sim's schema and saves · summary The sim core keeps its observation hook, Simulation::watch.
 323. **With Cleromancy off, `>choose` seeds its draw from the command.** Put
      to Mark on 2026-09-26, with 321: the VTT's own seeded draw of ruling
      298 takes the command's seed and domain, so a command always makes the
@@ -3123,7 +3123,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      DT3 does, and receipts show the issued amount beside the conserved
      total.
 
-     Links: area Processes and rules · summary The dev source's issue and assisted label live in the history; the logged command is the record; receipts show issued amount beside the conserved total.
+     Links: area Processes and rules · draws on 271 · summary The dev source's issue and assisted label live in the history; the logged command is the record; receipts show issued amount beside the conserved total.
 345. **The flow record holds every move, when asked.** Put to Mark on
      2026-09-26, with ruling 270: every move switched on when wanted, every
      move always on, or a net change per tick? Mark: "Every move, when
@@ -3179,13 +3179,13 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineage." Whatever has a synthesis process is a producer, mirroring
      digestion, and no producer classification enters the core.
 
-     Links: area Processes and rules · summary A declared synthesis produces the actor's own lineage's matter; whatever has a synthesis process is a producer, with no producer classification in the core.
+     Links: area Processes and rules · draws on 342 · summary A declared synthesis produces the actor's own lineage's matter; whatever has a synthesis process is a producer, with no producer classification in the core.
 358. **A dev placement may fill any declared matter account.** Put to Mark
      on 2026-09-27, with 357: any declared matter account, or world matter
      only? Mark: "Any declared matter account." Mesocosm's overlay chooses
      soil.
 
-     Links: area Processes and rules · summary A dev placement may fill any declared matter account; Mesocosm's overlay chooses soil.
+     Links: area Processes and rules · draws on 271, 357 · summary A dev placement may fill any declared matter account; Mesocosm's overlay chooses soil.
 359. **Each flow names the process that moved it.** Put to Mark on
      2026-09-27, with 357: add the act's process as the reason, or leave it
      out as ruling 345 had it? Mark: "Add the process."
@@ -3294,7 +3294,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      that successive tick results cannot accumulate or mix records, in both
      execution modes, with ledger reconciliation retained.
 
-     Links: area Processes and rules · summary Checkpoint 5 requires a per-tick flow handoff API so successive tick results cannot accumulate or mix records.
+     Links: area The sim's schema and saves · draws on 345 · summary Checkpoint 5 requires a per-tick flow handoff API so successive tick results cannot accumulate or mix records.
 
 372. **The atlas budget is saved locally per device.** Asked on 2026-09-27:
      "Should the atlas budget survive restarting the app? The existing
@@ -3875,7 +3875,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (recommended)." (B) "The site's stock, invisible in the volume." (C)
      "Refused whole." Mark chose A, "Heaped beside the cut".
 
-     Links: area Processes and rules · summary Earth a carver cannot hold is heaped beside the cut as an automatic fill edit, conserved and diggable; until capacity exists the carver holds all.
+     Links: area Processes and rules · draws on 53, 412 · summary Earth a carver cannot hold is heaped beside the cut as an automatic fill edit, conserved and diggable; until capacity exists the carver holds all.
 
 417. **The outdoors divides into walkable patches, capped.** Asked on
      2026-09-30, the first of SP5's forks: "How is open air divided into
@@ -9182,7 +9182,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      require native conservation and replay checks. This ruling changes
      neither process rates nor the committed choice within a tick.
 
-     Links: area Processes and rules · summary Age and upkeep continue during travel; soil produced by upkeep is carried until a later native site deposit.
+     Links: area Processes and rules · draws on 817 · summary Age and upkeep continue during travel; soil produced by upkeep is carried until a later native site deposit.
 
 821. **A child born during travel shares the remaining journey.**
      2026-10-11, Q3's native journey semantics.
@@ -9195,7 +9195,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      must preserve the shared remaining duration under 817. This answer
      does not certify the rejected reproduction candidate or A1.
 
-     Links: area Processes and rules · summary A birth during travel is allowed under ordinary conditions and the child shares the parent's remaining journey.
+     Links: area Processes and rules · draws on 817 · summary A birth during travel is allowed under ordinary conditions and the child shares the parent's remaining journey.
 
 822. **Travel events have a typed journey location without site reach.**
      2026-10-11, Q3's native journey semantics.
@@ -9208,7 +9208,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and backward reader need source review and native tests; the answer
      does not select an invented site or certify saved histories.
 
-     Links: area Processes and rules · summary An event during travel names the journey as its native location and gains no site reach until a later native telling.
+     Links: area Processes and rules · draws on 817 · summary An event during travel names the journey as its native location and gains no site reach until a later native telling.
 
 823. **A corpse completes the remaining journey before site availability.**
      2026-10-11, Q3's native journey semantics.
@@ -9221,7 +9221,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      populations until arrival. Representation, decay and conservation
      require native verification without changing authored process rates.
 
-     Links: area Processes and rules · summary A member dying during a journey leaves a corpse that completes the journey and becomes available at the destination.
+     Links: area Processes and rules · draws on 817 · summary A member dying during a journey leaves a corpse that completes the journey and becomes available at the destination.
 
 825. **The precise-contact fixture has a named native founding profile.**
      2026-10-11, Eponym's native fixture save owner.
@@ -9328,7 +9328,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      offered matter provenance, including mixed-source parts, rather than
      require the current holder's lineage to equal the admitted source.
 
-     Links: area Processes and rules · summary New ordinary feeding processes derive their target and source selector from the actual declared intake port; unmarked saves unchanged.
+     Links: area Processes and rules · draws on 829 · summary New ordinary feeding processes derive their target and source selector from the actual declared intake port; unmarked saves unchanged.
 
 833. **Mesocosm saves actual spatial state beside native body and terrain revisions.**
      2026-10-12, the actual geometry provider follow-up to830.
@@ -10584,7 +10584,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      function in the sim (Recommended)". The card is in the resident views
      plan's field admission section.
 
-     Links: area Processes and rules · amends 970 · summary The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored.
+     Links: area Ecology · amends 970 · summary The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored.
 
 972. **Presentation and ecology both read the light block in the first slice.**
      Asked with 971. Options: (1) presentation only: the tracer gains a
@@ -10610,7 +10610,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      year; (3) arc only, no night yet. Mark: "Honest units, with night
      (Recommended)".
 
-     Links: area Processes and rules · summary Honest units with night: a 1,440-tick day, season from the existing year, sun None below the horizon with ambient carrying night.
+     Links: area Ecology · draws on 971 · summary Honest units with night: a 1,440-tick day, season from the existing year, sun None below the horizon with ambient carrying night.
 
 975. **The core's tick cost is cut by sharing cohorts, copy on write.**
      Asked 2026-10-17 with the split of step 1 (966): on the seed-9 save 15
@@ -10666,13 +10666,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      schedule. Mark: "Default day: 1,440-tick day, mild season
      (Recommended)". Tidal-locked worlds take 970's fixed sun exactly.
 
-     Links: area Processes and rules · summary A world with no sun rules gets a 1,440-tick day and a mild 23.5 degree season; tidal-locked worlds take 970's fixed sun.
-
-981. **Names: `isocosm::light`, `light::at`, `Light`, `Sun`, `SunRules`.**
-     Asked with 979; the tracer side is `TraceParams` plus a light slot fed
-     from `BrickFrameInput`. Mark: "Use those names (Recommended)".
-
-     Links: area Processes and rules · summary The light code names are isocosm::light, light::at, Light, Sun and SunRules.
+     Links: area Ecology · draws on 979, 973 · summary A world with no sun rules gets a 1,440-tick day and a mild 23.5 degree season; tidal-locked worlds take 970's fixed sun.
 
 982. **The light credit is 500 per site per tick at full sun.**
      Asked 2026-10-17 as 888's tuning fork, with the lane's evidence: on the
@@ -10707,7 +10701,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)". Reading, not ruled: the intensity is read at world scale
      (no site latitude) at the act's tick.
 
-     Links: area Processes and rules · summary The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to.
+     Links: area Ecology · draws on 982 · summary The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

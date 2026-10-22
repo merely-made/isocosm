@@ -1693,6 +1693,7 @@ title = "A consumer eats across its prey's matter, once a period, choosing its p
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A consumer eats across its prey's matter once a period, choosing prey by a draw weighted by holdings."
+draws_on = ["287"]
 
 [cases."295"]
 title = "mere's atlas is sized by limits the host fills in"
@@ -1736,7 +1737,7 @@ draws_on = ["209"]
 [cases."320"]
 title = "The sim core keeps an observation hook"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "The sim's schema and saves"
 summary = "The sim core keeps its observation hook, Simulation::watch."
 
 [cases."323"]
@@ -1809,6 +1810,7 @@ title = "The dev source's issue and the assisted label live in the history"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The dev source's issue and assisted label live in the history; the logged command is the record; receipts show issued amount beside the conserved total."
+draws_on = ["271"]
 
 [cases."345"]
 title = "The flow record holds every move, when asked"
@@ -1861,12 +1863,14 @@ title = "A declared synthesis produces the actor's own lineage's matter"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A declared synthesis produces the actor's own lineage's matter; whatever has a synthesis process is a producer, with no producer classification in the core."
+draws_on = ["342"]
 
 [cases."358"]
 title = "A dev placement may fill any declared matter account"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A dev placement may fill any declared matter account; Mesocosm's overlay chooses soil."
+draws_on = ["271", "357"]
 
 [cases."359"]
 title = "Each flow names the process that moved it"
@@ -1921,8 +1925,9 @@ summary = "The host exposes a terrain atlas budget setting, default 8 MiB, bound
 [cases."371"]
 title = "Checkpoint 5 requires a per-tick flow handoff API"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "The sim's schema and saves"
 summary = "Checkpoint 5 requires a per-tick flow handoff API so successive tick results cannot accumulate or mix records."
+draws_on = ["345"]
 
 [cases."372"]
 title = "The atlas budget is saved locally per device"
@@ -2110,6 +2115,7 @@ title = "What a carver cannot hold is heaped beside the cut"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Earth a carver cannot hold is heaped beside the cut as an automatic fill edit, conserved and diggable; until capacity exists the carver holds all."
+draws_on = ["53", "412"]
 
 [cases."417"]
 title = "The outdoors divides into walkable patches, capped"
@@ -3889,24 +3895,28 @@ title = "Upkeep continues during travel and carries its produced soil"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Age and upkeep continue during travel; soil produced by upkeep is carried until a later native site deposit."
+draws_on = ["817"]
 
 [cases."821"]
 title = "A child born during travel shares the remaining journey"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A birth during travel is allowed under ordinary conditions and the child shares the parent's remaining journey."
+draws_on = ["817"]
 
 [cases."822"]
 title = "Travel events have a typed journey location without site reach"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "An event during travel names the journey as its native location and gains no site reach until a later native telling."
+draws_on = ["817"]
 
 [cases."823"]
 title = "A corpse completes the remaining journey before site availability"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A member dying during a journey leaves a corpse that completes the journey and becomes available at the destination."
+draws_on = ["817"]
 
 [cases."825"]
 title = "The precise-contact fixture has a named native founding profile"
@@ -3952,6 +3962,7 @@ title = "New ordinary feeding processes target what their declared ports admit"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "New ordinary feeding processes derive their target and source selector from the actual declared intake port; unmarked saves unchanged."
+draws_on = ["829"]
 
 [cases."833"]
 title = "Mesocosm saves actual spatial state beside native body and terrain revisions"
@@ -4602,7 +4613,7 @@ summary = "Bodies on the tenant get a fixed sun toward (0.4, 0.8, 0.3), ambient 
 [cases."971"]
 title = "The light field is a derived function in the sim"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Ecology"
 summary = "The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored."
 amends = ["970"]
 
@@ -4616,8 +4627,9 @@ draws_on = ["971"]
 [cases."973"]
 title = "Honest units, with night"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Ecology"
 summary = "Honest units with night: a 1,440-tick day, season from the existing year, sun None below the horizon with ambient carrying night."
+draws_on = ["971"]
 
 [cases."975"]
 title = "The core's tick cost is cut by sharing cohorts, copy on write"
@@ -4641,14 +4653,9 @@ summary = "The sun's parameters are an optional Rules.sun: Option<SunRules>, set
 [cases."980"]
 title = "A world with no sun rules gets a real day"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Ecology"
 summary = "A world with no sun rules gets a 1,440-tick day and a mild 23.5 degree season; tidal-locked worlds take 970's fixed sun."
-
-[cases."981"]
-title = "Names: `isocosm::light`, `light::at`, `Light`, `Sun`, `SunRules`"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
-summary = "The light code names are isocosm::light, light::at, Light, Sun and SunRules."
+draws_on = ["973", "979"]
 
 [cases."982"]
 title = "The light credit is 500 per site per tick at full sun"
@@ -4667,8 +4674,9 @@ draws_on = ["982"]
 [cases."984"]
 title = "The credit scales through a new `Effect::Sunlight`"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Ecology"
 summary = "The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to."
+draws_on = ["982"]
 
 [decisions."orthographic-voxel-presentation D1"]
 title = "surface camera (2026-10-21), applies 382"
@@ -4792,7 +4800,7 @@ title = "Light and life"
 source = "design_docs/doctrine.md"
 area = "Ecology"
 summary = "Light credit scales with the sun and a store holds a night; life spans are individual hazards under a drawn ceiling."
-draws_on = ["906", "949", "972", "982", "983"]
+draws_on = ["906", "949", "971", "972", "973", "980", "982", "983", "984"]
 
 [statements."ecology.6"]
 title = "Matter"
@@ -5094,7 +5102,7 @@ title = "Lighting"
 source = "design_docs/doctrine.md"
 area = "Presentation"
 summary = "The sun is the sim's light field; the fixed sun is the bench fallback; shadows wait on testing."
-draws_on = ["22", "749", "970"]
+draws_on = ["22", "749", "970", "ecology.5"]
 
 [statements."presentation.7"]
 title = "Maps and remains"
@@ -5200,6 +5208,27 @@ source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "Tongues and cultures descend like lineages; names come from tongue, tales and namer; culture spreads by contact, prestige, imposition."
 draws_on = ["167", "168", "169", "schema.7"]
+
+[statements."processes.15"]
+title = "Matter moves by declared processes"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Matter is conserved; dev placements come from a labelled dev source; conversions are checked; one feeding process per consumer; terrain ops resolve game-side."
+draws_on = ["271", "287", "294", "342", "344", "357", "358", "416", "829", "830", "832", "ecology.6"]
+
+[statements."processes.16"]
+title = "Journeys"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Migrations take the route's travel time; upkeep, births, events and corpses follow the journey to its end."
+draws_on = ["817", "820", "821", "822", "823"]
+
+[statements."processes.17"]
+title = "Magic"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Magic composes fundamental effects as combinable cantrips, each level costing sharply more; scripts hook other generators; explainable surprises welcome."
+draws_on = ["404"]
 
 [statements."record.1"]
 title = "Consistency is chosen per domain"
@@ -5311,7 +5340,7 @@ title = "Saves stay readable"
 source = "design_docs/doctrine.md"
 area = "The sim's schema and saves"
 summary = "Older save versions stay readers checked by their own hashes; the flow record sits outside state; shared state never changes hashes."
-draws_on = ["270", "345", "359", "608", "634", "641", "651", "975", "record.5"]
+draws_on = ["270", "320", "345", "359", "371", "608", "634", "641", "651", "975", "record.5"]
 
 [statements."schema.10"]
 title = "New rules are optional"

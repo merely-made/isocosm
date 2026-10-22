@@ -2972,6 +2972,13 @@ handed back (669), legacy tests became draws or retired (672) (Mark:
      control in its family's certification (667, 15), the rest retires with
      the family's legacy copy, and receipt examples move to the receipts.
 
+**Moved 2026-10-22** in the doctrine's Processes review, as executed: the
+light field's code names (Mark: "Into Ecology 5, 981 archived"):
+
+981. **Names: `isocosm::light`, `light::at`, `Light`, `Sun`, `SunRules`.**
+     Asked with 979; the tracer side is `TraceParams` plus a light slot fed
+     from `BrickFrameInput`. Mark: "Use those names (Recommended)".
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's

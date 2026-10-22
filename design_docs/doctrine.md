@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, and the sim's schema reviewed, with Processes 1 to 14; Processes and rules is under review, and Bodies and anatomy remains. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, the sim's schema, and Processes and rules reviewed; Bodies and anatomy remains. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -165,10 +165,11 @@ Links: draws on 41, 114, 218, 538 · summary World rules and rulesets are one la
 Every save stays loadable: older versions remain readers, each checked by its
 own hashes at every epoch checkpoint (Record 5), and saving again writes the
 current version (v4). The flow record sits outside state: every matter move
-when asked, each naming the process that moved it. Sharing state (cohorts
-copied on write) never changes serialisation or hashes.
+when asked, each naming the process that moved it, handed over tick by tick;
+the core keeps an observation hook. Sharing state (cohorts copied on write)
+never changes serialisation or hashes.
 
-Links: draws on 270, 345, 359, 608, 634, 641, 651, 975, record.5 · summary Older save versions stay readers checked by their own hashes; the flow record sits outside state; shared state never changes hashes.
+Links: draws on 270, 320, 345, 359, 371, 608, 634, 641, 651, 975, record.5 · summary Older save versions stay readers checked by their own hashes; the flow record sits outside state; shared state never changes hashes.
 
 *Reviewed 2026-10-22, new; checked built (saves at v4, v3's entries plus
 exact movement semantics). Mark: "Split saves and rules".*
@@ -462,6 +463,55 @@ Links: draws on 167, 168, 169, schema.7 · summary Tongues and cultures descend 
 
 *Reviewed 2026-10-22, new. Mark: "Split: making, culture".*
 
+### Processes 15. Matter moves by declared processes
+
+Matter is conserved through every process (Ecology 6). A dev's placement
+comes from a dev source outside the conserved total, into any declared
+account, its issue and the assisted label living in the history. Declared
+conversions (synthesis, digestion, mineralization) are checked; a synthesis
+yields the actor's own lineage's matter, so whatever synthesizes is a
+producer. Each consumer lineage has one feeding process, eating across its
+prey's matter once a period, prey drawn by holdings; a process declaring port
+feeding targets what its port admits. Native declares a terrain operation and
+the game resolves its geometry, the same session admitting the edit; earth a
+carver can't hold is heaped beside the cut.
+
+Links: draws on 271, 287, 294, 342, 344, 357, 358, 416, 829, 830, 832, ecology.6 · summary Matter is conserved; dev placements come from a labelled dev source; conversions are checked; one feeding process per consumer; terrain ops resolve game-side.
+
+*Reviewed 2026-10-22, new. Built: the dev source and its label, checked
+conversions, feeding, port feeding, native terrain operations. Heaping what
+a carver cannot hold (416) is not verified. Mark: "Processes statement".*
+
+### Processes 16. Journeys
+
+A migration departs and arrives after the route's travel time, its next route
+only after arrival. On the way, age and upkeep continue, the soil they make
+carried to the next site; a child born en route shares the rest of the
+journey; an event en route is located on the journey, with no site reach
+until a later telling; a corpse finishes the journey and becomes available at
+its end.
+
+Links: draws on 817, 820, 821, 822, 823 · summary Migrations take the route's travel time; upkeep, births, events and corpses follow the journey to its end.
+
+*Reviewed 2026-10-22, new; checked built in the journey module. Mark:
+"Processes statement".*
+
+### Processes 17. Magic
+
+Magic composes fundamental effects: every admitted effect is a cantrip,
+combinable, each level of combining costing sharply more power (equivalent
+exchange). An effect's script joins its fundamental character to
+characteristics other generators of the sim set (fire burning hotter near
+fire, ice spreading until the sun stops it), authored as world laws by
+modders or the generator. Surprising builds are welcome where their behaviour
+and exchange can be explained.
+
+*Not yet built.*
+
+Links: draws on 404 · summary Magic composes fundamental effects as combinable cantrips, each level costing sharply more; scripts hook other generators; explainable surprises welcome.
+
+*Reviewed 2026-10-22, new. Mark: "Magic as Processes 17; flow to Schema 9".*
+
 ## Ecology
 
 
@@ -528,16 +578,21 @@ rules".*
 
 ### Ecology 5. Light and life
 
-The sun's credit scales with the light field's intensity, and a site's store
-holds a night, so producers draw down in the dark; both amounts are the
+The light field is a pure function of the world's rules, the tick and the
+site, nothing stored: a 1,440-tick day with night and seasons from the year;
+a world without sun rules takes a real day and a mild season, a tidal-locked
+one the fixed sun. The sun's credit scales with the field's intensity through
+its own effect, and a site's store holds a night, so producers draw down in the dark; both amounts are the
 world's rules. A life span is individual: a death hazard under the lineage's
 drawn ceiling, acting only where the ceiling is above maturity.
 
-Links: draws on 906, 949, 972, 982, 983 · summary Light credit scales with the sun and a store holds a night; life spans are individual hazards under a drawn ceiling.
+Links: draws on 906, 949, 971, 972, 973, 980, 982, 983, 984 · summary Light credit scales with the sun and a store holds a night; life spans are individual hazards under a drawn ceiling.
 
 *Reviewed 2026-10-22, new. Mark: "Structure in doctrine, numbers into world
 rules". The credit and store are constants in `ecology.rs` today (500 and
 360,000, A1's values); making them world rules is owed in the sim plan.*
+*Refined 2026-10-22 in the Processes review: the light field itself (971, 973,
+980, 984) opens it (Mark: "Into Ecology 5, 981 archived").*
 
 ### Ecology 6. Matter
 
@@ -1065,12 +1120,12 @@ Links: draws on 23, 296, 425, 368, 369, 372, 374 · summary Terrain residency is
 
 ### Presentation 6. Lighting
 
-The sun comes from the sim's light field (971 to 973). Case 970's fixed sun,
+The sun comes from the sim's light field (Ecology 5). Case 970's fixed sun,
 matching the tracer, stays as the bench's default and a host option. Shadows,
 the torch's included, wait on their testing pass. Case 22 records the
 lighting the wing aims for.
 
-Links: draws on 970, 22, 749 · summary The sun is the sim's light field; the fixed sun is the bench fallback; shadows wait on testing.
+Links: draws on 970, 22, 749, ecology.5 · summary The sun is the sim's light field; the fixed sun is the bench fallback; shadows wait on testing.
 
 *Reviewed 2026-10-22, new. Mark: "971 amends 970: fixed sun is the bench fallback"; and the draft's wish list dropped, 22 kept as the aim.*
 *Refined 2026-10-22 in the Stack and engine review: 749's torch line cited.*
