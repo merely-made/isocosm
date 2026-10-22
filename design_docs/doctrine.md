@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation and the VTT reviewed, with Processes 1 to 3, Schema 1 and Stack 1; the other areas are empty. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation and the VTT reviewed, with Processes 1 to 3 and Schema 1; Stack and engine is under review (Stack 1 to 7); the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -663,6 +663,105 @@ Links: draws on 600, organs.5 · summary Build on the stack we have: unneeded cr
 *Reviewed 2026-10-22, new: written in the VTT review from 600, ahead of its
 area (Mark: "Archive 2, link 6, 600 to Stack"). The rest of the area is not
 yet reviewed.*
+
+### Stack 2. The stack supplies identity and trust
+
+Protected identity and admitted connections come from the stack; a game maps
+an authenticated peer to its native participant and seat. A product never
+manufactures keys, grants or trust roots to fill a missing stack
+configuration.
+
+Links: draws on 962 · stack · summary Identity and admitted connections come from the stack; games map peers to seats; products never manufacture keys or trust roots.
+
+*Reviewed 2026-10-22, new: moved here in the Host round ("Move the identity
+rule to Stack and engine"), then "Both as drafted".*
+
+### Stack 3. Where things sit, and the seams
+
+Cambium sits under isomere; rendering is isometer over genet and netrender;
+generation is the sim's, with esp and dramatis beside it; persistence,
+branching and networking are moot, muniment and murm. Seams between
+components stay clean even at some cost in speed: a missing boundary bites
+later, and hardware improves. A renderer sits behind the scene contract and
+can be swapped. Formats follow open standards; the wing makes its own only
+where none holds the thing.
+
+Links: draws on 16, 27, 78 · stack · summary Where the stack's pieces sit; seams stay clean at some cost in speed; renderers swap behind the scene contract; open formats first.
+
+*Reviewed 2026-10-22, new. Case 16's placement, checked against the disk,
+drops Cleromancy (gone, 600) and isoscape (no crate; generation is the
+sim's). Mark: "Both as drafted".*
+
+### Stack 4. One sim, one contract, one bench
+
+Isocosm is the one sim: no product grows an engine of its own, and
+mesocosm-core's sim moved in, re-expressed in process definitions, and
+retired. Games meet the sim through one game-neutral crate, `isocosm-overlay`:
+each game's vocabulary a module, shapes two games share lifted once into its
+core (points, act keys, harm, wounds, parts), the tick a newtype over the
+sim's count, subscription derived from a typed attention set. Everything
+generated and reviewed shares one bench (sim, world, specimen, item and
+effect lanes), which is also the dev tools.
+
+Links: draws on 20, 192, 197, 203, 204, 254 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
+
+*Reviewed 2026-10-22, new; checked built (mesocosm-core retired; the overlay's
+tick, attention set and shared shapes), the bench's lanes not each verified.
+Mark: "As drafted, archive 263".*
+
+### Stack 5. Isometer owns in-site space
+
+Space inside a site is isometer's; the sim takes it through isometer and
+keeps no copy. The sim records each edit as an asserted fact and an entity's
+place id; isometer, wgpu-free, applies edits, lifts sites into voxels and
+derives places, passages and travel cost. Movement and physical reach read
+isometer's space; the reach field (when news arrives), soil and its diffusion
+stay the sim's, keyed by isometer's columns. Lineage, provenance and mass are
+the sim's, isometer keeping an opaque tag and its own fixtures. Its store is
+to be mere's nisus, the voxel authority, a revision log carrying each edit to
+its consumers (owed as the place-graph plan's SP6).
+
+Links: draws on 330, 331, 670, 675, 696, 697, 698, 701, 703, 720, 721, 756 · summary In-site space is isometer's: the sim records edits, isometer applies them and derives places; nisus as its store is owed (SP6).
+
+*Reviewed 2026-10-22, new. Places, the lift, isometer's fixtures and the
+opaque tag are built; nisus is not yet under isometer, which still applies
+edits to `Ground`. The place-graph plan's SP6 already owed the move; Mark:
+"Owe nisus in a plan", so SP6's done-condition now covers stamped queries
+too.*
+
+### Stack 6. Places
+
+A room is roofed air: caves, tunnels and lintelled doorways are places. A
+patch splits where walkable width drops below a world rule, 2 by default.
+Walking, routing and sight run over places and passages, not raw voxels;
+sight is a voxel ray with the place graph choosing candidates. Navigation is
+a search per query, each result stamped with the revision it read (owed with
+SP6), cached only when a measured cost forces it.
+
+Links: draws on 333, 702, 737, 738, 741, 743 · summary Rooms are roofed air; patches split at necks; walking, routing and sight run over places; navigation searches per query, stamped.
+
+*Reviewed 2026-10-22, new; built in isometer-space but for stamped queries,
+owed with SP6.*
+
+### Stack 7. Physics is conatus's
+
+Physics lives in mere's conatus, parry and rapier private inside it. Every
+float path a game hands to the sim's physics replays bit for bit on any
+machine (rapier's enhanced determinism, libm, a digest diffed across Windows,
+macOS and Linux), checked by one labelled-digest crate in mere; until then a
+save promises same-machine replay. Isometer alone answers a pointer pick.
+Bindings, when built, are a conatus module generic over the key: bodies only,
+on a world shared with the terrain collider; accepted state arrives whole and
+per key, the two agreeing; a moved body keeps its id. Edits carry the
+source's stamp; conatus refreshes queries on call; a barrier on the stamp
+stays in the product until a second consumer needs it.
+
+Links: draws on 332, 347, 348, 349, 350, 351, 352, 604, 609, 695, 724 · stack · summary Physics is conatus's, replaying bit for bit across machines; isometer answers picks; bindings, when built, are generic conatus modules.
+
+*Reviewed 2026-10-22, new. Built: parry private inside conatus, rapier's
+enhanced determinism, the query refresh, isometer's pick. Not yet built: the
+binding module, the labelled-digest crate, the cross-OS digest. Mark: "As
+drafted, tagged stack".*
 
 ## Host and network
 

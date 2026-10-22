@@ -1120,6 +1120,7 @@ title = "Isocosm absorbs mesocosm-core; the first overlay plays on Isocosm"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Isocosm absorbs mesocosm-core: its sim moves in piece by piece re-expressed in process definitions, and the first overlay plays on Isocosm. (amended by 591)"
+draws_on = ["32"]
 
 [cases."193"]
 title = "Moved modules are decomposed under the 600-line ceiling"
@@ -1132,6 +1133,7 @@ title = "The overlay contract is one shared crate, `isocosm-overlay`"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The overlay contract is one shared game-neutral crate, isocosm-overlay, in shared/, with each game's directives as its own module."
+draws_on = ["154"]
 
 [cases."198"]
 title = "The consistency pass is applied, and a dated line keeps its date's words"
@@ -1164,12 +1166,14 @@ title = "The tick stamp is a newtype over the sim's count"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The tick stamp is a newtype over the sim's u64 count."
+draws_on = ["197"]
 
 [cases."204"]
 title = "Subscription derives from the attention set, whose type M1 designs"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Subscription derives from the attention set, which M1 types; the contract carries no separate topic keys."
+draws_on = ["154", "197"]
 
 [cases."205"]
 title = "A PLACES directive names a node of the place graph"
@@ -1448,6 +1452,7 @@ title = "The contract's shared shapes live once, in its core"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The contract's shared shapes (WorldPoint, act key, Harm, Wound, WoundSeverity, PartHandle) live once, in the crate's core."
+draws_on = ["197"]
 
 [cases."255"]
 title = "Raw receipts live out of tree; the repository keeps their summaries, sources and scripts"
@@ -1490,12 +1495,6 @@ title = "The background is hybrid: derived where effects commute, a calibrated r
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266)"
-
-[cases."263"]
-title = "Each family is built and certified in Isocosm, and `mesocosm-core`'s copies retire together at M3"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Stack and engine"
-summary = "Each family is built and certified in Isocosm and mesocosm-core's copies retire together at M3; duplication is temporary and no adapter is built. (amended by 666)"
 
 [cases."264"]
 title = "Part roles are open keys in the world's rules with a default set, and that set is examined before it is fixed"
@@ -1704,18 +1703,21 @@ title = "One edit reaches its consumers through a revision log"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "One edit reaches its consumers through a revision log of changes keyed by revision at 8-cubed brick grain."
+draws_on = ["330"]
 
 [cases."332"]
 title = "conatus carries the source's stamp; the barrier stays with the product"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "conatus carries the source's stamp via an optional stamp on voxel edits; the barrier stays in the product until a second consumer proves it."
+draws_on = ["330"]
 
 [cases."333"]
 title = "Navigation stays a search per query, each result stamped"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Navigation stays a search per query with each result stamped by revision; a cached product comes only when measured cost forces it."
+draws_on = ["330"]
 
 [cases."338"]
 title = "A process's shape requirement and seeding live on the function catalogue"
@@ -1778,18 +1780,21 @@ title = "It binds bodies only, on a world shared with T2's terrain collider"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The binding module binds bodies only, on a world shared with T2's terrain collider."
+draws_on = ["330", "348"]
 
 [cases."350"]
 title = "Accepted state arrives both whole and per key"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Accepted state arrives both as a whole-set reconcile and per key; cold and incremental must agree."
+draws_on = ["348"]
 
 [cases."351"]
 title = "A moved body keeps its id"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "A moved body keeps its id; it respawns only when the entity's shape revision changes."
+draws_on = ["348"]
 
 [cases."352"]
 title = "conatus gains a query-refresh call"
@@ -2991,6 +2996,7 @@ title = "Game-side physics replays bit for bit across machines"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest."
+draws_on = ["597"]
 
 [cases."605"]
 title = "The shards carry a shard-count equality check"
@@ -3021,6 +3027,7 @@ title = "The labelled digest is built once, in mere"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm."
+draws_on = ["604"]
 
 [cases."610"]
 title = "Labelled checkpoints per epoch; a per-tick trace on demand"
@@ -3296,6 +3303,7 @@ title = "Movement and physical reach go through isometer; the reach field stays 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Movement and physical reach read isometer's space; the reach field (when news arrives at a site) stays the sim's."
+draws_on = ["670"]
 
 [cases."677"]
 title = "The overlay's M2 is the families plan's Mesocosm share"
@@ -3390,18 +3398,21 @@ title = "The sim records edits; isometer applies them and derives places"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The sim records each edit as an asserted fact and an entity's place id; isometer applies edits and derives places, passages and travel cost."
+draws_on = ["413", "422", "670"]
 
 [cases."697"]
 title = "nisus is the store behind isometer, now"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Nisus is the store behind isometer now, with SP4; 670 governs the interface and 330 the storage."
+draws_on = ["330", "670"]
 
 [cases."698"]
 title = "SP4 and SP5 are built in isometer"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "SP4 and SP5 (edit application and places) are built in isometer without wgpu and consumed by the sim directly."
+draws_on = ["670"]
 
 [cases."699"]
 title = "The seam keys by `PartId`, and situs joins the body document"
@@ -3414,18 +3425,21 @@ title = "The lift moves to isometer"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Lifting a site into voxels moves to isometer beside SP4 and SP5; site grain and the world map stay the sim's."
+draws_on = ["698"]
 
 [cases."702"]
 title = "Walking, routing and sight are rewritten over SP5"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Isometer's walking, routing and sight are built over SP5's passages and travel cost, not raw voxels; legacy searches retire with their family."
+draws_on = ["597", "675"]
 
 [cases."703"]
 title = "Soil, the tier line and the coarse partition split now"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Soil and its diffusion stay the sim's keyed by isometer's columns; the tier line goes to host or directing; SP5 places replace the coarse partition."
+draws_on = ["670"]
 
 [cases."704"]
 title = "Checkpoint 10's wounds come from an agentless hazard"
@@ -3535,12 +3549,14 @@ title = "Lineage vocabulary leaves isometer-core with the bodies family"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Lineage vocabulary leaves isometer-core with the bodies family; provenance and species ids move to the sim keyed by PartId."
+draws_on = ["674", "699"]
 
 [cases."724"]
 title = "The folded probe stays a standalone isometry probe"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The folded probe stays a standalone isometry probe in its own workspace under crates/probes, pinned to mere by rev."
+draws_on = ["695"]
 
 [cases."735"]
 title = "The kiss3d fork: v0.47.0, a mark-ik fork, a mere crate over it"
@@ -3559,12 +3575,14 @@ title = "A room is roofed air"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "A room is roofed air: caves, tunnels and lintelled doorways are places with clearance on edges, and Cover::Roofed is the default."
+draws_on = ["417"]
 
 [cases."738"]
 title = "A patch splits at narrow necks"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "A patch splits where walkable width drops below a world-rule width."
+draws_on = ["418"]
 
 [cases."739"]
 title = "An edit's mass is credited by material"
@@ -3583,6 +3601,7 @@ title = "Sight is a voxel ray scoped by places"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Sight is a voxel ray with the place graph choosing candidates."
+draws_on = ["702"]
 
 [cases."742"]
 title = "The tier line goes to directing"
@@ -3596,6 +3615,7 @@ title = "The neck width defaults to 2"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The patch neck width defaults to 2, so any 1-wide neck splits."
+amends = ["738"]
 
 [cases."744"]
 title = "Cliff spans are drawn, and the lift steps its surface there"
@@ -3642,6 +3662,7 @@ title = "Lineage data moves into isocosm; isometer keeps an opaque tag"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "Lineage and provenance data (SpeciesId, Origin, Provenance) move into isocosm as sidecars keyed by PartId; isometer keeps an opaque tag."
+draws_on = ["699", "721"]
 
 [cases."757"]
 title = "Authored content enters by `Command::Assert`, with the record"
@@ -5122,6 +5143,51 @@ source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "Build on the stack we have: unneeded crates stay out, stale ones leave, own crates when the abstraction earns one."
 draws_on = ["600", "organs.5"]
+
+[statements."stack.2"]
+title = "The stack supplies identity and trust"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Identity and admitted connections come from the stack; games map peers to seats; products never manufacture keys or trust roots."
+draws_on = ["962"]
+stack = true
+
+[statements."stack.3"]
+title = "Where things sit, and the seams"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Where the stack's pieces sit; seams stay clean at some cost in speed; renderers swap behind the scene contract; open formats first."
+draws_on = ["16", "27", "78"]
+stack = true
+
+[statements."stack.4"]
+title = "One sim, one contract, one bench"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools."
+draws_on = ["20", "192", "197", "203", "204", "254"]
+
+[statements."stack.5"]
+title = "Isometer owns in-site space"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "In-site space is isometer's: the sim records edits, isometer applies them and derives places; nisus as its store is owed (SP6)."
+draws_on = ["330", "331", "670", "675", "696", "697", "698", "701", "703", "720", "721", "756"]
+
+[statements."stack.6"]
+title = "Places"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Rooms are roofed air; patches split at necks; walking, routing and sight run over places; navigation searches per query, stamped."
+draws_on = ["333", "702", "737", "738", "741", "743"]
+
+[statements."stack.7"]
+title = "Physics is conatus's"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Physics is conatus's, replaying bit for bit across machines; isometer answers picks; bindings, when built, are generic conatus modules."
+draws_on = ["332", "347", "348", "349", "350", "351", "352", "604", "609", "695", "724"]
+stack = true
 
 [statements."vtt.1"]
 title = "The table runs over the sim, or without it"
