@@ -1987,13 +1987,13 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      whoever takes up the role by the world's rules. Mark: "The player
      chooses."
 
-     Links: area Eponym · summary At a death in Eponym the player chooses who to become, among bonded companions.
+     Links: area Eponym · draws on 153 · summary At a death in Eponym the player chooses who to become, among bonded companions.
 187. **Survival and creative modes hold for Eponym as for Mesocosm.** Put
      to Mark on 2026-09-25: do rulings 180 and 184 hold for Eponym? Two
      options were put: the same, creative also being where tag-in lives;
      or survival only. Mark: "The same."
 
-     Links: area Eponym · summary Survival and creative modes hold for Eponym as for Mesocosm; creative is also where tag-in lives.
+     Links: area Directing and play · draws on 180, 184 · summary Survival and creative modes hold for Eponym as for Mesocosm; creative is also where tag-in lives.
 188. **A VTT campaign may run with the sim off.** Put to Mark on
      2026-09-25, opening the VTT's overlay: can a campaign run with the sim
      switched off, as a plain board with no world beneath? Three options
@@ -2456,7 +2456,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      which must pass the sim's invariants and agree with the sim's own fight
      in distribution (rulings 114, 123, 154), as the record's §3.8 has it.
 
-     Links: area Eponym · summary Eponym's blows are resolved in the foreground and handed back as vigour drained and wounds to parts, agreeing with the sim's fight in distribution.
+     Links: area Processes and rules · summary Eponym's blows are resolved in the foreground and handed back as vigour drained and wounds to parts, agreeing with the sim's fight in distribution.
 233. **Eponym's motion and contact solver runs on the game side.** Put to
      Mark on 2026-09-25, from the same decision's second half: on the game
      side over the stack's conatus, the accepted transition for each tick
@@ -2503,7 +2503,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      world. *Reading, not ruled:* going to a new world is how a line ends in
      one, so the plan needs no separate answer that lets it end.
 
-     Links: area Eponym · summary At an Eponym death with no bonded companion, what follows is the player's call: another life in that world or a new world.
+     Links: area Eponym · draws on 229, 235 · summary At an Eponym death with no bonded companion, what follows is the player's call: another life in that world or a new world.
 239. **Isocosm absorbs Eponym's simulation, and driving is built only on
      Isocosm.** Put to Mark on 2026-09-26, from the plan's decision 4: with
      Isocosm absorbing `eponym-world`'s and `eponym-social`'s simulation as
@@ -7732,7 +7732,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      position; fixtures that need motion recorded but not solved use a
      solver that does not move.
 
-     Links: area Eponym · summary Eponym's motion and contact stay game-side as eponym-motion; other Eponym crates move into Isocosm, which never depends on Rapier.
+     Links: area Eponym · draws on 233 · summary Eponym's motion and contact stay game-side as eponym-motion; other Eponym crates move into Isocosm, which never depends on Rapier.
 
 598. **The campaign world's adapters stay with the VTT.** 2026-10-06.
      Question: how does the VTT's campaign world move onto the sim, given
@@ -9011,7 +9011,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (recommended); Eponym-shaped counters in native; counters stay
      Eponym's. Mark chose "Native accounts and wounds (Recommended)".
 
-     Links: area Eponym · summary Eponym's hunger and fatigue become native accounts read by Needs; its wound is checkpoint 10's cell loss, built with Eponym's world move.
+     Links: area Eponym · draws on 239 · summary Eponym's hunger and fatigue become native accounts read by Needs; its wound is checkpoint 10's cell loss, built with Eponym's world move.
 768. **A campaign's session carries its assertions.** 2026-10-10, from the
      record lane (merged at `b9e0f967`). Question: `CampaignWorld` is a field
      of isonetry's replicated snapshot, and a native `Session` needs a
@@ -9037,7 +9037,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      field's knowing (84, 117) (recommended); a native noun of its own. Mark
      chose "Notes plus knowing (Recommended)".
 
-     Links: area Eponym · summary Eponym's epistemic layer becomes notes held by the observer plus the reach field's knowing; its simulation record leaves with its world move.
+     Links: area Eponym · draws on 84, 117 · summary Eponym's epistemic layer becomes notes held by the observer plus the reach field's knowing; its simulation record leaves with its world move.
 772. **A new line's name is its key.** 2026-10-10. Options: `lineage:<name>`,
      no schema change (recommended); a generated key and a name field. Mark
      chose "Its name is its key (Recommended)".
@@ -9059,7 +9059,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      game-side (recommended, built); a native item noun; game-side. Mark
      chose "Inert entities, carried by relation (Recommended)".
 
-     Links: area Eponym · summary Eponym's items are inert entities of item lineages carried by relation, with position and worn part game-side.
+     Links: area Eponym · draws on 239 · summary Eponym's items are inert entities of item lineages carried by relation, with position and worn part game-side.
 777. **Eponym keeps its admitted anatomy snapshot.** 2026-10-10. Options:
      keep it beside the native geometry with a game revision moving only on
      severing (recommended, built); read everything from the native
@@ -9213,7 +9213,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the native social owner attaches it after an accepted deed and reads
      it when deriving deeds. Q2 verifies association and save/replay.
 
-     Links: area Eponym · summary A deed's agreement link is a typed optional agreement id on its native event; agreements stay in State::agreements.
+     Links: area Eponym · draws on 780 · summary A deed's agreement link is a typed optional agreement id on its native event; agreements stay in State::agreements.
 
 809. **Native characters retain optional table metadata.** 2026-10-10,
      Q2's character-assertion fork under 795. Question: "The VTT character
@@ -9393,7 +9393,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      capacities are source calculations awaiting native measurement. The
      answer selects a recipe, not a tested admission or E3 acceptance.
 
-     Links: area Eponym · summary Eponym initially develops the compact six-part native recipe (intake, store, sense, contract, support, grip), replacing the authored seven-part body.
+     Links: area Eponym · draws on 816 · summary Eponym initially develops the compact six-part native recipe (intake, store, sense, contract, support, grip), replacing the authored seven-part body.
 
 819. **Fresh arrival tissue fits the developed native body.**
      2026-10-11, Q10's native body admission.
@@ -9406,7 +9406,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      logged admission require atomic refusal, conservation and replay
      tests; this ruling does not alter existing supplied matter.
 
-     Links: area Eponym · summary Fresh arrival tissue is issued within the developed native body's capacity; reserve 100 and energy 100 where admitted.
+     Links: area Eponym · draws on 816, 777 · summary Fresh arrival tissue is issued within the developed native body's capacity; reserve 100 and energy 100 where admitted.
 
 820. **Upkeep continues during travel and carries its produced soil.**
      2026-10-11, Q3's native journey semantics.
@@ -9610,7 +9610,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      item-kind weights do not silently replace their ledgers. This answer
      names the construction owner but supplies no recipe quantities or costs.
 
-     Links: area Eponym · summary Named native material recipes specify source stocks and quantities for newly founded material items; existing saves keep recorded holdings.
+     Links: area Eponym · draws on 776, 801 · summary Named native material recipes specify source stocks and quantities for newly founded material items; existing saves keep recorded holdings.
 
 836. **Each declared material has a distinct native stock in new worlds.**
      2026-10-12, material identity before fabrication.
@@ -9637,7 +9637,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      progress units and output; this answer supplies no duration, yield,
      refund/cancellation policy or scripted autonomous decision.
 
-     Links: area Eponym · summary A native project ledger reserves inputs and work spends from it; interruption preserves remaining inputs and progress, matter counted once.
+     Links: area Processes and rules · summary A native project ledger reserves inputs and work spends from it; interruption preserves remaining inputs and progress, matter counted once.
 
 838. **Any eligible natively authorized subject may resume a project.**
      2026-10-12, resumed work admission.
@@ -9650,7 +9650,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      acceptance alone does not complete a material operation or grant an
      unrelated project's access.
 
-     Links: area Eponym · summary Any subject with current craft eligibility, native project authorization and ordinary control may resume a project.
+     Links: area Processes and rules · draws on 837 · summary Any subject with current craft eligibility, native project authorization and ordinary control may resume a project.
 
 839. **Native owners of reserved inputs grant project access together.**
      2026-10-12, native project grant/revoke authority under838.
@@ -9664,7 +9664,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* ownership of unowned site stocks and changes to
      the joint owner roster need their actual native semantics before grants.
 
-     Links: area Eponym · summary The native owners of a project's reserved inputs, acting together, grant and revoke project access.
+     Links: area Processes and rules · draws on 838 · summary The native owners of a project's reserved inputs, acting together, grant and revoke project access.
 
 840. **Interrupted work stays at creation by default, with carrying chosen.**
      2026-10-12, physical project placement under837/838.
@@ -9677,7 +9677,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* the player chooses carrying through an admitted
      action; this is not permission for an adapter to relocate work silently.
 
-     Links: area Eponym · summary Interrupted work stays at its creation position by default; carrying by the current worker is an explicit choice with capacity checks.
+     Links: area Processes and rules · draws on 837, 838 · summary Interrupted work stays at its creation position by default; carrying by the current worker is an explicit choice with capacity checks.
 
 841. **Authored step profiles tie physical movement to native processes.**
      2026-10-12, Mesocosm's actual in-site movement source.
@@ -9715,7 +9715,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      inputs and permissions this answer does not define. It is not an
      inferred bypass of the ordinary ownership requirement.
 
-     Links: area Eponym · summary Ordinary reservation requires an explicit native ownership assertion; holding, tenancy and maker provenance supply none; a help action is a separate pathway.
+     Links: area Processes and rules · draws on 839 · summary Ordinary reservation requires an explicit native ownership assertion; holding, tenancy and maker provenance supply none; a help action is a separate pathway.
 
 844. **Polities may author any of the three collective approval strategies.**
      2026-10-12, a polity's share of joint project permission under839.
@@ -9729,7 +9729,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* the applicable strategy and its required inputs
      are authored native state, checked when permission is given or revoked.
 
-     Links: area Eponym · summary Polities authorize via an explicitly authored choice among governance decisions, member unanimity or declared representatives; none is selected silently.
+     Links: area Processes and rules · draws on 839 · summary Polities authorize via an explicitly authored choice among governance decisions, member unanimity or declared representatives; none is selected silently.
 
 845. **Stock ownership names exact quantity lots selected for reservation.**
      2026-10-12, native property quantity boundary under839/843.
@@ -9741,7 +9741,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      later incoming matter does not acquire an earlier quantity's owners.
      These ownership records do not issue or duplicate conserved matter.
 
-     Links: area Eponym · summary Stock ownership names exact quantity lots selected explicitly for reservation; later incoming matter does not acquire earlier owners.
+     Links: area Processes and rules · draws on 839, 843 · summary Stock ownership names exact quantity lots selected explicitly for reservation; later incoming matter does not acquire earlier owners.
 
 846. **Owned-stock debits select their native quantity lots explicitly.**
      2026-10-12, ordinary stock disposition after845.
@@ -9755,7 +9755,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      The answer does not supply a property-transfer or consumption policy
      beyond identifying the input lots.
 
-     Links: area Eponym · summary Debits of owned stock must explicitly select their native quantity lots; absent selection refuses and no automatic allocation applies.
+     Links: area Processes and rules · draws on 845 · summary Debits of owned stock must explicitly select their native quantity lots; absent selection refuses and no automatic allocation applies.
 
 847. **Resident corpses remain visible through native awareness and close-up.**
      2026-10-12, native body visibility after death and travel.
@@ -9794,7 +9794,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      remaining claim; the unselected portion stays there. No implicit split
      across other lots, FIFO or proportional allocation is introduced.
 
-     Links: area Eponym · summary A debit selects an exact quantity from a named lot, the unselected portion staying at source; no FIFO or proportional split.
+     Links: area Processes and rules · draws on 846 · summary A debit selects an exact quantity from a named lot, the unselected portion staying at source; no FIFO or proportional split.
 
 850. **Each operation authors retained output claims or consumed-claim closure.**
      2026-10-12, property disposition after selected native conversion.
@@ -9809,7 +9809,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      disposition or unavailable output vocabulary refuses that owned path.
      The next unused question is851.
 
-     Links: area Eponym · summary Each operation declares which outputs retain the selected owners' claims or closes consumed claims; matter stays conserved regardless.
+     Links: area Processes and rules · draws on 846 · summary Each operation declares which outputs retain the selected owners' claims or closes consumed claims; matter stays conserved regardless.
 
 851. **Every bound table player holds downtime unless they release their own hold.**
      2026-10-12, native downtime consent after246.
@@ -9982,7 +9982,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      or automatic choice of a different produced lot. Ambiguous, missing,
      spent or otherwise mismatched references refuse.
 
-     Links: area Eponym · summary A later process selects a future produced lot by an explicit authored reference naming the producing operation, output and exact quantity.
+     Links: area Processes and rules · draws on 849 · summary A later process selects a future produced lot by an explicit authored reference naming the producing operation, output and exact quantity.
 
 864. **Collect the outstanding questions and deliver them together.**
      2026-10-12, direct correction to the orchestrator's question cadence.
@@ -10126,7 +10126,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Companion eligibility is an explicitly authored native social agreement or standing predicate over the deceased body and candidate.
      Do not substitute a body-to-body relation or participant-to-critter directing bond; fallback requires establishing absence under the declared predicate.
 
-     Links: area Eponym · summary Companion succession eligibility is an explicitly authored native social agreement or standing predicate over deceased body and candidate.
+     Links: area Eponym · draws on 186 · summary Companion succession eligibility is an explicitly authored native social agreement or standing predicate over deceased body and candidate.
 
 878. **Total collapse uses an explicitly authored native global predicate.**
      2026-10-13, collected migration reply under864.

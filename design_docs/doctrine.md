@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm and Ecology reviewed; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology and Eponym reviewed, with Processes 1 and 2; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -14,6 +14,40 @@ remain the authority.
 ## The sim's schema and saves
 
 ## Processes and rules
+
+
+### Processes 1. The foreground resolves; the sim keeps count
+
+Where a game resolves something in finer detail than the sim (a blow's
+geometry), it hands the result back in the sim's terms (vigour drained, wounds
+to parts). What comes back must pass the sim's invariants and agree with the
+sim's own resolution in distribution.
+
+Links: draws on 232 · summary A game's finer resolution hands back in the sim's terms, passing its invariants and agreeing in distribution.
+
+*Reviewed 2026-10-22, new: moved up from the Eponym review at Mark's word
+("Move the handback principle up"). The rest of the area is not yet
+reviewed.*
+
+### Processes 2. Property is explicit, by lots
+
+Ownership is asserted, never inferred from holding, tenancy or making, and
+names exact quantity lots; later matter never inherits earlier owners. Debits
+select their lots (whole or an exact portion), with no FIFO or proportional
+split; each operation declares which outputs keep the owners' claims or
+closes them, and matter is conserved either way. A later process names a
+produced lot by its operation, output and quantity. Work reserves its inputs
+in a project ledger and spends from it; interruption keeps inputs and
+progress, the work staying where it was made unless carried. The owners of
+the reserved inputs together grant access; a polity grants by its authored
+strategy (decision, unanimity or representatives); any eligible, authorized
+subject may resume. A help action is a separate pathway, not yet designed.
+
+Links: draws on 837, 838, 839, 840, 843, 844, 845, 846, 849, 850, 863 · summary Ownership is asserted by exact lots; debits select lots; projects reserve inputs; input owners grant access.
+
+*Reviewed 2026-10-22, new: written in the Eponym review, whose questions
+raised these cases, and placed here at Mark's word ("Under Processes and
+rules, written now").*
 
 ## Ecology
 
@@ -265,14 +299,15 @@ derived from that participant's knowledge and control: it shows what the
 participant knows (the admitted facts and the disclosed map) and offers to act
 only on what the participant controls. What a participant may know follows its
 seat (player, creative observer, DM), the entity it plays and awareness
-granted in play, never its mode. Mesocosm's survival is the player's seat,
-showing what the critter knows; its creative mode is the creative observer's,
-showing the truth and never editing (the world editor edits); a mode switch changes only how the known is
+granted in play, never its mode. Mesocosm's and Eponym's survival is the
+player's seat, showing what the played creature knows; their creative mode is
+the creative observer's, showing the truth and never editing (the world editor
+edits), and in Eponym it is also where tag-in lives; a mode switch changes only how the known is
 shown. Settings choose how the known is presented, never what is known. The
 sim and the host hold the whole world, so a surface reads through the
 participant's knowledge, never from host state directly.
 
-Links: draws on 445, 180, 184, 432, 847, 868, 869, 870 · summary Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known.
+Links: draws on 445, 180, 184, 187, 432, 847, 868, 869, 870 · summary Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known.
 
 *Reviewed 2026-10-22, new. Drafted as a Presentation rule that "the view grants
 nothing". Mark: "maybe it's more like presentation is contingent upon
@@ -283,7 +318,8 @@ whole world, the leak cases 868 to 870 guard against); then "Widen it beyond
 views". Refined 2026-10-22 in the area's own review with case 445, the
 original rule that knowledge follows seat and subject, never mode. Mark: "All
 as drafted". Mesocosm's survival and creative (180, 184) folded in at Mark's
-word ("M3 into Directing 1") in the Mesocosm review.*
+word ("M3 into Directing 1") in the Mesocosm review, and Eponym's (187, with
+tag-in) in the Eponym review ("As drafted, 187 into Directing 1").*
 
 ### Directing 2. Each game foregrounds one rung
 
@@ -573,6 +609,64 @@ Links: draws on 961, 978 · summary Mesocosm defaults to A1 and to 2 ticks a sec
 *Reviewed 2026-10-22, new. Mark: "Both as drafted".*
 
 ## Eponym
+
+
+### Eponym 1. Lives and co-op
+
+Each player lives their own creature; co-op is lives side by side, not a
+shared one. A first life begins when the player picks (society standing by
+default) and how they pick: a newly generated outsider, a birth into one of
+the world's lineages, or a named denizen of the drawn world. At a death the
+player chooses who to become among companions the world's authored social
+agreement or standing predicate makes eligible; with none, it is the player's
+call: another life in that world or a new one.
+
+Links: draws on 185, 186, 234, 235, 238, 877 · summary Each player lives their own creature; first lives and successions are the player's picks among eligible lives.
+
+*Reviewed 2026-10-22, new. Mark: "As drafted, 187 into Directing 1".*
+
+### Eponym 2. Fighting and motion
+
+Eponym's strike system resolves each blow in the foreground and hands it
+back in the sim's terms (Processes 1). Motion and contact run game-side
+(`eponym-motion` over conatus); the sim keeps motion's data and admission, is
+handed a solver, never depends on Rapier, and no host supplies a final
+position. Worn items on a severed part drop through the sim's handoff, which
+carries no participant.
+
+Links: draws on 233, 597, 943, processes.1 · summary Blows resolve in the foreground and hand back; motion and contact are game-side; the sim is handed a solver.
+
+*Reviewed 2026-10-22, new. Mark moved the handback principle up to
+Processes 1 ("Move the handback principle up"); this statement cites it.*
+
+### Eponym 3. Eponym's world is native Isocosm
+
+Needs are native accounts read by needs; a wound is cell loss; knowing is
+notes plus the reach; items are inert entities carried by relation, with
+position and worn part game-side; an admitted anatomy snapshot sits beside
+native geometry; crafts and deed weights are keys a rules pack declares, which
+other games can declare too; a deed carries its agreement as a typed link on
+its event.
+
+Links: draws on 239, 767, 771, 776, 777, 778, 808 · summary Eponym's needs, wounds, knowing, items and social vocabulary are native Isocosm; crafts are rules-pack keys.
+
+*Reviewed 2026-10-22, new; checked built (crafts are keys the world's
+vocabulary declares).*
+
+### Eponym 4. Native recipes make bodies and things
+
+An admitted body develops from a selected native recipe, physiology and
+geometry together (the compact six-part recipe first), and newly issued
+matter fits what it develops; supplied stocks stay conserved and overflow
+refuses whole. New material items take their stocks from named native
+material recipes; existing saves keep their holdings. A saved version tag
+selects a declared founding profile, and restore regenerates and
+authenticates it.
+
+Links: draws on 816, 818, 819, 825, 835 · summary Native recipes develop bodies and stock new items; fresh matter fits the development; founding profiles restore by version tag.
+
+*Reviewed 2026-10-22, new. Mark: "Structure only"; the first picks'
+numbers (818, 819) stay in their cases, awaiting native measurement.*
 
 ## The VTT
 
