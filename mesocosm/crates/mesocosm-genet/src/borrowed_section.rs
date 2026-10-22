@@ -55,7 +55,7 @@ impl Snapshot {
     }
 }
 
-/// Rotate the shipped oblique camera around world up, keeping its pitch.
+/// Rotate the default camera around world up, keeping its pitch.
 pub fn forward(quarter_turn: u8) -> [f32; 3] {
     let [x, y, z] = CameraMode::default().forward();
     match quarter_turn % 4 { 0 => [x,y,z], 1 => [z,y,-x], 2 => [-x,y,-z], _ => [-z,y,x] }

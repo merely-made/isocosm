@@ -123,6 +123,14 @@ fn main() {
 /// and not a verdict: the ruling is Mark's and this sheet is the instrument.
 fn note_for(mode: CameraMode) -> &'static str {
     match mode {
+        CameraMode::Dimetric => "the wing's default: the 2:1 dimetric at 30 degrees, along -x -z",
+        CameraMode::DimetricSouth => "the default turned a quarter, along +x -z",
+        CameraMode::DimetricWest => "the default turned twice, along +x +z",
+        CameraMode::DimetricNorth => "the default turned three quarters, along -x +z",
+        CameraMode::Isometric => "true isometric at 35.26 degrees, equal foreshortening on all axes",
+        CameraMode::IsometricSouth => "true isometric turned a quarter",
+        CameraMode::IsometricWest => "true isometric turned twice",
+        CameraMode::IsometricNorth => "true isometric turned three quarters",
         CameraMode::Side => "the shipped section, looking down -z: bodies chain into the camera",
         CameraMode::Across => "turned a quarter, looking down -x: bodies chain across the view",
         CameraMode::Oblique => "tilted 20 degrees both ways: bodies chain along a short diagonal",
