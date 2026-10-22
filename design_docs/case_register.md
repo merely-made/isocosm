@@ -204,6 +204,7 @@ three design docs that cite it. The record holds the words.
 | 1005 | Value is a reading over supply, capability and need, never stored; money is an asserted claim; acting is by tier; trade trends are flow along routes. | none |
 | 1006 | An act is chosen by need times trust times approval; what gets made follows the same score; grinding yields aggregate competence, never a legend; a fey mood is a triggered need. | none |
 | 1009 | The world has a lineage (genotype its catalogue, realignment its boundary); a magic system is a world trait on six axes; bending the rules is declared suspension. | [functional generation](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md) |
+| 1012 | An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act. | none |
 
 ## Ecology
 
@@ -563,7 +564,7 @@ three design docs that cite it. The record holds the words.
 | 1 | The thing is one configurable, extensible world, history and entity generator playable several ways; views and perspectives are distinctions made on top of the sim. | [games wing founding](2026-07-30_games_wing_founding.md), [board on isometer](2026-09-15_board_on_isometer_plan.md), [glyph expression](../mesocosm/design_docs/2026-09-15_glyph_expression_plan.md) |
 | 16 | Stack placement: cambium under isomere, isometer over genet and netrender, generation in isoscape beside esp, dramatis, cleromancy; moot, muniment, murm persist; open standards first. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 20 | One bench for everything generated and reviewed, with sim, world, specimen, item and effect lanes, which is also the dev tools. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
-| 21 | Gamepads are a genet and standards concern; keymapping is a capability wanted across the stack, not only in isomere. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
+| 21 | Gamepads are a genet and standards concern; keymapping is a capability wanted across the stack, not only in isomere. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 27 | Use kiss3d provided it composes with the stack, and keep the renderer swappable behind the scene contract. | [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
 | 29 | Desktop is first-class; the web is a supported tier with a stated floor. | [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md) |
 | 77 | Two bindings, using the best capabilities each platform has if that costs nothing on mobile or the web. | none |
@@ -668,7 +669,7 @@ three design docs that cite it. The record holds the words.
 | Case | Decides | Cited by |
 | --- | --- | --- |
 | 155 | What a Mesocosm player plays depends on the lineage's traits; other lineage critters may be competitors or direct extensions. | none |
-| 175 | The first Mesocosm overlay directs, as ruling 60 has it; the played slice's direct control is rewritten. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 175 | The first Mesocosm overlay directs, as ruling 60 has it; the played slice's direct control is rewritten. | [games wing founding](2026-07-30_games_wing_founding.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 176 | A Mesocosm player directs with priorities, places, stances and nudges. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 177 | A critter follows its player's directing by its bond, built from how well the player's orders have served it. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 178 | Whether the bond carries across generations is a setting (fresh, seeded by lineage, or whole); seeded is the default. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |

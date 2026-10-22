@@ -354,6 +354,12 @@ ignore policy; the standalone shared crate's lockfile is tracked. These are
 CPU correctness receipts. This slice changes no native view and supplies no
 new visual or performance acceptance claim.
 
+*Owed, 2026-10-22, from the design record's §3.2.1 (archived that day):*
+whether a divinity's presence mode (omnipresent, reincarnating or fixed) is
+dictated by its tier, chosen by the wisher within it, or follows its referent.
+Mark's answer of 2026-09-18 addressed the grade, not the mode, so the mode
+stays with this plan; divinity is parked under ruling 279.
+
 
 ## 2. Findings
 

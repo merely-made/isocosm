@@ -1338,3 +1338,38 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
     your character visits another player's settlement, which is
     "bring your own hero" and, at world scale, the graft the lineage model
     already describes.
+
+## 9. The wing's phases
+
+*Moved 2026-10-22 from the design record's §11 (Mark: "Roadmap to the
+founding record"), when the record's narrative sections were archived;
+statuses as recorded there.*
+
+- **W0, the design record ruled.** Done when Mark has read it, its decisions
+  are taken or explicitly deferred, and it is committed with its index row.
+- **W1, every active plan evaluated.** Landed 2026-09-18: 61 rows, 30 keep, 22
+  rewrite, 6 retire, 3 surfaced
+  ([evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)).
+- **W2, the sim's design.** Done when the base profile has its own plan, the
+  taxonomy as a schema, the three process shapes as definitions, the record
+  and reach field specified, and a generator whose declared space is the
+  source of every receipt. Met on paper by the
+  [sim plan](../mesocosm/design_docs/2026-09-22_sim_plan.md) (2026-09-22).
+- **W3, the stack re-derived.** Done when each stack component's plan states
+  what it takes from the sim's nouns and nothing from any product's data, and
+  the record's findings against the stack are lanes in their owners' plans.
+- **W4, the bench.** Done when one bench, which is also the dev tools, runs the
+  sim headless under a seed with receipts and has lanes for processes and
+  effects including magic, the world, specimens, items and effects, so a draw
+  from the generator's declared space can be run, replayed and reviewed in any
+  of them without any game. A headless start exists
+  (`shared/isocosm/src/bin/isocosm-bench.rs`); the dev tools' remaining verbs
+  lift to it from Mesocosm's host (ruling 801).
+- **W5, the first game overlay.** Done when a game has a profile designed as a
+  core implementing the overlay contract, and a played loop with receipts drawn
+  from the generator. Mesocosm goes first (ruling 174), its played loop
+  directing (175), planned as the
+  [Mesocosm overlay plan](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md);
+  the [Eponym](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) and
+  [VTT](2026-09-25_vtt_overlay_plan.md) overlays go side by side after
+  Mesocosm's M3 (ruling 231).

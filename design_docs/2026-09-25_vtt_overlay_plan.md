@@ -80,7 +80,7 @@ held, for the battlemap as a scene; and the
 ## 0. Done-conditions
 
 W5's done-conditions are the record's
-[§11](2026-09-18_wing_design_plan.md#11-phases-and-done-conditions) (ruling 617). Here, for the VTT, they are
+[the wing's phases](2026-07-30_games_wing_founding.md#9-the-wings-phases) (ruling 617). Here, for the VTT, they are
 met by §1 (the profile), §3 (the core and the contract) and §2's phase V4
 (the played loop).
 
@@ -328,6 +328,10 @@ V2 opened without waiting for Mesocosm's M3 (case 798, amending 231), side
 by side with Eponym's plan.
 
 ## 6. Decisions for Mark
+
+*Owed, 2026-10-22, from the design record's §8 (archived that day):* the
+VTT's two theories of appearance, stylesheet and voxel-sourced, with the
+colour table now generating the CSS, a question for this plan to rule.
 
 All eight taken: the eighth by ruling 231 on 2026-09-25; the first to
 seventh by rulings 243 to 250 on 2026-09-26. V0 and V1 are done.
