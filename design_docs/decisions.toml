@@ -2331,18 +2331,21 @@ title = "The default set holds four reproductive strategies"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The default reproductive set holds four strategies: brood, seed or egg, budding and fission, and spores."
+draws_on = ["447"]
 
 [cases."449"]
 title = "A lineage's traits name its strategies, the body must support the one used, and the phenotype switches by circumstance"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A lineage's traits name its reproductive strategies; the body must support the one used; phenotype switches by circumstance."
+draws_on = ["36", "447"]
 
 [cases."450"]
 title = "Reproduction also carries mating, semelparity or iteroparity, parental care and horizontal transfer"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Reproduction also carries mating, semelparity or iteroparity, parental care and horizontal transfer, each governed by traits."
+draws_on = ["447"]
 
 [cases."451"]
 title = "An epoch ends by one of three rules, a year by default"
@@ -2418,6 +2421,7 @@ title = "Organ systems are named networks of functions"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Organ systems are data in the world's rules: named networks of functions connected along the body's tree."
+draws_on = ["277"]
 
 [cases."466"]
 title = "The fifteen functions take the proposed shapes and seeding"
@@ -2482,18 +2486,21 @@ title = "A body's system network is read from its tree, and a system works by de
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body's system network is read from its tree on demand, and a system works to the degree its routes carry what a process asks."
+draws_on = ["465"]
 
 [cases."478"]
 title = "The lineage keeps Mesocosm's recipe, and a body grows toward it"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The lineage keeps Mesocosm's axial recipe and placement policy as world data; children draw their own soma; maturing bodies grow toward the lineage's recipe. (amended by 485, 495)"
+draws_on = ["468"]
 
 [cases."479"]
 title = "A body grows a part it lacks once its parts are full, at PD2's price"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body whose parts are full grows the next part it lacks, nearest the root first, at PD2's price of a cell's mass per cell."
+draws_on = ["464", "468"]
 
 [cases."480"]
 title = "A spread acts wherever a patch lies"
@@ -2532,18 +2539,14 @@ title = "The default systems take the proposed table"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The default systems are ten, each its functions in roles, routes along attachments with capacities from cells; the integument works by living-cell share. (amended by 657)"
-
-[cases."490"]
-title = "The natives read their systems from the bodies family on"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Bodies and anatomy"
-summary = "The natives read their systems from S2's bodies family on; until then nothing certified changes."
+draws_on = ["465", "477"]
 
 [cases."491"]
 title = "The generator riffs systems by substitution"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The generator riffs new systems by substitution, swapping or adding a role's function, kept only if a body can realize its routes. (amended by 492, 563)"
+draws_on = ["465"]
 
 [cases."492"]
 title = "No shape gates a function; what a part does scales with the measurement its mechanic names"
@@ -2571,6 +2574,7 @@ title = "Whether segments grow toward the recipe's count is a lineage trait"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Whether segments grow toward the recipe's count is a lineage trait, epimorphic by default; absent appendages grow in either way."
+draws_on = ["478"]
 
 [cases."496"]
 title = "A wound takes cells in proportion, and healing comes first"
@@ -2625,6 +2629,7 @@ title = "A recipe's kinds are part templates"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A recipe's kinds are part templates: a box and the share of cells each function takes; the lexicon is a set of kinds."
+draws_on = ["468"]
 
 [cases."512"]
 title = "A founded lineage's recipe is drawn by its kingdom, the roster kept as presets"
@@ -2637,30 +2642,35 @@ title = "A body's reproduce volume scales what a birth spends, and neither the b
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body's reproduce volume scales what a birth spends, and neither the budget nor the timing is hardcoded. (amended by 518)"
+draws_on = ["447"]
 
 [cases."516"]
 title = "A whole part is incorporated, as affinity decides"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A body that is not hungry lands a part whole at the first free box, teaching its lineage the kind; affinity decides how it lands."
+draws_on = ["468"]
 
 [cases."518"]
 title = "A birth spends the provision its reproduce cells fill"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A birth spends the provision its reproduce cells fill; the body bears when the provision is full; no birth fraction or interval is set."
+amends = ["447", "515"]
 
 [cases."519"]
 title = "Hunger switches a grazer between an egg and a brood"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Hunger switches a grazer between strategies: a fed grazer broods and a hungry one lays an egg."
+draws_on = ["449", "518"]
 
 [cases."520"]
 title = "Whether growth builds a missing part or fills the provision first is a lineage trait"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Whether a body with full parts first grows a missing part or fills its provision is a lineage trait."
+draws_on = ["479", "518"]
 
 [cases."522"]
 title = "Ars Magica's open text becomes a VTT ruleset and a reference for the wing's magic"
@@ -2681,6 +2691,7 @@ title = "A bud is a part grown off its parent"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A bud grows as a part at its parent's reproducing part and severs into a body of its own once full."
+draws_on = ["470", "518"]
 
 [cases."525"]
 title = "Only worlds that ask for bodies found their lineages from recipes"
@@ -2694,24 +2705,28 @@ title = "Parental care feeds hungry young a parent's own mouthfuls"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A caring parent gives a hungry child one of its own mouthfuls a tick from its reserve while the parent is not hungry. (amended by 527)"
+draws_on = ["450", "518"]
 
 [cases."527"]
 title = "What a caring parent gives, milk or mouthfuls, is a lineage trait"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "What a caring parent gives its hungry young, milk or mouthfuls, is a lineage trait."
+amends = ["526"]
 
 [cases."530"]
 title = "How many eggs a birth lays is a lineage trait"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "How many eggs a birth splits its provision into is a lineage trait, drawn by the generator and revised at the epoch boundary."
+draws_on = ["518"]
 
 [cases."531"]
 title = "A recipe carries its absence odds beside its variance"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Each recipe carries its appendage absence odds beside its segment variance, both drawn by the generator with the recipe."
+draws_on = ["478"]
 
 [cases."532"]
 title = "One stack helper runs the wasm constructors once, for every web module"
@@ -2724,6 +2739,7 @@ title = "Whether a lineage breeds from income or from capital is its trait"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Whether a lineage's growth goes to missing part or provision before the reserve (income) or after it (capital) is a lineage trait."
+draws_on = ["520"]
 
 [cases."536"]
 title = "The constructor helper lives in cambium-genet-web-host"
@@ -2828,6 +2844,7 @@ title = "A bud severs once it holds a provision's worth"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A bud severs once its tissue reaches what its parent's reproduce cells hold, or its kind's adult mass if less."
+draws_on = ["524"]
 
 [cases."554"]
 title = "Bonds run individually until the young is weaned"
@@ -2848,42 +2865,49 @@ title = "Every cell carries along a system's route, and conduits more"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Each cell of a part on a route carries a world-rule capacity and a conduct cell a multiple of it; probe recipes unchanged."
+draws_on = ["477"]
 
 [cases."561"]
 title = "An intact body carries all its natives ask"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Per-cell route capacity is a world rule set so an intact body carries all its natives ask; only cuts, absences or missing sources lower degree."
+draws_on = ["560"]
 
 [cases."562"]
 title = "A process reads its system part by part"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A process reads its system part by part: each part takes its share only as far as its route carries; degree is reached over asked."
+draws_on = ["477"]
 
 [cases."563"]
 title = "No single riff is picked; riffing is to be systemic"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "No single riff is picked to calibrate or certify; a riff is a latent capability becoming ability through variation, certified as a mechanism."
+amends = ["491"]
 
 [cases."564"]
 title = "Each world draws its per-cell capacity"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Each world draws its per-cell route capacity between about 7 and 14 mg a tick, a range a world may widen."
+draws_on = ["561"]
 
 [cases."565"]
 title = "A conduct part carries by its cross-section"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A conduct cell's capacity multiple is its part's cross-section over the reference segment's, with no fixed number."
+draws_on = ["560"]
 
 [cases."566"]
 title = "Nursing reads the young's digestive system"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Nursing reads the young's digestive system: milk lands in the young part by part along its digestive routes, leaving the parent's reproduce part directly."
+draws_on = ["527"]
 
 [cases."567"]
 title = "The pre.4 runners build with the repo's pinned toolchain"
@@ -2896,12 +2920,14 @@ title = "Systems vary at birth, and the epoch boundary folds in what prospered"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Each body carries its systems; a child may swap one role's function at recipe-drawn odds, and the epoch boundary folds prospering variants into the lineage."
+draws_on = ["563"]
 
 [cases."569"]
 title = "The natives act by capability"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A native acts for any body whose carried systems route its function; a lineage's natives are whatever its bodies can do."
+draws_on = ["516"]
 
 [cases."571"]
 title = "The rates are drawn per world, not calibrated to earlier medians"
@@ -2921,84 +2947,98 @@ title = "A body carries the systems it realizes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A founded body carries each default system whose roles its parts fill; functions expressed outside them are latent until a riff routes them."
+draws_on = ["489"]
 
 [cases."575"]
 title = "A native acts on any system that routes its function"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A native acts on any carried system that routes its function; 489's pairing names the defaults, not a limit."
+draws_on = ["569"]
 
 [cases."576"]
 title = "Latent capability arises as cells vary at birth"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Latent capability arises as a child's part may give a cell to another function at birth, at odds."
+draws_on = ["568"]
 
 [cases."577"]
 title = "A varied cell is inherited"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A varied cell is inherited: a child takes its parent's varied cells on top of its own recipe draw."
+draws_on = ["576"]
 
 [cases."578"]
 title = "A child's cell varies at odds each recipe draws"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "One cell of one of a child's parts varies, at odds each recipe draws between 1 in 12 and 1 in 100."
+draws_on = ["576"]
 
 [cases."579"]
 title = "A cell may vary to any grown function"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A varied cell takes any grown catalogue function other than its own, drawn uniformly, and performs by the measurement its mechanic names."
+draws_on = ["492", "576"]
 
 [cases."580"]
 title = "A riff swaps or adds, at even odds"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Half of riffs swap a role's function for another and half add one; a swap may cost an ability and selection decides."
+draws_on = ["491", "568"]
 
 [cases."581"]
 title = "A process's parts share a route's capacity"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A process routes in one operation: a part carries everything bound beyond it, so a narrowed trunk shorts every part behind it."
+draws_on = ["562"]
 
 [cases."582"]
 title = "A native reads the systems routing its function as one network"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A native reads the carried systems routing its function as one network: all their sources, all their effects, the process landing across them."
+draws_on = ["575"]
 
 [cases."583"]
 title = "An inherited system the body cannot realize is carried dormant"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A child carries every system its parent carried; one its body cannot realize routes nothing (dormant) and is passed on."
+draws_on = ["568"]
 
 [cases."584"]
 title = "Any cell may vary"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Any cell may vary, even the last of a feeding, sensing or fixing function; a child born unable to feed starves."
+draws_on = ["578"]
 
 [cases."587"]
 title = "A development brings the system its cells realize"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Cells a development allocates during life bring the default system they realize; cells varied at birth stay latent until a riff routes them."
+amends = ["574"]
 
 [cases."588"]
 title = "The biting parts are the parts bitten"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The glandular system's effects are whichever part a bite lands on; the dose is what its routes carry there."
+draws_on = ["489"]
 
 [cases."589"]
 title = "The muscular system carries the limbs' share of the mouthful"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The muscular system carries the span's part (build multiple) of the mouthful to contracting parts; a limbless grazer bites by intake."
+draws_on = ["489"]
 
 [cases."590"]
 title = "A body grazes other lineages"
@@ -3265,36 +3305,42 @@ title = "The nervous system carries no matter"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The nervous and respiratory systems name no effects in the default table; the muscular system is the only route to the contracting parts."
+amends = ["489"]
 
 [cases."659"]
 title = "The nervous system joins systems for a process"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The nervous system joins systems for a process: a process reading several systems gets their joint effect only where nervous routes connect their parts."
+draws_on = ["657"]
 
 [cases."660"]
 title = "Any gated system can be joined"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Any process reading two or more gated systems is joined by nerves; the joining is not limited to a list of systems."
+draws_on = ["659"]
 
 [cases."661"]
 title = "Without nerves, systems work alone"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Without nerves systems work alone; only the joint effect is lost, a nerve cut costing coordination, not life."
+draws_on = ["659"]
 
 [cases."663"]
 title = "A sense reaching both systems connects them"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A sense reaching both systems' parts connects them; a grazer with no eye has no joint bite."
+draws_on = ["659"]
 
 [cases."664"]
 title = "The joint effect is by degree"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The joint effect is by degree, scaling with the share of the second system's parts the nerves reach."
+draws_on = ["659"]
 
 [cases."670"]
 title = "In-site space is isometer's; the sim takes it through isometer"
@@ -4769,6 +4815,48 @@ source = "design_docs/doctrine.md"
 area = "Bodies and anatomy"
 summary = "Tissue in parts, reserve in stores, a ledger per part; meals land by hunger, rent in proportion; starvation when rent fails; donors' matter kept."
 draws_on = ["446", "455", "459", "460", "463", "464", "504", "523", "544", "551", "766", "787"]
+
+[statements."bodies.6"]
+title = "Recipes and growth"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "A lineage carries a recipe of part templates and a lexicon; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity."
+draws_on = ["468", "478", "479", "511", "516", "531", "world.8"]
+
+[statements."bodies.7"]
+title = "Life-history traits"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Parts or provision first, income or capital, anamorphic or epimorphic: three life-history orders a lineage carries as traits."
+draws_on = ["495", "520", "535"]
+
+[statements."bodies.8"]
+title = "Reproduction"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Strategies by trait, switched by circumstance; every birth a transfer; a body bears when its provision is full; mating and transfer named."
+draws_on = ["447", "448", "449", "450", "515", "518", "519", "524", "530", "552"]
+
+[statements."bodies.9"]
+title = "Parental care"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Care feeds hungry, unweaned young milk or mouthfuls by trait while the parent is fed; milk lands along the young's digestive routes."
+draws_on = ["526", "527", "566", "processes.6"]
+
+[statements."bodies.10"]
+title = "Systems"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Systems are networks of functions read from the tree, working by degree; natives act on any system routing their function; nerves join systems."
+draws_on = ["465", "477", "489", "560", "561", "562", "564", "565", "569", "574", "575", "581", "582", "587", "588", "589", "657", "659", "660", "661", "663", "664"]
+
+[statements."bodies.11"]
+title = "Variation"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "One cell varies at birth and is inherited; riffs swap or add system roles; dormant systems pass on; selection decides; rates drawn, outcomes measured."
+draws_on = ["491", "563", "568", "571", "576", "577", "578", "579", "580", "583", "584", "ecology.1"]
 
 [statements."directing.1"]
 title = "Surfaces derive from knowledge and control"

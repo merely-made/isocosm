@@ -3053,6 +3053,31 @@ by 459 (Mark: "As drafted, archive 453 and 456"):
      accounts is ruling 294's, decided from 287's fork; 287 gave each
      consumer one feeding process.
 
+**Moved 2026-10-22** in the doctrine's Bodies review, as executed sequencing:
+the natives read their systems from the bodies family on (Mark: "As
+drafted, archive 490"):
+
+490. **The natives read their systems from the bodies family on.** Asked on
+     2026-10-02, with 489: "When do the natives start reading their systems?
+     Evidence: the probe's natives are certified on bodies founded before
+     466, which express no store, gate or conduct: fronds that fix, and a
+     grazer's intake lump, contracting rods and sensing point. Read as the
+     table lists, a grazer's muscular route would run from its living parts
+     to its rods along their attachments, and a wound or a severing would
+     narrow or cut it. 477 lets a process require a working system."
+     Options, recommended first: (A) "With the bodies family: the natives
+     read the systems the table lists from S2's bodies family on. That
+     family founds bodies by the recipe (478) with 466's functions and
+     certifies them again. Until then nothing certified changes
+     (recommended)." (B) "Now, in the probe: rewire the probe's natives to
+     read their systems at once, and certify checkpoint 6's domain again on
+     regrown bodies." (C) "By world rule: each native's definition names the
+     system it reads, if any. The default set names none, so a world opts
+     in." Mark chose A, "With the bodies family". So the natives read the
+     systems the table lists from S2's bodies family on, which founds bodies
+     by the recipe (478) with 466's functions and certifies them again;
+     until then nothing certified changes.
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's

@@ -4669,7 +4669,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-03 by ruling 530:* how many eggs a birth lays is a
      lineage trait.
 
-     Links: area Bodies and anatomy · summary The default reproductive set holds four strategies: brood, seed or egg, budding and fission, and spores.
+     Links: area Bodies and anatomy · draws on 447 · summary The default reproductive set holds four strategies: brood, seed or egg, budding and fission, and spores.
 
 449. **A lineage's traits name its strategies, the body must support the one
      used, and the phenotype switches by circumstance.** Asked on
@@ -4692,7 +4692,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      circumstance; and a body uses a strategy only when its reproductive
      functions express it (405, 277).
 
-     Links: area Bodies and anatomy · summary A lineage's traits name its reproductive strategies; the body must support the one used; phenotype switches by circumstance.
+     Links: area Bodies and anatomy · draws on 447, 36 · summary A lineage's traits name its reproductive strategies; the body must support the one used; phenotype switches by circumstance.
 
 450. **Reproduction also carries mating, semelparity or iteroparity,
      parental care and horizontal transfer.** Asked on 2026-10-01, with 448:
@@ -4721,7 +4721,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      refilling provision or its own mouthfuls from its reserve, as the
      lineage's trait says.
 
-     Links: area Bodies and anatomy · summary Reproduction also carries mating, semelparity or iteroparity, parental care and horizontal transfer, each governed by traits.
+     Links: area Bodies and anatomy · draws on 447 · summary Reproduction also carries mating, semelparity or iteroparity, parental care and horizontal transfer, each governed by traits.
 
 451. **An epoch ends by one of three rules, a year by default.** Asked on
      2026-10-01, opening checkpoint 6's step 4: "What ends an epoch in
@@ -5010,7 +5010,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Tabled 2026-10-02 by ruling 489:* the ten default systems, which the
      natives read from the bodies family on (490).
 
-     Links: area Bodies and anatomy · summary Organ systems are data in the world's rules: named networks of functions connected along the body's tree.
+     Links: area Bodies and anatomy · draws on 277 · summary Organ systems are data in the world's rules: named networks of functions connected along the body's tree.
 
 466. **The fifteen functions take the proposed shapes and seeding.** Asked
      on 2026-10-02, with 463: "Do the fifteen functions take the shapes and
@@ -5281,7 +5281,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      conduct cell more; an intact body carries all its natives ask; and a
      process reads its system part by part.
 
-     Links: area Bodies and anatomy · summary A body's system network is read from its tree on demand, and a system works to the degree its routes carry what a process asks.
+     Links: area Bodies and anatomy · draws on 465 · summary A body's system network is read from its tree on demand, and a system works to the degree its routes carry what a process asks.
 
 478. **The lineage keeps Mesocosm's recipe, and a body grows toward it.**
      Asked on 2026-10-02, with 477: "What does Isocosm's lineage keep as its
@@ -5321,7 +5321,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Varied 2026-10-03 by ruling 531:* each recipe carries its absence odds
      beside its variance.
 
-     Links: area Bodies and anatomy · summary The lineage keeps Mesocosm's axial recipe and placement policy as world data; children draw their own soma; maturing bodies grow toward the lineage's recipe. (amended by 485, 495)
+     Links: area Bodies and anatomy · draws on 468 · summary The lineage keeps Mesocosm's axial recipe and placement policy as world data; children draw their own soma; maturing bodies grow toward the lineage's recipe. (amended by 485, 495)
 
 479. **A body grows a part it lacks once its parts are full, at PD2's
      price.** Asked on 2026-10-02, with 477: "When does a maturing body grow
@@ -5354,7 +5354,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Placed against the reserve 2026-10-03 by ruling 535:* before it or
      after it, as the lineage breeds from income or from capital.
 
-     Links: area Bodies and anatomy · summary A body whose parts are full grows the next part it lacks, nearest the root first, at PD2's price of a cell's mass per cell.
+     Links: area Bodies and anatomy · draws on 468, 464 · summary A body whose parts are full grows the next part it lacks, nearest the root first, at PD2's price of a cell's mass per cell.
 
 480. **A spread acts wherever a patch lies.** Asked on 2026-10-02, with 477:
      "Where is a spread body present? Evidence: under 467 a fungus is one
@@ -5565,30 +5565,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by rulings 588 and 589:* the biting parts are the
      parts bitten, and the mouthful reads muscular for the limbs' share.
 
-     Links: area Bodies and anatomy · summary The default systems are ten, each its functions in roles, routes along attachments with capacities from cells; the integument works by living-cell share. (amended by 657)
-
-490. **The natives read their systems from the bodies family on.** Asked on
-     2026-10-02, with 489: "When do the natives start reading their systems?
-     Evidence: the probe's natives are certified on bodies founded before
-     466, which express no store, gate or conduct: fronds that fix, and a
-     grazer's intake lump, contracting rods and sensing point. Read as the
-     table lists, a grazer's muscular route would run from its living parts
-     to its rods along their attachments, and a wound or a severing would
-     narrow or cut it. 477 lets a process require a working system."
-     Options, recommended first: (A) "With the bodies family: the natives
-     read the systems the table lists from S2's bodies family on. That
-     family founds bodies by the recipe (478) with 466's functions and
-     certifies them again. Until then nothing certified changes
-     (recommended)." (B) "Now, in the probe: rewire the probe's natives to
-     read their systems at once, and certify checkpoint 6's domain again on
-     regrown bodies." (C) "By world rule: each native's definition names the
-     system it reads, if any. The default set names none, so a world opts
-     in." Mark chose A, "With the bodies family". So the natives read the
-     systems the table lists from S2's bodies family on, which founds bodies
-     by the recipe (478) with 466's functions and certifies them again;
-     until then nothing certified changes.
-
-     Links: area Bodies and anatomy · summary The natives read their systems from S2's bodies family on; until then nothing certified changes.
+     Links: area Bodies and anatomy · draws on 465, 477 · summary The default systems are ten, each its functions in roles, routes along attachments with capacities from cells; the integument works by living-cell share. (amended by 657)
 
 491. **The generator riffs systems by substitution.** Asked on 2026-10-02,
      with 489: "How does the generator riff new systems? Evidence: in 277
@@ -5621,7 +5598,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by ruling 580:* within a run, half of riffs swap
      and half add.
 
-     Links: area Bodies and anatomy · summary The generator riffs new systems by substitution, swapping or adding a role's function, kept only if a body can realize its routes. (amended by 492, 563)
+     Links: area Bodies and anatomy · draws on 465 · summary The generator riffs new systems by substitution, swapping or adding a role's function, kept only if a body can realize its routes. (amended by 492, 563)
 
 492. **No shape gates a function; what a part does scales with the
      measurement its mechanic names.** Raised by Mark on 2026-10-02, the
@@ -5767,7 +5744,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      epimorphic, is a trait of its lineage, epimorphic by default; absent
      appendages grow in either way (478).
 
-     Links: area Bodies and anatomy · summary Whether segments grow toward the recipe's count is a lineage trait, epimorphic by default; absent appendages grow in either way.
+     Links: area Bodies and anatomy · draws on 478 · summary Whether segments grow toward the recipe's count is a lineage trait, epimorphic by default; absent appendages grow in either way.
 
 496. **A wound takes cells in proportion, and healing comes first.** Asked
      on 2026-10-02, with 493: "Which cells does a wound take, and when do
@@ -5979,7 +5956,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      counts; a lineage's lexicon is a set of kinds; and Mesocosm's five
      appendages and its palette become the default templates.
 
-     Links: area Bodies and anatomy · summary A recipe's kinds are part templates: a box and the share of cells each function takes; the lexicon is a set of kinds.
+     Links: area Bodies and anatomy · draws on 468 · summary A recipe's kinds are part templates: a box and the share of cells each function takes; the lexicon is a set of kinds.
 
 512. **A founded lineage's recipe is drawn by its kingdom, the roster kept
      as presets.** Asked on 2026-10-03, with 510: "What recipe does a
@@ -6030,7 +6007,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      gestation is taken as a fixed value; where the budget and the timing
      come from was put back the same day (518).
 
-     Links: area Bodies and anatomy · summary A body's reproduce volume scales what a birth spends, and neither the budget nor the timing is hardcoded. (amended by 518)
+     Links: area Bodies and anatomy · draws on 447 · summary A body's reproduce volume scales what a birth spends, and neither the budget nor the timing is hardcoded. (amended by 518)
 
 516. **A whole part is incorporated, as affinity decides.** Asked on
      2026-10-03, with 514: "How does a probe body incorporate (468)?
@@ -6058,7 +6035,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-03 by ruling 544:* the landed part keeps its
      donor's matter.
 
-     Links: area Bodies and anatomy · summary A body that is not hungry lands a part whole at the first free box, teaching its lineage the kind; affinity decides how it lands.
+     Links: area Bodies and anatomy · draws on 468 · summary A body that is not hungry lands a part whole at the first free box, teaching its lineage the kind; affinity decides how it lands.
 
 518. **A birth spends the provision its reproduce cells fill.** Asked on
      2026-10-03, putting 515 back: "You chose what a birth spends, and said
@@ -6094,7 +6071,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      growth fills the provision or a missing part first is a lineage
      trait.
 
-     Links: area Bodies and anatomy · summary A birth spends the provision its reproduce cells fill; the body bears when the provision is full; no birth fraction or interval is set.
+     Links: area Bodies and anatomy · amends 447, 515 · summary A birth spends the provision its reproduce cells fill; the body bears when the provision is full; no birth fraction or interval is set.
 
 519. **Hunger switches a grazer between an egg and a brood.** Asked on
      2026-10-03, checkpoint 8's third round: "Under 518 every birth spends
@@ -6115,7 +6092,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-04 by ruling 551:* a body whose stores are full is
      fed, TD5's horizon capped by what its stores may hold.
 
-     Links: area Bodies and anatomy · summary Hunger switches a grazer between strategies: a fed grazer broods and a hungry one lays an egg.
+     Links: area Bodies and anatomy · draws on 518, 449 · summary Hunger switches a grazer between strategies: a fed grazer broods and a hungry one lays an egg.
 
 520. **Whether growth builds a missing part or fills the provision first is
      a lineage trait.** Asked on 2026-10-03, with 519: "With its parts full,
@@ -6140,7 +6117,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      emerges with no age threshold; one that provisions first breeds while
      still incomplete.
 
-     Links: area Bodies and anatomy · summary Whether a body with full parts first grows a missing part or fills its provision is a lineage trait.
+     Links: area Bodies and anatomy · draws on 479, 518 · summary Whether a body with full parts first grows a missing part or fills its provision is a lineage trait.
 
 522. **Ars Magica's open text becomes a VTT ruleset and a reference for the
      wing's magic.** Raised by Mark on 2026-10-03 ("this is probably good
@@ -6226,7 +6203,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-04 by ruling 552:* "once full" is once it holds a
      provision's worth, its parent's reproduce cells' mass.
 
-     Links: area Bodies and anatomy · summary A bud grows as a part at its parent's reproducing part and severs into a body of its own once full.
+     Links: area Bodies and anatomy · draws on 518, 470 · summary A bud grows as a part at its parent's reproducing part and severs into a body of its own once full.
 
 525. **Only worlds that ask for bodies found their lineages from
      recipes.** Asked on 2026-10-03, with 523: "Which generated worlds
@@ -6271,7 +6248,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a young weaned the first time it is fed, its stores full; the crowd
      runs a parent and its unweaned young as individuals.
 
-     Links: area Bodies and anatomy · summary A caring parent gives a hungry child one of its own mouthfuls a tick from its reserve while the parent is not hungry. (amended by 527)
+     Links: area Bodies and anatomy · draws on 450, 518 · summary A caring parent gives a hungry child one of its own mouthfuls a tick from its reserve while the parent is not hungry. (amended by 527)
 
 527. **What a caring parent gives, milk or mouthfuls, is a lineage trait.**
      Asked on 2026-10-03, putting 526 back at Mark's question ("Mouthfuls,
@@ -6301,7 +6278,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      one the probe's grazers give goes back to Mark. *Answered 2026-10-03
      by ruling 528:* milk.
 
-     Links: area Bodies and anatomy · summary What a caring parent gives its hungry young, milk or mouthfuls, is a lineage trait.
+     Links: area Bodies and anatomy · amends 526 · summary What a caring parent gives its hungry young, milk or mouthfuls, is a lineage trait.
 
 530. **How many eggs a birth lays is a lineage trait.** Asked on
      2026-10-03, with 528: "How many eggs does a birth lay (448: many
@@ -6323,7 +6300,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      remainders, and the probe draws its grazers' clutch per world as it
      draws their other traits.
 
-     Links: area Bodies and anatomy · summary How many eggs a birth splits its provision into is a lineage trait, drawn by the generator and revised at the epoch boundary.
+     Links: area Bodies and anatomy · draws on 518 · summary How many eggs a birth splits its provision into is a lineage trait, drawn by the generator and revised at the epoch boundary.
 
 531. **A recipe carries its absence odds beside its variance.** Asked on
      2026-10-03, with 528: "How much do children vary, without Mesocosm's
@@ -6351,7 +6328,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      parent's varied cells, and one of its cells may vary to any grown
      function at odds its recipe draws.
 
-     Links: area Bodies and anatomy · summary Each recipe carries its appendage absence odds beside its segment variance, both drawn by the generator with the recipe.
+     Links: area Bodies and anatomy · draws on 478 · summary Each recipe carries its appendage absence odds beside its segment variance, both drawn by the generator with the recipe.
 
 532. **One stack helper runs the wasm constructors once, for every web
      module.** Asked on 2026-10-03 in the Burn migration session, after
@@ -6401,7 +6378,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a trait of the lineage, drawn by the generator and revised at the
      epoch boundary (57).
 
-     Links: area Bodies and anatomy · summary Whether a lineage's growth goes to missing part or provision before the reserve (income) or after it (capital) is a lineage trait.
+     Links: area Bodies and anatomy · draws on 520 · summary Whether a lineage's growth goes to missing part or provision before the reserve (income) or after it (capital) is a lineage trait.
 
 536. **The constructor helper lives in cambium-genet-web-host.** Asked on
      2026-10-03 in the Burn migration session, carrying out 532: where the
@@ -6785,7 +6762,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      kind's adult mass if that is less, and the severed seedling grows the
      rest of its frond and recipe by 479 and 520.
 
-     Links: area Bodies and anatomy · summary A bud severs once its tissue reaches what its parent's reproduce cells hold, or its kind's adult mass if less.
+     Links: area Bodies and anatomy · draws on 524 · summary A bud severs once its tissue reaches what its parent's reproduce cells hold, or its kind's adult mass if less.
 
 554. **Bonds run individually until the young is weaned.** Asked on
      2026-10-04, opening checkpoint 8's step 8i: "How does the crowd run
@@ -6864,7 +6841,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by ruling 565:* a conduct cell's multiple is its
      part's cross-section over the reference segment's.
 
-     Links: area Bodies and anatomy · summary Each cell of a part on a route carries a world-rule capacity and a conduct cell a multiple of it; probe recipes unchanged.
+     Links: area Bodies and anatomy · draws on 477 · summary Each cell of a part on a route carries a world-rule capacity and a conduct cell a multiple of it; probe recipes unchanged.
 
 561. **An intact body carries all its natives ask.** Asked on 2026-10-05,
      with 560: "How much does a route carry? Evidence: an intact founded
@@ -6887,7 +6864,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by ruling 564:* each world draws the capacity,
      about 7 to 14 mg a cell a tick.
 
-     Links: area Bodies and anatomy · summary Per-cell route capacity is a world rule set so an intact body carries all its natives ask; only cuts, absences or missing sources lower degree.
+     Links: area Bodies and anatomy · draws on 560 · summary Per-cell route capacity is a world rule set so an intact body carries all its natives ask; only cuts, absences or missing sources lower degree.
 
 562. **A process reads its system part by part.** Asked on 2026-10-05, with
      560: "How does a process read a system whose effects are every living
@@ -6912,7 +6889,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      share a route's capacity, and a native reads the systems routing its
      function as one network.
 
-     Links: area Bodies and anatomy · summary A process reads its system part by part: each part takes its share only as far as its route carries; degree is reached over asked.
+     Links: area Bodies and anatomy · draws on 477 · summary A process reads its system part by part: each part takes its share only as far as its route carries; degree is reached over asked.
 
 563. **No single riff is picked; riffing is to be systemic.** Asked on
      2026-10-05, checkpoint 9's second round: "Which riffed system does
@@ -6950,7 +6927,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      561's inert systems manage outcomes, while conservation, the runners'
      equivalence and the planted faults constrain the instrument.
 
-     Links: area Bodies and anatomy · summary No single riff is picked to calibrate or certify; a riff is a latent capability becoming ability through variation, certified as a mechanism.
+     Links: area Bodies and anatomy · amends 491 · summary No single riff is picked to calibrate or certify; a riff is a latent capability becoming ability through variation, certified as a mechanism.
 
 564. **Each world draws its per-cell capacity.** Asked on 2026-10-05, with
      563: "How tight is the per-cell capacity that lets an intact body carry
@@ -6969,7 +6946,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stretched and slack bodies. *Reading, not ruled:* the range is a
      founding range a world may widen, 7 to 14 by default.
 
-     Links: area Bodies and anatomy · summary Each world draws its per-cell route capacity between about 7 and 14 mg a tick, a range a world may widen.
+     Links: area Bodies and anatomy · draws on 561 · summary Each world draws its per-cell route capacity between about 7 and 14 mg a tick, a range a world may widen.
 
 565. **A conduct part carries by its cross-section.** Asked on 2026-10-05,
      with 563: "How much more does a conduct cell carry than an ordinary
@@ -6987,7 +6964,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      number. *Reading, not ruled:* the reference segment's cross-section is
      its face, 25 voxels (505's evidence).
 
-     Links: area Bodies and anatomy · summary A conduct cell's capacity multiple is its part's cross-section over the reference segment's, with no fixed number.
+     Links: area Bodies and anatomy · draws on 560 · summary A conduct cell's capacity multiple is its part's cross-section over the reference segment's, with no fixed number.
 
 566. **Nursing reads the young's digestive system.** Asked on 2026-10-05,
      with 563: "What does nursing read? Evidence: the table gives the meal
@@ -7007,7 +6984,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      digestive routes, as a meal would, and leaves the parent's reproduce
      part directly.
 
-     Links: area Bodies and anatomy · summary Nursing reads the young's digestive system: milk lands in the young part by part along its digestive routes, leaving the parent's reproduce part directly.
+     Links: area Bodies and anatomy · draws on 527 · summary Nursing reads the young's digestive system: milk lands in the young part by part along its digestive routes, leaving the parent's reproduce part directly.
 
 567. **The pre.4 runners build with the repo's pinned toolchain.** Asked on
      2026-10-05 in the Burn migration session, from pre.4's findings while
@@ -7074,7 +7051,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by ruling 583:* an inherited system the child
      cannot realize is carried dormant.
 
-     Links: area Bodies and anatomy · summary Each body carries its systems; a child may swap one role's function at recipe-drawn odds, and the epoch boundary folds prospering variants into the lineage.
+     Links: area Bodies and anatomy · draws on 563 · summary Each body carries its systems; a child may swap one role's function at recipe-drawn odds, and the epoch boundary folds prospering variants into the lineage.
 
 569. **The natives act by capability.** Asked on 2026-10-05, with 568: "Do
      the natives act by capability? Evidence: the probe's natives belong to
@@ -7100,7 +7077,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by ruling 590:* a body that takes in grazes any
      living body of another lineage at its site.
 
-     Links: area Bodies and anatomy · summary A native acts for any body whose carried systems route its function; a lineage's natives are whatever its bodies can do.
+     Links: area Bodies and anatomy · draws on 516 · summary A native acts for any body whose carried systems route its function; a lineage's natives are whatever its bodies can do.
 
 571. **The rates are drawn per world, not calibrated to earlier medians.**
      Asked on 2026-10-05, with 568: "When bodies change, do we keep
@@ -7170,7 +7147,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Extended 2026-10-05 by ruling 587:* cells a development allocates in
      life bring the default system they realize.
 
-     Links: area Bodies and anatomy · summary A founded body carries each default system whose roles its parts fill; functions expressed outside them are latent until a riff routes them.
+     Links: area Bodies and anatomy · draws on 489 · summary A founded body carries each default system whose roles its parts fill; functions expressed outside them are latent until a riff routes them.
 
 575. **A native acts on any system that routes its function.** Asked with
      574: "Which native reads a riffed system? Evidence: 489's table pairs
@@ -7189,7 +7166,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      that route them, not a limit; a gut with fix added earns income
      through its digestive routes.
 
-     Links: area Bodies and anatomy · summary A native acts on any carried system that routes its function; 489's pairing names the defaults, not a limit.
+     Links: area Bodies and anatomy · draws on 569 · summary A native acts on any carried system that routes its function; 489's pairing names the defaults, not a limit.
 
 576. **Latent capability arises as cells vary at birth.** Asked with 574:
      "Where does latent capability come from in the probe? Evidence: probe
@@ -7219,7 +7196,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      12 to 1 in 100; to any grown function; and a riff swaps or adds at
      even odds.
 
-     Links: area Bodies and anatomy · summary Latent capability arises as a child's part may give a cell to another function at birth, at odds.
+     Links: area Bodies and anatomy · draws on 568 · summary Latent capability arises as a child's part may give a cell to another function at birth, at odds.
 
 577. **A varied cell is inherited.** Asked on 2026-10-05, checkpoint 9's
      fifth round: "Is a varied cell inherited (576)? Evidence: a child draws
@@ -7243,7 +7220,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      develops that part; a segment the child's drift drops, or a borne kind
      it lacks, takes its varied cell with it.
 
-     Links: area Bodies and anatomy · summary A varied cell is inherited: a child takes its parent's varied cells on top of its own recipe draw.
+     Links: area Bodies and anatomy · draws on 576 · summary A varied cell is inherited: a child takes its parent's varied cells on top of its own recipe draw.
 
 578. **A child's cell varies at odds each recipe draws.** Asked with 577:
      "How often does a child's cell vary? Evidence: founded producers have
@@ -7266,7 +7243,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Specified 2026-10-05 by ruling 584:* any cell may vary, the last of a
      function that feeds, senses or fixes included.
 
-     Links: area Bodies and anatomy · summary One cell of one of a child's parts varies, at odds each recipe draws between 1 in 12 and 1 in 100.
+     Links: area Bodies and anatomy · draws on 576 · summary One cell of one of a child's parts varies, at odds each recipe draws between 1 in 12 and 1 in 100.
 
 579. **A cell may vary to any grown function.** Asked with 577: "Which
      functions can a cell vary to? Evidence: under 492 no shape gates a
@@ -7289,7 +7266,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      own, drawn uniformly, and does what the measurement its mechanic names
      gives it, so a lump's fix cell fixes poorly by its area.
 
-     Links: area Bodies and anatomy · summary A varied cell takes any grown catalogue function other than its own, drawn uniformly, and performs by the measurement its mechanic names.
+     Links: area Bodies and anatomy · draws on 576, 492 · summary A varied cell takes any grown catalogue function other than its own, drawn uniformly, and performs by the measurement its mechanic names.
 
 580. **A riff swaps or adds, at even odds.** Asked with 577: "Does a riff
      swap a role's function or add one? Evidence: 491 says either, 'a
@@ -7309,7 +7286,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      role and the new function are drawn uniformly, the function among
      those the child's body expresses that the role does not already name.
 
-     Links: area Bodies and anatomy · summary Half of riffs swap a role's function for another and half add one; a swap may cost an ability and selection decides.
+     Links: area Bodies and anatomy · draws on 491, 568 · summary Half of riffs swap a role's function for another and half add one; a swap may cost an ability and selection decides.
 
 581. **A process's parts share a route's capacity.** Asked on 2026-10-05,
      checkpoint 9's sixth round: "Do a body's parts share a route's
@@ -7334,7 +7311,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      that each effect part feeds by its share, so capacity is shared within
      the operation and resets between processes.
 
-     Links: area Bodies and anatomy · summary A process routes in one operation: a part carries everything bound beyond it, so a narrowed trunk shorts every part behind it.
+     Links: area Bodies and anatomy · draws on 562 · summary A process routes in one operation: a part carries everything bound beyond it, so a narrowed trunk shorts every part behind it.
 
 582. **A native reads the systems routing its function as one network.**
      Asked with 581: "When several carried systems route a native's
@@ -7360,7 +7337,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      latent cell would be routed already through a system whose sources are
      every living part, and nothing would be latent (574).
 
-     Links: area Bodies and anatomy · summary A native reads the carried systems routing its function as one network: all their sources, all their effects, the process landing across them.
+     Links: area Bodies and anatomy · draws on 575 · summary A native reads the carried systems routing its function as one network: all their sources, all their effects, the process landing across them.
 
 583. **An inherited system the body cannot realize is carried dormant.**
      Asked with 581: "What happens to an inherited system the child's body
@@ -7379,7 +7356,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      body cannot realize routing nothing, and passes it on, so a descendant
      whose body realizes it again has it back.
 
-     Links: area Bodies and anatomy · summary A child carries every system its parent carried; one its body cannot realize routes nothing (dormant) and is passed on.
+     Links: area Bodies and anatomy · draws on 568 · summary A child carries every system its parent carried; one its body cannot realize routes nothing (dormant) and is passed on.
 
 584. **Any cell may vary.** Asked with 581: "Can a cell vary out of the
      last cell of a function that feeds, senses or fixes? Evidence: a
@@ -7397,7 +7374,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a child born unable to feed starves. The sparing of those kinds from
      absence, 531's reading, is not touched.
 
-     Links: area Bodies and anatomy · summary Any cell may vary, even the last of a feeding, sensing or fixing function; a child born unable to feed starves.
+     Links: area Bodies and anatomy · draws on 578 · summary Any cell may vary, even the last of a feeding, sensing or fixing function; a child born unable to feed starves.
 
 587. **A development brings the system its cells realize.** Asked on
      2026-10-05, checkpoint 9's seventh round: "Does a gland that develops
@@ -7420,7 +7397,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      routes them; a frond's gland brings the glandular system, and the dose
      goes on.
 
-     Links: area Bodies and anatomy · summary Cells a development allocates during life bring the default system they realize; cells varied at birth stay latent until a riff routes them.
+     Links: area Bodies and anatomy · amends 574 · summary Cells a development allocates during life bring the default system they realize; cells varied at birth stay latent until a riff routes them.
 
 588. **The biting parts are the parts bitten.** Asked with 587: "What are
      'the biting parts' the glandular system feeds (489)? Evidence: the
@@ -7439,7 +7416,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      system's effects are whichever part a bite lands on, the dose being
      what its routes carry there, and intact fronds dose as now.
 
-     Links: area Bodies and anatomy · summary The glandular system's effects are whichever part a bite lands on; the dose is what its routes carry there.
+     Links: area Bodies and anatomy · draws on 489 · summary The glandular system's effects are whichever part a bite lands on; the dose is what its routes carry there.
 
 589. **The muscular system carries the limbs' share of the mouthful.** Asked
      with 587: "How does the mouthful read the muscular system? Evidence:
@@ -7457,7 +7434,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      to the contracting parts, and a limbless grazer bites by its intake as
      now.
 
-     Links: area Bodies and anatomy · summary The muscular system carries the span's part (build multiple) of the mouthful to contracting parts; a limbless grazer bites by intake.
+     Links: area Bodies and anatomy · draws on 489 · summary The muscular system carries the span's part (build multiple) of the mouthful to contracting parts; a limbless grazer bites by intake.
 
 590. **A body grazes other lineages.** Asked with 587: "What does a body
      that comes to take in eat (569)? Evidence: under 569 every lineage
@@ -7972,7 +7949,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      is its purpose, replacing the reading first written here (that it would
      carry perception's signal), and 658 takes up how.
 
-     Links: area Bodies and anatomy · summary The nervous and respiratory systems name no effects in the default table; the muscular system is the only route to the contracting parts.
+     Links: area Bodies and anatomy · amends 489 · summary The nervous and respiratory systems name no effects in the default table; the muscular system is the only route to the contracting parts.
 659. **The nervous system joins systems for a process.** 2026-10-08, 658's
      design round. Question: what does its communication do, given that
      each system carries milligrams from sources through gates to effects,
@@ -7984,14 +7961,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      systems gets their joint effect only where nervous routes connect those
      systems' parts, and each system still works alone.
 
-     Links: area Bodies and anatomy · summary The nervous system joins systems for a process: a process reading several systems gets their joint effect only where nervous routes connect their parts.
+     Links: area Bodies and anatomy · draws on 657 · summary The nervous system joins systems for a process: a process reading several systems gets their joint effect only where nervous routes connect their parts.
 660. **Any gated system can be joined.** 2026-10-08. Question: which systems
      does it connect? Options: the four Mark named, muscular, digestive,
      respiratory and nervous (recommended); every system with gates. Mark
      chose "Every system with gates". So the joining is not limited to a
      list: any process reading two or more gated systems is joined by nerves.
 
-     Links: area Bodies and anatomy · summary Any process reading two or more gated systems is joined by nerves; the joining is not limited to a list of systems.
+     Links: area Bodies and anatomy · draws on 659 · summary Any process reading two or more gated systems is joined by nerves; the joining is not limited to a list of systems.
 661. **Without nerves, systems work alone.** 2026-10-08. Question: what
      happens to a body with no nerves, or with them cut, such as the probe's
      fronds? Options: systems work alone (recommended); local reflex only;
@@ -7999,7 +7976,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      only the joint effect is lost: a frond is unaffected, and a nerve cut
      costs coordination, not life.
 
-     Links: area Bodies and anatomy · summary Without nerves systems work alone; only the joint effect is lost, a nerve cut costing coordination, not life.
+     Links: area Bodies and anatomy · draws on 659 · summary Without nerves systems work alone; only the joint effect is lost, a nerve cut costing coordination, not life.
 663. **A sense reaching both systems connects them.** 2026-10-08. Question:
      what counts as the nerves connecting two systems' parts, routes running
      along attachments through live parts (477) and the senses being the
@@ -8009,14 +7986,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      senses: a nervous route from a sense source must reach a part of each,
      and a grazer with no eye has no joint bite.
 
-     Links: area Bodies and anatomy · summary A sense reaching both systems' parts connects them; a grazer with no eye has no joint bite.
+     Links: area Bodies and anatomy · draws on 659 · summary A sense reaching both systems' parts connects them; a grazer with no eye has no joint bite.
 664. **The joint effect is by degree.** 2026-10-08. Question: all or nothing,
      or by degree? Options: by degree, as systems work (477) (recommended);
      all or nothing. Mark chose "By degree (Recommended)". So the joint share
      scales with the share of the second system's parts the nerves reach: one
      limb innervated of two gives about half the limbs' share.
 
-     Links: area Bodies and anatomy · summary The joint effect is by degree, scaling with the share of the second system's parts the nerves reach.
+     Links: area Bodies and anatomy · draws on 659 · summary The joint effect is by degree, scaling with the share of the second system's parts the nerves reach.
 670. **In-site space is isometer's; the sim takes it through isometer.**
      2026-10-08, the families plan's second round. Question: legacy
      `places` gives Mesocosm its space inside a site and Eponym uses it,

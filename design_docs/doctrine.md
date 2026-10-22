@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, the sim's schema, and Processes and rules reviewed; Bodies and anatomy is under review (Bodies 1 to 5). Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, the sim's schema, and Processes and rules reviewed; Bodies and anatomy is under review (Bodies 1 to 11). Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -693,6 +693,105 @@ Links: draws on 446, 455, 459, 460, 463, 464, 504, 523, 544, 551, 766, 787 · su
 
 *Reviewed 2026-10-22, new; checked built. Mark: "As drafted, archive 453
 and 456".*
+
+### Bodies 6. Recipes and growth
+
+A lineage carries a recipe (tagmata of segment templates bearing kinds, with
+counts, variance and absence odds) and a placement policy; a kind is a part
+template, a box and its cells' functions, and the lexicon is the kinds it may
+express (World 8 draws founded recipes). Each child draws its own soma by its
+seed, so siblings differ. A body whose parts are full grows the next part it
+lacks toward the lineage's recipe, nearest the root first, at a cell's mass a
+cell, in the order its life-history traits set (Bodies 7). A body not hungry
+whose bite would take a whole part lands it at the first free box, teaching
+its lineage the kind; affinity decides how it lands.
+
+Links: draws on 468, 478, 479, 511, 516, 531, world.8 · summary A lineage carries a recipe of part templates and a lexicon; each child draws its soma; full bodies grow toward the recipe; whole parts are incorporated by affinity.
+
+*Reviewed 2026-10-22, new; checked built. Mark: "Order traits apart".*
+
+### Bodies 7. Life-history traits
+
+Three orders are a lineage's traits, drawn by the generator and revised at the
+epoch boundary: whether growth with the parts full builds the next missing
+part or fills the provision first; whether it does so before the reserve
+(breeding from income) or after it (breeding from capital); and whether
+segments grow toward the recipe's count as a body matures (anamorphic) or
+keep their drawn count (epimorphic, the default).
+
+Links: draws on 495, 520, 535 · summary Parts or provision first, income or capital, anamorphic or epimorphic: three life-history orders a lineage carries as traits.
+
+*Reviewed 2026-10-22, new: split from recipes at Mark's word ("Order traits
+apart"); checked built.*
+
+### Bodies 8. Reproduction
+
+Reproduction is several strategies a lineage's traits name (brood, seed or
+egg, budding and fission, spores, fragmentation), the body supporting the one
+it uses and its phenotype switching by circumstance: a fed grazer broods, a
+hungry one lays eggs. Every birth is a transfer, never a spawn. Reproduce
+cells fill a provision as stores fill the reserve, and a body bears when it
+is full, so no birth fraction or interval is set; a bud grows as a part and
+severs once it holds a provision's worth; how many eggs a birth lays is a
+trait. Reproduction also carries mating, breeding once or many times, and
+horizontal transfer.
+
+*Not yet built:* mating, horizontal transfer, spores.
+
+Links: draws on 447, 448, 449, 450, 515, 518, 519, 524, 530, 552 · summary Strategies by trait, switched by circumstance; every birth a transfer; a body bears when its provision is full; mating and transfer named.
+
+*Reviewed 2026-10-22, new. Mark: "Care apart".*
+
+### Bodies 9. Parental care
+
+A caring lineage feeds its hungry young, while the parent is not hungry, as
+its trait says: milk, its refilling provision going to the young rather than
+to its next birth, or mouthfuls from its reserve. Care reads only unweaned
+young (a young is weaned the first time it is fed, its stores full), and milk
+lands in the young part by part along its digestive routes. In the crowd, a
+parent and its unweaned young run as individuals (Processes 6).
+
+Links: draws on 526, 527, 566, processes.6 · summary Care feeds hungry, unweaned young milk or mouthfuls by trait while the parent is fed; milk lands along the young's digestive routes.
+
+*Reviewed 2026-10-22, new: split from reproduction at Mark's word ("Care
+apart"); checked built.*
+
+### Bodies 10. Systems
+
+Organ systems are named networks of functions in roles (sources, stores,
+gates, effects), read from the body's tree on demand: nodes on live parts,
+edges along attachments, each cell carrying a world-drawn capacity and a
+conduct cell more by its cross-section. A system works by degree: a process
+routes in one operation, each part taking its share as far as its route
+carries, so a narrowed trunk shorts what lies beyond. Ten default systems pair
+with the natives that read them; a native acts on any carried system routing
+its function, read as one network, so a lineage's natives are whatever its
+bodies can do. A body carries the defaults it realizes, a development bringing
+the system its cells realize. The nervous system carries no matter: it joins
+systems for a process where a sense reaches both, by degree; without it
+systems work alone.
+
+Links: draws on 465, 477, 489, 560, 561, 562, 564, 565, 569, 574, 575, 581, 582, 587, 588, 589, 657, 659, 660, 661, 663, 664 · summary Systems are networks of functions read from the tree, working by degree; natives act on any system routing their function; nerves join systems.
+
+*Reviewed 2026-10-22, new; checked built. Mark: "As drafted, archive 490".*
+
+### Bodies 11. Variation
+
+Variation is the mechanism; no single trait or part combination is picked to
+calibrate or certify. At birth one cell of a child varies, at odds each
+recipe draws (1 in 12 to 1 in 100), to any grown function, performing by its
+measurement; varied cells are inherited, so latent capability builds down a
+line. A child takes its parent's systems, and at recipe-drawn odds a riff
+swaps or adds a role's function, at even odds, kept only if its routes
+realize; an inherited system the body cannot realize is carried dormant; the
+epoch boundary folds in what prospered (Ecology 1). Any cell may vary, and
+selection decides. Rates are drawn per world and outcomes measured, never
+tuned to earlier medians.
+
+Links: draws on 491, 563, 568, 571, 576, 577, 578, 579, 580, 583, 584, ecology.1 · summary One cell varies at birth and is inherited; riffs swap or add system roles; dormant systems pass on; selection decides; rates drawn, outcomes measured.
+
+*Reviewed 2026-10-22, new; checked built. Mark: "As drafted, citing Ecology
+1".*
 
 ## Record and history
 
