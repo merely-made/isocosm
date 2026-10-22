@@ -5677,7 +5677,7 @@ draws_on = ["50", "51", "56", "79", "151"]
 title = "Polities"
 source = "design_docs/doctrine.md"
 area = "The sim's schema and saves"
-summary = "A polity needs efficacious enforcement, has a focus not a size, may build on another; its constitution is its definitive act; goals follow alignment."
+summary = "A polity enforces with what it provides and asserts; efficacy is read; a focus not a size; contingency borrows enforcement; no will to continue."
 draws_on = ["64", "67", "68", "81", "988", "989", "991", "992"]
 
 [statements."schema.6"]
@@ -5820,6 +5820,21 @@ source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "Runs unattended: the sim; needed by every game and deciding nothing: the stack; a way of playing: a game. The sim never renders, rolls or decides fun."
 draws_on = ["10", "114", "processes.1"]
+
+[statements."stack.13"]
+title = "The contract's discipline"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "The contract is coarse batches per tick, WIT-shaped, bound natively first; its types round-trip through bytes; it depends on no sim internals."
+draws_on = ["78", "154", "1000", "stack.4"]
+
+[statements."stack.14"]
+title = "Extension rungs"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Data, piccolo, components and native crates; cold and narrow goes behind a component when pluggable, hot or wide stays native."
+draws_on = ["76", "77", "78", "1000", "stack.3"]
+stack = true
 
 [statements."vtt.1"]
 title = "The table runs over the sim, or without it"
