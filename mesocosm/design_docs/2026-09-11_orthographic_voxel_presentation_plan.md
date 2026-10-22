@@ -29,7 +29,9 @@ remain rigid; native joint constraints and articulation that changes placement
 are an explicitly separate remaining condition, not a claim of this bridge.
 
 **Progress:** contacts/sweeps, shared gait and both camera paths connected.
-Smooth bodies and the surface isometric view are defaults. `--bodies voxels`,
+Smooth bodies and the wing's 2:1 dimetric surface view are defaults
+(doctrine, Presentation 1; true isometric stays as `--camera isometric`).
+`--bodies voxels`,
 `--camera oblique` and the other existing presets retain comparison views.
 Z/V turn surface and terrarium views, C switches surface/section, and
 `--view-depth` overrides visible depth. The borrowed producer carries the same

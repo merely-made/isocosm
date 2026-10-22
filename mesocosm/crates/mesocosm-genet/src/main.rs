@@ -94,7 +94,7 @@ fn main() {
             "--camera" => {
                 config.camera = CameraMode::parse(&args.next().unwrap_or_default())
                     .unwrap_or_else(|| {
-                        fail("--camera wants isometric, isometric-south/west/north, oblique, side, across or terrarium-east/south/west/north")
+                        fail("--camera wants dimetric, dimetric-south/west/north, isometric, isometric-south/west/north, oblique, side, across or terrarium-east/south/west/north")
                     });
             },
             "--view-depth" => {
@@ -339,7 +339,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --body-light N  body light scale, sun and ambient (default 1 matches terrain, zero is dark)
   --sun S         sky light: fixed (bench default), sim (play default) or a tick number
   --terrain-style MODE  auto (classic), classic or habitat
-  --camera MODE   isometric (default), isometric-south/west/north, oblique, side, across, terrarium-east/south/west/north
+  --camera MODE   dimetric (default), dimetric-south/west/north, isometric, isometric-south/west/north, oblique, side, across, terrarium-east/south/west/north
   --slab H        view half-height in voxels (default 28)
   --view-depth D  visible depth, 1..1024 voxels (default: surface frame or 16 for sections)
   --capture PATH  write the final frame as a PNG

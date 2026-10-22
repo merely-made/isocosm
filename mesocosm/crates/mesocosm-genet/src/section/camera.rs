@@ -7,9 +7,11 @@
 //! Presentation camera orientations: Mesocosm's named presets over the shared
 //! [`isometer::SlabCamera`].
 //!
-//! Side, across and the default oblique view retain their measured Q9
-//! geometry. CP1 adds four cardinal terrarium views at a shallow pitch.
-//! Each mode produces a forward vector; `view.rs` turns it into the one
+//! The default is the wing's view (doctrine, Presentation 1): the 2:1
+//! dimetric at 30°, turned in quarter steps, with true isometric kept as its
+//! own surface view. Side, across and the oblique section retain their
+//! measured Q9 geometry. CP1 adds four cardinal terrarium views at a shallow
+//! pitch. Each mode produces a forward vector; `view.rs` turns it into the one
 //! `SlabCamera` the terrain rays, the raster depth and the cull window all
 //! read. Rotation never reaches the world.
 
@@ -42,8 +44,17 @@ pub const TERRARIUM_DEGREES: f32 = 12.0;
 /// a world fact.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum CameraMode {
-    /// Surface-first orthographic views with equal foreshortening on all axes.
+    /// **The default view.** The wing's 2:1 dimetric at 30° (doctrine,
+    /// Presentation 1; cases 382, 387): a surface view whose tiles are twice
+    /// as wide as tall, as the board draws them. Its numbers are read off
+    /// [`isometer::SlabCamera::dimetric_2_1`], never restated here.
     #[default]
+    Dimetric,
+    DimetricSouth,
+    DimetricWest,
+    DimetricNorth,
+    /// True isometric at 35.26°, equal foreshortening on all three axes. Kept
+    /// as its own surface view; the default precludes no other (382).
     Isometric,
     IsometricSouth,
     IsometricWest,
@@ -55,11 +66,13 @@ pub enum CameraMode {
     /// `-x`. Bodies chain along `+z`, so they now chain across the screen at
     /// full length — the most part budget a single frame can show.
     Across,
-    /// **The shipped section.** Tilted off both ways by [`OBLIQUE_DEGREES`]:
+    /// **The section view.** Tilted off both ways by [`OBLIQUE_DEGREES`]:
     /// depth reads as a short diagonal and the vertical structure survives, at
     /// the cost of showing the chain at under half its across length. Ruled
-    /// the default on 2026-09-04 — it is the only arm that shows a body's part
-    /// budget *and* keeps the section.
+    /// the section's view on 2026-09-04 as the only arm that shows a body's
+    /// part budget *and* keeps the section. `C` switches to it from the
+    /// default surface view, the wing's dimetric since 2026-10-22 (doctrine,
+    /// Presentation 1).
     Oblique,
     /// Terrarium views keep a little vertical depth while turning around the
     /// body chain. East is the prototype's first view, looking across `-x`.
@@ -71,7 +84,11 @@ pub enum CameraMode {
 
 impl CameraMode {
     /// Every mode, in the order the contact sheet composes them.
-    pub const ALL: [CameraMode; 11] = [
+    pub const ALL: [CameraMode; 15] = [
+        Self::Dimetric,
+        Self::DimetricSouth,
+        Self::DimetricWest,
+        Self::DimetricNorth,
         Self::Isometric,
         Self::IsometricSouth,
         Self::IsometricWest,
@@ -88,7 +105,14 @@ impl CameraMode {
     pub const fn is_surface(self) -> bool {
         matches!(
             self,
-            Self::Isometric | Self::IsometricSouth | Self::IsometricWest | Self::IsometricNorth
+            Self::Dimetric
+                | Self::DimetricSouth
+                | Self::DimetricWest
+                | Self::DimetricNorth
+                | Self::Isometric
+                | Self::IsometricSouth
+                | Self::IsometricWest
+                | Self::IsometricNorth
         )
     }
 
@@ -109,10 +133,19 @@ impl CameraMode {
         )
     }
 
-    /// Turns one quarter around the terrarium. Legacy modes remain unchanged.
+    /// Turns one quarter around a surface or terrarium view. Section modes
+    /// remain unchanged.
     pub const fn quarter_turn(self, backwards: bool) -> Self {
         use CameraMode::*;
         match (self, backwards) {
+            (Dimetric, false) => DimetricSouth,
+            (DimetricSouth, false) => DimetricWest,
+            (DimetricWest, false) => DimetricNorth,
+            (DimetricNorth, false) => Dimetric,
+            (Dimetric, true) => DimetricNorth,
+            (DimetricNorth, true) => DimetricWest,
+            (DimetricWest, true) => DimetricSouth,
+            (DimetricSouth, true) => Dimetric,
             (Isometric, false) => IsometricSouth,
             (IsometricSouth, false) => IsometricWest,
             (IsometricWest, false) => IsometricNorth,
@@ -142,6 +175,10 @@ impl CameraMode {
 
     pub fn name(self) -> &'static str {
         match self {
+            Self::Dimetric => "dimetric",
+            Self::DimetricSouth => "dimetric-south",
+            Self::DimetricWest => "dimetric-west",
+            Self::DimetricNorth => "dimetric-north",
             Self::Isometric => "isometric",
             Self::IsometricSouth => "isometric-south",
             Self::IsometricWest => "isometric-west",
@@ -159,7 +196,14 @@ impl CameraMode {
     /// Which way the camera looks, unnormalized where that is exact anyway.
     pub fn forward(self) -> [f32; 3] {
         let (yaw, pitch) = (OBLIQUE_DEGREES.to_radians(), OBLIQUE_DEGREES.to_radians());
+        let [dx, dy, dz] = dimetric_forward();
         match self {
+            // The wing's default, then its quarter turns by the same signs the
+            // true-isometric turns use.
+            Self::Dimetric => [dx, dy, dz],
+            Self::DimetricSouth => [-dx, dy, dz],
+            Self::DimetricWest => [-dx, dy, -dz],
+            Self::DimetricNorth => [dx, dy, -dz],
             Self::Isometric => [-1.0, -1.0, -1.0],
             Self::IsometricSouth => [1.0, -1.0, -1.0],
             Self::IsometricWest => [1.0, -1.0, 1.0],
@@ -282,6 +326,15 @@ fn normalize(value: [f32; 3]) -> Option<[f32; 3]> {
     (length > 1e-6).then(|| [value[0] / length, value[1] / length, value[2] / length])
 }
 
+/// The wing's default forward, read off the shared camera with unit extents
+/// so the number has one home. Unit extents always frame, so this cannot
+/// refuse.
+fn dimetric_forward() -> [f32; 3] {
+    isometer::SlabCamera::dimetric_2_1([0.0; 3], 1.0, 1.0, 1.0)
+        .expect("unit extents frame")
+        .forward
+}
+
 fn terrarium_forward(horizontal: [f32; 3]) -> [f32; 3] {
     let pitch = TERRARIUM_DEGREES.to_radians();
     [
@@ -321,6 +374,36 @@ mod tests {
         }
     }
 
+    /// The default is the wing's view to the bit: the forward
+    /// `SlabCamera::dimetric_2_1` builds, a 30° pitch, and tiles twice as wide
+    /// as tall on screen, in all four quarter turns.
+    #[test]
+    fn the_default_is_the_wings_dimetric_in_quarter_turns() {
+        assert_eq!(CameraMode::default(), CameraMode::Dimetric);
+        let centre = [3.0, 30.0, -5.0];
+        let wing = isometer::SlabCamera::dimetric_2_1(centre, 28.0, 1.78, 64.0)
+            .expect("the wing's default frames");
+        assert_eq!(CameraMode::Dimetric.forward(), wing.forward);
+        let ours = super::super::view::slab_camera(CameraMode::Dimetric, centre, 28.0, 1.78);
+        assert_eq!(ours.basis(), wing.basis());
+        let mut mode = CameraMode::Dimetric;
+        for _ in 0..4 {
+            assert!(mode.is_surface(), "{} is not a surface view", mode.name());
+            let forward = mode.forward();
+            assert_eq!(forward[1], -0.5, "{} is not pitched 30 degrees", mode.name());
+            assert_eq!(forward[0].abs(), forward[2].abs(), "{} is off the grid", mode.name());
+            // A world +x unit rises half as far as it runs: the 2:1 tile.
+            let [right, up, _] = mode.basis();
+            let (dx, dy) = (dot(right, [1.0, 0.0, 0.0]), dot(up, [1.0, 0.0, 0.0]));
+            assert!((dy.abs() / dx.abs() - 0.5).abs() < 1e-5, "{} tiles are not 2:1", mode.name());
+            let camera = super::super::view::slab_camera(mode, [0.; 3], 28., 1.78);
+            assert!(camera.depth > 100., "{} does not frame the ground", mode.name());
+            mode = mode.quarter_turn(false);
+        }
+        assert_eq!(mode, CameraMode::Dimetric, "four turns come back");
+        assert_eq!(CameraMode::Dimetric.quarter_turn(true), CameraMode::DimetricNorth);
+    }
+
     /// Every mode names itself, and every name round-trips. The receipt and a
     /// scenario's `assert snap camera` both read this string.
     #[test]
@@ -329,7 +412,7 @@ mod tests {
             assert_eq!(CameraMode::parse(mode.name()), Some(mode));
             assert_eq!(CameraMode::parse(&mode.name().to_uppercase()), Some(mode));
         }
-        assert_eq!(CameraMode::default(), CameraMode::Isometric);
+        assert_eq!(CameraMode::default(), CameraMode::Dimetric);
         assert_eq!(CameraMode::parse("unknown"), None);
         assert!(CameraMode::TerrariumEast.is_terrarium());
         assert!(!CameraMode::Oblique.is_terrarium());
