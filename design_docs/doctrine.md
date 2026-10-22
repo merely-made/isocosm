@@ -33,6 +33,9 @@ the area is not yet reviewed.*
 
 ### Schema 2. State follows methodology
 
+The sim's nouns are the founding record's five, bodies, space, fields, time
+and provenance, each a ladder of scale whose far rung is what the near rung
+looks like from far enough away; world state is the fields a place carries.
 A thing has its own state exactly when it has its own way of turning a
 situation into an action; everything else is a relation, a record or a field
 over the things that do. The agent kinds are compositions: a creature; a
@@ -45,13 +48,12 @@ denizen when the record keeps it, names it or relates it. State is one ledger
 read more coarsely up the levels, the collective providing the coarsening:
 body needs matter less as factions and polities grow.
 
+*Not each verified:* the tiers' agent methods.
+
 Links: draws on 8, 9, 37, 38 · summary Own state exactly where there is own method; agent kinds are compositions; method by tier; one ledger read coarser up the levels.
 
-*Reviewed 2026-10-22, new. Built: each entity's method, kingdom and
-provenance; a faction holds no state and acts through its members. The
-tiers' agent methods are not each verified. 37's "borg" is written with
-Naming 2's "denizen". Mark moved its pair, what the sim is, into Stack 4
-("Schema 2 into Stack 4"); this statement as drafted.*
+*Refined 2026-10-22: the founding record's five nouns open it, from the
+design record's §3.1 (Mark: "Cite the founding record").*
 
 ### Schema 3. Provenance and identity
 
@@ -199,6 +201,19 @@ Links: draws on 417, 418, 419, 420, 421, 422, 740 · summary Places derive once 
 
 *Reviewed 2026-10-22, new; checked built in isometer-space and on `Entity`.
 Mark: "A schema statement"; Stack 6 cites it.*
+
+### Schema 12. The derivation rule
+
+A world is a seed, its rules and the set of asserted facts; everything else is
+derived on demand and may be discarded, and an entity is its seed plus the
+history that touched it. The rule is also the cost model: storage follows
+what was asserted, processing what is due, and nothing costs anything for
+merely existing (Processes 18).
+
+Links: draws on 14, 41, 69, 70 · summary A world is its seed, rules and asserted facts; all else is derived and discardable; storage follows the asserted, processing the due.
+
+*Reviewed 2026-10-22, new: from the design record's §1, ruled with the
+record; split from the four rules at Mark's word ("Split them").*
 
 ## Processes and rules
 
@@ -506,6 +521,24 @@ and exchange can be explained.
 Links: draws on 404, 1009 · summary Magic composes fundamental effects as combinable cantrips, each level costing sharply more; scripts hook other generators; explainable surprises welcome.
 
 *Reviewed 2026-10-22, new. Mark: "Magic as Processes 17; flow to Schema 9".*
+
+### Processes 18. Holding many things
+
+The sim holds hundreds of thousands of things by four rules: aggregate what
+isn't foregrounded, realizing an individual when something needs one
+(Processes 6); schedule due events instead of ticking, so an idle thing costs
+nothing (Processes 7); store deviations and derive the rest (Schema 12); and
+keep the environment's conditions on places, where things read them
+(Processes 4). Memory is not the constraint at this scale; processing is, and
+the four rules make it proportional to what is happening. The first measured
+target is a region.
+
+*Not yet measured:* the region-scale target (the sim plan's S5).
+
+Links: draws on 124, 430, schema.12, processes.4, processes.6, processes.7 · summary Four rules hold many things: aggregate the unforegrounded, schedule due events, store deviations, keep the environment on places.
+
+*Reviewed 2026-10-22, new: from the design record's §3.5, ruled with the
+record; split from the derivation rule at Mark's word ("Split them").*
 
 ## Ecology
 
@@ -1395,13 +1428,14 @@ branching and networking are moot, muniment and murm. Seams between
 components stay clean even at some cost in speed: a missing boundary bites
 later, and hardware improves. A renderer sits behind the scene contract and
 can be swapped. Formats follow open standards; the wing makes its own only
-where none holds the thing.
+where none holds the thing. Piccolo is the wing's one authoring language;
+numen's Rhai stays an internal front end until fields are wing-authored, when
+numen gains a Lua front end.
 
 Links: draws on 16, 27, 78 · stack · summary Where the stack's pieces sit; seams stay clean at some cost in speed; renderers swap behind the scene contract; open formats first.
 
-*Reviewed 2026-10-22, new. Case 16's placement, checked against the disk,
-drops Cleromancy (gone, 600) and isoscape (no crate; generation is the
-sim's). Mark: "Both as drafted".*
+*Refined 2026-10-22: one authoring language, from the design record's §9.3
+(Mark: "Into Stack 3").*
 
 ### Stack 4. One sim, one contract, one bench
 
@@ -1544,6 +1578,22 @@ Links: draws on 21, 29, 77, 532, 536, 537, 556, 567 · stack · summary Desktop 
 *Reviewed 2026-10-22, new. 532 to 567 are mere's burn-migration rulings,
 which mere's burn plan records; the wing's web build follows them. Mark: "As
 drafted, tagged stack".*
+
+### Stack 12. Three tiers, and what the sim never does
+
+What runs with nobody playing is the sim; what every game needs and decides
+nothing about the world is the stack; a way of playing is a game. The sim
+never renders, takes input, runs a camera or a turn order; never knows a hit
+point, a dice roll, a system's rules, a loot table, a dialogue line or a
+quest; never pathfinds an individual, checks line of sight or resolves a
+single blow; and never decides what is fun. It records outcomes, resolved by
+the foreground game's rules or by the background's outcome model
+(Processes 1).
+
+Links: draws on 10, 114, processes.1 · summary Runs unattended: the sim; needed by every game and deciding nothing: the stack; a way of playing: a game. The sim never renders, rolls or decides fun.
+
+*Reviewed 2026-10-22, new: from the design record's §2 and §3.8 (Mark, on
+§3.8: "sounds pretty right to me"), then "One Stack statement".*
 
 ## Host and network
 
