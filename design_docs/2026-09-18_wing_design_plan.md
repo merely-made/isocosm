@@ -2694,21 +2694,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineage, calibrated against the exact runner on the bench.
 
      Links: area Processes and rules · draws on 113 · summary The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266)
-264. **Part roles are open keys in the world's rules with a default set, and
-     that set is examined before it is fixed.** Put to Mark on 2026-09-26,
-     with 262: part roles from `isometer-core`'s closed four, open keys, or
-     open keys with the four as the default? Mark: "i feel like we're missing
-     many default part roles, but 1 sounds right. i don't mind isometer
-     depending on a basic set of archetypal parts satisfying each of the many
-     roles. limb, mass, sensor, plate, neurology, structure, idk. just feels
-     underexamined". Told that the code's four roles are shapes, lump, rod,
-     sheet and point, while a part's function comes from the processes it
-     expresses, so that neurology and structure are functions, and asked
-     which axis wants more: Mark: "Examine first." A survey of both axes, in
-     the code and in biology, comes back to him before the default set is
-     ruled.
-
-     Links: area Bodies and anatomy · summary Part roles are open keys in the world's rules with a default set, and that set is surveyed before it is fixed.
 265. **The thirty shapes are expressed as data with the used mechanics, and
      the definition widens with the fields the probe proves.** Put to Mark on
      2026-09-26, with 262: the shapes as data (X1), those plus the extensions
@@ -5158,7 +5143,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      to each function's, and a healing lineage regrows them before tissue or
      new parts.
 
-     Links: area Bodies and anatomy · summary A wound loses a part's cells; lineages whose traits allow it regrow them at a price, others never heal. (amended by 485)
+     Links: area Bodies and anatomy · draws on 123 · summary A wound loses a part's cells; lineages whose traits allow it regrow them at a price, others never heal. (amended by 485)
 
 470. **A severed part becomes a body of its own, alive where its lineage
      regrows from fragments.** Asked on 2026-10-02, with 467: "Where does a
@@ -5413,7 +5398,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineage without it keeps its losses, and what development left absent
      still grows in (478).
 
-     Links: area Bodies and anatomy · summary Growth toward the recipe regrows a severed part only in a lineage whose traits let it heal.
+     Links: area Bodies and anatomy · draws on 469, 478 · summary Growth toward the recipe regrows a severed part only in a lineage whose traits let it heal.
 
 486. **Every fragment of a lineage that regrows from fragments lives, and
      physiology decides which last.** Asked on 2026-10-02, with 485: "What
@@ -5437,7 +5422,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      way to feed starves by rent in time; no new rule decides which
      fragments live.
 
-     Links: area Bodies and anatomy · summary Every severed part of a fragment-regrowing lineage lives on as a body; physiology decides which last, with no new rule.
+     Links: area Bodies and anatomy · draws on 470 · summary Every severed part of a fragment-regrowing lineage lives on as a body; physiology decides which last, with no new rule.
 
 488. **A mold is a territory, and micro life a surface.** Asked on
      2026-10-02, opening the anatomy brief's fifth round: "Is a body a
@@ -5768,7 +5753,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      healing lineage's growth regrows lost cells before it fills tissue or
      grows new parts, paying each cell's mass.
 
-     Links: area Bodies and anatomy · summary A wound takes cells from a part's functions in proportion; a healing lineage regrows lost cells before filling tissue or growing parts.
+     Links: area Bodies and anatomy · draws on 469 · summary A wound takes cells from a part's functions in proportion; a healing lineage regrows lost cells before filling tissue or growing parts.
 
 497. **A territory's and a surface's matter lies in each place's ledger,
      under their keys.** Asked on 2026-10-02, the anatomy brief's ninth
@@ -8284,7 +8269,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      in the flow record a spill goes from part to site in the part's own
      matter while a bite goes from part to eater.
 
-     Links: area Bodies and anatomy · summary A wound is its own Effect with its own part draw; Eat stays tissue only.
+     Links: area Bodies and anatomy · draws on 469, 704 · summary A wound is its own Effect with its own part draw; Eat stays tissue only.
 706. **A part keeps its lost cells.** 2026-10-08. Question: capacity and
      adult mass read only from `half_extent` today, which 674 makes the
      body document's; how does a wound shrink them? Options: a lost-cells
@@ -8304,7 +8289,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `anatomy::books` counts a tombstone's matter that `held` and `room`
      skip.
 
-     Links: area Bodies and anatomy · summary Severing tombstones the whole subtree, keeps ids, never takes the root, and moves the tombstones' matter out.
+     Links: area Bodies and anatomy · draws on 674 · summary Severing tombstones the whole subtree, keeps ids, never takes the root, and moves the tombstones' matter out.
 708. **A wound spills everything over its lowered bound.** 2026-10-08,
      checkpoint 10's second round. Question: 469 spills "tissue it can no
      longer hold", but the store and reproduce bounds (`anatomy::bound`)
@@ -8313,14 +8298,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)". So tissue, reserve and provision each spill what
      exceeds their lowered bound, and no account sits above its bound.
 
-     Links: area Bodies and anatomy · summary A wound spills tissue, reserve and provision over their lowered bounds, so no account sits above its bound.
+     Links: area Bodies and anatomy · draws on 469 · summary A wound spills tissue, reserve and provision over their lowered bounds, so no account sits above its bound.
 709. **Free cells count in a wound's proportion.** 2026-10-08. Question:
      do unallocated cells count in 496's proportion? Options: free cells
      count (recommended); allocated only. Mark chose "Free cells count
      (Recommended)". So a wound takes cells across every function and the
      free pool together, and free cells cushion it.
 
-     Links: area Bodies and anatomy · summary Free (unallocated) cells count in a wound's proportion and cushion it.
+     Links: area Bodies and anatomy · draws on 496 · summary Free (unallocated) cells count in a wound's proportion and cushion it.
 710. **Losing every cell severs a part, or kills at the root.**
      2026-10-08. Question: what happens when a wound takes all of a part's
      cells? Options: it severs, the root killing (recommended); a
@@ -8328,7 +8313,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a non-root part with no cells left is severed under 707, and a root
      with none dies.
 
-     Links: area Bodies and anatomy · summary A non-root part with no cells left is severed; a root with none dies.
+     Links: area Bodies and anatomy · draws on 707 · summary A non-root part with no cells left is severed; a root with none dies.
 711. **Severing comes only from losing every cell.** 2026-10-08. Question:
      Eponym's strike severs past `sever_threshold` (24), and 669 hands
      strike resolution to the game; can a wound sever before all cells are
@@ -8337,7 +8322,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)". So severing has one mechanism, and a game's strikes
      reach it by wounding hard enough.
 
-     Links: area Bodies and anatomy · summary Severing comes only from losing every cell; a game's strikes reach it by wounding hard enough.
+     Links: area Bodies and anatomy · draws on 710 · summary Severing comes only from losing every cell; a game's strikes reach it by wounding hard enough.
 712. **Healing lands just before tissue.** 2026-10-08, checkpoint 10's
      third round. Question: 496 heals "before it fills tissue or grows new
      parts"; a hungry body lands reserve, tissue, grow, provision and a fed
@@ -8347,7 +8332,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      tissue, grow, provision, and a fed one heal, tissue, grow, provision,
      reserve.
 
-     Links: area Bodies and anatomy · summary Healing lands just before tissue: hungry bodies land reserve, heal, tissue, grow, provision; fed ones heal first.
+     Links: area Bodies and anatomy · draws on 496 · summary Healing lands just before tissue: hungry bodies land reserve, heal, tissue, grow, provision; fed ones heal first.
 713. **Regrowing from a fragment is a second trait.** 2026-10-08.
      Question: 485 makes healing and regrowing parts one trait; is
      regrowing from a fragment (470) its own? Options: a second trait,
@@ -8356,7 +8341,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      without its fragments living, and the anatomy brief §7's reading is
      ruled.
 
-     Links: area Bodies and anatomy · summary Regrowing from a fragment is a second trait drawn per lineage, separate from healing.
+     Links: area Bodies and anatomy · draws on 485, 470 · summary Regrowing from a fragment is a second trait drawn per lineage, separate from healing.
 714. **A living fragment re-roots as a seedling does.** 2026-10-08.
      Question: a limb's subtree holds no recipe root, so `lacking()` grows
      nothing; how does a living fragment grow? Options: re-root like a
@@ -8365,7 +8350,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      top part becomes part 0 at situs `[0,0,0]`, as a bud does, and it
      grows its recipe from there.
 
-     Links: area Bodies and anatomy · summary A living fragment re-roots as a seedling does: its top part becomes part 0 at situs [0,0,0] and grows its recipe from there.
+     Links: area Bodies and anatomy · draws on 470 · summary A living fragment re-roots as a seedling does: its top part becomes part 0 at situs [0,0,0] and grows its recipe from there.
 715. **A living fragment is a birth, unprovisioned.** 2026-10-08. Question:
      a bud is `Born(lineage)`, spends provision (518) and counts among
      births and the living; is a fragment a birth? Options: a birth without
@@ -8375,7 +8360,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      carrying its own matter, its systems dormant where it cannot realize
      them (583).
 
-     Links: area Bodies and anatomy · summary A living fragment is a birth without provision, counted among births and the living with a parent relation, systems dormant where unrealizable.
+     Links: area Bodies and anatomy · draws on 470, 554 · summary A living fragment is a birth without provision, counted among births and the living with a parent relation, systems dormant where unrealizable.
 716. **A hazard's wound lands on a part drawn by cells.** 2026-10-08,
      checkpoint 10's fourth round. Question: bites draw by edible holdings
      (`anatomy::bitten`) and 705 gives the wound its own draw; which part?
@@ -8383,7 +8368,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "By cells (Recommended)". So bigger parts are hit more often, structure
      for structure, apart from where the food is.
 
-     Links: area Bodies and anatomy · summary A hazard's wound lands on a part drawn by living cells, so bigger parts are hit more often.
+     Links: area Bodies and anatomy · draws on 705 · summary A hazard's wound lands on a part drawn by living cells, so bigger parts are hit more often.
 717. **Severing bumps the body's revision; a wound does not.** 2026-10-08.
      Question: Allocate and trait marks bump `body_revision`, invalidating
      `Query::Part` bindings, and Eponym's `injure` bumps its own; do harms?
@@ -8392,7 +8377,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      re-resolves bindings, and a bound process keeps its wounded part and
      reads its new capacity.
 
-     Links: area Bodies and anatomy · summary Severing bumps the body's revision and re-resolves bindings; a wound does not.
+     Links: area Bodies and anatomy · draws on 707 · summary Severing bumps the body's revision and re-resolves bindings; a wound does not.
 718. **Checkpoint 10 builds rot; eating carrion comes later.** 2026-10-08.
      Question: 470's dead fragments are "eaten, incorporated or left to
      rot", but nothing eats or rots a dead body today; what does checkpoint
@@ -8414,7 +8399,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      isometer gains the matching operation (it has `sever` and no revival)
      with the bodies family's move (676).
 
-     Links: area Bodies and anatomy · summary A regrown part revives its tombstone: healing clears the severed flag at that situs and gives it new cells.
+     Links: area Bodies and anatomy · draws on 707 · summary A regrown part revives its tombstone: healing clears the severed flag at that situs and gives it new cells.
 720. **Isometer's fixtures become its own.** 2026-10-08, the in-site space
      survey's last round. Question: isometer-lens, -mesh and -render
      dev-depend on isocosm, and 16 of their files import `isocosm::legacy`
@@ -8623,12 +8608,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chose "Sheets feed native (Recommended)".
 
      Links: area Method and documents · draws on 625 · summary The datasheet loader lowers onto native Recipe and Template; roster() reads the sheets; legacy Founding becomes a name into them.
-759. **The registry carries all fifteen functions, with the world move.**
-     2026-10-09. Options: all fifteen with the world move (recommended); the
-     five natives for good. Mark chose "All fifteen, with the world move
-     (Recommended)".
-
-     Links: area Bodies and anatomy · summary The registry carries all fifteen functions, arriving with the world move.
 760. **An authored faction is a polity with no members yet.** 2026-10-09.
      Question: campaign factions are authored without members while native
      derives factions from membership (63 to 68). Options: a polity whose
@@ -8920,7 +8899,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and save/replay. Q8 verifies allocation, accounting and restoration;
      these consequences do not by themselves certify checkpoint 10.
 
-     Links: area Bodies and anatomy · summary A loss records the cell's previous function or free-pool status, and healing restores that allocation rather than recomputing the lineage recipe.
+     Links: area Bodies and anatomy · draws on 469, 496 · summary A loss records the cell's previous function or free-pool status, and healing restores that allocation rather than recomputing the lineage recipe.
 
 811. **Unknown legacy losses remain while recorded losses can heal.**
      2026-10-10, Q8's legacy-loss fork after 810. Question: "Older body saves
@@ -8940,7 +8919,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      an archive actually loading and replaying; serialization/migration
      compatibility remains a verification gate, not supplied by this ruling.
 
-     Links: area Bodies and anatomy · summary Legacy losses of unknown allocation stay admissible and wait for explicit repair; healing selects only losses with recorded allocations.
+     Links: area Bodies and anatomy · draws on 810 · summary Legacy losses of unknown allocation stay admissible and wait for explicit repair; healing selects only losses with recorded allocations.
 
 812. **Healing after adapter transfer restores free-pool cells.**
      2026-10-11, Q8's transfer-allocation fork after 810. Question: "When an
@@ -8957,7 +8936,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      transfer, paid healing and save/replay. Ruling 811 still governs unknown
      legacy allocations; these are not silently reconstructed.
 
-     Links: area Bodies and anatomy · summary Healing after an adapter transfer restores lost cells as free-pool cells, retaining the lost cell IDs.
+     Links: area Bodies and anatomy · draws on 810 · summary Healing after an adapter transfer restores lost cells as free-pool cells, retaining the lost cell IDs.
 
 813. **An empty choice can be reconsidered at a later pass start.**
      2026-10-11, Q3's receipt-backed timing fork under 683. Question: "Ruling
@@ -9761,7 +9740,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Compare the actual shared-pass grant on that protected part, rather than the planned request.
      Admission and conserved matter must use that same resolved grant.
 
-     Links: area Bodies and anatomy · summary Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant.
+     Links: area Bodies and anatomy · draws on 872 · summary Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant.
 
 875. **Generated-world offers require one joint actual native witness.**
      2026-10-13, collected migration reply under864.

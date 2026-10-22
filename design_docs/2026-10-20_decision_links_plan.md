@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-21:** in progress: L1, L2, L1b and L3 done; L4 next. Shaped with Mark the same day in
+**Status, 2026-10-22:** in progress: L1, L2, L1b and L3 done; L4's seventeen area reviews done, its budget pass next, then archiving §1 to §11. Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -411,3 +411,13 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   plans). Kept as working instructions, which no record holds: check the
   stack first, surface scope changes, no unjustified `unsafe`, guard the
   feature-gated code.
+- **2026-10-22, L4's area reviews done.** All seventeen areas hold
+  reviewed statements, 130 in all (about 11,800 words): Processes and rules
+  the largest (17), Licensing the smallest (3). Statements moved where Mark
+  placed them (what the sim is into Stack 4, ages and epochs to Record,
+  matter to Ecology, modifiers and conditions to Processes, arcs to
+  Directing, among others); executed or superseded cases went to the
+  archive with notes; unbuilt rules are named in their statements. One
+  correction: Schema 6 had listed strain as unbuilt, and played worlds keep
+  it. Next: the budget pass, at Mark's word ("The budget pass"), then
+  archiving §1 to §11.
