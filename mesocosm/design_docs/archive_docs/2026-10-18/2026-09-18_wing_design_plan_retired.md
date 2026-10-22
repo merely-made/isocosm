@@ -2734,6 +2734,34 @@ lineages family's move (Mark: "Archive 752, 762, 763; keep 684 under E1"):
      (recommended); stay in directing. Mark chose "Into lineage/
      (Recommended)".
 
+**Moved 2026-10-22** in the doctrine's VTT review, as superseded (298, by 600)
+or carried out (902, the panels now `isocosm-vtt`'s endpoint, its licence
+amended by 919) (Mark: "Archive 2, link 6, 600 to Stack"):
+
+298. **Cleromancy is an optional feature of the VTT's host, off by
+     default.** Put to Mark on 2026-09-26, from the bump's finding that the
+     host depends on cleromancy unconditionally while cleromancy still pins
+     the old mere and genet. Mark asked: "Isometry-genet is a stale name if
+     I've ever heard one. Why do we depend on cleromancy? We probably
+     shouldn't; it's meant to be extra flavor on top of the sim's
+     self-sufficient processes, not a crucial dependency like mere." Answered
+     that one module uses it to seal a GM's disclosed generator choice, the
+     VTT keeping entropy, preview and commit. Put back, optional off by
+     default or removed? Mark: "Optional, off by default." Without it the
+     choice uses the VTT's own seeded draw, and cleromancy aligns in its own
+     repository on its own schedule.
+     *Amended 2026-10-06 by ruling 600:* Cleromancy is removed from the
+     VTT, a stale dependency of marginal benefit.
+902. **The VTT's panels go to `isocosm-vtt`.**
+     Asked 2026-10-15. Evidence: `isocosm-vtt` is an empty crates.io name
+     reservation (0.0.2, MPL-2.0); the VTT's implementation crates are MIT
+     OR Apache-2.0. Options: (1) "isometry-graphshell (Recommended)"; (2)
+     "isocosm-vtt". Mark: "isocosm-vtt"
+     *Reading, not ruled:* the panels are MPL-2.0 code today in
+     `isocosm-host`, so `isocosm-vtt` keeps their grant, where
+     `isometry-graphshell` would have mixed it. Its next publish would ship
+     implementation over unpublished path crates, so publishing waits.
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's

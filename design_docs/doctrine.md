@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym and World generation reviewed, with Processes 1 and 2 and Schema 1; the VTT is under review (VTT 1 to 4 written, its rulesets pending); the other areas are empty. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation and the VTT reviewed, with Processes 1 to 3, Schema 1 and Stack 1; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -66,6 +66,26 @@ Links: draws on 837, 838, 839, 840, 843, 844, 845, 846, 849, 850, 863 · summary
 *Reviewed 2026-10-22, new: written in the Eponym review, whose questions
 raised these cases, and placed here at Mark's word ("Under Processes and
 rules, written now").*
+
+### Processes 3. Other genres adapt a ruleset
+
+A tabletop ruleset belongs to its genre. A game of another genre keeps its
+own mechanics and may take a ruleset as a selectable mode (Eponym's
+progression, magic or costs), adapted to that genre rather than represented
+faithfully (VTT 5). An adaptation is a named profile listing each departure
+from the edition and the decision policy that stands in for each call a GM
+would make, as a hybrid profile and an unattended world declare theirs. The
+toolkit grown from the editions (checks, costs, effects, triggers) is shared
+by every product.
+
+Links: draws on 539, 540, 541, 543, vtt.5 · summary Another genre adapts a ruleset as a selectable mode, under a named profile of departures and stand-in decision policies; the toolkit is shared.
+
+*Reviewed 2026-10-22, new, from Mark's reframe in the VTT review: "while
+vtt5 is true for eponym and other potential games insofar as their rules are
+modifiable too, it's true in the most direct way for the vtt ... whereas eponym
+implementing dnd rules will necessitate some level of adaptation ... should be
+a distinction made." Then "Split: VTT 5 + Processes 3" and "Named profile,
+licence per product".*
 
 ## Ecology
 
@@ -595,12 +615,16 @@ Links: draws on 432, 434, 438 · summary Far marks show the glyphs of what modif
 
 Terrain has a per-axis scale. Its residency follows the view in nested rings:
 base grain where the view examines, each ring outward a power of two coarser,
-all inside the host's 8 MiB budget. A ring's grain is residency, never the
-sim's representation.
+all inside the host's atlas budget: 8 MiB by default, a setting bounded by
+the device, saved per device and allocated upfront. Past it, the nearest
+terrain stays and the view reports how much it omits. A ring's grain is
+residency, never the sim's representation.
 
-Links: draws on 23, 425 · summary Terrain residency is nested rings inside the host budget; grain is residency, never representation.
+Links: draws on 23, 425, 368, 369, 372, 374 · summary Terrain residency is nested rings inside a device-bounded atlas budget; overflow keeps the nearest and reports the rest; grain is residency, never representation.
 
 *Reviewed 2026-10-22, new. Mark dropped the draft's line on worlds past a fixed cap (945, one fixture's decision), which stays a case.*
+*Refined 2026-10-22 in the VTT review: the budget's cases cited (Mark:
+"Budget to Pres. 5, paging to Stack").*
 
 ### Presentation 6. Lighting
 
@@ -625,6 +649,20 @@ Links: draws on 847, 868, 869, 870, directing.1 · summary Map meanings are inde
 *Reviewed 2026-10-22, new: the specifics left here when Mark widened the principle into Directing 1.*
 
 ## Stack and engine
+
+
+### Stack 1. Build on the stack we have
+
+The wing builds on the stack it has. A crate it doesn't need or want is not
+invited in, and a stale dependency of marginal benefit leaves rather than
+being fetched to keep a build whole. The wing's own crates are made when the
+abstraction earns one (Organs 5).
+
+Links: draws on 600, organs.5 · summary Build on the stack we have: unneeded crates stay out, stale ones leave, own crates when the abstraction earns one.
+
+*Reviewed 2026-10-22, new: written in the VTT review from 600, ahead of its
+area (Mark: "Archive 2, link 6, 600 to Stack"). The rest of the area is not
+yet reviewed.*
 
 ## Host and network
 
@@ -871,12 +909,32 @@ Links: draws on 853, 854, 857, 858, 859, 871 · summary Players opt their own bo
 The sim's running arcs reach the DM as suggested hooks to take up, drop or
 reshape. An adventure pack whose requirements the world lacks waits dormant,
 or the GM forces it, displacing generated content; once compatible, it
-activates only when the DM previews and accepts it.
+activates only when the DM previews and accepts it. The DM's `>choose` draws
+from its command's seed, so a choice replays from the command alone.
 
-Links: draws on 190, 191, 865 · summary Running arcs reach the DM as hooks; a pack the world can't meet waits or is forced; a compatible one activates on the DM's acceptance.
+Links: draws on 190, 191, 323, 865 · summary Running arcs reach the DM as hooks; a pack the world can't meet waits or is forced; a compatible one activates on the DM's acceptance.
 
 *Reviewed 2026-10-22, new: drafted beside the rulesets, which Mark reframed;
-this half drew no change.*
+this half drew no change. Case 323 joined it in the second VTT round (Mark:
+"Archive 2, link 6, 600 to Stack").*
+
+### VTT 5. The table plays editions faithfully
+
+Recognized TTRPG editions are built faithfully as versioned rulesets: the
+GM's decision points kept and their rulings recorded; an edition's own state
+(hit points, slots) persists beside the body, each fact marked world fact,
+native state or derived display, the ruleset declaring how they relate;
+unattended, a ruleset-led world (538) runs the edition's procedures under
+declared decision policies. Content and subsystems mix freely; a cross-system
+encounter runs under a named hybrid profile documenting each crossing. An
+uncalibrated edition plays experimentally: warned at open, every receipt
+marked.
+
+Links: draws on 189, 250, 538, 539, 540, 542, 543 · summary The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked.
+
+*Reviewed 2026-10-22, new. Mark reframed the first draft: "it's true in the
+most direct way for the vtt, because we're talking about ttrpg rulesets which
+the vtt is meant to represent faithfully". Then "Split: VTT 5 + Processes 3".*
 
 ## Naming
 
@@ -935,15 +993,19 @@ the readings".*
 ### Licensing 1. Rulesets
 
 A ruleset ships when its licence lets the wing use it without legal or
-community objection. Qualifying: the 5e SRD (CC BY 4.0), Pathfinder 2e (ORC),
+community objection, checked per product: a licence may admit the VTT and
+exclude the games, as the Year Zero Engine's admits VTT modules and excludes
+video games. Qualifying: the 5e SRD (CC BY 4.0), Pathfinder 2e (ORC),
 Lancer (with attribution), and Ars Magica 5th Edition's open text (CC BY-SA
 4.0, with Atlas Games' credit line; anything shipped from it is
 share-alike). Daggerheart does not qualify. An open text that informs the
 sim's design is a reference: nothing is copied into the sim.
 
-Links: draws on 40, 522 · summary A ruleset ships when its licence draws no objection; an open text informing the sim is a reference, never copied in.
+Links: draws on 40, 522, 541 · summary A ruleset ships, per product, when its licence draws no objection; an open text informing the sim is a reference, never copied in.
 
 *Reviewed 2026-10-21, new. Mark: "Without the Massif line".*
+*Refined 2026-10-22 in the VTT review: checked per product (Mark: "Named
+profile, licence per product").*
 
 ### Licensing 2. Publication
 

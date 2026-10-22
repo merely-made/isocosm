@@ -2010,7 +2010,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Bounded 2026-10-03 by ruling 538:* calibration, and so this mode,
      applies in worlds the sim leads.
 
-     Links: area The VTT · summary An uncalibrated ruleset may play in a debug or experimental mode, with a warning. (amended by 538)
+     Links: area The VTT · draws on 114 · summary An uncalibrated ruleset may play in a debug or experimental mode, with a warning. (amended by 538)
 190. **An adventure pack whose requirements the world lacks waits, or the
      GM forces it.** Put to Mark on 2026-09-25: an adventure pack names
      what it needs from a world, a ruin, a faction at war, a missing heir;
@@ -2583,7 +2583,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Carried out 2026-10-06 by ruling 598:* the campaign world moves, its
      `isometry-core` adapters staying with the VTT.
 
-     Links: area The VTT · summary The tape-drawn faction turn retires at V2 once Isocosm absorbs the campaign world.
+     Links: area The VTT · plans campaign-retirement · summary The tape-drawn faction turn retires at V2 once Isocosm absorbs the campaign world.
 
 248. **A sim-off campaign still writes its facts as notes.** Put to Mark on
      2026-09-26, from decision 7: does a campaign played with the sim off
@@ -2598,7 +2598,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      opens with every receipt and save marked uncalibrated, or a standing
      banner as well? Mark: "Warn at open, mark receipts."
 
-     Links: area The VTT · summary An uncalibrated campaign warns when it opens and marks every receipt and save as uncalibrated.
+     Links: area The VTT · draws on 189 · summary An uncalibrated campaign warns when it opens and marks every receipt and save as uncalibrated.
 251. **Where an incoming part attaches is its attachment.** Put to Mark on
      2026-09-26, from the tract rename lane (ruling 224), which left alone a
      sense of *site* that is neither the world map's cell nor the tract: the
@@ -2940,7 +2940,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      page it too, computing bricks from the map on demand, or atlas only?
      Mark: "Page it too."
 
-     Links: area The VTT · summary The board's CPU side is paged too, computing bricks from the map on demand.
+     Links: area Stack and engine · summary The board's CPU side is paged too, computing bricks from the map on demand.
 291. **Residency follows the view, in an isometer helper.** Put to Mark on
      2026-09-26, with 288: which bricks are loaded, and where the code lives?
      Mark: "View, isometer helper." So the bricks overlapping the pane plus a
@@ -2987,22 +2987,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      1920 by 1080 pane over the 256-tile relief board, 6,391 with its margin.
 
      Links: area Stack and engine · summary The host's atlas budget defaults to 8 MiB.
-298. **Cleromancy is an optional feature of the VTT's host, off by
-     default.** Put to Mark on 2026-09-26, from the bump's finding that the
-     host depends on cleromancy unconditionally while cleromancy still pins
-     the old mere and genet. Mark asked: "Isometry-genet is a stale name if
-     I've ever heard one. Why do we depend on cleromancy? We probably
-     shouldn't; it's meant to be extra flavor on top of the sim's
-     self-sufficient processes, not a crucial dependency like mere." Answered
-     that one module uses it to seal a GM's disclosed generator choice, the
-     VTT keeping entropy, preview and commit. Put back, optional off by
-     default or removed? Mark: "Optional, off by default." Without it the
-     choice uses the VTT's own seeded draw, and cleromancy aligns in its own
-     repository on its own schedule.
-     *Amended 2026-10-06 by ruling 600:* Cleromancy is removed from the
-     VTT, a stale dependency of marginal benefit.
-
-     Links: area The VTT · summary Cleromancy is an optional feature of the VTT's host, off by default, with the VTT's own seeded draw used without it. (amended by 600)
 300. **The VTT's crates keep their prefix.** Put to Mark on 2026-09-26, after
      he called `isometry-genet` a stale name: rename the VTT's crates after
      the bump, during it, or keep ruling 111's `isometry-` prefix? Mark: "Eh.
@@ -3019,7 +3003,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ruled:* the spare count is a setting, one layer by default until its
      memory cost comes back to Mark.
 
-     Links: area The VTT · summary The pointer volume reserves headroom above the board's tallest point, one spare layer by default.
+     Links: area Stack and engine · summary The pointer volume reserves headroom above the board's tallest point, one spare layer by default.
 307. **The draw control stays in the check.** Put to Mark on 2026-09-26,
      with 304: Lane A added the crowd drawing prey by headcount as a control
      arm of its own accord; keep it or keep the check to the arms the
@@ -3299,7 +3283,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      different camera-distance rule. The review's stale-count case needs
      a regression test with unchanged keys and changing omitted counts.
 
-     Links: area The VTT · summary When visible terrain exceeds the atlas budget, keep the nearest terrain and report the current number of omitted bricks.
+     Links: area Presentation · summary When visible terrain exceeds the atlas budget, keep the nearest terrain and report the current number of omitted bricks.
 
 369. **The host exposes a device-bounded atlas budget setting.** Asked on
      2026-09-27: "2. Should the player be able to change the terrain atlas
@@ -3316,7 +3300,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* use the existing host preference machinery and
      test one rebuild after a settings change, then an unchanged-frame skip.
 
-     Links: area The VTT · summary The host exposes a terrain atlas budget setting, default 8 MiB, bounded by device limits, with changes rebuilding the atlas. (amended by 372)
+     Links: area Presentation · summary The host exposes a terrain atlas budget setting, default 8 MiB, bounded by device limits, with changes rebuilding the atlas. (amended by 372)
 
 371. **Checkpoint 5 requires a per-tick flow handoff API.** Asked on
      2026-09-27: "4. How should requested sim flow records be handed over?
@@ -3352,7 +3336,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      current device's enforced bounds when using it; missing or malformed
      local data falls back to the ruled default without changing campaigns.
 
-     Links: area The VTT · summary The atlas budget is saved locally per device in a small local preference store, outside campaign storage; malformed data falls back to the default.
+     Links: area Presentation · amends 369 · summary The atlas budget is saved locally per device in a small local preference store, outside campaign storage; malformed data falls back to the default.
 
 374. **Allocate the chosen terrain atlas budget upfront.** Asked on
      2026-09-27: "Which allocation policy should paging use? Independent
@@ -3375,7 +3359,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      available capacity does not trigger growth. Copy experiments remain
      research evidence, with their stated timing and hardware limits.
 
-     Links: area The VTT · summary Allocate the chosen terrain atlas budget upfront (8 MiB default, device-bounded); a changed budget rebuilds the atlas but filling capacity does not trigger growth.
+     Links: area Presentation · draws on 369, 372 · summary Allocate the chosen terrain atlas budget upfront (8 MiB default, device-bounded); a changed budget rebuilds the atlas but filling capacity does not trigger growth.
 
 377. **The pre.4 allocation guard also compares service identity.** Asked
      on 2026-09-27: "How should we carry the GPU allocation guard into
@@ -6704,7 +6688,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      what the editions repeat; and a house ruleset is made only if those
      experiments show a need.
 
-     Links: area The VTT · summary Rules are built as faithful versioned editions with GM decision points kept; a shared toolkit is extracted from what repeats; house ruleset only if needed.
+     Links: area The VTT · draws on 538 · summary Rules are built as faithful versioned editions with GM decision points kept; a shared toolkit is extracted from what repeats; house ruleset only if needed.
 
 540. **Rulesets mix freely in content and subsystems, and meet in an
      encounter only under a named hybrid profile.** Asked on 2026-10-03,
@@ -6725,7 +6709,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      encounter runs under a named hybrid profile that documents each
      crossing and each departure from either edition.
 
-     Links: area The VTT · summary Rulesets mix freely in content and subsystems; a cross-system encounter runs under a named hybrid profile documenting each crossing.
+     Links: area The VTT · draws on 538 · summary Rulesets mix freely in content and subsystems; a cross-system encounter runs under a named hybrid profile documenting each crossing.
 
 541. **The VTT plays faithful editions; Eponym and Mesocosm keep their own
      mechanics.** Asked on 2026-10-03, with 538: "How do the products
@@ -6747,7 +6731,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and procedures; and a published ruleset may govern Eponym's
      progression, magic or costs as a selectable mode.
 
-     Links: area The VTT · summary The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode.
+     Links: area Processes and rules · draws on 154, 538 · summary The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode.
 
 542. **An edition's own state persists beside the body, its relations to it
      declared.** Asked on 2026-10-03, following 538: "In a world its
@@ -6773,7 +6757,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      wound to hit points does to the body and what death in either does to
      the other.
 
-     Links: area The VTT · summary An edition's own state persists beside the body, each fact marked world fact, native state or derived display, with the ruleset declaring their relations.
+     Links: area The VTT · draws on 538, 41, 154 · summary An edition's own state persists beside the body, each fact marked world fact, native state or derived display, with the ruleset declaring their relations.
 
 543. **Unattended, a ruleset-led world runs the ruleset's procedures under
      declared decision policies.** Asked on 2026-10-03, with 542: "With
@@ -6797,7 +6781,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      make replaced by a declared decision policy for that kind of actor,
      simplified only as far as the bench shows the outcomes survive.
 
-     Links: area The VTT · summary Unattended, a ruleset-led world runs the ruleset's own procedures with each player or GM choice replaced by a declared decision policy.
+     Links: area The VTT · draws on 542, 539 · summary Unattended, a ruleset-led world runs the ruleset's own procedures with each player or GM choice replaced by a declared decision policy.
 
 544. **An incorporated part keeps its donor's matter.** Asked on 2026-10-03,
      building checkpoint 8's step 8f: "When a grazer incorporates a whole
@@ -7747,7 +7731,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Amended 2026-10-06 by ruling 599:* the overmap projection is not an
      adapter; the overmap itself moves into the sim.
 
-     Links: area The VTT · summary The campaign world moves into Isocosm as its legacy campaign tree; the map wrapper and token/sheet adapters stay in a slim VTT crate. (amended by 599, 913, 915)
+     Links: area The VTT · plans campaign-retirement · summary The campaign world moves into Isocosm as its legacy campaign tree; the map wrapper and token/sheet adapters stay in a slim VTT crate. (amended by 599, 913, 915)
 
 599. **The overmap moves into the sim.** 2026-10-06. Question, on new
      evidence against 598: the campaign world's `travel_cost` and
@@ -7767,7 +7751,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      refused sim-side before any VTT document is built; the VTT's lowering
      is a pair of extension traits in the slim `isometry-campaign`.
 
-     Links: area The VTT · summary The overmap moves into the sim as a sim noun; travel and discovery stay sim-side; the VTT imports Overmap from Isocosm.
+     Links: area The VTT · amends 598 · plans campaign-retirement · summary The overmap moves into the sim as a sim noun; travel and discovery stay sim-side; the VTT imports Overmap from Isocosm.
 
 600. **The VTT builds on the stack we have; Cleromancy leaves it.**
      2026-10-06. Question: main's root lock pins ten crates.io packages
@@ -7794,7 +7778,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      decision record moves to the VTT's archive; with Cleromancy gone the
      repo `CLAUDE.md`'s `--all-features` gate runs whole again, unchanged.
 
-     Links: area The VTT · summary The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched.
+     Links: area Stack and engine · summary The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched.
 
 604. **Game-side physics replays bit for bit across machines.** 2026-10-06,
      from the balaur read (603). Question: Isocosm's sim is integer-only, and
@@ -10339,18 +10323,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
      Links: area Host and network · draws on 892, 896 · summary The core's inspection endpoint sits in isocosm-host behind a feature; the binary becomes the stdio endpoint.
 
-902. **The VTT's panels go to `isocosm-vtt`.**
-     Asked 2026-10-15. Evidence: `isocosm-vtt` is an empty crates.io name
-     reservation (0.0.2, MPL-2.0); the VTT's implementation crates are MIT
-     OR Apache-2.0. Options: (1) "isometry-graphshell (Recommended)"; (2)
-     "isocosm-vtt". Mark: "isocosm-vtt"
-     *Reading, not ruled:* the panels are MPL-2.0 code today in
-     `isocosm-host`, so `isocosm-vtt` keeps their grant, where
-     `isometry-graphshell` would have mixed it. Its next publish would ship
-     implementation over unpublished path crates, so publishing waits.
-
-     Links: area The VTT · summary The VTT's panels go to the isocosm-vtt crate, keeping their MPL-2.0 grant; publishing waits. (amended by 919)
-
 903. **Mesocosm's and Eponym's panels become feature-gated modules in existing crates.**
      Asked 2026-10-15. Options: (1) "Modules in existing crates
      (Recommended)": an `endpoint` module in `mesocosm-runtime` and in
@@ -10435,7 +10407,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `isocosm-vtt`, the stack) comes back as questions before anything
      moves.
 
-     Links: area The VTT · summary isometry-campaign retires, its contents becoming components; where each part lands comes back as questions.
+     Links: area The VTT · plans campaign-retirement · summary isometry-campaign retires, its contents becoming components; where each part lands comes back as questions.
 
 914. **The crates stay publishable in principle.**
      Given 2026-10-15 after 911 and 913, unasked. Mark: "If the rest of the
@@ -10460,7 +10432,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (2) "Small component crates", each family its own crate; (3) "Wasm
      components", rung 3, against D18. Mark: "Owning homes (Recommended)"
 
-     Links: area The VTT · summary isometry-campaign's components are owning homes, no new crates: world into the sim, game layer into isocosm-vtt, map lowering into isometry-core, store into isonetry.
+     Links: area The VTT · draws on 913 · plans campaign-retirement · summary isometry-campaign's components are owning homes, no new crates: world into the sim, game layer into isocosm-vtt, map lowering into isometry-core, store into isonetry.
 
 917. **The crates aim to be published.**
      Asked 2026-10-15 by card, to confirm 914's reading. Options: (1) "Yes,
@@ -10505,7 +10477,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lines, DM-authority replication, iroh behind a feature). What to do
      with the name goes back to Mark.
 
-     Links: area The VTT · summary isonetry holds the GM store and the proposal lifecycle until V2.
+     Links: area The VTT · draws on 915 · plans campaign-retirement · summary isonetry holds the GM store and the proposal lifecycle until V2.
 
 923. **`isonetry` is remade.**
      Asked 2026-10-15 by card. Evidence: never published, the crates.io name
