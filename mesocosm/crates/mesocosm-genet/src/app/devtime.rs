@@ -37,7 +37,7 @@ impl Host {
             self.config.camera = if self.config.camera.is_surface() {
                 crate::section::CameraMode::Oblique
             } else {
-                crate::section::CameraMode::Isometric
+                crate::section::CameraMode::default()
             };
             return true;
         }
