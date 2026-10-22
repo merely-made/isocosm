@@ -206,6 +206,7 @@ three design docs that cite it. The record holds the words.
 | 452 | Deep time's span counts epochs in the world's rules, as Mesocosm does; under the default year a century is 100 epochs. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 454 | Shared ground is shared out from the pass's start; short supply gives each taker the same floored fraction; identity order decides nothing. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 507 | From checkpoint 7 on, the averaged negative-control crowd averages each lineage's tissue and reserve together and must still fail the starvation check. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 541 | The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
 | 554 | A parent and its unweaned young run as individuals in the crowd until the young is weaned; nursing reads only unweaned young. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 605 | When shards land, one shard and N shards give the same state hash at more than one thread count, as a standing test. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
 | 817 | Migration departs and arrives after the traversed route's authored travel time; no next route before arrival. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
@@ -533,6 +534,10 @@ three design docs that cite it. The record holds the words.
 | 18 | A game's grid is a projection: the sim volume is cubic, and any tile shape is a voxel region an overlay lays over it. (amended by 604) | [environmental surfaces](2026-07-08_environmental_surfaces_plan.md), [vtt overlay](2026-09-25_vtt_overlay_plan.md), [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md) |
 | 22 | Lighting wants all five rows: shadows, ambient occlusion, global illumination, point lights with day and night, transparency with water. | none |
 | 23 | Terrain gets per-axis scale (x, y, z) under W3, and paging is fixed one way or another in every consumer. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
+| 368 | When visible terrain exceeds the atlas budget, keep the nearest terrain and report the current number of omitted bricks. | none |
+| 369 | The host exposes a terrain atlas budget setting, default 8 MiB, bounded by device limits, with changes rebuilding the atlas. (amended by 372) | none |
+| 372 | The atlas budget is saved locally per device in a small local preference store, outside campaign storage; malformed data falls back to the default. | none |
+| 374 | Allocate the chosen terrain atlas budget upfront (8 MiB default, device-bounded); a changed budget rebuilds the atlas but filling capacity does not trigger growth. | none |
 | 382 | The wing has one default view, isometric with quarter turns, and it precludes no other view (free-yaw isometric, first person, over the shoulder). | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 387 | The default view's pitch is the 2:1 dimetric at 30 degrees, turned in quarter steps; true isometric stays available as another view. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md) |
 | 423 | The detail ladder has five rungs in one isometric camera, world map included; far marks show modifiers and aggregate modifiers, not only glyphs. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
@@ -570,9 +575,11 @@ three design docs that cite it. The record holds the words.
 | 254 | The contract's shared shapes (WorldPoint, act key, Harm, Wound, WoundSeverity, PartHandle) live once, in the crate's core. | none |
 | 263 | Each family is built and certified in Isocosm and mesocosm-core's copies retire together at M3; duplication is temporary and no adapter is built. (amended by 666) | none |
 | 289 | mere's atlas is sized to the card, riding with the retarget defect's fix. | [board on isometer](2026-09-15_board_on_isometer_plan.md) |
+| 290 | The board's CPU side is paged too, computing bricks from the map on demand. | [board on isometer](2026-09-15_board_on_isometer_plan.md) |
 | 291 | Residency follows the view (pane bricks plus one-brick margin), with mechanics in a product-neutral helper in shared/isometer and the board's rule in the VTT. (amended by 425) | [board on isometer](2026-09-15_board_on_isometer_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
 | 295 | mere's atlas is sized by plain-data AtlasLimits that the host fills in from device limits; MAX_BRICKS stays the default cap. | none |
 | 296 | The host's atlas budget defaults to 8 MiB. | none |
+| 302 | The pointer volume reserves headroom above the board's tallest point, one spare layer by default. | none |
 | 330 | nisus grows into the voxel authority and world store; Ground becomes a thin layer over it or retires. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [body binding](../mesocosm/design_docs/2026-09-26_body_binding_plan.md) |
 | 331 | One edit reaches its consumers through a revision log of changes keyed by revision at 8-cubed brick grain. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [body binding](../mesocosm/design_docs/2026-09-26_body_binding_plan.md) |
 | 332 | conatus carries the source's stamp via an optional stamp on voxel edits; the barrier stays in the product until a second consumer proves it. | [body binding](../mesocosm/design_docs/2026-09-26_body_binding_plan.md) |
@@ -602,6 +609,7 @@ three design docs that cite it. The record holds the words.
 | 556 | Every wasm module in mere moves to wasm-bindgen 0.2.129; 'stay with the newest' stands for later pins. | none |
 | 567 | The pre.4 probe, repro and OPFS runners build with the repo's pinned toolchain from mere's rust-toolchain.toml; bundles are rebuilt once. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 585 | Knot's root patch table takes cubecl-runtime from mere.git at the rev its mere rows pin, moving with every repin (mirrors 375). | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [DOC README](DOC_README.md) |
 | 604 | Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
 | 606 | The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
 | 609 | One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm. | none |
@@ -735,22 +743,13 @@ three design docs that cite it. The record holds the words.
 | 247 | The tape-drawn faction turn retires at V2 once Isocosm absorbs the campaign world. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [campaign retirement](2026-10-15_campaign_retirement_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 248 | A sim-off campaign still writes its facts as notes, so the sim can be switched on later over the same history. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 250 | An uncalibrated campaign warns when it opens and marks every receipt and save as uncalibrated. | [environmental surfaces](2026-07-08_environmental_surfaces_plan.md), [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
-| 290 | The board's CPU side is paged too, computing bricks from the map on demand. | [board on isometer](2026-09-15_board_on_isometer_plan.md) |
-| 298 | Cleromancy is an optional feature of the VTT's host, off by default, with the VTT's own seeded draw used without it. (amended by 600) | [board on isometer](2026-09-15_board_on_isometer_plan.md) |
-| 302 | The pointer volume reserves headroom above the board's tallest point, one spare layer by default. | none |
 | 323 | With Cleromancy off, the VTT's >choose seeds its draw from the command's seed and domain, so the choice replays from the command alone. | none |
-| 368 | When visible terrain exceeds the atlas budget, keep the nearest terrain and report the current number of omitted bricks. | none |
-| 369 | The host exposes a terrain atlas budget setting, default 8 MiB, bounded by device limits, with changes rebuilding the atlas. (amended by 372) | none |
-| 372 | The atlas budget is saved locally per device in a small local preference store, outside campaign storage; malformed data falls back to the default. | none |
-| 374 | Allocate the chosen terrain atlas budget upfront (8 MiB default, device-bounded); a changed budget rebuilds the atlas but filling capacity does not trigger growth. | none |
 | 539 | Rules are built as faithful versioned editions with GM decision points kept; a shared toolkit is extracted from what repeats; house ruleset only if needed. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
 | 540 | Rulesets mix freely in content and subsystems; a cross-system encounter runs under a named hybrid profile documenting each crossing. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
-| 541 | The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
 | 542 | An edition's own state persists beside the body, each fact marked world fact, native state or derived display, with the ruleset declaring their relations. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 543 | Unattended, a ruleset-led world runs the ruleset's own procedures with each player or GM choice replaced by a declared decision policy. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 598 | The campaign world moves into Isocosm as its legacy campaign tree; the map wrapper and token/sheet adapters stay in a slim VTT crate. (amended by 599, 913, 915) | none |
 | 599 | The overmap moves into the sim as a sim noun; travel and discovery stay sim-side; the VTT imports Overmap from Isocosm. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
-| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [DOC README](DOC_README.md) |
 | 768 | A campaign's session carries its assertions; CampaignWorld folds from them and a native Session replays from them when the sim switches on. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 807 | Event handles are an adapter reading of native event keys, one mapping shared with the VTT, validated to agree before a telling is admitted. | none |
 | 809 | Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
@@ -767,7 +766,6 @@ three design docs that cite it. The record holds the words.
 | 860 | Requested pace resolves to an explicitly authored native pace profile giving duration and stock costs; no default from the legacy percentage. | [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 865 | A compatible dormant adventure pack activates only when the DM previews and explicitly accepts it. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
 | 871 | Party map disclosures name explicit terrain windows and condition or claim snapshots the body knows, with source revisions; changes need a new disclosure. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
-| 902 | The VTT's panels go to the isocosm-vtt crate, keeping their MPL-2.0 grant; publishing waits. (amended by 919) | [campaign retirement](2026-10-15_campaign_retirement_plan.md), [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
 | 913 | isometry-campaign retires, its contents becoming components; where each part lands comes back as questions. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [campaign retirement](2026-10-15_campaign_retirement_plan.md) |
 | 915 | isometry-campaign's components are owning homes, no new crates: world into the sim, game layer into isocosm-vtt, map lowering into isometry-core, store into isonetry. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [campaign retirement](2026-10-15_campaign_retirement_plan.md) |
 | 921 | isonetry holds the GM store and the proposal lifecycle until V2. | [campaign retirement](2026-10-15_campaign_retirement_plan.md) |

@@ -1099,6 +1099,7 @@ title = "An uncalibrated ruleset may play in a debug or experimental mode, with 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "An uncalibrated ruleset may play in a debug or experimental mode, with a warning. (amended by 538)"
+draws_on = ["114"]
 
 [cases."190"]
 title = "An adventure pack whose requirements the world lacks waits, or the GM forces it"
@@ -1412,6 +1413,7 @@ title = "The tape-drawn faction turn retires at V2"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "The tape-drawn faction turn retires at V2 once Isocosm absorbs the campaign world."
+plans = ["campaign-retirement"]
 
 [cases."248"]
 title = "A sim-off campaign still writes its facts as notes"
@@ -1425,6 +1427,7 @@ title = "An uncalibrated campaign warns when it opens and marks its receipts"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "An uncalibrated campaign warns when it opens and marks every receipt and save as uncalibrated."
+draws_on = ["189"]
 
 [cases."251"]
 title = "Where an incoming part attaches is its attachment"
@@ -1620,7 +1623,7 @@ summary = "mere's atlas is sized to the card, riding with the retarget defect's 
 [cases."290"]
 title = "The board's CPU side is paged too"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "Stack and engine"
 summary = "The board's CPU side is paged too, computing bricks from the map on demand."
 
 [cases."291"]
@@ -1653,12 +1656,6 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "The host's atlas budget defaults to 8 MiB."
 
-[cases."298"]
-title = "Cleromancy is an optional feature of the VTT's host, off by default"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
-summary = "Cleromancy is an optional feature of the VTT's host, off by default, with the VTT's own seeded draw used without it. (amended by 600)"
-
 [cases."300"]
 title = "The VTT's crates keep their prefix"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -1669,7 +1666,7 @@ draws_on = ["111"]
 [cases."302"]
 title = "The pointer volume reserves headroom above the board's tallest point"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "Stack and engine"
 summary = "The pointer volume reserves headroom above the board's tallest point, one spare layer by default."
 
 [cases."307"]
@@ -1851,13 +1848,13 @@ summary = "Three method refinements accepted: separate measured evidence from la
 [cases."368"]
 title = "Centre-first overflow remains, with the current omitted count"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "Presentation"
 summary = "When visible terrain exceeds the atlas budget, keep the nearest terrain and report the current number of omitted bricks."
 
 [cases."369"]
 title = "The host exposes a device-bounded atlas budget setting"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "Presentation"
 summary = "The host exposes a terrain atlas budget setting, default 8 MiB, bounded by device limits, with changes rebuilding the atlas. (amended by 372)"
 
 [cases."371"]
@@ -1869,14 +1866,16 @@ summary = "Checkpoint 5 requires a per-tick flow handoff API so successive tick 
 [cases."372"]
 title = "The atlas budget is saved locally per device"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "Presentation"
 summary = "The atlas budget is saved locally per device in a small local preference store, outside campaign storage; malformed data falls back to the default."
+amends = ["369"]
 
 [cases."374"]
 title = "Allocate the chosen terrain atlas budget upfront"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "Presentation"
 summary = "Allocate the chosen terrain atlas budget upfront (8 MiB default, device-bounded); a changed budget rebuilds the atlas but filling capacity does not trigger growth."
+draws_on = ["369", "372"]
 
 [cases."377"]
 title = "The pre.4 allocation guard also compares service identity"
@@ -2674,30 +2673,35 @@ title = "Rules are built as faithful editions, a shared toolkit grown from them"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Rules are built as faithful versioned editions with GM decision points kept; a shared toolkit is extracted from what repeats; house ruleset only if needed."
+draws_on = ["538"]
 
 [cases."540"]
 title = "Rulesets mix freely in content and subsystems, and meet in an encounter only under a named hybrid profile"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Rulesets mix freely in content and subsystems; a cross-system encounter runs under a named hybrid profile documenting each crossing."
+draws_on = ["538"]
 
 [cases."541"]
 title = "The VTT plays faithful editions; Eponym and Mesocosm keep their own mechanics"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "Processes and rules"
 summary = "The VTT hosts faithful editions; Eponym and Mesocosm keep native mechanics, sharing the toolkit's effects, with a ruleset as selectable mode."
+draws_on = ["154", "538"]
 
 [cases."542"]
 title = "An edition's own state persists beside the body, its relations to it declared"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "An edition's own state persists beside the body, each fact marked world fact, native state or derived display, with the ruleset declaring their relations."
+draws_on = ["41", "154", "538"]
 
 [cases."543"]
 title = "Unattended, a ruleset-led world runs the ruleset's procedures under declared decision policies"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Unattended, a ruleset-led world runs the ruleset's own procedures with each player or GM choice replaced by a declared decision policy."
+draws_on = ["539", "542"]
 
 [cases."544"]
 title = "An incorporated part keeps its donor's matter"
@@ -2966,17 +2970,20 @@ title = "The campaign world's adapters stay with the VTT"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "The campaign world moves into Isocosm as its legacy campaign tree; the map wrapper and token/sheet adapters stay in a slim VTT crate. (amended by 599, 913, 915)"
+plans = ["campaign-retirement"]
 
 [cases."599"]
 title = "The overmap moves into the sim"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "The overmap moves into the sim as a sim noun; travel and discovery stay sim-side; the VTT imports Overmap from Isocosm."
+amends = ["598"]
+plans = ["campaign-retirement"]
 
 [cases."600"]
 title = "The VTT builds on the stack we have; Cleromancy leaves it"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "Stack and engine"
 summary = "The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched."
 
 [cases."604"]
@@ -4318,12 +4325,6 @@ area = "Host and network"
 summary = "The core's inspection endpoint sits in isocosm-host behind a feature; the binary becomes the stdio endpoint."
 draws_on = ["892", "896"]
 
-[cases."902"]
-title = "The VTT's panels go to `isocosm-vtt`"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
-summary = "The VTT's panels go to the isocosm-vtt crate, keeping their MPL-2.0 grant; publishing waits. (amended by 919)"
-
 [cases."903"]
 title = "Mesocosm's and Eponym's panels become feature-gated modules in existing crates"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -4361,6 +4362,7 @@ title = "`isometry-campaign` retires, its contents becoming components"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "isometry-campaign retires, its contents becoming components; where each part lands comes back as questions."
+plans = ["campaign-retirement"]
 
 [cases."914"]
 title = "The crates stay publishable in principle"
@@ -4374,6 +4376,8 @@ title = "913's \"components\" are owning homes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "isometry-campaign's components are owning homes, no new crates: world into the sim, game layer into isocosm-vtt, map lowering into isometry-core, store into isonetry."
+draws_on = ["913"]
+plans = ["campaign-retirement"]
 
 [cases."917"]
 title = "The crates aim to be published"
@@ -4401,6 +4405,8 @@ title = "`isonetry` holds the GM store and the proposal lifecycle until V2"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "isonetry holds the GM store and the proposal lifecycle until V2."
+draws_on = ["915"]
+plans = ["campaign-retirement"]
 
 [cases."923"]
 title = "`isonetry` is remade"
@@ -4819,8 +4825,8 @@ draws_on = ["923", "924", "959", "960", "962", "record.1"]
 title = "Rulesets"
 source = "design_docs/doctrine.md"
 area = "Licensing and sources"
-summary = "A ruleset ships when its licence draws no objection; an open text informing the sim is a reference, never copied in."
-draws_on = ["40", "522"]
+summary = "A ruleset ships, per product, when its licence draws no objection; an open text informing the sim is a reference, never copied in."
+draws_on = ["40", "522", "541"]
 
 [statements."licensing.2"]
 title = "Publication"
@@ -5030,8 +5036,8 @@ draws_on = ["432", "434", "438"]
 title = "Terrain fits the view"
 source = "design_docs/doctrine.md"
 area = "Presentation"
-summary = "Terrain residency is nested rings inside the host budget; grain is residency, never representation."
-draws_on = ["23", "425"]
+summary = "Terrain residency is nested rings inside a device-bounded atlas budget; overflow keeps the nearest and reports the rest; grain is residency, never representation."
+draws_on = ["23", "368", "369", "372", "374", "425"]
 
 [statements."presentation.6"]
 title = "Lighting"
@@ -5060,6 +5066,13 @@ source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "Ownership is asserted by exact lots; debits select lots; projects reserve inputs; input owners grant access."
 draws_on = ["837", "838", "839", "840", "843", "844", "845", "846", "849", "850", "863"]
+
+[statements."processes.3"]
+title = "Other genres adapt a ruleset"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Another genre adapts a ruleset as a selectable mode, under a named profile of departures and stand-in decision policies; the toolkit is shared."
+draws_on = ["539", "540", "541", "543", "vtt.5"]
 
 [statements."record.1"]
 title = "Consistency is chosen per domain"
@@ -5103,6 +5116,13 @@ area = "The sim's schema and saves"
 summary = "Authored content is asserted as native nouns with authored fills; disagreements with derived readings are kept and shown."
 draws_on = ["757", "760", "769", "834", "867"]
 
+[statements."stack.1"]
+title = "Build on the stack we have"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Build on the stack we have: unneeded crates stay out, stale ones leave, own crates when the abstraction earns one."
+draws_on = ["600", "organs.5"]
+
 [statements."vtt.1"]
 title = "The table runs over the sim, or without it"
 source = "design_docs/doctrine.md"
@@ -5129,7 +5149,14 @@ title = "The sim offers; the DM decides"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "Running arcs reach the DM as hooks; a pack the world can't meet waits or is forced; a compatible one activates on the DM's acceptance."
-draws_on = ["190", "191", "865"]
+draws_on = ["190", "191", "323", "865"]
+
+[statements."vtt.5"]
+title = "The table plays editions faithfully"
+source = "design_docs/doctrine.md"
+area = "The VTT"
+summary = "The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked."
+draws_on = ["189", "250", "538", "539", "540", "542", "543"]
 
 [statements."world.1"]
 title = "Shape and scale"
