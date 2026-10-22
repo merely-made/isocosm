@@ -175,7 +175,7 @@ when asked, each naming the process that moved it, handed over tick by tick;
 the core keeps an observation hook. Sharing state (cohorts copied on write)
 never changes serialisation or hashes.
 
-Links: draws on 270, 320, 345, 359, 371, 608, 634, 641, 651, 975, record.5 · summary Older save versions stay readers checked by their own hashes; the flow record sits outside state; shared state never changes hashes.
+Links: draws on 270, 320, 345, 359, 371, 608, 634, 641, 651, 975, record.5, sim-execution D5 · summary Older save versions stay readers checked by their own hashes; the flow record sits outside state; shared state never changes hashes.
 
 *Reviewed 2026-10-22, new; checked built (saves at v4, v3's entries plus
 exact movement semantics). Mark: "Split saves and rules".*
@@ -343,7 +343,7 @@ the foreground.
 
 *Not yet built:* rate models.
 
-Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999 · summary The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying.
+Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999, sim-execution D2 · summary The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying.
 
 *Refined 2026-10-22 from case 999 (Mark: "Both as drafted").*
 
@@ -352,23 +352,28 @@ Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 
 The clock counts a fine unit, a world setting, a minute by default; each
 process runs on its own period in world time, and anything finer is the
 foreground's. The scheduler indexes processes by the traits they need and
-keeps due events per group, so idle time is skipped; an advance's limit and
-its budget guard work, counting the members an evaluation stands for.
-Per-group phases run in the foreground; the background keeps a shared grid.
-Epochs and deep time are the record's (Record 7). Neighbouring worlds keep
-their own clocks, synced at crossings. Equal best moves break by a seeded
-draw. The sim is sharded by the place graph: each shard an armillary actor
-with its own due-event queue, field passes data-parallel inside a shard, and
-an ordered merge of cross-shard effects designed before the shards, so one
-shard and N give the same state hash at any thread count. On the web the sim
-runs in one Worker, scaling down by shard count.
+keeps due events per group, so idle time is skipped, and reconsiders a member
+only when something its process reads has changed or a time gate ripens; an
+advance's limit and its budget guard work, counting the members an evaluation
+stands for. Per-group phases run in the foreground; the background keeps a
+shared grid. Epochs and deep time are the record's (Record 7). Neighbouring
+worlds keep their own clocks, synced at crossings. A pass's evaluations read
+its start and may run at once, its commits serial in order; every draw is
+keyed by who acts, the tick and the process, never by commit order, so equal
+best moves and every other draw come out alike at any thread count. The sim is
+sharded by the place graph: each shard an armillary actor with its own
+due-event queue, field passes data-parallel inside a shard, and an ordered
+merge of cross-shard effects designed before the shards, so one shard and N
+give the same state hash at any thread count. On the web the sim runs in one
+Worker, scaling down by shard count.
 
-*Not yet built:* shards, and worlds syncing at crossings.
+*Not yet built:* waking, parallel evaluation and order-free draws (the
+execution plan's E1 to E3), shards, and worlds syncing at crossings.
 
-Links: draws on 149, 256, 257, 258, 259, 284, 285, 286, 293, 605, 958, record.7 · summary A fine world-set unit, periods per process; the scheduler skips idle time and budgets guard work; worlds sync at crossings.
+Links: draws on 149, 256, 257, 258, 259, 284, 285, 286, 293, 605, 958, record.7, sim-execution D1, sim-execution D4 · summary A fine world-set unit, periods per process; the scheduler skips idle time and unchanged members; a pass evaluates at once with draws keyed order-free; worlds sync at crossings.
 
-*Refined 2026-10-22: sharding by the place graph, from the design record's
-§4.7 (Mark: "Into Processes 7").*
+*Refined 2026-10-22 from the execution plan's D1 and D4: waking, parallel
+evaluation and order-free draws (Mark: "Refine P7 with all three").*
 
 ### Processes 8. Competition
 
@@ -1321,7 +1326,7 @@ chooser's own record of what it weighed and what the critter knows; nothing
 new is kept. An approved journey gives a directed critter a travel goal it
 follows when its own choice allows; the bond suffices.
 
-Links: draws on 683, 685, 686, 688, 690, 813, 861, 862 · summary One choice a tick weighing needs, mood, nudges and bond; bonds are weighted relations; suggestions and standing orders are derived.
+Links: draws on 683, 685, 686, 688, 690, 813, 861, 862, sim-execution D6 · summary One choice a tick weighing needs, mood, nudges and bond; bonds are weighted relations; suggestions and standing orders are derived.
 
 *Reviewed 2026-10-22, new. 685 named `Receipt.foregone` as a suggestion's
 source; the product reads the chooser's live consideration instead
@@ -1337,11 +1342,17 @@ detail up close: watched, run in detail and logged; far views stay crowd. A
 player's event stream carries what is attended. Survival filters through what
 the played critter knows and the reach. A location's identity is learned by
 observation or telling, its members and extent disclosed separately. The tier
-line is directing's.
+line is directing's: near is the attention roots and everything within one hop
+of the played critter's site, run as individuals; the rest runs as the crowd
+(Processes 6).
 
-Links: draws on 210, 212, 213, 691, 742, 876 · summary Attention is play, pins, examining and the game's care; examining is full detail up close; streams carry what is attended.
+*Not yet built:* the tier line (the execution plan's E5). Its band, how far
+past one hop a member goes before it returns to the crowd, is owed before E5.
 
-*Reviewed 2026-10-22, new. Mark: "All as drafted".*
+Links: draws on 210, 212, 213, 691, 742, 876, sim-execution D3 · summary Attention is play, pins, examining and the game's care; near is the roots plus one hop of the played critter's site; streams carry what is attended.
+
+*Refined 2026-10-22 from the execution plan's D3, the reach only (Mark, on
+this statement: "Refine D5 with the reach only").*
 
 ### Directing 6. Death and new lives
 
@@ -1815,13 +1826,18 @@ Links: draws on 833, 841, 842, 848, method.8 · summary Mesocosm owns its spatia
 
 ### Mesocosm 5. Defaults
 
-Mesocosm defaults to the named A1 preset (the shared generator stays Stock),
-and its tempo follows the measured tick: 2 ticks a second, with 10 as the aim
-once scheduling allows.
+Mesocosm defaults to the named A1 preset (the shared generator stays Stock)
+and to statistical agreement: far sites run as the crowd, the played critter
+and every noted member as individuals (Processes 6). Its tempo follows the
+measured tick: 2 ticks a second, with 10 as the aim once scheduling allows.
 
-Links: draws on 961, 978 · summary Mesocosm defaults to A1 and to 2 ticks a second, following measurement.
+*Not yet built:* the crowd in the core (the execution plan's E4), so far sites
+still run exactly.
 
-*Reviewed 2026-10-22, new. Mark: "Both as drafted".*
+Links: draws on 961, 978, sim-execution D2 · summary Mesocosm defaults to A1, to statistical agreement and to 2 ticks a second, following measurement.
+
+*Refined 2026-10-22 from the execution plan's D2 (Mark: "Also name it in
+Mesocosm 5").*
 
 ## Eponym
 

@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-22:** in progress: L1, L2, L1b, L3 and L4 done; L5 next. Shaped with Mark the same day in
+**Status, 2026-10-22:** in progress: L1, L2, L1b, L3, L4 and L5 done; L6 next. Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -452,3 +452,12 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   ("Roadmap to the founding record; questions to owners' plans"). §1 to §11
   then moved to `archive_docs/2026-10-22/`, their numbers kept. The doctrine
   holds 136 statements, within budget. Next: L5, the held six.
+- **2026-10-22, L5 done:** the execution plan's six decisions carry fields
+  lines and outcomes, chosen by Mark in one card round. There is no
+  Execution area; they fall under the areas that hold the model: D1 and D4
+  refine Processes 7 ("Refine P7 with all three"), D2 is filed under
+  Processes 6 and named in Mesocosm 5 ("Also name it in Mesocosm 5"), D3
+  refines Directing 5 with the reach only, and D5 and D6 are filed under
+  Schema 9 and Directing 4 ("Both apply, as filed"). A bare plan keyword
+  now lists the plan's decisions: `wing-decisions lookup sim-execution`.
+  Next: L6, global.
