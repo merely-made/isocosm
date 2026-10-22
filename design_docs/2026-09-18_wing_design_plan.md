@@ -2796,7 +2796,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      foreground-only; R4, until bodies move, seeding's only consumer is the
      founding generator. Mark: "Accept all four."
 
-     Links: area The sim's schema and saves · summary Checkpoint 3's four readings stand: untyped matter becomes the world's own, living matter is lineage-typed, shape identity is its roles, native readings run in crowds.
+     Links: area Bodies and anatomy · summary Checkpoint 3's four readings stand: untyped matter becomes the world's own, living matter is lineage-typed, shape identity is its roles, native readings run in crowds.
 274. **At a merge that changes lived outcomes, the player chooses.** Put to
      Mark on 2026-09-26, from both reviews: a merge by replay can change
      outcomes a player already lived through; show and choose, lived history
@@ -2857,7 +2857,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      adhesion, and its contact probe's impairments: one catalogue every game
      reads, or separate for now? Mark: "One catalogue."
 
-     Links: area The sim's schema and saves · summary The function vocabularies become one catalogue in the sim that every game reads.
+     Links: area Bodies and anatomy · summary The function vocabularies become one catalogue in the sim that every game reads.
 283. **The first disturbances are disease, an overperformer and a keystone
      lost; catastrophe follows.** Put to Mark on 2026-09-26: which
      disturbances the sim models first, serving both as the viability gate's
@@ -3076,7 +3076,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      by ruling 492:* no shape gates a function; the catalogue's shapes are
      each function's fits.
 
-     Links: area The sim's schema and saves · summary A process's shape requirement and seeding live on the function catalogue; a process requires a live part expressing a function, bound to the lowest-numbered qualifier. (amended by 480, 492)
+     Links: area Bodies and anatomy · summary A process's shape requirement and seeding live on the function catalogue; a process requires a live part expressing a function, bound to the lowest-numbered qualifier. (amended by 480, 492)
 339. **The catalogue starts with the five functions in use.** Put to Mark on
      2026-09-26, with 338: the five, all fifteen of ruling 277, or those
      with the other vocabularies folded in? Mark: "The five in use."
@@ -3086,7 +3086,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (281) and the probe's evidence. *Widened 2026-10-02 by ruling 461:*
      all fifteen of 277, the other vocabularies folded in.
 
-     Links: area The sim's schema and saves · summary The function catalogue starts with the five functions in use: contract, intake, sense, fix, secrete; keys stay open. (amended by 461)
+     Links: area Bodies and anatomy · summary The function catalogue starts with the five functions in use: contract, intake, sense, fix, secrete; keys stay open. (amended by 461)
 340. **The process's causal kind gives up the name `Shape`.** Put to Mark on
      2026-09-26, with 338: `isocosm::rules::Shape`, a process's causal kind
      (choice, agentless, transition), collides with ruling 276's part
@@ -3131,7 +3131,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      members it stands for, handed over each tick, every ledger reconciling
      from it in both runners.
 
-     Links: area The sim's schema and saves · summary The flow record holds every move, when asked, handed over each tick, with every ledger reconciling from it in both runners. (amended by 359)
+     Links: area The sim's schema and saves · draws on 270 · summary The flow record holds every move, when asked, handed over each tick, with every ledger reconciling from it in both runners. (amended by 359)
 347. **isometer alone answers a pointer pick.** Put to Mark on 2026-09-26,
      with 346: isometer only, conatus through the bindings as T1 was ruled,
      or both? Mark: "isometer only." The player clicks what was drawn, and
@@ -3190,14 +3190,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      2026-09-27, with 357: add the act's process as the reason, or leave it
      out as ruling 345 had it? Mark: "Add the process."
 
-     Links: area The sim's schema and saves · summary Each flow names the process that moved it.
+     Links: area The sim's schema and saves · amends 345 · summary Each flow names the process that moved it.
 360. **Part shapes take their own key prefix.** Put to Mark on 2026-09-27,
      with 357: X1 keyed part shapes as `shape:*`, the namespace the world's
      own `shape:graph` uses; separate them or share it? Mark: "Part shapes
      get their own prefix." *Reading, not ruled:* `part-shape:*`, the
      example offered.
 
-     Links: area The sim's schema and saves · summary Part shapes take their own key prefix (part-shape:*), separate from the world's shape:graph namespace.
+     Links: area Bodies and anatomy · summary Part shapes take their own key prefix (part-shape:*), separate from the world's shape:graph namespace.
 361. **isometer calls modulus's CPU walk instead of copying it.** Put to
      Mark on 2026-09-27, from Lane K's traversal fix under ruling 336, each
      crossing now computed as the boundary less the eye over the direction,
@@ -3601,7 +3601,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      flipped, false on planes, rings and tori and reserved for
      non-orientable shapes, skipped when false.
 
-     Links: area The sim's schema and saves · summary Each route optionally carries its border naming the side it leaves by and the side it enters, validated both ways and skipped when absent.
+     Links: area The sim's schema and saves · draws on 72, 73 · summary Each route optionally carries its border naming the side it leaves by and the side it enters, validated both ways and skipped when absent.
 
 398. **The map family is an optional part of Founding.** Asked on
      2026-09-28: "How does the map family enter founding? Evidence: Founding
@@ -3905,7 +3905,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "A graph per body class." (C) "One declared walker." Mark chose A,
      "Base grain, clearance on edges".
 
-     Links: area The sim's schema and saves · summary Places are derived once at base grain; each passage records its clearance so one graph serves every body by filtering.
+     Links: area The sim's schema and saves · draws on 417 · summary Places are derived once at base grain; each passage records its clearance so one graph serves every body by filtering.
 
 419. **A world-rule climb splits walkable patches.** Asked on 2026-09-30:
      "What steepness splits one walkable patch from the next? Evidence:
@@ -3920,7 +3920,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      can manage." (C) "No slope split, steepness only an edge's cost." Mark
      chose A, "World-rule climb".
 
-     Links: area The sim's schema and saves · summary A world-rule climb (default one unit of rise per unit of run, 45 degrees) splits walkable patches; each edge records its step.
+     Links: area The sim's schema and saves · draws on 417, 418 · summary A world-rule climb (default one unit of rise per unit of run, 45 degrees) splits walkable patches; each edge records its step.
 
 420. **The patch cap is a world rule with stepped presets.** Asked on
      2026-09-30: "How large may an outdoor patch grow before it is cut on the
@@ -3943,7 +3943,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      128, large 256 and extra large 512, and a founder may set their own x by
      y.
 
-     Links: area The sim's schema and saves · summary The patch cap is a world rule with stepped presets (16 to 512 base units a side) and founder-set x by y cells.
+     Links: area The sim's schema and saves · draws on 417 · summary The patch cap is a world rule with stepped presets (16 to 512 base units a side) and founder-set x by y cells.
 
 421. **A world picks the large preset, 256, by default.** Asked on
      2026-09-30: "Which preset does a world take when its founder picks none?
@@ -3953,7 +3953,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      site." Options, recommended first: (A) "Large, 256 (recommended)." (B)
      "Extra medium, 128." (C) "Medium, 64." Mark chose A, "Large, 256".
 
-     Links: area The sim's schema and saves · summary A world takes the large preset, 256 base units, by default when its founder picks none.
+     Links: area The sim's schema and saves · draws on 420 · summary A world takes the large preset, 256 base units, by default when its founder picks none.
 
 422. **An entity names its site until its game places it.** Asked on
      2026-09-30: "Once a site has places, what does an entity's location
@@ -7552,22 +7552,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
      Links: area Ecology · draws on 569, 287 · summary A body whose systems route intake grazes any living body of another lineage at its site, weighted by what each holds.
 
-591. **The games move onto the sim first; families are refined in place.**
-     2026-10-05. Question: how do the games move onto the sim, given that
-     192 re-expresses each family before it moves and Isocosm has no space
-     inside a site? Options: move first, refine in place (recommended);
-     re-express, then switch (192 as ruled); hybrid per game. Mark chose
-     "Move first, refine in place", after "the first and most consequential
-     thing to do is literally to move the games onto the sim" and "finish
-     the damn migration, at least". So the legacy sims (`mesocosm-core`,
-     `eponym-world` and `eponym-social`, the campaign world) move into
-     Isocosm, every game points at Isocosm and the legacy crates are
-     deleted, the games playing as today; families are re-expressed as
-     process definitions inside Isocosm afterwards. Amends 192. Bodies stop
-     at checkpoint 8: checkpoint 9 is parked on its branch, unmerged.
-
-     Links: area The sim's schema and saves · summary Legacy game sims move into Isocosm first, legacy crates deleted, games playing as today; families are re-expressed as process definitions afterwards. (amended by 655)
-
 592. **No source file over 600 lines without a technical reason.** 2026-10-05,
      Mark, unprompted: "enforce the 600 loc limit. there is no file that
      should be bigger than that without a technical reason." So the
@@ -7890,7 +7874,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      by the move. Under F1, the wing's authored pack manifests and process
      records become TOML; the SRD data stays a JSON import.
 
-     Links: area The sim's schema and saves · summary Rosters and rulesets move into datasheets through a dated plan; authored pack manifests and process records become TOML, SRD data stays JSON import.
+     Links: area Method and documents · summary Rosters and rulesets move into datasheets through a dated plan; authored pack manifests and process records become TOML, SRD data stays JSON import.
 624. **Packs load from TOML or JSON.** 2026-10-06, for the move of the
      pack files to TOML. Question: after the migration, should packs still
      load from JSON? Options: TOML only, with a JSON pack refused by a
@@ -7902,7 +7886,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      loads. *Reading, not ruled:* the manifest's `abi` stays 1, since the
      schema does not change, only the syntax.
 
-     Links: area The sim's schema and saves · summary Packs load from TOML or JSON, TOML preferred; this repository's own packs are TOML; manifest abi stays 1.
+     Links: area Method and documents · draws on 623 · summary Packs load from TOML or JSON, TOML preferred; this repository's own packs are TOML; manifest abi stays 1.
 625. **Every founding becomes data, instrument variants too.** 2026-10-06,
      for 623's plan. Question: which rosters move into datasheets? Options:
      the shipping rosters and kinds, with the instrument-only variants
@@ -7916,27 +7900,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      reproduce: every founding's state hash is unchanged by the move. The
      plan is `2026-10-06_wing_datasheets_plan.md`.
 
-     Links: area The sim's schema and saves · summary Every Founding variant, instrument variants included, becomes a datasheet and the enum a list read from them; state hashes unchanged.
-626. **The founding datasheets are embedded in isocosm.** 2026-10-06, at
-     the datasheets plan's P3 checkpoint. Question: where do the founding
-     datasheets live? Options: embedded in isocosm, parsed once, with
-     worlds, tests and probes calling `Founding` as now (recommended); in
-     Mesocosm's pack, admitted like the process files, which needs pack
-     admission wired into genesis at 71 sites and a ruling on the ruleset
-     digest. Mark chose "Embedded in isocosm". So the datasheets compile into
-     isocosm, and moving them into a pack waits for W2's founding ruleset.
-
-     Links: area The sim's schema and saves · summary Founding datasheets are embedded in isocosm and parsed once; moving them into a pack waits for W2's founding ruleset.
-627. **Datasheets name shapes and selector encodings in words.** 2026-10-06,
-     the same checkpoint. Question: how do datasheets name shapes and the
-     encodings in their selectors (`SHAPE_SKIRT = ARMOUR_SHAPE + SHAPE_PAD`,
-     a mouth above `JAW_SHAPE` drawn as a jaw)? Options: by name (recommended);
-     raw selector numbers. Mark chose "By name". So a datasheet says
-     `shape = "pad"`, `worn = "covering"`, `mouth = "jaw"`,
-     `chain = "leaf"`. The loader computes today's selectors, and a test
-     proves every computed recipe equals the code's.
-
-     Links: area The sim's schema and saves · summary Datasheets name shapes and selector encodings in words; the loader computes the selectors and a test proves they equal the code's.
+     Links: area Method and documents · draws on 623 · summary Every Founding variant, instrument variants included, becomes a datasheet and the enum a list read from them; state hashes unchanged.
 628. **The rationale prose moves into the datasheets.** 2026-10-06, the same
      checkpoint. Question: where does the prose go (why each body and shape
      exists, the DC findings and rulings)? Options: into the datasheets as
@@ -7945,52 +7909,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the Rust keeps only loader documentation.
 
      Links: area Method and documents · draws on 593 · summary Rationale prose for bodies and shapes moves into the datasheets as TOML comments; Rust keeps only loader documentation.
-629. **Founding datasheets are laid out by roster set.** 2026-10-06, P3a of
-     the datasheets plan. Question: one self-contained sheet per founding,
-     as the plan worded it, or sheets by roster set? The eight foundings
-     share 16 distinct recipes; per-founding sheets would hold 41
-     transcriptions, the mat in seven. Options: by roster set, the base,
-     branching, jointed and spaced sheets mirroring today's modules, plus
-     one foundings sheet naming each founding's palette and tier lists by
-     reference (recommended); one sheet per founding. Mark chose "By roster
-     set (Recommended)". So each body is written once, and the plan's
-     "one TOML datasheet per founding" is amended.
-
-     Links: area The sim's schema and saves · summary Founding datasheets are laid out by roster set plus one foundings sheet, not one self-contained sheet per founding.
-630. **Palettes extend one another.** 2026-10-06, the same round. Question:
-     are the four palettes written in full or by extension? Options: each
-     extends another, listing the slots it adds or replaces, with the
-     primitive palette written in full and pinned by a test to
-     `PartPalette::primitive()` (recommended); each written in full, every
-     slot in selector order. Mark chose "Each extends another
-     (Recommended)". So "no default moves" stays visible in the sheet, and a
-     shared shape is edited once.
-
-     Links: area The sim's schema and saves · summary Palettes each extend another, listing slots added or replaced; the primitive palette is written in full and pinned by a test.
-631. **The two unnamed primitive shapes are "block" and "rod".** 2026-10-06,
-     the same round. Question: what are mass slot 0 (`[2,2,2]`, tag 1) and
-     limb slot 0 (`[4,1,1]`, tag 2) called, which the code names only as
-     `0` and `JAW_SHAPE`? Options: "block" and "rod" (recommended); leave
-     them unnamed. Mark chose "\"block\" and \"rod\" (Recommended)". So
-     every palette slot has a name; plate's and sensor's defaults keep the
-     code's "frond" and "eye".
-
-     Links: area The sim's schema and saves · summary The two unnamed primitive shapes, mass slot 0 and limb slot 0, are called "block" and "rod".
-632. **Archetype names stay in code as lookups into the sheets.** 2026-10-06,
-     P3b of the datasheets plan. Question: once the code-built bodies go,
-     how do the 34 lines outside the founding code reach a body or palette?
-     One is production (generated archetypes seed from the spaced shrub),
-     five are examples in isometer-lens and mesocosm-genet, and the rest
-     are tests. The archetype module's four test files check the 16 bodies'
-     development as well. Options: keep `archetype::producer_mat()`,
-     `archetype::spaced::palette()` and the rest as one-line lookups into
-     the sheets, so the shapes, tagmata and prose live only in data and the
-     20 names stay compile-checked (recommended); remove them and look
-     bodies up by string. Mark chose "Keep names as lookups (Recommended)".
-     So no caller changes, and a test proves every accessor resolves.
-
-     Links: area The sim's schema and saves · summary Archetype names stay in code as one-line lookups into the datasheets, so no caller changes and a test proves each accessor resolves.
-
 633. **Saves keep fields; traces keep entities.** 2026-10-06, the state
      *(Recorded at `c0091aa8` as 622 to 625, numbers already taken by the
      datasheets rulings on main; renumbered 633 to 636 the same day.)*
@@ -8008,7 +7926,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      v2 stores the family witness's own type, and v1 saves are read through a
      separate struct carrying their string.
 
-     Links: area The sim's schema and saves · summary A v2 save stores the witness as a u64; v1 saves are read through a separate struct carrying their string.
+     Links: area The sim's schema and saves · draws on 608 · summary A v2 save stores the witness as a u64; v1 saves are read through a separate struct carrying their string.
 636. **The witness hashes postcard bytes.** 2026-10-06. Options: postcard
      (recommended); JSON into FNV. Mark chose "Postcard". So Isocosm hashes
      through `isometer_core::snapshot::encode`, one encoding across the
@@ -8025,7 +7943,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      SHA-256 at each epoch boundary while replaying and compares it, and a
      v1 fixture with checkpoints, made by the pre-H1 code, proves it.
 
-     Links: area The sim's schema and saves · summary A v1 save is checked at every epoch checkpoint with the SHA-256 as well as its final hash, proved by a v1 fixture with checkpoints.
+     Links: area The sim's schema and saves · draws on 608 · summary A v1 save is checked at every epoch checkpoint with the SHA-256 as well as its final hash, proved by a v1 fixture with checkpoints.
 642. **The probe traces draw 0's exact run.** 2026-10-07, for H1's
      `--trace` (610). Question: `isocosm-probe` runs many drawn worlds,
      each four ways, and already reruns draw 0's exact run as a reference;
@@ -8085,7 +8003,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      v3. Mark chose "Move to v3". So `SAVE_VERSION` becomes 3 with entries
      required, and v2 joins v1 as a kept reader, checked by its own hashes.
 
-     Links: area The sim's schema and saves · summary Save version becomes 3 with per-field entries required; v2 and v1 stay as kept readers checked by their own hashes.
+     Links: area The sim's schema and saves · draws on 634, 633 · summary Save version becomes 3 with per-field entries required; v2 and v1 stay as kept readers checked by their own hashes.
 652. **The state hash is the entries' digest.** 2026-10-08. Question: H1's
      hash is one FNV over the whole state's postcard bytes, while the
      crate's `Witness::digest` is balaur's fold over the entries, a
@@ -8174,21 +8092,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      limb innervated of two gives about half the limbs' share.
 
      Links: area Bodies and anatomy · summary The joint effect is by degree, scaling with the share of the second system's parts the nerves reach.
-669. **What the sim's laws exclude is handed back or deleted.** 2026-10-08.
-     Question: the sim neither renders nor resolves a blow; what becomes of
-     `voxel_profile`, Eponym's sheets, techniques, timed actions, strike
-     resolver and movement, the campaign's store and collaboration,
-     `effect_experiment` and the fixture worlds? Options: hand back or
-     delete (recommended); re-express everything; decide per family. Mark
-     chose "Hand back or delete (Recommended)". So game-owned code returns to
-     its game crate, presentation adapters go to the host or isometer,
-     `effect_experiment` is deleted and fixtures become draws (15), each when
-     its family is reached.
-
-     *2026-10-18, Mark:* "775 stands (Recommended)". Case 775 keeps
-     `effect_experiment` in mesocosm-runtime, amending this case's deletion of it.
-
-     Links: area The sim's schema and saves · summary Game-owned code the sim's laws exclude returns to its game crate or host; effect_experiment is deleted and fixtures become draws. (amended by 775)
 670. **In-site space is isometer's; the sim takes it through isometer.**
      2026-10-08, the families plan's second round. Question: legacy
      `places` gives Mesocosm its space inside a site and Eponym uses it,
@@ -8216,14 +8119,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mesocosm is not playable between its world family's move and M3.
 
      Links: area Directing and play · draws on 60 · summary Driving is the sapient player's mode; a non-sapient critter is directed; legacy Mesocosm driving ends with its world family's move.
-672. **Legacy tests become draws or retire.** 2026-10-08. Question: what of
-     the 13,738 lines of legacy integration tests and 25 examples? Options:
-     draws, or retire (recommended); port them all. Mark chose "Draws, or
-     retire (Recommended)". So behaviour a test pins becomes a draw or
-     control in its family's certification (667, 15), the rest retires with
-     the family's legacy copy, and receipt examples move to the receipts.
-
-     Links: area The sim's schema and saves · summary Legacy tests become draws or controls in their family's certification, or retire with the legacy copy.
 673. **Parked rungs' code moves; the rungs stay parked.** 2026-10-08.
      Question: glyphs, magic and neighbouring worlds pull no code lane yet
      (279); do Eponym's glyphs and the chronicles move with their families?
@@ -8710,7 +8605,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      members split out of their cohort (recommended); a `State` map; wait on
      275. Mark chose "Optional patch on Entity (Recommended)".
 
-     Links: area The sim's schema and saves · summary Entity gains an optional patch field, set only for members split out of their cohort.
+     Links: area The sim's schema and saves · draws on 422 · summary Entity gains an optional patch field, set only for members split out of their cohort.
 741. **Sight is a voxel ray scoped by places.** 2026-10-09. Question: no
      ruling defines sight over SP5's passages (702). Options: a voxel ray,
      the place graph choosing candidates (recommended); visible sets per
@@ -8825,7 +8720,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      into them (recommended); keep both; native code authoritative. Mark
      chose "Sheets feed native (Recommended)".
 
-     Links: area The sim's schema and saves · summary The datasheet loader lowers onto native Recipe and Template; roster() reads the sheets; legacy Founding becomes a name into them.
+     Links: area Method and documents · draws on 625 · summary The datasheet loader lowers onto native Recipe and Template; roster() reads the sheets; legacy Founding becomes a name into them.
 759. **The registry carries all fifteen functions, with the world move.**
      2026-10-09. Options: all fifteen with the world move (recommended); the
      five natives for good. Mark chose "All fifteen, with the world move
@@ -8910,7 +8805,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      no schema change (recommended); a generated key and a name field. Mark
      chose "Its name is its key (Recommended)".
 
-     Links: area The sim's schema and saves · summary A new line's name is its key, lineage:<name>, with no schema change.
+     Links: area Method and documents · summary A new line's name is its key, lineage:<name>, with no schema change.
 773 to 775. **Effects keys, glyph reading and the experiment.** 2026-10-10,
      from the effects family (merged at `a8570817`). Mark chose "Native
      function keys (Recommended)": embodiment keys on `function:<name>`,
@@ -8991,7 +8886,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      worktree; parity only where sim-certified. Mark chose "Invariants, no
      legacy parity (Recommended)".
 
-     Links: area The sim's schema and saves · summary Families certify against each plan's invariants (conservation, replay, controls), not legacy parity.
+     Links: area Method and documents · summary Families certify against each plan's invariants (conservation, replay, controls), not legacy parity.
 793 to 804. **The plan review's rulings.** 2026-10-10, from
      `2026-10-10_plan_review.md`, put in three rounds. Mark chose:
      - 793, "Accept it (Recommended)": the review's classification stands;
@@ -10157,7 +10052,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Every build reads one save format; a featureless build carries the
      society fields empty and refuses their operations.
 
-     Links: area The sim's schema and saves · summary The society feature gates operations, not state: State fields stay and are empty by default, so every build reads one save format.
+     Links: area The sim's schema and saves · amends 886 · summary The society feature gates operations, not state: State fields stay and are empty by default, so every build reads one save format.
 
 896. **The inspection shell becomes a Graphshell endpoint over the core.**
      Asked 2026-10-14 from the sim host plan's fork 1: a library-and-binary
@@ -10473,7 +10368,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      receipt" to the five bound natives; (3) "Retire under 672". Mark: "Ship
      the other ten (Recommended)"
 
-     Links: area The sim's schema and saves · summary F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen.
+     Links: area Method and documents · summary F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen.
 
 943. **F5: worn items on a severed non-played part drop through the sim's
      handoff.** A volley severing such a part is refused whole with
