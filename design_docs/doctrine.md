@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT and Stack and engine reviewed, with Processes 1 to 3 and Schema 1; the other areas are empty. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT and Stack and engine reviewed, with Processes 1 to 3; the sim's schema is under review (Schema 1 to 5); the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -31,6 +31,83 @@ Links: draws on 757, 760, 769, 834, 867 · summary Authored content is asserted 
 ("VTT 2 to the schema"), since any authoring enters this way. The rest of
 the area is not yet reviewed.*
 
+### Schema 2. State follows methodology
+
+A thing has its own state exactly when it has its own way of turning a
+situation into an action; everything else is a relation, a record or a field
+over the things that do. The agent kinds are compositions: a creature; a
+faction, a relation acting through its members (one a person defines is a
+party); a polity, factions with a collective methodology and so a state; a
+lineage, kith and kin. A settlement is a faction until it has a methodology;
+a region is terrain. Method goes by tier: reactive creatures,
+belief-desire-intention denizens, normative characters; a creature becomes a
+denizen when the record keeps it, names it or relates it. State is one ledger
+read more coarsely up the levels, the collective providing the coarsening:
+body needs matter less as factions and polities grow.
+
+Links: draws on 8, 9, 37, 38 · summary Own state exactly where there is own method; agent kinds are compositions; method by tier; one ledger read coarser up the levels.
+
+*Reviewed 2026-10-22, new. Built: each entity's method, kingdom and
+provenance; a faction holds no state and acts through its members. The
+tiers' agent methods are not each verified. 37's "borg" is written with
+Naming 2's "denizen". Mark moved its pair, what the sim is, into Stack 4
+("Schema 2 into Stack 4"); this statement as drafted.*
+
+### Schema 3. Provenance and identity
+
+Provenance and identity are two axes. Provenance is born of a lineage, made
+by a maker, or intrinsic to the world: constructs are made, the divine
+intrinsic, and neither is a rung of identity. Identity runs unnamed, named (a
+denizen), sapient (a sophont), and factional. A creature carries its
+genotype, a phenotype conditioned by circumstance, and its kingdom; a denizen
+adds naming and relationships; a character emerges contingent on its groups
+and resolves as both. Anything can become divine, a place or an item too;
+once it has, it is there in every fork and branch after its ascent, present
+as one omnipresent instance or a cycle of incarnations, and ended only by
+prophesied conditions tied to that ascent (how it is earned: Organs 1). An
+item can be a sophont: made so, awakened by its story, or inhabited. It acts
+through its wielder, by its own powers, or by taking over, and it is never
+owned.
+
+*Not yet built:* divinity and sophont items.
+
+Links: draws on 36, 42, 43, 45, 144, 145, 146, organs.1 · summary Provenance (lineage, maker, intrinsic) and identity (unnamed, denizen, sophont, factional) are two axes; divinity persists; sophont items are never owned.
+
+*Reviewed 2026-10-22, new. Mark: "Divinity in Schema 4" (drafted as Schema 4),
+so 42 and 43 stay in this area.*
+
+### Schema 4. Tenets, alignment and standing
+
+A tenet is the relation that a process yields an effect, with an opinion of
+it and the trust placed in it; whether a person may be owned is one, held or
+rejected like any other. Every agent's alignment comes from its acts: a
+sophont's; a faction's, weighting its members' by their influence; a
+polity's, from its decisions. Standing is alignment, reputation (the reach of
+one's deeds among those who know of them) and rank a polity asserts.
+
+*Not yet built:* alignment, reputation and standing; every entity holds its
+tenets.
+
+Links: draws on 50, 51, 56, 79, 151 · summary A tenet relates a process to its effect with opinion and trust; alignment comes from acts at every rung; standing is alignment, reputation, rank.
+
+*Reviewed 2026-10-22, new. Mark: "Polities apart".*
+
+### Schema 5. Polities
+
+A polity's state needs efficacious enforcement, not necessarily violence. A
+polity has a focus, not a size (a smiths' guild is one), and may build on
+another as an institution; polities under no host are a faction among
+themselves, a treaty their standing agreement. Asserting its constitution is
+a polity's definitive act. Its goals derive from its alignment; it has no
+will to continue beyond finding a new use, and an inactive one can be revived
+by whoever brings it support.
+
+Links: draws on 64, 67, 68, 81 · summary A polity needs efficacious enforcement, has a focus not a size, may build on another; its constitution is its definitive act; goals follow alignment.
+
+*Reviewed 2026-10-22, new: split from tenets at Mark's word ("Polities
+apart"). Polities are built behind the society feature (886); enforcement
+is not verified.*
+
 ## Processes and rules
 
 
@@ -49,7 +126,11 @@ reviewed.*
 
 ### Processes 2. Property is explicit, by lots
 
-Ownership is asserted, never inferred from holding, tenancy or making, and
+Who can hold and own follows what a thing is: a critter gathers and holds by
+its biology, with little capacity, and never owns; a sophont carries gear; a
+pilot possesses a mech; any sophont, faction or polity can have possessions.
+A critter has habitats, never a home it owns, though a named sapient can
+assert one for it. Ownership is asserted, never inferred from holding, tenancy or making, and
 names exact quantity lots; later matter never inherits earlier owners. Debits
 select their lots (whole or an exact portion), with no FIFO or proportional
 split; each operation declares which outputs keep the owners' claims or
@@ -61,11 +142,13 @@ the reserved inputs together grant access; a polity grants by its authored
 strategy (decision, unanimity or representatives); any eligible, authorized
 subject may resume. A help action is a separate pathway, not yet designed.
 
-Links: draws on 837, 838, 839, 840, 843, 844, 845, 846, 849, 850, 863 · summary Ownership is asserted by exact lots; debits select lots; projects reserve inputs; input owners grant access.
+Links: draws on 53, 54, 837, 838, 839, 840, 843, 844, 845, 846, 849, 850, 863 · summary Ownership is asserted by exact lots; debits select lots; projects reserve inputs; input owners grant access.
 
 *Reviewed 2026-10-22, new: written in the Eponym review, whose questions
 raised these cases, and placed here at Mark's word ("Under Processes and
 rules, written now").*
+*Refined 2026-10-22 in the schema review: who can hold and own (53, 54)
+opens it (Mark: "Fold into Processes 2").*
 
 ### Processes 3. Other genres adapt a ruleset
 
@@ -696,8 +779,12 @@ sim's). Mark: "Both as drafted".*
 
 ### Stack 4. One sim, one contract, one bench
 
-Isocosm is the one sim: no product grows an engine of its own, and
-mesocosm-core's sim moved in, re-expressed in process definitions, and
+Isocosm generates worlds, histories and entities, configurable and
+extensible, played several ways; projections, perspectives, turn-based or
+real-time play are distinctions made on top of it. No product's paradigm is
+hardcoded into it: named scopes (world, region, area, battlemap) are a game's
+defaults, not levels the sim holds (World 3). It is the one sim: no product
+grows an engine of its own, and mesocosm-core's sim moved in, re-expressed in process definitions, and
 retired. Games meet the sim through one game-neutral crate, `isocosm-overlay`:
 each game's vocabulary a module, shapes two games share lifted once into its
 core (points, act keys, harm, wounds, parts), the tick a newtype over the
@@ -706,7 +793,7 @@ what changed from the sim's admitted change records, never from a tracked
 copy. Everything generated and reviewed shares one bench (sim, world,
 specimen, item and effect lanes), which is also the dev tools.
 
-Links: draws on 20, 192, 197, 203, 204, 254, 483 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
+Links: draws on 1, 20, 92, 192, 197, 203, 204, 254, 483, world.3 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
 
 *Reviewed 2026-10-22, new; checked built (mesocosm-core retired; the overlay's
 tick, attention set and shared shapes), the bench's lanes not each verified.
@@ -715,6 +802,8 @@ Mark: "As drafted, archive 263".*
 retired, its receipts rule (483) kept here (Mark: "Retire the ECS, keep
 483"); Mesocosm's played scene already reads the spatial driver's admitted
 changes.*
+*Refined 2026-10-22 in the schema review: what the sim is (1, 92) opens it
+(Mark: "Schema 2 into Stack 4").*
 
 ### Stack 5. Isometer owns in-site space
 

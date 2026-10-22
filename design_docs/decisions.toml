@@ -6,7 +6,7 @@ schema = 1
 [cases."1"]
 title = "The thing is a simulator"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Stack and engine"
 summary = "The thing is one configurable, extensible world, history and entity generator playable several ways; views and perspectives are distinctions made on top of the sim."
 
 [cases."2"]
@@ -177,6 +177,7 @@ title = "Methodology by tier, and the borg line"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Methodology by tier: reactive critters, belief-desire-intention borgs, normative characters; a creature becomes a borg when the record keeps it; disposition is five-factor."
+draws_on = ["36"]
 
 [cases."38"]
 title = "State is one ledger, read more coarsely up the levels, and the coarsening is provided by the collective"
@@ -213,6 +214,7 @@ title = "How a divine thing is present, and how it ends"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A divine thing is omnipresent as one instance or cycles through reincarnation or recreation, destroyed only through prophesied conditions tied to its ascent."
+draws_on = ["42"]
 
 [cases."44"]
 title = "The quality of divinity is the quality of the journey"
@@ -225,6 +227,7 @@ title = "Provenance and identity are two axes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Provenance (lineage, maker, intrinsic) and identity (unnamed, named and sapient, factional) are two axes; constructs are made, divine is intrinsic."
+amends = ["42"]
 
 [cases."46"]
 title = "Grades per glyph by the form sacrificed"
@@ -262,6 +265,7 @@ title = "Who holds tenets, and how alignment is taken at each rung"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Factions align with multiple tenets by weighting each sophont's alignments by faction influence; polities align constitutionally in addition to their factions. (amended by 79)"
+draws_on = ["50"]
 
 [cases."52"]
 title = "The referent by tier, and impact against frequency"
@@ -273,13 +277,13 @@ draws_on = ["49"]
 [cases."53"]
 title = "Holding"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "Critters gather and hold by biology with limited capacity; sophonts carry gear; mechs are borgs holding pilots; any sophont, faction or polity can have possessions."
 
 [cases."54"]
 title = "Place"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "A critter has habitats, habits and memories but no home it owns; being named lets a sapient assert a home one-sidedly."
 
 [cases."55"]
@@ -293,6 +297,7 @@ title = "Standing is three things the record already has"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Standing is three things: alignment derived from acts, reputation as reach of deeds, and rank asserted by a polity."
+draws_on = ["51"]
 
 [cases."57"]
 title = "Two doors: reproduction rerolls expression, the epoch boundary changes the lineage; NPC lineages adapt there by default and so does yours"
@@ -342,6 +347,7 @@ title = "A polity's state needs efficacious means of enforcement, not necessaril
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A polity's state needs efficacious, not necessarily violent, enforcement; a polity has a focus, not a size, and may be contingent on other polities."
+draws_on = ["63"]
 
 [cases."65"]
 title = "A polity without support does nothing; it dies only when people agree it has"
@@ -360,12 +366,14 @@ title = "Polities under no host are a faction among themselves"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Polities under no host are a faction among themselves; a treaty is Paredros's standing agreement at scale."
+draws_on = ["63", "64"]
 
 [cases."68"]
 title = "A polity's goals are derived from its own alignment, as an individual's are; it has no will to continue beyond finding a new use; an inactive polity can be revived"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A polity's goals derive from its own alignment, as an individual's do; it has no will to continue beyond a new use; inactive polities revive."
+draws_on = ["64"]
 
 [cases."69"]
 title = "What is of note persists; the rest is regenerated. \"Of note\" is a tier between the soup and legend, for every kind of thing"
@@ -429,6 +437,7 @@ title = "A polity has its own alignment from its acts, as factions and individua
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A polity has its own alignment from its acts, as factions and individuals do."
+amends = ["51"]
 
 [cases."80"]
 title = "\"Of note\" is literal: a note on the thing, made by the sim as a player would make one"
@@ -442,6 +451,7 @@ title = "Asserting a constitution is itself an act, the definitive one"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Asserting a constitution is itself an act, the definitive one."
+draws_on = ["79"]
 
 [cases."82"]
 title = "The note is the impresa record, with a freeform text field beside the generated details"
@@ -502,7 +512,7 @@ summary = "History depth is the founder's choice; the generated timeline can be 
 [cases."92"]
 title = "The named scopes must not hardcode Isometry's paradigm into the sim"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Stack and engine"
 summary = "The named scopes (world, region, area, battlemap) must not hardcode Isometry's paradigm into the sim."
 
 [cases."93"]
@@ -804,18 +814,21 @@ title = "An item can be a sophont: made so, awakened by its story, or inhabited"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "An item can be a sophont: made so, awakened by its story, or inhabited."
+draws_on = ["45"]
 
 [cases."145"]
 title = "A sophont item acts through its wielder, by its own powers, and can take over"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A sophont item acts through its wielder, by its own powers, and can take over its wielder."
+draws_on = ["53", "144"]
 
 [cases."146"]
 title = "A sophont item is never owned"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A sophont item is never owned; it can be held, is a companion, and can own things itself."
+draws_on = ["144"]
 
 [cases."147"]
 title = "A site and a paged chunk are independent"
@@ -847,6 +860,7 @@ title = "Owning a person is slavery, and treating people as chattel is itself a 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Whether a person may be owned is a tenet, held or rejected like any other; owning a person is slavery."
+draws_on = ["50", "146"]
 
 [cases."152"]
 title = "Outside the world, a player directs only who they play"
@@ -5046,7 +5060,7 @@ title = "Property is explicit, by lots"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "Ownership is asserted by exact lots; debits select lots; projects reserve inputs; input owners grant access."
-draws_on = ["837", "838", "839", "840", "843", "844", "845", "846", "849", "850", "863"]
+draws_on = ["53", "54", "837", "838", "839", "840", "843", "844", "845", "846", "849", "850", "863"]
 
 [statements."processes.3"]
 title = "Other genres adapt a ruleset"
@@ -5097,6 +5111,34 @@ area = "The sim's schema and saves"
 summary = "Authored content is asserted as native nouns with authored fills; disagreements with derived readings are kept and shown."
 draws_on = ["757", "760", "769", "834", "867"]
 
+[statements."schema.2"]
+title = "State follows methodology"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "Own state exactly where there is own method; agent kinds are compositions; method by tier; one ledger read coarser up the levels."
+draws_on = ["8", "9", "37", "38"]
+
+[statements."schema.3"]
+title = "Provenance and identity"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "Provenance (lineage, maker, intrinsic) and identity (unnamed, denizen, sophont, factional) are two axes; divinity persists; sophont items are never owned."
+draws_on = ["36", "42", "43", "45", "144", "145", "146", "organs.1"]
+
+[statements."schema.4"]
+title = "Tenets, alignment and standing"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "A tenet relates a process to its effect with opinion and trust; alignment comes from acts at every rung; standing is alignment, reputation, rank."
+draws_on = ["50", "51", "56", "79", "151"]
+
+[statements."schema.5"]
+title = "Polities"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "A polity needs efficacious enforcement, has a focus not a size, may build on another; its constitution is its definitive act; goals follow alignment."
+draws_on = ["64", "67", "68", "81"]
+
 [statements."stack.1"]
 title = "Build on the stack we have"
 source = "design_docs/doctrine.md"
@@ -5126,7 +5168,7 @@ title = "One sim, one contract, one bench"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools."
-draws_on = ["20", "192", "197", "203", "204", "254", "483"]
+draws_on = ["1", "20", "92", "192", "197", "203", "204", "254", "483", "world.3"]
 
 [statements."stack.5"]
 title = "Isometer owns in-site space"
