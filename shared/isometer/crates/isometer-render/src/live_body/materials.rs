@@ -102,3 +102,38 @@ pub(super) fn part_appearance(body: LiveBody<'_>, part: PartId) -> PartAppearanc
         expression_tail: [fractions[4], 0.0, 0.0, 0.0],
     }
 }
+
+/// Shared marks for raster faces and implicit part surfaces.
+pub fn tissue_colour(base: [f32; 3], phase: f32, fractions: [f32; 5]) -> [f32; 3] {
+    let mut end = 0.;
+    for (fraction, mark) in fractions.into_iter().zip(TISSUE_COLOURS) {
+        end += fraction;
+        if phase < end {
+            let shade = base.into_iter().fold(0., f32::max);
+            return [0, 1, 2].map(|i| base[i] * 0.28 + mark[i] * shade * 0.72);
+        }
+    }
+    base
+}
+const TISSUE_COLOURS: [[f32; 3]; 5] = [
+    [0.82, 0.30, 0.25],
+    [0.82, 0.55, 0.20],
+    [0.32, 0.72, 0.92],
+    [0.34, 0.76, 0.30],
+    [0.78, 0.25, 0.72],
+];
+
+/// Area-average of the same tissue marks, useful when a part is smaller
+/// than the marked voxel pattern. Unallocated tissue keeps its base colour.
+pub fn tissue_average(base: [f32; 3], materials: &[PartMaterial], part: PartId) -> [f32; 3] {
+    let shade = base.into_iter().fold(0., f32::max);
+    let mut colour = base;
+    for material in materials.iter().filter(|m| m.part == part) {
+        if let Some(mark) = TISSUE_COLOURS.get(material.material as usize) {
+            for i in 0..3 {
+                colour[i] += material.fraction * 0.72 * (mark[i] * shade - base[i]);
+            }
+        }
+    }
+    colour
+}

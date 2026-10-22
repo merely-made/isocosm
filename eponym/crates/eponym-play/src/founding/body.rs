@@ -30,11 +30,13 @@ pub(super) fn install(rules: &mut Rules) -> Development {
     let recipe = Recipe {
         tagmata: vec![
             Tagma {
+                chain: Vec::new(),
                 segments: 1, segment: ROOT.into(), bears: Some(LIMB.into()), per_segment: 2,
                 parent: None, anchor: Anchor::Base, facing: Facing::Back, socket: Facing::Right,
                 variance: None,
             },
             Tagma {
+                chain: Vec::new(),
                 segments: 1, segment: SENSOR.into(), bears: None, per_segment: 0,
                 parent: Some(0), anchor: Anchor::Base, facing: Facing::Above, socket: Facing::Right,
                 variance: None,

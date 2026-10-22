@@ -1,7 +1,10 @@
 # Body appearance: shape suggests function, several anatomies per function
 
 **Status (2026-10-22):** plan. Four forks answered by Mark on 2026-10-22,
-recorded below in his chosen words; none numbered yet. Nothing built.
+recorded below in his chosen words; none numbered yet. Materials, named
+founding shapes and native chains are connected and captured. The ordinary
+foot-swing gate remains open; the orthographic voxel presentation plan records
+the successful integration checks and the failed ordinary gait qualification.
 
 ## What this plan is for
 
@@ -62,17 +65,18 @@ Each was put as a card with its evidence; the option Mark chose is quoted.
 - The sim measures length, area, cross-section and volume
   (`shared/isocosm/src/rules/amount.rs:240`,
   `shared/isocosm/src/anatomy.rs:75`), and carrying already scales by
-  cross-section (`shared/isocosm/src/systems/carry.rs:41`). Nothing scales a
-  limb's actuation by area or a body's mass by volume.
+  cross-section (`shared/isocosm/src/systems/carry.rs:41`). Adult mass already
+  scales by voxel volume (`shared/isocosm/src/anatomy.rs`, `ceiling`); limb
+  actuation by area and weight-bearing stance admission remain unbuilt.
 - The contact gait and contact-preserving rest poses (ed3ee3bf, cd451f5c)
   plant feet from whatever support parts a body has; today those are single
   segments, not chains.
 
 ## Phases
 
-Each phase is its own lane in its own worktree, verified there before main,
-with a picture as its receipt where the change is visible (doctrine, Method
-4). Any fork with more than one defensible answer returns to Mark.
+Each phase is verified before completion, with a picture as its receipt
+where the change is visible (doctrine, Method 4). Follow the workspace rule:
+work on main unless a concurrent source collision requires isolation. Any fork with more than one defensible answer returns to Mark.
 
 ### B1. Materials through the smooth path
 
@@ -142,3 +146,9 @@ with evidence has gone to Mark and come back numbered.
 
 - 2026-10-22: plan written from the body-appearance research round and the
   four cards above; nothing built.
+
+- 2026-10-22: the current authorized integration connects B1 and B3, with a
+  selectable named founding route for existing shapes. This does not complete
+  B2's inherited role-based random shape selection or its five-seed gate,
+  B4's per-connection blending, or B5's load-bearing dynamics. The live
+  qualification is recorded in the orthographic voxel presentation plan.

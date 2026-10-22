@@ -156,9 +156,16 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
                 .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
             if let Some(start) = config.start { founded.start = start; }
             if let Some(mode) = config.mode { founded.mode = mode; }
-            if config.body_roster {
-                founded.genesis.founding.as_mut().and_then(|f| f.bodies.as_mut())
-                    .ok_or_else(|| mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("body roster needs a bodied founding".into()))?.roster = true;
+            let bodies = founded.genesis.founding.as_mut().and_then(|f| f.bodies.as_mut())
+                .ok_or_else(|| mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(
+                    "body roster needs a bodied founding".into()))?;
+            if config.body_roster && config.body_founding.is_none() {
+                bodies.roster = true;
+                bodies.founding = None;
+            } else {
+                let selection = config.body_founding.as_deref().unwrap_or("SpacedRoster");
+                bodies.roster = selection != "Drawn";
+                bodies.founding = (selection != "Drawn").then(|| selection.to_string());
             }
             let mut founded = a1_setup(founded, affinity.clone())?.founded;
             founded.genesis.rules.epoch_ticks = config.play_epoch;

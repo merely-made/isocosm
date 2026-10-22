@@ -8,10 +8,15 @@ use super::SceneHandle;
 
 #[cfg(test)]
 mod tests;
+mod recording;
 
-pub struct SectionProducer { handle: SceneHandle, inner: Option<SceneProducer<Source>> }
+pub struct SectionProducer { handle: SceneHandle, render_scale: u32, inner: Option<SceneProducer<Source>> }
 impl SectionProducer {
-    pub fn new(handle: SceneHandle) -> Self { Self { handle, inner: None } }
+    pub fn new(handle: SceneHandle) -> Self { Self { handle, render_scale: 1, inner: None } }
+    pub(crate) fn set_render_scale(&mut self, scale: u32) {
+        self.render_scale = scale.clamp(1, 8);
+        if let Some(inner) = &mut self.inner { inner.set_render_scale(self.render_scale); }
+    }
     pub(crate) fn renders(&self) -> u64 { self.inner.as_ref().map_or(0, |inner|inner.renders()) }
     pub(crate) fn body_stats(&mut self) -> Option<section::BodyFrameStats> {
         if !self.has_current_frame() { return None; }
@@ -74,7 +79,9 @@ impl TextureProducer for SectionProducer {
                 *self.handle.error.borrow_mut() = Some("viewport GPU differs from the present core".into());
                 return None;
             }
-            self.inner = Some(SceneProducer::new(Source::new(host, self.handle.clone())));
+            let mut inner = SceneProducer::new(Source::new(host, self.handle.clone()));
+            inner.set_render_scale(self.render_scale);
+            self.inner = Some(inner);
         }
         self.inner.as_mut().unwrap().render(cx)
     }
@@ -91,11 +98,12 @@ pub(crate) struct Source {
     presented: Option<SlabCamera>,
     presented_input: Option<[u64;4]>,
     animation_frame: u64,
+    recording: recording::Recording,
 }
 
 impl Source {
     pub(crate) fn new(host: tenant::HostDevice, handle: SceneHandle) -> Self {
-        Self { host, handle, section: None, ground: None, target: None, presented: None, presented_input: None, animation_frame: 0 }
+        Self { host, handle, section: None, ground: None, target: None, presented: None, presented_input: None, animation_frame: 0, recording: Default::default() }
     }
     fn target(&mut self, size: [u32; 2]) {
         if self.target.as_ref().is_some_and(|t| t.3 == size) { return; }
@@ -167,6 +175,7 @@ impl SceneSource for Source {
                     &input.scene.ground, Framing::default())?);
             }
             let section = self.section.as_mut().unwrap();
+            let was_animating = section.animating();
             section.resize(size[0], size[1]);
             if self.ground != Some(input.fingerprint) {
                 section.set_ground(&input.scene.ground)?;
@@ -193,6 +202,10 @@ impl SceneSource for Source {
             section.draw(&mut encoder, draw, SectionFrame { scene: &input.scene, dirty: &[],
                 centre: camera.centre, pose: pose.as_ref(), roster: &roster })?;
             self.host.queue.submit([encoder.finish()]);
+            if std::env::var_os("MESOCOSM_DEBUG_MOTION").is_some() {
+                eprintln!("viewport {:?}: animation {was_animating} -> {}", input.revision, section.animating());
+            }
+            self.recording.frame(section, &self.target.as_ref().unwrap().0, &input, was_animating)?;
             self.presented = Some(camera);
             self.presented_input = Some(input.fingerprint);
             self.handle.error.borrow_mut().take();

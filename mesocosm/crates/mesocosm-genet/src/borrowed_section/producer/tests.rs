@@ -48,6 +48,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
     let host = section::host_device::from_renderer(core.renderer());
     let source = Source::new(host.clone(), handle.clone());
     let mut leaf = SectionProducer {
+        render_scale: 1,
         handle: handle.clone(),
         inner: Some(SceneProducer::new(source)),
     };

@@ -13,6 +13,9 @@ use isometer::{BodyFrameStats, Pose, SceneBody, SubjectKey};
 
 use super::{PlacedBody, SiteScene};
 
+mod materials;
+pub(crate) use materials::function_materials;
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum BodyMode {
     #[default]
@@ -62,8 +65,7 @@ impl HostBodies {
         }
     }
 
-    /// One placed body as the scene reads it. Native bodies carry no process
-    /// mosaic yet, so no materials.
+    /// One placed body with the native close-up's function allocations.
     pub fn scene_body<'a>(&self, body: &'a PlacedBody, played: Option<u64>) -> SceneBody<'a> {
         SceneBody {
             subject: SubjectKey(body.id),
@@ -78,7 +80,7 @@ impl HostBodies {
             scale: self.scale,
             grounded: body.physical.is_none(),
             tint: body.tint,
-            materials: &[],
+            materials: &body.materials,
             always_visible: Some(body.id) == played,
         }
     }

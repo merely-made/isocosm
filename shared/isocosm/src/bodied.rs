@@ -46,6 +46,9 @@ pub const TRAITS: [&str; 10] = [
 /// What a founding draws bodies within (550), each an inclusive range.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Bodies {
+    /// Explicit named founding; absent in existing generated worlds.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub founding: Option<Key>,
     pub variance: [u8; 2],
     /// A borne kind's absence odds, one in so many.
     pub absence: [u32; 2],
@@ -83,6 +86,7 @@ impl Default for Bodies {
     /// hazard, which Mesocosm's own founding turns on.
     fn default() -> Self {
         Self {
+            founding: None,
             variance: [1, 2],
             absence: [12, 12],
             clutch: [1, 4],
@@ -140,6 +144,7 @@ fn kind(name: &str) -> Key {
 
 fn bare(segments: u8, segment: &str) -> Tagma {
     Tagma {
+        chain: Vec::new(),
         segments,
         segment: kind(segment),
         bears: None,
@@ -157,6 +162,7 @@ fn bare(segments: u8, segment: &str) -> Tagma {
 /// below for a mouth.
 fn bearing(segments: u8, segment: &str, borne: &str, per: u8, socket: Facing) -> Tagma {
     Tagma {
+        chain: Vec::new(),
         bears: Some(kind(borne)),
         per_segment: per,
         socket,
@@ -292,8 +298,25 @@ pub fn life(seed: u64, index: u64, b: &Bodies) -> (BTreeSet<Key>, u32, bool) {
 /// life histories, and develops their founders, a cohort sharing a soma and
 /// its own matter given to its parts as far as they hold it.
 pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
-    let mut kinds = default_kinds();
-    let authored = roster();
+    let (mut kinds, authored) = if let Some(name) = &b.founding {
+        let sheets = crate::datasheet::sheets();
+        let palette = &sheets.founding(name)?.palette;
+        (
+            {
+                let mut kinds = crate::datasheet::native::kinds(palette)?;
+                // Native collision/volume frames require positive half-extents.
+                // A sheet's zero-width blade becomes the smallest paid solid link,
+                // only in this explicit new-world route. Historical kinds stay intact.
+                for kind in kinds.values_mut() {
+                    kind.half_extent = kind.half_extent.map(|h| h.max(1));
+                }
+                kinds
+            },
+            crate::datasheet::native::founding(name)?,
+        )
+    } else {
+        (default_kinds(), roster())
+    };
     let (mut producers, mut consumers) = (0, 0);
     let affinity = g.rules.affinity.clone().unwrap_or_default();
     affinity.validate()?;
@@ -310,7 +333,7 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
             _ => continue,
         };
         bodied.insert(key.clone());
-        let mut recipe = match b.roster {
+        let mut recipe = match b.roster || b.founding.is_some() {
             false => drawn(g.seed, index, producer, b),
             true => {
                 let turn = if producer {

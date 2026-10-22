@@ -16,7 +16,7 @@
 //! Which way it looks is [`camera`]'s, a host flag; none of the modes moves
 //! the hash.
 
-mod bodies;
+pub(crate) mod bodies;
 mod camera;
 mod capsules;
 pub mod host_device;
@@ -72,7 +72,10 @@ pub struct PlacedBody {
     /// site-grain picture otherwise uses its presentation ground anchor.
     pub at: [i32; 3],
     pub physical: Option<mesocosm_runtime::spatial::Pose>,
+    /// Recent admitted native steps, for a viewport that missed intermediate roots.
+    pub walks: Vec<[isocosm::spatial::Pose; 2]>,
     pub tint: [f32; 3],
+    pub materials: Vec<isometer::render::PartMaterial>,
     pub alive: bool,
 }
 

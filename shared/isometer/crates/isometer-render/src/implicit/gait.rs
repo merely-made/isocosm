@@ -21,6 +21,7 @@ pub struct Gait {
     feet: BTreeMap<PartId, Foot>,
     seen: BTreeSet<PartId>,
     root: Option<Vec3>,
+    native_origin: Option<Vec3>,
     moving: bool,
     elapsed: f32,
     pending_step: bool,
@@ -30,6 +31,21 @@ pub struct Gait {
 }
 
 impl Gait {
+    pub fn set_native_origin(&mut self, origin: [f32; 3]) {
+        self.native_origin = Some(origin.into());
+    }
+    pub(super) fn native_offset(&self, origin: Vec3) -> Vec3 {
+        self.native_origin
+            .map_or(Vec3::ZERO, |native| native - origin)
+    }
+    pub(super) fn reject(&mut self, part: PartId, planted: bool) {
+        self.feet.remove(&part);
+        if planted {
+            self.planted = self.planted.saturating_sub(1);
+        } else {
+            self.swinging = self.swinging.saturating_sub(1);
+        }
+    }
     pub fn start_step(&mut self) {
         self.pending_step = true;
     }

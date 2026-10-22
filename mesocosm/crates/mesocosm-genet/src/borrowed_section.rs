@@ -185,7 +185,9 @@ impl SceneHandle {
                     return Err("physical root exceeds Ground coordinate bounds".into());
                 }
                 bodies.push(PlacedBody { id:body.id, document:body.document.clone(), at:cell,
-                    physical:Some(pose.clone()), tint:scene::tint_of(isocosm::kingdom::of(member)),
+                    walks: vec![],
+                    physical:Some(pose.clone()),
+                    materials:section::bodies::function_materials(&body.allocations), tint:scene::tint_of(isocosm::kingdom::of(member)),
                     alive:member.alive });
             }
             let digest = isocosm::digest(&(session.sim.genesis(), session.sim.state(), &region, frame, roots));
@@ -273,8 +275,8 @@ fn lower(session: &Session, region: RegionReading, fingerprint: [u64; 4], quarte
             None => body.patch.filter(|p| volume.holds(p.cell[0], p.cell[2]))
                 .map(|p| volume.to_ground(p.cell)).unwrap_or_else(|| layout::spot(&ground, index)),
         };
-        bodies.push(PlacedBody { id: body.id, document: body.document, at, physical:None,
-            tint: scene::tint_of(isocosm::kingdom::of(entity)), alive: entity.alive });
+        bodies.push(PlacedBody { id: body.id, document: body.document, at, physical:None, walks:vec![],
+            materials:section::bodies::function_materials(&body.allocations), tint: scene::tint_of(isocosm::kingdom::of(entity)), alive: entity.alive });
     }
     let volumes = section::body_volumes(&bodies)?;
     Ok(Snapshot { presentation:None, revision:None, scene: SiteScene { site: region.site, ground, window: volume, bodies,

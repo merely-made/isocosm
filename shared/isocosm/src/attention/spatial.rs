@@ -19,7 +19,34 @@ pub struct Crowd { pub site: Id, pub lineage: Key, pub count: u64 }
 pub struct VisibleBody {
     pub id: Id, pub lineage: Key, pub kingdom: Key, pub revision: u64,
     pub alive: bool,
+    /// Functional tissue summaries admitted by the same local close-up as geometry.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub allocations: BTreeMap<PartId, PartAllocation>,
     pub document: BodyDocument, pub patch: Option<isometer_space::places::PlaceId>,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PartAllocation {
+    pub capacity: u32,
+    pub cells: BTreeMap<Key, u32>,
+}
+
+pub fn allocations(entity: &crate::schema::Entity) -> BTreeMap<PartId, PartAllocation> {
+    entity
+        .living()
+        .filter_map(|(id, p)| {
+            let capacity = crate::anatomy::living_cells(entity.extent(id), p);
+            (capacity > 0).then(|| {
+                (
+                    id,
+                    PartAllocation {
+                        capacity,
+                        cells: p.cells.clone(),
+                    },
+                )
+            })
+        })
+        .collect()
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -83,6 +110,7 @@ impl Simulation {
             for id in first..end {
                 bodies.push(VisibleBody { id, lineage: entity.lineage.clone(), kingdom: entity.kingdom.clone(),
                     revision: entity.body_revision, alive:entity.alive,
+                    allocations: allocations(entity),
                     document: document.clone(), patch: entity.patch });
             }
         }

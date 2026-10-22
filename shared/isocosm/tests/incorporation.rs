@@ -40,6 +40,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
 
 fn tagma(segment: &str, bears: Option<&str>) -> Tagma {
     Tagma {
+        chain: Vec::new(),
         segments: 1,
         segment: segment.into(),
         bears: bears.map(Into::into),

@@ -4,7 +4,8 @@
 
 ## Rich bodies in ordinary play, 2026-10-22
 
-**Status:** in progress. Reconnect existing founding sheets, native function
+**Status:** connections implemented and captured; ordinary foot-swing gate
+remains open. Reconnect existing founding sheets, native function
 allocations and serial appendage chains through the current development and
 shared rendering pipeline. Preserve historical saves and selectable drawn bodies.
 
@@ -19,16 +20,59 @@ stance and swing, inspect its silhouettes, and report remaining limits honestly.
 Receipts: `Code/testing/mesocosm/rich-bodies-2026-10-22/`, total cap 100 MB.
 Reuse the existing playable build cache; no new target or worktree.
 
-**Findings:** `datasheet/native.rs` refuses every chain; `bodied::drawn`
-chooses block trunks; `section/bodies.rs` supplies no per-part materials.
+**Initial findings:** `datasheet/native.rs` refused every chain; `bodied::drawn`
+chose block trunks; `section/bodies.rs` supplied no per-part materials.
 Existing sheets already declare upright lower links, feet, spaced leaves and
 varied trunks. Native collision admission still uses rigid integer part boxes.
+
+**Qualification, 2026-10-22:** 402 focused checks pass (259 native unit,
+43 native integration, 50 renderer, 50 host); 22 existing checks are ignored.
+The normal optimized release builds. New-chain software controls keep real
+upper/lower/foot identities and fixed lengths, lift the foot and withdraw it
+on severance. Birth/growth tests cover the reused native routes; the actual
+play run admits offspring with the richer graph. Native replay retains the
+old `f5767ede7effce0f` hash and the new world's `e922048bc4f566c3` hash.
+
+The first clock-sourced search accepts seed `11467091329334584174` on its
+11th structural candidate. At tick 14 it records 9 accepted walks, 23 placed
+offspring, zero developer intents and zero projection failures. Six actual
+viewport PNGs include three pictures of the same native cut: 5,012 pixels
+change while revision and native roots stay identical. Default dimetric and
+across captures show native tissue colours and real chains. `movement.webp`
+is a uniform 350 ms preview of actual frames; original measured times remain
+in `motion-final/frames.json`.
+
+**Unmet gate:** the ordinary recording contains zero foot-swing frames. It
+qualifies root interpolation, not a natural planted walking cycle. Native
+support may come from any occupied part, and the current rigid envelopes on
+steep ground do not guarantee a foot stance. Sweeps newly blocked by another
+body or a terrain corner are refused. Crowded silhouettes and the classic
+terrain's dense pattern still obscure anatomy. The second independent seed,
+`1792698331440758600`, reaches tick 14 with 3 walks and 22 placed offspring
+but no supported controlled pose at its new site: the picture is withdrawn,
+with no substitute body. These are retained findings, not passed gait gates.
+B2's random shape inheritance, B4's per-edge blending and B5's load-bearing
+constants remain separate work. Receipts and exact build/test boundaries are
+in `Code/testing/mesocosm/rich-bodies-2026-10-22/summary.json`; under 100 MB.
 
 **Progress:** chain development, named founding selection, native functional
 summaries, shared tissue colours and real three-part leg posing are connected;
 qualification is underway. Opt-in `MESOCOSM_CAPTURE_MOTION` records at most 24
 actual viewport frames with per-frame native roots, revision and contact stats.
 The directory must be new. It reuses Section's existing GPU readback.
+
+Qualification found that ordinary accepted steps can fall between presented
+pictures. The old bridge mistook the resulting distant endpoints for a
+teleport and discarded the gait. The bridge now takes at most 16 explicit
+accepted steps from the existing placement history, in order, and checks each
+segment against current terrain and bodies before and during presentation.
+It refuses missing path edges, changed visits/anatomy and newly blocked sweeps.
+History is summarized once per scene, rather than rescanned for every body.
+
+`--render-scale 1..8` exposes Isometer's existing nearest-scaled viewport;
+the default stays 1. It reduces viewport work and diagnostic PNG sizes without
+changing native simulation or camera framing. `MESOCOSM_DEBUG_MOTION=1` explains
+motion resets and sweep refusals; it does not change admission.
 
 The researcher review correctly distinguishes Cieslak's aspect-oriented plant
 modelling architecture from specific mechanics. Native `anatomy::ceiling`
