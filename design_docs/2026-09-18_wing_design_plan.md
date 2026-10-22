@@ -838,7 +838,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     like switch between them. I mean to enable strange scenarios like a
     world resting on a critter".
 
-    Links: area World generation · summary A world has one shape, any shape, not switchable.
+    Links: area World generation · draws on 72 · summary A world has one shape, any shape, not switchable.
 74. **Nesting is one composable, expandable mechanism; world, region, area
     and battlemap are its defaults.** Asked whether the nesting of maps is
     one mechanism repeated or a fixed set of levels, Mark, 2026-09-21: "I
@@ -948,7 +948,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     fixes: "Elaborate on the last two points. Shouldn't the nesting be
     dynamically allocated as locations are generated?"
 
-    Links: area World generation · summary Nesting is allocated dynamically as locations are generated, not fixed at founding.
+    Links: area World generation · draws on 72 · summary Nesting is allocated dynamically as locations are generated, not fixed at founding.
 89. **Founding is a short flow of crucial details and a seed; authoring is
     as deep as anyone likes, and authored content fills or displaces
     generated content; a world editor is owed.** Mark, 2026-09-21: "I feel
@@ -1114,7 +1114,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      suggested set from the seed is a fine default that could then be
      configured, much like the world's other characteristics."
 
-     Links: area World generation · summary A world's magic, like other characteristics, is suggested from the seed, configurable, and either a static profile or fluid over time under conditions.
+     Links: area World generation · draws on 101 · summary A world's magic, like other characteristics, is suggested from the seed, configurable, and either a static profile or fluid over time under conditions.
 103. **The sim knows the parts of an arc and lets entities pursue
      consequential goals for real reasons; the game makes the statement; the
      world is a bit like RimWorld's storyteller.** Mark, 2026-09-22: "Might
@@ -1557,7 +1557,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ruleset is probably good". Where a world sits on that spectrum reads
      as a founding setting, as its magic is (ruling 102).
 
-     Links: area World generation · summary A world's materials lie on a spectrum from a normal base matching a ruleset, through variants, to completely generated; a founding setting.
+     Links: area World generation · draws on 102 · summary A world's materials lie on a spectrum from a normal base matching a ruleset, through variants, to completely generated; a founding setting.
 141. **A skill rises by doing, being taught, studying and breakthroughs.**
      Put to Mark on 2026-09-24, from §3.3.1's open "how a skill
      accumulates": what raises a skill? Four options were put, to pick all
@@ -1633,7 +1633,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark: "Its kind decides." So a camp follows its people, a ruin its
      ground, a battlefield its site.
 
-     Links: area World generation · summary When a location's ground changes or moves, its kind decides what it follows: a camp its people, a ruin its ground, a battlefield its site.
+     Links: area World generation · draws on 72 · summary When a location's ground changes or moves, its kind decides what it follows: a camp its people, a ruin its ground, a battlefield its site.
 149. **Neighbouring worlds keep their own clocks and are synced at
      crossings.** Put to Mark on 2026-09-24, from §3.12's open question:
      do neighbouring worlds share one played clock? Three options were
@@ -3615,7 +3615,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      is amended: the relief and brick description move into Isocosm, not
      beside isometer's seam.
 
-     Links: area World generation · summary The terrain models (relief, detail noise, cavity shapes) live in Isocosm as verb-free modules; isometer-core keeps only the Terrain trait and Ground.
+     Links: area World generation · amends 392 · summary The terrain models (relief, detail noise, cavity shapes) live in Isocosm as verb-free modules; isometer-core keeps only the Terrain trait and Ground.
 
 394. **A site's skeleton is keyed entries in its conditions.** Asked on
      2026-09-28, decision 2: "How is a site's skeleton held? Evidence:
@@ -3631,7 +3631,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      rules name the keys the lift reads, elevation, relief and water level
      by default.
 
-     Links: area World generation · summary A site's skeleton is keyed entries in its conditions (elevation, relief, water level by default), named by the world's rules; Site's shape is unchanged.
+     Links: area World generation · draws on 72, 391 · summary A site's skeleton is keyed entries in its conditions (elevation, relief, water level by default), named by the world's rules; Site's shape is unchanged.
 
 396. **The lift works in chunks at power-of-two cell sizes from the start.**
      Asked on 2026-09-28, decision 4: "At what grain does the lift work in
@@ -3648,7 +3648,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chunking arriving at T2." Mark chose A, "Chunks from the start". With
      rulings 393 to 396 the spine plan's SP0 is done.
 
-     Links: area World generation · summary The lift works in power-of-two-sized chunks from the start, taking a chunk key and cell size, so a site costs only what is lifted.
+     Links: area World generation · draws on 13, 147 · summary The lift works in power-of-two-sized chunks from the start, taking a chunk key and cell size, so a site costs only what is lifted.
 
 397. **Each route carries its border.** Asked on 2026-09-28, in SP1's
      brief: "Where does each adjacency's frame relation live (which side a
@@ -3696,7 +3696,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      default now, a 7.5-inch base unit and 256-tile sites (2,048 voxels)."
      Mark chose A, "Scale-free draws".
 
-     Links: area World generation · summary SP1's seeded draws are scale-free (grids 2x2 to 16x16, site sides 256 to 2,048 base units), choosing no product default until a game founds.
+     Links: area World generation · draws on 396 · summary SP1's seeded draws are scale-free (grids 2x2 to 16x16, site sides 256 to 2,048 base units), choosing no product default until a game founds.
 
 400. **A lifted site gives its skeleton back exactly where it can.** Asked on
      2026-09-28, the first of SP2's forks: "What must a lifted site give back
@@ -3715,7 +3715,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      column, by holding the surface as the exact interpolation of a lattice
      whose sums have closed forms (the spine plan's §A.9).
 
-     Links: area World generation · summary A lifted site gives its skeleton back exactly where it can: mean surface equals its elevation, water fills to its level, relief bounds interior detail.
+     Links: area World generation · draws on 391 · summary A lifted site gives its skeleton back exactly where it can: mean surface equals its elevation, water fills to its level, relief bounds interior detail.
 
 401. **A site's interior is a Coons patch.** Asked on 2026-09-28: "How is a
      site's interior surface built between its four borders? Evidence: SP1
@@ -3729,7 +3729,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      fill, solved iteratively." (C) "Distance blend, which creases along the
      diagonals." Mark chose A, "Coons patch".
 
-     Links: area World generation · summary A site's interior surface is a Coons patch: transfinite interpolation from the four border profiles plus windowed correction and detail from its seed.
+     Links: area World generation · draws on 400 · summary A site's interior surface is a Coons patch: transfinite interpolation from the four border profiles plus windowed correction and detail from its seed.
 
 402. **A lift returns columns per chunk.** Asked on 2026-09-28: "What does a
      lift return? Evidence: SP2's volumes are heightfields with materials by
@@ -3743,7 +3743,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Ground directly (recommended)." (B) "Dense voxel chunks from the start."
      Mark chose A, "Columns per chunk".
 
-     Links: area World generation · summary A lift returns columns per chunk (surface height and material-by-depth rule) at its cell size; dense voxels are lowered only when a store needs them.
+     Links: area World generation · draws on 396 · summary A lift returns columns per chunk (surface height and material-by-depth rule) at its cell size; dense voxels are lowered only when a store needs them.
 
 403. **A lift's materials are world-local ids.** Asked on 2026-09-28: "What do
      a lift's voxels name as their material? Evidence: the wing index's
@@ -3757,7 +3757,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Ground's palette (recommended)." (B) "Palette indices for now." Mark
      chose A, "World-local ids".
 
-     Links: area World generation · summary A lift's voxel materials are world-local ids into a table saved with the world, seeded with air, water, soil and rock as the world's nis.
+     Links: area World generation · draws on 97 · summary A lift's voxel materials are world-local ids into a table saved with the world, seeded with air, water, soil and rock as the world's nis.
 
 404. **Magic composes fundamental effects, paid for through equivalent
      exchange, with world-dependent scripts.** Asked on 2026-09-28, after
@@ -3888,7 +3888,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      return matter through the dev source outside the conserved total and
      label the run assisted, as ruling 271 has it for placed matter.
 
-     Links: area World generation · summary Earth is matter: the volume is the world's own body; carving moves each cell's mass to the carver, filling draws from them; soil stays separate.
+     Links: area World generation · draws on 12 · summary Earth is matter: the volume is the world's own body; carving moves each cell's mass to the carver, filling draws from them; soil stays separate.
 
 413. **Edits are stored as shape operations.** Asked on 2026-09-30: "What is
      stored when the volume is edited? Evidence: Ground's own edits are
@@ -3902,7 +3902,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      grain." (C) "Shapes, compacted into cells when they grow too many."
      Mark chose A, "Shape operations".
 
-     Links: area World generation · summary Volume edits are stored as ordered shape operations per site (carve a sphere, fill a box, dig a route), replayed onto any chunk they overlap.
+     Links: area World generation · draws on 412 · summary Volume edits are stored as ordered shape operations per site (carve a sphere, fill a box, dig a route), replayed onto any chunk they overlap.
 
 414. **An edit reaching across a border is one fact, read across.** Asked on
      2026-09-30: "How does an edit that reaches across a border belong to the
@@ -3914,7 +3914,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      relation (recommended)." (B) "Split when made, one part per site." Mark
      chose A, "One fact, read across".
 
-     Links: area World generation · summary An edit reaching across a border is stored once, in its origin site's frame, and neighbours read it through the border's frame relation.
+     Links: area World generation · draws on 413, 391 · summary An edit reaching across a border is stored once, in its origin site's frame, and neighbours read it through the border's frame relation.
 
 415. **A lift carries caves as columns plus exceptions.** Asked on
      2026-09-30: "How does a lift carry caves and overhangs? Evidence: SP2's
@@ -3927,7 +3927,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      changes (recommended)." (B) "Dense when edited." (C) "Surface edits
      only for now." Mark chose A, "Columns plus exceptions".
 
-     Links: area World generation · summary A lift carries caves and overhangs as columns plus a sparse list of exception cells that differ from the column rule.
+     Links: area World generation · draws on 402 · summary A lift carries caves and overhangs as columns plus a sparse list of exception cells that differ from the column rule.
 
 416. **What a carver cannot hold is heaped beside the cut.** Asked on
      2026-09-30: "When a carve yields more earth than the carver can hold,
@@ -6420,7 +6420,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      with bodies, and the ecology family keeps its extentless bodies as the
      scale control.
 
-     Links: area World generation · summary Only worlds that ask for bodies found lineages from recipes; the ecology family keeps extentless bodies as the scale control.
+     Links: area World generation · amends 512 · summary Only worlds that ask for bodies found lineages from recipes; the ecology family keeps extentless bodies as the scale control.
 
 526. **Parental care feeds hungry young a parent's own mouthfuls.** Asked on
      2026-10-03, with 523: "How does parental care feed the young (450,
@@ -6842,7 +6842,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      of a part's cells to its role's process, so a lump takes in, a rod
      contracts, a point senses and a sheet fixes (511).
 
-     Links: area World generation · summary The generator gives reproduce one cell of each recipe's root segment kind, drawn and authored recipes alike.
+     Links: area World generation · draws on 512 · summary The generator gives reproduce one cell of each recipe's root segment kind, drawn and authored recipes alike.
 
 548. **A founded lineage's life history is drawn, within what its body
      allows.** Asked on 2026-10-04, with 547: "How does the generator draw
@@ -6866,7 +6866,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a world-rule bound, and each of its other traits either way; the
      probe sets its own.
 
-     Links: area World generation · summary The generator draws each founded lineage's life history by the founding seed, within what its body supports; the probe sets its own.
+     Links: area World generation · draws on 512 · summary The generator draws each founded lineage's life history by the founding seed, within what its body supports; the probe sets its own.
 
 549. **Flora and fauna draw recipes; myco and micro wait for territories
      and surfaces.** Asked on 2026-10-04, with 547: "In a world that asks
@@ -6888,7 +6888,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineages stay bodiless until checkpoint 11 makes them territories and
      surfaces.
 
-     Links: area World generation · summary In worlds that ask for bodies, flora and fauna draw recipes; myco and micro stay bodiless until territories and surfaces exist.
+     Links: area World generation · draws on 512, 488 · summary In worlds that ask for bodies, flora and fauna draw recipes; myco and micro stay bodiless until territories and surfaces exist.
 
 550. **The generator draws within Mesocosm's bounds where it has them.**
      Asked on 2026-10-04, with 547: "What bounds does the generator draw
@@ -6908,7 +6908,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      at 1 in 12, and a lineage's clutch from 1 to 4, by default, each a
      range the founding states and a world may widen.
 
-     Links: area World generation · summary The generator draws within Mesocosm's bounds by default: variance 1 to 2, absence odds 1 in 12, clutch 1 to 4, each widenable.
+     Links: area World generation · draws on 548 · summary The generator draws within Mesocosm's bounds by default: variance 1 to 2, absence odds 1 in 12, clutch 1 to 4, each widenable.
 
 551. **Full stores count as fed.** Asked on 2026-10-04, building checkpoint
      8's step 8h: "Under TD5, when is a probe grazer fed? Evidence: TD5
@@ -7320,7 +7320,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      100, a range a world may widen, and the check covers worlds that riff
      often and rarely.
 
-     Links: area World generation · summary Each recipe draws its system-riff odds between 1 in 12 and 1 in 100, a range a world may widen.
+     Links: area World generation · draws on 568 · summary Each recipe draws its system-riff odds between 1 in 12 and 1 in 100, a range a world may widen.
 
 574. **A body carries the systems it realizes.** Asked on 2026-10-05,
      checkpoint 9's fourth round: "Which systems does a body carry at
@@ -8319,7 +8319,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Isocosm's places family consumes it through isometer rather than
      keeping a copy, re-expressed after SP3 to SP5.
 
-     Links: area Stack and engine · summary In-site space is isometer's; Isocosm's places family consumes it through isometer rather than keeping a copy.
+     Links: area Stack and engine · amends 392, 393 · summary In-site space is isometer's; Isocosm's places family consumes it through isometer rather than keeping a copy.
 671. **Non-sapient critters are never driven; Mesocosm's driving ends with
      its world family's move.** 2026-10-08. Question: directing is built
      only on Isocosm (194, the overlay plan's M3), while legacy Mesocosm
@@ -8862,7 +8862,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lets land without re-certifying the lift's receipts until after the
      push.
 
-     Links: area World generation · summary Cliff spans are drawn from both sites' skeletons and the pair seed, and the lift steps its surface there.
+     Links: area World generation · draws on 391 · summary Cliff spans are drawn from both sites' skeletons and the pair seed, and the lift steps its surface there.
 746 to 748. **The tenant's context slot, report and water field.**
      2026-10-09. Mark chose "Keep the scoped slot (Recommended)" for 471's
      handle, "Submissions only (Recommended)" for the frame report, and
@@ -10244,7 +10244,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      A generator lane owns it after A1's generator changes land, one
      writer at a time in `generate.rs`.
 
-     Links: area World generation · summary The generator supplies spawn and arrival templates for generated worlds; movement stays template-driven.
+     Links: area World generation · draws on 830, 833 · summary The generator supplies spawn and arrival templates for generated worlds; movement stays template-driven.
 
 890. **The generator gives producers a real capture path.**
      2026-10-14, capture inputs for 875's joint witness.
@@ -10255,7 +10255,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      evidence with A1, which touches the same producer and consumer rates;
      the goal is default generated worlds passing 875's witness.
 
-     Links: area World generation · summary The generator gives producers a real capture path so default generated worlds pass 875's witness; tissue is not relabelled as fuel. (amended by 929)
+     Links: area World generation · draws on 875 · summary The generator gives producers a real capture path so default generated worlds pass 875's witness; tissue is not relabelled as fuel. (amended by 929)
 
 891. **The generator writes each world's global collapse predicate.**
      2026-10-14, the follow-up to 878.
@@ -10264,7 +10264,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mark chose (a), confirming it directly: "the generator writes a declared collapse predicate into each world's rules".
      The generator lane owns it with 889.
 
-     Links: area World generation · summary The generator writes a declared global collapse predicate into each world's rules, visible, saved and part of the digest.
+     Links: area World generation · draws on 878 · summary The generator writes a declared global collapse predicate into each world's rules, visible, saved and part of the digest.
 
 892. **The embeddable sim host is `isocosm-host` as a library.**
      Asked 2026-10-14, after 884. Evidence: `host/` is already the package
@@ -10373,7 +10373,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      where other fauna exists; (3) the diet left to the drawn mouth.
      Mark: "I accept the recommendations."
 
-     Links: area World generation · summary Bodied generated-ecology consumers always draw an intake mouth and keep limbs for movement; Bodies::grazing becomes the default.
+     Links: area World generation · draws on 832 · summary Bodied generated-ecology consumers always draw an intake mouth and keep limbs for movement; Bodies::grazing becomes the default.
 
 906. **A lineage's lifespan is individual: a death hazard under an old-age ceiling.**
      Asked 2026-10-15 in plain text, from the A1 lane's draft. Evidence:
@@ -10593,7 +10593,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      891, the predicate the generator declares; 887 is the Mesocosm-loop
      milestone.
 
-     Links: area World generation · summary A generated world collapses when the living Reactive, Deliberative and Normative population over all lineages is 0, declared as rules data.
+     Links: area World generation · draws on 891 · summary A generated world collapses when the living Reactive, Deliberative and Normative population over all lineages is 0, declared as rules data.
 
 935. **The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40.**
      Asked 2026-10-15 by card, from the A1 lane. Evidence: the preset as
@@ -10608,7 +10608,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      preset's numbers only (907): defaults, the hazard and the grazing
      default are untouched.
 
-     Links: area World generation · summary The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40; defaults, the hazard and the grazing default are untouched.
+     Links: area World generation · amends 907 · summary The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40; defaults, the hazard and the grazing default are untouched.
 
 939. **F1: the shipped pack gets the other ten definitions.** The pack ships
      five process definitions; the native registry carries fifteen, and the
@@ -10771,7 +10771,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      is configurable; this does not select a known passing seed or change
      the shared generator's Stock default.
 
-     Links: area World generation · summary An unchosen Mesocosm seed may use a bounded configurable candidate search; explicit seeds stay exact and the full native witness gate is kept.
+     Links: area World generation · draws on 875 · summary An unchosen Mesocosm seed may use a bounded configurable candidate search; explicit seeds stay exact and the full native witness gate is kept.
 
 969. **The pack-authoring fixtures are pinned LF by a narrow attributes rule.**
      Asked with 968. Options: (1) `crates/isometry-system/tests/fixtures/*.toml`

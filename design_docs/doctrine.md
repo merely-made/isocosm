@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology and Eponym reviewed, with Processes 1 and 2; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym and World generation reviewed, with Processes 1 and 2; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -223,6 +223,129 @@ Links: draws on 607, 610, 633, 636, 642, 649, 652, 653 · summary The state hash
 *Reviewed 2026-10-22, new. Mark: "Both as drafted".*
 
 ## World generation
+
+
+### World 1. Shape and scale
+
+Terrain runs from a region to a planetary system and always has a
+destructible, constructible interior; the height and kind a board holds per
+cell is a far view of that volume. A world map is a grid of sites in one
+shape, any shape (a sphere, a ring, a world resting on a critter), with a free
+base unit and power-of-two cells within a chunk. The first scale target is a
+region, larger scales not precluded.
+
+Links: draws on 11, 12, 13, 73, 124 · summary Terrain runs from region to planetary system with an interior; one shape per world, any shape; a region first.
+
+*Reviewed 2026-10-22, new. Mark: "2 and 3" (split World 1; schedule the
+world editor).*
+
+### World 2. Worlds in company
+
+A world sits among others: a parent, neighbours, a solar or binary system,
+worlds sharing a history that branched. Space and travel between worlds come
+later, and nothing built may assume one world alone under one sun; light is a
+derived function, so more bodies change a function, not saved state.
+
+Links: draws on 11, 105 · summary A world sits among others; nothing built may assume one world alone under one sun.
+
+*Reviewed 2026-10-22, new, from Mark's words in this round: "also consider
+worlds in relation to each other (a solar system, binary solar system,
+effects on light field later ...). space and interplanetary travel is not a
+first priority but what we build should compose with that possibility, no?"
+The sky is one sun today (`rules.sun`); a list of bodies is owed with
+Ecology 5's item in the sim plan (Mark: "Owe it with Ecology 5's item").*
+
+### World 3. The map's words
+
+A site has its own terrain and biome; a region is an area of sites; a
+location is a known, remarkable or potential site, or a nested place within
+one (a settlement, a dungeon, a gate), allocated as it is generated and
+spanning several sites if it must; wilderness is sites without a location,
+from which locations can be generated; environment is weather and climate.
+
+Links: draws on 72, 88 · summary Site, region, location, wilderness, biome and environment; locations nest and are allocated as generated.
+
+*Reviewed 2026-10-22, new: split from World 1 at Mark's word.*
+
+### World 4. The world is a generative entity
+
+What kind of entity a world is stays open: inert, sentient, a god, a turtle,
+dead. It has traits, its timeline is a lineage, and it generates activities,
+processes and effects; its magic and its materials are suggested from the
+seed, configurable, static or fluid over time under conditions, and its
+materials run from a normal base matching a ruleset to fully generated.
+
+Links: draws on 99, 101, 102, 140 · summary A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid.
+
+*Reviewed 2026-10-22, new: split from World 1 at Mark's word.*
+
+### World 5. Founding and authoring
+
+Founding is a short flow of crucial details and a seed; authoring goes as
+deep as anyone likes, filling or displacing generated content. How much
+history is the founder's choice, and the timeline can be gone back into. A
+world is realigned to another ruleset by a generative round that advances
+time. Presets (pressures, bodies, named rate sets) are founding choices, never
+the generator's defaults.
+
+Links: draws on 89, 90, 91, 272, 907, 935 · summary Founding is details plus a seed; authoring displaces generation; history depth is the founder's; presets are choices.
+
+*Reviewed 2026-10-22, new. The world editor 89 asks for is owed in the sim
+plan's S5 (Mark: "editor owed in the sim plan's S5").*
+
+### World 6. Sites are lifted to volume
+
+A site (the unit for generating and playing) and a chunk (the unit for
+paging) are independent. A top-down skeleton of keyed conditions (elevation,
+relief, water) gives each site its facts; neighbours meet through edge
+profiles computed alike from both sides, with drawn cliffs; the interior is a
+Coons patch giving the skeleton back exactly where it can. A lift returns
+columns per power-of-two chunk with world-local material ids, caves as
+exceptions. The lift lives in isometer's in-site space, and the sim depends
+on no render crate. When a location's ground moves, its kind decides what it
+follows.
+
+Links: draws on 147, 148, 391, 392, 393, 394, 396, 399, 400, 401, 402, 403, 670, 744 · summary Skeleton, edge profiles and Coons interiors lift sites to chunked columns; the lift is isometer's; the sim has no render crate.
+
+*Reviewed 2026-10-22, new. 392 and 393 put the lift in Isocosm; 670 had
+moved in-site space to isometer, where the lift's code lives, without the
+link. Mark: "As drafted, 670 amends 392 and 393".*
+
+### World 7. The volume is the world's body
+
+Carving moves each cell's mass to whoever carved, and filling draws from
+them; edible soil is its own pool. Edits are ordered shape operations per
+site, replayed onto any chunk they touch, and an edit across a border is
+stored once and read across.
+
+Links: draws on 412, 413, 414, 415 · summary Earth is matter: carving and filling conserve mass; edits are ordered shape operations read across borders.
+
+*Reviewed 2026-10-22, new. Mark: "As drafted".*
+
+### World 8. Founded lineages are drawn within what bodies allow
+
+In worlds that ask for bodies, flora and fauna draw recipes by kingdom (myco
+and micro become territories and surfaces); each reproduces in one cell of its
+root, draws its life history within what its body supports, and draws its
+variance, absence and riff odds within bounds a world may widen (Mesocosm's
+by default). Generated consumers graze. Other worlds keep extentless bodies as
+the scale control.
+
+Links: draws on 512, 525, 547, 548, 549, 550, 573, 905 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze; others stay extentless.
+
+*Reviewed 2026-10-22, new. Mark: "As drafted" (its pair moved up as Method 9).*
+
+### World 9. Places carry quality and alignment
+
+A place where all the world's glyphs exist is a divine environment; a
+glyph's placement influences its place by how durable and how fine it is.
+Rooms and buildings are judged for kind and impressiveness. Alignment relates
+things to glyphs, factions and polities, for and against, through the tenets
+their effects carry. Parked with divinity under 279.
+
+Links: draws on 48 · summary Glyph presence makes divine places; placement and rooms have quality; alignment runs through tenets. Parked.
+
+*Reviewed 2026-10-22, new. Mark: "A parked World statement".*
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -863,3 +986,18 @@ Links: draws on 833, 842, 848, 962 · summary A missing or stale input refuses; 
 *Reviewed 2026-10-22, new: proposed from the pattern across Mesocosm's
 physical-space cases and 962, not Mark's words. Mark: "widen 'refuse, never
 invent'".*
+
+### Method 9. Offered only once it works
+
+Anything generated (a world, a body, a recipe) is offered only after one
+joint witness that it works over a finite horizon; separate demonstrations or
+reachability alone do not count. The generator supplies what the witness
+needs (for worlds: spawn and arrival templates, a real capture path, a
+declared collapse predicate) rather than leaving it to packs. An unchosen
+seed may search a bounded, disclosed set of candidates; an explicit seed is
+exact; a failed witness never quietly tries another.
+
+Links: draws on 875, 889, 890, 891, 932, 963 · summary Generated things are offered only after a joint witness; the generator supplies its needs; seeds search boundedly or stay exact.
+
+*Reviewed 2026-10-22, new: drafted as World 6 and moved up at Mark's word
+("World 6 to Method"), then "Method 9 as drafted".*

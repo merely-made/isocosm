@@ -416,6 +416,7 @@ title = "A world has one shape, any shape"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A world has one shape, any shape, not switchable."
+draws_on = ["72"]
 
 [cases."74"]
 title = "Nesting is one composable, expandable mechanism; world, region, area and battlemap are its defaults"
@@ -496,6 +497,7 @@ title = "Nesting is allocated as locations are generated, not fixed at founding"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "Nesting is allocated dynamically as locations are generated, not fixed at founding."
+draws_on = ["72"]
 
 [cases."89"]
 title = "Founding is a short flow of crucial details and a seed; authoring is as deep as anyone likes, and authored content fills or displaces generated content; a world editor is owed"
@@ -580,6 +582,7 @@ title = "A world's magic, like its other characteristics, is suggested from the 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A world's magic, like other characteristics, is suggested from the seed, configurable, and either a static profile or fluid over time under conditions."
+draws_on = ["101"]
 
 [cases."103"]
 title = "The sim knows the parts of an arc and lets entities pursue consequential goals for real reasons; the game makes the statement; the world is a bit like RimWorld's storyteller"
@@ -794,6 +797,7 @@ title = "A world's materials lie on a spectrum, from a normal base that matches 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A world's materials lie on a spectrum from a normal base matching a ruleset, through variants, to completely generated; a founding setting."
+draws_on = ["102"]
 
 [cases."141"]
 title = "A skill rises by doing, being taught, studying and breakthroughs"
@@ -842,6 +846,7 @@ title = "When a location's ground changes or moves, its kind decides what it fol
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "When a location's ground changes or moves, its kind decides what it follows: a camp its people, a ruin its ground, a battlefield its site."
+draws_on = ["72"]
 
 [cases."149"]
 title = "Neighbouring worlds keep their own clocks and are synced at crossings"
@@ -1923,18 +1928,21 @@ title = "The terrain models live in Isocosm"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "The terrain models (relief, detail noise, cavity shapes) live in Isocosm as verb-free modules; isometer-core keeps only the Terrain trait and Ground."
+amends = ["392"]
 
 [cases."394"]
 title = "A site's skeleton is keyed entries in its conditions"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A site's skeleton is keyed entries in its conditions (elevation, relief, water level by default), named by the world's rules; Site's shape is unchanged."
+draws_on = ["72", "391"]
 
 [cases."396"]
 title = "The lift works in chunks at power-of-two cell sizes from the start"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "The lift works in power-of-two-sized chunks from the start, taking a chunk key and cell size, so a site costs only what is lifted."
+draws_on = ["13", "147"]
 
 [cases."397"]
 title = "Each route carries its border"
@@ -1953,30 +1961,35 @@ title = "SP1's draws are scale-free"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "SP1's seeded draws are scale-free (grids 2x2 to 16x16, site sides 256 to 2,048 base units), choosing no product default until a game founds."
+draws_on = ["396"]
 
 [cases."400"]
 title = "A lifted site gives its skeleton back exactly where it can"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A lifted site gives its skeleton back exactly where it can: mean surface equals its elevation, water fills to its level, relief bounds interior detail."
+draws_on = ["391"]
 
 [cases."401"]
 title = "A site's interior is a Coons patch"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A site's interior surface is a Coons patch: transfinite interpolation from the four border profiles plus windowed correction and detail from its seed."
+draws_on = ["400"]
 
 [cases."402"]
 title = "A lift returns columns per chunk"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A lift returns columns per chunk (surface height and material-by-depth rule) at its cell size; dense voxels are lowered only when a store needs them."
+draws_on = ["396"]
 
 [cases."403"]
 title = "A lift's materials are world-local ids"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A lift's voxel materials are world-local ids into a table saved with the world, seeded with air, water, soil and rock as the world's nis."
+draws_on = ["97"]
 
 [cases."404"]
 title = "Magic composes fundamental effects, paid for through equivalent exchange, with world-dependent scripts"
@@ -2007,24 +2020,28 @@ title = "Earth is matter: the volume is the world's own body"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "Earth is matter: the volume is the world's own body; carving moves each cell's mass to the carver, filling draws from them; soil stays separate."
+draws_on = ["12"]
 
 [cases."413"]
 title = "Edits are stored as shape operations"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "Volume edits are stored as ordered shape operations per site (carve a sphere, fill a box, dig a route), replayed onto any chunk they overlap."
+draws_on = ["412"]
 
 [cases."414"]
 title = "An edit reaching across a border is one fact, read across"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "An edit reaching across a border is stored once, in its origin site's frame, and neighbours read it through the border's frame relation."
+draws_on = ["391", "413"]
 
 [cases."415"]
 title = "A lift carries caves as columns plus exceptions"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A lift carries caves and overhangs as columns plus a sparse list of exception cells that differ from the column rule."
+draws_on = ["402"]
 
 [cases."416"]
 title = "What a carver cannot hold is heaped beside the cut"
@@ -2589,6 +2606,7 @@ title = "Only worlds that ask for bodies found their lineages from recipes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "Only worlds that ask for bodies found lineages from recipes; the ecology family keeps extentless bodies as the scale control."
+amends = ["512"]
 
 [cases."526"]
 title = "Parental care feeds hungry young a parent's own mouthfuls"
@@ -2685,24 +2703,28 @@ title = "A generated recipe reproduces in one cell of its root"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "The generator gives reproduce one cell of each recipe's root segment kind, drawn and authored recipes alike."
+draws_on = ["512"]
 
 [cases."548"]
 title = "A founded lineage's life history is drawn, within what its body allows"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "The generator draws each founded lineage's life history by the founding seed, within what its body supports; the probe sets its own."
+draws_on = ["512"]
 
 [cases."549"]
 title = "Flora and fauna draw recipes; myco and micro wait for territories and surfaces"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "In worlds that ask for bodies, flora and fauna draw recipes; myco and micro stay bodiless until territories and surfaces exist."
+draws_on = ["488", "512"]
 
 [cases."550"]
 title = "The generator draws within Mesocosm's bounds where it has them"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "The generator draws within Mesocosm's bounds by default: variance 1 to 2, absence odds 1 in 12, clutch 1 to 4, each widenable."
+draws_on = ["548"]
 
 [cases."551"]
 title = "Full stores count as fed"
@@ -2799,6 +2821,7 @@ title = "Each recipe draws its riff odds between 1 in 12 and 1 in 100"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "Each recipe draws its system-riff odds between 1 in 12 and 1 in 100, a range a world may widen."
+draws_on = ["568"]
 
 [cases."574"]
 title = "A body carries the systems it realizes"
@@ -3226,6 +3249,7 @@ title = "In-site space is isometer's; the sim takes it through isometer"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Stack and engine"
 summary = "In-site space is isometer's; Isocosm's places family consumes it through isometer rather than keeping a copy."
+amends = ["392", "393"]
 
 [cases."671"]
 title = "Non-sapient critters are never driven; Mesocosm's driving ends with its world family's move"
@@ -3564,6 +3588,7 @@ title = "Cliff spans are drawn, and the lift steps its surface there"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "Cliff spans are drawn from both sites' skeletons and the pair seed, and the lift steps its surface there."
+draws_on = ["391"]
 
 [cases."749"]
 title = "L7 lands on the tenant; D1 layers; the torch's shadows wait"
@@ -4211,18 +4236,21 @@ title = "Generated worlds get spawn and arrival templates from the generator"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "The generator supplies spawn and arrival templates for generated worlds; movement stays template-driven."
+draws_on = ["830", "833"]
 
 [cases."890"]
 title = "The generator gives producers a real capture path"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "The generator gives producers a real capture path so default generated worlds pass 875's witness; tissue is not relabelled as fuel. (amended by 929)"
+draws_on = ["875"]
 
 [cases."891"]
 title = "The generator writes each world's global collapse predicate"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "The generator writes a declared global collapse predicate into each world's rules, visible, saved and part of the digest."
+draws_on = ["878"]
 
 [cases."892"]
 title = "The embeddable sim host is `isocosm-host` as a library"
@@ -4283,6 +4311,7 @@ title = "A generated ecology's consumers graze"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "Bodied generated-ecology consumers always draw an intake mouth and keep limbs for movement; Bodies::grazing becomes the default."
+draws_on = ["832"]
 
 [cases."906"]
 title = "A lineage's lifespan is individual: a death hazard under an old-age ceiling"
@@ -4387,12 +4416,14 @@ title = "A generated world collapses when no organism is left (891's predicate)"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "A generated world collapses when the living Reactive, Deliberative and Normative population over all lineages is 0, declared as rules data."
+draws_on = ["891"]
 
 [cases."935"]
 title = "The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40; defaults, the hazard and the grazing default are untouched."
+amends = ["907"]
 
 [cases."939"]
 title = "F1: the shipped pack gets the other ten definitions"
@@ -4494,6 +4525,7 @@ title = "An unchosen Mesocosm seed may use a bounded candidate search"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "World generation"
 summary = "An unchosen Mesocosm seed may use a bounded configurable candidate search; explicit seeds stay exact and the full native witness gate is kept."
+draws_on = ["875"]
 
 [cases."969"]
 title = "The pack-authoring fixtures are pinned LF by a narrow attributes rule renormalized and re-checked out (recommended); (2) repo-wide `* text=auto eol=lf`; (3) make the test newline-agnostic in the lane's own code; (4) leave it to the pack-authoring lane. Mark: \"Narrow .gitattributes rule (Recommended)\". It lands as its own commit after the merge, verified by the same test passing on this checkout Links: area Stack and engine · summary Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide"
@@ -4870,6 +4902,13 @@ area = "Method and documents"
 summary = "A missing or stale input refuses; nothing invents a value to fill it."
 draws_on = ["833", "842", "848", "962"]
 
+[statements."method.9"]
+title = "Offered only once it works"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "Generated things are offered only after a joint witness; the generator supplies its needs; seeds search boundedly or stay exact."
+draws_on = ["875", "889", "890", "891", "932", "963"]
+
 [statements."naming.1"]
 title = "The family"
 source = "design_docs/doctrine.md"
@@ -5031,3 +5070,66 @@ source = "design_docs/doctrine.md"
 area = "Record and history"
 summary = "The state hash is an FNV-1a equality witness over labelled entries; SHA-256 for trust; epoch checkpoints, per-critter traces."
 draws_on = ["607", "610", "633", "636", "642", "649", "652", "653"]
+
+[statements."world.1"]
+title = "Shape and scale"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "Terrain runs from region to planetary system with an interior; one shape per world, any shape; a region first."
+draws_on = ["11", "12", "13", "73", "124"]
+
+[statements."world.2"]
+title = "Worlds in company"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "A world sits among others; nothing built may assume one world alone under one sun."
+draws_on = ["11", "105"]
+
+[statements."world.3"]
+title = "The map's words"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "Site, region, location, wilderness, biome and environment; locations nest and are allocated as generated."
+draws_on = ["72", "88"]
+
+[statements."world.4"]
+title = "The world is a generative entity"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid."
+draws_on = ["99", "101", "102", "140"]
+
+[statements."world.5"]
+title = "Founding and authoring"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "Founding is details plus a seed; authoring displaces generation; history depth is the founder's; presets are choices."
+draws_on = ["89", "90", "91", "272", "907", "935"]
+
+[statements."world.6"]
+title = "Sites are lifted to volume"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "Skeleton, edge profiles and Coons interiors lift sites to chunked columns; the lift is isometer's; the sim has no render crate."
+draws_on = ["147", "148", "391", "392", "393", "394", "396", "399", "400", "401", "402", "403", "670", "744"]
+
+[statements."world.7"]
+title = "The volume is the world's body"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "Earth is matter: carving and filling conserve mass; edits are ordered shape operations read across borders."
+draws_on = ["412", "413", "414", "415"]
+
+[statements."world.8"]
+title = "Founded lineages are drawn within what bodies allow"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze; others stay extentless."
+draws_on = ["512", "525", "547", "548", "549", "550", "573", "905"]
+
+[statements."world.9"]
+title = "Places carry quality and alignment"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "Glyph presence makes divine places; placement and rooms have quality; alignment runs through tenets. Parked."
+draws_on = ["48"]
