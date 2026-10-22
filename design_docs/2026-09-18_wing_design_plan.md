@@ -10584,6 +10584,398 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
      Links: area Ecology · draws on 982 · summary The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to.
 
+985. **A faction's general protocols belong to the world's ruleset.** Docketed
+     as D1 in the design record's §3.2.2 and accepted by Mark on 2026-09-21;
+     made a case on 2026-10-22 (Mark: "Dockets become cases"). The reading:
+     Where peer to peer agreement cannot emerge, "a few general protocols"
+     apply; because they are general they belong to the world's ruleset
+     (ruling 41) and not to the faction, which keeps the faction stateless.
+
+     Links: area Processes and rules · draws on 63, 41 · summary Where peer agreement cannot emerge, a faction's general protocols belong to the world's ruleset, keeping the faction stateless.
+
+986. **A form of governance is who qualifies and by what act.** Docketed as D2
+     in the design record's §3.2.2 and accepted by Mark on 2026-09-21; made a
+     case on 2026-10-22 (Mark: "Dockets become cases"). The reading: A form is
+     a pair, who qualifies to decide and by what act the decision is made.
+     Qualification is a predicate over what the record already holds for an
+     entity: standing in its three parts (ruling 56), possessions (ruling 53),
+     body and age, lineage, provenance. Rule by the wealthy, the old, the
+     strong, the ordained, the well born, the divine, everyone, or whoever the
+     lot falls on is then one shape with a different predicate. The deciding
+     act is a process of the first shape: voting, fighting, buying, divining,
+     inheriting, taking. Both halves are vocabulary the sim has, so forms are
+     data to be authored and generated, never an enum.
+
+     Links: area Processes and rules · draws on 63 · summary A form of governance is a pair, who qualifies to decide and by what deciding act; forms are data, never an enum.
+
+987. **The form that emerges is ranked preference over alignment.** Docketed
+     as D3 in the design record's §3.2.2 and accepted by Mark on 2026-09-21;
+     made a case on 2026-10-22 (Mark: "Dockets become cases"). The reading: A
+     sophont's ranking of forms of governance falls out of its alignment, and
+     support transfers down each ranking until a form holds. This is the sim's
+     mechanism for which form emerges, weighted by influence exactly as ruling
+     51 weights a faction's alignment, and not necessarily an election anyone
+     in the world holds. It runs at the rung transition that founds a polity,
+     and its winner is asserted as the constitution. At the cohort rung the
+     ballots are ruling 50's distributions, so the count runs over blocs and
+     not heads. Ties break on the seed.
+
+     Links: area Processes and rules · draws on 63, 50, 51 · summary Which form of governance emerges is ranked preference derived from alignment, weighted by influence, run at founding; ties break on the seed.
+
+988. **A polity enforces with what it provides and asserts.** Docketed as D4
+     in the design record's §3.2.2 and accepted by Mark on 2026-09-21; made a
+     case on 2026-10-22 (Mark: "Dockets become cases"). The reading: A polity
+     enforces with what it provides and what it asserts. Ruling 38 already
+     made provisioning a process of the faction and polity rungs, and what is
+     provided can be withheld. Everything the record lets a polity assert it
+     can also revoke: rank, office and membership (ruling 56), property
+     (ruling 53), home and borders (ruling 54). Force is one more means and
+     not the defining one. So the "or else" of a rule is an ordinary process
+     of the first shape, with a cost to the polity that applies it, and a
+     guild that bars a smith from the forge and a crown that sends soldiers
+     are the same shape. The act by which a form decides suggests the means by
+     which it enforces: rule by buying withholds pay, rule by divining
+     withholds rites, and rule by fighting fights.
+
+     Links: area The sim's schema and saves · draws on 64, 38, 66 · summary A polity enforces with what it provides and asserts, withholding or revoking; force is one means; the way of deciding suggests the means.
+
+989. **Efficacy is read as a track record, never asserted.** Docketed as D5 in
+     the design record's §3.2.2 and accepted by Mark on 2026-09-21; made a
+     case on 2026-10-22 (Mark: "Dockets become cases"). The reading: Whether a
+     means is efficacious is a track record, how often applying it produced
+     compliance, which is ruling 50's trust, held about the constitution as
+     about any tenet. After founding, the constitution is asserted and stays
+     put while its members' derived preference keeps moving, so the distance
+     between the two can be read at any time. Enforcement is what holds that
+     gap open.
+
+     Links: area The sim's schema and saves · draws on 50, 51 · summary Whether a means is efficacious is a track record, never asserted; the gap between a constitution and its members' preference is read at any time.
+
+990. **A polity's four conditions are read from the record.** Docketed as D6
+     in the design record's §3.2.2 and accepted by Mark on 2026-09-21; made a
+     case on 2026-10-22 (Mark: "Dockets become cases"). The reading: Each
+     condition is something the record can already tell. Inactive: it lacks
+     support for its operations and does nothing. Suppressed: it has support,
+     and another's enforcement stops it operating (the banned guild, the
+     occupied town, the outlawed church); its members can still act as a
+     faction, by consent and in secret. Superseded: another polity now binds
+     the acts that were its focus, and that one's enforcement works.
+     Subordinated to a faction: its methods still run and their outcome is one
+     faction's will, because that faction fills the party qualified to decide
+     or holds the means, the part commanding the whole.
+
+     Links: area Processes and rules · draws on 65, 66 · summary A polity's conditions short of death (inactive, suppressed, superseded, subordinated) are each read from the record, not exclusive, reversible.
+
+991. **No will to continue is built in.** Docketed as D7 in the design
+     record's §3.2.2 and accepted by Mark on 2026-09-21; made a case on
+     2026-10-22 (Mark: "Dockets become cases"). The reading: Where an
+     institution is seen clinging on, that is derived and needs no drive of
+     its own. The members it provisions support it for their own reasons, and
+     the sharpest case is ruling 66's subordination: an institution that
+     "wants to continue" is one subordinated to the faction of its own
+     officers, who want their provision to continue.
+
+     Links: area The sim's schema and saves · draws on 68, 66 · summary No will to continue is built into a polity; an institution seen clinging on is subordinated to its own officers' faction.
+
+992. **Contingency is borrowed enforcement, and collapse cascades.** Docketed
+     as D9 in the design record's §3.2.2 and accepted by Mark on 2026-09-21;
+     made a case on 2026-10-22 (Mark: "Dockets become cases"). The reading:
+     What makes the host an institution is that an agreement made under it
+     holds without its parties enforcing it themselves, and contingency is
+     borrowed enforcement: the guild's "or else" is backed by the town's
+     courts, the town's by the crown. A contingent polity is cheap to found,
+     because it need not bring means of its own, which is why a settled world
+     grows institutions and a wild one does not. And when a host fails,
+     everything contingent on it must find means of its own or fall back to a
+     faction, so collapse cascades, and those are events the hagiograph keeps.
+
+     Links: area The sim's schema and saves · draws on 64 · summary A contingent polity borrows its host's enforcement, so it is cheap to found, and a host's failure cascades through what is contingent on it.
+
+993. **Collection is roots and reachability.** Docketed as D11 in the design
+     record's §3.4.1 and accepted by Mark on 2026-09-21; made a case on
+     2026-10-22 (Mark: "Dockets become cases"). The reading: The roots are
+     what is relevant to a player: the foreground, and what the played entity
+     is, holds, knows and is related to; every asserted fact a live thing
+     still relies on, a claim, a membership, an agreement, a constitution;
+     every pending due event; and the legendary tier whole, which is never
+     collected. A thing of note is kept while something in the record reaches
+     it from a root, by a relation, a possession, a memory within reach, or a
+     cause-link. Unreached, it is collectible, and collecting it folds it back
+     into the distribution it was realised from, so counts and masses stay
+     conserved and only its deviations are lost. The test that makes this safe
+     is observational: collect only what nothing reachable from a player could
+     tell apart from its regenerated self.
+
+     Links: area Record and history · draws on 70, 71 · summary Collection is roots and reachability: a thing of note is kept while something reaches it from a root; collecting folds it back, conserving counts.
+
+994. **A thing of note sheds in steps: individual, stub, event.** Docketed as
+     D12 in the design record's §3.4.1 and accepted by Mark on 2026-09-21;
+     made a case on 2026-10-22 (Mark: "Dockets become cases"). The reading: A
+     thing of note sheds in steps, the full individual, then a stub, what an
+     event needs to name its participant (a kind, a lineage, a faction, a name
+     if it had one), then the event alone. So events are the floor of the
+     middle tier, and they refer to their participants by stub, never by a
+     live individual, so that a participant can be collected without breaking
+     the event that mentions it.
+
+     Links: area Record and history · draws on 71 · summary Collection is graded: the full individual, then a stub an event names it by, then the event alone; events refer to participants by stub.
+
+995. **The tiers of keeping are a component, not a crate per word.** Docketed
+     as D13 in the design record's §3.4.1 and accepted by Mark on 2026-09-21;
+     made a case on 2026-10-22 (Mark: "Dockets become cases"). The reading: A
+     component, one module of the sim, and not a crate per word. The three
+     tiers are one mechanism over every kind of thing, and the invalidation
+     criteria are one policy, so a denizen crate beside a place crate and a
+     thing crate would hold the same keeping machinery three times. It can
+     still be built to be tested and swapped alone behind its own seam inside
+     the sim. The kinds are then data: the inhabitant, the place, the thing,
+     the event.
+
+     Links: area Organs: glyphs, impresa, hagiograph · draws on 69 · summary The tiers of keeping are one component of the sim, not a crate per word; the kinds are data.
+
+996. **A location's kind is read off its pattern.** Docketed as D14 in the
+     design record's §3.7.1 and accepted by Mark on 2026-09-21; made a case on
+     2026-10-22 (Mark: "Dockets become cases"). The reading: A location's kind
+     reads as a biome does, the characteristic pattern of what is built there,
+     who is there and what it is used for, with ruin as the clearest case.
+     What is stored for a location is its extent, its modifiers and
+     conditions, what happened there and who claims it; the kind is how that
+     reads. A location may be only "potential", derived from terrain and not
+     yet of note, so the word spans the ambient and of-note tiers and the
+     keeping tier says which. A highway is a location that is also a route, a
+     long thin extent over many sites, so the graph's edges can be places of
+     note too.
+
+     Links: area World generation · draws on 72, 14 · summary A location stores extent, modifiers, conditions, history and claims; its kind is read off them; a location may be potential; a highway is also a route.
+
+997. **A nesting step says down, up, across and ratio.** Docketed as D15 in
+     the design record's §3.7.1 and accepted by Mark on 2026-09-21; made a
+     case on 2026-10-22 (Mark: "Dockets become cases"). The reading: What one
+     step has to say, so that steps compose. Down: how the finer map is
+     generated from the node above it, its terrain, biome, conditions and
+     seed, so an unvisited interior costs nothing. Up: how the finer map reads
+     from above, its state summarised as the node's conditions. Across: how
+     adjacency crosses the boundary, so a route is one path through several
+     levels. Ratio: how much finer, a power of two for volumes and free for
+     graphs. The last step meets the volume, its size a world's setting with a
+     default. Steps can be added at either end or in the middle without
+     touching the others: a system above the world, the planes beside it, a
+     dungeon's floors or a ship's decks, a body as a map.
+
+     Links: area World generation · draws on 74, 69 · summary A nesting step says how the finer map is generated (down), reads from above (up), crosses boundaries (across), and how much finer (ratio); steps compose.
+
+998. **What a critter-world does reaches the world as environment.** Docketed
+     as D16 in the design record's §3.7.1 and accepted by Mark on 2026-09-21;
+     made a case on 2026-10-22 (Mark: "Dockets become cases"). The reading:
+     What the critter does, walking, turning, sleeping, dying, reaches the
+     world as its environment. That is a reason beyond the sphere for holding
+     the map as adjacency: a body's surface is no regular grid at all.
+
+     Links: area World generation · draws on 73, 39 · summary For a world resting on a critter, what the critter does (walking, turning, sleeping, dying) reaches the world as its environment.
+
+999. **Lifting and restriction; processes declarative enough to aggregate.**
+     Docketed as D17 in the design record's §3.3 and accepted by Mark on
+     2026-09-21; made a case on 2026-10-22 (Mark: "Dockets become cases"). The
+     reading: Lifting takes an aggregate to individuals: sample from the
+     distribution, conditioned on every asserted fact, from the seed, so the
+     same place lifts the same way twice. Restriction takes individuals to an
+     aggregate: conserve the accounts, counts, mass, energy, and fold what
+     deviated into the distribution's parameters. Similitude is then two
+     checks on seeded draws: restricting what was just lifted returns the
+     aggregate, and a population run each way ends in the same statistics. A
+     process must be declarative enough for its aggregate form to be derived
+     from the one definition, typed inputs, costs, effects and rates; an
+     opaque script can only be executed, never integrated, so piccolo authors
+     and lowers to definitions, and scripted hooks run only in the foreground.
+
+     Links: area Processes and rules · draws on 75, 32, 15 · summary Lifting samples individuals from an aggregate by seed; restriction conserves accounts back; processes are declarative so their aggregate derives, scripts foreground-only.
+
+1000. **Two bindings as intent; the contract round-trips through bytes.**
+     Docketed as D18 in the design record's §5.2, 5.4 and accepted by Mark on
+     2026-09-21; made a case on 2026-10-22 (Mark: "Dockets become cases"). The
+     reading: Ruling 78 alone, as a design discipline. Two bindings as an
+     intent and not a duty: native first, the component binding built when the
+     first rung-3 consumer exists, the contract shaped so that day needs no
+     redesign. For erosion, a test and not a runtime: every contract type
+     round-trips through bytes, and the contract crate may not depend on the
+     sim's internals. With it the record's recommendation and verdict: keep
+     the first-party cores and the sim native, the contract shaped as WIT
+     forces so it can be bound as a component any day; total componentisation
+     is not worth it applied totally, and the rule of thumb is call frequency
+     times data volume, cold and narrow behind a component when it wants to be
+     pluggable, hot or wide native.
+
+     Links: area Stack and engine · draws on 78, 77, 76 · summary Ruling 78 as discipline: native binding first, a component binding when a rung-3 consumer exists; contract types round-trip through bytes; cores stay native.
+
+1001. **A secret is a taboo's set of knowers, and ends by leaking.** Docketed
+     as D21 in the design record's §3.4 and accepted by Mark on 2026-09-22;
+     made a case on 2026-10-22 (Mark: "Dockets become cases"). The reading:
+     What makes a secret is the taboo and not the information: a tenet holding
+     a strongly negative opinion of the telling, a norm with no formal "or
+     else", whose sanction is reputational, so a faction can keep secrets with
+     no polity behind it. A secret is a deed whose reach is held down, and its
+     value is what releasing it would do to its subject's standing among those
+     who would learn it. Telling is a choice under scarcity by a knower,
+     relation and opinion its trust and affinity, goals what telling buys,
+     personality the thresholds. The regime is notes, not a field: an explicit
+     set of knowers, each holding a note. A secret ends by leaking: once a
+     telling seeds the reach field at a place it is a rumour.
+
+     Links: area Processes and rules · draws on 87, 50, 56 · summary A secret is a taboo on telling (a norm with reputational sanction); its value is what release would do to standing; telling is a choice; it ends by leaking.
+
+1002. **Realignment is the epoch boundary at the scale of a world.** Docketed
+     as D22 in the design record's §3.9 and accepted by Mark on 2026-09-22;
+     made a case on 2026-10-22 (Mark: "Dockets become cases"). The reading:
+     Realignment is ruling 57's epoch boundary at the scale of a world, the
+     shop between rounds, and it is a rung transition; a change from hex
+     exploration to piloting a ship in orbit is also a change of foregrounded
+     scope, so a realignment may add steps to the nesting as well as change
+     the rules.
+
+     Links: area World generation · draws on 90, 57 · summary Realignment to another ruleset is the epoch boundary at world scale, a rung transition, and may add nesting steps as well as change rules.
+
+1003. **Going back is replay; editing the past forks.** Docketed as D23 in the
+     design record's §3.9 and accepted by Mark on 2026-09-22; made a case on
+     2026-10-22 (Mark: "Dockets become cases"). The reading: Going back is
+     cheap because of the derivation rule: the state at any past time is the
+     log replayed to then, with checkpoints at epoch boundaries bounding the
+     cost. Going back and editing is asserting a fact in the past, which makes
+     a fork, never a rewrite, so the timeline a founder edits is the same
+     thing as the branching a moot does. "Not overwhelm" is the three tiers of
+     keeping used as an interface: the timeline shows legend first, things of
+     note on zooming in, and the ambient only where someone looks.
+
+     Links: area World generation · draws on 91, 7, 126 · summary A past state is the log replayed (checkpoints bound the cost); editing the past asserts a fact there, making a fork; the timeline shows legend first.
+
+1004. **Nesting is the sim's; scopes are a game's.** Docketed as D24 in the
+     design record's §3.7.1 and accepted by Mark on 2026-09-22; made a case on
+     2026-10-22 (Mark: "Dockets become cases"). The reading: Nesting is the
+     world's and the sim's: a node opening into a finer map, allocated as
+     locations are generated, free of scale and with no named tiers; the sim's
+     only spatial nouns are the world map, the site, the region, the location
+     and the volume under them. A scope is a game's: the window it frames over
+     that nesting to play in, an extent and a grain with its grid projected
+     over it. Each game has its own scopes over the one world, so the same
+     node can be a terrarium to one game, a dungeon to another and a battlemap
+     to the third. What a ruleset may still fix is grain; what founding
+     supplies for nesting is only the kinds of location, as data.
+
+     Links: area World generation · draws on 92, 72, 74 · summary Nesting (a node opening into a finer map, no named tiers) is the sim's; a scope (a window of extent and grain) is a game's; each game has its own.
+
+1005. **Needs by tier; value is derived; trade is flow.** Docketed as D25 in
+     the design record's §3.3.1 and accepted by Mark on 2026-09-22; made a
+     case on 2026-10-22 (Mark: "Dockets become cases"). The reading: In brief
+     (the full reading is the archived record's §3.3.1): value is derived and
+     never stored, a reading over supply, capability and need at a place and a
+     time, and a price is that reading at a market; money is an item whose
+     only use is exchange, an asserted claim and never a primitive of the sim.
+     Why things act is tiered: a critter acts when a need crosses a threshold;
+     a denizen chooses a desire by belief and value; a character answers a
+     role or an institution; need is read from alignment, acts and
+     predilection. In aggregate a cohort's demand is a rate and a place's
+     supply a stock, and exchange is flow along routes from cheap to dear, the
+     diffusion the record uses for reach and plague with a price gradient;
+     provisioning is a polity running that flow on purpose.
+
+     Links: area Processes and rules · draws on 94, 37, 38 · summary Value is a reading over supply, capability and need, never stored; money is an asserted claim; acting is by tier; trade trends are flow along routes.
+
+1006. **An act's score is need, trust and approval.** Docketed as D26 in the
+     design record's §3.3.1 and accepted by Mark on 2026-09-22; made a case on
+     2026-10-22 (Mark: "Dockets become cases"). The reading: A sophont chooses
+     among the acts it could take by three readings: whether the act addresses
+     a need it has, whether it has the capability (ruling 50's trust that the
+     process yields the effect), and whether its alignment approves the means
+     and the effect (ruling 50's opinion); the score of an act is need times
+     trust times approval, every factor derived. What gets made is chosen by
+     the same score, and an item bears its making. Nobody churns weapons to
+     level up: a fungible act folds into the cohort's distribution and leaves
+     no note, so grinding produces aggregate competence and never a legend. A
+     fey mood is a triggered need: a rare confluence raises a need whose only
+     satisfier is one act.
+
+     Links: area Processes and rules · draws on 95, 50, 75 · summary An act is chosen by need times trust times approval; what gets made follows the same score; grinding yields aggregate competence, never a legend; a fey mood is a triggered need.
+
+1007. **A material's properties are its lineage's traits.** Docketed as D28 in
+     the design record's §3.3.1 and accepted by Mark on 2026-09-22; made a
+     case on 2026-10-22 (Mark: "Dockets become cases"). The reading: A
+     material's properties are its lineage's traits: hardness, weight, edge
+     and wear are readings of the lineage a lot of nis came from. Interactions
+     are effects: which effects a nis of that lineage produces and suffers,
+     "fire against wood" being burning applied to one lineage's nis, read from
+     its traits and the record, never from a table of pairs. Learning the
+     ecology is the note machinery: what a thing is made of is a note on a
+     lineage, held by whoever has met it, and a sophont with no note on a
+     lineage cannot use it. Scarcity and provenance are literally ecological:
+     a rare material is a rare critter, an extinction ends a material, and a
+     sword carries its lineage.
+
+     Links: area Ecology · draws on 97, 57, 49, 80 · summary A material's properties are its lineage's traits and its interactions are effects; what a thing is made of is a note; scarcity and provenance are ecological.
+
+1008. **The world is an entity on the ladders the record already has.**
+     Docketed as D29 in the design record's §3.3.1 and accepted by Mark on
+     2026-09-22; made a case on 2026-10-22 (Mark: "Dockets become cases"). The
+     reading: In brief (the full reading is the archived record's §3.3.1): the
+     world is one more entity on the record's ladders, at the root, and each
+     kind it may be is a position on a ruled axis: inert, a body without
+     agency; sentient, a turtle, flora or fauna, a critter of the world's
+     kingdom at macro scale; a sophont, with naming and memory, able to
+     assert, own and hold tenets; a god, ruling 42's divinity; dead, its
+     entity on the planes and its body still the ground. Agentless processes
+     are the world entity's own metabolism, chosen where the world is a
+     critter or a sophont; geology is anatomy, a world's kinds of nis its own
+     trait catalogue; and founding chooses or draws the world's kind.
+
+     Links: area World generation · draws on 98, 99 · summary The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy.
+
+1009. **The world has a lineage, and its magic is a trait on six axes.**
+     Docketed as D30 in the design record's §3.10 and accepted by Mark on
+     2026-09-22; made a case on 2026-10-22 (Mark: "Dockets become cases"). The
+     reading: In brief (the full reading is the archived record's §3.10;
+     ruling 404 and the functional generation plan now own magic's
+     composition): the world has a lineage, its genotype the catalogue its
+     critters draw on and its epoch boundary realignment. A world is
+     generative from four sources: typing, bodies, need, and the record
+     feeding back into what it recognises. A magic system is one trait of the
+     world's genotype, described on six axes: source, gate, orientation, cost
+     and breach, rhythm, manifestation. "Bends the rules" means a system
+     declares which of the world's invariants it may suspend, under what gate,
+     at what price, leaving what residue. Divinity reads a magic system
+     through its effects, acquisition and frequency, so the ladder of forms is
+     derived from the magic's gate axis.
+
+     Links: area Processes and rules · draws on 101, 102, 49 · summary The world has a lineage (genotype its catalogue, realignment its boundary); a magic system is a world trait on six axes; bending the rules is declared suspension.
+
+1010. **An arc is a thread of cause-links; the storyteller is the world's
+     agency.** Docketed as D31 in the design record's §3.11 and accepted by
+     Mark on 2026-09-22; made a case on 2026-10-22 (Mark: "Dockets become
+     cases"). The reading: In brief (the full reading is the archived record's
+     §3.11): every part of an arc is a thing the sim already has, a goal, its
+     consequence by the hagiograph's test, real reasons as the act's score,
+     pursuit, obstacles, stakes, turning points, an ending; an arc is a thread
+     in the record, the cause-links from a goal's adoption to its ending, and
+     a consequential goal leaves a note, but the sim never stores an arc. The
+     game reads threads out of the record, chooses which to foreground and
+     names them. The storyteller is the world entity's agency: a world given a
+     disposition and goals directs its own weather, plagues and wild events,
+     set by its founder, static or fluid.
+
+     Links: area Directing and play · draws on 103, 98, 99 · summary An arc's parts are things the sim has; an arc is a derived thread, never stored; a game makes its statement; the storyteller is the world entity's agency.
+
+1011. **Related worlds: descent and neighbourhood, neither merging.** Docketed
+     as D33 in the design record's §3.12 and accepted by Mark on 2026-09-22;
+     made a case on 2026-10-22 (Mark: "Dockets become cases"). The reading:
+     Two relations, neither merging anything: each world keeps its own log and
+     its own played clock, and what crosses between them is things with
+     provenance. Descent: forked worldlines are the world kingdom's lineage
+     tree, siblings sharing the log up to the fork. Neighbourhood: unrelated
+     worlds placed in relation by assertion at the rung above the world, a set
+     of worlds with routes between them, a crossing a rung transition recorded
+     in both logs; what arrives carries its home world's nis, which is where
+     exotic materials come from. Worlds under no host are a faction among
+     themselves, holding by their owners' consent.
+
+     Links: area World generation · draws on 105, 126, 11 · summary Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
@@ -11210,7 +11602,7 @@ means of communication all sophonts share and by those the proposer and the
 hearer each align with, which makes reach (§3.4) the gate on who can be
 asked at all. Where peer to peer agreement cannot emerge, everyone
 differently aligned or nobody holding an actionable opinion, "a few general
-protocols" apply. *Reading, accepted by Mark 2026-09-21 (D1):* because they are general they belong to the
+protocols" apply. *Reading, accepted by Mark 2026-09-21 (D1, case 985):* because they are general they belong to the
 world's ruleset (ruling 41) and not to the faction, which keeps the faction
 stateless. **Open:** which protocols. *Ruled 2026-09-24 (ruling 133):* a
 faction is never gated by disagreement. Those who join an act are its party
@@ -11241,7 +11633,7 @@ members, not the model.
 
 **What a form of governance is.** Mark: "all forms of governance that can be
 associated with acts or qualifiable parties should be considered."
-*Reading, accepted by Mark 2026-09-21 (D2):* a form is a pair, who qualifies to decide and by what act the
+*Reading, accepted by Mark 2026-09-21 (D2, case 986):* a form is a pair, who qualifies to decide and by what act the
 decision is made. Qualification is a predicate over what the record already
 holds for an entity: standing in its three parts (ruling 56), possessions
 (ruling 53), body and age, lineage, provenance. Rule by the wealthy, the
@@ -11260,7 +11652,7 @@ who solves problems by taking ranks rule by taking first and individualism
 next. Support then transfers down each ranking until a form holds, Mark's
 "preference-ordered rank choice voting for the sim": the rogue's first
 choice has no other supporters, so their support goes to their second.
-*Reading, accepted by Mark 2026-09-21 (D3):* this is the sim's mechanism for which form emerges, weighted by
+*Reading, accepted by Mark 2026-09-21 (D3, case 987):* this is the sim's mechanism for which form emerges, weighted by
 influence exactly as ruling 51 weights a faction's alignment, and not
 necessarily an election anyone in the world holds. It runs at the rung
 transition that founds a polity (§3.3), and its winner is asserted as the
@@ -11270,7 +11662,7 @@ so the count runs over blocs and not heads. Ties break on the seed.
 **Enforcement (ruling 64).** A polity's asserted state needs means of
 enforcing it, likely several, and they "must be efficacious". They need not
 be violent: Mark names the provision of the requirements for life, and self
-defence. *Reading, accepted by Mark 2026-09-21 (D4):* a polity enforces with what it provides and what it
+defence. *Reading, accepted by Mark 2026-09-21 (D4, case 988):* a polity enforces with what it provides and what it
 asserts. Ruling 38 already made provisioning a process of the faction and
 polity rungs, the collective feeding the individual, and what is provided
 can be withheld. Everything the record lets a polity assert it can also
@@ -11289,7 +11681,7 @@ constraint the sim holds. *Ruled 2026-09-24 (ruling 137):* a default. The
 generator suggests means from the way of deciding, and a polity may enforce
 by any means it has.
 
-**Efficacy is read, never asserted.** *Reading, accepted by Mark 2026-09-21 (D5):* whether a means is
+**Efficacy is read, never asserted.** *Reading, accepted by Mark 2026-09-21 (D5, case 989):* whether a means is
 efficacious is a track record, how often applying it produced compliance,
 which is ruling 50's trust, "expectations" formed from "how things turned
 out in the past", held about the constitution as about any tenet. After
@@ -11351,7 +11743,7 @@ no member keeping it, no mind remembering it and no bearer recording it.
 **Existence is asserted; condition is derived (ruling 66).** Ruling 65 kept
 death for agreement. Ruling 66 lets everything short of it happen
 "automatically", and names four conditions a polity can fall into.
-*Reading, accepted by Mark 2026-09-21 (D6),* each as something the record can already tell:
+*Reading, accepted by Mark 2026-09-21 (D6, case 990),* each as something the record can already tell:
 
 - *Inactive:* it lacks support for its operations and does nothing (ruling
   65).
@@ -11433,7 +11825,7 @@ done once for both.
 why would it want to continue if it didn't find a new use? Polities change
 like that." A polity whose use is gone finds a new one, or it becomes
 pointless, and a pointless polity is one people agree is dead (ruling 65).
-*Reading, accepted by Mark 2026-09-21 (D7):* where an institution is seen clinging on, that is derived and
+*Reading, accepted by Mark 2026-09-21 (D7, case 991):* where an institution is seen clinging on, that is derived and
 needs no drive of its own. The members it provisions support it for their
 own reasons, and the sharpest case is ruling 66's subordination: an
 institution that "wants to continue" is one subordinated to the faction of
@@ -11478,7 +11870,7 @@ went from hospital to military order to sovereign charity.
 contingent upon others, like factions comprised a polity. If you can make a
 durable agreement that works within another polity, congrats, you've built
 on an institution." So composition recurses: factions comprise a polity
-(ruling 8), and polities may sit inside polities. *Reading, accepted by Mark 2026-09-21 (D9):* what makes the
+(ruling 8), and polities may sit inside polities. *Reading, accepted by Mark 2026-09-21 (D9, case 992):* what makes the
 host an institution is that an agreement made under it holds without its
 parties enforcing it themselves, and contingency is borrowed enforcement:
 the guild's "or else" is backed by the town's courts, the town's by the
@@ -11616,7 +12008,7 @@ given a budget. (Corrected 2026-09-24 by ruling 113 from "a host's
 setting": the buffer changes what is funged, so it lives in the world's
 rules and replays with the log.)
 
-*Reading, accepted by Mark 2026-09-21 (D17).* The two transitions have names in the
+*Reading, accepted by Mark 2026-09-21 (D17, case 999).* The two transitions have names in the
 multiscale literature. *Lifting* takes an aggregate to individuals: sample
 from the distribution, conditioned on every asserted fact, from the seed, so
 the same place lifts the same way twice. *Restriction* takes individuals to
@@ -11671,7 +12063,7 @@ web, never stored, and no lane is open for it.
 ### 3.3.1 Needs, value and exchange
 
 From ruling 94. Mark's two questions, why people act and how that aggregates
-into trade, are answered here as a reading, docketed as D25, accepted 2026-09-22, built from
+into trade, are answered here as a reading, docketed as D25 (case 1005), accepted 2026-09-22, built from
 rulings already made.
 
 **Value (ruling 94).** Items, value, crafting and services "bear relation to
@@ -11700,7 +12092,7 @@ Mark's derivation of need holds at all three: need is read from "a part of
 alignment" (what a sophont values), "the stuff people do (acts)" (its
 record, so a smith needs iron because it smiths) and "are likely to do
 (predilection, personality?)", where predilection is ruling 37's disposition
-setting the thresholds, as it does for telling secrets (D21). This is the
+setting the thresholds, as it does for telling secrets (D21, case 1001). This is the
 Sims' model made honest: the Sims has one tier of needs with a utility curve
 each; the wing has needs at the bottom and values and obligations above, all
 three derived from state the record keeps.
@@ -11729,7 +12121,7 @@ item left behind, as kleptoplasty is the verb pointed inward. So crafting is
 not a fourth process shape. It is the first shape with matter among its
 inputs, and the schema's operation already has the slot: its commitments
 include "item, matter, energy, time", its transforms are typed, and a
-byproduct is declared (§3.3, `OperationDef`). *Reading, docketed as D26, accepted 2026-09-22:*
+byproduct is declared (§3.3, `OperationDef`). *Reading, docketed as D26 (case 1006), accepted 2026-09-22:*
 
 - *The link Mark asks for is the tenet, from the actor's side.* A sophont
   chooses among the acts it could take by three readings the record already
@@ -11841,7 +12233,7 @@ from the other end: matter is typed "kingdom first (flora, fauna, myco,
 micro...) and lineage under it", "with the type vocabulary world-derived
 from the roster rather than an authored element table" (playable ecology
 plan §6, ruling 4). No material table exists anywhere in the wing, and none
-is to be written. *Reading, docketed as D28, accepted 2026-09-22:*
+is to be written. *Reading, docketed as D28 (case 1007), accepted 2026-09-22:*
 
 - *A material's properties are its lineage's traits.* Ruling 57 already
   reads a lineage as a property vector, Ptree's vocabulary of mass, growth
@@ -11896,7 +12288,7 @@ is to be written. *Reading, docketed as D28, accepted 2026-09-22:*
   world", and what ruling 43's worldtree, "with the world's own processes
   bound to it", assumed.
 
-**The world as an entity (rulings 98 and 99).** *Reading, docketed as D29, accepted 2026-09-22.*
+**The world as an entity (rulings 98 and 99).** *Reading, docketed as D29 (case 1008), accepted 2026-09-22.*
 The world is one more entity on the ladders the record already has, at the
 root. Its kind is open to the world: "maybe the world is inert, or sentient,
 or a sophont, or a god, or a turtle, or whatever. maybe it's flora, or
@@ -12079,7 +12471,7 @@ yield hands it over; a contest is a fight, whose resolution is the sim's own
 outcome model under ruling 114 and is not yet designed. For a critter the
 choice is reactive, so whether a lineage leans to contest or scramble is a
 trait that moves at the epoch boundary (ruling 57); a denizen or sophont
-scores it like any act, by need, trust and approval (D26), with its
+scores it like any act, by need, trust and approval (D26, case 1006), with its
 disposition and its opinion of the other. This is the competition semantics
 the [aggregation research](../mesocosm/design_docs/2026-09-22_aggregation_research.md) found missing
 for shared resources, and it makes the mix a population statistic: a crowd's
@@ -12187,7 +12579,7 @@ and the record already holds every part of it.
 3. *How they learned it is sampled backward, on demand.* The arrival entries
    are a tree back to where the event happened. Asked how someone knows, the
    sim walks it, "by the trade road from the coast, from a carrier at the
-   market", and lifts (D17) a teller out of the carrier cohort only if
+   market", and lifts (D17, case 999) a teller out of the carrier cohort only if
    someone needs to meet them. Nothing is mapped ahead of time, and the
    answer agrees with what a forward simulation would have produced.
 
@@ -12269,7 +12661,7 @@ methods now borrowed from biology to build them.
 often, or there wouldn't be rules against its propagation", the word then
 corrected to "not rule, but 'taboo'"; and whether one is told turns on
 "relation, opinion, and goals", with personality wondered about. *Reading,
-docketed as D21, accepted 2026-09-22:*
+docketed as D21 (case 1001), accepted 2026-09-22:*
 
 - *What makes a secret* is the taboo and not the information. In the
   record's terms a taboo is a tenet (ruling 50) holding a strongly negative
@@ -12425,7 +12817,7 @@ not "silently evict" (`:322-331`). In the sim's terms: the ambient is
 evictable, the asserted and the foregrounded are protected, and a thing that
 comes back is regenerated at the same address from the same basic facts.
 
-*Reading, accepted by Mark 2026-09-21 (D11).* Taking
+*Reading, accepted by Mark 2026-09-21 (D11, case 993).* Taking
 "garbage collection" at its word gives the criteria a shape: roots and
 reachability. The roots are what is relevant to a player: the foreground,
 and what the played entity is, holds, knows and is related to; every
@@ -12462,7 +12854,7 @@ appeared carries no deviation and is regenerated on demand from the relation
 itself, which is the observational test of the reading above at work. "You
 would trash most of a raider that got killed with little incident; at a
 certain point just the event": collection is graded, never all or nothing.
-*Reading, accepted by Mark 2026-09-21 (D12):* a thing of note sheds in steps, the full individual, then a stub,
+*Reading, accepted by Mark 2026-09-21 (D12, case 994):* a thing of note sheds in steps, the full individual, then a stub,
 what an event needs to name its participant (a kind, a lineage, a faction, a
 name if it had one), then the event alone. So events are the floor of the
 middle tier, and they refer to their participants by stub, never by a live
@@ -12588,7 +12980,7 @@ the expressed process (ruling 157), attachment for where an incoming part
 joins (251), and situs for an organ's position in a plan's template (252).
 
 "Does this need to be a crate, or can it be a component of the wing?"
-*Recommendation, accepted by Mark 2026-09-21 (D13):* a component, one module of the sim, and
+*Recommendation, accepted by Mark 2026-09-21 (D13, case 995):* a component, one module of the sim, and
 not a crate per word. The three tiers are one mechanism over every kind of
 thing, and the invalidation criteria are one policy, so a `denizen` crate
 beside a place crate and a thing crate would hold the same keeping machinery
@@ -12722,7 +13114,7 @@ From ruling 72, whose definitions are kept whole in the first column.
 region. A location's kinds are many and open, "a settlement, a dungeon, a
 city, a trading outpost, a fort, a defensive gate, a highway, waaay more",
 so they are data to be authored and generated and never an enum, as forms of
-governance are (§3.2.2). *Reading, accepted by Mark 2026-09-21 (D14),* on the question that
+governance are (§3.2.2). *Reading, accepted by Mark 2026-09-21 (D14, case 996),* on the question that
 was asked: Mark calls a biome "the characteristic environmental pattern",
 which makes it something read off a site's conditions, and a location's kind
 reads the same way, the characteristic pattern of what is built there, who
@@ -12742,7 +13134,7 @@ and the graph of sites never changes topology in play. The purpose is
 "strange scenarios like a world resting on a critter", which the record can
 already say: a macro creature is a terrain-body (ruling 39, and ruling 43's
 worldtree), so a world resting on a critter is a world map whose graph of
-sites is laid over a body. *Reading, accepted by Mark 2026-09-21 (D16):* what
+sites is laid over a body. *Reading, accepted by Mark 2026-09-21 (D16, case 998):* what
 the critter does, walking, turning, sleeping, dying, reaches the world as
 its environment. That is a reason
 beyond the sphere for holding the map as adjacency: a body's surface is no
@@ -12779,7 +13171,7 @@ the sim. World, region, area and battlemap are the VTT's second pillar,
 "Maps at every scope, sculpted... Same world, different scopes"
 (`design_docs/PROJECT_DESCRIPTION.md:26-29`), and the pillar's own word is
 *scope*. The record conflated two things. *Answer to ruling 92's questions,
-docketed as D24, accepted 2026-09-22:*
+docketed as D24 (case 1004), accepted 2026-09-22:*
 
 - *Nesting* is the world's and the sim's: a node opening into a finer map,
   allocated as locations are generated (ruling 88), free of scale and with
@@ -12809,7 +13201,7 @@ docketed as D24, accepted 2026-09-22:*
   supplies for nesting is only the kinds of location, as data, each saying
   what it opens into.
 
-*Reading, accepted by Mark 2026-09-21 (D15):* what one step has to say, so that steps
+*Reading, accepted by Mark 2026-09-21 (D15, case 997):* what one step has to say, so that steps
 compose. *Down*, how the finer map is generated from the node above it: its
 terrain, biome, conditions and seed, the "same basic facts" of ruling 69, so
 an unvisited interior costs nothing. *Up*, how the finer map reads from
@@ -12954,7 +13346,7 @@ both old and new revisions recorded"
 (`eponym/design_docs/archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md`, core invariant
 4). Advancing time is what makes the seams honest: whatever the new ruleset
 cannot express is accounted for by the years that passed, as ruling 38 made
-the coarsening of needs diegetic. *Reading, docketed as D22, accepted 2026-09-22:* realignment is
+the coarsening of needs diegetic. *Reading, docketed as D22 (case 1002), accepted 2026-09-22:* realignment is
 ruling 57's epoch boundary at the scale of a world, the shop between rounds,
 and it is a rung transition of §3.3; Mark's example, from hex exploration to
 piloting a ship in orbit, is also a change of foregrounded scope under
@@ -12965,7 +13357,7 @@ the rules.
 choice, "a complexity and size issue", as in Dwarf Fortress. The generated
 timeline is one "one could go back in time to prior worldstates with", and
 the client is not to be overwhelmed but offered "the opportunity to zoom in
-and edit stuff". *Reading, docketed as D23, accepted 2026-09-22:* going back is cheap because of
+and edit stuff". *Reading, docketed as D23 (case 1003), accepted 2026-09-22:* going back is cheap because of
 the derivation rule. A world is its seed, its rules and its asserted facts,
 and the sim is deterministic, so the state at any past time is that log
 replayed to then, with checkpoints at epoch boundaries bounding the cost and
@@ -12984,7 +13376,7 @@ and adds nothing: deep time is the sim with nobody attending, so by ruling
 71 nothing is foregrounded and by ruling 75 everything runs in the
 aggregate, which is what makes a long past affordable; the wild events and
 catastrophes of ruling 91 come from the world's own rules and need no
-authoring; and every past state is reachable by replay (D23). Mesocosm does
+authoring; and every past state is reachable by replay (D23, case 1003). Mesocosm does
 this today, checked 2026-09-21: its deep time is "Mesocosm's own simulation,
 one idle tick at a time, with no hand, no checkpoint and no answer to any
 question", so that "a generated past is made of the same stuff as a played
@@ -13016,7 +13408,7 @@ owns the current model and open questions; the six axes below remain useful
 dimensions. Ruling 407 adds the construction and learning distinctions.
 
 From ruling 101. Every clause of Mark's first sentence is already held by a
-ruling, and the magic generator is a reading, docketed as D30, accepted 2026-09-22.
+ruling, and the magic generator is a reading, docketed as D30 (case 1009), accepted 2026-09-22.
 
 **The world has a lineage.** Under rulings 98 to 100 the world is an entity
 of a kingdom, so ruling 57 applies to it whole. A lineage is provenance
@@ -13030,7 +13422,7 @@ geology (ruling 97); and the conditions, operations, relations and
 invariants of the schema (ruling 32). Its expression is the roster and the
 history that unfold from it under the seed. Its epoch boundary is ruling
 90's realignment, the shop between rounds where a world "could grow new
-traits" (D22). To "fork into different realms" is ruling 7's forking (ruling 126) and
+traits" (D22, case 1002). To "fork into different realms" is ruling 7's forking (ruling 126) and
 ruling 11's planes, worlds in relation; to "split into/create other planets"
 is §3.3's lineage-splitting transition at the world rung, and under ruling
 100 the child may be meso, a moon calved from a planet.
@@ -13138,7 +13530,7 @@ the Ascension's spheres are an effect-oriented canon.
 ### 3.11 Arcs and the storyteller
 
 From ruling 103: "both, with the second being what gives the first its
-shape". *Reading, docketed as D31, accepted 2026-09-22.*
+shape". *Reading, docketed as D31 (case 1010), accepted 2026-09-22.*
 
 **The sim's half: the parts.** Every constituent part of an arc is a thing
 the sim already has, so the sim is "aware of the constituent parts" without
@@ -13262,7 +13654,7 @@ only its intents and the notes they made.
 shared context over worlds that are not merged: "two worldlines with a
 shared history that branched", or "entirely different worlds" made
 neighbours "in the celestial neighborhood", so that "you could manage a set
-of related worlds". *Reading, docketed as D33, accepted 2026-09-22.* Two relations, both already
+of related worlds". *Reading, docketed as D33 (case 1011), accepted 2026-09-22.* Two relations, both already
 in the record, and neither merges anything: each world keeps its own log and
 its own played clock, and what crosses between them is things with
 provenance.
@@ -13826,7 +14218,7 @@ code. And the record has been growing faster than it can be ruled: 1,275
 lines since ruling 62, with fifteen flagged readings, three recommendations
 and twelve open markers waiting on Mark, some of them carrying later ones.
 
-*What survives cheaply, accepted by Mark 2026-09-21 (D18).* Ruling 78 alone, as a design
+*What survives cheaply, accepted by Mark 2026-09-21 (D18, case 1000).* Ruling 78 alone, as a design
 discipline. Two bindings as an intent and not a duty: native first, the
 component binding built when the first rung 3 consumer exists, the contract
 shaped so that day needs no redesign. For erosion, a test and not a runtime:

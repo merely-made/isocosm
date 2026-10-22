@@ -102,7 +102,7 @@ a polity's definitive act. Its goals derive from its alignment; it has no
 will to continue beyond finding a new use, and an inactive one can be revived
 by whoever brings it support.
 
-Links: draws on 64, 67, 68, 81 · summary A polity needs efficacious enforcement, has a focus not a size, may build on another; its constitution is its definitive act; goals follow alignment.
+Links: draws on 64, 67, 68, 81, 988, 989, 991, 992 · summary A polity needs efficacious enforcement, has a focus not a size, may build on another; its constitution is its definitive act; goals follow alignment.
 
 *Reviewed 2026-10-22, new: split from tenets at Mark's word ("Polities
 apart"). Polities are built behind the society feature (886); enforcement
@@ -318,7 +318,7 @@ crowd's own chooser covers autonomous territories only.
 
 *Not yet built:* rate models.
 
-Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881 · summary The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying.
+Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999 · summary The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying.
 
 *Reviewed 2026-10-22, new. Mark: "As drafted, rate models marked".*
 
@@ -402,7 +402,7 @@ taboo, its telling turning on relation, opinion and goals.
 *Not yet built:* false beliefs, the four-way weighing, secrets and taboos.
 Knowing is notes plus reach, and tellings are built.
 
-Links: draws on 84, 86, 87, 117, 118, 119, 241 · summary Spread is modelled distributionally; any belief can be wrong; whether it takes weighs checking, teller, wish and manner; secrets are taboo leverage.
+Links: draws on 84, 86, 87, 117, 118, 119, 241, 1001 · summary Spread is modelled distributionally; any belief can be wrong; whether it takes weighs checking, teller, wish and manner; secrets are taboo leverage.
 
 *Reviewed 2026-10-22, new. Mark: "Belief here, temperament to World 4".*
 
@@ -423,7 +423,7 @@ holds it any more.
 *Not yet built:* secession, the four polity conditions, death when nothing
 holds a polity. Constitutions are built behind the society feature.
 
-Links: draws on 63, 65, 66, 133, 134, 135, 136, 137, 138, schema.5 · summary Factions act by consent, never gated; a group-vested polity is gated per act; constitutions change by their own way; force founds anew.
+Links: draws on 63, 65, 66, 133, 134, 135, 136, 137, 138, schema.5, 985, 986, 987, 990 · summary Factions act by consent, never gated; a group-vested polity is gated per act; constitutions change by their own way; force founds anew.
 
 *Reviewed 2026-10-22, new. Mark: "Processes statement".*
 
@@ -441,7 +441,7 @@ by its material.
 *Not yet built:* value, fey moods, skill decay, techniques, invention, item
 improvement. Skills are held on every entity.
 
-Links: draws on 94, 95, 132, 141, 142, 143, 173, schema.6 · summary Value tracks scarcity, capability and need; acting is like crafting; skills rise four ways and decay to a floor; masters invent; items grow with maker and story.
+Links: draws on 94, 95, 132, 141, 142, 143, 173, schema.6, 1005, 1006 · summary Value tracks scarcity, capability and need; acting is like crafting; skills rise four ways and decay to a floor; masters invent; items grow with maker and story.
 
 *Reviewed 2026-10-22, new. Mark: "Split: making, culture".*
 
@@ -503,7 +503,7 @@ and exchange can be explained.
 
 *Not yet built.*
 
-Links: draws on 404 · summary Magic composes fundamental effects as combinable cantrips, each level costing sharply more; scripts hook other generators; explainable surprises welcome.
+Links: draws on 404, 1009 · summary Magic composes fundamental effects as combinable cantrips, each level costing sharply more; scripts hook other generators; explainable surprises welcome.
 
 *Reviewed 2026-10-22, new. Mark: "Magic as Processes 17; flow to Schema 9".*
 
@@ -599,7 +599,7 @@ what things are made of (Law A, amended). Each declared material keeps a
 distinct native stock, and an edit's mass is credited by material, at a
 density and into an account set at founding.
 
-Links: draws on 96, 97, 98, 100, 139, 739, 836 · summary A world's materials are its creatures; the world is an entity of stuff; each material keeps its own stock, edits credited by density.
+Links: draws on 96, 97, 98, 100, 139, 739, 836, 1007 · summary A world's materials are its creatures; the world is an entity of stuff; each material keeps its own stock, edits credited by density.
 
 *Reviewed 2026-10-22, new: drafted in the schema review and placed here at
 Mark's word ("Matter to Ecology"). Built: per-material stocks, and density
@@ -879,7 +879,7 @@ graded, down to just the event.
 *Not yet built (sim plan, S4):* graded collection. Today collection folds
 only exactly equivalent state.
 
-Links: draws on 4, 69, 70, 71, 80, 125 · summary Ambient, of note, legend; the significant record is never lossy; collection is graded GC rooted in what players care about.
+Links: draws on 4, 69, 70, 71, 80, 125, 993, 994 · summary Ambient, of note, legend; the significant record is never lossy; collection is graded GC rooted in what players care about.
 
 *Reviewed 2026-10-22, new. Mark: "Mark the unbuilt rules as a reading" (marked above), and the gap became an owed item in the sim plan's S4.*
 
@@ -967,7 +967,7 @@ shape, any shape (a sphere, a ring, a world resting on a critter), with a free
 base unit and power-of-two cells within a chunk. The first scale target is a
 region, larger scales not precluded.
 
-Links: draws on 11, 12, 13, 73, 124 · summary Terrain runs from region to planetary system with an interior; one shape per world, any shape; a region first.
+Links: draws on 11, 12, 13, 73, 124, 998 · summary Terrain runs from region to planetary system with an interior; one shape per world, any shape; a region first.
 
 *Reviewed 2026-10-22, new. Mark: "2 and 3" (split World 1; schedule the
 world editor).*
@@ -982,7 +982,7 @@ derived function, so more bodies change a function, not saved state.
 *Not yet built:* the sky as a list of bodies; it is one sun today
 (`rules.sun`), owed in the sim plan with Ecology 5's item.
 
-Links: draws on 11, 105, 150 · summary A world sits among others; nothing built may assume one world alone under one sun.
+Links: draws on 11, 105, 150, 1011 · summary A world sits among others; nothing built may assume one world alone under one sun.
 
 *Refined 2026-10-22 in the schema review: 150, a planetary system as host,
 cited (Mark: "Matter to Ecology", 150 to World 2).*
@@ -998,7 +998,7 @@ Nesting is one composable mechanism, its levels fixed in neither order nor
 number; the VTT's four scopes (world, region, area, battlemap) are its
 defaults.
 
-Links: draws on 72, 88, 74 · summary Site, region, location, wilderness, biome and environment; locations nest by one composable mechanism, allocated as generated.
+Links: draws on 72, 88, 74, 996, 997, 1004 · summary Site, region, location, wilderness, biome and environment; locations nest by one composable mechanism, allocated as generated.
 
 *Reviewed 2026-10-22, new: split from World 1 at Mark's word. Case 74 folded
 in from the VTT review (Mark: "Fold 74 into World 3").*
@@ -1015,7 +1015,7 @@ lived, the world shaping its people through their conditions, and a fluid
 temperament moves by what happens to the world, its cycles and its epoch
 boundaries, never by what its people are.
 
-Links: draws on 99, 101, 102, 120, 121, 122, 140 · summary A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid.
+Links: draws on 99, 101, 102, 120, 121, 122, 140, 1008 · summary A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid.
 
 *Refined 2026-10-22 in the Processes review: how its temperament moves (120 to
 122; Mark: "Belief here, temperament to World 4").*
@@ -1029,7 +1029,7 @@ world is realigned to another ruleset by a generative round that advances
 time. Presets (pressures, bodies, named rate sets) are founding choices, never
 the generator's defaults.
 
-Links: draws on 89, 90, 91, 272, 907, 935 · summary Founding is details plus a seed; authoring displaces generation; history depth is the founder's; presets are choices.
+Links: draws on 89, 90, 91, 272, 907, 935, 1002, 1003 · summary Founding is details plus a seed; authoring displaces generation; history depth is the founder's; presets are choices.
 
 *Reviewed 2026-10-22, new. The world editor 89 asks for is owed in the sim
 plan's S5 (Mark: "editor owed in the sim plan's S5").*
@@ -1146,7 +1146,7 @@ record type does, and as a `denizen` crate would if it became the way entity
 information moves between contexts). Code on a parked rung moves with its
 family, unchanged in behaviour, and the rung stays parked.
 
-Links: draws on 201, 673 · summary Crates are made when the abstraction earns one, not per name; parked code moves unchanged.
+Links: draws on 201, 673, 995 · summary Crates are made when the abstraction earns one, not per name; parked code moves unchanged.
 
 *Reviewed 2026-10-21, new. Mark, refining the draft "organ words are
 components, not published crates": "it's more about being pragmatic and not
@@ -1261,7 +1261,7 @@ goals for real reasons, in its own terms; the game makes a coherent statement
 of them, the world a storyteller of sorts (at the table, running arcs reach the
 DM as hooks: VTT 4). An act records every goal it actually served.
 
-Links: draws on 103, 866, vtt.4 · summary The sim knows an arc's parts and lets entities pursue real goals; the game makes the statement; acts record every goal served.
+Links: draws on 103, 866, vtt.4, 1010 · summary The sim knows an arc's parts and lets entities pursue real goals; the game makes the statement; acts record every goal served.
 
 *Reviewed 2026-10-22, new: drafted in the Processes review and placed here at
 Mark's word ("Arcs to Directing").*
@@ -1423,7 +1423,7 @@ specimen, item and effect lanes), which is also the dev tools.
 
 *Not each verified:* the bench's five lanes.
 
-Links: draws on 1, 20, 92, 154, 192, 197, 203, 204, 254, 483, world.3 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
+Links: draws on 1, 20, 92, 154, 192, 197, 203, 204, 254, 483, world.3, 1000 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
 
 *Refined 2026-10-22 in the schema review: what the sim is (1, 92) opens it
 (Mark: "Schema 2 into Stack 4").*
