@@ -80,3 +80,9 @@ to `archive_docs/<YYYY-MM-DD>/`.
 - [`2026-08-08/2026-07-18_exploration_mode_plan.md`](archive_docs/2026-08-08/2026-07-18_exploration_mode_plan.md): the audit pass; residues in the extracted-receipts ledger.
 
 Foundation source adoption (2026-10-19): canonical promoted-family revisions and consumer source validation are recorded in `mere/design_docs/mere_docs/implementation_strategy/2026-10-19_family_promotion_plan.md`. Existing application and domain authority remain with their owning components.
+
+Pool supplier intake (2026-10-21): the root workspace adopts Armillary
+`92d5b15cf39aaac40a3f2d863ffee69c9be11bfc`; the existing Mere cohort and nested
+workspaces retain their independent pins. Source identities, session-bridge
+qualification and remaining acceptance gates are recorded once in
+`mere/support/family-promotion/pool-cohort-rollout-20261022.json`.
