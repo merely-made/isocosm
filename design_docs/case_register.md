@@ -94,10 +94,15 @@ three design docs that cite it. The record holds the words.
 | 672 | Legacy tests become draws or controls in their family's certification, or retire with the legacy copy. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 739 | An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 740 | Entity gains an optional patch field, set only for members split out of their cohort. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
+| 757 | Authored content enters by Command::Assert with the record family; the campaign world becomes a reading of native state. | none |
 | 758 | The datasheet loader lowers onto native Recipe and Template; roster() reads the sheets; legacy Founding becomes a name into them. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 760 | An authored faction is a polity with no members yet, asserted with authored name, tags, claims, governance and focus as facts. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
+| 769 | Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 772 | A new line's name is its key, lineage:<name>, with no schema change. | none |
 | 791 | Families certify against each plan's invariants (conservation, replay, controls), not legacy parity. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
+| 834 | A sim-on VTT character develops its own native body from a selected recipe and keeps its ID; placement and control are admitted separately. | none |
 | 836 | Newly founded worlds give each declared material a distinct native stock, preserved through carve, deposit and fabrication. | none |
+| 867 | Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 886 | The society layer (projects, institutions, custody, party, goals, polities) is parked behind a feature, on for VTT and Eponym, off for Mesocosm, tested separately. | [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 893 | The society feature gates operations, not state: State fields stay and are empty by default, so every build reads one save format. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 939 | F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen. | none |
@@ -428,6 +433,7 @@ three design docs that cite it. The record holds the words.
 | 48 | A place with all the glyphs existing there is a divine environment; placement durability and quality matter; alignment relates things to glyphs, factions and polities. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 72 | A world map is a grid of sites in any shape; defines region, location, wilderness, biome and environment. | [environmental surfaces](2026-07-08_environmental_surfaces_plan.md), [vtt overlay](2026-09-25_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 | 73 | A world has one shape, any shape, not switchable. | [campaign retirement](2026-10-15_campaign_retirement_plan.md), [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
+| 74 | Nesting is one composable, expandable mechanism; world, region, area and battlemap are its defaults. (amended by 92) | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 88 | Nesting is allocated dynamically as locations are generated, not fixed at founding. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 89 | Founding is a flow of key details plus a seed; authoring may go as deep as wanted, displacing generated content; a world editor is owed. | [environmental surfaces](2026-07-08_environmental_surfaces_plan.md), [vtt overlay](2026-09-25_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 | 90 | A world is realigned to another ruleset by a generative round that advances time. | none |
@@ -717,7 +723,6 @@ three design docs that cite it. The record holds the words.
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
-| 74 | Nesting is one composable, expandable mechanism; world, region, area and battlemap are its defaults. (amended by 92) | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 156 | A DM may take up any unclaimed entity to play, and may edit the world. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
 | 188 | A VTT campaign may run with the sim off, as a plain board. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 189 | An uncalibrated ruleset may play in a debug or experimental mode, with a warning. (amended by 538) | [environmental surfaces](2026-07-08_environmental_surfaces_plan.md), [vtt overlay](2026-09-25_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
@@ -746,14 +751,10 @@ three design docs that cite it. The record holds the words.
 | 598 | The campaign world moves into Isocosm as its legacy campaign tree; the map wrapper and token/sheet adapters stay in a slim VTT crate. (amended by 599, 913, 915) | none |
 | 599 | The overmap moves into the sim as a sim noun; travel and discovery stay sim-side; the VTT imports Overmap from Isocosm. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [DOC README](DOC_README.md) |
-| 757 | Authored content enters by Command::Assert with the record family; the campaign world becomes a reading of native state. | none |
-| 760 | An authored faction is a polity with no members yet, asserted with authored name, tags, claims, governance and focus as facts. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 768 | A campaign's session carries its assertions; CampaignWorld folds from them and a native Session replays from them when the sim switches on. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
-| 769 | Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 807 | Event handles are an adapter reading of native event keys, one mapping shared with the VTT, validated to agree before a telling is admitted. | none |
 | 809 | Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
 | 814 | The VTT declares its note kinds (reveal, narration, history) in the world's founding rules; native admission still refuses undeclared kinds. | none |
-| 834 | A sim-on VTT character develops its own native body from a selected recipe and keeps its ID; placement and control are admitted separately. | none |
 | 851 | Every saved bound table player, disconnected included, holds downtime unless they release their own hold. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 852 | A downtime proposal binds its original tick and player roster; a change makes it unavailable and requires a new proposal. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 853 | Each player opts their played native body into or out of a party; membership grants no control. | [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
@@ -765,7 +766,6 @@ three design docs that cite it. The record holds the words.
 | 859 | Each player approves their currently played body's departure and the DM applies approved departures together through native admission. | none |
 | 860 | Requested pace resolves to an explicitly authored native pace profile giving duration and stock costs; no default from the legacy percentage. | [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 865 | A compatible dormant adventure pack activates only when the DM previews and explicitly accepts it. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
-| 867 | Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 871 | Party map disclosures name explicit terrain windows and condition or claim snapshots the body knows, with source revisions; changes need a new disclosure. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
 | 902 | The VTT's panels go to the isocosm-vtt crate, keeping their MPL-2.0 grant; publishing waits. (amended by 919) | [campaign retirement](2026-10-15_campaign_retirement_plan.md), [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
 | 913 | isometry-campaign retires, its contents becoming components; where each part lands comes back as questions. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [campaign retirement](2026-10-15_campaign_retirement_plan.md) |
