@@ -126,8 +126,6 @@ every entity holds its skills and five-factor disposition.
 Links: draws on 62, 96, 158, 159, 160 · summary Mood is read from memory, needs and life, strain kept; personality traits grow on the five factors; abilities, skills, techniques; the planes after life.
 
 *Reviewed 2026-10-22, new. Mark: "Ages to Record" (split as recommended).*
-*Corrected 2026-10-22: strain was listed as unbuilt; played worlds keep it as
-the `sim:strain` account.*
 
 ### Schema 7. Culture and knowledge
 
@@ -238,9 +236,6 @@ subject may resume. A help action is a separate pathway, not yet designed.
 
 Links: draws on 53, 54, 837, 838, 839, 840, 843, 844, 845, 846, 849, 850, 863 · summary Ownership is asserted by exact lots; debits select lots; projects reserve inputs; input owners grant access.
 
-*Reviewed 2026-10-22, new: written in the Eponym review, whose questions
-raised these cases, and placed here at Mark's word ("Under Processes and
-rules, written now").*
 *Refined 2026-10-22 in the schema review: who can hold and own (53, 54)
 opens it (Mark: "Fold into Processes 2").*
 
@@ -586,11 +581,11 @@ its own effect, and a site's store holds a night, so producers draw down in the 
 world's rules. A life span is individual: a death hazard under the lineage's
 drawn ceiling, acting only where the ceiling is above maturity.
 
+*Not yet built:* the credit and store as world rules; they are constants in
+`ecology.rs` today (500 and 360,000, A1's values), owed in the sim plan.
+
 Links: draws on 906, 949, 971, 972, 973, 980, 982, 983, 984 · summary Light credit scales with the sun and a store holds a night; life spans are individual hazards under a drawn ceiling.
 
-*Reviewed 2026-10-22, new. Mark: "Structure in doctrine, numbers into world
-rules". The credit and store are constants in `ecology.rs` today (500 and
-360,000, A1's values); making them world rules is owed in the sim plan.*
 *Refined 2026-10-22 in the Processes review: the light field itself (971, 973,
 980, 984) opens it (Mark: "Into Ecology 5, 981 archived").*
 
@@ -984,14 +979,11 @@ worlds sharing a history that branched; a planetary system can be an entity
 hosting its worlds. Space and travel between worlds come later, and nothing built may assume one world alone under one sun; light is a
 derived function, so more bodies change a function, not saved state.
 
+*Not yet built:* the sky as a list of bodies; it is one sun today
+(`rules.sun`), owed in the sim plan with Ecology 5's item.
+
 Links: draws on 11, 105, 150 · summary A world sits among others; nothing built may assume one world alone under one sun.
 
-*Reviewed 2026-10-22, new, from Mark's words in this round: "also consider
-worlds in relation to each other (a solar system, binary solar system,
-effects on light field later ...). space and interplanetary travel is not a
-first priority but what we build should compose with that possibility, no?"
-The sky is one sun today (`rules.sun`); a list of bodies is owed with
-Ecology 5's item in the sim plan (Mark: "Owe it with Ecology 5's item").*
 *Refined 2026-10-22 in the schema review: 150, a planetary system as host,
 cited (Mark: "Matter to Ecology", 150 to World 2).*
 
@@ -1025,7 +1017,6 @@ boundaries, never by what its people are.
 
 Links: draws on 99, 101, 102, 120, 121, 122, 140 · summary A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid.
 
-*Reviewed 2026-10-22, new: split from World 1 at Mark's word.*
 *Refined 2026-10-22 in the Processes review: how its temperament moves (120 to
 122; Mark: "Belief here, temperament to World 4").*
 
@@ -1342,7 +1333,6 @@ residency, never the sim's representation.
 
 Links: draws on 23, 296, 425, 368, 369, 372, 374 · summary Terrain residency is nested rings inside a device-bounded atlas budget; overflow keeps the nearest and reports the rest; grain is residency, never representation.
 
-*Reviewed 2026-10-22, new. Mark dropped the draft's line on worlds past a fixed cap (945, one fixture's decision), which stays a case.*
 *Refined 2026-10-22 in the VTT review: the budget's cases cited (Mark:
 "Budget to Pres. 5, paging to Stack").*
 
@@ -1356,7 +1346,6 @@ lighting the wing aims for.
 Links: draws on 970, 22, 749, ecology.5 · summary The sun is the sim's light field; the fixed sun is the bench fallback; shadows wait on testing.
 
 *Reviewed 2026-10-22, new. Mark: "971 amends 970: fixed sun is the bench fallback"; and the draft's wish list dropped, 22 kept as the aim.*
-*Refined 2026-10-22 in the Stack and engine review: 749's torch line cited.*
 
 ### Presentation 7. Maps and remains
 
@@ -1432,18 +1421,12 @@ learns what changed from the sim's admitted change records, never from a
 tracked copy. Everything generated and reviewed shares one bench (sim, world,
 specimen, item and effect lanes), which is also the dev tools.
 
+*Not each verified:* the bench's five lanes.
+
 Links: draws on 1, 20, 92, 154, 192, 197, 203, 204, 254, 483, world.3 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
 
-*Reviewed 2026-10-22, new; checked built (mesocosm-core retired; the overlay's
-tick, attention set and shared shapes), the bench's lanes not each verified.
-Mark: "As drafted, archive 263".*
-*Refined 2026-10-22: the ECS was reopened against the host as built and
-retired, its receipts rule (483) kept here (Mark: "Retire the ECS, keep
-483"); Mesocosm's played scene already reads the spatial driver's admitted
-changes.*
 *Refined 2026-10-22 in the schema review: what the sim is (1, 92) opens it
 (Mark: "Schema 2 into Stack 4").*
-*Refined 2026-10-22 in the Processes review: D19's contract (154) cited.*
 
 ### Stack 5. Isometer owns in-site space
 
@@ -1574,7 +1557,6 @@ through a product trait. Three uniform product hosts sit on isomere's
 
 Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
 
-*Reviewed 2026-10-22, new. Mark: "All four as drafted"; checked against the code first, each is built.*
 *Refined 2026-10-22 in the Stack and engine review: 381, the decision the core
 and product hosts carry out, cited (Mark: "Refile to Host, cited by Host 1").*
 
@@ -1903,7 +1885,6 @@ sim's design is a reference: nothing is copied into the sim.
 
 Links: draws on 40, 522, 541 · summary A ruleset ships, per product, when its licence draws no objection; an open text informing the sim is a reference, never copied in.
 
-*Reviewed 2026-10-21, new. Mark: "Without the Massif line".*
 *Refined 2026-10-22 in the VTT review: checked per product (Mark: "Named
 profile, licence per product").*
 
@@ -1982,7 +1963,6 @@ summaries only. A family certifies against its plan's invariants
 
 Links: draws on 255, 791, 953 · summary Raw receipts live out of tree; briefs name and cap the receipts they need.
 
-*Reviewed 2026-10-21, new. Mark: "Both as drafted".*
 *Refined 2026-10-22 in the schema review: 791's certification rule (Mark:
 "791 to Method").*
 

@@ -1,0 +1,33 @@
+# The doctrine's size budget: DOC_POLICY.md, "Decisions and doctrine",
+# rule 5; the decision-links plan's L4. Ruled by Mark on 2026-10-22: two caps
+# ("Two caps"), each today's size plus a margin ("Today's size plus your
+# margin"): statements per area "+25%, at least 1", lines per statement "18:
+# today's longest plus 3". A statement's body counts; its fields line and
+# notes (paragraphs opening with `*`) do not. `wing-decisions check` reports
+# an overrun, and the next round touching that area opens with its
+# consolidation.
+
+# Body lines of any one statement. Longest on 2026-10-22: 15 (Stack 4,
+# Processes 2).
+lines_per_statement = 18
+
+# Statements per area: the count on 2026-10-22 (in the comment) plus 25%,
+# rounded up, and at least one more.
+[statements]
+"The sim's schema and saves" = 14           # 11
+"Processes and rules" = 22                  # 17
+"Ecology" = 8                               # 6
+"Bodies and anatomy" = 18                   # 14
+"Record and history" = 9                    # 7
+"World generation" = 12                     # 9
+"Organs: glyphs, impresa, hagiograph" = 7   # 5
+"Directing and play" = 9                    # 7
+"Presentation" = 9                          # 7
+"Stack and engine" = 14                     # 11
+"Host and network" = 7                      # 5
+"Mesocosm" = 7                              # 5
+"Eponym" = 5                                # 4
+"The VTT" = 7                               # 5
+"Naming" = 5                                # 4
+"Licensing and sources" = 4                 # 3
+"Method and documents" = 13                 # 10

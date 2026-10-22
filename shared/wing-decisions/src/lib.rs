@@ -9,6 +9,7 @@
 //! anchors against rust-analyzer's index.
 
 pub mod anchors;
+pub mod budget;
 pub mod cite;
 pub mod docs;
 pub mod git;
