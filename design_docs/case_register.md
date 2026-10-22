@@ -203,7 +203,7 @@ three design docs that cite it. The record holds the words.
 | 1001 | A secret is a taboo on telling (a norm with reputational sanction); its value is what release would do to standing; telling is a choice; it ends by leaking. | none |
 | 1005 | Value is a reading over supply, capability and need, never stored; money is an asserted claim; acting is by tier; trade trends are flow along routes. | none |
 | 1006 | An act is chosen by need times trust times approval; what gets made follows the same score; grinding yields aggregate competence, never a legend; a fey mood is a triggered need. | none |
-| 1009 | The world has a lineage (genotype its catalogue, realignment its boundary); a magic system is a world trait on six axes; bending the rules is declared suspension. | none |
+| 1009 | The world has a lineage (genotype its catalogue, realignment its boundary); a magic system is a world trait on six axes; bending the rules is declared suspension. | [functional generation](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md) |
 
 ## Ecology
 

@@ -5904,7 +5904,7 @@ title = "The world is a generative entity"
 source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid."
-draws_on = ["99", "101", "102", "120", "121", "122", "140", "1008"]
+draws_on = ["99", "101", "102", "120", "121", "122", "140", "1008", "1010"]
 
 [statements."world.5"]
 title = "Founding and authoring"

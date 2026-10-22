@@ -115,6 +115,22 @@ remain open; this refinement does not select a universal mana pool, gesture,
 preparation system, or progression model. Ball x Pit supplies Mark's analogy
 for combinations, not an algorithm to reproduce.
 
+### A magic system's six axes (case 1009)
+
+Case 1009 (the design record's D30, accepted 2026-09-22) describes a generated
+magic system as one trait of the world's genotype, drawn at founding or grown
+at a boundary, on six axes: *source* (the world's fields, the caster's
+anatomy, a bearer, a god, the record's frequency); *gate* (unconditional,
+anatomical, acquired on a journey, skill-gated, social, placed); *orientation*
+(bending how a process runs, or yielding an effect outright); *cost and
+breach* (which account pays, and which of the world's invariants the system
+may suspend, at what price, leaving what residue; ordinary magic suspends
+none); *rhythm* (cyclical, continuous, once); and *manifestation* (how it shows
+and is sensed). Divinity reads such a system through its effects, its
+acquisition and its frequency, so the ladder of sacrificed forms follows its
+gate axis. Placed here at Mark's word, 2026-10-22 ("Axes to the plan"),
+beside the composition design rulings 404 to 407 own.
+
 ### Design completion and inspection
 
 Before selecting implementation slices, complete the description of effect

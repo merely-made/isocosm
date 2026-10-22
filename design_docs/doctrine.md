@@ -1048,28 +1048,33 @@ Terrain runs from a region to a planetary system and always has a
 destructible, constructible interior; the height and kind a board holds per
 cell is a far view of that volume. A world map is a grid of sites in one
 shape, any shape (a sphere, a ring, a world resting on a critter), with a free
-base unit and power-of-two cells within a chunk. The first scale target is a
-region, larger scales not precluded.
+base unit and power-of-two cells within a chunk. For a world resting on a
+critter, what the critter does (walking, turning, sleeping, dying) reaches the
+world as its environment, one reason the map is held as adjacency. The first
+scale target is a region, larger scales not precluded.
 
 Links: draws on 11, 12, 13, 73, 124, 998 · summary Terrain runs from region to planetary system with an interior; one shape per world, any shape; a region first.
 
-*Reviewed 2026-10-22, new. Mark: "2 and 3" (split World 1; schedule the
-world editor).*
+*Refined 2026-10-22 from case 998 (Mark: "Both as drafted").*
 
 ### World 2. Worlds in company
 
 A world sits among others: a parent, neighbours, a solar or binary system,
 worlds sharing a history that branched; a planetary system can be an entity
-hosting its worlds. Space and travel between worlds come later, and nothing built may assume one world alone under one sun; light is a
-derived function, so more bodies change a function, not saved state.
+hosting its worlds. Worlds relate by descent, forked worldlines sharing the log
+up to the fork, or by neighbourhood, worlds placed in relation with routes
+between them; nothing merges, each keeping its own log and clock, a crossing
+recorded in both logs and what arrives carrying its home world's matter. Space
+and travel between worlds come later, and nothing built may assume one world
+alone under one sun; light is a derived function, so more bodies change a
+function, not saved state.
 
 *Not yet built:* the sky as a list of bodies; it is one sun today
 (`rules.sun`), owed in the sim plan with Ecology 5's item.
 
 Links: draws on 11, 105, 150, 1011 · summary A world sits among others; nothing built may assume one world alone under one sun.
 
-*Refined 2026-10-22 in the schema review: 150, a planetary system as host,
-cited (Mark: "Matter to Ecology", 150 to World 2).*
+*Refined 2026-10-22 from case 1011 (Mark: "Both as drafted").*
 
 ### World 3. The map's words
 
@@ -1078,14 +1083,17 @@ location is a known, remarkable or potential site, or a nested place within
 one (a settlement, a dungeon, a gate), allocated as it is generated and
 spanning several sites if it must; wilderness is sites without a location,
 from which locations can be generated; environment is weather and climate.
-Nesting is one composable mechanism, its levels fixed in neither order nor
-number; the VTT's four scopes (world, region, area, battlemap) are its
-defaults.
+A location stores its extent, conditions, history and claims, its kind read
+off them as a biome is; a potential location is derived from terrain and not
+yet of note; a highway is a location that is also a route. Nesting is the
+sim's, one composable mechanism, its levels fixed in neither order nor number,
+each step saying how the finer map is generated, reads from above, crosses its
+edges and how much finer it is; a scope is a game's window over it, each game
+its own, the VTT's four (world, region, area, battlemap) its defaults.
 
 Links: draws on 72, 88, 74, 996, 997, 1004 · summary Site, region, location, wilderness, biome and environment; locations nest by one composable mechanism, allocated as generated.
 
-*Reviewed 2026-10-22, new: split from World 1 at Mark's word. Case 74 folded
-in from the VTT review (Mark: "Fold 74 into World 3").*
+*Refined 2026-10-22 from cases 996, 997 and 1004 (Mark: "Both as drafted").*
 
 ### World 4. The world is a generative entity
 
@@ -1101,25 +1109,30 @@ boundaries, never by what its people are. Each kind a world may be is a
 position on a ruled axis (inert, a body without agency; sentient, a macro
 critter; a sophont; a god; dead, its entity on the planes); its agentless
 processes are its own metabolism, chosen where it is a critter or a sophont;
-its geology is its anatomy.
+its geology is its anatomy. Its storyteller is its own agency: a disposition
+and goals directing its weather, plagues and wild events, set by its founder.
 
-Links: draws on 99, 101, 102, 120, 121, 122, 140, 1008 · summary A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid.
+Links: draws on 99, 101, 102, 120, 121, 122, 140, 1008, 1010 · summary A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid.
 
-*Refined 2026-10-22 from case 1008 (Mark: "Both as drafted").*
+*Refined 2026-10-22 from cases 1008 and 1010 (Mark: "Storyteller to World
+4").*
 
 ### World 5. Founding and authoring
 
 Founding is a short flow of crucial details and a seed; authoring goes as
 deep as anyone likes, filling or displacing generated content. How much
-history is the founder's choice, and the timeline can be gone back into. A
-world is realigned to another ruleset by a generative round that advances
-time. Presets (pressures, bodies, named rate sets) are founding choices, never
-the generator's defaults.
+history is the founder's choice. Going back is replay to a checkpoint, and
+editing the past asserts a fact there, which forks; the timeline shows legend
+first. A world is realigned to another ruleset by a generative round that
+advances time: the epoch boundary at a world's scale, which may add nesting
+steps as well as change the rules. Presets (pressures, bodies, named rate
+sets) are founding choices, never the generator's defaults.
+
+*Not yet built:* the world editor, owed in the sim plan's S5.
 
 Links: draws on 89, 90, 91, 272, 907, 935, 1002, 1003 · summary Founding is details plus a seed; authoring displaces generation; history depth is the founder's; presets are choices.
 
-*Reviewed 2026-10-22, new. The world editor 89 asks for is owed in the sim
-plan's S5 (Mark: "editor owed in the sim plan's S5").*
+*Refined 2026-10-22 from cases 1002 and 1003 (Mark: "Both as drafted").*
 
 ### World 6. Sites are lifted to volume
 
@@ -1346,12 +1359,14 @@ Links: draws on 61, 406 · summary Death is final, each game with its trick; a n
 The sim knows the parts of an arc and lets entities pursue consequential
 goals for real reasons, in its own terms; the game makes a coherent statement
 of them, the world a storyteller of sorts (at the table, running arcs reach the
-DM as hooks: VTT 4). An act records every goal it actually served.
+DM as hooks: VTT 4). An arc is a thread of cause-links from a goal's adoption
+to its ending, derived and never stored, and a consequential goal leaves a
+note. An act records every goal it actually served.
 
 Links: draws on 103, 866, vtt.4, 1010 · summary The sim knows an arc's parts and lets entities pursue real goals; the game makes the statement; acts record every goal served.
 
-*Reviewed 2026-10-22, new: drafted in the Processes review and placed here at
-Mark's word ("Arcs to Directing").*
+*Refined 2026-10-22 from case 1010, its storyteller placed in World 4 (Mark:
+"Storyteller to World 4").*
 
 ## Presentation
 
