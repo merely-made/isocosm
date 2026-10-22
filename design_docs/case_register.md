@@ -209,6 +209,7 @@ three design docs that cite it. The record holds the words.
 | 829 | Port feeding applies to processes that declare it, migrated with their founding ports; unmarked saved grammars are preserved. | none |
 | 830 | Native declares a terrain operation, the game resolves its geometry, and the same native Session admits and records the edit. | none |
 | 832 | New ordinary feeding processes derive their target and source selector from the actual declared intake port; unmarked saves unchanged. | none |
+| 866 | A native act records participation in every goal it actually served; no primary goal discards the others. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 881 | The crowd implements its own chooser for autonomous (un-nudged) territories and refuses live nudges; nudged directing keeps native tests. | [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 958 | Equal best movement choices use a deterministic seeded draw keyed by world seed, creature and tick; scores and eligibility are unchanged. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 971 | The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored. | [resident views composition](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
@@ -503,13 +504,10 @@ three design docs that cite it. The record holds the words.
 | 690 | Standing orders are derived from logged nudges and their outcomes, replaying exactly, not kept on the entity. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 691 | Survival mode filters through what the critter knows and the reach field; the interim M4 ships both modes. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 742 | The tier line goes to directing, moving with the directing plan's D2, not to the host now. | [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
-| 751 | A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 753 | After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available. | none |
 | 779 | Native Take also admits a sapient critter for driving: one native path takes up a life in both games. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 813 | An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 861 | A player-directed deliberative critter gets a native travel goal from an approved journey; it departs when its own choice allows, so the party can split. (amended by 862) | none |
 | 862 | The existing native bond and scheduled chooser suffice for directed travel; no extra impression filter, trust threshold or motivation layer. | none |
-| 866 | A native act records participation in every goal it actually served; no primary goal discards the others. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 876 | Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately. | none |
 
 ## Presentation
@@ -673,6 +671,8 @@ three design docs that cite it. The record holds the words.
 | 680 | An interim M4 at site grain gives a first played loop on Isocosm without in-site space; the full M4 follows when places land. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 681 | The interim M4 is the switch: genet's runtime moves onto a native Session and the legacy world family retires then. (amended by 755) | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 682 | M3 plays a native generated lineage; the founders join when the bodies family and fork 9 land. | none |
+| 751 | A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 753 | After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available. | none |
 | 755 | The world families come forward in the migration push; Mesocosm's and Eponym's worlds move onto native, the switch with them, legacy bodies deleted. | none |
 | 833 | Mesocosm owns and saves actual spatial state, bound to native body and terrain revisions; missing or stale inputs refuse. | none |
 | 841 | Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission. | none |

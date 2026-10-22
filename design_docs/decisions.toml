@@ -182,6 +182,7 @@ title = "Each game foregrounds one rung of the agent ladder; the others are simm
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Each game foregrounds one rung of the agent ladder (critter, borg, character); the other rungs are simmed and weakly expressed."
+draws_on = ["6"]
 
 [cases."36"]
 title = "What a creature carries at each level of identity,"
@@ -334,6 +335,7 @@ title = "Driving is Paredros; directing composes on top of it"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Driving is Paredros (one sophont); directing composes on top by giving directives as that sophont, with an opinion modifier for efficacy."
+draws_on = ["59"]
 
 [cases."61"]
 title = "Death is final across the board; each game has its own trick"
@@ -864,12 +866,14 @@ title = "Outside the world, a player directs only who they play"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Outside the world, a player directs only who they play; everything else is asked in the world through that entity."
+draws_on = ["60"]
 
 [cases."153"]
 title = "Two players may direct the same entity"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Two players may direct the same entity, which weighs conflicting directives by its opinion of each."
+draws_on = ["152"]
 
 [cases."154"]
 title = "D19's contract is ruled"
@@ -1185,6 +1189,7 @@ title = "A player may pin any pointable thing"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "A player may pin any pointable thing: entities, places, items, lineages, factions and events."
+draws_on = ["130", "204"]
 
 [cases."211"]
 title = "An attended group runs its noted members exactly and the rest as a crowd"
@@ -1197,12 +1202,14 @@ title = "Examining is what the view shows up close"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Examining is what the view shows at full detail up close; that is watched, runs in detail and is logged; far views stay crowd."
+draws_on = ["71", "113"]
 
 [cases."213"]
 title = "A player's event stream carries what is attended"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "A player's event stream carries what is attended: who they play, what they pin and examine, and the game's own care."
+draws_on = ["180", "212"]
 
 [cases."214"]
 title = "A click draws the critter's attention; attending is the default, and a right click picks another meaning"
@@ -2181,6 +2188,7 @@ title = "What a window may know follows its seat and subject, never its mode"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "What a window may know follows its participant's seat, the entity played and awareness granted in play, never its mode."
+draws_on = ["156", "180", "184", "384", "443"]
 
 [cases."446"]
 title = "A body keeps its lineage's matter as tissue and reserve"
@@ -3201,6 +3209,7 @@ title = "Non-sapient critters are never driven; Mesocosm's driving ends with its
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Driving is the sapient player's mode; a non-sapient critter is directed; legacy Mesocosm driving ends with its world family's move."
+draws_on = ["60"]
 
 [cases."672"]
 title = "Legacy tests become draws or retire"
@@ -3244,6 +3253,7 @@ title = "The driving intents become the critter's own acts; `Idle` goes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "The six old driving intents become the critter's own acts chosen by its methodology; Idle has no role."
+draws_on = ["671"]
 
 [cases."680"]
 title = "An interim M4 at site grain"
@@ -3268,6 +3278,7 @@ title = "The critter's choice is a deliberative methodology"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "A deliberative critter chooses one Choice process weighing needs, mood, nudges and bond; Receipt.foregone records what it passed over. (amended by 813)"
+draws_on = ["679"]
 
 [cases."684"]
 title = "The interim boundary ports grow-a-copy scoring"
@@ -3280,6 +3291,7 @@ title = "A suggestion is a derived reading"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "A suggestion is a derived reading over foregone and knows; nothing new is kept."
+draws_on = ["683"]
 
 [cases."686"]
 title = "The runtime translates the contract"
@@ -3298,6 +3310,7 @@ title = "The bond is a weighted relation to a participant"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "A participant is a placeless entity and Relation gains a value; each player's bond is its own weighted relation to the critter."
+draws_on = ["177", "178"]
 
 [cases."689"]
 title = "Regions are derived each round"
@@ -3310,12 +3323,14 @@ title = "Standing orders are derived from the history"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Standing orders are derived from logged nudges and their outcomes, replaying exactly, not kept on the entity."
+draws_on = ["59", "216"]
 
 [cases."691"]
 title = "Survival mode filters through what the critter knows"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Survival mode filters through what the critter knows and the reach field; the interim M4 ships both modes."
+draws_on = ["180", "184"]
 
 [cases."695"]
 title = "parry-ground folds into conatus"
@@ -3526,6 +3541,7 @@ title = "The tier line goes to directing"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "The tier line goes to directing, moving with the directing plan's D2, not to the host now."
+draws_on = ["703"]
 
 [cases."743"]
 title = "The neck width defaults to 2"
@@ -3554,7 +3570,7 @@ summary = "The flow record stays in legacy until the record family; the registry
 [cases."751"]
 title = "A site is habitable when the lineage's conditions hold and a member lives there"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Directing and play"
+area = "Mesocosm"
 summary = "A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there."
 
 [cases."752"]
@@ -3566,7 +3582,7 @@ summary = "A minimal native lineage revision comes forward: development-recipe v
 [cases."753"]
 title = "After a regional collapse, members migrate and the player may start again elsewhere"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Directing and play"
+area = "Mesocosm"
 summary = "After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available."
 
 [cases."754"]
@@ -3694,6 +3710,7 @@ title = "Native `Take` admits a sophont for driving"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Native Take also admits a sapient critter for driving: one native path takes up a life in both games."
+draws_on = ["671"]
 
 [cases."787"]
 title = "Authored cells reach the world by `Command::Express`"
@@ -3760,6 +3777,7 @@ title = "An empty choice can be reconsidered at a later pass start"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick."
+amends = ["683"]
 
 [cases."814"]
 title = "The VTT declares its note kinds in the world's founding rules"
@@ -4037,12 +4055,14 @@ title = "Directed critters receive a travel goal, bounded by their impressions a
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "A player-directed deliberative critter gets a native travel goal from an approved journey; it departs when its own choice allows, so the party can split. (amended by 862)"
+draws_on = ["683", "859"]
 
 [cases."862"]
 title = "The existing native bond suffices for directed travel in this migration"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "The existing native bond and scheduled chooser suffice for directed travel; no extra impression filter, trust threshold or motivation layer."
+amends = ["861"]
 
 [cases."863"]
 title = "Future produced lots are selected by explicit authored operation/output references"
@@ -4065,7 +4085,7 @@ summary = "A compatible dormant adventure pack activates only when the DM previe
 [cases."866"]
 title = "A native act records participation in every goal it actually served"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Directing and play"
+area = "Processes and rules"
 summary = "A native act records participation in every goal it actually served; no primary goal discards the others."
 
 [cases."867"]
@@ -4122,6 +4142,7 @@ title = "Location identity is learned explicitly, with membership and extent sep
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately."
+draws_on = ["869"]
 
 [cases."877"]
 title = "Companion succession uses an authored native social agreement or standing predicate"
@@ -4577,7 +4598,42 @@ title = "Surfaces derive from knowledge and control"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
 summary = "Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known."
-draws_on = ["432", "847", "868", "869", "870"]
+draws_on = ["432", "445", "847", "868", "869", "870"]
+
+[statements."directing.2"]
+title = "Each game foregrounds one rung"
+source = "design_docs/doctrine.md"
+area = "Directing and play"
+summary = "Each game foregrounds one rung of the agent ladder; the other rungs are simmed and weakly expressed."
+draws_on = ["6", "35"]
+
+[statements."directing.3"]
+title = "Directing below sapience, driving above it"
+source = "design_docs/doctrine.md"
+area = "Directing and play"
+summary = "Non-sapient critters are directed, sophonts driven; a player directs only who they play; co-op direction is weighed by opinion."
+draws_on = ["59", "60", "152", "153", "671", "679", "779"]
+
+[statements."directing.4"]
+title = "The chooser and the bond"
+source = "design_docs/doctrine.md"
+area = "Directing and play"
+summary = "One choice a tick weighing needs, mood, nudges and bond; bonds are weighted relations; suggestions and standing orders are derived."
+draws_on = ["683", "685", "686", "688", "690", "813", "861", "862"]
+
+[statements."directing.5"]
+title = "Attention"
+source = "design_docs/doctrine.md"
+area = "Directing and play"
+summary = "Attention is play, pins, examining and the game's care; examining is full detail up close; streams carry what is attended."
+draws_on = ["210", "212", "213", "691", "742", "876"]
+
+[statements."directing.6"]
+title = "Death and new lives"
+source = "design_docs/doctrine.md"
+area = "Directing and play"
+summary = "Death is final, each game with its trick; a new life chooses which conditions to carry forward."
+draws_on = ["61", "406"]
 
 [statements."host.1"]
 title = "One sim host under three product hosts"
