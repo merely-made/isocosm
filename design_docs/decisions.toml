@@ -394,12 +394,14 @@ title = "The soup is the ambient tier; things of note return to it by becoming i
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "The soup is the ambient tier; things of note return to it by becoming irrelevant to the player (garbage collection), so invalidation criteria are crucial."
+draws_on = ["69"]
 
 [cases."71"]
 title = "The roots of collection are the entities players care about, and examination counts as play; collection is graded, down to just the event"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "Collection roots are the entities players care about; examination counts as play; collection is graded down to just the event."
+draws_on = ["70"]
 
 [cases."72"]
 title = "The place words: a world map is a grid of sites in any shape; region, location, wilderness, biome and environment defined"
@@ -448,6 +450,7 @@ title = "\"Of note\" is literal: a note on the thing, made by the sim as a playe
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "Of note is literal: a note on the thing, made by the sim as a player would make one."
+draws_on = ["69"]
 
 [cases."81"]
 title = "Asserting a constitution is itself an act, the definitive one"
@@ -699,36 +702,42 @@ title = "Noting and promotion belong to the world; collection and merging belong
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "Noting and promotion belong to the world; collection and merging belong to the record."
+draws_on = ["69", "70"]
 
 [cases."126"]
 title = "A fork founds a new world; a branch is the same world played apart and merged back"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "A fork founds a new world with its own history that never merges back; a branch is the same world played apart and merged back."
+draws_on = ["7", "104"]
 
 [cases."127"]
 title = "Everything fades, at a rate the holder's memory sets; physical notes do not"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "Everything fades at a rate the holder's memory sets, unless renewed; physical notes (journal, diary) do not fade; legend never fades."
+draws_on = ["70"]
 
 [cases."129"]
 title = "A thing stays of note only while some mind remembers it or some bearer records it"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "A thing stays of note only while some mind remembers it or some bearer records it; when the last copy goes it returns to ambient."
+draws_on = ["80", "127"]
 
 [cases."130"]
 title = "A player keeps things of note through who they play and what they pin; in Eponym a player's notes are diegetic"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "A player keeps things of note through who they play and what they pin; Eponym's notes are diegetic, the VTT's and Mesocosm's are not."
+draws_on = ["129"]
 
 [cases."131"]
 title = "A mind remembers what was new to it, mattered to it, was intense, or kept happening"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "A mind remembers what was new to it, mattered to it, was intense, or kept happening."
+draws_on = ["71", "127"]
 
 [cases."132"]
 title = "An unpractised skill decays slowly, to a floor it never drops below"
@@ -1514,6 +1523,7 @@ title = "At a merge that changes lived outcomes, the player chooses"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "When a merge changes lived outcomes the player chooses: keep their fork, let the replay adjust around them, or let it win, making them tales."
+draws_on = ["126", "157"]
 
 [cases."276"]
 title = "Shapes are eight: lump, rod, sheet, point, tube, branch, shell and joint"
@@ -2164,6 +2174,7 @@ title = "The world save holds the sim's history and a section per mode"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "The world save holds the sim's history plus an opaque section per mode, which builds without that mode carry through unchanged."
+draws_on = ["104", "385"]
 
 [cases."445"]
 title = "What a window may know follows its seat and subject, never its mode"
@@ -2948,6 +2959,7 @@ title = "Labelled checkpoints per epoch; a per-tick trace on demand"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "Saves keep one labelled checkpoint per epoch and a mismatch names the first diverging entry; bench and probe tools write a per-tick trace on demand."
+draws_on = ["284", "607"]
 
 [cases."612"]
 title = "An index row is a pointer, a purpose and a status"
@@ -3063,6 +3075,7 @@ title = "Saves keep fields; traces keep entities"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "Saved checkpoints carry labelled entries per top-level State field; the on-demand per-tick trace carries entities."
+draws_on = ["610"]
 
 [cases."634"]
 title = "A v2 save stores the witness as a u64"
@@ -3075,6 +3088,7 @@ title = "The witness hashes postcard bytes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "The witness hashes postcard bytes through isometer_core::snapshot::encode, one encoding across the family."
+draws_on = ["607"]
 
 [cases."641"]
 title = "A v1 save is still checked at every checkpoint"
@@ -3087,6 +3101,7 @@ title = "The probe traces draw 0's exact run"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "The probe's trace records draw 0's exact run in the bench's tick-witness line format."
+draws_on = ["610"]
 
 [cases."643"]
 title = "The repo shares a build-dir, not a target-dir"
@@ -3111,6 +3126,7 @@ title = "Traces label every critter"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "Traces carry one entry per critter, each cohort's digest reused for its members, so a divergence names the exact critter."
+draws_on = ["633"]
 
 [cases."651"]
 title = "H2's saves move to v3"
@@ -3123,12 +3139,14 @@ title = "The state hash is the entries' digest"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "state_hash is Witness::digest over the per-field entries; H1's whole-state hash survives only to read v2 saves."
+draws_on = ["607", "633"]
 
 [cases."653"]
 title = "Per-tick entries go in a framed trace"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines."
+draws_on = ["610", "649"]
 
 [cases."657"]
 title = "The nervous system carries no matter"
@@ -3640,12 +3658,6 @@ title = "Authored places, characters, laws and history lines are native nouns wi
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills."
-
-[cases."770"]
-title = "The legacy record leaves with the world move"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Record and history"
-summary = "Legacy history, record and snapshot leave with the world move; the moved world writes native history, journal and witness."
 
 [cases."771"]
 title = "Eponym's epistemic layer becomes notes plus knowing"
@@ -4348,12 +4360,6 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen."
 
-[cases."940"]
-title = "F2: generator-1 motion archives stay as decode receipts"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Record and history"
-summary = "F2: generator-1 motion archives stay as decode receipts only; the restore-and-continue tests retire."
-
 [cases."943"]
 title = "F5: worn items on a severed non-played part drop through the sim's handoff"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -4533,6 +4539,14 @@ area = "Presentation"
 summary = "Mesocosm defaults to a selectable isometric surface view with section options."
 draws_on = ["382"]
 governs = ["mesocosm-genet::section::camera"]
+
+[decisions."orthographic-voxel-presentation D2"]
+title = "rich bodies (2026-10-22), applies 511, 512, 531, 758"
+source = "mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md"
+area = "Bodies and anatomy"
+summary = "Existing paid body chains and function appearance connect to ordinary play."
+draws_on = ["511", "512", "531", "758"]
+governs = ["isocosm::datasheet::native", "isocosm::development", "mesocosm-genet::section"]
 
 [decisions."sim-execution D1"]
 title = "draw keys (2026-10-19)"
@@ -4789,3 +4803,31 @@ source = "design_docs/doctrine.md"
 area = "Record and history"
 summary = "Order is chosen per domain: a handed-off sequencer refuses stale intents where order matters; signed concurrent work is materialized where it does not."
 draws_on = ["104", "105", "910", "956", "960"]
+
+[statements."record.2"]
+title = "Three tiers of keeping"
+source = "design_docs/doctrine.md"
+area = "Record and history"
+summary = "Ambient, of note, legend; the significant record is never lossy; collection is graded GC rooted in what players care about."
+draws_on = ["4", "69", "70", "71", "80", "125"]
+
+[statements."record.3"]
+title = "Memory is local and fades"
+source = "design_docs/doctrine.md"
+area = "Record and history"
+summary = "Memory is local, graded and fades at the holder's rate unless renewed; a thing is of note while remembered or recorded."
+draws_on = ["5", "55", "127", "129", "130", "131"]
+
+[statements."record.4"]
+title = "Worlds fork and branch"
+source = "design_docs/doctrine.md"
+area = "Record and history"
+summary = "Forks found new worlds; branches return as proposals; lived outcomes are the player's choice at a merge; one save, a section per mode."
+draws_on = ["7", "104", "105", "126", "274", "444"]
+
+[statements."record.5"]
+title = "The witness"
+source = "design_docs/doctrine.md"
+area = "Record and history"
+summary = "The state hash is an FNV-1a equality witness over labelled entries; SHA-256 for trust; epoch checkpoints, per-critter traces."
+draws_on = ["607", "610", "633", "636", "642", "649", "652", "653"]

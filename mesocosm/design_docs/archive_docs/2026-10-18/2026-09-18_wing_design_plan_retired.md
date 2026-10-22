@@ -2649,6 +2649,23 @@ documentation pass; SP2's landed receipt and other active work are unchanged.
      yet. So the clause stands unbuilt, to be sharpened in the after-pass;
      only "levels it once held" is built.
 
+**Moved 2026-10-22** in the doctrine's Record and history review, as finished
+housekeeping (Mark: "Archive both"):
+
+770. **The legacy record leaves with the world move.** 2026-10-10.
+     Question: legacy `history`, `record` and `snapshot` are the legacy
+     `World`'s own record, shaped unlike native's. Options: they leave with
+     the world move, the moved world writing native history, journal and
+     witness (recommended); lower them now. Mark chose "Leave with the world
+     move (Recommended)".
+940. **F2: generator-1 motion archives stay as decode receipts.** They are
+     refused at generator 4 (`GeneratorDiverged`), the world that
+     authenticated them is gone, and `save_wire` already pins their bytes
+     and the refusal. Options: (1) "Decode receipts only (Recommended)": the
+     three restore-and-continue tests retire under 672; (2) "Build a gen-1
+     reader"; (3) "Ignore until Q5/Q11". Mark: "Decode receipts only
+     (Recommended)"
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's
