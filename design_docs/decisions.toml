@@ -1073,12 +1073,14 @@ title = "At a death in Eponym, the player chooses who to become, among bonded co
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "At a death in Eponym the player chooses who to become, among bonded companions."
+draws_on = ["153"]
 
 [cases."187"]
 title = "Survival and creative modes hold for Eponym as for Mesocosm"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Directing and play"
 summary = "Survival and creative modes hold for Eponym as for Mesocosm; creative is also where tag-in lives."
+draws_on = ["180", "184"]
 
 [cases."188"]
 title = "A VTT campaign may run with the sim off"
@@ -1318,7 +1320,7 @@ draws_on = ["181", "226"]
 [cases."232"]
 title = "Eponym's blows are resolved in the foreground and handed back"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "Eponym's blows are resolved in the foreground and handed back as vigour drained and wounds to parts, agreeing with the sim's fight in distribution."
 
 [cases."233"]
@@ -1350,6 +1352,7 @@ title = "At an Eponym death with no bonded companion, what follows is the player
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "At an Eponym death with no bonded companion, what follows is the player's call: another life in that world or a new world."
+draws_on = ["229", "235"]
 
 [cases."239"]
 title = "Isocosm absorbs Eponym's simulation, and driving is built only on Isocosm"
@@ -2926,6 +2929,7 @@ title = "Eponym's motion stays game-side"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "Eponym's motion and contact stay game-side as eponym-motion; other Eponym crates move into Isocosm, which never depends on Rapier."
+draws_on = ["233"]
 
 [cases."598"]
 title = "The campaign world's adapters stay with the VTT"
@@ -3649,6 +3653,7 @@ title = "Eponym's needs become native accounts; its wound, checkpoint 10's cell 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "Eponym's hunger and fatigue become native accounts read by Needs; its wound is checkpoint 10's cell loss, built with Eponym's world move."
+draws_on = ["239"]
 
 [cases."768"]
 title = "A campaign's session carries its assertions"
@@ -3667,6 +3672,7 @@ title = "Eponym's epistemic layer becomes notes plus knowing"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "Eponym's epistemic layer becomes notes held by the observer plus the reach field's knowing; its simulation record leaves with its world move."
+draws_on = ["84", "117"]
 
 [cases."772"]
 title = "A new line's name is its key"
@@ -3679,6 +3685,7 @@ title = "Eponym's items are inert entities carried by relation"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "Eponym's items are inert entities of item lineages carried by relation, with position and worn part game-side."
+draws_on = ["239"]
 
 [cases."777"]
 title = "Eponym keeps its admitted anatomy snapshot"
@@ -3735,6 +3742,7 @@ title = "A deed's agreement link is typed on its native event"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "A deed's agreement link is a typed optional agreement id on its native event; agreements stay in State::agreements."
+draws_on = ["780"]
 
 [cases."809"]
 title = "Native characters retain optional table metadata"
@@ -3797,12 +3805,14 @@ title = "Eponym initially develops the compact six-part native recipe"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "Eponym initially develops the compact six-part native recipe (intake, store, sense, contract, support, grip), replacing the authored seven-part body."
+draws_on = ["816"]
 
 [cases."819"]
 title = "Fresh arrival tissue fits the developed native body"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "Fresh arrival tissue is issued within the developed native body's capacity; reserve 100 and energy 100 where admitted."
+draws_on = ["777", "816"]
 
 [cases."820"]
 title = "Upkeep continues during travel and carries its produced soil"
@@ -3890,6 +3900,7 @@ title = "Named native material recipes specify new item stocks and quantities"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "Named native material recipes specify source stocks and quantities for newly founded material items; existing saves keep recorded holdings."
+draws_on = ["776", "801"]
 
 [cases."836"]
 title = "Each declared material has a distinct native stock in new worlds"
@@ -3900,26 +3911,29 @@ summary = "Newly founded worlds give each declared material a distinct native st
 [cases."837"]
 title = "A native project reserves inputs and spends from that ledger as work progresses"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "A native project ledger reserves inputs and work spends from it; interruption preserves remaining inputs and progress, matter counted once."
 
 [cases."838"]
 title = "Any eligible natively authorized subject may resume a project"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "Any subject with current craft eligibility, native project authorization and ordinary control may resume a project."
+draws_on = ["837"]
 
 [cases."839"]
 title = "Native owners of reserved inputs grant project access together"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "The native owners of a project's reserved inputs, acting together, grant and revoke project access."
+draws_on = ["838"]
 
 [cases."840"]
 title = "Interrupted work stays at creation by default, with carrying chosen"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "Interrupted work stays at its creation position by default; carrying by the current worker is an explicit choice with capacity checks."
+draws_on = ["837", "838"]
 
 [cases."841"]
 title = "Authored step profiles tie physical movement to native processes"
@@ -3938,26 +3952,30 @@ draws_on = ["833"]
 [cases."843"]
 title = "Ordinary reservation requires explicit native ownership"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "Ordinary reservation requires an explicit native ownership assertion; holding, tenancy and maker provenance supply none; a help action is a separate pathway."
+draws_on = ["839"]
 
 [cases."844"]
 title = "Polities may author any of the three collective approval strategies"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "Polities authorize via an explicitly authored choice among governance decisions, member unanimity or declared representatives; none is selected silently."
+draws_on = ["839"]
 
 [cases."845"]
 title = "Stock ownership names exact quantity lots selected for reservation"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "Stock ownership names exact quantity lots selected explicitly for reservation; later incoming matter does not acquire earlier owners."
+draws_on = ["839", "843"]
 
 [cases."846"]
 title = "Owned-stock debits select their native quantity lots explicitly"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "Debits of owned stock must explicitly select their native quantity lots; absent selection refuses and no automatic allocation applies."
+draws_on = ["845"]
 
 [cases."847"]
 title = "Resident corpses remain visible through native awareness and close-up"
@@ -3975,14 +3993,16 @@ draws_on = ["821", "833"]
 [cases."849"]
 title = "A debit may select an exact portion of a named native lot"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "A debit selects an exact quantity from a named lot, the unselected portion staying at source; no FIFO or proportional split."
+draws_on = ["846"]
 
 [cases."850"]
 title = "Each operation authors retained output claims or consumed-claim closure"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "Each operation declares which outputs retain the selected owners' claims or closes consumed claims; matter stays conserved regardless."
+draws_on = ["846"]
 
 [cases."851"]
 title = "Every bound table player holds downtime unless they release their own hold"
@@ -4061,8 +4081,9 @@ amends = ["861"]
 [cases."863"]
 title = "Future produced lots are selected by explicit authored operation/output references"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Eponym"
+area = "Processes and rules"
 summary = "A later process selects a future produced lot by an explicit authored reference naming the producing operation, output and exact quantity."
+draws_on = ["849"]
 
 [cases."864"]
 title = "Collect the outstanding questions and deliver them together"
@@ -4143,6 +4164,7 @@ title = "Companion succession uses an authored native social agreement or standi
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Eponym"
 summary = "Companion succession eligibility is an explicitly authored native social agreement or standing predicate over deceased body and candidate."
+draws_on = ["186"]
 
 [cases."878"]
 title = "Total collapse uses an explicitly authored native global predicate"
@@ -4601,7 +4623,7 @@ title = "Surfaces derive from knowledge and control"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
 summary = "Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known."
-draws_on = ["180", "184", "432", "445", "847", "868", "869", "870"]
+draws_on = ["180", "184", "187", "432", "445", "847", "868", "869", "870"]
 
 [statements."directing.2"]
 title = "Each game foregrounds one rung"
@@ -4672,6 +4694,34 @@ source = "design_docs/doctrine.md"
 area = "Ecology"
 summary = "Light credit scales with the sun and a store holds a night; life spans are individual hazards under a drawn ceiling."
 draws_on = ["906", "949", "972", "982", "983"]
+
+[statements."eponym.1"]
+title = "Lives and co-op"
+source = "design_docs/doctrine.md"
+area = "Eponym"
+summary = "Each player lives their own creature; first lives and successions are the player's picks among eligible lives."
+draws_on = ["185", "186", "234", "235", "238", "877"]
+
+[statements."eponym.2"]
+title = "Fighting and motion"
+source = "design_docs/doctrine.md"
+area = "Eponym"
+summary = "Blows resolve in the foreground and hand back; motion and contact are game-side; the sim is handed a solver."
+draws_on = ["233", "597", "943", "processes.1"]
+
+[statements."eponym.3"]
+title = "Eponym's world is native Isocosm"
+source = "design_docs/doctrine.md"
+area = "Eponym"
+summary = "Eponym's needs, wounds, knowing, items and social vocabulary are native Isocosm; crafts are rules-pack keys."
+draws_on = ["239", "767", "771", "776", "777", "778", "808"]
+
+[statements."eponym.4"]
+title = "Native recipes make bodies and things"
+source = "design_docs/doctrine.md"
+area = "Eponym"
+summary = "Native recipes develop bodies and stock new items; fresh matter fits the development; founding profiles restore by version tag."
+draws_on = ["816", "818", "819", "825", "835"]
 
 [statements."host.1"]
 title = "One sim host under three product hosts"
@@ -4932,6 +4982,20 @@ source = "design_docs/doctrine.md"
 area = "Presentation"
 summary = "Map meanings are independent layers; undisclosed edges clip sharply; remains are seen as their place is known."
 draws_on = ["847", "868", "869", "870", "directing.1"]
+
+[statements."processes.1"]
+title = "The foreground resolves; the sim keeps count"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "A game's finer resolution hands back in the sim's terms, passing its invariants and agreeing in distribution."
+draws_on = ["232"]
+
+[statements."processes.2"]
+title = "Property is explicit, by lots"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Ownership is asserted by exact lots; debits select lots; projects reserve inputs; input owners grant access."
+draws_on = ["837", "838", "839", "840", "843", "844", "845", "846", "849", "850", "863"]
 
 [statements."record.1"]
 title = "Consistency is chosen per domain"
