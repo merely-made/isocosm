@@ -97,10 +97,7 @@ fn assert_placements(session: &Session, game: &Game) {
             .sim
             .volume(at.site.0, at.window.min, at.window.max, at.window.depth)
             .unwrap();
-        let pose = native::Pose {
-            at: at.pose.at,
-            yaw: at.pose.yaw,
-        };
+        let pose = at.pose.clone();
         body::check(&volume, document, &pose).unwrap();
         let boxes = body::boxes(document, &pose).unwrap();
         for (site, other) in &all {

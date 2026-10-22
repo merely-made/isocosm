@@ -179,6 +179,9 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
             if runtime.critter().is_none_or(|id| !runtime.spatial().members.contains_key(&id)) {
                 return Err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingPlayedPlacement);
             }
+            if !placed_food_near_starter(&runtime) {
+                return Err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::MissingViableConsumerFood);
+            }
             Ok(runtime)
         }).map_err(|error| match error {
             mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message) => message,
@@ -192,6 +195,24 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
     // One tick at a time, on a worker: a world too big for the clock falls
     // behind it while the window keeps drawing the last tick.
     Ok(selected.setup.with_max_steps(1).with_background())
+}
+
+/// Structural diet compatibility alone can put food in a different site.
+/// New playable worlds also need an actual nearby meal, using native queries
+/// and native occupied geometry. This does not require a walk or choose one.
+fn placed_food_near_starter(runtime: &Runtime) -> bool {
+    use isocosm::spatial::{embodiment, foraging};
+    let Some(id) = runtime.critter() else { return false; };
+    let sim = runtime.sim();
+    let game = runtime.spatial();
+    let Some(actor) = game.members.get(&id) else { return false; };
+    let Some(doc) = sim.state().population.get(id).and_then(|e|e.body.as_ref()) else { return false; };
+    let Ok(occupied) = embodiment::boxes(doc, &actor.pose) else { return false; };
+    sim.placement_food(id, actor.site.0).into_iter().any(|(food, range)| {
+        let Some(at) = game.members.get(&food).filter(|at|at.site == actor.site) else { return false; };
+        let Some(doc) = sim.state().population.get(food).and_then(|e|e.body.as_ref()) else { return false; };
+        embodiment::boxes(doc, &at.pose).is_ok_and(|boxes|foraging::gap(&occupied, &boxes) <= range)
+    })
 }
 
 fn read_setup(path: &std::path::Path) -> Result<mesocosm_runtime::runtime::ecology::Setup, String> {
@@ -294,6 +315,19 @@ mod tests {
         }).unwrap();
         assert_eq!(selected.attempts, 2);
         assert_eq!(selected.seed, candidate_seed(7, 1));
+    }
+
+    #[test]
+    fn structurally_edible_food_in_another_site_is_not_a_playable_meal() {
+        // Second headed regression: the old preflight admitted this world,
+        // then its controlled consumer migrated immediately without walking.
+        let mut founded = mesocosm_runtime::Founded::generated(15_553_628_298_003_140_480, 60).unwrap();
+        let b = founded.genesis.founding.as_mut().unwrap().bodies.as_mut().unwrap();
+        b.roster = true;
+        b.founding = Some("SpacedRoster".into());
+        let founded = a1_setup(founded, None).unwrap().founded;
+        let runtime = Runtime::bench_placed(founded, 2).unwrap();
+        assert!(!placed_food_near_starter(&runtime));
     }
     #[test]
     fn default_search_recovers_the_observed_eight_candidate_exhaustion() {

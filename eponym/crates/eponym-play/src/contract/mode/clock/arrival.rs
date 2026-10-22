@@ -23,7 +23,7 @@ pub(super) fn inputs(session: &Session, mode: &ModeState, state: &State)
                 terrain_revision: session.sim.terrain_revision() },
             geometry: native::ArrivalGeometry { window: input.window.clone(), pose: native::Pose {
                 at: crate::walking::to_site(&v, input.pose.cell().map_err(|e| format!("Eponym arrival pose: {e:?}"))?),
-                yaw: input.yaw }, eye: input.eye, places: input.places },
+                yaw: input.yaw , feet: Default::default() }, eye: input.eye, places: input.places },
         });
     }
     Ok(out)

@@ -31,6 +31,8 @@ pub struct Stand {
     pub at: [i64; 3], pub yaw: Yaw,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub actor: Option<Id>,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub feet: BTreeMap<isometer_core::PartId, [i64; 3]>,
 }
 
 /// The stand a member takes on arriving by this route.
@@ -50,11 +52,15 @@ pub struct Templates {
     pub crossings: Vec<Crossing>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub foraging: BTreeMap<Key, super::foraging::Foraging>,
+    /// Spawn/arrival/birth clearance in base columns. Walking may close to food.
+    #[serde(default, skip_serializing_if = "zero")]
+    pub body_spacing: u32,
 }
+fn zero(value: &u32) -> bool { *value == 0 }
 
 impl Templates {
     pub fn validate(&self, genesis: &Genesis) -> Result<()> {
-        if !matches!(self.version, VERSION | 2 | 3) || self.window.max[0] <= self.window.min[0]
+        if !matches!(self.version, VERSION | 2 | 3 | 4) || self.window.max[0] <= self.window.min[0]
             || self.window.max[1] <= self.window.min[1] || self.window.depth <= 0 {
             return Err("unsupported or empty spatial templates".into());
         }
@@ -104,7 +110,7 @@ impl Templates {
                 .map(|stand| Crossing { from, to: r.to, stand: stand.clone() }))
             .collect::<Vec<_>>()).collect();
         genesis.rules.spatial_templates = Some(Templates { version: VERSION, window, places, eye: EYE,
-            stands, crossings, foraging: BTreeMap::new() });
+            stands, crossings, foraging: BTreeMap::new(), body_spacing: 0 });
         Ok(())
     }
 }
@@ -140,7 +146,7 @@ fn stands_of(volume: &Volume, rules: PlaceRules, seed: u64, site: Id) -> Result<
                 let patch = places.as_ref().and_then(|p| p.place_at(root));
                 if patch.is_some() && patch == places.as_ref().and_then(|p| p.place_at(eye)) {
                     let quarters = crate::draw(seed, "stand-yaw", &[site, (x as u64) << 20 ^ z as u64]) % 4;
-                    found.push(Stand { at: root, yaw: (0..quarters).fold(Yaw::Zero, |y, _| y.compose(Yaw::Quarter)), actor: None });
+                    found.push(Stand { at: root, yaw: (0..quarters).fold(Yaw::Zero, |y, _| y.compose(Yaw::Quarter)), actor: None , feet: Default::default() });
                 }
             }
         }

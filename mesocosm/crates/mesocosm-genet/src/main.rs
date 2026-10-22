@@ -335,7 +335,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --epoch N       play epoch ticks (default 60)
   --hour H        play world's starting hour, 0 to 23 (default 7)
   --soil P        play world's founding soil, percent (default 100)
-  --candidate-attempts N  cap unchosen A1 structural candidates (default 32, max 128)
+  --candidate-attempts N  cap unchosen A1 structural candidates (default 128, max 128)
   --unchosen-seed use the native clock-sourced new-world seed (ordinary default)
   --start W:E     wait at most W epochs for habitability, then add E epochs
   --mode MODE     survival or creative, using the native view

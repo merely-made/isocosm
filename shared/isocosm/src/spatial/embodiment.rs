@@ -9,12 +9,21 @@ use super::*;
 use isometer_core::BodyDocument;
 use isometer_space::{places::Places, volume::Volume};
 
+mod articulation;
 mod contacts;
+mod food;
+mod narrow;
+pub use food::FoodStand;
+mod swing;
+pub use articulation::{articulated, foot_points};
+pub use swing::{SAMPLES as SWING_SAMPLES, swing_boxes, swing_feet};
 mod founding;
 pub use contacts::{Contact, contacts, sweep_clear};
 #[cfg(test)]
+mod articulation_tests;
+#[cfg(test)]
 mod tests;
-pub use founding::declare;
+pub use founding::{anchor, declare};
 
 pub type Box3 = [[i64; 3]; 2];
 pub const SEARCH_REACH: i64 = 24;
@@ -31,12 +40,17 @@ pub fn enabled(sim: &Simulation) -> bool {
 
 /// Exact half-open boxes, including each attachment's yaw and the root yaw.
 pub fn boxes(document: &BodyDocument, pose: &Pose) -> Result<Vec<Box3>> {
+    let articulated = articulation::part_boxes(document, pose)?;
     let mut out = Vec::new();
     let mut cells = 0u64;
     for part in document
         .living()
         .filter(|part| part.half_extent.iter().all(|h| *h > 0))
     {
+        if let Some(bounds) = articulated.get(&part.id) {
+            out.push(*bounds);
+            continue;
+        }
         let size = part
             .half_extent
             .map(|h| h.checked_mul(2).ok_or("body extent overflow"));
@@ -94,7 +108,36 @@ pub fn air(volume: &Volume, at: [i64; 3]) -> bool {
 /// Every occupied part cell must fit; at least one actual part floor touches
 /// non-water ground. Empty attachment points have no collision volume.
 pub fn check(volume: &Volume, document: &BodyDocument, pose: &Pose) -> Result<()> {
-    check_occupied(volume, boxes(document, pose)?)
+    let occupied = boxes(document, pose)?;
+    if pose.feet.is_empty() {
+        check_occupied(volume, occupied)?;
+    } else {
+        narrow::clear(
+            volume,
+            document,
+            pose.at.map(|v| v * isometer_core::legs::UNIT),
+            pose.yaw,
+            &pose.feet,
+            &occupied,
+            &[],
+        )?;
+        articulation::support(volume, document, pose)?;
+    }
+    Ok(())
+}
+
+/// A new articulated world cannot submit an old rigid pose to bypass support.
+pub fn check_for(
+    sim: &Simulation,
+    volume: &Volume,
+    document: &BodyDocument,
+    pose: &Pose,
+) -> Result<()> {
+    if articulated(sim) && pose.feet.is_empty() && !isometer_core::legs::chains(document).is_empty()
+    {
+        return Err("articulated world requires admitted paid-foot placement".into());
+    }
+    check(volume, document, pose)
 }
 
 fn check_occupied(volume: &Volume, occupied: Vec<Box3>) -> Result<()> {
@@ -152,6 +195,10 @@ pub struct Grounding<'a> {
     // Exact terrain-only answers. Occupancy is always tested again by find.
     stands: BTreeMap<Vec<Box3>, BTreeMap<[i64; 2], Option<[i64; 3]>>>,
     stand_count: usize,
+    articulated: bool,
+    spacing: i64,
+    articulated_stands:
+        BTreeMap<BodyDocument, BTreeMap<([i64; 2], Yaw, Option<i64>), Option<Pose>>>,
 }
 
 impl<'a> Grounding<'a> {
@@ -161,11 +208,60 @@ impl<'a> Grounding<'a> {
             tops: BTreeMap::new(),
             stands: BTreeMap::new(),
             stand_count: 0,
+            articulated: false,
+            spacing: 0,
+            articulated_stands: BTreeMap::new(),
         }
     }
 
+    pub fn with_articulation(mut self, enabled: bool) -> Self {
+        self.articulated = enabled;
+        self
+    }
+    pub fn with_spacing(mut self, cells: u32) -> Self {
+        self.spacing = i64::from(cells);
+        self
+    }
+
     pub fn at(&mut self, document: &BodyDocument, x: i64, z: i64, yaw: Yaw) -> Result<Pose> {
-        let local = boxes(document, &Pose { at: [0; 3], yaw })?;
+        self.at_near(document, x, z, yaw, None)
+    }
+    fn at_near(
+        &mut self,
+        document: &BodyDocument,
+        x: i64,
+        z: i64,
+        yaw: Yaw,
+        height: Option<i64>,
+    ) -> Result<Pose> {
+        if self.articulated && !isometer_core::legs::chains(document).is_empty() {
+            if let Some(cached) = self
+                .articulated_stands
+                .get(document)
+                .and_then(|s| s.get(&([x, z], yaw, height)))
+            {
+                return cached
+                    .clone()
+                    .ok_or_else(|| "cached unsupported chain posture".into());
+            }
+            let pose = articulation::ground(self, document, x, z, yaw, height);
+            if self.stand_count < 4096 && self.articulated_stands.len() < 64 {
+                self.articulated_stands
+                    .entry(document.clone())
+                    .or_default()
+                    .insert(([x, z], yaw, height), pose.clone().ok());
+                self.stand_count += 1;
+            }
+            return pose;
+        }
+        let local = boxes(
+            document,
+            &Pose {
+                at: [0; 3],
+                yaw,
+                ..Default::default()
+            },
+        )?;
         self.at_boxes(&local, x, z, yaw)
     }
 
@@ -195,7 +291,11 @@ impl<'a> Grounding<'a> {
                 }
             }
         }
-        let pose = Pose { at: [x, y, z], yaw };
+        let pose = Pose {
+            at: [x, y, z],
+            yaw,
+            feet: Default::default(),
+        };
         check_occupied(self.volume, translated(relative, pose.at)?)?;
         Ok(pose)
     }
@@ -211,7 +311,45 @@ impl<'a> Grounding<'a> {
         cap: usize,
         blocked: &[Box3],
     ) -> Result<Pose> {
-        let local = boxes(document, &Pose { at: [0; 3], yaw })?;
+        self.find_where(
+            document,
+            centre,
+            yaw,
+            reach,
+            stride,
+            cap,
+            blocked,
+            |_, _| true,
+        )
+    }
+    pub fn find_where(
+        &mut self,
+        document: &BodyDocument,
+        centre: [i64; 3],
+        yaw: Yaw,
+        reach: i64,
+        stride: usize,
+        cap: usize,
+        blocked: &[Box3],
+        mut accept: impl FnMut(&Pose, &[Box3]) -> bool,
+    ) -> Result<Pose> {
+        let local = boxes(
+            document,
+            &Pose {
+                at: [0; 3],
+                yaw,
+                feet: Default::default(),
+            },
+        )?;
+        let separated: Vec<_> = blocked
+            .iter()
+            .map(|[lo, hi]| {
+                [
+                    [0, 1, 2].map(|k| lo[k].saturating_sub(if k == 1 { 0 } else { self.spacing })),
+                    [0, 1, 2].map(|k| hi[k].saturating_add(if k == 1 { 0 } else { self.spacing })),
+                ]
+            })
+            .collect();
         let mut tried = 0;
         for ring in (0..=reach).step_by(stride.max(1)) {
             for x in (centre[0] - ring..=centre[0] + ring).step_by(stride.max(1)) {
@@ -223,10 +361,16 @@ impl<'a> Grounding<'a> {
                     if tried > cap {
                         return Err("body placement candidate budget exhausted".into());
                     }
-                    if let Some(pose) = self.stand(&local, x, z, yaw)
-                        && !intersects(&translated(&local, pose.at)?, blocked)
-                    {
-                        return Ok(pose);
+                    let candidate = if self.articulated {
+                        self.at(document, x, z, yaw).ok()
+                    } else {
+                        self.stand(&local, x, z, yaw)
+                    };
+                    if let Some(pose) = candidate {
+                        let occupied = boxes(document, &pose)?;
+                        if !intersects(&occupied, &separated) && accept(&pose, &occupied) {
+                            return Ok(pose);
+                        }
                     }
                 }
             }
@@ -240,7 +384,11 @@ impl<'a> Grounding<'a> {
             .get(local)
             .and_then(|stands| stands.get(&[x, z]))
         {
-            return at.map(|at| Pose { at, yaw });
+            return at.map(|at| Pose {
+                at,
+                yaw,
+                feet: Default::default(),
+            });
         }
         let pose = self.at_boxes(local, x, z, yaw).ok();
         // Bounded for the whole immutable terrain window, including refusals.
@@ -265,16 +413,85 @@ pub fn neighbours(
     pose: &Pose,
 ) -> Vec<Pose> {
     let mut grounding = Grounding::new(volume);
+    if !pose.feet.is_empty() {
+        grounding.articulated = true;
+        return articulated_neighbours(places, profile, document, pose, &mut grounding);
+    }
     let Ok(local) = boxes(
         document,
         &Pose {
             at: [0; 3],
             yaw: pose.yaw,
+            feet: Default::default(),
         },
     ) else {
         return Vec::new();
     };
     neighbours_from_boxes(places, profile, &local, pose, &mut grounding)
+}
+
+pub(crate) fn articulated_neighbours(
+    places: &Places,
+    profile: &StepProfile,
+    document: &BodyDocument,
+    pose: &Pose,
+    grounding: &mut Grounding<'_>,
+) -> Vec<Pose> {
+    grounding.articulated = true;
+    let Some(from) = places.place_at(pose.at) else {
+        return Vec::new();
+    };
+    let mut out = Vec::new();
+    // The axial graph's forward direction is -Z. Try facing the actual step,
+    // then retain an admitted sidestep if a whole-body turn cannot fit.
+    for (dx, dz, facing) in [
+        (0, -1, Yaw::Zero),
+        (-1, 0, Yaw::Quarter),
+        (0, 1, Yaw::Half),
+        (1, 0, Yaw::ThreeQuarter),
+    ] {
+        for yaw in [facing, pose.yaw] {
+            if out.iter().any(|p: &Pose| {
+                p.at[0] == pose.at[0] + dx && p.at[2] == pose.at[2] + dz && p.yaw == yaw
+            }) {
+                continue;
+            }
+            let Ok(next) = grounding.at_near(
+                document,
+                pose.at[0] + dx,
+                pose.at[2] + dz,
+                yaw,
+                Some(pose.at[1]),
+            ) else {
+                continue;
+            };
+            if next.at[1].abs_diff(pose.at[1]) > u64::from(profile.body.climb) {
+                continue;
+            }
+            let Some(to) = places.place_at(next.at) else {
+                continue;
+            };
+            if from != to {
+                let key = if from < to { [from, to] } else { [to, from] };
+                if places
+                    .passages
+                    .get(&key)
+                    .and_then(|p| profile.body.fits(p))
+                    .is_none()
+                {
+                    continue;
+                }
+            }
+            // Turning geometry is checked through its conservative body sweep.
+            if yaw != pose.yaw
+                && swing::turn_clear(grounding.volume, document, pose, &next).is_err()
+            {
+                continue;
+            }
+            out.push(next);
+        }
+    }
+    out
 }
 
 pub(crate) fn neighbours_from_boxes(

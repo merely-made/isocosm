@@ -100,10 +100,7 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) ->
         .unwrap();
     g.population.groups.get_mut(&food).unwrap().count = 2;
     let at = stands.iter().find(|s| s.actor == Some(actor)).unwrap();
-    let before = native::Pose {
-        at: at.at,
-        yaw: at.yaw,
-    };
+    let before = native::Pose {at:at.at,yaw:at.yaw,feet:at.feet.clone()};
     let actor_boxes = body::boxes(
         g.population.get(actor).unwrap().body.as_ref().unwrap(),
         &before,

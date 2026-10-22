@@ -20,8 +20,7 @@ impl Game {
                 request: ArrivalRequest { actor: input.actor.0, from: journey.from, to: journey.to,
                     departed: journey.departed, arrives: journey.arrives, body_revision: member.body_revision,
                     terrain_revision: session.sim.terrain_revision() },
-                geometry: ArrivalGeometry { window: input.window.clone(), pose: isocosm::spatial::Pose {
-                    at: input.pose.at, yaw: input.pose.yaw }, eye: input.eye, places: input.places },
+                geometry: ArrivalGeometry { window: input.window.clone(), pose: input.pose.clone(), eye: input.eye, places: input.places },
             });
         }
         Ok(out)
@@ -43,15 +42,15 @@ impl Game {
             }
             return Ok(Placement { actor: EntityHandle(input.request.actor), site: PlaceHandle(input.request.to), patch,
                 body_revision: input.request.body_revision, terrain_revision: input.request.terrain_revision.clone(),
-                pose: Pose { at: input.geometry.pose.at, yaw: input.geometry.pose.yaw }, eye: input.geometry.eye,
+                pose: input.geometry.pose.clone(), eye: input.geometry.eye,
                 window: input.geometry.window.clone(), operations: BTreeMap::new(), places: Some(input.geometry.places),
                 resident_since: Some(input.request.arrives) });
         }
         let authored = self.driver.as_ref().ok_or("arrival driver absent")?.arrival_inputs()?;
         let held = authored.iter().find(|held| held.actor.0 == input.request.actor && held.from.0 == input.request.from
             && held.to.0 == input.request.to).ok_or("accepted arrival has no authored destination")?;
-        if input.geometry.window != held.window || input.geometry.pose.at != held.pose.at
-            || input.geometry.pose.yaw != held.pose.yaw || input.geometry.eye != held.eye
+        if input.geometry.window != held.window || input.geometry.pose != held.pose
+            || input.geometry.eye != held.eye
             || input.geometry.places != held.places
         { return Err("native arrival geometry differs from the saved authored destination".into()); }
         Ok(Placement { actor: held.actor, site: held.to, patch, body_revision: input.request.body_revision,
@@ -96,7 +95,7 @@ mod tests {
                 to: held.site.0, departed: 12, arrives: 16,
                 body_revision: held.body_revision, terrain_revision: held.terrain_revision.clone() },
             geometry: ArrivalGeometry { window: held.window.clone(),
-                pose: isocosm::spatial::Pose { at: held.pose.at, yaw: held.pose.yaw },
+                pose: held.pose.clone(),
                 eye: held.eye, places: held.places.unwrap_or_default() },
         };
         let next = game.arrival_placement(&input, held.patch).unwrap();

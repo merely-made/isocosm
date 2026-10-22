@@ -31,10 +31,7 @@ fn fixture() -> (PlacedBody, SiteScene) {
         document,
         at: volume.to_ground(pose.at),
         walks: vec![],
-        physical: Some(mesocosm_runtime::spatial::Pose {
-            at: pose.at,
-            yaw: pose.yaw,
-        }),
+        physical: Some(pose.clone()),
         tint: [1.; 3],
         materials: vec![],
         alive: true,

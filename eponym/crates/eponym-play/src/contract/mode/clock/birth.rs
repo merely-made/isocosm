@@ -38,10 +38,10 @@ pub(super) fn resolve(mode: &ModeState, state: &State, actions: &ActionState, pe
         return Err("birth parent's actual pose differs from the native request".into());
     }
     let geometry = native::BirthGeometry { profile: input.profile.clone(), parent_pose: native::Pose {
-        at: geometry::root(&pending.sim, &parent)?, yaw: physical.yaw }, parent_eye: physical.eye,
+        at: geometry::root(&pending.sim, &parent)?, yaw: physical.yaw , feet: Default::default() }, parent_eye: physical.eye,
         parent_window: parent.window, parent_places: physical.places,
         offset_from_parent: slot.offset_from_parent, yaw_from_parent: slot.yaw_from_parent,
-        eye_from_child: slot.eye_from_child, window: slot.window.clone() };
+        eye_from_child: slot.eye_from_child, window: slot.window.clone(), feet: Default::default() };
     let (pose, _) = native::birth_pose(&geometry)?;
     motion(&pending.sim, r.site.ok_or("birth parent is travelling")?, &slot.window, pose.at, &slot.pose)?;
     profile(&pending.sim, r.child, slot)?;

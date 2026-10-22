@@ -18,6 +18,9 @@ pub(super) fn pose(
     gait: &mut Gait,
     ground: &mut impl FnMut([f32; 3]) -> Option<f32>,
 ) -> Result<(Surface, AnatomyStats, BTreeSet<PartId>), String> {
+    if gait.physical.is_some() {
+        return super::physical_chains::pose(doc, body, gait, ground);
+    }
     let mut surface = Surface::default();
     let mut stats = AnatomyStats::default();
     let mut handled = BTreeSet::new();

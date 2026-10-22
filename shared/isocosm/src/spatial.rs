@@ -46,9 +46,15 @@ pub struct StepProfile {
     pub stance_offset: [i64; 3],
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Pose { pub at: [i64; 3], pub yaw: Yaw }
+pub struct Pose {
+    pub at: [i64; 3], pub yaw: Yaw,
+    /// Admitted sole centres in body-local fixed-point voxel units (1024).
+    /// Empty preserves the rigid contract of existing saved worlds.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub feet: BTreeMap<isometer_core::PartId, [i64; 3]>,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Request {

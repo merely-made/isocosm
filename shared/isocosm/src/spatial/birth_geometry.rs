@@ -26,7 +26,7 @@ pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Re
             .is_none_or(|at| at.site != site || at.arrived != r.parent_visit || at.pose != g.parent_pose) {
             return Err("birth parent differs from its native resident pose".into());
         }
-        embodiment::check(&volume, parent.body.as_ref().ok_or("parent geometry absent")?, &g.parent_pose)?;
+        embodiment::check_for(sim, &volume, parent.body.as_ref().ok_or("parent geometry absent")?, &g.parent_pose)?;
     }
     let patch = r.parent_patch.ok_or("parent has no admitted native place")?;
     for cell in [g.parent_pose.at, g.parent_eye] {
@@ -49,7 +49,10 @@ pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Re
         if !embodiment::enabled(sim) || profile.medium != BirthMedium::Air {
             return Err("part-floor support needs a declared whole-body air world".into());
         }
-        embodiment::check(&volume, document, &pose)?;
+        embodiment::check_for(sim, &volume, document, &pose)?;
+        if embodiment::articulated(sim) && !sim.spatial_destination_clear(r.child,site,&pose) {
+            return Err("newborn intersects a current native resident".into());
+        }
         if !embodiment::air(&volume, eye) || places.place_at(eye) != Some(patch) {
             return Err("whole-body child eye leaves its current clear patch".into());
         }

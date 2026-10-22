@@ -8,7 +8,19 @@ use crate::{
     terrain::View,
 };
 
-pub const GENERATED_VERSION: u32 = 3;
+pub const GENERATED_VERSION: u32 = 4;
+
+/// Distinct deterministic anchors across the declared physical window.
+pub fn anchor(seed: u64, site: u64, id: u64, window: &Window) -> [i64; 3] {
+    let p = [0, 1].map(|k| {
+        let width = (window.max[k] - window.min[k]) / 2;
+        window.min[k]
+            + width / 2
+            + (crate::draw(seed, "body-placement-anchor", &[site, id, k as u64])
+                % width.max(1) as u64) as i64
+    });
+    [p[0], 0, p[1]]
+}
 
 /// Explicit new-play founding transformation, before the native Session exists.
 /// Loading an existing world never regenerates its declared rules or placements.
@@ -19,6 +31,7 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
     if templates.version >= 2 {
         return Ok(());
     }
+    let guide = Simulation::new(genesis.clone(), crate::Execution::Grouped)?;
     let view = View::of(genesis)?;
     let side =
         i64::try_from(view.footprint.side).map_err(|_| "site exceeds physical coordinates")?;
@@ -41,6 +54,7 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
         depth: templates.window.depth,
     };
     templates.version = GENERATED_VERSION;
+    templates.body_spacing = 2;
     templates.stands.clear();
     for &site in genesis.sites.keys() {
         if !genesis.population.groups.values().any(|group| {
@@ -54,10 +68,16 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
         let w = &templates.window;
         let volume = Volume::lift(&view, site, w.min, w.max, w.depth, &[])?;
         let places = Places::derive(&volume, templates.places)?;
-        let mut grounding = Grounding::new(&volume);
+        let mut grounding = Grounding::new(&volume)
+            .with_articulation(true)
+            .with_spacing(templates.body_spacing);
         let mut blocked = Vec::new();
-        let mut stands = Vec::new();
-        for (&id, group) in &genesis.population.groups {
+        let mut stands: Vec<Stand> = Vec::new();
+        let mut groups: Vec<_> = genesis.population.groups.iter().collect();
+        // Creation order is not trophic order. Seat producers before the
+        // consumers whose actual placed food they become.
+        groups.sort_by_key(|(id, g)| (!g.entity.traits.contains("life:producer"), **id));
+        for (&id, group) in groups {
             let e = &group.entity;
             if !e.alive || e.resident_site() != Some(site) || crate::directing::is_participant(e) {
                 continue;
@@ -67,15 +87,41 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
             };
             let yaw = (0..crate::draw(genesis.seed, "body-stand-yaw", &[site, id]) % 4)
                 .fold(Yaw::Zero, |yaw, _| yaw.compose(Yaw::Quarter));
-            let Ok(pose) = grounding.find(
-                document,
-                [mid, 0, mid],
-                yaw,
-                SEARCH_REACH,
-                SEARCH_STRIDE,
-                SEARCH_CANDIDATES,
-                &blocked,
-            ) else {
+            let edible = guide.placement_food(id, site);
+            let foods: Vec<_> = stands
+                .iter()
+                .filter_map(|stand| {
+                    let food = stand.actor?;
+                    let search = *edible.get(&food)?;
+                    let doc = genesis.population.get(food)?.body.as_ref()?;
+                    FoodStand::of(
+                        &volume,
+                        doc,
+                        &Pose {
+                            at: stand.at,
+                            yaw: stand.yaw,
+                            feet: stand.feet.clone(),
+                        },
+                        search,
+                    )
+                    .ok()
+                })
+                .collect();
+            let centre = anchor(genesis.seed, site, id, &templates.window);
+            let answer = if edible.is_empty() {
+                grounding.find(
+                    document,
+                    centre,
+                    yaw,
+                    SEARCH_REACH,
+                    SEARCH_STRIDE,
+                    SEARCH_CANDIDATES,
+                    &blocked,
+                )
+            } else {
+                grounding.near_food(document, centre, yaw, &blocked, &foods)
+            };
+            let Ok(pose) = answer else {
                 continue;
             };
             let eye = [pose.at[0], pose.at[1] + templates.eye[1], pose.at[2]];
@@ -89,6 +135,7 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
                 at: pose.at,
                 yaw: pose.yaw,
                 actor: Some(id),
+                feet: pose.feet,
             });
             if stands.len() == STANDS_PER_SITE {
                 break;
@@ -124,6 +171,7 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
             &Pose {
                 at: [0; 3],
                 yaw: Yaw::Zero,
+                feet: Default::default(),
             },
         )? {
             for k in 0..3 {
@@ -165,9 +213,18 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
         if !cycles.insert(cycle.clone()) {
             continue;
         }
-        let Some(feed) = genesis.rules.processes.values().find(|p| p.port_feeding.is_some()
+        let Some(feed) =
+            genesis
+                .rules
+                .processes
+                .values()
+                .find(|p| {
+                    p.port_feeding.is_some()
             && p.target.is_some() && p.period.is_some() && p.requires.iter().any(|q|
-                matches!(q, Query::Trait { who: Binding::Actor, key } if key == cycle))).cloned() else {
+                matches!(q, Query::Trait { who: Binding::Actor, key } if key == cycle))
+                })
+                .cloned()
+        else {
             continue;
         };
         // New placed worlds read appetite from actual fillable body capacity.
@@ -175,12 +232,22 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
         if let Some(mind) = &mut genesis.rules.mind {
             for need in &mut mind.needs {
                 if need.traits.contains(cycle)
-                    && let Query::Below { who: Binding::Actor, key, .. } = &need.query
-                    && feed.commitments.iter().chain(&feed.effects).any(|e|
-                        matches!(e, Effect::Eat { into, .. } if into == key))
+                    && let Query::Below {
+                        who: Binding::Actor,
+                        key,
+                        ..
+                    } = &need.query
+                    && feed
+                        .commitments
+                        .iter()
+                        .chain(&feed.effects)
+                        .any(|e| matches!(e, Effect::Eat { into, .. } if into == key))
                 {
                     need.query = Query::Computed(Expr::AtLeast(
-                        Box::new(Expr::Read(Reading::Room { who: Binding::Actor, key: key.clone() })),
+                        Box::new(Expr::Read(Reading::Room {
+                            who: Binding::Actor,
+                            key: key.clone(),
+                        })),
                         Box::new(Expr::Const(1)),
                     ));
                 }
@@ -222,9 +289,15 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
                 stance_offset: [0; 3],
             },
         );
-        templates.foraging.insert(key.clone(), super::super::foraging::Foraging {
-            feed: feed.id, reach: 0, search: 32, nodes: 256,
-        });
+        templates.foraging.insert(
+            key.clone(),
+            super::super::foraging::Foraging {
+                feed: feed.id,
+                reach: 0,
+                search: super::super::foraging::FOOD_SEARCH,
+                nodes: 256,
+            },
+        );
         genesis.rules.processes.insert(key, process);
     }
     genesis.rules.spatial_templates = Some(templates);

@@ -29,12 +29,13 @@ pub fn geometry(sim: &Simulation, request: &Request, window: &Window) -> Result<
     let profile = &sim.genesis.rules.step_profiles[&request.profile];
     let terrain = sim.site_geometry(request.site, window, profile.places)?;
     let (volume, places) = (&terrain.volume, &terrain.places);
-    embodiment::check(&volume, document, before)?;
+    embodiment::check_for(sim, &volume, document, before)?;
     let local = embodiment::boxes(
         document,
         &Pose {
             at: [0; 3],
             yaw: before.yaw,
+            feet: Default::default(),
         },
     )?;
     let mut grounding = embodiment::Grounding::new(&volume);
@@ -47,42 +48,67 @@ pub fn geometry(sim: &Simulation, request: &Request, window: &Window) -> Result<
         .filter_map(|id| sim.current_placed_boxes(id, request.site))
         .flatten()
         .collect();
-    let mut parents = BTreeMap::from([(before.at, None)]);
-    let mut poses = BTreeMap::from([(before.at, before.clone())]);
-    let mut queue = VecDeque::from([before.at]);
+    let origin = (before.at, before.yaw);
+    let mut parents = BTreeMap::from([(origin, None)]);
+    let mut poses = BTreeMap::from([(origin, before.clone())]);
+    let mut queue = VecDeque::from([origin]);
+    let modern = embodiment::articulated(sim);
+    let mut priority = BTreeSet::from([(
+        gap(&embodiment::boxes(document, before)?, &food),
+        0usize,
+        origin,
+    )]);
     let mut goal = None;
-    while let Some(cell) = queue.pop_front() {
-        let pose = &poses[&cell];
-        if gap(&embodiment::translated(&local, pose.at)?, &food) <= f.reach {
+    while let Some(cell) = if modern {
+        priority.pop_first().map(|(_, _, key)| key)
+    } else {
+        queue.pop_front()
+    } {
+        let pose = poses[&cell].clone();
+        if gap(&embodiment::boxes(document, &pose)?, &food) <= f.reach {
             goal = Some(cell);
             break;
         }
-        for next in
-            embodiment::neighbours_from_boxes(&places, profile, &local, pose, &mut grounding)
-        {
-            if parents.contains_key(&next.at) {
+        let neighbours = if !before.feet.is_empty() {
+            embodiment::articulated_neighbours(places, profile, document, &pose, &mut grounding)
+        } else {
+            embodiment::neighbours_from_boxes(places, profile, &local, &pose, &mut grounding)
+        };
+        for next in neighbours {
+            let key = (next.at, next.yaw);
+            if parents.contains_key(&key) {
                 continue;
             }
             if parents.len() >= f.nodes {
                 continue;
             }
-            let boxes = embodiment::translated(&local, next.at)?;
+            let boxes = embodiment::boxes(document, &next)?;
             if embodiment::intersects(&boxes, &blocked) {
                 continue;
             }
-            parents.insert(next.at, Some(cell));
-            queue.push_back(next.at);
-            poses.insert(next.at, next);
+            if !before.feet.is_empty()
+                && cell == origin
+                && embodiment::sweep_clear(volume, document, &pose, &next, &blocked).is_err()
+            {
+                continue;
+            }
+            parents.insert(key, Some(cell));
+            if modern {
+                priority.insert((gap(&boxes, &food), parents.len(), key));
+            } else {
+                queue.push_back(key);
+            }
+            poses.insert(key, next);
         }
     }
     let mut cell = goal.ok_or("no supported route to chosen food within the saved node budget")?;
     while let Some(Some(parent)) = parents.get(&cell) {
-        if *parent == before.at {
+        if *parent == origin {
             break;
         }
         cell = *parent;
     }
-    if cell == before.at {
+    if cell == origin {
         return Err("food is already within feeding reach".into());
     }
     let after = poses[&cell].clone();

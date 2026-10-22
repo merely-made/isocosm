@@ -15,6 +15,9 @@ pub(super) struct Bodies {
     size: [u32; 2],
     motion: std::collections::BTreeMap<u64, motion::Motion>,
     previous: std::time::Instant,
+    clearance_terrain: Option<isometer::space::volume::Volume>,
+    clearance_bodies: Vec<(u64, isometer::core::BodyDocument, Option<isocosm::spatial::Pose>)>,
+    clearance_revision: u64,
 }
 impl Bodies {
     pub fn active(&self) -> bool {
@@ -29,6 +32,9 @@ impl Bodies {
             size,
             motion: Default::default(),
             previous: std::time::Instant::now(),
+            clearance_terrain: None,
+            clearance_bodies: Vec::new(),
+            clearance_revision: 0,
         }
     }
     pub fn resize(&mut self, device: &wgpu::Device, size: [u32; 2]) {
@@ -47,6 +53,14 @@ impl Bodies {
         light: f32,
         target: &wgpu::Texture,
     ) -> Result<(), String> {
+        let physical: Vec<_> = scene.bodies.iter().map(|b| (b.id,b.document.clone(),b.physical.clone())).collect();
+        let terrain_changed=self.clearance_terrain.as_ref()
+            .is_none_or(|old| old.materials!=scene.window.materials || !old.same_cells(&scene.window));
+        if terrain_changed || self.clearance_bodies != physical {
+            self.clearance_bodies = physical;
+            if terrain_changed {self.clearance_terrain = Some(scene.window.clone());}
+            self.clearance_revision = self.clearance_revision.wrapping_add(1);
+        }
         let mut surfaces = std::collections::BTreeMap::new();
         let mut joints = 0;
         let mut contacts = 0;
@@ -70,7 +84,8 @@ impl Bodies {
                     .motion
                     .entry(body.id)
                     .or_insert_with(|| motion::Motion::new(body, scene));
-                live.origin = motion.sample(body, scene, elapsed);
+                live.origin = motion.sample_revision(body, scene, elapsed, self.clearance_revision);
+                live.yaw_radians = motion.yaw_radians();
                 let elapsed = motion.elapsed(elapsed);
                 let witnesses = motion
                     .contacts()

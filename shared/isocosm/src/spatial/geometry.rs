@@ -64,7 +64,7 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
     }
     let document = actor.body.as_ref().ok_or("step body absent")?;
     if places.place_at(geometry.path[0].at) != Some(request.patch)
-        || if whole { embodiment::check(&volume, document, &geometry.path[0]).is_err() }
+        || if whole { embodiment::check_for(sim, &volume, document, &geometry.path[0]).is_err() }
             else { stance(&volume, profile.stance_offset, profile.body.height, geometry.path[0].at).is_none() } {
         return Err("step begins outside its admitted native patch".into());
     }
@@ -77,6 +77,12 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
         } else { neighbours(&volume, &places, profile, pair[0].at).contains(&pair[1].at) };
         if !available {
             return Err("step crosses an unavailable cell or authored clearance".into());
+        }
+        if embodiment::articulated(sim) && !pair[0].feet.is_empty() {
+            let blocked: Vec<_> = sim.state().spatial_poses.keys().copied()
+                .filter(|id| *id != request.actor)
+                .filter_map(|id| sim.current_placed_boxes(id, request.site)).flatten().collect();
+            embodiment::sweep_clear(volume, document, &pair[0], &pair[1], &blocked)?;
         }
     }
     let last = geometry.path.last().ok_or("empty step path")?;
@@ -98,7 +104,7 @@ pub(super) fn check_arrival(sim: &Simulation, request: &ArrivalRequest, geometry
     let (volume, places) = (&terrain.volume, &terrain.places);
     let patch = places.place_at(geometry.pose.at).ok_or("arrival pose has no realized patch")?;
     let fits = if embodiment::enabled(sim) {
-        embodiment::check(&volume, actor.body.as_ref().ok_or("arrival body absent")?, &geometry.pose)?;
+        embodiment::check_for(sim, &volume, actor.body.as_ref().ok_or("arrival body absent")?, &geometry.pose)?;
         embodiment::air(&volume, geometry.eye)
     } else { clear(&volume, geometry.pose.at) && clear(&volume, geometry.eye) };
     if !fits

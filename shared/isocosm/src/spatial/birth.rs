@@ -48,6 +48,8 @@ pub struct BirthGeometry {
     pub offset_from_parent: [i64; 3], pub yaw_from_parent: Yaw,
     /// Relative to the child's resulting yaw.
     pub eye_from_child: [i64; 3], pub window: Window,
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub feet: BTreeMap<isometer_core::PartId, [i64; 3]>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -71,7 +73,8 @@ pub fn rotate(yaw: Yaw, [x, y, z]: [i64; 3]) -> Result<[i64; 3]> {
 
 pub fn birth_pose(input: &BirthGeometry) -> Result<(Pose, [i64; 3])> {
     let offset = rotate(input.parent_pose.yaw, input.offset_from_parent)?;
-    let mut pose = Pose { at: input.parent_pose.at, yaw: input.parent_pose.yaw.compose(input.yaw_from_parent) };
+    let mut pose = Pose { at: input.parent_pose.at, yaw: input.parent_pose.yaw.compose(input.yaw_from_parent) , feet: Default::default() };
+    pose.feet = input.feet.clone();
     for k in 0..3 { pose.at[k] = pose.at[k].checked_add(offset[k]).ok_or("birth pose overflow")?; }
     let offset = rotate(pose.yaw, input.eye_from_child)?;
     let mut eye = pose.at;

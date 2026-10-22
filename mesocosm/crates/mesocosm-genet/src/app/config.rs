@@ -112,7 +112,7 @@ impl Default for HostConfig {
             play_soil: 100,
             seed: 0x00A7_7AC4,
             unchosen_seed: false,
-            candidate_attempts: 32,
+            candidate_attempts: 128,
             start: None,
             mode: None,
             population: isocosm::Founding::default().population,

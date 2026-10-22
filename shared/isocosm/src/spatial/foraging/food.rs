@@ -4,6 +4,60 @@
 use super::*;
 
 impl Simulation {
+    /// Edible resident identities for physical admission, including an actor
+    /// arriving at `site`. Reuse native meal/trait/stock queries; placement
+    /// ignores only the actor's current location and momentary appetite.
+    pub fn placement_food(&self, actor: Id, site: Id) -> BTreeMap<Id, u64> {
+        let Some(body) = self.body_at_start(actor) else {
+            return BTreeMap::new();
+        };
+        let mut out = BTreeMap::new();
+        for feed in self
+            .genesis
+            .rules
+            .processes
+            .values()
+            .filter(|p| p.port_feeding.is_some() && p.target.is_some())
+        {
+            if feed.feeding_part(body).is_err() {
+                continue;
+            }
+            let mut selector = feed.clone();
+            selector.target.as_mut().unwrap().same_place = false;
+            let search = self
+                .genesis
+                .rules
+                .spatial_templates
+                .as_ref()
+                .into_iter()
+                .flat_map(|t| t.foraging.values())
+                .filter(|f| f.feed == feed.id)
+                .map(|f| f.search)
+                .max()
+                .unwrap_or(FOOD_SEARCH);
+            for (&id, group) in &self.state.population.groups {
+                if group.entity.resident_site() != Some(site) {
+                    continue;
+                }
+                if self.food_queries(actor, id, &selector, site) {
+                    out.entry(id)
+                        .and_modify(|range: &mut u64| *range = (*range).max(search))
+                        .or_insert(search);
+                }
+            }
+        }
+        out
+    }
+
+    fn food_queries(&self, actor: Id, target: Id, feed: &Process, place: Id) -> bool {
+        let part = self.bind_part(actor, feed);
+        self.target_matches_without_reach(actor, Some(target), feed)
+            && feed.requires.iter().all(|q| {
+                self.process_query(actor, Some(target), place, part, feed, q)
+                    .is_ok()
+            })
+    }
+
     /// A meal already in reach can wait for its feeding cadence. Only weaker
     /// departures are suppressed; paid upkeep, healing and stronger nudges remain.
     pub(crate) fn foraging_wait_score(&self, actor: Id) -> i64 {
@@ -11,15 +65,24 @@ impl Simulation {
             return 0;
         }
         let templates = self.genesis.rules.spatial_templates.as_ref().unwrap();
-        templates.foraging.values().filter_map(|f| {
-            let feed = &self.genesis.rules.processes[&f.feed];
-            if feed.period.is_none_or(|p| self.state.tick % p == 0) {
-                return None;
-            }
-            let score = self.food_need_score(actor, feed);
-            (score > 0 && self.food_candidates(actor, feed).iter().any(|(_, d)| *d <= f.reach))
+        templates
+            .foraging
+            .values()
+            .filter_map(|f| {
+                let feed = &self.genesis.rules.processes[&f.feed];
+                if feed.period.is_none_or(|p| self.state.tick % p == 0) {
+                    return None;
+                }
+                let score = self.food_need_score(actor, feed);
+                (score > 0
+                    && self
+                        .food_candidates(actor, feed)
+                        .iter()
+                        .any(|(_, d)| *d <= f.reach))
                 .then_some(score)
-        }).max().unwrap_or(0)
+            })
+            .max()
+            .unwrap_or(0)
     }
 
     fn food_candidates(&self, actor: Id, feed: &Process) -> Vec<(Id, u64)> {
@@ -34,7 +97,6 @@ impl Simulation {
         {
             return Vec::new();
         }
-        let part = self.bind_part(actor, feed);
         let ids: BTreeSet<_> = self
             .state
             .spatial_poses
@@ -49,12 +111,8 @@ impl Simulation {
         ids.into_iter()
             .filter_map(|target| {
                 let d = self.food_gap(actor, target)?;
-                (self.target_matches_without_reach(actor, Some(target), feed)
-                    && self.owned_process_ready(actor, Some(target), feed)
-                    && feed.requires.iter().all(|q| {
-                        self.process_query(actor, Some(target), body.place, part, feed, q)
-                            .is_ok()
-                    }))
+                (self.food_queries(actor, target, feed, body.place)
+                    && self.owned_process_ready(actor, Some(target), feed))
                 .then_some((target, d))
             })
             .collect()

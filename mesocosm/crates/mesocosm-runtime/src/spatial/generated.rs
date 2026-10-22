@@ -38,13 +38,13 @@ impl Game {
                 let eye = std::array::from_fn(|k| stand.at[k] + templates.eye[k]);
                 placements.push(Placement { actor: EntityHandle(id), site: PlaceHandle(site), patch,
                     body_revision: member.body_revision, terrain_revision: native.sim.terrain_revision(),
-                    pose: Pose { at: stand.at, yaw: stand.yaw }, eye, window: templates.window.clone(),
+                    pose: Pose { at:stand.at, yaw:stand.yaw, feet:stand.feet.clone() }, eye, window: templates.window.clone(),
                     operations: BTreeMap::new(), places: Some(templates.places),
                     resident_since: Some(member.arrived) });
                 for crossing in &templates.crossings {
                     let to = &crossing.stand;
                     arrivals.push(ArrivalInput { actor: EntityHandle(id), from: PlaceHandle(crossing.from),
-                        to: PlaceHandle(crossing.to), pose: Pose { at: to.at, yaw: to.yaw },
+                        to: PlaceHandle(crossing.to), pose: Pose { at:to.at, yaw:to.yaw, feet:to.feet.clone() },
                         eye: std::array::from_fn(|k| to.at[k] + templates.eye[k]), window: templates.window.clone(),
                         places: templates.places, operations: BTreeMap::new() });
                 }

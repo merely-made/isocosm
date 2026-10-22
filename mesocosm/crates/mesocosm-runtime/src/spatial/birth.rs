@@ -91,10 +91,10 @@ impl Game {
             || parent.resident_since != Some(r.parent_visit) || parent.terrain_revision != r.terrain_revision
         { return Err("parent birth pose differs from current native source".into()); }
         Ok(BirthGeometry { profile: input.profile.clone(),
-            parent_pose: isocosm::spatial::Pose { at: parent.pose.at, yaw: parent.pose.yaw },
+            parent_pose: parent.pose.clone(),
             parent_eye: parent.eye, parent_window: parent.window.clone(),
             parent_places: parent.places.unwrap_or_default(), offset_from_parent: slot.offset_from_parent,
-            yaw_from_parent: slot.yaw_from_parent, eye_from_child: slot.eye_from_child, window: slot.window.clone() })
+            yaw_from_parent: slot.yaw_from_parent, eye_from_child: slot.eye_from_child, window: slot.window.clone() , feet: Default::default() })
     }
 
     pub(super) fn apply_births(&mut self, inputs: &[BirthResolution], reports: &[BirthReport], sim: &Simulation)
@@ -136,7 +136,7 @@ impl Game {
             let native = sim.genesis().rules.birth_profiles.get(&input.profile).ok_or("birth profile absent")?;
             let after = Placement { actor: EntityHandle(r.child), site: PlaceHandle(r.site.ok_or("travelling birth")?),
                 patch: *patch, body_revision: r.child_revision, terrain_revision: r.terrain_revision.clone(),
-                pose: Pose { at: pose.at, yaw: pose.yaw }, eye, window: slot.window.clone(),
+                pose: pose.clone(), eye, window: slot.window.clone(),
                 operations: slot.operations.clone(), places: Some(native.places), resident_since: Some(r.child_visit) };
             let sight_range = slot.sight_range;
             if self.members.contains_key(&r.child) { return Err("biological birth reuses a saved physical identity".into()); }

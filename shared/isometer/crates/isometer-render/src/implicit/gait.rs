@@ -18,6 +18,7 @@ struct Foot {
 
 #[derive(Default)]
 pub struct Gait {
+    pub(super) physical: Option<BTreeMap<PartId, [i64; 3]>>,
     feet: BTreeMap<PartId, Foot>,
     seen: BTreeSet<PartId>,
     root: Option<Vec3>,
@@ -31,6 +32,11 @@ pub struct Gait {
 }
 
 impl Gait {
+    /// Already admitted, body-local fixed-point soles. Native planning owns
+    /// their sequence and clearance; presentation must not plan another gait.
+    pub fn set_physical_feet(&mut self, feet: Option<BTreeMap<PartId, [i64; 3]>>) {
+        self.physical = feet;
+    }
     pub fn set_native_origin(&mut self, origin: [f32; 3]) {
         self.native_origin = Some(origin.into());
     }

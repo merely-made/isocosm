@@ -338,7 +338,8 @@ fn an_ordinary_a1_play_world_walks_without_forced_choices_and_restores() {
                 .unwrap()
                 .records
                 .iter()
-                .any(|r| !r.steps.is_empty());
+                .flat_map(|r| &r.changes)
+                .any(|c| matches!(c.admission, mesocosm_runtime::spatial::Admission::Step { .. }));
             if walking {
                 let saved = runtime.save_world().unwrap();
                 let restored = Runtime::resume_world(saved.clone(), 2, None).unwrap();

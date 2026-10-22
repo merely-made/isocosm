@@ -2,6 +2,24 @@
 
 **Date:** 2026-09-11
 
+## Native foot placement follow-up, 2026-10-22
+
+The later [foot placement plan](2026-10-22_foot_placement_plan.md) supersedes
+the open ordinary-swing gate in the earlier receipt below. New version-four
+worlds carry actual supported soles and share integer chain geometry between
+native admission and the default smooth renderer. Founding, arrivals and
+offspring reuse that machinery, with native food-aware placement, spacing and
+varied facing. A knee-pole singularity that flipped the first lifted leg into
+terrain is fixed. The originally unchosen regression world now takes admitted
+steps; 21 of 24 actual GPU frames show swinging and planted contacts together,
+with zero projection failures. The consolidated software run passes 481 checks
+with 24 existing ignores. Optimized build and headed qualification are recorded
+in that plan and `Code/testing/mesocosm/foot-placement-2026-10-22/`.
+
+This is geometric support and checked foot motion. Force/load dynamics,
+arbitrary joint graphs and the remaining shape/blending phases remain open.
+Historical saves retain their versioned placement and gait rules.
+
 ## Rich bodies in ordinary play, 2026-10-22
 
 **Status:** connections implemented and captured; ordinary foot-swing gate
