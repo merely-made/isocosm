@@ -1137,7 +1137,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      proceeds when the game is played. That feels more honest, predictable,
      and easy, but eh."
 
-     Links: area Host and network · summary Shared-world time: asynchronous play merged like git, or a clock running only when played; Mark leans to the second and asks (A ruled in 105).
+     Links: area Record and history · summary Shared-world time: asynchronous play merged like git, or a clock running only when played; Mark leans to the second and asks (A ruled in 105).
 105. **Option A is ruled; related worlds should share a context without
      merging, as branched worldlines or as neighbours in a celestial
      neighbourhood.** Mark, 2026-09-22: "A, then. And also... it would be
@@ -1147,7 +1147,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      neighboring world in the celestial neighborhood...? That way you could
      manage a set of related worlds".
 
-     Links: area Record and history · summary Option A for shared-world time is ruled; related worlds share a context without merging, as branched worldlines or celestial neighbours.
+     Links: area Record and history · draws on 104 · summary Option A for shared-world time is ruled; related worlds share a context without merging, as branched worldlines or celestial neighbours.
 107. **The change to ruling 47 is agreed; a sacrifice's grade is the depth
      of the entity's relation to that magic in its story; collecting all the
      magics is favoured, as a setting.** Mark, 2026-09-22: "agreed. hmm. if
@@ -4569,7 +4569,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ruled by this. Two modes over one world on one machine are two
      windows.
 
-     Links: area Host and network · summary A window plays one mode and switches in place, keeping world, subject and embodiment; a second window can play another mode.
+     Links: area Host and network · draws on 212, 213, 381 · summary A window plays one mode and switches in place, keeping world, subject and embodiment; a second window can play another mode.
 
 444. **The world save holds the sim's history and a section per mode.**
      Asked on 2026-10-01: "What does the one world save hold? Evidence: the
@@ -9427,7 +9427,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      transactional host publication must implement this union and retain
      native replay; the answer does not certify the proposed host.
 
-     Links: area Host and network · summary Each active window contributes to one player's single attention set, taken as their union; closing a window withdraws only its contribution.
+     Links: area Host and network · draws on 443, 204 · summary Each active window contributes to one player's single attention set, taken as their union; closing a window withdraws only its contribution.
 
 816. **Eponym develops admitted bodies from a selected native recipe.**
      2026-10-11, Q10's original-test diagnosis. Question: "Eponym’s 25 failing
@@ -10359,7 +10359,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `isocosm-host` becomes the core library; its inspection shell becomes
      a bin over it; generic pieces move in from the Mesocosm crates.
 
-     Links: area Host and network · summary The embeddable sim host is isocosm-host as a library; its inspection shell becomes a bin over it; generic pieces move in from Mesocosm crates.
+     Links: area Host and network · draws on 884 · summary The embeddable sim host is isocosm-host as a library; its inspection shell becomes a bin over it; generic pieces move in from Mesocosm crates.
 
 893. **The society feature gates operations, not state.**
      Asked 2026-10-14, after 886. Question: "How far does the feature
@@ -10388,7 +10388,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      endpoint over the core; product-specific panels go to product-owned
      endpoints, as the VTT's already is.
 
-     Links: area Host and network · summary The cross-product desktop inspection shell retires in favour of a Graphshell endpoint over the core; product panels go to product-owned endpoints.
+     Links: area Host and network · draws on 892 · summary The cross-product desktop inspection shell retires in favour of a Graphshell endpoint over the core; product panels go to product-owned endpoints.
 
 898. **All three product hosts sit on isomere's `Assembly`.**
      Asked 2026-10-14, fork 3. Options: (1) "Yes, all on Assembly
@@ -10399,7 +10399,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      capture, error and profile lines; Mesocosm's `SectionProducer` already
      exists), "naw, that was plenty, thank you".
 
-     Links: area Host and network · summary All three product hosts sit on isomere's Assembly, moving mesocosm-genet off its own winit and wgpu loop.
+     Links: area Host and network · draws on 884 · summary All three product hosts sit on isomere's Assembly, moving mesocosm-genet off its own winit and wgpu loop.
 
 900. **Every product panel moves to an endpoint in H2, with no new isometry names.**
      Asked 2026-10-15. Options: (1) "Retire now, rebuild per product
@@ -10410,7 +10410,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      retire over time. The desktop shell's product panels move to
      product-owned endpoints within H2.
 
-     Links: area Host and network · summary Every product panel moves to a product-owned endpoint within H2, and no new isometry- names are made (the prefix retires over time).
+     Links: area Host and network · draws on 896 · summary Every product panel moves to a product-owned endpoint within H2, and no new isometry- names are made (the prefix retires over time).
 
 901. **The core's inspection endpoint sits in `isocosm-host` behind a feature.**
      Asked 2026-10-15. Options: (1) "isocosm-host, behind a feature
@@ -10418,7 +10418,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `--validate-save`; (2) "Always in the core".
      Mark: "isocosm-host, behind a feature (Recommended)"
 
-     Links: area Host and network · summary The core's inspection endpoint sits in isocosm-host behind a feature; the binary becomes the stdio endpoint.
+     Links: area Host and network · draws on 892, 896 · summary The core's inspection endpoint sits in isocosm-host behind a feature; the binary becomes the stdio endpoint.
 
 902. **The VTT's panels go to `isocosm-vtt`.**
      Asked 2026-10-15. Evidence: `isocosm-vtt` is an empty crates.io name
@@ -10438,7 +10438,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `eponym-play`; (2) "New endpoint crates".
      Mark: "Modules in existing crates (Recommended)"
 
-     Links: area Host and network · summary Mesocosm's and Eponym's panels become feature-gated endpoint modules in mesocosm-runtime and eponym-play, not new crates.
+     Links: area Host and network · draws on 896 · summary Mesocosm's and Eponym's panels become feature-gated endpoint modules in mesocosm-runtime and eponym-play, not new crates.
 
 905. **A generated ecology's consumers graze.**
      Asked 2026-10-15 in plain text, from the A1 lane's draft. Evidence: of
@@ -10572,7 +10572,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (903), so the session lane and the host take the game layer alone;
      (2) "Always on". Mark: "Endpoint behind a feature (Recommended)"
 
-     Links: area Host and network · summary isocosm-vtt's endpoint sits behind an endpoint feature, so the session lane and host take the game layer alone.
+     Links: area Host and network · draws on 903 · summary isocosm-vtt's endpoint sits behind an endpoint feature, so the session lane and host take the game layer alone.
 
 921. **`isonetry` holds the GM store and the proposal lifecycle until V2.**
      Asked 2026-10-15 by card (F3). Evidence: 915's summary put them in
@@ -10611,7 +10611,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the name". Mark: "Family session layer (Recommended)"
      The sim-host plan's H7.
 
-     Links: area Host and network · summary isonetry becomes the Isocosm family's session layer: host-authority replication for the core World on the stack's transport; VTT-only parts move to isocosm-vtt.
+     Links: area Host and network · draws on 923 · summary isonetry becomes the Isocosm family's session layer: host-authority replication for the core World on the stack's transport; VTT-only parts move to isocosm-vtt.
 
 925. **Mesocosm's session lives in the core's `World`.**
      Asked 2026-10-15 by card (H3). Evidence: Mesocosm drives one saved loop
@@ -10623,7 +10623,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (2) "Runtime keeps it", the core supplying parts only.
      Mark: "The core's World (Recommended)"
 
-     Links: area Host and network · summary Mesocosm's session lives in the core's World, Runtime becoming a thin product layer: one door for the head and the endpoint.
+     Links: area Host and network · draws on 892 · summary Mesocosm's session lives in the core's World, Runtime becoming a thin product layer: one door for the head and the endpoint.
 
 926. **The core's driver is typed through a product trait.**
      Asked 2026-10-15 by card (H3). Options: (1) "Typed, via a product trait
@@ -10631,7 +10631,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      translation, holds and its round; (2) "Opaque bytes".
      Mark: "Typed, via a product trait (Recommended)"
 
-     Links: area Host and network · summary The core's driver is typed through a product trait naming its envelope type and supplying translation, holds and round.
+     Links: area Host and network · draws on 925 · summary The core's driver is typed through a product trait naming its envelope type and supplying translation, holds and round.
 
 927. **The core owns the clock and an explicit step; products choose.**
      Asked 2026-10-15 by card (H3). Evidence: Mesocosm's `Clock` is integer
@@ -10642,7 +10642,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      adopting the clock later; (2) "Product-owned pacing".
      Mark: "Core clock + explicit step (Recommended)"
 
-     Links: area Host and network · summary The core owns the clock and an explicit step; each product picks wall-clock or explicit pacing.
+     Links: area Host and network · draws on 925 · summary The core owns the clock and an explicit step; each product picks wall-clock or explicit pacing.
 
 932. **A generated world collapses when no organism is left (891's predicate).**
      Asked 2026-10-14 by card in the generator lane session; recorded here
@@ -10764,7 +10764,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      cambium into the core; (3) "Envelopes only". Mark: "Core's own press
      type (Recommended)"
 
-     Links: area Host and network · summary H4: the core has its own plain Press type and a keymap hook on the driver's Product trait; mesocosm-genet lowers winit's Key in one place.
+     Links: area Host and network · draws on 926 · summary H4: the core has its own plain Press type and a keymap hook on the driver's Product trait; mesocosm-genet lowers winit's Key in one place.
 
 955. **H4: only keys that make an envelope go through the core.** Options:
      (1) "World keys only (Recommended)": E, Space, S, the checkpoint answers
@@ -10776,7 +10776,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `submit_loop_input`, not the envelope queue, and are outside H4's
      done-condition; they stay as they are.
 
-     Links: area Host and network · summary H4: only world keys that make an envelope go through the core; camera, inspection, dev clock and menu navigation stay the window's.
+     Links: area Host and network · draws on 954 · summary H4: only world keys that make an envelope go through the core; camera, inspection, dev clock and menu navigation stay the window's.
 
 956. **H4: the core refuses a stale pick; the window still picks.** Options:
      (1) "Core checks staleness (Recommended)": the window hands the core a
@@ -10786,7 +10786,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      checks staying in the window; (2) "Wait for H6". Mark: "Core checks
      staleness (Recommended)"
 
-     Links: area Host and network · summary H4: the window hands the core a pick stamped with the world revision and the core refuses a stale one.
+     Links: area Host and network · draws on 910 · summary H4: the window hands the core a pick stamped with the world revision and the core refuses a stale one.
 
 957. **H4: the live-input backlog cap moves into the core's driver.** The
      window drops a key once 10 envelopes are queued (`QUEUE_CAP`). Options:
@@ -10795,7 +10795,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      10, while a replay or script queueing directly is not capped; (2)
      "Stays in the window". Mark: "In the core driver (Recommended)"
 
-     Links: area Host and network · summary H4: the live-input backlog cap moves into the core driver, configurable, default 10; replays and scripts are not capped.
+     Links: area Host and network · draws on 954 · summary H4: the live-input backlog cap moves into the core driver, configurable, default 10; replays and scripts are not capped.
 958. **Equal best movement choices use a seeded draw.** Asked 2026-10-16
      after 936's unchanged seed-9 diagnosis: all 52 producers leave before
      feeding at 15, all 64 meals block, and the next tick's two moves score 0
@@ -10818,7 +10818,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      explicit and unknown section bytes survive. A replica does not run a
      product adapter to decide the intent again.
 
-     Links: area Host and network · summary The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents.
+     Links: area Host and network · draws on 924 · summary The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents.
 960. **Requests and accepted records use their existing stack seams.**
      Asked 2026-10-17 with 959: (1) admitted stream/Graphshell requests and
      replies, with Stickleback joined spaces carrying host-authored accepted
@@ -10827,7 +10827,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      One host remains the sole accepting writer. The first serialized
      in-process controls precede the actual transport and product gates.
 
-     Links: area Host and network · summary Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer.
+     Links: area Host and network · draws on 959 · summary Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer.
 
 961. **Mesocosm defaults to the named A1 preset; the shared generator stays Stock.**
      Asked 2026-10-17 after the three A1 candidate forms reached 20/20, since
@@ -10850,7 +10850,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      product must not manufacture keys, grants or trust roots to fill a
      missing stack configuration.
 
-     Links: area Host and network · summary The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots.
+     Links: area Stack and engine · draws on 960 · summary The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots.
 
 963. **An unchosen Mesocosm seed may use a bounded candidate search.**
      Asked with 962 after a clock draw contained no consumer cohort. Mark's

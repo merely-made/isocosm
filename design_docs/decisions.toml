@@ -585,7 +585,7 @@ summary = "The sim knows the parts of an arc and lets entities pursue consequent
 [cases."104"]
 title = "Time in a shared world: asynchronous play merged like git, or a clock that runs only when played; Mark leans to the second and asks"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Host and network"
+area = "Record and history"
 summary = "Shared-world time: asynchronous play merged like git, or a clock running only when played; Mark leans to the second and asks (A ruled in 105)."
 
 [cases."105"]
@@ -593,6 +593,7 @@ title = "Option A is ruled; related worlds should share a context without mergin
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Record and history"
 summary = "Option A for shared-world time is ruled; related worlds share a context without merging, as branched worldlines or celestial neighbours."
+draws_on = ["104"]
 
 [cases."107"]
 title = "The change to ruling 47 is agreed; a sacrifice's grade is the depth of the entity's relation to that magic in its story; collecting all the magics is favoured, as a setting"
@@ -2156,6 +2157,7 @@ title = "A window plays one mode and switches in place"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "A window plays one mode and switches in place, keeping world, subject and embodiment; a second window can play another mode."
+draws_on = ["212", "213", "381"]
 
 [cases."444"]
 title = "The world save holds the sim's history and a section per mode"
@@ -3758,6 +3760,7 @@ title = "Active windows contribute to one player's attention set"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "Each active window contributes to one player's single attention set, taken as their union; closing a window withdraws only its contribution."
+draws_on = ["204", "443"]
 
 [cases."816"]
 title = "Eponym develops admitted bodies from a selected native recipe"
@@ -4174,6 +4177,7 @@ title = "The embeddable sim host is `isocosm-host` as a library"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "The embeddable sim host is isocosm-host as a library; its inspection shell becomes a bin over it; generic pieces move in from Mesocosm crates."
+draws_on = ["884"]
 
 [cases."893"]
 title = "The society feature gates operations, not state"
@@ -4186,24 +4190,28 @@ title = "The inspection shell becomes a Graphshell endpoint over the core"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "The cross-product desktop inspection shell retires in favour of a Graphshell endpoint over the core; product panels go to product-owned endpoints."
+draws_on = ["892"]
 
 [cases."898"]
 title = "All three product hosts sit on isomere's `Assembly`"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "All three product hosts sit on isomere's Assembly, moving mesocosm-genet off its own winit and wgpu loop."
+draws_on = ["884"]
 
 [cases."900"]
 title = "Every product panel moves to an endpoint in H2, with no new isometry names"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "Every product panel moves to a product-owned endpoint within H2, and no new isometry- names are made (the prefix retires over time)."
+draws_on = ["896"]
 
 [cases."901"]
 title = "The core's inspection endpoint sits in `isocosm-host` behind a feature"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "The core's inspection endpoint sits in isocosm-host behind a feature; the binary becomes the stdio endpoint."
+draws_on = ["892", "896"]
 
 [cases."902"]
 title = "The VTT's panels go to `isocosm-vtt`"
@@ -4216,6 +4224,7 @@ title = "Mesocosm's and Eponym's panels become feature-gated modules in existing
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "Mesocosm's and Eponym's panels become feature-gated endpoint modules in mesocosm-runtime and eponym-play, not new crates."
+draws_on = ["896"]
 
 [cases."905"]
 title = "A generated ecology's consumers graze"
@@ -4279,6 +4288,7 @@ title = "`isocosm-vtt`'s endpoint sits behind a feature"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "isocosm-vtt's endpoint sits behind an endpoint feature, so the session lane and host take the game layer alone."
+draws_on = ["903"]
 
 [cases."921"]
 title = "`isonetry` holds the GM store and the proposal lifecycle until V2"
@@ -4297,24 +4307,28 @@ title = "`isonetry` becomes the Isocosm family's session layer"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "isonetry becomes the Isocosm family's session layer: host-authority replication for the core World on the stack's transport; VTT-only parts move to isocosm-vtt."
+draws_on = ["923"]
 
 [cases."925"]
 title = "Mesocosm's session lives in the core's `World`"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "Mesocosm's session lives in the core's World, Runtime becoming a thin product layer: one door for the head and the endpoint."
+draws_on = ["892"]
 
 [cases."926"]
 title = "The core's driver is typed through a product trait"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "The core's driver is typed through a product trait naming its envelope type and supplying translation, holds and round."
+draws_on = ["925"]
 
 [cases."927"]
 title = "The core owns the clock and an explicit step; products choose"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "The core owns the clock and an explicit step; each product picks wall-clock or explicit pacing."
+draws_on = ["925"]
 
 [cases."932"]
 title = "A generated world collapses when no organism is left (891's predicate)"
@@ -4371,24 +4385,28 @@ title = "H4: the core has its own press type and a keymap hook"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "H4: the core has its own plain Press type and a keymap hook on the driver's Product trait; mesocosm-genet lowers winit's Key in one place."
+draws_on = ["926"]
 
 [cases."955"]
 title = "H4: only keys that make an envelope go through the core"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "H4: only world keys that make an envelope go through the core; camera, inspection, dev clock and menu navigation stay the window's."
+draws_on = ["954"]
 
 [cases."956"]
 title = "H4: the core refuses a stale pick; the window still picks"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "H4: the window hands the core a pick stamped with the world revision and the core refuses a stale one."
+draws_on = ["910"]
 
 [cases."957"]
 title = "H4: the live-input backlog cap moves into the core's driver"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "H4: the live-input backlog cap moves into the core driver, configurable, default 10; replays and scripts are not capped."
+draws_on = ["954"]
 
 [cases."958"]
 title = "Equal best movement choices use a seeded draw"
@@ -4401,12 +4419,14 @@ title = "The family session replicates accepted native authority and sections"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents."
+draws_on = ["924"]
 
 [cases."960"]
 title = "Requests and accepted records use their existing stack seams"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Host and network"
 summary = "Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer."
+draws_on = ["959"]
 
 [cases."961"]
 title = "Mesocosm defaults to the named A1 preset; the shared generator stays Stock"
@@ -4417,8 +4437,9 @@ summary = "Mesocosm defaults to the named A1 preset once receipt and physical-wi
 [cases."962"]
 title = "The stack supplies identity and admitted connections to family games"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Host and network"
+area = "Stack and engine"
 summary = "The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots."
+draws_on = ["960"]
 
 [cases."963"]
 title = "An unchosen Mesocosm seed may use a bounded candidate search"
@@ -4543,6 +4564,41 @@ source = "design_docs/doctrine.md"
 area = "Directing and play"
 summary = "Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known."
 draws_on = ["432", "847", "868", "869", "870"]
+
+[statements."host.1"]
+title = "One sim host under three product hosts"
+source = "design_docs/doctrine.md"
+area = "Host and network"
+summary = "The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it."
+draws_on = ["884", "892", "896", "898", "901", "925", "926", "927"]
+
+[statements."host.2"]
+title = "Inspection is endpoints"
+source = "design_docs/doctrine.md"
+area = "Host and network"
+summary = "Inspection is feature-gated Graphshell endpoints; any change stales every endpoint's snapshot."
+draws_on = ["896", "900", "901", "903", "910", "920", "record.1"]
+
+[statements."host.3"]
+title = "Only world keys go through the core"
+source = "design_docs/doctrine.md"
+area = "Host and network"
+summary = "Only world keys go through the core; stale picks are refused; live input is capped, replays are not."
+draws_on = ["954", "955", "956", "957", "record.1"]
+
+[statements."host.4"]
+title = "A window plays one mode"
+source = "design_docs/doctrine.md"
+area = "Host and network"
+summary = "A window plays one mode and switches in place; windows' attention contributions union into one set."
+draws_on = ["443", "815"]
+
+[statements."host.5"]
+title = "The family session"
+source = "design_docs/doctrine.md"
+area = "Host and network"
+summary = "isonetry is the family session layer: one host sequences, replicas take the accepted log and section changes."
+draws_on = ["923", "924", "959", "960", "962", "record.1"]
 
 [statements."licensing.1"]
 title = "Rulesets"
@@ -4726,3 +4782,10 @@ source = "design_docs/doctrine.md"
 area = "Presentation"
 summary = "Map meanings are independent layers; undisclosed edges clip sharply; remains are seen as their place is known."
 draws_on = ["847", "868", "869", "870", "directing.1"]
+
+[statements."record.1"]
+title = "Consistency is chosen per domain"
+source = "design_docs/doctrine.md"
+area = "Record and history"
+summary = "Order is chosen per domain: a handed-off sequencer refuses stale intents where order matters; signed concurrent work is materialized where it does not."
+draws_on = ["104", "105", "910", "956", "960"]
