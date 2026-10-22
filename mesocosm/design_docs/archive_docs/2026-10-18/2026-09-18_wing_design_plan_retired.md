@@ -2772,6 +2772,110 @@ amended by 919) (Mark: "Archive 2, link 6, 600 to Stack"):
      per family, or move matter and processes with bodies? Mark: "Build,
      retire together." The duplication is temporary and no adapter is built.
 
+**Moved 2026-10-22** in the doctrine's Stack and engine review, as not carried
+out: no crate took hecs, the host core went another way, and 483's receipts
+rule lives on in Stack 4 (Mark, the ECS reopened: "Retire the ECS, keep
+483"):
+
+481. **hecs stays the ECS.** Asked on 2026-10-02 in the Conatus/physics
+     session, after Mark said of the ECS "Not bevy, but can we compare the
+     potential of the other two?" Evidence: a local bench (Ryzen 9 7940HS,
+     release, 10k entities, microseconds per frame) put hecs 0.11.1 against
+     shipyard 0.11.5 at iterate 9.6 vs 19.7, spawn and despawn of 1% 5.4 vs
+     15, add and remove on 10% 166 vs 53, and listing changes 29 vs 20, all
+     under 1.1% of a 16 ms frame; hecs is 9.5k lines with 53 reverse
+     dependencies, shipyard 27.9k with 18; both are one-maintainer, MIT or
+     Apache-2.0, `Send + Sync` and build for wasm. Options, recommended
+     first: (A) "hecs, as ruled (recommended)." (B) shipyard, for cheap
+     add/remove and built-in tracking. (C) Prototype both first. Mark chose
+     A, keeping 2026-08-16's "hecs, placed".
+482. **The mode host and armillary schedule; the ECS is storage.** Asked
+     the same day. Evidence: armillary actors per shard, Rayon inside a
+     shard and an ordered merge already give the wing its scheduling and
+     determinism (§4.7). Options: (A) "Mode host and armillary; ECS is
+     storage (recommended)." (B) ECS workloads inside each actor, which
+     needs shipyard. Mark chose A: no second scheduler inside the first.
+484. **A boundary crate in Mere holds the ECS.** Asked the same day.
+     Options: (A) "Boundary crate in mere (recommended)": a thin crate owning
+     the `BodyId`-to-`Entity` side table (keeping the ECS disposable, never
+     mirrored ids), spawn and despawn tied to receipts, a command buffer for
+     off-thread writes, the scene-contract diff emitter and per-mode `World`
+     construction, with systems using hecs directly inside it. (B) The same
+     crate in Mesocosm until a second consumer appears. (C) No boundary
+     crate. (D) A full trait over ECSes. Mark chose A, since the projection
+     serves every mode.
+
+**Moved 2026-10-22** in the doctrine's Stack and engine review, as other
+repositories' decisions the wing record relayed: 24 and 30 are genet's, 34
+dramatis's (paredros itself archived with Eponym's old execution plan), 377
+mere's pre.4 plan's, 585 Knot's (Mark: "Archive, homes named"):
+
+24. **genet implements the full W3C animation surface,** the Web Animations
+    API included; the earlier deferral was a stopgap from the stylo
+    migration and never a design choice. formal-web (gterzian and Taym
+    Haddadi) is the architectural reference. Ruled 2026-09-18.
+30. **genet's references are the other Rust and browser engines in the
+    same lane,** blitz and formal-web specifically, with servo, Firefox,
+    WebKit, Chrome and the webviews as the more sophisticated efforts
+    with a few key architectural distinctions. Ruled 2026-09-18.
+34. **dramatis absorbs paredros-identity under W3:** its types move to
+    the stack's trust plane and the sim's provenance noun, and Paredros
+    consumes them back. Ruled 2026-09-18.
+377. **The pre.4 allocation guard also compares service identity.** Asked
+     on 2026-09-27: "How should we carry the GPU allocation guard into
+     pre.4? It currently compares five values: allocation ID, two slice
+     offsets, stream and size. Pre.4 adds a service ID, but normal
+     allocations still receive globally unique IDs, so a sixth comparison
+     is currently redundant. The existing five must remain: different
+     slices can share an allocation, and treating them as identical can
+     produce the wrong calculation." Options, recommended first: (A)
+     "Preserve the five comparisons; treat the new service field as context
+     and proceed under the migration stop rule (recommended)." (B) "Add
+     service ID as a sixth comparison; also verify the new rejection case
+     before proceeding." Mark selected verbatim: "Add service ID as a
+     sixth comparison; also verify the new rejection case before
+     proceeding." The migrated guard preserves allocation ID, both
+     offsets, stream and size and additionally requires equal service ID.
+     The service mismatch rejection must be verified before proceeding;
+     this disposes of the new-field stop under Mere's pre.4 plan S0-1 and
+     specifies S0-2's comparison scope. *Reading, not ruled:* pair a valid
+     matching-handle control with an otherwise equal handle whose service
+     differs, and show that deliberately removing the service predicate
+     makes the rejection check fail. Never submit the artificial mismatched
+     handle to a GPU client; the control exercises the guard itself.
+585. **Knot's CubeCL persistence mirrors 375 through mere's git.** Asked on
+     2026-10-05 in Knot's repin onto pre.4, 557's first handoff:
+     "pristine `cubecl-runtime 0.11.0-pre.4` turns `persistence` on by
+     default, which pulls in turso 0.8.0-pre.13. Mere avoids this with
+     ruling 375's patch tree, but `[patch]` doesn't carry across
+     workspaces, so standalone Knot takes upstream's default." Options, as
+     the migration session relays them: (A) "Mirror 375 via mere's git
+     (Recommended)": one `[patch.crates-io]` row, `cubecl-runtime` from
+     mere.git at the same rev, nothing vendored; 1,278 packages with no
+     turso or SQLite, at the cost of one more row each repin. (B) "Pristine
+     upstream": 1,338 packages including turso's cone of about 55 crates,
+     with `cc` pinned to 1.4.7. Mark's answer, as it relays it: "Mirror 375
+     via mere's git (Recommended)". So Knot's root patch table takes
+     `cubecl-runtime` from mere.git at the rev its mere rows pin, and the
+     row moves with them at every repin.
+
+**Moved 2026-10-22** in the doctrine's Stack and engine review, as executed:
+flow left legacy with the record family, and the registry is lowered onto
+the function catalogue (Mark: "Archive 750, tag Stack 1"):
+
+750. **The flow record moves with the record family; the registry
+     converges with bodies.** 2026-10-09, the matter-and-processes family
+     (merged at `14eb2dfb`: the five natives, typed matter and the registry
+     native; legacy transport, pressure and epoch types retired; 3,740
+     legacy lines to 1,257). Questions: the flow record (962 lines) depends
+     on legacy bodies, places and record types and native `Flow` carries no
+     lineage, kingdom or composition, about 23 files reading those; the
+     registry restricts shapes (`admits()`, intake on Mass) where native's
+     function catalogue does not (492). Mark chose "Move it with the record
+     (Recommended)" and "Converge with bodies (Recommended)". So `flow`
+     stays in legacy until the record family, and the bodies lane lowers
+     the registry onto the function catalogue with phenotype allocation.
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's

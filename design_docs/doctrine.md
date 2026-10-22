@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation and the VTT reviewed, with Processes 1 to 3 and Schema 1; Stack and engine is under review (Stack 1 to 11, the ECS reopened); the other areas are empty. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT and Stack and engine reviewed, with Processes 1 to 3 and Schema 1; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -660,11 +660,11 @@ invited in, and a stale dependency of marginal benefit leaves rather than
 being fetched to keep a build whole. The wing's own crates are made when the
 abstraction earns one (Organs 5).
 
-Links: draws on 600, organs.5 · summary Build on the stack we have: unneeded crates stay out, stale ones leave, own crates when the abstraction earns one.
+Links: draws on 600, organs.5 · stack · summary Build on the stack we have: unneeded crates stay out, stale ones leave, own crates when the abstraction earns one.
 
 *Reviewed 2026-10-22, new: written in the VTT review from 600, ahead of its
-area (Mark: "Archive 2, link 6, 600 to Stack"). The rest of the area is not
-yet reviewed.*
+area (Mark: "Archive 2, link 6, 600 to Stack"). Tagged stack in the area's own
+review (Mark: "Archive 750, tag Stack 1").*
 
 ### Stack 2. The stack supplies identity and trust
 
@@ -701,15 +701,20 @@ mesocosm-core's sim moved in, re-expressed in process definitions, and
 retired. Games meet the sim through one game-neutral crate, `isocosm-overlay`:
 each game's vocabulary a module, shapes two games share lifted once into its
 core (points, act keys, harm, wounds, parts), the tick a newtype over the
-sim's count, subscription derived from a typed attention set. Everything
-generated and reviewed shares one bench (sim, world, specimen, item and
-effect lanes), which is also the dev tools.
+sim's count, subscription derived from a typed attention set. A view learns
+what changed from the sim's admitted change records, never from a tracked
+copy. Everything generated and reviewed shares one bench (sim, world,
+specimen, item and effect lanes), which is also the dev tools.
 
-Links: draws on 20, 192, 197, 203, 204, 254 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
+Links: draws on 20, 192, 197, 203, 204, 254, 483 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
 
 *Reviewed 2026-10-22, new; checked built (mesocosm-core retired; the overlay's
 tick, attention set and shared shapes), the bench's lanes not each verified.
 Mark: "As drafted, archive 263".*
+*Refined 2026-10-22: the ECS was reopened against the host as built and
+retired, its receipts rule (483) kept here (Mark: "Retire the ECS, keep
+483"); Mesocosm's played scene already reads the spatial driver's admitted
+changes.*
 
 ### Stack 5. Isometer owns in-site space
 
@@ -837,9 +842,11 @@ world and its session (Mesocosm's included), the clock with an explicit step
 through a product trait. Three uniform product hosts sit on isomere's
 `Assembly` over it.
 
-Links: draws on 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
+Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
 
 *Reviewed 2026-10-22, new. Mark: "All four as drafted"; checked against the code first, each is built.*
+*Refined 2026-10-22 in the Stack and engine review: 381, the decision the core
+and product hosts carry out, cited (Mark: "Refile to Host, cited by Host 1").*
 
 ### Host 2. Inspection is endpoints
 

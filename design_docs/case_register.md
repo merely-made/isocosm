@@ -534,6 +534,7 @@ three design docs that cite it. The record holds the words.
 | 18 | A game's grid is a projection: the sim volume is cubic, and any tile shape is a voxel region an overlay lays over it. (amended by 604) | [environmental surfaces](2026-07-08_environmental_surfaces_plan.md), [vtt overlay](2026-09-25_vtt_overlay_plan.md), [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md) |
 | 22 | Lighting wants all five rows: shadows, ambient occlusion, global illumination, point lights with day and night, transparency with water. | none |
 | 23 | Terrain gets per-axis scale (x, y, z) under W3, and paging is fixed one way or another in every consumer. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
+| 296 | The host's atlas budget defaults to 8 MiB. | none |
 | 368 | When visible terrain exceeds the atlas budget, keep the nearest terrain and report the current number of omitted bricks. | none |
 | 369 | The host exposes a terrain atlas budget setting, default 8 MiB, bounded by device limits, with changes rebuilding the atlas. (amended by 372) | none |
 | 372 | The atlas budget is saved locally per device in a small local preference store, outside campaign storage; malformed data falls back to the default. | none |
@@ -561,11 +562,8 @@ three design docs that cite it. The record holds the words.
 | 16 | Stack placement: cambium under isomere, isometer over genet and netrender, generation in isoscape beside esp, dramatis, cleromancy; moot, muniment, murm persist; open standards first. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 20 | One bench for everything generated and reviewed, with sim, world, specimen, item and effect lanes, which is also the dev tools. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 21 | Gamepads are a genet and standards concern; keymapping is a capability wanted across the stack, not only in isomere. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
-| 24 | genet implements the full W3C animation surface including Web Animations API; formal-web is the architectural reference. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 27 | Use kiss3d provided it composes with the stack, and keep the renderer swappable behind the scene contract. | [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
 | 29 | Desktop is first-class; the web is a supported tier with a stated floor. | [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md) |
-| 30 | genet's references are blitz and formal-web, with servo, Firefox, WebKit, Chrome and webviews as the more sophisticated efforts. | none |
-| 34 | dramatis absorbs paredros-identity under W3; its types move to the stack's trust plane and Paredros consumes them back. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
 | 77 | Two bindings, using the best capabilities each platform has if that costs nothing on mobile or the web. | none |
 | 78 | Favor a clean boundary between componentized parts either way, since lack of one would bite later and performance improves with hardware. | none |
 | 192 | Isocosm absorbs mesocosm-core: its sim moves in piece by piece re-expressed in process definitions, and the first overlay plays on Isocosm. (amended by 591) | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
@@ -577,7 +575,6 @@ three design docs that cite it. The record holds the words.
 | 290 | The board's CPU side is paged too, computing bricks from the map on demand. | [board on isometer](2026-09-15_board_on_isometer_plan.md) |
 | 291 | Residency follows the view (pane bricks plus one-brick margin), with mechanics in a product-neutral helper in shared/isometer and the board's rule in the VTT. (amended by 425) | [board on isometer](2026-09-15_board_on_isometer_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
 | 295 | mere's atlas is sized by plain-data AtlasLimits that the host fills in from device limits; MAX_BRICKS stays the default cap. | none |
-| 296 | The host's atlas budget defaults to 8 MiB. | none |
 | 302 | The pointer volume reserves headroom above the board's tallest point, one spare layer by default. | none |
 | 330 | nisus grows into the voxel authority and world store; Ground becomes a thin layer over it or retires. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [body binding](../mesocosm/design_docs/2026-09-26_body_binding_plan.md) |
 | 331 | One edit reaches its consumers through a revision log of changes keyed by revision at 8-cubed brick grain. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [body binding](../mesocosm/design_docs/2026-09-26_body_binding_plan.md) |
@@ -591,23 +588,17 @@ three design docs that cite it. The record holds the words.
 | 352 | conatus gains a query-refresh call, replacing the workaround tiny step. | [body binding](../mesocosm/design_docs/2026-09-26_body_binding_plan.md) |
 | 361 | isometer calls modulus's public exact CPU walk instead of keeping a hand copy. | none |
 | 362 | The traversal's start voxel clamps into the box and reports the entry face, landing with the traversal fix. | none |
-| 377 | The pre.4 allocation guard compares service ID as a sixth value beside the existing five, with the rejection case verified by a deliberate-fault control. | none |
-| 381 | One host carries the three games as modes over one world save; each product is a build profile; different-mode players may share a trunk. | [games wing founding](2026-07-30_games_wing_founding.md) |
 | 442 | The all-modes build lives in a fourth host workspace holding only the mode host binary, depending on the products' crates by path. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md) |
 | 471 | kiss3d, reshaped with an explicit context handle and windowless render entry, is the stack's lit body renderer. (amended by 606) | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
 | 472 | Lighting is a stack-owned light and environment block read by both tracer and rasteriser. | [resident views composition](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md), [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
 | 473 | WGSL/WESL for raster shaders and CubeCL for compute; rust-gpu stays for Nexus-derived compute only. | none |
 | 476 | vello serves documents; kiss3d 2D is used only behind the scene contract for lit 2D games. | none |
-| 481 | hecs stays the ECS, keeping the 2026-08-16 placement. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
-| 482 | The mode host and armillary schedule; the ECS is storage only, with no second scheduler inside. | none |
 | 483 | The record-to-scene projection learns what changed from the record's per-tick receipts, not from ECS change tracking. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
-| 484 | A thin boundary crate in mere holds the ECS: BodyId-to-Entity table, receipt-tied spawn and despawn, command buffer, scene-contract diff emitter. | none |
 | 532 | One stack helper runs the wasm constructors once, called first from every web module's start, with a run-once guard and test. | none |
 | 536 | The shared wasm constructor helper lives in cambium-genet-web-host. | none |
 | 537 | The web modules take the newest wasm-bindgen they can, shared as one exact pin. (amended by 556) | none |
 | 556 | Every wasm module in mere moves to wasm-bindgen 0.2.129; 'stay with the newest' stands for later pins. | none |
 | 567 | The pre.4 probe, repro and OPFS runners build with the repo's pinned toolchain from mere's rust-toolchain.toml; bundles are rebuilt once. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 585 | Knot's root patch table takes cubecl-runtime from mere.git at the rev its mere rows pin, moving with every repin (mirrors 375). | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [DOC README](DOC_README.md) |
 | 604 | Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
 | 606 | The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
@@ -635,7 +626,6 @@ three design docs that cite it. The record holds the words.
 | 741 | Sight is a voxel ray with the place graph choosing candidates. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 743 | The patch neck width defaults to 2, so any 1-wide neck splits. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 749 | eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
-| 750 | The flow record stays in legacy until the record family; the registry converges with bodies, lowered onto the function catalogue. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 756 | Lineage and provenance data (SpeciesId, Origin, Provenance) move into isocosm as sidecars keyed by PartId; isometer keeps an opaque tag. | none |
 | 962 | The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots. | none |
 | 969 | Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
@@ -644,6 +634,7 @@ three design docs that cite it. The record holds the words.
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
+| 381 | One host carries the three games as modes over one world save; each product is a build profile; different-mode players may share a trunk. | [games wing founding](2026-07-30_games_wing_founding.md) |
 | 443 | A window plays one mode and switches in place, keeping world, subject and embodiment; a second window can play another mode. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md) |
 | 815 | Each active window contributes to one player's single attention set, taken as their union; closing a window withdraws only its contribution. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md) |
 | 884 | Three uniform product hosts over one embeddable sim host handling world founding, live keys, pointer and save import. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
