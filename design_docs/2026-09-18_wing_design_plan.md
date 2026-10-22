@@ -2042,7 +2042,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Amended 2026-10-05 by ruling 591:* the legacy sims move first and are
      re-expressed in place.
 
-     Links: area Stack and engine · summary Isocosm absorbs mesocosm-core: its sim moves in piece by piece re-expressed in process definitions, and the first overlay plays on Isocosm. (amended by 591)
+     Links: area Stack and engine · draws on 32 · summary Isocosm absorbs mesocosm-core: its sim moves in piece by piece re-expressed in process definitions, and the first overlay plays on Isocosm. (amended by 591)
 
 193. **Moved modules are decomposed under the 600-line ceiling.** Mark,
      2026-09-25, while the Mesocosm overlay plan was being drafted: "Feel
@@ -2063,7 +2063,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mesocosm's directives as its first game's module and Eponym and the
      VTT to add theirs.
 
-     Links: area Stack and engine · summary The overlay contract is one shared game-neutral crate, isocosm-overlay, in shared/, with each game's directives as its own module.
+     Links: area Stack and engine · draws on 154 · summary The overlay contract is one shared game-neutral crate, isocosm-overlay, in shared/, with each game's directives as its own module.
 198. **The consistency pass is applied, and a dated line keeps its date's
      words.** Put to Mark on 2026-09-25, with the RPG systems session's
      read-only pass over this record, the sim plan and the overlay plan at
@@ -2128,7 +2128,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `u64`, a plain `u64` as the sim uses, or an epoch and an offset, a
      structure the sim does not store? Mark: "Newtype over u64."
 
-     Links: area Stack and engine · summary The tick stamp is a newtype over the sim's u64 count.
+     Links: area Stack and engine · draws on 197 · summary The tick stamp is a newtype over the sim's u64 count.
 204. **Subscription derives from the attention set, whose type M1
      designs.** Put to Mark on 2026-09-25, the second fork: §5.2's point 4,
      in the contract's shape since ruling 154, has one attention set per
@@ -2138,7 +2138,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      attention set? Mark: "Type the attention set." So M1 is not done
      until the attention set has its type and subscription derives from it.
 
-     Links: area Stack and engine · summary Subscription derives from the attention set, which M1 types; the contract carries no separate topic keys.
+     Links: area Stack and engine · draws on 154, 197 · summary Subscription derives from the attention set, which M1 types; the contract carries no separate topic keys.
 205. **A PLACES directive names a node of the place graph.** Put to Mark on
      2026-09-25, the third fork: an opaque handle to a place-graph node
      (rulings 72, 147), a site, or raw coordinates? Mark: "Place-graph
@@ -2631,7 +2631,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `ActionKey` renamed, and `harm.rs` are core exports, and no game module
      defines its own.
 
-     Links: area Stack and engine · summary The contract's shared shapes (WorldPoint, act key, Harm, Wound, WoundSeverity, PartHandle) live once, in the crate's core.
+     Links: area Stack and engine · draws on 197 · summary The contract's shared shapes (WorldPoint, act key, Harm, Wound, WoundSeverity, PartHandle) live once, in the crate's core.
 255. **Raw receipts live out of tree; the repository keeps their summaries,
      sources and scripts.** Put to Mark on 2026-09-26, S2's checkpoint 2
      bringing 14 MB of raw JSON against a repository pack of 9 MB: commit
@@ -2711,14 +2711,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      lineage, calibrated against the exact runner on the bench.
 
      Links: area Processes and rules · summary The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266)
-263. **Each family is built and certified in Isocosm, and `mesocosm-core`'s
-     copies retire together at M3.** Put to Mark on 2026-09-26, with 262: how
-     is "`mesocosm-core` no longer owns it" met while Mesocosm's consumers
-     still use the core: build and retire together, consume Isocosm's types
-     per family, or move matter and processes with bodies? Mark: "Build,
-     retire together." The duplication is temporary and no adapter is built.
-
-     Links: area Stack and engine · summary Each family is built and certified in Isocosm and mesocosm-core's copies retire together at M3; duplication is temporary and no adapter is built. (amended by 666)
 264. **Part roles are open keys in the world's rules with a default set, and
      that set is examined before it is fixed.** Put to Mark on 2026-09-26,
      with 262: part roles from `isometer-core`'s closed four, open keys, or
@@ -3062,7 +3054,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      rebuilding when too far behind; per-consumer queues; or a product-side
      conductor? Mark: "A revision log."
 
-     Links: area Stack and engine · summary One edit reaches its consumers through a revision log of changes keyed by revision at 8-cubed brick grain.
+     Links: area Stack and engine · draws on 330 · summary One edit reaches its consumers through a revision log of changes keyed by revision at 8-cubed brick grain.
 332. **conatus carries the source's stamp; the barrier stays with the
      product.** Put to Mark on 2026-09-26, with 330: conatus stamps colliders
      with its own counter, which cannot be compared with the source's, and
@@ -3073,7 +3065,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      source stamp that queries report, and the barrier lives in the product
      until a second consumer proves it.
 
-     Links: area Stack and engine · summary conatus carries the source's stamp via an optional stamp on voxel edits; the barrier stays in the product until a second consumer proves it.
+     Links: area Stack and engine · draws on 330 · summary conatus carries the source's stamp via an optional stamp on voxel edits; the barrier stays in the product until a second consumer proves it.
 333. **Navigation stays a search per query, each result stamped.** Put to
      Mark on 2026-09-26, with 330: no product caches navigation, each
      searching the current terrain per query, never stale but never saying
@@ -3081,7 +3073,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      or wait for the place graph? Mark: "Stamp each query." A cached product
      comes only when a measured query cost forces it.
 
-     Links: area Stack and engine · summary Navigation stays a search per query with each result stamped by revision; a cached product comes only when measured cost forces it.
+     Links: area Stack and engine · draws on 330 · summary Navigation stays a search per query with each result stamped by revision; a cached product comes only when measured cost forces it.
 338. **A process's shape requirement and seeding live on the function
      catalogue.** Put to Mark on 2026-09-26, from Lane A's Part B, whose
      step 1 was planned before rulings 276 to 278 put shapes and functions
@@ -3176,19 +3168,19 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      on its own world, or bodies and terrain? Mark: "Bodies only, shared
      world." Terrain arrives through T2's one path (rulings 330 to 335).
 
-     Links: area Stack and engine · summary The binding module binds bodies only, on a world shared with T2's terrain collider.
+     Links: area Stack and engine · draws on 348, 330 · summary The binding module binds bodies only, on a world shared with T2's terrain collider.
 350. **Accepted state arrives both whole and per key.** Put to Mark on
      2026-09-26, with 346: a whole-set reconcile and per-key set and remove,
      reconcile only, or per key only? Mark: "Both." The reconcile is the cold
      rebuild and carries the VTT's per-event accepted map; per-key updates
      carry a critter changing alone; cold and incremental must agree.
 
-     Links: area Stack and engine · summary Accepted state arrives both as a whole-set reconcile and per key; cold and incremental must agree.
+     Links: area Stack and engine · draws on 348 · summary Accepted state arrives both as a whole-set reconcile and per key; cold and incremental must agree.
 351. **A moved body keeps its id.** Put to Mark on 2026-09-26, with 346: move
      it and keep its id, respawning only when the entity's shape revision
      changes, or always respawn? Mark: "Move it, keep its id."
 
-     Links: area Stack and engine · summary A moved body keeps its id; it respawns only when the entity's shape revision changes.
+     Links: area Stack and engine · draws on 348 · summary A moved body keeps its id; it respawns only when the entity's shape revision changes.
 352. **conatus gains a query-refresh call.** Put to Mark on 2026-09-26, with
      346: conatus's queries miss a topology change until the world steps, so
      `TactileWorld` and Eponym each run a tiny step; a refresh call in
@@ -7798,7 +7790,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      requirement. *Reading, not ruled:* until G8 lands it, a save promises
      same-machine replay only.
 
-     Links: area Stack and engine · summary Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest.
+     Links: area Stack and engine · draws on 597 · summary Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest.
 605. **The shards carry a shard-count equality check.** 2026-10-06, from
      the balaur read. Question: §4.7 designs the ordered merge before the
      shards, which are not built; balaur asserts one-thread and
@@ -7869,7 +7861,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Isocosm's switch to the FNV witness need not wait for it, and its
      labels and first-divergence report follow when the crate exists.
 
-     Links: area Stack and engine · summary One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm.
+     Links: area Stack and engine · draws on 604 · summary One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm.
 610. **Labelled checkpoints per epoch; a per-tick trace on demand.**
      2026-10-06. Question: Isocosm advances only through ticks with due
      events (ruling 284), and its saves already record a checkpoint, tick
@@ -8357,7 +8349,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      news the sim's (recommended); everything spatial through isometer.
      Mark chose "Yes: space through isometer, news the sim's (Recommended)".
 
-     Links: area Stack and engine · summary Movement and physical reach read isometer's space; the reach field (when news arrives at a site) stays the sim's.
+     Links: area Stack and engine · draws on 670 · summary Movement and physical reach read isometer's space; the reach field (when news arrives at a site) stays the sim's.
 677. **The overlay's M2 is the families plan's Mesocosm share.** 2026-10-08,
      the Mesocosm overlay plan's design round. Question: M2 ("absorption by
      family") predates 591 and 666 to 676, and the families re-expression
@@ -8509,7 +8501,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and isometer applies edits to its volume and derives places, passages
      and travel cost.
 
-     Links: area Stack and engine · summary The sim records each edit as an asserted fact and an entity's place id; isometer applies edits and derives places, passages and travel cost.
+     Links: area Stack and engine · draws on 670, 413, 422 · summary The sim records each edit as an asserted fact and an entity's place id; isometer applies edits and derives places, passages and travel cost.
 697. **nisus is the store behind isometer, now.** 2026-10-08. Question: 330
      made mere's nisus the voxel authority, and 670 gives in-site space to
      isometer, whose `Ground` stores it today; how do they fit? Options:
@@ -8520,7 +8512,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Annotation, 2026-10-08:* put back as 700 with T2 still unbuilt; it
      stands.
 
-     Links: area Stack and engine · summary Nisus is the store behind isometer now, with SP4; 670 governs the interface and 330 the storage.
+     Links: area Stack and engine · draws on 330, 670 · summary Nisus is the store behind isometer now, with SP4; 670 governs the interface and 330 the storage.
 698. **SP4 and SP5 are built in isometer.** 2026-10-08. Question: the lift
      lives in isocosm (`src/terrain`, `src/map`, 1,040 lines) and SP3's
      adapter in genet's bench; where are SP4 and SP5 built? Options: in
@@ -8529,7 +8521,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      isometer-core module or a product-neutral isometer crate without wgpu,
      consumed by the sim directly.
 
-     Links: area Stack and engine · summary SP4 and SP5 (edit application and places) are built in isometer without wgpu and consumed by the sim directly.
+     Links: area Stack and engine · draws on 670 · summary SP4 and SP5 (edit application and places) are built in isometer without wgpu and consumed by the sim directly.
 699. **The seam keys by `PartId`, and situs joins the body document.**
      2026-10-08, under 674. Question: isometer's `PartId(u32)` is a vector
      index with tombstones and native ids are `u64` map keys; situs and
@@ -8549,7 +8541,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Lift moves to isometer (Recommended)". So site grain stays the sim's,
      and lifting a site into voxels is isometer's, beside SP4 and SP5 (698).
 
-     Links: area Stack and engine · summary Lifting a site into voxels moves to isometer beside SP4 and SP5; site grain and the world map stay the sim's.
+     Links: area Stack and engine · draws on 698 · summary Lifting a site into voxels moves to isometer beside SP4 and SP5; site grain and the world map stay the sim's.
 702. **Walking, routing and sight are rewritten over SP5.** 2026-10-08.
      Question: legacy `near.rs` (369 lines) uses only `Ground` and `Aabb`;
      675 sends movement and physical reach through isometer and 597 keeps
@@ -8560,7 +8552,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      legacy searches retire with their family. *Reading, not ruled:*
      Eponym's conatus motion stays game-side (597).
 
-     Links: area Stack and engine · summary Isometer's walking, routing and sight are built over SP5's passages and travel cost, not raw voxels; legacy searches retire with their family.
+     Links: area Stack and engine · draws on 675, 597 · summary Isometer's walking, routing and sight are built over SP5's passages and travel cost, not raw voxels; legacy searches retire with their family.
 703. **Soil, the tier line and the coarse partition split now.** 2026-10-08.
      Question: where do legacy soil, the tier line and the coarse `Places`
      partition go? Options: split now (recommended); decide at the family.
@@ -8569,7 +8561,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      columns are sites"; the tier line goes to the host or directing; and
      SP5's places supersede the coarse partition.
 
-     Links: area Stack and engine · summary Soil and its diffusion stay the sim's keyed by isometer's columns; the tier line goes to host or directing; SP5 places replace the coarse partition.
+     Links: area Stack and engine · draws on 670 · summary Soil and its diffusion stay the sim's keyed by isometer's columns; the tier line goes to host or directing; SP5 places replace the coarse partition.
 704. **Checkpoint 10's wounds come from an agentless hazard.** 2026-10-08,
      checkpoint 10's brief, first round. Question: what inflicts a wound in
      the probe before 123's fights exist (the probe's fights are between
@@ -8741,7 +8733,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and an opaque origin tag, and `BodyPlan`'s shape classes stay as
      product-neutral geometry.
 
-     Links: area Stack and engine · summary Lineage vocabulary leaves isometer-core with the bodies family; provenance and species ids move to the sim keyed by PartId.
+     Links: area Stack and engine · draws on 674, 699 · summary Lineage vocabulary leaves isometer-core with the bodies family; provenance and species ids move to the sim keyed by PartId.
 724. **The folded probe stays a standalone isometry probe.** 2026-10-08.
      Question: where does it live? Options: its own workspace under
      `crates/probes`, pinned to mere by rev (recommended); `TactileWorld`'s
@@ -8749,7 +8741,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Standalone isometry probe (Recommended)". *Reading, not ruled:* its
      name no longer fits once parry goes, and a rename is a naming round.
 
-     Links: area Stack and engine · summary The folded probe stays a standalone isometry probe in its own workspace under crates/probes, pinned to mere by rev.
+     Links: area Stack and engine · draws on 695 · summary The folded probe stays a standalone isometry probe in its own workspace under crates/probes, pinned to mere by rev.
 735. **The kiss3d fork: v0.47.0, a mark-ik fork, a mere crate over it.**
      2026-10-09. Evidence: cargo's git cache holds dimforge/kiss3d at
      `28cdddd` (2026-08-29, past v0.46.0); v0.47.0 (2026-10-04), which
@@ -8790,14 +8782,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (Recommended)". So caves, tunnels and lintelled doorways are places
      with clearance on their edges, and `Cover::Roofed` is the default.
 
-     Links: area Stack and engine · summary A room is roofed air: caves, tunnels and lintelled doorways are places with clearance on edges, and Cover::Roofed is the default.
+     Links: area Stack and engine · draws on 417 · summary A room is roofed air: caves, tunnels and lintelled doorways are places with clearance on edges, and Cover::Roofed is the default.
 738. **A patch splits at narrow necks.** 2026-10-09. Question: clearance
      lives only on edges (418), so a 1-wide gap inside one large patch lets
      a 2-wide body through. Options: split where walkable width drops below
      a world-rule width (recommended); accept it; record each patch's
      narrowest width. Mark chose "Split at narrow necks (Recommended)".
 
-     Links: area Stack and engine · summary A patch splits where walkable width drops below a world-rule width.
+     Links: area Stack and engine · draws on 418 · summary A patch splits where walkable width drops below a world-rule width.
 739. **An edit's mass is credited by material.** 2026-10-09. Question: 412's
      density and matter account have no defaults and the sim names no
      carver. Options: density and account on `Material`, set at founding,
@@ -8819,7 +8811,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      pair of places; same or adjacent places only. Mark chose "Voxel ray,
      place-scoped (Recommended)".
 
-     Links: area Stack and engine · summary Sight is a voxel ray with the place graph choosing candidates.
+     Links: area Stack and engine · draws on 702 · summary Sight is a voxel ray with the place graph choosing candidates.
 742. **The tier line goes to directing.** 2026-10-09. Question: 703 sends it
      to the host or directing. Options: directing, with the family's
      re-expression (recommended); the host now. Mark chose "Directing
@@ -8834,7 +8826,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      1-wide neck splits (recommended); the roster's widest body; unset.
      Mark chose "Default 2 (Recommended)".
 
-     Links: area Stack and engine · summary The patch neck width defaults to 2, so any 1-wide neck splits.
+     Links: area Stack and engine · amends 738 · summary The patch neck width defaults to 2, so any 1-wide neck splits.
 744. **Cliff spans are drawn, and the lift steps its surface there.**
      2026-10-09. Question: spans derived from the lift never stop at a
      cliff, two sites meeting on one continuous profile, so only water
@@ -8923,7 +8915,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chose "Into isocosm, opaque tag (Recommended)". This carries 721 and
      699's mass reading.
 
-     Links: area Stack and engine · summary Lineage and provenance data (SpeciesId, Origin, Provenance) move into isocosm as sidecars keyed by PartId; isometer keeps an opaque tag.
+     Links: area Stack and engine · draws on 721, 699 · summary Lineage and provenance data (SpeciesId, Origin, Provenance) move into isocosm as sidecars keyed by PartId; isometer keeps an opaque tag.
 757. **Authored content enters by `Command::Assert`, with the record.**
      2026-10-09, from the campaign lane (merged at `b37d7e91`). Question:
      native asserts no faction, place, character, law, fact or history

@@ -281,7 +281,8 @@ guards is deliberately broken.
   (rulings 330 and 331), and `Ground` thins or retires as ruling 330 allows.
   Done when T2's own done-conditions hold and SP2 to SP5's draws pass again
   on nisus, with saves keeping their hashes or converting by a recorded
-  event.
+  event, and each navigation result carries the world revision it read
+  (333; doctrine, Stack 5 and 6; Mark, 2026-10-22: "Owe nisus in a plan").
 - *Annotation, 2026-10-08 (696 to 703, under 670 and 674):* the sim
   records each edit as an asserted fact and an entity's place id, and
   isometer applies edits and derives places, passages and travel cost (696);

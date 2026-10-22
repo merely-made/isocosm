@@ -2762,6 +2762,16 @@ amended by 919) (Mark: "Archive 2, link 6, 600 to Stack"):
      `isometry-graphshell` would have mixed it. Its next publish would ship
      implementation over unpublished path crates, so publishing waits.
 
+**Moved 2026-10-22** in the doctrine's Stack and engine review, as executed
+(mesocosm-core's copies retired) (Mark: "As drafted, archive 263"):
+
+263. **Each family is built and certified in Isocosm, and `mesocosm-core`'s
+     copies retire together at M3.** Put to Mark on 2026-09-26, with 262: how
+     is "`mesocosm-core` no longer owns it" met while Mesocosm's consumers
+     still use the core: build and retire together, consume Isocosm's types
+     per family, or move matter and processes with bodies? Mark: "Build,
+     retire together." The duplication is temporary and no adapter is built.
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's

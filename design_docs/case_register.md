@@ -573,7 +573,6 @@ three design docs that cite it. The record holds the words.
 | 203 | The tick stamp is a newtype over the sim's u64 count. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 204 | Subscription derives from the attention set, which M1 types; the contract carries no separate topic keys. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 254 | The contract's shared shapes (WorldPoint, act key, Harm, Wound, WoundSeverity, PartHandle) live once, in the crate's core. | none |
-| 263 | Each family is built and certified in Isocosm and mesocosm-core's copies retire together at M3; duplication is temporary and no adapter is built. (amended by 666) | none |
 | 289 | mere's atlas is sized to the card, riding with the retarget defect's fix. | [board on isometer](2026-09-15_board_on_isometer_plan.md) |
 | 290 | The board's CPU side is paged too, computing bricks from the map on demand. | [board on isometer](2026-09-15_board_on_isometer_plan.md) |
 | 291 | Residency follows the view (pane bricks plus one-brick margin), with mechanics in a product-neutral helper in shared/isometer and the board's rule in the VTT. (amended by 425) | [board on isometer](2026-09-15_board_on_isometer_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
