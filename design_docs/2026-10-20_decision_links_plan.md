@@ -401,3 +401,13 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   is recorded on the statement it shaped, not as a new case, so a round adds
   statements, not chits. The tool now reads doctrine statements (`naming.1`);
   the anchor check found Naming 4's two governed types present.
+- **2026-10-21, Licensing and Method.** Licensing: three statements (rulesets,
+  publication, licences by layer). Mark, asked whether a statement may cite
+  CLAUDE.md: "claude.md should be derived, not authoritative", which became
+  Method 7 (refining 615). Method: seven statements from 19 cases, and at
+  Mark's "Adopt; slim them all now" the three CLAUDE.md files went from
+  595 lines to about 190, each rule replaced by a pointer to its record
+  (the doctrine, the founding record's sections, the founding and overlay
+  plans). Kept as working instructions, which no record holds: check the
+  stack first, surface scope changes, no unjustified `unsafe`, guard the
+  feature-gated code.

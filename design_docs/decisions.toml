@@ -2851,18 +2851,21 @@ title = "No source file over 600 lines without a technical reason"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "No tracked source file over 600 lines without a listed technical reason; a script checks it and oversize files are split."
+draws_on = ["193"]
 
 [cases."593"]
 title = "Docs are outside the ceiling, and deduplicated"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "The 600-line ceiling covers source code only; docs are deduplicated, each result having one home and other mentions linking to it."
+amends = ["592"]
 
 [cases."594"]
 title = "A pre-commit hook enforces the ceiling"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "A pre-commit hook runs the line-ceiling script on staged files to enforce the ceiling."
+draws_on = ["592"]
 
 [cases."597"]
 title = "Eponym's motion stays game-side"
@@ -2935,36 +2938,42 @@ title = "An index row is a pointer, a purpose and a status"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "An index row is the link, one line of purpose and a dated status; ruling summaries live only in the record."
+draws_on = ["593"]
 
 [cases."613"]
 title = "Progress logs record landings, past entries included"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "A progress entry records what was built or verified with its commit, naming rulings by number; past entries are cut to that shape."
+draws_on = ["593"]
 
 [cases."614"]
 title = "Session notes are archived; briefs cite rulings by number"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "Design session notes are archived; briefs keep design text but cite rulings by number instead of re-tabulating rounds."
+draws_on = ["593"]
 
 [cases."615"]
 title = "One `DOC_POLICY.md`, and shared `CLAUDE.md` rules at the root"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "One root DOC_POLICY.md with a three-product addendum; rules the product CLAUDE.md files share move to the root CLAUDE.md; LICENSES.md files stay."
+draws_on = ["593"]
 
 [cases."616"]
 title = "A plan holds the spec, the record the decision"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "A plan is its spec's home and cites ruling numbers; the record is the decision's home; neither restates the other's rationale."
+draws_on = ["593"]
 
 [cases."618"]
 title = "A doc's own status line is current"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "Each plan's status line carries its newest dated status; the index row repeats a short version of it."
+draws_on = ["612"]
 
 [cases."622"]
 title = "scenevm is a donor of techniques only"
@@ -3007,6 +3016,7 @@ title = "The rationale prose moves into the datasheets"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "Rationale prose for bodies and shapes moves into the datasheets as TOML comments; Rust keeps only loader documentation."
+draws_on = ["593"]
 
 [cases."629"]
 title = "Founding datasheets are laid out by roster set"
@@ -4337,6 +4347,7 @@ title = "Every lane brief carries a receipt budget"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "Every lane brief names the receipts its done-conditions need and caps their total (for example 100 MB); exploratory runs keep summaries only."
+draws_on = ["255"]
 
 [cases."954"]
 title = "H4: the core has its own press type and a keymap hook"
@@ -4520,6 +4531,55 @@ source = "design_docs/doctrine.md"
 area = "Licensing and sources"
 summary = "Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0."
 draws_on = ["919"]
+
+[statements."method.1"]
+title = "Evidence is drawn, not picked"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "Tests draw under an unchosen seed; evidence is kept apart from reports; controls name their fault; gates are staged with what they gate."
+draws_on = ["15", "260", "366"]
+
+[statements."method.2"]
+title = "Questions are collected"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "Forks are collected into one round while authorised work continues."
+draws_on = ["864"]
+
+[statements."method.3"]
+title = "Source size"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "No source file over 600 lines without a listed reason, hook-checked; splits follow existing seams."
+draws_on = ["193", "592", "593", "594"]
+
+[statements."method.4"]
+title = "Receipts"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "Raw receipts live out of tree; briefs name and cap the receipts they need."
+draws_on = ["255", "953"]
+
+[statements."method.5"]
+title = "One home per fact"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "Each fact has one home and every other mention links to it."
+draws_on = ["593", "612", "613", "614", "615", "616", "618", "628", "790"]
+
+[statements."method.6"]
+title = "Dated words"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "A dated line keeps its date's words; logs are not rulings."
+draws_on = ["198", "613"]
+
+[statements."method.7"]
+title = "CLAUDE.md is derived"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "CLAUDE.md points to the records and holds only what an agent needs to find them and work here."
+draws_on = ["615"]
 
 [statements."naming.1"]
 title = "The family"

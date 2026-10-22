@@ -7696,7 +7696,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a pre-commit hook, `field-bake` retired; the splits landed at
      `bb92f2e`.
 
-     Links: area Method and documents · summary No tracked source file over 600 lines without a listed technical reason; a script checks it and oversize files are split.
+     Links: area Method and documents · draws on 193 · summary No tracked source file over 600 lines without a listed technical reason; a script checks it and oversize files are split.
 
 593. **Docs are outside the ceiling, and deduplicated.** 2026-10-05. Question:
      do markdown docs fall under the 600-line ceiling (36 over it, the wing
@@ -7705,7 +7705,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      deduplicate the docs." So the ceiling covers source code, and the docs
      are deduplicated: each result one home, other mentions a link.
 
-     Links: area Method and documents · summary The 600-line ceiling covers source code only; docs are deduplicated, each result having one home and other mentions linking to it.
+     Links: area Method and documents · amends 592 · summary The 600-line ceiling covers source code only; docs are deduplicated, each result having one home and other mentions linking to it.
 
 594. **A pre-commit hook enforces the ceiling.** 2026-10-05. Options: a
      pre-commit hook (recommended); by hand. Mark chose "Pre-commit hook".
@@ -7715,7 +7715,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      splits are not blocked by files they did not touch, and it says so
      and passes where no PowerShell exists.
 
-     Links: area Method and documents · summary A pre-commit hook runs the line-ceiling script on staged files to enforce the ceiling.
+     Links: area Method and documents · draws on 592 · summary A pre-commit hook runs the line-ceiling script on staged files to enforce the ceiling.
 
 597. **Eponym's motion stays game-side.** 2026-10-05. Question: how does
      Eponym's world move onto the sim, given that 233 keeps motion and
@@ -7907,7 +7907,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      status". So each row is the link, one line of what the doc is for and
      a dated status; ruling summaries live only in this record.
 
-     Links: area Method and documents · summary An index row is the link, one line of purpose and a dated status; ruling summaries live only in the record.
+     Links: area Method and documents · draws on 593 · summary An index row is the link, one line of purpose and a dated status; ruling summaries live only in the record.
 613. **Progress logs record landings, past entries included.** 2026-10-06,
      carrying out 593. Question: this record's Progress log is 1,679 lines,
      largely one-line restatements of rulings already in §0, and plans' logs
@@ -7919,7 +7919,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      restating them; past entries are cut to that shape, being logs and not
      rulings, and the rulings keep their words.
 
-     Links: area Method and documents · summary A progress entry records what was built or verified with its commit, naming rulings by number; past entries are cut to that shape.
+     Links: area Method and documents · draws on 593 · summary A progress entry records what was built or verified with its commit, naming rulings by number; past entries are cut to that shape.
 614. **Session notes are archived; briefs cite rulings by number.**
      2026-10-06, carrying out 593. Question: the sim design session notes
      (1,921 lines) tabulate each round's questions and answers, which this
@@ -7931,7 +7931,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `archive_docs/2026-10-06/`, and briefs keep their design text but cite
      rulings by number instead of re-tabulating rounds.
 
-     Links: area Method and documents · summary Design session notes are archived; briefs keep design text but cite rulings by number instead of re-tabulating rounds.
+     Links: area Method and documents · draws on 593 · summary Design session notes are archived; briefs keep design text but cite rulings by number instead of re-tabulating rounds.
 615. **One `DOC_POLICY.md`, and shared `CLAUDE.md` rules at the root.**
      2026-10-06, carrying out 593. Question: `DOC_POLICY.md` exists three
      times (root, Mesocosm, Eponym), one canonical core with stale local
@@ -7944,7 +7944,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `CLAUDE.md` files share move to the root `CLAUDE.md`, the product files
      linking; the `LICENSES.md` files, per-product legal records, stay.
 
-     Links: area Method and documents · summary One root DOC_POLICY.md with a three-product addendum; rules the product CLAUDE.md files share move to the root CLAUDE.md; LICENSES.md files stay.
+     Links: area Method and documents · draws on 593 · summary One root DOC_POLICY.md with a three-product addendum; rules the product CLAUDE.md files share move to the root CLAUDE.md; LICENSES.md files stay.
 
 616. **A plan holds the spec, the record the decision.** 2026-10-06,
      carrying out 593. Question: after the dedup's first four phases the
@@ -7957,7 +7957,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      neither restates the other's rationale, and the overlap a spec shares
      with the ruling that set it stays.
 
-     Links: area Method and documents · summary A plan is its spec's home and cites ruling numbers; the record is the decision's home; neither restates the other's rationale.
+     Links: area Method and documents · draws on 593 · summary A plan is its spec's home and cites ruling numbers; the record is the decision's home; neither restates the other's rationale.
 618. **A doc's own status line is current.** 2026-10-06. Question: about
      twenty plans' own status lines are older than the status their index
      row carries; where does current status live? Options: update the doc's
@@ -7965,7 +7965,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      line". So each plan's status line carries its newest dated status, and
      the index row repeats a short version of it.
 
-     Links: area Method and documents · summary Each plan's status line carries its newest dated status; the index row repeats a short version of it.
+     Links: area Method and documents · draws on 612 · summary Each plan's status line carries its newest dated status; the index row repeats a short version of it.
 622. **scenevm is a donor of techniques only.** 2026-10-06, from Mark's
      question whether Eldiron's `scenevm` (MIT, 0.95.0) would be "of use for
      the isocosm wing", how it "compares with kiss3d as a tenant, or composes
@@ -8062,7 +8062,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the datasheets". So the reasons sit beside the data people edit, and
      the Rust keeps only loader documentation.
 
-     Links: area Method and documents · summary Rationale prose for bodies and shapes moves into the datasheets as TOML comments; Rust keeps only loader documentation.
+     Links: area Method and documents · draws on 593 · summary Rationale prose for bodies and shapes moves into the datasheets as TOML comments; Rust keeps only loader documentation.
 629. **Founding datasheets are laid out by roster set.** 2026-10-06, P3a of
      the datasheets plan. Question: one self-contained sheet per founding,
      as the plan worded it, or sheets by roster set? The eight foundings
@@ -10750,7 +10750,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      only; (2) "Global rule too"; (3) "No rule". Mark: "Cap receipts in
      briefs (Recommended)". Carried into the lane-queue plan's rules (§2).
 
-     Links: area Method and documents · summary Every lane brief names the receipts its done-conditions need and caps their total (for example 100 MB); exploratory runs keep summaries only.
+     Links: area Method and documents · draws on 255 · summary Every lane brief names the receipts its done-conditions need and caps their total (for example 100 MB); exploratory runs keep summaries only.
 
 954. **H4: the core has its own press type and a keymap hook.** Asked
      2026-10-16 by card, from H4's assessment. Evidence: `mesocosm-genet`
