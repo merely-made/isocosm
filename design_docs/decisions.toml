@@ -5544,8 +5544,8 @@ draws_on = ["161", "162", "163", "164", "227", "schema.6"]
 title = "Belief"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
-summary = "Spread is modelled distributionally; any belief can be wrong; whether it takes weighs checking, teller, wish and manner; secrets are taboo leverage."
-draws_on = ["84", "86", "87", "117", "118", "119", "241", "1001"]
+summary = "Any belief can be wrong; whether it takes weighs checking, teller, wish and manner; a secret is a taboo's set of knowers, ending by leaking."
+draws_on = ["87", "117", "118", "119", "241", "1001", "processes.19"]
 
 [statements."processes.12"]
 title = "Collective action"
@@ -5595,6 +5595,13 @@ source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "Four rules hold many things: aggregate the unforegrounded, schedule due events, store deviations, keep the environment on places."
 draws_on = ["124", "430", "processes.4", "processes.6", "processes.7", "schema.12"]
+
+[statements."processes.19"]
+title = "How knowledge resolves"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Reach stores arrivals; knowing is a seeded draw over where one has been; how one learned is sampled backward; resolved answers become notes."
+draws_on = ["5", "84", "86", "record.3"]
 
 [statements."record.1"]
 title = "Consistency is chosen per domain"
