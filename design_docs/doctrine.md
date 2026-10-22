@@ -127,7 +127,8 @@ Links: draws on 18, 382, 387 · summary The default view is the 2:1 dimetric at 
 *Reviewed 2026-10-22, new. 382 left open whether Mesocosm opens in the
 default; its camera then defaulted to true isometric (35.26°). Mark: "Follow
 the wing: 2:1 dimetric, quarter turns", and "Ask the playable-loop lane to do
-it": the change is briefed to that lane and owed until it lands.*
+it": that lane made the change (`c33e69d0`), and it landed on main at
+`ace76d61` on 2026-10-22.*
 
 ### Presentation 2. The detail ladder
 
