@@ -176,4 +176,15 @@ commit message.
    statement whose governed code is all gone (rust-analyzer's index, read
    when a round is prepared), or one whose standing has faded (renewed only
    by a citation in a commit, plan or question round) enters a consolidation
-   round as a card; Mark keeps, merges or retires it.
+   round as a card; Mark keeps, merges or retires it. The budget is
+   `design_docs/doctrine_budget.toml` (ruled 2026-10-22): a cap on each
+   area's statements and one on every statement's body lines, its fields
+   line and notes not counted. `wing-decisions check` reports an overrun and
+   never refuses; the next round touching that area opens with its
+   consolidation.
+6. **One note per statement.** A statement carries one italic note after its
+   fields line: its latest outcome, in Mark's words (ruled 2026-10-22,
+   "Latest outcome only"). Earlier notes leave the doctrine; git keeps them,
+   and `wing-decisions lookup --history` lists the commits that touched the
+   statement. What is built, owed or unverified is said before the fields
+   line, as part of the statement.

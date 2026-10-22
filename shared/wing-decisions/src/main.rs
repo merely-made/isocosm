@@ -5,15 +5,17 @@
 //! the fields lines carry areas and summaries) and the journal cache.
 //! `wing-decisions lookup <key | path | --area NAME | --history KEY>`.
 //! `wing-decisions anchors (--index FILE.scip | --scip CRATE_DIR)...`.
-//! `wing-decisions check` fails when the committed manifest is stale.
+//! `wing-decisions check` fails when the committed manifest is stale, and
+//! reports the doctrine's budget overruns without failing.
 
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 use wing_decisions::anchors::{Found, Index};
 use wing_decisions::git::Repo;
 use wing_decisions::lookup::Lookup;
+use wing_decisions::budget::{self, BUDGET, Budget};
 use wing_decisions::model::Key;
-use wing_decisions::{MANIFEST, Snapshot, journal, scan};
+use wing_decisions::{DOCTRINE, MANIFEST, Snapshot, journal, scan};
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -82,13 +84,26 @@ fn check(repo: &Repo) -> Result<ExitCode, String> {
     let snap = Snapshot::from_index(repo)?;
     let fresh = snap.manifest().to_toml(true);
     let staged = repo.git(&["show", &format!(":{MANIFEST}")]).unwrap_or_default();
-    if staged.replace("\r\n", "\n") == fresh {
+    let current = staged.replace("\r\n", "\n") == fresh;
+    if current {
         println!("manifest is current");
-        Ok(ExitCode::SUCCESS)
     } else {
         println!("manifest is stale: run `wing-decisions regen --stage`");
-        Ok(ExitCode::from(1))
     }
+    let doctrine = snap.files.iter().find(|(p, _)| p == DOCTRINE).map_or("", |(_, t)| t.as_str());
+    match repo.git(&["show", &format!(":{BUDGET}")]) {
+        Ok(text) => {
+            let over = Budget::parse(&text)?.overruns(&budget::measure(doctrine));
+            if over.is_empty() {
+                println!("doctrine within budget");
+            } else {
+                println!("over budget, for the next round touching each area:");
+                over.iter().for_each(|o| println!("  {o}"));
+            }
+        }
+        Err(_) => println!("no {BUDGET} staged; budget not checked"),
+    }
+    Ok(if current { ExitCode::SUCCESS } else { ExitCode::from(1) })
 }
 
 fn lookup(repo: &Repo, rest: &[String]) -> Result<ExitCode, String> {

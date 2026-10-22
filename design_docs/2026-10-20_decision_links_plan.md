@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-22:** in progress: L1, L2, L1b and L3 done; L4's seventeen area reviews done, its budget pass next, then archiving §1 to §11. Shaped with Mark the same day in
+**Status, 2026-10-22:** in progress: L1, L2, L1b and L3 done; L4's seventeen area reviews and its budget done; archiving §1 to §11 next, then L5. Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -115,12 +115,20 @@ Mark's answers, recorded as given.
   conflicted on nearly every merge. `design_docs/decisions.toml` holds each
   decision's title, source and declared links only, without line numbers;
   mentions, back-links and citations are derived into the local cache.
-- **Budget form:** not settled. Mark weighed all three: a share of cases
-  draws him but may need distinctions (active against resolved cases,
-  inflation, its relation to fading); a count invites poorly merged
-  statements or a weightless cap; lines per area "invites editorial
-  consideration structurally with an optimization problem" and is "probably
-  the best. but this deserves another pass."
+- **Budget form:** first weighed 2026-10-20: a share of cases draws him but
+  may need distinctions (active against resolved cases, inflation, its
+  relation to fading); a count invites poorly merged statements or a
+  weightless cap; lines per area "invites editorial consideration
+  structurally with an optimization problem" and is "probably the best. but
+  this deserves another pass."
+- **Budget, the second pass, 2026-10-22,** with the written doctrine as
+  evidence (130 statements, 880 body lines; 3 to 17 statements per area;
+  statements up to 15 lines): "Two caps", statements per area and lines
+  per statement; "Today's size plus your margin": "+25%, at least 1" on each
+  area's count and "18: today's longest plus 3" on lines; kept in
+  "doctrine_budget.toml"; "Check reports; next round consolidates". Review
+  notes: "Latest outcome only", one note per statement, status moved into
+  the body. DOC_POLICY's rules 5 and 6 carry these.
 
 ## Design
 
@@ -289,8 +297,8 @@ Proposed text, not yet in the policy; Mark approves or changes it.
 
 ## Questions put to Mark
 
-1. **The per-area budget.** Its form (leaning lines per area) and its size,
-   after another pass.
+1. **The per-area budget.** Answered 2026-10-22 (Decisions, "Budget, the
+   second pass").
 
 ## Findings
 
@@ -420,4 +428,15 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   archive with notes; unbuilt rules are named in their statements. One
   correction: Schema 6 had listed strain as unbuilt, and played worlds keep
   it. Next: the budget pass, at Mark's word ("The budget pass"), then
+  archiving §1 to §11.
+- **2026-10-22, the budget.** Two caps, ruled with the doctrine's measured
+  sizes (Decisions): `design_docs/doctrine_budget.toml` holds each area's
+  statement cap and the 18-line cap per statement, and `wing-decisions
+  check` now measures the doctrine against it and reports overruns without
+  failing (two tests: bodies counted without fields lines and notes; an
+  overrun named by area and statement). The doctrine fits. Eleven
+  statements carried several review notes; each now keeps one, and the
+  status three of them held (Ecology 5's owed world rules, World 2's owed
+  sky, Stack 4's unverified bench lanes) moved into their bodies.
+  DOC_POLICY's rule 5 names the budget and rule 6 the one note. Next:
   archiving §1 to §11.
