@@ -25,16 +25,31 @@ use std::collections::BTreeSet;
 
 pub const MANIFEST: &str = "design_docs/decisions.toml";
 pub const DOCTRINE: &str = "design_docs/doctrine.md";
+/// Per-repository settings; absent, a repository has no case record.
+pub const CONFIG: &str = "design_docs/decisions_config.toml";
+
+#[derive(Default, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Config {
+    /// The case record's file name, matched wherever it lives.
+    pub record: Option<String>,
+}
 
 /// Everything relevant in the index, read once.
 pub struct Snapshot {
     pub files: Vec<(String, String)>,
     pub max_case: u32,
     pub plans: BTreeSet<String>,
+    pub config: Config,
 }
 
 impl Snapshot {
     pub fn from_index(repo: &Repo) -> Result<Snapshot, String> {
+        let config: Config = match repo.git(&["show", &format!(":{CONFIG}")]) {
+            Ok(text) => toml::from_str(&text).map_err(|e| format!("{CONFIG}: {e}"))?,
+            Err(_) => Config::default(),
+        };
+        let record = config.record.as_deref();
         let mut blobs = repo.blobs()?;
         let mut files = Vec::new();
         for (path, blob) in repo.index()? {
@@ -46,16 +61,16 @@ impl Snapshot {
         }
         let max_case = files
             .iter()
-            .filter(|(p, _)| scan::is_record(p))
+            .filter(|(p, _)| scan::is_record(p, record))
             .flat_map(|(_, t)| docs::case_numbers(t))
             .max()
             .unwrap_or(0);
         let plans = files.iter().filter_map(|(p, _)| model::plan_keyword(p).filter(|_| scan::is_doc(p))).collect();
-        Ok(Snapshot { files, max_case, plans })
+        Ok(Snapshot { files, max_case, plans, config })
     }
 
     pub fn citer(&self) -> Citer<'_> {
-        Citer { max_case: self.max_case, plans: &self.plans }
+        Citer { max_case: self.max_case, plans: &self.plans, record: self.config.record.as_deref() }
     }
 
     pub fn manifest(&self) -> manifest::Manifest {

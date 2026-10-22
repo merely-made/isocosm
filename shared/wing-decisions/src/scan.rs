@@ -9,11 +9,10 @@ use crate::docs::{self, Entry};
 use crate::model::{self, Key, anchor_id, slug};
 use std::collections::BTreeSet;
 
-/// The design record's file name, wherever it lives (it moves in L1b).
-pub const RECORD: &str = "2026-09-18_wing_design_plan.md";
-
-pub fn is_record(path: &str) -> bool {
-    path.ends_with(RECORD) && !path.contains("archive_docs/")
+/// Whether `path` is the case record named `record`, wherever it lives (a
+/// file name, so the record's history reads the same across moves).
+pub fn is_record(path: &str, record: Option<&str>) -> bool {
+    record.is_some_and(|r| path.ends_with(r)) && !path.contains("archive_docs/")
 }
 
 /// Files this tool writes; they cite everything, so they cite nothing.
@@ -44,7 +43,7 @@ pub struct Facts {
 
 pub fn facts(path: &str, text: &str, citer: &Citer) -> Facts {
     let mut f = Facts::default();
-    if is_record(path) {
+    if is_record(path, citer.record) {
         f.entries = docs::record_cases(path, text, citer);
     } else if path.ends_with("/doctrine.md") && is_doc(path) {
         f.entries = docs::doctrine_statements(path, text, citer);
@@ -57,7 +56,7 @@ pub fn facts(path: &str, text: &str, citer: &Citer) -> Facts {
                 f.cites.extend(citer.cite(c).into_iter().map(|k| (k, i + 1)));
             }
         }
-    } else if is_doc(path) && !is_record(path) && !path.ends_with("/doctrine.md") {
+    } else if is_doc(path) && !is_record(path, citer.record) && !path.ends_with("/doctrine.md") {
         for (i, line) in text.lines().enumerate() {
             f.cites.extend(citer.cite(line).into_iter().map(|k| (k, i + 1)));
         }
@@ -119,7 +118,7 @@ mod tests {
     #[test]
     fn rust_comments_cite_and_code_does_not() {
         let plans = BTreeSet::new();
-        let c = Citer { max_case: 984, plans: &plans };
+        let c = Citer { max_case: 984, plans: &plans, record: Some("2026-09-18_wing_design_plan.md") };
         let f = facts("shared/a.rs", "let x = f(42); // the share rule (975)\n/// ruling 338\n", &c);
         let keys: Vec<String> = f.cites.iter().map(|(k, l)| format!("{k}@{l}")).collect();
         assert_eq!(keys, ["975@1", "338@2"]);

@@ -41,7 +41,8 @@ fn run(args: &[String]) -> Result<ExitCode, String> {
 }
 
 fn register_path(snap: &Snapshot) -> Option<String> {
-    let record = snap.files.iter().find(|(p, _)| scan::is_record(p))?;
+    let name = snap.config.record.as_deref();
+    let record = snap.files.iter().find(|(p, _)| scan::is_record(p, name))?;
     let dir = record.0.rsplit_once('/').map_or("", |(d, _)| d);
     Some(format!("{dir}/case_register.md"))
 }

@@ -141,7 +141,7 @@ mod tests {
     #[test]
     fn record_cases_take_text_links_and_mentions() {
         let plans = BTreeSet::new();
-        let c = Citer { max_case: 984, plans: &plans };
+        let c = Citer { max_case: 984, plans: &plans, record: Some("2026-09-18_wing_design_plan.md") };
         let cases = record_cases("r.md", RECORD, &c);
         assert_eq!(cases.len(), 2);
         assert_eq!(cases[1].key, Key::Case(2));
@@ -155,7 +155,7 @@ mod tests {
     #[test]
     fn plan_decisions_are_keyed_by_plan() {
         let plans = BTreeSet::new();
-        let c = Citer { max_case: 984, plans: &plans };
+        let c = Citer { max_case: 984, plans: &plans, record: Some("2026-09-18_wing_design_plan.md") };
         let text = "## Decisions\n\n- **D1, draw keys (2026-10-19):** \"Actor\".\n  More (975).\n- **D2, near:** x\n\n## Findings\n\n- **D9, no:** y\n";
         let d = plan_decisions("p.md", text, "sim-execution", &c);
         assert_eq!(d.len(), 2);
