@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT and Stack and engine reviewed, with Processes 1 to 4; the sim's schema is under review (Schema 1 to 8); the other areas are empty. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, and the sim's schema reviewed, with Processes 1 to 4; Processes and rules and Bodies and anatomy remain. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -157,6 +157,47 @@ composition, and a space scope, come later.
 Links: draws on 41, 114, 218, 538 · summary World rules and rulesets are one language; each world picks whether the sim or its ruleset leads; ledger and record stay inviolable.
 
 *Reviewed 2026-10-22, new. Mark: "Schema statement".*
+
+### Schema 9. Saves stay readable
+
+Every save stays loadable: older versions remain readers, each checked by its
+own hashes at every epoch checkpoint (Record 5), and saving again writes the
+current version (v4). The flow record sits outside state: every matter move
+when asked, each naming the process that moved it. Sharing state (cohorts
+copied on write) never changes serialisation or hashes.
+
+Links: draws on 270, 345, 359, 608, 634, 641, 651, 975, record.5 · summary Older save versions stay readers checked by their own hashes; the flow record sits outside state; shared state never changes hashes.
+
+*Reviewed 2026-10-22, new; checked built (saves at v4, v3's entries plus
+exact movement semantics). Mark: "Split saves and rules".*
+
+### Schema 10. New rules are optional
+
+New rules and fields are optional, absent meaning the old behaviour, so old
+worlds keep their digests (the sun's parameters, a route's border, the map
+family in founding). A world copies its defaults in explicitly, so growing a
+default set never changes an old world. A feature gates operations, never
+state, so every build reads one save format; the society layer sits behind
+one, on by default and tested in its own lane.
+
+Links: draws on 364, 397, 398, 886, 893, 979 · summary New rules are optional fields, absent meaning old behaviour; defaults are copied in explicitly; features gate operations, never state.
+
+*Reviewed 2026-10-22, new; checked built. Mark: "Split saves and rules".*
+
+### Schema 11. Location and places
+
+Places derive once at the base grain, clearance recorded on edges, so one
+graph serves every body. The outdoors floods over walkable surface and splits
+where cliffs, water or a world-rule climb (45 degrees by default) stop a
+walker, a patch past the world's cap cut on the chunk grid (presets 16 to 512
+base units a side, x by y allowed, 256 by default). An entity names its site
+until its game places it, then its patch or room; places are the finest
+location the sim holds.
+
+Links: draws on 417, 418, 419, 420, 421, 422, 740 · summary Places derive once at base grain with clearance on edges; the outdoors splits by walkability under a capped patch size; an entity names its site until placed.
+
+*Reviewed 2026-10-22, new; checked built in isometer-space and on `Entity`.
+Mark: "A schema statement"; Stack 6 cites it.*
 
 ## Processes and rules
 
@@ -932,14 +973,15 @@ too.*
 
 ### Stack 6. Places
 
-A room is roofed air: caves, tunnels and lintelled doorways are places. A
+How places derive and what a location names are the sim's (Schema 11). A
+room is roofed air: caves, tunnels and lintelled doorways are places. A
 patch splits where walkable width drops below a world rule, 2 by default.
 Walking, routing and sight run over places and passages, not raw voxels;
 sight is a voxel ray with the place graph choosing candidates. Navigation is
 a search per query, each result stamped with the revision it read (owed with
 SP6), cached only when a measured cost forces it.
 
-Links: draws on 333, 702, 737, 738, 741, 743 · summary Rooms are roofed air; patches split at necks; walking, routing and sight run over places; navigation searches per query, stamped.
+Links: draws on 333, 702, 737, 738, 741, 743, schema.11 · summary Rooms are roofed air; patches split at necks; walking, routing and sight run over places; navigation searches per query, stamped.
 
 *Reviewed 2026-10-22, new; built in isometer-space but for stamped queries,
 owed with SP6.*
@@ -1441,11 +1483,14 @@ Links: draws on 193, 592, 593, 594 · summary No source file over 600 lines with
 Raw receipts live out of tree, under `Code/testing/<repo>/`; the repository
 keeps their summaries, sources and scripts. Each lane brief names the receipts
 its done-conditions need and caps their total; exploratory runs keep
-summaries only.
+summaries only. A family certifies against its plan's invariants
+(conservation, replay, its controls), never parity with a legacy copy.
 
-Links: draws on 255, 953 · summary Raw receipts live out of tree; briefs name and cap the receipts they need.
+Links: draws on 255, 791, 953 · summary Raw receipts live out of tree; briefs name and cap the receipts they need.
 
 *Reviewed 2026-10-21, new. Mark: "Both as drafted".*
+*Refined 2026-10-22 in the schema review: 791's certification rule (Mark:
+"791 to Method").*
 
 ### Method 5. One home per fact
 
@@ -1512,3 +1557,18 @@ Links: draws on 875, 889, 890, 891, 932, 963 · summary Generated things are off
 
 *Reviewed 2026-10-22, new: drafted as World 6 and moved up at Mark's word
 ("World 6 to Method"), then "Method 9 as drafted".*
+
+### Method 10. Rosters are datasheets
+
+Rosters and rulesets are datasheets authored in TOML, under the workspace's
+data-formats rule (`mere/design_docs/2026-10-06_data_formats_brief.md`);
+packs load from TOML or JSON, this repository's own being TOML. Every
+founding, instrument variants too, is data, and moving to it changed no state
+hash; the sheets feed native recipes and templates, and the shipped pack
+carries every native definition. A new line's name is its key.
+
+Links: draws on 623, 624, 625, 758, 772, 939 · summary Rosters and rulesets are TOML datasheets; every founding is data, hashes unchanged; sheets feed native recipes; the pack ships every definition.
+
+*Reviewed 2026-10-22, new: drafted in the schema review and placed here at
+Mark's word ("To Method"); the six layout cases the datasheets plan executed
+are archived.*

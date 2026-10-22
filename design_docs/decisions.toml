@@ -1559,7 +1559,7 @@ summary = "mesocosm-core's pressure profiles become founding presets."
 [cases."273"]
 title = "Checkpoint 3's four readings stand"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Bodies and anatomy"
 summary = "Checkpoint 3's four readings stand: untyped matter becomes the world's own, living matter is lineage-typed, shape identity is its roles, native readings run in crowds."
 
 [cases."274"]
@@ -1584,7 +1584,7 @@ summary = "A body's functions assemble into organ systems, parts are shapes expr
 [cases."278"]
 title = "The function vocabularies become one catalogue in the sim"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Bodies and anatomy"
 summary = "The function vocabularies become one catalogue in the sim that every game reads."
 
 [cases."283"]
@@ -1728,13 +1728,13 @@ draws_on = ["330"]
 [cases."338"]
 title = "A process's shape requirement and seeding live on the function catalogue"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Bodies and anatomy"
 summary = "A process's shape requirement and seeding live on the function catalogue; a process requires a live part expressing a function, bound to the lowest-numbered qualifier. (amended by 480, 492)"
 
 [cases."339"]
 title = "The catalogue starts with the five functions in use"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Bodies and anatomy"
 summary = "The function catalogue starts with the five functions in use: contract, intake, sense, fix, secrete; keys stay open. (amended by 461)"
 
 [cases."340"]
@@ -1768,6 +1768,7 @@ title = "The flow record holds every move, when asked"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "The flow record holds every move, when asked, handed over each tick, with every ledger reconciling from it in both runners. (amended by 359)"
+draws_on = ["270"]
 
 [cases."347"]
 title = "isometer alone answers a pointer pick"
@@ -1825,11 +1826,12 @@ title = "Each flow names the process that moved it"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Each flow names the process that moved it."
+amends = ["345"]
 
 [cases."360"]
 title = "Part shapes take their own key prefix"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Bodies and anatomy"
 summary = "Part shapes take their own key prefix (part-shape:*), separate from the world's shape:graph namespace."
 
 [cases."361"]
@@ -1961,6 +1963,7 @@ title = "Each route carries its border"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Each route optionally carries its border naming the side it leaves by and the side it enters, validated both ways and skipped when absent."
+draws_on = ["72", "73"]
 
 [cases."398"]
 title = "The map family is an optional part of Founding"
@@ -2072,24 +2075,28 @@ title = "Places are derived at the base grain, clearance recorded on edges"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Places are derived once at base grain; each passage records its clearance so one graph serves every body by filtering."
+draws_on = ["417"]
 
 [cases."419"]
 title = "A world-rule climb splits walkable patches"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A world-rule climb (default one unit of rise per unit of run, 45 degrees) splits walkable patches; each edge records its step."
+draws_on = ["417", "418"]
 
 [cases."420"]
 title = "The patch cap is a world rule with stepped presets"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "The patch cap is a world rule with stepped presets (16 to 512 base units a side) and founder-set x by y cells."
+draws_on = ["417"]
 
 [cases."421"]
 title = "A world picks the large preset, 256, by default"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A world takes the large preset, 256 base units, by default when its founder picks none."
+draws_on = ["420"]
 
 [cases."422"]
 title = "An entity names its site until its game places it"
@@ -2927,12 +2934,6 @@ area = "Ecology"
 summary = "A body whose systems route intake grazes any living body of another lineage at its site, weighted by what each holds."
 draws_on = ["287", "569"]
 
-[cases."591"]
-title = "The games move onto the sim first; families are refined in place"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
-summary = "Legacy game sims move into Isocosm first, legacy crates deleted, games playing as today; families are re-expressed as process definitions afterwards. (amended by 655)"
-
 [cases."592"]
 title = "No source file over 600 lines without a technical reason"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -3080,32 +3081,22 @@ draws_on = ["471", "606"]
 [cases."623"]
 title = "Rosters and rulesets move into datasheets, through a plan"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Method and documents"
 summary = "Rosters and rulesets move into datasheets through a dated plan; authored pack manifests and process records become TOML, SRD data stays JSON import."
 
 [cases."624"]
 title = "Packs load from TOML or JSON"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Method and documents"
 summary = "Packs load from TOML or JSON, TOML preferred; this repository's own packs are TOML; manifest abi stays 1."
+draws_on = ["623"]
 
 [cases."625"]
 title = "Every founding becomes data, instrument variants too"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Method and documents"
 summary = "Every Founding variant, instrument variants included, becomes a datasheet and the enum a list read from them; state hashes unchanged."
-
-[cases."626"]
-title = "The founding datasheets are embedded in isocosm"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
-summary = "Founding datasheets are embedded in isocosm and parsed once; moving them into a pack waits for W2's founding ruleset."
-
-[cases."627"]
-title = "Datasheets name shapes and selector encodings in words"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
-summary = "Datasheets name shapes and selector encodings in words; the loader computes the selectors and a test proves they equal the code's."
+draws_on = ["623"]
 
 [cases."628"]
 title = "The rationale prose moves into the datasheets"
@@ -3113,30 +3104,6 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Method and documents"
 summary = "Rationale prose for bodies and shapes moves into the datasheets as TOML comments; Rust keeps only loader documentation."
 draws_on = ["593"]
-
-[cases."629"]
-title = "Founding datasheets are laid out by roster set"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
-summary = "Founding datasheets are laid out by roster set plus one foundings sheet, not one self-contained sheet per founding."
-
-[cases."630"]
-title = "Palettes extend one another"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
-summary = "Palettes each extend another, listing slots added or replaced; the primitive palette is written in full and pinned by a test."
-
-[cases."631"]
-title = "The two unnamed primitive shapes are \"block\" and \"rod\""
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
-summary = "The two unnamed primitive shapes, mass slot 0 and limb slot 0, are called \"block\" and \"rod\"."
-
-[cases."632"]
-title = "Archetype names stay in code as lookups into the sheets"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
-summary = "Archetype names stay in code as one-line lookups into the datasheets, so no caller changes and a test proves each accessor resolves."
 
 [cases."633"]
 title = "Saves keep fields; traces keep entities"
@@ -3150,6 +3117,7 @@ title = "A v2 save stores the witness as a u64"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A v2 save stores the witness as a u64; v1 saves are read through a separate struct carrying their string."
+draws_on = ["608"]
 
 [cases."636"]
 title = "The witness hashes postcard bytes"
@@ -3163,6 +3131,7 @@ title = "A v1 save is still checked at every checkpoint"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "A v1 save is checked at every epoch checkpoint with the SHA-256 as well as its final hash, proved by a v1 fixture with checkpoints."
+draws_on = ["608"]
 
 [cases."642"]
 title = "The probe traces draw 0's exact run"
@@ -3202,6 +3171,7 @@ title = "H2's saves move to v3"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Save version becomes 3 with per-field entries required; v2 and v1 stay as kept readers checked by their own hashes."
+draws_on = ["633", "634"]
 
 [cases."652"]
 title = "The state hash is the entries' digest"
@@ -3253,12 +3223,6 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "The joint effect is by degree, scaling with the share of the second system's parts the nerves reach."
 
-[cases."669"]
-title = "What the sim's laws exclude is handed back or deleted"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
-summary = "Game-owned code the sim's laws exclude returns to its game crate or host; effect_experiment is deleted and fixtures become draws. (amended by 775)"
-
 [cases."670"]
 title = "In-site space is isometer's; the sim takes it through isometer"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -3272,12 +3236,6 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Directing and play"
 summary = "Driving is the sapient player's mode; a non-sapient critter is directed; legacy Mesocosm driving ends with its world family's move."
 draws_on = ["60"]
-
-[cases."672"]
-title = "Legacy tests become draws or retire"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
-summary = "Legacy tests become draws or controls in their family's certification, or retire with the legacy copy."
 
 [cases."673"]
 title = "Parked rungs' code moves; the rungs stay parked"
@@ -3592,6 +3550,7 @@ title = "An entity names its patch through an optional field"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Entity gains an optional patch field, set only for members split out of their cohort."
+draws_on = ["422"]
 
 [cases."741"]
 title = "Sight is a voxel ray scoped by places"
@@ -3665,8 +3624,9 @@ summary = "Authored content enters by Command::Assert with the record family; th
 [cases."758"]
 title = "The datasheets feed native; families-plan fork 9 closes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Method and documents"
 summary = "The datasheet loader lowers onto native Recipe and Template; roster() reads the sheets; legacy Founding becomes a name into them."
+draws_on = ["625"]
 
 [cases."759"]
 title = "The registry carries all fifteen functions, with the world move"
@@ -3732,7 +3692,7 @@ draws_on = ["84", "117"]
 [cases."772"]
 title = "A new line's name is its key"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Method and documents"
 summary = "A new line's name is its key, lineage:<name>, with no schema change."
 
 [cases."776"]
@@ -3776,7 +3736,7 @@ summary = "One dated after-pass plan holds every deferred done-condition, each i
 [cases."791"]
 title = "Families certify against invariants, not legacy parity; amends 667"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Method and documents"
 summary = "Families certify against each plan's invariants (conservation, replay, controls), not legacy parity."
 
 [cases."806"]
@@ -4309,6 +4269,7 @@ title = "The society feature gates operations, not state"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "The society feature gates operations, not state: State fields stay and are empty by default, so every build reads one save format."
+amends = ["886"]
 
 [cases."896"]
 title = "The inspection shell becomes a Graphshell endpoint over the core"
@@ -4472,7 +4433,7 @@ amends = ["907"]
 [cases."939"]
 title = "F1: the shipped pack gets the other ten definitions"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Method and documents"
 summary = "F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen."
 
 [cases."943"]
@@ -4923,7 +4884,7 @@ title = "Receipts"
 source = "design_docs/doctrine.md"
 area = "Method and documents"
 summary = "Raw receipts live out of tree; briefs name and cap the receipts they need."
-draws_on = ["255", "953"]
+draws_on = ["255", "791", "953"]
 
 [statements."method.5"]
 title = "One home per fact"
@@ -4959,6 +4920,13 @@ source = "design_docs/doctrine.md"
 area = "Method and documents"
 summary = "Generated things are offered only after a joint witness; the generator supplies its needs; seeds search boundedly or stay exact."
 draws_on = ["875", "889", "890", "891", "932", "963"]
+
+[statements."method.10"]
+title = "Rosters are datasheets"
+source = "design_docs/doctrine.md"
+area = "Method and documents"
+summary = "Rosters and rulesets are TOML datasheets; every founding is data, hashes unchanged; sheets feed native recipes; the pack ships every definition."
+draws_on = ["623", "624", "625", "758", "772", "939"]
 
 [statements."naming.1"]
 title = "The family"
@@ -5199,6 +5167,27 @@ area = "The sim's schema and saves"
 summary = "World rules and rulesets are one language; each world picks whether the sim or its ruleset leads; ledger and record stay inviolable."
 draws_on = ["41", "114", "218", "538"]
 
+[statements."schema.9"]
+title = "Saves stay readable"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "Older save versions stay readers checked by their own hashes; the flow record sits outside state; shared state never changes hashes."
+draws_on = ["270", "345", "359", "608", "634", "641", "651", "975", "record.5"]
+
+[statements."schema.10"]
+title = "New rules are optional"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "New rules are optional fields, absent meaning old behaviour; defaults are copied in explicitly; features gate operations, never state."
+draws_on = ["364", "397", "398", "886", "893", "979"]
+
+[statements."schema.11"]
+title = "Location and places"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "Places derive once at base grain with clearance on edges; the outdoors splits by walkability under a capped patch size; an entity names its site until placed."
+draws_on = ["417", "418", "419", "420", "421", "422", "740"]
+
 [statements."stack.1"]
 title = "Build on the stack we have"
 source = "design_docs/doctrine.md"
@@ -5242,7 +5231,7 @@ title = "Places"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "Rooms are roofed air; patches split at necks; walking, routing and sight run over places; navigation searches per query, stamped."
-draws_on = ["333", "702", "737", "738", "741", "743"]
+draws_on = ["333", "702", "737", "738", "741", "743", "schema.11"]
 
 [statements."stack.7"]
 title = "Physics is conatus's"

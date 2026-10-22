@@ -2876,6 +2876,102 @@ the function catalogue (Mark: "Archive 750, tag Stack 1"):
      stays in legacy until the record family, and the bodies lane lowers
      the registry onto the function catalogue with phenotype allocation.
 
+**Moved 2026-10-22** in the doctrine's schema review, as layout choices the
+datasheets plan executed (`archive_docs/2026-10-06/2026-10-06_wing_datasheets_plan.md`;
+Mark: "To Method", the principle now Method 10):
+
+626. **The founding datasheets are embedded in isocosm.** 2026-10-06, at
+     the datasheets plan's P3 checkpoint. Question: where do the founding
+     datasheets live? Options: embedded in isocosm, parsed once, with
+     worlds, tests and probes calling `Founding` as now (recommended); in
+     Mesocosm's pack, admitted like the process files, which needs pack
+     admission wired into genesis at 71 sites and a ruling on the ruleset
+     digest. Mark chose "Embedded in isocosm". So the datasheets compile into
+     isocosm, and moving them into a pack waits for W2's founding ruleset.
+627. **Datasheets name shapes and selector encodings in words.** 2026-10-06,
+     the same checkpoint. Question: how do datasheets name shapes and the
+     encodings in their selectors (`SHAPE_SKIRT = ARMOUR_SHAPE + SHAPE_PAD`,
+     a mouth above `JAW_SHAPE` drawn as a jaw)? Options: by name (recommended);
+     raw selector numbers. Mark chose "By name". So a datasheet says
+     `shape = "pad"`, `worn = "covering"`, `mouth = "jaw"`,
+     `chain = "leaf"`. The loader computes today's selectors, and a test
+     proves every computed recipe equals the code's.
+629. **Founding datasheets are laid out by roster set.** 2026-10-06, P3a of
+     the datasheets plan. Question: one self-contained sheet per founding,
+     as the plan worded it, or sheets by roster set? The eight foundings
+     share 16 distinct recipes; per-founding sheets would hold 41
+     transcriptions, the mat in seven. Options: by roster set, the base,
+     branching, jointed and spaced sheets mirroring today's modules, plus
+     one foundings sheet naming each founding's palette and tier lists by
+     reference (recommended); one sheet per founding. Mark chose "By roster
+     set (Recommended)". So each body is written once, and the plan's
+     "one TOML datasheet per founding" is amended.
+630. **Palettes extend one another.** 2026-10-06, the same round. Question:
+     are the four palettes written in full or by extension? Options: each
+     extends another, listing the slots it adds or replaces, with the
+     primitive palette written in full and pinned by a test to
+     `PartPalette::primitive()` (recommended); each written in full, every
+     slot in selector order. Mark chose "Each extends another
+     (Recommended)". So "no default moves" stays visible in the sheet, and a
+     shared shape is edited once.
+631. **The two unnamed primitive shapes are "block" and "rod".** 2026-10-06,
+     the same round. Question: what are mass slot 0 (`[2,2,2]`, tag 1) and
+     limb slot 0 (`[4,1,1]`, tag 2) called, which the code names only as
+     `0` and `JAW_SHAPE`? Options: "block" and "rod" (recommended); leave
+     them unnamed. Mark chose "\"block\" and \"rod\" (Recommended)". So
+     every palette slot has a name; plate's and sensor's defaults keep the
+     code's "frond" and "eye".
+632. **Archetype names stay in code as lookups into the sheets.** 2026-10-06,
+     P3b of the datasheets plan. Question: once the code-built bodies go,
+     how do the 34 lines outside the founding code reach a body or palette?
+     One is production (generated archetypes seed from the spaced shrub),
+     five are examples in isometer-lens and mesocosm-genet, and the rest
+     are tests. The archetype module's four test files check the 16 bodies'
+     development as well. Options: keep `archetype::producer_mat()`,
+     `archetype::spaced::palette()` and the rest as one-line lookups into
+     the sheets, so the shapes, tagmata and prose live only in data and the
+     20 names stay compile-checked (recommended); remove them and look
+     bodies up by string. Mark chose "Keep names as lookups (Recommended)".
+     So no caller changes, and a test proves every accessor resolves.
+
+**Moved 2026-10-22** in the doctrine's schema review, as executed: the games
+moved onto the sim and the legacy crates are gone (591), excluded code was
+handed back (669), legacy tests became draws or retired (672) (Mark:
+"Catalogue to Bodies; archive 3; 791 to Method"):
+
+591. **The games move onto the sim first; families are refined in place.**
+     2026-10-05. Question: how do the games move onto the sim, given that
+     192 re-expresses each family before it moves and Isocosm has no space
+     inside a site? Options: move first, refine in place (recommended);
+     re-express, then switch (192 as ruled); hybrid per game. Mark chose
+     "Move first, refine in place", after "the first and most consequential
+     thing to do is literally to move the games onto the sim" and "finish
+     the damn migration, at least". So the legacy sims (`mesocosm-core`,
+     `eponym-world` and `eponym-social`, the campaign world) move into
+     Isocosm, every game points at Isocosm and the legacy crates are
+     deleted, the games playing as today; families are re-expressed as
+     process definitions inside Isocosm afterwards. Amends 192. Bodies stop
+     at checkpoint 8: checkpoint 9 is parked on its branch, unmerged.
+669. **What the sim's laws exclude is handed back or deleted.** 2026-10-08.
+     Question: the sim neither renders nor resolves a blow; what becomes of
+     `voxel_profile`, Eponym's sheets, techniques, timed actions, strike
+     resolver and movement, the campaign's store and collaboration,
+     `effect_experiment` and the fixture worlds? Options: hand back or
+     delete (recommended); re-express everything; decide per family. Mark
+     chose "Hand back or delete (Recommended)". So game-owned code returns to
+     its game crate, presentation adapters go to the host or isometer,
+     `effect_experiment` is deleted and fixtures become draws (15), each when
+     its family is reached.
+
+     *2026-10-18, Mark:* "775 stands (Recommended)". Case 775 keeps
+     `effect_experiment` in mesocosm-runtime, amending this case's deletion of it.
+672. **Legacy tests become draws or retire.** 2026-10-08. Question: what of
+     the 13,738 lines of legacy integration tests and 25 examples? Options:
+     draws, or retire (recommended); port them all. Mark chose "Draws, or
+     retire (Recommended)". So behaviour a test pins becomes a draw or
+     control in its family's certification (667, 15), the rest retires with
+     the family's legacy copy, and receipt examples move to the receipts.
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's
