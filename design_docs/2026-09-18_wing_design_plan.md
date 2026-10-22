@@ -343,7 +343,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     games' domains: Mesocosm plays the critter and its lineage, Paredros
     the borg and its factions, Isometry the character inside its polities.
 
-    Links: area Directing and play · summary Each game foregrounds one rung of the agent ladder (critter, borg, character); the other rungs are simmed and weakly expressed.
+    Links: area Directing and play · draws on 6 · summary Each game foregrounds one rung of the agent ladder (critter, borg, character); the other rungs are simmed and weakly expressed.
 36. **What a creature carries at each level of identity,** in Mark's
     words, 2026-09-18, the first W2 answer. *Critter:* "genotype
     (collection of traits in relation. We wanted to use a mosaic scene for
@@ -672,7 +672,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     like directing mesocosm's critters, with an opinion modifier for
     command/request efficacy? So the systems compose, it seems to me."
 
-    Links: area Directing and play · summary Driving is Paredros (one sophont); directing composes on top by giving directives as that sophont, with an opinion modifier for efficacy.
+    Links: area Directing and play · draws on 59 · summary Driving is Paredros (one sophont); directing composes on top by giving directives as that sophont, with an opinion modifier for efficacy.
 61. **Death is final across the board; each game has its own trick.**
     Mark, 2026-09-19: "death is final across the board, but mesocosm's
     trick is that you have extra lives because of your cohort, paredros's
@@ -1678,14 +1678,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      entity a player plays, and D20's provider over `mere-capability`
      implements that in W3.
 
-     Links: area Directing and play · summary Outside the world, a player directs only who they play; everything else is asked in the world through that entity.
+     Links: area Directing and play · draws on 60 · summary Outside the world, a player directs only who they play; everything else is asked in the world through that entity.
 153. **Two players may direct the same entity.** Put to Mark on
      2026-09-24, co-op being a core taste in every vessel: can two players
      direct the same entity? Three options were put: yes, both, the
      entity weighing conflicting directives by its opinion of each; one at
      a time; or no. Mark: "Yes, both."
 
-     Links: area Directing and play · summary Two players may direct the same entity, which weighs conflicting directives by its opinion of each.
+     Links: area Directing and play · draws on 152 · summary Two players may direct the same entity, which weighs conflicting directives by its opinion of each.
 154. **D19's contract is ruled.** Put to Mark on 2026-09-24: D19's
      contract, a game submitting intents, the sim returning events and a
      read-only view of each tick, and outcomes a game settles coming back
@@ -2202,7 +2202,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      pointable thing." So entities, places, items, lineages, factions and
      events, anything that can have an impresa, can be pinned.
 
-     Links: area Directing and play · summary A player may pin any pointable thing: entities, places, items, lineages, factions and events.
+     Links: area Directing and play · draws on 204, 130 · summary A player may pin any pointable thing: entities, places, items, lineages, factions and events.
 211. **An attended group runs its noted members exactly and the rest as a
      crowd.** Put to Mark on 2026-09-25, with 210: when what a player cares
      about is a group, such as Mesocosm's lineage, does every member run
@@ -2230,7 +2230,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      when that region changes; far views, an overmap or the minimap, stay
      crowd, and the camera stays presentation inside a region.
 
-     Links: area Directing and play · summary Examining is what the view shows at full detail up close; that is watched, runs in detail and is logged; far views stay crowd.
+     Links: area Directing and play · draws on 71, 113 · summary Examining is what the view shows at full detail up close; that is watched, runs in detail and is logged; far views stay crowd.
 213. **A player's event stream carries what is attended.** Put to Mark on
      2026-09-25, with 212: events touching anything in the attention set,
      or everything the collector keeps from it? Mark: "Depends on the co-op
@@ -2244,7 +2244,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      entries reaching the played entity, and in survival mode only what the
      played critter can know (ruling 180).
 
-     Links: area Directing and play · summary A player's event stream carries what is attended: who they play, what they pin and examine, and the game's own care.
+     Links: area Directing and play · draws on 212, 180 · summary A player's event stream carries what is attended: who they play, what they pin and examine, and the game's own care.
 214. **A click draws the critter's attention; attending is the default, and
      a right click picks another meaning.** Put to Mark on 2026-09-25, from
      the played slice plan's open question of how a player gives directives
@@ -4625,7 +4625,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      mode shares it; and it shapes play only, every peer holding the whole
      world under replay.
 
-     Links: area Directing and play · summary What a window may know follows its participant's seat, the entity played and awareness granted in play, never its mode.
+     Links: area Directing and play · draws on 180, 184, 156, 384, 443 · summary What a window may know follows its participant's seat, the entity played and awareness granted in play, never its mode.
 
 446. **A body keeps its lineage's matter as tissue and reserve.** Asked on
      2026-10-01, opening checkpoint 6 with the question the checkpoint 5
@@ -8333,7 +8333,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      not sapient is directed, the legacy driving does not carry over, and
      Mesocosm is not playable between its world family's move and M3.
 
-     Links: area Directing and play · summary Driving is the sapient player's mode; a non-sapient critter is directed; legacy Mesocosm driving ends with its world family's move.
+     Links: area Directing and play · draws on 60 · summary Driving is the sapient player's mode; a non-sapient critter is directed; legacy Mesocosm driving ends with its world family's move.
 672. **Legacy tests become draws or retire.** 2026-10-08. Question: what of
      the 13,738 lines of legacy integration tests and 25 examples? Options:
      draws, or retire (recommended); port them all. Mark chose "Draws, or
@@ -8405,7 +8405,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      critter's own acts under directing, chosen by its methodology, and
      `Idle` has no role.
 
-     Links: area Directing and play · summary The six old driving intents become the critter's own acts chosen by its methodology; Idle has no role.
+     Links: area Directing and play · draws on 671 · summary The six old driving intents become the critter's own acts chosen by its methodology; Idle has no role.
 680. **An interim M4 at site grain.** 2026-10-08. Question: M4 now waits for
      in-site space through isometer (670, after SP3 to SP5) and for bodies
      after checkpoints 10 and 11; is there an earlier milestone? Options: an
@@ -8449,7 +8449,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      process, weighing needs, mood, nudges and bond, which is 679's "chosen
      by its methodology", and `Receipt.foregone` records what it passed over.
 
-     Links: area Directing and play · summary A deliberative critter chooses one Choice process weighing needs, mood, nudges and bond; Receipt.foregone records what it passed over. (amended by 813)
+     Links: area Directing and play · draws on 679 · summary A deliberative critter chooses one Choice process weighing needs, mood, nudges and bond; Receipt.foregone records what it passed over. (amended by 813)
 684. **The interim boundary ports grow-a-copy scoring.** 2026-10-08.
      Question: the interim M4's boundaries adapt every lineage (57, 182),
      while adaptation belongs to the lineages family, fifth, after places;
@@ -8471,7 +8471,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      critter considered and could act on, read from its receipts and what
      it knows, and nothing new is kept.
 
-     Links: area Directing and play · summary A suggestion is a derived reading over foregone and knows; nothing new is kept.
+     Links: area Directing and play · draws on 683 · summary A suggestion is a derived reading over foregone and knows; nothing new is kept.
 686. **The runtime translates the contract.** 2026-10-08. Question: which
      way does the contract dependency run (Isocosm does not depend on
      `isocosm-overlay`, 1,256 lines and used by nothing, and the overlay
@@ -8508,7 +8508,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the critter, moving with outcomes, which serves coop. *Reading, not
      ruled:* 178's setting seeds the weight at birth.
 
-     Links: area Directing and play · summary A participant is a placeless entity and Relation gains a value; each player's bond is its own weighted relation to the critter.
+     Links: area Directing and play · draws on 177, 178 · summary A participant is a placeless entity and Relation gains a value; each player's bond is its own weighted relation to the critter.
 689. **Regions are derived each round.** 2026-10-08, with 687. Question: how
      are 226's regions held at site grain? Options: derived each round from
      site biomass and site routes, never kept (recommended); kept and
@@ -8526,7 +8526,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      replaying exactly, and at site grain a contract `PlaceHandle` names a
      site.
 
-     Links: area Directing and play · summary Standing orders are derived from logged nudges and their outcomes, replaying exactly, not kept on the entity.
+     Links: area Directing and play · draws on 59, 216 · summary Standing orders are derived from logged nudges and their outcomes, replaying exactly, not kept on the entity.
 691. **Survival mode filters through what the critter knows.** 2026-10-08.
      Question: how does survival mode (180, 184) filter at site grain, with
      the sense function still running nothing? Options: through `knows` and
@@ -8534,7 +8534,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      knows (Recommended)". So the interim M4 ships both modes, and senses
      refine the filter when they run.
 
-     Links: area Directing and play · summary Survival mode filters through what the critter knows and the reach field; the interim M4 ships both modes.
+     Links: area Directing and play · draws on 180, 184 · summary Survival mode filters through what the critter knows and the reach field; the interim M4 ships both modes.
 695. **parry-ground folds into conatus.** 2026-10-08. Question: the probe
      is a 481-line binary with no consumers, `GroundCollision` already
      wraps `Voxels` privately, and mesocosm-runtime's `tactile.rs` already
@@ -8877,7 +8877,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Noted 2026-10-09:* the places lane coined `isometer-space` and
      `Atlas` mid-session; both are working names awaiting a naming round.
 
-     Links: area Directing and play · summary The tier line goes to directing, moving with the directing plan's D2, not to the host now.
+     Links: area Directing and play · draws on 703 · summary The tier line goes to directing, moving with the directing plan's D2, not to the host now.
 743. **The neck width defaults to 2.** 2026-10-09, the places lane's
      second pass (merged at `af3a0fc4`). Question: 738's split has no
      default, so nothing splits until a world sets one. Options: 2, so any
@@ -8940,7 +8940,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      there (recommended); mood at least zero; habitable from founding. Mark
      chose "Conditions met, member lives (Recommended)".
 
-     Links: area Directing and play · summary A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there.
+     Links: area Mesocosm · summary A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there.
 752. **A minimal native lineage revision comes forward.** 2026-10-09.
      Question: native has no lineage revision, so 684's grow-a-copy boundary
      has nothing to commit. Options: a minimal revision now, development-
@@ -8957,7 +8957,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chose "Both". So founding generates a move process per route, and
      `OnCollapse::Elsewhere` stays available.
 
-     Links: area Directing and play · summary After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available.
+     Links: area Mesocosm · summary After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available.
 754. **A region has collapsed only in a level it once held.** 2026-10-09.
      Question: regions that never held a trophic level read as collapsed
      from the first round, while 225 says "a level gone". Options: only
@@ -9153,7 +9153,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      sophont". So one native path takes up a life in both games: directing
      for a critter that is not sapient, driving for a sophont (671).
 
-     Links: area Directing and play · summary Native Take also admits a sapient critter for driving: one native path takes up a life in both games.
+     Links: area Directing and play · draws on 671 · summary Native Take also admits a sapient critter for driving: one native path takes up a life in both games.
 780 to 786. **Eponym's shape kept; the switch's follow-ups.** 2026-10-10,
      from the two world moves (Mesocosm's merged at `d3b90c6c`, the switch,
      legacy Mesocosm 40,645 lines to 2,016). Mark chose "Keep as built
@@ -9383,7 +9383,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      remain intact. Q3 qualifies the timing, one-process and replay controls
      on a fresh envelope before any reproduction pilot or rate promotion.
 
-     Links: area Directing and play · summary An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick.
+     Links: area Directing and play · amends 683 · summary An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick.
 
 814. **The VTT declares its note kinds in the world's founding rules.**
      2026-10-11, Q9's native contract-admission source audit. Question: "The
@@ -10026,7 +10026,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      threshold, motivation strength or new control grant is invented.
      The next unused question is862.
 
-     Links: area Directing and play · summary A player-directed deliberative critter gets a native travel goal from an approved journey; it departs when its own choice allows, so the party can split. (amended by 862)
+     Links: area Directing and play · draws on 683, 859 · summary A player-directed deliberative critter gets a native travel goal from an approved journey; it departs when its own choice allows, so the party can split. (amended by 862)
 
 862. **The existing native bond suffices for directed travel in this migration.**
      2026-10-12, reframing861's impression/motivation admission.
@@ -10041,7 +10041,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      body control and bond admission remain separate, and a goal is not a
      promise that the animal departs. The next unused question is863.
 
-     Links: area Directing and play · summary The existing native bond and scheduled chooser suffice for directed travel; no extra impression filter, trust threshold or motivation layer.
+     Links: area Directing and play · amends 861 · summary The existing native bond and scheduled chooser suffice for directed travel; no extra impression filter, trust threshold or motivation layer.
 
 863. **Future produced lots are selected by explicit authored operation/output references.**
      2026-10-12, subsequent autonomous use of849's named quantity lots.
@@ -10092,7 +10092,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the other served goals. Its immediate causal event remains separately
      validated. D31's derived arcs acquire no independent native Arc type.
 
-     Links: area Directing and play · summary A native act records participation in every goal it actually served; no primary goal discards the others.
+     Links: area Processes and rules · summary A native act records participation in every goal it actually served; no primary goal discards the others.
 
 867. **Authored polity attributes and member-derived readings retain their disagreement.**
      2026-10-13, presentation of disagreeing native polity facts.
@@ -10189,7 +10189,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Use actual native observation or telling to establish Location identity.
      Knowing a site does not infer its Location; identity does not reveal membership or extent, and unknown boundaries still clip sharply.
 
-     Links: area Directing and play · summary Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately.
+     Links: area Directing and play · draws on 869 · summary Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately.
 
 877. **Companion succession uses an authored native social agreement or standing predicate.**
      2026-10-13, collected migration reply under864.

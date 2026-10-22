@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host and Record reviewed, with Directing 1; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record and Directing reviewed; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -188,12 +188,14 @@ organs; the Stack and engine round will cite it.*
 Every surface a participant meets (views, maps, menus, lookups, sounds) is
 derived from that participant's knowledge and control: it shows what the
 participant knows (the admitted facts and the disclosed map) and offers to act
-only on what the participant controls. Settings choose how the known is
-presented, never what is known. The sim and the host hold the whole world, so
-a surface reads through the participant's knowledge, never from host state
-directly.
+only on what the participant controls. What a participant may know follows its
+seat (player, creative observer, DM), the entity it plays and awareness
+granted in play, never its mode; a mode switch changes only how the known is
+shown. Settings choose how the known is presented, never what is known. The
+sim and the host hold the whole world, so a surface reads through the
+participant's knowledge, never from host state directly.
 
-Links: draws on 432, 847, 868, 869, 870 · summary Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known.
+Links: draws on 445, 432, 847, 868, 869, 870 · summary Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known.
 
 *Reviewed 2026-10-22, new. Drafted as a Presentation rule that "the view grants
 nothing". Mark: "maybe it's more like presentation is contingent upon
@@ -201,7 +203,78 @@ knowledge and control? a rule about how things aren't related is less
 interesting than one that describes a relation", asking why a view would be
 presumed to grant knowledge (answer: views read from a host that holds the
 whole world, the leak cases 868 to 870 guard against); then "Widen it beyond
-views". The rest of the Directing and play area is not yet reviewed.*
+views". Refined 2026-10-22 in the area's own review with case 445, the
+original rule that knowledge follows seat and subject, never mode. Mark: "All
+as drafted".*
+
+### Directing 2. Each game foregrounds one rung
+
+Each game foregrounds one rung of the agent ladder (Mesocosm the critter and
+its lineage, Eponym the named entity and its factions, the VTT characters
+inside polities) and chooses its domain, ensemble, mechanics, controls,
+perspective and timescale. The other rungs are simmed and weakly expressed.
+
+Links: draws on 6, 35 · summary Each game foregrounds one rung of the agent ladder; the other rungs are simmed and weakly expressed.
+
+*Reviewed 2026-10-22, new. Mark: "All as drafted".*
+
+### Directing 3. Directing below sapience, driving above it
+
+A non-sapient critter acts by its own methodology and the player shapes it;
+a sophont is driven, and directing composes on top as directives through it,
+weighed by opinion. One native `Take` takes up either kind of life. Outside
+the world a player directs only who they play; two players may direct one
+entity, which weighs them by opinion. A creature's senses are its own, but it
+suggests what it perceives, so play is not blinded by them.
+
+Links: draws on 59, 60, 152, 153, 671, 679, 779 · summary Non-sapient critters are directed, sophonts driven; a player directs only who they play; co-op direction is weighed by opinion.
+
+*Reviewed 2026-10-22, new. Mark: "All as drafted".*
+
+### Directing 4. The chooser and the bond
+
+A deliberative critter chooses one Choice process a tick, weighing needs,
+mood, nudges and its bond; an empty choice may be reconsidered once at a later
+pass start. A nudge enters the sim as a logged native command the runtime
+translates. Each player's bond is its own weighted relation from a placeless
+participant entity to the critter. Standing orders are derived from logged
+nudges and their outcomes (desire paths). A suggestion is derived from the
+chooser's own record of what it weighed and what the critter knows; nothing
+new is kept. An approved journey gives a directed critter a travel goal it
+follows when its own choice allows; the bond suffices.
+
+Links: draws on 683, 685, 686, 688, 690, 813, 861, 862 · summary One choice a tick weighing needs, mood, nudges and bond; bonds are weighted relations; suggestions and standing orders are derived.
+
+*Reviewed 2026-10-22, new. 685 named `Receipt.foregone` as a suggestion's
+source; the product reads the chooser's live consideration instead
+(`readings::suggestions` calls `sim.consider`), so sim-execution D6 cannot
+break suggestions. Mark: "Say it neutrally", and the statement names neither
+mechanism.*
+
+### Directing 5. Attention
+
+Attention is who the player plays, what they pin (any pointable thing), what
+they examine and the game's own care. Examining is what the view shows at full
+detail up close: watched, run in detail and logged; far views stay crowd. A
+player's event stream carries what is attended. Survival filters through what
+the played critter knows and the reach. A location's identity is learned by
+observation or telling, its members and extent disclosed separately. The tier
+line is directing's.
+
+Links: draws on 210, 212, 213, 691, 742, 876 · summary Attention is play, pins, examining and the game's care; examining is full detail up close; streams carry what is attended.
+
+*Reviewed 2026-10-22, new. Mark: "All as drafted".*
+
+### Directing 6. Death and new lives
+
+Death is final; each game has its trick (a cohort's extra lives in Mesocosm,
+non-fungible lives in Eponym, a death the VTT's magic and science can almost
+undo). A new life chooses which conditions to carry forward: granular,
+randomized or all at once; one not carried keeps its historical event.
+
+Links: draws on 61, 406 · summary Death is final, each game with its trick; a new life chooses which conditions to carry forward.
+
+*Reviewed 2026-10-22, new. Mark: "All as drafted".*
 
 ## Presentation
 
