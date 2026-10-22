@@ -27,14 +27,9 @@ three design docs that cite it. The record holds the words.
 | 79 | A polity has its own alignment from its acts, as factions and individuals do. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 81 | Asserting a constitution is itself an act, the definitive one. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 96 | Abilities, skills and techniques are defined (a technique is an ability with a skill precondition); kleptoplasty is conditional; nis is a scale, not a material. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 97 | The materials of a world are its critters across all kingdoms. | [games wing founding](2026-07-30_games_wing_founding.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 98 | The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world. | [environmental surfaces](2026-07-08_environmental_surfaces_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
-| 100 | World is a kingdom with macro scale; meso and micro worlds are left open. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 139 | Law A is amended for materials: a lineage's traits may travel as what things are made of, beside shapes becoming relics. | [games wing founding](2026-07-30_games_wing_founding.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 144 | An item can be a sophont: made so, awakened by its story, or inhabited. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 145 | A sophont item acts through its wielder, by its own powers, and can take over its wielder. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 146 | A sophont item is never owned; it can be held, is a companion, and can own things itself. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 150 | A planetary system can be a host: an entity above the world with its own provenance and founding ruleset, hosting its worlds. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 151 | Whether a person may be owned is a tenet, held or rejected like any other; owning a person is slavery. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 158 | A mind's mood is fed by what it remembers, needs and lives through; personality traits are an inheritable, developable class of traits of their own. | none |
 | 159 | Mood is read on demand from its sources; strain is a kept level that builds while mood stays low and eases with rest or relief. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
@@ -43,9 +38,7 @@ three design docs that cite it. The record holds the words.
 | 166 | Languages divide: understanding needs a shared tongue learned like a skill, and interpreters matter. | none |
 | 170 | Art and ritual are crafts, and any craft or pursuit can be politicized or ritualized. | none |
 | 171 | Technology is both a world's generated tree and what is known, read from minds and bearers; an unheld technique is lost and can be refound. | none |
-| 172 | Ages are read and named, capped by the founder, can realign the world, and are the epochs of cultures and society. | none |
 | 218 | Each reading's bound and the competition's definition move into the world's rules now. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 268 | Computed amounts are bounded expression trees, with a default set of expressions easy to group and calibrate. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 270 | The flow record (per-tick matter receipts) is buffered outside the state hash. | none |
 | 273 | Checkpoint 3's four readings stand: untyped matter becomes the world's own, living matter is lineage-typed, shape identity is its roles, native readings run in crowds. | none |
 | 278 | The function vocabularies become one catalogue in the sim that every game reads. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
@@ -63,14 +56,6 @@ three design docs that cite it. The record holds the words.
 | 420 | The patch cap is a world rule with stepped presets (16 to 512 base units a side) and founder-set x by y cells. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 421 | A world takes the large preset, 256 base units, by default when its founder picks none. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 422 | An entity names its site until its game places it, then its patch or room; places are the finest location the sim holds. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
-| 427 | Every modification applies effects from the world's one vocabulary; a glyph is one source beside traits, parts, items, places, conditions and relations. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 428 | An entity holds a condition as a record of key, magnitude, cause and optional end; a status is a condition with an end. (amended by 430) | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 429 | Modifiers combine in layers the world orders, reading only earlier layers; each reading declares stacking: sum, highest, lowest, product or replace. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 430 | Environmental conditions live on places; a thing's own condition record sits beside its ledger, wounds and vigour staying the ledger's. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 431 | Each modifier declares itself distributive (applies to each member) or collective (belongs to the group); collective splits no crowd. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
-| 433 | A modifier declares its scope among bearer, body, relation, group, place and site; board adjacency belongs to the game's ruleset. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 435 | A cohort keeps a tally of members per condition cause outside its equality; merging adds tallies and lifting draws a cause by seed. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
-| 436 | A thing holds at most one record per key; a second application combines magnitudes by the key's stacking and the end becomes the later. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 538 | Each world chooses whether the sim leads and rulesets calibrate, or the ruleset leads and the sim's background follows; the ledger and record stay inviolable. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
 | 591 | Legacy game sims move into Isocosm first, legacy crates deleted, games playing as today; families are re-expressed as process definitions afterwards. (amended by 655) | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 608 | Version-1 saves are verified with their SHA-256 hash as a v1 reader only; saving again writes v2 with the FNV witness. | none |
@@ -88,7 +73,6 @@ three design docs that cite it. The record holds the words.
 | 651 | Save version becomes 3 with per-field entries required; v2 and v1 stay as kept readers checked by their own hashes. | none |
 | 669 | Game-owned code the sim's laws exclude returns to its game crate or host; effect_experiment is deleted and fixtures become draws. (amended by 775) | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 672 | Legacy tests become draws or controls in their family's certification, or retire with the legacy copy. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
-| 739 | An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 740 | Entity gains an optional patch field, set only for members split out of their cohort. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 757 | Authored content enters by Command::Assert with the record family; the campaign world becomes a reading of native state. | none |
 | 758 | The datasheet loader lowers onto native Recipe and Template; roster() reads the sheets; legacy Founding becomes a name into them. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
@@ -97,7 +81,6 @@ three design docs that cite it. The record holds the words.
 | 772 | A new line's name is its key, lineage:<name>, with no schema change. | none |
 | 791 | Families certify against each plan's invariants (conservation, replay, controls), not legacy parity. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 834 | A sim-on VTT character develops its own native body from a selected recipe and keeps its ID; placement and control are admitted separately. | none |
-| 836 | Newly founded worlds give each declared material a distinct native stock, preserved through carve, deposit and fabrication. | none |
 | 867 | Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 886 | The society layer (projects, institutions, custody, party, goals, polities) is parked behind a feature, on for VTT and Eponym, off for Mesocosm, tested separately. | [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 893 | The society feature gates operations, not state: State fields stay and are empty by default, so every build reads one save format. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
@@ -180,6 +163,7 @@ three design docs that cite it. The record holds the words.
 | 261 | The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266) | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 265 | The thirty shapes are expressed as data with the used mechanics, and the process definition widens with the fields the probe proves. | none |
 | 266 | Rate models take over where grouping stops paying; the exact crowd runs wherever it still finds identical members, shared-resource competition included. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
+| 268 | Computed amounts are bounded expression trees, with a default set of expressions easy to group and calibrate. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 269 | Shared ground is scrambled for proportionally by members that cannot decide and competed for by those that can. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 271 | Matter a dev places comes from a dev source outside the conserved total, creative mode only, and the run is labelled assisted. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 284 | An advance's limit guards work (evaluations), not ticks, so an advance may span any stretch of idle time. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
@@ -198,6 +182,14 @@ three design docs that cite it. The record holds the words.
 | 371 | Checkpoint 5 requires a per-tick flow handoff API so successive tick results cannot accumulate or mix records. | none |
 | 404 | Magic composes fundamental effects, each a combinable cantrip, each level of combining costing a magnitude more energy; effect scripts hook other generators; explainable surprises welcome. | [functional generation](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 416 | Earth a carver cannot hold is heaped beside the cut as an automatic fill edit, conserved and diggable; until capacity exists the carver holds all. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
+| 427 | Every modification applies effects from the world's one vocabulary; a glyph is one source beside traits, parts, items, places, conditions and relations. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 428 | An entity holds a condition as a record of key, magnitude, cause and optional end; a status is a condition with an end. (amended by 430) | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 429 | Modifiers combine in layers the world orders, reading only earlier layers; each reading declares stacking: sum, highest, lowest, product or replace. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 430 | Environmental conditions live on places; a thing's own condition record sits beside its ledger, wounds and vigour staying the ledger's. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 431 | Each modifier declares itself distributive (applies to each member) or collective (belongs to the group); collective splits no crowd. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
+| 433 | A modifier declares its scope among bearer, body, relation, group, place and site; board adjacency belongs to the game's ruleset. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 435 | A cohort keeps a tally of members per condition cause outside its equality; merging adds tallies and lifting draws a cause by seed. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
+| 436 | A thing holds at most one record per key; a second application combines magnitudes by the key's stacking and the end becomes the later. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 439 | A site-lineage moves to its rate model when members per distinct state fall below a world-rule bound; every switch is receipted. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 440 | Rate models are calibrated on the bench once per rules digest and ship with the rules; uncalibrated worlds stay on the exact crowd. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 451 | An epoch ends by Timed, Gated or PlayerTriggered rule; Timed counts the world's unit and defaults to a year. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
@@ -240,6 +232,10 @@ three design docs that cite it. The record holds the words.
 | Case | Decides | Cited by |
 | --- | --- | --- |
 | 57 | Reproduction rerolls expression and the epoch boundary changes the lineage; NPC lineages adapt at the epoch boundary by default, as does the player's. | [epoch boundary](../mesocosm/design_docs/2026-08-01_epoch_boundary_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
+| 97 | The materials of a world are its critters across all kingdoms. | [games wing founding](2026-07-30_games_wing_founding.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 98 | The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world. | [environmental surfaces](2026-07-08_environmental_surfaces_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
+| 100 | World is a kingdom with macro scale; meso and micro worlds are left open. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 139 | Law A is amended for materials: a lineage's traits may travel as what things are made of, beside shapes becoming relics. | [games wing founding](2026-07-30_games_wing_founding.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 182 | Unplayed lineages adapt, inherit and develop, weighing their adaptation against the rest of the trophic web; that is what an epoch is about. | [epoch boundary](../mesocosm/design_docs/2026-08-01_epoch_boundary_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 225 | A region has collapsed when one of its trophic levels (producers, consumers, decomposers) is gone there. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 226 | Ecological regions follow world biomass, filling by trophic level and spilling over; they merge as biomass falls, and a collapse is global when one remains. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
@@ -252,6 +248,7 @@ three design docs that cite it. The record holds the words.
 | 687 | At site grain a region groups sites by biomass: each trophic level fills its slot until over capacity, then spills; regions merge as biomass falls. | none |
 | 689 | Regions are derived each round from site biomass and routes, never kept; a world rule sets each trophic level's slot capacity. | none |
 | 718 | A dead body's matter returns to the site at a drawn rate (rot) in checkpoint 10; eating carrion comes later. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 739 | An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 754 | A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt. | none |
 | 764 | Native lessons from eating a part whole are discovery; legacy discovery's condition table retires with the world. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 765 | The native revision grows to tracts and systems at the boundary, built in the lineages family. | none |
@@ -259,6 +256,7 @@ three design docs that cite it. The record holds the words.
 | 827 | Spread capacity is a lineage-trait mechanic, with explicit capacity values acting as modifier or manipulator at the substrate, all in native rules. | none |
 | 828 | Overflow above capacity is divided equally among eligible routes before each route's transmission rate applies; untransmitted matter stays at source. | none |
 | 831 | Zero-transmission routes are excluded from the overflow split; if none are eligible the excess stays at the source. | none |
+| 836 | Newly founded worlds give each declared material a distinct native stock, preserved through carve, deposit and fabrication. | none |
 | 878 | Total collapse uses an explicitly authored native global predicate; no hardcoded regional conjunction, missing level or zero biomass. | none |
 | 879 | Ecological independence requires a distinct authored mechanical effect (costs, timing, typed flows may qualify); the operation family is recorded. | [resident views composition](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 906 | A lineage's lifespan is individual: from age 60 each dies at 2.5% a tick, never past the lineage's drawn lifespan of 80 to 120. (amended by 935, 949) | none |
@@ -411,6 +409,7 @@ three design docs that cite it. The record holds the words.
 | 129 | A thing stays of note only while some mind remembers it or some bearer records it; when the last copy goes it returns to ambient. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 130 | A player keeps things of note through who they play and what they pin; Eponym's notes are diegetic, the VTT's and Mesocosm's are not. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 131 | A mind remembers what was new to it, mattered to it, was intense, or kept happening. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 172 | Ages are read and named, capped by the founder, can realign the world, and are the epochs of cultures and society. | none |
 | 274 | When a merge changes lived outcomes the player chooses: keep their fork, let the replay adjust around them, or let it win, making them tales. | none |
 | 444 | The world save holds the sim's history plus an opaque section per mode, which builds without that mode carry through unchanged. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md) |
 | 607 | Isocosm's state hash becomes the family's 64-bit FNV-1a witness with labelled entries, first-divergence report and per-tick trace; SHA-256 stays for content addresses. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
@@ -444,6 +443,7 @@ three design docs that cite it. The record holds the words.
 | 140 | A world's materials lie on a spectrum from a normal base matching a ruleset, through variants, to completely generated; a founding setting. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 147 | A site (generating and playing unit) and a paged chunk (paging unit) are independent; a site spans as many chunks as its volume needs. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 148 | When a location's ground changes or moves, its kind decides what it follows: a camp its people, a ruin its ground, a battlefield its site. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 150 | A planetary system can be a host: an entity above the world with its own provenance and founding ruleset, hosting its worlds. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 272 | mesocosm-core's pressure profiles become founding presets. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 391 | Neighbouring sites meet through edge profiles: a top-down skeleton gives coarse facts, and each adjacency's boundary profile is computed identically from shared facts. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 392 | Isocosm owns the lift from site to volume (skeleton, edge profiles, lift, derived places); isoscape keeps founding presets; the sim depends on no render crate. (amended by 393) | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
