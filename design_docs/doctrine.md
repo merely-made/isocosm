@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing and Method reviewed; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing, Method and Organs reviewed; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -24,6 +24,70 @@ remain the authority.
 ## World generation
 
 ## Organs: glyphs, impresa, hagiograph
+
+### Organs 1. Divinity is earned by the journey
+
+Ascension sacrifices, which means destroys, forms of the world's glyphs. Its
+tier (demigod, avatar, avatar-plus, greater divinity) follows how hard the
+journey was. A sacrifice's grade is set by how deep the entity's relation to
+that magic runs in its story, and scaled by the form sacrificed (an item, then
+a technique, skill or ability, then an embodied trait), so a devotee of one
+magic who used it greatly can still reach greater divinity. The domain is how
+the sacrificed forms were acquired, and a mix of forms mixes it. Collecting
+all the magics is favoured, as a world setting. Parked under 279: a design to resume from, not one to build to.
+
+Links: draws on 44, 46, 47, 107 · summary Ascension sacrifices glyph forms; grade is depth of relation scaled by form; the domain is how the forms were acquired.
+
+*Reviewed 2026-10-21, new. Mark on the grading tension between 46 and 107: "Both: depth sets the grade, form scales it"; on the text: "As drafted".*
+
+### Organs 2. Power is the frequency of the domain's process
+
+A domain is named freely, but acts fuel it, and a god whose process rarely
+happens is weak, unless its effects are unprecedented or significant.
+Choosing a referent is for greater divinities and avatars. Anatomy (vampire,
+lich, fey, eldritch) is the other road to long life. Parked under 279: a design to resume from, not one to build to.
+
+Links: draws on 49, 52 · summary A domain's power is how often its process happens; rare but significant effects mitigate; referents are for the greatest.
+
+*Reviewed 2026-10-21, new. Mark: "As drafted".*
+
+### Organs 3. Peeking behind the curtain
+
+Some divine figures read truth beyond their senses and reach: magic that
+bends rules 5 (memory is not global) and 59 (senses are the creature's own)
+for its bearer. It is a trait a figure may hold, not one its tier grants, and
+no play mode or seat. Parked under 279: a design to resume from, not one to build to.
+
+Links: draws on 384 · summary Some divine figures read truth beyond their reach, a magic bending rules 5 and 59; a trait, not a seat.
+
+*Reviewed 2026-10-21, new: kept as drafted when Mark moved divine places (case 48) to World generation.*
+
+### Organs 4. The impresa note
+
+An impresa's note is its record, with a freeform text field (djot) beside
+the generated details: a closed subset of enumerated details inside an open
+superset of free text.
+
+Links: draws on 82, 85 · summary An impresa's note is its record: enumerated details inside free djot text.
+
+*Reviewed 2026-10-21, new. Put with Organs 5; not disputed.*
+
+### Organs 5. A crate when the abstraction earns it
+
+Crates are made pragmatically, not one per name. An organ is a component in
+the sim unless the abstraction earns a crate: it is shared across products or
+contexts, or it carries something across a boundary (as `wing-impresa`'s
+record type does, and as a `denizen` crate would if it became the way entity
+information moves between contexts). Code on a parked rung moves with its
+family, unchanged in behaviour, and the rung stays parked.
+
+Links: draws on 201, 673 · summary Crates are made when the abstraction earns one, not per name; parked code moves unchanged.
+
+*Reviewed 2026-10-21, new. Mark, refining the draft "organ words are
+components, not published crates": "it's more about being pragmatic and not
+inflating the count of crates. not that i don't want any crates. some things
+don't need that level of abstraction, you dig?" The principle reaches past the
+organs; the Stack and engine round will cite it.*
 
 ## Directing and play
 
