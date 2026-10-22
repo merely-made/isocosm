@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation and Host reviewed, with Directing 1 and Record 1; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host and Record reviewed, with Directing 1; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -47,7 +47,71 @@ anywhere on either axis ... there could be two players with GM authority". The
 VTT's shared-authority plan (2026-08-08) had already corrected the one-log
 view ("too broad"), choosing consistency per domain and making the sequencer a
 lease separate from edit mode; the redraft follows it. Mark: "Adopt this
-version, in Record and history". The rest of the area is not yet reviewed.*
+version, in Record and history".*
+
+### Record 2. Three tiers of keeping
+
+The ambient (the soup) is regenerated from basic facts; a thing of note
+carries a note, made by the sim as a player would make one; legend never
+fades. The record of significant events (unprecedented, legendary or
+narratively significant) is never lossy, and the hagiograph judges promotion
+by novelty, quality and relevance. Noting and promotion are world events;
+collection and merging are work on the record. Collection is garbage
+collection rooted in what players care about; examining counts as play; it is
+graded, down to just the event.
+
+*Not yet built (sim plan, S4):* graded collection. Today collection folds
+only exactly equivalent state.
+
+Links: draws on 4, 69, 70, 71, 80, 125 · summary Ambient, of note, legend; the significant record is never lossy; collection is graded GC rooted in what players care about.
+
+*Reviewed 2026-10-22, new. Mark: "Mark the unbuilt rules as a reading" (marked above), and the gap became an owed item in the sim plan's S4.*
+
+### Record 3. Memory is local and fades
+
+One memory, graded, over one history, from a critter's habit to a sophont's
+events; knowledge arrives by an event's reach, a field on the place graph. A
+mind keeps what was new to it, mattered to it, was intense or kept happening,
+and what it keeps fades at that mind's rate unless renewed; physical notes
+(journals, diaries) do not fade. A thing stays of note while some mind
+remembers it or some bearer records it, then returns to the ambient. A player
+keeps things through who they play and what they pin; Eponym's player notes
+are diegetic, the VTT's and Mesocosm's are not.
+
+*Not yet built (sim plan, S4):* fading at the holder's memory rate (a note's
+lifetime is today a fixed count set by the process that writes it) and the
+four criteria for what a mind keeps.
+
+Links: draws on 5, 55, 127, 129, 130, 131 · summary Memory is local, graded and fades at the holder's rate unless renewed; a thing is of note while remembered or recorded.
+
+*Reviewed 2026-10-22, new, with the unbuilt rules marked at Mark's word.*
+
+### Record 4. Worlds fork and branch
+
+Any state can found a world. A fork founds a new world with its own history,
+related by descent and never merging back; a branch is the same world played
+apart that returns as a proposal against the trunk, whose clock runs when
+played (Record 1). Related worlds share a context without merging (branched
+worldlines, celestial neighbours). Where a merge would change lived outcomes
+the player chooses: keep the fork, let the replay adjust around them, or let
+it win and they become tales. One save holds the sim's history plus an opaque
+section per mode, carried unread by builds without that mode.
+
+Links: draws on 7, 104, 105, 126, 274, 444 · summary Forks found new worlds; branches return as proposals; lived outcomes are the player's choice at a merge; one save, a section per mode.
+
+*Reviewed 2026-10-22, new. Mark: "Both as drafted".*
+
+### Record 5. The witness
+
+The state hash is the family's 64-bit FNV-1a witness over labelled per-field
+entries of postcard bytes: an equality check for replay, never a content
+address. SHA-256 stays for content addresses, draws and anything peers must
+trust. Saves keep a labelled checkpoint per epoch; on-demand traces carry one
+entry per critter; a mismatch names the first divergence.
+
+Links: draws on 607, 610, 633, 636, 642, 649, 652, 653 · summary The state hash is an FNV-1a equality witness over labelled entries; SHA-256 for trust; epoch checkpoints, per-critter traces.
+
+*Reviewed 2026-10-22, new. Mark: "Both as drafted".*
 
 ## World generation
 

@@ -2,6 +2,42 @@
 
 **Date:** 2026-09-11
 
+## Rich bodies in ordinary play, 2026-10-22
+
+**Status:** in progress. Reconnect existing founding sheets, native function
+allocations and serial appendage chains through the current development and
+shared rendering pipeline. Preserve historical saves and selectable drawn bodies.
+
+**Phases and done-conditions:** (1) Admit the existing paid limb/leaf chains
+through native recipes, including birth, growth, severance and replay; expose a
+named founding selection and use the richer roster for new play worlds.
+(2) Carry admitted per-part function colours into the existing body material
+channel and share its appearance calculation across rendering paths. Pose the
+real link graph with actual supporting feet and terrain clearance.
+(3) Run a fresh unchosen seed and retain a timed movement sequence with visible
+stance and swing, inspect its silhouettes, and report remaining limits honestly.
+Receipts: `Code/testing/mesocosm/rich-bodies-2026-10-22/`, total cap 100 MB.
+Reuse the existing playable build cache; no new target or worktree.
+
+**Findings:** `datasheet/native.rs` refuses every chain; `bodied::drawn`
+chooses block trunks; `section/bodies.rs` supplies no per-part materials.
+Existing sheets already declare upright lower links, feet, spaced leaves and
+varied trunks. Native collision admission still uses rigid integer part boxes.
+
+**Progress:** chain development, named founding selection, native functional
+summaries, shared tissue colours and real three-part leg posing are connected;
+qualification is underway. Opt-in `MESOCOSM_CAPTURE_MOTION` records at most 24
+actual viewport frames with per-frame native roots, revision and contact stats.
+The directory must be new. It reuses Section's existing GPU readback.
+
+The researcher review correctly distinguishes Cieslak's aspect-oriented plant
+modelling architecture from specific mechanics. Native `anatomy::ceiling`
+already prices adult mass by voxel volume; area-scaled actuation and weight
+balance remain unimplemented. This slice qualifies contact and motion only.
+The new named founding raises zero half-extents to the smallest positive native
+solid and pays its normal mass. Saved definitions and the historical
+`--body-roster` route retain their original dimensions and preimages.
+
 ## Articulation and surface camera, 2026-10-21
 
 **Status, 2026-10-22:** implemented and qualified as a contact-driven pose bridge;
@@ -85,6 +121,16 @@ declared or cleared envelope. The present bridge does not meet that condition.
 The body-binding plan remains the native/Conatus boundary reference.
 
 ## Decisions
+
+- **D2, rich bodies (2026-10-22), applies 511, 512, 531, 758:** Mark:
+  "Reconnect the richer bodies, functional colours, and actual limb chains,
+  reusing what's there. Then run an unchosen seed and capture them moving so
+  we can see whether it reads." This explicitly lifts the native adapter's
+  chain refusal. It connects existing paid developmental content and function
+  appearance; it does not establish a new actuator force or muscle law.
+
+  Links: area Bodies and anatomy · draws on 511, 512, 531, 758 · governs isocosm::development, isocosm::datasheet::native, mesocosm-genet::section · summary Existing paid body chains and function appearance connect to ordinary play.
+
 
 - **D1, surface camera (2026-10-21), applies 382:** Mark: "can we... make the
   camera isometric? just seems odd to prioritize looking at the cutaway of the

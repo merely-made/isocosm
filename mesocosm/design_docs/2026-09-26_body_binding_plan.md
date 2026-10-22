@@ -2,6 +2,12 @@
 
 **Date:** 2026-09-26
 
+**2026-10-22 rich-body continuation:** existing paid upper/lower/foot chains
+are being admitted through native development, growth and births. The shared
+renderer uses those real part identities for bounded contact poses. This does
+not add force-based actuation, weight balance or jointed native collision
+admission. See the presentation plan's rich-body phase for qualification.
+
 **2026-10-22 gait connection:** the shared pose controller now consumes native
 support witnesses and conservative translation clearance, over admitted root
 poses. This is the contact-driven presentation bridge described in the

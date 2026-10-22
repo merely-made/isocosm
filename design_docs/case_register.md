@@ -407,8 +407,6 @@ three design docs that cite it. The record holds the words.
 | 649 | Traces carry one entry per critter, each cohort's digest reused for its members, so a divergence names the exact critter. | none |
 | 652 | state_hash is Witness::digest over the per-field entries; H1's whole-state hash survives only to read v2 saves. | none |
 | 653 | Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines. | none |
-| 770 | Legacy history, record and snapshot leave with the world move; the moved world writes native history, journal and witness. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
-| 940 | F2: generator-1 motion archives stay as decode receipts only; the restore-and-continue tests retire. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) |
 
 ## World generation
 

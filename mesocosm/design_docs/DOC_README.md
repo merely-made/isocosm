@@ -48,6 +48,8 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
   supported far-tier evaluators declare exact invariants and comparison
   envelopes against an all-individual reference; macro trophic views are
   derived rather than a third simulation.
+- A motion receipt must include actual intermediate frames and contact counts;
+  a settled capture or a synthetic IK test does not qualify ordinary gait.
 - For visual anatomy, verify developed geometry and the captured silhouette:
   disjoint part envelopes can still merge from the game's camera.
 - Resolve declared body boxes by actual dimensions and terrain colours by the

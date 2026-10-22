@@ -800,7 +800,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     the player in some manner; that's garbage collection, right? So the
     criteria for invalidation is crucial..."
 
-    Links: area Record and history · summary The soup is the ambient tier; things of note return to it by becoming irrelevant to the player (garbage collection), so invalidation criteria are crucial.
+    Links: area Record and history · draws on 69 · summary The soup is the ambient tier; things of note return to it by becoming irrelevant to the player (garbage collection), so invalidation criteria are crucial.
 71. **The roots of collection are the entities players care about, and
     examination counts as play; collection is graded, down to just the
     event.** Asked who "the player" is that a thing must become irrelevant
@@ -813,7 +813,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     you would trash most of a raider that got killed with little incident;
     at a certain point just the event."
 
-    Links: area Record and history · summary Collection roots are the entities players care about; examination counts as play; collection is graded down to just the event.
+    Links: area Record and history · draws on 70 · summary Collection roots are the entities players care about; examination counts as play; collection is graded down to just the event.
 72. **The place words: a world map is a grid of sites in any shape; region,
     location, wilderness, biome and environment defined.** Asked whether a
     place's kind is stored or read, Mark, 2026-09-21: "I guess i envisioned
@@ -904,7 +904,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     that makes it 'of note.'" On D19 and D20: "idk!", so both stay held.
     **Both since ruled: D19 by ruling 154, D20 by ruling 152.**
 
-    Links: area Record and history · summary Of note is literal: a note on the thing, made by the sim as a player would make one.
+    Links: area Record and history · draws on 69 · summary Of note is literal: a note on the thing, made by the sim as a player would make one.
 81. **Asserting a constitution is itself an act, the definitive one.** On
     ruling 79, Mark, 2026-09-21: "isn't asserting a constitution of a polity
     itself an act? indeed, a definitive one."
@@ -1401,7 +1401,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      or a split, noting and promotion the world's, since something became
      remarkable, and collection and merging the record's. Mark: "Split."
 
-     Links: area Record and history · summary Noting and promotion belong to the world; collection and merging belong to the record.
+     Links: area Record and history · draws on 69, 70 · summary Noting and promotion belong to the world; collection and merging belong to the record.
 126. **A fork founds a new world; a branch is the same world played apart
      and merged back.** Put to Mark on 2026-09-24: ruling 7 says worlds
      are "forkable and branchable"; should a fork be the new world that
@@ -1411,7 +1411,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (D33), and a branch is ruling 104's play branch. D23's edit to the
      past, which may never rewrite, reads as a fork.
 
-     Links: area Record and history · summary A fork founds a new world with its own history that never merges back; a branch is the same world played apart and merged back.
+     Links: area Record and history · draws on 7, 104 · summary A fork founds a new world with its own history that never merges back; a branch is the same world played apart and merged back.
 127. **Everything fades, at a rate the holder's memory sets; physical
      notes do not.** Put to Mark on 2026-09-24, from ruling 70's "the
      criteria for invalidation is crucial" and RimWorld's caution: does a
@@ -1422,7 +1422,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      guess in dnd terms, intelligence? Plus you can keep physical notes
      that don't fade, like a journal, notebook, diary, etc."
 
-     Links: area Record and history · summary Everything fades at a rate the holder's memory sets, unless renewed; physical notes (journal, diary) do not fade; legend never fades.
+     Links: area Record and history · draws on 70 · summary Everything fades at a rate the holder's memory sets, unless renewed; physical notes (journal, diary) do not fade; legend never fades.
 129. **A thing stays of note only while some mind remembers it or some
      bearer records it.** Put to Mark on 2026-09-24, from ruling 127:
      ruling 80 has the sim write notes "the way a player would", and a
@@ -1434,7 +1434,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the bearer, and when the last copy is gone the thing returns to the
      ambient; legend never fades.
 
-     Links: area Record and history · summary A thing stays of note only while some mind remembers it or some bearer records it; when the last copy goes it returns to ambient.
+     Links: area Record and history · draws on 127, 80 · summary A thing stays of note only while some mind remembers it or some bearer records it; when the last copy goes it returns to ambient.
 130. **A player keeps things of note through who they play and what they
      pin; in Eponym a player's notes are diegetic.** Put to Mark on
      2026-09-24, from ruling 129's open case: a player remembers from
@@ -1446,7 +1446,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      diegetic. Not so for the vtt or mesocosm. Notes external to the game
      could be embedded in the app via knot editor later."
 
-     Links: area Record and history · summary A player keeps things of note through who they play and what they pin; Eponym's notes are diegetic, the VTT's and Mesocosm's are not.
+     Links: area Record and history · draws on 129 · summary A player keeps things of note through who they play and what they pin; Eponym's notes are diegetic, the VTT's and Mesocosm's are not.
 131. **A mind remembers what was new to it, mattered to it, was intense,
      or kept happening.** Put to Mark on 2026-09-24, closing §3.4.1's
      open item on what ruling 71's "little incident" measures: what makes
@@ -1456,7 +1456,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      four. So a little incident is one that was none of these to anyone
      who saw it, and no mind keeps it.
 
-     Links: area Record and history · summary A mind remembers what was new to it, mattered to it, was intense, or kept happening.
+     Links: area Record and history · draws on 71, 127 · summary A mind remembers what was new to it, mattered to it, was intense, or kept happening.
 132. **An unpractised skill decays slowly, to a floor it never drops
      below.** Put to Mark on 2026-09-24, from ruling 127's "everything
      fades" and the open question of whether a skill decays: does that
@@ -2833,7 +2833,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      157), and that two players' lived histories can collide. *Reading, not
      ruled:* when they do, each keeps their own fork by default.
 
-     Links: area Record and history · summary When a merge changes lived outcomes the player chooses: keep their fork, let the replay adjust around them, or let it win, making them tales.
+     Links: area Record and history · draws on 126, 157 · summary When a merge changes lived outcomes the player chooses: keep their fork, let the replay adjust around them, or let it win, making them tales.
 276. **Shapes are eight: lump, rod, sheet, point, tube, branch, shell and
      joint.** Put to Mark on 2026-09-26, from the survey of both axes that
      ruling 264 asked for: keep the four read from geometry, add joint and
@@ -4592,7 +4592,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      branches and merges with the trunk (104) is the mode's own, the sim's
      history merging as ruled.
 
-     Links: area Record and history · summary The world save holds the sim's history plus an opaque section per mode, which builds without that mode carry through unchanged.
+     Links: area Record and history · draws on 104, 385 · summary The world save holds the sim's history plus an opaque section per mode, which builds without that mode carry through unchanged.
 
 445. **What a window may know follows its seat and subject, never its
      mode.** Asked on 2026-10-01, the mode host's last open item, the
@@ -7897,7 +7897,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a mismatch names the first diverging entry; the bench and probe tools
      write a full per-tick trace when asked.
 
-     Links: area Record and history · summary Saves keep one labelled checkpoint per epoch and a mismatch names the first diverging entry; bench and probe tools write a per-tick trace on demand.
+     Links: area Record and history · draws on 607, 284 · summary Saves keep one labelled checkpoint per epoch and a mismatch names the first diverging entry; bench and probe tools write a per-tick trace on demand.
 612. **An index row is a pointer, a purpose and a status.** 2026-10-06,
      carrying out 593. Question: the wing index's rows hold 11,819 of its
      13,367 words, the design record's row alone 2,737 words of ruling
@@ -8120,7 +8120,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the collection that diverged, and the on-demand per-tick trace names the
      entity.
 
-     Links: area Record and history · summary Saved checkpoints carry labelled entries per top-level State field; the on-demand per-tick trace carries entities.
+     Links: area Record and history · draws on 610 · summary Saved checkpoints carry labelled entries per top-level State field; the on-demand per-tick trace carries entities.
 634. **A v2 save stores the witness as a u64.** 2026-10-06. Options: u64
      (recommended); a hex string in the existing `Key`. Mark chose "u64". So
      v2 stores the family witness's own type, and v1 saves are read through a
@@ -8132,7 +8132,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      through `isometer_core::snapshot::encode`, one encoding across the
      family.
 
-     Links: area Record and history · summary The witness hashes postcard bytes through isometer_core::snapshot::encode, one encoding across the family.
+     Links: area Record and history · draws on 607 · summary The witness hashes postcard bytes through isometer_core::snapshot::encode, one encoding across the family.
 641. **A v1 save is still checked at every checkpoint.** 2026-10-07,
      reading 608 for H1. Question: 608 verifies a v1 save "with the SHA-256
      hash it carries", and today's load also checks each epoch checkpoint's
@@ -8153,7 +8153,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `run_exact` takes an optional per-tick sink, and both tools write the
      same line format.
 
-     Links: area Record and history · summary The probe's trace records draw 0's exact run in the bench's tick-witness line format.
+     Links: area Record and history · draws on 610 · summary The probe's trace records draw 0's exact run in the bench's tick-witness line format.
 643. **The repo shares a build-dir, not a target-dir.** 2026-10-07,
      assessing 638. Question: cargo 1.98 has `build-dir` (stable since
      1.91), and two throwaway workspaces under one shared build-dir reused
@@ -8195,7 +8195,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      line holds as many entries as the world has critters. Notes needed no
      ruling: the list is append-only, so `note:<index>` is stable.
 
-     Links: area Record and history · summary Traces carry one entry per critter, each cohort's digest reused for its members, so a divergence names the exact critter.
+     Links: area Record and history · draws on 633 · summary Traces carry one entry per critter, each cohort's digest reused for its members, so a divergence names the exact critter.
 651. **H2's saves move to v3.** 2026-10-08, briefing H2 on mere's
      `state-witness` (`329d60d0`). Question: a v2 checkpoint stores a tick
      and a u64; how do saves carry the per-field entries (633) at each
@@ -8215,7 +8215,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the entries include the world's seed, revision and traits beside the
      state's fields, so the digest covers what H1's covered.
 
-     Links: area Record and history · summary state_hash is Witness::digest over the per-field entries; H1's whole-state hash survives only to read v2 saves.
+     Links: area Record and history · draws on 607, 633 · summary state_hash is Witness::digest over the per-field entries; H1's whole-state hash survives only to read v2 saves.
 653. **Per-tick entries go in a framed trace.** 2026-10-08. Question: how do
      the bench and probe write per-tick entries (610), a line holding one
      entry per critter (649)? Options: framed postcard under a new flag
@@ -8224,7 +8224,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `--trace-entries <file>` writes the crate's framed `Trace` (MERETRC,
      version 1), compared by `first_trace_divergence`.
 
-     Links: area Record and history · summary Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines.
+     Links: area Record and history · draws on 610, 649 · summary Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines.
 657. **The nervous system carries no matter.** 2026-10-08, finishing
      checkpoint 9 (amends 489's table). Question: checkpoint 9's control for
      589 (the muscular system carries the limbs' share of the bite) failed:
@@ -9104,14 +9104,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      as notes. Mark chose "Native nouns, authored fill (Recommended)".
 
      Links: area The VTT · summary Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills.
-770. **The legacy record leaves with the world move.** 2026-10-10.
-     Question: legacy `history`, `record` and `snapshot` are the legacy
-     `World`'s own record, shaped unlike native's. Options: they leave with
-     the world move, the moved world writing native history, journal and
-     witness (recommended); lower them now. Mark chose "Leave with the world
-     move (Recommended)".
-
-     Links: area Record and history · summary Legacy history, record and snapshot leave with the world move; the moved world writes native history, journal and witness.
 771. **Eponym's epistemic layer becomes notes plus knowing.** 2026-10-10.
      Options: its simulation record leaves with Eponym's world move and the
      epistemic layer becomes notes held by the observer plus the reach
@@ -10699,16 +10691,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the other ten (Recommended)"
 
      Links: area The sim's schema and saves · summary F1: the shipped pack ships the other ten process definitions so admission equals the native registry's fifteen.
-
-940. **F2: generator-1 motion archives stay as decode receipts.** They are
-     refused at generator 4 (`GeneratorDiverged`), the world that
-     authenticated them is gone, and `save_wire` already pins their bytes
-     and the refusal. Options: (1) "Decode receipts only (Recommended)": the
-     three restore-and-continue tests retire under 672; (2) "Build a gen-1
-     reader"; (3) "Ignore until Q5/Q11". Mark: "Decode receipts only
-     (Recommended)"
-
-     Links: area Record and history · summary F2: generator-1 motion archives stay as decode receipts only; the restore-and-continue tests retire.
 
 943. **F5: worn items on a severed non-played part drop through the sim's
      handoff.** A volley severing such a part is refused whole with
