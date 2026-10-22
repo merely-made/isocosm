@@ -2514,6 +2514,7 @@ title = "Ars Magica's open text becomes a VTT ruleset and a reference for the wi
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Licensing and sources"
 summary = "The VTT gains an Ars Magica 5e system pack under CC BY-SA 4.0 with Atlas credit; its magic and auras inform the wing's design."
+draws_on = ["40", "404"]
 
 [cases."523"]
 title = "A body starves when its rent fails, not below a fixed mass"
@@ -4225,6 +4226,7 @@ title = "The crates stay publishable in principle"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Licensing and sources"
 summary = "The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917)"
+draws_on = ["913"]
 
 [cases."915"]
 title = "913's \"components\" are owning homes"
@@ -4237,12 +4239,14 @@ title = "The crates aim to be published"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Licensing and sources"
 summary = "The crates aim to be published, not only publishable in principle."
+amends = ["914"]
 
 [cases."919"]
 title = "`isocosm-vtt` carries the VTT's licence, MIT OR Apache-2.0"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Licensing and sources"
 summary = "isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author."
+draws_on = ["902"]
 
 [cases."920"]
 title = "`isocosm-vtt`'s endpoint sits behind a feature"
@@ -4495,6 +4499,27 @@ source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
 [decisions."sim-execution D6"]
 title = "`foregone` only on direct acts (2026-10-20)"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+
+[statements."licensing.1"]
+title = "Rulesets"
+source = "design_docs/doctrine.md"
+area = "Licensing and sources"
+summary = "A ruleset ships when its licence draws no objection; an open text informing the sim is a reference, never copied in."
+draws_on = ["40", "522"]
+
+[statements."licensing.2"]
+title = "Publication"
+source = "design_docs/doctrine.md"
+area = "Licensing and sources"
+summary = "The crates aim to be published; each release is its own decision, mere's are mere's."
+draws_on = ["914", "917"]
+
+[statements."licensing.3"]
+title = "Licences follow the layer"
+source = "design_docs/doctrine.md"
+area = "Licensing and sources"
+summary = "Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0."
+draws_on = ["919"]
 
 [statements."naming.1"]
 title = "The family"
