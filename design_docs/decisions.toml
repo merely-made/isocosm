@@ -360,6 +360,7 @@ title = "Any means may stand behind a constitution; short of death, a polity's c
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Any means may stand behind a constitution; short of death a polity may automatically become suppressed, inactive, superseded or subordinated to a faction."
+draws_on = ["65"]
 
 [cases."67"]
 title = "Polities under no host are a faction among themselves"
@@ -477,6 +478,7 @@ title = "The five points of how knowledge resolves are agreed"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Agrees five points on how knowledge resolves, listed elsewhere in the record."
+draws_on = ["84"]
 
 [cases."87"]
 title = "A secret is valuable, leverage, kept by a taboo; telling it turns on relation, opinion and goals, and perhaps personality"
@@ -532,6 +534,7 @@ title = "Taking an action is analogous to crafting; crafting is incorporating ma
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Taking an action is analogous to crafting; values, abilities and needs shape what is made; a fey mood may be a triggered need."
+draws_on = ["94"]
 
 [cases."96"]
 title = "Abilities, skills and techniques defined; kleptoplasty is conditional; nis is a scale, not a material; the question was quality, not rarity"
@@ -657,36 +660,42 @@ title = "Any belief can be wrong, through wrong or stale information, and entiti
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Any belief can be wrong through deceit, honest mistake or a changing rumour; entities act on what they believe; reach carries versions of an event."
+draws_on = ["116"]
 
 [cases."118"]
 title = "Whether a belief takes: what the receiver can check, who's telling, what it wants to hear, and how it's told, all four"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Whether a belief takes depends on all four: what the receiver can check, who is telling, what it wants to hear, how it is told."
+draws_on = ["117"]
 
 [cases."119"]
 title = "Both: each entity's disposition shifts a world baseline, and the baseline is drawn from the world entity's disposition, a neutral median by default"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Each entity's disposition shifts a world baseline for weighing beliefs; the baseline is drawn from the world entity's disposition, a neutral median by default."
+draws_on = ["118"]
 
 [cases."120"]
 title = "The world's disposition seeds the founders only"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "World generation"
 summary = "The world's disposition seeds the founders only; afterwards dispositions are inherited and lived and the world's pull fades."
+draws_on = ["119"]
 
 [cases."121"]
 title = "The world shapes its people's dispositions through trait and through condition; people drift from the world's temperament, and the world's temperament may not be static either"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "World generation"
 summary = "The world shapes people's dispositions through trait and condition; people drift from the world's temperament, and that temperament may not be static."
+draws_on = ["119", "120"]
 
 [cases."122"]
 title = "A fluid world's temperament is moved by what happens to it, by its own cycles, and at its epoch boundary, not by its people's temperament"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "World generation"
 summary = "A fluid world's temperament is moved by what happens to it, its own cycles and its epoch boundary, not by its people's temperament."
+draws_on = ["102", "121"]
 
 [cases."123"]
 title = "Harm is both vigour and wounds"
@@ -747,12 +756,14 @@ title = "An unpractised skill decays slowly, to a floor it never drops below"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "An unpractised skill decays slowly, to a floor it never drops below."
+draws_on = ["127"]
 
 [cases."133"]
 title = "Factions are never gated by disagreement; a polity is, where its ultimate authority is vested in a group"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Factions are never gated by disagreement; a polity is, where its ultimate authority is vested in a group."
+draws_on = ["63"]
 
 [cases."134"]
 title = "A constitution changes by the polity's own way or its amendment rule; force outside the constitution founds a new polity and never takes over the old"
@@ -765,12 +776,14 @@ title = "Secession is the seceders' own act"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Secession is the seceders' own act; they found their own polity and the old one may accept or contest."
+draws_on = ["115", "116"]
 
 [cases."136"]
 title = "A polity dies by either route: its own dissolution, or when nothing holds it any more"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A polity dies by either route: its own dissolution, or when nothing holds it any more."
+amends = ["65"]
 
 [cases."137"]
 title = "The way of deciding suggests the means of enforcing by default and never binds them"
@@ -783,6 +796,7 @@ title = "Deadlock is per act, not a condition"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Deadlock is per act, not a polity condition; conditions stay four."
+draws_on = ["133"]
 
 [cases."139"]
 title = "Law A is amended for materials"
@@ -936,24 +950,28 @@ title = "Past what it can bear, a mind stops heeding, acts out, or rises, and th
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Past what it can bear a mind stops heeding directives, acts out, or rises; the break leaves a mark seeding or feeding a personality trait."
+draws_on = ["159"]
 
 [cases."162"]
 title = "Breaking does not spread"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Breaking does not spread; each mind breaks alone and a riot is many minds breaking for the same reasons."
+draws_on = ["161"]
 
 [cases."163"]
 title = "Whether a break goes down or up turns on traits, the moment and chance"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Whether a break goes down or up turns on traits, the moment, and seeded chance."
+draws_on = ["161"]
 
 [cases."164"]
 title = "What a mind can bear is set by its traits, its support and what it has been through"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "What a mind can bear is set by its traits, its support, and what it has been through."
+draws_on = ["161"]
 
 [cases."165"]
 title = "A culture is read from its people, and named when noted"
@@ -978,6 +996,7 @@ title = "Names come from the tongue, from tales, and from the namer"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Names come from the tongue, from tales, and from the namer."
+draws_on = ["36"]
 
 [cases."169"]
 title = "Culture spreads by contact, prestige and imposition, and drifts apart out of touch"
@@ -1010,6 +1029,7 @@ title = "Invention is driven by need, contact, temperament and mastery"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Invention is driven by need, contact, temperament and mastery."
+draws_on = ["142"]
 
 [cases."175"]
 title = "The first Mesocosm overlay directs, as ruling 60 has it; the played slice's direct control is rewritten and the plan retires into W5 at M3 (rulings 196 and 199)"
@@ -1324,8 +1344,9 @@ draws_on = ["181", "225"]
 [cases."227"]
 title = "The core reads mood from needs now"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Bodies and anatomy"
 summary = "The core reads mood from needs now (low reserve, hunger, wounds); strain builds whenever mood stays low; memory and situation wait for S1. 2026-10-18: a hazard wounds, a core wound share feeds mood, healing or rest answers it, strain builds and vitals shows it."
+draws_on = ["158", "159"]
 
 [cases."228"]
 title = "A right click shows a ring of acts"
@@ -1404,6 +1425,7 @@ title = "Posing is a telling's manner"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Posing is a telling's manner, the fourth thing a hearer weighs, carried on the telling and not as an intent of its own."
+draws_on = ["117", "118"]
 
 [cases."243"]
 title = "With the sim on, a battlemap is projected from the generated volume, the DM's map an edit over it"
@@ -5144,6 +5166,41 @@ area = "Processes and rules"
 summary = "Most contests end at sizing up; a fight builds strain against bearing; breaks shift advantage; it ends on yielding or being spent."
 draws_on = ["116", "217", "221", "222", "223", "processes.8"]
 
+[statements."processes.10"]
+title = "Breaking"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Mood reads needs and strain builds; past bearing a mind stops heeding, acts out or rises; breaks don't spread; bearing is traits, support, history."
+draws_on = ["161", "162", "163", "164", "227", "schema.6"]
+
+[statements."processes.11"]
+title = "Belief"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Spread is modelled distributionally; any belief can be wrong; whether it takes weighs checking, teller, wish and manner; secrets are taboo leverage."
+draws_on = ["84", "86", "87", "117", "118", "119", "241"]
+
+[statements."processes.12"]
+title = "Collective action"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Factions act by consent, never gated; a group-vested polity is gated per act; constitutions change by their own way; force founds anew."
+draws_on = ["63", "65", "66", "133", "134", "135", "136", "137", "138", "schema.5"]
+
+[statements."processes.13"]
+title = "Making and learning"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Value tracks scarcity, capability and need; acting is like crafting; skills rise four ways and decay to a floor; masters invent; items grow with maker and story."
+draws_on = ["94", "95", "132", "141", "142", "143", "173", "schema.6"]
+
+[statements."processes.14"]
+title = "How culture moves"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Tongues and cultures descend like lineages; names come from tongue, tales and namer; culture spreads by contact, prestige, imposition."
+draws_on = ["167", "168", "169", "schema.7"]
+
 [statements."record.1"]
 title = "Consistency is chosen per domain"
 source = "design_docs/doctrine.md"
@@ -5416,7 +5473,7 @@ title = "The world is a generative entity"
 source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid."
-draws_on = ["99", "101", "102", "140"]
+draws_on = ["99", "101", "102", "120", "121", "122", "140"]
 
 [statements."world.5"]
 title = "Founding and authoring"

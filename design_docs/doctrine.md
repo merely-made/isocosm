@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, and the sim's schema reviewed, with Processes 1 to 9; Processes and rules is under review, and Bodies and anatomy remains. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, and the sim's schema reviewed, with Processes 1 to 14; Processes and rules is under review, and Bodies and anatomy remains. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -119,13 +119,15 @@ experience; a technique is an ability with a skill precondition, shared
 between those who hold the skill. The significant dead go to the planes after
 life, and summoning them back is a costly possibility.
 
-*Not yet built:* strain, personality traits, techniques, the planes after
-life. Mood is read live from needs, and every entity holds its skills and
-five-factor disposition.
+*Not yet built:* personality traits, techniques, the planes after life. Mood
+is read live from needs, strain is kept as an account in played worlds, and
+every entity holds its skills and five-factor disposition.
 
 Links: draws on 62, 96, 158, 159, 160 · summary Mood is read from memory, needs and life, strain kept; personality traits grow on the five factors; abilities, skills, techniques; the planes after life.
 
 *Reviewed 2026-10-22, new. Mark: "Ages to Record" (split as recommended).*
+*Corrected 2026-10-22: strain was listed as unbuilt; played worlds keep it as
+the `sim:strain` account.*
 
 ### Schema 7. Culture and knowledge
 
@@ -371,6 +373,94 @@ Links: draws on 116, 217, 221, 222, 223, processes.8 · summary Most contests en
 
 *Reviewed 2026-10-22, new: split from competition at Mark's word ("Fights
 apart"); strain, bearing and yielding are built.*
+
+### Processes 10. Breaking
+
+Mood is read from needs (reserve, hunger, wounds as a share of cells), and
+strain builds while it stays low (Schema 6). Past what it can bear, a mind
+stops heeding, acts out, or rises, and the break leaves a mark on its traits.
+Breaking does not spread: a riot is many minds breaking for the same reasons.
+Whether a mind breaks down or up turns on its traits, the moment and a seeded
+draw; what it can bear is set by its traits, its support and what it has been
+through.
+
+*Not yet built:* breaks, and support and history in bearing.
+
+Links: draws on 161, 162, 163, 164, 227, schema.6 · summary Mood reads needs and strain builds; past bearing a mind stops heeding, acts out or rises; breaks don't spread; bearing is traits, support, history.
+
+*Reviewed 2026-10-22, new. Mark: "Healing to Bodies": 227's rest and healing
+rounds go to Bodies and anatomy, and this statement keeps how a mind gives
+way.*
+
+### Processes 11. Belief
+
+Information spread is modelled cheaply and distributionally, how someone
+learned a thing resolved on demand. Any belief can be wrong (deceit, honest
+mistake, a rumour retold), and entities act on what they believe; reach
+carries versions of an event. Whether a belief takes turns on what the
+receiver can check, who is telling, what it wants to hear and how it is told
+(posing is a telling's manner); each entity's disposition shifts a baseline
+drawn from the world entity's disposition. A secret is leverage kept by a
+taboo, its telling turning on relation, opinion and goals.
+
+*Not yet built:* false beliefs, the four-way weighing, secrets and taboos.
+Knowing is notes plus reach, and tellings are built.
+
+Links: draws on 84, 86, 87, 117, 118, 119, 241 · summary Spread is modelled distributionally; any belief can be wrong; whether it takes weighs checking, teller, wish and manner; secrets are taboo leverage.
+
+*Reviewed 2026-10-22, new. Mark: "Belief here, temperament to World 4".*
+
+### Processes 12. Collective action
+
+A faction acts by consent, peer to peer, and is never gated by disagreement:
+its members fall back on the way of deciding their alignments rank highest. A
+polity adds a constitution (Schema 5); where it vests ultimate authority in a
+group, disagreement gates its acts, one act at a time. Any means may stand
+behind a constitution, and the way of deciding suggests the means of
+enforcing without binding them. A constitution changes by the polity's own
+way or its amendment rule; force outside it founds a new polity and never
+takes over the old; secession is the seceders' own act. A polity without
+support does nothing; short of death it may become suppressed, inactive,
+superseded or subordinated, and it dies by its own dissolution or when nothing
+holds it any more.
+
+*Not yet built:* secession, the four polity conditions, death when nothing
+holds a polity. Constitutions are built behind the society feature.
+
+Links: draws on 63, 65, 66, 133, 134, 135, 136, 137, 138, schema.5 · summary Factions act by consent, never gated; a group-vested polity is gated per act; constitutions change by their own way; force founds anew.
+
+*Reviewed 2026-10-22, new. Mark: "Processes statement".*
+
+### Processes 13. Making and learning
+
+Value bears on scarcity, capability and material need, need derived from
+alignment, acts and predilection. Taking an action is like crafting: values,
+abilities and needs shape what is made, and a fey mood can be a triggered
+need. A skill rises by doing, teaching, study and breakthroughs and decays
+slowly to a floor (Schema 6). Techniques are found in the canon and invented
+by masters, invention driven by need, contact, temperament and mastery. An
+item improves as far as its maker's skill and its story allow, never capped
+by its material.
+
+*Not yet built:* value, fey moods, skill decay, techniques, invention, item
+improvement. Skills are held on every entity.
+
+Links: draws on 94, 95, 132, 141, 142, 143, 173, schema.6 · summary Value tracks scarcity, capability and need; acting is like crafting; skills rise four ways and decay to a floor; masters invent; items grow with maker and story.
+
+*Reviewed 2026-10-22, new. Mark: "Split: making, culture".*
+
+### Processes 14. How culture moves
+
+Tongues and cultures descend like lineages, dialects splitting when speakers
+part. Names come from the tongue, from tales and from the namer. Culture
+spreads by contact, prestige and imposition, and drifts apart out of touch
+(Schema 7).
+
+*Not yet built.*
+
+Links: draws on 167, 168, 169, schema.7 · summary Tongues and cultures descend like lineages; names come from tongue, tales and namer; culture spreads by contact, prestige, imposition.
+
+*Reviewed 2026-10-22, new. Mark: "Split: making, culture".*
 
 ## Ecology
 
@@ -644,11 +734,17 @@ What kind of entity a world is stays open: inert, sentient, a god, a turtle,
 dead. It has traits, its timeline is a lineage, and it generates activities,
 processes and effects; its magic and its materials are suggested from the
 seed, configurable, static or fluid over time under conditions, and its
-materials run from a normal base matching a ruleset to fully generated.
+materials run from a normal base matching a ruleset to fully generated. Its
+disposition seeds its founders only; after them dispositions are inherited and
+lived, the world shaping its people through their conditions, and a fluid
+temperament moves by what happens to the world, its cycles and its epoch
+boundaries, never by what its people are.
 
-Links: draws on 99, 101, 102, 140 · summary A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid.
+Links: draws on 99, 101, 102, 120, 121, 122, 140 · summary A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid.
 
 *Reviewed 2026-10-22, new: split from World 1 at Mark's word.*
+*Refined 2026-10-22 in the Processes review: how its temperament moves (120 to
+122; Mark: "Belief here, temperament to World 4").*
 
 ### World 5. Founding and authoring
 
