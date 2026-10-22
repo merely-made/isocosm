@@ -5589,6 +5589,13 @@ area = "Processes and rules"
 summary = "Magic composes fundamental effects as combinable cantrips, each level costing sharply more; scripts hook other generators; explainable surprises welcome."
 draws_on = ["404", "1009"]
 
+[statements."processes.18"]
+title = "Holding many things"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Four rules hold many things: aggregate the unforegrounded, schedule due events, store deviations, keep the environment on places."
+draws_on = ["124", "430", "processes.4", "processes.6", "processes.7", "schema.12"]
+
 [statements."record.1"]
 title = "Consistency is chosen per domain"
 source = "design_docs/doctrine.md"
@@ -5715,6 +5722,13 @@ area = "The sim's schema and saves"
 summary = "Places derive once at base grain with clearance on edges; the outdoors splits by walkability under a capped patch size; an entity names its site until placed."
 draws_on = ["417", "418", "419", "420", "421", "422", "740"]
 
+[statements."schema.12"]
+title = "The derivation rule"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "A world is its seed, rules and asserted facts; all else is derived and discardable; storage follows the asserted, processing the due."
+draws_on = ["14", "41", "69", "70"]
+
 [statements."stack.1"]
 title = "Build on the stack we have"
 source = "design_docs/doctrine.md"
@@ -5799,6 +5813,13 @@ area = "Stack and engine"
 summary = "Desktop first-class, the web a floored tier; best capabilities where free; gamepads are the stack's; web modules share one helper and pin."
 draws_on = ["21", "29", "77", "532", "536", "537", "556", "567"]
 stack = true
+
+[statements."stack.12"]
+title = "Three tiers, and what the sim never does"
+source = "design_docs/doctrine.md"
+area = "Stack and engine"
+summary = "Runs unattended: the sim; needed by every game and deciding nothing: the stack; a way of playing: a game. The sim never renders, rolls or decides fun."
+draws_on = ["10", "114", "processes.1"]
 
 [statements."vtt.1"]
 title = "The table runs over the sim, or without it"
