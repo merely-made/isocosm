@@ -17,14 +17,14 @@
 //! the hash.
 
 mod bodies;
-pub mod host_device;
 mod camera;
 mod capsules;
+pub mod host_device;
 mod light;
-mod tenant;
 mod smooth;
-pub use light::{Block as SkyBlock, SunSource};
+mod tenant;
 pub use capsules::{pose_of, roster_of};
+pub use light::{Block as SkyBlock, SunSource};
 mod terrain;
 pub use terrain::TerrainStyle;
 mod inspection;
@@ -137,6 +137,7 @@ pub struct Section {
     /// Which way it looks. Presentation, beside the half-height and for the
     /// same reason: it frames the world and decides nothing in it.
     mode: CameraMode,
+    view_depth: Option<f32>,
     custom_forward: Option<[f32; 3]>,
     body_mode: BodyMode,
     body_budget: usize,
@@ -146,6 +147,9 @@ pub struct Section {
 }
 
 impl Section {
+    pub fn animating(&self) -> bool {
+        self.body_mode == BodyMode::Smooth && self.body_tenant.animating()
+    }
     /// Binds a lifted site's Ground and builds the scene on the host's own
     /// device. `format` is the surface's, for the composite that lands
     /// the traced frame under the HUD.
@@ -160,7 +164,10 @@ impl Section {
         let (device, queue) = (host.device.clone(), host.queue.clone());
         let composite = Composite::new(&device, format);
         let mut scene = Scene::new(device.clone(), queue.clone(), width, height)?;
-        let residency = std::cell::RefCell::new(Residency::new(ResidencySettings::default(), scene.atlas_limits()));
+        let residency = std::cell::RefCell::new(Residency::new(
+            ResidencySettings::default(),
+            scene.atlas_limits(),
+        ));
         scene.bodies_mut().preview_depth = SLAB_DEPTH;
         Ok(Self {
             device,
@@ -174,6 +181,7 @@ impl Section {
             height,
             half_height: half_height_or_default(framing.half_height),
             mode: framing.mode,
+            view_depth: None,
             custom_forward: None,
             body_mode: BodyMode::default(),
             body_budget: DEFAULT_BODY_BUDGET,
@@ -190,7 +198,9 @@ impl Section {
     }
 
     pub fn resize(&mut self, width: u32, height: u32) {
-        if self.width == width.max(1) && self.height == height.max(1) { return; }
+        if self.width == width.max(1) && self.height == height.max(1) {
+            return;
+        }
         self.width = width.max(1);
         self.height = height.max(1);
         self.scene.resize(self.width, self.height);
@@ -221,7 +231,9 @@ impl Section {
         }
     }
 
-    pub fn cached_bodies(&self) -> usize { self.scene.cached_bodies() }
+    pub fn cached_bodies(&self) -> usize {
+        self.scene.cached_bodies()
+    }
 
     pub fn body_stats(&self) -> BodyFrameStats {
         self.scene.bodies().stats.clone()
@@ -312,8 +324,12 @@ impl Section {
             body_tenant,
             ..
         } = self;
-        let framed = framed_bricks(camera, isometer::core::ground::BRICK as f32, &source,
-            residency.borrow().capacity());
+        let framed = framed_bricks(
+            camera,
+            isometer::core::ground::BRICK as f32,
+            &source,
+            residency.borrow().capacity(),
+        );
         let terrain = PagedTerrain::new(residency, &source, &framed, frame.scene.ground.revision());
         let mut host = SectionHost {
             bodies: host_bodies,
@@ -323,10 +339,14 @@ impl Section {
         };
         let boxes;
         let volumes = if self.body_mode == BodyMode::Boxes {
-            boxes = DeclaredExtentVolumes::from_documents(frame.scene.bodies.iter().map(|body| &body.document),
-                isometer::render::geometry::NEUTRAL_MATERIAL);
+            boxes = DeclaredExtentVolumes::from_documents(
+                frame.scene.bodies.iter().map(|body| &body.document),
+                isometer::render::geometry::NEUTRAL_MATERIAL,
+            );
             &boxes
-        } else { &frame.scene.volumes };
+        } else {
+            &frame.scene.volumes
+        };
         scene.render(
             encoder,
             SceneFrame {
@@ -355,25 +375,40 @@ impl Section {
 
     /// Replace departed/refused native input in display, capture and queries.
     /// No substitute terrain or body is created for an off-site critter.
-    pub fn withdraw(&mut self, encoder: &mut wgpu::CommandEncoder, surface: Option<&wgpu::TextureView>) {
+    pub fn withdraw(
+        &mut self,
+        encoder: &mut wgpu::CommandEncoder,
+        surface: Option<&wgpu::TextureView>,
+    ) {
         self.invalidate_query();
         self.scene.bodies_mut().clear_inspection();
         self.scene.bodies_mut().stats = BodyFrameStats::default();
         self.host_bodies.fallback.clear();
         self.host_bodies.played_fallback = None;
-        let terrain = self.scene.display_texture().create_view(&Default::default());
+        let terrain = self
+            .scene
+            .display_texture()
+            .create_view(&Default::default());
         let bodies = self.body_tenant.view();
         for (view, colour) in std::iter::once((&terrain, wgpu::Color::BLACK))
             .chain(std::iter::once((&bodies, wgpu::Color::TRANSPARENT)))
-            .chain(surface.map(|view| (view, wgpu::Color::BLACK))) {
+            .chain(surface.map(|view| (view, wgpu::Color::BLACK)))
+        {
             let _pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                 label: Some("Mesocosm withdrawn native view"),
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment {
-                    view, depth_slice: None, resolve_target: None,
-                    ops: wgpu::Operations { load: wgpu::LoadOp::Clear(colour), store: wgpu::StoreOp::Store },
+                    view,
+                    depth_slice: None,
+                    resolve_target: None,
+                    ops: wgpu::Operations {
+                        load: wgpu::LoadOp::Clear(colour),
+                        store: wgpu::StoreOp::Store,
+                    },
                 })],
-                depth_stencil_attachment: None, timestamp_writes: None,
-                occlusion_query_set: None, multiview_mask: None,
+                depth_stencil_attachment: None,
+                timestamp_writes: None,
+                occlusion_query_set: None,
+                multiview_mask: None,
             });
         }
     }
@@ -464,7 +499,8 @@ impl isometer::SceneHost for SectionHost<'_> {
         bodies: &mut isometer::BodyLayer,
         camera: isometer::SlabCamera,
     ) -> Result<(), String> {
-        self.tenant.encode(encoder, bodies, camera, self.smooth.then_some(self.scene))
+        self.tenant
+            .encode(encoder, bodies, camera, self.smooth.then_some(self.scene))
     }
 
     fn begin(&mut self) {
@@ -508,6 +544,10 @@ pub fn half_height_or_default(configured: f32) -> f32 {
 /// Where the slab sits: on the followed body plus the pan, clamped so the
 /// frame never dips below bedrock. Presentation only.
 pub fn centre_on(at: [i32; 3], pan: Pan, half_height: f32, mode: CameraMode) -> [f32; 3] {
+    if mode.is_surface() {
+        let [right, up, _] = mode.basis();
+        return [0, 1, 2].map(|i| at[i] as f32 + right[i] * pan.x + up[i] * pan.y);
+    }
     let floor = mode.vertical_half(half_height_or_default(half_height));
     [
         at[0] as f32 + pan.x,

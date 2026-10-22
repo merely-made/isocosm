@@ -23,6 +23,8 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
     let size = [192, 144];
     let camera = native.camera(size[0] as f32 / size[1] as f32);
     let presentation = Presentation {
+        mode: section::CameraMode::default(),
+        depth: None,
         forward: camera.forward,
         centre: camera.centre,
         half_height: camera.half_height,
@@ -145,9 +147,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
         "{counts:?}"
     );
     assert!(leaf.pick((-1.0, 2.0), (96.0, 72.0)).is_err());
-    handle
-        .present(&native.scene, 8, presentation)
-        .unwrap();
+    handle.present(&native.scene, 8, presentation).unwrap();
     assert!(
         !leaf.validate_selection(selected),
         "selection expires with the shown snapshot"

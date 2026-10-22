@@ -33,12 +33,20 @@ impl Host {
     /// Presentation-only terrarium quarter turns. They are handled before
     /// inspection and dev/world keys so Z/V always remain camera controls.
     pub(super) fn try_camera_key(&mut self, key: &winit::keyboard::Key) -> bool {
+        if matches!(key, winit::keyboard::Key::Character(c) if c.eq_ignore_ascii_case("c")) {
+            self.config.camera = if self.config.camera.is_surface() {
+                crate::section::CameraMode::Oblique
+            } else {
+                crate::section::CameraMode::Isometric
+            };
+            return true;
+        }
         let backwards = match key {
             winit::keyboard::Key::Character(c) if matches!(c.as_str(), "z" | "Z") => true,
             winit::keyboard::Key::Character(c) if matches!(c.as_str(), "v" | "V") => false,
             _ => return false,
         };
-        if !self.config.camera.is_terrarium() {
+        if !self.config.camera.is_terrarium() && !self.config.camera.is_surface() {
             return true;
         }
         self.config.camera = self.config.camera.quarter_turn(backwards);

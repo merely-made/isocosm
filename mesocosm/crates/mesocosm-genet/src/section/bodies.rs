@@ -15,10 +15,10 @@ use super::{PlacedBody, SiteScene};
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum BodyMode {
+    #[default]
     Smooth,
     Capsules,
     Boxes,
-    #[default]
     Voxels,
 }
 
@@ -70,7 +70,10 @@ impl HostBodies {
             document: &body.document,
             pose: Pose {
                 position: body.at.map(|v| v as f32),
-                yaw_radians: body.physical.as_ref().map_or(0.0, |p| super::capsules::yaw_radians(p.yaw)),
+                yaw_radians: body
+                    .physical
+                    .as_ref()
+                    .map_or(0.0, |p| super::capsules::yaw_radians(p.yaw)),
             },
             scale: self.scale,
             grounded: body.physical.is_none(),
@@ -96,7 +99,11 @@ impl HostBodies {
         };
         match BodyLensProjection::project_truncated(body.document, placement) {
             Ok((mut projected, dropped)) if played || self.fallback.len() < MAX_ROSTER => {
-                super::capsules::rotate_pose(&mut projected.pose, body.origin(), body.pose.yaw_radians);
+                super::capsules::rotate_pose(
+                    &mut projected.pose,
+                    body.origin(),
+                    body.pose.yaw_radians,
+                );
                 stats.fallback_bodies += 1;
                 stats.controlled_drawn |= played;
                 stats.fallback_parts_dropped += dropped;

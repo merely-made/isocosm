@@ -10,10 +10,12 @@ use isometer_core::PartId;
 
 mod anatomy;
 mod contacts;
+mod gait;
 mod gpu;
 #[cfg(test)]
 mod tests;
-pub use anatomy::{AnatomyStats, from_anatomy, two_bone};
+pub use anatomy::{AnatomyStats, from_anatomy, two_bone, walking_anatomy};
+pub use gait::Gait;
 pub use gpu::{Frame, Renderer};
 
 /// GPU layout, also evaluated by the CPU picker. Kind 0 is a rounded box;

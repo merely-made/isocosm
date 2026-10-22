@@ -5,17 +5,7 @@ use super::{Primitive, Surface};
 use glam::{Mat4, Vec3};
 use isometer_core::PartId;
 
-pub(super) fn preserve(
-    surface: &mut Surface,
-    part: PartId,
-    matrix: Mat4,
-    half: Vec3,
-    colour: [f32; 3],
-    ground: &mut impl FnMut([f32; 3]) -> Option<f32>,
-) -> bool {
-    let centre = matrix.transform_point3(half);
-    let inverse = matrix.inverse();
-    let scale = matrix.transform_vector3(Vec3::X).length();
+pub(super) fn bounds(matrix: Mat4, half: Vec3) -> [Vec3; 2] {
     let mut min = Vec3::splat(f32::INFINITY);
     let mut max = -min;
     for x in [0., half.x * 2.] {
@@ -27,6 +17,38 @@ pub(super) fn preserve(
             }
         }
     }
+    [min, max]
+}
+
+pub(super) fn pad(
+    surface: &mut Surface,
+    part: PartId,
+    centre: Vec3,
+    point: Vec3,
+    radius: f32,
+    colour: [f32; 3],
+) {
+    surface.parts.push(Primitive::capsule(
+        part,
+        centre,
+        point + Vec3::Y * radius,
+        radius,
+        colour,
+    ));
+}
+
+pub(super) fn preserve(
+    surface: &mut Surface,
+    part: PartId,
+    matrix: Mat4,
+    half: Vec3,
+    colour: [f32; 3],
+    ground: &mut impl FnMut([f32; 3]) -> Option<f32>,
+) -> bool {
+    let centre = matrix.transform_point3(half);
+    let inverse = matrix.inverse();
+    let scale = matrix.transform_vector3(Vec3::X).length();
+    let [min, max] = bounds(matrix, half);
     let mut best: Option<(f32, Vec3, f32)> = None;
     let mut consider = |x: f32, z: f32| {
         let Some(height) = ground([x, min.y, z]) else {
@@ -73,13 +95,7 @@ pub(super) fn preserve(
         // Both centres and the capsule radius fit in the admitted part box.
         // A rounded corner may remove material from a real supporting cell;
         // this short pad restores that contact under the same part identity.
-        surface.parts.push(Primitive::capsule(
-            part,
-            centre,
-            point + Vec3::Y * radius,
-            radius,
-            colour,
-        ));
+        pad(surface, part, centre, point, radius, colour);
     }
     true
 }

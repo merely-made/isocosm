@@ -25,6 +25,8 @@ pub struct Snapshot {
 
 #[derive(Clone, Debug)]
 pub(crate) struct Presentation {
+    pub mode: CameraMode,
+    pub depth: Option<f32>,
     pub forward: [f32; 3], pub centre: [f32; 3], pub half_height: f32,
     pub bodies: section::BodyMode, pub budget: usize, pub light: f32,
     /// The sky at the presented tick, from the sim (971).
@@ -41,14 +43,15 @@ impl Snapshot {
     pub fn camera(&self, aspect: f32) -> SlabCamera {
         if let Some(view) = &self.presentation {
             return SlabCamera { centre: view.centre, forward: view.forward,
-                half_height: view.half_height, aspect, depth: section::SLAB_DEPTH, cutaway: None };
+                half_height: view.half_height, aspect,
+                depth: view.depth.unwrap_or_else(|| view.mode.depth(view.half_height, aspect)), cutaway: None };
         }
         let mode = CameraMode::default();
         let at = self.scene.played.and_then(|id| self.scene.at(id))
             .unwrap_or_else(|| layout::centre(&self.scene.ground));
         SlabCamera { centre: section::centre_on(at, Pan::default(), section::SLAB_HALF_HEIGHT, mode),
             forward: forward(self.quarter_turn), half_height: section::SLAB_HALF_HEIGHT,
-            aspect, depth: section::SLAB_DEPTH, cutaway: None }
+            aspect, depth: mode.depth(section::SLAB_HALF_HEIGHT, aspect), cutaway: None }
     }
 }
 

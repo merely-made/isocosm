@@ -76,6 +76,8 @@ impl mesquite::Product for Probe {
                 ("smooth-primitives", body_stats.smooth_primitives.to_string()),
                 ("posed-joints", body_stats.posed_joints.to_string()),
                 ("foot-contacts", body_stats.foot_contacts.to_string()),
+                ("planted-contacts", body_stats.planted_contacts.to_string()),
+                ("swinging-contacts", body_stats.swinging_contacts.to_string()),
                 ("support-contacts", body_stats.support_contacts.to_string()),
                 ("fallback-bodies", body_stats.fallback_bodies.to_string()),
                 ("projection-failures", body_stats.projection_failures.to_string()),

@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use super::{Primitive, Surface};
+use super::{Gait, Primitive, Surface};
 use crate::{LiveBody, material_colour};
 use glam::{Mat4, Quat, Vec3};
 use isometer_core::{BodyDocument, Role};
@@ -13,6 +13,8 @@ pub struct AnatomyStats {
     pub contacts: usize,
     /// Part-box contacts retained in the softened skin.
     pub supports: usize,
+    pub planted: usize,
+    pub swinging: usize,
 }
 
 /// Two fixed-length links in the plane of the target and pole. Reach is
@@ -43,9 +45,42 @@ pub fn from_anatomy(
     body: LiveBody<'_>,
     mut ground: impl FnMut([f32; 3]) -> Option<f32>,
 ) -> Result<(Surface, AnatomyStats), String> {
+    anatomy(document, body, &mut ground, None)
+}
+
+/// Contact witnesses come from the native physical placement. The disposable
+/// gait keeps their world anchors across admitted root movements. No witness
+/// is synthesized for a hanging limb or an unsupported part.
+pub fn walking_anatomy(
+    document: &BodyDocument,
+    body: LiveBody<'_>,
+    ground: &mut impl FnMut([f32; 3]) -> Option<f32>,
+    contacts: &std::collections::BTreeMap<isometer_core::PartId, Vec3>,
+    gait: &mut Gait,
+    elapsed: f32,
+) -> Result<(Surface, AnatomyStats), String> {
+    gait.begin(Vec3::from_array(body.origin), elapsed);
+    let result = anatomy(document, body, ground, Some((contacts, &mut *gait)));
+    gait.finish();
+    result
+}
+
+fn anatomy(
+    document: &BodyDocument,
+    body: LiveBody<'_>,
+    ground: &mut impl FnMut([f32; 3]) -> Option<f32>,
+    mut walking: Option<(
+        &std::collections::BTreeMap<isometer_core::PartId, Vec3>,
+        &mut Gait,
+    )>,
+) -> Result<(Surface, AnatomyStats), String> {
     let mut surface = Surface::default();
     let mut stats = AnatomyStats::default();
     let mut smallest = f32::INFINITY;
+    let parents: std::collections::BTreeSet<_> = document
+        .living()
+        .filter_map(|part| part.attachment.map(|a| a.parent))
+        .collect();
     let bounds = document.aabb();
     let trunk = if i64::from(bounds.max[2]) - i64::from(bounds.min[2])
         >= i64::from(bounds.max[0]) - i64::from(bounds.min[0])
@@ -71,10 +106,9 @@ pub fn from_anatomy(
         let centre = matrix.transform_point3(local_centre);
         let half = local_centre * scale.abs();
         let role = isometer_core::classify(part.half_extent);
+        let terminal = !parents.contains(&part.id);
         let support = part.attachment.is_some_and(|a| a.offset[1] < 0)
-            && !document
-                .living()
-                .any(|p| p.attachment.is_some_and(|a| a.parent == part.id))
+            && terminal
             && matches!(role, Role::Mass | Role::Limb)
             && i64::from(part.half_extent[1]) * 2 >= i64::from(part.half_extent[0])
             && i64::from(part.half_extent[1]) * 2 >= i64::from(part.half_extent[2]);
@@ -112,23 +146,78 @@ pub fn from_anatomy(
         let span = half[axis] - radius;
         let top = centre + along * span;
         let bottom = centre - along * span;
-        if (role == Role::Limb || support)
+        let articulated = terminal
+            && (role == Role::Limb || support)
             && axis == 1
             && along.y > 0.7
             && part.attachment.is_some()
-            && centre.y < body.origin[1] - radius
-        {
+            && centre.y < body.origin[1] - radius;
+        let contact_pose = if let Some((contacts, gait)) = walking.as_mut() {
+            contacts.get(&part.id).map(|point| {
+                let [min, mut max] = gait.envelope(super::contacts::bounds(matrix, local_centre));
+                // A cell-centred native witness gives a pad half a cell of
+                // room. Its whole rounded end remains in the part envelope.
+                let pad_radius = (half.min_element() * 0.15).min(0.2 * body.scale);
+                let contact_radius = if articulated { radius } else { pad_radius };
+                if articulated {
+                    // Bound lift by the space available for fixed links to fold.
+                    let reserve = half.min_element() - radius;
+                    let minimum = 2. * (span * span - reserve * reserve).max(0.).sqrt();
+                    let lift = (2. * span - minimum).max(0.) * 0.7;
+                    max.y = max.y.min(point.y + 2. * radius + lift);
+                }
+                let (at, planted) = gait.foot(part.id, *point, [min, max], contact_radius, ground);
+                (at, planted, pad_radius)
+            })
+        } else {
+            None
+        };
+        if articulated {
             let mut target = bottom;
             let contact = ground(bottom.to_array());
             if let Some(height) = contact {
                 target.y = (height + radius).max(bottom.y);
             }
-            let pole = bend_pole;
-            // Slightly folded rest links fit inside the limb's thickness.
-            // The foot is not lifted just to manufacture an idle pose.
             let reserve = half.min_element() - radius;
             let link = (span * span + reserve * reserve).sqrt();
-            let (knee, foot) = two_bone(top, target, pole, link, link);
+            let mut posed = None;
+            if let Some((point, _, _)) = contact_pose {
+                let planted_target = point + Vec3::Y * radius;
+                // Respect both fixed lengths and the admitted part envelope.
+                // Try the anatomy's bend plane in both directions, then its
+                // perpendicular, rather than pushing a knee through terrain.
+                let [min, max] = walking
+                    .as_ref()
+                    .unwrap()
+                    .1
+                    .envelope(super::contacts::bounds(matrix, local_centre));
+                let inside = |p: Vec3| {
+                    p.cmpge(min + radius - 0.001).all() && p.cmple(max - radius + 0.001).all()
+                };
+                if top.distance(planted_target) < link * 2. - 1e-4 {
+                    let across = bend_pole.cross(Vec3::Y);
+                    for pole in [
+                        bend_pole,
+                        -bend_pole,
+                        across,
+                        -across,
+                        bend_pole + across,
+                        bend_pole - across,
+                        -bend_pole + across,
+                        -bend_pole - across,
+                    ] {
+                        let candidate = two_bone(top, planted_target, pole, link, link);
+                        if inside(candidate.0) && inside(candidate.1) {
+                            posed = Some(candidate);
+                            break;
+                        }
+                    }
+                }
+            }
+            // Slightly folded rest links fit inside the limb's thickness.
+            // The foot is not lifted just to manufacture an idle pose.
+            let (knee, foot) =
+                posed.unwrap_or_else(|| two_bone(top, target, bend_pole, link, link));
             if contact.is_some_and(|height| (foot.y - radius - height).abs() < 0.025) {
                 stats.contacts += 1;
             }
@@ -175,15 +264,20 @@ pub fn from_anatomy(
                 ));
             }
         }
-        if super::contacts::preserve(
-            &mut surface,
-            part.id,
-            matrix,
-            local_centre,
-            colour,
-            &mut ground,
-        ) {
-            stats.supports += 1;
+        if let Some((point, planted, radius)) = contact_pose {
+            super::contacts::pad(&mut surface, part.id, centre, point, radius, colour);
+            stats.supports += usize::from(planted);
+        } else if walking.is_none() {
+            if super::contacts::preserve(
+                &mut surface,
+                part.id,
+                matrix,
+                local_centre,
+                colour,
+                ground,
+            ) {
+                stats.supports += 1;
+            }
         }
     }
     surface.blend = if smallest.is_finite() {
@@ -191,5 +285,9 @@ pub fn from_anatomy(
     } else {
         0.0
     };
+    if let Some((_, gait)) = walking {
+        stats.planted = gait.planted;
+        stats.swinging = gait.swinging;
+    }
     Ok((surface, stats))
 }

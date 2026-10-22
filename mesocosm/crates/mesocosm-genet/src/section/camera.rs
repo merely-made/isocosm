@@ -42,6 +42,12 @@ pub const TERRARIUM_DEGREES: f32 = 12.0;
 /// a world fact.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum CameraMode {
+    /// Surface-first orthographic views with equal foreshortening on all axes.
+    #[default]
+    Isometric,
+    IsometricSouth,
+    IsometricWest,
+    IsometricNorth,
     /// Straight down `-z`, bodies drawn end-on. The control arm of the Q9
     /// measurement, and bit-for-bit what the tree drew before this module.
     Side,
@@ -54,7 +60,6 @@ pub enum CameraMode {
     /// the cost of showing the chain at under half its across length. Ruled
     /// the default on 2026-09-04 — it is the only arm that shows a body's part
     /// budget *and* keeps the section.
-    #[default]
     Oblique,
     /// Terrarium views keep a little vertical depth while turning around the
     /// body chain. East is the prototype's first view, looking across `-x`.
@@ -66,7 +71,11 @@ pub enum CameraMode {
 
 impl CameraMode {
     /// Every mode, in the order the contact sheet composes them.
-    pub const ALL: [CameraMode; 7] = [
+    pub const ALL: [CameraMode; 11] = [
+        Self::Isometric,
+        Self::IsometricSouth,
+        Self::IsometricWest,
+        Self::IsometricNorth,
         Self::Side,
         Self::Across,
         Self::Oblique,
@@ -75,6 +84,23 @@ impl CameraMode {
         Self::TerrariumWest,
         Self::TerrariumNorth,
     ];
+
+    pub const fn is_surface(self) -> bool {
+        matches!(
+            self,
+            Self::Isometric | Self::IsometricSouth | Self::IsometricWest | Self::IsometricNorth
+        )
+    }
+
+    /// Surface views cover the visible ground rather than cutting a narrow
+    /// standing section through it. Terrain, bodies, culling and picks share it.
+    pub fn depth(self, half_height: f32, aspect: f32) -> f32 {
+        if self.is_surface() {
+            (half_height * aspect.max(1.0) * 4.0).max(64.0)
+        } else {
+            SLAB_DEPTH
+        }
+    }
 
     pub const fn is_terrarium(self) -> bool {
         matches!(
@@ -87,6 +113,14 @@ impl CameraMode {
     pub const fn quarter_turn(self, backwards: bool) -> Self {
         use CameraMode::*;
         match (self, backwards) {
+            (Isometric, false) => IsometricSouth,
+            (IsometricSouth, false) => IsometricWest,
+            (IsometricWest, false) => IsometricNorth,
+            (IsometricNorth, false) => Isometric,
+            (Isometric, true) => IsometricNorth,
+            (IsometricNorth, true) => IsometricWest,
+            (IsometricWest, true) => IsometricSouth,
+            (IsometricSouth, true) => Isometric,
             (TerrariumEast, false) => TerrariumSouth,
             (TerrariumSouth, false) => TerrariumWest,
             (TerrariumWest, false) => TerrariumNorth,
@@ -108,6 +142,10 @@ impl CameraMode {
 
     pub fn name(self) -> &'static str {
         match self {
+            Self::Isometric => "isometric",
+            Self::IsometricSouth => "isometric-south",
+            Self::IsometricWest => "isometric-west",
+            Self::IsometricNorth => "isometric-north",
             Self::Side => "side",
             Self::Across => "across",
             Self::Oblique => "oblique",
@@ -122,6 +160,10 @@ impl CameraMode {
     pub fn forward(self) -> [f32; 3] {
         let (yaw, pitch) = (OBLIQUE_DEGREES.to_radians(), OBLIQUE_DEGREES.to_radians());
         match self {
+            Self::Isometric => [-1.0, -1.0, -1.0],
+            Self::IsometricSouth => [1.0, -1.0, -1.0],
+            Self::IsometricWest => [1.0, -1.0, 1.0],
+            Self::IsometricNorth => [-1.0, -1.0, 1.0],
             Self::Side => [0.0, 0.0, -1.0],
             Self::Across => [-1.0, 0.0, 0.0],
             // Yawed off -z, then pitched down. Both by the same angle, so
@@ -183,8 +225,14 @@ impl CameraMode {
     /// The level modes take [`SlabWall`]'s own level branch, which returns
     /// exactly the half depth this replaces.
     pub fn slab_reach(self, half_height: f32, aspect: f32) -> f32 {
-        SlabWall::new(self.forward(), UP, half_height, aspect, SLAB_DEPTH)
-            .map_or(SLAB_DEPTH * 0.5, |wall| wall.reach)
+        SlabWall::new(
+            self.forward(),
+            UP,
+            half_height,
+            aspect,
+            self.depth(half_height, aspect),
+        )
+        .map_or(SLAB_DEPTH * 0.5, |wall| wall.reach)
     }
 }
 
@@ -247,6 +295,32 @@ fn terrarium_forward(horizontal: [f32; 3]) -> [f32; 3] {
 mod tests {
     use super::*;
 
+    #[test]
+    fn surface_isometric_has_equal_axes_and_full_ground_depth() {
+        for mode in [
+            CameraMode::Isometric,
+            CameraMode::IsometricSouth,
+            CameraMode::IsometricWest,
+            CameraMode::IsometricNorth,
+        ] {
+            let [r, u, f] = mode.basis();
+            let lengths = [0, 1, 2].map(|i| r[i].hypot(u[i]));
+            assert!((lengths[0] - lengths[1]).abs() < 1e-6);
+            assert!((lengths[1] - lengths[2]).abs() < 1e-6);
+            assert!(f[1] < -0.57);
+            let camera = super::super::view::slab_camera(mode, [0.; 3], 28., 1.78);
+            assert!(camera.depth > 100.);
+            assert!(camera.window().holds([20., 0., 20.]));
+            assert!(camera.clip().max - camera.clip().min > 100.);
+            let turn = mode.quarter_turn(false).quarter_turn(true);
+            assert_eq!(turn, mode);
+            let centre =
+                super::super::centre_on([0; 3], super::super::Pan { x: 2., y: 0. }, 28., mode);
+            assert!((dot(centre, r) - 2.).abs() < 1e-6);
+            assert!(dot(centre, u).abs() < 1e-6);
+        }
+    }
+
     /// Every mode names itself, and every name round-trips. The receipt and a
     /// scenario's `assert snap camera` both read this string.
     #[test]
@@ -255,8 +329,8 @@ mod tests {
             assert_eq!(CameraMode::parse(mode.name()), Some(mode));
             assert_eq!(CameraMode::parse(&mode.name().to_uppercase()), Some(mode));
         }
-        assert_eq!(CameraMode::default(), CameraMode::Oblique);
-        assert_eq!(CameraMode::parse("isometric"), None);
+        assert_eq!(CameraMode::default(), CameraMode::Isometric);
+        assert_eq!(CameraMode::parse("unknown"), None);
         assert!(CameraMode::TerrariumEast.is_terrarium());
         assert!(!CameraMode::Oblique.is_terrarium());
     }

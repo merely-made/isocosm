@@ -5,6 +5,7 @@
 use super::{SiteScene, light::Block};
 use isometer::render::implicit::{self, Frame};
 use isometer::{BodyLayer, SlabCamera};
+mod motion;
 
 pub(super) struct Bodies {
     renderer: Option<implicit::Renderer>,
@@ -12,8 +13,13 @@ pub(super) struct Bodies {
     queue: wgpu::Queue,
     format: wgpu::TextureFormat,
     size: [u32; 2],
+    motion: std::collections::BTreeMap<u64, motion::Motion>,
+    previous: std::time::Instant,
 }
 impl Bodies {
+    pub fn active(&self) -> bool {
+        self.motion.values().any(motion::Motion::active)
+    }
     pub fn new(host: &tenant::HostDevice, format: wgpu::TextureFormat, size: [u32; 2]) -> Self {
         Self {
             renderer: None,
@@ -21,6 +27,8 @@ impl Bodies {
             queue: host.queue.clone(),
             format,
             size,
+            motion: Default::default(),
+            previous: std::time::Instant::now(),
         }
     }
     pub fn resize(&mut self, device: &wgpu::Device, size: [u32; 2]) {
@@ -43,23 +51,49 @@ impl Bodies {
         let mut joints = 0;
         let mut contacts = 0;
         let mut supports = 0;
-        for (subject, live) in layer.render_bodies() {
+        let mut planted = 0;
+        let mut swinging = 0;
+        let now = std::time::Instant::now();
+        let elapsed = now.duration_since(self.previous).as_secs_f32().min(0.1);
+        self.previous = now;
+        let mut retained = std::collections::BTreeSet::new();
+        for (subject, mut live) in layer.render_bodies() {
             let body = scene
                 .body(subject.0)
                 .ok_or("smooth body has no native document")?;
-            let (surface, stats) = implicit::from_anatomy(&body.document, live, |p| {
-                // Ground::surface reads the edited solid column in the same
-                // datum as the body, including support beneath rigid remains.
-                scene
-                    .ground
-                    .surface(p[0].floor() as i32, p[2].floor() as i32)
-                    .map(|y| (y + 1) as f32)
-            })?;
+            let mut ground = |p| height(scene, p);
+            let (surface, stats) = if body.physical.is_none() {
+                implicit::from_anatomy(&body.document, live, ground)?
+            } else {
+                retained.insert(subject.0);
+                let motion = self
+                    .motion
+                    .entry(body.id)
+                    .or_insert_with(|| motion::Motion::new(body, scene));
+                live.origin = motion.sample(body, scene, elapsed);
+                let elapsed = motion.elapsed(elapsed);
+                let witnesses = motion
+                    .contacts()
+                    .into_iter()
+                    .map(|(part, at)| (part, at.into()))
+                    .collect();
+                implicit::walking_anatomy(
+                    &body.document,
+                    live,
+                    &mut ground,
+                    &witnesses,
+                    &mut motion.gait,
+                    elapsed,
+                )?
+            };
             joints += stats.joints;
             contacts += stats.contacts;
             supports += stats.supports;
+            planted += stats.planted;
+            swinging += stats.swinging;
             surfaces.insert(subject, surface);
         }
+        self.motion.retain(|id, _| retained.contains(id));
         let batch: Vec<_> = surfaces.values().collect();
         let renderer = self
             .renderer
@@ -83,9 +117,40 @@ impl Bodies {
         layer.stats.posed_joints = joints;
         layer.stats.foot_contacts = contacts;
         layer.stats.support_contacts = supports;
+        layer.stats.planted_contacts = planted;
+        layer.stats.swinging_contacts = swinging;
         layer.stats.draw_parts = layer.stats.voxel_parts;
         layer.stats.frame_upload_bytes = bytes;
         layer.stats.body_upload_measurement = Some("implicit primitive and frame bytes");
         layer.set_surfaces(surfaces)
     }
+}
+
+fn height(scene: &SiteScene, p: [f32; 3]) -> Option<f32> {
+    let sole = [
+        p[0].floor() as i32,
+        p[1].round() as i32,
+        p[2].floor() as i32,
+    ];
+    if (p[1] - sole[1] as f32).abs() < 0.025
+        && scene
+            .ground
+            .material([sole[0], sole[1] - 1, sole[2]])
+            .is_some_and(|m| m != scene.window.materials.air && m != scene.window.materials.water)
+        && scene.ground.material(sole) == Some(scene.window.materials.air)
+    {
+        return Some(sole[1] as f32);
+    }
+    scene
+        .ground
+        .surface(p[0].floor() as i32, p[2].floor() as i32)
+        .filter(|y| {
+            scene
+                .ground
+                .material([p[0].floor() as i32, *y, p[2].floor() as i32])
+                .is_some_and(|m| {
+                    m != scene.window.materials.air && m != scene.window.materials.water
+                })
+        })
+        .map(|y| (y + 1) as f32)
 }

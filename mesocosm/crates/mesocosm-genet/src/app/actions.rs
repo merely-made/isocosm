@@ -159,9 +159,11 @@ pub(super) fn key_named(name: &str) -> Option<Key> {
         "tab" => Some(Key::Named(NamedKey::Tab)),
         "up" => Some(Key::Named(NamedKey::ArrowUp)),
         "down" => Some(Key::Named(NamedKey::ArrowDown)),
+        "left" => Some(Key::Named(NamedKey::ArrowLeft)),
+        "right" => Some(Key::Named(NamedKey::ArrowRight)),
         // Play: E, Q, S; T at a checkpoint; R at the board; Z/V turn.
         // Dev: P . , [ ] N B M X F K G, and I J L U for inspection.
-        "e" | "q" | "s" | "t" | "r" | "z" | "v" | "p" | "." | "," | "[" | "]" | "n" | "b" | "m"
+        "e" | "q" | "s" | "t" | "r" | "z" | "v" | "c" | "p" | "." | "," | "[" | "]" | "n" | "b" | "m"
         | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" | "w" => Some(Key::Character(name.into())),
         _ => None,
     }
