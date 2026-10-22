@@ -141,7 +141,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
    person, turn based, real time, these are distinctions you make on top of
    this sim."
 
-   Links: area The sim's schema and saves · summary The thing is one configurable, extensible world, history and entity generator playable several ways; views and perspectives are distinctions made on top of the sim.
+   Links: area Stack and engine · summary The thing is one configurable, extensible world, history and entity generator playable several ways; views and perspectives are distinctions made on top of the sim.
 2. **Three layers run in the background at all times:** adapting ecology in
    a world with history; society adapting and reforming according to the
    goals and abilities of its inhabitants; polities, narratives and arcs
@@ -366,7 +366,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     and "a significant event causing a personality trait sounds cool
     too".
 
-    Links: area The sim's schema and saves · summary Methodology by tier: reactive critters, belief-desire-intention borgs, normative characters; a creature becomes a borg when the record keeps it; disposition is five-factor.
+    Links: area The sim's schema and saves · draws on 36 · summary Methodology by tier: reactive critters, belief-desire-intention borgs, normative characters; a creature becomes a borg when the record keeps it; disposition is five-factor.
 38. **State is one ledger, read more coarsely up the levels, and the
     coarsening is provided by the collective.** In Mark's words: "most of
     that stuff matters for critters trying to manage a nutrition budget
@@ -444,7 +444,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     the chain of avatars, maybe you get the one true god of lightning,
     maybe you get a worldtree that the world depends on and likewise."
 
-    Links: area The sim's schema and saves · summary A divine thing is omnipresent as one instance or cycles through reincarnation or recreation, destroyed only through prophesied conditions tied to its ascent.
+    Links: area The sim's schema and saves · draws on 42 · summary A divine thing is omnipresent as one instance or cycles through reincarnation or recreation, destroyed only through prophesied conditions tied to its ascent.
 44. **The quality of divinity is the quality of the journey.** Mark,
     2026-09-18: "perhaps the quality of divinity you can attain is related
     to your journey. If you fulfill the most difficult conditions for
@@ -464,7 +464,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     **Settled by ruling 200:** sophont is the term of art for a sapient
     entity, and a denizen is a named entity; every sophont is a denizen.
 
-    Links: area The sim's schema and saves · summary Provenance (lineage, maker, intrinsic) and identity (unnamed, named and sapient, factional) are two axes; constructs are made, divine is intrinsic.
+    Links: area The sim's schema and saves · amends 42 · summary Provenance (lineage, maker, intrinsic) and identity (unnamed, named and sapient, factional) are two axes; constructs are made, divine is intrinsic.
 46. **Grades per glyph by the form sacrificed.** Mark, 2026-09-18: "I was
     just thinking of like assigning a point tier to what form of glyph is
     sacrificed for ascension. Item vs technique/skill/ability vs embodied
@@ -543,7 +543,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     **Amended by ruling 79:** a polity's alignment is derived from its acts
     too, its decisions among them.
 
-    Links: area The sim's schema and saves · summary Factions align with multiple tenets by weighting each sophont's alignments by faction influence; polities align constitutionally in addition to their factions. (amended by 79)
+    Links: area The sim's schema and saves · draws on 50 · summary Factions align with multiple tenets by weighting each sophont's alignments by faction influence; polities align constitutionally in addition to their factions. (amended by 79)
 52. **The referent by tier, and impact against frequency.** Mark,
     2026-09-18: "choosing a referent is a privilege of the greater
     divinities and greater avatars, but even they are subject to the
@@ -565,7 +565,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     possessions; a critter can collect, hide items, and use them as
     needed, but they don't really own them."
 
-    Links: area The sim's schema and saves · summary Critters gather and hold by biology with limited capacity; sophonts carry gear; mechs are borgs holding pilots; any sophont, faction or polity can have possessions.
+    Links: area Processes and rules · summary Critters gather and hold by biology with limited capacity; sophonts carry gear; mechs are borgs holding pilots; any sophont, faction or polity can have possessions.
 54. **Place.** Mark, 2026-09-18: "a critter has habitats, habits,
     memories, but not really a home that it possesses except through
     presence and defense. Even just being named is enough to be able to
@@ -575,7 +575,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     that states it: "a human can give a dog a home, but they can't make
     the dog own the home."
 
-    Links: area The sim's schema and saves · summary A critter has habitats, habits and memories but no home it owns; being named lets a sapient assert a home one-sidedly.
+    Links: area Processes and rules · summary A critter has habitats, habits and memories but no home it owns; being named lets a sapient assert a home one-sidedly.
 55. **One memory, graded, over one history.** Asked on 2026-09-18 whether
     a critter's memory of habit and habitat and a sophont's memory of
     events are two things or one at different ends, Mark ruled "the
@@ -588,7 +588,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     which a polity asserts: a title, an office, a membership. Mark,
     2026-09-19: "Yeah, sounds about right."
 
-    Links: area The sim's schema and saves · summary Standing is three things: alignment derived from acts, reputation as reach of deeds, and rank asserted by a polity.
+    Links: area The sim's schema and saves · draws on 51 · summary Standing is three things: alignment derived from acts, reputation as reach of deeds, and rank asserted by a polity.
 57. **Two doors: reproduction rerolls expression, the epoch boundary
     changes the lineage; NPC lineages adapt there by default and so does
     yours.** Mark, 2026-09-19: "the question is how do npc lineages
@@ -715,7 +715,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     agreement that works within another polity, congrats, you've built on an
     institution".
 
-    Links: area The sim's schema and saves · summary A polity's state needs efficacious, not necessarily violent, enforcement; a polity has a focus, not a size, and may be contingent on other polities.
+    Links: area The sim's schema and saves · draws on 63 · summary A polity's state needs efficacious, not necessarily violent, enforcement; a polity has a focus, not a size, and may be contingent on other polities.
 65. **A polity without support does nothing; it dies only when people agree
     it has.** Mark, 2026-09-20: "when a polity lacks support to do its
     operations, then it essentially does nothing. But they only die when
@@ -742,7 +742,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     scale, until an empire, a church or a federation hosts them." Mark:
     "Also i agree with this."
 
-    Links: area The sim's schema and saves · summary Polities under no host are a faction among themselves; a treaty is Paredros's standing agreement at scale.
+    Links: area The sim's schema and saves · draws on 63, 64 · summary Polities under no host are a faction among themselves; a treaty is Paredros's standing agreement at scale.
 68. **A polity's goals are derived from its own alignment, as an
     individual's are; it has no will to continue beyond finding a new use;
     an inactive polity can be revived.** On the reading that an inactive
@@ -757,7 +757,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     have? If an institution outlived its use, why would it want to continue
     if it didn't find a new use? Polities change like that".
 
-    Links: area The sim's schema and saves · summary A polity's goals derive from its own alignment, as an individual's do; it has no will to continue beyond a new use; inactive polities revive.
+    Links: area The sim's schema and saves · draws on 64 · summary A polity's goals derive from its own alignment, as an individual's do; it has no will to continue beyond a new use; inactive polities revive.
 69. **What is of note persists; the rest is regenerated. "Of note" is a tier
     between the soup and legend, for every kind of thing.** Asked what makes
     a location a place and what keeps it the same place, Mark, 2026-09-20:
@@ -879,7 +879,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     first is a repeat of that theme. it's more accurate to say: just like
     factions and individuals, a polity has its own alignment from its acts."
 
-    Links: area The sim's schema and saves · summary A polity has its own alignment from its acts, as factions and individuals do.
+    Links: area The sim's schema and saves · amends 51 · summary A polity has its own alignment from its acts, as factions and individuals do.
 80. **"Of note" is literal: a note on the thing, made by the sim as a player
     would make one.** On docket D10, Mark, 2026-09-21: "i think of it as
     like literally a note on the site/item/entity. the sim just makes notes
@@ -892,7 +892,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     ruling 79, Mark, 2026-09-21: "isn't asserting a constitution of a polity
     itself an act? indeed, a definitive one."
 
-    Links: area The sim's schema and saves · summary Asserting a constitution is itself an act, the definitive one.
+    Links: area The sim's schema and saves · draws on 79 · summary Asserting a constitution is itself an act, the definitive one.
 82. **The note is the impresa record, with a freeform text field beside the
     generated details.** Mark, 2026-09-21: "i'm alright with the impresa
     record! ah, but... maybe a lil markdown/djot/gemtxt/txt-formatted
@@ -974,7 +974,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     paredros need those distinctions? Does each game get a different
     tiering? Or does each tier mean different things to different games?"
 
-    Links: area The sim's schema and saves · summary The named scopes (world, region, area, battlemap) must not hardcode Isometry's paradigm into the sim.
+    Links: area Stack and engine · summary The named scopes (world, region, area, battlemap) must not hardcode Isometry's paradigm into the sim.
 93. **Deep time is the same sim.** Asked whether a world's past is run by
     the same sim at a coarser grain or written by a separate history
     generator, Mark, 2026-09-21: "Same sim".
@@ -1581,7 +1581,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      phylactery, one of the dead summoned into a vessel. Mark picked all
      three.
 
-     Links: area The sim's schema and saves · summary An item can be a sophont: made so, awakened by its story, or inhabited.
+     Links: area The sim's schema and saves · draws on 45 · summary An item can be a sophont: made so, awakened by its story, or inhabited.
 145. **A sophont item acts through its wielder, by its own powers, and can
      take over.** Put to Mark on 2026-09-24, following ruling 144: how
      does a sophont item act in the world? Three options were put, to pick
@@ -1592,13 +1592,13 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      wielder, the reverse of ruling 53's pilot possessing the mech. Mark
      picked all three.
 
-     Links: area The sim's schema and saves · summary A sophont item acts through its wielder, by its own powers, and can take over its wielder.
+     Links: area The sim's schema and saves · draws on 144, 53 · summary A sophont item acts through its wielder, by its own powers, and can take over its wielder.
 146. **A sophont item is never owned.** Put to Mark on 2026-09-24: can a
      sophont item be owned? Three options were put: like any item; only by
      agreement; or never owned. Mark: "Never owned." So it can be held but
      never owned; it is a companion, and it can own things itself.
 
-     Links: area The sim's schema and saves · summary A sophont item is never owned; it can be held, is a companion, and can own things itself.
+     Links: area The sim's schema and saves · draws on 144 · summary A sophont item is never owned; it can be held, is a companion, and can own things itself.
 147. **A site and a paged chunk are independent.** Put to Mark on
      2026-09-24, from §3.7.1's open "how large a site is, in voxels and
      against the paged chunk": how does a site, the world map's unit,
@@ -1650,7 +1650,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and how one judges a slavery turns on whether one is the same kind of
      thing as the enslaved.
 
-     Links: area The sim's schema and saves · summary Whether a person may be owned is a tenet, held or rejected like any other; owning a person is slavery.
+     Links: area The sim's schema and saves · draws on 50, 146 · summary Whether a person may be owned is a tenet, held or rejected like any other; owning a person is slavery.
 152. **Outside the world, a player directs only who they play.** Put to
      Mark on 2026-09-24, from held item D20: outside the world, who may a
      player direct, given that inside it anyone can ask anyone through the
