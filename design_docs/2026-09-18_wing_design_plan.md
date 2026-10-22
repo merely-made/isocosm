@@ -2822,7 +2822,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      box, branch and joint from the tree, tube and shell declared from the
      body's voxels.
 
-     Links: area Bodies and anatomy · summary Shapes are eight: lump, rod, sheet, point, tube, branch, shell and joint. (amended by 492)
+     Links: area Bodies and anatomy · draws on 264 · summary Shapes are eight: lump, rod, sheet, point, tube, branch, shell and joint. (amended by 492)
 277. **A body's functions assemble into organ systems, and new systems are
      riffed from them.** Put to Mark on 2026-09-26, with 276: which functions
      join contract, intake, sense, fix and secrete: structure and control,
@@ -2850,7 +2850,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Tabled 2026-10-02 by rulings 489 and 491:* ten default systems, and
      new ones riffed by substitution.
 
-     Links: area Bodies and anatomy · summary A body's functions assemble into organ systems, parts are shapes expressing functions, and new systems are riffed by mixing functions.
+     Links: area Bodies and anatomy · draws on 276 · summary A body's functions assemble into organ systems, parts are shapes expressing functions, and new systems are riffed by mixing functions.
 278. **The function vocabularies become one catalogue in the sim.** Put to
      Mark on 2026-09-26, from the survey, which found four that never meet,
      Mesocosm's processes, `wing-functions`' kinds, Eponym's grip and
@@ -3076,7 +3076,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      by ruling 492:* no shape gates a function; the catalogue's shapes are
      each function's fits.
 
-     Links: area Bodies and anatomy · summary A process's shape requirement and seeding live on the function catalogue; a process requires a live part expressing a function, bound to the lowest-numbered qualifier. (amended by 480, 492)
+     Links: area Bodies and anatomy · draws on 276, 277, 278 · summary A process's shape requirement and seeding live on the function catalogue; a process requires a live part expressing a function, bound to the lowest-numbered qualifier. (amended by 480, 492)
 339. **The catalogue starts with the five functions in use.** Put to Mark on
      2026-09-26, with 338: the five, all fifteen of ruling 277, or those
      with the other vocabularies folded in? Mark: "The five in use."
@@ -3086,7 +3086,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (281) and the probe's evidence. *Widened 2026-10-02 by ruling 461:*
      all fifteen of 277, the other vocabularies folded in.
 
-     Links: area Bodies and anatomy · summary The function catalogue starts with the five functions in use: contract, intake, sense, fix, secrete; keys stay open. (amended by 461)
+     Links: area Bodies and anatomy · draws on 338 · summary The function catalogue starts with the five functions in use: contract, intake, sense, fix, secrete; keys stay open. (amended by 461)
 340. **The process's causal kind gives up the name `Shape`.** Put to Mark on
      2026-09-26, with 338: `isocosm::rules::Shape`, a process's causal kind
      (choice, agentless, transition), collides with ruling 276's part
@@ -4602,7 +4602,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      what its cells can and a body without one keeps none, and rent, growth
      and a landing meal reach the parts in proportion.
 
-     Links: area Bodies and anatomy · summary A body keeps its lineage's matter as two accounts, tissue and reserve; one meal-routing rule for every kingdom, reserve drawn first, overflow spills to ground. (amended by 463, 464, 523)
+     Links: area Bodies and anatomy · draws on 273, 342 · summary A body keeps its lineage's matter as two accounts, tissue and reserve; one meal-routing rule for every kingdom, reserve drawn first, overflow spills to ground. (amended by 463, 464, 523)
 
 447. **Reproduction is several strategies, governed by traits.** Asked on
      2026-10-01, with 446, filial cost being the other physiology the
@@ -4773,35 +4773,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
      Links: area Record and history · draws on 451 · summary Deep time's span counts epochs in the world's rules, as Mesocosm does; under the default year a century is 100 epochs.
 
-453. **The probe's minimal body is optional fields on the core part.**
-     Asked on 2026-10-01, building checkpoint 6's step 5, after its step 4
-     and X3 had landed on the branch: "Where does the probe's minimal body
-     live? Evidence: X2's readings and X6's allocation are core extensions
-     that read a part's cells, cell mass and half-extents, which Isocosm's
-     Part holds none of; my reading in the checkpoint 6 brief kept the
-     minimal body in the probe's world until the anatomy brief gives the
-     schema its body (281); the 09-25 crowd probe kept its bounds in its own
-     world the same way; the step's done-condition wants each native run as
-     definitions." Options, recommended first: (A) "Optional fields on the
-     core Part: Part gains half-extents, a cell capacity, cells per function
-     and cell mass, optional and hashing as before when absent; X2 and X6
-     read them in meaning for both runners, the natives run as core
-     definitions, and the anatomy brief reshapes the fields after the probe
-     (recommended)." (B) "A body in the probe's world: the probe holds its
-     own body type and runs the natives through probe-local readings; the
-     core's Part and definition widen only after the anatomy brief, so the
-     natives run as definitions only then." Mark chose A, "Optional fields
-     on the core Part". So the core part carries half-extents, a cell
-     capacity, cells per function and cell mass, each absent in parts
-     without them; X2's readings and X6's allocation read them for both
-     runners; and the anatomy brief (281) may reshape them once the probe
-     has shown what the mechanics use. This amends the brief's reading that
-     the minimal body lives in the probe's world. *Reshaped 2026-10-02 by
-     rulings 459 to 462:* matter in parts, capacity and cell mass derived
-     from extents, and each part's attachment kept.
-
-     Links: area Bodies and anatomy · summary The probe's minimal body is optional fields on the core part: half-extents, cell capacity, cells per function and cell mass. (amended by 459, 460, 461, 462)
-
 454. **Shared ground is shared out from the pass's start.** Asked on
      2026-10-01, building checkpoint 6's step 5, ruling 306 having moved
      hunting's shortage to 269's scramble in Part B: "How does ruling 269's
@@ -4860,52 +4831,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
      Links: area Bodies and anatomy · summary A body's ceiling is read part by part, summing a formula over living parts, matching Mesocosm to the milligram.
 
-456. **The probe's meal takes tissue, and where matter sits in a body goes
-     to the anatomy brief.** Asked on 2026-10-01, with 454: "What does a meal
-     take from its prey? Evidence: Mesocosm takes the mouthful from the
-     prey's substance only; a body's reserve goes back to the ground when it
-     dies. Isocosm's Eat takes from every matter account in proportion
-     (ruling 287), which 4b's prey fat relies on." Options, recommended
-     first: (A) "Tissue only, as Mesocosm: a meal names the accounts it
-     takes from. The body family takes tissue only, so a bitten prey keeps
-     its reserve. The hunting family keeps its proportional take of body and
-     fat (recommended)." (B) "Every matter account in proportion: keep
-     Isocosm's current Eat. A prey loses reserve along with its flesh, so
-     being bitten also changes how hungry it is, which Mesocosm never does."
-     Mark asked: "Could it depend on the part eaten, like the provenance of
-     the tissue? Like, where's the reserve stored in the body?" Answered
-     that Mesocosm's reserve has no place in the body, being one number on
-     the organism; that each part keeps its own mass and provenance mix,
-     bites and rent taking from the living parts root first and only
-     incorporation taking a named part whole; that which part loses tissue
-     changes nothing the five natives read; and that the probe's parts (453)
-     hold no matter. Put back: "What does the probe's meal take, given that
-     in Mesocosm the reserve has no place in the body and the part a bite
-     lands on changes nothing the five natives read?" Options, recommended
-     first: (A) "Tissue now, placement to anatomy: the probe's meal takes
-     tissue only, as Mesocosm does. The anatomy brief (281) gets an item with
-     your question: where tissue and reserve sit in the body, and whether a
-     bite lands on one part (recommended)." (B) "Matter in parts now: each
-     part holds its own tissue, plus reserve where it stores some. A bite
-     lands on a drawn part of the prey and takes from that part. This widens
-     ruling 453 ahead of the anatomy brief, for something none of the five
-     natives reads." (C) "A storing function: the reserve lives in parts that
-     express a new store function in the catalogue. A bite takes reserve
-     along with tissue in the share of the prey's cells that store. The
-     reserve gets a place without each part keeping its own ledger." Mark
-     chose A, "Tissue now, placement to anatomy". So a meal names the
-     accounts it takes from, the body family's taking tissue alone and the
-     hunting family's keeping 287's proportional take, and the anatomy brief
-     (281) carries Mark's question as an item of its own: where tissue and
-     reserve sit in a body, and whether a bite lands on one part. *Settled
-     2026-10-02 by ruling 459:* tissue in parts, the reserve in stores, a
-     bite landing on one part.
-     *Cite corrected 2026-10-02:* the proportional take across a prey's
-     accounts is ruling 294's, decided from 287's fork; 287 gave each
-     consumer one feeding process.
-
-     Links: area Bodies and anatomy · summary The probe's meal takes tissue only; where tissue and reserve sit in a body goes to the anatomy brief.
-
 459. **Tissue sits in parts, and the reserve in parts that store.** Asked
      on 2026-10-02, opening the anatomy brief (458): "Where does a body's
      matter sit? Evidence: Mesocosm keeps tissue part by part, each part
@@ -4936,7 +4861,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Booked 2026-10-02 by ruling 504:* each part keeps its own ledger and
      is a holder; the body's totals are readings.
 
-     Links: area Bodies and anatomy · summary Each part holds its own tissue and parts expressing store hold the reserve; a bite lands on one part of the prey. (amended by 463)
+     Links: area Bodies and anatomy · draws on 446 · summary Each part holds its own tissue and parts expressing store hold the reserve; a bite lands on one part of the prey. (amended by 463)
 
 460. **A part's cells are derived from its extents.** Asked on 2026-10-02,
      with 459: "How many cells does a part hold? Evidence: Mesocosm derives
@@ -4957,7 +4882,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Wounded 2026-10-02 by ruling 469:* a part keeps the cells a wound has
      lost, so its living cells are its derived capacity less them.
 
-     Links: area Bodies and anatomy · summary A part's capacity and cell mass are derived from its extents by Mesocosm's rule; the declared fields give way.
+     Links: area Bodies and anatomy · draws on 459 · summary A part's capacity and cell mass are derived from its extents by Mesocosm's rule; the declared fields give way.
 
 461. **The catalogue takes all fifteen functions, the other vocabularies
      folded in.** Asked on 2026-10-02, with 459: "How far does the function
@@ -4983,7 +4908,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      reader, with wing-functions' source and store onto store, its gate onto
      gate and its actuator onto contract.
 
-     Links: area Bodies and anatomy · summary The function catalogue holds all fifteen functions, with the other vocabularies folded into it.
+     Links: area Bodies and anatomy · amends 339 · summary The function catalogue holds all fifteen functions, with the other vocabularies folded into it.
 
 462. **The sim keeps where each part attaches.** Asked on 2026-10-02, with
      459: "Who measures a body's geometry for the sim? Evidence: Isocosm's
@@ -5009,7 +4934,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Brought forward 2026-10-03 by ruling 510:* the offsets are built in
      checkpoint 8, where growth and incorporation place parts by them.
 
-     Links: area Bodies and anatomy · summary Each part records where it attaches to its parent so the sim measures reach, clearance and contact; pivots and yaw stay isometer's.
+     Links: area Bodies and anatomy · draws on 405 · summary Each part records where it attaches to its parent so the sim measures reach, clearance and contact; pivots and yaw stay isometer's.
 
 463. **A store holds the reserve its cells can, and a body without one keeps
      none.** Asked on 2026-10-02, the anatomy brief's second round: "How
@@ -5034,7 +4959,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Founded 2026-10-02 by ruling 506:* the probe's grazers store in their
      lumps, and its producers stay lean.
 
-     Links: area Bodies and anatomy · summary A store holds reserve up to its store cells times a cell's mass; a body without a store keeps no reserve.
+     Links: area Bodies and anatomy · draws on 459 · summary A store holds reserve up to its store cells times a cell's mass; a body without a store keeps no reserve.
 
 464. **Rent, growth and a landing meal reach a body's parts in proportion.**
      Asked on 2026-10-02, with 463: "Which parts do rent, growth and a
@@ -5056,7 +4981,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ruling 294's proportional take, decided from 287's fork; 287 itself
      gave each consumer one feeding process.
 
-     Links: area Bodies and anatomy · summary Rent draws from parts in proportion to tissue; growth and a landing meal fill each part in proportion to its room.
+     Links: area Bodies and anatomy · draws on 459, 294 · summary Rent draws from parts in proportion to tissue; growth and a landing meal fill each part in proportion to its room.
 
 465. **Organ systems are named networks of functions.** Asked on 2026-10-02,
      with 463: "Are organ systems data in the sim? Evidence: ruling 277
@@ -5133,7 +5058,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Measured 2026-10-02 by ruling 493:* each function's measurement is
      tabled, taken by its share of the cells.
 
-     Links: area Bodies and anatomy · summary The fifteen functions take the proposed shape table and seeding; secrete alone is acquired; wing-functions' kinds map onto store, gate and contract. (amended by 492)
+     Links: area Bodies and anatomy · draws on 461 · summary The fifteen functions take the proposed shape table and seeding; secrete alone is acquired; wing-functions' kinds map onto store, gate and contract. (amended by 492)
 
 467. **One part model serves every body form, a part attaching to a parent
      or lying on a site.** Asked on 2026-10-02, the anatomy brief's third
@@ -5167,7 +5092,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      territory and micro life a surface, so the part model serves trees and
      terrain-bodies.
 
-     Links: area Bodies and anatomy · summary One part model serves every body form: a part attaches to a parent or lies on a site. (amended by 488)
+     Links: area Bodies and anatomy · draws on 58 · summary One part model serves every body form: a part attaches to a parent or lies on a site. (amended by 488)
 
 468. **A lineage carries a recipe, and its bodies also grow parts in life.**
      Asked on 2026-10-02, with 467: "Where does a body's part tree come
@@ -5454,7 +5379,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      each place it covers; an act still reads and writes the site of the
      part it binds.
 
-     Links: area Bodies and anatomy · summary A spread body acts and can be targeted wherever a live patch lies; its place for record and moves stays its root's site. (amended by 488)
+     Links: area Bodies and anatomy · draws on 467 · summary A spread body acts and can be targeted wherever a live patch lies; its place for record and moves stays its root's site. (amended by 488)
 
 483. **The projection's diff comes from the record's receipts.** Asked the
      same day: where does the record-to-scene-contract projection learn what
@@ -5588,7 +5513,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Placed 2026-10-02 by ruling 502:* built as the bodies family's last
      checkpoint, at site grain.
 
-     Links: area Bodies and anatomy · summary A mold is a territory (one entity, matter on each place covered) and micro life a surface; terrain-bodies stay part trees.
+     Links: area Bodies and anatomy · amends 58, 467, 480 · summary A mold is a territory (one entity, matter on each place covered) and micro life a surface; terrain-bodies stay part trees.
 
 489. **The default systems take the proposed table.** Asked on 2026-10-02,
      the anatomy brief's sixth round: "Do the default systems take the
@@ -5741,7 +5666,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      measurement, by its share of the cells, and how the eight names are
      read.
 
-     Links: area Bodies and anatomy · summary No shape gates a function; any part can express any function and its effect scales with the measurement its mechanic names.
+     Links: area Bodies and anatomy · amends 276, 338, 466 · summary No shape gates a function; any part can express any function and its effect scales with the measurement its mechanic names.
 
 493. **Each function scales with one measurement, by its share of the
      cells.** Asked on 2026-10-02, the anatomy brief's eighth round: "What
@@ -5794,7 +5719,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Applied 2026-10-02 by ruling 505:* income and the mouthful read their
      measurements alone, calibrated to the domain's median body.
 
-     Links: area Bodies and anatomy · summary Each function scales with one measurement (length, presented area, cross-section or volume), taken in proportion to its share of a part's cells.
+     Links: area Bodies and anatomy · draws on 492 · summary Each function scales with one measurement (length, presented area, cross-section or volume), taken in proportion to its share of a part's cells.
 
 494. **The eight names are read from the box and the tree, and hollows
      declared.** Asked on 2026-10-02, with 493: "How are tube, branch, shell
@@ -5820,7 +5745,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      construction from the body's voxels, naming that measurement (405),
      since the sim keeps no volumes.
 
-     Links: area Bodies and anatomy · summary Lump, rod, sheet and point are read from the box, branch and joint from the tree, tube and shell declared at construction.
+     Links: area Bodies and anatomy · draws on 492, 276 · summary Lump, rod, sheet and point are read from the box, branch and joint from the tree, tube and shell declared at construction.
 
 495. **Whether segments grow toward the recipe's count is a lineage trait.**
      Asked on 2026-10-02, with 493: "Does a body's segment count grow toward
@@ -5891,7 +5816,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      mineralization; a host's ledger holds a surface's matter the same way;
      and the territory entity keeps its identity, record and mind.
 
-     Links: area Bodies and anatomy · summary A territory's and a surface's matter lies in each place's ledger under their keys; the territory entity keeps identity, record and mind.
+     Links: area Bodies and anatomy · draws on 488 · summary A territory's and a surface's matter lies in each place's ledger under their keys; the territory entity keeps identity, record and mind.
 
 498. **Territories and surfaces spread by overflow along routes.** Asked on
      2026-10-02, with 497: "How do territories and surfaces spread (488)?
@@ -5942,7 +5867,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      strain a surface of its own carrying its revised genes, so a plague
      drifts and diverges as it spreads.
 
-     Links: area Bodies and anatomy · summary A germ lineage revises its genes by forking strains, child lineages, selected by host or place.
+     Links: area Bodies and anatomy · draws on 58, 488 · summary A germ lineage revises its genes by forking strains, child lineages, selected by host or place.
 
 500. **A territory or surface expresses its functions by the matter at each
      place.** Asked on 2026-10-02, with 497: "What of the catalogue does a
@@ -5966,7 +5891,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it holds there in place of cells and measurements, so a mold's decay at
      a place grows with its mass there.
 
-     Links: area Bodies and anatomy · summary A territory or surface expresses its lineage's functions at each place, scaled by the matter it holds there.
+     Links: area Bodies and anatomy · draws on 488, 466, 493 · summary A territory or surface expresses its lineage's functions at each place, scaled by the matter it holds there.
 
 504. **Each part keeps its own ledger and is a holder.** Asked on
      2026-10-02, opening checkpoint 7 (501): "Where does a part's matter
@@ -5995,7 +5920,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stay, the scale control, and only worlds that ask for bodies found
      from recipes.
 
-     Links: area Bodies and anatomy · summary Each part keeps its own ledger and is a holder; the body's totals are readings; bodies without parts keep their entity ledger.
+     Links: area Bodies and anatomy · draws on 459 · summary Each part keeps its own ledger and is a holder; the body's totals are readings; bodies without parts keep their entity ledger.
 
 507. **The averaged crowd averages all of a lineage's own matter.** Asked on
      2026-10-02, when checkpoint 7's 1,000-draw check (master seed
@@ -6276,7 +6201,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mesocosm's fixed 20 mg line goes from the sim as its quarter did (515);
      a newborn of any size lives while it can pay, and must feed.
 
-     Links: area Bodies and anatomy · summary A body starves when its tissue and reserve cannot pay its rent; the fixed 20 mg starvation line goes.
+     Links: area Bodies and anatomy · draws on 446, 518 · summary A body starves when its tissue and reserve cannot pay its rent; the fixed 20 mg starvation line goes.
 
 524. **A bud is a part grown off its parent.** Asked on 2026-10-03, with
      523: "What is a producer's bud under 518, which has every birth spend
@@ -6720,7 +6645,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it; and the part's room for the eater's own tissue counts the matter
      it already holds.
 
-     Links: area Bodies and anatomy · summary An incorporated part keeps its donor's matter under its provenance; the eater can neither spend it on rent nor grow from it.
+     Links: area Bodies and anatomy · draws on 504, 516 · summary An incorporated part keeps its donor's matter under its provenance; the eater can neither spend it on rent nor grow from it.
 
 547. **A generated recipe reproduces in one cell of its root.** Asked on
      2026-10-04, building checkpoint 8's step 8g: "Where do generated
@@ -6837,7 +6762,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Mesocosm's horizon stands wherever a store can reach it, a body whose
      stores are full is fed, and a body that stores nothing counts as fed.
 
-     Links: area Bodies and anatomy · summary A body is hungry while its reserve is below the lesser of 100 ticks of rent and its stores' capacity; full stores count as fed.
+     Links: area Bodies and anatomy · draws on 463 · summary A body is hungry while its reserve is below the lesser of 100 ticks of rent and its stores' capacity; full stores count as fed.
 
 552. **A bud severs once it holds a provision's worth.** Asked on
      2026-10-04, building checkpoint 8's step 8h: "When is a producer's bud
@@ -8141,7 +8066,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      document, and the sim keeps its physiology keyed by isometer's part
      ids, one geometry for every game and the lens.
 
-     Links: area Bodies and anatomy · summary A body's geometry is isometer's body document; the sim keeps physiology keyed by isometer's part ids.
+     Links: area Bodies and anatomy · draws on 670 · summary A body's geometry is isometer's body document; the sim keeps physiology keyed by isometer's part ids.
 675. **Movement and physical reach go through isometer; the reach field stays
      the sim's.** 2026-10-08. Question: a body's movement in a site and its
      physical reach would read isometer's in-site space, while the sim's
@@ -8334,7 +8259,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      gains situs and the shape name as product-neutral fields, and
      `mass_mg` becomes a reading of the sim's ledger, not a second store.
 
-     Links: area Bodies and anatomy · summary The sim keys physiology by PartId; BodyDocument gains situs and shape name; mass_mg becomes a reading of the sim's ledger.
+     Links: area Bodies and anatomy · draws on 674 · summary The sim keys physiology by PartId; BodyDocument gains situs and shape name; mass_mg becomes a reading of the sim's ledger.
 701. **The lift moves to isometer.** 2026-10-08. Question: does the lift
      (isocosm's `src/terrain` and `src/map`, 1,040 lines) move? Options: the
      lift to isometer, the world map and skeleton staying the sim's
@@ -8390,7 +8315,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `half_extent`. Mark chose "A lost-cells field (Recommended)". So
      physiology never writes geometry, and 674's move stays mechanical.
 
-     Links: area Bodies and anatomy · summary A part keeps a lost-cells field that capacity and ceiling subtract; physiology never writes geometry.
+     Links: area Bodies and anatomy · draws on 674, 469 · summary A part keeps a lost-cells field that capacity and ceiling subtract; physiology never writes geometry.
 707. **Severing follows isometer's semantics.** 2026-10-08. Question:
      native flags only the cut part (its children still count in `held`),
      isometer tombstones the whole subtree with stable ids and refuses the
@@ -8870,7 +8795,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `mosaic::propose` (recommended); a reading beside the offer; folded
      into `Revise` as counts. Mark chose "Command::Express (Recommended)".
 
-     Links: area Bodies and anatomy · summary Authored cells reach the world by native Command::Express placing cells through mosaic::propose.
+     Links: area Bodies and anatomy · draws on 766 · summary Authored cells reach the world by native Command::Express placing cells through mosaic::propose.
 790. **One after-pass plan holds every deferred done-condition.** 2026-10-10,
      from the plan review. Question: the after-pass list was scattered (732,
      761, the directing plan, the CLAUDE.md files). Options: one dated

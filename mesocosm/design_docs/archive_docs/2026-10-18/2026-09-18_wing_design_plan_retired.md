@@ -2979,6 +2979,80 @@ light field's code names (Mark: "Into Ecology 5, 981 archived"):
      Asked with 979; the tracer side is `TraceParams` plus a light slot fed
      from `BrickFrameInput`. Mark: "Use those names (Recommended)".
 
+**Moved 2026-10-22** in the doctrine's Bodies review, as probe-era cases
+superseded: 453's optional fields reshaped by 459 to 462, 456's meal settled
+by 459 (Mark: "As drafted, archive 453 and 456"):
+
+453. **The probe's minimal body is optional fields on the core part.**
+     Asked on 2026-10-01, building checkpoint 6's step 5, after its step 4
+     and X3 had landed on the branch: "Where does the probe's minimal body
+     live? Evidence: X2's readings and X6's allocation are core extensions
+     that read a part's cells, cell mass and half-extents, which Isocosm's
+     Part holds none of; my reading in the checkpoint 6 brief kept the
+     minimal body in the probe's world until the anatomy brief gives the
+     schema its body (281); the 09-25 crowd probe kept its bounds in its own
+     world the same way; the step's done-condition wants each native run as
+     definitions." Options, recommended first: (A) "Optional fields on the
+     core Part: Part gains half-extents, a cell capacity, cells per function
+     and cell mass, optional and hashing as before when absent; X2 and X6
+     read them in meaning for both runners, the natives run as core
+     definitions, and the anatomy brief reshapes the fields after the probe
+     (recommended)." (B) "A body in the probe's world: the probe holds its
+     own body type and runs the natives through probe-local readings; the
+     core's Part and definition widen only after the anatomy brief, so the
+     natives run as definitions only then." Mark chose A, "Optional fields
+     on the core Part". So the core part carries half-extents, a cell
+     capacity, cells per function and cell mass, each absent in parts
+     without them; X2's readings and X6's allocation read them for both
+     runners; and the anatomy brief (281) may reshape them once the probe
+     has shown what the mechanics use. This amends the brief's reading that
+     the minimal body lives in the probe's world. *Reshaped 2026-10-02 by
+     rulings 459 to 462:* matter in parts, capacity and cell mass derived
+     from extents, and each part's attachment kept.
+456. **The probe's meal takes tissue, and where matter sits in a body goes
+     to the anatomy brief.** Asked on 2026-10-01, with 454: "What does a meal
+     take from its prey? Evidence: Mesocosm takes the mouthful from the
+     prey's substance only; a body's reserve goes back to the ground when it
+     dies. Isocosm's Eat takes from every matter account in proportion
+     (ruling 287), which 4b's prey fat relies on." Options, recommended
+     first: (A) "Tissue only, as Mesocosm: a meal names the accounts it
+     takes from. The body family takes tissue only, so a bitten prey keeps
+     its reserve. The hunting family keeps its proportional take of body and
+     fat (recommended)." (B) "Every matter account in proportion: keep
+     Isocosm's current Eat. A prey loses reserve along with its flesh, so
+     being bitten also changes how hungry it is, which Mesocosm never does."
+     Mark asked: "Could it depend on the part eaten, like the provenance of
+     the tissue? Like, where's the reserve stored in the body?" Answered
+     that Mesocosm's reserve has no place in the body, being one number on
+     the organism; that each part keeps its own mass and provenance mix,
+     bites and rent taking from the living parts root first and only
+     incorporation taking a named part whole; that which part loses tissue
+     changes nothing the five natives read; and that the probe's parts (453)
+     hold no matter. Put back: "What does the probe's meal take, given that
+     in Mesocosm the reserve has no place in the body and the part a bite
+     lands on changes nothing the five natives read?" Options, recommended
+     first: (A) "Tissue now, placement to anatomy: the probe's meal takes
+     tissue only, as Mesocosm does. The anatomy brief (281) gets an item with
+     your question: where tissue and reserve sit in the body, and whether a
+     bite lands on one part (recommended)." (B) "Matter in parts now: each
+     part holds its own tissue, plus reserve where it stores some. A bite
+     lands on a drawn part of the prey and takes from that part. This widens
+     ruling 453 ahead of the anatomy brief, for something none of the five
+     natives reads." (C) "A storing function: the reserve lives in parts that
+     express a new store function in the catalogue. A bite takes reserve
+     along with tissue in the share of the prey's cells that store. The
+     reserve gets a place without each part keeping its own ledger." Mark
+     chose A, "Tissue now, placement to anatomy". So a meal names the
+     accounts it takes from, the body family's taking tissue alone and the
+     hunting family's keeping 287's proportional take, and the anatomy brief
+     (281) carries Mark's question as an item of its own: where tissue and
+     reserve sit in a body, and whether a bite lands on one part. *Settled
+     2026-10-02 by ruling 459:* tissue in parts, the reserve in stores, a
+     bite landing on one part.
+     *Cite corrected 2026-10-02:* the proportional take across a prey's
+     accounts is ruling 294's, decided from 287's fork; 287 gave each
+     consumer one feeding process.
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's
