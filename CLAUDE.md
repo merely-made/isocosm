@@ -81,18 +81,8 @@ the root `design_docs/`, and is cited by path, never copied.
 
 ### Licensing, for Mesocosm and Eponym
 
-The VTT's crates keep the root workspace's MIT OR Apache-2.0. For Mesocosm
-and Eponym:
-
-- Game code and repository documentation are MPL-2.0.
-- Promoted reusable library crates are MPL-2.0 as well (ruled 2026-09-03;
-  the earlier MIT OR Apache-2.0 path for a proven boundary is retired). The
-  only exception route is the fork/vendor criterion in mere's license posture
-  brief, recorded in `LICENSES.md` when it applies.
-- Original game assets are CC BY-SA 4.0 and require an attribution entry.
-  Imported assets retain their own licenses and must be recorded explicitly.
-- See the product's `LICENSES.md`. Do not blur code, library, and asset
-  grants.
+The rule is the doctrine's Licensing 3 (`design_docs/doctrine.md`); the grants
+are each product's `LICENSES.md`. Do not blur code, library, and asset grants.
 
 ---
 
@@ -207,11 +197,8 @@ sem is wired into this repo. It is described once in
   plan exists: `design_docs/2026-07-09_shared_authority_and_collaborative_building_plan.md`.
   Its conclusion: shared and DM-less authority still need no CRDTs; the
   guardrail stands.)
-- Do not ship copyrighted game content. 5e SRD (CC-BY-4.0), Pathfinder 2e
-  (ORC) and Ars Magica 5th Edition's open text (CC-BY-SA-4.0, Atlas Games'
-  release; ruling 522) material only, with attribution. Anything shipped
-  from Ars Magica is share-alike: CC-BY-SA-4.0 with Atlas Games' credit
-  line.
+- Do not ship copyrighted game content: only rulesets the doctrine's
+  Licensing 1 admits, with attribution.
 - The wing's default view is isometric with quarter turns (wing design
   record, ruling 382). The tabletop ships its locked 2:1 lens today and
   reaches quarter turns through a plan and render lane of its own; free yaw,

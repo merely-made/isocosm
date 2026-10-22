@@ -6352,7 +6352,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      scheduled by this ruling; and any lane that reads the prior art's code
      checks each project's licence first, none having been checked here.
 
-     Links: area Licensing and sources · summary The VTT gains an Ars Magica 5e system pack under CC BY-SA 4.0 with Atlas credit; its magic and auras inform the wing's design.
+     Links: area Licensing and sources · draws on 40, 404 · summary The VTT gains an Ars Magica 5e system pack under CC BY-SA 4.0 with Atlas credit; its magic and auras inform the wing's design.
 
 523. **A body starves when its rent fails, not below a fixed mass.** Asked
      on 2026-10-03, checkpoint 8's fourth round, returning evidence against
@@ -10528,7 +10528,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      them stays its own decision. This reading goes back to Mark with 913's
      assessment. *Amended by 917.*
 
-     Links: area Licensing and sources · summary The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917)
+     Links: area Licensing and sources · draws on 913 · summary The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917)
 
 915. **913's "components" are owning homes.**
      Asked 2026-10-15 by card. Evidence: `isometry-campaign` is 10,764 lines
@@ -10553,7 +10553,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      to keep. *Reading, not ruled:* releases in mere are mere's to decide,
      and are asked there; the campaign retirement plan's F4 places the work.
 
-     Links: area Licensing and sources · summary The crates aim to be published, not only publishable in principle.
+     Links: area Licensing and sources · amends 914 · summary The crates aim to be published, not only publishable in principle.
 
 919. **`isocosm-vtt` carries the VTT's licence, MIT OR Apache-2.0.**
      Asked 2026-10-15 by card (the retirement plan's F1). Evidence: the
@@ -10564,7 +10564,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      author; (2) "MPL-2.0"; (3) "Per-file licences".
      Mark: "MIT OR Apache-2.0 (Recommended)"
 
-     Links: area Licensing and sources · summary isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author.
+     Links: area Licensing and sources · draws on 902 · summary isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author.
 
 920. **`isocosm-vtt`'s endpoint sits behind a feature.**
      Asked 2026-10-15 by card (F2). Options: (1) "Endpoint behind a feature

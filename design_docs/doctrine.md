@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming reviewed; the other areas are empty. Each
+**Status, 2026-10-21:** Naming and Licensing reviewed; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -92,5 +92,49 @@ Links: draws on 340, 341 · governs isocosm::rules::Causation, isocosm::rules::b
 the readings".*
 
 ## Licensing and sources
+
+### Licensing 1. Rulesets
+
+A ruleset ships when its licence lets the wing use it without legal or
+community objection. Qualifying: the 5e SRD (CC BY 4.0), Pathfinder 2e (ORC),
+Lancer (with attribution), and Ars Magica 5th Edition's open text (CC BY-SA
+4.0, with Atlas Games' credit line; anything shipped from it is
+share-alike). Daggerheart does not qualify. An open text that informs the
+sim's design is a reference: nothing is copied into the sim.
+
+Links: draws on 40, 522 · summary A ruleset ships when its licence draws no objection; an open text informing the sim is a reference, never copied in.
+
+*Reviewed 2026-10-21, new. Mark: "Without the Massif line".*
+
+### Licensing 2. Publication
+
+The wing's crates aim to be published. Licences, metadata and dependencies
+are kept publishable, and each release is its own decision. A release in
+mere is mere's to decide and is asked there.
+
+Links: draws on 914, 917 · summary The crates aim to be published; each release is its own decision, mere's are mere's.
+
+*Reviewed 2026-10-21, new. Mark: "As drafted".*
+
+### Licensing 3. Licences follow the layer
+
+The VTT's crates, `isocosm-vtt` included, are MIT OR Apache-2.0. Mesocosm,
+Eponym, the shared wing crates and their promoted library crates are
+MPL-2.0; the only exception route is the fork/vendor criterion in mere's
+license posture brief (`mere/design_docs/2026-08-22_license_posture_brief.md`).
+Original assets are CC BY-SA 4.0 with an attribution entry; imported assets
+keep their own licences and are recorded. Code that moves between layers
+takes the destination's licence, relicensed by its author. Each product's
+`LICENSES.md` is the grant itself (`../mesocosm/LICENSES.md`,
+`../eponym/LICENSES.md`, the 2026-09-03 ruling recorded in Mesocosm's).
+
+Links: draws on 919 · summary Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0.
+
+*Reviewed 2026-10-21, new. Mark, asked whether to cite CLAUDE.md here:
+"claude.md should be derived, not authoritative. idk, if there's important
+instruction in there it should be a reference to an authoritative record, so
+the claude.md points ya to the records instead of bloating claude.md". So
+this statement holds the rule, resting on 919 and the products' LICENSES.md,
+and CLAUDE.md points here.*
 
 ## Method and documents
