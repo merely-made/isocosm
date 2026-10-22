@@ -1041,7 +1041,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     steel! it gives you a reason to learn the ecology, what stuff is,
     familiarize yourself with things to see what you can use... oh my god"
 
-    Links: area The sim's schema and saves · summary The materials of a world are its critters across all kingdoms.
+    Links: area Ecology · draws on 96 · summary The materials of a world are its critters across all kingdoms.
 98. **The world is an entity made of stuff, a world-class entity, the basic
     macro kingdom; stuff can be made out of the world, even critters.**
     Mark, 2026-09-22, on inert matter: "although, presumably the world has
@@ -1052,7 +1052,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     basic macro kingdom. then stuff can be made out of the world, even
     critters!"
 
-    Links: area The sim's schema and saves · summary The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world.
+    Links: area Ecology · draws on 97 · summary The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world.
 99. **What kind of entity a world is stays open to the world.** Mark,
     2026-09-22: "maybe the world is inert, or sentient, or a sophont, or a
     god, or a turtle, or whatever. maybe it's flora, or fauna. maybe it's
@@ -1064,7 +1064,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      this leaves open meso (small moon? satellite? asteroid? ship?) and
      micro worlds :3"
 
-     Links: area The sim's schema and saves · summary World is a kingdom with macro scale; meso and micro worlds are left open.
+     Links: area Ecology · draws on 98 · summary World is a kingdom with macro scale; meso and micro worlds are left open.
 101. **The world has traits and its timeline is a lineage; the world should
      be generative; glyphs are broad; a magic system generator is wanted
      that feeds divinity without hardcoded assumptions.** Mark, 2026-09-22:
@@ -1528,7 +1528,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      "Apply both as drafted", so it stands in the founding record's Law A
      and in Mesocosm's CLAUDE.md pipeline-laws line.
 
-     Links: area The sim's schema and saves · summary Law A is amended for materials: a lineage's traits may travel as what things are made of, beside shapes becoming relics.
+     Links: area Ecology · draws on 97 · summary Law A is amended for materials: a lineage's traits may travel as what things are made of, beside shapes becoming relics.
 140. **A world's materials lie on a spectrum, from a normal base that
      matches a ruleset to completely generated.** Put to Mark on
      2026-09-24: are a world's own materials, its rock, metal, water and
@@ -1635,7 +1635,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      provenance and founding ruleset of its own, hosting its worlds as a
      polity hosts others.
 
-     Links: area The sim's schema and saves · summary A planetary system can be a host: an entity above the world with its own provenance and founding ruleset, hosting its worlds.
+     Links: area World generation · draws on 100 · summary A planetary system can be a host: an entity above the world with its own provenance and founding ruleset, hosting its worlds.
 151. **Owning a person is slavery, and treating people as chattel is
      itself a tenet.** Put to Mark on 2026-09-24: ruling 146 says a sophont
      item is never owned; does that hold for every sophont? Two options
@@ -1729,7 +1729,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      builds as a kept level whenever mood stays low, and only rest or
      relief bleeds it off.
 
-     Links: area The sim's schema and saves · summary Mood is read on demand from its sources; strain is a kept level that builds while mood stays low and eases with rest or relief.
+     Links: area The sim's schema and saves · draws on 158 · summary Mood is read on demand from its sources; strain is a kept level that builds while mood stays low and eases with rest or relief.
 160. **Personality traits sit on the five factors.** Put to Mark on
      2026-09-24, from ruling 158 against ruling 37: how do personality
      traits stand to the five-factor disposition? Three options were put:
@@ -1738,7 +1738,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      continuous temperament, and personality traits are discrete features
      grown on top, their seeds drawn from the factors.
 
-     Links: area The sim's schema and saves · summary Personality traits are discrete features grown on top of the five-factor continuous temperament, their seeds drawn from the factors.
+     Links: area The sim's schema and saves · draws on 158, 37 · summary Personality traits are discrete features grown on top of the five-factor continuous temperament, their seeds drawn from the factors.
 161. **Past what it can bear, a mind stops heeding, acts out, or rises,
      and the break leaves a mark.** Put to Mark on 2026-09-24: what
      happens when strain passes what a mind can bear? Four options were
@@ -1828,7 +1828,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      from rulings 129 and 142, unobjected: a technique no mind or bearer
      holds is lost, and can be found again.
 
-     Links: area The sim's schema and saves · summary Technology is both a world's generated tree and what is known, read from minds and bearers; an unheld technique is lost and can be refound.
+     Links: area The sim's schema and saves · draws on 129, 142 · summary Technology is both a world's generated tree and what is known, read from minds and bearers; an unheld technique is lost and can be refound.
 172. **Ages are read and named, capped by the founder, can realign the
      world, and are the epochs of cultures and society.** Put to Mark on
      2026-09-24: does a world have ages of technology? Four options were
@@ -1839,7 +1839,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      first, third and fourth and, in place of the second: "Ages are the
      epochs of cultures/society."
 
-     Links: area The sim's schema and saves · summary Ages are read and named, capped by the founder, can realign the world, and are the epochs of cultures and society.
+     Links: area Record and history · draws on 171 · summary Ages are read and named, capped by the founder, can realign the world, and are the epochs of cultures and society.
 173. **Invention is driven by need, contact, temperament and mastery.** Put
      to Mark on 2026-09-24: what drives invention, a master going beyond
      the canon (ruling 142)? Four options were put, to pick all that
@@ -2751,7 +2751,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      easily. *Reading, not ruled:* the linear, clamped form with a draw term
      is among the defaults.
 
-     Links: area The sim's schema and saves · summary Computed amounts are bounded expression trees, with a default set of expressions easy to group and calibrate.
+     Links: area Processes and rules · summary Computed amounts are bounded expression trees, with a default set of expressions easy to group and calibrate.
 269. **Shared ground is scrambled for by what cannot decide and competed for
      by what can.** Put to Mark on 2026-09-26, from decision 6, ruling 266
      keeping the exact crowd while grouping pays: a shared site resource
@@ -4120,7 +4120,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      effects' glyphs. A ruleset's own arithmetic over readings, such as the
      SRD's `s_speed`, stays the ruleset's, which the sim never sees (§5).
 
-     Links: area The sim's schema and saves · summary Every modification applies effects from the world's one vocabulary; a glyph is one source beside traits, parts, items, places, conditions and relations.
+     Links: area Processes and rules · draws on 404, 407, 423 · summary Every modification applies effects from the world's one vocabulary; a glyph is one source beside traits, parts, items, places, conditions and relations.
 
 428. **An entity holds a condition as a record: key, magnitude, cause and
      an optional end.** Asked on 2026-09-30: "How does an entity hold a
@@ -4150,7 +4150,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ruling 430:* the record stands beside the ledger, and §3.5's rule is
      narrowed to the environment's conditions.
 
-     Links: area The sim's schema and saves · summary An entity holds a condition as a record of key, magnitude, cause and optional end; a status is a condition with an end. (amended by 430)
+     Links: area Processes and rules · summary An entity holds a condition as a record of key, magnitude, cause and optional end; a status is a condition with an end. (amended by 430)
 
 429. **Modifiers combine in layers the world orders.** Asked on 2026-09-30:
      "How do modifiers that read other modifiers combine? Evidence:
@@ -4176,7 +4176,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ruled:* the mosaic's adjacency (36) sits in such a layer, reading its
      neighbouring tracts.
 
-     Links: area The sim's schema and saves · summary Modifiers combine in layers the world orders, reading only earlier layers; each reading declares stacking: sum, highest, lowest, product or replace.
+     Links: area Processes and rules · draws on 268 · summary Modifiers combine in layers the world orders, reading only earlier layers; each reading declares stacking: sum, highest, lowest, product or replace.
 
 430. **The environment's conditions live on places; a thing's own
      condition record sits beside its ledger.** Asked on 2026-10-01,
@@ -4209,7 +4209,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      scheduled event, never a countdown. 406's carryover chooses among
      records and wounds alike.
 
-     Links: area The sim's schema and saves · summary Environmental conditions live on places; a thing's own condition record sits beside its ledger, wounds and vigour staying the ledger's.
+     Links: area Processes and rules · amends 428 · summary Environmental conditions live on places; a thing's own condition record sits beside its ledger, wounds and vigour staying the ledger's.
 
 431. **A modifier declares whether it applies to each member or to the
      group.** Asked on 2026-10-01: "How does a modifier apply to a group?
@@ -4235,7 +4235,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      collective modifiers on that body, and germs, many bodies, distributive
      ones.
 
-     Links: area The sim's schema and saves · summary Each modifier declares itself distributive (applies to each member) or collective (belongs to the group); collective splits no crowd.
+     Links: area Processes and rules · draws on 207, 58 · summary Each modifier declares itself distributive (applies to each member) or collective (belongs to the group); collective splits no crowd.
 
 432. **A far mark shows the glyphs of the effects on a thing, through a
      lens the player sets.** Asked on 2026-10-01: "What does a far mark show
@@ -4288,7 +4288,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Noted 2026-10-02 with ruling 502:* Mark sees territories and surfaces
      as possibly important for auras in magical systems.
 
-     Links: area The sim's schema and saves · summary A modifier declares its scope among bearer, body, relation, group, place and site; board adjacency belongs to the game's ruleset.
+     Links: area Processes and rules · draws on 422 · summary A modifier declares its scope among bearer, body, relation, group, place and site; board adjacency belongs to the game's ruleset.
 
 434. **The player's choice of which glyphs far marks show is a filter.**
      Asked on 2026-10-01: "What do we call the player's choice of which
@@ -4332,7 +4332,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the rest of the tally by a seeded draw, since no member has an identity
      until looked at (113).
 
-     Links: area The sim's schema and saves · summary A cohort keeps a tally of members per condition cause outside its equality; merging adds tallies and lifting draws a cause by seed.
+     Links: area Processes and rules · draws on 430 · summary A cohort keeps a tally of members per condition cause outside its equality; merging adds tallies and lifting draws a cause by seed.
 
 436. **A second application of a key combines into one record by the key's
      stacking.** Asked on 2026-10-01, a fork found writing §3.6: "How does a
@@ -4357,7 +4357,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      application's end with its magnitude, which is the refresh of option C
      available to a world that wants it.
 
-     Links: area The sim's schema and saves · summary A thing holds at most one record per key; a second application combines magnitudes by the key's stacking and the end becomes the later.
+     Links: area Processes and rules · draws on 429, 435 · summary A thing holds at most one record per key; a second application combines magnitudes by the key's stacking and the end becomes the later.
 
 437. **A minimap or overmap is a second camera on the ladder.** Asked on
      2026-10-01, a fork found writing the presentation plan's lane L10:
@@ -6578,7 +6578,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      persists beside the body, its relations declared, and unattended its
      procedures run under declared decision policies.
 
-     Links: area The sim's schema and saves · summary Each world chooses whether the sim leads and rulesets calibrate, or the ruleset leads and the sim's background follows; the ledger and record stay inviolable.
+     Links: area The sim's schema and saves · amends 114 · summary Each world chooses whether the sim leads and rulesets calibrate, or the ruleset leads and the sim's background follows; the ledger and record stay inviolable.
 
 539. **Rules are built as faithful editions, a shared toolkit grown from
      them.** Asked on 2026-10-03, with 538: "What do we build for rules?
@@ -8703,7 +8703,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (recommended); one density; cells, not mass. Mark chose "Density and
      account per material (Recommended)".
 
-     Links: area The sim's schema and saves · summary An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger.
+     Links: area Ecology · draws on 412 · summary An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger.
 740. **An entity names its patch through an optional field.** 2026-10-09.
      Question: `Entity.place` is a site id, and a cohort's members share a
      record. Options: `patch: Option<PlaceId>` on `Entity`, set only for
@@ -9490,7 +9490,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      their admitted ledgers. This does not reconstruct the composition of
      an older pooled `world:soil` balance or rewrite its saved founding.
 
-     Links: area The sim's schema and saves · summary Newly founded worlds give each declared material a distinct native stock, preserved through carve, deposit and fabrication.
+     Links: area Ecology · summary Newly founded worlds give each declared material a distinct native stock, preserved through carve, deposit and fabrication.
 
 837. **A native project reserves inputs and spends from that ledger as work progresses.**
      2026-10-12, interrupted material work under E3's T1/T3.

@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT and Stack and engine reviewed, with Processes 1 to 3; the sim's schema is under review (Schema 1 to 5); the other areas are empty. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT and Stack and engine reviewed, with Processes 1 to 4; the sim's schema is under review (Schema 1 to 8); the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -108,6 +108,56 @@ Links: draws on 64, 67, 68, 81 · summary A polity needs efficacious enforcement
 apart"). Polities are built behind the society feature (886); enforcement
 is not verified.*
 
+### Schema 6. Minds
+
+A mind's mood is read from what it remembers, needs and lives through;
+strain is kept, building while mood stays low and eased by rest or relief.
+Personality traits are discrete traits grown on the five-factor temperament,
+seeded from it, inheritable and developed by what one does. Abilities are
+what an entity can do; skills are practised pursuits that accumulate
+experience; a technique is an ability with a skill precondition, shared
+between those who hold the skill. The significant dead go to the planes after
+life, and summoning them back is a costly possibility.
+
+*Not yet built:* strain, personality traits, techniques, the planes after
+life. Mood is read live from needs, and every entity holds its skills and
+five-factor disposition.
+
+Links: draws on 62, 96, 158, 159, 160 · summary Mood is read from memory, needs and life, strain kept; personality traits grow on the five factors; abilities, skills, techniques; the planes after life.
+
+*Reviewed 2026-10-22, new. Mark: "Ages to Record" (split as recommended).*
+
+### Schema 7. Culture and knowledge
+
+A culture is read from its people and named when noted. Languages divide:
+understanding needs a shared tongue, learned like a skill. Art and ritual are
+crafts, and any craft can be politicized or ritualized. Technology is both the
+world's generated tree and what minds and bearers know; an unheld technique
+is lost and can be found again. Ages, the epochs of cultures, are the
+record's (Record 6).
+
+*Not yet built:* culture, languages, technology.
+
+Links: draws on 165, 166, 170, 171, record.6 · summary Culture is read and named when noted; languages divide; art and ritual are crafts; technology is the world's tree and what is known.
+
+*Reviewed 2026-10-22, new. Mark: "Ages to Record".*
+
+### Schema 8. One rules language; each world picks who leads
+
+World rules and game rulesets are one binding language, at founding and at
+play. Each world chooses whether the sim leads, rulesets calibrating to its
+background (114), or its ruleset leads, the sim's background following it
+wherever it specifies behaviour; the ledger, the record and the derivation
+rule stay inviolable either way. A reading's bound and a competition's
+definition sit in the world's rules. Effects entailed by a world's
+composition, and a space scope, come later.
+
+*Not yet built:* the per-world choice.
+
+Links: draws on 41, 114, 218, 538 · summary World rules and rulesets are one language; each world picks whether the sim or its ruleset leads; ledger and record stay inviolable.
+
+*Reviewed 2026-10-22, new. Mark: "Schema statement".*
+
 ## Processes and rules
 
 
@@ -169,6 +219,30 @@ modifiable too, it's true in the most direct way for the vtt ... whereas eponym
 implementing dnd rules will necessitate some level of adaptation ... should be
 a distinction made." Then "Split: VTT 5 + Processes 3" and "Named profile,
 licence per product".*
+
+### Processes 4. Modifiers and conditions
+
+Every modification applies effects from the world's one vocabulary; a glyph
+is one source among traits, parts, items, places, conditions and relations.
+Modifiers combine in layers the world orders, each reading only conditions
+and earlier layers, each reading declaring its stacking (sum, highest,
+lowest, product, replace); amounts are bounded expression trees, a default
+set easy to group and calibrate. A modifier declares its scope (bearer, body,
+relation, group, place, site; board adjacency is the game's) and whether it
+applies to each member or to the group. The environment's conditions live on
+places; a thing's own conditions are records beside its ledger (key,
+magnitude, cause, optional end), one per key, a second application combining
+by the key's stacking; a cohort tallies its members' causes, and a lift draws
+one by seed.
+
+*Not yet built:* condition records, a modifier's declared scope and
+distribution, cause tallies. Bounded amounts and layered stacking (in
+defence) are built.
+
+Links: draws on 268, 427, 428, 429, 430, 431, 433, 435, 436 · summary One effect vocabulary, many sources; modifiers in world-ordered layers with declared stacking and scope; conditions on places or as records.
+
+*Reviewed 2026-10-22, new: drafted in the schema review and placed here at
+Mark's word ("To Processes and rules").*
 
 ## Ecology
 
@@ -246,6 +320,22 @@ Links: draws on 906, 949, 972, 982, 983 · summary Light credit scales with the 
 *Reviewed 2026-10-22, new. Mark: "Structure in doctrine, numbers into world
 rules". The credit and store are constants in `ecology.rs` today (500 and
 360,000, A1's values); making them world rules is owed in the sim plan.*
+
+### Ecology 6. Matter
+
+A world's materials are its creatures across all kingdoms: learning the
+ecology is learning what things are made of. The world itself is an entity
+made of stuff, the basic macro kingdom (meso and micro worlds left open), and
+nis is a scale, not a material. A lineage's traits may travel between games as
+what things are made of (Law A, amended). Each declared material keeps a
+distinct native stock, and an edit's mass is credited by material, at a
+density and into an account set at founding.
+
+Links: draws on 96, 97, 98, 100, 139, 739, 836 · summary A world's materials are its creatures; the world is an entity of stuff; each material keeps its own stock, edits credited by density.
+
+*Reviewed 2026-10-22, new: drafted in the schema review and placed here at
+Mark's word ("Matter to Ecology"). Built: per-material stocks, and density
+and account on `Material`.*
 
 ## Bodies and anatomy
 
@@ -343,6 +433,19 @@ Links: draws on 607, 610, 633, 636, 642, 649, 652, 653 · summary The state hash
 
 *Reviewed 2026-10-22, new. Mark: "Both as drafted".*
 
+### Record 6. Ages
+
+Ages are read from what the peoples of a time commonly know, and named; they
+are the epochs of cultures and society. A founder may cap how far technology
+goes, and an age can realign the world to a new scope.
+
+*Not yet built.*
+
+Links: draws on 172 · summary Ages are read and named, the epochs of cultures; a founder caps technology; an age can realign the world.
+
+*Reviewed 2026-10-22, new: drafted in the schema review and placed here at
+Mark's word ("Ages to Record").*
+
 ## World generation
 
 
@@ -363,11 +466,11 @@ world editor).*
 ### World 2. Worlds in company
 
 A world sits among others: a parent, neighbours, a solar or binary system,
-worlds sharing a history that branched. Space and travel between worlds come
-later, and nothing built may assume one world alone under one sun; light is a
+worlds sharing a history that branched; a planetary system can be an entity
+hosting its worlds. Space and travel between worlds come later, and nothing built may assume one world alone under one sun; light is a
 derived function, so more bodies change a function, not saved state.
 
-Links: draws on 11, 105 · summary A world sits among others; nothing built may assume one world alone under one sun.
+Links: draws on 11, 105, 150 · summary A world sits among others; nothing built may assume one world alone under one sun.
 
 *Reviewed 2026-10-22, new, from Mark's words in this round: "also consider
 worlds in relation to each other (a solar system, binary solar system,
@@ -375,6 +478,8 @@ effects on light field later ...). space and interplanetary travel is not a
 first priority but what we build should compose with that possibility, no?"
 The sky is one sun today (`rules.sun`); a list of bodies is owed with
 Ecology 5's item in the sim plan (Mark: "Owe it with Ecology 5's item").*
+*Refined 2026-10-22 in the schema review: 150, a planetary system as host,
+cited (Mark: "Matter to Ecology", 150 to World 2).*
 
 ### World 3. The map's words
 

@@ -542,14 +542,16 @@ summary = "Abilities, skills and techniques are defined (a technique is an abili
 [cases."97"]
 title = "The materials of a world are its critters, across all the kingdoms"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Ecology"
 summary = "The materials of a world are its critters across all kingdoms."
+draws_on = ["96"]
 
 [cases."98"]
 title = "The world is an entity made of stuff, a world-class entity, the basic macro kingdom; stuff can be made out of the world, even critters"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Ecology"
 summary = "The world is an entity made of stuff, a world-class entity and the basic macro kingdom; stuff, even critters, can be made from the world."
+draws_on = ["97"]
 
 [cases."99"]
 title = "What kind of entity a world is stays open to the world"
@@ -560,8 +562,9 @@ summary = "What kind of entity a world is (inert, sentient, sophont, god, turtle
 [cases."100"]
 title = "World is a kingdom; its scale is macro; meso and micro worlds are left open"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Ecology"
 summary = "World is a kingdom with macro scale; meso and micro worlds are left open."
+draws_on = ["98"]
 
 [cases."101"]
 title = "The world has traits and its timeline is a lineage; the world should be generative; glyphs are broad; a magic system generator is wanted that feeds divinity without hardcoded assumptions"
@@ -781,8 +784,9 @@ summary = "Deadlock is per act, not a polity condition; conditions stay four."
 [cases."139"]
 title = "Law A is amended for materials"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Ecology"
 summary = "Law A is amended for materials: a lineage's traits may travel as what things are made of, beside shapes becoming relics."
+draws_on = ["97"]
 
 [cases."140"]
 title = "A world's materials lie on a spectrum, from a normal base that matches a ruleset to completely generated"
@@ -852,8 +856,9 @@ summary = "Neighbouring worlds keep their own clocks and are synced at crossings
 [cases."150"]
 title = "A planetary system can be a host"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "World generation"
 summary = "A planetary system can be a host: an entity above the world with its own provenance and founding ruleset, hosting its worlds."
+draws_on = ["100"]
 
 [cases."151"]
 title = "Owning a person is slavery, and treating people as chattel is itself a tenet"
@@ -913,12 +918,14 @@ title = "Mood is read; strain is kept"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Mood is read on demand from its sources; strain is a kept level that builds while mood stays low and eases with rest or relief."
+draws_on = ["158"]
 
 [cases."160"]
 title = "Personality traits sit on the five factors"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Personality traits are discrete features grown on top of the five-factor continuous temperament, their seeds drawn from the factors."
+draws_on = ["37", "158"]
 
 [cases."161"]
 title = "Past what it can bear, a mind stops heeding, acts out, or rises, and the break leaves a mark"
@@ -985,12 +992,14 @@ title = "Technology is both a world's generated tree and what is known"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Technology is both a world's generated tree and what is known, read from minds and bearers; an unheld technique is lost and can be refound."
+draws_on = ["129", "142"]
 
 [cases."172"]
 title = "Ages are read and named, capped by the founder, can realign the world, and are the epochs of cultures and society"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Record and history"
 summary = "Ages are read and named, capped by the founder, can realign the world, and are the epochs of cultures and society."
+draws_on = ["171"]
 
 [cases."173"]
 title = "Invention is driven by need, contact, temperament and mastery"
@@ -1520,7 +1529,7 @@ draws_on = ["260"]
 [cases."268"]
 title = "Computed amounts are bounded expression trees, with a default set easy to group and calibrate"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "Computed amounts are bounded expression trees, with a default set of expressions easy to group and calibrate."
 
 [cases."269"]
@@ -2118,32 +2127,36 @@ draws_on = ["424", "425"]
 [cases."427"]
 title = "Every modification applies effects from the world's one vocabulary, and a glyph is one source among many"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "Every modification applies effects from the world's one vocabulary; a glyph is one source beside traits, parts, items, places, conditions and relations."
+draws_on = ["404", "407", "423"]
 
 [cases."428"]
 title = "An entity holds a condition as a record: key, magnitude, cause and an optional end"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "An entity holds a condition as a record of key, magnitude, cause and optional end; a status is a condition with an end. (amended by 430)"
 
 [cases."429"]
 title = "Modifiers combine in layers the world orders"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "Modifiers combine in layers the world orders, reading only earlier layers; each reading declares stacking: sum, highest, lowest, product or replace."
+draws_on = ["268"]
 
 [cases."430"]
 title = "The environment's conditions live on places; a thing's own condition record sits beside its ledger"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "Environmental conditions live on places; a thing's own condition record sits beside its ledger, wounds and vigour staying the ledger's."
+amends = ["428"]
 
 [cases."431"]
 title = "A modifier declares whether it applies to each member or to the group"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "Each modifier declares itself distributive (applies to each member) or collective (belongs to the group); collective splits no crowd."
+draws_on = ["58", "207"]
 
 [cases."432"]
 title = "A far mark shows the glyphs of the effects on a thing, through a lens the player sets"
@@ -2155,8 +2168,9 @@ draws_on = ["49", "207", "423"]
 [cases."433"]
 title = "A modifier reaches only the scopes the sim holds"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "A modifier declares its scope among bearer, body, relation, group, place and site; board adjacency belongs to the game's ruleset."
+draws_on = ["422"]
 
 [cases."434"]
 title = "The player's choice of which glyphs far marks show is a filter"
@@ -2168,14 +2182,16 @@ amends = ["432"]
 [cases."435"]
 title = "A cohort keeps a tally of its members' condition causes beside its state"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "A cohort keeps a tally of members per condition cause outside its equality; merging adds tallies and lifting draws a cause by seed."
+draws_on = ["430"]
 
 [cases."436"]
 title = "A second application of a key combines into one record by the key's stacking"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Processes and rules"
 summary = "A thing holds at most one record per key; a second application combines magnitudes by the key's stacking and the end becomes the later."
+draws_on = ["429", "435"]
 
 [cases."437"]
 title = "A minimap or overmap is a second camera on the ladder"
@@ -2651,6 +2667,7 @@ title = "Each world chooses whether the sim or its ruleset leads"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The sim's schema and saves"
 summary = "Each world chooses whether the sim leads and rulesets calibrate, or the ruleset leads and the sim's background follows; the ledger and record stay inviolable."
+amends = ["114"]
 
 [cases."539"]
 title = "Rules are built as faithful editions, a shared toolkit grown from them"
@@ -3566,8 +3583,9 @@ draws_on = ["418"]
 [cases."739"]
 title = "An edit's mass is credited by material"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Ecology"
 summary = "An edit's mass is credited by material: density and account sit on Material, set at founding, crediting the acting entity's ledger."
+draws_on = ["412"]
 
 [cases."740"]
 title = "An entity names its patch through an optional field"
@@ -3944,7 +3962,7 @@ draws_on = ["776", "801"]
 [cases."836"]
 title = "Each declared material has a distinct native stock in new worlds"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The sim's schema and saves"
+area = "Ecology"
 summary = "Newly founded worlds give each declared material a distinct native stock, preserved through carve, deposit and fabrication."
 
 [cases."837"]
@@ -4753,6 +4771,13 @@ area = "Ecology"
 summary = "Light credit scales with the sun and a store holds a night; life spans are individual hazards under a drawn ceiling."
 draws_on = ["906", "949", "972", "982", "983"]
 
+[statements."ecology.6"]
+title = "Matter"
+source = "design_docs/doctrine.md"
+area = "Ecology"
+summary = "A world's materials are its creatures; the world is an entity of stuff; each material keeps its own stock, edits credited by density."
+draws_on = ["96", "97", "98", "100", "139", "739", "836"]
+
 [statements."eponym.1"]
 title = "Lives and co-op"
 source = "design_docs/doctrine.md"
@@ -5069,6 +5094,13 @@ area = "Processes and rules"
 summary = "Another genre adapts a ruleset as a selectable mode, under a named profile of departures and stand-in decision policies; the toolkit is shared."
 draws_on = ["539", "540", "541", "543", "vtt.5"]
 
+[statements."processes.4"]
+title = "Modifiers and conditions"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "One effect vocabulary, many sources; modifiers in world-ordered layers with declared stacking and scope; conditions on places or as records."
+draws_on = ["268", "427", "428", "429", "430", "431", "433", "435", "436"]
+
 [statements."record.1"]
 title = "Consistency is chosen per domain"
 source = "design_docs/doctrine.md"
@@ -5104,6 +5136,13 @@ area = "Record and history"
 summary = "The state hash is an FNV-1a equality witness over labelled entries; SHA-256 for trust; epoch checkpoints, per-critter traces."
 draws_on = ["607", "610", "633", "636", "642", "649", "652", "653"]
 
+[statements."record.6"]
+title = "Ages"
+source = "design_docs/doctrine.md"
+area = "Record and history"
+summary = "Ages are read and named, the epochs of cultures; a founder caps technology; an age can realign the world."
+draws_on = ["172"]
+
 [statements."schema.1"]
 title = "Authored content is native"
 source = "design_docs/doctrine.md"
@@ -5138,6 +5177,27 @@ source = "design_docs/doctrine.md"
 area = "The sim's schema and saves"
 summary = "A polity needs efficacious enforcement, has a focus not a size, may build on another; its constitution is its definitive act; goals follow alignment."
 draws_on = ["64", "67", "68", "81"]
+
+[statements."schema.6"]
+title = "Minds"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "Mood is read from memory, needs and life, strain kept; personality traits grow on the five factors; abilities, skills, techniques; the planes after life."
+draws_on = ["62", "96", "158", "159", "160"]
+
+[statements."schema.7"]
+title = "Culture and knowledge"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "Culture is read and named when noted; languages divide; art and ritual are crafts; technology is the world's tree and what is known."
+draws_on = ["165", "166", "170", "171", "record.6"]
+
+[statements."schema.8"]
+title = "One rules language; each world picks who leads"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "World rules and rulesets are one language; each world picks whether the sim or its ruleset leads; ledger and record stay inviolable."
+draws_on = ["41", "114", "218", "538"]
 
 [statements."stack.1"]
 title = "Build on the stack we have"
@@ -5271,7 +5331,7 @@ title = "Worlds in company"
 source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "A world sits among others; nothing built may assume one world alone under one sun."
-draws_on = ["11", "105"]
+draws_on = ["11", "105", "150"]
 
 [statements."world.3"]
 title = "The map's words"
