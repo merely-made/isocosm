@@ -29,6 +29,9 @@ pub(super) struct BodyTenant {
 }
 
 impl BodyTenant {
+    pub fn animating(&self) -> bool {
+        self.smooth.active()
+    }
     pub fn new(host: &HostDevice, size: [u32; 2]) -> Self {
         let mut inner = tenant::Tenant::new(host, FORMAT, size);
         inner.set_background([0.0; 4]);

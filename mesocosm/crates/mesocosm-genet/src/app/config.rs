@@ -51,6 +51,7 @@ pub struct HostConfig {
     pub slab_half_height: f32,
     /// Which way the section looks (DC4). Presentation only.
     pub camera: CameraMode,
+    pub view_depth: Option<f32>,
     pub terrain_style: section::TerrainStyle,
     /// Generated voxels, declared boxes or capsules, presentation only.
     pub body_mode: section::BodyMode,
@@ -126,6 +127,7 @@ impl Default for HostConfig {
             scenario: None,
             slab_half_height: section::SLAB_HALF_HEIGHT,
             camera: CameraMode::default(),
+            view_depth: None,
             terrain_style: section::TerrainStyle::Auto,
             body_mode: section::BodyMode::default(),
             body_budget: section::DEFAULT_BODY_BUDGET,

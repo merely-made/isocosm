@@ -17,17 +17,35 @@ impl super::Section {
             forward: self.custom_forward.unwrap_or_else(|| self.mode.forward()),
             half_height: self.half_height,
             aspect: self.aspect(),
-            depth: super::SLAB_DEPTH,
+            depth: self
+                .view_depth
+                .unwrap_or_else(|| self.mode.depth(self.half_height, self.aspect())),
             cutaway: None,
         }
     }
 
+    pub fn set_view_depth(&mut self, depth: Option<f32>) -> Result<(), String> {
+        if depth.is_some_and(|d| !d.is_finite() || !(1.0..=1024.0).contains(&d)) {
+            return Err("view depth must be between 1 and 1024 voxels".into());
+        }
+        if self.view_depth != depth {
+            self.invalidate_query();
+            self.view_depth = depth;
+        }
+        Ok(())
+    }
+
     /// Optional host-local orientation over the same terrain/body/cull camera.
     pub fn set_forward(&mut self, forward: Option<[f32; 3]>) -> Result<(), String> {
-        if forward.is_some_and(|f| SlabCamera::new([0.0;3], f, self.half_height, 1.0, super::SLAB_DEPTH).is_none()) {
+        if forward.is_some_and(|f| {
+            SlabCamera::new([0.0; 3], f, self.half_height, 1.0, super::SLAB_DEPTH).is_none()
+        }) {
             return Err("invalid local section orientation".into());
         }
-        if self.custom_forward != forward { self.invalidate_query(); self.custom_forward = forward; }
+        if self.custom_forward != forward {
+            self.invalidate_query();
+            self.custom_forward = forward;
+        }
         Ok(())
     }
 
@@ -52,7 +70,7 @@ pub(super) fn slab_camera(
         forward: mode.forward(),
         half_height,
         aspect,
-        depth: super::SLAB_DEPTH,
+        depth: mode.depth(half_height, aspect),
         cutaway: None,
     }
 }

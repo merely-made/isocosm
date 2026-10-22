@@ -2,6 +2,98 @@
 
 **Date:** 2026-09-11
 
+## Articulation and surface camera, 2026-10-21
+
+**Status, 2026-10-22:** implemented and qualified as a contact-driven pose bridge;
+native articulated collision admission remains open. Mark requested physical articulation and walking gaits
+over the existing part graph and physical machinery, and an isometric surface
+camera with options. The user reopens the older default-camera preference.
+
+**Phases and done-conditions:** expose exact native supporting-part witnesses
+and conservative translation clearance; connect disposable planted contacts,
+fixed-link knees and movement interpolation to admitted poses; verify stationary
+stance, swing, terrain edits, severance and refused sweeps. Make isometric the
+default, retain section presets, support quarter turns and configurable depth,
+and verify terrain/body/pick cameras agree through the actual borrowed producer.
+Run the saved unchosen world and compare native history and product sections.
+Receipts: `Code/testing/mesocosm/articulation-camera-2026-10-21/`, 100 MB cap.
+Reuse the existing playable target and marked Cargo home.
+
+**Ownership and findings:** native Isocosm supplies contacts and clearance from
+the same integer part boxes and terrain as stand, walk and offspring admission.
+Isometer owns contact-driven presentation IK and stance/swing state. Mesocosm
+binds admitted poses to it. No new native step or save grammar is authorized by
+an interpolated picture. Current anatomy often has only one short downward
+appendage, while a distant trunk segment supplies support. Collision envelopes
+remain rigid; native joint constraints and articulation that changes placement
+are an explicitly separate remaining condition, not a claim of this bridge.
+
+**Progress:** contacts/sweeps, shared gait and both camera paths connected.
+Smooth bodies and the surface isometric view are defaults. `--bodies voxels`,
+`--camera oblique` and the other existing presets retain comparison views.
+Z/V turn surface and terrarium views, C switches surface/section, and
+`--view-depth` overrides visible depth. The borrowed producer carries the same
+mode and depth as the actual Section, including body/terrain rays and picks.
+Four native controls and 45 host controls pass, four existing host controls
+ignored. The renderer's first run exposed an overstrict bitwise comparison of
+IK endpoints differing by 0.00000006; the control now uses a geometric tolerance.
+All 48 renderer controls now pass. Native meal seeking, blocked routes, births,
+placement and save/resume controls pass through the real Mesocosm consumer.
+The prototype window passes camera switching and quarter-turn controls, with
+35 bodies and 40 actual supporting-part witnesses in the surface view. These
+are supporting parts, not forty anatomical feet: this saved world still has
+zero reachable short-limb soles. Its native history and every opaque product
+section remain exactly equal after the camera exercise.
+
+**Qualification, 2026-10-22:** the final normal release executable passes the
+surface/section and quarter-turn exercise (45 frames). Following an actual
+walking denizen from tick 59 to 60 passes (32 frames): accepted walks rise
+130 to 134 while the producer renders five times, including the intermediate
+motion frames. Captures show settled contacts; the fixed-link sole-lift control
+qualifies swing separately. Both resulting complete save files are byte-equal
+to the pre-existing tick-60 baseline, including all product sections, and the
+new walk trace replays to `f5767ede7effce0f`. Projection failures and dev intents
+remain zero. Forty supporting parts in the wide surface view are distinct from
+the zero reachable large IK soles in this world's short appendages.
+
+The latest 48 renderer controls, four native embodiment controls, four motion
+controls, explicit actual-device producer/picking comparison, and normal
+release shared surface integration pass. The consumer run also passes its
+native food-walking, actual birth/placement and save/resume controls. Remaining
+ignored controls are separately owned gates, not passes. Native and initial
+consumer controls use unoptimized subjects over release dependencies; the final
+motion/producer controls use optimized production dependencies with only the
+host test crate unoptimized. Receipts and the exact source commit:
+`Code/testing/mesocosm/articulation-camera-2026-10-21/summary.json`.
+
+Fixed links only bend terminal appendages; attached descendants keep their
+native frames. The controller staggers swings, finishes a started swing at
+rest, and drops invalid contacts after terrain changes or severance. A native
+translation sweep bounds extra joint space while interpolating an accepted
+adjacent step. New blockers refuse the interpolation; rotations, changed
+anatomy, site or terrain-coordinate-frame changes and long moves reset it.
+Water cannot become a supporting sole, and a real floor under an overhang
+remains eligible. The producer advances its
+picture signature during active motion and returns to retaining idle frames.
+
+**Remaining physical-placement condition:** native joint limits and articulated
+occupied geometry must participate in stand, route, birth and occupancy
+admission before a pose may lower a rigid trunk or extend a limb outside its
+declared or cleared envelope. The present bridge does not meet that condition.
+The body-binding plan remains the native/Conatus boundary reference.
+
+## Decisions
+
+- **D1, surface camera (2026-10-21), applies 382:** Mark: "can we... make the
+  camera isometric? just seems odd to prioritize looking at the cutaway of the
+  ground, when most the stuff is happening on the surface... probably needs
+  options". This applies the wing's selectable isometric view to Mesocosm's
+  default, reopening its older shallow-section preference. Section views stay
+  selectable. Articulation is requested over the existing graph and physical
+  machinery, without inventing appendages that anatomy does not declare.
+
+  Links: area Presentation · draws on 382 · governs mesocosm-genet::section::camera · summary Mesocosm defaults to a selectable isometric surface view with section options.
+
 ## Smooth anatomy probe, 2026-10-21
 
 **Status:** implemented and qualified, 2026-10-21. Mark authorized experimenting with shader-fused

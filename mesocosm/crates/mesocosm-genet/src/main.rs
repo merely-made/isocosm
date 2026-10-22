@@ -94,8 +94,16 @@ fn main() {
             "--camera" => {
                 config.camera = CameraMode::parse(&args.next().unwrap_or_default())
                     .unwrap_or_else(|| {
-                        fail("--camera wants oblique, side, across or terrarium-east/south/west/north")
+                        fail("--camera wants isometric, isometric-south/west/north, oblique, side, across or terrarium-east/south/west/north")
                     });
+            },
+            "--view-depth" => {
+                let depth: f32 = args.next().unwrap_or_default().parse()
+                    .unwrap_or_else(|_| fail("--view-depth wants 1 to 1024 voxels"));
+                if !depth.is_finite() || !(1.0..=1024.0).contains(&depth) {
+                    fail("--view-depth wants 1 to 1024 voxels");
+                }
+                config.view_depth = Some(depth);
             },
             "--slab" => {
                 if let Some(half) = args.next().and_then(|v| v.parse::<f32>().ok()) {
@@ -326,13 +334,14 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)
   --ecology-rates RATE  a1 (ordinary default) or stock (requires an authored witness)
-  --bodies MODE   smooth, voxels (default), boxes or capsules; presentation only
+  --bodies MODE   smooth (default, contact gait), voxels, boxes or capsules
   --body-budget N maximum detailed bodies in the section
   --body-light N  body light scale, sun and ambient (default 1 matches terrain, zero is dark)
   --sun S         sky light: fixed (bench default), sim (play default) or a tick number
   --terrain-style MODE  auto (classic), classic or habitat
-  --camera MODE   oblique (default), side, across, terrarium-east/south/west/north
-  --slab H        section slab half-height in voxels (presentation only, default 28)
+  --camera MODE   isometric (default), isometric-south/west/north, oblique, side, across, terrarium-east/south/west/north
+  --slab H        view half-height in voxels (default 28)
+  --view-depth D  visible depth, 1..1024 voxels (default: surface frame or 16 for sections)
   --capture PATH  write the final frame as a PNG
   --trace PATH    write the session's save as the trace
   --no-trace      omit the session save (default behavior remains enabled)
@@ -356,7 +365,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
 --no-trace omits the save output; it cannot be combined with --trace.
 
 controls: click or E/Space attend, right click or Q choose a current hint,
-  S speciate, arrows pan, Z/V turn a terrarium camera, Esc quit
+  S speciate, arrows pan, Z/V rotate, C surface/section, Esc quit
 in the hint panel: Up/Down select, Enter or click the panel sends the hint,
   Escape closes it; each hint shows its actual body/site topic
 at a checkpoint the keys narrow:

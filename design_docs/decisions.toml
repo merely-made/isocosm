@@ -4494,6 +4494,14 @@ source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to."
 
+[decisions."orthographic-voxel-presentation D1"]
+title = "surface camera (2026-10-21), applies 382"
+source = "mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md"
+area = "Presentation"
+summary = "Mesocosm defaults to a selectable isometric surface view with section options."
+draws_on = ["382"]
+governs = ["mesocosm-genet::section::camera"]
+
 [decisions."sim-execution D1"]
 title = "draw keys (2026-10-19)"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"

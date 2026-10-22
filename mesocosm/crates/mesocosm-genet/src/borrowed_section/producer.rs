@@ -90,11 +90,12 @@ pub(crate) struct Source {
     ground: Option<[u64; 4]>, target: Option<(wgpu::Texture, wgpu::TextureView, wgpu::TextureView, [u32; 2])>,
     presented: Option<SlabCamera>,
     presented_input: Option<[u64;4]>,
+    animation_frame: u64,
 }
 
 impl Source {
     pub(crate) fn new(host: tenant::HostDevice, handle: SceneHandle) -> Self {
-        Self { host, handle, section: None, ground: None, target: None, presented: None, presented_input: None }
+        Self { host, handle, section: None, ground: None, target: None, presented: None, presented_input: None, animation_frame: 0 }
     }
     fn target(&mut self, size: [u32; 2]) {
         if self.target.as_ref().is_some_and(|t| t.3 == size) { return; }
@@ -137,6 +138,10 @@ impl SceneSource for Source {
             return Ok(SceneSignature { size:request.size, host:vec![], ..Default::default() });
         };
         let mut host = input.fingerprint.to_vec();
+        if self.section.as_ref().is_some_and(Section::animating) {
+            self.animation_frame = self.animation_frame.wrapping_add(1);
+        }
+        host.push(self.animation_frame);
         host.extend([input.site(), input.played().unwrap_or(u64::MAX), u64::from(input.quarter_turn)]);
         Ok(SceneSignature { size: request.size, camera: Some(input.camera(request.aspect)),
             terrain_revision: Some(input.fingerprint[0]), host, ..Default::default() })
@@ -169,6 +174,8 @@ impl SceneSource for Source {
             }
             section.configure_bodies(BodyMode::Voxels, section::DEFAULT_BODY_BUDGET);
             if let Some(view) = &input.presentation {
+                section.set_mode(view.mode);
+                section.set_view_depth(view.depth)?;
                 section.configure_bodies(view.bodies, view.budget);
                 section.set_half_height(view.half_height);
                 section.set_body_light(view.light);

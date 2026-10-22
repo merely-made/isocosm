@@ -2,6 +2,13 @@
 
 **Date:** 2026-09-26
 
+**2026-10-22 gait connection:** the shared pose controller now consumes native
+support witnesses and conservative translation clearance, over admitted root
+poses. This is the contact-driven presentation bridge described in the
+[presentation plan](2026-09-11_orthographic_voxel_presentation_plan.md).
+Native joint state, articulated collision admission and the generic Conatus
+binding adapter remain unbuilt.
+
 **2026-10-19 native play connection:** new Mesocosm play foundings use native
 rotated part boxes, Ground support and the existing atomic spatial clock for
 stands, walking, actual births and route arrivals. This does not implement

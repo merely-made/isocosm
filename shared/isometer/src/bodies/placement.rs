@@ -48,6 +48,8 @@ pub struct BodyFrameStats {
     pub smooth_primitives: usize,
     pub posed_joints: usize,
     pub foot_contacts: usize,
+    pub planted_contacts: usize,
+    pub swinging_contacts: usize,
     pub support_contacts: usize,
     /// A host-owned body's encode report, zero for caller-owned submission.
     pub body_tenant_internal_submissions: u64,

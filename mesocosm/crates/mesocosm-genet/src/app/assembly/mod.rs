@@ -121,6 +121,8 @@ impl State {
                     |j| format!("Traveling from site {} to site {}, arriving at tick {}.", j.from, j.to, j.arrives)));
             }
             let presentation = Presentation {
+                mode: host.config.camera,
+                depth: host.config.view_depth,
                 forward: host.config.camera.forward(),
                 centre: crate::section::centre_on(at, host.pan, half, host.config.camera),
                 half_height: half,

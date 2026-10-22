@@ -9,7 +9,9 @@ use super::*;
 use isometer_core::BodyDocument;
 use isometer_space::{places::Places, volume::Volume};
 
+mod contacts;
 mod founding;
+pub use contacts::{Contact, contacts, sweep_clear};
 #[cfg(test)]
 mod tests;
 pub use founding::declare;
@@ -110,9 +112,7 @@ fn check_occupied(volume: &Volume, occupied: Vec<Box3>) -> Result<()> {
         for x in lo[0]..hi[0] {
             for z in lo[2]..hi[2] {
                 let below = [x, lo[1].checked_sub(1).ok_or("body support overflow")?, z];
-                supported |= volume
-                    .material(below)
-                    .is_some_and(|m| m != volume.materials.air && m != volume.materials.water);
+                supported |= contacts::supported(volume, below);
                 for y in lo[1]..hi[1] {
                     if !air(volume, [x, y, z]) {
                         return Err("whole body intersects terrain or water".into());
@@ -235,13 +235,20 @@ impl<'a> Grounding<'a> {
     }
 
     fn stand(&mut self, local: &[Box3], x: i64, z: i64, yaw: Yaw) -> Option<Pose> {
-        if let Some(at) = self.stands.get(local).and_then(|stands| stands.get(&[x, z])) {
+        if let Some(at) = self
+            .stands
+            .get(local)
+            .and_then(|stands| stands.get(&[x, z]))
+        {
             return at.map(|at| Pose { at, yaw });
         }
         let pose = self.at_boxes(local, x, z, yaw).ok();
         // Bounded for the whole immutable terrain window, including refusals.
         if local.len() <= 64 && self.stand_count < 4096 {
-            self.stands.entry(local.to_vec()).or_default().insert([x, z], pose.as_ref().map(|p| p.at));
+            self.stands
+                .entry(local.to_vec())
+                .or_default()
+                .insert([x, z], pose.as_ref().map(|p| p.at));
             self.stand_count += 1;
         }
         pose
