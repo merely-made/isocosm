@@ -1541,12 +1541,6 @@ area = "Processes and rules"
 summary = "The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266)"
 draws_on = ["113"]
 
-[cases."264"]
-title = "Part roles are open keys in the world's rules with a default set, and that set is examined before it is fixed"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Bodies and anatomy"
-summary = "Part roles are open keys in the world's rules with a default set, and that set is surveyed before it is fixed."
-
 [cases."265"]
 title = "The thirty shapes are expressed as data with the used mechanics, and the definition widens with the fields the probe proves"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -2448,6 +2442,7 @@ title = "A wound loses a part's cells, regrown at a price where the lineage can"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A wound loses a part's cells; lineages whose traits allow it regrow them at a price, others never heal. (amended by 485)"
+draws_on = ["123"]
 
 [cases."470"]
 title = "A severed part becomes a body of its own, alive where its lineage regrows from fragments"
@@ -2520,12 +2515,14 @@ title = "Growth toward the recipe regrows a severed part only where the lineage 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Growth toward the recipe regrows a severed part only in a lineage whose traits let it heal."
+draws_on = ["469", "478"]
 
 [cases."486"]
 title = "Every fragment of a lineage that regrows from fragments lives, and physiology decides which last"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Every severed part of a fragment-regrowing lineage lives on as a body; physiology decides which last, with no new rule."
+draws_on = ["470"]
 
 [cases."488"]
 title = "A mold is a territory, and micro life a surface"
@@ -2581,6 +2578,7 @@ title = "A wound takes cells in proportion, and healing comes first"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A wound takes cells from a part's functions in proportion; a healing lineage regrows lost cells before filling tissue or growing parts."
+draws_on = ["469"]
 
 [cases."497"]
 title = "A territory's and a surface's matter lies in each place's ledger, under their keys"
@@ -3525,6 +3523,7 @@ title = "A wound is its own effect"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A wound is its own Effect with its own part draw; Eat stays tissue only."
+draws_on = ["469", "704"]
 
 [cases."706"]
 title = "A part keeps its lost cells"
@@ -3538,66 +3537,77 @@ title = "Severing follows isometer's semantics"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Severing tombstones the whole subtree, keeps ids, never takes the root, and moves the tombstones' matter out."
+draws_on = ["674"]
 
 [cases."708"]
 title = "A wound spills everything over its lowered bound"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A wound spills tissue, reserve and provision over their lowered bounds, so no account sits above its bound."
+draws_on = ["469"]
 
 [cases."709"]
 title = "Free cells count in a wound's proportion"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Free (unallocated) cells count in a wound's proportion and cushion it."
+draws_on = ["496"]
 
 [cases."710"]
 title = "Losing every cell severs a part, or kills at the root"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A non-root part with no cells left is severed; a root with none dies."
+draws_on = ["707"]
 
 [cases."711"]
 title = "Severing comes only from losing every cell"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Severing comes only from losing every cell; a game's strikes reach it by wounding hard enough."
+draws_on = ["710"]
 
 [cases."712"]
 title = "Healing lands just before tissue"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Healing lands just before tissue: hungry bodies land reserve, heal, tissue, grow, provision; fed ones heal first."
+draws_on = ["496"]
 
 [cases."713"]
 title = "Regrowing from a fragment is a second trait"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Regrowing from a fragment is a second trait drawn per lineage, separate from healing."
+draws_on = ["470", "485"]
 
 [cases."714"]
 title = "A living fragment re-roots as a seedling does"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A living fragment re-roots as a seedling does: its top part becomes part 0 at situs [0,0,0] and grows its recipe from there."
+draws_on = ["470"]
 
 [cases."715"]
 title = "A living fragment is a birth, unprovisioned"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A living fragment is a birth without provision, counted among births and the living with a parent relation, systems dormant where unrealizable."
+draws_on = ["470", "554"]
 
 [cases."716"]
 title = "A hazard's wound lands on a part drawn by cells"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A hazard's wound lands on a part drawn by living cells, so bigger parts are hit more often."
+draws_on = ["705"]
 
 [cases."717"]
 title = "Severing bumps the body's revision; a wound does not"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Severing bumps the body's revision and re-resolves bindings; a wound does not."
+draws_on = ["707"]
 
 [cases."718"]
 title = "Checkpoint 10 builds rot; eating carrion comes later"
@@ -3611,6 +3621,7 @@ title = "A regrown part revives its tombstone"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A regrown part revives its tombstone: healing clears the severed flag at that situs and gives it new cells."
+draws_on = ["707"]
 
 [cases."720"]
 title = "Isometer's fixtures become its own"
@@ -3750,12 +3761,6 @@ area = "Method and documents"
 summary = "The datasheet loader lowers onto native Recipe and Template; roster() reads the sheets; legacy Founding becomes a name into them."
 draws_on = ["625"]
 
-[cases."759"]
-title = "The registry carries all fifteen functions, with the world move"
-source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Bodies and anatomy"
-summary = "The registry carries all fifteen functions, arriving with the world move."
-
 [cases."760"]
 title = "An authored faction is a polity with no members yet"
 source = "design_docs/2026-09-18_wing_design_plan.md"
@@ -3894,18 +3899,21 @@ title = "Healing restores a lost cell's recorded allocation"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "A loss records the cell's previous function or free-pool status, and healing restores that allocation rather than recomputing the lineage recipe."
+draws_on = ["469", "496"]
 
 [cases."811"]
 title = "Unknown legacy losses remain while recorded losses can heal"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Legacy losses of unknown allocation stay admissible and wait for explicit repair; healing selects only losses with recorded allocations."
+draws_on = ["810"]
 
 [cases."812"]
 title = "Healing after adapter transfer restores free-pool cells"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Healing after an adapter transfer restores lost cells as free-pool cells, retaining the lost cell IDs."
+draws_on = ["810"]
 
 [cases."813"]
 title = "An empty choice can be reconsidered at a later pass start"
@@ -4304,6 +4312,7 @@ title = "Defence compares the final pass-granted bite on the protected part"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Bodies and anatomy"
 summary = "Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant."
+draws_on = ["872"]
 
 [cases."875"]
 title = "Generated-world offers require one joint actual native witness"
@@ -4857,6 +4866,27 @@ source = "design_docs/doctrine.md"
 area = "Bodies and anatomy"
 summary = "One cell varies at birth and is inherited; riffs swap or add system roles; dormant systems pass on; selection decides; rates drawn, outcomes measured."
 draws_on = ["491", "563", "568", "571", "576", "577", "578", "579", "580", "583", "584", "ecology.1"]
+
+[statements."bodies.12"]
+title = "Wounds and severing"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Harm drains vigour then wounds; a wound takes cells in proportion and spills; losing every cell severs (or kills at the root)."
+draws_on = ["123", "469", "496", "704", "705", "707", "708", "709", "710", "711", "716", "717"]
+
+[statements."bodies.13"]
+title = "Healing and fragments"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Healing lineages regrow lost cells and severed parts at a price; any body can rest to heal; fragments of fragment-regrowing lineages live on."
+draws_on = ["227", "470", "485", "486", "712", "713", "714", "715", "719", "810", "811", "812"]
+
+[statements."bodies.14"]
+title = "Defence"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Defensive tissue is designated with an authored threshold expression; it compares the final granted bite; geometry alone is no armour."
+draws_on = ["872", "873"]
 
 [statements."directing.1"]
 title = "Surfaces derive from knowledge and control"

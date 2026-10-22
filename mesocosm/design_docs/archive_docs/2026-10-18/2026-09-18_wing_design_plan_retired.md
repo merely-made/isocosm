@@ -3078,6 +3078,28 @@ drafted, archive 490"):
      by the recipe (478) with 466's functions and certifies them again;
      until then nothing certified changes.
 
+**Moved 2026-10-22** in the doctrine's Bodies review, as executed: the part
+roles' survey (264, which led to 276 and 277) and the registry's fifteen
+functions (759) (Mark: "Archive both"):
+
+264. **Part roles are open keys in the world's rules with a default set, and
+     that set is examined before it is fixed.** Put to Mark on 2026-09-26,
+     with 262: part roles from `isometer-core`'s closed four, open keys, or
+     open keys with the four as the default? Mark: "i feel like we're missing
+     many default part roles, but 1 sounds right. i don't mind isometer
+     depending on a basic set of archetypal parts satisfying each of the many
+     roles. limb, mass, sensor, plate, neurology, structure, idk. just feels
+     underexamined". Told that the code's four roles are shapes, lump, rod,
+     sheet and point, while a part's function comes from the processes it
+     expresses, so that neurology and structure are functions, and asked
+     which axis wants more: Mark: "Examine first." A survey of both axes, in
+     the code and in biology, comes back to him before the default set is
+     ruled.
+759. **The registry carries all fifteen functions, with the world move.**
+     2026-10-09. Options: all fifteen with the world move (recommended); the
+     five natives for good. Mark chose "All fifteen, with the world move
+     (Recommended)".
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's

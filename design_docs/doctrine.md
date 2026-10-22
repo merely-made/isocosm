@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, the sim's schema, and Processes and rules reviewed; Bodies and anatomy is under review (Bodies 1 to 11). Each
+**Status, 2026-10-22:** every area reviewed, 130 statements; the per-area budget and archiving the design record's §1 to §11 remain. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -792,6 +792,53 @@ Links: draws on 491, 563, 568, 571, 576, 577, 578, 579, 580, 583, 584, ecology.1
 
 *Reviewed 2026-10-22, new; checked built. Mark: "As drafted, citing Ecology
 1".*
+
+### Bodies 12. Wounds and severing
+
+Harm drains vigour first and wounds a part when it lands hard or vigour is
+gone. A wound is its own effect, landing on a part drawn by living cells and
+taking cells from its functions and free pool in proportion; the part keeps
+its lost cells, so physiology never writes geometry, and every account above
+its lowered bound spills. A part that loses every cell is severed under
+isometer's semantics (its subtree tombstoned, ids kept, never the root), and a
+root that loses every cell dies. Severing comes only that way, a game's
+strikes reaching it by wounding hard enough, and only severing bumps the
+body's revision. In Mesocosm's generated worlds a hazard wounds at a drawn
+rate, zero its control.
+
+*Not yet built:* the vigour pool.
+
+Links: draws on 123, 469, 496, 704, 705, 707, 708, 709, 710, 711, 716, 717 · summary Harm drains vigour then wounds; a wound takes cells in proportion and spills; losing every cell severs (or kills at the root).
+
+*Reviewed 2026-10-22, new; checked built but for vigour. Mark: "Two
+statements".*
+
+### Bodies 13. Healing and fragments
+
+A lineage that can heal regrows lost cells at a cell's mass each, just before
+tissue, restoring each cell's recorded allocation (free-pool after an adapter
+transfer; unknown legacy losses wait for an explicit repair), and regrows a
+severed part by reviving its tombstone. Any body can rest to heal a cell a
+tick at part of the cell price, never resting below the starving line. Where a
+lineage regrows from fragments, a trait of its own, a severed subtree lives,
+re-rooted as a seedling and counted a birth without provision, physiology
+deciding which fragments last; otherwise it is a carcass.
+
+Links: draws on 227, 470, 485, 486, 712, 713, 714, 715, 719, 810, 811, 812 · summary Healing lineages regrow lost cells and severed parts at a price; any body can rest to heal; fragments of fragment-regrowing lineages live on.
+
+*Reviewed 2026-10-22, new; checked built. 227's rest rounds came here at
+Mark's word ("Healing to Bodies"). Mark: "Two statements".*
+
+### Bodies 14. Defence
+
+Defensive tissue is explicitly designated, and its bite threshold is an
+authored native expression over that tissue and its modifiers; plate geometry
+alone makes no armour. Defence compares the final pass-granted bite on the
+protected part, and admission and conserved matter use that same grant.
+
+Links: draws on 872, 873 · summary Defensive tissue is designated with an authored threshold expression; it compares the final granted bite; geometry alone is no armour.
+
+*Reviewed 2026-10-22, new; checked built. Mark: "Its own statement".*
 
 ## Record and history
 

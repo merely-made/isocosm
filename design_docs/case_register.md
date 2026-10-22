@@ -243,7 +243,6 @@ three design docs that cite it. The record holds the words.
 | 58 | A spread is a body; a fungus is one body even when separate and germs are many bodies that revise genes on the fly. (amended by 488) | none |
 | 123 | Harm is both vigour (a reserve drained first) and wounds (to parts); vigour returns with rest and wounds heal slowly or never. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 227 | The core reads mood from needs now (low reserve, hunger, wounds); strain builds whenever mood stays low; memory and situation wait for S1. 2026-10-18: a hazard wounds, a core wound share feeds mood, healing or rest answers it, strain builds and vitals shows it. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
-| 264 | Part roles are open keys in the world's rules with a default set, and that set is surveyed before it is fixed. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 273 | Checkpoint 3's four readings stand: untyped matter becomes the world's own, living matter is lineage-typed, shape identity is its roles, native readings run in crowds. | none |
 | 276 | Shapes are eight: lump, rod, sheet, point, tube, branch, shell and joint. (amended by 492) | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 277 | A body's functions assemble into organ systems, parts are shapes expressing functions, and new systems are riffed by mixing functions. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
@@ -352,7 +351,6 @@ three design docs that cite it. The record holds the words.
 | 716 | A hazard's wound lands on a part drawn by living cells, so bigger parts are hit more often. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 717 | Severing bumps the body's revision and re-resolves bindings; a wound does not. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 719 | A regrown part revives its tombstone: healing clears the severed flag at that situs and gives it new cells. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 759 | The registry carries all fifteen functions, arriving with the world move. | [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
 | 766 | Native parts gain cell identity: tracts as cell sets beside the counts, intake ports as part data. | none |
 | 787 | Authored cells reach the world by native Command::Express placing cells through mosaic::propose. | [glyph expression](../mesocosm/design_docs/2026-09-15_glyph_expression_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 810 | A loss records the cell's previous function or free-pool status, and healing restores that allocation rather than recomputing the lineage recipe. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
