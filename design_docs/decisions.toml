@@ -4750,6 +4750,195 @@ area = "Ecology"
 summary = "The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to."
 draws_on = ["982"]
 
+[cases."985"]
+title = "A faction's general protocols belong to the world's ruleset"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Where peer agreement cannot emerge, a faction's general protocols belong to the world's ruleset, keeping the faction stateless."
+draws_on = ["41", "63"]
+
+[cases."986"]
+title = "A form of governance is who qualifies and by what act"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "A form of governance is a pair, who qualifies to decide and by what deciding act; forms are data, never an enum."
+draws_on = ["63"]
+
+[cases."987"]
+title = "The form that emerges is ranked preference over alignment"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Which form of governance emerges is ranked preference derived from alignment, weighted by influence, run at founding; ties break on the seed."
+draws_on = ["50", "51", "63"]
+
+[cases."988"]
+title = "A polity enforces with what it provides and asserts"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The sim's schema and saves"
+summary = "A polity enforces with what it provides and asserts, withholding or revoking; force is one means; the way of deciding suggests the means."
+draws_on = ["38", "64", "66"]
+
+[cases."989"]
+title = "Efficacy is read as a track record, never asserted"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The sim's schema and saves"
+summary = "Whether a means is efficacious is a track record, never asserted; the gap between a constitution and its members' preference is read at any time."
+draws_on = ["50", "51"]
+
+[cases."990"]
+title = "A polity's four conditions are read from the record"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "A polity's conditions short of death (inactive, suppressed, superseded, subordinated) are each read from the record, not exclusive, reversible."
+draws_on = ["65", "66"]
+
+[cases."991"]
+title = "No will to continue is built in"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The sim's schema and saves"
+summary = "No will to continue is built into a polity; an institution seen clinging on is subordinated to its own officers' faction."
+draws_on = ["66", "68"]
+
+[cases."992"]
+title = "Contingency is borrowed enforcement, and collapse cascades"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The sim's schema and saves"
+summary = "A contingent polity borrows its host's enforcement, so it is cheap to found, and a host's failure cascades through what is contingent on it."
+draws_on = ["64"]
+
+[cases."993"]
+title = "Collection is roots and reachability"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Record and history"
+summary = "Collection is roots and reachability: a thing of note is kept while something reaches it from a root; collecting folds it back, conserving counts."
+draws_on = ["70", "71"]
+
+[cases."994"]
+title = "A thing of note sheds in steps: individual, stub, event"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Record and history"
+summary = "Collection is graded: the full individual, then a stub an event names it by, then the event alone; events refer to participants by stub."
+draws_on = ["71"]
+
+[cases."995"]
+title = "The tiers of keeping are a component, not a crate per word"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Organs: glyphs, impresa, hagiograph"
+summary = "The tiers of keeping are one component of the sim, not a crate per word; the kinds are data."
+draws_on = ["69"]
+
+[cases."996"]
+title = "A location's kind is read off its pattern"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "A location stores extent, modifiers, conditions, history and claims; its kind is read off them; a location may be potential; a highway is also a route."
+draws_on = ["14", "72"]
+
+[cases."997"]
+title = "A nesting step says down, up, across and ratio"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "A nesting step says how the finer map is generated (down), reads from above (up), crosses boundaries (across), and how much finer (ratio); steps compose."
+draws_on = ["69", "74"]
+
+[cases."998"]
+title = "What a critter-world does reaches the world as environment"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "For a world resting on a critter, what the critter does (walking, turning, sleeping, dying) reaches the world as its environment."
+draws_on = ["39", "73"]
+
+[cases."999"]
+title = "Lifting and restriction; processes declarative enough to aggregate"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Lifting samples individuals from an aggregate by seed; restriction conserves accounts back; processes are declarative so their aggregate derives, scripts foreground-only."
+draws_on = ["15", "32", "75"]
+
+[cases."1000"]
+title = "Two bindings as intent; the contract round-trips through bytes"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Stack and engine"
+summary = "Ruling 78 as discipline: native binding first, a component binding when a rung-3 consumer exists; contract types round-trip through bytes; cores stay native."
+draws_on = ["76", "77", "78"]
+
+[cases."1001"]
+title = "A secret is a taboo's set of knowers, and ends by leaking"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "A secret is a taboo on telling (a norm with reputational sanction); its value is what release would do to standing; telling is a choice; it ends by leaking."
+draws_on = ["50", "56", "87"]
+
+[cases."1002"]
+title = "Realignment is the epoch boundary at the scale of a world"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Realignment to another ruleset is the epoch boundary at world scale, a rung transition, and may add nesting steps as well as change rules."
+draws_on = ["57", "90"]
+
+[cases."1003"]
+title = "Going back is replay; editing the past forks"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "A past state is the log replayed (checkpoints bound the cost); editing the past asserts a fact there, making a fork; the timeline shows legend first."
+draws_on = ["7", "91", "126"]
+
+[cases."1004"]
+title = "Nesting is the sim's; scopes are a game's"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Nesting (a node opening into a finer map, no named tiers) is the sim's; a scope (a window of extent and grain) is a game's; each game has its own."
+draws_on = ["72", "74", "92"]
+
+[cases."1005"]
+title = "Needs by tier; value is derived; trade is flow"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Value is a reading over supply, capability and need, never stored; money is an asserted claim; acting is by tier; trade trends are flow along routes."
+draws_on = ["37", "38", "94"]
+
+[cases."1006"]
+title = "An act's score is need, trust and approval"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "An act is chosen by need times trust times approval; what gets made follows the same score; grinding yields aggregate competence, never a legend; a fey mood is a triggered need."
+draws_on = ["50", "75", "95"]
+
+[cases."1007"]
+title = "A material's properties are its lineage's traits"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A material's properties are its lineage's traits and its interactions are effects; what a thing is made of is a note; scarcity and provenance are ecological."
+draws_on = ["49", "57", "80", "97"]
+
+[cases."1008"]
+title = "The world is an entity on the ladders the record already has"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy."
+draws_on = ["98", "99"]
+
+[cases."1009"]
+title = "The world has a lineage, and its magic is a trait on six axes"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The world has a lineage (genotype its catalogue, realignment its boundary); a magic system is a world trait on six axes; bending the rules is declared suspension."
+draws_on = ["49", "101", "102"]
+
+[cases."1010"]
+title = "An arc is a thread of cause-links; the storyteller is the world's agency"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "An arc's parts are things the sim has; an arc is a derived thread, never stored; a game makes its statement; the storyteller is the world entity's agency."
+draws_on = ["98", "99", "103"]
+
+[cases."1011"]
+title = "Related worlds: descent and neighbourhood, neither merging"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges."
+draws_on = ["11", "105", "126"]
+
 [decisions."orthographic-voxel-presentation D1"]
 title = "surface camera (2026-10-21), applies 382"
 source = "mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md"
@@ -4935,7 +5124,7 @@ title = "Arcs and goals"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
 summary = "The sim knows an arc's parts and lets entities pursue real goals; the game makes the statement; acts record every goal served."
-draws_on = ["103", "866", "vtt.4"]
+draws_on = ["103", "866", "1010", "vtt.4"]
 
 [statements."ecology.1"]
 title = "Two doors change a lineage"
@@ -4977,7 +5166,7 @@ title = "Matter"
 source = "design_docs/doctrine.md"
 area = "Ecology"
 summary = "A world's materials are its creatures; the world is an entity of stuff; each material keeps its own stock, edits credited by density."
-draws_on = ["96", "97", "98", "100", "139", "739", "836"]
+draws_on = ["96", "97", "98", "100", "139", "739", "836", "1007"]
 
 [statements."eponym.1"]
 title = "Lives and co-op"
@@ -5230,7 +5419,7 @@ title = "A crate when the abstraction earns it"
 source = "design_docs/doctrine.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Crates are made when the abstraction earns one, not per name; parked code moves unchanged."
-draws_on = ["201", "673"]
+draws_on = ["201", "673", "995"]
 
 [statements."presentation.1"]
 title = "One default view"
@@ -5321,7 +5510,7 @@ title = "Similitude and the crowd"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying."
-draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881"]
+draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881", "999"]
 
 [statements."processes.7"]
 title = "Time"
@@ -5356,21 +5545,21 @@ title = "Belief"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "Spread is modelled distributionally; any belief can be wrong; whether it takes weighs checking, teller, wish and manner; secrets are taboo leverage."
-draws_on = ["84", "86", "87", "117", "118", "119", "241"]
+draws_on = ["84", "86", "87", "117", "118", "119", "241", "1001"]
 
 [statements."processes.12"]
 title = "Collective action"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "Factions act by consent, never gated; a group-vested polity is gated per act; constitutions change by their own way; force founds anew."
-draws_on = ["63", "65", "66", "133", "134", "135", "136", "137", "138", "schema.5"]
+draws_on = ["63", "65", "66", "133", "134", "135", "136", "137", "138", "985", "986", "987", "990", "schema.5"]
 
 [statements."processes.13"]
 title = "Making and learning"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "Value tracks scarcity, capability and need; acting is like crafting; skills rise four ways and decay to a floor; masters invent; items grow with maker and story."
-draws_on = ["94", "95", "132", "141", "142", "143", "173", "schema.6"]
+draws_on = ["94", "95", "132", "141", "142", "143", "173", "1005", "1006", "schema.6"]
 
 [statements."processes.14"]
 title = "How culture moves"
@@ -5398,7 +5587,7 @@ title = "Magic"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
 summary = "Magic composes fundamental effects as combinable cantrips, each level costing sharply more; scripts hook other generators; explainable surprises welcome."
-draws_on = ["404"]
+draws_on = ["404", "1009"]
 
 [statements."record.1"]
 title = "Consistency is chosen per domain"
@@ -5412,7 +5601,7 @@ title = "Three tiers of keeping"
 source = "design_docs/doctrine.md"
 area = "Record and history"
 summary = "Ambient, of note, legend; the significant record is never lossy; collection is graded GC rooted in what players care about."
-draws_on = ["4", "69", "70", "71", "80", "125"]
+draws_on = ["4", "69", "70", "71", "80", "125", "993", "994"]
 
 [statements."record.3"]
 title = "Memory is local and fades"
@@ -5482,7 +5671,7 @@ title = "Polities"
 source = "design_docs/doctrine.md"
 area = "The sim's schema and saves"
 summary = "A polity needs efficacious enforcement, has a focus not a size, may build on another; its constitution is its definitive act; goals follow alignment."
-draws_on = ["64", "67", "68", "81"]
+draws_on = ["64", "67", "68", "81", "988", "989", "991", "992"]
 
 [statements."schema.6"]
 title = "Minds"
@@ -5555,7 +5744,7 @@ title = "One sim, one contract, one bench"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools."
-draws_on = ["1", "20", "92", "154", "192", "197", "203", "204", "254", "483", "world.3"]
+draws_on = ["1", "20", "92", "154", "192", "197", "203", "204", "254", "483", "1000", "world.3"]
 
 [statements."stack.5"]
 title = "Isometer owns in-site space"
@@ -5651,35 +5840,35 @@ title = "Shape and scale"
 source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "Terrain runs from region to planetary system with an interior; one shape per world, any shape; a region first."
-draws_on = ["11", "12", "13", "73", "124"]
+draws_on = ["11", "12", "13", "73", "124", "998"]
 
 [statements."world.2"]
 title = "Worlds in company"
 source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "A world sits among others; nothing built may assume one world alone under one sun."
-draws_on = ["11", "105", "150"]
+draws_on = ["11", "105", "150", "1011"]
 
 [statements."world.3"]
 title = "The map's words"
 source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "Site, region, location, wilderness, biome and environment; locations nest by one composable mechanism, allocated as generated."
-draws_on = ["72", "74", "88"]
+draws_on = ["72", "74", "88", "996", "997", "1004"]
 
 [statements."world.4"]
 title = "The world is a generative entity"
 source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "A world's kind stays open; it has traits and a lineage timeline; magic and materials are seeded, configurable, static or fluid."
-draws_on = ["99", "101", "102", "120", "121", "122", "140"]
+draws_on = ["99", "101", "102", "120", "121", "122", "140", "1008"]
 
 [statements."world.5"]
 title = "Founding and authoring"
 source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "Founding is details plus a seed; authoring displaces generation; history depth is the founder's; presets are choices."
-draws_on = ["89", "90", "91", "272", "907", "935"]
+draws_on = ["89", "90", "91", "272", "907", "935", "1002", "1003"]
 
 [statements."world.6"]
 title = "Sites are lifted to volume"
