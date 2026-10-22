@@ -7,8 +7,8 @@ mod geometry;
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use isometer::{BodyLayer, SlabCamera, SubjectKey};
 use super::light::Block;
+use isometer::{BodyLayer, SlabCamera, SubjectKey};
 use tenant::{BodyId, HostDevice, Palette, PaletteMesh, Pose};
 
 const FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8UnormSrgb;
@@ -25,6 +25,7 @@ pub(super) struct BodyTenant {
     cached: BTreeMap<SubjectKey, CachedBody>,
     light: f32,
     block: Block,
+    smooth: super::smooth::Bodies,
 }
 
 impl BodyTenant {
@@ -38,11 +39,13 @@ impl BodyTenant {
             cached: BTreeMap::new(),
             light: 1.0,
             block: Block::fixed(),
+            smooth: super::smooth::Bodies::new(host, FORMAT, size),
         }
     }
 
     pub fn resize(&mut self, device: &wgpu::Device, size: [u32; 2]) {
         self.target = target(device, size);
+        self.smooth.resize(device, size);
     }
 
     pub fn view(&self) -> wgpu::TextureView {
@@ -62,7 +65,19 @@ impl BodyTenant {
         encoder: &mut wgpu::CommandEncoder,
         layer: &mut BodyLayer,
         camera: SlabCamera,
+        smooth: Option<&super::SiteScene>,
     ) -> Result<(), String> {
+        if let Some(scene) = smooth {
+            return self.smooth.encode(
+                encoder,
+                layer,
+                camera,
+                scene,
+                self.block,
+                self.light,
+                &self.target,
+            );
+        }
         let mut retained = BTreeSet::new();
         let mut builds = 0;
         let mut bytes = 0;

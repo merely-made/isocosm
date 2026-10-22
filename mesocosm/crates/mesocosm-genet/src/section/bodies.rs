@@ -15,6 +15,7 @@ use super::{PlacedBody, SiteScene};
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum BodyMode {
+    Smooth,
     Capsules,
     Boxes,
     #[default]
@@ -24,6 +25,7 @@ pub enum BodyMode {
 impl BodyMode {
     pub fn parse(value: &str) -> Option<Self> {
         match value {
+            "smooth" => Some(Self::Smooth),
             "capsules" => Some(Self::Capsules),
             "boxes" => Some(Self::Boxes),
             "voxels" => Some(Self::Voxels),
@@ -33,6 +35,7 @@ impl BodyMode {
 
     pub fn name(self) -> &'static str {
         match self {
+            Self::Smooth => "smooth",
             Self::Capsules => "capsules",
             Self::Boxes => "boxes",
             Self::Voxels => "voxels",

@@ -6,10 +6,9 @@
 
 //! Mesocosm's body renderer.
 //!
-//! Small on purpose. The geometry is flat-shaded palette quads with no
-//! textures, no interpolated normals, and no skinning, because parts are rigid
-//! by ruling. That is why this game does not want an engine: an engine's
-//! rendering value is in the parts this problem does not have.
+//! Palette quads are the ordinary voxel path. [`implicit`] provides an
+//! optional smooth surface and a derived rest stance over the same part graph,
+//! without changing saved anatomy. Both run on the caller's shared device.
 //!
 //! # Headless first
 //!
@@ -26,6 +25,7 @@
 pub mod camera;
 pub mod composite;
 pub mod geometry;
+pub mod implicit;
 pub mod live_body;
 
 use isometer_mesh::BodyMesh;

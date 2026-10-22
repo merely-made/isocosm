@@ -29,7 +29,7 @@ mod vertex;
 
 pub use materials::{PartMaterial, TISSUE_CHANNELS};
 pub use palette::{MaterialPalette, PALETTE_ENTRIES, PaletteColour, linear_from_display};
-pub use query::{BodyHit, BodyQueryError, body_bounds, pick_bodies, posed_quad};
+pub use query::{BodyHit, BodyQueryError, body_bounds, pick_bodies, posed_quad, part_transform};
 
 use materials::part_appearance;
 use palette::{PaletteBlock, PaletteTable, palette_slot};

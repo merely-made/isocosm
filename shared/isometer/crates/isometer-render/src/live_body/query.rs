@@ -67,6 +67,18 @@ pub fn body_bounds(body: LiveBody<'_>) -> Result<Option<([f32; 3], [f32; 3])>, L
     Ok(seen.then_some((min.to_array(), max.to_array())))
 }
 
+/// A part's local voxel frame, identical to drawing and posed face queries.
+pub fn part_transform(body: LiveBody<'_>, part: PartId) -> Result<[[f32; 4]; 4], LiveBodyError> {
+    validate_body(body)?;
+    let p = body
+        .mesh
+        .placements
+        .iter()
+        .find(|p| p.part == part)
+        .ok_or(LiveBodyError::InvalidBody)?;
+    Ok(model_matrix(body, p.yaw, p.pivot, p.pivot_at).to_cols_array_2d())
+}
+
 /// One actual meshed face, transformed by the same part matrix used to draw.
 /// This is before clipping or occlusion, and is not a whole-body exterior test.
 pub fn posed_quad(

@@ -66,7 +66,7 @@ fn main() {
             },
             "--bodies" => {
                 config.body_mode = BodyMode::parse(&args.next().unwrap_or_default())
-                    .unwrap_or_else(|| fail("--bodies wants voxels, boxes or capsules"));
+                    .unwrap_or_else(|| fail("--bodies wants smooth, voxels, boxes or capsules"));
             },
             "--body-budget" => {
                 config.body_budget = args
@@ -326,7 +326,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)
   --ecology-rates RATE  a1 (ordinary default) or stock (requires an authored witness)
-  --bodies MODE   voxels (default), boxes or capsules; presentation only
+  --bodies MODE   smooth, voxels (default), boxes or capsules; presentation only
   --body-budget N maximum detailed bodies in the section
   --body-light N  body light scale, sun and ambient (default 1 matches terrain, zero is dark)
   --sun S         sky light: fixed (bench default), sim (play default) or a tick number

@@ -45,6 +45,10 @@ pub struct BodyFrameStats {
     pub instance_upload_bytes: u64,
     pub frame_upload_bytes: u64,
     pub draw_parts: usize,
+    pub smooth_primitives: usize,
+    pub posed_joints: usize,
+    pub foot_contacts: usize,
+    pub support_contacts: usize,
     /// A host-owned body's encode report, zero for caller-owned submission.
     pub body_tenant_internal_submissions: u64,
     /// Qualifies estimates when a host tenant does not expose upload counters.

@@ -25,6 +25,7 @@ use crate::camera::{SlabCamera, SlabWindow};
 use crate::volumes::DeclaredExtentVolumes;
 
 mod placement;
+mod surfaces;
 pub use placement::BodyFrameStats;
 pub(crate) use placement::{body_origin, depth_target, distance, intersects};
 
@@ -133,6 +134,7 @@ pub struct BodyLayer {
     renderer: LiveBodyRenderer,
     placed: Vec<PlacedBody>,
     palettes: BTreeMap<SubjectKey, Vec<PaletteColour>>,
+    surfaces: BTreeMap<SubjectKey, isometer_render::implicit::Surface>,
     pub stats: BodyFrameStats,
     pub budget: usize,
     /// Draw only the always-visible body, with no terrain behind it.
@@ -168,6 +170,7 @@ impl BodyLayer {
             renderer: LiveBodyRenderer::new(device, isometer_lens::FRAME_FORMAT, 256),
             placed: Vec::new(),
             palettes: BTreeMap::new(),
+            surfaces: BTreeMap::new(),
             stats: BodyFrameStats::default(),
             budget: 1,
             isolated: false,
@@ -230,6 +233,7 @@ impl BodyLayer {
 
     pub fn clear_inspection(&mut self) {
         self.placed.clear();
+        self.surfaces.clear();
         self.selected = None;
     }
 
@@ -258,6 +262,7 @@ impl BodyLayer {
         self.stats.secretory_parts = 0;
         self.stats.projection_failures += 1;
         self.placed.clear();
+        self.surfaces.clear();
         subjects
     }
 
@@ -278,9 +283,12 @@ impl BodyLayer {
     /// World bounds of one drawn part, under the same part matrix the draw
     /// used — parent rotation, pivot and continuous yaw included.
     ///
-    /// Read off the meshed faces rather than the declared volume box, so a
-    /// sparse anatomy reports what it actually occupies.
+    /// Voxel bounds follow actual faces. Implicit bounds conservatively include
+    /// the posed primitives and their blend allowance.
     pub fn part_bounds(&self, subject: SubjectKey, part: PartId) -> Option<([f32; 3], [f32; 3])> {
+        if let Some(surface) = self.surfaces.get(&subject) {
+            return surface.part_bounds(part);
+        }
         let placed = self.placed.iter().find(|body| body.subject == subject)?;
         let placement = placed.mesh.placements.iter().find(|p| p.part == part)?;
         let quads = placed.mesh.mesh_for(placement.volume)?.quads.len();
@@ -308,6 +316,9 @@ impl BodyLayer {
         Option<(PartAddress, isometer_render::live_body::BodyHit)>,
         isometer_render::live_body::BodyQueryError,
     > {
+        if !self.surfaces.is_empty() {
+            return self.pick_surfaces(origin, direction, far, clip);
+        }
         let bodies: Vec<_> = self.placed.iter().map(PlacedBody::live).collect();
         isometer_render::live_body::pick_bodies(&bodies, origin, direction, far, Some(clip)).map(
             |hit| {
@@ -431,6 +442,7 @@ impl BodyLayer {
         mut fallback: impl FnMut(&SceneBody<'_>, &mut BodyFrameStats),
     ) {
         self.placed.clear();
+        self.surfaces.clear();
         self.stats = BodyFrameStats::default();
         let mut candidates: Vec<_> = bodies
             .iter()

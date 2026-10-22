@@ -22,6 +22,7 @@ mod camera;
 mod capsules;
 mod light;
 mod tenant;
+mod smooth;
 pub use light::{Block as SkyBlock, SunSource};
 pub use capsules::{pose_of, roster_of};
 mod terrain;
@@ -189,6 +190,7 @@ impl Section {
     }
 
     pub fn resize(&mut self, width: u32, height: u32) {
+        if self.width == width.max(1) && self.height == height.max(1) { return; }
         self.width = width.max(1);
         self.height = height.max(1);
         self.scene.resize(self.width, self.height);
@@ -317,6 +319,7 @@ impl Section {
             bodies: host_bodies,
             scene: frame.scene,
             tenant: body_tenant,
+            smooth: self.body_mode == BodyMode::Smooth,
         };
         let boxes;
         let volumes = if self.body_mode == BodyMode::Boxes {
@@ -447,6 +450,7 @@ struct SectionHost<'a> {
     bodies: &'a mut bodies::HostBodies,
     scene: &'a SiteScene,
     tenant: &'a mut tenant::BodyTenant,
+    smooth: bool,
 }
 
 impl isometer::SceneHost for SectionHost<'_> {
@@ -460,7 +464,7 @@ impl isometer::SceneHost for SectionHost<'_> {
         bodies: &mut isometer::BodyLayer,
         camera: isometer::SlabCamera,
     ) -> Result<(), String> {
-        self.tenant.encode(encoder, bodies, camera)
+        self.tenant.encode(encoder, bodies, camera, self.smooth.then_some(self.scene))
     }
 
     fn begin(&mut self) {
