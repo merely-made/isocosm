@@ -40,9 +40,11 @@ three design docs that cite it. The record holds the words.
 | 171 | Technology is both a world's generated tree and what is known, read from minds and bearers; an unheld technique is lost and can be refound. | none |
 | 218 | Each reading's bound and the competition's definition move into the world's rules now. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 270 | The flow record (per-tick matter receipts) is buffered outside the state hash. | none |
+| 320 | The sim core keeps its observation hook, Simulation::watch. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 345 | The flow record holds every move, when asked, handed over each tick, with every ledger reconciling from it in both runners. (amended by 359) | none |
 | 359 | Each flow names the process that moved it. | none |
 | 364 | X1's defaults (eight shapes, five functions) are constants a world copies in explicitly, so growing the set later does not silently change old worlds. | none |
+| 371 | Checkpoint 5 requires a per-tick flow handoff API so successive tick results cannot accumulate or mix records. | none |
 | 397 | Each route optionally carries its border naming the side it leaves by and the side it enters, validated both ways and skipped when absent. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 398 | The map family is an optional part of Founding, skipped when absent so old receipts and digests stay byte-identical. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 417 | Open air divides into walkable patches split by cliffs or water; a patch larger than a cap is cut on the chunk grid. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
@@ -147,12 +149,10 @@ three design docs that cite it. The record holds the words.
 | 294 | A consumer eats across its prey's matter once a period, choosing prey by a draw weighted by holdings. | none |
 | 307 | The draw control (a crowd drawing prey by headcount) stays in the check as the arm showing whether the check sees prey choice. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 317 | A refused draw is recorded and left out of comparisons, and the check fails if an arm under test refuses more than 1% of draws. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 320 | The sim core keeps its observation hook, Simulation::watch. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 342 | Declared conversions are checked: a transform declaring a conversion kind is checked against synthesis, digestion and mineralization; the rest pass as before. | none |
 | 344 | The dev source's issue and assisted label live in the history; the logged command is the record; receipts show issued amount beside the conserved total. | none |
 | 357 | A declared synthesis produces the actor's own lineage's matter; whatever has a synthesis process is a producer, with no producer classification in the core. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 358 | A dev placement may fill any declared matter account; Mesocosm's overlay chooses soil. | none |
-| 371 | Checkpoint 5 requires a per-tick flow handoff API so successive tick results cannot accumulate or mix records. | none |
 | 404 | Magic composes fundamental effects, each a combinable cantrip, each level of combining costing a magnitude more energy; effect scripts hook other generators; explainable surprises welcome. | [functional generation](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 416 | Earth a carver cannot hold is heaped beside the cut as an automatic fill edit, conserved and diggable; until capacity exists the carver holds all. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 427 | Every modification applies effects from the world's one vocabulary; a glyph is one source beside traits, parts, items, places, conditions and relations. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
@@ -191,11 +191,6 @@ three design docs that cite it. The record holds the words.
 | 863 | A later process selects a future produced lot by an explicit authored reference naming the producing operation, output and exact quantity. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 881 | The crowd implements its own chooser for autonomous (un-nudged) territories and refuses live nudges; nudged directing keeps native tests. | [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 958 | Equal best movement choices use a deterministic seeded draw keyed by world seed, creature and tick; scores and eligibility are unchanged. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
-| 971 | The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored. | [resident views composition](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 973 | Honest units with night: a 1,440-tick day, season from the existing year, sun None below the horizon with ambient carrying night. | [resident views composition](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md), [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 980 | A world with no sun rules gets a 1,440-tick day and a mild 23.5 degree season; tidal-locked worlds take 970's fixed sun. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 981 | The light code names are isocosm::light, light::at, Light, Sun and SunRules. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 984 | The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Ecology
 
@@ -231,9 +226,13 @@ three design docs that cite it. The record holds the words.
 | 879 | Ecological independence requires a distinct authored mechanical effect (costs, timing, typed flows may qualify); the operation family is recorded. | [resident views composition](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 906 | A lineage's lifespan is individual: from age 60 each dies at 2.5% a tick, never past the lineage's drawn lifespan of 80 to 120. (amended by 935, 949) | none |
 | 949 | 906's hazard acts only where the drawn ceiling is above maturity, so today only the A1 preset carries it; stock digests unchanged. | none |
+| 971 | The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored. | [resident views composition](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 972 | Presentation and ecology both read the light block: the sunlight credit scales by intensity, with the limiting amount a tuning fork brought back with evidence. | [resident views composition](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 973 | Honest units with night: a 1,440-tick day, season from the existing year, sun None below the horizon with ambient carrying night. | [resident views composition](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md), [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 980 | A world with no sun rules gets a 1,440-tick day and a mild 23.5 degree season; tidal-locked worlds take 970's fixed sun. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 982 | The light credit is 500 per site per tick at full sun. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 983 | The site's light store holds a night: about 720 x 500 = 360,000 of full credit, so producers draw a reserve down in the dark. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 984 | The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Bodies and anatomy
 
