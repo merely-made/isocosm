@@ -79,3 +79,8 @@ genet-render-host = { git = "https://github.com/merely-made/genet.git", rev = "7
 # hash their own scene bytes, so they name the wire format directly.
 postcard = { workspace = true }
 ttf-parser = "0.25.1"
+
+# Shared surface regression through the real consumer feature graph.
+[[test]]
+name = "implicit_bodies"
+path = "../../../shared/isometer/tests/implicit_bodies.rs"

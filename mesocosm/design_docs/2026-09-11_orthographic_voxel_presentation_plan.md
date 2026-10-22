@@ -2,6 +2,79 @@
 
 **Date:** 2026-09-11
 
+## Smooth anatomy probe, 2026-10-21
+
+**Status:** implemented and qualified, 2026-10-21. Mark authorized experimenting with shader-fused
+parts and procedural poses in ordinary play, including a different visual
+style. This is a presentation probe under L5, over the existing admitted
+anatomy, placement, camera and edited terrain. Existing body modes remain
+available for comparison.
+
+**Target and done-conditions:** add `--bodies smooth` using Isometer's shared
+device and terrain depth. Fuse rounded part envelopes with smooth
+unions along actual attachment edges. Consecutive masses make a continuous
+trunk; smaller limb joins remain distinct. Infer a two-link
+presentation bend within downward limb volumes and terminal support branches,
+with fixed lengths and actual
+Ground contacts; do not introduce saved bones, animation or new native anatomy.
+Drawing and picking must consume the same posed field and part addresses.
+Verify ray queries, reachable/unreachable contacts, severance, terrain occlusion,
+and an ordinary saved-world capture with unchanged native and mode sections.
+Keep captures/logs under `Code/testing/mesocosm/smooth-anatomy-2026-10-21/`,
+100 MB total cap; reuse the existing playable target and marked Cargo home.
+
+**Ownership:** Isometer render owns the generic surface, inverse kinematics,
+shader and ray queries. Its body layer retains frame/revision validation.
+Mesocosm supplies native documents, current placement, terrain contacts and its
+existing sky. Walking interpolation, authored joint constraints, and general
+gait animation are outside this first rest-stance probe.
+
+**Findings:** the live section already resolves generated voxel content and
+structural materials, but its tenant rasterizes rigid faces. BodyDocument has
+attachment offsets and quarter-turn frames; it declares no articulated joints
+or limits. The first probe derives a visual knee within an existing downward support
+part rather than claiming a native skeletal model. The saved unchosen world
+uses cubes even for its downward terminal support; attachment direction and
+terminal position therefore supplement the existing extent-based role reading.
+
+**Progress, 2026-10-21:** the first headed prototype kept the native and mode
+sections unchanged, but its 24 posed supports had zero reachable IK sole
+targets. Native whole-body grounding chooses the highest required root over
+every occupied column: a rigid chain can rest on a distant segment or a box
+corner while its short limb hangs above lower terrain. Rounding also removed
+some of those corners. The surface now retains actual admitted box contacts
+under their original part identities. Sole targets and retained supports have
+separate counters; short limbs keep their reach and declared floor.
+
+The rest bend is inferred within a terminal support volume, in the plane of
+the body's longest horizontal extent. It introduces no native joint state or
+animation record. Body picking consumes the same field as the shader, through
+the existing frame and mesh-revision checks. The GPU uses the existing terrain
+depth and sky on the host's shared device and encoder. GPU resources initialize
+only when smooth mode is selected; an unchanged resize retains its targets.
+
+Current controls pass 44 renderer tests, 42 host tests and one shared surface
+regression (four existing host controls ignored). The shared regression lives
+once in `shared/isometer/tests/implicit_bodies.rs` and runs through Mesocosm's
+actual feature graph. These tests use unoptimized subject crates over release
+dependencies. Prototype captures pass at tick 60, hash `f5767ede7effce0f`,
+with the controlled critter alone and with the wider scene. The single-critter
+view reports one inferred joint, one retained support, and zero reachable IK
+sole targets. Native and opaque product sections match the original world.
+
+The style stays selectable via `--bodies smooth`, with voxels still the default.
+Walking interpolation, declared joints/limits, physically articulated placement,
+and richer generated body plans remain open. The existing rigid geometry still
+limits what a natural stance can do. Receipts retain the first failed contact
+assertion and the superseded build attempts. The normal release executable
+passes the shared surface regression and the final headed checks: 20 frames
+each for the controlled critter and the full scene, with zero projection
+failures. Both traces retain exact native history and opaque product sections.
+The previous tick-64 save replays to `b24aeceecfd0a64a`. Receipts:
+`Code/testing/mesocosm/smooth-anatomy-2026-10-21/summary.json`,
+`final-voxels.png`, `final-smooth.png`, and `final-scene.png`; 25.3 MB
+retained of the 100 MB cap.
+
 **Ordinary generation audit, 2026-10-20, verified:** the clock-selected
 world `15681609907537121240` reaches tick 64 and four parent-child levels after
 founding, with 393 reported biological children, 142 accepted walks, three
