@@ -514,7 +514,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     glyphs/symbols/factions/polities positively and/or negatively
     depending on tenets associated with effects?)"
 
-    Links: area Organs: glyphs, impresa, hagiograph · summary A place with all the glyphs existing there is a divine environment; placement durability and quality matter; alignment relates things to glyphs, factions and polities.
+    Links: area World generation · summary A place with all the glyphs existing there is a divine environment; placement durability and quality matter; alignment relates things to glyphs, factions and polities.
 49. **The domain is named freely; the acts fuel it; power is the
     frequency of the domain's process; anatomy is the other road to long
     life.** Mark, 2026-09-18: "you can name your domain when you ascend.
@@ -535,7 +535,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     around instantiating particular anatomies, magical, conditional
     (phylactery) or otherwise."
 
-    Links: area Organs: glyphs, impresa, hagiograph · summary The domain is named freely; acts fuel it; power is the frequency of its process; anatomy (vampire, lich) is the other road to long life.
+    Links: area Organs: glyphs, impresa, hagiograph · draws on 47 · summary The domain is named freely; acts fuel it; power is the frequency of its process; anatomy (vampire, lich) is the other road to long life.
 50. **A tenet.** Mark, 2026-09-18: "A tenet ought to be that relation:
     that process yields that effect, and here's our opinion of that, and
     the trust people have in it for their survival/fulfillment
@@ -569,7 +569,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     being applied is unprecedented, or causes something significant to
     happen."
 
-    Links: area Organs: glyphs, impresa, hagiograph · summary Choosing a referent is a privilege of greater divinities and avatars, still subject to process frequency; high-impact unprecedented effects can mitigate rarity.
+    Links: area Organs: glyphs, impresa, hagiograph · draws on 49 · summary Choosing a referent is a privilege of greater divinities and avatars, still subject to process frequency; high-impact unprecedented effects can mitigate rarity.
 53. **Holding.** Mark, 2026-09-18: "The squirrels in my backyard tell me
     critters can gather, and can hold depending on their biology (big
     cheeks, pouch, pocket space if eldritch or whatever) but have very
@@ -930,7 +930,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     2026-09-21, on where the freeform text goes: "For impresa... closed
     subset, open superset?"
 
-    Links: area Organs: glyphs, impresa, hagiograph · summary For the impresa, a closed subset inside an open superset.
+    Links: area Organs: glyphs, impresa, hagiograph · draws on 82 · summary For the impresa, a closed subset inside an open superset.
 86. **The five points of how knowledge resolves are agreed.** Mark,
     2026-09-21: "And agreed on the five points!"
 
@@ -1163,7 +1163,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      favor collecting all the magics, even trinkets plus your main magic.
      links ya to the world."
 
-     Links: area Organs: glyphs, impresa, hagiograph · summary A sacrifice's grade is the depth of the entity's relation to that magic in its story; collecting all magics is favoured, possibly as a setting.
+     Links: area Organs: glyphs, impresa, hagiograph · amends 46, 47 · summary A sacrifice's grade is the depth of the entity's relation to that magic in its story; collecting all magics is favoured, possibly as a setting.
 110. **The family and the sim are Isocosm; the tabletop is Isocosm: VTT; the
      rename is planned.** Mark, 2026-09-22: "Let's do it, isocosm, eponym,
      isocosm-vtt, etc. Let's plan the rename too". The reservations
@@ -2110,7 +2110,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      published for an organ word, and a `denizen` crate is made only if it
      becomes the way entity information moves between contexts.
 
-     Links: area Organs: glyphs, impresa, hagiograph · summary Organ words are components, not crates; no crate is published for one, and a denizen crate needs a reason such as moving entity information.
+     Links: area Organs: glyphs, impresa, hagiograph · draws on 200 · summary Organ words are components, not crates; no crate is published for one, and a denizen crate needs a reason such as moving entity information.
 202. **Speciating stays the player's act; expressing becomes the
      critter's own.** Put to Mark on 2026-09-25, from M1, where
      `mesocosm-core`'s `Speciate`, splitting the played line and naming it,
@@ -3531,7 +3531,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      trait a divine figure may have, not one its tier confers; option A's
      world seat is not adopted.
 
-     Links: area Organs: glyphs, impresa, hagiograph · summary Some divine figures can peek behind the curtain: awareness of the sim beyond an organism's capabilities is magic bending the rules, parked with divinity.
+     Links: area Organs: glyphs, impresa, hagiograph · draws on 5, 59, 279 · summary Some divine figures can peek behind the curtain: awareness of the sim beyond an organism's capabilities is magic bending the rules, parked with divinity.
 
 387. **The default view's pitch is the 2:1 dimetric, 30°.** Asked on
      2026-09-28: "What pitch is the wing's default view?" Evidence as put:
@@ -8350,7 +8350,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      So that code re-expresses with its family, unchanged in behaviour, and
      279 still bars new design on those rungs.
 
-     Links: area Organs: glyphs, impresa, hagiograph · summary Parked rungs' code (Eponym glyphs, chronicles) re-expresses with its family unchanged in behaviour; the rungs stay parked.
+     Links: area Organs: glyphs, impresa, hagiograph · draws on 279 · summary Parked rungs' code (Eponym glyphs, chronicles) re-expresses with its family unchanged in behaviour; the rungs stay parked.
 674. **A body's geometry goes through isometer; its physiology stays the
      sim's.** 2026-10-08, from Mark after 670: "I would figure that's how
      the sim would relate to movement, reach, and bodies too." Question:

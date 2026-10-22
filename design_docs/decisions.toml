@@ -258,7 +258,7 @@ summary = "Sacrifice is destruction, and a divinity's domain is how its sacrific
 [cases."48"]
 title = "Divine places, placement, rooms and alignment"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Organs: glyphs, impresa, hagiograph"
+area = "World generation"
 summary = "A place with all the glyphs existing there is a divine environment; placement durability and quality matter; alignment relates things to glyphs, factions and polities."
 
 [cases."49"]
@@ -266,6 +266,7 @@ title = "The domain is named freely; the acts fuel it; power is the frequency of
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "The domain is named freely; acts fuel it; power is the frequency of its process; anatomy (vampire, lich) is the other road to long life."
+draws_on = ["47"]
 
 [cases."50"]
 title = "A tenet"
@@ -284,6 +285,7 @@ title = "The referent by tier, and impact against frequency"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Choosing a referent is a privilege of greater divinities and avatars, still subject to process frequency; high-impact unprecedented effects can mitigate rarity."
+draws_on = ["49"]
 
 [cases."53"]
 title = "Holding"
@@ -470,6 +472,7 @@ title = "For the impresa: a closed subset inside an open superset"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "For the impresa, a closed subset inside an open superset."
+draws_on = ["82"]
 
 [cases."86"]
 title = "The five points of how knowledge resolves are agreed"
@@ -596,6 +599,7 @@ title = "The change to ruling 47 is agreed; a sacrifice's grade is the depth of 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "A sacrifice's grade is the depth of the entity's relation to that magic in its story; collecting all magics is favoured, possibly as a setting."
+amends = ["46", "47"]
 
 [cases."110"]
 title = "The family and the sim are Isocosm; the tabletop is Isocosm: VTT; the rename is planned"
@@ -1116,6 +1120,7 @@ title = "The organ words are components, not crates, and a `denizen` crate needs
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Organ words are components, not crates; no crate is published for one, and a denizen crate needs a reason such as moving entity information."
+draws_on = ["200"]
 
 [cases."202"]
 title = "Speciating stays the player's act; expressing becomes the critter's own"
@@ -1853,6 +1858,7 @@ title = "Some divine figures can peek behind the curtain: an awareness of the si
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Some divine figures can peek behind the curtain: awareness of the sim beyond an organism's capabilities is magic bending the rules, parked with divinity."
+draws_on = ["5", "59", "279"]
 
 [cases."387"]
 title = "The default view's pitch is the 2:1 dimetric, 30°"
@@ -3179,6 +3185,7 @@ title = "Parked rungs' code moves; the rungs stay parked"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Parked rungs' code (Eponym glyphs, chronicles) re-expresses with its family unchanged in behaviour; the rungs stay parked."
+draws_on = ["279"]
 
 [cases."674"]
 title = "A body's geometry goes through isometer; its physiology stays the sim's"
@@ -4609,3 +4616,38 @@ area = "Naming"
 summary = "Causation, Grown and Acquired, and Binding::Part are the rule catalogue's names."
 draws_on = ["340", "341"]
 governs = ["isocosm::rules::Causation", "isocosm::rules::body::Seeding"]
+
+[statements."organs.1"]
+title = "Divinity is earned by the journey"
+source = "design_docs/doctrine.md"
+area = "Organs: glyphs, impresa, hagiograph"
+summary = "Ascension sacrifices glyph forms; grade is depth of relation scaled by form; the domain is how the forms were acquired."
+draws_on = ["44", "46", "47", "107"]
+
+[statements."organs.2"]
+title = "Power is the frequency of the domain's process"
+source = "design_docs/doctrine.md"
+area = "Organs: glyphs, impresa, hagiograph"
+summary = "A domain's power is how often its process happens; rare but significant effects mitigate; referents are for the greatest."
+draws_on = ["49", "52"]
+
+[statements."organs.3"]
+title = "Peeking behind the curtain"
+source = "design_docs/doctrine.md"
+area = "Organs: glyphs, impresa, hagiograph"
+summary = "Some divine figures read truth beyond their reach, a magic bending rules 5 and 59; a trait, not a seat."
+draws_on = ["384"]
+
+[statements."organs.4"]
+title = "The impresa note"
+source = "design_docs/doctrine.md"
+area = "Organs: glyphs, impresa, hagiograph"
+summary = "An impresa's note is its record: enumerated details inside free djot text."
+draws_on = ["82", "85"]
+
+[statements."organs.5"]
+title = "A crate when the abstraction earns it"
+source = "design_docs/doctrine.md"
+area = "Organs: glyphs, impresa, hagiograph"
+summary = "Crates are made when the abstraction earns one, not per name; parked code moves unchanged."
+draws_on = ["201", "673"]
