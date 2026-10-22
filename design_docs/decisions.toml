@@ -582,7 +582,7 @@ draws_on = ["101"]
 [cases."103"]
 title = "The sim knows the parts of an arc and lets entities pursue consequential goals for real reasons; the game makes the statement; the world is a bit like RimWorld's storyteller"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Directing and play"
 summary = "The sim knows the parts of an arc and lets entities pursue consequential goals; the game makes the statement; the world is like a storyteller."
 
 [cases."104"]
@@ -630,6 +630,7 @@ title = "Similitude: the noted always run as individuals; the fungible agree in 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Similitude: noted things always run as individuals; the fungible agree in distribution; what was watched is logged; exact agreement is a world setting, statistical default."
+draws_on = ["75"]
 
 [cases."114"]
 title = "A game's ruleset is held to ruling 113's test: rulesets calibrate to the sim"
@@ -642,12 +643,14 @@ title = "Competition: each side chooses"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Competition: each side's methodology chooses among contest, yield, share or trade, and the sim resolves the choices; lineage leaning is a trait."
+draws_on = ["114"]
 
 [cases."116"]
 title = "Most contests never reach blows"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223)"
+draws_on = ["115"]
 
 [cases."117"]
 title = "Any belief can be wrong, through wrong or stale information, and entities act on what they believe"
@@ -884,8 +887,9 @@ draws_on = ["152"]
 [cases."154"]
 title = "D19's contract is ruled"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Stack and engine"
 summary = "D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff."
+draws_on = ["104", "113", "114"]
 
 [cases."155"]
 title = "What a Mesocosm player plays depends on the lineage's traits"
@@ -1192,24 +1196,28 @@ title = "When food is short, the sim resolves the crowd's choices in pairwise en
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "When food is short, the sim resolves the crowd's choices in pairwise encounters: contesters take from yielders, sharers split, two contesters size up by reserve. (amended by 217)"
+draws_on = ["115", "116"]
 
 [cases."207"]
 title = "The crowd runner keeps a histogram of exact states"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The crowd runner keeps a histogram of exact states, with random count draws; the pairing draw is the only approximation."
+draws_on = ["113"]
 
 [cases."208"]
 title = "What later processes read is the rules' own thresholds"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "What later processes read is the rules' own thresholds, read mechanically from the process definitions, plus a distribution per field for anything inspection shows."
+draws_on = ["113"]
 
 [cases."209"]
 title = "The first tolerance is 0.2 per reading, certified with controls"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The first tolerance is 0.2 per reading (Kolmogorov-Smirnov), certified with positive and negative controls and tightened later. (amended by 507)"
+draws_on = ["208"]
 
 [cases."210"]
 title = "A player may pin any pointable thing"
@@ -1223,6 +1231,7 @@ title = "An attended group runs its noted members exactly and the rest as a crow
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "An attended group runs its noted members exactly as individuals and its fungible members as a crowd within tolerance."
+draws_on = ["113"]
 
 [cases."212"]
 title = "Examining is what the view shows up close"
@@ -1264,6 +1273,7 @@ title = "The larger reserve does not win an escalated fight; the probe's other r
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The larger reserve does not win an escalated fight; the probe's other readings of ruling 206 stand and the fight is reworked around strain."
+draws_on = ["206"]
 
 [cases."218"]
 title = "Each reading's bound and the competition's definition sit in the world's rules"
@@ -1282,18 +1292,21 @@ title = "In an escalated fight, strain builds against bearing, and cost adds to 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "In an escalated fight each round adds strain to both sides, plus what the round costs them; a side whose strain passes its bearing breaks."
+amends = ["116", "217"]
 
 [cases."222"]
 title = "A break in a fight advantages or disadvantages; it decides nothing"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A break in a fight advantages or disadvantages a side in later rounds; it decides nothing automatically."
+draws_on = ["163", "221"]
 
 [cases."223"]
 title = "A fight ends when a side yields on re-sizing or is spent, whichever comes first"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A fight ends when a side yields on re-sizing or is spent (vigour or reserve out), whichever comes first."
+draws_on = ["222"]
 
 [cases."225"]
 title = "A region has collapsed when one of its trophic levels is gone"
@@ -1364,6 +1377,7 @@ title = "Competitions are keyed by what is contested, and share a round one per 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Competitions are keyed by what is contested, and each member enters one competition per tick, for its most pressing need. (amended by 240)"
+draws_on = ["115"]
 
 [cases."238"]
 title = "At an Eponym death with no bonded companion, what follows is the player's call"
@@ -1383,6 +1397,7 @@ title = "Competitions run concurrently in a tick and settle at its end"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Competitions run concurrently in a tick against the tick-start state, with costs summed and applied at the tick's end, capped at what a member holds."
+amends = ["236"]
 
 [cases."241"]
 title = "Posing is a telling's manner"
@@ -1476,6 +1491,7 @@ title = "The clock's unit is a world setting, a minute by default"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The clock's unit is a world setting, a minute by default; finer resolution is the foreground game's to resolve."
+draws_on = ["256"]
 
 [cases."258"]
 title = "The scheduler indexes processes by the traits they require now; queuing due events per entity is decided before M2's first receipts"
@@ -1488,6 +1504,7 @@ title = "The operation budget counts only the evaluations that run"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The operation budget counts only the evaluations that run; budgeted sessions take a new baseline."
+draws_on = ["258"]
 
 [cases."260"]
 title = "Viability gates are staged with the absorption, family by family"
@@ -1500,6 +1517,7 @@ title = "The background is hybrid: derived where effects commute, a calibrated r
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266)"
+draws_on = ["113"]
 
 [cases."264"]
 title = "Part roles are open keys in the world's rules with a default set, and that set is examined before it is fixed"
@@ -1518,6 +1536,7 @@ title = "Rate models take over where grouping stops paying"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Rate models take over where grouping stops paying; the exact crowd runs wherever it still finds identical members, shared-resource competition included."
+amends = ["261"]
 
 [cases."267"]
 title = "A level of the web stays alive by four measures"
@@ -1537,6 +1556,7 @@ title = "Shared ground is scrambled for by what cannot decide and competed for b
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Shared ground is scrambled for proportionally by members that cannot decide and competed for by those that can."
+draws_on = ["115", "266"]
 
 [cases."270"]
 title = "The flow record is buffered outside state"
@@ -1599,18 +1619,21 @@ title = "An advance's limit guards work, not ticks"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "An advance's limit guards work (evaluations), not ticks, so an advance may span any stretch of idle time."
+draws_on = ["256"]
 
 [cases."285"]
 title = "The budget counts the members an evaluation stands for"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The budget counts the members an evaluation stands for, so a budget means the same in grouped and individual modes."
+draws_on = ["284"]
 
 [cases."286"]
 title = "Due events are kept per group"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Due events are kept per group; a group knows when its next threshold falls due and is scheduled then."
+draws_on = ["258"]
 
 [cases."287"]
 title = "Each consumer lineage has one feeding process, choosing among its prey"
@@ -1641,6 +1664,7 @@ title = "Per-group phases run in the foreground; the background keeps a shared g
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Per-group phases run in the foreground and nearby; the background keeps a shared period grid as built."
+draws_on = ["286"]
 
 [cases."294"]
 title = "A consumer eats across its prey's matter, once a period, choosing its prey by a weighted draw"
@@ -1685,6 +1709,7 @@ title = "A refused draw is recorded and left out, and the check fails past a 1% 
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A refused draw is recorded and left out of comparisons, and the check fails if an arm under test refuses more than 1% of draws."
+draws_on = ["209"]
 
 [cases."320"]
 title = "The sim core keeps an observation hook"
@@ -2219,12 +2244,14 @@ title = "Grouping stops paying where members per state fall below a world rule"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A site-lineage moves to its rate model when members per distinct state fall below a world-rule bound; every switch is receipted."
+draws_on = ["266"]
 
 [cases."440"]
 title = "A rate model is calibrated on the bench, once per rules digest"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Rate models are calibrated on the bench once per rules digest and ship with the rules; uncalibrated worlds stay on the exact crowd."
+draws_on = ["261"]
 
 [cases."442"]
 title = "The all-modes build lives in a host workspace of its own"
@@ -2287,14 +2314,16 @@ summary = "Reproduction also carries mating, semelparity or iteroparity, parenta
 [cases."451"]
 title = "An epoch ends by one of three rules, a year by default"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Record and history"
 summary = "An epoch ends by Timed, Gated or PlayerTriggered rule; Timed counts the world's unit and defaults to a year."
+draws_on = ["256"]
 
 [cases."452"]
 title = "Deep time's span counts epochs, as Mesocosm counts it"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Record and history"
 summary = "Deep time's span counts epochs in the world's rules, as Mesocosm does; under the default year a century is 100 epochs."
+draws_on = ["451"]
 
 [cases."453"]
 title = "The probe's minimal body is optional fields on the core part"
@@ -2307,6 +2336,7 @@ title = "Shared ground is shared out from the pass's start"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "Shared ground is shared out from the pass's start; short supply gives each taker the same floored fraction; identity order decides nothing."
+draws_on = ["269"]
 
 [cases."455"]
 title = "A body's ceiling is read part by part"
@@ -2550,6 +2580,7 @@ title = "The averaged crowd averages all of a lineage's own matter"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "From checkpoint 7 on, the averaged negative-control crowd averages each lineage's tissue and reserve together and must still fail the starvation check."
+amends = ["209"]
 
 [cases."511"]
 title = "A recipe's kinds are part templates"
@@ -2762,6 +2793,7 @@ title = "Bonds run individually until the young is weaned"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "A parent and its unweaned young run as individuals in the crowd until the young is weaned; nursing reads only unweaned young."
+draws_on = ["113"]
 
 [cases."556"]
 title = "Every wasm module moves to the newest wasm-bindgen, 0.2.129"
@@ -4128,8 +4160,9 @@ draws_on = ["190"]
 [cases."866"]
 title = "A native act records participation in every goal it actually served"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Processes and rules"
+area = "Directing and play"
 summary = "A native act records participation in every goal it actually served; no primary goal discards the others."
+draws_on = ["103"]
 
 [cases."867"]
 title = "Authored polity attributes and member-derived readings retain their disagreement"
@@ -4697,6 +4730,13 @@ area = "Directing and play"
 summary = "Death is final, each game with its trick; a new life chooses which conditions to carry forward."
 draws_on = ["61", "406"]
 
+[statements."directing.7"]
+title = "Arcs and goals"
+source = "design_docs/doctrine.md"
+area = "Directing and play"
+summary = "The sim knows an arc's parts and lets entities pursue real goals; the game makes the statement; acts record every goal served."
+draws_on = ["103", "866", "vtt.4"]
+
 [statements."ecology.1"]
 title = "Two doors change a lineage"
 source = "design_docs/doctrine.md"
@@ -5069,6 +5109,41 @@ area = "Processes and rules"
 summary = "One effect vocabulary, many sources; modifiers in world-ordered layers with declared stacking and scope; conditions on places or as records."
 draws_on = ["268", "427", "428", "429", "430", "431", "433", "435", "436"]
 
+[statements."processes.5"]
+title = "The background and its shapes"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Ecology, society and arcs run in the background; processes are choices under scarcity plus field processes and rung transitions."
+draws_on = ["2", "10", "14", "28", "32", "93", "265"]
+
+[statements."processes.6"]
+title = "Similitude and the crowd"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying."
+draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881"]
+
+[statements."processes.7"]
+title = "Time"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "A fine world-set unit, periods per process; the scheduler skips idle time and budgets guard work; worlds sync at crossings."
+draws_on = ["149", "256", "257", "258", "259", "284", "285", "286", "293", "605", "958", "record.7"]
+
+[statements."processes.8"]
+title = "Competition"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Each side chooses contest, yield, share or trade; competitions run concurrently per tick; what cannot decide scrambles proportionally."
+draws_on = ["115", "206", "236", "240", "269", "454"]
+
+[statements."processes.9"]
+title = "Fights"
+source = "design_docs/doctrine.md"
+area = "Processes and rules"
+summary = "Most contests end at sizing up; a fight builds strain against bearing; breaks shift advantage; it ends on yielding or being spent."
+draws_on = ["116", "217", "221", "222", "223", "processes.8"]
+
 [statements."record.1"]
 title = "Consistency is chosen per domain"
 source = "design_docs/doctrine.md"
@@ -5110,6 +5185,13 @@ source = "design_docs/doctrine.md"
 area = "Record and history"
 summary = "Ages are read and named, the epochs of cultures; a founder caps technology; an age can realign the world."
 draws_on = ["172"]
+
+[statements."record.7"]
+title = "Epochs and deep time"
+source = "design_docs/doctrine.md"
+area = "Record and history"
+summary = "An epoch ends by a timed (a year by default), gated or player-called rule; deep time's span counts epochs."
+draws_on = ["451", "452"]
 
 [statements."schema.1"]
 title = "Authored content is native"
@@ -5217,7 +5299,7 @@ title = "One sim, one contract, one bench"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools."
-draws_on = ["1", "20", "92", "192", "197", "203", "204", "254", "483", "world.3"]
+draws_on = ["1", "20", "92", "154", "192", "197", "203", "204", "254", "483", "world.3"]
 
 [statements."stack.5"]
 title = "Isometer owns in-site space"

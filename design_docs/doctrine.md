@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, and the sim's schema reviewed, with Processes 1 to 4; Processes and rules and Bodies and anatomy remain. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym, World generation, the VTT, Stack and engine, and the sim's schema reviewed, with Processes 1 to 9; Processes and rules is under review, and Bodies and anatomy remains. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -285,6 +285,93 @@ Links: draws on 268, 427, 428, 429, 430, 431, 433, 435, 436 · summary One effec
 *Reviewed 2026-10-22, new: drafted in the schema review and placed here at
 Mark's word ("To Processes and rules").*
 
+### Processes 5. The background and its shapes
+
+Three layers always run in the background: an adapting ecology, a society
+reforming by its inhabitants' goals and abilities, and polities, narratives
+and arcs that change the world if left unattended, each taxonomy deep enough
+for unpredictable results. Processes are one shape at every rung, choices
+under scarcity, with two more: agentless field processes and rung transitions
+(founding, splitting, incorporation, collapse). A game has handles on the
+sim's verbs and its own on top. A graph derived from the bricks drives
+processes at the rung above them. The definition widens only with fields the
+probe proves; deep time is the same sim; nondeterministic water is fine where
+a field directs it.
+
+Links: draws on 2, 10, 14, 28, 32, 93, 265 · summary Ecology, society and arcs run in the background; processes are choices under scarcity plus field processes and rung transitions.
+
+*Reviewed 2026-10-22, new. Mark moved its pair, arcs and goals, to Directing 7
+("Arcs to Directing"); this statement as drafted.*
+
+### Processes 6. Similitude and the crowd
+
+Background and foreground agree; the background is cheaper by aggregation.
+Anything of note runs as an individual; the fungible agree in distribution
+over every threshold later processes read, within a bound in the world's rules
+(0.2 per reading at first), certified beside a positive and a negative
+control, an arm failing past 1% refused draws. What was watched is logged;
+exact agreement is a world setting, statistical the default. The crowd keeps a
+histogram of exact states and calls the individual runner's own meanings; an
+attended group runs its noted members exactly; a parent and its unweaned young
+run as individuals. Where members per state fall below a world-rule bound, a
+site and lineage moves to a rate model calibrated on the bench once per rules
+digest, every switch receipted; with no certified model it stays exact. The
+crowd's own chooser covers autonomous territories only.
+
+*Not yet built:* rate models.
+
+Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881 · summary The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying.
+
+*Reviewed 2026-10-22, new. Mark: "As drafted, rate models marked".*
+
+### Processes 7. Time
+
+The clock counts a fine unit, a world setting, a minute by default; each
+process runs on its own period in world time, and anything finer is the
+foreground's. The scheduler indexes processes by the traits they need and
+keeps due events per group, so idle time is skipped; an advance's limit and
+its budget guard work, counting the members an evaluation stands for.
+Per-group phases run in the foreground; the background keeps a shared grid.
+Epochs and deep time are the record's (Record 7). Neighbouring worlds keep
+their own clocks, synced at crossings. Equal best moves break by a seeded
+draw. Shards, when built, give the same state hash at any count.
+
+*Not yet built:* shards, and worlds syncing at crossings.
+
+Links: draws on 149, 256, 257, 258, 259, 284, 285, 286, 293, 605, 958, record.7 · summary A fine world-set unit, periods per process; the scheduler skips idle time and budgets guard work; worlds sync at crossings.
+
+*Reviewed 2026-10-22, new. Mark: "Epochs to Record" (451 and 452 moved to
+Record 7).*
+
+### Processes 8. Competition
+
+When two want what there isn't enough of, each side's methodology chooses
+contest, yield, share or trade, and the sim resolves the choices; a lineage's
+leaning is a trait. Competitions are keyed by what is contested; a member
+enters every one it needs in a tick, each against the tick's start, costs
+summed at its end. What cannot decide scrambles for shared ground, each taker
+the same floored fraction from the pass's start, identity order deciding
+nothing; what can decide competes, under shortage in pairwise encounters.
+
+Links: draws on 115, 206, 236, 240, 269, 454 · summary Each side chooses contest, yield, share or trade; competitions run concurrently per tick; what cannot decide scrambles proportionally.
+
+*Reviewed 2026-10-22, new: fights split out at Mark's word ("Fights apart").
+Pairwise encounters (206) are not verified against the current core.*
+
+### Processes 9. Fights
+
+Most contests (Processes 8) end at sizing up, by display or bluff; only a
+close match escalates. Each round of a fight adds strain to both sides, plus
+what the round costs them; a side whose strain passes its bearing breaks, a
+break up advantaging it and a break down disadvantaging it, neither deciding
+the fight. A fight ends when a side yields on re-sizing or is spent,
+whichever comes first; the larger reserve does not simply win.
+
+Links: draws on 116, 217, 221, 222, 223, processes.8 · summary Most contests end at sizing up; a fight builds strain against bearing; breaks shift advantage; it ends on yielding or being spent.
+
+*Reviewed 2026-10-22, new: split from competition at Mark's word ("Fights
+apart"); strain, bearing and yielding are built.*
+
 ## Ecology
 
 
@@ -486,6 +573,19 @@ Links: draws on 172 · summary Ages are read and named, the epochs of cultures; 
 
 *Reviewed 2026-10-22, new: drafted in the schema review and placed here at
 Mark's word ("Ages to Record").*
+
+### Record 7. Epochs and deep time
+
+An epoch ends by a timed rule (a year by default), a gated one or a player's
+call, and checkpoints fall on its boundaries. Deep time's span counts epochs,
+so under the default year a century is a hundred.
+
+*Not yet built:* the gated rule, which is named only.
+
+Links: draws on 451, 452 · summary An epoch ends by a timed (a year by default), gated or player-called rule; deep time's span counts epochs.
+
+*Reviewed 2026-10-22, new: drafted in the Processes review and placed here
+beside ages at Mark's word ("Epochs to Record").*
 
 ## World generation
 
@@ -784,6 +884,18 @@ Links: draws on 61, 406 · summary Death is final, each game with its trick; a n
 
 *Reviewed 2026-10-22, new. Mark: "All as drafted".*
 
+### Directing 7. Arcs and goals
+
+The sim knows the parts of an arc and lets entities pursue consequential
+goals for real reasons, in its own terms; the game makes a coherent statement
+of them, the world a storyteller of sorts (at the table, running arcs reach the
+DM as hooks: VTT 4). An act records every goal it actually served.
+
+Links: draws on 103, 866, vtt.4 · summary The sim knows an arc's parts and lets entities pursue real goals; the game makes the statement; acts record every goal served.
+
+*Reviewed 2026-10-22, new: drafted in the Processes review and placed here at
+Mark's word ("Arcs to Directing").*
+
 ## Presentation
 
 ### Presentation 1. One default view
@@ -930,16 +1042,18 @@ extensible, played several ways; projections, perspectives, turn-based or
 real-time play are distinctions made on top of it. No product's paradigm is
 hardcoded into it: named scopes (world, region, area, battlemap) are a game's
 defaults, not levels the sim holds (World 3). It is the one sim: no product
-grows an engine of its own, and mesocosm-core's sim moved in, re-expressed in process definitions, and
-retired. Games meet the sim through one game-neutral crate, `isocosm-overlay`:
-each game's vocabulary a module, shapes two games share lifted once into its
-core (points, act keys, harm, wounds, parts), the tick a newtype over the
-sim's count, subscription derived from a typed attention set. A view learns
-what changed from the sim's admitted change records, never from a tracked
-copy. Everything generated and reviewed shares one bench (sim, world,
+grows an engine of its own, and mesocosm-core's sim moved in, re-expressed in
+process definitions, and retired. Games meet the sim through one game-neutral
+crate, `isocosm-overlay`, submitting intents and taking back events, a
+read-only view of each tick and, through the handoff, the outcomes they
+settle: each game's vocabulary a module, shapes two games share lifted once
+into its core (points, act keys, harm, wounds, parts), the tick a newtype over
+the sim's count, subscription derived from a typed attention set. A view
+learns what changed from the sim's admitted change records, never from a
+tracked copy. Everything generated and reviewed shares one bench (sim, world,
 specimen, item and effect lanes), which is also the dev tools.
 
-Links: draws on 1, 20, 92, 192, 197, 203, 204, 254, 483, world.3 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
+Links: draws on 1, 20, 92, 154, 192, 197, 203, 204, 254, 483, world.3 · summary One sim, no product engines; one game-neutral overlay contract with shared shapes in its core; one bench that is also the dev tools.
 
 *Reviewed 2026-10-22, new; checked built (mesocosm-core retired; the overlay's
 tick, attention set and shared shapes), the bench's lanes not each verified.
@@ -950,6 +1064,7 @@ retired, its receipts rule (483) kept here (Mark: "Retire the ECS, keep
 changes.*
 *Refined 2026-10-22 in the schema review: what the sim is (1, 92) opens it
 (Mark: "Schema 2 into Stack 4").*
+*Refined 2026-10-22 in the Processes review: D19's contract (154) cited.*
 
 ### Stack 5. Isometer owns in-site space
 

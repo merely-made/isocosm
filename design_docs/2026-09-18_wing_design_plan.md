@@ -1108,7 +1108,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      is what takes that vocab and makes a coherent game statement out of it.
      So both, with the second being what gives the first its shape."
 
-     Links: area Processes and rules · summary The sim knows the parts of an arc and lets entities pursue consequential goals; the game makes the statement; the world is like a storyteller.
+     Links: area Directing and play · summary The sim knows the parts of an arc and lets entities pursue consequential goals; the game makes the statement; the world is like a storyteller.
 104. **Time in a shared world: asynchronous play merged like git, or a clock
      that runs only when played; Mark leans to the second and asks.** Mark,
      2026-09-22: "It would be nice if people could play together
@@ -1216,7 +1216,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      setting" against §3.12's "never of the machine" in the second's
      favour, and gives the aggregation research its acceptance criterion.
 
-     Links: area Processes and rules · summary Similitude: noted things always run as individuals; the fungible agree in distribution; what was watched is logged; exact agreement is a world setting, statistical default.
+     Links: area Processes and rules · draws on 75 · summary Similitude: noted things always run as individuals; the fungible agree in distribution; what was watched is logged; exact agreement is a world setting, statistical default.
 114. **A game's ruleset is held to ruling 113's test: rulesets calibrate to
      the sim.** Put to Mark on 2026-09-24: two armies meet and a duke
      falls; at a VTT table 5e resolves the battle, and with nobody playing
@@ -1248,7 +1248,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      trait. A fight is what a contest becomes; how it resolves is the next
      question.
 
-     Links: area Processes and rules · summary Competition: each side's methodology chooses among contest, yield, share or trade, and the sim resolves the choices; lineage leaning is a trait.
+     Links: area Processes and rules · draws on 114 · summary Competition: each side's methodology chooses among contest, yield, share or trade, and the sim resolves the choices; lineage leaning is a trait.
 116. **Most contests never reach blows.** Put to Mark on 2026-09-24,
      following ruling 115: once both sides choose to contest, what ends
      the fight? Three options were put: one side breaks, will deciding as
@@ -1260,7 +1260,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      against bearing, a break shifts the advantage without deciding, and
      the fight ends when a side yields on re-sizing or is spent.
 
-     Links: area Processes and rules · summary Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223)
+     Links: area Processes and rules · draws on 115 · summary Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223)
 117. **Any belief can be wrong, through wrong or stale information, and
      entities act on what they believe.** Mark, 2026-09-24, on ruling
      116's bluff: "Deception potentially leads people to make the wrong
@@ -1677,7 +1677,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      stand as the contract's shape, and W5 designs the details against
      them.
 
-     Links: area Processes and rules · summary D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff.
+     Links: area Stack and engine · draws on 104, 113, 114 · summary D19's contract is ruled: a game submits intents, the sim returns events and a read-only per-tick view, and settled outcomes return through the handoff.
 155. **What a Mesocosm player plays depends on the lineage's traits.** Put
      to Mark on 2026-09-24, from ruling 152 against ruling 59's "direct one
      or a cohort of critters": what does a Mesocosm player play? Two
@@ -2142,7 +2142,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      data drawn per seed; escalation costs body reserve until vigour is in
      the ledger (ruling 123); and trade waits for something to trade.
 
-     Links: area Processes and rules · summary When food is short, the sim resolves the crowd's choices in pairwise encounters: contesters take from yielders, sharers split, two contesters size up by reserve. (amended by 217)
+     Links: area Processes and rules · draws on 115, 116 · summary When food is short, the sim resolves the crowd's choices in pairwise encounters: contesters take from yielders, sharers split, two contesters size up by reserve. (amended by 217)
 207. **The crowd runner keeps a histogram of exact states.** Put to Mark
      on 2026-09-25, with 206: a histogram of exact states, coarsened
      states, moment closure, or super-individuals? Mark: "Exact-state
@@ -2151,7 +2151,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the only approximation; a field is coarsened only where the rules show
      it safe, and savings are reported in evaluations.
 
-     Links: area Processes and rules · summary The crowd runner keeps a histogram of exact states, with random count draws; the pairing draw is the only approximation.
+     Links: area Processes and rules · draws on 113 · summary The crowd runner keeps a histogram of exact states, with random count draws; the pairing draw is the only approximation.
 208. **What later processes read is the rules' own thresholds.** Put to
      Mark on 2026-09-25, from ruling 113's test: the fungible must agree in
      distribution over what later processes read, so what counts, counts
@@ -2163,7 +2163,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      time, so any conjunction of thresholds one rule tests together, hungry
      and strained say, is a reading of its own.
 
-     Links: area Processes and rules · summary What later processes read is the rules' own thresholds, read mechanically from the process definitions, plus a distribution per field for anything inspection shows.
+     Links: area Processes and rules · draws on 113 · summary What later processes read is the rules' own thresholds, read mechanically from the process definitions, plus a distribution per field for anything inspection shows.
 209. **The first tolerance is 0.2 per reading, certified with controls.**
      Put to Mark on 2026-09-25, with 208: a first bound of 0.2 or 0.1? Mark:
      "0.2, with controls." So each reading's bound sits in the world's
@@ -2177,7 +2177,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      averages each lineage's own matter, tissue and reserve, since a
      lineage that keeps no store (506) has no reserve to average.
 
-     Links: area Processes and rules · summary The first tolerance is 0.2 per reading (Kolmogorov-Smirnov), certified with positive and negative controls and tightened later. (amended by 507)
+     Links: area Processes and rules · draws on 208 · summary The first tolerance is 0.2 per reading (Kolmogorov-Smirnov), certified with positive and negative controls and tightened later. (amended by 507)
 210. **A player may pin any pointable thing.** Put to Mark on 2026-09-25,
      typing the attention set (ruling 204): what can a player pin, which
      ruling 130 keeps on the player's account? Three options were put: any
@@ -2195,7 +2195,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      run as individuals (ruling 113), and its fungible members run as a
      crowd within the world's tolerance.
 
-     Links: area Processes and rules · summary An attended group runs its noted members exactly as individuals and its fungible members as a crowd within tolerance.
+     Links: area Processes and rules · draws on 113 · summary An attended group runs its noted members exactly as individuals and its fungible members as a crowd within tolerance.
 212. **Examining is what the view shows up close.** Put to Mark on
      2026-09-25, with 210: what counts as examining, which ruling 71 makes
      play and ruling 113 logs: everything in view, what the view shows at
@@ -2279,7 +2279,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      fight." So the first, second and fourth stand as readings of ruling
      206, and the fight is reworked around strain (rulings 221 to 223).
 
-     Links: area Processes and rules · summary The larger reserve does not win an escalated fight; the probe's other readings of ruling 206 stand and the fight is reworked around strain.
+     Links: area Processes and rules · draws on 206 · summary The larger reserve does not win an escalated fight; the probe's other readings of ruling 206 stand and the fight is reworked around strain.
 218. **Each reading's bound and the competition's definition sit in the
      world's rules.** Put to Mark on 2026-09-25, from the probe's deviation:
      it kept both beside the core's `Rules`, moving them in being a schema
@@ -2307,7 +2307,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      off only with rest or relief (ruling 159). This is the core's first
      strain.
 
-     Links: area Processes and rules · summary In an escalated fight each round adds strain to both sides, plus what the round costs them; a side whose strain passes its bearing breaks.
+     Links: area Processes and rules · amends 116, 217 · summary In an escalated fight each round adds strain to both sides, plus what the round costs them; a side whose strain passes its bearing breaks.
 222. **A break in a fight advantages or disadvantages; it decides
      nothing.** Put to Mark on 2026-09-25, with 221: in a fight, does a
      break down yield and a break up prevail, or does any break yield?
@@ -2317,7 +2317,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      traits, the moment and a seeded draw (ruling 163), and neither ends the
      fight.
 
-     Links: area Processes and rules · summary A break in a fight advantages or disadvantages a side in later rounds; it decides nothing automatically.
+     Links: area Processes and rules · draws on 221, 163 · summary A break in a fight advantages or disadvantages a side in later rounds; it decides nothing automatically.
 223. **A fight ends when a side yields on re-sizing or is spent, whichever
      comes first.** Put to Mark on 2026-09-25, with 222: if a break only
      shifts the advantage, what ends a fight: re-sizing, being spent, or
@@ -2327,7 +2327,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      vigour, its reserve until vigour is in the ledger (ruling 123), runs
      out is spent.
 
-     Links: area Processes and rules · summary A fight ends when a side yields on re-sizing or is spent (vigour or reserve out), whichever comes first.
+     Links: area Processes and rules · draws on 222 · summary A fight ends when a side yields on re-sizing or is spent (vigour or reserve out), whichever comes first.
 225. **A region has collapsed when one of its trophic levels is gone.** Put
      to Mark on 2026-09-25, from ruling 181's open item, what measures a
      collapse: in one region, its producers gone, any trophic level gone, or
@@ -2476,7 +2476,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      competition resolves over its own entrants. **Amended by ruling 240:**
      competitions run concurrently in a tick and settle at its end.
 
-     Links: area Processes and rules · summary Competitions are keyed by what is contested, and each member enters one competition per tick, for its most pressing need. (amended by 240)
+     Links: area Processes and rules · draws on 115 · summary Competitions are keyed by what is contested, and each member enters one competition per tick, for its most pressing need. (amended by 240)
 238. **At an Eponym death with no bonded companion, what follows is the
      player's call.** Put to Mark on 2026-09-26, from the Eponym overlay
      plan's decision 3: an outsider arriving, the execution plan's F8
@@ -2515,7 +2515,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and applied at the tick's end, capped at what it holds. This amends
      236's one per tick; its map keyed by what is contested stands.
 
-     Links: area Processes and rules · summary Competitions run concurrently in a tick against the tick-start state, with costs summed and applied at the tick's end, capped at what a member holds.
+     Links: area Processes and rules · amends 236 · summary Competitions run concurrently in a tick against the tick-start state, with costs summed and applied at the tick's end, capped at what a member holds.
 241. **Posing is a telling's manner.** Put to Mark on 2026-09-26, from the
      Eponym overlay plan's decision 5: posing to intimidate, persuade or
      deceive, his own idea at ruling 117 and flagged since as a reading, is a
@@ -2645,7 +2645,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      foreground game's to resolve, as rulings 232 and 233 and the VTT's
      handoff already have it.
 
-     Links: area Processes and rules · summary The clock's unit is a world setting, a minute by default; finer resolution is the foreground game's to resolve.
+     Links: area Processes and rules · draws on 256 · summary The clock's unit is a world setting, a minute by default; finer resolution is the foreground game's to resolve.
 258. **The scheduler indexes processes by the traits they require now;
      queuing due events per entity is decided before M2's first receipts.**
      Put to Mark on 2026-09-26, from the review's second finding, confirmed
@@ -2667,7 +2667,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      a new baseline, and six tight-budget saves that failed to load in the
      other mode are checked again.
 
-     Links: area Processes and rules · summary The operation budget counts only the evaluations that run; budgeted sessions take a new baseline.
+     Links: area Processes and rules · draws on 258 · summary The operation budget counts only the evaluations that run; budgeted sessions take a new baseline.
 260. **Viability gates are staged with the absorption, family by family.**
      Put to Mark on 2026-09-26, from the review's fourth finding, that no
      phase gates on behaviour while no core the wing has run keeps an ecology
@@ -2693,7 +2693,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      resources, targets or relationships it is a rate model per site and
      lineage, calibrated against the exact runner on the bench.
 
-     Links: area Processes and rules · summary The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266)
+     Links: area Processes and rules · draws on 113 · summary The background is hybrid: derived where effects commute, a calibrated rate model per site and lineage where they share resources, targets or relationships. (amended by 266)
 264. **Part roles are open keys in the world's rules with a default set, and
      that set is examined before it is fixed.** Put to Mark on 2026-09-26,
      with 262: part roles from `isometer-core`'s closed four, open keys, or
@@ -2732,7 +2732,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      certified, and calibrated rate models take the ground where diverse
      bodies and relationships defeat grouping. This amends 261.
 
-     Links: area Processes and rules · summary Rate models take over where grouping stops paying; the exact crowd runs wherever it still finds identical members, shared-resource competition included.
+     Links: area Processes and rules · amends 261 · summary Rate models take over where grouping stops paying; the exact crowd runs wherever it still finds identical members, shared-resource competition included.
 267. **A level of the web stays alive by four measures.** Put to Mark on
      2026-09-26, from the second review's caution that births balancing deaths
      could certify a lifeless world: ruling 260's "stays alive in most draws",
@@ -2767,7 +2767,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the world as it began, and a short site or prey gives each taker the
      same fraction of its take, floored, the remainder staying put.
 
-     Links: area Processes and rules · summary Shared ground is scrambled for proportionally by members that cannot decide and competed for by those that can.
+     Links: area Processes and rules · draws on 266, 115 · summary Shared ground is scrambled for proportionally by members that cannot decide and competed for by those that can.
 270. **The flow record is buffered outside state.** Put to Mark on
      2026-09-26, from decision 7: each tick's matter receipts, reconciling
      every compartment, buffered outside the state hash, kept in state under
@@ -2877,7 +2877,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      tick limit, or run many advances? Mark: "Work, not ticks." So the limit
      guards evaluations, and an advance may span any stretch of idle time.
 
-     Links: area Processes and rules · summary An advance's limit guards work (evaluations), not ticks, so an advance may span any stretch of idle time.
+     Links: area Processes and rules · draws on 256 · summary An advance's limit guards work (evaluations), not ticks, so an advance may span any stretch of idle time.
 285. **The budget counts the members an evaluation stands for.** Put to Mark
      on 2026-09-26, with 284: individual mode evaluates a cohort member by
      member, so a history that fits a budget grouped can exceed it
@@ -2885,7 +2885,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      belong to its mode? Mark: "Count members." So a budget means the same in
      both modes.
 
-     Links: area Processes and rules · summary The budget counts the members an evaluation stands for, so a budget means the same in grouped and individual modes.
+     Links: area Processes and rules · draws on 284 · summary The budget counts the members an evaluation stands for, so a budget means the same in grouped and individual modes.
 286. **Due events are kept per group.** Put to Mark on 2026-09-26, with 284:
      84 to 96% of the remaining evaluations did nothing, death and age
      processes visiting every member each period to be blocked by thresholds,
@@ -2895,7 +2895,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      an age at death or a reserve running out, and is scheduled for then;
      grouping is kept, and the changed results are certified again.
 
-     Links: area Processes and rules · summary Due events are kept per group; a group knows when its next threshold falls due and is scheduled then.
+     Links: area Processes and rules · draws on 258 · summary Due events are kept per group; a group knows when its next threshold falls due and is scheduled then.
 287. **Each consumer lineage has one feeding process, choosing among its
      prey.** Put to Mark on 2026-09-26, with 284: the ecology generator made
      one feeding process per pair of predator and prey lineages, so feeding
@@ -2932,7 +2932,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      nearby run as individuals anyway (rulings 113, 212), so phases there cost
      no grouping. They come with the sim's attention sets.
 
-     Links: area Processes and rules · summary Per-group phases run in the foreground and nearby; the background keeps a shared period grid as built.
+     Links: area Processes and rules · draws on 286 · summary Per-group phases run in the foreground and nearby; the background keeps a shared period grid as built.
 294. **A consumer eats across its prey's matter, once a period, choosing its
      prey by a weighted draw.** Put to Mark on 2026-09-26, from ruling 287's
      fork, one feeding process being unable to name one account to take
@@ -2998,7 +2998,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      crowds being certified or qualified, the approximate crowd included,
      and the controls record their refusals unbounded.
 
-     Links: area Processes and rules · summary A refused draw is recorded and left out of comparisons, and the check fails if an arm under test refuses more than 1% of draws.
+     Links: area Processes and rules · draws on 209 · summary A refused draw is recorded and left out of comparisons, and the check fails if an arm under test refuses more than 1% of draws.
 320. **The sim core keeps an observation hook.** Put to Mark on 2026-09-26,
      from checkpoint 4b: to read prey choice in the exact runner, Lane A
      added `Simulation::watch(process)`, which keeps each accepted act of a
@@ -4432,7 +4432,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and every switch either way is receipted. The century's time is not
      guaranteed by this; the budget stays a guard on work (284).
 
-     Links: area Processes and rules · summary A site-lineage moves to its rate model when members per distinct state fall below a world-rule bound; every switch is receipted.
+     Links: area Processes and rules · draws on 266 · summary A site-lineage moves to its rate model when members per distinct state fall below a world-rule bound; every switch is receipted.
 
 440. **A rate model is calibrated on the bench, once per rules digest.**
      Asked on 2026-10-01: "Where is a rate model calibrated against the
@@ -4452,7 +4452,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      world under rules without a certified model keeps every site and
      lineage on the exact crowd, whatever 439's bound says.
 
-     Links: area Processes and rules · summary Rate models are calibrated on the bench once per rules digest and ship with the rules; uncalibrated worlds stay on the exact crowd.
+     Links: area Processes and rules · draws on 261 · summary Rate models are calibrated on the bench once per rules digest and ship with the rules; uncalibrated worlds stay on the exact crowd.
 
 442. **The all-modes build lives in a host workspace of its own.** Asked on
      2026-10-01, opening the mode host after its assessment found that no
@@ -4747,7 +4747,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      demand. The boundary where every lineage adapts (57) falls with the
      lineages' yearly process (256), and checkpoints fall on boundaries.
 
-     Links: area Processes and rules · summary An epoch ends by Timed, Gated or PlayerTriggered rule; Timed counts the world's unit and defaults to a year.
+     Links: area Record and history · draws on 256 · summary An epoch ends by Timed, Gated or PlayerTriggered rule; Timed counts the world's unit and defaults to a year.
 
 452. **Deep time's span counts epochs, as Mesocosm counts it.** Asked on
      2026-10-01, with 451: "How is deep time's span counted? Evidence:
@@ -4771,7 +4771,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      closing epochs within one epoch more than its span is refused as
      stalled.
 
-     Links: area Processes and rules · summary Deep time's span counts epochs in the world's rules, as Mesocosm does; under the default year a century is 100 epochs.
+     Links: area Record and history · draws on 451 · summary Deep time's span counts epochs in the world's rules, as Mesocosm does; under the default year a century is 100 epochs.
 
 453. **The probe's minimal body is optional fields on the core part.**
      Asked on 2026-10-01, building checkpoint 6's step 5, after its step 4
@@ -4839,7 +4839,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      240 keep their rounds against the tick's start, being how what can
      decide competes (269).
 
-     Links: area Processes and rules · summary Shared ground is shared out from the pass's start; short supply gives each taker the same floored fraction; identity order decides nothing.
+     Links: area Processes and rules · draws on 269 · summary Shared ground is shared out from the pass's start; short supply gives each taker the same floored fraction; identity order decides nothing.
 
 455. **A body's ceiling is read part by part.** Asked on 2026-10-01, with
      454: "How is a body's ceiling read? Evidence: Mesocosm prices each part
@@ -6031,7 +6031,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      average cannot fit in one member's parts passes to classmates with
      room, so the control loses no matter.
 
-     Links: area Processes and rules · summary From checkpoint 7 on, the averaged negative-control crowd averages each lineage's tissue and reserve together and must still fail the starvation check.
+     Links: area Processes and rules · amends 209 · summary From checkpoint 7 on, the averaged negative-control crowd averages each lineage's tissue and reserve together and must still fail the starvation check.
 
 511. **A recipe's kinds are part templates.** Asked on 2026-10-03, with 510:
      "How does the sim's recipe name what a segment bears? Evidence:
@@ -6890,7 +6890,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      their relation kept, returning them to its counts once the young is
      weaned, the mechanism by which the crowd will hold any relation.
 
-     Links: area Processes and rules · summary A parent and its unweaned young run as individuals in the crowd until the young is weaned; nursing reads only unweaned young.
+     Links: area Processes and rules · draws on 113 · summary A parent and its unweaned young run as individuals in the crowd until the young is weaned; nursing reads only unweaned young.
 
 556. **Every wasm module moves to the newest wasm-bindgen, 0.2.129.**
      Asked on 2026-10-04 in the Burn migration session, widening 537 and
@@ -9782,7 +9782,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the other served goals. Its immediate causal event remains separately
      validated. D31's derived arcs acquire no independent native Arc type.
 
-     Links: area Processes and rules · summary A native act records participation in every goal it actually served; no primary goal discards the others.
+     Links: area Directing and play · draws on 103 · summary A native act records participation in every goal it actually served; no primary goal discards the others.
 
 867. **Authored polity attributes and member-derived readings retain their disagreement.**
      2026-10-13, presentation of disagreeing native polity facts.
