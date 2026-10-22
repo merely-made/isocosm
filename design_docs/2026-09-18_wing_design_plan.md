@@ -3472,7 +3472,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      quarter-turn default, and its amendment waits on his word, drafted in
      the session notes' §9.4.
 
-     Links: area Presentation · summary The wing has one default view, isometric with quarter turns, and it precludes no other view (free-yaw isometric, first person, over the shoulder).
+     Links: area Presentation · amends 1 · summary The wing has one default view, isometric with quarter turns, and it precludes no other view (free-yaw isometric, first person, over the shoulder).
 
 383. **Harmony, order and chaos are ecological states.** Asked on
      2026-09-28: "What is harmony → order → chaos in sim terms? It appears
@@ -3547,7 +3547,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `SlabCamera::dimetric_2_1` (`shared/isometer/src/camera.rs:136`) turned
      in quarter steps, and true isometric is one of the other views.
 
-     Links: area Presentation · summary The default view's pitch is the 2:1 dimetric at 30 degrees, turned in quarter steps; true isometric stays available as another view.
+     Links: area Presentation · draws on 382 · summary The default view's pitch is the 2:1 dimetric at 30 degrees, turned in quarter steps; true isometric stays available as another view.
 
 391. **Neighbouring sites meet through edge profiles.** Asked on 2026-09-28:
      "How do neighbouring sites meet without seams? Ruling 73 allows any
@@ -4097,7 +4097,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the camera comes until examining lifts it, and the renderer never
      draws an individual the sim does not hold.
 
-     Links: area Presentation · summary A thing shows the finest rung its projected size warrants among those the sim holds; finer rungs arrive only through the log.
+     Links: area Presentation · draws on 423, 212 · summary A thing shows the finest rung its projected size warrants among those the sim holds; finer rungs arrive only through the log.
 
 425. **Terrain fits the budget in nested rings.** Asked on 2026-09-30: "How
      does terrain fit the budget across a zoom? Evidence: ruling 296's host
@@ -4119,7 +4119,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      never selects the sim's representation, since every level lifts from
      the same exact surface.
 
-     Links: area Presentation · summary Terrain residency uses nested rings: base grain where the view examines, each ring outward coarser, all inside the host's 8 MiB device budget.
+     Links: area Presentation · draws on 291, 296 · summary Terrain residency uses nested rings: base grain where the view examines, each ring outward coarser, all inside the host's 8 MiB device budget.
 
 426. **A thing changes rung seamlessly where the rungs share geometry, and
      by dither where they do not.** Asked on 2026-09-30, after the session
@@ -4154,7 +4154,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* neither per-part bakes nor a chain of halved
      bakes is needed under this ruling.
 
-     Links: area Presentation · summary Rung changes are seamless where rungs share geometry (sprites, live parts, terrain grains) and ordered dither with hysteresis where they do not.
+     Links: area Presentation · draws on 424, 425 · summary Rung changes are seamless where rungs share geometry (sprites, live parts, terrain grains) and ordered dither with hysteresis where they do not.
 
 427. **Every modification applies effects from the world's one vocabulary,
      and a glyph is one source among many.** Asked on 2026-09-30: "Is every
@@ -4329,7 +4329,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      this filter is Mark's. *Named 2026-10-01 by ruling 434:* the player's
      filter.
 
-     Links: area Presentation · summary A far mark shows the glyphs of the effects on a thing, or per-glyph member shares for a group, through a player-set filter. (amended by 434)
+     Links: area Presentation · draws on 423, 49, 207 · summary A far mark shows the glyphs of the effects on a thing, or per-glyph member shares for a group, through a player-set filter. (amended by 434)
 
 433. **A modifier reaches only the scopes the sim holds.** Asked on
      2026-10-01: "How far does a modifier reach beyond its bearer?
@@ -4444,7 +4444,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and Mesocosm's minimap hulls retire once a second camera held at R4
      replaces each.
 
-     Links: area Presentation · summary Minimap and overmap become second cameras on the ladder held at the world-map rung; the separate canvas and HUD renderers retire.
+     Links: area Presentation · draws on 423 · summary Minimap and overmap become second cameras on the ladder held at the world-map rung; the separate canvas and HUD renderers retire.
 
 438. **A far mark draws a glyph's display as a pixel icon.** Asked on
      2026-10-01, a fork found writing L10: "How does a far mark draw a
@@ -4471,7 +4471,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (netrender's), run once per glyph and cached, so no font draws at frame
      time.
 
-     Links: area Presentation · summary Each glyph's display is rasterised once into a pixel-icon atlas; far marks draw from it at integer scale with the scene's depth.
+     Links: area Presentation · draws on 432, 387 · summary Each glyph's display is rasterised once into a pixel-icon atlas; far marks draw from it at integer scale with the scene's depth.
 
 439. **Grouping stops paying where members per state fall below a world
      rule.** Asked on 2026-10-01, opening time at scale after a remeasure of
@@ -8831,7 +8831,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the push (732). The inventory also found `field-bake` already retired
      (`bb92f2e8`), leaving `ambience-lease` the one probe 474 archives.
 
-     Links: area Presentation · summary Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow.
+     Links: area Stack and engine · summary Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow.
 737. **A room is roofed air.** 2026-10-09, the places lane's forks (merged
      at `2a26c625`). Question: 417's "air cut off from the sky", read as no
      air path to the sky, floods an open-mouthed cave into the outdoor patch;
@@ -8917,7 +8917,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      traced colour, the torch casts no shadow until the testing pass tunes
      it, and the CLAUDE.md names the tenant.
 
-     Links: area Presentation · summary eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing.
+     Links: area Stack and engine · summary eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing.
 750. **The flow record moves with the record family; the registry
      converges with bodies.** 2026-10-09, the matter-and-processes family
      (merged at `14eb2dfb`: the five natives, typed matter and the registry
@@ -10147,7 +10147,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      All six answers were delivered together under864. No question remains
      pending from this round; the next unused question is871.
 
-     Links: area Presentation · summary Baked map thumbnails are an optional backdrop per world or view and respect sharp clipping.
+     Links: area Presentation · draws on 869 · summary Baked map thumbnails are an optional backdrop per world or view and respect sharp clipping.
 
 871. **Party map disclosures retain named known snapshots and their revisions.**
      2026-10-13, collected migration reply under864.
@@ -10726,7 +10726,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      (`residency.rs`), unmeasured; (2) "Raise Mere's cap"; (3) "Smaller
      fixture world". Mark: "Resident window (Recommended)"
 
-     Links: area Presentation · summary F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap.
+     Links: area Presentation · draws on 425 · summary F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap.
 
 949. **906's hazard acts only where the ceiling is above maturity: today, the
      A1 preset.** Asked 2026-10-16 by card from 947's review. Evidence: the
@@ -10924,7 +10924,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      function in the sim (Recommended)". The card is in the resident views
      plan's field admission section.
 
-     Links: area Processes and rules · summary The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored.
+     Links: area Processes and rules · amends 970 · summary The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored.
 
 972. **Presentation and ecology both read the light block in the first slice.**
      Asked with 971. Options: (1) presentation only: the tracer gains a

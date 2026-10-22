@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing, Method and Organs reviewed; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing, Method, Organs and Presentation reviewed, with Directing 1; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -91,7 +91,113 @@ organs; the Stack and engine round will cite it.*
 
 ## Directing and play
 
+### Directing 1. Surfaces derive from knowledge and control
+
+Every surface a participant meets (views, maps, menus, lookups, sounds) is
+derived from that participant's knowledge and control: it shows what the
+participant knows (the admitted facts and the disclosed map) and offers to act
+only on what the participant controls. Settings choose how the known is
+presented, never what is known. The sim and the host hold the whole world, so
+a surface reads through the participant's knowledge, never from host state
+directly.
+
+Links: draws on 432, 847, 868, 869, 870 · summary Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known.
+
+*Reviewed 2026-10-22, new. Drafted as a Presentation rule that "the view grants
+nothing". Mark: "maybe it's more like presentation is contingent upon
+knowledge and control? a rule about how things aren't related is less
+interesting than one that describes a relation", asking why a view would be
+presumed to grant knowledge (answer: views read from a host that holds the
+whole world, the leak cases 868 to 870 guard against); then "Widen it beyond
+views". The rest of the Directing and play area is not yet reviewed.*
+
 ## Presentation
+
+### Presentation 1. One default view
+
+The wing's default view is the 2:1 dimetric at 30°, turned in quarter steps,
+in every product, Mesocosm included. It precludes no other view (true and
+free-yaw isometric, first person, over the shoulder, Mesocosm's terrarium
+section); first person and over the shoulder wait on a perspective camera the
+scene does not have yet. A game's grid is a projection: the sim's volume is
+cubic, and a tile of any shape is a region of voxels an overlay lays over it.
+
+Links: draws on 18, 382, 387 · summary The default view is the 2:1 dimetric at 30 degrees in quarter turns, in every product; it precludes no other view.
+
+*Reviewed 2026-10-22, new. 382 left open whether Mesocosm opens in the
+default; its camera then defaulted to true isometric (35.26°). Mark: "Follow
+the wing: 2:1 dimetric, quarter turns", and "Ask the playable-loop lane to do
+it": the change is briefed to that lane and owed until it lands.*
+
+### Presentation 2. The detail ladder
+
+One camera draws five rungs, near to far: live parts over base-grain terrain;
+baked sprites over coarse terrain; a mark per individual; aggregate marks for
+groups and cohorts; the world map. A thing shows the finest rung its
+projected size warrants among those the sim holds, and finer detail arrives
+only by examining (212); whether approaching examines is each mode's choice.
+Rungs change seamlessly where they share geometry (sprites and live parts,
+terrain grains) and by ordered dither with hysteresis where they do not.
+
+Links: draws on 423, 424, 426 · summary One camera, five rungs; a thing shows the finest rung the sim holds for its size; examining lifts detail; rungs change seamlessly or by dither.
+
+*Reviewed 2026-10-22, new, split from the draft at Mark's word. 426 left
+open whether examining fires on approach. Mark: "Per mode".*
+
+### Presentation 3. Second cameras
+
+A minimap or overmap is a second camera on the same ladder, held at the world
+map's rung. The separate canvas and HUD renderers retire as second cameras
+replace them.
+
+Links: draws on 437 · summary A minimap or overmap is a second camera held at the map rung.
+
+*Reviewed 2026-10-22, new: split from the ladder at Mark's word.*
+
+### Presentation 4. Far marks show modifiers
+
+The third and fourth rungs mark what modifies a thing: the world's glyphs of
+the effects on it, and for a group each glyph's share of members or the
+group's own value, as far as the viewer may know, through the player's filter
+with a default per mode. Each glyph's display is rasterised once into a
+pixel-icon atlas that marks draw from at integer scale with the scene's depth.
+
+Links: draws on 432, 434, 438 · summary Far marks show the glyphs of what modifies a thing, through the player's filter, from a pixel-icon atlas.
+
+*Reviewed 2026-10-22, new. Mark: "Split P2 in two" (this statement as drafted).*
+
+### Presentation 5. Terrain fits the view
+
+Terrain has a per-axis scale. Its residency follows the view in nested rings:
+base grain where the view examines, each ring outward a power of two coarser,
+all inside the host's 8 MiB budget. A ring's grain is residency, never the
+sim's representation.
+
+Links: draws on 23, 425 · summary Terrain residency is nested rings inside the host budget; grain is residency, never representation.
+
+*Reviewed 2026-10-22, new. Mark dropped the draft's line on worlds past a fixed cap (945, one fixture's decision), which stays a case.*
+
+### Presentation 6. Lighting
+
+The sun comes from the sim's light field (971 to 973). Case 970's fixed sun,
+matching the tracer, stays as the bench's default and a host option. Shadows
+wait on their testing pass. Case 22 records the lighting the wing aims for.
+
+Links: draws on 970, 22 · summary The sun is the sim's light field; the fixed sun is the bench fallback; shadows wait on testing.
+
+*Reviewed 2026-10-22, new. Mark: "971 amends 970: fixed sun is the bench fallback"; and the draft's wish list dropped, 22 kept as the aim.*
+
+### Presentation 7. Maps and remains
+
+Faction claims and biomes are independent, configurable layers over known
+regions. Undisclosed edges clip sharply in every view, and every backdrop,
+baked thumbnails included, respects the clip. A resident corpse is seen by
+whoever is aware of its place, an in-transit one by no one, and seeing it
+gives no command over it. Each follows from Directing 1.
+
+Links: draws on 847, 868, 869, 870, directing.1 · summary Map meanings are independent layers; undisclosed edges clip sharply; remains are seen as their place is known.
+
+*Reviewed 2026-10-22, new: the specifics left here when Mark widened the principle into Directing 1.*
 
 ## Stack and engine
 
