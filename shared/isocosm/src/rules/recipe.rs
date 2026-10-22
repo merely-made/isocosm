@@ -84,12 +84,58 @@ pub enum Anchor {
     Tip,
 }
 
+/// A paid serial appendage link, resolved in its socket's frame.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ChainFacing {
+    Outward,
+    Inward,
+    Above,
+    Below,
+    Front,
+    Back,
+}
+
+impl ChainFacing {
+    pub fn facing(self, socket: Facing) -> Facing {
+        match self {
+            Self::Outward => socket,
+            Self::Inward => match socket {
+                Facing::Right => Facing::Left,
+                Facing::Left => Facing::Right,
+                Facing::Above => Facing::Below,
+                Facing::Below => Facing::Above,
+                Facing::Front => Facing::Back,
+                Facing::Back => Facing::Front,
+            },
+            Self::Above => Facing::Above,
+            Self::Below => Facing::Below,
+            Self::Front => Facing::Front,
+            Self::Back => Facing::Back,
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ChainLink {
+    pub kind: Key,
+    pub facing: ChainFacing,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub distal: bool,
+}
+fn is_false(value: &bool) -> bool {
+    !*value
+}
+
 /// One tagma (ruling 478): its segments, each of the `segment` kind, and
 /// the kind each segment bears, `per_segment` of them (a pair each for
 /// lateral kinds). `parent` names an earlier tagma it branches from, at
 /// `anchor`; absent, it continues from the segment placed last.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Tagma {
+    /// Absent in historical recipes; links have ordinary mass and part identities.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub chain: Vec<ChainLink>,
     pub segments: u8,
     pub segment: Key,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -270,7 +316,12 @@ impl Recipe {
     pub fn kinds(&self) -> BTreeSet<Key> {
         let segments = self.tagmata.iter().map(|t| t.segment.clone());
         let borne = self.tagmata.iter().filter_map(|t| t.bears.clone());
-        segments.chain(borne).collect()
+        segments.chain(borne).chain(
+                self.tagmata
+                    .iter()
+                    .flat_map(|t| t.chain.iter().map(|l| l.kind.clone())),
+            )
+            .collect()
     }
 }
 

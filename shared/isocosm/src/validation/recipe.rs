@@ -74,6 +74,11 @@ pub(crate) fn development(rules: &Rules, lineages: &BTreeMap<Key, Lineage>) -> R
             if t.bears.is_some() != (t.per_segment > 0) {
                 return refuse("bears a kind on no segment, or none on some");
             }
+            if !t.chain.is_empty()
+                && (t.bears.is_none() || t.chain.len() * usize::from(t.per_segment) * 2 > 255)
+            {
+                return refuse("has an unbound or oversized appendage chain");
+            }
             if t.parent.is_some_and(|p| usize::from(p) >= i) {
                 return refuse("branches a tagma from one not yet placed");
             }

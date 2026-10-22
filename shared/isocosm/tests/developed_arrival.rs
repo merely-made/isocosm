@@ -28,6 +28,7 @@ fn world(stores: u32) -> Session {
         ]),
     });
     let recipe = Recipe { tagmata: vec![Tagma {
+        chain: Vec::new(),
         segments: 1, segment: "kind:arrival-root".into(), bears: None, per_segment: 0,
         parent: None, anchor: Anchor::Base, facing: Facing::Back, socket: Facing::Right, variance: None,
     }], variance: 0, absence: [0,1], riff: [0,1], vary: [0,1] };

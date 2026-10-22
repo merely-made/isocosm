@@ -54,7 +54,10 @@ pub fn soma(rules: &Rules, recipe: &Recipe, seed: u64) -> Soma {
         segments.push(count);
         let [odds, of] = recipe.absence;
         let borne = t.bears.as_ref().and_then(|k| rules.kinds.get(k));
-        if t.per_segment == 0 || borne.is_none_or(present) || odds == 0 {
+        if t.per_segment == 0 || borne.is_none_or(present)
+            || t.chain
+                .iter()
+                .any(|l| rules.kinds.get(&l.kind).is_some_and(present)) || odds == 0 {
             continue;
         }
         if draw("soma-absent", i) % u64::from(of) < u64::from(odds) {
@@ -163,7 +166,33 @@ pub fn develop(rules: &Rules, d: &Development, soma: &Soma) -> Result<Body> {
                     let mut offset = flush(segment.half_extent, borne.half_extent, *socket);
                     offset[run] += along;
                     slot = slot.checked_add(1).ok_or("too many borne parts")?;
-                    parts.push(part(borne, [i as u8, s, slot], Some(id), offset));
+                    if t.chain.is_empty() {
+                        parts.push(part(borne, [i as u8, s, slot], Some(id), offset));
+                    } else {
+                        let mut parent = id;
+                        let mut previous = *socket;
+                        for (link_index, link) in t.chain.iter().enumerate() {
+                            let template = kind(&link.kind)?;
+                            let host = parts[parent.0 as usize].0.half_extent;
+                            let facing = link.facing.facing(*socket);
+                            let mut at = flush(host, template.half_extent, facing);
+                            if link_index == 0 {
+                                at[run] += along;
+                            } else {
+                                slot = slot.checked_add(1).ok_or("too many chain links")?;
+                                if link.distal {
+                                    let (axis, sign) = previous.axis();
+                                    if axis != facing.axis().0 {
+                                        at[axis] += sign * host[axis].abs();
+                                    }
+                                }
+                            }
+                            let child = next(&parts);
+                            parts.push(part(template, [i as u8, s, slot], Some(parent), at));
+                            parent = child;
+                            previous = facing;
+                        }
+                    }
                 }
             }
         }

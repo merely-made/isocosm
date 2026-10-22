@@ -46,7 +46,9 @@ pub(super) struct State {
 impl State {
     fn new(config: HostConfig) -> Self {
         let picture = SceneHandle::default();
-        let producer = Rc::new(RefCell::new(SectionProducer::new(picture.clone())));
+        let mut producer = SectionProducer::new(picture.clone());
+        producer.set_render_scale(config.render_scale);
+        let producer = Rc::new(RefCell::new(producer));
         Self {
             host: Host::new(config),
             picture,

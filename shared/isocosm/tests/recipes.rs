@@ -44,6 +44,7 @@ fn developed() -> Genesis {
     g.rules.affinity = Some(Affinity::default());
     let recipe = Recipe {
         tagmata: vec![Tagma {
+            chain: Vec::new(),
             segments: 1,
             segment: "kind:lump".into(),
             bears: Some("kind:limb".into()),

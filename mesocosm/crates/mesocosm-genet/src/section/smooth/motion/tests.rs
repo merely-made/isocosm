@@ -30,11 +30,13 @@ fn fixture() -> (PlacedBody, SiteScene) {
         id: 6,
         document,
         at: volume.to_ground(pose.at),
+        walks: vec![],
         physical: Some(mesocosm_runtime::spatial::Pose {
             at: pose.at,
             yaw: pose.yaw,
         }),
         tint: [1.; 3],
+        materials: vec![],
         alive: true,
     };
     let bodies = vec![body.clone()];
@@ -134,4 +136,26 @@ fn a_changed_terrain_coordinate_frame_is_not_a_walk() {
         body.at.map(|v| v as f32)
     );
     assert!(!motion.active());
+}
+
+#[test]
+fn a_missed_picture_uses_admitted_steps_and_never_invents_a_distant_path() {
+    let (mut body, mut scene) = fixture();
+    let mut motion = Motion::new(&body, &scene);
+    let start = motion.sample(&body, &scene, 0.02);
+    let from = motion.pose.clone().unwrap();
+    let mut middle = from.clone(); middle.at[0] += 1;
+    let mut end = middle.clone(); end.at[0] += 1;
+    body.walks = vec![[from.clone(),middle.clone()],[middle.clone(),end.clone()]];
+    body.physical.as_mut().unwrap().at = end.at;
+    body.at = scene.window.to_ground(end.at); scene.bodies[0] = body.clone();
+    assert_eq!(motion.sample(&body,&scene,0.), start);
+    assert!(motion.active());
+    let moving = motion.sample(&body,&scene,0.06);
+    assert!(moving[0] > start[0] && moving[0] < body.at[0] as f32);
+    for _ in 0..12 { motion.sample(&body,&scene,0.06); }
+    assert_eq!(motion.sample(&body,&scene,0.), body.at.map(|v|v as f32));
+    assert!(!motion.active());
+    // A missing edge is an unavailable route, not permission to fill the gap.
+    assert!(trail(&[[from.clone(),middle]], &from, &end).is_none());
 }

@@ -19,6 +19,7 @@ pub struct HostConfig {
     /// an epoch short enough to reach the board in a sitting.
     pub play: bool,
     pub body_roster: bool,
+    pub body_founding: Option<String>,
     pub play_epoch: u64,
     /// The hour of day a play world begins at.
     pub play_hour: u32,
@@ -35,6 +36,7 @@ pub struct HostConfig {
     /// The generated world's founding population.
     pub population: u64,
     pub ticks_per_second: u32,
+    pub render_scale: u32,
     pub width: u32,
     pub height: u32,
     /// Run this many frames and exit.
@@ -104,6 +106,7 @@ impl Default for HostConfig {
             bench_epoch: 60,
             play: false,
             body_roster: false,
+            body_founding: None,
             play_epoch: 60,
             play_hour: 7,
             play_soil: 100,
@@ -118,6 +121,7 @@ impl Default for HostConfig {
             // ticks per second keeps the clock from deferring without limit.
             // TD2's 10 (2026-08-29) stays the aspiration.
             ticks_per_second: 2,
+            render_scale: 1,
             width: 960,
             height: 540,
             frames: None,

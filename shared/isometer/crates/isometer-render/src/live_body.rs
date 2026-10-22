@@ -27,7 +27,7 @@ mod pose;
 mod query;
 mod vertex;
 
-pub use materials::{PartMaterial, TISSUE_CHANNELS};
+pub use materials::{PartMaterial, TISSUE_CHANNELS, tissue_colour, tissue_average};
 pub use palette::{MaterialPalette, PALETTE_ENTRIES, PaletteColour, linear_from_display};
 pub use query::{BodyHit, BodyQueryError, body_bounds, pick_bodies, posed_quad, part_transform};
 

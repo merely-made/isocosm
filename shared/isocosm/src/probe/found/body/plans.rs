@@ -39,6 +39,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
 
 fn segment(kind: &str, facing: Facing) -> Tagma {
     Tagma {
+        chain: Vec::new(),
         segments: 1,
         segment: kind.into(),
         bears: None,
@@ -105,6 +106,7 @@ impl BodyFounding {
         let limbs = self.pick("body-limbs", 0, self.limbs);
         let grazer = vec![
             Tagma {
+                chain: Vec::new(),
                 bears: Some(LIMB.into()),
                 per_segment: 1,
                 ..segment(LUMP, Facing::Back)

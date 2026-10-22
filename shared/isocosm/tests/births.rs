@@ -42,6 +42,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
 fn development(clutch: u32) -> Development {
     let recipe = Recipe {
         tagmata: vec![Tagma {
+        chain: Vec::new(),
             segments: 1,
             segment: "kind:lump".into(),
             bears: Some("kind:limb".into()),

@@ -40,6 +40,7 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
 fn recipe(anamorphic: bool) -> Development {
     let recipe = Recipe {
         tagmata: vec![Tagma {
+            chain: Vec::new(),
             segments: 2,
             segment: "kind:lump".into(),
             bears: Some("kind:limb".into()),

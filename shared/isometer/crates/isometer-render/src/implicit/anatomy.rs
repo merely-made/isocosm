@@ -90,7 +90,19 @@ fn anatomy(
         Vec3::X
     };
     let bend_pole = Quat::from_rotation_y(body.yaw_radians) * trunk;
+    let handled = if let Some((contacts, gait)) = walking.as_mut() {
+        let (chain_surface, chain_stats, handled) =
+            super::chains::pose(document, body, contacts, gait, ground)?;
+        surface.parts.extend(chain_surface.parts);
+        stats = chain_stats;
+        handled
+    } else {
+        std::collections::BTreeSet::new()
+    };
     for placement in &body.mesh.placements {
+        if handled.contains(&placement.part) {
+            continue;
+        }
         let part = document
             .part(placement.part)
             .ok_or("posed part absent from anatomy")?;
@@ -116,25 +128,12 @@ fn anatomy(
             * if support {
                 0.35
             } else if role == Role::Mass {
-                0.8
+                0.35
             } else {
                 0.45
             };
         smallest = smallest.min(radius);
-        let material = body
-            .mesh
-            .mesh_for(placement.volume)
-            .and_then(|m| m.quads.first())
-            .map_or(1, |q| q.material);
-        let base = body
-            .palette
-            .and_then(|p| p.linear(material))
-            .unwrap_or_else(|| material_colour(material));
-        let mut colour =
-            [0, 1, 2].map(|i| base[i] * body.tint[i] * if body.focused { 1.08 } else { 1.0 });
-        if body.selected_part == Some(part.id) {
-            colour = [0, 1, 2].map(|i| colour[i] * 0.72 + [1.0, 0.55, 0.1][i] * 0.28);
-        }
+        let colour = colour(body, part.id);
         // Generated native bodies also express supports as a terminal cube
         // attached below its parent. Read that graph edge, not just aspect.
         let axis = if support {
@@ -251,7 +250,7 @@ fn anatomy(
                 {
                     half.min_element()
                         .min(parent.half_extent.into_iter().min().unwrap_or(0) as f32 * body.scale)
-                        * 0.9
+                        * 0.45
                 } else {
                     radius * 0.8
                 };
@@ -281,7 +280,7 @@ fn anatomy(
         }
     }
     surface.blend = if smallest.is_finite() {
-        smallest * 0.35
+        smallest * 0.2
     } else {
         0.0
     };
@@ -290,4 +289,30 @@ fn anatomy(
         stats.swinging = gait.swinging;
     }
     Ok((surface, stats))
+}
+
+pub(super) fn colour(body: LiveBody<'_>, id: isometer_core::PartId) -> [f32; 3] {
+    let material = body
+        .mesh
+        .mesh_for(
+            body.mesh
+                .placements
+                .iter()
+                .find(|p| p.part == id)
+                .expect("anatomy placement")
+                .volume,
+        )
+        .and_then(|m| m.quads.first())
+        .map_or(1, |q| q.material);
+    let base = body
+        .palette
+        .and_then(|p| p.linear(material))
+        .unwrap_or_else(|| material_colour(material));
+    let mut colour =
+        [0, 1, 2].map(|i| base[i] * body.tint[i] * if body.focused { 1.08 } else { 1.0 });
+    colour = crate::tissue_average(colour, body.materials, id);
+    if body.selected_part == Some(id) {
+        colour = [0, 1, 2].map(|i| colour[i] * 0.72 + [1.0, 0.55, 0.1][i] * 0.28);
+    }
+    colour
 }

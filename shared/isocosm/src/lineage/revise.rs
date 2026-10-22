@@ -28,6 +28,7 @@ pub fn variants(d: &Development, most: usize) -> Vec<(Key, Development)> {
             let mut v = d.clone();
             let t = &mut v.recipe.tagmata[i];
             t.bears = Some(kind.clone());
+            t.chain.clear();
             t.per_segment = t.per_segment.max(1);
             out.push((format!("revision:{i}-bears-{kind}"), v));
         }

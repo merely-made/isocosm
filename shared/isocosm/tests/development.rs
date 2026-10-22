@@ -47,6 +47,7 @@ fn rules() -> Rules {
 
 fn tagma(segments: u8, bears: Option<&str>, per_segment: u8) -> Tagma {
     Tagma {
+        chain: Vec::new(),
         segments,
         segment: "kind:lump".into(),
         bears: bears.map(Into::into),

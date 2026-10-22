@@ -7,10 +7,10 @@
 //! The section's native input at site grain (wing ruling 681): the played
 //! critter's site, lifted to a Ground, and the bodies of its living members.
 
+use isocosm::directing::readings::View;
 use isocosm::kingdom::{self, Kingdom};
 use isocosm::schema::Id;
 use isocosm::simulation::Simulation;
-use isocosm::directing::readings::View;
 use isometer::render::kingdom_colour;
 
 use crate::section::{PlacedBody, SiteScene, body_volumes};
@@ -21,7 +21,9 @@ pub use mesocosm_runtime::runtime::placing::{DEPTH, WINDOW_HALF};
 pub fn site_of(sim: &Simulation, played: Option<Id>) -> Option<Id> {
     let pop = &sim.state().population;
     match played {
-        Some(id) => pop.get(id).and_then(|e| e.resident_site().or_else(|| e.journey.as_ref().map(|j| j.from))),
+        Some(id) => pop.get(id).and_then(|e| {
+            e.resident_site().or_else(|| e.journey.as_ref().map(|j| j.from))
+        }),
         None => sim.state().sites.keys().next().copied(),
     }
 }
@@ -83,7 +85,8 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
             }
             Some(held.pose.clone())
         };
-        bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical,
+        bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical, walks: vec![],
+            materials: native_materials(e),
             tint:tint_of(kingdom::of(e)), alive:e.alive });
     }
     let volumes = body_volumes(&bodies)?;
@@ -114,13 +117,14 @@ pub fn placed(
         .map(|(index, (id, entity, document))| PlacedBody {
             id,
             document,
-            physical: None,
+            physical: None, walks: vec![],
             at: entity
                 .patch
                 .filter(|p| volume.holds(p.cell[0], p.cell[2]))
                 .map(|p| volume.to_ground(p.cell))
                 .unwrap_or_else(|| super::layout::spot(ground, index)),
             tint: tint_of(kingdom::of(entity)),
+            materials: native_materials(entity),
             alive: entity.alive,
         })
         .collect()
@@ -144,6 +148,7 @@ pub fn placed_physical(sim: &Simulation, site: Id,
     game.version()?;
     let mut bodies = Vec::new();
     let mut realized = mesocosm_runtime::spatial::RealizedChecker::new(sim);
+    let walks = native_walks(game);
     for (&id, at) in &game.members {
         if at.site.0 != site || !visible.shows(id) { continue; }
         let entity = sim.state().population.get(id).ok_or("physical picture names an absent native member")?;
@@ -153,12 +158,17 @@ pub fn placed_physical(sim: &Simulation, site: Id,
         if !volume.holds(at.pose.at[0], at.pose.at[2]) { continue; }
         let cell = volume.to_ground(at.pose.at);
         let base = [volume.min[0], volume.datum, volume.min[1]];
-        let offsets = [i64::from(volume.ground().extent()), 0, i64::from(volume.ground().extent())];
-        if (0..3).any(|i| base[i].checked_add(offsets[i]).and_then(|b|
-            b.checked_add(i64::from(cell[i]))) != Some(at.pose.at[i])) {
+        let offsets = [i64::from(volume.ground().extent()), 0, i64::from(volume.ground().extent()),
+        ];
+        if (0..3).any(|i| {
+            base[i].checked_add(offsets[i]).and_then(|b|
+            b.checked_add(i64::from(cell[i]))) != Some(at.pose.at[i])
+        }) {
             return Err("physical picture exceeds Ground coordinate bounds".into());
         }
         bodies.push(PlacedBody { id, document, at:cell, physical:Some(at.pose.clone()),
+            walks: walks.get(&id).cloned().unwrap_or_default(),
+            materials: native_materials(entity),
             tint:tint_of(kingdom::of(entity)), alive:entity.alive });
     }
     Ok(bodies)
@@ -182,4 +192,31 @@ pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
     let bodies = placed_physical(sim, site, &volume, visible, game)?;
     let volumes = body_volumes(&bodies)?;
     Ok(SiteScene { site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })
+}
+
+/// The same admitted native summaries used by the borrowed close-up.
+fn native_materials(e: &isocosm::schema::Entity) -> Vec<isometer::render::PartMaterial> {
+    crate::section::bodies::function_materials(&isocosm::attention::spatial::allocations(e))
+}
+
+/// Read the existing validated placement history; never infer a path between
+/// distant endpoints or replay another visit's steps.
+fn native_walks(game: &mesocosm_runtime::spatial::Game)
+    -> std::collections::BTreeMap<Id, Vec<[isocosm::spatial::Pose; 2]>> {
+    let mut out = std::collections::BTreeMap::<Id, Vec<_>>::new();
+    let Some(driver) = &game.driver else { return out };
+    for c in driver.records.iter().rev().take(32).flat_map(|r| r.changes.iter().rev()) {
+        if !matches!(c.admission, mesocosm_runtime::spatial::Admission::Step { .. }) { continue; }
+        let Some(at) = game.members.get(&c.actor) else { continue };
+        let Some(from) = &c.before else { continue }; let to = &c.after;
+        if from.site != at.site || to.site != at.site
+            || from.resident_since != at.resident_since || to.resident_since != at.resident_since
+            || from.body_revision != at.body_revision || to.body_revision != at.body_revision { continue; }
+        let steps = out.entry(c.actor).or_default();
+        if steps.len() < 16 {
+            steps.push([isocosm::spatial::Pose {at:from.pose.at,yaw:from.pose.yaw},
+                isocosm::spatial::Pose {at:to.pose.at,yaw:to.pose.yaw}]);
+        }
+    }
+    for steps in out.values_mut() { steps.reverse(); } out
 }

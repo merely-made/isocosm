@@ -5,7 +5,7 @@
 
 use isometer::SlabCamera;
 use isometer::render::live_body::posed_quad;
-use isometer::render::{ClipSlab, LiveBody, material_colour};
+use isometer::render::{ClipSlab, LiveBody, material_colour, tissue_colour};
 use tenant::{Palette, PaletteMesh};
 
 pub(super) fn camera(slab: SlabCamera) -> tenant::Camera {
@@ -126,25 +126,6 @@ fn accent(colour: [f32; 3], selected: bool) -> [f32; 3] {
             colour[i]
         }
     })
-}
-
-fn tissue_colour(base: [f32; 3], phase: f32, fractions: [f32; 5]) -> [f32; 3] {
-    let marks = [
-        [0.82, 0.30, 0.25],
-        [0.82, 0.55, 0.20],
-        [0.32, 0.72, 0.92],
-        [0.34, 0.76, 0.30],
-        [0.78, 0.25, 0.72],
-    ];
-    let mut end = 0.0;
-    for (fraction, mark) in fractions.into_iter().zip(marks) {
-        end += fraction;
-        if phase < end {
-            let shade = base.into_iter().fold(0.0, f32::max);
-            return [0, 1, 2].map(|i| base[i] * 0.28 + mark[i] * shade * 0.72);
-        }
-    }
-    base
 }
 
 fn append(

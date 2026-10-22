@@ -47,6 +47,7 @@ pub(crate) fn development(g: &Genesis, choice: Option<NativeFixtureRecipe>) -> O
     };
     d.recipe = Recipe {
         tagmata: vec![Tagma {
+            chain: Vec::new(),
             segments: 1, segment: root.into(), bears: Some(STORE.into()), per_segment: 8,
             parent: None, anchor: Anchor::Base, facing: Facing::Back, socket: Facing::Above,
             variance: None,

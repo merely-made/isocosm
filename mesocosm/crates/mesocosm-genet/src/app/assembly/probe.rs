@@ -44,6 +44,7 @@ impl mesquite::Product for Probe {
             fields: [
                 ("mode", "played".into()),
                 ("camera", s.host.config.camera.name().into()),
+                ("render-scale", s.host.config.render_scale.to_string()),
                 ("frames", s.host.frames.to_string()),
                 ("dev", s.host.config.dev.to_string()),
                 ("dev-intents", dev_intents.to_string()),
@@ -67,6 +68,11 @@ impl mesquite::Product for Probe {
                 ("placed-offspring", children.to_string()),
                 ("controlled-placement", yes_no(r.critter().is_some_and(|id| physical.members.get(&id).is_some_and(|at| at.realized(&r.sim()).is_ok()
                     && physical.placement_unoccupied(&r.sim(), id).is_ok())))),
+                ("body-founding", r.sim().genesis().founding.as_ref()
+                    .and_then(|f| f.bodies.as_ref()).and_then(|b| b.founding.clone())
+                    .unwrap_or_else(|| "historical".into())),
+                ("functional-parts", s.host.scene.as_ref().map_or(0, |scene| scene.bodies.iter()
+                    .map(|b| b.materials.len()).sum::<usize>()).to_string()),
                 ("bodies", s.host.config.body_mode.name().into()),
                 ("voxel-bodies", body_stats.voxel_bodies.to_string()),
                 ("terrain-bricks", terrain_stats.resident.to_string()),

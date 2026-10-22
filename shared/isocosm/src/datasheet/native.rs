@@ -14,7 +14,7 @@
 
 use std::collections::BTreeMap;
 
-use super::schema::{AnchorWord, AppendageWord, FacingWord, MouthWord, TagmaEntry, WornWord};
+use super::schema::{AnchorWord, AppendageWord, FacingWord, MouthWord, RoleWord, TagmaEntry, WornWord};
 use super::{Bank, Banks, Shape, Sheets, sheets};
 use crate::anatomy;
 use crate::rules::{Anchor, Facing, Recipe, Tagma, Template};
@@ -89,10 +89,7 @@ fn anchor(word: AnchorWord) -> Anchor {
     }
 }
 
-fn tagma(entry: &TagmaEntry, banks: &Banks) -> Result<Tagma, String> {
-    if entry.chain.is_some() {
-        return Err("native recipes carry no appendage chain".into());
-    }
+fn tagma(sheets: &Sheets, sheet: &str, entry: &TagmaEntry, banks: &Banks) -> Result<Tagma, String> {
     let appendage = entry.appendage.unwrap_or(AppendageWord::None);
     let shape = entry.shape.as_deref();
     let bears = match appendage {
@@ -116,6 +113,38 @@ fn tagma(entry: &TagmaEntry, banks: &Banks) -> Result<Tagma, String> {
     let segment = banks.shape(Bank::Mass, entry.segment.as_deref())?;
     let layout = entry.layout.as_ref();
     Ok(Tagma {
+        chain: entry
+            .chain
+            .as_ref()
+            .map(|name| {
+                let (set, name) = name.split_once('.').unwrap_or((sheet, name));
+                let links = sheets
+                    .sets
+                    .get(set)
+                    .and_then(|s| s.chain.get(name))
+                    .ok_or_else(|| format!("unknown appendage chain {set}.{name}"))?;
+                if links.is_empty() {
+                    return Err("empty appendage chain".to_string());
+                }
+                links
+                    .iter()
+                    .map(|link| {
+                        let bank = match link.role {
+                            RoleWord::Mass => Bank::Mass,
+                            RoleWord::Limb => Bank::Limb,
+                            RoleWord::Plate => Bank::Plate,
+                            RoleWord::Sensor => Bank::Sensor,
+                        };
+                        Ok(crate::rules::ChainLink {
+                            kind: kind(&borne(banks, bank, Some(&link.shape))?.name),
+                            facing: link.facing,
+                            distal: link.distal,
+                        })
+                    })
+                    .collect::<Result<Vec<_>, String>>()
+            })
+            .transpose()?
+            .unwrap_or_default(),
         segments: entry.segments,
         segment: kind(&segment.name),
         bears: bears.map(|(s, _)| kind(&s.name)),
@@ -133,12 +162,14 @@ fn tagma(entry: &TagmaEntry, banks: &Banks) -> Result<Tagma, String> {
 
 /// One body, `<sheet>.<body>`, as a native recipe in the named palette.
 pub fn recipe(sheets: &Sheets, body: &str, banks: &Banks) -> Result<Recipe, String> {
-    let (_, entry) = sheets.body(body)?;
+    let (sheet, entry) = sheets.body(body)?;
     let tagmata = entry
         .tagma
         .iter()
         .enumerate()
-        .map(|(i, t)| tagma(t, banks).map_err(|why| format!("{body}, tagma {i}: {why}")))
+        .map(|(i, t)| {
+            tagma(sheets, sheet, t, banks).map_err(|why| format!("{body}, tagma {i}: {why}"))
+        })
         .collect::<Result<Vec<_>, _>>()?;
     Ok(Recipe {
         tagmata,
