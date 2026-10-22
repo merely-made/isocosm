@@ -2666,6 +2666,52 @@ housekeeping (Mark: "Archive both"):
      reader"; (3) "Ignore until Q5/Q11". Mark: "Decode receipts only
      (Recommended)"
 
+**Moved 2026-10-22** in the doctrine's Mesocosm review, as executed sequencing of
+Mesocosm's move onto native Isocosm (Mark: "Archive the four executed, keep 677
+and 682"):
+
+678. **Mesocosm's world family moves last, with M3.** 2026-10-08. Question:
+     671 ends Mesocosm's driving when its world family moves, leaving it
+     unplayable until M3; how is the gap handled? Options: the world family
+     moves last, with M3 (recommended); accept the gap; M3 first, then the
+     families. Mark chose "World family moves last, with M3 (Recommended)".
+     So Mesocosm keeps playing on the legacy world until directing on
+     Isocosm is ready, and the world family's re-expression is the switch
+     itself: the gap closes to nothing.
+680. **An interim M4 at site grain.** 2026-10-08. Question: M4 now waits for
+     in-site space through isometer (670, after SP3 to SP5) and for bodies
+     after checkpoints 10 and 11; is there an earlier milestone? Options: an
+     interim M4 at site grain (recommended); M4 waits for places. Mark chose
+     "An interim M4 at site grain (Recommended)". So a first played loop on
+     Isocosm runs without in-site space, rounds, births, boundaries and a
+     collapse at site grain with its receipts replaying, and the full M4
+     follows when places land.
+681. **The interim M4 is the switch; amends 678.** 2026-10-08, the directing
+     survey's first round. Question: 678 makes Mesocosm's world family's
+     move the switch, last, after places, while 680 puts a played loop on
+     Isocosm before places; where do M3 and the interim M4 run? (genet's W4
+     bench, 8,288 lines, already drives a native `Session` beside the legacy
+     world.) Options: beside legacy, switching at the world family's move
+     (recommended); the interim M4 is the switch. Mark chose "Interim M4 is
+     the switch". So genet's runtime moves onto a native `Session` at the
+     interim M4, and in-site play (carve, deposit, voxel sight) is gone
+     until the full M4. *Reading, not ruled:* M3 lands with the interim M4,
+     so 671's gap still closes to nothing; Mesocosm's legacy world family
+     retires at that switch rather than after places.
+755. **The world families come forward; amends 678 and 681's order.**
+     2026-10-09, from the bodies lane (first pass merged at `417a2e2c`).
+     Question: deleting legacy bodies is blocked, `organism` imported by 59
+     legacy files (37 in `world/`) and every outside consumer reaching
+     organisms through the legacy `World` or Eponym's `GameState`, while 678
+     and 681 put the world families last. Options: bring the world families
+     forward, re-expressing what native lacks and moving the worlds onto
+     native (recommended); re-express now and delete later; adapt legacy to
+     native bodies. Mark chose "Bring the world families forward
+     (Recommended)". So 732's push moves Mesocosm's and Eponym's worlds onto
+     native once native serves what they need (kingdom reading, mosaics,
+     graft compatibility, Eponym's needs and wounds), the switch (681, D5)
+     with them, and legacy bodies delete with the worlds.
+
 ## Findings
 
 - 2026-09-17: the tracer's orthographic branch begins on the section's

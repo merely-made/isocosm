@@ -1877,7 +1877,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      it with standing orders and priorities. **The rewrite is owed now,
      and the plan retires into W5 at M3 (rulings 196 and 199).**
 
-     Links: area Mesocosm · summary The first Mesocosm overlay directs, as ruling 60 has it; the played slice's direct control is rewritten.
+     Links: area Mesocosm · draws on 60 · summary The first Mesocosm overlay directs, as ruling 60 has it; the played slice's direct control is rewritten.
 176. **A Mesocosm player directs with priorities, places, stances and
      nudges.** Put to Mark on 2026-09-25: what does a Mesocosm player
      direct with? Four options were put, to pick all that should be in the
@@ -1888,14 +1888,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      216:** the player gives the nudge by click, and the other three grow
      from the nudges' history as desire paths.
 
-     Links: area Mesocosm · summary A Mesocosm player directs with priorities, places, stances and nudges.
+     Links: area Mesocosm · draws on 59 · summary A Mesocosm player directs with priorities, places, stances and nudges.
 177. **A critter follows its player's directing by its bond.** Put to Mark
      on 2026-09-25: does your own critter always follow your directing?
      Three options were put: within its body; when its needs allow; or by
      its bond, built from how well your orders have served it, as ruling
      60 weighs directives by opinion. Mark: "By its bond."
 
-     Links: area Mesocosm · summary A critter follows its player's directing by its bond, built from how well the player's orders have served it.
+     Links: area Mesocosm · draws on 60 · summary A critter follows its player's directing by its bond, built from how well the player's orders have served it.
 178. **Whether the bond carries across generations is a setting, seeded
      by default.** Put to Mark on 2026-09-25: when your critter dies and
      you take up the next of your lineage (ruling 61), does the bond carry
@@ -1904,7 +1904,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the lineage's, carrying whole. Mark: "All three should be options; my
      default would be seeded".
 
-     Links: area Mesocosm · summary Whether the bond carries across generations is a setting (fresh, seeded by lineage, or whole); seeded is the default.
+     Links: area Mesocosm · draws on 177, 61 · summary Whether the bond carries across generations is a setting (fresh, seeded by lineage, or whole); seeded is the default.
 179. **A Mesocosm player chooses when to start, from the world's
      habitability for their critter onward.** Put to Mark on 2026-09-25:
      does the first played loop start in a world with a past, deep time
@@ -1971,7 +1971,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the world? Two options were put: see and edit; or see only, editing
      belonging to the world editor (ruling 89). Mark: "See only."
 
-     Links: area Mesocosm · summary Creative mode shows the truth and does not edit; editing belongs to the world editor.
+     Links: area Mesocosm · draws on 180, 89 · summary Creative mode shows the truth and does not edit; editing belongs to the world editor.
 185. **Eponym's co-op is each player living their own creature.** Put to
      Mark on 2026-09-25, opening Eponym's overlay: what does co-op look
      like, given that ruling 153 lets two players direct one entity? Three
@@ -2145,7 +2145,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      handle." Dev intents keep raw coordinates, since they reach the grid
      directly.
 
-     Links: area Mesocosm · summary A PLACES directive names a place-graph node by opaque handle; dev intents keep raw coordinates.
+     Links: area Mesocosm · draws on 72, 147 · summary A PLACES directive names a place-graph node by opaque handle; dev intents keep raw coordinates.
 206. **When food is short, the sim resolves the crowd's choices in
      pairwise encounters.** Put to Mark on 2026-09-25, from the sim plan's
      S2 probe, which stopped at its first fork on finding no exact
@@ -2261,7 +2261,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      biology can do with it (ruling 59), and each is still a nudge the
      critter weighs.
 
-     Links: area Mesocosm · summary A click draws the critter's attention as a nudge it weighs by its bond; attending is the default and a right click picks another meaning.
+     Links: area Mesocosm · draws on 176, 177 · summary A click draws the critter's attention as a nudge it weighs by its bond; attending is the default and a right click picks another meaning.
 215. **A click never warns.** Put to Mark on 2026-09-25, with 214: can a
      click warn as well as invite, by a second gesture, or does the critter
      read the pointing through its own sense of the thing? Mark: "One
@@ -2269,7 +2269,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      by its own sense of it, and avoidance comes from its experience and its
      stance.
 
-     Links: area Mesocosm · summary A click never warns; the critter reads what it is shown by its own sense, and avoidance comes from experience and stance.
+     Links: area Mesocosm · draws on 214 · summary A click never warns; the critter reads what it is shown by its own sense, and avoidance comes from experience and stance.
 216. **Standing orders grow from attention.** Put to Mark on 2026-09-25,
      with 214: where do the standing orders come from, places to range and
      make home, priorities and stances: grown from attention, set at the
@@ -2283,7 +2283,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      attention led it into turned out, and places to avoid from what went
      badly there (215).
 
-     Links: area Mesocosm · summary Standing orders (ranges, homes, priorities, stances) grow from the player's attention as desire paths; the only directive sent is the nudge.
+     Links: area Mesocosm · draws on 59, 214 · summary Standing orders (ranges, homes, priorities, stances) grow from the player's attention as desire paths; the only directive sent is the nudge.
 217. **The larger reserve does not win an escalated fight; the probe's
      other readings stand.** Put to Mark on 2026-09-25, with the S2 probe's
      four readings of ruling 206: each member's choice follows its lineage's
@@ -2429,14 +2429,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      on the target? Mark: "A ring of acts." So the critter's possible acts
      toward the target appear around the cursor, and a click picks one.
 
-     Links: area Mesocosm · summary A right click shows a ring of acts around the cursor, the critter's possible acts toward the target, and a click picks one.
+     Links: area Mesocosm · draws on 214 · summary A right click shows a ring of acts around the cursor, the critter's possible acts toward the target, and a click picks one.
 229. **When a player's lineage ends, they pick another here or a new world,
      their call.** Put to Mark on 2026-09-25, from 226's "the world isn't
      done until your lineage is done and you need to pick a new one": pick
      another lineage in the same world, a new world, or either? Mark:
      "Either, player's call."
 
-     Links: area Mesocosm · summary When a player's lineage ends, they pick another lineage in the same world or a new world, their call.
+     Links: area Mesocosm · draws on 226 · summary When a player's lineage ends, they pick another lineage in the same world or a new world, their call.
 230. **A total collapse ends the world as a game, and it stays watchable.**
      Put to Mark on 2026-09-25, from 226's "or until the world's ecology is
      collapsed entirely", ruling 181 having had no collapse end play: after a
@@ -2445,7 +2445,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      holds, and a total collapse is the one loss that ends the game while the
      world can still be watched.
 
-     Links: area Mesocosm · summary A total ecological collapse ends the world as a game, but the world stays watchable.
+     Links: area Mesocosm · draws on 226, 181 · summary A total ecological collapse ends the world as a game, but the world stays watchable.
 232. **Eponym's blows are resolved in the foreground and handed back.** Put
      to Mark on 2026-09-25, from the Eponym overlay plan's §6 decision 1:
      Eponym's strike system resolves each blow geometrically and hands the
@@ -8385,17 +8385,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      alive in most draws (260), measured by persistence, turnover, collapse
      and response to intervention (267, 283).
 
-     Links: area Mesocosm · summary Overlay M2 is the families plan's Mesocosm share and keeps its own condition: the web stays alive in most draws.
-678. **Mesocosm's world family moves last, with M3.** 2026-10-08. Question:
-     671 ends Mesocosm's driving when its world family moves, leaving it
-     unplayable until M3; how is the gap handled? Options: the world family
-     moves last, with M3 (recommended); accept the gap; M3 first, then the
-     families. Mark chose "World family moves last, with M3 (Recommended)".
-     So Mesocosm keeps playing on the legacy world until directing on
-     Isocosm is ready, and the world family's re-expression is the switch
-     itself: the gap closes to nothing.
-
-     Links: area Mesocosm · summary Mesocosm's world family moves last, with M3, so Mesocosm keeps playing on the legacy world until directing on Isocosm is ready. (amended by 681, 755)
+     Links: area Mesocosm · draws on 260, 591 · summary Overlay M2 is the families plan's Mesocosm share and keeps its own condition: the web stays alive in most draws.
 679. **The driving intents become the critter's own acts; `Idle` goes.**
      2026-10-08, ruling the overlay plan §3's two readings. Question: the
      old `Move`, `Metabolize`, `Consume`, `Graft`, `Deposit` and `Carve`
@@ -8406,30 +8396,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      `Idle` has no role.
 
      Links: area Directing and play · draws on 671 · summary The six old driving intents become the critter's own acts chosen by its methodology; Idle has no role.
-680. **An interim M4 at site grain.** 2026-10-08. Question: M4 now waits for
-     in-site space through isometer (670, after SP3 to SP5) and for bodies
-     after checkpoints 10 and 11; is there an earlier milestone? Options: an
-     interim M4 at site grain (recommended); M4 waits for places. Mark chose
-     "An interim M4 at site grain (Recommended)". So a first played loop on
-     Isocosm runs without in-site space, rounds, births, boundaries and a
-     collapse at site grain with its receipts replaying, and the full M4
-     follows when places land.
-
-     Links: area Mesocosm · summary An interim M4 at site grain gives a first played loop on Isocosm without in-site space; the full M4 follows when places land.
-681. **The interim M4 is the switch; amends 678.** 2026-10-08, the directing
-     survey's first round. Question: 678 makes Mesocosm's world family's
-     move the switch, last, after places, while 680 puts a played loop on
-     Isocosm before places; where do M3 and the interim M4 run? (genet's W4
-     bench, 8,288 lines, already drives a native `Session` beside the legacy
-     world.) Options: beside legacy, switching at the world family's move
-     (recommended); the interim M4 is the switch. Mark chose "Interim M4 is
-     the switch". So genet's runtime moves onto a native `Session` at the
-     interim M4, and in-site play (carve, deposit, voxel sight) is gone
-     until the full M4. *Reading, not ruled:* M3 lands with the interim M4,
-     so 671's gap still closes to nothing; Mesocosm's legacy world family
-     retires at that switch rather than after places.
-
-     Links: area Mesocosm · summary The interim M4 is the switch: genet's runtime moves onto a native Session and the legacy world family retires then. (amended by 755)
 682. **M3 plays a native generated lineage.** 2026-10-08. Question: native
      generation (`bodied.rs`) makes lineages today, while re-expressing
      Mesocosm's founders waits on the bodies family and the families plan's
@@ -8940,7 +8906,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      there (recommended); mood at least zero; habitable from founding. Mark
      chose "Conditions met, member lives (Recommended)".
 
-     Links: area Mesocosm · summary A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there.
+     Links: area Mesocosm · draws on 179 · summary A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there.
 752. **A minimal native lineage revision comes forward.** 2026-10-09.
      Question: native has no lineage revision, so 684's grow-a-copy boundary
      has nothing to commit. Options: a minimal revision now, development-
@@ -8957,7 +8923,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      chose "Both". So founding generates a move process per route, and
      `OnCollapse::Elsewhere` stays available.
 
-     Links: area Mesocosm · summary After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available.
+     Links: area Mesocosm · draws on 181 · summary After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available.
 754. **A region has collapsed only in a level it once held.** 2026-10-09.
      Question: regions that never held a trophic level read as collapsed
      from the first round, while 225 says "a level gone". Options: only
@@ -8973,21 +8939,6 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Parked as research for after 732's push.
 
      Links: area Ecology · summary A region has collapsed only in a trophic level it once held; the clause about levels the world holds within reach is unbuilt.
-755. **The world families come forward; amends 678 and 681's order.**
-     2026-10-09, from the bodies lane (first pass merged at `417a2e2c`).
-     Question: deleting legacy bodies is blocked, `organism` imported by 59
-     legacy files (37 in `world/`) and every outside consumer reaching
-     organisms through the legacy `World` or Eponym's `GameState`, while 678
-     and 681 put the world families last. Options: bring the world families
-     forward, re-expressing what native lacks and moving the worlds onto
-     native (recommended); re-express now and delete later; adapt legacy to
-     native bodies. Mark chose "Bring the world families forward
-     (Recommended)". So 732's push moves Mesocosm's and Eponym's worlds onto
-     native once native serves what they need (kingdom reading, mosaics,
-     graft compatibility, Eponym's needs and wounds), the switch (681, D5)
-     with them, and legacy bodies delete with the worlds.
-
-     Links: area Mesocosm · summary The world families come forward in the migration push; Mesocosm's and Eponym's worlds move onto native, the switch with them, legacy bodies deleted.
 756. **Lineage data moves into isocosm; isometer keeps an opaque tag.**
      2026-10-09. Question: about 218 provenance and 200 `mass_mg` sites
      store lineage and mass in isometer's document. Options: `SpeciesId`,
@@ -9762,7 +9713,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Advisory layout is not an actual step. Step values, cost, timing and
      collision parameters remain authored rather than supplied by this answer.
 
-     Links: area Mesocosm · summary Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission.
+     Links: area Mesocosm · draws on 833 · summary Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission.
 
 842. **Destinations supply explicit authored arrival placements and windows.**
      2026-10-12, actual geometry after a native journey.
@@ -9775,7 +9726,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      refused destination binding remains unavailable. The answer supplies
      no coordinates or window dimensions.
 
-     Links: area Mesocosm · summary Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback.
+     Links: area Mesocosm · draws on 833 · summary Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback.
 
 843. **Ordinary reservation requires explicit native ownership.**
      2026-10-12, ownerless material under839.
@@ -9855,7 +9806,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      no control. A travelling parent has no site pose to guess; the native
      child still shares its remaining journey under821.
 
-     Links: area Mesocosm · summary Authored birth profiles resolve a newborn's physical placement from its parent's current pose; refused placement never undoes the birth.
+     Links: area Mesocosm · draws on 833, 821 · summary Authored birth profiles resolve a newborn's physical placement from its parent's current pose; refused placement never undoes the birth.
 
 849. **A debit may select an exact portion of a named native lot.**
      2026-10-12, partial native stock selection under846.
@@ -10820,7 +10771,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      applies once the remaining receipt and physical-witness gates pass. The
      shared generator default and the unchanged A1 qualification gate remain.
 
-     Links: area Mesocosm · summary Mesocosm defaults to the named A1 preset once receipt and physical-witness gates pass; the shared generator default stays Stock.
+     Links: area Mesocosm · draws on 907 · summary Mesocosm defaults to the named A1 preset once receipt and physical-witness gates pass; the shared generator default stays Stock.
 
 962. **The stack supplies identity and admitted connections to family games.**
      Asked 2026-10-17 while wiring H7's shipping VTT owner: the recommended
@@ -10965,7 +10916,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      1,440-tick day is then 12 minutes of play. The same round archived both
      merged lane sessions.
 
-     Links: area Mesocosm · summary Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops.
+     Links: area Mesocosm · draws on 976 · summary Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops.
 
 979. **The sun's parameters are an optional `Rules.sun`, absent meaning the default.**
      Asked 2026-10-17 at the light-field lane's start. Evidence: presets are

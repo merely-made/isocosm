@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record and Directing reviewed; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing and Mesocosm reviewed; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -190,12 +190,14 @@ derived from that participant's knowledge and control: it shows what the
 participant knows (the admitted facts and the disclosed map) and offers to act
 only on what the participant controls. What a participant may know follows its
 seat (player, creative observer, DM), the entity it plays and awareness
-granted in play, never its mode; a mode switch changes only how the known is
+granted in play, never its mode. Mesocosm's survival is the player's seat,
+showing what the critter knows; its creative mode is the creative observer's,
+showing the truth and never editing (the world editor edits); a mode switch changes only how the known is
 shown. Settings choose how the known is presented, never what is known. The
 sim and the host hold the whole world, so a surface reads through the
 participant's knowledge, never from host state directly.
 
-Links: draws on 445, 432, 847, 868, 869, 870 · summary Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known.
+Links: draws on 445, 180, 184, 432, 847, 868, 869, 870 · summary Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known.
 
 *Reviewed 2026-10-22, new. Drafted as a Presentation rule that "the view grants
 nothing". Mark: "maybe it's more like presentation is contingent upon
@@ -205,7 +207,8 @@ presumed to grant knowledge (answer: views read from a host that holds the
 whole world, the leak cases 868 to 870 guard against); then "Widen it beyond
 views". Refined 2026-10-22 in the area's own review with case 445, the
 original rule that knowledge follows seat and subject, never mode. Mark: "All
-as drafted".*
+as drafted". Mesocosm's survival and creative (180, 184) folded in at Mark's
+word ("M3 into Directing 1") in the Mesocosm review.*
 
 ### Directing 2. Each game foregrounds one rung
 
@@ -430,6 +433,70 @@ Links: draws on 923, 924, 959, 960, 962, record.1 · summary isonetry is the fam
 
 ## Mesocosm
 
+### Mesocosm 1. What the player plays
+
+The player plays a critter of its lineage, and how the rest of the lineage
+relates depends on its traits: competitors, a cohort, or extensions of one
+organism (a fungal monocreature, a swarm). Mesocosm is directed, never driven
+(Directing 3). At a birth the player keeps the parent by default and may take
+the offspring, reversibly. Speciating (splitting the line and naming it; "the
+name is the doing") is the player's act; expressing a candidate is the
+critter's own development.
+
+Links: draws on 155, 175, 183, 202, 682 · summary The player plays a critter whose lineage relates by its traits; keeps the parent at a birth; speciating is the player's act.
+
+*Reviewed 2026-10-22, new. Mark: "Both as drafted".*
+
+### Mesocosm 2. The only directive is a nudge
+
+A click draws the critter's attention to a place (a place-graph handle) or a
+thing, which it answers by its own lights, weighed by its bond; a right click
+shows a ring of its possible acts toward the target. No gesture warns:
+avoidance comes from experience and stance. Priorities, ranges, homes and
+stances grow from where attention keeps leading. The bond grows from how well
+the nudges served the critter; whether it carries to the next generation is a
+world setting (fresh, seeded, whole), seeded by default.
+
+Links: draws on 176, 177, 178, 205, 214, 215, 216, 228 · summary The only directive is a nudge by click; standing orders grow from attention; the bond carries by world setting.
+
+*Reviewed 2026-10-22, new. Mark: "Both as drafted".*
+
+### Mesocosm 3. Starting, losing and going on
+
+A player starts when they choose: at the start of the world's habitability for
+their critter (the first epoch boundary where a site meets the lineage's
+conditions and a member lives there), or with as much added time as they like.
+Losing is not the end: after a regional collapse members migrate along routes
+and the player may start again elsewhere; when a lineage ends the player picks
+another here or a new world, their call. A total collapse ends the world as a
+game, still watchable.
+
+Links: draws on 179, 181, 229, 230, 751, 753 · summary Start from habitability or later; a regional collapse is survivable; a total collapse ends the game, still watchable.
+
+*Reviewed 2026-10-22, new. Put with the seeing statement, which Mark folded into Directing 1.*
+
+### Mesocosm 4. Physical space is the game's
+
+Mesocosm owns and saves actual spatial state bound to native body and terrain
+revisions. Authored step profiles bind native movement processes;
+destinations supply authored arrival placements and windows; a newborn is
+placed from its parent's current pose. A missing or stale input refuses
+(Method 8), and a refused placement never undoes the native act.
+
+Links: draws on 833, 841, 842, 848, method.8 · summary Mesocosm owns its spatial state; authored profiles bind movement, arrival and birth placement; missing inputs refuse.
+
+*Reviewed 2026-10-22, new. Mark: "Both as drafted, and widen 'refuse, never invent'".*
+
+### Mesocosm 5. Defaults
+
+Mesocosm defaults to the named A1 preset (the shared generator stays Stock),
+and its tempo follows the measured tick: 2 ticks a second, with 10 as the aim
+once scheduling allows.
+
+Links: draws on 961, 978 · summary Mesocosm defaults to A1 and to 2 ticks a second, following measurement.
+
+*Reviewed 2026-10-22, new. Mark: "Both as drafted".*
+
 ## Eponym
 
 ## The VTT
@@ -542,7 +609,7 @@ names the fault it would detect, and passing and deliberately failing results
 are both kept. A gate is staged with what it gates: viability per family, as
 each brings its mechanics (producers, then consumers, then decomposers).
 
-Links: draws on 15, 260, 366 · summary Tests draw under an unchosen seed; evidence is kept apart from reports; controls name their fault; gates are staged with what they gate.
+Links: draws on 15, 260, 366, 677 · summary Tests draw under an unchosen seed; evidence is kept apart from reports; controls name their fault; gates are staged with what they gate.
 
 *Reviewed 2026-10-21, new. Mark: "Both as drafted".*
 
@@ -615,3 +682,15 @@ CLAUDE.md). Mark, during the Licensing round: "claude.md should be derived,
 not authoritative ... it should be a reference to an authoritative record, so
 the claude.md points ya to the records instead of bloating claude.md"; then
 "Adopt; slim them all now".*
+
+### Method 8. Refuse, never invent
+
+A missing or stale input refuses; nothing invents a value to fill it: not a
+position, an eye, a placement or a target, and not a key, a grant or a trust
+root. What is refused stays visibly unavailable until a real input arrives.
+
+Links: draws on 833, 842, 848, 962 · summary A missing or stale input refuses; nothing invents a value to fill it.
+
+*Reviewed 2026-10-22, new: proposed from the pattern across Mesocosm's
+physical-space cases and 962, not Mark's words. Mark: "widen 'refuse, never
+invent'".*
