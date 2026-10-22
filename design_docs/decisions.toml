@@ -1846,6 +1846,7 @@ title = "The wing has one default view, isometric with quarter turns, and it pre
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "The wing has one default view, isometric with quarter turns, and it precludes no other view (free-yaw isometric, first person, over the shoulder)."
+amends = ["1"]
 
 [cases."383"]
 title = "Harmony, order and chaos are ecological states"
@@ -1865,6 +1866,7 @@ title = "The default view's pitch is the 2:1 dimetric, 30°"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "The default view's pitch is the 2:1 dimetric at 30 degrees, turned in quarter steps; true isometric stays available as another view."
+draws_on = ["382"]
 
 [cases."391"]
 title = "Neighbouring sites meet through edge profiles"
@@ -2039,18 +2041,21 @@ title = "A thing shows the finest rung its size warrants among those the sim hol
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "A thing shows the finest rung its projected size warrants among those the sim holds; finer rungs arrive only through the log."
+draws_on = ["212", "423"]
 
 [cases."425"]
 title = "Terrain fits the budget in nested rings"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "Terrain residency uses nested rings: base grain where the view examines, each ring outward coarser, all inside the host's 8 MiB device budget."
+draws_on = ["291", "296"]
 
 [cases."426"]
 title = "A thing changes rung seamlessly where the rungs share geometry, and by dither where they do not"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "Rung changes are seamless where rungs share geometry (sprites, live parts, terrain grains) and ordered dither with hysteresis where they do not."
+draws_on = ["424", "425"]
 
 [cases."427"]
 title = "Every modification applies effects from the world's one vocabulary, and a glyph is one source among many"
@@ -2087,6 +2092,7 @@ title = "A far mark shows the glyphs of the effects on a thing, through a lens t
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "A far mark shows the glyphs of the effects on a thing, or per-glyph member shares for a group, through a player-set filter. (amended by 434)"
+draws_on = ["49", "207", "423"]
 
 [cases."433"]
 title = "A modifier reaches only the scopes the sim holds"
@@ -2118,12 +2124,14 @@ title = "A minimap or overmap is a second camera on the ladder"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "Minimap and overmap become second cameras on the ladder held at the world-map rung; the separate canvas and HUD renderers retire."
+draws_on = ["423"]
 
 [cases."438"]
 title = "A far mark draws a glyph's display as a pixel icon"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "Each glyph's display is rasterised once into a pixel-icon atlas; far marks draw from it at integer scale with the scene's depth."
+draws_on = ["387", "432"]
 
 [cases."439"]
 title = "Grouping stops paying where members per state fall below a world rule"
@@ -3460,7 +3468,7 @@ summary = "The kiss3d fork is v0.47.0 at crates/kiss3d (mark-ik fork, pinned by 
 [cases."736"]
 title = "Palette colours reach kiss3d as a texture addressed by UV"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Presentation"
+area = "Stack and engine"
 summary = "Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow."
 
 [cases."737"]
@@ -3514,7 +3522,7 @@ summary = "Cliff spans are drawn from both sites' skeletons and the pair seed, a
 [cases."749"]
 title = "L7 lands on the tenant; D1 layers; the torch's shadows wait"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "Presentation"
+area = "Stack and engine"
 summary = "eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing."
 
 [cases."750"]
@@ -4068,6 +4076,7 @@ title = "Baked map thumbnails are optional per world or view"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "Baked map thumbnails are an optional backdrop per world or view and respect sharp clipping."
+draws_on = ["869"]
 
 [cases."871"]
 title = "Party map disclosures retain named known snapshots and their revisions"
@@ -4342,6 +4351,7 @@ title = "F7: the producer builds its terrain from the resident window"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Presentation"
 summary = "F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap."
+draws_on = ["425"]
 
 [cases."949"]
 title = "906's hazard acts only where the ceiling is above maturity: today, the A1 preset"
@@ -4433,6 +4443,7 @@ title = "The light field is a derived function in the sim"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Processes and rules"
 summary = "The light field is a pure derived function in the sim over (rules, tick, site), read by the tracer and tenant, with nothing stored."
+amends = ["970"]
 
 [cases."972"]
 title = "Presentation and ecology both read the light block in the first slice"
@@ -4525,6 +4536,13 @@ source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
 [decisions."sim-execution D6"]
 title = "`foregone` only on direct acts (2026-10-20)"
 source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+
+[statements."directing.1"]
+title = "Surfaces derive from knowledge and control"
+source = "design_docs/doctrine.md"
+area = "Directing and play"
+summary = "Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known."
+draws_on = ["432", "847", "868", "869", "870"]
 
 [statements."licensing.1"]
 title = "Rulesets"
@@ -4659,3 +4677,52 @@ source = "design_docs/doctrine.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Crates are made when the abstraction earns one, not per name; parked code moves unchanged."
 draws_on = ["201", "673"]
+
+[statements."presentation.1"]
+title = "One default view"
+source = "design_docs/doctrine.md"
+area = "Presentation"
+summary = "The default view is the 2:1 dimetric at 30 degrees in quarter turns, in every product; it precludes no other view."
+draws_on = ["18", "382", "387"]
+
+[statements."presentation.2"]
+title = "The detail ladder"
+source = "design_docs/doctrine.md"
+area = "Presentation"
+summary = "One camera, five rungs; a thing shows the finest rung the sim holds for its size; examining lifts detail; rungs change seamlessly or by dither."
+draws_on = ["423", "424", "426"]
+
+[statements."presentation.3"]
+title = "Second cameras"
+source = "design_docs/doctrine.md"
+area = "Presentation"
+summary = "A minimap or overmap is a second camera held at the map rung."
+draws_on = ["437"]
+
+[statements."presentation.4"]
+title = "Far marks show modifiers"
+source = "design_docs/doctrine.md"
+area = "Presentation"
+summary = "Far marks show the glyphs of what modifies a thing, through the player's filter, from a pixel-icon atlas."
+draws_on = ["432", "434", "438"]
+
+[statements."presentation.5"]
+title = "Terrain fits the view"
+source = "design_docs/doctrine.md"
+area = "Presentation"
+summary = "Terrain residency is nested rings inside the host budget; grain is residency, never representation."
+draws_on = ["23", "425"]
+
+[statements."presentation.6"]
+title = "Lighting"
+source = "design_docs/doctrine.md"
+area = "Presentation"
+summary = "The sun is the sim's light field; the fixed sun is the bench fallback; shadows wait on testing."
+draws_on = ["22", "970"]
+
+[statements."presentation.7"]
+title = "Maps and remains"
+source = "design_docs/doctrine.md"
+area = "Presentation"
+summary = "Map meanings are independent layers; undisclosed edges clip sharply; remains are seen as their place is known."
+draws_on = ["847", "868", "869", "870", "directing.1"]

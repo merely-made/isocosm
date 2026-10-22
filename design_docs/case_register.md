@@ -529,8 +529,6 @@ three design docs that cite it. The record holds the words.
 | 432 | A far mark shows the glyphs of the effects on a thing, or per-glyph member shares for a group, through a player-set filter. (amended by 434) | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 437 | Minimap and overmap become second cameras on the ladder held at the world-map rung; the separate canvas and HUD renderers retire. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
 | 438 | Each glyph's display is rasterised once into a pixel-icon atlas; far marks draw from it at integer scale with the scene's depth. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
-| 736 | Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow. | none |
-| 749 | eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
 | 847 | Resident corpses stay visible in the same native awareness and close-up; in-transit corpses stay absent; showing grants no control. | none |
 | 868 | Faction claims and biomes use independently configurable map layers showing both meanings; settings grant no knowledge. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
 | 869 | Undisclosed edges of known map regions always clip sharply in every view; no fade option. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
@@ -611,10 +609,12 @@ three design docs that cite it. The record holds the words.
 | 721 | Lineage vocabulary leaves isometer-core with the bodies family; provenance and species ids move to the sim keyed by PartId. | none |
 | 724 | The folded probe stays a standalone isometry probe in its own workspace under crates/probes, pinned to mere by rev. | none |
 | 735 | The kiss3d fork is v0.47.0 at crates/kiss3d (mark-ik fork, pinned by rev), with a mere crate over it owning device, targets, lights, depth pre-pass. | none |
+| 736 | Palette colours reach kiss3d as a texture addressed by UV, keeping the fork's diff narrow. | none |
 | 737 | A room is roofed air: caves, tunnels and lintelled doorways are places with clearance on edges, and Cover::Roofed is the default. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 738 | A patch splits where walkable width drops below a world-rule width. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
 | 741 | Sight is a voxel ray with the place graph choosing candidates. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
 | 743 | The patch neck width defaults to 2, so any 1-wide neck splits. | [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) |
+| 749 | eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
 | 750 | The flow record stays in legacy until the record family; the registry converges with bodies, lowered onto the function catalogue. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 756 | Lineage and provenance data (SpeciesId, Origin, Provenance) move into isocosm as sidecars keyed by PartId; isometer keeps an opaque tag. | none |
 | 969 | Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
