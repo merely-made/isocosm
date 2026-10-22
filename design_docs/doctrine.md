@@ -6,12 +6,30 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym and World generation reviewed, with Processes 1 and 2; the other areas are empty. Each
+**Status, 2026-10-22:** Naming, Licensing, Method, Organs, Presentation, Host, Record, Directing, Mesocosm, Ecology, Eponym and World generation reviewed, with Processes 1 and 2 and Schema 1; the VTT is under review (VTT 1 to 4 written, its rulesets pending); the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
 
 ## The sim's schema and saves
+
+
+### Schema 1. Authored content is native
+
+Authored content enters by assertion, with the record, as the sim's own nouns
+filled with authored attributes: a faction is a polity with no members yet,
+its name, tags, claims, governance and focus asserted; a place is a site; a
+character is a placeless entity, which develops its own body from a selected
+recipe and keeps its identity; a law is a rule record; a history line is an
+event. Where authored attributes and readings derived from members disagree,
+both are kept with their sources and the disagreement shown until an
+explicit, admitted change.
+
+Links: draws on 757, 760, 769, 834, 867 · summary Authored content is asserted as native nouns with authored fills; disagreements with derived readings are kept and shown.
+
+*Reviewed 2026-10-22, new: drafted as VTT 2 and placed here at Mark's word
+("VTT 2 to the schema"), since any authoring enters this way. The rest of
+the area is not yet reviewed.*
 
 ## Processes and rules
 
@@ -262,10 +280,14 @@ location is a known, remarkable or potential site, or a nested place within
 one (a settlement, a dungeon, a gate), allocated as it is generated and
 spanning several sites if it must; wilderness is sites without a location,
 from which locations can be generated; environment is weather and climate.
+Nesting is one composable mechanism, its levels fixed in neither order nor
+number; the VTT's four scopes (world, region, area, battlemap) are its
+defaults.
 
-Links: draws on 72, 88 · summary Site, region, location, wilderness, biome and environment; locations nest and are allocated as generated.
+Links: draws on 72, 88, 74 · summary Site, region, location, wilderness, biome and environment; locations nest by one composable mechanism, allocated as generated.
 
-*Reviewed 2026-10-22, new: split from World 1 at Mark's word.*
+*Reviewed 2026-10-22, new: split from World 1 at Mark's word. Case 74 folded
+in from the VTT review (Mark: "Fold 74 into World 3").*
 
 ### World 4. The world is a generative entity
 
@@ -792,6 +814,69 @@ Links: draws on 816, 818, 819, 825, 835 · summary Native recipes develop bodies
 numbers (818, 819) stay in their cases, awaiting native measurement.*
 
 ## The VTT
+
+
+### VTT 1. The table runs over the sim, or without it
+
+A campaign may run with the sim off, as a plain board. Its session still
+carries its facts as assertions (Schema 1), so the sim can be switched on
+later over the same history. With the sim on, a battlemap is projected from
+the generated volume and the DM's map is an edit over it; moves within it
+reach the sim as per-tick batches, never a call per token. A character's map
+cell and owner are table metadata that grant no control and move no body; the
+table's note kinds (reveal, narration, history) are declared in its world's
+founding rules; an event's handle is the adapter's reading of its native key,
+one mapping shared and checked.
+
+Links: draws on 188, 243, 244, 248, 768, 807, 809, 814, schema.1 · summary A campaign runs sim-off as a board still writing assertions; sim-on, maps are edits over the volume and moves batch per tick.
+
+*Reviewed 2026-10-22, new. Mark: "VTT 2 to the schema": the rule that
+authored content is native moved to Schema 1, and the table's own vocabulary
+(807, 809, 814) stays here.*
+
+### VTT 2. Time at the table is consent
+
+A DM may take up any unclaimed entity to play and may edit the world; players
+sharing a character and the DM playing the unclaimed are on by default.
+Downtime advances the world's time, a domain where order matters (Record 1),
+and at the table it needs consent: every bound player holds it, disconnected
+players included, and only a player can release their own hold, which covers
+later proposals until they retake it. A proposal binds its tick and roster,
+and a change needs a new one; the DM chooses which ready proposal advances.
+Pace is an authored profile of duration and stock costs.
+
+Links: draws on 156, 245, 246, 851, 852, 855, 856, 860, record.1 · summary The DM may play the unclaimed and edit; downtime needs every bound player's yes or their own release, binding tick and roster.
+
+*Reviewed 2026-10-22, new. Mark: "Downtime to Record 1": time is a domain
+where order matters, so the statement cites Record 1 and keeps the table's
+specifics.*
+
+### VTT 3. A party is opt-in and grants no control
+
+Each player opts their played body into or out of a party, and may withdraw
+an earlier membership after changing bodies; new joins and disclosures name
+the body they play now. The party's map is a shared view of what members
+disclose (named terrain windows and snapshots, with their source revisions),
+kept after a member leaves; a change needs a new disclosure. A joint departure
+needs each player's approval for their own body, and the DM applies the
+approvals together through native admission.
+
+Links: draws on 853, 854, 857, 858, 859, 871 · summary Players opt their own bodies into parties; the party map is a shared, kept view of disclosures; joint departures need each player's approval.
+
+*Reviewed 2026-10-22, new; as drafted, beside VTT 2's change (Mark:
+"Downtime to Record 1").*
+
+### VTT 4. The sim offers; the DM decides
+
+The sim's running arcs reach the DM as suggested hooks to take up, drop or
+reshape. An adventure pack whose requirements the world lacks waits dormant,
+or the GM forces it, displacing generated content; once compatible, it
+activates only when the DM previews and accepts it.
+
+Links: draws on 190, 191, 865 · summary Running arcs reach the DM as hooks; a pack the world can't meet waits or is forced; a compatible one activates on the DM's acceptance.
+
+*Reviewed 2026-10-22, new: drafted beside the rulesets, which Mark reframed;
+this half drew no change.*
 
 ## Naming
 

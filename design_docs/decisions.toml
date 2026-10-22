@@ -421,7 +421,7 @@ draws_on = ["72"]
 [cases."74"]
 title = "Nesting is one composable, expandable mechanism; world, region, area and battlemap are its defaults"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "World generation"
 summary = "Nesting is one composable, expandable mechanism; world, region, area and battlemap are its defaults. (amended by 92)"
 
 [cases."75"]
@@ -897,6 +897,7 @@ title = "A DM may take up any unclaimed entity to play, and may edit the world"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "A DM may take up any unclaimed entity to play, and may edit the world."
+draws_on = ["152"]
 
 [cases."157"]
 title = "A thing of note is a relic, an event of note a tale, and Mesocosm's body site a tract"
@@ -1104,12 +1105,14 @@ title = "An adventure pack whose requirements the world lacks waits, or the GM f
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "An adventure pack whose requirements the world lacks waits dormant, or the GM forces it, displacing generated content."
+draws_on = ["89"]
 
 [cases."191"]
 title = "The VTT offers the sim's running arcs to the DM as suggested hooks"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "The VTT offers the sim's running arcs to the DM as suggested hooks to take up, drop or reshape."
+draws_on = ["103"]
 
 [cases."192"]
 title = "Isocosm absorbs mesocosm-core; the first overlay plays on Isocosm"
@@ -1382,6 +1385,7 @@ title = "With the sim on, a battlemap is projected from the generated volume, th
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "With the sim on, a battlemap is projected from the generated volume and the DM's map is an edit over it."
+draws_on = ["12", "18", "89"]
 
 [cases."244"]
 title = "Moves within a battlemap reach the sim"
@@ -1394,12 +1398,14 @@ title = "At a VTT table, sharing a character and the DM playing the unclaimed ar
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "At a VTT table, sharing a character and the DM playing the unclaimed are on by default."
+draws_on = ["153", "156"]
 
 [cases."246"]
 title = "Downtime needs each player's yes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Downtime needs each player's yes."
+draws_on = ["63", "104", "105"]
 
 [cases."247"]
 title = "The tape-drawn faction turn retires at V2"
@@ -1412,6 +1418,7 @@ title = "A sim-off campaign still writes its facts as notes"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "A sim-off campaign still writes its facts as notes, so the sim can be switched on later over the same history."
+draws_on = ["188"]
 
 [cases."250"]
 title = "An uncalibrated campaign warns when it opens and marks its receipts"
@@ -3632,7 +3639,7 @@ summary = "Lineage and provenance data (SpeciesId, Origin, Provenance) move into
 [cases."757"]
 title = "Authored content enters by `Command::Assert`, with the record"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "The sim's schema and saves"
 summary = "Authored content enters by Command::Assert with the record family; the campaign world becomes a reading of native state."
 
 [cases."758"]
@@ -3650,8 +3657,9 @@ summary = "The registry carries all fifteen functions, arriving with the world m
 [cases."760"]
 title = "An authored faction is a polity with no members yet"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "The sim's schema and saves"
 summary = "An authored faction is a polity with no members yet, asserted with authored name, tags, claims, governance and focus as facts."
+draws_on = ["63"]
 
 [cases."764"]
 title = "Lexicon lessons are discovery"
@@ -3685,12 +3693,14 @@ title = "A campaign's session carries its assertions"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "A campaign's session carries its assertions; CampaignWorld folds from them and a native Session replays from them when the sim switches on."
+draws_on = ["248"]
 
 [cases."769"]
 title = "Authored places, characters, laws and history lines are native nouns with authored fills"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "The sim's schema and saves"
 summary = "Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills."
+draws_on = ["760"]
 
 [cases."771"]
 title = "Eponym's epistemic layer becomes notes plus knowing"
@@ -3774,6 +3784,7 @@ title = "Native characters retain optional table metadata"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body."
+draws_on = ["152", "153"]
 
 [cases."810"]
 title = "Healing restores a lost cell's recorded allocation"
@@ -3917,8 +3928,9 @@ summary = "Mesocosm owns and saves actual spatial state, bound to native body an
 [cases."834"]
 title = "A sim-on VTT character develops its own native body and keeps its ID"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "The sim's schema and saves"
 summary = "A sim-on VTT character develops its own native body from a selected recipe and keeps its ID; placement and control are admitted separately."
+draws_on = ["809"]
 
 [cases."835"]
 title = "Named native material recipes specify new item stocks and quantities"
@@ -4034,60 +4046,70 @@ title = "Every bound table player holds downtime unless they release their own h
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Every saved bound table player, disconnected included, holds downtime unless they release their own hold."
+draws_on = ["246"]
 
 [cases."852"]
 title = "A downtime proposal binds its original native tick and player roster"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "A downtime proposal binds its original tick and player roster; a change makes it unavailable and requires a new proposal."
+draws_on = ["851"]
 
 [cases."853"]
 title = "Players opt their played native bodies into or out of a party"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Each player opts their played native body into or out of a party; membership grants no control."
+draws_on = ["8", "9"]
 
 [cases."854"]
 title = "The overmap combines party members' disclosed knowledge in a shared view"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "The overmap is a shared view combining party members' disclosed native knowledge; sharing grants no control or undisclosed knowledge."
+draws_on = ["853"]
 
 [cases."855"]
 title = "A self-released downtime hold covers future proposals until explicitly retaken"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "A self-released downtime hold covers current and future proposals until the player explicitly retakes it."
+draws_on = ["851"]
 
 [cases."856"]
 title = "The DM explicitly chooses which ready downtime proposal advances"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "The DM explicitly chooses which ready downtime proposal advances; the earliest does not advance automatically."
+draws_on = ["851", "852"]
 
 [cases."857"]
 title = "Players may withdraw their own earlier party memberships after changing bodies"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Players may withdraw their own earlier party memberships after changing bodies; new joins and disclosures name the current body."
+draws_on = ["853"]
 
 [cases."858"]
 title = "Disclosed map facts remain recorded after a member leaves"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Disclosed map facts remain in the party's recorded map after the contributing member leaves."
+draws_on = ["854"]
 
 [cases."859"]
 title = "Each player approves their currently played body's joint departure"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Each player approves their currently played body's departure and the DM applies approved departures together through native admission."
+draws_on = ["853"]
 
 [cases."860"]
 title = "Authored native pace profiles supply duration and stock costs"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Requested pace resolves to an explicitly authored native pace profile giving duration and stock costs; no default from the legacy percentage."
+draws_on = ["817"]
 
 [cases."861"]
 title = "Directed critters receive a travel goal, bounded by their impressions and motives"
@@ -4121,6 +4143,7 @@ title = "A compatible dormant adventure pack activates by explicit DM acceptance
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "A compatible dormant adventure pack activates only when the DM previews and explicitly accepts it."
+draws_on = ["190"]
 
 [cases."866"]
 title = "A native act records participation in every goal it actually served"
@@ -4131,8 +4154,9 @@ summary = "A native act records participation in every goal it actually served; 
 [cases."867"]
 title = "Authored polity attributes and member-derived readings retain their disagreement"
 source = "design_docs/2026-09-18_wing_design_plan.md"
-area = "The VTT"
+area = "The sim's schema and saves"
 summary = "Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change."
+draws_on = ["760"]
 
 [cases."868"]
 title = "Faction claims and biomes use configurable map layers"
@@ -4158,6 +4182,7 @@ title = "Party map disclosures retain named known snapshots and their revisions"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
 summary = "Party map disclosures name explicit terrain windows and condition or claim snapshots the body knows, with source revisions; changes need a new disclosure."
+draws_on = ["854"]
 
 [cases."872"]
 title = "Defensive tissue uses an authored native threshold expression"
@@ -5071,6 +5096,41 @@ area = "Record and history"
 summary = "The state hash is an FNV-1a equality witness over labelled entries; SHA-256 for trust; epoch checkpoints, per-critter traces."
 draws_on = ["607", "610", "633", "636", "642", "649", "652", "653"]
 
+[statements."schema.1"]
+title = "Authored content is native"
+source = "design_docs/doctrine.md"
+area = "The sim's schema and saves"
+summary = "Authored content is asserted as native nouns with authored fills; disagreements with derived readings are kept and shown."
+draws_on = ["757", "760", "769", "834", "867"]
+
+[statements."vtt.1"]
+title = "The table runs over the sim, or without it"
+source = "design_docs/doctrine.md"
+area = "The VTT"
+summary = "A campaign runs sim-off as a board still writing assertions; sim-on, maps are edits over the volume and moves batch per tick."
+draws_on = ["188", "243", "244", "248", "768", "807", "809", "814", "schema.1"]
+
+[statements."vtt.2"]
+title = "Time at the table is consent"
+source = "design_docs/doctrine.md"
+area = "The VTT"
+summary = "The DM may play the unclaimed and edit; downtime needs every bound player's yes or their own release, binding tick and roster."
+draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "record.1"]
+
+[statements."vtt.3"]
+title = "A party is opt-in and grants no control"
+source = "design_docs/doctrine.md"
+area = "The VTT"
+summary = "Players opt their own bodies into parties; the party map is a shared, kept view of disclosures; joint departures need each player's approval."
+draws_on = ["853", "854", "857", "858", "859", "871"]
+
+[statements."vtt.4"]
+title = "The sim offers; the DM decides"
+source = "design_docs/doctrine.md"
+area = "The VTT"
+summary = "Running arcs reach the DM as hooks; a pack the world can't meet waits or is forced; a compatible one activates on the DM's acceptance."
+draws_on = ["190", "191", "865"]
+
 [statements."world.1"]
 title = "Shape and scale"
 source = "design_docs/doctrine.md"
@@ -5089,8 +5149,8 @@ draws_on = ["11", "105"]
 title = "The map's words"
 source = "design_docs/doctrine.md"
 area = "World generation"
-summary = "Site, region, location, wilderness, biome and environment; locations nest and are allocated as generated."
-draws_on = ["72", "88"]
+summary = "Site, region, location, wilderness, biome and environment; locations nest by one composable mechanism, allocated as generated."
+draws_on = ["72", "74", "88"]
 
 [statements."world.4"]
 title = "The world is a generative entity"

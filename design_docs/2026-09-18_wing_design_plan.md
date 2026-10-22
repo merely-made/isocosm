@@ -847,7 +847,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
     yeah, those are good defaults." **Qualified by ruling 92:** the four
     are the VTT overlay's default scopes, not levels the sim hardcodes.
 
-    Links: area The VTT · summary Nesting is one composable, expandable mechanism; world, region, area and battlemap are its defaults. (amended by 92)
+    Links: area World generation · summary Nesting is one composable, expandable mechanism; world, region, area and battlemap are its defaults. (amended by 92)
 75. **Background and foreground agree; the background is cheaper by
     aggregation; losses at transitions preserve similitude; things of no
     note are fungible, behind a configurable buffer.** Asked whether one
@@ -1711,7 +1711,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      from outside the world? Three options were put: play any NPC; edit,
      not direct; or both. Mark: "Both."
 
-     Links: area The VTT · summary A DM may take up any unclaimed entity to play, and may edit the world.
+     Links: area The VTT · draws on 152 · summary A DM may take up any unclaimed entity to play, and may edit the world.
 157. **A thing of note is a relic, an event of note a tale, and
      Mesocosm's body site a tract.** Put to Mark on 2026-09-24 as the
      of-note naming round open since ruling 69, places of note being
@@ -2019,7 +2019,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      its content and displacing generated content (ruling 89); or the
      world bends at founding. Mark: "Wait or the gm forces it".
 
-     Links: area The VTT · summary An adventure pack whose requirements the world lacks waits dormant, or the GM forces it, displacing generated content.
+     Links: area The VTT · draws on 89 · summary An adventure pack whose requirements the world lacks waits dormant, or the GM forces it, displacing generated content.
 191. **The VTT offers the sim's running arcs to the DM as suggested
      hooks.** Put to Mark on 2026-09-25: the sim knows the parts of the
      arcs it is running (ruling 103); does the VTT offer them to the DM?
@@ -2027,7 +2027,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      drop or reshape; on request; or not at all. Mark: "As suggested
      hooks."
 
-     Links: area The VTT · summary The VTT offers the sim's running arcs to the DM as suggested hooks to take up, drop or reshape.
+     Links: area The VTT · draws on 103 · summary The VTT offers the sim's running arcs to the DM as suggested hooks to take up, drop or reshape.
 192. **Isocosm absorbs mesocosm-core; the first overlay plays on
      Isocosm.** Put to Mark on 2026-09-25, before drafting the Mesocosm
      overlay plan, with the sizes measured: `mesocosm-core` 44,901 lines
@@ -2550,7 +2550,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      grid (rulings 12, 18), or both, the map an edit over what was generated?
      Mark: "Both: an edit."
 
-     Links: area The VTT · summary With the sim on, a battlemap is projected from the generated volume and the DM's map is an edit over it.
+     Links: area The VTT · draws on 89, 12, 18 · summary With the sim on, a battlemap is projected from the generated volume and the DM's map is an edit over it.
 244. **Moves within a battlemap reach the sim.** Put to Mark on 2026-09-26,
      from the VTT plan's decision 2: only outcomes, assertions and travel,
      a token's position staying the table's, or moves within a battlemap
@@ -2565,13 +2565,13 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the DM playing any unclaimed one (ruling 156), on by default, or each a
      campaign setting the DM chooses? Mark: "On by default."
 
-     Links: area The VTT · summary At a VTT table, sharing a character and the DM playing the unclaimed are on by default.
+     Links: area The VTT · draws on 153, 156 · summary At a VTT table, sharing a character and the DM playing the unclaimed are on by default.
 246. **Downtime needs each player's yes.** Put to Mark on 2026-09-26, from
      decision 4: the players' consent to downtime (rulings 63, 104, 105)
      gathered as each player's yes, a majority, or the DM's declaration with
      a veto? Mark: "Each player's yes."
 
-     Links: area The VTT · summary Downtime needs each player's yes.
+     Links: area The VTT · draws on 63, 104, 105 · summary Downtime needs each player's yes.
 247. **The tape-drawn faction turn retires at V2.** Put to Mark on
      2026-09-26, from decision 5: with Isocosm absorbing
      `isometry-campaign`'s world as it did Mesocosm's and Eponym's (rulings
@@ -2591,7 +2591,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the same history, or does switching it on found a world from that point
      (ruling 126)? Mark: "Writes notes."
 
-     Links: area The VTT · summary A sim-off campaign still writes its facts as notes, so the sim can be switched on later over the same history.
+     Links: area The VTT · draws on 188 · summary A sim-off campaign still writes its facts as notes, so the sim can be switched on later over the same history.
 250. **An uncalibrated campaign warns when it opens and marks its
      receipts.** Put to Mark on 2026-09-26, with 249: what does the table see
      of ruling 189's debug or experimental mode, a warning when the campaign
@@ -8948,7 +8948,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      native state (recommended); build it now; the campaign stays authored
      until V2. Mark chose "Command::Assert with the record (Recommended)".
 
-     Links: area The VTT · summary Authored content enters by Command::Assert with the record family; the campaign world becomes a reading of native state.
+     Links: area The sim's schema and saves · summary Authored content enters by Command::Assert with the record family; the campaign world becomes a reading of native state.
 758. **The datasheets feed native; families-plan fork 9 closes.**
      2026-10-09. Question: legacy `Founding`'s eight bodies come from 1,198
      embedded TOML lines (625, 626) while `bodied::roster()` hand-codes the
@@ -8979,7 +8979,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      from them sit beside the authored attributes rather than replacing
      them, and where the two disagree is a later question.
 
-     Links: area The VTT · summary An authored faction is a polity with no members yet, asserted with authored name, tags, claims, governance and focus as facts.
+     Links: area The sim's schema and saves · draws on 63 · summary An authored faction is a polity with no members yet, asserted with authored name, tags, claims, governance and focus as facts.
 764. **Lexicon lessons are discovery.** 2026-10-10. Question: legacy
      discovery's condition table, with its endurance route, against native's
      lessons from eating a part whole (468). Options: native lessons are
@@ -9022,7 +9022,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      assertions (Recommended)", 248's "switched on later over the same
      history".
 
-     Links: area The VTT · summary A campaign's session carries its assertions; CampaignWorld folds from them and a native Session replays from them when the sim switches on.
+     Links: area The VTT · draws on 248 · summary A campaign's session carries its assertions; CampaignWorld folds from them and a native Session replays from them when the sim switches on.
 769. **Authored places, characters, laws and history lines are native nouns
      with authored fills.** 2026-10-10. Options: each its native noun with
      authored attributes filling placeholders as 760 did (a place a `Site`,
@@ -9030,7 +9030,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      history line an `Event`) (recommended); an asserted-records map; all
      as notes. Mark chose "Native nouns, authored fill (Recommended)".
 
-     Links: area The VTT · summary Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills.
+     Links: area The sim's schema and saves · draws on 760 · summary Authored places, characters, laws and history lines are native nouns (Site, placeless Entity, rule record, Event) with authored attribute fills.
 771. **Eponym's epistemic layer becomes notes plus knowing.** 2026-10-10.
      Options: its simulation record leaves with Eponym's world move and the
      epistemic layer becomes notes held by the observer plus the reach
@@ -9233,7 +9233,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      *Reading, not ruled:* absence preserves the existing non-table character
      path; the contract's cell and participant handle retain their types.
 
-     Links: area The VTT · summary Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body.
+     Links: area The VTT · draws on 152, 153 · summary Native Character carries the authored map cell and owner as optional table metadata, granting no control and moving no body.
 
 810. **Healing restores a lost cell's recorded allocation.** 2026-10-10,
      Q8's healing-allocation fork under 469 and 496. Question: "When healing
@@ -9598,7 +9598,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      supplies no default recipe, stock quantities, ruleset calibration or
      participant/party control policy. The next ruling is835.
 
-     Links: area The VTT · summary A sim-on VTT character develops its own native body from a selected recipe and keeps its ID; placement and control are admitted separately.
+     Links: area The sim's schema and saves · draws on 809 · summary A sim-on VTT character develops its own native body from a selected recipe and keeps its ID; placement and control are admitted separately.
 
 835. **Named native material recipes specify new item stocks and quantities.**
      2026-10-12, Eponym's material founding after776/801.
@@ -9821,7 +9821,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      state, the DM and another player cannot release it for them. The release
      duration is answered in855. Membership and native control stay separate.
 
-     Links: area The VTT · summary Every saved bound table player, disconnected included, holds downtime unless they release their own hold.
+     Links: area The VTT · draws on 246 · summary Every saved bound table player, disconnected included, holds downtime unless they release their own hold.
 
 852. **A downtime proposal binds its original native tick and player roster.**
      2026-10-12, waiting native consent validity.
@@ -9834,7 +9834,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      revive an invalidated proposal. Endpoint/connectivity changes alone do
      not remove the same native player from the roster.
 
-     Links: area The VTT · summary A downtime proposal binds its original tick and player roster; a change makes it unavailable and requires a new proposal.
+     Links: area The VTT · draws on 851 · summary A downtime proposal binds its original tick and player roster; a change makes it unavailable and requires a new proposal.
 
 853. **Players opt their played native bodies into or out of a party.**
      2026-10-12, native party membership for the VTT overmap.
@@ -9847,7 +9847,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and a table roster cannot stand in for native body/player identities.
      Withdrawal after a body change is answered in857.
 
-     Links: area The VTT · summary Each player opts their played native body into or out of a party; membership grants no control.
+     Links: area The VTT · draws on 8, 9 · summary Each player opts their played native body into or out of a party; membership grants no control.
 
 854. **The overmap combines party members' disclosed knowledge in a shared view.**
      2026-10-12, native knowing and party map presentation.
@@ -9859,7 +9859,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      every contributed fact, expose undisclosed knowledge or grant control.
      Retention after leaving is answered in858.
 
-     Links: area The VTT · summary The overmap is a shared view combining party members' disclosed native knowledge; sharing grants no control or undisclosed knowledge.
+     Links: area The VTT · draws on 853 · summary The overmap is a shared view combining party members' disclosed native knowledge; sharing grants no control or undisclosed knowledge.
 
 855. **A self-released downtime hold covers future proposals until explicitly retaken.**
      2026-10-12, duration of851's release.
@@ -9871,7 +9871,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      history survives saves. Disconnecting does not substitute for release;
      retaking does not erase earlier declarations, consents or advances.
 
-     Links: area The VTT · summary A self-released downtime hold covers current and future proposals until the player explicitly retakes it.
+     Links: area The VTT · draws on 851 · summary A self-released downtime hold covers current and future proposals until the player explicitly retakes it.
 
 856. **The DM explicitly chooses which ready downtime proposal advances.**
      2026-10-12, simultaneous eligible spans after a release.
@@ -9883,7 +9883,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      span. Admission checks852 and an actual yes or active self-release for
      each roster player, then publishes the chosen native advance atomically.
 
-     Links: area The VTT · summary The DM explicitly chooses which ready downtime proposal advances; the earliest does not advance automatically.
+     Links: area The VTT · draws on 851, 852 · summary The DM explicitly chooses which ready downtime proposal advances; the earliest does not advance automatically.
 
 857. **Players may withdraw their own earlier party memberships after changing bodies.**
      2026-10-12, membership withdrawal under853.
@@ -9895,7 +9895,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      the currently played body. No automatic heir, replacement body, other
      player's removal or control grant is inferred.
 
-     Links: area The VTT · summary Players may withdraw their own earlier party memberships after changing bodies; new joins and disclosures name the current body.
+     Links: area The VTT · draws on 853 · summary Players may withdraw their own earlier party memberships after changing bodies; new joins and disclosures name the current body.
 
 858. **Disclosed map facts remain recorded after a member leaves.**
      2026-10-12, retention of854's shared knowledge.
@@ -9907,7 +9907,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      ongoing window into the former member's undisclosed native knowledge.
      The next unused question is859.
 
-     Links: area The VTT · summary Disclosed map facts remain in the party's recorded map after the contributing member leaves.
+     Links: area The VTT · draws on 854 · summary Disclosed map facts remain in the party's recorded map after the contributing member leaves.
 
 859. **Each player approves their currently played body's joint departure.**
      2026-10-12, collective travel after853's membership.
@@ -9922,7 +9922,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      supplies no pace effect or shortcut to advancing native time.
      Pace question860 remains pending; the next unused question is861.
 
-     Links: area The VTT · summary Each player approves their currently played body's departure and the DM applies approved departures together through native admission.
+     Links: area The VTT · draws on 853 · summary Each player approves their currently played body's departure and the DM applies approved departures together through native admission.
 
 860. **Authored native pace profiles supply duration and stock costs.**
      2026-10-12, actual pace effects after817's journey duration.
@@ -9936,7 +9936,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      and available profiles remain author inputs; no recipe is guessed.
      Critter approval question861 remains pending; next unused question862.
 
-     Links: area The VTT · summary Requested pace resolves to an explicitly authored native pace profile giving duration and stock costs; no default from the legacy percentage.
+     Links: area The VTT · draws on 817 · summary Requested pace resolves to an explicitly authored native pace profile giving duration and stock costs; no default from the legacy percentage.
 
 861. **Directed critters receive a travel goal, bounded by their impressions and motives.**
      2026-10-12, deliberative bodies in859's joint journey.
@@ -10007,7 +10007,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      alone does not activate it or publish changes at a clock boundary.
      Native validation, preview freshness and atomic admission still apply.
 
-     Links: area The VTT · summary A compatible dormant adventure pack activates only when the DM previews and explicitly accepts it.
+     Links: area The VTT · draws on 190 · summary A compatible dormant adventure pack activates only when the DM previews and explicitly accepts it.
 
 866. **A native act records participation in every goal it actually served.**
      2026-10-13, goal participation beside immediate event causality.
@@ -10031,7 +10031,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      attributes, and authored attributes do not hide the member reading.
      Reconciliation requires an explicit admitted native change.
 
-     Links: area The VTT · summary Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change.
+     Links: area The sim's schema and saves · draws on 760 · summary Authored polity attributes and member-derived readings are both kept and their disagreement shown until an explicit native change.
 
 868. **Faction claims and biomes use configurable map layers.**
      2026-10-13, overlapping meanings in known native map regions.
@@ -10076,7 +10076,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
      Disclose only explicitly named windows and snapshots supported by the body's native knowledge.
      Keep authenticated source revisions; later native changes do not silently refresh the party's record.
 
-     Links: area The VTT · summary Party map disclosures name explicit terrain windows and condition or claim snapshots the body knows, with source revisions; changes need a new disclosure.
+     Links: area The VTT · draws on 854 · summary Party map disclosures name explicit terrain windows and condition or claim snapshots the body knows, with source revisions; changes need a new disclosure.
 
 872. **Defensive tissue uses an authored native threshold expression.**
      2026-10-13, collected migration reply under864.
