@@ -389,6 +389,7 @@ three design docs that cite it. The record holds the words.
 | 70 | The soup is the ambient tier; things of note return to it by becoming irrelevant to the player (garbage collection), so invalidation criteria are crucial. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 71 | Collection roots are the entities players care about; examination counts as play; collection is graded down to just the event. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 80 | Of note is literal: a note on the thing, made by the sim as a player would make one. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [place graph engine](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md), [wing organs](../mesocosm/design_docs/2026-09-26_wing_organs_plan.md) |
+| 104 | Shared-world time: asynchronous play merged like git, or a clock running only when played; Mark leans to the second and asks (A ruled in 105). | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 105 | Option A for shared-world time is ruled; related worlds share a context without merging, as branched worldlines or celestial neighbours. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 125 | Noting and promotion belong to the world; collection and merging belong to the record. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 126 | A fork founds a new world with its own history that never merges back; a branch is the same world played apart and merged back. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
@@ -617,13 +618,13 @@ three design docs that cite it. The record holds the words.
 | 749 | eponym-client draws through the tenant; bodies draw onto a transparent target netrender layers over traced colour; the torch casts no shadow until testing. | [orthographic voxel presentation](../mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md) |
 | 750 | The flow record stays in legacy until the record family; the registry converges with bodies, lowered onto the function catalogue. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 756 | Lineage and provenance data (SpeciesId, Origin, Provenance) move into isocosm as sidecars keyed by PartId; isometer keeps an opaque tag. | none |
+| 962 | The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots. | none |
 | 969 | Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
 
 ## Host and network
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
-| 104 | Shared-world time: asynchronous play merged like git, or a clock running only when played; Mark leans to the second and asks (A ruled in 105). | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 443 | A window plays one mode and switches in place, keeping world, subject and embodiment; a second window can play another mode. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md) |
 | 815 | Each active window contributes to one player's single attention set, taken as their union; closing a window withdraws only its contribution. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md) |
 | 884 | Three uniform product hosts over one embeddable sim host handling world founding, live keys, pointer and save import. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
@@ -646,7 +647,6 @@ three design docs that cite it. The record holds the words.
 | 957 | H4: the live-input backlog cap moves into the core driver, configurable, default 10; replays and scripts are not capped. | none |
 | 959 | The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
 | 960 | Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
-| 962 | The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots. | none |
 
 ## Mesocosm
 

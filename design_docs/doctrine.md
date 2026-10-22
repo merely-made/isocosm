@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-21:** Naming, Licensing, Method, Organs and Presentation reviewed, with Directing 1; the other areas are empty. Each
+**Status, 2026-10-21:** Naming, Licensing, Method, Organs, Presentation and Host reviewed, with Directing 1 and Record 1; the other areas are empty. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -20,6 +20,34 @@ remain the authority.
 ## Bodies and anatomy
 
 ## Record and history
+
+### Record 1. Consistency is chosen per domain
+
+Where order matters (the sim's world advance, live tactics, contested cells
+and resources), one sequencer accepts intents, each checked against the
+revision it was made from; a stale one is refused. The sequencer is a role, a
+lease or a turn: it can be handed off, and it is separate from edit authority
+(two GMs may both hold authority while one sequences) and from the network
+role (host, relay, peer).
+
+Where order does not matter (campaign authoring: facts, drafts, maps,
+packs), writers sign concurrent operations, and a type-specific materializer
+with the group's policy derives the view, keeping competing work rather than
+refusing it.
+
+An offline branch returns as a proposal against the trunk.
+
+Links: draws on 104, 105, 910, 956, 960 · summary Order is chosen per domain: a handed-off sequencer refuses stale intents where order matters; signed concurrent work is materialized where it does not.
+
+*Reviewed 2026-10-22, new. First drafted as "one authority accepts; everything
+else proposes against a revision". Mark: "if it composes well with the stack
+and doesn't limit the concurrency benefits of p2p networking... client/server,
+host/guest are networking and authority axes intersecting. and peers can sit
+anywhere on either axis ... there could be two players with GM authority". The
+VTT's shared-authority plan (2026-08-08) had already corrected the one-log
+view ("too broad"), choosing consistency per domain and making the sequencer a
+lease separate from edit mode; the redraft follows it. Mark: "Adopt this
+version, in Record and history". The rest of the area is not yet reviewed.*
 
 ## World generation
 
@@ -203,6 +231,65 @@ Links: draws on 847, 868, 869, 870, directing.1 · summary Map meanings are inde
 ## Stack and engine
 
 ## Host and network
+
+### Host 1. One sim host under three product hosts
+
+The embeddable core, `isocosm-host` as a library, founds worlds and holds the
+world and its session (Mesocosm's included), the clock with an explicit step
+(each product picks wall-clock or explicit pacing), and a driver typed
+through a product trait. Three uniform product hosts sit on isomere's
+`Assembly` over it.
+
+Links: draws on 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
+
+*Reviewed 2026-10-22, new. Mark: "All four as drafted"; checked against the code first, each is built.*
+
+### Host 2. Inspection is endpoints
+
+The core's inspection is a Graphshell endpoint behind a feature in
+`isocosm-host`; each product's panels are an endpoint module behind a feature
+in an existing crate. No new `isometry-` names are made. Every snapshot
+records tick, entry count and state hash, and an intent checks it, so a
+change through any endpoint stales every endpoint (Record 1).
+
+Links: draws on 896, 900, 901, 903, 910, 920, record.1 · summary Inspection is feature-gated Graphshell endpoints; any change stales every endpoint's snapshot.
+
+*Reviewed 2026-10-22, new. Mark: "All four as drafted"; checked against the code first, each is built.*
+
+### Host 3. Only world keys go through the core
+
+World keys reach the core as a plain `Press`, through a keymap hook on the
+product trait; camera, inspection, dev clock and menus stay the window's. A
+pick carries its frame's revision, and a stale one is refused (Record 1).
+Live input is capped (default 10, configurable); replays and scripts are not.
+
+Links: draws on 954, 955, 956, 957, record.1 · summary Only world keys go through the core; stale picks are refused; live input is capped, replays are not.
+
+*Reviewed 2026-10-22, new. Mark: "All four as drafted"; checked against the code first, each is built.*
+
+### Host 4. A window plays one mode
+
+A window plays one mode and switches in place, keeping the world, the subject
+and its embodiment; two modes on one machine are two windows. Each active
+window adds to the participant's one attention set; closing it withdraws only
+its share.
+
+Links: draws on 443, 815 · summary A window plays one mode and switches in place; windows' attention contributions union into one set.
+
+*Reviewed 2026-10-22, new. Mark: "All four as drafted"; checked against the code first, each is built.*
+
+### Host 5. The family session
+
+`isonetry`, remade, is the family's session layer. One host sequences each
+world (Record 1): peers send requests over admitted stream and Graphshell
+requests, and the host replicates the accepted native log plus opaque section
+changes over Stickleback joined spaces. A replica never reruns a product
+adapter to decide an intent. Replicating the full world is a separate grant
+from seeing a projection or holding a seat.
+
+Links: draws on 923, 924, 959, 960, 962, record.1 · summary isonetry is the family session layer: one host sequences, replicas take the accepted log and section changes.
+
+*Reviewed 2026-10-22, new. Mark moved 962's rule that products never manufacture keys, grants or trust roots to Stack and engine; the statement keeps 962's separate grant for full-world replication.*
 
 ## Mesocosm
 
