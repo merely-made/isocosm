@@ -39,7 +39,7 @@ impl Game {
         cells.reverse();
         let count = usize::try_from(r.cells).unwrap_or(usize::MAX).saturating_add(1);
         cells.truncate(count);
-        let mut path: Vec<_> = cells.into_iter().map(|cell| native::Pose { at: cell, yaw: input.yaw }).collect();
+        let mut path: Vec<_> = cells.into_iter().map(|cell| native::Pose { at: cell, yaw: input.yaw , feet: Default::default() }).collect();
         // The first root is the saved source pose, including its exact yaw.
         path.first_mut().ok_or("step route empty")?.yaw = at.pose.yaw;
         let last = path.last().ok_or("step route empty")?.at;
@@ -57,14 +57,14 @@ impl Game {
             let geometry = input.geometry.as_ref().map_err(|why| format!("accepted step was refused: {why}"))?;
             let before = self.members.get(&input.request.actor).ok_or("accepted step source pose absent")?.clone();
             let last = geometry.path.last().ok_or("accepted step path empty")?;
-            if geometry.path[0].at != before.pose.at || geometry.path[0].yaw != before.pose.yaw {
+            if geometry.path[0] != before.pose {
                 return Err("accepted step does not begin at the saved root pose".into());
             }
             if geometry.window != before.window || input.request.site != before.site.0 {
                 return Err("accepted step does not use the saved actual site window".into());
             }
             let mut after = before.clone();
-            after.pose = Pose { at: last.at, yaw: last.yaw };
+            after.pose = last.clone();
             after.eye = geometry.eye;
             after.body_revision = input.request.body_revision;
             after.terrain_revision = input.request.terrain_revision.clone();

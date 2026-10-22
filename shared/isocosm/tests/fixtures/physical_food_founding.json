@@ -1,0 +1,59 @@
+{
+  "seed": 16001893038526777987,
+  "sites": 6,
+  "population": 60,
+  "lineages": 4,
+  "cohort_size": 32,
+  "stock_min": 8,
+  "stock_max": 64,
+  "period_max": 5,
+  "base_unit_micrometres": 1000,
+  "ecology": true,
+  "map": {
+    "Grid": {
+      "shape": "shape:ring",
+      "width": 3,
+      "height": 2,
+      "side": 2048,
+      "elevation": [
+        0,
+        2048
+      ],
+      "relief": [
+        0,
+        256
+      ],
+      "sea_per_mille": 241
+    }
+  },
+  "bodies": {
+    "founding": "SpacedRoster",
+    "variance": [
+      1,
+      2
+    ],
+    "absence": [
+      12,
+      12
+    ],
+    "clutch": [
+      1,
+      4
+    ],
+    "roster": true,
+    "grazing": true,
+    "hazard": [
+      2,
+      8
+    ],
+    "wound": [
+      1,
+      8
+    ]
+  },
+  "played": {
+    "lineage": 1,
+    "region_sites": 2
+  },
+  "ecology_rates": "a1"
+}

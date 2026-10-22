@@ -20,15 +20,13 @@ pub(super) struct Motion {
     age: f32,
     sweep_from: Option<Pose>,
     started: bool,
+    checked_revision: u64,
     pub gait: Gait,
     contacts: BTreeMap<isometer::core::PartId, [f32; 3]>,
 }
 impl Motion {
     pub fn new(body: &PlacedBody, scene: &SiteScene) -> Self {
-        let pose = body.physical.as_ref().map(|p| Pose {
-            at: p.at,
-            yaw: p.yaw,
-        });
+        let pose = body.physical.as_ref().map(|p| p.clone());
         Self {
             site: scene.site,
             frame: (scene.window.min, scene.window.max, scene.window.datum),
@@ -38,68 +36,103 @@ impl Motion {
             pose,
             from: body.at.map(|v| v as f32),
             target: body.at.map(|v| v as f32),
-            age: 1.,
+            age: 100.,
             sweep_from: None,
             started: false,
+            checked_revision: 0,
             gait: Gait::default(),
             contacts: BTreeMap::new(),
         }
     }
 
+    #[cfg(test)]
     pub fn sample(&mut self, body: &PlacedBody, scene: &SiteScene, elapsed: f32) -> [f32; 3] {
+        self.sample_revision(body, scene, elapsed, self.checked_revision.wrapping_add(1))
+    }
+    pub fn sample_revision(
+        &mut self,
+        body: &PlacedBody,
+        scene: &SiteScene,
+        elapsed: f32,
+        revision: u64,
+    ) -> [f32; 3] {
         if self.site != scene.site
             || self.frame != (scene.window.min, scene.window.max, scene.window.datum)
             || self.document != body.document
             || !body.alive
         {
             if std::env::var_os("MESOCOSM_DEBUG_MOTION").is_some() {
-                eprintln!("motion {} reset: site={}, frame={}, anatomy={}, alive={}", body.id,
+                eprintln!(
+                    "motion {} reset: site={}, frame={}, anatomy={}, alive={}",
+                    body.id,
                     self.site != scene.site,
                     self.frame != (scene.window.min, scene.window.max, scene.window.datum),
-                    self.document != body.document, body.alive);
+                    self.document != body.document,
+                    body.alive
+                );
             }
             *self = Self::new(body, scene);
         }
-        let next = body.physical.as_ref().map(|p| Pose {
-            at: p.at,
-            yaw: p.yaw,
-        });
+        let next = body.physical.as_ref().map(|p| p.clone());
         let target = body.at.map(|v| v as f32);
         self.started = false;
         if next != self.observed {
-            let path = self.observed.as_ref().zip(next.as_ref())
-                .and_then(|(from,to)| trail(&body.walks, from, to));
+            let path = self
+                .observed
+                .as_ref()
+                .zip(next.as_ref())
+                .and_then(|(from, to)| trail(&body.walks, from, to));
             // Keep the admitted route, but clear each segment at presentation
             // time. A later blocked climb must not erase an earlier clear step.
-            if path.as_ref().is_some_and(|p| self.pending.len() + p.len() <= 16) {
+            if path
+                .as_ref()
+                .is_some_and(|p| self.pending.len() + p.len() <= 16)
+            {
                 self.pending.extend(path.unwrap());
             } else {
-                self.pending.clear(); self.pose = next.clone();
-                self.from = target; self.target = target; self.age = 1.;
-                self.sweep_from = None; self.gait = Gait::default();
+                self.pending.clear();
+                self.pose = next.clone();
+                self.from = target;
+                self.target = target;
+                self.age = 100.;
+                self.sweep_from = None;
+                self.gait = Gait::default();
             }
             self.observed = next;
         }
-        if self.age >= 0.24 && !self.pending.is_empty() {
+        if self.age >= self.duration() && !self.pending.is_empty() {
             let to = self.pending.pop_front().unwrap();
-            if self.pose.as_ref().is_some_and(|from| cleared(scene, body, from, &to)) {
+            if self
+                .pose
+                .as_ref()
+                .is_some_and(|from| from.yaw == to.yaw && cleared(scene, body, from, &to))
+            {
+                self.checked_revision = revision;
                 self.from = self.target;
                 self.target = scene.window.to_ground(to.at).map(|v| v as f32);
                 self.sweep_from = self.pose.replace(to);
-                self.age = 0.; self.started = true; self.gait.start_step();
+                self.age = 0.;
+                self.started = true;
+                self.gait.start_step();
             } else {
-                self.pending.clear(); self.pose = self.observed.clone();
-                self.from = target; self.target = target; self.age = 1.;
-                self.sweep_from = None; self.gait = Gait::default();
+                self.pending.clear();
+                self.pose = self.observed.clone();
+                self.from = target;
+                self.target = target;
+                self.age = 100.;
+                self.sweep_from = None;
+                self.gait = Gait::default();
             }
         }
-        if self.age < 0.24 && !self.started {
+        if self.age < self.duration() && !self.started && self.checked_revision != revision {
+            self.checked_revision = revision;
             if let (Some(from), Some(to)) = (&self.sweep_from, &self.pose) {
                 if !cleared(scene, body, from, to) {
                     self.from = target;
                     self.target = target;
-                    self.age = 1.;
-                    self.pending.clear(); self.pose = self.observed.clone();
+                    self.age = 100.;
+                    self.pending.clear();
+                    self.pose = self.observed.clone();
                     self.gait = Gait::default();
                 }
             }
@@ -119,15 +152,35 @@ impl Motion {
             }
         }
         self.age += self.elapsed(elapsed);
-        let t = (self.age / 0.24).clamp(0., 1.);
-        let t = t * t * (3. - 2. * t);
+        let t = (self.age / self.duration()).clamp(0., 1.);
+        let articulated = self.pose.as_ref().is_some_and(|p| !p.feet.is_empty());
+        let phase = (t * embodiment::SWING_SAMPLES as f32).floor() as i64
+            * isometer::core::legs::UNIT
+            / embodiment::SWING_SAMPLES;
+        let t = if articulated {
+            phase as f32 / isometer::core::legs::UNIT as f32
+        } else {
+            t * t * (3. - 2. * t)
+        };
+        let feet = self
+            .pose
+            .as_ref()
+            .filter(|p| !p.feet.is_empty())
+            .map(|pose| {
+                self.sweep_from
+                    .as_ref()
+                    .filter(|_| self.age < self.duration())
+                    .and_then(|from| embodiment::swing_feet(&body.document, from, pose, phase).ok())
+                    .unwrap_or_else(|| pose.feet.clone())
+            });
+        self.gait.set_physical_feet(feet);
         let origin = [0, 1, 2].map(|k| self.from[k] + (self.target[k] - self.from[k]) * t);
-        let min = if self.age < 0.24 {
+        let min = if self.age < self.duration() {
             [0, 1, 2].map(|k| self.from[k].min(self.target[k]) - origin[k])
         } else {
             [0.; 3]
         };
-        let max = if self.age < 0.24 {
+        let max = if self.age < self.duration() {
             [0, 1, 2].map(|k| self.from[k].max(self.target[k]) - origin[k])
         } else {
             [0.; 3]
@@ -135,6 +188,23 @@ impl Motion {
         self.gait.set_envelope_offset(min, max);
         self.gait.set_native_origin(self.target);
         origin
+    }
+
+    fn duration(&self) -> f32 {
+        self.pose
+            .as_ref()
+            .filter(|p| !p.feet.is_empty())
+            .map_or(0.24, |p| (p.feet.len() as f32 * 0.18).max(0.36))
+    }
+    pub fn yaw_radians(&self) -> f32 {
+        use isometer::core::Yaw;
+        let turns = match self.pose.as_ref().map(|p| p.yaw).unwrap_or_default() {
+            Yaw::Zero => 0.,
+            Yaw::Quarter => 1.,
+            Yaw::Half => 2.,
+            Yaw::ThreeQuarter => 3.,
+        };
+        turns * std::f32::consts::FRAC_PI_2
     }
 
     pub fn elapsed(&self, elapsed: f32) -> f32 {
@@ -149,7 +219,7 @@ impl Motion {
         self.contacts.clone()
     }
     pub fn active(&self) -> bool {
-        !self.pending.is_empty() || self.age < 0.24 || self.gait.swinging > 0
+        !self.pending.is_empty() || self.age < self.duration() || self.gait.swinging > 0
     }
 }
 
@@ -159,16 +229,10 @@ fn cleared(scene: &SiteScene, body: &PlacedBody, from: &Pose, to: &Pose) -> bool
         .iter()
         .filter(|other| other.id != body.id)
         .filter_map(|other| {
-            other.physical.as_ref().and_then(|pose| {
-                embodiment::boxes(
-                    &other.document,
-                    &Pose {
-                        at: pose.at,
-                        yaw: pose.yaw,
-                    },
-                )
-                .ok()
-            })
+            other
+                .physical
+                .as_ref()
+                .and_then(|pose| embodiment::boxes(&other.document, &pose.clone()).ok())
         })
         .flatten()
         .collect();
@@ -183,15 +247,23 @@ fn cleared(scene: &SiteScene, body: &PlacedBody, from: &Pose, to: &Pose) -> bool
 
 // Only stitch explicit admitted steps. A direct adjacent observation retains
 // the older bridge's conservative sweep; a distant observation needs history.
-fn trail(steps: &[[Pose;2]], from: &Pose, to: &Pose) -> Option<Vec<Pose>> {
-    if from.yaw == to.yaw && (0..3).all(|k| from.at[k].abs_diff(to.at[k]) <= 1) {
+fn trail(steps: &[[Pose; 2]], from: &Pose, to: &Pose) -> Option<Vec<Pose>> {
+    if from.feet.is_empty()
+        && to.feet.is_empty()
+        && from.yaw == to.yaw
+        && (0..3).all(|k| from.at[k].abs_diff(to.at[k]) <= 1)
+    {
         return Some(vec![to.clone()]);
     }
-    let mut at = from; let mut out = Vec::new();
-    for [a,b] in steps {
+    let mut at = from;
+    let mut out = Vec::new();
+    for [a, b] in steps {
         if a == at {
-            out.push(b.clone()); at = b;
-            if at == to { return Some(out); }
+            out.push(b.clone());
+            at = b;
+            if at == to {
+                return Some(out);
+            }
         }
     }
     None

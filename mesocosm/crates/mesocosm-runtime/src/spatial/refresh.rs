@@ -44,7 +44,7 @@ impl Placement {
     pub(super) fn check_native_pose(&self, sim: &Simulation) -> Result<(), String> {
         if sim.foraging_enabled() && (sim.state().spatial_poses.get(&self.actor.0)
             .is_none_or(|at| at.site != self.site.0 || Some(at.arrived) != self.resident_since
-                || at.pose.at != self.pose.at || at.pose.yaw != self.pose.yaw)
+                || at.pose != self.pose)
             || sim.genesis().rules.spatial_templates.as_ref().is_none_or(|t|
                 t.window != self.window || t.places != self.places.unwrap_or_default())) {
             return Err("game placement differs from its native resident pose".into());
@@ -69,8 +69,8 @@ impl Placement {
         let window = &self.window;
         let (volume, places) = cache.get(sim, self.site.0, window, self.places.unwrap_or_else(Rules::default))?;
         if isocosm::spatial::embodiment::enabled(sim) {
-            isocosm::spatial::embodiment::check(volume, member.body.as_ref().ok_or("native body absent")?,
-                &isocosm::spatial::Pose { at: self.pose.at, yaw: self.pose.yaw })?;
+            isocosm::spatial::embodiment::check_for(sim, volume, member.body.as_ref().ok_or("native body absent")?,
+                &self.pose.clone())?;
         }
         let mut next = self.clone();
         let patch = places.place_at(self.pose.at).ok_or("saved pose has no current realized patch")?;
@@ -197,7 +197,7 @@ mod tests {
         let held = Placement {
             actor: EntityHandle(actor), site: PlaceHandle(site), patch,
             body_revision: member.body_revision, terrain_revision: session.sim.terrain_revision(),
-            pose: super::super::Pose { at, yaw: isometer_core::Yaw::Zero }, eye: at,
+            pose: super::super::Pose { at, yaw: isometer_core::Yaw::Zero , feet: Default::default() }, eye: at,
             window, operations: BTreeMap::new(), places: Some(Rules::default()),
             resident_since: Some(member.arrived),
         };
@@ -275,7 +275,7 @@ mod tests {
                 }))).expect("window contains a clear patch cell");
         let held = Placement { actor: EntityHandle(actor), site: PlaceHandle(site), patch,
             body_revision: member.body_revision, terrain_revision: session.sim.terrain_revision(),
-            pose: super::super::Pose { at, yaw: isometer_core::Yaw::Zero }, eye: at,
+            pose: super::super::Pose { at, yaw: isometer_core::Yaw::Zero , feet: Default::default() }, eye: at,
             window, operations: BTreeMap::new(), places: Some(Rules::default()),
             resident_since: Some(member.arrived) };
         session.command(Command::Patch { entity: actor, patch: Some(patch) }).unwrap();

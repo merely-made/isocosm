@@ -214,8 +214,8 @@ fn native_walks(game: &mesocosm_runtime::spatial::Game)
             || from.body_revision != at.body_revision || to.body_revision != at.body_revision { continue; }
         let steps = out.entry(c.actor).or_default();
         if steps.len() < 16 {
-            steps.push([isocosm::spatial::Pose {at:from.pose.at,yaw:from.pose.yaw},
-                isocosm::spatial::Pose {at:to.pose.at,yaw:to.pose.yaw}]);
+            steps.push([from.pose.clone(),
+                to.pose.clone()]);
         }
     }
     for steps in out.values_mut() { steps.reverse(); } out

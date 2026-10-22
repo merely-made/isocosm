@@ -41,7 +41,14 @@ impl Recording {
             "reachable_feet": stats.foot_contacts, "joints": stats.posed_joints,
             "projection_failures": stats.projection_failures,
             "roots": input.scene.bodies.iter().filter_map(|b| b.physical.as_ref()
-                .map(|pose| serde_json::json!({"id":b.id,"at":pose.at}))).collect::<Vec<_>>() }));
+                .map(|pose| serde_json::json!({"id":b.id,"at":pose.at,"yaw":pose.yaw,
+                    "feet":pose.feet,"bounds":isocosm::spatial::embodiment::boxes(&b.document,pose).ok()})))
+                .collect::<Vec<_>>(),
+            "window": {"min":input.scene.window.min,"max":input.scene.window.max},
+            "native_foot_contacts": input.scene.bodies.iter().filter_map(|b| b.physical.as_ref()
+                .and_then(|pose| isocosm::spatial::embodiment::contacts(&input.scene.window,&b.document,pose).ok())
+                .map(|contacts| serde_json::json!({"id":b.id,"contacts":contacts.iter().map(|c|
+                    serde_json::json!({"part":c.part,"at":c.at})).collect::<Vec<_>>()}))).collect::<Vec<_>>() }));
         crate::played::write_json(&root.join("frames.json"), &self.frames)?;
         Ok(())
     }

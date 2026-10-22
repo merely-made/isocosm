@@ -10,6 +10,7 @@ use isometer_core::PartId;
 
 mod anatomy;
 mod chains;
+mod physical_chains;
 mod contacts;
 mod gait;
 mod gpu;

@@ -5,6 +5,7 @@
 //! keep their site-grain feeding and game-owned root contract.
 
 use super::*;
+pub const FOOD_SEARCH: u64 = 32;
 use crate::{rules::Process, simulation::Genesis};
 
 mod food;
@@ -77,7 +78,7 @@ pub(crate) fn founding_poses(g: &Genesis) -> BTreeMap<Id, Resident> {
         .rules
         .spatial_templates
         .as_ref()
-        .filter(|t| t.version == 3)
+        .filter(|t| t.version >= 3)
     else {
         return BTreeMap::new();
     };
@@ -91,10 +92,7 @@ pub(crate) fn founding_poses(g: &Genesis) -> BTreeMap<Id, Resident> {
                     Resident {
                         site,
                         arrived: g.population.get(id)?.arrived,
-                        pose: Pose {
-                            at: stand.at,
-                            yaw: stand.yaw,
-                        },
+                        pose: Pose { at: stand.at, yaw: stand.yaw, feet: stand.feet.clone() },
                     },
                 ))
             })
@@ -131,7 +129,7 @@ impl Simulation {
             .rules
             .spatial_templates
             .as_ref()
-            .is_some_and(|t| t.version == 3)
+            .is_some_and(|t| t.version >= 3)
     }
 
     pub fn foraging_policy(&self, walk: &str) -> Option<&Foraging> {

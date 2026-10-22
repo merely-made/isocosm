@@ -40,9 +40,7 @@ pub mod graft;
 pub use sight::{SightConfig, SightedSetup};
 
 /// Exact root-pivot pose in the site's base cells; no presentation scale.
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct Pose { pub at: [i64; 3], pub yaw: Yaw }
+pub use isocosm::spatial::Pose;
 
 /// Explicit geometry used only if its process is chosen.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -207,8 +205,8 @@ impl Placement {
         { return Err("saved spatial body, place or terrain binding is stale".into()); }
         let volume = sim.volume(self.site.0, self.window.min, self.window.max, self.window.depth)?;
         if isocosm::spatial::embodiment::enabled(sim) {
-            isocosm::spatial::embodiment::check(&volume, member.body.as_ref().ok_or("native body absent")?,
-                &isocosm::spatial::Pose { at: self.pose.at, yaw: self.pose.yaw })?;
+            isocosm::spatial::embodiment::check_for(sim, &volume, member.body.as_ref().ok_or("native body absent")?,
+                &self.pose.clone())?;
         }
         let site = crate::perception::InSite::of(sim, volume, self.places.unwrap_or_default())?;
         site.cell(sim, self.actor.0, self.pose.at)?;

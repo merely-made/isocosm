@@ -15,12 +15,30 @@ pub struct Contact {
 /// half-open boxes and water policy as placement, including edited columns.
 pub fn contacts(volume: &Volume, document: &BodyDocument, pose: &Pose) -> Result<Vec<Contact>> {
     let occupied = boxes(document, pose)?;
+    let pads = if pose.feet.is_empty() {
+        BTreeMap::new()
+    } else {
+        super::narrow::pads(
+            document,
+            pose.at.map(|v| v * isometer_core::legs::UNIT),
+            pose.yaw,
+            &pose.feet,
+        )?
+    };
     let mut out = Vec::new();
     for (part, [lo, hi]) in document
         .living()
         .filter(|p| p.half_extent.iter().all(|h| *h > 0))
         .zip(occupied)
     {
+        let [lo, hi] = if pose.feet.is_empty() {
+            [lo, hi]
+        } else {
+            let Some(bounds) = pads.get(&part.id) else {
+                continue;
+            };
+            *bounds
+        };
         let mut best = None;
         for x in lo[0]..hi[0] {
             for z in lo[2]..hi[2] {
@@ -62,6 +80,43 @@ pub fn sweep_clear(
     to: &Pose,
     blocked: &[Box3],
 ) -> Result<()> {
+    if !from.feet.is_empty() && !to.feet.is_empty() {
+        check(volume, document, from)?;
+        check(volume, document, to)?;
+        if (0..3).any(|k| from.at[k].abs_diff(to.at[k]) > 1) {
+            return Err("swing needs adjacent roots".into());
+        }
+        if from.yaw != to.yaw {
+            return super::swing::check_clear(
+                volume,
+                &super::swing::turn_clear(volume, document, from, to)?,
+                blocked,
+            );
+        }
+        let mut work = 0u64;
+        for sample in 0..=super::swing::SAMPLES {
+            let phase = sample * isometer_core::legs::UNIT / super::swing::SAMPLES;
+            let occupied = super::swing::swing_boxes(document, from, to, phase)?;
+            for [lo, hi] in &occupied {
+                let count = (0..3)
+                    .try_fold(1u64, |n, k| n.checked_mul(lo[k].abs_diff(hi[k])))
+                    .ok_or("swing work overflow")?;
+                work = work
+                    .checked_add(count)
+                    .filter(|n| *n <= 4_194_304)
+                    .ok_or("whole swing work budget exceeded")?;
+            }
+            let origin = [0, 1, 2]
+                .map(|k| from.at[k] * isometer_core::legs::UNIT + (to.at[k] - from.at[k]) * phase);
+            let feet = super::swing::swing_feet(document, from, to, phase)?;
+            super::narrow::clear(
+                volume, document, origin, from.yaw, &feet, &occupied, blocked,
+            )
+            .map_err(|why| format!("swing sample {sample}: {why}"))?;
+            super::swing::support_sample(volume, document, from, to, phase, &occupied)?;
+        }
+        return Ok(());
+    }
     if from.yaw != to.yaw || (0..3).any(|k| from.at[k].abs_diff(to.at[k]) > 1) {
         return Err("sweep needs adjacent untranslated frames".into());
     }

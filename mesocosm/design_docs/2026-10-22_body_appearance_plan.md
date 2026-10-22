@@ -152,3 +152,10 @@ with evidence has gone to Mark and come back numbered.
   B2's inherited role-based random shape selection or its five-seed gate,
   B4's per-connection blending, or B5's load-bearing dynamics. The live
   qualification is recorded in the orthographic voxel presentation plan.
+
+- 2026-10-22: the [foot placement follow-up](2026-10-22_foot_placement_plan.md)
+  connects actual paid soles to native terrain support and the smooth path's
+  shared integer chain skin. The ordinary unchosen regression now records
+  supported foot swing, closing the earlier zero-swing qualification gap.
+  The support polygon uses the document's volume centre as a geometric proxy;
+  this does not complete B5's actuation/load rules or its constants.

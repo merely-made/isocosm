@@ -116,7 +116,7 @@ pub(super) fn step(mode: &ModeState, state: &State, pending: &native::Pending) -
     let max = r.cells.checked_add(1).ok_or("native step budget overflow")?;
     let count = usize::try_from(max).unwrap_or(usize::MAX);
     let mut path = input.path_from_root.iter().take(count).map(|delta|
-        Ok(native::Pose { at: add(root, *delta)?, yaw: input.yaw }))
+        Ok(native::Pose { at: add(root, *delta)?, yaw: input.yaw , feet: Default::default() }))
         .collect::<Result<Vec<_>, String>>()?;
     path.first_mut().ok_or("authored step path is empty")?.yaw = physical.yaw;
     let eye = add(path.last().ok_or("authored step path is empty")?.at, input.eye_from_root)?;

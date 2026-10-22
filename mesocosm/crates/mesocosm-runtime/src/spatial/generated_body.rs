@@ -30,13 +30,7 @@ impl Game {
             .get(actor)
             .ok_or("physical actor absent")?;
         let document = member.body.as_ref().ok_or("physical body absent")?;
-        let boxes = body::boxes(
-            document,
-            &native::Pose {
-                at: at.pose.at,
-                yaw: at.pose.yaw,
-            },
-        )?;
+        let boxes = body::boxes(document, &at.pose.clone())?;
         if body::intersects(&boxes, &self.occupied(sim, at.site.0, Some(actor))?) {
             return Err("whole body intersects another current resident".into());
         }
@@ -86,6 +80,7 @@ impl Game {
                     pose: Pose {
                         at: stand.at,
                         yaw: stand.yaw,
+                        feet: stand.feet.clone(),
                     },
                     eye: std::array::from_fn(|k| stand.at[k] + templates.eye[k]),
                     window: w.clone(),
@@ -131,16 +126,34 @@ impl Game {
                 continue;
             }
             if let Some(document) = &member.body {
-                blocked.extend(body::boxes(
-                    document,
-                    &native::Pose {
-                        at: at.pose.at,
-                        yaw: at.pose.yaw,
-                    },
-                )?);
+                blocked.extend(body::boxes(document, &at.pose.clone())?);
             }
         }
         Ok(blocked)
+    }
+
+    fn placed_food(
+        &self,
+        sim: &Simulation,
+        actor: Id,
+        site: Id,
+        volume: &isometer_space::volume::Volume,
+    ) -> Vec<body::FoodStand> {
+        let edible = sim.placement_food(actor, site);
+        self.members
+            .iter()
+            .filter_map(|(&id, at)| {
+                let search = *edible.get(&id)?;
+                let entity = sim.state().population.get(id)?;
+                if at.site.0 != site
+                    || entity.resident_site() != Some(site)
+                    || at.resident_since != Some(entity.arrived)
+                {
+                    return None;
+                }
+                body::FoodStand::of(volume, entity.body.as_ref()?, &at.pose, search).ok()
+            })
+            .collect()
     }
 
     pub(super) fn generated_arrivals(
@@ -176,14 +189,28 @@ impl Game {
             .collect();
         // An unplaced founding cohort can become controlled at a death hold.
         // Its actual native journey is also a source for later physical landing.
-        ids.extend(session.sim.genesis().population.groups.iter()
-            .filter(|(_, group)| group.entity.body.is_some())
-            .flat_map(|(&first, group)| first..first + group.count));
+        ids.extend(
+            session
+                .sim
+                .genesis()
+                .population
+                .groups
+                .iter()
+                .filter(|(_, group)| group.entity.body.is_some())
+                .flat_map(|(&first, group)| first..first + group.count),
+        );
         let mut destinations: BTreeMap<Id, Vec<Id>> = BTreeMap::new();
         for id in ids {
-            let Some(member) = session.sim.state().population.get(id) else { continue; };
-            let Some(journey) = &member.journey else { continue; };
-            if member.body.is_some() && journey.arrives >= session.sim.state().tick && journey.arrives <= end {
+            let Some(member) = session.sim.state().population.get(id) else {
+                continue;
+            };
+            let Some(journey) = &member.journey else {
+                continue;
+            };
+            if member.body.is_some()
+                && journey.arrives >= session.sim.state().tick
+                && journey.arrives <= end
+            {
                 destinations.entry(journey.to).or_default().push(id);
             }
         }
@@ -193,41 +220,82 @@ impl Game {
             let volume_span = crate::profile::Span::new("arrival.volume");
             let volume = session.sim.site_volume(destination, &t.window)?;
             drop(volume_span);
-            let mut grounding = body::Grounding::new(&volume);
+            let mut grounding = body::Grounding::new(&volume)
+                .with_articulation(body::articulated(&session.sim))
+                .with_spacing(t.body_spacing);
             let mut blocked = self.occupied(&session.sim, destination, None)?;
             let mut refused = BTreeSet::new();
             for id in ids {
-                let member = session.sim.state().population.get(id).ok_or("arrival actor absent")?;
+                let member = session
+                    .sim
+                    .state()
+                    .population
+                    .get(id)
+                    .ok_or("arrival actor absent")?;
                 let journey = member.journey.as_ref().ok_or("arrival journey absent")?;
                 let Some(document) = &member.body else {
                     continue;
                 };
-                let centre = [
-                    (t.window.min[0] + t.window.max[0]) / 2,
-                    0,
-                    (t.window.min[1] + t.window.max[1]) / 2,
-                ];
-                let yaw = self
-                    .members
-                    .get(&id)
-                    .map_or(Yaw::Zero, |held| held.pose.yaw);
-                let Ok(shape) = body::boxes(document, &native::Pose { at: [0; 3], yaw }) else { continue; };
+                let centre = if body::articulated(&session.sim) {
+                    body::anchor(session.sim.genesis().seed, destination, id, &t.window)
+                } else {
+                    [
+                        (t.window.min[0] + t.window.max[0]) / 2,
+                        0,
+                        (t.window.min[1] + t.window.max[1]) / 2,
+                    ]
+                };
+                let yaw = if body::articulated(&session.sim) {
+                    (0..isocosm::draw(
+                        session.sim.genesis().seed,
+                        "body-arrival-yaw",
+                        &[id, destination],
+                    ) % 4)
+                        .fold(Yaw::Zero, |y, _| y.compose(Yaw::Quarter))
+                } else {
+                    self.members
+                        .get(&id)
+                        .map_or(Yaw::Zero, |held| held.pose.yaw)
+                };
+                let Ok(shape) = body::boxes(
+                    document,
+                    &native::Pose {
+                        at: [0; 3],
+                        yaw,
+                        ..Default::default()
+                    },
+                ) else {
+                    continue;
+                };
                 // The terrain and search stay fixed, and reservations only grow.
                 // An identical shape already refused here cannot become feasible.
-                if refused.contains(&shape) { continue; }
+                if !body::articulated(&session.sim) && refused.contains(&shape) {
+                    continue;
+                }
                 let search_span = crate::profile::Span::new("arrival.search");
-                let result = grounding.find(
-                    document,
-                    centre,
-                    yaw,
-                    body::SEARCH_REACH,
-                    body::SEARCH_STRIDE,
-                    body::SEARCH_CANDIDATES,
-                    &blocked,
-                );
+                let foods = if body::articulated(&session.sim) {
+                    self.placed_food(&session.sim, id, destination, &volume)
+                } else {
+                    Vec::new()
+                };
+                let result = if foods.is_empty() {
+                    grounding.find(
+                        document,
+                        centre,
+                        yaw,
+                        body::SEARCH_REACH,
+                        body::SEARCH_STRIDE,
+                        body::SEARCH_CANDIDATES,
+                        &blocked,
+                    )
+                } else {
+                    grounding.near_food(document, centre, yaw, &blocked, &foods)
+                };
                 drop(search_span);
                 let Ok(pose) = result else {
-                    if refused.len() < 64 { refused.insert(shape); }
+                    if refused.len() < 64 {
+                        refused.insert(shape);
+                    }
                     continue;
                 };
                 blocked.extend(body::boxes(document, &pose)?);
@@ -285,10 +353,7 @@ impl Game {
             .ok_or("walking actor absent")?;
         let document = actor.body.as_ref().ok_or("walking body absent")?;
         let (volume, places) = cache.get(&pending.sim, r.site, &at.window, profile.places)?;
-        let before = native::Pose {
-            at: at.pose.at,
-            yaw: at.pose.yaw,
-        };
+        let before = at.pose.clone();
         let blocked = self.occupied(&pending.sim, r.site, Some(r.actor))?;
         let available: Vec<_> = body::neighbours(&volume, &places, profile, document, &before)
             .into_iter()
@@ -364,15 +429,32 @@ impl Game {
             parent.places.unwrap_or_default(),
         )?;
         let blocked = self.occupied(&pending.sim, parent.site.0, None)?;
-        let pose = body::Grounding::new(&volume).find(
-            document,
-            parent.pose.at,
-            parent.pose.yaw,
-            body::SEARCH_REACH,
-            body::SEARCH_STRIDE,
-            body::SEARCH_CANDIDATES,
-            &blocked,
-        )?;
+        let t = pending
+            .sim
+            .genesis()
+            .rules
+            .spatial_templates
+            .as_ref()
+            .ok_or("birth templates absent")?;
+        let modern = body::articulated(&pending.sim);
+        let child_yaw = if modern {
+            (0..isocosm::draw(pending.sim.genesis().seed, "body-birth-yaw", &[r.child]) % 4)
+                .fold(Yaw::Zero, |y, _| y.compose(Yaw::Quarter))
+        } else {
+            parent.pose.yaw
+        };
+        let pose = body::Grounding::new(&volume)
+            .with_articulation(modern)
+            .with_spacing(t.body_spacing)
+            .find(
+                document,
+                parent.pose.at,
+                child_yaw,
+                body::SEARCH_REACH,
+                body::SEARCH_STRIDE,
+                body::SEARCH_CANDIDATES,
+                &blocked,
+            )?;
         let mut inverse = Yaw::Zero;
         while parent.pose.yaw.compose(inverse) != Yaw::Zero {
             inverse = inverse.compose(Yaw::Quarter);
@@ -389,17 +471,15 @@ impl Game {
             .eye;
         Ok(native::BirthGeometry {
             profile: key.clone(),
-            parent_pose: native::Pose {
-                at: parent.pose.at,
-                yaw: parent.pose.yaw,
-            },
+            parent_pose: parent.pose.clone(),
             parent_eye: parent.eye,
             parent_window: parent.window.clone(),
             parent_places: parent.places.unwrap_or_default(),
             offset_from_parent: offset,
-            yaw_from_parent: Yaw::Zero,
+            yaw_from_parent: inverse.compose(pose.yaw),
             eye_from_child: eye,
             window: parent.window.clone(),
+            feet: pose.feet,
         })
     }
 
@@ -432,8 +512,7 @@ impl Game {
         if resolution.request != *r
             || report.profile.as_ref() != Some(&g.profile)
             || expected.process != r.process
-            || g.parent_pose.at != parent.pose.at
-            || g.parent_pose.yaw != parent.pose.yaw
+            || g.parent_pose != parent.pose
             || g.parent_eye != parent.eye
             || g.parent_window != parent.window
             || g.window != parent.window
@@ -453,10 +532,7 @@ impl Game {
             patch,
             body_revision: r.child_revision,
             terrain_revision: r.terrain_revision.clone(),
-            pose: Pose {
-                at: pose.at,
-                yaw: pose.yaw,
-            },
+            pose: pose.clone(),
             eye,
             window: g.window.clone(),
             operations: BTreeMap::new(),
