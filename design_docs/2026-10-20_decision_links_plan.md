@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-22:** in progress: L1, L2, L1b and L3 done; L4's seventeen area reviews and its budget done; archiving §1 to §11 next, then L5. Shaped with Mark the same day in
+**Status, 2026-10-22:** in progress: L1, L2, L1b, L3 and L4 done; L5 next. Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -440,3 +440,15 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   sky, Stack 4's unverified bench lanes) moved into their bodies.
   DOC_POLICY's rule 5 names the budget and rule 6 the one note. Next:
   archiving §1 to §11.
+- **2026-10-22, L4 done: §1 to §11 carried over and archived.** Assessed
+  section by section first (Mark: "Assess section by section first"): they
+  held nine foundational rules no statement stated, 28 accepted docket
+  readings (D27 among them, accepted by ruling 106 though §3.3.1 still
+  marked it open), case 86's five points, and live items. The dockets became
+  cases 985 to 1012 ("Dockets become cases; rounds for the rest"); six card
+  rounds wrote Schema 12, Processes 18 and 19, Stack 12 to 14 and refined
+  seventeen statements; §11's phases became the founding record's §9 and the
+  open questions owed items in the wing organs, VTT overlay and sim plans
+  ("Roadmap to the founding record; questions to owners' plans"). §1 to §11
+  then moved to `archive_docs/2026-10-22/`, their numbers kept. The doctrine
+  holds 136 statements, within budget. Next: L5, the held six.
