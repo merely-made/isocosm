@@ -2,9 +2,9 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-23:** D5 and D6 built (Progress); E1 is next. Its six
-decisions are linked to the doctrine (Processes 6 and 7, Directing 4 and 5,
-Schema 9, Mesocosm 5). Specced at Mark's request after a
+**Status, 2026-10-23:** D5 and D6 built (Progress); parts by `Arc` and a
+cheaper gate index next, then E1 (D7). Its decisions are linked to the
+doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
 day (Decisions, below).
@@ -98,6 +98,12 @@ never cross into a crowd (113).
 
 Phases in order, each with its done-condition.
 
+- **D7a. Parts by `Arc`.** `Entity.parts` holds each part by `Arc`; a write
+  takes the part with `Arc::make_mut`. Done when the exact check below
+  holds and the battery's time is read against D5's.
+- **D7b. A cheaper gate index.** Re-filing reads a group's books once, and
+  moves are filed by the site their actor lives at. Done when the exact
+  check holds and the debug filing check (`passed_by`) still passes.
 - **E1. Waking.** The per-advance gate index (`schedule/filed.rs`, rulings 258,
   286) becomes persistent across advances, re-filed at commit from each
   process's read-set (`Gates::of`, `framed`, `Expr::reads`). Done when the
@@ -200,6 +206,17 @@ each title names its outcome against the doctrine.
 
   Links: area Directing and play · draws on 685 · governs isocosm::execute, isocosm::simulation::Receipt · summary A receipt's foregone list is filled for direct acts only; scheduled and planned receipts carry an empty one.
 
+- **D7, parts by `Arc` before E1 (2026-10-23), applies Schema 9:** "Part by
+  Arc, then gate index (Recommended)". A body's parts map holds each part
+  by `Arc`, so copying a body copies handles and a write copies only the
+  part it touches; serialisation, hashes and saves unchanged. Then the gate
+  index re-files a group reading its books once, not once per gate, and
+  files moves by the site their actor lives at. E1 comes back after both,
+  with new figures. This settles D5's open half and amends D4's order on
+  the measured split (Findings, 2026-10-23, where an accepted act goes).
+
+  Links: area The sim's schema and saves · draws on 975, sim-execution D5 · amends sim-execution D4 · governs isocosm::schema::Entity, isocosm::schedule::Filed · summary A body's parts are held by Arc and copied only when written; that and a cheaper gate index come before E1.
+
 ## Findings
 
 - **2026-10-19, the tick as built** (read from `shared/isocosm/src`, nothing
@@ -263,6 +280,26 @@ each title names its outcome against the doctrine.
   190 s, 36% less. Wall time includes the battery's two replays, which run
   the same acts; a figure for played rounds alone needs the scratch timing
   lines of 2026-10-20 and was not taken.
+- **2026-10-23, where an accepted act goes** (scratch counters at
+  `e764c9d0`, a throwaway worktree, nothing committed; the played A1
+  battery's seed 0 in release, play and both replays, about 175 to 190 s
+  of scheduling; each run printed the seed's usual line). Accepted acts
+  are about half of it, 868,527 of them; `mind:strain` alone, 399,627
+  acts adding a few points to one account, is a quarter. Inside an
+  accepted act, effects are 52%, re-filing the gate index 20%, the write
+  10%, queries 6%, the matter check 5%, and the stage 0.4% (D5). An extra
+  copy of the actor's body, made and dropped aside, averaged 56 µs, more
+  than half an accepted act: the copy on first write is what effects cost.
+  Re-filing reads the body's books again for each gate it tests. Blocked
+  evaluations, 4.9 million, are 11 to 14%; 70% of them are moves refused
+  because the actor does not live where the route starts, which a gate on
+  residency would pass by (about 9 s). Waking on an unchanged body would
+  skip almost nothing: blocked again with the body untouched since its last
+  block came to 0.3 s, because strain, upkeep and hazard write nearly every
+  member every tick. Deliberation for members who then chose another
+  process is about 10%, planning about 9%. Separately, where a world holds
+  owned projects, `begin_process_debits` digests the whole state for every
+  act; A1 holds none.
 
 ## Progress
 
@@ -290,3 +327,8 @@ each title names its outcome against the doctrine.
   to 2 identical, and isocosm's 264 lib tests pass in release and under
   the test profile. Battery wall time falls 23 to 36% (Findings). Whether
   `Part` also goes behind an `Arc` (D5) comes back now, with E1.
+- **2026-10-23, later:** asked first to build E1 and trace after ("E1
+  first, then trace"), a scratch probe of blocked work put E1's ceiling at
+  14% of scheduling, and the round turned to probing accepted acts ("Probe
+  accepted acts first"). That probe (Findings) made the body copy the
+  largest cost; D7 orders parts by `Arc`, then the gate index, then E1.
