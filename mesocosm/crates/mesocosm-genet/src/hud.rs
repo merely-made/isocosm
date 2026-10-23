@@ -76,6 +76,13 @@ impl Hud {
             &[],
             &[],
         );
+        let translated = match translated {
+            Ok(translated) => translated,
+            Err(error) => {
+                eprintln!("hud: the panel did not translate: {error}");
+                return;
+            },
+        };
         chrome.raster(&self.raster, &translated.scene);
     }
 

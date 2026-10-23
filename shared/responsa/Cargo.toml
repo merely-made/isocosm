@@ -1,22 +1,22 @@
 [package]
 rust-version = "1.97.1"
-name = "wing-decisions-run"
+name = "responsa-run"
 version = "0.1.0"
 edition = "2024"
 license = "MPL-2.0"
-description = "Runs eidetic's wing-decisions on this repository's eidetic pin, for the pre-commit hook and by hand"
+description = "Runs eidetic's responsa on this repository's eidetic pin, for the pre-commit hook and by hand"
 repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 [workspace]
 
 [[bin]]
-name = "wing-decisions"
+name = "responsa"
 path = "src/main.rs"
 
 [dependencies]
 # The family cohort's rev, as every eidetic pin in this repository.
-wing-decisions = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
+responsa = { git = "https://github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
 
 [profile.release]
 debug = false

@@ -108,7 +108,8 @@ pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapN
             let to = format!("site:{}", route.to);
             let id = format!("native-route:{}:{}:{}", route.from, route.to, route.travel);
             let name = |key: &str| overmap.node(key).map(|node| node.name.clone()).unwrap_or_else(|| key.into());
-            GraphCanvasRelation { id: id.clone(), from: from.clone(), to: to.clone(), kind: "Native route".into(),
+            GraphCanvasRelation { id: id.clone(), link_key: None, marks: Default::default(), strength: 1.0,
+                from: from.clone(), to: to.clone(), kind: "Native route".into(),
                 label: format!("{} to {}, disclosed native travel {} ticks", name(&from), name(&to), route.travel),
                 route: Vec::new(), visible: !ui.overmap_hidden_relations.contains(&id),
                 emphasized: ui.overmap_selected_relation.as_deref() == Some(id.as_str())
@@ -130,6 +131,9 @@ pub fn overmap_swatch(ui: &UiState) -> Option<GraphCanvasSwatch<String, OvermapN
                 .unwrap_or_else(|| edge.to.clone());
             GraphCanvasRelation {
                 id: id.clone(),
+                link_key: None,
+                marks: Default::default(),
+                strength: 1.0,
                 from: edge.from.clone(),
                 to: edge.to.clone(),
                 kind: if edge.directed {

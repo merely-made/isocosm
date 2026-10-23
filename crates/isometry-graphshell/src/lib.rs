@@ -488,6 +488,9 @@ fn add_overmap_routes(scene: &mut Scene, overmap: &Overmap) {
                 .into(),
             ),
             weight: Some((edge.weight as f32 / 10.0).clamp(0.1, 1.0)),
+            link_key: None,
+            marks: Default::default(),
+            strength: None,
         });
     }
 }

@@ -91,6 +91,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a"
 
 [[package]]
+name = "impresa"
+version = "0.0.1"
+source = "git+https://github.com/merely-made/eidetic.git?rev=aa94fe22eea29e9b54e01ed21e6991536ed4f208#aa94fe22eea29e9b54e01ed21e6991536ed4f208"
+dependencies = [
+ "serde",
+ "serde_json",
+ "toml",
+]
+
+[[package]]
 name = "indexmap"
 version = "2.14.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -120,8 +130,8 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 
 [[package]]
 name = "muniment"
-version = "0.1.2"
-source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
+version = "0.2.0"
+source = "git+https://github.com/merely-made/eidetic.git?rev=aa94fe22eea29e9b54e01ed21e6991536ed4f208#aa94fe22eea29e9b54e01ed21e6991536ed4f208"
 dependencies = [
  "async-trait",
  "blake3",
@@ -181,6 +191,26 @@ name = "regex-syntax"
 version = "0.8.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d6f6ff9a378485b298a5286656da665ba74413d36db0979633275d2e708145d4"
+
+[[package]]
+name = "responsa"
+version = "0.0.1"
+source = "git+https://github.com/merely-made/eidetic.git?rev=aa94fe22eea29e9b54e01ed21e6991536ed4f208#aa94fe22eea29e9b54e01ed21e6991536ed4f208"
+dependencies = [
+ "impresa",
+ "muniment",
+ "pollster",
+ "regex",
+ "serde",
+ "toml",
+]
+
+[[package]]
+name = "responsa-run"
+version = "0.1.0"
+dependencies = [
+ "responsa",
+]
 
 [[package]]
 name = "serde"
@@ -295,36 +325,6 @@ name = "unicode-ident"
 version = "1.0.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2c754d6c33795a1c324727428e5a7dedb5b06195f9890bdbcba760d3e246563"
-
-[[package]]
-name = "wing-decisions"
-version = "0.0.1"
-source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
-dependencies = [
- "muniment",
- "pollster",
- "regex",
- "serde",
- "toml",
- "wing-impresa",
-]
-
-[[package]]
-name = "wing-decisions-run"
-version = "0.1.0"
-dependencies = [
- "wing-decisions",
-]
-
-[[package]]
-name = "wing-impresa"
-version = "0.0.1"
-source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
-dependencies = [
- "serde",
- "serde_json",
- "toml",
-]
 
 [[package]]
 name = "winnow"

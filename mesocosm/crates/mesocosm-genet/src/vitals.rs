@@ -198,6 +198,13 @@ impl VitalsChrome {
             list.fonts(),
             list.images(),
         );
+        let translated = match translated {
+            Ok(translated) => translated,
+            Err(error) => {
+                eprintln!("vitals: the panel did not translate: {error}");
+                return;
+            },
+        };
         chrome.raster(&self.raster, &translated.scene);
     }
 

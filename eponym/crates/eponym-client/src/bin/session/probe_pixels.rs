@@ -20,10 +20,15 @@ use super::Context;
 const INSET: f32 = 2.0;
 
 pub(super) fn viewport(ctx: &Context<'_>) -> Option<Viewport> {
+    let projection = ctx.a11y_projection()?;
     let dom = ctx.runner.dom();
-    let node = taproot::matching(&dom.borrow(), &Selector::role("img").containing("Scene"))
-        .into_iter()
-        .next()?;
+    let node = taproot::matching_with_projection(
+        &dom.borrow(),
+        &Selector::role("img").containing("Scene"),
+        &projection,
+    )
+    .into_iter()
+    .next()?;
     let (x, y, width, height) = ctx.painted_rect(node)?;
     let pixel_scale = ctx.window.map_or(1.0, |window| window.scale_factor()) as f32 * ctx.ui_zoom;
     (width > 0.0 && height > 0.0).then(|| Viewport::new([x, y, width, height], pixel_scale, INSET))
