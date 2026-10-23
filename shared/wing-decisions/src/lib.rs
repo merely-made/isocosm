@@ -8,6 +8,7 @@
 //! the manifest and register; keeps the link journal; answers lookups; checks
 //! anchors against rust-analyzer's index.
 
+pub mod across;
 pub mod anchors;
 pub mod budget;
 pub mod cite;

@@ -14,12 +14,18 @@ pub enum Key {
     Plan(String, u32),
     /// A doctrine statement: its area's slug and number, `naming.1`.
     Statement(String, u32),
+    /// A key in another repository, by that repository's name: `mere:stack.1`.
+    Foreign(String, Box<Key>),
 }
 
 impl Key {
-    /// Parses `975` or `sim-execution D5`.
+    /// Parses `975`, `sim-execution D5`, `naming.1` or `mere:stack.1`.
     pub fn parse(s: &str) -> Option<Key> {
         let s = s.trim();
+        if let Some((repo, key)) = s.split_once(':') {
+            let inner = Key::parse(key).filter(|k| !matches!(k, Key::Foreign(..)))?;
+            return valid_keyword(repo).then(|| Key::Foreign(repo.to_string(), Box::new(inner)));
+        }
         if let Ok(n) = s.parse::<u32>() {
             return Some(Key::Case(n));
         }
@@ -38,6 +44,7 @@ impl Key {
             Key::Case(n) => format!("case:{n}"),
             Key::Plan(p, n) => format!("decision:{p}.D{n}"),
             Key::Statement(a, n) => format!("statement:{a}.{n}"),
+            Key::Foreign(r, k) => format!("{r}:{}", k.id()),
         }
     }
 }
@@ -48,6 +55,7 @@ impl fmt::Display for Key {
             Key::Case(n) => write!(f, "{n}"),
             Key::Plan(p, n) => write!(f, "{p} D{n}"),
             Key::Statement(a, n) => write!(f, "{a}.{n}"),
+            Key::Foreign(r, k) => write!(f, "{r}:{k}"),
         }
     }
 }
@@ -163,6 +171,11 @@ mod tests {
         assert_eq!(Key::parse("975"), Some(Key::Case(975)));
         assert_eq!(Key::parse("sim-execution D5"), Some(Key::Plan("sim-execution".into(), 5)));
         assert_eq!(Key::parse("Sim D5"), None);
+        let across = Key::Foreign("mere".into(), Box::new(Key::Statement("stack".into(), 1)));
+        assert_eq!(Key::parse("mere:stack.1"), Some(across.clone()));
+        assert_eq!(across.to_string(), "mere:stack.1");
+        assert_eq!(Key::parse("isocosm:600").map(|k| k.id()).as_deref(), Some("isocosm:case:600"));
+        assert_eq!(Key::parse("a:b:stack.1"), None);
         assert_eq!(Key::parse("naming.1"), Some(Key::Statement("naming".into(), 1)));
         assert_eq!(Key::Statement("naming".into(), 1).id(), "statement:naming.1");
         assert_eq!(Key::Plan("sim-execution".into(), 5).id(), "decision:sim-execution.D5");

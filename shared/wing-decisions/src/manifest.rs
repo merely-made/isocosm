@@ -89,6 +89,7 @@ impl Manifest {
                 Key::Case(n) => format!("cases.\"{n}\""),
                 Key::Plan(p, n) => format!("decisions.\"{p} D{n}\""),
                 Key::Statement(a, n) => format!("statements.\"{a}.{n}\""),
+                Key::Foreign(..) => format!("foreign.\"{k}\""),
             };
             let _ = write!(s, "\n[{table}]\n");
             match &item.entry {
