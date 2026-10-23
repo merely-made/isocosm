@@ -79,7 +79,7 @@ durability is not claimed.
 *The dated migration design and receipts below remain as written (793).*
 
 **Status: plan.** Founded from the 2026-08-08 wing audit. The
-[shared-authority plan](2026-07-09_shared_authority_and_collaborative_building_plan.md)'s
+[shared-authority plan](../../2026-07-09_shared_authority_and_collaborative_building_plan.md)'s
 **sequencing gate stands and governs**: no second Isometry runtime. Its
 earlier tiers (host-owned private stores, peer-side Lua revalidation,
 regenerated secrets, commit-reveal mechanics) are **superseded by this

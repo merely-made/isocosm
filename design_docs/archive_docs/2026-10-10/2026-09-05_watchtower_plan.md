@@ -7,7 +7,7 @@ prose editing (W5), other parties and their doorways (W9), per-party map
 views and membership editing (W7). The board over the sim, its section
 "Under the wing design record", is ruling 799's two battlemap paths in that
 plan's V2. Its five failing atlas and door tests are in the [after-pass
-plan](../../../mesocosm/design_docs/2026-10-10_after_pass_plan.md)'s A2.
+plan](../../../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-10_after_pass_plan.md)'s A2.
 
 **Status, 2026-09-26:** Rewritten to the record 2026-09-26 (ruling 280); W1 to W10 verified. *(Brought current 2026-10-06 under ruling 618; the
 earlier status line follows as written.)*

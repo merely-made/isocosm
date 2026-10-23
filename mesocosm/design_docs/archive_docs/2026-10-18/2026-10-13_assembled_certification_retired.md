@@ -5,7 +5,7 @@ kept as precedent and numbered 1 to 984 in the design record, with new rules
 numbered by him alone, and asked every active doc to lose its stacked status
 banners, old progress entries, stale counters and pasted copies. This file
 holds, verbatim, what left the live [assembled migration
-certification](../../2026-10-13_assembled_certification.md): its stacked
+certification](2026-10-13_assembled_certification.md): its stacked
 status banners. Case numbers in the moved text are the old ruling numbers,
 which the design record and its archive keep.
 

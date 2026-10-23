@@ -73,7 +73,7 @@ M4 and contested spatial/resource conditions remain the overlay's gates.
   `CLAUDE.md`. No code changed.
 
 - **2026-09-02:** the trait array's deletion ruled; the ruling lives in the
-  [phenotype plan](archive_docs/2026-10-10/2026-07-31_phenotype_plan.md)'s progress, and this is the
+  [phenotype plan](../2026-10-10/2026-07-31_phenotype_plan.md)'s progress, and this is the
   module the entry below already found had no consumer left in `World`.
 - **2026-09-02 (PE3a):** the boundary finally happens on its own. `EpochRule`
   is a versioned world rule beside the ruleset — `Timed { ticks }` built,

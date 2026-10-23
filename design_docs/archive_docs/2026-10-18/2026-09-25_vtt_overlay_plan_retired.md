@@ -15,7 +15,7 @@ from the live doc's folder, not from this one.
 
 **Ruling 913, 2026-10-15:** `isometry-campaign` retires and its contents
 move to their owning homes (wing design record, 913, 915 and 916), planned
-in the [campaign retirement plan](2026-10-15_campaign_retirement_plan.md),
+in the [campaign retirement plan](../../2026-10-15_campaign_retirement_plan.md),
 which carries §4's absorption as its phase R3.
 
 **Certification resumed, 2026-10-13:** the explicit "Certify" request opens
@@ -25,7 +25,7 @@ updating test snapshot/profile constructors. The new native effect vocabulary
 uses protocol22 and `isometry/session/v22` together. VTT campaign/session168
 runtime tests pass with no ignores, using default features. Full V2 and
 headed acceptance remain open. The
-[assembled certification record](../mesocosm/design_docs/2026-10-13_assembled_certification.md)
+[assembled certification record](../../../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-13_assembled_certification.md)
 owns the actual receipts and source qualifications; historical results below
 keep their scope.
 
@@ -335,11 +335,11 @@ contract module only; V2 to V4 proposed and not opened, waiting on
 Mesocosm's M3 (ruling 231). Drafted at
 Mark's word ("Overlay plans to RPG") in the RPG systems session, in parallel
 with the Simulation design review session, from the
-[wing design record](../mesocosm/design_docs/2026-09-18_wing_design_plan.md)'s
+[wing design record](../../2026-09-18_wing_design_plan.md)'s
 §5.7 (rulings 188 to 191), rulings 114 and 189, ruling 154, the contract's
 rulings (197, 203 to 205, 210 to 213), the system-plugin crate and this
 repository's plans. It mirrors the
-[Mesocosm overlay plan](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
+[Mesocosm overlay plan](../../../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
 of this plan's own is flagged as one. No lane runs until Mark opens it, and
 §6's eight decisions are taken: ruling 231 placing this overlay side by side
@@ -566,7 +566,7 @@ with its receipts marked.
   replay the same entries when the sim switches on (248). The legacy
   campaign tree is otherwise unmoved (3,943 lines), the faction turn marked
   for V2. Detail in the
-  [families plan](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md)'s
+  [families plan](../../../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md)'s
   Progress.
 - 2026-10-10: the record family's lane (`lane-record-2`, under 732's compile
   gate) built `Command::Assert` in native Isocosm (ruling 757): an authored
@@ -577,7 +577,7 @@ with its receipts marked.
   of places, characters, laws and history lines, went back to Mark as forks.
   `isocosm::legacy::campaign` is unchanged at 3,950 lines; the faction
   turn is marked to retire at V2 (247). Detail in the
-  [families plan](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md)'s
+  [families plan](../../../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md)'s
   Progress.
 - 2026-10-09: §4's absorption begun under 732's compile gate (lane
   `lane-campaign`; no tests, draws or receipts run). The last row went first,
@@ -587,7 +587,7 @@ with its receipts marked.
   family: the record, bodies, places, native founding, or an assertion path
   native lacks. The faction turn retires at V2 (247), so the legacy copy
   cannot leave in full before then. The detail and the forks are in the
-  [families plan](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md)'s
+  [families plan](../../../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md)'s
   Progress.
 - 2026-09-26: V1 done. Ruling 253 opened E1 and V1 as contract modules
   only; `src/vtt/` was built in a worktree, reviewed and merged by the
