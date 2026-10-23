@@ -1,11 +1,143 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
-
+//! One physical search shared by native food choice and the step provider.
 use super::*;
-use std::collections::VecDeque;
+use isometer_core::BodyDocument;
+use std::sync::Arc;
+mod cache;
+mod search;
+pub(crate) use cache::Cache;
 
-/// A bounded route to contact with the actual chosen food. The first step
-/// uses the same native body support, passage and occupancy checks as its goal.
+/// A complete contact route. Only its first adjacent step is published;
+/// subsequent rounds re-read needs, detection, terrain and current residents.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub struct FoodRoute {
+    pub target: Id,
+    pub path: Vec<Pose>,
+}
+
+/// Bounded derivative evidence, never saved authority or a claim that the
+/// entire site is unreachable when the declared node budget is exhausted.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize)]
+pub struct RouteSearch {
+    pub route: Option<FoodRoute>,
+    pub nodes: usize,
+    pub checked_edges: usize,
+    pub refused_edges: usize,
+    pub first_refusal: Option<String>,
+    pub exhausted: bool,
+}
+
+#[derive(Clone, Debug)]
+struct Input {
+    actor: Id,
+    site: Id,
+    terrain: Arc<super::super::SiteGeometry>,
+    document: BodyDocument,
+    before: Pose,
+    profile: StepProfile,
+    foods: Vec<(Id, Vec<embodiment::Box3>)>,
+    blocked: Vec<embodiment::Box3>,
+    reach: u64,
+    nodes: usize,
+}
+
+impl Simulation {
+    /// Read native appetite, meal eligibility and detection, then find a route
+    /// to any of those meals using the same physical machinery as admission.
+    pub fn food_route(&self, actor: Id, walk: &str) -> Result<RouteSearch> {
+        let f = self
+            .foraging_policy(walk)
+            .ok_or("foraging profile absent")?;
+        let feed = &self.genesis.rules.processes[&f.feed];
+        if self.food_need_score(actor, feed) <= 0 {
+            return Ok(RouteSearch::default());
+        }
+        let foods = self.food_candidates(actor, feed, f);
+        if foods.iter().any(|(_, d)| *d <= f.reach) {
+            return Ok(RouteSearch::default());
+        }
+        let at = self
+            .spatial_pose_at_start(actor)
+            .ok_or("foraging pose absent")?;
+        let t = self
+            .genesis
+            .rules
+            .spatial_templates
+            .as_ref()
+            .ok_or("foraging templates absent")?;
+        self.route_to_foods(
+            actor,
+            walk,
+            &embodiment::site_window(t, at.pose.at),
+            foods
+                .into_iter()
+                .filter(|(_, d)| *d <= f.search)
+                .map(|(id, _)| id),
+        )
+    }
+
+    fn route_to_foods(
+        &self,
+        actor: Id,
+        walk: &str,
+        window: &Window,
+        foods: impl IntoIterator<Item = Id>,
+    ) -> Result<RouteSearch> {
+        let _span = crate::profile::Span::new("foraging.route.read");
+        let f = self
+            .foraging_policy(walk)
+            .ok_or("foraging profile absent")?;
+        let at = self
+            .spatial_pose_at_start(actor)
+            .ok_or("foraging pose absent")?;
+        let foods: Vec<_> = foods
+            .into_iter()
+            .filter_map(|id| {
+                self.current_placed_boxes(id, at.site)
+                    .map(|boxes| (id, boxes))
+            })
+            .collect();
+        if foods.is_empty() {
+            return Ok(RouteSearch::default());
+        }
+        let profile = self
+            .genesis
+            .rules
+            .step_profiles
+            .get(walk)
+            .ok_or("step profile absent")?;
+        let terrain = self.site_geometry(at.site, window, profile.places)?;
+        let document = self
+            .body_at_start(actor)
+            .and_then(|e| e.body.as_ref())
+            .ok_or("walking body absent")?;
+        embodiment::check_for(self, &terrain.volume, document, &at.pose)?;
+        let input = Input {
+            actor,
+            site: at.site,
+            terrain,
+            document: document.clone(),
+            before: at.pose.clone(),
+            profile: profile.clone(),
+            foods,
+            reach: f.reach,
+            nodes: f.nodes,
+            blocked: self
+                .state
+                .spatial_poses
+                .keys()
+                .copied()
+                .filter(|id| *id != actor)
+                .filter_map(|id| self.current_placed_boxes(id, at.site))
+                .flatten()
+                .collect(),
+        };
+        self.foraging_routes.find(input)
+    }
+}
+
+/// The native choice and provider consume the same bounded full-route witness.
 pub fn geometry(sim: &Simulation, request: &Request, window: &Window) -> Result<Geometry> {
     let f = sim
         .foraging_policy(&request.profile)
@@ -15,121 +147,38 @@ pub fn geometry(sim: &Simulation, request: &Request, window: &Window) -> Result<
         return Err("chosen food no longer serves a current need within search range".into());
     }
     let target = request.target.ok_or("foraging target absent")?;
-    let before = &sim
-        .spatial_pose_at_start(request.actor)
-        .ok_or("foraging pose absent")?
-        .pose;
-    let document = sim
-        .body_at_start(request.actor)
-        .and_then(|e| e.body.as_ref())
-        .ok_or("walking body absent")?;
-    let food = sim
-        .current_placed_boxes(target, request.site)
-        .ok_or("chosen food pose absent")?;
-    let profile = &sim.genesis.rules.step_profiles[&request.profile];
-    let terrain = sim.site_geometry(request.site, window, profile.places)?;
-    let (volume, places) = (&terrain.volume, &terrain.places);
-    embodiment::check_for(sim, &volume, document, before)?;
-    let local = embodiment::boxes(
-        document,
-        &Pose {
-            at: [0; 3],
-            yaw: before.yaw,
-            feet: Default::default(),
-        },
-    )?;
-    let mut grounding = embodiment::Grounding::new(&volume);
-    let blocked: Vec<_> = sim
-        .state
-        .spatial_poses
-        .keys()
-        .copied()
-        .filter(|id| *id != request.actor)
-        .filter_map(|id| sim.current_placed_boxes(id, request.site))
-        .flatten()
-        .collect();
-    let origin = (before.at, before.yaw);
-    let mut parents = BTreeMap::from([(origin, None)]);
-    let mut poses = BTreeMap::from([(origin, before.clone())]);
-    let mut queue = VecDeque::from([origin]);
-    let modern = embodiment::articulated(sim);
-    let mut priority = BTreeSet::from([(
-        gap(&embodiment::boxes(document, before)?, &food),
-        0usize,
-        origin,
-    )]);
-    let mut goal = None;
-    while let Some(cell) = if modern {
-        priority.pop_first().map(|(_, _, key)| key)
+    let found = if f.reachable {
+        sim.food_route(request.actor, &request.profile)?
     } else {
-        queue.pop_front()
-    } {
-        let pose = poses[&cell].clone();
-        if gap(&embodiment::boxes(document, &pose)?, &food) <= f.reach {
-            goal = Some(cell);
-            break;
-        }
-        let neighbours = if !before.feet.is_empty() {
-            embodiment::articulated_neighbours(places, profile, document, &pose, &mut grounding)
-        } else {
-            embodiment::neighbours_from_boxes(places, profile, &local, &pose, &mut grounding)
-        };
-        for next in neighbours {
-            let key = (next.at, next.yaw);
-            if parents.contains_key(&key) {
-                continue;
-            }
-            if parents.len() >= f.nodes {
-                continue;
-            }
-            let boxes = embodiment::boxes(document, &next)?;
-            if embodiment::intersects(&boxes, &blocked) {
-                continue;
-            }
-            if !before.feet.is_empty()
-                && cell == origin
-                && embodiment::sweep_clear(volume, document, &pose, &next, &blocked).is_err()
-            {
-                continue;
-            }
-            parents.insert(key, Some(cell));
-            if modern {
-                priority.insert((gap(&boxes, &food), parents.len(), key));
-            } else {
-                queue.push_back(key);
-            }
-            poses.insert(key, next);
-        }
+        sim.route_to_foods(request.actor, &request.profile, window, [target])?
+    };
+    let route = found
+        .route
+        .ok_or("no supported route to chosen food within the saved node budget")?;
+    if route.target != target {
+        return Err("chosen food route changed with current occupancy".into());
     }
-    let mut cell = goal.ok_or("no supported route to chosen food within the saved node budget")?;
-    while let Some(Some(parent)) = parents.get(&cell) {
-        if *parent == origin {
-            break;
-        }
-        cell = *parent;
-    }
-    if cell == origin {
-        return Err("food is already within feeding reach".into());
-    }
-    let after = poses[&cell].clone();
-    let eye_offset = sim
+    let path: Vec<_> = route.path.into_iter().take(2).collect();
+    let after = path.get(1).ok_or("food is already within feeding reach")?;
+    let templates = sim
         .genesis
         .rules
         .spatial_templates
         .as_ref()
-        .expect("foraging templates")
-        .eye;
+        .ok_or("foraging templates absent")?;
     let mut eye = after.at;
     for k in 0..3 {
         eye[k] = eye[k]
-            .checked_add(eye_offset[k])
+            .checked_add(templates.eye[k])
             .ok_or("foraging eye overflow")?;
     }
     Ok(Geometry {
-        window: sim.genesis().rules.spatial_templates.as_ref()
-            .filter(|t| t.version >= 5).map(|t| embodiment::site_window(t,after.at))
-            .unwrap_or_else(|| window.clone()),
-        path: vec![before.clone(), after],
+        window: if templates.version >= 5 {
+            embodiment::site_window(templates, after.at)
+        } else {
+            window.clone()
+        },
+        path,
         eye,
     })
 }

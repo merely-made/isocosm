@@ -88,7 +88,7 @@ impl Simulation {
             .unwrap_or(0)
     }
 
-    fn food_candidates(&self, actor: Id, feed: &Process, policy: &Foraging) -> Vec<(Id, u64)> {
+    pub(super) fn food_candidates(&self, actor: Id, feed: &Process, policy: &Foraging) -> Vec<(Id, u64)> {
         let Some(body) = self.body_at_start(actor) else {
             return Vec::new();
         };
@@ -143,6 +143,10 @@ impl Simulation {
             let feed = &self.genesis.rules.processes[&f.feed];
             if self.food_need_score(actor, feed) <= 0 {
                 return Some(None);
+            }
+            if f.reachable {
+                return Some(self.food_route(actor, &p.id).ok()
+                    .and_then(|found| found.route.map(|r| r.target)));
             }
             let food = self.food_candidates(actor, feed, f);
             if food.iter().any(|(_, d)| *d <= f.reach) {

@@ -159,7 +159,7 @@ fn a_saved_initial_projection_cannot_move_the_native_root() {
 }
 
 #[test]
-fn bounded_routes_refuse_without_moving_or_teleporting() {
+fn bounded_routes_withhold_walks_without_moving_or_teleporting() {
     let mut f = control(true, 1, true);
     let before = f.game.members[&f.actor].pose.clone();
     for _ in 0..3 {
@@ -167,19 +167,14 @@ fn bounded_routes_refuse_without_moving_or_teleporting() {
     }
     assert_eq!(f.steps(), 0);
     assert_eq!(f.game.members[&f.actor].pose, before);
-    let refused = f.session.entries.iter().any(|entry| match &entry.command {
-        Command::AdvanceBirthSpatial { steps, .. } => steps.iter().any(|step| {
-            step.request.process == f.walk
-                && step
-                    .geometry
-                    .as_ref()
-                    .is_err_and(|why| why.contains("route"))
-        }),
+    let requested = f.session.entries.iter().any(|entry| match &entry.command {
+        Command::AdvanceBirthSpatial { steps, .. } => steps.iter()
+            .any(|step| step.request.actor == f.actor && step.request.process == f.walk),
         _ => false,
     });
     assert!(
-        refused,
-        "native choice must actually try the bounded food route"
+        !requested,
+        "native choice must withhold a walk when its route budget finds no contact"
     );
     f.game.validate_replay(&f.session).unwrap();
 }

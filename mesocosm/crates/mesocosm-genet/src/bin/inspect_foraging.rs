@@ -7,14 +7,22 @@ use isocosm::{
     spatial::{Preparation, foraging::FoodDetection},
 };
 use std::{path::Path, time::Instant};
+#[path = "inspect_foraging/probe.rs"]
+mod probe;
 
 fn main() -> Result<(), String> {
     let path = std::env::args()
         .nth(1)
-        .ok_or("inspect_foraging <world trace>")?;
+        .ok_or("inspect_foraging <world trace> [--census | --probe [--actors=6,19]]")?;
     let saved = mesocosm_genet::played::read_trace(Path::new(&path))?;
     let started = Instant::now();
     let session = Session::load(saved.clone(), Execution::Individuals)?;
+    if std::env::args().any(|arg| arg == "--probe") {
+        return probe::run(&session);
+    }
+    if std::env::args().any(|arg| arg == "--census") {
+        return probe::census(&session);
+    }
     let mut witnesses = Vec::new();
     let mut refused = 0;
     for entry in &session.entries {
@@ -68,10 +76,27 @@ fn main() -> Result<(), String> {
             if !matches!(detection, FoodDetection::Sight(_)) {
                 return Err("food step departed from a meal already in contact".into());
             }
+            let route = if policy.reachable {
+                let found = pending.sim.food_route(r.actor, &r.profile)?;
+                let route = found
+                    .route
+                    .as_ref()
+                    .ok_or("chosen meal has no complete physical route")?;
+                if route.target != target
+                    || route.path.get(..2)
+                        != Some(answer.geometry.as_ref().unwrap().path.as_slice())
+                {
+                    return Err("recorded step differs from the chosen complete route".into());
+                }
+                probe::verify(&pending.sim, r, route)?;
+                Some(found)
+            } else {
+                None
+            };
             witnesses.push(
                 serde_json::json!({"tick":r.tick,"actor":r.actor,"food":target,
                 "process":r.process,"action":r.action,"search":policy.search,"detection":detection,
-                "path":answer.geometry.as_ref().unwrap().path}),
+                "path":answer.geometry.as_ref().unwrap().path,"route":route}),
             );
         }
     }

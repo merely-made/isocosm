@@ -309,6 +309,7 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
                 search: super::super::foraging::FOOD_SEARCH,
                 nodes: 256,
                 sight: true,
+                reachable: true,
             },
         );
         genesis.rules.processes.insert(key, process);

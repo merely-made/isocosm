@@ -11,7 +11,8 @@ use crate::{rules::Process, simulation::Genesis};
 mod food;
 mod route;
 mod senses;
-pub use route::geometry;
+pub use route::{FoodRoute, RouteSearch, geometry};
+pub(crate) use route::Cache as RouteCache;
 pub use senses::{Detection, FoodDetection};
 pub(crate) use senses::declare as declare_senses;
 
@@ -30,6 +31,10 @@ pub struct Foraging {
     /// Absent in older recorded rules, which keep their original choices.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub sight: bool,
+    /// Choose only meals with a completely supported, swept physical route.
+    /// Omitted recorded rules retain their original nearest-food selection.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub reachable: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

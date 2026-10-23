@@ -65,6 +65,9 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
   not inherit its representative's position for individual meals.
   New physical foraging reads living sensory sources and current terrain before
   selecting remote food. Cached geometry carries no biological or awareness result.
+- A reachable-food result needs a complete supported and swept route. Its cache
+  matches actual body, soles, food geometry and current occupancy as well as
+  terrain; cached terrain alone cannot grant a walk.
 - A zero-thickness anatomy part is empty geometry with valid attachments;
   it must not turn every drawable part of that organism into a fallback.
 - A voxel material is a compact id into saved world-local definitions. Dynamic
@@ -81,7 +84,7 @@ Whole-site habitat work is tracked in the [presentation continuation](2026-09-11
 
 | Doc | For | Status |
 | --- | --- | --- |
-| [2026-10-23_senses_foraging_plan.md](2026-10-23_senses_foraging_plan.md) | Living sensory parts, cached terrain sight and native food choice. | 2026-10-23: qualified; 129 checks, four older replays, first clock draw with five verified sight-directed steps and 24 moving frames, 17 with supported swing. Route quality remains open. |
+| [2026-10-23_senses_foraging_plan.md](2026-10-23_senses_foraging_plan.md) | Living sensory parts, cached terrain sight and reachable native food choice. | 2026-10-23: qualified reachable-food follow-up; 56 controls, five older replays, 16 accepted steps across seven walkers, 24 actual frames with 20 supported swings. |
 | [2026-10-22_foot_placement_plan.md](2026-10-22_foot_placement_plan.md) | Native paid-foot placement, support on slopes, spacing and an ordinary walking capture. | 2026-10-22: shared native/rendered chain geometry, supported foot swing captured in the optimized build; 481 checks and old/new replay hashes pass. |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Mesocosm's goals and pillars. | Maintainer-owned. |
