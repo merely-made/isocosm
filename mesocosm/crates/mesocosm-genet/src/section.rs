@@ -26,7 +26,7 @@ mod tenant;
 pub use capsules::{pose_of, roster_of};
 pub use light::{Block as SkyBlock, SunSource};
 mod terrain;
-pub use terrain::TerrainStyle;
+pub use terrain::{TerrainStyle, terrain_cell};
 mod inspection;
 mod view;
 
@@ -129,6 +129,8 @@ pub struct Section {
     /// Shared projection, queries and traced terrain.
     scene: Scene,
     residency: std::cell::RefCell<Residency>,
+    columns: Option<isometer::ColumnTerrain>,
+    column_half: f32,
     body_tenant: tenant::BodyTenant,
     grade: Grade,
     terrain_appearance: Option<isometer::lens::TerrainAppearance>,
@@ -177,6 +179,8 @@ impl Section {
             queue,
             scene,
             residency,
+            columns: None,
+            column_half: 0.0,
             body_tenant: tenant::BodyTenant::new(host, [width, height]),
             grade: Grade::retro(PALETTE),
             terrain_appearance: None,
@@ -195,6 +199,7 @@ impl Section {
 
     /// Rebinds the terrain to another lifted Ground: a new site, or new edits.
     pub fn set_ground(&mut self, _ground: &Ground) -> Result<(), String> {
+        self.columns = None;
         self.residency.borrow_mut().rebuild();
         self.invalidate_query();
         Ok(())
@@ -310,9 +315,27 @@ impl Section {
         encoder: &mut wgpu::CommandEncoder,
         frame: SectionFrame<'_>,
     ) -> Result<(), String> {
+        let profile_start = std::time::Instant::now();
         self.bind_terrain_materials(frame.scene.window.materials);
-        let source = GroundTerrain(&frame.scene.ground);
         let camera = self.view(frame.centre);
+        let ground_source = GroundTerrain(&frame.scene.ground);
+        let paged=frame.scene.window.is_paged();
+        if paged && (self.columns.is_none() || self.column_half!=camera.half_height) {
+            self.columns = Some(isometer::ColumnTerrain::new(frame.scene.window.clone(),terrain_cell(camera.half_height)));
+            self.column_half=camera.half_height;
+            self.residency.borrow_mut().rebuild();
+        }
+        let framed=if paged {
+            let source=self.columns.as_mut().expect("column source");
+            let cell=source.cell;
+            let framed=source.frame(camera,8.0,self.residency.borrow().capacity());
+            if source.cell!=cell {self.residency.borrow_mut().rebuild();}
+            framed
+        } else {framed_bricks(camera,8.0,&ground_source,self.residency.borrow().capacity())};
+        let source: &dyn isometer::BrickSource = if paged {
+            self.columns.as_ref().expect("column source")
+        } else { &ground_source };
+        let cell=source.cell_size();
         let voxels = self.body_mode != BodyMode::Capsules;
         let scene_bodies = if voxels {
             self.scene_bodies(frame.scene)
@@ -327,13 +350,8 @@ impl Section {
             body_tenant,
             ..
         } = self;
-        let framed = framed_bricks(
-            camera,
-            isometer::core::ground::BRICK as f32,
-            &source,
-            residency.borrow().capacity(),
-        );
-        let terrain = PagedTerrain::new(residency, &source, &framed, frame.scene.ground.revision());
+        let framing_us = profile_start.elapsed().as_micros();
+        let terrain = PagedTerrain::new(residency, source, &framed, frame.scene.ground.revision());
         let mut host = SectionHost {
             bodies: host_bodies,
             scene: frame.scene,
@@ -368,6 +386,10 @@ impl Section {
             },
             &mut host,
         )?;
+        if std::env::var_os("MESOCOSM_PROFILE_ACTIVE").is_some_and(|v| v=="1") {
+            eprintln!("[mesocosm-terrain] cell={cell} bricks={} overflow={} framing={}us encode={}us",
+                framed.keys.len(),framed.overflow,framing_us,profile_start.elapsed().as_micros()-framing_us);
+        }
         Ok(())
     }
 

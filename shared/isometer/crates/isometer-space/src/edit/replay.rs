@@ -12,6 +12,7 @@ use crate::{Atlas, Result, SiteId};
 use std::collections::BTreeMap;
 
 /// One site's column rule at the base grain.
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub(crate) struct SiteRule {
     lattice: Lattice,
     pub water: i64,
@@ -20,6 +21,13 @@ pub(crate) struct SiteRule {
 }
 
 impl SiteRule {
+    /// Conservative column bounds, including every declared cliff.
+    pub fn heights(&self) -> [i64;2] {
+        let q = self.lattice.q;
+        let lo = self.lattice.heights.iter().flatten().copied().min().unwrap_or(0).div_euclid(q) as i64;
+        let hi = self.lattice.heights.iter().flatten().copied().max().unwrap_or(0).div_euclid(q) as i64;
+        [lo-self.lattice.cliffs.iter().map(|c| c.drop).sum::<i64>(), hi.max(self.water)]
+    }
     pub fn of<A: Atlas + ?Sized>(a: &A, site: SiteId) -> Result<Self> {
         Ok(Self {
             lattice: a.lattice(site)?,

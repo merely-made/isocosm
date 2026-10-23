@@ -242,3 +242,33 @@ fn sight_is_a_clear_ray_to_a_candidate_place() {
     assert!(!near.contains(&place(&tiles, beyond)));
     assert!(near.len() < tiles.places.len());
 }
+
+
+#[test]
+fn run_boundary_seeds_equal_the_dense_reference_for_rooms_water_and_edits() {
+    use super::cells::Cells;
+    use crate::{edit::{Edit,Op,Shape},volume::Volume};
+    for seed in [7,17,35] {
+        let a=crate::fixture::Grid::drawn(seed,2,2,64,false);
+        let edits=vec![(0,Edit {op:Op::Carve,shape:Shape::Sphere {centre:[30,18,30],radius:4}}),
+            (0,Edit {op:Op::Fill(3),shape:Shape::Box {min:[24,26,24],max:[35,28,35]}})];
+        let v=Volume::lift(&a,0,[22,22],[38,38],8,&edits).unwrap();
+        for cover in [Cover::Roofed,Cover::Sealed] {
+            let rules=Rules::ruled(cover);
+            let cells=Cells::new(&v,rules);
+            for x in v.min[0]..v.max[0] {for z in v.min[1]..v.max[1] {
+                for y in cells.floor..=cells.top+2 {
+                    let reference=(0..super::cells::HEADROOM).take_while(|d|cells.air([x,y+d,z])).count() as i64;
+                    assert_eq!(cells.headroom([x,y,z]),reference,"headroom {x} {y} {z}");
+                }
+            }}
+            let mut dense=Vec::new();
+            for x in v.min[0]..v.max[0] {for z in v.min[1]..v.max[1] {
+                dense.extend((cells.floor..=cells.top).map(|y|[x,y,z]));
+            }}
+            let mut reference=Places {site:v.site,rules,places:BTreeMap::new(),passages:BTreeMap::new(),labels:BTreeMap::new()};
+            reference.insert(&cells,super::flood::components(&cells,dense));
+            assert_eq!(Places::derive(&v,rules).unwrap(),reference,"seed {seed} cover {cover:?}");
+        }
+    }
+}

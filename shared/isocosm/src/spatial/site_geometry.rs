@@ -6,7 +6,7 @@ use crate::{Result, Simulation, operations::Window, schema::Id};
 use isometer_space::{volume::Volume, places::{Places, Rules}};
 use std::sync::{Arc, Mutex};
 
-const CAPACITY: usize = 8;
+const CAPACITY: usize = 64;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 struct Key { site: Id, window: Window, terrain: String }
@@ -36,7 +36,7 @@ impl SiteGeometry {
 #[derive(Debug)]
 struct Entry { key: Key, volume: Arc<Volume>, places: Vec<Arc<SiteGeometry>> }
 
-/// Clones share eight terrain windows, each with at most four place rule sets.
+/// Clones share sixty-four terrain windows, each with at most four place rule sets.
 /// Volume-only arrival searches and native validators use the same terrain.
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Cache(Arc<Mutex<Vec<Entry>>>);
@@ -52,7 +52,14 @@ impl Simulation {
                 return Ok(volume);
             }
         }
-        let volume = Arc::new(self.volume(site, window.min, window.max, window.depth)?);
+        let span = crate::profile::Span::new("terrain.volume");
+        let volume = if super::embodiment::whole_site(self) {
+            let view=crate::terrain::View::over(self.genesis(),&self.state().sites)?;
+            let edits:Vec<_>=self.state().edits.iter().map(|e|(e.site,e.edit.clone())).collect();
+            Volume::paged(&view,site,window.min,window.max,window.depth,&edits)?
+        } else {self.volume(site, window.min, window.max, window.depth)?};
+        let volume = Arc::new(volume);
+        drop(span);
         let mut entries = self.spatial_geometry.0.lock().map_err(|_| "spatial geometry cache poisoned")?;
         if let Some(existing) = entries.iter().find(|entry| entry.key == key) {
             return Ok(existing.volume.clone());
@@ -76,6 +83,7 @@ impl Simulation {
             }
         }
         let volume = self.site_volume(site, window)?;
+        let _span = crate::profile::Span::new("terrain.places");
         let places = Places::derive(&volume, rules)?;
         let found = Arc::new(SiteGeometry { key: key.clone(), rules, volume, places });
         let mut entries = self.spatial_geometry.0.lock().map_err(|_| "spatial geometry cache poisoned")?;

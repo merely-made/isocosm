@@ -36,6 +36,11 @@ pub(super) fn check(sim: &Simulation, r: &BirthRequest, g: &BirthGeometry) -> Re
         }
     }
     let (pose, eye) = birth_pose(g)?;
+    if let Some(t) = sim.genesis().rules.spatial_templates.as_ref().filter(|t| t.version >= 5)
+        && (g.parent_window != embodiment::site_window(t,g.parent_pose.at)
+            || g.window != embodiment::site_window(t,pose.at)) {
+        return Err("birth windows differ from their native site tiles".into());
+    }
     let terrain = sim.site_geometry(site, &g.window, profile.places)?;
     let (volume, places) = (&terrain.volume, &terrain.places);
     let patch = places.place_at(pose.at).ok_or("authored child pose has no realized patch")?;

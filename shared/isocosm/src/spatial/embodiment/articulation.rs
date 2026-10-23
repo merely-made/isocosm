@@ -285,10 +285,6 @@ fn top(g: &mut Grounding<'_>, x: i64, z: i64) -> Result<i64> {
         return Err("foot or body leaves terrain window".into());
     }
     Ok(*g.tops.entry([x, z]).or_insert_with(|| {
-        let cell = g.volume.to_ground([x, g.volume.datum, z]);
-        g.volume
-            .ground()
-            .surface(cell[0], cell[2])
-            .map_or(g.volume.datum - 1, |h| g.volume.datum + i64::from(h))
+        g.volume.surface(x,z).unwrap_or(g.volume.datum-1)
     }))
 }

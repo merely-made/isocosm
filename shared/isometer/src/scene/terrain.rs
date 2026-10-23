@@ -34,6 +34,7 @@ pub enum TerrainRefresh {
 
 /// A terrain the scene traces against.
 pub trait TerrainSource {
+    fn cell_size(&self) -> f32 { 1.0 }
     /// Stamps the frame, so an unchanged terrain is recognised as unchanged.
     fn revision(&self) -> u64;
 

@@ -39,6 +39,7 @@ pub use producer::{
 };
 pub use query::{BodyPick, BodyPickError, Pick, TerrainHit};
 pub use scene::{
+    ColumnTerrain,
     BRICK_BYTES, BrickSource, CapsuleFrame, FramedBricks, GroundTerrain, HostTerrain, PagedTerrain,
     Rebuild, Residency, ResidencySettings, ResidencyStats, Scene, SceneFrame, SceneHost,
     SceneStats, TerrainRefresh, TerrainSource, framed_bricks,

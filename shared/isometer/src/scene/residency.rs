@@ -59,6 +59,8 @@ pub const BRICK_BYTES: usize = (BRICK * BRICK * BRICK) as usize;
 /// to `(key + 1) * BRICK` on each axis, and its bytes run Y, then Z, then X
 /// with X contiguous.
 pub trait BrickSource {
+    /// Base units per displayed cell; representation and collision stay native.
+    fn cell_size(&self) -> f32 { 1.0 }
     /// The inclusive key box every brick of this terrain lies in, or `None`
     /// when it has none.
     fn bounds(&self) -> Option<[[i16; 3]; 2]>;

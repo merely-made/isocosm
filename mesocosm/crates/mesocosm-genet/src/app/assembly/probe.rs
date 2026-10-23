@@ -79,6 +79,8 @@ impl mesquite::Product for Probe {
                 ("voxel-bodies", body_stats.voxel_bodies.to_string()),
                 ("terrain-bricks", terrain_stats.resident.to_string()),
                 ("terrain-capacity", terrain_stats.capacity.to_string()),
+                ("habitat", if isocosm::spatial::embodiment::whole_site(&r.sim()) {"site"} else {"patch"}.into()),
+                ("site-poses", r.spatial().members.values().filter(|p| p.site.0 == s.host.scene.as_ref().map_or(u64::MAX,|s| s.site)).count().to_string()),
                 ("terrain-overflow", terrain_stats.overflow.to_string()),
                 ("voxel-parts", body_stats.voxel_parts.to_string()),
                 ("smooth-primitives", body_stats.smooth_primitives.to_string()),

@@ -303,9 +303,10 @@ mod shared_tests {
         let mut changed = window.clone();
         changed.depth += 1;
         assert!(!Arc::ptr_eq(&native, &clone.site_geometry(site, &changed, t.places).unwrap()));
-        for shift in 0..10 {
-            let w = Window { min: [at[0]-1+shift, at[2]-1],
-                max: [at[0]+1+shift, at[2]+1], depth: t.window.depth };
+        // Whole-site play retains 64 local windows. Vary depth to exercise
+        // eviction without assuming this fixture has room for 64 lateral shifts.
+        for extra in 2..68 {
+            let w = Window { depth:window.depth+extra,..window.clone() };
             clone.site_geometry(site, &w, t.places).unwrap();
         }
         let rebuilt = clone.site_geometry(site, &window, t.places).unwrap();

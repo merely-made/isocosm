@@ -126,7 +126,9 @@ pub fn geometry(sim: &Simulation, request: &Request, window: &Window) -> Result<
             .ok_or("foraging eye overflow")?;
     }
     Ok(Geometry {
-        window: window.clone(),
+        window: sim.genesis().rules.spatial_templates.as_ref()
+            .filter(|t| t.version >= 5).map(|t| embodiment::site_window(t,after.at))
+            .unwrap_or_else(|| window.clone()),
         path: vec![before.clone(), after],
         eye,
     })

@@ -13,6 +13,9 @@ use crate::edit::{Edit, SiteRule, reaching, runs, touched};
 use crate::lift::Materials;
 use crate::{Atlas, Result, SiteId};
 use isometer_core::ground::{BRICK, Ground, Terrain};
+use std::sync::Arc;
+mod paged;
+use paged::Paged;
 
 /// A realized window of one site's base cells.
 #[derive(Clone, Debug)]
@@ -26,6 +29,7 @@ pub struct Volume {
     pub materials: Materials,
     extent: i32,
     ground: Ground,
+    columns: Option<Arc<Paged>>,
 }
 
 /// The window's columns as `Ground::grow_with` reads them.
@@ -111,6 +115,7 @@ impl Volume {
             materials: m,
             extent,
             ground,
+            columns: None,
         };
         let cells = touched(&reaching(a, site, edits), m, min, max, 1);
         volume.write(cells.into_iter().map(|(([x, z], y), m)| ([x, y, z], m)))?;
@@ -137,6 +142,7 @@ impl Volume {
     }
 
     fn write(&mut self, cells: impl IntoIterator<Item = ([i64; 3], u8)>) -> Result<u32> {
+        if self.columns.is_some() { return Err("a paged volume is read-only; replay edits from its source".into()); }
         let voxels: Vec<_> = cells.into_iter().map(|(at, m)| (self.to_ground(at), m)).collect();
         self.ground
             .write(voxels)
@@ -164,11 +170,13 @@ impl Volume {
         if !self.holds(at[0], at[2]) {
             return None;
         }
+        if let Some(p) = &self.columns { return Some(p.material(at)); }
         Some(self.ground.material(self.to_ground(at)).unwrap_or(self.materials.rock))
     }
 
     /// The highest cell `Ground` may hold anything in, plus one.
     pub fn ceiling(&self) -> i64 {
+        if let Some(p) = &self.columns { return p.high+1; }
         let top = self.ground.keys().map(|k| i64::from(k[1])).max().unwrap_or(0);
         self.datum + (top + 1) * i64::from(BRICK)
     }
@@ -206,6 +214,7 @@ impl Volume {
         if frame(self) != frame(other) {
             return false;
         }
+        if self.columns.is_some() || other.columns.is_some() { return self.columns == other.columns; }
         let air = [isometer_core::ground::AIR; (BRICK * BRICK * BRICK) as usize];
         fn raw<'a>(v: &'a Volume, k: [i16; 3], air: &'a [u8]) -> &'a [u8] {
             v.ground.brick_materials(k).map_or(air, |(b, _)| b.raw())

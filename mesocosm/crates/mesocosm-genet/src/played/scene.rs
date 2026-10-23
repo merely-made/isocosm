@@ -188,7 +188,12 @@ pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
             .filter(|t| t.version >= 2).ok_or("played member has no current physical window")?;
         (site_of(sim, played).ok_or("played member has no native site or journey")?, &templates.window)
     };
-    let volume = sim.site_volume(site, window)?.as_ref().clone();
+    let volume = if isocosm::spatial::embodiment::whole_site(sim) {
+        let t = sim.genesis().rules.spatial_templates.as_ref().expect("site templates");
+        let view = isocosm::terrain::View::over(sim.genesis(),&sim.state().sites)?;
+        let edits:Vec<_> = sim.state().edits.iter().map(|e| (e.site,e.edit.clone())).collect();
+        isometer::space::volume::Volume::paged(&view,site,t.window.min,t.window.max,t.window.depth,&edits)?
+    } else { sim.site_volume(site, window)?.as_ref().clone() };
     let bodies = placed_physical(sim, site, &volume, visible, game)?;
     let volumes = body_volumes(&bodies)?;
     Ok(SiteScene { site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })

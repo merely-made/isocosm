@@ -226,18 +226,20 @@ impl State {
             self.refresh();
             return;
         }
+        let pan_step=crate::section::PAN_STEP*crate::section::half_height_or_default(
+            self.host.config.slab_half_height)/crate::section::SLAB_HALF_HEIGHT;
         match key {
-            Key::Named(NamedKey::ArrowLeft) => self.host.pan.x -= crate::section::PAN_STEP,
-            Key::Named(NamedKey::ArrowRight) => self.host.pan.x += crate::section::PAN_STEP,
+            Key::Named(NamedKey::ArrowLeft) => self.host.pan.x -= pan_step,
+            Key::Named(NamedKey::ArrowRight) => self.host.pan.x += pan_step,
             Key::Named(NamedKey::ArrowUp)
                 if !self.host.continuation_open() && !self.host.directing_open() =>
             {
-                self.host.pan.y += crate::section::PAN_STEP
+                self.host.pan.y += pan_step
             },
             Key::Named(NamedKey::ArrowDown)
                 if !self.host.continuation_open() && !self.host.directing_open() =>
             {
-                self.host.pan.y -= crate::section::PAN_STEP
+                self.host.pan.y -= pan_step
             },
             _ => self.host.press_key(key),
         }

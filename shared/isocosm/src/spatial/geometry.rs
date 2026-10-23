@@ -51,7 +51,10 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
         || profile.process != request.process || sim.terrain_revision() != request.terrain_revision
         || geometry.path.is_empty() || geometry.path.len() as u128 > u128::from(request.cells) + 1
     { return Err("step source, profile, path or native binding changed".into()); }
-    let terrain = sim.site_geometry(request.site, &geometry.window, profile.places)?;
+    let t = sim.genesis().rules.spatial_templates.as_ref();
+    let source_window = t.filter(|t| t.version >= 5)
+        .map(|t| embodiment::site_window(t, geometry.path[0].at)).unwrap_or_else(|| geometry.window.clone());
+    let terrain = sim.site_geometry(request.site, &source_window, profile.places)?;
     let (volume, places) = (&terrain.volume, &terrain.places);
     let whole = embodiment::enabled(sim);
     if sim.foraging_enabled() && sim.state().spatial_poses.get(&request.actor)
@@ -59,7 +62,7 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
         return Err("step begins away from its native resident pose".into());
     }
     if sim.foraging_enabled() && sim.genesis().rules.spatial_templates.as_ref()
-        .is_some_and(|t| t.window != geometry.window) {
+        .is_some_and(|t| embodiment::site_window(t,geometry.path.last().unwrap().at) != geometry.window) {
         return Err("step differs from the native resident terrain window".into());
     }
     let document = actor.body.as_ref().ok_or("step body absent")?;
@@ -86,6 +89,8 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
         }
     }
     let last = geometry.path.last().ok_or("empty step path")?;
+    let final_terrain = sim.site_geometry(request.site, &geometry.window, profile.places)?;
+    let (volume, places) = (&final_terrain.volume, &final_terrain.places);
     let patch = places.place_at(last.at).ok_or("step ends outside realized places")?;
     if !(if whole { embodiment::air(&volume, geometry.eye) } else { clear(&volume, geometry.eye) })
         || places.place_at(geometry.eye) != Some(patch) {
@@ -101,6 +106,10 @@ pub(super) fn check_arrival(sim: &Simulation, request: &ArrivalRequest, geometry
         || actor.body_revision != request.body_revision || sim.terrain_revision() != request.terrain_revision
     { return Err("arrival placement source changed".into()); }
     let terrain = sim.site_geometry(request.to, &geometry.window, geometry.places)?;
+    if let Some(t) = sim.genesis().rules.spatial_templates.as_ref().filter(|t| t.version >= 5)
+        && geometry.window != embodiment::site_window(t,geometry.pose.at) {
+        return Err("arrival window differs from its native site tile".into());
+    }
     let (volume, places) = (&terrain.volume, &terrain.places);
     let patch = places.place_at(geometry.pose.at).ok_or("arrival pose has no realized patch")?;
     let fits = if embodiment::enabled(sim) {

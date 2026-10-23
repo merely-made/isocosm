@@ -36,7 +36,7 @@ impl Game {
             // A failed physical landing can leave a historical pose several
             // native visits behind. Native arrival admission validates the
             // actual journey; this projection retains only its input contract.
-            if source.window != input.geometry.window
+            if (source.window != input.geometry.window && driver.profile.version != 6)
                 || source.places.unwrap_or_default() != input.geometry.places {
                 return Err("generated arrival differs from its source window and route".into());
             }

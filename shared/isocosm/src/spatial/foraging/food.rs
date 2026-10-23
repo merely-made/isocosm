@@ -39,10 +39,13 @@ impl Simulation {
                 if group.entity.resident_site() != Some(site) {
                     continue;
                 }
-                if self.food_queries(actor, id, &selector, site) {
-                    out.entry(id)
+                let count = if embodiment::whole_site(self) { group.count } else { 1 };
+                for target in id..id+count {
+                if self.food_queries(actor, target, &selector, site) {
+                    out.entry(target)
                         .and_modify(|range: &mut u64| *range = (*range).max(search))
                         .or_insert(search);
+                }
                 }
             }
         }

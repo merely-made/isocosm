@@ -176,6 +176,11 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
             }
             let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
             founded.genesis.rules.sun = Some(isocosm::light::SunRules { start_hour: config.play_hour, ..sun });
+            if config.habitat_site {
+                isocosm::spatial::embodiment::declare_site(&mut founded.genesis)
+                    .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
+                preflight_site_starter(&founded)?;
+            }
             let runtime = Runtime::bench_placed(founded, config.ticks_per_second)
                 .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
             if runtime.critter().is_none_or(|id| !runtime.spatial().members.contains_key(&id)) {
@@ -203,18 +208,45 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
 /// New playable worlds also need an actual nearby meal, using native queries
 /// and native occupied geometry. This does not require a walk or choose one.
 fn placed_food_near_starter(runtime: &Runtime) -> bool {
-    use isocosm::spatial::{embodiment, foraging};
     let Some(id) = runtime.critter() else { return false; };
     let sim = runtime.sim();
     let game = runtime.spatial();
     let Some(actor) = game.members.get(&id) else { return false; };
+    starter_food_near(&sim,id,actor.site.0,|food| game.members.get(&food)
+        .filter(|at| at.site==actor.site).map(|at|at.pose.clone()))
+}
+
+fn starter_food_near(sim:&isocosm::Simulation,id:u64,site:u64,
+    mut pose:impl FnMut(u64)->Option<isocosm::spatial::Pose>) -> bool {
+    use isocosm::spatial::{embodiment, foraging};
+    let Some(at)=pose(id) else {return false};
     let Some(doc) = sim.state().population.get(id).and_then(|e|e.body.as_ref()) else { return false; };
-    let Ok(occupied) = embodiment::boxes(doc, &actor.pose) else { return false; };
-    sim.placement_food(id, actor.site.0).into_iter().any(|(food, range)| {
-        let Some(at) = game.members.get(&food).filter(|at|at.site == actor.site) else { return false; };
+    let Ok(occupied) = embodiment::boxes(doc, &at) else { return false; };
+    sim.placement_food(id, site).into_iter().any(|(food, range)| {
+        let Some(at) = pose(food) else { return false; };
         let Some(doc) = sim.state().population.get(food).and_then(|e|e.body.as_ref()) else { return false; };
-        embodiment::boxes(doc, &at.pose).is_ok_and(|boxes|foraging::gap(&occupied, &boxes) <= range)
+        embodiment::boxes(doc, &at).is_ok_and(|boxes|foraging::gap(&occupied, &boxes) <= range)
     })
+}
+
+/// Reject the same unsupported starts before deriving every resident's places.
+/// The native interim still chooses the controller; no walking outcome is tested.
+fn preflight_site_starter(founded:&mesocosm_runtime::Founded)
+    -> Result<(),mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
+    use mesocosm_runtime::runtime::ecology::GeneratedSetupError as Error;
+    if founded.start!=Default::default() || founded.genesis.rules.deep_time.epochs!=0 {return Ok(());}
+    let session=isocosm::Session::new(founded.genesis.clone(),isocosm::Execution::Grouped).map_err(Error::Invalid)?;
+    let interim=isocosm::directing::interim::Interim::found_session(session,
+        founded.start,founded.mode,founded.pace).map_err(Error::Invalid)?;
+    let actor=interim.critter().ok_or(Error::MissingPlayedPlacement)?;
+    let sim=&interim.session.sim;
+    let site=sim.state().population.get(actor).and_then(|e|e.resident_site()).ok_or(Error::MissingPlayedPlacement)?;
+    let t=sim.genesis().rules.spatial_templates.as_ref().ok_or(Error::MissingPlayedPlacement)?;
+    let poses:std::collections::BTreeMap<_,_>=t.stands.get(&site).into_iter().flatten()
+        .filter_map(|s|Some((s.actor?,isocosm::spatial::Pose {at:s.at,yaw:s.yaw,feet:s.feet.clone()}))).collect();
+    if !poses.contains_key(&actor) {return Err(Error::MissingPlayedPlacement);}
+    if !starter_food_near(sim,actor,site,|id|poses.get(&id).cloned()) {return Err(Error::MissingViableConsumerFood);}
+    Ok(())
 }
 
 fn read_setup(path: &std::path::Path) -> Result<mesocosm_runtime::runtime::ecology::Setup, String> {

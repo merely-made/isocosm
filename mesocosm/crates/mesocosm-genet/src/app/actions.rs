@@ -73,6 +73,13 @@ impl Host {
     /// Runs one named action. `false` when there is no such name, which the
     /// scenario driver reports as a failed step.
     pub(super) fn run_action(&mut self, label: &str) -> bool {
+        if let Some(value) = label.trim().strip_prefix("zoom ") {
+            if let Ok(half) = value.parse::<f32>() && half.is_finite() && (8.0..=2048.0).contains(&half) {
+                self.config.slab_half_height=half;
+                return true;
+            }
+            return false;
+        }
         let (name, rest) = match label.trim().split_once(char::is_whitespace) {
             Some((name, rest)) => (name, rest.trim()),
             None => (label.trim(), ""),
@@ -164,7 +171,7 @@ pub(super) fn key_named(name: &str) -> Option<Key> {
         // Play: E, Q, S; T at a checkpoint; R at the board; Z/V turn.
         // Dev: P . , [ ] N B M X F K G, and I J L U for inspection.
         "e" | "q" | "s" | "t" | "r" | "z" | "v" | "c" | "p" | "." | "," | "[" | "]" | "n" | "b" | "m"
-        | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" | "w" => Some(Key::Character(name.into())),
+        | "x" | "f" | "k" | "g" | "i" | "j" | "l" | "u" | "w" | "o" | "+" | "-" | "=" => Some(Key::Character(name.into())),
         _ => None,
     }
 }

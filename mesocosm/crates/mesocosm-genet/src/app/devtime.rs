@@ -33,6 +33,32 @@ impl Host {
     /// Presentation-only terrarium quarter turns. They are handled before
     /// inspection and dev/world keys so Z/V always remain camera controls.
     pub(super) fn try_camera_key(&mut self, key: &winit::keyboard::Key) -> bool {
+        if let winit::keyboard::Key::Character(c) = key {
+            if c.eq_ignore_ascii_case("o") {
+                if self.config.slab_half_height > crate::section::SLAB_HALF_HEIGHT*2.0 {
+                    self.config.slab_half_height=crate::section::SLAB_HALF_HEIGHT;
+                    self.pan=crate::section::Pan::default();
+                } else if let Some(scene)=&self.scene {
+                    if !self.config.camera.is_surface() { self.config.camera=crate::section::CameraMode::default(); }
+                    let v=&scene.window;
+                    let mid=[0,1].map(|k|(v.min[k]+v.max[k])/2);
+                    let at=v.to_ground([mid[0],v.surface(mid[0],mid[1]).unwrap_or(v.datum)+1,mid[1]]);
+                    let followed=self.follow_at();
+                    let delta=[0,1,2].map(|i| (at[i]-followed[i]) as f32);
+                    let [right,up,_]=self.config.camera.basis();
+                    self.pan=crate::section::Pan {x:(0..3).map(|i|delta[i]*right[i]).sum(),
+                        y:(0..3).map(|i|delta[i]*up[i]).sum()};
+                    self.config.slab_half_height=((v.max[0]-v.min[0]).max(v.max[1]-v.min[1]) as f32*0.8).clamp(8.0,2048.0);
+                }
+                return true;
+            }
+            let factor = match c.as_str() { "+" | "=" => Some(0.5), "-" | "_" => Some(2.0), _ => None };
+            if let Some(factor) = factor {
+                self.config.slab_half_height = (crate::section::half_height_or_default(
+                    self.config.slab_half_height)*factor).clamp(8.0,2048.0);
+                return true;
+            }
+        }
         if matches!(key, winit::keyboard::Key::Character(c) if c.eq_ignore_ascii_case("c")) {
             self.config.camera = if self.config.camera.is_surface() {
                 crate::section::CameraMode::Oblique
