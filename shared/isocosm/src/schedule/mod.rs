@@ -6,9 +6,10 @@
 //! pass began. A process visits only the groups ready for it: carrying the
 //! traits it requires of its actor (ruling 258), and passing its thresholds
 //! on the actor's own accounts and age, a group's age coming due on a timer
-//! (ruling 286), and a live part expressing any function it requires (ruling
-//! 338). Any other group would be blocked, so passing it by changes
-//! nothing but the count. The operation budget counts only the evaluations
+//! (ruling 286), a live part expressing any function it requires (ruling
+//! 338), and for a timed move, residing where one of its routes starts,
+//! unless it is a deliberative member's to choose. Any other group would be
+//! blocked, so passing it by changes nothing but the count. The operation budget counts only the evaluations
 //! that run (ruling 259), by the members each stands for (ruling 285).
 //! Every act of a pass reads the world as the pass began, and a pass whose
 //! acts take from ground they share is planned first, so that ground running
@@ -110,7 +111,8 @@ impl Simulation {
                 && due <= end
             {
                 queue.insert((due, p.priority, p.id.clone()));
-                let gates = Gates::of(p, &self.genesis.rules);
+                let immediate = self.state.movement.immediate();
+                let gates = Gates::of(p, &self.genesis.rules).residing(p, &self.state.sites, immediate);
                 if !gates.none() {
                     gated.insert(p.id.clone(), gates);
                 }
