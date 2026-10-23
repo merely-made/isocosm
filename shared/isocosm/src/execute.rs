@@ -182,22 +182,26 @@ impl Simulation {
                 Err(why) => return refused(receipt, Outcome::Blocked(why)),
             }
         }
-        receipt.foregone = genesis
-            .rules
-            .processes
-            .values()
-            .filter(|p| p.id != process && p.causation == Causation::Choice)
-            .filter(|p| {
-                let part = self.bind_part(actor, p);
-                self.route_ready(actor, p) && self.target_matches(actor, target, p)
-                    && self.foraging_walk_matches(actor, target, p)
-                    && self.owned_process_ready(actor,target,p)
-                    && p.requires
-                        .iter()
-                        .all(|q| self.process_query(actor, target, place, part, p, q).is_ok())
-            })
-            .map(|p| p.id.clone())
-            .collect();
+        // Only a direct act's receipt is kept to be read (685); a scheduled
+        // or planned one is read only for whether it was accepted.
+        if matches!(run, Run::Act) {
+            receipt.foregone = genesis
+                .rules
+                .processes
+                .values()
+                .filter(|p| p.id != process && p.causation == Causation::Choice)
+                .filter(|p| {
+                    let part = self.bind_part(actor, p);
+                    self.route_ready(actor, p) && self.target_matches(actor, target, p)
+                        && self.foraging_walk_matches(actor, target, p)
+                        && self.owned_process_ready(actor,target,p)
+                        && p.requires
+                            .iter()
+                            .all(|q| self.process_query(actor, target, place, part, p, q).is_ok())
+                })
+                .map(|p| p.id.clone())
+                .collect();
+        }
         // Writes go to a stage of what the act binds, never to the world,
         // until every check below has passed.
         let mut stage = match self.stage((actor, target), place, part, count, act) {

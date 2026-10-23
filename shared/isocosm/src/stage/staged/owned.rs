@@ -13,7 +13,7 @@ impl Staged<'_> {
             _ => return Err("owned debit needs an addressed native source".into()),
         };
         let actual = match source {
-            StockSource::Entity(id) => self.stage.bodies.get(&id).map(crate::anatomy::books)
+            StockSource::Entity(id) => self.stage.bodies.get(&id).map(|body| crate::anatomy::books(body))
                 .and_then(|books| books.get(key).copied()).unwrap_or(0),
             StockSource::Site(id) => self.stage.site.as_ref().filter(|_| id == self.stage.place)
                 .or_else(|| self.sim.site_at_start(id)).and_then(|site| site.accounts.get(key).copied()).unwrap_or(0),

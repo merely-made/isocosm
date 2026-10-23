@@ -2,11 +2,12 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-22:** plan, nothing built; its six decisions are linked to
-the doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
+**Status, 2026-10-23:** D5 and D6 built (Progress); E1 is next. Its six
+decisions are linked to the doctrine (Processes 6 and 7, Directing 4 and 5,
+Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
-day (Decisions, below); E1 is next when he opens it.
+day (Decisions, below).
 
 ## Why
 
@@ -253,6 +254,15 @@ each title names its outcome against the doctrine.
   two); the test named `the_band_between_promotion_and_demotion_is_memory`
   tests no band. To put to Mark before E5: keep 1 and 2, widen where worlds
   are larger, or a band in ticks.
+- **2026-10-23, D5 and D6 measured** (release, the same tree before and
+  after the change, the played A1 battery's `played-candidate` arm on one
+  worker, the two binaries alternated on a machine other sessions were
+  building on). Seeds 0 to 2 print identical lines on both and take
+  1,049.7 s before and 804.5 s after, 23% less. Seed 0 alone, twice each:
+  309.4 and 284.9 s before, 197.8 and 181.4 s after, a mean of 297 s to
+  190 s, 36% less. Wall time includes the battery's two replays, which run
+  the same acts; a figure for played rounds alone needs the scratch timing
+  lines of 2026-10-20 and was not taken.
 
 ## Progress
 
@@ -270,3 +280,13 @@ each title names its outcome against the doctrine.
   in Mesocosm 5; D3 refines Directing 5 with the reach only, the band
   staying owed before E5; D5 and D6 are filed under Schema 9 and
   Directing 4 unchanged. `wing-decisions lookup sim-execution` lists them.
+- **2026-10-23:** D5 and D6 built. The stage holds each bound body by the
+  `Arc` it starts with and copies it on its first write; commit installs
+  the staged handle where the live body is still the pass's base, merges
+  as before where an earlier act changed it, and leaves alone a body the
+  act never wrote. `Population::lift_shared` lifts a member without
+  copying it. `run_inner` fills `foregone` for direct acts only. Exact:
+  H3's pins 6/6 with nothing rerecorded, the played A1 battery's seeds 0
+  to 2 identical, and isocosm's 264 lib tests pass in release and under
+  the test profile. Battery wall time falls 23 to 36% (Findings). Whether
+  `Part` also goes behind an `Arc` (D5) comes back now, with E1.

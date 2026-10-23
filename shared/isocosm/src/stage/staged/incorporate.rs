@@ -41,7 +41,7 @@ impl Staged<'_> {
             self.guard_owned_debit(from,key,*amount)?;
         }
         let mut donor = self.stage.bodies.remove(&prey).expect("found above");
-        let id = growth::take_whole(self.actor(), &mut donor, part, &w);
+        let id = growth::take_whole(self.actor(), Arc::make_mut(&mut donor), part, &w);
         self.stage.bodies.insert(prey, donor);
         let id = id.ok_or("bitten part missing")?;
         if sim.flowing() {
