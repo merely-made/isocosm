@@ -20,6 +20,8 @@ pub struct HostConfig {
     pub play: bool,
     pub body_roster: bool,
     pub body_founding: Option<String>,
+    /// None uses varied proportions for ordinary play, authored for explicit presets.
+    pub body_proportions: Option<bool>,
     pub play_epoch: u64,
     /// The hour of day a play world begins at.
     pub play_hour: u32,
@@ -107,6 +109,7 @@ impl Default for HostConfig {
             play: false,
             body_roster: false,
             body_founding: None,
+            body_proportions: None,
             play_epoch: 60,
             play_hour: 7,
             play_soil: 100,

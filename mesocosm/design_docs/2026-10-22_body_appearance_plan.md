@@ -1,10 +1,12 @@
 # Body appearance: shape suggests function, several anatomies per function
 
-**Status (2026-10-22):** plan. Four forks answered by Mark on 2026-10-22,
+**Status (2026-10-22):** in progress. Four forks answered by Mark on 2026-10-22,
 recorded below in his chosen words; none numbered yet. Materials, named
 founding shapes and native chains are connected and captured. The ordinary
-foot-swing gate remains open; the orthographic voxel presentation plan records
-the successful integration checks and the failed ordinary gait qualification.
+foot-swing gate passed in the foot-placement follow-up. B2 now connects native
+recipe proportions and role-based selection, with five captured foundings and
+ordinary supported walking. The native three-epoch ecology gate passes 20/20;
+119 focused checks pass. Curved leaf/shell contents, B4 and B5 remain open.
 
 ## What this plan is for
 
@@ -97,6 +99,13 @@ appendages as short stout or long slender links; feeding structures as
 openings, tubes or gripping branches), with inherited variance over the
 choice.
 
+Mark's follow-up on 2026-10-22 folds proportions into this phase: reuse the
+existing shapes and functional traits, then capture an unchosen seed moving.
+New ordinary play opts into saved native proportion choices; explicit named
+presets stay fixed unless `--body-proportions varied` is requested. The
+`fixed` setting retains the preceding play founding. Historical saves omit
+the opt-in and retain their recipes and digests.
+
 Done when: five seeds of the ordinary founding produce lineages whose
 silhouettes differ in a contact sheet; every chosen shape is one the sheet
 already declares; A1 still passes its unchanged 20/20 gate on the standard
@@ -137,12 +146,72 @@ with evidence has gone to Mark and come back numbered.
 
 ## Open
 
-- Whether "proportions" (broader inherited variance in segment length and
-  girth) is its own phase after B5 or folds into B2.
+- Curved leaf and shell contents inside the declared volumes: the captured
+  plates still read as panels even with better body proportions.
 - Whether the far rungs of the detail ladder (doctrine, Presentation 2) need
   the function tint, or only the marks.
 
 ## Progress
+
+- 2026-10-22, proportions follow-up: work on main. Required receipts are
+  deterministic development/serialization checks, a five-seed silhouette
+  contact sheet, actual intermediate GPU frames of one clock-drawn seed
+  walking with native support, and save replay. Total retained cap: 100 MB
+  under `C:/Users/mark_/Code/testing/mesocosm/body-proportions-2026-10-22`.
+  Reuse the existing playable Cargo target and `isocosm-foraging` Cargo home;
+  create no worktree or isolated target. Functional life history biases
+  native recipe choice (capital: deeper thorax, provision-first: fuller
+  collecting crown), with no capability gated by shape. Paid limb chains
+  and foot-station counts remain inherited fixed structure. B4 and B5 are
+  separate unfinished work.
+
+  The old roster assigned its tier entries in order, so a one-fauna world
+  always got the same browser. Its two five-segment bare backbone runs and
+  long tail made the long silhouette. The base stalk also still grew along
+  the old horizontal axis. The new opt-in selects existing authored plans
+  with seeded life-history weights and changes their native tagma counts and
+  mass kinds: `block`, `broad` and `slim`, with their existing cell allocations.
+  Consumers retain paid chains and fixed leg stations. Capital breeders get
+  deeper thoraxes; provision-first producers favour the branching plan and
+  fuller stalk crowns. Producers draw shorter patches, compact branching
+  crowns or genuinely upright stalks. These are lineage recipes used by
+  development, capacity, placement, reproduction and rendering.
+
+  The first clock draw was `1792712288221676900`; its first physically
+  food-eligible candidate was number 10, `15301219037052331983`. It took two
+  admitted food-directed steps with zero developer world intents. Twenty-four
+  actual GPU frames include 21 supported swing frames, zero projection
+  failures and zero intersections between placed bodies. Its planted feet span
+  terrain heights 1117 to 1122. The slowed WebP preserves the captured pixels
+  and records the original timing separately.
+
+  The same seed and camera with `--body-proportions fixed` gives a 42 mm
+  walker; the new body spans 26 mm on its longest footprint axis. Five
+  independent clock draws produce walkers spanning 19 to 27 mm, with both
+  four-legged plated and six-legged forms, and compact/raised producers.
+  The flat shell plates still look like side panels, and upright fronds can
+  read as signs. This is a captured proportion improvement. B4's connection
+  blending and B5's load rules remain separate. Startup still rejects many candidates
+  for physical stands or nearby food; its eligibility rules are unchanged.
+
+  The 119 focused native/host/runtime checks pass, including deterministic
+  regeneration, old serialization, inherited development, five native bodies
+  standing and swinging in two orientations, and the new ordinary-walking
+  regression. Replays retain `1ca7fd30b469cc59` for the new walking save,
+  `0137807de2708f28` for the preceding foot-placement save, and
+  `e922048bc4f566c3` for the earlier rich-body save. The explicit ecology
+  check reuses A1's existing three-epoch runner, conservation assertions,
+  two execution-mode replays and unchanged qualification predicate on seeds
+  0 to 19. It uses the existing `ISOCOSM_REPRO_WORKERS` setting; the initial
+  two-worker run was stopped after three qualified draws and retained before
+  the six-worker run. All 20 draws pass the unchanged qualification predicate,
+  with conserved matter on every round and exact final-save replay in both
+  execution modes. This is the native site-grain ecology gate, separate from
+  the actual headed physical movement above. Retained receipts total under
+  10 MB of the 100 MB cap. The existing playable checkout, target and Cargo
+  home remain for running and rebuilding the app; no new build locations were
+  created. Final results are in the
+  [receipt packet](C:/Users/mark_/Code/testing/mesocosm/body-proportions-2026-10-22/summary.json).
 
 - 2026-10-22: plan written from the body-appearance research round and the
   four cards above; nothing built.

@@ -71,6 +71,8 @@ impl mesquite::Product for Probe {
                 ("body-founding", r.sim().genesis().founding.as_ref()
                     .and_then(|f| f.bodies.as_ref()).and_then(|b| b.founding.clone())
                     .unwrap_or_else(|| "historical".into())),
+                ("body-proportions", if r.sim().genesis().founding.as_ref()
+                    .and_then(|f|f.bodies.as_ref()).is_some_and(|b|b.proportions) { "varied" } else { "fixed" }.into()),
                 ("functional-parts", s.host.scene.as_ref().map_or(0, |scene| scene.bodies.iter()
                     .map(|b| b.materials.len()).sum::<usize>()).to_string()),
                 ("bodies", s.host.config.body_mode.name().into()),
