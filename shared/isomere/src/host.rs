@@ -400,11 +400,14 @@ impl<P: Product> Assembly<P> {
                 }
                 this.register_leaves(ctx);
                 let busy = this.product.frame(ctx);
-                if let Some(capture) = &this.capture {
-                    let ready = this.product.capture_ready(ctx);
-                    capture.arm::<P>(ctx, ready);
-                }
-                busy || this.lanes.iter().any(|lane| lane.wants_frames())
+                let capturing = match &this.capture {
+                    Some(capture) => {
+                        let ready = this.product.capture_ready(ctx);
+                        capture.arm::<P>(ctx, ready)
+                    },
+                    None => false,
+                };
+                busy || capturing || this.lanes.iter().any(|lane| lane.wants_frames())
             }),
             after_dispatch: Box::new(move |ctx| {
                 dispatch.borrow_mut().product.after_dispatch(ctx);

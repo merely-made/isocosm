@@ -118,7 +118,7 @@ fn generated_forest_sites_reach_the_native_board() {
         harness.update(|ui| ui.apply_snapshot(visit));
         harness.relayout();
         let labels = harness.with_dom(|dom| {
-            taproot::matching(dom, &Selector::class("tile-encounter"))
+            taproot::matching_classes(dom, &Selector::class("tile-encounter"))
                 .into_iter()
                 .map(|node| {
                     dom.attribute(node, &Namespace::from(""), &LocalName::from("aria-label"))
@@ -155,7 +155,7 @@ fn board_tile_clips_its_hit_area_to_the_visible_diamond() {
         harness.update(|ui| ui.set_pixel_grid((2.0, zoom)));
         harness.layout_at(WINDOW.0, WINDOW.1);
         let tile = harness.with_dom(|dom| {
-            let tiles = taproot::matching(dom, &Selector::class("tile"));
+            let tiles = taproot::matching_classes(dom, &Selector::class("tile"));
             assert_eq!(tiles.len(), 1);
             tiles[0]
         });
@@ -278,7 +278,7 @@ fn watchtower_preview_commit_projects_inhabitants_and_reopens_checkpoint() {
     if !harness.state().scene_board {
         assert!(
             harness.with_dom(|dom| {
-                !taproot::matching(dom, &Selector::class("token-tower-beast")).is_empty()
+                !taproot::matching_classes(dom, &Selector::class("token-tower-beast")).is_empty()
             }),
             "the projected board renders the creature's pack sprite class"
         );

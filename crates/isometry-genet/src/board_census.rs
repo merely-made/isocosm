@@ -124,7 +124,7 @@ fn census(harness: &BoardHarness) -> Census {
             elements: [0; BOARD_ELEMENT.len()],
             allowed: [0; ALLOWED.len()],
         };
-        for root in taproot::matching(dom, &Selector::class("board")) {
+        for root in taproot::matching_classes(dom, &Selector::class("board")) {
             out.containers += 1;
             let mut stack: Vec<_> = dom.dom_children(root).collect();
             while let Some(node) = stack.pop() {

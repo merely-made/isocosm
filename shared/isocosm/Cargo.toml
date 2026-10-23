@@ -21,14 +21,14 @@ serde = { version = "1", features = ["derive", "rc"] }
 serde_json = "1"
 toml = "1"
 sha2 = "0.10"
-wing-impresa = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
+wing-impresa = { package = "impresa", git = "https://github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
 wing-glyphs = { path = "../wing-glyphs" }
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
 isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
 # In-site space: the lift, edits and places (wing rulings 696, 698 and 701).
 isometer-space = { path = "../isometer/crates/isometer-space" }
 # The labelled witness, built once in mere (wing rulings 609, 647, 650).
-state-witness = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
+state-witness = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
 wing-functions = { path = "../wing-functions" }
 wing-formats = { path = "../wing-formats" }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
@@ -43,11 +43,33 @@ opt-level = 1
 rust-version = "1.97.1"
 
 [patch.crates-io]
+# mere patches accesskit 0.25.1 (support/patches/accesskit); its cambium hosts
+# call methods only the patched copy has, so the same copy, from mere at its pin.
+accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
 # Promoted sources shared with immutable older Mere suppliers.
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
 
 [patch."https://github.com/merely-made/mere.git"]
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
 
 [patch."https://www.github.com/merely-made/mere.git"]
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+
+# mere's own pins (eidetic 34105d63, gemot 4342aed4) follow the cohort:
+# the www form of each URL is the same repository under another source key.
+[patch."https://github.com/merely-made/eidetic.git"]
+muniment = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+chartulary = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+eidetic = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+hagiograph = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+stickleback = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+luggage = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+servitor = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+mere-proofs = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+
+[patch."https://github.com/merely-made/gemot.git"]
+gemot = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }
+mooting = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }
+mien = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }
+moothold = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }
+commons-spine = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }

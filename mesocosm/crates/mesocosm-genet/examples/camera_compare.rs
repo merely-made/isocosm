@@ -253,7 +253,8 @@ impl CaptionStrip {
             list.commands(),
             list.fonts(),
             list.images(),
-        );
+        )
+        .expect("the caption translates");
         chrome.raster(&self.raster, &translated.scene);
         read_back(chrome, &self.raster, width, height)
     }

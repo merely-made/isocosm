@@ -64,14 +64,14 @@ isometry-campaign = { workspace = true, optional = true }
 isocosm-vtt = { workspace = true, optional = true, default-features = false }
 isocosm = { path = "../../shared/isocosm", default-features = false }
 isocosm-host = { path = "../../host" }
-# This pin predates the graphshell-host extraction. Its admitted native
-# stream APIs are still exported by the Graphshell port at this revision.
-graphshell-native = { package = "graphshell", git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", default-features = false, features = ["native"], optional = true }
+# The admitted native stream APIs, in graphshell-host since mere lifted
+# Graphshell's serving half there (2e896a75, 2026-10-15).
+graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", default-features = false, features = ["native"], optional = true }
 graphshell-endpoint = { workspace = true, optional = true }
 chirograph = { workspace = true, optional = true }
 sceno = { workspace = true, optional = true }
-insigne = { git = "https://github.com/merely-made/dramatis.git", rev = "0234e7eea6f2ddf2330a71b9425da01b06ae0391", optional = true }
-notochord = { git = "https://github.com/merely-made/dramatis.git", rev = "0234e7eea6f2ddf2330a71b9425da01b06ae0391", optional = true }
+insigne = { git = "https://github.com/merely-made/dramatis.git", branch = "main", optional = true }
+notochord = { git = "https://github.com/merely-made/dramatis.git", branch = "main", optional = true }
 # The VTT's contract, whose assertions the host commits (wing ruling 795).
 isocosm-overlay = { workspace = true, optional = true }
 muniment = { workspace = true, optional = true }
