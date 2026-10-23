@@ -2,8 +2,8 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-23:** D5, D6 and D7 built (Progress); deliberation and
-planning next, probed first (D8), then E1. Its decisions are linked to the
+**Status, 2026-10-23:** D5, D6 and D7 built (Progress); D9 and D10 next
+(deliberation and planning, D8), then E1. Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -104,6 +104,12 @@ Phases in order, each with its done-condition.
 - **D7b. A cheaper gate index.** Re-filing reads a group's books once, and
   moves are filed by the site their actor lives at. Done when the exact
   check holds and the debug filing check (`passed_by`) still passes.
+- **D9a. A narrower prey scan.** Candidates indexed by the test that
+  rejects most of them, found first by a probe. Done when the exact check
+  holds and the debug comparison against a full scan still passes.
+- **D9b. Unchanged re-choices skipped.** A world revision, bumped by every
+  change, kept with an empty choice. Done when the exact check holds.
+- **D10. The planned stage kept.** Done when the exact check holds.
 - **E1. Waking.** The per-advance gate index (`schedule/filed.rs`, rulings 258,
   286) becomes persistent across advances, re-filed at commit from each
   process's read-set (`Gates::of`, `framed`, `Expr::reads`). Done when the
@@ -227,6 +233,27 @@ each title names its outcome against the doctrine.
 
   Links: area Directing and play · draws on 454, 683, 813, sim-execution D7 · amends sim-execution D7 · governs isocosm::directing::choice, isocosm::schedule · summary After D7, deliberation and a shared-ground pass's plan are probed and cut before E1, keeping how choices are made and ground shared.
 
+- **D9, deliberation cut without changing a choice (2026-10-23), applies
+  Directing 4:** "Narrow the prey scan (Recommended), Skip unchanged
+  re-choices". A prey search visits only the candidates the cheap test
+  that rejects most of them would pass, indexed by that test, so the same
+  prey are accepted and the same draw made; and an empty choice is scored
+  again at a later pass start (813) only where the world has changed since
+  it was last scored, every change bumping a revision. Scoring feeding on
+  any acceptable prey, which would change the prey a suggestion names, was
+  not chosen.
+
+  Links: area Directing and play · draws on 683, 813, sim-execution D8 · governs isocosm::targets, isocosm::directing::choice · summary A prey search visits only possible prey, and an empty choice is scored again only when the world has changed since.
+
+- **D10, a shared-ground act keeps its planned writes (2026-10-23), applies
+  Processes 8:** "Reuse the plan's stage (Recommended)". When an act's
+  shares cover what it planned to take, it keeps the stage its plan staged
+  and only re-checks that it fits and commits, rather than evaluating
+  again; this holds only if effects read nothing but the pass's start, and
+  the exact check decides it, any difference coming back as a question.
+
+  Links: area Processes and rules · draws on 454, sim-execution D8 · governs isocosm::schedule, isocosm::execute · summary An act whose shares cover its plan keeps the planned stage and only re-checks fit before commit.
+
 ## Findings
 
 - **2026-10-19, the tick as built** (read from `shared/isocosm/src`, nothing
@@ -331,6 +358,17 @@ each title names its outcome against the doctrine.
   which seldom do. Deliberation for members who then chose another process
   is 15%, and the plans of shared-ground passes (`produce-3`, `feed-1`),
   which evaluate each member before acting it, 15%.
+- **2026-10-23, deliberation and planning** (scratch counters at
+  `ade7d189`, seed 0 as before, nothing committed; the machine was busy,
+  so shares, not seconds). A choice was worked out 131,388 times; most of
+  its cost is `feed-1`'s prey search, the only costly targeted choice:
+  53,397 searches, each scanning about 573 candidate groups, about 90% of
+  them failing `target_matches` before any requirement is read. Hunters
+  search once to score the choice and again at the feeding pass (454). An
+  empty choice was scored again at a later pass 100,710 times, 36% of them
+  with no commit since. Planning's 900 passes evaluated 205,833 planned
+  acts, each evaluated again to act; deliberation inside planning is the
+  other half of planning's time.
 
 ## Progress
 
@@ -385,3 +423,6 @@ each title names its outcome against the doctrine.
   Battery time falls 9 to 12% against D7a (Findings).
 - **2026-10-23, after D7:** with new figures (Findings), E1 came back as
   D7 said; the round chose deliberation and planning first (D8).
+- **2026-10-23, deliberation and planning probed** (Findings); D9 and
+  D10 chosen in one round: narrow the prey scan, skip unchanged
+  re-choices, keep the plan's stage.
