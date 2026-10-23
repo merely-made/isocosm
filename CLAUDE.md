@@ -24,17 +24,17 @@ not prohibit shared libraries or atomic changes across products.
 | Record | Holds |
 | --- | --- |
 | `design_docs/doctrine.md` | What the wing holds and why, by area; read first |
-| `design_docs/2026-09-18_wing_design_plan.md` | Every case (§0), Mark's words; `wing-decisions lookup <n>` finds one |
+| `design_docs/2026-09-18_wing_design_plan.md` | Every case (§0), Mark's words; `responsa lookup <n>` finds one |
 | `design_docs/2026-07-30_games_wing_founding.md` | Vessels, care granularity (§1), the pipeline laws (§3), vocabulary (§7) |
 | `design_docs/DOC_README.md` and each product's | Indexes, working principles |
 | `design_docs/DOC_POLICY.md` | How docs and decisions are kept (one policy for all three) |
 | each product's `design_docs/PROJECT_DESCRIPTION.md` | Goals and pillars (maintainer-owned) |
 | each product's `LICENSES.md` | The licence grants (doctrine, Licensing 3) |
 
-`shared/wing-decisions` reads the records: `lookup <case | plan D-key |
-statement | path>`, `lookup --area <name>`, `lookup --history <key>`. The
-pre-commit hook keeps `design_docs/decisions.toml` and the case register
-current.
+`responsa` (eidetic's decisions tool, run here through `shared/responsa`)
+reads the records: `lookup <case | plan D-key | statement | path>`, `lookup
+--area <name>`, `lookup --history <key>`. The pre-commit hook keeps
+`design_docs/decisions.toml` and the case register current.
 
 ## Working here
 

@@ -2,9 +2,10 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-22:** L1 to L6 done; core v2 waits only on wgpu-graft's PR and retinue's push. Shaped with Mark the same day in
-four card rounds (Decisions, below); the per-area budget is his to set. The
-execution plan's six decisions are held until this lands.
+**Status, 2026-10-23:** done, and archived to `archive_docs/2026-10-22/`. L1 to
+L6 all landed and every repository carries core v2. The execution plan's six
+decisions are linked (L5). The open points have homes, named in the last
+Progress entry.
 
 ## Why
 
@@ -545,3 +546,13 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   mere accept muniment 0.2 at their current pins. Here the sim takes
   impresa under its old dependency name, the runner is `shared/responsa`
   with a `responsa` binary, and the hook builds it.
+- **2026-10-23, done and archived.** wgpu-graft's PR merged and retinue
+  pushed, so every repository carries core v2. isocosm moved to mere main and
+  the named cohort (`1b9e9132`) and runs `responsa` through `shared/responsa`.
+  The open points have homes: the tier-line band stays owed in the sim
+  execution plan's Findings; consolidation is core §11 rule 5; fading's rate
+  and floor, and the answer-key rerun on each toolchain bump, are in
+  `eidetic/design_docs/eidetic_docs/implementation_strategy/2026-10-23_responsa_plan.md`.
+  The unresolved links the L1b entry counted are repointed in the next commit
+  (ruling 619), all but four whose targets are source files deleted with
+  legacy Mesocosm and Eponym. The plan moved to `archive_docs/2026-10-22/`.
