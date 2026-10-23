@@ -1,4 +1,5 @@
-/target
+# Every workspace's build output, nested ones included (host/ had none).
+target/
 /target-*/
 .idea/
 .vscode/
