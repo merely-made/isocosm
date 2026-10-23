@@ -79,8 +79,7 @@ impl Game {
         let at = self.members.get(&observer).ok_or("marked sight observer has no current physical eye binding")?;
         let mut realized = super::RealizedChecker::new(sim);
         realized.check(at)?;
-        let volume = sim.volume(at.site.0, at.window.min, at.window.max, at.window.depth)?;
-        let site = InSite::of(sim, volume, at.places.unwrap_or_default())?;
+        let site = InSite::cached(sim, at.site.0, &at.window, at.places.unwrap_or_default())?;
         let mut targets = BTreeMap::new();
         for (&id, held) in &self.members {
             if id == observer || !visible.shows(id) || held.site != at.site { continue; }
@@ -89,7 +88,7 @@ impl Game {
             realized.check(held)?;
             let cell = held.pose.at;
             if !site.volume().holds(cell[0], cell[2]) || cell[1] < site.volume().datum
-                || cell[1] >= site.volume().ceiling() { continue; }
+                || (!isocosm::spatial::embodiment::enabled(sim) && cell[1] >= site.volume().ceiling()) { continue; }
             targets.insert(id, cell);
         }
         let sight = Sight { observer, eye: at.eye, range, targets };

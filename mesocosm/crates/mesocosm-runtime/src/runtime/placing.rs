@@ -22,12 +22,17 @@ pub const DEPTH: i64 = 8;
 
 /// `site` lifted within the bounded window around its centre.
 pub fn lift(sim: &Simulation, site: Id) -> Result<Volume, String> {
+    let w = window(sim)?;
+    sim.volume(site, w.min, w.max, w.depth)
+}
+
+pub(crate) fn window(sim: &Simulation) -> Result<isocosm::operations::Window, String> {
     let side = sim.atlas()?.footprint.side as i64;
     let half = WINDOW_HALF.min(side / 2).max(1);
     let mid = side / 2;
     let min = [(mid - half).max(0); 2];
     let max = [(mid + half).min(side); 2];
-    sim.volume(site, min, max, DEPTH)
+    Ok(isocosm::operations::Window { min, max, depth: DEPTH })
 }
 
 /// Source of the terrain lift, including weather/skeleton changes and edits

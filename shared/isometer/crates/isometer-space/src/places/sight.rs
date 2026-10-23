@@ -6,17 +6,17 @@
 //! where places lie, not by passages, because sight crosses a chasm a walk
 //! has to go round.
 
-use super::{PlaceId, Places};
+use super::{Kind, Place, PlaceId, Places};
 use crate::volume::Volume;
 use std::collections::BTreeSet;
 
 impl Places {
-    /// The places with a cell within `range` of `eye` on every axis.
+    /// Nearby places. Outdoor patches label open columns above their walking
+    /// surface, so their height is bounded by the actual ray endpoints instead.
     pub fn candidates(&self, eye: [i64; 3], range: u64) -> BTreeSet<PlaceId> {
-        let r = range as i64;
         self.places
             .values()
-            .filter(|p| (0..3).all(|k| p.bounds[0][k] - r <= eye[k] && eye[k] <= p.bounds[1][k] + r))
+            .filter(|p| candidate(p, eye, range))
             .map(|p| p.id)
             .collect()
     }
@@ -25,11 +25,18 @@ impl Places {
     /// candidate, and the ray between them is clear.
     pub fn sees(&self, volume: &Volume, eye: [i64; 3], target: [i64; 3], range: u64) -> bool {
         let near = (0..3).all(|k| eye[k].abs_diff(target[k]) <= range);
-        let candidate = self
-            .place_at(target)
-            .is_some_and(|p| self.candidates(eye, range).contains(&p));
+        // One target needs only its own candidate bounds, not a set rebuilt
+        // from every place for every eye/part pair.
+        let candidate = self.place_at(target).and_then(|id| self.places.get(&id))
+            .is_some_and(|p| candidate(p, eye, range));
         near && candidate && ray(volume, eye, target)
     }
+}
+
+fn candidate(place: &Place, eye: [i64; 3], range: u64) -> bool {
+    (0..3).all(|k| (k == 1 && place.kind == Kind::Patch)
+        || (i128::from(place.bounds[0][k]) - i128::from(range) <= i128::from(eye[k])
+            && i128::from(eye[k]) <= i128::from(place.bounds[1][k]) + i128::from(range)))
 }
 
 /// Whether no solid cell lies strictly between two cells' centres. Air and

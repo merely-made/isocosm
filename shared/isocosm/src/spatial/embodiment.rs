@@ -42,15 +42,30 @@ pub fn enabled(sim: &Simulation) -> bool {
 
 /// Exact half-open boxes, including each attachment's yaw and the root yaw.
 pub fn boxes(document: &BodyDocument, pose: &Pose) -> Result<Vec<Box3>> {
-    let articulated = articulation::part_boxes(document, pose)?;
     let mut out = Vec::new();
+    visit_boxes(document, pose, |_, bounds| out.push(bounds))?;
+    Ok(out)
+}
+
+/// The same placed bounds keyed by actual part identity, for contact and senses.
+pub fn part_boxes(document: &BodyDocument, pose: &Pose) -> Result<BTreeMap<isometer_core::PartId, Box3>> {
+    let mut out = BTreeMap::new();
+    visit_boxes(document, pose, |id, bounds| { out.insert(id, bounds); })?;
+    Ok(out)
+}
+
+fn visit_boxes(document: &BodyDocument, pose: &Pose,
+    mut put: impl FnMut(isometer_core::PartId, Box3)) -> Result<()> {
+    let articulated = articulation::part_boxes(document, pose)?;
+    let mut occupied = false;
     let mut cells = 0u64;
     for part in document
         .living()
         .filter(|part| part.half_extent.iter().all(|h| *h > 0))
     {
+        occupied = true;
         if let Some(bounds) = articulated.get(&part.id) {
-            out.push(*bounds);
+            put(part.id, *bounds);
             continue;
         }
         let size = part
@@ -84,12 +99,12 @@ pub fn boxes(document: &BodyDocument, pose: &Pose) -> Result<Vec<Box3>> {
             .checked_add(count)
             .filter(|n| *n <= 1_048_576)
             .ok_or("whole body exceeds bounded clearance work")?;
-        out.push([lo, hi]);
+        put(part.id, [lo, hi]);
     }
-    if out.is_empty() {
+    if !occupied {
         return Err("native body has no occupied part boxes".into());
     }
-    Ok(out)
+    Ok(())
 }
 
 pub fn intersects(a: &[Box3], b: &[Box3]) -> bool {

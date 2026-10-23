@@ -526,8 +526,9 @@ impl Runtime {
         let site = self.played().and_then(|e| e.resident_site())
             .ok_or("played critter has no resident site")?;
         let sim = self.sim();
-        let volume = placing::lift(&sim, site)?;
-        crate::perception::InSite::of(&sim, volume, Default::default())
+        let at = self.critter().and_then(|id| self.spatial().members.get(&id));
+        let window = at.map(|p| p.window.clone()).map(Ok).unwrap_or_else(|| placing::window(&sim))?;
+        crate::perception::InSite::cached(&sim, site, &window, at.and_then(|p| p.places).unwrap_or_default())
     }
 
     pub fn windows(&self) -> &FlowWindows { &self.product().windows }

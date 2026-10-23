@@ -35,6 +35,7 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
     if templates.version >= 2 {
         return Ok(());
     }
+    super::super::foraging::declare_senses(genesis);
     let guide = Simulation::new(genesis.clone(), crate::Execution::Grouped)?;
     let view = View::of(genesis)?;
     let side =
@@ -307,6 +308,7 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
                 reach: 0,
                 search: super::super::foraging::FOOD_SEARCH,
                 nodes: 256,
+                sight: true,
             },
         );
         genesis.rules.processes.insert(key, process);

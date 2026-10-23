@@ -79,7 +79,7 @@ impl Simulation {
                 let score = self.food_need_score(actor, feed);
                 (score > 0
                     && self
-                        .food_candidates(actor, feed)
+                        .food_candidates(actor, feed, f)
                         .iter()
                         .any(|(_, d)| *d <= f.reach))
                 .then_some(score)
@@ -88,7 +88,7 @@ impl Simulation {
             .unwrap_or(0)
     }
 
-    fn food_candidates(&self, actor: Id, feed: &Process) -> Vec<(Id, u64)> {
+    fn food_candidates(&self, actor: Id, feed: &Process, policy: &Foraging) -> Vec<(Id, u64)> {
         let Some(body) = self.body_at_start(actor) else {
             return Vec::new();
         };
@@ -100,6 +100,9 @@ impl Simulation {
         {
             return Vec::new();
         }
+        // Build at most one eye/terrain reading, only if an eligible remote
+        // meal needs it. Contact feeding and inedible residents need no rays.
+        let sight = std::cell::OnceCell::new();
         let ids: BTreeSet<_> = self
             .state
             .spatial_poses
@@ -114,9 +117,14 @@ impl Simulation {
         ids.into_iter()
             .filter_map(|target| {
                 let d = self.food_gap(actor, target)?;
-                (self.food_queries(actor, target, feed, body.place)
-                    && self.owned_process_ready(actor, Some(target), feed))
-                .then_some((target, d))
+                if (policy.sight && d > policy.search)
+                    || !self.food_queries(actor, target, feed, body.place) {
+                    return None;
+                }
+                let detected = !policy.sight || d <= policy.reach || sight
+                    .get_or_init(|| senses::Sight::read(self, actor, policy.search))
+                    .as_ref().is_some_and(|s| s.detects(self, target).is_some());
+                (detected && self.owned_process_ready(actor, Some(target), feed)).then_some((target, d))
             })
             .collect()
     }
@@ -136,7 +144,7 @@ impl Simulation {
             if self.food_need_score(actor, feed) <= 0 {
                 return Some(None);
             }
-            let food = self.food_candidates(actor, feed);
+            let food = self.food_candidates(actor, feed, f);
             if food.iter().any(|(_, d)| *d <= f.reach) {
                 return Some(None);
             }
@@ -152,7 +160,7 @@ impl Simulation {
         }
         let f = t.foraging.values().find(|f| f.feed == p.id)?;
         let food: Vec<_> = self
-            .food_candidates(actor, p)
+            .food_candidates(actor, p, f)
             .into_iter()
             .filter(|(_, d)| *d <= f.reach)
             .map(|(id, _)| id)
@@ -204,7 +212,7 @@ impl Simulation {
         let feed = &self.genesis.rules.processes[&f.feed];
         self.food_need_score(actor, feed) > 0
             && self
-                .food_candidates(actor, feed)
+                .food_candidates(actor, feed, f)
                 .iter()
                 .any(|(id, d)| Some(*id) == target && *d > f.reach && *d <= f.search)
     }

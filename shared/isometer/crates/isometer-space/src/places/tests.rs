@@ -243,6 +243,19 @@ fn sight_is_a_clear_ray_to_a_candidate_place() {
     assert!(near.len() < tiles.places.len());
 }
 
+#[test]
+fn outdoor_sight_reaches_raised_body_cells_above_the_walking_surface() {
+    let grid = flat();
+    let v = Volume::paged(&grid, 0, [0; 2], [SIDE; 2], 8, &[]).unwrap();
+    let places = Places::derive(&v, Rules::default()).unwrap();
+    let eye = [4, v.ceiling() + 64, 4];
+    let target = [12, eye[1], 4];
+    assert_eq!(v.material(eye), Some(v.materials.air));
+    assert!(places.sees(&v, eye, target, 8));
+    assert!(!places.sees(&v, eye, target, 7));
+    assert!(!places.sees(&v, eye, [12, eye[1] - 9, 4], 8));
+}
+
 
 #[test]
 fn run_boundary_seeds_equal_the_dense_reference_for_rooms_water_and_edits() {

@@ -98,6 +98,21 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) ->
                 .contains("life:producer")
         })
         .unwrap();
+    // This authored navigation control needs an actual sense. The random
+    // recipe used here can omit eyes entirely. Allocate one existing cell;
+    // function is independent of shape and the physical route stays the same.
+    let e = std::sync::Arc::make_mut(&mut g.population.groups.get_mut(&actor).unwrap().entity);
+    if !e.living().any(|(_, p)| p.cells.get("function:sense").is_some_and(|n| *n > 0)) {
+        let id = e.living().find(|(_, p)| p.cells.values().any(|n| *n > 1)).unwrap().0;
+        let extent = e.extent(id);
+        let p = e.parts.get_mut(&id).unwrap();
+        let source = p.cells.iter().find(|(_, n)| **n > 1).unwrap().0.clone();
+        *p.cells.get_mut(&source).unwrap() -= 1;
+        p.cells.insert("function:sense".into(), 1);
+        p.functions.insert("function:sense".into());
+        isocosm::mosaic::sync(p, extent);
+        e.systems = isocosm::systems::founded(e, &g.rules);
+    }
     g.population.groups.get_mut(&food).unwrap().count = 2;
     let at = stands.iter().find(|s| s.actor == Some(actor)).unwrap();
     let before = native::Pose {at:at.at,yaw:at.yaw,feet:at.feet.clone()};
