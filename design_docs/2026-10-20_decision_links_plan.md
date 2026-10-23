@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-22:** in progress: L1 to L5 done; L6 under way (L6a to L6c done, L6d next). Shaped with Mark the same day in
+**Status, 2026-10-22:** in progress: L1 to L5 done; L6 under way (L6a to L6d done, L6e next). Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -145,6 +145,12 @@ Mark's answers, recorded as given.
   checked against that repository's committed manifest in the checkout
   beside this one, "Sibling checkout, else unchecked"; and the core's
   section 11 "Approve as drafted".
+- **The five, on a closer reading, 2026-10-22:** Stack 3 and 14 each held
+  a stack-wide rule and the wing's own placements, so moving them whole
+  would have put the wing's words in mere's doctrine. Both "Split as
+  drafted": the rule to mere, the wing's half kept here citing it. Stack
+  1, 2 and 11: "Reword to 'a product'". mere's shape: "'The stack', 1–5,
+  budget 7".
 
 ## Design
 
@@ -283,12 +289,13 @@ other repositories' doc policies, each text approved (L6).
   - **L6d. A stack doctrine in mere.** Stack 1, 2, 3, 11 and 14 move to
     `mere/design_docs/doctrine.md` with their own budget; isocosm cites them
     across. Done when both repositories' checks are current and no isocosm
-    citation names the old keys.
+    citation names the old keys. Done 2026-10-22.
   - **L6e. To the stack and to every repository.** The tool moves beside
     muniment in eidetic with the record types it uses, isocosm and mere pin
     it, and core v2 is copied to every repository carrying the core, each
-    committed by pathspec; the one line where v1 copies drifted (a path in
-    bold in seven, in code font in twelve) is set to code font in all.
+    committed by pathspec. The one line where v1 copies differ (a path in
+    bold in seven, in code font in twelve) stays as it is: mere's family
+    audit reads a code-font path as a citation that must resolve.
     Done when both checks run from the pinned tool
     and every repository carries core v2.
 
@@ -507,3 +514,12 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   and one that did not. The rule is the core's section 11 (core v2), and
   isocosm's addendum keeps only its record, its tool and its consolidation
   details. Next: L6d, the stack doctrine in mere.
+- **2026-10-22, L6d done.** mere's `design_docs/doctrine.md` begins with
+  five statements, one area, budget 7; its manifest declares them, and its
+  `check` resolves all 14 links into isocosm. isocosm's Stack area keeps
+  the wing's halves of Stack 3 and 14, citing `mere:stack.3` and
+  `mere:stack.5`, and opens with a pointer to mere's doctrine; Stack 1, 2
+  and 11 left. The doctrine holds 133 statements. Core §11 now names its
+  files without the `design_docs/` prefix, in both repositories, after
+  mere's citation audit flagged the prefixed paths a repository lacks;
+  mere's audits read as before plus one indexed document. Next: L6e.

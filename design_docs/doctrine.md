@@ -6,7 +6,7 @@ cases it rests on. This is the layer read during work; the cases themselves
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
 doctrine". Plan: `2026-10-20_decision_links_plan.md`.
 
-**Status, 2026-10-22:** every area reviewed, 136 statements, within the budget in `doctrine_budget.toml`; the design record's §1 to §11 are carried in and archived. Each
+**Status, 2026-10-22:** every area reviewed, 133 statements, within the budget in `doctrine_budget.toml`; the design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round
 (the plan's L4); until an area is reviewed, its cases in the design record
 remain the authority.
@@ -1474,48 +1474,24 @@ Links: draws on 847, 868, 869, 870, directing.1 · summary Map meanings are inde
 
 ## Stack and engine
 
+What binds every product on the stack is mere's doctrine
+(`../mere/design_docs/doctrine.md`, cited as `mere:stack.<n>`); the statements
+here say how the wing stands on it. Stack 1, 2 and 11 moved there whole on
+2026-10-22, and the stack-wide halves of Stack 3 and 14.
 
-### Stack 1. Build on the stack we have
-
-The wing builds on the stack it has. A crate it doesn't need or want is not
-invited in, and a stale dependency of marginal benefit leaves rather than
-being fetched to keep a build whole. The wing's own crates are made when the
-abstraction earns one (Organs 5).
-
-Links: draws on 600, organs.5 · stack · summary Build on the stack we have: unneeded crates stay out, stale ones leave, own crates when the abstraction earns one.
-
-*Reviewed 2026-10-22, new: written in the VTT review from 600, ahead of its
-area (Mark: "Archive 2, link 6, 600 to Stack"). Tagged stack in the area's own
-review (Mark: "Archive 750, tag Stack 1").*
-
-### Stack 2. The stack supplies identity and trust
-
-Protected identity and admitted connections come from the stack; a game maps
-an authenticated peer to its native participant and seat. A product never
-manufactures keys, grants or trust roots to fill a missing stack
-configuration.
-
-Links: draws on 962 · stack · summary Identity and admitted connections come from the stack; games map peers to seats; products never manufacture keys or trust roots.
-
-*Reviewed 2026-10-22, new: moved here in the Host round ("Move the identity
-rule to Stack and engine"), then "Both as drafted".*
-
-### Stack 3. Where things sit, and the seams
+### Stack 3. Where the wing's pieces sit
 
 Cambium sits under isomere; rendering is isometer over genet and netrender;
 generation is the sim's, with esp and dramatis beside it; persistence,
-branching and networking are moot, muniment and murm. Seams between
-components stay clean even at some cost in speed: a missing boundary bites
-later, and hardware improves. A renderer sits behind the scene contract and
-can be swapped. Formats follow open standards; the wing makes its own only
-where none holds the thing. Piccolo is the wing's one authoring language;
-numen's Rhai stays an internal front end until fields are wing-authored, when
-numen gains a Lua front end.
+branching and networking are moot, muniment and murm. Piccolo is the wing's
+one authoring language; numen's Rhai stays an internal front end until fields
+are wing-authored, when numen gains a Lua front end. The seams between them
+are the stack's (mere's Stack 3).
 
-Links: draws on 16, 27, 78 · stack · summary Where the stack's pieces sit; seams stay clean at some cost in speed; renderers swap behind the scene contract; open formats first.
+Links: draws on 16, mere:stack.3 · stack · summary Where the wing's pieces sit: cambium under isomere, isometer over genet and netrender, the sim beside esp and dramatis; piccolo the one authoring language.
 
-*Refined 2026-10-22: one authoring language, from the design record's §9.3
-(Mark: "Into Stack 3").*
+*Refined 2026-10-22: its stack-wide half, seams and open formats, moved to
+mere's doctrine as Stack 3 ("Split as drafted").*
 
 ### Stack 4. One sim, one contract, one bench
 
@@ -1643,22 +1619,6 @@ Links: draws on 442, 643, 644, 648, 969 · stack · summary Separate product wor
 
 *Reviewed 2026-10-22, new; checked built. Mark: "Both, 296 to Pres. 5".*
 
-### Stack 11. Platforms and the web
-
-Desktop is first-class; the web is a supported tier with a stated floor. Two
-bindings take each platform's best capabilities where that costs nothing on
-mobile or the web. Gamepads and keymapping are stack capabilities, genet's and
-the standards', not isomere's alone. Web modules run their wasm constructors
-once, through cambium-genet-web-host's helper, and take the newest
-wasm-bindgen as one exact pin; runners build with the repo's pinned
-toolchain.
-
-Links: draws on 21, 29, 77, 532, 536, 537, 556, 567 · stack · summary Desktop first-class, the web a floored tier; best capabilities where free; gamepads are the stack's; web modules share one helper and pin.
-
-*Reviewed 2026-10-22, new. 532 to 567 are mere's burn-migration rulings,
-which mere's burn plan records; the wing's web build follows them. Mark: "As
-drafted, tagged stack".*
-
 ### Stack 12. Three tiers, and what the sim never does
 
 What runs with nobody playing is the sim; what every game needs and decides
@@ -1690,21 +1650,17 @@ Links: draws on 78, 154, 1000, stack.4 · summary The contract is coarse batches
 *Reviewed 2026-10-22, new: from the design record's §5.2, carried by case
 1000 (Mark: "Its own Stack statement").*
 
-### Stack 14. Extension rungs
+### Stack 14. The wing's rungs
 
-Extension rides four rungs: data (open sets such as kinds of location, forms
-of governance, catalogues and canons), piccolo (rulesets and world packs,
-lowered to definitions by digest), components (outside code, a resolver, a
-generator or a director, on Wasmtime where a platform allows), and native
-crates (the first-party cores and the sim). Total componentisation is not
-worth it applied totally: by call frequency times data volume, cold and
-narrow goes behind a component when it wants to be pluggable, and hot or wide
-stays native.
+The wing's four rungs (mere's Stack 5): data, its open sets such as kinds of
+location, forms of governance, catalogues and canons; piccolo, rulesets and
+world packs; components, a resolver, a generator or a director; and native
+crates, the first-party cores and the sim.
 
-Links: draws on 76, 77, 78, 1000, stack.3 · stack · summary Data, piccolo, components and native crates; cold and narrow goes behind a component when pluggable, hot or wide stays native.
+Links: draws on 76, 1000, mere:stack.5 · stack · summary The wing's rungs: open sets as data, rulesets and world packs in piccolo, resolvers, generators and directors as components, the cores and the sim native.
 
-*Reviewed 2026-10-22, new: from the design record's §5.3 and §5.4, carried
-by case 1000 (Mark: "A Stack statement, tagged stack").*
+*Refined 2026-10-22: the rungs and their rule moved to mere's doctrine as
+Stack 5 ("Split as drafted").*
 
 ## Host and network
 

@@ -126,11 +126,11 @@ working-principles section in that same session.
 
 Answers to design questions are *cases*, kept in the words given: a
 repository's case record, where it keeps one, and each plan's Decisions
-section. What is read during work is the *doctrine*,
-`design_docs/doctrine.md`: short statements by area, each citing what it
-rests on. An answer to an operational question (merge, push, which run to
-accept) is not a case; it lives in the commit message. A repository with
-no doctrine yet keeps rules 1 to 4 until its first statement is written.
+section. What is read during work is the *doctrine*, `doctrine.md` in
+`design_docs/`: short statements by area, each citing what it rests on. An
+answer to an operational question (merge, push, which run to accept) is
+not a case; it lives in the commit message. A repository with no doctrine
+yet keeps rules 1 to 4 until its first statement is written.
 
 1. **Keys are mechanical.** A case in the record takes the next number in
    answer order; a plan's decision takes `<plan keyword> D<n>` in answer
@@ -150,17 +150,17 @@ no doctrine yet keeps rules 1 to 4 until its first statement is written.
    summary …`, `summary` last. Reverse links, mentions and code citations
    are generated, never written.
 4. **Generated files are never edited or hand-merged.** The decisions
-   tool writes `design_docs/decisions.toml` and, beside a case record,
-   `case_register.md`; the pre-commit hook runs it and `lookup` answers
-   from it. Its journal and derived citations are a local cache.
-   `design_docs/decisions_config.toml` names the case record, if any.
-5. **Doctrine is consolidated, not accumulated.**
-   `design_docs/doctrine_budget.toml` caps each area's statements and
-   every statement's body lines; `check` reports an overrun and never
-   refuses, and the next round touching the area opens with its
-   consolidation. A statement whose governed code is gone or whose
-   standing has faded enters that round too, to be kept, merged or
-   retired.
+   tool writes `decisions.toml` in `design_docs/` and, beside a case
+   record, `case_register.md`; the pre-commit hook runs it and `lookup`
+   answers from it. Its journal and derived citations are a local cache.
+   A `decisions_config.toml` beside the manifest names the case record, if
+   any.
+5. **Doctrine is consolidated, not accumulated.** `doctrine_budget.toml`
+   in `design_docs/` caps each area's statements and every statement's
+   body lines; `check` reports an overrun and never refuses, and the next
+   round touching the area opens with its consolidation. A statement whose
+   governed code is gone or whose standing has faded enters that round
+   too, to be kept, merged or retired.
 6. **One note per statement.** A statement carries one italic note after
    its fields line: its latest outcome, in the words given. Earlier notes
    leave; git keeps them. What is built, owed or unverified is said
