@@ -18,6 +18,8 @@ mod swing;
 pub use articulation::{articulated, foot_points};
 pub use swing::{SAMPLES as SWING_SAMPLES, swing_boxes, swing_feet};
 mod founding;
+mod habitat;
+pub use habitat::{declare_site, place_in_site, site_window, whole_site};
 pub use contacts::{Contact, contacts, sweep_clear};
 #[cfg(test)]
 mod articulation_tests;
@@ -275,13 +277,7 @@ impl<'a> Grounding<'a> {
             for x in lo[0]..hi[0] {
                 for z in lo[2]..hi[2] {
                     let top = *self.tops.entry([x, z]).or_insert_with(|| {
-                        let cell = self.volume.to_ground([x, self.volume.datum, z]);
-                        self.volume
-                            .ground()
-                            .surface(cell[0], cell[2])
-                            .map_or(self.volume.datum - 1, |height| {
-                                self.volume.datum + i64::from(height)
-                            })
+                        self.volume.surface(x,z).unwrap_or(self.volume.datum-1)
                     });
                     y = y.max(
                         top.checked_add(1)

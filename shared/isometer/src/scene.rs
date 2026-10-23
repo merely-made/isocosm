@@ -29,6 +29,9 @@ use crate::query::PresentedFrame;
 mod palette_tests;
 mod residency;
 mod terrain;
+mod columns;
+mod coordinates;
+pub use columns::ColumnTerrain;
 pub use residency::{
     BRICK_BYTES, BrickSource, FramedBricks, PagedTerrain, Rebuild, Residency, ResidencySettings,
     ResidencyStats, framed_bricks,
@@ -140,6 +143,7 @@ pub struct Scene {
     /// Isolated previews and failed frames must not consume its upload.
     terrain_upload_pending: bool,
     terrain_diagnostics: Option<BrickDiagnostics>,
+    terrain_cell: f32,
     bodies: BodyLayer,
     /// The scene's own chrome, on the scene's own depth. Built on first use,
     /// because a frame that never sets a glyph pays for no pipeline.
@@ -183,6 +187,7 @@ impl Scene {
             light: TraceLight::default(),
             terrain_upload_pending: true,
             terrain_diagnostics: None,
+            terrain_cell: 1.0,
             bodies,
             glyphs: None,
             width,
@@ -309,7 +314,10 @@ impl Scene {
         far: f32,
     ) -> Result<Option<isometer_lens::BrickRayHit>, isometer_lens::BrickRayError> {
         match &self.map {
-            Some(map) => map.trace_ray(origin, direction, far),
+            Some(map) => map.trace_ray(origin.map(|v| v/self.terrain_cell), direction, far/self.terrain_cell)
+                .map(|hit| hit.map(|mut h| { h.distance*=self.terrain_cell;
+                    h.point=h.point.map(|v| v*self.terrain_cell);
+                    h.voxel=h.voxel.map(|v| v*self.terrain_cell as i32); h })),
             None => Ok(None),
         }
     }
@@ -358,10 +366,15 @@ impl Scene {
             BrickChange::Slots(&slots)
         };
         let camera = frame.camera;
-        let trace_camera = camera.trace().ok_or("invalid scene camera")?;
+        let cell = frame.terrain.map_or(1.0, |s| s.cell_size());
+        if !cell.is_finite() || cell < 1.0 { return Err("invalid terrain cell size".into()); }
+        self.terrain_cell = cell;
+        let scaled = coordinates::camera(camera,cell);
+        let trace_camera = scaled.trace().ok_or("invalid scene camera")?;
 
         if frame.capsules.is_none() {
-            let matrix = self.draw_bodies(encoder, &frame, host);
+            let mut matrix = self.draw_bodies(encoder, &frame, host);
+            for column in matrix.iter_mut().take(3) { for v in column { *v *= cell; } }
             if frame.terrain.is_none()
                 || (self.bodies.isolated && self.bodies.stats.fallback_bodies == 0)
             {
@@ -372,6 +385,8 @@ impl Scene {
                 return Ok(SceneStats::default());
             }
             let revision = frame.terrain.expect("terrain present").revision();
+            let roster:Vec<_> = host.roster().iter().map(|p| coordinates::pose(p,cell)).collect();
+            let played = host.played().map(|p| coordinates::pose(p,cell));
             let Self {
                 tracer,
                 map,
@@ -389,11 +404,11 @@ impl Scene {
             )
             .changed(change)
             .with_clip_from_world(matrix)
-            .with_roster(host.roster());
-            input.terrain_appearance = frame.terrain_appearance;
+            .with_roster(&roster);
+            input.terrain_appearance = coordinates::appearance(frame.terrain_appearance,cell);
             input.terrain_palette = terrain_palette.as_ref();
             input.light = *light;
-            if let Some(pose) = host.played() {
+            if let Some(pose) = &played {
                 input = input.with_pose(pose);
             }
             self.terrain_diagnostics = Some(
@@ -403,6 +418,8 @@ impl Scene {
             );
         } else {
             let capsules = frame.capsules.expect("capsule frame");
+            let roster:Vec<_> = capsules.roster.iter().map(|p| coordinates::pose(p,cell)).collect();
+            let played = capsules.played.map(|p| coordinates::pose(p,cell));
             let revision = frame
                 .terrain
                 .ok_or("a capsule frame still needs terrain")?
@@ -422,11 +439,11 @@ impl Scene {
                 &frame.grade,
             )
             .changed(change)
-            .with_roster(capsules.roster);
-            input.terrain_appearance = frame.terrain_appearance;
+            .with_roster(&roster);
+            input.terrain_appearance = coordinates::appearance(frame.terrain_appearance,cell);
             input.terrain_palette = terrain_palette.as_ref();
             input.light = *light;
-            if let Some(pose) = capsules.played {
+            if let Some(pose) = &played {
                 input = input.with_pose(pose);
             }
             self.terrain_diagnostics = Some(

@@ -153,6 +153,10 @@ pub trait Terrain {
 }
 
 impl Ground {
+    /// An empty projection in this coordinate frame, before bricks are paged.
+    pub fn empty(extent: i32, sea_level: i32) -> Self {
+        Self { extent, sea_level, ..Self::default() }
+    }
     /// Raises the ground a [`Terrain`] described. `extent` is the resident
     /// bound: bricks are laid from `-extent` to `extent` on both horizontal
     /// axes.

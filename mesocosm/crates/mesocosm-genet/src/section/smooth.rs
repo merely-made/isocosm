@@ -142,30 +142,17 @@ impl Bodies {
 }
 
 fn height(scene: &SiteScene, p: [f32; 3]) -> Option<f32> {
-    let sole = [
-        p[0].floor() as i32,
-        p[1].round() as i32,
-        p[2].floor() as i32,
-    ];
-    if (p[1] - sole[1] as f32).abs() < 0.025
-        && scene
-            .ground
-            .material([sole[0], sole[1] - 1, sole[2]])
-            .is_some_and(|m| m != scene.window.materials.air && m != scene.window.materials.water)
-        && scene.ground.material(sole) == Some(scene.window.materials.air)
-    {
-        return Some(sole[1] as f32);
+    let v=&scene.window;
+    let extent=i64::from(v.ground().extent());
+    let x=p[0].floor() as i64+v.min[0]+extent;
+    let z=p[2].floor() as i64+v.min[1]+extent;
+    let y=p[1].round() as i64+v.datum;
+    let dry=|m| m!=v.materials.air && m!=v.materials.water;
+    if (p[1]-(y-v.datum) as f32).abs()<0.025
+        && v.material([x,y-1,z]).is_some_and(dry)
+        && v.material([x,y,z])==Some(v.materials.air) {
+        return Some((y-v.datum) as f32);
     }
-    scene
-        .ground
-        .surface(p[0].floor() as i32, p[2].floor() as i32)
-        .filter(|y| {
-            scene
-                .ground
-                .material([p[0].floor() as i32, *y, p[2].floor() as i32])
-                .is_some_and(|m| {
-                    m != scene.window.materials.air && m != scene.window.materials.water
-                })
-        })
-        .map(|y| (y + 1) as f32)
+    v.surface(x,z).filter(|y|v.material([x,*y,z]).is_some_and(dry))
+        .map(|y|(y+1-v.datum) as f32)
 }

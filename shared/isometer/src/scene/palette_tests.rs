@@ -138,3 +138,48 @@ fn a_frame_with_a_palette_draws_a_fixture_cell_in_its_palette_colour() {
     let (_, _, cleared) = scene.capture(|_, _, _| {}).expect("a capture reads back");
     assert_eq!(cleared, unknown);
 }
+
+
+#[test]
+fn coarse_terrain_keeps_native_projection_depth_and_query_distance() {
+    struct Scaled<'a>(&'a Ground);
+    impl TerrainSource for Scaled<'_> {
+        fn cell_size(&self)->f32 {2.0}
+        fn revision(&self)->u64 {0}
+        fn brick_map(&self)->Result<isometer_lens::BrickMap,String> {GroundTerrain(self.0).brick_map()}
+        fn refresh(&self,map:&mut isometer_lens::BrickMap,dirty:&[[i16;3]])
+            ->Result<super::TerrainRefresh,String> {GroundTerrain(self.0).refresh(map,dirty)}
+    }
+    struct High;
+    impl Terrain for High {
+        fn sea_level(&self,_:i32)->i32 {2}
+        fn surface(&self,_:i32,_:i32,_:i32)->i32 {7}
+    }
+    let Some((device,queue))=device() else {return};
+    let fine=Ground::grow_with(&High,24,|_,_,_|TURF);
+    let coarse=Ground::grow_with(&Flat,12,|_,_,_|TURF);
+    let mut images=Vec::new(); let mut hits=Vec::new();
+    let volumes=DeclaredExtentVolumes::from_documents(std::iter::empty(),9);
+    let plain=GroundTerrain(&fine); let scaled=Scaled(&coarse);
+    for source in [&plain as &dyn TerrainSource,&scaled as &dyn TerrainSource] {
+        let mut scene=Scene::new(device.clone(),queue.clone(),SIZE,SIZE).unwrap();
+        let mut encoder=device.create_command_encoder(&Default::default());
+        scene.render(&mut encoder,SceneFrame {
+            camera:SlabCamera::dimetric_2_1([0.5,8.0,0.5],6.0,1.0,64.0).unwrap(),
+            bodies:&[],volumes:SceneVolumes::DeclaredSolid(&volumes),terrain:Some(source),dirty:&[],
+            grade:Grade {fog_start:1.0,..Grade::clay()},terrain_appearance:None,
+            body_budget:1,capsules:None,
+        },&mut Host).unwrap();
+        queue.submit([encoder.finish()]);
+        images.push(scene.capture(|_,_,_|{}).unwrap().2);
+        hits.push(scene.terrain_ray([0.5,12.,0.5],[0.,-1.,0.],32.).unwrap().unwrap());
+    }
+    assert_eq!(images[0],images[1],"terrain grain must preserve its native depth projection");
+    // The shared DDA advances 0.0001 grid cells into its bounds. One map
+    // begins at that bound, the other traverses air first, so allow that
+    // sub-cell advance after conversion to native units.
+    assert!((hits[0].distance-hits[1].distance).abs()<0.0005,"{hits:?}");
+    for i in 0..3 {assert!((hits[0].point[i]-hits[1].point[i]).abs()<0.0005,"{hits:?}");}
+    assert_eq!(hits[0].normal,hits[1].normal);
+    assert_eq!(hits[0].material,hits[1].material);
+}

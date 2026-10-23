@@ -198,6 +198,11 @@ fn main() {
             "--follow" => config.follow = args.next().and_then(|v| v.parse().ok()),
             "--play" => config.play = true,
             "--body-roster" => config.body_roster = true,
+            "--habitat" => { founding_explicit = true; config.habitat_site = match args.next().as_deref() {
+                Some("site") => true,
+                Some("patch") => false,
+                _ => fail("--habitat wants site or patch"),
+            }; },
             "--body-proportions" => config.body_proportions = Some(match args.next().as_deref() {
                 Some("varied") => true,
                 Some("fixed") => false,
@@ -338,6 +343,8 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --body-roster   use the historical authored roster for a new play world
   --body-founding NAME  new-play body roster (default SpacedRoster; Drawn uses random recipes)
   --body-proportions varied|fixed  native proportions (ordinary play: varied; explicit presets: fixed)
+  --habitat site|patch  new-play territory (default: the whole native site)
+  Camera: +/- zoom; O whole-site overview/return; Z/V turn; C section view
   --epoch N       play epoch ticks (default 60)
   --hour H        play world's starting hour, 0 to 23 (default 7)
   --soil P        play world's founding soil, percent (default 100)

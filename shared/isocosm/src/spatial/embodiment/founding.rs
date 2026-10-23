@@ -25,6 +25,10 @@ pub fn anchor(seed: u64, site: u64, id: u64, window: &Window) -> [i64; 3] {
 /// Explicit new-play founding transformation, before the native Session exists.
 /// Loading an existing world never regenerates its declared rules or placements.
 pub fn declare(genesis: &mut Genesis) -> Result<()> {
+    declare_in(genesis, false)
+}
+
+pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
     let Some(mut templates) = genesis.rules.spatial_templates.clone() else {
         return Err("placed play needs generator-declared physical templates".into());
     };
@@ -56,6 +60,12 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
     templates.version = GENERATED_VERSION;
     templates.body_spacing = 2;
     templates.stands.clear();
+    if full_site {
+        templates.version = habitat::VERSION;
+        templates.window.min = [0;2];
+        templates.window.max = [side;2];
+        templates.stands = habitat::stands(genesis, &templates)?;
+    } else {
     for &site in genesis.sites.keys() {
         if !genesis.population.groups.values().any(|group| {
             group.entity.alive
@@ -142,6 +152,7 @@ pub fn declare(genesis: &mut Genesis) -> Result<()> {
             }
         }
         templates.stands.insert(site, stands);
+    }
     }
     templates.crossings = genesis
         .sites

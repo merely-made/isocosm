@@ -9,7 +9,6 @@ use isocosm::{
     Command,
     spatial::{self as native, embodiment as body},
 };
-use isometer_space::places::Places;
 
 pub(super) const UNPLACED_PARENT: &str = "biological parent has no physical pose";
 
@@ -53,10 +52,10 @@ impl Game {
             if stands.is_empty() {
                 continue;
             }
-            let w = &templates.window;
-            let volume = native.sim.volume(site, w.min, w.max, w.depth)?;
-            let places = Places::derive(&volume, templates.places)?;
             for stand in stands {
+                let w = body::site_window(templates,stand.at);
+                let geometry = native.sim.site_geometry(site, &w, templates.places)?;
+                let places = &geometry.places;
                 let id = stand.actor.ok_or("whole-body stand actor absent")?;
                 let patch = places
                     .place_at(stand.at)
@@ -83,7 +82,7 @@ impl Game {
                         feet: stand.feet.clone(),
                     },
                     eye: std::array::from_fn(|k| stand.at[k] + templates.eye[k]),
-                    window: w.clone(),
+                    window: w,
                     operations: BTreeMap::new(),
                     places: Some(templates.places),
                     resident_since: Some(member.arrived),
@@ -96,7 +95,7 @@ impl Game {
             &Authored {
                 placements,
                 profile: Profile {
-                    version: 5,
+                    version: if templates.version >= 5 { 6 } else { 5 },
                     steps: BTreeMap::new(),
                     arrivals: Vec::new(),
                     births: Vec::new(),
@@ -160,6 +159,7 @@ impl Game {
         &self,
         session: &Session,
     ) -> Result<Vec<native::ArrivalResolution>, String> {
+        if body::whole_site(&session.sim) { return self.site_arrivals(session); }
         let t = session
             .sim
             .genesis()
@@ -377,7 +377,8 @@ impl Game {
             .eye;
         let eye = std::array::from_fn(|k| after.at[k] + offset[k]);
         let geometry = native::Geometry {
-            window: at.window.clone(),
+            window: pending.sim.genesis().rules.spatial_templates.as_ref()
+                .map(|t| body::site_window(t,after.at)).unwrap_or_else(||at.window.clone()),
             path: vec![before, after],
             eye,
         };
@@ -478,7 +479,7 @@ impl Game {
             offset_from_parent: offset,
             yaw_from_parent: inverse.compose(pose.yaw),
             eye_from_child: eye,
-            window: parent.window.clone(),
+            window: body::site_window(t,pose.at),
             feet: pose.feet,
         })
     }
@@ -515,7 +516,7 @@ impl Game {
             || g.parent_pose != parent.pose
             || g.parent_eye != parent.eye
             || g.parent_window != parent.window
-            || g.window != parent.window
+            || (g.window != parent.window && !body::whole_site(sim))
             || g.eye_from_child != eye_offset
             || g.parent_places != parent.places.unwrap_or_default()
             || r.site != Some(parent.site.0)

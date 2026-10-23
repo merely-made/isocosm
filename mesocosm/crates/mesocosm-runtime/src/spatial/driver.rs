@@ -60,11 +60,13 @@ impl Game {
             if geometry.path[0] != before.pose {
                 return Err("accepted step does not begin at the saved root pose".into());
             }
-            if geometry.window != before.window || input.request.site != before.site.0 {
+            if (geometry.window != before.window && self.driver.as_ref().is_none_or(|d| d.profile.version != 6))
+                || input.request.site != before.site.0 {
                 return Err("accepted step does not use the saved actual site window".into());
             }
             let mut after = before.clone();
             after.pose = last.clone();
+            after.window = geometry.window.clone();
             after.eye = geometry.eye;
             after.body_revision = input.request.body_revision;
             after.terrain_revision = input.request.terrain_revision.clone();

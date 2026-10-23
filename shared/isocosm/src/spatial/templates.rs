@@ -60,13 +60,13 @@ fn zero(value: &u32) -> bool { *value == 0 }
 
 impl Templates {
     pub fn validate(&self, genesis: &Genesis) -> Result<()> {
-        if !matches!(self.version, VERSION | 2 | 3 | 4) || self.window.max[0] <= self.window.min[0]
+        if !matches!(self.version, VERSION | 2 | 3 | 4 | 5) || self.window.max[0] <= self.window.min[0]
             || self.window.max[1] <= self.window.min[1] || self.window.depth <= 0 {
             return Err("unsupported or empty spatial templates".into());
         }
         let inside = |stand: &Stand| (0..2).all(|k| stand.at[2 * k] >= self.window.min[k] && stand.at[2 * k] < self.window.max[k]);
         if self.stands.iter().any(|(site, stands)| !genesis.sites.contains_key(site)
-            || stands.len() > STANDS || !stands.iter().all(inside)) {
+            || stands.len() > if self.version >= 5 { 256 } else { STANDS } || !stands.iter().all(inside)) {
             return Err("spatial template stands name an absent site or leave the window".into());
         }
         let mut actors = BTreeSet::new();

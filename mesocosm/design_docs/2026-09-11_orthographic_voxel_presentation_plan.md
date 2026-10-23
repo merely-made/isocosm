@@ -1,5 +1,119 @@
 # Orthographic voxel presentation plan
 
+## Whole-site habitat, 2026-10-22
+
+**Status:** implemented and qualified, 2026-10-23. Mark requests the whole
+native site, dispersed food and creatures, an unchosen moving capture, and a
+profile of the larger area. New ordinary play uses the whole site; `--habitat
+patch` retains the previous bounded instrument.
+
+The site remains the existing generated terrain. New play declares its full
+extent as territory; bounded local windows supply the existing Ground, Places,
+support, walking and birth checks. Saved earlier worlds retain their windows.
+Terrain presentation reuses the same column rules, edits and camera residency.
+
+Phases and done-conditions:
+
+1. Admit actual individuals across the site, with native edible food placement
+   and the existing paid-foot support. Local windows must cross their paging
+   boundaries without a physical wall, teleport or change in site coordinates.
+2. Draw the wider territory from its real terrain, retain the close camera and
+   expose the existing zoom. Test terrain/body depth and old-save replay.
+3. Capture the first eligible clock-drawn world walking, with intermediate
+   support counts and zero developer world intents. Measure terrain preparation,
+   place derivation, placement, ordinary updates and terrain framing as area
+   grows; report the measured bottlenecks and unqualified limits.
+
+Retain receipts in `Code/testing/mesocosm/site-area-2026-10-22/`, with a total
+100 MB cap. Reuse the existing playable target, Cargo home and checkout.
+
+**Findings, 2026-10-22:** the previous varied-body capture admits a 112 by
+112 mm patch inside a 1,424 mm site, about 162 times its area. Founding caps
+the window at 256 cells and four cohort representatives per site. `Volume`
+materializes its whole window; `Places` derives all cells; `GroundTerrain`
+rescans all brick keys for each framed column. These are implementation
+costs, not measured site-size limits.
+
+**Progress, 2026-10-23:** the first whole-site prototype passed the native
+window-crossing and restore control, but its wider founding test exceeded seven
+CPU minutes and 1.3 GB peak working set before it was stopped as outdated.
+The existing realization filled deep water below rejected stands, and place
+seeding allocated every rock and sky cell. New full-site physical windows now
+read the same exact column/edit rules with a bounded height cache. Place floods
+start at air/water run boundaries; a dense-reference control checks both cover
+rules, water, rooms and edits. Headroom above the highest occupied cell reuses
+that known open column.
+
+**Implementation and qualification, 2026-10-23:** native template version five
+declares individual founders over the existing site. Its overlapping 256-cell
+physical windows use one canonical native calculation for founding, walking,
+birth and arrival; generated driver version six carries those windows. The
+shared food query now names actual cohort members in these worlds. Arrival
+placement reuses founding's native diet, whole-body support and spacing search.
+Existing saved worlds keep their original versions and placement meanings.
+
+Exact column/edit volumes avoid filling all buried rock and water. Native
+admission shares the existing immutable volume/Places cache across 64 local
+windows. `Placement::check` reuses the stronger existing realization check,
+removing a second uncached volume/Places derivation per actor. The renderer
+pages the same terrain through existing camera residency, increasing display
+grain when a camera would overflow its atlas. Native physics remains at one
+base cell. Coarse surface cells retain their actual surface material. Rendered
+sole queries now read the paged volume instead of its empty Ground projection;
+the first capture exposed that stale adapter as an all-feet-swinging bug.
+
+The first completed clock-sourced search accepts seed `5459250615279831498`
+on candidate 29 from base `1792730654959707800`. Site two is 1,904 by 1,904
+one-millimetre cells, 289 times the previous capture's 112-cell-square area.
+All 60 founders have actual poses: 32 producers and 28 consumers, spanning
+1,717 by 1,587 cells with all four facings. At tick two the run has 31 ordinary
+accepted walks, zero developer world intents and zero projection failures.
+Repeating that same world after both renderer fixes preserves native hash
+`ee459fe1d7118570`. Twenty of 24 actual GPU frames contain both swing and planted
+supports; the native-box intersection check finds none. The lossless movement
+preview is slowed to 200 ms per recorded frame. Close, neighbourhood and
+whole-site captures report zero atlas overflow.
+
+The focused software gates pass 188 checks, with six existing ignores; the
+long multi-seed ecology-search test was omitted, with its focused hunger,
+feeding, obstruction, birth, journey, boundary and restore controls retained.
+These include a dense-reference Places comparison, exact paged materials with
+water/edits, terrain projection/depth controls and actual whole-site offspring
+and arrivals. Four native saves replay with their recorded hashes: the new
+site `ee459fe1d7118570`, proportions `1ca7fd30b469cc59`, foot placement
+`0137807de2708f28` and earlier rich bodies `e922048bc4f566c3`.
+
+**Measured costs:** the final optimized capture takes 66.2 seconds including
+startup, the forecast, two native ticks and the capture scenario; peak working
+set is 619.5 MiB (Windows PeakPagefileUsage counter: 1,687,203,840 bytes).
+Thirty-three cold Places graphs account for 34.3 seconds
+(median 1.08 seconds), while 63 terrain-window builds total 140 ms. One round
+forecast takes 11.0 seconds; nested clock spans include forecast work and must
+not be added together as real-tick cost. At the site's centre, a 256-square
+materialized volume costs 405 ms against 1.49 ms for exact columns, followed by
+717 ms deriving Places. A 512-square materialized reference takes 5.12 seconds
+before Places; that larger Places derivation is deliberately not attempted.
+
+Across six camera sizes the adaptive terrain stays within 16,383 atlas bricks.
+Warm CPU framing takes 0.09 to 1.07 ms; a cold page fill takes 15 to 208 ms.
+The headed close view's median CPU encode is 1.54 ms. These are CPU wall times,
+not GPU timings or a general frame-rate guarantee. Cold Places, forecast
+walking/rest work and new-page fills remain the measured pressure points.
+
+`O` opens the site overview and returns to the close view; `+`/`-` zoom, arrows
+pan with the current scale, and existing camera turns remain available. The
+overview is a coarse terrain view: distant body visibility and landscape
+landmarks still need work. This two-tick capture does not qualify long
+generational growth, dense populations, arbitrary site sizes, or force/load
+dynamics. Founding retains a 256-stand budget per site and local geometry a
+64-window cache; neither is an unlimited-world claim.
+
+Receipts are in `Code/testing/mesocosm/site-area-2026-10-22/`: `expanded.*`,
+`expanded-motion/`, `expanded-moving.webp`, `expanded-profiles.json`,
+`terrain-profile-qualified.log`, the focused test logs, source archive and
+binary hashes. Earlier failed/stopped prototypes are retained separately.
+The existing playable checkout, target and offline Cargo home are reused.
+
 **Date:** 2026-09-11
 
 ## Native foot placement follow-up, 2026-10-22

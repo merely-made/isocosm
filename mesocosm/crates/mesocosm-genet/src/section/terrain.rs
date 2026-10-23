@@ -7,6 +7,11 @@ use super::{Grade, PALETTE, Section};
 use isometer::lens::{TerrainAppearance, TerrainPalette};
 use isometer::space::Materials;
 
+/// Initial display grain. Camera paging may increase it to fit its atlas.
+pub fn terrain_cell(half_height:f32) -> i64 {
+    ((half_height/96.0).ceil().max(1.0) as u32).next_power_of_two() as i64
+}
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum TerrainStyle {
     #[default]

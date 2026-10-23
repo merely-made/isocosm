@@ -385,6 +385,7 @@ impl<'a> PagedTerrain<'a> {
 }
 
 impl TerrainSource for PagedTerrain<'_> {
+    fn cell_size(&self) -> f32 { self.source.cell_size() }
     fn revision(&self) -> u64 {
         self.revision
     }

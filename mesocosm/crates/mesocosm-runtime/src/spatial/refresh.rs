@@ -46,7 +46,8 @@ impl Placement {
             .is_none_or(|at| at.site != self.site.0 || Some(at.arrived) != self.resident_since
                 || at.pose != self.pose)
             || sim.genesis().rules.spatial_templates.as_ref().is_none_or(|t|
-                t.window != self.window || t.places != self.places.unwrap_or_default())) {
+                isocosm::spatial::embodiment::site_window(t,self.pose.at) != self.window
+                    || t.places != self.places.unwrap_or_default())) {
             return Err("game placement differs from its native resident pose".into());
         }
         Ok(())

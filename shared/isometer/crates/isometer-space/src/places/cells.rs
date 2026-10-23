@@ -33,6 +33,7 @@ pub(super) struct Cells<'a> {
     /// The open sky: every cell at or above it is air.
     pub top: i64,
     roofs: RefCell<BTreeMap<[i64; 2], Option<i64>>>,
+    tops: RefCell<BTreeMap<[i64; 2], Option<i64>>>,
 }
 
 impl<'a> Cells<'a> {
@@ -43,6 +44,7 @@ impl<'a> Cells<'a> {
             floor: v.datum,
             top: v.ceiling(),
             roofs: RefCell::default(),
+            tops: RefCell::default(),
         }
     }
 
@@ -74,6 +76,9 @@ impl<'a> Cells<'a> {
 
     /// Air cells from `at` up, `at` included, counted to [`HEADROOM`].
     pub fn headroom(&self, [x, y, z]: [i64; 3]) -> i64 {
+        let top = *self.tops.borrow_mut().entry([x,z])
+            .or_insert_with(|| self.v.surface(x,z));
+        if top.is_some_and(|top| y>top) { return HEADROOM; }
         (0..HEADROOM).take_while(|d| self.air([x, y + d, z])).count() as i64
     }
 
@@ -139,12 +144,19 @@ impl<'a> Cells<'a> {
         out
     }
 
-    /// Every cell of the window, floor to sky.
+    /// First cell of each air/water run. Floods visit complete rooms and
+    /// water bodies themselves; every walkable stance begins an air run.
+    /// Solid cells and interior sky seeds cannot discover another place.
     pub fn everywhere(&self) -> Vec<[i64; 3]> {
         let mut out = Vec::new();
         for x in self.v.min[0]..self.v.max[0] {
             for z in self.v.min[1]..self.v.max[1] {
-                out.extend((self.floor..=self.top).map(|y| [x, y, z]));
+                let mut previous=Cell::Solid;
+                for y in self.floor..=self.top {
+                    let here=self.cell([x,y,z]);
+                    if here != previous && matches!(here,Cell::Air|Cell::Water) { out.push([x,y,z]); }
+                    previous=here;
+                }
             }
         }
         out

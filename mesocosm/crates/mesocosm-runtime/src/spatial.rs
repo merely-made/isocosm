@@ -32,6 +32,7 @@ mod birth_command;
 pub use birth::{BirthInput, BirthParent, BirthSlot};
 mod generated;
 mod generated_body;
+mod generated_site;
 mod children;
 pub use children::{ArrivalTemplate, BirthTemplates, ChildInputs};
 mod replay;
@@ -203,13 +204,6 @@ impl Placement {
             || self.resident_since != Some(member.arrived)
             || self.patch.site != self.site.0 || sim.terrain_revision() != self.terrain_revision
         { return Err("saved spatial body, place or terrain binding is stale".into()); }
-        let volume = sim.volume(self.site.0, self.window.min, self.window.max, self.window.depth)?;
-        if isocosm::spatial::embodiment::enabled(sim) {
-            isocosm::spatial::embodiment::check_for(sim, &volume, member.body.as_ref().ok_or("native body absent")?,
-                &self.pose.clone())?;
-        }
-        let site = crate::perception::InSite::of(sim, volume, self.places.unwrap_or_default())?;
-        site.cell(sim, self.actor.0, self.pose.at)?;
-        site.cell(sim, self.actor.0, self.eye)
+        self.realized(sim)
     }
 }
