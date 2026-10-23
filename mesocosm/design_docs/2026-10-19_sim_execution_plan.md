@@ -2,8 +2,8 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-23:** D5, D6 and D7a built (Progress); the cheaper gate
-index (D7b) next, then E1. Its decisions are linked to the
+**Status, 2026-10-23:** D5, D6 and D7 built (Progress); E1 comes back
+next, with new figures (D7). Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -305,6 +305,12 @@ each title names its outcome against the doctrine.
   Seeds 0 to 2 print identical lines and take 403.2 s with D5 and 278.0 s
   with D7a, 31% less. Seed 0 twice each: 110.5 and 110.0 s, then 62.9 and
   62.1 s, 43% less.
+- **2026-10-23, D7b measured** (as D7a, against D7a's tree). Seeds 0 to 2
+  identical, 277.9 s before and 254.1 s after, 9% less; seed 0 twice
+  each, 62.8 and 61.8 s, then 55.9 and 53.6 s, 12% less. Seed 0 under
+  release with debug assertions on, so the filing check runs over the
+  played world, reached its hour's limit without finishing and without an
+  assertion firing.
 
 ## Progress
 
@@ -346,3 +352,14 @@ each title names its outcome against the doctrine.
   its 264 lib tests under the test profile, `mesocosm-phenotype`'s 25 and
   the VTT's native campaign 8. Battery time falls 31 to 43% against D5
   (Findings).
+- **2026-10-23, D7b built.** Filing reads each of a group's holdings once
+  (`Reading`), however many gates ask. A timed move's gates hold the sites
+  whose routes reach its destinations, worked out per advance (routes
+  change only when asserted), and a member is filed for it only where it
+  resides there. A deliberative member is filed for a move it may choose
+  wherever it lives: its choice for the tick is made at the first choice
+  pass that visits it (683, 813), and passing it by would move that choice
+  to a later pass and a different world. Exact: H3's pins 6/6, the battery's
+  seeds 0 to 2 identical, isocosm's 717 tests in release and its 264 lib
+  tests under the test profile, where the filing check (`passed_by`) runs.
+  Battery time falls 9 to 12% against D7a (Findings).

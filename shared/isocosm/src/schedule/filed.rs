@@ -3,12 +3,14 @@
 
 //! Which stored groups each due process could run for. A process's gates
 //! are what it requires of its actor's own state: traits, being alive,
-//! account and holdings thresholds, a live part expressing a function, and
-//! an age. A group passes or fails them
+//! account and holdings thresholds, a live part expressing a function, an
+//! age, and for a timed move, residing where one of its routes starts. A
+//! group passes or fails them
 //! until an act changes it, except its age, which comes due at a tick known
 //! in advance (ruling 286). So each group is filed as ready for the
 //! processes whose gates it passes, again whenever an act commits to it, and
 //! a group still too young is kept on a timer for the tick it comes of age.
+//! Filing reads each of a group's holdings once, whatever the gates asking.
 
 use crate::{population::Population, rules::*, schema::*};
 use std::collections::{BTreeMap, BTreeSet};
@@ -26,6 +28,34 @@ pub(crate) struct Gates {
     /// Functions a live part must express (ruling 338).
     expresses: BTreeSet<Key>,
     age: Tick,
+    /// For a timed move, the sites whose routes reach every place it goes.
+    resides: Option<BTreeSet<Id>>,
+    /// A chosen process is read by every deliberative member wherever it
+    /// lives: its choice for the tick is made at the first choice pass that
+    /// visits it (683, 813), so passing it by would move that choice.
+    chosen: bool,
+}
+
+/// One body as its gates read it, each holding worked out once.
+struct Reading<'a> {
+    e: &'a Entity,
+    rules: &'a Rules,
+    held: BTreeMap<&'a str, u64>,
+    books: Option<Ledger>,
+}
+
+impl<'a> Reading<'a> {
+    fn new(e: &'a Entity, rules: &'a Rules) -> Self {
+        Self { e, rules, held: BTreeMap::new(), books: None }
+    }
+    fn held(&mut self, key: &'a str) -> u64 {
+        let (e, rules) = (self.e, self.rules);
+        *self.held.entry(key).or_insert_with(|| crate::anatomy::held(e, rules, key))
+    }
+    fn books(&mut self) -> &Ledger {
+        let e = self.e;
+        self.books.get_or_insert_with(|| crate::anatomy::books(e))
+    }
 }
 
 /// The matter a ledger holds in `matter`'s accounts, as `mass` reads it.
@@ -77,31 +107,46 @@ impl Gates {
         g
     }
 
+    /// Where a timed move may start, as its route check reads it: a
+    /// resident site whose routes reach each of its destinations. Routes
+    /// change only when asserted, never during an advance.
+    pub(crate) fn residing(mut self, p: &Process, sites: &BTreeMap<Id, Site>, immediate: bool) -> Self {
+        let to: Vec<Id> = p.commitments.iter().chain(&p.effects).filter_map(|e| match e {
+            Effect::Move { destination } | Effect::MovePaced { destination, .. } => Some(*destination),
+            _ => None,
+        }).collect();
+        if !immediate && !to.is_empty() {
+            let reaches = |s: &Site| to.iter().all(|t| s.routes.iter().any(|r| r.to == *t));
+            self.resides = Some(sites.iter().filter(|(_, s)| reaches(s)).map(|(id, _)| *id).collect());
+            self.chosen = p.causation == Causation::Choice;
+        }
+        self
+    }
+
     /// Whether the process requires nothing of its actor's own state.
     pub(crate) fn none(&self) -> bool {
         *self == Self::default()
     }
 
-    /// Whether `e` passes every gate but its age.
-    fn met(&self, e: &Entity, rules: &Rules) -> bool {
+    /// Whether the body read passes every gate but its age.
+    fn met<'a>(&'a self, r: &mut Reading<'a>) -> bool {
+        let e = r.e;
+        let resident = |sites: &BTreeSet<Id>| {
+            (self.chosen && e.method == Method::Deliberative)
+                || e.resident_site().is_some_and(|s| sites.contains(&s))
+        };
         (!self.alive || e.alive)
             && self.traits.iter().all(|t| e.traits.contains(t))
-            && self
-                .at_least
-                .iter()
-                .all(|(k, v)| crate::anatomy::held(e, rules, k) >= *v)
-            && self
-                .below
-                .iter()
-                .all(|(k, v)| crate::anatomy::held(e, rules, k) < *v)
-            && (self.holds == 0
-                || held(&crate::anatomy::books(e), &self.matter) >= u128::from(self.holds))
+            && self.resides.as_ref().is_none_or(resident)
+            && self.at_least.iter().all(|(k, v)| r.held(k) >= *v)
+            && self.below.iter().all(|(k, v)| r.held(k) < *v)
+            && (self.holds == 0 || held(r.books(), &self.matter) >= u128::from(self.holds))
             && self.expresses.iter().all(|f| expressing(e, f).is_some())
     }
 
     /// Whether `e` passes every gate at `tick`, as the requirements read it.
     pub(crate) fn open(&self, e: &Entity, tick: Tick, rules: &Rules) -> bool {
-        self.met(e, rules) && tick.saturating_sub(e.born) >= self.age
+        self.met(&mut Reading::new(e, rules)) && tick.saturating_sub(e.born) >= self.age
     }
 }
 
@@ -171,17 +216,25 @@ impl Filed {
                     candidates.extend(ids.iter().cloned());
                 }
             }
+            let mut read = Reading::new(e, rules);
+            let (mut due, mut later) = (vec![], vec![]);
             for id in candidates {
                 let g = &self.gates[&id];
-                if !g.met(e, rules) {
+                if !g.met(&mut read) {
                     continue;
                 }
                 let ripe = e.born.saturating_add(g.age);
                 if ripe <= tick {
-                    self.file(id, first);
+                    due.push(id);
                 } else {
-                    self.timers.insert((ripe, id, first));
+                    later.push((ripe, id));
                 }
+            }
+            for id in due {
+                self.file(id, first);
+            }
+            for (ripe, id) in later {
+                self.timers.insert((ripe, id, first));
             }
         }
     }
