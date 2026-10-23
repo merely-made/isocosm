@@ -3,7 +3,7 @@
 # ("Two caps"), each today's size plus a margin ("Today's size plus your
 # margin"): statements per area "+25%, at least 1", lines per statement "18:
 # today's longest plus 3". A statement's body counts; its fields line and
-# notes (paragraphs opening with `*`) do not. `wing-decisions check` reports
+# notes (paragraphs opening with `*`) do not. `responsa check` reports
 # an overrun, and the next round touching that area opens with its
 # consolidation.
 

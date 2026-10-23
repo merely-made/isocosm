@@ -88,7 +88,7 @@ fn dom_board_only(what: &str) -> bool {
 fn rect(harness: &BoardHarness, class: &str) -> (f32, f32, f32, f32) {
     harness
         .with_dom(|dom| {
-            taproot::matching(dom, &Selector::class(class))
+            taproot::matching_classes(dom, &Selector::class(class))
                 .first()
                 .copied()
         })
@@ -120,7 +120,7 @@ fn windows_figure(measured: f32, windows: f32, what: &str) {
 
 fn panel_bottom(harness: &BoardHarness) -> f32 {
     let rows = harness.with_dom(|dom| {
-        let side = taproot::matching(dom, &Selector::class("side"))
+        let side = taproot::matching_classes(dom, &Selector::class("side"))
             .first()
             .copied()
             .expect("the panel strip is in the retained tree");
@@ -474,7 +474,7 @@ fn collapsing_turns_takes_the_section_off_the_panel() {
 
     let panel = harness
         .with_dom(|dom| {
-            taproot::matching(dom, &Selector::class("disclosure-panel"))
+            taproot::matching_classes(dom, &Selector::class("disclosure-panel"))
                 .first()
                 .copied()
         })
@@ -543,7 +543,7 @@ fn a_turn_row_inside_the_disclosure_still_selects_its_token() {
 ///
 /// | state | expanded | collapsed |
 /// | --- | ---: | ---: |
-/// | composing a 19-character whisper | 790 | 555 |
+/// | composing a 19-character whisper | 788 | 553 |
 /// | target pick armed | 802 | 567 |
 ///
 /// The diet recorded 823/578 and 831/586, both expanded figures over the 820
@@ -551,17 +551,18 @@ fn a_turn_row_inside_the_disclosure_still_selects_its_token() {
 /// does (2026-09-26, ruling 329). Expanded, both now fit inside the design:
 /// composing is inside the 800 target as well, a target pick 2 px over it.
 /// Collapsing still takes the whole 247 px section rather than the 69 px §3.5
-/// projected for collapsing the initiative list to its current entry.
+/// projected for collapsing the initiative list to its current entry. Under
+/// genet `7d1d89db` (2026-10-23) composing sits 2 px higher; it was 790/555.
 #[test]
 fn collapsing_turns_brings_the_transient_states_inside_the_design() {
     let mut composing = composing_a_whisper(DESIGN_SIZE);
     let open = panel_bottom(&composing);
-    windows_figure(open, 790.0, "composing fits the design expanded");
+    windows_figure(open, 788.0, "composing fits the design expanded");
     collapse_turns(&mut composing);
     let shut = panel_bottom(&composing);
     windows_figure(
         shut,
-        555.0,
+        553.0,
         "and collapsed it is well inside the 800 target",
     );
     assert!(

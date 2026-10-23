@@ -23,7 +23,7 @@ resident-ground-receipt = ["dep:burn", "conatus/resident"]
 # byte-identical to the ones mesocosm declares, so the feature request and the
 # revision the resolver sees do not move with the crate.
 [dependencies]
-modulus = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
+modulus = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
 # Body documents and brick ground, from the family floor. The lens names no
 # product type in production code.
 isometer-core = { path = "../isometer-core" }
@@ -41,7 +41,7 @@ pollster = "0.4"
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
 burn = { version = "=0.22.0", default-features = false, features = ["std", "wgpu", "cubecl"], optional = true }
-conatus = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
+conatus = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 web-time = "1"
@@ -56,7 +56,7 @@ png = "0.17"
 isometer-core = { path = "../isometer-core", features = ["fixtures"] }
 isometer-mesh = { path = "../isometer-mesh" }
 isometer-render = { path = "../isometer-render" }
-netrender = { git = "https://github.com/merely-made/netrender.git", rev = "c74b7cb28090c28b1c6d80b08dcdea18aff48d3e" }
+netrender = { git = "https://github.com/merely-made/netrender.git", branch = "main" }
 serde_json = "1"
 winit = "0.30"
 

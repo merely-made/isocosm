@@ -21,7 +21,7 @@ use std::path::{Path, PathBuf};
 use std::rc::Rc;
 use std::time::Instant;
 
-use cambium_genet_winit_host::{AppCtx, Frame, read_frame};
+use cambium_genet_winit_host::{AppCtx, CaptureFrame, Frame};
 use isometer::core::PartId;
 use eponym_play::{GameEvent, ItemKind, StrikeOutcome};
 use taproot::Selector;
@@ -54,6 +54,8 @@ pub(super) struct Lane {
     armed: u64,
     presented: u64,
     readback: Rc<RefCell<Option<Result<Frame, String>>>>,
+    /// The readback the host queued, polled each frame until it lands.
+    pending: Rc<RefCell<Option<CaptureFrame>>>,
     viewport: Option<([f32; 4], f32)>,
     notes: Vec<String>,
     errors: Vec<String>,
@@ -69,6 +71,7 @@ impl Lane {
             armed: 0,
             presented: 0,
             readback: Rc::new(RefCell::new(None)),
+            pending: Rc::default(),
             viewport: None,
             notes: Vec::new(),
             errors: Vec::new(),
@@ -120,16 +123,21 @@ impl Lane {
     }
 
     fn arm(&mut self, ctx: &mut Context<'_>) {
-        let sink = self.readback.clone();
-        *ctx.capture = Some(Box::new(move |result| {
-            *sink.borrow_mut() = Some(result.map_err(|refusal| refusal.to_string())
-                .and_then(|frame| read_frame(frame.surface, frame.view, frame.width, frame.height)
-                    .ok_or_else(|| "native frame readback failed".to_owned())));
+        let (sink, pending) = (self.readback.clone(), self.pending.clone());
+        *ctx.capture = Some(Box::new(move |result| match result {
+            Ok(job) => *pending.borrow_mut() = Some(job),
+            Err(refusal) => *sink.borrow_mut() = Some(Err(refusal.to_string())),
         }));
         self.armed = self.frames;
     }
 
     fn collect(&mut self, ctx: &mut Context<'_>) {
+        let landed = self.pending.borrow_mut().as_mut().and_then(|job| job.poll());
+        if let Some(landed) = landed {
+            self.pending.borrow_mut().take();
+            *self.readback.borrow_mut() =
+                Some(landed.map(|(_, pixels)| pixels).map_err(|refusal| refusal.to_string()));
+        }
         let result = self.readback.borrow_mut().take();
         let Some(result) = result else {
             if self.frames.saturating_sub(self.armed) > READBACK_GRACE {
@@ -238,11 +246,16 @@ impl Lane {
 
 /// The leaf's painted rectangle, in logical pixels, plus the physical scale.
 fn viewport(ctx: &Context<'_>) -> Option<([f32; 4], f32)> {
+    let projection = ctx.a11y_projection()?;
     let dom = ctx.runner.dom();
     let dom = dom.borrow();
-    let node = taproot::matching(&dom, &Selector::role("img").containing("Scene"))
-        .into_iter()
-        .next()?;
+    let node = taproot::matching_with_projection(
+        &dom,
+        &Selector::role("img").containing("Scene"),
+        &projection,
+    )
+    .into_iter()
+    .next()?;
     drop(dom);
     let (x, y, width, height) = ctx.painted_rect(node)?;
     (width > 0.0 && height > 0.0).then(|| {

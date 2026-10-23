@@ -19,12 +19,19 @@
 //! The write is to a `.tmp` beside the target and then a rename, so a reader
 //! watching the directory never sees half a PNG. `mesquite::write_png` does
 //! the encoding — there is no second PNG encoder in the wing.
+//!
+//! The host queues the readback and hands back a job to poll; it lands a few
+//! frames later. Until it does, or until five seconds pass (mesquite's bound),
+//! [`Capture::arm`] reports it in flight so the host keeps presenting.
 
+use std::cell::RefCell;
 use std::path::PathBuf;
+use std::rc::Rc;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::time::{Duration, Instant};
 
-use cambium_genet_winit_host::read_frame;
+use cambium_genet_winit_host::CaptureFrame;
 
 use super::{Ctx, Product};
 
@@ -48,9 +55,14 @@ pub struct Capture {
     names: CaptureNames,
     directory: Option<PathBuf>,
     every_frame: bool,
-    /// Shared with the armed closure, which runs on the presentation path.
+    /// Set once a capture has landed.
     saved: Arc<AtomicBool>,
+    /// The readback the host queued, with when it was armed; polled each frame.
+    pending: Rc<RefCell<Option<(CaptureFrame, Instant)>>>,
 }
+
+/// How long a queued readback may take before it is given up (mesquite's).
+const READBACK_LIMIT: Duration = Duration::from_secs(5);
 
 impl Capture {
     /// The policy this process's environment declares.
@@ -60,6 +72,7 @@ impl Capture {
             directory: std::env::var_os(names.directory_var).map(Into::into),
             every_frame: std::env::var(names.every_frame_var).is_ok_and(|value| value == "1"),
             saved: Arc::new(AtomicBool::new(false)),
+            pending: Rc::default(),
         }
     }
 
@@ -70,41 +83,66 @@ impl Capture {
             && (self.every_frame || (ready && !self.saved.load(Ordering::Acquire)))
     }
 
-    /// Request a readback for this presentation when the policy allows it.
+    /// Finish a queued readback, or request one for this presentation when
+    /// the policy allows it. Returns whether a readback is in flight, which
+    /// the host treats as a reason to present again; nothing else here asks
+    /// for a frame, so capture never creates an idle redraw loop.
     ///
     /// A failed readback or write leaves `saved` clear, so a later natural
-    /// frame retries. Capture never creates an idle redraw loop.
-    pub fn arm<P: Product>(&self, ctx: &mut Ctx<'_, P>, ready: bool) {
-        if !self.should_arm(ready) {
-            return;
+    /// frame retries.
+    pub fn arm<P: Product>(&self, ctx: &mut Ctx<'_, P>, ready: bool) -> bool {
+        if self.finish() {
+            return true;
         }
-        let directory = self.directory.clone().expect("checked by should_arm");
-        let every_frame = self.every_frame;
-        let saved = self.saved.clone();
-        let (file, prefix) = (self.names.file, self.names.log_prefix);
-        *ctx.capture = Some(Box::new(move |result| {
-            if !every_frame && saved.load(Ordering::Acquire) {
-                return;
-            }
-            let frame = match result {
-                Ok(frame) => frame,
-                Err(refusal) => {
-                    eprintln!("[{prefix}] capture failed: {refusal}");
-                    return;
-                },
-            };
-            let Some(frame) = read_frame(frame.surface, frame.view, frame.width, frame.height) else {
-                return;
-            };
-            let path = directory.join(file);
-            let pending = directory.join(format!("{file}.tmp"));
-            let result = mesquite::write_png(&pending, &frame)
-                .and_then(|()| std::fs::rename(&pending, &path).map_err(|why| why.to_string()));
-            match result {
-                Ok(()) => saved.store(true, Ordering::Release),
-                Err(error) => eprintln!("[{prefix}] capture failed: {error}"),
-            }
+        if !self.should_arm(ready) {
+            return false;
+        }
+        let slot = self.pending.clone();
+        let prefix = self.names.log_prefix;
+        *ctx.capture = Some(Box::new(move |result| match result {
+            Ok(job) => *slot.borrow_mut() = Some((job, Instant::now())),
+            Err(refusal) => eprintln!("[{prefix}] capture failed: {refusal}"),
         }));
+        false
+    }
+
+    /// Polls the queued readback and writes it when it lands. True while it
+    /// is still in flight.
+    fn finish(&self) -> bool {
+        let mut slot = self.pending.borrow_mut();
+        let Some((job, armed)) = slot.as_mut() else {
+            return false;
+        };
+        let landed = if armed.elapsed() >= READBACK_LIMIT {
+            Err(format!("native frame readback timed out after {} ms", READBACK_LIMIT.as_millis()))
+        } else {
+            match job.poll() {
+                None => return true,
+                Some(result) => result.map(|(_, pixels)| pixels).map_err(|refusal| refusal.to_string()),
+            }
+        };
+        *slot = None;
+        let prefix = self.names.log_prefix;
+        let frame = match landed {
+            Ok(frame) => frame,
+            Err(error) => {
+                eprintln!("[{prefix}] capture failed: {error}");
+                return false;
+            },
+        };
+        if !self.every_frame && self.saved.load(Ordering::Acquire) {
+            return false;
+        }
+        let directory = self.directory.as_ref().expect("armed only with a directory");
+        let path = directory.join(self.names.file);
+        let pending = directory.join(format!("{}.tmp", self.names.file));
+        let result = mesquite::write_png(&pending, &frame)
+            .and_then(|()| std::fs::rename(&pending, &path).map_err(|why| why.to_string()));
+        match result {
+            Ok(()) => self.saved.store(true, Ordering::Release),
+            Err(error) => eprintln!("[{prefix}] capture failed: {error}"),
+        }
+        false
     }
 }
 
@@ -125,6 +163,7 @@ mod tests {
             directory: Some(PathBuf::from("receipt")),
             every_frame,
             saved: Arc::new(AtomicBool::new(saved)),
+            pending: Rc::default(),
         }
     }
 

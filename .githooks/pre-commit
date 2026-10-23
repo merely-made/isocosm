@@ -20,17 +20,17 @@ status=0
 # staged when a design doc or Rust source is staged. Built once, rebuilt when
 # its own source is newer. It never blocks a commit: it is generated, not authority.
 if git diff --cached --name-only | grep -qE '(design_docs/.*\.md|\.rs)$'; then
-    crate="$root/shared/wing-decisions"
-    tool="$crate/target/release/wing-decisions"
+    crate="$root/shared/responsa"
+    tool="$crate/target/release/responsa"
     [ -f "$tool.exe" ] && tool="$tool.exe"
     if command -v cargo >/dev/null 2>&1 && { [ ! -f "$tool" ] || [ -n "$(find "$crate/src" "$crate/Cargo.toml" -newer "$tool" 2>/dev/null | head -1)" ]; }; then
-        cargo build -q --release --manifest-path "$crate/Cargo.toml" || echo "pre-commit: wing-decisions did not build" >&2
-        [ -f "$crate/target/release/wing-decisions.exe" ] && tool="$crate/target/release/wing-decisions.exe"
+        cargo build -q --release --manifest-path "$crate/Cargo.toml" || echo "pre-commit: responsa did not build" >&2
+        [ -f "$crate/target/release/responsa.exe" ] && tool="$crate/target/release/responsa.exe"
     fi
     if [ -f "$tool" ]; then
         (cd "$root" && "$tool" regen --stage >/dev/null) || echo "pre-commit: decisions manifest not regenerated" >&2
     else
-        echo "pre-commit: wing-decisions not built (no cargo); decisions manifest not regenerated" >&2
+        echo "pre-commit: responsa not built (no cargo); decisions manifest not regenerated" >&2
     fi
 fi
 exit $status

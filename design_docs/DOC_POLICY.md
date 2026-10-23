@@ -190,14 +190,14 @@ Core §11 governs. It was ruled here first (2026-10-20,
   `design_docs/2026-09-18_wing_design_plan.md`, named in
   `design_docs/decisions_config.toml`. Its cases are the wing's, numbered
   across all three products; `case_register.md` is generated beside it.
-- **The decisions tool** is eidetic's `wing-decisions`, run here through
-  `shared/wing-decisions`, a runner on this repository's eidetic pin:
+- **The decisions tool** is eidetic's `responsa`, run here through
+  `shared/responsa`, a runner on this repository's eidetic pin:
   `regen [--stage]`,
   `check`, `lookup <case | plan D-key | plan keyword | statement |
   other-repository key | path>`, `lookup --area <name>` and
   `lookup --history <key>` (the commits that touched a decision's links).
   The pre-commit hook runs it; after a merge that touched the generated
-  files, run `wing-decisions regen --stage`. Its journal is an impresa
+  files, run `responsa regen --stage`. Its journal is an impresa
   journal rebuilt from git history.
 - **Consolidation** (core §11, rule 5): governed code is read from
   rust-analyzer's index when a round is prepared, and standing is renewed

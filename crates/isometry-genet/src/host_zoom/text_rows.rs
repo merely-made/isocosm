@@ -23,7 +23,7 @@ struct TextRow {
 /// box (a collapsed panel's) generate no box and are not rows.
 fn text_rows(harness: &BoardHarness) -> Vec<TextRow> {
     let found = harness.with_dom(|dom| {
-        let side = taproot::matching(dom, &Selector::class("side"))
+        let side = taproot::matching_classes(dom, &Selector::class("side"))
             .first()
             .copied()
             .expect("the panel strip is in the retained tree");

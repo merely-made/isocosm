@@ -158,6 +158,13 @@ Mark's answers, recorded as given.
   types), and the answer was the cohort: "repin, update, all good in my
   book", option 2, gemot first. On the seven repositories behind their
   remotes: "Level, push; PR for wgpu-graft".
+- **Naming round, 2026-10-22:** wing-impresa is "impresa", the organ's own
+  name, as hagiograph kept its name in eidetic; the decisions tool is
+  "responsa", jurists' written answers to questions put to them, which
+  accrued into law; "Publish both, repin now". responsa needed muniment's
+  directory backend, unreleased since 0.1.2, so muniment published as 0.2.0
+  ("murm first, now", then "bump the rest": murm, knot-editor, esp,
+  woodshed and mere accept 0.2).
 
 ## Design
 
@@ -532,3 +539,9 @@ Proposed text, not yet in the policy; Mark approves or changes it.
   files without the `design_docs/` prefix, in both repositories, after
   mere's citation audit flagged the prefixed paths a repository lacks;
   mere's audits read as before plus one indexed document. Next: L6e.
+- **2026-10-22, the names.** impresa 0.0.1, muniment 0.2.0 and responsa 0.0.1
+  are on crates.io from eidetic aa94fe22. murm's native workspace and gemot
+  (8ffdc9a5) moved to that commit first; knot-editor, esp, woodshed and
+  mere accept muniment 0.2 at their current pins. Here the sim takes
+  impresa under its old dependency name, the runner is `shared/responsa`
+  with a `responsa` binary, and the hook builds it.
