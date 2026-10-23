@@ -5028,6 +5028,22 @@ draws_on = ["454", "683", "813", "sim-execution D7"]
 amends = ["sim-execution D7"]
 governs = ["isocosm::directing::choice", "isocosm::schedule"]
 
+[decisions."sim-execution D9"]
+title = "deliberation cut without changing a choice (2026-10-23), applies Directing 4"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Directing and play"
+summary = "A prey search visits only possible prey, and an empty choice is scored again only when the world has changed since."
+draws_on = ["683", "813", "sim-execution D8"]
+governs = ["isocosm::directing::choice", "isocosm::targets"]
+
+[decisions."sim-execution D10"]
+title = "a shared-ground act keeps its planned writes (2026-10-23), applies Processes 8"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "An act whose shares cover its plan keeps the planned stage and only re-checks fit before commit."
+draws_on = ["454", "sim-execution D8"]
+governs = ["isocosm::execute", "isocosm::schedule"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"
