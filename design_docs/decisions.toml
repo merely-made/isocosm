@@ -5019,6 +5019,15 @@ draws_on = ["975", "sim-execution D5"]
 amends = ["sim-execution D4"]
 governs = ["isocosm::schedule::Filed", "isocosm::schema::Entity"]
 
+[decisions."sim-execution D8"]
+title = "deliberation and planning before E1 (2026-10-23), applies Directing 4 and Processes 8"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Directing and play"
+summary = "After D7, deliberation and a shared-ground pass's plan are probed and cut before E1, keeping how choices are made and ground shared."
+draws_on = ["454", "683", "813", "sim-execution D7"]
+amends = ["sim-execution D7"]
+governs = ["isocosm::directing::choice", "isocosm::schedule"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"

@@ -2,8 +2,8 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-23:** D5, D6 and D7 built (Progress); E1 comes back
-next, with new figures (D7). Its decisions are linked to the
+**Status, 2026-10-23:** D5, D6 and D7 built (Progress); deliberation and
+planning next, probed first (D8), then E1. Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -217,6 +217,16 @@ each title names its outcome against the doctrine.
 
   Links: area The sim's schema and saves · draws on 975, sim-execution D5 · amends sim-execution D4 · governs isocosm::schema::Entity, isocosm::schedule::Filed · summary A body's parts are held by Arc and copied only when written; that and a cheaper gate index come before E1.
 
+- **D8, deliberation and planning before E1 (2026-10-23), applies Directing
+  4 and Processes 8:** "Deliberation and planning". After D7, a
+  deliberative member's choice and a shared-ground pass's plan are each
+  about 15% of scheduling (Findings, 2026-10-23, after D7). Each is probed
+  first; anything that would change how a choice is made or kept (683,
+  813) or how shared ground is shared out (454) comes back as a question.
+  E1 waits; this amends D7's order.
+
+  Links: area Directing and play · draws on 454, 683, 813, sim-execution D7 · amends sim-execution D7 · governs isocosm::directing::choice, isocosm::schedule · summary After D7, deliberation and a shared-ground pass's plan are probed and cut before E1, keeping how choices are made and ground shared.
+
 ## Findings
 
 - **2026-10-19, the tick as built** (read from `shared/isocosm/src`, nothing
@@ -311,6 +321,16 @@ each title names its outcome against the doctrine.
   release with debug assertions on, so the filing check runs over the
   played world, reached its hour's limit without finishing and without an
   assertion firing.
+- **2026-10-23, after D7** (the same scratch counters at `62f69614`, seed 0
+  in release, play and both replays, a quiet machine; nothing committed).
+  Scheduling takes 56.6 s. Accepted acts are 45% of it, re-filing the gate
+  index after them 12% of the whole, effects 9%, queries 6%. Blocked
+  evaluations are 15%, now 1.5 million of them (4.9 million before D7b);
+  blocked again with the body untouched is 0.2 s, and what blocks now reads
+  wounds and mood, which change nearly every tick, or site conditions,
+  which seldom do. Deliberation for members who then chose another process
+  is 15%, and the plans of shared-ground passes (`produce-3`, `feed-1`),
+  which evaluate each member before acting it, 15%.
 
 ## Progress
 
@@ -363,3 +383,5 @@ each title names its outcome against the doctrine.
   seeds 0 to 2 identical, isocosm's 717 tests in release and its 264 lib
   tests under the test profile, where the filing check (`passed_by`) runs.
   Battery time falls 9 to 12% against D7a (Findings).
+- **2026-10-23, after D7:** with new figures (Findings), E1 came back as
+  D7 said; the round chose deliberation and planning first (D8).
