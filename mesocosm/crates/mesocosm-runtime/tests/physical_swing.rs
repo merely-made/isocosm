@@ -5,14 +5,14 @@ use isocosm::spatial::embodiment as body;
 use isometer_space::places::Places;
 use mesocosm_runtime::{Founded, Runtime};
 
-#[test]
-fn unchosen_hungry_starter_can_take_a_supported_food_step() {
-    let mut founded = Founded::generated(175_745_444_879_347_014, 60).unwrap();
+fn ordinary(seed: u64, proportions: bool) -> Runtime {
+    let mut founded = Founded::generated(seed, 60).unwrap();
     let mut domain = founded.genesis.founding.clone().unwrap();
     domain.ecology_rates = isocosm::ecology::Rates::A1;
     let b = domain.bodies.as_mut().unwrap();
     b.roster = true;
     b.founding = Some("SpacedRoster".into());
+    b.proportions = proportions;
     founded.genesis = domain.generate().unwrap();
     founded.genesis.rules.epoch_ticks = 60;
     let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
@@ -20,7 +20,12 @@ fn unchosen_hungry_starter_can_take_a_supported_food_step() {
         start_hour: 7,
         ..sun
     });
-    let mut runtime = Runtime::bench_placed(founded, 2).unwrap();
+    Runtime::bench_placed(founded, 2).unwrap()
+}
+
+#[test]
+fn unchosen_hungry_starter_can_take_a_supported_food_step() {
+    let mut runtime = ordinary(175_745_444_879_347_014, false);
     {
         let sim = runtime.sim();
         let game = runtime.spatial();
@@ -87,4 +92,19 @@ fn unchosen_hungry_starter_can_take_a_supported_food_step() {
     // withdraw on departure, rather than masquerading as another failed gait.
     assert_ne!(e.resident_site(), Some(game.members[&id].site.0));
     assert!(game.members[&id].realized(&sim).is_err());
+}
+
+#[test]
+fn varied_unchosen_starter_walks_on_ordinary_needs_and_keeps_its_feet() {
+    // First physically food-eligible seed from the B2 clock draw. Selection
+    // did not inspect walking; the headed receipt shows its real swing frames.
+    let mut runtime = ordinary(15_301_219_037_052_331_983, true);
+    runtime.step(2);
+    let game = runtime.spatial();
+    let walks = game.driver.as_ref().unwrap().records.iter().flat_map(|r|&r.changes)
+        .filter(|c|matches!(c.admission, mesocosm_runtime::spatial::Admission::Step { .. })).count();
+    assert!(walks > 0, "ordinary needs must admit a physical food step");
+    let id = runtime.critter().unwrap();
+    assert_eq!(game.members[&id].pose.feet.len(), 6);
+    assert!(game.members[&id].realized(&runtime.sim()).is_ok());
 }

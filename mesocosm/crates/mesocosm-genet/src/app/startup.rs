@@ -167,6 +167,8 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
                 bodies.roster = selection != "Drawn";
                 bodies.founding = (selection != "Drawn").then(|| selection.to_string());
             }
+            bodies.proportions = config.body_proportions.unwrap_or(
+                !config.body_roster && config.body_founding.is_none());
             let mut founded = a1_setup(founded, affinity.clone())?.founded;
             founded.genesis.rules.epoch_ticks = config.play_epoch;
             for site in founded.genesis.sites.values_mut() {

@@ -11,6 +11,7 @@ mod chooser_window;
 const EPOCH: Tick = 60;
 
 mod profile;
+mod proportions;
 use profile::{Form, world};
 
 // The dated 936 diagnostics retain the exact pre-958 world. New candidate

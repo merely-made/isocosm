@@ -198,6 +198,11 @@ fn main() {
             "--follow" => config.follow = args.next().and_then(|v| v.parse().ok()),
             "--play" => config.play = true,
             "--body-roster" => config.body_roster = true,
+            "--body-proportions" => config.body_proportions = Some(match args.next().as_deref() {
+                Some("varied") => true,
+                Some("fixed") => false,
+                _ => fail("--body-proportions wants varied or fixed"),
+            }),
             "--body-founding" => config.body_founding = Some(args.next()
                 .unwrap_or_else(|| fail("--body-founding wants a name or Drawn"))),
             "--curve" => curve = args.next().and_then(|v| v.parse().ok()),
@@ -216,7 +221,7 @@ fn main() {
     }
 
     if seed_explicit && unchosen_explicit { fail("choose --seed or --unchosen-seed"); }
-    if (config.body_roster || config.body_founding.is_some()) && (!config.play || config.watch.is_some() || config.spread.is_some()
+    if (config.body_roster || config.body_founding.is_some() || config.body_proportions.is_some()) && (!config.play || config.watch.is_some() || config.spread.is_some()
         || config.bench_world || config.ecology_candidate.is_some() || config.ecology_witness.is_some()
         || config.spatial.is_some() || config.graft.is_some() || replay.is_some() || bench) {
         fail("body founding options require a new --play world without another startup input");
@@ -332,6 +337,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --play          a playable world: founds at once, no ecology witness
   --body-roster   use the historical authored roster for a new play world
   --body-founding NAME  new-play body roster (default SpacedRoster; Drawn uses random recipes)
+  --body-proportions varied|fixed  native proportions (ordinary play: varied; explicit presets: fixed)
   --epoch N       play epoch ticks (default 60)
   --hour H        play world's starting hour, 0 to 23 (default 7)
   --soil P        play world's founding soil, percent (default 100)

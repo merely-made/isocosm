@@ -20,6 +20,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 mod feeding;
+mod proportions;
 
 /// The life-history traits a lineage may carry (449, 520, 521, 527, 535).
 pub const BROOD: &str = "strategy:brood";
@@ -57,6 +58,10 @@ pub struct Bodies {
     /// than drawing (512).
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub roster: bool,
+    /// Draw proportions from the named sheet and the lineage's life history.
+    /// Opt-in founding data: old worlds retain their exact recipe lottery.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub proportions: bool,
     /// Whether a drawn consumer's mouth always admits the ecology's
     /// producers: its limbs stay, its head bears the grazing mouth (ruling
     /// 905, the default). Without it, a limbed consumer draws a jaw, which
@@ -91,6 +96,7 @@ impl Default for Bodies {
             absence: [12, 12],
             clutch: [1, 4],
             roster: false,
+            proportions: false,
             grazing: true,
             hazard: [0, 0],
             wound: [0, 0],
@@ -333,7 +339,12 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
             _ => continue,
         };
         bodied.insert(key.clone());
-        let mut recipe = match b.roster || b.founding.is_some() {
+        let (traits, clutch, anamorphic) = life(g.seed, index, b);
+        let varied = b.proportions.then(||
+            proportions::drawn(g.seed, index, producer, &traits, &authored)).flatten();
+        let mut recipe = match varied {
+            Some(recipe) => recipe,
+            None => match b.roster || b.founding.is_some() {
             false => drawn(g.seed, index, producer, b),
             true => {
                 let turn = if producer {
@@ -346,6 +357,7 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
                 *turn += 1;
                 pick
             },
+            },
         };
         reproducing(&mut kinds, &mut recipe)?;
         if !producer {
@@ -356,7 +368,6 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
                 g.rules.processes.insert(feed, p);
             }
         }
-        let (traits, clutch, anamorphic) = life(g.seed, index, b);
         lineage.traits.extend(traits.iter().cloned());
         added.insert(key.clone(), traits);
         let domain = (crate::draw(g.seed, "domain", &[index]) % u64::from(affinity.domains)) as u16;
