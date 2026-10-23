@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-22:** in progress: L1 to L5 done; L6 under way (L6a done, L6b next). Shaped with Mark the same day in
+**Status, 2026-10-22:** in progress: L1 to L5 done; L6 under way (L6a to L6c done, L6d next). Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -140,6 +140,11 @@ Mark's answers, recorded as given.
   every repository carrying the core. The global `CLAUDE.md`: "Replace with
   the draft", its numbering paragraph replaced the same day, then reworded
   not to name anyone ("You don't have to name me specifically").
+- **Across repositories and the core text, 2026-10-22:** a key in another
+  repository is "mere:stack.1", the journal's namespace:local shape; it is
+  checked against that repository's committed manifest in the checkout
+  beside this one, "Sibling checkout, else unchecked"; and the core's
+  section 11 "Approve as drafted".
 
 ## Design
 
@@ -270,10 +275,11 @@ other repositories' doc policies, each text approved (L6).
   - **L6b. The tool generalised.** Its paths (record, register, doctrine,
     budget, manifest) come from a per-repo configuration, and a link may
     name a statement in another repository. Done when isocosm's `check`
-    and lookups read as before and the tests pass.
+    and lookups read as before and the tests pass. Done 2026-10-22.
   - **L6c. The core's section 11.** The rule, written for any repository
     (no isocosm paths), approved as text, then isocosm's addendum keeps
     only its local paths and budget. Done when the text is approved.
+    Done 2026-10-22: approved, and isocosm's core is v2.
   - **L6d. A stack doctrine in mere.** Stack 1, 2, 3, 11 and 14 move to
     `mere/design_docs/doctrine.md` with their own budget; isocosm cites them
     across. Done when both repositories' checks are current and no isocosm
@@ -281,7 +287,9 @@ other repositories' doc policies, each text approved (L6).
   - **L6e. To the stack and to every repository.** The tool moves beside
     muniment in eidetic with the record types it uses, isocosm and mere pin
     it, and core v2 is copied to every repository carrying the core, each
-    committed by pathspec. Done when both checks run from the pinned tool
+    committed by pathspec; the one line where v1 copies drifted (a path in
+    bold in seven, in code font in twelve) is set to code font in all.
+    Done when both checks run from the pinned tool
     and every repository carries core v2.
 
 ## L1 draft: the rule, for `design_docs/DOC_POLICY.md`'s local addendum
@@ -491,3 +499,11 @@ Proposed text, not yet in the policy; Mark approves or changes it.
 - **2026-10-22, L6 shaped and begun.** One card round settled what goes to
   mere, the tool's move, core v2 and the global `CLAUDE.md` (Decisions);
   L6a, that file's paragraph, is done. Next: L6b, the tool generalised.
+- **2026-10-22, L6b and L6c done.** The case record is per-repository
+  configuration (`design_docs/decisions_config.toml`); with it unstaged
+  the manifest reads stale, with it current, and lookups read as before. A
+  key may name another repository (`mere:stack.1`), checked against that
+  repository's manifest beside this one; tried with one key that resolved
+  and one that did not. The rule is the core's section 11 (core v2), and
+  isocosm's addendum keeps only its record, its tool and its consolidation
+  details. Next: L6d, the stack doctrine in mere.
