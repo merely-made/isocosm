@@ -121,7 +121,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "muniment"
 version = "0.1.2"
-source = "git+https://github.com/merely-made/eidetic.git?rev=738ef15956a29a125820b2d6c2280d39a6214f8e#738ef15956a29a125820b2d6c2280d39a6214f8e"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "async-trait",
  "blake3",
@@ -298,20 +298,28 @@ checksum = "a2c754d6c33795a1c324727428e5a7dedb5b06195f9890bdbcba760d3e246563"
 
 [[package]]
 name = "wing-decisions"
-version = "0.1.0"
+version = "0.0.1"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "muniment",
  "pollster",
  "regex",
  "serde",
- "serde_json",
  "toml",
  "wing-impresa",
 ]
 
 [[package]]
-name = "wing-impresa"
+name = "wing-decisions-run"
 version = "0.1.0"
+dependencies = [
+ "wing-decisions",
+]
+
+[[package]]
+name = "wing-impresa"
+version = "0.0.1"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "serde",
  "serde_json",

@@ -619,7 +619,7 @@ dependencies = [
 [[package]]
 name = "chartulary"
 version = "0.2.2"
-source = "git+https://github.com/merely-made/eidetic.git?rev=738ef15956a29a125820b2d6c2280d39a6214f8e#738ef15956a29a125820b2d6c2280d39a6214f8e"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "muniment",
  "petgraph",
@@ -1297,7 +1297,7 @@ source = "git+https://www.github.com/merely-made/mere.git?rev=0b9b7a9b218579f1f3
 [[package]]
 name = "eidetic"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/eidetic.git?rev=738ef15956a29a125820b2d6c2280d39a6214f8e#738ef15956a29a125820b2d6c2280d39a6214f8e"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "async-trait",
  "blake3",
@@ -1930,7 +1930,7 @@ dependencies = [
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/eidetic.git?rev=738ef15956a29a125820b2d6c2280d39a6214f8e#738ef15956a29a125820b2d6c2280d39a6214f8e"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "serde",
 ]
@@ -3267,7 +3267,7 @@ checksum = "4050469837a6ff301cd14c1f8f24f88549e6d548f24f64e2148eb0f72cebc51f"
 [[package]]
 name = "luggage"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/eidetic.git?rev=738ef15956a29a125820b2d6c2280d39a6214f8e#738ef15956a29a125820b2d6c2280d39a6214f8e"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "semver",
  "serde",
@@ -3404,7 +3404,7 @@ dependencies = [
 [[package]]
 name = "mere-proofs"
 version = "0.1.0"
-source = "git+https://github.com/merely-made/eidetic.git?rev=738ef15956a29a125820b2d6c2280d39a6214f8e#738ef15956a29a125820b2d6c2280d39a6214f8e"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "blake3",
  "serde",
@@ -3531,7 +3531,7 @@ dependencies = [
 [[package]]
 name = "muniment"
 version = "0.1.2"
-source = "git+https://github.com/merely-made/eidetic.git?rev=738ef15956a29a125820b2d6c2280d39a6214f8e#738ef15956a29a125820b2d6c2280d39a6214f8e"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "async-trait",
  "blake3",
@@ -6023,7 +6023,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "stickleback"
 version = "0.1.1"
-source = "git+https://github.com/merely-made/eidetic.git?rev=738ef15956a29a125820b2d6c2280d39a6214f8e#738ef15956a29a125820b2d6c2280d39a6214f8e"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "blake3",
  "futures-util",
@@ -7261,7 +7261,8 @@ dependencies = [
 
 [[package]]
 name = "wing-impresa"
-version = "0.1.0"
+version = "0.0.1"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "serde",
  "serde_json",

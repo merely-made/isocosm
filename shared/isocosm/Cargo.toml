@@ -21,9 +21,9 @@ serde = { version = "1", features = ["derive", "rc"] }
 serde_json = "1"
 toml = "1"
 sha2 = "0.10"
-wing-impresa = { path = "../wing-impresa" }
+wing-impresa = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
 wing-glyphs = { path = "../wing-glyphs" }
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "738ef15956a29a125820b2d6c2280d39a6214f8e" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
 isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
 # In-site space: the lift, edits and places (wing rulings 696, 698 and 701).
 isometer-space = { path = "../isometer/crates/isometer-space" }
@@ -44,10 +44,10 @@ rust-version = "1.97.1"
 
 [patch.crates-io]
 # Promoted sources shared with immutable older Mere suppliers.
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "738ef15956a29a125820b2d6c2280d39a6214f8e" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
 
 [patch."https://github.com/merely-made/mere.git"]
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "738ef15956a29a125820b2d6c2280d39a6214f8e" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
 
 [patch."https://www.github.com/merely-made/mere.git"]
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "738ef15956a29a125820b2d6c2280d39a6214f8e" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }

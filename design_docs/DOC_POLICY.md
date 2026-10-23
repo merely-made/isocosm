@@ -190,7 +190,9 @@ Core §11 governs. It was ruled here first (2026-10-20,
   `design_docs/2026-09-18_wing_design_plan.md`, named in
   `design_docs/decisions_config.toml`. Its cases are the wing's, numbered
   across all three products; `case_register.md` is generated beside it.
-- **The decisions tool** is `shared/wing-decisions`: `regen [--stage]`,
+- **The decisions tool** is eidetic's `wing-decisions`, run here through
+  `shared/wing-decisions`, a runner on this repository's eidetic pin:
+  `regen [--stage]`,
   `check`, `lookup <case | plan D-key | plan keyword | statement |
   other-repository key | path>`, `lookup --area <name>` and
   `lookup --history <key>` (the commits that touched a decision's links).
