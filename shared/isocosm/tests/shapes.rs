@@ -100,7 +100,7 @@ fn put(e: &mut Entity, id: u32, s: Sketch) {
                 situs: f.situs,
                 shape: f.shape,
                 severed: !e.lives(*k),
-                part: p.clone(),
+                part: (**p).clone(),
             };
             (k.0, sketch)
         })

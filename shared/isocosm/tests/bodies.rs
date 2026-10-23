@@ -86,8 +86,7 @@ fn world() -> Genesis {
     for k in own {
         let v = critter.accounts.remove(&k).unwrap_or(0);
         critter
-            .parts
-            .get_mut(&PartId(0))
+            .part_mut(&PartId(0))
             .unwrap()
             .matter
             .insert(k, v);
@@ -421,7 +420,7 @@ fn bodies_and_tissue_serialize_as_before() {
     let back: AccountKind =
         serde_json::from_str(&serde_json::to_string(&reserve).unwrap()).unwrap();
     assert_eq!(back, reserve);
-    let part = world().population.get(1).unwrap().parts[&PartId(2)].clone();
+    let part = Part::clone(&world().population.get(1).unwrap().parts[&PartId(2)]);
     let back: Part = serde_json::from_str(&serde_json::to_string(&part).unwrap()).unwrap();
     assert_eq!(back, part);
 }
@@ -444,7 +443,7 @@ fn a_part_allots_only_its_own_cells_to_what_it_expresses() {
     assert!(shrunk.contains("capacity of 3"), "{shrunk}");
     assert!(
         !refused(&|e| {
-            let p = e.parts.get_mut(&PartId(2)).unwrap();
+            let p = e.part_mut(&PartId(2)).unwrap();
             p.cells.insert(of("contract"), 0);
         })
         .is_empty()

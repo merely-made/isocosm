@@ -37,7 +37,7 @@ impl PortFeeding {
     }
 
     pub(crate) fn intake<'a>(&self, actor: &'a Entity, id: PartId) -> Result<&'a Part> {
-        actor.parts.get(&id).filter(|p| actor.lives(id) && self.addresses(p))
+        actor.parts.get(&id).map(std::sync::Arc::as_ref).filter(|p| actor.lives(id) && self.addresses(p))
             .ok_or_else(|| "the bound intake organ is no longer declared or living".into())
     }
 

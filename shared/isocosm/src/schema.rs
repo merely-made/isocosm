@@ -103,7 +103,9 @@ pub struct Entity {
     /// whose parts have none.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub body: Option<BodyDocument>,
-    pub parts: BTreeMap<PartId, Part>,
+    /// Each part shared until written: copying a body copies handles, and
+    /// a write copies only the part it takes (`Arc::make_mut`, ruling 975).
+    pub parts: BTreeMap<PartId, std::sync::Arc<Part>>,
     pub traits: BTreeSet<Key>,
     pub accounts: Ledger,
     pub skills: BTreeMap<Key, u64>,
@@ -177,6 +179,15 @@ impl Entity {
     }
     pub fn colocated(&self, other: &Self) -> bool {
         self.resident_site().is_some_and(|site| other.resident_site() == Some(site))
+    }
+    /// A part for writing, copied first if another body shares it.
+    pub fn part_mut(&mut self, id: &PartId) -> Option<&mut Part> {
+        self.parts.get_mut(id).map(std::sync::Arc::make_mut)
+    }
+    /// Every part for writing, each copied first if shared: for writes that
+    /// touch them all.
+    pub fn parts_mut(&mut self) -> impl Iterator<Item = (&PartId, &mut Part)> {
+        self.parts.iter_mut().map(|(id, part)| (id, std::sync::Arc::make_mut(part)))
     }
 }
 

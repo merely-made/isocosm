@@ -126,6 +126,7 @@ impl Simulation {
         let body = region.bodies.into_iter().find(|b| b.id == id)
             .ok_or("examiner target is outside this window's visible close-up")?;
         let entity = self.state.population.get(id).ok_or("examiner target is no longer native")?;
-        Ok(InspectedBody { body, parts: entity.parts.clone() })
+        let parts = entity.parts.iter().map(|(id, p)| (*id, Part::clone(p))).collect();
+        Ok(InspectedBody { body, parts })
     }
 }

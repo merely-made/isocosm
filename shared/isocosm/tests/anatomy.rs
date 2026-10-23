@@ -117,7 +117,7 @@ fn the_reserve_lives_only_in_what_stores() {
 fn a_bite_lands_on_a_part_drawn_by_what_each_holds() {
     let mut e = grazer(&world());
     let held: Vec<u64> = (0..e.parts.len() as u64).map(|i| 10 * (i + 1)).collect();
-    for (p, h) in e.parts.values_mut().zip(&held) {
+    for (p, h) in e.parts_mut().map(|(_, p)| p).zip(&held) {
         p.matter = BTreeMap::from([("tissue:1".into(), *h)]);
     }
     let of = ["tissue:1".to_string()];
@@ -199,8 +199,8 @@ fn a_declared_name_that_lies_and_matter_outside_the_parts_are_refused() {
         let i = e.lineage.trim_start_matches("lineage:").to_string();
         let key = format!("tissue:{i}");
         let held: u64 = e
-            .parts
-            .values_mut()
+            .parts_mut()
+            .map(|(_, p)| p)
             .filter_map(|p| p.matter.remove(&key))
             .sum();
         e.accounts.insert(key, held.max(1));

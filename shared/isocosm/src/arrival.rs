@@ -118,7 +118,7 @@ impl Simulation {
         let mut parts = BTreeMap::new();
         for part in body.living() {
             let mut p = e.parts.get(&part.id).cloned().unwrap_or_default();
-            crate::mosaic::sync(&mut p, part.half_extent);
+            crate::mosaic::sync(std::sync::Arc::make_mut(&mut p), part.half_extent);
             parts.insert(part.id, p);
         }
         e.body = Some(body);

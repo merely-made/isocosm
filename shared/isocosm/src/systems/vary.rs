@@ -58,7 +58,7 @@ pub fn inherit(e: &mut Entity) {
             .keys()
             .copied()
             .find(|id| e.situs(*id) == Some(v.situs));
-        if let Some(p) = at.and_then(|id| e.parts.get_mut(&id)) {
+        if let Some(p) = at.and_then(|id| e.part_mut(&id)) {
             shift(p, &v.from, &v.to);
         }
     }
@@ -110,7 +110,7 @@ pub fn vary(child: &mut Entity, rules: &Rules, recipe: &Recipe, seed: u64) -> Op
     let to = pick(&grown, draw("vary-to"))?;
     let situs = child.situs(id)?;
     let half = child.extent(id);
-    let part = child.parts.get_mut(&id)?;
+    let part = child.part_mut(&id)?;
     shift(part, &from, &to);
     crate::mosaic::sync(part, half);
     let v = Varied { situs, from, to };

@@ -193,7 +193,7 @@ fn grazing(seed: u64, held: u64) -> ProbeWorld {
     };
     frond.embody(develop(&rules, &d, &soma).unwrap());
     frond.soma = vec![1];
-    frond.parts.get_mut(&PartId(0)).unwrap().matter = BTreeMap::from([("tissue:0".into(), held)]);
+    frond.part_mut(&PartId(0)).unwrap().matter = BTreeMap::from([("tissue:0".into(), held)]);
     let room = crate::anatomy::room(&grazer, &rules, "reserve:1");
     crate::anatomy::give(&mut grazer, &rules, "reserve:1", room)
         .unwrap()
@@ -274,7 +274,7 @@ fn crowded(seed: u64, held: u64, grazers: u64) -> ProbeWorld {
     let soma = Soma { segments: vec![2], absent: vec![], seed: 0 };
     frond.embody(develop(&rules, &d, &soma).unwrap());
     frond.soma = vec![2];
-    for part in frond.parts.values_mut() {
+    for (_, part) in frond.parts_mut() {
         part.matter = BTreeMap::from([("tissue:0".into(), held)]);
     }
     let mut population = Population::default();
@@ -318,7 +318,7 @@ fn bites_on_one_part_share_its_shortfall() {
     let w = grazing(0, 1);
     let mut prey = w.genesis.population.groups.values()
         .find(|g| g.entity.lineage == "lineage:0").unwrap().entity.as_ref().clone();
-    prey.parts = BTreeMap::from([(PartId(0), part(&[("a", 1)])), (PartId(1), part(&[("a", 5)]))]);
+    prey.parts = BTreeMap::from([(PartId(0), part(&[("a", 1)]).into()), (PartId(1), part(&[("a", 5)]).into())]);
     let bite = |v: u64, at: u32| (BTreeMap::from([("a".to_string(), v)]), Some(PartId(at)));
     let quotas = |mut bites: Vec<(Ledger, Option<PartId>)>| {
         super::part_quotas(&prey, &mut bites);

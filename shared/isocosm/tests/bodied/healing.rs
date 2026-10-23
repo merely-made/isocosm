@@ -101,7 +101,8 @@ fn ordinary_founders_inherit_the_seeded_trait() {
                             isocosm::schema::Part {
                                 traits: lineage.traits.clone(),
                                 ..Default::default()
-                            },
+                            }
+                            .into(),
                         )]), "bare Part0 retains only its lineage traits");
                     }
                 }

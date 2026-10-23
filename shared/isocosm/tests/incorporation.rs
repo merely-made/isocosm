@@ -318,7 +318,7 @@ fn a_pass_takes_a_part_whole_only_as_it_finds_it() {
             let state = sim.state();
             let holds = |id: Id| {
                 let e = state.population.get(id).unwrap();
-                let foreign = |p: &&Part| p.matter.get("tissue:0").is_some_and(|v| *v > 0);
+                let foreign = |p: &&std::sync::Arc<Part>| p.matter.get("tissue:0").is_some_and(|v| *v > 0);
                 e.parts.values().filter(foreign).count()
             };
             let whole: usize = grazers.iter().map(|g| holds(*g)).sum();
@@ -351,7 +351,7 @@ fn pass_world(seed: u64, asks: [u64; 2]) -> (Genesis, [Id; 2], Id) {
     producer.embody(develop(&rules, &frond, &soma).unwrap());
     producer.soma = vec![2];
     for (part, held) in [(0, 3), (1, 10)] {
-        producer.parts.get_mut(&PartId(part)).unwrap().matter =
+        producer.part_mut(&PartId(part)).unwrap().matter =
             BTreeMap::from([("tissue:0".into(), held)]);
     }
     let grazer = g.population.get(eater).unwrap().clone();

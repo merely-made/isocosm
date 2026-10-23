@@ -52,7 +52,7 @@ fn absent_loss_records_preserve_the_previous_json_and_postcard_preimages() {
         .unwrap()
         .parts
         .values()
-        .cloned()
+        .map(|p| Part::clone(p))
         .chain([Part::default()])
     {
         p.losses.clear();
@@ -85,7 +85,7 @@ fn recorded_free_and_function_losses_change_both_hashes_and_roundtrip_in_json() 
         cells: 1,
     })
     .unwrap();
-    let mut p = s.sim.state().population.get(1).unwrap().parts[&PartId(1)].clone();
+    let mut p = Part::clone(&s.sim.state().population.get(1).unwrap().parts[&PartId(1)]);
     for allocation in [None, Some("function:contract".into())] {
         p.losses.insert(p.lost[0], allocation);
         let old = previous(&p);

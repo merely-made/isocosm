@@ -130,7 +130,7 @@ fn nursing(seed: u64) -> ProbeWorld {
     };
     frond.embody(develop(&rules, &d, &soma).unwrap());
     frond.soma = vec![1];
-    frond.parts.get_mut(&PartId(0)).unwrap().matter =
+    frond.part_mut(&PartId(0)).unwrap().matter =
         std::collections::BTreeMap::from([("tissue:0".into(), 10_000)]);
     for key in ["tissue:1", "reserve:1", "provision:1"] {
         let room = crate::anatomy::room(&parent, &rules, key);
@@ -215,7 +215,7 @@ fn a_crowd_bite_takes_what_its_part_held() {
     };
     prey.embody(develop(rules, &d, &soma).unwrap());
     for (part, held) in [(0, 3), (1, 10)] {
-        prey.parts.get_mut(&PartId(part)).unwrap().matter =
+        prey.part_mut(&PartId(part)).unwrap().matter =
             BTreeMap::from([("tissue:0".into(), held)]);
     }
     let room = crate::anatomy::room(&grazer, rules, "reserve:1");
