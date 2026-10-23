@@ -5767,28 +5767,12 @@ area = "The sim's schema and saves"
 summary = "A world is its seed, rules and asserted facts; all else is derived and discardable; storage follows the asserted, processing the due."
 draws_on = ["14", "41", "69", "70"]
 
-[statements."stack.1"]
-title = "Build on the stack we have"
-source = "design_docs/doctrine.md"
-area = "Stack and engine"
-summary = "Build on the stack we have: unneeded crates stay out, stale ones leave, own crates when the abstraction earns one."
-draws_on = ["600", "organs.5"]
-stack = true
-
-[statements."stack.2"]
-title = "The stack supplies identity and trust"
-source = "design_docs/doctrine.md"
-area = "Stack and engine"
-summary = "Identity and admitted connections come from the stack; games map peers to seats; products never manufacture keys or trust roots."
-draws_on = ["962"]
-stack = true
-
 [statements."stack.3"]
-title = "Where things sit, and the seams"
+title = "Where the wing's pieces sit"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
-summary = "Where the stack's pieces sit; seams stay clean at some cost in speed; renderers swap behind the scene contract; open formats first."
-draws_on = ["16", "27", "78"]
+summary = "Where the wing's pieces sit: cambium under isomere, isometer over genet and netrender, the sim beside esp and dramatis; piccolo the one authoring language."
+draws_on = ["16", "mere:stack.3"]
 stack = true
 
 [statements."stack.4"]
@@ -5844,14 +5828,6 @@ summary = "Separate product workspaces plus a host workspace; one machine-local 
 draws_on = ["442", "643", "644", "648", "969"]
 stack = true
 
-[statements."stack.11"]
-title = "Platforms and the web"
-source = "design_docs/doctrine.md"
-area = "Stack and engine"
-summary = "Desktop first-class, the web a floored tier; best capabilities where free; gamepads are the stack's; web modules share one helper and pin."
-draws_on = ["21", "29", "77", "532", "536", "537", "556", "567"]
-stack = true
-
 [statements."stack.12"]
 title = "Three tiers, and what the sim never does"
 source = "design_docs/doctrine.md"
@@ -5867,11 +5843,11 @@ summary = "The contract is coarse batches per tick, WIT-shaped, bound natively f
 draws_on = ["78", "154", "1000", "stack.4"]
 
 [statements."stack.14"]
-title = "Extension rungs"
+title = "The wing's rungs"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
-summary = "Data, piccolo, components and native crates; cold and narrow goes behind a component when pluggable, hot or wide stays native."
-draws_on = ["76", "77", "78", "1000", "stack.3"]
+summary = "The wing's rungs: open sets as data, rulesets and world packs in piccolo, resolvers, generators and directors as components, the cores and the sim native."
+draws_on = ["76", "1000", "mere:stack.5"]
 stack = true
 
 [statements."vtt.1"]
