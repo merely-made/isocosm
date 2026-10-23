@@ -14,7 +14,7 @@ impl Staged<'_> {
             return None;
         };
         let rules = &self.sim.genesis.rules;
-        let body = self.stage.bodies.get_mut(&id)?;
+        let body = self.stage.bodies.get_mut(&id).map(Arc::make_mut)?;
         let caps = self.stage.caps.get_mut(&id);
         let split = match give {
             true => crate::anatomy::give_within(body, rules, key, amount, caps)?,
@@ -102,7 +102,7 @@ impl Parties for Staged<'_> {
     }
     fn body(&mut self, who: Binding) -> Result<&mut Entity> {
         let id = self.sim.bound(self.stage.actor, self.stage.target, who)?;
-        Ok(self.stage.bodies.get_mut(&id).ok_or("body missing")?)
+        Ok(self.stage.bodies.get_mut(&id).map(Arc::make_mut).ok_or("body missing")?)
     }
     fn part(&mut self) -> Result<(&mut Entity, PartId)> {
         let part = self.stage.part.ok_or("no part is bound")?;
