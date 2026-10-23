@@ -262,7 +262,7 @@ each title names its outcome against the doctrine.
   `Arc` and `foregone` only on direct acts (Decisions), not yet numbered or
   built. Mark then held all six decisions until the decision-links plan
   settles how decisions are keyed and linked
-  ([2026-10-20_decision_links_plan.md](../../design_docs/2026-10-20_decision_links_plan.md)),
+  ([2026-10-20_decision_links_plan.md](../../design_docs/archive_docs/2026-10-22/2026-10-20_decision_links_plan.md)),
   then had them keyed D1 to D6 the same evening so D5 and D6 can be briefed.
 - **2026-10-22:** the six decisions linked under the decision-links plan's
   L5. D1 and D4 refine Processes 7 (waking, parallel evaluation and
