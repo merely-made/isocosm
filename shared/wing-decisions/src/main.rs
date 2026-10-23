@@ -15,7 +15,7 @@ use wing_decisions::git::Repo;
 use wing_decisions::lookup::Lookup;
 use wing_decisions::budget::{self, BUDGET, Budget};
 use wing_decisions::model::Key;
-use wing_decisions::{DOCTRINE, MANIFEST, Snapshot, journal, scan};
+use wing_decisions::{DOCTRINE, MANIFEST, Snapshot, across, journal, scan};
 
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -83,7 +83,8 @@ fn regen(repo: &Repo, stage: bool) -> Result<ExitCode, String> {
 
 fn check(repo: &Repo) -> Result<ExitCode, String> {
     let snap = Snapshot::from_index(repo)?;
-    let fresh = snap.manifest().to_toml(true);
+    let m = snap.manifest();
+    let fresh = m.to_toml(true);
     let staged = repo.git(&["show", &format!(":{MANIFEST}")]).unwrap_or_default();
     let current = staged.replace("\r\n", "\n") == fresh;
     if current {
@@ -104,6 +105,16 @@ fn check(repo: &Repo) -> Result<ExitCode, String> {
         }
         Err(_) => println!("no {BUDGET} staged; budget not checked"),
     }
+    let across = across::check(&repo.root, &m);
+    if across.checked > 0 && across.broken.is_empty() {
+        println!("links to other repositories: {} checked, all declared", across.checked);
+    } else if !across.broken.is_empty() {
+        println!("links to other repositories that do not resolve:");
+        across.broken.iter().for_each(|b| println!("  {b}"));
+    }
+    for r in &across.unchecked {
+        println!("no checkout of {r} beside this one; its keys are unchecked");
+    }
     Ok(if current { ExitCode::SUCCESS } else { ExitCode::from(1) })
 }
 
@@ -116,6 +127,20 @@ fn lookup(repo: &Repo, rest: &[String]) -> Result<ExitCode, String> {
         q if !q.is_empty() => {
             let q = q.join(" ");
             match Key::parse(&q) {
+                Some(Key::Foreign(r, inner)) => {
+                    let mut s = match across::manifest(&repo.root, &r) {
+                        Some(theirs) => theirs
+                            .decision(&inner)
+                            .map_or_else(|| format!("{r}:{inner}: not declared in {r}\n"), |d| format!("{r}:{d}")),
+                        None => format!("{r}:{inner}: no checkout of {r} beside this one\n"),
+                    };
+                    // What links to it here: the derived view's back-links.
+                    let here = l.decision(&Key::Foreign(r, inner)).unwrap_or_default();
+                    for line in here.lines().skip(1) {
+                        s.push_str(&format!("  in this repository, {}\n", line.trim_start()));
+                    }
+                    s
+                }
                 Some(k) => l.decision(&k).unwrap_or_else(|| format!("{k}: neither declared nor cited\n")),
                 None => l.plan(&q).unwrap_or_else(|| l.path(&q)),
             }

@@ -12,6 +12,7 @@ pub struct Lookup {
     pub cases: Table,
     pub decisions: Table,
     pub statements: Table,
+    pub foreign: Table,
 }
 
 const FIELDS: &[&str] = &[
@@ -41,7 +42,12 @@ impl Lookup {
             Some(Value::Table(x)) => x,
             _ => Table::new(),
         };
-        Ok(Lookup { cases: take(&mut t, "cases"), decisions: take(&mut t, "decisions"), statements: take(&mut t, "statements") })
+        Ok(Lookup {
+            cases: take(&mut t, "cases"),
+            decisions: take(&mut t, "decisions"),
+            statements: take(&mut t, "statements"),
+            foreign: take(&mut t, "foreign"),
+        })
     }
 
     fn item(&self, key: &Key) -> Option<&Table> {
@@ -49,6 +55,7 @@ impl Lookup {
             Key::Case(n) => self.cases.get(&n.to_string()),
             Key::Plan(..) => self.decisions.get(&key.to_string()),
             Key::Statement(..) => self.statements.get(&key.to_string()),
+            Key::Foreign(..) => self.foreign.get(&key.to_string()),
         }
         .and_then(Value::as_table)
     }
@@ -58,6 +65,11 @@ impl Lookup {
         let d = self.decisions.iter().map(|(k, v)| (k.clone(), v));
         let st = self.statements.iter().map(|(k, v)| (k.clone(), v));
         c.chain(d).chain(st).filter_map(|(k, v)| v.as_table().map(|t| (k, t)))
+    }
+
+    /// Whether the manifest declares `key` (a title, not only citations).
+    pub fn declares(&self, key: &Key) -> bool {
+        self.item(key).is_some_and(|t| t.contains_key("title"))
     }
 
     /// One decision, its declared links and everything pointing back.
