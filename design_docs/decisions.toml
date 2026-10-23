@@ -5010,6 +5010,15 @@ summary = "A receipt's foregone list is filled for direct acts only; scheduled a
 draws_on = ["685"]
 governs = ["isocosm::execute", "isocosm::simulation::Receipt"]
 
+[decisions."sim-execution D7"]
+title = "parts by `Arc` before E1 (2026-10-23), applies Schema 9"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "The sim's schema and saves"
+summary = "A body's parts are held by Arc and copied only when written; that and a cheaper gate index come before E1."
+draws_on = ["975", "sim-execution D5"]
+amends = ["sim-execution D4"]
+governs = ["isocosm::schedule::Filed", "isocosm::schema::Entity"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"
