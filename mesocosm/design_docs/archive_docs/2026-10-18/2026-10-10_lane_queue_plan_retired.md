@@ -1,6 +1,6 @@
 # The lane queue: what moved out on 2026-10-18
 
-**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [lane queue plan](../../2026-10-10_lane_queue_plan.md): its stacked status banners, the Progress entries older than the five that describe the open work (the original log ran newest-first from 2026-10-17 down to 2026-10-10, then oldest-first from 2026-10-10 to 2026-10-14), and three counter phrases cut from entries that stayed. Entries that were also pasted into the sim plan, the VTT overlay plan or the after-pass plan are here only once.
+**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [lane queue plan](2026-10-10_lane_queue_plan.md): its stacked status banners, the Progress entries older than the five that describe the open work (the original log ran newest-first from 2026-10-17 down to 2026-10-10, then oldest-first from 2026-10-10 to 2026-10-14), and three counter phrases cut from entries that stayed. Entries that were also pasted into the sim plan, the VTT overlay plan or the after-pass plan are here only once.
 
 ## Status banners
 
@@ -201,7 +201,7 @@ lanes grind; Mark answers the forks the orchestrator batches.
   carry its produced soil; children share the remaining journey; transit
   events use a typed journey location without site reach; corpses finish the
   remaining journey before destination availability. The exact questions,
-  answers and consequences live in the [wing record](2026-09-18_wing_design_plan.md).
+  answers and consequences live in the [wing record](../../../../design_docs/2026-09-18_wing_design_plan.md).
   All six choices are settled; the next ruling is 824. Q3 journey and Q10
   recipe implementations are source preparation in progress, with rates,
   original failures, supplied-stock conservation and genuine archive gates

@@ -15,5 +15,5 @@ root/Eponym/Isomere/host include all features. Raw current-pin qualification is
 `Code/testing/isometry/after-pass-2026-10-10/certify-murm-compiler-gates.json`.
 The integration lane's failed untouched `55f48769` baseline remains historical.
 Runtime, statistical and headed acceptance retain distinct done-conditions in
-the [assembled certification record](../mesocosm/design_docs/2026-10-13_assembled_certification.md).
+the [assembled certification record](../../../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-13_assembled_certification.md).
 The supplier owner is `murm/design_docs/2026-10-13_murm_family_move_plan.md`.

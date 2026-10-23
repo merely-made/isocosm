@@ -10,7 +10,7 @@ the player's alone. Its open phases moved: P5, contested flow, to the [epoch
 boundary plan](../../2026-08-01_epoch_boundary_plan.md)'s current state; P6 is the
 [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md)'s
 gates W3 to W5; P0's headed judgment and VB3 to VB5's visual acceptance are
-in the [after-pass plan](../../2026-10-10_after_pass_plan.md)'s A4; sub-part body
+in the [after-pass plan](../2026-10-18/2026-10-10_after_pass_plan.md)'s A4; sub-part body
 change (D3a) is checkpoint 10's cell loss (469).
 
 **Status: body rules and integration plan, refreshed 2026-09-05. P1-P4 and

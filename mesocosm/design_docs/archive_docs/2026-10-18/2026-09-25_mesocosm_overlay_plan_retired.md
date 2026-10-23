@@ -141,7 +141,7 @@ M1 done the same day (rulings 197, 202 to 205, 210 to 213), M2 to M4
 proposed and not
 opened. Drafted at Mark's
 word ("Draft the Mesocosm plan") from the
-[wing design record](2026-09-18_wing_design_plan.md)'s rulings on the
+[wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md)'s rulings on the
 overlay, 174 to 193, gathered in its §5.5, and from Mesocosm's existing
 plans. Every row cites the ruling or plan it rests on; a reading of this
 plan's own is flagged as one. No lane runs until Mark opens it.

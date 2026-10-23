@@ -36,9 +36,9 @@ Rust lines, including `shared/isocosm/src/legacy/campaign.rs`, until V2.
 
 Rulings 800 and 801 update the owner labels in the original A3 list:
 M3 and the interim M4, including D5's headed condition, belong to the
-[directing plan](2026-10-08_directing_interim_m4_plan.md); the Mesocosm
+[directing plan](../../2026-10-08_directing_interim_m4_plan.md); the Mesocosm
 overlay keeps full M4. The protocol bump and H2 travel belong to the
-[VTT overlay's V2](../../design_docs/2026-09-25_vtt_overlay_plan.md),
+[VTT overlay's V2](../../../../design_docs/2026-09-25_vtt_overlay_plan.md),
 whose folded protocol plan is archived. Eponym's functional and memory
 conditions belong to its overlay's E3. Ecology residues belong to sim
 S8 to S10 (802).

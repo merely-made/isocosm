@@ -22,9 +22,9 @@ conditions and the soil cycle into sim S8 to S10. Those documents are
 archived rather than separate live lanes. Ruling 800 gives M3 and the
 interim M4 to directing. V2 and E3 are open before M3 certification (798).
 
-The [Mesocosm/wing index](DOC_README.md),
-[VTT index](../../design_docs/DOC_README.md) and
-[Eponym index](../../eponym/design_docs/DOC_README.md) are the current
+The [Mesocosm/wing index](../../DOC_README.md),
+[VTT index](../../../../design_docs/DOC_README.md) and
+[Eponym index](../../../../eponym/design_docs/DOC_README.md) are the current
 inventory. The Findings below describe the review's source snapshot;
 contract routing, tenant adoption and turn-order compliance are separate
 implementation lanes, not work certified by these document annotations.
