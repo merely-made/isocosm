@@ -2,8 +2,8 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-23:** D5 and D6 built (Progress); parts by `Arc` and a
-cheaper gate index next, then E1 (D7). Its decisions are linked to the
+**Status, 2026-10-23:** D5, D6 and D7a built (Progress); the cheaper gate
+index (D7b) next, then E1. Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -300,6 +300,11 @@ each title names its outcome against the doctrine.
   process is about 10%, planning about 9%. Separately, where a world holds
   owned projects, `begin_process_debits` digests the whole state for every
   act; A1 holds none.
+- **2026-10-23, D7a measured** (release, D5's tree and D7a's alternated,
+  the same battery arm on one worker, a quieter machine than D5's runs).
+  Seeds 0 to 2 print identical lines and take 403.2 s with D5 and 278.0 s
+  with D7a, 31% less. Seed 0 twice each: 110.5 and 110.0 s, then 62.9 and
+  62.1 s, 43% less.
 
 ## Progress
 
@@ -332,3 +337,12 @@ each title names its outcome against the doctrine.
   14% of scheduling, and the round turned to probing accepted acts ("Probe
   accepted acts first"). That probe (Findings) made the body copy the
   largest cost; D7 orders parts by `Arc`, then the gate index, then E1.
+- **2026-10-23, D7a built.** `Entity.parts` holds each part by `Arc`;
+  writes go through `Entity::part_mut` and `parts_mut`, or `Arc::make_mut`
+  where only some parts change, and merging a pass's changes skips a part
+  the act never wrote. The state preimage reads the same bytes, so hashes
+  and saves are unchanged. Exact: H3's pins 6/6 with nothing rerecorded,
+  the battery's seeds 0 to 2 identical, isocosm's 717 tests in release and
+  its 264 lib tests under the test profile, `mesocosm-phenotype`'s 25 and
+  the VTT's native campaign 8. Battery time falls 31 to 43% against D5
+  (Findings).

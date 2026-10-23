@@ -55,12 +55,12 @@ impl<'a> BodyRead<'a> {
 
     pub fn part(&self, id: PartId) -> Option<PartRead<'a>> {
         Some(PartRead { geometry: self.document.part(id)?,
-            physiology: self.entity.parts.get(&id), rules: self.rules })
+            physiology: self.entity.parts.get(&id).map(std::sync::Arc::as_ref), rules: self.rules })
     }
 
     pub fn parts(&self) -> impl Iterator<Item = PartRead<'a>> + '_ {
         self.document.parts.iter().map(|geometry| PartRead { geometry,
-            physiology: self.entity.parts.get(&geometry.id), rules: self.rules })
+            physiology: self.entity.parts.get(&geometry.id).map(std::sync::Arc::as_ref), rules: self.rules })
     }
 }
 

@@ -31,8 +31,7 @@ fn injured(domain: u16) -> Fixture {
         .population
         .lift(prey)
         .unwrap()
-        .parts
-        .get_mut(&PartId(0))
+        .part_mut(&PartId(0))
         .unwrap();
     p.cells.insert("function:fix".into(), 2);
     mosaic::sync(p, [3, 3, 1]);
@@ -47,7 +46,7 @@ fn injured(domain: u16) -> Fixture {
     g.population = wounder.sim.state().population.clone();
     g.sites = wounder.sim.state().sites.clone();
     let mut producer = g.population.get(prey).unwrap().clone();
-    let p = producer.parts.get_mut(&PartId(0)).unwrap();
+    let p = producer.part_mut(&PartId(0)).unwrap();
     let unknown = *p.losses.iter().find(|(_, f)| f.is_some()).unwrap().0;
     p.losses.remove(&unknown);
     assert_eq!(p.lost.len(), 3);
@@ -116,7 +115,7 @@ fn moved(e: &Entity) -> (PartId, &Part) {
     e.parts
         .iter()
         .find(|(_, p)| p.matter.contains_key("tissue:0"))
-        .map(|(id, p)| (*id, p))
+        .map(|(id, p)| (*id, &**p))
         .expect("the injured frond transferred whole")
 }
 
@@ -153,7 +152,7 @@ fn an_adapter_clears_only_known_loss_allocations() {
         );
         let before = contents(&eater, &prey);
         let id = growth::take_whole(&mut eater, &mut prey, PartId(0), &w).unwrap();
-        let p = &eater.parts[&id];
+        let p: &Part = &eater.parts[&id];
         assert_eq!(p.lost, f.original.lost);
         assert_eq!(p.losses.keys().copied().collect::<BTreeSet<_>>(), f.known);
         assert!(

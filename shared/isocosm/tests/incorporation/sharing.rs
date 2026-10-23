@@ -16,7 +16,7 @@ fn coincident(asks: [u64; 2], stock: [u64; 2]) -> (Genesis, [Id; 2], Id) {
         g.population.lift(id).unwrap().traits.insert(trait_key.into());
     }
     for (id, held) in stock.into_iter().enumerate() {
-        g.population.lift(prey).unwrap().parts.get_mut(&PartId(id as u32)).unwrap()
+        g.population.lift(prey).unwrap().part_mut(&PartId(id as u32)).unwrap()
             .matter = BTreeMap::from([("tissue:0".into(), held)]);
     }
     let of = ["tissue:0".to_string()];
@@ -67,7 +67,7 @@ fn both(g: Genesis, grazers: [Id; 2], prey: Id, inspect: impl Fn(&Session, &[Flo
 }
 
 fn foreign_parts(s: &Session, id: Id) -> Vec<&Part> {
-    s.sim.state().population.get(id).unwrap().parts.values()
+    s.sim.state().population.get(id).unwrap().parts.values().map(std::sync::Arc::as_ref)
         .filter(|p| p.matter.get("tissue:0").is_some_and(|v| *v > 0)).collect()
 }
 

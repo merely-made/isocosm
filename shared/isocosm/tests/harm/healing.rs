@@ -44,8 +44,7 @@ fn healing_restores_recorded_cells_and_pays_reserve_before_tissue() {
         g.population
             .lift(1)
             .unwrap()
-            .parts
-            .get_mut(&PartId(0))
+            .part_mut(&PartId(0))
             .unwrap()
             .matter
             .insert("reserve:1".into(), 48);
@@ -99,8 +98,7 @@ fn a_restored_free_cell_stays_free_and_varied_allocation_survives() {
         .population
         .lift(1)
         .unwrap()
-        .parts
-        .get_mut(&PartId(1))
+        .part_mut(&PartId(1))
         .unwrap();
     limb.cells.insert("function:contract".into(), 4);
     isocosm::mosaic::sync(limb, [2; 3]);
@@ -135,14 +133,13 @@ fn a_lineage_without_healing_keeps_its_recorded_losses() {
 #[test]
 fn an_unaffordable_cell_remains_lost_without_partial_payment() {
     let mut g = healer(false, true);
-    for p in g.population.lift(1).unwrap().parts.values_mut() {
+    for p in g.population.lift(1).unwrap().parts_mut().map(|(_, p)| p) {
         p.matter.clear();
     }
     g.population
         .lift(1)
         .unwrap()
-        .parts
-        .get_mut(&PartId(0))
+        .part_mut(&PartId(0))
         .unwrap()
         .matter
         .insert("tissue:1".into(), 11);
@@ -163,8 +160,7 @@ fn tombstones_revive_in_place_without_reclaiming_fragment_matter() {
         g.population
             .lift(1)
             .unwrap()
-            .parts
-            .get_mut(&PartId(0))
+            .part_mut(&PartId(0))
             .unwrap()
             .matter
             .insert("reserve:1".into(), 48);
@@ -210,8 +206,7 @@ fn one_paid_cell_revives_only_the_top_tombstone() {
     g.population
         .lift(1)
         .unwrap()
-        .parts
-        .get_mut(&PartId(0))
+        .part_mut(&PartId(0))
         .unwrap()
         .matter
         .insert("tissue:1".into(), 12);
@@ -239,8 +234,7 @@ fn damaged(known: bool) -> Genesis {
         .population
         .lift(1)
         .unwrap()
-        .parts
-        .get_mut(&PartId(1))
+        .part_mut(&PartId(1))
         .unwrap();
     if known {
         p.losses.remove(&p.lost[0]);
@@ -285,8 +279,7 @@ fn a_legacy_genesis_loss_loads_only_with_its_normal_digests_intact() {
         .population
         .lift(1)
         .unwrap()
-        .parts
-        .get_mut(&PartId(1))
+        .part_mut(&PartId(1))
         .unwrap();
     p.losses.insert(p.lost[0], None);
     let failure = Session::load(changed, Execution::Individuals)
@@ -299,8 +292,7 @@ fn a_legacy_genesis_loss_loads_only_with_its_normal_digests_intact() {
         .population
         .lift(1)
         .unwrap()
-        .parts
-        .get_mut(&PartId(1))
+        .part_mut(&PartId(1))
         .unwrap();
     p.losses.insert(p.lost[0], None);
     changed.genesis_digest = isocosm::digest(&changed.genesis);
@@ -342,8 +334,7 @@ fn admission_rejects_loss_metadata_for_present_cells_or_unknown_functions() {
         .population
         .lift(1)
         .unwrap()
-        .parts
-        .get_mut(&PartId(1))
+        .part_mut(&PartId(1))
         .unwrap();
     p.losses.insert(CellId(0), None);
     assert!(g.validate().unwrap_err().contains("present cell"));
@@ -352,8 +343,7 @@ fn admission_rejects_loss_metadata_for_present_cells_or_unknown_functions() {
         .population
         .lift(1)
         .unwrap()
-        .parts
-        .get_mut(&PartId(1))
+        .part_mut(&PartId(1))
         .unwrap();
     p.losses.insert(p.lost[0], Some("function:absent".into()));
     assert!(g.validate().unwrap_err().contains("unknown function"));
@@ -367,8 +357,7 @@ fn generated_landing_heals_before_tissue_and_after_a_hungry_reserve() {
         g.population
             .lift(1)
             .unwrap()
-            .parts
-            .get_mut(&PartId(2))
+            .part_mut(&PartId(2))
             .unwrap()
             .matter
             .insert("tissue:1".into(), 21);
@@ -388,8 +377,7 @@ fn generated_landing_heals_before_tissue_and_after_a_hungry_reserve() {
             g.population
                 .lift(1)
                 .unwrap()
-                .parts
-                .get_mut(&PartId(0))
+                .part_mut(&PartId(0))
                 .unwrap()
                 .matter
                 .insert("reserve:1".into(), 48);
@@ -496,7 +484,7 @@ fn a_full_wounded_producer_draws_healing_income_through_its_working_route() {
         let clean = |e: &Entity| {
             let mut parts = e.parts.clone();
             for p in parts.values_mut() {
-                p.matter.retain(|_, n| *n > 0);
+                std::sync::Arc::make_mut(p).matter.retain(|_, n| *n > 0);
             }
             parts
         };

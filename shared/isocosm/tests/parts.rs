@@ -45,7 +45,7 @@ fn sketched(e: &Entity) -> BTreeMap<u32, Sketch> {
                 situs: f.situs,
                 shape: f.shape,
                 severed: !e.lives(*k),
-                part: p.clone(),
+                part: (**p).clone(),
             };
             (k.0, sketch)
         })

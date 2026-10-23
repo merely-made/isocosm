@@ -366,7 +366,7 @@ fn apply(
     f: fn(&mut Ledger, &str, u64) -> Result<()>,
 ) -> Result<()> {
     for (id, amount) in split {
-        let part = e.parts.get_mut(id).ok_or("routed part missing")?;
+        let part = e.part_mut(id).ok_or("routed part missing")?;
         f(&mut part.matter, key, *amount)?;
     }
     Ok(())

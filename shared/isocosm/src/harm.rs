@@ -187,7 +187,7 @@ pub(crate) fn hurt(
         return Err("a wound to no living part".into());
     }
     let half = e.extent(part);
-    let p = e.parts.get_mut(&part).ok_or("an unlaid part")?;
+    let p = e.part_mut(&part).ok_or("an unlaid part")?;
     let mut wounded = Wounded {
         part,
         lost: take(p, half, cells),

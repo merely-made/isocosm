@@ -73,7 +73,7 @@ impl Allocation {
         for (id, tracts) in &self.parts {
             let half = body.part(*id).ok_or(Refused::UnknownPart { part: *id })?.half_extent;
             let part = parts.get_mut(id).ok_or(Refused::UnknownPart { part: *id })?;
-            changed += propose(part, half, tracts).map_err(Refused::Validator)?;
+            changed += propose(std::sync::Arc::make_mut(part), half, tracts).map_err(Refused::Validator)?;
         }
         entity.parts = parts;
         Ok(changed)

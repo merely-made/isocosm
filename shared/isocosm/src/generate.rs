@@ -469,7 +469,8 @@ impl Founding {
                             traits: lineages[&lineage].traits.clone(),
                             graft_origin: None,
                             ..Default::default()
-                        },
+                        }
+                        .into(),
                     )]),
                     traits: lineages[&lineage].traits.clone(),
                     accounts,

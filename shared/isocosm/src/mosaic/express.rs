@@ -21,7 +21,7 @@ impl Simulation {
         }
         let half = e.extent(part);
         let mut p = e.parts.get(&part).cloned().ok_or("an unlaid part")?;
-        let changed = propose(&mut p, half, tracts)?;
+        let changed = propose(std::sync::Arc::make_mut(&mut p), half, tracts)?;
         let e = self.state.population.lift(entity)?;
         e.parts.insert(part, p);
         e.body_revision = e.body_revision.saturating_add(1);

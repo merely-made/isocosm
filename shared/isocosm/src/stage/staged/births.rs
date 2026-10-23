@@ -64,8 +64,8 @@ impl Staged<'_> {
         // 821: cloning also retains the exact remaining journey.
         let mut child = self.actor().clone();
         child.accounts.clear();
-        for part in child.parts.values_mut() {
-            part.matter.clear();
+        for part in child.parts.values_mut().filter(|p| !p.matter.is_empty()) {
+            std::sync::Arc::make_mut(part).matter.clear();
         }
         child.born = tick;
         child.arrived = tick;

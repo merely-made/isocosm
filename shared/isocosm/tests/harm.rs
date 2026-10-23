@@ -259,7 +259,7 @@ fn a_wound_spills_all_accounts_over_the_lowered_bound_without_changing_geometry(
     let mut g = fixture(false);
     let e = g.population.lift(1).unwrap();
     let half = e.extent(PartId(0));
-    let p = e.parts.get_mut(&PartId(0)).unwrap();
+    let p = e.part_mut(&PartId(0)).unwrap();
     for key in ["tissue:1", "reserve:1", "provision:1"] {
         p.matter
             .insert(key.into(), anatomy::bound(half, p, &g.rules, key));
@@ -419,8 +419,7 @@ fn admission_refuses_matter_hidden_in_a_tombstone() {
     g.population
         .lift(1)
         .unwrap()
-        .parts
-        .get_mut(&PartId(2))
+        .part_mut(&PartId(2))
         .unwrap()
         .matter
         .clear();

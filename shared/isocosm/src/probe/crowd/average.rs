@@ -135,8 +135,8 @@ fn averaged_into(e: &Entity, rules: &crate::rules::Rules, key: &Key, amount: u64
         e.accounts.insert(key.clone(), amount);
         return (e, 0);
     }
-    for part in e.parts.values_mut() {
-        part.matter.remove(key);
+    for part in e.parts.values_mut().filter(|p| p.matter.contains_key(key)) {
+        std::sync::Arc::make_mut(part).matter.remove(key);
     }
     let fits = amount.min(crate::anatomy::room(&e, rules, key));
     crate::anatomy::give(&mut e, rules, key, fits)

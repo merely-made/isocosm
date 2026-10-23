@@ -408,7 +408,7 @@ impl BodyFounding {
                     let i = i as u32;
                     let halves: BTreeMap<PartId, anatomy::Half> =
                         e.parts.keys().map(|id| (*id, e.extent(*id))).collect();
-                    for (id, part) in e.parts.iter_mut() {
+                    for (id, part) in e.parts_mut() {
                         let half = halves[id];
                         let held = anatomy::ceiling(half, b) * tissue_mille / 1000;
                         part.matter.insert(tissue(i), held);

@@ -43,12 +43,11 @@ fn a_founded_body_carries_the_defaults_it_realizes() {
 fn a_developed_gland_brings_its_system_and_a_varied_cell_does_not() {
     let r = rules();
     let mut e = grazer();
-    let lump = e.parts.get_mut(&PartId(0)).unwrap();
+    let lump = e.part_mut(&PartId(0)).unwrap();
     lump.cells.insert("function:fix".into(), 1);
     lump.functions.insert("function:fix".into());
     let before = e.clone();
-    *e.parts
-        .get_mut(&PartId(0))
+    *e.part_mut(&PartId(0))
         .unwrap()
         .cells
         .get_mut("function:store")
@@ -59,7 +58,7 @@ fn a_developed_gland_brings_its_system_and_a_varied_cell_does_not() {
         "latent fix"
     );
     let before = e.clone();
-    let lump = e.parts.get_mut(&PartId(0)).unwrap();
+    let lump = e.part_mut(&PartId(0)).unwrap();
     lump.cells.insert("function:secrete".into(), 1);
     lump.functions.insert("function:secrete".into());
     take_up(&mut e, &r, &before);
@@ -90,10 +89,10 @@ fn varied_cells_pass_down_where_their_parts_lie() {
     assert_eq!(parts[&PartId(1)].cells["function:contract"], 1);
     assert_eq!(parts[&PartId(1)].cells["function:fix"], 1);
     assert_eq!(parts[&PartId(2)], e.parts[&PartId(2)]);
-    let mut limb = e.parts[&PartId(1)].clone();
+    let mut limb = Part::clone(&e.parts[&PartId(1)]);
     regrow(&mut limb, e.situs(PartId(1)), &varied);
     crate::mosaic::sync(&mut limb, e.extent(PartId(1)));
-    assert_eq!(limb, parts[&PartId(1)]);
+    assert_eq!(limb, *parts[&PartId(1)]);
 }
 
 #[test]

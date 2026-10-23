@@ -52,7 +52,8 @@ fn far_crowds_stay_aggregate_and_reads_preserve_native_history_and_replay() {
     let visible = session.sim.region_reading(participants[0], second.id(), Mode::Survival, site).unwrap();
     let inspected = session.sim.inspected_body(participants[0], second.id(), Mode::Survival, site, subjects[0]).unwrap();
     assert_eq!(inspected.body.id, subjects[0]);
-    assert_eq!(inspected.parts, session.sim.state().population.get(subjects[0]).unwrap().parts);
+    let parts = &session.sim.state().population.get(subjects[0]).unwrap().parts;
+    assert_eq!(inspected.parts, parts.iter().map(|(id, p)| (*id, (**p).clone())).collect::<BTreeMap<_, _>>());
     assert_eq!(session.save(), saved, "camera, far map and examiner reads never write replay history");
     for execution in [Execution::Individuals, Execution::Grouped] {
         let replay = Session::load(saved.clone(), execution).unwrap();

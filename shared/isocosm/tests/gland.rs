@@ -82,8 +82,7 @@ fn world(soil: u64) -> Genesis {
     for k in own {
         let v = critter.accounts.remove(&k).unwrap_or(0);
         critter
-            .parts
-            .get_mut(&PartId(0))
+            .part_mut(&PartId(0))
             .unwrap()
             .matter
             .insert(k, v);

@@ -95,7 +95,7 @@ impl Staged<'_> {
             match (bitten, prey) {
                 (Some(part), Some(Holder::Entity(id))) => {
                     let body = self.body(from)?;
-                    let p = body.parts.get_mut(&part).ok_or("bitten part missing")?;
+                    let p = body.part_mut(&part).ok_or("bitten part missing")?;
                     debit(&mut p.matter, key, *value)?;
                     self.stage.routed.push(flows::Routed {
                         body: id, key: key.clone(), give: false, parts: vec![(part, *value)],

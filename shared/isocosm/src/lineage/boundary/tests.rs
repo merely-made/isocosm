@@ -21,7 +21,7 @@ fn session() -> Session {
     for c in g.population.groups.values_mut() {
         let e = c.entity_mut();
         if e.lineage == "lineage:1" {
-            e.parts.get_mut(&PartId(0)).unwrap().functions =
+            e.part_mut(&PartId(0)).unwrap().functions =
                 BTreeSet::from(["function:intake".into(), "function:store".into()]);
             e.systems
                 .insert("system:digestive".into(), digestive.clone());
@@ -86,8 +86,7 @@ fn complexity_counts_living_expression_and_realization_once() {
         .0;
     let mut duplicate = s.sim.state().population.get(id).unwrap().clone();
     duplicate
-        .parts
-        .get_mut(&PartId(0))
+        .part_mut(&PartId(0))
         .unwrap()
         .functions
         .insert("foreign:function".into());
@@ -102,14 +101,14 @@ fn complexity_counts_living_expression_and_realization_once() {
         "members and foreign keys add nothing"
     );
     let mut varied = s.sim.state().population.get(id).unwrap().clone();
-    varied.parts.get_mut(&PartId(0)).unwrap().functions =
+    varied.part_mut(&PartId(0)).unwrap().functions =
         BTreeSet::from(["function:secrete".into()]);
     varied.systems.insert(
         "system:glandular".into(),
         default_systems().remove("system:glandular").unwrap(),
     );
     let mut cut = varied.clone();
-    cut.parts.get_mut(&PartId(0)).unwrap().functions = BTreeSet::from(["function:respire".into()]);
+    cut.part_mut(&PartId(0)).unwrap().functions = BTreeSet::from(["function:respire".into()]);
     let mut doc = crate::geometry::document(&crate::geometry::Frame::default());
     doc.parts[0].severed = true;
     cut.body = Some(doc);

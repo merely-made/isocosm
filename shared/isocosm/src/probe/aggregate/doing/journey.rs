@@ -17,7 +17,9 @@ impl Doing<'_> {
     pub(super) fn provisioned_birth(&mut self, provision: &Ledger) -> Result<bool> {
         let mut child = self.member.clone();
         child.accounts.clear();
-        for part in child.parts.values_mut() { part.matter.clear(); }
+        for part in child.parts.values_mut().filter(|p| !p.matter.is_empty()) {
+            std::sync::Arc::make_mut(part).matter.clear();
+        }
         child.born = self.tick;
         child.arrived = self.tick;
         child.visits.clear();

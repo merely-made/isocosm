@@ -208,7 +208,7 @@ fn mark(e: &mut Entity, key: &str, present: bool) -> Result<()> {
 
 /// A part's trait changes its body, so the body's revision moves.
 fn mark_part(e: &mut Entity, part: PartId, key: &str, present: bool) -> Result<()> {
-    let p = e.parts.get_mut(&part).ok_or("bound part missing")?;
+    let p = e.part_mut(&part).ok_or("bound part missing")?;
     set(&mut p.traits, key, present);
     revise(e)
 }
@@ -225,7 +225,7 @@ fn allocate(
     cells: u64,
 ) -> Result<()> {
     let half = e.extent(part);
-    let p = e.parts.get_mut(&part).ok_or("bound part missing")?;
+    let p = e.part_mut(&part).ok_or("bound part missing")?;
     let cells = u32::try_from(cells).map_err(|_| "allocation overflow")?;
     if !p.functions.contains(to) {
         let acquired = rules
