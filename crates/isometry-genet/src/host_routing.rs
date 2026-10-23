@@ -66,7 +66,7 @@ fn board() -> BoardHarness {
 fn board_origin(harness: &BoardHarness) -> (f32, f32) {
     let node = harness
         .with_dom(|dom| {
-            taproot::matching(dom, &Selector::class("board"))
+            taproot::matching_classes(dom, &Selector::class("board"))
                 .first()
                 .copied()
         })
@@ -261,7 +261,7 @@ fn the_board_screen_lays_out_where_the_gestures_expect() {
     let rect = |class: &str| {
         harness
             .with_dom(|dom| {
-                taproot::matching(dom, &Selector::class(class))
+                taproot::matching_classes(dom, &Selector::class(class))
                     .first()
                     .copied()
             })
@@ -414,7 +414,7 @@ fn typing_in_the_compendium_filters_its_index() {
 
 /// How many entry rows the compendium index is currently drawing.
 fn index_rows(harness: &BoardHarness) -> usize {
-    harness.with_dom(|dom| taproot::matching(dom, &Selector::class("compendium-link")).len())
+    harness.with_dom(|dom| taproot::matching_classes(dom, &Selector::class("compendium-link")).len())
 }
 
 /// The lane the caret is in has a box on screen.

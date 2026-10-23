@@ -14,7 +14,26 @@ isometer-core = { path = "../../../../shared/isometer/crates/isometer-core" }
 serde = { version = "1", features = ["derive"] }
 # The stack's collider layer (wing rulings 695, 722 to 725, 731): Rapier and
 # Parry stay private inside conatus.
-conatus = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
+conatus = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
 
 [workspace.package]
 rust-version = "1.97.1"
+
+# mere's own pins (eidetic 34105d63, gemot 4342aed4) follow the cohort:
+# the www form of each URL is the same repository under another source key.
+[patch."https://github.com/merely-made/eidetic.git"]
+muniment = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+chartulary = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+eidetic = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+hagiograph = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+stickleback = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+luggage = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+servitor = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+mere-proofs = { git = "https://www.github.com/merely-made/eidetic.git", rev = "aa94fe22eea29e9b54e01ed21e6991536ed4f208" }
+
+[patch."https://github.com/merely-made/gemot.git"]
+gemot = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }
+mooting = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }
+mien = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }
+moothold = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }
+commons-spine = { git = "https://www.github.com/merely-made/gemot.git", rev = "8ffdc9a5bab5dcc82fe3be4bfa0e1c5d8dbbab1c" }

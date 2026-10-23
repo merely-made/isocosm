@@ -111,7 +111,7 @@ macro_rules! adapter_or_skip {
 /// How many `.tile` elements the board is drawing. Zero is the whole premise:
 /// under the flag nothing in the tree names a tile.
 fn tile_elements(harness: &BoardHarness) -> usize {
-    harness.with_dom(|dom| taproot::matching(dom, &Selector::class("tile")).len())
+    harness.with_dom(|dom| taproot::matching_classes(dom, &Selector::class("tile")).len())
 }
 
 /// Pane-local coordinates of a window point. The `.board` container sits at

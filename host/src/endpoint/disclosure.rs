@@ -89,7 +89,8 @@ pub fn scene(adapter: &str, items: &[Item], links: &[(String, String, &str)]) ->
         let points = vec![scene.items[from.0 as usize].transform.translate,
             scene.items[to.0 as usize].transform.translate];
         scene.relations.push(RoutedRelation { from, to, space: Scene::WORLD, points,
-            kind: Some((*kind).into()), weight: None });
+            kind: Some((*kind).into()), weight: None, link_key: None,
+            marks: Default::default(), strength: None });
     }
     scene
 }

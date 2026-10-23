@@ -74,7 +74,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     if validate(&broken).is_ok() {
         return Err("missing-font control unexpectedly passed".into());
     }
-    let translated = paint_list_render::translate_envelope_with_external_textures(&envelope);
+    let translated = paint_list_render::translate_envelope_with_external_textures(&envelope)
+        .map_err(|error| format!("paint translation: {error}"))?;
     if !translated.external_textures.is_empty() {
         return Err("external GPU texture references need their producer capture".into());
     }

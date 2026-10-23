@@ -37,8 +37,8 @@ wing-glyphs = { path = "../../../shared/wing-glyphs" }
 # The sim-host core: its clock now (H3, 927), its driver and world next; its
 # Graphshell endpoint, under `endpoint`, serves the played turn (900, 903).
 isocosm-host = { path = "../../../host" }
-chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
-graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", optional = true }
+chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", optional = true }
+graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", optional = true }
 # The game published to the world section (H3).
 serde_json = "1"
 
@@ -48,7 +48,7 @@ endpoint = ["isocosm-host/endpoint", "dep:chirograph", "dep:graphshell-endpoint"
 [dev-dependencies]
 isonetry = { path = "../../../crates/isonetry", default-features = false }
 isocosm-host = { path = "../../../host", features = ["endpoint", "fixtures"] }
-graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d", features = ["local", "stdio"] }
+graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", features = ["local", "stdio"] }
 serde_json = "1"
 isometer-core = { workspace = true, features = ["fixtures"] }
 
