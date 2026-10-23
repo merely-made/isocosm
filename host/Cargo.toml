@@ -46,7 +46,7 @@ rust-version = "1.97.1"
 # Graphshell's crates name mere without www; these keep one mere source.
 [patch."https://github.com/merely-made/mere.git"]
 # Promoted sources shared with immutable older Mere suppliers.
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "738ef15956a29a125820b2d6c2280d39a6214f8e" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
 sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
 scenograph = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
 scenomise = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
@@ -54,7 +54,7 @@ scenotime = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a
 mere-curation = { git = "https://www.github.com/merely-made/mere.git", rev = "0b9b7a9b218579f1f36cc1ab05a51b2a13128f1d" }
 
 [patch.crates-io]
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "738ef15956a29a125820b2d6c2280d39a6214f8e" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }
 
 [patch."https://www.github.com/merely-made/mere.git"]
-hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "738ef15956a29a125820b2d6c2280d39a6214f8e" }
+hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "b830faac6539d6b69d41dd3ea76fa6f52951255f" }

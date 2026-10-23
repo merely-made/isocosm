@@ -255,7 +255,7 @@ dependencies = [
 [[package]]
 name = "hagiograph"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/eidetic.git?rev=738ef15956a29a125820b2d6c2280d39a6214f8e#738ef15956a29a125820b2d6c2280d39a6214f8e"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "serde",
 ]
@@ -783,7 +783,8 @@ dependencies = [
 
 [[package]]
 name = "wing-impresa"
-version = "0.1.0"
+version = "0.0.1"
+source = "git+https://github.com/merely-made/eidetic.git?rev=b830faac6539d6b69d41dd3ea76fa6f52951255f#b830faac6539d6b69d41dd3ea76fa6f52951255f"
 dependencies = [
  "serde",
  "serde_json",

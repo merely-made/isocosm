@@ -7,7 +7,8 @@ Condition carryover remains partly designed under 406.
 ## Current state, 2026-10-10
 
 `shared/wing-glyphs` owns canon, journey and divinity kernel types;
-`shared/wing-impresa` owns association records. Their existence does not
+eidetic's `wing-impresa` (moved there from `shared/` on 2026-10-22) owns
+association records. Their existence does not
 complete G3, G4, G6 or G7. `shared/isocosm/src/effects/` owns the moved
 embodiment, pack, functions and journal readings. The game halves live in
 `mesocosm/crates/mesocosm-runtime/src/glyphs.rs` and
@@ -36,7 +37,7 @@ organs live here, both wing material no single game owns: the
 the chosen referent and its periods, canon revisions; kernel
 `shared/wing-glyphs`), and the **impresa**, the association organ (records
 citing accepted events, read as fact, belief or legend; kernel
-`shared/wing-impresa`). Gates G1 and G2 are implemented, G5 landed in Eponym
+`wing-impresa`, in eidetic since 2026-10-22). Gates G1 and G2 are implemented, G5 landed in Eponym
 on 2026-09-14, G3 and G4 are open, G6 and G7 are ruled and not started, as
 the status paragraph below records. The wing design record's §2.7 owns the
 magic axes a world is drawn on and cites this plan for glyphs, journeys and

@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-20
 
-**Status, 2026-10-22:** in progress: L1 to L5 done; L6 under way (L6a to L6d done, L6e next). Shaped with Mark the same day in
+**Status, 2026-10-22:** L1 to L6 done; core v2 waits only on wgpu-graft's PR and retinue's push. Shaped with Mark the same day in
 four card rounds (Decisions, below); the per-area budget is his to set. The
 execution plan's six decisions are held until this lands.
 
@@ -151,6 +151,13 @@ Mark's answers, recorded as given.
   drafted": the rule to mere, the wing's half kept here citing it. Stack
   1, 2 and 11: "Reword to 'a product'". mere's shape: "'The stack', 1–5,
   budget 7".
+- **L6e, 2026-10-22:** pushes "Push each when green"; impresa "Both to
+  eidetic"; the move "Now, in a worktree; land when green"; the hook "A
+  thin runner crate". The repin was found to cascade (gemot, pinned here,
+  pinned eidetic's older commit, so a partial repin doubled five crates'
+  types), and the answer was the cohort: "repin, update, all good in my
+  book", option 2, gemot first. On the seven repositories behind their
+  remotes: "Level, push; PR for wgpu-graft".
 
 ## Design
 
@@ -297,7 +304,9 @@ other repositories' doc policies, each text approved (L6).
     bold in seven, in code font in twelve) stays as it is: mere's family
     audit reads a code-font path as a citation that must resolve.
     Done when both checks run from the pinned tool
-    and every repository carries core v2.
+    and every repository carries core v2. Done 2026-10-22, but for
+    wgpu-graft (a PR, so its required checks run) and retinue (committed;
+    its remote branch has others' unpushed work ahead of it).
 
 ## L1 draft: the rule, for `design_docs/DOC_POLICY.md`'s local addendum
 
