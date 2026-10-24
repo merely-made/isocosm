@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 //! Nearby dry sole targets, using the same height cache and paid chain checks.
 use super::*;
-use isometer_core::legs::{Leg, UNIT};
+use isometer_core::legs::{Leg, Rotation, UNIT};
 
 pub(super) fn targets(
     g: &mut Grounding<'_>,
@@ -12,12 +12,24 @@ pub(super) fn targets(
     yaw: Yaw,
     radius: i64,
 ) -> Result<Vec<[i64; 3]>> {
-    let half = super::super::birth::rotate(yaw, leg.half)?.map(i64::abs);
+    targets_rotated(g, leg, x, z, Rotation::at(yaw, 0), radius)
+}
+pub(super) fn targets_rotated(
+    g: &mut Grounding<'_>,
+    leg: &Leg,
+    x: i64,
+    z: i64,
+    rotation: Rotation,
+    radius: i64,
+) -> Result<Vec<[i64; 3]>> {
+    let half = rotation
+        .bounds([leg.half.map(|h| -h), leg.half], [0; 3])
+        .ok_or("foot extent overflow")?[1];
     let mut targets = Vec::new();
     for dx in -radius..=radius {
         for dz in -radius..=radius {
             let local = [leg.sole[0] + dx * UNIT, 0, leg.sole[2] + dz * UNIT];
-            let p = super::super::birth::rotate(yaw, local)?;
+            let p = rotation.rotate(local).ok_or("foot target overflow")?;
             let centre = [x * UNIT + p[0], 0, z * UNIT + p[2]];
             let mut heights = Vec::new();
             let mut dry = true;
@@ -132,6 +144,7 @@ pub(super) fn arrivals(
         return vec![to.clone()];
     };
     let frame = isometer_core::legs::StrideFrame {
+        turn: 0,
         root: to.at.map(|v| v * UNIT),
         feet: world.clone(),
         bearing: world.keys().copied().collect(),

@@ -2,18 +2,6 @@
 // SPDX-License-Identifier: MPL-2.0
 use super::*;
 
-#[derive(Deserialize)]
-struct Fixture {
-    seed: u64,
-    sites: BTreeMap<u64, crate::schema::Site>,
-    footprint: crate::schema::Footprint,
-    skeleton: crate::rules::Skeleton,
-    materials: Vec<crate::schema::Material>,
-    document: BodyDocument,
-    site: u64,
-    before: Pose,
-    after: Vec<Pose>,
-}
 #[test]
 fn retained_steep_pose_uses_paid_intermediate_stances() {
     let f: Fixture = serde_json::from_str(include_str!("../fixtures/steep.json")).unwrap();

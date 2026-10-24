@@ -19,6 +19,8 @@ pub(super) struct Motion {
     walking: Option<embodiment::Walking>,
     shifting: bool,
     braced: bool,
+    pivoting: bool,
+    yaw: f32,
     from: [f32; 3],
     target: [f32; 3],
     age: f32,
@@ -41,6 +43,12 @@ impl Motion {
             walking: scene.walking,
             shifting: false,
             braced: false,
+            pivoting: false,
+            yaw: isometer::core::legs::Rotation::at(
+                pose.as_ref().map(|p| p.yaw).unwrap_or_default(),
+                0,
+            )
+            .radians(),
             pose,
             from: body.at.map(|v| v as f32),
             target: body.at.map(|v| v as f32),
@@ -115,7 +123,7 @@ impl Motion {
             let to = walk.poses[1].clone();
             if self.pose.as_ref().is_some_and(|from| {
                 from == &walk.poses[0]
-                    && from.yaw == to.yaw
+                    && (from.yaw == to.yaw || walk.stride.as_ref().is_some_and(|s| s.turn != 0))
                     && cleared(scene, body, from, &to, walk.stride.as_ref())
             }) {
                 self.checked_revision = revision;
@@ -192,7 +200,7 @@ impl Motion {
             .filter(|p| !p.feet.is_empty())
             .map(|pose| {
                 if let Some(frame) = &planned {
-                    return embodiment::stride_feet(frame, pose.yaw)
+                    return embodiment::stride_feet(frame, self.sweep_from.as_ref().unwrap().yaw)
                         .unwrap_or_else(|_| pose.feet.clone());
                 }
                 self.sweep_from
@@ -202,8 +210,26 @@ impl Motion {
                     .unwrap_or_else(|| pose.feet.clone())
             });
         self.gait.set_physical_feet(feet);
-        self.braced =
-            planned.is_some() && self.stride.as_ref().is_some_and(|s| s.stages.is_empty());
+        let previous_yaw = self.yaw;
+        self.yaw = if let Some(frame) = &planned {
+            isometer::core::legs::Rotation::at(self.sweep_from.as_ref().unwrap().yaw, frame.turn)
+                .radians()
+        } else {
+            isometer::core::legs::Rotation::at(
+                self.pose.as_ref().map(|p| p.yaw).unwrap_or_default(),
+                0,
+            )
+            .radians()
+        };
+        self.pivoting = planned
+            .as_ref()
+            .is_some_and(|f| f.bearing.len() == f.feet.len())
+            && (self.yaw - previous_yaw).abs() > 0.000001;
+        self.braced = planned.is_some()
+            && self
+                .stride
+                .as_ref()
+                .is_some_and(|s| s.stages.is_empty() && s.turn == 0);
         let linear = [0, 1, 2].map(|k| self.from[k] + (self.target[k] - self.from[k]) * t);
         let origin = if let Some(frame) = &planned {
             let zero = scene.window.to_ground([0; 3]);
@@ -219,9 +245,9 @@ impl Motion {
         let mut high = [0, 1, 2].map(|k| self.from[k].max(self.target[k]));
         if let Some(stride) = &self.stride {
             let zero = scene.window.to_ground([0; 3]);
-            for s in &stride.stages {
+            for root in stride.stages.iter().map(|s| s.root) {
                 for k in 0..3 {
-                    let at = zero[k] as f32 + s.root[k] as f32 / isometer::core::legs::UNIT as f32;
+                    let at = zero[k] as f32 + root[k] as f32 / isometer::core::legs::UNIT as f32;
                     low[k] = low[k].min(at);
                     high[k] = high[k].max(at);
                 }
@@ -249,14 +275,7 @@ impl Motion {
             .map_or(0.24, |p| (p.feet.len() as f32 * 0.18).max(0.36))
     }
     pub fn yaw_radians(&self) -> f32 {
-        use isometer::core::Yaw;
-        let turns = match self.pose.as_ref().map(|p| p.yaw).unwrap_or_default() {
-            Yaw::Zero => 0.,
-            Yaw::Quarter => 1.,
-            Yaw::Half => 2.,
-            Yaw::ThreeQuarter => 3.,
-        };
-        turns * std::f32::consts::FRAC_PI_2
+        self.yaw
     }
 
     pub fn elapsed(&self, elapsed: f32) -> f32 {
@@ -278,6 +297,9 @@ impl Motion {
     }
     pub fn braced(&self) -> bool {
         self.braced
+    }
+    pub fn pivoting(&self) -> bool {
+        self.pivoting
     }
 }
 

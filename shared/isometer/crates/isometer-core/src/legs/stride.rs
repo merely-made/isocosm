@@ -1,7 +1,6 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
-//! Explicit fixed-point body transfers and single-foot swings. Terrain and
-//! admission remain the caller's; sampling never chooses a different motion.
+//! One explicit fixed-point trajectory for supported transfers, foot steps and turns.
 use super::{Point, UNIT};
 use crate::PartId;
 use serde::{Deserialize, Serialize};
@@ -11,30 +10,35 @@ use std::collections::{BTreeMap, BTreeSet};
 #[serde(deny_unknown_fields)]
 pub struct Stage {
     pub foot: PartId,
-    /// Absolute fixed-point root, reached with every current sole planted.
     pub root: Point,
-    /// Clearance above the higher of this foot's two sole heights.
+    /// Zero denotes a planted body transfer, permitted only in a turning stride.
     pub lift: i64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub target: Option<Point>,
+    /// Body orientation reached before this foot lifts, relative to initial yaw.
+    #[serde(default, skip_serializing_if = "zero")]
+    pub turn: i64,
 }
-
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Stride {
     pub stages: Vec<Stage>,
-    /// Rise to the higher endpoint before crossing; lower after crossing.
-    /// Omission preserves an earlier straight root transfer.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub clearance: bool,
+    /// Signed quarter turn. Omission keeps the original ordinary stride format.
+    #[serde(default, skip_serializing_if = "zero")]
+    pub turn: i8,
 }
-
+fn zero<T: Default + PartialEq>(value: &T) -> bool {
+    *value == T::default()
+}
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct StrideFrame {
     pub root: Point,
-    /// Absolute sole centres; a body shift cannot drag a planted foot.
     pub feet: BTreeMap<PartId, Point>,
     pub bearing: BTreeSet<PartId>,
+    pub turn: i64,
 }
-
 fn lerp(a: Point, b: Point, t: i64) -> Point {
     [0, 1, 2].map(|k| {
         (i128::from(a[k])
@@ -42,7 +46,6 @@ fn lerp(a: Point, b: Point, t: i64) -> Point {
             as i64
     })
 }
-
 fn transfer(a: Point, b: Point, t: i64, clearance: bool) -> Point {
     if !clearance || a[1] == b[1] {
         return lerp(a, b, t);
@@ -61,7 +64,6 @@ fn transfer(a: Point, b: Point, t: i64, clearance: bool) -> Point {
         lerp(bend, b, t * 2 - UNIT)
     }
 }
-
 impl Stride {
     pub fn samples(&self) -> i64 {
         128.max(self.stages.len() as i64 * 16)
@@ -74,64 +76,102 @@ impl Stride {
         b: &BTreeMap<PartId, Point>,
         phase: i64,
     ) -> Option<StrideFrame> {
-        if !(0..=UNIT).contains(&phase) || self.stages.len() > 64 || a.keys().ne(b.keys()) {
+        if !(0..=UNIT).contains(&phase)
+            || self.stages.len() > 64
+            || a.keys().ne(b.keys())
+            || ![-1, 0, 1].contains(&self.turn)
+        {
             return None;
         }
         let mut seen = BTreeSet::new();
+        let mut end = a.clone();
+        let mut angle = 0;
         for s in &self.stages {
-            if !a.contains_key(&s.foot) || !seen.insert(s.foot) || s.lift <= 0 {
-                return None;
+            let old = *end.get(&s.foot)?;
+            let goal = s.target.unwrap_or(b[&s.foot]);
+            if self.turn == 0 {
+                if !seen.insert(s.foot) || s.lift <= 0 || s.target.is_some() || s.turn != 0 {
+                    return None;
+                }
+            } else {
+                let direction = i64::from(self.turn);
+                if s.turn.unsigned_abs() > UNIT as u64
+                    || s.target.is_none()
+                    || s.lift < 0
+                    || s.turn * direction < angle * direction
+                    || s.turn.abs() > UNIT
+                    || (s.turn != angle && s.lift != 0)
+                    || (s.lift == 0 && goal != old)
+                {
+                    return None;
+                }
             }
+            end.insert(s.foot, goal);
+            angle = s.turn;
         }
-        if a.iter().any(|(id, p)| *p != b[id] && !seen.contains(id)) {
+        if end != *b || (self.turn != 0 && angle != i64::from(self.turn) * UNIT) {
             return None;
         }
-        let units = self.stages.len() as i64 * 4 + 1;
-        let scaled = phase * units;
-        let index = (scaled / (4 * UNIT)) as usize;
+        let units = self
+            .stages
+            .iter()
+            .map(|s| if s.lift == 0 { 1 } else { 4 })
+            .sum::<i64>()
+            + 1;
+        let mut scaled = phase * units;
         let mut feet = a.clone();
         let mut root = from;
-        for stage in self.stages.iter().take(index) {
-            feet.insert(stage.foot, b[&stage.foot]);
-            root = stage.root;
-        }
-        let mut bearing = feet.keys().copied().collect::<BTreeSet<_>>();
-        let root = if let Some(stage) = self.stages.get(index) {
-            let t = scaled - index as i64 * 4 * UNIT;
-            if t <= UNIT {
-                transfer(root, stage.root, t, self.clearance)
-            } else {
-                let t = (t - UNIT) / 3;
-                let start = feet[&stage.foot];
-                let end = b[&stage.foot];
-                let height = start[1].max(end[1]).checked_add(stage.lift)?;
-                let travel = ((t - UNIT / 4) * 2).clamp(0, UNIT);
-                let mut sole = lerp(start, end, travel);
-                sole[1] = if t < UNIT / 4 {
-                    (i128::from(start[1])
-                        + (i128::from(height) - i128::from(start[1])) * i128::from(t) * 4
-                            / i128::from(UNIT)) as i64
-                } else if t > UNIT * 3 / 4 {
-                    (i128::from(end[1])
-                        + (i128::from(height) - i128::from(end[1])) * i128::from(UNIT - t) * 4
-                            / i128::from(UNIT)) as i64
-                } else {
-                    height
-                };
-                feet.insert(stage.foot, sole);
-                if t > 0 && t < UNIT {
-                    bearing.remove(&stage.foot);
-                }
-                stage.root
+        let mut turn = 0;
+        for s in &self.stages {
+            let duration = if s.lift == 0 { UNIT } else { 4 * UNIT };
+            let goal = s.target.unwrap_or(b[&s.foot]);
+            if scaled >= duration {
+                feet.insert(s.foot, goal);
+                root = s.root;
+                turn = s.turn;
+                scaled -= duration;
+                continue;
             }
-        } else {
-            let t = scaled - self.stages.len() as i64 * 4 * UNIT;
-            transfer(root, to, t, self.clearance)
-        };
+            let mut bearing = feet.keys().copied().collect::<BTreeSet<_>>();
+            if scaled <= UNIT {
+                return Some(StrideFrame {
+                    root: transfer(root, s.root, scaled, self.clearance),
+                    feet,
+                    bearing,
+                    turn: turn + (s.turn - turn) * scaled / UNIT,
+                });
+            }
+            let t = (scaled - UNIT) / 3;
+            let start = feet[&s.foot];
+            let height = start[1].max(goal[1]).checked_add(s.lift)?;
+            let mut sole = lerp(start, goal, ((t - UNIT / 4) * 2).clamp(0, UNIT));
+            sole[1] = if t < UNIT / 4 {
+                (i128::from(start[1])
+                    + (i128::from(height) - i128::from(start[1])) * i128::from(t) * 4
+                        / i128::from(UNIT)) as i64
+            } else if t > UNIT * 3 / 4 {
+                (i128::from(goal[1])
+                    + (i128::from(height) - i128::from(goal[1])) * i128::from(UNIT - t) * 4
+                        / i128::from(UNIT)) as i64
+            } else {
+                height
+            };
+            feet.insert(s.foot, sole);
+            if t > 0 && t < UNIT {
+                bearing.remove(&s.foot);
+            }
+            return Some(StrideFrame {
+                root: s.root,
+                feet,
+                bearing,
+                turn: s.turn,
+            });
+        }
         Some(StrideFrame {
-            root,
+            root: transfer(root, to, scaled, self.clearance),
+            bearing: feet.keys().copied().collect(),
             feet,
-            bearing,
+            turn,
         })
     }
 }
@@ -140,15 +180,78 @@ impl Stride {
 mod tests {
     use super::*;
     #[test]
+    fn smaller_pivots_replant_between_rotations_without_dragging_bearing_soles() {
+        let a = BTreeMap::from([(PartId(1), [-UNIT, 0, 0]), (PartId(2), [UNIT, 0, 0])]);
+        let mut b = a.clone();
+        b.get_mut(&PartId(1)).unwrap()[0] += UNIT;
+        let root = [0, 2 * UNIT, 0];
+        let stride = Stride {
+            turn: 1,
+            clearance: true,
+            stages: vec![
+                Stage {
+                    foot: PartId(1),
+                    root,
+                    lift: 0,
+                    turn: UNIT / 2,
+                    target: Some(a[&PartId(1)]),
+                },
+                Stage {
+                    foot: PartId(1),
+                    root,
+                    lift: UNIT,
+                    turn: UNIT / 2,
+                    target: Some(b[&PartId(1)]),
+                },
+                Stage {
+                    foot: PartId(1),
+                    root,
+                    lift: 0,
+                    turn: UNIT,
+                    target: Some(b[&PartId(1)]),
+                },
+            ],
+        };
+        let mut last = stride.sample(root, root, &a, &b, 0).unwrap();
+        let mut rotated = false;
+        let mut lifted = false;
+        for i in 1..=stride.samples() {
+            let frame = stride
+                .sample(root, root, &a, &b, i * UNIT / stride.samples())
+                .unwrap();
+            if frame.turn != last.turn {
+                rotated = true;
+                assert_eq!(frame.bearing.len(), 2);
+                if last.bearing.len() == 2 {
+                    assert_eq!(frame.feet, last.feet);
+                }
+                for (id, p) in &frame.feet {
+                    assert_eq!([p[0], p[2]], [last.feet[id][0], last.feet[id][2]]);
+                }
+            }
+            lifted |= frame.bearing.len() == 1;
+            last = frame;
+        }
+        assert!(rotated && lifted);
+        assert_eq!(last.feet, b);
+        assert_eq!(last.turn, UNIT);
+        let mut forged = stride;
+        forged.stages[0].target = Some(b[&PartId(1)]);
+        assert!(forged.sample(root, root, &a, &b, UNIT / 2).is_none());
+    }
+    #[test]
     fn body_transfers_before_takeoff_and_all_other_feet_stay_anchored() {
         let a = BTreeMap::from([(PartId(1), [-UNIT, 0, 0]), (PartId(2), [UNIT, 0, 0])]);
         let b = BTreeMap::from([(PartId(1), [0, 0, 0]), (PartId(2), [UNIT, 0, 0])]);
         let stride = Stride {
+            turn: 0,
             clearance: false,
             stages: vec![Stage {
                 foot: PartId(1),
                 root: [UNIT, 2 * UNIT, 0],
                 lift: UNIT,
+                target: None,
+                turn: 0,
             }],
         };
         let shifted = stride
@@ -198,9 +301,12 @@ mod tests {
             foot: PartId(1),
             root: [0; 3],
             lift: UNIT,
+            target: None,
+            turn: 0,
         };
         assert!(
             Stride {
+                turn: 0,
                 clearance: false,
                 stages: vec![s.clone(), s.clone()]
             }
@@ -209,6 +315,7 @@ mod tests {
         );
         assert!(
             Stride {
+                turn: 0,
                 stages: vec![s],
                 clearance: false
             }

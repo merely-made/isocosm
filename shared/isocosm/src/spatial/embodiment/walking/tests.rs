@@ -3,7 +3,20 @@
 use super::super::articulation_tests::{quadruped, volume};
 use super::*;
 mod steep;
+mod turns;
 
+#[derive(Deserialize)]
+struct Fixture {
+    seed: u64,
+    sites: BTreeMap<u64, crate::schema::Site>,
+    footprint: crate::schema::Footprint,
+    skeleton: crate::rules::Skeleton,
+    materials: Vec<crate::schema::Material>,
+    document: BodyDocument,
+    site: u64,
+    before: Pose,
+    after: Vec<Pose>,
+}
 #[test]
 fn omitted_clearance_keeps_the_first_saved_straight_transfer_policy() {
     let old = r#"{"shift":2,"foot_search":2,"lift":3,"postures":256}"#;
@@ -18,6 +31,8 @@ fn omitted_clearance_keeps_the_first_saved_straight_transfer_policy() {
     );
     assert!(Walking::default().clearance);
     assert_eq!(policy.stances, 0);
+    assert!(!policy.turns);
+    assert!(Walking::default().turns);
     let earlier = r#"{"clearance":true,"shift":4,"foot_search":2,"lift":3,"postures":256}"#;
     let earlier: Walking = serde_json::from_str(earlier).unwrap();
     assert_eq!(earlier.stances, 0);

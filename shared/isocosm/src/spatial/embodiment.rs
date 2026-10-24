@@ -14,9 +14,11 @@ mod contacts;
 mod food;
 mod footholds;
 mod narrow;
+mod steps;
 mod support;
 mod walking;
 pub use food::FoodStand;
+pub(crate) use steps::articulated_neighbours;
 pub use walking::local_feet as stride_feet;
 pub use walking::{
     Walking, check_stride, check_walk, plan_stride, step_stride, stride_boxes, stride_sample,
@@ -30,9 +32,9 @@ mod habitat;
 pub use contacts::{Contact, contacts, sweep_clear};
 pub use habitat::{declare_site, place_in_site, site_window, whole_site};
 #[cfg(test)]
-mod articulation_tests;
+pub(super) mod articulation_tests;
 #[cfg(test)]
-mod tests;
+pub(super) mod tests;
 pub use founding::{anchor, declare};
 
 pub type Box3 = [[i64; 3]; 2];
@@ -475,80 +477,6 @@ pub fn neighbours_with_walking(
         return Vec::new();
     };
     neighbours_from_boxes(places, profile, &local, pose, &mut grounding)
-}
-
-pub(crate) fn articulated_neighbours(
-    places: &Places,
-    profile: &StepProfile,
-    document: &BodyDocument,
-    pose: &Pose,
-    grounding: &mut Grounding<'_>,
-) -> Vec<Pose> {
-    grounding.articulated = true;
-    let Some(from) = places.place_at(pose.at) else {
-        return Vec::new();
-    };
-    let mut out = Vec::new();
-    // The axial graph's forward direction is -Z. Try facing the actual step,
-    // then retain an admitted sidestep if a whole-body turn cannot fit.
-    for (dx, dz, facing) in [
-        (0, -1, Yaw::Zero),
-        (-1, 0, Yaw::Quarter),
-        (0, 1, Yaw::Half),
-        (1, 0, Yaw::ThreeQuarter),
-    ] {
-        for yaw in [facing, pose.yaw] {
-            if out.iter().any(|p: &Pose| {
-                p.at[0] == pose.at[0] + dx && p.at[2] == pose.at[2] + dz && p.yaw == yaw
-            }) {
-                continue;
-            }
-            let Ok(next) = grounding.at_near(
-                document,
-                pose.at[0] + dx,
-                pose.at[2] + dz,
-                yaw,
-                Some(pose.at[1]),
-            ) else {
-                continue;
-            };
-            if next.at[1].abs_diff(pose.at[1]) > u64::from(profile.body.climb) {
-                continue;
-            }
-            let Some(to) = places.place_at(next.at) else {
-                continue;
-            };
-            if from != to {
-                let key = if from < to { [from, to] } else { [to, from] };
-                if places
-                    .passages
-                    .get(&key)
-                    .and_then(|p| profile.body.fits(p))
-                    .is_none()
-                {
-                    continue;
-                }
-            }
-            // Turning geometry is checked through its conservative body sweep.
-            if yaw != pose.yaw
-                && swing::turn_clear(grounding.volume, document, pose, &next).is_err()
-            {
-                continue;
-            }
-            if let Some(rules) = grounding.walking.filter(|r| r.stances > 0) {
-                out.extend(footholds::arrivals(
-                    grounding.volume,
-                    document,
-                    pose,
-                    &next,
-                    rules,
-                ));
-            } else {
-                out.push(next);
-            }
-        }
-    }
-    out
 }
 
 pub(crate) fn neighbours_from_boxes(

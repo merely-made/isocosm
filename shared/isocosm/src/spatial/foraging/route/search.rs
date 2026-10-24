@@ -3,9 +3,14 @@
 //! Bounded multi-goal search over native grounded poses. Expensive full swings
 //! are checked on candidate paths, once per edge, before declaring reachability.
 use super::*;
+#[cfg(test)]
+mod turn_tests;
 type Node = ([i64; 3], Yaw, [u8; 32]);
 fn node(input: &Input, pose: &Pose) -> Node {
-    key(pose, input.walking.is_some_and(|r| r.stances > 0))
+    key(
+        pose,
+        input.walking.is_some_and(|r| r.stances > 0 || r.turns),
+    )
 }
 fn key(pose: &Pose, stances: bool) -> Node {
     use sha2::{Digest, Sha256};
@@ -152,15 +157,16 @@ fn trial(
     rejected: &BTreeSet<(Node, Node)>,
     exhausted: &mut bool,
 ) -> Result<Option<Vec<Node>>> {
-    let mut costs = BTreeMap::from([(origin, 0u64)]);
+    let mut costs = BTreeMap::from([(origin, (0u64, 0u64))]);
     let mut parents = BTreeMap::new();
     let mut queue = BTreeSet::from([(
         graph[&origin].distance.saturating_sub(input.reach),
         0u64,
+        0u64,
         origin,
     )]);
-    while let Some((_, cost, key)) = queue.pop_first() {
-        if costs.get(&key) != Some(&cost) {
+    while let Some((_, sideways, cost, key)) = queue.pop_first() {
+        if costs.get(&key) != Some(&(cost, sideways)) {
             continue;
         }
         if graph[&key].food.is_some() {
@@ -213,15 +219,36 @@ fn trial(
                 continue;
             }
             let next_cost = cost + 1;
-            if costs.get(&to).is_some_and(|old| *old <= next_cost) {
+            let next_sideways = sideways
+                + u64::from(
+                    input.walking.is_some_and(|r| r.turns)
+                        && sidestep(&graph[&key].pose, &graph[&to].pose),
+                );
+            if costs
+                .get(&to)
+                .is_some_and(|old| *old <= (next_cost, next_sideways))
+            {
                 continue;
             }
-            costs.insert(to, next_cost);
+            costs.insert(to, (next_cost, next_sideways));
             parents.insert(to, key);
             let estimate =
                 next_cost.saturating_add(graph[&to].distance.saturating_sub(input.reach));
-            queue.insert((estimate, next_cost, to));
+            queue.insert((estimate, next_sideways, next_cost, to));
         }
     }
     Ok(None)
+}
+fn sidestep(from: &Pose, to: &Pose) -> bool {
+    let d = [to.at[0] - from.at[0], to.at[2] - from.at[2]];
+    if d == [0, 0] {
+        return false;
+    }
+    let forward = match to.yaw {
+        Yaw::Zero => [0, -1],
+        Yaw::Quarter => [-1, 0],
+        Yaw::Half => [0, 1],
+        Yaw::ThreeQuarter => [1, 0],
+    };
+    d != forward
 }

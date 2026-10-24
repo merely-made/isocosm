@@ -72,6 +72,8 @@ def main():
         "max_weight_shifting": max(record.get("weight_shifting", 0) for record in records),
         "planted_body_transfer_frames": sum(record.get("planted_body_transfers", 0) > 0 for record in records),
         "max_planted_body_transfers": max(record.get("planted_body_transfers", 0) for record in records),
+        "supported_pivot_frames": sum(record.get("pivoting", 0) > 0 for record in records),
+        "max_pivoting": max(record.get("pivoting", 0) for record in records),
         "max_planted": max(record["planted"] for record in records),
         "projection_failures": max(record["projection_failures"] for record in records),
         "same_native_cut_changes": changes,

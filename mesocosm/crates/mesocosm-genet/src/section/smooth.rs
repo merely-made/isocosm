@@ -80,6 +80,7 @@ impl Bodies {
         let mut swinging = 0;
         let mut shifting = 0;
         let mut braced = 0;
+        let mut pivoting = 0;
         let now = std::time::Instant::now();
         let elapsed = now.duration_since(self.previous).as_secs_f32().min(0.1);
         self.previous = now;
@@ -100,6 +101,7 @@ impl Bodies {
                 live.origin = motion.sample_revision(body, scene, elapsed, self.clearance_revision);
                 shifting += usize::from(motion.shifting());
                 braced += usize::from(motion.braced());
+                pivoting += usize::from(motion.pivoting());
                 live.yaw_radians = motion.yaw_radians();
                 let elapsed = motion.elapsed(elapsed);
                 let witnesses = motion
@@ -151,6 +153,7 @@ impl Bodies {
         layer.stats.swinging_contacts = swinging;
         layer.stats.weight_shifting_bodies = shifting;
         layer.stats.planted_body_transfers = braced;
+        layer.stats.pivoting_bodies = pivoting;
         layer.stats.draw_parts = layer.stats.voxel_parts;
         layer.stats.frame_upload_bytes = bytes;
         layer.stats.body_upload_measurement = Some("implicit primitive and frame bytes");

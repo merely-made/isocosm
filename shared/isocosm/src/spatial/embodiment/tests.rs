@@ -3,7 +3,7 @@
 
 use super::*;
 
-pub(super) fn terrain() -> Simulation {
+pub(in crate::spatial) fn terrain() -> Simulation {
     let g = crate::Founding {
         seed: 7,
         sites: 4,

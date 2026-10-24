@@ -54,6 +54,8 @@ pub struct BodyFrameStats {
     pub weight_shifting_bodies: usize,
     /// Host-written: moving the body with every world-space sole retained.
     pub planted_body_transfers: usize,
+    /// Host-written: an admitted orientation change over planted support.
+    pub pivoting_bodies: usize,
     pub support_contacts: usize,
     /// A host-owned body's encode report, zero for caller-owned submission.
     pub body_tenant_internal_submissions: u64,

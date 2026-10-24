@@ -81,6 +81,9 @@ fn fixture() -> (PlacedBody, SiteScene) {
 }
 
 fn jointed_fixture() -> (PlacedBody, SiteScene, Pose, isometer::core::legs::Stride) {
+    jointed_motion(false)
+}
+fn jointed_motion(pivot: bool) -> (PlacedBody, SiteScene, Pose, isometer::core::legs::Stride) {
     let mut founding = mesocosm_runtime::Founded::generated(7, 60)
         .unwrap()
         .genesis
@@ -108,12 +111,35 @@ fn jointed_fixture() -> (PlacedBody, SiteScene, Pose, isometer::core::legs::Stri
         let Ok(from) = ground.find(doc, [384, 0, 384], Default::default(), 12, 2, 64, &[]) else {
             continue;
         };
-        for (dx, dz) in [(1, 0), (-1, 0), (0, 1), (0, -1)] {
-            let Ok(to) = ground.at(doc, from.at[0] + dx, from.at[2] + dz, from.yaw) else {
+        let directions = if pivot {
+            vec![
+                (0, 0, from.yaw.compose(isometer::core::Yaw::Quarter)),
+                (0, 0, from.yaw.compose(isometer::core::Yaw::ThreeQuarter)),
+            ]
+        } else {
+            vec![
+                (1, 0, from.yaw),
+                (-1, 0, from.yaw),
+                (0, 1, from.yaw),
+                (0, -1, from.yaw),
+            ]
+        };
+        for (dx, dz, yaw) in directions {
+            let Ok(to) = ground.at(doc, from.at[0] + dx, from.at[2] + dz, yaw) else {
                 continue;
             };
-            let Ok(stride) = embodiment::plan_stride(&volume, doc, &from, &to, rules, &[]) else {
-                continue;
+            let stride = match embodiment::plan_stride(&volume, doc, &from, &to, rules, &[]) {
+                Ok(stride) => stride,
+                Err(why) => {
+                    if pivot {
+                        eprintln!(
+                            "generated pivot with {} parts and {} feet toward {yaw:?}: {why}",
+                            doc.living().count(),
+                            from.feet.len()
+                        );
+                    }
+                    continue;
+                },
             };
             let body = PlacedBody {
                 id: 6,
@@ -139,6 +165,39 @@ fn jointed_fixture() -> (PlacedBody, SiteScene, Pose, isometer::core::legs::Stri
         }
     }
     panic!("jointed roster must supply a supported moving fixture");
+}
+
+#[test]
+fn displayed_pivot_uses_the_accepted_orientation_and_supported_stride() {
+    let (mut body, mut scene, to, stride) = jointed_motion(true);
+    let from = body.physical.clone().unwrap();
+    let mut motion = Motion::new(&body, &scene);
+    motion.sample_revision(&body, &scene, 0., 1);
+    body.physical = Some(to.clone());
+    body.at = scene.window.to_ground(to.at);
+    body.walks = vec![Walk {
+        poses: [from.clone(), to.clone()],
+        stride: Some(stride.clone()),
+    }];
+    scene.bodies = vec![body.clone()];
+    let mut pivoted = false;
+    for _ in 0..160 {
+        motion.sample_revision(&body, &scene, 0.025, 2);
+        if motion.age < motion.duration() {
+            let phase = ((motion.age / motion.duration()) * stride.samples() as f32).floor() as i64
+                * isometer::core::legs::UNIT
+                / stride.samples();
+            let frame = embodiment::stride_sample(&from, &to, &stride, phase).unwrap();
+            let yaw = isometer::core::legs::Rotation::at(from.yaw, frame.turn).radians();
+            assert!((motion.yaw_radians() - yaw).abs() < 0.00001);
+            pivoted |= motion.pivoting();
+        }
+    }
+    assert!(
+        pivoted,
+        "an admitted turn must not snap to its final facing"
+    );
+    assert!(!motion.active());
 }
 
 #[test]

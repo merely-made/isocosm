@@ -6,7 +6,7 @@ use isometer_core::{
     legs::{self, UNIT},
 };
 
-pub(super) fn quadruped() -> BodyDocument {
+pub(in crate::spatial) fn quadruped() -> BodyDocument {
     let mut doc = BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 4]);
     for x in [-1, 1] {
         for z in [-3, 3] {

@@ -13,15 +13,28 @@ pub(super) struct Recording {
 }
 impl Default for Recording {
     fn default() -> Self {
-        Self { root: std::env::var_os("MESOCOSM_CAPTURE_MOTION").map(PathBuf::from),
-            ready: false, start: Instant::now(), frames: Vec::new() }
+        Self {
+            root: std::env::var_os("MESOCOSM_CAPTURE_MOTION").map(PathBuf::from),
+            ready: false,
+            start: Instant::now(),
+            frames: Vec::new(),
+        }
     }
 }
 impl Recording {
-    pub(super) fn frame(&mut self, section: &Section, texture: &wgpu::Texture,
-        input: &super::super::Snapshot, was_animating: bool) -> Result<(), String> {
-        let Some(root) = &self.root else { return Ok(()) };
-        if self.frames.len() >= 24 || (!self.frames.is_empty() && !was_animating && !section.animating()) {
+    pub(super) fn frame(
+        &mut self,
+        section: &Section,
+        texture: &wgpu::Texture,
+        input: &super::super::Snapshot,
+        was_animating: bool,
+    ) -> Result<(), String> {
+        let Some(root) = &self.root else {
+            return Ok(());
+        };
+        if self.frames.len() >= 24
+            || (!self.frames.is_empty() && !was_animating && !section.animating())
+        {
             return Ok(());
         }
         if !self.ready {
@@ -29,7 +42,8 @@ impl Recording {
             std::fs::create_dir(root).map_err(|e| format!("motion capture directory: {e}"))?;
             self.ready = true;
         }
-        let (width, height, rgba) = section.capture_from(texture, |_,_,_| {})
+        let (width, height, rgba) = section
+            .capture_from(texture, |_, _, _| {})
             .ok_or("motion frame GPU readback failed")?;
         let stats = section.body_stats();
         let name = format!("frame-{:02}.png", self.frames.len());
@@ -40,6 +54,7 @@ impl Recording {
             "planted": stats.planted_contacts, "swinging": stats.swinging_contacts,
             "weight_shifting": stats.weight_shifting_bodies,
             "planted_body_transfers": stats.planted_body_transfers,
+            "pivoting": stats.pivoting_bodies,
             "reachable_feet": stats.foot_contacts, "joints": stats.posed_joints,
             "projection_failures": stats.projection_failures,
             "roots": input.scene.bodies.iter().filter_map(|b| b.physical.as_ref()

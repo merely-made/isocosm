@@ -396,6 +396,118 @@ initial process peaks at 2.72 GB working set. Source, locks, binary hashes,
 failed exploratory probes, both captures and exact witnesses are retained
 under the 100 MB receipt cap.
 
+## Supported turning follow-up, 2026-10-24
+
+Mark agrees to connect supported quarter-turns and steering next. This is
+implementation of the existing limb/support model. Responsa path lookups find
+no governing decision on the affected walking, stride or food-route modules.
+The case record and generated decision files are unchanged.
+
+Shared Isometer core owns the deterministic turn sampling alongside its
+existing stride. Native Isocosm owns candidate placement, paid reach, terrain,
+support, live occupancy and admission. Mesocosm presents the accepted sampled
+orientation and soles. An optional saved walking flag enables the new path;
+omission preserves earlier saved policies.
+
+Done-conditions:
+
+1. Construct supported quarter-turns by moving feet to a shared stance,
+   pivoting over its planted soles, then using the existing stride planner to
+   complete the step. Validate every displayed phase against paid chains,
+   actual dry support, narrow terrain and current occupied geometry.
+2. Connect turns to the existing food-route search, with facing as a preference
+   between equally short routes. Retain legitimate sideways movement and all
+   existing route/work bounds. Test supported pivots, blocked turns and an
+   obstruction that requires a change of facing.
+3. Present the same admitted turn and collect actual pivot/sole evidence.
+   Run the first eligible unchosen seed, verify its exact native food routes,
+   capture movement, and replay the retained older native histories.
+
+Receipts: `Code/testing/mesocosm/turning-2026-10-24/`, total retained cap 100 MB.
+Reuse the existing playable checkout, target and named Cargo home. Record
+remaining refusals and measured costs. Startup optimization remains a later
+slice.
+
+The implementation extends the existing stride stages with optional explicit
+world-space sole targets and relative body orientations. It reuses ordinary
+foot-step planning between small supported pivots, trying eight or four
+pieces for a quarter-turn. Body-only stages retain every sole. The same
+fixed-point rotation and sampled trajectory drive native paid-chain checks
+and display. The sampler retains ordinary stage resolution. Candidate stances
+and foot-step planning share the declared posture budget; complete motion
+retains the existing clearance-work and sixty-four-stage bounds.
+
+A first, separate whole-quarter pivot format passed the toy quadruped and
+slope checks but failed the generated-body render fixture: the longer bodies
+could not keep one stance through ninety degrees. Its source and failed
+receipt are retained. The delivered approach instead merges turning and
+repeated foot placement into the existing stage sequence; old fields remain
+omitted in ordinary saved strides.
+
+Foot support uses the actual rotated pad footprint against dry terrain
+columns, with the existing bearing polygon and volume-centre law. Rigid-part
+clearance remains conservative rotated bounds. Contacts retain the existing
+sole-centre representation; independent ankle yaw and friction are unmodelled.
+The optional saved `Walking.turns` flag defaults on for new worlds. Omission
+preserves older policy, route ordering and stride serialization.
+
+Routes can include supported adjacent quarter-turns and turns at one root.
+Facing breaks ties between equally short routes. A longer route may still
+lose to a short sideways step; the route-node cap remains 256. Foot layouts
+remain distinct route states when supported turns are enabled.
+
+The first unchosen draw admitted candidate 10/128, seed
+`14417468444982103644`. Its first three ticks produced forty-one verified food
+steps across twenty-three walkers, hash `1a60465b3560d3ef`, but no turn. The
+twenty-three actual frames show supported walking and zero projection failures.
+This remains the initial failed turning demonstration, not final acceptance.
+
+The live refusal probe found actor 41's fixed pivot root outside the bearing
+polygon. The follow-up reuses polygon balance during rotation, preserves
+usable current contacts and permits a lower torso stance within `shift`.
+Turning alone may lower the root by at most that declared deviation; ordinary
+saved stride restrictions are unchanged. Narrow terrain, current bodies, paid
+reach and support still validate the complete trajectory. The actor's exact
+terrain, anatomy and two admitted static turn goals become a regression;
+the recovered trajectory includes a torso shift during the pivot. The final
+capture retests this same unchosen genesis with presentation following actor
+41. The initial capture, exact sources, binary hashes and failures remain in
+the receipt directory.
+
+Status: 138 selected controls pass: eight shared limb/sampler, nineteen native
+spatial, fifty-five host, twenty-six runtime and thirty integration controls.
+These include two ground heights, a blocked turn, an obstacle requiring
+turning in a food route, generated anatomy in the renderer, the retained steep
+stance and the first unchosen support refusal. Six existing ignored tests
+remain ignored; one older multi-seed integration is filtered.
+
+The repaired three-tick run of the exact same genesis has hash
+`ace920c6cd43b872`, forty verified sight-directed food steps across twenty-three
+walkers and two admitted turns, by actors 65 and 60. Every accepted food step
+was rechecked at its exact native choice cut, including its complete route
+and paid stride. No recorded food route was refused. The first-cut census
+still has one actor exhausting the 256-node limit and four returning before
+search, among twenty-eight reports.
+
+Following actor 41 did not show the two remote turns. A presentation-only
+recapture follows actor 65 and reproduces the identical complete native
+history. `turn-view-moving.webp` contains twenty-four actual frames, including
+six with supported swings, twelve with torso shifts and one with a planted
+pivot. Projection failures and reported endpoint-box intersections are zero.
+This records the native sole-centre and paid-chain model; it does not qualify
+independent ankle articulation or continuous moving-body contact dynamics.
+
+`balanced-profile.json` records 9,248 spans below the 131,072-span cap. The
+repaired process took 67.52 seconds with a 624.3 MB peak working
+set. Thirty-one cold terrain/place builds cost 22.76 seconds; eighty-two route
+searches cost 18.78 seconds; 980 stride plans cost 16.08 seconds. Nested spans
+overlap. The initial failed run had other replay work running, so these are
+cost censuses, not a controlled before/after speed comparison. Startup and
+repeated-work optimization remain a later slice. All nine retained older
+native histories replay to their exact recorded hashes with the final binary.
+`qualification.json`, the source archive and executable hashes identify this
+receipt; the headed claim is limited to the captured Mesocosm run.
+
 ## Delivery locations
 
 Work is on main in `Code/repos/isocosm`. The existing

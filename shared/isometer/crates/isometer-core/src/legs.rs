@@ -8,6 +8,8 @@ mod collision;
 pub use collision::Capsule;
 mod stride;
 pub use stride::{Stage, Stride, StrideFrame};
+mod rotation;
+pub use rotation::Rotation;
 pub mod support;
 
 pub const UNIT: i64 = 1024;

@@ -26,10 +26,26 @@ impl mesquite::Product for Probe {
         let body_stats = s.producer.borrow_mut().body_stats().unwrap_or_default();
         let terrain_stats = s.producer.borrow_mut().terrain_stats().unwrap_or_default();
         let physical = r.spatial();
-        let (walks, children) = physical.driver.as_ref().map_or((0, 0), |driver| (
-            driver.records.iter().map(|record| record.steps.len()).sum::<usize>(),
-            driver.records.iter().flat_map(|record| &record.changes)
-                .filter(|change| matches!(change.admission, mesocosm_runtime::spatial::Admission::Birth { .. })).count()));
+        let (walks, children) = physical.driver.as_ref().map_or((0, 0), |driver| {
+            (
+                driver
+                    .records
+                    .iter()
+                    .map(|record| record.steps.len())
+                    .sum::<usize>(),
+                driver
+                    .records
+                    .iter()
+                    .flat_map(|record| &record.changes)
+                    .filter(|change| {
+                        matches!(
+                            change.admission,
+                            mesocosm_runtime::spatial::Admission::Birth { .. }
+                        )
+                    })
+                    .count(),
+            )
+        });
         let living = r
             .sim()
             .state()
@@ -61,43 +77,147 @@ impl mesquite::Product for Probe {
                 ("site", some(s.host.scene.as_ref().map(|s| s.site))),
                 ("living", living.to_string()),
                 ("physical-members", physical.members.len().to_string()),
-                ("whole-body-placement", yes_no(isocosm::spatial::embodiment::enabled(&r.sim()))),
+                (
+                    "whole-body-placement",
+                    yes_no(isocosm::spatial::embodiment::enabled(&r.sim())),
+                ),
                 ("accepted-walks", walks.to_string()),
                 ("food-directed-walking", yes_no(r.sim().foraging_enabled())),
-                ("native-poses", r.sim().state().spatial_poses.len().to_string()),
+                (
+                    "native-poses",
+                    r.sim().state().spatial_poses.len().to_string(),
+                ),
                 ("placed-offspring", children.to_string()),
-                ("controlled-placement", yes_no(r.critter().is_some_and(|id| physical.members.get(&id).is_some_and(|at| at.realized(&r.sim()).is_ok()
-                    && physical.placement_unoccupied(&r.sim(), id).is_ok())))),
-                ("body-founding", r.sim().genesis().founding.as_ref()
-                    .and_then(|f| f.bodies.as_ref()).and_then(|b| b.founding.clone())
-                    .unwrap_or_else(|| "historical".into())),
-                ("body-proportions", if r.sim().genesis().founding.as_ref()
-                    .and_then(|f|f.bodies.as_ref()).is_some_and(|b|b.proportions) { "varied" } else { "fixed" }.into()),
-                ("functional-parts", s.host.scene.as_ref().map_or(0, |scene| scene.bodies.iter()
-                    .map(|b| b.materials.len()).sum::<usize>()).to_string()),
+                (
+                    "controlled-placement",
+                    yes_no(r.critter().is_some_and(|id| {
+                        physical.members.get(&id).is_some_and(|at| {
+                            at.realized(&r.sim()).is_ok()
+                                && physical.placement_unoccupied(&r.sim(), id).is_ok()
+                        })
+                    })),
+                ),
+                (
+                    "body-founding",
+                    r.sim()
+                        .genesis()
+                        .founding
+                        .as_ref()
+                        .and_then(|f| f.bodies.as_ref())
+                        .and_then(|b| b.founding.clone())
+                        .unwrap_or_else(|| "historical".into()),
+                ),
+                (
+                    "body-proportions",
+                    if r.sim()
+                        .genesis()
+                        .founding
+                        .as_ref()
+                        .and_then(|f| f.bodies.as_ref())
+                        .is_some_and(|b| b.proportions)
+                    {
+                        "varied"
+                    } else {
+                        "fixed"
+                    }
+                    .into(),
+                ),
+                (
+                    "functional-parts",
+                    s.host
+                        .scene
+                        .as_ref()
+                        .map_or(0, |scene| {
+                            scene
+                                .bodies
+                                .iter()
+                                .map(|b| b.materials.len())
+                                .sum::<usize>()
+                        })
+                        .to_string(),
+                ),
                 ("bodies", s.host.config.body_mode.name().into()),
                 ("voxel-bodies", body_stats.voxel_bodies.to_string()),
                 ("terrain-bricks", terrain_stats.resident.to_string()),
                 ("terrain-capacity", terrain_stats.capacity.to_string()),
-                ("habitat", if isocosm::spatial::embodiment::whole_site(&r.sim()) {"site"} else {"patch"}.into()),
-                ("site-poses", r.spatial().members.values().filter(|p| p.site.0 == s.host.scene.as_ref().map_or(u64::MAX,|s| s.site)).count().to_string()),
+                (
+                    "habitat",
+                    if isocosm::spatial::embodiment::whole_site(&r.sim()) {
+                        "site"
+                    } else {
+                        "patch"
+                    }
+                    .into(),
+                ),
+                (
+                    "site-poses",
+                    r.spatial()
+                        .members
+                        .values()
+                        .filter(|p| p.site.0 == s.host.scene.as_ref().map_or(u64::MAX, |s| s.site))
+                        .count()
+                        .to_string(),
+                ),
                 ("terrain-overflow", terrain_stats.overflow.to_string()),
                 ("voxel-parts", body_stats.voxel_parts.to_string()),
-                ("smooth-primitives", body_stats.smooth_primitives.to_string()),
+                (
+                    "smooth-primitives",
+                    body_stats.smooth_primitives.to_string(),
+                ),
                 ("posed-joints", body_stats.posed_joints.to_string()),
                 ("foot-contacts", body_stats.foot_contacts.to_string()),
                 ("planted-contacts", body_stats.planted_contacts.to_string()),
-                ("swinging-contacts", body_stats.swinging_contacts.to_string()),
-                ("weight-shifting-bodies", body_stats.weight_shifting_bodies.to_string()),
-                ("planted-body-transfers", body_stats.planted_body_transfers.to_string()),
+                (
+                    "swinging-contacts",
+                    body_stats.swinging_contacts.to_string(),
+                ),
+                (
+                    "weight-shifting-bodies",
+                    body_stats.weight_shifting_bodies.to_string(),
+                ),
+                (
+                    "planted-body-transfers",
+                    body_stats.planted_body_transfers.to_string(),
+                ),
+                ("pivoting-bodies", body_stats.pivoting_bodies.to_string()),
                 ("support-contacts", body_stats.support_contacts.to_string()),
                 ("fallback-bodies", body_stats.fallback_bodies.to_string()),
-                ("projection-failures", body_stats.projection_failures.to_string()),
-                ("body-projection-error", body_stats.last_error.clone().unwrap_or_default()),
-                ("scene-physical-bodies", s.host.scene.as_ref().map_or(0, |scene|
-                    scene.bodies.iter().filter(|body| body.physical.is_some()).count()).to_string()),
-                ("scene-parts", s.host.scene.as_ref().map_or(0, |scene|
-                    scene.bodies.iter().map(|body| body.document.living().count()).sum::<usize>()).to_string()),
+                (
+                    "projection-failures",
+                    body_stats.projection_failures.to_string(),
+                ),
+                (
+                    "body-projection-error",
+                    body_stats.last_error.clone().unwrap_or_default(),
+                ),
+                (
+                    "scene-physical-bodies",
+                    s.host
+                        .scene
+                        .as_ref()
+                        .map_or(0, |scene| {
+                            scene
+                                .bodies
+                                .iter()
+                                .filter(|body| body.physical.is_some())
+                                .count()
+                        })
+                        .to_string(),
+                ),
+                (
+                    "scene-parts",
+                    s.host
+                        .scene
+                        .as_ref()
+                        .map_or(0, |scene| {
+                            scene
+                                .bodies
+                                .iter()
+                                .map(|body| body.document.living().count())
+                                .sum::<usize>()
+                        })
+                        .to_string(),
+                ),
                 ("boundary", yes_no(r.review().is_some())),
                 ("fault", r.fault().unwrap_or("").to_owned()),
                 ("tick", r.tick().to_string()),
