@@ -3,7 +3,7 @@
 **Date:** 2026-10-19
 
 **Status, 2026-10-23:** D5, D6, D7, D9a and D11 built, D9b and D10 dropped
-(Progress), and E1a; E1b next (D13). Its decisions are linked to the
+(Progress), and E1a and E1b; E1c next (D13). Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -471,6 +471,17 @@ each title names its outcome against the doctrine.
   and 11 s on a round forecast, readings for a native-site battery. The
   route cache is waking as E1 means it, keyed by exact inputs; E1b and
   E1c can follow it.
+- **2026-10-24, what a re-file costs** (scratch counters, seed 0, E1b's
+  first build). Of 1.59 million re-files, 406,890 found the body the very
+  allocation it was filed from and the filing unchanged, 601,394 a changed
+  body with the filing unchanged, 283,531 a changed filing, and 299,545
+  were new groups (the rebuild at each advance). Skipping the gate tests
+  alone saved nothing, the first build being 20% slower: the cost was the
+  index kept by process name, a set of names cloned and every ready list
+  re-entered on each re-file. With processes numbered and a re-file that
+  changes nothing touching nothing, E1b was 13% less CPU on seed 0 (81.8,
+  91.8 and 86.5 s against E1a, then 67.1, 82.0 and 77.9 s); seeds 0 to 2
+  identical in 571.0 s and 529.5 s of wall time on a busy machine.
 - **2026-10-23, what E1's parts could save** (scratch counters, seed 0, a
   busy machine, 91.8 s of scheduling). Blocked evaluations by the
   requirement they fail: `mind:relief` on mood 393,954, `body:rest` on its
@@ -572,3 +583,17 @@ each title names its outcome against the doctrine.
   6/6, the battery's seeds 0 to 2 identical, isocosm's 717 tests in
   release and its 264 lib tests under the test profile, where the filing
   check runs. About 3% less CPU on seed 0 (Findings). E1b next.
+- **2026-10-24, E1b built.** A commit works out what each act changed of
+  each body it wrote (`Changed`: the accounts and matter it wrote, whether
+  the residence moved, whether anything else a gate reads did). Filing
+  keeps, per group, the gates its body passed but for age and a weak
+  handle on that body: a group still on the very body keeps its filing,
+  as the pieces a lift leaves do; one whose body an act changed reads
+  again only the gates the change can move (`Gates::moved_by`); any other,
+  and a site's residents after its conditions change, read whole. The
+  index numbers its processes and holds bitsets, and a re-file that
+  changes nothing leaves the ready lists alone. Debug builds compare every
+  kept or narrowed filing with a whole reading. Exact: H3's pins 6/6, the
+  battery's seeds 0 to 2 identical, isocosm's 717 tests in release and its
+  264 lib tests under the test profile. 13% less CPU on seed 0
+  (Findings). E1c next.
