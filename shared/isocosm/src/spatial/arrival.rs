@@ -31,7 +31,8 @@ impl Simulation {
                 let touched: Vec<_> = self.state.population.groups.range(first..end).map(|(id, _)| *id).collect();
                 if let Some(targets) = &mut self.targets { targets.touch(&self.state.population, touched.iter().copied()); }
                 if let Some(filed) = &mut self.filed {
-                    filed.touch(&self.state.population, touched, self.state.tick, &self.genesis.rules);
+                    let world = crate::schedule::World::of(&self.state, &self.genesis.rules);
+                    filed.touch(&self.state.population, touched, &world);
                 }
             }
             self.spatial_resolutions.arrived.insert(r.actor);

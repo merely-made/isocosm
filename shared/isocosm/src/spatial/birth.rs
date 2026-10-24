@@ -121,7 +121,8 @@ impl Simulation {
                     self.state.population.lift(mark.child).expect("accepted child identity exists").patch = Some(*patch);
                     if let Some(targets) = &mut self.targets { targets.touch(&self.state.population, [mark.child]); }
                     if let Some(filed) = &mut self.filed {
-                        filed.touch(&self.state.population, [mark.child], self.state.tick, &self.genesis.rules);
+                        let world = crate::schedule::World::of(&self.state, &self.genesis.rules);
+                        filed.touch(&self.state.population, [mark.child], &world);
                     }
                 }
                 self.spatial_resolutions.born.insert(mark.child);

@@ -105,8 +105,8 @@ impl Simulation {
             journeys.touch(&candidate.state.population, changed.iter().copied());
         }
         if let Some(filed) = &mut candidate.filed {
-            filed.touch(&candidate.state.population, changed,
-                candidate.state.tick, &candidate.genesis.rules);
+            let world = crate::schedule::World::of(&candidate.state, &candidate.genesis.rules);
+            filed.touch(&candidate.state.population, changed, &world);
         }
         *self = candidate;
         Ok(())
