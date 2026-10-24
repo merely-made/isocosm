@@ -6,26 +6,57 @@
 //! one per stored group. A weighted selector, feeding's (ruling 287), draws
 //! instead among every member it would accept, seeded and keyed by the act,
 //! each weighted by the matter it holds, so abundant prey are eaten more.
-//! During an advance the groups are filed by place and lineage, so a
-//! selector that names either looks only where it could match instead of
-//! across the whole population (ruling 237). Every member is read as the
+//! During an advance the groups are filed by place, lineage and life, so a
+//! selector that names any of them looks only where it could match instead
+//! of across the whole population (ruling 237), and the requirements that
+//! cannot read the prey are asked once per search. Every member is read as the
 //! pass under way began, so what earlier acts of the pass did to a member
 //! changes neither whether it is accepted nor what it weighs (ruling 454).
 
 use crate::{meaning::mass, population::Population, rules::*, schema::*, simulation::Simulation};
 use std::collections::{BTreeMap, BTreeSet};
 
-/// Stored groups by their first identity, filed by place and lineage.
+/// Where a group is filed: its place (none while travelling), its lineage,
+/// and whether it lives.
+type Filing = (Option<Id>, Key, bool);
+
+/// Stored groups by their first identity, filed by place, lineage and life.
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Targets {
-    filed: BTreeMap<(Option<Id>, Key), BTreeSet<Id>>,
-    at: BTreeMap<Id, (Option<Id>, Key)>,
+    filed: BTreeMap<Filing, BTreeSet<Id>>,
+    at: BTreeMap<Id, Filing>,
+}
+
+/// Whether a requirement can read the prey: it binds the target, reads a
+/// relation to it, or is one whose reading the search does not know. The
+/// rest read the actor, its part, its site or the tick.
+fn reads_prey(q: &Query) -> bool {
+    match q {
+        Query::Alive(who)
+        | Query::Trait { who, .. }
+        | Query::Account { who, .. }
+        | Query::Below { who, .. }
+        | Query::Part { who, .. }
+        | Query::Holds { who, .. }
+        | Query::Wounded { who, .. }
+        | Query::Routes { who, .. } => *who == Binding::Target,
+        Query::Age { .. } | Query::Condition { .. } | Query::Mood { .. } | Query::MoodBelow { .. }
+        | Query::Expresses { .. } => false,
+        Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
+        Query::Related { .. }
+        | Query::Project { .. }
+        | Query::ProjectDecision
+        | Query::InstitutionDecision
+        | Query::Institution { .. } => true,
+    }
 }
 
 impl Targets {
-    /// Files a lazily preserved body by its place and lineage at pass start.
+    /// Files a lazily preserved body by its place, lineage and life at pass
+    /// start.
     pub(crate) fn keep(&mut self, first: Id, entity: &Entity) {
-        let key = (entity.journey.is_none().then_some(entity.place), entity.lineage.clone());
+        let place = entity.journey.is_none().then_some(entity.place);
+        let key = (place, entity.lineage.clone(), entity.alive);
         self.filed.entry(key.clone()).or_default().insert(first);
         self.at.insert(first, key);
     }
@@ -64,15 +95,16 @@ impl Targets {
         selector: &'a Target,
         place: Id,
     ) -> Box<dyn Iterator<Item = &'a BTreeSet<Id>> + 'a> {
-        let lineage = |key: &(Option<Id>, Key)| {
+        let lineage = |key: &Filing| {
             selector
                 .lineage
                 .as_ref()
                 .is_none_or(|lineage| *lineage == key.1)
                 && (selector.among.is_empty() || selector.among.contains(&key.1))
+                && selector.alive.is_none_or(|alive| alive == key.2)
         };
         if selector.same_place {
-            let at = (Some(place), Key::new())..;
+            let at = (Some(place), Key::new(), false)..;
             let here = self.filed.range(at).take_while(move |(k, _)| k.0 == Some(place));
             Box::new(here.filter(move |(k, _)| lineage(k)).map(|(_, v)| v))
         } else {
@@ -120,16 +152,15 @@ impl Simulation {
         if selector.same_place && !self.state.movement.immediate() && entity.resident_site().is_none() {
             return None;
         }
-        // Reject an ineligible actor before searching the population for food.
-        // This is only a read shortcut; apply still checks every requirement.
-        if p.requires.iter().any(|q| {
-            matches!(q, Query::Trait {who:Binding::Actor,key}
-            if !entity.traits.contains(key))
-        }) {
-            return None;
-        }
         let place = entity.place;
         let part = self.bind_part(actor, p);
+        // A requirement that cannot read the prey holds for every candidate
+        // or for none, so it is asked once, before the search; only the rest
+        // are asked of each candidate. Apply still checks every requirement.
+        let (of_prey, of_actor): (Vec<&Query>, Vec<&Query>) = p.requires.iter().partition(|q| reads_prey(q));
+        if !of_actor.iter().all(|q| self.process_query(actor, None, place, part, p, q).is_ok()) {
+            return None;
+        }
         let groups = &self.state.population.groups;
         // A group offers its first member, or its second when the first is
         // the actor; identities never reach the top of their range, so the
@@ -140,7 +171,7 @@ impl Simulation {
             let candidate = if first == actor { first + 1 } else { first };
             let accepted = candidate < first + count
                 && self.target_matches(actor, Some(candidate), p)
-                && p.requires
+                && of_prey
                     .iter()
                     .all(|q| self.process_query(actor, Some(candidate), place, part, p, q).is_ok());
             accepted.then_some(candidate)

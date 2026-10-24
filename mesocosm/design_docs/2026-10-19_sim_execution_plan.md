@@ -2,8 +2,8 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-23:** D5, D6 and D7 built (Progress); D9 and D10 next
-(deliberation and planning, D8), then E1. Its decisions are linked to the
+**Status, 2026-10-23:** D5, D6, D7, D9a and D11 built (Progress); D10 next
+(planning, D8), then E1. Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -400,6 +400,11 @@ each title names its outcome against the doctrine.
   finds prey costs about 560 µs, 18,561 of them, 10.4 s: the search reads
   the hunter's own site, liveness refusing 2.6 million candidates, and
   every requirement read for each of about 56 that pass.
+- **2026-10-23, D11 measured** (D9a's tree and D11's alternated, a busy
+  machine). Seeds 0 to 2 print identical lines, 558.1 s before and 426.8
+  s after by wall time. Seed 0 by process CPU time, three pairs: 98.0,
+  91.2 and 82.1 s before, 96.3, 75.7 and 75.6 s after, 9% less, the load
+  falling as the pairs ran.
 
 ## Progress
 
@@ -467,3 +472,14 @@ each title names its outcome against the doctrine.
 - **2026-10-23, after D9a:** a probe of deliberation (Findings) put D9b at
   under 1%; the round dropped it and chose to narrow the prey scan
   further (D11).
+- **2026-10-23, D11 built.** The target index files a group by place,
+  lineage and whether it lives, so a selector naming life lists only the
+  bodies it could accept, the frame's preserved bodies filed as they began
+  the pass. A prey search asks the requirements that cannot read the prey
+  (`reads_prey`: none bound to the target, no relation, no project or
+  institution query, no expression reading the target) once, before it
+  reads any candidate, and the rest of each candidate. The same prey are
+  accepted and the same draw made. Exact: H3's pins 6/6, the battery's
+  seeds 0 to 2 identical, isocosm's 717 tests in release and its 264 lib
+  tests under the test profile, where the filed search is compared with a
+  full scan. About 9% less CPU time (Findings).
