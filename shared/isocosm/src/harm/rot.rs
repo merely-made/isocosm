@@ -28,7 +28,7 @@ pub(crate) fn rot(
         for (id, p) in &mut e.parts {
             let n = p.matter.get(&key).copied().unwrap_or(0).min(left);
             if n > 0 {
-                debit(&mut p.matter, &key, n)?;
+                debit(&mut std::sync::Arc::make_mut(p).matter, &key, n)?;
                 moved.push((Some(*id), Ledger::from([(key.clone(), n)])));
                 left -= n;
             }

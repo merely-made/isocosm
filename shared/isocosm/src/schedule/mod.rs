@@ -6,9 +6,10 @@
 //! pass began. A process visits only the groups ready for it: carrying the
 //! traits it requires of its actor (ruling 258), and passing its thresholds
 //! on the actor's own accounts and age, a group's age coming due on a timer
-//! (ruling 286), and a live part expressing any function it requires (ruling
-//! 338). Any other group would be blocked, so passing it by changes
-//! nothing but the count. The operation budget counts only the evaluations
+//! (ruling 286), a live part expressing any function it requires (ruling
+//! 338), and for a timed move, residing where one of its routes starts,
+//! unless it is a deliberative member's to choose. Any other group would be
+//! blocked, so passing it by changes nothing but the count. The operation budget counts only the evaluations
 //! that run (ruling 259), by the members each stands for (ruling 285).
 //! Every act of a pass reads the world as the pass began, and a pass whose
 //! acts take from ground they share is planned first, so that ground running
@@ -18,7 +19,7 @@ mod filed;
 mod frame;
 mod pass;
 
-pub(crate) use filed::{Filed, Gates};
+pub(crate) use filed::{Filed, Gates, World};
 pub(crate) use frame::{Demands, Frame, Planned, Shares, edible, fits, merge, merge_site};
 pub(crate) use pass::Pass;
 
@@ -110,7 +111,10 @@ impl Simulation {
                 && due <= end
             {
                 queue.insert((due, p.priority, p.id.clone()));
-                let gates = Gates::of(p, &self.genesis.rules);
+                let immediate = self.state.movement.immediate();
+                let gates = Gates::of(p, &self.genesis.rules)
+                    .residing(p, &self.state.sites, immediate)
+                    .reading(p, &self.genesis.rules);
                 if !gates.none() {
                     gated.insert(p.id.clone(), gates);
                 }
@@ -126,13 +130,8 @@ impl Simulation {
             self.targets = Some(crate::targets::Targets::new(&self.state.population));
         }
         if !gated.is_empty() {
-            let population = &self.state.population;
-            self.filed = Some(Filed::new(
-                population,
-                gated,
-                self.state.tick,
-                &self.genesis.rules,
-            ));
+            let world = World::of(&self.state, &self.genesis.rules);
+            self.filed = Some(Filed::new(&self.state.population, gated, &world));
         }
         self.journeys = (!self.state.movement.immediate())
             .then(|| crate::journey::Journeys::new(&self.state.population));
@@ -175,7 +174,7 @@ impl Simulation {
             self.state.tick = due;
             self.refresh_attention();
             if let Some(filed) = &mut self.filed {
-                filed.ripen(&self.state.population, due, &self.genesis.rules);
+                filed.ripen(&self.state.population, &World::of(&self.state, &self.genesis.rules));
             }
             let genesis = std::sync::Arc::clone(&self.genesis);
             let process = &genesis.rules.processes[&id];
@@ -235,7 +234,7 @@ impl Simulation {
                 let actor = first + offset;
                 let entity = self.state.population.get(actor);
                 if entity.is_none_or(|e| {
-                    gates.is_some_and(|g| !g.open(e, self.state.tick, &self.genesis.rules))
+                    gates.is_some_and(|g| !g.open(e, &World::of(&self.state, &self.genesis.rules)))
                 }) {
                     continue;
                 }
@@ -313,12 +312,9 @@ impl Simulation {
     fn passed_by(&self, gates: Option<&Gates>, from: Id, until: Id) {
         #[cfg(debug_assertions)]
         for (first, g) in self.state.population.groups.range(from..until.max(from)) {
+            let world = World::of(&self.state, &self.genesis.rules);
             debug_assert!(
-                gates.is_some_and(|gates| !gates.open(
-                    &g.entity,
-                    self.state.tick,
-                    &self.genesis.rules
-                )),
+                gates.is_some_and(|gates| !gates.open(&g.entity, &world)),
                 "the filed pass went past group {first}"
             );
         }
@@ -345,7 +341,7 @@ impl Simulation {
             let Some(entity) = self.body_at_start(actor) else {
                 continue;
             };
-            if gates.is_some_and(|g| !g.open(entity, self.state.tick, &self.genesis.rules)) {
+            if gates.is_some_and(|g| !g.open(entity, &World::of(&self.state, &self.genesis.rules))) {
                 continue;
             }
             // A deliberative critter takes only the act it chose (683).

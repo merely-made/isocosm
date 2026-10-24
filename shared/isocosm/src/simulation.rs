@@ -111,6 +111,7 @@ pub struct Receipt {
     pub target: Option<Id>,
     pub count: u64,
     pub chosen: Key,
+    /// For a direct act only; empty on scheduled and planned receipts.
     pub foregone: Vec<Key>,
     pub cause: Option<Key>,
     pub facts_read: Vec<String>,

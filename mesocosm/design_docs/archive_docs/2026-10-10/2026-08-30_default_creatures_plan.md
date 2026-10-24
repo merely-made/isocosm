@@ -2,7 +2,7 @@
 
 **Archived 2026-10-10 (wing design record ruling 793): done.** DC1 to DC4
 landed; the roster now lives as native datasheets (758). Its residue is in
-the [after-pass plan](../../2026-10-10_after_pass_plan.md)'s A4: DC5's colour, the
+the [after-pass plan](../2026-10-18/2026-10-10_after_pass_plan.md)'s A4: DC5's colour, the
 critter review, §6.6's three conditions the roster must still meet, and
 CP1's camera review and habitat dressing. Q10's prey-set finding went with
 TG6 to the sim plan.

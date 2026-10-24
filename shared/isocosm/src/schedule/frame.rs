@@ -370,23 +370,28 @@ pub(crate) fn merge(live: &mut Entity, base: &Entity, new: Entity) {
 /// part another act of the pass removed stays removed: the act left it as
 /// it found it, or it would not have fitted.
 fn merge_parts(
-    live: &mut BTreeMap<PartId, Part>,
-    base: &BTreeMap<PartId, Part>,
-    new: BTreeMap<PartId, Part>,
+    live: &mut BTreeMap<PartId, Arc<Part>>,
+    base: &BTreeMap<PartId, Arc<Part>>,
+    new: BTreeMap<PartId, Arc<Part>>,
 ) {
     for id in base.keys().filter(|id| !new.contains_key(*id)) {
         live.remove(id);
     }
-    for (id, mut part) in new {
+    for (id, part) in new {
         let (Some(was), Some(now)) = (base.get(&id), live.get_mut(&id)) else {
             if !base.contains_key(&id) {
                 live.insert(id, part);
             }
             continue;
         };
+        // A part the act left as it found it lands as nothing.
+        if Arc::ptr_eq(&part, was) {
+            continue;
+        }
+        let (mut part, now) = (Arc::unwrap_or_clone(part), Arc::make_mut(now));
         delta(&mut now.matter, &was.matter, &part.matter);
         part.matter = std::mem::take(&mut now.matter);
-        let mut kept = was.clone();
+        let mut kept = Part::clone(was);
         kept.matter = part.matter.clone();
         if part != kept {
             *now = part;

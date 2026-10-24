@@ -68,10 +68,10 @@ three design docs that cite it. The record holds the words.
 | 893 | The society feature gates operations, not state: State fields stay and are empty by default, so every build reads one save format. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 975 | The core's tick cost is cut by sharing cohorts behind an Arc, copying on write, with serialisation and hashes unchanged. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 979 | The sun's parameters are an optional Rules.sun: Option<SunRules>, set by presets at founding; absent means the default. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 988 | A polity enforces with what it provides and asserts, withholding or revoking; force is one means; the way of deciding suggests the means. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 989 | Whether a means is efficacious is a track record, never asserted; the gap between a constitution and its members' preference is read at any time. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 991 | No will to continue is built into a polity; an institution seen clinging on is subordinated to its own officers' faction. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 992 | A contingent polity borrows its host's enforcement, so it is cheap to found, and a host's failure cascades through what is contingent on it. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
+| 988 | A polity enforces with what it provides and asserts, withholding or revoking; force is one means; the way of deciding suggests the means. | [DOC README](DOC_README.md) |
+| 989 | Whether a means is efficacious is a track record, never asserted; the gap between a constitution and its members' preference is read at any time. | [DOC README](DOC_README.md) |
+| 991 | No will to continue is built into a polity; an institution seen clinging on is subordinated to its own officers' faction. | [DOC README](DOC_README.md) |
+| 992 | A contingent polity borrows its host's enforcement, so it is cheap to found, and a host's failure cascades through what is contingent on it. | [DOC README](DOC_README.md) |
 
 ## Processes and rules
 
@@ -90,7 +90,7 @@ three design docs that cite it. The record holds the words.
 | 66 | Any means may stand behind a constitution; short of death a polity may automatically become suppressed, inactive, superseded or subordinated to a faction. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [campaign retirement](2026-10-15_campaign_retirement_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 75 | Background and foreground agree; the background is cheaper by aggregation; transition losses preserve similitude; things of no note are fungible behind a configurable buffer. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 84 | Information spread is to be modelled cheaply and distributionally, with how a person learned a thing resolved on demand. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
-| 86 | Agrees five points on how knowledge resolves, listed elsewhere in the record. | [decision links](2026-10-20_decision_links_plan.md), [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
+| 86 | Agrees five points on how knowledge resolves, listed elsewhere in the record. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 87 | A secret is valuable leverage kept by a taboo; telling it turns on relation, opinion, goals and perhaps personality. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 93 | Deep time is the same sim, not a separate history generator. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 94 | Value bears on scarcity, capability and material need; need derives from alignment, acts and predilection. | [vtt overlay](2026-09-25_vtt_overlay_plan.md) |
@@ -195,16 +195,16 @@ three design docs that cite it. The record holds the words.
 | 863 | A later process selects a future produced lot by an explicit authored reference naming the producing operation, output and exact quantity. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 881 | The crowd implements its own chooser for autonomous (un-nudged) territories and refuses live nudges; nudged directing keeps native tests. | [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 958 | Equal best movement choices use a deterministic seeded draw keyed by world seed, creature and tick; scores and eligibility are unchanged. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
-| 985 | Where peer agreement cannot emerge, a faction's general protocols belong to the world's ruleset, keeping the faction stateless. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 986 | A form of governance is a pair, who qualifies to decide and by what deciding act; forms are data, never an enum. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 987 | Which form of governance emerges is ranked preference derived from alignment, weighted by influence, run at founding; ties break on the seed. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 990 | A polity's conditions short of death (inactive, suppressed, superseded, subordinated) are each read from the record, not exclusive, reversible. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 999 | Lifting samples individuals from an aggregate by seed; restriction conserves accounts back; processes are declarative so their aggregate derives, scripts foreground-only. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 1001 | A secret is a taboo on telling (a norm with reputational sanction); its value is what release would do to standing; telling is a choice; it ends by leaking. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 1005 | Value is a reading over supply, capability and need, never stored; money is an asserted claim; acting is by tier; trade trends are flow along routes. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 1006 | An act is chosen by need times trust times approval; what gets made follows the same score; grinding yields aggregate competence, never a legend; a fey mood is a triggered need. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 1009 | The world has a lineage (genotype its catalogue, realignment its boundary); a magic system is a world trait on six axes; bending the rules is declared suspension. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md), [functional generation](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md) |
-| 1012 | An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
+| 985 | Where peer agreement cannot emerge, a faction's general protocols belong to the world's ruleset, keeping the faction stateless. | [DOC README](DOC_README.md) |
+| 986 | A form of governance is a pair, who qualifies to decide and by what deciding act; forms are data, never an enum. | [DOC README](DOC_README.md) |
+| 987 | Which form of governance emerges is ranked preference derived from alignment, weighted by influence, run at founding; ties break on the seed. | [DOC README](DOC_README.md) |
+| 990 | A polity's conditions short of death (inactive, suppressed, superseded, subordinated) are each read from the record, not exclusive, reversible. | [DOC README](DOC_README.md) |
+| 999 | Lifting samples individuals from an aggregate by seed; restriction conserves accounts back; processes are declarative so their aggregate derives, scripts foreground-only. | [DOC README](DOC_README.md) |
+| 1001 | A secret is a taboo on telling (a norm with reputational sanction); its value is what release would do to standing; telling is a choice; it ends by leaking. | [DOC README](DOC_README.md) |
+| 1005 | Value is a reading over supply, capability and need, never stored; money is an asserted claim; acting is by tier; trade trends are flow along routes. | [DOC README](DOC_README.md) |
+| 1006 | An act is chosen by need times trust times approval; what gets made follows the same score; grinding yields aggregate competence, never a legend; a fey mood is a triggered need. | [DOC README](DOC_README.md) |
+| 1009 | The world has a lineage (genotype its catalogue, realignment its boundary); a magic system is a world trait on six axes; bending the rules is declared suspension. | [DOC README](DOC_README.md), [functional generation](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md) |
+| 1012 | An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act. | [DOC README](DOC_README.md) |
 
 ## Ecology
 
@@ -247,7 +247,7 @@ three design docs that cite it. The record holds the words.
 | 982 | The light credit is 500 per site per tick at full sun. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 983 | The site's light store holds a night: about 720 x 500 = 360,000 of full credit, so producers draw a reserve down in the dark. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 984 | The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1007 | A material's properties are its lineage's traits and its interactions are effects; what a thing is made of is a note; scarcity and provenance are ecological. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
+| 1007 | A material's properties are its lineage's traits and its interactions are effects; what a thing is made of is a note; scarcity and provenance are ecological. | [DOC README](DOC_README.md) |
 
 ## Bodies and anatomy
 
@@ -407,8 +407,8 @@ three design docs that cite it. The record holds the words.
 | 649 | Traces carry one entry per critter, each cohort's digest reused for its members, so a divergence names the exact critter. | none |
 | 652 | state_hash is Witness::digest over the per-field entries; H1's whole-state hash survives only to read v2 saves. | none |
 | 653 | Per-tick entries go in a framed postcard trace written by a new --trace-entries flag; --trace keeps its text lines. | none |
-| 993 | Collection is roots and reachability: a thing of note is kept while something reaches it from a root; collecting folds it back, conserving counts. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 994 | Collection is graded: the full individual, then a stub an event names it by, then the event alone; events refer to participants by stub. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
+| 993 | Collection is roots and reachability: a thing of note is kept while something reaches it from a root; collecting folds it back, conserving counts. | [DOC README](DOC_README.md) |
+| 994 | Collection is graded: the full individual, then a stub an event names it by, then the event alone; events refer to participants by stub. | [DOC README](DOC_README.md) |
 
 ## World generation
 
@@ -468,14 +468,14 @@ three design docs that cite it. The record holds the words.
 | 932 | A generated world collapses when the living Reactive, Deliberative and Normative population over all lineages is 0, declared as rules data. | none |
 | 935 | The A1 preset's lifespan ceiling is 100 plus a draw of 0 to 40; defaults, the hazard and the grazing default are untouched. | none |
 | 963 | An unchosen Mesocosm seed may use a bounded configurable candidate search; explicit seeds stay exact and the full native witness gate is kept. | none |
-| 996 | A location stores extent, modifiers, conditions, history and claims; its kind is read off them; a location may be potential; a highway is also a route. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 997 | A nesting step says how the finer map is generated (down), reads from above (up), crosses boundaries (across), and how much finer (ratio); steps compose. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 998 | For a world resting on a critter, what the critter does (walking, turning, sleeping, dying) reaches the world as its environment. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 1002 | Realignment to another ruleset is the epoch boundary at world scale, a rung transition, and may add nesting steps as well as change rules. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 1003 | A past state is the log replayed (checkpoints bound the cost); editing the past asserts a fact there, making a fork; the timeline shows legend first. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 1004 | Nesting (a node opening into a finer map, no named tiers) is the sim's; a scope (a window of extent and grain) is a game's; each game has its own. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 1008 | The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
-| 1011 | Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
+| 996 | A location stores extent, modifiers, conditions, history and claims; its kind is read off them; a location may be potential; a highway is also a route. | [DOC README](DOC_README.md) |
+| 997 | A nesting step says how the finer map is generated (down), reads from above (up), crosses boundaries (across), and how much finer (ratio); steps compose. | [DOC README](DOC_README.md) |
+| 998 | For a world resting on a critter, what the critter does (walking, turning, sleeping, dying) reaches the world as its environment. | [DOC README](DOC_README.md) |
+| 1002 | Realignment to another ruleset is the epoch boundary at world scale, a rung transition, and may add nesting steps as well as change rules. | [DOC README](DOC_README.md) |
+| 1003 | A past state is the log replayed (checkpoints bound the cost); editing the past asserts a fact there, making a fork; the timeline shows legend first. | [DOC README](DOC_README.md) |
+| 1004 | Nesting (a node opening into a finer map, no named tiers) is the sim's; a scope (a window of extent and grain) is a game's; each game has its own. | [DOC README](DOC_README.md) |
+| 1008 | The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy. | [DOC README](DOC_README.md) |
+| 1011 | Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges. | [DOC README](DOC_README.md) |
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -492,7 +492,7 @@ three design docs that cite it. The record holds the words.
 | 201 | Organ words are components, not crates; no crate is published for one, and a denizen crate needs a reason such as moving entity information. | [games wing founding](2026-07-30_games_wing_founding.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 384 | Some divine figures can peek behind the curtain: awareness of the sim beyond an organism's capabilities is magic bending the rules, parked with divinity. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md) |
 | 673 | Parked rungs' code (Eponym glyphs, chronicles) re-expresses with its family unchanged in behaviour; the rungs stay parked. | [glyph expression](../mesocosm/design_docs/2026-09-15_glyph_expression_plan.md), [wing organs](../mesocosm/design_docs/2026-09-26_wing_organs_plan.md), [families reexpression](../mesocosm/design_docs/2026-10-08_families_reexpression_plan.md) |
-| 995 | The tiers of keeping are one component of the sim, not a crate per word; the kinds are data. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
+| 995 | The tiers of keeping are one component of the sim, not a crate per word; the kinds are data. | [DOC README](DOC_README.md) |
 
 ## Directing and play
 
@@ -514,7 +514,7 @@ three design docs that cite it. The record holds the words.
 | 445 | What a window may know follows its participant's seat, the entity played and awareness granted in play, never its mode. | [isomere](../mesocosm/design_docs/2026-09-15_isomere_plan.md) |
 | 671 | Driving is the sapient player's mode; a non-sapient critter is directed; legacy Mesocosm driving ends with its world family's move. | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 679 | The six old driving intents become the critter's own acts chosen by its methodology; Idle has no role. | [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
-| 683 | A deliberative critter chooses one Choice process weighing needs, mood, nudges and bond; Receipt.foregone records what it passed over. (amended by 813) | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
+| 683 | A deliberative critter chooses one Choice process weighing needs, mood, nudges and bond; Receipt.foregone records what it passed over. (amended by 813) | [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 685 | A suggestion is a derived reading over foregone and knows; nothing new is kept. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 686 | The runtime over Session translates contract envelopes into native commands; Isocosm and the contract stay independent; a nudge is a new logged command. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 688 | A participant is a placeless entity and Relation gains a value; each player's bond is its own weighted relation to the critter. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
@@ -522,12 +522,12 @@ three design docs that cite it. The record holds the words.
 | 691 | Survival mode filters through what the critter knows and the reach field; the interim M4 ships both modes. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
 | 742 | The tier line goes to directing, moving with the directing plan's D2, not to the host now. | [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 779 | Native Take also admits a sapient critter for driving: one native path takes up a life in both games. | [eponym overlay](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-09-22_sim_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md) |
-| 813 | An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md) |
+| 813 | An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick. | [directing interim m4](../mesocosm/design_docs/2026-10-08_directing_interim_m4_plan.md), [sim execution](../mesocosm/design_docs/2026-10-19_sim_execution_plan.md) |
 | 861 | A player-directed deliberative critter gets a native travel goal from an approved journey; it departs when its own choice allows, so the party can split. (amended by 862) | none |
 | 862 | The existing native bond and scheduled chooser suffice for directed travel; no extra impression filter, trust threshold or motivation layer. | none |
 | 866 | A native act records participation in every goal it actually served; no primary goal discards the others. | [vtt overlay](2026-09-25_vtt_overlay_plan.md), [stock title](../mesocosm/design_docs/2026-10-14_stock_title_plan.md) |
 | 876 | Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately. | none |
-| 1010 | An arc's parts are things the sim has; an arc is a derived thread, never stored; a game makes its statement; the storyteller is the world entity's agency. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
+| 1010 | An arc's parts are things the sim has; an arc is a derived thread, never stored; a game makes its statement; the storyteller is the world entity's agency. | [DOC README](DOC_README.md) |
 
 ## Presentation
 
@@ -634,7 +634,7 @@ three design docs that cite it. The record holds the words.
 | 756 | Lineage and provenance data (SpeciesId, Origin, Provenance) move into isocosm as sidecars keyed by PartId; isometer keeps an opaque tag. | none |
 | 962 | The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots. | none |
 | 969 | Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide. | [sim host](../mesocosm/design_docs/2026-10-14_sim_host_plan.md) |
-| 1000 | Ruling 78 as discipline: native binding first, a component binding when a rung-3 consumer exists; contract types round-trip through bytes; cores stay native. | [decision links](2026-10-20_decision_links_plan.md), [DOC README](DOC_README.md) |
+| 1000 | Ruling 78 as discipline: native binding first, a component binding when a rung-3 consumer exists; contract types round-trip through bytes; cores stay native. | [DOC README](DOC_README.md) |
 
 ## Host and network
 

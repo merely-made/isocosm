@@ -98,7 +98,7 @@ pub fn seed(e: &mut Entity) {
         false => mouths,
     };
     for (id, port) in declared {
-        if let Some(part) = e.parts.get_mut(&id) {
+        if let Some(part) = e.part_mut(&id) {
             part.port.get_or_insert(port);
         }
     }

@@ -87,7 +87,7 @@ pub(crate) fn restore(e: &mut Entity, id: PartId, cell: CellId) -> Result<()> {
     } else {
         e.body_revision
     };
-    let p = e.parts.get_mut(&id).ok_or("missing healing part")?;
+    let p = e.part_mut(&id).ok_or("missing healing part")?;
     let allocation = p.losses.remove(&cell).ok_or("unknown lost allocation")?;
     if !p.lost.contains(&cell) {
         return Err("healing a present cell".into());

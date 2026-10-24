@@ -47,8 +47,7 @@ fn the_joint_share_is_the_contracting_cells_the_senses_reach() {
     let (reached, total) = joined(&e, &r, INTAKE, CONTRACT, None);
     assert_eq!((reached, total), (2, 4));
     // With the joint able to carry, both are reached.
-    e.parts
-        .get_mut(&joint)
+    e.part_mut(&joint)
         .unwrap()
         .cells
         .insert("function:gate".into(), 1);

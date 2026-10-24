@@ -4,7 +4,8 @@ What the games wing holds and why, by area: short statements, each citing the
 cases it rests on. This is the layer read during work; the cases themselves
 (Mark's answers, in his words) are the design record's §0 and each plan's
 Decisions section. Rules for keeping it: `DOC_POLICY.md`, "Decisions and
-doctrine". Plan: `2026-10-20_decision_links_plan.md`.
+doctrine". Plan, archived:
+[the decision-links plan](archive_docs/2026-10-22/2026-10-20_decision_links_plan.md).
 
 **Status, 2026-10-22:** every area reviewed, 133 statements, within the budget in `doctrine_budget.toml`; the design record's §1 to §11 are carried in and archived. Each
 area's statements are drafted from its cases and put to Mark as a card round

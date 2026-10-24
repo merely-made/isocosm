@@ -50,6 +50,11 @@ impl Population {
         Ok(first)
     }
     pub fn lift(&mut self, id: Id) -> Result<&mut Entity> {
+        Ok(self.lift_shared(id)?.entity_mut())
+    }
+    /// Lifts `id` into a group of its own still sharing its entity, so a
+    /// caller that replaces the entity copies nothing (ruling 975).
+    pub fn lift_shared(&mut self, id: Id) -> Result<&mut Cohort> {
         let (&first, group) = self
             .groups
             .range(..=id)
@@ -86,7 +91,7 @@ impl Population {
                 entity: group.entity,
             },
         );
-        Ok(self.groups.get_mut(&id).unwrap().entity_mut())
+        Ok(self.groups.get_mut(&id).unwrap())
     }
     pub fn restrict(&mut self, protected: &BTreeSet<Id>) {
         self.restrict_logged(protected, &mut |_, _| {});

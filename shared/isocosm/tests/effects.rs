@@ -313,7 +313,7 @@ fn allocation_moves_the_bound_parts_cells_within_its_capacity() {
     let mut g = world();
     let critter = g.population.lift(1).unwrap();
     critter.body.as_mut().unwrap().parts[0].half_extent = [3, 3, 1];
-    let sheet = critter.parts.get_mut(&PartId(0)).unwrap();
+    let sheet = critter.part_mut(&PartId(0)).unwrap();
     sheet.cells = BTreeMap::from([("function:fix".into(), 1), ("function:secrete".into(), 3)]);
     sheet.matter = BTreeMap::from([(TISSUE.into(), 10)]);
     critter.accounts.clear();

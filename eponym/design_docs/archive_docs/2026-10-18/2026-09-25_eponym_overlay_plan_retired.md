@@ -21,11 +21,11 @@ focused camera/map controls pass; two explicit measurement controls remain
 ignored. Uncached full-resolution footprint selection measured 1.3–1.8 seconds
 per new view, so these results do not establish real-time zoom; close recovery
 was two frames in both runs. The earlier failed camera-ordering and allocator
-receipts remain preserved. The [camera residency closeout](../../../../testing/isometry/f-2026-10-16/camera-residency-closeout.md)
+receipts remain preserved. The [camera residency closeout](../../../../../../testing/isometry/f-2026-10-16/camera-residency-closeout.md)
 binds source and evidence hashes. Broader E3 and headed product acceptance
 remain open.
 
-**Earlier F3/F4/F7 checkpoint, 2026-10-17:** the native level-fixture union qualifies the repaired contact, severance, timed-action, worn-item and external-volley controls. The two remaining timed-action controls pass 2/2; the worn-item controls pass 3/3; external-volley controls pass 4/4; and the native-level contact panel passes 1/1. The producer receipt qualifies all six GPU tests across the level-suite run and the focused severance rerun: five passed in the broader run, whose only client-library failure was the earlier severance camera selection, and the updated severance test then passed with its before/after captures. The same broader run passed all three ordinary resident-producer tests. The final all-target/all-feature compiler check passes. This is a receipt union, not a clean aggregate runtime rerun; the interrupted `native-level-suite.log` remains as evidence of the earlier failure. At that checkpoint, three far-window runtime gates under `v1-proof` remained open; the later V1/V1b camera residency closeout above supersedes that status. Broader E3 and headed product acceptance remain open. See the [F receipt manifest](../../../../testing/isometry/f-2026-10-16/README.md).
+**Earlier F3/F4/F7 checkpoint, 2026-10-17:** the native level-fixture union qualifies the repaired contact, severance, timed-action, worn-item and external-volley controls. The two remaining timed-action controls pass 2/2; the worn-item controls pass 3/3; external-volley controls pass 4/4; and the native-level contact panel passes 1/1. The producer receipt qualifies all six GPU tests across the level-suite run and the focused severance rerun: five passed in the broader run, whose only client-library failure was the earlier severance camera selection, and the updated severance test then passed with its before/after captures. The same broader run passed all three ordinary resident-producer tests. The final all-target/all-feature compiler check passes. This is a receipt union, not a clean aggregate runtime rerun; the interrupted `native-level-suite.log` remains as evidence of the earlier failure. At that checkpoint, three far-window runtime gates under `v1-proof` remained open; the later V1/V1b camera residency closeout above supersedes that status. Broader E3 and headed product acceptance remain open. See the [F receipt manifest](../../../../../../testing/isometry/f-2026-10-16/README.md).
 
 **Certification resumed, 2026-10-13:** the explicit "Certify" request opens
 the assembled-source acceptance pass. The Eponym workspace compiles with all
@@ -35,7 +35,7 @@ the supplied camera rotation. Knowing payloads validate the declared observer
 or reporter for statement/terrain records before native admission. Eponym
 play35 runtime tests pass; one genuine historical archive input remains
 ignored. Full E3 and headed acceptance remain open. The
-[assembled certification record](../../mesocosm/design_docs/2026-10-13_assembled_certification.md)
+[assembled certification record](../../../../mesocosm/design_docs/archive_docs/2026-10-18/2026-10-13_assembled_certification.md)
 owns the actual receipts and source qualifications. Earlier evidence retains
 its exact source scope.
 
@@ -253,10 +253,10 @@ moves the shared facts to dramatis (803).
 Mesocosm's M3 (ruling 231). Drafted at
 Mark's word ("Overlay plans to RPG") in the RPG systems session, in parallel
 with the Simulation design review session, from the
-[wing design record](../../mesocosm/design_docs/2026-09-18_wing_design_plan.md)'s
+[wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md)'s
 §5.6 (rulings 185 to 187), ruling 60, ruling 130, rulings 152 to 156, the
 contract's rulings (197, 203 to 205, 210 to 213), and Eponym's own plans. It
-mirrors the [Mesocosm overlay plan](../../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
+mirrors the [Mesocosm overlay plan](../../../../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md),
 the first game's. Every row cites the ruling or plan it rests on; a reading
 of this plan's own is flagged as one. No lane runs until Mark opens it. §6's
 seven decisions are taken: ruling 231 placing this overlay side by side with

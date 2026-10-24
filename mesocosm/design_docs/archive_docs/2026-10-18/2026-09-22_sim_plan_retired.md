@@ -278,7 +278,7 @@ the sim through the specimen bench and researching aggregation in the review
 session. The product-independent core is `shared/isocosm`, package `isocosm`
 0.1.0, following ruling 110 and the family rename plan's R3. The existing
 native specimen bench is its first host. Drafted at Mark's word ("proceed!") from the
-[wing design record](2026-09-18_wing_design_plan.md), rulings 1 to 105, as
+[wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md), rulings 1 to 105, as
 the base profile's own plan under that record. It is a schema and a set of
 definitions, not prose; every entry cites the ruling it rests on, and every
 entry that rests on one of this record's own readings names its docket item
@@ -303,7 +303,7 @@ magic (§2.3, §2.7), parked with divinity and magic under ruling 279. Rulings
 381 and 382, one host with modes and a default view, sit above the sim and
 change nothing in this plan. Rulings 389 to 392 do: the spatial spine, which
 connects the world map's sites to the voxels under them, is planned in the
-rewritten [place-graph engine plan](2026-08-05_place_graph_engine_plan.md)
+rewritten [place-graph engine plan](../../2026-08-05_place_graph_engine_plan.md)
 §A, and §2.2 gains the site's skeleton, the edge profile and the lift's
 owner. Its phases SP1 to SP5 run beside S2 without moving `mesocosm-core`'s
 places ahead of ruling 195 or touching mere ahead of ruling 363.
@@ -333,7 +333,7 @@ after the probe (262). Findings has the extension list and the density.
 (458), opening bodies.
 
 **Status, 2026-10-02, the anatomy brief:** opened by ruling 458, as 281
-asked, in [its own brief](2026-10-02_anatomy_brief.md). Its first round is
+asked, in [its own brief](../../2026-10-02_anatomy_brief.md). Its first round is
 ruled: tissue in each part and the reserve in the parts that store (459), a
 part's cells derived from its extents (460), all fifteen functions with the
 other vocabularies folded in (461), and each part's attachment kept by the
@@ -429,7 +429,7 @@ Checkpoint 9, systems, is ready to open.
   compiler/test/fixture/tuning work is deferred until assembled source under826.
 
 - **2026-10-11, transit and native-body decisions settled:** rulings 818 to
-  823 in the [wing record](2026-09-18_wing_design_plan.md) select Eponym's
+  823 in the [wing record](../../../../design_docs/2026-09-18_wing_design_plan.md) select Eponym's
   compact native recipe and fresh capacity-bounded issuance. Under 817,
   travellers continue upkeep, carry its soil, allow paid birth with the same
   remaining journey, locate events in the journey without site reach, and
@@ -444,7 +444,7 @@ Checkpoint 9, systems, is ready to open.
   positives, the native all-target check and all nine consumer compilers
   passed. The complete reviews are in
   [lane queue Progress](2026-10-10_lane_queue_plan.md#progress) and the scope
-  is in [directing Progress](2026-10-08_directing_interim_m4_plan.md#progress).
+  is in [directing Progress](../../2026-10-08_directing_interim_m4_plan.md#progress).
   The ongoing thousand-draw probe describes its frozen earlier build;
   current-main reproduction, full C10 and journey certification remain open.
 
@@ -458,7 +458,7 @@ Checkpoint 9, systems, is ready to open.
   feasibility and scoring preserve 454; 813 reconsiders empty choices once
   at later scheduled pass starts while retaining selected commitments for
   the tick. Focused tests, intended compiled controls and exact restoration
-  are recorded in [directing Progress](2026-10-08_directing_interim_m4_plan.md#progress).
+  are recorded in [directing Progress](../../2026-10-08_directing_interim_m4_plan.md#progress).
   A fresh original-rate seed-zero control and unchanged candidate are
   proposed separately; A1 remains open and no rates are promoted.
 
@@ -466,7 +466,7 @@ Checkpoint 9, systems, is ready to open.
   loss allocations become free-pool allocations during adapter transfer;
   lost IDs, existing keys and unknown old losses are preserved. The focused
   positives, two intended compiled controls and exact restoration are in
-  [CHECKPOINT_10.md](../testing/bench/receipts/2026-10-10/isocosm/CHECKPOINT_10.md).
+  [CHECKPOINT_10.md](../../../testing/bench/receipts/2026-10-10/isocosm/CHECKPOINT_10.md).
   Ordinary HEAL draws, injury coverage and fresh full C10 remain open.
 
 - **2026-10-11, rulings 812 and 813:** an adapter's recorded losses keep
@@ -580,7 +580,7 @@ Checkpoint 9, systems, is ready to open.
   no compile, test, draw or headed certification.
 
 Landings only (ruling 613); the full log to 2026-10-06 is archived as
-[2026-09-22_sim_plan_progress.md](archive_docs/2026-10-06/2026-09-22_sim_plan_progress.md).
+[2026-09-22_sim_plan_progress.md](../2026-10-06/2026-09-22_sim_plan_progress.md).
 
 - **2026-10-10, Q2 native checkpoint, ruling 808:** native events hold a
   typed optional agreement ID; social deeds recover that association, and
@@ -611,7 +611,7 @@ Landings only (ruling 613); the full log to 2026-10-06 is archived as
   fixtures predate authored Character, so arbitrary synthetic v2 Character
   archives and historical postcard decoding are not certified. Exact source,
   commands and the failed fixture attempt are recorded in
-  [Q2_NATIVE_METADATA.md](../testing/bench/receipts/2026-10-10/isocosm/Q2_NATIVE_METADATA.md).
+  [Q2_NATIVE_METADATA.md](../../../testing/bench/receipts/2026-10-10/isocosm/Q2_NATIVE_METADATA.md).
   Consumer contract/replication and V2/E3 completion remain open.
 - 2026-10-09: checkpoint 9 unparked, certified and merged at `df6f0527` (Findings).
 - 2026-10-10, lane `lane-repro`: Q3's native account repairs and ruling

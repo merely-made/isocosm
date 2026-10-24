@@ -183,8 +183,8 @@ product's docs.
 ### Decisions and doctrine
 
 Core §11 governs. It was ruled here first (2026-10-20,
-`design_docs/2026-10-20_decision_links_plan.md`) and became core on
-2026-10-22. What is local:
+`design_docs/archive_docs/2026-10-22/2026-10-20_decision_links_plan.md`) and
+became core on 2026-10-22. What is local:
 
 - **The case record** is the design record's §0,
   `design_docs/2026-09-18_wing_design_plan.md`, named in

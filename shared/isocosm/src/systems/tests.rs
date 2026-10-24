@@ -100,7 +100,7 @@ fn every_living_part_names_no_function() {
 #[test]
 fn a_latent_cell_becomes_an_ability_only_once_a_system_routes_it() {
     let mut e = grazer();
-    let lump = e.parts.get_mut(&PartId(0)).unwrap();
+    let lump = e.part_mut(&PartId(0)).unwrap();
     *lump.cells.get_mut("function:intake").unwrap() -= 1;
     lump.cells.insert("function:fix".into(), 1);
     lump.functions.insert("function:fix".into());
@@ -201,7 +201,7 @@ fn a_conduct_cell_carries_by_its_cross_section() {
 #[test]
 fn the_parts_bitten_are_the_glands_effects() {
     let mut e = grazer();
-    let lump = e.parts.get_mut(&PartId(0)).unwrap();
+    let lump = e.part_mut(&PartId(0)).unwrap();
     lump.cells.insert("function:secrete".into(), 1);
     lump.functions.insert("function:secrete".into());
     let gland = default_systems()["system:glandular"].clone();

@@ -67,13 +67,13 @@ impl Staged<'_> {
             // Publish each part into the private stage before the next
             // guard reads actual balances for another part of that account.
             let mut source = self.stage.bodies.remove(&donor).ok_or("graft donor disappeared")?;
-            let transfer = graft::transplant_part(self.actor(),&mut source,&preview,*old,*new);
+            let transfer = graft::transplant_part(self.actor(),Arc::make_mut(&mut source),&preview,*old,*new);
             self.stage.bodies.insert(donor,source);
             transfer?;
         }
         self.sim.state.projects.debit_capture.with(|context| { context.preserve = None; Ok(()) })?;
         let mut source = self.stage.bodies.remove(&donor).ok_or("graft donor disappeared")?;
-        let transfer = graft::finish(self.actor(),&mut source);
+        let transfer = graft::finish(self.actor(),Arc::make_mut(&mut source));
         self.stage.bodies.insert(donor,source);
         transfer?;
         for (_,part) in &preview.mapping {

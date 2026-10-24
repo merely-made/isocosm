@@ -320,7 +320,7 @@ fn lands(took: &Option<Took>, was: &Entity, after: &mut Entity, bitten: Option<P
         },
         Some(Took::Bite(taken)) => {
             let ledger = match bitten {
-                Some(id) => match after.parts.get_mut(&id) {
+                Some(id) => match after.part_mut(&id) {
                     Some(part) => &mut part.matter,
                     None => return false,
                 },

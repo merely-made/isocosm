@@ -481,8 +481,7 @@ fn unknown_loss() -> (Genesis, Id, isocosm::schema::PartId) {
         .population
         .lift(entity)
         .unwrap()
-        .parts
-        .get_mut(&part)
+        .part_mut(&part)
         .unwrap();
     assert_eq!(wounded.lost.len(), 1);
     assert_eq!(
@@ -524,8 +523,7 @@ fn unknown_loss_allocation_survives_native_replay_without_becoming_free_pool() {
             .population
             .lift(entity)
             .unwrap()
-            .parts
-            .get_mut(&part)
+            .part_mut(&part)
             .unwrap()
             .losses
             .insert(lost[0], None);

@@ -18,7 +18,7 @@ use crate::{
     schema::*,
     simulation::Simulation,
 };
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, sync::Arc};
 
 mod staged;
 mod publication;
@@ -57,9 +57,10 @@ pub(crate) struct Stage {
     graft: Option<crate::graft::Record>,
     /// The members the actor stands for: one, or a whole bulk cohort.
     count: u64,
-    /// The bound bodies as the act leaves them. A target that is the actor
-    /// is the same body.
-    bodies: BTreeMap<Id, Entity>,
+    /// The bound bodies as the act leaves them, each sharing the body it
+    /// began with until its first write copies it (ruling 975). A target
+    /// that is the actor is the same body.
+    bodies: BTreeMap<Id, Arc<Entity>>,
     /// The site's ledger and conditions, copied on the first write.
     site: Option<Site>,
     births: Vec<Entity>,
@@ -110,11 +111,11 @@ impl Simulation {
         // A cohort acts only through processes without targets.
         debug_assert!(count == 1 || target.is_none());
         let mut bodies = BTreeMap::new();
-        let body = self.body_at_start(actor).ok_or("unknown entity")?;
-        bodies.insert(actor, body.clone());
+        let body = self.body_shared_at_start(actor).ok_or("unknown entity")?;
+        bodies.insert(actor, Arc::clone(body));
         if let Some(target) = target {
-            let body = self.body_at_start(target).ok_or("unknown entity")?;
-            bodies.entry(target).or_insert_with(|| body.clone());
+            let body = self.body_shared_at_start(target).ok_or("unknown entity")?;
+            bodies.entry(target).or_insert_with(|| Arc::clone(body));
         }
         Ok(Stage {
             process: String::new(),
@@ -299,6 +300,12 @@ impl Simulation {
         let legs = std::mem::take(&mut stage.legs);
         let legs = crate::flows::split(legs, std::mem::take(&mut stage.routed));
         let count = stage.count;
+        // A site whose conditions the act shifts has its residents filed
+        // again, their gates reading those conditions.
+        let place = stage.place;
+        let shifted = self.filed.is_some() && stage.site.as_ref().is_some_and(|site| {
+            self.site_at_start(place).is_none_or(|was| was.conditions != site.conditions)
+        });
         let reached = if self.targets.is_some() || self.filed.is_some() || self.journal.is_some() || self.journeys.is_some() {
             self.reaches(&stage)
         } else {
@@ -345,12 +352,11 @@ impl Simulation {
             j.touch(&self.state.population, reached.iter().copied());
         }
         if let Some(f) = &mut self.filed {
-            f.touch(
-                &self.state.population,
-                reached,
-                self.state.tick,
-                &self.genesis.rules,
-            );
+            let world = crate::schedule::World::of(&self.state, &self.genesis.rules);
+            f.touch(&self.state.population, reached, &world);
+            if shifted {
+                f.touch_site(&self.state.population, place, &world);
+            }
         }
     }
 
@@ -395,17 +401,22 @@ impl Simulation {
         self.institution_decision_stamp = stage.institution_decision;
         let s = &mut self.state;
         if stage.count == 1 {
-            s.population.lift(stage.actor).expect("the actor exists");
+            s.population.lift_shared(stage.actor).expect("the actor exists");
         }
         if let Some(target) = stage.target {
-            s.population.lift(target).expect("the target exists");
+            s.population.lift_shared(target).expect("the target exists");
         }
+        // A body the act never wrote lands as nothing; one whose live body
+        // is still its base lands as the staged handle, copying nothing.
         for (k, (id, body)) in stage.bodies.into_iter().enumerate() {
             let group = s.population.groups.get_mut(&id);
-            let live = group.expect("staged bodies were lifted").entity_mut();
+            let live = group.expect("staged bodies were lifted");
             match &bases {
-                Some(bases) => merge(live, &bases[k], body),
-                None => *live = body,
+                Some(bases) if Arc::ptr_eq(&body, &bases[k]) => {},
+                Some(bases) if live.entity != bases[k] => {
+                    merge(live.entity_mut(), &bases[k], Arc::unwrap_or_clone(body));
+                },
+                _ => live.entity = body,
             }
         }
         for child in stage.births {

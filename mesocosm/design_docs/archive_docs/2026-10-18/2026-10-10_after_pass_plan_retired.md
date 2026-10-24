@@ -5,7 +5,7 @@ kept as precedent and numbered 1 to 984 in the design record, with new rules
 numbered by him alone, and asked every active doc to lose its stacked status
 banners, old progress entries, stale counters and pasted copies. This file
 holds, verbatim, what left the live [after-pass
-plan](../../2026-10-10_after_pass_plan.md): its stacked status banners and the
+plan](2026-10-10_after_pass_plan.md): its stacked status banners and the
 progress entries that no longer describe open work (the newest, which do,
 stay). Case numbers in the moved text are the old ruling numbers, which the
 design record and its archive keep.
@@ -103,7 +103,7 @@ Progress for current execution.
   feasibility and scoring preserve 454; 813 reconsiders empty choices once
   at later scheduled pass starts while retaining selected commitments for
   the tick. Focused tests, intended compiled controls and exact restoration
-  are recorded in [directing Progress](2026-10-08_directing_interim_m4_plan.md#progress).
+  are recorded in [directing Progress](../../2026-10-08_directing_interim_m4_plan.md#progress).
   A fresh original-rate seed-zero control and unchanged candidate are
   proposed separately; A1 remains open and no rates are promoted.
 
@@ -111,7 +111,7 @@ Progress for current execution.
   loss allocations become free-pool allocations during adapter transfer;
   lost IDs, existing keys and unknown old losses are preserved. The focused
   positives, two intended compiled controls and exact restoration are in
-  [CHECKPOINT_10.md](../testing/bench/receipts/2026-10-10/isocosm/CHECKPOINT_10.md).
+  [CHECKPOINT_10.md](../../../testing/bench/receipts/2026-10-10/isocosm/CHECKPOINT_10.md).
   Ordinary HEAL draws, injury coverage and fresh full C10 remain open.
 
 - **2026-10-11, Q6 protocol qualified:** version five and ALPN v5 passed

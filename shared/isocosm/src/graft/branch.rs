@@ -106,14 +106,14 @@ pub(crate) fn transplant_part(actor: &mut Entity, donor: &mut Entity, preview: &
         at.parent = *ids.get(&at.parent).ok_or("graft descendant parent is outside its branch")?;
         Some(at)
     };
-    let mut physiology = donor.parts.remove(&old).ok_or("graft source physiology disappeared")?;
+    let mut physiology = std::sync::Arc::unwrap_or_clone(donor.parts.remove(&old).ok_or("graft source physiology disappeared")?);
     physiology.graft_origin = Some(preview.origins.get(&old).ok_or("graft arrangement origin disappeared")?.clone());
     if preview.verdicts.get(&old) == Some(&Verdict::Adapter) {
         physiology.cells.clear(); physiology.functions.clear(); physiology.tracts.clear();
         for allocation in physiology.losses.values_mut() { *allocation = None; }
     }
     target.parts.push(geometry);
-    actor.parts.insert(new, physiology);
+    actor.parts.insert(new, physiology.into());
     let source = donor.body.as_mut().expect("source checked above");
     let part = source.parts.get_mut(old.0 as usize).ok_or("graft donor tombstone is absent")?;
     part.severed = true;

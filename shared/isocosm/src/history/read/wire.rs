@@ -71,7 +71,7 @@ pub struct LegacyEntity {
 impl LegacyEntity {
     pub(super) fn native(&self) -> Result<Entity> {
         let parts = self.parts.iter().map(|(&id, p)| {
-            Ok((PartId(u32::try_from(id).map_err(|_| "legacy part identity exceeds u32")?), p.native()))
+            Ok((PartId(u32::try_from(id).map_err(|_| "legacy part identity exceeds u32")?), std::sync::Arc::new(p.native())))
         }).collect::<Result<_>>()?;
         Ok(Entity { lineage:self.lineage.clone(), kingdom:self.kingdom.clone(), scale:self.scale.clone(),
             provenance:self.provenance.clone(), method:self.method, place:self.place, arrived:self.arrived,

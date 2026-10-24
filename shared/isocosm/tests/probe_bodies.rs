@@ -194,7 +194,7 @@ fn set(g: &mut Genesis, lineage: &str, (tissue, reserve): (u64, u64)) -> (u64, u
         if e.lineage != lineage {
             continue;
         }
-        for p in e.parts.values_mut() {
+        for p in e.parts_mut().map(|(_, p)| p) {
             p.matter.clear();
         }
         for (key, amount) in [
@@ -338,7 +338,7 @@ fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
                 let rules = g.rules.clone();
                 let frond = g.population.lift(target).unwrap();
                 let before = frond.clone();
-                let part = frond.parts.get_mut(&PartId(0)).unwrap();
+                let part = frond.part_mut(&PartId(0)).unwrap();
                 let fixing = part.cells["function:fix"];
                 let cells = fixing.min(4);
                 part.cells.insert("function:fix".into(), fixing - cells);
@@ -360,7 +360,7 @@ fn a_grazers_meal_is_its_mouthful_by_volume_landed_and_dosed() {
             let gland = build(g.population.get(target).unwrap()).gland;
             let parts = |e: &Entity| -> Vec<u64> {
                 let held = |p: &Part| p.matter.get("tissue:0").copied().unwrap_or(0);
-                e.parts.values().map(held).collect()
+                e.parts.values().map(|p| held(p)).collect()
             };
             let before = parts(g.population.get(target).unwrap());
             // A quarter of the draws graze over ground too lean to charge it.

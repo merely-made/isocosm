@@ -82,7 +82,7 @@ fn world(seed: u64, keep: &[&str], change: impl FnOnce(&mut Entity, &Rules)) -> 
     let b = rules.body();
     let halves: BTreeMap<PartId, [i32; 3]> =
         e.parts.keys().map(|id| (*id, e.extent(*id))).collect();
-    for (id, p) in e.parts.iter_mut() {
+    for (id, p) in e.parts_mut() {
         p.matter
             .insert("tissue:1".into(), anatomy::ceiling(halves[id], b) / 2);
     }
@@ -96,7 +96,7 @@ fn world(seed: u64, keep: &[&str], change: impl FnOnce(&mut Entity, &Rules)) -> 
     let tombstones: Vec<_> = e.parts.keys().copied().filter(|id| !e.lives(*id)).collect();
     let site = g.sites.get_mut(&e.place).unwrap();
     for id in tombstones {
-        for (key, amount) in std::mem::take(&mut e.parts.get_mut(&id).unwrap().matter) {
+        for (key, amount) in std::mem::take(&mut e.part_mut(&id).unwrap().matter) {
             let held = site.accounts.entry(key).or_default();
             *held = held.checked_add(amount).unwrap();
         }
@@ -197,7 +197,7 @@ fn a_cut_route_carries_nothing_beyond_the_cut() {
 #[test]
 fn a_latent_cell_earns_only_once_a_riff_routes_it() {
     let latent = |e: &mut Entity, _: &Rules| {
-        let lump = e.parts.get_mut(&PartId(0)).unwrap();
+        let lump = e.part_mut(&PartId(0)).unwrap();
         *lump.cells.get_mut("function:intake").unwrap() -= 1;
         lump.cells.insert("function:fix".into(), 1);
         lump.functions.insert("function:fix".into());

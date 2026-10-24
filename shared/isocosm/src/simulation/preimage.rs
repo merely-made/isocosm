@@ -66,7 +66,7 @@ pub(super) struct Entity<'a> {
     body_revision: u64,
     #[serde(skip_serializing_if = "Option::is_none")]
     body: Option<&'a BodyDocument>,
-    parts: &'a BTreeMap<PartId, Part>,
+    parts: &'a BTreeMap<PartId, std::sync::Arc<Part>>,
     traits: &'a BTreeSet<Key>,
     accounts: &'a Ledger,
     skills: &'a BTreeMap<Key, u64>,

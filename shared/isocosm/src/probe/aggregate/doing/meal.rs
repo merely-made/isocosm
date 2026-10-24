@@ -34,7 +34,7 @@ impl Doing<'_> {
         } else { true };
         if whole && whole_admitted && self.whole(of, &portion)? { return Ok(true); }
         let prey = self.prey.as_mut().ok_or("the crowd eats only in a hunt")?;
-        let held = match self.bitten.and_then(|id| prey.parts.get_mut(&id)) {
+        let held = match self.bitten.and_then(|id| prey.part_mut(&id)) {
             Some(part) => &mut part.matter,
             None => &mut prey.accounts,
         };

@@ -42,7 +42,7 @@ square sites first and a chunked lift. SP1 is next.
 **Status, 2026-09-28, SP1 landed** at `6f25a89`: 121 tests pass, three
 controls fail as they must, and 256 maps drawn from an unselected master
 seed pass every check
-([receipt](../testing/bench/receipts/2026-09-28/isocosm/SP1_MAP_DRAWS.md)).
+([receipt](../../../testing/bench/receipts/2026-09-28/isocosm/SP1_MAP_DRAWS.md)).
 SP2, the lift, is next.
 
 **Status, 2026-09-28, SP2 landed** at `38ea90f`: 133 tests pass, four
@@ -50,7 +50,7 @@ controls fail as they must, and 64 worlds drawn from an unselected master
 seed meet exactly at every border point, give their elevations back as exact
 means against a brute-force sum of 195,970,560 columns, and lift the same
 bytes twice
-([receipt](../testing/bench/receipts/2026-09-28/isocosm/SP2_LIFT_DRAWS.md)).
+([receipt](../../../testing/bench/receipts/2026-09-28/isocosm/SP2_LIFT_DRAWS.md)).
 SP3, the bench adapter into isometer, is next.
 
 **Status, 2026-09-28, SP3 opened:** Mark approved the first integration
@@ -66,7 +66,7 @@ existing isometer scene. Five focused tests, the locked package all-target
 check and both native scenarios pass. The perturbed source visibly breaks
 the border; restoring it restores the viewport exactly. The trial boundary
 stays suspended while terrain is open and completes after returning.
-[Receipt and captures](../testing/bench/receipts/2026-09-29/spine/SP3_TERRAIN.md).
+[Receipt and captures](../../../testing/bench/receipts/2026-09-29/spine/SP3_TERRAIN.md).
 SP4's asserted edits are next on the spatial chain; body absorption and
 shared-store implementation retain their separate gates.
 

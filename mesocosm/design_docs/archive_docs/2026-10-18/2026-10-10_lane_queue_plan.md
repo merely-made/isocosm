@@ -18,7 +18,7 @@ Read with: the wing record's rulings 732 to 804
 ## 1. The orchestrator's loop
 
 The section's dated execution updates of 2026-10-10 to 2026-10-11 moved to
-[the archive](archive_docs/2026-10-18/2026-10-10_lane_queue_plan_retired.md#execution-updates)
+[the archive](2026-10-10_lane_queue_plan_retired.md#execution-updates)
 on 2026-10-18.
 
 ## 2. Rules for every lane (paste into every brief)

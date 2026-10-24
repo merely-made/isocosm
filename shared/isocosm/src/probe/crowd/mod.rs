@@ -302,13 +302,16 @@ impl<'w> Crowd<'w> {
     fn scheduled(&mut self, p: &Process) -> Result<()> {
         let rules = &self.world.genesis.rules;
         let gates = crate::schedule::Gates::of(p, &self.world.genesis.rules);
+        // The crowd's gates read its bodies alone: no residence, no reading.
+        let (sites, lineages) = (std::collections::BTreeMap::new(), std::collections::BTreeMap::new());
+        let world = crate::schedule::World { tick: self.tick, rules, sites: &sites, lineages: &lineages };
         let bins = self.bins.iter().map(|(e, &n)| (e.clone(), n, Who::Bin));
         let kin = self.kin.iter().map(|(id, e)| (e.clone(), 1, Who::Kin(*id)));
         let snapshot: Vec<(Entity, u64, Who)> = bins.chain(kin).collect();
         let hunting = p.target.as_ref().is_some_and(|t| t.weighted);
         let mut acting = Vec::new();
         for (e, n, who) in snapshot {
-            if !e.alive || !gates.open(&e, self.tick, rules) {
+            if !e.alive || !gates.open(&e, &world) {
                 continue;
             }
             if p.causation == Causation::Agentless {

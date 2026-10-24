@@ -152,7 +152,7 @@ impl Entity {
     /// its geometry founds (766).
     pub fn embody(&mut self, b: Body) {
         self.body = Some(b.doc);
-        self.parts = b.parts;
+        self.parts = b.parts.into_iter().map(|(id, p)| (id, p.into())).collect();
         crate::mosaic::ports::seed(self);
     }
 
@@ -161,7 +161,7 @@ impl Entity {
         let halves: Vec<(PartId, [i32; 3])> =
             self.parts.keys().map(|id| (*id, self.extent(*id))).collect();
         for (id, half) in halves {
-            if let Some(p) = self.parts.get_mut(&id) {
+            if let Some(p) = self.part_mut(&id) {
                 crate::mosaic::sync(p, half);
             }
         }
@@ -208,7 +208,7 @@ impl Entity {
         self.parts
             .iter()
             .filter(|(id, _)| self.lives(**id))
-            .map(|(id, p)| (*id, p))
+            .map(|(id, p)| (*id, &**p))
     }
 
     /// The living parts attached directly to `id`.
@@ -249,7 +249,7 @@ impl Entity {
             },
             (None, _) => return Err("a part with geometry on a body without".into()),
         };
-        self.parts.insert(id, p);
+        self.parts.insert(id, p.into());
         Ok(id)
     }
 
@@ -259,7 +259,7 @@ impl Entity {
     /// before tombstones; its geometry and physiology are handed back.
     pub fn take_part(&mut self, id: PartId) -> Option<(Frame, Part)> {
         let frame = self.frame(id);
-        let part = self.parts.remove(&id)?;
+        let part = std::sync::Arc::unwrap_or_clone(self.parts.remove(&id)?);
         if let Some(g) = self
             .body
             .as_mut()

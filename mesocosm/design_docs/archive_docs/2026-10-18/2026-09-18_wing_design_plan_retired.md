@@ -99,13 +99,13 @@ to it); W1 is evaluated, ruled and applied for all three products. W2, the
 sim's own plan, is next and is design work, not lanes.
 
 **Status, 2026-09-22:** rulings run to 105. W2 is drafted as the
-[sim plan](2026-09-22_sim_plan.md), a schema and definitions compiled from
-this record, with the [session notes](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md)
-beside it; the [readings docket](archive_docs/2026-09-24/2026-09-21_wing_readings_docket.md) holds
+[sim plan](../../2026-09-22_sim_plan.md), a schema and definitions compiled from
+this record, with the [session notes](../2026-10-06/2026-09-22_sim_design_session_notes.md)
+beside it; the [readings docket](../2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
 **Status, 2026-09-27:** rulings run to 380, and W5 is drafted as the
-[Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md), its M0 and
+[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings
@@ -120,7 +120,7 @@ other view (382), harmony, order and chaos as ecological states (383), and
 divine awareness of the sim as rule-bending magic (384). The founding
 record's amendment for 381 and the tabletop `CLAUDE.md`'s for 382 are
 drafted in the
-[session notes' §9.4](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#94-drafts-waiting-on-marks-word)
+[session notes' §9.4](../2026-10-06/2026-09-22_sim_design_session_notes.md#94-drafts-waiting-on-marks-word)
 and wait on Mark's word. Later the same session Mark gave it: both
 amendments are applied (385, 386), the default's pitch is the 2:1 dimetric,
 30° (387), and Mesocosm's opening view waits on CP1 comparing its
@@ -1590,7 +1590,7 @@ documentation pass; SP2's landed receipt and other active work are unchanged.
      the read is of balaur at `de0df794`, read-only, copying no code; any
      port is its own decision; the doc dedup (593) waits behind it.
      *2026-10-06:* the wing's half of the read is
-     [2026-10-06_balaur_wing_brief.md](2026-10-06_balaur_wing_brief.md).
+     [2026-10-06_balaur_wing_brief.md](../../2026-10-06_balaur_wing_brief.md).
 
 611. **The docs dedup comes before 607's lane.** 2026-10-06. Question: the
      docs dedup (593) has waited since before the balaur read, and 607's
@@ -3137,7 +3137,7 @@ scheduler), the board plan (paging, the repins), the side-panel plan, the
 overlay plans, the rename plan, and mere's and genet's plans for their lanes.
 This log keeps the landings no other document owns (ruling 613); the full log
 to 2026-10-06 is archived as
-[2026-09-18_wing_design_plan_progress.md](archive_docs/2026-10-06/2026-09-18_wing_design_plan_progress.md).
+[2026-09-18_wing_design_plan_progress.md](../2026-10-06/2026-09-18_wing_design_plan_progress.md).
 
 - 2026-10-06: Isocosm's resident inference on stable Burn 0.22 (`359c765f`),
   with conatus and stable CubeCL taken from mere `5fecd707` in the root,

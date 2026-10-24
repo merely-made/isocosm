@@ -101,7 +101,7 @@ impl Staged<'_> {
         let definition = self.sim.project_definition(&project.definition)?.clone();
         let worker = &self.stage.bodies[&actor];
         let site = project.carrier.map_or(Some(project.site), |carrier|
-            self.stage.bodies.get(&carrier).or_else(|| self.sim.body_at_start(carrier))
+            self.stage.bodies.get(&carrier).map(Arc::as_ref).or_else(|| self.sim.body_at_start(carrier))
                 .and_then(Entity::resident_site));
         if !worker.alive || !worker.resident_site().is_some_and(|at| site == Some(at)) || project.output.is_some()
             || !self.sim.project_authorized(&project,actor)

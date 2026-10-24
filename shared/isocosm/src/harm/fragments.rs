@@ -63,7 +63,7 @@ pub(crate) fn detach(e: &mut Entity, part: PartId, tick: Tick, alive: bool) -> R
         .collect();
     for (old, new) in &mapping {
         let half = e.extent(*old);
-        let p = e.parts.get_mut(old).ok_or("a subtree missing physiology")?;
+        let p = e.part_mut(old).ok_or("a subtree missing physiology")?;
         let mut copied = p.clone();
         copied.matter = std::mem::take(&mut p.matter);
         body.parts.insert(*new, copied);

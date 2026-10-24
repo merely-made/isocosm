@@ -18,6 +18,7 @@ use crate::{
 use std::{
     borrow::Cow,
     collections::{BTreeMap, BTreeSet},
+    sync::Arc,
 };
 
 mod harm;
@@ -43,7 +44,7 @@ impl Staged<'_> {
             return Ok(&mut self.site()?.accounts);
         }
         let id = self.sim.bound(self.stage.actor, self.stage.target, who)?;
-        let body = self.stage.bodies.get_mut(&id);
+        let body = self.stage.bodies.get_mut(&id).map(Arc::make_mut);
         Ok(&mut body.ok_or("body binding changed")?.accounts)
     }
     fn site(&mut self) -> Result<&mut Site> {
@@ -67,10 +68,8 @@ impl Staged<'_> {
     }
     fn actor(&mut self) -> &mut Entity {
         let actor = self.stage.actor;
-        self.stage
-            .bodies
-            .get_mut(&actor)
-            .expect("the actor is staged")
+        let body = self.stage.bodies.get_mut(&actor);
+        Arc::make_mut(body.expect("the actor is staged"))
     }
     pub(super) fn add_note(
         &mut self,
