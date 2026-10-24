@@ -3,7 +3,7 @@
 **Date:** 2026-10-19
 
 **Status, 2026-10-23:** D5, D6, D7, D9a and D11 built, D9b and D10 dropped
-(Progress); E1a next (D13). Its decisions are linked to the
+(Progress), and E1a; E1b next (D13). Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -300,6 +300,17 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on 258, 286, 683, 813, sim-execution D1, sim-execution D4 · governs isocosm::schedule::Filed · summary Waking is built as more gates, then re-filing by what an act changed, then an index kept across advances, each exact.
 
+- **D14, E1a by cheap necessary gates, mood left out (2026-10-23), applies
+  Processes 7:** "Cheap necessary gates (Recommended)". Gates that read a
+  requirement whole, rest's healing reading among them, were exact but
+  saved nothing: re-filing read the reading as often as acts were blocked
+  by it. Rest is filed instead by what its reading needs before it can
+  come to one, a lost cell whose loss was recorded; the act still reads it
+  whole. A site's conditions, a lookup, stay read whole. Mood, read anew
+  nearly every tick, is not gated. This amends D13.
+
+  Links: area Processes and rules · draws on 258, 286, sim-execution D13 · amends sim-execution D13 · governs isocosm::schedule::Filed · summary Rest is filed by a lost cell its healing needs, a site's condition read as the act reads it; mood is not gated.
+
 ## Findings
 
 - **2026-10-19, the tick as built** (read from `shared/isocosm/src`, nothing
@@ -441,6 +452,25 @@ each title names its outcome against the doctrine.
   alternated, seed 0, process CPU time, three pairs): 82.1, 82.0 and 94.5
   s, then 84.4, 96.4 and 96.5 s, 7% more, every pair slower; seeds 0 to 2
   identical. Not landed.
+- **2026-10-23, E1a measured** (D11's tree and E1a's alternated, seed 0,
+  process CPU time). Gates reading rest's healing whole: 95.5, 100.7 and
+  95.7 s before, 98.9, 98.3 and 95.6 s after, no change. Rest filed by a
+  lost cell, on a quiet machine: 62.3, 62.6 and 62.7 s before, 59.6, 59.5
+  and 62.2 s after, about 3% less; seeds 0 to 2 identical in 311.1 s and
+  311.2 s of wall time.
+- **2026-10-23, the playable loop's wiring** (read from its unpushed
+  commits on `playable-loop`, `dcb07005` to `f705be43`). Foraging now
+  chooses food by native senses over pass-start bodies and a route search
+  (`spatial/foraging/senses.rs`, `route/search.rs`), cached on exact
+  physical inputs with terrain by `Arc` identity (`route/cache.rs`), and
+  bodies walk through footholds and supported transfers
+  (`spatial/embodiment/walking.rs`). A forager's target comes from that
+  search (`foraging_target`), ahead of D9a's and D11's prey scan, so those
+  leave it as it is; its cost is deliberation the A1 battery does not
+  exercise. Its own large run spent about 34 s deriving cold Places graphs
+  and 11 s on a round forecast, readings for a native-site battery. The
+  route cache is waking as E1 means it, keyed by exact inputs; E1b and
+  E1c can follow it.
 - **2026-10-23, what E1's parts could save** (scratch counters, seed 0, a
   busy machine, 91.8 s of scheduling). Blocked evaluations by the
   requirement they fail: `mind:relief` on mood 393,954, `body:rest` on its
@@ -532,3 +562,13 @@ each title names its outcome against the doctrine.
   round dropped it for E1.
 - **2026-10-23, E1 assessed** (Findings): split into E1a, E1b and E1c in
   that order (D13).
+- **2026-10-23, E1a built.** Gates read beyond a body through a `World`
+  (tick, rules, sites, lineages). A process without a target that shifts
+  no condition gains its requirements on its site's conditions as gates,
+  read as the act reads them, its residents filed again whenever a commit
+  changes that site's conditions; worlds with spread or custody keep
+  none. Rest is filed by a lost cell its healing needs (D14). A chosen
+  process leaves deliberative members unfiltered (D7b). Exact: H3's pins
+  6/6, the battery's seeds 0 to 2 identical, isocosm's 717 tests in
+  release and its 264 lib tests under the test profile, where the filing
+  check runs. About 3% less CPU on seed 0 (Findings). E1b next.

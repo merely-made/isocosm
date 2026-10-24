@@ -5070,6 +5070,15 @@ summary = "Waking is built as more gates, then re-filing by what an act changed,
 draws_on = ["258", "286", "683", "813", "sim-execution D1", "sim-execution D4"]
 governs = ["isocosm::schedule::Filed"]
 
+[decisions."sim-execution D14"]
+title = "E1a by cheap necessary gates, mood left out (2026-10-23), applies Processes 7"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Rest is filed by a lost cell its healing needs, a site's condition read as the act reads it; mood is not gated."
+draws_on = ["258", "286", "sim-execution D13"]
+amends = ["sim-execution D13"]
+governs = ["isocosm::schedule::Filed"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"

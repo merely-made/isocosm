@@ -114,7 +114,8 @@ impl Simulation {
             work.arrivals = arrivals;
             if let Some(t) = &mut self.targets { t.touch(&self.state.population, [first]); }
             if let Some(f) = &mut self.filed {
-                f.touch(&self.state.population, [first], tick, &self.genesis.rules);
+                let world = crate::schedule::World::at(&self.state, &self.genesis.rules, tick);
+                f.touch(&self.state.population, [first], &world);
             }
         }
         Ok(())
