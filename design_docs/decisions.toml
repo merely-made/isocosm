@@ -5044,6 +5044,15 @@ summary = "An act whose shares cover its plan keeps the planned stage and only r
 draws_on = ["454", "sim-execution D8"]
 governs = ["isocosm::execute", "isocosm::schedule"]
 
+[decisions."sim-execution D11"]
+title = "D9b dropped and the prey scan narrowed further (2026-10-23), applies Directing 4"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Directing and play"
+summary = "Skipping unchanged re-choices is dropped; a prey search files living and dead apart and tests prey-independent requirements once."
+draws_on = ["683", "813", "sim-execution D9"]
+amends = ["sim-execution D9"]
+governs = ["isocosm::targets"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"
