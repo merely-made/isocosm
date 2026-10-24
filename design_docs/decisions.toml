@@ -5053,6 +5053,15 @@ draws_on = ["683", "813", "sim-execution D9"]
 amends = ["sim-execution D9"]
 governs = ["isocosm::targets"]
 
+[decisions."sim-execution D12"]
+title = "D10 tried where provably safe, then dropped (2026-10-23), applies Processes 8"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Keeping a plan's stage for its act, tried where provably safe, was exact but slower and is dropped; shared-ground acts evaluate twice."
+draws_on = ["454", "sim-execution D10"]
+amends = ["sim-execution D10"]
+governs = ["isocosm::execute"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"

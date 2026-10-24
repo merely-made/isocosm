@@ -2,8 +2,8 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-23:** D5, D6, D7, D9a and D11 built (Progress); D10 next
-(planning, D8), then E1. Its decisions are linked to the
+**Status, 2026-10-23:** D5, D6, D7, D9a and D11 built, D9b and D10 dropped
+(Progress); E1 next. Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -111,7 +111,8 @@ Phases in order, each with its done-condition.
 - **D11. The prey scan narrowed further.** Living and dead filed apart;
   prey-independent requirements tested once per search. Done when the
   exact check holds and the debug comparison with a full scan passes.
-- **D10. The planned stage kept.** Done when the exact check holds.
+- **D10. The planned stage kept.** Dropped (D12): where safe, exact but 7%
+  slower.
 - **E1. Waking.** The per-advance gate index (`schedule/filed.rs`, rulings 258,
   286) becomes persistent across advances, re-filed at commit from each
   process's read-set (`Gates::of`, `framed`, `Expr::reads`). Done when the
@@ -268,6 +269,18 @@ each title names its outcome against the doctrine.
 
   Links: area Directing and play · draws on 683, 813, sim-execution D9 · amends sim-execution D9 · governs isocosm::targets · summary Skipping unchanged re-choices is dropped; a prey search files living and dead apart and tests prey-independent requirements once.
 
+- **D12, D10 tried where provably safe, then dropped (2026-10-23), applies
+  Processes 8:** "Reuse where provably safe", then "Drop D10, go to E1
+  (Recommended)". An act's effects read more than the pass's start: what
+  lineages have learned (a meal), a live identity counter (a birth), notes,
+  record highs, polities and projects. So a plan kept its stage only for a
+  process of fixed transfers and plain transforms, nothing drawn, no owned
+  lots, its shares covering all it took. That was exact and 7% slower,
+  cloning the stage costing more than the four ledger effects it saved.
+  Shared-ground acts keep both evaluations; E1 is next. This amends D10.
+
+  Links: area Processes and rules · draws on 454, sim-execution D10 · amends sim-execution D10 · governs isocosm::execute · summary Keeping a plan's stage for its act, tried where provably safe, was exact but slower and is dropped; shared-ground acts evaluate twice.
+
 ## Findings
 
 - **2026-10-19, the tick as built** (read from `shared/isocosm/src`, nothing
@@ -405,6 +418,10 @@ each title names its outcome against the doctrine.
   s after by wall time. Seed 0 by process CPU time, three pairs: 98.0,
   91.2 and 82.1 s before, 96.3, 75.7 and 75.6 s after, 9% less, the load
   falling as the pairs ran.
+- **2026-10-23, D10 where safe measured** (D11's tree and the kept stage
+  alternated, seed 0, process CPU time, three pairs): 82.1, 82.0 and 94.5
+  s, then 84.4, 96.4 and 96.5 s, 7% more, every pair slower; seeds 0 to 2
+  identical. Not landed.
 
 ## Progress
 
@@ -483,3 +500,6 @@ each title names its outcome against the doctrine.
   seeds 0 to 2 identical, isocosm's 717 tests in release and its 264 lib
   tests under the test profile, where the filed search is compared with a
   full scan. About 9% less CPU time (Findings).
+- **2026-10-23, D10 tried and dropped (D12):** the round chose reuse where
+  provably safe; built, it was exact and 7% slower (Findings), and the
+  round dropped it for E1.
