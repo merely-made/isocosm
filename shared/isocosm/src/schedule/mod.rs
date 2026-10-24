@@ -19,7 +19,7 @@ mod filed;
 mod frame;
 mod pass;
 
-pub(crate) use filed::{Filed, Gates, World};
+pub(crate) use filed::{Changed, Filed, Gates, World};
 pub(crate) use frame::{Demands, Frame, Planned, Shares, edible, fits, merge, merge_site};
 pub(crate) use pass::Pass;
 

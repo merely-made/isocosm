@@ -13,7 +13,7 @@
 //! Filing reads each of a group's holdings once, whatever the gates asking.
 
 use crate::{population::Population, rules::*, schema::*, simulation::State};
-use std::collections::{BTreeMap, BTreeSet};
+use std::{collections::{BTreeMap, BTreeSet}, sync::{Arc, Weak}};
 
 /// What a process requires of its actor's own state.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
@@ -228,6 +228,14 @@ impl Gates {
             && (chooses || self.reads.iter().all(|q| r.holds(q)))
     }
 
+    /// Whether what an act changed of a body can move this gate's outcome.
+    fn moved_by(&self, c: &Changed) -> bool {
+        c.whole
+            || (c.residence && (self.resides.is_some() || !self.reads.is_empty()))
+            || self.at_least.iter().chain(&self.below).any(|(k, _)| c.keys.contains(k))
+            || (self.holds > 0 && c.keys.iter().any(|k| self.matter.contains(k)))
+    }
+
     /// Whether `e` passes every gate at the world's tick, as the
     /// requirements read it.
     pub(crate) fn open(&self, e: &Entity, world: &World) -> bool {
@@ -235,22 +243,131 @@ impl Gates {
     }
 }
 
+/// A set of gated processes by their number in the index.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+struct Bits(Vec<u64>);
+
+impl Bits {
+    fn with(n: usize) -> Self {
+        Self(vec![0; n.div_ceil(64)])
+    }
+    fn insert(&mut self, i: usize) {
+        self.0[i / 64] |= 1 << (i % 64);
+    }
+    fn remove(&mut self, i: usize) {
+        self.0[i / 64] &= !(1 << (i % 64));
+    }
+    fn contains(&self, i: usize) -> bool {
+        self.0[i / 64] & (1 << (i % 64)) != 0
+    }
+    fn union(&mut self, other: &Self) {
+        for (a, b) in self.0.iter_mut().zip(&other.0) {
+            *a |= b;
+        }
+    }
+    fn iter(&self) -> impl Iterator<Item = usize> + '_ {
+        self.0.iter().enumerate().flat_map(|(w, bits)| {
+            let mut left = *bits;
+            std::iter::from_fn(move || {
+                if left == 0 {
+                    return None;
+                }
+                let at = left.trailing_zeros() as usize;
+                left &= left - 1;
+                Some(w * 64 + at)
+            })
+        })
+    }
+}
+
 /// Stored groups by first identity, filed as ready for each gated due
-/// process, kept only during an advance.
+/// process, kept only during an advance. Processes are numbered, so that a
+/// group filed again as it was changes nothing in the index.
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Filed {
-    gates: BTreeMap<Key, Gates>,
-    by_trait: BTreeMap<Key, BTreeSet<Key>>,
-    untraited: BTreeSet<Key>,
-    ready: BTreeMap<Key, BTreeSet<Id>>,
-    at: BTreeMap<Id, BTreeSet<Key>>,
+    names: BTreeMap<Key, usize>,
+    gates: Vec<Gates>,
+    by_trait: BTreeMap<Key, Bits>,
+    untraited: Bits,
+    ready: Vec<BTreeSet<Id>>,
+    at: BTreeMap<Id, Bits>,
     /// Groups passing every gate of a process but their age, by the tick
     /// they come of age.
-    timers: BTreeSet<(Tick, Key, Id)>,
+    timers: BTreeSet<(Tick, usize, Id)>,
     /// Groups by the site they reside at, filed again when its conditions
     /// change.
     residents: BTreeMap<Id, BTreeSet<Id>>,
     resides_at: BTreeMap<Id, Id>,
+    /// Each group's filing: the gates its body passed but for age, and the
+    /// body it was read from.
+    filings: BTreeMap<Id, Filing>,
+}
+
+/// The gates a body passed but for age, and that body. The weak handle
+/// keeps its allocation from reuse, and any write to the body after it
+/// moves the body to another (`Arc::make_mut`), so the same address is the
+/// same body.
+#[derive(Clone, Debug)]
+struct Filing {
+    body: Weak<Entity>,
+    passed: Bits,
+}
+
+/// What one act changed of a body, as filing reads it: the accounts it
+/// wrote, its own or its parts' matter; whether its residence moved; and
+/// whether anything else a gate reads did (traits, life, method, lineage,
+/// age, its body's document or a part's shape), which files it afresh.
+#[derive(Clone, Debug, Default)]
+pub(crate) struct Changed {
+    keys: BTreeSet<Key>,
+    residence: bool,
+    whole: bool,
+}
+
+impl Changed {
+    /// What `now` changed of `was`.
+    pub(crate) fn between(was: &Entity, now: &Entity) -> Self {
+        let mut keys = BTreeSet::new();
+        let mut ledger = |a: &Ledger, b: &Ledger| {
+            for k in a.keys().chain(b.keys()) {
+                if a.get(k) != b.get(k) {
+                    keys.insert(k.clone());
+                }
+            }
+        };
+        ledger(&was.accounts, &now.accounts);
+        let mut whole = was.parts.len() != now.parts.len();
+        for (id, part) in &now.parts {
+            match was.parts.get(id) {
+                Some(old) if Arc::ptr_eq(old, part) => {},
+                Some(old) => {
+                    ledger(&old.matter, &part.matter);
+                    let mut shape = Part::clone(old);
+                    shape.matter = part.matter.clone();
+                    whole |= shape != **part;
+                },
+                None => whole = true,
+            }
+        }
+        whole |= was.traits != now.traits
+            || was.alive != now.alive
+            || was.method != now.method
+            || was.lineage != now.lineage
+            || was.born != now.born
+            || was.body != now.body;
+        Self { keys, residence: was.resident_site() != now.resident_site(), whole }
+    }
+}
+
+/// The candidates whose gates the body read passes, but for age.
+fn passing<'a>(gates: &'a [Gates], candidates: &Bits, read: &mut Reading<'a>) -> Bits {
+    let mut passed = Bits::with(gates.len());
+    for i in candidates.iter() {
+        if gates[i].met(read) {
+            passed.insert(i);
+        }
+    }
+    passed
 }
 
 impl Filed {
@@ -259,54 +376,82 @@ impl Filed {
         gates: BTreeMap<Key, Gates>,
         world: &World,
     ) -> Self {
-        let mut filed = Self::default();
-        for (id, g) in &gates {
+        let n = gates.len();
+        let mut filed = Self { untraited: Bits::with(n), ..Self::default() };
+        for (i, (id, g)) in gates.into_iter().enumerate() {
             if g.traits.is_empty() {
-                filed.untraited.insert(id.clone());
+                filed.untraited.insert(i);
             }
             for t in &g.traits {
-                let processes = filed.by_trait.entry(t.clone()).or_default();
-                processes.insert(id.clone());
+                filed.by_trait.entry(t.clone()).or_insert_with(|| Bits::with(n)).insert(i);
             }
+            filed.names.insert(id, i);
+            filed.gates.push(g);
         }
-        filed.gates = gates;
+        filed.ready = vec![BTreeSet::new(); n];
         let firsts: Vec<Id> = population.groups.keys().copied().collect();
         filed.touch(population, firsts, world);
         filed
     }
 
     /// Files again every group residing at `site`, after its conditions
-    /// changed.
+    /// changed, each read afresh.
     pub(crate) fn touch_site(&mut self, population: &Population, site: Id, world: &World) {
         let firsts: Vec<Id> = self.residents.get(&site).into_iter().flatten().copied().collect();
-        self.touch(population, firsts, world);
-    }
-
-    pub(crate) fn gates(&self, process: &str) -> Option<&Gates> {
-        self.gates.get(process)
+        self.refile(population, firsts, &BTreeMap::new(), world, true);
     }
 
     /// Files again every group that may start at one of `firsts`, after the
     /// population changed there, as it stands at the world's tick.
-    pub(crate) fn touch(
+    pub(crate) fn touch(&mut self, population: &Population, firsts: impl IntoIterator<Item = Id>, world: &World) {
+        self.refile(population, firsts, &BTreeMap::new(), world, false);
+    }
+
+    /// The same after an act, knowing what it changed of each body it
+    /// wrote: a group still on the body it was filed from keeps its filing;
+    /// one whose body the act changed reads again only the gates the change
+    /// can move; any other is read whole.
+    pub(crate) fn touch_changed(
         &mut self,
         population: &Population,
         firsts: impl IntoIterator<Item = Id>,
+        changes: &BTreeMap<Id, Changed>,
         world: &World,
     ) {
-        let tick = world.tick;
+        self.refile(population, firsts, changes, world, false);
+    }
+
+    pub(crate) fn gates(&self, process: &str) -> Option<&Gates> {
+        self.names.get(process).map(|&i| &self.gates[i])
+    }
+
+    fn refile(
+        &mut self,
+        population: &Population,
+        firsts: impl IntoIterator<Item = Id>,
+        changes: &BTreeMap<Id, Changed>,
+        world: &World,
+        afresh: bool,
+    ) {
+        let (tick, n) = (world.tick, self.gates.len());
+        let mut firsts: Vec<Id> = firsts.into_iter().collect();
+        firsts.sort_unstable();
+        firsts.dedup();
+        // The filings the touched groups had: a group an act lifted a member
+        // out of began, with its pieces, from the filing of the group it was.
+        let was: Vec<(Id, Filing)> = firsts.iter().filter_map(|f| Some((*f, self.filings.get(f)?.clone()))).collect();
         for first in firsts {
-            for id in self.at.remove(&first).unwrap_or_default() {
-                if let Some(set) = self.ready.get_mut(&id) {
-                    set.remove(&first);
-                }
-            }
+            let filed = self.at.remove(&first).unwrap_or_else(|| Bits::with(n));
             if let Some(site) = self.resides_at.remove(&first)
                 && let Some(set) = self.residents.get_mut(&site)
             {
                 set.remove(&first);
             }
             let Some(group) = population.groups.get(&first) else {
+                for i in filed.iter() {
+                    self.ready[i].remove(&first);
+                }
+                self.filings.remove(&first);
                 continue;
             };
             let e = &group.entity;
@@ -314,60 +459,79 @@ impl Filed {
                 self.residents.entry(site).or_default().insert(first);
                 self.resides_at.insert(first, site);
             }
-            let mut candidates: BTreeSet<Key> = self.untraited.clone();
+            let mut candidates = self.untraited.clone();
             for t in &e.traits {
-                if let Some(ids) = self.by_trait.get(t) {
-                    candidates.extend(ids.iter().cloned());
+                if let Some(bits) = self.by_trait.get(t) {
+                    candidates.union(bits);
                 }
             }
+            let gates = &self.gates;
             let mut read = Reading::new(e, world);
-            let (mut due, mut later) = (vec![], vec![]);
-            for id in candidates {
-                let g = &self.gates[&id];
-                if !g.met(&mut read) {
-                    continue;
-                }
-                let ripe = e.born.saturating_add(g.age);
+            let began = was.iter().rev().find(|(f, _)| *f <= first).map(|(_, filing)| filing);
+            let same = |b: &Filing| std::ptr::eq(b.body.as_ptr(), Arc::as_ptr(e));
+            let passed = match (began, changes.get(&first)) {
+                (Some(b), _) if !afresh && same(b) => b.passed.clone(),
+                (Some(b), Some(c)) if !afresh && !c.whole => {
+                    let mut passed = b.passed.clone();
+                    for i in candidates.iter().filter(|i| gates[*i].moved_by(c)) {
+                        if gates[i].met(&mut read) {
+                            passed.insert(i);
+                        } else {
+                            passed.remove(i);
+                        }
+                    }
+                    passed
+                },
+                _ => passing(gates, &candidates, &mut read),
+            };
+            // Debug builds check a kept or narrowed filing against a whole one.
+            #[cfg(debug_assertions)]
+            debug_assert_eq!(passed, passing(gates, &candidates, &mut Reading::new(e, world)), "group {first}'s filing differs from a whole reading");
+            let mut due = Bits::with(n);
+            for i in passed.iter() {
+                let ripe = e.born.saturating_add(gates[i].age);
                 if ripe <= tick {
-                    due.push(id);
+                    due.insert(i);
                 } else {
-                    later.push((ripe, id));
+                    self.timers.insert((ripe, i, first));
                 }
             }
-            for id in due {
-                self.file(id, first);
+            if due != filed {
+                for i in filed.iter().filter(|i| !due.contains(*i)) {
+                    self.ready[i].remove(&first);
+                }
+                for i in due.iter().filter(|i| !filed.contains(*i)) {
+                    self.ready[i].insert(first);
+                }
             }
-            for (ripe, id) in later {
-                self.timers.insert((ripe, id, first));
-            }
+            self.at.insert(first, due);
+            self.filings.insert(first, Filing { body: Arc::downgrade(e), passed });
         }
-    }
-
-    fn file(&mut self, id: Key, first: Id) {
-        self.ready.entry(id.clone()).or_default().insert(first);
-        self.at.entry(first).or_default().insert(id);
     }
 
     /// Files the groups come of age by `tick` that still pass every other
     /// gate. A timer whose group has since changed is read afresh.
     pub(crate) fn ripen(&mut self, population: &Population, world: &World) {
+        let n = self.gates.len();
         while self
             .timers
             .first()
             .is_some_and(|(when, _, _)| *when <= world.tick)
         {
-            let (_, id, first) = self.timers.pop_first().expect("a timer is due");
+            let (_, i, first) = self.timers.pop_first().expect("a timer is due");
             let Some(group) = population.groups.get(&first) else {
                 continue;
             };
-            if self.gates[&id].open(&group.entity, world) {
-                self.file(id, first);
+            if self.gates[i].open(&group.entity, world) {
+                self.ready[i].insert(first);
+                self.at.entry(first).or_insert_with(|| Bits::with(n)).insert(i);
             }
         }
     }
 
     /// The least stored group from `from` on that is ready for `process`.
     pub(crate) fn next(&self, process: &str, from: Id) -> Option<Id> {
-        self.ready.get(process)?.range(from..).next().copied()
+        let i = *self.names.get(process)?;
+        self.ready[i].range(from..).next().copied()
     }
 }
