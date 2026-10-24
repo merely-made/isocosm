@@ -115,3 +115,69 @@ pub(super) fn poses(
     }
     Ok(None)
 }
+
+/// Supported arrivals can keep useful world-space contacts. A canonical stand
+/// is one option, not an obligation to move every sole at once.
+pub(super) fn arrivals(
+    volume: &Volume,
+    doc: &BodyDocument,
+    from: &Pose,
+    to: &Pose,
+    rules: Walking,
+) -> Vec<Pose> {
+    if rules.stances == 0 || from.yaw != to.yaw || from.feet.is_empty() {
+        return vec![to.clone()];
+    }
+    let Ok(world) = foot_points(from) else {
+        return vec![to.clone()];
+    };
+    let frame = isometer_core::legs::StrideFrame {
+        root: to.at.map(|v| v * UNIT),
+        feet: world.clone(),
+        bearing: world.keys().copied().collect(),
+    };
+    let Ok(anchored) = stride_feet(&frame, to.yaw) else {
+        return vec![to.clone()];
+    };
+    let ids: Vec<_> = to.feet.keys().copied().collect();
+    let mut candidates = Vec::new();
+    let mut tried = 0usize;
+    for (base, other) in [(&anchored, &to.feet), (&to.feet, &anchored)] {
+        let mut variants = vec![base.clone()];
+        for (i, &id) in ids.iter().enumerate() {
+            let mut one = base.clone();
+            one.insert(id, other[&id]);
+            variants.push(one.clone());
+            for &second in ids.iter().skip(i + 1) {
+                let mut two = one.clone();
+                two.insert(second, other[&second]);
+                variants.push(two);
+            }
+        }
+        for feet in variants.into_iter().take(usize::from(rules.postures)) {
+            if tried >= usize::from(rules.postures) {
+                break;
+            }
+            tried += 1;
+            let pose = Pose { feet, ..to.clone() };
+            if !candidates.contains(&pose) && check(volume, doc, &pose).is_ok() {
+                candidates.push(pose);
+            }
+        }
+    }
+    candidates.sort_by_key(|pose| {
+        let points = foot_points(pose).unwrap();
+        (
+            points
+                .iter()
+                .map(|(id, p)| (0..3).map(|k| p[k].abs_diff(world[id][k])).sum::<u64>())
+                .sum::<u64>(),
+            pose.feet.clone(),
+        )
+    });
+    candidates.truncate(usize::from(rules.stances).saturating_sub(1));
+    if !candidates.contains(to) {
+        candidates.push(to.clone());
+    }
+    candidates
+}

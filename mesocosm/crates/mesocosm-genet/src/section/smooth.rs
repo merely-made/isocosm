@@ -16,7 +16,11 @@ pub(super) struct Bodies {
     motion: std::collections::BTreeMap<u64, motion::Motion>,
     previous: std::time::Instant,
     clearance_terrain: Option<isometer::space::volume::Volume>,
-    clearance_bodies: Vec<(u64, isometer::core::BodyDocument, Option<isocosm::spatial::Pose>)>,
+    clearance_bodies: Vec<(
+        u64,
+        isometer::core::BodyDocument,
+        Option<isocosm::spatial::Pose>,
+    )>,
     clearance_revision: u64,
 }
 impl Bodies {
@@ -53,12 +57,19 @@ impl Bodies {
         light: f32,
         target: &wgpu::Texture,
     ) -> Result<(), String> {
-        let physical: Vec<_> = scene.bodies.iter().map(|b| (b.id,b.document.clone(),b.physical.clone())).collect();
-        let terrain_changed=self.clearance_terrain.as_ref()
-            .is_none_or(|old| old.materials!=scene.window.materials || !old.same_cells(&scene.window));
+        let physical: Vec<_> = scene
+            .bodies
+            .iter()
+            .map(|b| (b.id, b.document.clone(), b.physical.clone()))
+            .collect();
+        let terrain_changed = self.clearance_terrain.as_ref().is_none_or(|old| {
+            old.materials != scene.window.materials || !old.same_cells(&scene.window)
+        });
         if terrain_changed || self.clearance_bodies != physical {
             self.clearance_bodies = physical;
-            if terrain_changed {self.clearance_terrain = Some(scene.window.clone());}
+            if terrain_changed {
+                self.clearance_terrain = Some(scene.window.clone());
+            }
             self.clearance_revision = self.clearance_revision.wrapping_add(1);
         }
         let mut surfaces = std::collections::BTreeMap::new();
@@ -68,6 +79,7 @@ impl Bodies {
         let mut planted = 0;
         let mut swinging = 0;
         let mut shifting = 0;
+        let mut braced = 0;
         let now = std::time::Instant::now();
         let elapsed = now.duration_since(self.previous).as_secs_f32().min(0.1);
         self.previous = now;
@@ -87,6 +99,7 @@ impl Bodies {
                     .or_insert_with(|| motion::Motion::new(body, scene));
                 live.origin = motion.sample_revision(body, scene, elapsed, self.clearance_revision);
                 shifting += usize::from(motion.shifting());
+                braced += usize::from(motion.braced());
                 live.yaw_radians = motion.yaw_radians();
                 let elapsed = motion.elapsed(elapsed);
                 let witnesses = motion
@@ -137,6 +150,7 @@ impl Bodies {
         layer.stats.planted_contacts = planted;
         layer.stats.swinging_contacts = swinging;
         layer.stats.weight_shifting_bodies = shifting;
+        layer.stats.planted_body_transfers = braced;
         layer.stats.draw_parts = layer.stats.voxel_parts;
         layer.stats.frame_upload_bytes = bytes;
         layer.stats.body_upload_measurement = Some("implicit primitive and frame bytes");
@@ -145,17 +159,19 @@ impl Bodies {
 }
 
 fn height(scene: &SiteScene, p: [f32; 3]) -> Option<f32> {
-    let v=&scene.window;
-    let extent=i64::from(v.ground().extent());
-    let x=p[0].floor() as i64+v.min[0]+extent;
-    let z=p[2].floor() as i64+v.min[1]+extent;
-    let y=p[1].round() as i64+v.datum;
-    let dry=|m| m!=v.materials.air && m!=v.materials.water;
-    if (p[1]-(y-v.datum) as f32).abs()<0.025
-        && v.material([x,y-1,z]).is_some_and(dry)
-        && v.material([x,y,z])==Some(v.materials.air) {
-        return Some((y-v.datum) as f32);
+    let v = &scene.window;
+    let extent = i64::from(v.ground().extent());
+    let x = p[0].floor() as i64 + v.min[0] + extent;
+    let z = p[2].floor() as i64 + v.min[1] + extent;
+    let y = p[1].round() as i64 + v.datum;
+    let dry = |m| m != v.materials.air && m != v.materials.water;
+    if (p[1] - (y - v.datum) as f32).abs() < 0.025
+        && v.material([x, y - 1, z]).is_some_and(dry)
+        && v.material([x, y, z]) == Some(v.materials.air)
+    {
+        return Some((y - v.datum) as f32);
     }
-    v.surface(x,z).filter(|y|v.material([x,*y,z]).is_some_and(dry))
-        .map(|y|(y+1-v.datum) as f32)
+    v.surface(x, z)
+        .filter(|y| v.material([x, *y, z]).is_some_and(dry))
+        .map(|y| (y + 1 - v.datum) as f32)
 }

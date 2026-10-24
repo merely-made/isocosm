@@ -39,6 +39,7 @@ impl Recording {
             "focus": input.presentation.as_ref().and_then(|p| p.focus),
             "planted": stats.planted_contacts, "swinging": stats.swinging_contacts,
             "weight_shifting": stats.weight_shifting_bodies,
+            "planted_body_transfers": stats.planted_body_transfers,
             "reachable_feet": stats.foot_contacts, "joints": stats.posed_joints,
             "projection_failures": stats.projection_failures,
             "roots": input.scene.bodies.iter().filter_map(|b| b.physical.as_ref()

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 use super::super::articulation_tests::{quadruped, volume};
 use super::*;
+mod steep;
 
 #[test]
 fn omitted_clearance_keeps_the_first_saved_straight_transfer_policy() {
@@ -16,6 +17,16 @@ fn omitted_clearance_keeps_the_first_saved_straight_transfer_policy() {
             .is_none()
     );
     assert!(Walking::default().clearance);
+    assert_eq!(policy.stances, 0);
+    let earlier = r#"{"clearance":true,"shift":4,"foot_search":2,"lift":3,"postures":256}"#;
+    let earlier: Walking = serde_json::from_str(earlier).unwrap();
+    assert_eq!(earlier.stances, 0);
+    assert!(
+        serde_json::to_value(earlier)
+            .unwrap()
+            .get("stances")
+            .is_none()
+    );
 }
 use isometer_core::{Attachment, VolumeRef};
 

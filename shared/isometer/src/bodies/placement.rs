@@ -52,6 +52,8 @@ pub struct BodyFrameStats {
     pub swinging_contacts: usize,
     /// Host-written count of bodies following an admitted root weight transfer.
     pub weight_shifting_bodies: usize,
+    /// Host-written: moving the body with every world-space sole retained.
+    pub planted_body_transfers: usize,
     pub support_contacts: usize,
     /// A host-owned body's encode report, zero for caller-owned submission.
     pub body_tenant_internal_submissions: u64,

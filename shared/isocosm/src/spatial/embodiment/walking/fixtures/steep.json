@@ -1,0 +1,2532 @@
+{
+  "seed": 1792779701043394300,
+  "sites": {
+    "0": {
+      "terrain_seed": 9823703706584237270,
+      "conditions": {
+        "site:0": 1,
+        "terrain:elevation": 36,
+        "terrain:relief": 55,
+        "terrain:water": 387,
+        "world:habitable": 1,
+        "world:weather": 0
+      },
+      "accounts": {
+        "sim:energy": 360000,
+        "world:soil": 690
+      },
+      "routes": [
+        {
+          "to": 1,
+          "travel": 3,
+          "transmission": 507539,
+          "border": {
+            "side": 1,
+            "enters": 3
+          }
+        },
+        {
+          "to": 3,
+          "travel": 3,
+          "transmission": 994110,
+          "border": {
+            "side": 2,
+            "enters": 0
+          }
+        }
+      ]
+    },
+    "1": {
+      "terrain_seed": 3762839552024139427,
+      "conditions": {
+        "site:1": 1,
+        "terrain:elevation": 387,
+        "terrain:relief": 40,
+        "terrain:water": 387,
+        "world:habitable": 1,
+        "world:weather": 0
+      },
+      "accounts": {
+        "sim:energy": 360000,
+        "world:soil": 686
+      },
+      "routes": [
+        {
+          "to": 2,
+          "travel": 1,
+          "transmission": 823137,
+          "border": {
+            "side": 1,
+            "enters": 3
+          }
+        },
+        {
+          "to": 4,
+          "travel": 4,
+          "transmission": 884176,
+          "border": {
+            "side": 2,
+            "enters": 0
+          }
+        },
+        {
+          "to": 0,
+          "travel": 3,
+          "transmission": 700539,
+          "border": {
+            "side": 3,
+            "enters": 1
+          }
+        }
+      ]
+    },
+    "2": {
+      "terrain_seed": 3025204305499300094,
+      "conditions": {
+        "site:2": 1,
+        "terrain:elevation": 484,
+        "terrain:relief": 51,
+        "terrain:water": 387,
+        "world:habitable": 1,
+        "world:weather": 0
+      },
+      "accounts": {
+        "sim:energy": 360000,
+        "world:soil": 696
+      },
+      "routes": [
+        {
+          "to": 5,
+          "travel": 3,
+          "transmission": 860190,
+          "border": {
+            "side": 2,
+            "enters": 0
+          }
+        },
+        {
+          "to": 1,
+          "travel": 1,
+          "transmission": 813865,
+          "border": {
+            "side": 3,
+            "enters": 1
+          }
+        }
+      ]
+    },
+    "3": {
+      "terrain_seed": 16839933618095776864,
+      "conditions": {
+        "site:3": 1,
+        "terrain:elevation": 249,
+        "terrain:relief": 37,
+        "terrain:water": 387,
+        "world:habitable": 1,
+        "world:weather": 0
+      },
+      "accounts": {
+        "sim:energy": 360000,
+        "world:soil": 701
+      },
+      "routes": [
+        {
+          "to": 0,
+          "travel": 2,
+          "transmission": 847384,
+          "border": {
+            "side": 0,
+            "enters": 2
+          }
+        },
+        {
+          "to": 4,
+          "travel": 4,
+          "transmission": 795254,
+          "border": {
+            "side": 1,
+            "enters": 3
+          }
+        }
+      ]
+    },
+    "4": {
+      "terrain_seed": 13180729815282366887,
+      "conditions": {
+        "site:4": 1,
+        "terrain:elevation": 363,
+        "terrain:relief": 45,
+        "terrain:water": 387,
+        "world:habitable": 1,
+        "world:weather": 0
+      },
+      "accounts": {
+        "sim:energy": 360000,
+        "world:soil": 653
+      },
+      "routes": [
+        {
+          "to": 1,
+          "travel": 1,
+          "transmission": 761241,
+          "border": {
+            "side": 0,
+            "enters": 2
+          }
+        },
+        {
+          "to": 5,
+          "travel": 2,
+          "transmission": 555246,
+          "border": {
+            "side": 1,
+            "enters": 3
+          }
+        },
+        {
+          "to": 3,
+          "travel": 1,
+          "transmission": 714111,
+          "border": {
+            "side": 3,
+            "enters": 1
+          }
+        }
+      ]
+    },
+    "5": {
+      "terrain_seed": 12612909034102570159,
+      "conditions": {
+        "site:5": 1,
+        "terrain:elevation": 698,
+        "terrain:relief": 33,
+        "terrain:water": 387,
+        "world:habitable": 1,
+        "world:weather": 0
+      },
+      "accounts": {
+        "sim:energy": 360000,
+        "world:soil": 647
+      },
+      "routes": [
+        {
+          "to": 2,
+          "travel": 2,
+          "transmission": 990422,
+          "border": {
+            "side": 0,
+            "enters": 2
+          }
+        },
+        {
+          "to": 4,
+          "travel": 1,
+          "transmission": 849363,
+          "border": {
+            "side": 3,
+            "enters": 1
+          }
+        }
+      ]
+    }
+  },
+  "footprint": {
+    "sides": 4,
+    "side": 768
+  },
+  "materials": [
+    {
+      "key": "world:air",
+      "lineage": "world:ground"
+    },
+    {
+      "key": "world:water",
+      "lineage": "world:ground"
+    },
+    {
+      "key": "world:soil",
+      "lineage": "world:ground"
+    },
+    {
+      "key": "world:rock",
+      "lineage": "world:ground"
+    }
+  ],
+  "skeleton": {
+    "elevation": "terrain:elevation",
+    "relief": "terrain:relief",
+    "water": "terrain:water"
+  },
+  "document": {
+    "root": 0,
+    "plan": {
+      "symmetry": "Bilateral",
+      "preferences": [
+        "Below",
+        "Right",
+        "Above",
+        "Front"
+      ],
+      "tolerance": 2
+    },
+    "parts": [
+      {
+        "id": 0,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          1,
+          1
+        ],
+        "pivot": [
+          2,
+          1,
+          1
+        ],
+        "attachment": null,
+        "origin": null,
+        "severed": false,
+        "situs": [
+          0,
+          0,
+          0
+        ],
+        "shape": ""
+      },
+      {
+        "id": 1,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          1,
+          1
+        ],
+        "pivot": [
+          2,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 0,
+          "offset": [
+            0,
+            -2,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          0,
+          0,
+          1
+        ],
+        "shape": ""
+      },
+      {
+        "id": 2,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          1,
+          1
+        ],
+        "pivot": [
+          2,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 0,
+          "offset": [
+            0,
+            2,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          1,
+          0,
+          0
+        ],
+        "shape": ""
+      },
+      {
+        "id": 3,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          1,
+          1
+        ],
+        "pivot": [
+          1,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 2,
+          "offset": [
+            3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          1,
+          0,
+          1
+        ],
+        "shape": ""
+      },
+      {
+        "id": 4,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          1,
+          1
+        ],
+        "pivot": [
+          1,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 2,
+          "offset": [
+            -3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          1,
+          0,
+          2
+        ],
+        "shape": ""
+      },
+      {
+        "id": 5,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          2,
+          2
+        ],
+        "pivot": [
+          2,
+          2,
+          2
+        ],
+        "attachment": {
+          "parent": 0,
+          "offset": [
+            0,
+            0,
+            3
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          0,
+          0
+        ],
+        "shape": ""
+      },
+      {
+        "id": 6,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          4,
+          4
+        ],
+        "pivot": [
+          1,
+          4,
+          4
+        ],
+        "attachment": {
+          "parent": 5,
+          "offset": [
+            3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          0,
+          1
+        ],
+        "shape": ""
+      },
+      {
+        "id": 7,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          4,
+          4
+        ],
+        "pivot": [
+          1,
+          4,
+          4
+        ],
+        "attachment": {
+          "parent": 5,
+          "offset": [
+            -3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          0,
+          2
+        ],
+        "shape": ""
+      },
+      {
+        "id": 8,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          2,
+          2
+        ],
+        "pivot": [
+          2,
+          2,
+          2
+        ],
+        "attachment": {
+          "parent": 5,
+          "offset": [
+            0,
+            0,
+            4
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          1,
+          0
+        ],
+        "shape": ""
+      },
+      {
+        "id": 9,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          4,
+          4
+        ],
+        "pivot": [
+          1,
+          4,
+          4
+        ],
+        "attachment": {
+          "parent": 8,
+          "offset": [
+            3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          1,
+          1
+        ],
+        "shape": ""
+      },
+      {
+        "id": 10,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          4,
+          4
+        ],
+        "pivot": [
+          1,
+          4,
+          4
+        ],
+        "attachment": {
+          "parent": 8,
+          "offset": [
+            -3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          1,
+          2
+        ],
+        "shape": ""
+      },
+      {
+        "id": 11,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          2,
+          2
+        ],
+        "pivot": [
+          2,
+          2,
+          2
+        ],
+        "attachment": {
+          "parent": 8,
+          "offset": [
+            0,
+            0,
+            4
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          2,
+          0
+        ],
+        "shape": ""
+      },
+      {
+        "id": 12,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          4,
+          4
+        ],
+        "pivot": [
+          1,
+          4,
+          4
+        ],
+        "attachment": {
+          "parent": 11,
+          "offset": [
+            3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          2,
+          1
+        ],
+        "shape": ""
+      },
+      {
+        "id": 13,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          4,
+          4
+        ],
+        "pivot": [
+          1,
+          4,
+          4
+        ],
+        "attachment": {
+          "parent": 11,
+          "offset": [
+            -3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          2,
+          2
+        ],
+        "shape": ""
+      },
+      {
+        "id": 14,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          2,
+          2
+        ],
+        "pivot": [
+          2,
+          2,
+          2
+        ],
+        "attachment": {
+          "parent": 11,
+          "offset": [
+            0,
+            0,
+            4
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          3,
+          0
+        ],
+        "shape": ""
+      },
+      {
+        "id": 15,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          4,
+          4
+        ],
+        "pivot": [
+          1,
+          4,
+          4
+        ],
+        "attachment": {
+          "parent": 14,
+          "offset": [
+            3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          3,
+          1
+        ],
+        "shape": ""
+      },
+      {
+        "id": 16,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          4,
+          4
+        ],
+        "pivot": [
+          1,
+          4,
+          4
+        ],
+        "attachment": {
+          "parent": 14,
+          "offset": [
+            -3,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          2,
+          3,
+          2
+        ],
+        "shape": ""
+      },
+      {
+        "id": 17,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          2,
+          2
+        ],
+        "pivot": [
+          2,
+          2,
+          2
+        ],
+        "attachment": {
+          "parent": 5,
+          "offset": [
+            0,
+            -4,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          3,
+          0,
+          0
+        ],
+        "shape": ""
+      },
+      {
+        "id": 18,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          3,
+          1,
+          1
+        ],
+        "pivot": [
+          3,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 17,
+          "offset": [
+            5,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          3,
+          0,
+          1
+        ],
+        "shape": ""
+      },
+      {
+        "id": 19,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          3,
+          1
+        ],
+        "pivot": [
+          1,
+          3,
+          1
+        ],
+        "attachment": {
+          "parent": 18,
+          "offset": [
+            3,
+            -4,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          3,
+          0,
+          2
+        ],
+        "shape": ""
+      },
+      {
+        "id": 20,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          1,
+          3
+        ],
+        "pivot": [
+          1,
+          1,
+          3
+        ],
+        "attachment": {
+          "parent": 19,
+          "offset": [
+            0,
+            -3,
+            -4
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          3,
+          0,
+          3
+        ],
+        "shape": ""
+      },
+      {
+        "id": 21,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          3,
+          1,
+          1
+        ],
+        "pivot": [
+          3,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 17,
+          "offset": [
+            -5,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          3,
+          0,
+          4
+        ],
+        "shape": ""
+      },
+      {
+        "id": 22,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          3,
+          1
+        ],
+        "pivot": [
+          1,
+          3,
+          1
+        ],
+        "attachment": {
+          "parent": 21,
+          "offset": [
+            -3,
+            -4,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          3,
+          0,
+          5
+        ],
+        "shape": ""
+      },
+      {
+        "id": 23,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          1,
+          3
+        ],
+        "pivot": [
+          1,
+          1,
+          3
+        ],
+        "attachment": {
+          "parent": 22,
+          "offset": [
+            0,
+            -3,
+            -4
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          3,
+          0,
+          6
+        ],
+        "shape": ""
+      },
+      {
+        "id": 24,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          2,
+          2
+        ],
+        "pivot": [
+          2,
+          2,
+          2
+        ],
+        "attachment": {
+          "parent": 14,
+          "offset": [
+            0,
+            -4,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          4,
+          0,
+          0
+        ],
+        "shape": ""
+      },
+      {
+        "id": 25,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          3,
+          1,
+          1
+        ],
+        "pivot": [
+          3,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 24,
+          "offset": [
+            5,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          4,
+          0,
+          1
+        ],
+        "shape": ""
+      },
+      {
+        "id": 26,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          3,
+          1
+        ],
+        "pivot": [
+          1,
+          3,
+          1
+        ],
+        "attachment": {
+          "parent": 25,
+          "offset": [
+            3,
+            -4,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          4,
+          0,
+          2
+        ],
+        "shape": ""
+      },
+      {
+        "id": 27,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          1,
+          3
+        ],
+        "pivot": [
+          1,
+          1,
+          3
+        ],
+        "attachment": {
+          "parent": 26,
+          "offset": [
+            0,
+            -3,
+            -4
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          4,
+          0,
+          3
+        ],
+        "shape": ""
+      },
+      {
+        "id": 28,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          3,
+          1,
+          1
+        ],
+        "pivot": [
+          3,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 24,
+          "offset": [
+            -5,
+            0,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          4,
+          0,
+          4
+        ],
+        "shape": ""
+      },
+      {
+        "id": 29,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          3,
+          1
+        ],
+        "pivot": [
+          1,
+          3,
+          1
+        ],
+        "attachment": {
+          "parent": 28,
+          "offset": [
+            -3,
+            -4,
+            0
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          4,
+          0,
+          5
+        ],
+        "shape": ""
+      },
+      {
+        "id": 30,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          1,
+          1,
+          3
+        ],
+        "pivot": [
+          1,
+          1,
+          3
+        ],
+        "attachment": {
+          "parent": 29,
+          "offset": [
+            0,
+            -3,
+            -4
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          4,
+          0,
+          6
+        ],
+        "shape": ""
+      },
+      {
+        "id": 31,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          1,
+          1
+        ],
+        "pivot": [
+          2,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 14,
+          "offset": [
+            0,
+            0,
+            3
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          5,
+          0,
+          0
+        ],
+        "shape": ""
+      },
+      {
+        "id": 32,
+        "volume": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "half_extent": [
+          2,
+          1,
+          1
+        ],
+        "pivot": [
+          2,
+          1,
+          1
+        ],
+        "attachment": {
+          "parent": 31,
+          "offset": [
+            0,
+            0,
+            2
+          ],
+          "yaw": "Zero"
+        },
+        "origin": null,
+        "severed": false,
+        "situs": [
+          5,
+          1,
+          0
+        ],
+        "shape": ""
+      }
+    ]
+  },
+  "site": 2,
+  "before": {
+    "at": [
+      591,
+      498,
+      202
+    ],
+    "feet": {
+      "20": [
+        8192,
+        -1024,
+        -1024
+      ],
+      "23": [
+        -8192,
+        -1024,
+        -1024
+      ],
+      "27": [
+        8192,
+        -14336,
+        11264
+      ],
+      "30": [
+        -8192,
+        -12288,
+        11264
+      ]
+    },
+    "yaw": "ThreeQuarter"
+  },
+  "after": [
+    {
+      "at": [
+        591,
+        498,
+        201
+      ],
+      "feet": {
+        "20": [
+          8192,
+          -1024,
+          -1024
+        ],
+        "23": [
+          -10240,
+          0,
+          -3072
+        ],
+        "27": [
+          8192,
+          -14336,
+          11264
+        ],
+        "30": [
+          -8192,
+          -14336,
+          13312
+        ]
+      },
+      "yaw": "ThreeQuarter"
+    },
+    {
+      "at": [
+        590,
+        498,
+        202
+      ],
+      "feet": {
+        "20": [
+          8192,
+          -2048,
+          -1024
+        ],
+        "23": [
+          -8192,
+          -2048,
+          -1024
+        ],
+        "27": [
+          7168,
+          -15360,
+          11264
+        ],
+        "30": [
+          -9216,
+          -14336,
+          12288
+        ]
+      },
+      "yaw": "ThreeQuarter"
+    },
+    {
+      "at": [
+        591,
+        498,
+        203
+      ],
+      "feet": {
+        "20": [
+          8192,
+          -1024,
+          -1024
+        ],
+        "23": [
+          -8192,
+          -1024,
+          -1024
+        ],
+        "27": [
+          8192,
+          -14336,
+          11264
+        ],
+        "30": [
+          -8192,
+          -12288,
+          11264
+        ]
+      },
+      "yaw": "ThreeQuarter"
+    },
+    {
+      "at": [
+        592,
+        499,
+        202
+      ],
+      "feet": {
+        "20": [
+          8192,
+          -1024,
+          -1024
+        ],
+        "23": [
+          -8192,
+          -1024,
+          -1024
+        ],
+        "27": [
+          8192,
+          -14336,
+          11264
+        ],
+        "30": [
+          -8192,
+          -12288,
+          11264
+        ]
+      },
+      "yaw": "ThreeQuarter"
+    }
+  ]
+}

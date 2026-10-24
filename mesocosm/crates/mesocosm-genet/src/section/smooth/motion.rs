@@ -18,6 +18,7 @@ pub(super) struct Motion {
     stride: Option<isometer::core::legs::Stride>,
     walking: Option<embodiment::Walking>,
     shifting: bool,
+    braced: bool,
     from: [f32; 3],
     target: [f32; 3],
     age: f32,
@@ -39,6 +40,7 @@ impl Motion {
             stride: None,
             walking: scene.walking,
             shifting: false,
+            braced: false,
             pose,
             from: body.at.map(|v| v as f32),
             target: body.at.map(|v| v as f32),
@@ -200,6 +202,8 @@ impl Motion {
                     .unwrap_or_else(|| pose.feet.clone())
             });
         self.gait.set_physical_feet(feet);
+        self.braced =
+            planned.is_some() && self.stride.as_ref().is_some_and(|s| s.stages.is_empty());
         let linear = [0, 1, 2].map(|k| self.from[k] + (self.target[k] - self.from[k]) * t);
         let origin = if let Some(frame) = &planned {
             let zero = scene.window.to_ground([0; 3]);
@@ -271,6 +275,9 @@ impl Motion {
     }
     pub fn shifting(&self) -> bool {
         self.shifting
+    }
+    pub fn braced(&self) -> bool {
+        self.braced
     }
 }
 

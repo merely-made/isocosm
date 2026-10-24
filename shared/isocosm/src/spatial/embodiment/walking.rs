@@ -13,6 +13,9 @@ mod tests;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Walking {
+    /// Supported arrival stances retained per neighbour; omission keeps the canonical stand.
+    #[serde(default, skip_serializing_if = "zero")]
+    pub stances: u8,
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub clearance: bool,
     /// Maximum root deviation around the two admitted endpoint roots, in cells.
@@ -27,6 +30,7 @@ pub struct Walking {
 impl Default for Walking {
     fn default() -> Self {
         Self {
+            stances: 4,
             clearance: true,
             shift: 4,
             foot_search: 2,
@@ -37,11 +41,15 @@ impl Default for Walking {
 }
 impl Walking {
     pub fn valid(self) -> bool {
-        self.shift <= 4
+        self.stances <= 8
+            && self.shift <= 4
             && self.foot_search <= 3
             && (1..=4).contains(&self.lift)
             && (1..=1024).contains(&self.postures)
     }
+}
+fn zero(value: &u8) -> bool {
+    *value == 0
 }
 pub fn walking_rules(sim: &Simulation) -> Option<Walking> {
     sim.genesis()
@@ -281,22 +289,31 @@ pub fn plan_stride(
             else {
                 continue;
             };
-            let Some(at) = polygon::balance(
-                &poly,
-                [nominal[0] + centre[0], nominal[2] + centre[2]],
-                UNIT / 4,
-            ) else {
-                continue;
+            let origins = if rules.stances > 0 {
+                vec![root, nominal, finish]
+            } else {
+                vec![nominal]
             };
-            let at = [at[0] - centre[0], nominal[1], at[1] - centre[2]];
-            let reach = i64::from(rules.shift) * UNIT;
-            if [0, 2].iter().any(|&k| {
-                at[k] < start[k].min(finish[k]) - reach || at[k] > start[k].max(finish[k]) + reach
-            }) {
-                continue;
+            for origin in origins {
+                let Some(at) = polygon::balance(
+                    &poly,
+                    [origin[0] + centre[0], origin[2] + centre[2]],
+                    UNIT / 4,
+                ) else {
+                    continue;
+                };
+                let at = [at[0] - centre[0], origin[1], at[1] - centre[2]];
+                let reach = i64::from(rules.shift) * UNIT;
+                if [0, 2].iter().any(|&k| {
+                    at[k] < start[k].min(finish[k]) - reach
+                        || at[k] > start[k].max(finish[k]) + reach
+                }) {
+                    continue;
+                }
+                let anchor = if rules.stances > 0 { root } else { nominal };
+                let cost = at[0].abs_diff(anchor[0]) + at[2].abs_diff(anchor[2]);
+                candidates.push((cost, foot, at));
             }
-            let cost = at[0].abs_diff(nominal[0]) + at[2].abs_diff(nominal[2]);
-            candidates.push((cost, foot, at));
         }
         candidates.sort();
         let mut found = None;

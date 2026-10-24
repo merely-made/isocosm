@@ -12,20 +12,23 @@ use isometer_space::{places::Places, volume::Volume};
 mod articulation;
 mod contacts;
 mod food;
+mod footholds;
 mod narrow;
 mod support;
 mod walking;
-mod footholds;
-pub use walking::{Walking, walking_rules, check_stride, check_walk, plan_stride, step_stride, stride_sample, stride_boxes};
-pub use walking::local_feet as stride_feet;
 pub use food::FoodStand;
+pub use walking::local_feet as stride_feet;
+pub use walking::{
+    Walking, check_stride, check_walk, plan_stride, step_stride, stride_boxes, stride_sample,
+    walking_rules,
+};
 mod swing;
 pub use articulation::{articulated, foot_points};
 pub use swing::{SAMPLES as SWING_SAMPLES, swing_boxes, swing_feet};
 mod founding;
 mod habitat;
-pub use habitat::{declare_site, place_in_site, site_window, whole_site};
 pub use contacts::{Contact, contacts, sweep_clear};
+pub use habitat::{declare_site, place_in_site, site_window, whole_site};
 #[cfg(test)]
 mod articulation_tests;
 #[cfg(test)]
@@ -53,14 +56,22 @@ pub fn boxes(document: &BodyDocument, pose: &Pose) -> Result<Vec<Box3>> {
 }
 
 /// The same placed bounds keyed by actual part identity, for contact and senses.
-pub fn part_boxes(document: &BodyDocument, pose: &Pose) -> Result<BTreeMap<isometer_core::PartId, Box3>> {
+pub fn part_boxes(
+    document: &BodyDocument,
+    pose: &Pose,
+) -> Result<BTreeMap<isometer_core::PartId, Box3>> {
     let mut out = BTreeMap::new();
-    visit_boxes(document, pose, |id, bounds| { out.insert(id, bounds); })?;
+    visit_boxes(document, pose, |id, bounds| {
+        out.insert(id, bounds);
+    })?;
     Ok(out)
 }
 
-fn visit_boxes(document: &BodyDocument, pose: &Pose,
-    mut put: impl FnMut(isometer_core::PartId, Box3)) -> Result<()> {
+fn visit_boxes(
+    document: &BodyDocument,
+    pose: &Pose,
+    mut put: impl FnMut(isometer_core::PartId, Box3),
+) -> Result<()> {
     let articulated = articulation::part_boxes(document, pose)?;
     let mut occupied = false;
     let mut cells = 0u64;
@@ -226,7 +237,9 @@ pub struct Grounding<'a> {
 
 impl<'a> Grounding<'a> {
     pub fn with_walking(mut self, walking: Option<Walking>) -> Self {
-        if self.walking != walking { self.articulated_stands.clear(); }
+        if self.walking != walking {
+            self.articulated_stands.clear();
+        }
         self.walking = walking;
         self
     }
@@ -304,7 +317,7 @@ impl<'a> Grounding<'a> {
             for x in lo[0]..hi[0] {
                 for z in lo[2]..hi[2] {
                     let top = *self.tops.entry([x, z]).or_insert_with(|| {
-                        self.volume.surface(x,z).unwrap_or(self.volume.datum-1)
+                        self.volume.surface(x, z).unwrap_or(self.volume.datum - 1)
                     });
                     y = y.max(
                         top.checked_add(1)
@@ -435,11 +448,17 @@ pub fn neighbours(
     document: &BodyDocument,
     pose: &Pose,
 ) -> Vec<Pose> {
-    neighbours_with_walking(volume,places,profile,document,pose,None)
+    neighbours_with_walking(volume, places, profile, document, pose, None)
 }
 
-pub fn neighbours_with_walking(volume:&Volume,places:&Places,profile:&StepProfile,
-    document:&BodyDocument,pose:&Pose,walking:Option<Walking>)->Vec<Pose> {
+pub fn neighbours_with_walking(
+    volume: &Volume,
+    places: &Places,
+    profile: &StepProfile,
+    document: &BodyDocument,
+    pose: &Pose,
+    walking: Option<Walking>,
+) -> Vec<Pose> {
     let mut grounding = Grounding::new(volume).with_walking(walking);
     if !pose.feet.is_empty() {
         grounding.articulated = true;
@@ -516,7 +535,17 @@ pub(crate) fn articulated_neighbours(
             {
                 continue;
             }
-            out.push(next);
+            if let Some(rules) = grounding.walking.filter(|r| r.stances > 0) {
+                out.extend(footholds::arrivals(
+                    grounding.volume,
+                    document,
+                    pose,
+                    &next,
+                    rules,
+                ));
+            } else {
+                out.push(next);
+            }
         }
     }
     out

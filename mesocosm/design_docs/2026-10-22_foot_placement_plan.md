@@ -1,7 +1,7 @@
 # Foot placement in ordinary play
 
-Date: 2026-10-22. Status: original placement and bounded weight-shifting
-follow-up qualified, 2026-10-23; retained refusals are recorded below.
+Date: 2026-10-22. Status: original placement, bounded weight shifts and
+intermediate stances qualified, 2026-10-23; remaining bounds are recorded below.
 
 The previous [body appearance receipt](2026-10-22_body_appearance_plan.md)
 showed moving roots but no ordinary foot swing. Native whole-body placement
@@ -306,6 +306,95 @@ The original 2026-10-22 pictures qualify shared foot geometry and supported
 gait. Body appearance and actuator/load rules are tracked separately in the
 [body appearance plan](2026-10-22_body_appearance_plan.md); this follow-up
 qualifies placement and motion.
+
+## Intermediate stance follow-up, 2026-10-23
+
+Mark requests intermediate stances within paid reach for the retained steep
+case, followed by an unchosen moving capture. This is implementation within
+the existing limb/support model. Responsa's path lookup finds no governing
+decision on the walking module; the case record and generated manifests are
+unchanged.
+
+Done-conditions:
+
+1. Reuse the existing stride representation and body/sole sampling. Retain
+   useful world-space contacts in supported arrival stances and bound their
+   number with an optional saved policy. Omission preserves canonical arrivals.
+2. Search connected stances through the existing nearby dry-target cache,
+   support polygon, paid limb solver and narrow clearance checks. Validate
+   the complete proposed motion at every rendered phase. The retained pose
+   and terrain get a regression; unsupported, stretched, blocked and malformed
+   trajectories remain rejection controls.
+3. Qualify the optimized build, replay retained worlds, run the first eligible
+   unchosen seed and capture actual intermediate movement. Record any remaining
+   refusals and bounded costs. Keep native admission authoritative and present
+   its exact accepted trajectory.
+
+Receipts: `Code/testing/mesocosm/intermediate-stances-2026-10-23/`, total cap
+100 MB. Reuse the existing playable checkout, target and named Cargo home.
+The checked-in steep fixture is extracted from the retained native genesis
+and exact pending-cut pose; live occupancy is checked again by the diagnostic.
+
+The retained terrain/limb regression admits all four neighbouring
+root moves while keeping the soles fixed. The old canonical destinations
+still reproduce the paid-reach refusal. This is an endpoint-choice problem:
+the terrain-only neighbour query discarded the current contact configuration.
+
+New `Walking.stances` defaults to four supported arrivals per neighbour,
+including the canonical stand, with the existing 256-posture limit bounding
+trials. Routes distinguish foot layouts at the same root/yaw. The body-transfer
+planner can retain its current supported root before a foot moves. Older rules
+omit `stances`, keep canonical neighbours and retain their previous route keys.
+
+An exploratory temporary-landing protocol and separate stance solver did not
+resolve the forced canonical destinations; their sources and failed probes
+are retained in the receipt. They are removed from the implementation. The
+existing shared stride already represents the accepted planted-body transfers.
+The occupied-scene diagnostic admits seven variants across those same four
+neighbouring roots, including the uphill root. Four retain all world-space
+soles; three use one foot stage. The old saved world's rules and history remain
+unchanged: this diagnostic evaluates the proposed policy at its exact retained
+choice point.
+
+Qualification passes 126 selected controls: fifteen native spatial controls,
+one route-state identity control, fifty-four host controls, twenty-six runtime
+controls and thirty integration controls. Six existing headed/profiling cases
+are ignored; one older multi-seed integration case is filtered. Receiving
+release type checks cover all host/runtime targets. Eight older native traces
+replay to their recorded hashes.
+
+The normal optimized build runs `--play --unchosen-seed` with clock origin
+`1792810898425799800`. Its existing structural/placement preflight admits
+candidate 71/128, seed `3577203618348961378`; no motion criterion selects the
+seed. Three ordinary ticks yield fifteen food-directed steps across nine
+creatures and native hash `2ed329360b247f4f`. Exact native choice-point checks
+verify every accepted step's sight witness, complete route, paid limb motion
+and current occupancy; no recorded route is refused.
+
+Twenty-four actual frames include thirteen supported-swing frames and twenty
+planted-body-transfer frames. Projection failures, endpoint native box overlaps
+and developer world intents are zero. An isometric-north recapture of the same
+seed makes the soles clearer than the hillside-backed dimetric-south view.
+Its native save is identical; its twenty-four frames include fifteen supported
+swing frames and twenty-three planted-body-transfer frames. The preview uses
+200 ms per captured frame; raw frame times are retained.
+
+At the first choice point, nine of thirteen reports contain routes, three
+return before physical search and one exhausts the unchanged 256-node bound.
+The latter remains unresolved, not proof of global unreachability. Body centre
+is still the existing rest-volume geometric proxy. Posed mass, force, friction,
+actuator capacity, momentum and richer turning remain separate work.
+
+The original capture records 3,639 spans below its 131,072 cap. Startup founder
+placement totals 50.53 s across 1,140 calls, including rejected candidates.
+Seven cold Places builds total 46.92 s. Twenty-nine route searches total 2.78 s,
+median 29 ms, maximum 1.56 s. Walking planning totals 0.58 s over thirty-nine
+calls; checking totals 1.38 s over 123 calls. Nested spans overlap. The capture
+overlaps native diagnostic/replay work and other workspace builds, so this is
+a cost census rather than a frame-rate or cross-seed speed comparison. The
+initial process peaks at 2.72 GB working set. Source, locks, binary hashes,
+failed exploratory probes, both captures and exact witnesses are retained
+under the 100 MB receipt cap.
 
 ## Delivery locations
 

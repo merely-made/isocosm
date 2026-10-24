@@ -206,5 +206,9 @@ still cannot swing a foot or reach a meal on their local terrain. The
 connects support-guided body transfers, nearby sole targets and shared gait
 witnesses. Richer turning and connected founding placement remain separate
 work; negative bounded searches do not establish global unreachability.
+The [intermediate-stance follow-up](2026-10-22_foot_placement_plan.md#intermediate-stance-follow-up-2026-10-23)
+recovers all four departures from the retained steep pose by preserving useful
+sole contacts. Its fresh unchosen run verifies fifteen food steps across nine
+walkers; one first-cut search still exhausts the existing node bound.
 The capture qualifies three ticks, not long-term ecological balance or
 force-bearing locomotion.
