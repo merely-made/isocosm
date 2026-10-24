@@ -114,6 +114,12 @@ impl Simulation {
         if let Some(target) = self.foraging_target(actor, p) { return target; }
         let selector = p.target.as_ref()?;
         let entity = self.body_at_start(actor)?;
+        // A traveller is colocated with no one, so a selector that wants its
+        // place accepts nothing; the index files it under its last site, whose
+        // whole population the search would otherwise read and refuse.
+        if selector.same_place && !self.state.movement.immediate() && entity.resident_site().is_none() {
+            return None;
+        }
         // Reject an ineligible actor before searching the population for food.
         // This is only a read shortcut; apply still checks every requirement.
         if p.requires.iter().any(|q| {

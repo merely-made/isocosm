@@ -369,6 +369,17 @@ each title names its outcome against the doctrine.
   with no commit since. Planning's 900 passes evaluated 205,833 planned
   acts, each evaluated again to act; deliberation inside planning is the
   other half of planning's time.
+- **2026-10-23, the test that refuses most prey** (scratch counters on
+  `target_matches`, seed 0): of 30.6 million candidates the prey searches
+  read, 24.7 million failed only colocation, 2.6 million liveness, 0.26
+  million diet, and 3.0 million passed. The index already files groups by
+  place; the colocation refusals are searches by travellers, whom the index
+  files under their last site and whom colocation refuses everywhere.
+- **2026-10-23, D9a measured** (D7b's tree and D9a's alternated, seed 0,
+  three pairs, process CPU time, as other sessions' builds made wall time
+  unreliable: D7b's seed 0 took 115 s against 55 s on a quiet machine).
+  106.0, 107.1 and 98.5 s before, 97.0, 101.5 and 87.9 s after, 8% less,
+  every line identical.
 
 ## Progress
 
@@ -426,3 +437,10 @@ each title names its outcome against the doctrine.
 - **2026-10-23, deliberation and planning probed** (Findings); D9 and
   D10 chosen in one round: narrow the prey scan, skip unchanged
   re-choices, keep the plan's stage.
+- **2026-10-23, D9a built.** A traveller's search for prey at its own place
+  ends before it reads anyone (`choose_target`): colocation needs both
+  bodies resident, and the index files a traveller under its last site.
+  The same prey are found and the same draws made. Exact: H3's pins 6/6,
+  the battery's seeds 0 to 2 identical, isocosm's 717 tests in release and
+  its 264 lib tests under the test profile, where the filed search is
+  still compared with a full scan. 8% less CPU time (Findings).
