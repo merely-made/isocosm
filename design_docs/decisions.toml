@@ -5062,6 +5062,14 @@ draws_on = ["454", "sim-execution D10"]
 amends = ["sim-execution D10"]
 governs = ["isocosm::execute"]
 
+[decisions."sim-execution D13"]
+title = "E1 in three parts (2026-10-23), applies Processes 7"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Waking is built as more gates, then re-filing by what an act changed, then an index kept across advances, each exact."
+draws_on = ["258", "286", "683", "813", "sim-execution D1", "sim-execution D4"]
+governs = ["isocosm::schedule::Filed"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"
