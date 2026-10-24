@@ -22,7 +22,7 @@ fn blind(g: &mut Genesis, actor: u64) {
     let e = std::sync::Arc::make_mut(&mut g.population.groups.get_mut(&actor).unwrap().entity);
     let extents: std::collections::BTreeMap<_, _> =
         e.living().map(|(id, _)| (id, e.extent(id))).collect();
-    for (id, p) in &mut e.parts {
+    for (id, p) in e.parts_mut() {
         p.functions.remove("function:sense");
         p.cells.remove("function:sense");
         p.tracts.clear();
@@ -311,7 +311,7 @@ fn the_sight_witness_moves_with_rotated_sensory_anatomy() {
         blind(g, actor);
         let e = std::sync::Arc::make_mut(&mut g.population.groups.get_mut(&actor).unwrap().entity);
         let extent = e.extent(sensor);
-        let p = e.parts.get_mut(&sensor).unwrap();
+        let p = e.part_mut(&sensor).unwrap();
         let source = p.cells.iter().find(|(_, n)| **n > 1).unwrap().0.clone();
         *p.cells.get_mut(&source).unwrap() -= 1;
         p.cells.insert("function:sense".into(), 1);

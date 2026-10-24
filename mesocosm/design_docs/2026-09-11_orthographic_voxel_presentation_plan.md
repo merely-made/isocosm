@@ -1,5 +1,105 @@
 # Orthographic voxel presentation plan
 
+## Startup cache follow-up, 2026-10-24
+
+**Status:** implemented and qualified, 2026-10-24. Reduce repeated terrain and physical-route work using
+the existing immutable caches, then profile an ordinary unchosen world.
+Receipts: `Code/testing/mesocosm/startup-cache-2026-10-24/`, total cap 100 MB.
+Reuse the existing playable checkout, Cargo target and named offline home.
+
+**Findings, 2026-10-24:** upstream `c637ee2a` contains fourteen simulator and
+documentation commits absent from this lane, including shared parts and
+narrower target scans. Merge `0972799e` brings those into the existing supported
+walking implementation before this work. The upstream terrain and route cache
+implementations are unchanged. The previous retained seed has 31 distinct
+physical windows and 31 cold Places derivations: those are first builds, not
+31 copies of one graph. Each graph repeatedly reads the same stance adjacency
+during flooding, neck splitting and passage construction. Its existing Cells
+object already caches roofs and tops. Food routes unnecessarily include bodies
+outside their bounded terrain window in their exact input, so distant movement
+invalidates useful searches. Authenticated history prefixes create fresh caches;
+forks share terrain but currently discard the equally exact route cache.
+
+Phases and done-conditions:
+
+1. Extend the existing per-derivation terrain readings to reuse stance steps.
+   Compare complete cached Places, labels and passages with uncached derivation,
+   including water, both cover rules and edits. Share existing derivative
+   caches through authenticated history prefixes and forks; commands and native
+   outcomes must still replay. Terrain, window and rule changes must invalidate.
+2. Keep only blockers that can overlap a route's terrain window in its cache
+   input. Preserve current appetite, food eligibility, detection, anatomy,
+   soles and local occupancy checks. Prove distant movement reuses a search,
+   local obstruction invalidates it, and recorded native routes remain exact.
+3. Build the normal optimized executable, run the first eligible unchosen
+   world through ordinary steps, retain actual movement and bounded profile
+   receipts, and replay the retained histories. Compare the earlier turning
+   world's native history and cost census; distinguish upstream simulator gains
+   from this cache work. Report the cold graphs and route work that remain.
+
+The work is implementation. Governing path lookups retain the shared cliff
+headroom and history rules; it introduces no new case or doctrine statement.
+
+**Progress, 2026-10-24:** 29 terrain controls and 277 native controls pass,
+with 19 existing native ignores. The matched 128-square graph keeps identical
+labels/passages while reducing stance-step reads from 65,536 to 16,384
+(137,996 to 84,843 microseconds in this fixture run). The receiving build
+found three old direct mutations in newer foraging fixtures incompatible with
+upstream's shared parts. They now use `part_mut`/`parts_mut`; the failed build
+is retained separately. The receiving gates pass 111 checks, bringing this
+slice to 417 passes with 25 existing ignores and one older multi-seed control
+filtered. The same retained world takes 35.31 seconds against 67.52 previously,
+with an identical complete native history. Its 31 cold Places builds cost
+11.65 seconds against 22.76, route searches fall from 82 to 55 and stride plans
+from 980 to 298. These whole-run gains include the merged upstream changes.
+
+The first new unchosen world accepts candidate 3, seed `3580977844374872680`,
+from clock origin `1792872357923932000`. It has a 288-cell site, against the
+comparison world's 1,520. Setup completes at the observed 5.61-second marker,
+but the first ordinary round takes 68.40 seconds. The completed three ticks
+have 43 verified food steps across seventeen walkers, hash `bd0f8e0cdcc8fb70`.
+Twenty-four actual frames include nineteen supported swings and twenty torso
+shifts, with zero projection failures or reported endpoint-box intersections.
+Its 94 cold route searches cost 66.24 seconds, including searches of 28.94 and
+14.82 seconds. The first-cut census has seventeen routes in twenty-nine reports,
+and eleven searches exhaust the node limit without a route. Actors 13 and 26
+check 364 and 449 edges, refusing 250 and 307; their first refusal reasons
+name missing support and terrain/water clearance respectively.
+Repeated reads of these negative results take about one millisecond. The
+remaining pressure is cold paid-stride search, not repeated identical reads.
+The large `body:rest` span includes deliberation over food-directed walking
+at the first choice pass. Preview timing is uniform per actual frame; the raw
+records retain the long native-tick waits.
+
+Ten retained native histories replay exactly. Upstream E1b (`499ba499`) lands
+during this qualification and is integrated before final delivery. Its narrower
+scheduler filing has no terrain/route cache edits. The pre-E1b receipts remain;
+the same two worlds are pinned for final receiving, history and profile checks.
+The E1b native and receiving gates pass the same 417 controls. Both final
+three-tick native histories match completely, retaining the hashes above.
+The final comparison scenario takes 53.17 seconds with other Cargo jobs
+present, against the earlier 35.31-second pass and the old 67.52 seconds.
+Its search/plan counts stay 55/298; cold Places cost 19.51 seconds, route
+searches 6.28 seconds and stride plans 5.38 seconds. These wall figures vary
+on the shared machine and include upstream changes. The unchanged histories
+and reduced work counts are the stable result.
+
+The retained unchosen E1b rerun takes 109.33 seconds, including an 80.10-second
+first round. It still has 94 cold route searches (77.54 seconds) and 1,391
+nested stride plans (71.21 seconds). Its setup marker is 8.72 seconds but
+excludes the original candidate search. The original unchosen draw, native
+choice witnesses, final captures and both profiles are retained. Cold search
+against difficult support and terrain remains open; all search budgets stay
+unchanged. All ten retained older native histories replay exactly with the
+final executable. Both final inspection runs verify every accepted sighted
+food step at its native choice cut, forty in the comparison and forty-three
+in the retained draw, with zero recorded food-route refusals. The final draw's
+twenty-four actual frames include eighteen supported swings and twenty torso
+shifts, with zero projection failures or reported endpoint-box intersections.
+`final-results.json`, executable hashes, `sources.zip` and `qualification.json`
+bind the final source, checks and measurements. Existing playable/rebuild
+resources are retained; this slice creates no isolated target or worktree.
+
 ## Whole-site habitat, 2026-10-22
 
 **Status:** implemented and qualified, 2026-10-23. Mark requests the whole

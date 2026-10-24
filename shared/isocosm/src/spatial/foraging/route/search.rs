@@ -4,7 +4,7 @@
 //! are checked on candidate paths, once per edge, before declaring reachability.
 use super::*;
 #[cfg(test)]
-mod turn_tests;
+pub(super) mod turn_tests;
 type Node = ([i64; 3], Yaw, [u8; 32]);
 fn node(input: &Input, pose: &Pose) -> Node {
     key(

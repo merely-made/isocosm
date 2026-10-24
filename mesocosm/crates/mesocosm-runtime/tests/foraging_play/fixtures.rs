@@ -105,7 +105,7 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) ->
     if !e.living().any(|(_, p)| p.cells.get("function:sense").is_some_and(|n| *n > 0)) {
         let id = e.living().find(|(_, p)| p.cells.values().any(|n| *n > 1)).unwrap().0;
         let extent = e.extent(id);
-        let p = e.parts.get_mut(&id).unwrap();
+        let p = e.part_mut(&id).unwrap();
         let source = p.cells.iter().find(|(_, n)| **n > 1).unwrap().0.clone();
         *p.cells.get_mut(&source).unwrap() -= 1;
         p.cells.insert("function:sense".into(), 1);

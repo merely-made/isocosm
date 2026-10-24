@@ -34,6 +34,11 @@ pub(super) struct Cells<'a> {
     pub top: i64,
     roofs: RefCell<BTreeMap<[i64; 2], Option<i64>>>,
     tops: RefCell<BTreeMap<[i64; 2], Option<i64>>>,
+    steps: RefCell<BTreeMap<[i64; 3], Vec<([i64; 3], i64)>>>,
+    #[cfg(test)]
+    pub reuse_steps: bool,
+    #[cfg(test)]
+    pub step_reads: std::cell::Cell<usize>,
 }
 
 impl<'a> Cells<'a> {
@@ -45,6 +50,11 @@ impl<'a> Cells<'a> {
             top: v.ceiling(),
             roofs: RefCell::default(),
             tops: RefCell::default(),
+            steps: RefCell::default(),
+            #[cfg(test)]
+            reuse_steps: true,
+            #[cfg(test)]
+            step_reads: std::cell::Cell::new(0),
         }
     }
 
@@ -76,10 +86,17 @@ impl<'a> Cells<'a> {
 
     /// Air cells from `at` up, `at` included, counted to [`HEADROOM`].
     pub fn headroom(&self, [x, y, z]: [i64; 3]) -> i64 {
-        let top = *self.tops.borrow_mut().entry([x,z])
-            .or_insert_with(|| self.v.surface(x,z));
-        if top.is_some_and(|top| y>top) { return HEADROOM; }
-        (0..HEADROOM).take_while(|d| self.air([x, y + d, z])).count() as i64
+        let top = *self
+            .tops
+            .borrow_mut()
+            .entry([x, z])
+            .or_insert_with(|| self.v.surface(x, z));
+        if top.is_some_and(|top| y > top) {
+            return HEADROOM;
+        }
+        (0..HEADROOM)
+            .take_while(|d| self.air([x, y + d, z]))
+            .count() as i64
     }
 
     /// The highest solid cell in a column.
@@ -87,7 +104,9 @@ impl<'a> Cells<'a> {
         if let Some(r) = self.roofs.borrow().get(&[x, z]) {
             return *r;
         }
-        let r = (self.floor..self.top).rev().find(|&y| self.cell([x, y, z]) == Cell::Solid);
+        let r = (self.floor..self.top)
+            .rev()
+            .find(|&y| self.cell([x, y, z]) == Cell::Solid);
         self.roofs.borrow_mut().insert([x, z], r);
         r
     }
@@ -110,6 +129,24 @@ impl<'a> Cells<'a> {
     /// any rise, with the rise: up while `a`'s column is clear above it,
     /// level, or down while the neighbour's column is clear up to `a`.
     pub fn steps(&self, a: [i64; 3]) -> Vec<([i64; 3], i64)> {
+        #[cfg(test)]
+        if !self.reuse_steps {
+            return self.read_steps(a);
+        }
+        if let Some(found) = self.steps.borrow().get(&a) {
+            return found.clone();
+        }
+        // Floods, necks and passages read the same immutable volume/rules.
+        // Keep adjacency beside the existing roof/top readings for this
+        // derivation only; an edited volume gets a new Cells instance.
+        let found = self.read_steps(a);
+        self.steps.borrow_mut().insert(a, found.clone());
+        found
+    }
+
+    fn read_steps(&self, a: [i64; 3]) -> Vec<([i64; 3], i64)> {
+        #[cfg(test)]
+        self.step_reads.set(self.step_reads.get() + 1);
         let room = self.headroom(a);
         DIRECTIONS
             .iter()
@@ -120,7 +157,13 @@ impl<'a> Cells<'a> {
     /// The steps from stance `a`, with `room` headroom, into column
     /// `[nx, nz]` of `far`: this volume's, or a neighbour's across a border
     /// with the same heights.
-    pub fn step_into(&self, a: [i64; 3], room: i64, far: &Cells<'_>, [nx, nz]: [i64; 2]) -> Vec<([i64; 3], i64)> {
+    pub fn step_into(
+        &self,
+        a: [i64; 3],
+        room: i64,
+        far: &Cells<'_>,
+        [nx, nz]: [i64; 2],
+    ) -> Vec<([i64; 3], i64)> {
         let y = a[1];
         let mut out = Vec::new();
         let mut below = far.cell([nx, y - 1, nz]);
@@ -151,11 +194,13 @@ impl<'a> Cells<'a> {
         let mut out = Vec::new();
         for x in self.v.min[0]..self.v.max[0] {
             for z in self.v.min[1]..self.v.max[1] {
-                let mut previous=Cell::Solid;
+                let mut previous = Cell::Solid;
                 for y in self.floor..=self.top {
-                    let here=self.cell([x,y,z]);
-                    if here != previous && matches!(here,Cell::Air|Cell::Water) { out.push([x,y,z]); }
-                    previous=here;
+                    let here = self.cell([x, y, z]);
+                    if here != previous && matches!(here, Cell::Air | Cell::Water) {
+                        out.push([x, y, z]);
+                    }
+                    previous = here;
                 }
             }
         }

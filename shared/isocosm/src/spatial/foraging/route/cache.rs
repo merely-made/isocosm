@@ -17,7 +17,8 @@ impl Input {
     fn matches(&self, other: &Self) -> bool {
         self.actor == other.actor
             && self.site == other.site
-            && Arc::ptr_eq(&self.terrain, &other.terrain)
+            && (Arc::ptr_eq(&self.terrain, &other.terrain)
+                || self.terrain.same_source(&other.terrain))
             && self.document == other.document
             && self.before == other.before
             && self.profile == other.profile
@@ -29,13 +30,21 @@ impl Input {
     }
 }
 impl Cache {
-    pub(super) fn find(&self, input: Input) -> Result<RouteSearch> {
+    pub(super) fn find(&self, mut input: Input) -> Result<RouteSearch> {
+        // Every admitted part and sampled sweep must remain in this volume.
+        // A box wholly outside its horizontal window cannot block that motion.
+        // Keep crossing boxes whole, including occupied food and local bodies.
+        let volume = &input.terrain.volume;
+        input.blocked.retain(|[lo, hi]| {
+            (0..2).all(|k| lo[2 * k] < volume.max[k] && hi[2 * k] > volume.min[k])
+        });
         {
             let mut entries = self.0.lock().map_err(|_| "foraging route cache poisoned")?;
             if let Some(index) = entries.iter().position(|e| e.input.matches(&input)) {
                 let found = entries.remove(index);
                 let result = found.result.clone();
                 entries.push(found);
+                let _hit = crate::profile::Span::new("foraging.route.hit");
                 return Ok(result);
             }
         }
@@ -52,3 +61,6 @@ impl Cache {
         Ok(result)
     }
 }
+
+#[cfg(test)]
+mod tests;

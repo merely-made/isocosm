@@ -137,6 +137,7 @@ fn verify<H: PartialEq>(
         old.tick,
         mode,
         Movement::ImmediateV3,
+        None,
         &stops,
         check,
     )?;

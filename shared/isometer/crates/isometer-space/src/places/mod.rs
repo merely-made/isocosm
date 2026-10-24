@@ -22,6 +22,8 @@ mod route;
 mod sight;
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod reuse_tests;
 
 pub use join::join;
 pub use route::{Body, route_over};

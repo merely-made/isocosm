@@ -257,6 +257,7 @@ impl Session {
             saved.tick,
             mode,
             movement,
+            None,
             &[],
             |_, _| Ok(()),
         )?;
@@ -291,10 +292,15 @@ impl Session {
         tick: Tick,
         mode: Execution,
         movement: Movement,
+        caches: Option<&Simulation>,
         stops: &[Tick],
         mut at: impl FnMut(usize, &Simulation) -> Result<()>,
     ) -> Result<Self> {
         let mut session = Self::new(genesis, mode)?;
+        if let Some(source) = caches {
+            session.sim.spatial_geometry = source.spatial_geometry.clone();
+            session.sim.foraging_routes = source.foraging_routes.clone();
+        }
         session.sim.state.movement = movement;
         session.branch = branch;
         let mut next = 0;
@@ -334,7 +340,7 @@ impl Session {
             .ok_or("history entry is absent")?;
         Self::replay(self.sim.genesis.as_ref().clone(), self.branch.clone(),
             self.entries[..index].to_vec(), self.entries[index].tick,
-            self.sim.mode, self.sim.state.movement, &[], |_, _| Ok(()))
+            self.sim.mode, self.sim.state.movement, Some(&self.sim), &[], |_, _| Ok(()))
     }
     /// Read an exact accepted prefix, excluding later entries at the same tick.
     /// This authenticates a finite witness without creating a played branch.
@@ -348,7 +354,7 @@ impl Session {
         }
         let prefix = Self::replay(self.sim.genesis.as_ref().clone(), self.branch.clone(),
             self.entries[..entry_count].to_vec(), tick, self.sim.mode,
-            self.sim.state.movement, &[], |_, _| Ok(()))?;
+            self.sim.state.movement, Some(&self.sim), &[], |_, _| Ok(()))?;
         if prefix.sim.state.tick != tick {
             return Err("history prefix splits a multi-tick command".into());
         }
@@ -359,9 +365,10 @@ impl Session {
             return Err("cannot fork an unplayed future".into());
         }
         let mut fork = Self::new(self.sim.genesis.as_ref().clone(), self.sim.mode)?;
-        // Replaying still authenticates every command. Only immutable terrain
-        // windows, keyed by their actual terrain inputs, survive between forks.
+        // Replaying still authenticates every command. The derivative caches
+        // match exact terrain/physical inputs and re-read biology before use.
         fork.sim.spatial_geometry = self.sim.spatial_geometry.clone();
+        fork.sim.foraging_routes = self.sim.foraging_routes.clone();
         fork.sim.state.movement = self.sim.state.movement;
         fork.branch = branch;
         for entry in self.entries.iter().filter(|e| e.tick <= tick && match &e.command {

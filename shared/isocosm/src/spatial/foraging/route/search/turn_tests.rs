@@ -16,9 +16,7 @@ fn cells(boxes: &[embodiment::Box3]) -> Vec<embodiment::Box3> {
     }
     out
 }
-#[test]
-fn food_route_turns_past_an_obstacle_that_blocks_the_unturned_body() {
-    let sim = terrain();
+pub(in crate::spatial::foraging::route) fn control_input(sim: &Simulation) -> Input {
     let doc = quadruped();
     let rules = embodiment::Walking::default();
     let terrain = sim
@@ -63,7 +61,7 @@ fn food_route_turns_past_an_obstacle_that_blocks_the_unturned_body() {
                 && !embodiment::intersects(&[*b], &swept)
         })
         .unwrap();
-    let input = Input {
+    Input {
         actor: 1,
         site: 0,
         terrain: terrain.clone(),
@@ -86,9 +84,20 @@ fn food_route_turns_past_an_obstacle_that_blocks_the_unturned_body() {
         reach: 0,
         nodes: 256,
         walking: Some(rules),
-    };
+    }
+}
+
+#[test]
+fn food_route_turns_past_an_obstacle_that_blocks_the_unturned_body() {
+    let sim = terrain();
+    let input = control_input(&sim);
+    let straight = embodiment::Grounding::new(&input.terrain.volume)
+        .with_articulation(true)
+        .with_walking(input.walking)
+        .at(&input.document, 383, 384, Yaw::Zero)
+        .unwrap();
     assert!(embodiment::intersects(
-        &embodiment::boxes(&doc, &straight).unwrap(),
+        &embodiment::boxes(&input.document, &straight).unwrap(),
         &input.blocked
     ));
     let report = find(&input).unwrap();
@@ -99,11 +108,11 @@ fn food_route_turns_past_an_obstacle_that_blocks_the_unturned_body() {
     assert!(route.strides.iter().flatten().any(|s| s.turn != 0));
     for (i, pair) in route.path.windows(2).enumerate() {
         embodiment::check_walk(
-            &terrain.volume,
-            &doc,
+            &input.terrain.volume,
+            &input.document,
             &pair[0],
             &pair[1],
-            Some(rules),
+            input.walking,
             route.strides[i].as_ref(),
             &input.blocked,
         )

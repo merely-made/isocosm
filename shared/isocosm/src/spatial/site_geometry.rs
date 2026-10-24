@@ -28,6 +28,9 @@ impl Key {
 #[derive(Debug)]
 pub struct SiteGeometry { key: Key, rules: Rules, pub volume: Arc<Volume>, pub places: Places }
 impl SiteGeometry {
+    pub(crate) fn same_source(&self, other: &Self) -> bool {
+        self.rules == other.rules && self.key == other.key
+    }
     pub fn matches(&self, sim: &Simulation, site: Id, window: &Window, rules: Rules) -> bool {
         self.rules == rules && self.key == Key::of(sim, site, window)
     }
@@ -49,6 +52,7 @@ impl Simulation {
                 let found = entries.remove(index);
                 let volume = found.volume.clone();
                 entries.push(found);
+                let _hit = crate::profile::Span::new("terrain.volume.hit");
                 return Ok(volume);
             }
         }
@@ -79,7 +83,10 @@ impl Simulation {
                 let entry = entries.remove(index);
                 let found = entry.places.iter().find(|p| p.rules == rules).cloned();
                 entries.push(entry);
-                if let Some(found) = found { return Ok(found); }
+                if let Some(found) = found {
+                    let _hit = crate::profile::Span::new("terrain.places.hit");
+                    return Ok(found);
+                }
             }
         }
         let volume = self.site_volume(site, window)?;
