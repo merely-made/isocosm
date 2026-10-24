@@ -107,8 +107,10 @@ Phases in order, each with its done-condition.
 - **D9a. A narrower prey scan.** Candidates indexed by the test that
   rejects most of them, found first by a probe. Done when the exact check
   holds and the debug comparison against a full scan still passes.
-- **D9b. Unchanged re-choices skipped.** A world revision, bumped by every
-  change, kept with an empty choice. Done when the exact check holds.
+- **D9b. Unchanged re-choices skipped.** Dropped (D11): under 1% after D9a.
+- **D11. The prey scan narrowed further.** Living and dead filed apart;
+  prey-independent requirements tested once per search. Done when the
+  exact check holds and the debug comparison with a full scan passes.
 - **D10. The planned stage kept.** Done when the exact check holds.
 - **E1. Waking.** The per-advance gate index (`schedule/filed.rs`, rulings 258,
   286) becomes persistent across advances, re-filed at commit from each
@@ -254,6 +256,18 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on 454, sim-execution D8 · governs isocosm::schedule, isocosm::execute · summary An act whose shares cover its plan keeps the planned stage and only re-checks fit before commit.
 
+- **D11, D9b dropped and the prey scan narrowed further (2026-10-23),
+  applies Directing 4:** "Drop D9b (Recommended)" and "Both narrowings
+  (Recommended)". After D9a, skipping unchanged re-choices would save 0.6
+  s of 93.6 s of scheduling, under 1%, for a revision every kind of change
+  must bump; 813 stays as it is. A successful prey search, now about 11%,
+  reads only the prey a liveness-naming selector could accept, the index
+  filing living and dead bodies apart, and tests the requirements that do
+  not read the prey once per search, those that do once per candidate; the
+  same prey are accepted and the same draw made. This amends D9.
+
+  Links: area Directing and play · draws on 683, 813, sim-execution D9 · amends sim-execution D9 · governs isocosm::targets · summary Skipping unchanged re-choices is dropped; a prey search files living and dead apart and tests prey-independent requirements once.
+
 ## Findings
 
 - **2026-10-19, the tick as built** (read from `shared/isocosm/src`, nothing
@@ -380,6 +394,12 @@ each title names its outcome against the doctrine.
   unreliable: D7b's seed 0 took 115 s against 55 s on a quiet machine).
   106.0, 107.1 and 98.5 s before, 97.0, 101.5 and 87.9 s after, 8% less,
   every line identical.
+- **2026-10-23, deliberation after D9a** (the same counters, seed 0, a
+  busy machine, 93.6 s of scheduling). An empty choice scored again costs
+  17 µs, not 59; those with no commit since come to 0.6 s. A choice that
+  finds prey costs about 560 µs, 18,561 of them, 10.4 s: the search reads
+  the hunter's own site, liveness refusing 2.6 million candidates, and
+  every requirement read for each of about 56 that pass.
 
 ## Progress
 
@@ -444,3 +464,6 @@ each title names its outcome against the doctrine.
   the battery's seeds 0 to 2 identical, isocosm's 717 tests in release and
   its 264 lib tests under the test profile, where the filed search is
   still compared with a full scan. 8% less CPU time (Findings).
+- **2026-10-23, after D9a:** a probe of deliberation (Findings) put D9b at
+  under 1%; the round dropped it and chose to narrow the prey scan
+  further (D11).
