@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 //! Interpolate only adjacent admitted roots with a native clearance witness.
-use super::super::{PlacedBody, SiteScene};
+use super::super::{PlacedBody, SiteScene, Walk};
 use isocosm::spatial::{Pose, embodiment};
 use isometer::{core::BodyDocument, render::implicit::Gait};
 use std::collections::{BTreeMap, VecDeque};
@@ -14,7 +14,10 @@ pub(super) struct Motion {
     document: BodyDocument,
     pose: Option<Pose>,
     observed: Option<Pose>,
-    pending: VecDeque<Pose>,
+    pending: VecDeque<Walk>,
+    stride: Option<isometer::core::legs::Stride>,
+    walking: Option<embodiment::Walking>,
+    shifting: bool,
     from: [f32; 3],
     target: [f32; 3],
     age: f32,
@@ -33,6 +36,9 @@ impl Motion {
             document: body.document.clone(),
             observed: pose.clone(),
             pending: VecDeque::new(),
+            stride: None,
+            walking: scene.walking,
+            shifting: false,
             pose,
             from: body.at.map(|v| v as f32),
             target: body.at.map(|v| v as f32),
@@ -60,6 +66,7 @@ impl Motion {
             || self.frame != (scene.window.min, scene.window.max, scene.window.datum)
             || self.document != body.document
             || !body.alive
+            || self.walking != scene.walking
         {
             if std::env::var_os("MESOCOSM_DEBUG_MOTION").is_some() {
                 eprintln!(
@@ -96,21 +103,24 @@ impl Motion {
                 self.target = target;
                 self.age = 100.;
                 self.sweep_from = None;
+                self.stride = None;
                 self.gait = Gait::default();
             }
             self.observed = next;
         }
         if self.age >= self.duration() && !self.pending.is_empty() {
-            let to = self.pending.pop_front().unwrap();
-            if self
-                .pose
-                .as_ref()
-                .is_some_and(|from| from.yaw == to.yaw && cleared(scene, body, from, &to))
-            {
+            let walk = self.pending.pop_front().unwrap();
+            let to = walk.poses[1].clone();
+            if self.pose.as_ref().is_some_and(|from| {
+                from == &walk.poses[0]
+                    && from.yaw == to.yaw
+                    && cleared(scene, body, from, &to, walk.stride.as_ref())
+            }) {
                 self.checked_revision = revision;
                 self.from = self.target;
                 self.target = scene.window.to_ground(to.at).map(|v| v as f32);
                 self.sweep_from = self.pose.replace(to);
+                self.stride = walk.stride;
                 self.age = 0.;
                 self.started = true;
                 self.gait.start_step();
@@ -121,13 +131,14 @@ impl Motion {
                 self.target = target;
                 self.age = 100.;
                 self.sweep_from = None;
+                self.stride = None;
                 self.gait = Gait::default();
             }
         }
         if self.age < self.duration() && !self.started && self.checked_revision != revision {
             self.checked_revision = revision;
             if let (Some(from), Some(to)) = (&self.sweep_from, &self.pose) {
-                if !cleared(scene, body, from, to) {
+                if !cleared(scene, body, from, to, self.stride.as_ref()) {
                     self.from = target;
                     self.target = target;
                     self.age = 100.;
@@ -154,34 +165,71 @@ impl Motion {
         self.age += self.elapsed(elapsed);
         let t = (self.age / self.duration()).clamp(0., 1.);
         let articulated = self.pose.as_ref().is_some_and(|p| !p.feet.is_empty());
-        let phase = (t * embodiment::SWING_SAMPLES as f32).floor() as i64
-            * isometer::core::legs::UNIT
-            / embodiment::SWING_SAMPLES;
+        let samples = self
+            .stride
+            .as_ref()
+            .map_or(embodiment::SWING_SAMPLES, |s| s.samples());
+        let phase = (t * samples as f32).floor() as i64 * isometer::core::legs::UNIT / samples;
         let t = if articulated {
             phase as f32 / isometer::core::legs::UNIT as f32
         } else {
             t * t * (3. - 2. * t)
         };
+        let planned = self
+            .sweep_from
+            .as_ref()
+            .zip(self.pose.as_ref())
+            .zip(self.stride.as_ref())
+            .filter(|_| self.age < self.duration())
+            .and_then(|((from, to), stride)| {
+                embodiment::stride_sample(from, to, stride, phase).ok()
+            });
         let feet = self
             .pose
             .as_ref()
             .filter(|p| !p.feet.is_empty())
             .map(|pose| {
+                if let Some(frame) = &planned {
+                    return embodiment::stride_feet(frame, pose.yaw)
+                        .unwrap_or_else(|_| pose.feet.clone());
+                }
                 self.sweep_from
                     .as_ref()
-                    .filter(|_| self.age < self.duration())
+                    .filter(|_| self.age < self.duration() && self.stride.is_none())
                     .and_then(|from| embodiment::swing_feet(&body.document, from, pose, phase).ok())
                     .unwrap_or_else(|| pose.feet.clone())
             });
         self.gait.set_physical_feet(feet);
-        let origin = [0, 1, 2].map(|k| self.from[k] + (self.target[k] - self.from[k]) * t);
+        let linear = [0, 1, 2].map(|k| self.from[k] + (self.target[k] - self.from[k]) * t);
+        let origin = if let Some(frame) = &planned {
+            let zero = scene.window.to_ground([0; 3]);
+            [0, 1, 2]
+                .map(|k| zero[k] as f32 + frame.root[k] as f32 / isometer::core::legs::UNIT as f32)
+        } else if self.age < self.duration() && self.stride.is_some() {
+            self.target
+        } else {
+            linear
+        };
+        self.shifting = planned.is_some() && (0..3).any(|k| (origin[k] - linear[k]).abs() > 0.002);
+        let mut low = [0, 1, 2].map(|k| self.from[k].min(self.target[k]));
+        let mut high = [0, 1, 2].map(|k| self.from[k].max(self.target[k]));
+        if let Some(stride) = &self.stride {
+            let zero = scene.window.to_ground([0; 3]);
+            for s in &stride.stages {
+                for k in 0..3 {
+                    let at = zero[k] as f32 + s.root[k] as f32 / isometer::core::legs::UNIT as f32;
+                    low[k] = low[k].min(at);
+                    high[k] = high[k].max(at);
+                }
+            }
+        }
         let min = if self.age < self.duration() {
-            [0, 1, 2].map(|k| self.from[k].min(self.target[k]) - origin[k])
+            [0, 1, 2].map(|k| low[k] - origin[k])
         } else {
             [0.; 3]
         };
         let max = if self.age < self.duration() {
-            [0, 1, 2].map(|k| self.from[k].max(self.target[k]) - origin[k])
+            [0, 1, 2].map(|k| high[k] - origin[k])
         } else {
             [0.; 3]
         };
@@ -221,9 +269,18 @@ impl Motion {
     pub fn active(&self) -> bool {
         !self.pending.is_empty() || self.age < self.duration() || self.gait.swinging > 0
     }
+    pub fn shifting(&self) -> bool {
+        self.shifting
+    }
 }
 
-fn cleared(scene: &SiteScene, body: &PlacedBody, from: &Pose, to: &Pose) -> bool {
+fn cleared(
+    scene: &SiteScene,
+    body: &PlacedBody,
+    from: &Pose,
+    to: &Pose,
+    stride: Option<&isometer::core::legs::Stride>,
+) -> bool {
     let blocked: Vec<_> = scene
         .bodies
         .iter()
@@ -236,7 +293,15 @@ fn cleared(scene: &SiteScene, body: &PlacedBody, from: &Pose, to: &Pose) -> bool
         })
         .flatten()
         .collect();
-    let clear = embodiment::sweep_clear(&scene.window, &body.document, from, to, &blocked);
+    let clear = embodiment::check_walk(
+        &scene.window,
+        &body.document,
+        from,
+        to,
+        scene.walking,
+        stride,
+        &blocked,
+    );
     if let Err(why) = &clear {
         if std::env::var_os("MESOCOSM_DEBUG_MOTION").is_some() {
             eprintln!("motion {} {:?} -> {:?}: {why}", body.id, from.at, to.at);
@@ -247,19 +312,20 @@ fn cleared(scene: &SiteScene, body: &PlacedBody, from: &Pose, to: &Pose) -> bool
 
 // Only stitch explicit admitted steps. A direct adjacent observation retains
 // the older bridge's conservative sweep; a distant observation needs history.
-fn trail(steps: &[[Pose; 2]], from: &Pose, to: &Pose) -> Option<Vec<Pose>> {
+fn trail(steps: &[Walk], from: &Pose, to: &Pose) -> Option<Vec<Walk>> {
     if from.feet.is_empty()
         && to.feet.is_empty()
         && from.yaw == to.yaw
         && (0..3).all(|k| from.at[k].abs_diff(to.at[k]) <= 1)
     {
-        return Some(vec![to.clone()]);
+        return Some(vec![[from.clone(), to.clone()].into()]);
     }
     let mut at = from;
     let mut out = Vec::new();
-    for [a, b] in steps {
+    for step in steps {
+        let [a, b] = &step.poses;
         if a == at {
-            out.push(b.clone());
+            out.push(step.clone());
             at = b;
             if at == to {
                 return Some(out);

@@ -11,9 +11,9 @@ use std::{path::Path, time::Instant};
 mod probe;
 
 fn main() -> Result<(), String> {
-    let path = std::env::args()
-        .nth(1)
-        .ok_or("inspect_foraging <world trace> [--census | --probe [--actors=6,19]]")?;
+    let path = std::env::args().nth(1).ok_or(
+        "inspect_foraging <world trace> [--census | --probe [--actors=6,19] [--try-walking]]",
+    )?;
     let saved = mesocosm_genet::played::read_trace(Path::new(&path))?;
     let started = Instant::now();
     let session = Session::load(saved.clone(), Execution::Individuals)?;
@@ -89,6 +89,9 @@ fn main() -> Result<(), String> {
                     return Err("recorded step differs from the chosen complete route".into());
                 }
                 probe::verify(&pending.sim, r, route)?;
+                if route.strides.get(..1) != answer.geometry.as_ref().unwrap().strides.get(..1) {
+                    return Err("recorded gait differs from the chosen complete route".into());
+                }
                 Some(found)
             } else {
                 None

@@ -41,7 +41,14 @@ pub struct Authored { pub placements: Vec<Placement>, pub profile: Profile }
 pub enum Setup { Placements(Vec<Placement>), Driver(Authored), Sighted(SightedSetup) }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Admission { Step { action: String }, Arrival, Birth { action: String, parent: Id, ordinal: u64 } }
+pub enum Admission {
+    Step {
+        action: String,
+        /// The exact accepted path and weight transfers in new walking worlds.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        geometry: Option<Box<isocosm::spatial::Geometry>>,
+    }, Arrival, Birth { action: String, parent: Id, ordinal: u64 }
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Transition {

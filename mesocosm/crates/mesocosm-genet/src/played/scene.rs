@@ -42,6 +42,7 @@ pub fn site_scene(sim: &Simulation, played: Option<Id>) -> Result<SiteScene, Str
     let bodies = placed(sim, site, &volume);
     let volumes = body_volumes(&bodies)?;
     Ok(SiteScene {
+        walking: isocosm::spatial::embodiment::walking_rules(sim),
         site,
         ground,
         window: volume,
@@ -90,7 +91,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
             tint:tint_of(kingdom::of(e)), alive:e.alive });
     }
     let volumes = body_volumes(&bodies)?;
-    Ok(SiteScene { site:site.site(), ground, window:volume, bodies,
+    Ok(SiteScene { walking: isocosm::spatial::embodiment::walking_rules(&sim), site:site.site(), ground, window:volume, bodies,
         played:runtime.critter(), volumes })
 }
 
@@ -196,7 +197,7 @@ pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
     } else { sim.site_volume(site, window)?.as_ref().clone() };
     let bodies = placed_physical(sim, site, &volume, visible, game)?;
     let volumes = body_volumes(&bodies)?;
-    Ok(SiteScene { site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })
+    Ok(SiteScene { walking: isocosm::spatial::embodiment::walking_rules(&sim), site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })
 }
 
 /// The same admitted native summaries used by the borrowed close-up.
@@ -207,7 +208,7 @@ fn native_materials(e: &isocosm::schema::Entity) -> Vec<isometer::render::PartMa
 /// Read the existing validated placement history; never infer a path between
 /// distant endpoints or replay another visit's steps.
 fn native_walks(game: &mesocosm_runtime::spatial::Game)
-    -> std::collections::BTreeMap<Id, Vec<[isocosm::spatial::Pose; 2]>> {
+    -> std::collections::BTreeMap<Id, Vec<crate::section::Walk>> {
     let mut out = std::collections::BTreeMap::<Id, Vec<_>>::new();
     let Some(driver) = &game.driver else { return out };
     for c in driver.records.iter().rev().take(32).flat_map(|r| r.changes.iter().rev()) {
@@ -219,8 +220,15 @@ fn native_walks(game: &mesocosm_runtime::spatial::Game)
             || from.body_revision != at.body_revision || to.body_revision != at.body_revision { continue; }
         let steps = out.entry(c.actor).or_default();
         if steps.len() < 16 {
-            steps.push([from.pose.clone(),
-                to.pose.clone()]);
+            if let mesocosm_runtime::spatial::Admission::Step {geometry:Some(geometry),..}=&c.admission {
+                for (index,pair) in geometry.path.windows(2).enumerate().rev() {
+                    if steps.len()>=16 {break;}
+                    steps.push(crate::section::Walk {poses:[pair[0].clone(),pair[1].clone()],
+                        stride:geometry.strides.get(index).cloned().flatten()});
+                }
+            } else {
+                steps.push([from.pose.clone(),to.pose.clone()].into());
+            }
         }
     }
     for steps in out.values_mut() { steps.reverse(); } out

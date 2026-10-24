@@ -65,7 +65,12 @@ pub struct Request {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Geometry { pub window: Window, pub path: Vec<Pose>, pub eye: [i64; 3] }
+pub struct Geometry {
+    pub window: Window, pub path: Vec<Pose>, pub eye: [i64; 3],
+    /// One explicit gait per adjacent edge; empty preserves recorded legacy steps.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub strides: Vec<Option<isometer_core::legs::Stride>>,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Resolution { pub request: Request, pub geometry: std::result::Result<Geometry, String> }

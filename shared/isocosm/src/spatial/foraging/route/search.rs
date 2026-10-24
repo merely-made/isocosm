@@ -28,9 +28,9 @@ pub(super) fn find(input: &Input) -> Result<RouteSearch> {
             feet: Default::default(),
         },
     )?;
-    let mut grounding = embodiment::Grounding::new(&input.terrain.volume);
+    let mut grounding = embodiment::Grounding::new(&input.terrain.volume).with_walking(input.walking);
     let mut rejected = BTreeSet::new();
-    let mut checked = BTreeSet::new();
+    let mut checked = BTreeMap::new();
     let mut report = RouteSearch::default();
     loop {
         let path = trial(
@@ -48,27 +48,31 @@ pub(super) fn find(input: &Input) -> Result<RouteSearch> {
         let mut valid = true;
         for edge in path.windows(2) {
             let pair = (edge[0], edge[1]);
-            if checked.contains(&pair) {
+            if checked.contains_key(&pair) {
                 continue;
             }
             report.checked_edges += 1;
-            if let Err(why) = embodiment::sweep_clear(
+            let plan = embodiment::step_stride(
                 &input.terrain.volume,
                 &input.document,
                 &graph[&pair.0].pose,
                 &graph[&pair.1].pose,
+                input.walking,
                 &input.blocked,
-            ) {
+            );
+            if let Err(why) = &plan {
                 rejected.insert(pair);
                 report.refused_edges += 1;
-                report.first_refusal.get_or_insert(why);
+                report.first_refusal.get_or_insert_with(||why.clone());
                 valid = false;
                 break;
             }
-            checked.insert(pair);
+            checked.insert(pair, plan.unwrap());
         }
         if valid {
             report.route = Some(FoodRoute {
+                strides: if input.walking.is_some() {path.windows(2)
+                    .map(|e|checked[&(e[0],e[1])].clone()).collect()} else {Vec::new()},
                 target: graph[path.last().unwrap()].food.unwrap(),
                 path: path.iter().map(|key| graph[key].pose.clone()).collect(),
             });

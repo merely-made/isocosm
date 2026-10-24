@@ -68,6 +68,8 @@ def main():
         "swing_frames": sum(record["swinging"] > 0 for record in records),
         "supported_swing_frames": sum(record["swinging"] > 0 and record["planted"] > 0 for record in records),
         "max_swinging": max(record["swinging"] for record in records),
+        "weight_shifting_frames": sum(record.get("weight_shifting", 0) > 0 for record in records),
+        "max_weight_shifting": max(record.get("weight_shifting", 0) for record in records),
         "max_planted": max(record["planted"] for record in records),
         "projection_failures": max(record["projection_failures"] for record in records),
         "same_native_cut_changes": changes,
@@ -84,7 +86,7 @@ def main():
     images[0].save(args.preview, save_all=True, append_images=images[1:],
                    duration=args.duration_ms, loop=0, lossless=True, exact=True, method=3)
     args.summary.write_text(json.dumps(summary, indent=2) + "\n")
-    print(json.dumps({key: summary[key] for key in ["frames", "swing_frames", "supported_swing_frames",
+    print(json.dumps({key: summary[key] for key in ["frames", "swing_frames", "supported_swing_frames", "weight_shifting_frames",
                                                   "projection_failures", "observed_facings"]}, indent=2))
 
 

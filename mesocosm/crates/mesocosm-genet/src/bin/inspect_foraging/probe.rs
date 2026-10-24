@@ -105,19 +105,29 @@ pub(super) fn verify(
             .unwrap()
         })
         .collect();
-    for pair in route.path.windows(2) {
-        if !body::neighbours(
+    let walking = body::walking_rules(sim);
+    for (index, pair) in route.path.windows(2).enumerate() {
+        if !body::neighbours_with_walking(
             &geometry.volume,
             &geometry.places,
             profile,
             document,
             &pair[0],
+            walking,
         )
         .contains(&pair[1])
         {
             return Err("complete route crosses an unavailable native neighbour".into());
         }
-        body::sweep_clear(&geometry.volume, document, &pair[0], &pair[1], &blocked)?;
+        body::check_walk(
+            &geometry.volume,
+            document,
+            &pair[0],
+            &pair[1],
+            walking,
+            route.strides.get(index).and_then(Option::as_ref),
+            &blocked,
+        )?;
     }
     let food = &sim.state().spatial_poses[&route.target];
     let boxes = body::boxes(
@@ -220,25 +230,40 @@ pub(super) fn run(session: &Session) -> Result<(), String> {
                     .unwrap()
                 })
                 .collect();
-            let neighbours: Vec<_> = body::neighbours(
+            let walking = body::walking_rules(sim).or_else(|| {
+                std::env::args()
+                    .any(|arg| arg == "--try-walking")
+                    .then(body::Walking::default)
+            });
+            let neighbours: Vec<_> = body::neighbours_with_walking(
                 &geometry.volume,
                 &geometry.places,
                 profile,
                 document,
                 pose,
+                walking,
             )
             .into_iter()
             .map(|next| {
                 let occupied = body::boxes(document, &next).unwrap();
+                let wider: Vec<_> = walking.filter(|_| std::env::args().any(|a| a == "--try-walking"))
+                    .into_iter().flat_map(|rules| (1..=4).map(move |shift| body::Walking {shift, ..rules}))
+                    .map(|rules| serde_json::json!({"shift":rules.shift,
+                        "plan":body::step_stride(&geometry.volume,document,pose,&next,Some(rules),&blocked)}))
+                    .collect();
                 serde_json::json!({"pose":next,"intersects":body::intersects(&occupied,&blocked),
-                    "swing":body::sweep_clear(&geometry.volume,document,pose,&next,&blocked)})
+                    "stride":body::step_stride(&geometry.volume,document,pose,&next,walking,&blocked),
+                    "shift_trials":wider,
+                    "legacy_swing":body::sweep_clear(&geometry.volume,document,pose,&next,&blocked)})
             })
             .collect();
             let started = Instant::now();
             let result = foraging::geometry(sim, r, &window);
-            probes.push(serde_json::json!({"request":r,"before":pose,
+            probes.push(
+                serde_json::json!({"request":r,"before":pose,"probe_walking":walking,
                 "food":sim.state().spatial_poses.get(&r.target.unwrap()),
-                "neighbours":neighbours,"route":result,"route_us":started.elapsed().as_micros()}));
+                "neighbours":neighbours,"route":result,"route_us":started.elapsed().as_micros()}),
+            );
         }
         break;
     }

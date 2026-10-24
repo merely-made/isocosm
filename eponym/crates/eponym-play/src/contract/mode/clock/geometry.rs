@@ -120,7 +120,7 @@ pub(super) fn step(mode: &ModeState, state: &State, pending: &native::Pending) -
         .collect::<Result<Vec<_>, String>>()?;
     path.first_mut().ok_or("authored step path is empty")?.yaw = physical.yaw;
     let eye = add(path.last().ok_or("authored step path is empty")?.at, input.eye_from_root)?;
-    let answer = native::Geometry { window: at.window, path, eye };
+    let answer = native::Geometry { window: at.window, path, eye, strides: Vec::new() };
     native::check_step(&pending.sim, r, &answer)?;
     Ok(answer)
 }

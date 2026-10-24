@@ -36,6 +36,7 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
         return Ok(());
     }
     super::super::foraging::declare_senses(genesis);
+    templates.walking = Some(Walking::default());
     let guide = Simulation::new(genesis.clone(), crate::Execution::Grouped)?;
     let view = View::of(genesis)?;
     let side =
@@ -80,6 +81,7 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
         let volume = Volume::lift(&view, site, w.min, w.max, w.depth, &[])?;
         let places = Places::derive(&volume, templates.places)?;
         let mut grounding = Grounding::new(&volume)
+            .with_walking(templates.walking)
             .with_articulation(true)
             .with_spacing(templates.body_spacing);
         let mut blocked = Vec::new();

@@ -50,6 +50,8 @@ pub struct BodyFrameStats {
     pub foot_contacts: usize,
     pub planted_contacts: usize,
     pub swinging_contacts: usize,
+    /// Host-written count of bodies following an admitted root weight transfer.
+    pub weight_shifting_bodies: usize,
     pub support_contacts: usize,
     /// A host-owned body's encode report, zero for caller-owned submission.
     pub body_tenant_internal_submissions: u64,

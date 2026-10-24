@@ -1,6 +1,7 @@
 # Foot placement in ordinary play
 
-Date: 2026-10-22. Status: implemented and captured in the optimized playable build.
+Date: 2026-10-22. Status: original placement and bounded weight-shifting
+follow-up qualified, 2026-10-23; retained refusals are recorded below.
 
 The previous [body appearance receipt](2026-10-22_body_appearance_plan.md)
 showed moving roots but no ordinary foot swing. Native whole-body placement
@@ -156,20 +157,155 @@ therefore distinguish actual native departure from a placement failure.
 
 ## Remaining limits
 
+The 2026-10-23 follow-up below addresses the straight root path, fixed foot
+order and nominal-only foot columns. Its qualification is tracked separately
+from the original receipt in this section.
+
 Native turning uses a conservative swept envelope and can refuse on slopes;
 the presentation snaps an admitted turn rather than sliding planted soles.
 The chain convention remains the existing paid upper/lower/foot graph, not
 arbitrary anatomical-joint solving. Only one foot swings at a time. Support
-uses the declared document's volume centre as a geometric proxy, not posed
-mass redistribution, force balance or dynamic weight transfer. Terrain
-clearance is checked at the same 128 quantized phases that are rendered;
+uses the declared document's rest-volume centre as a geometric proxy. Root
+transfers are kinematic; posed mass, actuator capacity, force balance, friction
+and momentum remain separate work. Terrain
+clearance is checked at the same quantized phases that are rendered: 128 for
+the original gait, and at least 128 or 16 per moving foot for explicit strides;
 this does not qualify unsampled continuous trajectories or another engine's
 physics. Alternative body comparison modes keep declared rest volumes.
 
-The images still show long block-shaped bodies on thin links, and the terrain
-pattern competes with their silhouettes. This change qualifies shared foot
-geometry and a supported gait, not B2's varied inherited shapes, B4's local
-blend radii or B5's muscle/load constants.
+## Weight shifting follow-up, 2026-10-23
+
+Mark requests weight shifting and better foot placement through the existing
+limb and support machinery, followed by an unchosen moving capture.
+
+### Phases and done-conditions
+
+1. Reuse the actual dry bearing-cell polygon and paid limb solver to plan a
+   body shift before lifting a foot. Share deterministic integer trajectory
+   data and sampling; native validation and the renderer must consume that
+   same recorded plan. Retain old saved worlds' omitted-field semantics.
+   Controls must show a previously unbalanced swing becoming supported, keep
+   planted feet fixed, and reject forged, obstructed or unreachable motions.
+2. Let grounding search nearby dry foot columns within explicit saved bounds,
+   reusing the existing height cache, capsule clearance and support checks.
+   Founding, walking, births and arrivals use the same placement machinery.
+   Controls cover a nominal foot column that fails beside a valid foothold,
+   true gaps and water, and body obstruction. Route caching includes the new
+   physical policy and records complete gait witnesses before choosing food.
+3. Build with the qualified dependency lock and normal release optimization.
+   Run the first eligible unchosen world, capture real intermediate frames,
+   verify weight shifts and planted contacts, and replay retained old saves.
+   Record remaining refusals and bounded costs without relaxing clearance,
+   support or route budgets to obtain a capture.
+
+Receipts: `Code/testing/mesocosm/weight-shifting-2026-10-23/`, total retained
+cap 100 MB. Reuse Mesocosm's existing playable checkout, target and named Cargo
+home. Preserve earlier receipts. No new worktree or build cache is needed.
+
+### Findings
+
+2026-10-23: `embodiment/swing.rs` moves the root linearly throughout a fixed
+part-ID foot order. `articulation::support_at` already builds the convex hull
+of actual dry pad contacts, but only tests the body volume centre against it.
+`articulation::ground` tries the nominal sole columns and root heights; it does
+not search nearby sole targets. `section/smooth/motion.rs` samples native feet
+but separately interpolates the root. These must be connected by an explicit
+native gait witness, rather than independently planning a visible trajectory.
+
+Ownership: isometer-core carries product-neutral fixed-point gait data and
+sampling. Native Isocosm owns terrain/body queries, support-guided planning and
+admission. Mesocosm carries accepted witnesses to its disposable animation.
+The existing volume-centre balance proxy remains the support law; this work
+does not assign muscle forces, friction coefficients or momentum constants.
+
+### Progress
+
+2026-10-23: traced the four retained local failures, existing support polygon,
+paid-chain geometry, route search, native publication and renderer sampling.
+The new optional saved `Templates.walking` policy declares a four-cell body
+shift bound, two-cell foothold search radius, three-cell maximum lift and 256
+candidate-posture limit. New physical founding opts in. Old saved rules omit
+the policy and retain the original grounding and swing semantics. Its saved
+`clearance` flag selects a vertical rise before horizontal transfer, followed
+by lowering after crossing. Omission retains the earlier straight transfer and
+its one-cell trial-rise limit. Strides record the same flag and admission
+requires it to match the policy.
+
+`isometer-core::legs::Stride` records foot order, fixed-point body-transfer
+knots and clearance. Native support-guided planning tries the actual remaining
+bearing polygon before each takeoff, then validates the complete plan through
+the existing limb capsules, terrain and current-body checks. The geometry
+witness travels through the accepted native step and Mesocosm admission record
+to `Motion`; the renderer samples that witness for both root and feet.
+
+Nearby sole targets reuse `Grounding`'s height cache. Per-limb reach and capsule
+clearance filter the candidates, then the existing whole-body support check
+admits a bounded posture. Founding, routes, births and arrivals use this path.
+The cache key includes the walking policy, and native publication rechecks the
+recorded path and stride against current occupancy.
+
+Six core controls and thirteen native embodiment controls pass, including a
+loaded corner that cannot lift in the old fixed order, a missing nominal
+foothold beside dry support, world-fixed bearing feet and rejected forged or
+blocked trajectories and the order of rise, crossing and lowering. Optimized
+host and runtime qualification is in progress.
+
+The first optimized pass accepts eleven food steps across five critters in
+unchosen seed `72173207038511016`, the thirtieth startup candidate from
+clock draw `1792799530492473600`. North and south captures have identical
+complete native saves. The first camera hides feet behind a slope; south
+reveals them. The retained steep sensing-world case still fails: two-cell
+transfers cannot find a bearing polygon, and three/four-cell straight transfers
+hit part 6 against an uphill voxel at their first sample. That evidence calls
+for raising the root before crossing, with every planted sole kept fixed and
+paid reach rechecked. Final qualification below uses that ordered transfer.
+
+### Final qualification, 2026-10-23
+
+The normal release build repeats the actual accepted seed from the original
+unchosen run. Complete founding data, terrain, food, anatomy and initial
+placements match after removing only `Templates.walking`. Three ordinary
+ticks now accept seventeen sighted food steps across seven critters, against
+eleven across five with the first straight-transfer policy. All seventeen
+complete route witnesses pass native verification, ten contain lateral root
+transfers, and all seventeen begin with feet at different terrain heights.
+The final native hash is `b629dab76e9ad27d`.
+
+`clearance-moving.webp` packages twenty-four actual GPU frames from the south
+camera, including seventeen supported-swing frames and twenty body-transfer
+frames. There are zero projection failures, endpoint native-box intersections
+or developer world intents. Pixel changes occur within unchanged native cuts.
+The renderer reads the accepted native trajectory for root and feet.
+
+129 receiving controls pass: six core, thirteen native embodiment, fifty-four
+host and fifty-six runtime/placement/senses/route controls. Six existing
+profiling/headed cases are ignored and one multi-seed search is filtered.
+Seven retained native histories replay exactly, including the first new-policy
+capture whose omitted clearance flag retains its earlier straight transfers.
+Eponym's mechanical constructor update is included; its independent check stops
+before source compilation at its existing stale lockfile.
+
+At the same first pending cut, the census finds seven complete routes among
+twenty-three nonempty searches, against five in the first pass. Sixteen searches
+still have no route, eight exhaust 256 nodes. The retained steep sensing-world
+pose still has no admitted adjacent transfer: trials at shifts one through four
+fail paid reach. These are bounded planner refusals, not proofs of global
+unreachability. Multi-stage footholds, richer body articulation and turns remain
+possible follow-ups; this work does not stretch limbs or relax support.
+
+The final capture logs 3,463 native spans below the 131,072 cap. Sixteen cold
+Places builds total 48.04 s; forty-seven route searches total 23.24 s, median
+143 ms and maximum 4.03 s. Walking planning totals 11.91 s over 757 calls;
+checking totals 6.97 s over 533 calls. Nested spans overlap. The capture overlaps
+a retained-case diagnostic and other workspace builds, so these CPU wall spans
+are a cost census rather than a comparative frame-rate benchmark. Exact source,
+locks, binary hashes, the rejected straight trials and raw frames remain in the
+named receipt directory under 100 MB.
+
+The original 2026-10-22 pictures qualify shared foot geometry and supported
+gait. Body appearance and actuator/load rules are tracked separately in the
+[body appearance plan](2026-10-22_body_appearance_plan.md); this follow-up
+qualifies placement and motion.
 
 ## Delivery locations
 
@@ -178,6 +314,6 @@ Work is on main in `Code/repos/isocosm`. The existing
 for Mesocosm's runnable Windows build. The existing named Cargo home
 `C:/t/cargo-homes/isocosm-foraging` is reused for the same offline dependency
 graph. These remain owned by that playable/rebuild workflow; this task creates
-no isolated worktree, target or Cargo home. Eponym's three constructors are
-updated for the shared optional feet field; headed qualification here covers
+no isolated worktree, target or Cargo home. Eponym's geometry constructor is
+updated for the shared optional stride field; headed qualification here covers
 Mesocosm, not Eponym.

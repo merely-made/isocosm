@@ -221,6 +221,7 @@ impl Game {
             let volume = session.sim.site_volume(destination, &t.window)?;
             drop(volume_span);
             let mut grounding = body::Grounding::new(&volume)
+                .with_walking(t.walking)
                 .with_articulation(body::articulated(&session.sim))
                 .with_spacing(t.body_spacing);
             let mut blocked = self.occupied(&session.sim, destination, None)?;
@@ -355,7 +356,8 @@ impl Game {
         let (volume, places) = cache.get(&pending.sim, r.site, &at.window, profile.places)?;
         let before = at.pose.clone();
         let blocked = self.occupied(&pending.sim, r.site, Some(r.actor))?;
-        let available: Vec<_> = body::neighbours(&volume, &places, profile, document, &before)
+        let walking = body::walking_rules(&pending.sim);
+        let available: Vec<_> = body::neighbours_with_walking(&volume, &places, profile, document, &before, walking)
             .into_iter()
             .filter(|pose| {
                 body::boxes(document, pose).is_ok_and(|boxes| !body::intersects(&boxes, &blocked))
@@ -376,7 +378,11 @@ impl Game {
             .ok_or("walking templates absent")?
             .eye;
         let eye = std::array::from_fn(|k| after.at[k] + offset[k]);
+        let strides = if walking.is_some() {
+            vec![body::step_stride(&volume,document,&before,&after,walking,&blocked)?]
+        } else {Vec::new()};
         let geometry = native::Geometry {
+            strides,
             window: pending.sim.genesis().rules.spatial_templates.as_ref()
                 .map(|t| body::site_window(t,after.at)).unwrap_or_else(||at.window.clone()),
             path: vec![before, after],
@@ -445,6 +451,7 @@ impl Game {
             parent.pose.yaw
         };
         let pose = body::Grounding::new(&volume)
+            .with_walking(t.walking)
             .with_articulation(modern)
             .with_spacing(t.body_spacing)
             .find(

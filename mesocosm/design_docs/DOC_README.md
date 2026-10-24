@@ -85,7 +85,7 @@ Whole-site habitat work is tracked in the [presentation continuation](2026-09-11
 | Doc | For | Status |
 | --- | --- | --- |
 | [2026-10-23_senses_foraging_plan.md](2026-10-23_senses_foraging_plan.md) | Living sensory parts, cached terrain sight and reachable native food choice. | 2026-10-23: qualified reachable-food follow-up; 56 controls, five older replays, 16 accepted steps across seven walkers, 24 actual frames with 20 supported swings. |
-| [2026-10-22_foot_placement_plan.md](2026-10-22_foot_placement_plan.md) | Native paid-foot placement, support on slopes, spacing and an ordinary walking capture. | 2026-10-22: shared native/rendered chain geometry, supported foot swing captured in the optimized build; 481 checks and old/new replay hashes pass. |
+| [2026-10-22_foot_placement_plan.md](2026-10-22_foot_placement_plan.md) | Native paid-foot placement, support on slopes, spacing and shared gait witnesses. | 2026-10-23: bounded weight shifts and nearby footholds qualified; 129 controls, seven native replays, 17 food steps across seven walkers and 24 actual frames. Retained steep and node-bound refusals recorded. |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Mesocosm's goals and pillars. | Maintainer-owned. |
 | [2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md) | W1: every plan evaluated against the design record. | Ruled and applied 2026-09-18 (ruling 31). |

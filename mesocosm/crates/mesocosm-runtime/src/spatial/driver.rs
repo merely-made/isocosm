@@ -45,7 +45,7 @@ impl Game {
         let last = path.last().ok_or("step route empty")?.at;
         let mut eye = last;
         for k in 0..3 { eye[k] = eye[k].checked_add(input.eye_offset[k]).ok_or("step eye offset overflow")?; }
-        let geometry = native::Geometry { window: at.window.clone(), path, eye };
+        let geometry = native::Geometry { window: at.window.clone(), path, eye, strides: Vec::new() };
         native::check_step(&pending.sim, r, &geometry)?;
         Ok(geometry)
     }
@@ -72,7 +72,8 @@ impl Game {
             after.terrain_revision = input.request.terrain_revision.clone();
             // The final patch is re-derived from this same exact pose on refresh.
             changes.push(profile::Transition { actor: input.request.actor, before: Some(before), after: after.clone(),
-                admission: profile::Admission::Step { action: input.request.action.clone() }, sight_range: None });
+                admission: profile::Admission::Step { action: input.request.action.clone(),
+                    geometry: (!geometry.strides.is_empty()).then(||Box::new(geometry.clone())) }, sight_range: None });
             self.members.insert(input.request.actor, after);
         }
         Ok(changes)

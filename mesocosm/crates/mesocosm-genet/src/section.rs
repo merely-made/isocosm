@@ -73,7 +73,7 @@ pub struct PlacedBody {
     pub at: [i32; 3],
     pub physical: Option<mesocosm_runtime::spatial::Pose>,
     /// Recent admitted native steps, for a viewport that missed intermediate roots.
-    pub walks: Vec<[isocosm::spatial::Pose; 2]>,
+    pub walks: Vec<Walk>,
     pub tint: [f32; 3],
     pub materials: Vec<isometer::render::PartMaterial>,
     pub alive: bool,
@@ -90,6 +90,16 @@ pub struct SiteScene {
     pub played: Option<u64>,
     /// Generated, envelope-preserving voxel forms for native body documents.
     pub volumes: DeclaredExtentVolumes,
+    pub walking: Option<isocosm::spatial::embodiment::Walking>,
+}
+
+#[derive(Clone, Debug)]
+pub struct Walk {
+    pub poses: [isocosm::spatial::Pose;2],
+    pub stride: Option<isometer::core::legs::Stride>,
+}
+impl From<[isocosm::spatial::Pose;2]> for Walk {
+    fn from(poses:[isocosm::spatial::Pose;2])->Self {Self {poses,stride:None}}
 }
 
 /// Every native scene uses the same voxel grammar and structural material

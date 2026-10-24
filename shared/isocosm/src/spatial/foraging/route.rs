@@ -14,6 +14,8 @@ pub(crate) use cache::Cache;
 pub struct FoodRoute {
     pub target: Id,
     pub path: Vec<Pose>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub strides: Vec<Option<isometer_core::legs::Stride>>,
 }
 
 /// Bounded derivative evidence, never saved authority or a claim that the
@@ -40,6 +42,7 @@ struct Input {
     blocked: Vec<embodiment::Box3>,
     reach: u64,
     nodes: usize,
+    walking: Option<embodiment::Walking>,
 }
 
 impl Simulation {
@@ -120,6 +123,7 @@ impl Simulation {
             document: document.clone(),
             before: at.pose.clone(),
             profile: profile.clone(),
+            walking: embodiment::walking_rules(self),
             foods,
             reach: f.reach,
             nodes: f.nodes,
@@ -173,6 +177,7 @@ pub fn geometry(sim: &Simulation, request: &Request, window: &Window) -> Result<
             .ok_or("foraging eye overflow")?;
     }
     Ok(Geometry {
+        strides: route.strides.into_iter().take(1).collect(),
         window: if templates.version >= 5 {
             embodiment::site_window(templates, after.at)
         } else {

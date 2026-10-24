@@ -67,6 +67,7 @@ impl Bodies {
         let mut supports = 0;
         let mut planted = 0;
         let mut swinging = 0;
+        let mut shifting = 0;
         let now = std::time::Instant::now();
         let elapsed = now.duration_since(self.previous).as_secs_f32().min(0.1);
         self.previous = now;
@@ -85,6 +86,7 @@ impl Bodies {
                     .entry(body.id)
                     .or_insert_with(|| motion::Motion::new(body, scene));
                 live.origin = motion.sample_revision(body, scene, elapsed, self.clearance_revision);
+                shifting += usize::from(motion.shifting());
                 live.yaw_radians = motion.yaw_radians();
                 let elapsed = motion.elapsed(elapsed);
                 let witnesses = motion
@@ -134,6 +136,7 @@ impl Bodies {
         layer.stats.support_contacts = supports;
         layer.stats.planted_contacts = planted;
         layer.stats.swinging_contacts = swinging;
+        layer.stats.weight_shifting_bodies = shifting;
         layer.stats.draw_parts = layer.stats.voxel_parts;
         layer.stats.frame_upload_bytes = bytes;
         layer.stats.body_upload_measurement = Some("implicit primitive and frame bytes");

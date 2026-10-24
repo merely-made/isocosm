@@ -57,6 +57,11 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
     let terrain = sim.site_geometry(request.site, &source_window, profile.places)?;
     let (volume, places) = (&terrain.volume, &terrain.places);
     let whole = embodiment::enabled(sim);
+    let walking = embodiment::walking_rules(sim);
+    if (!geometry.strides.is_empty() && geometry.strides.len()+1 != geometry.path.len())
+        || (walking.is_none() && geometry.strides.iter().any(Option::is_some)) {
+        return Err("step gait witnesses differ from its path or native policy".into());
+    }
     if sim.foraging_enabled() && sim.state().spatial_poses.get(&request.actor)
         .is_none_or(|at| at.site != request.site || at.arrived != actor.arrived || at.pose != geometry.path[0]) {
         return Err("step begins away from its native resident pose".into());
@@ -71,12 +76,16 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
             else { stance(&volume, profile.stance_offset, profile.body.height, geometry.path[0].at).is_none() } {
         return Err("step begins outside its admitted native patch".into());
     }
-    for pair in geometry.path.windows(2) {
+    for (index,pair) in geometry.path.windows(2).enumerate() {
+        if geometry.strides.get(index).and_then(Option::as_ref).is_some()
+            && (pair[0].feet.is_empty() || pair[0].yaw != pair[1].yaw) {
+            return Err("gait witness has no matching articulated straight step".into());
+        }
         if sim.foraging_enabled() && !sim.spatial_destination_clear(request.actor, request.site, &pair[1]) {
             return Err("step destination intersects a current native resident".into());
         }
         let available = if whole {
-            embodiment::neighbours(&volume, &places, profile, document, &pair[0]).contains(&pair[1])
+            embodiment::neighbours_with_walking(&volume, &places, profile, document, &pair[0],walking).contains(&pair[1])
         } else { neighbours(&volume, &places, profile, pair[0].at).contains(&pair[1].at) };
         if !available {
             return Err("step crosses an unavailable cell or authored clearance".into());
@@ -85,7 +94,8 @@ pub fn check_step(sim: &Simulation, request: &Request, geometry: &Geometry) -> R
             let blocked: Vec<_> = sim.state().spatial_poses.keys().copied()
                 .filter(|id| *id != request.actor)
                 .filter_map(|id| sim.current_placed_boxes(id, request.site)).flatten().collect();
-            embodiment::sweep_clear(volume, document, &pair[0], &pair[1], &blocked)?;
+            embodiment::check_walk(volume, document, &pair[0], &pair[1],walking,
+                geometry.strides.get(index).and_then(Option::as_ref), &blocked)?;
         }
     }
     let last = geometry.path.last().ok_or("empty step path")?;

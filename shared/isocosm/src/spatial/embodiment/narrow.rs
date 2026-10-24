@@ -91,12 +91,28 @@ pub(super) fn clear(
             ],
         );
     }
-    let mut work = 0u64;
-    for (part, [lo, hi]) in doc
+    check_parts(volume, doc
         .living()
         .filter(|p| p.half_extent.iter().all(|h| *h > 0))
-        .zip(occupied)
-    {
+        .zip(occupied).map(|(p,b)|(p.id,*b)), &shapes)
+}
+
+pub(super) fn leg_clear(volume:&Volume,leg:&legs::Leg,sole:[i64;3],origin:[i64;3],yaw:Yaw)->Result<()> {
+    let skin=leg.skin(sole).ok_or("unreachable paid links")?;
+    let shapes=BTreeMap::from([
+        (leg.upper,vec![link(skin.upper,yaw,origin)?]),
+        (leg.lower,vec![link(skin.lower,yaw,origin)?]),
+        (leg.foot,vec![Solid::Pad(pad(skin.pad,yaw,origin)?),link(skin.connector,yaw,origin)?]),
+    ]);
+    let occupied=leg.occupied(sole).ok_or("unreachable paid links")?.into_iter()
+        .map(|(id,b)|Ok((id,super::swing::placed(b,yaw,origin)?))).collect::<Result<Vec<_>>>()?;
+    check_parts(volume,occupied.into_iter(),&shapes)
+}
+
+fn check_parts(volume:&Volume,parts:impl Iterator<Item=(PartId,Box3)>,
+    shapes:&BTreeMap<PartId,Vec<Solid>>)->Result<()> {
+    let mut work=0u64;
+    for (id,[lo,hi]) in parts {
         if !volume.holds(lo[0], lo[2]) || !volume.holds(hi[0] - 1, hi[2] - 1) {
             return Err("posed body leaves terrain window".into());
         }
@@ -115,14 +131,14 @@ pub(super) fn clear(
                         continue;
                     }
                     if shapes
-                        .get(&part.id)
+                        .get(&id)
                         .is_some_and(|parts| parts.iter().all(|p| !p.hits(at)))
                     {
                         continue;
                     }
                     return Err(format!(
                         "posed part {} intersects terrain or water at {at:?}",
-                        part.id.0
+                        id.0
                     ));
                 }
             }

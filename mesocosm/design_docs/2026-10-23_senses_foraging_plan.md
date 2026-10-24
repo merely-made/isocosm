@@ -201,8 +201,10 @@ The earlier sensing world recorded 61 refused routes out of 66 attempts. New
 physical rules now require a complete native route before selecting food, and
 the provider reuses that physical search. The 256-node bound remains; failure
 does not establish global unreachability. Some statically supported bodies
-still cannot swing a foot or reach a meal on their local terrain. Weight
-shifting, richer turning and connected founding placement remain possible
-follow-ups; this slice does not relax their current support/collision checks.
+still cannot swing a foot or reach a meal on their local terrain. The
+[foot-placement follow-up](2026-10-22_foot_placement_plan.md#weight-shifting-follow-up-2026-10-23)
+connects support-guided body transfers, nearby sole targets and shared gait
+witnesses. Richer turning and connected founding placement remain separate
+work; negative bounded searches do not establish global unreachability.
 The capture qualifies three ticks, not long-term ecological balance or
 force-bearing locomotion.

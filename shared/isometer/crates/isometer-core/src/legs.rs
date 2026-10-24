@@ -6,6 +6,9 @@ use crate::{BodyDocument, PartId, Role, classify};
 use std::collections::BTreeSet;
 mod collision;
 pub use collision::Capsule;
+mod stride;
+pub use stride::{Stage, Stride, StrideFrame};
+pub mod support;
 
 pub const UNIT: i64 = 1024;
 pub type Point = [i64; 3];

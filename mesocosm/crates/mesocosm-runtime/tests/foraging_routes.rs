@@ -176,18 +176,20 @@ fn assert_complete(f: &Fixture, route: &native::foraging::FoodRoute) {
             .unwrap()
         })
         .collect();
-    for pair in route.path.windows(2) {
+    let walking=native::embodiment::walking_rules(sim);
+    for (index,pair) in route.path.windows(2).enumerate() {
         assert!(
-            native::embodiment::neighbours(
+            native::embodiment::neighbours_with_walking(
                 &terrain.volume,
                 &terrain.places,
                 profile,
                 document,
-                &pair[0]
+                &pair[0],walking
             )
             .contains(&pair[1])
         );
-        native::embodiment::sweep_clear(&terrain.volume, document, &pair[0], &pair[1], &blocked)
+        native::embodiment::check_walk(&terrain.volume, document, &pair[0], &pair[1], walking,
+            route.strides.get(index).and_then(Option::as_ref), &blocked)
             .unwrap();
     }
     let target = &sim.state().spatial_poses[&route.target].pose;

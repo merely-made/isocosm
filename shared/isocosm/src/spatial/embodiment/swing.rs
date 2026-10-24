@@ -135,7 +135,7 @@ pub(super) fn support_sample(
         })
         .collect();
     let origin = [0, 1, 2].map(|k| from.at[k] * UNIT + (to.at[k] - from.at[k]) * phase);
-    super::articulation::support_at(
+    super::support::check(
         volume,
         document,
         &swing_feet(document, from, to, phase)?,

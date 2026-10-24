@@ -62,7 +62,7 @@ pub fn place_in_site(sim: &Simulation, t: &Templates, id: Id, site: Id,
     for anchor in anchors {
         let w = site_window(t,anchor);
         let volume = sim.site_volume(site,&w)?;
-        let mut grounding = Grounding::new(&volume).with_articulation(true).with_spacing(t.body_spacing);
+        let mut grounding = Grounding::new(&volume).with_articulation(true).with_walking(t.walking).with_spacing(t.body_spacing);
         let foods: Vec<_> = placed.iter().filter_map(|(id,p)| {
             let search = *edible.get(id)?;
             FoodStand::of(&volume,sim.state().population.get(*id)?.body.as_ref()?,p,search).ok()

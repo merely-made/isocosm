@@ -13,6 +13,11 @@ mod articulation;
 mod contacts;
 mod food;
 mod narrow;
+mod support;
+mod walking;
+mod footholds;
+pub use walking::{Walking, walking_rules, check_stride, check_walk, plan_stride, step_stride, stride_sample, stride_boxes};
+pub use walking::local_feet as stride_feet;
 pub use food::FoodStand;
 mod swing;
 pub use articulation::{articulated, foot_points};
@@ -138,7 +143,7 @@ pub fn check(volume: &Volume, document: &BodyDocument, pose: &Pose) -> Result<()
             &occupied,
             &[],
         )?;
-        articulation::support(volume, document, pose)?;
+        support::standing(volume, document, pose)?;
     }
     Ok(())
 }
@@ -214,11 +219,17 @@ pub struct Grounding<'a> {
     stand_count: usize,
     articulated: bool,
     spacing: i64,
+    walking: Option<Walking>,
     articulated_stands:
         BTreeMap<BodyDocument, BTreeMap<([i64; 2], Yaw, Option<i64>), Option<Pose>>>,
 }
 
 impl<'a> Grounding<'a> {
+    pub fn with_walking(mut self, walking: Option<Walking>) -> Self {
+        if self.walking != walking { self.articulated_stands.clear(); }
+        self.walking = walking;
+        self
+    }
     pub fn new(volume: &'a Volume) -> Self {
         Self {
             volume,
@@ -227,6 +238,7 @@ impl<'a> Grounding<'a> {
             stand_count: 0,
             articulated: false,
             spacing: 0,
+            walking: None,
             articulated_stands: BTreeMap::new(),
         }
     }
@@ -423,7 +435,12 @@ pub fn neighbours(
     document: &BodyDocument,
     pose: &Pose,
 ) -> Vec<Pose> {
-    let mut grounding = Grounding::new(volume);
+    neighbours_with_walking(volume,places,profile,document,pose,None)
+}
+
+pub fn neighbours_with_walking(volume:&Volume,places:&Places,profile:&StepProfile,
+    document:&BodyDocument,pose:&Pose,walking:Option<Walking>)->Vec<Pose> {
+    let mut grounding = Grounding::new(volume).with_walking(walking);
     if !pose.feet.is_empty() {
         grounding.articulated = true;
         return articulated_neighbours(places, profile, document, pose, &mut grounding);

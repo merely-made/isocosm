@@ -97,92 +97,6 @@ pub(super) fn part_boxes(document: &BodyDocument, pose: &Pose) -> Result<BTreeMa
     Ok(out)
 }
 
-pub(super) fn support(volume: &Volume, document: &BodyDocument, pose: &Pose) -> Result<()> {
-    // The body's volume centre must lie over actual supporting terrain cells,
-    // including edge contacts on slopes. No force constant is used.
-    let bearing = pose.feet.keys().copied().collect();
-    support_at(
-        volume,
-        document,
-        &pose.feet,
-        pose.at.map(|v| v * UNIT),
-        pose.yaw,
-        &bearing,
-    )
-}
-
-pub(super) fn support_at(
-    volume: &Volume,
-    document: &BodyDocument,
-    feet: &BTreeMap<PartId, [i64; 3]>,
-    origin: [i64; 3],
-    yaw: Yaw,
-    bearing: &BTreeSet<PartId>,
-) -> Result<()> {
-    let mass_centre = document.centre_of_mass(|id| {
-        document.part(id).map_or(0, |p| {
-            p.half_extent
-                .iter()
-                .fold(8u64, |n, h| n.saturating_mul((*h).max(0) as u64))
-        })
-    });
-    let centre = super::super::birth::rotate(yaw, mass_centre.map(|v| i64::from(v) * UNIT))?;
-    let centre = [centre[0] + origin[0], centre[2] + origin[2]];
-    let mut points = Vec::new();
-    for (id, [lo, hi]) in super::narrow::pads(document, origin, yaw, feet)? {
-        if !bearing.contains(&id) {
-            continue;
-        }
-        if !(lo[0]..hi[0])
-            .any(|x| (lo[2]..hi[2]).any(|z| contacts::supported(volume, [x, lo[1] - 1, z])))
-        {
-            return Err("paid foot has no dry terrain support".into());
-        }
-        for x in lo[0]..hi[0] {
-            for z in lo[2]..hi[2] {
-                if !contacts::supported(volume, [x, lo[1] - 1, z]) {
-                    continue;
-                }
-                for dx in [0, 1] {
-                    for dz in [0, 1] {
-                        points.push([(x + dx) * UNIT, (z + dz) * UNIT]);
-                    }
-                }
-            }
-        }
-    }
-    points.sort();
-    points.dedup();
-    if points.len() < 3 {
-        return Err("no ground-bearing foot polygon".into());
-    }
-    let cross = |a: [i64; 2], b: [i64; 2], c: [i64; 2]| {
-        i128::from(b[0] - a[0]) * i128::from(c[1] - a[1])
-            - i128::from(b[1] - a[1]) * i128::from(c[0] - a[0])
-    };
-    let mut hull = Vec::new();
-    for &p in &points {
-        while hull.len() >= 2 && cross(hull[hull.len() - 2], hull[hull.len() - 1], p) <= 0 {
-            hull.pop();
-        }
-        hull.push(p);
-    }
-    let lower = hull.len();
-    for &p in points.iter().rev().skip(1) {
-        while hull.len() > lower && cross(hull[hull.len() - 2], hull[hull.len() - 1], p) <= 0 {
-            hull.pop();
-        }
-        hull.push(p);
-    }
-    if hull
-        .windows(2)
-        .any(|pair| cross(pair[0], pair[1], centre) < 0)
-    {
-        return Err("body volume centre leaves its bearing-foot polygon".into());
-    }
-    Ok(())
-}
-
 pub(super) fn ground(
     g: &mut Grounding<'_>,
     doc: &BodyDocument,
@@ -219,23 +133,12 @@ pub(super) fn ground(
             }
         }
     }
-    let mut soles = BTreeMap::new();
+    let mut options = BTreeMap::new();
     for leg in &chains {
-        let p = super::super::birth::rotate(yaw, leg.sole)?;
-        let h = super::super::birth::rotate(yaw, leg.half)?.map(i64::abs);
-        let centre = [x * UNIT + p[0], 0, z * UNIT + p[2]];
-        let mut height = i64::MIN;
-        for xx in (centre[0] - h[0]).div_euclid(UNIT)..-(-(centre[0] + h[0])).div_euclid(UNIT) {
-            for zz in (centre[2] - h[2]).div_euclid(UNIT)..-(-(centre[2] + h[2])).div_euclid(UNIT) {
-                let y = top(g, xx, zz)?;
-                if !contacts::supported(g.volume, [xx, y, zz]) {
-                    return Err("foot footprint lacks dry ground".into());
-                }
-                height = height.max(y + 1);
-            }
-        }
-        soles.insert(leg.foot, [leg.sole[0], height * UNIT, leg.sole[2]]);
+        options.insert(leg.foot, super::footholds::targets(g, leg, x, z, yaw,
+            g.walking.map_or(0, |r| i64::from(r.foot_search)))?);
     }
+    let soles: BTreeMap<_, _> = options.iter().map(|(id, ps)| (*id, ps[0])).collect();
     // Search root height from body clearance upward, bounded by paid reach.
     // The first valid posture is crouched rather than balanced on a trunk edge.
     let reach = chains
@@ -256,31 +159,16 @@ pub(super) fn ground(
         .clamp(min_y, min_y + reach);
     let heights =
         std::iter::once(preferred).chain((1..=reach).flat_map(|d| [preferred - d, preferred + d]));
+    let mut tried = 0;
     for y in heights.filter(|y| *y >= min_y && *y <= min_y + reach) {
-        let feet = soles
-            .iter()
-            .map(|(&id, &p)| (id, [p[0], p[1] - y * UNIT, p[2]]))
-            .collect();
-        let pose = Pose {
-            at: [x, y, z],
-            yaw,
-            feet,
-        };
-        if chains.iter().any(|leg| {
-            let sole = pose.feet[&leg.foot];
-            leg.solve([sole[0], sole[1] + UNIT, sole[2]]).is_none()
-                || leg.solve([sole[0], sole[1] - UNIT, sole[2]]).is_none()
-        }) {
-            continue;
-        }
-        if check(g.volume, doc, &pose).is_ok() {
+        if let Some(pose) = super::footholds::poses(g, doc, &chains, &options, [x, y, z], yaw, &mut tried)? {
             return Ok(pose);
         }
     }
     Err("no clear supported posture within paid leg reach".into())
 }
 
-fn top(g: &mut Grounding<'_>, x: i64, z: i64) -> Result<i64> {
+pub(super) fn top(g: &mut Grounding<'_>, x: i64, z: i64) -> Result<i64> {
     if !g.volume.holds(x, z) {
         return Err("foot or body leaves terrain window".into());
     }

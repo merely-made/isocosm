@@ -6,7 +6,7 @@ use isometer_core::{
     legs::{self, UNIT},
 };
 
-fn quadruped() -> BodyDocument {
+pub(super) fn quadruped() -> BodyDocument {
     let mut doc = BodyDocument::new(VolumeRef::from_tag(1), [2, 2, 4]);
     for x in [-1, 1] {
         for z in [-3, 3] {
@@ -34,7 +34,7 @@ fn quadruped() -> BodyDocument {
     doc
 }
 
-fn volume() -> Volume {
+pub(super) fn volume() -> Volume {
     super::tests::terrain()
         .volume(0, [350; 2], [418; 2], 16)
         .unwrap()

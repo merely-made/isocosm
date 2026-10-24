@@ -55,11 +55,16 @@ pub struct Templates {
     /// Spawn/arrival/birth clearance in base columns. Walking may close to food.
     #[serde(default, skip_serializing_if = "zero")]
     pub body_spacing: u32,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub walking: Option<embodiment::Walking>,
 }
 fn zero(value: &u32) -> bool { *value == 0 }
 
 impl Templates {
     pub fn validate(&self, genesis: &Genesis) -> Result<()> {
+        if self.walking.is_some_and(|r| self.version < 4 || !r.valid()) {
+            return Err("weight transfers need bounded articulated walking rules".into());
+        }
         if !matches!(self.version, VERSION | 2 | 3 | 4 | 5) || self.window.max[0] <= self.window.min[0]
             || self.window.max[1] <= self.window.min[1] || self.window.depth <= 0 {
             return Err("unsupported or empty spatial templates".into());
@@ -110,7 +115,7 @@ impl Templates {
                 .map(|stand| Crossing { from, to: r.to, stand: stand.clone() }))
             .collect::<Vec<_>>()).collect();
         genesis.rules.spatial_templates = Some(Templates { version: VERSION, window, places, eye: EYE,
-            stands, crossings, foraging: BTreeMap::new(), body_spacing: 0 });
+            stands, crossings, foraging: BTreeMap::new(), body_spacing: 0, walking: None });
         Ok(())
     }
 }
