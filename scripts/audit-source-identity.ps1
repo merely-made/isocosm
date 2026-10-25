@@ -41,7 +41,7 @@ $family = @(
     'paint_list_render',
     'cambium',
     'cambium-rootstock',
-    'cambium-genet-winit-host',
+    'cambium-desktop',
     'sprigging',
     'sceno',
     'scenomise',

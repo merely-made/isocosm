@@ -20,8 +20,8 @@ serde = { version = "1", default-features = false, features = ["derive", "alloc"
 serde_json = "1"
 # The next-life Graphshell endpoint over the sim-host core (rulings 900, 903).
 isocosm-host = { path = "../../../host", optional = true, features = ["endpoint"] }
-chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", optional = true }
-graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", optional = true }
+chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7", optional = true }
+graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7", optional = true }
 
 [features]
 endpoint = ["dep:isocosm-host", "dep:chirograph", "dep:graphshell-endpoint"]
@@ -29,7 +29,7 @@ endpoint = ["dep:isocosm-host", "dep:chirograph", "dep:graphshell-endpoint"]
 [dev-dependencies]
 isonetry = { path = "../../../crates/isonetry", default-features = false }
 isocosm-host = { path = "../../../host", features = ["endpoint", "fixtures"] }
-graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", features = ["local", "stdio"] }
+graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7", features = ["local", "stdio"] }
 
 # A no-argument stdio endpoint for Graphshell's g4_sessions receipt (H2).
 [[example]]

@@ -28,11 +28,11 @@ sceno = { workspace = true }
 # The shared single-root Cambium desktop host (genet G1). It owns the winit
 # lifecycle, the surface, layout, paint, hit testing, input routing, IME and
 # the AccessKit sync that host.rs / render.rs / input.rs used to assemble — so
-# the direct deps that assembly needed (genet-layout, genet-winit-host,
+# the direct deps that assembly needed (genet-layout, genet-winit,
 # cambium-winit, netrender, paint_list_api, paint_list_render, wgpu, winit) are
 # gone from this manifest. They still arrive transitively; reaching around the
 # host to name them again would put the duplication straight back.
-cambium-genet-winit-host = { workspace = true }
+cambium-desktop = { workspace = true }
 # M4 of the isomere plan: the wing's host assembly. `host` is off by default in
 # isomere because it drags wgpu in and `isometry-views` consumes the crate only
 # to emit elements; this is the consumer that turns it on. It brought the

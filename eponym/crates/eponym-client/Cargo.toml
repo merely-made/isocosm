@@ -42,7 +42,7 @@ netrender = { workspace = true }
 # scenario driver, and the paint-list path netrender rasterizes.
 cambium = { workspace = true }
 cambium-rootstock = { workspace = true }
-cambium-genet-winit-host = { workspace = true }
+cambium-desktop = { workspace = true }
 taproot = { workspace = true }
 # P3b: the promoted scenario lane, now mere's `mesquite` (2026-09-14) rather
 # than this repository's `shared/wing-scenario`, through the workspace pin as
@@ -56,7 +56,7 @@ isometer = { path = "../../../shared/isometer" }
 # shared rules under this product's seeds plus its own remaining rules. A
 # sibling path crate under the repository's `shared/`, like isometer, and it
 # names no scene and no voxel.
-# M4 turns on `host`: the assembly over `cambium-genet-winit-host` the session
+# M4 turns on `host`: the assembly over `cambium-desktop` the session
 # bin's hooks are now made of. Off by default in isomere because it drags wgpu
 # in, which a view crate must not pay for.
 isomere = { path = "../../../shared/isomere", features = ["host"] }
