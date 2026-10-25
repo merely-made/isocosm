@@ -17,29 +17,29 @@ publish = false
 
 [features]
 default = []
-# M4's host assembly. Off by default: `cambium-genet-winit-host` drags wgpu,
+# M4's host assembly. Off by default: `cambium-desktop` drags wgpu,
 # netrender and winit in, and `isometry-views` / `mesocosm-views` consume this
 # crate only to emit elements. The three hosts turn it on; the view crates
 # never pay for a renderer.
-host = ["dep:cambium-genet-winit-host", "dep:cambium-rootstock", "dep:mesquite"]
+host = ["dep:cambium-desktop", "dep:cambium-rootstock", "dep:mesquite"]
 
 [dependencies]
 # The widget vocabulary the panels are written in. M0 uses none of it, but the
 # crate's whole reason to exist is the tiers above the sheet, and the family
 # revision is fixed here once rather than per milestone.
-cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
+cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
 # Perceptual seed-to-palette derivation. The sheet's colours are `Seeds` a
 # product hand-picked plus the states tinct fills.
-tinct = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
+tinct = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
 
 # M4: the host assembly's substrate. The seven hooks, the producer registry and
 # the frame readback are the winit host's; `RootView` and the context types are
 # rootstock's, which the winit host uses privately rather than re-exports;
 # `mesquite` is the scenario lane wired into two of the seven hooks, and its
 # `write_png` is the wing's one PNG encoder. All three behind `host`.
-cambium-genet-winit-host = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", optional = true }
-cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", optional = true }
-mesquite = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19", optional = true }
+cambium-desktop = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7", optional = true }
+cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7", optional = true }
+mesquite = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7", optional = true }
 
 # Deliberately nothing from `shared/isometer`: isomere never names a voxel and
 # never names a scene. A viewport card holds a leaf key, not a body.
@@ -51,7 +51,7 @@ mesquite = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d4485
 [patch.crates-io]
 # mere patches accesskit 0.25.1 (support/patches/accesskit); its cambium hosts
 # call methods only the patched copy has, so the same copy, from mere at its pin.
-accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
+accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
@@ -62,20 +62,20 @@ rust-version = "1.97.1"
 
 # Root patches are not inherited from the imported Murm suppliers.
 [patch."https://github.com/merely-made/mere.git"]
-cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-cambium-genet-winit-host = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-mere-surface-api = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-cambium-winit = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-cambium-winit-a11y = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-command-menu = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-mere-apparatus = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-meristem = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-mesquite = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-tinct = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
-workbench = { git = "https://www.github.com/merely-made/mere.git", rev = "a6d44855b24de92ef060e16059cdacbe95135a19" }
+cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+cambium-desktop = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+mere-surface-api = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+cambium-winit = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+cambium-a11y = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+command-menu = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+mere-apparatus = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+meristem = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+mesquite = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+tinct = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
+workbench = { git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7" }
 
 # mere's own pins (eidetic 34105d63, gemot 4342aed4) follow the cohort:
 # the www form of each URL is the same repository under another source key.

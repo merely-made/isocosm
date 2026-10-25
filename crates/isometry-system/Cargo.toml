@@ -29,14 +29,14 @@ pack-authoring = [
     "dep:taplo",
     "dep:sha2",
     "dep:logos",
-    "dep:mere-source-edit",
+    "dep:mere-edit",
     "dep:libc",
 ]
 
 # Shared source-edit kernel, optional to private authoring; canonical Git source.
-[dependencies.mere-source-edit]
-git = "https://github.com/merely-made/mere.git"
-branch = "main"
+[dependencies.mere-edit]
+git = "https://www.github.com/merely-made/mere.git"
+rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7"
 version = "0.1.0"
 optional = true
 

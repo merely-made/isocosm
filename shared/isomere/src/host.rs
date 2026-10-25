@@ -3,7 +3,7 @@
 
 //! The host assembly (M4 of the isomere plan).
 //!
-//! `cambium-genet-winit-host` already owns the window, the surface, layout,
+//! `cambium-desktop` already owns the window, the surface, layout,
 //! paint, input routing and accessibility. What it deliberately does *not*
 //! own is the seven [`HostHooks`] closures, and the 2026-09-15 inventory found
 //! the three products filling the same five things into them by hand:
@@ -45,7 +45,7 @@
 //!
 //! # Why the feature gate
 //!
-//! `cambium-genet-winit-host` drags wgpu, netrender and winit in. The panels
+//! `cambium-desktop` drags wgpu, netrender and winit in. The panels
 //! above emit elements and nothing else, and `isometry-views` and
 //! `mesocosm-views` consume them, so this module is behind the `host` feature
 //! and those two crates never pay for a renderer. The three hosts turn it on.

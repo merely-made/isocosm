@@ -35,7 +35,7 @@ sprigging = { workspace = true }
 # list, and the raster composites over the frame like any other chrome
 # texture. The separate --bench entry uses Cambium's native document host.
 cambium = { workspace = true }
-cambium-genet-winit-host = { workspace = true }
+cambium-desktop = { workspace = true }
 cambium-rootstock = { workspace = true }
 genet-livery = { workspace = true }
 genet-scripted-dom = { workspace = true }
@@ -74,7 +74,7 @@ serde_json = "1"
 
 [dev-dependencies]
 tempfile = "=3.27.0"
-genet-render-host = { git = "https://github.com/merely-made/genet.git", branch = "main" }
+genet-presenter = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 # The frame examples that moved here from isometer-lens (family plan step 1)
 # hash their own scene bytes, so they name the wire format directly.
 postcard = { workspace = true }

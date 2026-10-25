@@ -1,6 +1,6 @@
 //! Isometry's desktop application.
 //!
-//! There is no native host in this crate any more. `cambium-genet-winit-host`
+//! There is no native host in this crate any more. `cambium-desktop`
 //! owns the winit lifecycle, the genet surface, the retained layout, the paint
 //! pass, hit testing, pointer/keyboard/IME/wheel routing, frame capture, and
 //! the AccessKit lifecycle — all of it extracted from woodshed's donor
