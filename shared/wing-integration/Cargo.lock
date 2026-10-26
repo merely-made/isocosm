@@ -602,7 +602,7 @@ dependencies = [
 [[package]]
 name = "chatelaine"
 version = "0.0.3"
-source = "git+https://github.com/merely-made/dramatis.git?branch=main#d508a0fbe9e551dcd45d2e3b38ac001c6de1b757"
+source = "git+https://github.com/merely-made/dramatis.git?branch=main#dc593a343258cdabd9743a5a57ba49e8b103a876"
 dependencies = [
  "serde",
  "uuid",
@@ -1179,7 +1179,7 @@ checksum = "117240f60069e65410b3ae1bb213295bd828f707b5bec6596a1afc8793ce0cbc"
 [[package]]
 name = "dramatis"
 version = "0.0.3"
-source = "git+https://github.com/merely-made/dramatis.git?branch=main#d508a0fbe9e551dcd45d2e3b38ac001c6de1b757"
+source = "git+https://github.com/merely-made/dramatis.git?branch=main#dc593a343258cdabd9743a5a57ba49e8b103a876"
 dependencies = [
  "gaz",
  "personae",
@@ -1550,7 +1550,7 @@ dependencies = [
 [[package]]
 name = "gaz"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/dramatis.git?branch=main#d508a0fbe9e551dcd45d2e3b38ac001c6de1b757"
+source = "git+https://github.com/merely-made/dramatis.git?branch=main#dc593a343258cdabd9743a5a57ba49e8b103a876"
 dependencies = [
  "insigne",
  "serde",
@@ -2452,7 +2452,7 @@ dependencies = [
 [[package]]
 name = "insigne"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/dramatis.git?branch=main#d508a0fbe9e551dcd45d2e3b38ac001c6de1b757"
+source = "git+https://github.com/merely-made/dramatis.git?branch=main#dc593a343258cdabd9743a5a57ba49e8b103a876"
 dependencies = [
  "blake3",
  "ed25519-dalek",
@@ -3339,7 +3339,7 @@ dependencies = [
 [[package]]
 name = "mere-transport"
 version = "0.0.2"
-source = "git+https://github.com/merely-made/murm.git?branch=main#a51d3bbb52f3d3793ab49dd075ceb778eb5de018"
+source = "git+https://github.com/merely-made/murm.git?branch=main#573a8b2c0326265c1489532edff9f38d6f2c84ab"
 dependencies = [
  "bytes",
  "iroh",
@@ -3458,7 +3458,7 @@ dependencies = [
 [[package]]
 name = "murm-webrtc"
 version = "0.0.1"
-source = "git+https://github.com/merely-made/murm.git?branch=main#a51d3bbb52f3d3793ab49dd075ceb778eb5de018"
+source = "git+https://github.com/merely-made/murm.git?branch=main#573a8b2c0326265c1489532edff9f38d6f2c84ab"
 dependencies = [
  "blake3",
  "luggage",
@@ -3846,7 +3846,7 @@ dependencies = [
 [[package]]
 name = "notochord"
 version = "0.1.1"
-source = "git+https://github.com/merely-made/dramatis.git?branch=main#d508a0fbe9e551dcd45d2e3b38ac001c6de1b757"
+source = "git+https://github.com/merely-made/dramatis.git?branch=main#dc593a343258cdabd9743a5a57ba49e8b103a876"
 dependencies = [
  "blake3",
  "insigne",
@@ -4338,7 +4338,7 @@ checksum = "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220"
 [[package]]
 name = "personae"
 version = "0.3.0"
-source = "git+https://github.com/merely-made/dramatis.git?branch=main#d508a0fbe9e551dcd45d2e3b38ac001c6de1b757"
+source = "git+https://github.com/merely-made/dramatis.git?branch=main#dc593a343258cdabd9743a5a57ba49e8b103a876"
 dependencies = [
  "blake3",
  "chacha20poly1305 0.11.0",
