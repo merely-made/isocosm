@@ -138,9 +138,7 @@ pub(super) fn standing(volume: &Volume, document: &BodyDocument, pose: &Pose) ->
 /// Its key keeps exact oriented pad geometry and the selected bearing feet.
 pub(super) struct Bearing<'a> {
     volume: &'a Volume,
-    capacity: usize,
-    entries: BTreeMap<Vec<(PartId, narrow::Pad)>, Result<Vec<[i64; 2]>>>,
-    order: std::collections::VecDeque<Vec<(PartId, narrow::Pad)>>,
+    entries: Memo<Vec<(PartId, narrow::Pad)>, Result<Vec<[i64; 2]>>>,
     pub reads: usize,
     pub misses: usize,
 }
@@ -148,9 +146,7 @@ impl<'a> Bearing<'a> {
     pub fn new(volume: &'a Volume, capacity: usize) -> Self {
         Self {
             volume,
-            capacity,
-            entries: BTreeMap::new(),
-            order: Default::default(),
+            entries: Memo::new(capacity),
             reads: 0,
             misses: 0,
         }
@@ -161,7 +157,7 @@ impl<'a> Bearing<'a> {
         bearing: &BTreeSet<PartId>,
     ) -> Result<Vec<[i64; 2]>> {
         self.reads += 1;
-        if self.capacity == 0 {
+        if !self.entries.enabled() {
             self.misses += 1;
             return bearing_pads(self.volume, pads, bearing);
         }
@@ -175,13 +171,7 @@ impl<'a> Bearing<'a> {
         }
         self.misses += 1;
         let result = bearing_pads(self.volume, pads, bearing);
-        if self.capacity > 0 {
-            if self.entries.len() >= self.capacity {
-                self.entries.remove(&self.order.pop_front().unwrap());
-            }
-            self.order.push_back(key.clone());
-            self.entries.insert(key, result.clone());
-        }
+        self.entries.insert(key, result.clone());
         result
     }
 }

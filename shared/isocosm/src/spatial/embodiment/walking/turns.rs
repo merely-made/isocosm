@@ -230,7 +230,6 @@ fn attempt(
     root: [i64; 3],
     pieces: i64,
     direction: i8,
-    g: &mut Grounding<'_>,
     tried: &mut usize,
 ) -> Result<Stride> {
     let (volume, doc) = (checks.volume, checks.document);
@@ -249,7 +248,16 @@ fn attempt(
         let next_angle = i64::from(direction) * UNIT * (piece + 1) / pieces;
         let mut accepted = None;
         let mut why = "no common paid stance for the next small pivot".to_string();
-        for world in common(g, doc, root, from.yaw, angle, next_angle, rules, &current) {
+        for world in common(
+            &mut checks.grounding,
+            doc,
+            root,
+            from.yaw,
+            angle,
+            next_angle,
+            rules,
+            &current,
+        ) {
             *tried += 1;
             if *tried > usize::from(rules.postures) {
                 return Err(format!("turn posture budget exhausted: {why}"));
@@ -330,7 +338,7 @@ pub(super) fn plan(
     }
     check(volume, doc, from)?;
     check(volume, doc, to)?;
-    let mut grounding = Grounding::new(volume).with_walking(Some(rules));
+    checks.grounding.set_walking(Some(rules));
     let mut tried = 0usize;
     let mut why = "no paid sequence of smaller pivots".to_string();
     let mut roots = Vec::new();
@@ -357,17 +365,7 @@ pub(super) fn plan(
             if tried >= usize::from(rules.postures) {
                 return Err(format!("turn posture budget exhausted: {why}"));
             }
-            match attempt(
-                checks,
-                from,
-                to,
-                rules,
-                root,
-                pieces,
-                direction,
-                &mut grounding,
-                &mut tried,
-            ) {
+            match attempt(checks, from, to, rules, root, pieces, direction, &mut tried) {
                 Ok(stride) => return Ok(stride),
                 Err(error) => why = format!("root {root:?}, {pieces} pivots: {error}"),
             }

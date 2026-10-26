@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 use super::super::articulation_tests::{quadruped, volume};
 use super::*;
+mod endpoints;
 mod reuse;
 mod steep;
 mod turns;

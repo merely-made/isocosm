@@ -3,6 +3,9 @@
 //! Bounded multi-goal search over native grounded poses. Expensive full swings
 //! are checked on candidate paths, once per edge, before declaring reachability.
 use super::*;
+use crate::profile::Clock;
+mod profile;
+use profile::Work;
 #[cfg(test)]
 mod cold_tests;
 #[cfg(test)]
@@ -57,6 +60,7 @@ pub(super) fn find(input: &Input) -> Result<RouteSearch> {
     find_using(input, &mut strides)
 }
 fn find_using(input: &Input, strides: &mut embodiment::StrideChecks<'_>) -> Result<RouteSearch> {
+    let mut work = Work::new(input.actor);
     let origin = node(input, &input.before);
     let mut graph = BTreeMap::from([(origin, vertex(input, input.before.clone())?)]);
     if graph[&origin].food.is_some() {
@@ -73,21 +77,24 @@ fn find_using(input: &Input, strides: &mut embodiment::StrideChecks<'_>) -> Resu
             feet: Default::default(),
         },
     )?;
-    let mut grounding =
-        embodiment::Grounding::new(&input.terrain.volume).with_walking(input.walking);
     let mut rejected = BTreeSet::new();
     let mut checked = BTreeMap::new();
     let mut report = RouteSearch::default();
     loop {
+        work.trials += 1;
+        let clock = Clock::new();
         let path = trial(
             input,
             origin,
             &mut graph,
-            &mut grounding,
+            strides,
             &local,
             &rejected,
             &mut report.exhausted,
-        )?;
+            &mut work,
+        );
+        work.trials_ns += clock.ns();
+        let path = path?;
         let Some(path) = path else {
             break;
         };
@@ -152,10 +159,11 @@ fn trial(
     input: &Input,
     origin: Node,
     graph: &mut BTreeMap<Node, Vertex>,
-    grounding: &mut embodiment::Grounding<'_>,
+    strides: &mut embodiment::StrideChecks<'_>,
     local: &[embodiment::Box3],
     rejected: &BTreeSet<(Node, Node)>,
     exhausted: &mut bool,
+    work: &mut Work,
 ) -> Result<Option<Vec<Node>>> {
     let mut costs = BTreeMap::from([(origin, (0u64, 0u64))]);
     let mut parents = BTreeMap::new();
@@ -166,6 +174,7 @@ fn trial(
         origin,
     )]);
     while let Some((_, sideways, cost, key)) = queue.pop_first() {
+        work.pops += 1;
         if costs.get(&key) != Some(&(cost, sideways)) {
             continue;
         }
@@ -179,23 +188,17 @@ fn trial(
         }
         if graph[&key].neighbours.is_none() {
             let pose = &graph[&key].pose;
-            let candidates = if !pose.feet.is_empty() {
-                embodiment::articulated_neighbours(
-                    &input.terrain.places,
-                    &input.profile,
-                    &input.document,
-                    pose,
-                    grounding,
-                )
-            } else {
-                embodiment::neighbours_from_boxes(
-                    &input.terrain.places,
-                    &input.profile,
-                    local,
-                    pose,
-                    grounding,
-                )
-            };
+            let clock = Clock::new();
+            let candidates = strides.neighbours(
+                &input.terrain.places,
+                &input.profile,
+                local,
+                pose,
+                input.walking,
+            );
+            work.neighbours_ns += clock.ns();
+            work.candidates += candidates.len();
+            let clock = Clock::new();
             let mut neighbours = Vec::new();
             for next in candidates {
                 let to = node(input, &next);
@@ -213,6 +216,7 @@ fn trial(
                 neighbours.push(to);
             }
             graph.get_mut(&key).unwrap().neighbours = Some(neighbours);
+            work.admit_ns += clock.ns();
         }
         for &to in graph[&key].neighbours.as_ref().unwrap() {
             if rejected.contains(&(key, to)) {

@@ -191,9 +191,7 @@ fn check_parts(
 /// before these results can be used; the borrowed volume cannot change.
 pub(super) struct Clearance<'a> {
     volume: &'a Volume,
-    capacity: usize,
-    entries: BTreeMap<(PartId, Box3, Option<Vec<Solid>>), Result<()>>,
-    order: std::collections::VecDeque<(PartId, Box3, Option<Vec<Solid>>)>,
+    entries: Memo<(PartId, Box3, Option<Vec<Solid>>), Result<()>>,
     pub reads: usize,
     pub misses: usize,
 }
@@ -201,9 +199,7 @@ impl<'a> Clearance<'a> {
     pub fn new(volume: &'a Volume, capacity: usize) -> Self {
         Self {
             volume,
-            capacity,
-            entries: BTreeMap::new(),
-            order: Default::default(),
+            entries: Memo::new(capacity),
             reads: 0,
             misses: 0,
         }
@@ -233,7 +229,7 @@ impl<'a> Clearance<'a> {
                 .filter(|n| *n <= 1_048_576)
                 .ok_or("posed clearance budget exceeded")?;
             self.reads += 1;
-            if self.capacity == 0 {
+            if !self.entries.enabled() {
                 self.misses += 1;
                 check_part(self.volume, id, [lo, hi], shapes.get(&id))?;
                 continue;
@@ -245,13 +241,7 @@ impl<'a> Clearance<'a> {
             }
             self.misses += 1;
             let result = check_part(self.volume, id, [lo, hi], shapes.get(&id));
-            if self.capacity > 0 {
-                if self.entries.len() >= self.capacity {
-                    self.entries.remove(&self.order.pop_front().unwrap());
-                }
-                self.order.push_back(key.clone());
-                self.entries.insert(key, result.clone());
-            }
+            self.entries.insert(key, result.clone());
             result?;
         }
         Ok(())

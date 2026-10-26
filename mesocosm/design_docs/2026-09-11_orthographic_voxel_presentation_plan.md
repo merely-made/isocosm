@@ -1,5 +1,90 @@
 # Orthographic voxel presentation plan
 
+## Posture and route cost follow-up, 2026-10-26
+
+**Status:** implemented and qualified, 2026-10-26. Profile
+and reduce repeated physical readings. Upstream was current at `9b3e73ff`
+after fetching.
+Receipts: `Code/testing/mesocosm/posture-route-2026-10-26/`, total cap 100 MB.
+Reuse the existing playable checkout, target and named Cargo home.
+
+Phases and done-conditions:
+
+1. Separate posture-key lookup, body construction, shapes, terrain clearance
+   and support from route trials, grounded neighbours and node admission.
+   Measure both retained worlds with bounded aggregate counters.
+2. Reuse the measured repeated work through existing physical owners. Keep
+   distinct soles, deterministic candidate order, physical refusals and search
+   budgets. Qualify the retained native histories and focused controls.
+3. Build the normal optimized executable, compare cold round costs, draw an
+   unchosen world and retain actual moving frames with contact evidence.
+
+**Findings, 2026-10-26:** the prior slice's full posture/component reuse leaves
+19.7 and 25.5 second first rounds. `route::search` still builds neighbour
+stances separately from its paid-stride checker; `steps::articulated_neighbours`
+calls the ordinary `footholds::arrivals` admission path for each source stance.
+The measured repeated work is resident intersection and arrival admission,
+rather than pose construction. No new design decision is needed.
+
+The bounded profiler separates sampled-pose lookup/construction, resident
+intersection, skin placement, terrain and support, plus route trials, grounded
+neighbours and admission. The first saved-world measurements assign 5.427
+seconds to resident intersections in shore and 10.564 seconds to arrival
+stance admission in ridge. Sampled gait-pose construction costs 1.188 and
+1.150 seconds. Node admission and repeated queue trials contribute much less.
+
+**Progress, 2026-10-26:** exact per-box resident memoization and terrain-only
+arrival admission share the route's existing physical context. Neighbours and
+turns now share Grounding; admission still precedes resident filtering and
+stance truncation. Common bounded FIFO storage replaces the repeated map/queue
+bookkeeping in the physical memo owners. The first pass preserves both full
+route censuses, including paths, gaits and all refusal fields. Resident scans
+fall from millions to about 80,000-100,000. Arrival memoization reduces repeated
+admission calls, but remaining distinct arrivals still repeat terrain/support
+work. They now use the existing prepared narrow and bearing-polygon machinery
+after the native box/sole checks, preserving their limits and error ordering.
+284 native controls pass, including exact admission/error comparison across
+all facings, half-open resident collision, stale-scope and stance-order checks.
+All 404 controls pass: 284 native, one explicit cached/uncached cold benchmark,
+eight shared-leg controls and 111 receiving controls. Twenty-five existing
+opt-in tests remain skipped; one older eighteen-seed play control is filtered.
+Twelve retained histories replay exactly. Independent accepted-step checks
+verify detection, supported routes and recorded gaits for all three new runs,
+with zero recorded route refusals. Formatting and decision-record checks pass.
+
+Both complete first-cut route censuses match the pre-optimization readings,
+excluding timing fields alone. Their paths, strides, distinct soles, graph
+counts and all refusal fields agree. Cold route time falls from 16.946 to
+9.265 seconds in shore and 22.169 to 11.590 in ridge. Exact resident readings
+reduce sampled collision time from 5.427 to 0.461 seconds and 3.403 to 0.364.
+Shared prepared arrival components reduce stance-admission time from 3.109
+to 0.670 seconds and 10.564 to 3.086. Part/support counters now include
+admissions as well as gait samples; nested times must not be summed.
+
+Normal optimized play, three ordinary ticks, retains both complete native
+histories: shore hash `bd0f8e0cdcc8fb70`, 43 food steps across 17 walkers;
+ridge hash `9ba5838d4fc319dd`, 36 across 16. Their first rounds fall from
+19.708 to 11.965 seconds and 25.535 to 14.810 respectively. Later rounds
+take 2.361/4.412 and 4.288/0.843 seconds. Measurements share this machine;
+the intermediate cache-only shore run is retained despite competing load.
+
+The fresh clock draw starts at `1793000372122172400`; the existing viability
+search accepts candidate 9/128, seed `13400079724686017949`. All rejected
+candidates remain in its log. Three ticks produce 32 food steps across 13
+walkers, hash `e044adb69a4b1d68`, in rounds of 4.518, 1.886 and 0.716 seconds.
+Observed setup takes 22.437 seconds, including candidate search. Each of the
+three motion sets has 24 actual GPU frames; supported swing appears in
+19/20/16, with zero projection failures and zero reported visible native-box
+intersections. Same-cut pixels change in 21/21, 22/22 and 20/21 comparable
+pairs. No world-changing developer intents are issued.
+
+Remaining: difficult cold rounds still pause for 12-15 seconds. Distinct
+sampled terrain-clearance work and ridge's distinct arrival checks remain
+material; repeated frontier trials are smaller. Whole-play terrain-place
+reads cost about 5.4 seconds per retained run. The fresh draw's startup is
+dominated by founder placement and terrain-place reads during viability
+search. These receipts qualify three ticks, not generations or epochs.
+
 ## Cold walking search follow-up, 2026-10-25
 
 **Status:** implemented and qualified, 2026-10-25. Reuse physical posture work inside cold

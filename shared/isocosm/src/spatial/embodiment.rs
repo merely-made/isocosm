@@ -13,7 +13,9 @@ mod articulation;
 mod contacts;
 mod food;
 mod footholds;
+mod memo;
 mod narrow;
+use memo::Memo;
 mod steps;
 mod support;
 mod walking;
@@ -226,6 +228,7 @@ pub(crate) fn translated(local: &[Box3], at: [i64; 3]) -> Result<Vec<Box3>> {
 /// Highest terrain cells are read from Ground, including edits and water.
 /// Reused across a bounded stand/path search, never persisted as authority.
 pub struct Grounding<'a> {
+    costs: steps::Costs,
     volume: &'a Volume,
     tops: BTreeMap<[i64; 2], i64>,
     // Exact terrain-only answers. Occupancy is always tested again by find.
@@ -240,14 +243,18 @@ pub struct Grounding<'a> {
 
 impl<'a> Grounding<'a> {
     pub fn with_walking(mut self, walking: Option<Walking>) -> Self {
+        self.set_walking(walking);
+        self
+    }
+    fn set_walking(&mut self, walking: Option<Walking>) {
         if self.walking != walking {
             self.articulated_stands.clear();
         }
         self.walking = walking;
-        self
     }
     pub fn new(volume: &'a Volume) -> Self {
         Self {
+            costs: Default::default(),
             volume,
             tops: BTreeMap::new(),
             stands: BTreeMap::new(),
@@ -462,11 +469,16 @@ pub fn neighbours_with_walking(
     pose: &Pose,
     walking: Option<Walking>,
 ) -> Vec<Pose> {
-    let mut grounding = Grounding::new(volume).with_walking(walking);
     if !pose.feet.is_empty() {
-        grounding.articulated = true;
-        return articulated_neighbours(places, profile, document, pose, &mut grounding);
+        return StrideChecks::new(volume, document, &[]).neighbours(
+            places,
+            profile,
+            &[],
+            pose,
+            walking,
+        );
     }
+    let mut grounding = Grounding::new(volume).with_walking(walking);
     let Ok(local) = boxes(
         document,
         &Pose {

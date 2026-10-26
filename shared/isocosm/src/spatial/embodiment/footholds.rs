@@ -130,12 +130,21 @@ pub(super) fn poses(
 
 /// Supported arrivals can keep useful world-space contacts. A canonical stand
 /// is one option, not an obligation to move every sole at once.
+#[cfg(test)]
 pub(super) fn arrivals(
     volume: &Volume,
     doc: &BodyDocument,
     from: &Pose,
     to: &Pose,
     rules: Walking,
+) -> Vec<Pose> {
+    arrivals_checked(from, to, rules, |pose| check(volume, doc, pose).is_ok())
+}
+pub(super) fn arrivals_checked(
+    from: &Pose,
+    to: &Pose,
+    rules: Walking,
+    mut admit: impl FnMut(&Pose) -> bool,
 ) -> Vec<Pose> {
     if rules.stances == 0 || from.yaw != to.yaw || from.feet.is_empty() {
         return vec![to.clone()];
@@ -173,7 +182,7 @@ pub(super) fn arrivals(
             }
             tried += 1;
             let pose = Pose { feet, ..to.clone() };
-            if !candidates.contains(&pose) && check(volume, doc, &pose).is_ok() {
+            if !candidates.contains(&pose) && admit(&pose) {
                 candidates.push(pose);
             }
         }

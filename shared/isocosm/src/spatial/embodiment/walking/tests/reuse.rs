@@ -102,9 +102,9 @@ fn eviction_and_cache_hits_do_not_change_strides_or_the_whole_swing_budget() {
     let from = g.at(&doc, 384, 384, Yaw::Zero).unwrap();
     let to = g.at(&doc, 385, 384, Yaw::Zero).unwrap();
     let mut reused = Checks::new(&volume, &doc, &[]);
-    reused.capacity = 4;
+    reused.set_capacity(4);
     let mut fresh = Checks::new(&volume, &doc, &[]);
-    fresh.capacity = 0;
+    fresh.set_capacity(0);
     assert_eq!(
         reused.step(&from, &to, Some(Walking::default())),
         fresh.step(&from, &to, Some(Walking::default()))

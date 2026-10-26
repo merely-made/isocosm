@@ -1,21 +1,45 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 use super::*;
+use crate::profile::Clock;
 use isometer_core::legs::Rotation;
+
+#[derive(Default)]
+pub(super) struct Costs {
+    ground_ns: usize,
+    arrivals_ns: usize,
+    grounds: usize,
+    arrivals: usize,
+}
+impl Drop for Costs {
+    fn drop(&mut self) {
+        if self.grounds > 0 {
+            crate::profile::counts(
+                "walking.neighbours",
+                &[
+                    ("ground_ns", self.ground_ns),
+                    ("arrivals_ns", self.arrivals_ns),
+                    ("grounds", self.grounds),
+                    ("arrivals", self.arrivals),
+                ],
+            );
+        }
+    }
+}
 
 pub(crate) fn articulated_neighbours(
     places: &Places,
     profile: &StepProfile,
     document: &BodyDocument,
     pose: &Pose,
-    grounding: &mut Grounding<'_>,
+    checks: &mut StrideChecks<'_>,
 ) -> Vec<Pose> {
-    grounding.articulated = true;
+    checks.grounding.articulated = true;
     let Some(from) = places.place_at(pose.at) else {
         return Vec::new();
     };
     let mut out = Vec::new();
-    let turning = grounding.walking.is_some_and(|r| r.turns);
+    let turning = checks.grounding.walking.is_some_and(|r| r.turns);
     // The axial graph's forward direction is -Z. Try facing the actual step,
     // then retain an admitted sidestep if a whole-body turn cannot fit.
     let mut directions = vec![
@@ -46,13 +70,17 @@ pub(crate) fn articulated_neighbours(
             }) {
                 continue;
             }
-            let Ok(next) = grounding.at_near(
+            let clock = Clock::new();
+            let next = checks.grounding.at_near(
                 document,
                 pose.at[0] + dx,
                 pose.at[2] + dz,
                 yaw,
                 Some(pose.at[1]),
-            ) else {
+            );
+            checks.grounding.costs.ground_ns += clock.ns();
+            checks.grounding.costs.grounds += 1;
+            let Ok(next) = next else {
                 continue;
             };
             if next.at[1].abs_diff(pose.at[1]) > u64::from(profile.body.climb) {
@@ -75,18 +103,17 @@ pub(crate) fn articulated_neighbours(
             // Turning geometry is checked through its conservative body sweep.
             if yaw != pose.yaw
                 && !turning
-                && swing::turn_clear(grounding.volume, document, pose, &next).is_err()
+                && swing::turn_clear(checks.grounding.volume, document, pose, &next).is_err()
             {
                 continue;
             }
-            if let Some(rules) = grounding.walking.filter(|r| r.stances > 0) {
-                out.extend(footholds::arrivals(
-                    grounding.volume,
-                    document,
-                    pose,
-                    &next,
-                    rules,
-                ));
+            if let Some(rules) = checks.grounding.walking.filter(|r| r.stances > 0) {
+                let clock = Clock::new();
+                let arrivals =
+                    footholds::arrivals_checked(pose, &next, rules, |p| checks.admit(p).is_ok());
+                checks.grounding.costs.arrivals_ns += clock.ns();
+                checks.grounding.costs.arrivals += 1;
+                out.extend(arrivals);
             } else {
                 out.push(next);
             }

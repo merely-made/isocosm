@@ -14,6 +14,19 @@ pub(crate) struct Span<'a> {
     label: &'a str,
     started: Option<Instant>,
 }
+/// Aggregate short operations without emitting a log line per posture.
+#[derive(Clone, Copy)]
+pub(crate) struct Clock(Option<Instant>);
+impl Clock {
+    pub(crate) fn new() -> Self {
+        Self(enabled().then(Instant::now))
+    }
+    pub(crate) fn ns(self) -> usize {
+        self.0.map_or(0, |t| {
+            t.elapsed().as_nanos().try_into().unwrap_or(usize::MAX)
+        })
+    }
+}
 pub(crate) fn counts(label: &str, values: &[(&str, usize)]) {
     if enabled() && COUNT.fetch_add(1, Ordering::Relaxed) < limit() {
         eprint!("[isocosm-count] {label}");
