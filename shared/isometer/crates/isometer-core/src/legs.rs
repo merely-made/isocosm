@@ -23,6 +23,20 @@ pub struct Skin {
     pub pad: Bounds,
     pub connector: Capsule,
 }
+impl Skin {
+    /// Conservative bounds of these already solved links, pad and connector.
+    pub fn occupied(&self) -> [Bounds; 3] {
+        let neck = self.connector.bounds();
+        [
+            self.upper.bounds(),
+            self.lower.bounds(),
+            [
+                [0, 1, 2].map(|k| self.pad[0][k].min(neck[0][k])),
+                [0, 1, 2].map(|k| self.pad[1][k].max(neck[1][k])),
+            ],
+        ]
+    }
+}
 
 #[derive(Clone, Debug)]
 pub struct Leg {
@@ -188,17 +202,8 @@ impl Leg {
     /// Conservative occupied bounds of the same two capsules and rigid pad
     /// used by the smooth renderer. Bounds remain fixed-point body-local.
     pub fn occupied(&self, sole: Point) -> Option<[(PartId, Bounds); 3]> {
-        let skin = self.skin(sole)?;
-        let neck = skin.connector.bounds();
-        let foot = [
-            [0, 1, 2].map(|k| skin.pad[0][k].min(neck[0][k])),
-            [0, 1, 2].map(|k| skin.pad[1][k].max(neck[1][k])),
-        ];
-        Some([
-            (self.upper, skin.upper.bounds()),
-            (self.lower, skin.lower.bounds()),
-            (self.foot, foot),
-        ])
+        let [upper, lower, foot] = self.skin(sole)?.occupied();
+        Some([(self.upper, upper), (self.lower, lower), (self.foot, foot)])
     }
     pub fn skin(&self, sole: Point) -> Option<Skin> {
         let [knee, ankle] = self.solve(sole)?;

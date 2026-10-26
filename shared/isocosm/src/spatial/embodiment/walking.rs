@@ -7,9 +7,12 @@ use isometer_core::{
     PartId,
     legs::{self, Rotation, Stage, Stride, StrideFrame, UNIT, support as polygon},
 };
+mod checks;
 #[cfg(test)]
 mod tests;
 mod turns;
+pub(crate) use checks::Checks;
+use checks::boxes_at;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -107,34 +110,6 @@ pub fn stride_boxes(
         &local_feet(&frame, from.yaw)?,
     )
 }
-fn boxes_at(
-    document: &BodyDocument,
-    origin: [i64; 3],
-    yaw: Rotation,
-    feet: &BTreeMap<PartId, [i64; 3]>,
-) -> Result<Vec<Box3>> {
-    let mut replacements = BTreeMap::new();
-    for leg in legs::chains(document) {
-        for (id, bounds) in leg
-            .occupied(*feet.get(&leg.foot).ok_or("planned foot absent")?)
-            .ok_or("weight transfer exceeds paid reach")?
-        {
-            replacements.insert(id, placed(bounds, yaw, origin)?);
-        }
-    }
-    let rest = boxes(document, &Pose::default())?;
-    document
-        .living()
-        .filter(|p| p.half_extent.iter().all(|h| *h > 0))
-        .zip(rest)
-        .map(|(part, bounds)| {
-            if let Some(b) = replacements.get(&part.id) {
-                return Ok(*b);
-            }
-            placed(bounds.map(|p| p.map(|v| v * UNIT)), yaw, origin)
-        })
-        .collect()
-}
 fn placed(bounds: [[i64; 3]; 2], rotation: Rotation, origin: [i64; 3]) -> Result<Box3> {
     let b = rotation
         .bounds(bounds, origin)
@@ -145,15 +120,13 @@ fn placed(bounds: [[i64; 3]; 2], rotation: Rotation, origin: [i64; 3]) -> Result
     ])
 }
 fn samples(
-    volume: &Volume,
-    document: &BodyDocument,
+    checks: &mut Checks<'_>,
     yaw: Yaw,
     stride: &Stride,
     a: [i64; 3],
     b: [i64; 3],
     from: &BTreeMap<PartId, [i64; 3]>,
     to: &BTreeMap<PartId, [i64; 3]>,
-    blocked: &[Box3],
     count: i64,
     base_turn: i64,
 ) -> Result<()> {
@@ -163,32 +136,12 @@ fn samples(
             .sample(a, b, from, to, sample * UNIT / count)
             .ok_or("invalid planned stage")?;
         frame.turn += base_turn;
-        let feet = local_feet(&frame, yaw)?;
-        let rotation = Rotation::at(yaw, frame.turn);
-        let occupied = boxes_at(document, frame.root, rotation, &feet)?;
-        for [lo, hi] in &occupied {
-            let n = (0..3)
-                .try_fold(1u64, |n, k| n.checked_mul(lo[k].abs_diff(hi[k])))
-                .ok_or("stride work overflow")?;
-            work = work
-                .checked_add(n)
-                .filter(|n| *n <= 4_194_304)
-                .ok_or("whole swing work budget exceeded")?;
-        }
-        narrow::clear_rotated(
-            volume, document, frame.root, rotation, &feet, &occupied, blocked,
-        )
-        .and_then(|_| {
-            support::check_rotated(
-                volume,
-                document,
-                &feet,
-                frame.root,
-                rotation,
-                &frame.bearing,
-            )
-        })
-        .map_err(|why| format!("weight-transfer sample {sample}: {why}"))?;
+        let (cells, clear) = checks.evaluate(&frame, yaw)?;
+        work = work
+            .checked_add(cells?)
+            .filter(|n| *n <= 4_194_304)
+            .ok_or("whole swing work budget exceeded")?;
+        clear.map_err(|why| format!("weight-transfer sample {sample}: {why}"))?;
     }
     Ok(())
 }
@@ -201,22 +154,36 @@ pub fn check_stride(
     stride: &Stride,
     blocked: &[Box3],
 ) -> Result<()> {
+    check_stride_with(
+        &mut Checks::new(volume, document, blocked),
+        from,
+        to,
+        rules,
+        stride,
+    )
+}
+fn check_stride_with(
+    checks: &mut Checks<'_>,
+    from: &Pose,
+    to: &Pose,
+    rules: Walking,
+    stride: &Stride,
+) -> Result<()> {
     let _span = crate::profile::Span::new("walking.check");
+    let (volume, document) = (checks.volume, checks.document);
     if stride.turn != 0 {
         turns::validate(volume, document, from, to, rules, stride)?;
     } else {
         validate(volume, document, from, to, rules, stride)?;
     }
     samples(
-        volume,
-        document,
+        checks,
         from.yaw,
         stride,
         from.at.map(|v| v * UNIT),
         to.at.map(|v| v * UNIT),
         &foot_points(from)?,
         &foot_points(to)?,
-        blocked,
         stride.samples(),
         0,
     )
@@ -285,12 +252,15 @@ pub fn plan_stride(
     rules: Walking,
     blocked: &[Box3],
 ) -> Result<Stride> {
+    plan_with(&mut Checks::new(volume, document, blocked), from, to, rules)
+}
+fn plan_with(checks: &mut Checks<'_>, from: &Pose, to: &Pose, rules: Walking) -> Result<Stride> {
     let _span = crate::profile::Span::new("walking.plan");
     if from.yaw != to.yaw && rules.turns {
-        return turns::plan(volume, document, from, to, rules, blocked);
+        return turns::plan(checks, from, to, rules);
     }
     let mut tried = 0usize;
-    plan_straight(volume, document, from, to, rules, blocked, &mut tried)
+    plan_straight(checks, from, to, rules, &mut tried)
 }
 fn frame(pose: &Pose) -> Result<StrideFrame> {
     let feet = foot_points(pose)?;
@@ -301,28 +271,17 @@ fn frame(pose: &Pose) -> Result<StrideFrame> {
         turn: 0,
     })
 }
-fn check_frame(
-    volume: &Volume,
-    doc: &BodyDocument,
-    frame: &StrideFrame,
-    yaw: Yaw,
-    blocked: &[Box3],
-) -> Result<()> {
-    let feet = local_feet(frame, yaw)?;
-    let rotation = Rotation::at(yaw, frame.turn);
-    let occupied = boxes_at(doc, frame.root, rotation, &feet)?;
-    narrow::clear_rotated(volume, doc, frame.root, rotation, &feet, &occupied, blocked)?;
-    support::check_rotated(volume, doc, &feet, frame.root, rotation, &frame.bearing)
+fn check_frame(checks: &mut Checks<'_>, frame: &StrideFrame, yaw: Yaw) -> Result<()> {
+    checks.evaluate(frame, yaw)?.1
 }
 fn plan_straight(
-    volume: &Volume,
-    document: &BodyDocument,
+    checks: &mut Checks<'_>,
     from: &Pose,
     to: &Pose,
     rules: Walking,
-    blocked: &[Box3],
     tried: &mut usize,
 ) -> Result<Stride> {
+    let (volume, document) = (checks.volume, checks.document);
     if !rules.valid()
         || from.yaw != to.yaw
         || from.feet.is_empty()
@@ -333,32 +292,29 @@ fn plan_straight(
     check(volume, document, from)?;
     check(volume, document, to)?;
     let stride = plan_at(
-        volume,
-        document,
+        checks,
         &frame(from)?,
         &frame(to)?,
         from.yaw,
         0,
         rules,
-        blocked,
         tried,
     )?;
     validate(volume, document, from, to, rules, &stride)?;
     Ok(stride)
 }
 fn plan_at(
-    volume: &Volume,
-    document: &BodyDocument,
+    checks: &mut Checks<'_>,
     from: &StrideFrame,
     to: &StrideFrame,
     yaw: Yaw,
     angle: i64,
     rules: Walking,
-    blocked: &[Box3],
     tried: &mut usize,
 ) -> Result<Stride> {
-    check_frame(volume, document, from, yaw, blocked)?;
-    check_frame(volume, document, to, yaw, blocked)?;
+    check_frame(checks, from, yaw)?;
+    check_frame(checks, to, yaw)?;
+    let (volume, document) = (checks.volume, checks.document);
     let start = from.root;
     let finish = to.root;
     let first = from.feet.clone();
@@ -458,9 +414,7 @@ fn plan_at(
                     };
                     let mut after = feet.clone();
                     after.insert(foot, end[&foot]);
-                    match samples(
-                        volume, document, yaw, &single, root, at, &feet, &after, blocked, 16, angle,
-                    ) {
+                    match samples(checks, yaw, &single, root, at, &feet, &after, 16, angle) {
                         Ok(()) => {
                             found = Some((stage, after));
                             break 'candidate;
@@ -482,15 +436,13 @@ fn plan_at(
         clearance: rules.clearance,
     };
     samples(
-        volume,
-        document,
+        checks,
         yaw,
         &stride,
         start,
         finish,
         &first,
         &end,
-        blocked,
         stride.samples(),
         angle,
     )?;

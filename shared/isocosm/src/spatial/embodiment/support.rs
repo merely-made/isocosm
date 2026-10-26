@@ -11,6 +11,11 @@ pub(super) fn centre(document: &BodyDocument, yaw: Yaw) -> Result<[i64; 3]> {
     centre_rotated(document, Rotation::at(yaw, 0))
 }
 pub(super) fn centre_rotated(document: &BodyDocument, rotation: Rotation) -> Result<[i64; 3]> {
+    rotation
+        .rotate(centre_local(document))
+        .ok_or("turn centre overflow".into())
+}
+pub(super) fn centre_local(document: &BodyDocument) -> [i64; 3] {
     let p = document.centre_of_mass(|id| {
         document.part(id).map_or(0, |p| {
             p.half_extent
@@ -18,9 +23,7 @@ pub(super) fn centre_rotated(document: &BodyDocument, rotation: Rotation) -> Res
                 .fold(8u64, |n, h| n.saturating_mul((*h).max(0) as u64))
         })
     });
-    rotation
-        .rotate(p.map(|v| i64::from(v) * UNIT))
-        .ok_or("turn centre overflow".into())
+    p.map(|v| i64::from(v) * UNIT)
 }
 pub(super) fn bearing(
     volume: &Volume,
@@ -47,10 +50,21 @@ pub(super) fn bearing_rotated(
     rotation: Rotation,
     bearing: &BTreeSet<PartId>,
 ) -> Result<Vec<[i64; 2]>> {
+    bearing_pads(
+        volume,
+        &super::narrow::pad_shapes(document, origin, rotation, feet)?,
+        bearing,
+    )
+}
+pub(super) fn bearing_pads(
+    volume: &Volume,
+    pads: &BTreeMap<PartId, super::narrow::Pad>,
+    bearing: &BTreeSet<PartId>,
+) -> Result<Vec<[i64; 2]>> {
     let mut points = Vec::new();
-    for (id, pad) in super::narrow::pad_shapes(document, origin, rotation, feet)? {
+    for (id, pad) in pads {
         let [lo, hi] = pad.cells();
-        if !bearing.contains(&id) {
+        if !bearing.contains(id) {
             continue;
         }
         if !(lo[0]..hi[0]).any(|x| {
@@ -118,4 +132,56 @@ pub(super) fn standing(volume: &Volume, document: &BodyDocument, pose: &Pose) ->
         pose.yaw,
         &pose.feet.keys().copied().collect(),
     )
+}
+
+/// A planted support polygon is unchanged by the swinging foot or torso shift.
+/// Its key keeps exact oriented pad geometry and the selected bearing feet.
+pub(super) struct Bearing<'a> {
+    volume: &'a Volume,
+    capacity: usize,
+    entries: BTreeMap<Vec<(PartId, narrow::Pad)>, Result<Vec<[i64; 2]>>>,
+    order: std::collections::VecDeque<Vec<(PartId, narrow::Pad)>>,
+    pub reads: usize,
+    pub misses: usize,
+}
+impl<'a> Bearing<'a> {
+    pub fn new(volume: &'a Volume, capacity: usize) -> Self {
+        Self {
+            volume,
+            capacity,
+            entries: BTreeMap::new(),
+            order: Default::default(),
+            reads: 0,
+            misses: 0,
+        }
+    }
+    pub fn hull(
+        &mut self,
+        pads: &BTreeMap<PartId, narrow::Pad>,
+        bearing: &BTreeSet<PartId>,
+    ) -> Result<Vec<[i64; 2]>> {
+        self.reads += 1;
+        if self.capacity == 0 {
+            self.misses += 1;
+            return bearing_pads(self.volume, pads, bearing);
+        }
+        let key: Vec<_> = pads
+            .iter()
+            .filter(|(id, _)| bearing.contains(id))
+            .map(|(&id, &pad)| (id, pad))
+            .collect();
+        if let Some(found) = self.entries.get(&key) {
+            return found.clone();
+        }
+        self.misses += 1;
+        let result = bearing_pads(self.volume, pads, bearing);
+        if self.capacity > 0 {
+            if self.entries.len() >= self.capacity {
+                self.entries.remove(&self.order.pop_front().unwrap());
+            }
+            self.order.push_back(key.clone());
+            self.entries.insert(key, result.clone());
+        }
+        result
+    }
 }

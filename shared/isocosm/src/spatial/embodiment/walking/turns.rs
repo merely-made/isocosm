@@ -223,26 +223,23 @@ fn common(
 }
 
 fn attempt(
-    volume: &Volume,
-    doc: &BodyDocument,
+    checks: &mut Checks<'_>,
     from: &Pose,
     to: &Pose,
     rules: Walking,
-    blocked: &[Box3],
     root: [i64; 3],
     pieces: i64,
     direction: i8,
     g: &mut Grounding<'_>,
     tried: &mut usize,
 ) -> Result<Stride> {
+    let (volume, doc) = (checks.volume, checks.document);
     let mut current = frame(from)?;
     let mut stages = Vec::new();
     if current.root[1] != root[1] {
         let mut low = current.clone();
         low.root[1] = root[1];
-        let entry = plan_at(
-            volume, doc, &current, &low, from.yaw, 0, rules, blocked, tried,
-        )?;
+        let entry = plan_at(checks, &current, &low, from.yaw, 0, rules, tried)?;
         append(&mut stages, entry, &low, 0);
         stages.push(body_stage(&low));
         current = low;
@@ -281,11 +278,9 @@ fn attempt(
                     f.root = [0, 1, 2]
                         .map(|k| before.root[k] + (after.root[k] - before.root[k]) * i / 16);
                     f.turn = angle + (next_angle - angle) * i / 16;
-                    check_frame(volume, doc, &f, from.yaw, blocked)?;
+                    check_frame(checks, &f, from.yaw)?;
                 }
-                let entry = plan_at(
-                    volume, doc, &current, &before, from.yaw, angle, rules, blocked, tried,
-                )?;
+                let entry = plan_at(checks, &current, &before, from.yaw, angle, rules, tried)?;
                 Ok((entry, before, after))
             })();
             match result {
@@ -310,27 +305,24 @@ fn attempt(
     }
     let mut end = frame(to)?;
     end.turn = i64::from(direction) * UNIT;
-    let exit = plan_at(
-        volume, doc, &current, &end, from.yaw, end.turn, rules, blocked, tried,
-    )?;
+    let exit = plan_at(checks, &current, &end, from.yaw, end.turn, rules, tried)?;
     append(&mut stages, exit, &end, end.turn);
     let stride = Stride {
         stages,
         clearance: rules.clearance,
         turn: direction,
     };
-    check_stride(volume, doc, from, to, rules, &stride, blocked)?;
+    check_stride_with(checks, from, to, rules, &stride)?;
     Ok(stride)
 }
 
 pub(super) fn plan(
-    volume: &Volume,
-    doc: &BodyDocument,
+    checks: &mut Checks<'_>,
     from: &Pose,
     to: &Pose,
     rules: Walking,
-    blocked: &[Box3],
 ) -> Result<Stride> {
+    let (volume, doc) = (checks.volume, checks.document);
     let direction = Rotation::quarter_turn(from.yaw, to.yaw)
         .ok_or("a supported turn is one quarter at a time")?;
     if !rules.valid() || from.feet.is_empty() || (0..3).any(|k| from.at[k].abs_diff(to.at[k]) > 1) {
@@ -366,12 +358,10 @@ pub(super) fn plan(
                 return Err(format!("turn posture budget exhausted: {why}"));
             }
             match attempt(
-                volume,
-                doc,
+                checks,
                 from,
                 to,
                 rules,
-                blocked,
                 root,
                 pieces,
                 direction,

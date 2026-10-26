@@ -68,6 +68,8 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 - A reachable-food result needs a complete supported and swept route. Its cache
   matches actual body, soles, food geometry and current occupancy as well as
   terrain; cached terrain alone cannot grant a walk.
+  Within a cold search, component reuse keeps exact capsule/pad geometry and
+  bearing feet, and still charges every sample and part visit to its work bound.
 - A zero-thickness anatomy part is empty geometry with valid attachments;
   it must not turn every drawable part of that organism into a fallback.
 - A voxel material is a compact id into saved world-local definitions. Dynamic
@@ -80,7 +82,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 ## Active docs
 
-Whole-site habitat work is tracked in the [presentation continuation](2026-09-11_orthographic_voxel_presentation_plan.md#whole-site-habitat-2026-10-22): full territory, individual food/body placement, native local physics, adaptive terrain paging and the unchosen moving/profile receipt are qualified (2026-10-23). The [startup cache follow-up](2026-09-11_orthographic_voxel_presentation_plan.md#startup-cache-follow-up-2026-10-24) is qualified over upstream E1b (2026-10-24): 417 controls and ten older native replays, with exact retained histories and fewer route/stride searches. Cold failed support routes and distant readability remain open.
+Whole-site habitat work is tracked in the [presentation continuation](2026-09-11_orthographic_voxel_presentation_plan.md#whole-site-habitat-2026-10-22): full territory, individual food/body placement, native local physics, adaptive terrain paging and the unchosen moving/profile receipt are qualified (2026-10-23). The [startup cache follow-up](2026-09-11_orthographic_voxel_presentation_plan.md#startup-cache-follow-up-2026-10-24) is qualified over upstream E1b (2026-10-24). The [cold walking follow-up](2026-09-11_orthographic_voxel_presentation_plan.md#cold-walking-search-follow-up-2026-10-25) qualifies exact posture, part-clearance and support reuse: 401 controls, eleven retained replays and two moving receipts; the retained first round falls from 64.6 to 19.7 seconds. Remaining cold work and distant readability stay open.
 
 | Doc | For | Status |
 | --- | --- | --- |
@@ -105,7 +107,7 @@ Whole-site habitat work is tracked in the [presentation continuation](2026-09-11
 | [2026-09-26_wing_organs_plan.md](2026-09-26_wing_organs_plan.md) | The wing's two organs no single game owns: the hagioglyph and the impresa. | 2026-10-10: shared kernels and native effects; higher rungs parked, 406 carryover refinement still partly designed. |
 | [2026-09-26_body_binding_plan.md](2026-09-26_body_binding_plan.md) | One binding adapter keeping critters and tokens against conatus bodies. | 2026-10-19: native whole-body play connection uses the spatial clock; generic Conatus binding remains unbuilt. |
 | [2026-09-15_isomere_plan.md](2026-09-15_isomere_plan.md) | isomere: the wing's GUI layer and mode host. | 2026-10-18: M0 to M5 landed and M6 deferred; the mode host awaits runtime and headed two-window acceptance. |
-| [2026-09-11_orthographic_voxel_presentation_plan.md](2026-09-11_orthographic_voxel_presentation_plan.md) | The wing's orthographic voxel presentation, lanes L1 to L10. | 2026-10-24: startup cache reuse qualified with upstream E1b, 417 controls and ten older replays; matched histories, fewer searches and an unchosen walking/profile receipt. Cold failed support searches, distant readability and load dynamics remain open. |
+| [2026-09-11_orthographic_voxel_presentation_plan.md](2026-09-11_orthographic_voxel_presentation_plan.md) | The wing's orthographic voxel presentation, lanes L1 to L10. | 2026-10-25: cold physical search reuse qualified over the upstream repin, 401 controls and eleven retained replays; exact histories and two moving/profile receipts. The retained first round falls from 64.6 to 19.7 seconds. Remaining cold work, distant readability and load dynamics stay open. |
 | [2026-09-15_glyph_expression_plan.md](2026-09-15_glyph_expression_plan.md) | How a canon's glyphs come to be expressed by traits. | 2026-10-10: effects native, trait catalogue folded into §10 (801); higher glyph/divinity rungs parked (279, 673). |
 | [2026-09-09_functional_generation_plan.md](2026-09-09_functional_generation_plan.md) | Functional networks, operators and generation: constructions, cantrips, exchange costs. | 2026-09-28: composition designed (404 to 407); no implementation lane open. |
 | [2026-08-05_place_graph_engine_plan.md](2026-08-05_place_graph_engine_plan.md) | The spatial spine: places derived from the volume. | 2026-10-19: narrow Mesocosm whole-body SP7 connection; SP1 to SP5 built, SP6 waits on T2, broader SP7 and SP8 remain open. |

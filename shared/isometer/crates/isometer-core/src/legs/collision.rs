@@ -4,7 +4,7 @@
 //! empty space; unresolved contacts within 1/32 voxel remain occupied.
 use super::{Bounds, Point};
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Capsule {
     pub a: Point,
     pub b: Point,

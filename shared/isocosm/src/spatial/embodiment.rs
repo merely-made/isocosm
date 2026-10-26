@@ -19,6 +19,7 @@ mod support;
 mod walking;
 pub use food::FoodStand;
 pub(crate) use steps::articulated_neighbours;
+pub(crate) use walking::Checks as StrideChecks;
 pub use walking::local_feet as stride_feet;
 pub use walking::{
     Walking, check_stride, check_walk, plan_stride, step_stride, stride_boxes, stride_sample,

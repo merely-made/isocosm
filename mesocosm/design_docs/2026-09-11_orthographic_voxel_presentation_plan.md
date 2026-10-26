@@ -1,5 +1,96 @@
 # Orthographic voxel presentation plan
 
+## Cold walking search follow-up, 2026-10-25
+
+**Status:** implemented and qualified, 2026-10-25. Reuse physical posture work inside cold
+food-route searches. Integrate upstream `91fbd50a` before qualification.
+Receipts: `Code/testing/mesocosm/cold-route-2026-10-25/`, total cap 100 MB.
+Reuse the playable checkout, target and named Cargo home.
+
+**Findings, 2026-10-25:** the retained shore draw's first round spends about
+80 seconds in cold search. Full positive and negative route reads already
+hit their cache. `walking::samples` and turning's `check_frame` repeatedly
+reconstruct chains, solve limb skins, place rigid parts and derive pad support
+for identical postures. Each candidate edge discards those results.
+The first matched native benchmark keeps actor 13's 364 checked/250 refused
+edges and actor 26's 449/307, including their exact first reasons and exhausted
+256-node reports. Posture-only reuse evaluates 38,152 of 105,934 requests and
+168,930 of 468,437 respectively. Those distinct postures still repeat rigid
+part terrain scans and planted support polygons, so their existing narrow
+and support owners also gain bounded, terrain-bound component readings.
+
+Phases and done-conditions:
+
+1. Prepare anatomy once and share bounded exact posture results across one
+   physical search, using the existing paid chains, narrow collision and
+   bearing-foot polygon. Include root, facing, soles and bearing feet in each
+   posture key; bind terrain, anatomy and current blockers to the search.
+   Component readings retain exact capsule/pad geometry, not AABBs alone.
+   Keep candidate order, posture/node limits and cumulative swing work intact.
+2. Compare reused and fresh physical answers for supported, blocked and failed
+   postures. Qualify retained steep and turning controls and native histories.
+3. Rerun the retained slow draw with actual movement frames and bounded timing
+   evidence, then draw an unchosen world for ordinary play. Report cold work,
+   remaining costs and precise validation boundaries.
+
+This is implementation under the existing body and admission rules; no new
+decision or doctrine statement is introduced.
+
+**Progress, 2026-10-25:** 281 native controls pass, with 19 existing opt-in
+ignores and one new explicit benchmark. The benchmark also passes, comparing
+the complete cold search reports with reuse disabled and enabled in one binary.
+Actor 13 takes 3.927 versus 1.398 seconds and actor 26 takes 22.841 versus
+7.092 seconds. The latter's terrain-part evaluations fall from 14,166,056 to
+462,379 and support builds from 405,620 to 7,027. Candidate order and all
+search/work limits remain unchanged. Same-bounds/different-capsule and
+per-visit budget controls pass. An initial budget-test fixture crossed ground;
+its failing transcript is retained, and the corrected air-layer fixture passes.
+The receiving graph qualifies Mere `d20eb555`, Genet `ea18315d` and Netrender
+`8a3d289a` with one identity per audited family crate. Eight shared leg controls
+and 111 receiving controls pass, bringing this slice to 401 passes including
+the explicit benchmark. Twenty-five existing opt-in tests remain skipped;
+the normal native suite also skips that benchmark before its explicit run.
+One older eighteen-seed ordinary-play control remains filtered, as in the
+preceding qualification. All eleven retained histories replay exactly.
+
+The receiving executable preserves the retained shore world's complete native
+history, hash `bd0f8e0cdcc8fb70`, with 43 food steps across seventeen walkers.
+In a new quiet-build comparison the first round falls from 64.586 to 19.708
+seconds; the previous approximately 80-second sample remains in its original
+receipt. Three-tick process time falls from 85.187 to 40.657 seconds. The same
+94 cold searches cost 62.515 versus 17.791 seconds and the same 1,391 stride
+plans cost 57.824 versus 13.085 seconds. Later rounds take 2.827 and 4.514
+seconds. Terrain's nine cold Places builds still cost 5.380 seconds. In the
+new run, 1,074,157 sampled posture requests need 399,973 evaluations; its
+12,302,317 part checks need 1,385,903 terrain scans and 366,228 support reads
+need 16,816 polygon builds. These counters are not elapsed times.
+
+A fresh clock origin `1792972883653705300` offers candidate 43 of the existing
+128-candidate bound, seed `815647235344402300`. All preceding refusals remain
+in the log. Its three ordinary ticks yield 36 food steps across sixteen
+walkers, hash `9ba5838d4fc319dd`; rounds take 25.535, 4.714 and 0.959 seconds.
+Observed setup is 16.844 seconds, including those candidates. Its 81 searches
+cost 22.931 seconds, including 11.501 seconds in 1,189 stride plans. The
+retained and fresh runs each record twenty-four actual frames, with nineteen
+and twenty supported-swing frames respectively, zero projection failures and
+no reported visible native-box intersections. Their lossless previews retain
+actual frame pixels with uniform 200 ms playback; raw records keep real times.
+Every accepted food step in both runs also verifies detection, its complete
+supported route and its recorded stride at the original native choice cut:
+43 and 36 accepted sighted steps, zero recorded food-route refusals. The
+normal optimized binaries, source archive, dependency lock and qualification
+manifest are bound in the receipt directory. Formatting, source-size and
+decision-record checks pass. Existing playable/rebuild resources are retained;
+this slice creates no isolated target, Cargo home or worktree.
+
+Remaining: the cold first round is still too long for fluid play. Distinct
+posture checks and route work outside the measured stride spans remain; the
+fresh draw spends about half its search time outside those spans. Further
+profiling should separate endpoint grounding, candidate generation and graph
+search before changing search policy. This slice neither prunes stance states
+nor lowers paid/posture/node/work limits. It qualifies three ordinary ticks,
+not an epoch or multi-generation gameplay loop.
+
 ## Startup cache follow-up, 2026-10-24
 
 **Status:** implemented and qualified, 2026-10-24. Reduce repeated terrain and physical-route work using

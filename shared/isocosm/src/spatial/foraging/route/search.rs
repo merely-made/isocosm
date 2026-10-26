@@ -4,6 +4,8 @@
 //! are checked on candidate paths, once per edge, before declaring reachability.
 use super::*;
 #[cfg(test)]
+mod cold_tests;
+#[cfg(test)]
 pub(super) mod turn_tests;
 type Node = ([i64; 3], Yaw, [u8; 32]);
 fn node(input: &Input, pose: &Pose) -> Node {
@@ -50,6 +52,11 @@ struct Vertex {
 }
 
 pub(super) fn find(input: &Input) -> Result<RouteSearch> {
+    let mut strides =
+        embodiment::StrideChecks::new(&input.terrain.volume, &input.document, &input.blocked);
+    find_using(input, &mut strides)
+}
+fn find_using(input: &Input, strides: &mut embodiment::StrideChecks<'_>) -> Result<RouteSearch> {
     let origin = node(input, &input.before);
     let mut graph = BTreeMap::from([(origin, vertex(input, input.before.clone())?)]);
     if graph[&origin].food.is_some() {
@@ -91,14 +98,7 @@ pub(super) fn find(input: &Input) -> Result<RouteSearch> {
                 continue;
             }
             report.checked_edges += 1;
-            let plan = embodiment::step_stride(
-                &input.terrain.volume,
-                &input.document,
-                &graph[&pair.0].pose,
-                &graph[&pair.1].pose,
-                input.walking,
-                &input.blocked,
-            );
+            let plan = strides.step(&graph[&pair.0].pose, &graph[&pair.1].pose, input.walking);
             if let Err(why) = &plan {
                 rejected.insert(pair);
                 report.refused_edges += 1;

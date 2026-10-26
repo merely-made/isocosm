@@ -3,6 +3,7 @@
 //! A turning sole against voxel columns, using integer separating axes.
 use isometer_core::legs::{Bounds, Point, Rotation, UNIT};
 
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub(in crate::spatial::embodiment) struct Pad {
     corners: [[i64; 2]; 4],
     axes: [[i64; 2]; 2],

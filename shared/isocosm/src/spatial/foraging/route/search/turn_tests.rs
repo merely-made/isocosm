@@ -101,6 +101,14 @@ fn food_route_turns_past_an_obstacle_that_blocks_the_unturned_body() {
         &input.blocked
     ));
     let report = find(&input).unwrap();
+    let mut uncached =
+        embodiment::StrideChecks::new(&input.terrain.volume, &input.document, &input.blocked)
+            .without_reuse();
+    assert_eq!(
+        report,
+        find_using(&input, &mut uncached).unwrap(),
+        "reuse must keep the chosen route, gait and refusal census exactly"
+    );
     let route = report
         .route
         .expect("paid pivot must provide a food route around the obstacle");
