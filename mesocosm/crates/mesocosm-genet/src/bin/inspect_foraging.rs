@@ -7,6 +7,8 @@ use isocosm::{
     spatial::{Preparation, foraging::FoodDetection},
 };
 use std::{path::Path, time::Instant};
+#[path = "inspect_foraging/cursor.rs"]
+mod cursor;
 #[path = "inspect_foraging/probe.rs"]
 mod probe;
 
@@ -34,7 +36,8 @@ fn main() -> Result<(), String> {
     }
     let mut witnesses = Vec::new();
     let mut refused = 0;
-    for entry in &session.entries {
+    let mut cursor = cursor::Cursor::new(&session);
+    for (entry_index, entry) in session.entries.iter().enumerate() {
         let Command::AdvanceBirthSpatial {
             ticks,
             terrain,
@@ -45,10 +48,10 @@ fn main() -> Result<(), String> {
         else {
             continue;
         };
-        if steps.is_empty() {
+        if steps.iter().all(|answer| answer.request.tick < from_tick) {
             continue;
         }
-        let before = session.before_entry(&entry.id)?;
+        let before = cursor.before(entry_index)?;
         for (index, answer) in steps.iter().enumerate() {
             if answer.request.tick < from_tick {
                 continue;

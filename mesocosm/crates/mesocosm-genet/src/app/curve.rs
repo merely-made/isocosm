@@ -28,11 +28,26 @@ fn reading(runtime: &Runtime) -> Value {
     json!({"tick":sim.state().tick,"hash":format!("{:016x}",sim.state_hash()),"actors":actors})
 }
 
+fn persist(config: &HostConfig, runtime: &Runtime, observations: &[Value]) -> Result<(), String> {
+    if let Some(path) = &config.receipt {
+        crate::played::write_json(
+            path,
+            &json!({"method":"native runtime and existing keyed demo answers; no stock edits",
+            "run":runtime.receipt(),"observations":observations}),
+        )?;
+    }
+    if let Some(path) = &config.trace {
+        crate::played::write_world_trace(path, runtime)?;
+    }
+    Ok(())
+}
+
 pub fn run(config: &HostConfig, ticks: u64, every: u64) -> Result<(), String> {
     let authored =
         mesocosm_runtime::Authored::load(&pack_root()).map_err(|why| format!("{why:?}"))?;
     let mut runtime = startup::configured(config, &authored)?;
     let mut observations = vec![reading(&runtime)];
+    persist(config, &runtime, &observations)?;
     for step in 0..ticks {
         crate::played::demo_step(&mut runtime, step);
         if step % every.max(1) == 0 || step + 1 == ticks {
@@ -53,17 +68,8 @@ pub fn run(config: &HostConfig, ticks: u64, every: u64) -> Result<(), String> {
                 living
             );
             observations.push(sample);
-            if let Some(path) = &config.receipt {
-                crate::played::write_json(
-                    path,
-                    &json!({"method":"native runtime and existing keyed demo answers; no stock edits",
-                    "run":runtime.receipt(),"observations":observations}),
-                )?;
-            }
+            persist(config, &runtime, &observations)?;
         }
-    }
-    if let Some(path) = &config.trace {
-        crate::played::write_world_trace(path, &runtime)?;
     }
     Ok(())
 }
