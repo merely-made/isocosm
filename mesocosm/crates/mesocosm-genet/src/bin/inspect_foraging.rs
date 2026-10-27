@@ -12,10 +12,19 @@ mod probe;
 
 fn main() -> Result<(), String> {
     let path = std::env::args().nth(1).ok_or(
-        "inspect_foraging <world trace> [--loads | --census | --probe [--actors=6,19] [--try-walking]]",
+        "inspect_foraging <world trace> [--from-tick N] [--loads | --census | --probe [--actors=6,19] [--try-walking]]",
     )?;
     let saved = mesocosm_genet::played::read_trace(Path::new(&path))?;
     let started = Instant::now();
+    let arguments: Vec<_> = std::env::args().collect();
+    let from_tick = if let Some(i) = arguments.iter().position(|a| a == "--from-tick") {
+        arguments
+            .get(i + 1)
+            .and_then(|v| v.parse::<u64>().ok())
+            .ok_or("--from-tick wants a native tick")?
+    } else {
+        0
+    };
     let session = Session::load(saved.clone(), Execution::Individuals)?;
     if std::env::args().any(|arg| arg == "--probe") {
         return probe::run(&session);
@@ -41,6 +50,9 @@ fn main() -> Result<(), String> {
         }
         let before = session.before_entry(&entry.id)?;
         for (index, answer) in steps.iter().enumerate() {
+            if answer.request.tick < from_tick {
+                continue;
+            }
             let Some(policy) = before.sim.foraging_policy(&answer.request.profile) else {
                 continue;
             };

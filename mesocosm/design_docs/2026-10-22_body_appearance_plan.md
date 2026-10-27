@@ -137,6 +137,31 @@ if bulges remain, as its own later phase.
 
 ### B5. Actuation by area, mass by volume
 
+**Grown-body sampling, 2026-10-26: in progress.** Pull first (upstream
+`0d334440`); reuse native growth, anatomy, saved recipes and ordinary runtime
+steps. Required receipts: three clock-drawn worlds, growth/part-fill readings,
+more than one paid limb cross-section, actual aged moving frames, supported
+load samples, replay and focused controls. Total retained cap: 100 MB under
+`Code/testing/mesocosm/grown-loads-2026-10-26/`. Existing playable target and
+named Cargo home only. Strength constants remain undecided.
+
+Phases: expose saved native limb scale bounds using the same palette templates
+and anatomy cell capacity; keep old omitted bounds and explicit fixed presets.
+Reuse one startup path for headed and headless worlds, save headless curve
+progress and resume it for aged motion. Run three unchosen draws, retaining
+unsuccessful growth or route readings; extend the same worlds if needed rather
+than replace seeds. Measure actual part matter, tissue filling, age and limb
+dimensions at native cuts. Done when tissue growth beyond founding and varied
+sections appear in measured moving bodies, with actual captures and replay;
+report any limits instead of interpreting a short draw as strength calibration.
+
+Findings, 2026-10-26: `meaning::grow` fills existing parts before adding missing
+recipe parts; it does not enlarge extents. `bodied::proportions` keeps paid
+chain dimensions fixed. `app::curve` already advances the same runtime with
+keyed demo answers but discards its trace, and independently reconstructs
+startup. `--watch` already resumes the complete native/physical world. The
+sampling changes join these existing pieces, without a new growth model.
+
 **Actual-balance slice, 2026-10-26: implemented and qualified.** Mark authorizes wiring
 posed parts and native tissue mass into support, with an unchosen moving
 capture and measured loads before strength constants. `git pull --ff-only`

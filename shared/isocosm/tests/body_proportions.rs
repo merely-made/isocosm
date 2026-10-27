@@ -11,6 +11,53 @@ fn founding(seed: u64) -> Founding {
 }
 
 #[test]
+fn limb_sizes_are_paid_inherited_geometry_and_omission_keeps_old_kinds() {
+    use isocosm::anatomy;
+    let mut sections=BTreeSet::new();
+    for seed in 1..=16 {
+        let mut f=founding(seed);
+        f.bodies.as_mut().unwrap().limb_scale=[1,2];
+        let g=f.generate().unwrap();
+        g.validate().unwrap();
+        assert_eq!(serde_json::to_value(&g).unwrap(),serde_json::to_value(f.generate().unwrap()).unwrap());
+        for lineage in g.lineages.values().filter(|l| l.kingdom=="kingdom:fauna") {
+            let d=lineage.development.as_ref().unwrap();
+            let mut s=soma(&g.rules,&d.recipe,seed);s.absent.clear();
+            let body=develop(&g.rules,d,&s).unwrap();
+            let legs=isometer_core::legs::chains(&body.doc);
+            assert!(!legs.is_empty(),"scaled links must remain actual paid chains");
+            for leg in legs {
+                let p=body.doc.part(leg.upper).unwrap();
+                sections.insert(anatomy::measure(p.half_extent,isocosm::rules::Measure::CrossSection));
+            }
+            for t in d.recipe.tagmata.iter().filter(|t|!t.chain.is_empty()) {
+                for link in &t.chain {
+                    let kind=&g.rules.kinds[&link.kind];
+                    assert_eq!(kind.cells.get("function:contract"),Some(&anatomy::capacity(kind.half_extent)));
+                }
+            }
+            let saved=serde_json::to_string(d).unwrap();
+            let restored=serde_json::from_str(&saved).unwrap();
+            assert_eq!(develop(&g.rules,d,&s).unwrap(),develop(&g.rules,&restored,&s).unwrap());
+        }
+    }
+    assert_eq!(sections,BTreeSet::from([9,25]));
+    let f=founding(3);
+    let value=serde_json::to_value(&f).unwrap();
+    assert!(value["bodies"].get("limb_scale").is_none());
+    let saved:Founding=serde_json::from_value(value).unwrap();
+    assert_eq!(serde_json::to_value(saved.generate().unwrap()).unwrap(),serde_json::to_value(f.generate().unwrap()).unwrap());
+}
+
+#[test]
+fn limb_size_bounds_are_explicit_and_bounded() {
+    for bounds in [[0,1],[2,1],[1,3],[255,255]] {
+        let mut f=founding(3);f.bodies.as_mut().unwrap().limb_scale=bounds;
+        assert!(f.bodies.as_ref().unwrap().check().is_err());
+    }
+}
+
+#[test]
 fn native_shapes_vary_and_keep_paid_feet_and_life_history() {
     let mut producers = BTreeSet::new();
     let mut consumers = BTreeSet::new();
@@ -71,8 +118,10 @@ fn shorter_paid_bodies_can_stand_and_swing_without_changing_terrain() {
     let sim = Simulation::new(terrain, Execution::Individuals).unwrap();
     let volume = sim.volume(0, [350;2], [418;2], 16).unwrap();
     let mut grounding = Grounding::new(&volume).with_articulation(true);
-    for seed in 1..=5 {
-        let g = founding(seed).generate().unwrap();
+    for bounds in [[0,0],[2,2]] {
+      for seed in 1..=5 {
+        let mut f=founding(seed);f.bodies.as_mut().unwrap().limb_scale=bounds;
+        let g = f.generate().unwrap();
         let d = g.lineages["lineage:1"].development.as_ref().unwrap();
         let mut s = soma(&g.rules, &d.recipe, seed);
         s.absent.clear();
@@ -81,7 +130,8 @@ fn shorter_paid_bodies_can_stand_and_swing_without_changing_terrain() {
             let from = grounding.at(&body.doc, 384, 384, yaw).unwrap();
             let to = grounding.at(&body.doc, 385, 384, yaw).unwrap();
             sweep_clear(&volume, &body.doc, &from, &to, &[])
-                .unwrap_or_else(|why|panic!("seed {seed}, {yaw:?}: {why}"));
+                .unwrap_or_else(|why|panic!("seed {seed}, limbs {bounds:?}, {yaw:?}: {why}"));
         }
+      }
     }
 }

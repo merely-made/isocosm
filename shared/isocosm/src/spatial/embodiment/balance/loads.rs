@@ -13,6 +13,9 @@ pub struct FootLoad {
 #[derive(Clone, Debug, Serialize)]
 pub struct Load {
     pub mass_mg: u128,
+    pub tissue_mg: u128,
+    pub current_parts_capacity_mg: u128,
+    pub age: Tick,
     /// World coordinates in 1/1024 base cells, the gait's existing units.
     pub centre: [i64; 3],
     pub rest_volume_centre: [i64; 3],
@@ -32,6 +35,22 @@ pub fn stride_load(
     let member = motion_member(sim, actor)?;
     let doc = member.body.as_ref().ok_or("load geometry absent")?;
     let balance = Balance::of(member, &sim.genesis().rules)?;
+    let rules = &sim.genesis().rules;
+    let own = crate::anatomy::own(rules, &member.lineage);
+    let tissue_mg = member
+        .living()
+        .map(|(_, p)| {
+            own.tissue
+                .as_ref()
+                .and_then(|key| p.matter.get(key))
+                .copied()
+                .unwrap_or(0) as u128
+        })
+        .sum();
+    let current_parts_capacity_mg = member
+        .living()
+        .map(|(id, _)| u128::from(crate::anatomy::ceiling(member.extent(id), rules.body())))
+        .sum();
     let frame = stride_sample(from, to, stride, phase)?;
     let local = stride_feet(&frame, from.yaw)?;
     let rotation = Rotation::at(from.yaw, frame.turn);
@@ -67,6 +86,9 @@ pub fn stride_load(
     }
     Ok(Load {
         mass_mg: balance.mass,
+        tissue_mg,
+        current_parts_capacity_mg,
+        age: sim.state().tick.saturating_sub(member.born),
         centre,
         rest_volume_centre,
         contact_cells: feet.iter().map(|f| f.contact_cells).sum(),

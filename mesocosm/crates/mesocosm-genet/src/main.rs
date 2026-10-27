@@ -268,6 +268,8 @@ fn main() {
         fail("--ecology-witness requires a new generated world and contains its own complete spatial provider");
     }
     if let Some(ticks) = curve {
+        config.trace = trace;
+        config.receipt = receipt;
         std::process::exit(match mesocosm_genet::app::curve(&config, ticks, 20) {
             Ok(()) => 0,
             Err(why) => { eprintln!("curve: {why}"); 1 },
@@ -350,6 +352,7 @@ mesocosm-genet: run Mesocosm in a window over a native Isocosm session
   --soil P        play world's founding soil, percent (default 100)
   --candidate-attempts N  cap unchosen A1 structural candidates (default 128, max 128)
   --unchosen-seed use the native clock-sourced new-world seed (ordinary default)
+  --curve N       run N headless demo steps; save explicit --trace and --receipt outputs
   --start W:E     wait at most W epochs for habitability, then add E epochs
   --mode MODE     survival or creative, using the native view
   --population N  founding population (default: the founding's own)

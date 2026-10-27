@@ -169,6 +169,7 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
             }
             bodies.proportions = config.body_proportions.unwrap_or(
                 !config.body_roster && config.body_founding.is_none());
+            bodies.limb_scale = if bodies.proportions { [1,2] } else { [0,0] };
             let mut founded = a1_setup(founded, affinity.clone())?.founded;
             founded.genesis.rules.epoch_ticks = config.play_epoch;
             for site in founded.genesis.sites.values_mut() {
@@ -380,4 +381,30 @@ mod tests {
         assert!(selected.attempts <= HostConfig::default().candidate_attempts);
     }
 
+}
+
+/// One start/resume path for the headed host and headless sampling.
+pub(super) fn configured(config: &HostConfig, authored: &mesocosm_runtime::Authored) -> Result<Runtime,String> {
+    if config.watch.is_some() && (config.start.is_some() || config.unchosen_seed) {
+        return Err("a resumed run already has its native founding and start".into());
+    }
+    if config.spread.is_some() && (config.start.is_some() || config.mode.is_some() || config.unchosen_seed) {
+        return Err("authored spread supplies its own seed, start and viewing mode".into());
+    }
+    match (&config.watch, &config.spread) {
+            (Some(_), Some(_)) => {
+                Err("authored spread founding cannot replace a resumed run".into())
+            },
+            (_, Some(path)) => std::fs::read(path)
+                .map_err(|why| why.to_string())
+                .and_then(|bytes| {
+                    serde_json::from_slice::<mesocosm_runtime::author_spread::Setup>(&bytes)
+                        .map_err(|why| why.to_string())
+                })
+                .and_then(|setup| Runtime::from_authored_spread(&setup, config.ticks_per_second)),
+            (Some(path), None) => {
+                crate::played::resume_with_mode(path, config.ticks_per_second, config.mode)
+            },
+            (None, None) => generated(config, authored.affinity().cloned()),
+        }
 }

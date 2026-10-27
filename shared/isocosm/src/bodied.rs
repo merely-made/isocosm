@@ -62,6 +62,9 @@ pub struct Bodies {
     /// Opt-in founding data: old worlds retain their exact recipe lottery.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub proportions: bool,
+    /// Saved inclusive geometry bounds. Omission keeps historical chain sizes.
+    #[serde(default, skip_serializing_if = "unset")]
+    pub limb_scale: [u8; 2],
     /// Whether a drawn consumer's mouth always admits the ecology's
     /// producers: its limbs stay, its head bears the grazing mouth (ruling
     /// 905, the default). Without it, a limbed consumer draws a jaw, which
@@ -97,6 +100,7 @@ impl Default for Bodies {
             clutch: [1, 4],
             roster: false,
             proportions: false,
+            limb_scale: [0, 0],
             grazing: true,
             hazard: [0, 0],
             wound: [0, 0],
@@ -112,7 +116,9 @@ impl Bodies {
             && self.hazard[0] <= self.hazard[1]
             && self.hazard[1] <= MAX_DRAW
             && self.wound[0] <= self.wound[1];
-        if !ordered || self.absence[0] == 0 || self.clutch[0] == 0 {
+        if !ordered || self.absence[0] == 0 || self.clutch[0] == 0
+            || (self.limb_scale != [0,0] && !(1..=2).contains(&self.limb_scale[0]))
+            || (self.limb_scale != [0,0] && (self.limb_scale[1] < self.limb_scale[0] || self.limb_scale[1] > 2)) {
             return Err("body bounds outside the declared generator domain".into());
         }
         if self.hazard[1] > 0 && self.wound[0] == 0 {
@@ -360,6 +366,9 @@ pub(crate) fn embody(g: &mut Genesis, b: &Bodies) -> Result<()> {
             },
         };
         reproducing(&mut kinds, &mut recipe)?;
+        if !producer {
+            proportions::limbs(g.seed, index, b.limb_scale, &mut kinds, &mut recipe)?;
+        }
         if !producer {
             let intake = feeding::declare(&mut kinds, &mut recipe, key)?;
             let feed = format!("ecology:feed-{}", key.trim_start_matches("lineage:"));

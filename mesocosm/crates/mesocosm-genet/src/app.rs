@@ -89,36 +89,11 @@ pub struct Host {
 
 impl Host {
     pub fn new(mut config: HostConfig) -> Self {
-        if config.spread.is_some()
-            && (config.start.is_some() || config.mode.is_some() || config.unchosen_seed)
-        {
-            eprintln!("authored spread supplies its own seed, start and viewing mode");
-            std::process::exit(1);
-        }
-        if config.watch.is_some() && (config.start.is_some() || config.unchosen_seed) {
-            eprintln!("a resumed run already has its native founding and start");
-            std::process::exit(1);
-        }
         let authored = mesocosm_runtime::Authored::load(&pack_root()).unwrap_or_else(|why| {
             eprintln!("pack admission: {why:?}");
             std::process::exit(1);
         });
-        let mut runtime = match (&config.watch, &config.spread) {
-            (Some(_), Some(_)) => {
-                Err("authored spread founding cannot replace a resumed run".into())
-            },
-            (_, Some(path)) => std::fs::read(path)
-                .map_err(|why| why.to_string())
-                .and_then(|bytes| {
-                    serde_json::from_slice::<mesocosm_runtime::author_spread::Setup>(&bytes)
-                        .map_err(|why| why.to_string())
-                })
-                .and_then(|setup| Runtime::from_authored_spread(&setup, config.ticks_per_second)),
-            (Some(path), None) => {
-                crate::played::resume_with_mode(path, config.ticks_per_second, config.mode)
-            },
-            (None, None) => startup::generated(&config, authored.affinity().cloned()),
-        }
+        let mut runtime = startup::configured(&config, &authored)
         .unwrap_or_else(|why| {
             eprintln!("world: {why}");
             std::process::exit(1);
@@ -326,21 +301,9 @@ impl Host {
 #[path = "app/scene_cache_tests.rs"]
 mod scene_cache_tests;
 
-/// A play world stepped headless with the demo's answers, printing the
-/// living count every `every` ticks: a quick look at how far a world booms.
-pub fn curve(config: &HostConfig, ticks: u64, every: u64) -> Result<(), String> {
-    let authored = mesocosm_runtime::Authored::load(&pack_root()).map_err(|why| format!("{why:?}"))?;
-    let mut runtime = startup::generated(config, authored.affinity().cloned())?;
-    for step in 0..ticks {
-        crate::played::demo_step(&mut runtime, step);
-        if step % every == 0 || step + 1 == ticks {
-            let sim = runtime.sim();
-            let living: u64 = sim.state().population.groups.values().filter(|g| g.entity.alive).map(|g| g.count).sum();
-            println!("curve: soil {}% tick {} living {}", config.play_soil, sim.state().tick, living);
-        }
-    }
-    Ok(())
-}
+#[path = "app/curve.rs"]
+mod curve_run;
+pub use curve_run::run as curve;
 
 /// The shipped pack's root, from this crate's own location.
 fn pack_root() -> std::path::PathBuf {
