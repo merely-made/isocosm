@@ -137,30 +137,94 @@ if bulges remain, as its own later phase.
 
 ### B5. Actuation by area, mass by volume
 
-**Grown-body sampling, 2026-10-26: in progress.** Pull first (upstream
-`0d334440`); reuse native growth, anatomy, saved recipes and ordinary runtime
-steps. Required receipts: three clock-drawn worlds, growth/part-fill readings,
-more than one paid limb cross-section, actual aged moving frames, supported
-load samples, replay and focused controls. Total retained cap: 100 MB under
-`Code/testing/mesocosm/grown-loads-2026-10-26/`. Existing playable target and
-named Cargo home only. Strength constants remain undecided.
+**Grown-body sampling, 2026-10-26/27: implemented; thin-body sample qualified.**
+Pulled upstream `0d334440` first. Required receipts: three clock-drawn worlds,
+growth/part-fill readings, multiple paid limb sections, actual aged moving
+frames, supported load samples, replay and focused controls. Total retained
+cap: 100 MB under `Code/testing/mesocosm/grown-loads-2026-10-26/`; reuse the
+existing playable target and named Cargo home. Strength constants remain open.
 
-Phases: expose saved native limb scale bounds using the same palette templates
-and anatomy cell capacity; keep old omitted bounds and explicit fixed presets.
-Reuse one startup path for headed and headless worlds, save headless curve
-progress and resume it for aged motion. Run three unchosen draws, retaining
-unsuccessful growth or route readings; extend the same worlds if needed rather
-than replace seeds. Measure actual part matter, tissue filling, age and limb
-dimensions at native cuts. Done when tissue growth beyond founding and varied
-sections appear in measured moving bodies, with actual captures and replay;
-report any limits instead of interpreting a short draw as strength calibration.
+New ordinary varied foundings save `Bodies.limb_scale = [1,2]`. One seeded
+choice per lineage clones the existing contract-only chain templates at 1x
+or 2x half-extents, using native anatomy capacity for their cell allocation.
+The recipe and lexicon inherit the resulting kinds. Multi-function authored
+templates retain their declared allocation. Omitted bounds and explicit fixed
+presets retain historical dimensions. Both sizes pass the existing flat-ground
+standing/swinging check across five bodies and two orientations.
 
-Findings, 2026-10-26: `meaning::grow` fills existing parts before adding missing
-recipe parts; it does not enlarge extents. `bodied::proportions` keeps paid
-chain dimensions fixed. `app::curve` already advances the same runtime with
-keyed demo answers but discards its trace, and independently reconstructs
-startup. `--watch` already resumes the complete native/physical world. The
-sampling changes join these existing pieces, without a new growth model.
+`meaning::grow` fills tissue before adding missing recipe parts; it does not
+stretch existing limbs. No new growth model or stock edits were used. Headed
+and headless runs now share startup and resume. The curve uses the existing
+keyed demo answers and native runtime; `--watch` supplies the aged captures.
+The CLI initially discarded curve output paths before dispatch; that failure
+is retained, and the same accepted clock-drawn seeds were repeated after repair.
+Curve saves now persist at the initial census, later censuses and final step,
+using the existing atomic WorldSave writer. Zero-step sampling also works.
+
+The first eligible candidates of three independent native clock draws were:
+
+| Draw | Clock seed | Candidate | Accepted world seed | Captured native ticks |
+| --- | --- | --- | --- | --- |
+| A | 1793073248861038400 | 24/128 | 10609730715666009785 | 21 to 24 |
+| B | 1793073283041221400 | 56/128 | 4790618633270446537 | 30 to 33 |
+| C | 1793073283031687100 | 29/128 | 4601644208613844599 | 5 to 8 |
+
+A and C's 30-step trials were stopped after about 24 minutes. Their partial
+readings and process peaks (2.26 GB and 5.38 GB working set) remain; shorter
+cuts of those same worlds were saved, without replacing seeds. A's repeated
+tick-21 hash matches its original census. These shared-machine runs do not
+qualify round latency or attribute the whole delay to one physical stage.
+
+A provides 24 actual GPU frames, 15 supported swing frames and 20 weight-shift
+frames; B's resident-camera repeat provides 23 frames, four supported swings
+and seven weight-shift frames. They have zero projection failures and no
+reported visible inter-body native-box intersections; 20/21 and 19/20
+comparable same-cut frame pairs change pixels. Their late native histories
+contain 26 and 14 verified food-directed steps. C grows 17 founding walkers
+from 10 to 11-12 mg, but makes no local food steps during its aged capture;
+its stationary feeding result is retained. All runs have zero developer world
+intents. Headless keyed care/checkpoint answers remain explicit in the method.
+
+The 5,864 late gait samples all keep their posed part-mass centres inside
+support. Both upper and lower native link sections span 9 and 25. Localized
+part matter spans 2-10 mg; summed bearing pad contacts span 7-187 native cells,
+and aggregate mass/contact cell spans 0.0160-1.0 mg. In B, actor 17 regrows
+from 3 mg at tick 21 to 5 mg while walking at tick 31; actor 8 regrows from
+4 mg at tick 21 to 10 mg while walking at tick 33. Reproduction also reduces
+parents' tissue, so age or net gain from founding alone is not a growth test.
+
+This does not supply full adult density: walking tissue fills only
+0.055-0.350% of current-part capacity (2,858 mg in A, 5,458 mg in B).
+Unlocalized entity inventory is not included in part loads. Pad contacts are
+summed per foot, with overlap counted per pad; these are quasi-static readings,
+not per-foot reaction forces or a strength law. The fuller-body calibration
+gate remains open. Existing growth/refilling and inherited dimensions are
+qualified; growth beyond the founding mass in a walking pose is not established.
+
+The inspector's tick filter initially still rebuilt every warm-up prefix.
+It now skips irrelevant entries and reuses native `Session::command` between
+exact cuts, checking complete entry identity/outcome and falling back to the
+existing prefix reader for older implicit clock gaps. Its short-run output
+matches the original exactly, including routes and 258 load samples. Saving
+at censuses leaves the one-step WorldSave byte-equivalent as decoded data.
+419 Rust controls pass (26 existing opt-ins ignored, one long ordinary-play
+integration control filtered, plus the shared-leg name filter). Fourteen older
+histories replay on the capture build; all three new histories replay exactly
+on the final tools build, with hashes `64774914823746a7`, `d5665c6b3983faf4`
+and `8a9a3a95af7148b2`.
+
+The capture source is `116cef68`; `faf4cd1b` adds only census persistence and
+the diagnostic replay cursor. Both source archives, actual lock and binary
+hashes are retained. One camera limitation remains: dev follow moves the camera
+while the scene still selects the played critter's native site. A's final
+still is blank after the played critter changes sites, although the preceding
+24 moving GPU frames remain valid. B's first follow also entered a journey;
+its resident-camera repeat has an identical native history and a usable end
+still. Cross-site following is not qualified by this sample.
+
+Exact measurements and failures are in the
+[sampling summary](C:/Users/mark_/Code/testing/mesocosm/grown-loads-2026-10-26/samples-summary.json)
+and [qualification packet](C:/Users/mark_/Code/testing/mesocosm/grown-loads-2026-10-26/qualification.json).
 
 **Actual-balance slice, 2026-10-26: implemented and qualified.** Mark authorizes wiring
 posed parts and native tissue mass into support, with an unchosen moving
