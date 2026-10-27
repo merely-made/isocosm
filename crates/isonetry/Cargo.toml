@@ -66,7 +66,7 @@ isocosm = { path = "../../shared/isocosm", default-features = false }
 isocosm-host = { path = "../../host" }
 # The admitted native stream APIs, in graphshell-host since mere lifted
 # Graphshell's serving half there (2e896a75, 2026-10-15).
-graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "d20eb5555710ccba62220cf34434ca3f0ea659e7", default-features = false, features = ["native"], optional = true }
+graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381", default-features = false, features = ["native"], optional = true }
 graphshell-endpoint = { workspace = true, optional = true }
 chirograph = { workspace = true, optional = true }
 sceno = { workspace = true, optional = true }
