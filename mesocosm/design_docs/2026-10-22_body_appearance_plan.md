@@ -1,6 +1,8 @@
 # Body appearance: shape suggests function, several anatomies per function
 
-**Status (2026-10-22):** in progress. Four forks answered by Mark on 2026-10-22,
+**Status (2026-10-26):** in progress. Actual posed-matter balance is qualified;
+strength limits remain open. Its receipt is three ordinary ticks; the 20/20
+ecology gate below predates this opt-in. Four forks answered by Mark on 2026-10-22,
 recorded below in his chosen words; none numbered yet. Materials, named
 founding shapes and native chains are connected and captured. The ordinary
 foot-swing gate passed in the foot-placement follow-up. B2 now connects native
@@ -135,7 +137,67 @@ if bulges remain, as its own later phase.
 
 ### B5. Actuation by area, mass by volume
 
-A limb's actuation scales with its cross-section and a body's mass with its
+**Actual-balance slice, 2026-10-26: implemented and qualified.** Mark authorizes wiring
+posed parts and native tissue mass into support, with an unchosen moving
+capture and measured loads before strength constants. `git pull --ff-only`
+reports current upstream. This slice does not select strength constants.
+Receipts: `Code/testing/mesocosm/posed-balance-2026-10-26/`, cap 100 MB;
+reuse the existing playable target and Cargo home.
+
+Done-conditions: read mass from living parts' native matter ledgers; reuse
+the existing paid-chain skins for posed part centres; share the reading in
+grounding, route admission, gait planning and validation. Mass changes must
+invalidate physical cache readings. Omitted saved rules retain their former
+balance law. Verify a limb movement and a changed tissue distribution alter
+the support answer, replay older histories, and capture an ordinary unchosen
+world with supported swings. Report mass, mass-centre shifts and supported
+contact area without inventing per-foot reaction forces or strength limits.
+
+Findings, 2026-10-26: `embodiment::support::centre_local` weights rest pivots
+by box volume, rounded to whole cells. `walking::Checks` prepares that centre
+once, so solved limb skins cannot move it. Isometer's chain solver already
+provides the posed link endpoints and pad, and `meaning::mass` reads exact
+matter from a ledger. Isocosm owns the mass reading; geometry remains in
+Isometer and the existing support polygon remains the admission machinery.
+
+Progress, 2026-10-26: new physical foundings save `Walking.balance = true`.
+Isocosm reads each living part's current matter ledger; Isometer's existing
+graph pivots, paid capsule midpoints and pad centres supply its placement.
+Fixed-point i128 moments retain sub-cell precision. The same reading reaches
+standing, neighbours, arrival admission, supported pivots, gait planning and
+complete validation, including native births and runtime pose refresh. Mass
+snapshots participate in route keys; changing a context clears its dependent
+posture/admission/grounding readings. Older saved rules keep their old law.
+
+409 controls pass: 289 native, eight shared-leg, 111 receiving and the explicit
+cached/uncached cold-failure comparison. Twenty-five existing opt-in tests are
+skipped; one older eighteen-seed play control is filtered. Thirteen older
+histories and the new history replay exactly. The inspector initially treated
+departed visits as occupants, reporting a false later-route collision. Its
+occupancy filter now matches native current-site/current-visit semantics;
+the original failure and corrected inspection remain in the receipt packet.
+
+The unchosen clock draw starts at `1793059475430350300`; the existing search
+accepts candidate 19/128, seed `12743438241358451287`. Three ordinary ticks
+produce 39 verified food steps across 19 walkers, hash `99077b277fd86c1a`.
+All 5,031 sampled gait phases have supported posed mass centres. The actual
+24-frame motion capture has 14 supported swing frames, 20 weight shifts,
+zero projection failures and no reported visible native-box intersections;
+18/21 comparable same-cut pairs change pixels. Developer intents stay zero.
+
+Measured part matter is 10 mg for every sampled walker. Bearing feet range
+from three to four, summed supported pad contact cells from 7 to 48, and
+aggregate mass/contact cell from 0.208 to 1.429 mg (median 0.476). Both link
+cross-section readings are 9 in native anatomy units. The posed centre lies
+1.587-3.632 cells horizontally from the former rest-volume proxy; straight
+step articulation moves the body-relative centre by up to 1.215 cells.
+These are quasi-static part-lumped readings, with pad contacts summed per
+foot, not a per-foot force split. This short draw does not sample grown mass
+or varied link sections and cannot calibrate strength constants. Frame timing
+shares the machine with compilation; no latency comparison is claimed.
+
+The remaining strength phase: a limb's actuation scales with its cross-section
+and a body's mass with its
 volume, so a long slender link reaches but carries less and a stout one bears
 more. The constants are Mark's; this phase proposes them with the measured
 range and builds nothing until they are numbered.

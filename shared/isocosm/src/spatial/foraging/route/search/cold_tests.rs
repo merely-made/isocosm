@@ -51,6 +51,8 @@ fn retained_cold_failures_keep_their_search_census_with_fewer_posture_evaluation
                     .filter_map(|(id, _)| sim.current_placed_boxes(id, at.site).map(|b| (id, b)))
                     .collect();
                 let input = Input {
+                    balance: embodiment::balance_for(&sim, sim.body_at_start(actor).unwrap())
+                        .unwrap(),
                     actor,
                     site: at.site,
                     terrain: sim

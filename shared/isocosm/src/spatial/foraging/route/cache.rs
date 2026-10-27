@@ -27,6 +27,7 @@ impl Input {
             && self.reach == other.reach
             && self.nodes == other.nodes
             && self.walking == other.walking
+            && self.balance == other.balance
     }
 }
 impl Cache {

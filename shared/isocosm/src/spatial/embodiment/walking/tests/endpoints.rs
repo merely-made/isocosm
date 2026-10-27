@@ -3,6 +3,35 @@
 use super::*;
 
 #[test]
+fn a_heavy_swinging_foot_changes_the_actual_sampled_support_answer() {
+    let v = volume();
+    let doc = quadruped();
+    let pose = Grounding::new(&v)
+        .with_articulation(true)
+        .at(&doc, 384, 384, Yaw::Zero)
+        .unwrap();
+    let legs = isometer_core::legs::chains(&doc);
+    let foot = legs[0].foot;
+    let opposite = legs.last().unwrap().foot;
+    let mut f = frame(&pose).unwrap();
+    f.bearing.remove(&foot);
+    let centred =
+        Balance::from_parts(&doc, [(doc.root, 1000), (opposite, 100), (foot, 1)]).unwrap();
+    let loaded = Balance::from_parts(&doc, [(doc.root, 1), (foot, 1000)]).unwrap();
+    let mut checks = Checks::new(&v, &doc, &[]).with_balance(Some(centred));
+    assert!(checks.evaluate(&f, pose.yaw).unwrap().1.is_ok());
+    let mut checks = checks.with_balance(Some(loaded));
+    assert!(
+        checks
+            .evaluate(&f, pose.yaw)
+            .unwrap()
+            .1
+            .unwrap_err()
+            .contains("posed matter centre")
+    );
+}
+
+#[test]
 fn arrival_reuse_preserves_stance_order_and_keeps_residents_out_of_terrain_admission() {
     let volume = volume();
     let doc = quadruped();

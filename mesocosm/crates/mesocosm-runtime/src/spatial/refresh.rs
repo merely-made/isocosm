@@ -70,7 +70,7 @@ impl Placement {
         let window = &self.window;
         let (volume, places) = cache.get(sim, self.site.0, window, self.places.unwrap_or_else(Rules::default))?;
         if isocosm::spatial::embodiment::enabled(sim) {
-            isocosm::spatial::embodiment::check_for(sim, volume, member.body.as_ref().ok_or("native body absent")?,
+            isocosm::spatial::embodiment::check_member(sim, volume, member,
                 &self.pose.clone())?;
         }
         let mut next = self.clone();

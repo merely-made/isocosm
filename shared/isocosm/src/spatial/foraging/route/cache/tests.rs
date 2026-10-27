@@ -9,6 +9,28 @@ fn input(sim: &Simulation) -> Input {
 }
 
 #[test]
+fn actual_matter_changes_invalidate_the_physical_route_cache() {
+    let sim = terrain();
+    let mut input = input(&sim);
+    let cache = Cache::default();
+    let foot = isometer_core::legs::chains(&input.document)[0].foot;
+    for amount in [1, 100] {
+        input.balance = Some(
+            embodiment::Balance::from_parts(
+                &input.document,
+                [(input.document.root, 10000), (foot, amount)],
+            )
+            .unwrap(),
+        );
+        assert_eq!(
+            cache.find(input.clone()).unwrap(),
+            search::find(&input).unwrap()
+        );
+    }
+    assert_eq!(cache.0.lock().unwrap().len(), 2);
+}
+
+#[test]
 fn distant_movement_reuses_the_route_but_a_local_blocker_invalidates_it() {
     let sim = terrain();
     let cache = Cache::default();

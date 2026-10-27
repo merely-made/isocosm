@@ -43,6 +43,7 @@ struct Input {
     reach: u64,
     nodes: usize,
     walking: Option<embodiment::Walking>,
+    balance: Option<embodiment::Balance>,
 }
 
 impl Simulation {
@@ -111,11 +112,9 @@ impl Simulation {
             .get(walk)
             .ok_or("step profile absent")?;
         let terrain = self.site_geometry(at.site, window, profile.places)?;
-        let document = self
-            .body_at_start(actor)
-            .and_then(|e| e.body.as_ref())
-            .ok_or("walking body absent")?;
-        embodiment::check_for(self, &terrain.volume, document, &at.pose)?;
+        let member = embodiment::motion_member(self, actor)?;
+        let document = member.body.as_ref().ok_or("walking body absent")?;
+        embodiment::check_member(self, &terrain.volume, member, &at.pose)?;
         let input = Input {
             actor,
             site: at.site,
@@ -124,6 +123,7 @@ impl Simulation {
             before: at.pose.clone(),
             profile: profile.clone(),
             walking: embodiment::walking_rules(self),
+            balance: embodiment::balance_for(self, member)?,
             foods,
             reach: f.reach,
             nodes: f.nodes,

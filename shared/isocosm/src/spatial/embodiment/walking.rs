@@ -17,6 +17,10 @@ use checks::boxes_at;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Walking {
+    /// Native part matter at the currently solved limb centres. Historical
+    /// policies omit this and retain their rest-volume balance law.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub balance: bool,
     /// Admit supported pivots; omission preserves earlier walking semantics.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub turns: bool,
@@ -37,6 +41,7 @@ pub struct Walking {
 impl Default for Walking {
     fn default() -> Self {
         Self {
+            balance: false,
             turns: true,
             stances: 4,
             clearance: true,
@@ -170,11 +175,10 @@ fn check_stride_with(
     stride: &Stride,
 ) -> Result<()> {
     let _span = crate::profile::Span::new("walking.check");
-    let (volume, document) = (checks.volume, checks.document);
     if stride.turn != 0 {
-        turns::validate(volume, document, from, to, rules, stride)?;
+        turns::validate(checks, from, to, rules, stride)?;
     } else {
-        validate(volume, document, from, to, rules, stride)?;
+        validate(checks, from, to, rules, stride)?;
     }
     samples(
         checks,
@@ -189,8 +193,7 @@ fn check_stride_with(
     )
 }
 fn validate(
-    volume: &Volume,
-    document: &BodyDocument,
+    checks: &mut Checks<'_>,
     from: &Pose,
     to: &Pose,
     rules: Walking,
@@ -205,8 +208,8 @@ fn validate(
     {
         return Err("weight transfer differs from its bounded walking policy".into());
     }
-    check(volume, document, from)?;
-    check(volume, document, to)?;
+    checks.admit(from)?;
+    checks.admit(to)?;
     let a = from.at.map(|v| v * UNIT);
     let b = to.at.map(|v| v * UNIT);
     let feet = foot_points(from)?;
@@ -281,7 +284,6 @@ fn plan_straight(
     rules: Walking,
     tried: &mut usize,
 ) -> Result<Stride> {
-    let (volume, document) = (checks.volume, checks.document);
     if !rules.valid()
         || from.yaw != to.yaw
         || from.feet.is_empty()
@@ -289,8 +291,8 @@ fn plan_straight(
     {
         return Err("weight transfer needs a bounded adjacent articulated step".into());
     }
-    check(volume, document, from)?;
-    check(volume, document, to)?;
+    checks.admit(from)?;
+    checks.admit(to)?;
     let stride = plan_at(
         checks,
         &frame(from)?,
@@ -300,7 +302,7 @@ fn plan_straight(
         rules,
         tried,
     )?;
-    validate(volume, document, from, to, rules, &stride)?;
+    validate(checks, from, to, rules, &stride)?;
     Ok(stride)
 }
 fn plan_at(
@@ -328,7 +330,6 @@ fn plan_at(
         .map(|(id, _)| *id)
         .collect();
     let total = remaining.len();
-    let centre = support::centre_rotated(document, Rotation::at(yaw, angle))?;
     while !remaining.is_empty() {
         let nominal = [0, 1, 2].map(|k| {
             if k == 1 {
@@ -344,6 +345,7 @@ fn plan_at(
             bearing: feet.keys().copied().collect(),
         };
         let local = local_feet(&current, yaw)?;
+        let centre = checks.centre(&local, Rotation::at(yaw, angle))?;
         let mut candidates = Vec::new();
         for &foot in &remaining {
             let bearing = feet.keys().copied().filter(|id| *id != foot).collect();
@@ -458,22 +460,7 @@ pub fn check_walk(
     stride: Option<&Stride>,
     blocked: &[Box3],
 ) -> Result<()> {
-    if let Some(rules) = rules.filter(|r| !from.feet.is_empty() && (from.yaw == to.yaw || r.turns))
-    {
-        return check_stride(
-            volume,
-            document,
-            from,
-            to,
-            rules,
-            stride.ok_or("walking step lacks its admitted weight-transfer plan")?,
-            blocked,
-        );
-    }
-    if stride.is_some() {
-        return Err("weight-transfer plan has no matching walking policy".into());
-    }
-    sweep_clear(volume, document, from, to, blocked)
+    Checks::new(volume, document, blocked).check_walk(from, to, rules, stride)
 }
 
 pub fn step_stride(

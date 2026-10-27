@@ -53,7 +53,7 @@ impl Game {
                 continue;
             }
             for stand in stands {
-                let w = body::site_window(templates,stand.at);
+                let w = body::site_window(templates, stand.at);
                 let geometry = native.sim.site_geometry(site, &w, templates.places)?;
                 let places = &geometry.places;
                 let id = stand.actor.ok_or("whole-body stand actor absent")?;
@@ -159,7 +159,9 @@ impl Game {
         &self,
         session: &Session,
     ) -> Result<Vec<native::ArrivalResolution>, String> {
-        if body::whole_site(&session.sim) { return self.site_arrivals(session); }
+        if body::whole_site(&session.sim) {
+            return self.site_arrivals(session);
+        }
         let t = session
             .sim
             .genesis()
@@ -237,6 +239,7 @@ impl Game {
                 let Some(document) = &member.body else {
                     continue;
                 };
+                grounding = grounding.with_balance(body::balance_for(&session.sim, member)?);
                 let centre = if body::articulated(&session.sim) {
                     body::anchor(session.sim.genesis().seed, destination, id, &t.window)
                 } else {
@@ -357,12 +360,14 @@ impl Game {
         let before = at.pose.clone();
         let blocked = self.occupied(&pending.sim, r.site, Some(r.actor))?;
         let walking = body::walking_rules(&pending.sim);
-        let available: Vec<_> = body::neighbours_with_walking(&volume, &places, profile, document, &before, walking)
-            .into_iter()
-            .filter(|pose| {
-                body::boxes(document, pose).is_ok_and(|boxes| !body::intersects(&boxes, &blocked))
-            })
-            .collect();
+        let available: Vec<_> =
+            body::neighbours_for(&pending.sim, r.actor, &volume, &places, profile, &before)?
+                .into_iter()
+                .filter(|pose| {
+                    body::boxes(document, pose)
+                        .is_ok_and(|boxes| !body::intersects(&boxes, &blocked))
+                })
+                .collect();
         if available.is_empty() {
             return Err("no supported unoccupied whole-body walking neighbour".into());
         }
@@ -379,12 +384,27 @@ impl Game {
             .eye;
         let eye = std::array::from_fn(|k| after.at[k] + offset[k]);
         let strides = if walking.is_some() {
-            vec![body::step_stride(&volume,document,&before,&after,walking,&blocked)?]
-        } else {Vec::new()};
+            vec![body::step_for(
+                &pending.sim,
+                r.actor,
+                &volume,
+                &before,
+                &after,
+                &blocked,
+            )?]
+        } else {
+            Vec::new()
+        };
         let geometry = native::Geometry {
             strides,
-            window: pending.sim.genesis().rules.spatial_templates.as_ref()
-                .map(|t| body::site_window(t,after.at)).unwrap_or_else(||at.window.clone()),
+            window: pending
+                .sim
+                .genesis()
+                .rules
+                .spatial_templates
+                .as_ref()
+                .map(|t| body::site_window(t, after.at))
+                .unwrap_or_else(|| at.window.clone()),
             path: vec![before, after],
             eye,
         };
@@ -451,6 +471,7 @@ impl Game {
             parent.pose.yaw
         };
         let pose = body::Grounding::new(&volume)
+            .with_balance(body::balance_for(&pending.sim, child)?)
             .with_walking(t.walking)
             .with_articulation(modern)
             .with_spacing(t.body_spacing)
@@ -486,7 +507,7 @@ impl Game {
             offset_from_parent: offset,
             yaw_from_parent: inverse.compose(pose.yaw),
             eye_from_child: eye,
-            window: body::site_window(t,pose.at),
+            window: body::site_window(t, pose.at),
             feet: pose.feet,
         })
     }

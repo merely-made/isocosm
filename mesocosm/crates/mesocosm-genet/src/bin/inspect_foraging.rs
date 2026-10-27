@@ -12,7 +12,7 @@ mod probe;
 
 fn main() -> Result<(), String> {
     let path = std::env::args().nth(1).ok_or(
-        "inspect_foraging <world trace> [--census | --probe [--actors=6,19] [--try-walking]]",
+        "inspect_foraging <world trace> [--loads | --census | --probe [--actors=6,19] [--try-walking]]",
     )?;
     let saved = mesocosm_genet::played::read_trace(Path::new(&path))?;
     let started = Instant::now();
@@ -96,10 +96,40 @@ fn main() -> Result<(), String> {
             } else {
                 None
             };
+            let mut loads = Vec::new();
+            if std::env::args().any(|arg| arg == "--loads") {
+                let g = answer.geometry.as_ref().unwrap();
+                let terrain = pending.sim.site_geometry(
+                    r.site,
+                    &g.window,
+                    pending.sim.genesis().rules.step_profiles[&r.profile].places,
+                )?;
+                for (i, pair) in g.path.windows(2).enumerate() {
+                    if let Some(stride) = g.strides.get(i).and_then(Option::as_ref) {
+                        for sample in 0..=stride.samples() {
+                            let load = isocosm::spatial::embodiment::stride_load(
+                                &pending.sim,
+                                r.actor,
+                                &terrain.volume,
+                                &pair[0],
+                                &pair[1],
+                                stride,
+                                sample * 1024 / stride.samples(),
+                            )?;
+                            if !load.supported {
+                                return Err(
+                                    "accepted step has an unsupported posed mass centre".into()
+                                );
+                            }
+                            loads.push(load);
+                        }
+                    }
+                }
+            }
             witnesses.push(
                 serde_json::json!({"tick":r.tick,"actor":r.actor,"food":target,
                 "process":r.process,"action":r.action,"search":policy.search,"detection":detection,
-                "path":answer.geometry.as_ref().unwrap().path,"route":route}),
+                "path":answer.geometry.as_ref().unwrap().path,"route":route,"loads":loads}),
             );
         }
     }

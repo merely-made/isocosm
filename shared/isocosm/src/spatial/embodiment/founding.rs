@@ -36,7 +36,7 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
         return Ok(());
     }
     super::super::foraging::declare_senses(genesis);
-    templates.walking = Some(Walking::default());
+    templates.walking = Some(Walking { balance: true, ..Walking::default() });
     let guide = Simulation::new(genesis.clone(), crate::Execution::Grouped)?;
     let view = View::of(genesis)?;
     let side =
@@ -98,6 +98,8 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
             let Some(document) = e.body.as_ref() else {
                 continue;
             };
+            grounding = grounding.with_balance(templates.walking.filter(|r| r.balance)
+                .map(|_| Balance::of(e,&genesis.rules)).transpose()?);
             let yaw = (0..crate::draw(genesis.seed, "body-stand-yaw", &[site, id]) % 4)
                 .fold(Yaw::Zero, |yaw, _| yaw.compose(Yaw::Quarter));
             let edible = guide.placement_food(id, site);

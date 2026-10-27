@@ -29,6 +29,7 @@ pub(crate) struct Checks<'a> {
     times: [usize; 7],
 }
 struct Body {
+    balance: Option<Balance>,
     chains: Vec<legs::Leg>,
     rest: Result<Vec<(PartId, Box3)>>,
     centre: [i64; 3],
@@ -36,6 +37,7 @@ struct Body {
 impl Body {
     fn new(document: &BodyDocument) -> Self {
         Self {
+            balance: None,
             chains: legs::chains(document),
             rest: boxes(document, &Pose::default()).map(|rest| {
                 document
@@ -83,6 +85,48 @@ impl Body {
     }
 }
 impl<'a> Checks<'a> {
+    pub(crate) fn with_balance(mut self, balance: Option<Balance>) -> Self {
+        self.entries.clear();
+        self.admissions.clear();
+        self.body.balance = balance.clone();
+        self.grounding.set_balance(balance);
+        self
+    }
+    pub(super) fn centre(
+        &self,
+        feet: &BTreeMap<PartId, [i64; 3]>,
+        rotation: Rotation,
+    ) -> Result<[i64; 3]> {
+        match &self.body.balance {
+            Some(balance) => balance.at(self.document, feet, rotation),
+            None => rotation
+                .rotate(self.body.centre)
+                .ok_or("turn centre overflow".into()),
+        }
+    }
+    pub(crate) fn check_walk(
+        &mut self,
+        from: &Pose,
+        to: &Pose,
+        rules: Option<Walking>,
+        stride: Option<&Stride>,
+    ) -> Result<()> {
+        if let Some(rules) =
+            rules.filter(|r| !from.feet.is_empty() && (from.yaw == to.yaw || r.turns))
+        {
+            return check_stride_with(
+                self,
+                from,
+                to,
+                rules,
+                stride.ok_or("walking step lacks its admitted weight-transfer plan")?,
+            );
+        }
+        if stride.is_some() {
+            return Err("weight-transfer plan has no matching walking policy".into());
+        }
+        sweep_clear(self.volume, self.document, from, to, self.blocked)
+    }
     #[cfg(test)]
     pub(crate) fn without_reuse(mut self) -> Self {
         self.entries.set_capacity(0);
@@ -178,7 +222,7 @@ impl<'a> Checks<'a> {
         self.admission_reads += 1;
         if !self.admissions.enabled() {
             self.admission_misses += 1;
-            return check(self.volume, self.document, pose);
+            return check_balanced(self.volume, self.document, pose, self.body.balance.as_ref());
         }
         let key = (
             pose.at,
@@ -223,6 +267,7 @@ impl<'a> Checks<'a> {
         self.supported(
             origin,
             rotation,
+            &skins,
             &shapes.pads,
             &pose.feet.keys().copied().collect(),
         )
@@ -231,15 +276,26 @@ impl<'a> Checks<'a> {
         &mut self,
         origin: [i64; 3],
         rotation: Rotation,
+        skins: &[legs::Skin],
         pads: &BTreeMap<PartId, narrow::Pad>,
         bearing: &BTreeSet<PartId>,
     ) -> Result<()> {
-        let centre = rotation
-            .rotate(self.body.centre)
-            .ok_or("turn centre overflow")?;
+        let centre = match &self.body.balance {
+            Some(balance) => rotation
+                .rotate(balance.centre(self.body.chains.iter().zip(skins))?)
+                .ok_or("posed centre rotation overflow")?,
+            None => rotation
+                .rotate(self.body.centre)
+                .ok_or("turn centre overflow")?,
+        };
         let hull = self.bearing.hull(pads, bearing)?;
         if !polygon::contains(&hull, [centre[0] + origin[0], centre[2] + origin[2]]) {
-            return Err("body volume centre leaves its bearing-foot polygon".into());
+            return Err(if self.body.balance.is_some() {
+                "posed matter centre leaves its bearing-foot polygon"
+            } else {
+                "body volume centre leaves its bearing-foot polygon"
+            }
+            .into());
         }
         Ok(())
     }
@@ -331,7 +387,8 @@ impl<'a> Checks<'a> {
             self.times[5] += time.ns();
             cleared?;
             let time = Clock::new();
-            let supported = self.supported(frame.root, rotation, &shapes.pads, &frame.bearing);
+            let supported =
+                self.supported(frame.root, rotation, &skins, &shapes.pads, &frame.bearing);
             self.times[6] += time.ns();
             supported
         })();

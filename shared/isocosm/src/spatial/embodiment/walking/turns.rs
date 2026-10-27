@@ -4,8 +4,7 @@
 use super::*;
 
 pub(super) fn validate(
-    volume: &Volume,
-    doc: &BodyDocument,
+    checks: &mut Checks<'_>,
     from: &Pose,
     to: &Pose,
     rules: Walking,
@@ -21,8 +20,8 @@ pub(super) fn validate(
     {
         return Err("turn differs from its bounded walking policy".into());
     }
-    check(volume, doc, from)?;
-    check(volume, doc, to)?;
+    checks.admit(from)?;
+    checks.admit(to)?;
     let mut feet = foot_points(from)?;
     let mut angle = 0;
     let direction = i64::from(stride.turn);
@@ -63,18 +62,18 @@ fn planted(root: [i64; 3], feet: BTreeMap<PartId, [i64; 3]>, turn: i64) -> Strid
     }
 }
 fn balanced(
-    volume: &Volume,
-    doc: &BodyDocument,
+    checks: &Checks<'_>,
     mut frame: StrideFrame,
     yaw: Yaw,
     from: &Pose,
     to: &Pose,
     rules: Walking,
 ) -> Result<StrideFrame> {
+    let (volume, doc) = (checks.volume, checks.document);
     let rotation = Rotation::at(yaw, frame.turn);
     let local = local_feet(&frame, yaw)?;
     let hull = support::bearing_rotated(volume, doc, &local, frame.root, rotation, &frame.bearing)?;
-    let centre = support::centre_rotated(doc, rotation)?;
+    let centre = checks.centre(&local, rotation)?;
     let at = polygon::balance(
         &hull,
         [frame.root[0] + centre[0], frame.root[2] + centre[2]],
@@ -232,7 +231,7 @@ fn attempt(
     direction: i8,
     tried: &mut usize,
 ) -> Result<Stride> {
-    let (volume, doc) = (checks.volume, checks.document);
+    let doc = checks.document;
     let mut current = frame(from)?;
     let mut stages = Vec::new();
     if current.root[1] != root[1] {
@@ -264,8 +263,7 @@ fn attempt(
             }
             let result: Result<_> = (|| {
                 let before = balanced(
-                    volume,
-                    doc,
+                    checks,
                     planted(root, world.clone(), angle),
                     from.yaw,
                     from,
@@ -273,8 +271,7 @@ fn attempt(
                     rules,
                 )?;
                 let after = balanced(
-                    volume,
-                    doc,
+                    checks,
                     planted(root, world, next_angle),
                     from.yaw,
                     from,
@@ -330,14 +327,13 @@ pub(super) fn plan(
     to: &Pose,
     rules: Walking,
 ) -> Result<Stride> {
-    let (volume, doc) = (checks.volume, checks.document);
     let direction = Rotation::quarter_turn(from.yaw, to.yaw)
         .ok_or("a supported turn is one quarter at a time")?;
     if !rules.valid() || from.feet.is_empty() || (0..3).any(|k| from.at[k].abs_diff(to.at[k]) > 1) {
         return Err("turn needs a bounded adjacent articulated step".into());
     }
-    check(volume, doc, from)?;
-    check(volume, doc, to)?;
+    checks.admit(from)?;
+    checks.admit(to)?;
     checks.grounding.set_walking(Some(rules));
     let mut tried = 0usize;
     let mut why = "no paid sequence of smaller pivots".to_string();

@@ -56,7 +56,8 @@ struct Vertex {
 
 pub(super) fn find(input: &Input) -> Result<RouteSearch> {
     let mut strides =
-        embodiment::StrideChecks::new(&input.terrain.volume, &input.document, &input.blocked);
+        embodiment::StrideChecks::new(&input.terrain.volume, &input.document, &input.blocked)
+            .with_balance(input.balance.clone());
     find_using(input, &mut strides)
 }
 fn find_using(input: &Input, strides: &mut embodiment::StrideChecks<'_>) -> Result<RouteSearch> {

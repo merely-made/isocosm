@@ -10,6 +10,13 @@ use isometer_core::BodyDocument;
 use isometer_space::{places::Places, volume::Volume};
 
 mod articulation;
+mod balance;
+use balance::check_balanced;
+pub(crate) use balance::motion_member;
+pub use balance::{
+    Balance, FootLoad, Load, balance_for, check_member, check_motion, neighbours_for, step_for,
+    stride_load,
+};
 mod contacts;
 mod food;
 mod footholds;
@@ -228,6 +235,7 @@ pub(crate) fn translated(local: &[Box3], at: [i64; 3]) -> Result<Vec<Box3>> {
 /// Highest terrain cells are read from Ground, including edits and water.
 /// Reused across a bounded stand/path search, never persisted as authority.
 pub struct Grounding<'a> {
+    balance: Option<Balance>,
     costs: steps::Costs,
     volume: &'a Volume,
     tops: BTreeMap<[i64; 2], i64>,
@@ -242,6 +250,16 @@ pub struct Grounding<'a> {
 }
 
 impl<'a> Grounding<'a> {
+    pub fn with_balance(mut self, balance: Option<Balance>) -> Self {
+        self.set_balance(balance);
+        self
+    }
+    fn set_balance(&mut self, balance: Option<Balance>) {
+        if self.balance != balance {
+            self.articulated_stands.clear();
+        }
+        self.balance = balance;
+    }
     pub fn with_walking(mut self, walking: Option<Walking>) -> Self {
         self.set_walking(walking);
         self
@@ -254,6 +272,7 @@ impl<'a> Grounding<'a> {
     }
     pub fn new(volume: &'a Volume) -> Self {
         Self {
+            balance: None,
             costs: Default::default(),
             volume,
             tops: BTreeMap::new(),

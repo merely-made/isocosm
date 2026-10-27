@@ -22,6 +22,10 @@ impl<K: Ord + Clone, V> Memo<K, V> {
     pub fn len(&self) -> usize {
         self.entries.len()
     }
+    pub fn clear(&mut self) {
+        self.entries.clear();
+        self.order.clear();
+    }
     pub fn get(&self, key: &K) -> Option<&V> {
         self.entries.get(key)
     }

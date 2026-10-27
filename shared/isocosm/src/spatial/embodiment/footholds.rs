@@ -121,7 +121,7 @@ pub(super) fn poses(
             return Err("nearby foothold posture budget exhausted".into());
         }
         let pose = Pose { at, yaw, feet };
-        if check(g.volume, doc, &pose).is_ok() {
+        if check_balanced(g.volume, doc, &pose, g.balance.as_ref()).is_ok() {
             return Ok(Some(pose));
         }
     }

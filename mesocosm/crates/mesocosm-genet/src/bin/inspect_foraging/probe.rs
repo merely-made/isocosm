@@ -78,10 +78,10 @@ pub(super) fn verify(
         .state()
         .population
         .get(r.actor)
-        .unwrap()
+        .ok_or("verified actor absent")?
         .body
         .as_ref()
-        .unwrap();
+        .ok_or("verified body absent")?;
     let templates = sim.genesis().rules.spatial_templates.as_ref().unwrap();
     let window = body::site_window(templates, route.path[0].at);
     let profile = &sim.genesis().rules.step_profiles[&r.profile];
@@ -91,40 +91,36 @@ pub(super) fn verify(
         .spatial_poses
         .iter()
         .filter(|(id, at)| **id != r.actor && at.site == r.site)
-        .flat_map(|(id, at)| {
-            body::boxes(
-                sim.state()
-                    .population
-                    .get(*id)
-                    .unwrap()
-                    .body
-                    .as_ref()
-                    .unwrap(),
-                &at.pose,
-            )
-            .unwrap()
+        .filter_map(|(id, at)| {
+            let member = sim.state().population.get(*id)?;
+            if member.resident_site() != Some(r.site) || member.arrived != at.arrived {
+                eprintln!("verify actor {} tick {}: ignore stale visit {} (current site {:?}, current visit {}, pose visit {})",
+                    r.actor,r.tick,id,member.resident_site(),member.arrived,at.arrived);
+                return None;
+            }
+            body::boxes(member.body.as_ref()?, &at.pose).ok()
         })
+        .flatten()
         .collect();
-    let walking = body::walking_rules(sim);
     for (index, pair) in route.path.windows(2).enumerate() {
-        if !body::neighbours_with_walking(
+        if !body::neighbours_for(
+            sim,
+            r.actor,
             &geometry.volume,
             &geometry.places,
             profile,
-            document,
             &pair[0],
-            walking,
-        )
+        )?
         .contains(&pair[1])
         {
             return Err("complete route crosses an unavailable native neighbour".into());
         }
-        body::check_walk(
+        body::check_motion(
+            sim,
+            r.actor,
             &geometry.volume,
-            document,
             &pair[0],
             &pair[1],
-            walking,
             route.strides.get(index).and_then(Option::as_ref),
             &blocked,
         )?;

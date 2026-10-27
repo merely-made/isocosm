@@ -62,6 +62,7 @@ pub(in crate::spatial::foraging::route) fn control_input(sim: &Simulation) -> In
         })
         .unwrap();
     Input {
+        balance: None,
         actor: 1,
         site: 0,
         terrain: terrain.clone(),
