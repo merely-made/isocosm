@@ -202,6 +202,15 @@ impl Simulation {
                 .map(|p| p.id.clone())
                 .collect();
         }
+        let risky = definition.risk.as_ref().is_some_and(|r| {
+            crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
+                < u64::from(r.per_million)
+        });
+        // A risk that does not fall, on a process that otherwise does
+        // nothing, is no act: nothing is staged, numbered or written (E7b).
+        if !risky && definition.risk.is_some() && definition.effects.is_empty() && definition.commitments.is_empty() {
+            return refused(receipt, Outcome::Blocked("the risk did not fall".into()));
+        }
         // Writes go to a stage of what the act binds, never to the world,
         // until every check below has passed.
         let mut stage = match self.stage((actor, target), place, part, count, act) {
@@ -219,10 +228,6 @@ impl Simulation {
             Run::Scheduled(shares) => stage.shares = shares,
             Run::Act => {},
         }
-        let risky = definition.risk.as_ref().is_some_and(|r| {
-            crate::draw(self.genesis.dynamics_seed(), &id, &[actor]) % 1_000_000
-                < u64::from(r.per_million)
-        });
         let outcomes = if risky {
             &definition.risk.as_ref().unwrap().effects
         } else {

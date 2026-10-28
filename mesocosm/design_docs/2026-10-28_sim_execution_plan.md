@@ -1,7 +1,7 @@
 # The sim's execution model: speed, waking, parallel evaluation, near and far
 
 **Status:** 2026-10-28: cut from `2026-10-19_sim_execution_plan.md`, plus the speed items of `2026-10-14_sim_host_plan.md`, `2026-09-22_sim_plan.md`, `2026-09-11_orthographic_voxel_presentation_plan.md` and `2026-10-22_foot_placement_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20); the head at 10 ticks a second (D21). Open: E7b (death on the queue), then E4 and E5 (D17); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
+`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20); the head at 10 ticks a second (D21); a missed risk on a process that otherwise does nothing makes no act (E7b). Open: E4 and E5 (D17, D22); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
 
 **For:** every tick-latency, frame and search-time bar in the family, and the execution work that serves them: waking (E1), draw keys (E2), parallel evaluation (E3), the crowd in the core (E4), crossings and the tier line (E5), rate models (E6), the host's latency bars, cold-route and startup search time, and the scale and scheduler-waste items. This is the only plan that states a speed number; others name `sim-execution` and do not restate it.
 
@@ -344,3 +344,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: E7a built: a played world keeps strain as a rate (`strain.rs`, `Mind::rate`, `Entity::settled`).
 - 2026-10-28: E8 built: `Lineage::decides` paces a lineage's choice and move passes, offset by first identity.
 - 2026-10-28: D19 to D22: periods 10 / 2 / 5 in played worlds, meals scaled by period, the head at 10 ticks a second; choice-rule tests run unpaced (`directing::tests::unpaced`).
+- 2026-10-28: E7b built, simpler than planned: the per-tick hazard keeps its draw, but a draw that misses on a process with no other effect makes no act (`execute.rs`), so the empty accepted act each mature member took each tick is gone; the death tick is not drawn once.

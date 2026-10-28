@@ -111,6 +111,7 @@ pub fn genesis(seed: u64, side: u32, extent: u64) -> Result<Genesis> {
         traits: BTreeSet::new(),
         kingdom: kingdom.into(),
         development: None,
+        decides: None,
     };
     let mut sophont = lineage("kingdom:fauna");
     sophont.development = Some(body::install(&mut g.rules));
@@ -145,6 +146,7 @@ pub fn genesis(seed: u64, side: u32, extent: u64) -> Result<Genesis> {
         rise: 0,
         rise_traits: BTreeMap::new(),
         stake: 0,
+        rate: None,
     });
     r.accounts.insert("sim:strain".into(), AccountKind::Strain);
     // A sophont carves through its own ledger (412, 739).
@@ -189,6 +191,7 @@ pub(crate) fn legacy_genesis_v2(seed: u64, side: u32, extent: u64) -> Result<Gen
         traits: BTreeSet::new(),
         kingdom: kingdom.into(),
         development: None,
+        decides: None,
     };
     g.lineages.insert(SOPHONT.into(), lineage("kingdom:fauna"));
     for item in [FOOD, DRESSING, SCRAP] {
@@ -221,6 +224,7 @@ pub(crate) fn legacy_genesis_v2(seed: u64, side: u32, extent: u64) -> Result<Gen
         rise: 0,
         rise_traits: BTreeMap::new(),
         stake: 0,
+        rate: None,
     });
     r.accounts.insert("sim:strain".into(), AccountKind::Strain);
     // A sophont carves through its own ledger (412, 739).
