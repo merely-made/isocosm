@@ -66,7 +66,10 @@ fn full_site_founders_are_individual_and_distributed() {
 }
 
 fn site_control() -> (Session,Game,u64) {
-    let f=control(true,256,true);
+    site_of(control(true,256,true))
+}
+
+fn site_of(f: Fixture) -> (Session,Game,u64) {
     let mut g=f.session.sim.genesis().clone();
     let t=g.rules.spatial_templates.as_mut().unwrap();
     t.version=5;t.window.min=[0;2];t.window.max=[g.world.footprint.unwrap().side as i64;2];
@@ -116,6 +119,38 @@ fn an_actual_journey_uses_site_arrival_placement_and_restores() {
     assert_eq!(p.site.0,to);
     let t=session.sim.genesis().rules.spatial_templates.as_ref().unwrap();
     assert_eq!(p.window,native::embodiment::site_window(t,p.pose.at));
+    assert_eq!(session.sim.state().spatial_poses[&actor].pose,p.pose);
+    p.realized(&session.sim).unwrap();
+    game.validate_replay(&session).unwrap();
+}
+
+#[test]
+fn a_resting_body_whose_stance_stops_balancing_resettles_and_stays_realized() {
+    let (session,mut game,actor)=site_of(control(false,256,true));
+    let held=game.members[&actor].clone();
+    let site=held.site.0;
+    let t=session.sim.genesis().rules.spatial_templates.clone().unwrap();
+    let balanced=|s:&Session,pose:&native::Pose| {
+        let g=s.sim.site_geometry(site,&native::embodiment::site_window(&t,pose.at),t.places).unwrap();
+        native::embodiment::check_member(&s.sim,&g.volume,s.sim.state().population.get(actor).unwrap(),pose).is_ok()
+    };
+    assert!(balanced(&session,&held.pose));
+    // The ground goes from under its centre and one side (D38's case is its
+    // matter moving; either leaves the stance off balance).
+    let at=held.pose.at;
+    let sides=[([-2,-24],[24,24]),([-24,-24],[2,24]),([-24,-2],[24,24]),([-24,-24],[24,2])];
+    let (mut session,_)=sides.iter().map(|&(lo,hi)| {
+        let mut s=session.clone();
+        let edit=isometer_space::Edit { op:isometer_space::Op::Carve, shape:isometer_space::Shape::Box {
+            min:[at[0]+lo[0],at[1]-16,at[2]+lo[1]], max:[at[0]+hi[0]+1,at[1]+8,at[2]+hi[1]+1] } };
+        s.command(Command::Edit { site, edit, by:None }).unwrap();
+        let off=!balanced(&s,&held.pose);
+        (s,off)
+    }).find(|(_,off)| *off).expect("a side whose ground the stance needs");
+    let _=game.advance_clock(&mut session).unwrap();
+    let p=&game.members[&actor];
+    assert_ne!(p.pose,held.pose,"the body re-settled");
+    assert!(balanced(&session,&p.pose));
     assert_eq!(session.sim.state().spatial_poses[&actor].pose,p.pose);
     p.realized(&session.sim).unwrap();
     game.validate_replay(&session).unwrap();

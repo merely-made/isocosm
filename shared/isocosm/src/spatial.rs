@@ -23,6 +23,7 @@ mod birth_geometry;
 mod birth_command;
 mod templates;
 mod tier;
+mod settle;
 pub mod embodiment;
 pub mod foraging;
 pub use templates::{Templates, Stand, Crossing, STANDS as STANDS_PER_SITE};
@@ -40,7 +41,8 @@ pub enum Publication {
     Birth(Id),
     /// A member that left the physical path (the execution plan's E5).
     Unplaced(Id),
-    /// A member drawn into a camera's frame (E5), with what its placement needs.
+    /// A member drawn into a camera's frame (E5), or a resting member
+    /// re-settled (D38), with what its placement needs.
     Drawn { actor: Id, site: Id, pose: Pose, patch: PlaceId, arrived: Tick },
 }
 pub use advance::{Preparation, Prepared, SpatialAdvance};

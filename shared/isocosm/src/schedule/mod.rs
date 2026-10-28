@@ -157,9 +157,11 @@ impl Simulation {
             }
         }
         // Outside the near tier, members leave the physical path (E5) and
-        // fold into bands (E4).
+        // fold into bands (E4); posed members whose matter moved them off
+        // balance re-settle (D38).
         self.unplace_far();
         self.draw_into_frames();
+        self.settle_drifted();
         self.fold_far();
         Ok(work)
     }
