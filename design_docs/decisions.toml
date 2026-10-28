@@ -5238,6 +5238,14 @@ summary = "The head's target stays 10 ticks a second, revisited after the physic
 draws_on = ["sim-execution D21"]
 governs = ["mesocosm_genet::app::config"]
 
+[decisions."sim-execution D32"]
+title = "the camera's frame is a region (2026-10-28), applies Directing 5"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Directing and play"
+summary = "The head's view windows are an attention region; outside them members hold no pose."
+draws_on = ["742", "sim-execution D23", "sim-execution D25", "sim-execution D26", "sim-execution D30"]
+governs = ["isocosm::attention", "isocosm::spatial"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"

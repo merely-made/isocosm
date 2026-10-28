@@ -281,6 +281,18 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on sim-execution D21 · governs mesocosm_genet::app::config · summary The head's target stays 10 ticks a second, revisited after the physical work is cut.
 
+- **D32, the camera's frame is a region (2026-10-28), applies Directing 5:**
+  "Camera frame as a region (Recommended)". The head reports its view
+  windows (a site and voxel bounds) as an attention region; near is inside
+  a frame or a root. Far members hold no pose and forage at site grain;
+  members are drawn into a frame by its share of the site, placed by the
+  arrival policy, and fold back after the collection buffer once outside.
+  Asked after the Places cache proved to thrash because every member of a
+  one-site world walks it (a 1,024-window cache cut derivations from 356 to
+  156 at a 6.1 GB peak; reverted).
+
+  Links: area Directing and play · draws on 742, sim-execution D23, sim-execution D25, sim-execution D26, sim-execution D30 · governs isocosm::attention, isocosm::spatial · summary The head's view windows are an attention region; outside them members hold no pose.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -417,3 +429,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: D24 to D26: the aggregate runs a population model per site and lineage; near is the rendered area plus the roots; a band in ticks. Measured first: about 1.2 members per exact body state in played worlds (seeds 0 to 2, ticks 60 to 180).
 - 2026-10-28: D27 to D29: bands run through the scheduler, a representative plus a pool, bands by age and felt needs.
 - 2026-10-28: the head measured (D30, D31): Places re-derivation next, then far members off the physical path.
+- 2026-10-28: D32: the camera's frame is an attention region; the Places misses were first visits and LRU eviction across a one-site world's windows, not terrain change.
