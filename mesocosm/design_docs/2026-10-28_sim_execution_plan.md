@@ -1,7 +1,7 @@
 # The sim's execution model: speed, waking, parallel evaluation, near and far
 
 **Status:** 2026-10-28: cut from `2026-10-19_sim_execution_plan.md`, plus the speed items of `2026-10-14_sim_host_plan.md`, `2026-09-22_sim_plan.md`, `2026-09-11_orthographic_voxel_presentation_plan.md` and `2026-10-22_foot_placement_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c). Open: E7 (rates worked out when read) and E8 (decision periods per lineage), then E4 and E5 (D17); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
+`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8), their values per kind not yet set. Open: E7b (death on the queue), then E4 and E5 (D17); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
 
 **For:** every tick-latency, frame and search-time bar in the family, and the execution work that serves them: waking (E1), draw keys (E2), parallel evaluation (E3), the crowd in the core (E4), crossings and the tier line (E5), rate models (E6), the host's latency bars, cold-route and startup search time, and the scale and scheduler-waste items. This is the only plan that states a speed number; others name `sim-execution` and do not restate it.
 
@@ -307,6 +307,7 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: E2 is not built: bite and amount draws are still keyed by the act number (`stage/staged/meal.rs`, `stage/staged/mod.rs`); soma draws by id.
 - 2026-10-28: The crowd lives only in `shared/isocosm/src/probe/crowd/`; `TierLine` (`directing/tier.rs`) is exported and unwired.
 - 2026-10-28: The head's default is 2 ticks per second (`mesocosm-genet/src/app/config.rs`).
+- 2026-10-28: After E7a, rest (`harm/rest.rs`) is the largest pass: a Choice act and the first choice pass of each tick, so it carries every deciding member's deliberation; E8's periods are what cut it. The death hazards are a small share, so E7b is minor. A write outside an act (a command such as a wound) does not settle strain first, so the ticks before it accrue at the new mood.
 - 2026-10-28: What D15 to D17 touch: a process has one `period` for the world (`rules/mod.rs:193`); the queue is keyed by due tick, priority and id, and a pass walks every group or every filed one (`schedule/mod.rs`). Strain and relief run every tick for every member (`rules/mind.rs:50`); so do each lineage's death, age and, from maturity, hazard processes (`ecology.rs:133-190`). The agentless `body:hazard` acts once per world body, not per member (`harm/hazard.rs`). Bite and amount draws are keyed by the act number, so any phase removing accepted acts moves them until E2.
 - 2026-10-28: D4's order ("speed first: E1, E2, E3, then E4 and E5") was amended by D7 and D8, which inserted D7a, D7b, D9a, D11 and E1a before E1 completes; no later decision restates the order.
 - 2026-10-28: D9b and D10 are dropped (D11, D12); the old plan's status line and its phase list disagreed, and the cut lists neither as a phase.
@@ -315,3 +316,5 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 ## Progress
 - 2026-10-28: cut from `2026-10-19_sim_execution_plan.md` and the speed items of the sim host, sim, orthographic voxel presentation and foot placement plans.
 - 2026-10-28: D15 to D17 answered (decision periods per lineage, rates worked out when read, order); E1c built; D18 (checked in isolation while wired); E7 and E8 added.
+- 2026-10-28: E7a built: a played world keeps strain as a rate (`strain.rs`, `Mind::rate`, `Entity::settled`).
+- 2026-10-28: E8 built: `Lineage::decides` paces a lineage's choice and move passes, offset by first identity.

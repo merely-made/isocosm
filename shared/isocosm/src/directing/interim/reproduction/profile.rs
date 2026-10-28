@@ -120,7 +120,9 @@ fn check(g: &Genesis, original: bool) {
 /// Declared exploratory tweaks, applied after the base checks and only to a
 /// run that names them: `ISOCOSM_REPRO_TWEAK` is a comma list of `meal=N`,
 /// `upkeep=N`, `feed=N`, `gate=N`, `provision=N`, `bperiod=N` (consumer rates) and
-/// `lifebase=N` (every lineage's lifespan ceiling is N plus a draw of 0 to 40). Absent,
+/// `lifebase=N` (every lineage's lifespan ceiling is N plus a draw of 0 to 40), and
+/// `pdecide=N`, `cdecide=N`, `ddecide=N` (how often producers, consumers and
+/// decomposers decide, D15). Absent,
 /// the world is exactly the generator's stock rates or its A1 preset.
 fn tweak(g: &mut Genesis, lineages: u64, list: Option<&str>) {
     let Some(list) = list else { return };
@@ -171,7 +173,11 @@ fn tweak(g: &mut Genesis, lineages: u64, list: Option<&str>) {
                         }
                     }
                 },
+                ("pdecide", 0) | ("cdecide", 1) | ("ddecide", 2) => {
+                    g.lineages.get_mut(&format!("lineage:{i}")).unwrap().decides = Some(n);
+                },
                 ("meal" | "upkeep" | "feed" | "gate" | "provision" | "bperiod", _) => {},
+                ("pdecide" | "cdecide" | "ddecide", _) => {},
                 _ => panic!("unknown tweak {key}"),
             }
         }
