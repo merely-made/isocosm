@@ -7,7 +7,7 @@
 //! and a pool of what its members hold beyond count times the representative.
 //! Nothing the game points at folds: attention's roots, relations, nudged
 //! or released members, travellers, deliberative members, authored or
-//! placed characters.
+//! placed characters, members holding a pose.
 
 use crate::{
     anatomy::books,
@@ -74,7 +74,8 @@ impl Simulation {
             if !e.alive || held || e.method == Method::Deliberative {
                 continue;
             }
-            if s.attention.foreground(first, g.count) || pointed.range(first..first + g.count).next().is_some() {
+            let posed = s.spatial_poses.range(first..first + g.count).next().is_some();
+            if posed || s.attention.foreground(first, g.count) || pointed.range(first..first + g.count).next().is_some() {
                 continue;
             }
             let Some(site) = e.resident_site() else {

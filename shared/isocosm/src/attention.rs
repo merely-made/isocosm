@@ -130,6 +130,12 @@ impl Windows {
         self.released.iter().filter(|(_, until)| **until > tick).map(|(id, _)| *id).collect()
     }
 
+    /// Every camera frame an active window examines (D32).
+    pub(crate) fn frames(&self) -> Vec<Region> {
+        self.active.values().filter_map(|c| c.attention.examined.clone())
+            .filter(|r| matches!(r, Region::Frame { .. })).collect()
+    }
+
     pub(crate) fn foreground(&self, first: Id, count: u64) -> bool {
         self.root_cache.range(first..first + count).next().is_some()
     }
