@@ -36,3 +36,16 @@ advances; `body:rest` 448 s; `foraging.route.read` 446 s (8,642);
 `forecast.source_replay` 333 s (1); `terrain.places` 284 s (356);
 `walking.plan` 273 s (25,525); `body:walk:ability:cycle-1` 36 s;
 `foraging.sight.read` 19 s (14,703).
+
+Same seed and command, later the same day:
+
+| Tree | Wall | `schedule.total` | `terrain.places` | route search | walking plans | forecast |
+| --- | --- | --- | --- | --- | --- | --- |
+| `172d55ed` | 1,101 s | 748 s | 284 s (356) | 444 s (788) | 273 s | 333 s |
+| cache 1,024 (reverted) | 845 s | 536 s | 117 s (156) | 401 s | 242 s | 204 s |
+| E5a-b plus the frame | 613 s | 310 s | 325 s (475) | 7 s (24) | 5 s | 148 s |
+| `541d88af` (E5d) | 69 s | 14.5 s | 30.7 s (33, 26 at startup) | 8.3 s (29) | 5.7 s | 0.85 s |
+
+The 1,024-window cache peaked at 6.1 GB. In the frame-only run, 67 of 93
+Places misses over 25 ticks came from `check_arrival` on arrivals the game
+placed across the whole site. Living at tick 60: 123, 123, 118, 135.
