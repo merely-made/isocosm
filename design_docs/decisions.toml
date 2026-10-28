@@ -4962,6 +4962,24 @@ summary = "Existing paid body chains and function appearance connect to ordinary
 draws_on = ["511", "512", "531", "758"]
 governs = ["isocosm::datasheet::native", "isocosm::development", "mesocosm-genet::section"]
 
+[decisions."orthographic-voxel-presentation D3"]
+title = "the camera decides neither the sim nor the rendering (2026-10-28), refines D1"
+source = "mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md"
+
+[decisions."place-graph-engine D1"]
+title = "many projections of one store (2026-10-28), applies 18"
+source = "mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md"
+area = "World generation"
+summary = "2D, 2.5D and 3D views are non-destructive projections of one store, as many per thing as needed, a creature's senses among them."
+draws_on = ["18", "presentation.1"]
+
+[decisions."session-network D1"]
+title = "no rule against CRDTs (2026-10-28), refines Record 1"
+source = "design_docs/2026-10-28_session_network_plan.md"
+area = "Host and network"
+summary = "The no-CRDTs rule is withdrawn; whether an operation family needs a true CRDT is decided on its merits."
+draws_on = ["host.5", "record.1"]
+
 [decisions."sim-execution D1"]
 title = "draw keys (2026-10-19), refines Processes 7"
 source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
@@ -5111,6 +5129,14 @@ area = "Method and documents"
 summary = "While the sim is wired, a change is checked in isolation by its own tests, never against the previous build; validation of the whole is designed once it is wired."
 draws_on = ["791", "sim-execution D13"]
 amends = ["sim-execution D13"]
+
+[decisions."wing-organs D1"]
+title = "parked (2026-10-28), amends 279 and 673"
+source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"
+area = "Method and documents"
+summary = "Parked means not a priority; it never bars code or design, which are what unpark a rung."
+draws_on = ["279", "673"]
+amends = ["279", "673"]
 
 [statements."bodies.1"]
 title = "Forms"
