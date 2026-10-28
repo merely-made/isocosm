@@ -330,23 +330,23 @@ Anything of note runs as an individual; the fungible agree in distribution
 over every threshold later processes read, within a bound in the world's rules
 (0.2 per reading at first), certified beside a positive and a negative
 control, an arm failing past 1% refused draws. What was watched is logged;
-exact agreement is a world setting, statistical the default. The crowd keeps a
-histogram of exact states and calls the individual runner's own meanings; an
-attended group runs its noted members exactly; a parent and its unweaned young
-run as individuals. Where members per state fall below a world-rule bound, a
-site and lineage moves to a rate model calibrated on the bench once per rules
-digest, every switch receipted; with no certified model it stays exact. The
-crowd's own chooser covers autonomous territories only. Lifting samples
+exact agreement is a world setting, statistical the default. The aggregate
+runs a population model per site and lineage (counts by age band and
+condition, its matter, births, deaths, meals, upkeep and moves as rates),
+calling the individual runner's own meanings; an attended group runs its
+noted members exactly; a parent and its unweaned young run as individuals.
+The crowd's own chooser covers autonomous territories only. Lifting samples
 individuals from an aggregate by seed, conditioned on every asserted fact;
 restriction conserves the accounts back. A process is declarative enough for
 its aggregate to derive from its one definition, so scripted hooks run only in
 the foreground.
 
-*Not yet built:* rate models.
+*Not yet built:* the population model (the execution plan's E4).
 
-Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999, sim-execution D2 · summary The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying.
+Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999, sim-execution D2, sim-execution D24 · summary The noted run as individuals; the fungible agree in distribution; outside the rendered area a population model per site and lineage.
 
-*Refined 2026-10-22 from case 999 (Mark: "Both as drafted").*
+*Refined 2026-10-28 from the execution plan's D24 ("Population model
+(Recommended)"), after a measure of about 1.2 members per exact state.*
 
 ### Processes 7. Time
 
@@ -1346,17 +1346,18 @@ detail up close: watched, run in detail and logged; far views stay crowd. A
 player's event stream carries what is attended. Survival filters through what
 the played critter knows and the reach. A location's identity is learned by
 observation or telling, its members and extent disclosed separately. The tier
-line is directing's: near is the attention roots and everything within one hop
-of the played critter's site, run as individuals; the rest runs as the crowd
-(Processes 6).
+line is directing's: near is the rendered area plus the attention roots and
+those they care for, run as individuals; far within the rendered area is
+presentation; the aggregate outside it never depends on the view (Processes
+6). A member keeps its tier until it has been out of that tier's area for a
+band of ticks, a world rule, so the view's sweeps and the edge do not churn.
 
-*Not yet built:* the tier line (the execution plan's E5). Its band, how far
-past one hop a member goes before it returns to the crowd, is owed before E5.
+*Not yet built:* the tier line (the execution plan's E5).
 
-Links: draws on 210, 212, 213, 691, 742, 876, sim-execution D3 · summary Attention is play, pins, examining and the game's care; near is the roots plus one hop of the played critter's site; streams carry what is attended.
+Links: draws on 210, 212, 213, 691, 742, 876, sim-execution D3, sim-execution D23, sim-execution D25, sim-execution D26 · summary Attention is play, pins, examining and the game's care; near is the rendered area plus the roots; a band of ticks holds a member's tier; streams carry what is attended.
 
-*Refined 2026-10-22 from the execution plan's D3, the reach only (Mark, on
-this statement: "Refine D5 with the reach only").*
+*Refined 2026-10-28 from the execution plan's D25 and D26 ("Rendered area
+plus roots (Recommended)", "A band in ticks (Recommended)").*
 
 ### Directing 6. Death and new lives
 

@@ -1,7 +1,7 @@
 # The sim's execution model: speed, waking, parallel evaluation, near and far
 
 **Status:** 2026-10-28: cut from `2026-10-19_sim_execution_plan.md`, plus the speed items of `2026-10-14_sim_host_plan.md`, `2026-09-22_sim_plan.md`, `2026-09-11_orthographic_voxel_presentation_plan.md` and `2026-10-22_foot_placement_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20); the head at 10 ticks a second (D21); a missed risk on a process that otherwise does nothing makes no act (E7b). Open: E4 and E5 (D17, D22); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
+`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20); the head at 10 ticks a second (D21); a missed risk on a process that otherwise does nothing makes no act (E7b). Open: E4 (a population model outside the rendered area, D24) and E5 (the tier line: the rendered area plus roots, a band in ticks, D25, D26); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
 
 **For:** every tick-latency, frame and search-time bar in the family, and the execution work that serves them: waking (E1), draw keys (E2), parallel evaluation (E3), the crowd in the core (E4), crossings and the tier line (E5), rate models (E6), the host's latency bars, cold-route and startup search time, and the scale and scheduler-waste items. This is the only plan that states a speed number; others name `sim-execution` and do not restate it.
 
@@ -222,6 +222,29 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on 113, 742, sim-execution D2, sim-execution D3 · governs isocosm::directing::tier · summary Near is the rendered area, view-dependent; far within it is presentation; the aggregate tier lies outside it and never depends on the view.
 
+- **D24, the aggregate runs a population model (2026-10-28), refines
+  Processes 6:** "Population model (Recommended)". Per site and lineage:
+  counts by age band and condition (fed, hungry, wounded), its matter, and
+  births, deaths, meals, upkeep and moves as rates; bodies are drawn from the
+  lineage's recipe and recorded variation when lifted; noted members never
+  fold. Asked after a measure of about 1.2 members per exact body state in
+  played worlds, so the exact-state crowd would barely compress them.
+
+  Links: area Processes and rules · draws on 113, 207, 261, 266, sim-execution D2, sim-execution D23 · amends sim-execution D2 · governs isocosm::probe::crowd · summary Outside the rendered area, a population model per site and lineage, not a histogram of exact states.
+
+- **D25, near is the rendered area plus the roots (2026-10-28), refines
+  Directing 5:** "Rendered area plus roots (Recommended)". Everything
+  rendered, plus the played critter, pinned and examined things and those
+  they care for, wherever they are. This replaces D3's one hop.
+
+  Links: area Directing and play · draws on 212, 742, sim-execution D3, sim-execution D23 · amends sim-execution D3 · governs isocosm::directing::tier · summary Near is the rendered area plus the attention roots and those they care for.
+
+- **D26, a band in ticks (2026-10-28), refines Directing 5:** "A band in
+  ticks (Recommended)". A member keeps its tier until it has been out of
+  that tier's area for a band of ticks, a world rule.
+
+  Links: area Directing and play · draws on 742, sim-execution D25 · governs isocosm::directing::tier · summary A member keeps its tier until out of its area for a band of ticks.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -270,18 +293,17 @@ Evaluate a pass's members concurrently against pass-start state (454) and commit
 - Rulings: 454, D1
 - From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:78-87`, `:132-134`, `:333-335`.
 
-### E4. The crowd in the core
-The probe's crowd (`probe/crowd/`) becomes an execution form for far sites, keeping the shared query and effect meanings (219); identity-bound processes stay on the exact tier; Mesocosm's worlds are statistical (D2): far sites crowd, the played critter and noted members individual.
-- Done when: "the envelope check below certifies on Mesocosm's played worlds." (invariants exact, outcomes in distribution: the crowd-and-tier constraint above.)
-- Needs: E1 to E3 first (D4, speed first); D2; the decided-already near/far rulings
-- Rulings: 75, 113, 206, 207, 211, 212, 219, 259, 285, 435, 554, 431, 881, D2
-- From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:135-138`, `:153-159`.
+### E4. The population model
+Outside the rendered area each site and lineage runs as a population (D24): counts by age band and condition (fed, hungry, wounded), its matter, and births, deaths, meals, upkeep and moves as rates read from the same process definitions (219), matter conserved every tick. The probe's exact-state crowd (`probe/crowd/`) is not the form: played worlds hold about 1.2 members per exact body state. Identity-bound processes and noted members stay individual (113, D2).
+- Done when: a far site and lineage advances as a population, conserving matter, in a unit test (D18).
+- Needs: D23, D24
+- Rulings: 75, 113, 207, 219, 261, 266, 440, D2, D23, D24
 
 ### E5. Crossings and the tier line
-Wire `TierLine` into directing (742): lift a member from its bin by seed with condition causes drawn from the tally (435), fold back conserving totals; noted members never cross into a crowd. `TierLine` is exported from `directing/mod.rs` and referenced nowhere else.
-- Done when: "the invariants below hold across crossings and the envelope still certifies."
-- Needs: E4; the band ruling (Questions for Mark); D3
-- Rulings: 113, 293, 431, 435, 554, 742, D3
+Wire the tier line into directing (742): near is the rendered area plus the attention roots and those they care for (D25); a member keeps its tier until out of its area for a band of ticks, a world rule (D26). Lifting draws a member's body from the lineage's recipe and recorded variation, its condition from the population's counts (435); folding back adds it to the counts, conserving matter; noted members never fold. Keyed on site, lineage and tick, never on a view event (D23). `TierLine` (`directing/tier.rs`) is hop-based and unwired today.
+- Done when: a member lifted and folded back conserves matter and keeps its identity in a unit test (D18).
+- Needs: E4; D25, D26
+- Rulings: 113, 293, 431, 435, 554, 742, D23, D25, D26
 - From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:139-141`, `:360-367`.
 
 ### E6. Rate models
@@ -334,7 +356,6 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - **Playable-loop forager route search** (the `playable-loop` branch, unpushed at 2026-10-23): its cost is deliberation the A1 battery does not exercise and no battery measures it. Owned by `bodies`; `sim-execution` reads its cost once a battery exists. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:461-472`.
 
 ## Questions for Mark
-- **The tier line's band (owed before E5).** `TierLine::default()` is promote at 1 hop, demote at 2, and hops are whole numbers, so the band the doc comment calls memory is empty; a member stepping between one and two hops changes tier every tick, each change a crossing. The 3x3 enclosure has diameter two. Options stated: "keep 1 and 2, widen where worlds are larger, or a band in ticks." From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:360-367`.
 - **Which speed bar is the bar.** 966's 1.5 s on the seed-9 save (about a hundred members) stays open for a ruling "with the scheduling profile"; 976's 8 s holds; 978 sets the head at 2 ticks per second with 10 the aspiration; the aim is 0.1 s at a few hundred members. Rule whether the aim replaces 966 and when the head's tempo is raised (the 1,440-tick day of the light field, 973, is 12 minutes of play at 2 ticks per second). From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md:7-13`, `:359-370`.
 - **The `cargo test` profile.** The played seed 0 runs far slower under the `cargo test` profile than release, and with debug assertions off drops substantially. The likely source is named but "not strictly separated": the journal's full `State` clone verifying each rollback (`journal.rs:66`) and `passed_by`'s population rescan (`schedule/mod.rs:314`). No action decided. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:350-355`.
 - **Occurrence index in E2's key (conditional).** If the actor, tick and process key collides for a grouped cohort, E2 brings the fork to Mark. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:128-131`.
@@ -357,3 +378,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: E8 built: `Lineage::decides` paces a lineage's choice and move passes, offset by first identity.
 - 2026-10-28: D19 to D22: periods 10 / 2 / 5 in played worlds, meals scaled by period, the head at 10 ticks a second; choice-rule tests run unpaced (`directing::tests::unpaced`).
 - 2026-10-28: E7b built, simpler than planned: the per-tick hazard keeps its draw, but a draw that misses on a process with no other effect makes no act (`execute.rs`), so the empty accepted act each mature member took each tick is gone; the death tick is not drawn once.
+- 2026-10-28: D24 to D26: the aggregate runs a population model per site and lineage; near is the rendered area plus the roots; a band in ticks. Measured first: about 1.2 members per exact body state in played worlds (seeds 0 to 2, ticks 60 to 180).

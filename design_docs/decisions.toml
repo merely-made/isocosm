@@ -5171,6 +5171,32 @@ summary = "Near is the rendered area, view-dependent; far within it is presentat
 draws_on = ["113", "742", "sim-execution D2", "sim-execution D3"]
 governs = ["isocosm::directing::tier"]
 
+[decisions."sim-execution D24"]
+title = "the aggregate runs a population model (2026-10-28), refines Processes 6"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Outside the rendered area, a population model per site and lineage, not a histogram of exact states."
+draws_on = ["113", "207", "261", "266", "sim-execution D2", "sim-execution D23"]
+amends = ["sim-execution D2"]
+governs = ["isocosm::probe::crowd"]
+
+[decisions."sim-execution D25"]
+title = "near is the rendered area plus the roots (2026-10-28), refines Directing 5"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Directing and play"
+summary = "Near is the rendered area plus the attention roots and those they care for."
+draws_on = ["212", "742", "sim-execution D3", "sim-execution D23"]
+amends = ["sim-execution D3"]
+governs = ["isocosm::directing::tier"]
+
+[decisions."sim-execution D26"]
+title = "a band in ticks (2026-10-28), refines Directing 5"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Directing and play"
+summary = "A member keeps its tier until out of its area for a band of ticks."
+draws_on = ["742", "sim-execution D25"]
+governs = ["isocosm::directing::tier"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"
@@ -5309,8 +5335,8 @@ draws_on = ["683", "685", "686", "688", "690", "813", "861", "862", "sim-executi
 title = "Attention"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
-summary = "Attention is play, pins, examining and the game's care; near is the roots plus one hop of the played critter's site; streams carry what is attended."
-draws_on = ["210", "212", "213", "691", "742", "876", "sim-execution D3"]
+summary = "Attention is play, pins, examining and the game's care; near is the rendered area plus the roots; a band of ticks holds a member's tier; streams carry what is attended."
+draws_on = ["210", "212", "213", "691", "742", "876", "sim-execution D3", "sim-execution D23", "sim-execution D25", "sim-execution D26"]
 
 [statements."directing.6"]
 title = "Death and new lives"
@@ -5709,8 +5735,8 @@ draws_on = ["2", "10", "14", "28", "32", "93", "265"]
 title = "Similitude and the crowd"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
-summary = "The noted run as individuals; the fungible agree in distribution within certified bounds; an exact-state crowd, rate models where grouping stops paying."
-draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881", "999", "sim-execution D2"]
+summary = "The noted run as individuals; the fungible agree in distribution; outside the rendered area a population model per site and lineage."
+draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881", "999", "sim-execution D2", "sim-execution D24"]
 
 [statements."processes.7"]
 title = "Time"
