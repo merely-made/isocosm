@@ -209,9 +209,11 @@ impl Game {
             let Some(journey) = &member.journey else {
                 continue;
             };
+            // Far arrivals land off the physical path (E5).
             if member.body.is_some()
                 && journey.arrives >= session.sim.state().tick
                 && journey.arrives <= end
+                && session.sim.near(id)
             {
                 destinations.entry(journey.to).or_default().push(id);
             }

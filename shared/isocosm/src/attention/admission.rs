@@ -60,6 +60,13 @@ impl Simulation {
         Ok("attention-closed".into())
     }
 
+    /// The participant's window under `profile`, where one is attached.
+    pub fn window_for(&self, participant: Id, profile: &str) -> Option<WindowId> {
+        self.state.attention.active.iter()
+            .find(|(_, c)| c.participant == participant && c.profile == profile)
+            .map(|(window, _)| *window)
+    }
+
     pub fn attention_window(&self, participant: Id, handle: u64)
         -> Result<(WindowId, Key, WindowAttention)> {
         self.attention_participant(participant)?;

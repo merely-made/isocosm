@@ -13,7 +13,8 @@ impl Game {
         for (&first,group) in &sim.state().population.groups {
             let Some(j) = &group.entity.journey else { continue };
             if group.entity.body.is_none() || j.arrives < sim.state().tick || j.arrives > sim.state().tick+1 { continue; }
-            destinations.entry(j.to).or_default().extend(first..first+group.count);
+            // Far arrivals land off the physical path (E5).
+            destinations.entry(j.to).or_default().extend((first..first+group.count).filter(|id| sim.near(*id)));
         }
         let mut out = Vec::new();
         for (site,ids) in destinations {

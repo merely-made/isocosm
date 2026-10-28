@@ -99,7 +99,8 @@ impl Simulation {
         for mark in marks {
             let request = self.birth_request(mark);
             let available = request.site.is_some() && request.child_journey.is_none()
-                && self.genesis.rules.birth_profiles.values().any(|p| p.process == request.process);
+                && self.genesis.rules.birth_profiles.values().any(|p| p.process == request.process)
+                && self.near(mark.parent);
             if available && self.spatial_resolutions.birth_pending.is_none()
                 && !self.spatial_resolutions.births.contains_key(&mark.child)
                 && let Some(answer) = self.spatial_resolutions.birth_fallback.as_ref()
@@ -133,6 +134,11 @@ impl Simulation {
             {
                 self.spatial_resolutions.birth_reports.push(BirthReport { request, profile: None,
                     patch: Err("birth has no resident parent pose/profile; physical binding is unavailable".into()) });
+                self.spatial_resolutions.order.push(Publication::Birth(mark.child));
+            } else if !self.near(mark.parent) {
+                // A far parent's child lands off the physical path (E5).
+                self.spatial_resolutions.birth_reports.push(BirthReport { request, profile: None,
+                    patch: Err("a far parent's child lands off the physical path".into()) });
                 self.spatial_resolutions.order.push(Publication::Birth(mark.child));
             } else if self.spatial_resolutions.birth_pending.is_none() {
                 let mut sim = self.clone();

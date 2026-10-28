@@ -11,6 +11,13 @@
 use crate::{Simulation, schema::*};
 
 impl Simulation {
+    /// Whether a member is near: every member is, in a world without
+    /// attention windows; otherwise a root or one still buffered.
+    pub fn near(&self, id: Id) -> bool {
+        let w = &self.state.attention;
+        w.is_empty() || w.foreground(id, 1) || w.buffered(self.state.tick).contains(&id)
+    }
+
     /// Unplaces every posed member that is neither near nor buffered.
     pub(crate) fn unplace_far(&mut self) {
         let windows = &self.state.attention;
