@@ -26,7 +26,7 @@ mod tier;
 pub mod embodiment;
 pub mod foraging;
 pub use templates::{Templates, Stand, Crossing, STANDS as STANDS_PER_SITE};
-pub use tier::MealRate;
+pub(crate) use tier::FarFood;
 pub use birth::{BirthProfile, BirthMedium, BirthSupport, BirthRequest, BirthGeometry, BirthResolution, BirthReport, BirthPending, birth_pose};
 pub use birth::rotate as rotate_offset;
 pub use birth_command::{BirthPreparation, PreparedBirth};

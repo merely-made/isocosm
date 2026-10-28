@@ -41,14 +41,18 @@ fn a_frame_keeps_its_members_posed_and_the_rest_leave_the_physical_path() {
 }
 
 #[test]
-fn far_meals_follow_the_rate_near_foragers_are_measured_to_eat() {
+fn a_far_forager_finds_food_more_often_where_prey_is_plentiful() {
     let mut s = world(3, Execution::Individuals);
     let feed = "ecology:feed-1";
-    assert!(s.sim.far_meal(Id::MAX - 1, feed), "with nothing measured, a far forager eats");
-    s.sim.state.meal_rates.insert(feed.into(), crate::spatial::MealRate { meals: 1, chances: 4 });
-    let eats = (0..4000).filter(|t| {
-        s.sim.state.tick = *t;
-        s.sim.far_meal(Id::MAX - 1, feed)
-    }).count();
-    assert!((800..1200).contains(&eats), "about a quarter of decisions eat: {eats}");
+    assert!(s.sim.far_meal(Id::MAX - 1, feed), "with no far-food table, a far forager eats");
+    let forager = *s.sim.state().population.groups.iter()
+        .find(|(_, g)| g.entity.alive && g.entity.lineage == "lineage:1").unwrap().0;
+    let site = s.sim.state().population.get(forager).unwrap().resident_site().unwrap();
+    let rate = |s: &mut crate::Session, prey: u128| {
+        s.sim.far_food = Some(crate::spatial::FarFood::from([((site, feed.to_string()), (prey, 1))]));
+        (0..2000).filter(|t| { s.sim.state.tick = *t; s.sim.far_meal(forager, feed) }).count()
+    };
+    let (scarce, plenty) = (rate(&mut s, 1), rate(&mut s, 1_000_000));
+    assert!(scarce < 1000 && plenty > 1900, "scarce {scarce}, plentiful {plenty}");
+    assert_eq!(rate(&mut s, 0), 0, "no prey, no meal");
 }
