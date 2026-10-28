@@ -121,6 +121,7 @@ impl Simulation {
         if targeted {
             self.targets = Some(crate::targets::Targets::new(&self.state.population));
         }
+        self.far_food = self.far_food_table();
         // The index is kept across advances (E1c): reconciled with the world
         // as this advance finds it, or built afresh where it no longer answers.
         match &mut self.filed {
@@ -133,6 +134,7 @@ impl Simulation {
         self.chosen = Default::default();
         let done = self.scheduled(queue, end, &mut work);
         self.targets = None;
+        self.far_food = None;
         self.journeys = None;
         match (&done, &mut self.filed) {
             (Ok(()), Some(f)) => f.settle(&self.state),
@@ -155,9 +157,11 @@ impl Simulation {
             }
         }
         // Outside the near tier, members leave the physical path (E5) and
-        // fold into bands (E4).
+        // fold into bands (E4); posed members whose matter moved them off
+        // balance re-settle (D38).
         self.unplace_far();
         self.draw_into_frames();
+        self.settle_drifted();
         self.fold_far();
         Ok(work)
     }

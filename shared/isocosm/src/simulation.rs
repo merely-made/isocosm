@@ -162,6 +162,9 @@ pub struct Simulation {
     pub(crate) issued: u128,
     /// Groups filed for target searches, kept only during an advance.
     pub(crate) targets: Option<crate::targets::Targets>,
+    /// Prey matter and foragers per site and feed, for far meals (D35),
+    /// kept only during an advance.
+    pub(crate) far_food: Option<crate::spatial::FarFood>,
     /// Groups filed by the traits processes on a period require, kept
     /// across advances (E1c).
     pub(crate) filed: Option<crate::schedule::Filed>,
@@ -234,6 +237,7 @@ impl Simulation {
             conserved,
             issued: 0,
             targets: None,
+            far_food: None,
             filed: None,
             pass: None,
             frame: None,

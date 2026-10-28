@@ -84,6 +84,22 @@ pub fn place_within(sim: &Simulation, t: &Templates, id: Id, site: Id, within: &
     Err("no supported unoccupied habitat stand within placement budget".into())
 }
 
+/// The nearest balanced stance to `pose` by the same search, its yaw kept:
+/// for a resting body whose matter moved after it was posed (the execution
+/// plan's D38).
+pub fn settle(sim: &Simulation, t: &Templates, id: Id, site: Id, pose: &Pose,
+    placed: &BTreeMap<Id, Pose>) -> Result<Pose> {
+    let entity = sim.state().population.get(id).ok_or("settling actor absent")?;
+    let doc = entity.body.as_ref().ok_or("settling body absent")?;
+    let blocked: Vec<_> = placed.iter().filter(|(other, _)| **other != id).filter_map(|(other, p)|
+        sim.state().population.get(*other)?.body.as_ref().and_then(|d| boxes(d, p).ok()))
+        .flatten().collect();
+    let volume = sim.site_volume(site, &site_window(t, pose.at))?;
+    Grounding::new(&volume).with_articulation(true).with_walking(t.walking).with_spacing(t.body_spacing)
+        .with_balance(balance_for(sim, entity)?)
+        .find(doc, pose.at, pose.yaw, SEARCH_REACH, SEARCH_STRIDE, SEARCH_CANDIDATES, &blocked)
+}
+
 pub(super) fn stands(g: &Genesis, t: &Templates) -> Result<BTreeMap<Id, Vec<Stand>>> {
     let mut source = g.clone();
     let mut declaration = t.clone();

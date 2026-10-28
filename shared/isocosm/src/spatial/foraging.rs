@@ -35,7 +35,14 @@ pub struct Foraging {
     /// Omitted recorded rules retain their original nearest-food selection.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub reachable: bool,
+    /// How many meals' worth of prey per forager halves a far forager's
+    /// chance to find food (D35); omitted, one.
+    #[serde(default = "one_meal", skip_serializing_if = "is_one_meal")]
+    pub far_half: u64,
 }
+
+fn one_meal() -> u64 { 1 }
+fn is_one_meal(n: &u64) -> bool { *n == 1 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

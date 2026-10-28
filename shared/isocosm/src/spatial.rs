@@ -23,16 +23,28 @@ mod birth_geometry;
 mod birth_command;
 mod templates;
 mod tier;
+mod settle;
 pub mod embodiment;
 pub mod foraging;
 pub use templates::{Templates, Stand, Crossing, STANDS as STANDS_PER_SITE};
+pub(crate) use tier::FarFood;
+#[cfg(test)]
+pub(crate) use tier::encounter;
 pub use birth::{BirthProfile, BirthMedium, BirthSupport, BirthRequest, BirthGeometry, BirthResolution, BirthReport, BirthPending, birth_pose};
 pub use birth::rotate as rotate_offset;
 pub use birth_command::{BirthPreparation, PreparedBirth};
 pub(crate) use birth::BirthMark;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Publication { Step(Key), Birth(Id) }
+pub enum Publication {
+    Step(Key),
+    Birth(Id),
+    /// A member that left the physical path (the execution plan's E5).
+    Unplaced(Id),
+    /// A member drawn into a camera's frame (E5), or a resting member
+    /// re-settled (D38), with what its placement needs.
+    Drawn { actor: Id, site: Id, pose: Pose, patch: PlaceId, arrived: Tick },
+}
 pub use advance::{Preparation, Prepared, SpatialAdvance};
 pub use geometry::{check_step, neighbours};
 

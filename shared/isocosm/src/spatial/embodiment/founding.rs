@@ -314,6 +314,7 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
                 nodes: 256,
                 sight: true,
                 reachable: true,
+                far_half: 1,
             },
         );
         genesis.rules.processes.insert(key, process);

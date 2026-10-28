@@ -13,10 +13,10 @@ use crate::runtime::translate::Refusal;
 
 const PROFILE: &str = "mesocosm";
 
-/// Off on main until the tier line's fixes land together (the execution
-/// plan's D33): with it off, no window is attached and every member keeps
-/// its pose, as before.
-pub(super) const FRAME_TIER: bool = false;
+/// On since the tier line's fixes landed (the execution plan's D33, lifted
+/// by D36 to D38); off, no window is attached and every member keeps its
+/// pose, as before.
+pub(super) const FRAME_TIER: bool = true;
 
 impl Mesocosm {
     /// Brings the participant's window to the played critter's frame.
