@@ -1,7 +1,7 @@
 # The sim's execution model: speed, waking, parallel evaluation, near and far
 
 **Status:** 2026-10-28: cut from `2026-10-19_sim_execution_plan.md`, plus the speed items of `2026-10-14_sim_host_plan.md`, `2026-09-22_sim_plan.md`, `2026-09-11_orthographic_voxel_presentation_plan.md` and `2026-10-22_foot_placement_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20); the head at 10 ticks a second (D21); a missed risk on a process that otherwise does nothing makes no act (E7b). Built in part: E4a (far members fold into bands with a pool, where a world declares banding) and E5a-b (a camera frame roots its posed members; elsewhere members leave the physical path once a world has attention windows). Open: E4b (bands act once for all members, effects scaled by count), E5c (members drawn into a frame by its share of the site), E5d (the head reports its frame); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
+`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20); the head at 10 ticks a second (D21); a missed risk on a process that otherwise does nothing makes no act (E7b). Built in part: E4a (far members fold into bands with a pool, where a world declares banding) and E5a-b (a camera frame roots its posed members; elsewhere members leave the physical path once a world has attention windows). Open: E4b (bands act once for all members, effects scaled by count), E5c built (members drawn into a frame by its share of the site); E5d built (the runtime holds the critter's frame as attention; far arrivals and births land without a pose); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
 
 **For:** every tick-latency, frame and search-time bar in the family, and the execution work that serves them: waking (E1), draw keys (E2), parallel evaluation (E3), the crowd in the core (E4), crossings and the tier line (E5), rate models (E6), the host's latency bars, cold-route and startup search time, and the scale and scheduler-waste items. This is the only plan that states a speed number; others name `sim-execution` and do not restate it.
 
@@ -293,6 +293,33 @@ each title names its outcome against the doctrine.
 
   Links: area Directing and play · draws on 742, sim-execution D23, sim-execution D25, sim-execution D26, sim-execution D30 · governs isocosm::attention, isocosm::spatial · summary The head's view windows are an attention region; outside them members hold no pose.
 
+- **D33, the frame off on main for now (2026-10-28), applies D18:** "Frame
+  off on main for now (Recommended)". A headed look at E5d found the played
+  critter's view blank after it migrated (its arrival pose fails the balance
+  check) and deaths up from 2 to 22 by tick 20; the runtime's frame attach
+  is held behind `FRAME_TIER` until the fixes land together on the branch.
+
+  Links: area Processes and rules · draws on sim-execution D32 · governs mesocosm_runtime::runtime · summary The head reports no frame on main until E5's fixes land together.
+
+- **D34, far meals at the walkers' measured rate (2026-10-28), applies
+  Processes 6:** "The walkers' measured rate (Recommended)". A far forager's
+  meal succeeds at the per-tick rate near foragers actually eat, measured
+  from the near tier and kept as a world rule, so the far tier agrees with
+  the near in distribution.
+
+  Links: area Processes and rules · draws on 113, sim-execution D2, sim-execution D24 · governs isocosm::spatial::foraging · summary A far forager eats at the rate near foragers are measured to eat.
+
+- **D35, far meals by an encounter rate from prey density (2026-10-28),
+  replaces D34:** "Encounter rate from prey density (Recommended)". A far
+  forager finds food with chance M / (M + K): M the prey matter its diet
+  can eat at its site, shared among that diet's foragers there; K one
+  meal's worth times a half-saturation constant, a world rule. Asked after
+  D34's live measurement proved biased: near foragers are few and see only
+  posed food (5 meals per 61 hungry ticks), so paced far foragers starved
+  (11 dead by tick 21) and unpaced ones overgrazed and crashed (9 dead).
+
+  Links: area Processes and rules · draws on 113, sim-execution D24, sim-execution D34 · replaces sim-execution D34 · governs isocosm::spatial::foraging · summary A far forager finds food by a saturating encounter rate on its site's prey matter.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -432,3 +459,7 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: D32: the camera's frame is an attention region; the Places misses were first visits and LRU eviction across a one-site world's windows, not terrain change.
 - 2026-10-28: E4a built (`band.rs`, `Cohort::pool`, `Rules::banding`): far members fold into bands, conserving every account; off unless a world declares banding.
 - 2026-10-28: E5a-b built (`Region::Frame`, `spatial/tier.rs`): a frame roots its posed members; with attention windows, posed members neither near nor buffered lose their pose and forage at site grain.
+- 2026-10-28: E5d built (`mesocosm-runtime/src/runtime/frame.rs`, `Simulation::near`): the critter's frame is the participant's attention; far arrivals and births stay off the physical path. The headless play run's cost fell about sixteenfold (receipts).
+- 2026-10-28: E5c built (`Simulation::draw_into_frames`, `embodiment::place_within`): frames fill toward their share by area, at most twice the shortfall tried an advance.
+- 2026-10-28: D33, D34: the head's frame off on main (`FRAME_TIER`); far meals to be paced at the walkers' measured rate. The tier publications (`Publication::Unplaced`, `Drawn`) are on `sim-e4-probe`, not main.
+- 2026-10-28: D35 replaces D34: far meals by an encounter rate from prey density.

@@ -184,7 +184,7 @@ impl Mesocosm {
 
     /// One round after the queued envelopes have applied.
     fn round(&mut self, world: &World) -> Result<(), String> {
-        self.frame_attention(world);
+        if frame::FRAME_TIER { self.frame_attention(world); }
         if self.background { return self.begin_round(world); }
         let _span = crate::profile::Span::new("round.total");
         self.sync_loop(world);
