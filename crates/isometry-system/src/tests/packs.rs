@@ -185,3 +185,20 @@ fn a_pack_with_both_manifests_is_refused() {
     assert_eq!(loaded.manifest().id, "twice");
     let _ = std::fs::remove_dir_all(&root);
 }
+
+#[test]
+fn every_bundled_pack_declares_its_terms() {
+    // These ship with the app, so each says what it is offered under; a pack
+    // a user adds from their own roots may still declare nothing.
+    let packs = Path::new(env!("CARGO_MANIFEST_DIR")).join("examples/packs");
+    let mut seen = 0;
+    for entry in std::fs::read_dir(packs).unwrap() {
+        let root = entry.unwrap().path();
+        let pack = GeneratorPack::load(&root).unwrap();
+        let manifest = pack.manifest();
+        assert!(manifest.licence.is_some(), "{} declares no licence", root.display());
+        assert!(manifest.credit.is_some(), "{} declares no credit", root.display());
+        seen += 1;
+    }
+    assert!(seen >= 3, "the bundled packs were all found");
+}
