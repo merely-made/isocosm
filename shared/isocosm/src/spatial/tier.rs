@@ -20,9 +20,15 @@ impl Simulation {
     }
 
     /// Unplaces every posed member that is neither near nor buffered.
+    /// Whether this advance may move members on or off the physical path:
+    /// any but an older spatial command, whose record publishes no tier.
+    fn tiering(&self) -> bool {
+        !self.spatial_resolutions.enabled || self.spatial_resolutions.birth_enabled
+    }
+
     pub(crate) fn unplace_far(&mut self) {
         let windows = &self.state.attention;
-        if windows.is_empty() {
+        if windows.is_empty() || !self.tiering() {
             return;
         }
         let buffered = windows.buffered(self.state.tick);
@@ -46,6 +52,9 @@ impl Simulation {
             if let Ok(e) = self.state.population.lift(id) {
                 e.patch = None;
             }
+            if self.spatial_resolutions.enabled {
+                self.spatial_resolutions.order.push(super::Publication::Unplaced(id));
+            }
         }
     }
 
@@ -56,6 +65,9 @@ impl Simulation {
         let Some(t) = self.genesis.rules.spatial_templates.clone() else {
             return;
         };
+        if !self.tiering() {
+            return;
+        }
         for frame in self.state.attention.frames() {
             let Region::Frame { site, min, max } = frame else { continue };
             let area = |a: [i64; 2], b: [i64; 2]| ((b[0] - a[0]).max(0) * (b[1] - a[1]).max(0)) as u128;
@@ -113,7 +125,11 @@ impl Simulation {
                 }
                 if let Ok(e) = self.state.population.lift(id) {
                     e.patch = Some(patch);
-                    self.keep_spatial_pose(id, site, pose);
+                    let arrived = e.arrived;
+                    self.keep_spatial_pose(id, site, pose.clone());
+                    if self.spatial_resolutions.enabled {
+                        self.spatial_resolutions.order.push(super::Publication::Drawn { actor: id, site, pose, patch, arrived });
+                    }
                 }
             }
         }

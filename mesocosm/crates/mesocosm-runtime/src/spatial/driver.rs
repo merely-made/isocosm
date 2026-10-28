@@ -97,6 +97,18 @@ impl Game {
                     let report = reports.iter().find(|r| r.request.child == *child).ok_or("birth publication report absent")?;
                     changes.extend(self.apply_births(births, std::slice::from_ref(report), sim)?);
                 },
+                // The sim's tier line (E5, D32): a far member leaves the
+                // game's placements; one drawn into a frame joins them.
+                native::Publication::Unplaced(id) => { self.members.remove(id); },
+                native::Publication::Drawn { actor, site, pose, patch, arrived } => {
+                    let t = sim.genesis().rules.spatial_templates.as_ref().ok_or("drawn member has no templates")?;
+                    let body_revision = sim.state().population.get(*actor).map_or(0, |e| e.body_revision);
+                    self.members.insert(*actor, Placement { actor: EntityHandle(*actor), site: PlaceHandle(*site),
+                        patch: *patch, body_revision, terrain_revision: sim.terrain_revision(), pose: pose.clone(),
+                        eye: std::array::from_fn(|k| pose.at[k] + t.eye[k]),
+                        window: isocosm::spatial::embodiment::site_window(t, pose.at), operations: BTreeMap::new(),
+                        places: Some(t.places), resident_since: Some(*arrived) });
+                },
             }
         }
         if used_births.len() != reports.len() { return Err("birth report omitted from native publication order".into()); }

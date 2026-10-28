@@ -32,7 +32,14 @@ pub use birth_command::{BirthPreparation, PreparedBirth};
 pub(crate) use birth::BirthMark;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Publication { Step(Key), Birth(Id) }
+pub enum Publication {
+    Step(Key),
+    Birth(Id),
+    /// A member that left the physical path (the execution plan's E5).
+    Unplaced(Id),
+    /// A member drawn into a camera's frame (E5), with what its placement needs.
+    Drawn { actor: Id, site: Id, pose: Pose, patch: PlaceId, arrived: Tick },
+}
 pub use advance::{Preparation, Prepared, SpatialAdvance};
 pub use geometry::{check_step, neighbours};
 
