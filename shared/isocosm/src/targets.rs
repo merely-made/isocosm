@@ -145,6 +145,39 @@ impl Simulation {
         if let Some(target)=self.institution_target(actor,p) {return target.ok().flatten();}
         if let Some(target) = self.foraging_target(actor, p) { return target; }
         let selector = p.target.as_ref()?;
+        let (place, offered) = self.offering(actor, p)?;
+        let accepting = |first: &Id| offered(*first).is_some();
+        let found = |firsts: Vec<Id>| {
+            if selector.weighted {
+                self.drawn(actor, p, firsts.into_iter().filter(accepting))
+            } else {
+                firsts.into_iter().find_map(&offered)
+            }
+        };
+        let filed = found(self.searched(selector, place));
+        debug_assert!(
+            self.targets.is_none() || filed == found(self.target_firsts(self.state.population.groups.keys().copied())),
+            "the filed search missed a group"
+        );
+        filed
+    }
+
+    /// The prey matter an act of `p` by `actor` could draw from: the weight
+    /// the ordinary search shares among the groups it accepts, so read by the
+    /// actor's own intake (D35, D37).
+    pub(crate) fn prey_matter(&self, actor: Id, p: &Process) -> u128 {
+        let (Some(selector), Some((place, offered))) = (p.target.as_ref(), self.offering(actor, p)) else {
+            return 0;
+        };
+        let accepted = self.searched(selector, place).into_iter().filter(|first| offered(*first).is_some());
+        self.weighed(actor, accepted).1
+    }
+
+    /// Where `actor`'s search for `p` looks from, and the member each group
+    /// offers it, by the group's first member; None where the actor itself is
+    /// refused.
+    fn offering<'a>(&'a self, actor: Id, p: &'a Process) -> Option<(Id, impl Fn(Id) -> Option<Id> + 'a)> {
+        let selector = p.target.as_ref()?;
         let entity = self.body_at_start(actor)?;
         // A traveller is colocated with no one, so a selector that wants its
         // place accepts nothing; the index files it under its last site, whose
@@ -161,12 +194,11 @@ impl Simulation {
         if !of_actor.iter().all(|q| self.process_query(actor, None, place, part, p, q).is_ok()) {
             return None;
         }
-        let groups = &self.state.population.groups;
         // A group offers its first member, or its second when the first is
         // the actor; identities never reach the top of their range, so the
         // second always has a number. Equal members read alike, so the
         // requirements asked of one are asked for the group.
-        let offered = |first: Id| -> Option<Id> {
+        let offered = move |first: Id| -> Option<Id> {
             let (_, count) = self.target_span(first)?;
             let candidate = if first == actor { first + 1 } else { first };
             let accepted = candidate < first + count
@@ -176,15 +208,12 @@ impl Simulation {
                     .all(|q| self.process_query(actor, Some(candidate), place, part, p, q).is_ok());
             accepted.then_some(candidate)
         };
-        let accepting = |first: &Id| offered(*first).is_some();
-        let everywhere = || {
-            let firsts = self.target_firsts(groups.keys().copied());
-            if selector.weighted {
-                self.drawn(actor, p, firsts.into_iter().filter(accepting))
-            } else {
-                firsts.into_iter().find_map(offered)
-            }
-        };
+        Some((place, offered))
+    }
+
+    /// The groups a search by `selector` from `place` reads, by first
+    /// member: the filed lists during an advance, every group otherwise.
+    fn searched(&self, selector: &Target, place: Id) -> Vec<Id> {
         match &self.targets {
             // Every group outside the lists fails the selector anyway.
             Some(t) => {
@@ -192,24 +221,16 @@ impl Simulation {
                     .frame
                     .iter()
                     .flat_map(|f| f.targets.lists(selector, place).flatten().copied());
-                let filed =
-                    self.target_firsts(t.lists(selector, place).flatten().copied().chain(kept));
-                let found = if selector.weighted {
-                    self.drawn(actor, p, filed.into_iter().filter(accepting))
-                } else {
-                    filed.into_iter().find_map(offered)
-                };
-                debug_assert_eq!(found, everywhere(), "the filed search missed a group");
-                found
+                self.target_firsts(t.lists(selector, place).flatten().copied().chain(kept))
             },
-            None => everywhere(),
+            None => self.target_firsts(self.state.population.groups.keys().copied()),
         }
     }
 
-    /// The member drawn among the accepting groups `firsts`, in identity
-    /// order: each member but the actor weighted by the matter it holds, so
-    /// the same member is drawn however its equals are grouped.
-    fn drawn(&self, actor: Id, p: &Process, firsts: impl Iterator<Item = Id>) -> Option<Id> {
+    /// The accepting groups `firsts` weighed for a draw, in identity order:
+    /// each member but the actor by the matter it holds, so the same member
+    /// is drawn however its equals are grouped; and their total.
+    fn weighed(&self, actor: Id, firsts: impl Iterator<Item = Id>) -> (Vec<(Id, bool, u128, u128)>, u128) {
         let rules = &self.genesis.rules;
         let mut eligible = Vec::new();
         let mut total = 0u128;
@@ -225,6 +246,13 @@ impl Simulation {
                 eligible.push((first, within, members, held));
             }
         }
+        (eligible, total)
+    }
+
+    /// The member drawn among the accepting groups `firsts`, each member
+    /// weighted by the matter it holds.
+    fn drawn(&self, actor: Id, p: &Process, firsts: impl Iterator<Item = Id>) -> Option<Id> {
+        let (eligible, total) = self.weighed(actor, firsts);
         if total == 0 {
             return None;
         }

@@ -6,6 +6,11 @@ use crate::{Execution, Founding, Session, history::Command};
 
 /// A small ecology whose lineage 1, a consumer, is played.
 pub(crate) fn world(seed: u64, mode: Execution) -> Session {
+    Session::new(founding(seed), mode).unwrap()
+}
+
+/// The world `world` runs, before it starts.
+pub(crate) fn founding(seed: u64) -> crate::simulation::Genesis {
     let genesis = Founding {
         seed,
         sites: 4,
@@ -21,7 +26,7 @@ pub(crate) fn world(seed: u64, mode: Execution) -> Session {
     }
     .generate()
     .unwrap();
-    Session::new(unpaced(genesis), mode).unwrap()
+    unpaced(genesis)
 }
 
 /// The world with every lineage deciding each tick: for tests of how a

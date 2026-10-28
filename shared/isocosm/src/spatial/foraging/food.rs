@@ -63,8 +63,11 @@ impl Simulation {
 
     /// A meal already in reach can wait for its feeding cadence. Only weaker
     /// departures are suppressed; paid upkeep, healing and stronger nudges remain.
+    /// A far forager's reach is its site (D36): food its intake admits there
+    /// waits for the feed as a posed forager's does in reach.
     pub(crate) fn foraging_wait_score(&self, actor: Id) -> i64 {
-        if !self.foraging_enabled() || !self.state.spatial_poses.contains_key(&actor) {
+        let posed = self.state.spatial_poses.contains_key(&actor);
+        if !self.foraging_enabled() || !posed && self.far_food.is_none() {
             return 0;
         }
         let templates = self.genesis.rules.spatial_templates.as_ref().unwrap();
@@ -77,12 +80,12 @@ impl Simulation {
                     return None;
                 }
                 let score = self.food_need_score(actor, feed);
-                (score > 0
-                    && self
-                        .food_candidates(actor, feed, f)
-                        .iter()
-                        .any(|(_, d)| *d <= f.reach))
-                .then_some(score)
+                let in_reach = || if posed {
+                    self.food_candidates(actor, feed, f).iter().any(|(_, d)| *d <= f.reach)
+                } else {
+                    self.prey_matter(actor, feed) > 0
+                };
+                (score > 0 && in_reach()).then_some(score)
             })
             .max()
             .unwrap_or(0)
@@ -161,8 +164,8 @@ impl Simulation {
             );
         }
         let f = t.foraging.values().find(|f| f.feed == p.id);
-        // A far forager eats at site grain as often as near foragers are
-        // measured to eat (D34); otherwise it finds nothing this decision.
+        // A far forager eats at site grain by an encounter rate on the prey
+        // its intake admits there (D35, D37); otherwise it finds nothing.
         if !self.state.spatial_poses.contains_key(&actor) {
             return match f {
                 Some(f) if !self.far_meal(actor, &f.feed) => Some(None),
