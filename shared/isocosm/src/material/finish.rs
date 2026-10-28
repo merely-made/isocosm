@@ -68,6 +68,7 @@ impl Recipe {
             varied: vec![],
             patch: None,
             authored: None,
+            settled: None,
         })
     }
 }

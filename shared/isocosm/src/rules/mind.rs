@@ -33,9 +33,36 @@ pub struct Mind {
     pub rise_traits: BTreeMap<Key, i64>,
     /// The moment: per mille added to the rise for each point of mood.
     pub stake: i64,
+    /// Strain kept as a rate and worked out when read (`crate::strain`),
+    /// where every need reads only the actor's own body; absent where the
+    /// world keeps strain by its two processes.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rate: Option<Rate>,
+}
+
+/// Strain built a tick while mood lies below minus `low_mood`, and bled a
+/// tick while it does not (ruling 159; the execution plan's E7, D16).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Rate {
+    pub low_mood: u64,
+    pub build: u64,
+    pub bleed: u64,
 }
 
 impl Mind {
+    /// Whether every need reads only the actor's own body, so that mood
+    /// changes only when the body is written.
+    pub fn bodily(&self) -> bool {
+        self.needs.iter().all(|n| {
+            matches!(
+                n.query,
+                Query::Below { who: Binding::Actor, .. }
+                    | Query::Account { who: Binding::Actor, .. }
+                    | Query::Wounded { who: Binding::Actor, .. }
+            )
+        })
+    }
+
     /// Strain's per-world ranges, inclusive (ruling 159), each drawn from the
     /// world's seed: minus the mood a low mood lies below, and the strain
     /// built and bled a tick. The probe's minds and the played lineages share

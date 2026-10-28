@@ -245,5 +245,6 @@ fn authored_entity(c: &Character, tick: Tick) -> Entity {
         varied: vec![],
         patch: None,
         authored: Some(c.clone()),
+        settled: None,
     }
 }

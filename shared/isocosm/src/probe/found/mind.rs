@@ -157,6 +157,7 @@ impl MindFounding {
             rise: signed("mind-rise", 0, self.rise),
             rise_traits,
             stake: signed("mind-stake", 0, self.stake),
+            rate: None,
         };
         let processes = mind.strain_processes(
             pick("mind-low-mood", 0, self.low_mood),

@@ -408,6 +408,7 @@ impl Simulation {
         }
         self.project_decision_stamp = stage.project_decision;
         self.institution_decision_stamp = stage.institution_decision;
+        let genesis = Arc::clone(&self.genesis);
         let s = &mut self.state;
         if stage.count == 1 {
             s.population.lift_shared(stage.actor).expect("the actor exists");
@@ -417,15 +418,31 @@ impl Simulation {
         }
         // A body the act never wrote lands as nothing; one whose live body
         // is still its base lands as the staged handle, copying nothing.
+        // Strain kept as a rate is settled by the live body as it stood
+        // before the write, then carried onto what the write left (E7).
         for (k, (id, body)) in stage.bodies.into_iter().enumerate() {
             let group = s.population.groups.get_mut(&id);
             let live = group.expect("staged bodies were lifted");
+            if Arc::ptr_eq(&body, &live.entity) {
+                continue;
+            }
+            let gained = crate::strain::gained(&live.entity, &genesis.rules, s.tick);
+            let carry = |e: &mut Entity| {
+                if let Some(gained) = gained {
+                    crate::strain::carry(e, &genesis.rules, gained, s.tick);
+                }
+            };
             match &bases {
                 Some(bases) if Arc::ptr_eq(&body, &bases[k]) => {},
                 Some(bases) if live.entity != bases[k] => {
                     merge(live.entity_mut(), &bases[k], Arc::unwrap_or_clone(body));
+                    carry(live.entity_mut());
                 },
-                _ => live.entity = body,
+                _ => {
+                    let mut body = body;
+                    carry(Arc::make_mut(&mut body));
+                    live.entity = body;
+                },
             }
         }
         for child in stage.births {

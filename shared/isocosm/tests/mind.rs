@@ -38,6 +38,7 @@ fn world(low: u64) -> Genesis {
         rise: 500,
         rise_traits: BTreeMap::new(),
         stake: 0,
+        rate: None,
     });
     let mut build = rules.processes["sim:remember"].clone();
     build.id = "mind:strain".into();

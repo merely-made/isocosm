@@ -429,6 +429,7 @@ impl Founding {
                     varied: vec![],
                     patch: None,
                     authored: None,
+                    settled: None,
                 },
                 1,
             )?;
@@ -482,6 +483,7 @@ impl Founding {
                     varied: vec![],
                     patch: None,
                     authored: None,
+                    settled: None,
                 },
                 count,
             )?;

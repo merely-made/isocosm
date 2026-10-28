@@ -38,6 +38,7 @@ fn minded(who: Binding) -> Genesis {
         rise: 0,
         rise_traits: BTreeMap::new(),
         stake: 0,
+        rate: None,
     });
     g
 }

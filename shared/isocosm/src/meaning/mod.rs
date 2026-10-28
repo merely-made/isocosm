@@ -216,7 +216,13 @@ impl<'a> Scene<'a> {
         match b {
             Binding::Place => Ok(value(&self.site.ok_or("site missing")?.accounts, key)),
             Binding::Part => Ok(value(&self.part()?.matter, key)),
-            other => Ok(crate::anatomy::held(self.body(other)?, self.rules, key)),
+            other => {
+                let body = self.body(other)?;
+                if crate::strain::is_rated(self.rules, key) {
+                    return Ok(crate::strain::at(body, self.rules, self.tick));
+                }
+                Ok(crate::anatomy::held(body, self.rules, key))
+            },
         }
     }
     /// The matter a binding holds in all, a body's parts' included.

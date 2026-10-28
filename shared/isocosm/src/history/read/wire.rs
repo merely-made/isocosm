@@ -79,7 +79,7 @@ impl LegacyEntity {
             body_revision:self.body_revision, body:None, parts, traits:self.traits.clone(),
             accounts:self.accounts.clone(), skills:self.skills.clone(), tenets:self.tenets.clone(),
             disposition:self.disposition, soma:self.soma.clone(), systems:Default::default(),
-            varied:vec![], patch:None, authored:None })
+            varied:vec![], patch:None, authored:None, settled:None })
     }
 }
 

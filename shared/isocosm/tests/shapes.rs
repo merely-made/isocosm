@@ -442,6 +442,7 @@ fn with_mind(g: &mut Genesis, query: Query) {
         rise: 0,
         rise_traits: BTreeMap::new(),
         stake: 0,
+        rate: None,
     });
 }
 

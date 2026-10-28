@@ -134,6 +134,11 @@ pub struct Entity {
     /// An authored character's fill (769); absent elsewhere, which serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub authored: Option<crate::asserted::Character>,
+    /// The tick its strain was last worked out to, where the world keeps
+    /// strain as a rate (`crate::strain`); absent elsewhere, which
+    /// serialize and hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub settled: Option<Tick>,
 }
 
 /// A cell varied at birth (576): where it lies in the recipe, and the

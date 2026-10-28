@@ -110,12 +110,14 @@ fn wound(s: &mut Session, c: Id) {
     assert!(share(s, c) >= 25, "the critter's limbs hold a quarter of its cells");
 }
 
+/// The critter's strain, worked out at the world's tick (E7).
 fn strain(s: &Session, c: Id) -> u64 {
-    s.sim.state().population.get(c).unwrap().accounts.get(STRAIN).copied().unwrap_or(0)
+    let e = s.sim.state().population.get(c).unwrap();
+    crate::strain::at(e, &s.sim.genesis().rules, s.sim.state().tick)
 }
 
 #[test]
-fn a_played_world_has_a_wound_need_after_its_hunger_and_strain_processes() {
+fn a_played_world_has_a_wound_need_after_its_hunger_and_keeps_strain_as_a_rate() {
     let (s, _) = world(mesocosm(), vec![], false);
     let rules = &s.sim.genesis().rules;
     let mind = rules.mind.as_ref().unwrap();
@@ -125,10 +127,9 @@ fn a_played_world_has_a_wound_need_after_its_hunger_and_strain_processes() {
     assert_eq!(wound.query, Query::Wounded { who: Binding::Actor, at_least: 25 });
     assert_eq!(rules.accounts[&mind.strain], AccountKind::Strain);
     assert_eq!(mind.strain, STRAIN);
-    let build = &rules.processes["mind:strain"];
-    let relief = &rules.processes["mind:relief"];
-    assert!(build.requires.iter().any(|q| matches!(q, Query::MoodBelow { .. })));
-    assert!(relief.requires.iter().any(|q| matches!(q, Query::Mood { .. })));
+    // Every need reads the body, so strain is a rate, not two processes.
+    assert!(mind.bodily() && mind.rate.is_some());
+    assert!(!rules.processes.contains_key("mind:strain") && !rules.processes.contains_key("mind:relief"));
     assert!(rules.processes.contains_key(harm::hazard::ID), "the hazard joins the played world");
     assert!(rules.processes.contains_key(harm::rest::ID), "and so does rest");
 }

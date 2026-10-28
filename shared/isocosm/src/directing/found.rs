@@ -60,6 +60,7 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         rise: 0,
         rise_traits: BTreeMap::new(),
         stake: 0,
+        rate: None,
     });
     mind.needs.extend((0..f.lineages).map(hunger));
     // A body that has lost a quarter of its cells is wounded (the 2026-10-18
@@ -75,14 +76,18 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
     // Strain builds while mood stays low and eases when it recovers, as a
     // probe mind's does, from the same ranges and draws.
     let pick = |domain: &str, r: [u64; 2]| r[0] + crate::draw(f.seed, domain, &[0]) % (r[1] - r[0] + 1);
-    let keeping = mind.strain_processes(
-        pick("mind-low-mood", Mind::LOW_MOOD),
-        pick("mind-build", Mind::BUILD),
-        pick("mind-bleed", Mind::BLEED),
-    );
-    rules
-        .processes
-        .extend(keeping.into_iter().map(|p| (p.id.clone(), p)));
+    let (low_mood, build, bleed) =
+        (pick("mind-low-mood", Mind::LOW_MOOD), pick("mind-build", Mind::BUILD), pick("mind-bleed", Mind::BLEED));
+    // Where mood reads only the body, strain is a rate worked out when read
+    // (E7); otherwise its two processes keep it each tick.
+    if mind.bodily() {
+        mind.rate = Some(Rate { low_mood, build, bleed });
+    } else {
+        let keeping = mind.strain_processes(low_mood, build, bleed);
+        rules
+            .processes
+            .extend(keeping.into_iter().map(|p| (p.id.clone(), p)));
+    }
     let mut slots = BTreeMap::new();
     for level in LEVELS.into_iter().filter(|l| rules.traits.contains(*l)) {
         let founded: u128 = g

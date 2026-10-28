@@ -82,6 +82,8 @@ pub(super) struct Entity<'a> {
     patch: Option<&'a isometer_space::places::PlaceId>,
     #[serde(skip_serializing_if = "Option::is_none")]
     authored: Option<Character<'a>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    settled: Option<Tick>,
 }
 
 impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
@@ -111,6 +113,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             varied,
             patch,
             authored,
+            settled,
         } = value;
         Self {
             lineage,
@@ -137,6 +140,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             varied,
             patch: patch.as_ref(),
             authored: authored.as_ref().map(Character::from),
+            settled: *settled,
         }
     }
 }

@@ -29,7 +29,7 @@ pub use effect::{Conversion, Effect};
 pub use feeding::{FeedingSources, PortFeeding};
 pub use graft::{Compatibility, GraftReceipt, Raise, retained};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
-pub use mind::{Mind, Need};
+pub use mind::{Mind, Need, Rate};
 pub use pace::{PaceCost, PaceDuration, PaceProfile};
 pub use recipe::{Affinity, Anchor, ChainFacing, ChainLink, Declared, Development, Facing, Policy, Recipe, Tagma, Template, Verdict};
 pub use systems::{Carriage, Fill, Role, System, default_systems};

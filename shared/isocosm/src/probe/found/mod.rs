@@ -501,6 +501,7 @@ pub(super) fn member(
         varied: vec![],
         patch: None,
         authored: None,
+        settled: None,
     }
 }
 
