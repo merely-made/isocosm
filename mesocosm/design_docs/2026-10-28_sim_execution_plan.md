@@ -245,6 +245,27 @@ each title names its outcome against the doctrine.
 
   Links: area Directing and play · draws on 742, sim-execution D25 · governs isocosm::directing::tier · summary A member keeps its tier until out of its area for a band of ticks.
 
+- **D27, bands run through the scheduler (2026-10-28), applies Processes
+  6:** "Through the scheduler (Recommended)". Each band is a representative
+  body with a count, run by the existing scheduler and process definitions
+  with multiplicity (219); feeding, risk and death gain band-aware forms.
+
+  Links: area Processes and rules · draws on 219, sim-execution D24 · governs isocosm::schedule, isocosm::population · summary A band is a representative body with a count, run by the scheduler with multiplicity.
+
+- **D28, a representative plus a pool (2026-10-28), applies Processes 6:**
+  "Representative plus pool (Recommended)". The band keeps a ledger of the
+  difference between its members' summed matter and count times the
+  representative's, so totals are conserved; lifting draws from it.
+
+  Links: area Processes and rules · draws on sim-execution D24, sim-execution D27 · governs isocosm::population · summary A band's pool holds the difference between its members' matter and the representative's times its count.
+
+- **D29, bands by age and felt needs (2026-10-28), applies Processes 6:**
+  "Age band and felt needs (Recommended)". Besides site and lineage, a band
+  is an age band of a world-rule width (default a third of maturity) and
+  the set of the mind's needs its members feel.
+
+  Links: area Processes and rules · draws on 227, sim-execution D24 · governs isocosm::population · summary A band is a site, lineage, age band and set of felt needs.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -294,7 +315,7 @@ Evaluate a pass's members concurrently against pass-start state (454) and commit
 - From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:78-87`, `:132-134`, `:333-335`.
 
 ### E4. The population model
-Outside the rendered area each site and lineage runs as a population (D24): counts by age band and condition (fed, hungry, wounded), its matter, and births, deaths, meals, upkeep and moves as rates read from the same process definitions (219), matter conserved every tick. The probe's exact-state crowd (`probe/crowd/`) is not the form: played worlds hold about 1.2 members per exact body state. Identity-bound processes and noted members stay individual (113, D2).
+Outside the rendered area each site and lineage runs as a population (D24), in bands of age and felt needs (D29), each a representative body with a count and a matter pool (D28), run by the scheduler with multiplicity (D27): counts by age band and condition (fed, hungry, wounded), its matter, and births, deaths, meals, upkeep and moves as rates read from the same process definitions (219), matter conserved every tick. The probe's exact-state crowd (`probe/crowd/`) is not the form: played worlds hold about 1.2 members per exact body state. Identity-bound processes and noted members stay individual (113, D2).
 - Done when: a far site and lineage advances as a population, conserving matter, in a unit test (D18).
 - Needs: D23, D24
 - Rulings: 75, 113, 207, 219, 261, 266, 440, D2, D23, D24
@@ -379,3 +400,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: D19 to D22: periods 10 / 2 / 5 in played worlds, meals scaled by period, the head at 10 ticks a second; choice-rule tests run unpaced (`directing::tests::unpaced`).
 - 2026-10-28: E7b built, simpler than planned: the per-tick hazard keeps its draw, but a draw that misses on a process with no other effect makes no act (`execute.rs`), so the empty accepted act each mature member took each tick is gone; the death tick is not drawn once.
 - 2026-10-28: D24 to D26: the aggregate runs a population model per site and lineage; near is the rendered area plus the roots; a band in ticks. Measured first: about 1.2 members per exact body state in played worlds (seeds 0 to 2, ticks 60 to 180).
+- 2026-10-28: D27 to D29: bands run through the scheduler, a representative plus a pool, bands by age and felt needs.

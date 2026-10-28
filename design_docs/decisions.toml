@@ -5197,6 +5197,30 @@ summary = "A member keeps its tier until out of its area for a band of ticks."
 draws_on = ["742", "sim-execution D25"]
 governs = ["isocosm::directing::tier"]
 
+[decisions."sim-execution D27"]
+title = "bands run through the scheduler (2026-10-28), applies Processes 6"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A band is a representative body with a count, run by the scheduler with multiplicity."
+draws_on = ["219", "sim-execution D24"]
+governs = ["isocosm::population", "isocosm::schedule"]
+
+[decisions."sim-execution D28"]
+title = "a representative plus a pool (2026-10-28), applies Processes 6"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A band's pool holds the difference between its members' matter and the representative's times its count."
+draws_on = ["sim-execution D24", "sim-execution D27"]
+governs = ["isocosm::population"]
+
+[decisions."sim-execution D29"]
+title = "bands by age and felt needs (2026-10-28), applies Processes 6"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A band is a site, lineage, age band and set of felt needs."
+draws_on = ["227", "sim-execution D24"]
+governs = ["isocosm::population"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"
