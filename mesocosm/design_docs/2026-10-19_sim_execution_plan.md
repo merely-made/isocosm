@@ -3,8 +3,9 @@
 **Date:** 2026-10-19
 
 **Status, 2026-10-28:** D5, D6, D7, D9a and D11 built, D9b and D10 dropped
-(Progress), and E1a and E1b. Then E1c, E7 (rates worked out when read) and E8
-(decision periods per lineage), then E4 and E5 (D17). Its decisions are linked to the
+(Progress), and E1a, E1b and E1c. Then E7 (rates worked out when read) and E8
+(decision periods per lineage), then E4 and E5 (D17), each checked in
+isolation while the sim is wired (D18). Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -148,41 +149,33 @@ Phases in order, each with its done-condition.
   while mood is low and bleeding while not, never below nought. Reads
   settle it; a commit that changes what mood reads re-derives the rate; the
   state preimage settles first; a crossing of the bearing is a due event.
-  Done when the exact check holds, which first needs mood to change only at
-  a commit (a need reading the clock breaks it, and comes back as a
-  question).
+  Mood must change only at a commit: where a world's needs read anything
+  but the actor's body, strain stays on its processes. Removing ~740 acts a
+  tick moves the act counter, so bite and amount draws move until E2.
 - **E7b. Death on the queue** (D16). `ecology:hazard-{i}`'s draw each tick
   from maturity becomes one draw of the tick of death at maturity, at the
   same per-tick odds and keyed by actor, tick and process (D1), kept as a
-  due event; age and starvation wake at their ticks. Done when lifespans
-  agree in distribution with the per-tick draw and the pins are re-recorded
-  once, with E8's.
+  due event; age and starvation wake at their ticks.
 - **E8. Decision periods per lineage** (D15). A lineage carries a decision
   period, one by default, pacing its members' choices and moves: the queue
   keys passes by rate class and filing holds each group under its class.
-  Done when the exact check holds with every period at one; Mesocosm's
-  periods per kind are then set as a ruling, offered as options.
+  Mesocosm's periods per kind are then set as a ruling, offered as options.
 
 ## Qualification
 
-How each phase is known to be right, fixed before it is built.
+How each phase is known to be right (D18, replacing the per-phase exact,
+envelope and pin checks this section held through E1c).
 
-- **E1, E3, and E2 once its draws are rekeyed: exact.** A pure execution change
-  leaves every state hash identical to the serial, unskipped run: the H3 pins
-  6/6 without rerecording, and the played A1 battery's first seeds printing
-  identical lines. Any difference is a bug.
-- **E4 and E5: invariants exact, outcomes in distribution.** Matter is
-  conserved every tick, noted members keep their identities, and every
-  crossing conserves totals. Outcomes against the all-individual world are
-  judged with the checkpoint 10 harness: paired worlds, Kolmogorov-Smirnov
-  distance, paired permutation, DKW equivalence within the reading's bound,
-  Holm-corrected, as it certified C10 and C11. A pass is a run that passes; it
-  is not a receipt to keep.
-- **E7b and E8: in distribution, then pinned.** Lifespans under E7b against
-  the per-tick draw by the checkpoint 10 harness; E8 exact at period one.
-  The pins are re-recorded once, for both.
-- **Speed** is read from the same runs: ms per played tick in a grown world,
-  once per phase.
+- **While the sim is wired,** a phase is done when it compiles and the tests
+  of the piece it touches pass, run in isolation. No battery, pin or
+  certification runs per phase, and nothing is checked against the previous
+  build; a pin that breaks is re-recorded, not treated as a bug. The
+  done-conditions above that name an exact check or the envelope are read
+  this way.
+- **Kept every phase:** determinism within one build (the same inputs give
+  the same world) and conservation of matter, both already unit tests.
+- **Once everything is wired,** validation of the whole is designed against
+  what the game should be, the crowd's certification (Processes 6) among it.
 
 ## Questions put to Mark
 
@@ -357,6 +350,18 @@ each title names its outcome against the doctrine.
   new figures. One re-recording of the pins covers E7b and E8.
 
   Links: area Processes and rules · draws on sim-execution D4, sim-execution D13 · amends sim-execution D4, sim-execution D13 · governs isocosm::schedule · summary E1c, then rates worked out when read, then decision periods per lineage, then the crowd and the tier line.
+
+- **D18, wired first, validated after (2026-10-28), refines Method 4:**
+  "What I value is everything being wired up at the very least before I
+  start making any type of validation scheme to figure out if something is
+  consistent or works ... if you want to test each individual part, like at
+  that point, it maybe makes a bit more sense to test it in isolation then.
+  But like, as we're literally developing and writing each individual part,
+  it does not make sense to test each individual part like it is the final
+  game." Asked after E1c's gates ("Why do we need fidelity to previous
+  behavior?"). The Qualification section is rewritten to it.
+
+  Links: area Method and documents · draws on 791, sim-execution D13 · amends sim-execution D13 · summary While the sim is wired, a change is checked in isolation by its own tests, never against the previous build; validation of the whole is designed once it is wired.
 
 ## Findings
 
@@ -657,3 +662,14 @@ each title names its outcome against the doctrine.
 - **2026-10-28:** Mark asked for per-kind decision rates, rates worked out
   when read and the crowd tier, and answered three questions (D15 to D17):
   E7 and E8 added, Processes 7 refined. E1c next.
+- **2026-10-28, E1c built.** The gate index is built once for every process
+  on a period and kept across advances (`schedule/filed/kept.rs`): at each
+  advance's start a group whose body is not the handle it was filed from,
+  or that is new or gone, is filed again, and so are the residents of a
+  site whose conditions changed; other rules, movement mode or routes
+  rebuild it, and a refused advance drops it. Battery seeds 0 to 2
+  identical, 190.3 s at main (`3b2db632`) and 171.1 s after, one pair, a
+  quiet machine: about 0.12 s a played tick at main against 0.46 s on
+  10-20, so case 978's two ticks a second is stale. 289 lib tests in debug
+  with the kept-filing check, 744 in release. Then D18: phases after E1c are
+  checked in isolation.

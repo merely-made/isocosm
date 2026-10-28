@@ -2085,12 +2085,15 @@ Raw receipts live out of tree, under `Code/testing/<repo>/`; the repository
 keeps their summaries, sources and scripts. Each lane brief names the receipts
 its done-conditions need and caps their total; exploratory runs keep
 summaries only. A family certifies against its plan's invariants
-(conservation, replay, its controls), never parity with a legacy copy.
+(conservation, replay, its controls), never parity with a legacy copy or
+the previous build. While the sim is being wired, a change is checked by its
+own tests in isolation; validation of the whole is designed once it is wired.
 
-Links: draws on 255, 791, 953 · summary Raw receipts live out of tree; briefs name and cap the receipts they need.
+Links: draws on 255, 791, 953, sim-execution D18 · summary Raw receipts live out of tree; briefs cap the receipts they need; certify against invariants, never the previous build; check in isolation until wired.
 
-*Refined 2026-10-22 in the schema review: 791's certification rule (Mark:
-"791 to Method").*
+*Refined 2026-10-28 from the execution plan's D18 (Mark: "What I value is
+everything being wired up at the very least before I start making any type
+of validation scheme").*
 
 ### Method 5. One home per fact
 

@@ -5104,6 +5104,14 @@ draws_on = ["sim-execution D4", "sim-execution D13"]
 amends = ["sim-execution D4", "sim-execution D13"]
 governs = ["isocosm::schedule"]
 
+[decisions."sim-execution D18"]
+title = "wired first, validated after (2026-10-28), refines Method 4"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Method and documents"
+summary = "While the sim is wired, a change is checked in isolation by its own tests, never against the previous build; validation of the whole is designed once it is wired."
+draws_on = ["791", "sim-execution D13"]
+amends = ["sim-execution D13"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"
@@ -5437,8 +5445,8 @@ draws_on = ["193", "592", "593", "594"]
 title = "Receipts"
 source = "design_docs/doctrine.md"
 area = "Method and documents"
-summary = "Raw receipts live out of tree; briefs name and cap the receipts they need."
-draws_on = ["255", "791", "953"]
+summary = "Raw receipts live out of tree; briefs cap the receipts they need; certify against invariants, never the previous build; check in isolation until wired."
+draws_on = ["255", "791", "953", "sim-execution D18"]
 
 [statements."method.5"]
 title = "One home per fact"
