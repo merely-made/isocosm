@@ -39,3 +39,16 @@ fn a_frame_keeps_its_members_posed_and_the_rest_leave_the_physical_path() {
     assert!(posed.iter().all(|id| framed.contains(id) || *id == c), "outside the frame only roots stay posed: {posed:?}");
     assert!(posed.len() < members.len(), "some members left the physical path");
 }
+
+#[test]
+fn far_meals_follow_the_rate_near_foragers_are_measured_to_eat() {
+    let mut s = world(3, Execution::Individuals);
+    let feed = "ecology:feed-1";
+    assert!(s.sim.far_meal(Id::MAX - 1, feed), "with nothing measured, a far forager eats");
+    s.sim.state.meal_rates.insert(feed.into(), crate::spatial::MealRate { meals: 1, chances: 4 });
+    let eats = (0..4000).filter(|t| {
+        s.sim.state.tick = *t;
+        s.sim.far_meal(Id::MAX - 1, feed)
+    }).count();
+    assert!((800..1200).contains(&eats), "about a quarter of decisions eat: {eats}");
+}

@@ -297,6 +297,7 @@ impl Simulation {
     /// first write: the actor alone unless it acts for its cohort, then the
     /// target.
     pub(crate) fn commit(&mut self, mut stage: Stage, next_action: u64, process: &str) {
+        self.note_meal(process, stage.actor);
         let legs = std::mem::take(&mut stage.legs);
         let legs = crate::flows::split(legs, std::mem::take(&mut stage.routed));
         let count = stage.count;

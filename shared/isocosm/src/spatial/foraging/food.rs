@@ -160,10 +160,16 @@ impl Simulation {
                     .map(|(id, _)| id),
             );
         }
+        let f = t.foraging.values().find(|f| f.feed == p.id);
+        // A far forager eats at site grain as often as near foragers are
+        // measured to eat (D34); otherwise it finds nothing this decision.
         if !self.state.spatial_poses.contains_key(&actor) {
-            return None;
+            return match f {
+                Some(f) if !self.far_meal(actor, &f.feed) => Some(None),
+                _ => None,
+            };
         }
-        let f = t.foraging.values().find(|f| f.feed == p.id)?;
+        let f = f?;
         let food: Vec<_> = self
             .food_candidates(actor, p, f)
             .into_iter()

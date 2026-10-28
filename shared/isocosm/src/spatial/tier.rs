@@ -9,7 +9,26 @@
 //! then forages at site grain. A world without windows keeps every pose.
 
 use crate::{Simulation, attention::Region, operations::Window, schema::*, spatial::{Pose, embodiment}};
+use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+
+/// Meals near foragers took, and the hungry forager-ticks they had (D34),
+/// halved together as they grow so the rate follows the world.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct MealRate {
+    pub meals: u64,
+    pub chances: u64,
+}
+
+/// Forager-ticks past which a rate's counts are halved.
+const MEMORY: u64 = 4096;
+
+impl MealRate {
+    /// Meals per hungry forager-tick, per million.
+    fn per_million(self) -> Option<u64> {
+        (self.chances > 0).then(|| self.meals.saturating_mul(1_000_000) / self.chances)
+    }
+}
 
 impl Simulation {
     /// Whether a member is near: every member is, in a world without
@@ -133,5 +152,54 @@ impl Simulation {
                 }
             }
         }
+    }
+
+    /// Notes a meal a near (posed) forager took by `process`.
+    pub(crate) fn note_meal(&mut self, process: &str, actor: Id) {
+        let feeds = self.genesis.rules.spatial_templates.as_ref()
+            .is_some_and(|t| t.foraging.values().any(|f| f.feed == process));
+        if feeds && self.state.spatial_poses.contains_key(&actor) {
+            self.state.meal_rates.entry(process.into()).or_default().meals += 1;
+        }
+    }
+
+    /// Notes a tick of every hungry near forager, by its feed process.
+    pub(crate) fn note_meal_chances(&mut self) {
+        let Some(t) = self.genesis.rules.spatial_templates.as_ref() else { return };
+        let feeds: Vec<Key> = t.foraging.values().map(|f| f.feed.clone()).collect();
+        let mut chances: BTreeMap<Key, u64> = BTreeMap::new();
+        for &id in self.state.spatial_poses.keys() {
+            for feed in &feeds {
+                let Some(p) = self.genesis.rules.processes.get(feed) else { continue };
+                if self.food_need_score(id, p) > 0 {
+                    *chances.entry(feed.clone()).or_default() += 1;
+                }
+            }
+        }
+        for (feed, n) in chances {
+            let rate = self.state.meal_rates.entry(feed).or_default();
+            rate.chances += n;
+            if rate.chances > MEMORY {
+                rate.chances /= 2;
+                rate.meals /= 2;
+            }
+        }
+    }
+
+    /// Whether a far forager eats at this decision (D34): with the chance
+    /// near foragers of its feed eat per tick, times the ticks one decision
+    /// covers; the rate pooled over every feed where its own is unmeasured,
+    /// and always where nothing is.
+    pub(crate) fn far_meal(&self, actor: Id, feed: &str) -> bool {
+        let rates = &self.state.meal_rates;
+        let pooled = rates.values().fold(MealRate::default(), |a, r| MealRate {
+            meals: a.meals + r.meals, chances: a.chances + r.chances });
+        let Some(per_million) = rates.get(feed).and_then(|r| r.per_million()).or_else(|| pooled.per_million()) else {
+            return true;
+        };
+        let lineage = self.state.population.get(actor).map(|e| &e.lineage);
+        let period = lineage.and_then(|l| self.state.lineages.get(l)).and_then(|l| l.decides).unwrap_or(1);
+        let draw = crate::draw(self.genesis.seed, "far-meal", &[actor, self.state.tick]) % 1_000_000;
+        draw < per_million.saturating_mul(period)
     }
 }
