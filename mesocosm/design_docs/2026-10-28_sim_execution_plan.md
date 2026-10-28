@@ -309,6 +309,17 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on 113, sim-execution D2, sim-execution D24 · governs isocosm::spatial::foraging · summary A far forager eats at the rate near foragers are measured to eat.
 
+- **D35, far meals by an encounter rate from prey density (2026-10-28),
+  replaces D34:** "Encounter rate from prey density (Recommended)". A far
+  forager finds food with chance M / (M + K): M the prey matter its diet
+  can eat at its site, shared among that diet's foragers there; K one
+  meal's worth times a half-saturation constant, a world rule. Asked after
+  D34's live measurement proved biased: near foragers are few and see only
+  posed food (5 meals per 61 hungry ticks), so paced far foragers starved
+  (11 dead by tick 21) and unpaced ones overgrazed and crashed (9 dead).
+
+  Links: area Processes and rules · draws on 113, sim-execution D24, sim-execution D34 · replaces sim-execution D34 · governs isocosm::spatial::foraging · summary A far forager finds food by a saturating encounter rate on its site's prey matter.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -451,3 +462,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: E5d built (`mesocosm-runtime/src/runtime/frame.rs`, `Simulation::near`): the critter's frame is the participant's attention; far arrivals and births stay off the physical path. The headless play run's cost fell about sixteenfold (receipts).
 - 2026-10-28: E5c built (`Simulation::draw_into_frames`, `embodiment::place_within`): frames fill toward their share by area, at most twice the shortfall tried an advance.
 - 2026-10-28: D33, D34: the head's frame off on main (`FRAME_TIER`); far meals to be paced at the walkers' measured rate. The tier publications (`Publication::Unplaced`, `Drawn`) are on `sim-e4-probe`, not main.
+- 2026-10-28: D35 replaces D34: far meals by an encounter rate from prey density.

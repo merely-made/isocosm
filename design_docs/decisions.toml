@@ -5262,6 +5262,15 @@ summary = "A far forager eats at the rate near foragers are measured to eat."
 draws_on = ["113", "sim-execution D2", "sim-execution D24"]
 governs = ["isocosm::spatial::foraging"]
 
+[decisions."sim-execution D35"]
+title = "far meals by an encounter rate from prey density (2026-10-28), replaces D34"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A far forager finds food by a saturating encounter rate on its site's prey matter."
+draws_on = ["113", "sim-execution D24", "sim-execution D34"]
+replaces = ["sim-execution D34"]
+governs = ["isocosm::spatial::foraging"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"
