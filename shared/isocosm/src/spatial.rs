@@ -22,6 +22,7 @@ pub use birth_fallback::BirthFallback;
 mod birth_geometry;
 mod birth_command;
 mod templates;
+mod tier;
 pub mod embodiment;
 pub mod foraging;
 pub use templates::{Templates, Stand, Crossing, STANDS as STANDS_PER_SITE};

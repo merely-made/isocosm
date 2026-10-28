@@ -35,7 +35,7 @@ impl Simulation {
 
     fn in_region(&self, site: Id, region: &Region) -> bool {
         match region {
-            Region::Site(id) => site == *id,
+            Region::Site(id) | Region::Frame { site: id, .. } => site == *id,
             Region::Location(id) => self.state.locations.get(id).is_some_and(|l| l.sites.contains(&site)),
         }
     }

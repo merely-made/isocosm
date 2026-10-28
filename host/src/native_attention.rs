@@ -64,7 +64,8 @@ pub fn effective(session: &Session, participant: ParticipantHandle) -> Result<Pl
     let raise = |values: BTreeSet<Target>| values.into_iter()
         .map(|target| raise_target(session, target)).collect::<Result<BTreeSet<_>, _>>();
     let examined = value.examined.into_iter().map(|region| match region {
-        Region::Site(id) => Ok(PlaceHandle(id)),
+        // The overlay's handle names a frame's site (D32).
+        Region::Site(id) | Region::Frame { site: id, .. } => Ok(PlaceHandle(id)),
         Region::Location(_) => Err("native Location requires its place-graph adapter".into()),
     }).collect::<Result<_, String>>()?;
     Ok(PlayerAttention { participant, played: value.played.into_iter().map(EntityHandle).collect(),
@@ -77,7 +78,7 @@ pub fn restored(session: &Session, participant: ParticipantHandle,
     if profile != expected_profile { return Err("saved window belongs to another product mode".into()); }
     let pinned = held.pinned.into_iter().map(|p| raise_target(session, p)).collect::<Result<_, _>>()?;
     let examined = match held.examined {
-        Some(Region::Site(site)) => Some(PlaceHandle(site)),
+        Some(Region::Site(site) | Region::Frame { site, .. }) => Some(PlaceHandle(site)),
         Some(Region::Location(_)) => return Err("native Location requires its place-graph adapter".into()),
         None => None,
     };

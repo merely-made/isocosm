@@ -137,8 +137,9 @@ impl Simulation {
         }
         let t = self.genesis.rules.spatial_templates.as_ref()?;
         if let Some(f) = t.foraging.get(&p.id) {
+            // A member off the physical path forages at site grain (E5).
             if !self.state.spatial_poses.contains_key(&actor) {
-                return Some(None);
+                return None;
             }
             let feed = &self.genesis.rules.processes[&f.feed];
             if self.food_need_score(actor, feed) <= 0 {

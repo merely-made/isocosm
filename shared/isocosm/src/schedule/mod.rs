@@ -154,7 +154,9 @@ impl Simulation {
                 None => population.restrict(&roots),
             }
         }
-        // Outside the near tier, members fold into bands (E4).
+        // Outside the near tier, members leave the physical path (E5) and
+        // fold into bands (E4).
+        self.unplace_far();
         self.fold_far();
         Ok(work)
     }
