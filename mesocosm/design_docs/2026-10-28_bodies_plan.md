@@ -158,6 +158,7 @@ friction), which are unmodelled.
 - From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:407-411, 569-573, 657-660`; `archive_docs/2026-10-28/2026-10-22_foot_placement_plan.md:164-167`
 
 #### BO8. Gait: turns, stages and sampling
+Mark, 2026-10-28, on quantized facing: "Except for things like maybe feet, which are automatically placed anyway, so might as well do quantized facing and then use that for the leaning and the, you know, the body weight and which weight is on the foot and, you know, to determine like if somebody has balance and whether or not they're gonna trip and all that stuff." A direction for this phase, not a ruling on its form: feet take a quantized facing, and lean, weight per foot, balance and tripping read from it.
 Turning is conservative: a longer route may still lose to a short sideways step,
 and slope refusals were not re-stated after supported turns landed. Only one foot
 swings at a time; multi-stage footholds and richer body articulation remain

@@ -210,8 +210,21 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on sim-execution D17 · governs isocosm::ecology · summary E7b, then the crowd and the tier line.
 
+- **D23, three tiers (2026-10-28), applies Processes 6:** "I think the near
+  tier is necessarily dependent on the viewing dimension, but the far tier,
+  well, there's like a far tier, like in the way that people use
+  billboarding, where like if something is really, really, really far away,
+  then they'll just billboard it, you know? And then there's the far tier of
+  like, it's not in this area. You could not possibly see it. Then that's
+  like aggregate tier, right?" Recorded by another session as a constraint
+  (below) and keyed here. How near as the rendered area sits with D3's
+  "roots plus one hop" comes back with the band question before E5.
+
+  Links: area Processes and rules · draws on 113, 742, sim-execution D2, sim-execution D3 · governs isocosm::directing::tier · summary Near is the rendered area, view-dependent; far within it is presentation; the aggregate tier lies outside it and never depends on the view.
+
 ## Constraints
 
+- **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
 - **Checked in isolation while wired (D18).** A phase is done when it compiles and the tests of the piece it touches pass, run alone. No battery, pin or certification runs per phase and nothing is checked against the previous build; a pin that breaks is re-recorded, not a bug. Done-conditions below naming an exact check or the envelope are read this way. Kept every phase: determinism within one build and conservation of matter, both unit tests. Superseded from E1c on: "A pure execution change leaves every state hash identical to the serial, unskipped run ... Any difference is a bug" (rulings 454, 958, D1, D4).
 - **Once wired: crowd and tier (E4, E5),** as part of validating the whole: invariants exact (matter conserved every tick, noted members keep their identities, every crossing conserves totals); outcomes judged with the checkpoint 10 harness: paired worlds, Kolmogorov-Smirnov distance, paired permutation, DKW equivalence within the reading's bound, Holm-corrected, as it certified C10 and C11. "A pass is a run that passes; it is not a receipt to keep."
 - **No cohort claim on projection-only evidence.** "No cohort execution claim lands on projection-only evidence. It needs an exact zero-tick round trip and a measured evolution envelope against the all-individual reference." (place plan stop rule).
@@ -323,7 +336,6 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 ## Questions for Mark
 - **The tier line's band (owed before E5).** `TierLine::default()` is promote at 1 hop, demote at 2, and hops are whole numbers, so the band the doc comment calls memory is empty; a member stepping between one and two hops changes tier every tick, each change a crossing. The 3x3 enclosure has diameter two. Options stated: "keep 1 and 2, widen where worlds are larger, or a band in ticks." From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:360-367`.
 - **Which speed bar is the bar.** 966's 1.5 s on the seed-9 save (about a hundred members) stays open for a ruling "with the scheduling profile"; 976's 8 s holds; 978 sets the head at 2 ticks per second with 10 the aspiration; the aim is 0.1 s at a few hundred members. Rule whether the aim replaces 966 and when the head's tempo is raised (the 1,440-tick day of the light field, 973, is 12 minutes of play at 2 ticks per second). From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md:7-13`, `:359-370`.
-- **Is the tier line independent of the viewing dimension (gap raised 2026-10-27).** Whether the tier line must be independent of the 2D, 2.5D and 3D views, so E5's seeded lift keys on site, lineage and tick and never on a view event. Intrinsic world dimension may legitimately change aggregate results; viewing dimension may not. No old plan states it; it is raised here as a question, not a ruling. From: gap raised 2026-10-27.
 - **The `cargo test` profile.** The played seed 0 runs far slower under the `cargo test` profile than release, and with debug assertions off drops substantially. The likely source is named but "not strictly separated": the journal's full `State` clone verifying each rollback (`journal.rs:66`) and `passed_by`'s population rescan (`schedule/mod.rs:314`). No action decided. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:350-355`.
 - **Occurrence index in E2's key (conditional).** If the actor, tick and process key collides for a grouped cohort, E2 brings the fork to Mark. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:128-131`.
 

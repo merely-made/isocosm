@@ -5,7 +5,7 @@
 
 **For:** magic and construction as world operations: the six axes a generated magic system is drawn on (case 1009, the nucleus), fundamental effects with equivalent-exchange cost, effect scripts connected to the world, persistent-effect lifecycle, rulesets and ways of casting, nested construction composition, the inspection a player or developer needs, the first slice's open work, and the effects system's remainders.
 
-Not here: glyph canon, journey, ascension, chains and standing, the impresa (`wing-organs`); the 279 unpark condition and its measured state (`sim`, parked items); the 673 versus 404 to 407 and 1009 ruling on what "parked" means (`wing-organs`, Questions); the body contract and conditions (`wing-phenotype-contract`); capability, repertoire and proficiency (`sim`); any speed or tick-cost bar, including the cost of bounding script work (`sim-execution`); licences of rulesets that may ship (`content-packs`).
+Not here: glyph canon, journey, ascension, chains and standing, the impresa (`wing-organs`); the body contract and conditions (`wing-phenotype-contract`); capability, repertoire and proficiency (`sim`); any speed or tick-cost bar, including the cost of bounding script work (`sim-execution`); licences of rulesets that may ship (`content-packs`).
 
 Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
 plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
@@ -13,7 +13,7 @@ line in Findings.
 
 ## Constraints
 
-- **Parked under 279**, with magic: the composition design has no implementation lane open. Source: ruling 279; the unpark condition is `sim`'s, the reading of 673 is `wing-organs`'.
+- **Parked**, with magic: not a priority now, and open to design and code, which are what unpark it (`wing-organs` D1).
 - **Equivalent exchange (ruling 404, Mark):** "Equivalent exchange. Any effect (burn, freeze, shock, buff, debuff, heal…) should be available as a cantrip and combinable. But each level of combining takes a magnitude more energy." Cantrip names a small expression, not universal access, zero cost or a ruleset's casting category. Equivalent exchange is a world rule, not a claim of thermodynamic realism.
 - **Construction declares function; geometry supplies measurements (405).** Reach, clearance, contact and coverage come from geometry, so a body change can invalidate a reading. Constructible, executable in these circumstances, and advantageous here are different questions. The current single-part bindings and three-operator evaluator are foundations, not the complete system.
 - **Reads never silently regenerate an inhabited world's rules.** Reads use accepted state and admitted definitions; mod-authored and generated definitions share one admission and inspection path. The sim's rule stands: lower to process definitions where possible; hooks without a supported lowering stay foreground-only.
@@ -29,21 +29,21 @@ line in Findings.
 ### F1. The six axes of a magic system
 A generated magic system is one trait of the world's genotype, drawn at founding or grown at a boundary, on six axes (case 1009, D30, accepted 2026-09-22): *source* (the world's fields, the caster's anatomy, a bearer, a god, the record's frequency); *gate* (unconditional, anatomical, acquired on a journey, skill-gated, social, placed); *orientation* (bending how a process runs, or yielding an effect outright); *cost and breach* (which account pays, which of the world's invariants the system may suspend, at what price, leaving what residue); *rhythm* (cyclical, continuous, once); *manifestation* (how it shows and is sensed). Divinity reads such a system through its effects, acquisition and frequency, so the ladder of sacrificed forms follows the gate axis. Mod authors and the generator should both be able to create such magic. Placed here at Mark's word, 2026-10-22: "Axes to the plan".
 - Done when: not stated; owed
-- Needs: F2, F3, F4; ruling 279 unpark (`sim`)
+- Needs: F2, F3, F4
 - Rulings: 1009, 101, 102, 49
 - From: `archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md:118-132`; design record case 1009 (`design_docs/2026-09-18_wing_design_plan.md:10933`)
 
 ### F2. Cost curve for combining
 Strongly escalating cost with deeper or stronger combinations; the exact curve is open. No tenfold growth, no numerical definition of composition level and no D&D or Pathfinder spell rank is selected; ten sequential low-power casts are not one tenth-level combination. Reading, not ruled: costs should expose their contributing effects, strengths, composition relationships and contextual modifiers; composition depth, repeated effects, duration, area, range, simultaneous versus sequential use and persistent propagation need explicit treatment before a formula is chosen. Explainable, surprising and powerful combinations are wanted.
 - Done when: not stated; owed
-- Needs: F3; ruling 279 unpark
+- Needs: F3
 - Rulings: 404, 279
 - From: `archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md:45-70`
 
 ### F3. Effect scripts connected to the world
 A script has a fundamental character plus characteristics that vary with the sim (nearby fire makes fire hotter and cheaper; ice spreads until sunlight stops it; world size influences gravity). These are admitted alternatives a world may generate, not defaults. Mark: "basically hook other generators of the sim into the effect's script calculation." Proposed execution contract, not a selected runtime: an effect definition names its revision, parameters, world inputs, targets, operations, costs, ongoing behaviour and explanation, and the facts it reads and may change. Open: "How to bound script work without silently changing world outcomes remains an execution-design question, not a balancing rule."
 - Done when: not stated; owed
-- Needs: `sim` process definitions (lowering); `sim-execution` for any cost bar on script work; ruling 279 unpark
+- Needs: `sim` process definitions (lowering); `sim-execution` for any cost bar on script work
 - Rulings: 404
 - From: `archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md:72-98`
 
@@ -57,7 +57,7 @@ A script has a fundamental character plus characteristics that vary with the sim
 ### F5. Rulesets and ways of casting
 Schools and aspects are interpretations of effects and their relationships. Mark's references (Homestuck, Elder Scrolls, D&D, Pathfinder, PbtA) are influences to compare, not interchangeable schemas. A ruleset's supplied spells are exemplars whose defining behaviour is preserved in the mapping; generated spells fill out the catalogue; no mechanical equivalence is inferred from a school label. CoreRPG and the individual system adapters are unresolved. The same canonical effect need not acquire the same spell level, damage or casting procedure under every ruleset, but the overlay calibration requirements still apply to shared world outcomes. Casting methods are open; no universal mana pool, gesture, preparation or progression model is selected. Ball x Pit is Mark's analogy for combinations, not an algorithm. Ruling 522 (2026-10-03) gave Ars Magica's Hermetic magic (Techniques composed with Forms at guideline levels) as a reference. Whether its structure becomes native vocabulary is a question below.
 - Done when: not stated; owed
-- Needs: ruleset adapters (`vtt-overlay` rulesets, `mesocosm-overlay` calibration); F1; ruling 279 unpark
+- Needs: ruleset adapters (`vtt-overlay` rulesets, `mesocosm-overlay` calibration); F1
 - Rulings: 404, 522
 - From: `archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md:100-116`; design record ruling 522 (`design_docs/2026-09-18_wing_design_plan.md:3722`)
 
@@ -91,7 +91,7 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
 
 ## Deferred and parked
 
-- **Everything above** is parked with magic under 279 (`sim`). No phase is scheduled. The first slice's lanes (evaluator, generation, consumer wiring) need no further work except as F8 records.
+- **Everything above** is parked with magic: no phase is scheduled (`wing-organs` D1). The first slice's lanes (evaluator, generation, consumer wiring) need no further work except as F8 records.
 
 ## Questions for Mark
 
@@ -112,4 +112,4 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
 
 ## Progress
 
-- 2026-10-28: cut from the functional generation plan and the presentation plan's effects remainders (pres.32); all phases parked under 279.
+- 2026-10-28: cut from the functional generation plan and the presentation plan's effects remainders (pres.32); all phases parked.

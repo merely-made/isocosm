@@ -38,5 +38,5 @@ preserve other products' work and stage only the intended paths.
 - The social simulation ships with its legibility surface, and relationship
   drift has player levers (founding plan, "The social layer is the base
   layer"; founding record §2).
-- No rollback netcode or universal CRDT world state speculatively (the
-  shared-authority plan, root `design_docs/`).
+- No rollback netcode speculatively (the session network plan, root
+  `design_docs/`).

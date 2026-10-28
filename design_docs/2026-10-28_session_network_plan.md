@@ -27,6 +27,12 @@ Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
 plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
 line in Findings.
 
+## Decisions
+
+- **D1, no rule against CRDTs (2026-10-28), refines Record 1:** Mark: "No CRDTs never made any sense. It was a stupid rule to begin with. And just a misunderstanding as well to begin with. So no, that rule is gone. Get rid of that rule." Which operation families want true CRDT types stays a design question (Questions); none is ruled out.
+
+  Links: area Host and network · draws on record.1, host.5 · summary The no-CRDTs rule is withdrawn; whether an operation family needs a true CRDT is decided on its merits.
+
 ## Constraints
 
 - **The no-second-runtime gate stands and governs** (shared-authority plan,
@@ -196,7 +202,7 @@ Demand-gated tiers of the shared-authority plan. K2 must say for each whether
 it is superseded by the Stickleback plan, retained, or deleted. The peer-side
 commit-reveal and regenerated secrets are marked superseded already. Parked
 items here wait on demand, Personae or the V2 world; nothing here is parked
-under 279 (that is `sim`'s item).
+parked (`wing-organs` D1).
 
 - **T1. Transferable host role (Tier 1)**: late-join in reverse: the outgoing
   host freezes intents, transfers `GameSnapshot`, sequence, log hash and the
@@ -303,10 +309,7 @@ under 279 (that is `sim`'s item).
 - 2026-10-28: the shared-authority plan's sequencing items 1 and 2 are "landed
   locally 2026-07-11" but cite Moot, Murm and Personae pieces; the plan itself
   says Tier 1 still needs live transfer.
-- 2026-10-28: CLAUDE.md describes the session model as "DM authority plus an
-  ordered event log, with no CRDTs", which doctrine Record 1 supersedes for
-  campaign authoring (signed concurrent operations); the sequenced lane keeps
-  the ordered log.
+- 2026-10-28: the "no CRDTs" line is gone from the three CLAUDE.md files (D1).
 
 ## Progress
 - 2026-10-28: cut from the sim host plan's H7, the Stickleback migration plan,

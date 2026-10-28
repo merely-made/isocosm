@@ -42,5 +42,5 @@ Each is held in the founding record:
 - The federation platform is extracted from shipped games, not built first;
   the sim is the exception (§5).
 - The invariant is care granularity, not person purity (§1).
-- No rollback netcode or universal CRDT world state speculatively (the
-  shared-authority plan, root `design_docs/`).
+- No rollback netcode speculatively (the session network plan, root
+  `design_docs/`).
