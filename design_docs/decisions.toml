@@ -4948,7 +4948,7 @@ draws_on = ["95", "96", "143"]
 
 [decisions."orthographic-voxel-presentation D1"]
 title = "surface camera (2026-10-21), applies 382"
-source = "mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md"
+source = "mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md"
 area = "Presentation"
 summary = "Mesocosm defaults to a selectable isometric surface view with section options."
 draws_on = ["382"]
@@ -4956,7 +4956,7 @@ governs = ["mesocosm-genet::section::camera"]
 
 [decisions."orthographic-voxel-presentation D2"]
 title = "rich bodies (2026-10-22), applies 511, 512, 531, 758"
-source = "mesocosm/design_docs/2026-09-11_orthographic_voxel_presentation_plan.md"
+source = "mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md"
 area = "Bodies and anatomy"
 summary = "Existing paid body chains and function appearance connect to ordinary play."
 draws_on = ["511", "512", "531", "758"]
@@ -4964,7 +4964,7 @@ governs = ["isocosm::datasheet::native", "isocosm::development", "mesocosm-genet
 
 [decisions."sim-execution D1"]
 title = "draw keys (2026-10-19), refines Processes 7"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Amount, bite, risk and soma draws are keyed by actor, tick and process, never by commit order, so evaluation is order-free; one deliberate hash move."
 draws_on = ["454", "958"]
@@ -4972,7 +4972,7 @@ governs = ["isocosm::execute", "isocosm::stage"]
 
 [decisions."sim-execution D2"]
 title = "exactness (2026-10-19), applies Processes 6, refines Mesocosm 5"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Mesocosm's worlds are statistical: far sites run as the crowd, the played critter and every noted member as individuals."
 draws_on = ["75", "113", "211"]
@@ -4980,7 +4980,7 @@ governs = ["isocosm::probe::crowd"]
 
 [decisions."sim-execution D3"]
 title = "near (2026-10-19), refines Directing 5"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "Near is the attention roots and everything within one hop of the played critter's site; the band is owed before E5."
 draws_on = ["212", "742"]
@@ -4988,7 +4988,7 @@ governs = ["isocosm::directing::tier"]
 
 [decisions."sim-execution D4"]
 title = "order (2026-10-19), refines Processes 7"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Speed first: waking, draw keys and parallel evaluation (E1 to E3) before the crowd and the tier line (E4, E5)."
 draws_on = ["978"]
@@ -4996,7 +4996,7 @@ governs = ["isocosm::schedule"]
 
 [decisions."sim-execution D5"]
 title = "stage bodies by `Arc` (2026-10-20), applies Schema 9"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "The sim's schema and saves"
 summary = "The stage holds each body by the Arc it starts with and copies it only on its first write; serialisation, hashes and saves unchanged."
 draws_on = ["338", "975"]
@@ -5004,7 +5004,7 @@ governs = ["isocosm::population::Population", "isocosm::stage::Stage"]
 
 [decisions."sim-execution D6"]
 title = "`foregone` only on direct acts (2026-10-20), applies Directing 4"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "A receipt's foregone list is filled for direct acts only; scheduled and planned receipts carry an empty one."
 draws_on = ["685"]
@@ -5012,7 +5012,7 @@ governs = ["isocosm::execute", "isocosm::simulation::Receipt"]
 
 [decisions."sim-execution D7"]
 title = "parts by `Arc` before E1 (2026-10-23), applies Schema 9"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "The sim's schema and saves"
 summary = "A body's parts are held by Arc and copied only when written; that and a cheaper gate index come before E1."
 draws_on = ["975", "sim-execution D5"]
@@ -5021,7 +5021,7 @@ governs = ["isocosm::schedule::Filed", "isocosm::schema::Entity"]
 
 [decisions."sim-execution D8"]
 title = "deliberation and planning before E1 (2026-10-23), applies Directing 4 and Processes 8"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "After D7, deliberation and a shared-ground pass's plan are probed and cut before E1, keeping how choices are made and ground shared."
 draws_on = ["454", "683", "813", "sim-execution D7"]
@@ -5030,7 +5030,7 @@ governs = ["isocosm::directing::choice", "isocosm::schedule"]
 
 [decisions."sim-execution D9"]
 title = "deliberation cut without changing a choice (2026-10-23), applies Directing 4"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "A prey search visits only possible prey, and an empty choice is scored again only when the world has changed since."
 draws_on = ["683", "813", "sim-execution D8"]
@@ -5038,7 +5038,7 @@ governs = ["isocosm::directing::choice", "isocosm::targets"]
 
 [decisions."sim-execution D10"]
 title = "a shared-ground act keeps its planned writes (2026-10-23), applies Processes 8"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "An act whose shares cover its plan keeps the planned stage and only re-checks fit before commit."
 draws_on = ["454", "sim-execution D8"]
@@ -5046,7 +5046,7 @@ governs = ["isocosm::execute", "isocosm::schedule"]
 
 [decisions."sim-execution D11"]
 title = "D9b dropped and the prey scan narrowed further (2026-10-23), applies Directing 4"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "Skipping unchanged re-choices is dropped; a prey search files living and dead apart and tests prey-independent requirements once."
 draws_on = ["683", "813", "sim-execution D9"]
@@ -5055,7 +5055,7 @@ governs = ["isocosm::targets"]
 
 [decisions."sim-execution D12"]
 title = "D10 tried where provably safe, then dropped (2026-10-23), applies Processes 8"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Keeping a plan's stage for its act, tried where provably safe, was exact but slower and is dropped; shared-ground acts evaluate twice."
 draws_on = ["454", "sim-execution D10"]
@@ -5064,7 +5064,7 @@ governs = ["isocosm::execute"]
 
 [decisions."sim-execution D13"]
 title = "E1 in three parts (2026-10-23), applies Processes 7"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Waking is built as more gates, then re-filing by what an act changed, then an index kept across advances, each exact."
 draws_on = ["258", "286", "683", "813", "sim-execution D1", "sim-execution D4"]
@@ -5072,7 +5072,7 @@ governs = ["isocosm::schedule::Filed"]
 
 [decisions."sim-execution D14"]
 title = "E1a by cheap necessary gates, mood left out (2026-10-23), applies Processes 7"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Rest is filed by a lost cell its healing needs, a site's condition read as the act reads it; mood is not gated."
 draws_on = ["258", "286", "sim-execution D13"]
@@ -5081,7 +5081,7 @@ governs = ["isocosm::schedule::Filed"]
 
 [decisions."sim-execution D15"]
 title = "a kind's decision rate on its lineage (2026-10-28), refines Processes 7"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A lineage's decision period paces its members' choices and moves."
 draws_on = ["258", "sim-execution D4"]
@@ -5089,7 +5089,7 @@ governs = ["isocosm::schedule", "isocosm::schema::Lineage"]
 
 [decisions."sim-execution D16"]
 title = "decisions are choices and moves (2026-10-28), refines Processes 7"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Choices and moves are paced by the lineage; bodily rates are worked out when read, their crossings due events per member."
 draws_on = ["159", "227", "906", "sim-execution D1"]
@@ -5097,7 +5097,7 @@ governs = ["isocosm::ecology", "isocosm::rules::mind", "isocosm::schedule"]
 
 [decisions."sim-execution D17"]
 title = "order (2026-10-28), amends D4 and D13"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "E1c, then rates worked out when read, then decision periods per lineage, then the crowd and the tier line."
 draws_on = ["sim-execution D4", "sim-execution D13"]
@@ -5106,7 +5106,7 @@ governs = ["isocosm::schedule"]
 
 [decisions."sim-execution D18"]
 title = "wired first, validated after (2026-10-28), refines Method 4"
-source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Method and documents"
 summary = "While the sim is wired, a change is checked in isolation by its own tests, never against the previous build; validation of the whole is designed once it is wired."
 draws_on = ["791", "sim-execution D13"]

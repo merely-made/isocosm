@@ -53,12 +53,12 @@ naming rounds.
 
 **Consumes:** the [founding record](2026-07-30_games_wing_founding.md),
 whose laws and nouns this record sits under; the
-[place-graph engine plan](../mesocosm/design_docs/2026-08-05_place_graph_engine_plan.md) §0 rulings;
-the [resident views composition plan](../mesocosm/design_docs/2026-08-14_resident_views_composition_plan.md)
+[place-graph engine plan](../mesocosm/design_docs/archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md) §0 rulings;
+the [resident views composition plan](../mesocosm/design_docs/archive_docs/2026-10-28/2026-08-14_resident_views_composition_plan.md)
 for "Burn proposes, the record disposes"; the
 [isoscape family plan](../mesocosm/design_docs/archive_docs/2026-10-10/2026-09-16_isoscape_family_plan.md) for the
 generation bucket; the
-[board-on-isometer plan](2026-09-15_board_on_isometer_plan.md)
+[board-on-isometer plan](archive_docs/2026-10-28/2026-09-15_board_on_isometer_plan.md)
 at the repository root as the worked example of a plan designed to the wrong
 target.
 
@@ -101,14 +101,14 @@ construction supports coordinated functional readings, geometry, collision,
 animation bindings and descriptions. These derived products cite the source
 revision; one body may require many runtime objects. Runtime handles and
 render parts are disposable and do not define the continuing individual.
-The [body contract's current refinement](../mesocosm/design_docs/2026-07-31_wing_phenotype_contract_plan.md#current-contract-refinement-2026-09-28)
+The [body contract's current refinement](../mesocosm/design_docs/archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md#current-contract-refinement-2026-09-28)
 separates subject, incarnation, recipe, body revision and projection.
 
 Capability is what current construction and circumstances support; repertoire
 is the procedures an entity can attempt; proficiency is how well it performs
 them. Maturation and practice can change these separately. Perception, belief,
 self-belief and tenets inform choices; actual circumstances resolve effects.
-The [sim plan](../mesocosm/design_docs/2026-09-22_sim_plan.md#25-capabilities-and-knowledge) owns these
+The [sim plan](../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-22_sim_plan.md#25-capabilities-and-knowledge) owns these
 distinctions. Material and conceptual operations share composition machinery,
 with mundane and magical meanings supplied by the world's rules (407).
 
@@ -116,7 +116,7 @@ Magic composes fundamental effects with strongly escalating energy costs,
 and its scripts may read world conditions and other generators' accepted
 outputs (404). Rulesets categorize those effects and supply distinctive
 exemplars; generated spells can extend their catalogues. The
-[functional generation plan](../mesocosm/design_docs/2026-09-09_functional_generation_plan.md#composition-design-2026-09-28)
+[functional generation plan](../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-09_functional_generation_plan.md#composition-design-2026-09-28)
 owns this design, including its open cost and execution questions. Explainable
 surprise and powerful combinations are wanted; fairness does not mean every
 build is equally strong.

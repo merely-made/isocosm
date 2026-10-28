@@ -1,0 +1,2953 @@
+# Orthographic voxel presentation plan
+
+## Posture and route cost follow-up, 2026-10-26
+
+**Status:** implemented and qualified, 2026-10-26. Profile
+and reduce repeated physical readings. Upstream was current at `9b3e73ff`
+after fetching.
+Receipts: `Code/testing/mesocosm/posture-route-2026-10-26/`, total cap 100 MB.
+Reuse the existing playable checkout, target and named Cargo home.
+
+Phases and done-conditions:
+
+1. Separate posture-key lookup, body construction, shapes, terrain clearance
+   and support from route trials, grounded neighbours and node admission.
+   Measure both retained worlds with bounded aggregate counters.
+2. Reuse the measured repeated work through existing physical owners. Keep
+   distinct soles, deterministic candidate order, physical refusals and search
+   budgets. Qualify the retained native histories and focused controls.
+3. Build the normal optimized executable, compare cold round costs, draw an
+   unchosen world and retain actual moving frames with contact evidence.
+
+**Findings, 2026-10-26:** the prior slice's full posture/component reuse leaves
+19.7 and 25.5 second first rounds. `route::search` still builds neighbour
+stances separately from its paid-stride checker; `steps::articulated_neighbours`
+calls the ordinary `footholds::arrivals` admission path for each source stance.
+The measured repeated work is resident intersection and arrival admission,
+rather than pose construction. No new design decision is needed.
+
+The bounded profiler separates sampled-pose lookup/construction, resident
+intersection, skin placement, terrain and support, plus route trials, grounded
+neighbours and admission. The first saved-world measurements assign 5.427
+seconds to resident intersections in shore and 10.564 seconds to arrival
+stance admission in ridge. Sampled gait-pose construction costs 1.188 and
+1.150 seconds. Node admission and repeated queue trials contribute much less.
+
+**Progress, 2026-10-26:** exact per-box resident memoization and terrain-only
+arrival admission share the route's existing physical context. Neighbours and
+turns now share Grounding; admission still precedes resident filtering and
+stance truncation. Common bounded FIFO storage replaces the repeated map/queue
+bookkeeping in the physical memo owners. The first pass preserves both full
+route censuses, including paths, gaits and all refusal fields. Resident scans
+fall from millions to about 80,000-100,000. Arrival memoization reduces repeated
+admission calls, but remaining distinct arrivals still repeat terrain/support
+work. They now use the existing prepared narrow and bearing-polygon machinery
+after the native box/sole checks, preserving their limits and error ordering.
+284 native controls pass, including exact admission/error comparison across
+all facings, half-open resident collision, stale-scope and stance-order checks.
+All 404 controls pass: 284 native, one explicit cached/uncached cold benchmark,
+eight shared-leg controls and 111 receiving controls. Twenty-five existing
+opt-in tests remain skipped; one older eighteen-seed play control is filtered.
+Twelve retained histories replay exactly. Independent accepted-step checks
+verify detection, supported routes and recorded gaits for all three new runs,
+with zero recorded route refusals. Formatting and decision-record checks pass.
+
+Both complete first-cut route censuses match the pre-optimization readings,
+excluding timing fields alone. Their paths, strides, distinct soles, graph
+counts and all refusal fields agree. Cold route time falls from 16.946 to
+9.265 seconds in shore and 22.169 to 11.590 in ridge. Exact resident readings
+reduce sampled collision time from 5.427 to 0.461 seconds and 3.403 to 0.364.
+Shared prepared arrival components reduce stance-admission time from 3.109
+to 0.670 seconds and 10.564 to 3.086. Part/support counters now include
+admissions as well as gait samples; nested times must not be summed.
+
+Normal optimized play, three ordinary ticks, retains both complete native
+histories: shore hash `bd0f8e0cdcc8fb70`, 43 food steps across 17 walkers;
+ridge hash `9ba5838d4fc319dd`, 36 across 16. Their first rounds fall from
+19.708 to 11.965 seconds and 25.535 to 14.810 respectively. Later rounds
+take 2.361/4.412 and 4.288/0.843 seconds. Measurements share this machine;
+the intermediate cache-only shore run is retained despite competing load.
+
+The fresh clock draw starts at `1793000372122172400`; the existing viability
+search accepts candidate 9/128, seed `13400079724686017949`. All rejected
+candidates remain in its log. Three ticks produce 32 food steps across 13
+walkers, hash `e044adb69a4b1d68`, in rounds of 4.518, 1.886 and 0.716 seconds.
+Observed setup takes 22.437 seconds, including candidate search. Each of the
+three motion sets has 24 actual GPU frames; supported swing appears in
+19/20/16, with zero projection failures and zero reported visible native-box
+intersections. Same-cut pixels change in 21/21, 22/22 and 20/21 comparable
+pairs. No world-changing developer intents are issued.
+
+Remaining: difficult cold rounds still pause for 12-15 seconds. Distinct
+sampled terrain-clearance work and ridge's distinct arrival checks remain
+material; repeated frontier trials are smaller. Whole-play terrain-place
+reads cost about 5.4 seconds per retained run. The fresh draw's startup is
+dominated by founder placement and terrain-place reads during viability
+search. These receipts qualify three ticks, not generations or epochs.
+
+## Cold walking search follow-up, 2026-10-25
+
+**Status:** implemented and qualified, 2026-10-25. Reuse physical posture work inside cold
+food-route searches. Integrate upstream `91fbd50a` before qualification.
+Receipts: `Code/testing/mesocosm/cold-route-2026-10-25/`, total cap 100 MB.
+Reuse the playable checkout, target and named Cargo home.
+
+**Findings, 2026-10-25:** the retained shore draw's first round spends about
+80 seconds in cold search. Full positive and negative route reads already
+hit their cache. `walking::samples` and turning's `check_frame` repeatedly
+reconstruct chains, solve limb skins, place rigid parts and derive pad support
+for identical postures. Each candidate edge discards those results.
+The first matched native benchmark keeps actor 13's 364 checked/250 refused
+edges and actor 26's 449/307, including their exact first reasons and exhausted
+256-node reports. Posture-only reuse evaluates 38,152 of 105,934 requests and
+168,930 of 468,437 respectively. Those distinct postures still repeat rigid
+part terrain scans and planted support polygons, so their existing narrow
+and support owners also gain bounded, terrain-bound component readings.
+
+Phases and done-conditions:
+
+1. Prepare anatomy once and share bounded exact posture results across one
+   physical search, using the existing paid chains, narrow collision and
+   bearing-foot polygon. Include root, facing, soles and bearing feet in each
+   posture key; bind terrain, anatomy and current blockers to the search.
+   Component readings retain exact capsule/pad geometry, not AABBs alone.
+   Keep candidate order, posture/node limits and cumulative swing work intact.
+2. Compare reused and fresh physical answers for supported, blocked and failed
+   postures. Qualify retained steep and turning controls and native histories.
+3. Rerun the retained slow draw with actual movement frames and bounded timing
+   evidence, then draw an unchosen world for ordinary play. Report cold work,
+   remaining costs and precise validation boundaries.
+
+This is implementation under the existing body and admission rules; no new
+decision or doctrine statement is introduced.
+
+**Progress, 2026-10-25:** 281 native controls pass, with 19 existing opt-in
+ignores and one new explicit benchmark. The benchmark also passes, comparing
+the complete cold search reports with reuse disabled and enabled in one binary.
+Actor 13 takes 3.927 versus 1.398 seconds and actor 26 takes 22.841 versus
+7.092 seconds. The latter's terrain-part evaluations fall from 14,166,056 to
+462,379 and support builds from 405,620 to 7,027. Candidate order and all
+search/work limits remain unchanged. Same-bounds/different-capsule and
+per-visit budget controls pass. An initial budget-test fixture crossed ground;
+its failing transcript is retained, and the corrected air-layer fixture passes.
+The receiving graph qualifies Mere `d20eb555`, Genet `ea18315d` and Netrender
+`8a3d289a` with one identity per audited family crate. Eight shared leg controls
+and 111 receiving controls pass, bringing this slice to 401 passes including
+the explicit benchmark. Twenty-five existing opt-in tests remain skipped;
+the normal native suite also skips that benchmark before its explicit run.
+One older eighteen-seed ordinary-play control remains filtered, as in the
+preceding qualification. All eleven retained histories replay exactly.
+
+The receiving executable preserves the retained shore world's complete native
+history, hash `bd0f8e0cdcc8fb70`, with 43 food steps across seventeen walkers.
+In a new quiet-build comparison the first round falls from 64.586 to 19.708
+seconds; the previous approximately 80-second sample remains in its original
+receipt. Three-tick process time falls from 85.187 to 40.657 seconds. The same
+94 cold searches cost 62.515 versus 17.791 seconds and the same 1,391 stride
+plans cost 57.824 versus 13.085 seconds. Later rounds take 2.827 and 4.514
+seconds. Terrain's nine cold Places builds still cost 5.380 seconds. In the
+new run, 1,074,157 sampled posture requests need 399,973 evaluations; its
+12,302,317 part checks need 1,385,903 terrain scans and 366,228 support reads
+need 16,816 polygon builds. These counters are not elapsed times.
+
+A fresh clock origin `1792972883653705300` offers candidate 43 of the existing
+128-candidate bound, seed `815647235344402300`. All preceding refusals remain
+in the log. Its three ordinary ticks yield 36 food steps across sixteen
+walkers, hash `9ba5838d4fc319dd`; rounds take 25.535, 4.714 and 0.959 seconds.
+Observed setup is 16.844 seconds, including those candidates. Its 81 searches
+cost 22.931 seconds, including 11.501 seconds in 1,189 stride plans. The
+retained and fresh runs each record twenty-four actual frames, with nineteen
+and twenty supported-swing frames respectively, zero projection failures and
+no reported visible native-box intersections. Their lossless previews retain
+actual frame pixels with uniform 200 ms playback; raw records keep real times.
+Every accepted food step in both runs also verifies detection, its complete
+supported route and its recorded stride at the original native choice cut:
+43 and 36 accepted sighted steps, zero recorded food-route refusals. The
+normal optimized binaries, source archive, dependency lock and qualification
+manifest are bound in the receipt directory. Formatting, source-size and
+decision-record checks pass. Existing playable/rebuild resources are retained;
+this slice creates no isolated target, Cargo home or worktree.
+
+Remaining: the cold first round is still too long for fluid play. Distinct
+posture checks and route work outside the measured stride spans remain; the
+fresh draw spends about half its search time outside those spans. Further
+profiling should separate endpoint grounding, candidate generation and graph
+search before changing search policy. This slice neither prunes stance states
+nor lowers paid/posture/node/work limits. It qualifies three ordinary ticks,
+not an epoch or multi-generation gameplay loop.
+
+## Startup cache follow-up, 2026-10-24
+
+**Status:** implemented and qualified, 2026-10-24. Reduce repeated terrain and physical-route work using
+the existing immutable caches, then profile an ordinary unchosen world.
+Receipts: `Code/testing/mesocosm/startup-cache-2026-10-24/`, total cap 100 MB.
+Reuse the existing playable checkout, Cargo target and named offline home.
+
+**Findings, 2026-10-24:** upstream `c637ee2a` contains fourteen simulator and
+documentation commits absent from this lane, including shared parts and
+narrower target scans. Merge `0972799e` brings those into the existing supported
+walking implementation before this work. The upstream terrain and route cache
+implementations are unchanged. The previous retained seed has 31 distinct
+physical windows and 31 cold Places derivations: those are first builds, not
+31 copies of one graph. Each graph repeatedly reads the same stance adjacency
+during flooding, neck splitting and passage construction. Its existing Cells
+object already caches roofs and tops. Food routes unnecessarily include bodies
+outside their bounded terrain window in their exact input, so distant movement
+invalidates useful searches. Authenticated history prefixes create fresh caches;
+forks share terrain but currently discard the equally exact route cache.
+
+Phases and done-conditions:
+
+1. Extend the existing per-derivation terrain readings to reuse stance steps.
+   Compare complete cached Places, labels and passages with uncached derivation,
+   including water, both cover rules and edits. Share existing derivative
+   caches through authenticated history prefixes and forks; commands and native
+   outcomes must still replay. Terrain, window and rule changes must invalidate.
+2. Keep only blockers that can overlap a route's terrain window in its cache
+   input. Preserve current appetite, food eligibility, detection, anatomy,
+   soles and local occupancy checks. Prove distant movement reuses a search,
+   local obstruction invalidates it, and recorded native routes remain exact.
+3. Build the normal optimized executable, run the first eligible unchosen
+   world through ordinary steps, retain actual movement and bounded profile
+   receipts, and replay the retained histories. Compare the earlier turning
+   world's native history and cost census; distinguish upstream simulator gains
+   from this cache work. Report the cold graphs and route work that remain.
+
+The work is implementation. Governing path lookups retain the shared cliff
+headroom and history rules; it introduces no new case or doctrine statement.
+
+**Progress, 2026-10-24:** 29 terrain controls and 277 native controls pass,
+with 19 existing native ignores. The matched 128-square graph keeps identical
+labels/passages while reducing stance-step reads from 65,536 to 16,384
+(137,996 to 84,843 microseconds in this fixture run). The receiving build
+found three old direct mutations in newer foraging fixtures incompatible with
+upstream's shared parts. They now use `part_mut`/`parts_mut`; the failed build
+is retained separately. The receiving gates pass 111 checks, bringing this
+slice to 417 passes with 25 existing ignores and one older multi-seed control
+filtered. The same retained world takes 35.31 seconds against 67.52 previously,
+with an identical complete native history. Its 31 cold Places builds cost
+11.65 seconds against 22.76, route searches fall from 82 to 55 and stride plans
+from 980 to 298. These whole-run gains include the merged upstream changes.
+
+The first new unchosen world accepts candidate 3, seed `3580977844374872680`,
+from clock origin `1792872357923932000`. It has a 288-cell site, against the
+comparison world's 1,520. Setup completes at the observed 5.61-second marker,
+but the first ordinary round takes 68.40 seconds. The completed three ticks
+have 43 verified food steps across seventeen walkers, hash `bd0f8e0cdcc8fb70`.
+Twenty-four actual frames include nineteen supported swings and twenty torso
+shifts, with zero projection failures or reported endpoint-box intersections.
+Its 94 cold route searches cost 66.24 seconds, including searches of 28.94 and
+14.82 seconds. The first-cut census has seventeen routes in twenty-nine reports,
+and eleven searches exhaust the node limit without a route. Actors 13 and 26
+check 364 and 449 edges, refusing 250 and 307; their first refusal reasons
+name missing support and terrain/water clearance respectively.
+Repeated reads of these negative results take about one millisecond. The
+remaining pressure is cold paid-stride search, not repeated identical reads.
+The large `body:rest` span includes deliberation over food-directed walking
+at the first choice pass. Preview timing is uniform per actual frame; the raw
+records retain the long native-tick waits.
+
+Ten retained native histories replay exactly. Upstream E1b (`499ba499`) lands
+during this qualification and is integrated before final delivery. Its narrower
+scheduler filing has no terrain/route cache edits. The pre-E1b receipts remain;
+the same two worlds are pinned for final receiving, history and profile checks.
+The E1b native and receiving gates pass the same 417 controls. Both final
+three-tick native histories match completely, retaining the hashes above.
+The final comparison scenario takes 53.17 seconds with other Cargo jobs
+present, against the earlier 35.31-second pass and the old 67.52 seconds.
+Its search/plan counts stay 55/298; cold Places cost 19.51 seconds, route
+searches 6.28 seconds and stride plans 5.38 seconds. These wall figures vary
+on the shared machine and include upstream changes. The unchanged histories
+and reduced work counts are the stable result.
+
+The retained unchosen E1b rerun takes 109.33 seconds, including an 80.10-second
+first round. It still has 94 cold route searches (77.54 seconds) and 1,391
+nested stride plans (71.21 seconds). Its setup marker is 8.72 seconds but
+excludes the original candidate search. The original unchosen draw, native
+choice witnesses, final captures and both profiles are retained. Cold search
+against difficult support and terrain remains open; all search budgets stay
+unchanged. All ten retained older native histories replay exactly with the
+final executable. Both final inspection runs verify every accepted sighted
+food step at its native choice cut, forty in the comparison and forty-three
+in the retained draw, with zero recorded food-route refusals. The final draw's
+twenty-four actual frames include eighteen supported swings and twenty torso
+shifts, with zero projection failures or reported endpoint-box intersections.
+`final-results.json`, executable hashes, `sources.zip` and `qualification.json`
+bind the final source, checks and measurements. Existing playable/rebuild
+resources are retained; this slice creates no isolated target or worktree.
+
+## Whole-site habitat, 2026-10-22
+
+**Status:** implemented and qualified, 2026-10-23. Mark requests the whole
+native site, dispersed food and creatures, an unchosen moving capture, and a
+profile of the larger area. New ordinary play uses the whole site; `--habitat
+patch` retains the previous bounded instrument.
+
+The site remains the existing generated terrain. New play declares its full
+extent as territory; bounded local windows supply the existing Ground, Places,
+support, walking and birth checks. Saved earlier worlds retain their windows.
+Terrain presentation reuses the same column rules, edits and camera residency.
+
+Phases and done-conditions:
+
+1. Admit actual individuals across the site, with native edible food placement
+   and the existing paid-foot support. Local windows must cross their paging
+   boundaries without a physical wall, teleport or change in site coordinates.
+2. Draw the wider territory from its real terrain, retain the close camera and
+   expose the existing zoom. Test terrain/body depth and old-save replay.
+3. Capture the first eligible clock-drawn world walking, with intermediate
+   support counts and zero developer world intents. Measure terrain preparation,
+   place derivation, placement, ordinary updates and terrain framing as area
+   grows; report the measured bottlenecks and unqualified limits.
+
+Retain receipts in `Code/testing/mesocosm/site-area-2026-10-22/`, with a total
+100 MB cap. Reuse the existing playable target, Cargo home and checkout.
+
+**Findings, 2026-10-22:** the previous varied-body capture admits a 112 by
+112 mm patch inside a 1,424 mm site, about 162 times its area. Founding caps
+the window at 256 cells and four cohort representatives per site. `Volume`
+materializes its whole window; `Places` derives all cells; `GroundTerrain`
+rescans all brick keys for each framed column. These are implementation
+costs, not measured site-size limits.
+
+**Progress, 2026-10-23:** the first whole-site prototype passed the native
+window-crossing and restore control, but its wider founding test exceeded seven
+CPU minutes and 1.3 GB peak working set before it was stopped as outdated.
+The existing realization filled deep water below rejected stands, and place
+seeding allocated every rock and sky cell. New full-site physical windows now
+read the same exact column/edit rules with a bounded height cache. Place floods
+start at air/water run boundaries; a dense-reference control checks both cover
+rules, water, rooms and edits. Headroom above the highest occupied cell reuses
+that known open column.
+
+**Implementation and qualification, 2026-10-23:** native template version five
+declares individual founders over the existing site. Its overlapping 256-cell
+physical windows use one canonical native calculation for founding, walking,
+birth and arrival; generated driver version six carries those windows. The
+shared food query now names actual cohort members in these worlds. Arrival
+placement reuses founding's native diet, whole-body support and spacing search.
+Existing saved worlds keep their original versions and placement meanings.
+
+Exact column/edit volumes avoid filling all buried rock and water. Native
+admission shares the existing immutable volume/Places cache across 64 local
+windows. `Placement::check` reuses the stronger existing realization check,
+removing a second uncached volume/Places derivation per actor. The renderer
+pages the same terrain through existing camera residency, increasing display
+grain when a camera would overflow its atlas. Native physics remains at one
+base cell. Coarse surface cells retain their actual surface material. Rendered
+sole queries now read the paged volume instead of its empty Ground projection;
+the first capture exposed that stale adapter as an all-feet-swinging bug.
+
+The first completed clock-sourced search accepts seed `5459250615279831498`
+on candidate 29 from base `1792730654959707800`. Site two is 1,904 by 1,904
+one-millimetre cells, 289 times the previous capture's 112-cell-square area.
+All 60 founders have actual poses: 32 producers and 28 consumers, spanning
+1,717 by 1,587 cells with all four facings. At tick two the run has 31 ordinary
+accepted walks, zero developer world intents and zero projection failures.
+Repeating that same world after both renderer fixes preserves native hash
+`ee459fe1d7118570`. Twenty of 24 actual GPU frames contain both swing and planted
+supports; the native-box intersection check finds none. The lossless movement
+preview is slowed to 200 ms per recorded frame. Close, neighbourhood and
+whole-site captures report zero atlas overflow.
+
+The focused software gates pass 188 checks, with six existing ignores; the
+long multi-seed ecology-search test was omitted, with its focused hunger,
+feeding, obstruction, birth, journey, boundary and restore controls retained.
+These include a dense-reference Places comparison, exact paged materials with
+water/edits, terrain projection/depth controls and actual whole-site offspring
+and arrivals. Four native saves replay with their recorded hashes: the new
+site `ee459fe1d7118570`, proportions `1ca7fd30b469cc59`, foot placement
+`0137807de2708f28` and earlier rich bodies `e922048bc4f566c3`.
+
+**Measured costs:** the final optimized capture takes 66.2 seconds including
+startup, the forecast, two native ticks and the capture scenario; peak working
+set is 619.5 MiB (Windows PeakPagefileUsage counter: 1,687,203,840 bytes).
+Thirty-three cold Places graphs account for 34.3 seconds
+(median 1.08 seconds), while 63 terrain-window builds total 140 ms. One round
+forecast takes 11.0 seconds; nested clock spans include forecast work and must
+not be added together as real-tick cost. At the site's centre, a 256-square
+materialized volume costs 405 ms against 1.49 ms for exact columns, followed by
+717 ms deriving Places. A 512-square materialized reference takes 5.12 seconds
+before Places; that larger Places derivation is deliberately not attempted.
+
+Across six camera sizes the adaptive terrain stays within 16,383 atlas bricks.
+Warm CPU framing takes 0.09 to 1.07 ms; a cold page fill takes 15 to 208 ms.
+The headed close view's median CPU encode is 1.54 ms. These are CPU wall times,
+not GPU timings or a general frame-rate guarantee. Cold Places, forecast
+walking/rest work and new-page fills remain the measured pressure points.
+
+`O` opens the site overview and returns to the close view; `+`/`-` zoom, arrows
+pan with the current scale, and existing camera turns remain available. The
+overview is a coarse terrain view: distant body visibility and landscape
+landmarks still need work. This two-tick capture does not qualify long
+generational growth, dense populations, arbitrary site sizes, or force/load
+dynamics. Founding retains a 256-stand budget per site and local geometry a
+64-window cache; neither is an unlimited-world claim.
+
+Receipts are in `Code/testing/mesocosm/site-area-2026-10-22/`: `expanded.*`,
+`expanded-motion/`, `expanded-moving.webp`, `expanded-profiles.json`,
+`terrain-profile-qualified.log`, the focused test logs, source archive and
+binary hashes. Earlier failed/stopped prototypes are retained separately.
+The existing playable checkout, target and offline Cargo home are reused.
+
+**Date:** 2026-09-11
+
+## Native foot placement follow-up, 2026-10-22
+
+The later [foot placement plan](2026-10-22_foot_placement_plan.md) supersedes
+the open ordinary-swing gate in the earlier receipt below. New version-four
+worlds carry actual supported soles and share integer chain geometry between
+native admission and the default smooth renderer. Founding, arrivals and
+offspring reuse that machinery, with native food-aware placement, spacing and
+varied facing. A knee-pole singularity that flipped the first lifted leg into
+terrain is fixed. The originally unchosen regression world now takes admitted
+steps; 21 of 24 actual GPU frames show swinging and planted contacts together,
+with zero projection failures. The consolidated software run passes 481 checks
+with 24 existing ignores. Optimized build and headed qualification are recorded
+in that plan and `Code/testing/mesocosm/foot-placement-2026-10-22/`.
+
+This is geometric support and checked foot motion. Force/load dynamics,
+arbitrary joint graphs and the remaining shape/blending phases remain open.
+Historical saves retain their versioned placement and gait rules.
+
+## Rich bodies in ordinary play, 2026-10-22
+
+**Status:** connections implemented and captured; ordinary foot-swing gate
+remains open. Reconnect existing founding sheets, native function
+allocations and serial appendage chains through the current development and
+shared rendering pipeline. Preserve historical saves and selectable drawn bodies.
+
+**Phases and done-conditions:** (1) Admit the existing paid limb/leaf chains
+through native recipes, including birth, growth, severance and replay; expose a
+named founding selection and use the richer roster for new play worlds.
+(2) Carry admitted per-part function colours into the existing body material
+channel and share its appearance calculation across rendering paths. Pose the
+real link graph with actual supporting feet and terrain clearance.
+(3) Run a fresh unchosen seed and retain a timed movement sequence with visible
+stance and swing, inspect its silhouettes, and report remaining limits honestly.
+Receipts: `Code/testing/mesocosm/rich-bodies-2026-10-22/`, total cap 100 MB.
+Reuse the existing playable build cache; no new target or worktree.
+
+**Initial findings:** `datasheet/native.rs` refused every chain; `bodied::drawn`
+chose block trunks; `section/bodies.rs` supplied no per-part materials.
+Existing sheets already declare upright lower links, feet, spaced leaves and
+varied trunks. Native collision admission still uses rigid integer part boxes.
+
+**Qualification, 2026-10-22:** 402 focused checks pass (259 native unit,
+43 native integration, 50 renderer, 50 host); 22 existing checks are ignored.
+The normal optimized release builds. New-chain software controls keep real
+upper/lower/foot identities and fixed lengths, lift the foot and withdraw it
+on severance. Birth/growth tests cover the reused native routes; the actual
+play run admits offspring with the richer graph. Native replay retains the
+old `f5767ede7effce0f` hash and the new world's `e922048bc4f566c3` hash.
+
+The first clock-sourced search accepts seed `11467091329334584174` on its
+11th structural candidate. At tick 14 it records 9 accepted walks, 23 placed
+offspring, zero developer intents and zero projection failures. Six actual
+viewport PNGs include three pictures of the same native cut: 5,012 pixels
+change while revision and native roots stay identical. Default dimetric and
+across captures show native tissue colours and real chains. `movement.webp`
+is a uniform 350 ms preview of actual frames; original measured times remain
+in `motion-final/frames.json`.
+
+**Unmet gate:** the ordinary recording contains zero foot-swing frames. It
+qualifies root interpolation, not a natural planted walking cycle. Native
+support may come from any occupied part, and the current rigid envelopes on
+steep ground do not guarantee a foot stance. Sweeps newly blocked by another
+body or a terrain corner are refused. Crowded silhouettes and the classic
+terrain's dense pattern still obscure anatomy. The second independent seed,
+`1792698331440758600`, reaches tick 14 with 3 walks and 22 placed offspring
+but no supported controlled pose at its new site: the picture is withdrawn,
+with no substitute body. These are retained findings, not passed gait gates.
+B2's random shape inheritance, B4's per-edge blending and B5's load-bearing
+constants remain separate work. Receipts and exact build/test boundaries are
+in `Code/testing/mesocosm/rich-bodies-2026-10-22/summary.json`; under 100 MB.
+
+**Progress:** chain development, named founding selection, native functional
+summaries, shared tissue colours and real three-part leg posing are connected;
+qualification is underway. Opt-in `MESOCOSM_CAPTURE_MOTION` records at most 24
+actual viewport frames with per-frame native roots, revision and contact stats.
+The directory must be new. It reuses Section's existing GPU readback.
+
+Qualification found that ordinary accepted steps can fall between presented
+pictures. The old bridge mistook the resulting distant endpoints for a
+teleport and discarded the gait. The bridge now takes at most 16 explicit
+accepted steps from the existing placement history, in order, and checks each
+segment against current terrain and bodies before and during presentation.
+It refuses missing path edges, changed visits/anatomy and newly blocked sweeps.
+History is summarized once per scene, rather than rescanned for every body.
+
+`--render-scale 1..8` exposes Isometer's existing nearest-scaled viewport;
+the default stays 1. It reduces viewport work and diagnostic PNG sizes without
+changing native simulation or camera framing. `MESOCOSM_DEBUG_MOTION=1` explains
+motion resets and sweep refusals; it does not change admission.
+
+The researcher review correctly distinguishes Cieslak's aspect-oriented plant
+modelling architecture from specific mechanics. Native `anatomy::ceiling`
+already prices adult mass by voxel volume; area-scaled actuation and weight
+balance remain unimplemented. This slice qualifies contact and motion only.
+The new named founding raises zero half-extents to the smallest positive native
+solid and pays its normal mass. Saved definitions and the historical
+`--body-roster` route retain their original dimensions and preimages.
+
+## Articulation and surface camera, 2026-10-21
+
+**Status, 2026-10-22:** implemented and qualified as a contact-driven pose bridge;
+native articulated collision admission remains open. Mark requested physical articulation and walking gaits
+over the existing part graph and physical machinery, and an isometric surface
+camera with options. The user reopens the older default-camera preference.
+
+**Phases and done-conditions:** expose exact native supporting-part witnesses
+and conservative translation clearance; connect disposable planted contacts,
+fixed-link knees and movement interpolation to admitted poses; verify stationary
+stance, swing, terrain edits, severance and refused sweeps. Make isometric the
+default, retain section presets, support quarter turns and configurable depth,
+and verify terrain/body/pick cameras agree through the actual borrowed producer.
+Run the saved unchosen world and compare native history and product sections.
+Receipts: `Code/testing/mesocosm/articulation-camera-2026-10-21/`, 100 MB cap.
+Reuse the existing playable target and marked Cargo home.
+
+**Ownership and findings:** native Isocosm supplies contacts and clearance from
+the same integer part boxes and terrain as stand, walk and offspring admission.
+Isometer owns contact-driven presentation IK and stance/swing state. Mesocosm
+binds admitted poses to it. No new native step or save grammar is authorized by
+an interpolated picture. Current anatomy often has only one short downward
+appendage, while a distant trunk segment supplies support. Collision envelopes
+remain rigid; native joint constraints and articulation that changes placement
+are an explicitly separate remaining condition, not a claim of this bridge.
+
+**Progress:** contacts/sweeps, shared gait and both camera paths connected.
+Smooth bodies and the wing's 2:1 dimetric surface view are defaults
+(doctrine, Presentation 1; true isometric stays as `--camera isometric`).
+`--bodies voxels`,
+`--camera oblique` and the other existing presets retain comparison views.
+Z/V turn surface and terrarium views, C switches surface/section, and
+`--view-depth` overrides visible depth. The borrowed producer carries the same
+mode and depth as the actual Section, including body/terrain rays and picks.
+Four native controls and 45 host controls pass, four existing host controls
+ignored. The renderer's first run exposed an overstrict bitwise comparison of
+IK endpoints differing by 0.00000006; the control now uses a geometric tolerance.
+All 48 renderer controls now pass. Native meal seeking, blocked routes, births,
+placement and save/resume controls pass through the real Mesocosm consumer.
+The prototype window passes camera switching and quarter-turn controls, with
+35 bodies and 40 actual supporting-part witnesses in the surface view. These
+are supporting parts, not forty anatomical feet: this saved world still has
+zero reachable short-limb soles. Its native history and every opaque product
+section remain exactly equal after the camera exercise.
+
+**Qualification, 2026-10-22:** the final normal release executable passes the
+surface/section and quarter-turn exercise (45 frames). Following an actual
+walking denizen from tick 59 to 60 passes (32 frames): accepted walks rise
+130 to 134 while the producer renders five times, including the intermediate
+motion frames. Captures show settled contacts; the fixed-link sole-lift control
+qualifies swing separately. Both resulting complete save files are byte-equal
+to the pre-existing tick-60 baseline, including all product sections, and the
+new walk trace replays to `f5767ede7effce0f`. Projection failures and dev intents
+remain zero. Forty supporting parts in the wide surface view are distinct from
+the zero reachable large IK soles in this world's short appendages.
+
+The latest 48 renderer controls, four native embodiment controls, four motion
+controls, explicit actual-device producer/picking comparison, and normal
+release shared surface integration pass. The consumer run also passes its
+native food-walking, actual birth/placement and save/resume controls. Remaining
+ignored controls are separately owned gates, not passes. Native and initial
+consumer controls use unoptimized subjects over release dependencies; the final
+motion/producer controls use optimized production dependencies with only the
+host test crate unoptimized. Receipts and the exact source commit:
+`Code/testing/mesocosm/articulation-camera-2026-10-21/summary.json`.
+
+Fixed links only bend terminal appendages; attached descendants keep their
+native frames. The controller staggers swings, finishes a started swing at
+rest, and drops invalid contacts after terrain changes or severance. A native
+translation sweep bounds extra joint space while interpolating an accepted
+adjacent step. New blockers refuse the interpolation; rotations, changed
+anatomy, site or terrain-coordinate-frame changes and long moves reset it.
+Water cannot become a supporting sole, and a real floor under an overhang
+remains eligible. The producer advances its
+picture signature during active motion and returns to retaining idle frames.
+
+**Remaining physical-placement condition:** native joint limits and articulated
+occupied geometry must participate in stand, route, birth and occupancy
+admission before a pose may lower a rigid trunk or extend a limb outside its
+declared or cleared envelope. The present bridge does not meet that condition.
+The body-binding plan remains the native/Conatus boundary reference.
+
+## Decisions
+
+- **D2, rich bodies (2026-10-22), applies 511, 512, 531, 758:** Mark:
+  "Reconnect the richer bodies, functional colours, and actual limb chains,
+  reusing what's there. Then run an unchosen seed and capture them moving so
+  we can see whether it reads." This explicitly lifts the native adapter's
+  chain refusal. It connects existing paid developmental content and function
+  appearance; it does not establish a new actuator force or muscle law.
+
+  Links: area Bodies and anatomy · draws on 511, 512, 531, 758 · governs isocosm::development, isocosm::datasheet::native, mesocosm-genet::section · summary Existing paid body chains and function appearance connect to ordinary play.
+
+
+- **D1, surface camera (2026-10-21), applies 382:** Mark: "can we... make the
+  camera isometric? just seems odd to prioritize looking at the cutaway of the
+  ground, when most the stuff is happening on the surface... probably needs
+  options". This applies the wing's selectable isometric view to Mesocosm's
+  default, reopening its older shallow-section preference. Section views stay
+  selectable. Articulation is requested over the existing graph and physical
+  machinery, without inventing appendages that anatomy does not declare.
+
+  Links: area Presentation · draws on 382 · governs mesocosm-genet::section::camera · summary Mesocosm defaults to a selectable isometric surface view with section options.
+
+## Smooth anatomy probe, 2026-10-21
+
+**Status:** implemented and qualified, 2026-10-21. Mark authorized experimenting with shader-fused
+parts and procedural poses in ordinary play, including a different visual
+style. This is a presentation probe under L5, over the existing admitted
+anatomy, placement, camera and edited terrain. Existing body modes remain
+available for comparison.
+
+**Target and done-conditions:** add `--bodies smooth` using Isometer's shared
+device and terrain depth. Fuse rounded part envelopes with smooth
+unions along actual attachment edges. Consecutive masses make a continuous
+trunk; smaller limb joins remain distinct. Infer a two-link
+presentation bend within downward limb volumes and terminal support branches,
+with fixed lengths and actual
+Ground contacts; do not introduce saved bones, animation or new native anatomy.
+Drawing and picking must consume the same posed field and part addresses.
+Verify ray queries, reachable/unreachable contacts, severance, terrain occlusion,
+and an ordinary saved-world capture with unchanged native and mode sections.
+Keep captures/logs under `Code/testing/mesocosm/smooth-anatomy-2026-10-21/`,
+100 MB total cap; reuse the existing playable target and marked Cargo home.
+
+**Ownership:** Isometer render owns the generic surface, inverse kinematics,
+shader and ray queries. Its body layer retains frame/revision validation.
+Mesocosm supplies native documents, current placement, terrain contacts and its
+existing sky. Walking interpolation, authored joint constraints, and general
+gait animation are outside this first rest-stance probe.
+
+**Findings:** the live section already resolves generated voxel content and
+structural materials, but its tenant rasterizes rigid faces. BodyDocument has
+attachment offsets and quarter-turn frames; it declares no articulated joints
+or limits. The first probe derives a visual knee within an existing downward support
+part rather than claiming a native skeletal model. The saved unchosen world
+uses cubes even for its downward terminal support; attachment direction and
+terminal position therefore supplement the existing extent-based role reading.
+
+**Progress, 2026-10-21:** the first headed prototype kept the native and mode
+sections unchanged, but its 24 posed supports had zero reachable IK sole
+targets. Native whole-body grounding chooses the highest required root over
+every occupied column: a rigid chain can rest on a distant segment or a box
+corner while its short limb hangs above lower terrain. Rounding also removed
+some of those corners. The surface now retains actual admitted box contacts
+under their original part identities. Sole targets and retained supports have
+separate counters; short limbs keep their reach and declared floor.
+
+The rest bend is inferred within a terminal support volume, in the plane of
+the body's longest horizontal extent. It introduces no native joint state or
+animation record. Body picking consumes the same field as the shader, through
+the existing frame and mesh-revision checks. The GPU uses the existing terrain
+depth and sky on the host's shared device and encoder. GPU resources initialize
+only when smooth mode is selected; an unchanged resize retains its targets.
+
+Current controls pass 44 renderer tests, 42 host tests and one shared surface
+regression (four existing host controls ignored). The shared regression lives
+once in `shared/isometer/tests/implicit_bodies.rs` and runs through Mesocosm's
+actual feature graph. These tests use unoptimized subject crates over release
+dependencies. Prototype captures pass at tick 60, hash `f5767ede7effce0f`,
+with the controlled critter alone and with the wider scene. The single-critter
+view reports one inferred joint, one retained support, and zero reachable IK
+sole targets. Native and opaque product sections match the original world.
+
+The style stays selectable via `--bodies smooth`, with voxels still the default.
+Walking interpolation, declared joints/limits, physically articulated placement,
+and richer generated body plans remain open. The existing rigid geometry still
+limits what a natural stance can do. Receipts retain the first failed contact
+assertion and the superseded build attempts. The normal release executable
+passes the shared surface regression and the final headed checks: 20 frames
+each for the controlled critter and the full scene, with zero projection
+failures. Both traces retain exact native history and opaque product sections.
+The previous tick-64 save replays to `b24aeceecfd0a64a`. Receipts:
+`Code/testing/mesocosm/smooth-anatomy-2026-10-21/summary.json`,
+`final-voxels.png`, `final-smooth.png`, and `final-scene.png`; 25.3 MB
+retained of the 100 MB cap.
+
+**Ordinary generation audit, 2026-10-20, verified:** the clock-selected
+world `15681609907537121240` reaches tick 64 and four parent-child levels after
+founding, with 393 reported biological children, 142 accepted walks, three
+accepted offspring placements and its natural tick-60 review answered through
+the ordinary keymap. Control passes from 6 to cohort member 8 at tick 20.
+This qualifies biological generations across the world and one cohort succession;
+it does not qualify a direct parent-to-offspring control transfer.
+
+The first startup exhausted the old eight-candidate search bound. The bounded,
+configurable default is now 32; the exact failed base seed passes a regression.
+The subsequent run exposed a blank viewport during travel, a false current-pose
+probe, an unseen traveling newborn offered for takeover, and a fatal arrival
+recovery that compared the new journey with an older historical pose.
+
+The view now retains generator-declared terrain during travel or missing physical
+placement, shows its status, and draws only currently admitted bodies. Both the
+question and keymap use the existing native loop reading. An unseen offspring
+leaves the personal Keep Parent answer available. The native arrival report
+validates identity and the actual journey; the product keeps its window/rule
+checks while allowing recovery from older visits. Initially unplaced founding
+cohort members can acquire real geometry through their actual native arrivals.
+
+Arrival batches reuse terrain and the existing Grounding surface cache per
+destination, retaining actor order and reservations. Identical failed rotated
+part-box shapes can be skipped while those reservations only grow. The former
+product-only geometry cache now retains a native `SiteGeometry` entry. Native
+walking, birth, arrival and route validation share at most eight immutable entries
+across simulation clones, keyed by complete terrain revision, site, window and
+place rules. Every actor, visit, body, eye and occupancy check remains current.
+Cache data is absent from saved state and witnesses. Tests cover exact cells,
+clones, eviction, edits, source-window mismatch and stale physical bindings.
+
+**Receipts:** `Code/testing/mesocosm/generations-2026-10-20/summary.json`, capped
+at 100 MB. The exact default launch executable is rebuilt. Seventy-eight release
+tests pass, with six existing profiling/GPU controls ignored. The headed tick-45
+and tick-64 captures show controlled member 8 physically placed; at tick 64 the
+scene has 35 checked physical bodies, zero projection failures and zero terrain
+overflow. Dev intent count remains zero. Headed reload preserves native and mode
+section bytes, and headless replay preserves `b24aeceecfd0a64a`. The earlier
+version-three, whole-body, root-only and coarse receipts retain their hashes.
+A separate short replay counts the actual automatic cohort takeover once,
+rather than mistaking its subsequent confirmation for a second change.
+
+**Limits:** this is one generated world, not ecological balance or a frame-budget
+gate. The live rounds have a roughly 4.17-second median in this loaded diagnostic;
+the natural boundary takes roughly 159.6 seconds including forecasts. Individual
+reused geometry reads have a 9-microsecond median, but physical searches, native
+work and per-candidate historical forecast replay still cost time. Bodies remain
+rigid and unsupported placements remain absent. Independent execution/doctrine
+documentation work was preserved.
+
+**2026-10-20 food-directed walking, verified:** native choice needs exact
+positions to distinguish reachable meals from nearby food. New play foundings
+opt into saved foraging rules and native resident poses, updated by the
+existing step/birth/arrival publications. Mesocosm keeps its placement bindings
+as a checked projection of those poses. Native food selectors, organ admission,
+pressing needs, scoring and ordinary choice remain the decision machinery.
+Done when hungry critters approach edible placed food, feed only within declared
+reach, decline walking when satisfied or without eligible food, respect blocked
+routes and current visits, and ordinary-play plus save/replay controls pass.
+Keep earlier saves' semantics and preserve the separate execution-plan WIP.
+Retain at most 100 MB under `Code/testing/mesocosm/foraging-play-2026-10-20/`.
+
+**Food connection findings, 2026-10-20:** previous walking had no target and
+therefore no feeding need to score. Site-level feeding also admitted targets
+beyond physical contact, so increasing walking's priority would only conceal
+the missing spatial reading. New template version three records exact native
+`spatial_poses`, including site and visit; accepted step, birth and arrival
+publications update them. The native witness covers these poses and advance
+rollback restores them. Pass frames preserve poses alongside pass-start bodies.
+Mesocosm checks its saved bindings against that native pose record.
+
+Each saved foraging entry connects one walking profile to an existing feeding
+process. It declares food-search distance (32 base cells by default), contact
+reach (zero occupied-box gap by default) and route work (256 supported root
+positions by default, with a validated maximum). Native selectors, intake-port
+admission, requirements and negative need weights identify useful food. Walking
+inherits the feeding act's existing need score, keeps its ordinary priority,
+binds an actual target, and is eligible each tick. Feeding retains its existing
+three-tick cadence. A reachable meal suppresses weaker intersite departures
+while it waits for that cadence; stronger native nudges and other useful acts
+remain eligible. It does not earn an unconditional priority
+bonus. Already reachable food remains a feeding choice; satisfied actors and
+actors without eligible placed food have no food-seeking walk.
+
+New placed consumer needs use the existing `Room` account reading, retaining
+their original trait filters and weights. The former fixed hunger threshold
+stayed quiet until after reproduction in the first ordinary control. Reading
+actual unfilled capacity makes a supported meal useful before that threshold.
+The wants projection and need scorer share the same account-query recognizer.
+
+Weighted physical meals draw only among actual placed identities, rather than
+letting the representative's cohort inherit its pose. Unplaced actors retain
+their coarse feeding semantics. A bounded breadth-first route uses existing
+Ground/Places support and whole-part occupancy checks; the accepted act publishes
+one adjacent step. Old template versions one and two retain their prior rules
+and hashes. This does not add sensory organs, continuous dynamics, automatic
+resettling, or the separate execution plan's near/far implementation. Future
+persistent waking must account for pose and food-target reads as well as bodies.
+
+**Native acceptance, 2026-10-20:** ten food-connection controls pass in release.
+An ordinary A1 world, seed `16003851315348448884`, chooses an accepted walk at
+tick 5 with its population, needs, terrain and competing processes unedited;
+WorldSave restore preserves its native hash, spatial projection and saved bytes.
+Seed `16003851315348448882` instead starts with reachable food and feeds by tick
+6, so it correctly supplies no approach in that interval. These are bounded
+ordinary-play receipts, not a multi-generation or ecology-balance qualification.
+Current founder stock is small relative to anatomical capacity (the walking
+case reads 10 held against 2184 capacity at tick 3), so capacity appetite exerts
+pressure earlier than the former fixed threshold.
+
+The other controls cover remote-meal refusal then contact intake, a satisfied
+need, ineligible food, waiting for feeding cadence with migration available,
+a terrain wall, an exhausted route budget, unplaced cohort identities, stale
+publication, and projection tampering. In-site route fixtures use small flat
+populations and disable intersite departures; the ordinary control retains them.
+Need validation accepts only the canonical actor-capacity predicate among
+computed queries, checking its account; target and unrelated computed needs
+remain rejected. Geometry searches reuse precomputed rotated boxes and a common
+Grounding surface cache rather than rewalking attachments for every neighbour.
+The earlier version-two movement/birth suite explicitly retains its original
+mind and walking cadence.
+
+**Final receipt, 2026-10-20:** 73 selected release tests pass, with two profiling
+controls ignored. The added version-three child control observes actual native
+reproduction, checks each placed child's own resident pose, and validates replay.
+The headed six-tick ordinary run and its headed reload both pass, preserving
+hash `1adf0afe1092eb30`: one accepted walk, two native poses, controlled placement,
+zero dev intents, zero projection failures and zero terrain overflow. Its native
+record places actor 6 on arrival at site 2, then records a tick-5 step toward
+food 38 from `[560, 964, 560]` to `[560, 963, 559]`. The actual arrival and step
+therefore both exercise native pose publication. The new trace also passes
+headless replay. The earlier whole-body, root-only and coarse traces retain
+hashes `a9b8975e814376ab`, `7e8b8c04b8665d63` and `2698906e7fd7bb51` respectively.
+
+Receipts and captures: `Code/testing/mesocosm/foraging-play-2026-10-20/summary.json`.
+The original playable checkout and its stable target remain the owner of the
+launch executable. Shared Cargo cache contention required the marked temporary
+home `C:/t/cargo-homes/isocosm-foraging`; it contains links to existing pinned
+sources, not copied credentials. After all build owners exited, tool policy
+rejected removal of those links and the temporary diagnostic executables/PDBs.
+They remain explicitly listed in the receipt, within the 100 MB evidence cap.
+This receipt makes no interactive frame-budget or broad ecological claim.
+
+**2026-10-19 physical continuation, verified:** new playable foundings
+declare whole-body stands and bounded walking/birth placement through native
+spatial profiles. Shared Isocosm owns rotated part-box clearance and terrain
+support; Mesocosm supplies generated geometry to the existing atomic spatial
+clock. Recorded older foundings retain their placement semantics.
+Done when terrain intersections and out-of-window limbs refuse, accepted
+native walking changes saved poses, actual biological children gain checked
+placements and future inputs, and save/replay plus headed captures pass.
+Retain at most 100 MB under `Code/testing/mesocosm/physical-play-2026-10-19/`.
+
+The continuation explicitly declares native template version two for new
+`bench_placed`/play foundings. Each founding stand binds its actual actor,
+rotated occupied part boxes and yaw; the window grows with founding anatomy.
+Empty attachment parts remain empty. The provider checks every occupied cell
+against Ground, requires actual non-water part-floor contact, keeps all parts
+inside the saved window, and avoids other physically admitted residents.
+It still seats at most four cohort representatives per site.
+
+Mesocosm generated profile five supplies geometry to the existing native
+prepare/resolve/publish clock. Consumer cycle traits share walking processes:
+one adjacent horizontal column per accepted act, every three ticks when native
+choice selects it, with a one-cell height change limit and Place passage
+admission. The generated direction is deterministic. This connects walking
+without adding direct input-driven movement or continuous locomotion.
+
+Birth profiles declare `BodyGround` support. The actual native newborn's
+document and identity select a bounded nearby supported, unoccupied pose.
+The existing child-input registry records biological provenance for accepted
+and refused placements, so children can receive later walking/arrival inputs.
+Physical refusal does not reverse biology. Route arrivals use the same body
+checks and reserve space against simultaneous arrivals. Recorded version-one
+templates, authored profiles and old saves keep their original semantics.
+
+Growth or terrain edits can invalidate a saved pose; refresh retains that
+history and the view omits invalid neighbors or withdraws an invalid controlled
+body. Automatic resettling, gravity, articulated gait, aquatic/flight support,
+all-individual placement and sustained ordinary multi-generation ecological
+qualification remain open. Conatus tactile queries retain their advisory role.
+
+The first whole-body capture exposed a separate renderer limit: its larger
+terrain contained 6,258 bricks, while the section's old packed map admitted
+only 2,047. Preserve `standing.json`/`standing.png` as the failure. GroundTerrain
+now also implements Isometer's existing BrickSource seam, and the playable
+section uses its existing camera-framed Residency/PagedTerrain with actual
+device limits. Terrain resident/capacity/overflow counters make that boundary
+visible in receipts. The adapter test pages a Ground exceeding the packed
+limit, pans it, and compares all resident material cells with Ground.
+
+**Physical continuation receipts, 2026-10-19:** release gates passed: 33
+runtime tests (two existing profiling tests ignored), 41 host tests (four
+existing explicit GPU gates ignored), 63 shared-scene tests and 20 native
+birth/generated-template/spatial-clock compatibility tests. The four new
+physical controls use flat, provisioned native bodies and disable competing
+choice processes: they verify terrain penetration and rotated window refusal,
+walking, actual biological child placement and subsequent walking, native
+route arrivals, a refused newborn later seated by arrival, save/replay and
+tamper refusal. An initial eight-tick refusal control stopped before native
+reproduction; the eighteen-tick control passes. These fixtures qualify the
+physical connection, not ordinary ecological independence.
+
+The rebuilt original executable's `standing-paged.json` captures two physical
+voxel bodies and 77 parts, zero fallback/projection failures and zero terrain
+overflow. Its camera holds 1,343 resident bricks of a 16,383-brick capacity.
+`resume.json` and headless replay preserve native hash `a9b8975e814376ab`.
+`step.json` reaches tick one and replays hash `4dbe9a957c853f11`; this one-tick
+capture has no accepted walk or offspring and does not qualify reproduction.
+`old-coarse.json` retains tick-120 hash `2698906e7fd7bb51` and no physical
+members. `old-physical.json` retains root-only hash `7e8b8c04b8665d63` and two
+members. All five captures pass their scenario checks and were visually
+inspected. The new placement raises the previously buried consumer clear of
+the slope without changing its anatomy. Body silhouettes and terrain shapes
+remain the native generator's output.
+
+The extra `walk.json` ordinary-world control reaches tick six with both bodies
+valid, but fails its exploratory `accepted-walks >= 1` assertion. Its native
+entries contain no requested step answers: current food acts have priority ten
+and walking has priority zero. Preserve this receipt as a behavior limitation,
+not a passing walking capture. Routine wandering needs a choice/need policy;
+the controlled native tests prove the connected step and offspring machinery.
+The captures do not establish sustained ordinary reproduction or a frame budget.
+All retained receipts occupy under 3 MB of the 100 MB cap. The existing
+user-owned playable worktree and its reusable target remain for the named
+launch path; this slice creates no isolated target, Cargo home or worktree.
+
+**2026-10-19 connection slice, verified:** connect native play founding to
+the existing generator-declared stands and spatial clock, and connect native
+part envelopes to Isometer's version-one voxel grammar. Keep coarse benches,
+box comparison, old-save placement, and ecological admission distinct.
+Done when generated stands survive clock/save/replay, voxel forms preserve
+native anatomy and bounds, missing stands refuse without invented poses, and
+headed new-play plus old-save comparison captures pass. Retain at most 100 MB
+under `Code/testing/mesocosm/connected-play-2026-10-19/`.
+
+**Connection findings before the physical continuation, 2026-10-19:**
+`--play` existed only on `playable-loop`; its two
+implementation commits are now merged into main. Its `Runtime::bench` path
+skipped `Game::found_generated`, whereas ecology admission already invoked
+that provider. Native bodies were always resolved as solids despite the
+implemented `ContentPack` voxel grammar. Authored body recipes already exist
+behind `Bodies::roster`; expose them explicitly rather than silently changing
+ordinary ecological founding. Version-one generated stands provide roots,
+eyes and route arrivals, not whole-body clearance, continuous walking or
+offspring slots. Birth-slot and step providers exist, but this generator
+declares neither; a missing child placement must not acquire a display pose.
+
+The authored roster also exposed zero-thickness native parts: the observed
+consumer has one and its producer has sixteen. Omitting those volumes made
+`LiveBodyProjector` refuse both whole bodies, invoking the capsule fallback.
+They now resolve to content-addressed empty geometry, retaining attachments
+and descendants without inventing thickness. One `ContentEntry::generate`
+implementation supplies both palette packs and native declared-envelope
+appearance. `--bodies boxes` retains the solid comparison; `--body-roster`
+selects the existing authored recipes before native development and is saved
+as a founding choice. Generated surface details do not change native tissue
+law or collision geometry; native per-cell tissue materials remain unbound.
+
+The generated provider seats at most one representative per cohort and four
+cohorts per site. Other members remain at site grain. A configured physical
+view omits unplaced bodies and withdraws when its controlled member lacks a
+pose; it never scatters those members onto a presentation grid. A stand only
+checks root and eye clearance. Native attachment bounds can still intersect
+a slope or extend past the declared terrain window. These were the support,
+clearance, walking, child-placement and terrain-window gaps addressed by the
+physical continuation above. Continuous multi-generation play remains open.
+
+**Connection receipts, 2026-10-19:** release gates passed: 84 mesh tests,
+62 shared-scene tests (including GPU depth/picking/palette), 41 host tests
+(four pre-existing explicit GPU gates ignored), three generated-template
+tests and three placed-play tests, plus the release executable build.
+`placed-connected.json` records seed 16003851315348448882, two physical
+representatives, two voxel bodies and 27 projected parts. Selecting the
+authored recipes in the same terrain gives 77 projected parts in
+`roster-connected.json`; both report zero projection failures and capsule
+fallbacks. `roster-resume-connected.json` preserves native hash
+`7e8b8c04b8665d63`; headless replay matches it and the drawn founding's
+`d8a12b59f8b81c1e`. These captures pause the host at tick zero, with zero dev
+intents, and qualify founding/presentation and restoration, not sustained play.
+
+`original-boxes.json` and `original-voxels-connected.json` preserve the old
+tick-120 hash `2698906e7fd7bb51`, with no physical members manufactured on
+resume. The latter reports 20 projected voxel bodies and no fallback. An
+explicit new play world at that flooded seed refuses its missing controlled
+stand. Preserve `roster.png` as the observed capsule-fallback failure before
+the flat-part repair, and `scenario-refusal.json` as the rejected exploratory
+scenario syntax. Receipts, saves and captures occupy under 5 MB of the 100 MB
+cap. The executable and its stable existing target stay at the user's named
+`worktrees/isocosm-playable/mesocosm/target`; no isolated target or Cargo home
+was created. Main includes the playable branch and the connection changes;
+the existing playable checkout is fast-forwarded to that source.
+
+**2026-10-19 repair slice, verified:** preserve each native part's declared
+extent when its volume tag is unresolved; bind terrain colours through the
+lift's material ids. Done when aliasing and reordered-material controls pass,
+the playable host builds, and the same tick-120 save renders with unchanged
+native hash before and after. Receipts capped at 100 MB under
+`Code/testing/mesocosm/render-evaluation-2026-10-19/`.
+
+**Progress, 2026-10-19:** the unresolved-tag control failed before repair
+(`[4,4,4]` drawn for an `[8,2,2]` part), then passed with the shared
+`VolumeSource::resolve_part` path used by live meshes, one-shot meshes and
+flattening. Declared boxes now share content addresses by actual dimensions
+and material; native documents remain unchanged. Eight Mesocosm scene builds
+share one neutral-material helper. Terrain binds the existing shared palette
+through the lift's material table for both looks, including water.
+
+Release gates passed: 84 mesh tests; 61 shared-scene tests, including GPU
+palette/depth/picking; 18 Mesocosm section tests (3 independently owned GPU
+gates remain ignored); and the playable binary build. Native captures
+`classic-oblique-after.png` and `habitat-east-after.png` preserve tick 120,
+hash `2698906e7fd7bb51`, and report no fault. The former is the same-camera
+comparison against `original.png`; the latter shows the across orientation
+with the habitat look. These receipts qualify this exact saved world, not
+the broader after-pass certification. Two `stale-executable` runs remain as
+failed experimental receipts: the inherited target-dir environment initially
+left the executable at the requested launch path unchanged. The accepted
+build explicitly used `--target-dir ./target`.
+
+### Findings, 2026-10-19
+
+- The exact played save (seed 2814468213915169548, tick 120, native hash
+  `2698906e7fd7bb51`) has no physical members. The coarse site view supplies
+  patch or presentation placement, rather than saved physical poses.
+- Native founding bodies carry the all-zero undrawn volume tag for every
+  part (`shared/isocosm/src/geometry.rs`). The consumer has 10 parts with
+  half-extents `[2,2,2]` and `[4,1,1]`; the producer has 39, including
+  `[4,4,1]` plates. `DeclaredExtentVolumes` keyed only on that shared tag,
+  causing the mesh paths to reuse the first 4-by-4-by-4 cube. Projection must
+  resolve declared boxes by their actual content without rewriting native
+  body documents, and live meshes, one-shot meshes and flattening must agree.
+- The saved material table is air 0, water 1, soil 2, rock 3. The unbound
+  tracer assumes soil 3, rock 2 and unknown otherwise. Both host looks left
+  that semantic mapping unbound, so water was magenta and soil/rock swapped.
+  The existing `TerrainPalette` binding is the shared correction point.
+- Site 1 declares elevation 183 and water level 234. The lift fills to water
+  level and the tracer treats water as opaque. Palette correction does not
+  provide transparency, underwater visibility, or physical water behaviour.
+- Declared solids remain boxes; `HostBodies::scene_body` supplies no tissue
+  materials. The oblique camera compresses the body's longitudinal axis.
+  These are current presentation limits, separate from the two binding bugs.
+- The neutral fallback had been material 1, which is hash-coloured before
+  multiplying by kingdom tint. All native scene paths now use the renderer's
+  white material through one helper. The generated founding uses drawn
+  recipes (`Bodies::roster == false`), rather than the authored roster.
+
+**Status, 2026-10-18:** L2, L7 and L9 have landed, L7 on mere's kiss3d tenant rather than the DOM path this plan first drew (case 749). Mesocosm's tenant migration is implemented, with the terrain depth pre-pass, ordered Netrender layers and a fixed sun shared with the tracer (case 970); four workspace compile gates and both CPU controls pass. LiveBody stays for the VTT board, Eponym's producer and the posed-face queries. Open: GPU runtime and headed certification, whose checks are carried below; L7's done-conditions and the L3 and L5 re-proof; L6, L8 and L10; the terrain's per-axis scale (case 23). Next: the headed tenant certification.
+
+**W1, 2026-09-18:** keep. Tier: stack, rendering. Its benches are the
+product bench W4 lifts out. Evaluated against the wing design record; see
+[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+§2.
+
+**Owns:** how the three vessels present voxel worlds and bodies through the
+web engine, and the unification of Isometry, Paredros, and Mesocosm on one
+presentation lane of broader use to the stack.
+
+**Does not own:** world truth (`Ground`, the body document, the core hash),
+resident compute (the [resident views plan](2026-08-14_resident_views_composition_plan.md)),
+Livery's CSS conformance program (genet's own plans), or netrender's
+execution graph (`netrender/netrender-notes/2026-09-04_wgpu_execution_graph_plan.md`).
+
+**Prior art:**
+
+- [PolyCSS](https://github.com/layoutit/polycss), MIT: polygon meshes and
+  `.vox` volumes as DOM elements under `matrix3d`.
+- [Layoutit Voxels](https://github.com/layoutit/layoutit-voxels/tree/35ee4110a8c9c66eb210d0ad0d184e66641a01fd),
+  GPL-2.0-only: source studied on 2026-09-13 as an interaction reference for
+  the specimen bench and parts examiner. No implementation is incorporated.
+- [Zdog](https://zzz.dog), MIT: flat-shaded pseudo-3D drawn as 2D vector
+  paths under 3D transforms.
+- [Bonsai](https://github.com/scallyw4g/bonsai), WTFPL: already adopted three
+  ways on 2026-08-07 (landscape §8.3); its meshing and deferred shading no
+  longer apply here.
+- GBA-era tactics games (Tactics Ogre, FFTA): many animated bodies as baked
+  sprites at a locked angle. Isometry's founding look.
+
+## Rulings (Mark, 2026-09-11)
+
+1. **Paredros is orthographic.** A true isometric game. This closes the camera
+   question the [Paredros execution plan](../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
+   left open until the spatial laws could judge it, and it retires the
+   Barony/Delver close-perspective reference lane. Camera is not person:
+   Paredros stays second person in agency.
+2. **The wing presents through genet and netrender.** Bodies and props are
+   DOM under CSS; ground is layered. Renderling exits Paredros once L7's
+   receipt holds. The engine of broader use is genet plus netrender plus
+   conatus, and the three games are DOM consumers of one appearance crate.
+3. **Livery gains CSS 3D transforms.** Authorized as genet scope. Genet's own
+   plan founds it; this doc names the consumer.
+4. **One appearance crate.** `isometry-voxel` and `mesocosm-mesh` merge into a
+   wing-neutral crate that emits a sprite sheet or a face list from the same
+   volume.
+5. **Ground is tile layers, provided underground stays possible.** One layer
+   per height step, cutaway by hiding layers above the focus. Layering is also
+   the surface-interaction seam.
+6. **Live faces are the default to scope first.** Mark wants to feel
+   live-all-the-time; the expected landing is a hybrid of live faces in focus
+   and during rotation, baked sprites elsewhere. L0 decides which is honest.
+7. **HTML is an interchange format.** A body or memorial is a document.
+8. **Angles 1-4 are adopted** (§ Novel angles): GPU sprite bake on the resident
+   lane, ground as generated tile layers, the hagiograph as a consumer, games
+   as documents.
+9. **The probe runs first.** No lane past L0 lands before its receipt.
+10. **L5 is body-level (Mark, 2026-09-12, from the L0 verdict).** A body or
+    part is one DOM element whose paint is a retained netrender fragment
+    below it, spliced the way genet splices an iframe's paint list into a
+    replaced box. Faces never become elements. This promotes L3's face
+    batch from "not yet earned" to the mechanism L5 runs on.
+11. **L1's genet plan carries two more consumers (Mark, 2026-09-12):** a
+    first-frame style and layout scaling slice, linear and about two orders
+    cheaper per element, and a host-side DOM mutation harness with real
+    timing. Founded in genet as
+    `genet/design_docs/2026-09-12_css_3d_transforms_and_first_frame_plan.md`.
+12. **Ordering is decided by comparison, not by construction (Mark,
+    2026-09-12, superseding the same day's strip ruling).** Depth strips
+    sorted in the 3D rendering context are candidate path A of L0c, beside
+    cached sprites (B) and resident geometry with a depth attachment (C).
+    The one-cell rule is a condition of the strip experiment, never an
+    application constraint. Mark's wider ruling: the vessels may have
+    isometric or orthogonal cameras, fixed or free, and quantized heights
+    are an application setting; the engine establishes its resources first
+    and applications take constraints from the receipts. See § Specifying a
+    presentation.
+13. **Path C is the main spatial renderer (Mark, 2026-09-13, from the L0c
+    receipt).** Ground and mutually occluding bodies share one depth
+    attachment in a scene viewport whose producer owns depth; genet receives
+    the image through its document composition path. That is what the L0c
+    probe's path C implements. Genet's T3 embeds that viewport.
+14. **L5 puts parts into the shared scene as instances (Mark, 2026-09-13).**
+    One surface per body is refused: it would lose depth between bodies
+    again. Body and part identities stay stable, DOM controls stay
+    optional, and an explicit mapping from supported style properties to
+    instance data is the bridge that still has to be built and measured.
+    CSS classes, semantic identity and GPU drawing coexist across it.
+15. **Continuous presentation rotation (Mark, 2026-09-13).** A body
+    transform above the articulated part transforms. The adapter's
+    quantizer turns each part about its own pivot and leaves attachments in
+    place, so fractional part yaw alone would not turn a body. Discrete
+    simulation orientation stays useful on its own.
+
+## The picture
+
+```text
+Ground / body document / accepted activity  (application authority)
+    -> geometry + appearance + presentation pose
+       -> shared colour + depth viewport    (one scene producer)
+          -> ordinary SceneImage            (netrender external image staging)
+             -> DOM paint order             (genet clips, transforms, opacity)
+                -> one wgpu device          (host-owned device and queue)
+
+DOM controls / resolved style -> admitted appearance and view settings
+viewport-local pointer -> camera ray -> visible body/part identity
+```
+
+Parallel cameras remain useful presets. They do not require painter order
+or a body splitting rule. Production Mesocosm already joins bodies and
+traced terrain through one depth attachment; the bench carries that image
+through the normal document paint stream. Other DOM content composites with
+the viewport as a whole. Its pixels do not acquire the producer's internal
+depth relationships. Planar fragments and sprites remain useful representations
+with their own measured limits. External image staging is a GPU conversion
+and copy on the shared device, not a zero-copy claim.
+
+What this buys the stack rather than the games alone: CSS Transforms Level 2
+is a web standard genet lacks and has WPT coverage for, so the Livery work
+pays in turnstone and Pelt on real pages and in mere's spatial graph views,
+which already carry padded 3D positions. Renderling paid off in one Paredros
+crate and two probes, at the cost of a local fork, rust-gpu pins, and a
+crabslab fork.
+
+## Authority boundaries
+
+| Layer | Owns | Must not decide |
+| --- | --- | --- |
+| `Ground`, body document, core | voxel facts, revisions, part placements, the hash | how anything looks |
+| appearance crate | volume to sprite or face list; palette; facing; greedy merge | world facts; DOM structure |
+| scene producer and application projection | scene camera, part pose, depth, visible geometry query, admitted appearance mapping | simulation facts; CSS interpretation |
+| DOM + CSS (genet) | element layout, resolved style, document paint/input geometry, semantic controls | application part identity; scene depth; device |
+| netrender Scene / compositor | affine rasterization, retained fragments, external textures, boundaries between the DOM lane, chrome and embedded surfaces | scene meaning; tenant internals |
+| conatus / CubeCL | resident planes, GPU bakes into atlas textures | appearance policy |
+| tracer (`conatus-brick`) | the optional live-volume lens for any camera that needs it | ground presentation by default |
+
+The execution graph plan is not amended here. Its RG3 second consumer
+becomes the tracer as an optional lens rather than renderling as a mesh
+tenant, and D1's depth join stops being a promotion gate. That amendment is
+Mark's, in netrender's notes, after L0.
+
+## Specifying a presentation
+
+Ruled 2026-09-12 with ruling 12. An application specifies these five
+independently; the engine chooses batching, splitting, caching and
+representation behind them and preserves object identity across whatever it
+chooses. Isometric 2:1, orthographic isometric, and the terrarium section are
+presets over this, not separate systems.
+
+**Annotation, 2026-09-28 (wing design record, ruling 382):** the wing has
+one default view, isometric with quarter turns, and it precludes no other
+view: free-yaw isometric, first person and third person over the shoulder
+stay available. The camera row below already admits the default and free
+yaw. First person and over the shoulder need a perspective camera, which
+isometer's orthographic `SlabCamera` does not express. The default's pitch,
+the VTT's 30° dimetric or true isometric, is open. *Ruled later that day
+(387):* the pitch is the 2:1 dimetric, 30°, `SlabCamera::dimetric_2_1`
+turned in quarter steps, with true isometric one of the other views.
+*Reading, put to Mark the same day without objection:* the camera reserves
+room for a perspective projection now and builds it when a mode needs one,
+with Eponym's `r1-proof` perspective camera as the donor.
+
+| Choice | The application states | The engine must not require |
+| --- | --- | --- |
+| Camera | projection, orientation, scale, permitted movement | a fixed camera for correctness |
+| Cutaway | a world-space plane, slab or volume | a cutaway aligned to a height step or a screen row |
+| Appearance | geometry, materials, markings, pose | pre-split parts to avoid a rendering defect |
+| Visibility | which objects participate, which surfaces occlude | painter order as the only occlusion |
+| Quality | resolution, animation cadence, detail, supported effects | one effect route for every object |
+
+The boundary that stays explicit: a depth-rendered surface embedded in a
+document is correct within itself, and ordinary DOM around it follows
+document composition. DOM elements intersecting objects inside that surface,
+picking, and accessible descriptions of those objects each need a named
+integration, priced by L0c and owned by genet's T3.
+
+Resources already present, verified 2026-09-12:
+
+| Resource | Gives | Limit today |
+| --- | --- | --- |
+| `mesocosm-render/src/live_body.rs` | wgpu adapter with a depth attachment, instanced placements, cached geometry keyed by volume bytes, a world-space clip slab; no renderling | a product adapter, not a genet component |
+| Paredros D1 receipt | headed proof that traced ground and raster geometry occlude each other | a fixture, not a cost comparison |
+| `netrender/src/external_texture.rs` | GPU-produced content enters composition without CPU readback | staging on the image route is not free |
+| genet host-content slots (`paint.rs`) | host-painted content inside CSS paint order | layer retention (T4) and 3D (T1) open |
+| conatus resident planes, modulus traversal | shared spatial data with revisions and read epochs | each consumer binds and updates on its own policy |
+| sceno identity and projection contracts | stable source and instance identity back to application meaning | no 3D picking or accessibility inside a surface |
+
+## Lanes
+
+Each lane names its owner tree and a done condition. L0 blocks everything.
+
+### L0. The ceiling probes
+
+Two untracked probes under `mere/crates/probes/` (the gitignored probe
+workspace), receipts copied into `Code/testing/wing/`.
+
+- **L0a, netrender face throughput.** Bodies as retained fragments of
+  rectangles under CPU-side orthographic projection, bypassing Livery.
+  Measure CPU scene build, Vello encode, and GPU frame time across a grid of
+  body count and rectangles per body, static and with per-part transforms
+  changing every frame.
+- **L0b, genet element cost.** The same counts as absolutely positioned,
+  transformed elements in a document through the Livery route. Measure style,
+  layout, and paint per frame, static and with transforms mutated per frame
+  where the scripted profile allows it.
+- **L0c, the three-path comparison (measured 2026-09-12; equivalent yaw and
+  content-variety follow-up measured 2026-09-13, picking still open).** One scene, one camera, one
+  cutaway, one set of materials and motions, presented three ways from Rust
+  into netrender with no genet DOM in the loop: (A) retained planar
+  fragments, strips and parts under the six-cell placement, re-lowered
+  through `Renderer::update_fragment` when a part turns or a strip's brick
+  is dirty; (B) cached sprites from the appearance bake, one image per
+  facing; (C) resident geometry through Mesocosm's `live_body` adapter into
+  a depth attachment, composited through netrender's external texture. The
+  scene carries six cases: two bodies crossing, a long articulated part, a
+  terrain edit at a chunk boundary, a clipped viewport, and a material
+  change, plus continuous yaw. Each path reports correctness against a per-pixel depth oracle,
+  frame time, upload bytes, memory, and what a change invalidates. Path A's
+  yaw re-lower cost, per re-lowered rectangle, is one of its numbers, and one
+  of its cells wraps every body in a content-box clip layer, which is genet
+  T4's rerun condition. What this cannot price is CSS ownership of per-part
+  classes, effects and hit testing, which only runs through genet once T3
+  and T4 exist; the receipt says so.
+**Done when:** both receipts exist with device, driver, and commit named; the
+table states the largest static and live element count under a 16 ms frame;
+and the doc's § Receipts records whether live faces, the hybrid, or bake-only
+is the honest default. L0c adds: its receipt exists at
+`Code/testing/wing/l0c_three_paths.{json,md}`; all six cases have sampled pixel
+comparisons and the receipt names each path's residuals and quality policy;
+and § Receipts states, per path, frame time,
+upload bytes, memory and invalidation on the same host and commit, plus for
+path A the facing count at which quantized swaps cost the same as re-lowering.
+
+### L1. Livery 3D transforms (genet scope)
+
+CSS Transforms Level 2: `matrix3d`, `translate3d`, `rotate3d`, `scale3d`,
+`perspective` and `perspective-origin`, `transform-style`,
+`backface-visibility`, 3D `transform-origin`, and the individual `translate`,
+`rotate`, `scale` properties. Lowering projects each element to netrender's
+existing column-major 4x4 `Transform` and z-sorts within a 3D rendering
+context. Netrender's `Transform` was ready; Livery parsed none of these until
+genet T1 landed (`d61978378c1`, 2026-09-15; see the status addendum, now in the [retired banners](archive_docs/2026-10-18/2026-09-11_orthographic_voxel_presentation_plan_retired.md#status-banners)).
+
+Founded in genet on 2026-09-12 as
+`genet/design_docs/2026-09-12_css_3d_transforms_and_first_frame_plan.md`
+with three lanes: T1 the transforms above; T2 first-frame style and layout
+scaling, linear and about two orders cheaper per element, plus phase timing
+behind a flag; T3 a host-side DOM mutation harness with real timing and the
+scene viewport used by L5 (T3 revised after rulings 13–15). Ruling 11 names
+the three engine consumers; T1 and T2 remained independent of the first
+bench, and both landed 2026-09-15.
+The L0b attribution of the superlinear first frame
+lives at `Code/testing/wing/l0b_first_frame_attribution.md` and seeds T2.
+
+**Done when:** genet's plan founds it with its WPT `css/css-transforms`
+counts; a wing fixture body of rigid parts renders through Ortet with the
+same silhouette the appearance crate's bake produces; individual transform
+properties animate a part's yaw without touching the parent matrix; T2's
+done condition holds on the L0b grid; T3's harness reports a live per-frame
+number for a body whose parts move every frame.
+
+### L2. One appearance crate
+
+**Closed 2026-09-15** by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md)
+step 11: the merged crate is `isometer-mesh` at
+`shared/isometer/crates/isometer-mesh`, holding mesocosm-mesh's body
+document, greedy quads and projection beside isometry-voxel's recipes,
+palettes and bakes; Isometry's tileset bake is byte-identical, the meshes
+are untouched, and the crate has no engine or wgpu dependency. The open
+decision on where the appearance crate lives is resolved the same way.
+
+This broader wing consolidation does not block the specimen bench, which
+can consume the existing mesocosm-mesh and mesocosm-render APIs directly.
+
+Merge `isometry-voxel` (recipe, palette, `bake_facing`, `Sheet`) and
+`mesocosm-mesh` (body document, rigid parts, greedy `Quad`, `PartMesh`) into
+one wing-neutral crate. Two projections from one volume: a sprite sheet at a
+locked angle and facing, or a face list with per-face normal and palette
+index. The body document stays the shared organ; nothing already on a body is
+remeshed when a part attaches.
+
+**Done when:** Isometry's tileset bake and Mesocosm's live body both build
+from the merged crate with pixel-identical sheets and quad-identical meshes
+to today's; a face list carries enough for L3 to emit DOM without touching
+voxels again; the crate has no engine or wgpu dependency.
+
+### L3. Shared scene depth and document composition
+
+Ground and mutually occluding bodies use the same camera and depth target.
+The application owns that scene producer; netrender stages its colour view
+as an external image in the ordinary paint stream. Genet supplies the
+content box and document geometry, while Mere's Cambium host supplies the
+producer lifecycle and rendering hook. Reuse the existing custom-leaf splice,
+DrawExternalTexture translation and external-image staging APIs. T4's
+retained-fragment fix remains useful for planar content independently.
+
+**Done when:** the body/terrain scenes from L0c, including a long part over
+a ledge, render with equivalent poses and declared coverage/tie tolerances;
+the viewport composites between DOM siblings under clips, transforms and
+opacity; resize and producer retirement preserve resource identity; unchanged
+geometry has no static re-upload; and producer, staging and document work
+are timed separately from presentation wait. Interior-only rounded agreement
+does not establish exact pixels or picking. Bench B below owns the first
+end-to-end consumer of this lane.
+
+### L4. Ground as tile layers, underground included
+
+Materialize `Ground` bricks into ground units by the path L0c names, with
+the cutaway specified as a world-space plane or slab (§ Specifying a
+presentation) and applied by class or by clip slab: units past the cut hide,
+units at the cut draw with their surface, units behind draw dimmed. Under
+path A a unit is a depth strip, cells sharing a depth key under the vessel's
+parallel projection, about two thousand elements for a 64 by 64 by 16 room;
+under path C a unit is a resident chunk drawn with the slab. Isometry's
+board today is the per-tile shape with `isometry_core::depth_key` as
+z-index, a paint-order convention and not a definition of camera depth. The
+tracer remains the lens for any camera that needs a live volume.
+
+Destructible and constructible ground rides the existing revision contract:
+`Ground` bumps its revision and drains dirty bricks; only the strips a dirty
+brick touches regenerate, through the same content-replace call a turning
+part uses; retained fragments keep every other strip. A carve, a burrow, or a placed block is the same path as
+generation.
+
+**Done when:** a carved burrow is visible through the cutaway with no
+tracer in the frame; a radius-zero carve regenerates only the ground units
+its brick touches, proved by fragment or instance identity; unit count and
+bytes per revision are reported for one map of each vessel; Isometry's board
+draws the same picture through the chosen path as from its tile elements
+today, with the same tiles selectable.
+
+### L5. Live body instances, appearance and interaction
+
+Rulings 13–15 supersede the fragment-backed body/part element shape. Bodies
+share one scene viewport, with cached geometry and part instance data.
+Continuous parent presentation pose rotates attachments with their body;
+core orientation and simulation records retain their own discrete semantics.
+Body and part controls address the same identities as geometry picking.
+
+Resolved style may supply a declared set of decorative appearance values.
+These are distinct from biological phenotype fractions. Pose and appearance
+changes update instance fields; topology or voxel edits invalidate only their
+actual geometry dependencies. A sprite representation remains an optional
+measured quality choice, not a requirement imposed by T2's large-DOM gate.
+
+**Done when:** a multi-part body turns continuously with nonzero attachment
+pivots and unchanged static geometry uploads; style changes affect the
+intended instances; pointer selection resolves the visible part while list
+selection may address an occluded part with a depth-correct highlight;
+both reject stale anatomy; and a part edit preserves unrelated cached geometry.
+Bench A and Bench B supply the first consumer proofs.
+
+### L6. GPU sprite bake on the resident lane
+
+A CubeCL kernel projects a resident volume into a sprite atlas texture that
+netrender samples as a registered image. Zero CPU pixels: a runtime-attached
+part is rebaked on the GPU and enters the DOM as a class change. This unifies
+the engine review's R2 bake path with Isometry's lane. Downlevel keeps the CPU
+bake.
+
+**Done when:** a GPU-baked sheet matches the CPU bake within the coverage
+tolerance the render tests already use; one device, one allocation, no
+per-frame upload on an unchanged body.
+
+### L7. Renderling exits Paredros
+
+Paredros's room, D1, crossing, lighting, and residency paths move to the
+appearance crate plus DOM. The `d1_depth` receipt is retired with rationale,
+since the join it proved is replaced by L3 interleave. The renderling fork,
+spirv-std pins, and crabslab fork leave the Paredros manifest.
+
+**Done when:** `eponym-client` builds with no renderling dependency; the S0
+replay hash is unchanged; the room composes through the same layers as
+Mesocosm's section; the probes that still want renderling are archived, not
+patched.
+
+### L8. HTML as interchange
+
+A body, prop, or memorial serializes as a self-contained HTML fragment: a
+declarative shadow root carrying its own style and its face or sprite markup,
+with the body document's identity as data attributes. Genet's Shadow DOM lane
+landed 2026-09-07/08, and the parser/script interleaving plan closed
+declarative attachment through the custom-element registry on 2026-09-08,
+so nothing in genet blocks this lane.
+
+**Done when:** a body round-trips document to HTML to document with the
+same part placements and palette; Isometry loads a Mesocosm-authored body
+from that fragment over P2P; the hagiograph emits a memorial as one such
+fragment.
+
+## Specimen bench prerequisites (2026-09-13)
+
+**Status:** assessment, both standalone probe prerequisites, Bench A and
+Bench B's bounded native integration are complete. Three parallel source
+audits checked rendering, host embedding, and world/activity inputs.
+The existing creator is the starting point, not a second specimen model.
+Its prior headed receipts establish earlier source revisions; they were not
+rerun in this assessment. Current source anchors were Isometry 5e98d14,
+Mere 1f30117a, Genet 6ebd3598 and netrender 3961aca9, with concurrent
+Rootstock input/layout and Genet scripted/realm edits left intact.
+
+### Existing resources
+
+- [Creator and habitat comparison](2026-07-31_wing_phenotype_contract_plan.md#held-body-and-habitat-comparison-2026-09-08):
+  versioned seed/criteria requests, held-body rerolls, coalesced worker and
+  stale-result rejection. Prepared candidates own disposable founding worlds.
+  Current code is in crates/mesocosm-core/src/world/generation.rs and
+  crates/mesocosm-genet/src/app/creator.rs.
+- The same plan's trial-evidence section records bounded observations over
+  accepted world activity. Prepared::observe currently returns aggregates;
+  a visible stepping trial is the missing host join.
+- crates/mesocosm-genet/src/section.rs already draws bodies and traced terrain with
+  one depth attachment. mesocosm-render supplies instance tint, phenotype
+  materials and upload/cache counters. VB1 and VB3 receipts live under
+  Code/testing/mesocosm; VB3 explicitly leaves pointer picking open.
+- Ortet has accepted ordinary external-image composition. Genet's T3 owns
+  the engine geometry work and references Mere's missing Cambium producer
+  bridge. The external_texture element constructor alone is not a connected
+  rendering path.
+
+### Interaction reference: Layoutit Voxels (2026-09-13)
+
+Mark authorized source study as a reference independently of code reuse.
+The inspected revision is `35ee4110a8c9c66eb210d0ad0d184e66641a01fd`.
+Its face-addressed tools (`src/components/layers.vue`) suggest a direct
+selection-to-inspection flow: the drawn part and its ordinary DOM reading
+refer to the same organism, part and geometry revision. Bench B uses the
+existing creator and `mesocosm_views::part_of` to expose that correspondence.
+Selection expires when its preview or geometry is replaced.
+
+The cube presentation separates simple geometry from face colour/texture
+choices. The bench's declared appearance controls therefore exercise instance
+updates while keeping resident geometry cached. Report staging and geometry
+uploads separately. Palette experiments need no new body representation.
+
+Two follow-ons are useful without expanding Bench B's gates. A portable
+inspection view can extend the existing saved generation request with pose,
+camera and part selection, retaining enough versioned inputs to reproduce it.
+Geometry editing/export must derive visibility from the same shape data as
+the scene and queries: Layoutit's cube preview and export helper disagree
+about occlusion by non-cube neighbours (`cube.vue`, `visibleFaces.mjs`).
+Mixed-shape boundaries become an explicit agreement fixture if such shapes
+are admitted. Snapshot undo and one DOM element per voxel are implementation
+choices in that reference, not requirements of the bench.
+
+### Immediate probes, before embedding
+
+**Execution order corrected by Mark, 2026-09-13.** The bench's integrated
+done conditions depend on missing viewport, style, picking and body-pose
+work. They are not gates for pricing the renderer. The existing L0c probe
+can settle the two immediate questions without Genet or any new picking API.
+
+1. **Continuous body transform:** add finite parent yaw to LiveBody above
+   part attachments; keep simulation Yaw and immutable mesh identity. Rerun
+   A and C on identical continuous poses and the CPU depth oracle, then
+   measure the same population/camera/motion. B's snapped facings remain a
+   separately labelled approximation. Done when attachment coordinates and
+   pose-only GPU reuse pass, sampled pixel differences are reported, and the
+   equivalent-pose timing/upload receipt replaces the earlier unequal-yaw
+   claim. Production callers default to zero presentation yaw.
+2. **Variety in the existing probe:** share sprites by content, dimensions,
+   projection and facing, with placement kept separate. Control shape count
+   independently from body count and report actual unique geometry and cache
+   capacity. Done when duplicate bodies reuse images, real content/facing
+   changes invalidate them, deterministic shape workloads agree across paths,
+   a small varied scene is checked against the oracle, and equivalent
+   population runs report timing, uploads and memory. This precedes T3.
+
+**Receipt:** the probe, raw JSON and source identities are retained in
+`mere/crates/probes/wing-three-paths/` at cc4c079c; the full local capture is
+`Code/testing/wing/l0c_2026-09-13/README.md`, with its source snapshot beside
+it. LiveBody now accepts finite continuous parent yaw;
+17 renderer tests, 10 probe tests and the Mesocosm workspace all-features/
+all-targets check pass. Fresh A/C yaw runs share the same
+workload digest and report 135–148 / 2.14–2.43 ms median at 1,000 bodies,
+with zero measured geometry uploads on C. The corrected sprite cache uses
+12 images for 1,000 duplicate bodies. At 1,000 distinct torso shapes, C has
+1,005 live mesh keys and costs about 8 ms; B's crossing cost is 10.53 ms,
+with 276 MiB of images. The notch sampler measures geometry reuse, not
+general generated anatomy. Sampled coloured residuals were traced to
+coincident surfaces; isolated terrain pixels and timing tails remain explicit.
+
+The probe code owners are mesocosm-render and the existing
+mere/crates/probes/wing-three-paths probe. Bench A below supplies the bounds
+and part-query consumer; CSS appearance and host producer lifecycle remain
+Bench B's integration work.
+
+### Bench A. Presentation pose and visible-part queries
+
+**Status, 2026-09-13:** implemented in the existing Section API, following the
+adapter/probe baseline at Isometry bf05d2b and Mere cc4c079c. Fresh CPU and GPU
+pixel checks pass. Native pointer routing and Genet viewport input remain
+Bench B's integration work.
+
+**Owner:** Mesocosm rendering and host projection. The immediate probe supplied
+validated parent yaw above resolved part attachments, leaving core Yaw,
+BodyDocument and VolumeRef unchanged. Apply that pose to presentation culling/framing bounds;
+the current core AABB alone cannot bound a rotated body. Add a CPU query
+against actual part quads using the same matrices,
+slab and bounds as drawing; compare the result with the nearest visible
+terrain hit. GPU ID picking and independent continuous joint animation can
+follow their own measured needs.
+
+**Done when:** a nonzero-pivot body completes a continuous turn with intact
+attachments and no new static geometry upload; independent 45/90-degree
+coordinates agree; overlapping bodies, nearer terrain and cutaway clipping
+yield the visible part; a long body rotating at a viewport/slab edge is not
+incorrectly culled; severing invalidates stale selection. Preserve the
+existing quarter-turn and shared-depth tests.
+
+**Implementation findings, 2026-09-13:** draw, bounds and body queries now
+share the renderer's part matrices. Bounds visit actual transformed quads:
+the core AABB omits attachment yaw and noncentral pivots, so it is not a safe
+presentation rejection test, even before adding parent yaw. A future cheap
+bounds cache must remain conservative for those admitted shapes. This host
+culling work has not been included in the standalone L0c cost numbers.
+
+The Section query joins addressed body faces to the filtered terrain map
+that it encoded. It refuses incomplete frames and capsule fallbacks, and
+separates a frame-specific hit from a geometry-revision-scoped semantic
+selection. Equal-distance body identities carry an explicit tie flag; the
+stable CPU tie choice does not promise the GPU's colour owner on coincident
+surfaces. Exact raster-boundary coverage is likewise not a CPU ray guarantee.
+
+Review also exposed a standing-wall camera error: the slab constructor needs
+world vertical, not screen-up. Pitched-view acceptance must test front and
+far cuts as well as projected XY. Frame identity must survive Section
+replacement without aliasing, and changed habitat bounds/chamber must retire
+both the filtered terrain cache and the previous query receipt. These are
+part of the integrated acceptance checks, not new simulation rules.
+Terrain uploads also remain pending while an isolated preview omits terrain
+or a frame fails. The next successful terrain encode receives the full pending
+map; ordinary uninterrupted terrain edits retain their incremental uploads.
+
+**Verification, 2026-09-13:** 32 mesocosm-render library tests, six lens terrain
+ray tests, two lens camera tests, 33 Section tests and six grafting/preview
+tests pass, as do all 10 standalone probe tests. The Section suite includes
+fresh whole-frame selection-colour readbacks compared with every pixel query,
+independent leading/top/trailing/outside rectangles, pitched front/far wall
+pixels, the noncentral attachment, nearer terrain, cutaway changes made while
+isolated, Section recreation and severing. Existing shared-depth, expression
+material and family-scene tests remain green. This is headless rendering
+acceptance; it does not claim a headed or document-embedded specimen bench.
+Both the Mesocosm workspace and Isometry's root workspace pass
+`cargo check --workspace --all-features --all-targets --offline --locked`.
+
+The retained implementation is in `mesocosm-render/src/live_body/{pose,query}.rs`,
+`mesocosm-lens/src/bricks/ray.rs`, and
+`mesocosm-genet/src/section/{bodies,inspection,view}.rs`; all are under
+`mesocosm/crates/`. Section's `set_body_yaw`, `presentation_bounds`,
+`pick_pixel`/`pick_ndc` and `validate_pick` form the next viewport's consumer
+seam. The preview uses these presented bounds to fit the body beside its panel.
+
+### Bench B. One interactive Genet viewport
+
+**Status, 2026-09-13:** bounded native integration accepted with the evidence
+and limits below. The `--bench` entry uses Cambium's native host and the existing
+creator's Request/Prepared worlds. Whole-game host migration remains separate.
+
+**Owners:** Mere/Cambium producer lifecycle, Genet content-box and common 2D
+paint/input geometry, Mesocosm scene producer and appearance mapping. Reuse
+custom_leaf, DrawExternalTexture and stage_external_image. Initialize from
+the host device/queue, stage changed generations before normal rasterization,
+and retire removed producers. Declare colour encoding and alpha explicitly.
+
+Content-box origin/size must account for padding and borders. Pointer-local
+coordinates use the inverse accumulated paint transform, then the camera ray;
+an axis-aligned bounding rectangle is insufficient. Expose the existing
+resolved-style queries through a read-only host seam for a declared set of
+appearance properties. Ordinary DOM specimen/part controls provide labels,
+focus and actions for the same identities.
+
+**Done when:** two occluding bodies and terrain render between DOM siblings;
+border/padding, scrolling, clip edges, transform origin, 2D scale/rotation,
+opacity, zoom and output scale agree in pixels and picks; an overlaid control
+wins input; resize/hide/remove/recreate preserve lifecycle; unchanged sources
+skip staging and decorative style changes leave geometry cached. Use the
+accepted Ortet image tests and Cambium native smoke host as starting fixtures.
+
+**Implementation:** Cambium's `ProducerRegistry` binds a producer to the
+existing custom-leaf slot after layout. It supplies the host device/queue,
+content extent and declared resolved appearance. Changed view identities or
+generations are staged before ordinary document paint. Resize invalidates the
+old image; hiding suspends; removal retires the registration. A recreated node
+registers again. Encoded sRGB and source alpha are explicit contracts.
+
+Genet's `ElementGeometry` supplies content origin, inverse accumulated 2D
+transform and ancestor clips to the host input path. Ordinary DOM hit routing
+decides the recipient first, so the clear-selection overlay wins. The slot
+does not introduce a clip around legacy retained fragments: its image bounds
+and authored CSS overflow supply clipping, preserving the T4-independent path.
+Pixel padding is covered; the existing percentage-padding query approximation
+is not promoted into a conformance claim by this work.
+
+Mesocosm's producer reuses `Section`, including its body/terrain depth and
+visible-part queries. CSS `color` converts from encoded sRGB into a linear
+multiplier on the organism's ordinary presentation tint. The instance override
+does not edit world or material facts. Group opacity stays in document paint.
+Unchanged scene inputs skip producer rendering as well as image staging.
+The parts examiner uses the existing `part_of` projection; buttons and viewport
+hits identify the same organism/part. Preview replacement expires selection
+even when a new candidate reuses local IDs.
+
+`testing/bench/acceptance.scenario` drives native pointer input and captures
+the presented document. Its decoded-PNG checks isolate viewport content from
+labels, buttons and the overlay: tint must change body pixels with background
+fixed, while decorative CSS must preserve content pixels and upload counters.
+The separate habitat and deliberate-failure scenarios exercise the composed
+habitat and the receipt's failure path. These are correctness checks, not the
+population and frame-cost comparison assigned to Bench D.
+
+**Native receipt, 2026-09-13:** the final development build passes acceptance
+in 167 frames with 15 captures, at actual output scale 2. The initial seed-1
+candidate has 33 parts and uploads 8,064 static mesh bytes. Each tint comparison
+changes 102,660 body pixels while all 1,128,060 sampled background pixels remain
+fixed. Decorative CSS leaves all 1,230,720 sampled content pixels unchanged;
+opacity changes composition and resets to the same pixels. Neither operation
+rerenders the producer or adds mesh/instance uploads. Transformed centre clicks,
+UI zoom 1.25, overlay priority, resizing, removal/recreation and candidate
+replacement pass through real host input. The independent geometry fixture
+calculates the authored 7-degree/0.9 transform rather than querying Genet's
+inverse back as its own oracle.
+
+The habitat scenario passes in 25 frames with ten detailed bodies and 343
+parts beside the traced terrain, with no capsule fallback or world-hash change.
+This frame establishes native assembly; exact occlusion is carried by Bench A's
+body/terrain pixel tests, and literal clipping/transform edges by Genet's and
+Cambium's focused fixtures. Body count alone is not an occlusion oracle. The
+deliberately false assertion produces process exit 1, `ok: false` and two fresh
+PNGs. A separate Section GPU test verifies tint changes, reset pixels, invalid
+input, unchanged geometry and preserved material facts.
+
+Compact receipts and source-blob identities are retained under
+`testing/bench/receipts/2026-09-13/`; full PNGs are under
+`Code/testing/specimen-bench/native-final/`. The source record identifies the
+actual executable, avoiding the older binary under `mesocosm/target`. Those
+captures use development path overrides, with source blobs recorded before
+commit. A separate full Mesocosm workspace check passes on Rust 1.97.1 with
+the committed Git dependencies and no sibling overrides:
+
+```text
+cargo check --release --offline --workspace --all-features --all-targets -j 3
+```
+
+That graph uses Mere `4f4de1d05ec99461f7fa3cdc4e514e904a999213`,
+Genet `101d9e9ade8671564e723443d9f0498e899a33f1` and netrender
+`3961aca919f707ab09a786379eb4ce8bb121258e`, with one source identity per
+family. Genet's 61 focused checks, Cambium's 34 CPU and two GPU producer tests,
+62 native-host regression tests, and the Section tint GPU test pass. The
+separate Isometry root workspace also passes its required locked/offline
+all-features/all-targets check on its unchanged dependency baseline; it is
+not a second host acceptance of the new pins. Remaining warnings are the
+existing unused TraceCamera helper and core-test mutable binding.
+
+### Generation comparison (2026-09-13)
+
+**Priority:** Mark paused world-trial work to explore generation with the bench.
+The 48-specimen audit is at `Code/testing/generation-audit-2026-09-13/audit.md`:
+the random draw uses little of the existing shape and appendage-chain vocabulary.
+The first experiment changes proportions through admitted mass-part shapes.
+
+**Status:** implemented and native-verified. The bench retains the
+original beside four explicit single-stretch alternatives. Recipe topology,
+individual segment counts, appendage assignments and mass stay fixed. Shape
+selection uses only distinct envelopes actually admitted by the current palette.
+The ordinary generation admission and founding path checks each alternative;
+missing choices and refusals remain visible. More proportions advances through
+the finite available edits; it is not a claim of unlimited unique generation.
+
+Core ownership is `generation/proportions.rs`. It reuses the existing recipe
+admission and founding operations, leaving ordinary seeded requests unchanged.
+The UI owns disposable comparison worlds, shared-scale or individually fitted
+cards, an inspected selection, and generation-change readings for affected parts.
+Each card uses the existing Cambium producer/Section path. Meshes are currently
+cached per viewport; this slice does not claim cross-viewport mesh sharing or
+integrated population-cost acceptance.
+
+Save comparison writes a fresh local file containing versioned selection inputs,
+the palette, admitted voxel content and the expected world hash. Reopening with
+`--bench --comparison FILE` validates content and reconstructs that hash before
+showing the comparison. It does not rewrite a played world or reinterpret a
+shape selector using whichever palette happens to be current.
+
+**Done when:** native captures show the original and four alternatives; choosing
+one updates the same parts examiner and expires old selection; shared scale and
+fit-each behave distinctly; generating more alternatives leaves the original
+hash unchanged; exported inputs reopen the selected world exactly; corrupt
+records refuse; and the existing generation/bench checks remain green.
+
+The broader controls inventory, arbitrary topology edits, chain variation,
+general per-part generation traces and surface-pattern variation remain later
+experiments. This first slice reports the changed stretch and affected part IDs,
+not a complete provenance map of every development operation.
+
+**Receipt, 2026-09-13:** all 20 core generation tests pass, including two new
+proportion tests that pin realized topology, mass, appendage instructions,
+original preservation, palette exhaustion and serialized replay. The native
+proportion scenario passes in 71 frames with six captures: four alternatives
+are admitted and all five cards draw. The retained hash is `aa8ae203bde513d6`;
+alternative 1 is `333f1885cc2ef33c`, including after export/reopen. Reopen passes
+in eight frames with two captures; a falsified expected hash exits 1 before
+host creation. Shared-scale versus fit-each changes sampled pixels in all four
+alternative previews (4,361; 4,377; 6,171; 4,762 pixels), while the original's
+sample remains identical. These fixed native image regions exclude card labels
+and selection borders; they are a bounded fixture, not a general scaling oracle.
+
+The previous 167-frame/15-capture bench acceptance also passes. Both Mesocosm's
+release and Isometry's separate root workspace all-features/all-targets checks
+pass. The native build uses the committed Git dependencies without sibling
+overrides. Compact receipts and source identities are under
+`testing/bench/receipts/2026-09-13/proportions/`; PNGs and saved comparison files
+remain under `Code/testing/specimen-proportions-2026-09-13/`.
+
+### Generation wiring and gap filling (2026-09-13)
+
+**Status:** generation wiring native-verified; species likeness remains open. Mark clarified that a proportion comparison is one
+control within the intended generator, not its completion. Parallel audits
+identified existing stretch graphs, appendage chains, archetype recipes and
+material accounts whose vocabulary the creator was not exposing.
+
+Core owns a new `Generated` body plan: seeded bounded parent trees, segment
+counts, socket directions, admitted shape choices and serial appendage chains.
+Axial and Branched retain their existing streams. Eight starting anatomies
+provide raccoon-like, cat-like, horse-like, bird-like, fish-like, grass, shrub
+and tree recipes. Starting forms reject developmental organ omissions; their
+feeding roles still come from ordinary realized anatomy. These references do
+not confer flying or swimming capabilities on the existing world simulation.
+
+The host exposes body plan, starting anatomy, feeding role, seed entry, random
+seed, suggested reproducible seeds, reroll, mass and size. Generation remains
+on the existing worker with stale-result rejection. Refused candidates remain
+visible. Save specimen includes the exact content, request and expected hash
+through the same saved-comparison format.
+
+Size belongs to the admitted content pack. Sizes 2 and 3 enlarge eligible
+structural shapes and update voxel bytes, content addresses and palette bounds
+together. Sensory and other role-sensitive detail retain their admitted size;
+every resize derives from the unchanged base pack. Mass remains independently
+editable paid tissue, with its own reserve and ecological consequences. Neither
+control is a CSS scaling effect. Saves retain both the base pack and selected
+size, and validate that resizing reproduces the saved content on reopen.
+
+**Done when:** all eight starts admit and render; generated topology differs
+across seeds and replays; seed/reroll and editable mass work through native
+controls; size changes authoritative bounds while preserving paid mass; mass
+changes accounts while holding geometry; saved resized specimens reconstruct;
+and previous generation and bench acceptance remain green.
+
+**Findings:** core supports ordered acyclic attachment graphs, but does not
+currently enforce whole-body self-intersection freedom. The generated grammar
+uses cardinal stretches and finite admitted shapes. Surface markings and
+finished visual recognition need their own native inspection, not inference
+from archetype labels. Native captures show distinct but still blocky structural
+prototypes; finished species likeness and surface markings remain open. World
+trials remain paused.
+
+**Receipt, 2026-09-13:** 27 core generation tests and 10 content tests pass.
+The native generation scenario passes in 106 frames with 16 captures, covering
+all eight starting forms, generated topology reroll and seed replay, invalid
+input, size and paid mass. The cat fixture changes from bounds `[16,19,30]`
+to `[32,32,60]` at Size 2 while retaining 800 mg. Capacity changes from 1,522
+to 7,429 mg. Raising mass to 1,600 mg preserves the larger bounds and all
+474,216 sampled viewport pixels. This verifies independent controls, not a
+constant-density growth rule.
+
+Saved Size 2 reopens in 19 frames with three captures and the identical
+`4e8f6296be013bcd` world hash. Restoring Size 1 recovers the base geometry.
+Falsified size metadata and expected hash both refuse before host creation;
+a zero-candidate request refuses saving without crashing. The existing native
+bench scenario (167 frames/15 captures) and proportion scenario (71/6) pass.
+The release all-features/all-targets workspace check passes on committed Git
+dependencies. An unrelated task held the shared Cargo cache lock, so the final
+frozen build used a separate offline lock directory over the already-present
+sources, with cache cleanup disabled. Source identities, native receipts and
+the one post-build formatting-only change are recorded under
+`testing/bench/receipts/2026-09-13/generation/`; images remain under
+`Code/testing/generation-wiring-2026-09-13/`.
+
+### Composable anatomy (2026-09-13)
+
+**Status:** native-verified. The named animals and plants are reference body plans,
+not a closed roster. Core adds independently selected stretch arrangements
+and appendage patterns to the existing generated recipe path. The host exposes
+the choices, counts and seeded length bounds through the specimen bench.
+Requests without structure settings retain their existing draw streams.
+
+**Done when:** arrangements and organ patterns produce measurably distinct
+developed anatomy; feasible combinations admit through ordinary founding;
+seed replay, paid mass and saved restoration hold; native controls and captures
+exercise animal and plant combinations; prior generation acceptance passes.
+The first vocabulary is chain, cardinal radial branches, crown, mat, bent vine
+and downward roots, combined with bare sites, legs, wings, fins, leaves or
+feelers. These describe anatomy. Flight, swimming, climbing and root physiology
+remain application capabilities. Shells, rounded or tapered part shapes and
+surface markings remain further vocabulary work.
+
+**Receipt:** 32 core generation tests pass, including all 96 compatible
+layout/organ/feeding-role combinations on the bench's SpacedRoster palette
+at seed 1 and six structural stretches. Tests cover paid founding, JSON replay,
+sparse palettes and bounds. Review caught coincident fin pairs and converging
+mat/root branches; their resolved-position fixtures now pass. These fixtures
+do not establish general self-intersection freedom. Feeding supports remain
+separate from structural stretch counts, and radial branches use a hub separate
+from the feeding root so ordinary ecology does not mistake a downward mass
+for a mouth.
+
+Native composition acceptance passes in 75 frames with 11 captures. Saved
+roots/leaves at length 2 reopens and regenerates the same `9c2153f6c1c90c07`
+world hash. Command-line generation and native loading use the same rich
+palette for explicit structure; a radial-feeler request matches the independently
+observed native-control hash `50e8f3a3a6b6d22d`. Earlier command-line requests
+retain their primitive palette for replay compatibility. All 14 deterministic
+checkpoints in the previous generation receipt match, and the old resized save
+still reopens. The ordinary native bench acceptance and release workspace
+all-features/all-targets check pass. One host content-selection/roundtrip test
+also passes.
+
+Source identities and compact receipts are under
+`testing/bench/receipts/2026-09-13/structure/`; captures remain under
+`Code/testing/structure-generation-2026-09-13/`. The capture review confirms
+distinct but blocky structures. This slice broadens combinations of existing
+parts; it does not yet expand the finite voxel shape bank or qualify population
+rendering cost. Shells, tapering, rounded forms and coherent surface patterns
+are the next visual vocabulary candidates.
+
+### Glyph effects and interaction experiment (2026-09-13)
+
+The [wing organs plan](2026-09-26_wing_organs_plan.md) §1 (the general
+model's §7.4 until ruling 310 moved it on 2026-09-26)
+now owns the configurable world canon, acquisition history, journey-shaped
+divinity and fixed-period power direction. Its shared kernel and optional
+accepted-event trial integration are a gameplay-data slice. The rendering
+experiments below retain their measured scope; a drawn glyph is not evidence
+that an individual acquired its effect.
+
+**Status:** first planar experiment native-verified. Mark's working model mixes
+a glyph-effect lexicon with spatial, rule-based behavior and stable generated
+material/surface/item interactions. Strings form only when the selected glyph
+and behavior support a relationship; individual marks remain valid outcomes.
+Clouds are one arrangement among streams, boundaries, branches and inscriptions.
+
+Three independent inputs are glyph vocabulary, spatial behavior and receiving
+interaction profile. Generated choices are seeded and persisted so discoveries
+can be repeated. A ruleset may guarantee an effect's existence, conditions,
+outcome and interactions, reserving explicit slots for generated variation.
+Appearance changes must not silently alter those guarantees. D&D 5e and PF2e
+are motivating consumers, not implemented rule packs for this experiment.
+
+Keep game adjudication with each product. Existing wing-functions supplies
+part-bound functional blueprints and typed proposals; it does not become a
+universal collision, magic or ecology evaluator. Visual and audio consumers
+read accepted activity. Glyphs, meshes, strokes and surface patches can share
+presentation recipes without becoming biological traits or gameplay authority.
+
+**First slice:** an explicitly separate bench interaction experiment. Hold the
+effect and seed fixed while changing a receiver, then hold the receiver while
+changing spatial behavior. Show the resulting marks and relationships beside
+a readable explanation. Support deterministic sampling, replay and bounded
+counts. An authored guarantee must survive reseeding; allowed generated
+interactions may vary. The first viewport may be planar and must say so;
+shared-depth body attachment and world collision require their own rendering
+and activity receipts.
+
+**Done when:** native controls visibly distinguish stream, enclosure and
+surface attachment; compatible marks form inspectable strings while incompatible
+marks remain separate; receiver changes produce repeatable explained outcomes;
+saved experiment inputs reconstruct; fixed guarantees resist reseeding; and
+existing anatomy and bench acceptance remain green. Document presentation-only
+inputs and all unimplemented gameplay semantics explicitly.
+
+**Receipt, 2026-09-13:** `mesocosm-core::effect_experiment` owns a versioned,
+bounded request, stable material-response selection and stateless integer
+samples. The host draws procedural glyph strokes through the existing Sprigging
+leaf path. No dependencies or platform pins changed. The demonstration has
+quotes/slashes/backticks, stream/enclose/inscribe, and stone/metal/moss samples.
+Guaranteed responses are authored demonstration laws, not imported game rules.
+Generated lookup depends on the interaction seed and receiver, never the
+appearance seed. Groups require glyph, behavior and response compatibility.
+
+Seven focused core tests pass. Native acceptance passes in 125 frames with ten
+captures: animation changes pixels, guaranteed interaction reseeding preserves
+pixels, appearance reseeding changes marks while retaining the response, and
+split/string relationships differ. Save/reopen and closing/reopening the view
+reproduce all 786,384 sampled viewport pixels. Restart restoration, fixed-tick
+playback and pause pass separately in 166 frames with four captures. Invalid
+version, count and saved tick each refuse before host creation. The specimen
+world hash stays unchanged through the experiment. Existing bench acceptance
+(167 frames) and anatomy composition acceptance (75 frames), plus the release
+workspace all-features/all-targets check, pass.
+
+Native review changed the initial stream from simultaneous clumped marks to
+staggered emissions with individual scripted arrival times. Saved requests and
+ticks reopen with `--effect-experiment FILE`. Compact receipts and source
+identities live at `testing/bench/receipts/2026-09-13/effects/`; images remain at
+`Code/testing/effects-2026-09-13/final/`.
+
+**Remaining scope:** the receiver is a material sample on a demonstration plane.
+Contact age is scripted, not a collision result. Surface and item identities,
+organ emission sites, scene interaction, CSS effect styling, sound, mixed fixed and
+generated rule packs, and effect-to-effect composition remain subsequent work.
+The first comparison proves controllable expression and reproducible responses,
+not gameplay adjudication, camouflage or a populated-scene performance budget.
+
+### Bench C. Visible disposable world trial
+
+**Owner:** Mesocosm host/runtime. Reuse Prepared::enter and the existing runtime
+driver, adding a narrow prepared-world trial boundary where necessary. Show
+play/pause/reset/step over the disposable world, preserve the entry world and
+parked game, and expose bounded accepted activity once per tick. Honor game
+checkpoints as visible pauses. Scope selection and later sound emitters by
+preview epoch, organism and part plus the geometry dependency revision;
+allocation revision alone does not track attachment/severing.
+
+**Done when:** the saved request and a fixed intent/tick sequence reproduce
+initial/final hashes and activity; the scene visibly reflects actual movement
+or feeding; redraw does not repeat an event; reroll/reset rejects stale worker,
+selection and activity state. Runtime/history/flow remain the source of facts.
+
+**Bounded idle trial implementation, 2026-09-13:** `mesocosm-runtime::Trial`
+owns an exact clone of the displayed fresh specimen world, including proportion
+and size choices. It reuses ordinary Runtime stepping and checkpoint handling;
+it admits only fresh tick-zero, epoch-zero worlds with a living controlled body.
+A later snapshot needs its runtime history/checkpoint and is refused here.
+The trial applies at most 128 Idle intents. Its immutable baseline plus that
+trace, rather than seed/count metadata alone, is the replay source.
+
+The native bench exposes World trial, Step world (one tick), Play/Pause,
+Reset and Exit. Trial rendering uses the habitat and accumulated terrain dirty
+regions. Each successful step consumes a new accepted-history batch once;
+redraw is read-only. Movement slashes use recorded departure/arrival positions;
+feeding quotes use donor pre-step and eater post-step locations, including a
+donor that disappears. These are organism-level activity indicators, not
+physical mouth/foot contacts. Marks live for eight simulation ticks and are
+bounded to 128; clipping and occlusion may hide them. Marker height (0/2/4/6/8,
+default 4 world units) and size (0.7/1.4/2.8, default 1.4) are independent
+presentation controls. The recorded interaction coordinates stay unchanged.
+
+Start/reset/exit replace presentation identity; successful ticks expire part
+selection; generation changes discard the trial. Saving a specimen during a
+trial still refers to source generation, and exiting restores that source.
+Playback pauses when hidden or when the planar experiment opens. The existing
+spatial preview remains a separate presentation experiment.
+
+The resource audit also corrected `TrialEvidence.subject_predation_mg`: it
+must credit `Event::Fed.eater`, not the victim in `from`. A paired-subject test
+checks both directions and excludes non-predatory feeding. Previous receipts
+of that field reflect the earlier implementation; they are not reinterpreted
+as verified incoming predation evidence.
+
+**Native acceptance:** the seed-7 consumer's 48 Idle ticks reproduce 12 accepted
+movements and 50 feeding events. Reset and a separate process reopening the
+saved specimen reproduce the hashes and activity. Restyling changes viewport
+pixels while preserving world state and activity; restoring styling restores
+the viewport. Playback, pause, hidden/planar transitions and reroll cancellation
+are exercised. See [receipts](../testing/bench/receipts/2026-09-13/world-trial/source.json).
+This closes the bounded Idle trial, not broader controlled intents, contact
+localization, material reactions, transparency, sound or integrated cost.
+Checkpoint stopping has a focused injected-state test; a natural checkpoint
+and donor removal are not separate native acceptance cases.
+
+### Bench D. Variety and cost receipt
+
+**Owner:** integrated bench host. Reuse the probe-only variety comparison above
+and price the added document/style/input boundary. Control instance count independently from
+distinct mesh count. Compare shared geometry with varied appearance, different
+assemblies of reusable parts, and independently generated geometry. The current
+content pack has at most 16 volumes. The follow-up probe has configurable
+mesh capacity, measures up to 1,005 live keys and refuses an undersized cache
+before GPU creation. Establish application working limits from actual bytes
+and measured costs, with visible refusal rather than silently missing bodies.
+
+**Done when:** equivalent camera, poses and pixel scale accompany correctness,
+first-frame cost, median/p95/max work, mesh/instance uploads, texture/staging
+cost and cache activity. Carry the equivalent-pose yaw baseline and document
+the renderer's policy for coincident surfaces; count foreground coverage separately from background.
+Record the source revisions and benchmark population, including unique geometry.
+
+**Integrated population workload, 2026-09-13:** `--population FILE` is a
+presentation-only bench input over the existing LiveBodyRenderer and the same
+Cambium producer/Genet document boundary. It does not invent ecological
+organisms or alter a saved specimen. Three versioned fixture families separate
+instance colour, assembly placement, and seeded exterior occupancy notches.
+Body count (1..1000), design count (1..body count), seed and mesh capacity
+(1..4096) are explicit JSON inputs. Insufficient live-key capacity is refused
+before GPU creation. Generated occupancy is not general anatomy generation.
+
+The fixed orthographic camera and spiral grid preserve pixel scale and
+population prefixes. Actual unique meshes, assemblies, part instances, quads,
+CPU preparation and retained mesh counts are reported separately from GPU
+cache builds/uploads/evictions. The population surface uses the existing body
+renderer directly; ecological projection, terrain and active effects are
+outside this workload. Texture bytes cover its RGBA8 colour and Depth32
+attachments, not total process/GPU memory.
+
+The pinned Cambium host already exposes CPU stage profiles. Named native
+cost phases retain first-frame and median/p95/max values, separate producer
+calls from actual redraws, and exclude capture profiles. GPU execution
+duration and successful presentation of every callback are not inferred.
+Independent ray/AABB tests derive silhouettes and nearest depth from explicit
+voxel occupancy for all three families at two poses, including overlap. Their
+magnified framing is separate from the native fixed-camera coverage receipt.
+
+**Receipt:** [21 native configurations](../testing/bench/receipts/2026-09-13/population/matrix.json)
+cover 1/16/128/1000 bodies and independent design counts through 1000.
+All 4,746 frames' scenario runs pass; admitted runs submit all requested
+parts without clipping, cache eviction or warm mesh uploads. At 1000 bodies,
+shared appearance and assembly use three GPU mesh keys; 1000 occupancy
+designs use 1002. Each redraw uploads 336,000 instance bytes. The two scene
+attachments occupy 7,475,328 bytes at the measured viewport size.
+
+Observed median producer CPU time during yaw was 1.02 ms for 1000 appearance
+variants, 1.24 ms for 1000 assemblies, and 7.12 ms for 1000 distinct notched
+torsos. Resolved CSS changes incurred roughly 2.1 ms of relayout in these
+runs. GPU duration and sustained display throughput remain unmeasured. Process snapshots retain concurrent build
+load; they do not establish application working limits. A later three-case
+recheck measured 0.58/0.80/5.35 ms respectively. Both passes are retained,
+including the receipt-only readiness correction between them.
+
+Only 4.55-5.01% of the native viewport foreground is occupied at 1000 bodies.
+This receipt prices sparse fixed-scale submissions and the document boundary.
+That sparse receipt did not settle dense coverage/overdraw, real generated
+anatomy with ecological projection, terrain/effects together, full memory
+residency or application working limits. Initial CPU preparation also repeats shared part meshing
+across assembly designs; it is reported honestly rather than treated as a
+shared preparation cache. Existing yaw/coplanar policy receipts remain in force.
+
+**Dense and layered receipt, 2026-09-13:** population controls now expose
+camera half-height (8..2000), spacing (1..128), depth layers (1..32) and input
+reversal. Defaults preserve the earlier layout; the v2 digest records these
+settings. Layer groups occupy distinct positions 40 units apart along the
+camera axis. Tight lateral packing is a renderer stress fixture, not admitted
+ecological placement. Volume-key grouping still determines GPU batching.
+
+[Twenty-three native cases](../testing/bench/receipts/2026-09-13/density/matrix.json)
+pass the existing style/yaw/reset and warm-cache checks. Unclipped dense
+layouts cover 33-35% of the viewport; tightly cropped layouts cover 93-95%.
+The crop submits 960 bodies and reports 350-371 conservative bounds crossing
+clip planes, including 154-165 wholly outside a plane. This is not a claim
+that all submitted bodies are visible. One/four/eight-layer controls keep
+the same projected group count and camera. Native reversal comparisons
+change zero viewport pixels in all four tested pairs.
+
+The independent oracle now tests four and eight separated layers. At its
+magnified framing, 265 covered pixel rays intersect 1060 then 2120 bodies;
+the silhouette stays unchanged. Stable interior depth and clear background
+checks retain their tolerances. Both manual and configured input reversal
+preserve exact RGBA/depth. These counts describe geometric overlap, not shader
+invocations or early-depth rejection.
+
+The native device confirms timestamp queries disabled. A separate ignored
+diagnostic uses a private baseline-feature device, drains old queue work
+outside each sample, and records CPU render/submit, completion wait and
+serialized total with a ten-second bound. Its 23 cases and 24 steady samples
+per case pass at the native attachment dimensions, 1236x756. It identifies
+an NVIDIA RTX 4060 Laptop GPU using Vulkan; native adapter identity is not
+exposed by the current host hook, so their timings are not subtracted.
+
+Private-device median serialized totals were 0.56 ms wide / 0.65 ms cropped
+for shared appearance, 0.57 / 0.68 ms for assemblies, and 1.15 / 1.27 ms for
+122 geometry keys. The 962-key eight-layer case took 5.68 ms forward and
+4.85 ms reversed. These are one bounded run's CPU-plus-completion times,
+not GPU-only durations or application frame budgets. Native profiles and
+available concurrent-build snapshots are retained separately.
+
+This closes the bounded dense/layered fixture receipt. Real generated anatomy
+through ecological projection, terrain and causal effects together, transparent
+compositing, full memory accounting and application working limits remain open.
+The raw capture/profile paths, source identities and repeat commands are in
+[the source receipt](../testing/bench/receipts/2026-09-13/density/source.json).
+
+**Integrated generated-world receipt (2026-09-13).** The existing Section path
+now has a [three-source native matrix](../testing/bench/receipts/2026-09-13/integrated-world/matrix.json):
+axial consumer, rooted producer, and size-2 cat-like consumer, reopened from
+retained requests, palettes and volume content. Each passes 391 frames, eight
+ordinary Idle steps, activity hiding/restoration, hidden-step reset/replay,
+and autoplay/pause. Showing activity again restores identical captured viewport
+pixels and identical history, event totals and world hash. The trial's new
+Show/Hide activity setting affects presentation only and survives reset.
+
+At tick eight the three worlds submit respectively 13/15/16 voxel bodies,
+454/492/537 parts, and 27/39/35 activity glyphs. All report zero fallback,
+budget omission, missing volume and projection failure. These are submitted
+counts after Section filtering, not a visible-pixel census. The rooted world
+has movement and feeding by its other organisms; uptake itself has no glyph.
+Read-only Section probe fields now expose that distinction, complete body
+stats, world organism count and ground revision. Terrain counters are explicitly
+unavailable.
+
+Forty alternating material changes force main-surface redraws at the same
+paused poses, both with marks and without them. CPU producer medians span
+1.05-1.86 ms in this run; paused frames cause zero actual scene redraws and
+zero mesh/instance uploads. Warm phases upload no body mesh geometry. The
+shown-first ordering and timing variation do not establish an incremental
+glyph cost. Five comparison surfaces remain in the document: material changes
+redraw the main surface, while visibility and simulation revisions redraw all
+six. Aggregate profiles therefore remain document-level receipts. Manual-step
+phases exclude some simulation CPU in the after-frame scenario callback;
+a separate autoplay phase includes ordinary frame-hook stepping and records
+its actual tick count. Neither is a GPU duration or an application budget.
+
+The 39 Section tests, including pairwise body/terrain and body/glyph depth,
+and the 190-frame trial lifecycle scenario pass. A three-way generated depth
+oracle remains open. Default window captures clip the lower viewport, so
+pixel checks cover its captured portion. Complete terrain accounting, larger
+ecological populations, transparency, uptake/contact effects and full memory
+remain next gates. Exact sources, executable identity, repeat command and
+measurement limits are in the [source receipt](../testing/bench/receipts/2026-09-13/integrated-world/source.json).
+
+**Uptake and terrain accounting receipt (2026-09-13).** The next
+[three-world matrix](../testing/bench/receipts/2026-09-13/uptake-world/matrix.json)
+adds actual positive soil uptake from the runtime's accepted flow batch.
+Internal substance-to-reserve bookkeeping is excluded. Biographical activity
+JSON stays unchanged; `Trial::uptakes()` carries exact flow provenance with
+stable tick/flow-ordinal identity and explicitly sampled recipient positions.
+The soil ledger does not identify the drawn-from column or responsible root,
+so this is an organism-level indicator, not a contact trace.
+
+Continuous uptake refreshes one rising backtick pulse per recipient. Eight-tick
+recent records remain bounded to 128; whole-trial transfer counts and milligrams
+are separate. The combined movement/feeding/uptake display retains its 128-mark
+cap and reports drops. Uptake can be hidden separately; resetting preserves the
+presentation settings. At tick eight axial/roots/cat worlds record 128/136/128
+uptake transfers totaling 1452/1467/1284 mg, shown as 16/17/16 uptake pulses.
+Combined marks are 43/56/51, with zero budget drops.
+
+All three 449-frame scenarios pass positive uptake-only pixel change and exact
+hide/show and hidden-step replay. Their captured viewports now fit entirely in
+the window: the trial height allowance is corrected, with existing 0.75 zoom
+and size-2.8 marks selected for these receipts. The default size-1.4 rooted
+fixture changed only 25 pixels, below the existing 32-pixel acceptance threshold;
+the larger configurable setting is the qualified visibility receipt.
+
+Section now exposes serializable terrain diagnostics: actual pointer/atlas and
+uniform write calls, bytes, full-map and unchanged-revision flags, processed
+slot declarations, and existing trace/resource counters. Skipped or failed
+terrain encodes expose no stale diagnostic. Native captured frames retain the
+map with zero upload bytes while still encoding a trace pass. A separate GPU
+test proves cold full upload, unchanged retention, carved-slot upload of exactly
+516 bytes per slot in its fixture, and no duplicate upload at the same revision.
+Seven runtime tests, this GPU test, 39 Section tests and the 190-frame lifecycle
+scenario pass. [Source identity and repeat commands](../testing/bench/receipts/2026-09-13/uptake-world/source.json)
+record the limits. General contact reactions, native carving intents, scaled
+ecological workloads and GPU timing remain open; uptake does not supply missing
+impact normals or material-contact facts.
+
+**Trial carving receipt (2026-09-13).** `Trial::carve` now queues one
+ordinary carve and advances one runtime tick, exposing actual outcomes and a
+separate positive `TrialCarve` reading. The default target is the existing
+played-host convention, one cell below the critter at radius one. Bench controls
+expose bounded relative XYZ offsets, radius one/two, target reset, and carving
+indicator visibility. Core still admits anatomical reach and removes terrain;
+trial limits/checkpoints refuse before queuing. Numeric overflow also refuses
+before queuing. Rejected attempts advance ecology, so rejection is not a promise
+of an unchanged world hash.
+
+The [three-world receipt](../testing/bench/receipts/2026-09-13/carving-world/matrix.json)
+independently samples solids in each requested cube. Axial/roots/cat remove
+18/18/9 voxels, matching the accepted events, with 1032/1032/516 uploaded bytes
+and 4/4/2 pointer/atlas write calls. Targets offset +64 on X are actually rejected
+as out of reach (reaches 49/3/28), leaving terrain revision, sampled solids and
+terrain upload totals unchanged. Cumulative main-surface terrain counters retain
+the dirty upload receipt across later cached redraws. Reset and exact two-intent
+replay restore world, trace, activity, uptake, carving records and pixels.
+
+Orange slashes mark recorded carving locations, raised by the existing display
+height setting. They do not claim contact normals or material debris. The axial
+pose changes 103 pixels when carving marks are hidden; the rooted and cat-like
+poses change none. Those two qualify terrain/replay, not visible-marker coverage.
+The separate axial visibility scenario passes. Recent records remain bounded to
+128/eight ticks and share the global mark cap; target/style settings survive reset.
+
+Ten runtime tests and two presentation tests pass. Native checks pass three
+227-frame world traces, a 46-frame axial visibility case, the 449-frame uptake
+regression and the 189-frame playback lifecycle. All recorded viewports fit the
+capture at zoom 0.75; the trial height allowance includes the new controls.
+[Sources, verification script and commands](../testing/bench/receipts/2026-09-13/carving-world/source.json)
+retain the evidence and view-dependent visibility limit. General contact/material
+reactions and larger ecological workloads remain separate next gates.
+
+The two immediate probes, Bench A and Bench B's bounded native integration
+are complete. Generation comparison and the opaque spatial matrix have receipts. Bench C's
+bounded idle trial has native reset/reopen and lifecycle receipts. Bench D has a bounded sparse-population document/style/input receipt;
+dense/layered fixtures and three bounded generated worlds now have receipts;
+scaled ecological scenes and application working limits remain open. The L2
+crate merger, portable body v1 and a general audio framework do not block
+these slices; genet T1, T2 and netrender T4 landed 2026-09-15/16 and were
+never gates for them.
+
+**Soundscape and effects:** use Bench C's accepted movement, feeding, carving
+and life-cycle activity plus habitat state. Tapping is not the causal model.
+Per-foot contacts, impact forces and water interaction need their own evidenced
+inputs before the effects claim them. Active Hocket lives under
+woodshed/ports/hocket: Firewheel/device/sample work is useful prior art, while
+its track/layer looper engine is not the bench's event model. A later local
+audio consumer owns sound mappings, activity aggregation, audio-clock scheduling
+and configurable voice/detail budgets. It shares facts with visual effects.
+
+**Progress, 2026-09-13:** resource audit and owner-specific done conditions
+recorded; stale L3/L5 and T3 embedding descriptions reconciled. Mark then
+separated the cheap adapter/yaw and variety probes from bench integration.
+Those probe slices now have source, tests, fresh performance/correctness JSON
+and a reproducible receipt at `Code/testing/wing/l0c_2026-09-13/`, with the probe
+and compact receipts retained at Mere cc4c079c. Bench A adds posed bounds,
+preview framing and visible-part queries to the existing Section; its fresh
+headless readbacks pass. Bench B adds the native viewport, style bridge and
+part examiner, with fresh presented-document captures and failing controls.
+The bounded idle world trial is implemented; broader world-intent trials and
+the integrated population/cost receipt remain open.
+
+
+### Spatial glyph preview (2026-09-13)
+
+The bench now places opaque punctuation strokes in world space around the
+posed specimen. Section draws one bounded glyph batch against its existing
+body and terrain depth attachment, including isolated previews. Positions are
+3D; glyph faces follow the orthographic camera. This is the first 2.5D view of
+the spatial effect vocabulary. It does not yet lift the planar experiment's
+receiver rules into world collisions.
+
+**Spatial glyphs** enables an eighteen-mark orbit. Step, reset, play/pause,
+glyph selection and oblique/across camera controls are presentation settings.
+Hiding the specimen or opening the planar experiment pauses the orbit.
+The body world and gameplay clock remain unchanged. Comparison cards retain
+ordinary bodies and follow camera changes consistently.
+
+The renderer admits at most 128 finite, opaque glyphs, reuses its GPU buffers,
+and initializes only when first used. It shares the exact section matrix,
+slab and bounds; no DOM element or depth key is needed per mark. No population
+or frame-cost claim is made by this preview. Glyphs are decorative and do not
+participate in the body's picking hook.
+
+Done conditions: a real voxel-body GPU fixture verifies front and rear strokes
+from Side and Oblique cameras over all covered pixels, including exposed
+edges; native controls change orbit pixels; reset reproduces exact pixels;
+camera changes preserve world identity; existing bench and planar scenarios
+still pass. Native scenario: `testing/bench/spatial.scenario`. Receipts:
+`testing/bench/receipts/2026-09-13/spatial/`.
+
+### Spatial coverage extension (2026-09-13)
+
+The admitted opaque spatial vocabulary now includes four forms. These are
+presentation experiments; they do not yet lift the planar receiver rules into
+world adjudication or claim that every glyph combination is a causal string.
+
+| Form | Placement | Behavior | Attachment |
+| --- | --- | --- | --- |
+| Orbit | Camera-facing strokes in a 3D loop | Repeating world-space orbit | Posed body bounds |
+| Surface | World-plane strokes | Stable seeded inscription | Largest actual meshed face per admitted part |
+| Tether | Camera-facing strokes along a bowed path | Repeating orientation | Two distinct part anchors required |
+| Emission | Camera-facing strokes moving outward | Staggered travel and shrinking lifetime | Actual face normal, optionally selected part |
+
+`Section::glyph_anchors` returns at most 32 anchors in stable PartId order.
+It uses the renderer's own `posed_quad` transform, including part placement,
+continuous body yaw, origin and scale. A selected part must match the current
+body projection revision. Meshed faces may be hidden by another part or ground;
+shared depth determines visibility. An anchor does not assert that a face is
+exposed to an ecological process. Surface strokes get a small world-space
+normal offset to avoid coplanar depth ties.
+
+Appearance seed and count are configurable. Counts cycle through 6, 18, 64 and
+128 in the bench; saved requests admit 2 through 128. Sampling is stateless in
+tick order. Framing uses a fixed form envelope so travel does not pump the zoom.
+Save/Reopen spatial stores the form, glyph, appearance seed, count and tick;
+replay requires the same specimen world hash, pose, camera, body/habitat mode
+and complete part identity (organism, part and mesh revision).
+It is a settings receipt for the current bench, not a standalone world save.
+
+Coverage targets:
+
+- All four forms, three glyphs and two native camera views (24 combinations).
+- Counts 2/18/128, arbitrary sampling order, seed changes and replay in pure tests.
+- All three glyphs with camera-facing and world-plane bases, body occlusion,
+  exposed stroke edges, world bounds and slab clipping in GPU tests.
+- Invalid finite/size/colour/orientation inputs preserve the prior renderer list;
+  128 entries admitted, 129 refused, empty input clears.
+- Actual sparse-mesh faces, exact continuous pose, part revision expiry and
+  bounded anchors checked independently of the presentation sampler.
+- Native seed/count changes, exact saved replay pixels, selected-part surface
+  and emission, tether refusal for one anchor, and unchanged world identity.
+
+Native receipt: the 24-combination matrix plus density, selected attachments,
+replay and isolation-refusal checks passed in 336 frames (32 captures). Original
+orbit controls passed in 207 frames, bench regression in 167, and planar effects
+in 125. Native images are under `Code/testing/spatial-coverage-2026-09-13/`;
+compact receipts are under `testing/bench/receipts/2026-09-13/spatial-coverage/`.
+
+The complete effects system remains open: world collision and material/item
+responses, gameplay rule packs and guarantees, effect composition, transparent
+haze and overlap policy, surface editing/picking, soundscape event consumption,
+perspective cameras, richer glyph assets and population cost measurement.
+Those need their own owner-specific acceptance, rather than being implied by
+this opaque spatial coverage matrix.
+
+### L9. The shared scene crate, isometer (founded 2026-09-14)
+
+Ruled by Mark on 2026-09-14 when Paredros became the second consumer of the
+shared-depth scene. Mesocosm's `Section` (mesocosm-genet, 4,569 lines across
+23 files, 31 references to `mesocosm_core::World`) is the only implementation
+of tracer plus live bodies plus glyphs on one depth attachment; Paredros's
+document-host plan (`eponym/design_docs/archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md`,
+lane P1) was building a second producer over the same two renderers because
+`Section`'s body layer iterates a Mesocosm `World`, and Isometry's board would
+be a third. That is the duplicate-runs-at-one-problem case the consolidation
+rule forbids, so the scene becomes an Isometry path crate at
+`shared/isometer`, beside `wing-glyphs` and `wing-scenario`. Plain working
+name; no naming round spent. This is not the merged appearance crate of L2,
+whose home stays an open decision below.
+
+**Owner tree:** `shared/isometer`, with mesocosm-genet's `Section` and
+Paredros's P1 producer becoming thin adapters over it. Mesocosm's `World`,
+Paredros's `GameState`, and Isometry's map stay outside the crate.
+
+**Done when:**
+
+1. Body inputs are decoupled from any product world: per body a body
+   document, a pose (position plus continuous parent yaw, ruling 15), a
+   volume source, a tint, and a stable identity of subject id plus part id.
+   A volume source answering tag-only references with declared-extent solid
+   parts exists as the fallback Paredros anatomies need.
+2. The terrain tracer and live bodies draw on one depth attachment under one
+   `clip_from_world`; an orthographic slab camera is selectable; the cutaway
+   is a world-space plane or slab (§ Specifying a presentation).
+3. The spatial glyph batch draws against that same depth.
+4. The CPU pick and presentation-bounds queries (`set_body_yaw`,
+   `presentation_bounds`, `pick_pixel`, `pick_ndc`, `validate_pick`) address
+   the same identities.
+5. A `TextureProducer` wrapper carries the unchanged-input skip and the
+   sRGB/straight-alpha contract the bench settled, so each product supplies
+   state and framing, never GPU code.
+6. Mesocosm's bench and section acceptance stay green through the adapter;
+   Paredros's P1 retargets to the crate and retires its local producer; the
+   crate has no dependency on `mesocosm_core::World`, `eponym_world`, or
+   `isometry_core`.
+
+**Sequencing:** starts after the wing-scenario extraction lands, since both
+lanes edit mesocosm-genet.
+
+**Progress (2026-09-14):** steps 1 to 7 of the
+[extraction plan](archive_docs/2026-10-10/2026-09-14_isometer_extraction_plan.md) landed on main
+through 6983ea5, each with all 32 spatial-coverage viewports byte-identical
+to the 2026-09-13 receipt. Done conditions 1 to 5 hold in the crate; 6 closed
+with step 8, the Paredros retarget (e138186, by the Paredros session), and
+the terrain parity control at `Code/testing/l9-terrain-parity/`. **L9
+closed 2026-09-14.** What remains product-coupled is the family's neutral
+core types, owned by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md).
+
+### L10. The detail ladder (2026-10-01)
+
+Ruled by Mark on 2026-09-30 and 2026-10-01 in the wing's one-zoom thread;
+ruling numbers in this lane are the wing design record's (423 to 426, 432 to
+434). One detail ladder replaces the four near-to-far renderers the one-game
+assessment found: the isometer scene, the VTT's DOM board, the VTT atlas on
+sprigging's canvas and Mesocosm's minimap on the HUD lane
+([session notes, §9.2](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#92-what-the-assessment-found)).
+It answers the hybrid switch policy among the open decisions below.
+
+**The rungs (423),** near to far, all in the one isometric camera (382, 387):
+
+| Rung | Draws | Over | Needs the sim to hold |
+| --- | --- | --- | --- |
+| R0 | live voxel parts, `isometer-render`'s `LiveBody` | base-grain terrain | the individual |
+| R1 | baked sprites, `isometer-mesh`'s `bake_facing` | a ring's coarser terrain | the individual |
+| R2 | a mark per individual, the glyphs of the effects modifying it | surface tiles | the individual |
+| R3 | an aggregate mark per group, each glyph with its share or the group's own value | places | a crowd or group |
+| R4 | the world map, sites coloured by their readings, with routes | the map | the site |
+
+**Choosing (424).** A pure function of the view and of what the sim holds:
+each thing takes the finest rung its projected size warrants, bounded by the
+finest the sim holds for it. Thresholds are in projected pixels of a thing's
+extent, each with a hysteresis band (426). Zooming in examines (212), which
+lifts detail through the log, so a finer rung arrives only once the sim holds
+it, and the renderer never draws an individual the sim does not hold.
+
+**Terrain (425).** Residency (291, `isometer::scene::residency`) becomes
+rings: base grain over what the view examines, each ring outward lifted one
+level coarser by SP2's `lift(site, level, at)`, the whole inside 296's 8 MiB
+of 16,383 bricks. The tracer walks each brick at its own scale, so levels
+meet without stitching (the record's §3.6). *Reading, not ruled:* where the
+rings overflow, the outer rings coarsen first and the examined region keeps
+base grain. The specimen bench leaves GroundTerrain's default of 2,047 for
+the host's budget (425).
+
+**Transitions (426).** Seamless where the rungs share geometry: R0 and R1
+meet pixel for pixel, a fine terrain column slides from its parent's top to
+its own, and a site's plate eases into its relief with its exact mean held at
+every frame (SP2). Dithered where they do not: R1 to R2, R2 to R3 and R3 to
+R4 swap by an ordered dither over a few frames, never alpha, with hysteresis
+at each threshold. A group dithers into its members only once they are
+lifted (424).
+
+**Far marks (432, 434).** An individual's mark carries the glyphs of the
+effects modifying it, which every modification has (427 with 49), as far as
+the viewer may know them, through the player's filter, each mode supplying a
+default. A group's mark gives each glyph its exact share of members (207), or
+the group's own value when collective (431). A glyph's display is
+`wing_glyphs::GlyphDefinition::display`, opaque Unicode, while isometer's
+glyph batch draws a bounded set of punctuation strokes, not display text. So
+each display is rasterised once at mark size into an atlas of pixel icons,
+and isometer draws far marks from it at integer scale with the scene's depth
+(438); the glyph batch keeps drawing glyph effects' strokes. A canon revision
+changes which glyph an effect shows, never the atlas. *Reading, not ruled:*
+the rasteriser is netrender's text path (parley, skrifa, vello), run once per
+glyph, cached, and thresholded to opaque pixels, since the look takes no
+alpha. The sim supplies the modifiers through the
+[sim plan's §3.6](2026-09-22_sim_plan.md#36-conditions-and-modifiers), phase
+S7.
+
+**More cameras (437).** A minimap or an overmap is a second camera on the
+same ladder, held at R4. The main camera reaches R4 by zooming out, and the
+VTT's overmap on sprigging's canvas and Mesocosm's minimap hulls on the HUD
+lane retire once a second camera replaces each.
+
+**Owner tree:** `shared/isometer`, beside the residency helper (291), for the
+pure functions: rung choice, rings and the dither schedule. Hosts supply the
+sim's holdings, the viewer's knowledge and the player's filter through the
+overlay contract; the sim decides nothing about drawing.
+
+**Done when:**
+
+1. Rung choice is a pure function in isometer, tested over seeded views and
+   holdings: no thing shows a rung finer than the sim holds for it, and a
+   zoom oscillating inside a hysteresis band never changes a rung. A choice
+   with the bound removed, and one with a zero band, are the controls that
+   must fail.
+2. Over seeded maps and views the ring set stays within 16,383 bricks, base
+   grain covers the examined region, and the level rises by one per ring
+   outward. A 2,047-brick control coarsens the outer rings instead of
+   refusing, and the specimen bench runs on the host's budget.
+3. A receipt shows the GPU pass landing the bake's pixels and face shading
+   at the R0 to R1 threshold for seeded bodies at all four facings, with a
+   perturbed palette as the control. Until it holds, R0 and R1 dither.
+4. Every terrain slide frame has integer column tops between the parent's
+   and the column's own, ending at the two lifts, and every plate-easing
+   frame holds the site's exact mean, checked on the numerator; an ease that
+   does not hold it is the control.
+5. Every pixel of every dithered frame comes from exactly one of the two
+   rungs' pictures, the same for the same thing and frame; an alpha-blended
+   control is caught.
+6. An individual's mark shows exactly the known glyphs its filter passes,
+   and a group's shares equal its histogram's counts; an effect the viewer
+   cannot know is the control and never shows. Rests on S7.
+7. The atlas holds each glyph's display once, as opaque pixels at mark size,
+   and marks drawn from it occlude and are occluded by the scene at its
+   depth. A canon revision moves which icon an effect shows without
+   rebuilding the atlas: the receipt counts atlas builds, and a control
+   that rebuilds on revision shows a second build.
+8. The VTT and Mesocosm each show their map through a second camera held at
+   R4, matching the sites, routes and readings their retiring overmap and
+   minimap drew, and the canvas and HUD renderers are removed.
+
+**Forks found writing this, ruled 2026-10-01:** what becomes of the overmap
+and minimap is second cameras on the ladder (437), and how a mark draws a
+glyph's display is pixel icons from the display (438). **Still open:**
+whether examining fires as the camera approaches, once the lift's latency is
+measured under done-condition 1's harness. Thresholds, bands, each mode's
+default filter and the dither's pattern and frame count are bench readings,
+to come with numbers.
+
+**Folded in, 2026-10-10 (ruling 801): the views founding plan.** Its
+minimap retires into done-condition 8's second camera, and the plan is
+archived at `archive_docs/2026-10-10/`. What it keeps for that camera:
+adapter-first (the views crate discloses facts and never computes layout);
+region meaning per game, Mesocosm's being the dominant lineage, derived at
+projection time and never stored; and the cambium lane as ordinary chrome
+for text (its 2026-08-29 amendment). Today `mesocosm-views/src/minimap.rs`
+reads the native world's sites at site grain (783) through sceno's hulls.
+Done-condition 8 for Mesocosm also holds when, as that plan asked, a
+region's dominant holder visibly shifts between two captures of one long
+draw under a seed nobody chose; when its regions are the place graph's
+own nodes once places reach Mesocosm; and when a region is a hit target
+selecting its place. Fields evaluated over a place stay consumer-pull.
+The VTT's overmap readings that camera draws are its overlay plan's V2
+(§5.1 there).
+
+## Carried from the retired process plans (2026-10-18)
+
+- Mesocosm's lit bodies against the traced terrain have not yet been seen on a
+  GPU: look at occlusion, palette and selection under each camera and after a
+  resize in a headed run. (from after-pass plan §A4)
+- Compare the captured final layered master with the window, including the
+  chromeless route. (from after-pass plan §A4)
+- Measure the presentation-only `--body-light` setting, the per-frame CPU
+  palette reconstruction and per-face pose validation, mesh uploads on motion
+  and camera cuts, marked-face subdivision and the retained terrain receipt's
+  extra import. The body receipt's mesh-byte estimates omit the tenant's
+  camera and light uploads, so no upload-silence claim stands until counters
+  are measured. (from after-pass plan §A4)
+- `LiveBody` still serves the VTT board, Eponym's producer and the posed-face
+  queries; migrate those consumers to the tenant before retiring it. (from
+  after-pass plan §A4)
+- Two `isometer-lens` tests still fail in the 2026-10-17 run
+  (`Code/testing/isometry/light-field-2026-10-17/isometer-tests.log`): the
+  tracer roster test ("the second body is drawn beside the first, not instead
+  of it") and the unlit first-rung test ("no unfogged ambient-lit rock face in
+  either frame"). The baseline's third,
+  `eating_changes_mass_balance_collision_and_geometry` in `isometer-mesh`, has
+  no later run; fix each, or retire it under case 672 naming where its
+  invariant is now checked. (from after-pass plan §A2)
+
+## CSS features and standards to earmark
+
+Fast-track candidates for genet's
+[standards-to-features ledger](../../../genet/design_docs/2026-09-07_standards_to_features_ledger.md),
+which is the authority on where Livery stands. The status column here is a
+file-mention count over the livery crates on 2026-09-11, a hint and not a
+conformance claim; the ledger's census numbers win.
+
+| Tier | Feature | Standard | Livery mentions | Unlocks here |
+| --- | --- | --- | --- | --- |
+| 0 | 3D transforms, `transform-style`, `backface-visibility`, individual transform properties | CSS Transforms 2 | 0 | L1 and optional DOM 3D presentation; independent of the shared-depth viewport |
+| 0 | `image-rendering: pixelated` | CSS Images 3 | 1 | Isometry's nearest-neighbour lens for sprites and tiles |
+| 0 | custom properties, `@property` | CSS Variables 1, Properties and Values API | 11, 1 | palette swap by variable; animatable typed yaw and tint |
+| 0 | `color-mix()`, relative colour, `oklch` | CSS Color 4 and 5 | 10, 8 | per-face shading from one material colour, replacing `face_shade` in code |
+| 1 | animations and transitions, `animation-composition` | CSS Animations 1, Transitions 1, Animations 2 | 2, 5 | part motion between poses; facing swaps |
+| 1 | `clip-path`, `mask-image`, `mask-composite` | CSS Masking 1 | 9, 0 | cutaway of underground layers; damage masks on destructible parts |
+| 1 | `content-visibility`, `contain` | CSS Containment 2 | 0 | off-screen layer culling for large maps |
+| 1 | `will-change` | CSS Will Change 1 | 0 | the promotion hint for retained fragments |
+| 1 | `mix-blend-mode`, `isolation`, `filter`, `backdrop-filter` | Compositing 1, Filter Effects 1 | 1, present | lighting tint, section haze; netrender already rasterizes filters |
+| 2 | `offset-path`, `offset-distance` | Motion Path 1 | 0 | bodies moving along paths without script |
+| 2 | anchor positioning | CSS Anchor Positioning 1 | 0 | labels and callouts pinned to bodies; Isometry's atlas labels |
+| 2 | declarative Shadow DOM, custom elements | HTML, DOM | 6 | L8: a body as a self-contained element |
+| 2 | `@scope`, nesting | CSS Cascading 6, Nesting 1 | 0 | per-body style scoping without class prefixes |
+| 2 | View Transitions | CSS View Transitions 1 | 0 | epoch board and section transitions |
+| 3 | `corner-shape`, `border-shape` | CSS Borders 4 | 0 | non-box shapes only; PolyCSS's triangle path; not needed for voxels |
+| 3 | accessibility tree, ARIA | ledger row 3 | ledger | a screen-readable tabletop; the inspector as a test oracle |
+
+Each row that opens a lane gets a ledger row in genet naming this doc as the
+consumer. That edit is genet's, in the same session the lane opens.
+
+## Prior art, what still transfers
+
+| Source | Transfers | Does not |
+| --- | --- | --- |
+| PolyCSS | face culling, greedy rectangle merge, painter sort, baked per-normal shading, atlas slicing, snapshot as standalone HTML | `corner-shape` triangles; a JS dependency |
+| [GlyphCSS](https://github.com/apresmoi/glyphcss), MIT, PolyCSS fork (added 2026-09-13) | glyph palettes as Lambert shading ramps, one character grid written as a single string per change, wireframe/solid/voxel/ink modes; a reference for the glyph canon and the bench's stroke work | per-polygon DOM is gone, but so is depth: painter order only; a JS dependency |
+| Zdog | flat-shaded vector pseudo-3D under affine transforms, exactly the Vello lane | canvas/SVG runtime |
+| Bonsai | relief lab loop, decoration tier, SDF layer brush editing, profiler-first culture | meshing, deferred shading, GPU-authoritative generation |
+| Renderling | headless image-test pattern, slab allocation ideas for L6 | the runtime and its toolchain |
+| GBA tactics games | baked sprites at a locked angle carry many animated bodies | free camera |
+| Dwarf Fortress | z-level cutaway as the underground presentation | ASCII |
+| Godot Voxel Tools, `block-mesh` | task pools, greedy meshing benchmarks for L2 | engine ownership |
+
+## Novel angles, adopted
+
+1. **GPU sprite bake on the resident lane** (L6). The resident chunk already
+   feeds the tracer by GPU copy; the same allocation feeds a bake kernel whose
+   output is a sprite atlas, not a mesh.
+2. **Ground as generated tile layers** (L4). The version that reaches the
+   browser with no GPU features at all.
+3. **The hagiograph as a consumer** (L8). `CLAUDE.md` already assigns memorial
+   events to the stack's procedural voxel engine; if that engine is genet plus
+   the appearance crate, a memorial is a generated, styled, shareable document.
+4. **Games as documents.** Save state stays in the core hash. Presentation is
+   a DOM that cambium, accessibility, P2P peers, and the inspector already
+   understand.
+
+## Deliberate exclusions
+
+- Perspective cameras in any vessel. Vello is affine; the tracer remains the
+  only perspective-capable lens and is not load-bearing.
+- A per-pixel depth buffer in the DOM. Interleave replaces it.
+- Ground as DOM voxels. Ground is tiles per height step or the tracer.
+- Per-face animation. Parts are rigid; animation is per part.
+- A PolyCSS or Zdog dependency. Their cores are small enough to own.
+- Any lane past L0 before the L0 receipt.
+- Amending the execution graph plan from this doc.
+- Editing genet's ledger or Livery plans from this doc.
+
+## Open decisions for Mark
+
+- Hybrid switch policy: which bodies count as "in focus" for live
+  fragment-backed parts. Raised while genet's T2 was open; T2 landed
+  2026-09-15 with the quadratic removed and 50,000 elements at 7.68 s, so
+  the policy is now a quality choice rather than a scaling necessity.
+  *Reading, not ruled, 2026-09-30:* the wing's detail ladder now answers
+  it. The wing design record's ruling 424 gives each thing the finest rung
+  its projected size warrants among those the sim holds, live parts being
+  the finest; live faces during rotation (ruling 6 above) stand. The ladder's
+  five rungs (423), its terrain rings (425) and the open transition are in
+  the record and the
+  [session notes' §10](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30).
+  *2026-10-01:* the transition is ruled (426): seamless where the rungs share
+  geometry, by ordered dither with hysteresis where they do not. Sprite to
+  live parts is the seamless step, and it owes a measurement this plan's
+  receipts do not yet hold: `isometer-mesh`'s silhouette test proves
+  coverage under the bake's projection, not that the GPU pass lands the
+  bake's pixels and face shading. The far rungs' content is ruled too (432):
+  a thing's mark carries the glyphs of the effects modifying it, as the
+  viewer may know them and filtered by the player's choice with a default
+  per mode, and a group's mark carries each glyph's exact share of members
+  or the group's own value. Each glyph's display already lives in
+  `wing-glyphs` (`GlyphDefinition::display`). The whole ladder is briefed as
+  [lane L10](#l10-the-detail-ladder-2026-10-01).
+- Whether the tracer keeps the Mesocosm section by default or the section
+  also moves to tile layers once L4 lands.
+- Whether L6's GPU bake targets the enhanced capability profile only, with
+  CPU bake as the downlevel tier, or replaces the CPU bake outright.
+- Where the merged appearance crate lives: the Isometry root workspace, or
+  mere as a platform organ once a non-wing consumer appears.
+  The scene crate is ruled separately (L9, `shared/isometer`, 2026-09-14);
+  this decision covers volume, palette, bake and mesh only.
+- Poses and clips (raised 2026-09-12): whether a pose (a set of part
+  transforms) and a clip (keyframes over poses) become body-document data
+  played as CSS animations on the individual transform properties, with
+  player-set facing slots as stored poses, and which wing plan owns which
+  poses exist and when they fire. Presentation here; behaviour elsewhere.
+
+## Receipts
+
+Filled by lanes as they close. L0 first.
+
+### L0a, netrender face throughput (2026-09-11)
+
+Receipt: `Code/testing/wing/l0a_netrender_face_ceiling.{json,md}`; probe at
+`mere/crates/probes/netrender-face-ceiling/` (untracked). RTX 4060 Laptop GPU,
+Vulkan, driver 610.88, netrender `3961aca91`, 1920x1080 RGBA8, medians over
+60 frames after 5 warmup. Three paths were measured: **static** (the same
+flat-rectangle scene every frame through the tile cache), **live** (every
+body's transform changes every frame, scene rebuilt, tile cache), and
+**fragment** (each body a retained fragment placed through
+`Scene::place_fragment` with a fresh 4x4 each frame).
+
+| path | rectangles | frame ms |
+| --- | ---: | ---: |
+| static | 50,000 | 11.3 |
+| static | 150,000 | 27.3 |
+| live, flat | 5,000 | 6.5 |
+| live, flat | 20,000 | 18.4 |
+| live, flat | 50,000 | 50.9 |
+| live, fragment | 50,000 | 6.8 |
+| live, fragment | 200,000 | 10.0 |
+| live, fragment | 600,000 | 36.2 |
+
+Findings:
+
+- **Retained fragments are the live path.** Under a 16 ms frame the flat live
+  path holds roughly ten to fifteen thousand rectangles; the fragment path
+  holds two hundred thousand measured and an interpolated ceiling near three
+  hundred thousand. Fragment lowering stayed at one lower per body across
+  every transform-changing frame, so a moving body costs a placement, not a
+  re-encode. This is a twenty-fold lift and it decides L5: live faces are
+  viable at Paredros scale provided every body is a fragment.
+- **CPU path overhead dominates, not the GPU.** On the flat live path at the
+  largest cell, dirty-tile rebuild is three quarters of netrender's total
+  while Vello's render is a small fraction. The tile cache re-lowers every
+  tile a moving body touches, which is why the flat path collapses.
+- **The fragment path bypasses the tile cache**, so its two halves are master
+  compose and Vello render, comparable at the largest cell. A face-batch
+  scene op (L3) would attack the compose half; below two hundred thousand
+  rectangles neither half is the constraint, so L3's batch op is not yet
+  earned.
+- **No API refusal.** Fragments already carry a per-instance transform.
+  Qualified 2026-09-12: planar, and retained only at layer depth zero; see
+  L0c above and genet T4.
+- **Probe-workspace blocker, not fixed here:** `mere/.cargo/config.toml`
+  patches the genet git source's `servo-paint` to a path that no longer
+  exists, so any cargo run with a cwd inside mere fails at resolution. The
+  probe was built with `--manifest-path` from outside mere. This will bite
+  every probe under `mere/crates/probes` until the stale patch is removed.
+
+L0a's half of the L0 done condition: static ceiling fifty thousand
+rectangles through the tile path; live ceiling two hundred thousand through
+fragments. The genet half (L0b) decides whether the DOM can supply that
+many elements.
+
+### L0b, genet element cost (2026-09-12)
+
+Receipt: `Code/testing/wing/l0b_genet_element_ceiling.{json,md}`; fixtures,
+generator, runner, and attribution variants under `Code/testing/wing/l0b/`.
+Ryzen 9 7940HS, RTX 4060 Laptop, genet `546201874df` through the Ortet
+release host, netrender path-patched at `3961aca91`. Elements are absolutely
+positioned faces under 2D `matrix()` transforms (Livery has no 3D transforms
+yet), grouped body > faces. Ortet exposes no per-frame timing and presents
+with Fifo on a visible window, so steady cost is the slope between a long
+and a one-frame run and cannot resolve below the refresh interval.
+
+| elements | first frame over empty baseline | steady per frame |
+| ---: | ---: | ---: |
+| 1,000 | 0.2 s | 6 to 7 ms (refresh floor) |
+| 5,000 | 4.6 to 4.9 s | 8 to 14 ms |
+| 20,000 | 60 to 132 s | unresolvable |
+| 50,000 | 15 to 17 min | unresolvable |
+
+| variant, 5,000 elements | first frame over baseline |
+| --- | ---: |
+| faces hidden with `display:none` | 4.0 s |
+| faces with transforms (the fixture) | 4.9 s |
+| faces with no transform | 10.1 s |
+
+Findings:
+
+- **Steady state is not the problem.** Through five thousand elements the
+  redraw sits at the display floor. At twenty and fifty thousand the
+  run-to-run variance of a single document exceeds the per-frame slope, so
+  steady state is unmeasurable by this method and a host-side harness with
+  real timing is needed to say more.
+- **The first frame is the wall, and it is superlinear.** Ten times the
+  elements from five to fifty thousand costs roughly two hundred times the
+  time. This is a genet defect in parse, style, or first layout, not a
+  property of the DOM approach; a stock browser lays out fifty thousand
+  positioned boxes in well under a second.
+- **The quadratic term is absolute positioning, not parse and style.**
+  Corrected 2026-09-12 by the one-factor attribution at
+  `Code/testing/wing/l0b_first_frame_attribution.md`. Parse, style, and box
+  construction are linear at about 0.13 ms per element (the `display:none`
+  variant grows with exponent 1.05). Only `position:absolute` changes the
+  exponent, to about 2.2: genet's positioned-box pass walks the whole
+  fragment tree two to four times per positioned box
+  (`apply_absolute_and_fixed_positioning` in genet-livery's
+  `layout/positioned.rs` calling `FragmentTree::resize_leaf`,
+  `translate_subtree`, and `recompute_overflow` in buckram's
+  `fragment_tree.rs`). The untransformed variant was slower because
+  `left`/`top` offsets make `translate_subtree` take its whole-document
+  scan instead of its zero-offset early return, not because of overdraw.
+  The earlier "parse plus style is the larger half" reading in the L0b
+  receipt is withdrawn there and here.
+- **Live mutation was not measured.** The Boa-scripted fixtures render
+  byte-identical frames with no wake events, so this Ortet build does not
+  present script mutations. The fifty-thousand live cell timed out at thirty
+  minutes on its first frame. This matters less than it looks: live faces in
+  this plan are driven by the Rust host mutating the DOM directly, so the
+  right live measurement is a host-side harness, not page script.
+- **No phase timing exists in genet.** Neither info nor debug logging emits
+  parse, style, layout, or paint spans. Attribution had to be done by
+  fixture variant.
+
+### L0c, the three-path comparison (2026-09-12)
+
+Receipt: `Code/testing/wing/l0c_three_paths.{json,md}`, frames under
+`Code/testing/wing/l0c_frames/`; probe at `mere/crates/probes/wing-three-paths/`
+(untracked). RTX 4060 Laptop GPU, Vulkan, driver 610.88, netrender
+`3961aca91`, mesocosm at isometry `89752cd` through a detached worktree
+(`Code/worktrees/isometry-l0c`, because the live checkout's `mesocosm-core`
+was mid-edit by another session). 1920x1080, one orthographic camera, no
+genet DOM; a CPU z-buffer oracle cross-checked against Mesocosm's depth pipeline.
+
+The following tables preserve the original run. The 2026-09-13 follow-up
+below supersedes its yaw and sprite-cache claims; the scale workloads differ.
+
+Correctness, two bodies, worst interior mismatch over three frames:
+
+| case | A fragments | B sprites | C depth |
+| --- | ---: | ---: | ---: |
+| crossing | 0.25% | 0.48% | 0.00% |
+| articulated, tail over the ledge | 1.39% | 1.00% | 0.03% |
+| terrain edit at the chunk seam | 0.22% | 0.49% | 0.00% |
+| clipped viewport | 0.25% | 0.48% | 0.00% |
+| material change | 0.47% | 0.75% | 0.00% |
+| continuous yaw | 0.17% | 0.63% | 1.63% (adapter quantizes yaw) |
+
+Cost, 1000 bodies (181k resident rectangles on A), median frame ms:
+
+| case | A | B | C |
+| --- | ---: | ---: | ---: |
+| crossing | 13.7 | 17.2 | 2.7 |
+| articulated | 11.2 | 31.0 | 3.8 |
+| terrain edit | 7.9 | 16.9 | 2.6 |
+| clipped | 91.9 | 22.0 | 3.0 |
+| material change | 19.2 | 21.2 | 3.0 |
+| continuous yaw | 223.5 | 18.0 | 3.4 |
+
+Findings, in the receipt's numbering:
+
+- **Path C has small residuals on most fixtures.** Original medians were
+  2.6 to 3.8 ms at a thousand repeated bodies. Its yaw was quantized in this
+  run; the follow-up adds continuous parent yaw. Rounded zero percentages
+  do not mean exact pixels, and distinct geometry raises its cost.
+- **Path A's re-lower is about 1.1 µs per rectangle, CPU-bound.** Roughly
+  14,000 re-lowered rectangles fit under 16 ms, about a hundred checkered
+  walkers turning; the rest of the frame is gone. Retained placement alone
+  reproduces L0a's number.
+- **T4's netrender fallback measured.** One clip layer costs path A 3.3x at 200 bodies and
+  6.7x at 1000, with the lower count at zero: the fallback never retains.
+- **Painter order fails on ordinary bodies.** A six-cell-wide walker spans
+  twelve depth keys; placed at its base key the ground under its front edge
+  paints over it, placed at its front key it paints over the wall. Both
+  painter paths share the defect. The one-cell rule is a property of path
+  A, not an application constraint, and it is retired (ruling 12).
+- **The original per-body sprite cache duplicated content.** 1.5 GB RSS at a thousand articulated
+  bodies at 22 px per voxel, and a 974 ms frame when every body's facing
+  changes at once.
+- **`mesocosm-mesh` `Quad::corners` winding is reversed for y faces**
+  against its own doc comment. Mesocosm's `cull_mode: None` never noticed;
+  the probe's first winding-based cull dropped every top face until path C
+  disagreed. Recorded for `mesocosm-mesh`'s owner; nothing changed there.
+- **Not priced:** CSS ownership of per-part classes, effects and hit
+  testing, which never ran through genet. Under path C those become
+  instance data and a picking hook; that boundary is genet T3's.
+
+**L0c verdict.** Resident geometry with a depth attachment is the honest
+occlusion mechanism for bodies and ground. Retained planar fragments keep
+their place for planar, static content. Sprites are a bake for far or fixed
+things at small pixel scale.
+
+**Original qualifications (Mark's review, 2026-09-13):** the
+continuous-yaw row is not an equivalent workload, since C snapped between
+quarter turns while A re-projected, so C's advantage for continuous
+rotation was unestablished until ruling 15 landed and the case reran on
+identical poses; the sprite memory figure describes the probe's
+per-body cache, not sprites as such; "exact" overstated it, C has one or
+two residual pixels on most frames and 610 on the articulated case's
+frame 30; T4's netrender fallback was measured and genet embedding was
+not; and variety was not measured at all, since the swarm repeats a few
+shapes and C was configured for 64 cached meshes.
+
+**Follow-up (2026-09-13):** `Code/testing/wing/l0c_2026-09-13/README.md`
+records finite parent yaw, matching A/C poses, content-keyed sprites and
+independent shape counts. At 1,000 duplicate bodies, three yaw order runs
+give A 135–148 ms and C 2.14–2.43 ms median, with zero geometry uploads.
+One C repeat has a 20.71 ms p95, so this is not a deadline guarantee.
+Across 1, 16, 128 and 1,000 actual shapes, crossing C rises from 2.09 to
+8.43 ms and B from 9.53 to 10.53 ms. B holds 5.42 to 276.10 MiB of images;
+turning 1,000 distinct shapes raises it to 819.64 MiB and a 612 ms spike.
+The corrected swarm distribution is a new workload; old timings are not
+mixed into these comparisons. The original yaw fixture now has two interior
+residual pixels per sampled frame. All coloured residuals in the ordinary
+articulated and eight-shape crossing frames lie on coincident surfaces
+with competing checker materials; the oracle and GPU do not share a tie
+policy. This explains the residual without claiming pixel-exact agreement.
+
+**Specimen bench follow-on:** the [prerequisite assessment](#specimen-bench-prerequisites-2026-09-13)
+now supplies the prior-work inventory, ownership and implementation slices.
+Its activity/effects boundary follows bodies interacting with their world.
+
+### L0a/L0b founding verdict (historical)
+
+The measurements below remain scoped to their original fixtures. Their
+hybrid and body-fragment default was superseded by rulings 13–15 and the
+current L3/L5 scopes; it does not set specimen bench prerequisites.
+
+L0's done condition is met with one named gap (live mutation through the
+DOM is unmeasured until a host-side harness exists). The ceilings:
+
+| path | largest count under a 16 ms frame |
+| --- | ---: |
+| netrender, retained fragments, live | 200,000 rectangles (measured), ~290,000 (interpolated) |
+| netrender, flat rebuild, live | 10,000 to 15,000 rectangles |
+| genet DOM, steady state | at least 5,000 elements, more unmeasurable |
+| genet DOM, first frame within 5 s | about 5,000 elements |
+
+The bottleneck is genet's first-frame scaling, not netrender. The honest
+default is therefore the **hybrid**: live faces for bodies in focus and
+during rotation, baked sprites elsewhere. Live-all-the-time at Paredros scale
+is gated on an engine slice that makes genet's first frame linear (the
+quadratic term is the per-positioned-box whole-tree rework named above; the
+linear parse and style cost is already small) plus a host-side mutation
+harness to measure the live path. Both are genet's T2 and T3.
+
+**L5 shape, ruled 2026-09-12 (ruling 10):** put the DOM at body or part
+granularity and keep faces below it. A body is one element whose paint is a
+retained netrender fragment, the way genet already splices an iframe's paint
+list into a replaced box. Element count drops to hundreds, rectangle count
+stays with netrender at the level L0a proved, and CSS still owns classes,
+transforms, hit testing, and styling per part. Per-face shading and masks
+then apply per part rather than per face. This is the shape the hybrid was
+always going to converge on; the genet first-frame slice is owed regardless
+and belongs in L1's genet plan as a named consumer.
+
+## Progress
+
+- **2026-10-17, tenant sun (970):** the body tenant now carries a fixed
+  sun toward (0.4, 0.8, 0.3) with ambient 0.38 and sun 0.62, shadows off,
+  the tracer's own constants (`tracer.wgsl`: light = 0.38 + 0.62 * max(0,
+  N.L)), so terrain and bodies read under one sun. The sun's intensity is
+  0.62 pi because kiss3d's diffuse is albedo / pi * N.L. `--body-light` now
+  scales sun and ambient together (default 1 matches the terrain, 0 is
+  dark). `section/tenant/geometry.rs` no longer applies `face_shade` to
+  tenant faces: it was baked by each quad's local axis, so under a real sun
+  it would shade twice, and a rotated body kept the wrong tint (before the
+  change, faces that point up in the world but carry a bottom-facing local
+  axis rendered dark; after, they are lit as tops). The VTT and Eponym
+  `LiveBody` path keeps `face_shade`. Both constants move to the admitted
+  sim field when one exists (ruling 472); nothing here reads a sim value.
+  Receipt, `Code/testing/isometry/tenant-sun-2026-10-17/`: the seed-9 save
+  of the earlier receipt (`a1-release-seed9-world.json`, sha256 prefix
+  87b5f527, native hash ae57d13f26b17f4f, tick 70) resumed with
+  `--watch seed9-world.json --frames 6 --no-trace`, release, before
+  (`before.png`, base `285821ad`) and after (`after.png`, this change), both
+  PASS 7 frames, one capture. Of 42,154 changed pixels none lies outside the
+  body hue band, so terrain is unchanged; body faces went from six baked
+  tints to sun levels (top 132 to 125 in sRGB red, matching 0.906 of the
+  base; a +x face 114 to 103; faces facing up with a bottom-facing local
+  axis 82 to 125). The dither-like hatch on one cube's front face is gone;
+  not diagnosed, most likely coplanar quads of different baked tint that
+  now share a colour.
+  `before.png` is byte-identical (sha256 a17052f8) to the earlier
+  receipt's `scene-cache-seed9-watch.png`, so the base reproduces it; the two
+  executables were removed for the 100 MB cap, their hashes are in
+  `manifest.sha256`. Inspected by eye, `before-after-crop.png` side by side. Not claimed: the
+  tonemap stays kiss3d's default (Neutral), unmeasured above 0.76; no
+  performance or upload claim. `cargo test --release -p mesocosm-genet
+  --lib section::tenant` and `cargo check --workspace --all-targets` in
+  `mesocosm/`: passed (3 tests; clean, no errors, no warnings in the touched files); logs `tenant-controls.log` and `workspace-check.log`.
+
+- **2026-10-10, Q7 CPU controls:** `cargo test -p mesocosm-genet --lib
+  section::tenant::geometry::tests --offline -j 1` passed 2/2, with 20 other
+  tests filtered. `transformed_face_crossing_the_slab_is_clipped_and_outside_faces_vanish`
+  checks the clipped area and full rejection of a translated, scaled,
+  rotated face; `tenant_and_tracer_project_the_same_depth_under_mesocosm_presets`
+  checks tenant camera validity and matrix agreement for all seven presets.
+  Output used the same target/build directories as the compile gates below.
+  These CPU controls execute no GPU frame. Headed depth, palette, selection,
+  capture/window agreement and performance certification remain A4 work.
+
+- **2026-10-10, Q7 compile gates:** `cargo check --workspace --all-targets
+  --offline -j 1` passed in `shared/isometer` (default only) and `mesocosm`;
+  the same gate with `--all-features` passed in the root VTT workspace and
+  `eponym`. Mesocosm was checked again after correcting the tenant's CPU
+  mesh-build counter. All used `C:\t\cargo-targets\isometry\tenant` and its
+  `build` directory. Existing VTT unused/dead-code warnings remain. These
+  gates compile tests; the two CPU adapter controls still await execution,
+  and no GPU runtime/headed receipt is claimed.
+
+- **2026-10-10, Q7 gate checkpoint:** `shared/isometer` passed
+  `cargo check --workspace --all-targets --offline -j 1`, default features,
+  in `C:\t\cargo-targets\isometry\tenant`. This verifies the shared scene
+  hook and query/geometry API compile, including its tests; it executes no
+  tests. Mesocosm and the VTT/Eponym consumer gates remain pending. Cargo
+  was released at this checkpoint for the other queued lanes.
+
+- **2026-10-10, Q7:** implemented the host tenant, terrain depth pre-pass,
+  ordered Netrender layers, capture/chromeless composition and shared body
+  encode hook. Added CPU controls for a transformed face crossing the slab,
+  a fully clipped face and tenant/tracer projection agreement. Formatting
+  and whitespace checks pass; compile gates are queued. No runtime/headed
+  receipt is claimed. Lane ran with the inherited Codex model under 805's
+  translation of the queue's Opus requirement.
+
+
+---
+
+*Archived 2026-10-28.* Cut, with the other active plans, into a new set: what was
+still open, deferred or a follow-on here now lives in `2026-10-28_orthographic_voxel_presentation_plan.md` (in the product's
+`design_docs/`), which cites this file by line. This copy is history: its
+status lines, receipts and claims are as they stood, not current.

@@ -10,10 +10,10 @@ preserve other products' work and stage only the intended paths.
 ## Where the records are
 
 - What Eponym is: `design_docs/PROJECT_DESCRIPTION.md` and the founding plan,
-  `design_docs/2026-07-30_paredros_founding_plan.md` (Paredros is Eponym's
+  `design_docs/2026-10-28_eponym_overlay_plan.md` (Paredros is Eponym's
   former name).
 - Where it stands, and what each crate holds: `design_docs/DOC_README.md` and
-  the overlay plan, `design_docs/2026-09-25_eponym_overlay_plan.md`.
+  the overlay plan, `design_docs/2026-10-28_eponym_overlay_plan.md`.
 - The wing's records (doctrine, design record, founding record): the root
   `design_docs/`, listed in `../CLAUDE.md`.
 

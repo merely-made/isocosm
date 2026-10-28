@@ -25,7 +25,7 @@ own vocabularies beyond what folds into the catalogue. **Consumes:** the
 [wing design record](../../design_docs/2026-09-18_wing_design_plan.md), rulings 36, 37, 39,
 57, 58, 123, 155, 251, 252, 264, 276 to 278, 281, 338 to 341, 405, 430, 446,
 447 to 450, 453, 456 to 470, 477 to 480, 485 to 500 and 504; checkpoint 6's
-findings in the [sim plan](2026-09-22_sim_plan.md).
+findings in the [sim plan](archive_docs/2026-10-28/2026-09-22_sim_plan.md).
 
 ## 1. Three levels
 

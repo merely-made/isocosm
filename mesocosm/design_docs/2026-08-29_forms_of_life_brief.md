@@ -833,7 +833,7 @@ This keeps one simulation authority, in the shape the wing has already ruled
 twice: "evolved controllers as bounded intent proposers"
 ([engine ecology rulings](2026-08-18_engine_ecology_rulings_and_review.md)), and
 "Burn proposes, the record disposes" ([resident views
-plan](2026-08-14_resident_views_composition_plan.md)). The influence proposes;
+plan](archive_docs/2026-10-28/2026-08-14_resident_views_composition_plan.md)). The influence proposes;
 the ecology disposes.
 
 **The readout is not free.** `last_fauna_decision` is exactly the "why did it do

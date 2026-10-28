@@ -212,7 +212,7 @@ PNGs remain in the local capture directory; compact JSON is retained under
 `receipts/2026-09-13/`.
 
 Source ownership, qualified acceptance and the remaining trial/cost work live
-in the [wing plan](../../design_docs/2026-09-11_orthographic_voxel_presentation_plan.md#bench-b-one-interactive-genet-viewport).
+in the [wing plan](../../design_docs/archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md#bench-b-one-interactive-genet-viewport).
 
 ## Proportion comparison
 

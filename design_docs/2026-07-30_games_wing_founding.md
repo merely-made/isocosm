@@ -40,7 +40,7 @@ vessels share nouns (space, bodies, fields, time, provenance); each owns
 its verb and person. When a shared component starts encoding what you do,
 it has crossed into a game and belongs there. Law A is unaffected: it
 governs content inheritance across games, not code or format sharing. See
-`2026-08-05_place_graph_engine_plan.md` §0 for the full ruling set.
+`archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md` §0 for the full ruling set.
 
 | Game | Person | Relationship | Design consequence |
 | ---- | ------ | ------------ | ------------------ |
@@ -158,7 +158,7 @@ not merely random school names. Player histories displace generated history;
 playing the earlier games is never required to obtain a rich lineage or culture.
 
 Eponym's proposed RPG and character-sheet design lives in
-`eponym/design_docs/2026-07-30_paredros_founding_plan.md`, under
+`eponym/design_docs/archive_docs/2026-10-28/2026-07-30_paredros_founding_plan.md`, under
 "Borg generation, techniques, and the character sheet". That product proposal
 does not impose its attributes, skill points, or action rules on the other games.
 
@@ -805,7 +805,7 @@ foreign rule authority: the portable tree is topology and provenance, exact
 geometry is an optional projection, and a descendant is still regrown under
 Mesocosm's rules rather than restored voxel for voxel. The full contract and
 proof gates live in the
-[wing phenotype plan](../mesocosm/design_docs/2026-07-31_wing_phenotype_contract_plan.md).
+[wing phenotype plan](../mesocosm/design_docs/archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md).
 
 ---
 
@@ -1114,7 +1114,7 @@ portable artifact. Its implemented fields are a flattened voxel projection,
 per-cell part attribution, flat **per-part provenance**, species, mass, and
 collision hints. The fuller topology once proposed for v0 is now the scoped v1
 contract in the
-[wing phenotype plan](../mesocosm/design_docs/2026-07-31_wing_phenotype_contract_plan.md): stable
+[wing phenotype plan](../mesocosm/design_docs/archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md): stable
 subject and body-revision identity, primitive parent links, source addresses,
 and optional projection data.
 
@@ -1309,7 +1309,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    branch while preserving the other continuation. This is a domain
    materializer applying **adopt or branch**, not evidence for a universal
    CRDT. The detailed rule belongs to the
-   [epoch-boundary plan](../mesocosm/design_docs/2026-08-01_epoch_boundary_plan.md).
+   [epoch-boundary plan](../mesocosm/design_docs/archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md).
 
    Honest caveats: whole-heap snapshotting scales with heap size and an ecology
    is a large-mutable-state profile; cross-platform float determinism is the
@@ -1354,7 +1354,7 @@ statuses as recorded there.*
   taxonomy as a schema, the three process shapes as definitions, the record
   and reach field specified, and a generator whose declared space is the
   source of every receipt. Met on paper by the
-  [sim plan](../mesocosm/design_docs/2026-09-22_sim_plan.md) (2026-09-22).
+  [sim plan](../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-22_sim_plan.md) (2026-09-22).
 - **W3, the stack re-derived.** Done when each stack component's plan states
   what it takes from the sim's nouns and nothing from any product's data, and
   the record's findings against the stack are lanes in their owners' plans.
@@ -1369,7 +1369,7 @@ statuses as recorded there.*
   core implementing the overlay contract, and a played loop with receipts drawn
   from the generator. Mesocosm goes first (ruling 174), its played loop
   directing (175), planned as the
-  [Mesocosm overlay plan](../mesocosm/design_docs/2026-09-25_mesocosm_overlay_plan.md);
-  the [Eponym](../eponym/design_docs/2026-09-25_eponym_overlay_plan.md) and
-  [VTT](2026-09-25_vtt_overlay_plan.md) overlays go side by side after
+  [Mesocosm overlay plan](../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-25_mesocosm_overlay_plan.md);
+  the [Eponym](../eponym/design_docs/archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md) and
+  [VTT](archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md) overlays go side by side after
   Mesocosm's M3 (ruling 231).

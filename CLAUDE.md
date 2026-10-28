@@ -66,7 +66,7 @@ description: `design_docs/PROJECT_DESCRIPTION.md`; vocabulary (map, tile,
 token, tileset, campaign, system plugin, session): `README.md` and the board
 plan. The substrate never knows what a hit point is; rules live in system
 plugins (PROJECT_DESCRIPTION). The session model is DM authority plus an
-ordered event log, with no CRDTs (`design_docs/2026-07-09_shared_authority_and_collaborative_building_plan.md`).
+ordered event log, with no CRDTs (`design_docs/2026-10-28_session_network_plan.md`).
 The wing's default view is the 2:1 dimetric in quarter turns (doctrine,
 Presentation 1).
 

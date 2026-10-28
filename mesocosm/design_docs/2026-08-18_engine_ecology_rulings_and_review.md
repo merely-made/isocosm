@@ -729,7 +729,7 @@ application being active. Existing license notices remain part of any extraction
 
 2. **Portable subject and body revision, followed by one test world.**
    This is a missing contract, not another duplicated generator. The
-   [body contract](2026-07-31_wing_phenotype_contract_plan.md) already identifies
+   [body contract](archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md) already identifies
    v0's missing subject, revision, parent links and scoped part addresses.
    Paredros `eponym-world/src/anatomy.rs:13` now admits a Mesocosm body with
    subject/revision identity; the tabletop receives a flattened appearance.
@@ -815,7 +815,7 @@ and shared-world fixture before proposing a shared creator or whole runtime.
 
 **Implementation follow-up, 2026-09-09:** the shared v0 format library and live
 producer/consumer target are now implemented in the working tree; verification
-and remaining gates are recorded in the [body plan, section 12](2026-07-31_wing_phenotype_contract_plan.md#12-shared-v0-format-implementation-2026-09-09).
+and remaining gates are recorded in the [body plan, section 12](archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md#12-shared-v0-format-implementation-2026-09-09).
 The dependency review found no need for platform pin changes in this pure-data
 slice. The renderer compatibility bridge remains a separate coordinated API
 migration; the audit does not claim the three dependency graphs aligned.

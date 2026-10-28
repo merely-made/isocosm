@@ -1,0 +1,593 @@
+# Eponym's overlay: the W5 plan
+
+**Date:** 2026-09-25
+
+**Status, 2026-10-18:** E0 and E1 are done, and E2's families have moved onto
+native Isocosm. On 2026-10-17 the far-window obligations passed with the actual
+1280×720 camera (V1 at 933,888 resident bytes, V1b at 959,120, both under 1
+MiB), the native level-fixture controls for contact, severance, timed action,
+worn item and external volley were qualified, and the all-target, all-feature
+compiler check passed. Real-time zoom is not established: uncached footprint
+selection took 1.3 to 1.8 seconds per new view. Broader E3 and headed product
+acceptance (E4) are open, and E3's phases below are next. The [camera residency
+closeout](../../../../testing/isometry/f-2026-10-16/camera-residency-closeout.md)
+binds the evidence.
+
+### E3 next phases, 2026-10-10
+
+1. **Driven life and succession.** Complete first-life founding and start
+   time, bonded succession through native `Take` (779), and creative
+   control; keep accepted motion in the game and patch placement native.
+   Done when an uninterrupted played life and its successor replay through
+   the same contract and the same native history.
+2. **Asks, knowing and fights.** Exercise refusals about work and the asker,
+   counters and agreements with pointable premises; write/find bearer notes
+   and filter survival by knowing. Complete sizing up, yield and escalation
+   through native harm. The adapter admits plain tellings and the mind's
+   Observe/Claim/Correct records; other manners and bearer notes still
+   require native capabilities rather than a game-side authority.
+3. **Folded loops and memory.** Build T1 over inert items, T2's product
+   receipt when Mere's T2 lands, T3 work and F3b1 to F3b4 (801). Draw-based
+   and headed certification are not done-conditions of this phase.
+
+*Reading, not ruled:* until native vigour exists, the handoff's
+`vigour_drained` is calibrated to lost cells by the foreground, preserving
+767's whole-body harm conversion. Severing lowers to a wound through the
+whole part. Minor, serious and crippling part wounds refuse explicitly;
+their native semantics remain open with checkpoint 10 and E3.
+
+Native work and agreement terms carry asked grade/danger/danger-cap and
+offered share, each within `u8`. Other keys refuse as unbuilt; duplicate
+keys and overflowing counts refuse. Exercising an agreement requires its
+held parties and terms. This keeps the wider contract vocabulary visible
+without dropping a caller's terms during lowering.
+
+**Owns:** Eponym's profile as a game over the Isocosm sim (the record's §5);
+the Eponym side of the overlay contract (ruling 154), a module beside
+Mesocosm's in `shared/isocosm-overlay` (ruling 197); the played loop W5
+names; and the order in which `eponym-world`'s and `eponym-social`'s
+simulation moves into Isocosm for this overlay's needs (§4, §6 decision 4).
+**Does not own:** the sim, whose schema, process definitions, record and
+generator the [sim plan](../../mesocosm/design_docs/2026-09-22_sim_plan.md)
+owns, so every move lands under its phases; the bench (W4); the other
+overlays (the record's §5.5 and §5.7); the stack's identity organ, which
+takes `eponym-identity` under W3 (ruling 34); or naming. **Consumes:** the
+record; the sim plan; the contract crate's
+[README](../../shared/isocosm-overlay/README.md); the
+[founding plan](2026-07-30_paredros_founding_plan.md), the charter; the
+[execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)'s fundamental-layer
+ledger F0 to F8; the [functional loops plan](archive_docs/2026-10-10/2026-09-09_functional_loops_plan.md)
+for the joins and lane S; the
+[memory and remembrance plan](archive_docs/2026-10-10/2026-09-09_memory_and_remembrance_plan.md) for
+lanes M and H; the [world conditions plan](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md),
+which founds the sim's process definition (ruling 32); the
+[genet document host plan](archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md) for the
+host that stays Eponym's; and the
+[vessel briefs](../../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
+§2 for the camera.
+
+---
+
+## 0. Done-conditions
+
+W5's done-conditions are the record's
+[the wing's phases](../../design_docs/2026-07-30_games_wing_founding.md#9-the-wings-phases) (ruling 617). Here, for Eponym, they are
+met by §1 (the profile), §3 (the core and the contract) and §2's phase E4
+(the played loop).
+
+The order is rulings 174 and 231.
+
+## 1. The profile
+
+Ruling 6's six parts.
+
+| Part | Eponym | Rests on |
+| --- | --- | --- |
+| Domain | one named creature, a sophont, lived in the second person until it dies: the foregrounded rung is the denizen and its factions, and what play refines is what remembered entities do, the coterie, the party, the base | 35, 36, 60, 200; the record's §5 |
+| Ensemble | the named creatures of the places one life reaches, settlements, dungeons, ruins, surface and underground places, and what the played sophont knows of them; its care, the collector's roots, is the sophont and those it knows | 3, 6, 71; founding plan §1 |
+| Mechanics | driving one body in real time, its acts resolved by what the body affords; asks to peers as proposals a peer weighs by its opinion of the asker and may refuse or counter; telling and hearing, with beliefs that can be wrong; building and crafting as embodied acts that incorporate matter; harm as vigour and wounds to the body's tree; fights sized up first and, when they escalate, strain against bearing; skills raised by doing, teaching, study and breakthroughs; secrets kept by taboo | 60, 63, 87, 95, 96, 115, 116, 117, 118, 123, 141, 142, 221 to 223 |
+| Controls | driving: the actuation of one body, which the contract opens to this game alone; directives to companions compose on top as proposals weighed by opinion, never orders; the player directs only who they play; naming; notes written in the world; pins, and the region the view shows up close | 60, 130, 152, 168, 210, 212; the record's §5.2 point 2 and §9.14; the founding plan's "Leverage without command" |
+| Perspective | third person on one continuous zoom, near acts, mid leads, far plans, with first person a setting; survival shows what the creature one lives knows, its diegetic notes included, creative shows the truth and is where tag-in lives; the legibility surface ships with the simulation, not after it. *2026-09-28:* the wing's default view is isometric with quarter turns and precludes none of these; first person and third person over the shoulder stay available (382) | vessel briefs §2; 187; 382; PROJECT_DESCRIPTION pillar 4 |
+| Timescale | the moment: one life lived in real time until death, then succession; the world's clock proceeds while played, deep time before it; where in that time a life begins is the player's pick, with the default once settlements stand | vessel briefs §2 ("the rhyme"); 61, 93, 104, 105, 186, 234 |
+
+## 2. The played loop
+
+1. **Founding.** A seeded draw from the generator's declared space, the
+   region being its first edge (ruling 124). Eponym needs sapient people and
+   society (ruling 3), so the draw carries deep time enough for settlements
+   to stand (rulings 91, 93). Where in that time the life begins is the
+   player's pick, with the default once settlements stand (ruling 234), and
+   how it begins is the player's call among three: an arriving outsider, a
+   birth into one of the world's lineages, or a denizen of the drawn world
+   (ruling 235). *Reading, not ruled:* the founding flow's history
+   parameter (sim plan §5.1) is where that span is set.
+2. **The life.** The player drives one body (ruling 60): its motion, its
+   timed acts, what it observes. Its needs move the one ledger (ruling 38)
+   and its acts score by need, trust and approval (ruling 95, D26). An ask
+   to a peer is a proposal (ruling 63): the peer answers by its own
+   methodology weighed by its opinion of the asker (ruling 60), refusal and
+   counteroffer complete outcomes, and a standing agreement is consent that
+   holds until its premises change (rulings 63, 67; the founding plan's
+   "Offers become standing agreements"). Telling plants a note on the hearer
+   or leaks into the reach field (ruling 87); what is told may be false and
+   takes by four things (rulings 117, 118), and posing, to intimidate,
+   persuade or deceive, is the telling's manner, the fourth of them (ruling
+   241). Building and crafting are the
+   one verb pointed outward, items bearing their maker and materials
+   (ruling 95), and a carve in the ground is an asserted fact (the record's
+   §1, ruling 89). A fight is sized up first, most ending there (ruling
+   116); one that escalates strains both sides against their bearing, a
+   break advantaging or disadvantaging, and ends when a side yields on
+   re-sizing or is spent (rulings 221 to 223); a blow drains vigour and
+   wounds a part (ruling 123). The sophont writes notes in the world, a
+   bearer that can be found, read, lost or stolen (rulings 127, 130), and
+   names what it meets (rulings 36, 168).
+3. **Death and succession.** Death is final (ruling 61); the body and the
+   consequences remain, and the world keeps what it remembers of the dead
+   (ruling 129). The player chooses who to become among the companions with
+   a bond to the one who died (ruling 186); with no such companion the
+   player takes up another life in that world, any of ruling 235's three, or
+   goes to a new world (ruling 238). Tag-in lives in creative mode only (ruling 187).
+4. **Co-op.** Each player lives their own named creature in the same world,
+   peers to each other as to anyone (ruling 185); ruling 153's shared
+   directing is not Eponym's shape. E4 plays it over the session lane, two
+   peers in one world (ruling 242).
+5. **Modes.** Survival and creative (ruling 187), chosen by the player;
+   creative is also where debugging reads the truth.
+
+## 3. The core and the contract
+
+The contract's shape is ruling 154's. Eponym is the game the contract
+opens actuation to: §5.2 point 2 carries "directives, and where the overlay
+opens it, the actuation of one body", and §9.14 names driving as Eponym's
+(ruling 60). Its module is `shared/isocosm-overlay/src/eponym/`, beside
+`mesocosm/` (ruling 197), changing nothing in the core.
+
+| Direction | Eponym's side | Rests on |
+| --- | --- | --- |
+| In: actuation | the played body's acts for one tick: the accepted transition its fixed-step motion and contact solver, run on the game side over the stack's conatus, produced for that tick, with its timed acts, targets named by entity handle and places by place-graph handle; the one body the participant plays, never a second | 60, 152, 203, 205, 233; §5.2 points 1 and 2, §9.14 |
+| In: asks | a proposal to one peer: the work, the terms, the danger; the sim answers by that peer's methodology weighed by its opinion of the asker; a standing agreement is a proposal accepted once and held | 60, 63, 67 |
+| In: tellings | a claim told to one hearer, with its manner: posing to intimidate, persuade or deceive is how a claim is told, the fourth thing the hearer weighs, carried on the telling and never an intent of its own; what is told may be false, and the hearer takes it by what it can check, who is telling, what it wants to hear and how it is told; display and bluff in a contest stay sizing up | 87, 116, 117, 118, 241 |
+| In: the player's acts | naming the creature one lives and what it meets, the name being the doing; writing a note, a bearer in the world | 36, 168, 130, 127 |
+| In: checkpoint answers | at a death, the companion to become, among those with a bond to the dead; with none, another life in that world, any of ruling 235's three, or a new world | 61, 186, 235, 238 |
+| In: creative | tag-in to a companion and tag-out to home, in creative mode only | 187; `eponym-identity`'s `ControlIntent::{TagIn, TagOut}` |
+| In: attention changes | pin or unpin any pointable thing; the up-close region as the zoom nears a place | 210, 212 |
+| In: dev intents | none: the crossing fixture's body presets are receipts, not play (*a reading*) | |
+| Out: events | the stream derived from the attention set: what touches the sophont one lives, what it pins, the region it examines; in survival only what it can know, its diegetic notes included; the legibility surface reads this stream | 187, 204, 213 |
+| Out: views | the near rung around the played body for the follow camera at every zoom; far zooms read the crowd | 154, 212 |
+| Handoff | Eponym's blows: the foreground resolves each strike geometrically and hands the harm back in the sim's terms, vigour drained and wounds to parts, which must pass the sim's invariants and agree with the sim's own fight in distribution; the handoff is inhabited | 114, 123, 154, 232; the record's §3.8 |
+
+*Reading, not ruled:* Eponym's willingness rule, three gates in order, can I
+do it, would I risk that for you, is it more than I would bear
+(`eponym-social/src/willing.rs:7-23`), is the act score of ruling 95 asked
+of the peer with the asker's standing as a term, so an ask needs no rule of
+its own in the sim; refusal about the work, refusal about the asker and
+counteroffer are the three ways the score falls short.
+
+**The intents today.** `eponym-world`'s `GameIntent`
+(`src/transitions.rs:59`) holds seventeen variants, its `WorldIntent`
+(`src/world.rs:33`) two, and `eponym-identity`'s `ControlIntent`
+(`src/control.rs:24`) four. *Reading, not ruled, confirmed intent by intent
+in E1:* under driving they split four ways. `Move`, `Observe`, `Take`,
+`Eat`, `Rest`, `Wait`, `AdvanceMotion`, `AttachItem` and `DetachItem` are
+the body's acts and become actuation; `ConfigureMovementProfile` is the
+game-side solver's own setting (ruling 233), with no contract type, as E1
+found; `ResolveVolley` is the handoff's outcome (ruling 232); `Name` is the
+player's act. `Generate`, `Fall`, `AdmitAnatomy`,
+`ReconcileAnatomy` and `Carve` are the sim's own: lifting a body from the
+roster (ruling 75), a consequence of motion, the body's revisions as the
+record's facts, and a world edit asserted by an act; `InheritSite` is
+founding, authored content displacing generated (ruling 89); `ReviseCanon`
+is the hagioglyph organ's. Of the control intents, `Begin` becomes who the
+participant plays, the attention set's `played`; `TagIn` and `TagOut` are
+creative mode's; `Succeed` is the death checkpoint. The `Session` that owns
+control history and its save cut (`src/session.rs`) is the shape the
+contract replaces: intents are the replay log (the record's §5.2 point 2).
+
+## 4. Absorption: `eponym-world` and `eponym-social` into Isocosm
+
+The record's §2 test puts whatever runs with nobody playing in the sim, and
+`eponym-world`'s `Simulation` advances every living subject with "no
+observer, camera, selected subject, or control identity" (execution plan
+F2). Ruling 192 ruled the same absorption for Mesocosm and ruling 239 rules it
+for Eponym, in the order bodies, places, lives and rounds, standing and asks,
+knowledge, glyphs, then fights and technique; the table below is what moves. `eponym-world` is
+11,508 lines of source and `eponym-social` 2,747; every family that moves
+is decomposed under the 600-line ceiling as it goes, this repository's own
+rule (`eponym/CLAUDE.md`), split along seams the code already has.
+
+| Family | Modules, lines | Destination in Isocosm |
+| --- | --- | --- |
+| Bodies, needs and holding | `anatomy` 536, `subject_sheet` 482, `items` 323, `bodies` 234, `movement_profile` 162, `equipment` 41 | the critter: part tree, the one ledger with needs, injuries and revisions, gear-limited holding (rulings 36, 38, 53); the sim plan's §2.3 |
+| Motion and contact | `contact` 1,029, `timed_action` 690, `movement` 350, `motion` 293, `navigation` 256 | does not move: the solver runs on the game side over the stack's conatus (ruling 233), only the accepted transition for each tick crosses, as the intent, and navigation stays derived advice |
+| Fights and technique | `combat` 812, `technique` 799 | the competing instance and harm (rulings 115, 116, 123, 221 to 223), quality as affordance (ruling 96, D27), abilities, skills and techniques (rulings 96, 141 to 143); the strike resolver stays in the foreground and hands its harm back (ruling 232) |
+| Places and edits | `world` 272, `sites` 211 | the place graph: a `SlotId` is the record's site and a `Site` its location (rulings 72, 147; the record's §3.7.1); carve and inherit as asserted facts (§1, ruling 89) |
+| Lives and rounds | `simulation` 471, `population` 245, `projects` 220, `simulation_record` 177 | the denizen's methodology (ruling 37), needs and the act score (ruling 95, D26), deep time (ruling 93), the record |
+| Glyphs and canon | `glyphs` 949 | the world's canon and the hagioglyph organ (ruling 101; sim plan §2.7), beside `wing-glyphs` |
+| Session, state and transitions | `state` 959, `session` 697, `transitions` 406 | the contract: the intent grammar splits as §3 says, saves become the sim's log, and the control pointer becomes `played` and the death checkpoint |
+| Standing and deeds | `deed` 179, `relation` 113 | alignment and reputation derived from acts (rulings 51, 56) |
+| Asks and agreements | `response` 201, `willing` 182, `companion` 140, `agreement` 126, `offer` 79 | proposing and joining (ruling 63), directing weighed by opinion (ruling 60), standing agreements (ruling 67) |
+| Settlement | `settlement` 227, `settling` 125 | homes offered under agreements (rulings 54, 63); a settlement a faction until it has a methodology (rulings 8, 63) |
+| Knowledge | `epistemic` 570 | notes on knowers, reports and corrections (rulings 84, 86, 117) and the secrets regime (ruling 87); the sim plan's §4 |
+| Society | `society` 462 | the join of the above at the faction rung; confirmed as it moves |
+| Fixtures and scenes | `fixtures` 786 (world), `scene` 135 and `bin` 140 (social) | receipts, replaced by draws (ruling 15) |
+
+### 4.1 The execution plan's layers, mapped onto E2 (ruling 313)
+
+The [execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
+retired into this plan on 2026-09-26. Its fundamental layers F0 to F2 are
+landed receipts (persistent world, one embodied life, other lives); F3 to F8
+keep their semantic done-conditions and land through E2's families in the
+order ruled (239), then E3 and E4. Nothing here reorders a family.
+
+| Layer | Its done-condition, in short | Lands in |
+| --- | --- | --- |
+| F3, memory, belief and standing | two witnesses believe differently, a claim reaches an absent creature, an answer cites its evidence and norms; F3a landed 2026-08-26 | knowledge (notes on knowers, reports, corrections; the reach field for the background, rulings 84, 86, 117) and standing and deeds (rulings 51, 56); the memory and remembrance plan for the foreground's recall |
+| F4, requests and coordination | one grammar asks a stranger, neighbour, ally or enemy for different acts; refusal and counteroffer are complete outcomes; no party command surface | asks and agreements (rulings 60, 63, 67) and E3's refused, countered and agreed asks |
+| F5, material life | one creature keeps a shelter from world materials; cooperation changes the work, not the verb; structures keep builders, materials and purpose | bodies, needs and holding (the one ledger, gear-limited holding, rulings 38, 53) and places and edits (carve as an asserted fact, ruling 89); the functional loops plan's T lanes, T2 now and T1 and T3 after these families (ruling 314) |
+| F6, settlement and culture | two settlements answer differently from their histories; every tenet points at practices and precedents | settlement (rulings 54, 63) and society, a settlement a faction until it has a methodology (rulings 8, 63); tenets and standing in the record's §2.6 |
+| F7, danger | a conflict avoided, negotiated, escaped, won or lost through existing facts; consequences alter bodies, property, relations and places with no combat-only duplicate | fights and technique (rulings 115, 116, 123, 221 to 223) and E3's sized-up fight and escalation |
+| F8, death and control continuity | death continues through an eligible life or an outsider; a non-death body change records what moved, copied, died or remained | the contract's death checkpoint (§3; rulings 61, 186) and E3's succession among bonded companions; tag-in in creative mode (ruling 187) |
+
+`eponym-identity` (509 lines) goes to dramatis under W3 (ruling 34), its
+`SubjectId`, body revisions and facets the sim's provenance noun, and its
+control pointer this plan's §3. `eponym-sortie` (1,082 lines) is S3's
+receipt and retires when the joined session adopts its evidence, as the
+functional loops plan already says. What stays Eponym's own:
+`eponym-client` (11,951 lines), the genet document host, input, the camera
+and its zoom, the scene producer, the panels and journal, and the
+legibility surface.
+
+## 5. Phases and done-conditions
+
+E0 and E1 are done and E3 is open (case 798). Done-conditions are draws,
+never fixtures (case 15).
+
+- **E0, the profile ruled.** Done when §6's decisions are taken; everything
+  else in §1 to §4 rests on rulings already made. **Done 2026-09-26**
+  (rulings 231 to 235, 238, 239, 241 and 242).
+- **E1, the contract's Eponym side.** Done when `src/eponym/` exists in
+  `shared/isocosm-overlay` (ruling 197) with actuation, asks, tellings, the
+  player's acts, the death checkpoint, creative's tag-in and the handoff's
+  vocabulary as §3 has them under rulings 232 and 233; every type round-trips
+  through bytes and the crate still depends on nothing sim-internal (D18);
+  and each of today's seventeen game intents, two world intents and four
+  control intents is mapped as §3 splits them. **Done 2026-09-26** (ruling
+  253): `src/eponym/` landed on main at 1996ecc with thirteen round-trip
+  tests and the README's mapping table, and the shapes it shared with the
+  VTT's module, a voxel point, an act key and harm, were lifted to the crate
+  root at 269ffc5 at Mark's word.
+- **E2, absorption by family.** One sub-phase per family of §4, in the order
+  ruled (239): bodies, places, lives and rounds, standing and asks,
+  knowledge, glyphs, then fights and technique. Each is done when the family runs in Isocosm under
+  its process definitions, conserves its accounts and replays identically,
+  its Eponym tests are ported or replaced by draws, every moved file is
+  within the 600-line ceiling, and `eponym-world` or `eponym-social` no
+  longer owns it. Lands under the sim plan's S1 to S3, the knowledge family
+  under S3.
+- **E3, driving on Isocosm,** built only there, with no prototype over
+  today's `Session` (ruling 239). Done when a
+  played sophont is driven on Isocosm, its acts resolved by what its body
+  affords; an ask is refused about the work, refused about the asker and
+  countered, each with its premises pointable; a note written is later found
+  by another; a fight is sized up and ends there, and another escalates and
+  ends by a yield or a side spent; a death is followed by a succession the
+  player chose among bonded companions; survival shows only what the
+  creature knows; and a seeded run replays to the same hash.
+- **E4, the played loop.** Done when, from a seed nobody chose and a start
+  the player picked, the headed host lives one named life end to end on
+  Isocosm: a home made or joined, asks agreed and refused, a fight, notes
+  written and found, a death and a succession, then the successor's life
+  continuing in the same history; two players' creatures live in one world
+  over the session lane, peers to each other (rulings 185, 242); survival
+  and creative modes both work; the receipts replay on both peers to the
+  same hash; and the fungible agree in
+  distribution within the world's stated tolerance (ruling 113). This is
+  W5's done-condition for Eponym.
+
+E1 and E2 run side by side; E3 needs E2's bodies, places, lives and asks;
+E4 needs all of E2 and E3.
+
+### 5.1 What E3 carries from the folded plans (2026-10-10, ruling 801)
+
+Ruling 801 folded the functional loops plan and the memory and remembrance
+plan into E3; both are archived at `archive_docs/2026-10-10/` with their
+reasoning, prior art and receipts. Their landed lanes (J0, J1a to J1c, B1
+to B4, F3a, F3b5) stand as receipts taken on the legacy world. What remains
+is restated here over native Isocosm and `eponym-play`, as part of E3's
+done-condition; E4 takes its headed and two-peer halves.
+
+From the functional loops plan:
+
+- **Session and contact (its J1 and S1).** Done when one played sophont
+  moves through contact, suffers a fall, loses capability and is inspected
+  with the same identity, revision and item locations; a duplicate effect
+  cannot injure twice; a save resumes injury, terrain, agreements, recall,
+  control and interrupted work from one cut, the next accepted actions
+  matching uninterrupted play; and an injected partial or corrupt save never
+  partly replaces live state. Natively the wound is checkpoint 10's cell
+  loss (767), motion and the strike resolver are `eponym-play`'s (232,
+  233), and the save is the native session's log beside `eponym-play`'s
+  admitted anatomy snapshot (777).
+- **Death and continuation (its S2).** Beyond E3's succession clause: a dead
+  subject cannot act; changing who is played neither transfers property nor
+  rewrites what others remember; the previous life's remains, custody and
+  commitments persist; and the hagiograph can remember a life that never
+  became legendary. With no bonded companion, ruling 238's answers apply,
+  an arriving outsider being native arrival
+  (`shared/isocosm/src/arrival.rs`).
+- **Strike quality (its B3).** Three policies compared over the same
+  recorded contact cases before one is accepted: contact-driven,
+  quality-weighted (the recommended experiment) and an attack-roll adapter.
+  An admitted uncertain outcome is sampled under a saved RNG identity and is
+  never rerolled by reload, frame rate or limb order. Done when the
+  comparison's distributions, monotonic response to quality, defender
+  agency and exact replay are receipted and Mark picks the policy.
+- **Material work (its T1 to T3).** T1 and T3 waited on E2's bodies,
+  holding, lives and rounds, which are native now: items are inert entities
+  carried by relation (776) and crafts are rules-pack keys (778). T1 is done
+  when one creature gathers, carries and places material with provenance,
+  cannot spend it twice and resumes interrupted work, an autonomous creature
+  using the same command boundary. T2, one edit reaching collision,
+  navigation and rendering at one revision, is the place graph plan's SP4
+  edits in `isometer-space` with nisus beneath at SP6; Eponym's share is
+  that its walking, sight and scene read the edited revision. T3 is done
+  when work is interrupted and resumed by an eligible subject, refusal is a
+  complete outcome, and another creature answers an observed loss or benefit
+  without a script.
+- **World conditions (its W lane):** surgery and magic stay parked with
+  magic under ruling 279.
+
+From the memory and remembrance plan. The background is the sim's: an
+event's reach is a field and a background entity's knowing a seeded draw
+over it, held as notes on the knower (771; `shared/isocosm/src/reach.rs`,
+`shared/isocosm/src/knowing.rs`). E3 owns the foreground's recall.
+
+- **Evidence into answers (its F3b1).** Done when every admitted
+  observation points at an accepted event and never precedes it; an
+  affected subject receives it by an explicit policy and an excluded one
+  does not; an answer's support resolves to real entries and its
+  explanation names the event or belief revision without inventing
+  certainty; norm and standing revisions take part in the answer,
+  observer-relative and pointable; a correction changes only later answers
+  of those who receive it; and replay gives identical ids, beliefs,
+  premises and hash.
+- **Episodic memory and bounded recall (its F3b2).** Done when one event
+  stream yields the same episodes and recall order for every subject; hot
+  recall stays within configured global and per-subject budgets, archive
+  within its quota; pinned and recently retold episodes survive eviction,
+  and eviction changes no decision; forgetting is the record's decay (129,
+  131), replayed exactly; and a corrupt, foreign or over-budget reference
+  is rejected atomically.
+- **Long-lived saves.** Done when a checkpoint restores exactly from its
+  base and reachable deltas and refuses a broken hash or missing base;
+  publication and crash recovery are atomic; aggregates keep obligations,
+  corrections, provenance and pins; and an unattended-years receipt
+  projects storage over drawn populations (ruling 15). This is Eponym's
+  only until the sim's record replaces the histories it measures.
+- **Preferences and retelling (its F3b3), promotion and manifestation (its
+  F3b4).** Done when dispositions and their changes replay with their
+  sources pointable; a retelling points at its source memory and speaker
+  and reaches only its listeners; contradictions stay visible; promotion is
+  the hagiograph's test (ruling 4), traceable, deterministic and bounded;
+  and a manifestation is a proposal the world-conditions owner admits,
+  retelling alone never mutating terrain.
+- *Still Mark's, from the memory plan:* the initial salience inputs, the
+  first recall budgets, and the minimum stable reference vocabulary shared
+  with the hagiograph.
+
+E3 opened without waiting for Mesocosm's M3 (case 798, amending 231), side
+by side with the VTT's plan.
+
+## 6. Decisions for Mark
+
+All seven taken: the seventh by ruling 231 and the first and second by
+rulings 232 to 235 on 2026-09-25; the third's last half, the fourth, the
+fifth and the sixth by rulings 238, 239, 241 and 242 on 2026-09-26. E0 and E1
+are done.
+
+1. **The handoff and the solver.** Two halves. (a) Eponym's blows: the
+   foreground strike system keeps resolving them geometrically and hands
+   outcomes back through the handoff, calibrated to the sim's fight under
+   ruling 114; or the sim's competing instance runs at foreground fidelity
+   with Eponym supplying actuation alone, its handoff uninhabited as
+   Mesocosm's is. (b) The fixed-step motion and contact solver: the game
+   side, over the stack's conatus, with the accepted transition per tick
+   the intent; or the sim's own process, fed the input frames. The record's
+   §3.8 says the sim never resolves a single blow and §5.2 point 1 says the
+   contract is batches per tick, never a call per entity; the two halves
+   decide what a batch carries. **Ruled 232 and 233 (2026-09-25):
+   "Foreground hands back" and "Game side."** Eponym's strike system
+   resolves each blow geometrically and hands the harm back through the
+   handoff, vigour drained and wounds to parts, calibrated to the sim's
+   fight (rulings 114, 123, 154); the solver runs on the game side over the
+   stack's conatus, and the accepted transition for each tick crosses as
+   the intent.
+2. **The start in time.** Eponym needs society (ruling 3): how much deep
+   time a draw carries before the first life, and where the player may begin
+   in it: from the world's habitability for the creature onward, as ruling
+   179 gives Mesocosm, or only where settlements already stand. **Ruled 234
+   (2026-09-25): "Player's pick, society default."**
+3. **The first life and the outsider.** How the first life begins: a newly
+   generated outsider arriving, a birth into one of the world's lineages, or
+   a choice among the drawn world's denizens; and at a death with no
+   bonded companion (ruling 186), the execution plan's F8 fallback, a
+   generated outsider so lack of allies never ends the world, or another
+   rule; and whether an answer that lets the line end exists at all, which
+   Mesocosm's contract has none of. **Ruled 235 (2026-09-25) for the first
+   half: "Any, player's call."** A first life may begin as an arriving
+   outsider, as a birth into one of the world's lineages, or as a denizen
+   of the drawn world. **Ruled 238 (2026-09-26) for the rest: "Player's
+   call."** With no bonded companion the player takes up another life in
+   that world, any of the three, or goes to a new world, as ruling 229
+   gives Mesocosm. *Reading recorded with it, not ruled:* going to a new
+   world is how a line ends in one, so no separate answer lets the line
+   end.
+4. **Absorption, its order, and where driving is built.** Whether Isocosm
+   absorbs `eponym-world`'s and `eponym-social`'s simulation as ruling 192
+   had it absorb `mesocosm-core`; the order, proposed as bodies, places,
+   lives and rounds, standing and asks, knowledge, glyphs, then fights and
+   technique; and whether driving is built only on Isocosm, as ruling 194
+   had Mesocosm's directing, or first over today's `Session`. **Ruled 239
+   (2026-09-26): "Only on Isocosm."** Isocosm absorbs `eponym-world`'s and
+   `eponym-social`'s simulation as ruling 192 had it absorb
+   `mesocosm-core`, in the order proposed, and driving is built only on
+   Isocosm, with no prototype over `Session`, as ruling 194 had Mesocosm's
+   directing.
+5. **Posing.** The record's §3.4 flags posing, to intimidate, persuade or
+   deceive, as a reading of ruling 117 and not a ruling. Eponym is the game
+   that needs it in play. Rule it, so E1 carries a posing intent, or leave it
+   out of E1. **Ruled 241 (2026-09-26): "A telling's manner."** Posing is
+   how a claim is told, the fourth thing a hearer weighs (ruling 118),
+   carried on the telling and not an intent of its own; display and bluff
+   in a contest stay sizing up (ruling 116).
+6. **Co-op in E4.** Each player their own creature is ruled (ruling 185).
+   Whether E4's done-condition includes two peers over the session lane, or
+   single-player first as the founding plan parked real-time co-op netcode.
+   **Ruled 242 (2026-09-26): "Two peers in E4."**
+7. **Which overlay is W5's second.** Ruling 174 put Mesocosm first and
+   nothing ordered Eponym and the VTT; the same question sat in the VTT
+   plan's §6. **Ruled 231 (2026-09-25): "Side by side."** Both proceed
+   after Mesocosm's M3, each on its own plan.
+
+## 7. Carried from archived plans (2026-10-10)
+
+Ruling 793 archived the genet document host plan to
+`archive_docs/2026-10-10/`, P0 to P5 landed; what it left open lands here.
+
+- **Physical keyboard and mouse acceptance** of the session host: open
+  until a person runs it. E4's headed loop is where it is taken.
+- **What a save is.** `eponym_client::equipment_store`
+  (`crates/eponym-client/src/equipment_store.rs`) still has no caller: an
+  immutable series of published saves, where the session writes one
+  mutable `session.save`. Which one an Eponym save is was left as a ruling,
+  not a retirement; it is E3's to put, since E3 replays a seeded run.
+- **Glyph marks in the scene** on the shared depth, a real canon, and
+  durable journey persistence: the scene half is the presentation plan's
+  L10 far marks; the canon and journeys are the
+  [wing organs plan](../../mesocosm/design_docs/2026-09-26_wing_organs_plan.md)'s.
+- **The session bin's name** (`crates/eponym-client/src/bin/session.rs`)
+  is a naming round, not a session default.
+
+## Carried from the retired process plans (2026-10-18)
+
+- The torch's brightness is untuned (`TORCH_INTENSITY` was set against the CPU
+  falloff it replaced) and its shadows stay off until the testing pass (case
+  749); both are still to be tuned in a headed run. (from after-pass plan §A4)
+- Healing and starvation in Eponym are headed findings still to be looked at
+  and tuned; rest currently keeps wounds under the existing zero-healing law.
+  (from after-pass plan §A4)
+- `GameState::save` on a game whose participant has taken up a subject writes
+  a save its own restore refuses (`StateDiverged`), because the take is a
+  control fact the bare game log does not carry (the Session save does).
+  Nothing in production calls it that way today, and the fix is not yet
+  chosen. (from after-pass plan §A2.1)
+- An arrived outsider's own reserve sits on its entity ledger: `anatomy::held`
+  counts it but `take_within` spends only anatomical parts, so Eponym's hunger
+  command refuses insufficient reserve for an embodied arrival. The
+  arrival-to-embodiment accounting decision belongs to E3's body admission
+  gate, and generated-body receipts do not cover it. (from after-pass plan
+  §Findings)
+- Nothing in movement keeps two bodies from overlapping (a reading, not
+  ruled); the shared fixtures space bodies at their native bounds instead
+  (case 941). (from after-pass plan §A2.1)
+
+## Findings
+
+- **2026-10-12, native material/work inventory:** `ItemKind::mass_mg`
+  declares 250/100/900mg for food/dressing/scrap, while `GameState::lay_items`
+  founds food with `MEAL` (40mg) and dressing/scrap with empty native matter
+  ledgers. Carry admission still reads the declared kind masses. These are
+  distinct existing readings, not replacement founding quantities.
+  `founding.rs` maps both soil and rock to `world:soil`, so that scalar cannot
+  reconstruct their material identity. Native `Provenance::Made(Id)` exists
+  without a manufacture constructor; `Arrive` issues outside matter and
+  cannot stand in for a conserved fabrication operation. `Social::Exercise`
+  records performed work and its deed but has no material progress or resumed
+  project state. *Reading, not ruled:* the next crafting choice must settle
+  authored inputs/output/costs, retained progress, spend or reservation timing,
+  and another eligible subject's resumption before that source is placed.
+  Rulings95 to98 and776/778 establish material incorporation, provenance and
+  ownership, not those recipes or progress semantics. No stock, mass, fixture,
+  carry rule or work-completion default changed in this inventory.
+- **2026-09-25:** `eponym-world` counted at 11,508 lines, `eponym-social`
+  2,747, `eponym-identity` 509, `eponym-sortie` 1,082 and `eponym-client`
+  11,951 (`wc -l` over each `src` tree's `.rs` files); per-module counts in
+  §4 are from the same pass, a directory module summed with its file.
+- **2026-09-25:** `GameIntent` at `eponym-world/src/transitions.rs:59` holds
+  the seventeen variants §3 names and `GameEvent` twenty; `WorldIntent` at
+  `src/world.rs:33` holds `Carve` and `InheritSite`; `ControlIntent` at
+  `eponym-identity/src/control.rs:24` holds `Begin`, `TagIn`, `TagOut` and
+  `Succeed`, and `Control::played` is one subject by the shape of the type,
+  which is ruling 152 already enforced in code.
+- **2026-09-25:** the willingness rule's three gates
+  (`eponym-social/src/willing.rs:7-23`) and `RulingKind`
+  (`src/response.rs:156`: formed, performed, declined, outside terms,
+  renegotiated, ended) are the vocabulary §3's asks row maps; an agreement
+  "is still not a command" (`src/agreement.rs:14-17`).
+- **2026-09-25:** `shared/isocosm-overlay`'s attention set already names
+  Eponym's care as "Eponym's sophont and those it knows"
+  (`src/attention.rs`), from the record's §3.4.1, so §1's ensemble row adds
+  no type to the core.
+
+## Progress
+
+- **2026-10-12, 846/849/850:** actual native debit selection supplies exact
+  named-lot quantities. Remainder retains its original source; operation
+  declarations retain explicit output claims or close consumed input claims
+  without changing conserved matter. The native preflight/candidate and
+  ordinary controlled Eponym caller are being connected. No recipe default,
+  FIFO, proportional mixed-owner allocation or tissue ownership is inferred.
+  Source is unverified; compiler/tests/fixtures/probes/tuning remain deferred826.
+
+- **2026-10-12, exact owned stock caller source (846/849/850):** appended
+  GameSave12 StockAct/EatOwned vocabulary connects native debit previews and
+  explicit named-lot portions to the real controlled Session and stock panel.
+  Ordinary unmarked Eat keeps its recorded grammar. The new partial-meal path
+  marks food spent only after its actual native matter holdings are exhausted.
+  Stock rules enter newly authored worlds through generator7 and an appended
+  OwnedMaterialProfile marker; generator6's original profile shape remains
+  unchanged. Native admission and operation-authored retained/closed claims
+  are assembling. This is source placement, uncompiled and untested under826.
+
+- **2026-10-13, authored spread founding and replay source:** separate
+  SpreadMaterialProfile/native generator8 and GameSave13 append required
+  native founder recipes/lineages/stocks/capacity/title rules. Logged Arrive
+  and optional Develop record actual founder IDs; alias resolution references
+  those accepted events or actual subjects. Selected Place/Overflow/ForkStrain
+  and ownership steps use native admission/previews; controlled sessions
+  refuse author actions. The actual document startup consumes strict input
+  version2 before Session::begin. Native local placement supports conserved
+  loose same-lineage matter and unchanged spread identity within one resident
+  site; anatomical part sources refuse pending allocation support. Old
+  material profile shapes and Session1 remain intact. Source uncompiled and
+  untested826; full E3/C11 acceptance remains open.
+
+- **2026-10-16, triage F2/F5/F6/F8 (940, 943, 944, 946):** the old
+  generator-1 continuation assertions retire with their bytes and refusal
+  controls preserved. The unreachable stale-anatomy panel case retires;
+  actual severance inspection remains a live gate. Worn-item release uses
+  native `Dropped` under its non-played wearer and updates the projection
+  only after acceptance; its same-item/feet/session-replay control passes.
+  The sortie's logged native six-cell trench produces the actual fall,
+  injury, pact tag-in, rescue and return: all six sortie tests plus the
+  material-edit/world-replay control pass, final hash `2b75f82c9bfe5c65`.
+  The play library passes 27 active tests with its genuine WorldSave2 input
+  still ignored. Receipts: `Code/testing/isometry/f-2026-10-16/`, cap 100 MB.
+  F3/F4 native fixture and F7 producer runtime gates remain in progress;
+  broader E3 and headed product acceptance are not closed.
+
+- **2026-10-16, native far-window boundary:** F7's ordinary producer uses
+  the existing V1b cache, while the original `v1-proof` module stays gated
+  as before. Its far native footprint requests 6,901 bricks against 2,047
+  available atlas slots (1,791 in the strict probe); three feature-only
+  paging/travel/retarget tests therefore remain open. They are retained,
+  and an all-feature compiler result does not certify their runtime.
+
+
+---
+
+*Archived 2026-10-28.* Cut, with the other active plans, into a new set: what was
+still open, deferred or a follow-on here now lives in `2026-10-28_eponym_overlay_plan.md` (in the product's
+`design_docs/`), which cites this file by line. This copy is history: its
+status lines, receipts and claims are as they stood, not current.

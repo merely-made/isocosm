@@ -186,7 +186,7 @@ not inspect an entity or advance time. The core has no renderer dependency.
 ## Current limits
 
 This is the first executable foundation of the
-[sim plan](../../mesocosm/design_docs/2026-09-22_sim_plan.md), not completion of
+[sim plan](../../mesocosm/design_docs/2026-10-28_sim_plan.md), not completion of
 S1-S6. The schema includes several future authoring seams whose full behavior
 is not implemented: goals and deliberation, ranked polity consent, genotype
 epochs and realignment, world crossing, magic, body-volume mechanics, and
