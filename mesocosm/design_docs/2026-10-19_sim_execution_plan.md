@@ -2,8 +2,9 @@
 
 **Date:** 2026-10-19
 
-**Status, 2026-10-23:** D5, D6, D7, D9a and D11 built, D9b and D10 dropped
-(Progress), and E1a and E1b; E1c next (D13). Its decisions are linked to the
+**Status, 2026-10-28:** D5, D6, D7, D9a and D11 built, D9b and D10 dropped
+(Progress), and E1a and E1b. Then E1c, E7 (rates worked out when read) and E8
+(decision periods per lineage), then E4 and E5 (D17). Its decisions are linked to the
 doctrine (Processes 6 and 7, Directing 4 and 5, Schema 9, Mesocosm 5). Specced at Mark's request after a
 probe was stopped for blurring design, implementation and qualification. The
 three are kept apart below. Mark answered the four open questions the same
@@ -141,6 +142,26 @@ Phases in order, each with its done-condition.
   invariants below hold across crossings and the envelope still certifies.
 - **E6. Rate models.** Later: calibration per rules digest (440), for shared
   resources where the crowd stops paying (261, 266).
+- **E7a. Strain worked out when read** (D16). `mind:strain` and
+  `mind:relief` (`rules/mind.rs`, both every tick for every member) become
+  one rated account: a value, the tick it was settled and a rate, building
+  while mood is low and bleeding while not, never below nought. Reads
+  settle it; a commit that changes what mood reads re-derives the rate; the
+  state preimage settles first; a crossing of the bearing is a due event.
+  Done when the exact check holds, which first needs mood to change only at
+  a commit (a need reading the clock breaks it, and comes back as a
+  question).
+- **E7b. Death on the queue** (D16). `ecology:hazard-{i}`'s draw each tick
+  from maturity becomes one draw of the tick of death at maturity, at the
+  same per-tick odds and keyed by actor, tick and process (D1), kept as a
+  due event; age and starvation wake at their ticks. Done when lifespans
+  agree in distribution with the per-tick draw and the pins are re-recorded
+  once, with E8's.
+- **E8. Decision periods per lineage** (D15). A lineage carries a decision
+  period, one by default, pacing its members' choices and moves: the queue
+  keys passes by rate class and filing holds each group under its class.
+  Done when the exact check holds with every period at one; Mesocosm's
+  periods per kind are then set as a ruling, offered as options.
 
 ## Qualification
 
@@ -157,6 +178,9 @@ How each phase is known to be right, fixed before it is built.
   distance, paired permutation, DKW equivalence within the reading's bound,
   Holm-corrected, as it certified C10 and C11. A pass is a run that passes; it
   is not a receipt to keep.
+- **E7b and E8: in distribution, then pinned.** Lifespans under E7b against
+  the per-tick draw by the checkpoint 10 harness; E8 exact at period one.
+  The pins are re-recorded once, for both.
 - **Speed** is read from the same runs: ms per played tick in a grown world,
   once per phase.
 
@@ -310,6 +334,29 @@ each title names its outcome against the doctrine.
   nearly every tick, is not gated. This amends D13.
 
   Links: area Processes and rules · draws on 258, 286, sim-execution D13 · amends sim-execution D13 · governs isocosm::schedule::Filed · summary Rest is filed by a lost cell its healing needs, a site's condition read as the act reads it; mood is not gated.
+
+- **D15, a kind's decision rate on its lineage (2026-10-28), refines
+  Processes 7:** "On the lineage (Recommended)". A lineage carries a
+  decision period that paces its members' choices and moves; revisions and
+  splits carry it. Asked after a talk on tick cost: "Every tick, every
+  member is reconsidered for every act that's due ... That needs changing."
+
+  Links: area Processes and rules · draws on 258, sim-execution D4 · governs isocosm::schema::Lineage, isocosm::schedule · summary A lineage's decision period paces its members' choices and moves.
+
+- **D16, decisions are choices and moves (2026-10-28), refines Processes
+  7:** "Choices and moves (Recommended)". Choice processes and movement are
+  paced by the lineage's period; strain, death and growth are rates worked
+  out when read, their crossings kept as due events per member, never
+  slowed.
+
+  Links: area Processes and rules · draws on 159, 227, 906, sim-execution D1 · governs isocosm::rules::mind, isocosm::ecology, isocosm::schedule · summary Choices and moves are paced by the lineage; bodily rates are worked out when read, their crossings due events per member.
+
+- **D17, order (2026-10-28), amends D4 and D13:** "E1c, 2, 1, 3
+  (Recommended)". E1c, then E7 (rates worked out when read), then E8
+  (decision periods), then E4 and E5. E2 and E3 come back after E8 with
+  new figures. One re-recording of the pins covers E7b and E8.
+
+  Links: area Processes and rules · draws on sim-execution D4, sim-execution D13 · amends sim-execution D4, sim-execution D13 · governs isocosm::schedule · summary E1c, then rates worked out when read, then decision periods per lineage, then the crowd and the tier line.
 
 ## Findings
 
@@ -482,6 +529,16 @@ each title names its outcome against the doctrine.
   changes nothing touching nothing, E1b was 13% less CPU on seed 0 (81.8,
   91.8 and 86.5 s against E1a, then 67.1, 82.0 and 77.9 s); seeds 0 to 2
   identical in 571.0 s and 529.5 s of wall time on a busy machine.
+- **2026-10-28, what D15 to D17 touch** (read at `3460801c`, nothing run).
+  A process has one `period` for the world (`rules/mod.rs:193`); the queue
+  is keyed by due tick, priority and id, and a pass walks every group or
+  every filed one (`schedule/mod.rs:105-213`). Strain and relief run every
+  tick for every member (`rules/mind.rs:50`); so do each lineage's death,
+  age and, from maturity, hazard processes, the hazard a risk draw each
+  tick (`ecology.rs:133-190`). The agentless `body:hazard` acts once per
+  world body, not per member (`harm/hazard.rs`). The crowd runs only over
+  the probe's world (`probe/crowd/`), and `TierLine` is exported but
+  unused (`directing/tier.rs`).
 - **2026-10-23, what E1's parts could save** (scratch counters, seed 0, a
   busy machine, 91.8 s of scheduling). Blocked evaluations by the
   requirement they fail: `mind:relief` on mood 393,954, `body:rest` on its
@@ -597,3 +654,6 @@ each title names its outcome against the doctrine.
   battery's seeds 0 to 2 identical, isocosm's 717 tests in release and its
   264 lib tests under the test profile. 13% less CPU on seed 0
   (Findings). E1c next.
+- **2026-10-28:** Mark asked for per-kind decision rates, rates worked out
+  when read and the crowd tier, and answered three questions (D15 to D17):
+  E7 and E8 added, Processes 7 refined. E1c next.

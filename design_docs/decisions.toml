@@ -5079,6 +5079,31 @@ draws_on = ["258", "286", "sim-execution D13"]
 amends = ["sim-execution D13"]
 governs = ["isocosm::schedule::Filed"]
 
+[decisions."sim-execution D15"]
+title = "a kind's decision rate on its lineage (2026-10-28), refines Processes 7"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A lineage's decision period paces its members' choices and moves."
+draws_on = ["258", "sim-execution D4"]
+governs = ["isocosm::schedule", "isocosm::schema::Lineage"]
+
+[decisions."sim-execution D16"]
+title = "decisions are choices and moves (2026-10-28), refines Processes 7"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Choices and moves are paced by the lineage; bodily rates are worked out when read, their crossings due events per member."
+draws_on = ["159", "227", "906", "sim-execution D1"]
+governs = ["isocosm::ecology", "isocosm::rules::mind", "isocosm::schedule"]
+
+[decisions."sim-execution D17"]
+title = "order (2026-10-28), amends D4 and D13"
+source = "mesocosm/design_docs/2026-10-19_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "E1c, then rates worked out when read, then decision periods per lineage, then the crowd and the tier line."
+draws_on = ["sim-execution D4", "sim-execution D13"]
+amends = ["sim-execution D4", "sim-execution D13"]
+governs = ["isocosm::schedule"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"
@@ -5616,8 +5641,8 @@ draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307",
 title = "Time"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
-summary = "A fine world-set unit, periods per process; the scheduler skips idle time and unchanged members; a pass evaluates at once with draws keyed order-free; worlds sync at crossings."
-draws_on = ["149", "256", "257", "258", "259", "284", "285", "286", "293", "605", "958", "sim-execution D1", "sim-execution D4", "record.7"]
+summary = "A fine world-set unit, periods per process and decision periods per lineage; bodily rates worked out when read; the scheduler skips idle time and unchanged members; draws keyed order-free; worlds sync at crossings."
+draws_on = ["149", "256", "257", "258", "259", "284", "285", "286", "293", "605", "958", "sim-execution D1", "sim-execution D4", "sim-execution D15", "sim-execution D16", "record.7"]
 
 [statements."processes.8"]
 title = "Competition"

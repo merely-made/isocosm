@@ -351,30 +351,33 @@ Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 
 ### Processes 7. Time
 
 The clock counts a fine unit, a world setting, a minute by default; each
-process runs on its own period in world time, and anything finer is the
-foreground's. The scheduler indexes processes by the traits they need and
-keeps due events per group, so idle time is skipped, and reconsiders a member
-only when something its process reads has changed or a time gate ripens; an
-advance's limit and its budget guard work, counting the members an evaluation
-stands for. Per-group phases run in the foreground; the background keeps a
-shared grid. Epochs and deep time are the record's (Record 7). Neighbouring
-worlds keep their own clocks, synced at crossings. A pass's evaluations read
-its start and may run at once, its commits serial in order; every draw is
-keyed by who acts, the tick and the process, never by commit order, so equal
-best moves and every other draw come out alike at any thread count. The sim is
-sharded by the place graph: each shard an armillary actor with its own
-due-event queue, field passes data-parallel inside a shard, and an ordered
-merge of cross-shard effects designed before the shards, so one shard and N
-give the same state hash at any thread count. On the web the sim runs in one
-Worker, scaling down by shard count.
+process runs on its own period in world time, a lineage's choices and moves on
+its decision period, and anything finer is the foreground's. Bodily rates are
+worked out when read, not acted each tick. The scheduler indexes processes by
+the traits they need and keeps due events per member, a rate's crossings among
+them, so idle time is skipped, and reconsiders a member only when what its
+process reads has changed or a time gate ripens; an advance's limit and its
+budget guard work, counting the members an evaluation stands for. Per-group
+phases run in the foreground; the background keeps a shared grid. Epochs and
+deep time are the record's (Record 7). Neighbouring worlds keep their own
+clocks, synced at crossings. A pass's evaluations read its start and may run at
+once, its commits serial in order; every draw is keyed by who acts, the tick
+and the process, never by commit order, so equal best moves and every other
+draw come out alike at any thread count. The sim is sharded by the place graph:
+each shard an armillary actor with its own due-event queue, field passes
+data-parallel inside a shard, and an ordered merge of cross-shard effects
+designed before the shards, so one shard and N give the same state hash. On the
+web the sim runs in one Worker, scaling down by shard count.
 
 *Not yet built:* waking, parallel evaluation and order-free draws (the
-execution plan's E1 to E3), shards, and worlds syncing at crossings.
+execution plan's E1 to E3), rates worked out when read and decision periods
+(E7, E8), shards, and worlds syncing at crossings.
 
-Links: draws on 149, 256, 257, 258, 259, 284, 285, 286, 293, 605, 958, record.7, sim-execution D1, sim-execution D4 · summary A fine world-set unit, periods per process; the scheduler skips idle time and unchanged members; a pass evaluates at once with draws keyed order-free; worlds sync at crossings.
+Links: draws on 149, 256, 257, 258, 259, 284, 285, 286, 293, 605, 958, record.7, sim-execution D1, sim-execution D4, sim-execution D15, sim-execution D16 · summary A fine world-set unit, periods per process and decision periods per lineage; bodily rates worked out when read; the scheduler skips idle time and unchanged members; draws keyed order-free; worlds sync at crossings.
 
-*Refined 2026-10-22 from the execution plan's D1 and D4: waking, parallel
-evaluation and order-free draws (Mark: "Refine P7 with all three").*
+*Refined 2026-10-28 from the execution plan's D15 and D16: a lineage's
+decision period, bodily rates worked out when read ("On the lineage
+(Recommended)", "Choices and moves (Recommended)").*
 
 ### Processes 8. Competition
 
