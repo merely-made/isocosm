@@ -11,6 +11,9 @@
 //! processes whose gates it passes, again whenever an act commits to it, and
 //! a group still too young is kept on a timer for the tick it comes of age.
 //! Filing reads each of a group's holdings once, whatever the gates asking.
+//! The index is kept across advances (`kept`).
+
+mod kept;
 
 use crate::{population::Population, rules::*, schema::*, simulation::State};
 use std::{collections::{BTreeMap, BTreeSet}, sync::{Arc, Weak}};
@@ -280,8 +283,8 @@ impl Bits {
     }
 }
 
-/// Stored groups by first identity, filed as ready for each gated due
-/// process, kept only during an advance. Processes are numbered, so that a
+/// Stored groups by first identity, filed as ready for each gated process
+/// on a period, kept across advances. Processes are numbered, so that a
 /// group filed again as it was changes nothing in the index.
 #[derive(Clone, Debug, Default)]
 pub(crate) struct Filed {
@@ -301,6 +304,7 @@ pub(crate) struct Filed {
     /// Each group's filing: the gates its body passed but for age, and the
     /// body it was read from.
     filings: BTreeMap<Id, Filing>,
+    basis: kept::Basis,
 }
 
 /// The gates a body passed but for age, and that body. The weak handle

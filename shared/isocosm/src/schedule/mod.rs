@@ -30,7 +30,7 @@ use crate::{
     schema::*,
     simulation::{Execution, Simulation, Work},
 };
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
 /// Whether an act of `p`'s pass could read what another act of it writes:
 /// a target, a take of shared ground, or a site it both reads and writes.
@@ -101,7 +101,6 @@ impl Simulation {
         self.refresh_attention();
         self.protect_attention();
         let mut queue = BTreeSet::new();
-        let mut gated = BTreeMap::new();
         for p in self.genesis.rules.processes.values() {
             if let Some(period) = p.period
                 && let Some(due) = self
@@ -111,13 +110,6 @@ impl Simulation {
                 && due <= end
             {
                 queue.insert((due, p.priority, p.id.clone()));
-                let immediate = self.state.movement.immediate();
-                let gates = Gates::of(p, &self.genesis.rules)
-                    .residing(p, &self.state.sites, immediate)
-                    .reading(p, &self.genesis.rules);
-                if !gates.none() {
-                    gated.insert(p.id.clone(), gates);
-                }
             }
         }
         let targeted = self
@@ -129,9 +121,11 @@ impl Simulation {
         if targeted {
             self.targets = Some(crate::targets::Targets::new(&self.state.population));
         }
-        if !gated.is_empty() {
-            let world = World::of(&self.state, &self.genesis.rules);
-            self.filed = Some(Filed::new(&self.state.population, gated, &world));
+        // The index is kept across advances (E1c): reconciled with the world
+        // as this advance finds it, or built afresh where it no longer answers.
+        match &mut self.filed {
+            Some(f) if f.answers(&self.genesis, &self.state) => f.reconcile(&self.state, &self.genesis.rules),
+            _ => self.filed = Filed::build(&self.genesis, &self.state),
         }
         self.journeys = (!self.state.movement.immediate())
             .then(|| crate::journey::Journeys::new(&self.state.population));
@@ -140,7 +134,10 @@ impl Simulation {
         let done = self.scheduled(queue, end, &mut work);
         self.targets = None;
         self.journeys = None;
-        self.filed = None;
+        match (&done, &mut self.filed) {
+            (Ok(()), Some(f)) => f.settle(&self.state),
+            _ => self.filed = None,
+        }
         self.pass = None;
         self.frame = None;
         self.chosen = Default::default();

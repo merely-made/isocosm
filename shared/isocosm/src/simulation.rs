@@ -162,8 +162,8 @@ pub struct Simulation {
     pub(crate) issued: u128,
     /// Groups filed for target searches, kept only during an advance.
     pub(crate) targets: Option<crate::targets::Targets>,
-    /// Groups filed by the traits due processes require, kept only during
-    /// an advance.
+    /// Groups filed by the traits processes on a period require, kept
+    /// across advances (E1c).
     pub(crate) filed: Option<crate::schedule::Filed>,
     /// The due process's pass under way, if any.
     pub(crate) pass: Option<crate::schedule::Pass>,
