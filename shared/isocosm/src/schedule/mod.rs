@@ -199,7 +199,9 @@ impl Simulation {
                 let (first, count) = pass.origin(&self.state.population, found);
                 self.passed_by(gates.as_ref(), from, first);
                 from = first + count;
-                self.visit(process, &id, gates.as_ref(), (first, count), work)?;
+                if self.decides(process, first) {
+                    self.visit(process, &id, gates.as_ref(), (first, count), work)?;
+                }
             }
             self.passed_by(gates.as_ref(), from, bound);
             self.pass = None;
@@ -224,6 +226,9 @@ impl Simulation {
         {
             let count = self.state.population.groups[&first].count;
             from = first + count;
+            if !self.decides(process, first) {
+                continue;
+            }
             let Some((calls, multiplicity)) = self.calls(process, first, count) else {
                 continue;
             };
@@ -267,6 +272,18 @@ impl Simulation {
         let mut frame = self.frame.take().expect("a pass under way");
         frame.share(plans, ground, rules);
         self.frame = Some(frame);
+    }
+
+    /// Whether a group decides this tick (D15, D16): a choice or a move
+    /// runs for it only every `decides` ticks of its lineage, offset by its
+    /// first identity so a kind's decisions spread across the ticks.
+    fn decides(&self, process: &Process, first: Id) -> bool {
+        if process.causation != Causation::Choice {
+            return true;
+        }
+        let lineage = self.state.population.groups.get(&first).map(|g| &g.entity.lineage);
+        let period = lineage.and_then(|l| self.state.lineages.get(l)).and_then(|l| l.decides).unwrap_or(1);
+        period <= 1 || (self.state.tick + first) % period == 0
     }
 
     /// How a group is evaluated: the calls, each standing for some members,

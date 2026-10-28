@@ -214,6 +214,11 @@ pub struct Lineage {
     /// one serialize and hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub development: Option<crate::rules::Development>,
+    /// How often its members decide, in ticks: their choices and moves run
+    /// every `decides` ticks (the execution plan's D15, D16); absent, every
+    /// tick, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub decides: Option<Tick>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

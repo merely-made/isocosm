@@ -185,6 +185,7 @@ impl ProbeFounding {
                 traits: BTreeSet::new(),
                 kingdom: "kingdom:world".into(),
                 development: None,
+                decides: None,
             },
         )]);
         let mut traits = set(&["leaning:contest".into(), "leaning:scramble".into()]);
@@ -217,6 +218,7 @@ impl ProbeFounding {
                     traits: set(&[identity.clone(), leaning.into()]),
                     kingdom: "kingdom:fauna".into(),
                     development: None,
+                    decides: None,
                 },
             );
             let takes: Vec<(&Thing, u64)> = drawn.iter().map(|d| (d.thing, d.ration)).collect();
@@ -254,6 +256,7 @@ impl ProbeFounding {
                     traits: set(&[identity]),
                     kingdom: "kingdom:fauna".into(),
                     development: None,
+                    decides: None,
                 },
             );
             for p in hunters.processes() {

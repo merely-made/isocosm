@@ -189,3 +189,40 @@ fn a_reactive_critter_is_not_deliberated() {
     let feed = s.sim.genesis().rules.processes["ecology:upkeep-0"].clone();
     assert!(matches!(s.sim.deliberate(r, &feed), Deliberated::Free));
 }
+
+/// The played line's choices and moves, every tick of `ticks`, when its
+/// lineage decides every `decides` ticks (D15, D16).
+fn paced_acts(decides: Option<Tick>, ticks: Tick) -> Vec<crate::watch::Watched> {
+    let g = crate::Founding {
+        seed: 3,
+        sites: 2,
+        population: 30,
+        cohort_size: 1,
+        lineages: 3,
+        ecology: true,
+        bodies: Some(crate::bodied::Bodies::default()),
+        played: Some(Played { lineage: 1, region_sites: 1 }),
+        ..Default::default()
+    }.generate().unwrap();
+    let mut s = Session::new(g, Execution::Individuals).unwrap();
+    s.sim.state.lineages.get_mut("lineage:1").unwrap().decides = decides;
+    let rules = s.sim.genesis().rules.clone();
+    for p in rules.processes.values().filter(|p| p.causation == crate::rules::Causation::Choice) {
+        s.sim.watch(&p.id);
+    }
+    s.advance(ticks).unwrap();
+    let watched = s.sim.take_watched();
+    let pop = &s.sim.state().population;
+    let line = |id: Id| pop.get(id).is_some_and(|e| e.lineage == "lineage:1");
+    watched.into_iter().filter(|w| line(w.actor)).collect()
+}
+
+#[test]
+fn a_lineage_decides_only_every_its_period_of_ticks() {
+    let every = paced_acts(None, 12);
+    assert!(every.iter().any(|w| (w.tick + w.actor) % 3 != 0), "deciding every tick, acts fall off the period");
+    let paced = paced_acts(Some(3), 12);
+    assert!(!paced.is_empty(), "a paced line still decides");
+    assert!(paced.iter().all(|w| (w.tick + w.actor) % 3 == 0), "{paced:?}");
+    assert!(paced.len() < every.len());
+}
