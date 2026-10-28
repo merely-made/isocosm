@@ -32,7 +32,7 @@ impl Simulation {
         for target in &value.pinned { self.attention_target(target)?; }
         if let Some(region) = &value.examined {
             self.attention_target(&match region {
-                Region::Site(id) => Target::Site(*id),
+                Region::Site(id) | Region::Frame { site: id, .. } => Target::Site(*id),
                 Region::Location(id) => Target::Location(*id),
             })?;
         }

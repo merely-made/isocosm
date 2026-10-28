@@ -285,6 +285,11 @@ pub struct Rules {
     /// means the defaults, and worlds without it hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub directing: Option<Directing>,
+    /// How far members fold into the population model's bands (the
+    /// execution plan's E4, D29); absent, nothing folds, and worlds without
+    /// it hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub banding: Option<crate::band::Banding>,
     /// The crafts and deeds a world's sophonts read (778); absent in worlds
     /// without them, which hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]

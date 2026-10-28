@@ -78,7 +78,14 @@ impl Simulation {
                 if let Target::Entity(id) = target { roots.insert(id); }
             }
             for region in attention.examined {
+                // A frame roots the members posed inside it (D32).
+                if matches!(region, Region::Frame { .. }) {
+                    let posed = self.state.spatial_poses.iter();
+                    roots.extend(posed.filter(|(_, r)| region.frames(r.site, r.pose.at)).map(|(id, _)| *id));
+                    continue;
+                }
                 let sites = match region {
+                    Region::Frame { .. } => BTreeSet::new(),
                     Region::Site(id) => BTreeSet::from([id]),
                     Region::Location(id) => self.state.locations.get(&id)
                         .map(|l| l.sites.clone()).unwrap_or_default(),

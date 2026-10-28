@@ -46,6 +46,21 @@ pub enum Target {
 pub enum Region {
     Site(Id),
     Location(Id),
+    /// The part of a site a camera shows (the execution plan's D32): its
+    /// horizontal voxel bounds, `min` inclusive and `max` exclusive, as a
+    /// terrain window's.
+    Frame { site: Id, min: [i64; 2], max: [i64; 2] },
+}
+
+impl Region {
+    /// Whether a pose at `at` in `site` lies in a frame.
+    pub(crate) fn frames(&self, site: Id, at: [i64; 3]) -> bool {
+        match self {
+            Region::Frame { site: s, min, max } => *s == site
+                && (0..2).all(|k| (min[k]..max[k]).contains(&at[2 * k])),
+            _ => false,
+        }
+    }
 }
 
 /// A close-up region is local to one active window, never a far camera.

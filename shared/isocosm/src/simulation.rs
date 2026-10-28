@@ -567,12 +567,13 @@ impl Simulation {
 
 pub(crate) fn matter(state: &State, rules: &Rules) -> u128 {
     let mass = |a: &Ledger| crate::spread::ledger_mass(a, rules, &state.spreads);
-    state
+    let bodies = state
         .population
         .groups
         .values()
         .map(|g| mass(&crate::anatomy::books(&g.entity)) * u128::from(g.count))
-        .sum::<u128>()
+        .sum::<u128>();
+    u128::try_from(bodies as i128 + crate::band::pooled(state, rules)).expect("a band holds at least what its pool takes")
         + state
             .sites
             .values()

@@ -6,13 +6,44 @@ use serde::{Deserialize, Serialize};
 use std::{collections::{BTreeMap, BTreeSet}, sync::Arc};
 
 /// A contiguous identity interval sharing the complete causal state. No means,
-/// rounded bins or lost tails: different reserves/traits remain different rows.
+/// rounded bins or lost tails: different reserves/traits remain different rows,
+/// except a band of the population model (the execution plan's E4, D28), whose
+/// members' bodies differ and whose `pool` holds what they hold beyond
+/// `count` times its representative `entity`.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Cohort {
     pub count: u64,
     /// Shared between Session copies; a write copies the one entity
     /// (`Arc::make_mut`), so a clone of the population copies only the map.
     pub entity: Arc<Entity>,
+    /// A band's ledger beyond its representative's, per account, signed;
+    /// empty for any other cohort, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub pool: Pool,
+}
+
+/// A band's signed ledger (D28).
+pub type Pool = BTreeMap<Key, i128>;
+
+/// `pool` split for a piece of `count` members out of `of`: its share of
+/// each account, truncated toward nought, the remainder left behind.
+fn share(pool: &Pool, count: u64, of: u64) -> Pool {
+    pool.iter()
+        .map(|(k, v)| (k.clone(), v * i128::from(count) / i128::from(of)))
+        .filter(|(_, v)| *v != 0)
+        .collect()
+}
+
+/// What remains of `pool` once `taken` is drawn from it.
+fn less(pool: &Pool, taken: &[&Pool]) -> Pool {
+    let mut left = pool.clone();
+    for t in taken {
+        for (k, v) in *t {
+            *left.entry(k.clone()).or_default() -= v;
+        }
+    }
+    left.retain(|_, v| *v != 0);
+    left
 }
 
 impl Cohort {
@@ -46,7 +77,7 @@ impl Population {
         }
         let first = self.next_id;
         self.next_id = first.checked_add(count).ok_or("identity exhausted")?;
-        self.groups.insert(first, Cohort { count, entity: entity.into() });
+        self.groups.insert(first, Cohort { count, entity: entity.into(), pool: Pool::new() });
         Ok(first)
     }
     pub fn lift(&mut self, id: Id) -> Result<&mut Entity> {
@@ -66,12 +97,19 @@ impl Population {
         let group = group.clone();
         let end = first + group.count;
         self.groups.remove(&first);
+        // A band's pool goes with its pieces by their counts, the remainder
+        // to the member lifted.
+        let (before, after) = (id - first, end - id - 1);
+        let pools = [share(&group.pool, before, group.count), share(&group.pool, after, group.count)];
+        let own = less(&group.pool, &[&pools[0], &pools[1]]);
+        let [pool_before, pool_after] = pools;
         if id > first {
             self.groups.insert(
                 first,
                 Cohort {
-                    count: id - first,
+                    count: before,
                     entity: group.entity.clone(),
+                    pool: pool_before,
                 },
             );
         }
@@ -79,8 +117,9 @@ impl Population {
             self.groups.insert(
                 id + 1,
                 Cohort {
-                    count: end - id - 1,
+                    count: after,
                     entity: group.entity.clone(),
+                    pool: pool_after,
                 },
             );
         }
@@ -89,6 +128,7 @@ impl Population {
             Cohort {
                 count: 1,
                 entity: group.entity,
+                pool: own,
             },
         );
         Ok(self.groups.get_mut(&id).unwrap())
@@ -116,6 +156,8 @@ impl Population {
             if let Some((&previous, last)) = merged.last_key_value()
                 && previous + last.count == first
                 && last.entity == group.entity
+                && last.pool.is_empty()
+                && group.pool.is_empty()
                 && !protected.contains(&previous)
                 && !protected.contains(&first)
             {
@@ -135,6 +177,7 @@ impl Population {
     }
     pub fn totals(&self) -> Result<BTreeMap<Key, u128>> {
         let mut totals = BTreeMap::new();
+        let mut pooled: BTreeMap<Key, i128> = BTreeMap::new();
         for group in self.groups.values() {
             for (key, value) in &crate::anatomy::books(&group.entity) {
                 let slot = totals.entry(key.clone()).or_insert(0u128);
@@ -142,6 +185,14 @@ impl Population {
                     .checked_add(u128::from(*value) * u128::from(group.count))
                     .ok_or("account total overflow")?;
             }
+            for (key, value) in &group.pool {
+                *pooled.entry(key.clone()).or_default() += value;
+            }
+        }
+        for (key, value) in pooled {
+            let slot = totals.entry(key).or_insert(0u128);
+            let total = i128::try_from(*slot).map_err(|_| "account total overflow")? + value;
+            *slot = u128::try_from(total).map_err(|_| "a pool holds more than its band")?;
         }
         Ok(totals)
     }

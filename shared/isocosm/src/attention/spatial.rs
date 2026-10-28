@@ -84,7 +84,7 @@ impl Simulation {
         let (held, visible) = self.spatial_window(participant, window, mode)?;
         if !visible.sites.contains(&site) { return Err("close-up site is outside native awareness".into()); }
         let watched = match held.examined {
-            Some(Region::Site(id)) => id == site,
+            Some(Region::Site(id) | Region::Frame { site: id, .. }) => id == site,
             Some(Region::Location(id)) => {
                 let actual = self.state.locations.get(&id).is_some_and(|l| l.sites.contains(&site));
                 if mode == Mode::Creative { actual } else {
