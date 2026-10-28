@@ -5221,6 +5221,23 @@ summary = "A band is a site, lineage, age band and set of felt needs."
 draws_on = ["227", "sim-execution D24"]
 governs = ["isocosm::population"]
 
+[decisions."sim-execution D30"]
+title = "the Places cache, then far members off the physical path (2026-10-28), amends D22"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Fix the Places re-derivation, then take far members off the physical path."
+draws_on = ["sim-execution D22", "sim-execution D24"]
+amends = ["sim-execution D22"]
+governs = ["isocosm::spatial"]
+
+[decisions."sim-execution D31"]
+title = "the head stays at 10 ticks a second (2026-10-28), applies D21"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The head's target stays 10 ticks a second, revisited after the physical work is cut."
+draws_on = ["sim-execution D21"]
+governs = ["mesocosm_genet::app::config"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"

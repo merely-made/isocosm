@@ -266,6 +266,21 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on 227, sim-execution D24 · governs isocosm::population · summary A band is a site, lineage, age band and set of felt needs.
 
+- **D30, the Places cache, then far members off the physical path
+  (2026-10-28), amends D22:** "Places cache, then far off-path
+  (Recommended)". Asked after the head measured about 12.5 s a played tick,
+  nearly all of it foraging route search, Places derivation and walking
+  plans (Findings). First why Places is derived anew so often, then the
+  aggregate tier's members stop walking and route-searching (E4b, E5).
+
+  Links: area Processes and rules · draws on sim-execution D22, sim-execution D24 · amends sim-execution D22 · governs isocosm::spatial · summary Fix the Places re-derivation, then take far members off the physical path.
+
+- **D31, the head stays at 10 ticks a second (2026-10-28), applies D21:**
+  "Keep 10, revisit after (Recommended)". The clock defers at either tempo
+  while a tick costs seconds; re-measure once the physical work is cut.
+
+  Links: area Processes and rules · draws on sim-execution D21 · governs mesocosm_genet::app::config · summary The head's target stays 10 ticks a second, revisited after the physical work is cut.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -385,7 +400,7 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: E1c built (`schedule/filed/kept.rs`): the index is reconciled at each advance by each group's body handle and each site's conditions, rebuilt on other rules, movement mode or routes, dropped on a refused advance. A played tick now costs well under 978's premise of 0.45 s (receipts: `archive_docs/2026-10-28/2026-10-28_sim_execution_plan_receipts.md`), so its tempo question is open again. No threads exist in the sim's evaluation (thread scopes only in the probe bin and interim reproduction), so E3 is not built.
 - 2026-10-28: E2 is not built: bite and amount draws are still keyed by the act number (`stage/staged/meal.rs`, `stage/staged/mod.rs`); soma draws by id.
 - 2026-10-28: The crowd lives only in `shared/isocosm/src/probe/crowd/`; `TierLine` (`directing/tier.rs`) is exported and unwired.
-- 2026-10-28: The head's default is 2 ticks per second (`mesocosm-genet/src/app/config.rs`).
+- 2026-10-28: The head's tick is physical work, not scheduling bookkeeping: a headless play run (`mesocosm-genet --play --curve 60`) spent about 12.5 s a tick in scheduling, mostly foraging route search, Places derivation (`terrain.places`, re-derived hundreds of times in 60 ticks) and walking plans; one boundary forecast replay took minutes (receipts). The battery's site-grain worlds exercise none of it.
 - 2026-10-28: After E7a, rest (`harm/rest.rs`) is the largest pass: a Choice act and the first choice pass of each tick, so it carries every deciding member's deliberation; E8's periods are what cut it. The death hazards are a small share, so E7b is minor. A write outside an act (a command such as a wound) does not settle strain first, so the ticks before it accrue at the new mood.
 - 2026-10-28: What D15 to D17 touch: a process has one `period` for the world (`rules/mod.rs:193`); the queue is keyed by due tick, priority and id, and a pass walks every group or every filed one (`schedule/mod.rs`). Strain and relief run every tick for every member (`rules/mind.rs:50`); so do each lineage's death, age and, from maturity, hazard processes (`ecology.rs:133-190`). The agentless `body:hazard` acts once per world body, not per member (`harm/hazard.rs`). Bite and amount draws are keyed by the act number, so any phase removing accepted acts moves them until E2.
 - 2026-10-28: D4's order ("speed first: E1, E2, E3, then E4 and E5") was amended by D7 and D8, which inserted D7a, D7b, D9a, D11 and E1a before E1 completes; no later decision restates the order.
@@ -401,3 +416,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: E7b built, simpler than planned: the per-tick hazard keeps its draw, but a draw that misses on a process with no other effect makes no act (`execute.rs`), so the empty accepted act each mature member took each tick is gone; the death tick is not drawn once.
 - 2026-10-28: D24 to D26: the aggregate runs a population model per site and lineage; near is the rendered area plus the roots; a band in ticks. Measured first: about 1.2 members per exact body state in played worlds (seeds 0 to 2, ticks 60 to 180).
 - 2026-10-28: D27 to D29: bands run through the scheduler, a representative plus a pool, bands by age and felt needs.
+- 2026-10-28: the head measured (D30, D31): Places re-derivation next, then far members off the physical path.
