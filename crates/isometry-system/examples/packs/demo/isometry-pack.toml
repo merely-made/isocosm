@@ -2,6 +2,8 @@ format = 1
 id = "demo"
 name = "Demo Generator Pack"
 version = "0.1.0"
+license = "MIT OR Apache-2.0"
+credit = "Copyright 2026 Mark Alan Boykin"
 
 [[generators]]
 id = "forge_item"

@@ -23,6 +23,15 @@ pub struct ContentPackManifest {
     pub name: String,
     #[serde(default)]
     pub version: String,
+    /// The terms the pack's content is offered under, as an SPDX expression:
+    /// `CC-BY-SA-4.0`, `OGL-1.0a`, or a `LicenseRef-` for terms SPDX lacks.
+    /// Absent means the pack declares none, which a host shows as such.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub license: Option<String>,
+    /// The attribution its license asks to travel with the content, verbatim,
+    /// such as Atlas Games' line for Ars Magica's open text.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub credit: Option<String>,
     #[serde(default)]
     pub generators: Vec<GeneratorEntry>,
     /// The pack's **choreography**: what a beat looks like, and which beats a
@@ -92,6 +101,9 @@ pub enum ContentPackError {
     MissingPackId,
     InvalidPackId(String),
     MissingPackName,
+    /// A `license` or `credit` key present but blank: declared, yet saying
+    /// nothing, which reads as a mistake rather than as no terms.
+    BlankTerms(&'static str),
     MissingGeneratorId,
     DuplicateGenerator(String),
     InvalidLockPreset(String),
@@ -116,6 +128,11 @@ impl ContentPackManifest {
         }
         if self.name.trim().is_empty() {
             return Err(ContentPackError::MissingPackName);
+        }
+        for (key, value) in [("license", &self.license), ("credit", &self.credit)] {
+            if value.as_deref().is_some_and(|v| v.trim().is_empty()) {
+                return Err(ContentPackError::BlankTerms(key));
+            }
         }
         let mut generator_ids = BTreeSet::new();
         for generator in &self.generators {
@@ -211,6 +228,9 @@ impl std::fmt::Display for ContentPackError {
             Self::MissingPackId => write!(f, "content-pack id is required"),
             Self::InvalidPackId(id) => write!(f, "content-pack id cannot contain ':': {id}"),
             Self::MissingPackName => write!(f, "content-pack name is required"),
+            Self::BlankTerms(key) => {
+                write!(f, "content-pack {key} is declared but blank; omit it or fill it")
+            }
             Self::MissingGeneratorId => write!(
                 f,
                 "content-pack generator id is required and cannot contain ':'"
@@ -293,6 +313,8 @@ mod tests {
             id: "demo".to_owned(),
             name: "Demo Pack".to_owned(),
             version: "0.1.0".to_owned(),
+            license: None,
+            credit: None,
             choreography: Vec::new(),
             generators: vec![GeneratorEntry {
                 id: "forge_item".to_owned(),
@@ -326,6 +348,32 @@ mod tests {
             manifest.validate(),
             Err(ContentPackError::UnsafePath("../outside.lua".to_owned()))
         );
+    }
+
+    #[test]
+    fn terms_travel_with_the_pack_and_stay_out_of_packs_without_them() {
+        let declared: ContentPackManifest = serde_json::from_str(
+            r#"{"format": 1, "id": "saga", "name": "Saga", "license": "CC-BY-SA-4.0",
+                "credit": "Based on the material for Ars Magica"}"#,
+        )
+        .unwrap();
+        declared.validate().unwrap();
+        assert_eq!(declared.license.as_deref(), Some("CC-BY-SA-4.0"));
+        assert_eq!(declared.credit.as_deref(), Some("Based on the material for Ars Magica"));
+
+        // A pack without terms keeps the bytes it had before the fields existed.
+        let plain = serde_json::to_string(&manifest()).unwrap();
+        assert!(!plain.contains("license") && !plain.contains("credit"));
+    }
+
+    #[test]
+    fn declared_terms_cannot_be_blank() {
+        let mut m = manifest();
+        m.license = Some("  ".to_owned());
+        assert_eq!(m.validate(), Err(ContentPackError::BlankTerms("license")));
+        m.license = Some("OGL-1.0a".to_owned());
+        m.credit = Some(String::new());
+        assert_eq!(m.validate(), Err(ContentPackError::BlankTerms("credit")));
     }
 
     #[test]

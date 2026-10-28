@@ -76,7 +76,7 @@ mod tests {
     fn seeded_draw_selects_a_real_loaded_generator_and_replays() {
         let catalog = GeneratorCatalog::discover(generator_pack_roots());
         let choices = catalog.choices();
-        assert!(!choices.is_empty(), "bundled generator packs must load");
+        assert!(!choices.is_empty(), "the fixture generator packs must load");
         let request = GeneratorSelectionRequest {
             seed: "session-4".to_owned(),
             domain: "isometry.generator-preview/v1".to_owned(),
