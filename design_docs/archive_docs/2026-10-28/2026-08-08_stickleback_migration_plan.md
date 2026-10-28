@@ -1,0 +1,100 @@
+# Stickleback Consumer Migration Plan (2026-08-08)
+
+**Status, 2026-10-18:** K0 to K2 remain unimplemented. `campaign_sync.rs` in
+`isonetry` still assembles `LogSync` and `SyncedSpace` directly, so K0's
+`JoinedSpace` adoption is open; H7's family-record lane uses `JoinedSpace` only
+for single-host World replication and does not implement this plan's
+multi-writer campaign sync. The shipping Genet UI now qualifies one native VTT
+action and an exact same-campaign ledger restart; production peer admission and
+setup, and power-loss durability, stay open. K0 is next, then K1's concurrent
+and refused-operation receipts and K2's named dispositions for the older tiers.
+The no-second-runtime gate still governs.
+
+**W1, 2026-09-18:** keep. Tier: stack, branching. Sovereignty over a shared
+carrier. Evaluated against the wing design record; see
+[mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md)
+§1.
+
+## 1. The debt
+
+Live `campaign_sync.rs` (isonetry) still assembles `LogSync` and
+`SyncedSpace` directly. That is pre-rebase construction: Isometry doing
+by hand what Stickleback's `JoinedSpace` now owns.
+
+## 2. The boundary, stated once
+
+Move campaign collaboration onto Stickleback `JoinedSpace`. **Isometry
+retains**: its domain grammar (campaign operations), authorization, the
+materializer, and the tactical sequencer. **Stickleback owns**: space
+membership, log transport, sync. The seam is the same shape as every
+other consumer rebase in the stack: domain sovereignty over a shared
+carrier.
+
+## 3. Gates
+
+**K0 — JoinedSpace adoption.** `campaign_sync.rs` consumes `JoinedSpace`;
+direct `LogSync`/`SyncedSpace` assembly deleted.
+**Done when:** the existing multi-writer campaign receipts re-green on
+the new path and the deleted assembly has no survivors (grep receipt).
+
+**K1 — Authority receipts on the new carrier.** Authorization,
+materializer, and conflict handling proven unchanged over Stickleback
+transport.
+**Done when:** a two-writer concurrent-edit receipt and a
+refused-unauthorized-operation receipt both pass on `JoinedSpace`.
+
+**K2 — Superseded-tier sweep.** The old tiers' machinery (private stores,
+peer revalidation, secrets, commit-reveal) either deleted or explicitly
+retained with a named reason.
+**Done when:** the shared-authority plan's tier sections carry per-tier
+dispositions and the code matches them.
+
+## Stop rules
+
+- The sequencing gate outranks this plan: any step that would mint a
+  second runtime stops.
+- Pack distribution over Stickleback (campaign-packs residue) waits for
+  K0-K1; it does not drive them.
+
+## Findings
+
+- **2026-09-03, from the host migration's p2panda fix, load-bearing for
+  K0.** In the owned fork at `mere-p2panda-net-0.7.2`, signature
+  verification happens once, in `AnyHeader::decode`; `Header::verify` is
+  test-only and `validate_operation`'s check is compile-time true in a
+  normal build. An `Operation` that exists was either decoded (verified)
+  or built locally by `Header::builder` (signed). The in-memory
+  `header.extensions` is a decoded view: mutating it changes neither the
+  signed bytes nor `header.hash()`, so a test that tampers an extension
+  field asserts a no-op. Isometry is safe today because network
+  operations reach `CampaignSpace::insert` through the decoded
+  subscription; K0 must not carry that assumption implicitly. The net
+  crate is now the published `mere-p2panda-net =0.7.2` and every consumer
+  must repeat mere-transport's exact dep line and feature set; keep the
+  fork tag in lockstep with mere's rather than a branch.
+  `CampaignSpace::to_operation` is already shaped like gemot's
+  `to_operation_seed`, so the `JoinedSpace` rebase is a lift; the one
+  isometry-only shape is the three-field `CampaignExt` with its `parents`
+  DAG, which gemot has no analogue for.
+
+## Progress
+
+- **2026-09-04, endpoint-readiness ruling.** K0 will remove Isometry's direct
+  `LogSync`/`SyncedSpace` assembly, but it will not remove endpoint binding:
+  `JoinedSpace::join` still takes the host's already-created p2panda
+  `Endpoint` and `Gossip`. The loaded-machine flake in
+  `host_bridge_delivers_actor_state_to_the_kernel` therefore belongs to the
+  bridge receipt, not to the carrier migration. Its fixed two-second polling
+  budget was replaced in the working tree by a failure-aware 30-second
+  deadline for actor readiness and the returned actor update. The focused test
+  passed once after a clean test-profile build and five immediate repeats,
+  each completing in 0.16-0.29 seconds. K0 remains required for the ownership
+  reasons in §2.
+
+
+---
+
+*Archived 2026-10-28.* Cut, with the other active plans, into a new set: what was
+still open, deferred or a follow-on here now lives in `2026-10-28_session_network_plan.md` (in the product's
+`design_docs/`), which cites this file by line. This copy is history: its
+status lines, receipts and claims are as they stood, not current.

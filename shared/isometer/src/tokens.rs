@@ -21,7 +21,7 @@
 //! That table is what [`BodyLayer::set_palette`](crate::BodyLayer::set_palette)
 //! takes, so a token drawn live carries its recipe's own colours — I6, found
 //! by I4 and done in
-//! `isometry/design_docs/2026-09-15_board_on_isometer_plan.md`:
+//! `isometry/design_docs/2026-10-28_board_on_isometer_plan.md`:
 //!
 //! ```ignore
 //! scene.bodies_mut().set_palette(subject, Some(material_colours(&palette)));

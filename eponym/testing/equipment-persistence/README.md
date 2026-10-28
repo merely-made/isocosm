@@ -6,7 +6,7 @@ attachment. `run-1788911337963/` keeps the published save and the two
 composited captures from 2026-09-08.
 
 The binary was retired on 2026-09-15 under the
-[isomere plan](../../../mesocosm/design_docs/2026-09-15_isomere_plan.md)'s M5;
+[isomere plan](../../../mesocosm/design_docs/2026-10-28_sim_host_plan.md)'s M5;
 the rationale is in
 [the genet document host plan](../../design_docs/archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md),
 under "Retiring the body sheet".

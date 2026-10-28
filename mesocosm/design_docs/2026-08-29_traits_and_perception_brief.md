@@ -186,7 +186,7 @@ Six things worth reacting to before the detail.
    pair, forever. The epoch-boundary plan rules that `None` is *the honest
    answer* and explicitly forbids inventing a shared ancestor "to make the
    arithmetic work," because that would be "a lie the graft rule then acts on"
-   ([epoch boundary plan](2026-08-01_epoch_boundary_plan.md) §, and
+   ([epoch boundary plan](archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md) §, and
    `species.rs:224-226`). **What `None` costs is a ruling Mark owes before any
    formula can be written.** It is the single hardest blocker in the message.
 
@@ -441,7 +441,7 @@ inheritance operator, not a hash you re-record. That is the line not to cross.
 The literal reading of "a lot of those relations can exist between one organism
 on a trait by trait basis" is an S×T loop per (observer, target) pair per tick.
 That does not survive the scale plan. The measured P6 receipt on this host
-([place graph engine plan](2026-08-05_place_graph_engine_plan.md)) is 75 bodies
+([place graph engine plan](archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md)) is 75 bodies
 → 133 µs/tick, 600 → 3747, which is where the scale plan's `N^1.6` and its
 ~4,700 saturation figure come from. Fitting `T = aN + bN²` to those four points
 puts the pairwise term at roughly 65% of the tick at N=300 and 83% at N=600 — so
