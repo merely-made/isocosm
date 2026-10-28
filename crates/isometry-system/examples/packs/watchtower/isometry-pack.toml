@@ -2,7 +2,7 @@ format = 1
 id = "watchtower"
 name = "Ash and Bells Watchtower"
 version = "0.1.0"
-licence = "MIT OR Apache-2.0"
+license = "MIT OR Apache-2.0"
 credit = "Copyright 2026 Mark Alan Boykin"
 
 [[generators]]

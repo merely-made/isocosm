@@ -27,8 +27,8 @@ pub struct ContentPackManifest {
     /// `CC-BY-SA-4.0`, `OGL-1.0a`, or a `LicenseRef-` for terms SPDX lacks.
     /// Absent means the pack declares none, which a host shows as such.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub licence: Option<String>,
-    /// The attribution its licence asks to travel with the content, verbatim,
+    pub license: Option<String>,
+    /// The attribution its license asks to travel with the content, verbatim,
     /// such as Atlas Games' line for Ars Magica's open text.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub credit: Option<String>,
@@ -101,7 +101,7 @@ pub enum ContentPackError {
     MissingPackId,
     InvalidPackId(String),
     MissingPackName,
-    /// A `licence` or `credit` key present but blank: declared, yet saying
+    /// A `license` or `credit` key present but blank: declared, yet saying
     /// nothing, which reads as a mistake rather than as no terms.
     BlankTerms(&'static str),
     MissingGeneratorId,
@@ -129,7 +129,7 @@ impl ContentPackManifest {
         if self.name.trim().is_empty() {
             return Err(ContentPackError::MissingPackName);
         }
-        for (key, value) in [("licence", &self.licence), ("credit", &self.credit)] {
+        for (key, value) in [("license", &self.license), ("credit", &self.credit)] {
             if value.as_deref().is_some_and(|v| v.trim().is_empty()) {
                 return Err(ContentPackError::BlankTerms(key));
             }
@@ -313,7 +313,7 @@ mod tests {
             id: "demo".to_owned(),
             name: "Demo Pack".to_owned(),
             version: "0.1.0".to_owned(),
-            licence: None,
+            license: None,
             credit: None,
             choreography: Vec::new(),
             generators: vec![GeneratorEntry {
@@ -353,25 +353,25 @@ mod tests {
     #[test]
     fn terms_travel_with_the_pack_and_stay_out_of_packs_without_them() {
         let declared: ContentPackManifest = serde_json::from_str(
-            r#"{"format": 1, "id": "saga", "name": "Saga", "licence": "CC-BY-SA-4.0",
+            r#"{"format": 1, "id": "saga", "name": "Saga", "license": "CC-BY-SA-4.0",
                 "credit": "Based on the material for Ars Magica"}"#,
         )
         .unwrap();
         declared.validate().unwrap();
-        assert_eq!(declared.licence.as_deref(), Some("CC-BY-SA-4.0"));
+        assert_eq!(declared.license.as_deref(), Some("CC-BY-SA-4.0"));
         assert_eq!(declared.credit.as_deref(), Some("Based on the material for Ars Magica"));
 
         // A pack without terms keeps the bytes it had before the fields existed.
         let plain = serde_json::to_string(&manifest()).unwrap();
-        assert!(!plain.contains("licence") && !plain.contains("credit"));
+        assert!(!plain.contains("license") && !plain.contains("credit"));
     }
 
     #[test]
     fn declared_terms_cannot_be_blank() {
         let mut m = manifest();
-        m.licence = Some("  ".to_owned());
-        assert_eq!(m.validate(), Err(ContentPackError::BlankTerms("licence")));
-        m.licence = Some("OGL-1.0a".to_owned());
+        m.license = Some("  ".to_owned());
+        assert_eq!(m.validate(), Err(ContentPackError::BlankTerms("license")));
+        m.license = Some("OGL-1.0a".to_owned());
         m.credit = Some(String::new());
         assert_eq!(m.validate(), Err(ContentPackError::BlankTerms("credit")));
     }

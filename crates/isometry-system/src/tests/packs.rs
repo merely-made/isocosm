@@ -196,7 +196,7 @@ fn every_bundled_pack_declares_its_terms() {
         let root = entry.unwrap().path();
         let pack = GeneratorPack::load(&root).unwrap();
         let manifest = pack.manifest();
-        assert!(manifest.licence.is_some(), "{} declares no licence", root.display());
+        assert!(manifest.license.is_some(), "{} declares no license", root.display());
         assert!(manifest.credit.is_some(), "{} declares no credit", root.display());
         seen += 1;
     }
