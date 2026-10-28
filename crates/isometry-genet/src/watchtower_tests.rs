@@ -185,7 +185,7 @@ fn watchtower() -> (WatchtowerHarness, Rc<RefCell<App>>) {
         ui.generator_choices
             .iter()
             .any(|choice| choice.id.contains("watchtower")),
-        "the bundled watchtower pack is available to the desktop generator"
+        "the watchtower fixture pack is available to the desktop generator"
     );
     let system = srd_5e();
     ui.sheet_schema = schema_of(&system);

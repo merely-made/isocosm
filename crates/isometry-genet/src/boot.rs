@@ -13,7 +13,7 @@
 
 use super::*;
 
-/// Search the bundled example, a project-local pack root, and user-selected
+/// Search the bundled `core` pack, a project-local pack root, and user-selected
 /// roots. Entries may be pack directories or directories containing packs.
 ///
 /// (This doc had drifted two functions away from what it documents; the M4
@@ -22,14 +22,12 @@ pub(crate) fn generator_pack_roots() -> Vec<std::path::PathBuf> {
     // The `core` pack ships the default beat vocabulary (strike, recoil, fall,
     // cheer...). It is a pack like any other, so a campaign overrides a beat
     // simply by declaring the same name: the app owns no choreography.
-    let mut roots = vec![
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../isometry-system/examples/packs/core"),
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../isometry-system/examples/packs/demo"),
-        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../isometry-system/examples/packs/watchtower"),
-    ];
+    let mut roots = vec![example_pack("core")];
+    // `demo` and `watchtower` are fixtures: the host's tests and the watchtower
+    // self-test load them, a user's table does not.
+    if cfg!(test) || std::env::var_os("ISOMETRY_WATCHTOWER_SELFTEST").is_some() {
+        roots.extend(["demo", "watchtower"].map(example_pack));
+    }
     let local = std::path::PathBuf::from("packs");
     if local.is_dir() {
         roots.push(local);
@@ -38,6 +36,12 @@ pub(crate) fn generator_pack_roots() -> Vec<std::path::PathBuf> {
         roots.extend(std::env::split_paths(&paths));
     }
     roots
+}
+
+fn example_pack(name: &str) -> std::path::PathBuf {
+    std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../isometry-system/examples/packs")
+        .join(name)
 }
 
 /// Parse `--host` or `--join <ticket>` from the command line.
