@@ -13,6 +13,9 @@ use serde::{Deserialize, Serialize};
 pub(super) const MATURE: u64 = 60;
 /// The hazard per tick once mature: 2.5 percent, a mean wait of 40 ticks (906).
 pub(super) const HAZARD_PER_MILLION: u32 = 25_000;
+/// How often a played world's producers, consumers and decomposers decide,
+/// in ticks (the execution plan's D19).
+pub(crate) const DECIDES: [u64; 3] = [10, 2, 5];
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]

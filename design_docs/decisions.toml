@@ -5112,6 +5112,39 @@ summary = "While the sim is wired, a change is checked in isolation by its own t
 draws_on = ["791", "sim-execution D13"]
 amends = ["sim-execution D13"]
 
+[decisions."sim-execution D19"]
+title = "how often each kind decides (2026-10-28), applies Processes 7"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "Producers decide every 10 ticks, consumers every 2, decomposers every 5."
+draws_on = ["sim-execution D15", "sim-execution D16"]
+governs = ["isocosm::directing::found", "isocosm::ecology::rates"]
+
+[decisions."sim-execution D20"]
+title = "meals scale with the decision period (2026-10-28), applies Processes 7"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A meal taken by a choice is its amount times the eater's decision period."
+draws_on = ["sim-execution D15", "sim-execution D19"]
+governs = ["isocosm::stage"]
+
+[decisions."sim-execution D21"]
+title = "the head at 10 ticks a second (2026-10-28), amends case 978"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The head's default tempo is 10 ticks a second."
+draws_on = ["978", "sim-execution D19"]
+amends = ["978"]
+governs = ["mesocosm_genet::app::config"]
+
+[decisions."sim-execution D22"]
+title = "E7b before the crowd tier (2026-10-28), applies D17"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "E7b, then the crowd and the tier line."
+draws_on = ["sim-execution D17"]
+governs = ["isocosm::ecology"]
+
 [statements."bodies.1"]
 title = "Forms"
 source = "design_docs/doctrine.md"

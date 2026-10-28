@@ -22,7 +22,7 @@ fn fixture_sites(
     non_move: bool,
     sites: u32,
 ) -> (Genesis, Id, Id) {
-    let mut g = Founding {
+    let g = Founding {
         seed: 3,
         sites,
         population: 30,
@@ -37,6 +37,7 @@ fn fixture_sites(
     }
     .generate()
     .unwrap();
+    let mut g = super::tests::unpaced(g);
     let body = |lineage: &str| {
         g.population
             .groups

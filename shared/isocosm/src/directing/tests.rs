@@ -21,7 +21,16 @@ pub(crate) fn world(seed: u64, mode: Execution) -> Session {
     }
     .generate()
     .unwrap();
-    Session::new(genesis, mode).unwrap()
+    Session::new(unpaced(genesis), mode).unwrap()
+}
+
+/// The world with every lineage deciding each tick: for tests of how a
+/// choice is made rather than how often (D19 paces played worlds).
+pub(crate) fn unpaced(mut g: crate::simulation::Genesis) -> crate::simulation::Genesis {
+    for l in g.lineages.values_mut() {
+        l.decides = None;
+    }
+    g
 }
 
 pub(crate) fn critter(s: &Session) -> Id {

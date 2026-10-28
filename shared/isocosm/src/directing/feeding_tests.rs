@@ -8,7 +8,7 @@ use super::*;
 use crate::{Execution, Founding, Session, history::Command, rules::*, simulation::Genesis};
 
 fn fixture() -> (Genesis, Id, Id) {
-    let mut g = Founding {
+    let g = Founding {
         seed: 3,
         sites: 2,
         population: 30,
@@ -23,6 +23,7 @@ fn fixture() -> (Genesis, Id, Id) {
     }
     .generate()
     .unwrap();
+    let mut g = super::tests::unpaced(g);
     let actor = *g
         .population
         .groups

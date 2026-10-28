@@ -1,7 +1,7 @@
 # The sim's execution model: speed, waking, parallel evaluation, near and far
 
 **Status:** 2026-10-28: cut from `2026-10-19_sim_execution_plan.md`, plus the speed items of `2026-10-14_sim_host_plan.md`, `2026-09-22_sim_plan.md`, `2026-09-11_orthographic_voxel_presentation_plan.md` and `2026-10-22_foot_placement_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8), their values per kind not yet set. Open: E7b (death on the queue), then E4 and E5 (D17); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
+`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20); the head at 10 ticks a second (D21). Open: E7b (death on the queue), then E4 and E5 (D17); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
 
 **For:** every tick-latency, frame and search-time bar in the family, and the execution work that serves them: waking (E1), draw keys (E2), parallel evaluation (E3), the crowd in the core (E4), crossings and the tier line (E5), rate models (E6), the host's latency bars, cold-route and startup search time, and the scale and scheduler-waste items. This is the only plan that states a speed number; others name `sim-execution` and do not restate it.
 
@@ -185,6 +185,31 @@ each title names its outcome against the doctrine.
 
   Links: area Method and documents · draws on 791, sim-execution D13 · amends sim-execution D13 · summary While the sim is wired, a change is checked in isolation by its own tests, never against the previous build; validation of the whole is designed once it is wired.
 
+- **D19, how often each kind decides (2026-10-28), applies Processes 7:**
+  "10 / 2 / 5 (Recommended)". A played world's producers decide every 10
+  ticks, consumers every 2, decomposers every 5 (`ecology::rates::DECIDES`).
+
+  Links: area Processes and rules · draws on sim-execution D15, sim-execution D16 · governs isocosm::ecology::rates, isocosm::directing::found · summary Producers decide every 10 ticks, consumers every 2, decomposers every 5.
+
+- **D20, meals scale with the decision period (2026-10-28), applies
+  Processes 7:** "Scale meals by period (Recommended)". A meal a choice
+  takes is its amount times its eater's period, so a slower decider eats as
+  much over the ticks it lets pass.
+
+  Links: area Processes and rules · draws on sim-execution D15, sim-execution D19 · governs isocosm::stage · summary A meal taken by a choice is its amount times the eater's decision period.
+
+- **D21, the head at 10 ticks a second (2026-10-28), amends case 978:**
+  "10 a second (Recommended)". TD2's aspiration becomes the head's default
+  once decision periods brought a played tick near 20 ms.
+
+  Links: area Processes and rules · draws on 978, sim-execution D19 · amends 978 · governs mesocosm_genet::app::config · summary The head's default tempo is 10 ticks a second.
+
+- **D22, E7b before the crowd tier (2026-10-28), applies D17:** "E7b, then
+  the crowd tier". E8 was built before E7b once rest's deliberation proved
+  the larger cost; E7b comes next, then E4 and E5.
+
+  Links: area Processes and rules · draws on sim-execution D17 · governs isocosm::ecology · summary E7b, then the crowd and the tier line.
+
 ## Constraints
 
 - **Checked in isolation while wired (D18).** A phase is done when it compiles and the tests of the piece it touches pass, run alone. No battery, pin or certification runs per phase and nothing is checked against the previous build; a pin that breaks is re-recorded, not a bug. Done-conditions below naming an exact check or the envelope are read this way. Kept every phase: determinism within one build and conservation of matter, both unit tests. Superseded from E1c on: "A pure execution change leaves every state hash identical to the serial, unskipped run ... Any difference is a bug" (rulings 454, 958, D1, D4).
@@ -318,3 +343,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: D15 to D17 answered (decision periods per lineage, rates worked out when read, order); E1c built; D18 (checked in isolation while wired); E7 and E8 added.
 - 2026-10-28: E7a built: a played world keeps strain as a rate (`strain.rs`, `Mind::rate`, `Entity::settled`).
 - 2026-10-28: E8 built: `Lineage::decides` paces a lineage's choice and move passes, offset by first identity.
+- 2026-10-28: D19 to D22: periods 10 / 2 / 5 in played worlds, meals scaled by period, the head at 10 ticks a second; choice-rule tests run unpaced (`directing::tests::unpaced`).

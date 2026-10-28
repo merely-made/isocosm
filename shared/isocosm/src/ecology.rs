@@ -13,7 +13,7 @@ mod evidence;
 mod run;
 mod validated_run;
 mod independence;
-mod rates;
+pub(crate) mod rates;
 pub use independence::*;
 pub use rates::Rates;
 pub use joint::*;

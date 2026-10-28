@@ -20,12 +20,12 @@ use profile::{Form, world};
 // `Effect::Sunlight`, so every ecology world's rules, and this digest, moved.
 // Rerecorded 2026-10-18 under the note to 227: Mesocosm's worlds gained the
 // hazard and rest, and a played world its wound need and its strain processes.
-// Rerecorded 2026-10-28 under the execution plan's D16: a played world keeps
-// strain as a rate, not two processes.
+// Rerecorded 2026-10-28 under the execution plan's D16 and D19: a played
+// world keeps strain as a rate, and its kinds decide at their own paces.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "8774a6da7a0c7645df907ca02bb049be6366d3795e6dc614fe8acc56924bf686");
+    assert_eq!(crate::digest(&genesis), "8c220de1ebead81458b45d56cc3833e62479ac4943a7d6d4c2d690f992edacad");
     genesis
 }
 

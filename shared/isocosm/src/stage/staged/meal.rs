@@ -7,12 +7,24 @@
 use super::*;
 
 impl Staged<'_> {
+    /// What a meal asks: its amount, times how often its eater's lineage
+    /// decides where a choice takes it (D20), so a slower decider eats as
+    /// much over the ticks it lets pass.
+    pub(super) fn asked(&self, amount: &Amount) -> Result<u64> {
+        let sim = self.sim;
+        let choice = sim.genesis.rules.processes.get(&self.stage.process).is_some_and(|p| p.causation == Causation::Choice);
+        let lineage = self.stage.bodies.get(&self.stage.actor).map(|e| &e.lineage).filter(|_| choice);
+        let pace = lineage.and_then(|l| sim.state.lineages.get(l)).and_then(|l| l.decides).unwrap_or(1);
+        amount.resolved()?.checked_mul(pace).ok_or_else(|| "a meal overflows".into())
+    }
+
     pub(super) fn meal(
         &mut self, from: Binding, amount: &Amount, into: &Key, of: &[Key], whole: bool,
     ) -> Result<()> {
         if self.body(from)?.journey.is_some() {
             return Err("travelling prey has no resident site".into());
         }
+        let asked_amount = self.asked(amount)?;
         let sim = self.sim;
         let rules = &sim.genesis.rules;
         let actor = self.stage.actor;
@@ -64,7 +76,7 @@ impl Staged<'_> {
             let granted = match &portion {
                 Some(portion) => portion.values().try_fold(0u64, |sum, value|
                     sum.checked_add(*value).ok_or("granted bite overflow"))?,
-                None => meaning::share(&offered, rules, amount.resolved()?).values()
+                None => meaning::share(&offered, rules, asked_amount).values()
                     .try_fold(0u64, |sum, value| sum.checked_add(*value).ok_or("granted bite overflow"))?,
             };
             if let Some(threshold) = crate::defence::threshold(rules, self.body(from)?, part)?
@@ -75,7 +87,7 @@ impl Staged<'_> {
         if let (true, Some(part)) = (whole && whole_admitted, bitten) {
             let asked: u64 = match &portion {
                 Some(p) => p.values().sum(),
-                None => amount.resolved()?,
+                None => asked_amount,
             };
             let all: u64 = offered.values().sum();
             if asked >= all && self.incorporate(from, part)? { return Ok(()); }
@@ -86,7 +98,7 @@ impl Staged<'_> {
                 let held = offered.get(&k).copied().unwrap_or(0);
                 (k, v.min(held))
             }).filter(|(_, v)| *v > 0).collect(),
-            None => meaning::share(&offered, rules, amount.resolved()?),
+            None => meaning::share(&offered, rules, asked_amount),
         };
         let prey = self.holder(from);
         let mut total = 0u64;

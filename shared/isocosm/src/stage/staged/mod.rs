@@ -240,7 +240,7 @@ impl Staged<'_> {
             Effect::Eat {
                 from, amount, of, ..
             } if shared(from) => {
-                let (holder, asked) = (holder(from)?, amount.resolved()?);
+                let (holder, asked) = (holder(from)?, self.asked(amount)?);
                 if let Some(d) = &mut self.stage.demands {
                     d.meal = Some((holder, asked, of.clone()));
                     d.meal_part = None;
