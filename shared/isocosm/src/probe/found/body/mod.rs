@@ -293,6 +293,7 @@ impl BodyFounding {
             systems: default_systems(),
             carriage: Some(Carriage { per_cell }),
             directing: None,
+            banding: None,
             social: None,
             spread_capacity: None,
             material_recipes: BTreeMap::new(),

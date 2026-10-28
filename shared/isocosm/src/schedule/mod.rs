@@ -154,6 +154,8 @@ impl Simulation {
                 None => population.restrict(&roots),
             }
         }
+        // Outside the near tier, members fold into bands (E4).
+        self.fold_far();
         Ok(work)
     }
 
