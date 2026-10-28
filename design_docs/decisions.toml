@@ -5271,6 +5271,30 @@ draws_on = ["113", "sim-execution D24", "sim-execution D34"]
 replaces = ["sim-execution D34"]
 governs = ["isocosm::spatial::foraging"]
 
+[decisions."sim-execution D36"]
+title = "far foragers wait at site grain (2026-10-28), applies Processes 6"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A far forager whose site holds food it can eat waits there for its feed, as a posed forager waits with food in reach."
+draws_on = ["113", "sim-execution D32", "sim-execution D35"]
+governs = ["isocosm::spatial::foraging"]
+
+[decisions."sim-execution D37"]
+title = "far prey read by the forager's own intake (2026-10-28), applies Processes 6"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A far forager's prey matter is what the ordinary search accepts for it, by its own intake."
+draws_on = ["sim-execution D35"]
+governs = ["isocosm::spatial::tier", "isocosm::targets"]
+
+[decisions."sim-execution D38"]
+title = "a resting body re-settles (2026-10-28), applies Bodies 2"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Bodies and anatomy"
+summary = "A posed member whose stance stops balancing takes the nearest balanced stance at the end of the advance."
+draws_on = ["sim-execution D32", "sim-execution D33"]
+governs = ["isocosm::spatial"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"
