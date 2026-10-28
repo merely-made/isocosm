@@ -11,6 +11,12 @@ Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
 plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
 line in Findings.
 
+## Decisions
+
+- **D1, many projections of one store (2026-10-28), applies 18:** Mark: "Sounds fine to me. If we can do that, sounds fine to me. Makes a lot of sense to me. And they don't have to be like projections in like a destructive way, you know, or projections in like a, you only get one projection per thing." And: "I think that different creatures would see the world differently, right? And so it makes sense to be able to analyze the world according to these different dimensions." Top-down, side, 2:1 dimetric, 3D and slices along any axis are reads of the one quantized store; a read never writes back, and a thing may be read through as many projections at once as anything needs, a creature's senses included.
+
+  Links: area World generation · draws on 18, presentation.1 · summary 2D, 2.5D and 3D views are non-destructive projections of one store, as many per thing as needed, a creature's senses among them.
+
 ## Constraints
 
 - Done-conditions are seeded draws from a declared space, never fixtures (ruling 15), and each check carries a control that fails when the property it guards is deliberately broken (old plan §A.5).
@@ -63,7 +69,7 @@ Rename the voxel material seeded as `world:soil` to `world:earth`, so `world:soi
 - From: `archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md` lines 399-404 and 466-468.
 
 ### PG4. Passage survival at coarse levels
-A coarse lift point-samples each coarse cell's origin: `chunk()` in `lift/chunk.rs` reads each coarse column's surface at the cell origin only, and the edit replay in `edit/replay.rs` keeps only cells whose coordinates are multiples of the step. A carve, door, burrow or water channel narrower than the cell can vanish at a coarse ring. No test in `lift/tests.rs` or `edit/tests.rs` covers passages, and none of L10's done-conditions checks that a passage survives. The direction stated when this was raised: a coarse cell should stay open if any fine cell in it is carved, and carry the fine clearance. That rule is not ruled (see Questions).
+A coarse lift point-samples each coarse cell's origin: `chunk()` in `lift/chunk.rs` reads each coarse column's surface at the cell origin only, and the edit replay in `edit/replay.rs` keeps only cells whose coordinates are multiples of the step. A carve, door, burrow or water channel narrower than the cell can vanish at a coarse ring. No test in `lift/tests.rs` or `edit/tests.rs` covers passages, and none of L10's done-conditions checks that a passage survives. The direction stated when this was raised: a coarse cell should stay open if any fine cell in it is carved, and carry the fine clearance. Mark doubts it ("sounds like full voxel territory"); the recommendation in Questions keeps coarse cells to a derived "opening here" bit.
 - Done when: not stated; owed. The form the harvest suggested: a seeded-edit control where a one-base-cell passage is present at base grain, its survival or absence at each ring level is stated and checked, and a control fails when origin-sampling drops it.
 - Needs: `orthographic-voxel-presentation L10` (its rings); SP2's `lift(site, level, at)`; the places derived at ring levels
 - Rulings: 425, 296
@@ -84,6 +90,7 @@ Before any product field enters `ResidentChunk`, its card names authority class,
 - From: `archive_docs/2026-10-28/2026-08-14_resident_views_composition_plan.md` lines 30-39, 140-176, 178-236, 326-330, 523-526, 877-901.
 
 ## Deferred and parked
+- **A view for slicing the world by its projections.** Mark, 2026-10-28, of the scratch terrain-ladder widget: "in terms of like slicing up the map in a lot of different ways. I think that was cool", and "I'd be okay with that being like a Metacosmos, you know, GUI. I mean, obviously we have more work to do before we can make decisions like that." Not a phase and not a name; it waits on D1's projections existing. From: Mark, 2026-10-28.
 - **Overflow (416)**: once capacity exists, what a carver cannot hold is filled back as a heap beside the cut, an automatic fill edit placed from the edit's seed; until then the carver holds all of it. Waits on a world capacity, which no plan defines. From: `archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md` lines 213-216 and 482-484; rulings 412, 416.
 - **Skeleton founding in isoscape**: the founding pipeline starts in Isocosm's generator and moves to isoscape when isoscape is founded (392); Isocosm's default base unit of 1,000 µm is a placeholder no world has been founded against. Waits on isoscape's founding. From: `archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md` lines 343-345 and 157; ruling 392.
 - **Relief lab and presentation-amplification tier**: two directions adopted 2026-08-07 as instruments, "not a gate": live seed and parameter twiddling over worldgen re-rendered through the tracer; GPU micro-detail that never enters the replay hash (enhanced profile only). Cues only; relief generation has since been replaced by the lift. From: `archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md` lines 1205-1232.
@@ -95,8 +102,7 @@ Before any product field enters `ResidentChunk`, its card names authority class,
 
 ## Questions for Mark
 - **Which air is "cut off from the sky" (417)**: no air path to the sky, or solid anywhere above. Both are built and a caller must name one. Related reading, not ruled: the sim never sees a member move within its site, so its game updates `patch` through `Command::Patch` as it moves it. From: `archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md` lines 238-244 and 276-278; rulings 417, 737, 740.
-- **Passage rule at coarse levels**: PG4's direction (a coarse cell stays open if any fine cell in it is carved, carrying the fine clearance) is the only candidate stated and is not ruled. Is it the rule, and what clearance does a coarse cell carry? From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md` lines 2436-2467.
-- **Top-down, side, 2:1 dimetric and 3D as projections of one store**: gap raised 2026-10-27. No plan names these views as projections of this one store, and none says whether the store's dimension is itself a world rule. Is it? (`sim-execution` holds the tier line's side of this cut: whether the line must be independent of the viewing dimension.) From: the 2026-10-27 design discussion; not in the archived plans.
+- **Passage rule at coarse levels**: Mark, 2026-10-28: "I don't know. Maybe not. I don't know. It kind of sounds like full voxel territory to me." Recommendation (not ruled): nothing physical reads a coarse lift (already §A.2.6: a coarse lift for a far view is presentation and never feeds a derivation), so fit, passage and sight for the sim always read base grain and its sparse exceptions, which are cheap to scan directly. A coarse cell keeps no fine geometry and no clearance; that would be voxel detail climbing the levels. It may carry one derived bit, "an opening is here", set when any exception falls inside it, so a far view or a coarsely sensing creature can show or notice that something is there without pretending to draw it. PG4 then checks only that the bit survives. From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md` lines 2436-2467; Mark, 2026-10-28.
 
 ## Findings
 - 2026-10-28: the border clause of SP5 is built: `places::join` builds passages across a border through the frame relation, with the cliff spans drawn (743, 744). The old SP5 annotation that it was "still open" is history.

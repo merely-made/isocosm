@@ -24,7 +24,7 @@ speed bars (`sim-execution`); the host's mode-host and GUI acceptance (`sim-host
 store and its lifts (`place-graph-engine`); body appearance, footing, senses and binding
 (`bodies`); the body voxel scale and the default-view ruling (`orthographic-voxel-presentation`);
 hagiograph significance and the glyph organ (`wing-organs`); the wing's portable body contract
-(`wing-phenotype-contract`); parked rungs (ruling 279, `sim`).
+(`wing-phenotype-contract`); parked rungs (`wing-organs` D1).
 
 Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
 plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a

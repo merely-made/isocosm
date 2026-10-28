@@ -168,8 +168,8 @@ Eponym's only until the sim's record replaces the histories it measures.
   visible; promotion is the hagiograph's test (ruling 4), traceable, deterministic and bounded;
   and a manifestation is a proposal the world-conditions owner admits, retelling alone never
   mutating terrain."
-- Needs: the hagiograph (`wing-organs`); a world-conditions owner for manifestation (parked
-  under 279, see `sim`)
+- Needs: the hagiograph (`wing-organs`); a world-conditions owner for manifestation (parked,
+  `wing-organs` D1)
 - Rulings: 4, 801
 - From: `archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:346`.
 
@@ -259,11 +259,11 @@ Acceptance of the session host with a real keyboard and mouse.
   overflowing counts refuse; the wider contract vocabulary stays visible but unbuilt. Waits on
   a ruling to widen the vocabulary. Rulings 63, 67. From:
   `archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:40`.
-- **World conditions (surgery and magic)**: parked under 279, see `sim`. From:
+- **World conditions (surgery and magic)**: parked (`wing-organs` D1). From:
   `archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:338`.
 - **Glyph marks in the scene, a real canon, durable journey persistence**: the scene half is
   `orthographic-voxel-presentation` far marks (L10); canon and journeys are `wing-organs` G3 and
-  G4, parked under 279, see `sim`. From:
+  G4, parked (`wing-organs` D1). From:
   `archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:464`.
 - **Sky creatures, a later scale experiment**: done when "one organism has a coherent coarse
   lifecycle, produces an observable local effect, and responds to one local action without

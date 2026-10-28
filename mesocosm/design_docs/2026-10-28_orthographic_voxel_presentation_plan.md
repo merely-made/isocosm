@@ -46,6 +46,10 @@ line in Findings.
 
   Links: area Presentation · draws on 382 · governs mesocosm-genet::section::camera · summary Mesocosm defaults to a selectable isometric surface view with section options.
 
+- **D3, the camera decides neither the sim nor the rendering (2026-10-28), refines D1:** Mark: "It can be axonometric, could be oblique, could be isometric, could be diametric, could be trimetric, could be... You know, it really just, it does, that's not the most important thing. The most important thing is that the question of the camera is not determinative of the question of the sim or the question of the rendering, necessarily. Unless we decide to do quantized facing, which I don't think we're doing, necessarily." Which projection a view uses is a host setting; D1's "isometric" and doctrine Presentation 1's 2:1 dimetric need no reconciling.
+
+  Links: area Presentation · draws on 382, presentation.1, orthographic-voxel-presentation D1 · refines orthographic-voxel-presentation D1 · summary The projection a view uses is a setting; the camera determines neither the sim nor the rendering.
+
 ## Constraints
 - Ground and bodies share one depth attachment; a body's parts are scene
   instances (rulings 13 and 14). Mark, ruling 14: "One surface per body is
@@ -269,8 +273,6 @@ should name this plan.
 - **Hybrid switch policy**: the old plan reads it as answered by the ladder (424), marked "Reading, not ruled"; genet's T2 landed, so it is now a quality choice rather than a scaling necessity. Confirm or rule. Same source.
 - **Far-rung function tint**: whether the far rungs of the detail ladder (doctrine Presentation 2) need the function tint, or only the marks. From: `archive_docs/2026-10-28/2026-10-22_body_appearance_plan.md:302-303`.
 - **L10 readings not ruled**: that outer rings coarsen first; that the glyph rasteriser is netrender's text path (parley, skrifa, vello) run once per glyph, cached and thresholded to opaque pixels. Bench readings still owed with numbers: thresholds, hysteresis bands, each mode's default glyph filter, dither pattern and frame count; and whether the GPU pass lands the bake's pixels and face shading (the silhouette test proves coverage only). Mark's "Per mode" already settles who decides whether examining fires on approach. From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:2395-2400, 2420-2422, 2469-2476, 2601-2605`.
-- **D1's wording**: D1 above says "isometric"; doctrine Presentation 1, which records Mark's "Follow the wing: 2:1 dimetric, quarter turns", makes the default the 2:1 dimetric, and the camera now defaults to it. Whether D1 stands as written, as the record of a decision since refined, is Mark's. From: `archive_docs/2026-10-28/2026-09-25_mesocosm_overlay_plan.md:78`.
-
 ## Findings
 - 2026-10-28: `shared/isometer/crates` holds core, lens, mesh, render and space. A grep finds no L10 machinery (no rung or ring set, no rung hysteresis; `isometer-lens` has a tracer palette dither, which is not the rung dither), no `gpu_bake`, and no HTML serializer.
 - 2026-10-28: no `renderling` in any manifest or lock of this repository; Eponym's README says no local fork is needed since L7. L7's first condition holds; the S0 replay hash and the room-composition condition are unchecked.
