@@ -157,6 +157,7 @@ impl Simulation {
         // Outside the near tier, members leave the physical path (E5) and
         // fold into bands (E4).
         self.unplace_far();
+        self.draw_into_frames();
         self.fold_far();
         Ok(work)
     }

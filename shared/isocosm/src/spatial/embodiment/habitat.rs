@@ -37,12 +37,19 @@ pub fn declare_site(g: &mut Genesis) -> Result<()> {
 /// One placement policy for founding and actual arrivals, using native diets.
 pub fn place_in_site(sim: &Simulation, t: &Templates, id: Id, site: Id,
     placed: &BTreeMap<Id, Pose>) -> Result<Pose> {
+    place_within(sim, t, id, site, &t.window, placed)
+}
+
+/// The same policy, its search centred inside `within` (a camera's frame,
+/// the execution plan's E5).
+pub fn place_within(sim: &Simulation, t: &Templates, id: Id, site: Id, within: &Window,
+    placed: &BTreeMap<Id, Pose>) -> Result<Pose> {
     let entity = sim.state().population.get(id).ok_or("habitat actor absent")?;
     let doc = entity.body.as_ref().ok_or("habitat body absent")?;
     let margin = i64::from(doc.aabb().extent().into_iter().max().unwrap_or(0)) + SEARCH_REACH;
     let centre = [0,1].map(|k| {
-        let span = (t.window.max[k]-t.window.min[k]-2*margin).max(1);
-        t.window.min[k] + margin.min((t.window.max[k]-t.window.min[k])/2)
+        let span = (within.max[k]-within.min[k]-2*margin).max(1);
+        within.min[k] + margin.min((within.max[k]-within.min[k])/2)
             + (crate::draw(sim.genesis().seed,"habitat-anchor",&[site,id,k as u64]) % span as u64) as i64
     });
     let centre = [centre[0],0,centre[1]];
@@ -50,8 +57,9 @@ pub fn place_in_site(sim: &Simulation, t: &Templates, id: Id, site: Id,
         .fold(Yaw::Zero, |y,_| y.compose(Yaw::Quarter));
     let edible = sim.placement_food(id,site);
     let mut anchors = vec![centre];
+    let inside = |at: &[i64; 3]| (0..2).all(|k| (within.min[k]..within.max[k]).contains(&at[2 * k]));
     if !edible.is_empty() {
-        anchors = placed.iter().filter(|(id,_)| edible.contains_key(id)).map(|(_,p)| p.at).collect();
+        anchors = placed.iter().filter(|(id,p)| edible.contains_key(id) && inside(&p.at)).map(|(_,p)| p.at).collect();
         anchors.sort_by_key(|a| a[0].abs_diff(centre[0])+a[2].abs_diff(centre[2]));
         anchors.truncate(4);
         if anchors.is_empty() { anchors.push(centre); }
