@@ -5246,6 +5246,22 @@ summary = "The head's view windows are an attention region; outside them members
 draws_on = ["742", "sim-execution D23", "sim-execution D25", "sim-execution D26", "sim-execution D30"]
 governs = ["isocosm::attention", "isocosm::spatial"]
 
+[decisions."sim-execution D33"]
+title = "the frame off on main for now (2026-10-28), applies D18"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "The head reports no frame on main until E5's fixes land together."
+draws_on = ["sim-execution D32"]
+governs = ["mesocosm_runtime::runtime"]
+
+[decisions."sim-execution D34"]
+title = "far meals at the walkers' measured rate (2026-10-28), applies Processes 6"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A far forager eats at the rate near foragers are measured to eat."
+draws_on = ["113", "sim-execution D2", "sim-execution D24"]
+governs = ["isocosm::spatial::foraging"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"

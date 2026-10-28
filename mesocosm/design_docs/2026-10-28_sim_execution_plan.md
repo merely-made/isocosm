@@ -293,6 +293,22 @@ each title names its outcome against the doctrine.
 
   Links: area Directing and play · draws on 742, sim-execution D23, sim-execution D25, sim-execution D26, sim-execution D30 · governs isocosm::attention, isocosm::spatial · summary The head's view windows are an attention region; outside them members hold no pose.
 
+- **D33, the frame off on main for now (2026-10-28), applies D18:** "Frame
+  off on main for now (Recommended)". A headed look at E5d found the played
+  critter's view blank after it migrated (its arrival pose fails the balance
+  check) and deaths up from 2 to 22 by tick 20; the runtime's frame attach
+  is held behind `FRAME_TIER` until the fixes land together on the branch.
+
+  Links: area Processes and rules · draws on sim-execution D32 · governs mesocosm_runtime::runtime · summary The head reports no frame on main until E5's fixes land together.
+
+- **D34, far meals at the walkers' measured rate (2026-10-28), applies
+  Processes 6:** "The walkers' measured rate (Recommended)". A far forager's
+  meal succeeds at the per-tick rate near foragers actually eat, measured
+  from the near tier and kept as a world rule, so the far tier agrees with
+  the near in distribution.
+
+  Links: area Processes and rules · draws on 113, sim-execution D2, sim-execution D24 · governs isocosm::spatial::foraging · summary A far forager eats at the rate near foragers are measured to eat.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -434,3 +450,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: E5a-b built (`Region::Frame`, `spatial/tier.rs`): a frame roots its posed members; with attention windows, posed members neither near nor buffered lose their pose and forage at site grain.
 - 2026-10-28: E5d built (`mesocosm-runtime/src/runtime/frame.rs`, `Simulation::near`): the critter's frame is the participant's attention; far arrivals and births stay off the physical path. The headless play run's cost fell about sixteenfold (receipts).
 - 2026-10-28: E5c built (`Simulation::draw_into_frames`, `embodiment::place_within`): frames fill toward their share by area, at most twice the shortfall tried an advance.
+- 2026-10-28: D33, D34: the head's frame off on main (`FRAME_TIER`); far meals to be paced at the walkers' measured rate. The tier publications (`Publication::Unplaced`, `Drawn`) are on `sim-e4-probe`, not main.
