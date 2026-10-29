@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::grid::TileGrid;
 use crate::iso::TileCoord;
-use crate::sheet::SheetData;
+use crate::sheet::{FieldValue, SheetData};
 
 /// Index into the map's tileset vocabulary (`MapDocument::tile_kinds`).
 /// Kind 0 is always "empty" by convention.
@@ -109,6 +109,10 @@ pub struct MapDocument {
     /// no stance (just walking). The substrate never knows what Scouting does.
     #[serde(default)]
     pub stances: BTreeMap<TokenId, String>,
+    /// Versioned game-owned state beside the sheets. The substrate stores it
+    /// without interpreting it; system plugins own its schema and changes.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub system_data: BTreeMap<String, FieldValue>,
 }
 
 impl MapDocument {
@@ -127,6 +131,7 @@ impl MapDocument {
             mobility: BTreeMap::new(),
             turn_counters: BTreeMap::new(),
             stances: BTreeMap::new(),
+            system_data: BTreeMap::new(),
         }
     }
 

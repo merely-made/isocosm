@@ -293,7 +293,7 @@ pub fn srd_5e() -> System {
         function a_attack_mult(c, t, degree)
             if degree >= 2 then return 200 else return 100 end
         end
-        function a_attack_dmg(c) return ab_mod(c.str) end
+        function a_attack_dmg(c) return ab_mod(c.str) + (c.damage_bonus or 0) end
 
         -- Convince: a Charisma pitch against the target's resolve DC. This is
         -- the persuasion twin of a_attack/a_attack_hit -- same shape, social

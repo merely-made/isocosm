@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# Adapted mechanical implementation data; original summaries, not book prose.
+# Based on the material for Ars Magica, copyright 1993-2024, licensed by
+# Trident, Inc. d/b/a Atlas Games, under CC BY-SA 4.0.
+# Ars Magica and Mythic Europe are trademarks of Trident, Inc., used with permission.
+# Source text: reviewed/Ars Magica - Definitive Edition (Core Rules).md,
+# blob 41860c6a10eedc246c730ca485bed6927060ced9 in OriginalMadman/Ars-Magica-Open-License.
+version = 1
+
+[[effects]]
+id = "ars5:eyes-of-the-cat"
+edition = "ars5"
+kind = "sight"
+level = 5
+range_ft = 5
+personal = false
+duration = "sun"
+concentration = false
+actions = 1
+bonus_action = false
+form = "corpus"
+requisite = "animal"
+source = "Ars Magica Definitive Edition: Eyes of the Cat; formulaic Muto Corpus with Animal requisite"
+license = "CC-BY-SA-4.0"
+credit = "Based on the material for Ars Magica, copyright 1993-2024, licensed by Trident, Inc. d/b/a Atlas Games under https://creativecommons.org/licenses/by-sa/4.0/; adapted as executable procedure data."
+
+[[effects]]
+id = "ars5:preternatural-growth"
+edition = "ars5"
+kind = "size"
+level = 15
+range_ft = 5
+personal = false
+duration = "sun"
+concentration = false
+actions = 1
+bonus_action = false
+form = "corpus"
+source = "Ars Magica Definitive Edition: Preternatural Growth and Shrinking; normal Size +1 or -1/-2"
+license = "CC-BY-SA-4.0"
+credit = "Based on the material for Ars Magica, copyright 1993-2024, licensed by Trident, Inc. d/b/a Atlas Games under https://creativecommons.org/licenses/by-sa/4.0/; adapted as executable procedure data."
+
+[[effects]]
+id = "ars5:edge-of-the-razor"
+edition = "ars5"
+kind = "weapon"
+level = 20
+range_ft = 5
+personal = false
+duration = "sun"
+concentration = false
+actions = 1
+bonus_action = false
+form = "terram"
+source = "Ars Magica Definitive Edition: Edge of the Razor; metal edged or pointed weapon, +2 Damage"
+license = "CC-BY-SA-4.0"
+credit = "Based on the material for Ars Magica, copyright 1993-2024, licensed by Trident, Inc. d/b/a Atlas Games under https://creativecommons.org/licenses/by-sa/4.0/; adapted as executable procedure data."

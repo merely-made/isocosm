@@ -277,7 +277,10 @@ impl App {
                     Ok(inventory) => inventory,
                     Err(why) => { runner.update(|ui| ui.status = why); return; },
                 };
-                let effective = system.effective_sheet(&sheet, inventory.as_ref());
+                let effective = match system.effective_map_sheet(&runner.state().map, tok, &sheet, inventory.as_ref()) {
+                    Ok(sheet) => sheet,
+                    Err(why) => { runner.update(|ui| ui.status = why); return; },
+                };
                 if let Some(expr) = system.action_expr(&key, &effective) {
                     let by = sheet.text("name").unwrap_or("?").to_owned();
                     let label = system
@@ -422,7 +425,10 @@ impl App {
                     Ok(inventory) => inventory,
                     Err(why) => { runner.update(|ui| { ui.sheet_effective = None; ui.sheet_derived.clear(); ui.status = why; }); return; },
                 };
-                let effective = system.effective_sheet(&sheet, inventory.as_ref());
+                let effective = match system.effective_map_sheet(&runner.state().map, tok, &sheet, inventory.as_ref()) {
+                    Ok(sheet) => sheet,
+                    Err(why) => { runner.update(|ui| { ui.sheet_effective = None; ui.sheet_derived.clear(); ui.status = why; }); return; },
+                };
                 let derived = system.derived(&effective);
                 runner.update(|ui| {
                     ui.sheet_effective = Some(effective);

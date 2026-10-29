@@ -316,3 +316,37 @@ fn a_part_the_body_cannot_pay_for_is_not_grown() {
     assert_eq!(e.parts.len(), 1, "only the lump");
     assert_eq!(e.accounts[SOIL], 30, "the hand untouched");
 }
+
+#[test]
+fn a_catalogued_growth_candidate_still_uses_paid_native_growth_and_exact_history() {
+    let mut g = world(false);
+    let process = grow_act();
+    assert_eq!(process.effect_kinds(), [EffectKind::Grow].into());
+    g.rules.processes.insert(process.id.clone(), process);
+    let id = first_grazer(&g);
+    let mut e = body(&g, &[1], &[], &[[0, 0, 2]], 12);
+    e.accounts.insert(SOIL.into(), 30);
+    *g.population.lift(id).unwrap() = e;
+    let mut session = isocosm::Session::new(g, isocosm::Execution::Individuals).unwrap();
+    let matter = session.sim.matter();
+    let parts = session.sim.state().population.get(id).unwrap().parts.len();
+    session
+        .command(isocosm::Command::Act {
+            actor: id,
+            target: None,
+            process: "test:grow".into(),
+            cause: None,
+        })
+        .unwrap();
+    assert!(grew(&session.sim, id));
+    assert!(session.sim.state().population.get(id).unwrap().parts.len() > parts);
+    assert_eq!(session.sim.matter(), matter);
+    let saved = serde_json::to_vec(&session.save()).unwrap();
+    let restored = isocosm::Session::load_json(&saved, isocosm::Execution::Individuals).unwrap();
+    assert_eq!(restored.sim.state(), session.sim.state());
+    assert_eq!(restored.entries, session.entries);
+    assert_eq!(
+        restored.sim.witness().digest(),
+        session.sim.witness().digest()
+    );
+}

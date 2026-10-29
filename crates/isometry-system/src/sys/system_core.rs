@@ -252,6 +252,15 @@ impl System {
         effective
     }
 
+    /// Equipment and running ruleset effects share the existing transient
+    /// input path. The map holds only the accepted lifecycle, never a patched
+    /// copy of a base sheet that expiry would have to undo.
+    pub fn effective_map_sheet(&self, map: &isometry_core::MapDocument, token: TokenId,
+        sheet: &SheetData, inventory: Option<&Inventory>) -> Result<SheetData, String> {
+        let equipped = self.effective_sheet(sheet, inventory);
+        crate::active_effects::project_sheet(map, token, inventory, &equipped)
+    }
+
     /// Call a Lua function `func(character)` returning an int.
     pub(crate) fn call_int(&mut self, func: &str, sheet: &SheetData) -> Option<i64> {
         self.call_int_ctx(func, sheet, None, None)

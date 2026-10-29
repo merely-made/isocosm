@@ -1,0 +1,5851 @@
+{
+  "cases": [
+    {
+      "absolute_dark": "Grey",
+      "active": {
+        "caster": 1,
+        "concentration": false,
+        "definition": {
+          "actions": 1,
+          "bonus_action": false,
+          "concentration": false,
+          "credit": "Based on the System Reference Document 5.1 by Wizards of the Coast LLC, licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/",
+          "duration": {
+            "seconds": 28800
+          },
+          "edition": "dnd5",
+          "form": null,
+          "id": "dnd5:darkvision",
+          "kind": "sight",
+          "level": 2,
+          "license": "CC-BY-4.0",
+          "personal": false,
+          "range_ft": 5,
+          "requisite": null,
+          "source": "D&D SRD 5.1: Darkvision; https://media.wizards.com/2023/downloads/dnd/SRD_CC_v5.1.pdf"
+        },
+        "ended": null,
+        "expires": 28800,
+        "id": 1,
+        "penetration": null,
+        "rank": 2,
+        "size_change": 0,
+        "started": 0,
+        "suppressed_by": [],
+        "target": {
+          "Creature": 2
+        }
+      },
+      "body_half_extent": [
+        4,
+        8,
+        4
+      ],
+      "expired_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 12
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 10
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:dnd5:darkvision": {
+            "Bool": true
+          },
+          "known:dnd5:enlarge-reduce": {
+            "Bool": true
+          },
+          "known:dnd5:magic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:dnd5:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:9": {
+            "Int": 12
+          },
+          "prof": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 12
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "5e-srd"
+      },
+      "near_dark": "Grey",
+      "procedure": "dnd5:darkvision",
+      "receipt": {
+        "casting_total": null,
+        "costs": {
+          "slot:2": -1
+        },
+        "definition_revision": "9f307bc7aa496867a9094c94133c8d9dbd7a81e70234d0349952cb512f5591c2",
+        "dice": [],
+        "effect": 1,
+        "experimental": true,
+        "outcome": "effect activated",
+        "request": {
+          "caster": 1,
+          "definition": "dnd5:darkvision",
+          "rank": 2,
+          "request_id": "demo:0",
+          "resisted": false,
+          "ruling": null,
+          "size_change": 0,
+          "target": {
+            "Creature": 2
+          },
+          "willing": true
+        },
+        "tick": 0
+      },
+      "restored": true,
+      "sheet": {
+        "fields": {
+          "ac": {
+            "Int": 12
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "darkvision_ft": {
+            "Int": 60
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 10
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:dnd5:darkvision": {
+            "Bool": true
+          },
+          "known:dnd5:enlarge-reduce": {
+            "Bool": true
+          },
+          "known:dnd5:magic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:dnd5:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:9": {
+            "Int": 12
+          },
+          "prof": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 12
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "5e-srd"
+      },
+      "suppressed_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 12
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 10
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:dnd5:darkvision": {
+            "Bool": true
+          },
+          "known:dnd5:enlarge-reduce": {
+            "Bool": true
+          },
+          "known:dnd5:magic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:dnd5:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:9": {
+            "Int": 12
+          },
+          "prof": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 12
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "5e-srd"
+      },
+      "weapon": {
+        "attack_bonus": 0,
+        "damage_bonus": 0,
+        "damage_dice": 0,
+        "magical": false,
+        "penetration": null,
+        "resisted_by_magic": false
+      }
+    },
+    {
+      "absolute_dark": "Hidden",
+      "active": {
+        "caster": 1,
+        "concentration": true,
+        "definition": {
+          "actions": 1,
+          "bonus_action": false,
+          "concentration": true,
+          "credit": "Based on the System Reference Document 5.1 by Wizards of the Coast LLC, licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/",
+          "duration": {
+            "seconds": 60
+          },
+          "edition": "dnd5",
+          "form": null,
+          "id": "dnd5:enlarge-reduce",
+          "kind": "size",
+          "level": 2,
+          "license": "CC-BY-4.0",
+          "personal": false,
+          "range_ft": 30,
+          "requisite": null,
+          "source": "D&D SRD 5.1: Enlarge/Reduce"
+        },
+        "ended": null,
+        "expires": 60,
+        "id": 1,
+        "penetration": null,
+        "rank": 2,
+        "size_change": 1,
+        "started": 0,
+        "suppressed_by": [],
+        "target": {
+          "Creature": 2
+        }
+      },
+      "body_half_extent": [
+        8,
+        16,
+        8
+      ],
+      "expired_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 12
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 10
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:dnd5:darkvision": {
+            "Bool": true
+          },
+          "known:dnd5:enlarge-reduce": {
+            "Bool": true
+          },
+          "known:dnd5:magic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:dnd5:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:9": {
+            "Int": 12
+          },
+          "prof": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 12
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "5e-srd"
+      },
+      "near_dark": "Hidden",
+      "procedure": "dnd5:enlarge-reduce",
+      "receipt": {
+        "casting_total": null,
+        "costs": {
+          "slot:2": -1
+        },
+        "definition_revision": "f4e5f8e708d0be1d5ad94673fcf43c12142173ec95a671be671bdea7615096db",
+        "dice": [],
+        "effect": 1,
+        "experimental": true,
+        "outcome": "effect activated",
+        "request": {
+          "caster": 1,
+          "definition": "dnd5:enlarge-reduce",
+          "rank": 2,
+          "request_id": "demo:1",
+          "resisted": false,
+          "ruling": null,
+          "size_change": 1,
+          "target": {
+            "Creature": 2
+          },
+          "willing": true
+        },
+        "tick": 0
+      },
+      "restored": true,
+      "sheet": {
+        "fields": {
+          "ac": {
+            "Int": 12
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "effect_weapon_action": {
+            "Text": "attack"
+          },
+          "effect_weapon_d4": {
+            "Int": 1
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 10
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:dnd5:darkvision": {
+            "Bool": true
+          },
+          "known:dnd5:enlarge-reduce": {
+            "Bool": true
+          },
+          "known:dnd5:magic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:dnd5:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:9": {
+            "Int": 12
+          },
+          "prof": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 3
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "strength_advantage": {
+            "Int": 1
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 512000000
+          },
+          "will": {
+            "Int": 12
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "5e-srd"
+      },
+      "suppressed_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 12
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 10
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:dnd5:darkvision": {
+            "Bool": true
+          },
+          "known:dnd5:enlarge-reduce": {
+            "Bool": true
+          },
+          "known:dnd5:magic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:dnd5:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:9": {
+            "Int": 12
+          },
+          "prof": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 12
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "5e-srd"
+      },
+      "weapon": {
+        "attack_bonus": 0,
+        "damage_bonus": 0,
+        "damage_dice": 0,
+        "magical": false,
+        "penetration": null,
+        "resisted_by_magic": false
+      }
+    },
+    {
+      "absolute_dark": "Hidden",
+      "active": {
+        "caster": 1,
+        "concentration": true,
+        "definition": {
+          "actions": 0,
+          "bonus_action": true,
+          "concentration": true,
+          "credit": "Based on the System Reference Document 5.1 by Wizards of the Coast LLC, licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/",
+          "duration": {
+            "seconds": 3600
+          },
+          "edition": "dnd5",
+          "form": null,
+          "id": "dnd5:magic-weapon",
+          "kind": "weapon",
+          "level": 2,
+          "license": "CC-BY-4.0",
+          "personal": false,
+          "range_ft": 5,
+          "requisite": null,
+          "source": "D&D SRD 5.1: Magic Weapon"
+        },
+        "ended": null,
+        "expires": 3600,
+        "id": 1,
+        "penetration": null,
+        "rank": 2,
+        "size_change": 0,
+        "started": 0,
+        "suppressed_by": [],
+        "target": {
+          "Item": "demo:sword"
+        }
+      },
+      "body_half_extent": [
+        4,
+        8,
+        4
+      ],
+      "expired_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 12
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 10
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:dnd5:darkvision": {
+            "Bool": true
+          },
+          "known:dnd5:enlarge-reduce": {
+            "Bool": true
+          },
+          "known:dnd5:magic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:dnd5:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:9": {
+            "Int": 12
+          },
+          "prof": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 12
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "5e-srd"
+      },
+      "near_dark": "Hidden",
+      "procedure": "dnd5:magic-weapon",
+      "receipt": {
+        "casting_total": null,
+        "costs": {
+          "slot:2": -1
+        },
+        "definition_revision": "f6b228fcb3573c0e28622909071f9daaf193885c9849d80d28eb8d5e5d63ab93",
+        "dice": [],
+        "effect": 1,
+        "experimental": true,
+        "outcome": "effect activated",
+        "request": {
+          "caster": 1,
+          "definition": "dnd5:magic-weapon",
+          "rank": 2,
+          "request_id": "demo:2",
+          "resisted": false,
+          "ruling": null,
+          "size_change": 0,
+          "target": {
+            "Item": "demo:sword"
+          },
+          "willing": true
+        },
+        "tick": 0
+      },
+      "restored": true,
+      "sheet": {
+        "fields": {
+          "ac": {
+            "Int": 12
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 1
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "effect_weapon_action": {
+            "Text": "attack"
+          },
+          "effect_weapon_damage": {
+            "Int": 1
+          },
+          "effect_weapon_dice": {
+            "Int": 0
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 10
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:dnd5:darkvision": {
+            "Bool": true
+          },
+          "known:dnd5:enlarge-reduce": {
+            "Bool": true
+          },
+          "known:dnd5:magic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "magical_weapon": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:dnd5:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:9": {
+            "Int": 12
+          },
+          "prof": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 12
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "5e-srd"
+      },
+      "suppressed_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 12
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 10
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:dnd5:darkvision": {
+            "Bool": true
+          },
+          "known:dnd5:enlarge-reduce": {
+            "Bool": true
+          },
+          "known:dnd5:magic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:dnd5:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:enlarge-reduce:9": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:dnd5:magic-weapon:9": {
+            "Int": 12
+          },
+          "prof": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 12
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "5e-srd"
+      },
+      "weapon": {
+        "attack_bonus": 1,
+        "damage_bonus": 1,
+        "damage_dice": 0,
+        "magical": true,
+        "penetration": null,
+        "resisted_by_magic": false
+      }
+    },
+    {
+      "absolute_dark": "Grey",
+      "active": {
+        "caster": 1,
+        "concentration": false,
+        "definition": {
+          "actions": 2,
+          "bonus_action": false,
+          "concentration": false,
+          "credit": "Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative License: https://paizo.com/orclicense",
+          "duration": {
+            "seconds": 3600
+          },
+          "edition": "pathfinder2",
+          "form": null,
+          "id": "pf2:darkvision",
+          "kind": "sight",
+          "level": 2,
+          "license": "ORC",
+          "personal": true,
+          "range_ft": 0,
+          "requisite": null,
+          "source": "Pathfinder Player Core: Darkvision (2023 Remaster); rank-2 personal, rank-3 touch, rank-5 daily preparations"
+        },
+        "ended": null,
+        "expires": 3600,
+        "id": 1,
+        "penetration": null,
+        "rank": 2,
+        "size_change": 0,
+        "started": 0,
+        "suppressed_by": [],
+        "target": {
+          "Creature": 1
+        }
+      },
+      "body_half_extent": [
+        4,
+        8,
+        4
+      ],
+      "expired_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 16
+          },
+          "actions_per_turn": {
+            "Int": 3
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 20
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:pf2:darkvision": {
+            "Bool": true
+          },
+          "known:pf2:enlarge": {
+            "Bool": true
+          },
+          "known:pf2:runic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:pf2:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:2": {
+            "Int": 11
+          },
+          "prepared:pf2:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:10": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:2": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:3": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:4": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:5": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:6": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:7": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:8": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:9": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:1": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:9": {
+            "Int": 12
+          },
+          "rank_attack": {
+            "Int": 2
+          },
+          "rank_intimidation": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 14
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "pf2e-srd"
+      },
+      "near_dark": "Grey",
+      "procedure": "pf2:darkvision",
+      "receipt": {
+        "casting_total": null,
+        "costs": {
+          "prepared:pf2:darkvision:2": -1
+        },
+        "definition_revision": "5ec9c0204ad70b0e6d0a096ea80f51104ebb2f1a606c19cba3294ff5ee43d281",
+        "dice": [],
+        "effect": 1,
+        "experimental": true,
+        "outcome": "effect activated",
+        "request": {
+          "caster": 1,
+          "definition": "pf2:darkvision",
+          "rank": 2,
+          "request_id": "demo:0",
+          "resisted": false,
+          "ruling": null,
+          "size_change": 0,
+          "target": {
+            "Creature": 1
+          },
+          "willing": true
+        },
+        "tick": 0
+      },
+      "restored": true,
+      "sheet": {
+        "fields": {
+          "ac": {
+            "Int": 16
+          },
+          "actions_per_turn": {
+            "Int": 3
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "darkvision": {
+            "Bool": true
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 20
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:pf2:darkvision": {
+            "Bool": true
+          },
+          "known:pf2:enlarge": {
+            "Bool": true
+          },
+          "known:pf2:runic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:pf2:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:2": {
+            "Int": 11
+          },
+          "prepared:pf2:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:10": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:2": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:3": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:4": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:5": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:6": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:7": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:8": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:9": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:1": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:9": {
+            "Int": 12
+          },
+          "rank_attack": {
+            "Int": 2
+          },
+          "rank_intimidation": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 14
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "pf2e-srd"
+      },
+      "suppressed_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 16
+          },
+          "actions_per_turn": {
+            "Int": 3
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 20
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:pf2:darkvision": {
+            "Bool": true
+          },
+          "known:pf2:enlarge": {
+            "Bool": true
+          },
+          "known:pf2:runic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:pf2:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:2": {
+            "Int": 11
+          },
+          "prepared:pf2:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:10": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:2": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:3": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:4": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:5": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:6": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:7": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:8": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:9": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:1": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:9": {
+            "Int": 12
+          },
+          "rank_attack": {
+            "Int": 2
+          },
+          "rank_intimidation": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 14
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "pf2e-srd"
+      },
+      "weapon": {
+        "attack_bonus": 0,
+        "damage_bonus": 0,
+        "damage_dice": 0,
+        "magical": false,
+        "penetration": null,
+        "resisted_by_magic": false
+      }
+    },
+    {
+      "absolute_dark": "Hidden",
+      "active": {
+        "caster": 1,
+        "concentration": false,
+        "definition": {
+          "actions": 2,
+          "bonus_action": false,
+          "concentration": false,
+          "credit": "Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative License: https://paizo.com/orclicense",
+          "duration": {
+            "seconds": 300
+          },
+          "edition": "pathfinder2",
+          "form": null,
+          "id": "pf2:enlarge",
+          "kind": "size",
+          "level": 2,
+          "license": "ORC",
+          "personal": false,
+          "range_ft": 30,
+          "requisite": null,
+          "source": "Pathfinder Player Core: Enlarge (2023 Remaster); single-target rank-2 and rank-4 versions"
+        },
+        "ended": null,
+        "expires": 300,
+        "id": 1,
+        "penetration": null,
+        "rank": 2,
+        "size_change": 1,
+        "started": 0,
+        "suppressed_by": [],
+        "target": {
+          "Creature": 2
+        }
+      },
+      "body_half_extent": [
+        8,
+        16,
+        8
+      ],
+      "expired_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 16
+          },
+          "actions_per_turn": {
+            "Int": 3
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 20
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:pf2:darkvision": {
+            "Bool": true
+          },
+          "known:pf2:enlarge": {
+            "Bool": true
+          },
+          "known:pf2:runic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:pf2:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:10": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:2": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:3": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:4": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:5": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:6": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:7": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:8": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:9": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:1": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:9": {
+            "Int": 12
+          },
+          "rank_attack": {
+            "Int": 2
+          },
+          "rank_intimidation": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 14
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "pf2e-srd"
+      },
+      "near_dark": "Hidden",
+      "procedure": "pf2:enlarge",
+      "receipt": {
+        "casting_total": null,
+        "costs": {
+          "prepared:pf2:enlarge:2": -1
+        },
+        "definition_revision": "552fd23d5809f1bfee671b056c9d224b298374a4f3e3742681b57f3833d3fab7",
+        "dice": [],
+        "effect": 1,
+        "experimental": true,
+        "outcome": "effect activated",
+        "request": {
+          "caster": 1,
+          "definition": "pf2:enlarge",
+          "rank": 2,
+          "request_id": "demo:1",
+          "resisted": false,
+          "ruling": null,
+          "size_change": 1,
+          "target": {
+            "Creature": 2
+          },
+          "willing": true
+        },
+        "tick": 0
+      },
+      "restored": true,
+      "sheet": {
+        "fields": {
+          "ac": {
+            "Int": 16
+          },
+          "actions_per_turn": {
+            "Int": 3
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "clumsy": {
+            "Int": 1
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "effect_reach_tiles": {
+            "Int": 2
+          },
+          "effect_weapon_action": {
+            "Text": "strike"
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 20
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:pf2:darkvision": {
+            "Bool": true
+          },
+          "known:pf2:enlarge": {
+            "Bool": true
+          },
+          "known:pf2:runic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "melee_damage_status_bonus": {
+            "Int": 2
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:pf2:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:10": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:2": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:3": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:4": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:5": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:6": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:7": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:8": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:9": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:1": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:9": {
+            "Int": 12
+          },
+          "rank_attack": {
+            "Int": 2
+          },
+          "rank_intimidation": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 10
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 3
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 14
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "pf2e-srd"
+      },
+      "suppressed_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 16
+          },
+          "actions_per_turn": {
+            "Int": 3
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 20
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:pf2:darkvision": {
+            "Bool": true
+          },
+          "known:pf2:enlarge": {
+            "Bool": true
+          },
+          "known:pf2:runic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:pf2:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:10": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:2": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:3": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:4": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:5": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:6": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:7": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:8": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:9": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:1": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:9": {
+            "Int": 12
+          },
+          "rank_attack": {
+            "Int": 2
+          },
+          "rank_intimidation": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 14
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "pf2e-srd"
+      },
+      "weapon": {
+        "attack_bonus": 0,
+        "damage_bonus": 0,
+        "damage_dice": 0,
+        "magical": false,
+        "penetration": null,
+        "resisted_by_magic": false
+      }
+    },
+    {
+      "absolute_dark": "Hidden",
+      "active": {
+        "caster": 1,
+        "concentration": false,
+        "definition": {
+          "actions": 2,
+          "bonus_action": false,
+          "concentration": false,
+          "credit": "Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative License: https://paizo.com/orclicense",
+          "duration": {
+            "seconds": 60
+          },
+          "edition": "pathfinder2",
+          "form": null,
+          "id": "pf2:runic-weapon",
+          "kind": "weapon",
+          "level": 1,
+          "license": "ORC",
+          "personal": false,
+          "range_ft": 5,
+          "requisite": null,
+          "source": "Pathfinder Player Core: Runic Weapon (2023 Remaster); rank-1, rank-6 and rank-9 weapon runes"
+        },
+        "ended": null,
+        "expires": 60,
+        "id": 1,
+        "penetration": null,
+        "rank": 1,
+        "size_change": 0,
+        "started": 0,
+        "suppressed_by": [],
+        "target": {
+          "Item": "demo:sword"
+        }
+      },
+      "body_half_extent": [
+        4,
+        8,
+        4
+      ],
+      "expired_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 16
+          },
+          "actions_per_turn": {
+            "Int": 3
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 20
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:pf2:darkvision": {
+            "Bool": true
+          },
+          "known:pf2:enlarge": {
+            "Bool": true
+          },
+          "known:pf2:runic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:pf2:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:10": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:2": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:3": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:4": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:5": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:6": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:7": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:8": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:9": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:1": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:9": {
+            "Int": 12
+          },
+          "rank_attack": {
+            "Int": 2
+          },
+          "rank_intimidation": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 14
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "pf2e-srd"
+      },
+      "near_dark": "Hidden",
+      "procedure": "pf2:runic-weapon",
+      "receipt": {
+        "casting_total": null,
+        "costs": {
+          "prepared:pf2:runic-weapon:1": -1
+        },
+        "definition_revision": "21132974a8a2a8a31c180f7d9af49f95a239e1da54ef9b34f751cf3ce1fd4994",
+        "dice": [],
+        "effect": 1,
+        "experimental": true,
+        "outcome": "effect activated",
+        "request": {
+          "caster": 1,
+          "definition": "pf2:runic-weapon",
+          "rank": 1,
+          "request_id": "demo:2",
+          "resisted": false,
+          "ruling": null,
+          "size_change": 0,
+          "target": {
+            "Item": "demo:sword"
+          },
+          "willing": true
+        },
+        "tick": 0
+      },
+      "restored": true,
+      "sheet": {
+        "fields": {
+          "ac": {
+            "Int": 16
+          },
+          "actions_per_turn": {
+            "Int": 3
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 1
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "effect_weapon_action": {
+            "Text": "strike"
+          },
+          "effect_weapon_damage": {
+            "Int": 0
+          },
+          "effect_weapon_dice": {
+            "Int": 2
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 20
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:pf2:darkvision": {
+            "Bool": true
+          },
+          "known:pf2:enlarge": {
+            "Bool": true
+          },
+          "known:pf2:runic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "magical_weapon": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:pf2:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:10": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:2": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:3": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:4": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:5": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:6": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:7": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:8": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:9": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:1": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:9": {
+            "Int": 12
+          },
+          "rank_attack": {
+            "Int": 2
+          },
+          "rank_intimidation": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 14
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "pf2e-srd"
+      },
+      "suppressed_sheet": {
+        "fields": {
+          "ac": {
+            "Int": 16
+          },
+          "actions_per_turn": {
+            "Int": 3
+          },
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cha": {
+            "Int": 10
+          },
+          "con": {
+            "Int": 10
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "dex": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "hp_max": {
+            "Int": 20
+          },
+          "int": {
+            "Int": 10
+          },
+          "known:pf2:darkvision": {
+            "Bool": true
+          },
+          "known:pf2:enlarge": {
+            "Bool": true
+          },
+          "known:pf2:runic-weapon": {
+            "Bool": true
+          },
+          "level": {
+            "Int": 1
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:pf2:darkvision:10": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:2": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:3": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:4": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:5": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:6": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:7": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:8": {
+            "Int": 12
+          },
+          "prepared:pf2:darkvision:9": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:10": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:2": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:3": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:4": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:5": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:6": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:7": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:8": {
+            "Int": 12
+          },
+          "prepared:pf2:enlarge:9": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:1": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:10": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:2": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:3": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:4": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:5": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:6": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:7": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:8": {
+            "Int": 12
+          },
+          "prepared:pf2:runic-weapon:9": {
+            "Int": 12
+          },
+          "rank_attack": {
+            "Int": 2
+          },
+          "rank_intimidation": {
+            "Int": 2
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "sight": {
+            "Int": 6
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "speed": {
+            "Int": 5
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "str": {
+            "Int": 10
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          },
+          "will": {
+            "Int": 14
+          },
+          "wis": {
+            "Int": 10
+          }
+        },
+        "system": "pf2e-srd"
+      },
+      "weapon": {
+        "attack_bonus": 1,
+        "damage_bonus": 0,
+        "damage_dice": 2,
+        "magical": true,
+        "penetration": null,
+        "resisted_by_magic": false
+      }
+    },
+    {
+      "absolute_dark": "Hidden",
+      "active": {
+        "caster": 1,
+        "concentration": false,
+        "definition": {
+          "actions": 1,
+          "bonus_action": false,
+          "concentration": false,
+          "credit": "Based on the material for Ars Magica, copyright 1993-2024, licensed by Trident, Inc. d/b/a Atlas Games under https://creativecommons.org/licenses/by-sa/4.0/; adapted as executable procedure data.",
+          "duration": "sun",
+          "edition": "ars5",
+          "form": "terram",
+          "id": "ars5:edge-of-the-razor",
+          "kind": "weapon",
+          "level": 20,
+          "license": "CC-BY-SA-4.0",
+          "personal": false,
+          "range_ft": 5,
+          "requisite": null,
+          "source": "Ars Magica Definitive Edition: Edge of the Razor; metal edged or pointed weapon, +2 Damage"
+        },
+        "ended": null,
+        "expires": 21600,
+        "id": 1,
+        "penetration": 6,
+        "rank": 20,
+        "size_change": 0,
+        "started": 0,
+        "suppressed_by": [],
+        "target": {
+          "Item": "demo:sword"
+        }
+      },
+      "body_half_extent": [
+        4,
+        8,
+        4
+      ],
+      "expired_sheet": {
+        "fields": {
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "known:ars5:edge-of-the-razor": {
+            "Bool": true
+          },
+          "known:ars5:eyes-of-the-cat": {
+            "Bool": true
+          },
+          "known:ars5:preternatural-growth": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:ars5:eyes-of-the-cat:10": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:5": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:6": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:7": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:8": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:9": {
+            "Int": 12
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          }
+        },
+        "system": "ars5"
+      },
+      "near_dark": "Hidden",
+      "procedure": "ars5:edge-of-the-razor",
+      "receipt": {
+        "casting_total": 26,
+        "costs": {},
+        "definition_revision": "bfd8e61f773637b299fa42add7fcb0f43e5ffef7c114c47614a0437ca0129e2e",
+        "dice": [
+          4
+        ],
+        "effect": 1,
+        "experimental": true,
+        "outcome": "effect activated",
+        "request": {
+          "caster": 1,
+          "definition": "ars5:edge-of-the-razor",
+          "rank": 20,
+          "request_id": "demo:0",
+          "resisted": false,
+          "ruling": null,
+          "size_change": 0,
+          "target": {
+            "Item": "demo:sword"
+          },
+          "willing": true
+        },
+        "tick": 0
+      },
+      "restored": true,
+      "sheet": {
+        "fields": {
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "attack_bonus": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "effect_weapon_action": {
+            "Text": "attack"
+          },
+          "effect_weapon_damage": {
+            "Int": 2
+          },
+          "effect_weapon_dice": {
+            "Int": 0
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "known:ars5:edge-of-the-razor": {
+            "Bool": true
+          },
+          "known:ars5:eyes-of-the-cat": {
+            "Bool": true
+          },
+          "known:ars5:preternatural-growth": {
+            "Bool": true
+          },
+          "magical_weapon": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:ars5:eyes-of-the-cat:10": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:5": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:6": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:7": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:8": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:9": {
+            "Int": 12
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          }
+        },
+        "system": "ars5"
+      },
+      "suppressed_sheet": {
+        "fields": {
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "known:ars5:edge-of-the-razor": {
+            "Bool": true
+          },
+          "known:ars5:eyes-of-the-cat": {
+            "Bool": true
+          },
+          "known:ars5:preternatural-growth": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:ars5:eyes-of-the-cat:10": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:5": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:6": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:7": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:8": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:9": {
+            "Int": 12
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          }
+        },
+        "system": "ars5"
+      },
+      "weapon": {
+        "attack_bonus": 0,
+        "damage_bonus": 2,
+        "damage_dice": 0,
+        "magical": true,
+        "penetration": 6,
+        "resisted_by_magic": true
+      }
+    },
+    {
+      "absolute_dark": "Hidden",
+      "active": {
+        "caster": 1,
+        "concentration": false,
+        "definition": {
+          "actions": 1,
+          "bonus_action": false,
+          "concentration": false,
+          "credit": "Based on the material for Ars Magica, copyright 1993-2024, licensed by Trident, Inc. d/b/a Atlas Games under https://creativecommons.org/licenses/by-sa/4.0/; adapted as executable procedure data.",
+          "duration": "sun",
+          "edition": "ars5",
+          "form": "corpus",
+          "id": "ars5:eyes-of-the-cat",
+          "kind": "sight",
+          "level": 5,
+          "license": "CC-BY-SA-4.0",
+          "personal": false,
+          "range_ft": 5,
+          "requisite": "animal",
+          "source": "Ars Magica Definitive Edition: Eyes of the Cat; formulaic Muto Corpus with Animal requisite"
+        },
+        "ended": null,
+        "expires": 21600,
+        "id": 1,
+        "penetration": 21,
+        "rank": 5,
+        "size_change": 0,
+        "started": 0,
+        "suppressed_by": [],
+        "target": {
+          "Creature": 2
+        }
+      },
+      "body_half_extent": [
+        4,
+        8,
+        4
+      ],
+      "expired_sheet": {
+        "fields": {
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "known:ars5:edge-of-the-razor": {
+            "Bool": true
+          },
+          "known:ars5:eyes-of-the-cat": {
+            "Bool": true
+          },
+          "known:ars5:preternatural-growth": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:ars5:eyes-of-the-cat:10": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:5": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:6": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:7": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:8": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:9": {
+            "Int": 12
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          }
+        },
+        "system": "ars5"
+      },
+      "near_dark": "Grey",
+      "procedure": "ars5:eyes-of-the-cat",
+      "receipt": {
+        "casting_total": 26,
+        "costs": {},
+        "definition_revision": "ab6ca78a26046c1723246de41c207fbb6a6f62a2c9185cff2ed565b05df655c8",
+        "dice": [
+          4
+        ],
+        "effect": 1,
+        "experimental": true,
+        "outcome": "effect activated",
+        "request": {
+          "caster": 1,
+          "definition": "ars5:eyes-of-the-cat",
+          "rank": 5,
+          "request_id": "demo:1",
+          "resisted": false,
+          "ruling": null,
+          "size_change": 0,
+          "target": {
+            "Creature": 2
+          },
+          "willing": true
+        },
+        "tick": 0
+      },
+      "restored": true,
+      "sheet": {
+        "fields": {
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "cat_eyes": {
+            "Bool": true
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "known:ars5:edge-of-the-razor": {
+            "Bool": true
+          },
+          "known:ars5:eyes-of-the-cat": {
+            "Bool": true
+          },
+          "known:ars5:preternatural-growth": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:ars5:eyes-of-the-cat:10": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:5": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:6": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:7": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:8": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:9": {
+            "Int": 12
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          }
+        },
+        "system": "ars5"
+      },
+      "suppressed_sheet": {
+        "fields": {
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "known:ars5:edge-of-the-razor": {
+            "Bool": true
+          },
+          "known:ars5:eyes-of-the-cat": {
+            "Bool": true
+          },
+          "known:ars5:preternatural-growth": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:ars5:eyes-of-the-cat:10": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:5": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:6": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:7": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:8": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:9": {
+            "Int": 12
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          }
+        },
+        "system": "ars5"
+      },
+      "weapon": {
+        "attack_bonus": 0,
+        "damage_bonus": 0,
+        "damage_dice": 0,
+        "magical": false,
+        "penetration": null,
+        "resisted_by_magic": false
+      }
+    },
+    {
+      "absolute_dark": "Hidden",
+      "active": {
+        "caster": 1,
+        "concentration": false,
+        "definition": {
+          "actions": 1,
+          "bonus_action": false,
+          "concentration": false,
+          "credit": "Based on the material for Ars Magica, copyright 1993-2024, licensed by Trident, Inc. d/b/a Atlas Games under https://creativecommons.org/licenses/by-sa/4.0/; adapted as executable procedure data.",
+          "duration": "sun",
+          "edition": "ars5",
+          "form": "corpus",
+          "id": "ars5:preternatural-growth",
+          "kind": "size",
+          "level": 15,
+          "license": "CC-BY-SA-4.0",
+          "personal": false,
+          "range_ft": 5,
+          "requisite": null,
+          "source": "Ars Magica Definitive Edition: Preternatural Growth and Shrinking; normal Size +1 or -1/-2"
+        },
+        "ended": null,
+        "expires": 21600,
+        "id": 1,
+        "penetration": 11,
+        "rank": 15,
+        "size_change": 1,
+        "started": 0,
+        "suppressed_by": [],
+        "target": {
+          "Creature": 2
+        }
+      },
+      "body_half_extent": [
+        8,
+        16,
+        8
+      ],
+      "expired_sheet": {
+        "fields": {
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "known:ars5:edge-of-the-razor": {
+            "Bool": true
+          },
+          "known:ars5:eyes-of-the-cat": {
+            "Bool": true
+          },
+          "known:ars5:preternatural-growth": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:ars5:eyes-of-the-cat:10": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:5": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:6": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:7": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:8": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:9": {
+            "Int": 12
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          }
+        },
+        "system": "ars5"
+      },
+      "near_dark": "Hidden",
+      "procedure": "ars5:preternatural-growth",
+      "receipt": {
+        "casting_total": 26,
+        "costs": {},
+        "definition_revision": "948aec4b828d5f9e1c3afd9be0bf0d7c9f9b98a70a93f24803ef92beb210f15f",
+        "dice": [
+          4
+        ],
+        "effect": 1,
+        "experimental": true,
+        "outcome": "effect activated",
+        "request": {
+          "caster": 1,
+          "definition": "ars5:preternatural-growth",
+          "rank": 15,
+          "request_id": "demo:2",
+          "resisted": false,
+          "ruling": null,
+          "size_change": 1,
+          "target": {
+            "Creature": 2
+          },
+          "willing": true
+        },
+        "tick": 0
+      },
+      "restored": true,
+      "sheet": {
+        "fields": {
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 1
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "known:ars5:edge-of-the-razor": {
+            "Bool": true
+          },
+          "known:ars5:eyes-of-the-cat": {
+            "Bool": true
+          },
+          "known:ars5:preternatural-growth": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:ars5:eyes-of-the-cat:10": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:5": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:6": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:7": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:8": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:9": {
+            "Int": 12
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          }
+        },
+        "system": "ars5"
+      },
+      "suppressed_sheet": {
+        "fields": {
+          "animal": {
+            "Int": 10
+          },
+          "ars_size": {
+            "Int": 0
+          },
+          "body_form": {
+            "Text": "corpus"
+          },
+          "can_manipulate": {
+            "Bool": true
+          },
+          "can_speak": {
+            "Bool": true
+          },
+          "con_save_bonus": {
+            "Int": 3
+          },
+          "corpus": {
+            "Int": 10
+          },
+          "fatigue_lost": {
+            "Int": 0
+          },
+          "hp_current": {
+            "Int": 30
+          },
+          "known:ars5:edge-of-the-razor": {
+            "Bool": true
+          },
+          "known:ars5:eyes-of-the-cat": {
+            "Bool": true
+          },
+          "known:ars5:preternatural-growth": {
+            "Bool": true
+          },
+          "material_or_focus": {
+            "Bool": true
+          },
+          "muto": {
+            "Int": 10
+          },
+          "name": {
+            "Text": "Bearer"
+          },
+          "prepared:ars5:eyes-of-the-cat:10": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:5": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:6": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:7": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:8": {
+            "Int": 12
+          },
+          "prepared:ars5:eyes-of-the-cat:9": {
+            "Int": 12
+          },
+          "reach_ft": {
+            "Int": 5
+          },
+          "size_category": {
+            "Int": 2
+          },
+          "slot:1": {
+            "Int": 12
+          },
+          "slot:10": {
+            "Int": 12
+          },
+          "slot:2": {
+            "Int": 12
+          },
+          "slot:3": {
+            "Int": 12
+          },
+          "slot:4": {
+            "Int": 12
+          },
+          "slot:5": {
+            "Int": 12
+          },
+          "slot:6": {
+            "Int": 12
+          },
+          "slot:7": {
+            "Int": 12
+          },
+          "slot:8": {
+            "Int": 12
+          },
+          "slot:9": {
+            "Int": 12
+          },
+          "spell_save_dc": {
+            "Int": 15
+          },
+          "stamina": {
+            "Int": 2
+          },
+          "terram": {
+            "Int": 10
+          },
+          "weight_mg": {
+            "Int": 64000000
+          }
+        },
+        "system": "ars5"
+      },
+      "weapon": {
+        "attack_bonus": 0,
+        "damage_bonus": 0,
+        "damage_dice": 0,
+        "magical": false,
+        "penetration": null,
+        "resisted_by_magic": false
+      }
+    }
+  ],
+  "scope": "Nine executable VTT procedures on an authored board; no headed casting controls or native biological magic.",
+  "seed": 73,
+  "version": 1
+}

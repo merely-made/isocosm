@@ -22,6 +22,7 @@ piccolo = "0.3"
 
 [dev-dependencies]
 isocosm-vtt = { workspace = true, default-features = false }
+isometer-core = { workspace = true }
 
 # App-local terminal authoring; normal runtime builds do not carry syntax tooling.
 [features]

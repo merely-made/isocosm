@@ -31,6 +31,8 @@ use isometry_core::{
 use piccolo::{Closure, Executor, Fuel, IntoValue, Lua, StashedExecutor, Table, Value};
 
 mod bestiary;
+pub mod effect_catalogue;
+pub mod active_effects;
 mod items;
 mod pf2e;
 mod spells;

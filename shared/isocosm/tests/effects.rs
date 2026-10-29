@@ -419,3 +419,56 @@ fn rules_refuse_what_these_effects_cannot_do() {
         "the control"
     );
 }
+
+#[test]
+fn a_sensory_allocation_changes_a_native_reading_and_replays_without_new_matter() {
+    let mut g = world();
+    let e = g.population.lift(1).unwrap();
+    e.body.as_mut().unwrap().parts[0].half_extent = [3, 3, 1];
+    e.accounts.clear();
+    let part = e.part_mut(&PartId(0)).unwrap();
+    part.functions = ["function:fix", "function:sense"].map(String::from).into();
+    part.cells = BTreeMap::from([("function:fix".into(), 4)]);
+    part.matter = BTreeMap::from([(TISSUE.into(), 10)]);
+    let effect = Effect::Allocate {
+        from: Some("function:fix".into()),
+        to: "function:sense".into(),
+        cells: 2.into(),
+    };
+    let requires = vec![Query::Expresses {
+        function: "function:sense".into(),
+    }];
+    let p = act("test:sense", requires, vec![effect]);
+    assert_eq!(p.effect_kinds(), [EffectKind::Allocate].into());
+    with(&mut g, p);
+    let sensory_area = |sim: &Simulation| {
+        let e = sim.state().population.get(1).unwrap();
+        isocosm::anatomy::share_of(
+            e.extent(PartId(0)),
+            &e.parts[&PartId(0)],
+            "function:sense",
+            Measure::Area,
+        )
+    };
+    let mut session = Session::new(g, Execution::Individuals).unwrap();
+    let matter = session.sim.matter();
+    assert_eq!(sensory_area(&session.sim), 0);
+    session
+        .command(isocosm::Command::Act {
+            actor: 1,
+            target: None,
+            process: "test:sense".into(),
+            cause: None,
+        })
+        .unwrap();
+    assert!(sensory_area(&session.sim) > 0);
+    assert_eq!(session.sim.matter(), matter);
+    let saved = serde_json::to_vec(&session.save()).unwrap();
+    let restored = Session::load_json(&saved, Execution::Individuals).unwrap();
+    assert_eq!(restored.sim.state(), session.sim.state());
+    assert_eq!(restored.entries, session.entries);
+    assert_eq!(
+        restored.sim.witness().digest(),
+        session.sim.witness().digest()
+    );
+}
