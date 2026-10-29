@@ -5295,6 +5295,22 @@ summary = "A posed member whose stance stops balancing takes the nearest balance
 draws_on = ["sim-execution D32", "sim-execution D33"]
 governs = ["isocosm::spatial"]
 
+[decisions."sim-execution D39"]
+title = "a crowded frame draws by the ordinary search (2026-10-28), applies Directing 5"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Directing and play"
+summary = "A drawn member with no free stance near its food takes the ordinary search, and that food counts as crowded for the rest of the advance."
+draws_on = ["sim-execution D32", "sim-execution D36"]
+governs = ["isocosm::spatial"]
+
+[decisions."sim-execution D40"]
+title = "a frame's draw stops at its first failure (2026-10-29), applies Directing 5"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Directing and play"
+summary = "A frame's draw stops for the advance at its first member with no stance in the frame."
+draws_on = ["sim-execution D32", "sim-execution D39"]
+governs = ["isocosm::spatial"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"

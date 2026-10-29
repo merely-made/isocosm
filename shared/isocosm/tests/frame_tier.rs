@@ -46,10 +46,18 @@ fn a_frame_draws_members_in_and_only_roots_stay_posed_outside_it() {
         .filter(|g| g.entity.alive && g.entity.body.is_some() && g.entity.journey.is_none() && g.entity.resident_site() == Some(site))
         .map(|g| g.count).sum::<u64>();
     s.attach_window(p, "mesocosm".into(), WindowAttention { examined: Some(frame.clone()), ..Default::default() }).unwrap();
-    s.advance(1).unwrap();
-    let after = framed(&s);
     // How full a frame gets depends on its ground; this world's quarter has
-    // few stands, so the test asks only that drawing adds members.
+    // few stands, so the test asks only that drawing adds members. A draw
+    // stops at its first member with no stance (D40), so a frame fills over
+    // several advances.
+    let mut after = before;
+    for _ in 0..8 {
+        s.advance(1).unwrap();
+        after = framed(&s);
+        if after > before {
+            break;
+        }
+    }
     assert!(members > 0 && after > before, "the frame draws members in: {before} then {after} of {members}");
     let state = s.sim.state();
     let at_site: Vec<_> = state.spatial_poses.iter().filter(|(_, r)| r.site == site).collect();

@@ -40,7 +40,7 @@ pub use swing::{SAMPLES as SWING_SAMPLES, swing_boxes, swing_feet};
 mod founding;
 mod habitat;
 pub use contacts::{Contact, contacts, sweep_clear};
-pub use habitat::{declare_site, place_in_site, place_within, settle, site_window, whole_site};
+pub use habitat::{declare_site, draw_within, place_in_site, place_within, settle, site_window, whole_site};
 #[cfg(test)]
 pub(super) mod articulation_tests;
 #[cfg(test)]

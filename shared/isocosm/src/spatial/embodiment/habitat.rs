@@ -44,6 +44,28 @@ pub fn place_in_site(sim: &Simulation, t: &Templates, id: Id, site: Id,
 /// the execution plan's E5).
 pub fn place_within(sim: &Simulation, t: &Templates, id: Id, site: Id, within: &Window,
     placed: &BTreeMap<Id, Pose>) -> Result<Pose> {
+    stand_within(sim, t, id, site, within, placed, &sim.placement_food(id, site))
+}
+
+/// A frame's draw (the execution plan's D39): the same policy, and where no
+/// stance near the member's placed food is free, the search a member with no
+/// food placed takes. `crowded` holds the placed food already found full this
+/// advance; a member whose food is among it goes straight to that search.
+pub fn draw_within(sim: &Simulation, t: &Templates, id: Id, site: Id, within: &Window,
+    placed: &BTreeMap<Id, Pose>, crowded: &mut BTreeSet<Vec<Id>>) -> Result<Pose> {
+    let edible = sim.placement_food(id, site);
+    let food: Vec<Id> = edible.keys().copied().filter(|f| placed.contains_key(f)).collect();
+    if !food.is_empty() && !crowded.contains(&food) {
+        if let Ok(pose) = stand_within(sim, t, id, site, within, placed, &edible) {
+            return Ok(pose);
+        }
+        crowded.insert(food);
+    }
+    stand_within(sim, t, id, site, within, placed, &BTreeMap::new())
+}
+
+fn stand_within(sim: &Simulation, t: &Templates, id: Id, site: Id, within: &Window,
+    placed: &BTreeMap<Id, Pose>, edible: &BTreeMap<Id, u64>) -> Result<Pose> {
     let entity = sim.state().population.get(id).ok_or("habitat actor absent")?;
     let doc = entity.body.as_ref().ok_or("habitat body absent")?;
     let margin = i64::from(doc.aabb().extent().into_iter().max().unwrap_or(0)) + SEARCH_REACH;
@@ -55,7 +77,6 @@ pub fn place_within(sim: &Simulation, t: &Templates, id: Id, site: Id, within: &
     let centre = [centre[0],0,centre[1]];
     let yaw = (0..crate::draw(sim.genesis().seed,"body-stand-yaw",&[site,id])%4)
         .fold(Yaw::Zero, |y,_| y.compose(Yaw::Quarter));
-    let edible = sim.placement_food(id,site);
     let mut anchors = vec![centre];
     let inside = |at: &[i64; 3]| (0..2).all(|k| (within.min[k]..within.max[k]).contains(&at[2 * k]));
     if !edible.is_empty() {

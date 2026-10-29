@@ -91,3 +91,58 @@ difference the new re-settle test in `tests/site_habitat.rs`, which
 passed (and failed with `settle_drifted` removed). The lib's four failures (`held_advance_tests`,
 `verified_question_tests`) are the same with the frame call disabled.
 `isocosm` lib: 295 passed, 20 ignored.
+
+## The frame draw, 2026-10-29 (D39, D40)
+
+`physical_swing`'s `unchosen_hungry_starter_can_take_a_supported_food_step`
+with its fixture's lineages unpaced (`decides = None`), debug, timed by the
+triage of the 36 failing runtime tests: 19 s at `541d88af`, 222 s at
+`76f8f5cc`, past 420 s at `b10cebbe` and past 32 minutes at `06b100a2`
+(both killed). The branch had the frame on at every one of these points;
+`FRAME_TIER` only exists on main.
+
+At `06b100a2`, with wall timers summed per advance (traces:
+`Code/testing/isometry/frame-tier-2026-10-28/traces/swing-unpaced-*.log`,
+the timers in `instrument.py` and `draw-instrumentation.patch` beside them):
+
+| Tick | Frame draw | Rest of the advance |
+| --- | --- | --- |
+| 1 | 191.5 s | under 1 s |
+| 2 | 425.3 s | about 6 s |
+
+D36 to D38's own work at tick 2: `foraging_wait_score` 432 calls, 252 ms;
+`prey_matter` 408 calls, 41 ms; `settle_drifted` 69 ms.
+
+The frame covers the whole of site 0, so tick 1's draw wants all 58 far
+members. 23 found a stance (16.8 s); 35 consumers whose two food bodies were
+already surrounded each ran the near-food search to its 625-candidate
+budget and failed (193.7 s, 5 to 9 s each). Tick 2 tried the same 35 again;
+every try failed.
+
+With D39 alone: near-food searches fell to 3 at tick 1 and 1 at tick 2,
+but 31 members a tick failed the ordinary search too (81 to 103 s a tick):
+the site's ground held 27 to 29 of the 58. The test ran 828 s and failed
+its last assertion (the critter still at site 0 after step 8).
+
+With D39 and D40: the test passes in 232 s. Steps took 14, 30, 20, 42, 19,
+24, 39 and 27 s; the frame draw 13 to 31 s a tick; posed members rose from
+12 at tick 1 to 34 at tick 7.
+
+D40 broke two pins that pass with D39 alone; both re-recorded under D18.
+`frame_tier`'s draw test (one advance): under D40 its frame held 0 of 64
+after one advance, 1 after two and 2 after eight; D39 alone drew 2 in the
+first, the most that quarter's ground holds. It now advances up to eight
+times until the frame draws. `physical_swing`'s
+`varied_unchosen_starter_walks_on_ordinary_needs_and_keeps_its_feet`: its
+critter's first food step is admitted at tick 2, and in that tick it departs
+on a journey (with D39 alone it stayed; 201 s); its pose is now asserted
+realized exactly while it is resident. A cap of four failed tries an advance
+was measured as an alternative: the frame test passed, the varied test failed
+the same way, and the unpaced test failed its last check in 342 s.
+
+`isocosm` lib: 295 passed, 20 ignored; `frame_tier`: passed.
+`cargo test -p mesocosm-runtime --tests --no-fail-fast`, debug: 58 passed,
+36 failed, the same 36 as at `76f8f5cc` and with D36 to D38; the two
+passing beyond that are D38's re-settle test and D39's
+`a_drawn_member_whose_food_is_crowded_takes_the_ordinary_search` (traces:
+`runtime-tests-d39-d40.log`, `isocosm-lib-d39-d40.log`).

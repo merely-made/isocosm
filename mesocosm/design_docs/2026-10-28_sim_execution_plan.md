@@ -1,7 +1,7 @@
 # The sim's execution model: speed, waking, parallel evaluation, near and far
 
 **Status:** 2026-10-28: cut from `2026-10-19_sim_execution_plan.md`, plus the speed items of `2026-10-14_sim_host_plan.md`, `2026-09-22_sim_plan.md`, `2026-09-11_orthographic_voxel_presentation_plan.md` and `2026-10-22_foot_placement_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20); the head at 10 ticks a second (D21); a missed risk on a process that otherwise does nothing makes no act (E7b). Built in part: E4a (far members fold into bands with a pool, where a world declares banding) and E5a-b (a camera frame roots its posed members; elsewhere members leave the physical path once a world has attention windows). Open: E4b (bands act once for all members, effects scaled by count), E5c built (members drawn into a frame by its share of the site); E5d built (the runtime holds the critter's frame as attention; far arrivals and births land without a pose), and the frame on in main since D36 to D38 (far foragers wait at site grain and read prey by their own intake; resting bodies re-settle); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
+`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20); the head at 10 ticks a second (D21); a missed risk on a process that otherwise does nothing makes no act (E7b). Built in part: E4a (far members fold into bands with a pool, where a world declares banding) and E5a-b (a camera frame roots its posed members; elsewhere members leave the physical path once a world has attention windows). Open: E4b (bands act once for all members, effects scaled by count), E5c built (members drawn into a frame by its share of the site); E5d built (the runtime holds the critter's frame as attention; far arrivals and births land without a pose), and the frame on in main since D36 to D38 (far foragers wait at site grain and read prey by their own intake; resting bodies re-settle), a crowded frame drawing by the ordinary search (D39) and stopping at its first failure (D40); E1 as a whole, E2, E3, E6, the tier line's band, and the speed bars. From E7 on, phases are checked in isolation while the sim is wired (D18).
 
 **For:** every tick-latency, frame and search-time bar in the family, and the execution work that serves them: waking (E1), draw keys (E2), parallel evaluation (E3), the crowd in the core (E4), crossings and the tier line (E5), rate models (E6), the host's latency bars, cold-route and startup search time, and the scale and scheduler-waste items. This is the only plan that states a speed number; others name `sim-execution` and do not restate it.
 
@@ -354,6 +354,30 @@ each title names its outcome against the doctrine.
 
   Links: area Bodies and anatomy · draws on sim-execution D32, sim-execution D33 · governs isocosm::spatial · summary A posed member whose stance stops balancing takes the nearest balanced stance at the end of the advance.
 
+- **D39, a crowded frame draws by the ordinary search (2026-10-28),
+  applies Directing 5:** "Fall back, skip repeats (Recommended)". A member
+  drawn into a frame stands near its placed food by the arrival policy;
+  where no stance near that food is free, it takes the search a member with
+  no food placed takes, around the frame's anchor, and walks to food from
+  there. After the first such failure in an advance, later members with the
+  same placed food go straight to that search. Asked after `physical_swing`,
+  unpaced, was traced to the frame draw: consumers whose food was already
+  surrounded each ran the near-food search to its candidate budget and
+  failed, and the draw retried them every advance.
+
+  Links: area Directing and play · draws on sim-execution D32, sim-execution D36 · governs isocosm::spatial · summary A drawn member with no free stance near its food takes the ordinary search, and that food counts as crowded for the rest of the advance.
+
+- **D40, a frame's draw stops at its first failure (2026-10-29), applies
+  Directing 5:** "Stop at first failure (Recommended)". A frame's draw ends
+  for the advance at its first member that finds no stance in the frame;
+  the next advance tries again in a new draw order, so a frame on full
+  ground fills over several advances. This replaces the cap of twice the
+  shortfall. Asked after D39 was measured: the frame's site held about half
+  the members its share asked for, and the members that found no stance
+  anywhere were searched for again every advance.
+
+  Links: area Directing and play · draws on sim-execution D32, sim-execution D39 · governs isocosm::spatial · summary A frame's draw stops for the advance at its first member with no stance in the frame.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -482,6 +506,7 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: The frame's extra deaths were far consumers leaving food, not the far-meal draw: between feeds a posed forager walks toward food or waits with it in reach, while a far one could do neither (`foraging_walk_matches` and `foraging_wait_score` refuse unposed actors), so a move was its only choice (D36). The far-food table also counted every living body at a site, the foragers' own among them, as prey (D37). With both fixed, frame-on deaths match frame-off over the same opening (receipts).
 - 2026-10-28: The critter's blank view after a migration is not the frame's: a stance is admitted against the body's matter as it is posed, and matter gained or lost standing still moves the matter centre, which leaves a stance near the edge of its feet; `realized` then fails and the scene drops the body. Matter does not change `body_revision`, so nothing re-posed it (D38). The same failure was traced with the frame off.
 - 2026-10-28: A large part of `mesocosm-runtime`'s test suite already fails at `76f8f5cc` (among them `held_advance_tests`, `verified_question_tests`, `ecology_offer`, `live_input`, `physical_play`), the same set with D36 to D38; the lib tests among them fail the same with the frame call disabled (receipts). Not taken up here.
+- 2026-10-28: Unpaced, `physical_swing`'s hungry-starter test ran past half an hour at the frame-on head, against 222 s at `76f8f5cc`, all of it in the frame draw: its frame covers the whole site, and the consumers whose food was already surrounded each ran the near-food search to its candidate budget and failed, every advance (D39); the site's ground also held only about half the frame's share, and the rest failed the ordinary search every advance (D40). D36 to D38's own work (wait score, prey matter, re-settle) came to under half a second a tick (receipts).
 
 ## Progress
 - 2026-10-28: cut from `2026-10-19_sim_execution_plan.md` and the speed items of the sim host, sim, orthographic voxel presentation and foot placement plans.
@@ -501,3 +526,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: D33, D34: the head's frame off on main (`FRAME_TIER`); far meals to be paced at the walkers' measured rate. The tier publications (`Publication::Unplaced`, `Drawn`) are on `sim-e4-probe`, not main.
 - 2026-10-28: D35 replaces D34: far meals by an encounter rate from prey density.
 - 2026-10-28: D36 to D38 built (`Simulation::prey_matter`, `foraging_wait_score`, `spatial/settle.rs`); `FRAME_TIER` on in main, lifting D33.
+- 2026-10-29: D39, D40 built (`embodiment::draw_within`, `Simulation::draw_into_frames`).

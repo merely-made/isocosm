@@ -9,7 +9,7 @@
 //! then forages at site grain. A world without windows keeps every pose.
 
 use crate::{Simulation, attention::Region, operations::Window, schema::*, spatial::{Pose, embodiment}};
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 /// Foragers per site and feed process (D35), read once an advance.
 pub(crate) type FarFood = BTreeMap<(Id, Key), u64>;
@@ -63,7 +63,9 @@ impl Simulation {
 
     /// Draws far members of a frame's site into the frame until it holds
     /// its share of the site's members by area, each placed by the arrival
-    /// policy inside the frame (D32).
+    /// policy inside the frame (D32), or where no stance near its food is
+    /// free, by the search of a member with no food placed (D39); the draw
+    /// stops for the advance at its first member with no stance (D40).
     pub(crate) fn draw_into_frames(&mut self) {
         let Some(t) = self.genesis.rules.spatial_templates.clone() else {
             return;
@@ -101,19 +103,21 @@ impl Simulation {
                 .filter(|(_, r)| r.site == site).map(|(id, r)| (*id, r.pose.clone())).collect();
             let within = Window { min, max, depth: t.window.depth };
             let mut drawn = Vec::new();
-            // At most twice the shortfall tried an advance: a frame on hard
-            // ground fills over several advances, not by searching for every
-            // far member each tick.
-            for id in far.into_iter().take(want.saturating_mul(2)) {
+            let mut crowded = BTreeSet::new();
+            // The draw stops at its first member with no stance in the frame
+            // (D40): a frame on full ground fills over several advances, not
+            // by searching for every far member each tick.
+            for id in far {
                 if drawn.len() == want {
                     break;
                 }
-                let Ok(pose) = embodiment::place_within(self, &t, id, site, &within, &placed) else { continue };
-                if !frame.frames(site, pose.at) {
-                    continue;
-                }
-                let Ok(terrain) = self.site_geometry(site, &embodiment::site_window(&t, pose.at), t.places) else { continue };
-                let Some(patch) = terrain.places.place_at(pose.at) else { continue };
+                let stance = embodiment::draw_within(self, &t, id, site, &within, &placed, &mut crowded).ok()
+                    .filter(|pose| frame.frames(site, pose.at))
+                    .and_then(|pose| {
+                        let terrain = self.site_geometry(site, &embodiment::site_window(&t, pose.at), t.places).ok()?;
+                        Some((terrain.places.place_at(pose.at)?, pose))
+                    });
+                let Some((patch, pose)) = stance else { break };
                 placed.insert(id, pose.clone());
                 drawn.push((id, pose, patch));
             }
