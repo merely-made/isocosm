@@ -1,6 +1,6 @@
 # Functional generation: magic as world operations
 
-**Status:** 2026-10-28: cut from `2026-09-09_functional_generation_plan.md` and its effects-remainders item from `2026-09-11_orthographic_voxel_presentation_plan.md`, which are archived in
+**Status:** 2026-10-28: F10a catalogue and F10b native binding controls built and tested following Mark's agreement below; complete edition procedures and F10c persistent enchantments remain open. Cut from `2026-09-09_functional_generation_plan.md` and its effects-remainders item from `2026-09-11_orthographic_voxel_presentation_plan.md`, which are archived in
 `archive_docs/2026-10-28/`. The first slice is built: `shared/wing-functions` (network, operators, generation, carriage) is shared and used by `shared/isocosm` (`effects/functions.rs`, `systems/carry.rs`) and by Eponym. The composition design (rulings 404 to 407, case 1009) is written; no cost formula, script runtime or ruleset adapter is selected. All of it is parked under ruling 279.
 
 **For:** magic and construction as world operations: the six axes a generated magic system is drawn on (case 1009, the nucleus), fundamental effects with equivalent-exchange cost, effect scripts connected to the world, persistent-effect lifecycle, rulesets and ways of casting, nested construction composition, the inspection a player or developer needs, the first slice's open work, and the effects system's remainders.
@@ -89,9 +89,26 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
 - Rulings: -
 - From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:1915-1920`, `:2207-2214`, `:2305-2310`
 
+### F10. Effect catalogue and edition correspondences
+The initial coverage map has ten families: resources and harm, defence and checks, anatomy, movement, perception and knowledge, agency and relationships, matter and environment, spatial access, life and identity, and persistence and interaction. Catalogue entries name the native primitives they may use and keep that evidence distinct from an implemented ruleset procedure. The ruleset lane owns reference mappings to D&D 5e SRD 5.1, Pathfinder 2e Player Core (2023), and Ars Magica 5e; these are source correspondences, not conversions of spell rank, energy, damage, duration or authority. Unknown and optional correspondences stay explicit. This tranche does not adopt a universal magic grammar or cost curve.
+
+- F10a done when: a versioned TOML catalogue covers every family and carries a mapping or an explicit gap for all three sources on every entry; admission rejects duplicate identities, unknown native operations, missing source references and unjustified implementation claims; a runnable inspector reports the coverage and the actual native process candidates.
+- F10b done when: the first body and sensory bindings are exercised through accepted native processes, refusal controls and exact save/replay, with their actual scope stated. A matching primitive alone does not establish a full spell implementation.
+- F10c open: persistent enchantments need an addressable lifecycle before their mapping can be promoted to executable. Activation, ownership, termination, interference and restoration of overlapping changes must be specified and tested; a timed note is not a substitute. Later edition-native execution preserves its own checks, costs, choices and exceptions.
+- Receipt budget: 100 MB total; compact test and inspection results only. Reuse existing Cargo targets; no headed captures are required for this catalogue tranche.
+- Needs: the existing native `rules::Effect` and `Process` grammar; `isometry-system` for edition content and inspection; F4 for F10c.
+
+## Decisions
+
+- **D1, effect catalogue (2026-10-28), applies Processes 3 and VTT 5:** Mark: "Ok! Agreed!" In response to the proposal: "I'd build the catalogue broadly, then make a small set work completely across the three rulesets. Body transformation, senses and persistent enchantment would expose useful differences immediately while giving world generation something substantial to grow around."
+
+  Outcome: applies to doctrine Processes 3 and VTT 5. This implementation starts with F10a and the existing native bindings in F10b; F10c and complete edition-native casting remain named open work rather than being represented by reference mappings. The speculative metamorphoses remain optional design candidates, not newly selected world laws.
+
+  Links: area Processes and rules · draws on 539, 540, 541, 543 · plans functional-generation · summary Start a broad effect catalogue with explicit edition correspondences and a bounded executable tranche.
+
 ## Deferred and parked
 
-- **Everything above** is parked with magic: no phase is scheduled (`wing-organs` D1). The first slice's lanes (evaluator, generation, consumer wiring) need no further work except as F8 records.
+- **F1 to F9** remain parked with magic (`wing-organs` D1). F10 is the bounded catalogue and binding tranche approved above. The first slice's lanes (evaluator, generation, consumer wiring) need no further work except as F8 records.
 
 ## Questions for Mark
 
@@ -105,6 +122,10 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
 
 ## Findings
 
+- 2026-10-28, F10: `crates/isometry-system/data/effects.toml` holds 54 vocabulary entries across ten families and pins three reference corpora. Nine related correspondences cover sensory allocation, recipe growth and lasting enchantment; 153 mappings are explicitly unreviewed. This is an initial coverage map, not a complete spell inventory or three executable rulesets. Source content stays in the system lane; no tabletop text or costs were added to native simulation rules.
+- 2026-10-28, F10: native `rules::Effect::kind` and `Process::effect_declarations` inspect the existing grammar, including commitments, guarded alternatives and risks. Catalogue candidates are declarations, not accepted acts. A sensory allocation candidate must both bind and allocate `function:sense`; an unrelated gland allocation does not qualify. The catalogue does not admit new operations or alter world saves.
+- 2026-10-28, F10b: the existing allocation and growth fixtures now also execute through `Session` and restore the exact state, entries and witness. Sensory allocation changes the native area reading without creating matter. Recipe growth adds paid parts without creating matter. Neither demonstrates darkvision, temporary resizing, polymorph, or an edition-native spell procedure. Persistent enchantment, suppression and dispelling have no native binding; a note's text lifetime and the function evaluator's charge storage do not provide one.
+- 2026-10-28, prior art for F10: Fantasy Grounds' [CoreRPG layering](https://fantasygroundsunity.atlassian.net/wiki/spaces/FGCP/pages/996644522/Ruleset%2B-%2BLayering), Foundry's [Active Effects](https://foundryvtt.com/article/active-effects/) and [PF2e rule elements](https://github.com/foundryvtt/pf2e/wiki/Quickstart-guide-for-rule-elements) inform the separation of common infrastructure, specific procedures and inspectable changes. They are research references, not adopted dependencies or proof of a complete simulation adapter.
 - 2026-10-28: `shared/wing-functions/src` holds carriage, generation, network and operators with tests. It is consumed by `shared/isocosm/src/effects/functions.rs`, `shared/isocosm/src/systems/carry.rs`, `eponym/crates/eponym-play` and `eponym-client`, and by `crates/isometry-campaign`. The "first slice implemented" header and "no implementation lane open" describe two different things: the evaluator exists; the composition design is unbuilt.
 - 2026-10-28: Eponym owns deterministic limb actions over the shared router (`eponym/crates/eponym-play/src/timed_action.rs`: elapsed ticks, anatomical bindings, interruption, strike receipts). So F8's "directional gesture timing", "physical strike adjudication", "live Eponym session integration" and "native timed charging" are at least partly built there; which F8 items they close is not verified. The strike-quality policy choice is `eponym-overlay`'s (ep.12 there).
 - 2026-10-28: the first slice's consumer wiring named `mesocosm-core`'s body membership adapter, which no longer exists; the native equivalent is `shared/isocosm/src/effects/functions.rs`. First-slice test counts and the batch receipts are not gates.
@@ -112,4 +133,5 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
 
 ## Progress
 
+- 2026-10-28: F10a initial catalogue, admission checks and native candidate inspector built; F10b native allocation/growth conservation and exact-history controls passed. F10c and edition-native execution remain open. Run `cargo run -p isometry-system --example inspect_effects -- --markdown` for the readable coverage matrix, `--json` for the revisioned report, or add `--genesis PATH` to inspect a native Genesis rather than the labelled reference founding. Run evidence belongs in the dated archive, not here.
 - 2026-10-28: cut from the functional generation plan and the presentation plan's effects remainders (pres.32); all phases parked.

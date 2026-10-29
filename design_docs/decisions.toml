@@ -4946,6 +4946,14 @@ area = "Processes and rules"
 summary = "An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act."
 draws_on = ["95", "96", "143"]
 
+[decisions."functional-generation D1"]
+title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
+source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
+area = "Processes and rules"
+summary = "Start a broad effect catalogue with explicit edition correspondences and a bounded executable tranche."
+draws_on = ["539", "540", "541", "543"]
+plans = ["functional-generation"]
+
 [decisions."orthographic-voxel-presentation D1"]
 title = "surface camera (2026-10-21), applies 382"
 source = "mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md"

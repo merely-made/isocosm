@@ -23,6 +23,8 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 - Read `../CLAUDE.md` first for repo role, terminology, and don'ts.
 - Verify claims against the codebase, not doc-to-doc consistency.
+- `responsa` reads the Git index: stage the intended record changes before
+  regenerating, checking or looking up a new decision.
 - Plans carry done-conditions, not time estimates.
 - `PROJECT_DESCRIPTION.md` is maintainer-owned; surface contradictions,
   do not edit unasked.

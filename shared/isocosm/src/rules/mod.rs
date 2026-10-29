@@ -25,7 +25,7 @@ pub use body::{BodyRules, Function, SHAPES, Seeding, default_functions, default_
 pub use competition::{Competition, Competitor, Similitude};
 pub use directing::{Directing, Inheritance, MovementTies};
 pub use defence::{Defence, DefenceLayer};
-pub use effect::{Conversion, Effect};
+pub use effect::{Conversion, Effect, EffectKind};
 pub use feeding::{FeedingSources, PortFeeding};
 pub use graft::{Compatibility, GraftReceipt, Raise, retained};
 pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};

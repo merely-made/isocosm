@@ -6,6 +6,9 @@
 
 use super::*;
 
+mod kind;
+pub use kind::EffectKind;
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Effect {
     Transfer {
