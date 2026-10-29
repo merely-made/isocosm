@@ -35,7 +35,27 @@ fn catalogue_covers_its_stated_vocabulary_without_claiming_complete_editions() {
         .flat_map(|e| e.mappings.values())
         .filter(|m| m.relation == Correspondence::Related)
         .count();
-    assert_eq!(related, 9);
+    assert_eq!(related, 15);
+    let definitions = isometry_system::active_effects::Definitions::builtin().unwrap();
+    catalogue.validate_procedures(&definitions).unwrap();
+    let bound: std::collections::BTreeSet<_> = catalogue
+        .entries
+        .iter()
+        .flat_map(|e| e.mappings.values())
+        .flat_map(|m| m.procedures.iter())
+        .collect();
+    assert_eq!(bound.len(), 9);
+    assert!(definitions.0.keys().all(|id| bound.contains(id)));
+    let mut bad = catalogue.clone();
+    bad.entries
+        .iter_mut()
+        .find(|e| e.id == "wing:detect")
+        .unwrap()
+        .mappings
+        .get_mut("ars5")
+        .unwrap()
+        .procedures = vec!["ars5:edge-of-the-razor".into()];
+    assert!(bad.validate_procedures(&definitions).is_err());
     assert!(catalogue.entry("wing:enchant").unwrap().native.is_empty());
     assert!(catalogue.entry("wing:resize").unwrap().native.is_empty());
     assert!(
@@ -85,6 +105,7 @@ fn admission_names_gaps_and_refuses_unsupported_claims() {
                     relation: Correspondence::Unmapped,
                     references: vec![],
                     differences: vec![],
+                    procedures: vec![],
                 },
             );
         })

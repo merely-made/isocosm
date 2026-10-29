@@ -70,6 +70,10 @@ pub struct Mapping {
     pub references: Vec<String>,
     #[serde(default)]
     pub differences: Vec<String>,
+    /// Specific executable procedures, distinct from a related reference or
+    /// a primitive candidate. Their accepted definitions are saved by casts.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub procedures: Vec<String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -168,5 +172,7 @@ impl Catalogue {
 }
 
 pub fn builtin() -> Result<Catalogue, String> {
-    Catalogue::from_toml(include_str!("../../data/effects.toml"))
+    let catalogue = Catalogue::from_toml(include_str!("../../data/effects.toml"))?;
+    catalogue.validate_procedures(&crate::active_effects::Definitions::builtin()?)?;
+    Ok(catalogue)
 }

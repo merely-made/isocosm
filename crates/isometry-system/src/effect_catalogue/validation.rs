@@ -62,6 +62,14 @@ impl Catalogue {
                 for reference in mapping.references.iter().chain(&mapping.differences) {
                     nonempty(reference, "mapping reference or difference")?;
                 }
+                let mut procedures = BTreeSet::new();
+                for procedure in &mapping.procedures {
+                    identity(procedure)?;
+                    if mapping.relation != Correspondence::Related || !procedures.insert(procedure)
+                    {
+                        return Err("executable bindings require unique procedures and a reviewed correspondence".into());
+                    }
+                }
             }
             let mut native = BTreeSet::new();
             for binding in &entry.native {
@@ -82,6 +90,46 @@ impl Catalogue {
         let covered: BTreeSet<_> = self.entries.iter().map(|entry| entry.family).collect();
         if covered != families {
             return Err("declared catalogue coverage includes an empty family".into());
+        }
+        Ok(())
+    }
+
+    /// Resolve executable references separately from structural admission, so
+    /// externally authored catalogues can supply their own procedure registry.
+    pub fn validate_procedures(
+        &self,
+        definitions: &crate::active_effects::Definitions,
+    ) -> Result<(), String> {
+        use crate::active_effects::{Edition, Kind};
+        for entry in &self.entries {
+            for (source, mapping) in &entry.mappings {
+                for id in &mapping.procedures {
+                    let def = definitions.get(id)?;
+                    let expected = match (source.as_str(), entry.id.as_str()) {
+                        ("dnd5-srd51", _) => Edition::Dnd5,
+                        ("pf2-player-core", _) => Edition::Pathfinder2,
+                        ("ars5", _) => Edition::Ars5,
+                        _ => {
+                            return Err(
+                                "executable correspondence has an unknown source edition".into()
+                            );
+                        },
+                    };
+                    let kind = match entry.id.as_str() {
+                        "wing:detect" => Kind::Sight,
+                        "wing:resize" => Kind::Size,
+                        "wing:enchant" => Kind::Weapon,
+                        _ => {
+                            return Err("procedure bound to an unrelated catalogue operation".into());
+                        },
+                    };
+                    if def.edition != expected || def.kind != kind {
+                        return Err(
+                            "procedure correspondence disagrees with edition or operation".into(),
+                        );
+                    }
+                }
+            }
         }
         Ok(())
     }

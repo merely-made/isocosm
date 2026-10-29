@@ -86,9 +86,12 @@ impl System {
         let Some(spec) = def.target.as_ref() else {
             return Err(ActionError::NotTargeted(action_key.to_owned()));
         };
-        if distance > spec.range {
+        let range = if actor_sheet.text("effect_weapon_action") == Some(action_key) {
+            actor_sheet.int("effect_reach_tiles").and_then(|r| u32::try_from(r).ok()).unwrap_or(spec.range)
+        } else { spec.range };
+        if distance > range {
             return Err(ActionError::OutOfRange {
-                range: spec.range,
+                range,
                 distance,
             });
         }
@@ -172,8 +175,11 @@ impl System {
             let dmg_bonus = self
                 .call_int_ctx(&spec.damage_func, actor_sheet, Some(target_sheet), None)
                 .ok_or_else(|| ActionError::ScriptFailed(spec.damage_func.clone()))?;
-            let (dmg_raw, dmg_dice) = roll(&spec.damage, rng)
-                .ok_or_else(|| ActionError::BadDice(spec.damage.clone()))?;
+            let (expression, effect_bonus, floor) = crate::active_effects::damage_expression(action_key, actor_sheet, &spec.damage)
+                .map_err(ActionError::BadDice)?;
+            let dmg_bonus = dmg_bonus.checked_add(effect_bonus).ok_or_else(|| ActionError::BadDice("damage bonus overflow".into()))?;
+            let (dmg_raw, dmg_dice) = roll(&expression, rng)
+                .ok_or_else(|| ActionError::BadDice(expression.clone()))?;
             // The degree scales the whole effect, dice and modifiers together:
             // a PF2e critical doubles it, a 5e save-for-half halves it. Percent
             // because the Lua boundary carries integers; 100 when unspecified.
@@ -185,14 +191,14 @@ impl System {
             };
             // Damage never heals: a big negative modifier floors at zero rather
             // than restoring the victim.
-            let dmg_total = (dmg_raw + dmg_bonus as i32).max(0);
+            let dmg_total = (dmg_raw + dmg_bonus as i32).max(floor);
             let dmg_total = ((dmg_total as i64 * mult.max(0)) / 100) as i32;
             damage = Some(RollRecord {
                 by,
                 expr: if mult == 100 {
-                    format!("{}{dmg_bonus:+}", spec.damage)
+                    format!("{expression}{dmg_bonus:+}")
                 } else {
-                    format!("({}{dmg_bonus:+}) x{mult}%", spec.damage)
+                    format!("({expression}{dmg_bonus:+}) x{mult}%")
                 },
                 dice: dmg_dice,
                 total: dmg_total,

@@ -228,9 +228,9 @@ pub fn pf2e_srd() -> System {
             -- a frightened striker swings at -N. This is the *read* side of the
             -- magnitude Demoralize writes; nothing here knows Demoralize exists,
             -- only that `c.frightened` is a number the substrate handed over.
-            return ab_mod(c.str) + prof(c.level, c.rank_attack) - 5 * map - (c.frightened or 0)
+            return ab_mod(c.str) + prof(c.level, c.rank_attack) + (c.attack_bonus or 0) - 5 * map - (c.frightened or 0)
         end
-        function p_strike_dmg(c) return ab_mod(c.str) end
+        function p_strike_dmg(c) return ab_mod(c.str) + (c.damage_bonus or 0) + (c.melee_damage_status_bonus or 0) end
         -- Intimidation: the same level + rank shape as the attack, on its own
         -- proficiency, plus Charisma rather than Strength.
         function p_intimidate(c)
@@ -269,7 +269,11 @@ pub fn pf2e_srd() -> System {
             return d
         end
         function p_strike_degree(c, t, roll, die)
-            return degree_vs(t.ac or 16, roll, die)
+            -- Clumsy and frightened are status penalties, so only the greater
+            -- applies to this Dexterity-based defence.
+            local status = t.frightened or 0
+            if (t.clumsy or 0) > status then status = t.clumsy end
+            return degree_vs((t.ac or 16) - status, roll, die)
         end
         function p_demoralize_degree(c, t, roll, die)
             return degree_vs(t.will or 14, roll, die)

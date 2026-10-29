@@ -1,0 +1,48 @@
+# Mechanical implementation data, based on the D&D SRD 5.1, CC BY 4.0.
+# Original descriptions; source text remains in the cited SRD.
+version = 1
+
+[[effects]]
+id = "dnd5:darkvision"
+edition = "dnd5"
+kind = "sight"
+level = 2
+range_ft = 5
+personal = false
+duration = { seconds = 28800 }
+concentration = false
+actions = 1
+bonus_action = false
+source = "D&D SRD 5.1: Darkvision; https://media.wizards.com/2023/downloads/dnd/SRD_CC_v5.1.pdf"
+license = "CC-BY-4.0"
+credit = "Based on the System Reference Document 5.1 by Wizards of the Coast LLC, licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/"
+
+[[effects]]
+id = "dnd5:enlarge-reduce"
+edition = "dnd5"
+kind = "size"
+level = 2
+range_ft = 30
+personal = false
+duration = { seconds = 60 }
+concentration = true
+actions = 1
+bonus_action = false
+source = "D&D SRD 5.1: Enlarge/Reduce"
+license = "CC-BY-4.0"
+credit = "Based on the System Reference Document 5.1 by Wizards of the Coast LLC, licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/"
+
+[[effects]]
+id = "dnd5:magic-weapon"
+edition = "dnd5"
+kind = "weapon"
+level = 2
+range_ft = 5
+personal = false
+duration = { seconds = 3600 }
+concentration = true
+actions = 0
+bonus_action = true
+source = "D&D SRD 5.1: Magic Weapon"
+license = "CC-BY-4.0"
+credit = "Based on the System Reference Document 5.1 by Wizards of the Coast LLC, licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/"

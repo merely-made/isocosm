@@ -102,13 +102,13 @@ impl App {
                 // carries them; the target's affordability is never asked.
                 let actor_eff = sheet_with_turn_counters(
                     &sheet_with_conditions(
-                        &system.effective_sheet(&actor_sheet, actor_inv.as_ref()),
+                        &system.effective_map_sheet(&runner.state().map, actor, &actor_sheet, actor_inv.as_ref())?,
                         actor_conds.iter(),
                     ),
                     actor_counters.iter(),
                 );
                 let target_eff = sheet_with_conditions(
-                    &system.effective_sheet(&target_sheet, target_inv.as_ref()),
+                    &system.effective_map_sheet(&runner.state().map, target, &target_sheet, target_inv.as_ref())?,
                     target_conds.iter(),
                 );
                 system

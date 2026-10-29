@@ -1,0 +1,1588 @@
+{
+  "catalogue_revision": "fca9769880b85b7b22b2812ce0c73a7cd7528342dd41cf4818c8405fbbd0beb5",
+  "rules_revision": "28df1f36a1e6b53d3acfd6e4be849951a3728aeec96fc1046900493df93c55ff",
+  "process_source": "reference founding, seed 10, four individuals; not an inhabited save",
+  "candidate_meaning": "declared primitive match only; not admission, execution or a complete edition procedure",
+  "catalogue": {
+    "version": 1,
+    "scope": "Initial Wing effect vocabulary with nine executable VTT procedures for sight, resizing and lasting weapon spells. Other edition mappings remain explicit research gaps. Not a complete inventory of any source corpus.",
+    "families": [
+      "resources",
+      "defence",
+      "anatomy",
+      "movement",
+      "perception",
+      "agency",
+      "environment",
+      "spatial_access",
+      "life_identity",
+      "persistence"
+    ],
+    "sources": [
+      {
+        "id": "ars5",
+        "edition": "Ars Magica Fifth Edition",
+        "corpus": "Definitive Fifth Edition open core (blob 41860c6a10eedc246c730ca485bed6927060ced9) for executable examples; Supplemental Spell Guidelines for other references",
+        "url": "https://www.atlas-games.com/arsmagica/openars"
+      },
+      {
+        "id": "dnd5-srd51",
+        "edition": "D&D 5e, SRD 5.1 (2014 rules)",
+        "corpus": "System Reference Document 5.1; reference metadata only",
+        "url": "https://media.wizards.com/2023/downloads/dnd/SRD_CC_v5.1.pdf"
+      },
+      {
+        "id": "pf2-player-core",
+        "edition": "Pathfinder 2e, Player Core (2023 Remaster)",
+        "corpus": "Player Core; reference metadata only, not the legacy Core Rulebook",
+        "url": "https://paizo.com/products/btq02eoj?Pathfinder-Player-Core"
+      }
+    ],
+    "entries": [
+      {
+        "id": "wing:allocate-sense",
+        "family": "perception",
+        "summary": "Allocate living cells to an existing sensory function.",
+        "limitation": "Native allocation changes a declared organ's functional cells; it does not grant darkvision, a new modality, a greater sight radius or an edition's spell procedure.",
+        "native": [
+          {
+            "operation": "allocate",
+            "function": "function:sense"
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "related",
+            "references": [
+              "Supplemental Spell Guidelines: Intellego Animal, supernatural-creature detection"
+            ],
+            "differences": [
+              "Intellego detection reads a specified subject under its guidelines. Allocating native sensory tissue does not implement an Intellego effect, its target or its casting method."
+            ]
+          },
+          "dnd5-srd51": {
+            "relation": "related",
+            "references": [
+              "Spells: Darkvision"
+            ],
+            "differences": [
+              "Darkvision grants a specified kind of sight for a duration; native allocation is anatomical and grants no darkvision semantics. Casting, target restrictions, range and duration remain edition-owned."
+            ]
+          },
+          "pf2-player-core": {
+            "relation": "related",
+            "references": [
+              "Spells: Darkvision; senses: darkvision"
+            ],
+            "differences": [
+              "The edition grants a named sense with spell-specific duration and heightened behaviour. Native sensing cells are only an anatomical candidate, not that sense or its casting procedure."
+            ]
+          }
+        }
+      },
+      {
+        "id": "wing:associate",
+        "family": "agency",
+        "summary": "Establish or remove a named relationship.",
+        "limitation": "A native relation records a fact; loyalty, ownership and membership each need their own rules.",
+        "native": [
+          {
+            "operation": "relate",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:birth",
+        "family": "life_identity",
+        "summary": "Produce a new individual through a funded reproductive process.",
+        "limitation": "Native reproduction accounts for provision and lineage; it does not imply summoning or an existing identity's return.",
+        "native": [
+          {
+            "operation": "birth",
+            "function": null
+          },
+          {
+            "operation": "bear",
+            "function": null
+          },
+          {
+            "operation": "bud",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:communicate",
+        "family": "perception",
+        "summary": "Convey information through an admitted channel.",
+        "limitation": "Writing a note is not proof a receiver heard, understood or believed it.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:compel",
+        "family": "agency",
+        "summary": "Constrain or redirect another agent's choices.",
+        "limitation": "Agency, resistance, permission and unattended decisions must be declared.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:conceal",
+        "family": "perception",
+        "summary": "Restrict what particular observers can detect.",
+        "limitation": "Must specify the affected senses and conditions; hiding presentation does not change detection.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:consume",
+        "family": "resources",
+        "summary": "Spend or eat an available resource.",
+        "limitation": "Native stock and feeding rules apply; the catalogue does not select a universal casting resource.",
+        "native": [
+          {
+            "operation": "spend",
+            "function": null
+          },
+          {
+            "operation": "eat",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:convert",
+        "family": "resources",
+        "summary": "Transform accounted resources with stated byproducts.",
+        "limitation": "Native conversions must satisfy declared accounting; this is not unrestricted creation or annihilation.",
+        "native": [
+          {
+            "operation": "convert",
+            "function": null
+          },
+          {
+            "operation": "transform",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:create-or-destroy",
+        "family": "resources",
+        "summary": "Introduce or remove material under an explicit world rule.",
+        "limitation": "Unbound as unrestricted magic: origin, destination, accounting and any permitted breach must be declared.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:death",
+        "family": "life_identity",
+        "summary": "End an individual's current living state.",
+        "limitation": "Native death does not settle an edition's death saves, afterlife or continuing-subject rules.",
+        "native": [
+          {
+            "operation": "death",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:detect",
+        "family": "perception",
+        "summary": "Read a specified feature through an admitted sense.",
+        "limitation": "Specific sight spells filter the existing terrain height tracer per observer; this is not a general supernatural-detection grammar or native sensory allocation.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "related",
+            "references": [
+              "Definitive core: Eyes of the Cat"
+            ],
+            "differences": [
+              "Muto Corpus with Animal requisite, Touch and Sun; permits near-dark vision but not absolute darkness. Calm unmastered formulaic casting is executable."
+            ],
+            "procedures": [
+              "ars5:eyes-of-the-cat"
+            ]
+          },
+          "dnd5-srd51": {
+            "relation": "related",
+            "references": [
+              "Spells: Darkvision"
+            ],
+            "differences": [
+              "Touch a willing creature, eight hours, sixty-foot darkvision; ordinary darkvision cannot pierce magical darkness."
+            ],
+            "procedures": [
+              "dnd5:darkvision"
+            ]
+          },
+          "pf2-player-core": {
+            "relation": "related",
+            "references": [
+              "Player Core: Darkvision; Darkness"
+            ],
+            "differences": [
+              "Rank two is personal for one hour; rank three permits touch; rank five lasts until daily preparations. Heightened magical darkness can defeat ordinary darkvision."
+            ],
+            "procedures": [
+              "pf2:darkvision"
+            ]
+          }
+        }
+      },
+      {
+        "id": "wing:dimensional-access",
+        "family": "spatial_access",
+        "summary": "Perceive, reach or move along an additional spatial direction.",
+        "limitation": "Optional extension: sensory access, bodily extent and movement are independent capabilities; planar travel is not assumed equivalent.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:dispel",
+        "family": "persistence",
+        "summary": "End or suppress a specified active effect.",
+        "limitation": "Needs addressable effects and interference rules; removing a trait cannot safely undo overlapping sources.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:displace",
+        "family": "movement",
+        "summary": "Move another bearer by an external force.",
+        "limitation": "An actor's voluntary step is not a forced-displacement binding.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:divide",
+        "family": "life_identity",
+        "summary": "Divide a living body or continuing agency.",
+        "limitation": "Native budding creates offspring; it does not establish duplicated identity or shared memories.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:emotion",
+        "family": "agency",
+        "summary": "Change an individual's emotional or motivational state.",
+        "limitation": "A site condition is not an individual's emotion; native needs and beliefs require an explicit binding.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:enchant",
+        "family": "persistence",
+        "summary": "Attach a lasting, addressable magical change to a bearer.",
+        "limitation": "Nine-spell VTT tranche supplies an addressable lifecycle and lasting weapon changes; permanent device creation and native biological magic remain unbound. Base state is projected, not rolled back.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "related",
+            "references": [
+              "Definitive core: Edge of the Razor; formulaic casting and Sun duration; laboratory enchanted devices are separate"
+            ],
+            "differences": [
+              "Investing a device and casting a sustained spell are separate procedures. Laboratory work, resources, triggers and effect frequency are retained as edition-specific requirements."
+            ],
+            "procedures": [
+              "ars5:edge-of-the-razor"
+            ]
+          },
+          "dnd5-srd51": {
+            "relation": "related",
+            "references": [
+              "Spells: Magic Weapon; spell duration and concentration"
+            ],
+            "differences": [
+              "A temporary weapon spell and a permanent magic item have different procedures. Preserve target, modifiers, concentration, expiry and dispelling; no common lifetime is selected here."
+            ],
+            "procedures": [
+              "dnd5:magic-weapon"
+            ]
+          },
+          "pf2-player-core": {
+            "relation": "related",
+            "references": [
+              "Spells: Runic Weapon"
+            ],
+            "differences": [
+              "Runic Weapon's temporary weapon changes and heightened effects belong to that spell. The catalogue does not equate them with permanent runes or another edition's bonuses."
+            ],
+            "procedures": [
+              "pf2:runic-weapon"
+            ]
+          }
+        }
+      },
+      {
+        "id": "wing:flight",
+        "family": "movement",
+        "summary": "Support controlled movement through open space.",
+        "limitation": "A flight label does not establish lift, control, landing, carrying capacity or edition-specific movement.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:fluid",
+        "family": "environment",
+        "summary": "Change a fluid's distribution or flow.",
+        "limitation": "Resource transfer alone does not implement fluid geometry or motion.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:fuse",
+        "family": "life_identity",
+        "summary": "Combine bodies or establish collective agency.",
+        "limitation": "Physical grafting and computational aggregation do not by themselves merge subjects or decision rights.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:graft",
+        "family": "anatomy",
+        "summary": "Attach admitted material or parts to a body.",
+        "limitation": "Native compatibility, stock, anatomy and receipt checks still apply; attaching a part does not grant every associated ability.",
+        "native": [
+          {
+            "operation": "graft",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:grow-body",
+        "family": "anatomy",
+        "summary": "Grow the next parts of an admitted body recipe from paid material.",
+        "limitation": "Native growth fills or adds recipe parts and accounts for matter. It does not resize existing extents, replace a stat block, merge equipment or implement temporary polymorph.",
+        "native": [
+          {
+            "operation": "grow",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "related",
+            "references": [
+              "Hermetic magic: Muto Corpus and Muto Animal guidelines"
+            ],
+            "differences": [
+              "Transformation guidelines and their limits are separate from native development. Technique, Form, requisites, magnitude, Range, Duration and Target are not inferred from a growth cost."
+            ]
+          },
+          "dnd5-srd51": {
+            "relation": "related",
+            "references": [
+              "Spells: Enlarge/Reduce; Polymorph"
+            ],
+            "differences": [
+              "These spells specify distinct size or form changes and their own reversions and statistics. Recipe growth is a lasting material process; those procedures require separate bindings."
+            ]
+          },
+          "pf2-player-core": {
+            "relation": "related",
+            "references": [
+              "Spells: Enlarge; Animal Form; polymorph trait"
+            ],
+            "differences": [
+              "A battle form's statistics and limitations are edition-native. Paid growth supplies neither battle-form statistics nor temporary size and reach adjustments."
+            ]
+          }
+        }
+      },
+      {
+        "id": "wing:heal",
+        "family": "resources",
+        "summary": "Restore recorded bodily injury.",
+        "limitation": "Native healing pays its material cost and repairs lost cells; it does not restore arbitrary hit points or regrow every missing part.",
+        "native": [
+          {
+            "operation": "heal",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:illusion",
+        "family": "perception",
+        "summary": "Change perceived information under a stated sensory rule.",
+        "limitation": "Unbound: must identify perceivers, modalities and how interaction can expose the deception.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:immunity",
+        "family": "defence",
+        "summary": "Exclude a specified class of incoming effects.",
+        "limitation": "A label is not a universal immunity; exceptions and receiver classes remain explicit.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:incarnate",
+        "family": "life_identity",
+        "summary": "Bind a continuing subject to a body.",
+        "limitation": "Continuing-subject storage and carryover remain open; birth does not establish incarnation.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:light",
+        "family": "environment",
+        "summary": "Change illumination in the world.",
+        "limitation": "Native sunlight energy accounting does not by itself create or conceal visible light.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:locomotion",
+        "family": "movement",
+        "summary": "Move through the world's admitted places and routes.",
+        "limitation": "Site travel, paid in-site strides and an edition's movement budget are different native procedures.",
+        "native": [
+          {
+            "operation": "move",
+            "function": null
+          },
+          {
+            "operation": "move_paced",
+            "function": null
+          },
+          {
+            "operation": "step",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:modify-check",
+        "family": "defence",
+        "summary": "Change a check or statistic under stated stacking rules.",
+        "limitation": "Native defence has layered readings, but no general edition modifier binding is declared here.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:pocket-space",
+        "family": "spatial_access",
+        "summary": "Establish a bounded accessible region with stated spatial relations.",
+        "limitation": "The region's topology, contents, entrances and persistence must be declared.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:portal",
+        "family": "spatial_access",
+        "summary": "Create an admitted connection between locations.",
+        "limitation": "A relation between locations does not itself create a traversable, sensed or persistent portal.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:possess",
+        "family": "life_identity",
+        "summary": "Change the relationship between a subject and bodily agency.",
+        "limitation": "Requires explicit control, identity, consent, resistance and termination semantics.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:regenerate",
+        "family": "anatomy",
+        "summary": "Reconstruct missing anatomy.",
+        "limitation": "Native healing of lost cells and growth of recipe parts are candidates for a future composed procedure, not universal regeneration.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:remember",
+        "family": "perception",
+        "summary": "Acquire, preserve or alter an individual's memory.",
+        "limitation": "A historical record is not itself an individual's memory or knowledge.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:reshape",
+        "family": "anatomy",
+        "summary": "Change a body's form while declaring what identity and state persist.",
+        "limitation": "Temporary polymorph, permanent transformation and development are separate procedures.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:resist",
+        "family": "defence",
+        "summary": "Reduce or oppose a specified class of incoming effects.",
+        "limitation": "A named resistance needs its receiver classes, magnitude and interaction rules.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:resize",
+        "family": "anatomy",
+        "summary": "Change existing body dimensions.",
+        "limitation": "VTT size spells project the current part graph with exact quantized coordinates. Native tissue and support are unchanged; Ars physical proportions require an authored mapping. Confined-space fitting is not automatic.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "related",
+            "references": [
+              "Definitive core: Preternatural Growth and Shrinking"
+            ],
+            "differences": [
+              "Normal Size +1 or -1/-2, formulaic Muto Corpus and Sun duration; Size does not prescribe an exact voxel scaling ratio."
+            ],
+            "procedures": [
+              "ars5:preternatural-growth"
+            ]
+          },
+          "dnd5-srd51": {
+            "relation": "related",
+            "references": [
+              "Spells: Enlarge/Reduce"
+            ],
+            "differences": [
+              "Double or half dimensions, Constitution save when unwilling, one-minute concentration and weapon d4 modifier; confined-space fitting and equipment geometry need host integration."
+            ],
+            "procedures": [
+              "dnd5:enlarge-reduce"
+            ]
+          },
+          "pf2-player-core": {
+            "relation": "related",
+            "references": [
+              "Player Core: Enlarge"
+            ],
+            "differences": [
+              "Five minutes, Large or heightened Huge, clumsy, added reach and status melee damage. Single-target ranks are executable; rank-six group casting requires a group transaction."
+            ],
+            "procedures": [
+              "pf2:enlarge"
+            ]
+          }
+        }
+      },
+      {
+        "id": "wing:restrain",
+        "family": "movement",
+        "summary": "Limit available movement or actions.",
+        "limitation": "Constraints must affect the actual movement and choice machinery; a condition label alone is insufficient.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:resurrect",
+        "family": "life_identity",
+        "summary": "Restore life under explicit identity and body rules.",
+        "limitation": "Not established by native birth or healing; costs, consent and retained state are separate requirements.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:reveal",
+        "family": "perception",
+        "summary": "Make specified information available to an observer.",
+        "limitation": "World truth, sensed information and an observer's beliefs remain distinct.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:shed",
+        "family": "anatomy",
+        "summary": "Detach anatomy through a declared developmental process.",
+        "limitation": "Severing by injury is not a complete voluntary shedding or metamorphosis procedure.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:store-effect",
+        "family": "persistence",
+        "summary": "Retain an executable effect for later invocation.",
+        "limitation": "The shared function evaluator stores charge; it does not store executable enchantments.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:summon",
+        "family": "life_identity",
+        "summary": "Bring an identified or generated being into an encounter.",
+        "limitation": "Spawning a new body does not settle whether the being already existed, obeys or returns elsewhere.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:sustain",
+        "family": "persistence",
+        "summary": "Maintain a change while its continuing conditions hold.",
+        "limitation": "Unbound: needs an addressable effect and declared maintenance and interruption semantics.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:teleport",
+        "family": "movement",
+        "summary": "Change location without traversing the intervening route.",
+        "limitation": "Native movement follows its travel rules; it does not establish teleportation or destination admission.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:terrain",
+        "family": "environment",
+        "summary": "Carve or fill admitted terrain.",
+        "limitation": "Native terrain actions still need geometric adjudication, reach and material accounting.",
+        "native": [
+          {
+            "operation": "terrain",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:thermal",
+        "family": "environment",
+        "summary": "Change temperature or heat exchange.",
+        "limitation": "A generic condition counter does not implement heat transport, freezing, burning or their costs.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:transfer",
+        "family": "resources",
+        "summary": "Move a declared resource between accounts.",
+        "limitation": "A native transfer moves a named account and cannot translate spell slots into energy without an admitted rule.",
+        "native": [
+          {
+            "operation": "transfer",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:trigger",
+        "family": "persistence",
+        "summary": "Apply a branch when a declared condition is satisfied.",
+        "limitation": "A native When is evaluated within one admitted act; it does not register a persistent event subscription.",
+        "native": [
+          {
+            "operation": "when",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:vow",
+        "family": "agency",
+        "summary": "Create an obligation with stated terms and consequences.",
+        "limitation": "Native agreements exist, but no generic magical enforcement or oath procedure is declared.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:vulnerability",
+        "family": "defence",
+        "summary": "Increase susceptibility to a specified class of effects.",
+        "limitation": "Native injury and an edition's damage weaknesses need distinct mappings.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:ward",
+        "family": "spatial_access",
+        "summary": "Restrict passage or interaction for declared receivers.",
+        "limitation": "A ward needs geometry, receiver tests, ownership and a lifetime; an arbitrary trait is insufficient.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:weather",
+        "family": "environment",
+        "summary": "Change atmospheric conditions and their duration.",
+        "limitation": "Weather needs process, spatial and temporal bindings rather than a presentation effect.",
+        "native": [],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      },
+      {
+        "id": "wing:wound",
+        "family": "resources",
+        "summary": "Remove living cells and record bodily injury.",
+        "limitation": "Native cell loss is not a hit-point subtraction; defence, target part and overflow rules remain native.",
+        "native": [
+          {
+            "operation": "wound",
+            "function": null
+          }
+        ],
+        "mappings": {
+          "ars5": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "dnd5-srd51": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          },
+          "pf2-player-core": {
+            "relation": "unmapped",
+            "references": [],
+            "differences": []
+          }
+        }
+      }
+    ]
+  },
+  "native_candidates": {
+    "wing:allocate-sense": [],
+    "wing:associate": [],
+    "wing:birth": [
+      "sim:birth"
+    ],
+    "wing:communicate": [],
+    "wing:compel": [],
+    "wing:conceal": [],
+    "wing:consume": [],
+    "wing:convert": [
+      "process:cycle-0-0",
+      "process:cycle-0-1",
+      "process:cycle-1-0",
+      "process:cycle-1-1"
+    ],
+    "wing:create-or-destroy": [],
+    "wing:death": [
+      "sim:death"
+    ],
+    "wing:detect": [],
+    "wing:dimensional-access": [],
+    "wing:dispel": [],
+    "wing:displace": [],
+    "wing:divide": [],
+    "wing:emotion": [],
+    "wing:enchant": [],
+    "wing:flight": [],
+    "wing:fluid": [],
+    "wing:fuse": [],
+    "wing:graft": [],
+    "wing:grow-body": [],
+    "wing:heal": [],
+    "wing:illusion": [],
+    "wing:immunity": [],
+    "wing:incarnate": [],
+    "wing:light": [],
+    "wing:locomotion": [],
+    "wing:modify-check": [],
+    "wing:pocket-space": [],
+    "wing:portal": [],
+    "wing:possess": [],
+    "wing:regenerate": [],
+    "wing:remember": [],
+    "wing:reshape": [],
+    "wing:resist": [],
+    "wing:resize": [],
+    "wing:restrain": [],
+    "wing:resurrect": [],
+    "wing:reveal": [],
+    "wing:shed": [],
+    "wing:store-effect": [],
+    "wing:summon": [],
+    "wing:sustain": [],
+    "wing:teleport": [],
+    "wing:terrain": [],
+    "wing:thermal": [],
+    "wing:transfer": [
+      "sim:give"
+    ],
+    "wing:trigger": [],
+    "wing:vow": [],
+    "wing:vulnerability": [],
+    "wing:ward": [],
+    "wing:weather": [],
+    "wing:wound": []
+  }
+}

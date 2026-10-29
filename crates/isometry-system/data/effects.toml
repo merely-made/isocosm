@@ -1,7 +1,7 @@
 # Original coverage metadata and references, not reproduced rules text.
 # Native lists name candidate primitives, never complete spell implementations.
 version = 1
-scope = "Initial Wing effect vocabulary. Three reviewed correspondence examples; all other edition mappings are explicit research gaps. Not a complete inventory of any source corpus."
+scope = "Initial Wing effect vocabulary with nine executable VTT procedures for sight, resizing and lasting weapon spells. Other edition mappings remain explicit research gaps. Not a complete inventory of any source corpus."
 families = ["resources", "defence", "anatomy", "movement", "perception", "agency", "environment", "spatial_access", "life_identity", "persistence"]
 
 [[sources]]
@@ -19,8 +19,8 @@ url = "https://paizo.com/products/btq02eoj?Pathfinder-Player-Core"
 [[sources]]
 id = "ars5"
 edition = "Ars Magica Fifth Edition"
-corpus = "Fifth Edition core and Atlas's collected Supplemental Spell Guidelines (2005-2019); reference metadata only"
-url = "https://www.atlas-games.com/pdf_storage/ArM5Guidelines.pdf"
+corpus = "Definitive Fifth Edition open core (blob 41860c6a10eedc246c730ca485bed6927060ced9) for executable examples; Supplemental Spell Guidelines for other references"
+url = "https://www.atlas-games.com/arsmagica/openars"
 
 [[entries]]
 id = "wing:allocate-sense"
@@ -64,18 +64,21 @@ differences = ["Transformation guidelines and their limits are separate from nat
 id = "wing:enchant"
 family = "persistence"
 summary = "Attach a lasting, addressable magical change to a bearer."
-limitation = "Unbound: requires effect identity, source, bearer, activation, maintenance, expiry, interruption and interference. A timed note is not an enchantment and cannot provide rollback."
+limitation = "Nine-spell VTT tranche supplies an addressable lifecycle and lasting weapon changes; permanent device creation and native biological magic remain unbound. Base state is projected, not rolled back."
 [entries.mappings.dnd5-srd51]
 relation = "related"
 references = ["Spells: Magic Weapon; spell duration and concentration"]
+procedures = ["dnd5:magic-weapon"]
 differences = ["A temporary weapon spell and a permanent magic item have different procedures. Preserve target, modifiers, concentration, expiry and dispelling; no common lifetime is selected here."]
 [entries.mappings.pf2-player-core]
 relation = "related"
 references = ["Spells: Runic Weapon"]
+procedures = ["pf2:runic-weapon"]
 differences = ["Runic Weapon's temporary weapon changes and heightened effects belong to that spell. The catalogue does not equate them with permanent runes or another edition's bonuses."]
 [entries.mappings.ars5]
 relation = "related"
-references = ["Laboratory: enchanted devices; Hermetic magic: spell duration"]
+references = ["Definitive core: Edge of the Razor; formulaic casting and Sun duration; laboratory enchanted devices are separate"]
+procedures = ["ars5:edge-of-the-razor"]
 differences = ["Investing a device and casting a sustained spell are separate procedures. Laboratory work, resources, triggers and effect frequency are retained as edition-specific requirements."]
 
 # The remaining vocabulary is deliberately unmapped until its references and
@@ -209,13 +212,22 @@ relation = "unmapped"
 id = "wing:resize"
 family = "anatomy"
 summary = "Change existing body dimensions."
-limitation = "Native recipe growth does not resize existing extents; support, mass, clearance and reach must be rederived."
+limitation = "VTT size spells project the current part graph with exact quantized coordinates. Native tissue and support are unchanged; Ars physical proportions require an authored mapping. Confined-space fitting is not automatic."
 [entries.mappings.dnd5-srd51]
-relation = "unmapped"
+relation = "related"
+references = ["Spells: Enlarge/Reduce"]
+procedures = ["dnd5:enlarge-reduce"]
+differences = ["Double or half dimensions, Constitution save when unwilling, one-minute concentration and weapon d4 modifier; confined-space fitting and equipment geometry need host integration."]
 [entries.mappings.pf2-player-core]
-relation = "unmapped"
+relation = "related"
+references = ["Player Core: Enlarge"]
+procedures = ["pf2:enlarge"]
+differences = ["Five minutes, Large or heightened Huge, clumsy, added reach and status melee damage. Single-target ranks are executable; rank-six group casting requires a group transaction."]
 [entries.mappings.ars5]
-relation = "unmapped"
+relation = "related"
+references = ["Definitive core: Preternatural Growth and Shrinking"]
+procedures = ["ars5:preternatural-growth"]
+differences = ["Normal Size +1 or -1/-2, formulaic Muto Corpus and Sun duration; Size does not prescribe an exact voxel scaling ratio."]
 
 [[entries]]
 id = "wing:reshape"
@@ -331,13 +343,22 @@ relation = "unmapped"
 id = "wing:detect"
 family = "perception"
 summary = "Read a specified feature through an admitted sense."
-limitation = "Perception is an observer-specific reading; natural sight exists but no general detection-effect binding is declared."
+limitation = "Specific sight spells filter the existing terrain height tracer per observer; this is not a general supernatural-detection grammar or native sensory allocation."
 [entries.mappings.dnd5-srd51]
-relation = "unmapped"
+relation = "related"
+references = ["Spells: Darkvision"]
+procedures = ["dnd5:darkvision"]
+differences = ["Touch a willing creature, eight hours, sixty-foot darkvision; ordinary darkvision cannot pierce magical darkness."]
 [entries.mappings.pf2-player-core]
-relation = "unmapped"
+relation = "related"
+references = ["Player Core: Darkvision; Darkness"]
+procedures = ["pf2:darkvision"]
+differences = ["Rank two is personal for one hour; rank three permits touch; rank five lasts until daily preparations. Heightened magical darkness can defeat ordinary darkvision."]
 [entries.mappings.ars5]
-relation = "unmapped"
+relation = "related"
+references = ["Definitive core: Eyes of the Cat"]
+procedures = ["ars5:eyes-of-the-cat"]
+differences = ["Muto Corpus with Animal requisite, Touch and Sun; permits near-dark vision but not absolute darkness. Calm unmastered formulaic casting is executable."]
 
 [[entries]]
 id = "wing:conceal"

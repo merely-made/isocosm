@@ -1,6 +1,6 @@
 # Functional generation: magic as world operations
 
-**Status:** 2026-10-28: F10a catalogue and F10b native binding controls built and tested following Mark's agreement below; complete edition procedures and F10c persistent enchantments remain open. Cut from `2026-09-09_functional_generation_plan.md` and its effects-remainders item from `2026-09-11_orthographic_voxel_presentation_plan.md`, which are archived in
+**Status:** 2026-10-28: F10 catalogue/native controls and F11's nine experimental VTT procedures built and tested. A saved active-effect lifecycle and executable body, senses and weapon consumers exist; desktop casting, native magic and complete edition ports remain open. Cut from `2026-09-09_functional_generation_plan.md` and its effects-remainders item from `2026-09-11_orthographic_voxel_presentation_plan.md`, which are archived in
 `archive_docs/2026-10-28/`. The first slice is built: `shared/wing-functions` (network, operators, generation, carriage) is shared and used by `shared/isocosm` (`effects/functions.rs`, `systems/carry.rs`) and by Eponym. The composition design (rulings 404 to 407, case 1009) is written; no cost formula, script runtime or ruleset adapter is selected. All of it is parked under ruling 279.
 
 **For:** magic and construction as world operations: the six axes a generated magic system is drawn on (case 1009, the nucleus), fundamental effects with equivalent-exchange cost, effect scripts connected to the world, persistent-effect lifecycle, rulesets and ways of casting, nested construction composition, the inspection a player or developer needs, the first slice's open work, and the effects system's remainders.
@@ -94,21 +94,54 @@ The initial coverage map has ten families: resources and harm, defence and check
 
 - F10a done when: a versioned TOML catalogue covers every family and carries a mapping or an explicit gap for all three sources on every entry; admission rejects duplicate identities, unknown native operations, missing source references and unjustified implementation claims; a runnable inspector reports the coverage and the actual native process candidates.
 - F10b done when: the first body and sensory bindings are exercised through accepted native processes, refusal controls and exact save/replay, with their actual scope stated. A matching primitive alone does not establish a full spell implementation.
-- F10c open: persistent enchantments need an addressable lifecycle before their mapping can be promoted to executable. Activation, ownership, termination, interference and restoration of overlapping changes must be specified and tested; a timed note is not a substitute. Later edition-native execution preserves its own checks, costs, choices and exceptions.
+- F10c: F11 supplies the VTT lifecycle for the three temporary weapon spells: identity, source, bearer, activation, termination, interference and overlapping changes. Native persistent-effect bindings and permanent devices remain open; a timed note is not an enchantment. Complete edition execution still needs each exception and casting method.
 - Receipt budget: 100 MB total; compact test and inspection results only. Reuse existing Cargo targets; no headed captures are required for this catalogue tranche.
 - Needs: the existing native `rules::Effect` and `Process` grammar; `isometry-system` for edition content and inspection; F4 for F10c.
+
+### F11. The agreed small set: executable edition procedures
+
+Mark's follow-up, "What about the small set?", identifies the unfinished half
+of D1. Catalogue metadata and native allocation/growth controls did not meet
+the promised spell execution. This phase connects specific procedures rather
+than treating those controls as implementations of tabletop magic.
+
+- Scope: D&D SRD 5.1 Darkvision, Enlarge/Reduce and Magic Weapon; Pathfinder
+  Player Core Remaster Darkvision, Enlarge and Runic Weapon; Ars Magica
+  Definitive Fifth Edition Eyes of the Cat, Preternatural Growth and Shrinking,
+  and Edge of the Razor. Each remains an experimental, bounded procedure.
+- F11a done when: accepted casts consume declared resources/actions, preserve
+  edition targeting and duration, retain source definitions and dice, survive
+  save/replay, and refuse atomically. The calm unmastered Ars profile is
+  explicit; stress, resistance and counteract decisions are not guessed.
+- F11b done when: senses change the terrain visibility reading, size changes
+  project the current part graph, and lasting weapon changes feed the existing
+  damage consumer. Expiry preserves later base edits; suppression sources and
+  dispel outcomes are addressable; overlap cannot add the same spell twice.
+- F11c open: complete edition exceptions, desktop casting controls, scene
+  body/lighting consumers, automatic concentration events, multiplayer command
+  admission and cross-map migration. D&D confined-space fitting, equipment
+  meshes, object targets and Strength advantage rolls; PF2e group casting;
+  Ars stress/botch, full resistance and laboratory devices remain named work.
+  Native magic and calibration for unattended worlds remain separate gates.
+- Receipt budget: the same total cap as F10. Retain compact headless evidence;
+  a source correspondence or passing API test is not a headed play receipt.
+- Owner: `isometry-system::active_effects`, using the substrate's uninterpreted
+  `MapDocument.system_data`, existing inventories, dice and height visibility;
+  native body documents and native clock/sky reads are inputs. There is no new
+  biological simulator, universal spell level or material cost curve.
+- Usage and exact supported profiles: [effect procedures](../../crates/isometry-system/data/effects/README.md).
 
 ## Decisions
 
 - **D1, effect catalogue (2026-10-28), applies Processes 3 and VTT 5:** Mark: "Ok! Agreed!" In response to the proposal: "I'd build the catalogue broadly, then make a small set work completely across the three rulesets. Body transformation, senses and persistent enchantment would expose useful differences immediately while giving world generation something substantial to grow around."
 
-  Outcome: applies to doctrine Processes 3 and VTT 5. This implementation starts with F10a and the existing native bindings in F10b; F10c and complete edition-native casting remain named open work rather than being represented by reference mappings. The speculative metamorphoses remain optional design candidates, not newly selected world laws.
+  Outcome: applies to doctrine Processes 3 and VTT 5. F10a and F10b delivered catalogue and native controls only; Mark's follow-up requires the agreed executable examples, implemented in F11. The VTT lifecycle addresses F10c's temporary lasting effects; complete edition ports, native magic and permanent device creation stay explicit open work. Speculative metamorphoses remain optional candidates, not selected world laws.
 
   Links: area Processes and rules · draws on 539, 540, 541, 543 · plans functional-generation · summary Start a broad effect catalogue with explicit edition correspondences and a bounded executable tranche.
 
 ## Deferred and parked
 
-- **F1 to F9** remain parked with magic (`wing-organs` D1). F10 is the bounded catalogue and binding tranche approved above. The first slice's lanes (evaluator, generation, consumer wiring) need no further work except as F8 records.
+- **F1 to F9** remain parked with magic (`wing-organs` D1). F10/F11 are the bounded catalogue and executable examples approved above. The first slice's lanes (evaluator, generation, consumer wiring) need no further work except as F8 records.
 
 ## Questions for Mark
 
@@ -122,6 +155,9 @@ The initial coverage map has ten families: resources and harm, defence and check
 
 ## Findings
 
+- 2026-10-28, F11: the three procedure packs in `crates/isometry-system/data/effects/` declare specific casting profiles. D&D uses slots and concentration; PF2e prepared casts share `actions_spent` with Strikes; Ars uses calm formulaic totals, fatigue and the accepted next sunrise/sunset. Player Core's base Darkvision is personal and Enlarge lasts five minutes. Ars cat eyes do not see in absolute darkness. The source and profile boundaries are kept with the data.
+- 2026-10-28, F11: `active_effects` stores accepted definitions, cast costs, dice, bearer IDs, independent suppressors and end causes. Current sheets and inventories are projected rather than restored from old copies. `System::effective_map_sheet`, the attack resolver, the height tracer and the shared body graph consume the changes. Exact quantized scaling refuses when a joint would round; Ars Size does not imply an exact native geometric ratio. This is VTT state beside native bodies, not native biological mutation.
+
 - 2026-10-28, F10: `crates/isometry-system/data/effects.toml` holds 54 vocabulary entries across ten families and pins three reference corpora. Nine related correspondences cover sensory allocation, recipe growth and lasting enchantment; 153 mappings are explicitly unreviewed. This is an initial coverage map, not a complete spell inventory or three executable rulesets. Source content stays in the system lane; no tabletop text or costs were added to native simulation rules.
 - 2026-10-28, F10: native `rules::Effect::kind` and `Process::effect_declarations` inspect the existing grammar, including commitments, guarded alternatives and risks. Catalogue candidates are declarations, not accepted acts. A sensory allocation candidate must both bind and allocate `function:sense`; an unrelated gland allocation does not qualify. The catalogue does not admit new operations or alter world saves.
 - 2026-10-28, F10b: the existing allocation and growth fixtures now also execute through `Session` and restore the exact state, entries and witness. Sensory allocation changes the native area reading without creating matter. Recipe growth adds paid parts without creating matter. Neither demonstrates darkvision, temporary resizing, polymorph, or an edition-native spell procedure. Persistent enchantment, suppression and dispelling have no native binding; a note's text lifetime and the function evaluator's charge storage do not provide one.
@@ -132,6 +168,8 @@ The initial coverage map has ten families: resources and harm, defence and check
 - 2026-10-28: the registry carries fifteen functions in `rules::default_functions`, five bound to native processes; effects key on `function:<name>` (773). That is the existing hook between F3 scripts and the sim.
 
 ## Progress
+
+- 2026-10-28: F11a/F11b executable API and headless demonstration built for all nine named procedures, with saved lifecycle and existing consumer integration. F11c remains open; the previous catalogue-only landing did not fulfill the whole agreed small set. Use `cargo run -p isometry-system --example cast_effects` for execution and `inspect_effects` for coverage.
 
 - 2026-10-28: F10a initial catalogue, admission checks and native candidate inspector built; F10b native allocation/growth conservation and exact-history controls passed. F10c and edition-native execution remain open. Run `cargo run -p isometry-system --example inspect_effects -- --markdown` for the readable coverage matrix, `--json` for the revisioned report, or add `--genesis PATH` to inspect a native Genesis rather than the labelled reference founding. Run evidence belongs in the dated archive, not here.
 - 2026-10-28: cut from the functional generation plan and the presentation plan's effects remainders (pres.32); all phases parked.

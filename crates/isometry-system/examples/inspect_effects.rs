@@ -96,6 +96,16 @@ fn run() -> Result<(), String> {
             }
         });
         println!("{related} reviewed related correspondences; {gaps} explicit remaining mappings");
+        let procedures: usize = report
+            .catalogue
+            .entries
+            .iter()
+            .flat_map(|e| e.mappings.values())
+            .map(|m| m.procedures.len())
+            .sum();
+        println!(
+            "{procedures} specific executable VTT procedure bindings (run the cast_effects example)"
+        );
         println!("{}", report.candidate_meaning);
         for entry in &report.catalogue.entries {
             println!(
@@ -114,6 +124,9 @@ fn print_markdown(report: &Report) {
     println!("Catalogue revision: `{}`.\n", report.catalogue_revision);
     println!("Native candidates: {}.\n", report.candidate_meaning);
     println!("Process source: {}.\n", report.process_source);
+    println!(
+        "Executable bindings name specific procedures in the system lane; native candidates remain declarations. Run `cast_effects` for execution receipts.\n"
+    );
     for source in &report.catalogue.sources {
         println!("- **{}:** [{}]({}).", source.id, source.edition, source.url);
     }
@@ -145,12 +158,17 @@ fn print_markdown(report: &Report) {
             .map(|source| {
                 let mapping = &entry.mappings[&source.id];
                 cell(&format!(
-                    "{:?}{}",
+                    "{:?}{}{}",
                     mapping.relation,
                     if mapping.references.is_empty() {
                         String::new()
                     } else {
                         format!(": {}", mapping.references.join("; "))
+                    },
+                    if mapping.procedures.is_empty() {
+                        String::new()
+                    } else {
+                        format!("; executable: {}", mapping.procedures.join(", "))
                     }
                 ))
             })

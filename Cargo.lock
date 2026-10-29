@@ -4492,6 +4492,7 @@ version = "0.1.0"
 dependencies = [
  "isocosm",
  "isocosm-vtt",
+ "isometer-core",
  "isometry-campaign",
  "isometry-core",
  "libc",

@@ -1,0 +1,49 @@
+# ORC-licensed mechanical implementation data. Source: Pathfinder Player Core
+# (2023), Paizo Inc.; no setting names, artwork or descriptive prose reproduced.
+# Reference: https://github.com/foundryvtt/pf2e/tree/master/packs/pf2e/spells/spells
+version = 1
+
+[[effects]]
+id = "pf2:darkvision"
+edition = "pathfinder2"
+kind = "sight"
+level = 2
+range_ft = 0
+personal = true
+duration = { seconds = 3600 }
+concentration = false
+actions = 2
+bonus_action = false
+source = "Pathfinder Player Core: Darkvision (2023 Remaster); rank-2 personal, rank-3 touch, rank-5 daily preparations"
+license = "ORC"
+credit = "Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative License: https://paizo.com/orclicense"
+
+[[effects]]
+id = "pf2:enlarge"
+edition = "pathfinder2"
+kind = "size"
+level = 2
+range_ft = 30
+personal = false
+duration = { seconds = 300 }
+concentration = false
+actions = 2
+bonus_action = false
+source = "Pathfinder Player Core: Enlarge (2023 Remaster); single-target rank-2 and rank-4 versions"
+license = "ORC"
+credit = "Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative License: https://paizo.com/orclicense"
+
+[[effects]]
+id = "pf2:runic-weapon"
+edition = "pathfinder2"
+kind = "weapon"
+level = 1
+range_ft = 5
+personal = false
+duration = { seconds = 60 }
+concentration = false
+actions = 2
+bonus_action = false
+source = "Pathfinder Player Core: Runic Weapon (2023 Remaster); rank-1, rank-6 and rank-9 weapon runes"
+license = "ORC"
+credit = "Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative License: https://paizo.com/orclicense"

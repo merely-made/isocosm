@@ -34,6 +34,12 @@ appearance baked to a locked isometric 2D lens. The core is system-agnostic:
 game rules arrive as schema-plus-Lua plugins, and the substrate only knows
 tiles, tokens, turns, facing, and elevation.
 
+The [effect examples](crates/isometry-system/data/effects/README.md) execute
+nine experimental body, sight and lasting weapon procedures across D&D SRD
+5.1, Pathfinder Player Core and Ars Magica Definitive Fifth Edition. Run
+`cargo run -p isometry-system --example cast_effects` for their saved lifecycle
+and derived-state receipts. Casting controls in the desktop UI remain open.
+
 <p align="center">
   <img src="assets/screenshots/battlemap-demo.png" alt="The VTT's painted battlemap with terrain, tokens, and turn order" width="900"><br>
   <sub>A painted battlemap with terrain, tokens, editing tools, and turn order in view.</sub>
