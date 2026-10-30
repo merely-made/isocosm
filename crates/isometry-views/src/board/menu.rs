@@ -16,6 +16,7 @@ use super::*;
 /// emitting both cannot. (The same reason `PACE_PCTS` indexes the pace row.)
 enum TokenMenuAction {
     Sheet,
+    Look,
     EndTurn,
     Emote(String),
     ClearCondition(String),
@@ -49,6 +50,11 @@ fn token_menu(
         None => end_turn.disabled_because("no turn order"),
     });
     actions.push(TokenMenuAction::EndTurn);
+
+    let look = CommandItem::new("Appearance").with_id("look");
+    let may = ui.map.token(id).is_some_and(|token| ui.may_edit_look(token));
+    items.push(if may { look } else { look.disabled_because("not your token") });
+    actions.push(TokenMenuAction::Look);
 
     for (beat, label) in &ui.emotes {
         items.push(CommandItem::new(label.clone()).with_id(format!("emote-{beat}")));
@@ -124,6 +130,7 @@ pub(super) fn context_menu_overlay(ui: &UiState) -> Option<UiChild> {
                 if let Some(action) = path.first().and_then(|i| actions.get(*i)) {
                     match action {
                         TokenMenuAction::Sheet => ui.open_or_bind_sheet(),
+                        TokenMenuAction::Look => ui.open_look(id),
                         TokenMenuAction::EndTurn => ui.end_turn(),
                         TokenMenuAction::Emote(beat) => ui.emote(id, beat),
                         TokenMenuAction::ClearCondition(name) => {
@@ -179,8 +186,8 @@ mod token_menu_tests {
 
         let (items, actions) = token_menu(&ui, TokenId(1));
         assert_eq!(items.len(), actions.len());
-        // Sheet, End turn, one emote, one condition, Remove, Close.
-        assert_eq!(items.len(), 6);
+        // Sheet, End turn, Appearance, one emote, one condition, Remove, Close.
+        assert_eq!(items.len(), 7);
         assert!(
             items.iter().any(|i| i.label == "Clear: frightened 2"),
             "a graded condition names its magnitude: {:?}",

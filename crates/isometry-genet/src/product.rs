@@ -43,9 +43,8 @@ use std::rc::Rc;
 use isomere::host::{
     CaptureNames, CloseDisposition, CloseRequest, FocusedTextSlot, KeyPress, Product,
 };
-use isometry_views::{BOARD_SCENE_LEAF_KEY, BoardProducer, UiChild, UiState};
+use isometry_views::{BOARD_SCENE_LEAF_KEY, BoardProducer, LOOK_PREVIEW_LEAF_KEY, UiChild, UiState};
 
-use crate::scene_board::SceneBoard;
 use crate::{App, Ctx, Logic, Runner};
 
 /// What this host calls its capture policy. The two variables and the file name
@@ -75,15 +74,20 @@ impl Product for Isometry {
     fn viewport_keys(&self, _ctx: &Ctx<'_>, keys: &mut Vec<u64>) {
         if self.0.borrow().scene_board.is_some() {
             keys.push(BOARD_SCENE_LEAF_KEY);
+            keys.push(LOOK_PREVIEW_LEAF_KEY);
         }
     }
 
-    fn producer(&self, _ctx: &Ctx<'_>, _key: u64) -> Option<Self::Producer> {
-        self.0
-            .borrow()
-            .scene_board
-            .as_ref()
-            .map(SceneBoard::producer)
+    /// The board's producer, or the look editor preview's for its key: two
+    /// sources of one kind, so the preview draws as the board does.
+    fn producer(&self, _ctx: &Ctx<'_>, key: u64) -> Option<Self::Producer> {
+        let app = self.0.borrow();
+        let board = app.scene_board.as_ref()?;
+        Some(if key == LOOK_PREVIEW_LEAF_KEY {
+            board.preview_producer()
+        } else {
+            board.producer()
+        })
     }
 
     fn frame(&mut self, ctx: &mut Ctx<'_>) -> bool {

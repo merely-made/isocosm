@@ -14,8 +14,8 @@ pub(crate) use kinds::{BASE_TILE_KINDS, WATCHTOWER_TILE_KINDS, tile_kind_css};
 #[cfg(test)]
 pub(crate) use overlays::SHROUD;
 pub(crate) use overlays::{PANE_GROUND, TILE_TINTS, hex_rgb, shrouded};
-// The scene board draws the same rig these rules bake (B2).
-pub(crate) use tokens::token_recipes;
+pub use tokens::class_css;
+pub(crate) use tokens::{BOARD_BAKE, SPRITE_FIT};
 
 /// The floor every overlay panel stacks from, above the whole board.
 ///
@@ -427,10 +427,10 @@ pub fn board_css() -> String {
         "/* @tile-kinds: generated from BASE_TILE_KINDS, see tile_kind_css. */",
         &tile_kind_css(BASE_TILE_KINDS),
     );
-    // Voxel-baked pixel tileset: the pixel sprites this sheet was waiting for
-    // (design_docs/2026-07-08_campaign_packs_plan.md). Knight is the demo rig;
-    // goblin is the same rig recoloured, proving palette-swap on the board.
+    // Each core-pack class baked to its `.token-<class>` sprite (doctrine VTT
+    // 7); a pack that rebinds a class appends its own rules at boot.
     css.push_str(&tokens::voxel_token_css());
+    css.push_str(crate::look::LOOK_CSS);
     css.push_str(watchtower::css());
     css.push_str(&force_css());
     css.push_str(COMPENDIUM_CSS);

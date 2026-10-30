@@ -115,6 +115,13 @@ pub(crate) fn key_intercept(runner: &mut Runner, press: &KeyPress) -> bool {
         }
         return true;
     }
+    // The look editor likewise: Escape cancels it, leaving the table's look.
+    if runner.state().look_open {
+        if named(press, NamedKey::Escape) {
+            runner.update(|ui| ui.cancel_look());
+        }
+        return true;
+    }
     // Everything below is a plain board verb, and every one of them is a row
     // in `isometry_views::KEYMAP` — the one declaration the side panel's key
     // crib is also read off (M3 of the isomere plan). A key that is not in it
@@ -347,6 +354,7 @@ pub(crate) fn init(
     ui.sheet_schema = schema_of(&system);
     ui.bestiary = bestiary_of();
     ui.emotes = app.pack_emotes.clone();
+    ui.appearance = app.pack_appearance.clone();
     ui.spells = spells_of();
     ui.items = items_of();
     app.system = Some(system);
@@ -516,6 +524,7 @@ impl App {
             || (self.turns_selftest && !self.turns_fired)
             || self.family_selftest.as_ref().is_some_and(|test| !test.done())
             || self.magic_selftest.as_ref().is_some_and(|test| !test.done())
+            || self.look_selftest.as_ref().is_some_and(|test| !test.done())
             || (self.select_selftest && !self.select_fired)
             || (self.overlay_selftest.is_some() && !self.overlay_fired)
             || (self.net.is_some() && self.net_selftest && !self.selftest_fired)
@@ -538,6 +547,10 @@ impl App {
         self.maybe_overlay_selftest(ctx);
         self.maybe_family_selftest(ctx);
         self.maybe_magic_selftest(ctx);
+        if let Some(mut test) = self.look_selftest.take() {
+            test.drive(ctx);
+            self.look_selftest = Some(test);
+        }
         if self.net.is_some() {
             self.maybe_selftest(ctx);
         }

@@ -21,7 +21,7 @@
 //! output contract are `SceneProducer`'s; markers and the context menu stay
 //! DOM, as §3 rules.
 
-use std::collections::BTreeSet;
+use std::collections::BTreeMap;
 
 use isometer::lens::{BrickDiagnostics, Grade, TerrainAppearance};
 use isometer::{
@@ -120,9 +120,10 @@ pub struct BoardSource {
     /// rebinds it and an ordinary frame does not.
     palette_revision: Option<usize>,
     world: Option<BoardWorld>,
-    /// Subjects whose recipe colour table is already registered on the body
-    /// layer. A table is per subject and survives frames, so it is set once.
-    palettes: BTreeSet<SubjectKey>,
+    /// Subjects whose look's colour table is registered on the body layer,
+    /// and the look it was registered for. A table is per subject and
+    /// survives frames, so it is set again only when the look changes.
+    palettes: BTreeMap<SubjectKey, Option<u64>>,
     /// Tokens the last frame drew as the placeholder body.
     placeholders: usize,
 }
@@ -142,7 +143,7 @@ impl BoardSource {
             ground: None,
             palette_revision: None,
             world: None,
-            palettes: BTreeSet::new(),
+            palettes: BTreeMap::new(),
             placeholders: 0,
             residency: ResidencySettings::default(),
             atlas_budget: isometer::lens::ATLAS_BUDGET_BYTES,
@@ -341,13 +342,13 @@ fn pose_of(
     world: &BoardWorld,
     token: &Token,
 ) -> (Pose, f32) {
-    let scale = tokens.scale(&token.sprite);
+    let scale = tokens.scale(token.id);
     let elevation = *map
         .elevation
         .get(token.at.0.max(0) as u32, token.at.1.max(0) as u32)
         .unwrap_or(&0) as i32;
     let feet = world.stand(token.at, elevation);
-    let aabb = tokens.body(&token.sprite).0.document.aabb();
+    let aabb = tokens.body(token.id).0.document.aabb();
     // `grounded` stands the document's floor on `position[1]`; the horizontal
     // half has no shared spelling, so the volume's own centre comes off the
     // position, as Eponym's source does it.
@@ -364,6 +365,7 @@ fn pose_of(
 impl SceneSource for BoardSource {
     fn inputs(&mut self, request: &FrameRequest<'_>) -> Result<SceneSignature, String> {
         if self.view.borrow().native.is_some() {return self.native_inputs(request);}
+        self.sync_looks();
         let (camera, world) = self
             .framing(request)
             .ok_or("the board cannot frame this pane")?;
@@ -377,10 +379,9 @@ impl SceneSource for BoardSource {
                 let (pose, scale) = pose_of(&self.tokens, &view.map, &world, token);
                 BodySignature {
                     subject: SubjectKey(u64::from(token.id.0)),
-                    // The recipes are static, so a token's geometry changes
-                    // only when its sprite does: the name's own hash is the
-                    // revision.
-                    revision: sprite_revision(&token.sprite),
+                    // A token's geometry changes exactly when its resolved
+                    // look does, so the look's key is the revision.
+                    revision: self.tokens.key(token.id).unwrap_or(0),
                     pose,
                     scale,
                     grounded: true,
@@ -416,11 +417,13 @@ impl SceneSource for BoardSource {
         // A token's recipe colour table is per subject and survives frames, so
         // it is registered once — before the bodies below borrow the table the
         // documents come from.
+        self.sync_looks();
         let drawn: Vec<Token> = self.view.borrow().map.tokens.clone();
         for token in &drawn {
             let subject = SubjectKey(u64::from(token.id.0));
-            if self.palettes.insert(subject) {
-                let colours = self.tokens.colours(&token.sprite);
+            let key = self.tokens.key(token.id);
+            if self.palettes.insert(subject, key) != Some(key) {
+                let colours = self.tokens.colours(token.id);
                 self.scene
                     .as_mut()
                     .expect("the scene was built")
@@ -443,7 +446,7 @@ impl SceneSource for BoardSource {
             if held.overlays.cuts(&held.map, token) {
                 continue;
             }
-            let (body, placeholder) = self.tokens.body(&token.sprite);
+            let (body, placeholder) = self.tokens.body(token.id);
             missing += usize::from(placeholder);
             let (pose, scale) = pose_of(&self.tokens, &held.map, &world, token);
             bodies.push(SceneBody {
@@ -531,13 +534,14 @@ impl SceneSource for BoardSource {
     }
 }
 
-/// A sprite name as a geometry revision: the recipes are a fixed table, so two
-/// tokens of one sprite share a number and a rename is a change.
-fn sprite_revision(sprite: &str) -> u64 {
-    let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
-    for byte in sprite.as_bytes() {
-        hash ^= u64::from(*byte);
-        hash = hash.wrapping_mul(0x1000_0000_01b3);
+impl BoardSource {
+    /// Brings every token's body up to its look in the snapshot.
+    fn sync_looks(&mut self) {
+        let handle = self.view.clone();
+        let view = handle.borrow();
+        self.tokens.set_library(&view.library);
+        for token in &view.map.tokens {
+            self.tokens.sync(token.id, &view.look(token));
+        }
     }
-    hash
 }

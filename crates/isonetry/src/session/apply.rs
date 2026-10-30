@@ -214,6 +214,14 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             sync_active_map(state);
             Ok(())
         },
+        GameEvent::AppearanceSet { token, sprite, appearance } => {
+            state
+                .map
+                .set_appearance(*token, sprite, appearance.clone())
+                .map_err(GameError::Core)?;
+            sync_active_map(state);
+            Ok(())
+        },
         GameEvent::SheetSet { token, sheet } => {
             state.map.set_sheet(*token, sheet.clone());
             sync_active_map(state);

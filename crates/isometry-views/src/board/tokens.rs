@@ -91,15 +91,33 @@ pub(super) fn token_el(ui: &UiState, token: &Token) -> UiChild {
     // sprite therefore needs a scaled translate, so both ride the same inline
     // declaration rather than the class. At scale 1 nothing is emitted and the
     // sheet's rule stands untouched.
+    // A token whose look is not its bare class (its own overrides, an
+    // equipped item's layer) carries its own bake; the class rule stands for
+    // every other token.
+    let look = crate::appearance::LookInput::of(ui, token);
+    let own = if look.is_bare() {
+        None
+    } else {
+        ui.appearance_bakes
+            .uri(&ui.appearance, &look, 0, &crate::theme::BOARD_BAKE)
+            .map(|uri| format!("background-image: url(\"{uri}\"); {}", crate::theme::SPRITE_FIT))
+    };
     let sprite_el = el("div", ()).attr("class", class);
     let sprite: Vec<UiChild> = vec![if s == 1.0 {
-        Box::new(sprite_el)
+        match own {
+            Some(style) => Box::new(sprite_el.attr("style", style)),
+            None => Box::new(sprite_el),
+        }
     } else {
         let mut style = format!(
             "width: {}px; height: {}px;",
             TOKEN_BOX.0 * s,
             TOKEN_BOX.1 * s
         );
+        if let Some(own) = &own {
+            style.push(' ');
+            style.push_str(own);
+        }
         if flipped {
             style.push_str(&format!(
                 " transform: translateX({}px) scaleX(-1);",

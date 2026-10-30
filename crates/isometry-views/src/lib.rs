@@ -6,6 +6,7 @@
 //! arrive as stylesheets. Host-agnostic: the desktop host and the later
 //! web host both drive [`board_root`].
 
+pub mod appearance;
 mod board;
 mod character;
 mod command;
@@ -15,6 +16,8 @@ mod downtime;
 mod generator;
 mod governance;
 mod keymap;
+mod look;
+pub use look::{LOOK_PREVIEW_LEAF_KEY, LOOK_PREVIEW_SIZE};
 mod overmap;
 mod native_party;
 pub use native_party::{PartyUi, PartyRequest, PartyView};
@@ -76,4 +79,4 @@ pub use state::{OvermapMotionState, OvermapMotionTick};
 pub use state::native::{Acceptance as NativeAcceptance, NativeUi, TableFileAction, PhysicalRequest, PhysicalOutcome,
     ItemsRequest, ItemsOutcome, ItemsFileAction};
 pub use state::{PACE_PCTS, STANCE_KEYS, mode_items, pace_items, stance_items};
-pub use theme::{board_css, tile_kind_colour};
+pub use theme::{board_css, class_css, tile_kind_colour};

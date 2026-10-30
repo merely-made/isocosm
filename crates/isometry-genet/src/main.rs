@@ -286,6 +286,8 @@ struct App {
     /// Emotes the loaded packs offer, handed to the view at boot. The app owns
     /// no beat vocabulary of its own.
     pack_emotes: Vec<(String, String)>,
+    /// The looks the loaded packs bind, handed to the view at boot.
+    pack_appearance: std::rc::Rc<isometry_views::appearance::Library>,
     /// Tokens whose standing-on-a-door state has already produced a travel
     /// event, so the sweep emits once per crossing rather than once per poll.
     travel_emitted: Vec<TokenId>,
@@ -334,6 +336,7 @@ struct App {
     /// party selection and native join, then verify the accepted replay.
     family_selftest: Option<selftest::FamilySelftest>,
     magic_selftest: Option<selftest::MagicSelftest>,
+    look_selftest: Option<selftest::LookSelftest>,
     /// `ISOMETRY_SELECT_SELFTEST`: B3's headed receipt. Press on raised ground
     /// and right-press a token, both through the board's own pointer path, and
     /// leave the selection and the menu standing for a capture.

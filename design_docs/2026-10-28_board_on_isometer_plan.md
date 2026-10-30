@@ -257,7 +257,23 @@ roadmap's distribution residue goes to `content-packs`.
 - 2026-10-28: `DESIGN_SIZE` is (1100, 820) in `crates/isometry-genet/src/main.rs:168`.
 - 2026-10-28: the old plan's timing and single-sample figures (M4 layout median,
   regrow times) are machine-specific and are not carried as thresholds.
+- 2026-10-30: under BD5's ruling (1019, 1022, 1028) both boards draw a
+  token from one resolution, `appearance::Library::resolve` in
+  `isometry-views`: the class (`Token::sprite`) bound by the core pack's
+  `appearance.toml`, the token's overrides (`MapDocument::appearances`,
+  `TokenAppearance` in `isometry-core`) and its equipped items' bound layers.
+  The scene board keys a token's geometry revision and colour table by the
+  resolved look; the DOM board bakes class rules from the same file and
+  bakes a token with its own look inline. The DOM board still draws every
+  facing from bake facing 0, mirrored for east and north.
+- 2026-10-30: the in-app `ISOMETRY_CAPTURE_DIR` readback did not land for any
+  selftest on this machine (a turns-selftest control run included); the look
+  editor's headed pairs were taken with PrintWindow from outside the process.
 
 ## Progress
 - 2026-10-28: cut from the board-on-isometer plan, the VTT overlay plan's board
   and appearance items, and the extracted-receipts ledger.
+- 2026-10-30: the look editor (creation panel and the token menu's
+  Appearance row) with a live preview on whichever board is active, cancel,
+  save and reopen; `AppearanceSet` replicates a look (protocol 23); headed
+  pairs in `Code/testing/isocosm/appearance/`.

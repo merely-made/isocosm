@@ -14,6 +14,7 @@ use crate::demo::demo_map;
 mod character;
 mod interaction;
 mod lanes;
+mod look;
 mod play;
 mod session;
 mod surfaces;

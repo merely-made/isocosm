@@ -2,6 +2,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
+use crate::appearance::TokenAppearance;
 use crate::grid::TileGrid;
 use crate::iso::TileCoord;
 use crate::sheet::{FieldValue, SheetData};
@@ -67,6 +68,11 @@ pub struct MapDocument {
     /// plugin interprets them). `serde(default)` so older saves load.
     #[serde(default)]
     pub sheets: BTreeMap<TokenId, SheetData>,
+    /// Each token's overrides on its class's look (ruling 1022); the class is
+    /// the token's `sprite`. Absent is the class as the pack binds it.
+    /// `serde(default)` so older saves load.
+    #[serde(default)]
+    pub appearances: BTreeMap<TokenId, TokenAppearance>,
     /// Tokens that are out of play. The substrate does not know *why* (hit
     /// points at zero, fled, banished): a system plugin decides that and says
     /// so. What the substrate does with it is generic and mechanical, the same
@@ -126,6 +132,7 @@ impl MapDocument {
             elevation: TileGrid::new(width, height, 0),
             tokens: Vec::new(),
             sheets: BTreeMap::new(),
+            appearances: BTreeMap::new(),
             defeated: BTreeSet::new(),
             conditions: BTreeMap::new(),
             mobility: BTreeMap::new(),
@@ -270,6 +277,24 @@ impl MapDocument {
         self.sheets.insert(id, sheet);
     }
 
+    /// Set a token's class and its overrides in one step. Empty overrides are
+    /// not stored, so "back to the class" and "never changed" are one state.
+    pub fn set_appearance(
+        &mut self,
+        id: TokenId,
+        sprite: &str,
+        appearance: TokenAppearance,
+    ) -> Result<(), crate::EventError> {
+        let token = self.token_mut(id).ok_or(crate::EventError::UnknownToken(id))?;
+        token.sprite = sprite.to_owned();
+        if appearance.is_empty() {
+            self.appearances.remove(&id);
+        } else {
+            self.appearances.insert(id, appearance);
+        }
+        Ok(())
+    }
+
     /// Apply one resolved delta to the addressed token's sheet. Returns false
     /// when that token has no sheet, which is the only failure the substrate
     /// can see: it has no opinion about the field, the sign, or the magnitude.
@@ -382,6 +407,33 @@ mod tests {
         assert_eq!(m.intern_tile_kind("grass"), grass);
         assert_ne!(grass, tree);
         assert_eq!(m.tile_kinds[0], "empty");
+    }
+
+    #[test]
+    fn a_save_from_before_appearances_loads_and_takes_one() {
+        let mut m = MapDocument::new("old", 4, 4);
+        m.tokens.push(Token {
+            id: TokenId(1),
+            at: (1, 1),
+            facing: Facing::South,
+            sprite: "goblin".to_owned(),
+            owner: None,
+        });
+        let mut json: serde_json::Value = serde_json::to_value(&m).unwrap();
+        json.as_object_mut().unwrap().remove("appearances");
+        let mut loaded: MapDocument = serde_json::from_value(json).unwrap();
+        assert!(loaded.appearances.is_empty());
+        assert_eq!(loaded.tokens[0].sprite, "goblin", "the sprite is the class");
+
+        let mut look = TokenAppearance::default();
+        look.layers.insert("hair".to_owned(), "hair:long".to_owned());
+        loaded.set_appearance(TokenId(1), "knight", look.clone()).unwrap();
+        assert_eq!(loaded.tokens[0].sprite, "knight");
+        assert_eq!(loaded.appearances.get(&TokenId(1)), Some(&look));
+        // Back to the bare class stores nothing.
+        loaded.set_appearance(TokenId(1), "knight", TokenAppearance::default()).unwrap();
+        assert!(loaded.appearances.is_empty());
+        assert!(loaded.set_appearance(TokenId(9), "knight", look).is_err());
     }
 
     #[test]
