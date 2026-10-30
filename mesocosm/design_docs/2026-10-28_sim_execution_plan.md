@@ -7,11 +7,6 @@
 
 Not here: the sim's phases and the parked rungs (`sim`); the session layer (`session-network`); the host's GUI layer and mode host (`sim-host`); the place store and lifts (`place-graph-engine`); the playable-loop forager route search (`bodies`, senses).
 
-Receipts from this plan's runs go to one file,
-`archive_docs/receipts/2026-10-28_sim_execution_plan_receipts.md`, never into this plan (DOC_POLICY
-§8). Evidence that matters is also a test in the repository or a line in
-Findings.
-
 ## Decisions
 
 Mark's answers, keyed `sim-execution D1` to `D6` in the order he gave them
@@ -506,7 +501,7 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: The old host plan's earlier receipt figures (cohort sharing on the core-tick lane) are not comparable with the execution plan's battery figures: D5 and D7a redid the sharing as stage-body and part `Arc`s.
 - 2026-10-28: The frame's extra deaths were far consumers leaving food, not the far-meal draw: between feeds a posed forager walks toward food or waits with it in reach, while a far one could do neither (`foraging_walk_matches` and `foraging_wait_score` refuse unposed actors), so a move was its only choice (D36). The far-food table also counted every living body at a site, the foragers' own among them, as prey (D37). With both fixed, frame-on deaths match frame-off over the same opening (receipts).
 - 2026-10-28: The critter's blank view after a migration is not the frame's: a stance is admitted against the body's matter as it is posed, and matter gained or lost standing still moves the matter centre, which leaves a stance near the edge of its feet; `realized` then fails and the scene drops the body. Matter does not change `body_revision`, so nothing re-posed it (D38). The same failure was traced with the frame off.
-- 2026-10-28: A large part of `mesocosm-runtime`'s test suite already fails at `76f8f5cc` (among them `held_advance_tests`, `verified_question_tests`, `ecology_offer`, `live_input`, `physical_play`), the same set with D36 to D38; the lib tests among them fail the same with the frame call disabled (receipts). Not a work item: they gate nothing (Mark, 2026-10-30; root DOC_README working principles).
+- 2026-10-28: A large part of `mesocosm-runtime`'s test suite already fails at `76f8f5cc` (among them `held_advance_tests`, `verified_question_tests`, `ecology_offer`, `live_input`, `physical_play`), the same set with D36 to D38; the lib tests among them fail the same with the frame call disabled (receipts). Fixing them is not a work item (Mark, 2026-10-30).
 - 2026-10-28: Unpaced, `physical_swing`'s hungry-starter test ran past half an hour at the frame-on head, against 222 s at `76f8f5cc`, all of it in the frame draw: its frame covers the whole site, and the consumers whose food was already surrounded each ran the near-food search to its candidate budget and failed, every advance (D39); the site's ground also held only about half the frame's share, and the rest failed the ordinary search every advance (D40). D36 to D38's own work (wait score, prey matter, re-settle) came to under half a second a tick (receipts).
 
 ## Progress

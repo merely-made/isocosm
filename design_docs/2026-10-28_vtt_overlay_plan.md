@@ -5,11 +5,6 @@
 **For:** the VTT as a game over the Isocosm sim: V2 (a campaign over a drawn world), V3 (the table over the sim, calibrated handoff), V4 (the played loop, W5's done-condition for the VTT), the VTT's rulesets and their edition procedures (F10 to F12), and how a ruleset reads the sim's environment at a battlemap. The VTT side of the overlay contract (ruling 154) lives in `shared/isocosm-overlay`.
 Not here: the sim itself, which is `sim` (S1, S3, S5 are the phases V2 lands under); retiring `isometry-campaign` and moving its world into Isocosm, which is `campaign-retirement` R3; drawing the board and the DOM board's fate, which is `board-on-isometer`; the overmap's drawing as a second camera, which is `orthographic-voxel-presentation` L10; the session carrier and host handoff, which is `session-network`; pack terms and distribution, which is `content-packs`; Eponym's recalibration of its sortie scene, which is `eponym-overlay`.
 
-Receipts from this plan's runs go to one file,
-`archive_docs/receipts/2026-10-28_vtt_overlay_plan_receipts.md`, never into this plan (DOC_POLICY
-§8). Evidence that matters is also a test in the repository or a line in
-Findings.
-
 ## Decisions
 
 Copied verbatim from the old overlay's §6. All eight are taken. The "Owed" stylesheet-versus-voxel appearance row that headed the section has moved to `board-on-isometer`.

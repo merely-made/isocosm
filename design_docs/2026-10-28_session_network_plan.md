@@ -23,11 +23,6 @@ where the GM store and proposal lifecycle go on retirement
 (`campaign-retirement R2b`); pack distribution over the carrier
 (`content-packs`); every tick, frame and search-time bar (`sim-execution`).
 
-Receipts from this plan's runs go to one file,
-`archive_docs/receipts/2026-10-28_session_network_plan_receipts.md`, never into this plan (DOC_POLICY
-§8). Evidence that matters is also a test in the repository or a line in
-Findings.
-
 ## Decisions
 
 - **D1, no rule against CRDTs (2026-10-28), refines Record 1:** Mark: "No CRDTs never made any sense. It was a stupid rule to begin with. And just a misunderstanding as well to begin with. So no, that rule is gone. Get rid of that rule." Which operation families want true CRDT types stays a design question (Questions); none is ruled out.

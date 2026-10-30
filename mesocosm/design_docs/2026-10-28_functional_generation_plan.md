@@ -7,11 +7,6 @@
 
 Not here: glyph canon, journey, ascension, chains and standing, the impresa (`wing-organs`); the body contract and conditions (`wing-phenotype-contract`); capability, repertoire and proficiency (`sim`); any speed or tick-cost bar, including the cost of bounding script work (`sim-execution`); licences of rulesets that may ship (`content-packs`); the VTT's effect catalogue and edition procedures, F10 to F12 (`vtt-overlay`).
 
-Receipts from this plan's runs go to one file,
-`archive_docs/receipts/2026-10-28_functional_generation_plan_receipts.md`, never into this plan (DOC_POLICY
-§8). Evidence that matters is also a test in the repository or a line in
-Findings.
-
 ## Constraints
 
 - **Parked**, with magic: not a priority now, and open to design and code, which are what unpark it (`wing-organs` D1).

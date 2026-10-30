@@ -20,11 +20,6 @@ residency policy (`place-graph-engine`); the VTT's overmap readings
 (`vtt-overlay V2`); the board's own stylesheet-versus-voxel choice
 (`board-on-isometer`).
 
-Receipts from this plan's runs go to one file,
-`archive_docs/receipts/2026-10-28_orthographic_voxel_presentation_plan_receipts.md`, never into this plan (DOC_POLICY
-§8). Evidence that matters is also a test in the repository or a line in
-Findings.
-
 ## Decisions
 
 - **D2, rich bodies (2026-10-22), applies 511, 512, 531, 758:** Mark:

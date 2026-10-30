@@ -7,11 +7,6 @@
 
 Not here: the sim's recipe, development and body geometry (the sim's own plan, `sim`); the binding of bodies to physics, footing and senses are `bodies`; the journey's acquisition and progression rules and divinity are `wing-organs` (same-individual rebirth is `wing-organs G4`); the composition design for magic and construction is `functional-generation`. The sim host's examiner and incarnation controls wait on this plan: see `sim-host`'s deferred examiner item. A projection of this plan in the scene is `orthographic-voxel-presentation`.
 
-Receipts from this plan's runs go to one file,
-`archive_docs/receipts/2026-10-28_wing_phenotype_contract_plan_receipts.md`, never into this plan (DOC_POLICY
-§8). Evidence that matters is also a test in the repository or a line in
-Findings.
-
 ## Constraints
 
 Stop rules binding every phase below (old §10):

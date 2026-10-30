@@ -13,13 +13,6 @@ native package is `eponym-client`.
 
 ## Working principles for AI assistants
 
-- **Build the game, not a test harness for it (Mark, 2026-10-30).** "The
-  solution is to iteratively build the game, adding parts on, evaluating how
-  they work in the game, without trying to make goldens out of each step." The
-  game's shape is not known yet, so behaviour tests, goldens and receipts made
-  now encode guesses: none gates a step, no session goes to fixing tests that
-  pin an older guess, and the design is worked out by building parts and
-  judging them in the game, not by asking Mark every detail.
 - Read `../CLAUDE.md` first for repo role, terminology, and don'ts.
 - Verify claims against the codebase and the sibling repos, not doc-to-doc
   consistency.

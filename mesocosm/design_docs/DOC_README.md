@@ -12,13 +12,6 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 ## Working principles for AI assistants
 
-- **Build the game, not a test harness for it (Mark, 2026-10-30).** "The
-  solution is to iteratively build the game, adding parts on, evaluating how
-  they work in the game, without trying to make goldens out of each step." The
-  game's shape is not known yet, so behaviour tests, goldens and receipts made
-  now encode guesses: none gates a step, no session goes to fixing tests that
-  pin an older guess, and the design is worked out by building parts and
-  judging them in the game, not by asking Mark every detail.
 - Construction design should establish the relationships among source,
   embodiment, action, history and presentation before selecting implementation
   slices. Keep accepted decisions separate from proposed schemas and cost

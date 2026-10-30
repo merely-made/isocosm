@@ -5,11 +5,6 @@
 **For:** moving what is left of `isometry-campaign` into its owning homes (ruling 915), deleting the crate, and getting every crate in `isocosm-vtt`'s normal-dependency closure published in dependency order. Opened by case 913: "We should retire isometry-campaign, which is unpublished, and make its contents into components." Asked what "components" meant, Mark chose owning homes (915): each part moves to the crate that owns its subject, with no new crates and no wasm components (D18 keeps first-party code native).
 Not here: the VTT's V2 phases that replace the campaign's world with the sim's, which are `vtt-overlay` V2 (this plan's R3 waits on them); the sim phases the world lands under, which are `sim` S1, S3, S5; remaking `isonetry` as the family session layer, which is `session-network` H7; what a pack shows and how terms are authored, which is `content-packs`.
 
-Receipts from this plan's runs go to one file,
-`archive_docs/receipts/2026-10-28_campaign_retirement_plan_receipts.md`, never into this plan (DOC_POLICY
-§8). Evidence that matters is also a test in the repository or a line in
-Findings.
-
 ## Constraints
 
 - **F1 (919).** `isocosm-vtt` carries MIT OR Apache-2.0, the VTT's licence; its MPL endpoint was relicensed by its author. Code that moves between layers takes the destination's licence (doctrine Licensing 3).

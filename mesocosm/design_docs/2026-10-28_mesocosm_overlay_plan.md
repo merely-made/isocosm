@@ -26,11 +26,6 @@ store and its lifts (`place-graph-engine`); body appearance, footing, senses and
 hagiograph significance and the glyph organ (`wing-organs`); the wing's portable body contract
 (`wing-phenotype-contract`); parked rungs (`wing-organs` D1).
 
-Receipts from this plan's runs go to one file,
-`archive_docs/receipts/2026-10-28_mesocosm_overlay_plan_receipts.md`, never into this plan (DOC_POLICY
-§8). Evidence that matters is also a test in the repository or a line in
-Findings.
-
 ## Constraints
 
 - **Directing, never driving.** A click draws the critter's attention; it weighs each nudge by
@@ -408,7 +403,7 @@ Epoch boundary (record: open, the record does not decide).
   452. From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:45-48`.
 
 ## Findings
-- 2026-10-30: `mesocosm-runtime`'s integration tests ran 56 passed and 36 failed at `76f8f5cc`, with four lib failures, the same with the frame call disabled (`sim-execution` Findings). Many pin behaviour the game has since changed (decision periods, D19). They gate nothing and are not a work item: the game is built part by part and judged in play, not against goldens (Mark, 2026-10-30; root DOC_README working principles).
+- 2026-10-30: `mesocosm-runtime`'s integration tests ran 56 passed and 36 failed at `76f8f5cc`, with four lib failures, the same with the frame call disabled (`sim-execution` Findings). Many pin behaviour the game has since changed (decision periods, D19). Fixing them is not a work item (Mark, 2026-10-30).
 
 - 2026-10-28: `mesocosm/crates` holds `mesocosm-genet`, `-phenotype`, `-runtime`, `-views`
   and probes; `mesocosm-core` is gone. `isocosm::legacy` appears only in design docs, so the

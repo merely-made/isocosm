@@ -7,11 +7,6 @@
 
 Not here: SP7, the absorption join of Mesocosm's in-site play, Eponym's scope crossing sites and the VTT's battlemap as a lifted site, is `mesocosm-overlay M4` (with `eponym-overlay E3` and `vtt-overlay V2` as the other two products' share). The tier line (`TierLine`) and the crowd are `sim-execution E4` and `sim-execution E5`; every speed or frame bar is `sim-execution`. Sensor-part positions, oriented collision, facing and gait (the interaction-expansion follow-ons) are `bodies`. The L10 detail ladder and its ring set are `orthographic-voxel-presentation L10`; this plan owns the lift they call.
 
-Receipts from this plan's runs go to one file,
-`archive_docs/receipts/2026-10-28_place_graph_engine_plan_receipts.md`, never into this plan (DOC_POLICY
-§8). Evidence that matters is also a test in the repository or a line in
-Findings.
-
 ## Decisions
 
 - **D1, many projections of one store (2026-10-28), applies 18:** Mark: "Sounds fine to me. If we can do that, sounds fine to me. Makes a lot of sense to me. And they don't have to be like projections in like a destructive way, you know, or projections in like a, you only get one projection per thing." And: "I think that different creatures would see the world differently, right? And so it makes sense to be able to analyze the world according to these different dimensions." Top-down, side, 2:1 dimetric, 3D and slices along any axis are reads of the one quantized store; a read never writes back, and a thing may be read through as many projections at once as anything needs, a creature's senses included.
