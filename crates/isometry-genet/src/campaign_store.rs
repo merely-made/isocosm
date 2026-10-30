@@ -102,6 +102,10 @@ impl CampaignRepository {
 mod h7_bench_fixture;
 
 #[cfg(test)]
+#[path = "campaign_store/region_fixture.rs"]
+mod region_fixture;
+
+#[cfg(test)]
 mod tests {
     use super::*;
     use isometry_campaign::{

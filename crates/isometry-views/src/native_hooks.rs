@@ -7,6 +7,7 @@ use cambium::{el,text,lens,clickable,caret_text_field,TextInput};
 use isocosm_overlay::vtt::HookIntent;
 use isocosm_vtt::native::hooks::GoalHook;
 use isocosm::polities::PolityReading;
+use isocosm_vtt::native::places::PlaceView;
 use crate::{UiState,UiChild,PartyRequest,PartyView};
 
 pub fn native_goal_lines(hook:&GoalHook)->Vec<String> {
@@ -38,6 +39,31 @@ pub fn native_polity_lines(read:&PolityReading)->Vec<String> {
     lines
 }
 
+pub fn native_place_lines(view:&PlaceView)->Vec<String> {
+    let read=&view.reading;
+    let name=|id:&u64| view.names.get(id).cloned().unwrap_or_else(|| format!("#{id}"));
+    let tier=read.tier.map_or("no tier",|t| t.word());
+    let mut lines=vec![format!("Location {} · {} · {} living residents · sites {:?}",read.location,tier,read.residents.len(),read.sites)];
+    for h in &read.households {
+        let members=h.members.iter().map(name).collect::<Vec<_>>().join(", ");
+        lines.push(format!("Dwelling {} ({}): {} does {} (grade {}) under a tenancy with {}; household: {}",
+            h.dwelling,h.name.as_deref().unwrap_or("unnamed"),name(&h.tenant),
+            isocosm::social::craft_name(&h.does.craft),h.does.grade,name(&h.with),members));
+    }
+    for g in &read.groups {
+        lines.push(format!("{} (polity {}) · governance {} · {} residents by constitution, {} by membership{}",
+            g.name.as_deref().unwrap_or("Unnamed group"),g.polity,g.governance,g.constitutional.len(),g.related.len(),
+            if g.ended {" · ended"} else {""}));
+    }
+    lines.push("Why it is here, from the history log:".into());
+    for e in &view.entries {lines.push(format!("Entry {} at tick {}: {} -> {}",e.order,e.tick,e.what,e.outcome));}
+    for e in &read.record {
+        let toward=e.object.map(|o| format!(" toward {}",name(&o))).unwrap_or_default();
+        lines.push(format!("Tick {} · {} by {}{}",e.tick,e.process,name(&e.subject),toward));
+    }
+    lines
+}
+
 pub(crate) fn panel(_ui:&UiState,read:&PartyView)->Vec<UiChild> {
     if !read.dm {return Vec::new();}
     let mut rows:Vec<UiChild>=vec![Box::new(el("h3",text("Current native goals and polities")))];
@@ -56,6 +82,10 @@ pub(crate) fn panel(_ui:&UiState,read:&PartyView)->Vec<UiChild> {
             ui.request_party(PartyRequest::Hook(HookIntent::ReshapeGoal {arc,goal:goal.clone(),note}));
         })));
     }
+    if !read.places.is_empty() {rows.push(Box::new(el("h3",text("Places read off their residents"))));}
+    for place in &read.places {for line in native_place_lines(place) {
+        rows.push(Box::new(el("div",text(line)).attr("class","side-line")));
+    }}
     for polity in &read.polities {for line in native_polity_lines(polity) {
         rows.push(Box::new(el("div",text(line)).attr("class","side-line")));
     }}

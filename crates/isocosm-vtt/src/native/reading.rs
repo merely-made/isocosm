@@ -21,6 +21,8 @@ mod space;
 mod storylets;
 mod polities;
 pub use polities::polity_readings;
+pub mod places;
+pub use places::place_readings;
 
 impl<'a> Reading<'a> {
     pub(super) fn new(session: &'a Session) -> Self {

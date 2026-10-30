@@ -16,6 +16,7 @@ use super::*;
 
 pub(crate) use family::FamilySelftest;
 pub(crate) use magic::MagicSelftest;
+pub(crate) use region::RegionSelftest;
 pub(crate) use overlays::OverlayArm;
 
 mod adjudicate;
@@ -23,6 +24,7 @@ mod board;
 mod family;
 mod magic;
 mod overlays;
+mod region;
 mod session;
 mod surfaces;
 mod terrain;
