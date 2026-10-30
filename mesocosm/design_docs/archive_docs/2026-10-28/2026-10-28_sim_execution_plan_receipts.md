@@ -146,3 +146,13 @@ the same way, and the unpaced test failed its last check in 342 s.
 passing beyond that are D38's re-settle test and D39's
 `a_drawn_member_whose_food_is_crowded_takes_the_ordinary_search` (traces:
 `runtime-tests-d39-d40.log`, `isocosm-lib-d39-d40.log`).
+
+## physical_swing unpaced, 2026-10-29
+
+Paced (D19), `unchosen_hungry_starter_can_take_a_supported_food_step`'s
+critter (entity 6, `lineage:1`, period 2) decides on even ticks: tick 1
+admits no step, tick 2 admits its food step, and it is still resident at
+site 0 at tick 12, so the test's departure check fails too (12 ticks, 265 s,
+debug). Its fixture unpaced, as Mark's group-1 answer to the runtime triage
+asks ("Fix replay, unpace where allowed"): the file's three tests pass in
+255 s (`cargo test -p mesocosm-runtime --test physical_swing`, debug).

@@ -527,3 +527,4 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - 2026-10-28: D35 replaces D34: far meals by an encounter rate from prey density.
 - 2026-10-28: D36 to D38 built (`Simulation::prey_matter`, `foraging_wait_score`, `spatial/settle.rs`); `FRAME_TIER` on in main, lifting D33.
 - 2026-10-29: D39, D40 built (`embodiment::draw_within`, `Simulation::draw_into_frames`).
+- 2026-10-29: `physical_swing`'s fixture unpaced, carrying out Mark's answer to the runtime triage's group 1 ("Fix replay, unpace where allowed", 2026-10-28, not yet keyed); its three tests pass.

@@ -15,6 +15,11 @@ fn ordinary(seed: u64, proportions: bool) -> Runtime {
     b.founding = Some("SpacedRoster".into());
     b.proportions = proportions;
     founded.genesis = domain.generate().unwrap();
+    // Every lineage decides each tick: these tests ask how a starter walks,
+    // not how often it decides (D19 paces played worlds).
+    for l in founded.genesis.lineages.values_mut() {
+        l.decides = None;
+    }
     founded.genesis.rules.epoch_ticks = 60;
     let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
     founded.genesis.rules.sun = Some(isocosm::light::SunRules {
