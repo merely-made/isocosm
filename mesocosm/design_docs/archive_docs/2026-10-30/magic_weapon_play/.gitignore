@@ -1,7 +1,0 @@
-# Synthetic runtime stores stay local for replay; screenshots and this lane's
-# compact receipt are the public evidence. Do not publish private host stores.
-*.family
-*.family-lock
-*.redb
-stdout.log
-stderr.log

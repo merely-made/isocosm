@@ -1,15 +1,16 @@
 # The place graph and its world store
 
-**Status:** 2026-10-28: cut from `2026-08-05_place_graph_engine_plan.md` and `2026-08-14_resident_views_composition_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. SP1 to SP5 are built: the site map and skeleton in `shared/isocosm/src/map/`, the lift, edits and places over `Ground` in `shared/isometer/crates/isometer-space/`. Open: their re-certification (the lift's bytes moved when cliffs were drawn), SP6 (nisus under `Ground`, waiting on mere's T2), SP8 (the region), the resident-surface obligations, passage survival at coarse levels, the VRAM residency policy and the standing field-admission gate.
+**Status:** 2026-10-30: cut on 2026-10-28 from `2026-08-05_place_graph_engine_plan.md` and `2026-08-14_resident_views_composition_plan.md`, which are archived in
+`archive_docs/2026-10-28/`. SP1 to SP5 are built: the site map and skeleton in `shared/isocosm/src/map/`, the lift, edits and places over `Ground` in `shared/isometer/crates/isometer-space/`. Open: their re-certification (the lift's bytes moved when cliffs were drawn), SP6 (nisus under `Ground`, waiting on mere's T2), SP8 (the region), the resident-surface obligations, passage survival at coarse levels, the VRAM residency policy, the standing field-admission gate and PG7 (Places from the column rule and its exceptions, the cost `sim-execution` D30 names).
 
 **For:** the spatial spine from world map to voxels and the resident planes the products draw from it: the lift at power-of-two cell sizes, edits as asserted facts, places and passages derived from the volume, `Ground` and its move to nisus, the region, and what a field must declare before it becomes a resident plane. Phases keep their SP labels; new ones are PG.
 
 Not here: SP7, the absorption join of Mesocosm's in-site play, Eponym's scope crossing sites and the VTT's battlemap as a lifted site, is `mesocosm-overlay M4` (with `eponym-overlay E3` and `vtt-overlay V2` as the other two products' share). The tier line (`TierLine`) and the crowd are `sim-execution E4` and `sim-execution E5`; every speed or frame bar is `sim-execution`. Sensor-part positions, oriented collision, facing and gait (the interaction-expansion follow-ons) are `bodies`. The L10 detail ladder and its ring set are `orthographic-voxel-presentation L10`; this plan owns the lift they call.
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
+Receipts from this plan's runs go to one file,
+`archive_docs/receipts/2026-10-28_place_graph_engine_plan_receipts.md`, never into this plan (DOC_POLICY
+§8). Evidence that matters is also a test in the repository or a line in
+Findings.
 
 ## Decisions
 
@@ -89,6 +90,13 @@ Before any product field enters `ResidentChunk`, its card names authority class,
 - Rulings: 879 (energy is not matter), 971 to 974, 970, 979, 982 to 984, 888, 472
 - From: `archive_docs/2026-10-28/2026-08-14_resident_views_composition_plan.md` lines 30-39, 140-176, 178-236, 326-330, 523-526, 877-901.
 
+### PG7. Places from the column rule and its exceptions
+`sim-execution` D30 ("Places cache, then far off-path") found Places derivation among the head's largest costs, and D32 placed it: first visits and LRU eviction across a one-site world's windows (`mesocosm-runtime/src/spatial/geometry_cache.rs`), not terrain change. Every derivation realizes a window's `Volume` and seeds the flood from every column, floor to top (`Places::derive`, `Cells::everywhere` in `isometer-space/src/places/`). The lift already says most of it without voxels: under the column rule air lies only above a column's surface, so a room needs an exception (an air exception below the surface, or rule air that a solid exception walls in); outdoor patches and water read each column's surface from the rule; a sight ray over open ground is blocked only where it falls below a column's top. Mark, 2026-10-30, of where the fix lives: "I'll take your recommendation. That's probably fine." The recommendation was here, since Places and their derivation are this plan's (SP5), with `sim-execution` measuring the result. The direction (from the 2026-10-28 discussion, not ruled): derive Places from the column rule and the exceptions, seed rooms only at exceptions, and realize voxels only where exceptions or a body's contact need them, so a window without edits costs a pass over its columns.
+- Done when: on seeded edit sequences, Places derived from the rule and exceptions equal `Places::derive` over the realized volume (rooms, water, patches, passages), with a control that drops the seeds beside solid exceptions and misses a walled-in room; a window with no exceptions derives without realizing a `Volume`; the head's share of a played tick spent deriving Places is measured before and after by `sim-execution`.
+- Needs: SP4/SP5 (re-certification)
+- Rulings: 412, 415, 417 to 422; `sim-execution` D30, D32
+- From: `sim-execution` D30, D32 and Findings 2026-10-28; Mark, 2026-10-30.
+
 ## Deferred and parked
 - **A view for slicing the world by its projections.** Mark, 2026-10-28, of the scratch terrain-ladder widget: "in terms of like slicing up the map in a lot of different ways. I think that was cool", and "I'd be okay with that being like a Metacosmos, you know, GUI. I mean, obviously we have more work to do before we can make decisions like that." Not a phase and not a name; it waits on D1's projections existing. From: Mark, 2026-10-28.
 - **Overflow (416)**: once capacity exists, what a carver cannot hold is filled back as a heap beside the cut, an automatic fill edit placed from the edit's seed; until then the carver holds all of it. Waits on a world capacity, which no plan defines. From: `archive_docs/2026-10-28/2026-08-05_place_graph_engine_plan.md` lines 213-216 and 482-484; rulings 412, 416.
@@ -115,4 +123,5 @@ Before any product field enters `ResidentChunk`, its card names authority class,
 - 2026-10-28: the 2026-10-19 narrow Mesocosm connection (generated whole-body stands, walking and biological child placement consuming `Ground` and Places through the native spatial clock) is a bounded SP7 slice; full in-site play is `mesocosm-overlay M4`.
 
 ## Progress
+- 2026-10-30: PG7 added, the Places cost `sim-execution` D30 named.
 - 2026-10-28: cut from `2026-08-05_place_graph_engine_plan.md` and `2026-08-14_resident_views_composition_plan.md`.

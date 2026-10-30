@@ -7,9 +7,10 @@
 
 Not here: how a magic system is composed, priced and cast, and effects-rendering remainders (`functional-generation`); the body contract and condition carryover into a new life (`wing-phenotype-contract`, wing.4 there); glyph display on far marks (`orthographic-voxel-presentation` L10); deep time and the hagiograph's history (`sim` S5); Eponym's glyph reading and invocation (`eponym-overlay`).
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
+Receipts from this plan's runs go to one file,
+`archive_docs/receipts/2026-10-28_wing_organs_plan_receipts.md`, never into this plan (DOC_POLICY
+§8). Evidence that matters is also a test in the repository or a line in
+Findings.
 
 ## Decisions
 

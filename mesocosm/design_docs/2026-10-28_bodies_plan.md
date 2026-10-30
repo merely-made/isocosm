@@ -24,9 +24,10 @@ tenant path (`orthographic-voxel-presentation`, including the far-rung function
 tint question); effects and magic (`functional-generation`); the world store's
 lifts (`place-graph-engine`).
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
+Receipts from this plan's runs go to one file,
+`archive_docs/receipts/2026-10-28_bodies_plan_receipts.md`, never into this plan (DOC_POLICY
+§8). Evidence that matters is also a test in the repository or a line in
+Findings.
 
 ## Decisions (Mark, 2026-10-22, unnumbered)
 

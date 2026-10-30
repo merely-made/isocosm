@@ -5,9 +5,10 @@
 **For:** packs as the unit content ships in: what a pack declares about its terms and how the VTT and the authoring tool treat them, the authoring tool's residue, how packs are distributed, how a pack's appearance is previewed and given a real tileset, and which rulesets may ship in a pack. Mark's doctrine statements are Licensing 1 (rulesets), Licensing 2 (publication) and Licensing 3 (licences follow the layer).
 Not here: where the manifest schema lives after `isometry-campaign` retires, which is `campaign-retirement`'s question (this plan waits on it); the session carrier packs are distributed over, which is `session-network` (K0, K1); the stylesheet-versus-voxel appearance ruling, which is `board-on-isometer`; the sim's generator and pack-requirement semantics (a pack displaces generated content where the world meets its requirements), which are `sim` and `vtt-overlay` V2.
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
+Receipts from this plan's runs go to one file,
+`archive_docs/receipts/2026-10-28_content_packs_plan_receipts.md`, never into this plan (DOC_POLICY
+§8). Evidence that matters is also a test in the repository or a line in
+Findings.
 
 ## Constraints
 

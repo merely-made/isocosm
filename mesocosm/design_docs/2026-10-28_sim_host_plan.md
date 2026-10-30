@@ -7,9 +7,10 @@
 
 Not here: H7, the family session layer (`isonetry` remade), is `session-network H7`. Every tick, frame or search-time bar, including case 966's 1.5 s, the 976 bar, the head's tempo (978) and TD2's aspiration, is `sim-execution` (its Speed bars). The host's lighting and launch-capture findings (964 to 969) are `orthographic-voxel-presentation`. The headed run of directing (old D5) is `mesocosm-overlay M4i.2`; the full in-site play is `mesocosm-overlay M4`.
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
+Receipts from this plan's runs go to one file,
+`archive_docs/receipts/2026-10-28_sim_host_plan_receipts.md`, never into this plan (DOC_POLICY
+§8). Evidence that matters is also a test in the repository or a line in
+Findings.
 
 ## Constraints
 

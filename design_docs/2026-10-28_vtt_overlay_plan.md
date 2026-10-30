@@ -1,13 +1,14 @@
 # The VTT over the sim
 
-**Status:** 2026-10-28: cut from `2026-09-25_vtt_overlay_plan.md`, `2026-07-08_environmental_surfaces_plan.md`, the VTT parts of `2026-08-08_extracted_receipts.md` and the scene-board path of `2026-09-15_board_on_isometer_plan.md`, which are archived in `archive_docs/2026-10-28/`. V0 (the profile ruled) and V1 (the contract's VTT side, `shared/isocosm-overlay/src/vtt/`) are done. V2 is partly placed in code: native founding, journeys, items, disclosure and the session protocol exist. The sim-off `CampaignWorld` reading with `party_known`, the inline `TravelResolved` event and the sim-on lifted-site battlemap remain. V2 as a whole, V3 and V4 are open.
+**Status:** 2026-10-28: cut from `2026-09-25_vtt_overlay_plan.md`, `2026-07-08_environmental_surfaces_plan.md`, the VTT parts of `2026-08-08_extracted_receipts.md` and the scene-board path of `2026-09-15_board_on_isometer_plan.md`, which are archived in `archive_docs/2026-10-28/`. V0 (the profile ruled) and V1 (the contract's VTT side, `shared/isocosm-overlay/src/vtt/`) are done. V2 is partly placed in code: native founding, journeys, items, disclosure and the session protocol exist. The sim-off `CampaignWorld` reading with `party_known`, the inline `TravelResolved` event and the sim-on lifted-site battlemap remain. V2 as a whole, V3 and V4 are open. F10 to F12 (moved from `functional-generation` 2026-10-30) are built: the effect catalogue, nine experimental edition procedures and Magic Weapon at the shipping table; F11c is open.
 
-**For:** the VTT as a game over the Isocosm sim: V2 (a campaign over a drawn world), V3 (the table over the sim, calibrated handoff), V4 (the played loop, W5's done-condition for the VTT), the VTT's rulesets, and how a ruleset reads the sim's environment at a battlemap. The VTT side of the overlay contract (ruling 154) lives in `shared/isocosm-overlay`.
+**For:** the VTT as a game over the Isocosm sim: V2 (a campaign over a drawn world), V3 (the table over the sim, calibrated handoff), V4 (the played loop, W5's done-condition for the VTT), the VTT's rulesets and their edition procedures (F10 to F12), and how a ruleset reads the sim's environment at a battlemap. The VTT side of the overlay contract (ruling 154) lives in `shared/isocosm-overlay`.
 Not here: the sim itself, which is `sim` (S1, S3, S5 are the phases V2 lands under); retiring `isometry-campaign` and moving its world into Isocosm, which is `campaign-retirement` R3; drawing the board and the DOM board's fate, which is `board-on-isometer`; the overmap's drawing as a second camera, which is `orthographic-voxel-presentation` L10; the session carrier and host handoff, which is `session-network`; pack terms and distribution, which is `content-packs`; Eponym's recalibration of its sortie scene, which is `eponym-overlay`.
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
+Receipts from this plan's runs go to one file,
+`archive_docs/receipts/2026-10-28_vtt_overlay_plan_receipts.md`, never into this plan (DOC_POLICY
+§8). Evidence that matters is also a test in the repository or a line in
+Findings.
 
 ## Decisions
 
@@ -153,6 +154,85 @@ Rulings 538 to 543 (2026-10-03): the VTT plays recognized editions faithfully as
 - Rulings: 538, 539, 540, 541, 522, 542, 543, 114
 - From: `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:42-50`
 
+### F10 to F12. Edition procedures
+Moved here from `functional-generation` on 2026-10-30 with their labels (Mark,
+of whether F10 to F12 move to a VTT plan: "Yeah, sure."). They are RS's first
+built work: the effect catalogue with edition correspondences, nine bounded
+procedures and Magic Weapon at the shipping table. The decision they carry
+out is `functional-generation` D1; native magic, the six axes and the cost
+curve stay there.
+
+#### F10. Effect catalogue and edition correspondences
+The initial coverage map has ten families: resources and harm, defence and checks, anatomy, movement, perception and knowledge, agency and relationships, matter and environment, spatial access, life and identity, and persistence and interaction. Catalogue entries name the native primitives they may use and keep that evidence distinct from an implemented ruleset procedure. The ruleset lane owns reference mappings to D&D 5e SRD 5.1, Pathfinder 2e Player Core (2023), and Ars Magica 5e; these are source correspondences, not conversions of spell rank, energy, damage, duration or authority. Unknown and optional correspondences stay explicit. This tranche does not adopt a universal magic grammar or cost curve.
+
+- F10a done when: a versioned TOML catalogue covers every family and carries a mapping or an explicit gap for all three sources on every entry; admission rejects duplicate identities, unknown native operations, missing source references and unjustified implementation claims; a runnable inspector reports the coverage and the actual native process candidates.
+- F10b done when: the first body and sensory bindings are exercised through accepted native processes, refusal controls and exact save/replay, with their actual scope stated. A matching primitive alone does not establish a full spell implementation.
+- F10c: F11 supplies the VTT lifecycle for the three temporary weapon spells: identity, source, bearer, activation, termination, interference and overlapping changes. Native persistent-effect bindings and permanent devices remain open; a timed note is not an enchantment. Complete edition execution still needs each exception and casting method.
+- Needs: the existing native `rules::Effect` and `Process` grammar; `isometry-system` for edition content and inspection; `functional-generation` F4 for F10c.
+
+#### F11. The agreed small set: executable edition procedures
+
+Mark's follow-up, "What about the small set?", identifies the unfinished half
+of `functional-generation` D1. Catalogue metadata and native allocation/growth controls did not meet
+the promised spell execution. This phase connects specific procedures rather
+than treating those controls as implementations of tabletop magic.
+
+- Scope: D&D SRD 5.1 Darkvision, Enlarge/Reduce and Magic Weapon; Pathfinder
+  Player Core Remaster Darkvision, Enlarge and Runic Weapon; Ars Magica
+  Definitive Fifth Edition Eyes of the Cat, Preternatural Growth and Shrinking,
+  and Edge of the Razor. Each remains an experimental, bounded procedure.
+- F11a done when: accepted casts consume declared resources/actions, preserve
+  edition targeting and duration, retain source definitions and dice, survive
+  save/replay, and refuse atomically. The calm unmastered Ars profile is
+  explicit; stress, resistance and counteract decisions are not guessed.
+- F11b done when: senses change the terrain visibility reading, size changes
+  project the current part graph, and lasting weapon changes feed the existing
+  damage consumer. Expiry preserves later base edits; suppression sources and
+  dispel outcomes are addressable; overlap cannot add the same spell twice.
+- F11c open: complete edition exceptions, desktop casting for the other eight
+  procedures, scene body/lighting consumers, concentration integration with
+  other damage sources, live multiplayer admission and cross-map migration.
+  F12 connects Magic Weapon, its weapon attacks and explicit table damage.
+  D&D confined-space fitting, equipment
+  meshes, object targets and Strength advantage rolls; PF2e group casting;
+  Ars stress/botch, full resistance and laboratory devices remain named work.
+  Native magic and calibration for unattended worlds remain separate gates.
+- Owner: `isometry-system::active_effects`, using the substrate's uninterpreted
+  `MapDocument.system_data`, existing inventories, dice and height visibility;
+  native body documents and native clock/sky reads are inputs. There is no new
+  biological simulator, universal spell level or material cost curve.
+- Usage and exact supported profiles: [effect procedures](../crates/isometry-system/data/effects/README.md).
+
+#### F12. Magic Weapon in the shipping table
+
+2026-10-30, done for the bounded free-play loop. Mark approved: choose a
+weapon from a sheet, accept the cast through the current authority, spend the
+slot, resolve an enhanced attack, lose concentration on damage, expire with
+elapsed time, and restore/replay the same accepted results.
+
+- Owner: `isocosm-vtt` endpoint over the existing family host, with rules in
+  `isometry-system`. The retired mutable GameSnapshot route is not extended.
+- Done when: rendered character-sheet actions invoke this endpoint; refused
+  or stale requests spend no resource or RNG; attack damage triggers the
+  existing concentration procedure in the same transaction; native time ends
+  the effect; checkpoints and family replicas preserve accepted edition state.
+- Native participants/seat cuts determine control and disclosure. Edition HP,
+  slots and unmarked tabletop weapons are labelled ruleset facts beside the
+  native body, not a second biological or item-custody simulation. Native
+  physical items are not silently counted again through legacy equipment.
+- Physical range uses current native placement when a table scale is declared;
+  otherwise an attack requires an explicit DM reach ruling, retained in history.
+  Self-touch casting on one's equipped weapon requires no guessed terrain pose.
+- The first range adapter measures native root distance and a terrain ray
+  through the sim's existing site geometry cache. Articulated weapon reach,
+  body size and native physical equipment bindings remain separate work.
+- Scope: D&D SRD 5.1 Magic Weapon and its weapon attack consumer. Other spells,
+  native magical manufacture, item migration and edition-complete combat remain
+  F11c work. Production peer transport/admission remains the session lane's gate.
+- Receipts: family admission/replay and save controls, view routing checks,
+  feature-enabled compile checks, and a bounded desktop capture, in the one
+  receipt file.
+
 ## Deferred and parked
 
 - **Follow-ons waiting on V2**: a reusable character library and Knot prose editing (W5); initializing parties other than the session party and their tactical doorway updates (W9); independent per-party map views and party-membership editing (W7). Parties and their knowledge then come from the sim. Waits on V2. From: `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:410-417`.
@@ -167,7 +247,16 @@ Rulings 538 to 543 (2026-10-03): the VTT plays recognized editions faithfully as
 
 ## Findings
 
-- 2026-10-30: `functional-generation` F12 connects an experimental Magic Weapon free-play loop through the shipping `FamilyTable` / `VttEndpoint`, with edition facts in the native world's opaque product sections. It reuses system casting/attack/concentration, native time consent and family persistence. Table equipment is explicitly unmarked, and root/terrain reach requires declared scale or an explicit DM ruling. This is not V3 calibration, native magical item manufacture or V4's multiplayer played-loop acceptance. The remaining edition and consumer work stays in F11c/F12 of the functional generation plan.
+- 2026-10-30, F12: the shipping desktop's authority is `FamilyTable` / `VttEndpoint`, not the retained legacy `GameSnapshot` handlers. `isocosm-vtt::ruleset` stores sheets, unmarked table equipment, active effects, the dice stream and result history in an opaque world section. Its changes share the existing atomic world acceptance and family checkpoint/record replay. It creates neither native anatomy nor native items.
+- 2026-10-30, F12: `isocosm-vtt::sheets` advertises controls through the current seat cut; a player can cast on their own wielded weapon but cannot grant slots, edit sheets or override reach. Weapon and explicit external damage call `active_effects::concentration_check`, retaining the actual faces. Native downtime settles expiry in the same accepted transaction. The first adapter is free play; initiative, class progression and other damage sources are not wired here.
+- 2026-10-30, F12: the native simulation's `spatial_poses` and admitted VTT `PositionBinding` both supply physical roots. A generated founding stand alone has no admitted terrain patch; the physical test fixture publishes `Command::Patch` just as Mesocosm does. `ruleset::frame` refuses stale or unplaced bodies and reuses `Simulation::site_geometry` and `Places::sees` for current measured reach. No rules-map coordinates are published as placement.
+- 2026-10-30, F12: D&D critical hits now repeat damage dice while adding flat modifiers once, through the existing dice parser and action resolver. PF2e retains its whole-damage multiplier. The desktop readout now shows zero remaining time after concentration ends; the initial misleading capture is retained with the corrected result in the dated receipts.
+- 2026-10-28, F11: the three procedure packs in `crates/isometry-system/data/effects/` declare specific casting profiles. D&D uses slots and concentration; PF2e prepared casts share `actions_spent` with Strikes; Ars uses calm formulaic totals, fatigue and the accepted next sunrise/sunset. Player Core's base Darkvision is personal and Enlarge lasts five minutes. Ars cat eyes do not see in absolute darkness. The source and profile boundaries are kept with the data.
+- 2026-10-28, F11: `active_effects` stores accepted definitions, cast costs, dice, bearer IDs, independent suppressors and end causes. Current sheets and inventories are projected rather than restored from old copies. `System::effective_map_sheet`, the attack resolver, the height tracer and the shared body graph consume the changes. Exact quantized scaling refuses when a joint would round; Ars Size does not imply an exact native geometric ratio. This is VTT state beside native bodies, not native biological mutation.
+- 2026-10-28, F10: `crates/isometry-system/data/effects.toml` holds 54 vocabulary entries across ten families and pins three reference corpora. Nine related correspondences cover sensory allocation, recipe growth and lasting enchantment; 153 mappings are explicitly unreviewed. This is an initial coverage map, not a complete spell inventory or three executable rulesets. Source content stays in the system lane; no tabletop text or costs were added to native simulation rules.
+- 2026-10-28, F10: native `rules::Effect::kind` and `Process::effect_declarations` inspect the existing grammar, including commitments, guarded alternatives and risks. Catalogue candidates are declarations, not accepted acts. A sensory allocation candidate must both bind and allocate `function:sense`; an unrelated gland allocation does not qualify. The catalogue does not admit new operations or alter world saves.
+- 2026-10-28, F10b: the existing allocation and growth fixtures now also execute through `Session` and restore the exact state, entries and witness. Sensory allocation changes the native area reading without creating matter. Recipe growth adds paid parts without creating matter. Neither demonstrates darkvision, temporary resizing, polymorph, or an edition-native spell procedure. Persistent enchantment, suppression and dispelling have no native binding; a note's text lifetime and the function evaluator's charge storage do not provide one.
+- 2026-10-28, prior art for F10: Fantasy Grounds' [CoreRPG layering](https://fantasygroundsunity.atlassian.net/wiki/spaces/FGCP/pages/996644522/Ruleset%2B-%2BLayering), Foundry's [Active Effects](https://foundryvtt.com/article/active-effects/) and [PF2e rule elements](https://github.com/foundryvtt/pf2e/wiki/Quickstart-guide-for-rule-elements) inform the separation of common infrastructure, specific procedures and inspectable changes. They are research references, not adopted dependencies or proof of a complete simulation adapter.
 - 2026-10-28: the entropy-tape faction turn and `legacy/campaign` are gone from code (no `FactionVerb`); V2.2's retirement clause is satisfied, the rest of V2.2 is not. `party_known` still lives in `crates/isocosm-vtt/src/founding/content.rs` and `crates/isometry-campaign/src/content/world/ops.rs`.
 - 2026-10-28: `GameEvent::TravelResolved` is still emitted inline at `crates/isometry-genet/src/overmap.rs:133`; the wire is at `PROTOCOL_VERSION` 22 (`crates/isonetry/src/protocol.rs:26`). The protocol hardening plan's H0 and H1 landed (DOC_README).
 - 2026-10-28: the old plan's "five failing watchtower atlas and door tests" are not carried: all `isometry-genet` tests passed today.
@@ -178,4 +267,8 @@ Rulings 538 to 543 (2026-10-03): the VTT plays recognized editions faithfully as
 
 ## Progress
 
+- 2026-10-30: F10 to F12 moved here from `functional-generation`, with their findings and progress lines.
+- 2026-10-30: F12 connects Magic Weapon to the shipping character-sheet endpoint, accepted slots and dice, enhanced attacks, damage-driven concentration, native downtime expiry, family replay and disk reload. Headed active/lost/expired states are verified; a misleading ended-effect countdown was corrected. Native physical item enchantment, articulated weapon reach, the other desktop procedures and the live peer gate remain open.
+- 2026-10-28: F11a/F11b executable API and headless demonstration built for all nine named procedures, with saved lifecycle and existing consumer integration. F11c remains open; the previous catalogue-only landing did not fulfill the whole agreed small set. Use `cargo run -p isometry-system --example cast_effects` for execution and `inspect_effects` for coverage.
+- 2026-10-28: F10a initial catalogue, admission checks and native candidate inspector built; F10b native allocation/growth conservation and exact-history controls passed. F10c and edition-native execution remain open. Run `cargo run -p isometry-system --example inspect_effects -- --markdown` for the readable coverage matrix, `--json` for the revisioned report, or add `--genesis PATH` to inspect a native Genesis rather than the labelled reference founding. Run evidence belongs in the plan's receipt file.
 - 2026-10-28: cut from the VTT overlay, environmental surfaces and extracted-receipts plans.

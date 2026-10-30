@@ -1,6 +1,6 @@
 # Mesocosm overlay: directing, the played loop and the epoch boundary
 
-**Status:** 2026-10-28: cut from `2026-09-25_mesocosm_overlay_plan.md`,
+**Status:** 2026-10-30: cut on 2026-10-28 from `2026-09-25_mesocosm_overlay_plan.md`,
 `2026-10-08_directing_interim_m4_plan.md` and `2026-08-01_epoch_boundary_plan.md`,
 which are archived in `archive_docs/2026-10-28/`. Built: `mesocosm-core` and its
 sixteen-variant `Intent` are deleted; the four crates (`mesocosm-runtime`, `-views`,
@@ -8,8 +8,8 @@ sixteen-variant `Intent` are deleted; the four crates (`mesocosm-runtime`, `-vie
 envelopes; directing (D1 to D5) is built on native Isocosm and the switch has landed;
 the boundary, review, revision and speciation are native in `shared/isocosm/src/lineage/`.
 Open: certification of M3 and the interim M4 by draws, the headed three-epoch run, the full
-M4 (chosen in-site acts and contact reaching the same accepted world), and the
-between-epoch work below.
+M4 (chosen in-site acts and contact reaching the same accepted world), the
+between-epoch work below, and M0 (`mesocosm-runtime`'s failing suite).
 
 **For:** Mesocosm as a game over the Isocosm sim: directing (M3, called M3.1 to M3.3 here),
 the interim M4 at site grain (M4i.1 to M4i.3, was directing D4 and D5), the full M4 played
@@ -26,9 +26,10 @@ store and its lifts (`place-graph-engine`); body appearance, footing, senses and
 hagiograph significance and the glyph organ (`wing-organs`); the wing's portable body contract
 (`wing-phenotype-contract`); parked rungs (`wing-organs` D1).
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
+Receipts from this plan's runs go to one file,
+`archive_docs/receipts/2026-10-28_mesocosm_overlay_plan_receipts.md`, never into this plan (DOC_POLICY
+§8). Evidence that matters is also a test in the repository or a line in
+Findings.
 
 ## Constraints
 
@@ -72,6 +73,12 @@ line in Findings.
   From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:611-638`.
 
 ## Phases
+
+### M0. `mesocosm-runtime`'s suite passes
+A large part of the suite already failed at `76f8f5cc` (`held_advance_tests`, `verified_question_tests`, `ecology_offer`, `live_input` and `physical_play` among them), and fails the same with the frame call disabled (`sim-execution` Findings, 2026-10-28). The runtime triage's group 1 ("Fix replay, unpace where allowed", Mark, 2026-10-28) unpaced `physical_swing`'s fixture. Mark, 2026-10-30, of who owns the rest: "That could be you." The docs-review session took it.
+- Done when: `mesocosm-runtime`'s lib and integration tests pass, each failure fixed or its test brought to current semantics (DOC_POLICY §3), none ignored to pass.
+- Needs: -
+- From: `sim-execution` Findings 2026-10-28; Mark, 2026-10-30.
 
 ### Directing (M3, interim M4)
 
@@ -446,6 +453,6 @@ Epoch boundary (record: open, the record does not decide).
   namespaces that reuse these labels; this plan's M labels are the overlay plan's only.
 
 ## Progress
-
+- 2026-10-30: M0 added, `mesocosm-runtime`'s failing suite.
 - 2026-10-28: cut from the Mesocosm overlay plan, the directing and interim M4 plan and the
   epoch boundary plan.

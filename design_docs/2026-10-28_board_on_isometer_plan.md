@@ -22,9 +22,10 @@ the overmap as a second camera (`orthographic-voxel-presentation`); isomere
 (`sim-host`); the session model (`session-network`); campaign packs
 (`content-packs`).
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
+Receipts from this plan's runs go to one file,
+`archive_docs/receipts/2026-10-28_board_on_isometer_plan_receipts.md`, never into this plan (DOC_POLICY
+§8). Evidence that matters is also a test in the repository or a line in
+Findings.
 
 ## Decisions
 
