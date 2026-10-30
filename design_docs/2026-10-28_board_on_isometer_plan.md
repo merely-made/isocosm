@@ -132,9 +132,10 @@ The colour table now generates the CSS. The old overlay plan called it "a
 question for this plan to rule"; it is held here, and it is a question for Mark.
 It bears on BD4's tints and on `content-packs` (appearance preview, a real
 tileset).
+- Ruled 2026-10-30, case 1019 (Mark: "Voxel source, classes bind"): a look is an isometer `Appearance` recipe; packs bind class names to layers and palettes; the preview and the board read one recipe (doctrine VTT 7).
 - Done when: not stated; owed
-- Needs: Mark's ruling; BD4
-- Rulings: PROJECT_DESCRIPTION pillar 3
+- Needs: BD4
+- Rulings: PROJECT_DESCRIPTION pillar 3, 1019
 - From: `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:332-334`
   (the "Owed" row of its section 6).
 
@@ -218,10 +219,6 @@ roadmap's distribution residue goes to `content-packs`.
   exactly "archive, or keep as a downlevel path". Since the paging trigger has
   fired, the ruling is now due. From:
   `archive_docs/2026-10-28/2026-09-15_board_on_isometer_plan.md:178,382-391`.
-- **Stylesheet or voxel-sourced appearance (BD5)**: which of the two theories
-  governs how the board gets its looks, now that the colour table generates the
-  CSS. The old plan stated the two theories, not a recommendation. From:
-  `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:332-334`.
 - **What "Genet text acceptance" means**: the old plan names it open in its
   status line and last progress entry but never says what it is. The wing
   record (case 438, `2026-09-18_wing_design_plan.md:4370-4395`) put three

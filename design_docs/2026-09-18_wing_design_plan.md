@@ -10995,6 +10995,81 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · draws on 96, 95, 143 · summary An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act.
 
+1013. **Pathfinder 2e is the first edition built whole at the table.** Ruled
+      by Mark on 2026-10-30 (Mark: "PF2e first"), offered against the 5e SRD,
+      which the adapter alone accepts today, and Ars Magica. The reading:
+      legal character creation and ordinary play (equipment, actions,
+      incapacitation, recorded GM rulings, save and reopen) are completed for
+      Pathfinder 2e's Player Core Remaster before the other editions, which
+      are specified but not built meanwhile. It keeps 249's order: the same
+      edition is calibrated first where the sim leads.
+
+      Links: area The VTT · draws on 249, 522, 541, vtt.5 · summary Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile.
+
+1014. **A VTT campaign's ruleset leads unless its founder picks the sim.**
+      Ruled by Mark on 2026-10-30 (Mark: "Ruleset leads"), offered against
+      the sim leading by default and no default. The reading: a campaign
+      founded at the table defaults to its ruleset leading, the sim's
+      background following wherever the edition specifies behaviour; sim-led
+      is chosen at founding. 114's calibration binds only sim-led worlds, so
+      V3's bench is required of an edition only when a world it plays in is
+      sim-led.
+
+      Links: area The sim's schema and saves · draws on 114, 538, 249, schema.8 · summary A VTT campaign defaults to ruleset-led; sim-led is a founding choice; calibration binds only sim-led worlds.
+
+1015. **A town is a reading over founders.** Ruled by Mark on 2026-10-30
+      (Mark: "Reading over founders"), offered against pure emergence from
+      deep time and towns asserted as a place kind. The reading: the founding
+      flow places households where geography and resources favour them, and
+      a town is read off the dwellings, tenancies, work and institutions
+      gathered there, never stored, so its history is what explains it.
+
+      Links: area World generation · draws on 54, 63, schema.12 · summary Founding places households by geography and resources; a town is read off dwellings, tenancies, work and institutions, never stored.
+
+1016. **Pathfinder 2e content is checked against ORC records only.** Ruled by
+      Mark on 2026-10-30 (Mark: "Foundry records, ORC only"), offered against
+      his own Player Core copy as the authority and both. The reading: as the
+      effects README already did for spells, a lane reads the foundryvtt/pf2e
+      repository's records as a check, never vendoring them, keeps only those
+      whose source is a Remaster book under the ORC licence, and writes
+      original summaries and executable fields. Legacy OGL records are not
+      used.
+
+      Links: area Licensing and sources · draws on 541, licensing.1 · summary Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields.
+
+1017. **A town's size is a ladder of words.** Ruled by Mark on 2026-10-30
+      (Mark: "A size ladder"), offered against one word with size as a read
+      property and leaving the word to a later round. The reading: the
+      reading of 1015 takes a ladder of words by size (hamlet to city, for
+      example), read off population and institutions; the words and the
+      thresholds are set by a naming round, never coined in a lane.
+      "Settlement" is not one of them: it already carries two senses in code.
+
+      Links: area World generation · draws on 1015, naming.3 · summary The town reading takes a size ladder of words read off population and institutions; a naming round sets words and thresholds.
+
+1018. **Each edition declares its campaign's shape.** Ruled by Mark on
+      2026-10-30 (Mark: "Each edition declares it"), offered against one
+      universal campaign that editions extend and deferring until Ars Magica.
+      The reading: an edition declares its campaign structure (a party or a
+      troupe, its unit of time, holdings shared like a covenant), and the
+      table supplies what every shape uses: sessions, consent and the record.
+      Pathfinder 2e's party, levels and encounters are one declaration, not
+      the table's model.
+
+      Links: area The VTT · draws on 522, 1013, vtt.2, vtt.5 · summary An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record.
+
+1019. **A look is a voxel recipe; class names bind it.** Ruled by Mark on
+      2026-10-30 (Mark: "Voxel source, classes bind"), settling the
+      board-on-isometer plan's BD5, offered against the stylesheet theory
+      (voxels baked to sprites a stylesheet names) and voxels only. The
+      reading: a character's or thing's look is an isometer `Appearance`
+      recipe (layers, palette, clips); PROJECT_DESCRIPTION pillar 3 holds as
+      data, a pack mapping class names to layers and palettes, so a campaign
+      reskins without touching the app; the creator's preview and the board
+      read the same recipe.
+
+      Links: area The VTT · draws on 1018 · summary A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

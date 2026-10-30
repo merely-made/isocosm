@@ -4946,6 +4946,55 @@ area = "Processes and rules"
 summary = "An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act."
 draws_on = ["95", "96", "143"]
 
+[cases."1013"]
+title = "Pathfinder 2e is the first edition built whole at the table"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile."
+draws_on = ["249", "522", "541", "vtt.5"]
+
+[cases."1014"]
+title = "A VTT campaign's ruleset leads unless its founder picks the sim"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The sim's schema and saves"
+summary = "A VTT campaign defaults to ruleset-led; sim-led is a founding choice; calibration binds only sim-led worlds."
+draws_on = ["114", "249", "538", "schema.8"]
+
+[cases."1015"]
+title = "A town is a reading over founders"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Founding places households by geography and resources; a town is read off dwellings, tenancies, work and institutions, never stored."
+draws_on = ["54", "63", "schema.12"]
+
+[cases."1016"]
+title = "Pathfinder 2e content is checked against ORC records only"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Licensing and sources"
+summary = "Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields."
+draws_on = ["541", "licensing.1"]
+
+[cases."1017"]
+title = "A town's size is a ladder of words"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "The town reading takes a size ladder of words read off population and institutions; a naming round sets words and thresholds."
+draws_on = ["1015", "naming.3"]
+
+[cases."1018"]
+title = "Each edition declares its campaign's shape"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record."
+draws_on = ["522", "1013", "vtt.2", "vtt.5"]
+
+[cases."1019"]
+title = "A look is a voxel recipe; class names bind it"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe."
+draws_on = ["1018"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6053,8 +6102,8 @@ draws_on = ["165", "166", "170", "171", "record.6"]
 title = "One rules language; each world picks who leads"
 source = "design_docs/doctrine.md"
 area = "The sim's schema and saves"
-summary = "World rules and rulesets are one language; each world picks whether the sim or its ruleset leads; ledger and record stay inviolable."
-draws_on = ["41", "114", "218", "538"]
+summary = "World rules and rulesets are one language; each world picks whether the sim or its ruleset leads, a table campaign defaulting to its ruleset; ledger and record stay inviolable."
+draws_on = ["41", "114", "218", "538", "1014"]
 
 [statements."schema.9"]
 title = "Saves stay readable"
@@ -6200,7 +6249,21 @@ title = "The table plays editions faithfully"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked."
-draws_on = ["189", "250", "538", "539", "540", "542", "543"]
+draws_on = ["189", "250", "538", "539", "540", "542", "543", "1013"]
+
+[statements."vtt.6"]
+title = "Each edition declares its campaign's shape"
+source = "design_docs/doctrine.md"
+area = "The VTT"
+summary = "An edition declares its campaign's structure; the table supplies sessions, consent and the record."
+draws_on = ["522", "1013", "1018", "vtt.2", "vtt.5"]
+
+[statements."vtt.7"]
+title = "A look is a voxel recipe that class names bind"
+source = "design_docs/doctrine.md"
+area = "The VTT"
+summary = "A look is an isometer Appearance recipe; packs bind class names to it; preview and board read one recipe."
+draws_on = ["1019"]
 
 [statements."world.1"]
 title = "Shape and scale"
@@ -6264,3 +6327,10 @@ source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "Glyph presence makes divine places; placement and rooms have quality; alignment runs through tenets. Parked."
 draws_on = ["48"]
+
+[statements."world.10"]
+title = "Towns are read off their founders"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "Founding places households by geography and resources; towns are read off dwellings, tenancies, work and institutions on a size ladder of words, never stored."
+draws_on = ["54", "63", "1015", "1017", "naming.3", "schema.12"]

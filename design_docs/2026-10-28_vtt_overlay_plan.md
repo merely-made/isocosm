@@ -135,8 +135,9 @@ The VTT's own downtime logic in `crates/isometry-views/src/downtime.rs`: every s
 ### V3. The table over the sim
 An adjudicated action at a battlemap returns through the handoff and passes the sim's invariants. The bench (the design record's W4) runs the calibration check over seeded draws.
 - Done when: "Done when an adjudicated action at a battlemap returns through the handoff and passes the sim's invariants (ruling 154); the bench check of ruling 114 runs over seeded draws for Pathfinder 2e's skeleton first (ruling 249), a fight with no player choices resolving in the same distribution as the sim's own (rulings 115, 116, 123, 221 to 223) within the world's tolerance (ruling 209), and a ruleset that fails it plays only in a debug or experimental mode that warns when the campaign opens and marks every receipt and save uncalibrated (rulings 189, 250); a campaign with the sim off plays as today, its downtime the table's own, and still writes its facts as notes so the sim can be switched on later over the same history (rulings 188, 248); and a death at the table is reversed by the rules as re-embodiment (rulings 61, 62)."
+- Case 1014 (2026-10-30, Mark: "Ruleset leads"): a table campaign defaults to ruleset-led, so the bench clause above binds an edition only where a world it plays in is sim-led; ruleset-led play needs no calibration.
 - Needs: V1 (done); V2's world; the bench (W4); the grain and condition questions below
-- Rulings: 114, 154, 249, 250, 189, 188, 248, 61, 62, 209
+- Rulings: 114, 154, 249, 250, 189, 188, 248, 61, 62, 209, 1014
 - From: `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:262-273`
 
 ### V4. The played loop
@@ -150,7 +151,8 @@ W5's done-condition for the VTT.
 Rulings 538 to 543 (2026-10-03): the VTT plays recognized editions faithfully as versioned rulesets, keeping the GM's decision points and recording their rulings, with a toolkit grown from what they repeat. A world chooses whether the sim or its ruleset leads, and 114's calibration holds only where the sim leads. An encounter across systems runs under a named hybrid profile. Ars Magica 5th Edition joins 5e and Pathfinder 2e (522). In a ruleset-led world an edition's own state persists beside the body with declared relations (542), and its procedures run unattended under declared decision policies (543). No phase or done-condition carried these.
 - Done when: not stated; owed.
 - Needs: V3; the sim-led versus ruleset-led world switch; `content-packs` for which rulesets may ship (doctrine Licensing 1)
-- Rulings: 538, 539, 540, 541, 522, 542, 543, 114
+- Order (case 1013, 2026-10-30, Mark: "PF2e first"): Pathfinder 2e's Player Core Remaster is completed first for character creation and ordinary play; 5e SRD and Ars Magica are specified meanwhile. The default is ruleset-led (case 1014).
+- Rulings: 538, 539, 540, 541, 522, 542, 543, 114, 1013, 1014
 - From: `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:42-50`
 
 ## Deferred and parked

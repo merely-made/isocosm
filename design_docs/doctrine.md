@@ -157,15 +157,16 @@ World rules and game rulesets are one binding language, at founding and at
 play. Each world chooses whether the sim leads, rulesets calibrating to its
 background (114), or its ruleset leads, the sim's background following it
 wherever it specifies behaviour; the ledger, the record and the derivation
-rule stay inviolable either way. A reading's bound and a competition's
-definition sit in the world's rules. Effects entailed by a world's
-composition, and a space scope, come later.
+rule stay inviolable either way. A campaign founded at the table defaults to
+its ruleset leading, sim-led chosen at founding. A reading's bound and a
+competition's definition sit in the world's rules. Effects entailed by a
+world's composition, and a space scope, come later.
 
 *Not yet built:* the per-world choice.
 
-Links: draws on 41, 114, 218, 538 · summary World rules and rulesets are one language; each world picks whether the sim or its ruleset leads; ledger and record stay inviolable.
+Links: draws on 41, 114, 218, 538, 1014 · summary World rules and rulesets are one language; each world picks whether the sim or its ruleset leads, a table campaign defaulting to its ruleset; ledger and record stay inviolable.
 
-*Reviewed 2026-10-22, new. Mark: "Schema statement".*
+*Refined 2026-10-30 from case 1014 (Mark: "Ruleset leads").*
 
 ### Schema 9. Saves stay readable
 
@@ -1197,6 +1198,21 @@ Links: draws on 48 · summary Glyph presence makes divine places; placement and 
 
 *Reviewed 2026-10-22, new. Mark: "A parked World statement".*
 
+### World 10. Towns are read off their founders
+
+The founding flow places households where geography and resources favour
+them. What gathers there is read, never stored, off its dwellings, tenancies,
+work and institutions, on a ladder of words by size that a naming round sets
+(not "settlement", which code already uses twice); the history that made it
+explains it, and factions and polities act through its residents.
+
+*Not yet built:* founding households (sim S5); the ladder's words and
+thresholds await a naming round.
+
+Links: draws on 54, 63, 1015, 1017, naming.3, schema.12 · summary Founding places households by geography and resources; towns are read off dwellings, tenancies, work and institutions on a size ladder of words, never stored.
+
+*Refined 2026-10-30 from case 1017 (Mark: "A size ladder").*
+
 ## Organs: glyphs, impresa, hagiograph
 
 ### Organs 1. Divinity is earned by the journey
@@ -1939,11 +1955,33 @@ encounter runs under a named hybrid profile documenting each crossing. An
 uncalibrated edition plays experimentally: warned at open, every receipt
 marked.
 
-Links: draws on 189, 250, 538, 539, 540, 542, 543 · summary The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked.
+Links: draws on 189, 250, 538, 539, 540, 542, 543, 1013 · summary The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked.
 
-*Reviewed 2026-10-22, new. Mark reframed the first draft: "it's true in the
-most direct way for the vtt, because we're talking about ttrpg rulesets which
-the vtt is meant to represent faithfully". Then "Split: VTT 5 + Processes 3".*
+*Applied 2026-10-30, case 1013: Pathfinder 2e is built whole first (Mark:
+"PF2e first").*
+
+### VTT 6. Each edition declares its campaign's shape
+
+An edition declares its campaign structure: a party or a troupe, its unit of
+time, holdings shared like a covenant. The table supplies what every shape
+uses (sessions, consent, the record), and no edition's shape is the table's
+model.
+
+Links: draws on 522, 1013, 1018, vtt.2, vtt.5 · summary An edition declares its campaign's structure; the table supplies sessions, consent and the record.
+
+*Reviewed 2026-10-30, new, from case 1018 (Mark: "Each edition declares it").*
+
+### VTT 7. A look is a voxel recipe that class names bind
+
+A character's or thing's look is an isometer `Appearance` recipe of layers,
+palette and clips. A pack binds class names to layers and palettes, so a
+campaign reskins the world without touching the app, and the creator's
+preview and the board read the same recipe.
+
+Links: draws on 1019 · summary A look is an isometer Appearance recipe; packs bind class names to it; preview and board read one recipe.
+
+*Reviewed 2026-10-30, new, from case 1019 (Mark: "Voxel source, classes
+bind").*
 
 ## Naming
 

@@ -72,6 +72,7 @@ three design docs that cite it. The record holds the words.
 | 989 | Whether a means is efficacious is a track record, never asserted; the gap between a constitution and its members' preference is read at any time. | [DOC README](DOC_README.md) |
 | 991 | No will to continue is built into a polity; an institution seen clinging on is subordinated to its own officers' faction. | [DOC README](DOC_README.md) |
 | 992 | A contingent polity borrows its host's enforcement, so it is cheap to found, and a host's failure cascades through what is contingent on it. | [DOC README](DOC_README.md) |
+| 1014 | A VTT campaign defaults to ruleset-led; sim-led is a founding choice; calibration binds only sim-led worlds. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 
 ## Processes and rules
 
@@ -476,6 +477,8 @@ three design docs that cite it. The record holds the words.
 | 1004 | Nesting (a node opening into a finer map, no named tiers) is the sim's; a scope (a window of extent and grain) is a game's; each game has its own. | [DOC README](DOC_README.md) |
 | 1008 | The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy. | [DOC README](DOC_README.md) |
 | 1011 | Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges. | [DOC README](DOC_README.md) |
+| 1015 | Founding places households by geography and resources; a town is read off dwellings, tenancies, work and institutions, never stored. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1017 | The town reading takes a size ladder of words read off population and institutions; a naming round sets words and thresholds. | none |
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -765,6 +768,9 @@ three design docs that cite it. The record holds the words.
 | 913 | isometry-campaign retires, its contents becoming components; where each part lands comes back as questions. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 915 | isometry-campaign's components are owning homes, no new crates: world into the sim, game layer into isocosm-vtt, map lowering into isometry-core, store into isonetry. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 921 | isonetry holds the GM store and the proposal lifecycle until V2. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
+| 1013 | Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1018 | An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record. | none |
+| 1019 | A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 
 ## Naming
 
@@ -792,6 +798,7 @@ three design docs that cite it. The record holds the words.
 | 914 | The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917) | none |
 | 917 | The crates aim to be published, not only publishable in principle. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 919 | isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
+| 1016 | Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields. | none |
 
 ## Method and documents
 
