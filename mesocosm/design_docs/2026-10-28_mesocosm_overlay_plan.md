@@ -8,8 +8,8 @@ sixteen-variant `Intent` are deleted; the four crates (`mesocosm-runtime`, `-vie
 envelopes; directing (D1 to D5) is built on native Isocosm and the switch has landed;
 the boundary, review, revision and speciation are native in `shared/isocosm/src/lineage/`.
 Open: certification of M3 and the interim M4 by draws, the headed three-epoch run, the full
-M4 (chosen in-site acts and contact reaching the same accepted world), the
-between-epoch work below, and M0 (`mesocosm-runtime`'s failing suite).
+M4 (chosen in-site acts and contact reaching the same accepted world), and the
+between-epoch work below.
 
 **For:** Mesocosm as a game over the Isocosm sim: directing (M3, called M3.1 to M3.3 here),
 the interim M4 at site grain (M4i.1 to M4i.3, was directing D4 and D5), the full M4 played
@@ -73,12 +73,6 @@ Findings.
   From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:611-638`.
 
 ## Phases
-
-### M0. `mesocosm-runtime`'s suite passes
-A large part of the suite already failed at `76f8f5cc` (`held_advance_tests`, `verified_question_tests`, `ecology_offer`, `live_input` and `physical_play` among them), and fails the same with the frame call disabled (`sim-execution` Findings, 2026-10-28). The runtime triage's group 1 ("Fix replay, unpace where allowed", Mark, 2026-10-28) unpaced `physical_swing`'s fixture. Mark, 2026-10-30, of who owns the rest: "That could be you." The docs-review session took it.
-- Done when: `mesocosm-runtime`'s lib and integration tests pass, each failure fixed or its test brought to current semantics (DOC_POLICY §3), none ignored to pass.
-- Needs: -
-- From: `sim-execution` Findings 2026-10-28; Mark, 2026-10-30.
 
 ### Directing (M3, interim M4)
 
@@ -414,6 +408,7 @@ Epoch boundary (record: open, the record does not decide).
   452. From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:45-48`.
 
 ## Findings
+- 2026-10-30: `mesocosm-runtime`'s integration tests ran 56 passed and 36 failed at `76f8f5cc`, with four lib failures, the same with the frame call disabled (`sim-execution` Findings). Many pin behaviour the game has since changed (decision periods, D19). They gate nothing and are not a work item: the game is built part by part and judged in play, not against goldens (Mark, 2026-10-30; root DOC_README working principles).
 
 - 2026-10-28: `mesocosm/crates` holds `mesocosm-genet`, `-phenotype`, `-runtime`, `-views`
   and probes; `mesocosm-core` is gone. `isocosm::legacy` appears only in design docs, so the
@@ -453,6 +448,5 @@ Epoch boundary (record: open, the record does not decide).
   namespaces that reuse these labels; this plan's M labels are the overlay plan's only.
 
 ## Progress
-- 2026-10-30: M0 added, `mesocosm-runtime`'s failing suite.
 - 2026-10-28: cut from the Mesocosm overlay plan, the directing and interim M4 plan and the
   epoch boundary plan.
