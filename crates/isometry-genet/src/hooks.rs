@@ -515,6 +515,7 @@ impl App {
             || (self.whisper_selftest && !self.whisper_fired)
             || (self.turns_selftest && !self.turns_fired)
             || self.family_selftest.as_ref().is_some_and(|test| !test.done())
+            || self.magic_selftest.as_ref().is_some_and(|test| !test.done())
             || (self.select_selftest && !self.select_fired)
             || (self.overlay_selftest.is_some() && !self.overlay_fired)
             || (self.net.is_some() && self.net_selftest && !self.selftest_fired)
@@ -536,6 +537,7 @@ impl App {
         self.maybe_select_selftest(ctx);
         self.maybe_overlay_selftest(ctx);
         self.maybe_family_selftest(ctx);
+        self.maybe_magic_selftest(ctx);
         if self.net.is_some() {
             self.maybe_selftest(ctx);
         }

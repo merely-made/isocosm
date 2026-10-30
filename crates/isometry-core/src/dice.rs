@@ -11,13 +11,17 @@
 use serde::{Deserialize, Serialize};
 
 /// A small xorshift64* generator. Deterministic for a given seed.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Rng(u64);
 
 impl Rng {
     /// Seed the generator. Zero is remapped (xorshift can't leave 0).
     pub fn new(seed: u64) -> Self {
-        Rng(if seed == 0 { 0x9E37_79B9_7F4A_7C15 } else { seed })
+        Rng(if seed == 0 {
+            0x9E37_79B9_7F4A_7C15
+        } else {
+            seed
+        })
     }
 
     fn next_u64(&mut self) -> u64 {
@@ -56,6 +60,15 @@ const MAX_SIDES: u32 = 1000;
 /// rolled, or `None` if the expression doesn't parse or exceeds the
 /// caps. Uses `rng` for the dice, so a fixed seed is reproducible.
 pub fn roll(expr: &str, rng: &mut Rng) -> Option<(i32, Vec<u16>)> {
+    roll_scaled_dice(expr, 1, rng)
+}
+
+/// Repeat each dice term, preserving flat modifiers. The same parser and
+/// bounded dice stream serve critical hits and ordinary rolls.
+pub fn roll_scaled_dice(expr: &str, dice_scale: u32, rng: &mut Rng) -> Option<(i32, Vec<u16>)> {
+    if dice_scale == 0 || dice_scale > MAX_COUNT {
+        return None;
+    }
     let s: String = expr
         .chars()
         .filter(|c| !c.is_whitespace())
@@ -78,7 +91,12 @@ pub fn roll(expr: &str, rng: &mut Rng) -> Option<(i32, Vec<u16>)> {
             return None;
         }
         let value = if let Some((count, sides)) = body.split_once('d') {
-            let count: u32 = if count.is_empty() { 1 } else { count.parse().ok()? };
+            let count: u32 = if count.is_empty() {
+                1
+            } else {
+                count.parse().ok()?
+            };
+            let count = count.checked_mul(dice_scale)?;
             let sides: u32 = sides.parse().ok()?;
             if count == 0 || sides == 0 || count > MAX_COUNT || sides > MAX_SIDES {
                 return None;
@@ -149,5 +167,20 @@ mod tests {
         assert_eq!(roll("hello", &mut rng), None);
         assert_eq!(roll("999d6", &mut rng), None); // over MAX_COUNT
         assert_eq!(roll("1d0", &mut rng), None);
+    }
+
+    #[test]
+    fn repeated_dice_preserve_flat_modifiers_and_the_existing_limits() {
+        let (total, dice) = roll_scaled_dice("1d8+3", 2, &mut Rng::new(14)).unwrap();
+        assert_eq!(dice.len(), 2);
+        assert_eq!(
+            total,
+            dice.iter().map(|die| i32::from(*die)).sum::<i32>() + 3
+        );
+        assert!(roll_scaled_dice("51d8", 2, &mut Rng::new(14)).is_none());
+        assert_eq!(
+            roll_scaled_dice("7", 2, &mut Rng::new(14)),
+            Some((7, vec![]))
+        );
     }
 }

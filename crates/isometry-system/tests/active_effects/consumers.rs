@@ -301,3 +301,21 @@ fn equipment_stacks_by_the_spell_rule_and_stays_with_the_item_identity() {
     assert!(change.penetration.is_some());
     assert_eq!(ars.sheet(BEARER).int("effect_weapon_damage"), Some(2));
 }
+
+#[test]
+fn a_dnd_critical_rolls_twice_and_applies_magic_weapons_flat_bonus_once() {
+    let mut scene = Scene::new(Edition::Dnd5, 73);
+    let request = scene.request("dnd5:magic-weapon", "critical");
+    scene.cast(&request, 0, false).unwrap();
+    let seed = (1..1000)
+        .find(|seed| Rng::new(*seed).die(20) == 20)
+        .unwrap();
+    let resolution = attack(&mut srd_5e(), &scene, "attack", seed, 1);
+    assert_eq!(resolution.degree, 2);
+    let damage = resolution.damage.unwrap();
+    assert_eq!(damage.dice.len(), 2);
+    assert_eq!(
+        damage.total,
+        damage.dice.iter().map(|die| i32::from(*die)).sum::<i32>() + 1
+    );
+}

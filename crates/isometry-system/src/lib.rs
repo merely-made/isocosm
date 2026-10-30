@@ -108,6 +108,9 @@ pub struct TargetSpec {
     /// and a multiplier rather than a bonus because doubling *dice plus
     /// modifiers* is not expressible as an addend.
     pub damage_mult_func: Option<String>,
+    /// Lua `f(c,t,degree) -> count`: repeat dice only, keeping flat damage
+    /// bonuses once. Used by 5e critical hits; defaults to one.
+    pub damage_dice_mult_func: Option<String>,
     /// The target-sheet field the effect subtracts from.
     pub damage_field: String,
     /// Beat played by the actor, and by the target on a hit or a miss. Pack

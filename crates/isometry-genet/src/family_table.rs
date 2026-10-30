@@ -325,6 +325,10 @@ impl FamilyTable {
             .ok_or_else(|| "VTT game section is absent".into())
     }
 
+    pub(crate) fn edition_state(&self)->Result<Option<isocosm_vtt::ruleset::State>,String> {
+        self.host.read(|_,sections|isocosm_vtt::ruleset::State::read(sections))?
+    }
+
     pub(crate) fn native_world(&self) -> Result<NativeWorld, String> {
         self.host.read(|session, _| {
             NativeWorld::from_session(session, self.content.clone(), self.origin.clone())

@@ -38,43 +38,41 @@ The [effect examples](crates/isometry-system/data/effects/README.md) execute
 nine experimental body, sight and lasting weapon procedures across D&D SRD
 5.1, Pathfinder Player Core and Ars Magica Definitive Fifth Edition. Run
 `cargo run -p isometry-system --example cast_effects` for their saved lifecycle
-and derived-state receipts. Casting controls in the desktop UI remain open.
+and derived-state receipts. The desktop's **Character sheets** tab now makes
+D&D Magic Weapon playable in free play: cast on a wielded table weapon,
+resolve an enhanced attack, check concentration on damage and expire it with
+accepted table time. The effect examples describe the exact boundaries.
 
 <p align="center">
   <img src="assets/screenshots/battlemap-demo.png" alt="The VTT's painted battlemap with terrain, tokens, and turn order" width="900"><br>
   <sub>A painted battlemap with terrain, tokens, editing tools, and turn order in view.</sub>
 </p>
 
-### Status (2026-08-12)
+### Status (2026-10-30)
 
-Pre-release; the full game loop runs. Built in Rust on the Merely stack
+Pre-release. Built in Rust on the Merely stack
 (Cambium, genet-layout, netrender); no published releases yet.
 
-- The desktop app runs board rendering, editing tools, tokens, turn order,
-  tactical actions, and P2P sessions over iroh.
-- The 2026-08-08 wing audit archived ten completed plans: bootstrap,
-  gameplay roadmap, exploration, worldbuilding, board narration,
-  adjudication, and the bulk of campaign packs all landed.
-- Protocol hardening began 2026-08-08: versioned action envelopes and
-  explicit doorway transitions with a proven late-join replay receipt.
+- Native campaigns run through the family host and `VttEndpoint`, including
+  table time, parties, journeys, disclosed knowledge, authoring and sheets.
+- The retained battlemap screenshot above records the earlier board path.
+  The current native table does not use its legacy mutable session handlers.
+- Family checkpoints and accepted-record replay are tested. Live peer
+  transport/admission remains open during the session-layer replacement.
 - A 5e SRD content pack ships in `isometry-system` (sheets, bestiary, items,
   spells) with Lua rules via piccolo.
-- Seven-crate workspace (core, campaign, graphshell, views, genet, net,
-  system). The voxel appearance pipeline folded into the isometer family's
+- Eight-crate workspace (core, campaign, graphshell, views, genet, net,
+  system and VTT). The voxel appearance pipeline folded into the isometer family's
   `isometer-mesh` on 2026-09-15; `isometry-views` bakes tileset sprites
   through `isometer_mesh::bake`.
 
-Current plans live in [design_docs/](design_docs/DOC_README.md): finish
-protocol hardening (overmap travel as one resolved payload with a two-peer
-receipt), then migrate campaign sync onto the shared replicated-space
-runtime; the overmap presentation plan stays active.
+Current plans live in [design_docs/](design_docs/DOC_README.md), including
+the native table, board and session-layer work.
 
 ### Use
 
 ```sh
 cargo run -p isometry-genet                  # desktop app
-cargo run -p isometry-genet -- --host        # host a session, prints a join ticket
-cargo run -p isometry-genet -- --join <ticket>
 cargo run -p isometry-genet -- --campaign <name>   # restore a campaign checkpoint
 
 cargo test --workspace --all-features        # default features skip the campaign networking lanes

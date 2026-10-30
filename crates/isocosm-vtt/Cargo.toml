@@ -12,7 +12,7 @@ categories = ["games"]
 
 [features]
 default = []
-endpoint = ["dep:chirograph", "dep:graphshell-endpoint", "isocosm-host/endpoint"]
+endpoint = ["dep:chirograph", "dep:graphshell-endpoint", "isocosm-host/endpoint", "dep:isometry-system", "dep:isometry-core"]
 
 [dependencies]
 chirograph = { workspace = true, optional = true }
@@ -21,6 +21,8 @@ isocosm = { workspace = true }
 isocosm-host = { path = "../../host", features = ["society"] }
 isocosm-overlay = { workspace = true }
 isometry-campaign = { workspace = true }
+isometry-core = { workspace = true, optional = true }
+isometry-system = { workspace = true, optional = true }
 isometer-space = { path = "../../shared/isometer/crates/isometer-space" }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -33,6 +35,10 @@ postcard = { workspace = true }
 # A no-argument stdio endpoint for Graphshell's g4_sessions receipt (H2).
 [[example]]
 name = "vtt_endpoint"
+required-features = ["endpoint"]
+
+[[example]]
+name = "magic_weapon_table"
 required-features = ["endpoint"]
 
 [[test]]

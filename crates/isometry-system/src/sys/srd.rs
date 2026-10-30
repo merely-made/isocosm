@@ -138,7 +138,8 @@ pub fn srd_5e() -> System {
                 hit_func: "a_attack_hit".to_owned(),
                 damage: "1d8".to_owned(),
                 damage_func: "a_attack_dmg".to_owned(),
-                damage_mult_func: Some("a_attack_mult".to_owned()),
+                damage_mult_func: None,
+                damage_dice_mult_func: Some("a_attack_dice_mult".to_owned()),
                 damage_field: "hp_current".to_owned(),
                 actor_beat: "strike".to_owned(),
                 hit_beat: "recoil".to_owned(),
@@ -171,6 +172,7 @@ pub fn srd_5e() -> System {
                 damage: "0".to_owned(),
                 damage_func: "a_zero".to_owned(),
                 damage_mult_func: None,
+                damage_dice_mult_func: None,
                 damage_field: "hp_current".to_owned(),
                 actor_beat: "strike".to_owned(),
                 hit_beat: "recoil".to_owned(),
@@ -201,6 +203,7 @@ pub fn srd_5e() -> System {
                 damage: "0".to_owned(),
                 damage_func: "a_zero".to_owned(),
                 damage_mult_func: None,
+                damage_dice_mult_func: None,
                 damage_field: "hp_current".to_owned(),
                 actor_beat: "strike".to_owned(),
                 hit_beat: "recoil".to_owned(),
@@ -234,6 +237,7 @@ pub fn srd_5e() -> System {
                 damage: "0".to_owned(),
                 damage_func: "a_zero".to_owned(),
                 damage_mult_func: None,
+                damage_dice_mult_func: None,
                 damage_field: "hp_current".to_owned(),
                 actor_beat: "cheer".to_owned(),
                 hit_beat: "cheer".to_owned(),
@@ -281,17 +285,15 @@ pub fn srd_5e() -> System {
         -- a_attack), `die` the natural roll, `t` the defender's sheet.
         -- 5e is a two-rung system: hit or miss. A natural 20 is the one
         -- exception -- it always hits, and crits (degree 2, which doubles the
-        -- damage via a_attack_mult); a natural 1 always misses.
+        -- damage dice via a_attack_dice_mult); a natural 1 always misses.
         function a_attack_hit(c, t, roll, die)
             if die == 20 then return 2 end
             if die == 1 then return 0 end
             if roll >= (t.ac or 12) then return 1 else return 0 end
         end
-        -- 5e doubles the dice on a crit. (Strictly it doubles only the dice and
-        -- not the modifier; the percent seam scales the whole effect, so this is
-        -- the honest approximation until the seam can split them.)
-        function a_attack_mult(c, t, degree)
-            if degree >= 2 then return 200 else return 100 end
+        -- 5e repeats damage dice on a critical, adding flat modifiers once.
+        function a_attack_dice_mult(c, t, degree)
+            if degree >= 2 then return 2 else return 1 end
         end
         function a_attack_dmg(c) return ab_mod(c.str) + (c.damage_bonus or 0) end
 

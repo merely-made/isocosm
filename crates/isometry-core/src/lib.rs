@@ -20,7 +20,7 @@ mod turn;
 mod visibility;
 
 pub use beat::Beat;
-pub use dice::{roll, Rng, RollRecord};
+pub use dice::{roll, roll_scaled_dice, Rng, RollRecord};
 pub use sheet::{FieldValue, SheetData, SheetDelta};
 pub use template::{away, compass, distance, push_path, template_tiles, TemplateKind};
 pub use event::{EventError, SessionEvent, apply};

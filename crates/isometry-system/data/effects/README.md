@@ -15,6 +15,28 @@ JSON reports costs, dice, accepted definitions, body dimensions, senses and
 weapon changes. This is a headless demonstration, not a Mesocosm magic
 playtest or a complete port of these editions.
 
+The desktop's **Character sheets** tab now exposes one free-play loop:
+D&D SRD 5.1 Magic Weapon on the caster's own wielded longsword or club.
+The DM creates a sheet for a native body, grants the spell and a slot, adds
+table equipment and wields it. The controlling player or DM can then cast.
+The running effect, enhancement bonuses and actual attack/concentration dice
+appear on the same page. Sheet equipment is explicitly unmarked table data;
+this does not manufacture, carry or enchant a native physical item.
+
+The current `isocosm-vtt` endpoint accepts these changes through the family
+host. Damage from its weapon attacks or its explicit external-damage buttons
+uses the same concentration procedure. Accepted native downtime expires the
+effect through the existing player-consent path. Checkpoints and accepted
+family records carry the resulting edition state and dice stream. Replica
+replay is verified; live peer transport remains a separate session gate.
+
+Attacks use current native resident poses or admitted VTT positions when the
+DM declares native cells per five-foot square in **Native operation
+authoring**. This first adapter measures root distance and a terrain ray,
+not articulated weapon reach or whole-body space. Without that calibration,
+only the DM can choose **Rule within reach and attack**, recording the ruling.
+No position is guessed from the rules input's temporary map coordinates.
+
 `active_effects::cast` takes the current map, existing inventories, procedure
 definitions, a request, a calibrated board/clock context, the host's
 line-of-effect predicate and the existing dice stream. Refusal changes neither
@@ -56,8 +78,9 @@ Implemented profiles and remaining boundaries:
   Constitution save, bonus-action restrictions and concentration. Creature
   resizing and main-hand damage are projected. Confined-space fitting,
   resized equipment meshes, object targets and automatic Strength advantage
-  rolls remain unwired. The attack pack's existing critical damage
-  approximation remains. This is not a complete Enlarge/Reduce port.
+  rolls remain unwired. Critical attacks now repeat damage dice and add flat
+  modifiers, including Magic Weapon, once. This is not a complete
+  Enlarge/Reduce port.
 - PF2e: prepared casts and the existing three-action budget. Darkvision's
   personal/touch targeting and daily-preparation heightening are distinct.
   Enlarge supports single-target ranks; rank-six group casting needs one group
@@ -69,10 +92,11 @@ Implemented profiles and remaining boundaries:
   of the Razor reports penetration and that the changed weapon is resisted.
   Ars Size remains its own quantity; geometry needs an authored scale.
 
-Desktop casting controls, automatic concentration checks from every damage
-source, scene consumers for body/lighting projections, multiplayer command
-admission and cross-map migration remain integration work. The API does not
-install a second native simulator or authorize peer-side adjudication.
+Desktop casting for the other eight procedures, concentration integration
+with other damage sources, initiative/action economy, scene consumers for
+body/lighting projections, live multiplayer admission and cross-map migration
+remain integration work. The API does not install a second native simulator
+or authorize peer-side adjudication.
 
 Sources and licences:
 

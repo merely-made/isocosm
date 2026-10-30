@@ -4324,6 +4324,8 @@ dependencies = [
  "isocosm-overlay",
  "isometer-space",
  "isometry-campaign",
+ "isometry-core",
+ "isometry-system",
  "isonetry",
  "postcard",
  "serde",

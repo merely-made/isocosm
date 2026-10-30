@@ -107,6 +107,25 @@ pub fn concentration_damage(
     clock: Clock,
     rng: &mut Rng,
 ) -> Result<Option<(i64, i64)>, String> {
+    Ok(concentration_check(map, caster, damage, clock, rng)?.map(|check| (check.total, check.dc)))
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ConcentrationCheck {
+    pub total: i64,
+    pub dc: i64,
+    pub dice: Vec<u16>,
+    pub bonus: i64,
+}
+
+/// The same procedure with its actual die faces retained for the table log.
+pub fn concentration_check(
+    map: &mut MapDocument,
+    caster: TokenId,
+    damage: u32,
+    clock: Clock,
+    rng: &mut Rng,
+) -> Result<Option<ConcentrationCheck>, String> {
     let mut records = Records::at(map, clock)?;
     settle(&mut records, map, clock);
     if damage == 0
@@ -124,8 +143,11 @@ pub fn concentration_damage(
         .ok_or("Constitution save bonus is undeclared")?;
     let mut proposed = rng.clone();
     let first = i64::from(proposed.die(20));
+    let mut dice = vec![first as u16];
     let die = if sheet.fields.get("concentration_advantage") == Some(&FieldValue::Bool(true)) {
-        first.max(i64::from(proposed.die(20)))
+        let second = proposed.die(20) as u16;
+        dice.push(second);
+        first.max(i64::from(second))
     } else {
         first
     };
@@ -144,5 +166,10 @@ pub fn concentration_damage(
     }
     records.store(map)?;
     *rng = proposed;
-    Ok(Some((total, dc)))
+    Ok(Some(ConcentrationCheck {
+        total,
+        dc,
+        dice,
+        bonus,
+    }))
 }

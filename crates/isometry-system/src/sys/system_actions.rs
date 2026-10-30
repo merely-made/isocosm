@@ -103,6 +103,7 @@ impl System {
             damage: spec.damage.clone(),
             damage_func: spec.damage_func.clone(),
             damage_mult_func: spec.damage_mult_func.clone(),
+            damage_dice_mult_func: spec.damage_dice_mult_func.clone(),
             damage_field: spec.damage_field.clone(),
             actor_beat: spec.actor_beat.clone(),
             hit_beat: spec.hit_beat.clone(),
@@ -178,8 +179,14 @@ impl System {
             let (expression, effect_bonus, floor) = crate::active_effects::damage_expression(action_key, actor_sheet, &spec.damage)
                 .map_err(ActionError::BadDice)?;
             let dmg_bonus = dmg_bonus.checked_add(effect_bonus).ok_or_else(|| ActionError::BadDice("damage bonus overflow".into()))?;
-            let (dmg_raw, dmg_dice) = roll(&expression, rng)
+            let dice_mult=match spec.damage_dice_mult_func.as_ref() {
+                Some(func)=>self.call_int_ctx(func,actor_sheet,Some(target_sheet),Some(degree))
+                    .and_then(|n|u32::try_from(n).ok()).ok_or_else(||ActionError::ScriptFailed(func.clone()))?,
+                None=>1,
+            };
+            let (dmg_raw, dmg_dice) = isometry_core::roll_scaled_dice(&expression,dice_mult,rng)
                 .ok_or_else(|| ActionError::BadDice(expression.clone()))?;
+            let expression=if dice_mult==1 {expression} else {format!("dice x{dice_mult} ({expression})")};
             // The degree scales the whole effect, dice and modifiers together:
             // a PF2e critical doubles it, a 5e save-for-half halves it. Percent
             // because the Lua boundary carries integers; 100 when unspecified.

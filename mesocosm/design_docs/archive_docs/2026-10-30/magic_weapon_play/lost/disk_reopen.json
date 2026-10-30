@@ -1,0 +1,56 @@
+{
+  "reopened": {
+    "effects": [
+      {
+        "active": false,
+        "ended": [
+          0,
+          "Concentration"
+        ],
+        "expires": 60,
+        "id": 1
+      }
+    ],
+    "log_entries": 10,
+    "native_tick": 0,
+    "rolls": [
+      {
+        "by": "Character 3",
+        "dice": [
+          10
+        ],
+        "expr": "1d20+3",
+        "total": 13
+      },
+      {
+        "by": "Character 3",
+        "dice": [
+          6
+        ],
+        "expr": "1d8+1",
+        "total": 7
+      },
+      {
+        "by": "3 concentration",
+        "dice": [
+          2
+        ],
+        "expr": "Constitution save +0 vs DC 10",
+        "total": 2
+      }
+    ],
+    "sheets": [
+      {
+        "body": 3,
+        "hp": 9,
+        "slot_2": 1
+      },
+      {
+        "body": 5,
+        "hp": 3,
+        "slot_2": 0
+      }
+    ]
+  },
+  "sequence": 13
+}

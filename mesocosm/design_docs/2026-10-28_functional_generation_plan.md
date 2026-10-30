@@ -1,6 +1,6 @@
 # Functional generation: magic as world operations
 
-**Status:** 2026-10-28: F10 catalogue/native controls and F11's nine experimental VTT procedures built and tested. A saved active-effect lifecycle and executable body, senses and weapon consumers exist; desktop casting, native magic and complete edition ports remain open. Cut from `2026-09-09_functional_generation_plan.md` and its effects-remainders item from `2026-09-11_orthographic_voxel_presentation_plan.md`, which are archived in
+**Status:** 2026-10-30: F10 catalogue/native controls and F11's nine experimental VTT procedures built and tested. F12's bounded desktop loop, D&D Magic Weapon, is built and verified through the current family-table authority, headed controls and saved replay/reload. The other desktop procedures, native magic and complete edition ports remain open. Cut from `2026-09-09_functional_generation_plan.md` and its effects-remainders item from `2026-09-11_orthographic_voxel_presentation_plan.md`, which are archived in
 `archive_docs/2026-10-28/`. The first slice is built: `shared/wing-functions` (network, operators, generation, carriage) is shared and used by `shared/isocosm` (`effects/functions.rs`, `systems/carry.rs`) and by Eponym. The composition design (rulings 404 to 407, case 1009) is written; no cost formula, script runtime or ruleset adapter is selected. All of it is parked under ruling 279.
 
 **For:** magic and construction as world operations: the six axes a generated magic system is drawn on (case 1009, the nucleus), fundamental effects with equivalent-exchange cost, effect scripts connected to the world, persistent-effect lifecycle, rulesets and ways of casting, nested construction composition, the inspection a player or developer needs, the first slice's open work, and the effects system's remainders.
@@ -117,9 +117,11 @@ than treating those controls as implementations of tabletop magic.
   project the current part graph, and lasting weapon changes feed the existing
   damage consumer. Expiry preserves later base edits; suppression sources and
   dispel outcomes are addressable; overlap cannot add the same spell twice.
-- F11c open: complete edition exceptions, desktop casting controls, scene
-  body/lighting consumers, automatic concentration events, multiplayer command
-  admission and cross-map migration. D&D confined-space fitting, equipment
+- F11c open: complete edition exceptions, desktop casting for the other eight
+  procedures, scene body/lighting consumers, concentration integration with
+  other damage sources, live multiplayer admission and cross-map migration.
+  F12 connects Magic Weapon, its weapon attacks and explicit table damage.
+  D&D confined-space fitting, equipment
   meshes, object targets and Strength advantage rolls; PF2e group casting;
   Ars stress/botch, full resistance and laboratory devices remain named work.
   Native magic and calibration for unattended worlds remain separate gates.
@@ -130,6 +132,36 @@ than treating those controls as implementations of tabletop magic.
   native body documents and native clock/sky reads are inputs. There is no new
   biological simulator, universal spell level or material cost curve.
 - Usage and exact supported profiles: [effect procedures](../../crates/isometry-system/data/effects/README.md).
+
+### F12. Magic Weapon in the shipping table
+
+2026-10-30, done for the bounded free-play loop. Mark approved: choose a
+weapon from a sheet, accept the cast through the current authority, spend the
+slot, resolve an enhanced attack, lose concentration on damage, expire with
+elapsed time, and restore/replay the same accepted results.
+
+- Owner: `isocosm-vtt` endpoint over the existing family host, with rules in
+  `isometry-system`. The retired mutable GameSnapshot route is not extended.
+- Done when: rendered character-sheet actions invoke this endpoint; refused
+  or stale requests spend no resource or RNG; attack damage triggers the
+  existing concentration procedure in the same transaction; native time ends
+  the effect; checkpoints and family replicas preserve accepted edition state.
+- Native participants/seat cuts determine control and disclosure. Edition HP,
+  slots and unmarked tabletop weapons are labelled ruleset facts beside the
+  native body, not a second biological or item-custody simulation. Native
+  physical items are not silently counted again through legacy equipment.
+- Physical range uses current native placement when a table scale is declared;
+  otherwise an attack requires an explicit DM reach ruling, retained in history.
+  Self-touch casting on one's equipped weapon requires no guessed terrain pose.
+- The first range adapter measures native root distance and a terrain ray
+  through the sim's existing site geometry cache. Articulated weapon reach,
+  body size and native physical equipment bindings remain separate work.
+- Scope: D&D SRD 5.1 Magic Weapon and its weapon attack consumer. Other spells,
+  native magical manufacture, item migration and edition-complete combat remain
+  F11c work. Production peer transport/admission remains the session lane's gate.
+- Receipts: family admission/replay and save controls, view routing checks,
+  feature-enabled compile checks, and a bounded desktop capture. Total cap
+  remains 100 MB; use the existing targets and preserve older cited receipts.
 
 ## Decisions
 
@@ -155,6 +187,10 @@ than treating those controls as implementations of tabletop magic.
 
 ## Findings
 
+- 2026-10-30, F12: the shipping desktop's authority is `FamilyTable` / `VttEndpoint`, not the retained legacy `GameSnapshot` handlers. `isocosm-vtt::ruleset` stores sheets, unmarked table equipment, active effects, the dice stream and result history in an opaque world section. Its changes share the existing atomic world acceptance and family checkpoint/record replay. It creates neither native anatomy nor native items.
+- 2026-10-30, F12: `isocosm-vtt::sheets` advertises controls through the current seat cut; a player can cast on their own wielded weapon but cannot grant slots, edit sheets or override reach. Weapon and explicit external damage call `active_effects::concentration_check`, retaining the actual faces. Native downtime settles expiry in the same accepted transaction. The first adapter is free play; initiative, class progression and other damage sources are not wired here.
+- 2026-10-30, F12: the native simulation's `spatial_poses` and admitted VTT `PositionBinding` both supply physical roots. A generated founding stand alone has no admitted terrain patch; the physical test fixture publishes `Command::Patch` just as Mesocosm does. `ruleset::frame` refuses stale or unplaced bodies and reuses `Simulation::site_geometry` and `Places::sees` for current measured reach. No rules-map coordinates are published as placement.
+- 2026-10-30, F12: D&D critical hits now repeat damage dice while adding flat modifiers once, through the existing dice parser and action resolver. PF2e retains its whole-damage multiplier. The desktop readout now shows zero remaining time after concentration ends; the initial misleading capture is retained with the corrected result in the dated receipts.
 - 2026-10-28, F11: the three procedure packs in `crates/isometry-system/data/effects/` declare specific casting profiles. D&D uses slots and concentration; PF2e prepared casts share `actions_spent` with Strikes; Ars uses calm formulaic totals, fatigue and the accepted next sunrise/sunset. Player Core's base Darkvision is personal and Enlarge lasts five minutes. Ars cat eyes do not see in absolute darkness. The source and profile boundaries are kept with the data.
 - 2026-10-28, F11: `active_effects` stores accepted definitions, cast costs, dice, bearer IDs, independent suppressors and end causes. Current sheets and inventories are projected rather than restored from old copies. `System::effective_map_sheet`, the attack resolver, the height tracer and the shared body graph consume the changes. Exact quantized scaling refuses when a joint would round; Ars Size does not imply an exact native geometric ratio. This is VTT state beside native bodies, not native biological mutation.
 
@@ -169,6 +205,7 @@ than treating those controls as implementations of tabletop magic.
 
 ## Progress
 
+- 2026-10-30: F12 connects Magic Weapon to the shipping character-sheet endpoint, accepted slots and dice, enhanced attacks, damage-driven concentration, native downtime expiry, family replay and disk reload. Headed active/lost/expired states are verified; a misleading ended-effect countdown was corrected. Native physical item enchantment, articulated weapon reach, the other desktop procedures and the live peer gate remain open.
 - 2026-10-28: F11a/F11b executable API and headless demonstration built for all nine named procedures, with saved lifecycle and existing consumer integration. F11c remains open; the previous catalogue-only landing did not fulfill the whole agreed small set. Use `cargo run -p isometry-system --example cast_effects` for execution and `inspect_effects` for coverage.
 
 - 2026-10-28: F10a initial catalogue, admission checks and native candidate inspector built; F10b native allocation/growth conservation and exact-history controls passed. F10c and edition-native execution remain open. Run `cargo run -p isometry-system --example inspect_effects -- --markdown` for the readable coverage matrix, `--json` for the revisioned report, or add `--genesis PATH` to inspect a native Genesis rather than the labelled reference founding. Run evidence belongs in the dated archive, not here.

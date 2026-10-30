@@ -6,12 +6,12 @@
 //! The implementation is the `isometry-*` crates of this workspace.
 //!
 //! This crate holds the VTT's Graphshell endpoint over the sim-host core
-//! (rulings 900, 902 and 904): the retired desktop shell's six VTT panels as
-//! six projections of one table seat. Table time and party, joint journeys,
+//! (rulings 900, 902 and 904): seven projections of one table seat.
+//! Table time and party, joint journeys,
 //! the disclosed overmap, held map knowledge, adventures and goals, and
-//! native operation authoring. Every card's actions bind to an [`Act`]; a
-//! world change goes through `crate::native::submit_game_access`
-//! with the VTT's game bytes in the world's `vtt` section.
+//! native operation authoring, and character sheets. Every card's actions
+//! bind to an [`Act`]. Native changes and opaque edition state share the
+//! existing world's atomic acceptance and family replication boundary.
 
 #[path = "adventure.rs"] mod adventure;
 #[path = "authoring.rs"] mod authoring;
@@ -19,6 +19,7 @@
 #[path = "knowledge.rs"] mod knowledge;
 #[path = "overmap.rs"] mod overmap;
 #[path = "table.rs"] mod table;
+#[path = "sheets.rs"] mod sheets;
 
 use std::collections::BTreeMap;
 
@@ -50,9 +51,11 @@ pub const OVERMAP: &str = "vtt:overmap";
 pub const KNOWLEDGE: &str = "vtt:knowledge";
 pub const ADVENTURE: &str = "vtt:adventure";
 pub const AUTHORING: &str = "vtt:authoring";
-const SESSIONS: [(&str, &str); 6] = [(TABLE, "Table time and party"), (JOURNEYS, "Joint journeys"),
+pub const SHEETS: &str = "vtt:sheets";
+const SESSIONS: [(&str, &str); 7] = [(TABLE, "Table time and party"), (JOURNEYS, "Joint journeys"),
     (OVERMAP, "Disclosed overmap"), (KNOWLEDGE, "Held map knowledge"),
-    (ADVENTURE, "Adventures and current goals"), (AUTHORING, "Native operation authoring")];
+    (ADVENTURE, "Adventures and current goals"), (AUTHORING, "Native operation authoring"),
+    (SHEETS,"Character sheets")];
 
 /// What one advertised action does when invoked.
 #[derive(Clone, Debug)]
@@ -78,6 +81,7 @@ pub(crate) enum Act {
     Examine(Option<u64>),
     /// The DM's table contract assertions; the payload is their JSON array.
     Assert,
+    Ruleset(crate::ruleset::Action),
 }
 
 /// A session's cards and the acts their actions bind.
@@ -146,6 +150,7 @@ impl VttEndpoint {
             KNOWLEDGE => knowledge::build(self, &cx),
             ADVENTURE => adventure::build(self, &cx),
             AUTHORING => authoring::build(self, &cx),
+            SHEETS => sheets::build(self, &cx),
             _ => Err("projection request names an unknown VTT session".into()),
         }
     }
@@ -158,6 +163,7 @@ impl VttEndpoint {
             let (_, next) = crate::native::submit_game_access(session, game(sections), bytes, access)?;
             let mut sections = sections.clone();
             sections.insert(MODE.into(), next);
+            crate::ruleset::settle(session, &mut sections)?;
             Ok(((), sections))
         })
     }
@@ -170,6 +176,15 @@ impl VttEndpoint {
 
     fn act(&mut self, act: Act, payload: &[u8]) -> Result<(), String> {
         match act {
+            Act::Ruleset(action) => {
+                let access = self.window.projection()?.access;
+                let before = self.window.cut()?;
+                self.world.product_sections(before, |session, sections| {
+                    let mut next = sections.clone();
+                    crate::ruleset::apply(session, &mut next, access, &action, payload)?;
+                    Ok(((), next))
+                })
+            },
             Act::Submit(bytes) => self.submit(if bytes.is_empty() { payload } else { &bytes }),
             Act::Send(intent) => {
                 let bytes = self.envelope(|participant, tick| VttIntentEnvelope {

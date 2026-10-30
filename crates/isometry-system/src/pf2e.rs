@@ -137,6 +137,7 @@ pub fn pf2e_srd() -> System {
             damage_func: "p_strike_dmg".to_owned(),
             // The whole point: a critical Strike doubles everything.
             damage_mult_func: Some("p_crit_mult".to_owned()),
+            damage_dice_mult_func: None,
             damage_field: "hp_current".to_owned(),
             actor_beat: "strike".to_owned(),
             hit_beat: "recoil".to_owned(),
@@ -180,6 +181,7 @@ pub fn pf2e_srd() -> System {
             damage: "0".to_owned(),
             damage_func: "p_zero".to_owned(),
             damage_mult_func: None,
+            damage_dice_mult_func: None,
             damage_field: "hp_current".to_owned(),
             actor_beat: "demoralize".to_owned(),
             hit_beat: "cower".to_owned(),

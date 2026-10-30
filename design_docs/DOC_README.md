@@ -30,6 +30,9 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
   do not edit unasked.
 - The substrate/system split is load-bearing: geometry and turns in the
   substrate, rules in system plugins. Keep it that way in every doc.
+- Trace desktop work through the active `FamilyTable` / `VttEndpoint` route.
+  The retained legacy `GameSnapshot` handlers are not the shipping campaign
+  authority. Edition facts travel in the world's opaque product sections.
 
 ## Active docs
 

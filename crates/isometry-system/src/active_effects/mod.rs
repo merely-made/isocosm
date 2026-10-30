@@ -19,7 +19,7 @@ pub use casting::cast;
 pub(crate) use damage::damage_expression;
 pub use definitions::{Definition, Definitions, Duration, Edition, Kind};
 pub use geometry::{BodyChange, project_body};
-pub use lifecycle::{advance, concentration_damage, dismiss, interrupt, set_suppression};
+pub use lifecycle::{advance, concentration_damage, concentration_check, ConcentrationCheck, dismiss, interrupt, set_suppression};
 pub use projection::{
     Lighting, Perceived, WeaponChange, perceive, project_sheet, visible_tiles, weapon,
 };

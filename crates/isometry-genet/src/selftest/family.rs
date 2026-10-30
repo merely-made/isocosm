@@ -113,7 +113,7 @@ impl FamilySelftest {
 
     fn begin(&mut self, app: &mut App, ctx: &mut Ctx<'_>) {
         let ui = ctx.runner.state();
-        if ui.vtt_projections.len() != 6 {
+        if ui.vtt_projections.len() != 7 {
             return;
         }
         let tabs = {
@@ -121,7 +121,7 @@ impl FamilySelftest {
             let dom = dom.borrow();
             dom.all_with_class(dom.document(), "vtt-tab")
         };
-        if tabs.len() != 6 {
+        if tabs.len() != 7 {
             return;
         }
         let table = app
@@ -151,7 +151,7 @@ impl FamilySelftest {
             .map(|projection| projection.id.clone())
             .collect();
         eprintln!(
-            "[h7-family-selftest] disclosed six tabs: {:?}; startup_sequence={} startup_records_drained={}",
+            "[h7-family-selftest] disclosed endpoint tabs: {:?}; startup_sequence={} startup_records_drained={}",
             ui.vtt_projections
                 .iter()
                 .map(|projection| projection.label.as_str())
@@ -200,7 +200,7 @@ impl FamilySelftest {
 
     fn click_tab_id(&mut self, ctx: &mut Ctx<'_>, id: &str) {
         let Some(index) = self.tab_ids.iter().position(|candidate| candidate == id) else {
-            panic!("the table projection is absent from the six displayed tabs: {id}");
+            panic!("the table projection is absent from the displayed tabs: {id}");
         };
         let node = {
             let dom = ctx.runner.dom();

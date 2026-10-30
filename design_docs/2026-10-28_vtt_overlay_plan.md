@@ -167,6 +167,7 @@ Rulings 538 to 543 (2026-10-03): the VTT plays recognized editions faithfully as
 
 ## Findings
 
+- 2026-10-30: `functional-generation` F12 connects an experimental Magic Weapon free-play loop through the shipping `FamilyTable` / `VttEndpoint`, with edition facts in the native world's opaque product sections. It reuses system casting/attack/concentration, native time consent and family persistence. Table equipment is explicitly unmarked, and root/terrain reach requires declared scale or an explicit DM ruling. This is not V3 calibration, native magical item manufacture or V4's multiplayer played-loop acceptance. The remaining edition and consumer work stays in F11c/F12 of the functional generation plan.
 - 2026-10-28: the entropy-tape faction turn and `legacy/campaign` are gone from code (no `FactionVerb`); V2.2's retirement clause is satisfied, the rest of V2.2 is not. `party_known` still lives in `crates/isocosm-vtt/src/founding/content.rs` and `crates/isometry-campaign/src/content/world/ops.rs`.
 - 2026-10-28: `GameEvent::TravelResolved` is still emitted inline at `crates/isometry-genet/src/overmap.rs:133`; the wire is at `PROTOCOL_VERSION` 22 (`crates/isonetry/src/protocol.rs:26`). The protocol hardening plan's H0 and H1 landed (DOC_README).
 - 2026-10-28: the old plan's "five failing watchtower atlas and door tests" are not carried: all `isometry-genet` tests passed today.

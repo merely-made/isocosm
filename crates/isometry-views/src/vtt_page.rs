@@ -71,7 +71,7 @@ fn card(projection: &str, item: &crate::state::VttCardView) -> UiChild {
                             ui.request_vtt_action(&projection, &item_id, &action_id)
                         },
                     ),
-                    el("div", text(action.explanation.clone())).attr("class", "vtt-action-help"),
+                    (!action.explanation.is_empty()).then(||el("div", text(action.explanation.clone())).attr("class", "vtt-action-help")),
                 ),
             )) as UiChild
         })

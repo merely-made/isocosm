@@ -59,11 +59,11 @@ fn read(endpoint: &mut VttEndpoint, session: &str) -> Vec<Card> {
 }
 
 #[test]
-fn six_projections_answer_at_both_seats_and_dm_panels_refuse_a_player() {
+fn projections_answer_at_both_seats_and_dm_panels_refuse_a_player() {
     let t = table();
     let mut dm = VttEndpoint::open(&t.world, t.dm, Seat::Dm).unwrap();
     let mut player = VttEndpoint::open(&t.world, t.player, Seat::Player).unwrap();
-    assert_eq!(dm.describe().projections.len(), 6);
+    assert_eq!(dm.describe().projections.len(), 7);
     for offer in dm.describe().projections {
         let session = offer.request.session.0;
         assert!(!read(&mut dm, &session).is_empty() && !read(&mut player, &session).is_empty(), "{session} reads");
@@ -167,7 +167,7 @@ fn the_endpoint_survives_the_wire_encoding() {
     let mut carrier = LocalCarrier::new(endpoint, |_, _| Err("resume is not used".to_string()));
     let CarrierResponseBody::Descriptor(descriptor) = carrier.request(CarrierRequestBody::Discover).unwrap()
         else { panic!("discovery answers a descriptor") };
-    assert_eq!(descriptor.projections.len(), 6);
+    assert_eq!(descriptor.projections.len(), 7);
     let request = descriptor.projections.into_iter().find(|offer| offer.request.session.0 == TABLE).unwrap().request;
     let CarrierResponseBody::Snapshot(first) = carrier.request(CarrierRequestBody::Snapshot(request)).unwrap()
         else { panic!("a snapshot request answers a snapshot") };

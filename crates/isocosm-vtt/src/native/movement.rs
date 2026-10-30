@@ -12,7 +12,7 @@ use isometer_space::places::Places;
 
 /// Recheck the trusted host's cut against current native control. A caller's
 /// table owner, character metadata or proposed access never replaces it.
-pub(super) fn current_access(session: &Session, access: OrdinaryAccess) -> Result<(), String> {
+pub(crate) fn current_access(session: &Session, access: OrdinaryAccess) -> Result<(), String> {
     if !session.sim.state().population.get(access.participant.0)
         .is_some_and(isocosm::directing::is_participant)
     { return Err("table caller is not a native participant".into()); }

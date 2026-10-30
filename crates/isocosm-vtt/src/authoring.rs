@@ -87,5 +87,10 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         built.push(Item { id: "quote".into(), card: card("Last preview", vec![value("Quote", quote)], &["quote"]),
             actions: Vec::new() }, Vec::new());
     }
+    built.push(Item {id:"ruleset-scale".into(),card:card("Ruleset physical scale",vec![value("Scale","Native cells per five-foot square")],&["authoring"]),
+        actions:vec![action("vtt.ruleset-scale","Set ruleset physical scale","Declare scale for measured weapon reach.",
+            r#"{"type":"object","properties":{"cells_per_square":{"type":"integer","minimum":1}},"required":["cells_per_square"],"additionalProperties":false}"#,
+            IntentEffect::DomainTruth),action("vtt.ruleset-rulings","Use DM reach rulings","Use your recorded reach decisions for this table.",isocosm_host::endpoint::disclosure::NULL,IntentEffect::DomainTruth)]},
+            vec![Act::Ruleset(crate::ruleset::Action::Calibrate),Act::Ruleset(crate::ruleset::Action::UseRulings)]);
     Ok(built)
 }

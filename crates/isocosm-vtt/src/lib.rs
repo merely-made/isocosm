@@ -8,6 +8,9 @@ pub mod founding;
 pub mod native;
 
 #[cfg(feature = "endpoint")]
+pub mod ruleset;
+
+#[cfg(feature = "endpoint")]
 #[path = "endpoint.rs"]
 mod endpoint;
 #[cfg(feature = "endpoint")]
