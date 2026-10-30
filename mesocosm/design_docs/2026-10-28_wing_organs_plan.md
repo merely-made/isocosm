@@ -7,10 +7,6 @@
 
 Not here: how a magic system is composed, priced and cast, and effects-rendering remainders (`functional-generation`); the body contract and condition carryover into a new life (`wing-phenotype-contract`, wing.4 there); glyph display on far marks (`orthographic-voxel-presentation` L10); deep time and the hagiograph's history (`sim` S5); Eponym's glyph reading and invocation (`eponym-overlay`).
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
-
 ## Decisions
 
 - **D1, parked (2026-10-28), amends 279 and 673:** Mark: "Parked is a designation. We get that designation to indicate that something is not a priority, right? It's not a prohibition. You're not trying to prohibit coding or designing these things, as those are the types of things that would get it out of parked status. So, like, doesn't make any sense to try to, like, back it up with all of this bureaucracy." Parked marks what is not a priority now. It neither bars code nor bars design on a rung; that work is how a rung leaves parked. Ruling 279's condition ("until a region with an ecology and a society runs") and 673's "279 still bars new design on those rungs" stop being gates.

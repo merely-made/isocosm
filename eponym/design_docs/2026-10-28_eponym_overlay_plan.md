@@ -20,10 +20,6 @@ view-selection and other speed bars (`sim-execution`); the resident surface, atl
 atlas-slot work (`place-graph-engine`); glyph canon and journeys (`wing-organs`); the hagiograph's
 promotion test (`wing-organs`); the VTT (`vtt-overlay`).
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
-
 ## Constraints
 
 - **E3 is built only on Isocosm, with no prototype over `Session`** (ruling 239). E3 opened

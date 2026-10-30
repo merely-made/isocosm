@@ -5086,6 +5086,10 @@ governs = ["isocosm::datasheet::native", "isocosm::development", "mesocosm-genet
 [decisions."orthographic-voxel-presentation D3"]
 title = "the camera decides neither the sim nor the rendering (2026-10-28), refines D1"
 source = "mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md"
+area = "Presentation"
+summary = "The projection a view uses is a setting; the camera determines neither the sim nor the rendering."
+draws_on = ["382", "orthographic-voxel-presentation D1", "presentation.1"]
+amends = ["orthographic-voxel-presentation D1"]
 
 [decisions."place-graph-engine D1"]
 title = "many projections of one store (2026-10-28), applies 18"
@@ -5852,21 +5856,21 @@ title = "Divinity is earned by the journey"
 source = "design_docs/doctrine.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Ascension sacrifices glyph forms; grade is depth of relation scaled by form; the domain is how the forms were acquired."
-draws_on = ["44", "46", "47", "107"]
+draws_on = ["44", "46", "47", "107", "wing-organs D1"]
 
 [statements."organs.2"]
 title = "Power is the frequency of the domain's process"
 source = "design_docs/doctrine.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "A domain's power is how often its process happens; rare but significant effects mitigate; referents are for the greatest."
-draws_on = ["49", "52"]
+draws_on = ["49", "52", "wing-organs D1"]
 
 [statements."organs.3"]
 title = "Peeking behind the curtain"
 source = "design_docs/doctrine.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Some divine figures read truth beyond their reach, a magic bending rules 5 and 59; a trait, not a seat."
-draws_on = ["384"]
+draws_on = ["384", "wing-organs D1"]
 
 [statements."organs.4"]
 title = "The impresa note"

@@ -1228,33 +1228,42 @@ that magic runs in its story, and scaled by the form sacrificed (an item, then
 a technique, skill or ability, then an embodied trait), so a devotee of one
 magic who used it greatly can still reach greater divinity. The domain is how
 the sacrificed forms were acquired, and a mix of forms mixes it. Collecting
-all the magics is favoured, as a world setting. Parked under 279: a design to resume from, not one to build to.
+all the magics is favoured, as a world setting. Parked
+(279, wing-organs D1): not a priority, and code or design on it is what
+unparks it.
 
-Links: draws on 44, 46, 47, 107 · summary Ascension sacrifices glyph forms; grade is depth of relation scaled by form; the domain is how the forms were acquired.
+Links: draws on 44, 46, 47, 107, wing-organs D1 · summary Ascension sacrifices glyph forms; grade is depth of relation scaled by form; the domain is how the forms were acquired.
 
-*Reviewed 2026-10-21, new. Mark on the grading tension between 46 and 107: "Both: depth sets the grade, form scales it"; on the text: "As drafted".*
+*Refined 2026-10-30 from wing-organs D1, the parked clause only (Mark:
+"Parked is a designation. ... It's not a prohibition.").*
 
 ### Organs 2. Power is the frequency of the domain's process
 
 A domain is named freely, but acts fuel it, and a god whose process rarely
 happens is weak, unless its effects are unprecedented or significant.
 Choosing a referent is for greater divinities and avatars. Anatomy (vampire,
-lich, fey, eldritch) is the other road to long life. Parked under 279: a design to resume from, not one to build to.
+lich, fey, eldritch) is the other road to long life. Parked
+(279, wing-organs D1): not a priority, and code or design on it is what
+unparks it.
 
-Links: draws on 49, 52 · summary A domain's power is how often its process happens; rare but significant effects mitigate; referents are for the greatest.
+Links: draws on 49, 52, wing-organs D1 · summary A domain's power is how often its process happens; rare but significant effects mitigate; referents are for the greatest.
 
-*Reviewed 2026-10-21, new. Mark: "As drafted".*
+*Refined 2026-10-30 from wing-organs D1, the parked clause only (Mark:
+"Parked is a designation. ... It's not a prohibition.").*
 
 ### Organs 3. Peeking behind the curtain
 
 Some divine figures read truth beyond their senses and reach: magic that
 bends rules 5 (memory is not global) and 59 (senses are the creature's own)
 for its bearer. It is a trait a figure may hold, not one its tier grants, and
-no play mode or seat. Parked under 279: a design to resume from, not one to build to.
+no play mode or seat. Parked
+(279, wing-organs D1): not a priority, and code or design on it is what
+unparks it.
 
-Links: draws on 384 · summary Some divine figures read truth beyond their reach, a magic bending rules 5 and 59; a trait, not a seat.
+Links: draws on 384, wing-organs D1 · summary Some divine figures read truth beyond their reach, a magic bending rules 5 and 59; a trait, not a seat.
 
-*Reviewed 2026-10-21, new: kept as drafted when Mark moved divine places (case 48) to World generation.*
+*Refined 2026-10-30 from wing-organs D1, the parked clause only (Mark:
+"Parked is a designation. ... It's not a prohibition.").*
 
 ### Organs 4. The impresa note
 

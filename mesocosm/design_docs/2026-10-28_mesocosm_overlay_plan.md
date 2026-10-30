@@ -1,6 +1,6 @@
 # Mesocosm overlay: directing, the played loop and the epoch boundary
 
-**Status:** 2026-10-28: cut from `2026-09-25_mesocosm_overlay_plan.md`,
+**Status:** 2026-10-30: cut on 2026-10-28 from `2026-09-25_mesocosm_overlay_plan.md`,
 `2026-10-08_directing_interim_m4_plan.md` and `2026-08-01_epoch_boundary_plan.md`,
 which are archived in `archive_docs/2026-10-28/`. Built: `mesocosm-core` and its
 sixteen-variant `Intent` are deleted; the four crates (`mesocosm-runtime`, `-views`,
@@ -25,10 +25,6 @@ store and its lifts (`place-graph-engine`); body appearance, footing, senses and
 (`bodies`); the body voxel scale and the default-view ruling (`orthographic-voxel-presentation`);
 hagiograph significance and the glyph organ (`wing-organs`); the wing's portable body contract
 (`wing-phenotype-contract`); parked rungs (`wing-organs` D1).
-
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
 
 ## Constraints
 
@@ -407,6 +403,7 @@ Epoch boundary (record: open, the record does not decide).
   452. From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:45-48`.
 
 ## Findings
+- 2026-10-30: `mesocosm-runtime`'s integration tests ran 56 passed and 36 failed at `76f8f5cc`, with four lib failures, the same with the frame call disabled (`sim-execution` Findings). Many pin behaviour the game has since changed (decision periods, D19). Fixing them is not a work item (Mark, 2026-10-30).
 
 - 2026-10-28: `mesocosm/crates` holds `mesocosm-genet`, `-phenotype`, `-runtime`, `-views`
   and probes; `mesocosm-core` is gone. `isocosm::legacy` appears only in design docs, so the
@@ -446,6 +443,5 @@ Epoch boundary (record: open, the record does not decide).
   namespaces that reuse these labels; this plan's M labels are the overlay plan's only.
 
 ## Progress
-
 - 2026-10-28: cut from the Mesocosm overlay plan, the directing and interim M4 plan and the
   epoch boundary plan.

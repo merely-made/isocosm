@@ -20,10 +20,6 @@ residency policy (`place-graph-engine`); the VTT's overmap readings
 (`vtt-overlay V2`); the board's own stylesheet-versus-voxel choice
 (`board-on-isometer`).
 
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
-
 ## Decisions
 
 - **D2, rich bodies (2026-10-22), applies 511, 512, 531, 758:** Mark:
@@ -48,7 +44,7 @@ line in Findings.
 
 - **D3, the camera decides neither the sim nor the rendering (2026-10-28), refines D1:** Mark: "It can be axonometric, could be oblique, could be isometric, could be diametric, could be trimetric, could be... You know, it really just, it does, that's not the most important thing. The most important thing is that the question of the camera is not determinative of the question of the sim or the question of the rendering, necessarily. Unless we decide to do quantized facing, which I don't think we're doing, necessarily." Which projection a view uses is a host setting; D1's "isometric" and doctrine Presentation 1's 2:1 dimetric need no reconciling.
 
-  Links: area Presentation · draws on 382, presentation.1, orthographic-voxel-presentation D1 · refines orthographic-voxel-presentation D1 · summary The projection a view uses is a setting; the camera determines neither the sim nor the rendering.
+  Links: area Presentation · draws on 382, presentation.1, orthographic-voxel-presentation D1 · amends orthographic-voxel-presentation D1 · summary The projection a view uses is a setting; the camera determines neither the sim nor the rendering.
 
 ## Constraints
 - Ground and bodies share one depth attachment; a body's parts are scene
