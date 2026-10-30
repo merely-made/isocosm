@@ -17,6 +17,7 @@ mod answer;
 mod asks;
 mod companions;
 mod deed;
+pub mod ladder;
 mod settlement;
 mod terms;
 pub mod willing;

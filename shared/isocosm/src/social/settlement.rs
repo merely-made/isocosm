@@ -44,7 +44,7 @@ impl Simulation {
 
     /// The tenancies whose agreements stand, as (tenant, dwelling,
     /// agreement), latest agreement first.
-    fn tenancies(&self) -> Vec<(Id, Id, Id)> {
+    pub(super) fn tenancies(&self) -> Vec<(Id, Id, Id)> {
         let stands = |a: Id| self.state.agreements.get(&a).is_some_and(Agreement::standing);
         let mut held: Vec<(Id, Id, Id)> = self
             .state

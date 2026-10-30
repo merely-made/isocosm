@@ -1,0 +1,113 @@
+# A quick-start world (case 1023, doctrine World 10): a modded, shared world
+# whose founders are authored and enter by the founding door at its first
+# tick. This one is a small original example for the ladder readings, not a
+# shipping preset: six founders on one map site, four dwellings, one
+# faction. Every key and name here is this pack's content.
+
+schema = 1
+key = "mill-ford"
+name = "Mill Ford"
+status = "example"
+
+# The world the pack is laid over, drawn under the caller's seed.
+[world]
+sites = 4
+population = 16
+lineages = 2
+cohort_size = 4
+
+# The founders' lineage, which the pack adds to the world.
+[lineage]
+key = "lineage:mill-ford-folk"
+kingdom = "kingdom:fauna"
+
+# Which of the world's map sites, in id order, the founders arrive at.
+[settle]
+site = 0
+
+[vocabulary]
+crafts = ["craft:milling", "craft:farming", "craft:fishing", "craft:weaving"]
+
+# What each recorded deed does to the standing of whoever it was toward.
+[vocabulary.deeds]
+"deed:offer-accepted" = { trust = 1, affinity = 0, phrase = "took up what I asked" }
+"deed:offer-refused" = { trust = 0, affinity = 0, phrase = "said no to what I asked" }
+"deed:offer-countered" = { trust = 0, affinity = 0, phrase = "came back with other terms" }
+"deed:agreement-formed" = { trust = 1, affinity = 1, phrase = "made an arrangement with me" }
+"deed:performed-under-agreement" = { trust = 2, affinity = 1, phrase = "did what we arranged" }
+"deed:agreement-renegotiated" = { trust = 0, affinity = 0, phrase = "changed what we arranged" }
+"deed:agreement-ended" = { trust = 0, affinity = -1, phrase = "ended what we arranged" }
+
+[faction]
+key = "ford-commons"
+name = "The Ford Commons"
+governance = "governance:consent"
+focus = ["craft:milling", "craft:farming"]
+
+[[founders]]
+key = "ada"
+name = "Ada Wren"
+crafts = { "craft:milling" = 3, "craft:farming" = 1 }
+member = true
+
+[[founders]]
+key = "brann"
+name = "Brann Holt"
+crafts = { "craft:farming" = 3 }
+member = true
+
+[[founders]]
+key = "corin"
+name = "Corin Vale"
+crafts = { "craft:fishing" = 2, "craft:farming" = 1 }
+member = true
+
+[[founders]]
+key = "dessa"
+name = "Dessa Holt"
+crafts = { "craft:weaving" = 3 }
+member = true
+
+[[founders]]
+key = "edrin"
+name = "Edrin Marsh"
+crafts = { "craft:fishing" = 3 }
+caution = 2
+
+[[founders]]
+key = "fen"
+name = "Fen Ashby"
+crafts = { "craft:milling" = 1, "craft:weaving" = 1 }
+
+# Each dwelling is offered to its tenant by `with`, for the work named.
+[[dwellings]]
+key = "mill-house"
+name = "the mill house"
+tenant = "ada"
+with = "brann"
+work = { craft = "craft:milling", grade = 2, danger = 0 }
+terms = { share = 2, danger_cap = 1 }
+
+[[dwellings]]
+key = "long-barn"
+name = "the long barn"
+tenant = "brann"
+with = "ada"
+work = { craft = "craft:farming", grade = 2, danger = 0 }
+terms = { share = 2, danger_cap = 1 }
+
+[[dwellings]]
+key = "ferry-cottage"
+name = "the ferry cottage"
+tenant = "corin"
+with = "ada"
+work = { craft = "craft:fishing", grade = 1, danger = 0 }
+terms = { share = 1, danger_cap = 1 }
+
+[[dwellings]]
+key = "loom-house"
+name = "the loom house"
+tenant = "dessa"
+with = "corin"
+work = { craft = "craft:weaving", grade = 2, danger = 0 }
+terms = { share = 2, danger_cap = 1 }
