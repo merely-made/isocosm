@@ -11070,6 +11070,113 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1018 · summary A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe.
 
+1020. **Pathfinder 2e hit points stay the edition's; crits, dying and death
+      reach the body.** Ruled by Mark on 2026-10-30 (Mark: "Crits and dying
+      wound"), offered against hit points alone with death killing, every hit
+      wounding in proportion, and death by the DM's ruling. The reading: hit
+      points are edition state, read as vigour rather than wounds; a critical
+      hit and going dying each issue a native wound, and death issues the
+      native kill, in the same transaction as the edition's change; a native
+      death shows on the sheet.
+
+      Links: area The VTT · draws on 542, 1013, vtt.5 · summary PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction.
+
+1021. **Pathfinder 2e's first slice is two ancestries and two classes.**
+      Ruled by Mark on 2026-10-30 (Mark: "2 ancestries, 2 classes"), offered
+      against every ancestry with two classes and all of Player Core's first
+      level. The reading: Human and Dwarf, Fighter and Rogue, about 75 ORC
+      Remaster records, with no spellcasting; the slice grows once the path is
+      proven.
+
+      Links: area The VTT · draws on 1013, 1016 · summary The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting.
+
+1022. **A character's look is kept at the table as a class plus overrides.**
+      Ruled by Mark on 2026-10-30 (Mark: "Table record, class plus
+      overrides"), offered against the fully resolved recipe and the native
+      binding with the sim on only. The reading: a per-token look lives in the
+      table's record beside its sheet, replicated by its own event, sim on or
+      off; it stores the class name with per-slot choices and palette
+      overrides, so a pack's reskin reaches whatever is not overridden; the
+      existing sprite names become classes with no save migration.
+
+      Links: area The VTT · draws on 1019, vtt.7 · summary A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden.
+
+1023. **People grow out of a world given deep time; a quick-start world is a
+      modded, shared world.** Ruled by Mark on 2026-10-30 (Mark: "3 for sure.
+      A quick start world is a modded, shared world!"), replacing 1015's
+      founding flow, after his account of the ladder: creatures arising from
+      the world's conditions, shaped by them and finding the leverage they
+      can exact from them, becoming named, gaining friends, enemies, families
+      and lineages, depending on particular areas and living in larger groups
+      as their needs allow, growing "from a small hamlet into a town, then
+      perhaps into a city", factions and polities developing out of them;
+      each product foregrounding different layers of one sim. Offered against
+      emergence only and founders as a scaffold to be replaced. The reading: in
+      a world given deep time the generator places no people; lineages grow
+      and spread where conditions hold them, and individuals, kin, households,
+      factions and polities are read up the ladder from them, individuals
+      lifted where play attends. A quick-start world is a modded, shared world
+      whose founders are authored and enter by the founding door at its first
+      tick. A town is read the same way in either.
+
+      Links: area World generation · replaces 1015 · draws on naming.2, processes.6, processes.12, ecology.4, schema.5 · summary In a world given deep time people grow out of its conditions and are read up a ladder; a quick-start world is a modded, shared world with authored founders.
+
+1024. **A faction decides by consent; a polity adds a constitution.** Ruled by
+      Mark on 2026-10-30 (Mark: "Keep the split"), after he called a polity
+      "really just any type of group decision-making". The reading: his phrase
+      covers both rungs; groups act first as factions, and a constitution
+      makes one a polity.
+
+      Links: area The sim's schema and saves · draws on schema.5, processes.12 · summary "Any group decision-making" covers faction and polity; a constitution makes a faction a polity.
+
+1025. **A town's tiers are hamlet, town and city.** Ruled by Mark on
+      2026-10-30 (Mark: "Hamlet, town, city"), offered against settlement,
+      town, city and a later naming round, settling 1017's ladder. The
+      reading: three tiers read off size; their thresholds are set from
+      measured draws, not guessed.
+
+      Links: area World generation · draws on 1017, naming.3 · summary The ladder's tiers are hamlet, town and city, thresholds set from measured draws.
+
+1026. **Pathfinder 2e is built beside the skeleton, from a saved draft, and
+      stays marked experimental.** Ruled by Mark on 2026-10-30 (Mark: "All as
+      recommended, keep the mark"), the rules lane's forks taken as drafted.
+      The reading: Remaster attribute modifiers are built beside the skeleton's
+      ability scores; the system id `pf2e-srd` stays an opaque key with a
+      correct label; equipment is unmarked at the table and coins are edition
+      state, as the Magic Weapon loop has them; encounter mode (initiative,
+      three actions, reaction) is declared in edition state; ancestry is an
+      edition fact, tied to a native lineage later; creation is a saved draft,
+      one explained step at a time; legality and derivation are Rust over
+      TOML, Lua kept for degrees of success; the book's words name fields
+      only. Play stays marked experimental until the per-world lead choice
+      exists.
+
+      Links: area The VTT · draws on 1013, 1014, 1018, 1020, vtt.5, vtt.6 · summary PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists.
+
+1027. **A place's tier counts its residents.** Ruled by Mark on 2026-10-30
+      (Mark: "Size counts residents"), offered against households with a
+      standing tenancy, the region lane's other forks taken as drafted. The
+      reading: hamlet, town or city is read off living residents; a dwelling
+      is an asserted place linked to its map site through a `Location`; the
+      tier thresholds and any scoring weights live in a datasheet; the first
+      dispute read is an agreement one party ends against the other's
+      standing; hooks travel the existing goal-thread path; a polity's
+      governance is chosen by ranked preference over its members (Processes
+      12).
+
+      Links: area World generation · draws on 1025, processes.12, method.10 · summary A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing.
+
+1028. **Layers may come from `.vox` files as well as TOML.** Ruled by Mark on
+      2026-10-30 (Mark: "Allow .vox too"), approving the `dot_vox` dependency,
+      the appearance lane's other forks taken as drafted. The reading: layers
+      are authored as TOML box fills or loaded from `.vox` files (Vengi,
+      MagicaVoxel); the preview follows whichever board is active; packs bind
+      item keys to layers; with the sim on the body draws as today, the look
+      only sim-off for now; the words class, recipe and layer go to a naming
+      round.
+
+      Links: area The VTT · draws on 1019, 1022, bodies.2 · summary Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

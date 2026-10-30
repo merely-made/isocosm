@@ -4995,6 +4995,70 @@ area = "The VTT"
 summary = "A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe."
 draws_on = ["1018"]
 
+[cases."1020"]
+title = "Pathfinder 2e hit points stay the edition's; crits, dying and death reach the body"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction."
+draws_on = ["542", "1013", "vtt.5"]
+
+[cases."1021"]
+title = "Pathfinder 2e's first slice is two ancestries and two classes"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting."
+draws_on = ["1013", "1016"]
+
+[cases."1022"]
+title = "A character's look is kept at the table as a class plus overrides"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden."
+draws_on = ["1019", "vtt.7"]
+
+[cases."1023"]
+title = "People grow out of a world given deep time; a quick-start world is a modded, shared world"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "In a world given deep time people grow out of its conditions and are read up a ladder; a quick-start world is a modded, shared world with authored founders."
+draws_on = ["ecology.4", "naming.2", "processes.6", "processes.12", "schema.5"]
+replaces = ["1015"]
+
+[cases."1024"]
+title = "A faction decides by consent; a polity adds a constitution"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The sim's schema and saves"
+summary = "\"Any group decision-making\" covers faction and polity; a constitution makes a faction a polity."
+draws_on = ["processes.12", "schema.5"]
+
+[cases."1025"]
+title = "A town's tiers are hamlet, town and city"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "The ladder's tiers are hamlet, town and city, thresholds set from measured draws."
+draws_on = ["1017", "naming.3"]
+
+[cases."1026"]
+title = "Pathfinder 2e is built beside the skeleton, from a saved draft, and stays marked experimental"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists."
+draws_on = ["1013", "1014", "1018", "1020", "vtt.5", "vtt.6"]
+
+[cases."1027"]
+title = "A place's tier counts its residents"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing."
+draws_on = ["1025", "method.10", "processes.12"]
+
+[cases."1028"]
+title = "Layers may come from `.vox` files as well as TOML"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today."
+draws_on = ["1019", "1022", "bodies.2"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6082,7 +6146,7 @@ title = "Polities"
 source = "design_docs/doctrine.md"
 area = "The sim's schema and saves"
 summary = "A polity enforces with what it provides and asserts; efficacy is read; a focus not a size; contingency borrows enforcement; no will to continue."
-draws_on = ["64", "67", "68", "81", "988", "989", "991", "992"]
+draws_on = ["64", "67", "68", "81", "988", "989", "991", "992", "1024"]
 
 [statements."schema.6"]
 title = "Minds"
@@ -6249,7 +6313,7 @@ title = "The table plays editions faithfully"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked."
-draws_on = ["189", "250", "538", "539", "540", "542", "543", "1013"]
+draws_on = ["189", "250", "538", "539", "540", "542", "543", "1013", "1020", "1021", "1026"]
 
 [statements."vtt.6"]
 title = "Each edition declares its campaign's shape"
@@ -6263,7 +6327,7 @@ title = "A look is a voxel recipe that class names bind"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "A look is an isometer Appearance recipe; packs bind class names to it; preview and board read one recipe."
-draws_on = ["1019"]
+draws_on = ["1019", "1022", "1028"]
 
 [statements."world.1"]
 title = "Shape and scale"
@@ -6329,8 +6393,8 @@ summary = "Glyph presence makes divine places; placement and rooms have quality;
 draws_on = ["48"]
 
 [statements."world.10"]
-title = "Towns are read off their founders"
+title = "People grow out of the world; towns are read off them"
 source = "design_docs/doctrine.md"
 area = "World generation"
-summary = "Founding places households by geography and resources; towns are read off dwellings, tenancies, work and institutions on a size ladder of words, never stored."
-draws_on = ["54", "63", "1015", "1017", "naming.3", "schema.12"]
+summary = "People grow out of a deep-time world (a quick-start world is modded and shared, its founders authored); places read as hamlet, town or city, never stored."
+draws_on = ["54", "63", "1017", "1023", "1025", "1027", "ecology.4", "naming.2", "naming.3", "processes.6", "schema.12"]

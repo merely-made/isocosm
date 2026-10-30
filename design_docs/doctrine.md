@@ -112,10 +112,10 @@ be revived by whoever brings it support.
 
 *Not verified:* enforcement. Polities are built behind the society feature.
 
-Links: draws on 64, 67, 68, 81, 988, 989, 991, 992 · summary A polity enforces with what it provides and asserts; efficacy is read; a focus not a size; contingency borrows enforcement; no will to continue.
+Links: draws on 64, 67, 68, 81, 988, 989, 991, 992, 1024 · summary A polity enforces with what it provides and asserts; efficacy is read; a focus not a size; contingency borrows enforcement; no will to continue.
 
-*Refined 2026-10-22 from cases 988, 989, 991 and 992 (Mark: "Both refined as
-drafted").*
+*Applied 2026-10-30, case 1024: "any group decision-making" covers faction
+and polity (Mark: "Keep the split").*
 
 ### Schema 6. Minds
 
@@ -1198,20 +1198,24 @@ Links: draws on 48 · summary Glyph presence makes divine places; placement and 
 
 *Reviewed 2026-10-22, new. Mark: "A parked World statement".*
 
-### World 10. Towns are read off their founders
+### World 10. People grow out of the world; towns are read off them
 
-The founding flow places households where geography and resources favour
-them. What gathers there is read, never stored, off its dwellings, tenancies,
-work and institutions, on a ladder of words by size that a naming round sets
-(not "settlement", which code already uses twice); the history that made it
-explains it, and factions and polities act through its residents.
+In a world given deep time the generator places no people: lineages grow and
+spread where conditions hold them, and named individuals, kin, households,
+factions and polities are read up the ladder from them, individuals lifted
+where play attends. A quick-start world is a modded, shared world whose
+founders are authored and enter by the founding door at its first tick.
+Either way a place is a hamlet, town or city, read off its dwellings,
+tenancies, work and institutions and never stored, its tier counting
+residents against thresholds set from measured draws; its history explains it, and factions and polities act
+through its residents.
 
-*Not yet built:* founding households (sim S5); the ladder's words and
-thresholds await a naming round.
+*Not yet built:* any of it (sim S5 sub-item d); the readings come first.
 
-Links: draws on 54, 63, 1015, 1017, naming.3, schema.12 · summary Founding places households by geography and resources; towns are read off dwellings, tenancies, work and institutions on a size ladder of words, never stored.
+Links: draws on 54, 63, 1017, 1023, 1025, 1027, naming.2, naming.3, processes.6, ecology.4, schema.12 · summary People grow out of a deep-time world (a quick-start world is modded and shared, its founders authored); places read as hamlet, town or city, never stored.
 
-*Refined 2026-10-30 from case 1017 (Mark: "A size ladder").*
+*Refined 2026-10-30 from cases 1023 and 1025 (Mark: "3 for sure. A quick
+start world is a modded, shared world!").*
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -1955,10 +1959,11 @@ encounter runs under a named hybrid profile documenting each crossing. An
 uncalibrated edition plays experimentally: warned at open, every receipt
 marked.
 
-Links: draws on 189, 250, 538, 539, 540, 542, 543, 1013 · summary The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked.
+Links: draws on 189, 250, 538, 539, 540, 542, 543, 1013, 1020, 1021, 1026 · summary The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked.
 
-*Applied 2026-10-30, case 1013: Pathfinder 2e is built whole first (Mark:
-"PF2e first").*
+*Applied 2026-10-30, cases 1013, 1020, 1021: Pathfinder 2e is built whole
+first; its HP stays the edition's while crits, dying and death reach the body
+(Mark: "Crits and dying wound").*
 
 ### VTT 6. Each edition declares its campaign's shape
 
@@ -1978,10 +1983,10 @@ palette and clips. A pack binds class names to layers and palettes, so a
 campaign reskins the world without touching the app, and the creator's
 preview and the board read the same recipe.
 
-Links: draws on 1019 · summary A look is an isometer Appearance recipe; packs bind class names to it; preview and board read one recipe.
+Links: draws on 1019, 1022, 1028 · summary A look is an isometer Appearance recipe; packs bind class names to it; preview and board read one recipe.
 
-*Reviewed 2026-10-30, new, from case 1019 (Mark: "Voxel source, classes
-bind").*
+*Applied 2026-10-30, case 1022: kept at the table as a class plus
+overrides (Mark: "Table record, class plus overrides").*
 
 ## Naming
 
