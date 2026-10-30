@@ -160,7 +160,7 @@ stickleback = { git = "https://github.com/merely-made/eidetic.git", rev = "f599f
 # Keep layout on the same Genet revision as this workspace's host. No
 # ipc-channel row since genet 1b62fd0b: nothing here reaches it (mere dropped
 # its row the same way, 250fd238).
-taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", branch = "main", version = "=0.14.0" }
+taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "db6c4057d3d23048e8425a3ed050a42641fe1f7f", version = "=0.14.0" }
 
 # Isocosm's suite runs three times faster at opt-level 1, and every workspace
 # that builds it sets the same level so the shared build directory holds one
