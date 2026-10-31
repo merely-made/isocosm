@@ -106,6 +106,7 @@ pub fn fist() -> Item {
         hands: Some(1),
         range: None,
         ac: None, dex_cap: None, check: None, speed: None, strength: None, hardness: None, hp: None,
+        per: None,
         contents: Vec::new(),
         summary: "Unarmed attack: 1d4 bludgeoning; agile, finesse, nonlethal.".into(),
     }
@@ -175,7 +176,17 @@ pub fn attack(b: &Build, w: &Item) -> i64 {
 /// deadly or fatal add their die on top.
 pub fn damage(b: &Build, w: &Item, critical: bool) -> (String, i64, Option<String>) {
     let mut dice = w.damage.clone().unwrap_or_else(|| "1".into());
-    let flat = if melee(w) || w.traits.iter().any(|t| t.starts_with("thrown")) { b.modifier("str") } else { 0 };
+    let strength = b.modifier("str");
+    let flat = if melee(w) {
+        // A thief may use Dexterity for damage with a finesse melee weapon.
+        if w.has("finesse") && b.racket.as_deref() == Some("thief") { strength.max(b.modifier("dex")) } else { strength }
+    } else if w.traits.iter().any(|t| t.starts_with("thrown")) {
+        strength
+    } else if w.has("propulsive") {
+        if strength > 0 { strength / 2 } else { strength }
+    } else {
+        0
+    };
     let mut extra = None;
     if critical {
         for t in &w.traits {
@@ -210,4 +221,48 @@ pub fn recovery(dying: i64, result: Degree) -> i64 {
 pub fn dying_gain(critical: bool, wounded: i64, already_dying: bool) -> i64 {
     let base = if critical { 2 } else { 1 };
     if already_dying { base } else { base + wounded }
+}
+
+/// A hit paused for the defender's reaction (case 1050): damage applies when
+/// the defender's seat decides on Shield Block.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Pending {
+    pub attacker: u32,
+    pub target: u32,
+    pub amount: i64,
+    pub critical: bool,
+}
+
+/// An activity that takes native time: begun, then completed once the
+/// table's consented downtime has passed `until`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Activity {
+    /// treat-wounds or rest.
+    pub kind: String,
+    pub actor: u32,
+    pub target: u32,
+    pub until: u64,
+}
+
+/// A healer's effect a creature cannot benefit from again until `until`.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Immunity {
+    pub kind: String,
+    pub healer: u32,
+    pub target: u32,
+    pub until: u64,
+}
+
+/// Hit Points healed (or, on a critical failure, damage dealt) by Treat
+/// Wounds or Battle Medicine at the trained DC 15.
+pub fn medicine_dice(result: Degree) -> (&'static str, bool) {
+    match result {
+        Degree::CriticalSuccess => ("4d8", true),
+        Degree::Success => ("2d8", true),
+        Degree::Failure => ("0", true),
+        Degree::CriticalFailure => ("1d8", false),
+    }
 }

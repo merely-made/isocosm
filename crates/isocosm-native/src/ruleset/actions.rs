@@ -312,7 +312,8 @@ pub(super) fn apply(
         },
         Action::Choose { .. } | Action::Undo(_) | Action::Finish(_) | Action::Discard(_)
         | Action::StartEncounter | Action::EndEncounter | Action::EndTurn(_) | Action::RaiseShield(_)
-        | Action::Check { .. } | Action::SetDc(_) | Action::Stride { .. } | Action::RuleStride { .. } => {
+        | Action::Check { .. } | Action::SetDc(_) | Action::Stride { .. } | Action::RuleStride { .. } | Action::OffGuard { .. }
+        | Action::Block { .. } | Action::BattleMedicine { .. } | Action::Begin { .. } | Action::Complete(_) => {
             return Err("this action belongs to the Pathfinder 2e edition".into());
         },
     };
