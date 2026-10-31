@@ -8,6 +8,7 @@ pub use skeleton::pf2e_srd;
 
 pub mod derive;
 pub mod draft;
+pub mod play;
 pub mod records;
 
 /// The opaque system key the skeleton and effect packs already use (case

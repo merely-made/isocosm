@@ -7,6 +7,10 @@
 # License: https://paizo.com/orclicense
 version = 1
 
+# Generic common languages. Setting-named ones (Jotun, Sakvroth, Taldane and
+# the uncommon list) are held back pending the reserved-material check.
+common_languages = ["Draconic", "Dwarven", "Elven", "Fey", "Gnomish", "Goblin", "Halfling", "Orcish"]
+
 [[ancestry]]
 id = "human"
 name = "Human"
@@ -17,7 +21,8 @@ speed = 25
 vision = "normal"
 boosts = [[], []]
 flaws = []
-languages = ["Common", "one more common language"]
+languages = ["Common"]
+extra_languages = 1
 summary = "Short-lived, adaptable and everywhere. 8 Hit Points, Medium, Speed 25 feet, ordinary vision. Two free attribute boosts and no flaw; human feats lean toward extra training and flexibility."
 
 [[ancestry]]
@@ -31,7 +36,9 @@ vision = "darkvision"
 boosts = [["con"], ["wis"], []]
 flaws = ["cha"]
 languages = ["Common", "Dwarven"]
-summary = "Stout and steady, at home underground. 10 Hit Points, Medium, Speed 20 feet, darkvision. Boosts to Constitution and Wisdom plus one free boost, and a flaw to Charisma. Starts with a clan dagger (equipment comes in a later step of the table)."
+additional_languages = ["Gnomish", "Goblin", "Orcish"]
+items = ["clan-dagger"]
+summary = "Stout and steady, at home underground. 10 Hit Points, Medium, Speed 20 feet, darkvision. Boosts to Constitution and Wisdom plus one free boost, and a flaw to Charisma. Starts with a clan dagger."
 
 [[heritage]]
 id = "skilled-human"

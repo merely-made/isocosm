@@ -304,3 +304,16 @@ did not start, family replay and refusal of drafts under a 5e founding are
 covered by `crates/isocosm-vtt/tests/ruleset_pf2e.rs`; illegal choices and
 the 1016 loader filter by `crates/isometry-system/src/tests/pf2e_creation.rs`.
 The 5e endpoint tests (`ruleset_play.rs`) pass unchanged.
+
+### Play trial, 2026-10-30
+
+Ledger from `pf2e_table --ready` (both bodies drafted as dwarf fighters
+through the sheet buttons, longsword, steel shield and scale mail readied),
+then the headed desktop with `ISOMETRY_PF2E_SELFTEST=play`: Start encounter,
+two GM-ruled Strikes (`MAP 0`, then `MAP -5`), Raise a Shield. PASS, four
+accepted records, durable replay exact; the disk reopen shows the
+encounter, both Strikes and the raised shield in the log (sequence 69). The
+sheet read AC 19 with the shield raised and Longsword +8, both checked by
+hand. Capture: `C:\Users\mark_\Code\testing\isocosm\pf2e-chars\play\isometry_capture.png`.
+The dying track's native wound and kill are covered by
+`ruleset_pf2e.rs`'s encounter test.

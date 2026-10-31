@@ -23,6 +23,14 @@ pub struct TableMetadata {
 /// adapter admits each.
 pub const EDITIONS: [&str; 2] = ["5e-srd", "pf2e-srd"];
 
+/// What the table calls an edition key.
+pub fn edition_label(edition: &str) -> &'static str {
+    match edition {
+        "pf2e-srd" => "Pathfinder 2e Player Core (Remaster)",
+        _ => "D&D SRD 5.1",
+    }
+}
+
 pub fn default_edition() -> String {
     EDITIONS[0].into()
 }

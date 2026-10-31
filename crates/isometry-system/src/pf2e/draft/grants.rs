@@ -80,6 +80,20 @@ impl Walk<'_> {
         Ok(())
     }
 
+    /// One language learned from `from`; nothing when all are known.
+    pub(super) fn language(&mut self, id: &str, title: &str, from: &[String]) -> Result<(), Stop> {
+        let options: Vec<Opt> = from.iter().map(|l| Opt {
+            value: l.clone(), label: l.clone(), summary: String::new(),
+            refused: self.build.languages.contains(l).then(|| "already known".into()),
+        }).collect();
+        if options.iter().all(|o| o.refused.is_some()) {
+            return Ok(());
+        }
+        let language = self.take(Slot { id: id.into(), kind: "language", title: title.into(), options })?;
+        self.build.languages.push(language);
+        Ok(())
+    }
+
     /// Fixed training; already trained, a free pick replaces it.
     pub(super) fn train(&mut self, skill: &str, id: &str, by: &str) -> Result<(), Stop> {
         if self.build.trained(skill) {
@@ -227,6 +241,12 @@ impl Walk<'_> {
             Grant::RecoveryDc(n) => b.recovery_dc += n,
             Grant::Initiative(n) => b.initiative += n,
             Grant::Resistance(kind) => b.resistances.push(kind.clone()),
+            Grant::Languages(count) => {
+                let from = self.r.common_languages.clone();
+                for n in 0..*count {
+                    self.language(&format!("{id}/language:{n}"), &format!("{by}: language {}", n + 1), &from)?;
+                }
+            },
         }
         Ok(())
     }

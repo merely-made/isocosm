@@ -70,7 +70,12 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             let can_control=ruleset::controls(session,access,id);
             let dm=access.seat==Seat::Dm;
             if pathfinder {
-                super::sheets_pf2e::body(&mut built,&state,&map,id,tid,&title,can_control)?;
+                let alive=native.population.get(id).is_some_and(|b|b.alive);
+                let targets:Vec<u64>=visible.iter().copied().filter(|t|*t!=id && map.sheet(ruleset::token(*t).unwrap()).is_some_and(|s|s.int("dead").unwrap_or(0)==0)
+                    && native.population.get(id).and_then(|b|b.resident_site()).is_some_and(|site|native.population.get(*t).and_then(|b|b.resident_site())==Some(site))
+                    && (state.cells_per_square.is_none() || ruleset::measured_reach(&state,session,sections,access,id,*t).is_ok())).collect();
+                let seat=super::sheets_pf2e::Seat{control:can_control,gm:dm,alive,measured:state.cells_per_square.is_some(),targets};
+                super::sheets_pf2e::body(&mut built,&state,&map,id,tid,&title,&seat)?;
                 continue;
             }
             let Some(sheet)=map.sheet(tid) else {
@@ -158,6 +163,9 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                     }
                 }
             }
+        }
+        if pathfinder {
+            super::sheets_pf2e::table(&mut built,&state,access.seat==Seat::Dm);
         }
         for (index,entry) in state.log.iter().enumerate().rev().take(8) {
             if access.seat!=Seat::Dm && !entry_mentions(entry,access.subject.map(|s|s.0)) {continue;}

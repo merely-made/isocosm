@@ -10,7 +10,7 @@ use graphshell_endpoint::{IntentSink, ProjectionCatalog, ProjectionSource};
 use isocosm_host::world::World;
 use isocosm_overlay::Seat;
 use isocosm_vtt::{
-    TABLE, VttEndpoint,
+    SHEETS, TABLE, VttEndpoint,
     founding::{Content, TableMetadata},
     native::GameBindings,
 };
@@ -52,6 +52,12 @@ fn click(
         other => Err(format!("fixture action refused: {other:?}")),
     }
 }
+
+const DWARF_FIGHTER: &[&str] = &[
+    "dwarf", "listed", "str", "rock-dwarf", "warrior", "str", "con", "fighter", "athletics", "str",
+    "dex", "con", "wis", "int", "acrobatics", "medicine", "survival", "crafting", "Gnomish",
+    "dwarven-lore", "society", "vicious-swing", "longsword", "steel-shield", "scale-mail", "done",
+];
 
 fn main() -> Result<(), String> {
     let mut args = std::env::args().skip(1);
@@ -96,6 +102,28 @@ fn main() -> Result<(), String> {
     )?;
     let mut endpoint = VttEndpoint::open(host.world(), dm, Seat::Dm)?;
     click(&mut endpoint, TABLE, "roster", "vtt.roster-empty")?;
+    // `--ready`: both bodies drafted as dwarf fighters through the same
+    // sheet buttons, with longsword, steel shield and scale mail readied.
+    if args.next().as_deref() == Some("--ready") {
+        for body in bodies {
+            let card = format!("sheet:{body}");
+            click(&mut endpoint, SHEETS, &card, "vtt.sheet-create")?;
+            for value in DWARF_FIGHTER {
+                click(&mut endpoint, SHEETS, &card, &format!("vtt.draft-{value}"))?;
+            }
+            click(&mut endpoint, SHEETS, &card, "vtt.draft-finish")?;
+            let items = host.read(|_, sections| -> Result<Vec<(String, String)>, String> {
+                let state = isocosm_vtt::ruleset::State::read(sections)?.ok_or("no edition state")?;
+                let inventory = &state.inventories[&isocosm_vtt::ruleset::token(body)?];
+                Ok(inventory.items.iter().map(|(id, item)| (id.0.clone(), item.name.clone())).collect())
+            })??;
+            for (id, name) in items {
+                if ["Longsword", "Steel Shield", "Scale Mail"].contains(&name.as_str()) {
+                    click(&mut endpoint, SHEETS, &card, &format!("vtt.pf2e-equip-{id}"))?;
+                }
+            }
+        }
+    }
     println!(
         "Pathfinder Bench ledger {path}; bodies={bodies:?}; sequence={}",
         host.sequence()

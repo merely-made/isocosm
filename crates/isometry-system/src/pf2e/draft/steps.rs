@@ -45,6 +45,9 @@ pub(super) fn run(w: &mut Walk<'_>) -> Result<(), Stop> {
     let options = record_options(r.ancestries.values(), |a| (&a.id, &a.name, &a.summary));
     let ancestry = &r.ancestries[&w.take(slot("ancestry", "ancestry", "Ancestry", options))?];
     w.build.ancestry = Some(ancestry.id.clone());
+    w.build.languages.extend(ancestry.languages.iter().cloned());
+    w.build.gear.extend(ancestry.items.iter().cloned());
+    w.build.coins = STARTING_COINS;
     let listed = ancestry.boosts.iter().any(|b| !b.is_empty()) || !ancestry.flaws.is_empty();
     let alternate = listed && {
         let fixed: Vec<_> = ancestry.boosts.iter().filter(|b| !b.is_empty())
@@ -149,6 +152,13 @@ pub(super) fn run(w: &mut Walk<'_>) -> Result<(), Stop> {
     for n in 0..picks {
         w.pick_skill(&format!("skill:{n}"), &format!("Trained skill {} of {picks}", n + 1), &[])?;
     }
+    // Languages: the ancestry's extra picks plus Intelligence.
+    let from = if ancestry.additional_languages.is_empty() { r.common_languages.clone() }
+        else { ancestry.additional_languages.clone() };
+    let picks = ancestry.extra_languages + w.build.modifier("int").max(0);
+    for n in 0..picks {
+        w.language(&format!("language:{n}"), &format!("Language {} of {picks}", n + 1), &from)?;
+    }
     // Feats.
     w.feat_slot("ancestry-feat", "ancestry-feat", "Ancestry feat", "ancestry")?;
     if let Some(category) = heritage_feat {
@@ -158,5 +168,30 @@ pub(super) fn run(w: &mut Walk<'_>) -> Result<(), Stop> {
         w.feat_slot("skill-feat", "skill-feat", "Skill feat", "skill")?;
     }
     w.feat_slot("class-feat", "class-feat", "Class feat", "class")?;
+    // Starting gear, one purchase at a time.
+    for n in 0.. {
+        let mut options = vec![Opt { value: "done".into(), label: "Stop buying".into(), refused: None,
+            summary: format!("Keep {} as coins.", money(w.build.coins)) }];
+        options.extend(r.items.values().map(|i| Opt {
+            value: i.id.clone(), label: format!("{} ({})", i.name, money(i.price)), summary: i.summary.clone(),
+            refused: if i.price > w.build.coins {
+                Some(format!("costs {}; {} left", money(i.price), money(w.build.coins)))
+            } else if i.rarity != "common" && !access(&w.build, i) {
+                Some(format!("{}: needs access", i.rarity))
+            } else { None },
+        }));
+        let title = format!("Starting gear: purchase {} ({} left)", n + 1, money(w.build.coins));
+        let item = w.take(slot(format!("gear:{n}"), "gear", title, options))?;
+        if item == "done" {
+            break;
+        }
+        w.build.coins -= r.items[&item].price;
+        w.build.gear.push(item);
+    }
     Ok(())
+}
+
+/// Access to an uncommon item: Dwarven Weapon Familiarity opens dwarf weapons.
+fn access(build: &Build, item: &records::Item) -> bool {
+    item.has("dwarf") && build.feats.iter().any(|f| f == "dwarven-weapon-familiarity")
 }

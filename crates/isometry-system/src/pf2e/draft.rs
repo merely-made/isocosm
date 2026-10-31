@@ -89,6 +89,22 @@ pub struct Build {
     pub recovery_dc: i64,
     pub initiative: i64,
     pub resistances: Vec<String>,
+    pub languages: Vec<String>,
+    /// Items owned at 1st level: bought, or given by the ancestry.
+    pub gear: Vec<String>,
+    /// Starting money left after buying, in copper pieces.
+    pub coins: i64,
+}
+
+/// Player Core's starting money: 15 gold pieces.
+pub const STARTING_COINS: i64 = 1500;
+
+/// Format copper pieces the way prices read.
+pub fn money(cp: i64) -> String {
+    let (gp, sp, c) = (cp / 100, cp % 100 / 10, cp % 10);
+    let parts: Vec<String> = [(gp, "gp"), (sp, "sp"), (c, "cp")].iter()
+        .filter(|(n, _)| *n > 0).map(|(n, u)| format!("{n} {u}")).collect();
+    if parts.is_empty() { "nothing".into() } else { parts.join(" ") }
 }
 
 impl Build {
