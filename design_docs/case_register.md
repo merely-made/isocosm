@@ -434,7 +434,7 @@ three design docs that cite it. The record holds the words.
 | 120 | The world's disposition seeds the founders only; afterwards dispositions are inherited and lived and the world's pull fades. | none |
 | 121 | The world shapes people's dispositions through trait and condition; people drift from the world's temperament, and that temperament may not be static. | none |
 | 122 | A fluid world's temperament is moved by what happens to it, its own cycles and its epoch boundary, not by its people's temperament. | none |
-| 124 | The first scale target is a region (hundreds of sites, tens of thousands of critters); larger scales are not precluded. | [place graph engine](../mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 124 | The first scale target is a region (hundreds of sites, tens of thousands of critters); larger scales are not precluded. | [place graph engine](../mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 140 | A world's materials lie on a spectrum from a normal base matching a ruleset, through variants, to completely generated; a founding setting. | none |
 | 147 | A site (generating and playing unit) and a paged chunk (paging unit) are independent; a site spans as many chunks as its volume needs. | none |
 | 148 | When a location's ground changes or moves, its kind decides what it follows: a camp its people, a ruin its ground, a battlefield its site. | none |
@@ -608,7 +608,7 @@ three design docs that cite it. The record holds the words.
 | 472 | Lighting is a stack-owned light and environment block read by both tracer and rasteriser. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
 | 473 | WGSL/WESL for raster shaders and CubeCL for compute; rust-gpu stays for Nexus-derived compute only. | none |
 | 476 | vello serves documents; kiss3d 2D is used only behind the scene contract for lit 2D games. | none |
-| 483 | The record-to-scene projection learns what changed from the record's per-tick receipts, not from ECS change tracking. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
+| 483 | The record-to-scene projection learns what changed from the record's per-tick receipts, not from ECS change tracking. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 532 | One stack helper runs the wasm constructors once, called first from every web module's start, with a run-once guard and test. | none |
 | 536 | The shared wasm constructor helper lives in cambium-genet-web-host. | none |
 | 537 | The web modules take the newest wasm-bindgen they can, shared as one exact pin. (amended by 556) | none |
@@ -704,8 +704,8 @@ three design docs that cite it. The record holds the words.
 | 751 | A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there. | none |
 | 753 | After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available. | none |
 | 833 | Mesocosm owns and saves actual spatial state, bound to native body and terrain revisions; missing or stale inputs refuse. | none |
-| 841 | Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission. | none |
-| 842 | Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback. | none |
+| 841 | Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 842 | Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 848 | Authored birth profiles resolve a newborn's physical placement from its parent's current pose; refused placement never undoes the birth. | none |
 | 961 | Mesocosm defaults to the named A1 preset once receipt and physical-witness gates pass; the shared generator default stays Stock. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 978 | Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |

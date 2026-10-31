@@ -298,6 +298,7 @@ One merged list; each names the phase that owns it.
 - **Eponym motion tests**: eighteen of thirty-one fail at baseline (no standable fixture position, missing ledges, `InvalidStart`, archive decoding), before the binding query setup is reached, so query refresh does not certify those motion and save paths. Belongs to `eponym-overlay`. Ruling 804. From: `archive_docs/2026-10-28/2026-09-26_body_binding_plan.md:416-420, 481-487`.
 
 ## Questions for Mark
+- **Where near-tier movement lives**: asked in `sim-execution` Questions (2026-10-30), with a recommendation that would move route search, walking and foot placement toward conatus.
 - **Strength constants**: the constants for BO2 are Mark's to number once the proposal with evidence reaches him. From: `archive_docs/2026-10-28/2026-10-22_body_appearance_plan.md:138-140`.
 - **Build word for the binding module**: ruling 346 builds it "when Mark says"; BO13 to BO15 wait on it. From: `archive_docs/2026-10-28/2026-09-26_body_binding_plan.md:343-353`.
 - **Binding key for the VTT**: `(map, TokenId)`, or the site `PlaceHandle` under ruling 243. From: `archive_docs/2026-10-28/2026-09-26_body_binding_plan.md:307-317`.
