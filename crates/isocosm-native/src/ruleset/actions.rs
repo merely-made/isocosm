@@ -120,7 +120,7 @@ pub(super) fn apply(
                     quantity: 1,
                     tags: vec!["weapon".into()],
                     modifiers: vec![],
-                    appearance_layers: vec![],
+                    appearance_layers: vec![], material: None, make: None, condition: None,
                 },
             );
             state.weapon_damage.insert(item_id, damage);

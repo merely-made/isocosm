@@ -282,3 +282,8 @@ roadmap's distribution residue goes to `content-packs`.
   Appearance row) with a live preview on whichever board is active, cancel,
   save and reopen; `AppearanceSet` replicates a look (protocol 23); headed
   pairs in `Code/testing/isocosm/appearance/`.
+- 2026-10-31: item looks derived from what an item is (cases 1035, 1043):
+  a pack binds item templates (or kind tags) to sorts with seeded shapes,
+  maps `material`, make grade and `condition` keys to palette, finish and
+  wear, and the look editor shows a variant strip; PF2e level-0 arms,
+  armour and shields are bound in the core pack (protocol 25).

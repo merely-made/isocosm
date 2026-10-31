@@ -19,7 +19,7 @@ pub struct LookDraft {
     pub appearance: TokenAppearance,
     /// The equipped item templates the token wears, so the preview shows what
     /// the board will.
-    pub items: Vec<String>,
+    pub items: Vec<super::ItemLook>,
     /// The preview's quarter turn; never written to the table.
     pub facing: Facing,
 }
@@ -93,6 +93,7 @@ pub fn bake_facing_of(facing: Facing) -> u8 {
 #[derive(Default)]
 pub struct Bakes {
     held: RefCell<HashMap<(LookInput, u8, i32, u64), Rc<str>>>,
+    items: RefCell<HashMap<(super::ItemLook, i32, u64), Rc<str>>>,
 }
 
 impl Bakes {
@@ -109,13 +110,39 @@ impl Bakes {
         if let Some(uri) = self.held.borrow().get(&key) {
             return Some(uri.clone());
         }
-        let items = look.items.iter().map(String::as_str);
-        let resolved = library.resolve(&look.sprite, look.appearance.as_ref(), items).ok()?;
+        let resolved = library.resolve(&look.sprite, look.appearance.as_ref(), &look.items).ok()?;
         let uri: Rc<str> = bake_facing(&resolved.voxels, &resolved.palette, facing, params)
             .to_png_data_uri()
             .into();
         let mut held = self.held.borrow_mut();
         // A creator session can try many looks; keep the cache bounded.
+        if held.len() > 512 {
+            held.clear();
+        }
+        held.insert(key, uri.clone());
+        Some(uri)
+    }
+
+    /// One item alone, baked at its south view, or `None` if it does not
+    /// resolve.
+    pub fn item_uri(
+        &self,
+        library: &Library,
+        item: &super::ItemLook,
+        params: &BakeParams,
+    ) -> Option<Rc<str>> {
+        let key = (item.clone(), params.half_w, library.fingerprint());
+        if let Some(uri) = self.items.borrow().get(&key) {
+            return Some(uri.clone());
+        }
+        let resolved = library.resolve_item(item).ok()?;
+        if resolved.voxels.filled() == 0 {
+            return None;
+        }
+        let facing = bake_facing_of(Facing::South);
+        let uri: Rc<str> =
+            bake_facing(&resolved.voxels, &resolved.palette, facing, params).to_png_data_uri().into();
+        let mut held = self.items.borrow_mut();
         if held.len() > 512 {
             held.clear();
         }

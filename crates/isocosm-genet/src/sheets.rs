@@ -219,6 +219,9 @@ impl App {
                             tags: vec![category.to_lowercase()],
                             modifiers: Vec::new(),
                             appearance_layers,
+                            material: None,
+                            make: None,
+                            condition: None,
                         };
                         if inventory.insert(item).is_ok() {
                             event = Some(GameEvent::InventorySet {

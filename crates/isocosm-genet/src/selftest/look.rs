@@ -45,22 +45,36 @@ impl LookSelftest {
                 ctx.runner.update(|ui| {
                     let id = ui.map.tokens[0].id;
                     let inventory = ui.inventories.entry(id).or_default();
-                    let item = ItemId::new("look-selftest.sword");
-                    let _ = inventory.insert(ItemInstance {
-                        id: item.clone(),
-                        template: "srd5e:longsword".to_owned(),
-                        name: "Longsword".to_owned(),
-                        quantity: 1,
-                        tags: vec!["weapon".to_owned()],
-                        modifiers: Vec::new(),
-                        appearance_layers: Vec::new(),
-                    });
-                    let _ = inventory.equip(EquipmentSlot::MainHand, item);
+                    // PF2e level-0 arms with the open keys of case 1043: a
+                    // fine bronze longsword, worn; a wooden shield; mail.
+                    for (n, template, kind, slot, material, grade, condition) in [
+                        ("sword", "pf2e:longsword", "weapon", EquipmentSlot::MainHand, Some("bronze"), Some("fine"), Some("worn")),
+                        ("shield", "pf2e:wooden-shield", "shield", EquipmentSlot::OffHand, None, Some("common"), None),
+                        ("mail", "pf2e:chain-mail", "armor", EquipmentSlot::Body, Some("iron"), Some("common"), None),
+                    ] {
+                        let item = ItemId::new(format!("look-selftest.{n}"));
+                        let _ = inventory.insert(ItemInstance {
+                            id: item.clone(),
+                            template: template.to_owned(),
+                            name: n.to_owned(),
+                            quantity: 1,
+                            tags: vec![kind.to_owned()],
+                            modifiers: Vec::new(),
+                            appearance_layers: Vec::new(),
+                            material: material.map(str::to_owned),
+                            make: grade.map(|grade| isocosm_campaign::ItemMake {
+                                grade: Some(grade.to_owned()),
+                                ..Default::default()
+                            }),
+                            condition: condition.map(str::to_owned),
+                        });
+                        let _ = inventory.equip(slot, item);
+                    }
                     ui.open_look(id);
                 });
                 ctx.runner.state().look_open
             },
-            1 => self.click(ctx, "traveler"),
+            1 => self.click(ctx, "hero"),
             2 => self.click(ctx, "hood"),
             3 => {
                 ctx.runner.update(|ui| ui.set_look_colour(1, [0xd8, 0xb0, 0x4a]));

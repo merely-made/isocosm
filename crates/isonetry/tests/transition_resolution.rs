@@ -154,7 +154,7 @@ fn sword() -> Inventory {
             quantity: 1,
             tags: vec!["weapon".to_owned()],
             modifiers: Vec::new(),
-            appearance_layers: vec!["weapon:longsword".to_owned()],
+            appearance_layers: vec!["weapon:longsword".to_owned()], material: None, make: None, condition: None,
         })
         .unwrap();
     inventory

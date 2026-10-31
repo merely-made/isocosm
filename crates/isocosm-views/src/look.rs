@@ -135,6 +135,16 @@ pub fn look_rows(ui: &UiState) -> Vec<UiChild> {
             .collect();
         rows.extend(row(&swatch.label, colours));
     }
+    // One strip, for what is held in the main hand (else the first item), so
+    // the panel stays within the design height.
+    let shown = look
+        .items
+        .iter()
+        .find(|item| item.hand == "main")
+        .or_else(|| look.items.first());
+    if let Some(item) = shown {
+        rows.extend(variant_strip(ui, item));
+    }
     rows.push(Box::new(
         el(
             "div",
@@ -143,6 +153,51 @@ pub fn look_rows(ui: &UiState) -> Vec<UiChild> {
         .attr("class", "btn-row"),
     ));
     rows
+}
+
+/// The item stamp for the variant strip: the board's, doubled.
+const ITEM_BAKE: BakeParams = BakeParams {
+    half_w: 4,
+    cube_h: 4,
+    facings: 4,
+    margin: 1,
+};
+
+/// An equipped item beside variants of it: the same sort under other
+/// material, make and condition keys from the pack, each labelled with its
+/// keys. Read-only: it shows what the keys do.
+fn variant_strip(ui: &UiState, item: &crate::appearance::ItemLook) -> Vec<UiChild> {
+    let library = &ui.appearance;
+    let Some(sort) = library.item_sort(item) else {
+        return Vec::new();
+    };
+    let chips: Vec<UiChild> = library
+        .item_variants(item, 6)
+        .iter()
+        .filter_map(|variant| {
+            let uri = ui.appearance_bakes.item_uri(library, variant, &ITEM_BAKE)?;
+            let keys = [
+                variant.material.as_deref().unwrap_or("-"),
+                variant.grade.as_deref().unwrap_or("-"),
+                variant.condition.as_deref().unwrap_or("-"),
+            ]
+            .join(" ");
+            let chip: UiChild = Box::new(
+                el(
+                    "div",
+                    (
+                        el("div", ())
+                            .attr("class", "look-item")
+                            .attr("style", format!("background-image: url(\"{uri}\"); {SPRITE_FIT}")),
+                        el("div", text(keys)).attr("class", "look-item-keys"),
+                    ),
+                )
+                .attr("class", "look-variant"),
+            );
+            Some(chip)
+        })
+        .collect();
+    row(sort, chips)
 }
 
 /// A token's own look editor, omitted until opened from its menu.
@@ -190,4 +245,14 @@ pub(crate) const LOOK_CSS: &str = "
     border: 1px solid #3d4666;
 }
 .look-swatch-active { border: 2px solid #ffffff; }
+.look-variant { margin-right: 4px; margin-bottom: 4px; }
+.look-item {
+    width: 34px;
+    height: 58px;
+    background-color: #12141b;
+    border: 1px solid #3d4666;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+.look-item-keys { color: #8d93a6; font-size: 8px; width: 36px; }
 ";

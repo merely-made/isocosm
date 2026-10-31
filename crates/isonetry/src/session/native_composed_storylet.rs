@@ -76,7 +76,7 @@ fn readmit(state: &GameSnapshot, input: &ComposedStoryletInput, public: &Compose
                 }).ok_or("storylet item has no explicit bound instance identity")?;
                 let inventory = inventories.entry(owner).or_insert_with(|| state.inventories.get(&owner).cloned().unwrap_or_default());
                 inventory.insert(ItemInstance { id: named.clone(), template: item.template.clone(), name: item.name.clone(),
-                    quantity: 1, tags: item.tags.clone(), modifiers: Vec::new(), appearance_layers: Vec::new() })
+                    quantity: 1, tags: item.tags.clone(), modifiers: Vec::new(), appearance_layers: Vec::new() , material: None, make: None, condition: None,})
                     .map_err(|error| format!("storylet inert item proposal is invalid: {error:?}"))?;
             },
             _ => {},

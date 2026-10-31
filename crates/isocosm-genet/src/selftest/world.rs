@@ -184,7 +184,7 @@ impl App {
                         quantity: 1,
                         tags: vec!["map".to_owned(), "reveals:citadel".to_owned()],
                         modifiers: Vec::new(),
-                        appearance_layers: Vec::new(),
+                        appearance_layers: Vec::new(), material: None, make: None, condition: None,
                     },
                 );
                 ui.open_overmap();

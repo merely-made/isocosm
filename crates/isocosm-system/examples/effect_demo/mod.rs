@@ -82,7 +82,7 @@ impl Scene {
             quantity: 1,
             tags: vec!["weapon".into(), "metal".into(), "edged".into()],
             modifiers: vec![],
-            appearance_layers: vec![],
+            appearance_layers: vec![], material: None, make: None, condition: None,
         };
         let inventory = Inventory {
             items: [(sword.id.clone(), sword.clone())].into(),
