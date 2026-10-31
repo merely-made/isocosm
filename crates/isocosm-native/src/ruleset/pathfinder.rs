@@ -48,7 +48,7 @@ pub(super) fn apply(
     state: &mut State,
     map: &mut MapDocument,
     session: &mut Session,
-    sections: &BTreeMap<String, Vec<u8>>,
+    sections: &mut BTreeMap<String, Vec<u8>>,
     access: OrdinaryAccess,
     action: &Action,
     payload: &[u8],

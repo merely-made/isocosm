@@ -312,7 +312,7 @@ pub(super) fn apply(
         },
         Action::Choose { .. } | Action::Undo(_) | Action::Finish(_) | Action::Discard(_)
         | Action::StartEncounter | Action::EndEncounter | Action::EndTurn(_) | Action::RaiseShield(_)
-        | Action::Check { .. } | Action::SetDc(_) => {
+        | Action::Check { .. } | Action::SetDc(_) | Action::Stride { .. } | Action::RuleStride { .. } => {
             return Err("this action belongs to the Pathfinder 2e edition".into());
         },
     };

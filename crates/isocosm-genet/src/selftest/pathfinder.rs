@@ -3,7 +3,9 @@
 //! is `draft` (stop at the ancestry feat, where refused options show their
 //! reasons), `finished` (finish a dwarf fighter and show the sheet) or
 //! `play` (over a `pf2e_table --ready` ledger: start an encounter, Strike
-//! twice, Raise a Shield).
+//! twice, Raise a Shield) or `stride` (over a `pf2e_table --stride` ledger:
+//! start an encounter, pass turns to the body `ISOCOSM_PF2E_STRIDER` names,
+//! and Stride it).
 use super::painted::Painted;
 use super::*;
 use cambium_genet_winit_host::ScrollAlign;
@@ -29,6 +31,8 @@ enum Phase {
     Finish,
     /// Encounter steps: start, Strike, Strike, Raise a Shield.
     Play(usize),
+    /// Encounter start, then turns passed to the strider, then its Stride.
+    Stride(bool),
     Verify,
     Capture(u8),
     Done,
@@ -37,6 +41,7 @@ enum Phase {
 pub(crate) struct PathfinderSelftest {
     finished: bool,
     play: bool,
+    strider: Option<u64>,
     /// Log length when the last play step was clicked.
     log: usize,
     phase: Phase,
@@ -51,8 +56,10 @@ pub(crate) struct PathfinderSelftest {
 impl PathfinderSelftest {
     pub(crate) fn from_env() -> Option<Self> {
         std::env::var("ISOCOSM_PF2E_SELFTEST").ok().map(|mode| {
-            assert!(["draft", "finished", "play"].contains(&mode.as_str()), "pf2e selftest mode is draft, finished or play");
-            Self { finished: mode == "finished", play: mode == "play", log: 0, phase: Phase::Select, started: Instant::now(),
+            assert!(["draft", "finished", "play", "stride"].contains(&mode.as_str()), "pf2e selftest mode");
+            let strider = (mode == "stride").then(|| std::env::var("ISOCOSM_PF2E_STRIDER")
+                .expect("stride mode names its body").parse().expect("a body id"));
+            Self { finished: mode == "finished", play: mode == "play", strider, log: 0, phase: Phase::Select, started: Instant::now(),
                 painted: Painted::default(), body: None, before: None, waiting: false }
         })
     }
@@ -86,6 +93,45 @@ impl PathfinderSelftest {
             state.as_ref()?.drafts.get(&id).map(|d| d.choices.len())
         };
         match self.phase {
+            Phase::Select if self.strider.is_some() => {
+                if self.painted.tab(ctx, SHEETS) {
+                    self.phase = Phase::Stride(false);
+                }
+            },
+            Phase::Stride(started) => {
+                let state = state.expect("a --stride ledger has edition state");
+                if self.waiting {
+                    if state.log.len() > self.log {
+                        self.waiting = false;
+                        if state.log.last().is_some_and(|l| l.note.contains("Strides")) {
+                            self.phase = Phase::Verify;
+                        } else {
+                            self.phase = Phase::Stride(true);
+                        }
+                    }
+                    return;
+                }
+                let strider = self.strider.unwrap();
+                self.body = Some(strider);
+                self.log = state.log.len();
+                let current = state.encounter.as_ref().and_then(|e| e.current()).map(|t| u64::from(t.token));
+                let clicked = if !started {
+                    self.painted.button(ctx, "vtt.pf2e-start-encounter", None)
+                } else if current != Some(strider) {
+                    self.painted.button(ctx, "vtt.pf2e-end-turn", current)
+                } else {
+                    let offered: Vec<String> = ctx.runner.state().vtt_projections.iter().find(|p| p.id == SHEETS)
+                        .into_iter().flat_map(|p| p.cards.iter())
+                        .filter(|c| c.values.iter().any(|v| v.label == "Native body" && v.value == strider.to_string()))
+                        .flat_map(|c| c.actions.iter().map(|a| a.id.clone()))
+                        .filter(|id| id.starts_with("vtt.pf2e-stride-")).collect();
+                    let pick = offered.iter().find(|id| id.starts_with("vtt.pf2e-stride-20")).or(offered.first()).cloned();
+                    pick.is_some_and(|id| self.painted.button(ctx, &id, Some(strider)))
+                };
+                if clicked {
+                    self.waiting = true;
+                }
+            },
             Phase::Select if self.play => {
                 if self.painted.tab(ctx, SHEETS) {
                     self.phase = Phase::Play(0);
@@ -159,7 +205,7 @@ impl PathfinderSelftest {
                 let id = isocosm_native::ruleset::token(self.body.unwrap()).unwrap();
                 eprintln!(
                     "[pf2e-selftest] PASS mode={} body={} choices={} sheet={} hp={:?} accepted_records={} durable_replay=exact; last={:?}",
-                    if self.play { "play" } else if self.finished { "finished" } else { "draft" },
+                    if self.strider.is_some() { "stride" } else if self.play { "play" } else if self.finished { "finished" } else { "draft" },
                     self.body.unwrap(),
                     state.drafts[&id].choices.len(),
                     state.sheets.contains_key(&id),
@@ -171,13 +217,14 @@ impl PathfinderSelftest {
             },
             Phase::Capture(frames) => {
                 if frames == 0 {
-                    let wanted = if self.play { "Condition: " } else if self.finished { "Hit Points: " } else { "Next decision: " };
+                    let wanted = if self.strider.is_some() { "This turn: 2 actions" } else if self.play { "Condition: " } else if self.finished { "Hit Points: " } else { "Next decision: " };
                     let node = {
                         let dom = ctx.runner.dom();
                         let dom = dom.borrow();
                         dom.all_with_class(dom.document(), "vtt-value").into_iter().find(|node| {
                             dom.dom_children(*node).filter_map(|child| dom.text(child))
                                 .collect::<String>().starts_with(wanted)
+
                         })
                     };
                     if let Some(node) = node {

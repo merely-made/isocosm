@@ -74,7 +74,8 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                 let targets:Vec<u64>=visible.iter().copied().filter(|t|*t!=id && map.sheet(ruleset::token(*t).unwrap()).is_some_and(|s|s.int("dead").unwrap_or(0)==0)
                     && native.population.get(id).and_then(|b|b.resident_site()).is_some_and(|site|native.population.get(*t).and_then(|b|b.resident_site())==Some(site))
                     && (state.cells_per_square.is_none() || ruleset::measured_reach(&state,session,sections,access,id,*t).is_ok())).collect();
-                let seat=super::sheets_pf2e::Seat{control:can_control,gm:dm,alive,measured:state.cells_per_square.is_some(),targets};
+                let strides=if can_control {super::sheets_pf2e::strides(&state,session,sections,id,tid,dm)} else {Vec::new()};
+                let seat=super::sheets_pf2e::Seat{control:can_control,gm:dm,alive,measured:state.cells_per_square.is_some(),targets,strides};
                 super::sheets_pf2e::body(&mut built,&state,&map,id,tid,&title,&seat)?;
                 continue;
             }

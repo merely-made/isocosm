@@ -171,7 +171,9 @@ pub(super) fn run(w: &mut Walk<'_>) -> Result<(), Stop> {
     // Starting gear, one purchase at a time.
     for n in 0.. {
         let mut options = vec![Opt { value: "done".into(), label: "Stop buying".into(), refused: None,
-            summary: format!("Keep {} as coins.", money(w.build.coins)) }];
+            summary: format!("Keep {} as coins.", money(w.build.coins)) },
+            Opt { value: "class-kit".into(), label: "Take a class kit".into(), summary: String::new(),
+                refused: Some("no ORC Remaster record of the class kits exists to check them against (case 1042)".into()) }];
         options.extend(r.items.values().map(|i| Opt {
             value: i.id.clone(), label: format!("{} ({})", i.name, money(i.price)), summary: i.summary.clone(),
             refused: if i.price > w.build.coins {

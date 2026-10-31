@@ -34,6 +34,38 @@ pub(crate) struct Seat {
     pub measured: bool,
     /// Bodies with living Pathfinder sheets this one could Strike.
     pub targets: Vec<u64>,
+    /// Stride destinations: label, native cell, and whether a GM rules it.
+    pub strides: Vec<(String, [i64; 3], bool)>,
+}
+
+/// Stride destinations for an admitted, placed character: the four
+/// compass directions, one square and full Speed, measured at the table's
+/// scale; with no scale, steps a GM seat may rule.
+pub(crate) fn strides(state: &State, session: &cosmograph::Session, sections: &std::collections::BTreeMap<String, Vec<u8>>,
+    id: u64, token: TokenId, gm: bool) -> Vec<(String, [i64; 3], bool)> {
+    let Ok(from) = play::position(sections, id) else { return Vec::new() };
+    let Ok(start) = from.current(session) else { return Vec::new() };
+    let Some(build) = state.drafts.get(&token).and_then(|d| d.finished(records::builtin()).ok()) else { return Vec::new() };
+    let feet = play::speed(&build, &play::gear(state, token));
+    let (steps, ruled): (Vec<(i64, String)>, bool) = match state.cells_per_square {
+        Some(scale) => ([1, feet / 5].iter().map(|k| (k * i64::from(scale), format!("{} feet", k * 5))).collect(), false),
+        None if gm => ([1, 4].iter().map(|k| (*k, format!("{k} cells"))).collect(), true),
+        None => return Vec::new(),
+    };
+    let Some(ground) = play::ground(session, &from) else { return Vec::new() };
+    let mut out = Vec::new();
+    for (name, dx, dz) in [("east", 1, 0), ("west", -1, 0), ("south", 0, 1), ("north", 0, -1)] {
+        for (cells, distance) in &steps {
+            let Some(at) = ground.landing(start[0] + dx * cells, start[2] + dz * cells) else { continue };
+            if let Some(scale) = state.cells_per_square {
+                if play::squares(start, at, scale) * 5 > feet as u64 {
+                    continue;
+                }
+            }
+            out.push((format!("{distance} {name}"), at, ruled));
+        }
+    }
+    out
 }
 
 /// The card for one native body: start, draft or finished sheet.
@@ -165,6 +197,11 @@ fn actions(choices: &mut Choices, state: &State, id: u64, token: TokenId, build:
             };
             choices.push((intent, label,
                 "One action: an attack roll against Armor Class, with the multiple attack penalty after the first.".into(), act));
+        }
+        for (label, at, ruled) in &seat.strides {
+            let act = if *ruled { Action::RuleStride { actor: id, to: *at } } else { Action::Stride { actor: id, to: *at } };
+            choices.push((format!("vtt.pf2e-stride-{}", label.replace(' ', "-")), format!("Stride {label}"),
+                format!("One action: move to native cell {at:?}, within Speed."), act));
         }
         if play::gear(state, token).shield.is_some() {
             choices.push(("vtt.pf2e-raise-shield".into(), "Raise a Shield".into(),
