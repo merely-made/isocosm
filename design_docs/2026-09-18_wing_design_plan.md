@@ -11317,6 +11317,19 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Host and network · draws on 1036, host.2, record.4, processes.6, naming.3 · summary A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched.
 
+1039. **Runtime and stored names follow the rename, with a version bump.**
+      Ruled by Mark on 2026-10-31 (Mark: "Rename both", "Rename with a
+      version bump"), offered against keeping them. The reading: the VTT's
+      `ISOMETRY_*` variables become `ISOCOSM_*` and the sim's `ISOCOSM_*`
+      become `COSMOGRAPH_*`, captures and log tags following, old harness
+      scripts kept as history; the persisted and wire identifiers that still
+      say isometry (chronicle vessel, store slots, seed domains, effect keys,
+      schema ids, the session ALPN, the pack manifest file, the preferences
+      directory) are renamed together under one version bump, old saves read
+      through a one-time migration.
+
+      Links: area Naming · draws on 1036, 1037, schema.9 · summary Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

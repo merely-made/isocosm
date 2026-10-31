@@ -5129,6 +5129,13 @@ area = "Host and network"
 summary = "A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched."
 draws_on = ["1036", "host.2", "naming.3", "processes.6", "record.4"]
 
+[cases."1039"]
+title = "Runtime and stored names follow the rename, with a version bump"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration."
+draws_on = ["1036", "1037", "schema.9"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
