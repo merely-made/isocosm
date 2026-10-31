@@ -24,8 +24,11 @@ pub use projection::{
     Lighting, Perceived, WeaponChange, perceive, project_sheet, visible_tiles, weapon,
 };
 
-const KEY: &str = "isometry:active-effects";
-pub const VERSION: u32 = 1;
+const KEY: &str = "isocosm:active-effects";
+/// Version 1 lived under this key; it reads once and moves on the next store.
+const OLD_KEY: &str = "isometry:active-effects";
+/// 2 moved the key from `isometry:` to `isocosm:` (case 1040).
+pub const VERSION: u32 = 2;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -138,14 +141,19 @@ impl Records {
         cosmograph::digest(self)
     }
     pub fn read(map: &MapDocument) -> Result<Option<Self>, String> {
-        let Some(value) = map.system_data.get(KEY) else {
-            return Ok(None);
+        let (value, old) = match (map.system_data.get(KEY), map.system_data.get(OLD_KEY)) {
+            (Some(value), _) => (value, false),
+            (None, Some(value)) => (value, true),
+            (None, None) => return Ok(None),
         };
         let text = value
             .as_text()
             .ok_or("active effect state is not encoded text")?;
-        let records: Self =
+        let mut records: Self =
             serde_json::from_str(text).map_err(|e| format!("active effect state: {e}"))?;
+        if old && records.version == 1 {
+            records.version = VERSION;
+        }
         records.validate()?;
         Ok(Some(records))
     }
@@ -227,6 +235,7 @@ impl Records {
             KEY.into(),
             FieldValue::Text(serde_json::to_string(self).map_err(|e| e.to_string())?),
         );
+        map.system_data.remove(OLD_KEY);
         Ok(())
     }
 }

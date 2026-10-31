@@ -7,7 +7,7 @@ use std::{
 
 const HOLDER: &str = "PACK_AUTHOR_LEASE_HOLDER";
 fn lock(f: &Fixture) -> PathBuf {
-    f.0.join(".isometry-pack.toml.author.lock")
+    f.0.join(".isocosm-pack.toml.author.lock")
 }
 // Re-run this test binary as a saver that stops after syncing its temporary file.
 fn holder(f: &Fixture) -> Child {
@@ -18,7 +18,7 @@ fn holder(f: &Fixture) -> Child {
         .stderr(Stdio::null())
         .spawn()
         .unwrap();
-    let temporary = format!(".isometry-pack.toml.author-{}-", child.id());
+    let temporary = format!(".isocosm-pack.toml.author-{}-", child.id());
     let deadline = Instant::now() + Duration::from_secs(60);
     while !(lock(f).exists()
         && fs::read_dir(&f.0)

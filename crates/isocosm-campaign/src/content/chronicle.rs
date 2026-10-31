@@ -42,7 +42,7 @@ use cosmograph::asserted::{Character, HistoryLine};
 pub const CHRONICLE_SCHEMA: &str = wing_formats::CHRONICLE_SCHEMA;
 
 /// How this campaign names itself when it appends a fact.
-pub const VESSEL: &str = "isometry";
+pub const VESSEL: &str = wing_formats::VTT_VESSEL;
 
 /// The one verb in the wing's shared vocabulary that this campaign writes.
 /// Shared means the payload is a contract, not a convenience: see
@@ -114,8 +114,8 @@ impl Arrival {
     /// newer writer is diagnosed rather than mis-decoded into a creature that
     /// looks plausible and is wrong.
     pub fn read(bytes: &[u8]) -> Result<Self, ChronicleError> {
-        let chronicle: Chronicle =
-            wing_formats::unframe(MAGIC, VERSION, bytes).map_err(chronicle_error)?;
+        // A v0 chronicle is carried forward here (case 1040).
+        let chronicle = wing_formats::read_chronicle(bytes).map_err(chronicle_error)?;
         wing_formats::validate_chronicle(&chronicle).map_err(|_| ChronicleError::Inconsistent)?;
         Ok(Self { chronicle })
     }
@@ -360,9 +360,26 @@ mod tests {
             Arrival::read(&bytes),
             Err(ChronicleError::UnknownVersion {
                 found: 4,
-                expected: 0
+                expected: VERSION
             })
         );
+    }
+
+    #[test]
+    fn a_v0_record_with_our_old_vessel_reads_as_ours() {
+        let mut chronicle = Chronicle::default();
+        chronicle.parts.push(PartOrigin::default());
+        chronicle.deeds.push(Deed {
+            vessel: wing_formats::V0_VTT_VESSEL.into(),
+            verb: "held-the-ford".into(),
+            at: 5,
+            detail: br#"{"id":"h","text":"held"}"#.to_vec(),
+        });
+        let v0 = wing_formats::frame(MAGIC, 0, &chronicle).unwrap();
+        let arrival = Arrival::read(&v0).unwrap();
+        assert_eq!(arrival.history().len(), 1);
+        assert_eq!(arrival.foreign().count(), 0);
+        assert_eq!(wing_formats::peek(MAGIC, &arrival.to_bytes().unwrap()), Ok(VERSION));
     }
 
     #[test]

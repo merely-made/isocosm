@@ -10,7 +10,7 @@
 
 use std::ops::{Deref, DerefMut};
 
-use isometer_core::{WireError, frame, unframe};
+use isometer_core::{WireError, frame};
 use serde::{Deserialize, Serialize};
 pub use wing_formats::{Deed, PartOrigin};
 
@@ -84,7 +84,7 @@ impl Chronicle {
     }
 
     pub fn from_bytes(bytes: &[u8]) -> Result<Self, WireError> {
-        let chronicle: Self = unframe(CHRONICLE_MAGIC, CHRONICLE_VERSION, bytes)?;
+        let chronicle = Self(wing_formats::read_chronicle(bytes)?);
         wing_formats::validate_chronicle(&chronicle.0)?;
         Ok(chronicle)
     }

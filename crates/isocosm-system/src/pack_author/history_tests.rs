@@ -206,7 +206,7 @@ fn measure_history_modes() {
             .collect::<String>()
     );
     let demo = fs::read_to_string(
-        Path::new(env!("CARGO_MANIFEST_DIR")).join("examples/packs/demo/isometry-pack.toml"),
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("examples/packs/demo/isocosm-pack.toml"),
     )
     .unwrap();
     let mut timing = vec![];

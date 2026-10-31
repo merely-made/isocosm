@@ -21,7 +21,7 @@ impl Fixture {
         ));
         fs::create_dir_all(&path).unwrap();
         let source =
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("examples/packs/demo/isometry-pack.toml");
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("examples/packs/demo/isocosm-pack.toml");
         fs::copy(source, path.join(GeneratorPack::MANIFEST_FILE)).unwrap();
         Self(path)
     }
@@ -315,7 +315,7 @@ fn save_conflicts_failures_permissions_and_source_bytes() {
     assert!(save::fail_save(&mut s).is_err());
     assert_eq!(fs::read(&s.path).unwrap(), disk);
     assert_eq!(s.saved_revision, 1);
-    let lock = f.0.join(".isometry-pack.toml.author.lock");
+    let lock = f.0.join(".isocosm-pack.toml.author.lock");
     fs::write(&lock, "another writer").unwrap();
     assert!(s.save(2).is_err());
     fs::remove_file(lock).unwrap();

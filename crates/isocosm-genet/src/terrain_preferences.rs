@@ -18,22 +18,26 @@ pub(crate) struct Preferences {
     attempted: u32,
 }
 
-fn config_path() -> Option<PathBuf> {
+/// The preference file under the app's config directory, named `title` on
+/// Windows and macOS and `lower` elsewhere.
+fn config_path(title: &str, lower: &str) -> Option<PathBuf> {
     #[cfg(target_os = "windows")]
     let root = std::env::var_os("LOCALAPPDATA")
         .map(PathBuf::from)?
         .join("Merely")
-        .join("Isometry");
+        .join(title);
     #[cfg(target_os = "macos")]
     let root = std::env::var_os("HOME")
         .map(PathBuf::from)?
-        .join("Library/Application Support/Isometry");
+        .join("Library/Application Support")
+        .join(title);
     #[cfg(not(any(target_os = "windows", target_os = "macos")))]
     let root = xdg_root(
         std::env::var_os("XDG_CONFIG_HOME").map(PathBuf::from),
         std::env::var_os("HOME").map(PathBuf::from),
     )?
-    .join("isometry");
+    .join(lower);
+    let _ = (title, lower);
     root.is_absolute().then(|| root.join("terrain.json"))
 }
 
@@ -47,8 +51,16 @@ fn xdg_root(xdg: Option<PathBuf>, home: Option<PathBuf>) -> Option<PathBuf> {
 }
 
 impl Preferences {
+    /// The `Isometry` directory is read when `Isocosm` holds no file yet; its
+    /// value is written to the new place and the old file removed (case 1040).
     pub(crate) fn local(ui: &mut isocosm_views::UiState) -> Self {
-        Self::open(config_path(), ui)
+        let path = config_path("Isocosm", "isocosm");
+        if let (Some(new), Some(old)) = (&path, config_path("Isometry", "isometry")) {
+            if let Err(error) = move_old(new, &old) {
+                eprintln!("[isocosm] terrain preference not moved from {}: {error}", old.display());
+            }
+        }
+        Self::open(path, ui)
     }
 
     fn open(path: Option<PathBuf>, ui: &mut isocosm_views::UiState) -> Self {
@@ -68,26 +80,10 @@ impl Preferences {
     }
 
     fn load(&self) -> io::Result<Option<u32>> {
-        let Some(path) = &self.path else {
-            return Ok(None);
-        };
-        let file = match fs::File::open(path) {
-            Ok(file) => file,
-            Err(error) if error.kind() == io::ErrorKind::NotFound => return Ok(None),
-            Err(error) => return Err(error),
-        };
-        let mut bytes = Vec::new();
-        file.take(4097).read_to_end(&mut bytes)?;
-        if bytes.len() > 4096 {
-            return Err(io::Error::other("terrain preference exceeds 4 KiB"));
+        match &self.path {
+            Some(path) => load_from(path),
+            None => Ok(None),
         }
-        let value: FileValue = serde_json::from_slice(&bytes).map_err(io::Error::other)?;
-        if value.version != 1 || value.atlas_budget_mib == 0 {
-            return Err(io::Error::other(
-                "unsupported or invalid terrain preference",
-            ));
-        }
-        Ok(Some(value.atlas_budget_mib))
     }
 
     /// Once per changed request, including a failed attempt. No per-frame I/O
@@ -102,35 +98,76 @@ impl Preferences {
             .path
             .as_ref()
             .ok_or_else(|| io::Error::other("no local config directory"))?;
-        let parent = path
-            .parent()
-            .ok_or_else(|| io::Error::other("no preference parent directory"))?;
-        fs::create_dir_all(parent)?;
-        // Each writer owns its temporary file. Rename replaces the old value
-        // only after the complete new JSON has reached the file.
-        static SERIAL: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
-        let serial = SERIAL.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-        let temporary = path.with_extension(format!("json.{}.{}.tmp", std::process::id(), serial));
-        let mut file = fs::OpenOptions::new()
-            .create_new(true)
-            .write(true)
-            .open(&temporary)?;
-        let result = (|| {
-            let bytes = serde_json::to_vec_pretty(&FileValue {
-                version: 1,
-                atlas_budget_mib: value,
-            })
-            .map_err(io::Error::other)?;
-            file.write_all(&bytes)?;
-            file.sync_all()?;
-            drop(file);
-            fs::rename(&temporary, path)
-        })();
-        if result.is_err() {
-            let _ = fs::remove_file(&temporary);
-        }
-        result
+        write_value(path, value)
     }
+}
+
+/// Moves a readable preference at `old` to an absent `new`; the old file goes
+/// only after the new one is written. A bad old file is left for inspection.
+fn move_old(new: &PathBuf, old: &PathBuf) -> io::Result<()> {
+    if new.exists() {
+        return Ok(());
+    }
+    let Some(value) = load_from(old)? else {
+        return Ok(());
+    };
+    write_value(new, value)?;
+    fs::remove_file(old)?;
+    if let Some(parent) = old.parent() {
+        let _ = fs::remove_dir(parent);
+    }
+    Ok(())
+}
+
+fn load_from(path: &PathBuf) -> io::Result<Option<u32>> {
+    let file = match fs::File::open(path) {
+        Ok(file) => file,
+        Err(error) if error.kind() == io::ErrorKind::NotFound => return Ok(None),
+        Err(error) => return Err(error),
+    };
+    let mut bytes = Vec::new();
+    file.take(4097).read_to_end(&mut bytes)?;
+    if bytes.len() > 4096 {
+        return Err(io::Error::other("terrain preference exceeds 4 KiB"));
+    }
+    let value: FileValue = serde_json::from_slice(&bytes).map_err(io::Error::other)?;
+    if value.version != 1 || value.atlas_budget_mib == 0 {
+        return Err(io::Error::other(
+            "unsupported or invalid terrain preference",
+        ));
+    }
+    Ok(Some(value.atlas_budget_mib))
+}
+
+fn write_value(path: &PathBuf, value: u32) -> io::Result<()> {
+    let parent = path
+        .parent()
+        .ok_or_else(|| io::Error::other("no preference parent directory"))?;
+    fs::create_dir_all(parent)?;
+    // Each writer owns its temporary file. Rename replaces the old value
+    // only after the complete new JSON has reached the file.
+    static SERIAL: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    let serial = SERIAL.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    let temporary = path.with_extension(format!("json.{}.{}.tmp", std::process::id(), serial));
+    let mut file = fs::OpenOptions::new()
+        .create_new(true)
+        .write(true)
+        .open(&temporary)?;
+    let result = (|| {
+        let bytes = serde_json::to_vec_pretty(&FileValue {
+            version: 1,
+            atlas_budget_mib: value,
+        })
+        .map_err(io::Error::other)?;
+        file.write_all(&bytes)?;
+        file.sync_all()?;
+        drop(file);
+        fs::rename(&temporary, path)
+    })();
+    if result.is_err() {
+        let _ = fs::remove_file(&temporary);
+    }
+    result
 }
 
 #[cfg(test)]
@@ -188,6 +225,24 @@ mod tests {
         restarted.terrain_settings.budget_mib = 4;
         restored.save_changed(&restarted).unwrap();
         assert_eq!(restored.load().unwrap(), Some(4), "replace existing file");
+    }
+
+    #[test]
+    fn an_old_preference_moves_once_and_a_bad_one_stays() {
+        let scratch = Scratch::new();
+        let old = scratch.0.join("Isometry").join("terrain.json");
+        let new = scratch.0.join("Isocosm").join("terrain.json");
+        write_value(&old, 32).unwrap();
+        move_old(&new, &old).unwrap();
+        assert_eq!(load_from(&new).unwrap(), Some(32));
+        assert!(!old.exists() && !scratch.0.join("Isometry").exists());
+        write_value(&old, 16).unwrap();
+        move_old(&new, &old).unwrap();
+        assert_eq!(load_from(&new).unwrap(), Some(32), "the new file wins");
+        fs::remove_file(&new).unwrap();
+        fs::write(&old, "not json").unwrap();
+        assert!(move_old(&new, &old).is_err());
+        assert!(old.exists() && !new.exists());
     }
 
     #[test]

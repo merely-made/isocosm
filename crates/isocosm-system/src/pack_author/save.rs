@@ -73,8 +73,15 @@ impl Session {
         }
         check_disk(&self.path, &self.disk_fingerprint)?;
         check_manifest_set(&self.path)?;
-        fs::rename(&temporary, &self.path).map_err(|e| format!("replace manifest: {e}"))?;
+        // An old-named manifest is written under its current name, and the old
+        // file goes only once the new one is in place (case 1040).
+        let target = GeneratorPack::current_manifest_path(&self.path);
+        fs::rename(&temporary, &target).map_err(|e| format!("replace manifest: {e}"))?;
         files.temporary = None;
+        if target != self.path {
+            fs::remove_file(&self.path).map_err(|e| format!("remove old manifest: {e}"))?;
+            self.path = target;
+        }
         self.disk_fingerprint = self.current.fingerprint.clone();
         self.saved_revision = base;
         Ok(
@@ -84,9 +91,7 @@ impl Session {
 }
 fn check_manifest_set(path: &Path) -> Result<(), String> {
     let parent = path.parent().ok_or("manifest has no parent")?;
-    if parent.join(GeneratorPack::MANIFEST_FILE).is_file()
-        && parent.join(GeneratorPack::MANIFEST_FILE_JSON).is_file()
-    {
+    if GeneratorPack::manifest_count(parent) > 1 {
         return Err("both TOML and JSON manifests are present; reopen explicitly".into());
     }
     Ok(())

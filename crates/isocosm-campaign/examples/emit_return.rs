@@ -11,8 +11,8 @@
 //! cargo run -p isocosm-campaign --example emit_return
 //! ```
 //!
-//! then copy `fixtures/returned.chronicle` into mesocosm's
-//! `crates/mesocosm-core/fixtures/`.
+//! then copy `fixtures/campaign/returned.chronicle` into
+//! `shared/cosmograph/fixtures/campaign/` and `shared/cosmograph/fixtures/mesocosm/`.
 
 use std::{fs, path::PathBuf};
 

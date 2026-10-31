@@ -12,8 +12,12 @@ use isonetry::GameSnapshot;
 use muniment::{Journal, JsonSlots, RedbBackend};
 use serde::{Deserialize, Serialize};
 
-const PRIVATE_CAMPAIGN_SLOT: &str = "isometry/campaign/private";
-const CAMPAIGN_CHECKPOINT_SLOT: &str = "isometry/campaign/checkpoint";
+const PRIVATE_CAMPAIGN_SLOT: &str = "isocosm/campaign/private";
+const CAMPAIGN_CHECKPOINT_SLOT: &str = "isocosm/campaign/checkpoint";
+/// The slots' names before format 3 (case 1040): read when the new slot is
+/// empty, written forward, then deleted.
+const OLD_PRIVATE_CAMPAIGN_SLOT: &str = "isometry/campaign/private";
+const OLD_CAMPAIGN_CHECKPOINT_SLOT: &str = "isometry/campaign/checkpoint";
 
 /// The durable campaign boundary: shared state plus GM-private state in one
 /// store transaction. `format` gives future migrations an explicit switch.
@@ -31,7 +35,8 @@ pub struct CampaignCheckpoint {
 }
 
 impl CampaignCheckpoint {
-    pub const FORMAT: u32 = 2;
+    /// 3 moved the slots from `isometry/` to `isocosm/` (case 1040).
+    pub const FORMAT: u32 = 3;
 
     pub fn new(
         public: GameSnapshot,
@@ -74,8 +79,9 @@ impl CampaignRepository {
 
     pub fn load_checkpoint(&self) -> Result<Option<CampaignCheckpoint>, String> {
         let checkpoint: Option<CampaignCheckpoint> =
-            pollster::block_on(self.slots.load(CAMPAIGN_CHECKPOINT_SLOT))
-                .map_err(|error| error.to_string())?;
+            self.load_moving(CAMPAIGN_CHECKPOINT_SLOT, OLD_CAMPAIGN_CHECKPOINT_SLOT, |old: &mut CampaignCheckpoint| {
+                old.format = CampaignCheckpoint::FORMAT;
+            })?;
         match checkpoint {
             Some(checkpoint) if (1..=CampaignCheckpoint::FORMAT).contains(&checkpoint.format) => {
                 Ok(Some(checkpoint))
@@ -91,9 +97,29 @@ impl CampaignRepository {
     /// Legacy private-state slot. Existing W0a sidecars load through this while
     /// the public JSON map remains their source of truth.
     pub fn load_private(&self) -> Result<CampaignStore, String> {
-        pollster::block_on(self.slots.load(PRIVATE_CAMPAIGN_SLOT))
-            .map_err(|error| error.to_string())
+        self.load_moving(PRIVATE_CAMPAIGN_SLOT, OLD_PRIVATE_CAMPAIGN_SLOT, |_| {})
             .map(|campaign| campaign.unwrap_or_default())
+    }
+
+    /// Reads `slot`, or else the pre-format-3 `old` slot. An old value is
+    /// written to `slot` and the old slot deleted only after that write lands.
+    fn load_moving<T: Serialize + serde::de::DeserializeOwned>(
+        &self,
+        slot: &str,
+        old: &str,
+        upgrade: impl FnOnce(&mut T),
+    ) -> Result<Option<T>, String> {
+        let error = |error: muniment::StoreError| error.to_string();
+        if let Some(value) = pollster::block_on(self.slots.load(slot)).map_err(error)? {
+            return Ok(Some(value));
+        }
+        let Some(mut value) = pollster::block_on(self.slots.load::<T>(old)).map_err(error)? else {
+            return Ok(None);
+        };
+        upgrade(&mut value);
+        pollster::block_on(self.slots.save(slot, &value)).map_err(error)?;
+        pollster::block_on(self.slots.delete(old)).map_err(error)?;
+        Ok(Some(value))
     }
 }
 
@@ -205,7 +231,20 @@ mod tests {
             .unwrap()
             .load_checkpoint()
             .unwrap();
-        assert_eq!(restored, Some(checkpoint));
+        assert_eq!(restored, Some(checkpoint.clone()));
+
+        // A format-2 save under the old slot name reads once, moves, and is
+        // stamped format 3; the old slot is gone afterwards (case 1040).
+        let repository = CampaignRepository::open(&path).unwrap();
+        let mut old = checkpoint.clone();
+        old.format = 2;
+        pollster::block_on(repository.slots.delete(CAMPAIGN_CHECKPOINT_SLOT)).unwrap();
+        pollster::block_on(repository.slots.save(OLD_CAMPAIGN_CHECKPOINT_SLOT, &old)).unwrap();
+        assert_eq!(repository.load_checkpoint().unwrap(), Some(checkpoint));
+        let gone: Option<CampaignCheckpoint> =
+            pollster::block_on(repository.slots.load(OLD_CAMPAIGN_CHECKPOINT_SLOT)).unwrap();
+        assert!(gone.is_none());
+        drop(repository);
 
         std::fs::remove_file(path).unwrap();
     }

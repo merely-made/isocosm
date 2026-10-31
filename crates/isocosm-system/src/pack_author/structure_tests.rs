@@ -224,3 +224,18 @@ fn unprovable_or_invalid_structural_edits_refuse_without_publication() {
             .contains("complete TOML")
     );
 }
+
+#[test]
+fn an_old_named_manifest_is_saved_under_the_current_name() {
+    let f = Fixture::new();
+    let [old_toml, _] = GeneratorPack::OLD_MANIFEST_FILES;
+    fs::rename(f.0.join(GeneratorPack::MANIFEST_FILE), f.0.join(old_toml)).unwrap();
+    let mut s = f.session();
+    replace(&mut s, "Demo Generator Pack", "Moved pack");
+    s.save(2).unwrap();
+    assert!(!f.0.join(old_toml).exists());
+    let text = fs::read_to_string(f.0.join(GeneratorPack::MANIFEST_FILE)).unwrap();
+    assert!(text.contains("Moved pack"));
+    fs::copy(f.0.join(GeneratorPack::MANIFEST_FILE), f.0.join(old_toml)).unwrap();
+    assert!(Session::open(&f.0, 32).is_err(), "an old and a current manifest together are refused");
+}

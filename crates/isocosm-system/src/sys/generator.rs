@@ -136,16 +136,42 @@ impl GeneratorCatalog {
 
 impl GeneratorPack {
     /// The manifest as authored (wing design record, ruling 624).
-    pub const MANIFEST_FILE: &'static str = "isometry-pack.toml";
+    pub const MANIFEST_FILE: &'static str = "isocosm-pack.toml";
     /// The manifest's JSON name, still read when no TOML manifest is present.
-    pub const MANIFEST_FILE_JSON: &'static str = "isometry-pack.json";
+    pub const MANIFEST_FILE_JSON: &'static str = "isocosm-pack.json";
+    /// The names before case 1040, read when no current one is present and
+    /// renamed by pack-author's next save.
+    pub const OLD_MANIFEST_FILES: [&'static str; 2] = ["isometry-pack.toml", "isometry-pack.json"];
 
-    /// The manifest at `root`: the TOML name first, then the JSON one.
+    fn manifest_names() -> [&'static str; 4] {
+        let [old_toml, old_json] = Self::OLD_MANIFEST_FILES;
+        [Self::MANIFEST_FILE, Self::MANIFEST_FILE_JSON, old_toml, old_json]
+    }
+
+    /// The manifest at `root`: TOML before JSON, current names before old.
     pub fn manifest_path(root: &Path) -> Option<PathBuf> {
-        [Self::MANIFEST_FILE, Self::MANIFEST_FILE_JSON]
+        Self::manifest_names()
             .into_iter()
             .map(|name| root.join(name))
             .find(|path| path.is_file())
+    }
+
+    /// How many manifests `root` holds under any name; a pack has one.
+    pub fn manifest_count(root: &Path) -> usize {
+        Self::manifest_names()
+            .into_iter()
+            .filter(|name| root.join(name).is_file())
+            .count()
+    }
+
+    /// Where a manifest at `path` is written: an old name maps to its current one.
+    pub fn current_manifest_path(path: &Path) -> PathBuf {
+        let name = path.file_name().and_then(|name| name.to_str());
+        match name {
+            Some(name) if name == Self::OLD_MANIFEST_FILES[0] => path.with_file_name(Self::MANIFEST_FILE),
+            Some(name) if name == Self::OLD_MANIFEST_FILES[1] => path.with_file_name(Self::MANIFEST_FILE_JSON),
+            _ => path.to_path_buf(),
+        }
     }
 
     /// Load a pack directory and validate its manifest before any generator
@@ -156,10 +182,9 @@ impl GeneratorPack {
             .as_ref()
             .canonicalize()
             .map_err(|error| format!("open content-pack root: {error}"))?;
-        if root.join(Self::MANIFEST_FILE).is_file() && root.join(Self::MANIFEST_FILE_JSON).is_file()
-        {
+        if Self::manifest_count(&root) > 1 {
             return Err(format!(
-                "{} holds both {} and {}; a pack has one manifest",
+                "{} holds more than one of {} and {} (or their old names); a pack has one manifest",
                 root.display(),
                 Self::MANIFEST_FILE,
                 Self::MANIFEST_FILE_JSON

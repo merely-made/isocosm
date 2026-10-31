@@ -135,9 +135,7 @@ impl Session {
         let root = root
             .canonicalize()
             .map_err(|e| format!("open pack root: {e}"))?;
-        if root.join(GeneratorPack::MANIFEST_FILE).is_file()
-            && root.join(GeneratorPack::MANIFEST_FILE_JSON).is_file()
-        {
+        if GeneratorPack::manifest_count(&root) > 1 {
             return Err("a pack has one manifest; both TOML and JSON are present".into());
         }
         let path = GeneratorPack::manifest_path(&root).ok_or("no content-pack manifest")?;
