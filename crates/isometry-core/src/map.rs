@@ -117,7 +117,8 @@ pub struct MapDocument {
     pub stances: BTreeMap<TokenId, String>,
     /// Versioned game-owned state beside the sheets. The substrate stores it
     /// without interpreting it; system plugins own its schema and changes.
-    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    /// Always written: postcard snapshots cannot skip a field.
+    #[serde(default)]
     pub system_data: BTreeMap<String, FieldValue>,
 }
 

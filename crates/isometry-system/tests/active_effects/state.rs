@@ -3,8 +3,9 @@ use super::super::*;
 #[test]
 fn old_map_json_is_unchanged_and_unsupported_or_tampered_state_is_refused() {
     let map = MapDocument::new("legacy", 2, 2);
-    let value = serde_json::to_value(&map).unwrap();
-    assert!(value.get("system_data").is_none());
+    let mut value = serde_json::to_value(&map).unwrap();
+    // A save from before the field existed still loads.
+    value.as_object_mut().unwrap().remove("system_data");
     assert_eq!(serde_json::from_value::<MapDocument>(value).unwrap(), map);
     let mut scene = Scene::new(Edition::Dnd5, 73);
     let request = scene.request("dnd5:darkvision", "state");
