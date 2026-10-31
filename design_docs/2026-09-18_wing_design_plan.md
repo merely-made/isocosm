@@ -11485,6 +11485,11 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       sites are two distinct crossings.
 
       Links: area World generation · draws on world.6, processes.16 · summary A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings.
+      *Built how* (Mark, 2026-10-31: "A: full directional travel", offered
+      against directional arrival alone and one crossing per pair): travel
+      acts name the route they take and a journey records its border,
+      behind a new movement version so older saves replay unchanged; both
+      of a torus's routes are travellable.
 
 1045. **A shared mechanism moves when its second consumer is planned, not
       when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
