@@ -97,7 +97,7 @@ Cambium controls connected to the logged window-attention command, using the cur
 - 2026-10-31 (H9): `Session` keeps no restorable past state (`checkpoints` are witnesses, `history.rs:31-34`), so a scrub replays from genesis: `fork_at(20)` took 0.96 s against 1.85 s to advance 50 ticks on the 12-site world in a debug build, and a `Session` clone took 0.27 ms. The viewer's timeline therefore keeps one clone per tick it steps and replays only ticks it never kept.
 
 - 2026-10-31 (H9): the board places cards at the endpoint's spiral slots and fits the spiral into the viewport, so a card's drawn width falls as the graph grows: about 70 px at 17 cards and narrower at 40, where titles such as "Site 10" and a closed site's "+N" are cut off (captures in `Code/testing/isocosm/world-graph-viewer/2026-10-31-run2/`). The board's physics does not pull related cards together, so the layout is the score's, not a force layout.
-- 2026-10-31 (H9): `cosmograph-host` pins mere by absolute path to the `remote-board-to-stack` worktree (`20314ca6`) and carries mere's root patch tables with absolute paths, until that branch lands; the endpoint's existing mere crates moved with it from `b232631f`.
+- 2026-10-31 (H9): `cosmograph-host` pins mere at `79837737` (the landed merge of the remote board's move) and carries mere's root patch tables at that rev; the endpoint's existing mere crates moved with it from `b232631f`.
 
 ## Progress
 - 2026-10-28: cut from `2026-10-14_sim_host_plan.md` and `2026-09-15_isomere_plan.md`.
