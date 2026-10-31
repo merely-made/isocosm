@@ -11593,6 +11593,24 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Directing and play · draws on 60, 671, 1053, 1055 · summary A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture.
 
+1058. **A third of a parent's delta passes at birth; a lineage is sapient
+      from half its adults until under a third.** Ruled by Mark on
+      2026-10-31, setting the world rules 1053 and 1055 left open: "So what
+      do you think on the numbers? Instinctively, I think one third or one
+      half. And for what share of members makes a lineage sapient? Again,
+      one third or one half sounds about right." Put back with a
+      recommendation for each, Mark chose "A third (Recommended)" and "Half
+      in, a third out (Recommended)". The reading: each parent passes a third
+      of its learned delta at birth, so two parents pass at most two thirds,
+      teaching keeps the larger part, and an unrenewed lesson fades to a
+      ninth in two generations. A lineage is read at the epoch boundary, over
+      its adults only: it becomes sapient once half have passed and stays so
+      until fewer than a third have, so a die-off or a baby boom does not
+      flip it, while young who grow up untaught and fail can. Both are world
+      rules; these are their defaults.
+
+      Links: area Directing and play · draws on 1053, 1055, ecology.1 · summary A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

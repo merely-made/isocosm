@@ -335,19 +335,23 @@ exact agreement is a world setting, statistical the default. The aggregate
 runs a population model per site and lineage (counts by age band and
 condition, its matter, births, deaths, meals, upkeep and moves as rates),
 calling the individual runner's own meanings; an attended group runs its
-noted members exactly; a parent and its unweaned young run as individuals.
-The crowd's own chooser covers autonomous territories only. Lifting samples
-individuals from an aggregate by seed, conditioned on every asserted fact;
-restriction conserves the accounts back. A process is declarative enough for
-its aggregate to derive from its one definition, so scripted hooks run only in
-the foreground.
+noted members exactly; a parent with its unweaned young, and a member with a
+live learned delta, run as individuals. The crowd's own chooser covers
+un-nudged territories only, running a band's lineage policy once for all its
+members; a rate distilled from that policy serves a lineage no player has met
+only where measured to save. Lifting samples individuals from an aggregate by
+seed, conditioned on every asserted fact; restriction conserves the accounts
+back. A process is declarative enough for its aggregate to derive from its
+one definition, so scripted hooks run only in the foreground.
 
-*Not yet built:* the population model (the execution plan's E4).
+*Not yet built:* the population model and its bands' policies (the execution
+plan's E4).
 
-Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999, sim-execution D2, sim-execution D24 · summary The noted run as individuals; the fungible agree in distribution; outside the rendered area a population model per site and lineage.
+Links: draws on 75, 113, 207, 208, 209, 211, 219, 261, 266, 307, 317, 439, 440, 507, 554, 881, 999, 1052, sim-execution D2, sim-execution D24 · summary The noted run as individuals; the fungible agree in distribution; outside the rendered area a population model per site and lineage, its bands running their lineage's policy.
 
-*Refined 2026-10-28 from the execution plan's D24 ("Population model
-(Recommended)"), after a measure of about 1.2 members per exact state.*
+*Refined 2026-10-31 from case 1052 (Mark: "1 seems reasonable, just looking
+for resource savings. Maybe it wouldn't save much"), drafted without a card
+round at his word: "For the doctrine statements, you can rewrite".*
 
 ### Processes 7. Time
 
@@ -500,13 +504,22 @@ Links: draws on 94, 95, 132, 141, 142, 143, 173, schema.6, 1005, 1006, 1012 · s
 Tongues and cultures descend like lineages, dialects splitting when speakers
 part. Names come from the tongue, from tales and from the namer. Culture
 spreads by contact, prestige and imposition, and drifts apart out of touch
-(Schema 7).
+(Schema 7). Learned behaviour moves the same way, by named mechanisms with
+costs: the young imitate nearby kin's learned deltas, weighted by those kin's
+success, and the epoch boundary adopts into the lineage policy what spread;
+teaching is an act of social or sapient lineages that costs time and matter,
+fastest from parent to young; and each parent passes a third of its delta at
+birth, a world rule. Kin share a base policy, so their deltas transfer
+directly; across lineages only acts can be imitated, slower and lossier.
 
 *Not yet built.*
 
-Links: draws on 167, 168, 169, schema.7 · summary Tongues and cultures descend like lineages; names come from tongue, tales and namer; culture spreads by contact, prestige, imposition.
+Links: draws on 167, 168, 169, schema.7, 1053, 1058 · summary Tongues and cultures descend like lineages; names come from tongue, tales and namer; culture and learned behaviour spread by contact, prestige (imitating the successful), teaching and imposition.
 
-*Reviewed 2026-10-22, new. Mark: "Split: making, culture".*
+*Refined 2026-10-31 from cases 1053 and 1058 (Mark: "Imitating the
+successful (Recommended), Teaching as an act, Parent to young should
+accelerate teaching"; "A third (Recommended)"), drafted without a card round
+at his word: "For the doctrine statements, you can rewrite".*
 
 ### Processes 15. Matter moves by declared processes
 
@@ -1338,34 +1351,55 @@ Links: draws on 6, 35 · summary Each game foregrounds one rung of the agent lad
 
 A non-sapient critter acts by its own methodology and the player shapes it;
 a sophont is driven, and directing composes on top as directives through it,
-weighed by opinion. One native `Take` takes up either kind of life. Outside
-the world a player directs only who they play; two players may direct one
-entity, which weighs them by opinion. A creature's senses are its own, but it
-suggests what it perceives, so play is not blinded by them.
+weighed by opinion. Sapience is measured from behaviour, never declared: a
+creature passes by following a direction it was never given, by taking up an
+act it watched without reward, or by using one thing on another, and any
+creature that passes may be driven. A lineage is read at the epoch boundary,
+over its adults: sapient once half have passed, until fewer than a third
+have (world rules). A driven creature learns from its player by imitation
+wherever driving is, and passes it on as culture (Processes 14). One native
+`Take` takes up either kind of life. Outside the world a player directs only
+who they play; two players may direct one entity, which weighs them by
+opinion. A creature's senses are its own, but it suggests what it perceives,
+so play is not blinded by them.
 
-Links: draws on 59, 60, 152, 153, 671, 679, 779 · summary Non-sapient critters are directed, sophonts driven; a player directs only who they play; co-op direction is weighed by opinion.
+*Not yet built:* the sapience measure, a lineage's reading, learning from the
+player.
 
-*Reviewed 2026-10-22, new. Mark: "All as drafted".*
+Links: draws on 59, 60, 152, 153, 671, 679, 779, 1055, 1056, 1058 · summary Non-sapient critters are directed, sophonts driven; sapience is measured, for a creature and for a lineage; a driven creature learns from its player; a player directs only who they play.
+
+*Refined 2026-10-31 from cases 1055, 1056 and 1058 (Mark: "Novel directions
+(Recommended), Imitation (Recommended), Tool use"; "Both (Recommended)";
+"Wherever driving is (Recommended)"; "Half in, a third out (Recommended)"),
+drafted without a card round at his word: "For the doctrine statements, you
+can rewrite".*
 
 ### Directing 4. The chooser and the bond
 
 A deliberative critter chooses one Choice process a tick, weighing needs,
 mood, nudges and its bond; an empty choice may be reconsidered once at a later
-pass start. A nudge enters the sim as a logged native command the runtime
-translates. Each player's bond is its own weighted relation from a placeless
-participant entity to the critter. Standing orders are derived from logged
-nudges and their outcomes (desire paths). A suggestion is derived from the
-chooser's own record of what it weighed and what the critter knows; nothing
-new is kept. An approved journey gives a directed critter a travel goal it
-follows when its own choice allows; the bond suffices.
+pass start. Every lineage whose members choose carries a small integer
+recurrent policy that scores the offered processes from those terms (needs
+scaled by the lineage's drives, mood, each nudge by its bond, what it senses)
+and its own state, each member learning its own delta on it; non-choosers grow
+by a developmental grammar, and a world without policies keeps the
+hand-written score. The policy proposes among the acts the body and the world
+admit; the resolvers dispose. A nudge enters the sim as a logged native
+command the runtime translates. Each player's bond is its own weighted
+relation from a placeless participant entity to the critter. Standing orders
+are derived from logged nudges and their outcomes (desire paths). A suggestion
+is derived from the chooser's own record of what it weighed and what the
+critter knows; nothing new is kept. An approved journey gives a directed
+critter a travel goal it follows when its own choice allows; the bond
+suffices.
 
-Links: draws on 683, 685, 686, 688, 690, 813, 861, 862, sim-execution D6 · summary One choice a tick weighing needs, mood, nudges and bond; bonds are weighted relations; suggestions and standing orders are derived.
+*Not yet built:* lineage policies and members' learned deltas.
 
-*Reviewed 2026-10-22, new. 685 named `Receipt.foregone` as a suggestion's
-source; the product reads the chooser's live consideration instead
-(`readings::suggestions` calls `sim.consider`), so sim-execution D6 cannot
-break suggestions. Mark: "Say it neutrally", and the statement names neither
-mechanism.*
+Links: draws on 683, 685, 686, 688, 690, 813, 861, 862, 1051, sim-execution D6 · summary One choice a tick weighing needs, mood, nudges and bond, scored by a lineage's policy and each member's delta; bonds are weighted relations; suggestions and standing orders are derived.
+
+*Refined 2026-10-31 from case 1051 (Mark: "Terms as inputs (Recommended)",
+"Deliberative fauna (Recommended)"), drafted without a card round at his
+word: "For the doctrine statements, you can rewrite".*
 
 ### Directing 5. Attention
 
@@ -1767,15 +1801,20 @@ Links: draws on 923, 924, 959, 960, 962, record.1 · summary isonetry is the fam
 
 The player plays a critter of its lineage, and how the rest of the lineage
 relates depends on its traits: competitors, a cohort, or extensions of one
-organism (a fungal monocreature, a swarm). Mesocosm is directed, never driven
-(Directing 3). At a birth the player keeps the parent by default and may take
+organism (a fungal monocreature, a swarm). Mesocosm directs its critter, and
+drives one only once it is sapient (Directing 3). At a birth the player keeps the parent by default and may take
 the offspring, reversibly. Speciating (splitting the line and naming it; "the
 name is the doing") is the player's act; expressing a candidate is the
 critter's own development.
 
-Links: draws on 155, 175, 183, 202, 682 · summary The player plays a critter whose lineage relates by its traits; keeps the parent at a birth; speciating is the player's act.
+Links: draws on 155, 175, 183, 202, 671, 682, 1056 · summary The player plays a critter whose lineage relates by its traits, directed until it is sapient; keeps the parent at a birth; speciating is the player's act.
 
-*Reviewed 2026-10-22, new. Mark: "Both as drafted".*
+*Refined 2026-10-31 from case 1056 ("in Mesocosm once a lineage is
+sapient") and Mark's words that day: "for direct control, you have to be
+able to embody the creature, which requires that they be sapient, so if you
+develop your lineage to sapience you get a real advantage in interacting with
+the world in the roguelike's rounds"; drafted without a card round at his
+word: "For the doctrine statements, you can rewrite".*
 
 ### Mesocosm 2. The only directive is a nudge
 
@@ -1784,12 +1823,21 @@ thing, which it answers by its own lights, weighed by its bond; a right click
 shows a ring of its possible acts toward the target. No gesture warns:
 avoidance comes from experience and stance. Priorities, ranges, homes and
 stances grow from where attention keeps leading. The bond grows from how well
-the nudges served the critter; whether it carries to the next generation is a
-world setting (fresh, seeded, whole), seeded by default.
+the nudges served the critter, and under it the critter keeps trust per kind
+of direction (a place to range, a thing to approach, an act toward a target,
+keyed also by the target's lineage), learned from how following it turned out
+against what it expected: trusted kinds are taken faster, distrusted ones
+hesitated over and then refused, and trust fades as memory does. Whether bond
+and trust carry to the next generation is a world setting (fresh, seeded,
+whole), seeded by default.
 
-Links: draws on 176, 177, 178, 205, 214, 215, 216, 228 · summary The only directive is a nudge by click; standing orders grow from attention; the bond carries by world setting.
+*Not yet built:* trust per kind of direction.
 
-*Reviewed 2026-10-22, new. Mark: "Both as drafted".*
+Links: draws on 176, 177, 178, 205, 214, 215, 216, 228, 1054 · summary The only directive is a nudge by click; standing orders grow from attention; trust is kept per kind of direction; bond and trust carry by world setting.
+
+*Refined 2026-10-31 from case 1054 (Mark: "Per kind of direction
+(Recommended)"), drafted without a card round at his word: "For the doctrine
+statements, you can rewrite".*
 
 ### Mesocosm 3. Starting, losing and going on
 

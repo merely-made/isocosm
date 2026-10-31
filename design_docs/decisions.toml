@@ -5263,6 +5263,13 @@ area = "World generation"
 summary = "A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings."
 draws_on = ["processes.16", "world.6"]
 
+[cases."1058"]
+title = "A third of a parent's delta passes at birth; a lineage is sapient from half its adults until under a third"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third."
+draws_on = ["1053", "1055", "ecology.1"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -5772,15 +5779,15 @@ draws_on = ["6", "35"]
 title = "Directing below sapience, driving above it"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
-summary = "Non-sapient critters are directed, sophonts driven; a player directs only who they play; co-op direction is weighed by opinion."
-draws_on = ["59", "60", "152", "153", "671", "679", "779"]
+summary = "Non-sapient critters are directed, sophonts driven; sapience is measured, for a creature and for a lineage; a driven creature learns from its player; a player directs only who they play."
+draws_on = ["59", "60", "152", "153", "671", "679", "779", "1055", "1056", "1058"]
 
 [statements."directing.4"]
 title = "The chooser and the bond"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
-summary = "One choice a tick weighing needs, mood, nudges and bond; bonds are weighted relations; suggestions and standing orders are derived."
-draws_on = ["683", "685", "686", "688", "690", "813", "861", "862", "sim-execution D6"]
+summary = "One choice a tick weighing needs, mood, nudges and bond, scored by a lineage's policy and each member's delta; bonds are weighted relations; suggestions and standing orders are derived."
+draws_on = ["683", "685", "686", "688", "690", "813", "861", "862", "1051", "sim-execution D6"]
 
 [statements."directing.5"]
 title = "Attention"
@@ -5933,15 +5940,15 @@ draws_on = ["919"]
 title = "What the player plays"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "The player plays a critter whose lineage relates by its traits; keeps the parent at a birth; speciating is the player's act."
-draws_on = ["155", "175", "183", "202", "682"]
+summary = "The player plays a critter whose lineage relates by its traits, directed until it is sapient; keeps the parent at a birth; speciating is the player's act."
+draws_on = ["155", "175", "183", "202", "671", "682", "1056"]
 
 [statements."mesocosm.2"]
 title = "The only directive is a nudge"
 source = "design_docs/doctrine.md"
 area = "Mesocosm"
-summary = "The only directive is a nudge by click; standing orders grow from attention; the bond carries by world setting."
-draws_on = ["176", "177", "178", "205", "214", "215", "216", "228"]
+summary = "The only directive is a nudge by click; standing orders grow from attention; trust is kept per kind of direction; bond and trust carry by world setting."
+draws_on = ["176", "177", "178", "205", "214", "215", "216", "228", "1054"]
 
 [statements."mesocosm.3"]
 title = "Starting, losing and going on"
@@ -6186,8 +6193,8 @@ draws_on = ["2", "10", "14", "28", "32", "93", "265"]
 title = "Similitude and the crowd"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
-summary = "The noted run as individuals; the fungible agree in distribution; outside the rendered area a population model per site and lineage."
-draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881", "999", "sim-execution D2", "sim-execution D24"]
+summary = "The noted run as individuals; the fungible agree in distribution; outside the rendered area a population model per site and lineage, its bands running their lineage's policy."
+draws_on = ["75", "113", "207", "208", "209", "211", "219", "261", "266", "307", "317", "439", "440", "507", "554", "881", "999", "1052", "sim-execution D2", "sim-execution D24"]
 
 [statements."processes.7"]
 title = "Time"
@@ -6242,8 +6249,8 @@ draws_on = ["94", "95", "132", "141", "142", "143", "173", "1005", "1006", "1012
 title = "How culture moves"
 source = "design_docs/doctrine.md"
 area = "Processes and rules"
-summary = "Tongues and cultures descend like lineages; names come from tongue, tales and namer; culture spreads by contact, prestige, imposition."
-draws_on = ["167", "168", "169", "schema.7"]
+summary = "Tongues and cultures descend like lineages; names come from tongue, tales and namer; culture and learned behaviour spread by contact, prestige (imitating the successful), teaching and imposition."
+draws_on = ["167", "168", "169", "1053", "1058", "schema.7"]
 
 [statements."processes.15"]
 title = "Matter moves by declared processes"
