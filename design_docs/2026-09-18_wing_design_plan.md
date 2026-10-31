@@ -11272,6 +11272,35 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1012, 1019, 1022, 1028, bodies.6, bodies.11, processes.13, schema.7 · summary A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture.
 
+1036. **Isocosm is the VTT; the sim is Cosmograph; the products are peers.**
+      Ruled by Mark on 2026-10-30, after "Isometry" was found taken and
+      released by another project: "i suspect that isocosm and mesocosm,
+      being similar, maybe should just be peer names. could the name
+      cosmograph be the name of the sim instead? then isocosm could slot in as
+      the vtt's name. and no need for colons any more", then "we needn't make
+      the repo `cosmograph`; the original thing was the vtt, and since that's
+      now `isocosm`, let's just leave that as is", and from a round of
+      alternatives (entelecheia, imago mundi, cosmogon), "Cosmograph". The
+      reading: the products are Isocosm (the VTT), Mesocosm and Eponym, peers
+      without a family prefix; the shared sim is Cosmograph; the repository
+      stays `isocosm`. Cosmograph was chosen knowing a commercial
+      graph-visualization product shares the name and Profantasy's
+      Cosmographer Pro sits one word away in tabletop mapping.
+
+      Links: area Naming · replaces naming.1 · summary The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm.
+
+1037. **The tree follows the names now.** Ruled by Mark on 2026-10-30
+      ("Everything now", then "isocosm-native", "Keep both", "Rename paths
+      too"). The reading: the sim crates become `cosmograph`,
+      `cosmograph-host` and `cosmograph-overlay` (folder `shared/cosmograph`);
+      the VTT's `isometry-*` crates become `isocosm-*`; its adapter over the
+      sim, `isocosm-vtt`, becomes `isocosm-native`; `isonetry` and `isomere`
+      keep their names; visible strings say Isocosm; the `Code/testing/isometry`
+      and `worktrees/isometry-*` paths are renamed and their citations fixed.
+      `cosmograph` 0.0.1 and `isocosm` 0.0.2 were published to claim the names.
+
+      Links: area Naming · draws on 1036 · summary Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

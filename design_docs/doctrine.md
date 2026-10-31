@@ -2007,14 +2007,17 @@ Links: draws on 1012, 1019, 1022, 1028, 1035 · summary A look is derived in lay
 
 ### Naming 1. The family
 
-The family and its sim are Isocosm; the products are Isocosm: VTT, Isocosm:
-Mesocosm and Isocosm: Eponym. Isometry survives only as a plain technical
-prefix (the VTT's `isometry-*` crates) and in paths that receipts already cite
-(`Code/testing/isometry`, `worktrees/isometry-*`).
+The products are peers: Isocosm (the VTT), Mesocosm and Eponym, with no
+family prefix. The sim they share is Cosmograph. The repository stays
+`isocosm`, the VTT being the original project. Crates follow: the sim's are
+`cosmograph*`, the VTT's `isocosm-*` (its adapter over the sim
+`isocosm-native`); `isonetry` and `isomere` keep their own names.
 
-Links: draws on 110, 111, 112, 300, 883 · summary Isocosm is the family and the sim; Isometry is only a technical prefix.
+*Owed:* carrying the rename through the tree (case 1037).
 
-*Reviewed 2026-10-21, new. Mark: "Drop the old-name aliases".*
+Links: draws on 1036, 1037 · summary Isocosm (the VTT), Mesocosm and Eponym are peer products; the sim is Cosmograph; the repository stays isocosm.
+
+*Refined 2026-10-30 from case 1036 (Mark: "Cosmograph").*
 
 ### Naming 2. The of-note ladder
 

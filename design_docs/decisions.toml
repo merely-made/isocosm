@@ -5108,6 +5108,20 @@ area = "The VTT"
 summary = "A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture."
 draws_on = ["1012", "1019", "1022", "1028", "bodies.6", "bodies.11", "processes.13", "schema.7"]
 
+[cases."1036"]
+title = "Isocosm is the VTT; the sim is Cosmograph; the products are peers"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm."
+replaces = ["naming.1"]
+
+[cases."1037"]
+title = "The tree follows the names now"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow."
+draws_on = ["1036"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -5875,8 +5889,8 @@ draws_on = ["623", "624", "625", "758", "772", "939"]
 title = "The family"
 source = "design_docs/doctrine.md"
 area = "Naming"
-summary = "Isocosm is the family and the sim; Isometry is only a technical prefix."
-draws_on = ["110", "111", "112", "300", "883"]
+summary = "Isocosm (the VTT), Mesocosm and Eponym are peer products; the sim is Cosmograph; the repository stays isocosm."
+draws_on = ["1036", "1037"]
 
 [statements."naming.2"]
 title = "The of-note ladder"
