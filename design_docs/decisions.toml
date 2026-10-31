@@ -5143,6 +5143,27 @@ area = "Naming"
 summary = "Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion."
 draws_on = ["1030", "1039", "schema.9"]
 
+[cases."1041"]
+title = "Quick-start worlds are founded from a picker; the population model is E4's"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4."
+draws_on = ["1023", "1032"]
+
+[cases."1042"]
+title = "Pathfinder 2e ships the Adventurer's Pack, not class kits; Stride gets an admitted-character bench"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only."
+draws_on = ["1016", "1034"]
+
+[cases."1043"]
+title = "Table items carry open material, make and condition keys; make names its grade, its act and its maker"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults."
+draws_on = ["1012", "1035", "processes.13"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

@@ -484,6 +484,7 @@ three design docs that cite it. The record holds the words.
 | 1025 | The ladder's tiers are hamlet, town and city, thresholds set from measured draws. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1027 | A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1032 | Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members. | none |
+| 1041 | A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4. | none |
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -788,6 +789,8 @@ three design docs that cite it. The record holds the words.
 | 1033 | Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1034 | PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move. | none |
 | 1035 | A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture. | none |
+| 1042 | PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only. | none |
+| 1043 | Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults. | none |
 
 ## Naming
 

@@ -11347,6 +11347,46 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Naming · draws on 1030, 1039, schema.9 · summary Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion.
 
+1041. **Quick-start worlds are founded from a picker; the population model is
+      E4's.** Ruled by Mark on 2026-10-30 (Mark: "Picker + packs from disk",
+      "Build on E4 when it lands"), the region lane's forks after its second
+      increment. The reading: the founding panel lists the quick-start worlds
+      the sim carries and those content packs offer from disk, and founds one
+      in a single step; the region lane builds the sapient-lineage slice on
+      the sim execution plan's E4 when it lands, not a model of its own, and
+      the tier thresholds stay provisional until then.
+
+      Links: area World generation · draws on 1023, 1032 · summary A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4.
+
+1042. **Pathfinder 2e ships the Adventurer's Pack, not class kits; Stride gets
+      an admitted-character bench.** Ruled by Mark on 2026-10-31 (Mark: "Pack
+      now, kits wait", "Build an admitted-character bench", "Generic only").
+      The reading: no ORC record carries the Fighter or Rogue kit, so taking
+      a class kit is refused with that reason until a source is ruled, and
+      the Adventurer's Pack (checked item by item) is bought with starting
+      gold; Stride moves characters admitted through native table admission,
+      a bench building them, and a body without that binding is refused with
+      the reason; only the generic languages ship.
+
+      Links: area The VTT · draws on 1016, 1034 · summary PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only.
+
+1043. **Table items carry open material, make and condition keys; make names
+      its grade, its act and its maker.** Ruled by Mark on 2026-10-31 (Mark:
+      "Open keys on table items"; on make, "1, 3 (with the maker listed). it
+      would be nice if modifiers could be applied based on 3. and even if
+      we're not deriving things from deep time, we should be able to use the
+      sim's machinery to make stuff that builds on a ruleset's default
+      items/spells/templates"). The reading: each table item may carry
+      `material`, `make` and `condition` keys with no fixed vocabulary, a pack
+      mapping them to palette, finish and wear, and with the sim on they are
+      filled from the item's entity; make is a grade key together with the
+      act that made it and its maker, and modifiers may follow from that act;
+      the sim's making machinery should be usable at the table to make new
+      things on a ruleset's default items, spells and templates, without deep
+      time.
+
+      Links: area The VTT · draws on 1012, 1035, processes.13 · summary Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
