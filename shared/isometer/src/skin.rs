@@ -15,35 +15,19 @@
 //! it returns copies of the documents that differ only in their volume
 //! references, and nothing here is read back as geometry or anatomy.
 //!
-//! The inputs are product-neutral ([`PartSkin`]): a product reads its sim's
-//! per-part matter and function cells into them.
+//! The inputs are product-neutral ([`PartSkin`], in `isometer-core`):
+//! Cosmograph reads its entities into them (`attention::spatial::skin_parts`).
 
 use std::collections::BTreeMap;
 use std::hash::{Hash, Hasher};
 
+pub use isometer_core::PartSkin;
 use isometer_core::{BodyDocument, PartId, classify};
 use isometer_mesh::{ContentEntry, ContentError, Volume};
 use isometer_render::PartMaterial;
 
 use crate::bodies::{PaletteColour, SubjectKey};
 use crate::volumes::DeclaredExtentVolumes;
-
-/// What one part is, as far as its look needs: the matter it holds, by key
-/// and amount, and the cells each function holds out of its capacity.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct PartSkin {
-    pub part: PartId,
-    pub matter: BTreeMap<String, u64>,
-    pub functions: BTreeMap<String, u32>,
-    pub capacity: u32,
-}
-
-impl PartSkin {
-    /// A part with nothing read into it yet.
-    pub fn new(part: PartId) -> Self {
-        Self { part, matter: BTreeMap::new(), functions: BTreeMap::new(), capacity: 0 }
-    }
-}
 
 /// The colours a skin draws with. A matter key the rules do not name takes a
 /// colour drawn from the key itself, inside `bounds`, so open and generated

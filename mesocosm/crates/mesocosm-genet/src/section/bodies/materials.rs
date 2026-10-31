@@ -1,30 +1,14 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 //! Native bodies into isometer's shared skin (phenotype-contract P5, case
-//! 1049): each part's matter and function cells read off the entity, and the
-//! skin's forms, colours and marks put back on the placed bodies. The
+//! 1049): Cosmograph reads each part's matter and function cells off the
+//! entity, and the skin's forms, colours and marks go back on the placed
+//! bodies. The
 //! function-to-tissue table that lived here is isometer's now.
 use super::super::{DeclaredExtentVolumes, PlacedBody};
-use isometer::{PartSkin, SkinBody, SkinRules, SubjectKey};
+use isometer::{SkinBody, SkinRules, SubjectKey};
 
-/// What the skin reads from a native entity: each living part's matter
-/// ledger and its cells per function out of its capacity.
-pub(crate) fn skin_parts(entity: &cosmograph::schema::Entity) -> Vec<PartSkin> {
-    let allocations = cosmograph::attention::spatial::allocations(entity);
-    entity
-        .parts
-        .iter()
-        .map(|(&part, held)| {
-            let allocation = allocations.get(&part);
-            PartSkin {
-                matter: held.matter.clone(),
-                functions: allocation.map(|a| a.cells.clone()).unwrap_or_default(),
-                capacity: allocation.map_or(0, |a| a.capacity),
-                ..PartSkin::new(part)
-            }
-        })
-        .collect()
-}
+pub(crate) use cosmograph::attention::spatial::skin_parts;
 
 /// Skin every placed body: its drawn document becomes the skin's
 /// presentation copy (only volume references differ), and its marks and

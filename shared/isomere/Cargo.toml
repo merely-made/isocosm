@@ -55,7 +55,7 @@ accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "b23263
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
-taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", branch = "main", version = "=0.14.0" }
+taffy = { package = "genet-taffy", git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.16.0" }
 
 [workspace.package]
 rust-version = "1.97.1"
@@ -99,3 +99,30 @@ commons-spine = { git = "https://www.github.com/merely-made/gemot.git", rev = "9
 [patch."https://github.com/merely-made/armillary.git"]
 armillary = { git = "https://www.github.com/merely-made/armillary.git", rev = "864f107d44bf759111ad2ea3c9036b2cfbf03f4c" }
 apparatus-core = { git = "https://www.github.com/merely-made/armillary.git", rev = "06340b08327b29c3485ecb0089bb5cafed20fd80" }
+
+# One Genet revision for every edge (genet-taffy 0.16). Mere's crates name
+# genet by `branch = "main"`; these rows send those edges to the pinned
+# revision under the www spelling, a separate source key, so the graph holds
+# one copy of genet's types and a clean checkout resolves the same tree.
+[patch."https://github.com/merely-made/genet.git"]
+buckram = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.0.3" }
+cadency = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.0.1" }
+document-session-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.1" }
+engine-observables-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-document-resources = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.1" }
+genet-flow = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.0" }
+genet-fontique = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.10.0" }
+genet-host-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-livery = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.0.4" }
+genet-paint-types = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-parley = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.10.0" }
+genet-presenter = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-render = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-scripted-dom = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.2" }
+genet-static-dom = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.1" }
+genet-text = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.0" }
+genet-winit = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+layout-dom-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.1" }
+livery = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.0.5" }
+regress = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.11.1" }
+taproot = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.0" }

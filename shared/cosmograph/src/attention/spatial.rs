@@ -31,6 +31,26 @@ pub struct PartAllocation {
     pub cells: BTreeMap<Key, u32>,
 }
 
+/// What the creature skin reads from an entity (case 1049): each part's
+/// matter ledger and its cells per function out of its capacity. A derived
+/// presentation input, like the allocations it is read beside.
+pub fn skin_parts(entity: &crate::schema::Entity) -> Vec<isometer_core::PartSkin> {
+    let allocations = allocations(entity);
+    entity
+        .parts
+        .iter()
+        .map(|(&part, held)| {
+            let allocation = allocations.get(&part);
+            isometer_core::PartSkin {
+                matter: held.matter.clone(),
+                functions: allocation.map(|a| a.cells.clone()).unwrap_or_default(),
+                capacity: allocation.map_or(0, |a| a.capacity),
+                ..isometer_core::PartSkin::new(part)
+            }
+        })
+        .collect()
+}
+
 pub fn allocations(entity: &crate::schema::Entity) -> BTreeMap<PartId, PartAllocation> {
     entity
         .living()

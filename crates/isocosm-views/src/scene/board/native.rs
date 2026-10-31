@@ -85,7 +85,7 @@ pub(in crate::scene) fn read(ui:&UiState)->Result<Rc<Picture>,String> {
         if !volume.material(at).is_some_and(|material|material==m.air || material==m.water) {
             return Err("native scene root is not in the current clear volume".into());
         }
-        bodies.push(Body {entity,revision:body.body_revision,document,pose:root_pose(at,yaw,origin)?,played:played==Some(entity),parts:skin_parts(body)});
+        bodies.push(Body {entity,revision:body.body_revision,document,pose:root_pose(at,yaw,origin)?,played:played==Some(entity),parts:cosmograph::attention::spatial::skin_parts(body)});
     }
     if bodies.is_empty() || seat==Seat::Player && played.is_none_or(|entity|!bodies.iter().any(|body|body.entity==entity)) {
         return Err("native scene lacks its current admitted bodies or actual played subject".into());
@@ -117,17 +117,6 @@ pub(in crate::scene) fn read(ui:&UiState)->Result<Rc<Picture>,String> {
     }
     let fingerprint=cosmograph::digest(&(world.cursor()?,table,&ui.map,input,participant,seat,&visible));
     Ok(Rc::new(Picture {volume,input:input.clone(),bodies,tokens,cells,origin,fingerprint}))
-}
-
-/// What isometer's skin reads from a native entity: each part's matter ledger
-/// and its cells per function out of its capacity.
-fn skin_parts(entity:&cosmograph::schema::Entity)->Vec<isometer::PartSkin> {
-    let allocations=cosmograph::attention::spatial::allocations(entity);
-    entity.parts.iter().map(|(&part,held)| {
-        let allocation=allocations.get(&part);
-        isometer::PartSkin {matter:held.matter.clone(),functions:allocation.map(|a|a.cells.clone()).unwrap_or_default(),
-            capacity:allocation.map_or(0,|a|a.capacity),..isometer::PartSkin::new(part)}
-    }).collect()
 }
 
 fn root_pose(at:[i64;3],yaw:Yaw,origin:[i64;3])->Result<Pose,String> {

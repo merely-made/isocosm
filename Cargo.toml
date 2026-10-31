@@ -182,12 +182,12 @@ sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "b23263
 # One reference per git source, or two copies of the DOM seams land
 # and the host's `LayoutDom` stops being the one Isocosm's views and receipts
 # build. Bump this when mere's genet pin moves, and only then.
-layout-dom-api = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "=0.1.1" }
-genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "=0.1.2" }
+layout-dom-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.1" }
+genet-scripted-dom = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.2" }
 # The shared automatability substrate: selector resolution, so Isocosm's
 # host-routing receipts target a control by role and label rather than pixel.
 # Named `genet-probe` until genet 7baa554c (2026-09-14).
-taproot = { git = "https://github.com/merely-made/genet.git", branch = "main" }
+taproot = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35" }
 
 # Mirror of the [patch.crates-io] entries this workspace's genet graph needs;
 # patches are per-workspace-root and do NOT inherit through a git dep, so both
@@ -220,8 +220,8 @@ muniment = { git = "https://github.com/merely-made/eidetic.git", rev = "f599ffe9
 # reach them through crates.io, and a registry copy beside the git one is the
 # same two-`LayoutDom` split the workspace dep above guards against. Same
 # revision as mere's Cambium consumes, necessarily.
-layout-dom-api = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "=0.1.1" }
-genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "=0.1.2" }
+layout-dom-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.1" }
+genet-scripted-dom = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.2" }
 # There is deliberately no `cambium` or `sprigging` entry here. Both are
 # published, but nothing in this graph reaches them through the registry —
 # mere's members take them by path inside mere's own checkout — so an entry
@@ -238,8 +238,9 @@ genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch 
 # Nothing here depends on it; the entry outlived its subject. Taffy is
 # different: Buckram and Livery consume the renamed `genet-taffy` package, so
 # the patch below names that package explicitly while keeping the dependency
-# alias Cargo expects.
-taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", branch = "main", version = "=0.14.0" }
+# alias Cargo expects. Every genet row in every workspace here pins the same
+# revision (genet-taffy 0.16), so no graph holds two copies of genet's types.
+taffy = { package = "genet-taffy", git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.16.0" }
 # `murm-replication` (stickleback) and `mere-transport` are written against the
 # **owned p2panda fork**, not the published crates. mere's manifest repoints the
 # family there; this workspace must mirror it, or it resolves stock p2panda from
@@ -374,3 +375,30 @@ commons-spine = { git = "https://www.github.com/merely-made/gemot.git", rev = "9
 [patch."https://github.com/merely-made/armillary.git"]
 armillary = { git = "https://www.github.com/merely-made/armillary.git", rev = "864f107d44bf759111ad2ea3c9036b2cfbf03f4c" }
 apparatus-core = { git = "https://www.github.com/merely-made/armillary.git", rev = "06340b08327b29c3485ecb0089bb5cafed20fd80" }
+
+# One Genet revision for every edge (genet-taffy 0.16). Mere's crates name
+# genet by `branch = "main"`; these rows send those edges to the pinned
+# revision under the www spelling, a separate source key, so the graph holds
+# one copy of genet's types and a clean checkout resolves the same tree.
+[patch."https://github.com/merely-made/genet.git"]
+buckram = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.0.3" }
+cadency = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.0.1" }
+document-session-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.1" }
+engine-observables-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-document-resources = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.1" }
+genet-flow = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.0" }
+genet-fontique = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.10.0" }
+genet-host-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-livery = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.0.4" }
+genet-paint-types = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-parley = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.10.0" }
+genet-presenter = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-render = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+genet-scripted-dom = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.2" }
+genet-static-dom = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.1" }
+genet-text = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.0" }
+genet-winit = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.2.0" }
+layout-dom-api = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.1" }
+livery = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.0.5" }
+regress = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.11.1" }
+taproot = { git = "https://www.github.com/merely-made/genet.git", rev = "b7c0bef04613d854367d407b91c87a38b9b03b35", version = "=0.1.0" }
