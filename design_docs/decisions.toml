@@ -5278,6 +5278,27 @@ summary = "Start a broad effect catalogue with explicit edition correspondences 
 draws_on = ["539", "540", "541", "543"]
 plans = ["functional-generation"]
 
+[decisions."mesocosm-overlay D1"]
+title = "the first slice (2026-10-31), applies Directing 4"
+source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
+area = "Directing and play"
+summary = "The lineage policy is built in two slices: evolution at birth and the boundary first, members' learning within a life second."
+draws_on = ["1051", "ecology.1"]
+
+[decisions."mesocosm-overlay D2"]
+title = "founding (2026-10-31), applies Directing 4"
+source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
+area = "Directing and play"
+summary = "A founding policy reproduces the hand-written score plus noise sized by a world rule; with none, runs hash as today."
+draws_on = ["1051", "schema.10"]
+
+[decisions."mesocosm-overlay D3"]
+title = "the nudge's weight (2026-10-31), applies Mesocosm 2"
+source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
+area = "Directing and play"
+summary = "A nudge's sway stays outside the policy at a fixed weight; heritable heed is a candidate, toward domestication by effort."
+draws_on = ["1054", "mesocosm.2"]
+
 [decisions."orthographic-voxel-presentation D1"]
 title = "surface camera (2026-10-21), applies 382"
 source = "mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md"
