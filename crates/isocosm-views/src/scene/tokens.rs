@@ -101,8 +101,7 @@ impl TokenBodies {
                 return *key;
             }
         }
-        let items = look.items.iter().map(String::as_str);
-        let key = match self.library.resolve(&look.sprite, look.appearance.as_ref(), items) {
+        let key = match self.library.resolve(&look.sprite, look.appearance.as_ref(), &look.items) {
             Ok(resolved) => {
                 let key = resolved.key;
                 if !self.built.contains_key(&key) {

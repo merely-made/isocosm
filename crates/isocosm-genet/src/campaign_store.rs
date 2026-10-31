@@ -196,7 +196,7 @@ mod tests {
                 quantity: 1,
                 tags: Vec::new(),
                 modifiers: Vec::new(),
-                appearance_layers: vec!["weapon:longsword".to_owned()],
+                appearance_layers: vec!["weapon:longsword".to_owned()], material: None, make: None, condition: None,
             })
             .unwrap();
         inventory

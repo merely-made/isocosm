@@ -19,10 +19,13 @@ use isocosm_core::TokenAppearance;
 use serde::Deserialize;
 
 mod creator;
+mod items;
 #[cfg(test)]
 mod tests;
 
 pub use creator::{Bakes, LookDraft, bake_facing_of};
+pub use items::ItemLook;
+use items::{ITEM_PALETTE, ItemTables, chipped};
 
 /// The core pack's looks, compiled in so a table with no packs on disk still
 /// draws its classes, and so the board's stylesheet can be baked statically.
@@ -54,12 +57,12 @@ pub struct Resolved {
 }
 
 /// Everything a token's look is resolved from: its class, its overrides and
-/// the item templates it has equipped, in slot order.
+/// the items it has equipped, in slot order.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct LookInput {
     pub sprite: String,
     pub appearance: Option<TokenAppearance>,
-    pub items: Vec<String>,
+    pub items: Vec<ItemLook>,
 }
 
 impl LookInput {
@@ -79,9 +82,8 @@ impl LookInput {
             .map(|inventory| {
                 inventory
                     .equipped
-                    .values()
-                    .filter_map(|id| inventory.items.get(id))
-                    .map(|item| item.template.clone())
+                    .iter()
+                    .filter_map(|(slot, id)| Some(ItemLook::of(inventory.items.get(id)?, *slot)))
                     .collect()
             })
             .unwrap_or_default();
@@ -151,7 +153,15 @@ struct FileFormat {
     #[serde(default)]
     swatches: Vec<Swatch>,
     #[serde(default)]
-    items: BTreeMap<String, String>,
+    item_sorts: BTreeMap<String, String>,
+    #[serde(default)]
+    sorts: BTreeMap<String, items::SortEntry>,
+    #[serde(default)]
+    materials: BTreeMap<String, String>,
+    #[serde(default)]
+    makes: BTreeMap<String, items::MakeEntry>,
+    #[serde(default)]
+    conditions: BTreeMap<String, items::ConditionEntry>,
     #[serde(default)]
     layers: BTreeMap<String, LayerEntry>,
 }
@@ -165,7 +175,7 @@ pub struct Library {
     classes: BTreeMap<String, ClassEntry>,
     choices: BTreeMap<String, Vec<String>>,
     swatches: Vec<Swatch>,
-    items: BTreeMap<String, String>,
+    items: ItemTables,
     layers: BTreeMap<String, LayerSource>,
     /// Moves with every overlay, so a resolved key never outlives the
     /// bindings it was resolved under.
@@ -187,7 +197,7 @@ impl Library {
             classes: BTreeMap::new(),
             choices: BTreeMap::new(),
             swatches: Vec::new(),
-            items: BTreeMap::new(),
+            items: ItemTables::default(),
             layers: BTreeMap::new(),
             fingerprint: 0,
         }
@@ -245,7 +255,13 @@ impl Library {
         self.palettes.extend(file.palettes);
         self.classes.extend(file.classes);
         self.choices.extend(file.choices);
-        self.items.extend(file.items);
+        self.items.extend(ItemTables {
+            item_sorts: file.item_sorts,
+            sorts: file.sorts,
+            materials: file.materials,
+            makes: file.makes,
+            conditions: file.conditions,
+        });
         self.layers.extend(layers);
         for swatch in file.swatches {
             self.swatches.retain(|held| held.index != swatch.index);
@@ -308,22 +324,18 @@ impl Library {
         self.palette(&class.palette, 0).ok()?.get(index as usize).copied()
     }
 
-    /// The layer an equipped item of `template` shows, if a pack binds one.
-    pub fn item_layer(&self, template: &str) -> Option<&str> {
-        self.items.get(template).map(String::as_str)
-    }
-
     /// Resolve a token's look: its class's layers with `overrides` taken
-    /// first, then each equipped item's bound layer, over the class palette
-    /// with `overrides`' entries replaced.
+    /// first, then each equipped item's derived look (armour under what is
+    /// held), over the class palette with `overrides`' entries replaced and
+    /// each hand's item colours after it.
     ///
     /// A class or layer no pack declares is an error, so the caller draws the
     /// visible placeholder rather than a token silently missing its hat.
-    pub fn resolve<'a>(
+    pub fn resolve(
         &self,
         sprite: &str,
         overrides: Option<&TokenAppearance>,
-        templates: impl IntoIterator<Item = &'a str>,
+        items: &[ItemLook],
     ) -> Result<Resolved, String> {
         let class = self
             .classes
@@ -337,45 +349,107 @@ impl Library {
                 }
             }
         }
-        for template in templates {
-            if let Some(name) = self.item_layer(template) {
-                names.push(name);
-            }
-        }
         let mut colours = self.palette(&class.palette, 0)?;
         if let Some(look) = overrides {
             for (index, colour) in &look.palette {
-                let i = *index as usize;
-                if colours.len() <= i {
-                    colours.resize(i + 1, [255, 0, 255]);
-                }
-                colours[i] = *colour;
+                set_colour(&mut colours, *index as usize, *colour);
             }
         }
         let [dx, dy, dz] = self.size;
         let mut voxels = Voxels::new(dx, dy, dz);
         for name in &names {
-            let layer = self
-                .layers
-                .get(*name)
-                .ok_or_else(|| format!("no pack declares the layer `{name}`"))?;
-            if let Some(loaded) = &layer.loaded {
-                voxels.blit(loaded, 0, 0, 0);
-            }
-            for [x0, x1, y0, y1, z0, z1, index] in &layer.fills {
-                voxels.fill(*x0, *x1, *y0, *y1, *z0, *z1, *index as u8);
-            }
-            for [x, y, z, index] in &layer.points {
-                voxels.set(*x, *y, *z, *index as u8);
-            }
+            let layer = self.layer(name)?;
+            draw(&mut voxels, layer, |x, y, z, index| Some((x, y, z, index)));
         }
+        let drawn = self.draw_items(&mut voxels, &mut colours, items)?;
         let mut hasher = std::collections::hash_map::DefaultHasher::new();
-        (self.fingerprint, &names, &colours).hash(&mut hasher);
+        (self.fingerprint, &names, &drawn, &colours).hash(&mut hasher);
         Ok(Resolved {
             voxels,
             palette: Palette::new(colours),
             key: hasher.finish(),
         })
+    }
+
+    /// One item alone, as the variant strip shows it.
+    pub fn resolve_item(&self, item: &ItemLook) -> Result<Resolved, String> {
+        let [dx, dy, dz] = self.size;
+        let mut voxels = Voxels::new(dx, dy, dz);
+        let mut colours = Vec::new();
+        let drawn = self.draw_items(&mut voxels, &mut colours, std::slice::from_ref(item))?;
+        let mut hasher = std::collections::hash_map::DefaultHasher::new();
+        (self.fingerprint, &drawn, &colours).hash(&mut hasher);
+        Ok(Resolved {
+            voxels,
+            palette: Palette::new(colours),
+            key: hasher.finish(),
+        })
+    }
+
+    /// `item` again under other material, make and condition keys, `count`
+    /// of them, walking the pack's own vocabularies so every pack shows its
+    /// range. The first is the item as it is.
+    pub fn item_variants(&self, item: &ItemLook, count: usize) -> Vec<ItemLook> {
+        let materials = self.variant_materials(item);
+        let makes: Vec<&str> = self.items.makes.keys().map(String::as_str).collect();
+        let conditions: Vec<Option<&str>> = std::iter::once(None)
+            .chain(self.items.conditions.keys().map(|key| Some(key.as_str())))
+            .collect();
+        let mut out = vec![item.clone()];
+        for i in 1..count {
+            let mut variant = item.clone();
+            if !materials.is_empty() {
+                variant.material = Some(materials[i % materials.len()].to_owned());
+            }
+            if !makes.is_empty() {
+                variant.grade = Some(makes[i % makes.len()].to_owned());
+            }
+            variant.condition = conditions[i % conditions.len()].map(str::to_owned);
+            variant.seed = item.seed.wrapping_add((i as u64).wrapping_mul(0x9e37_79b9_7f4a_7c15));
+            out.push(variant);
+        }
+        out
+    }
+
+    fn layer(&self, name: &str) -> Result<&LayerSource, String> {
+        self.layers
+            .get(name)
+            .ok_or_else(|| format!("no pack declares the layer `{name}`"))
+    }
+
+    /// Draw each item over `voxels` in paper-doll order and set its colours;
+    /// returns what was drawn, for the look's key.
+    fn draw_items(
+        &self,
+        voxels: &mut Voxels,
+        colours: &mut Vec<Rgb>,
+        items: &[ItemLook],
+    ) -> Result<Vec<(String, bool, u8, u64)>, String> {
+        if colours.len() < ITEM_PALETTE {
+            colours.resize(ITEM_PALETTE, [255, 0, 255]);
+        }
+        let mut ordered: Vec<&ItemLook> = items.iter().collect();
+        ordered.sort_by_key(|item| item.order());
+        let mut drawn = Vec::new();
+        let dx = self.size[0];
+        for item in ordered {
+            let Some(look) = self.item_draw(item)? else {
+                continue;
+            };
+            for (i, colour) in look.colours.iter().enumerate() {
+                set_colour(colours, look.base as usize + i, *colour);
+            }
+            let layer = self.layer(look.layer)?;
+            draw(voxels, layer, |x, y, z, index| {
+                if index == 0 && chipped(look.seed, x, y, z, look.chip) {
+                    return None;
+                }
+                let x = if look.mirror { dx - 1 - x } else { x };
+                Some((x, y, z, look.base + index.min(3)))
+            });
+            drawn.push((look.layer.to_owned(), look.mirror, look.base, look.seed));
+        }
+        Ok(drawn)
     }
 
     /// A named palette with its `from` chain applied. The depth bound keeps a
@@ -408,6 +482,44 @@ impl Library {
             colours[i] = parse_colour(colour)?;
         }
         Ok(colours)
+    }
+}
+
+fn set_colour(colours: &mut Vec<Rgb>, i: usize, colour: Rgb) {
+    if colours.len() <= i {
+        colours.resize(i + 1, [255, 0, 255]);
+    }
+    colours[i] = colour;
+}
+
+/// Every voxel of `layer`, passed through `place` (which may move, recolour
+/// or drop it) onto `voxels`.
+fn draw(
+    voxels: &mut Voxels,
+    layer: &LayerSource,
+    place: impl Fn(i32, i32, i32, u8) -> Option<(i32, i32, i32, u8)>,
+) {
+    let mut put = |x: i32, y: i32, z: i32, index: u8| {
+        if let Some((x, y, z, index)) = place(x, y, z, index) {
+            voxels.set(x, y, z, index);
+        }
+    };
+    if let Some(loaded) = &layer.loaded {
+        for (x, y, z, index) in loaded.iter() {
+            put(x, y, z, index);
+        }
+    }
+    for [x0, x1, y0, y1, z0, z1, index] in &layer.fills {
+        for z in *z0..*z1 {
+            for y in *y0..*y1 {
+                for x in *x0..*x1 {
+                    put(x, y, z, *index as u8);
+                }
+            }
+        }
+    }
+    for [x, y, z, index] in &layer.points {
+        put(*x, *y, *z, *index as u8);
     }
 }
 

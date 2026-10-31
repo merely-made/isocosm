@@ -32,7 +32,7 @@ pub use generator::{
     GeneratorFixture, GeneratorRequest, ItemProposal, MapPatchProposal, NpcProposal,
 };
 pub use item::{
-    EquipmentSlot, HiddenItemModifier, Inventory, InventoryError, ItemId, ItemInstance,
+    EquipmentSlot, HiddenItemModifier, Inventory, InventoryError, ItemId, ItemInstance, ItemMake,
     ItemModifier, ItemModifierKind, ItemModifierReveal,
 };
 pub use map::{

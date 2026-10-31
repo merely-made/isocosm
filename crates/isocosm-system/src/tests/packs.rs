@@ -144,7 +144,7 @@ fn equipped_modifier_changes_effective_attack_without_mutating_sheet() {
             stats: BTreeMap::from([("attack_bonus".to_owned(), 2)]),
             appearance_layer: None,
         }],
-        appearance_layers: vec!["weapon:longsword".to_owned()],
+        appearance_layers: vec!["weapon:longsword".to_owned()], material: None, make: None, condition: None,
     };
     let mut inventory = Inventory::default();
     inventory.insert(sword).unwrap();

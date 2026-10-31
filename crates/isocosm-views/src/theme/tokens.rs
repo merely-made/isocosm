@@ -33,7 +33,7 @@ pub fn class_css(library: &Library) -> String {
     use isocosm_core::Facing;
     let mut css = String::new();
     for class in library.classes() {
-        let Ok(resolved) = library.resolve(class, None, []) else {
+        let Ok(resolved) = library.resolve(class, None, &[]) else {
             continue;
         };
         for (facing, name) in [

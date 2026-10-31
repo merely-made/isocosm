@@ -275,7 +275,7 @@ impl HostSession {
                             quantity: 1,
                             tags: item.tags,
                             modifiers: Vec::new(),
-                            appearance_layers: Vec::new(),
+                            appearance_layers: Vec::new(), material: None, make: None, condition: None,
                         })
                         .map_err(|error| format!("storylet item is invalid: {error:?}"))?;
                     events.push(GameEvent::InventorySet {
@@ -462,7 +462,7 @@ impl HostSession {
                         quantity: 1,
                         tags: item.tags.clone(),
                         modifiers: Vec::new(),
-                        appearance_layers: Vec::new(),
+                        appearance_layers: Vec::new(), material: None, make: None, condition: None,
                     })
                     .map_err(|error| format!("campaign reward is invalid: {error:?}"))?;
             }

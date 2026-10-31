@@ -101,7 +101,7 @@ impl HostSession {
                 inventory.insert(ItemInstance {
                     id: ItemId::new(format!("campaign.{}.reward.{index}", campaign.content().id)),
                     template: item.template.clone(), name: item.name.clone(), quantity: 1,
-                    tags: item.tags.clone(), modifiers: Vec::new(), appearance_layers: Vec::new(),
+                    tags: item.tags.clone(), modifiers: Vec::new(), appearance_layers: Vec::new(), material: None, make: None, condition: None,
                 }).map_err(|e| format!("campaign reward is invalid: {e:?}"))?;
             }
             inventories.insert(owner, inventory);

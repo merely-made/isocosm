@@ -290,7 +290,7 @@ impl App {
                             quantity: 1,
                             tags: item.tags.clone(),
                             modifiers: Vec::new(),
-                            appearance_layers: Vec::new(),
+                            appearance_layers: Vec::new(), material: None, make: None, condition: None,
                         };
                         if let Err(error) = inventory.insert(instance) {
                             {

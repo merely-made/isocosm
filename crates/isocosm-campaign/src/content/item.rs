@@ -75,6 +75,32 @@ pub struct ItemInstance {
     /// Public base layers contributed when this item is equipped.
     #[serde(default)]
     pub appearance_layers: Vec<String>,
+    /// What it is made of, as a key a pack maps to a palette (case 1043). No
+    /// fixed vocabulary; with the sim on it is filled from the item's entity.
+    #[serde(default)]
+    pub material: Option<String>,
+    /// How it was made: its grade, and the act and maker where known.
+    #[serde(default)]
+    pub make: Option<ItemMake>,
+    /// What has happened to it since, as a key a pack maps to wear.
+    #[serde(default)]
+    pub condition: Option<String>,
+}
+
+/// An item's make (case 1043): a grade key a pack maps to a finish, and the
+/// act that made it and its maker. The act and maker exist where the sim made
+/// the thing; at the table they may be absent or GM-authored. Modifiers may
+/// later follow from the act.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub struct ItemMake {
+    #[serde(default)]
+    pub grade: Option<String>,
+    /// The act that made it, as the record's own key.
+    #[serde(default)]
+    pub act: Option<String>,
+    /// Who made it, as the record's own key.
+    #[serde(default)]
+    pub maker: Option<String>,
 }
 
 fn one() -> u32 {
@@ -227,6 +253,9 @@ mod tests {
             tags: vec!["weapon".to_owned()],
             modifiers: Vec::new(),
             appearance_layers: vec!["weapon:longsword".to_owned()],
+            material: None,
+            make: None,
+            condition: None,
         }
     }
 
@@ -241,6 +270,9 @@ mod tests {
                 .collect(),
             modifiers: Vec::new(),
             appearance_layers: Vec::new(),
+            material: None,
+            make: None,
+            condition: None,
         }
     }
 

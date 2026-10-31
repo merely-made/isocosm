@@ -97,7 +97,7 @@ pub(super) fn apply(
                     quantity: 1,
                     tags: vec![r.items[item].kind.clone()],
                     modifiers: vec![],
-                    appearance_layers: vec![],
+                    appearance_layers: vec![], material: None, make: None, condition: None,
                 });
             }
             let ancestry = build.ancestry.as_ref().map_or("", |a| r.ancestries[a].name.as_str());
