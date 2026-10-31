@@ -1,61 +1,52 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
-//! Product meanings for the existing five neutral tissue channels.
-use cosmograph::attention::spatial::PartAllocation;
-use cosmograph::schema::PartId;
-use isometer::render::PartMaterial;
-use std::collections::BTreeMap;
+//! Native bodies into isometer's shared skin (phenotype-contract P5, case
+//! 1049): each part's matter and function cells read off the entity, and the
+//! skin's forms, colours and marks put back on the placed bodies. The
+//! function-to-tissue table that lived here is isometer's now.
+use super::super::{DeclaredExtentVolumes, PlacedBody};
+use isometer::{PartSkin, SkinBody, SkinRules, SubjectKey};
 
-pub(crate) fn function_materials(parts: &BTreeMap<PartId, PartAllocation>) -> Vec<PartMaterial> {
-    let mut out = Vec::new();
-    for (&part, allocation) in parts {
-        if allocation.capacity == 0 {
-            continue;
-        }
-        let mut counts = [0u64; 5];
-        for (function, &cells) in &allocation.cells {
-            let channel = match function.as_str() {
-                "function:contract" | "function:support" | "function:grip"
-                | "function:adhesion" => 0,
-                "function:intake" | "function:excrete" => 1,
-                "function:sense" | "function:conduct" | "function:gate" | "function:circulate" => 2,
-                "function:fix" | "function:respire" => 3,
-                "function:store" | "function:reproduce" | "function:secrete" => 4,
-                _ => continue,
-            };
-            counts[channel] += u64::from(cells);
-        }
-        for (channel, count) in counts.into_iter().enumerate().filter(|(_, n)| *n > 0) {
-            out.push(PartMaterial {
-                part,
-                material: channel as u8,
-                fraction: count as f32 / allocation.capacity as f32,
-            });
-        }
-    }
-    out
+/// What the skin reads from a native entity: each living part's matter
+/// ledger and its cells per function out of its capacity.
+pub(crate) fn skin_parts(entity: &cosmograph::schema::Entity) -> Vec<PartSkin> {
+    let allocations = cosmograph::attention::spatial::allocations(entity);
+    entity
+        .parts
+        .iter()
+        .map(|(&part, held)| {
+            let allocation = allocations.get(&part);
+            PartSkin {
+                matter: held.matter.clone(),
+                functions: allocation.map(|a| a.cells.clone()).unwrap_or_default(),
+                capacity: allocation.map_or(0, |a| a.capacity),
+                ..PartSkin::new(part)
+            }
+        })
+        .collect()
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn mixed_native_functions_share_the_existing_channels() {
-        let input = BTreeMap::from([(
-            PartId(4),
-            PartAllocation {
-                capacity: 8,
-                cells: BTreeMap::from([
-                    ("function:intake".into(), 4),
-                    ("function:store".into(), 2),
-                    ("function:reproduce".into(), 1),
-                ]),
-            },
-        )]);
-        let output = function_materials(&input);
-        assert_eq!(output.len(), 2);
-        assert_eq!(output[0].fraction, 0.5);
-        assert_eq!(output[1].fraction, 0.375);
-        assert!(function_materials(&BTreeMap::new()).is_empty());
+/// Skin every placed body: its drawn document becomes the skin's
+/// presentation copy (only volume references differ), and its marks and
+/// colour table are filled. The returned forms resolve those copies.
+pub(crate) fn body_volumes(bodies: &mut [PlacedBody]) -> Result<DeclaredExtentVolumes, String> {
+    let mut skin = isometer::skin(
+        bodies.iter().map(|body| SkinBody {
+            subject: SubjectKey(body.id),
+            document: &body.document,
+            parts: &body.parts,
+            seed: body.id,
+        }),
+        &SkinRules::default(),
+    )
+    .map_err(|why| format!("native body appearance: {why:?}"))?;
+    for body in bodies.iter_mut() {
+        let subject = SubjectKey(body.id);
+        if let Some(document) = skin.documents.remove(&subject) {
+            body.document = document;
+        }
+        body.materials = skin.marks.remove(&subject).unwrap_or_default();
+        body.palette = skin.palettes.remove(&subject).unwrap_or_default();
     }
+    Ok(skin.volumes)
 }

@@ -133,7 +133,7 @@ impl SceneHandle {
                 // it still supplies no missing body position or control.
                 mesocosm_runtime::runtime::placing::lift(&session.sim, site)?
             };
-            let bodies = scene::placed_physical(&session.sim, site, &volume, &visible, game)?;
+            let mut bodies = scene::placed_physical(&session.sim, site, &volume, &visible, game)?;
             let digest = cosmograph::digest(&(session.sim.genesis(), session.sim.state(), &region, game));
             let mut fingerprint = [0; 4];
             for (i, word) in fingerprint.iter_mut().enumerate() {
@@ -141,7 +141,7 @@ impl SceneHandle {
             }
             if self.input.borrow().as_ref().is_some_and(|old|
                 old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
-            let volumes = section::body_volumes(&bodies)?;
+            let volumes = section::body_volumes(&mut bodies)?;
             let snapshot = Snapshot { presentation:None, revision:None, scene:SiteScene { walking:None, site, ground:volume.ground().clone(), window:volume,
                 bodies, played:region.played, volumes }, fingerprint, quarter_turn };
             *self.input.borrow_mut() = Some(Rc::new(snapshot));
@@ -187,7 +187,8 @@ impl SceneHandle {
                 bodies.push(PlacedBody { id:body.id, document:body.document.clone(), at:cell,
                     walks: vec![],
                     physical:Some(pose.clone()),
-                    materials:section::bodies::function_materials(&body.allocations), tint:scene::tint_of(cosmograph::kingdom::of(member)),
+                    parts:section::bodies::skin_parts(member), materials:vec![], palette:vec![],
+                    tint:scene::tint_of(cosmograph::kingdom::of(member)),
                     alive:member.alive });
             }
             let digest = cosmograph::digest(&(session.sim.genesis(), session.sim.state(), &region, frame, roots));
@@ -197,7 +198,7 @@ impl SceneHandle {
             }
             if self.input.borrow().as_ref().is_some_and(|old|
                 old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
-            let volumes = section::body_volumes(&bodies)?;
+            let volumes = section::body_volumes(&mut bodies)?;
             let snapshot = Snapshot { presentation:None, revision:None, scene:SiteScene { walking:None, site, ground:volume.ground().clone(), window:volume,
                 bodies, played:region.played, volumes }, fingerprint, quarter_turn };
             *self.input.borrow_mut() = Some(Rc::new(snapshot)); self.error.borrow_mut().take();
@@ -276,9 +277,10 @@ fn lower(session: &Session, region: RegionReading, fingerprint: [u64; 4], quarte
                 .map(|p| volume.to_ground(p.cell)).unwrap_or_else(|| layout::spot(&ground, index)),
         };
         bodies.push(PlacedBody { id: body.id, document: body.document, at, physical:None, walks:vec![],
-            materials:section::bodies::function_materials(&body.allocations), tint: scene::tint_of(cosmograph::kingdom::of(entity)), alive: entity.alive });
+            parts:section::bodies::skin_parts(entity), materials:vec![], palette:vec![],
+            tint: scene::tint_of(cosmograph::kingdom::of(entity)), alive: entity.alive });
     }
-    let volumes = section::body_volumes(&bodies)?;
+    let volumes = section::body_volumes(&mut bodies)?;
     Ok(Snapshot { presentation:None, revision:None, scene: SiteScene { walking:None, site: region.site, ground, window: volume, bodies,
         played: region.played, volumes }, fingerprint, quarter_turn })
 }

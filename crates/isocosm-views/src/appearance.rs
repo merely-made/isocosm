@@ -25,7 +25,7 @@ mod tests;
 
 pub use creator::{Bakes, LookDraft, bake_facing_of};
 pub use items::ItemLook;
-use items::{ITEM_PALETTE, ItemTables, chipped};
+use items::ItemTables;
 
 /// The core pack's looks, compiled in so a table with no packs on disk still
 /// draws its classes, and so the board's stylesheet can be baked statically.
@@ -153,6 +153,8 @@ struct FileFormat {
     #[serde(default)]
     swatches: Vec<Swatch>,
     #[serde(default)]
+    matter: BTreeMap<String, String>,
+    #[serde(default)]
     item_sorts: BTreeMap<String, String>,
     #[serde(default)]
     sorts: BTreeMap<String, items::SortEntry>,
@@ -176,6 +178,8 @@ pub struct Library {
     choices: BTreeMap<String, Vec<String>>,
     swatches: Vec<Swatch>,
     items: ItemTables,
+    /// Matter keys to colours, for the creature skin (case 1049).
+    matter: BTreeMap<String, Rgb>,
     layers: BTreeMap<String, LayerSource>,
     /// Moves with every overlay, so a resolved key never outlives the
     /// bindings it was resolved under.
@@ -198,6 +202,7 @@ impl Library {
             choices: BTreeMap::new(),
             swatches: Vec::new(),
             items: ItemTables::default(),
+            matter: BTreeMap::new(),
             layers: BTreeMap::new(),
             fingerprint: 0,
         }
@@ -255,6 +260,9 @@ impl Library {
         self.palettes.extend(file.palettes);
         self.classes.extend(file.classes);
         self.choices.extend(file.choices);
+        for (key, colour) in &file.matter {
+            self.matter.insert(key.clone(), parse_colour(colour)?);
+        }
         self.items.extend(ItemTables {
             item_sorts: file.item_sorts,
             sorts: file.sorts,
@@ -272,6 +280,12 @@ impl Library {
         (self.fingerprint, text).hash(&mut hasher);
         self.fingerprint = hasher.finish();
         Ok(())
+    }
+
+    /// The creature skin's rules: the packs' matter colours over isometer's
+    /// default bounds for any matter key they do not name.
+    pub fn skin_rules(&self) -> isometer::SkinRules {
+        isometer::SkinRules { matter: self.matter.clone(), ..isometer::SkinRules::default() }
     }
 
     /// Moves whenever the loaded bindings do.
@@ -371,85 +385,10 @@ impl Library {
         })
     }
 
-    /// One item alone, as the variant strip shows it.
-    pub fn resolve_item(&self, item: &ItemLook) -> Result<Resolved, String> {
-        let [dx, dy, dz] = self.size;
-        let mut voxels = Voxels::new(dx, dy, dz);
-        let mut colours = Vec::new();
-        let drawn = self.draw_items(&mut voxels, &mut colours, std::slice::from_ref(item))?;
-        let mut hasher = std::collections::hash_map::DefaultHasher::new();
-        (self.fingerprint, &drawn, &colours).hash(&mut hasher);
-        Ok(Resolved {
-            voxels,
-            palette: Palette::new(colours),
-            key: hasher.finish(),
-        })
-    }
-
-    /// `item` again under other material, make and condition keys, `count`
-    /// of them, walking the pack's own vocabularies so every pack shows its
-    /// range. The first is the item as it is.
-    pub fn item_variants(&self, item: &ItemLook, count: usize) -> Vec<ItemLook> {
-        let materials = self.variant_materials(item);
-        let makes: Vec<&str> = self.items.makes.keys().map(String::as_str).collect();
-        let conditions: Vec<Option<&str>> = std::iter::once(None)
-            .chain(self.items.conditions.keys().map(|key| Some(key.as_str())))
-            .collect();
-        let mut out = vec![item.clone()];
-        for i in 1..count {
-            let mut variant = item.clone();
-            if !materials.is_empty() {
-                variant.material = Some(materials[i % materials.len()].to_owned());
-            }
-            if !makes.is_empty() {
-                variant.grade = Some(makes[i % makes.len()].to_owned());
-            }
-            variant.condition = conditions[i % conditions.len()].map(str::to_owned);
-            variant.seed = item.seed.wrapping_add((i as u64).wrapping_mul(0x9e37_79b9_7f4a_7c15));
-            out.push(variant);
-        }
-        out
-    }
-
-    fn layer(&self, name: &str) -> Result<&LayerSource, String> {
+    pub(super) fn layer(&self, name: &str) -> Result<&LayerSource, String> {
         self.layers
             .get(name)
             .ok_or_else(|| format!("no pack declares the layer `{name}`"))
-    }
-
-    /// Draw each item over `voxels` in paper-doll order and set its colours;
-    /// returns what was drawn, for the look's key.
-    fn draw_items(
-        &self,
-        voxels: &mut Voxels,
-        colours: &mut Vec<Rgb>,
-        items: &[ItemLook],
-    ) -> Result<Vec<(String, bool, u8, u64)>, String> {
-        if colours.len() < ITEM_PALETTE {
-            colours.resize(ITEM_PALETTE, [255, 0, 255]);
-        }
-        let mut ordered: Vec<&ItemLook> = items.iter().collect();
-        ordered.sort_by_key(|item| item.order());
-        let mut drawn = Vec::new();
-        let dx = self.size[0];
-        for item in ordered {
-            let Some(look) = self.item_draw(item)? else {
-                continue;
-            };
-            for (i, colour) in look.colours.iter().enumerate() {
-                set_colour(colours, look.base as usize + i, *colour);
-            }
-            let layer = self.layer(look.layer)?;
-            draw(voxels, layer, |x, y, z, index| {
-                if index == 0 && chipped(look.seed, x, y, z, look.chip) {
-                    return None;
-                }
-                let x = if look.mirror { dx - 1 - x } else { x };
-                Some((x, y, z, look.base + index.min(3)))
-            });
-            drawn.push((look.layer.to_owned(), look.mirror, look.base, look.seed));
-        }
-        Ok(drawn)
     }
 
     /// A named palette with its `from` chain applied. The depth bound keeps a
@@ -485,7 +424,7 @@ impl Library {
     }
 }
 
-fn set_colour(colours: &mut Vec<Rgb>, i: usize, colour: Rgb) {
+pub(super) fn set_colour(colours: &mut Vec<Rgb>, i: usize, colour: Rgb) {
     if colours.len() <= i {
         colours.resize(i + 1, [255, 0, 255]);
     }
@@ -494,7 +433,7 @@ fn set_colour(colours: &mut Vec<Rgb>, i: usize, colour: Rgb) {
 
 /// Every voxel of `layer`, passed through `place` (which may move, recolour
 /// or drop it) onto `voxels`.
-fn draw(
+pub(super) fn draw(
     voxels: &mut Voxels,
     layer: &LayerSource,
     place: impl Fn(i32, i32, i32, u8) -> Option<(i32, i32, i32, u8)>,

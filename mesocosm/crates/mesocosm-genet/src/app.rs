@@ -246,7 +246,7 @@ impl Host {
         {
             scene.bodies =
                 crate::played::scene::placed_visible(&sim, site, &scene.window, &visible);
-            scene.volumes = match crate::section::body_volumes(&scene.bodies) {
+            scene.volumes = match crate::section::body_volumes(&mut scene.bodies) {
                 Ok(volumes) => volumes,
                 Err(why) => {
                     eprintln!("site appearance: {why}");

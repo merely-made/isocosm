@@ -3,7 +3,7 @@
 
 use super::*;
 use crate::scene::board::{BoardSource,BoardPick,PlainHost,BODY_BUDGET,board_grade};
-use isometer::{BodySignature,Cutaway,DeclaredExtentVolumes,FrameRequest,GroundTerrain,Pick,SceneBody,
+use isometer::{BodySignature,Cutaway,FrameRequest,GroundTerrain,Pick,SceneBody,
     SceneFrame,SceneSignature,SceneVolumes,SubjectKey,TerrainSource};
 
 impl BoardSource {
@@ -52,16 +52,24 @@ impl BoardSource {
         // nor geometry. This same Scene now consumes actual native documents.
         self.ground=None;self.palette_revision=None;self.palettes.clear();self.world=None;self.placeholders=0;
         let p=&picture.input;
-        let volumes=DeclaredExtentVolumes::from_documents(picture.bodies.iter().map(|body|&body.document),p.material);
-        let bodies:Vec<_>=picture.bodies.iter().map(|body|SceneBody {
-            subject:SubjectKey(body.entity),document:&body.document,pose:body.pose,scale:p.scale,grounded:false,
-            tint:if body.played {p.played_tint}else{p.other_tint},materials:&[],always_visible:body.played,
+        // The creature skin (case 1049): forms inside each declared extent,
+        // colour from matter through the packs' table, function marks.
+        let rules=self.tokens.library().skin_rules();
+        let skin=isometer::skin(picture.bodies.iter().map(|body|isometer::SkinBody {subject:SubjectKey(body.entity),
+            document:&body.document,parts:&body.parts,seed:body.entity}),&rules).map_err(|e|format!("native skin: {e:?}"))?;
+        let none=Vec::new();
+        let bodies:Vec<_>=picture.bodies.iter().map(|body| {
+            let subject=SubjectKey(body.entity);
+            SceneBody {subject,document:skin.documents.get(&subject).unwrap_or(&body.document),pose:body.pose,scale:p.scale,
+                grounded:false,tint:if body.played {p.played_tint}else{p.other_tint},
+                materials:skin.marks.get(&subject).unwrap_or(&none),always_visible:body.played}
         }).collect();
-        for body in &bodies {scene.bodies_mut().set_palette(body.subject,None);}
+        for body in &bodies {scene.bodies_mut().set_palette(body.subject,skin.palettes.get(&body.subject).cloned());}
+        let volumes=&skin.volumes;
         let ground=GroundTerrain(picture.volume.ground());
         let mut encoder=r.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {label:Some("native VTT physical scene")});
         scene.render(&mut encoder,SceneFrame {camera:camera(picture,r.aspect)?,bodies:&bodies,
-            volumes:SceneVolumes::DeclaredSolid(&volumes),terrain:Some(&ground as &dyn TerrainSource),dirty:&[],
+            volumes:SceneVolumes::DeclaredSolid(volumes),terrain:Some(&ground as &dyn TerrainSource),dirty:&[],
             grade:board_grade(),terrain_appearance:None,body_budget:BODY_BUDGET,capsules:None},&mut PlainHost)?;
         r.queue.submit(Some(encoder.finish()));
         Ok(scene.encoded_view().clone())

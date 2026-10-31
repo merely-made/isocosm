@@ -482,3 +482,9 @@ fills = [[2, 8, 7, 17, 1, 7, 0], [0, 2, 12, 16, 2, 6, 0], [8, 10, 12, 16, 2, 6, 
 
 [layers."item:plate"]
 fills = [[2, 8, 9, 17, 1, 7, 0], [0, 2, 15, 17, 1, 7, 0], [8, 10, 15, 17, 1, 7, 0], [2, 8, 7, 9, 1, 7, 3], [3, 7, 13, 14, 1, 2, 2]]
+
+# Creature skins (case 1049): a native body's parts are coloured by the matter
+# they hold, mixed by amount. Name a matter key here to give it a colour; a key
+# no pack names draws a muted colour from the key itself, so generated worlds'
+# matter still reads apart. The core pack names none yet.
+[matter]

@@ -75,7 +75,11 @@ pub struct PlacedBody {
     /// Recent admitted native steps, for a viewport that missed intermediate roots.
     pub walks: Vec<Walk>,
     pub tint: [f32; 3],
+    /// What the skin is derived from: each part's matter and function cells.
+    pub parts: Vec<isometer::PartSkin>,
+    /// The skin's function marks and colour table, filled by [`body_volumes`].
     pub materials: Vec<isometer::render::PartMaterial>,
+    pub palette: Vec<isometer::PaletteColour>,
     pub alive: bool,
 }
 
@@ -102,12 +106,7 @@ impl From<[cosmograph::spatial::Pose;2]> for Walk {
     fn from(poses:[cosmograph::spatial::Pose;2])->Self {Self {poses,stride:None}}
 }
 
-/// Every native scene uses the same voxel grammar and structural material
-/// table; kingdom tint supplies colour without changing native geometry.
-pub(crate) fn body_volumes(bodies: &[PlacedBody]) -> Result<DeclaredExtentVolumes, String> {
-    DeclaredExtentVolumes::generated_from_documents(bodies.iter().map(|body| &body.document))
-        .map_err(|why| format!("native body appearance: {why:?}"))
-}
+pub(crate) use bodies::{body_volumes, skin_parts};
 
 impl SiteScene {
     /// Where body `id` stands in this scene, if it is here.
@@ -327,6 +326,7 @@ impl Section {
     ) -> Result<(), String> {
         let profile_start = std::time::Instant::now();
         self.bind_terrain_materials(frame.scene.window.materials);
+        self.register_palettes(frame.scene);
         let camera = self.view(frame.centre);
         let ground_source = GroundTerrain(&frame.scene.ground);
         let paged=frame.scene.window.is_paged();
