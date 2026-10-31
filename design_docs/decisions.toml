@@ -5101,6 +5101,13 @@ area = "The VTT"
 summary = "PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move."
 draws_on = ["1020", "1021", "1026", "vtt.5"]
 
+[cases."1035"]
+title = "A look is derived in layers; items first; packs carry style until culture does"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture."
+draws_on = ["1012", "1019", "1022", "1028", "bodies.6", "bodies.11", "processes.13", "schema.7"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6369,11 +6376,11 @@ summary = "An edition declares its campaign's structure; the table supplies sess
 draws_on = ["522", "1013", "1018", "vtt.2", "vtt.5"]
 
 [statements."vtt.7"]
-title = "A look is a voxel recipe that class names bind"
+title = "A look is derived in layers"
 source = "design_docs/doctrine.md"
 area = "The VTT"
-summary = "A look is an isometer Appearance recipe; packs bind class names to it; preview and board read one recipe."
-draws_on = ["1019", "1022", "1028"]
+summary = "A look is derived in layers (shape, material, make, style, condition, seed, overrides) into one Appearance read by preview and board."
+draws_on = ["1012", "1019", "1022", "1028", "1035"]
 
 [statements."world.1"]
 title = "Shape and scale"

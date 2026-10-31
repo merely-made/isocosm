@@ -11257,6 +11257,21 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1020, 1021, 1026, vtt.5 · summary PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move.
 
+1035. **A look is derived in layers; items first; packs carry style until
+      culture does.** Ruled by Mark on 2026-10-30 (Mark: "Derived in
+      layers", "Items", "Packs now, culture later"), after he asked how
+      items, character models and entities should be procedurally generated
+      and varied. Offered against authored classes with seeded variation and
+      looks from sim data alone. The reading: a look is derived from what a
+      thing is, outward: shape from the body's part tree or the item's sort,
+      palette from material, finish from make, style from a pack today and
+      from culture once culture is built, wear from condition, variation from
+      the seed within its lineage's bounds, and the creator's overrides last;
+      the same derivation runs sim-on and sim-off, sim-off with fewer layers.
+      Items are generated first.
+
+      Links: area The VTT · draws on 1012, 1019, 1022, 1028, bodies.6, bodies.11, processes.13, schema.7 · summary A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

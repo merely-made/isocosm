@@ -1989,17 +1989,19 @@ Links: draws on 522, 1013, 1018, vtt.2, vtt.5 · summary An edition declares its
 
 *Reviewed 2026-10-30, new, from case 1018 (Mark: "Each edition declares it").*
 
-### VTT 7. A look is a voxel recipe that class names bind
+### VTT 7. A look is derived in layers
 
-A character's or thing's look is an isometer `Appearance` recipe of layers,
-palette and clips. A pack binds class names to layers and palettes, so a
-campaign reskins the world without touching the app, and the creator's
-preview and the board read the same recipe.
+A thing's look is derived from what it is, outward, into an isometer
+`Appearance`: shape from the body's part tree or the item's sort, palette from
+material, finish from make, style from a pack (from culture, once built),
+wear from condition, variation from its seed within its lineage's bounds, and
+the creator's overrides last. A pack binds class names to layers and
+palettes, so a campaign reskins without touching the app; the preview and the
+board read the same look, sim on or off. Items are generated first.
 
-Links: draws on 1019, 1022, 1028 · summary A look is an isometer Appearance recipe; packs bind class names to it; preview and board read one recipe.
+Links: draws on 1012, 1019, 1022, 1028, 1035 · summary A look is derived in layers (shape, material, make, style, condition, seed, overrides) into one Appearance read by preview and board.
 
-*Applied 2026-10-30, case 1022: kept at the table as a class plus
-overrides (Mark: "Table record, class plus overrides").*
+*Refined 2026-10-30 from case 1035 (Mark: "Derived in layers").*
 
 ## Naming
 
