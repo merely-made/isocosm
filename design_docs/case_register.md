@@ -573,7 +573,7 @@ three design docs that cite it. The record holds the words.
 | --- | --- | --- |
 | 1 | The thing is one configurable, extensible world, history and entity generator playable several ways; views and perspectives are distinctions made on top of the sim. | [games wing founding](2026-07-30_games_wing_founding.md), [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
 | 16 | Stack placement: cambium under isomere, isometer over genet and netrender, generation in isoscape beside esp, dramatis, cleromancy; moot, muniment, murm persist; open standards first. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 20 | One bench for everything generated and reviewed, with sim, world, specimen, item and effect lanes, which is also the dev tools. | none |
+| 20 | One bench for everything generated and reviewed, with sim, world, specimen, item and effect lanes, which is also the dev tools. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 21 | Gamepads are a genet and standards concern; keymapping is a capability wanted across the stack, not only in isomere. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 27 | Use kiss3d provided it composes with the stack, and keep the renderer swappable behind the scene contract. | [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
 | 29 | Desktop is first-class; the web is a supported tier with a stated floor. | [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md) |
@@ -675,7 +675,7 @@ three design docs that cite it. The record holds the words.
 | 959 | The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents. | [session network](2026-10-28_session_network_plan.md) |
 | 960 | Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer. | [session network](2026-10-28_session_network_plan.md) |
 | 1038 | A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
-| 1048 | H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack. | none |
+| 1048 | H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 
 ## Mesocosm
 

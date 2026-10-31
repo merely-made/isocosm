@@ -49,7 +49,7 @@ fn invoke(snapshot: &ProjectionSnapshot, id: &str, intent: &str, payload: &[u8])
 #[test]
 fn the_world_projection_discloses_a_world_card_and_one_card_per_site() {
     let mut endpoint = SimEndpoint::new(bench(), None);
-    assert_eq!(endpoint.describe().projections.len(), 1);
+    assert_eq!(endpoint.describe().projections.len(), 2, "the world and the world graph");
     let first = snapshot(&mut endpoint);
     let cards = cards(&mut endpoint, &first);
     let sites = endpoint.world().read(|s| s.sim.state().sites.len()).unwrap();

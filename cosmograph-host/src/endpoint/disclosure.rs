@@ -18,8 +18,8 @@ use chirograph::{
 };
 use crate::world::World;
 use sceno::{
-    Arrangement, Footprint, InstanceId, Placement, Representation, RoutedRelation, Scene, Score,
-    ScoreItem, Size2, SourceRef, Spiral,
+    Arrangement, Fold, Footprint, InstanceId, Placement, Representation, RoutedRelation, Scene, Score,
+    ScoreItem, Size2, SourceRef, Spiral, StandIn,
 };
 
 /// One disclosed thing: its source id, its card and the actions it offers.
@@ -64,8 +64,22 @@ pub fn request(session: &str) -> ProjectionRequest {
         score: Score::new(arrangement()) }
 }
 
+/// Several disclosed items drawn as one stand-in (a sceno fold): the
+/// stand-in's id, the others' ids, and the host's words for it.
+pub struct Folded {
+    pub stand_in: String,
+    pub members: Vec<String>,
+    pub label: String,
+}
+
 /// The items' solved scene, with `links` (from, to, kind) as relations.
 pub fn scene(adapter: &str, items: &[Item], links: &[(String, String, &str)]) -> Scene {
+    scene_folded(adapter, items, links, &[])
+}
+
+/// The items' solved scene with relations and folds.
+pub fn scene_folded(adapter: &str, items: &[Item], links: &[(String, String, &str)], folds: &[Folded])
+    -> Scene {
     let mut score = Score::new(arrangement());
     score.items = items.iter().enumerate().map(|(ordinal, item)| ScoreItem {
         source: SourceRef::new(adapter, &item.id),
@@ -91,6 +105,14 @@ pub fn scene(adapter: &str, items: &[Item], links: &[(String, String, &str)]) ->
         scene.relations.push(RoutedRelation { from, to, space: Scene::WORLD, points,
             kind: Some((*kind).into()), weight: None, link_key: None,
             marks: Default::default(), strength: None });
+    }
+    for fold in folds {
+        let Some(&stand_in) = instances.get(&fold.stand_in) else { continue };
+        let mut members = vec![stand_in];
+        members.extend(fold.members.iter().filter_map(|id| instances.get(id).copied()));
+        if members.len() < 2 { continue; }
+        scene.folds.push(Fold { members, stand_in: StandIn::Member(stand_in), rule: None, boundary: None,
+            label: Some(fold.label.clone()) });
     }
     scene
 }
@@ -127,6 +149,12 @@ impl Disclosure {
     /// A fresh snapshot of `items` at the current revision.
     pub fn snapshot(&mut self, request: ProjectionRequest, adapter: &str, items: &[Item],
         links: &[(String, String, &str)]) -> Result<ProjectionSnapshot, String> {
+        self.snapshot_folded(request, adapter, items, links, &[])
+    }
+
+    /// A fresh snapshot whose scene also carries `folds`.
+    pub fn snapshot_folded(&mut self, request: ProjectionRequest, adapter: &str, items: &[Item],
+        links: &[(String, String, &str)], folds: &[Folded]) -> Result<ProjectionSnapshot, String> {
         if request.version.major != ProtocolVersion::V1.major {
             return Err("projection request uses an unsupported protocol".into());
         }
@@ -138,7 +166,7 @@ impl Disclosure {
         }
         self.catch_up()?;
         let scene = SceneSnapshot::from_dense(SceneEpoch(1), Revision(self.revision),
-            scene(adapter, items, links)).map_err(|error| format!("invalid scene: {error:?}"))?;
+            scene_folded(adapter, items, links, folds)).map_err(|error| format!("invalid scene: {error:?}"))?;
         let presentation = self.presentations(items, &scene)?;
         let snapshot = ProjectionSnapshot { version: ProtocolVersion::V1, session: request.session,
             scene, presentation, cache_policy: CachePolicy::default() };
