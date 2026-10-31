@@ -1910,22 +1910,26 @@ Links: draws on 188, 243, 244, 248, 768, 807, 809, 814, schema.1 · summary A ca
 authored content is native moved to Schema 1, and the table's own vocabulary
 (807, 809, 814) stays here.*
 
-### VTT 2. Time at the table is consent
+### VTT 2. Roles are traded seats; time at the table is consent
 
-A DM may take up any unclaimed entity to play and may edit the world; players
-sharing a character and the DM playing the unclaimed are on by default.
-Downtime advances the world's time, a domain where order matters (Record 1),
-and at the table it needs consent: every bound player holds it, disconnected
+GM, player and host are authorities over a shared world state that people
+hold, trade and share: any number may hold the GM seat or none, a GM may play
+characters beside the unclaimed, and the seat controlling a body drafts its
+character. A campaign's edition and world configuration are chosen at its
+founding. Downtime advances the world's time, a domain where order matters
+(Record 1), and needs consent: every bound player holds it, disconnected
 players included, and only a player can release their own hold, which covers
 later proposals until they retake it. A proposal binds its tick and roster,
-and a change needs a new one; the DM chooses which ready proposal advances.
+and a change needs a new one; a GM chooses which ready proposal advances.
 Pace is an authored profile of duration and stock costs.
 
-Links: draws on 156, 245, 246, 851, 852, 855, 856, 860, record.1 · summary The DM may play the unclaimed and edit; downtime needs every bound player's yes or their own release, binding tick and roster.
+*Owed:* who chooses a ready proposal, and who takes up VTT 4's offers, at a
+table with no GM seated (1030's sandbox play).
 
-*Reviewed 2026-10-22, new. Mark: "Downtime to Record 1": time is a domain
-where order matters, so the statement cites Record 1 and keeps the table's
-specifics.*
+Links: draws on 156, 245, 246, 851, 852, 855, 856, 860, 1029, 1030, record.1 · summary GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes.
+
+*Refined 2026-10-30 from cases 1029 and 1030 (Mark: "it should even be
+possible for six people to all be gm, and for eight to all be players").*
 
 ### VTT 3. A party is opt-in and grants no control
 
@@ -1968,7 +1972,7 @@ encounter runs under a named hybrid profile documenting each crossing. An
 uncalibrated edition plays experimentally: warned at open, every receipt
 marked.
 
-Links: draws on 189, 250, 538, 539, 540, 542, 543, 1013, 1020, 1021, 1026 · summary The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked.
+Links: draws on 189, 250, 538, 539, 540, 542, 543, 1013, 1020, 1021, 1026, 1031 · summary The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked.
 
 *Applied 2026-10-30, cases 1013, 1020, 1021: Pathfinder 2e is built whole
 first; its HP stays the edition's while crits, dying and death reach the body

@@ -11177,6 +11177,72 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1019, 1022, bodies.2 · summary Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today.
 
+1029. **A campaign's edition is chosen at its founding.** Ruled by Mark on
+      2026-10-30 (Mark: "Field in campaign founding"), offered against a DM
+      action that locks once a sheet exists and a choice per character. With
+      1030 he named what founding chooses: "the ruleset and other worldgen
+      configs (or using preexisting worlds/applying a new ruleset to a
+      preexisting world)". The reading: the edition is a field of the
+      campaign's founding, beside its lead and world configuration, and a
+      campaign may be founded over an existing world under a new ruleset;
+      those who join, join a world under those rules.
+
+      Links: area The VTT · draws on 1014, 1018, schema.8 · summary A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset.
+
+1030. **Roles are seats people trade; a table may have many GMs or none.**
+      Ruled by Mark on 2026-10-30, answering who drafts a character (Mark:
+      "1 for that reason"): "the separation between dungeon/gamemaster and
+      player should not be so severe ... gms can make and play player-faction
+      aligned characters along with npcs, players can make their characters
+      and can take over hosting duties if needed, and the goal should be to
+      allow people to trade off of those responsibilities by sharing the
+      worldstate and changing authorities related to these roles. it should
+      even be possible for six people to all be gm, and for eight to all be
+      players relying on a prewritten campaign, with one choosing to become a
+      gm when needed to resolve an issue. the goal of including scripting,
+      dialogue, worldgen, the equivalent of radiant quests and nemeses and
+      procedurally generated narrative cues grounded in the simmed world, is
+      to make it possible to play in a sandbox fashion without a gm
+      worldbuilding and cultivating the experience." The reading: the seat
+      that controls a body drafts its character; GM, player and host are
+      authorities over a shared world state that people hold, trade and
+      share, any number at once or none; play without a GM is a goal, carried
+      by the sim's generated cues.
+
+      Links: area The VTT · draws on 153, 156, vtt.2, vtt.4, vtt.5 · summary GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal.
+
+1031. **Pathfinder 2e's slice takes all forty backgrounds.** Ruled by Mark on
+      2026-10-30 (Mark: "All 40"), offered against ten chosen for skill
+      coverage. The reading: 1021's slice grows to every Player Core
+      background and the skill feats they grant, about a hundred records.
+
+      Links: area The VTT · draws on 1021 · summary The PF2e slice takes all forty backgrounds and their skill feats, about a hundred records.
+
+1032. **The ladder's first readings settle residents, groups and founding
+      events.** Ruled by Mark on 2026-10-30 (Mark: "All as recommended"), the
+      region lane's forks after its first readings. The reading: a place's
+      residents are its tenants and their kin with no home of their own on the
+      same site; founding-door entries write sim events, so every product can
+      read why a place exists; founders become kin only through births, the
+      population model's work; a group is a polity once its constitution
+      names members, otherwise a faction; a quick-start world's tenancies form
+      by the founding tick's own commands; loading a quick-start world in the
+      app gets an owner before the population model lands.
+
+      Links: area World generation · draws on 1023, 1024, 1027, world.10 · summary Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members.
+
+1033. **Looks face four ways; PF2e founds, names lores and waits for
+      languages.** Ruled by Mark on 2026-10-30 (Mark: "All as recommended"),
+      the appearance and rules lanes' forks after their first builds. The
+      reading: each look bakes four true facings; the classes keep their
+      varied looks; turn entries are labelled by the character's name; the
+      founding panel picks a campaign's edition, re-founding an existing
+      world under a new ruleset being a later flow; lores the book leaves to
+      the player are written in as text; Player Core's nine terrain lores
+      stand; languages come with the equipment increment.
+
+      Links: area The VTT · draws on 1022, 1028, 1029, 1031 · summary Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

@@ -483,6 +483,7 @@ three design docs that cite it. The record holds the words.
 | 1023 | In a world given deep time people grow out of its conditions and are read up a ladder; a quick-start world is a modded, shared world with authored founders. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1025 | The ladder's tiers are hamlet, town and city, thresholds set from measured draws. | none |
 | 1027 | A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing. | none |
+| 1032 | Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members. | none |
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -780,6 +781,10 @@ three design docs that cite it. The record holds the words.
 | 1022 | A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden. | none |
 | 1026 | PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists. | none |
 | 1028 | Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today. | none |
+| 1029 | A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset. | none |
+| 1030 | GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal. | none |
+| 1031 | The PF2e slice takes all forty backgrounds and their skill feats, about a hundred records. | none |
+| 1033 | Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text. | none |
 
 ## Naming
 

@@ -5059,6 +5059,41 @@ area = "The VTT"
 summary = "Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today."
 draws_on = ["1019", "1022", "bodies.2"]
 
+[cases."1029"]
+title = "A campaign's edition is chosen at its founding"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset."
+draws_on = ["1014", "1018", "schema.8"]
+
+[cases."1030"]
+title = "Roles are seats people trade; a table may have many GMs or none"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal."
+draws_on = ["153", "156", "vtt.2", "vtt.4", "vtt.5"]
+
+[cases."1031"]
+title = "Pathfinder 2e's slice takes all forty backgrounds"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "The PF2e slice takes all forty backgrounds and their skill feats, about a hundred records."
+draws_on = ["1021"]
+
+[cases."1032"]
+title = "The ladder's first readings settle residents, groups and founding events"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members."
+draws_on = ["1023", "1024", "1027", "world.10"]
+
+[cases."1033"]
+title = "Looks face four ways; PF2e founds, names lores and waits for languages"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text."
+draws_on = ["1022", "1028", "1029", "1031"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6292,11 +6327,11 @@ summary = "A campaign runs sim-off as a board still writing assertions; sim-on, 
 draws_on = ["188", "243", "244", "248", "768", "807", "809", "814", "schema.1"]
 
 [statements."vtt.2"]
-title = "Time at the table is consent"
+title = "Roles are traded seats; time at the table is consent"
 source = "design_docs/doctrine.md"
 area = "The VTT"
-summary = "The DM may play the unclaimed and edit; downtime needs every bound player's yes or their own release, binding tick and roster."
-draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "record.1"]
+summary = "GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes."
+draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "1029", "1030", "record.1"]
 
 [statements."vtt.3"]
 title = "A party is opt-in and grants no control"
@@ -6317,7 +6352,7 @@ title = "The table plays editions faithfully"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked."
-draws_on = ["189", "250", "538", "539", "540", "542", "543", "1013", "1020", "1021", "1026"]
+draws_on = ["189", "250", "538", "539", "540", "542", "543", "1013", "1020", "1021", "1026", "1031"]
 
 [statements."vtt.6"]
 title = "Each edition declares its campaign's shape"
