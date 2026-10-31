@@ -77,6 +77,35 @@ pub(super) fn reach(
     target: u64,
     payload: &[u8],
 ) -> Result<(u32, String), String> {
+    reach_with(state, session, sections, access, actor, target, payload, &mut |start, end, scale| {
+        let span = (0..3).map(|axis| start[axis].abs_diff(end[axis])).max().unwrap_or(0);
+        if span > u64::from(scale) {
+            return Err("target is beyond the weapon's five-foot reach".into());
+        }
+        Ok((
+            u32::try_from(span.div_ceil(u64::from(scale))).map_err(|_| "distance overflow")?,
+            format!("native root reach: {span} cells, scale {scale} cells per square"),
+        ))
+    })
+}
+
+/// Distance between two native points at a scale: squares and a note, or a
+/// refusal. Each edition supplies its own count.
+pub(super) type Limit<'a> = dyn FnMut([i64; 3], [i64; 3], u32) -> Result<(u32, String), String> + 'a;
+
+/// Reach with the edition's own distance rule; terrain, site and life checks
+/// and the uncalibrated ruling path are shared.
+#[allow(clippy::too_many_arguments)]
+pub(super) fn reach_with(
+    state: &State,
+    session: &Session,
+    sections: &BTreeMap<String, Vec<u8>>,
+    access: OrdinaryAccess,
+    actor: u64,
+    target: u64,
+    payload: &[u8],
+    limit: &mut Limit<'_>,
+) -> Result<(u32, String), String> {
     let a = session
         .sim
         .state()
@@ -102,13 +131,7 @@ pub(super) fn reach(
         let target = physical_point(session, &game, target)?;
         let start = source.pose.at;
         let end = target.pose.at;
-        let span = (0..3)
-            .map(|axis| start[axis].abs_diff(end[axis]))
-            .max()
-            .unwrap_or(0);
-        if span > u64::from(scale) {
-            return Err("target is beyond the weapon's five-foot reach".into());
-        }
+        let measured = limit(start, end, scale)?;
         let window = Window {
             min: [
                 source.window.min[0].min(target.window.min[0]),
@@ -135,10 +158,7 @@ pub(super) fn reach(
         {
             return Err("native terrain blocks the weapon attack".into());
         }
-        return Ok((
-            u32::try_from(span.div_ceil(u64::from(scale))).map_err(|_| "distance overflow")?,
-            format!("native root reach: {span} cells, scale {scale} cells per square"),
-        ));
+        return Ok(measured);
     }
     if access.seat != Seat::Dm {
         return Err("uncalibrated reach needs the DM's recorded ruling".into());
@@ -219,4 +239,11 @@ pub(super) fn hurt(
     } else {
         Ok(String::new())
     }
+}
+
+/// A body's current native point: its resident pose, or its admitted table
+/// position.
+pub(super) fn point(session: &Session, sections: &BTreeMap<String, Vec<u8>>, id: u64) -> Result<[i64; 3], String> {
+    let game = GameBindings::decode(sections.get("vtt").map_or(&[], Vec::as_slice))?;
+    Ok(physical_point(session, &game, id)?.pose.at)
 }

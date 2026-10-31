@@ -165,6 +165,9 @@ pub struct Item {
     pub hardness: Option<i64>,
     #[serde(default)]
     pub hp: Option<i64>,
+    /// How many come for one price (ammunition is sold by tens).
+    #[serde(default)]
+    pub per: Option<u32>,
     /// What a kit holds: item ids with quantities.
     #[serde(default)]
     pub contents: Vec<(String, u32)>,

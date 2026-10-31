@@ -42,11 +42,24 @@ pub(crate) struct Ground {
     places: isometer_space::places::Places,
 }
 
-pub(crate) fn ground(session: &Session, from: &PositionBinding) -> Option<Ground> {
+std::thread_local! {
+    /// The last ground lifted, keyed by site, window, places and terrain
+    /// revision: card snapshots ask for it on every frame of a turn.
+    static GROUND: std::cell::RefCell<Option<(String, std::rc::Rc<Ground>)>> = const { std::cell::RefCell::new(None) };
+}
+
+pub(crate) fn ground(session: &Session, from: &PositionBinding) -> Option<std::rc::Rc<Ground>> {
     let p = &from.placement;
+    let key = format!("{}:{:?}:{:?}:{}:{:?}:{}", p.site, p.window.min, p.window.max, p.window.depth, p.places,
+        session.sim.terrain_revision());
+    if let Some(hit) = GROUND.with(|g| g.borrow().as_ref().filter(|(k, _)| *k == key).map(|(_, v)| v.clone())) {
+        return Some(hit);
+    }
     let volume = session.sim.volume(p.site, p.window.min, p.window.max, p.window.depth).ok()?;
     let places = isometer_space::places::Places::derive(&volume, p.places).ok()?;
-    Some(Ground { volume, places })
+    let ground = std::rc::Rc::new(Ground { volume, places });
+    GROUND.with(|g| *g.borrow_mut() = Some((key, ground.clone())));
+    Some(ground)
 }
 
 impl Ground {
@@ -61,13 +74,6 @@ impl Ground {
     }
 }
 
-/// Squares between two cells at `scale` cells per square (root distance,
-/// as reach measures it).
-pub(crate) fn squares(from: [i64; 3], to: [i64; 3], scale: u32) -> u64 {
-    let span = (0..3).map(|k| from[k].abs_diff(to[k])).max().unwrap_or(0);
-    span.div_ceil(u64::from(scale))
-}
-
 pub(super) fn stride(state: &mut State, map: &MapDocument, session: &mut Session,
     sections: &mut BTreeMap<String, Vec<u8>>, access: OrdinaryAccess, actor: u64, to: [i64; 3], ruled: bool)
     -> Result<String, String> {
@@ -80,11 +86,11 @@ pub(super) fn stride(state: &mut State, map: &MapDocument, session: &mut Session
     let feet = speed(&build(state, id)?, &gear(state, id));
     let measure = match (state.cells_per_square, ruled) {
         (Some(scale), false) => {
-            let needed = squares(start, to, scale);
-            if needed * 5 > feet as u64 {
-                return Err(format!("{} feet exceeds Speed {feet} feet", needed * 5));
+            let needed = combat::feet(start, to, scale);
+            if needed > feet as u64 {
+                return Err(format!("{needed} feet exceeds Speed {feet} feet"));
             }
-            format!("{} feet of Speed {feet}, measured at {scale} cells per square", needed * 5)
+            format!("{needed} feet of Speed {feet}, measured at {scale} cells per square, diagonals 5 then 10")
         },
         (Some(_), true) => return Err("with a physical scale set, Stride is measured".into()),
         (None, false) => return Err("no physical scale is set; a GM seat rules the Stride".into()),

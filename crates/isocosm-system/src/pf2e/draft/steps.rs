@@ -190,7 +190,7 @@ pub(super) fn run(w: &mut Walk<'_>) -> Result<(), Stop> {
         w.build.coins -= r.items[&item].price;
         let bought = &r.items[&item];
         if bought.contents.is_empty() {
-            w.build.gear.push((item, 1));
+            w.build.gear.push((item, bought.per.unwrap_or(1)));
         } else {
             w.build.gear.extend(bought.contents.iter().cloned());
         }

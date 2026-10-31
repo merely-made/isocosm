@@ -114,3 +114,17 @@ fn only_orc_remaster_records_load() {
     assert!(Records::parse(&[&record("OGL", true)]).unwrap_err().contains("ORC"));
     assert!(Records::parse(&[&record("ORC", false)]).unwrap_err().contains("Remaster"));
 }
+
+#[test]
+fn diagonals_alternate_and_flanking_needs_opposite_sides() {
+    use crate::pf2e::combat::{feet, flanks};
+    // Four cells a square: one diagonal is 5 feet, two are 15, three 20.
+    assert_eq!(feet([0, 0, 0], [4, 0, 4], 4), 5);
+    assert_eq!(feet([0, 0, 0], [8, 0, 8], 4), 15);
+    assert_eq!(feet([0, 0, 0], [12, 0, 12], 4), 20);
+    assert_eq!(feet([0, 0, 0], [12, 0, 4], 4), 15);
+    assert!(flanks([-1, 0], [1, 0], [0, 0]));
+    assert!(flanks([-1, -1], [1, 1], [0, 0]));
+    assert!(!flanks([-1, -1], [1, -1], [0, 0]));
+    assert!(!flanks([-1, 0], [0, 1], [0, 0]));
+}

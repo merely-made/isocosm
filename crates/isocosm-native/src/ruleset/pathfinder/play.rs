@@ -8,13 +8,17 @@ use super::*;
 use cosmograph::Command;
 use isocosm_campaign::EquipmentSlot;
 use isocosm_system::pf2e::{
+    combat,
     draft::Build,
     play::{self as rules, Degree, Encounter, Gear, Turn},
     records::Item,
 };
 
+mod heal;
+mod shield;
 mod stride;
-pub(crate) use stride::{ground, position, speed, squares};
+mod strike;
+pub(crate) use stride::{ground, position, speed};
 
 /// Native cells one wound takes. Provisional: the size is an open fork.
 const WOUND_CELLS: u32 = 1;
@@ -177,7 +181,15 @@ pub(super) fn apply(
 ) -> Result<(String, Vec<RollRecord>), String> {
     use frame::authorize;
     let mut rolls = Vec::new();
+    if state.pending.is_some() && !matches!(action, Action::Block { .. }) {
+        return Err("a hit waits on the defender's Shield Block decision".into());
+    }
     let note = match action {
+        Action::Block { target, block } => shield::decide(state, map, session, access, *target, *block)?,
+        Action::BattleMedicine { actor, target } =>
+            heal::battle_medicine(state, map, session, sections, access, *actor, *target, &mut rolls)?,
+        Action::Begin { actor, target, kind } => heal::begin(state, map, session, access, *actor, *target, kind)?,
+        Action::Complete(actor) => heal::complete(state, map, session, access, *actor, &mut rolls)?,
         Action::Stride { actor, to } => stride::stride(state, map, session, sections, access, *actor, *to, false)?,
         Action::RuleStride { actor, to } => stride::stride(state, map, session, sections, access, *actor, *to, true)?,
         Action::Calibrate => {
@@ -272,6 +284,9 @@ pub(super) fn apply(
         Action::RaiseShield(actor) => {
             let id = authorize(session, access, *actor)?;
             let shield = gear(state, id).shield.ok_or("no shield is held")?;
+            if shield::broken(state, map, id) {
+                return Err(format!("the {} is broken", shield.name));
+            }
             spend(state, id, 1)?;
             let encounter = state.encounter.as_mut().ok_or("no encounter")?;
             let current = encounter.current;
@@ -301,59 +316,14 @@ pub(super) fn apply(
             state.check_dc = Some(dc);
             format!("GM ruling: skill checks are against DC {dc}")
         },
-        Action::Attack { actor, target } | Action::RuleAttack { actor, target } => {
-            let a = authorize(session, access, *actor)?;
+        Action::Attack { .. } | Action::RuleAttack { .. } =>
+            strike::strike(state, map, session, sections, access, action, payload, &mut rolls)?,
+        Action::OffGuard { target, on } => {
+            gm(access)?;
             let t = token(*target)?;
-            if down(map, a) {
-                return Err("this character cannot act".into());
-            }
-            let ruled = matches!(action, Action::RuleAttack { .. });
-            let ruling: &[u8] = if ruled {
-                gm(access)?;
-                br#"{"squares":1,"reason":"GM ruled the target within reach with a clear path"}"#
-            } else {
-                payload
-            };
-            let (_, reach) = frame::reach(state, session, &*sections, access, *actor, *target, ruling)?;
-            let ab = build(state, a)?;
-            let weapon = gear(state, a).weapon.cloned().unwrap_or_else(rules::fist);
-            if weapon.range.is_some() && !weapon.traits.iter().any(|x| x.starts_with("thrown")) {
-                return Err("ranged Strikes come with ranged measurement".into());
-            }
-            spend(state, a, 1)?;
-            let attacks = state.encounter.as_ref().and_then(|e| e.current()).map_or(0, |turn| turn.attacks);
-            let map_penalty = rules::multiple_attack_penalty(&weapon, attacks);
-            let bonus = rules::attack(&ab, &weapon) + map_penalty;
-            let tb = build(state, t)?;
-            let raised = state.encounter.as_ref().and_then(|e| e.turn(t.0)).is_some_and(|turn| turn.shield_raised);
-            let ac = rules::armor_class(&tb, &gear(state, t), raised);
-            let (die, face) = d20(state)?;
-            let result = rules::degree(die + bonus, ac, face);
-            rolls.push(RollRecord { by: format!("{actor} Strike"), expr: format!("1d20{bonus:+} vs AC {ac} (MAP {map_penalty})"),
-                dice: vec![face], total: (die + bonus) as i32 });
-            let encounter = state.encounter.as_mut().ok_or("no encounter")?;
-            let current = encounter.current;
-            encounter.order[current].attacks += 1;
-            let mut note = format!("Character {actor} Strikes {target} with {}: {}", weapon.name, result.name());
-            if result >= Degree::Success {
-                let critical = result == Degree::CriticalSuccess;
-                let (dice, flat, extra) = rules::damage(&ab, &weapon, critical);
-                let (rolled, faces) = isocosm_core::roll(&dice, &mut state.rng).ok_or("weapon damage dice")?;
-                let mut amount = (i64::from(rolled) + flat).max(1);
-                if critical {
-                    amount *= 2;
-                }
-                let mut all = faces;
-                if let Some(extra) = extra {
-                    let (more, faces) = isocosm_core::roll(&extra, &mut state.rng).ok_or("extra damage dice")?;
-                    amount += i64::from(more);
-                    all.extend(faces);
-                }
-                rolls.push(RollRecord { by: format!("{actor} damage"), expr: format!("{dice}{flat:+}{}",
-                    if critical { " doubled" } else { "" }), dice: all, total: amount as i32 });
-                note.push_str(&format!("; {}", hurt(state, map, session, t, amount, critical)?));
-            }
-            format!("{note}; {reach}")
+            let sheet = map.sheets.get_mut(&t).ok_or("target has no sheet")?;
+            sheet.set_int("off_guard", i64::from(*on));
+            format!("GM ruling: character {target} is {}off-guard", if *on { "" } else { "no longer " })
         },
         Action::Damage { target, amount } => {
             gm(access)?;

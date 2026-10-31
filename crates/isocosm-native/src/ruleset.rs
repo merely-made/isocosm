@@ -117,6 +117,29 @@ pub enum Action {
         actor: u64,
         to: [i64; 3],
     },
+    /// A GM seat's ruling that a creature is, or is no longer, off-guard.
+    OffGuard {
+        target: u64,
+        on: bool,
+    },
+    /// The defender's choice on a paused hit: Shield Block or take it.
+    Block {
+        target: u64,
+        block: bool,
+    },
+    /// Battle Medicine: one action, a healer's toolkit, an adjacent target.
+    BattleMedicine {
+        actor: u64,
+        target: u64,
+    },
+    /// Begin Treat Wounds (10 minutes) or rest (8 hours); completes once
+    /// consented native downtime has passed.
+    Begin {
+        actor: u64,
+        target: u64,
+        kind: String,
+    },
+    Complete(u64),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -154,6 +177,14 @@ pub struct State {
     /// The DC a GM seat set for skill checks; absent is the 1st-level 15.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub check_dc: Option<i64>,
+    /// A hit waiting on the defender's reaction.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pending: Option<pf2e::play::Pending>,
+    /// Activities waiting on native time.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub activities: Vec<pf2e::play::Activity>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub immunities: Vec<pf2e::play::Immunity>,
 }
 
 impl State {
@@ -172,6 +203,9 @@ impl State {
             drafts: BTreeMap::new(),
             encounter: None,
             check_dc: None,
+            pending: None,
+            activities: Vec::new(),
+            immunities: Vec::new(),
         }
     }
     pub fn read(sections: &BTreeMap<String, Vec<u8>>) -> Result<Option<Self>, String> {
@@ -188,7 +222,8 @@ impl State {
                     || state.cells_per_square == Some(0)
                     || state.sheets.values().any(|sheet| sheet.system != edition)
                     || (edition != pf2e::SYSTEM
-                        && (!state.drafts.is_empty() || state.encounter.is_some() || state.check_dc.is_some()))
+                        && (!state.drafts.is_empty() || state.encounter.is_some() || state.check_dc.is_some()
+                            || state.pending.is_some() || !state.activities.is_empty() || !state.immunities.is_empty()))
                 {
                     return Err("unsupported or invalid edition state".into());
                 }
