@@ -797,6 +797,7 @@ three design docs that cite it. The record holds the words.
 | 1044 | Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes. | none |
 | 1046 | The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks. | none |
 | 1047 | PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next. | none |
+| 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | none |
 
 ## Naming
 

@@ -5207,6 +5207,13 @@ area = "Bodies and anatomy"
 summary = "A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes."
 draws_on = ["1035", "1046", "bodies.2", "bodies.11"]
 
+[cases."1050"]
+title = "Pathfinder 2e combat: ammunition spent, Shield Block chosen by the defender, healing by toolkit and time, flanking by party"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members."
+draws_on = ["1034", "1047", "vtt.2", "vtt.3", "vtt.5"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
