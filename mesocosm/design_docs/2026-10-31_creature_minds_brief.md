@@ -1,9 +1,10 @@
 # Creature minds: learning in the crowd and out of it
 
-**Status:** 2026-10-31: design brief from a conversation with Mark. Nothing in
-it is ruled. Mark's words are quoted with their date; everything else is a
-proposal, a reading of the records or a question. It is not a plan: it
-changes no code, and the phases it implies belong to the plans named in §6.
+**Status:** 2026-10-31: design brief from a conversation with Mark. Its seven
+questions were answered the same day as cases 1051 to 1056 (§7); the rest is
+proposal and reading of the records. Mark's words are quoted with their date.
+It is not a plan: it changes no code, and the phases it implies belong to the
+plans named in §6.
 
 **Names** are Naming 1's (cases 1036 and 1037): the sim is Cosmograph; Isocosm
 (the VTT), Mesocosm and Eponym are peer products. Code paths below are under
@@ -117,7 +118,7 @@ disposition, and no more", forms-of-life brief).
 | | When | What changes | Where it lives |
 | --- | --- | --- | --- |
 | **Local** | within a life | the individual's plastic delta on the lineage policy; its trust table (§3.4) | a fading memory (Record 3): it decays at the holder's memory rate unless renewed. Youth learns fast and pays for it (EB2) |
-| **Fast** | across a few generations | culture: deltas of members who bred, taught or were imitated fold into the lineage policy | a named world mechanism with a cost, as the founding record requires ("A learned technique becomes heritable only through a named world mechanism, with its costs and transmission limits recorded"); optional per world (Schema 10) |
+| **Fast** | across a few generations | culture: young imitate successful kin, and teaching passes deltas on, fastest from parent to young (case 1053) | named world mechanisms with a cost, as the founding record requires ("A learned technique becomes heritable only through a named world mechanism, with its costs and transmission limits recorded"); optional per world (Schema 10) |
 | **Slow** | at reproduction and the epoch boundary | drive vector, policy size and shape, mutation | Ecology 1's two doors: reproduction rerolls expression, the boundary adopts what prospered |
 
 Folding deltas only works because every member's policy descends from the
@@ -186,11 +187,12 @@ declared kinds (Mark: "agreed on measured classification!").
   level; measured diet is the honest source of that level, where today a
   declared trait names it (`rules/directing.rs` `slots`,
   `directing/readings/regions.rs`).
-- **Sapience is the same test.** A lineage reads as sapient when its members
-  pass behavioural probes: imitation, following a direction never given
-  before, signalling to kin, tool use. A brain-capacity trait makes passing
-  possible; it is not a switch. Passing admits driving (case 671) and moves
-  the lineage up Schema 2's method tiers.
+- **Sapience is the same test** (case 1055). A creature passes by following a
+  direction never given before, by imitating an act it watched, or by using
+  one thing on another; a lineage reads as sapient when a share of its
+  members pass, and any passing individual may be driven. A brain-capacity
+  trait makes passing possible; it is not a switch. Passing admits driving
+  (case 671) and moves the lineage up Schema 2's method tiers.
 
 One measured behaviour space serves four consumers: roles, sapience, the
 hagiograph's novelty and quality gates (MAP-Elites' behaviour descriptors),
@@ -295,24 +297,27 @@ Cues for the plans that own each part, not phases of this brief.
 - `sim-host` H2 (inspection is endpoints): a roles-and-trust reading per
   lineage on the Graphshell endpoint.
 
-## 7. Questions for Mark
+## 7. Answered
 
-1. **Where the policy sits.** Does it replace the deliberative scorer's
-   hand-written terms, or take them as inputs (proposed), or bias them the
-   way B1's biases did?
-2. **Who has one.** Every deliberative lineage, or fauna first as in B1,
-   with flora growing by a developmental grammar instead (§2.6)?
-3. **The cultural mechanism.** Which named mechanism folds deltas into the
-   lineage (kin nearby imitating, parent to young, teaching), and what does
-   it cost?
-4. **The crowd.** Does the population model run the shared policy over band
-   representatives, or a rate distilled from it?
-5. **Trust's grain.** Per kind of direction, per place, per target lineage,
-   or a mix?
-6. **Sapience's probes.** Which behaviours count, and does sapience belong to
-   a lineage, an individual or both?
-7. **Imitation's reach.** Does a driven creature learn from the player only
-   in Eponym, or in Mesocosm too once its lineage is sapient?
+Put to Mark as two card rounds on 2026-10-31; each answer is a case in the
+design record, in his words.
+
+| Question | Case | Answer |
+| --- | --- | --- |
+| Where the policy sits | 1051 | It scores the offered processes, the chooser's terms as its inputs |
+| Who carries one | 1051 | Deliberative fauna; non-choosers grow by a developmental grammar |
+| How the crowd chooses | 1052 | The lineage policy over bands; a distilled rate for unmet lineages only where measured to save |
+| How culture moves | 1053 | Imitating successful kin and teaching; parent to young faster; a bounded share at birth; across lineages only acts are imitated |
+| Trust's grain | 1054 | Per kind of direction, under the bond's weight |
+| What counts as sapience | 1055 | Novel directions, imitation, tool use (not signalling) |
+| Who is sapient | 1055 | Both: a lineage by a share of members, and any passing individual |
+| Whether a driven creature learns from its player | 1056 | Wherever driving is |
+
+Still open: how large a share passes at birth and what share makes a lineage
+sapient (world rules, numbers unset); whether a distilled rate saves enough
+to adopt for unmet lineages (a measurement, `sim-execution` E6). Mark's
+"compatibility?" on teaching was read in 1053 as kinship of policies; if he
+meant something else, it comes back as a question.
 
 ## 8. Latent synergies
 

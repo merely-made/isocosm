@@ -5214,6 +5214,48 @@ area = "The VTT"
 summary = "PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members."
 draws_on = ["1034", "1047", "vtt.2", "vtt.3", "vtt.5"]
 
+[cases."1051"]
+title = "A lineage policy scores the chooser's terms; deliberative fauna carry one"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "A lineage's small integer policy scores the chooser's offered processes from its terms and recurrent state; deliberative fauna carry one, non-choosers grow by grammar."
+draws_on = ["683", "directing.4", "schema.10"]
+
+[cases."1052"]
+title = "The crowd runs its lineage's policy over bands"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "The crowd's bands run the lineage policy once for their members; a distilled rate for unmet lineages only where measured to save."
+draws_on = ["440", "1051", "sim-execution D24", "processes.6"]
+
+[cases."1053"]
+title = "Culture moves by imitating the successful and by teaching"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Learned deltas fold into a lineage by imitating successful kin and by teaching, faster from parent to young; a bounded share may pass at birth; across lineages only acts are imitated."
+draws_on = ["1051", "processes.14"]
+
+[cases."1054"]
+title = "Trust in a player's directions is kept per kind of direction"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "Under each bond a creature keeps trust per kind of direction, learned from outcomes; it speeds, slows or refuses directions and carries as the bond does."
+draws_on = ["177", "178", "688", "mesocosm.2"]
+
+[cases."1055"]
+title = "Sapience is measured: novel directions, imitation and tool use; a lineage or an individual"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "Sapience is read from behaviour (novel directions, imitation, tool use); a lineage is sapient by a share of passing members, and any passing individual may be driven."
+draws_on = ["671", "directing.3", "naming.2"]
+
+[cases."1056"]
+title = "A driven creature learns from its player wherever driving is"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture."
+draws_on = ["60", "671", "1053", "1055"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
