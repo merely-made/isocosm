@@ -42,7 +42,7 @@ pub use map::{
 pub use overmap::{Overmap, OvermapEdge, OvermapNode};
 pub use pack::{
     BeatEntry, CONTENT_PACK_FORMAT, ContentPackError, ContentPackManifest, GeneratorChoice,
-    GeneratorEntry, GeneratorLockPreset,
+    GeneratorEntry, GeneratorLockPreset, QuickstartEntry,
 };
 pub use world::{
     CampaignDraft, CampaignWorld, DraftMap, MapInhabitant, RoleSlot, StoryletEffect, StoryletError,

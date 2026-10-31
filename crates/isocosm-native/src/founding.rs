@@ -18,6 +18,8 @@ pub use publication::{NativeCursor, NativeWorld};
 mod content;
 mod generation;
 mod table;
+mod quickstart;
+pub use quickstart::quickstart_draft;
 pub use content::{Content, EDITIONS, TableMetadata, default_edition, edition_label, is_default_edition};
 pub use generation::GenerationOrigin;
 

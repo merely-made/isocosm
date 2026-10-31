@@ -111,7 +111,15 @@ pub fn generator_overlay(ui: &UiState) -> Option<UiChild> {
     if ui.native.world.is_some() {
         return Some(crate::native_pack::overlay(ui));
     }
-    let choice = ui.selected_generator()?;
+    let Some(choice) = ui.selected_generator() else {
+        // No generator pack: the panel still offers the quick-start worlds.
+        let body = founding::quickstarts(ui);
+        if body.is_empty() { return None; }
+        let close: UiChild = Box::new(clickable(
+            el::<_, UiState, ()>("span", text("close")).attr("class", "btn btn-mini"),
+            |ui: &mut UiState, _| ui.close_generator()));
+        return Some(crate::widgets::overlay_panel("generator", "Generate".to_owned(), vec![close], body));
+    };
     let preset = choice.lock_presets.first();
     let locked = preset.is_some_and(|preset| ui.generator_locks.contains_key(&preset.key));
     let lock_label = match (preset, locked) {
@@ -198,6 +206,7 @@ pub fn generator_overlay(ui: &UiState) -> Option<UiChild> {
         ],
     };
     let mut body = body;
+    body.extend(founding::quickstarts(ui));
     body.insert(
         0,
         Box::new(clickable(

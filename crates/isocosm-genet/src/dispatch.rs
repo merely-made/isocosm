@@ -130,6 +130,7 @@ impl App {
         self.pump_native_institutions(ctx);
         self.pump_native_composed_storylet(ctx);
         self.pump_native_party(ctx);
+        self.pump_quickstart(ctx);
         self.pump_native_packs(ctx);
         // Cheap flags first: this tail runs after every dispatch, and the save
         // path below starts by cloning the journal. An ordinary click asks for
@@ -153,6 +154,7 @@ impl App {
             self.pump_native_institutions(ctx);
             self.pump_native_composed_storylet(ctx);
             self.pump_native_party(ctx);
+        self.pump_quickstart(ctx);
             self.pump_native_packs(ctx);
             self.refresh_source_history(ctx);
             self.sync_native_choreography(ctx);

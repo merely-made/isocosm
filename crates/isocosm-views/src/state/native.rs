@@ -54,6 +54,19 @@ pub struct NativeUi {
     pub preview_request: bool,
     pub selection: Option<Selection>,
     pub events:crate::NativeEventUi,
+    /// Quick-start worlds the host can found in one step (case 1041).
+    pub quickstarts: Vec<QuickstartChoice>,
+    /// The index of the quick-start world asked for, once.
+    pub quickstart_request: Option<usize>,
+}
+
+/// A quick-start world on offer: its pack's datasheet text and where it came from.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct QuickstartChoice {
+    pub name: String,
+    /// "carried" for the sim's own, else the content pack's id.
+    pub source: String,
+    pub text: String,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -187,6 +200,13 @@ impl super::UiState {
         self.native.edition = edition.to_owned();
         self.status = format!("the campaign will be founded under {}", isocosm_native::founding::edition_label(edition));
     }
+    /// Ask the host to found the quick-start world at `index`.
+    pub fn request_quickstart(&mut self, index: usize) {
+        if !self.can_edit_inventory { self.status = "founding a world requires the host".into(); return; }
+        if self.native.world.is_some() { self.status = "a native campaign is already founded".into(); return; }
+        if index < self.native.quickstarts.len() { self.native.quickstart_request = Some(index); }
+    }
+
     pub fn preview_native_world(&mut self) {
         if !self.can_edit_inventory { self.status = "world selection requires the host".into(); return; }
         if self.generator_preview.is_none() { self.status = "generate a campaign draft first".into(); return; }

@@ -98,6 +98,13 @@ impl HostNet {
         Ok(())
     }
 
+    pub async fn commit_native_quickstart(&self, pack: &str, seed: u64, mode: cosmograph::Execution)
+        -> Result<(), String> {
+        let out = self.session.lock().await.commit_native_quickstart(pack, seed, mode)?;
+        dispatch(&self.peers, out).await;
+        Ok(())
+    }
+
     pub async fn commit_native_campaign(
         &self,
         profile: &cosmograph::Founding,

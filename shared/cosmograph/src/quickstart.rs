@@ -76,12 +76,22 @@ pub struct Founder {
 #[serde(deny_unknown_fields)]
 pub struct Dwelling { pub key: Key, pub name: String, pub tenant: Key, pub with: Key, pub work: Work, pub terms: Terms }
 
+/// A pack from its datasheet text, wherever it was read from: carried here
+/// or found in a content pack's folder.
+pub fn parse(text: &str) -> Result<Pack> {
+    let pack: Pack = toml::from_str(text).map_err(|e| format!("quick-start pack: {e}"))?;
+    if pack.schema != 1 {
+        return Err(format!("quick-start pack {}: unsupported schema {}", pack.key, pack.schema));
+    }
+    Ok(pack)
+}
+
 /// A carried pack by key.
 pub fn pack(key: &str) -> Result<Pack> {
     let (_, text) = PACKS.iter().find(|(k, _)| *k == key).ok_or("no quick-start pack under that key")?;
-    let pack: Pack = toml::from_str(text).map_err(|e| format!("quick-start pack {key}: {e}"))?;
-    if pack.schema != 1 || pack.key != key {
-        return Err(format!("quick-start pack {key}: schema or key disagrees"));
+    let pack = parse(text)?;
+    if pack.key != key {
+        return Err(format!("quick-start pack {key}: its key disagrees"));
     }
     Ok(pack)
 }
@@ -157,12 +167,21 @@ impl Pack {
     }
 }
 
+impl Pack {
+    /// The pack laid over a world drawn under `seed`, and that world's map
+    /// sites in id order, before anyone enters.
+    pub fn genesis(&self, seed: u64) -> Result<(Genesis, Vec<Id>)> {
+        let mut genesis = self.founding(seed).generate()?;
+        self.lay(&mut genesis)?;
+        let sites = genesis.sites.keys().copied().collect();
+        Ok((genesis, sites))
+    }
+}
+
 /// The pack `key` laid over a world drawn under `seed`, founded.
 pub fn session(key: &str, seed: u64, mode: Execution) -> Result<Session> {
     let pack = pack(key)?;
-    let mut genesis = pack.founding(seed).generate()?;
-    pack.lay(&mut genesis)?;
-    let sites: Vec<Id> = genesis.sites.keys().copied().collect();
+    let (genesis, sites) = pack.genesis(seed)?;
     let mut session = Session::new(genesis, mode)?;
     pack.found(&mut |c| session.command(c), &sites)?;
     Ok(session)

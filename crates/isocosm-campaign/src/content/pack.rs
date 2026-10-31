@@ -44,6 +44,17 @@ pub struct ContentPackManifest {
     /// cheer but not spit.
     #[serde(default)]
     pub choreography: Vec<BeatEntry>,
+    /// Quick-start worlds the pack offers (cases 1023 and 1041): Cosmograph
+    /// quick-start datasheets, relative to the pack root, which the founding
+    /// panel lists beside the ones the sim carries.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub quickstarts: Vec<QuickstartEntry>,
+}
+
+/// One quick-start world's datasheet, relative to the pack root.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct QuickstartEntry {
+    pub file: String,
 }
 
 /// One named beat: its stylesheet, and whether it can be thrown as an emote.
@@ -182,6 +193,9 @@ impl ContentPackManifest {
                 return Err(ContentPackError::UnsafePath(beat.style.clone()));
             }
         }
+        if let Some(entry) = self.quickstarts.iter().find(|q| !is_pack_path(&q.file)) {
+            return Err(ContentPackError::UnsafePath(entry.file.clone()));
+        }
         Ok(())
     }
 
@@ -316,6 +330,7 @@ mod tests {
             license: None,
             credit: None,
             choreography: Vec::new(),
+            quickstarts: Vec::new(),
             generators: vec![GeneratorEntry {
                 id: "forge_item".to_owned(),
                 name: "Forge item".to_owned(),

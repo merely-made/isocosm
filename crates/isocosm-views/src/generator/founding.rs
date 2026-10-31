@@ -43,6 +43,20 @@ pub(super) fn selection(ui: &UiState) -> Vec<UiChild> {
     body
 }
 
+/// Quick-start worlds (cases 1023, 1041): each founds its world in one step.
+pub(super) fn quickstarts(ui: &UiState) -> Vec<UiChild> {
+    if !ui.can_edit_inventory || ui.native.world.is_some() || ui.native.quickstarts.is_empty() {
+        return Vec::new();
+    }
+    let mut body: Vec<UiChild> = vec![Box::new(el("h3", text("Found a quick-start world")))];
+    for (index, choice) in ui.native.quickstarts.iter().enumerate() {
+        let label = format!("{} ({})", choice.name, choice.source);
+        body.push(Box::new(clickable(el("div", text(label)).attr("class", "btn"),
+            move |ui: &mut UiState, _| ui.request_quickstart(index))));
+    }
+    body
+}
+
 pub(crate) fn table_controls(ui: &UiState) -> Vec<UiChild> {
     let mut body: Vec<UiChild> = vec![Box::new(el("div", text(
         "Native table: explicitly admit characters/control, then bind tokens, authenticated peers and authored cells."

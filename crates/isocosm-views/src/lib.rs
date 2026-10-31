@@ -76,7 +76,7 @@ pub use state::{
 };
 pub use state::{VttActionRequest, VttActionView, VttCardValue, VttCardView, VttProjectionView};
 pub use state::{OvermapMotionState, OvermapMotionTick};
-pub use state::native::{Acceptance as NativeAcceptance, NativeUi, TableFileAction, PhysicalRequest, PhysicalOutcome,
+pub use state::native::{Acceptance as NativeAcceptance, NativeUi, QuickstartChoice, TableFileAction, PhysicalRequest, PhysicalOutcome,
     ItemsRequest, ItemsOutcome, ItemsFileAction};
 pub use state::{PACE_PCTS, STANCE_KEYS, mode_items, pace_items, stance_items};
 pub use theme::{board_css, class_css, tile_kind_colour};

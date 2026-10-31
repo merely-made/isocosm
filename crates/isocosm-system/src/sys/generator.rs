@@ -54,6 +54,13 @@ impl GeneratorCatalog {
         Self { packs, diagnostics }
     }
 
+    /// Every quick-start datasheet the discovered packs offer, as (pack id,
+    /// path) (case 1041); reading and parsing them is the caller's.
+    pub fn quickstarts(&self) -> Vec<(String, PathBuf)> {
+        self.packs.iter().flat_map(|pack| pack.manifest().quickstarts.iter()
+            .map(|entry| (pack.manifest().id.clone(), pack.root.join(&entry.file)))).collect()
+    }
+
     pub fn choices(&self) -> Vec<GeneratorChoice> {
         self.packs
             .iter()

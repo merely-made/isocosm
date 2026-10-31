@@ -115,6 +115,7 @@ mod native_events;
 mod native_time;
 mod overmap;
 mod product;
+mod quickstart;
 mod scene_board;
 #[cfg(test)]
 mod scene_routing;

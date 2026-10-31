@@ -22,6 +22,8 @@ pub(super) enum BridgeCommand {
         request: RequestId, profile: cosmograph::Founding, mode: cosmograph::Execution,
         record: GenerationRecord, item_owner: Option<TokenId>,
     },
+    /// A quick-start pack's datasheet text, founded in one step (case 1041).
+    NativeQuickstart { request: RequestId, pack: String, seed: u64, mode: cosmograph::Execution },
     Event(GameEvent),
     Travel {
         request: RequestId,

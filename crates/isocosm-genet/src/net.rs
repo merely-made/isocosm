@@ -405,6 +405,10 @@ async fn run_host(
                     let result = host.commit_native_campaign(&profile, &record, item_owner, mode).await;
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
                 },
+                BridgeCommand::NativeQuickstart { request, pack, seed, mode } => {
+                    let result = host.commit_native_quickstart(&pack, seed, mode).await;
+                    out.emit(BridgeUpdate::CampaignFinished(Correlated::new(request, result)));
+                },
                 BridgeCommand::Campaign {
                     request,
                     record,
@@ -529,6 +533,7 @@ async fn run_client(
                     )));
                 },
                 BridgeCommand::Campaign { request, .. } | BridgeCommand::NativeCampaign { request, .. }
+                    | BridgeCommand::NativeQuickstart { request, .. }
                     | BridgeCommand::NativeSetup { request, .. } | BridgeCommand::NativeTableBinding { request, .. }
                     | BridgeCommand::NativeTableAdmission { request, .. } => {
                     out.emit(BridgeUpdate::CampaignFinished(Correlated::new(
