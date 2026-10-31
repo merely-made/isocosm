@@ -11403,6 +11403,21 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1023, 1043, processes.13 · summary Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes.
 
+1045. **A shared mechanism moves when its second consumer is planned, not
+      when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
+      D12, refining mere's Stack 1): "second host is planned", because
+      "shows up doesn't happen, you know, until it's planned. And shows up
+      also doesn't happen until the extraction happens. But then the
+      extraction is gated on a second consumer, right? So it's just
+      circular." Planned means a dated plan in the consumer's own repository
+      names the adoption with a done-condition; the move is done when the
+      code has moved and its first consumer builds on it, and the second
+      consumer's adoption is that consumer's receipt. Mark asked that the
+      same rule reach the wing ("Also isocosm Stack 7"): 332's stamp barrier
+      moves into conatus once a second consumer plans it.
+
+      Links: area Stack and engine · amends 332 · draws on mere:stack.1 · summary A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

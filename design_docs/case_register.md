@@ -644,6 +644,7 @@ three design docs that cite it. The record holds the words.
 | 962 | The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots. | [session network](2026-10-28_session_network_plan.md) |
 | 969 | Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide. | none |
 | 1000 | Ruling 78 as discipline: native binding first, a component binding when a rung-3 consumer exists; contract types round-trip through bytes; cores stay native. | [DOC README](DOC_README.md) |
+| 1045 | A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt. | none |
 
 ## Host and network
 

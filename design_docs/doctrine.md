@@ -1598,14 +1598,17 @@ Bindings, when built, are a conatus module generic over the key: bodies only,
 on a world shared with the terrain collider; accepted state arrives whole and
 per key, the two agreeing; a moved body keeps its id. Edits carry the
 source's stamp; conatus refreshes queries on call; a barrier on the stamp
-stays in the product until a second consumer needs it.
+stays in the product until a second consumer plans it.
 
-Links: draws on 332, 347, 348, 349, 350, 351, 352, 604, 609, 695, 724 · stack · summary Physics is conatus's, replaying bit for bit across machines; isometer answers picks; bindings, when built, are generic conatus modules.
+Links: draws on 332, 347, 348, 349, 350, 351, 352, 604, 609, 695, 724, 1045 · stack · summary Physics is conatus's, replaying bit for bit across machines; isometer answers picks; bindings, when built, are generic conatus modules.
 
 *Reviewed 2026-10-22, new. Built: parry private inside conatus, rapier's
 enhanced determinism, the query refresh, isometer's pick. Not yet built: the
 binding module, the labelled-digest crate, the cross-OS digest. Mark: "As
 drafted, tagged stack".*
+
+*Refined 2026-10-31 (1045): the barrier waits for a planned second consumer,
+not an arrived one. Mark: "Also isocosm Stack 7".*
 
 ### Stack 8. Lit bodies over traced terrain
 

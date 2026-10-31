@@ -5171,6 +5171,14 @@ area = "The VTT"
 summary = "Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes."
 draws_on = ["1023", "1043", "processes.13"]
 
+[cases."1045"]
+title = "A shared mechanism moves when its second consumer is planned, not when it arrives"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Stack and engine"
+summary = "A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt."
+draws_on = ["mere:stack.1"]
+amends = ["332"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6347,7 +6355,7 @@ title = "Physics is conatus's"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "Physics is conatus's, replaying bit for bit across machines; isometer answers picks; bindings, when built, are generic conatus modules."
-draws_on = ["332", "347", "348", "349", "350", "351", "352", "604", "609", "695", "724"]
+draws_on = ["332", "347", "348", "349", "350", "351", "352", "604", "609", "695", "724", "1045"]
 stack = true
 
 [statements."stack.8"]
