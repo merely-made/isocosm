@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-//! A quick-start world founded as a campaign in one step (cases 1023, 1041):
+//! A quick-start world founded as a campaign in one step (case 1023; Mark: "Picker + packs from disk"):
 //! the pack laid over its drawn world, its founders entered by the founding
 //! door at the first tick, and the smallest table content beside it.
 

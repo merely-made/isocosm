@@ -43,7 +43,7 @@ pub(super) fn selection(ui: &UiState) -> Vec<UiChild> {
     body
 }
 
-/// Quick-start worlds (cases 1023, 1041): each founds its world in one step.
+/// Quick-start worlds (case 1023; Mark: "Picker + packs from disk"): each founds its world in one step.
 pub(super) fn quickstarts(ui: &UiState) -> Vec<UiChild> {
     if !ui.can_edit_inventory || ui.native.world.is_some() || ui.native.quickstarts.is_empty() {
         return Vec::new();

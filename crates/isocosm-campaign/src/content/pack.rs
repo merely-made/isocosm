@@ -44,7 +44,7 @@ pub struct ContentPackManifest {
     /// cheer but not spit.
     #[serde(default)]
     pub choreography: Vec<BeatEntry>,
-    /// Quick-start worlds the pack offers (cases 1023 and 1041): Cosmograph
+    /// Quick-start worlds the pack offers (case 1023; Mark: "Picker + packs from disk"): Cosmograph
     /// quick-start datasheets, relative to the pack root, which the founding
     /// panel lists beside the ones the sim carries.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]

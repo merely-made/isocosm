@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-//! Quick-start worlds (cases 1023, 1041): the picker lists the packs the sim
+//! Quick-start worlds (case 1023; Mark: "Picker + packs from disk"): the picker lists the packs the sim
 //! carries and those the content-pack folders offer, and founds the chosen
 //! one in a single host commit.
 

@@ -41,7 +41,7 @@ impl HostSession {
         self.publish_native_founding(prepared, item_owner)
     }
 
-    /// Found a quick-start pack's world in one step (cases 1023, 1041): `pack`
+    /// Found a quick-start pack's world in one step (case 1023; Mark: "Picker + packs from disk"): `pack`
     /// is the datasheet text, carried or read from a content pack's folder.
     pub fn commit_native_quickstart(
         &mut self, pack: &str, seed: u64, mode: Execution,

@@ -54,7 +54,7 @@ pub struct NativeUi {
     pub preview_request: bool,
     pub selection: Option<Selection>,
     pub events:crate::NativeEventUi,
-    /// Quick-start worlds the host can found in one step (case 1041).
+    /// Quick-start worlds the host can found in one step.
     pub quickstarts: Vec<QuickstartChoice>,
     /// The index of the quick-start world asked for, once.
     pub quickstart_request: Option<usize>,
