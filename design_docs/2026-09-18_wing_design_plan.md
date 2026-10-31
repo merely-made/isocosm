@@ -11330,6 +11330,23 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Naming · draws on 1036, 1037, schema.9 · summary Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration.
 
+1040. **Stored names migrate at load; the chronicle moves to v1; "nemeses"
+      means relation-based tracking.** Ruled by Mark on 2026-10-31 (Mark: "At
+      load", "Bump the chronicle to v1", "One per container"). The reading:
+      renamed stored names are read new-then-old and written new, the old
+      removed after the first good write, each renamed container's version
+      moving once (session 24, checkpoint format 3, active effects 2); the
+      shared chronicle format moves to v1 for every game, its fixtures
+      regenerated. On 1030's "radiant quests and nemeses", asked whether the
+      Eponym guardrail against rival-hierarchy promotion (patented to August
+      2036) should limit it: "Ah, i did not mean rival-hierarchy. Just
+      relation-based entity tracking. They do not own the world nemesis, even
+      if they have patented the nemesis system." So nemeses are entities
+      tracked by their relations to the players (remembered enmity and its
+      history), and the guardrail is untouched.
+
+      Links: area Naming · draws on 1030, 1039, schema.9 · summary Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

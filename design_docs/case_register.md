@@ -808,6 +808,7 @@ three design docs that cite it. The record holds the words.
 | 1036 | The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 1037 | Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 1039 | Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration. | none |
+| 1040 | Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion. | none |
 
 ## Licensing and sources
 
