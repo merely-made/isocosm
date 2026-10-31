@@ -5186,6 +5186,27 @@ area = "The VTT"
 summary = "The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks."
 draws_on = ["1035", "1043", "licensing.1"]
 
+[cases."1047"]
+title = "Pathfinder 2e measures diagonals by the book; ordinary combat is next"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next."
+draws_on = ["1042", "vtt.5"]
+
+[cases."1048"]
+title = "The world-graph viewer runs on a bench-founded generated world, branches diverge by an act, and draws on the stack's canvas"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Host and network"
+summary = "H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack."
+draws_on = ["1038", "1045", "host.2", "record.4"]
+
+[cases."1049"]
+title = "Creature bodies get a shared presentation skin"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes."
+draws_on = ["1035", "1046", "bodies.2", "bodies.11"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

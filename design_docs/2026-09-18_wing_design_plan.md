@@ -11413,6 +11413,46 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1035, 1043, licensing.1 · summary The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks.
 
+1047. **Pathfinder 2e measures diagonals by the book; ordinary combat is
+      next.** Ruled by Mark on 2026-10-31 (Mark: "Player Core's 5/10",
+      "Finish ordinary combat"), after Stride landed measuring plain squares.
+      The reading: under Pathfinder 2e, Stride and reach count diagonals at 5
+      then 10 feet alternately, as Player Core does, other editions keeping
+      their own rule; the rules lane next builds ranged Strikes, conditions
+      (off-guard, Sneak Attack), Shield Block and healing.
+
+      Links: area The VTT · draws on 1042, vtt.5 · summary PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next.
+
+1048. **The world-graph viewer runs on a bench-founded generated world,
+      branches diverge by an act, and draws on the stack's canvas.** Ruled by
+      Mark on 2026-10-31 (Mark: "Generated, bench-founded", "A change inside
+      the branch", "Mere lane extracts the mapping"), after the viewer lane
+      measured that a branch forked by `fork_at` replays identically to its
+      main line (the branch key seeds nothing) and that Mill Ford does not
+      change over fifty ticks. The reading: H9 founds a seed nobody chose
+      under the bench purpose, the viewer being an instrument, and shows the
+      place step at site grain until World 10's people land; a branch becomes
+      its own when a change is offered inside it; the graph is drawn by
+      mere's `pictograph` canvas, the Graphshell scene-to-canvas mapping moved
+      out of the web-only port into the stack as its second consumer
+      arrives, and the viewer is a binary in `cosmograph-host` behind a
+      feature.
+
+      Links: area Host and network · draws on 1038, 1045, record.4, host.2 · summary H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack.
+
+1049. **Creature bodies get a shared presentation skin.** Ruled by Mark on
+      2026-10-31 (Mark: "All as recommended"), the appearance lane's forks on
+      creature bodies. The reading: the body's skin is the presentation half
+      of phenotype-contract P5, in isometer's body adapter and shared by all
+      three products (Mesocosm's function colouring moving into it); forms
+      are drawn inside each part's declared extent and never read back as
+      geometry; palette comes from matter, a pack mapping matter keys to
+      colours, with function regions as marks and seeded colour variation
+      only; with the sim off, creatures keep their pack classes; construction
+      (P1) and generation (C0) stay with the phenotype plan.
+
+      Links: area Bodies and anatomy · draws on 1035, 1046, bodies.2, bodies.11 · summary A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes.
+
 1045. **A shared mechanism moves when its second consumer is planned, not
       when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
       D12, refining mere's Stack 1): "second host is planned", because
