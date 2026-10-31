@@ -5094,6 +5094,13 @@ area = "The VTT"
 summary = "Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text."
 draws_on = ["1022", "1028", "1029", "1031"]
 
+[cases."1034"]
+title = "Pathfinder 2e play: arms and armour, one-cell wounds, Stride moves the body"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move."
+draws_on = ["1020", "1021", "1026", "vtt.5"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

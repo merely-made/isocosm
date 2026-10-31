@@ -11243,6 +11243,20 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1022, 1028, 1029, 1031 · summary Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text.
 
+1034. **Pathfinder 2e play: arms and armour, one-cell wounds, Stride moves
+      the body.** Ruled by Mark on 2026-10-30, each as recommended. Gear
+      (Mark: "All arms and armour + kit gear"): every level-0 Player Core
+      weapon, armour and shield plus the gear the Fighter and Rogue kits and
+      the adventurer's pack name, about 110 records, bought with 15 gp or
+      taken as a class kit. Wounds (Mark: "One cell each"): a critical hit
+      taken and each drop to dying wound one cell of a part the sim draws.
+      Stride (Mark: "Stride carries the move"): one transaction carries the
+      native cell batch, checked against Speed at the campaign's
+      cells-per-square, and spends an action; where the scale is unset, a
+      GM's recorded ruling stands in.
+
+      Links: area The VTT · draws on 1020, 1021, 1026, vtt.5 · summary PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
