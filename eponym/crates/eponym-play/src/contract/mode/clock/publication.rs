@@ -63,6 +63,13 @@ pub(super) fn ordered(mode: &mut ModeState, state: &mut State, actions: &mut Act
                 let report = reports.iter().find(|r| r.request.child == *child).ok_or("published birth report absent")?;
                 changes.extend(birth::publish(mode, state, actions, sim, births, report)?);
             },
+            // The sim's tier line (E5) and re-settling (D38) only matter for
+            // a played subject; re-posing a saved binding is not built yet.
+            native::Publication::Unplaced(id) | native::Publication::Drawn { actor: id, .. } => {
+                if mode.bindings.iter().any(|b| b.entity == *id) {
+                    return Err("tier or re-settle publication for a played subject is not supported".into());
+                }
+            },
         }
     }
     if used_births.len() != reports.len() { return Err("native birth report was omitted from publication order".into()); }
