@@ -5718,10 +5718,10 @@ summary = "Blows resolve in the foreground and hand back; motion and contact are
 draws_on = ["233", "597", "943", "processes.1"]
 
 [statements."eponym.3"]
-title = "Eponym's world is native Isocosm"
+title = "Eponym's world is native Cosmograph"
 source = "design_docs/doctrine.md"
 area = "Eponym"
-summary = "Eponym's needs, wounds, knowing, items and social vocabulary are native Isocosm; crafts are rules-pack keys."
+summary = "Eponym's needs, wounds, knowing, items and social vocabulary are native Cosmograph; crafts are rules-pack keys."
 draws_on = ["239", "767", "771", "776", "777", "778", "808"]
 
 [statements."eponym.4"]
@@ -5735,7 +5735,7 @@ draws_on = ["816", "818", "819", "825", "835"]
 title = "One sim host under three product hosts"
 source = "design_docs/doctrine.md"
 area = "Host and network"
-summary = "The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it."
+summary = "The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it."
 draws_on = ["381", "884", "892", "896", "898", "901", "925", "926", "927"]
 
 [statements."host.2"]

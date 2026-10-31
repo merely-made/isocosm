@@ -1158,7 +1158,7 @@ follows.
 
 Links: draws on 147, 148, 391, 392, 393, 394, 396, 399, 400, 401, 402, 403, 670, 744 · summary Skeleton, edge profiles and Coons interiors lift sites to chunked columns; the lift is isometer's; the sim has no render crate.
 
-*Reviewed 2026-10-22, new. 392 and 393 put the lift in Isocosm; 670 had
+*Reviewed 2026-10-22, new. 392 and 393 put the lift in the sim; 670 had
 moved in-site space to isometer, where the lift's code lives, without the
 link. Mark: "As drafted, 670 amends 392 and 393".*
 
@@ -1529,14 +1529,14 @@ mere's doctrine as Stack 3 ("Split as drafted").*
 
 ### Stack 4. One sim, one contract, one bench
 
-Isocosm generates worlds, histories and entities, configurable and
+Cosmograph generates worlds, histories and entities, configurable and
 extensible, played several ways; projections, perspectives, turn-based or
 real-time play are distinctions made on top of it. No product's paradigm is
 hardcoded into it: named scopes (world, region, area, battlemap) are a game's
 defaults, not levels the sim holds (World 3). It is the one sim: no product
 grows an engine of its own, and mesocosm-core's sim moved in, re-expressed in
 process definitions, and retired. Games meet the sim through one game-neutral
-crate, `isocosm-overlay`, submitting intents and taking back events, a
+crate, `cosmograph-overlay`, submitting intents and taking back events, a
 read-only view of each tick and, through the handoff, the outcomes they
 settle: each game's vocabulary a module, shapes two games share lifted once
 into its core (points, act keys, harm, wounds, parts), the tick a newtype over
@@ -1700,13 +1700,13 @@ Stack 5 ("Split as drafted").*
 
 ### Host 1. One sim host under three product hosts
 
-The embeddable core, `isocosm-host` as a library, founds worlds and holds the
+The embeddable core, `cosmograph-host` as a library, founds worlds and holds the
 world and its session (Mesocosm's included), the clock with an explicit step
 (each product picks wall-clock or explicit pacing), and a driver typed
 through a product trait. Three uniform product hosts sit on isomere's
 `Assembly` over it.
 
-Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
+Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
 
 *Refined 2026-10-22 in the Stack and engine review: 381, the decision the core
 and product hosts carry out, cited (Mark: "Refile to Host, cited by Host 1").*
@@ -1714,8 +1714,8 @@ and product hosts carry out, cited (Mark: "Refile to Host, cited by Host 1").*
 ### Host 2. Inspection is endpoints
 
 The core's inspection is a Graphshell endpoint behind a feature in
-`isocosm-host`; each product's panels are an endpoint module behind a feature
-in an existing crate. No new `isometry-` names are made. Every snapshot
+`cosmograph-host`; each product's panels are an endpoint module behind a feature
+in an existing crate. No new crate names are made for it. Every snapshot
 records tick, entry count and state hash, and an intent checks it, so a
 change through any endpoint stales every endpoint (Record 1).
 
@@ -1860,7 +1860,7 @@ Links: draws on 233, 597, 943, processes.1 · summary Blows resolve in the foreg
 *Reviewed 2026-10-22, new. Mark moved the handback principle up to
 Processes 1 ("Move the handback principle up"); this statement cites it.*
 
-### Eponym 3. Eponym's world is native Isocosm
+### Eponym 3. Eponym's world is native Cosmograph
 
 Needs are native accounts read by needs; a wound is cell loss; knowing is
 notes plus the reach; items are inert entities carried by relation, with
@@ -1869,7 +1869,7 @@ native geometry; crafts and deed weights are keys a rules pack declares, which
 other games can declare too; a deed carries its agreement as a typed link on
 its event.
 
-Links: draws on 239, 767, 771, 776, 777, 778, 808 · summary Eponym's needs, wounds, knowing, items and social vocabulary are native Isocosm; crafts are rules-pack keys.
+Links: draws on 239, 767, 771, 776, 777, 778, 808 · summary Eponym's needs, wounds, knowing, items and social vocabulary are native Cosmograph; crafts are rules-pack keys.
 
 *Reviewed 2026-10-22, new; checked built (crafts are keys the world's
 vocabulary declares).*
@@ -2088,7 +2088,7 @@ Links: draws on 914, 917 · summary The crates aim to be published; each release
 
 ### Licensing 3. Licences follow the layer
 
-The VTT's crates, `isocosm-vtt` included, are MIT OR Apache-2.0. Mesocosm,
+The VTT's crates, `isocosm-native` included, are MIT OR Apache-2.0. Mesocosm,
 Eponym, the shared wing crates and their promoted library crates are
 MPL-2.0; the only exception route is the fork/vendor criterion in mere's
 license posture brief (`mere/design_docs/2026-08-22_license_posture_brief.md`).
