@@ -48,7 +48,7 @@ pub use items::{ProjectCarryPolicy,ProjectCarryConfig,ProjectCustodyWitness,Proj
 pub mod graft;
 
 mod reading;
-pub use reading::{Geography, Reading, polity_readings};
+pub use reading::{Geography, Reading, place_readings, places, polity_readings};
 
 /// Where the native operation refused an input.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

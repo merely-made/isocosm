@@ -334,6 +334,7 @@ struct App {
     /// party selection and native join, then verify the accepted replay.
     family_selftest: Option<selftest::FamilySelftest>,
     magic_selftest: Option<selftest::MagicSelftest>,
+    region_selftest: Option<selftest::RegionSelftest>,
     /// `ISOMETRY_SELECT_SELFTEST`: B3's headed receipt. Press on raised ground
     /// and right-press a token, both through the board's own pointer path, and
     /// leave the selection and the menu standing for a capture.

@@ -64,6 +64,7 @@ pub mod probe;
 pub mod process;
 mod profile;
 pub mod projects;
+pub mod quickstart;
 pub mod party;
 mod queries;
 pub mod reach;

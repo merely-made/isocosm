@@ -36,6 +36,8 @@ pub struct PartyView {
     pub overmap: Option<isocosm_vtt::native::overmap::OvermapReading>,
     pub hooks: Vec<isocosm_vtt::native::hooks::GoalHook>,
     pub polities: Vec<isocosm::polities::PolityReading>,
+    /// Places read off their residents, for GM authority only (World 10).
+    pub places: Vec<isocosm_vtt::native::places::PlaceView>,
     pub knowledge: Option<isocosm_vtt::native::party::KnowledgeReading>,
     pub location_authoring: std::collections::BTreeMap<Id, isocosm::schema::Location>,
 }

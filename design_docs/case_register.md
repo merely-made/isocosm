@@ -73,7 +73,7 @@ three design docs that cite it. The record holds the words.
 | 991 | No will to continue is built into a polity; an institution seen clinging on is subordinated to its own officers' faction. | [DOC README](DOC_README.md) |
 | 992 | A contingent polity borrows its host's enforcement, so it is cheap to found, and a host's failure cascades through what is contingent on it. | [DOC README](DOC_README.md) |
 | 1014 | A VTT campaign defaults to ruleset-led; sim-led is a founding choice; calibration binds only sim-led worlds. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1024 | "Any group decision-making" covers faction and polity; a constitution makes a faction a polity. | none |
+| 1024 | "Any group decision-making" covers faction and polity; a constitution makes a faction a polity. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 
 ## Processes and rules
 
@@ -481,8 +481,8 @@ three design docs that cite it. The record holds the words.
 | 1015 | Founding places households by geography and resources; a town is read off dwellings, tenancies, work and institutions, never stored. | none |
 | 1017 | The town reading takes a size ladder of words read off population and institutions; a naming round sets words and thresholds. | none |
 | 1023 | In a world given deep time people grow out of its conditions and are read up a ladder; a quick-start world is a modded, shared world with authored founders. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 1025 | The ladder's tiers are hamlet, town and city, thresholds set from measured draws. | none |
-| 1027 | A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing. | none |
+| 1025 | The ladder's tiers are hamlet, town and city, thresholds set from measured draws. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1027 | A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1032 | Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members. | none |
 
 ## Organs: glyphs, impresa, hagiograph
@@ -779,7 +779,7 @@ three design docs that cite it. The record holds the words.
 | 1020 | PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction. | none |
 | 1021 | The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting. | none |
 | 1022 | A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden. | none |
-| 1026 | PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists. | none |
+| 1026 | PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1028 | Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today. | none |
 | 1029 | A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset. | none |
 | 1030 | GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal. | none |

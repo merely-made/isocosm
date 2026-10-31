@@ -90,6 +90,7 @@ pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party
     let hooks=if dm {isocosm_vtt::native::goal_hooks(session,access.subject.map_or(u64::MAX,|id|id.0),
         isocosm::directing::readings::Mode::Creative)?} else {Vec::new()};
     let polities=if dm {isocosm_vtt::native::polity_readings(session,access)?} else {Vec::new()};
+    let places=if dm {isocosm_vtt::native::place_readings(session,access)?} else {Vec::new()};
     let mut journey_authoring = Vec::new();
     if dm {
         let roster = table.bound_players();
@@ -123,7 +124,7 @@ pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party
         source: isocosm::digest(snapshot.native.as_ref().ok_or("no native campaign")?),
         table: table_digest(snapshot.native_table.as_ref()), participant: access.participant.0,
         subject: access.subject.map(|id| id.0), shared, map, here, events,
-        dm,journeys,journey_authoring,journey_quote:None,overmap,hooks,polities,knowledge,
+        dm,journeys,journey_authoring,journey_quote:None,overmap,hooks,polities,places,knowledge,
         location_authoring: if dm { session.sim.state().locations.clone() } else { Default::default() } };
     Ok(view)
 }

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 //! Adventures and current goals: the DM's pack, storylet and goal decisions
-//! on the shared world, with live polity readings beside them.
+//! on the shared world, with live place and polity readings beside them.
 
 use std::collections::BTreeSet;
 
@@ -10,8 +10,8 @@ use chirograph::IntentEffect;
 use isocosm::{directing::readings::Mode, polities::PolityReading};
 use isocosm_host::endpoint::disclosure::{Item, NULL, action, card, value};
 use isocosm_overlay::{Seat, vtt::HookIntent};
-use crate::native::{goal_hooks, hooks::GoalHook, pack::{self, PackInput, PackView}, polity_readings,
-    storylets};
+use crate::native::{goal_hooks, hooks::GoalHook, pack::{self, PackInput, PackView}, place_readings,
+    places::PlaceView, polity_readings, storylets};
 
 use super::{Act, Built, Cx, VttEndpoint};
 
@@ -95,6 +95,27 @@ fn polity(built: &mut Built, read: PolityReading) {
         actions: Vec::new() }, Vec::new());
 }
 
+fn place(built: &mut Built, view: PlaceView) {
+    let read = &view.reading;
+    let name = |id: &u64| view.names.get(id).cloned().unwrap_or_else(|| format!("#{id}"));
+    let mut values = vec![value("Tier", read.tier.map_or("none", |t| t.word())),
+        value("Living residents", read.residents.len()), value("Sites", format!("{:?}", read.sites))];
+    values.extend(read.households.iter().map(|h| value(format!("Dwelling {}", h.name.as_deref().unwrap_or("unnamed")),
+        format!("{} does {} (grade {}) under a tenancy with {}; household {}", name(&h.tenant),
+            isocosm::social::craft_name(&h.does.craft), h.does.grade, name(&h.with),
+            h.members.iter().map(name).collect::<Vec<_>>().join(", ")))));
+    values.extend(read.groups.iter().map(|g| value(g.name.clone().unwrap_or_else(|| format!("Polity {}", g.polity)),
+        format!("governance {} · {} residents by constitution, {} by membership{}", g.governance,
+            g.constitutional.len(), g.related.len(), if g.ended { " · ended" } else { "" }))));
+    values.extend(view.entries.iter().map(|e| value(format!("Why: entry {} at tick {}", e.order, e.tick),
+        format!("{} -> {}", e.what, e.outcome))));
+    values.extend(read.record.iter().map(|e| value(format!("Why: tick {}", e.tick), format!("{} by {}{}", e.process,
+        name(&e.subject), e.object.map(|o| format!(" toward {}", name(&o))).unwrap_or_default()))));
+    built.push(Item { id: format!("place:{}", read.location),
+        card: card(format!("Location {} · {}", read.location, read.tier.map_or("no tier", |t| t.word())), values, &["place"]),
+        actions: Vec::new() }, Vec::new());
+}
+
 pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
     let mut built = Built::new();
     let access = cx.cut.access;
@@ -102,11 +123,12 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         else { endpoint.read(|session, game| {
             let packs = pack::read_packs(session, game, access, &BTreeSet::new())?;
             let goals = goal_hooks(session, access.subject.map_or(u64::MAX, |id| id.0), Mode::Creative)?;
+            let places = place_readings(session, access)?;
             let polities = polity_readings(session, access)?;
             let storylets = storylets::read_storylets(session, game, access)?;
-            Ok((packs, goals, polities, storylets))
+            Ok((packs, goals, places, polities, storylets))
         }) };
-    let (packs, goals, polities, storylets) = match read {
+    let (packs, goals, places, polities, storylets) = match read {
         Ok(read) => read,
         Err(reason) => {
             built.push(Item { id: "adventure".into(), card: card("Adventures and current goals",
@@ -126,10 +148,11 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             actions }, acts);
     }
     for hook in goals { goal(&mut built, hook); }
+    for view in places { place(&mut built, view); }
     for read in polities { polity(&mut built, read); }
     if built.items.is_empty() {
         built.push(Item { id: "adventure".into(), card: card("Adventures and current goals",
-            vec![value("Note", "No packs, storylets, current goals or polities in this world.")], &["note"]),
+            vec![value("Note", "No packs, storylets, current goals, places or polities in this world.")], &["note"]),
             actions: Vec::new() }, Vec::new());
     }
     Ok(built)

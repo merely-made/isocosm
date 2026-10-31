@@ -184,6 +184,7 @@ impl App {
             terrain_receipt: crate::selftest::TerrainReceipt::from_env(),
             family_selftest: selftest::FamilySelftest::from_env(),
             magic_selftest: selftest::MagicSelftest::from_env(),
+            region_selftest: selftest::RegionSelftest::from_env(),
             combat_selftest: std::env::var_os("ISOMETRY_COMBAT_SELFTEST").is_some(),
             combat_swings: 4,
             last_swing: None,
