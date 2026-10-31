@@ -5136,6 +5136,13 @@ area = "Naming"
 summary = "Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration."
 draws_on = ["1036", "1037", "schema.9"]
 
+[cases."1040"]
+title = "Stored names migrate at load; the chronicle moves to v1; \"nemeses\" means relation-based tracking"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion."
+draws_on = ["1030", "1039", "schema.9"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
