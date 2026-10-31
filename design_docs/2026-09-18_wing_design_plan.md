@@ -11490,6 +11490,12 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       acts name the route they take and a journey records its border,
       behind a new movement version so older saves replay unchanged; both
       of a torus's routes are travellable.
+      Its forks, each as recommended (Mark, 2026-10-31): legacy v1
+      crossings gain an optional border and a v6 habitat lands arrivals at
+      the entering edge; an arrival lands at the edge when the camera frame
+      covers it and otherwise stays far (E5); move acts carry their side only
+      where parallel routes join one pair; fresh worlds' pinned hashes move
+      under the new movement version, old saves keeping theirs.
 
 1045. **A shared mechanism moves when its second consumer is planned, not
       when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
