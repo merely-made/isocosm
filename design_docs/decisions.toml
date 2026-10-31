@@ -5179,6 +5179,13 @@ summary = "A shared mechanism moves once a second consumer plans it in its own d
 draws_on = ["mere:stack.1"]
 amends = ["332"]
 
+[cases."1046"]
+title = "Edition ids may sit in the core pack; creature bodies are the next looks"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks."
+draws_on = ["1035", "1043", "licensing.1"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

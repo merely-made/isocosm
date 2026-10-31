@@ -11403,7 +11403,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1023, 1043, processes.13 · summary Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes.
 
-1045. **Edition ids may sit in the core pack; creature bodies are the next
+1046. **Edition ids may sit in the core pack; creature bodies are the next
       looks.** Ruled by Mark on 2026-10-31 (Mark: "Keep in the core pack",
       "Creature bodies"), after generated item looks landed. The reading: the
       core pack (MIT OR Apache-2.0) may name an edition's item ids to bind
