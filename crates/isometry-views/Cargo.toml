@@ -17,7 +17,8 @@ isocosm-vtt = { workspace = true, default-features = false }
 isocosm = { workspace = true }
 isocosm-overlay = { workspace = true }
 isonetry = { workspace = true }
-isometer-mesh = { workspace = true }
+isometer-mesh = { workspace = true, features = ["vox"] }
+toml = "1"
 isometer-core = { workspace = true }
 isometer-lens = { workspace = true }
 isometer = { workspace = true }

@@ -359,6 +359,9 @@ pub fn board_root(ui: &UiState) -> UiChild {
     if let Some(overlay) = crate::character::character_overlay(ui) {
         pane_children.push(overlay);
     }
+    if let Some(overlay) = crate::look::look_overlay(ui) {
+        pane_children.push(overlay);
+    }
     if let Some(overlay) = crate::sheet::sheet_overlay(ui) {
         pane_children.push(overlay);
     }

@@ -15,6 +15,7 @@ use layout_dom_api::{LayoutDom as _, LocalName, Namespace};
 use super::*;
 
 pub(crate) use family::FamilySelftest;
+pub(crate) use look::LookSelftest;
 pub(crate) use magic::MagicSelftest;
 pub(crate) use region::RegionSelftest;
 pub(crate) use overlays::OverlayArm;
@@ -22,6 +23,7 @@ pub(crate) use overlays::OverlayArm;
 mod adjudicate;
 mod board;
 mod family;
+mod look;
 mod magic;
 mod overlays;
 mod region;

@@ -1,48 +1,50 @@
-//! Tokens as live bodies: the DOM board's own recipes, meshed.
+//! Tokens as live bodies: each token's look, resolved and meshed.
 //!
-//! The DOM board bakes `theme::token_recipes` to sprite rules; this hands the
-//! same rig and the same palette to [`TokenBody`] (I4) and registers the
-//! palette's colour table on the body layer (I6), so a token drawn through the
-//! scene wears the colours its sprite wears. Nothing is invented here — a
-//! sprite name the recipe table does not carry gets [`PLACEHOLDER`] and is
-//! counted, rather than a silently missing piece on the board.
+//! A token's look is its class plus its overrides plus its equipped items'
+//! layers, resolved by [`Library::resolve`] (doctrine VTT 7). The DOM board
+//! bakes the same resolution to sprite pixels, and the creator's preview reads
+//! it too, so the three cannot disagree. A body is built once per resolved
+//! key and shared by every token with that look. A look that does not resolve
+//! draws as a one-voxel magenta stand-in and is counted, rather than a silently missing
+//! piece on the board.
 //!
-//! **Scale.** A recipe is authored in its own voxels; the board's unit is the
+//! **Scale.** A look is authored in its own voxels; the board's unit is the
 //! tile, which the subdivision ruling made [`VOXELS_PER_TILE`] world units
 //! wide. The rig is stood [`FOOTPRINT`] of a tile wide either way, which puts
-//! the shipped 8-voxel hero at three quarters of a diamond and its 12-voxel
-//! height at about 22 screen pixels against the DOM sprite's 36 — the same
-//! pixels as before the subdivision, because a tile is still a tile.
-//! Sprite-for-sprite size parity is not B2's (the renderers differ); standing
-//! inside its own tile is.
+//! the 8-voxel-wide humanoid at three quarters of a diamond, the same pixels
+//! as before the subdivision, because a tile is still a tile.
 
-use std::collections::BTreeMap;
+use std::collections::HashMap;
+use std::rc::Rc;
 
 use isometer::mesh::VolumeSource;
 use isometer::mesh::bake::Palette;
 use isometer::mesh::voxel::Voxels;
 use isometer::{PaletteColour, TokenBody, VolumeMap, material_colours};
-use isometry_core::Facing;
+use isometry_core::{Facing, TokenId};
 
 use super::terrain::VOXELS_PER_TILE;
-use crate::theme::token_recipes;
+use crate::appearance::{Library, LookInput};
 
 /// A token's footprint as a fraction of a tile's diagonal.
 pub const FOOTPRINT: f32 = 0.75;
 
-/// The sprite name a token with no recipe is drawn as: one voxel, so the piece
-/// is on the board and visibly wrong rather than absent.
-pub const PLACEHOLDER: &str = "";
+struct Built {
+    body: TokenBody,
+    colours: Vec<PaletteColour>,
+}
 
-/// Every token body the board can draw, plus the one volume map the frame
+/// Every token body the board draws, plus the one volume map the frame
 /// resolves them through.
-///
-/// Built once and held: the recipes are static, and a `TokenBody` carries a
-/// content-addressed volume, so every sprite of the one rig shares a single
-/// mesh and only the colour table differs.
 pub struct TokenBodies {
-    bodies: BTreeMap<String, TokenBody>,
-    /// The scene's volume source: every distinct recipe, collapsed by content.
+    library: Rc<Library>,
+    /// Bodies by resolved key: one per distinct look, however many wear it.
+    built: HashMap<u64, Built>,
+    /// Each token's last look and what it resolved to; `None` is the
+    /// placeholder.
+    keys: HashMap<TokenId, (LookInput, Option<u64>)>,
+    placeholder: Built,
+    /// The scene's volume source: every distinct look, collapsed by content.
     pub volumes: VolumeMap,
 }
 
@@ -53,59 +55,107 @@ impl Default for TokenBodies {
 }
 
 impl TokenBodies {
+    /// A table over the core pack's looks.
     pub fn new() -> Self {
-        let (rig, variants) = token_recipes();
-        let mut bodies = BTreeMap::new();
-        let mut volumes = VolumeMap::new();
-        let mut add = |name: &str, body: TokenBody| {
-            if let Some(volume) = body.volumes.volume(body.volume) {
-                volumes.insert(body.volume, volume.clone());
-            }
-            bodies.insert(name.to_owned(), body);
-        };
-        for (name, _) in variants.iter() {
-            add(name, TokenBody::from_voxels(&rig));
-        }
+        Self::with_library(Rc::new(Library::core()))
+    }
+
+    pub fn with_library(library: Rc<Library>) -> Self {
         // The stand-in: one voxel of palette index 0, which becomes material
-        // 1 and takes the placeholder colour below.
+        // 1 and takes the placeholder colour.
         let mut cell = Voxels::new(1, 1, 1);
         cell.set(0, 0, 0, 0);
-        add(PLACEHOLDER, TokenBody::from_voxels(&cell));
-        Self { bodies, volumes }
-    }
-
-    /// The body a sprite name draws as, and whether it is the placeholder.
-    pub fn body(&self, sprite: &str) -> (&TokenBody, bool) {
-        match self.bodies.get(sprite) {
-            Some(body) => (body, false),
-            None => (
-                self.bodies
-                    .get(PLACEHOLDER)
-                    .expect("the placeholder body is always built"),
-                true,
-            ),
+        let placeholder = Built {
+            body: TokenBody::from_voxels(&cell),
+            colours: material_colours(&Palette::new(vec![PLACEHOLDER_COLOUR])),
+        };
+        let mut volumes = VolumeMap::new();
+        add_volume(&mut volumes, &placeholder.body);
+        Self {
+            library,
+            built: HashMap::new(),
+            keys: HashMap::new(),
+            placeholder,
+            volumes,
         }
     }
 
-    /// The colour table a sprite's materials index into: its palette shifted
-    /// by one, as [`material_colours`] gives it. A sprite with no recipe takes
-    /// the placeholder colour.
-    pub fn colours(&self, sprite: &str) -> Vec<PaletteColour> {
-        let (_, variants) = token_recipes();
-        variants
-            .iter()
-            .find(|(name, _)| *name == sprite)
-            .map(|(_, palette)| material_colours(palette))
-            .unwrap_or_else(|| material_colours(&Palette::new(vec![PLACEHOLDER_COLOUR])))
+    /// Takes the bindings the board now resolves through. A different
+    /// library re-resolves every token on its next [`Self::sync`].
+    pub fn set_library(&mut self, library: &Rc<Library>) {
+        if !Rc::ptr_eq(&self.library, library) {
+            self.library = library.clone();
+            self.keys.clear();
+        }
     }
 
-    /// The scale that stands `sprite` [`FOOTPRINT`] of a tile wide. A tile is
+    pub fn library(&self) -> &Rc<Library> {
+        &self.library
+    }
+
+    /// Brings `id`'s body up to `look`, building it if no token wore that
+    /// look before, and returns the key its geometry and colours go by.
+    pub fn sync(&mut self, id: TokenId, look: &LookInput) -> Option<u64> {
+        if let Some((held, key)) = self.keys.get(&id) {
+            if held == look {
+                return *key;
+            }
+        }
+        let items = look.items.iter().map(String::as_str);
+        let key = match self.library.resolve(&look.sprite, look.appearance.as_ref(), items) {
+            Ok(resolved) => {
+                let key = resolved.key;
+                if !self.built.contains_key(&key) {
+                    let body = TokenBody::from_voxels(&resolved.voxels);
+                    add_volume(&mut self.volumes, &body);
+                    let colours = material_colours(&resolved.palette);
+                    self.built.insert(key, Built { body, colours });
+                }
+                Some(key)
+            },
+            Err(_) => None,
+        };
+        self.keys.insert(id, (look.clone(), key));
+        key
+    }
+
+    /// The key `id`'s look last resolved to; `None` is the placeholder.
+    pub fn key(&self, id: TokenId) -> Option<u64> {
+        self.keys.get(&id).and_then(|(_, key)| *key)
+    }
+
+    fn built(&self, id: TokenId) -> (&Built, bool) {
+        match self.key(id).and_then(|key| self.built.get(&key)) {
+            Some(built) => (built, false),
+            None => (&self.placeholder, true),
+        }
+    }
+
+    /// The body `id` draws as, and whether it is the placeholder.
+    pub fn body(&self, id: TokenId) -> (&TokenBody, bool) {
+        let (built, placeholder) = self.built(id);
+        (&built.body, placeholder)
+    }
+
+    /// The colour table `id`'s materials index into: its palette shifted by
+    /// one, as [`material_colours`] gives it.
+    pub fn colours(&self, id: TokenId) -> Vec<PaletteColour> {
+        self.built(id).0.colours.clone()
+    }
+
+    /// The scale that stands `id` [`FOOTPRINT`] of a tile wide. A tile is
     /// [`VOXELS_PER_TILE`] world units, so the on-screen size is what it was
     /// before the grid was subdivided.
-    pub fn scale(&self, sprite: &str) -> f32 {
-        let size = self.body(sprite).0.size();
+    pub fn scale(&self, id: TokenId) -> f32 {
+        let size = self.body(id).0.size();
         let widest = size[0].max(size[2]).max(1) as f32;
         FOOTPRINT * VOXELS_PER_TILE as f32 / widest
+    }
+}
+
+fn add_volume(volumes: &mut VolumeMap, body: &TokenBody) {
+    if let Some(volume) = body.volumes.volume(body.volume) {
+        volumes.insert(body.volume, volume.clone());
     }
 }
 

@@ -7,7 +7,7 @@ fn character_creation_waits_for_the_host_to_make_token_and_default_sheet_togethe
     let mut ui = UiState::new(demo_map());
     ui.character_name = cambium::TextInput::new("Mira");
     ui.character_owner = cambium::TextInput::new("mira-player");
-    ui.character_sprite = "goblin".to_owned();
+    ui.look.sprite = "goblin".to_owned();
     let before = ui.map.tokens.len();
 
     ui.create_character();
@@ -24,6 +24,7 @@ fn character_creation_waits_for_the_host_to_make_token_and_default_sheet_togethe
                 owner: Some("mira-player".to_owned()),
             },
             name: "Mira".to_owned(),
+            appearance: Default::default(),
         })
     );
 }

@@ -28,6 +28,8 @@ pub struct SheetSchema {
 pub struct CharacterCreateRequest {
     pub token: Token,
     pub name: String,
+    /// The overrides chosen in the creator; the class is `token.sprite`.
+    pub appearance: isometry_core::TokenAppearance,
 }
 
 /// How initiative builds the turn order (a system choice over the same

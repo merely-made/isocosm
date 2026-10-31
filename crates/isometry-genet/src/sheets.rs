@@ -118,6 +118,15 @@ impl App {
                         token: request.token.clone(),
                         sheet: sheet.clone(),
                     });
+                    // The look's overrides follow as their own event, so a
+                    // character made with a bare class sends exactly as before.
+                    if !request.appearance.is_empty() {
+                        ui.net_outbox.push(GameEvent::AppearanceSet {
+                            token: request.token.id,
+                            sprite: request.token.sprite.clone(),
+                            appearance: request.appearance.clone(),
+                        });
+                    }
                 } else {
                     // Validation above ensures this cannot fail. Keep the
                     // placement and its system-default sheet in one host turn,
@@ -128,6 +137,13 @@ impl App {
                     )
                     .expect("prevalidated character placement applies");
                     ui.map.set_sheet(request.token.id, sheet.clone());
+                    ui.map
+                        .set_appearance(
+                            request.token.id,
+                            &request.token.sprite,
+                            request.appearance.clone(),
+                        )
+                        .expect("the token was just placed");
                     ui.recompute_fog();
                     ui.recompute_reach();
                 }

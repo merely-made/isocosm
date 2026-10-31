@@ -11,7 +11,9 @@ impl UiState {
             self.status = "character creation requires the host".to_owned();
             return;
         }
+        self.look = crate::appearance::LookDraft::new(&self.look.sprite);
         self.character_open = true;
+        self.look_open = false;
     }
 
     pub fn close_character(&mut self) {
@@ -41,12 +43,13 @@ impl UiState {
             id: self.next_token_id(),
             at,
             facing: Facing::South,
-            sprite: self.character_sprite.clone(),
+            sprite: self.look.sprite.clone(),
             owner: (!owner.is_empty()).then(|| owner.to_owned()),
         };
         self.character_create_request = Some(CharacterCreateRequest {
             token,
             name: name.to_owned(),
+            appearance: self.look.appearance.clone(),
         });
         self.character_open = false;
         self.status = format!("creating {name}");

@@ -5,8 +5,8 @@ use isometry_campaign::{
 };
 use isometry_campaign::CampaignMap;
 use isometry_core::{
-    Beat, MapDocument, RollRecord, SessionEvent, SheetData, SheetDelta, TileCoord, TokenId,
-    TurnList,
+    Beat, MapDocument, RollRecord, SessionEvent, SheetData, SheetDelta, TileCoord, TokenAppearance,
+    TokenId, TurnList,
 };
 use serde::{Deserialize, Serialize};
 
@@ -23,7 +23,7 @@ use serde::{Deserialize, Serialize};
 /// the space: a body that *does* decode and means something else. Bump it for
 /// any change to the wire shape, and move `iroh_link::ALPN` with it so an
 /// incompatible peer cannot even dial.
-pub const PROTOCOL_VERSION: u16 = 22;
+pub const PROTOCOL_VERSION: u16 = 23;
 
 /// A peer's identity within a session. For the iroh transport this wraps
 /// the remote node id; the pure-sync core only needs it to route.
@@ -317,6 +317,13 @@ pub enum GameEvent {
     Rolled(RollRecord),
     /// Bind or replace a token's character sheet.
     SheetSet { token: TokenId, sheet: SheetData },
+    /// Set a token's look: its class (the token's `sprite`) and its overrides
+    /// on that class (ruling 1022). A declaration about the token, no verdict.
+    AppearanceSet {
+        token: TokenId,
+        sprite: String,
+        appearance: TokenAppearance,
+    },
     /// A public campaign fact committed to the journal: a revealed
     /// secret, a generated object's public face, narration, a history
     /// event. Host-committed only; the host rejects client intents of

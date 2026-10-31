@@ -311,6 +311,11 @@ impl HostSession {
             // no state to change: the worst a liar can do is wave.
             GameEvent::Emoted { token, .. } => (!self.peer_owns(from, *token))
                 .then(|| "you can only emote your own tokens".to_owned()),
+            // A look is a declaration about your own token (case 1030: the
+            // seat that controls the body edits its character): the class and
+            // its colours are no rule's input, so control is the whole check.
+            GameEvent::AppearanceSet { token, .. } => (!self.peer_owns(from, *token))
+                .then(|| "you can only change the look of your own tokens".to_owned()),
             GameEvent::StanceSet { token, .. } => (!self.peer_owns(from, *token))
                 .then(|| "you can only set the stance of your own tokens".to_owned()),
 

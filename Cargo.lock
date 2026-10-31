@@ -2026,6 +2026,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "dot_vox"
+version = "5.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f160bf661e495a80ec98ac88a6535f5c80c02d2271c7013af70fe9ec670ccbff"
+dependencies = [
+ "ahash",
+ "lazy_static",
+ "log",
+ "nom 8.0.0",
+]
+
+[[package]]
 name = "downcast-rs"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4387,6 +4399,7 @@ name = "isometer-mesh"
 version = "0.0.1"
 dependencies = [
  "blake3",
+ "dot_vox",
  "isometer-core",
  "postcard",
  "serde",
@@ -4532,6 +4545,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sprigging",
+ "toml",
  "wgpu",
 ]
 

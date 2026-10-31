@@ -120,6 +120,14 @@ impl App {
             sheet.push('\n');
             sheet.push_str(&beat.css);
         }
+        // Looks are pack data too (doctrine VTT 7): the core pack's are built
+        // in, and every other pack's `appearance.toml` overlays them. The
+        // class rules are baked again only when a pack changed them.
+        let (pack_appearance, overlaid) = pack_appearance(&generator_pack_roots());
+        if overlaid {
+            sheet.push('\n');
+            sheet.push_str(&isometry_views::class_css(&pack_appearance));
+        }
         let pack_emotes: Vec<(String, String)> = pack_beats
             .iter()
             .filter_map(|b| b.emote.clone().map(|label| (b.name.clone(), label)))
@@ -185,6 +193,7 @@ impl App {
             family_selftest: selftest::FamilySelftest::from_env(),
             magic_selftest: selftest::MagicSelftest::from_env(),
             region_selftest: selftest::RegionSelftest::from_env(),
+            look_selftest: selftest::LookSelftest::from_env(),
             combat_selftest: std::env::var_os("ISOMETRY_COMBAT_SELFTEST").is_some(),
             combat_swings: 4,
             last_swing: None,
@@ -212,6 +221,47 @@ impl App {
             generator_catalog,
             last_generator_selection: None,
             pack_emotes,
+            pack_appearance: std::rc::Rc::new(pack_appearance),
         }
     }
+}
+
+/// The core pack's looks with every other found pack's `appearance.toml`
+/// laid over them in root order, and whether any was. A pack that does not
+/// parse is reported and skipped, so one bad pack cannot blank the board.
+fn pack_appearance(roots: &[std::path::PathBuf]) -> (isometry_views::appearance::Library, bool) {
+    let mut library = isometry_views::appearance::Library::core();
+    let core = example_pack("core").canonicalize().ok();
+    let mut overlaid = false;
+    let mut packs = Vec::new();
+    for root in roots {
+        if root.join("appearance.toml").is_file() {
+            packs.push(root.clone());
+        } else if let Ok(entries) = std::fs::read_dir(root) {
+            let mut children: Vec<_> = entries
+                .filter_map(Result::ok)
+                .map(|entry| entry.path())
+                .filter(|path| path.join("appearance.toml").is_file())
+                .collect();
+            children.sort();
+            packs.extend(children);
+        }
+    }
+    for pack in packs {
+        if pack.canonicalize().ok() == core {
+            continue;
+        }
+        let path = pack.join("appearance.toml");
+        let read = |file: &str| {
+            std::fs::read(pack.join(file)).map_err(|error| format!("{file}: {error}"))
+        };
+        let result = std::fs::read_to_string(&path)
+            .map_err(|error| error.to_string())
+            .and_then(|text| library.overlay(&text, &read));
+        match result {
+            Ok(()) => overlaid = true,
+            Err(error) => eprintln!("[isometry] appearance {}: {error}", path.display()),
+        }
+    }
+    (library, overlaid)
 }

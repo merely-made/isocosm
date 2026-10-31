@@ -57,6 +57,10 @@ pub(crate) struct SceneBoard {
     /// board says nothing and an edit says what it cost (B4).
     costed: Option<GroundCost>,
     preferences: crate::terrain_preferences::Preferences,
+    /// The look editor's preview: a one-tile board through a second source,
+    /// so it draws exactly as the board does. Registered once, synced only
+    /// while an editor is open.
+    preview: (BoardHandle, Rc<RefCell<BoardProducer>>),
 }
 
 /// The residency settings the environment asks for: the default, with
@@ -78,7 +82,13 @@ impl SceneBoard {
         let mut board = BoardView::new(ui.map.clone());
         board.sync(ui);
         let view = board.into_handle();
+        let preview_view = BoardView::new(isometry_core::MapDocument::new("look preview", 1, 1))
+            .into_handle();
+        let preview_producer = Rc::new(RefCell::new(BoardProducer::new(BoardSource::new(
+            preview_view.clone(),
+        ))));
         Self {
+            preview: (preview_view, preview_producer),
             view: view.clone(),
             producer: Rc::new(RefCell::new(BoardProducer::new(
                 BoardSource::new(view).with_residency(residency()),
@@ -95,6 +105,11 @@ impl SceneBoard {
     /// is registered.
     pub(crate) fn producer(&self) -> Rc<RefCell<BoardProducer>> {
         self.producer.clone()
+    }
+
+    /// The look editor preview's producer, for its own leaf key.
+    pub(crate) fn preview_producer(&self) -> Rc<RefCell<BoardProducer>> {
+        self.preview.1.clone()
     }
 
     /// The board's gestures, handed the frame the producer last drew (B3).
@@ -161,9 +176,15 @@ impl SceneBoard {
             .window
             .map_or(1.0, |window| window.scale_factor() as f32);
         let scale = (device * ctx.ui_zoom).round().max(1.0) as u32;
+        let state = ctx.runner.state();
+        if state.character_open || state.look_open {
+            let (w, h) = isometry_views::LOOK_PREVIEW_SIZE;
+            self.preview.0.borrow_mut().sync_preview(state, (w as f32, h as f32));
+        }
         if self.scale != scale {
             self.scale = scale;
             self.producer.borrow_mut().set_render_scale(scale);
+            self.preview.1.borrow_mut().set_render_scale(scale);
             // Said out loud, because the grid is the one thing about this
             // board a capture cannot tell you from its pixels alone once the
             // upscale is doing its job.

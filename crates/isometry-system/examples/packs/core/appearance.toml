@@ -1,0 +1,172 @@
+# The core pack's looks (doctrine VTT 7; rulings 1019, 1022, 1028).
+#
+# A token's `sprite` names one of the classes below. A class picks a layer for
+# each slot and a palette; a token may override slots and palette entries, and
+# whatever it does not override follows this file, so a pack that redeclares a
+# layer, palette or class reskins every token still using it. All content here
+# is original.
+#
+# Layers share one frame (`size`, x right, y up, z depth; the camera-facing
+# front is z = 0). A layer is box fills `[x0, x1, y0, y1, z0, z1, index]`
+# (half-open) and single `points` `[x, y, z, index]`, or a `file` relative to
+# the pack root: another TOML layer or a `.vox`, whose colour slot 1 draws
+# palette index 0 (the file's own colours are not used: the palette is the
+# class's). Later slots draw over earlier ones; equipped items' layers last.
+
+format = 1
+size = [10, 24, 8]
+slots = ["body", "hair"]
+
+# Palette indices: 0 skin, 1 shirt, 2 trousers, 3 belt, 4 hair, 5 boots,
+# 6 eyes, 7 metal, 8 grip.
+[palettes.default]
+colours = ["#f0c39b", "#cd413c", "#3c4882", "#282834", "#6e482a", "#342a28", "#1e1c22", "#aab0bc", "#604028"]
+
+[palettes.scavenger]
+from = "default"
+set = { 0 = "#b88b66", 1 = "#746945" }
+
+[palettes.traveler]
+from = "default"
+set = { 0 = "#dcb38e", 1 = "#547b9e" }
+
+[palettes.goblin]
+from = "default"
+set = { 0 = "#8ca56e", 1 = "#486e3c" }
+
+[palettes.orc]
+from = "default"
+set = { 0 = "#788c5f", 1 = "#5c4637" }
+
+[palettes.skeleton]
+from = "default"
+set = { 0 = "#e2dfd3", 1 = "#c6c2b4" }
+
+[palettes.wolf]
+from = "default"
+set = { 0 = "#96969e", 1 = "#5c5c64" }
+
+[classes.hero]
+palette = "default"
+layers = { body = "body:base", hair = "hair:short" }
+
+[classes.knight]
+palette = "default"
+layers = { body = "body:mail", hair = "hair:crop" }
+
+[classes.scavenger]
+palette = "scavenger"
+layers = { body = "body:base", hair = "hair:long" }
+
+[classes.traveler]
+palette = "traveler"
+layers = { body = "body:robe", hair = "hair:short" }
+
+[classes.goblin]
+palette = "goblin"
+layers = { body = "body:base", hair = "" }
+
+[classes.orc]
+palette = "orc"
+layers = { body = "body:mail", hair = "hair:crop" }
+
+[classes.skeleton]
+palette = "skeleton"
+layers = { body = "body:base", hair = "" }
+
+[classes.wolf]
+palette = "wolf"
+layers = { body = "body:base", hair = "hair:long" }
+
+# What the creator offers in each slot; "" is nothing.
+[choices]
+body = ["body:base", "body:robe", "body:mail"]
+hair = ["hair:short", "hair:long", "hair:crop", ""]
+
+# Palette entries the creator offers to recolour, and the colours it offers.
+[[swatches]]
+index = 0
+label = "skin"
+colours = ["#f0c39b", "#dcb38e", "#b88b66", "#8a5a3c", "#5a3a28", "#8ca56e"]
+
+[[swatches]]
+index = 1
+label = "shirt"
+colours = ["#cd413c", "#547b9e", "#486e3c", "#d8b04a", "#7a4a8c", "#e8e4d8"]
+
+[[swatches]]
+index = 2
+label = "trousers"
+colours = ["#3c4882", "#4a3a2a", "#2e2e34", "#6a6a52", "#7a2c2c"]
+
+[[swatches]]
+index = 4
+label = "hair"
+colours = ["#6e482a", "#1e1a18", "#d8b04a", "#a8402a", "#c8c4bc", "#3a5a8c"]
+
+# Item templates to the layer they show while equipped.
+[items]
+"srd5e:longsword" = "weapon:sword"
+"srd5e:shortsword" = "weapon:sword"
+"srd5e:greatsword" = "weapon:sword"
+"srd5e:scimitar" = "weapon:sword"
+"srd5e:rapier" = "weapon:sword"
+
+[layers."body:base"]
+fills = [
+    [2, 4, 2, 9, 2, 6, 2], [6, 8, 2, 9, 2, 6, 2],         # legs
+    [2, 4, 0, 2, 2, 6, 5], [6, 8, 0, 2, 2, 6, 5],         # boots
+    [2, 8, 9, 10, 2, 6, 3],                               # belt
+    [2, 8, 10, 17, 2, 6, 1],                              # torso
+    [0, 2, 10, 16, 3, 5, 1], [8, 10, 10, 16, 3, 5, 1],    # sleeves
+    [0, 2, 10, 11, 3, 5, 0], [8, 10, 10, 11, 3, 5, 0],    # hands
+    [3, 7, 17, 22, 2, 6, 0],                              # head
+]
+points = [[4, 19, 2, 6], [6, 19, 2, 6]]                   # eyes
+
+[layers."body:robe"]
+fills = [
+    [2, 4, 0, 2, 2, 6, 5], [6, 8, 0, 2, 2, 6, 5],         # boots
+    [2, 8, 2, 17, 2, 6, 1],                               # robe to the ankle
+    [1, 9, 2, 3, 1, 7, 1],                                # flared hem
+    [2, 8, 11, 12, 2, 6, 3],                              # sash
+    [0, 2, 10, 16, 2, 6, 1], [8, 10, 10, 16, 2, 6, 1],    # wide sleeves
+    [0, 2, 10, 11, 3, 5, 0], [8, 10, 10, 11, 3, 5, 0],    # hands
+    [3, 7, 17, 22, 2, 6, 0],                              # head
+]
+points = [[4, 19, 2, 6], [6, 19, 2, 6]]
+
+[layers."body:mail"]
+fills = [
+    [2, 4, 2, 9, 2, 6, 2], [6, 8, 2, 9, 2, 6, 2],         # legs
+    [2, 4, 0, 3, 2, 6, 5], [6, 8, 0, 3, 2, 6, 5],         # tall boots
+    [2, 8, 9, 10, 2, 6, 3],                               # belt
+    [2, 8, 10, 17, 2, 6, 7],                              # mail shirt
+    [2, 8, 8, 9, 2, 6, 7],                                # mail skirt
+    [0, 2, 10, 16, 3, 5, 1], [8, 10, 10, 16, 3, 5, 1],    # sleeves
+    [0, 2, 15, 17, 2, 6, 7], [8, 10, 15, 17, 2, 6, 7],    # shoulder plates
+    [0, 2, 10, 11, 3, 5, 0], [8, 10, 10, 11, 3, 5, 0],    # hands
+    [3, 7, 17, 22, 2, 6, 0],                              # head
+]
+points = [[4, 19, 2, 6], [6, 19, 2, 6]]
+
+[layers."hair:short"]
+fills = [[3, 7, 21, 24, 2, 6, 4]]
+
+[layers."hair:long"]
+fills = [
+    [3, 7, 21, 24, 2, 6, 4],                              # crown
+    [3, 7, 13, 21, 5, 6, 4],                              # down the back
+    [2, 3, 16, 23, 3, 6, 4], [7, 8, 16, 23, 3, 6, 4],     # sides
+]
+
+[layers."hair:crop"]
+fills = [[3, 7, 21, 23, 3, 6, 4]]
+
+[layers."weapon:sword"]
+fills = [
+    [9, 10, 8, 11, 2, 3, 8],                              # grip, in front of the hand
+    [8, 10, 11, 12, 1, 3, 7],                             # crossguard
+    [9, 10, 12, 21, 2, 3, 7],                             # blade
+]
+points = [[9, 7, 2, 7]]                                   # pommel

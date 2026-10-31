@@ -7,7 +7,8 @@ use isometry_campaign::{
 use isometry_campaign::CampaignMap;
 use isometry_core::{
     Facing, IsoGeometry, Layer, MapDocument, MoveRules, Rng, RollRecord, SessionEvent,
-    TemplateKind, TileCoord, TileKindId, Token, TokenId, TurnList, apply, distance, reachable,
+    TemplateKind, TileCoord, TileKindId, Token, TokenAppearance, TokenId, TurnList, apply, distance,
+    reachable,
     roll, template_tiles,
 };
 use isonetry::{GameEvent, GameSnapshot, ROLL_LOG_CAP, apply_game};
@@ -61,6 +62,7 @@ pub mod native;
 mod character;
 mod interaction;
 mod lanes;
+mod look;
 mod overmap_interaction;
 mod overmap_motion;
 mod pixels;
@@ -185,7 +187,15 @@ pub struct UiState {
     pub character_open: bool,
     pub character_name: TextInput,
     pub character_owner: TextInput,
-    pub character_sprite: String,
+    /// The creator's working look: the new character's while creating, the
+    /// edited token's while `look_open`. The table changes only on accept.
+    pub look: crate::appearance::LookDraft,
+    /// Whether the look editor is open on an existing token (`look.token`).
+    pub look_open: bool,
+    /// The packs' looks, which every board and the preview resolve through.
+    pub appearance: std::rc::Rc<crate::appearance::Library>,
+    /// Baked sprites for the DOM side, by look.
+    pub appearance_bakes: crate::appearance::Bakes,
     /// Whether a whisper is being composed (the lane's field is on screen and
     /// holds the caret).
     pub composing: bool,
