@@ -440,7 +440,8 @@ pub(crate) fn run(sim: &mut Simulation, command: &Command) -> Result<String> {
 
 fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
     match command {
-        Command::Location { location } => sim.author_location(location),
+        Command::Location { location } => sim.author_location(location)
+            .and_then(|o| sim.founding_event(command, o)),
         Command::ActOwned { participant, actor, target, process, cause, selections } =>
             crate::society().and_then(|()| sim.owned_act(*participant,*actor,*target,process,cause.clone(),selections)),
         Command::Owned { .. } => Err("owned direct command needs its native Session".into()),
@@ -536,7 +537,7 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
             Ok("revised".into())
         },
         Command::Speciate { founder, name } => sim.speciate(*founder, name),
-        Command::Assert(assertion) => sim.assert(assertion),
+        Command::Assert(assertion) => sim.assert(assertion).and_then(|o| sim.founding_event(command, o)),
         Command::AttachSite { place, attachment } => sim.attach_site(place, attachment),
         Command::Wound {
             entity,
@@ -546,7 +547,10 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
             let wounded = sim.wound(*entity, *part, *cells)?;
             serde_json::to_string(&wounded).map_err(|e| e.to_string())
         },
-        Command::Arrive(arrival) => Ok(format!("entity:{}", sim.arrive(arrival)?)),
+        Command::Arrive(arrival) => {
+            let outcome = format!("entity:{}", sim.arrive(arrival)?);
+            sim.founding_event(command, outcome)
+        },
         Command::Embody { entity, body } => {
             sim.embody(*entity, body.clone())?;
             Ok("embodied".into())

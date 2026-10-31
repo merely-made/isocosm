@@ -104,13 +104,14 @@ fn place(built: &mut Built, view: PlaceView) {
         format!("{} does {} (grade {}) under a tenancy with {}; household {}", name(&h.tenant),
             isocosm::social::craft_name(&h.does.craft), h.does.grade, name(&h.with),
             h.members.iter().map(name).collect::<Vec<_>>().join(", ")))));
-    values.extend(read.groups.iter().map(|g| value(g.name.clone().unwrap_or_else(|| format!("Polity {}", g.polity)),
+    values.extend(read.groups.iter().map(|g| value(format!("{} {}", if g.polity { "Polity" } else { "Faction" },
+        g.name.clone().unwrap_or_else(|| g.id.to_string())),
         format!("governance {} · {} residents by constitution, {} by membership{}", g.governance,
             g.constitutional.len(), g.related.len(), if g.ended { " · ended" } else { "" }))));
-    values.extend(view.entries.iter().map(|e| value(format!("Why: entry {} at tick {}", e.order, e.tick),
-        format!("{} -> {}", e.what, e.outcome))));
-    values.extend(read.record.iter().map(|e| value(format!("Why: tick {}", e.tick), format!("{} by {}{}", e.process,
-        name(&e.subject), e.object.map(|o| format!(" toward {}", name(&o))).unwrap_or_default()))));
+    values.extend(read.record.iter().map(|e| value(format!("Why: tick {}", e.tick), format!("{}{}{}{}", e.process,
+        if e.subject == isocosm::directing::PLACELESS { String::new() } else { format!(" by {}", name(&e.subject)) }, e.object.map(|o| format!(" toward {}", name(&o))).unwrap_or_default(),
+        match e.place { isocosm::schema::EventPlace::Site(s) if s != isocosm::directing::PLACELESS =>
+            format!(" at {}", view.names.get(&s).cloned().unwrap_or_else(|| format!("site {s}"))), _ => String::new() }))));
     built.push(Item { id: format!("place:{}", read.location),
         card: card(format!("Location {} · {}", read.location, read.tier.map_or("no tier", |t| t.word())), values, &["place"]),
         actions: Vec::new() }, Vec::new());

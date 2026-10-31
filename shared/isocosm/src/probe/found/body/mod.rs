@@ -310,6 +310,7 @@ impl BodyFounding {
             global_collapse: None,
             spatial_templates: None,
             ecology_witness: None,
+            founding_events: false,
             companions: None,
             sun: None,
             version: crate::VERSION,

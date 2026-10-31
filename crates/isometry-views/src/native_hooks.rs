@@ -51,15 +51,15 @@ pub fn native_place_lines(view:&PlaceView)->Vec<String> {
             isocosm::social::craft_name(&h.does.craft),h.does.grade,name(&h.with),members));
     }
     for g in &read.groups {
-        lines.push(format!("{} (polity {}) · governance {} · {} residents by constitution, {} by membership{}",
-            g.name.as_deref().unwrap_or("Unnamed group"),g.polity,g.governance,g.constitutional.len(),g.related.len(),
+        lines.push(format!("{} {} ({}) · governance {} · {} residents by constitution, {} by membership{}",
+            if g.polity {"Polity"} else {"Faction"},g.name.as_deref().unwrap_or("unnamed"),g.id,g.governance,g.constitutional.len(),g.related.len(),
             if g.ended {" · ended"} else {""}));
     }
-    lines.push("Why it is here, from the history log:".into());
-    for e in &view.entries {lines.push(format!("Entry {} at tick {}: {} -> {}",e.order,e.tick,e.what,e.outcome));}
+    lines.push("Why it is here, from the record:".into());
     for e in &read.record {
         let toward=e.object.map(|o| format!(" toward {}",name(&o))).unwrap_or_default();
-        lines.push(format!("Tick {} · {} by {}{}",e.tick,e.process,name(&e.subject),toward));
+        let by=if e.subject==isocosm::directing::PLACELESS {String::new()} else {format!(" by {}",name(&e.subject))};
+        lines.push(format!("Tick {} · {}{}{}",e.tick,e.process,by,toward));
     }
     lines
 }

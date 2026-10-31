@@ -339,6 +339,12 @@ pub struct Rules {
     /// sun, and worlds without it hash as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sun: Option<crate::light::SunRules>,
+    /// Whether what enters by the founding door (an arrival, an assertion,
+    /// a location) leaves a world event, so every product reads why a place
+    /// exists from the record (case 1032); absent in older worlds, which
+    /// hash as before.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub founding_events: bool,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.
