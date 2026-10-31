@@ -1,0 +1,406 @@
+# Pathfinder 2e Player Core (Remaster): every background (case 1031). ORC-
+# licensed mechanics checked against the foundryvtt/pf2e records whose
+# publication is a Remaster book under the ORC licence (case 1016); summaries
+# are original. Where the book lets you name a terrain Lore, the options are
+# Player Core's terrain types; a Lore the book leaves to you to name (a city,
+# a cult) is recorded as that description.
+# Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative
+# License: https://paizo.com/orclicense
+version = 1
+
+[[background]]
+id = "acolyte"
+name = "Acolyte"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "wis"]
+skill = "religion"
+lore = ["Scribing Lore"]
+feat = "student-of-the-canon"
+summary = "You copied texts and kept rites in a temple. Boost Intelligence or Wisdom plus one free boost; trained in Religion and Scribing Lore; the Student of the Canon skill feat."
+
+[[background]]
+id = "acrobat"
+name = "Acrobat"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "dex"]
+skill = "acrobatics"
+lore = ["Circus Lore"]
+feat = "steady-balance"
+summary = "A performer of tumbles and high wires. Boost Strength or Dexterity plus one free boost; trained in Acrobatics and Circus Lore; the Steady Balance skill feat."
+
+[[background]]
+id = "animal-whisperer"
+name = "Animal Whisperer"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["wis", "cha"]
+skill = "nature"
+lore = ["Aquatic Lore", "Arctic Lore", "Desert Lore", "Forest Lore", "Mountain Lore", "Plains Lore", "Sky Lore", "Swamp Lore", "Underground Lore"]
+feat = "train-animal"
+summary = "Animals have always trusted you, and you learned to teach them. Boost Wisdom or Charisma plus one free boost; trained in Nature and a terrain Lore; the Train Animal skill feat."
+
+[[background]]
+id = "artisan"
+name = "Artisan"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "int"]
+skill = "crafting"
+lore = ["Guild Lore"]
+feat = "specialty-crafting"
+summary = "You trained in a workshop under a guild's rules. Boost Strength or Intelligence plus one free boost; trained in Crafting and Guild Lore; the Specialty Crafting skill feat."
+
+[[background]]
+id = "artist"
+name = "Artist"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["dex", "cha"]
+skill = "crafting"
+lore = ["Art Lore"]
+feat = "specialty-crafting"
+summary = "You made things for beauty and sold them to live. Boost Dexterity or Charisma plus one free boost; trained in Crafting and Art Lore; the Specialty Crafting skill feat."
+
+[[background]]
+id = "bandit"
+name = "Bandit"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["dex", "cha"]
+skill = "intimidation"
+lore = ["Aquatic Lore", "Arctic Lore", "Desert Lore", "Forest Lore", "Mountain Lore", "Plains Lore", "Sky Lore", "Swamp Lore", "Underground Lore"]
+feat = "group-coercion"
+summary = "You robbed travellers on lonely roads. Boost Dexterity or Charisma plus one free boost; trained in Intimidation and a terrain Lore; the Group Coercion skill feat."
+
+[[background]]
+id = "barkeep"
+name = "Barkeep"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["con", "cha"]
+skill = "diplomacy"
+lore = ["Alcohol Lore"]
+feat = "hobnobber"
+summary = "You kept a bar and heard everything said across it. Boost Constitution or Charisma plus one free boost; trained in Diplomacy and Alcohol Lore; the Hobnobber skill feat."
+
+[[background]]
+id = "barrister"
+name = "Barrister"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "cha"]
+skill = "diplomacy"
+lore = ["Legal Lore"]
+feat = "group-impression"
+summary = "You argued cases before courts and crowds. Boost Intelligence or Charisma plus one free boost; trained in Diplomacy and Legal Lore; the Group Impression skill feat."
+
+[[background]]
+id = "bounty-hunter"
+name = "Bounty Hunter"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "wis"]
+skill = "survival"
+lore = ["Legal Lore"]
+feat = "experienced-tracker"
+summary = "You tracked down people with a price on them. Boost Strength or Wisdom plus one free boost; trained in Survival and Legal Lore; the Experienced Tracker skill feat."
+
+[[background]]
+id = "charlatan"
+name = "Charlatan"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "cha"]
+skill = "deception"
+lore = ["Underworld Lore"]
+feat = "charming-liar"
+summary = "You made a living on false names and better stories. Boost Intelligence or Charisma plus one free boost; trained in Deception and Underworld Lore; the Charming Liar skill feat."
+
+[[background]]
+id = "cook"
+name = "Cook"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["con", "int"]
+skill = "survival"
+lore = ["Cooking Lore"]
+feat = "seasoned"
+summary = "You fed a kitchen's worth of people every day. Boost Constitution or Intelligence plus one free boost; trained in Survival and Cooking Lore; the Seasoned skill feat."
+
+[[background]]
+id = "criminal"
+name = "Criminal"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["dex", "int"]
+skill = "stealth"
+lore = ["Underworld Lore"]
+feat = "experienced-smuggler"
+summary = "You lived outside the law and learned to move goods unseen. Boost Dexterity or Intelligence plus one free boost; trained in Stealth and Underworld Lore; the Experienced Smuggler skill feat."
+
+[[background]]
+id = "cultist"
+name = "Cultist"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "cha"]
+skill = "occultism"
+lore = ["Lore of your deity or cult (you name it)"]
+feat = "schooled-in-secrets"
+summary = "You belonged to a secret faith with rites of its own. Boost Intelligence or Charisma plus one free boost; trained in Occultism and Lore of your deity or cult (you name it); the Schooled in Secrets skill feat."
+
+[[background]]
+id = "detective"
+name = "Detective"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "wis"]
+skill = "society"
+lore = ["Underworld Lore"]
+feat = "streetwise"
+summary = "You solved crimes by reading people and places. Boost Intelligence or Wisdom plus one free boost; trained in Society and Underworld Lore; the Streetwise skill feat."
+
+[[background]]
+id = "emissary"
+name = "Emissary"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "cha"]
+skill = "society"
+lore = ["Lore of a city you often visited (you name it)"]
+feat = "multilingual"
+summary = "You carried messages and made alliances far from home. Boost Intelligence or Charisma plus one free boost; trained in Society and Lore of a city you often visited (you name it); the Multilingual skill feat."
+
+[[background]]
+id = "entertainer"
+name = "Entertainer"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["dex", "cha"]
+skill = "performance"
+lore = ["Theater Lore"]
+feat = "fascinating-performance"
+summary = "You played to audiences for coin and applause. Boost Dexterity or Charisma plus one free boost; trained in Performance and Theater Lore; the Fascinating Performance skill feat."
+
+[[background]]
+id = "farmhand"
+name = "Farmhand"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["con", "wis"]
+skill = "athletics"
+lore = ["Farming Lore"]
+grants = [{ feat_with = { feat = "assurance", value = "athletics" } }]
+summary = "You worked the land through every season. Boost Constitution or Wisdom plus one free boost; trained in Athletics and Farming Lore; Assurance with Athletics."
+
+[[background]]
+id = "field-medic"
+name = "Field Medic"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["con", "wis"]
+skill = "medicine"
+lore = ["Warfare Lore"]
+feat = "battle-medicine"
+summary = "You patched up the wounded under fire. Boost Constitution or Wisdom plus one free boost; trained in Medicine and Warfare Lore; the Battle Medicine skill feat."
+
+[[background]]
+id = "fortune-teller"
+name = "Fortune Teller"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "cha"]
+skill = "occultism"
+lore = ["Fortune-Telling Lore"]
+feat = "oddity-identification"
+summary = "You read futures for those who paid to hear them. Boost Intelligence or Charisma plus one free boost; trained in Occultism and Fortune-Telling Lore; the Oddity Identification skill feat."
+
+[[background]]
+id = "gambler"
+name = "Gambler"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["dex", "cha"]
+skill = "deception"
+lore = ["Games Lore"]
+feat = "lie-to-me"
+summary = "Games of chance drew you in, for better or worse. Boost Dexterity or Charisma plus one free boost; trained in Deception and Games Lore; the Lie to Me skill feat."
+
+[[background]]
+id = "gladiator"
+name = "Gladiator"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "cha"]
+skill = "performance"
+lore = ["Gladiatorial Lore"]
+feat = "impressive-performance"
+summary = "You fought in the arena for a crowd's delight. Boost Strength or Charisma plus one free boost; trained in Performance and Gladiatorial Lore; the Impressive Performance skill feat."
+
+[[background]]
+id = "guard"
+name = "Guard"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "cha"]
+skill = "intimidation"
+lore = ["Legal Lore", "Warfare Lore"]
+feat = "quick-coercion"
+summary = "You kept watch and made suspects talk. Boost Strength or Charisma plus one free boost; trained in Intimidation and Legal Lore or Warfare Lore; the Quick Coercion skill feat."
+
+[[background]]
+id = "herbalist"
+name = "Herbalist"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["con", "wis"]
+skill = "nature"
+lore = ["Herbalism Lore"]
+feat = "natural-medicine"
+summary = "You gathered plants and made remedies from them. Boost Constitution or Wisdom plus one free boost; trained in Nature and Herbalism Lore; the Natural Medicine skill feat."
+
+[[background]]
+id = "hermit"
+name = "Hermit"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["con", "int"]
+lore = ["Aquatic Lore", "Arctic Lore", "Desert Lore", "Forest Lore", "Mountain Lore", "Plains Lore", "Sky Lore", "Swamp Lore", "Underground Lore"]
+feat = "dubious-knowledge"
+grants = [{ pick = { nature = [{ train = "nature" }], occultism = [{ train = "occultism" }] } }]
+summary = "You lived alone, far from other people. Boost Constitution or Intelligence plus one free boost; trained in Nature or Occultism and a terrain Lore; the Dubious Knowledge skill feat."
+
+[[background]]
+id = "hunter"
+name = "Hunter"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["dex", "wis"]
+skill = "survival"
+lore = ["Tanning Lore"]
+feat = "survey-wildlife"
+summary = "You tracked and dressed game for your keep. Boost Dexterity or Wisdom plus one free boost; trained in Survival and Tanning Lore; the Survey Wildlife skill feat."
+
+[[background]]
+id = "laborer"
+name = "Laborer"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "con"]
+skill = "athletics"
+lore = ["Labor Lore"]
+feat = "hefty-hauler"
+summary = "Years of hauling and digging. Boost Strength or Constitution plus one free boost; trained in Athletics and Labor Lore; the Hefty Hauler skill feat."
+
+[[background]]
+id = "martial-disciple"
+name = "Martial Disciple"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "dex"]
+lore = ["Warfare Lore"]
+grants = [{ pick = { acrobatics = [{ train = "acrobatics" }, { feat = "cat-fall" }], athletics = [{ train = "athletics" }, { feat = "quick-jump" }] } }]
+summary = "You studied at a school of fighting. Boost Strength or Dexterity plus one free boost; trained in Acrobatics or Athletics and Warfare Lore; Cat Fall with Acrobatics or Quick Jump with Athletics."
+
+[[background]]
+id = "merchant"
+name = "Merchant"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "cha"]
+skill = "diplomacy"
+lore = ["Mercantile Lore"]
+feat = "bargain-hunter"
+summary = "You bought low, sold high and haggled in between. Boost Intelligence or Charisma plus one free boost; trained in Diplomacy and Mercantile Lore; the Bargain Hunter skill feat."
+
+[[background]]
+id = "miner"
+name = "Miner"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "wis"]
+skill = "survival"
+lore = ["Mining Lore"]
+grants = [{ feat_with = { feat = "terrain-expertise", value = "underground" } }]
+summary = "You worked deep underground for ore and stone. Boost Strength or Wisdom plus one free boost; trained in Survival and Mining Lore; Terrain Expertise for underground terrain."
+
+[[background]]
+id = "noble"
+name = "Noble"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "cha"]
+skill = "society"
+lore = ["Genealogy Lore", "Heraldry Lore"]
+feat = "courtly-graces"
+summary = "You were raised to obligation, etiquette and intrigue. Boost Intelligence or Charisma plus one free boost; trained in Society and Genealogy Lore or Heraldry Lore; the Courtly Graces skill feat."
+
+[[background]]
+id = "nomad"
+name = "Nomad"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["con", "wis"]
+skill = "survival"
+lore = ["Aquatic Lore", "Arctic Lore", "Desert Lore", "Forest Lore", "Mountain Lore", "Plains Lore", "Sky Lore", "Swamp Lore", "Underground Lore"]
+grants = [{ feat_with = { feat = "assurance", value = "survival" } }]
+summary = "You never stayed long in one place. Boost Constitution or Wisdom plus one free boost; trained in Survival and a terrain Lore; Assurance with Survival."
+
+[[background]]
+id = "prisoner"
+name = "Prisoner"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "con"]
+skill = "stealth"
+lore = ["Underworld Lore"]
+feat = "experienced-smuggler"
+summary = "You spent years locked up, rightly or not. Boost Strength or Constitution plus one free boost; trained in Stealth and Underworld Lore; the Experienced Smuggler skill feat."
+
+[[background]]
+id = "raised-by-belief"
+name = "Raised by Belief"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = []
+lore = ["Lore of your deity"]
+unavailable = "chooses a deity, whose divine attribute and divine skill set this background's boost, training and Assurance; deity records are not in this slice"
+summary = "You grew up steeped in one deity's traditions. One boost to an attribute your deity favours plus one free boost; trained in your deity's divine skill with Assurance in it, and a Lore of your deity."
+
+[[background]]
+id = "sailor"
+name = "Sailor"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "dex"]
+skill = "athletics"
+lore = ["Sailing Lore"]
+feat = "underwater-marauder"
+summary = "You worked ships and learned to fight on and under the water. Boost Strength or Dexterity plus one free boost; trained in Athletics and Sailing Lore; the Underwater Marauder skill feat."
+
+[[background]]
+id = "scholar"
+name = "Scholar"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "wis"]
+lore = ["Academia Lore"]
+grants = [{ pick = { arcana = [{ train = "arcana" }, { feat_with = { feat = "assurance", value = "arcana" } }], nature = [{ train = "nature" }, { feat_with = { feat = "assurance", value = "nature" } }], occultism = [{ train = "occultism" }, { feat_with = { feat = "assurance", value = "occultism" } }], religion = [{ train = "religion" }, { feat_with = { feat = "assurance", value = "religion" } }] } }]
+summary = "You studied at an academy and dreamed of seeing what you read about. Boost Intelligence or Wisdom plus one free boost; trained in one of Arcana, Nature, Occultism or Religion and Academia Lore; Assurance with the chosen skill."
+
+[[background]]
+id = "scout"
+name = "Scout"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["dex", "wis"]
+skill = "survival"
+lore = ["Aquatic Lore", "Arctic Lore", "Desert Lore", "Forest Lore", "Mountain Lore", "Plains Lore", "Sky Lore", "Swamp Lore", "Underground Lore"]
+feat = "forager"
+summary = "You found trails and guided others through the wild. Boost Dexterity or Wisdom plus one free boost; trained in Survival and a terrain Lore; the Forager skill feat."
+
+[[background]]
+id = "street-urchin"
+name = "Street Urchin"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["dex", "con"]
+skill = "thievery"
+lore = ["Lore of the city you grew up in (you name it)"]
+feat = "pickpocket"
+summary = "You survived on a city's streets by quick hands. Boost Dexterity or Constitution plus one free boost; trained in Thievery and Lore of the city you grew up in (you name it); the Pickpocket skill feat."
+
+[[background]]
+id = "teacher"
+name = "Teacher"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["int", "wis"]
+lore = ["Academia Lore"]
+feat = "experienced-professional"
+grants = [{ pick = { performance = [{ train = "performance" }], society = [{ train = "society" }] } }]
+summary = "You taught others and now seek to learn first-hand. Boost Intelligence or Wisdom plus one free boost; trained in Performance or Society and Academia Lore; the Experienced Professional skill feat."
+
+[[background]]
+id = "tinker"
+name = "Tinker"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["dex", "int"]
+skill = "crafting"
+lore = ["Engineering Lore"]
+feat = "specialty-crafting"
+summary = "You built and mended contraptions. Boost Dexterity or Intelligence plus one free boost; trained in Crafting and Engineering Lore; the Specialty Crafting skill feat."
+
+[[background]]
+id = "warrior"
+name = "Warrior"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+boosts = ["str", "con"]
+skill = "intimidation"
+lore = ["Warfare Lore"]
+feat = "intimidating-glare"
+summary = "You fought for pay, for a cause or to stay alive. Boost Strength or Constitution plus one free boost; trained in Intimidation and Warfare Lore; the Intimidating Glare skill feat."

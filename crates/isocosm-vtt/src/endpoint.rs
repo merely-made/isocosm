@@ -20,6 +20,7 @@
 #[path = "overmap.rs"] mod overmap;
 #[path = "table.rs"] mod table;
 #[path = "sheets.rs"] mod sheets;
+#[path = "sheets_pf2e.rs"] mod sheets_pf2e;
 
 use std::collections::BTreeMap;
 

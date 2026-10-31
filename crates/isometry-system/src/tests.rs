@@ -18,6 +18,7 @@ mod actions;
 mod generator;
 mod packs;
 mod pf2e;
+mod pf2e_creation;
 
 /// A knight who reliably hits, and a victim whose AC is the only variable.
 fn duel(target_ac: i64, target_hp: i64) -> (System, SheetData, SheetData) {

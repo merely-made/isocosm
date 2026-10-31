@@ -18,7 +18,7 @@ pub use publication::{NativeCursor, NativeWorld};
 mod content;
 mod generation;
 mod table;
-pub use content::{Content, TableMetadata};
+pub use content::{Content, EDITIONS, TableMetadata, default_edition, is_default_edition};
 pub use generation::GenerationOrigin;
 
 /// The VTT's declared vocabulary; other kinds remain the caller's founding choice.

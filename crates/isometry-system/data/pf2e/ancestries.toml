@@ -1,0 +1,87 @@
+# Pathfinder 2e Player Core (Remaster): ancestries and heritages for the first
+# creation slice (case 1021). ORC-licensed mechanics, checked against the
+# foundryvtt/pf2e records (branch v14-dev) whose publication is a Remaster
+# book under the ORC licence (case 1016); summaries are original, and no
+# setting text or artwork is reproduced.
+# Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative
+# License: https://paizo.com/orclicense
+version = 1
+
+[[ancestry]]
+id = "human"
+name = "Human"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+hp = 8
+size = "Medium"
+speed = 25
+vision = "normal"
+boosts = [[], []]
+flaws = []
+languages = ["Common", "one more common language"]
+summary = "Short-lived, adaptable and everywhere. 8 Hit Points, Medium, Speed 25 feet, ordinary vision. Two free attribute boosts and no flaw; human feats lean toward extra training and flexibility."
+
+[[ancestry]]
+id = "dwarf"
+name = "Dwarf"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+hp = 10
+size = "Medium"
+speed = 20
+vision = "darkvision"
+boosts = [["con"], ["wis"], []]
+flaws = ["cha"]
+languages = ["Common", "Dwarven"]
+summary = "Stout and steady, at home underground. 10 Hit Points, Medium, Speed 20 feet, darkvision. Boosts to Constitution and Wisdom plus one free boost, and a flaw to Charisma. Starts with a clan dagger (equipment comes in a later step of the table)."
+
+[[heritage]]
+id = "skilled-human"
+name = "Skilled Human"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+ancestry = "human"
+grants = [{ train_choice = { count = 1 } }]
+summary = "You become trained in one skill of your choice (expert in it from 5th level)."
+
+[[heritage]]
+id = "versatile-human"
+name = "Versatile Human"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+ancestry = "human"
+grants = [{ feat_choice = "general" }]
+summary = "You gain one 1st-level general feat whose prerequisites you meet; skill feats count as general feats."
+
+[[heritage]]
+id = "ancient-blooded-dwarf"
+name = "Ancient-Blooded Dwarf"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+ancestry = "dwarf"
+summary = "You gain the Call on Ancient Blood reaction: when a magical effect forces a saving throw, before you roll, gain a +1 circumstance bonus to saves until the end of that turn."
+
+[[heritage]]
+id = "death-warden-dwarf"
+name = "Death Warden Dwarf"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+ancestry = "dwarf"
+summary = "A success on a saving throw against a void effect, or one created by an undead creature, becomes a critical success."
+
+[[heritage]]
+id = "forge-dwarf"
+name = "Forge Dwarf"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+ancestry = "dwarf"
+grants = [{ resistance = "fire" }]
+summary = "Fire resistance equal to half your level (at least 1), and environmental heat counts as one step less severe for you."
+
+[[heritage]]
+id = "rock-dwarf"
+name = "Rock Dwarf"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+ancestry = "dwarf"
+summary = "A +2 circumstance bonus to your Fortitude or Reflex DC against being Shoved, Tripped or Repositioned, and to saves against effects that would knock you prone; forced movement of 10 feet or more is halved."
+
+[[heritage]]
+id = "strong-blooded-dwarf"
+name = "Strong-Blooded Dwarf"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+ancestry = "dwarf"
+grants = [{ resistance = "poison" }]
+summary = "Poison resistance equal to half your level (at least 1); each successful save against a poison affliction lowers its stage by 2 (by 1 if virulent), a critical success by 3 (2 if virulent)."

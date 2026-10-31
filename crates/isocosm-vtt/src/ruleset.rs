@@ -5,13 +5,46 @@ use isocosm_overlay::{EntityHandle, OrdinaryAccess, Seat};
 use isometry_campaign::{Inventory, ItemId};
 use isometry_core::{FieldValue, MapDocument, Rng, RollRecord, SheetData, TokenId};
 use isometry_system::active_effects::{self as effects, Clock, Records};
+use isometry_system::pf2e::{self, draft::Draft};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 mod actions;
 mod frame;
+mod pathfinder;
 
 pub const SECTION: &str = "isocosm-vtt:edition";
+const CAMPAIGN: &str = "isocosm-vtt:campaign";
+
+pub use crate::founding::{EDITIONS, default_edition};
+
+/// The edition the campaign was founded under (case 1029); a world with no
+/// campaign record plays the 5e adapter it always has.
+pub fn edition(sections: &BTreeMap<String, Vec<u8>>) -> Result<String, String> {
+    #[derive(Deserialize)]
+    struct Founded {
+        content: Founding,
+    }
+    #[derive(Deserialize)]
+    struct Founding {
+        #[serde(default = "default_edition")]
+        edition: String,
+    }
+    let Some(bytes) = sections.get(CAMPAIGN) else {
+        return Ok(default_edition());
+    };
+    let founded: Founded =
+        serde_json::from_slice(bytes).map_err(|e| format!("campaign founding: {e}"))?;
+    if !EDITIONS.contains(&founded.content.edition.as_str()) {
+        return Err(format!("unknown edition {}", founded.content.edition));
+    }
+    Ok(founded.content.edition)
+}
+
+/// The edition's label as the table shows it.
+pub fn label(edition: &str) -> &'static str {
+    if edition == pf2e::SYSTEM { pf2e::LABEL } else { "D&D SRD 5.1" }
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Action {
@@ -53,6 +86,18 @@ pub enum Action {
     },
     Calibrate,
     UseRulings,
+    /// Answer the pending decision of a creation draft.
+    Choose {
+        actor: u64,
+        slot: String,
+        value: String,
+    },
+    /// Take back a draft's last choice.
+    Undo(u64),
+    /// Record a complete draft as the character's sheet.
+    Finish(u64),
+    /// Abandon an unfinished draft.
+    Discard(u64),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -79,6 +124,10 @@ pub struct State {
     /// Authored native base cells per five-foot square. None needs a DM ruling.
     pub cells_per_square: Option<u32>,
     pub log: Vec<Log>,
+    /// Creation drafts: the choices only, the character rebuilt from them.
+    /// A finished draft stays as the record of how its sheet was made.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub drafts: BTreeMap<TokenId, Draft>,
 }
 
 impl State {
@@ -94,6 +143,7 @@ impl State {
             next_item: 1,
             cells_per_square: None,
             log: Vec::new(),
+            drafts: BTreeMap::new(),
         }
     }
     pub fn read(sections: &BTreeMap<String, Vec<u8>>) -> Result<Option<Self>, String> {
@@ -102,15 +152,18 @@ impl State {
             .map(|bytes| {
                 let state: Self =
                     serde_json::from_slice(bytes).map_err(|e| format!("edition state: {e}"))?;
+                let edition = edition(sections)?;
                 if state.version != 1
                     || !state.experimental
                     || state.next_item == 0
                     || state.log.len() > 4096
                     || state.cells_per_square == Some(0)
-                    || state.sheets.values().any(|sheet| sheet.system != "5e-srd")
+                    || state.sheets.values().any(|sheet| sheet.system != edition)
+                    || (edition != pf2e::SYSTEM && !state.drafts.is_empty())
                 {
                     return Err("unsupported or invalid edition state".into());
                 }
+                pathfinder::check(&state)?;
                 Records::read(&state.map())?;
                 Ok(state)
             })
@@ -215,15 +268,18 @@ pub fn apply(
     payload: &[u8],
 ) -> Result<(), String> {
     crate::native::current_access(session, access)?;
+    let edition = edition(sections)?;
     let mut state =
         State::read(sections)?.unwrap_or_else(|| State::new(session.sim.genesis().seed));
     if state.log.len() >= 4096 {
         return Err("edition history limit reached".into());
     }
     let mut map = state.current_map(session)?;
-    let (note, rolls) = actions::apply(
-        &mut state, &mut map, session, sections, access, action, payload,
-    )?;
+    let (note, rolls) = if edition == pf2e::SYSTEM {
+        pathfinder::apply(&mut state, &mut map, session, access, action)?
+    } else {
+        actions::apply(&mut state, &mut map, session, sections, access, action, payload)?
+    };
     state.take_map(map);
     state.log.push(Log {
         by: access.participant.0,

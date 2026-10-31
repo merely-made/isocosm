@@ -1,0 +1,136 @@
+//! Write a fresh Bench family ledger founded under Pathfinder 2e, for the
+//! desktop creation trial; `--inspect` reopens a saved one and prints what the
+//! family host replayed.
+#[path = "../tests/native_founding/fixture.rs"]
+mod content_fixture;
+#[path = "../tests/support/table.rs"]
+mod table;
+use chirograph::{IntentInvocation, IntentResult};
+use graphshell_endpoint::{IntentSink, ProjectionCatalog, ProjectionSource};
+use isocosm_host::world::World;
+use isocosm_overlay::Seat;
+use isocosm_vtt::{
+    TABLE, VttEndpoint,
+    founding::{Content, TableMetadata},
+    native::GameBindings,
+};
+use isonetry::family::{FamilyHost, FamilyLedgerLimits, FamilyLimits, SessionId};
+
+fn click(
+    endpoint: &mut VttEndpoint,
+    projection: &str,
+    id: &str,
+    intent: &str,
+) -> Result<(), String> {
+    let offer = endpoint
+        .describe()
+        .projections
+        .into_iter()
+        .find(|o| o.request.session.0 == projection)
+        .ok_or("missing projection")?;
+    let snap = endpoint.snapshot(offer.request)?;
+    let target = snap
+        .scene
+        .active_items_in_order()
+        .into_iter()
+        .find(|(_, item)| {
+            snap.scene.tables.sources[item.source.0 as usize]
+                .as_ref()
+                .is_some_and(|source| source.id == id)
+        })
+        .ok_or("missing card")?
+        .0;
+    match endpoint.invoke(IntentInvocation {
+        session: snap.session,
+        target,
+        observed_epoch: snap.scene.epoch,
+        observed_revision: snap.scene.revision,
+        intent: intent.into(),
+        payload: vec![],
+    })? {
+        IntentResult::Accepted => Ok(()),
+        other => Err(format!("fixture action refused: {other:?}")),
+    }
+}
+
+fn main() -> Result<(), String> {
+    let mut args = std::env::args().skip(1);
+    let path = args.next().ok_or("supply a new .family ledger path")?;
+    if path == "--inspect" {
+        return inspect(&args.next().ok_or("supply the saved .family ledger path")?);
+    }
+    let table::Table {
+        world, dm, bodies, ..
+    } = table::table_with_sites(1);
+    let (session, mut sections) = world.into_parts()?;
+    let draft = content_fixture::draft();
+    let content = Content {
+        id: "pathfinder-bench".into(),
+        name: "Pathfinder Bench".into(),
+        maps: draft.maps,
+        storylets: draft.world.storylets,
+        rewards: vec![],
+        starting_map: draft.starting_map,
+        final_storylet: draft.final_storylet,
+        table: TableMetadata::default(),
+        edition: "pf2e-srd".into(),
+    };
+    content.validate().map_err(|e| e.to_string())?;
+    sections.insert("vtt".into(), GameBindings::decode(&[])?.encode()?);
+    sections.insert(
+        "isocosm-vtt:campaign".into(),
+        serde_json::to_vec(&serde_json::json!({"content":content,"origin":null}))
+            .map_err(|e| e.to_string())?,
+    );
+    sections.insert(
+        "isocosm-vtt:table-access".into(),
+        serde_json::to_vec(&serde_json::json!({"host_participant":dm.0,"peers":[]}))
+            .map_err(|e| e.to_string())?,
+    );
+    let host = FamilyHost::create_file(
+        &path,
+        SessionId([83; 16]),
+        World::with_sections(session, sections),
+        FamilyLimits::default(),
+        FamilyLedgerLimits::default(),
+    )?;
+    let mut endpoint = VttEndpoint::open(host.world(), dm, Seat::Dm)?;
+    click(&mut endpoint, TABLE, "roster", "vtt.roster-empty")?;
+    println!(
+        "Pathfinder Bench ledger {path}; bodies={bodies:?}; sequence={}",
+        host.sequence()
+    );
+    Ok(())
+}
+
+/// Reopen the real saved ledger after the headed writer has closed. Opening
+/// verifies the checkpoint and accepted suffix through the normal family host.
+fn inspect(path: &str) -> Result<(), String> {
+    let host = FamilyHost::resume_file(
+        path,
+        isocosm::Execution::Grouped,
+        FamilyLimits::default(),
+        FamilyLedgerLimits::default(),
+    )?;
+    let report = host.read(|_, sections| -> Result<_, String> {
+        let state = isocosm_vtt::ruleset::State::read(sections)?.ok_or("no saved edition state")?;
+        Ok(serde_json::json!({
+            "edition": isocosm_vtt::ruleset::edition(sections)?,
+            "sheets": state.sheets.iter().map(|(id, sheet)| serde_json::json!({
+                "body": id.0, "system": sheet.system, "hp": sheet.int("hp_current")
+            })).collect::<Vec<_>>(),
+            "drafts": state.drafts.iter().map(|(id, draft)| serde_json::json!({
+                "body": id.0, "choices": draft.choices.len()
+            })).collect::<Vec<_>>(),
+            "log": state.log.iter().map(|entry| entry.note.clone()).collect::<Vec<_>>(),
+        }))
+    })??;
+    println!(
+        "{}",
+        serde_json::to_string_pretty(
+            &serde_json::json!({"sequence":host.sequence(),"reopened":report})
+        )
+        .map_err(|e| e.to_string())?
+    );
+    Ok(())
+}

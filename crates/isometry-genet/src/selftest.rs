@@ -16,12 +16,15 @@ use super::*;
 
 pub(crate) use family::FamilySelftest;
 pub(crate) use magic::MagicSelftest;
+pub(crate) use pathfinder::PathfinderSelftest;
 pub(crate) use overlays::OverlayArm;
 
 mod adjudicate;
 mod board;
 mod family;
 mod magic;
+mod painted;
+mod pathfinder;
 mod overlays;
 mod session;
 mod surfaces;

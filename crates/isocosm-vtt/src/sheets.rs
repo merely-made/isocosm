@@ -54,6 +54,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
     endpoint.world.read_sections(|session,sections| {
         let state=State::read(sections)?.unwrap_or_else(||State::new(session.sim.genesis().seed));
         let map=state.current_map(session)?;
+        let pathfinder=super::sheets_pf2e::plays(sections)?;
         let mut built=Built::new();
         let native=session.sim.state();
         let mut bodies:std::collections::BTreeSet<u64>=state.sheets.keys().map(|id|u64::from(id.0)).collect();
@@ -68,6 +69,10 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             let title=native.population.get(id).and_then(|b|b.authored.as_ref()).map_or_else(||format!("Character {id}"),|a|a.key.clone());
             let can_control=ruleset::controls(session,access,id);
             let dm=access.seat==Seat::Dm;
+            if pathfinder {
+                super::sheets_pf2e::body(&mut built,&state,&map,id,tid,&title,can_control)?;
+                continue;
+            }
             let Some(sheet)=map.sheet(tid) else {
                 let choices=if dm && can_control {vec![("vtt.sheet-create".into(),"Create D&D SRD 5.1 sheet".into(),Action::Create(id))]} else {vec![]};
                 push(&mut built,format!("sheet:{id}"),&title,vec![value("Native body",id),value("Sheet","not configured")],choices);
@@ -179,6 +184,14 @@ fn entry_mentions(entry: &ruleset::Log, subject: Option<u64>) -> bool {
             *actor == id || *target == id
         },
         (Action::Damage { target, .. }, Some(id)) => *target == id,
+        (
+            Action::Create(actor)
+            | Action::Choose { actor, .. }
+            | Action::Undo(actor)
+            | Action::Finish(actor)
+            | Action::Discard(actor),
+            Some(id),
+        ) => *actor == id,
         _ => false,
     }
 }

@@ -775,10 +775,10 @@ three design docs that cite it. The record holds the words.
 | 1013 | Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1018 | An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record. | none |
 | 1019 | A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
-| 1020 | PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction. | none |
-| 1021 | The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting. | none |
+| 1020 | PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1021 | The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1022 | A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden. | none |
-| 1026 | PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists. | none |
+| 1026 | PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1028 | Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today. | none |
 
 ## Naming

@@ -1,6 +1,6 @@
 # ORC-licensed mechanical implementation data. Source: Pathfinder Player Core
 # (2023), Paizo Inc.; no setting names, artwork or descriptive prose reproduced.
-# Reference: https://github.com/foundryvtt/pf2e/tree/master/packs/pf2e/spells/spells
+# Reference: https://github.com/foundryvtt/pf2e/tree/v14-dev/packs/pf2e/spells
 version = 1
 
 [[effects]]
