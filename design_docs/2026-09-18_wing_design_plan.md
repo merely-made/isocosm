@@ -11453,6 +11453,22 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Bodies and anatomy · draws on 1035, 1046, bodies.2, bodies.11 · summary A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes.
 
+1050. **Pathfinder 2e combat: ammunition spent, Shield Block chosen by the
+      defender, healing by toolkit and time, flanking by party.** Ruled by
+      Mark on 2026-10-31, each as recommended ("Add and spend ammo", "Strike
+      pauses for the defender", "Toolkit, Battle Medicine, timed healing",
+      "Allies are party members"). The reading: Player Core's four level-0
+      ammunition records join starting gear and each ranged Strike spends
+      one, refused when none is left; a hit pauses at the defender's pending
+      reaction, the defender's seat choosing Shield Block or not before
+      damage applies; the healer's toolkit joins the gear, Battle Medicine is
+      an encounter action, and Treat Wounds and rest pass native time through
+      downtime consent; flanking is measured from positions and reach, allies
+      being members of the same native party, with GM-ruled off-guard for
+      everything else.
+
+      Links: area The VTT · draws on 1034, 1047, vtt.2, vtt.3, vtt.5 · summary PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members.
+
 1045. **A shared mechanism moves when its second consumer is planned, not
       when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
       D12, refining mere's Stack 1): "second host is planned", because

@@ -5207,6 +5207,13 @@ area = "Bodies and anatomy"
 summary = "A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes."
 draws_on = ["1035", "1046", "bodies.2", "bodies.11"]
 
+[cases."1050"]
+title = "Pathfinder 2e combat: ammunition spent, Shield Block chosen by the defender, healing by toolkit and time, flanking by party"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members."
+draws_on = ["1034", "1047", "vtt.2", "vtt.3", "vtt.5"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -5583,6 +5590,14 @@ area = "Directing and play"
 summary = "A frame's draw stops for the advance at its first member with no stance in the frame."
 draws_on = ["sim-execution D32", "sim-execution D39"]
 governs = ["cosmograph::spatial"]
+
+[decisions."sim-execution D41"]
+title = "a paced Grouped span runs a tick at a time (2026-10-30), applies Processes 7"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Processes and rules"
+summary = "A Grouped advance with a paced lineage runs one tick at a time, so a span groups and chooses as its ticks taken singly."
+draws_on = ["609", "610", "sim-execution D15", "sim-execution D19"]
+governs = ["cosmograph::schedule"]
 
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
