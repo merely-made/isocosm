@@ -784,7 +784,7 @@ three design docs that cite it. The record holds the words.
 | 1029 | A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1030 | GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1031 | The PF2e slice takes all forty backgrounds and their skill feats, about a hundred records. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1033 | Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text. | none |
+| 1033 | Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 | 1034 | PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move. | none |
 
 ## Naming

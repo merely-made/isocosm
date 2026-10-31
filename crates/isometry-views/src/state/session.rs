@@ -37,6 +37,17 @@ impl UiState {
         }
     }
 
+    /// What a turn entry calls a token (case 1033): its character's name from
+    /// its sheet, or its class when it has no named sheet.
+    pub fn turn_name(&self, id: TokenId) -> String {
+        let named = self.map.sheet(id).and_then(|sheet| sheet.text("name"));
+        match (named, self.map.token(id)) {
+            (Some(name), _) if !name.trim().is_empty() => name.to_owned(),
+            (_, Some(token)) => token.sprite.clone(),
+            _ => "token".to_owned(),
+        }
+    }
+
     /// A short display label for a token, e.g. "knight 1".
     pub(crate) fn token_label(&self, id: TokenId) -> String {
         match self.map.token(id) {

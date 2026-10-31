@@ -154,7 +154,7 @@ fn turn_row(ui: &UiState, id: TokenId) -> UiChild {
     let label = format!(
         "{}{} {} ({owner})",
         if active { "> " } else { "" },
-        token.sprite,
+        ui.turn_name(id),
         id.0
     );
     Box::new(

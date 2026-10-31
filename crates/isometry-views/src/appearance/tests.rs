@@ -93,3 +93,13 @@ fn a_layer_can_come_from_a_toml_file_or_a_vox() {
     let garbage = |_: &str| Ok(b"not a vox".to_vec());
     assert!(library.overlay(not_vox, &garbage).is_err());
 }
+
+#[test]
+fn the_core_packs_vox_layer_loads_and_draws() {
+    let library = Library::core();
+    let hooded = library.resolve("hero", Some(&look("hair", "hair:hood", 0, [9, 9, 9])), []).unwrap();
+    let bare = library.resolve("hero", Some(&look("hair", "", 0, [9, 9, 9])), []).unwrap();
+    assert!(hooded.voxels.filled() > bare.voxels.filled() + 40, "the hood's cloth is drawn");
+    // Colour slot 10 in the file is palette index 9, the hood's cloth.
+    assert!(hooded.voxels.iter().any(|(_, _, _, index)| index == 9));
+}

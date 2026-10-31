@@ -264,8 +264,13 @@ roadmap's distribution residue goes to `content-packs`.
   `TokenAppearance` in `isometry-core`) and its equipped items' bound layers.
   The scene board keys a token's geometry revision and colour table by the
   resolved look; the DOM board bakes class rules from the same file and
-  bakes a token with its own look inline. The DOM board still draws every
-  facing from bake facing 0, mirrored for east and north.
+  bakes a token with its own look inline.
+- 2026-10-30: a token's facing now draws as a true quarter turn on both
+  boards and in the preview (case 1033), and four headed previews per board
+  (`Code/testing/isocosm/appearance/facings-{dom,scene}.png`) showed that
+  south had been drawn as north on both: bake facing 0 and yaw zero put the
+  rig's front toward the upper right. `bake_facing_of` and `yaw_of` now put
+  north at zero, so a south-facing token shows its face.
 - 2026-10-30: the in-app `ISOMETRY_CAPTURE_DIR` readback did not land for any
   selftest on this machine (a turns-selftest control run included); the look
   editor's headed pairs were taken with PrintWindow from outside the process.

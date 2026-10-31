@@ -18,9 +18,9 @@ size = [10, 24, 8]
 slots = ["body", "hair"]
 
 # Palette indices: 0 skin, 1 shirt, 2 trousers, 3 belt, 4 hair, 5 boots,
-# 6 eyes, 7 metal, 8 grip.
+# 6 eyes, 7 metal, 8 grip, 9 hood.
 [palettes.default]
-colours = ["#f0c39b", "#cd413c", "#3c4882", "#282834", "#6e482a", "#342a28", "#1e1c22", "#aab0bc", "#604028"]
+colours = ["#f0c39b", "#cd413c", "#3c4882", "#282834", "#6e482a", "#342a28", "#1e1c22", "#aab0bc", "#604028", "#4a5a3a"]
 
 [palettes.scavenger]
 from = "default"
@@ -81,7 +81,7 @@ layers = { body = "body:base", hair = "hair:long" }
 # What the creator offers in each slot; "" is nothing.
 [choices]
 body = ["body:base", "body:robe", "body:mail"]
-hair = ["hair:short", "hair:long", "hair:crop", ""]
+hair = ["hair:short", "hair:long", "hair:crop", "hair:hood", ""]
 
 # Palette entries the creator offers to recolour, and the colours it offers.
 [[swatches]]
@@ -103,6 +103,11 @@ colours = ["#3c4882", "#4a3a2a", "#2e2e34", "#6a6a52", "#7a2c2c"]
 index = 4
 label = "hair"
 colours = ["#6e482a", "#1e1a18", "#d8b04a", "#a8402a", "#c8c4bc", "#3a5a8c"]
+
+[[swatches]]
+index = 9
+label = "hood"
+colours = ["#4a5a3a", "#5a3a2a", "#2e3448", "#8c2c2c", "#c8c4bc"]
 
 # Item templates to the layer they show while equipped.
 [items]
@@ -170,3 +175,7 @@ fills = [
     [9, 10, 12, 21, 2, 3, 7],                             # blade
 ]
 points = [[9, 7, 2, 7]]                                   # pommel
+
+# A layer from a .vox file (written by appearance/make_hood.py).
+[layers."hair:hood"]
+file = "appearance/hood.vox"

@@ -75,13 +75,15 @@ impl LookDraft {
     }
 }
 
-/// The bake facing a board facing shows: the bake's four views in its own
-/// quarter-turn order.
+/// The bake facing a board facing shows. Measured in the running game
+/// (2026-10-30, four headed previews): bake 0 shows the figure's back with its
+/// front toward the screen's upper right, which is north (row decreasing), and
+/// each step turns it a quarter clockwise as seen from above.
 pub fn bake_facing_of(facing: Facing) -> u8 {
     match facing {
-        Facing::South => 0,
+        Facing::North => 0,
         Facing::East => 1,
-        Facing::North => 2,
+        Facing::South => 2,
         Facing::West => 3,
     }
 }

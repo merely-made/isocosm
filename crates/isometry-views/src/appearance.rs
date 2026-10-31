@@ -28,6 +28,12 @@ pub use creator::{Bakes, LookDraft, bake_facing_of};
 /// draws its classes, and so the board's stylesheet can be baked statically.
 const CORE: &str = include_str!("../../isometry-system/examples/packs/core/appearance.toml");
 
+/// The files the core pack's `appearance.toml` names, compiled in with it.
+const CORE_FILES: &[(&str, &[u8])] = &[(
+    "appearance/hood.vox",
+    include_bytes!("../../isometry-system/examples/packs/core/appearance/hood.vox"),
+)];
+
 /// A palette entry the creator offers to recolour.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -192,7 +198,13 @@ impl Library {
     pub fn core() -> Self {
         let mut library = Self::empty();
         library
-            .overlay(CORE, &|path: &str| Err(format!("the core pack reads no files ({path})")))
+            .overlay(CORE, &|path: &str| {
+                CORE_FILES
+                    .iter()
+                    .find(|(name, _)| *name == path)
+                    .map(|(_, bytes)| bytes.to_vec())
+                    .ok_or_else(|| format!("the core pack has no file {path}"))
+            })
             .expect("the core pack's appearance.toml parses");
         library
     }
@@ -402,13 +414,11 @@ impl Library {
 /// A `file` layer: another TOML layer (fills and points) or a `.vox`.
 fn load_layer(path: &str, bytes: &[u8]) -> Result<Voxels, String> {
     if path.ends_with(".vox") {
-        let (raw, _) = isometer_mesh::bake::load_vox(bytes)
+        // `dot_vox` already reads a file's colour slot n as index n - 1, so a
+        // .vox's first colour is palette index 0 here; the file's own colours
+        // are not used.
+        let (voxels, _) = isometer_mesh::bake::load_vox(bytes)
             .ok_or_else(|| format!("`{path}` is not a readable .vox"))?;
-        // A .vox's colour slot 1 is the first colour, which is index 0 here.
-        let mut voxels = Voxels::new(raw.dx, raw.dy, raw.dz);
-        for (x, y, z, slot) in raw.iter() {
-            voxels.set(x, y, z, slot.saturating_sub(1));
-        }
         return Ok(voxels);
     }
     let text = std::str::from_utf8(bytes).map_err(|_| format!("`{path}` is not text"))?;

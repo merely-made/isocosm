@@ -79,3 +79,15 @@ fn a_seat_that_does_not_control_the_token_cannot_open_its_look() {
     ui.open_look(token.id);
     assert!(ui.look_open, "the controlling seat may");
 }
+
+#[test]
+fn a_turn_entry_is_called_by_its_characters_name() {
+    let mut ui = UiState::new(demo_map());
+    let token = first_token(&ui);
+    let mut sheet = isometry_core::SheetData::new("5e-srd");
+    sheet.set_text("name", "Mira".to_owned());
+    ui.map.set_sheet(token.id, sheet);
+    assert_eq!(ui.turn_name(token.id), "Mira");
+    ui.map.sheets.clear();
+    assert_eq!(ui.turn_name(token.id), token.sprite, "no named sheet: the class");
+}

@@ -41,9 +41,10 @@ pub(super) fn token_el(ui: &UiState, token: &Token) -> UiChild {
             }
         }
     }
-    // The creature has four baked views. The starter humanoids still mirror
-    // one view; keep that transform out of the creature's scaled inline style.
+    // A class the packs bind is baked in four true facings, as is the
+    // creature; anything else still mirrors one view.
     let flipped = token.sprite != "tower-beast"
+        && !ui.appearance.has_class(&token.sprite)
         && matches!(
             token.facing,
             isometry_core::Facing::East | isometry_core::Facing::North
@@ -99,7 +100,12 @@ pub(super) fn token_el(ui: &UiState, token: &Token) -> UiChild {
         None
     } else {
         ui.appearance_bakes
-            .uri(&ui.appearance, &look, 0, &crate::theme::BOARD_BAKE)
+            .uri(
+                &ui.appearance,
+                &look,
+                crate::appearance::bake_facing_of(token.facing),
+                &crate::theme::BOARD_BAKE,
+            )
             .map(|uri| format!("background-image: url(\"{uri}\"); {}", crate::theme::SPRITE_FIT))
     };
     let sprite_el = el("div", ()).attr("class", class);
