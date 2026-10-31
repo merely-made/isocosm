@@ -5168,7 +5168,7 @@ draws_on = ["1012", "1035", "processes.13"]
 title = "Homebrew is the sim's making, with Distillery's models optional; quick-start worlds author their own ground"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "The VTT"
-summary = "Homebrew is composed by the sim's making on ruleset defaults, Distillery's models optional and checked; quick-start packs author their own sites and routes."
+summary = "Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes."
 draws_on = ["1023", "1043", "processes.13"]
 
 [decisions."functional-generation D1"]
