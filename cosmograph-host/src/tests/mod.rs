@@ -7,6 +7,8 @@ mod drive;
 mod input;
 #[cfg(feature = "endpoint")]
 mod endpoint;
+#[cfg(all(feature = "endpoint", feature = "society"))]
+mod graph;
 mod file_save;
 mod founding;
 mod lifecycle;
