@@ -88,10 +88,11 @@ impl GraphSession {
 
     pub fn snapshot(&mut self, request: ProjectionRequest) -> Result<ProjectionSnapshot, String> {
         let head = self.timeline.head()?;
-        let (line, from) = (self.timeline.line(), self.timeline.forked_from());
+        let (line, lines, from) = (self.timeline.line(), self.timeline.lines(), self.timeline.forked_from());
         let (view, acts, actions) = (self.view.clone(), self.acts(), self.world_actions());
         let mut built = self.timeline.read(|s| {
             let mut world = vec![value("Tick", s.sim.state().tick), value("Head", head), value("Line", line),
+                value("Lines", lines),
                 value("Entries", s.entries.len()), value("State hash", format!("{:016x}", s.sim.state_hash())),
                 value("Filters", view.domains.iter().map(|d| d.word()).collect::<Vec<_>>().join(", "))];
             if let Some((parent, tick)) = from { world.push(value("Forked from", format!("line {parent} at tick {tick}"))); }

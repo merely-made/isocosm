@@ -107,7 +107,7 @@ pub fn graph(session: &Session, view: &View, acts: &[chirograph::AdvertisedActio
             let id = format!("region:{}", region.sites.first().copied().unwrap_or_default());
             let mut values = vec![value("Sites", region.sites.len()), value("Collapsed", region.collapsed)];
             values.extend(region.biomass.iter().map(|(level, m)| value(level.as_str(), m)));
-            g.items.push(Item { id: id.clone(), card: card(format!("Region of site {}", &id[7..]), values,
+            g.items.push(Item { id: id.clone(), card: card(format!("Region {}", &id[7..]), values,
                 &["region"]), actions: vec![toggle(view, &id, "region")] });
         }
     }
@@ -135,7 +135,9 @@ pub fn graph(session: &Session, view: &View, acts: &[chirograph::AdvertisedActio
                 let group = &state.population.groups[&first];
                 let e = &group.entity;
                 let named = sim.name_of(first).filter(|_| group.count == 1);
-                let title = named.map(str::to_owned).unwrap_or_else(|| format!("{} ×{}", e.lineage, group.count));
+                // The lineage key's last part keeps a small card's title readable.
+                let short = e.lineage.rsplit(':').next().unwrap_or(&e.lineage);
+                let title = named.map(str::to_owned).unwrap_or_else(|| format!("{short} ×{}", group.count));
                 let badges: &[&str] = if named.is_some() { &["group", "denizen"] } else { &["group"] };
                 g.items.push(Item { id: format!("group:{first}"), card: card(title, vec![
                     value("Lineage", &e.lineage), value("Kingdom", &e.kingdom), value("Members", group.count),
