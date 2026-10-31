@@ -6,7 +6,7 @@
 
 //! V1: the Eponym-owned residency policy pulled by continuous zoom.
 //!
-//! Isometer lifts exact `Ground` from Eponym's world on Isocosm, and owns
+//! Isometer lifts exact `Ground` from Eponym's world on Cosmograph, and owns
 //! the brick-map allocation. Eponym owns
 //! which exact bricks its current camera needs and the budget that bounds that
 //! presentation working set.

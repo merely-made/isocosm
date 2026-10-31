@@ -22,7 +22,7 @@ folded into the record and noted here by section.
 
 ---
 
-## 1. Isometry root, 2026-09-18
+## 1. Isocosm root, 2026-09-18
 
 Read-only evaluation of every active plan in the tabletop's index against
 this record. Rulings on keep, rewrite and retire are Mark's; the
@@ -194,8 +194,8 @@ record's corrections from this evaluation were folded the same day (§3.3,
 
 ## 4. What W1 leaves for Mark
 
-Across the three products: 61 rows, counted from the tables above rather than by hand (a 2026-09-18 correction; the first summary said fifty-seven and twenty-one): 30 keep, 22 rewrite, 6 retire, 3 surfaced to Mark as maintainer-owned. Isometry 9/4/1, Mesocosm 19/13/4, Paredros 2/5/1, as keep, rewrite and retire. The retirements: runtime profile
-(Isometry); engine and render lane landscape, execution waves, open
+Across the three products: 61 rows, counted from the tables above rather than by hand (a 2026-09-18 correction; the first summary said fifty-seven and twenty-one): 30 keep, 22 rewrite, 6 retire, 3 surfaced to Mark as maintainer-owned. Isocosm 9/4/1, Mesocosm 19/13/4, Paredros 2/5/1, as keep, rewrite and retire. The retirements: runtime profile
+(Isocosm); engine and render lane landscape, execution waves, open
 rulings register, effect pack preset (Mesocosm); R4 extraction review
 (Paredros). Every retirement names surviving code and its tier. The
 rewrites all share one of three causes: the plan owns a sim-tier subject

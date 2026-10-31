@@ -4,7 +4,7 @@
 //! Author-only references resolve accepted native actors, never future IDs.
 
 use crate::identity::SubjectId;
-use isocosm::{schema::{Id, Key}, projects::{DebitSelection, DecisionPolicy, Owner},
+use cosmograph::{schema::{Id, Key}, projects::{DebitSelection, DecisionPolicy, Owner},
     spread::{TransitId, Identity, Placement, Supply, Substrate}};
 use isometer_space::places::PlaceId;
 use serde::{Deserialize, Serialize};
@@ -51,8 +51,8 @@ pub struct AuthorSpreadLot {
     pub collectives: BTreeMap<Id, DecisionPolicy>,
 }
 
-pub(crate) fn substrate(source: isocosm::projects::StockSource) -> Result<Substrate, crate::WorldError> {
-    use isocosm::projects::StockSource;
+pub(crate) fn substrate(source: cosmograph::projects::StockSource) -> Result<Substrate, crate::WorldError> {
+    use cosmograph::projects::StockSource;
     match source {
         StockSource::Entity(id) => Ok(Substrate::Host(id)),
         StockSource::Site(id) => Ok(Substrate::Site(id)),

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 //! Headless ordinary runtime steps, with resumable native growth observations.
 use super::*;
-use isocosm::{anatomy, spatial::embodiment::Balance};
+use cosmograph::{anatomy, spatial::embodiment::Balance};
 use serde_json::{Value, json};
 
 fn reading(runtime: &Runtime) -> Value {
@@ -18,8 +18,8 @@ fn reading(runtime: &Runtime) -> Value {
         let capacity:u128=e.living().map(|(id,_)|u128::from(anatomy::ceiling(e.extent(id),rules.body()))).sum();
         let legs:Vec<_>=isometer::core::legs::chains(doc).iter().map(|leg| json!({
             "foot":leg.foot,"upper":e.extent(leg.upper),"lower":e.extent(leg.lower),"pad":e.extent(leg.foot),
-            "upper_section":anatomy::measure(e.extent(leg.upper),isocosm::rules::Measure::CrossSection),
-            "lower_section":anatomy::measure(e.extent(leg.lower),isocosm::rules::Measure::CrossSection)})).collect();
+            "upper_section":anatomy::measure(e.extent(leg.upper),cosmograph::rules::Measure::CrossSection),
+            "lower_section":anatomy::measure(e.extent(leg.lower),cosmograph::rules::Measure::CrossSection)})).collect();
         Some(json!({"actor":id,"count":group.count,"lineage":e.lineage,"born":e.born,
             "age":sim.state().tick.saturating_sub(e.born),"site":e.resident_site(),
             "mass_mg":Balance::of(e,rules).map(|b|b.mass_mg()),"tissue_mg":tissue,

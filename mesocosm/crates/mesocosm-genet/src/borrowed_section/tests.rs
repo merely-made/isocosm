@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isocosm::{Command, Execution, Founding, attention::{Region, WindowAttention}, directing::Played, schema::Method};
+use cosmograph::{Command, Execution, Founding, attention::{Region, WindowAttention}, directing::Played, schema::Method};
 use isometer::{FrameRequest, SceneProducer};
 
 pub(super) fn fixture() -> (Session, Id, Id, u64, Id) {
     // A played world is mapped (783): the close-up lifts its site's terrain.
-    let grid = isocosm::map::Grid { width: 2, height: 2, ..isocosm::map::Grid::drawn(11) };
-    let genesis = Founding { seed: 11, sites: 4, map: Some(isocosm::map::Layout::Grid(grid)),
+    let grid = cosmograph::map::Grid { width: 2, height: 2, ..cosmograph::map::Grid::drawn(11) };
+    let genesis = Founding { seed: 11, sites: 4, map: Some(cosmograph::map::Layout::Grid(grid)),
         population: 24, cohort_size: 1, lineages: 3,
         ecology: true, bodies: Some(Default::default()), played: Some(Played { lineage: 1, region_sites: 1 }),
         ..Default::default() }.generate().unwrap();
@@ -81,7 +81,7 @@ fn unchanged_native_snapshot_skips_lowering_and_invalid_camera_refuses_atomicall
 #[test]
 fn survival_section_does_not_gain_awareness_from_a_watch() {
     let (mut session, participant, subject, _, _) = fixture();
-    let visible = isocosm::directing::readings::view(&session.sim, subject, Mode::Survival);
+    let visible = cosmograph::directing::readings::view(&session.sim, subject, Mode::Survival);
     let hidden = *session.sim.state().sites.keys().find(|id| !visible.sites.contains(id)).unwrap();
     let window = session.attach_window(participant, "mesocosm".into(), WindowAttention {
         examined: Some(Region::Site(hidden)), ..Default::default() }).unwrap();

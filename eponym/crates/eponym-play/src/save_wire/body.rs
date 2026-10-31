@@ -4,7 +4,7 @@
 //! Generator-1 anatomy wire, before geometry and lineal matter separated.
 //! Decoding preserves every old part fact; it does not authenticate a save.
 
-use isocosm::lineage::{LineageBody, Provenance, SpeciesId};
+use cosmograph::lineage::{LineageBody, Provenance, SpeciesId};
 use isometer_core::{Attachment, PartId, VolumeRef};
 use serde::{Deserialize, Serialize};
 

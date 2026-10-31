@@ -6,13 +6,13 @@ linked.
 
 ## The repository
 
-Three products over one simulator: Isocosm: VTT at the root, Isocosm:
-Mesocosm in `mesocosm/`, Isocosm: Eponym in `eponym/` (doctrine, Naming 1).
+Three peer products over one simulator, Cosmograph: Isocosm (the VTT) at the
+root, Mesocosm in `mesocosm/`, Eponym in `eponym/` (doctrine, Naming 1).
 Each has its own Cargo workspace, kept separate to preserve source and patch
 policy; read the product's `CLAUDE.md` before editing it. Shared sim and wing
 crates are under `shared/`.
 
-Use `./scripts/wing.ps1 isometry <cargo arguments>` (or `mesocosm`/`eponym`)
+Use `./scripts/wing.ps1 isocosm <cargo arguments>` (or `mesocosm`/`eponym`)
 to select a product. Tabletop-only machine overrides live in the ignored
 `.cargo/tabletop-local.toml`, supplied explicitly by that command. Do not put
 product-specific patches in `.cargo/config.toml`: children inherit it. Direct
@@ -60,7 +60,7 @@ reads the records: `lookup <case | plan D-key | statement | path>`, `lookup
 
 ## The VTT
 
-A pixel-art isometric virtual tabletop over the Isocosm sim: a P2P map
+A pixel-art isometric virtual tabletop over the Cosmograph sim: a P2P map
 editor and turn-based play substrate for tabletop systems. Product
 description: `design_docs/PROJECT_DESCRIPTION.md`; vocabulary (map, tile,
 token, tileset, campaign, system plugin, session): `README.md` and the board
@@ -72,18 +72,18 @@ Presentation 1).
 
 ```text
 crates/
-  isometry-core/    Pure substrate model: grids, iso math, map documents,
+  isocosm-core/     Pure substrate model: grids, iso math, map documents,
                     session events. No I/O, UI, net or genet deps.
-  isometry-views/   Cambium view fns + CSS sheets (tilesets are stylesheets).
-  isometry-genet/   Native winit host; ISOMETRY_PROFILE=1 prints frame timers.
+  isocosm-views/    Cambium view fns + CSS sheets (tilesets are stylesheets).
+  isocosm-genet/    Native winit host; ISOMETRY_PROFILE=1 prints frame timers.
   isonetry/         DM-authority replication over a pure protocol seam, iroh
                     behind a feature.
-  isometry-system/  System plugins: schemas plus piccolo Lua rules, with the
+  isocosm-system/   System plugins: schemas plus piccolo Lua rules, with the
                     5e SRD pack.
 ```
 
 Voxel appearance lives in `shared/isometer/crates/isometer-mesh`. Keep
-`isometry-core` pure: no `wgpu`, `iroh`, genet crates or file I/O.
+`isocosm-core` pure: no `wgpu`, `iroh`, genet crates or file I/O.
 
 **Guard the feature-gated code.** Every campaign feature is `default = []`,
 so a plain `cargo test` compiles none of them; run

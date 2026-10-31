@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Verify a saved run's food steps at their exact native pass-start cuts.
-use isocosm::{
+use cosmograph::{
     Command, Execution, Session,
     spatial::{Preparation, foraging::FoodDetection},
 };
@@ -122,7 +122,7 @@ fn main() -> Result<(), String> {
                 for (i, pair) in g.path.windows(2).enumerate() {
                     if let Some(stride) = g.strides.get(i).and_then(Option::as_ref) {
                         for sample in 0..=stride.samples() {
-                            let load = isocosm::spatial::embodiment::stride_load(
+                            let load = cosmograph::spatial::embodiment::stride_load(
                                 &pending.sim,
                                 r.actor,
                                 &terrain.volume,

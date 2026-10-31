@@ -1,9 +1,9 @@
 use graphshell_endpoint::ProjectionCatalog;
-use isocosm::{
+use cosmograph::{
     directing::interim::{OnCollapse, Pace},
     directing::readings::Mode,
 };
-use isocosm_host::fixtures::fixture;
+use cosmograph_host::fixtures::fixture;
 use mesocosm_runtime::{
     continuation::LoopSettings,
     endpoint::{CONFIGURE, MODE, MesocosmEndpoint, SESSION},

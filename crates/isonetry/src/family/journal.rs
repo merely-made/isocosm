@@ -1,7 +1,7 @@
 use std::{cell::RefCell, collections::VecDeque};
 
-use isocosm::Session;
-use isocosm_host::{
+use cosmograph::Session;
+use cosmograph_host::{
     save::{FORMAT_VERSION as WORLD_FORMAT_VERSION, WorldSave},
     world::CommitGate,
 };
@@ -187,7 +187,7 @@ impl CommitGate for FamilyJournal {
             final_tick,
             native_hash: candidate.sim.state_hash(),
             section_updates: section_diff(&before_save.sections, &candidate_save.sections),
-            section_digest: isocosm::digest(&candidate_save.sections),
+            section_digest: cosmograph::digest(&candidate_save.sections),
             revision: candidate_revision,
             native_suffix: suffix.to_vec(),
             digest: String::new(),
@@ -217,7 +217,7 @@ impl CommitGate for FamilyJournal {
 
 fn replay_suffix(
     before: &Session,
-    suffix: &[isocosm::history::Entry],
+    suffix: &[cosmograph::history::Entry],
     final_tick: u64,
 ) -> Result<Session, String> {
     let mut replayed = before.clone();

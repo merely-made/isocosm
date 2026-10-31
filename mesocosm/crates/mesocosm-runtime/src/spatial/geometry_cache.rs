@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Retains one native geometry entry across product publications.
-use isocosm::{operations::Window, schema::Id, simulation::Simulation, spatial::SiteGeometry};
+use cosmograph::{operations::Window, schema::Id, simulation::Simulation, spatial::SiteGeometry};
 use isometer_space::{places::{Places, Rules}, volume::Volume};
 use std::sync::Arc;
 
@@ -29,8 +29,8 @@ impl GeometryCache {
 }
 
 #[cfg(test)]
-pub(super) fn physical_test_session() -> isocosm::Session {
-    use isocosm::{
+pub(super) fn physical_test_session() -> cosmograph::Session {
+    use cosmograph::{
         Execution, Founding,
         directing::Played,
         map::{Grid, Layout},
@@ -57,13 +57,13 @@ pub(super) fn physical_test_session() -> isocosm::Session {
     }
     .generate()
     .unwrap();
-    isocosm::Session::new(genesis, Execution::Individuals).unwrap()
+    cosmograph::Session::new(genesis, Execution::Individuals).unwrap()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::operations::Window;
+    use cosmograph::operations::Window;
     use isometer_space::{Edit, Op, Shape};
 
     #[test]
@@ -187,7 +187,7 @@ mod tests {
                 })
                 .expect("generated edit site has an embodied resident");
             state_only
-                .command(isocosm::Command::Patch {
+                .command(cosmograph::Command::Patch {
                     entity: actor,
                     patch: Some(patch),
                 })
@@ -220,13 +220,13 @@ mod tests {
     #[ignore = "seed-9 geometry timing; run explicitly after the F physical gate"]
     fn seed_nine_generated_member_order_geometry_workload() {
         use crate::{Founded, spatial::Game};
-        use isocosm::{Execution, Session};
+        use cosmograph::{Execution, Session};
         use std::hint::black_box;
         use std::time::Instant;
 
         let founded = Founded::generated(9, 256).unwrap();
         let mut founding = founded.genesis.founding.clone().unwrap();
-        founding.ecology_rates = isocosm::ecology::Rates::A1;
+        founding.ecology_rates = cosmograph::ecology::Rates::A1;
         let genesis = founding.generate().unwrap();
         let mut session = Session::new(genesis, Execution::Individuals).unwrap();
         let mut game = Game::default();

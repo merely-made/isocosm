@@ -74,7 +74,7 @@ fn the_shared_wording_is_the_sentence_both_sources_wrote() {
 fn a_product_that_says_nothing_still_assembles() {
     // Nothing runs without an event loop; what this proves is that the seven
     // closures typecheck over a product with no producer, no lane and no
-    // capture, which is the Isometry shape.
+    // capture, which is the Isocosm shape.
     let _hooks = Assembly::new(Silent).hooks();
 }
 
@@ -116,7 +116,7 @@ fn defaults_claim_no_leaf_and_no_close() {
     assert!(!Silent.profiling());
 }
 
-/// A product with nowhere to put the error line, which is Isometry's shape:
+/// A product with nowhere to put the error line, which is Isocosm's shape:
 /// its scene board reports a producer refusal on stderr and its side panel has
 /// no error element.
 struct Mute;

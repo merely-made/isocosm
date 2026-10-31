@@ -8,7 +8,7 @@
 //! items are inert bodies of their own lineages, food holding matter a
 //! sophont eats.
 
-use isocosm::{
+use cosmograph::{
     Founding, Result,
     map::{Grid, Layout},
     rules::{AccountKind, Amount, Binding, Causation, Effect, Mind, Need, Process, Query, Target},
@@ -131,11 +131,11 @@ pub fn genesis(seed: u64, side: u32, extent: u64) -> Result<Genesis> {
         r.accounts.insert(item.into(), matter(item, false));
     }
     r.relations.insert(CARRIES.into());
-    r.relations.insert(isocosm::social::TENANT.into());
-    r.note_kinds.extend(set(&[isocosm::arrival::NAME, SITE_FACT]));
-    r.note_kinds.extend(isocosm::knowing::NOTE_KINDS.iter().map(|k| k.to_string()));
+    r.relations.insert(cosmograph::social::TENANT.into());
+    r.note_kinds.extend(set(&[cosmograph::arrival::NAME, SITE_FACT]));
+    r.note_kinds.extend(cosmograph::knowing::NOTE_KINDS.iter().map(|k| k.to_string()));
     let social = crate::vocabulary::vocabulary();
-    r.processes.extend(isocosm::social::processes(&social));
+    r.processes.extend(cosmograph::social::processes(&social));
     r.social = Some(social);
     r.processes.extend(processes());
     r.mind = Some(Mind {
@@ -209,11 +209,11 @@ pub(crate) fn legacy_genesis_v2(seed: u64, side: u32, extent: u64) -> Result<Gen
         r.accounts.insert(item.into(), matter(item, false));
     }
     r.relations.insert(CARRIES.into());
-    r.relations.insert(isocosm::social::TENANT.into());
-    r.note_kinds.extend(set(&[isocosm::arrival::NAME, SITE_FACT]));
-    r.note_kinds.extend(isocosm::knowing::NOTE_KINDS.iter().map(|k| k.to_string()));
+    r.relations.insert(cosmograph::social::TENANT.into());
+    r.note_kinds.extend(set(&[cosmograph::arrival::NAME, SITE_FACT]));
+    r.note_kinds.extend(cosmograph::knowing::NOTE_KINDS.iter().map(|k| k.to_string()));
     let social = crate::vocabulary::vocabulary();
-    r.processes.extend(isocosm::social::processes(&social));
+    r.processes.extend(cosmograph::social::processes(&social));
     r.social = Some(social);
     r.processes.extend(processes());
     r.mind = Some(Mind {

@@ -94,7 +94,7 @@ where
 mod tests {
     use std::time::Duration;
 
-    use isometry_campaign::{CampaignProposal, CampaignProposalMode};
+    use isocosm_campaign::{CampaignProposal, CampaignProposalMode};
     use muniment::MemoryBackend;
     use transport::{Transport, sync_overlay_topic};
 

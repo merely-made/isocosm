@@ -33,10 +33,10 @@ where the GM store and proposal lifecycle go on retirement
 
 - **The no-second-runtime gate stands and governs** (shared-authority plan,
   re-scoped 2026-08-08; Stickleback plan stop rule). In one sentence: no step
-  may create a second Isometry actor, host composition or private-delivery path
+  may create a second Isocosm actor, host composition or private-delivery path
   beside the existing host session and its tactical sequencer; tactical play
   keeps the existing sequencer, and a step that would do otherwise stops. The
-  archived plan states it as "Do not add a second Isometry actor or
+  archived plan states it as "Do not add a second Isocosm actor or
   private-delivery path against the retiring host-composition seam." It is
   defined nowhere else, so this sentence is its definition here. Source:
   `archive_docs/2026-10-28/2026-07-09_shared_authority_and_collaborative_building_plan.md:4-14,326-330`;
@@ -120,7 +120,7 @@ table claim acceptance.
 Until H7 lands, the Genet app still uses the old VTT event authority and
 `isonetry` keeps its VTT job plus the GM store and proposals. The remake is a
 separate change from the campaign retirement; this phase is where "the old
-DM-authority core retired" is made true. VTT-only parts move to `isocosm-vtt`
+DM-authority core retired" is made true. VTT-only parts move to `isocosm-native`
 (924).
 - Done when: the last clause of H7's condition: the VTT's table runs on H7 "with the old DM-authority core retired."
 - Needs: H7b; `campaign-retirement R2b`; `vtt-overlay V2`
@@ -146,8 +146,8 @@ assembly is deleted. K0 removes the direct assembly, not endpoint binding:
 and `Gossip`. The loaded-machine flake in the host bridge test belongs to the
 bridge receipt, not to this. `CampaignSpace::to_operation` is already shaped
 like gemot's `to_operation_seed`, so the rebase is a lift; the one
-isometry-only shape is the three-field `CampaignExt` with its `parents` DAG.
-Isometry keeps its domain grammar, authorization, materializer and tactical
+Isocosm-only shape is the three-field `CampaignExt` with its `parents` DAG.
+Isocosm keeps its domain grammar, authorization, materializer and tactical
 sequencer; Stickleback owns membership, log transport and sync. A K0 receipt
 should show the decoded-only admission path explicitly (Constraints).
 - Done when: "the existing multi-writer campaign receipts re-green on the new path and the deleted assembly has no survivors (grep receipt)."
@@ -256,7 +256,7 @@ parked (`wing-organs` D1).
   publication and receipt, payload sealing, cabal-key rotation after removal and
   desktop actor wiring. `murm-replication` must own accepted-operation
   processing, service lifecycle, retention, checkpoints and native-drop import
-  before Isometry rebases as a later domain consumer. Same-Moot founding
+  before Isocosm rebases as a later domain consumer. Same-Moot founding
   conflicts use that Moot's admission context; unrelated founding Moots stay
   restricted. Waits on `murm-replication` (mere) and K0. From: same file
   `:313-330`.
@@ -299,7 +299,7 @@ parked (`wing-organs` D1).
   running on this layer.
 - 2026-10-28: `PROTOCOL_VERSION` is 22 (`crates/isonetry/src/protocol.rs:26`);
   `isonetry`'s default feature is still `vtt`, which carries the old VTT API and
-  `isometry-campaign`.
+  `isocosm-campaign`.
 - 2026-10-28: no `Retract`, host handoff or commit-reveal code was found by
   grep (checked against the code today).
 - 2026-10-28: the shared-authority plan's sequencing items 1 and 2 are "landed

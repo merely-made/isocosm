@@ -7,10 +7,10 @@
 //! The section's native input at site grain (wing ruling 681): the played
 //! critter's site, lifted to a Ground, and the bodies of its living members.
 
-use isocosm::directing::readings::View;
-use isocosm::kingdom::{self, Kingdom};
-use isocosm::schema::Id;
-use isocosm::simulation::Simulation;
+use cosmograph::directing::readings::View;
+use cosmograph::kingdom::{self, Kingdom};
+use cosmograph::schema::Id;
+use cosmograph::simulation::Simulation;
 use isometer::render::kingdom_colour;
 
 use crate::section::{PlacedBody, SiteScene, body_volumes};
@@ -42,7 +42,7 @@ pub fn site_scene(sim: &Simulation, played: Option<Id>) -> Result<SiteScene, Str
     let bodies = placed(sim, site, &volume);
     let volumes = body_volumes(&bodies)?;
     Ok(SiteScene {
-        walking: isocosm::spatial::embodiment::walking_rules(sim),
+        walking: cosmograph::spatial::embodiment::walking_rules(sim),
         site,
         ground,
         window: volume,
@@ -91,7 +91,7 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
             tint:tint_of(kingdom::of(e)), alive:e.alive });
     }
     let volumes = body_volumes(&bodies)?;
-    Ok(SiteScene { walking: isocosm::spatial::embodiment::walking_rules(&sim), site:site.site(), ground, window:volume, bodies,
+    Ok(SiteScene { walking: cosmograph::spatial::embodiment::walking_rules(&sim), site:site.site(), ground, window:volume, bodies,
         played:runtime.critter(), volumes })
 }
 
@@ -189,20 +189,20 @@ pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
             .filter(|t| t.version >= 2).ok_or("played member has no current physical window")?;
         (site_of(sim, played).ok_or("played member has no native site or journey")?, &templates.window)
     };
-    let volume = if isocosm::spatial::embodiment::whole_site(sim) {
+    let volume = if cosmograph::spatial::embodiment::whole_site(sim) {
         let t = sim.genesis().rules.spatial_templates.as_ref().expect("site templates");
-        let view = isocosm::terrain::View::over(sim.genesis(),&sim.state().sites)?;
+        let view = cosmograph::terrain::View::over(sim.genesis(),&sim.state().sites)?;
         let edits:Vec<_> = sim.state().edits.iter().map(|e| (e.site,e.edit.clone())).collect();
         isometer::space::volume::Volume::paged(&view,site,t.window.min,t.window.max,t.window.depth,&edits)?
     } else { sim.site_volume(site, window)?.as_ref().clone() };
     let bodies = placed_physical(sim, site, &volume, visible, game)?;
     let volumes = body_volumes(&bodies)?;
-    Ok(SiteScene { walking: isocosm::spatial::embodiment::walking_rules(&sim), site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })
+    Ok(SiteScene { walking: cosmograph::spatial::embodiment::walking_rules(&sim), site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })
 }
 
 /// The same admitted native summaries used by the borrowed close-up.
-fn native_materials(e: &isocosm::schema::Entity) -> Vec<isometer::render::PartMaterial> {
-    crate::section::bodies::function_materials(&isocosm::attention::spatial::allocations(e))
+fn native_materials(e: &cosmograph::schema::Entity) -> Vec<isometer::render::PartMaterial> {
+    crate::section::bodies::function_materials(&cosmograph::attention::spatial::allocations(e))
 }
 
 /// Read the existing validated placement history; never infer a path between

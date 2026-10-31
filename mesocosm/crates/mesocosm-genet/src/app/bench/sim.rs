@@ -4,7 +4,7 @@
 //! A host over the simulation. Rendering and controls never mutate its world directly.
 use super::{Bench, Child};
 use cambium::{TextInput, clickable, el, focusable, lens, text, text_field_typed};
-use isocosm::{
+use cosmograph::{
     Execution, Founding, Session,
     history::{Command, Merge},
     schema::Method,
@@ -107,7 +107,7 @@ impl Bench {
         self.sim.compared = None;
         if let Some(session) = &mut self.sim.session {
             self.sim.notice = match session.command(command) {
-                Ok(s) => serde_json::from_str::<isocosm::simulation::Receipt>(&s)
+                Ok(s) => serde_json::from_str::<cosmograph::simulation::Receipt>(&s)
                     .map(|r| {
                         format!(
                             "{}: {:?}. Matter {} → {}.",
@@ -146,7 +146,7 @@ impl Bench {
         let result = (|| {
             let session = self.sim.session.as_ref().ok_or("Found a world first.")?;
             let path = self.export_directory.join(format!(
-                "isocosm-{}-{}.json",
+                "cosmograph-{}-{}.json",
                 session.sim.genesis().seed,
                 session.sim.state().tick
             ));
@@ -210,7 +210,7 @@ impl Bench {
             session.sim.state().tick,
             format!(
                 "branch:{}",
-                isocosm::digest(&(
+                cosmograph::digest(&(
                     &session.branch,
                     session.sim.state().tick,
                     session.entries.len(),
@@ -292,7 +292,7 @@ fn input(label: &'static str, get: fn(&mut Bench) -> &mut TextInput) -> Child {
 
 pub(super) fn view(state: &Bench) -> Child {
     let mut children: Vec<Child> = vec![
-        Box::new(el("h1", text("Bench / Isocosm"))),
+        Box::new(el("h1", text("Bench / Cosmograph"))),
         Box::new(el(
             "p",
             text(

@@ -4,7 +4,7 @@
 //! A separate authored founding grammar; earlier material profiles stay exact.
 
 use super::materials::MaterialProfile;
-use isocosm::{Result, material::Recipe, rules::AccountKind,
+use cosmograph::{Result, material::Recipe, rules::AccountKind,
     schema::{Id, Key, Ledger, Lineage, Method}, simulation::Genesis,
     projects::StockRules, spread::{CapacityModifier, CapacityRules, Identity, PlaceLedger}};
 use serde::{Deserialize, Serialize};

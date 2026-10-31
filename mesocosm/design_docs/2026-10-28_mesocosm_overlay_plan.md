@@ -4,19 +4,19 @@
 `2026-10-08_directing_interim_m4_plan.md` and `2026-08-01_epoch_boundary_plan.md`,
 which are archived in `archive_docs/2026-10-28/`. Built: `mesocosm-core` and its
 sixteen-variant `Intent` are deleted; the four crates (`mesocosm-runtime`, `-views`,
-`-phenotype`, `-genet`) run a native `Session` and lower `isocosm_overlay::mesocosm`
-envelopes; directing (D1 to D5) is built on native Isocosm and the switch has landed;
-the boundary, review, revision and speciation are native in `shared/isocosm/src/lineage/`.
+`-phenotype`, `-genet`) run a native `Session` and lower `cosmograph_overlay::mesocosm`
+envelopes; directing (D1 to D5) is built on native Cosmograph and the switch has landed;
+the boundary, review, revision and speciation are native in `shared/cosmograph/src/lineage/`.
 Open: certification of M3 and the interim M4 by draws, the headed three-epoch run, the full
 M4 (chosen in-site acts and contact reaching the same accepted world), and the
 between-epoch work below.
 
-**For:** Mesocosm as a game over the Isocosm sim: directing (M3, called M3.1 to M3.3 here),
+**For:** Mesocosm as a game over the Cosmograph sim: directing (M3, called M3.1 to M3.3 here),
 the interim M4 at site grain (M4i.1 to M4i.3, was directing D4 and D5), the full M4 played
 loop (W5's done-condition for Mesocosm) with the headed findings carried into it, SP7 (the
 place graph's absorption join, named as this plan's), and what happens between epochs
 (prefix EB): judging a run, how a lineage splits, goals, and the youth-cost of plasticity.
-The Mesocosm side of the overlay contract is built (`shared/isocosm-overlay/src/mesocosm/`);
+The Mesocosm side of the overlay contract is built (`shared/cosmograph-overlay/src/mesocosm/`);
 what remains of it is the dev and attention follow-on.
 
 Not here: the sim's schema, processes and families certification (`sim`); route and tick
@@ -32,7 +32,7 @@ hagiograph significance and the glyph organ (`wing-organs`); the wing's portable
   its bond (rulings 59, 60, 175 to 178, 214 to 216). Non-sapient critters are never driven (671);
   `Idle` has no role and the driving intents are the critter's own acts (679); 679 forbids
   restoring player-driving carve and deposit. From: `archive_docs/2026-10-28/2026-09-25_mesocosm_overlay_plan.md` §1, §3.
-- **Directing only on Isocosm, no throwaway adapter** (ruling 194). Absorption order ruled in
+- **Directing only on Cosmograph, no throwaway adapter** (ruling 194). Absorption order ruled in
   195; the played slice plan retired into the overlay plan at M3 (196). From:
   `archive_docs/2026-10-28/2026-09-25_mesocosm_overlay_plan.md` §6.
 - **The switch is the interim M4, before places** (681 amends 678); in-site play (carve,
@@ -136,7 +136,7 @@ collapse (225) played on elsewhere, and survival and creative modes.
 Section, HUD, succession and review lanes run over the `Session` runtime; legacy driving
 removed. Certify in the headed host (case 680).
 - Done when: "680's condition holds in the headed host: three epochs end to end at site grain
-  on Isocosm, both modes, receipts replaying."
+  on Cosmograph, both modes, receipts replaying."
 - Needs: M3.1 to M3.3; M4i.1; `sim-host I3` (the mode host and its headed acceptance)
 - Rulings: 671, 679, 680, 681, 686
 - From: `archive_docs/2026-10-28/2026-10-08_directing_interim_m4_plan.md:118-123`, status line 5.
@@ -194,7 +194,7 @@ and exact produced-output native selectors (863). Both are source "uncompiled an
 
 ### M4.5. The web condition
 After `mesocosm-core`'s deletion, the web condition that M2 set remains to be shown by draws.
-- Done when: each family "runs in Isocosm under its process definitions, conserves its
+- Done when: each family "runs in Cosmograph under its process definitions, conserves its
   accounts and replays identically, its `mesocosm-core` tests are ported or replaced by draws,
   every moved file is within the 600-line ceiling (ruling 193), `mesocosm-core` no longer owns
   it, and the level of the web it enables stays alive in most draws: producers alone, then
@@ -252,7 +252,7 @@ Rounds under directing, a birth keeping the parent by default, boundaries where 
 adapts against the web and the player revises in the shop, a local collapse played on, in both
 modes.
 - Done when: "from a seed nobody chose and a start the player picked, the headed host plays
-  three epochs end to end on Isocosm: rounds under directing, a birth keeping the parent by
+  three epochs end to end on Cosmograph: rounds under directing, a birth keeping the parent by
   default, boundaries where every lineage adapts against the web and the player revises in the
   shop, and a local collapse played on; survival and creative modes both work; the receipts
   replay to the same hash; and the fungible agree in distribution within the world's stated
@@ -406,13 +406,13 @@ Epoch boundary (record: open, the record does not decide).
 - 2026-10-30: `mesocosm-runtime`'s integration tests ran 56 passed and 36 failed at `76f8f5cc`, with four lib failures, the same with the frame call disabled (`sim-execution` Findings). Many pin behaviour the game has since changed (decision periods, D19). Fixing them is not a work item (Mark, 2026-10-30).
 
 - 2026-10-28: `mesocosm/crates` holds `mesocosm-genet`, `-phenotype`, `-runtime`, `-views`
-  and probes; `mesocosm-core` is gone. `isocosm::legacy` appears only in design docs, so the
+  and probes; `mesocosm-core` is gone. `cosmograph::legacy` appears only in design docs, so the
   directing plan's "legacy driving" survey is stale. `mesocosm-runtime/src/runtime/translate.rs`
-  lowers `isocosm_overlay::mesocosm`, so the claim that the overlay crate is "depended on by
+  lowers `cosmograph_overlay::mesocosm`, so the claim that the overlay crate is "depended on by
   nothing" is stale. No Rust file under `mesocosm/crates`, `eponym/crates` or
-  `shared/isocosm/src` exceeds 600 lines.
+  `shared/cosmograph/src` exceeds 600 lines.
 - 2026-10-28: habitability for a critter is read natively
-  (`shared/isocosm/src/directing/readings/habitable.rs`, citing 179 and 751; the interim
+  (`shared/cosmograph/src/directing/readings/habitable.rs`, citing 179 and 751; the interim
   `begin` waits for a habitable site). The 2026-10-09 fork on it is closed in code; the
   player-picked start still needs the headed run (M4).
 - 2026-10-28: `OnCollapse` has `Stay` and `Elsewhere` (`directing/interim/mod.rs`) and
@@ -428,9 +428,9 @@ Epoch boundary (record: open, the record does not decide).
 - 2026-10-28: `Command::Edit { by: Some(..) }` is handled in `mesocosm-runtime/src/glyphs.rs`
   and `terrain.rs`; the chosen-process binding itself is not confirmed. `perception.rs` and
   `voxel_profile.rs` exist.
-- 2026-10-28: `shared/isocosm/src/journey.rs` and `journey/` exist; their verification state is
+- 2026-10-28: `shared/cosmograph/src/journey.rs` and `journey/` exist; their verification state is
   unknown (M4i.3).
-- 2026-10-28: in `shared/isocosm/src/lineage/` the boundary, review, revision, speciation,
+- 2026-10-28: in `shared/cosmograph/src/lineage/` the boundary, review, revision, speciation,
   reckoning and tree exist; no plasticity or life-stage cost, no goal generator and no NPC
   speciation were found. `history.rs` stamps events (203).
 - 2026-10-28: stale in the archived plans: the epoch plan's `mesocosm-core::{history, species,

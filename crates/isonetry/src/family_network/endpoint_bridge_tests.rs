@@ -3,7 +3,7 @@ use super::*;
 #[test]
 fn bridge_exposes_fixed_descriptor_and_closes_pump_with_stream() {
     let descriptor = EndpointDescriptor {
-        label: "Isocosm family".into(),
+        label: "wing".into(),
         projections: Vec::new(),
     };
     let (bridge, pump) = BridgeEndpoint::new(

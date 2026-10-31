@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Eponym's play over Isocosm (wing rulings 239, 597, 669, 671 and 755):
+//! Eponym's play over Cosmograph (wing rulings 239, 597, 669, 671 and 755):
 //! what the game keeps once its world runs on the sim. The world, bodies,
 //! needs, wounds, items, edits, deeds and knowing are the sim's; this crate
 //! drives a sapient player's subject through native commands and keeps

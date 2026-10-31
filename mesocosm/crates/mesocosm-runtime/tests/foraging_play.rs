@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::{Command, Execution, Session, spatial as native};
+use cosmograph::{Command, Execution, Session, spatial as native};
 use mesocosm_runtime::{
     Founded, Runtime,
     spatial::{Admission, Game},
@@ -12,17 +12,17 @@ use fixtures::*;
 
 #[test]
 fn capacity_appetite_reads_the_body_and_keeps_other_computed_needs_excluded() {
-    use isocosm::rules::{Binding, Expr, Query, Reading};
+    use cosmograph::rules::{Binding, Expr, Query, Reading};
     let mut g = ordinary(16_003_851_315_348_448_882).genesis;
     native::embodiment::declare(&mut g).unwrap();
     let index = g.rules.mind.as_ref().unwrap().needs.iter()
         .position(|n| matches!(n.query, Query::Computed(_))).unwrap();
     let need = g.rules.mind.as_ref().unwrap().needs[index].clone();
-    let key = isocosm::needs::account(&need.query).unwrap().clone();
+    let key = cosmograph::needs::account(&need.query).unwrap().clone();
     let actor = g.population.groups.values().map(|g| &*g.entity)
         .find(|e| e.traits.contains("life:consumer") && need.traits.is_subset(&e.traits)).unwrap();
-    let want = isocosm::needs::want(&g.rules, actor, &key).unwrap();
-    assert_eq!(want.deficit(), isocosm::anatomy::room(actor, &g.rules, &key));
+    let want = cosmograph::needs::want(&g.rules, actor, &key).unwrap();
+    assert_eq!(want.deficit(), cosmograph::anatomy::room(actor, &g.rules, &key));
     for (who, account) in [(Binding::Target, key), (Binding::Actor, "missing:account".into())] {
         g.rules.mind.as_mut().unwrap().needs[index].query = Query::Computed(Expr::AtLeast(
             Box::new(Expr::Read(Reading::Room { who, key: account })),
@@ -47,7 +47,7 @@ fn available_food_can_wait_for_its_native_feeding_cadence() {
     f.game.validate_replay(&f.session).unwrap();
 }
 
-fn act(f: &mut Fixture, target: u64) -> isocosm::simulation::Receipt {
+fn act(f: &mut Fixture, target: u64) -> cosmograph::simulation::Receipt {
     let result = f
         .session
         .command(Command::Act {
@@ -96,7 +96,7 @@ fn hungry_native_choice_approaches_actual_food_and_meals_require_contact() {
             e.resident_site(),
             e.patch,
             e.arrived,
-            isocosm::anatomy::books(e)
+            cosmograph::anatomy::books(e)
         );
     }
     let meal = act(&mut f, food);
@@ -305,7 +305,7 @@ fn an_ordinary_a1_play_world_walks_without_forced_choices_and_restores() {
                 let needs = runtime
                     .critter()
                     .and_then(|id| r.sim.state().population.get(id))
-                    .map(|e| isocosm::needs::wants(&r.sim.genesis().rules, e));
+                    .map(|e| cosmograph::needs::wants(&r.sim.genesis().rules, e));
                 let refusals: Vec<_> = r
                     .entries
                     .last()
@@ -360,7 +360,7 @@ fn an_ordinary_a1_play_world_walks_without_forced_choices_and_restores() {
                 .state()
                 .population
                 .get(id)
-                .map(|e| isocosm::needs::wants(&runtime.sim().genesis().rules, e))
+                .map(|e| cosmograph::needs::wants(&runtime.sim().genesis().rules, e))
         });
         let refused: Vec<_> = runtime
             .session()

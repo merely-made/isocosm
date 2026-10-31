@@ -188,7 +188,7 @@ fn the_status_panel_defaults_to_the_shared_shape() {
 }
 
 /// A crib names the entries it carries and gets their own words back, in
-/// declaration order and with the product's own punctuation. Isometry's key
+/// declaration order and with the product's own punctuation. Isocosm's key
 /// hint is four of eight bindings joined by " / ".
 #[test]
 fn a_crib_narrows_the_line_without_rewriting_it() {

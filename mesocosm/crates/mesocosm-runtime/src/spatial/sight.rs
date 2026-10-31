@@ -5,7 +5,7 @@
 
 use super::*;
 use crate::perception::{InSite, Sight};
-use isocosm::directing::readings::View;
+use cosmograph::directing::readings::View;
 
 /// The range belongs to an explicitly named native observer. Its eye and
 /// window remain the actual saved Placement's; no rendering spot supplies them.
@@ -88,7 +88,7 @@ impl Game {
             realized.check(held)?;
             let cell = held.pose.at;
             if !site.volume().holds(cell[0], cell[2]) || cell[1] < site.volume().datum
-                || (!isocosm::spatial::embodiment::enabled(sim) && cell[1] >= site.volume().ceiling()) { continue; }
+                || (!cosmograph::spatial::embodiment::enabled(sim) && cell[1] >= site.volume().ceiling()) { continue; }
             targets.insert(id, cell);
         }
         let sight = Sight { observer, eye: at.eye, range, targets };

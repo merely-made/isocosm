@@ -1,9 +1,9 @@
 # Wing construction, embodiment and continuity
 
 **Status:** 2026-10-28: cut from `2026-07-31_wing_phenotype_contract_plan.md`, which is archived in
-`archive_docs/2026-10-28/`. The shared v0 body and chronicle formats are extracted (`shared/wing-formats`, `shared/wing-integration`); the native sim carries `body_revision` on its entities and drives a scene through `SubjectKey`; `wing-glyphs::Journey` holds reincarnation inside its progression kernel. Open: the shared construction description, continuing-subject and incarnation storage, configured condition carryover, the v1 identity contract (W0 to W6) and the creator and generator lanes (C0 to C5), none of which is built on native Isocosm. The old plan marked its done-conditions "not authoritative" until rewritten (W1 verdict, 2026-09-18); this plan re-expresses them without changing them.
+`archive_docs/2026-10-28/`. The shared v0 body and chronicle formats are extracted (`shared/wing-formats`, `shared/wing-integration`); the native sim carries `body_revision` on its entities and drives a scene through `SubjectKey`; `wing-glyphs::Journey` holds reincarnation inside its progression kernel. Open: the shared construction description, continuing-subject and incarnation storage, configured condition carryover, the v1 identity contract (W0 to W6) and the creator and generator lanes (C0 to C5), none of which is built on native Cosmograph. The old plan marked its done-conditions "not authoritative" until rewritten (W1 verdict, 2026-09-18); this plan re-expresses them without changing them.
 
-**For:** the identity, incarnation and construction contract that every game shares: continuing subject, body revision, part address, carryover; the W0 to W6 portable-body gates; and the C0 to C5 creator and generator lanes, re-expressed on native Isocosm. Phases W0 to W6 and C0 to C5 keep their labels; the open design work before them is P1 to P6.
+**For:** the identity, incarnation and construction contract that every game shares: continuing subject, body revision, part address, carryover; the W0 to W6 portable-body gates; and the C0 to C5 creator and generator lanes, re-expressed on native Cosmograph. Phases W0 to W6 and C0 to C5 keep their labels; the open design work before them is P1 to P6.
 
 Not here: the sim's recipe, development and body geometry (the sim's own plan, `sim`); the binding of bodies to physics, footing and senses are `bodies`; the journey's acquisition and progression rules and divinity are `wing-organs` (same-individual rebirth is `wing-organs G4`); the composition design for magic and construction is `functional-generation`. The sim host's examiner and incarnation controls wait on this plan: see `sim-host`'s deferred examiner item. A projection of this plan in the scene is `orthographic-voxel-presentation`.
 
@@ -22,7 +22,7 @@ Stop rules binding every phase below (old §10):
 Standing design statements from the old plan:
 - Construction declares functional properties; geometry supplies named measurements where mechanics require them (405). Geometry, collision, animation and functional readings identify the source revision they reflect. One body can correspond to multiple runtime objects; changing a mesh or camera alone does not mint a new incarnation or change an injury.
 - The live body is timing-sensitive state: one simulation authority or ordered session accepts severing, grafting, regrowth and body replacement. The anatomy tree is not a CRDT. Other vessels append facts and proposals; concurrent claims against one revision stay visible until sequenced or branched (set union preserves claims, it does not merge anatomies).
-- Keeping an independently mutable second world beside Isocosm and synchronizing answers creates the second authority the adapter exists to avoid. The scene adapter is a derived, replaceable view of accepted construction.
+- Keeping an independently mutable second world beside Cosmograph and synchronizing answers creates the second authority the adapter exists to avoid. The scene adapter is a derived, replaceable view of accepted construction.
 - Four transitions stay distinct: a mode or camera change in one world (same subject, incarnation and body); interpretation under another ruleset (record an adaptation if it changes the body); adaptation or regrowth in another context (a new revision, the prior form stays pointable); a new life (selected carryover applied; a continuing individual's reincarnation is distinct from founding a descendant).
 - Mark, 2026-09-07 (generation): start with a seed and a few key criteria; a detailed parts editor follows later.
 
@@ -85,11 +85,11 @@ Remaining: the v1 identity/topology contract (W1), a common world/checkpoint fix
 ### W2. Local branch proof
 Graft rules: the source operation names a living subtree under one source revision; destination part ids are freshly allocated; parents are remapped; the root attaches to one destination part; every destination part keeps its source address; the source's loss and destination's acquisition are causally linked; severing the root removes the imported subtree. Assimilation is distinct from graft and a consumer can tell which occurred.
 - Done when: "Mesocosm transfers or assimilates a source subtree according to the local phenotype plan, loss cascades on both sides, and provenance identifies the source revision and part after destination ids are remapped."
-- Needs: W1; the native `graft` module (`shared/isocosm/src/graft`)
+- Needs: W1; the native `graft` module (`shared/cosmograph/src/graft`)
 - From: `archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md` lines 372-386 and §9 W2, lines 499-503.
 
 ### W3. Mesocosm to the VTT (v1)
-- Done when: "Isometry reads a v1 body using local primitive mirror structs, renders its projection, preserves unknown anatomy data, appends a deed addressed to the body revision, and returns it without linking Mesocosm." (Isometry is the VTT's former name.)
+- Done when: "Isocosm reads a v1 body using local primitive mirror structs, renders its projection, preserves unknown anatomy data, appends a deed addressed to the body revision, and returns it without linking Mesocosm." (Isocosm is the VTT's former name.)
 - Needs: W1; `vtt-overlay`
 - From: `archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md` §9 W3, lines 505-509.
 
@@ -106,11 +106,11 @@ Written for Paredros, which is Eponym's former name; Eponym is the current secon
 
 ### W6. Descendant distinction
 - Done when: "returning the same subject preserves body revision identity, while founding a descendant mints a new subject and phenotype with pointable ancestry; neither operation is implemented as a flat star rebuild."
-- Needs: W1; the lineages family's absorption into Isocosm (`mesocosm-overlay`, M2 absorption)
+- Needs: W1; the lineages family's absorption into Cosmograph (`mesocosm-overlay`, M2 absorption)
 - From: `archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md` lines 335-344 and §9 W6, lines 523-527.
 
 ### C0. First generator, fixtures and admission matrix
-Seed plus key criteria produce several candidate bodies with retained features and structural variation; impossible requests report their conflict or a bounded search failure. Criteria are required, preferred or unconstrained; unsupported requests are visible; a small supported vocabulary begins; required criteria are never silently relaxed. The authored comparison corpus: rooted or radial, articulated mobile, asymmetrically injured or grafted, one unknown optional mechanism, an unnamed start, a factionless named life. The generator is the sim's, `shared/isocosm/src/generate.rs`, not the deleted `mesocosm-core::world::generation`. Wider grammars (articulated, radial), taxonomy, free parts editing and population-level persistence are separate follow-ups.
+Seed plus key criteria produce several candidate bodies with retained features and structural variation; impossible requests report their conflict or a bounded search failure. Criteria are required, preferred or unconstrained; unsupported requests are visible; a small supported vocabulary begins; required criteria are never silently relaxed. The authored comparison corpus: rooted or radial, articulated mobile, asymmetrically injured or grafted, one unknown optional mechanism, an unnamed start, a factionless named life. The generator is the sim's, `shared/cosmograph/src/generate.rs`, not the deleted `mesocosm-core::world::generation`. Wider grammars (articulated, radial), taxonomy, free parts editing and population-level persistence are separate follow-ups.
 - Done when: "the first bounded generator produces inspectable candidate bodies with recorded seed, recipe/content revision, conditions, and locks. Identical inputs reproduce the body; varied seeds produce structural variety; retained features survive regeneration; impossible requests report their conflict or bounded search failure. Preview generation does not create a live subject or spend world resources. Compare generated and authored bodies in the same admission matrix, recording accepted/rejected candidates, reasons, generation cost, and visible differences. At least one supported body family must be genuinely generated; the other fixture families may initially be authored. Wider biological generation remains iterative. Novel multi-body colonies still need PE5's subject/body decision."
 - Needs: `sim` (the native generator); PE5 (archived playable ecology plan)
 - Rulings: Mark, 2026-09-07
@@ -127,7 +127,7 @@ Seed plus key criteria produce several candidate bodies with retained features a
 - From: `archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md` lines 825-835.
 
 ### C3. Portable body and destination preview
-- Done when: "W1-W6 have their own evidence, including wrong-world and wrong-subject rejection, stale revision refusal, required-feature refusal, opaque preservation through re-export, and same-subject versus descendant behavior. One portable body has distinct, explained game readings, an Isometry projection, and a causally addressed return fact. File-based transfer suffices for this gate; live federation is a later transport receipt."
+- Done when: "W1-W6 have their own evidence, including wrong-world and wrong-subject rejection, stale revision refusal, required-feature refusal, opaque preservation through re-export, and same-subject versus descendant behavior. One portable body has distinct, explained game readings, an Isocosm projection, and a causally addressed return fact. File-based transfer suffices for this gate; live federation is a later transport receipt."
 - Needs: W0 to W6
 - From: `archive_docs/2026-10-28/2026-07-31_wing_phenotype_contract_plan.md` lines 837-847.
 
@@ -153,11 +153,11 @@ Needs the world and history lane's small context contract; the archived plan nam
 
 ## Findings
 - 2026-10-28: `shared/wing-formats` and `shared/wing-integration` exist and hold the v0 formats; v1 is not built, and no `carryover` or incarnation storage exists outside `wing-glyphs` tests.
-- 2026-10-28: the body adapter (P5) is partly present: `Entity.body_revision` and `spatial.rs` placement exist in `shared/isocosm`, `SubjectKey(u64)` and `PartAddress` are in `shared/isometer/src/bodies.rs`, and `mesocosm-genet/src/section/tenant.rs` caches by `SubjectKey`. No test with a source part ID above `u32::MAX` was found. The old status line says the sim-to-scene connection now exists.
+- 2026-10-28: the body adapter (P5) is partly present: `Entity.body_revision` and `spatial.rs` placement exist in `shared/cosmograph`, `SubjectKey(u64)` and `PartAddress` are in `shared/isometer/src/bodies.rs`, and `mesocosm-genet/src/section/tenant.rs` caches by `SubjectKey`. No test with a source part ID above `u32::MAX` was found. The old status line says the sim-to-scene connection now exists.
 - 2026-10-28: nothing of the creator surface survives: the generator criteria, picker, drafts, held-body habitat comparison, `generate-start`, `--create` and `--draft` lived in the deleted `mesocosm-core` and `mesocosm-genet`; no `criteria` hit exists in the native tree, and `mesocosm-genet --start` now means a deep-time start. The old C0 to C2 implementation history is void on deleted code.
-- 2026-10-28: the old plan's §3 "historical product allocation" and its Paredros, Isometry and `OrganismId` wording are pre-rename or deleted; read Paredros as Eponym and Isometry as the VTT.
+- 2026-10-28: the old plan's §3 "historical product allocation" and its Paredros, Isocosm and `OrganismId` wording are pre-rename or deleted; read Paredros as Eponym and Isocosm as the VTT.
 - 2026-10-28: the old "preparation documented; body adapter unimplemented" note (2026-09-28) is superseded by the plan's own 2026-10-18 status; the 2026-09-28 mapping table survives here as P5's rules.
-- 2026-10-28: `shared/isocosm/src/graft` exists (W2's native graft).
+- 2026-10-28: `shared/cosmograph/src/graft` exists (W2's native graft).
 
 ## Progress
 - 2026-10-28: cut from `2026-07-31_wing_phenotype_contract_plan.md`.

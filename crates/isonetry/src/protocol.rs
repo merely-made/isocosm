@@ -1,10 +1,10 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use isometry_campaign::{
+use isocosm_campaign::{
     CampaignWorld, GenerationRecord, Inventory, ItemId, ItemModifierReveal, WorldEvent, WorldFact,
 };
-use isometry_campaign::CampaignMap;
-use isometry_core::{
+use isocosm_campaign::CampaignMap;
+use isocosm_core::{
     Beat, MapDocument, RollRecord, SessionEvent, SheetData, SheetDelta, TileCoord, TokenAppearance,
     TokenId, TurnList,
 };
@@ -111,7 +111,7 @@ pub struct GameSnapshot {
     #[serde(default)]
     pub world: CampaignWorld,
     #[serde(default)]
-    pub native: Option<isocosm_vtt::founding::NativeWorld>,
+    pub native: Option<isocosm_native::founding::NativeWorld>,
     /// Each location's clock, keyed by stored-map id, in ticks (a tick is one
     /// full round of that location's turn order, or whatever the DM declares
     /// passed). Absolute, not elapsed: locations diverge while parties are
@@ -436,7 +436,7 @@ pub enum GameEvent {
     /// sheetless token between two log entries.
     ///
     /// Appended deliberately: postcard tags enum variants by index.
-    CharacterCreated { token: isometry_core::Token, sheet: SheetData },
+    CharacterCreated { token: isocosm_core::Token, sheet: SheetData },
     NativePublished(crate::session::NativePublication),
     NativeTravelResolved(crate::session::NativeTravelResolved),
     NativeTableResolved(crate::native_table::NativeTableResolved),
@@ -507,10 +507,10 @@ pub enum NetMessage {
     /// Appended at the end, like `Action`: postcard tags variants by index.
     VersionRefused { offered: u16, supported: u16 },
     /// An individual native table time request, attributed by its transport.
-    NativeTime(isocosm_overlay::vtt::VttIntentEnvelope),
-    NativeParty(isocosm_overlay::vtt::VttIntentEnvelope),
-    NativeJourney(isocosm_vtt::native::joint_journey::JourneyEnvelope),
-    NativeItem(isocosm_vtt::native::items::ItemInput),
+    NativeTime(cosmograph_overlay::vtt::VttIntentEnvelope),
+    NativeParty(cosmograph_overlay::vtt::VttIntentEnvelope),
+    NativeJourney(isocosm_native::native::joint_journey::JourneyEnvelope),
+    NativeItem(isocosm_native::native::items::ItemInput),
     NativeInstitution(crate::session::NativeInstitutionInput),
 }
 

@@ -8,9 +8,9 @@
 use super::{Envelope, Mesocosm, Refusal, Runtime, commit, session};
 use crate::{spatial::Game, continuation::{self, Continuation, LoopInput, LoopReading,
     LoopSettings, LoopPhase, LoopAction, LoopAnswer, SavedProposal, Origin}, succession::Occasion};
-use isocosm_host::world::World;
-use isocosm_overlay::{OrdinaryAccess, ParticipantHandle, EntityHandle, Seat, Tick};
-use isocosm::directing::interim::Happening;
+use cosmograph_host::world::World;
+use cosmograph_overlay::{OrdinaryAccess, ParticipantHandle, EntityHandle, Seat, Tick};
+use cosmograph::directing::interim::Happening;
 
 impl Mesocosm {
     pub(crate) fn loop_settings(&self) -> LoopSettings {
@@ -95,7 +95,7 @@ impl Mesocosm {
         if let Some(authored) = &self.authored { self.terms = authored.terms().clone(); }
         self.proposed = saved.proposed.iter().map(|p| {
             let parts = p.commands.iter().filter_map(|c| match c {
-                isocosm::Command::Express { part, tracts, .. } => Some((*part, tracts.clone())),
+                cosmograph::Command::Express { part, tracts, .. } => Some((*part, tracts.clone())),
                 _ => None,
             }).collect();
             crate::review::Proposed { offer: p.offer, script: p.script.clone(), cells: p.cells.clone(),
@@ -120,7 +120,7 @@ impl Mesocosm {
 
     /// A loop input through the saved loop's door, then its state adopted.
     fn loop_input(&mut self, world: &World, input: &LoopInput,
-        door: fn(&mut isocosm::Session, &mut Game, OrdinaryAccess, &LoopInput) -> Result<String, Refusal>)
+        door: fn(&mut cosmograph::Session, &mut Game, OrdinaryAccess, &LoopInput) -> Result<String, Refusal>)
         -> Result<String, Refusal> {
         self.sync_loop(world);
         let access = self.loop_access(world);
@@ -131,7 +131,7 @@ impl Mesocosm {
         Ok(out)
     }
 
-    pub(super) fn answer_saved(&mut self, world: &World, answer: isocosm_overlay::mesocosm::CheckpointAnswer)
+    pub(super) fn answer_saved(&mut self, world: &World, answer: cosmograph_overlay::mesocosm::CheckpointAnswer)
         -> Result<String, Refusal> {
         self.sync_loop(world);
         let access = self.loop_access(world);

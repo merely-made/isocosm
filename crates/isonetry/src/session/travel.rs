@@ -272,7 +272,7 @@ pub(crate) fn apply_transition(
             .clone();
         state.map = document;
         state.active_map = Some(id.clone());
-        state.turns = isometry_core::TurnList::new();
+        state.turns = isocosm_core::TurnList::new();
         for token in &state.map.tokens {
             state.turns.add(token.id);
         }

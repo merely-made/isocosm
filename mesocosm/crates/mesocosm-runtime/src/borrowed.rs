@@ -3,8 +3,8 @@
 
 //! Product operations over the host's named native Session; no owned world.
 
-use isocosm::{Session, schema::Id, directing::readings::View};
-use isocosm_overlay::{Intent, mesocosm::MesocosmIntentEnvelope};
+use cosmograph::{Session, schema::Id, directing::readings::View};
+use cosmograph_overlay::{Intent, mesocosm::MesocosmIntentEnvelope};
 use crate::{Refusal, runtime::translate::direct};
 
 pub struct Reading<'a> { session: &'a Session, visible: &'a View }
@@ -37,21 +37,21 @@ pub fn submit(session: &mut Session, participant: Id, round: u64,
 }
 
 /// The shared host resolves operations against its named native Session.
-pub fn advance_geometry<R>(session: &mut Session, access: isocosm_overlay::OrdinaryAccess,
+pub fn advance_geometry<R>(session: &mut Session, access: cosmograph_overlay::OrdinaryAccess,
     resolver: &mut R)
-    -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, Refusal>
-where R: FnMut(&isocosm::operations::Pending)
-    -> Result<isocosm_overlay::mesocosm::TerrainGeometry, String> + ?Sized
+    -> Result<cosmograph::flows::FlowResult<cosmograph::simulation::Work>, Refusal>
+where R: FnMut(&cosmograph::operations::Pending)
+    -> Result<cosmograph_overlay::mesocosm::TerrainGeometry, String> + ?Sized
 {
     crate::terrain::advance(session, access, resolver)
 }
 
 /// The caller publishes these native and product candidates together.
-pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAccess,
+pub fn submit_game(session: &mut Session, access: cosmograph_overlay::OrdinaryAccess,
     round: u64, input: &crate::spatial::Input, mut game: crate::spatial::Game)
     -> Result<(String, crate::spatial::Game), Refusal> {
     use crate::spatial::Input;
-    if access.seat == isocosm_overlay::Seat::CreativeObserver
+    if access.seat == cosmograph_overlay::Seat::CreativeObserver
         || session.sim.plays(access.participant.0) != access.subject.map(|id| id.0)
     { return Err(Refusal::NotPlayed); }
     game.validate(session).map_err(Refusal::Sim)?;
@@ -89,7 +89,7 @@ pub fn submit_game(session: &mut Session, access: isocosm_overlay::OrdinaryAcces
             submit(&mut candidate, access.participant.0, round, envelope)?
         },
         Input::Game(input) => {
-            if access.seat != isocosm_overlay::Seat::Player
+            if access.seat != cosmograph_overlay::Seat::Player
                 || access.subject.is_none()
                 || candidate.sim.plays(access.participant.0) != access.subject.map(|id| id.0)
                 || input.participant != access.participant || input.tick.0 != candidate.sim.state().tick

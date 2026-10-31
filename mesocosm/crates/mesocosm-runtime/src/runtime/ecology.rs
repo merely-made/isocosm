@@ -5,7 +5,7 @@
 
 use super::{Founded, Runtime};
 use crate::spatial::{Game, Setup as SpatialSetup};
-use isocosm::{Execution, directing::is_participant, ecology::{
+use cosmograph::{Execution, directing::is_participant, ecology::{
     BirthRequirement, CaptureRequirement, CaptureStock, CounterProof, CounterRequirement,
     IndependenceSpec, JointSpec, JointWitness, ReturnRequirement, Selection, run_joint_validated,
 }};
@@ -15,7 +15,7 @@ mod offer;
 mod seal;
 pub use seal::{Seal,SealData};
 
-fn has_living_role(genesis: &isocosm::simulation::Genesis, lineage: &str, role: &str) -> bool {
+fn has_living_role(genesis: &cosmograph::simulation::Genesis, lineage: &str, role: &str) -> bool {
     genesis.population.groups.values().any(|group| {
         group.count > 0
             && group.entity.alive
@@ -28,7 +28,7 @@ fn has_living_role(genesis: &isocosm::simulation::Genesis, lineage: &str, role: 
 #[derive(Debug)]
 pub enum GeneratedSetupError { MissingViableConsumerFood, MissingPlayedPlacement, Invalid(String) }
 
-fn generated_specification(genesis: &isocosm::simulation::Genesis) -> Result<JointSpec, GeneratedSetupError> {
+fn generated_specification(genesis: &cosmograph::simulation::Genesis) -> Result<JointSpec, GeneratedSetupError> {
     let founding = genesis.founding.as_ref().ok_or_else(|| GeneratedSetupError::Invalid("generated ecology needs its founding".into()))?;
     let producers: Vec<u32> = (0..founding.lineages)
         .filter(|index| {
@@ -143,7 +143,7 @@ impl Setup {
 
     pub fn generated_classified(founded: Founded, execution: Execution) -> Result<Self, GeneratedSetupError> {
         if founded.genesis.founding.as_ref().is_none_or(|f| f.preset.is_some()
-            || f.affinity.is_some() || f.ecology_rates != isocosm::ecology::Rates::A1) {
+            || f.affinity.is_some() || f.ecology_rates != cosmograph::ecology::Rates::A1) {
             return Err(GeneratedSetupError::Invalid("default ecology offer requires an ordinary A1 founding without preset or affinity".into()));
         }
         let specification = generated_specification(&founded.genesis)?;
@@ -180,7 +180,7 @@ impl Setup {
     }
 
     fn assess_validated(&self, progress: &mut dyn FnMut(u64, u64))
-        -> Result<(isocosm::ecology::ValidatedJointRun, Game), String> {
+        -> Result<(cosmograph::ecology::ValidatedJointRun, Game), String> {
         self.check()?;
         let mut game = Game::default();
         let mut initialized = false;
@@ -219,11 +219,11 @@ impl Setup {
         progress: &mut dyn FnMut(u64, u64)) -> Result<Runtime, String> {
         let founding=self.founded.genesis.founding.as_ref().ok_or("generated candidate has no founding")?;
         // This producer captures its real basis; authored JSON cannot replace it.
-        let basis=isocosm::ecology::GeneratedBasis::new(founding)?;
+        let basis=cosmograph::ecology::GeneratedBasis::new(founding)?;
         let criterion=self.specification.independence.as_ref()
             .ok_or("generated-world offer needs explicit native mechanical-effect declarations879")?;
         let (run, spatial) = self.assess_validated(progress)?;
-        let admitted = isocosm::ecology::admit_validated(run, criterion, &basis)?;
+        let admitted = cosmograph::ecology::admit_validated(run, criterion, &basis)?;
         offer::accepted(self, spatial, admitted, ticks_per_second)
     }
 }

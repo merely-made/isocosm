@@ -3,7 +3,7 @@
 Round two found 356 physical pixels at 256 by 256 where the board drawn with
 one spare layer of headroom differs from the board drawn with none. Mark asked
 for the cause before the branch merges. The probe is `headroom_bands` in
-`crates/isometry-views/src/scene/band_tests.rs`, run by hand; its raw output
+`crates/isocosm-views/src/scene/band_tests.rs`, run by hand; its raw output
 is out of tree, hashed at the foot of this page. Every finding below is the
 same in the debug and release builds.
 
@@ -149,7 +149,7 @@ LLVM 22.1.8. The working tree was clean when the run started.
 ```text
 CARGO_TARGET_DIR=C:\t\cargo-targets\isometry
 CARGO_BUILD_JOBS=4
-cargo test --release -p isometry-views --lib headroom_bands --offline --locked -- --ignored --nocapture --test-threads=1
+cargo test --release -p isocosm-views --lib headroom_bands --offline --locked -- --ignored --nocapture --test-threads=1
 ```
 
 The one requested test passed; 120 tests were filtered out. It checked the
@@ -178,7 +178,7 @@ it does not claim agreement with that f64 camera at every texel. Broader
 cost and headed-picture receipts were not rerun for this bounded gate.
 
 Raw files are retained under
-`Code/testing/isometry/receipts/2026-09-27/lane-e-traversal-band-control/`.
+`Code/testing/isocosm/receipts/2026-09-27/lane-e-traversal-band-control/`.
 `provenance.json` records the command, compiler, branch, clean source commit,
 integrated main, target, job count and SHA-256 values for the lock and test
 sources. `result.json` records exit code 0. The SHA-256 of `SHA256SUMS` is
@@ -220,7 +220,7 @@ authorize those choices or merge paging into main.
 ### Earlier raw receipts
 
 Under ruling 255 the probe's logs are in
-`Code/testing/isometry/receipts/2026-09-26/scene-board-paging/bands/`, and
+`Code/testing/isocosm/receipts/2026-09-26/scene-board-paging/bands/`, and
 the pin bump's in `.../scene-board-paging/4663de8/bands/`. Each opens with
 its commit, command and compiler. The first round's two builds found the
 same; the pin bump's was run in release.

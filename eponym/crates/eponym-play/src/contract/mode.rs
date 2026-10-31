@@ -3,7 +3,7 @@
 
 //! Product-only bindings borrowed beside the host's sole native Session.
 
-use isocosm::{Session, schema::{Id, Key}, operations::Window};
+use cosmograph::{Session, schema::{Id, Key}, operations::Window};
 use serde::{Deserialize, Serialize};
 use crate::{MotionPose, identity::SubjectId};
 use isometer_space::places::PlaceId;
@@ -74,7 +74,7 @@ pub struct SpatialBindingInput {
 }
 
 pub fn source(session: &Session) -> Key {
-    isocosm::digest(&(&session.branch,&session.entries,session.sim.genesis(),session.sim.state_hash()))
+    cosmograph::digest(&(&session.branch,&session.entries,session.sim.genesis(),session.sim.state_hash()))
 }
 
 impl ModeState {

@@ -16,8 +16,8 @@ every live case in one line with the plans that cite it.
 
 ## Current state, 2026-10-10
 
-Isocosm is the single sim in `shared/isocosm`. Legacy Mesocosm and Eponym
-are deleted; `shared/isocosm/src/legacy.rs` exports only `campaign`,
+Cosmograph is the single sim in `shared/cosmograph`. Legacy Mesocosm and Eponym
+are deleted; `shared/cosmograph/src/legacy.rs` exports only `campaign`,
 held by the VTT until V2. Isometer owns in-site shape, edits and queries in
 `shared/isometer/crates/isometer-space/src/`. Eponym's game-side motion,
 combat, admitted anatomy and control live in `eponym/crates/eponym-play`;

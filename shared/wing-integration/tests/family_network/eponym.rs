@@ -1,6 +1,6 @@
 use eponym_play::endpoint::{EponymEndpoint, SESSION, STEP};
 use graphshell_endpoint::ProjectionCatalog;
-use isocosm_host::fixtures::fixture;
+use cosmograph_host::fixtures::fixture;
 
 use super::harness::{ClientIntent, Harness};
 

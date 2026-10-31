@@ -18,7 +18,7 @@ fn drawn_and_authored_native_anatomies_project_without_capsule_fallback() {
         let mut founded = mesocosm_runtime::Founded::generated(16_003_851_315_348_448_882, 60).unwrap();
         let mut domain = founded.genesis.founding.clone().unwrap();
         domain.bodies.as_mut().unwrap().roster = roster;
-        domain.ecology_rates = isocosm::ecology::Rates::A1;
+        domain.ecology_rates = cosmograph::ecology::Rates::A1;
         founded.genesis = domain.generate().unwrap();
         let runtime = mesocosm_runtime::Runtime::bench_placed(founded, 2).unwrap();
         let sim = runtime.sim();

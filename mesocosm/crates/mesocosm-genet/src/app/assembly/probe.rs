@@ -79,7 +79,7 @@ impl mesquite::Product for Probe {
                 ("physical-members", physical.members.len().to_string()),
                 (
                     "whole-body-placement",
-                    yes_no(isocosm::spatial::embodiment::enabled(&r.sim())),
+                    yes_no(cosmograph::spatial::embodiment::enabled(&r.sim())),
                 ),
                 ("accepted-walks", walks.to_string()),
                 ("food-directed-walking", yes_no(r.sim().foraging_enabled())),
@@ -142,7 +142,7 @@ impl mesquite::Product for Probe {
                 ("terrain-capacity", terrain_stats.capacity.to_string()),
                 (
                     "habitat",
-                    if isocosm::spatial::embodiment::whole_site(&r.sim()) {
+                    if cosmograph::spatial::embodiment::whole_site(&r.sim()) {
                         "site"
                     } else {
                         "patch"

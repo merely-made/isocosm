@@ -12,9 +12,9 @@
 //! this struct is not visible to an author, which is how "scripts cannot
 //! inspect hidden world state" is enforced rather than asked for.
 
-use isocosm::mosaic::{dims, path};
-use isocosm::process::{Registry, RulesetDigest};
-use isocosm::schema::Entity;
+use cosmograph::mosaic::{dims, path};
+use cosmograph::process::{Registry, RulesetDigest};
+use cosmograph::schema::Entity;
 use isometer_core::{Role, classify};
 use serde::{Deserialize, Serialize};
 
@@ -141,7 +141,7 @@ impl Request {
             trigger: Trigger::Discovery,
             ruleset: registry.digest(),
             revision: u32::try_from(entity.body_revision).unwrap_or(u32::MAX),
-            expect: isocosm::draw(entity.body_revision, "express", &[]),
+            expect: cosmograph::draw(entity.body_revision, "express", &[]),
             definitions: definitions_of(registry),
             parts: parts_of(entity),
             candidates,

@@ -668,7 +668,7 @@ HEAD and two of them would have put a false claim in this brief.
 
 2. **"Adding a field to `Event::Learned` breaks the `.chronicle` fixtures."**
    **False.** `played.chronicle`, `returned.chronicle` and `rng.chronicle` are
-   `Chronicle`/`Deed` records for the cross-game Isometry pipeline
+   `Chronicle`/`Deed` records for the cross-game Isocosm pipeline
    (`chronicle.rs`), loaded by `tests/homecoming.rs:24/27`. They have nothing
    to do with `Event` or with world snapshots.
 

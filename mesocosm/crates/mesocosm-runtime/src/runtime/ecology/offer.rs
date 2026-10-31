@@ -5,13 +5,13 @@
 
 use super::{Setup,Seal,Runtime};
 use crate::spatial::Game;
-use isocosm::{Session,ecology::AdmittedJointRun,directing::interim::Interim};
+use cosmograph::{Session,ecology::AdmittedJointRun,directing::interim::Interim};
 
 pub(super) fn accepted(setup:&Setup,mut game:Game,admitted:AdmittedJointRun,
     ticks_per_second:u32)->Result<Runtime,String> {
     if ticks_per_second==0 {return Err("offered runtime requires a positive clock rate".into());}
     // Consume the exact Session and proof produced by the one validated run.
-    let (world,witness,admission)=isocosm_host::founding::from_admitted_run(setup.execution,admitted)?;
+    let (world,witness,admission)=cosmograph_host::founding::from_admitted_run(setup.execution,admitted)?;
     let (session,sections)=world.into_parts()?;
     game.validate(&session)?;
     let configured=setup.spatial.is_some() || game.driver.is_some();

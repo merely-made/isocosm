@@ -1,7 +1,7 @@
 """Run the scene board's paging receipts and summarise them (ruling 255).
 
 Runs `paging_receipts_at_256` and `paging_receipts_headroom` from
-`crates/isometry-views` in the debug and release builds, keeps each raw log
+`crates/isocosm-views` in the debug and release builds, keeps each raw log
 out of tree, and writes the summary and the raw-receipt manifest beside this
 script:
 
@@ -14,7 +14,7 @@ shipping host binary, into `DIR/host-<n>-<NAME>`, in the order given; it needs
 a desktop session. Each `--check` runs the 256 session once more at that
 headroom, into `DIR/headroom-check/headroom-<LAYERS>-run-<n>`, after the hosts.
 
-DIR defaults to ~/Code/testing/isometry/receipts/2026-09-26/scene-board-paging/
+DIR defaults to ~/Code/testing/isocosm/receipts/2026-09-26/scene-board-paging/
 <commit>, the machine's out-of-tree receipt directory with one folder per
 round, so a round never overwrites the files an earlier manifest hashed.
 `--summarise-only` rebuilds the summary from logs already there, so a copy
@@ -51,7 +51,7 @@ def output(command: list[str]) -> str:
 
 
 def run(build: str, out: pathlib.Path) -> pathlib.Path:
-    command = ["cargo", "test", "-p", "isometry-views", "--lib"]
+    command = ["cargo", "test", "-p", "isocosm-views", "--lib"]
     if build == "release":
         command.append("--release")
     command += ["paging_receipts", "--", "--ignored", "--nocapture", "--test-threads=1"]
@@ -233,7 +233,7 @@ def manifest(out: pathlib.Path, logs: list[pathlib.Path]) -> str:
         "",
         "Under ruling 255 of the wing design record, the raw logs of the scene",
         "board's paging receipts live outside the repository, in",
-        f"`Code/testing/isometry/receipts/2026-09-26/scene-board-paging/{round_name}/`",
+        f"`Code/testing/isocosm/receipts/2026-09-26/scene-board-paging/{round_name}/`",
         "on the machine that ran them; paths below are relative to that folder. The",
         "summary (`summary.md`) and the scripts that run the receipts and rebuild the",
         "summary (`receipts.py`, `headed.py`) stay here. Check a copy against its",
@@ -252,7 +252,7 @@ def manifest(out: pathlib.Path, logs: list[pathlib.Path]) -> str:
         ),
         "",
         f"Source: commit {commits}, test `paging_receipts_at_256` in",
-        "`crates/isometry-views/src/scene/paging_tests.rs`, run with",
+        "`crates/isocosm-views/src/scene/paging_tests.rs`, run with",
         "`--ignored --nocapture --test-threads=1`, and `--release` for the release log.",
         "Each log opens with its commit, command and compiler; each headed session's",
         "`source.txt` names its commit, binary hash and switches.",

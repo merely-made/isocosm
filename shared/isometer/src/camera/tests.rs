@@ -403,8 +403,8 @@ fn a_world_point_lands_where_the_raster_matrix_puts_it() {
     }
 }
 
-/// Isometry's shipped `IsoGeometry` defaults, restated rather than imported:
-/// `isometry-core` is the host's crate and this one stays neutral.
+/// Isocosm's shipped `IsoGeometry` defaults, restated rather than imported:
+/// `isocosm-core` is the host's crate and this one stays neutral.
 const TILE_W: f32 = 32.0;
 const TILE_H: f32 = 16.0;
 const ELEV_STEP: f32 = 8.0;

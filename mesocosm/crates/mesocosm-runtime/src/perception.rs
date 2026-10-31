@@ -6,11 +6,11 @@
 //! spot are never substituted for an eye or body position.
 
 use std::collections::{BTreeMap, BTreeSet};
-use isocosm::{Session, schema::Id, simulation::Simulation,
+use cosmograph::{Session, schema::Id, simulation::Simulation,
     directing::readings::{Mode, View}};
 use isometer_space::{places::{Places, Rules}, volume::Volume};
 use std::sync::Arc;
-use isocosm::{operations::Window, spatial::{SiteGeometry, embodiment}};
+use cosmograph::{operations::Window, spatial::{SiteGeometry, embodiment}};
 
 /// One current native site's derived geometry. No second edit or placement log.
 pub struct InSite {
@@ -117,7 +117,7 @@ impl InSite {
     /// Creative keeps native truth. Survival cannot invent missing body cells.
     pub fn refine(&self, sim: &Simulation, mode: Mode, sight: &Sight) -> Result<View, String> {
         let seen = self.seen(sim, sight)?;
-        let mut view = isocosm::directing::readings::view(sim, sight.observer, mode);
+        let mut view = cosmograph::directing::readings::view(sim, sight.observer, mode);
         if mode == Mode::Creative { return Ok(view); }
         let mut things = BTreeMap::new();
         for (&first, &count) in &view.things {

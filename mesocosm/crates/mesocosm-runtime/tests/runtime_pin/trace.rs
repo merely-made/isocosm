@@ -7,7 +7,7 @@
 //! with `MESOCOSM_RECORD_TRACE=1` only when the sim's behaviour is meant to
 //! change, and say why in the commit.
 
-use isocosm_overlay::{AttentionChange, EntityHandle, Intent, PlaceHandle,
+use cosmograph_overlay::{AttentionChange, EntityHandle, Intent, PlaceHandle,
     mesocosm::{DevIntent, MesocosmIntent, PlayerAct, PlayerActKind}};
 use mesocosm_runtime::{Occasion, Refusal, Runtime, runtime::Envelope};
 use serde::{Deserialize, Serialize};

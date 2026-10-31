@@ -7,7 +7,7 @@
 //! Minimal, dependency-free PNG + base64 encoder for baked sheets.
 //!
 //! A baked [`Sheet`] binds to the board as a CSS `background-image:
-//! url("data:image/png;base64,...")`, the same path isometry's placeholder
+//! url("data:image/png;base64,...")`, the same path Isocosm's placeholder
 //! tileset already uses. Rather than pull an image crate, this encodes PNG
 //! with *stored* (uncompressed) DEFLATE blocks: no compressor needed, still a
 //! valid PNG a browser renders. Sprites are small, so size is a non-issue.

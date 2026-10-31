@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isocosm::spatial::{ArrivalRequest, ArrivalGeometry, ArrivalResolution, ArrivalReport};
+use cosmograph::spatial::{ArrivalRequest, ArrivalGeometry, ArrivalResolution, ArrivalReport};
 
 impl Game {
     pub(super) fn arrival_inputs(&self, session: &Session) -> Result<Vec<ArrivalResolution>, String> {

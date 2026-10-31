@@ -4,7 +4,7 @@
 //! Saved admission evidence belongs to the exact native witness prefix.
 //! It is not another live world or a new baseline selected during restore.
 
-use isocosm::{Session,ecology::{Admission,JointWitness}};
+use cosmograph::{Session,ecology::{Admission,JointWitness}};
 use serde::{Deserialize,Serialize};
 use std::{ops::{Deref,DerefMut},sync::{Arc,OnceLock}};
 

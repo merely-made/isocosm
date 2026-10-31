@@ -7,8 +7,8 @@ file is the canonical index for this directory, updated in the same session
 as any doc change. Each row is a link, what the doc is for and a dated status
 (wing design record, ruling 612); the docs hold the rest.
 
-Names: the sim and the family are Isocosm, the second-person game is Eponym,
-the tabletop is Isocosm: VTT (rulings 109 to 111).
+Names: the products are Isocosm (the VTT), Mesocosm and Eponym, peers;
+the sim is Cosmograph (cases 1036 and 1037; earlier, rulings 109 to 111).
 
 ## Games wing entry points
 
@@ -17,7 +17,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 - [Eponym index](../eponym/design_docs/DOC_README.md): Eponym's index.
 - [2026-07-30_games_wing_founding.md](2026-07-30_games_wing_founding.md): the wing founding record: vessels, pipeline laws, shared vocabulary.
 - [2026-09-18_wing_design_plan.md](2026-09-18_wing_design_plan.md): the wing design record: every case (§0) and the current architecture; its sections 1 to 11 are archived, the W0 to W5 phases now the founding record's §9.
-- [2026-10-28_sim_plan.md](../mesocosm/design_docs/2026-10-28_sim_plan.md): the sim, Isocosm.
+- [2026-10-28_sim_plan.md](../mesocosm/design_docs/2026-10-28_sim_plan.md): the sim, Cosmograph.
 
 ## Working principles for AI assistants
 
@@ -44,7 +44,7 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 | [DOC_POLICY.md](DOC_POLICY.md) | Documentation governance for all three products. | The one copy since 2026-10-06 (ruling 615); 2026-10-28: plans hold no receipts (§8). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | The VTT's goals and pillars. | Maintainer-owned. |
 | [2026-10-28_vtt_overlay_plan.md](2026-10-28_vtt_overlay_plan.md) | The VTT over the sim (W5): V2 the campaign over a drawn world, V3 the table over the sim, V4 the played loop; rulesets, their edition procedures (F10 to F12) and the battlemap's reading of fields. | 2026-10-30: V0 and V1 done, V2 partly placed, V3 and V4 open; F10 to F12 (from `functional_generation`) built, F11c open. |
-| [2026-10-28_campaign_retirement_plan.md](2026-10-28_campaign_retirement_plan.md) | Retiring `isometry-campaign` into its owning homes, then publishing. | 2026-10-28: cut; R0 and R1 done; R2a, R2b, R3 (at `vtt-overlay` V2) and R4 open; where the pack manifest lands is a question. |
+| [2026-10-28_campaign_retirement_plan.md](2026-10-28_campaign_retirement_plan.md) | Retiring `isocosm-campaign` into its owning homes, then publishing. | 2026-10-28: cut; R0 and R1 done; R2a, R2b, R3 (at `vtt-overlay` V2) and R4 open; where the pack manifest lands is a question. |
 | [2026-10-28_content_packs_plan.md](2026-10-28_content_packs_plan.md) | Packs as the unit content ships in: declared terms, authoring, distribution, tilesets, licences of shippable rulesets. | 2026-10-28: cut; `pack-author` landed, manifest `license` and `credit` landed, bundled packs enforced; showing terms and distribution open. |
 | [2026-10-28_board_on_isometer_plan.md](2026-10-28_board_on_isometer_plan.md) | The VTT's board on isometer: the scene board's remaining drawing, the DOM board's fate, appearance and the smallest display. | 2026-10-28: cut; the scene board is built behind its flag; the sim-on path is `vtt-overlay` V2. |
 | [2026-10-28_session_network_plan.md](2026-10-28_session_network_plan.md) | One session layer for every product: H7 (`isonetry` remade), the carrier gates K0 to K2, the no-second-runtime gate, and the deferred authority tiers. | 2026-10-28: cut; the remake has begun (`family`, `family_network`); H7's gates open. |

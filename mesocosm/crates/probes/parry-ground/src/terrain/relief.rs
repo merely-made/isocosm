@@ -14,7 +14,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use isocosm::rng::Rng;
+use cosmograph::rng::Rng;
 
 /// Grid side: 2^6 + 1. Coarse is the point; regions carry local detail.
 const SIDE: usize = 65;

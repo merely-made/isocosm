@@ -5,7 +5,7 @@
 
 use super::{Founded, Runtime};
 use crate::spatial::Game;
-use isocosm::{Command, Session, asserted::Assertion,
+use cosmograph::{Command, Session, asserted::Assertion,
     projects::{DebitSelection, SpreadPreview, StockLot}, spread::{self, Identity, Substrate}};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;

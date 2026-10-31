@@ -6,16 +6,16 @@
 use std::collections::BTreeMap;
 use std::sync::atomic::{AtomicU64, Ordering};
 
-use isocosm::asserted::{Assertion, Authored, Character, Faction, HistoryLine, Law, Place, Route};
-use isometry_campaign::{
+use cosmograph::asserted::{Assertion, Authored, Character, Faction, HistoryLine, Law, Place, Route};
+use isocosm_campaign::{
     CampaignDraft, CampaignWorld, DraftMap, EncounterAnchor, EntropyTape, EquipmentSlot, GenValue,
     GenerationRecord, GeneratorRequest, HiddenItemModifier, Inventory, ItemId, ItemInstance,
     ItemModifier, ItemModifierKind, ItemProposal, LocalMapProposal, MapCellProposal, MapInhabitant,
     MapPoint, MapScale, MapTransition, RevealCondition, RoleSlot, SecretFact, SpawnZone,
     StoryletEffect, StoryletProposal, StoryletRequirements, WorldEvent, WorldFact,
 };
-use isometry_campaign::{CampaignMap, LowerMap};
-use isometry_core::{
+use isocosm_campaign::{CampaignMap, LowerMap};
+use isocosm_core::{
     Beat, Facing, MapDocument, RollRecord, SessionEvent, SheetData, SheetDelta, Token, TokenId,
     TurnList,
 };

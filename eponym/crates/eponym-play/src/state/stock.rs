@@ -6,8 +6,8 @@
 use super::GameState;
 use crate::identity::{SubjectId, Tick};
 use crate::{GameError, GameEvent, ItemError, ItemId, ItemKind, ItemLocation, WorldError};
-use isocosm::{projects::{DebitPreview, DebitSelection, OwnedActed}, schema::Id};
-use isocosm_overlay::{ActKey, EntityHandle, eponym::{EponymIntent, StockAct}};
+use cosmograph::{projects::{DebitPreview, DebitSelection, OwnedActed}, schema::Id};
+use cosmograph_overlay::{ActKey, EntityHandle, eponym::{EponymIntent, StockAct}};
 
 impl GameState {
     /// A read-only preview of the real native operation at the current cut.
@@ -88,10 +88,10 @@ impl GameState {
         let mut events = self.stock_act(tick, subject, &process, Some(item.0), selections)?;
         let sim = self.world.sim();
         let food = sim.state().population.get(item.0).ok_or(WorldError::Refused)?;
-        let stocks = isocosm::anatomy::books(food);
+        let stocks = cosmograph::anatomy::books(food);
         let remains = stocks.iter().any(|(key, amount)| *amount > 0
             && (matches!(sim.genesis().rules.accounts.get(key),
-                Some(isocosm::rules::AccountKind::Matter { .. })) || sim.state().spreads.owns(key)));
+                Some(cosmograph::rules::AccountKind::Matter { .. })) || sim.state().spreads.owns(key)));
         if !remains { self.act(subject, Some(item.0), crate::founding::SPENT)?; }
         events.push(GameEvent::Ate { tick, subject, item,
             hunger:self.need(subject, crate::founding::RESERVE) });

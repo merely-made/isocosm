@@ -1,23 +1,23 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! The society the sortie reads, held in Eponym's world on Isocosm (wing
+//! The society the sortie reads, held in Eponym's world on Cosmograph (wing
 //! rulings 60, 63, 67 and 755): its peers are sim entities this receipt
 //! names, and every deed, ask, agreement, wound and dig is a native command
 //! at the tick it happens, the sim's clock brought up to it first.
 
 use eponym_play::identity::{SubjectId, Tick};
 use eponym_play::{World, WorldError, WorldIntent, founding};
-use isocosm::history::Command;
-use isocosm::schema::{Id, Key, Method};
-use isocosm::social::{
+use cosmograph::history::Command;
+use cosmograph::schema::{Id, Key, Method};
+use cosmograph::social::{
     Agreement, Answer, Deed, DeedKind, EndReason, Offer, Premise, Response, Ruling, Social,
     Standing, Terms, Work,
 };
-use isocosm_overlay::eponym::{
+use cosmograph_overlay::eponym::{
     AgreementAct, AgreementHandle, DeedKey, EponymHandoff, EponymIntent,
 };
-use isocosm_overlay::{EntityHandle, Harm, PlaceHandle};
+use cosmograph_overlay::{EntityHandle, Harm, PlaceHandle};
 
 /// What the society refuses with.
 pub type SocialError = WorldError;
@@ -34,7 +34,7 @@ impl Society {
     pub fn world(&self) -> &World {
         &self.world
     }
-    pub fn sim(&self) -> &isocosm::Simulation {
+    pub fn sim(&self) -> &cosmograph::Simulation {
         self.world.sim()
     }
 
@@ -56,18 +56,18 @@ impl Society {
         caution: i16,
     ) -> Result<Id, SocialError> {
         let key = name.to_lowercase();
-        let character = isocosm::asserted::Character {
+        let character = cosmograph::asserted::Character {
             key: key.clone(),
             name: name.into(),
             ..Default::default()
         };
         self.world
-            .found(Command::Assert(isocosm::asserted::Assertion::Character(
+            .found(Command::Assert(cosmograph::asserted::Assertion::Character(
                 character,
             )))?;
         let mut disposition = [0; 5];
-        disposition[isocosm::social::CAUTION] = caution;
-        let arrival = isocosm::arrival::Arrival {
+        disposition[cosmograph::social::CAUTION] = caution;
+        let arrival = cosmograph::arrival::Arrival {
             lineage: founding::SOPHONT.into(),
             site: self.world.site(),
             method: Method::Normative,
@@ -153,7 +153,7 @@ impl Society {
                 dwelling: PlaceHandle(dwelling),
             }),
             Social::Deed { doer, toward, kind } => {
-                EponymIntent::Deed(isocosm_overlay::eponym::Deed {
+                EponymIntent::Deed(cosmograph_overlay::eponym::Deed {
                     doer: EntityHandle(doer),
                     toward: toward.map(EntityHandle),
                     kind: DeedKey(kind.key),
@@ -262,14 +262,14 @@ impl Society {
 
     /// A dwelling, asserted as an authored place (769).
     pub fn found_dwelling(&mut self, key: &str, name: &str) -> Result<Id, SocialError> {
-        let place = isocosm::asserted::Place {
+        let place = cosmograph::asserted::Place {
             key: key.into(),
             name: name.into(),
             ..Default::default()
         };
         let outcome = self
             .world
-            .found(Command::Assert(isocosm::asserted::Assertion::Place(place)))?;
+            .found(Command::Assert(cosmograph::asserted::Assertion::Place(place)))?;
         outcome
             .strip_prefix("site:")
             .and_then(|s| s.parse().ok())

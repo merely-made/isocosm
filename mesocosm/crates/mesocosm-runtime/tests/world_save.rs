@@ -5,8 +5,8 @@
 #[allow(dead_code)]
 mod worlds;
 
-use isocosm::Execution;
-use isocosm_host::{
+use cosmograph::Execution;
+use cosmograph_host::{
     save::{ImportSave, WorldSave},
     world::World,
 };

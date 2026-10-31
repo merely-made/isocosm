@@ -14,7 +14,7 @@
 //! 2. **The mesquite scenario lane**, ticked in `after_frame` and told about a
 //!    close in `close_request`, with a redraw so the deferred close can present
 //!    its last frame.
-//! 3. **Capture arming** — Isometry's bounded `ISOMETRY_CAPTURE_DIR` policy,
+//! 3. **Capture arming** — Isocosm's bounded `ISOMETRY_CAPTURE_DIR` policy,
 //!    which is the same policy under any other env name.
 //! 4. **The error line**, published from the product's own scene error or the
 //!    first producer error among its leaves, compared against what is already
@@ -46,7 +46,7 @@
 //! # Why the feature gate
 //!
 //! `cambium-desktop` drags wgpu, netrender and winit in. The panels
-//! above emit elements and nothing else, and `isometry-views` and
+//! above emit elements and nothing else, and `isocosm-views` and
 //! `mesocosm-views` consume them, so this module is behind the `host` feature
 //! and those two crates never pay for a renderer. The three hosts turn it on.
 
@@ -79,7 +79,7 @@ pub const VIEWPORT_ERROR: &str = "Viewport unavailable";
 
 /// A product with no viewport producer of its own.
 ///
-/// Isometry registers painted leaves rather than same-device producers, so its
+/// Isocosm registers painted leaves rather than same-device producers, so its
 /// [`Product::Producer`] is this: a type that satisfies the bound and is never
 /// constructed, because [`Product::viewport_keys`] names no key.
 pub enum NoProducer {}
@@ -191,7 +191,7 @@ pub trait Product: Sized + 'static {
     /// the error would otherwise call `runner.update` with nothing to write,
     /// rebuilding its retained tree and asking for a redraw on every frame an
     /// error stood — an idle loop bought for a string nobody can read.
-    /// Isometry is that product: its scene board reports a producer refusal as
+    /// Isocosm is that product: its scene board reports a producer refusal as
     /// a stderr line and its side panel has no error element.
     const PUBLISHES_ERROR: bool = true;
 
@@ -274,7 +274,7 @@ pub trait Product: Sized + 'static {
         false
     }
 
-    /// Whether to print the frame profile line. Isometry's `ISOMETRY_PROFILE=1`.
+    /// Whether to print the frame profile line. Isocosm's `ISOMETRY_PROFILE=1`.
     fn profiling(&self) -> bool {
         false
     }

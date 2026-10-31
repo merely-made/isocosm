@@ -4,7 +4,7 @@
 use super::*;
 use crate::fixtures::session::timed_action_world_with_practice_striker_at_target;
 use crate::{GameEvent, GameIntent, ItemLocation, Name, Session, World, WorldConfig};
-use isocosm::lineage::SpeciesId;
+use cosmograph::lineage::SpeciesId;
 
 #[test]
 fn two_native_severings_keep_one_game_revision_and_the_actual_native_snapshot_source() {

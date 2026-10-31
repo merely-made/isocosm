@@ -40,7 +40,7 @@ fn seal() {
     let mut unknown:serde_json::Value=serde_json::from_slice(&encoded).unwrap();
     unknown.as_object_mut().unwrap().insert("unknown".into(),true.into());
     assert!(serde_json::from_value::<Seal>(unknown).is_err());
-    let reference=isocosm::digest(&game);
+    let reference=cosmograph::digest(&game);
     let started=Instant::now();
     assert_eq!(game.physical_digest(),reference);
     let cold_us=started.elapsed().as_micros();
@@ -50,17 +50,17 @@ fn seal() {
     let mut changed=game.clone();
     changed.ecology.as_mut().unwrap().witness.native.branch.push_str(":changed");
     assert_ne!(changed.physical_digest(),reference);
-    assert_eq!(changed.physical_digest(),isocosm::digest(&changed));
+    assert_eq!(changed.physical_digest(),cosmograph::digest(&changed));
     assert_eq!(game.physical_digest(),reference,"COW leaves the original seal intact");
     let mut plain=Game::default();
     plain.version=UNMARKED_VERSION;
-    assert_eq!(plain.physical_digest(),isocosm::digest(&plain));
+    assert_eq!(plain.physical_digest(),cosmograph::digest(&plain));
     eprintln!("[seal-case] bytes={} cold_us={cold_us} warm_us={warm_us} exact=true cow=true unknown_refused=true",encoded.len());
 }
 
 /// Compare the exact public resolution with the same ordered cached digests.
 fn registry() {
-    use isocosm::process::{Process, Registry};
+    use cosmograph::process::{Process, Registry};
     use std::{hint::black_box, time::Instant};
     let native = Registry::native();
     let reference = native.of_native(Process::Intake).reference();

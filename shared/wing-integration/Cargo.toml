@@ -12,16 +12,16 @@ license = "MPL-2.0"
 description = "Live producer-to-consumer receipts for the games wing."
 
 [dependencies]
-isocosm = { path = "../isocosm" }
-isometry-campaign = { path = "../../crates/isometry-campaign" }
+cosmograph = { path = "../cosmograph" }
+isocosm-campaign = { path = "../../crates/isocosm-campaign" }
 isometer-core = { path = "../isometer/crates/isometer-core" }
 isometer-mesh = { path = "../isometer/crates/isometer-mesh" }
-isocosm-host = { path = "../../host", features = ["endpoint", "fixtures"] }
-isocosm-overlay = { path = "../isocosm-overlay" }
+cosmograph-host = { path = "../../cosmograph-host", features = ["endpoint", "fixtures"] }
+cosmograph-overlay = { path = "../cosmograph-overlay" }
 isonetry = { path = "../../crates/isonetry", default-features = false, features = ["family-net"] }
 mesocosm-runtime = { path = "../../mesocosm/crates/mesocosm-runtime", features = ["endpoint"] }
 eponym-play = { path = "../../eponym/crates/eponym-play", features = ["endpoint"] }
-isocosm-vtt = { path = "../../crates/isocosm-vtt", features = ["endpoint"] }
+isocosm-native = { path = "../../crates/isocosm-native", features = ["endpoint"] }
 chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381" }
 graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381", features = ["network"] }
 graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381", default-features = false, features = ["native"] }
@@ -36,10 +36,10 @@ p2panda-core = "0.7.0"
 tokio = { version = "1", features = ["rt", "rt-multi-thread", "sync", "macros", "io-util", "time"] }
 serde_json = "1"
 
-# Isocosm's suite runs three times faster at opt-level 1, and every workspace
+# Cosmograph's suite runs three times faster at opt-level 1, and every workspace
 # that builds it sets the same level so the shared build directory holds one
 # copy (wing design record, ruling 648).
-[profile.dev.package.isocosm]
+[profile.dev.package.cosmograph]
 opt-level = 1
 
 [workspace.package]

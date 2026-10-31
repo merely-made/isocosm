@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use serde::{Deserialize, Serialize};
-use isocosm_overlay::{ParticipantHandle, Tick};
+use cosmograph_overlay::{ParticipantHandle, Tick};
 use crate::runtime::Envelope;
 
 /// Existing envelopes remain readable beside explicit product operations.

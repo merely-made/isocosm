@@ -8,7 +8,7 @@
 //!
 //! The window, device and frame loop are isomere's Assembly. Input becomes
 //! core envelopes, the shared runtime steps a native
-//! Isocosm session at a fixed rate, and the world comes back out to be drawn.
+//! Cosmograph session at a fixed rate, and the world comes back out to be drawn.
 //! If a rule ever appears in this crate, it is in the wrong crate.
 //!
 //! The player directs and never drives (wing rulings 671, 679): keys send

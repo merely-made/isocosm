@@ -57,7 +57,7 @@ user data. Tests track current semantics only.
 ### 5. Cross-referencing
 
 - Within a repo: relative links.
-- Across repos: cite by path (`isometry/design_docs/...`), since relative links
+- Across repos: cite by path (`isocosm/design_docs/...`), since relative links
   do not cross repository boundaries reliably and rot silently when the
   neighbour moves or is archived.
 - Crates: link to crates.io when referring to a public API
@@ -177,9 +177,9 @@ yet keeps rules 1 to 4 until its first statement is written.
    leave; git keeps them. What is built, owed or unverified is said
    before the fields line.
 
-## Local addendum — Isometry, the games wing's repository
+## Local addendum — Isocosm, the games wing's repository
 
-This repository holds three products: Isocosm: VTT at the root, Mesocosm in
+This repository holds three products: Isocosm at the root, Mesocosm in
 `mesocosm/` and Eponym in `eponym/`, each with a flat `design_docs/` and its
 own index; no area roots have been promoted yet. This one policy governs all
 three (wing design record, ruling 615); the product directories link here.

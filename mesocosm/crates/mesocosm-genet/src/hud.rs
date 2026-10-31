@@ -16,8 +16,8 @@
 //! [`crate::vitals`] is the first consumer of. What the guard still forbids is
 //! teaching this lane lettering as a shortcut.
 
-use isocosm::schema::Id;
-use isocosm::simulation::Simulation;
+use cosmograph::schema::Id;
+use cosmograph::simulation::Simulation;
 use mesocosm_views::MinimapLeaf;
 use sprigging::{Leaf, PaintCx, Size};
 

@@ -5,7 +5,7 @@
 Later independent gates retain their own source and hash manifests:
 [traversal bands](bands.md), [current omissions and local settings](settings.md),
 and the test-only [atlas replacement experiment](replacement.md). Their
-directories are under `Code/testing/isometry/receipts/2026-09-27/`; the
+directories are under `Code/testing/isocosm/receipts/2026-09-27/`; the
 2026-09-26 receipts below are preserved as recorded.
 
 Ruling 373 adds the [one-submission replacement measurement](batched-replacement.md)
@@ -13,7 +13,7 @@ in `lane-e-atlas-batched/`, preserving the first experiment and draft run.
 
 Under ruling 255 of the wing design record, the raw logs of the scene
 board's paging receipts live outside the repository, in
-`Code/testing/isometry/receipts/2026-09-26/scene-board-paging/4663de8/`
+`Code/testing/isocosm/receipts/2026-09-26/scene-board-paging/4663de8/`
 on the machine that ran them; paths below are relative to that folder. The
 summary (`summary.md`) and the scripts that run the receipts and rebuild the
 summary (`receipts.py`, `headed.py`) stay here. Check a copy against its
@@ -22,7 +22,7 @@ summary from it. An earlier round's files stay where they were, hashed by
 the manifest committed with that round.
 
 Source: commit `4663de87422a471d793245d5cf8f674843cf89f6`, test `paging_receipts_at_256` in
-`crates/isometry-views/src/scene/paging_tests.rs`, run with
+`crates/isocosm-views/src/scene/paging_tests.rs`, run with
 `--ignored --nocapture --test-threads=1`, and `--release` for the release log.
 Each log opens with its commit, command and compiler; each headed session's
 `source.txt` names its commit, binary hash and switches.

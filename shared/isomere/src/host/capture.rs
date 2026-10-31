@@ -1,20 +1,20 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! Bounded native-frame capture, promoted from Isometry's `capture.rs`.
+//! Bounded native-frame capture, promoted from Isocosm's `capture.rs`.
 //!
 //! A headed receipt wants one final image. Continuous readback and PNG
 //! encoding stall the render thread, so they stay opt-in. The policy is three
 //! facts — a directory, whether every frame counts, and whether one has
-//! already landed — and none of the three is about Isometry; what was about
-//! Isometry is the two environment variable names, the file name and the log
+//! already landed — and none of the three is about Isocosm; what was about
+//! Isocosm is the two environment variable names, the file name and the log
 //! prefix, so those are [`CaptureNames`] and the rest is here.
 //!
 //! **Not mesquite's capture.** `mesquite::Lane` captures on a scenario's say-so,
 //! at names the scenario chooses, with pixel comparison and a receipt behind
 //! it. This is the other lane: an unscripted headed run that wants one PNG
 //! when the host has stopped moving. A product with a scenario wants mesquite;
-//! a product with an environment variable wants this; Isometry has both.
+//! a product with an environment variable wants this; Isocosm has both.
 //!
 //! The write is to a `.tmp` beside the target and then a rename, so a reader
 //! watching the directory never sees half a PNG. `mesquite::write_png` does

@@ -7,8 +7,8 @@ DOC_POLICY §5 this file is the canonical index for this directory, updated in
 the same session as any doc change. Each row is a link, what the doc is for
 and a dated status (wing design record, ruling 612); the docs hold the rest.
 
-Names: the sim and the family are Isocosm, the second-person game is Eponym,
-the tabletop is Isocosm: VTT (rulings 109 to 111).
+Names: the products are Isocosm (the VTT), Mesocosm and Eponym, peers;
+the sim is Cosmograph (cases 1036 and 1037; earlier, rulings 109 to 111).
 
 ## Working principles for AI assistants
 
@@ -89,13 +89,13 @@ the tabletop is Isocosm: VTT (rulings 109 to 111).
 
 | Doc | For | Status |
 | --- | --- | --- |
-| [2026-10-28_sim_plan.md](2026-10-28_sim_plan.md) | The sim (W2): Isocosm's schema, record, generator, ecology phases S1 to S10, the society layer, owed world rules, certification, and ruling 279's unpark condition. | 2026-10-28: cut; bodies certified at site grain, A1 passes; S8 to S10 and tuning open. |
+| [2026-10-28_sim_plan.md](2026-10-28_sim_plan.md) | The sim (W2): Cosmograph's schema, record, generator, ecology phases S1 to S10, the society layer, owed world rules, certification, and ruling 279's unpark condition. | 2026-10-28: cut; bodies certified at site grain, A1 passes; S8 to S10 and tuning open. |
 | [2026-10-28_sim_execution_plan.md](2026-10-28_sim_execution_plan.md) | The sim's execution: waking, draw keys, parallel evaluation, the near/far crowd tier, and every speed bar (its one owner). Carries decisions D1 to D14. | 2026-10-28: cut; E1a, E1b and D5 to D11 built and exact; E1c to E6 open; which speed bar governs is a question. |
 | [2026-10-28_sim_host_plan.md](2026-10-28_sim_host_plan.md) | One embeddable sim host under the product hosts, and isomere, the wing's GUI layer and mode host. | 2026-10-28: cut; the core library is built and the Mesocosm head runs on it; mode host acceptance open. H7 is `session-network`. |
 | [2026-10-28_place_graph_engine_plan.md](2026-10-28_place_graph_engine_plan.md) | The place graph and its world store: lifts, edits and places, field admission, residency, passages at coarse levels. | 2026-10-28: cut; SP1 to SP5 built, re-certification, SP6 and SP8 open. |
 | [2026-10-28_orthographic_voxel_presentation_plan.md](2026-10-28_orthographic_voxel_presentation_plan.md) | The wing's orthographic voxel presentation: lanes L1 to L10 and the open presentation items. Carries decisions D1 and D2. | 2026-10-28: cut; the tenant path and the 2:1 dimetric view are defaults; headed certification and the L10 detail ladder open. |
 | [2026-10-28_bodies_plan.md](2026-10-28_bodies_plan.md) | Bodies in the world: appearance, footing, senses and binding, with one list of remaining limits. | 2026-10-28: cut; chains, stances, supported turning and sensed reachable food built; blending, strength by area and binding open. |
-| [2026-10-28_mesocosm_overlay_plan.md](2026-10-28_mesocosm_overlay_plan.md) | Mesocosm as an overlay: directing (M3), the interim and full M4 played loop, and the epoch boundary. | 2026-10-28: cut; directing built on native Isocosm; certification, the headed three-epoch run and full M4 open. |
+| [2026-10-28_mesocosm_overlay_plan.md](2026-10-28_mesocosm_overlay_plan.md) | Mesocosm as an overlay: directing (M3), the interim and full M4 played loop, and the epoch boundary. | 2026-10-28: cut; directing built on native Cosmograph; certification, the headed three-epoch run and full M4 open. |
 | [2026-10-28_wing_phenotype_contract_plan.md](2026-10-28_wing_phenotype_contract_plan.md) | Wing construction, embodiment and continuity: body identity across games, W0 to W6, the creator C0 to C5. | 2026-10-28: cut; v0 formats extracted; the identity contract and creator open. |
 | [2026-10-28_wing_organs_plan.md](2026-10-28_wing_organs_plan.md) | The hagioglyph (canon, journey, expression, divinity) and the impresa. | 2026-10-28: cut; kernels shared; every phase parked under 279; holds the owed ruling on 279 versus 673. |
 | [2026-10-28_functional_generation_plan.md](2026-10-28_functional_generation_plan.md) | Magic as world operations: the six axes, composition and cost, effect lifecycle, ways of casting, and the questions raised 2026-10-27. | 2026-10-30: the first slice is shared; composition designed; F1 to F9 not a priority (parked). The edition procedures, F10 to F12, moved to the root `vtt_overlay` plan. |

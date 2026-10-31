@@ -35,8 +35,8 @@ eponym-play = { path = "../eponym-play" }
 wing-functions = { path = "../../../shared/wing-functions" }
 netrender_text = { workspace = true }
 modulus = { workspace = true, optional = true }
-isocosm = { path = "../../../shared/isocosm" }
-isocosm-overlay = { path = "../../../shared/isocosm-overlay" }
+cosmograph = { path = "../../../shared/cosmograph" }
+cosmograph-overlay = { path = "../../../shared/cosmograph-overlay" }
 netrender = { workspace = true }
 # P1/P2 document-host lane deps: the Cambium host, its producer seam, the
 # scenario driver, and the paint-list path netrender rasterizes.

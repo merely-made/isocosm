@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Eponym's world on Isocosm (wing ruling 755): a native session founded by
+//! Eponym's world on Cosmograph (wing ruling 755): a native session founded by
 //! Eponym's pack, the one site it is played in lifted by isometer (670,
 //! 696), and Eponym's meanings over its sites. A carve is an edit the sim
 //! keeps, made through its carver's ledger; an inherited site a fact the
@@ -13,11 +13,11 @@
 
 use std::collections::BTreeMap;
 
-use isocosm::history::Command;
-use isocosm::schema::Id;
-use isocosm::{Execution, Session};
-use isocosm_overlay::eponym::{ActTarget, Actuation, EponymIntent, TimedAct};
-use isocosm_overlay::{ActKey, EntityHandle, WorldPoint};
+use cosmograph::history::Command;
+use cosmograph::schema::Id;
+use cosmograph::{Execution, Session};
+use cosmograph_overlay::eponym::{ActTarget, Actuation, EponymIntent, TimedAct};
+use cosmograph_overlay::{ActKey, EntityHandle, WorldPoint};
 use isometer_core::ground::Ground;
 use isometer_core::snapshot::{self, hash_bytes};
 use isometer_space::volume::Volume;
@@ -71,7 +71,7 @@ pub enum WorldIntent {
     /// Exactly one first marker is required by the material generator tag.
     MaterialProfile { profile: Box<MaterialProfile> },
     /// A distinct founding grammar preserves earlier material-profile bytes.
-    OwnedMaterialProfile { profile: Box<MaterialProfile>, stock: isocosm::projects::StockRules },
+    OwnedMaterialProfile { profile: Box<MaterialProfile>, stock: cosmograph::projects::StockRules },
     SpreadMaterialProfile { profile: Box<crate::SpreadMaterialProfile> },
     /// An authored native material edit, appended to preserve archive tags.
     MaterialEdit { tick: Tick, edit: Edit },
@@ -190,12 +190,12 @@ impl World {
     }
 
     pub fn generate_owned_materials(seed: u64, config: WorldConfig, profile: MaterialProfile,
-        stock: isocosm::projects::StockRules) -> Result<Self, WorldError> {
+        stock: cosmograph::projects::StockRules) -> Result<Self, WorldError> {
         Self::generate_material_profile(seed, config, profile, Some(stock))
     }
 
     fn generate_material_profile(seed: u64, config: WorldConfig, profile: MaterialProfile,
-        stock: Option<isocosm::projects::StockRules>) -> Result<Self, WorldError> {
+        stock: Option<cosmograph::projects::StockRules>) -> Result<Self, WorldError> {
         Self::check_config(config)?;
         let mut genesis = profile.genesis(seed, u32::from(config.side), config.extent as u64 * 2)
             .map_err(|_| WorldError::InvalidMaterialProfile)?;
@@ -208,7 +208,7 @@ impl World {
                 WorldIntent::MaterialProfile { profile:Box::new(profile.clone()) }),
         };
         let mut world = Self::from_genesis(seed, config, version, genesis,
-            isocosm::schema::Movement::Journey, vec![marker])?;
+            cosmograph::schema::Movement::Journey, vec![marker])?;
         world.arrive_material_items(&profile)?;
         Ok(world)
     }
@@ -250,8 +250,8 @@ impl World {
     // Version 3 is an explicit source proposal, not a claimed released archive format.
     fn generate_version(seed: u64, config: WorldConfig, version: u32) -> Result<Self, WorldError> {
         let movement = match version {
-            2 => isocosm::schema::Movement::ImmediateV3,
-            3 | GENERATOR_VERSION | crate::founding::fixture::GENERATOR_VERSION => isocosm::schema::Movement::Journey,
+            2 => cosmograph::schema::Movement::ImmediateV3,
+            3 | GENERATOR_VERSION | crate::founding::fixture::GENERATOR_VERSION => cosmograph::schema::Movement::Journey,
             _ => return Err(WorldError::GeneratorDiverged { saved:version, current:GENERATOR_VERSION }),
         };
         Self::check_config(config)?;
@@ -277,10 +277,10 @@ impl World {
     }
 
     fn from_genesis(seed: u64, config: WorldConfig, version: u32,
-        genesis: isocosm::simulation::Genesis, movement: isocosm::schema::Movement,
+        genesis: cosmograph::simulation::Genesis, movement: cosmograph::schema::Movement,
         intents: Vec<WorldIntent>) -> Result<Self, WorldError> {
         let side = config.extent as u64 * 2;
-        let base_hash = hash_bytes(isocosm::digest(&genesis).as_bytes());
+        let base_hash = hash_bytes(cosmograph::digest(&genesis).as_bytes());
         let session =
             Session::new_with_movement(genesis, Execution::Individuals, movement).map_err(|_| WorldError::Refused)?;
         let map = WorldMap::generate(&session.sim);
@@ -340,7 +340,7 @@ impl World {
     pub fn session(&self) -> &Session {
         &self.session
     }
-    pub fn sim(&self) -> &isocosm::Simulation {
+    pub fn sim(&self) -> &cosmograph::Simulation {
         &self.session.sim
     }
     /// The site Eponym is played in.
@@ -489,7 +489,7 @@ impl World {
                 if !self.map.inherit(slot, kind, fact) {
                     return Err(WorldError::MissingSlot(slot));
                 }
-                let assertion = isocosm::asserted::Assertion::Fact(isocosm::asserted::Fact {
+                let assertion = cosmograph::asserted::Assertion::Fact(cosmograph::asserted::Fact {
                     about: format!("site:{}", slot.site),
                     key: format!("inherit:{}", fact.0),
                     kind: crate::founding::SITE_FACT.into(),

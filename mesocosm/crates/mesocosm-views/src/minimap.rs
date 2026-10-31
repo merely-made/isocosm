@@ -22,8 +22,8 @@
 
 use std::collections::BTreeMap;
 
-use isocosm::schema::{Id, Key};
-use isocosm::simulation::Simulation;
+use cosmograph::schema::{Id, Key};
+use cosmograph::simulation::Simulation;
 use sceno::{
     Arrangement, Footprint, Hulls, Placement, Rect, Representation, Scene, Score, ScoreItem, Size2,
     SourceRef, Vec2,
@@ -42,7 +42,7 @@ pub fn site_points(sim: &Simulation) -> BTreeMap<Id, Vec2> {
     let sites = &sim.state().sites;
     let laid: BTreeMap<Id, [u32; 2]> = sites
         .keys()
-        .filter_map(|id| isocosm::map::position(sim.genesis(), *id).map(|at| (*id, at)))
+        .filter_map(|id| cosmograph::map::position(sim.genesis(), *id).map(|at| (*id, at)))
         .collect();
     if laid.len() == sites.len() && !laid.is_empty() {
         let across = |k: usize| laid.values().map(|at| at[k]).max().unwrap_or(0) as f32 + 1.0;

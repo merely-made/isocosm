@@ -6,7 +6,7 @@ edition = "2024"
 # Game code, so MPL-2.0 — the processdef plan's license gate is explicit that
 # definitions, pack loaders, validators, fixtures and game-specific schemas are
 # MPL-2.0, and that only a *generic* sandbox crate may become MIT OR Apache-2.0
-# once Isometry and Mesocosm prove one extracted boundary. Nothing here is
+# once Isocosm and Mesocosm prove one extracted boundary. Nothing here is
 # generic: the schema names this game's roles and seeding rule.
 license = "MPL-2.0"
 description = "Mesocosm's pack door: discovery, admission and lowering of data-only process packs into the core's ruleset. Later, the Piccolo authoring host."
@@ -19,7 +19,7 @@ publish = false
 # refusing the ones that are not admissible, which is precisely the job a
 # deterministic, integer-only, I/O-free core must not have.
 [dependencies]
-isocosm = { workspace = true }
+cosmograph = { workspace = true }
 isometer-core = { workspace = true }
 piccolo = "0.3"
 serde = { workspace = true }

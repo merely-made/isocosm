@@ -3,8 +3,8 @@ use chirograph::{
     ResourceRequest, ResourceResponse,
 };
 use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
-use isocosm_overlay::Seat;
-use isocosm_vtt::{TABLE, VttEndpoint};
+use cosmograph_overlay::Seat;
+use isocosm_native::{TABLE, VttEndpoint};
 
 use super::harness::{ClientIntent, Harness};
 use isonetry::{
@@ -56,7 +56,7 @@ impl IntentSink for BootstrapEndpoint {
     }
 }
 
-#[path = "../../../../crates/isocosm-vtt/tests/support/table.rs"]
+#[path = "../../../../crates/isocosm-native/tests/support/table.rs"]
 mod table;
 
 struct LedgerDirectory(PathBuf);
@@ -274,7 +274,7 @@ async fn vtt_host_restart_reconnects_with_signed_checkpoint_and_republished_ledg
             // bounded family ledger. The caller retains the original host key.
             let recovered_host = FamilyHost::resume_file(
                 &path,
-                isocosm::Execution::Individuals,
+                cosmograph::Execution::Individuals,
                 FamilyLimits::default(),
                 FamilyLedgerLimits::default(),
             )

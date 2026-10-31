@@ -19,8 +19,8 @@
 //! revokes the tag-in the same way it vacates a home in S2.
 
 use eponym_play::identity::{SubjectId, Tick};
-use isocosm::schema::Id as AgreementId;
-use isocosm::social::{Response, RulingKind, Terms, Verdict, Work};
+use cosmograph::schema::Id as AgreementId;
+use cosmograph::social::{Response, RulingKind, Terms, Verdict, Work};
 
 use crate::society::{SocialError, Society};
 use serde::{Deserialize, Serialize};

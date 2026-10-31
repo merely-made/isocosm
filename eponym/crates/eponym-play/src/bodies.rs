@@ -12,7 +12,7 @@
 
 use std::collections::BTreeMap;
 
-use isocosm::schema::Id;
+use cosmograph::schema::Id;
 use isometer_core::snapshot::{self, hash_bytes};
 use serde::{Deserialize, Serialize};
 
@@ -107,13 +107,13 @@ impl Body {
         let e = sim.state().population.get(record.entity)?;
         let rules = &sim.genesis().rules;
         let need = |account| {
-            let want = isocosm::needs::want(rules, e, account);
+            let want = cosmograph::needs::want(rules, e, account);
             want.map_or(0, |w| w.deficit().min(u64::from(MAX_NEED)) as u16)
         };
-        let wound = isocosm::harm::wound_share(e) as u16;
+        let wound = cosmograph::harm::wound_share(e) as u16;
         let mut profile = BodyProfile::draw(world.seed(), record.body_seed, subject);
         if world.developed_bodies() {
-            profile.mass_mg = u32::try_from(isocosm::anatomy::held(e, rules, crate::founding::TISSUE)).ok()?;
+            profile.mass_mg = u32::try_from(cosmograph::anatomy::held(e, rules, crate::founding::TISSUE)).ok()?;
         }
         Some(Self {
             subject,

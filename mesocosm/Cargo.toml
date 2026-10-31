@@ -67,7 +67,7 @@ cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev =
 genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 # The CSS/layout/paint engine. `genet-layout` is gone: genet deleted the Stylo
 # compatibility cone on 2026-08-21 and Livery over Buckram is what lays out a
-# ScriptedDom now. Isometry's shared Cambium host consumes this same engine.
+# ScriptedDom now. Isocosm's shared Cambium host consumes this same engine.
 genet-livery = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 # Reusable split-and-tab tile arrangement (ruled 2026-09-02, dev tools plan
 # §4): the dev lane's placement is a `workbench::TileTree`'s own geometry
@@ -100,7 +100,7 @@ paint_list_render = { git = "https://github.com/merely-made/netrender.git", bran
 # render have no row here. The core keeps one: mesocosm-core sits below the
 # family and must not take the facade.
 isometer-core = { path = "../shared/isometer/crates/isometer-core", version = "0.1.0" }
-isocosm = { path = "../shared/isocosm", default-features = false }
+cosmograph = { path = "../shared/cosmograph", default-features = false }
 mesocosm-phenotype = { path = "crates/mesocosm-phenotype", version = "0.0.1" }
 mesocosm-genet = { path = "crates/mesocosm-genet", version = "0.0.1" }
 mesocosm-runtime = { path = "crates/mesocosm-runtime", version = "0.0.1" }
@@ -162,10 +162,10 @@ stickleback = { git = "https://github.com/merely-made/eidetic.git", rev = "f599f
 # its row the same way, 250fd238).
 taffy = { package = "genet-taffy", git = "https://github.com/merely-made/genet.git", rev = "db6c4057d3d23048e8425a3ed050a42641fe1f7f", version = "=0.14.0" }
 
-# Isocosm's suite runs three times faster at opt-level 1, and every workspace
+# Cosmograph's suite runs three times faster at opt-level 1, and every workspace
 # that builds it sets the same level so the shared build directory holds one
 # copy (wing design record, ruling 648).
-[profile.dev.package.isocosm]
+[profile.dev.package.cosmograph]
 opt-level = 1
 
 # Generated physical admission exercises the product's spatial driver too.

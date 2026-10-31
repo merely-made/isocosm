@@ -61,7 +61,7 @@ Copied verbatim from the old plan's section 5.
   `board_tile_clips_its_hit_area_to_the_visible_diamond` defines.
 - **Isometer additions are tested inside isometer** against its existing
   receipts, which stay byte-identical where the new inputs are unused.
-- The `isometry-core` crate stays pure and keeps iso math and `depth_key` for
+- The `isocosm-core` crate stays pure and keeps iso math and `depth_key` for
   any DOM overlay that still wants a paint order.
 
 ## Phases
@@ -229,12 +229,12 @@ roadmap's distribution residue goes to `content-packs`.
 
 ## Findings
 - 2026-10-28: the scene board is behind `ISOMETRY_SCENE_BOARD`
-  (`crates/isometry-views/src/board.rs:311`, `state.rs:118`,
-  `crates/isometry-genet/src/scene_routing.rs`); the DOM board has not been
+  (`crates/isocosm-views/src/board.rs:311`, `state.rs:118`,
+  `crates/isocosm-genet/src/scene_routing.rs`); the DOM board has not been
   archived or made the fallback by ruling. The sim-on lifted-site path does not
   exist.
 - 2026-10-28: the board uses `SlabCamera::dimetric_2_1` (I5) in
-  `crates/isometry-views/src/scene/world.rs`, and B3 retired `tile_at_pane` and
+  `crates/isocosm-views/src/scene/world.rs`, and B3 retired `tile_at_pane` and
   `token_drag_candidate` as reachable paths (`scene/parity_tests.rs`,
   `state/interaction/gestures.rs`). Decisions 1 to 3 are as built: tokens are
   live bodies, the producer owns the render scale, tints go through materials.
@@ -253,15 +253,15 @@ roadmap's distribution residue goes to `content-packs`.
 - 2026-10-28: `MAX_TERRAIN_MATERIALS` is 64 (`isometer-lens/src/lib.rs:126`),
   as the old plan says.
 - 2026-10-28: the eight-way, one-diagonal-cost test `budget_caps_the_reach` is
-  in `crates/isometry-core/src/path.rs:159`.
-- 2026-10-28: `DESIGN_SIZE` is (1100, 820) in `crates/isometry-genet/src/main.rs:168`.
+  in `crates/isocosm-core/src/path.rs:159`.
+- 2026-10-28: `DESIGN_SIZE` is (1100, 820) in `crates/isocosm-genet/src/main.rs:168`.
 - 2026-10-28: the old plan's timing and single-sample figures (M4 layout median,
   regrow times) are machine-specific and are not carried as thresholds.
 - 2026-10-30: under BD5's ruling (1019, 1022, 1028) both boards draw a
   token from one resolution, `appearance::Library::resolve` in
-  `isometry-views`: the class (`Token::sprite`) bound by the core pack's
+  `isocosm-views`: the class (`Token::sprite`) bound by the core pack's
   `appearance.toml`, the token's overrides (`MapDocument::appearances`,
-  `TokenAppearance` in `isometry-core`) and its equipped items' bound layers.
+  `TokenAppearance` in `isocosm-core`) and its equipped items' bound layers.
   The scene board keys a token's geometry revision and colour table by the
   resolved look; the DOM board bakes class rules from the same file and
   bakes a token with its own look inline.

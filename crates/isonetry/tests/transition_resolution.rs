@@ -9,13 +9,13 @@
 //! travel *payload* rather than of replication: what the authority says, and
 //! what a peer is thereby spared from working out.
 
-use isocosm::asserted::{Assertion, Authored};
-use isometry_campaign::{
+use cosmograph::asserted::{Assertion, Authored};
+use isocosm_campaign::{
     EquipmentSlot, Inventory, ItemId, ItemInstance, MapPoint, MapScale, MapTransition,
 };
-use isometry_campaign::CampaignMap;
-use isometry_campaign::CampaignStore;
-use isometry_core::{Facing, MapDocument, SessionEvent, SheetData, Token, TokenId, TurnList};
+use isocosm_campaign::CampaignMap;
+use isocosm_campaign::CampaignStore;
+use isocosm_core::{Facing, MapDocument, SessionEvent, SheetData, Token, TokenId, TurnList};
 use isonetry::sim::Sim;
 use isonetry::{
     GameError, GameEvent, GameSnapshot, GameSourceHistory, HostSession, PeerId, RequestId,
@@ -31,7 +31,7 @@ fn uncontrolled_faction_residents_do_not_hold_the_party_board() {
     state.map.tokens[0].at = (3, 3);
     state
         .world
-        .assert(Assertion::Faction(isocosm::asserted::Faction {
+        .assert(Assertion::Faction(cosmograph::asserted::Faction {
             authored: Authored {
                 key: "scavengers".to_owned(),
                 name: "Scavengers".to_owned(),

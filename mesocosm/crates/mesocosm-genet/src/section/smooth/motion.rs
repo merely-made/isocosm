@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 //! Interpolate only adjacent admitted roots with a native clearance witness.
 use super::super::{PlacedBody, SiteScene, Walk};
-use isocosm::spatial::{Pose, embodiment};
+use cosmograph::spatial::{Pose, embodiment};
 use isometer::{core::BodyDocument, render::implicit::Gait};
 use std::collections::{BTreeMap, VecDeque};
 #[cfg(test)]

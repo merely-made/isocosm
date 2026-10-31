@@ -1,31 +1,30 @@
 # Isocosm
 
-One simulated world, played three ways. This repository holds the Isocosm
+One simulated world, played three ways. This repository holds the Cosmograph
 simulator and the three games built over it, each in its own Cargo
 workspace:
 
 | Product | Where | What it is |
 | --- | --- | --- |
-| **Isocosm** | `shared/isocosm` | the simulator: a configurable world, history and entity generator that runs whether or not anyone is playing |
-| **Isocosm: VTT** | the root workspace, `crates/isometry-*` | a pixel-art isometric virtual tabletop with peer-to-peer play (formerly Isometry; the crates keep the prefix as a plain technical name) |
-| **Isocosm: Mesocosm** | [`mesocosm/`](mesocosm/README.md) | an ecological roguelike of lineages: you are a critter in a small world of anything, refined over the ages |
-| **Isocosm: Eponym** | [`eponym/`](eponym/README.md) | a second-person action RPG: you name one creature and live that life among peers (formerly Paredros) |
+| **Cosmograph** | `shared/cosmograph` | the simulator: a configurable world, history and entity generator that runs whether or not anyone is playing |
+| **Isocosm** | the root workspace, `crates/isocosm-*` | a pixel-art isometric virtual tabletop with peer-to-peer play (formerly Isometry, then Isocosm: VTT) |
+| **Mesocosm** | [`mesocosm/`](mesocosm/README.md) | an ecological roguelike of lineages: you are a critter in a small world of anything, refined over the ages |
+| **Eponym** | [`eponym/`](eponym/README.md) | a second-person action RPG: you name one creature and live that life among peers (formerly Paredros) |
 
 The wing's design lives in [design_docs/](design_docs/DOC_README.md) and
 `mesocosm/design_docs/`, where the
 [wing design record](design_docs/2026-09-18_wing_design_plan.md)
 and the [sim plan](mesocosm/design_docs/2026-10-28_sim_plan.md) sit. The
-family took these names on 2026-09-22 (rulings 109 to 112 of the record).
+products took their present names on 2026-10-30 (cases 1036 and 1037 of the record).
 
-From this directory, select a product with `./scripts/wing.ps1 isometry test`
-(the VTT keeps `isometry` as its product key), `./scripts/wing.ps1 mesocosm
-test`, or `./scripts/wing.ps1 eponym test`. Additional arguments are passed
+From this directory, select a product with `./scripts/wing.ps1 isocosm test`,
+`./scripts/wing.ps1 mesocosm test`, or `./scripts/wing.ps1 eponym test`. Additional arguments are passed
 to Cargo, for example `-p mesocosm-core --lib`. On other platforms, run
 Cargo from the corresponding product directory; tabletop-only local
 overrides can be supplied with Cargo's `--config` option. Each product's
 `build.ps1` also forwards to the root dispatcher.
 
-## Isocosm: VTT
+## Isocosm
 
 A pixel-art isometric virtual tabletop. One player preps maps and hosts; the
 group joins peer-to-peer and plays in turns. GBA-tactics look (2:1 diamond
@@ -34,10 +33,10 @@ appearance baked to a locked isometric 2D lens. The core is system-agnostic:
 game rules arrive as schema-plus-Lua plugins, and the substrate only knows
 tiles, tokens, turns, facing, and elevation.
 
-The [effect examples](crates/isometry-system/data/effects/README.md) execute
+The [effect examples](crates/isocosm-system/data/effects/README.md) execute
 nine experimental body, sight and lasting weapon procedures across D&D SRD
 5.1, Pathfinder Player Core and Ars Magica Definitive Fifth Edition. Run
-`cargo run -p isometry-system --example cast_effects` for their saved lifecycle
+`cargo run -p isocosm-system --example cast_effects` for their saved lifecycle
 and derived-state receipts. The desktop's **Character sheets** tab now makes
 D&D Magic Weapon playable in free play: cast on a wielded table weapon,
 resolve an enhanced attack, check concentration on damage and expire it with
@@ -59,11 +58,11 @@ Pre-release. Built in Rust on the Merely stack
   The current native table does not use its legacy mutable session handlers.
 - Family checkpoints and accepted-record replay are tested. Live peer
   transport/admission remains open during the session-layer replacement.
-- A 5e SRD content pack ships in `isometry-system` (sheets, bestiary, items,
+- A 5e SRD content pack ships in `isocosm-system` (sheets, bestiary, items,
   spells) with Lua rules via piccolo.
 - Eight-crate workspace (core, campaign, graphshell, views, genet, net,
   system and VTT). The voxel appearance pipeline folded into the isometer family's
-  `isometer-mesh` on 2026-09-15; `isometry-views` bakes tileset sprites
+  `isometer-mesh` on 2026-09-15; `isocosm-views` bakes tileset sprites
   through `isometer_mesh::bake`.
 
 Current plans live in [design_docs/](design_docs/DOC_README.md), including
@@ -72,8 +71,8 @@ the native table, board and session-layer work.
 ### Use
 
 ```sh
-cargo run -p isometry-genet                  # desktop app
-cargo run -p isometry-genet -- --campaign <name>   # restore a campaign checkpoint
+cargo run -p isocosm-genet                  # desktop app
+cargo run -p isocosm-genet -- --campaign <name>   # restore a campaign checkpoint
 
 cargo test --workspace --all-features        # default features skip the campaign networking lanes
 ```

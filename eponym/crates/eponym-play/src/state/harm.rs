@@ -8,8 +8,8 @@
 //! severing moves the body's revision and reconciles its admitted anatomy;
 //! a wound alone does not (717).
 
-use isocosm_overlay::eponym::{Blow, EponymHandoff};
-use isocosm_overlay::{ActKey, EntityHandle, Harm, PartHandle, Wound, WoundSeverity};
+use cosmograph_overlay::eponym::{Blow, EponymHandoff};
+use cosmograph_overlay::{ActKey, EntityHandle, Harm, PartHandle, Wound, WoundSeverity};
 use isometer_core::PartId;
 
 use crate::identity::{BodyRevisionId, SubjectId, Tick};
@@ -101,7 +101,7 @@ impl GameState {
     }
 
     /// The cells a whole-body harm out of a hundred takes, at least one.
-    fn cells_for(&self, entity: isocosm::schema::Id, harm: u16) -> u32 {
+    fn cells_for(&self, entity: cosmograph::schema::Id, harm: u16) -> u32 {
         if harm == 0 {
             return 0;
         }
@@ -110,7 +110,7 @@ impl GameState {
         };
         let living: u64 = e
             .living()
-            .map(|(id, p)| u64::from(isocosm::anatomy::living_cells(e.extent(id), p)))
+            .map(|(id, p)| u64::from(cosmograph::anatomy::living_cells(e.extent(id), p)))
             .sum();
         (living * u64::from(harm)).div_ceil(100).max(1) as u32
     }

@@ -13,61 +13,61 @@ impl HostNet {
         dispatch(&self.peers,out).await;
         Ok(())
     }
-    pub async fn quote_native_items(&self,input:&isocosm_vtt::native::items::ItemInput)
-        ->Result<isocosm_vtt::native::items::ItemPreview,String> {
+    pub async fn quote_native_items(&self,input:&isocosm_native::native::items::ItemInput)
+        ->Result<isocosm_native::native::items::ItemPreview,String> {
         self.session.lock().await.quote_native_items(crate::native_table::TableSender::Host,input)
     }
-    pub async fn native_items(&self,input:&isocosm_vtt::native::items::ItemInput)->Result<(),String> {
+    pub async fn native_items(&self,input:&isocosm_native::native::items::ItemInput)->Result<(),String> {
         let out=self.session.lock().await.native_items(crate::native_table::TableSender::Host,input)?;
         dispatch(&self.peers,out).await;
         Ok(())
     }
-    pub async fn quote_native_physical(&self, input: &isocosm_vtt::native::physical_map::PhysicalMapInput)
-        -> Result<isocosm_vtt::native::physical_map::PhysicalMapPreview, String> {
+    pub async fn quote_native_physical(&self, input: &isocosm_native::native::physical_map::PhysicalMapInput)
+        -> Result<isocosm_native::native::physical_map::PhysicalMapPreview, String> {
         self.session.lock().await.quote_native_physical(input)
     }
-    pub async fn native_physical(&self, input: &isocosm_vtt::native::physical_map::PhysicalMapInput)
+    pub async fn native_physical(&self, input: &isocosm_native::native::physical_map::PhysicalMapInput)
         -> Result<(), String> {
         let out = self.session.lock().await.native_physical(input)?;
         dispatch(&self.peers, out).await;
         Ok(())
     }
-    pub async fn native_pack(&self,input:&isocosm_vtt::native::pack::PackEnvelope)->Result<(),String> {
+    pub async fn native_pack(&self,input:&isocosm_native::native::pack::PackEnvelope)->Result<(),String> {
         let out=self.session.lock().await.native_pack(crate::native_table::TableSender::Host,input)?;
         dispatch(&self.peers,out).await;
         Ok(())
     }
-    pub async fn register_generated_pack(&self,record:&isometry_campaign::GenerationRecord,
-        requirements:isometry_campaign::StoryletRequirements,roles:Vec<isometry_campaign::RoleSlot>,
-        choreography:Vec<isocosm_vtt::native::pack::Choreography>,max_depth:usize)->Result<(),String> {
+    pub async fn register_generated_pack(&self,record:&isocosm_campaign::GenerationRecord,
+        requirements:isocosm_campaign::StoryletRequirements,roles:Vec<isocosm_campaign::RoleSlot>,
+        choreography:Vec<isocosm_native::native::pack::Choreography>,max_depth:usize)->Result<(),String> {
         let out=self.session.lock().await.register_generated_pack(record,requirements,roles,choreography,max_depth)?;
         dispatch(&self.peers,out).await;
         Ok(())
     }
-    pub async fn native_hook(&self,envelope:&isocosm_overlay::vtt::VttIntentEnvelope)->Result<(),String> {
+    pub async fn native_hook(&self,envelope:&cosmograph_overlay::vtt::VttIntentEnvelope)->Result<(),String> {
         let out=self.session.lock().await.native_hook(envelope)?;
         dispatch(&self.peers,out).await;
         Ok(())
     }
-    pub async fn native_journey(&self, input: &isocosm_vtt::native::joint_journey::JourneyEnvelope) -> Result<(), String> {
+    pub async fn native_journey(&self, input: &isocosm_native::native::joint_journey::JourneyEnvelope) -> Result<(), String> {
         let out = self.session.lock().await.native_journey(crate::native_table::TableSender::Host, input)?;
         dispatch(&self.peers, out).await;
         Ok(())
     }
 
-    pub async fn native_party(&self, envelope: &isocosm_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
+    pub async fn native_party(&self, envelope: &cosmograph_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
         let out = self.session.lock().await.native_party(crate::native_table::TableSender::Host, envelope)?;
         dispatch(&self.peers, out).await;
         Ok(())
     }
 
-    pub async fn native_location(&self,input:&isocosm_vtt::native::party::LocationInput)->Result<(),String> {
+    pub async fn native_location(&self,input:&isocosm_native::native::party::LocationInput)->Result<(),String> {
         let out=self.session.lock().await.native_location(input)?;
         dispatch(&self.peers,out).await;
         Ok(())
     }
 
-    pub async fn native_time(&self, envelope: &isocosm_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
+    pub async fn native_time(&self, envelope: &cosmograph_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
         let out = self.session.lock().await.native_time(crate::native_table::TableSender::Host, envelope)?;
         dispatch(&self.peers, out).await;
         Ok(())
@@ -88,10 +88,10 @@ impl HostNet {
         Ok(())
     }
     pub async fn commit_native_setup(
-        &self, setup: &isocosm_vtt::founding::Setup,
-        expected: &isocosm_vtt::founding::NativeWorld,
-        record: &isometry_campaign::GenerationRecord,
-        item_owner: Option<isometry_core::TokenId>,
+        &self, setup: &isocosm_native::founding::Setup,
+        expected: &isocosm_native::founding::NativeWorld,
+        record: &isocosm_campaign::GenerationRecord,
+        item_owner: Option<isocosm_core::TokenId>,
     ) -> Result<(), String> {
         let out = self.session.lock().await.commit_native_setup(setup, expected, record, item_owner)?;
         dispatch(&self.peers, out).await;
@@ -100,10 +100,10 @@ impl HostNet {
 
     pub async fn commit_native_campaign(
         &self,
-        profile: &isocosm::Founding,
-        record: &isometry_campaign::GenerationRecord,
-        item_owner: Option<isometry_core::TokenId>,
-        mode: isocosm::Execution,
+        profile: &cosmograph::Founding,
+        record: &isocosm_campaign::GenerationRecord,
+        item_owner: Option<isocosm_core::TokenId>,
+        mode: cosmograph::Execution,
     ) -> Result<(), String> {
         let out = self.session.lock().await
             .commit_native_campaign(profile, record, item_owner, mode)?;
@@ -116,7 +116,7 @@ impl ClientNet {
     pub async fn native_institution(&self,input:crate::NativeInstitutionInput)->Result<(),String> {
         write_frame(&mut *self.send.lock().await,&crate::NetMessage::NativeInstitution(input)).await
     }
-    pub async fn native_items(&self,input:isocosm_vtt::native::items::ItemInput)->Result<(),String> {
+    pub async fn native_items(&self,input:isocosm_native::native::items::ItemInput)->Result<(),String> {
         write_frame(&mut *self.send.lock().await,&crate::NetMessage::NativeItem(input)).await
     }
 }

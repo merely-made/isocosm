@@ -5,11 +5,11 @@
 //! cells hold, its intake port and the body's feeding mode (766), whether it
 //! lives, and where it came from.
 
-use isocosm::mosaic::ports::{active, feeding};
-use isocosm::process::{FeedingMode, IntakePort, NisKind};
+use cosmograph::mosaic::ports::{active, feeding};
+use cosmograph::process::{FeedingMode, IntakePort, NisKind};
 use mesocosm_runtime::TermTable;
-use isocosm::schema::{Id, PartId};
-use isocosm::simulation::Simulation;
+use cosmograph::schema::{Id, PartId};
+use cosmograph::simulation::Simulation;
 use isometer_core::classify;
 
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
@@ -76,7 +76,7 @@ pub fn part_of_with_terms(
             history_event: String::new(),
             lineage: e.lineage.clone(),
             donor: origin,
-            scruple: match isocosm::matter::scruple::of(p, &sim.genesis().rules) {
+            scruple: match cosmograph::matter::scruple::of(p, &sim.genesis().rules) {
                 Ok(mix) if mix.is_empty() => "no tissue".into(),
                 Ok(mix) => mix.iter().map(|(line, mg)| format!("{line}: {mg} mg"))
                     .collect::<Vec<_>>().join(", "),

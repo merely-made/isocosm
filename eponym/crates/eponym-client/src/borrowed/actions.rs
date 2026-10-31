@@ -4,7 +4,7 @@
 //! Actual shared-host inputs use the same Eponym solver as standalone play.
 //! Only derived game data is decoded; the host's candidate Session is borrowed.
 
-use isocosm::{Session,directing::readings::View};
+use cosmograph::{Session,directing::readings::View};
 use eponym_play::contract::mode::actions;
 pub use eponym_play::contract::mode::actions::{Action,ActionConfig,SubjectProfile,
     MotionPolicy,CombatPolicy,FallPayment,game_source,OrdinaryAccess};

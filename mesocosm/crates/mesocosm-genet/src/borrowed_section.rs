@@ -9,7 +9,7 @@ pub mod producer;
 mod tests;
 
 use std::{cell::RefCell, rc::Rc};
-use isocosm::{Session, attention::spatial::RegionReading, directing::readings::Mode, schema::Id};
+use cosmograph::{Session, attention::spatial::RegionReading, directing::readings::Mode, schema::Id};
 use isometer::SlabCamera;
 use mesocosm_runtime::perception::{InSite, Sight};
 pub use isometer::core::Yaw as RootYaw;
@@ -70,7 +70,7 @@ pub struct SceneHandle {
 impl SceneHandle {
     /// A product's validated picture inputs, published without a second world.
     pub(crate) fn present(&self, scene: &SiteScene, revision: u64, presentation: Presentation) -> Result<(), String> {
-        let digest = isocosm::digest(&(revision, format!("{presentation:?}")));
+        let digest = cosmograph::digest(&(revision, format!("{presentation:?}")));
         let mut fingerprint = [0; 4];
         for (i, word) in fingerprint.iter_mut().enumerate() {
             *word = u64::from_str_radix(&digest[i * 16..(i + 1) * 16], 16).map_err(|why| why.to_string())?;
@@ -114,7 +114,7 @@ impl SceneHandle {
                 session.sim.state().population.get(id).is_none_or(|e| e.resident_site() != Some(site))) {
                 return Err("played critter is off-site; physical close-up withdrawn".into());
             }
-            let mut visible = isocosm::directing::readings::view(&session.sim, subject.unwrap_or(Id::MAX), mode);
+            let mut visible = cosmograph::directing::readings::view(&session.sim, subject.unwrap_or(Id::MAX), mode);
             if mode == Mode::Survival && game.has_sight_source() {
                 let observer = subject.ok_or("marked sight requires this window's actual played observer")?;
                 let (space, sight) = game.sight(&session.sim, observer, &visible)?
@@ -134,7 +134,7 @@ impl SceneHandle {
                 mesocosm_runtime::runtime::placing::lift(&session.sim, site)?
             };
             let bodies = scene::placed_physical(&session.sim, site, &volume, &visible, game)?;
-            let digest = isocosm::digest(&(session.sim.genesis(), session.sim.state(), &region, game));
+            let digest = cosmograph::digest(&(session.sim.genesis(), session.sim.state(), &region, game));
             let mut fingerprint = [0; 4];
             for (i, word) in fingerprint.iter_mut().enumerate() {
                 *word = u64::from_str_radix(&digest[i * 16..(i + 1) * 16], 16).map_err(|e| e.to_string())?;
@@ -156,7 +156,7 @@ impl SceneHandle {
     /// borrowed Session. The picture then uses the admitted local region's
     /// current native body documents, and gives missing roots no layout pose.
     pub fn update_roots(&self, session: &Session, participant: Id, window: u64, mode: Mode,
-        site: Id, quarter_turn: u8, frame: &isocosm::operations::Window,
+        site: Id, quarter_turn: u8, frame: &cosmograph::operations::Window,
         roots: &std::collections::BTreeMap<Id, mesocosm_runtime::spatial::Pose>) -> Result<bool, String> {
         let result: Result<bool, String> = (|| {
             if quarter_turn > 3 { return Err("quarter turn must be zero through three".into()); }
@@ -187,10 +187,10 @@ impl SceneHandle {
                 bodies.push(PlacedBody { id:body.id, document:body.document.clone(), at:cell,
                     walks: vec![],
                     physical:Some(pose.clone()),
-                    materials:section::bodies::function_materials(&body.allocations), tint:scene::tint_of(isocosm::kingdom::of(member)),
+                    materials:section::bodies::function_materials(&body.allocations), tint:scene::tint_of(cosmograph::kingdom::of(member)),
                     alive:member.alive });
             }
-            let digest = isocosm::digest(&(session.sim.genesis(), session.sim.state(), &region, frame, roots));
+            let digest = cosmograph::digest(&(session.sim.genesis(), session.sim.state(), &region, frame, roots));
             let mut fingerprint = [0; 4];
             for (i, word) in fingerprint.iter_mut().enumerate() {
                 *word = u64::from_str_radix(&digest[i * 16..(i + 1) * 16], 16).map_err(|e| e.to_string())?;
@@ -223,7 +223,7 @@ impl SceneHandle {
                     session.sim.state().population.get(id).is_none_or(|e| e.resident_site().is_none())) {
                 return Err("played critter is off-site; close-up withdrawn".into());
             }
-            let digest = isocosm::digest(&(session.sim.genesis(), session.sim.state(), &region,
+            let digest = cosmograph::digest(&(session.sim.genesis(), session.sim.state(), &region,
                 geometry.map(|(_, sight)| sight)));
             let mut fingerprint = [0; 4];
             for (i, word) in fingerprint.iter_mut().enumerate() {
@@ -276,7 +276,7 @@ fn lower(session: &Session, region: RegionReading, fingerprint: [u64; 4], quarte
                 .map(|p| volume.to_ground(p.cell)).unwrap_or_else(|| layout::spot(&ground, index)),
         };
         bodies.push(PlacedBody { id: body.id, document: body.document, at, physical:None, walks:vec![],
-            materials:section::bodies::function_materials(&body.allocations), tint: scene::tint_of(isocosm::kingdom::of(entity)), alive: entity.alive });
+            materials:section::bodies::function_materials(&body.allocations), tint: scene::tint_of(cosmograph::kingdom::of(entity)), alive: entity.alive });
     }
     let volumes = section::body_volumes(&bodies)?;
     Ok(Snapshot { presentation:None, revision:None, scene: SiteScene { walking:None, site: region.site, ground, window: volume, bodies,

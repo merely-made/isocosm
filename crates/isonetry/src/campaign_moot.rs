@@ -71,7 +71,7 @@ impl CampaignMootContext {
 #[cfg(test)]
 mod tests {
     use gemot::moot::MootEvent;
-    use isometry_campaign::{CampaignProposal, CampaignProposalMode};
+    use isocosm_campaign::{CampaignProposal, CampaignProposalMode};
     use muniment::MemoryBackend;
     use personae::Ed25519Keypair;
 

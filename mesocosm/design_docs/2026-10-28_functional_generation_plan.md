@@ -1,7 +1,7 @@
 # Functional generation: magic as world operations
 
 **Status:** 2026-10-30: F10 to F12, the VTT's edition procedures, moved to `vtt-overlay`. Cut from `2026-09-09_functional_generation_plan.md` and its effects-remainders item from `2026-09-11_orthographic_voxel_presentation_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. The first slice is built: `shared/wing-functions` (network, operators, generation, carriage) is shared and used by `shared/isocosm` (`effects/functions.rs`, `systems/carry.rs`) and by Eponym. The composition design (rulings 404 to 407, case 1009) is written; no cost formula, script runtime or ruleset adapter is selected. F1 to F9 are not a priority (parked; `wing-organs` D1).
+`archive_docs/2026-10-28/`. The first slice is built: `shared/wing-functions` (network, operators, generation, carriage) is shared and used by `shared/cosmograph` (`effects/functions.rs`, `systems/carry.rs`) and by Eponym. The composition design (rulings 404 to 407, case 1009) is written; no cost formula, script runtime or ruleset adapter is selected. F1 to F9 are not a priority (parked; `wing-organs` D1).
 
 **For:** magic and construction as world operations: the six axes a generated magic system is drawn on (case 1009, the nucleus), fundamental effects with equivalent-exchange cost, effect scripts connected to the world, persistent-effect lifecycle, rulesets and ways of casting, nested construction composition, the inspection a player or developer needs, the first slice's open work, and the effects system's remainders.
 
@@ -15,7 +15,7 @@ Not here: glyph canon, journey, ascension, chains and standing, the impresa (`wi
 - **Reads never silently regenerate an inhabited world's rules.** Reads use accepted state and admitted definitions; mod-authored and generated definitions share one admission and inspection path. The sim's rule stands: lower to process definitions where possible; hooks without a supported lowering stay foreground-only.
 - **Ordinary magic suspends no invariant** of the world (case 1009, cost and breach axis); any breach is priced and leaves residue.
 - **Fairness means understandable exchange**, not equal builds and not removing every interaction players exploit. Self-amplifying interactions are not rejected for being strong; their accounting, feedback and cost must be inspectable.
-- **Developer explanations stay distinct from what an inhabitant knows.** An execution trace alone does not establish an actor's motives or beliefs. Isocosm's staged, checked effects remain the authority boundary.
+- **Developer explanations stay distinct from what an inhabitant knows.** An execution trace alone does not establish an actor's motives or beliefs. Cosmograph's staged, checked effects remain the authority boundary.
 - **Charge units are authored and abstract** and do not replace Mesocosm's conserved matter ledger. `wing-functions` owns neither a second body nor product world state. Game adjudication stays with each product.
 - **No new ECS, skeletal library or physics-learning system follows from the composition model.**
 - **Ars Magica's open text informs; nothing is copied into the sim** (ruling 522, doctrine Licensing 1). What ships from it is share-alike and is `content-packs`' to clear.
@@ -109,9 +109,9 @@ The effects receiver is a demonstration plane with scripted contact age. Open: s
 
 ## Findings
 
-- 2026-10-28: `shared/wing-functions/src` holds carriage, generation, network and operators with tests. It is consumed by `shared/isocosm/src/effects/functions.rs`, `shared/isocosm/src/systems/carry.rs`, `eponym/crates/eponym-play` and `eponym-client`, and by `crates/isometry-campaign`. The "first slice implemented" header and "no implementation lane open" describe two different things: the evaluator exists; the composition design is unbuilt.
+- 2026-10-28: `shared/wing-functions/src` holds carriage, generation, network and operators with tests. It is consumed by `shared/cosmograph/src/effects/functions.rs`, `shared/cosmograph/src/systems/carry.rs`, `eponym/crates/eponym-play` and `eponym-client`, and by `crates/isocosm-campaign`. The "first slice implemented" header and "no implementation lane open" describe two different things: the evaluator exists; the composition design is unbuilt.
 - 2026-10-28: Eponym owns deterministic limb actions over the shared router (`eponym/crates/eponym-play/src/timed_action.rs`: elapsed ticks, anatomical bindings, interruption, strike receipts). So F8's "directional gesture timing", "physical strike adjudication", "live Eponym session integration" and "native timed charging" are at least partly built there; which F8 items they close is not verified. The strike-quality policy choice is `eponym-overlay`'s (ep.12 there).
-- 2026-10-28: the first slice's consumer wiring named `mesocosm-core`'s body membership adapter, which no longer exists; the native equivalent is `shared/isocosm/src/effects/functions.rs`. First-slice test counts and the batch receipts are not gates.
+- 2026-10-28: the first slice's consumer wiring named `mesocosm-core`'s body membership adapter, which no longer exists; the native equivalent is `shared/cosmograph/src/effects/functions.rs`. First-slice test counts and the batch receipts are not gates.
 - 2026-10-28: the registry carries fifteen functions in `rules::default_functions`, five bound to native processes; effects key on `function:<name>` (773). That is the existing hook between F3 scripts and the sim.
 
 ## Progress

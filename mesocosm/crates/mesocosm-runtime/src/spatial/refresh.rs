@@ -6,7 +6,7 @@
 //! stale binding refuses physical operations/rendering, not ordinary clocks.
 
 use super::{Game, Placement};
-use isocosm::{Command, Session, schema::Id, Simulation};
+use cosmograph::{Command, Session, schema::Id, Simulation};
 use isometer_space::places::Rules;
 use std::collections::BTreeMap;
 
@@ -46,7 +46,7 @@ impl Placement {
             .is_none_or(|at| at.site != self.site.0 || Some(at.arrived) != self.resident_since
                 || at.pose != self.pose)
             || sim.genesis().rules.spatial_templates.as_ref().is_none_or(|t|
-                isocosm::spatial::embodiment::site_window(t,self.pose.at) != self.window
+                cosmograph::spatial::embodiment::site_window(t,self.pose.at) != self.window
                     || t.places != self.places.unwrap_or_default())) {
             return Err("game placement differs from its native resident pose".into());
         }
@@ -69,15 +69,15 @@ impl Placement {
         self.check_native_pose(sim)?;
         let window = &self.window;
         let (volume, places) = cache.get(sim, self.site.0, window, self.places.unwrap_or_else(Rules::default))?;
-        if isocosm::spatial::embodiment::enabled(sim) {
-            isocosm::spatial::embodiment::check_member(sim, volume, member,
+        if cosmograph::spatial::embodiment::enabled(sim) {
+            cosmograph::spatial::embodiment::check_member(sim, volume, member,
                 &self.pose.clone())?;
         }
         let mut next = self.clone();
         let patch = places.place_at(self.pose.at).ok_or("saved pose has no current realized patch")?;
         for cell in [self.pose.at, self.eye] {
             if !volume.holds(cell[0], cell[2]) || cell[1] < volume.datum
-                || (!isocosm::spatial::embodiment::enabled(sim) && cell[1] >= volume.ceiling())
+                || (!cosmograph::spatial::embodiment::enabled(sim) && cell[1] >= volume.ceiling())
                 || places.place_at(cell) != Some(patch)
                 || !volume.material(cell).is_some_and(|m| m == volume.materials.air || m == volume.materials.water)
             { return Err("saved pose or eye no longer admits in the current realized clear patch".into()); }
@@ -160,8 +160,8 @@ impl Game {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::operations::Window;
-    use isocosm_overlay::{EntityHandle, PlaceHandle};
+    use cosmograph::operations::Window;
+    use cosmograph_overlay::{EntityHandle, PlaceHandle};
 
     #[test]
     fn geometry_reuse_does_not_skip_current_visit_or_body_revision_checks() {

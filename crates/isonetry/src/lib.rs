@@ -1,4 +1,4 @@
-//! The Isocosm family's session layer over one host-owned core World.
+//! The The wing's session layer over one host-owned core World.
 //!
 //! [`family`] records accepted native history and opaque product sections;
 //! replicas apply those records without repeating product admission. The
@@ -10,7 +10,7 @@
 //! Their concrete game-event protocol is separate from the family record API.
 
 #[cfg(feature = "vtt")]
-pub use isocosm_vtt::founding::NativeWorld;
+pub use isocosm_native::founding::NativeWorld;
 #[cfg(feature = "vtt")]
 pub use session::{NativePublication, NativeTravelResolved, NativeTimeResolved, NativePartyResolved,
     NativeJourneyResolved, NativeHookResolved, NativePackResolved, NativePhysicalResolved, NativeItemsResolved, TravelMember, TravelTableResult};

@@ -72,8 +72,8 @@ fn held(mode: &ModeState, state: &State, sim: &Simulation, actor: Id)
     Ok((binding, physical))
 }
 
-pub(super) fn terrain(mode: &ModeState, state: &State, pending: &isocosm::operations::Pending)
-    -> Result<isocosm::operations::Geometry, String> {
+pub(super) fn terrain(mode: &ModeState, state: &State, pending: &cosmograph::operations::Pending)
+    -> Result<cosmograph::operations::Geometry, String> {
     let r = &pending.request;
     let (at, physical) = held(mode, state, &pending.sim, r.actor)?;
     let input = state.profile.terrain.get(&at.subject).and_then(|m| m.get(&r.process))
@@ -90,16 +90,16 @@ pub(super) fn terrain(mode: &ModeState, state: &State, pending: &isocosm::operat
             points: points.iter().map(|p| add(root, *p)).collect::<Result<_, _>>()?, radius: *radius },
     };
     let op = match &r.change {
-        isocosm::operations::Change::Carve => Op::Carve,
-        isocosm::operations::Change::Deposit { material } => {
+        cosmograph::operations::Change::Carve => Op::Carve,
+        cosmograph::operations::Change::Deposit { material } => {
             let index = pending.sim.genesis().world.materials.iter().position(|m| &m.key == material)
                 .ok_or("native deposit material is absent")?;
             Op::Fill(u8::try_from(index).map_err(|_| "native material ordinal overflow")?)
         },
     };
-    let answer = isocosm::operations::Geometry { window: at.window, eye: physical.eye,
+    let answer = cosmograph::operations::Geometry { window: at.window, eye: physical.eye,
         focus: add(root, input.focus_from_root)?, edit: Edit { op, shape } };
-    isocosm::operations::check_geometry(&pending.sim, r, &answer)?;
+    cosmograph::operations::check_geometry(&pending.sim, r, &answer)?;
     Ok(answer)
 }
 

@@ -6,7 +6,7 @@
 //! issue their exact recipe stocks through the native founding door.
 
 use crate::ItemKind;
-use isocosm::{material::Recipe, rules::{AccountKind, Process}, schema::Key, simulation::Genesis};
+use cosmograph::{material::Recipe, rules::{AccountKind, Process}, schema::Key, simulation::Genesis};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -48,12 +48,12 @@ pub struct MaterialProfile {
     pub recipes: BTreeMap<Key, ItemRecipe>,
     pub processes: BTreeMap<Key, Process>,
     /// Authored construction definitions join the same native recipe keys.
-    pub projects: Option<isocosm::projects::Catalogue>,
+    pub projects: Option<cosmograph::projects::Catalogue>,
     pub items: Vec<InitialMaterialItem>,
 }
 
 impl MaterialProfile {
-    pub fn genesis(&self, seed: u64, side: u32, extent: u64) -> isocosm::Result<Genesis> {
+    pub fn genesis(&self, seed: u64, side: u32, extent: u64) -> cosmograph::Result<Genesis> {
         if self.version != PROFILE_VERSION || self.key.trim().is_empty() {
             return Err("unsupported or unnamed Eponym material profile".into());
         }

@@ -6,7 +6,7 @@ use mesocosm_runtime::{Founded, Runtime};
 fn founded(seed: u64) -> Founded {
     let mut founded = Founded::generated(seed, 60).unwrap();
     let mut domain = founded.genesis.founding.clone().unwrap();
-    domain.ecology_rates = isocosm::ecology::Rates::A1;
+    domain.ecology_rates = cosmograph::ecology::Rates::A1;
     founded.genesis = domain.generate().unwrap();
     founded.genesis.rules.epoch_ticks = 60;
     founded

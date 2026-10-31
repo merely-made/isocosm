@@ -1,15 +1,15 @@
-# Eponym overlay: driving on Isocosm and the played loop
+# Eponym overlay: driving on Cosmograph and the played loop
 
 **Status:** 2026-10-28: cut from `2026-09-25_eponym_overlay_plan.md` and
 `2026-07-30_paredros_founding_plan.md`, which are archived in `archive_docs/2026-10-28/`,
 and from the open items of `DOC_README.md`. Built: the Eponym side of the overlay contract
-(`shared/isocosm-overlay/src/eponym/`: act, actuation, agree, ask, checkpoint, handoff), and the
-E2 families moved onto native Isocosm (`eponym-world`, `eponym-social` and `eponym-identity`
+(`shared/cosmograph-overlay/src/eponym/`: act, actuation, agree, ask, checkpoint, handoff), and the
+E2 families moved onto native Cosmograph (`eponym-world`, `eponym-social` and `eponym-identity`
 no longer exist; `eponym/crates/` holds `eponym-client`, `-motion`, `-play`, `-sortie`).
-Open: E3 (driving on Isocosm, with the folded functional-loops and memory lanes), E4 (headed,
+Open: E3 (driving on Cosmograph, with the folded functional-loops and memory lanes), E4 (headed,
 two-peer, end to end), and the charter's open design as questions.
 
-**For:** Eponym as a game over the Isocosm sim: E3, E4 and the lanes ruling 801 folded into E3
+**For:** Eponym as a game over the Cosmograph sim: E3, E4 and the lanes ruling 801 folded into E3
 (session and contact, death and continuation, strike quality, material work, memory and
 recall), plus the carried headed findings, save defects and the founding charter's open
 questions.
@@ -22,7 +22,7 @@ promotion test (`wing-organs`); the VTT (`vtt-overlay`).
 
 ## Constraints
 
-- **E3 is built only on Isocosm, with no prototype over `Session`** (ruling 239). E3 opened
+- **E3 is built only on Cosmograph, with no prototype over `Session`** (ruling 239). E3 opened
   without waiting for Mesocosm's M3 (798, amending 231), side by side with the VTT. From:
   `archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:268`, `:288-289`.
 - **No game-side authority.** Telling manners other than plain tellings and bearer notes "still
@@ -41,7 +41,7 @@ promotion test (`wing-organs`); the VTT (`vtt-overlay`).
 ### E2. Absorption closeout
 The families moved: bodies, places, lives and rounds, standing and asks, knowledge, glyphs,
 fights and technique (order ruled in 239). No per-family closeout is recorded.
-- Done when: "the family runs in Isocosm under its process definitions, conserves its accounts
+- Done when: "the family runs in Cosmograph under its process definitions, conserves its accounts
   and replays identically, its Eponym tests are ported or replaced by draws, every moved file is
   within the 600-line ceiling, and `eponym-world` or `eponym-social` no longer owns it."
 - Needs: `sim` families certification (the knowledge family under S3)
@@ -96,7 +96,7 @@ Beyond E3.1's succession clause: a dead subject cannot act; changing who is play
 transfers property nor rewrites what others remember; the previous life's remains, custody and
 commitments persist; the hagiograph can remember a life that never became legendary. No bonded
 companion: ruling 238's answers (an arriving outsider is native arrival,
-`shared/isocosm/src/arrival.rs`).
+`shared/cosmograph/src/arrival.rs`).
 - Done when: not stated beyond the clauses above; owed
 - Needs: E3.1; the hagiograph (`wing-organs`)
 - Rulings: 186, 238
@@ -127,7 +127,7 @@ read the edited revision.
 - From: `archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:326`.
 
 ### F3b1. Evidence into answers
-Recall is E3's; the background is the sim's (771; `shared/isocosm/src/reach.rs`, `knowing.rs`).
+Recall is E3's; the background is the sim's (771; `shared/cosmograph/src/reach.rs`, `knowing.rs`).
 - Done when: "every admitted observation points at an accepted event and never precedes it; an
   affected subject receives it by an explicit policy and an excluded one does not; an answer's
   support resolves to real entries and its explanation names the event or belief revision
@@ -208,8 +208,8 @@ acceptance remains open."
 - Rulings: 826, 846, 849, 850
 - From: `archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:540`.
 
-### E3. Driving on Isocosm (whole)
-- Done when: "a played sophont is driven on Isocosm, its acts resolved by what its body affords;
+### E3. Driving on Cosmograph (whole)
+- Done when: "a played sophont is driven on Cosmograph, its acts resolved by what its body affords;
   an ask is refused about the work, refused about the asker and countered, each with its
   premises pointable; a note written is later found by another; a fight is sized up and ends
   there, and another escalates and ends by a yield or a side spent; a death is followed by a
@@ -237,7 +237,7 @@ Acceptance of the session host with a real keyboard and mouse.
 
 ### E4. The played loop (W5's done-condition for Eponym)
 - Done when: "from a seed nobody chose and a start the player picked, the headed host lives one
-  named life end to end on Isocosm: a home made or joined, asks agreed and refused, a fight,
+  named life end to end on Cosmograph: a home made or joined, asks agreed and refused, a fight,
   notes written and found, a death and a succession, then the successor's life continuing in the
   same history; two players' creatures live in one world over the session lane, peers to each
   other (rulings 185, 242); survival and creative modes both work; the receipts replay on both
@@ -342,8 +342,8 @@ Acceptance of the session host with a real keyboard and mouse.
   archived plan's module counts for them describe finished inventory. No Rust file under
   `eponym/crates` exceeds 600 lines. The per-family E2 closeout against its done-condition is
   still unrecorded.
-- 2026-10-28: `shared/isocosm-overlay/src/eponym/` exists (act, actuation, agree, ask,
-  checkpoint, handoff). Native `shared/isocosm/src/social/`, `knowing.rs` (771) and `reach.rs`
+- 2026-10-28: `shared/cosmograph-overlay/src/eponym/` exists (act, actuation, agree, ask,
+  checkpoint, handoff). Native `shared/cosmograph/src/social/`, `knowing.rs` (771) and `reach.rs`
   exist, which probably covers the epistemic layer the families plan called unbuilt; confirm in
   E3.2.
 - 2026-10-28: `StateDiverged` is still raised in `eponym-play/src/session.rs` (E3.6).

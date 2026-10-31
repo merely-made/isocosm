@@ -7,7 +7,7 @@
 //! Split out of `session.rs` on 2026-07-24; behavior unchanged.
 
 use super::*;
-use isometry_core::SessionEvent;
+use isocosm_core::SessionEvent;
 
 impl HostSession {
     pub fn reconcile_pending_reveals(&mut self) -> Result<Vec<Outbound>, String> {

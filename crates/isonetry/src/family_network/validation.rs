@@ -4,7 +4,7 @@ use super::{SESSION, TOPIC, host};
 use crate::family::{
     AcceptedRecord, FAMILY_FORMAT_VERSION, FamilyHost, HostAdmission, SessionId, WireLimits,
 };
-use isocosm::Command;
+use cosmograph::Command;
 use muniment::MemoryBackend;
 use murm_replication::MunimentStore;
 use p2panda_core::{Body, Header, Operation, Signature, SigningKey, Topic};
@@ -100,7 +100,7 @@ fn signed_records_reject_tampering_wrong_envelopes_positions_and_caps() {
     let mut other_session = record.clone();
     other_session.session = SessionId([0x99; 16]);
     other_session.digest.clear();
-    other_session.digest = isocosm::digest(&other_session);
+    other_session.digest = cosmograph::digest(&other_session);
     let wrong_session = sign_record(&other_session, &key, 0, None, WireLimits::default()).unwrap();
     assert!(verify_host_record(&wrong_session, &author, SESSION, WireLimits::default()).is_err());
 
@@ -214,7 +214,7 @@ async fn wrong_family_parent_is_refused_before_store_queue_and_recovery_return()
     let mut wrong_parent = second;
     wrong_parent.parent_digest = "wrong-prior-family-digest".into();
     wrong_parent.digest.clear();
-    wrong_parent.digest = isocosm::digest(&wrong_parent);
+    wrong_parent.digest = cosmograph::digest(&wrong_parent);
     let wrong_op = sign_record(
         &wrong_parent,
         &key,

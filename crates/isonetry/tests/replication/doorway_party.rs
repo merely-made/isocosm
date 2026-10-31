@@ -1,7 +1,7 @@
 //! The bounded connection between local doorways and overmap party position.
 
 use super::*;
-use isocosm::asserted::{Assertion, Place};
+use cosmograph::asserted::{Assertion, Place};
 
 fn place(id: &str, map: &str) -> Place {
     Place {

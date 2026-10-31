@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::projects::{Custody, ProjectId};
-use isocosm_overlay::{EntityHandle, eponym::{EponymIntent, ProjectCarry, ProjectHandle}};
+use cosmograph::projects::{Custody, ProjectId};
+use cosmograph_overlay::{EntityHandle, eponym::{EponymIntent, ProjectCarry, ProjectHandle}};
 use crate::{GameError, GameEvent, WorldError};
 use crate::identity::{SubjectId, Tick};
 use super::GameState;

@@ -4,14 +4,14 @@
 //! Mesocosm's import adapter; the core carries the game as opaque bytes.
 
 use super::{Founded, GameSave, Loop, MODE, Runtime};
-use isocosm::{
+use cosmograph::{
     Execution,
     directing::{
         interim::{Interim, OnCollapse, Pace, Start},
         readings::Mode,
     },
 };
-use isocosm_host::{
+use cosmograph_host::{
     save::{FORMAT_VERSION, ImportSave, WorldSave},
     world::World,
 };

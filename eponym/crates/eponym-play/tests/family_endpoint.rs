@@ -6,8 +6,8 @@
 use chirograph::{IntentInvocation, IntentResult, ProjectionSnapshot};
 use eponym_play::endpoint::{EponymEndpoint, STEP};
 use graphshell_endpoint::{IntentSink, ProjectionCatalog, ProjectionSource};
-use isocosm::Execution;
-use isocosm_host::{fixtures::fixture, world::World};
+use cosmograph::Execution;
+use cosmograph_host::{fixtures::fixture, world::World};
 use isonetry::family::{FamilyHost, FamilyReplica, SessionId};
 
 const OPAQUE: &str = "family-test-opaque";

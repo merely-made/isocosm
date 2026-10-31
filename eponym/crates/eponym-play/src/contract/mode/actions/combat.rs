@@ -61,7 +61,7 @@ pub(super) fn injury(session:&mut Session, entity:Id, harm:u16, severed:&[PartId
     let body = session.sim.state().population.get(entity).ok_or("Eponym wound target is absent")?;
     let cells = if harm == 0 || !severed.is_empty() {0} else {
         let living = body.living().try_fold(0u64,|all,(id,part)|all
-            .checked_add(u64::from(isocosm::anatomy::living_cells(body.extent(id),part)))
+            .checked_add(u64::from(cosmograph::anatomy::living_cells(body.extent(id),part)))
             .ok_or("Eponym living cell count overflow"))?;
         let amount = living.checked_mul(u64::from(harm)).ok_or("Eponym harm cell count overflow")?
             .div_ceil(100).max(1);

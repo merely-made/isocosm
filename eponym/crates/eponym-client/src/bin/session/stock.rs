@@ -5,7 +5,7 @@
 
 use cambium::{el, text};
 use eponym_play::{GameIntent, ItemId, identity::{SubjectId, Tick}};
-use isocosm::{projects::{DebitPreview, DebitSelection, LotQuantity}, rules::{Causation, Query}};
+use cosmograph::{projects::{DebitPreview, DebitSelection, LotQuantity}, rules::{Causation, Query}};
 use super::{SessionApp, view::{Child, button}};
 
 pub(super) struct Selection {

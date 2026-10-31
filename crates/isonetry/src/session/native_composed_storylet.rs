@@ -5,10 +5,10 @@
 
 use super::*;
 use crate::native_table::{NativeTable, table_digest};
-use isocosm::Execution;
-use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
-use isometry_campaign::StoryletProposal;
-use isocosm_vtt::{founding::{Campaign, NativeWorld}, native::{GameBindings, storylets::*}};
+use cosmograph::Execution;
+use cosmograph_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
+use isocosm_campaign::StoryletProposal;
+use isocosm_native::{founding::{Campaign, NativeWorld}, native::{GameBindings, storylets::*}};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -31,7 +31,7 @@ fn access(campaign: &Campaign, table: &NativeTable) -> OrdinaryAccess {
 fn offers(campaign: &Campaign, table: &NativeTable) -> Result<BTreeMap<String, StoryletProposal>, String> {
     table.validate_history(campaign.table_session())?;
     let mut offers = campaign.content().storylets.clone();
-    for (key, storylet) in isocosm_vtt::native::pack::active_content(
+    for (key, storylet) in isocosm_native::native::pack::active_content(
         campaign.table_session(), &table.game, access(campaign, table))?.storylets {
         if offers.get(&key).is_some_and(|old| old != &storylet) {
             return Err(format!("native campaign and accepted pack disagree about storylet {key}"));
@@ -50,8 +50,8 @@ fn readmit(state: &GameSnapshot, input: &ComposedStoryletInput, public: &Compose
     let source = offers.get(&input.storylet.key).ok_or("physical storylet offer is absent")?;
     // Source/effects are public campaign data. Private eligibility is not a
     // replica inference, and no private cast or requirement list is carried.
-    if input.storylet.participant != table.host_participant || input.storylet.expected_content != isocosm::digest(&offers)
-        || public.key != source.key || public.source_digest != isocosm::digest(source)
+    if input.storylet.participant != table.host_participant || input.storylet.expected_content != cosmograph::digest(&offers)
+        || public.key != source.key || public.source_digest != cosmograph::digest(source)
         || public.effects != source.effects || !public.cast.is_empty() {
         return Err("physical storylet differs from its host cut or minimal public source projection".into());
     }

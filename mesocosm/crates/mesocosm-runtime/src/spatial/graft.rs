@@ -5,8 +5,8 @@
 //! stale binding remains unavailable; no attachment or root pose is chosen.
 
 use super::{Game, Placement};
-use isocosm::{Session, schema::Id};
-use isocosm_overlay::EntityHandle;
+use cosmograph::{Session, schema::Id};
+use cosmograph_overlay::EntityHandle;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

@@ -78,7 +78,7 @@ cargo test --manifest-path shared/isometer/Cargo.toml --release -p isometer-lens
 ```
 
 Final stdout/stderr, parsed samples, source/lock hashes and exact scope:
-`Code/testing/isometry/receipts/2026-09-27/lane-e-atlas-batched/experiment.*`.
+`Code/testing/isocosm/receipts/2026-09-27/lane-e-atlas-batched/experiment.*`.
 `draft-pattern.*` preserves an earlier run with a periodic key pattern and
 growing packing vector; it is historical, not this result. The original
 experiment directory remains unchanged. Compiler:

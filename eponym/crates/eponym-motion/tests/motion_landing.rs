@@ -5,7 +5,7 @@ use eponym_play::identity::{BodyRevisionId, SubjectId};
 use eponym_play::{
     GameEvent, GameIntent, GameState, MotionInput, MotionRules, Name, World, WorldConfig,
 };
-use isocosm::{anatomy, history::Command};
+use cosmograph::{anatomy, history::Command};
 
 const SUBJECT: SubjectId = SubjectId(1);
 
@@ -106,7 +106,7 @@ fn game() -> (GameState, MotionInput, i32) {
         tick: game.next_tick(),
         subject: SUBJECT,
         revision: BodyRevisionId(0),
-        document: Box::new(game.native_anatomy(SUBJECT, isocosm::lineage::SpeciesId(71)).unwrap()),
+        document: Box::new(game.native_anatomy(SUBJECT, cosmograph::lineage::SpeciesId(71)).unwrap()),
     })
     .unwrap();
     (game, input, drop)

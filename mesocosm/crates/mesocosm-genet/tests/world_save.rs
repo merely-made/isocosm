@@ -5,8 +5,8 @@
 #[allow(dead_code)]
 mod worlds;
 
-use isocosm::Execution;
-use isocosm_host::{save::WorldSave, world::World};
+use cosmograph::Execution;
+use cosmograph_host::{save::WorldSave, world::World};
 use mesocosm_genet::played;
 use mesocosm_runtime::Runtime;
 

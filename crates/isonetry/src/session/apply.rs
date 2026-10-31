@@ -35,13 +35,13 @@ const MAX_GENERATION_VALUE_DEPTH: usize = 16;
 
 /// Hand a fresh set of beats to every peer's board. Bumping the sequence is what
 /// makes two identical consecutive strikes play twice rather than once.
-pub(crate) fn play_beats(state: &mut GameSnapshot, beats: Vec<isometry_core::Beat>) {
+pub(crate) fn play_beats(state: &mut GameSnapshot, beats: Vec<isocosm_core::Beat>) {
     state.last_beats = beats;
     state.beat_seq = state.beat_seq.wrapping_add(1);
 }
 
 /// Append a roll to the shared log, dropping the oldest past the cap.
-pub(crate) fn push_roll(state: &mut GameSnapshot, record: &isometry_core::RollRecord) {
+pub(crate) fn push_roll(state: &mut GameSnapshot, record: &isocosm_core::RollRecord) {
     state.roll_log.push(record.clone());
     let overflow = state
         .roll_log
@@ -56,7 +56,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
     if state.native.is_some()
         && matches!(event, GameEvent::World(_) | GameEvent::TravelResolved { .. } | GameEvent::TimeAdvanced { .. }
             | GameEvent::ActionResolved(_) | GameEvent::TransitionResolved(_)
-            | GameEvent::Map(isometry_core::SessionEvent::TokenFaced { .. }))
+            | GameEvent::Map(isocosm_core::SessionEvent::TokenFaced { .. }))
     {
         return Err(GameError::Native("legacy world mutation on a native campaign".into()));
     }
@@ -193,7 +193,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
         },
         GameEvent::Emoted { token, beat } => {
             require_token(state, *token)?;
-            play_beats(state, vec![isometry_core::Beat::new(*token, beat.clone())]);
+            play_beats(state, vec![isocosm_core::Beat::new(*token, beat.clone())]);
             Ok(())
         },
         GameEvent::StanceSet { token, stance } => {
@@ -234,7 +234,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
             // defaults.
             apply(
                 &mut state.map,
-                &isometry_core::SessionEvent::TokenPlaced(token.clone()),
+                &isocosm_core::SessionEvent::TokenPlaced(token.clone()),
             )
             .map_err(GameError::Core)?;
             state.map.set_sheet(token.id, sheet.clone());
@@ -315,7 +315,7 @@ pub fn apply_game(state: &mut GameSnapshot, event: &GameEvent) -> Result<(), Gam
                 .ok_or_else(|| GameError::UnknownMap(id.clone()))?;
             state.map = map.document.clone();
             state.active_map = Some(id.clone());
-            state.turns = isometry_core::TurnList::new();
+            state.turns = isocosm_core::TurnList::new();
             for token in &state.map.tokens {
                 state.turns.add(token.id);
             }

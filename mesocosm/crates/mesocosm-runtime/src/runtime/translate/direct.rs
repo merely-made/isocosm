@@ -3,8 +3,8 @@
 
 //! The shared direct lowering used by owned and borrowed Mesocosm drivers.
 
-use isocosm::{Session, Command, directing::{Aim, Toward}, schema::Id};
-use isocosm_overlay::mesocosm::{DevIntent, MesocosmIntent, NudgeMeaning,
+use cosmograph::{Session, Command, directing::{Aim, Toward}, schema::Id};
+use cosmograph_overlay::mesocosm::{DevIntent, MesocosmIntent, NudgeMeaning,
     NudgeTarget, PlayerActKind};
 use crate::Refusal;
 

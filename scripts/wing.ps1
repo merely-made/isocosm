@@ -1,8 +1,8 @@
 # Parse the positional product ourselves so Cargo flags such as -p cannot
 # bind to a PowerShell parameter abbreviation.
 $Product = if ($args.Count -gt 0) { $args[0] } else { '' }
-if ($Product -notin @('isometry', 'mesocosm', 'eponym', 'formats', 'integration')) {
-    throw 'Usage: wing.ps1 <isometry|mesocosm|eponym|formats|integration> [cargo arguments]'
+if ($Product -notin @('isocosm', 'mesocosm', 'eponym', 'formats', 'integration')) {
+    throw 'Usage: wing.ps1 <isocosm|mesocosm|eponym|formats|integration> [cargo arguments]'
 }
 $CargoArguments = @($args | Select-Object -Skip 1)
 
@@ -11,14 +11,14 @@ $CargoArguments = @($args | Select-Object -Skip 1)
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 $workspacePath = switch ($Product) {
-    'isometry' { $repoRoot }
+    'isocosm' { $repoRoot }
     'formats' { Join-Path $repoRoot 'shared/wing-formats' }
     'integration' { Join-Path $repoRoot 'shared/wing-integration' }
     default { Join-Path $repoRoot $Product }
 }
 $localConfig = Join-Path $repoRoot '.cargo/tabletop-local.toml'
 $cargoPrefix = @()
-if ($Product -eq 'isometry' -and (Test-Path -LiteralPath $localConfig)) {
+if ($Product -eq 'isocosm' -and (Test-Path -LiteralPath $localConfig)) {
     $cargoPrefix = @('--config', $localConfig)
 }
 if (-not $CargoArguments) { $CargoArguments = @('check') }

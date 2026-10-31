@@ -3,8 +3,8 @@
 
 //! Finite old Generate and admission grammar for authenticated pre-recipe worlds.
 
-use isocosm::Command;
-use isocosm::lineage::LineageBody;
+use cosmograph::Command;
+use cosmograph::lineage::LineageBody;
 use crate::bodies::{BodyError, BodyProfile, BodyRecord};
 use crate::founding::{self, ENERGY, FULL, RESERVE};
 use crate::identity::{BodyRevisionId, SubjectId, Tick};
@@ -37,10 +37,10 @@ impl GameState {
             (RESERVE, FULL),
             (ENERGY, FULL),
         ];
-        let arrival = isocosm::arrival::Arrival {
+        let arrival = cosmograph::arrival::Arrival {
             lineage: founding::SOPHONT.into(),
             site: self.world.site(),
-            method: isocosm::schema::Method::Normative,
+            method: cosmograph::schema::Method::Normative,
             accounts: accounts.iter().map(|(k, v)| (k.to_string(), *v)).collect(),
             traits: Default::default(),
             skills: Default::default(),

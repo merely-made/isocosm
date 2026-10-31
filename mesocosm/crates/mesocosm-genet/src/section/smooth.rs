@@ -19,7 +19,7 @@ pub(super) struct Bodies {
     clearance_bodies: Vec<(
         u64,
         isometer::core::BodyDocument,
-        Option<isocosm::spatial::Pose>,
+        Option<cosmograph::spatial::Pose>,
     )>,
     clearance_revision: u64,
 }

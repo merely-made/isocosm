@@ -1,8 +1,8 @@
 # Native specimen bench checks
 
-## Isocosm simulation
+## Cosmograph simulation
 
-Choose **Simulation** to found and run a world through `shared/isocosm`.
+Choose **Simulation** to found and run a world through `shared/cosmograph`.
 **Reservoir world** and **Ecology world** select two generator families;
 seed, population, sites, lineages and ticks per step are editable. Inspection,
 remembering, reproduction and record reckoning are logged sim commands.
@@ -19,7 +19,7 @@ The first scenario checks inspection, paid birth, save/restore, branching and
 merge acceptance. The second edits founding parameters, runs ecology for an
 epoch, checks matter conservation and cross-mode replay, then verifies an
 invalid founding leaves the played world intact. Both use native controls.
-The core's [README](../../../shared/isocosm/README.md) names the implemented
+The core's [README](../../../shared/cosmograph/README.md) names the implemented
 behavior and the remaining sim-plan work.
 
 ### Resource-complete panel text capture
@@ -61,12 +61,12 @@ The replay output path must also be unused.
 
 The host integration pins Mere `ac41628a`, Genet `92b249af` and NetRender
 `9607d16f` together across the shared Isomere/Isometer consumers. Default
-Isometry and Eponym client checks cover those sibling graphs. The optional
+Isocosm and Eponym client checks cover those sibling graphs. The optional
 Cleromancy integration retains its separately pinned graph and is outside
 this capture receipt. This proves the paused panel's paint replay, not Hybrid
 text rendering, live Isometer texture import or whole-loop performance.
 
-The core's own `isocosm-scale` binary measures what it runs by size, outside
+The core's own `cosmograph-scale` binary measures what it runs by size, outside
 this host: time per tick, evaluations, stored groups, history growth and heap,
 for both generator families and both execution modes, with fitted scaling
 curves. Its receipts are in `receipts/2026-09-25/isocosm/`: `scale.json`, its
@@ -83,7 +83,7 @@ receipt and state hash of random acts on the core as it was before that
 change and the two preceding it, and as it is after them.
 `remeasure-source.json` names their commits.
 
-`isocosm-probe` runs ruling 113's check on ruling 115's competition for food,
+`cosmograph-probe` runs ruling 113's check on ruling 115's competition for food,
 the exact individual runner against a crowd. Its certified receipt is
 `probe.json` in the same directory, with density-ladder receipts beside it and
 their own `probe-source.json`. `verify.py` recomputes every distance and

@@ -13,7 +13,7 @@ use crate::{
     EquipmentProjection, ItemId, PartCapability, PartFunction, ResourceKind, ResourceReserve,
     TechniqueId, TechniqueInputs, TechniqueKnowledge,
 };
-use isocosm::lineage::{LineageBody as BodyDocument, Origin, Provenance, SpeciesId};
+use cosmograph::lineage::{LineageBody as BodyDocument, Origin, Provenance, SpeciesId};
 use isometer_core::{Attachment, PartId, VolumeRef, Yaw};
 
 pub const WETLAND_LINE: SpeciesId = SpeciesId(71);

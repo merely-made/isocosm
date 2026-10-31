@@ -4,7 +4,7 @@
 //! Actual production clocks resolve chosen steps; input never directly moves a body.
 
 use super::*;
-use isocosm::spatial::{self as native, SpatialAdvance};
+use cosmograph::spatial::{self as native, SpatialAdvance};
 use isometer_space::places::Places;
 use std::collections::VecDeque;
 
@@ -106,7 +106,7 @@ impl Game {
                     self.members.insert(*actor, Placement { actor: EntityHandle(*actor), site: PlaceHandle(*site),
                         patch: *patch, body_revision, terrain_revision: sim.terrain_revision(), pose: pose.clone(),
                         eye: std::array::from_fn(|k| pose.at[k] + t.eye[k]),
-                        window: isocosm::spatial::embodiment::site_window(t, pose.at), operations: BTreeMap::new(),
+                        window: cosmograph::spatial::embodiment::site_window(t, pose.at), operations: BTreeMap::new(),
                         places: Some(t.places), resident_since: Some(*arrived) });
                 },
             }
@@ -130,13 +130,13 @@ impl Game {
 
     /// Trusted owner clock. Ordinary played inputs use `advance` and its native access gate.
     pub fn advance_clock(&mut self, session: &mut Session)
-        -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, String> {
+        -> Result<cosmograph::flows::FlowResult<cosmograph::simulation::Work>, String> {
         self.advance_clock_with_geometry(session, &mut super::refresh::GeometryCache::default())
     }
 
     pub(crate) fn advance_clock_with_geometry(&mut self, session: &mut Session,
         geometry: &mut super::refresh::GeometryCache)
-        -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, String> {
+        -> Result<cosmograph::flows::FlowResult<cosmograph::simulation::Work>, String> {
         let _span = crate::profile::Span::new("clock.total");
         self.version()?;
         let mut native_session = crate::profile::measure("clock.clone_session", || session.clone());
@@ -189,7 +189,7 @@ impl Game {
                 },
                 SpatialAdvance::Advanced(out) => {
                     // Fallback refusals are ordinary explicit native receipts.
-                    if let Some(isocosm::history::Entry { command: isocosm::Command::AdvanceBirthSpatial { births: recorded, .. }, .. })
+                    if let Some(cosmograph::history::Entry { command: cosmograph::Command::AdvanceBirthSpatial { births: recorded, .. }, .. })
                         = native_session.entries.last() { births = recorded.clone(); }
                     let accepted = native_session.sim.spatial_steps().clone();
                     let reports = native_session.sim.spatial_arrivals().to_vec();

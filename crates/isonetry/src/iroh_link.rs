@@ -29,7 +29,7 @@ use crate::protocol::{
     FNV_OFFSET, GameEvent, GameSnapshot, NetMessage, Outbound, PeerId, Recipient, fnv1a,
 };
 use crate::session::{ClientSession, HostSession};
-use isometry_campaign::CampaignStore;
+use isocosm_campaign::CampaignStore;
 use muniment::Journal;
 
 /// The session ALPN. Bumping it is a protocol break (old clients can't
@@ -203,8 +203,8 @@ impl HostNet {
 
     pub async fn commit_campaign(
         &self,
-        record: isometry_campaign::GenerationRecord,
-        item_owner: Option<isometry_core::TokenId>,
+        record: isocosm_campaign::GenerationRecord,
+        item_owner: Option<isocosm_core::TokenId>,
     ) -> Result<(), String> {
         let out = self
             .session
@@ -218,8 +218,8 @@ impl HostNet {
     /// Commit a campaign and seed the named party at its one starting place.
     pub async fn commit_campaign_for_party(
         &self,
-        record: isometry_campaign::GenerationRecord,
-        item_owner: Option<isometry_core::TokenId>,
+        record: isocosm_campaign::GenerationRecord,
+        item_owner: Option<isocosm_core::TokenId>,
         party: &str,
     ) -> Result<(), String> {
         let out = self
@@ -235,7 +235,7 @@ impl HostNet {
     /// session lock, then broadcast both committed consequences in order.
     pub async fn commit_transition_for_party(
         &self,
-        token: isometry_core::TokenId,
+        token: isocosm_core::TokenId,
         request: crate::protocol::RequestId,
         party: &str,
     ) -> Result<(), String> {
@@ -252,7 +252,7 @@ impl HostNet {
     pub async fn commit_storylet(
         &self,
         key: &str,
-        item_owner: Option<isometry_core::TokenId>,
+        item_owner: Option<isocosm_core::TokenId>,
     ) -> Result<(), String> {
         let out = self.session.lock().await.commit_storylet(key, item_owner)?;
         dispatch(&self.peers, out).await;
@@ -369,17 +369,17 @@ impl ClientNet {
         write_frame(&mut send, &msg).await
     }
 
-    pub async fn native_time(&self, envelope: isocosm_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
+    pub async fn native_time(&self, envelope: cosmograph_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
         let (_, msg) = self.session.lock().await.native_time(envelope);
         write_frame(&mut *self.send.lock().await, &msg).await
     }
 
-    pub async fn native_party(&self, envelope: isocosm_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
+    pub async fn native_party(&self, envelope: cosmograph_overlay::vtt::VttIntentEnvelope) -> Result<(), String> {
         let (_, msg) = self.session.lock().await.native_party(envelope);
         write_frame(&mut *self.send.lock().await, &msg).await
     }
 
-    pub async fn native_journey(&self, input: isocosm_vtt::native::joint_journey::JourneyEnvelope) -> Result<(), String> {
+    pub async fn native_journey(&self, input: isocosm_native::native::joint_journey::JourneyEnvelope) -> Result<(), String> {
         let (_, msg) = self.session.lock().await.native_journey(input);
         write_frame(&mut *self.send.lock().await, &msg).await
     }
@@ -417,7 +417,7 @@ impl ClientNet {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometry_core::{Facing, MapDocument, SessionEvent, Token, TokenId, TurnList};
+    use isocosm_core::{Facing, MapDocument, SessionEvent, Token, TokenId, TurnList};
 
     fn snapshot() -> GameSnapshot {
         let mut map = MapDocument::new("iroh demo", 8, 8);

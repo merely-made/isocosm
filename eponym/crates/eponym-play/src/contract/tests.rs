@@ -5,10 +5,10 @@ use super::*;
 
 mod borrowed;
 use crate::{WorldConfig, founding, vocabulary};
-use isocosm::arrival::Arrival;
-use isocosm::schema::Method;
-use isocosm_overlay::ActKey;
-use isocosm_overlay::eponym::{
+use cosmograph::arrival::Arrival;
+use cosmograph::schema::Method;
+use cosmograph_overlay::ActKey;
+use cosmograph_overlay::eponym::{
     Blow, Deed, DeedKey, FirstLife, PlayerAct, PlayerActKind, StartTime, TimedAct,
 };
 
@@ -178,7 +178,7 @@ fn anatomical_spending_keeps_the_native_outcome_through_the_adapter() {
     });
     if receipt.accepted() {
         let lowered = world.submit(None, &drive).unwrap();
-        let adapted: isocosm::simulation::Receipt =
+        let adapted: cosmograph::simulation::Receipt =
             serde_json::from_str(&lowered.outcomes[0]).unwrap();
         assert_eq!(adapted, receipt);
         assert_eq!(world.sim().state_hash(), native.state_hash());
@@ -190,8 +190,8 @@ fn anatomical_spending_keeps_the_native_outcome_through_the_adapter() {
 
 #[test]
 fn accepted_motion_names_a_native_patch() {
-    use isocosm_overlay::eponym::Motion;
-    use isocosm_overlay::{PlaceHandle, WorldPoint};
+    use cosmograph_overlay::eponym::Motion;
+    use cosmograph_overlay::{PlaceHandle, WorldPoint};
     let (mut world, a, _) = world();
     let top = world.ground().surface(0, 0).unwrap();
     let cell =
@@ -309,7 +309,7 @@ fn names_deeds_and_asks_reach_the_native_owners() {
     }
     assert_eq!(world.sim().state().agreements[&agreement].history.len(), 4);
     let restored =
-        isocosm::Session::load(world.session().save(), isocosm::Execution::Individuals).unwrap();
+        cosmograph::Session::load(world.session().save(), cosmograph::Execution::Individuals).unwrap();
     assert_eq!(restored.sim.state_hash(), world.sim().state_hash());
     assert_eq!(restored.sim.deeds(), world.sim().deeds());
 
@@ -323,7 +323,7 @@ fn names_deeds_and_asks_reach_the_native_owners() {
                 Some(format!("agreement:{agreement}"))
             )
             .outcome,
-        isocosm::simulation::Outcome::Refused("unknown causal event".into())
+        cosmograph::simulation::Outcome::Refused("unknown causal event".into())
     );
     let before = world.state_hash().unwrap();
     let unattached = Deed {
@@ -399,9 +399,9 @@ fn a_resolved_blow_becomes_a_native_wound() {
 
 #[test]
 fn knowing_and_tellings_keep_the_native_claim_chain() {
-    use isocosm::knowing::Reading;
-    use isocosm_overlay::EventHandle;
-    use isocosm_overlay::eponym::{Claim, KnowingAct, Telling};
+    use cosmograph::knowing::Reading;
+    use cosmograph_overlay::EventHandle;
+    use cosmograph_overlay::eponym::{Claim, KnowingAct, Telling};
     let (mut world, a, b) = world();
     let deed = Deed {
         doer: EntityHandle(a),
@@ -448,7 +448,7 @@ fn knowing_and_tellings_keep_the_native_claim_chain() {
         from: EntityHandle(a),
         to: EntityHandle(b),
         claim: Claim {
-            about: Pointable::Event(EventHandle(isocosm_overlay::key_handle(&proposition.event))),
+            about: Pointable::Event(EventHandle(cosmograph_overlay::key_handle(&proposition.event))),
             as_told: bytes,
         },
         manner: Manner::Plain,

@@ -2,16 +2,16 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::*;
-use isocosm::Execution;
-use isocosm_vtt::founding::{Campaign, NativeWorld};
-use isocosm_host::founding::{Offered, Purpose};
+use cosmograph::Execution;
+use isocosm_native::founding::{Campaign, NativeWorld};
+use cosmograph_host::founding::{Offered, Purpose};
 use std::collections::BTreeMap;
 
 impl HostSession {
     /// Found from the selected native profile and an already inspected pack result.
     pub fn commit_native_campaign(
         &mut self,
-        profile: &isocosm::Founding,
+        profile: &cosmograph::Founding,
         record: &GenerationRecord,
         item_owner: Option<TokenId>,
         mode: Execution,
@@ -28,7 +28,7 @@ impl HostSession {
 
     pub fn commit_native_campaign_for(
         &mut self,
-        profile: &isocosm::Founding,
+        profile: &cosmograph::Founding,
         record: &GenerationRecord,
         item_owner: Option<TokenId>,
         mode: Execution,
@@ -43,7 +43,7 @@ impl HostSession {
 
     /// Only the inspected native preview may be published by this host.
     pub fn commit_native_setup(
-        &mut self, setup: &isocosm_vtt::founding::Setup, expected: &NativeWorld,
+        &mut self, setup: &isocosm_native::founding::Setup, expected: &NativeWorld,
         record: &GenerationRecord, item_owner: Option<TokenId>,
     ) -> Result<Vec<Outbound>, String> {
         self.commit_native_setup_for(
@@ -57,7 +57,7 @@ impl HostSession {
     }
 
     pub fn commit_native_setup_for(
-        &mut self, setup: &isocosm_vtt::founding::Setup, expected: &NativeWorld,
+        &mut self, setup: &isocosm_native::founding::Setup, expected: &NativeWorld,
         record: &GenerationRecord, item_owner: Option<TokenId>,
         purpose: Purpose, offered: Option<Offered<'_>>,
     ) -> Result<Vec<Outbound>, String> {
@@ -71,7 +71,7 @@ impl HostSession {
     }
 
     fn publish_native_founding(
-        &mut self, prepared: isocosm_vtt::founding::Prepared, item_owner: Option<TokenId>,
+        &mut self, prepared: isocosm_native::founding::Prepared, item_owner: Option<TokenId>,
     ) -> Result<Vec<Outbound>, String> {
         let mut private = self.campaign.clone();
         for secret in prepared.private.secrets() {
@@ -106,7 +106,7 @@ impl HostSession {
 
     pub fn commit_native_assertions(
         &mut self,
-        assertions: &[isocosm_overlay::vtt::Assertion],
+        assertions: &[cosmograph_overlay::vtt::Assertion],
     ) -> Result<Vec<Outbound>, String> {
         let previous = self.state.native.as_ref().ok_or("no native campaign")?;
         let old = previous.load(Execution::Grouped)?;

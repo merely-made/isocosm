@@ -27,9 +27,9 @@
 //! it did. The result is a **complete desired state** for the parts named,
 //! which is the only shape the validator accepts.
 
-use isocosm::mosaic::{CellId, dims, path, propose};
-use isocosm::process::{ProcessId, Registry};
-use isocosm::schema::{Entity, Key, PartId};
+use cosmograph::mosaic::{CellId, dims, path, propose};
+use cosmograph::process::{ProcessId, Registry};
+use cosmograph::schema::{Entity, Key, PartId};
 use serde::{Deserialize, Serialize};
 
 use super::Refused;

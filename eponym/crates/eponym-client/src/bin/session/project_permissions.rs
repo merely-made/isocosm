@@ -6,7 +6,7 @@
 use cambium::{el, text};
 use eponym_play::{GameEvent, GameIntent};
 use eponym_play::identity::SubjectId;
-use isocosm::projects::{Owner, ProjectId};
+use cosmograph::projects::{Owner, ProjectId};
 use super::{SessionApp, view::{Child, button}};
 
 pub(super) fn rows(state:&SessionApp) -> Vec<Child> {

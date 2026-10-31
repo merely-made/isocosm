@@ -1,7 +1,7 @@
 # Eponym
 
-Name reservation for **Eponym**, the second-person game of the Isocosm
-family. Formerly Paredros; renamed 2026-09-22.
+Name reservation for **Eponym**, the second-person game of the
+wing. Formerly Paredros; renamed 2026-09-22.
 
 A second-person action RPG in a persistent generated world. You name one
 creature and ordinarily inhabit that life until it dies. Other named

@@ -143,7 +143,7 @@ impl HostSession {
 
     pub fn try_local_event(&mut self, event: GameEvent) -> Result<Vec<Outbound>, String> {
         if self.state.native.is_some() {
-            if let GameEvent::Map(isometry_core::SessionEvent::TokenMoved { id, to }) = &event {
+            if let GameEvent::Map(isocosm_core::SessionEvent::TokenMoved { id, to }) = &event {
                 return self.native_move(crate::native_table::TableSender::Host, *id, *to);
             }
         }
@@ -202,12 +202,12 @@ impl HostSession {
     /// onto the native entry the campaign folds (768), prevalidated there.
     pub fn commit_assertion(
         &mut self,
-        assertion: &isocosm_overlay::vtt::Assertion,
+        assertion: &cosmograph_overlay::vtt::Assertion,
     ) -> Result<Vec<Outbound>, String> {
         if self.state.native.is_some() {
             return self.commit_native_assertions(std::slice::from_ref(assertion));
         }
-        let event = isocosm_vtt::contract::translate(&self.state.world, assertion)
+        let event = isocosm_native::contract::translate(&self.state.world, assertion)
             .map_err(|refusal| format!("assertion refused: {refusal:?}"))?;
         self.try_commit(GameEvent::World(event))
     }
@@ -239,7 +239,7 @@ impl HostSession {
             match effect {
                 StoryletEffect::Fact { fact } => events.push(GameEvent::Fact(fact)),
                 StoryletEffect::History { event } => events.push(GameEvent::World(
-                    WorldEvent::Assert(isocosm::asserted::Assertion::History(event)),
+                    WorldEvent::Assert(cosmograph::asserted::Assertion::History(event)),
                 )),
                 StoryletEffect::LocalMap { map } => {
                     let map = map
@@ -374,7 +374,7 @@ impl HostSession {
         item_owner: Option<TokenId>,
         party: Option<&str>,
     ) -> Result<Vec<Outbound>, String> {
-        let isometry_campaign::GenValue::Campaign { campaign: draft } =
+        let isocosm_campaign::GenValue::Campaign { campaign: draft } =
             record.proposal.clone()
         else {
             return Err("generation record is not a campaign draft".to_owned());
@@ -426,7 +426,7 @@ impl HostSession {
         // host-private campaign state. Keep the original `draft` above for
         // staging, then redact only the public record that enters the log.
         let mut public_record = record;
-        if let isometry_campaign::GenValue::Campaign { campaign } =
+        if let isocosm_campaign::GenValue::Campaign { campaign } =
             &mut public_record.proposal
         {
             campaign.secrets.clear();

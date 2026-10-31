@@ -2,5 +2,5 @@
 .githooks/* text eol=lf
 
 # Pack-authoring fixtures are addressed by byte offset; keep them LF on every machine (wing ruling 969).
-crates/isometry-system/tests/fixtures/*.toml text eol=lf
-crates/isometry-system/examples/packs/** text eol=lf
+crates/isocosm-system/tests/fixtures/*.toml text eol=lf
+crates/isocosm-system/examples/packs/** text eol=lf

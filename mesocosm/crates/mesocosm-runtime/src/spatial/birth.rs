@@ -4,7 +4,7 @@
 //! Authored biological birth slots relative to the parent's admitted pose (848).
 
 use super::*;
-use isocosm::spatial::{BirthPending, BirthRequest, BirthGeometry, BirthResolution, BirthReport};
+use cosmograph::spatial::{BirthPending, BirthRequest, BirthGeometry, BirthResolution, BirthReport};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum BirthParent {
@@ -132,7 +132,7 @@ impl Game {
                 || parent.places.unwrap_or_default() != geometry.parent_places
                 || parent.resident_since != Some(r.parent_visit)
             { return Err("native birth geometry does not use the parent's admitted current pose".into()); }
-            let (pose, eye) = isocosm::spatial::birth_pose(geometry)?;
+            let (pose, eye) = cosmograph::spatial::birth_pose(geometry)?;
             let native = sim.genesis().rules.birth_profiles.get(&input.profile).ok_or("birth profile absent")?;
             let after = Placement { actor: EntityHandle(r.child), site: PlaceHandle(r.site.ok_or("travelling birth")?),
                 patch: *patch, body_revision: r.child_revision, terrain_revision: r.terrain_revision.clone(),

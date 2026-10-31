@@ -6,9 +6,9 @@
 
 use super::*;
 use crate::native_table::{NativeTable, TableSender, table_digest};
-use isocosm::Execution;
-use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat, vtt::VttIntentEnvelope};
-use isocosm_vtt::{founding::Campaign, native::time::{Roster, validate_transition}};
+use cosmograph::Execution;
+use cosmograph_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat, vtt::VttIntentEnvelope};
+use isocosm_native::{founding::Campaign, native::time::{Roster, validate_transition}};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]

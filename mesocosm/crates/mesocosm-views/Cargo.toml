@@ -13,7 +13,7 @@ publish = false
 # paint the solved scene. If a layout is ever computed in this crate, it is
 # in the wrong crate; if a rule is, doubly so.
 [dependencies]
-isocosm = { workspace = true }
+cosmograph = { workspace = true }
 # The runtime's windows, refusals and review the panels put in words.
 mesocosm-runtime = { workspace = true }
 isometer-core = { workspace = true }

@@ -9,16 +9,16 @@ repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 # Its own workspace, like `shared/isometer` and the other `shared/` path
-# crates, and excluded from the Isometry root workspace beside them, so each
+# crates, and excluded from the Isocosm root workspace beside them, so each
 # product resolves its own graph. The root is on the same mere revision this
-# crate is, which is what lets `isometry-genet` name the host types at all; an
+# crate is, which is what lets `isocosm-genet` name the host types at all; an
 # earlier note here claimed otherwise and was wrong (corrected 2026-09-15).
 [workspace]
 
 [features]
 default = []
 # M4's host assembly. Off by default: `cambium-desktop` drags wgpu,
-# netrender and winit in, and `isometry-views` / `mesocosm-views` consume this
+# netrender and winit in, and `isocosm-views` / `mesocosm-views` consume this
 # crate only to emit elements. The three hosts turn it on; the view crates
 # never pay for a renderer.
 host = ["dep:cambium-desktop", "dep:cambium-rootstock", "dep:mesquite"]

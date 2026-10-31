@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 //! Ordinary unchosen regression, without changing needs, terrain or anatomy.
-use isocosm::spatial::{Pose, embodiment as body};
+use cosmograph::spatial::{Pose, embodiment as body};
 use std::collections::{BTreeMap, BTreeSet};
 use isometer_space::places::Places;
 use mesocosm_runtime::{Founded, Runtime};
@@ -9,7 +9,7 @@ use mesocosm_runtime::{Founded, Runtime};
 fn ordinary(seed: u64, proportions: bool) -> Runtime {
     let mut founded = Founded::generated(seed, 60).unwrap();
     let mut domain = founded.genesis.founding.clone().unwrap();
-    domain.ecology_rates = isocosm::ecology::Rates::A1;
+    domain.ecology_rates = cosmograph::ecology::Rates::A1;
     let b = domain.bodies.as_mut().unwrap();
     b.roster = true;
     b.founding = Some("SpacedRoster".into());
@@ -22,7 +22,7 @@ fn ordinary(seed: u64, proportions: bool) -> Runtime {
     }
     founded.genesis.rules.epoch_ticks = 60;
     let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
-    founded.genesis.rules.sun = Some(isocosm::light::SunRules {
+    founded.genesis.rules.sun = Some(cosmograph::light::SunRules {
         start_hour: 7,
         ..sun
     });

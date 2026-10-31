@@ -5,8 +5,8 @@
 
 use super::*;
 use crate::native_table::{TableSender, table_digest};
-use isocosm::{Command, Execution};
-use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat, vtt::VttIntentEnvelope};
+use cosmograph::{Command, Execution};
+use cosmograph_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat, vtt::VttIntentEnvelope};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -36,7 +36,7 @@ pub(crate) fn apply_native_party(state: &mut GameSnapshot, result: &NativePartyR
 
 impl HostSession {
     /// Local trusted DM input only. Peers have no Location author request door.
-    pub fn native_location(&mut self, input: &isocosm_vtt::native::party::LocationInput)
+    pub fn native_location(&mut self, input: &isocosm_native::native::party::LocationInput)
         -> Result<Vec<Outbound>, String> {
         let world = self.state.native.as_ref().ok_or("Location input needs a native campaign")?;
         let table = self.state.native_table.as_ref().ok_or("Location input needs admitted native participant bindings")?;

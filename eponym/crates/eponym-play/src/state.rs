@@ -12,13 +12,13 @@
 
 use std::collections::BTreeMap;
 
-use isocosm::history::Command;
-use isocosm::schema::Id;
-use isocosm_overlay::eponym::{
+use cosmograph::history::Command;
+use cosmograph::schema::Id;
+use cosmograph_overlay::eponym::{
     ActTarget, Actuation, EponymIntent, FirstLife, LifeCheckpoint, LifeChoice, Motion, StartTime,
     TimedAct,
 };
-use isocosm_overlay::{ActKey, EntityHandle, PlaceHandle, WorldPoint};
+use cosmograph_overlay::{ActKey, EntityHandle, PlaceHandle, WorldPoint};
 use isometer_core::snapshot::{self, hash_bytes};
 
 use crate::bodies::{BodyError, BodyRecord};
@@ -363,7 +363,7 @@ impl GameState {
                 return Err(WorldError::NotFounding.into());
             }
             self.world.found(Command::Assert(
-                isocosm::asserted::Assertion::StockOwnership(lot.clone()),
+                cosmograph::asserted::Assertion::StockOwnership(lot.clone()),
             ))?;
             return Ok(vec![]);
         }
@@ -464,14 +464,14 @@ impl GameState {
         };
         let at = [0, top + 1, 0];
         for kind in kinds {
-            let mut accounts = isocosm::schema::Ledger::new();
+            let mut accounts = cosmograph::schema::Ledger::new();
             if kind == Food {
                 accounts.insert(crate::founding::FOOD.into(), crate::founding::MEAL);
             }
-            let arrival = isocosm::arrival::Arrival {
+            let arrival = cosmograph::arrival::Arrival {
                 lineage: kind.lineage().into(),
                 site: self.world.site(),
-                method: isocosm::schema::Method::Inert,
+                method: cosmograph::schema::Method::Inert,
                 accounts,
                 traits: Default::default(),
                 skills: Default::default(),

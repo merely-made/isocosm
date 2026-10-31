@@ -12,7 +12,7 @@ impl World {
             .map_err(|_| WorldError::InvalidMaterialProfile)?;
         let marker = WorldIntent::SpreadMaterialProfile { profile: Box::new(profile.clone()) };
         let mut world = Self::from_genesis(seed, config, SPREAD_GENERATOR_VERSION, genesis,
-            isocosm::schema::Movement::Journey, vec![marker])?;
+            cosmograph::schema::Movement::Journey, vec![marker])?;
         world.arrive_material_items(&profile.materials)?;
         Ok(world)
     }
@@ -36,7 +36,7 @@ impl World {
         Ok(())
     }
 
-    pub(crate) fn prepare_spread_command(&self, command: &Command) -> Result<isocosm::projects::SpreadPreview, WorldError> {
+    pub(crate) fn prepare_spread_command(&self, command: &Command) -> Result<cosmograph::projects::SpreadPreview, WorldError> {
         self.session.prepare_owned_spread(command).map_err(|_| WorldError::Refused)
     }
 }

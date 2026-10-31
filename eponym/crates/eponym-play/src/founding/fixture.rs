@@ -3,8 +3,8 @@
 
 //! The versioned native precise-contact pack selected by ruling 825.
 
-use isocosm::rules::{Anchor, Development, Facing, Policy, Recipe, Tagma, Template};
-use isocosm::simulation::Genesis;
+use cosmograph::rules::{Anchor, Development, Facing, Policy, Recipe, Tagma, Template};
+use cosmograph::simulation::Genesis;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -26,7 +26,7 @@ fn template(half_extent: [i32; 3], function: &str, cells: u32) -> Template {
     }
 }
 
-pub(super) fn install(g: &mut Genesis) -> isocosm::Result<()> {
+pub(super) fn install(g: &mut Genesis) -> cosmograph::Result<()> {
     g.rules.kinds.extend(BTreeMap::from([
         (ACTOR.into(), template([1; 3], "function:intake", 1)),
         (TARGET.into(), template([1, 3, 1], "function:intake", 2)),

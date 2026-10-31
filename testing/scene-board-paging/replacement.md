@@ -62,7 +62,7 @@ cargo test --manifest-path shared/isometer/Cargo.toml --release -p isometer-lens
 
 Raw stdout/stderr, compiler, source/lock hashes, exact command/scope and
 machine-readable samples are under
-`Code/testing/isometry/receipts/2026-09-27/lane-e-atlas-replacement/`.
+`Code/testing/isocosm/receipts/2026-09-27/lane-e-atlas-replacement/`.
 The initial harness compile error ran no test and is retained separately.
 `SHA256SUMS`: `84fc96a31f9b66dfaec9bc19b765cb0c441b8482a300c72b75a774cd13d1ba7d`.
 Compiler: `rustc 1.98.1 (48a229cea 2026-09-01)`, host

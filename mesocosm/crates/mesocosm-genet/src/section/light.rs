@@ -7,7 +7,7 @@
 //! cannot disagree.
 
 use isometer::lens::TraceLight;
-use isocosm::light::Light;
+use cosmograph::light::Light;
 use tenant::{Ambient, LightBlock, Sun};
 
 /// The sun's weight in the terrain's Lambert term at full strength: the
@@ -83,11 +83,11 @@ impl SunSource {
         }
     }
 
-    pub fn block(self, rules: &isocosm::rules::Rules, tick: u64) -> Block {
+    pub fn block(self, rules: &cosmograph::rules::Rules, tick: u64) -> Block {
         match self {
             Self::Fixed => Block::fixed(),
-            Self::Sim => Block::from_sim(isocosm::light::at(rules, tick, None)),
-            Self::At(at) => Block::from_sim(isocosm::light::at(rules, at, None)),
+            Self::Sim => Block::from_sim(cosmograph::light::at(rules, tick, None)),
+            Self::At(at) => Block::from_sim(cosmograph::light::at(rules, at, None)),
         }
     }
 }
@@ -95,9 +95,9 @@ impl SunSource {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isocosm::{Founding, light, preset::Preset};
+    use cosmograph::{Founding, light, preset::Preset};
 
-    fn rules(preset: Option<Preset>) -> isocosm::rules::Rules {
+    fn rules(preset: Option<Preset>) -> cosmograph::rules::Rules {
         Founding { seed: 9, sites: 3, population: 24, cohort_size: 8, lineages: 2, preset,
             ..Default::default() }.generate().unwrap().rules
     }

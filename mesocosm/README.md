@@ -1,6 +1,6 @@
 # Mesocosm
 
-Mesocosm now lives in the [Isometry umbrella repository](../README.md), under
+Mesocosm now lives in the [Isocosm umbrella repository](../README.md), under
 `mesocosm/`. It retains its own Cargo workspace and package names. See the
 [wing index](../design_docs/DOC_README.md) for all three products.
 
@@ -13,7 +13,7 @@ no predator manages alone. One verb: **metabolize**. World into self, self
 into world, and the world keeps what your generations did to it.
 
 This repo is also the canonical design authority for the three-game wing
-(Mesocosm, Paredros, Isometry); the sibling repos cite its wing-level docs
+(Mesocosm, Paredros, Isocosm); the sibling repos cite its wing-level docs
 rather than copy them.
 
 ## Status (2026-08-12)
@@ -22,7 +22,7 @@ Early implementation. The simulation, body pipeline, and windowed host run;
 the repeated epoch game loop does not run end to end yet.
 
 - Wave 1 complete: the simulation core owns all state, the windowed host
-  runs, and the cross-repo Isometry projection works, coupled by data.
+  runs, and the cross-repo Isocosm projection works, coupled by data.
 - Epoch and ecology lab with three authored worlds, plus the two-game proof
   pair, complete per the 2026-08-07 audit.
 - General-model ecological slices E0-E4 landed workspace-green 2026-08-07:

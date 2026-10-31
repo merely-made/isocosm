@@ -22,7 +22,7 @@ use eponym_client::room::{Room, SEED};
 use eponym_play::identity::{Control, SubjectId, Tick};
 use eponym_play::vocabulary::{ABANDONED, HEALING, SCOUTING};
 use eponym_play::{WorldIntent, walking};
-use isocosm::social::{DeedKind, Response, Terms, Work};
+use cosmograph::social::{DeedKind, Response, Terms, Work};
 use isometer_space::{Edit, Op, edit::Shape, volume::Volume};
 
 use crate::march;

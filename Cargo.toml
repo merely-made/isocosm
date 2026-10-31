@@ -1,21 +1,21 @@
 [workspace]
 resolver = "2"
 members = [
-    "crates/isometry-core",
-    "crates/isometry-campaign",
-    "crates/isometry-graphshell",
-    "crates/isometry-views",
-    "crates/isometry-genet",
+    "crates/isocosm-core",
+    "crates/isocosm-campaign",
+    "crates/isocosm-graphshell",
+    "crates/isocosm-views",
+    "crates/isocosm-genet",
     "crates/isonetry",
-    "crates/isometry-system",
-    "crates/isocosm-vtt",
+    "crates/isocosm-system",
+    "crates/isocosm-native",
 ]
-exclude = ["host", "mesocosm", "eponym", "shared/isocosm", "shared/isocosm-overlay", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer", "shared/isomere"]
+exclude = ["cosmograph-host", "mesocosm", "eponym", "shared/cosmograph", "shared/cosmograph-overlay", "shared/wing-functions", "shared/wing-formats", "shared/wing-integration", "shared/wing-glyphs", "shared/isometer", "shared/isomere"]
 
 # Keep interactive debug builds responsive; see the watchtower plan's M4 drag
 # receipt. Include the app where generic host/layout code is instantiated.
 # Symbols and debug assertions remain enabled; only these hot packages change.
-[profile.dev.package.isometry-genet]
+[profile.dev.package.isocosm-genet]
 opt-level = 2
 
 [profile.dev.package.cambium-rootstock]
@@ -43,14 +43,14 @@ rust-version = "1.97.1"
 
 [workspace.dependencies]
 # Internal crates
-isometry-core = { path = "crates/isometry-core", version = "0.1.0" }
-isometry-campaign = { path = "crates/isometry-campaign", version = "0.1.0" }
-isocosm-vtt = { path = "crates/isocosm-vtt", version = "0.0.2", default-features = false }
+isocosm-core = { path = "crates/isocosm-core", version = "0.1.0" }
+isocosm-campaign = { path = "crates/isocosm-campaign", version = "0.1.0" }
+isocosm-native = { path = "crates/isocosm-native", version = "0.0.2", default-features = false }
 # The sim owns accepted world state/history. VTT content and table projections
-# live in isometry-campaign; the separate sim workspace is taken by path.
-isocosm = { path = "shared/isocosm" }
+# live in isocosm-campaign; the separate sim workspace is taken by path.
+cosmograph = { path = "shared/cosmograph" }
 # The overlay contract; its own workspace, taken by path (wing ruling 795).
-isocosm-overlay = { path = "shared/isocosm-overlay" }
+cosmograph-overlay = { path = "shared/cosmograph-overlay" }
 # The wing appearance crate: the voxel bake merged into the family mesh
 # crate on 2026-09-15. It carries its own workspace, so it stays in the
 # `exclude` list above and is taken by path, as wing-integration takes it.
@@ -71,15 +71,15 @@ wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
 # The wing GUI layer: the shared panels and the keymap the control-help
 # line is derived from. Its own workspace, so it is taken by path too.
 isomere = { path = "shared/isomere" }
-isometry-views = { path = "crates/isometry-views", version = "0.1.0" }
+isocosm-views = { path = "crates/isocosm-views", version = "0.1.0" }
 isonetry = { path = "crates/isonetry", version = "0.1.0" }
-isometry-system = { path = "crates/isometry-system", version = "0.1.0" }
+isocosm-system = { path = "crates/isocosm-system", version = "0.1.0" }
 
 # Persistence
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 postcard = { version = "1", features = ["alloc"], default-features = false }
-# Portable slots/blobs over a host-chosen backend. Isometry uses its redb
+# Portable slots/blobs over a host-chosen backend. Isocosm uses its redb
 # backend for private desktop campaign state; the future web host can swap
 # the backend without changing campaign data.
 muniment = { git = "https://github.com/merely-made/eidetic.git", rev = "f599ffe93298025bf6d65ae310a7cb4270ea52e3" }
@@ -122,8 +122,8 @@ p2panda-store = { version = "0.7.0", default-features = false }
 p2panda-sync = "0.7.0"
 thiserror = "1"
 
-# Product-free projection score and analytic solvers. Isometry owns the
-# campaign-to-score adapter in `isometry-views`; the shared crates carry only
+# Product-free projection score and analytic solvers. Isocosm owns the
+# campaign-to-score adapter in `isocosm-views`; the shared crates carry only
 # opaque source refs, measured footprints, and scenes.
 sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381" }
 scenomise = { git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381" }
@@ -144,7 +144,7 @@ chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "b2326
 # **Git, not crates.io** (Mark's ruling, 2026-07-26): the family resolves from
 # the owning repo until there is an actual GitHub release to consume, and
 # crates.io releases keep being cut for external consumers rather than for us.
-# Isometry was the only repo still taking these from the registry, and it was
+# Isocosm was the only repo still taking these from the registry, and it was
 # the one carrying the hazard: published cambium/sprigging resolve
 # `paint_list_api` from crates.io while this workspace git-deps netrender's, so
 # `sprigging::PaintCmd` was not `paint_list_api::PaintCmd`. The gitignored
@@ -164,10 +164,10 @@ chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "b2326
 cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381" }
 # The single-root Cambium desktop host (genet G1, 2026-08-09; mere's since
 # 2026-09-03). It owns the winit lifecycle, the surface, layout, paint, hit
-# testing, input routing and the AccessKit sync isometry used to assemble by
+# testing, input routing and the AccessKit sync Isocosm used to assemble by
 # hand — so the direct deps that assembly needed (genet-layout,
 # genet-winit, cambium-winit, netrender, paint_list_*, wgpu, winit) are
-# gone from this workspace. They still arrive transitively; only what isometry
+# gone from this workspace. They still arrive transitively; only what Isocosm
 # may *name* changed.
 cambium-desktop = { git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381" }
 # Cambium's retained custom-paint leaves (the graph-canvas swatch's painted
@@ -180,11 +180,11 @@ sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "b23263
 # `layout_dom_api`), `genet-scripted-dom`, `taproot`, `genet-winit`
 # and `genet-livery` from the owner-selected Genet revision below.
 # One reference per git source, or two copies of the DOM seams land
-# and the host's `LayoutDom` stops being the one isometry's views and receipts
+# and the host's `LayoutDom` stops being the one Isocosm's views and receipts
 # build. Bump this when mere's genet pin moves, and only then.
 layout-dom-api = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "=0.1.1" }
 genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main", version = "=0.1.2" }
-# The shared automatability substrate: selector resolution, so isometry's
+# The shared automatability substrate: selector resolution, so Isocosm's
 # host-routing receipts target a control by role and label rather than pixel.
 # Named `genet-probe` until genet 7baa554c (2026-09-14).
 taproot = { git = "https://github.com/merely-made/genet.git", branch = "main" }
@@ -285,10 +285,10 @@ mere-p2panda-net = { git = "https://github.com/mark-ik/p2panda.git", tag = "mere
 # from genet or netrender, so every app workspace restates it. Retires by
 # deletion when upstream ships a wgpu-30 vello.
 
-# Isocosm's suite runs three times faster at opt-level 1, and every workspace
+# Cosmograph's suite runs three times faster at opt-level 1, and every workspace
 # that builds it sets the same level so the shared build directory holds one
 # copy (wing design record, ruling 648).
-[profile.dev.package.isocosm]
+[profile.dev.package.cosmograph]
 opt-level = 1
 
 # Root patches are not inherited from the imported Murm suppliers.

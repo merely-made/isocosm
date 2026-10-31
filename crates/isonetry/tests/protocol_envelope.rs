@@ -5,7 +5,7 @@
 //! from `replication.rs` because they prove properties of the envelope rather
 //! than of replication: what a peer refuses, and what it declines to do twice.
 
-use isometry_core::{
+use isocosm_core::{
     Beat, Facing, MapDocument, RollRecord, SheetData, SheetDelta, Token, TokenId, TurnList,
 };
 use isonetry::sim::Sim;

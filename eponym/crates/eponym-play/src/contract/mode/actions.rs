@@ -8,9 +8,9 @@ use super::*;
 use std::collections::BTreeSet;
 use crate::{CombatRules, MotionInput, MotionRules, MotionSolver, MovementProfile};
 use crate::identity::{BodyRevisionId, Tick};
-use isocosm::{Command, directing::readings::View, lineage::SpeciesId, projects::*};
-pub use isocosm_overlay::OrdinaryAccess;
-use isocosm_overlay::Seat;
+use cosmograph::{Command, directing::readings::View, lineage::SpeciesId, projects::*};
+pub use cosmograph_overlay::OrdinaryAccess;
+use cosmograph_overlay::Seat;
 use isometer_core::PartId;
 use crate::timed_action::{Direction, TimedActionRules};
 use wing_functions::FunctionalNetwork;
@@ -95,7 +95,7 @@ pub enum Action {
     ProjectCarry { project: ProjectId, carried: bool },
 }
 
-pub fn game_source(bytes: &[u8]) -> Key { isocosm::digest(&bytes) }
+pub fn game_source(bytes: &[u8]) -> Key { cosmograph::digest(&bytes) }
 
 impl ActionState {
     pub fn validate(&self, mode: &ModeState) -> Result<(),String> {
@@ -173,7 +173,7 @@ pub fn submit(session: &mut Session, bytes: Vec<u8>, input: &ActionInput,
     let binding = binding(&mode,input.subject)?.clone();
     let participant = access.participant.0;
     if access.seat == Seat::CreativeObserver || !session.sim.state().population.get(participant)
-        .is_some_and(isocosm::directing::is_participant)
+        .is_some_and(cosmograph::directing::is_participant)
         || access.subject.map(|s|s.0) != Some(binding.entity)
         || session.sim.plays(participant) != Some(binding.entity) || !visible.shows(binding.entity) {
         return Err("Eponym action requires the actual current native played body".into());
@@ -192,7 +192,7 @@ pub fn submit(session: &mut Session, bytes: Vec<u8>, input: &ActionInput,
         action => {
             binding.current(session)?;
             if !session.sim.state().population.get(binding.entity)
-                .is_some_and(|e|e.alive && e.method == isocosm::schema::Method::Normative) {
+                .is_some_and(|e|e.alive && e.method == cosmograph::schema::Method::Normative) {
                 return Err("Eponym physical act requires a living normative played body".into());
             }
             match action {

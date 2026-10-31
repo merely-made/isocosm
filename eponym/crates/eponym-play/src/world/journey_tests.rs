@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 use super::*;
-use isocosm::schema::Movement;
+use cosmograph::schema::Movement;
 
 #[test]
 fn world_save_wire_pins_its_movement_semantics() {

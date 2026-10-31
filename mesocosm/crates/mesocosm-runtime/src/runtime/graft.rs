@@ -7,8 +7,8 @@
 
 use super::Runtime;
 use crate::spatial::{Game, graft::Reading};
-use isocosm::{Command, Session, graft::{Carry, Prepared}, projects::DebitSelection};
-use isocosm_overlay::{ActKey, EntityHandle, OrdinaryAccess, ParticipantHandle, Seat, Tick};
+use cosmograph::{Command, Session, graft::{Carry, Prepared}, projects::DebitSelection};
+use cosmograph_overlay::{ActKey, EntityHandle, OrdinaryAccess, ParticipantHandle, Seat, Tick};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -50,7 +50,7 @@ pub fn prepare(session: &Session, access: OrdinaryAccess, game: &Game,
 }
 
 fn admit(session: &mut Session, access: OrdinaryAccess, game: &mut Game,
-    input: &GraftInput) -> Result<isocosm::flows::FlowResult<String>, String> {
+    input: &GraftInput) -> Result<cosmograph::flows::FlowResult<String>, String> {
     check(session, access, input)?;
     game.validate(session)?;
     let mut native = session.clone();

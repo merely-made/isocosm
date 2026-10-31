@@ -12,7 +12,7 @@ After `8ceb59d`, it reports 12, 3, then 0 without changing the atlas bytes,
 projection revision, residency change count or last-change stats; refresh
 returns `Current`. The host-facing `GroundCost` substitutes that current
 count and its profile line is tested too. Raw fail/pass receipts are in
-`Code/testing/isometry/receipts/2026-09-27/lane-e-current-overflow/`, whose
+`Code/testing/isocosm/receipts/2026-09-27/lane-e-current-overflow/`, whose
 `SHA256SUMS` is
 `6f1ec1406904c9d7e0973dbd5c7c2bd60e5600eb815b580e3bf613aa23bfdadb`.
 Two earlier command/standalone-lock launch errors there are not regression
@@ -59,7 +59,7 @@ read-only review found no blocking correctness issue.
 
 Commands, compiler, source/lock hashes and stdout/stderr for the settings
 and persistence gates are under
-`Code/testing/isometry/receipts/2026-09-27/lane-e-live-terrain-settings/`.
+`Code/testing/isocosm/receipts/2026-09-27/lane-e-live-terrain-settings/`.
 All gates use `C:\t\cargo-targets\isometry`, four build jobs, release mode,
 offline locked resolution and one test thread. The compiler is
 `rustc 1.98.1 (48a229cea 2026-09-01)`, `x86_64-pc-windows-msvc`.

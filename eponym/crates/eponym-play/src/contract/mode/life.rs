@@ -6,9 +6,9 @@
 
 use super::*;
 use std::collections::BTreeSet;
-use isocosm::{Command, schema::Method};
-use isocosm_overlay::{OrdinaryAccess, Seat};
-use isocosm_overlay::eponym::{LifeCheckpoint, LifeChoice, StartTime, Successor};
+use cosmograph::{Command, schema::Method};
+use cosmograph_overlay::{OrdinaryAccess, Seat};
+use cosmograph_overlay::eponym::{LifeCheckpoint, LifeChoice, StartTime, Successor};
 
 pub const KIND: &str = "eponym:life";
 
@@ -30,7 +30,7 @@ pub struct Record {
 }
 
 /// Actual native control evidence, independent of current PLAYS or product labels.
-pub fn previous_take(session: &Session, participant: Id) -> Option<&isocosm::history::Entry> {
+pub fn previous_take(session: &Session, participant: Id) -> Option<&cosmograph::history::Entry> {
     session.entries.iter().rev().find(|entry|
         matches!(&entry.command, Command::Take { participant: p, .. } if *p == participant)
             && entry.outcome == "taken")
@@ -117,7 +117,7 @@ pub fn prepare(session: &Session, bytes: &[u8], subject: SubjectId, checkpoint: 
 /// Current admitted, visible subjects only. Complete native eligibility decides
 /// fallback; a hidden or unbound companion never becomes an invented subject.
 pub fn death_choices(session: &Session, bytes: &[u8], access: OrdinaryAccess,
-    visible: &isocosm::directing::readings::View) -> Result<Vec<Input>, String> {
+    visible: &cosmograph::directing::readings::View) -> Result<Vec<Input>, String> {
     let prior = previous_take(session, access.participant.0).ok_or("no native life to succeed")?;
     let Command::Take { critter: predecessor, .. } = &prior.command else { unreachable!() };
     let predecessor = *predecessor;
@@ -129,11 +129,11 @@ pub fn death_choices(session: &Session, bytes: &[u8], access: OrdinaryAccess,
     let mut choices = Vec::new();
     for binding in &mode.bindings {
         if !visible.shows(binding.entity) { continue; }
-        let entity = isocosm_overlay::EntityHandle(binding.entity);
+        let entity = cosmograph_overlay::EntityHandle(binding.entity);
         let next = if eligible.is_empty() { Successor::Another(LifeChoice::Denizen(entity)) }
             else if eligible.contains(&binding.entity) { Successor::Companion(entity) } else { continue; };
-        let checkpoint = LifeCheckpoint::Death(isocosm_overlay::eponym::Succession {
-            of: isocosm_overlay::EntityHandle(predecessor), next });
+        let checkpoint = LifeCheckpoint::Death(cosmograph_overlay::eponym::Succession {
+            of: cosmograph_overlay::EntityHandle(predecessor), next });
         if let Ok(input) = prepare(session, bytes, binding.subject, checkpoint, access) { choices.push(input); }
     }
     Ok(choices)
@@ -143,7 +143,7 @@ fn admit(session: &Session, mode: &ModeState, input: &Input, access: OrdinaryAcc
     let target = shape(input)?;
     let participant = access.participant.0;
     if access.seat != Seat::Player || !session.sim.state().population.get(participant)
-        .is_some_and(isocosm::directing::is_participant)
+        .is_some_and(cosmograph::directing::is_participant)
         || access.subject.map(|s| s.0) != session.sim.plays(participant) {
         return Err("Eponym life selection needs the actual current native participant".into());
     }

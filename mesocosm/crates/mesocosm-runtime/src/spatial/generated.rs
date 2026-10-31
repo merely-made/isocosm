@@ -6,7 +6,7 @@
 //! chosen here: each stand and crossing was declared by the generator.
 
 use super::*;
-use isocosm::{Command, directing::is_participant};
+use cosmograph::{Command, directing::is_participant};
 use isometer_space::places::Places;
 
 impl Game {

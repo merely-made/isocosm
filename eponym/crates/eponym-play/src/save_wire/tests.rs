@@ -6,7 +6,7 @@ use crate::{WorldConfig, WorldError, GameError, SessionError,
     identity::{BodyRevisionId, SubjectId, Tick},
     timed_action::{TimedActionSave, TimedActionSession, TimedActionError}};
 use isometer_core::{snapshot, VolumeRef};
-use isocosm::lineage::{LineageBody, SpeciesId};
+use cosmograph::lineage::{LineageBody, SpeciesId};
 
 const ARCHIVES: [&[u8];3] = [
     include_bytes!("../../../eponym-motion/tests/fixtures/timed-action-v1-game-v3.save"),

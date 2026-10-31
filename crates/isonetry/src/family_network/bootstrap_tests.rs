@@ -2,7 +2,7 @@ use super::*;
 use crate::family::FamilyReplica;
 use crate::family_network::tests::host;
 use chirograph::ResourceResponse;
-use isocosm::Execution;
+use cosmograph::Execution;
 use p2panda_core::SigningKey;
 
 fn checkpoint_resource(key: &SigningKey) -> FamilyCheckpointResource {

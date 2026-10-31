@@ -32,7 +32,7 @@ into a finished subsystem.
 
 **Standing.** A vessel consumes facts, places, motifs, bodies, and provenance
 from the shared record, then realizes them at its own scale. Mesocosm,
-Paredros, and Isometry do not need a permanent interchange format for their
+Paredros, and Isocosm do not need a permanent interchange format for their
 render chunks. Their voxel resolutions and presentation policies may differ.
 
 This does not abolish shared spatial semantics. The record still needs stable
@@ -83,7 +83,7 @@ camera, lighting, LOD, composition, picking, and readability policy.
 - Paredros uses perspective traversal and sparse residency. A clipmap or mip
   joins the continuous pull-back when a real exact camera footprint exceeds
   its resident budget.
-- Isometry may use orthographic traversal where live volume matters and baked
+- Isocosm may use orthographic traversal where live volume matters and baked
   sprites or meshes where a stable tabletop asset is cheaper.
 
 Ground remains raymarched on the hot path. Renderling remains the mesh tenant
@@ -113,7 +113,7 @@ Renderling's stock `Vertex` is 26 words. A procedural bake should measure
 whether that ABI is acceptable before making it the universal extraction
 target. A compact procedural vertex ABI may be the better fork seam.
 
-This path is for bakes, colliders that require meshes, Isometry assets, distant
+This path is for bakes, colliders that require meshes, Isocosm assets, distant
 LOD, and forms that cannot stay raymarched. It is not a reason to mesh the
 resident ground every frame.
 
@@ -698,7 +698,7 @@ work, and none authorizes a generic engine umbrella in advance.
 ## 7. Cross-port sharing audit, 2026-09-09
 
 **Status: source audit and recommended implementation order, not completed
-extractions.** Reviewed the three imported products at Isometry `746fbc8`,
+extractions.** Reviewed the three imported products at Isocosm `746fbc8`,
 their manifests and lockfiles, and current local Mere/Netrender sources with
 bounded Luna/Terra lanes. No builds or runtime measurements were performed for
 this audit. Mere contains uncommitted atlas/host changes, so an available local
@@ -714,7 +714,7 @@ application being active. Existing license notices remain part of any extraction
 ### Highest-value common solutions
 
 1. **One body/chronicle format definition and live interchange tests.**
-   `crates/isometry-campaign/src/chronicle.rs:24` and
+   `crates/isocosm-campaign/src/chronicle.rs:24` and
    `crates/isometry-voxel/src/body.rs:9` in the repository root justify local
    positional-Postcard mirrors using the old data-not-types restriction.
    Their live writers remain `mesocosm-core/src/chronicle.rs:55` and

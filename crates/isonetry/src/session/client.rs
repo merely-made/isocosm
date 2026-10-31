@@ -104,15 +104,15 @@ impl ClientSession {
         (Recipient::Host, NetMessage::Intent { event })
     }
 
-    pub fn native_time(&self, envelope: isocosm_overlay::vtt::VttIntentEnvelope) -> Outbound {
+    pub fn native_time(&self, envelope: cosmograph_overlay::vtt::VttIntentEnvelope) -> Outbound {
         (Recipient::Host, NetMessage::NativeTime(envelope))
     }
 
-    pub fn native_party(&self, envelope: isocosm_overlay::vtt::VttIntentEnvelope) -> Outbound {
+    pub fn native_party(&self, envelope: cosmograph_overlay::vtt::VttIntentEnvelope) -> Outbound {
         (Recipient::Host, NetMessage::NativeParty(envelope))
     }
 
-    pub fn native_journey(&self, input: isocosm_vtt::native::joint_journey::JourneyEnvelope) -> Outbound {
+    pub fn native_journey(&self, input: isocosm_native::native::joint_journey::JourneyEnvelope) -> Outbound {
         (Recipient::Host, NetMessage::NativeJourney(input))
     }
 

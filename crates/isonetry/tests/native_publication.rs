@@ -1,11 +1,11 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-#[path = "../../isocosm-vtt/tests/native_founding/fixture.rs"]
+#[path = "../../isocosm-native/tests/native_founding/fixture.rs"]
 mod fixture;
-use isocosm::{Command, Execution, Founding, rules::{Causation, Effect, Process}};
-use isocosm_vtt::founding::{Campaign, NativeWorld};
-use isometry_core::{Facing, MapDocument, Token, TokenId, TurnList};
+use cosmograph::{Command, Execution, Founding, rules::{Causation, Effect, Process}};
+use isocosm_native::founding::{Campaign, NativeWorld};
+use isocosm_core::{Facing, MapDocument, Token, TokenId, TurnList};
 use isonetry::{
     GameEvent, GameSnapshot, HostSession, NativePublication, NativeTravelResolved,
     NetMessage, PeerId, RequestId, TravelTableResult, apply_game,
@@ -37,7 +37,7 @@ fn founded() -> HostSession {
         &fixture::record(),
         Some(TokenId(1)),
         Execution::Grouped,
-        isocosm_host::founding::Purpose::Bench,
+        cosmograph_host::founding::Purpose::Bench,
         None,
     )
     .unwrap();
@@ -99,7 +99,7 @@ fn native_wire_refuses_a_forged_saved_hash_and_legacy_world_fallback() {
     let mut receiver = host.state().clone();
     let before = receiver.clone();
     let error = apply_game(&mut receiver, &GameEvent::World(
-        isometry_campaign::WorldEvent::PartyMoved {
+        isocosm_campaign::WorldEvent::PartyMoved {
             party: "forged".into(), node: "ford".into(),
         })).unwrap_err();
     assert!(format!("{error:?}").contains("legacy world mutation"));

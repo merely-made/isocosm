@@ -18,8 +18,8 @@ pub fn run() {
         if matches!(reading.phase, LoopPhase::LineageEnded | LoopPhase::WorldEnded) {
             // This is the same ordinary Watch choice as the host's lifecycle pane.
             let input = LoopInput { kind: continuation::KIND.into(), version: continuation::VERSION,
-                participant: isocosm_overlay::ParticipantHandle(r.interim().participant),
-                tick: isocosm_overlay::Tick(r.tick()), expected: reading.cut,
+                participant: cosmograph_overlay::ParticipantHandle(r.interim().participant),
+                tick: cosmograph_overlay::Tick(r.tick()), expected: reading.cut,
                 action: LoopAction::Answer(LoopAnswer::Watch) };
             r.submit_loop_input(&input).unwrap();
         }
@@ -63,7 +63,7 @@ pub fn run() {
     let mut previous = initial;
     let participant = r.interim().participant;
     for entry in r.session().entries.iter().skip(start_entries) {
-        if let isocosm::Command::Take { participant: owner, critter } = &entry.command
+        if let cosmograph::Command::Take { participant: owner, critter } = &entry.command
             && *owner == participant && entry.outcome == "taken" && previous != Some(*critter) {
             handovers += 1;
             if previous.is_some_and(|parent| game.driver.as_ref().and_then(|d| d.children.get(critter))

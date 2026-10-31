@@ -11,7 +11,7 @@ pub enum CampaignSpaceError {
     #[error("campaign operation addresses another campaign or branch")]
     WrongSpace,
     #[error("campaign proposal is invalid: {0:?}")]
-    InvalidProposal(isometry_campaign::CampaignProposalError),
+    InvalidProposal(isocosm_campaign::CampaignProposalError),
     #[error("campaign governance proposal is invalid: {0}")]
     InvalidGovernance(CampaignGovernanceError),
     #[error("campaign governance resolution is invalid: {0}")]
@@ -37,7 +37,7 @@ pub fn to_operation(
     let signing_key = SigningKey::from_bytes(&keypair.to_seed());
     let body_bytes = encode_cbor(event).expect("campaign events always CBOR-encode");
     let body = Body::from_bytes(&body_bytes);
-    // p2panda 0.7 dropped Header.timestamp. Isometry orders a branch by
+    // p2panda 0.7 dropped Header.timestamp. Isocosm orders a branch by
     // seq_num + backlink + parents (a DAG), never the header clock, and the
     // event body still carries at_ms(), so nothing here is lost. Fresh-data
     // prototype: no stored operations to keep hash-stable across the bump.

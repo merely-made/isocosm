@@ -793,7 +793,7 @@ three design docs that cite it. The record holds the words.
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
-| 110 | The family and sim are Isocosm; the tabletop is Isocosm: VTT; reservations eponym, isocosm, isocosm-vtt published to crates.io; the rename is planned. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md) |
+| 110 | The family and sim are Isocosm; the tabletop is Isocosm: VTT; reservations eponym, isocosm, isocosm-vtt published to crates.io; the rename is planned. | [DOC README](DOC_README.md), [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 111 | Isometry is retired as a product word and kept as the plain technical prefix of the tabletop's crates; the tabletop is Isocosm: VTT only. | [DOC README](DOC_README.md), [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 112 | Mesocosm keeps its name; Eponym stays; the family is settled as Isocosm with Isocosm: VTT, Mesocosm and Eponym. | none |
 | 157 | A thing of note is a relic, an event of note a tale, and Mesocosm's body site a tract. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
@@ -805,8 +805,8 @@ three design docs that cite it. The record holds the words.
 | 341 | Seeding's two values are Grown and Acquired. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 434 | The player's choice of which glyphs far marks show is called a filter; lens keeps one meaning, a projection. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 883 | The local checkout is Code/repos/isocosm; a naming-ledger line records it and lane worktrees and the testing tree keep their isometry names. | none |
-| 1036 | The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm. | none |
-| 1037 | Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
+| 1036 | The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
+| 1037 | Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 
 ## Licensing and sources
 

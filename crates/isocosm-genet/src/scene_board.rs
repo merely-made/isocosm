@@ -1,0 +1,205 @@
+//! The scene board's host half: the flag, the shared snapshot, and the one
+//! producer registration (B2).
+//!
+//! `isocosm-views` owns everything about how the board draws through the
+//! shared scene. What is left for the host is what only a host can do: read
+//! the environment flag once, push the board's current state into the snapshot
+//! the producer reads, and choose the integer pixel grid the scene renders on.
+//!
+//! **Registration moved out in M4.** Hanging a producer on a leaf key is the
+//! one thing every wing host did identically, so `isomere::host::Assembly`
+//! does it now, from the product impl's `viewport_keys` and `producer`. This
+//! module hands the producer over through [`SceneBoard::producer`] and keeps
+//! the two things that are about the board rather than about hosting it.
+//!
+//! **The pixel grid.** Decision 2 of the plan moved integer scaling off the
+//! DOM's `board_scale` and onto the producer's render scale. The scale is the
+//! device scale times the interface zoom, rounded to a whole number and never
+//! below one: the scene then draws at (about) the pane's *logical* size and
+//! the producer presents each of those pixels as one square block, which is
+//! the GBA crispness pillar expressed in the renderer rather than in CSS.
+//!
+//! **Headroom.** `ISOMETRY_SCENE_HEADROOM=<layers>` sets the spare brick
+//! layers the scene board's pointer volume keeps above the board's tallest
+//! tile; unset, the residency's own default of one, which is provisional.
+//!
+//! Nothing here runs unless the flag is set. With it unset the producer is
+//! never built, the leaf is never registered, and every existing receipt sees
+//! the board it always saw.
+
+use std::cell::RefCell;
+use std::rc::Rc;
+
+use isocosm_views::{
+    BoardHandle, BoardProducer, BoardSource, BoardView, GroundCost, ResidencySettings, ScenePick,
+    UiState,
+};
+
+use crate::Ctx;
+
+/// `ISOMETRY_SCENE_BOARD=1`: draw the board through the isometer scene.
+pub(crate) fn enabled() -> bool {
+    std::env::var_os("ISOMETRY_SCENE_BOARD").is_some()
+}
+
+/// The host's handle on the scene board: the snapshot the view layer's source
+/// reads, and the producer the document leaf is served from.
+pub(crate) struct SceneBoard {
+    view: BoardHandle,
+    producer: Rc<RefCell<BoardProducer>>,
+    scale: u32,
+    /// The last error printed, so a frame that keeps failing says so once
+    /// rather than once per frame — and a frame that starts failing says so at
+    /// all. A scene board that quietly draws nothing is the failure this
+    /// guards against.
+    reported: Option<String>,
+    /// The last ground change reported under `ISOMETRY_PROFILE`, so a still
+    /// board says nothing and an edit says what it cost (B4).
+    costed: Option<GroundCost>,
+    preferences: crate::terrain_preferences::Preferences,
+    /// The look editor's preview: a one-tile board through a second source,
+    /// so it draws exactly as the board does. Registered once, synced only
+    /// while an editor is open.
+    preview: (BoardHandle, Rc<RefCell<BoardProducer>>),
+}
+
+/// The residency settings the environment asks for: the default, with
+/// `ISOMETRY_SCENE_HEADROOM` overriding its spare layers when it parses.
+fn residency() -> ResidencySettings {
+    let mut settings = ResidencySettings::default();
+    let asked = std::env::var("ISOMETRY_SCENE_HEADROOM").ok();
+    if let Some(layers) = asked.and_then(|value| value.trim().parse().ok()) {
+        settings.headroom = layers;
+        eprintln!("[isometry] scene board headroom {layers} layers");
+    }
+    settings
+}
+
+impl SceneBoard {
+    /// Restores the local terrain budget and builds the first board snapshot.
+    pub(crate) fn new(ui: &mut UiState) -> Self {
+        let preferences = crate::terrain_preferences::Preferences::local(ui);
+        let mut board = BoardView::new(ui.map.clone());
+        board.sync(ui);
+        let view = board.into_handle();
+        let preview_view = BoardView::new(isocosm_core::MapDocument::new("look preview", 1, 1))
+            .into_handle();
+        let preview_producer = Rc::new(RefCell::new(BoardProducer::new(BoardSource::new(
+            preview_view.clone(),
+        ))));
+        Self {
+            preview: (preview_view, preview_producer),
+            view: view.clone(),
+            producer: Rc::new(RefCell::new(BoardProducer::new(
+                BoardSource::new(view).with_residency(residency()),
+            ))),
+            scale: 1,
+            reported: None,
+            costed: None,
+            preferences,
+        }
+    }
+
+    /// The producer the assembly registers against the board's leaf key.
+    /// Cheap: the handle is an `Rc`, and the assembly asks only until the key
+    /// is registered.
+    pub(crate) fn producer(&self) -> Rc<RefCell<BoardProducer>> {
+        self.producer.clone()
+    }
+
+    /// The look editor preview's producer, for its own leaf key.
+    pub(crate) fn preview_producer(&self) -> Rc<RefCell<BoardProducer>> {
+        self.preview.1.clone()
+    }
+
+    /// The board's gestures, handed the frame the producer last drew (B3).
+    ///
+    /// The view layer owns every rule about what a press means; what it cannot
+    /// own is the producer, which lives in the host's registry. So the state
+    /// carries this borrow of it and asks at the moment the gesture runs,
+    /// rather than reading a snapshot that is a frame stale by construction.
+    pub(crate) fn pick(&self) -> ScenePick {
+        ScenePick::new(self.producer.clone())
+    }
+
+    /// Reports current omissions/device bounds to the panel and, under
+    /// `ISOMETRY_PROFILE`, what the last ground change cost.
+    ///
+    /// Called *after* the frame rather than in [`Self::sync`], because the
+    /// ground is brought up to date inside the producer's own draw: asked
+    /// before it, a sync would always report the change before last, and a
+    /// board that then parks would never say what the last edit cost.
+    pub(crate) fn report_ground(&mut self, ctx: &mut Ctx<'_>) {
+        let source = self.producer.borrow();
+        let cost = source.source().ground_cost();
+        if let Some(limit) = source.source().atlas_device_budget() {
+            let omitted = cost.map_or(0, |cost| cost.residency.overflow);
+            let current = &ctx.runner.state().terrain_settings;
+            if current.device_budget != Some(limit) || current.omitted != omitted {
+                ctx.runner
+                    .update(|ui| ui.terrain_settings.report(limit, omitted));
+                if let Some(window) = ctx.window {
+                    window.request_redraw();
+                }
+            }
+        }
+        if std::env::var_os("ISOMETRY_PROFILE").is_none() {
+            return;
+        }
+        if self.costed != cost {
+            self.costed = cost;
+            if let Some(cost) = cost {
+                eprintln!("[isometry] scene board ground: {}", cost.line());
+            }
+        }
+    }
+
+    /// Save a changed user request at dispatch, before a window can close.
+    pub(crate) fn save_preferences(&mut self, ctx: &mut Ctx<'_>) {
+        if let Err(error) = self.preferences.save_changed(ctx.runner.state()) {
+            eprintln!("[isometry] could not save terrain memory preference: {error}");
+            ctx.runner.update(|ui| {
+                ui.status = format!("Terrain memory applies this session; saving failed: {error}")
+            });
+        }
+    }
+
+    /// Per frame: take the board's state and set the pixel grid.
+    pub(crate) fn sync(&mut self, ctx: &mut Ctx<'_>) {
+        self.save_preferences(ctx);
+        self.producer
+            .borrow_mut()
+            .source_mut()
+            .set_atlas_budget(ctx.runner.state().terrain_settings.budget_bytes());
+        self.view.borrow_mut().sync(ctx.runner.state());
+        let device = ctx
+            .window
+            .map_or(1.0, |window| window.scale_factor() as f32);
+        let scale = (device * ctx.ui_zoom).round().max(1.0) as u32;
+        let state = ctx.runner.state();
+        if state.character_open || state.look_open {
+            let (w, h) = isocosm_views::LOOK_PREVIEW_SIZE;
+            self.preview.0.borrow_mut().sync_preview(state, (w as f32, h as f32));
+        }
+        if self.scale != scale {
+            self.scale = scale;
+            self.producer.borrow_mut().set_render_scale(scale);
+            self.preview.1.borrow_mut().set_render_scale(scale);
+            // Said out loud, because the grid is the one thing about this
+            // board a capture cannot tell you from its pixels alone once the
+            // upscale is doing its job.
+            eprintln!(
+                "[isometry] scene board render scale {scale} (device {device}, zoom {})",
+                ctx.ui_zoom
+            );
+        }
+        let producer=self.producer.borrow();
+        let error=producer.last_error().or_else(||producer.source().native_error()).map(str::to_owned);
+        if self.reported != error {
+            if let Some(why) = &error {
+                eprintln!("[isometry] scene board: {why}");
+            }
+            self.reported = error;
+        }
+    }
+}

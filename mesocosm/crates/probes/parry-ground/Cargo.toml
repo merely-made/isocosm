@@ -9,7 +9,7 @@ publish = false
 [workspace]
 
 [dependencies]
-isocosm = { path = "../../../../shared/isocosm", default-features = false }
+cosmograph = { path = "../../../../shared/cosmograph", default-features = false }
 isometer-core = { path = "../../../../shared/isometer/crates/isometer-core" }
 serde = { version = "1", features = ["derive"] }
 # The stack's collider layer (wing rulings 695, 722 to 725, 731): Rapier and

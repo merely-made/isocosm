@@ -5,8 +5,8 @@ use eponym_play::*;
 use eponym_play::identity::{BodyRevisionId, SubjectId, Tick};
 use eponym_play::founding::{ENERGY, FULL, RESERVE, SOPHONT, TISSUE};
 use eponym_play::timed_action::{Direction, TimedActionRules, TimedActionSession};
-use isocosm::{Command, Execution, anatomy};
-use isocosm::lineage::SpeciesId;
+use cosmograph::{Command, Execution, anatomy};
+use cosmograph::lineage::SpeciesId;
 use isometer_core::{PartId, snapshot};
 use wing_functions::{Edge, FunctionalNetwork, Node, NodeId, NodeKind, Operator, PartRef, WorldRules};
 
@@ -36,7 +36,7 @@ fn game() -> GameState {
     generate(&mut game, TARGET, NativeFixtureRecipe::ProbeTargetV1, at);
     game
 }
-fn entity(game: &GameState, subject: SubjectId) -> &isocosm::schema::Entity {
+fn entity(game: &GameState, subject: SubjectId) -> &cosmograph::schema::Entity {
     game.world().sim().state().population.get(game.entity(subject).unwrap()).unwrap()
 }
 
@@ -44,12 +44,12 @@ fn entity(game: &GameState, subject: SubjectId) -> &isocosm::schema::Entity {
 fn native_fixture_profile_regrows_the_declared_native_pack_and_preserves_base_hash() {
     let world = fixture(); let save = world.save_record();
     assert_eq!(save.generator_version, 5);
-    assert_eq!(world.sim().state().movement, isocosm::schema::Movement::Journey);
+    assert_eq!(world.sim().state().movement, cosmograph::schema::Movement::Journey);
     let restored = World::restore(&world.save().unwrap())
         .expect("fixture profile must regenerate its authenticated founding");
     assert_eq!(restored.save_record(), save);
     assert_eq!(restored.state_hash().unwrap(), world.state_hash().unwrap());
-    assert_eq!(isocosm::digest(restored.sim().genesis()), isocosm::digest(world.sim().genesis()));
+    assert_eq!(cosmograph::digest(restored.sim().genesis()), cosmograph::digest(world.sim().genesis()));
     let ordinary = World::generate(7, world.config()).unwrap();
     assert_eq!(ordinary.generator_version(), 4);
     assert_ne!(ordinary.base_hash(), world.base_hash());
@@ -167,7 +167,7 @@ fn native_selected_stocks_fit_and_are_conserved_without_loose_fallback() {
     }
     let native = game.world().session();
     let json = serde_json::to_vec(&native.save()).unwrap();
-    let restored = isocosm::Session::load_json(&json, Execution::Individuals).unwrap();
+    let restored = cosmograph::Session::load_json(&json, Execution::Individuals).unwrap();
     assert_eq!(restored.sim.state_hash(), native.sim.state_hash());
     assert_eq!(restored.entries, native.entries);
 }
@@ -180,8 +180,8 @@ fn overflow_development_refuses_without_losing_supplied_stock_or_history() {
         anatomy::bound(body.doc.part(*id).unwrap().half_extent, p, &native.sim.genesis().rules, key)).sum::<u64>();
     let tissue = bound(TISSUE); let reserve = bound(RESERVE).checked_add(1).unwrap();
     let at = game.world().site();
-    let outcome = native.command(Command::Arrive(isocosm::arrival::Arrival {
-        lineage: SOPHONT.into(), site: at, method: isocosm::schema::Method::Normative,
+    let outcome = native.command(Command::Arrive(cosmograph::arrival::Arrival {
+        lineage: SOPHONT.into(), site: at, method: cosmograph::schema::Method::Normative,
         accounts: [(TISSUE.into(), tissue), (RESERVE.into(), reserve), (ENERGY.into(), FULL)].into(),
         traits: Default::default(), skills: Default::default(), disposition: [0; 5], character: None,
     })).unwrap();

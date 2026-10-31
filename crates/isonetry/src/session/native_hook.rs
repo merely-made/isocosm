@@ -5,8 +5,8 @@
 
 use super::*;
 use crate::native_table::{NativeTable,table_digest};
-use isocosm::Execution;
-use isocosm_overlay::{EntityHandle,OrdinaryAccess,ParticipantHandle,Seat,vtt::VttIntentEnvelope};
+use cosmograph::Execution;
+use cosmograph_overlay::{EntityHandle,OrdinaryAccess,ParticipantHandle,Seat,vtt::VttIntentEnvelope};
 use serde::{Deserialize,Serialize};
 
 #[derive(Clone,Debug,PartialEq,Serialize,Deserialize)]
@@ -32,7 +32,7 @@ pub(crate) fn apply_native_hook(state:&mut GameSnapshot,result:&NativeHookResolv
     }
     old.validate_history(before.table_session()).map_err(GameError::Native)?;
     result.table.validate_history(after.table_session()).map_err(GameError::Native)?;
-    let record=isocosm_vtt::native::hooks::validate_transition(before.table_session(),&old.game,
+    let record=isocosm_native::native::hooks::validate_transition(before.table_session(),&old.game,
         after.table_session(),&result.table.game).map_err(GameError::Native)?;
     if record.participant!=old.host_participant { return Err(fail("hook has no authenticated native DM")); }
     let mut next=state.clone();

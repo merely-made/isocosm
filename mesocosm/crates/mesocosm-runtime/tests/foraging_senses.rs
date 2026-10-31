@@ -1,6 +1,6 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
-use isocosm::{Command, Execution, Session, simulation::Genesis, spatial as native};
+use cosmograph::{Command, Execution, Session, simulation::Genesis, spatial as native};
 use mesocosm_runtime::{
     Founded,
     spatial::{Admission, Game},
@@ -26,7 +26,7 @@ fn blind(g: &mut Genesis, actor: u64) {
         p.functions.remove("function:sense");
         p.cells.remove("function:sense");
         p.tracts.clear();
-        isocosm::mosaic::sync(p, extents[id]);
+        cosmograph::mosaic::sync(p, extents[id]);
     }
 }
 
@@ -164,7 +164,7 @@ fn absent_senses_and_short_ranges_refuse_remote_food_but_contact_remains() {
             cause: None,
         })
         .unwrap();
-    let meal: isocosm::simulation::Receipt = serde_json::from_str(&outcome).unwrap();
+    let meal: cosmograph::simulation::Receipt = serde_json::from_str(&outcome).unwrap();
     assert!(
         meal.accepted(),
         "blind contact feeding still uses the native meal: {meal:?}"
@@ -207,10 +207,10 @@ fn detection_and_authored_picture_sight_cross_local_window_boundaries() {
             },
         )
         .unwrap();
-    let view = isocosm::directing::readings::view(
+    let view = cosmograph::directing::readings::view(
         &f.session.sim,
         f.actor,
-        isocosm::directing::readings::Mode::Creative,
+        cosmograph::directing::readings::Mode::Creative,
     );
     let (site, sight) = f
         .game
@@ -316,7 +316,7 @@ fn the_sight_witness_moves_with_rotated_sensory_anatomy() {
         *p.cells.get_mut(&source).unwrap() -= 1;
         p.cells.insert("function:sense".into(), 1);
         p.functions.insert("function:sense".into());
-        isocosm::mosaic::sync(p, extent);
+        cosmograph::mosaic::sync(p, extent);
     });
     let Some(native::foraging::FoodDetection::Sight(before)) = detected(&f) else {
         panic!("visible food");

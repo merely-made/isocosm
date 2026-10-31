@@ -3,9 +3,9 @@
 
 //! Game geometry answers a native declaration, never a player-driving edit.
 
-use isocosm::{Session, operations::{Change, Geometry, Pending, Preparation, Resolution, Window},
+use cosmograph::{Session, operations::{Change, Geometry, Pending, Preparation, Resolution, Window},
     flows::FlowResult, simulation::Work};
-use isocosm_overlay::{OrdinaryAccess, Seat, mesocosm::{TerrainGeometry, TerrainShape}};
+use cosmograph_overlay::{OrdinaryAccess, Seat, mesocosm::{TerrainGeometry, TerrainShape}};
 use isometer_space::{Edit, Op, Shape};
 use crate::Refusal;
 
@@ -36,7 +36,7 @@ pub(crate) fn resolved(pending: &Pending, actual: TerrainGeometry) -> Result<Res
         window: Window { min: actual.min, max: actual.max, depth: actual.depth },
         eye: actual.eye, focus: actual.focus, edit: Edit { op, shape },
     };
-    isocosm::operations::check_geometry(&pending.sim, request, &geometry)?;
+    cosmograph::operations::check_geometry(&pending.sim, request, &geometry)?;
     Ok(Resolution { request: request.clone(), geometry })
 }
 

@@ -5,8 +5,8 @@
 
 use cambium::{el, text};
 use eponym_play::{GameEvent, GameIntent};
-use isocosm::projects::{Phase, ProjectId, StockSource};
-use isocosm::rules::{Effect, Query};
+use cosmograph::projects::{Phase, ProjectId, StockSource};
+use cosmograph::rules::{Effect, Query};
 use super::{SessionApp, view::{Child, button}};
 
 fn label(key: &str) -> &str { key.split_once(':').map_or(key, |(_, word)| word) }

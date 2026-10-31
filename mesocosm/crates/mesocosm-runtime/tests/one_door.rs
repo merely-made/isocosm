@@ -13,7 +13,7 @@ mod worlds;
 
 use chirograph::{IntentInvocation, IntentResult, ProjectionSnapshot};
 use graphshell_endpoint::{IntentSink, ProjectionCatalog, ProjectionSource};
-use isocosm_overlay::ParticipantHandle;
+use cosmograph_overlay::ParticipantHandle;
 use mesocosm_runtime::endpoint::{ANSWER, MesocosmEndpoint, STEP};
 
 fn snapshot(endpoint: &mut MesocosmEndpoint) -> ProjectionSnapshot {

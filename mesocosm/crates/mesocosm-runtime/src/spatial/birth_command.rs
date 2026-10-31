@@ -4,7 +4,7 @@
 //! Actual dev ForceBirth uses the same authored newborn geometry as the clock.
 
 use super::*;
-use isocosm::{Command, spatial::{BirthPreparation, BirthResolution}};
+use cosmograph::{Command, spatial::{BirthPreparation, BirthResolution}};
 
 impl Game {
     pub(crate) fn force_birth(&mut self, session: &mut Session, parent: Id) -> Result<String, String> {

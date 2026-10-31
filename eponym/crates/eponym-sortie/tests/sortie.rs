@@ -16,7 +16,7 @@ use eponym_sortie::scene;
 use eponym_sortie::sortie::SortieEvent;
 use eponym_play::identity::{BodyRevisionId, ControlIntent, Tick};
 use eponym_sortie::settled::{AUD, BRAM, ODRIS, SELA};
-use isocosm::social::{DeedKind, Premise, Verdict};
+use cosmograph::social::{DeedKind, Premise, Verdict};
 
 fn tick_of(event: &SortieEvent) -> Tick {
     match event {
@@ -115,7 +115,7 @@ fn a_tag_in_occurs_mid_action_under_the_pact() {
     let (sela, aud) = (sortie.society.id(SELA), sortie.society.id(AUD));
     assert!(deeds.iter().any(|deed| deed.doer == sela
         && deed.toward == Some(aud)
-        && deed.kind.is(isocosm::social::PERFORMED)));
+        && deed.kind.is(cosmograph::social::PERFORMED)));
     assert!(deeds.iter().any(|deed| deed.doer == sela
         && deed.toward == Some(aud)
         && deed.kind.is(eponym_play::vocabulary::STOOD_BY)));
@@ -243,6 +243,6 @@ fn the_negotiation_is_real_and_the_agreement_closes() {
         .society
         .deeds()
         .iter()
-        .any(|deed| deed.kind == DeedKind::under(isocosm::social::AGREEMENT_ENDED, outing.id));
+        .any(|deed| deed.kind == DeedKind::under(cosmograph::social::AGREEMENT_ENDED, outing.id));
     assert!(ended);
 }

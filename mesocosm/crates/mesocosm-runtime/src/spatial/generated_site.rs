@@ -3,7 +3,7 @@
 
 //! Whole-site arrivals use the same native placement policy as founders.
 use super::*;
-use isocosm::spatial::{self as native, embodiment as body};
+use cosmograph::spatial::{self as native, embodiment as body};
 
 impl Game {
     pub(super) fn site_arrivals(&self, session: &Session) -> Result<Vec<native::ArrivalResolution>,String> {

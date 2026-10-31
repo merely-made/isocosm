@@ -5,7 +5,7 @@
 //! existing spatial provider and door. Every pose below is one the generator
 //! declared; a body with no declared template acquires none.
 
-use isocosm::{Command, Execution, Session, schema::Id, spatial::Templates};
+use cosmograph::{Command, Execution, Session, schema::Id, spatial::Templates};
 use mesocosm_runtime::{Founded, spatial::Game};
 
 fn founded() -> Founded { Founded::generated(7, 256).unwrap() }
@@ -68,7 +68,7 @@ fn an_arrival_takes_its_declared_stand_and_an_unseated_body_takes_none() {
     let route = format!("move:{}-{}", crossing.from, crossing.to);
     let mut forced = probe.sim.genesis().rules.processes[&route].clone();
     forced.id = "test:forced-move".into();
-    forced.requires.retain(|q| !matches!(q, isocosm::rules::Query::MoodBelow { .. }));
+    forced.requires.retain(|q| !matches!(q, cosmograph::rules::Query::MoodBelow { .. }));
     let mut genesis = probe.sim.genesis().clone();
     genesis.rules.processes.insert(forced.id.clone(), forced);
     let mut session = Session::new(genesis, Execution::Grouped).unwrap();

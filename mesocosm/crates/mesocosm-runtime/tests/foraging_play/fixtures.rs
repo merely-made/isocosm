@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isocosm::{
+use cosmograph::{
     rules::{Binding, Query},
     spatial::embodiment as body,
 };
@@ -10,11 +10,11 @@ use isocosm::{
 pub fn ordinary(seed: u64) -> Founded {
     let mut founded = Founded::generated(seed, 60).unwrap();
     let mut domain = founded.genesis.founding.clone().unwrap();
-    domain.ecology_rates = isocosm::ecology::Rates::A1;
+    domain.ecology_rates = cosmograph::ecology::Rates::A1;
     founded.genesis = domain.generate().unwrap();
     founded.genesis.rules.epoch_ticks = 60;
     let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
-    founded.genesis.rules.sun = Some(isocosm::light::SunRules { start_hour: 7, ..sun });
+    founded.genesis.rules.sun = Some(cosmograph::light::SunRules { start_hour: 7, ..sun });
     founded
 }
 
@@ -110,8 +110,8 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) ->
         *p.cells.get_mut(&source).unwrap() -= 1;
         p.cells.insert("function:sense".into(), 1);
         p.functions.insert("function:sense".into());
-        isocosm::mosaic::sync(p, extent);
-        e.systems = isocosm::systems::founded(e, &g.rules);
+        cosmograph::mosaic::sync(p, extent);
+        e.systems = cosmograph::systems::founded(e, &g.rules);
     }
     g.population.groups.get_mut(&food).unwrap().count = 2;
     let at = stands.iter().find(|s| s.actor == Some(actor)).unwrap();
@@ -125,18 +125,18 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) ->
     let (walk, feed) = (walk.clone(), f.feed.clone());
     // Author only the fixture's appetite level. Choice, competing processes,
     // native food intake, population cohorts and the spatial clock stay active.
-    let wants = isocosm::needs::wants(&g.rules, g.population.get(actor).unwrap());
+    let wants = cosmograph::needs::wants(&g.rules, g.population.get(actor).unwrap());
     let want = wants.first().expect("native account hunger");
     let account = want.account.clone();
     if hungry {
         let amount = want.held.min(3);
-        isocosm::anatomy::take(std::sync::Arc::make_mut(&mut g.population.groups.get_mut(&actor).unwrap().entity),
+        cosmograph::anatomy::take(std::sync::Arc::make_mut(&mut g.population.groups.get_mut(&actor).unwrap().entity),
             &g.rules, &account, amount).unwrap().unwrap();
         *g.sites.get_mut(&site).unwrap().accounts.entry("world:soil".into()).or_default() += amount;
     }
-    let held = isocosm::anatomy::held(g.population.get(actor).unwrap(), &g.rules, &account);
+    let held = cosmograph::anatomy::held(g.population.get(actor).unwrap(), &g.rules, &account);
     for n in &mut g.rules.mind.as_mut().unwrap().needs {
-        if isocosm::needs::account(&n.query) == Some(&account) {
+        if cosmograph::needs::account(&n.query) == Some(&account) {
             n.query = Query::Below { who: Binding::Actor, key: account.clone(),
                 amount: if hungry { held + 1 } else { 0 } };
         }
@@ -145,7 +145,7 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) ->
     t.foraging.get_mut(&walk).unwrap().nodes = nodes;
     let window = t.window.clone();
     // Place real food a few cells beyond contact on flat native terrain.
-    let view = isocosm::terrain::View::of(g).unwrap();
+    let view = cosmograph::terrain::View::of(g).unwrap();
     let volume = isometer_space::volume::Volume::lift(
         &view,
         site,
@@ -196,7 +196,7 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) ->
             .port_feeding
             .as_mut()
             .unwrap()
-            .sources = isocosm::rules::FeedingSources::Only(Default::default());
+            .sources = cosmograph::rules::FeedingSources::Only(Default::default());
     }
     let mut session = Session::new(g.clone(), Execution::Grouped).unwrap();
     let mut game = Game::default();

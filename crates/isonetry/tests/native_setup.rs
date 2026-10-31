@@ -1,13 +1,13 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-#[path = "../../isocosm-vtt/tests/native_founding/fixture.rs"]
+#[path = "../../isocosm-native/tests/native_founding/fixture.rs"]
 mod fixture;
-#[path = "../../isocosm-vtt/tests/native_setup/fixture.rs"]
+#[path = "../../isocosm-native/tests/native_setup/fixture.rs"]
 mod setup_fixture;
-use isocosm::Execution;
-use isocosm_vtt::founding::{Campaign, NativeWorld};
-use isometry_core::{Facing, MapDocument, Token, TokenId, TurnList};
+use cosmograph::Execution;
+use isocosm_native::founding::{Campaign, NativeWorld};
+use isocosm_core::{Facing, MapDocument, Token, TokenId, TurnList};
 use isonetry::{GameSnapshot, HostSession, ClientSession, PeerId, NetMessage};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -34,7 +34,7 @@ fn inspected_setup_is_one_native_host_publication_wire_and_saved_replay() {
         &expected,
         &record,
         Some(TokenId(1)),
-        isocosm_host::founding::Purpose::Bench,
+        cosmograph_host::founding::Purpose::Bench,
         None,
     )
     .unwrap();
@@ -63,21 +63,21 @@ fn changed_preview_and_late_native_attachment_refuse_without_any_host_commit() {
         &expected,
         &record,
         Some(TokenId(1)),
-        isocosm_host::founding::Purpose::Bench,
+        cosmograph_host::founding::Purpose::Bench,
         None,
     )
         .expect_err("uninspected native preview was published");
     assert!(error.contains("preview changed"));
     assert_eq!(host.state(), &before); assert_eq!(host.log_hash(), before_hash); assert_eq!(host.seq(), before_seq);
     let mut invalid = setup.clone();
-    invalid.attachments.insert("shrine".into(), isocosm::site_authoring::Attachment::Existing(0));
+    invalid.attachments.insert("shrine".into(), cosmograph::site_authoring::Attachment::Existing(0));
     let error = host
         .commit_native_setup_for(
             &invalid,
             &expected,
             &record,
             Some(TokenId(1)),
-            isocosm_host::founding::Purpose::Bench,
+            cosmograph_host::founding::Purpose::Bench,
             None,
         )
         .unwrap_err();

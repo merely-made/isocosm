@@ -4,14 +4,14 @@
 use super::*;
 use crate::native_table::{NativeTable, NativeTableAdmissionInput, NativeTableBindingInput, NativeTableResolved, NativeTokenMove,
     TableSender, table_digest};
-use isocosm::Execution;
-use isocosm_overlay::{EntityHandle, Intent, IntentEnvelope, OrdinaryAccess, ParticipantHandle, Seat, Tick,
+use cosmograph::Execution;
+use cosmograph_overlay::{EntityHandle, Intent, IntentEnvelope, OrdinaryAccess, ParticipantHandle, Seat, Tick,
     vtt::{TableAct, TableActKind, TableBatch, VttIntent}};
 
 fn preserve_time(old: Option<&NativeTable>, next: &NativeTable, carry_config:bool) -> Result<(), String> {
-    let before = isocosm_vtt::native::GameBindings::decode(
+    let before = isocosm_native::native::GameBindings::decode(
         old.map_or(&[][..], |table| table.game.as_slice()))?;
-    let after = isocosm_vtt::native::GameBindings::decode(&next.game)?;
+    let after = isocosm_native::native::GameBindings::decode(&next.game)?;
     if before.downtime() != after.downtime() || before.time_holds() != after.time_holds()
         || before.shared_players() != after.shared_players() || before.journeys()!=after.journeys()
         || before.hooks()!=after.hooks() || before.catalogue()!=after.catalogue()
@@ -33,16 +33,16 @@ fn preserve_time(old: Option<&NativeTable>, next: &NativeTable, carry_config:boo
 
 fn roster_revision(old: Option<&NativeTable>, next: &NativeTable) -> Result<u64, String> {
     let Some(old) = old else { return Ok(0); };
-    let revision = isocosm_vtt::native::GameBindings::decode(&old.game)?.roster_revision();
+    let revision = isocosm_native::native::GameBindings::decode(&old.game)?.roster_revision();
     if old.bound_players() == next.bound_players() { Ok(revision) }
     else { revision.checked_add(1).ok_or("native time roster revision overflow".into()) }
 }
 
-fn validate_binding_change(state: &GameSnapshot, session: &isocosm::Session,
+fn validate_binding_change(state: &GameSnapshot, session: &cosmograph::Session,
     old: Option<&NativeTable>, next: &NativeTable) -> Result<(), String> {
     if let Some(old) = old {
-        let a = isocosm_vtt::native::GameBindings::decode(&old.game)?;
-        let b = isocosm_vtt::native::GameBindings::decode(&next.game)?;
+        let a = isocosm_native::native::GameBindings::decode(&old.game)?;
+        let b = isocosm_native::native::GameBindings::decode(&next.game)?;
         if old.boards == next.boards && a.characters() == b.characters()
             && a.positions() == b.positions() && a.controls() == b.controls() {
             // Only metadata changes: departed/stale poses remain history.
@@ -64,7 +64,7 @@ pub fn resolve_native_move(state: &GameSnapshot, sender: TableSender, token: Tok
         .ok_or("token has no explicit native character binding")?;
     let destination = board.cells.iter().find(|cell| cell.tile == to)
         .ok_or("destination tile has no authored native cell")?;
-    let game = isocosm_vtt::native::GameBindings::decode(&table.game)?;
+    let game = isocosm_native::native::GameBindings::decode(&table.game)?;
     let actor = game.characters().get(&character.character).ok_or("native recipe binding is absent")?.entity;
     let participant = table.participant(sender)?;
     let session = campaign.table_session();
@@ -105,7 +105,7 @@ pub(crate) fn apply_native_table(state: &mut GameSnapshot, result: &NativeTableR
         if next.active_map.as_deref() != Some(movement.map.as_str()) || !moved.insert(movement.token)
             || next.map.token(movement.token).map(|token| token.at) != Some(movement.from)
         { return Err(fail("native table move names a stale map or token")); }
-        apply(&mut next.map, &isometry_core::SessionEvent::TokenMoved { id: movement.token, to: movement.to })
+        apply(&mut next.map, &isocosm_core::SessionEvent::TokenMoved { id: movement.token, to: movement.to })
             .map_err(GameError::Core)?;
     }
     if let Some(active) = &next.active_map {
@@ -137,9 +137,9 @@ impl HostSession {
         }
         let mut campaign = world.load(Execution::Grouped)?;
         let participant = match input.participant {
-            isocosm_vtt::native::ParticipantInput::Existing(id) => id,
-            isocosm_vtt::native::ParticipantInput::Join => {
-                campaign = campaign.with_commands(&[isocosm::Command::Join], 0).map_err(|error| error.to_string())?;
+            isocosm_native::native::ParticipantInput::Existing(id) => id,
+            isocosm_native::native::ParticipantInput::Join => {
+                campaign = campaign.with_commands(&[cosmograph::Command::Join], 0).map_err(|error| error.to_string())?;
                 campaign.table_session().entries.last().ok_or("native join entry is absent")?.outcome
                     .strip_prefix("participant:").ok_or("native join returned no participant")?
                     .parse().map_err(|_| "native join returned an invalid participant")?
@@ -178,9 +178,9 @@ impl HostSession {
         validate_binding_change(&self.state, campaign.table_session(), self.state.native_table.as_ref(), &input.table)?;
         let mut table = input.table.clone();
         let prior = self.state.native_table.as_ref().map(|old|
-            isocosm_vtt::native::GameBindings::decode(&old.game).map(|game| game.roster_revision()))
+            isocosm_native::native::GameBindings::decode(&old.game).map(|game| game.roster_revision()))
             .transpose()?.unwrap_or(0);
-        let mut game = isocosm_vtt::native::GameBindings::decode(&table.game)?;
+        let mut game = isocosm_native::native::GameBindings::decode(&table.game)?;
         if game.roster_revision() != prior { return Err("binding input rewrites its accepted roster revision".into()); }
         let revision = roster_revision(self.state.native_table.as_ref(), &table)?;
         if revision != prior {

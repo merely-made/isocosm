@@ -17,14 +17,14 @@ use chirograph::{
 use graphshell_endpoint::{
     IntentSink, PresentationSource, ProjectionCatalog, ProjectionNoticeSource, ProjectionSource,
 };
-use isocosm::{Command, Session};
-use isocosm_host::{
+use cosmograph::{Command, Session};
+use cosmograph_host::{
     binding::Binding,
     endpoint::disclosure::{self, Disclosure, Item, NULL, action, card, rejected, value},
     window::Window,
     world::World,
 };
-use isocosm_overlay::{AttentionSet, ParticipantHandle, Seat};
+use cosmograph_overlay::{AttentionSet, ParticipantHandle, Seat};
 
 use crate::contract::{Reading, mode::{ModeState, clock, life}};
 

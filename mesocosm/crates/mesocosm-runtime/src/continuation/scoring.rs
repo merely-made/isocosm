@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::{physical, Game};
-use isocosm::{Session, Result, lineage::{Review, boundary::{self, Candidate, Score}}};
+use cosmograph::{Session, Result, lineage::{Review, boundary::{self, Candidate, Score}}};
 
 #[derive(Default)]
 pub(crate) struct Scorer { source: Option<boundary::ScoringSource> }

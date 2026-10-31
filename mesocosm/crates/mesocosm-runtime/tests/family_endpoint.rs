@@ -5,12 +5,12 @@
 
 use chirograph::{IntentInvocation, IntentResult, ProjectionSnapshot};
 use graphshell_endpoint::{IntentSink, ProjectionCatalog, ProjectionSource};
-use isocosm::{
+use cosmograph::{
     Execution,
     directing::interim::{OnCollapse, Pace},
     directing::readings::Mode,
 };
-use isocosm_host::{fixtures::fixture, world::World};
+use cosmograph_host::{fixtures::fixture, world::World};
 use isonetry::family::{FamilyHost, FamilyReplica, SessionId};
 use mesocosm_runtime::{
     continuation::LoopSettings,
@@ -85,7 +85,7 @@ fn reproduce(
 fn unchanged(
     host: &FamilyHost,
     endpoint: &mut MesocosmEndpoint,
-    before: (u64, u64, isocosm_host::save::WorldSave),
+    before: (u64, u64, cosmograph_host::save::WorldSave),
 ) {
     assert_eq!(host.sequence(), before.0);
     assert_eq!(host.revision().unwrap(), before.1);

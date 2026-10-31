@@ -15,14 +15,14 @@
 
 use std::cell::Ref;
 
-use isocosm::directing::interim::{Handover, Happening, Interim, OnCollapse, Pace, Start};
-use isocosm::directing::readings::{Mode, View};
-use isocosm::schema::{Entity, Id, Tick};
-use isocosm::simulation::{Genesis, Simulation};
-use isocosm::{Execution, Session};
-use isocosm_host::drive::{Button, Context, Driver, InputRefusal, Pacing, Pick, Pointed, Press, Product};
-use isocosm_host::world::World;
-use isocosm_overlay::mesocosm::{MesocosmIntent, MesocosmIntentEnvelope};
+use cosmograph::directing::interim::{Handover, Happening, Interim, OnCollapse, Pace, Start};
+use cosmograph::directing::readings::{Mode, View};
+use cosmograph::schema::{Entity, Id, Tick};
+use cosmograph::simulation::{Genesis, Simulation};
+use cosmograph::{Execution, Session};
+use cosmograph_host::drive::{Button, Context, Driver, InputRefusal, Pacing, Pick, Pointed, Press, Product};
+use cosmograph_host::world::World;
+use cosmograph_overlay::mesocosm::{MesocosmIntent, MesocosmIntentEnvelope};
 use serde::{Deserialize, Serialize};
 
 use crate::glyphs::{GlyphReading, GlyphRules};
@@ -43,7 +43,7 @@ mod frame;
 pub use translate::Refusal;
 
 /// Default ceiling on rounds one `advance` call runs.
-pub const DEFAULT_MAX_STEPS_PER_ADVANCE: u64 = isocosm_host::drive::DEFAULT_MAX_STEPS;
+pub const DEFAULT_MAX_STEPS_PER_ADVANCE: u64 = cosmograph_host::drive::DEFAULT_MAX_STEPS;
 
 /// The world section that holds Mesocosm's game.
 pub const MODE: &str = "mesocosm";
@@ -69,27 +69,27 @@ impl Founded {
         Self::generated_with_affinity(seed, population, None)
     }
     pub fn generated_with_affinity(seed: u64, population: u64,
-        affinity: Option<isocosm::rules::Affinity>) -> Result<Self, String> {
-        let grid = isocosm::map::Grid {
+        affinity: Option<cosmograph::rules::Affinity>) -> Result<Self, String> {
+        let grid = cosmograph::map::Grid {
             width: 3,
             height: 2,
-            ..isocosm::map::Grid::drawn(seed)
+            ..cosmograph::map::Grid::drawn(seed)
         };
-        let genesis = isocosm::Founding {
+        let genesis = cosmograph::Founding {
             seed,
             affinity,
             population,
             sites: grid.width * grid.height,
-            map: Some(isocosm::map::Layout::Grid(grid)),
+            map: Some(cosmograph::map::Layout::Grid(grid)),
             ecology: true,
             // Mesocosm's worlds wound and rest at the probe's rates (704, the
             // 2026-10-18 note to ruling 227); the generator's default does not.
-            bodies: Some(isocosm::bodied::Bodies {
-                hazard: isocosm::harm::hazard::RATE,
-                wound: isocosm::harm::hazard::CELLS,
+            bodies: Some(cosmograph::bodied::Bodies {
+                hazard: cosmograph::harm::hazard::RATE,
+                wound: cosmograph::harm::hazard::CELLS,
                 ..Default::default()
             }),
-            played: Some(isocosm::directing::Played {
+            played: Some(cosmograph::directing::Played {
                 lineage: 1,
                 region_sites: 2,
             }),
@@ -203,7 +203,7 @@ impl Mesocosm {
 
     /// A round's game adopted after its session committed.
     fn finish_round(&mut self, world: &World, game: crate::spatial::Game,
-        flows: Vec<isocosm::flows::Flow>, verified: Option<crate::continuation::VerifiedQuestion>) -> Result<(), String> {
+        flows: Vec<cosmograph::flows::Flow>, verified: Option<crate::continuation::VerifiedQuestion>) -> Result<(), String> {
         self.spatial = game;
         self.verified_question = verified;
         if let Err(why) = self.restore_loop(world) { self.fault = Some(why.clone()); return Err(why); }
@@ -257,7 +257,7 @@ impl Runtime {
         Self::new(Founded::generated(seed, population)?, ticks_per_second)
     }
     pub fn generated_with_affinity(seed: u64, population: u64, ticks_per_second: u32,
-        affinity: Option<isocosm::rules::Affinity>) -> Result<Self, String> {
+        affinity: Option<cosmograph::rules::Affinity>) -> Result<Self, String> {
         Self::new(Founded::generated_with_affinity(seed, population, affinity)?, ticks_per_second)
     }
 
@@ -493,8 +493,8 @@ impl Runtime {
     pub fn view(&self) -> View {
         let lp = &self.product().lp;
         let session = self.session();
-        let critter = session.sim.plays(lp.participant).unwrap_or(isocosm::directing::PLACELESS);
-        isocosm::directing::readings::view(&session.sim, critter, lp.mode)
+        let critter = session.sim.plays(lp.participant).unwrap_or(cosmograph::directing::PLACELESS);
+        cosmograph::directing::readings::view(&session.sim, critter, lp.mode)
     }
 
     /// Native awareness refined by explicit in-site geometry, when the host

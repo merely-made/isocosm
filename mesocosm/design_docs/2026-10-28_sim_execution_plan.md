@@ -20,23 +20,23 @@ each title names its outcome against the doctrine.
   order-free; one deliberate hash move, outcomes the same in distribution.
   E2 is in.
 
-  Links: area Processes and rules · draws on 454, 958 · governs isocosm::execute, isocosm::stage · summary Amount, bite, risk and soma draws are keyed by actor, tick and process, never by commit order, so evaluation is order-free; one deliberate hash move.
+  Links: area Processes and rules · draws on 454, 958 · governs cosmograph::execute, cosmograph::stage · summary Amount, bite, risk and soma draws are keyed by actor, tick and process, never by commit order, so evaluation is order-free; one deliberate hash move.
 
 - **D2, exactness (2026-10-19), applies Processes 6, refines Mesocosm 5:** "Statistical (Recommended)". Mesocosm's far sites run as the
   crowd; the played critter and every noted member always run as
   individuals.
 
-  Links: area Processes and rules · draws on 75, 113, 211 · governs isocosm::probe::crowd · summary Mesocosm's worlds are statistical: far sites run as the crowd, the played critter and every noted member as individuals.
+  Links: area Processes and rules · draws on 75, 113, 211 · governs cosmograph::probe::crowd · summary Mesocosm's worlds are statistical: far sites run as the crowd, the played critter and every noted member as individuals.
 
 - **D3, near (2026-10-19), refines Directing 5:** "Roots plus one hop (Recommended)". Attention roots and everything
   within one hop of the played critter's site; promote within one hop, demote
   at two or more.
 
-  Links: area Directing and play · draws on 212, 742 · governs isocosm::directing::tier · summary Near is the attention roots and everything within one hop of the played critter's site; the band is owed before E5.
+  Links: area Directing and play · draws on 212, 742 · governs cosmograph::directing::tier · summary Near is the attention roots and everything within one hop of the played critter's site; the band is owed before E5.
 
 - **D4, order (2026-10-19), refines Processes 7:** "Speed first (Recommended)". E1, E2, E3, then E4 and E5.
 
-  Links: area Processes and rules · draws on 978 · governs isocosm::schedule · summary Speed first: waking, draw keys and parallel evaluation (E1 to E3) before the crowd and the tier line (E4, E5).
+  Links: area Processes and rules · draws on 978 · governs cosmograph::schedule · summary Speed first: waking, draw keys and parallel evaluation (E1 to E3) before the crowd and the tier line (E4, E5).
 
 - **D5, stage bodies by `Arc` (2026-10-20), applies Schema 9:** "Accept A, you number it". The
   stage holds the `Arc<Entity>` that `body_shared_at_start` returns and
@@ -46,7 +46,7 @@ each title names its outcome against the doctrine.
   are unchanged; serialisation, hashes and saves unchanged. Whether `Part`
   also goes behind an `Arc` comes back once this is measured.
 
-  Links: area The sim's schema and saves · draws on 338, 975 · governs isocosm::stage::Stage, isocosm::population::Population · summary The stage holds each body by the Arc it starts with and copies it only on its first write; serialisation, hashes and saves unchanged.
+  Links: area The sim's schema and saves · draws on 338, 975 · governs cosmograph::stage::Stage, cosmograph::population::Population · summary The stage holds each body by the Arc it starts with and copies it only on its first write; serialisation, hashes and saves unchanged.
 
 - **D6, `foregone` only on direct acts (2026-10-20), applies Directing 4:** "Accept B, you number it".
   `run_inner` fills `Receipt.foregone` for `Run::Act` only; scheduled and
@@ -54,7 +54,7 @@ each title names its outcome against the doctrine.
   list. Law A's record and ruling 685's reading are kept receipts, which
   still carry it.
 
-  Links: area Directing and play · draws on 685 · governs isocosm::execute, isocosm::simulation::Receipt · summary A receipt's foregone list is filled for direct acts only; scheduled and planned receipts carry an empty one.
+  Links: area Directing and play · draws on 685 · governs cosmograph::execute, cosmograph::simulation::Receipt · summary A receipt's foregone list is filled for direct acts only; scheduled and planned receipts carry an empty one.
 
 - **D7, parts by `Arc` before E1 (2026-10-23), applies Schema 9:** "Part by
   Arc, then gate index (Recommended)". A body's parts map holds each part
@@ -65,7 +65,7 @@ each title names its outcome against the doctrine.
   with new figures. This settles D5's open half and amends D4's order on
   the measured split (Findings, 2026-10-23, where an accepted act goes).
 
-  Links: area The sim's schema and saves · draws on 975, sim-execution D5 · amends sim-execution D4 · governs isocosm::schema::Entity, isocosm::schedule::Filed · summary A body's parts are held by Arc and copied only when written; that and a cheaper gate index come before E1.
+  Links: area The sim's schema and saves · draws on 975, sim-execution D5 · amends sim-execution D4 · governs cosmograph::schema::Entity, cosmograph::schedule::Filed · summary A body's parts are held by Arc and copied only when written; that and a cheaper gate index come before E1.
 
 - **D8, deliberation and planning before E1 (2026-10-23), applies Directing
   4 and Processes 8:** "Deliberation and planning". After D7, a
@@ -75,7 +75,7 @@ each title names its outcome against the doctrine.
   813) or how shared ground is shared out (454) comes back as a question.
   E1 waits; this amends D7's order.
 
-  Links: area Directing and play · draws on 454, 683, 813, sim-execution D7 · amends sim-execution D7 · governs isocosm::directing::choice, isocosm::schedule · summary After D7, deliberation and a shared-ground pass's plan are probed and cut before E1, keeping how choices are made and ground shared.
+  Links: area Directing and play · draws on 454, 683, 813, sim-execution D7 · amends sim-execution D7 · governs cosmograph::directing::choice, cosmograph::schedule · summary After D7, deliberation and a shared-ground pass's plan are probed and cut before E1, keeping how choices are made and ground shared.
 
 - **D9, deliberation cut without changing a choice (2026-10-23), applies
   Directing 4:** "Narrow the prey scan (Recommended), Skip unchanged
@@ -87,7 +87,7 @@ each title names its outcome against the doctrine.
   any acceptable prey, which would change the prey a suggestion names, was
   not chosen.
 
-  Links: area Directing and play · draws on 683, 813, sim-execution D8 · governs isocosm::targets, isocosm::directing::choice · summary A prey search visits only possible prey, and an empty choice is scored again only when the world has changed since.
+  Links: area Directing and play · draws on 683, 813, sim-execution D8 · governs cosmograph::targets, cosmograph::directing::choice · summary A prey search visits only possible prey, and an empty choice is scored again only when the world has changed since.
 
 - **D10, a shared-ground act keeps its planned writes (2026-10-23), applies
   Processes 8:** "Reuse the plan's stage (Recommended)". When an act's
@@ -96,7 +96,7 @@ each title names its outcome against the doctrine.
   again; this holds only if effects read nothing but the pass's start, and
   the exact check decides it, any difference coming back as a question.
 
-  Links: area Processes and rules · draws on 454, sim-execution D8 · governs isocosm::schedule, isocosm::execute · summary An act whose shares cover its plan keeps the planned stage and only re-checks fit before commit.
+  Links: area Processes and rules · draws on 454, sim-execution D8 · governs cosmograph::schedule, cosmograph::execute · summary An act whose shares cover its plan keeps the planned stage and only re-checks fit before commit.
 
 - **D11, D9b dropped and the prey scan narrowed further (2026-10-23),
   applies Directing 4:** "Drop D9b (Recommended)" and "Both narrowings
@@ -108,7 +108,7 @@ each title names its outcome against the doctrine.
   not read the prey once per search, those that do once per candidate; the
   same prey are accepted and the same draw made. This amends D9.
 
-  Links: area Directing and play · draws on 683, 813, sim-execution D9 · amends sim-execution D9 · governs isocosm::targets · summary Skipping unchanged re-choices is dropped; a prey search files living and dead apart and tests prey-independent requirements once.
+  Links: area Directing and play · draws on 683, 813, sim-execution D9 · amends sim-execution D9 · governs cosmograph::targets · summary Skipping unchanged re-choices is dropped; a prey search files living and dead apart and tests prey-independent requirements once.
 
 - **D12, D10 tried where provably safe, then dropped (2026-10-23), applies
   Processes 8:** "Reuse where provably safe", then "Drop D10, go to E1
@@ -120,7 +120,7 @@ each title names its outcome against the doctrine.
   cloning the stage costing more than the four ledger effects it saved.
   Shared-ground acts keep both evaluations; E1 is next. This amends D10.
 
-  Links: area Processes and rules · draws on 454, sim-execution D10 · amends sim-execution D10 · governs isocosm::execute · summary Keeping a plan's stage for its act, tried where provably safe, was exact but slower and is dropped; shared-ground acts evaluate twice.
+  Links: area Processes and rules · draws on 454, sim-execution D10 · amends sim-execution D10 · governs cosmograph::execute · summary Keeping a plan's stage for its act, tried where provably safe, was exact but slower and is dropped; shared-ground acts evaluate twice.
 
 - **D13, E1 in three parts (2026-10-23), applies Processes 7:** "E1a, then
   E1b, then E1c (Recommended)" and, for mood, "Measure, then decide
@@ -132,7 +132,7 @@ each title names its outcome against the doctrine.
   process leaves deliberative members unfiltered, so no choice moves to a
   later pass.
 
-  Links: area Processes and rules · draws on 258, 286, 683, 813, sim-execution D1, sim-execution D4 · governs isocosm::schedule::Filed · summary Waking is built as more gates, then re-filing by what an act changed, then an index kept across advances, each exact.
+  Links: area Processes and rules · draws on 258, 286, 683, 813, sim-execution D1, sim-execution D4 · governs cosmograph::schedule::Filed · summary Waking is built as more gates, then re-filing by what an act changed, then an index kept across advances, each exact.
 
 - **D14, E1a by cheap necessary gates, mood left out (2026-10-23), applies
   Processes 7:** "Cheap necessary gates (Recommended)". Gates that read a
@@ -143,7 +143,7 @@ each title names its outcome against the doctrine.
   whole. A site's conditions, a lookup, stay read whole. Mood, read anew
   nearly every tick, is not gated. This amends D13.
 
-  Links: area Processes and rules · draws on 258, 286, sim-execution D13 · amends sim-execution D13 · governs isocosm::schedule::Filed · summary Rest is filed by a lost cell its healing needs, a site's condition read as the act reads it; mood is not gated.
+  Links: area Processes and rules · draws on 258, 286, sim-execution D13 · amends sim-execution D13 · governs cosmograph::schedule::Filed · summary Rest is filed by a lost cell its healing needs, a site's condition read as the act reads it; mood is not gated.
 
 - **D15, a kind's decision rate on its lineage (2026-10-28), refines
   Processes 7:** "On the lineage (Recommended)". A lineage carries a
@@ -151,7 +151,7 @@ each title names its outcome against the doctrine.
   splits carry it. Asked after a talk on tick cost: "Every tick, every
   member is reconsidered for every act that's due ... That needs changing."
 
-  Links: area Processes and rules · draws on 258, sim-execution D4 · governs isocosm::schema::Lineage, isocosm::schedule · summary A lineage's decision period paces its members' choices and moves.
+  Links: area Processes and rules · draws on 258, sim-execution D4 · governs cosmograph::schema::Lineage, cosmograph::schedule · summary A lineage's decision period paces its members' choices and moves.
 
 - **D16, decisions are choices and moves (2026-10-28), refines Processes
   7:** "Choices and moves (Recommended)". Choice processes and movement are
@@ -159,14 +159,14 @@ each title names its outcome against the doctrine.
   out when read, their crossings kept as due events per member, never
   slowed.
 
-  Links: area Processes and rules · draws on 159, 227, 906, sim-execution D1 · governs isocosm::rules::mind, isocosm::ecology, isocosm::schedule · summary Choices and moves are paced by the lineage; bodily rates are worked out when read, their crossings due events per member.
+  Links: area Processes and rules · draws on 159, 227, 906, sim-execution D1 · governs cosmograph::rules::mind, cosmograph::ecology, cosmograph::schedule · summary Choices and moves are paced by the lineage; bodily rates are worked out when read, their crossings due events per member.
 
 - **D17, order (2026-10-28), amends D4 and D13:** "E1c, 2, 1, 3
   (Recommended)". E1c, then E7 (rates worked out when read), then E8
   (decision periods), then E4 and E5. E2 and E3 come back after E8 with
   new figures.
 
-  Links: area Processes and rules · draws on sim-execution D4, sim-execution D13 · amends sim-execution D4, sim-execution D13 · governs isocosm::schedule · summary E1c, then rates worked out when read, then decision periods per lineage, then the crowd and the tier line.
+  Links: area Processes and rules · draws on sim-execution D4, sim-execution D13 · amends sim-execution D4, sim-execution D13 · governs cosmograph::schedule · summary E1c, then rates worked out when read, then decision periods per lineage, then the crowd and the tier line.
 
 - **D18, wired first, validated after (2026-10-28), refines Method 4:**
   "What I value is everything being wired up at the very least before I
@@ -185,14 +185,14 @@ each title names its outcome against the doctrine.
   "10 / 2 / 5 (Recommended)". A played world's producers decide every 10
   ticks, consumers every 2, decomposers every 5 (`ecology::rates::DECIDES`).
 
-  Links: area Processes and rules · draws on sim-execution D15, sim-execution D16 · governs isocosm::ecology::rates, isocosm::directing::found · summary Producers decide every 10 ticks, consumers every 2, decomposers every 5.
+  Links: area Processes and rules · draws on sim-execution D15, sim-execution D16 · governs cosmograph::ecology::rates, cosmograph::directing::found · summary Producers decide every 10 ticks, consumers every 2, decomposers every 5.
 
 - **D20, meals scale with the decision period (2026-10-28), applies
   Processes 7:** "Scale meals by period (Recommended)". A meal a choice
   takes is its amount times its eater's period, so a slower decider eats as
   much over the ticks it lets pass.
 
-  Links: area Processes and rules · draws on sim-execution D15, sim-execution D19 · governs isocosm::stage · summary A meal taken by a choice is its amount times the eater's decision period.
+  Links: area Processes and rules · draws on sim-execution D15, sim-execution D19 · governs cosmograph::stage · summary A meal taken by a choice is its amount times the eater's decision period.
 
 - **D21, the head at 10 ticks a second (2026-10-28), amends case 978:**
   "10 a second (Recommended)". TD2's aspiration becomes the head's default
@@ -204,7 +204,7 @@ each title names its outcome against the doctrine.
   the crowd tier". E8 was built before E7b once rest's deliberation proved
   the larger cost; E7b comes next, then E4 and E5.
 
-  Links: area Processes and rules · draws on sim-execution D17 · governs isocosm::ecology · summary E7b, then the crowd and the tier line.
+  Links: area Processes and rules · draws on sim-execution D17 · governs cosmograph::ecology · summary E7b, then the crowd and the tier line.
 
 - **D23, three tiers (2026-10-28), applies Processes 6:** "I think the near
   tier is necessarily dependent on the viewing dimension, but the far tier,
@@ -216,7 +216,7 @@ each title names its outcome against the doctrine.
   (below) and keyed here. How near as the rendered area sits with D3's
   "roots plus one hop" comes back with the band question before E5.
 
-  Links: area Processes and rules · draws on 113, 742, sim-execution D2, sim-execution D3 · governs isocosm::directing::tier · summary Near is the rendered area, view-dependent; far within it is presentation; the aggregate tier lies outside it and never depends on the view.
+  Links: area Processes and rules · draws on 113, 742, sim-execution D2, sim-execution D3 · governs cosmograph::directing::tier · summary Near is the rendered area, view-dependent; far within it is presentation; the aggregate tier lies outside it and never depends on the view.
 
 - **D24, the aggregate runs a population model (2026-10-28), refines
   Processes 6:** "Population model (Recommended)". Per site and lineage:
@@ -226,41 +226,41 @@ each title names its outcome against the doctrine.
   fold. Asked after a measure of about 1.2 members per exact body state in
   played worlds, so the exact-state crowd would barely compress them.
 
-  Links: area Processes and rules · draws on 113, 207, 261, 266, sim-execution D2, sim-execution D23 · amends sim-execution D2 · governs isocosm::probe::crowd · summary Outside the rendered area, a population model per site and lineage, not a histogram of exact states.
+  Links: area Processes and rules · draws on 113, 207, 261, 266, sim-execution D2, sim-execution D23 · amends sim-execution D2 · governs cosmograph::probe::crowd · summary Outside the rendered area, a population model per site and lineage, not a histogram of exact states.
 
 - **D25, near is the rendered area plus the roots (2026-10-28), refines
   Directing 5:** "Rendered area plus roots (Recommended)". Everything
   rendered, plus the played critter, pinned and examined things and those
   they care for, wherever they are. This replaces D3's one hop.
 
-  Links: area Directing and play · draws on 212, 742, sim-execution D3, sim-execution D23 · amends sim-execution D3 · governs isocosm::directing::tier · summary Near is the rendered area plus the attention roots and those they care for.
+  Links: area Directing and play · draws on 212, 742, sim-execution D3, sim-execution D23 · amends sim-execution D3 · governs cosmograph::directing::tier · summary Near is the rendered area plus the attention roots and those they care for.
 
 - **D26, a band in ticks (2026-10-28), refines Directing 5:** "A band in
   ticks (Recommended)". A member keeps its tier until it has been out of
   that tier's area for a band of ticks, a world rule.
 
-  Links: area Directing and play · draws on 742, sim-execution D25 · governs isocosm::directing::tier · summary A member keeps its tier until out of its area for a band of ticks.
+  Links: area Directing and play · draws on 742, sim-execution D25 · governs cosmograph::directing::tier · summary A member keeps its tier until out of its area for a band of ticks.
 
 - **D27, bands run through the scheduler (2026-10-28), applies Processes
   6:** "Through the scheduler (Recommended)". Each band is a representative
   body with a count, run by the existing scheduler and process definitions
   with multiplicity (219); feeding, risk and death gain band-aware forms.
 
-  Links: area Processes and rules · draws on 219, sim-execution D24 · governs isocosm::schedule, isocosm::population · summary A band is a representative body with a count, run by the scheduler with multiplicity.
+  Links: area Processes and rules · draws on 219, sim-execution D24 · governs cosmograph::schedule, cosmograph::population · summary A band is a representative body with a count, run by the scheduler with multiplicity.
 
 - **D28, a representative plus a pool (2026-10-28), applies Processes 6:**
   "Representative plus pool (Recommended)". The band keeps a ledger of the
   difference between its members' summed matter and count times the
   representative's, so totals are conserved; lifting draws from it.
 
-  Links: area Processes and rules · draws on sim-execution D24, sim-execution D27 · governs isocosm::population · summary A band's pool holds the difference between its members' matter and the representative's times its count.
+  Links: area Processes and rules · draws on sim-execution D24, sim-execution D27 · governs cosmograph::population · summary A band's pool holds the difference between its members' matter and the representative's times its count.
 
 - **D29, bands by age and felt needs (2026-10-28), applies Processes 6:**
   "Age band and felt needs (Recommended)". Besides site and lineage, a band
   is an age band of a world-rule width (default a third of maturity) and
   the set of the mind's needs its members feel.
 
-  Links: area Processes and rules · draws on 227, sim-execution D24 · governs isocosm::population · summary A band is a site, lineage, age band and set of felt needs.
+  Links: area Processes and rules · draws on 227, sim-execution D24 · governs cosmograph::population · summary A band is a site, lineage, age band and set of felt needs.
 
 - **D30, the Places cache, then far members off the physical path
   (2026-10-28), amends D22:** "Places cache, then far off-path
@@ -269,7 +269,7 @@ each title names its outcome against the doctrine.
   plans (Findings). First why Places is derived anew so often, then the
   aggregate tier's members stop walking and route-searching (E4b, E5).
 
-  Links: area Processes and rules · draws on sim-execution D22, sim-execution D24 · amends sim-execution D22 · governs isocosm::spatial · summary Fix the Places re-derivation, then take far members off the physical path.
+  Links: area Processes and rules · draws on sim-execution D22, sim-execution D24 · amends sim-execution D22 · governs cosmograph::spatial · summary Fix the Places re-derivation, then take far members off the physical path.
 
 - **D31, the head stays at 10 ticks a second (2026-10-28), applies D21:**
   "Keep 10, revisit after (Recommended)". The clock defers at either tempo
@@ -287,7 +287,7 @@ each title names its outcome against the doctrine.
   one-site world walks it (a 1,024-window cache cut derivations from 356 to
   156 at a 6.1 GB peak; reverted).
 
-  Links: area Directing and play · draws on 742, sim-execution D23, sim-execution D25, sim-execution D26, sim-execution D30 · governs isocosm::attention, isocosm::spatial · summary The head's view windows are an attention region; outside them members hold no pose.
+  Links: area Directing and play · draws on 742, sim-execution D23, sim-execution D25, sim-execution D26, sim-execution D30 · governs cosmograph::attention, cosmograph::spatial · summary The head's view windows are an attention region; outside them members hold no pose.
 
 - **D33, the frame off on main for now (2026-10-28), applies D18:** "Frame
   off on main for now (Recommended)". A headed look at E5d found the played
@@ -303,7 +303,7 @@ each title names its outcome against the doctrine.
   from the near tier and kept as a world rule, so the far tier agrees with
   the near in distribution.
 
-  Links: area Processes and rules · draws on 113, sim-execution D2, sim-execution D24 · governs isocosm::spatial::foraging · summary A far forager eats at the rate near foragers are measured to eat.
+  Links: area Processes and rules · draws on 113, sim-execution D2, sim-execution D24 · governs cosmograph::spatial::foraging · summary A far forager eats at the rate near foragers are measured to eat.
 
 - **D35, far meals by an encounter rate from prey density (2026-10-28),
   replaces D34:** "Encounter rate from prey density (Recommended)". A far
@@ -314,7 +314,7 @@ each title names its outcome against the doctrine.
   posed food (5 meals per 61 hungry ticks), so paced far foragers starved
   (11 dead by tick 21) and unpaced ones overgrazed and crashed (9 dead).
 
-  Links: area Processes and rules · draws on 113, sim-execution D24, sim-execution D34 · replaces sim-execution D34 · governs isocosm::spatial::foraging · summary A far forager finds food by a saturating encounter rate on its site's prey matter.
+  Links: area Processes and rules · draws on 113, sim-execution D24, sim-execution D34 · replaces sim-execution D34 · governs cosmograph::spatial::foraging · summary A far forager finds food by a saturating encounter rate on its site's prey matter.
 
 - **D36, far foragers wait at site grain (2026-10-28), applies Processes
   6:** "Wait at site grain (Recommended)". A far forager's reach is its
@@ -325,7 +325,7 @@ each title names its outcome against the doctrine.
   it, so between feeds its only choice was a move, and consumers left the
   only site with prey and starved elsewhere.
 
-  Links: area Processes and rules · draws on 113, sim-execution D32, sim-execution D35 · governs isocosm::spatial::foraging · summary A far forager whose site holds food it can eat waits there for its feed, as a posed forager waits with food in reach.
+  Links: area Processes and rules · draws on 113, sim-execution D32, sim-execution D35 · governs cosmograph::spatial::foraging · summary A far forager whose site holds food it can eat waits there for its feed, as a posed forager waits with food in reach.
 
 - **D37, far prey read by the forager's own intake (2026-10-28), applies
   Processes 6:** "Each forager's intake (Recommended)". D35's M is the prey
@@ -336,7 +336,7 @@ each title names its outcome against the doctrine.
   consumers and the ground read as prey), so far draws hit and then found
   nothing.
 
-  Links: area Processes and rules · draws on sim-execution D35 · governs isocosm::spatial::tier, isocosm::targets · summary A far forager's prey matter is what the ordinary search accepts for it, by its own intake.
+  Links: area Processes and rules · draws on sim-execution D35 · governs cosmograph::spatial::tier, cosmograph::targets · summary A far forager's prey matter is what the ordinary search accepts for it, by its own intake.
 
 - **D38, a resting body re-settles (2026-10-28), applies Bodies 2:**
   "Re-settle at advance end (Recommended)". At the end of each advance a
@@ -348,7 +348,7 @@ each title names its outcome against the doctrine.
   nothing re-poses a resting body, since matter does not change its body
   revision; the same happens with the frame off.
 
-  Links: area Bodies and anatomy · draws on sim-execution D32, sim-execution D33 · governs isocosm::spatial · summary A posed member whose stance stops balancing takes the nearest balanced stance at the end of the advance.
+  Links: area Bodies and anatomy · draws on sim-execution D32, sim-execution D33 · governs cosmograph::spatial · summary A posed member whose stance stops balancing takes the nearest balanced stance at the end of the advance.
 
 - **D39, a crowded frame draws by the ordinary search (2026-10-28),
   applies Directing 5:** "Fall back, skip repeats (Recommended)". A member
@@ -361,7 +361,7 @@ each title names its outcome against the doctrine.
   surrounded each ran the near-food search to its candidate budget and
   failed, and the draw retried them every advance.
 
-  Links: area Directing and play · draws on sim-execution D32, sim-execution D36 · governs isocosm::spatial · summary A drawn member with no free stance near its food takes the ordinary search, and that food counts as crowded for the rest of the advance.
+  Links: area Directing and play · draws on sim-execution D32, sim-execution D36 · governs cosmograph::spatial · summary A drawn member with no free stance near its food takes the ordinary search, and that food counts as crowded for the rest of the advance.
 
 - **D40, a frame's draw stops at its first failure (2026-10-29), applies
   Directing 5:** "Stop at first failure (Recommended)". A frame's draw ends
@@ -372,7 +372,7 @@ each title names its outcome against the doctrine.
   the members its share asked for, and the members that found no stance
   anywhere were searched for again every advance.
 
-  Links: area Directing and play · draws on sim-execution D32, sim-execution D39 · governs isocosm::spatial · summary A frame's draw stops for the advance at its first member with no stance in the frame.
+  Links: area Directing and play · draws on sim-execution D32, sim-execution D39 · governs cosmograph::spatial · summary A frame's draw stops for the advance at its first member with no stance in the frame.
 
 ## Constraints
 
@@ -468,7 +468,7 @@ Three measured pressure points for fluid play and larger sites: (pres.1) difficu
 - From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:81-86`, `:171-177`, `:263-269`, `:362-385`; `archive_docs/2026-10-28/2026-10-22_foot_placement_plan.md:506-507`.
 
 ### EX3. Scale stress
-A matrix of world size against population with tick cost, hash cost, memory and residency, every number reproducible from a cargo run; the `isocosm-scale` remeasure is its first native instance. The aggregate form and cohort execution it once covered are E4 to E6; zoom is the presentation plan's L10.
+A matrix of world size against population with tick cost, hash cost, memory and residency, every number reproducible from a cargo run; the `cosmograph-scale` remeasure is its first native instance. The aggregate form and cohort execution it once covered are E4 to E6; zoom is the presentation plan's L10.
 - Done when: "every number reproducible from a cargo run"; no other threshold stated
 - Needs: -
 - Rulings: 793
@@ -492,7 +492,7 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 ## Findings
 - 2026-10-28: E1c built (`schedule/filed/kept.rs`): the index is reconciled at each advance by each group's body handle and each site's conditions, rebuilt on other rules, movement mode or routes, dropped on a refused advance. A played tick now costs well under 978's premise of 0.45 s (receipts: `archive_docs/receipts/2026-10-28_sim_execution_plan_receipts.md`), so its tempo question is open again. No threads exist in the sim's evaluation (thread scopes only in the probe bin and interim reproduction), so E3 is not built.
 - 2026-10-28: E2 is not built: bite and amount draws are still keyed by the act number (`stage/staged/meal.rs`, `stage/staged/mod.rs`); soma draws by id.
-- 2026-10-28: The crowd lives only in `shared/isocosm/src/probe/crowd/`; `TierLine` (`directing/tier.rs`) is exported and unwired.
+- 2026-10-28: The crowd lives only in `shared/cosmograph/src/probe/crowd/`; `TierLine` (`directing/tier.rs`) is exported and unwired.
 - 2026-10-28: The head's tick is physical work, not scheduling bookkeeping: a headless play run (`mesocosm-genet --play --curve 60`) spent about 12.5 s a tick in scheduling, mostly foraging route search, Places derivation (`terrain.places`, re-derived hundreds of times in 60 ticks) and walking plans; one boundary forecast replay took minutes (receipts). The battery's site-grain worlds exercise none of it.
 - 2026-10-28: After E7a, rest (`harm/rest.rs`) is the largest pass: a Choice act and the first choice pass of each tick, so it carries every deciding member's deliberation; E8's periods are what cut it. The death hazards are a small share, so E7b is minor. A write outside an act (a command such as a wound) does not settle strain first, so the ticks before it accrue at the new mood.
 - 2026-10-28: What D15 to D17 touch: a process has one `period` for the world (`rules/mod.rs:193`); the queue is keyed by due tick, priority and id, and a pass walks every group or every filed one (`schedule/mod.rs`). Strain and relief run every tick for every member (`rules/mind.rs:50`); so do each lineage's death, age and, from maturity, hazard processes (`ecology.rs:133-190`). The agentless `body:hazard` acts once per world body, not per member (`harm/hazard.rs`). Bite and amount draws are keyed by the act number, so any phase removing accepted acts moves them until E2.

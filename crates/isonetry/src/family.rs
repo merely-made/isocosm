@@ -1,5 +1,5 @@
 //! One host's accepted native log and opaque section updates for the three
-//! Isocosm products. Requests are resolved at the host; replicas apply the
+//! wing's products. Requests are resolved at the host; replicas apply the
 //! recorded native commands and never run a product adapter to decide again.
 //!
 //! The core owns one accepted writer and replicas replay its native records
@@ -12,8 +12,8 @@
 use std::collections::BTreeMap;
 use std::rc::Rc;
 
-use isocosm::{Command, Execution, Session, history::Entry};
-use isocosm_host::{
+use cosmograph::{Command, Execution, Session, history::Entry};
+use cosmograph_host::{
     save::WorldSave,
     world::{Cut, ReplicationSnapshot, World},
 };
@@ -88,14 +88,14 @@ impl Checkpoint {
 
     fn seal(mut self) -> Self {
         self.digest.clear();
-        self.digest = isocosm::digest(&self);
+        self.digest = cosmograph::digest(&self);
         self
     }
 
     fn authentic(&self) -> bool {
         let mut unsigned = self.clone();
         let digest = std::mem::take(&mut unsigned.digest);
-        !digest.is_empty() && digest == isocosm::digest(&unsigned)
+        !digest.is_empty() && digest == cosmograph::digest(&unsigned)
     }
 
     /// Check the digest and declared native/section cut before trusting this
@@ -149,14 +149,14 @@ impl AcceptedRecord {
 
     fn seal(mut self) -> Self {
         self.digest.clear();
-        self.digest = isocosm::digest(&self);
+        self.digest = cosmograph::digest(&self);
         self
     }
 
     fn authentic(&self) -> bool {
         let mut unsigned = self.clone();
         let digest = std::mem::take(&mut unsigned.digest);
-        !digest.is_empty() && digest == isocosm::digest(&unsigned)
+        !digest.is_empty() && digest == cosmograph::digest(&unsigned)
     }
 }
 
@@ -469,7 +469,7 @@ impl FamilyReplica {
             if native.entries.len() != record.native_cut
                 || native.sim.state().tick != record.final_tick
                 || native.sim.state_hash() != record.native_hash
-                || isocosm::digest(sections) != record.section_digest
+                || cosmograph::digest(sections) != record.section_digest
                 || revision != record.revision
             {
                 return Err("accepted record postcondition mismatch".into());
@@ -504,7 +504,7 @@ fn checkpoint(
         native_cut: snapshot.save.native.entries.len(),
         native_hash: snapshot.save.native.state_hash,
         final_tick: snapshot.save.native.tick,
-        section_digest: isocosm::digest(&snapshot.save.sections),
+        section_digest: cosmograph::digest(&snapshot.save.sections),
         revision: snapshot.revision,
         world: snapshot.save,
         digest: String::new(),
@@ -523,7 +523,7 @@ fn verify_checkpoint(checkpoint: &Checkpoint) -> Result<(), String> {
     if checkpoint.world.native.entries.len() != checkpoint.native_cut
         || checkpoint.world.native.state_hash != checkpoint.native_hash
         || checkpoint.world.native.tick != checkpoint.final_tick
-        || isocosm::digest(&checkpoint.world.sections) != checkpoint.section_digest
+        || cosmograph::digest(&checkpoint.world.sections) != checkpoint.section_digest
     {
         return Err("checkpoint contents do not match their declared cut".into());
     }

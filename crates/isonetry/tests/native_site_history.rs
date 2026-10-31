@@ -1,11 +1,11 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
-#[path = "../../isocosm-vtt/tests/native_founding/fixture.rs"]
+#[path = "../../isocosm-native/tests/native_founding/fixture.rs"]
 mod fixture;
-use isocosm::Execution;
-use isocosm_vtt::founding::{Campaign, NativeWorld};
-use isometry_core::{MapDocument, TurnList};
+use cosmograph::Execution;
+use isocosm_native::founding::{Campaign, NativeWorld};
+use isocosm_core::{MapDocument, TurnList};
 use isonetry::{GameEvent, GameSnapshot, GameSourceHistory, HostSession, NativePublication};
 use std::collections::{BTreeMap, BTreeSet};
 

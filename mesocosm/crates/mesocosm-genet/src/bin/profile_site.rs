@@ -3,7 +3,7 @@
 
 //! Cold terrain/place preparation and camera residency over an exact saved site.
 use std::{path::Path,time::Instant};
-use isocosm::{operations::Window,Simulation,Execution};
+use cosmograph::{operations::Window,Simulation,Execution};
 use isometer::{BrickSource,ColumnTerrain,SlabCamera,framed_bricks};
 
 fn main() -> Result<(),String> {
@@ -14,7 +14,7 @@ fn main() -> Result<(),String> {
     let site=t.stands.iter().max_by_key(|(_,s)|s.len()).map(|(id,_)|*id).ok_or("no sites")?;
     let side=sim.genesis().world.footprint.ok_or("no site outline")?.side as i64;
     if std::env::args().any(|s|s=="--probe") { return probe(&sim,t,site,side); }
-    let view=isocosm::terrain::View::of(sim.genesis())?;
+    let view=cosmograph::terrain::View::of(sim.genesis())?;
     let centre=side/2;
     let mut cold=Vec::new();
     let mut local=Vec::new();
@@ -68,17 +68,17 @@ fn main() -> Result<(),String> {
     Ok(())
 }
 
-fn probe(sim:&Simulation,t:&isocosm::spatial::Templates,site:u64,side:i64)->Result<(),String> {
+fn probe(sim:&Simulation,t:&cosmograph::spatial::Templates,site:u64,side:i64)->Result<(),String> {
     use isometer::{TerrainSource,PagedTerrain,Residency,ResidencySettings};
     let stand=t.stands[&site].iter().find(|s|s.actor==Some(38)).unwrap_or(&t.stands[&site][0]);
-    let pose=isocosm::spatial::Pose {at:stand.at,yaw:stand.yaw,feet:stand.feet.clone()};
+    let pose=cosmograph::spatial::Pose {at:stand.at,yaw:stand.yaw,feet:stand.feet.clone()};
     let doc=sim.state().population.get(stand.actor.unwrap()).unwrap().body.as_ref().unwrap();
-    let view=isocosm::terrain::View::of(sim.genesis())?;
+    let view=cosmograph::terrain::View::of(sim.genesis())?;
     let v=isometer::space::volume::Volume::paged(&view,site,[0;2],[side;2],8,&[])?;
     let camera=SlabCamera {centre:v.to_ground(stand.at).map(|x|x as f32),
         forward:mesocosm_genet::section::CameraMode::DimetricNorth.forward(),
         half_height:28.,aspect:1.5,depth:168.,cutaway:None};
-    let contacts=isocosm::spatial::embodiment::contacts(&v,doc,&pose)?;
+    let contacts=cosmograph::spatial::embodiment::contacts(&v,doc,&pose)?;
     let source=ColumnTerrain::new(v.clone(),1);
     let framed=framed_bricks(camera,8.,&source,16383);
     let limits=isometer::lens::AtlasLimits {max_atlas_bytes:8*1024*1024,

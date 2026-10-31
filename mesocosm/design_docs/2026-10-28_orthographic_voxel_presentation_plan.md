@@ -29,7 +29,7 @@ residency policy (`place-graph-engine`); the VTT's overmap readings
   chain refusal. It connects existing paid developmental content and function
   appearance; it does not establish a new actuator force or muscle law.
 
-  Links: area Bodies and anatomy · draws on 511, 512, 531, 758 · governs isocosm::development, isocosm::datasheet::native, mesocosm-genet::section · summary Existing paid body chains and function appearance connect to ordinary play.
+  Links: area Bodies and anatomy · draws on 511, 512, 531, 758 · governs cosmograph::development, cosmograph::datasheet::native, mesocosm-genet::section · summary Existing paid body chains and function appearance connect to ordinary play.
 
 
 - **D1, surface camera (2026-10-21), applies 382:** Mark: "can we... make the
@@ -85,7 +85,7 @@ after the tenant migration.
 Rewritten once by ruling 13 (the resident chunk drawn with the slab); no code
 found. The underground cutaway must stay possible. Whether the section keeps the
 tracer by default or also moves to tile layers is a question below.
-- Done when: "a carved burrow is visible through the cutaway with no tracer in the frame; a radius-zero carve regenerates only the ground units its brick touches, proved by fragment or instance identity; unit count and bytes per revision are reported for one map of each vessel; Isometry's board draws the same picture through the chosen path as from its tile elements today, with the same tiles selectable."
+- Done when: "a carved burrow is visible through the cutaway with no tracer in the frame; a radius-zero carve regenerates only the ground units its brick touches, proved by fragment or instance identity; unit count and bytes per revision are reported for one map of each vessel; Isocosm's board draws the same picture through the chosen path as from its tile elements today, with the same tiles selectable."
 - Needs: the Mesocosm-section question below; `board-on-isometer` for the board's half
 - Rulings: presentation rulings 5, 13
 - From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:1324-1348`
@@ -115,7 +115,7 @@ Verify, then close or finish. Only the first condition has been checked (see Fin
 ### L8. HTML as interchange
 A body, prop or memorial as a self-contained HTML fragment with a declarative
 shadow root. Not built; genet's Shadow DOM has landed and nothing blocks it.
-- Done when: "a body round-trips document to HTML to document with the same part placements and palette; Isometry loads a Mesocosm-authored body from that fragment over P2P; the hagiograph emits a memorial as one such fragment."
+- Done when: "a body round-trips document to HTML to document with the same part placements and palette; Isocosm loads a Mesocosm-authored body from that fragment over P2P; the hagiograph emits a memorial as one such fragment."
 - Needs: `wing-organs` (the hagiograph's memorial)
 - Rulings: presentation ruling 7, angle 3
 - From: `archive_docs/2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md:1395-1407`
@@ -274,7 +274,7 @@ should name this plan.
 - 2026-10-28: no `renderling` in any manifest or lock of this repository; Eponym's README says no local fork is needed since L7. L7's first condition holds; the S0 replay hash and the room-composition condition are unchecked.
 - 2026-10-28: the old claim that `LiveBody` serves the VTT board and Eponym's producer no longer matches the code. Outside `shared/isometer`, only Mesocosm's tenant geometry and a scene-cache test name it. PR2 should reread the consumers before retiring.
 - 2026-10-28: the three tests named in PR2 still exist (`isometer-lens` `tracer_tests/roster.rs:83` and `unlit.rs:437`, `isometer-mesh/tests/attachment.rs:59`); their pass state is unverified. `Quad::corners` (`isometer-mesh/src/greedy.rs:49`) documents counter-clockwise from outside; the y-face reversal is not re-checked.
-- 2026-10-28: the VTT overmap (`crates/isocosm-vtt/src/overmap.rs`) and Mesocosm's minimap and HUD (`mesocosm-genet/src/{maps,hud}.rs`) still exist, so L10 condition 8 has nothing done.
+- 2026-10-28: the VTT overmap (`crates/isocosm-native/src/overmap.rs`) and Mesocosm's minimap and HUD (`mesocosm-genet/src/{maps,hud}.rs`) still exist, so L10 condition 8 has nothing done.
 - 2026-10-28: the tenant now lights with a sun (`section/tenant/geometry.rs` shades by the world normal), so the sim host plan's finding that the body tenant lit with ambient only is closed. Its default-launch capture finding was a one-run observation and is dropped.
 - 2026-10-28: doctrine Presentation 1 records Mark's ruling that Mesocosm opens in the 2:1 dimetric default, which closes the overlay plan's open question on the default view. Doctrine Presentation 2 records Mark's "Per mode" on whether examining fires on approach.
 - 2026-10-28: pres rulings 2 and 5 (bodies and props as DOM, ground as tile layers) are overridden by rulings 10, 13 and 14 (path C); ruling 6 is answered by the ladder. The old plan's L0 and resource paths name crates that no longer exist (`mesocosm-mesh`, `mesocosm-render`); the appearance crate is `isometer-mesh` and the renderer `isometer-render`.

@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::{
+use cosmograph::{
     Execution, Session,
     rules::{Causation, Query},
     spatial::{self as native, embodiment as body},
@@ -15,7 +15,7 @@ use mesocosm_runtime::{
 fn founded() -> Founded {
     let mut founded = Founded::generated(16_003_851_315_348_448_882, 60).unwrap();
     let mut domain = founded.genesis.founding.clone().unwrap();
-    domain.ecology_rates = isocosm::ecology::Rates::A1;
+    domain.ecology_rates = cosmograph::ecology::Rates::A1;
     let bodies = domain.bodies.as_mut().unwrap();
     bodies.roster = true;
     bodies.hazard = [0; 2];
@@ -241,7 +241,7 @@ fn generated_route_arrivals_keep_full_body_support_and_replay() {
     let mut game = Game::default();
     game.found_generated(&mut session).unwrap();
     session
-        .command(isocosm::Command::Act {
+        .command(cosmograph::Command::Act {
             actor: traveller,
             target: None,
             process: key,
@@ -323,7 +323,7 @@ fn a_refused_birth_keeps_its_biology_and_can_gain_a_pose_on_native_arrival() {
     assert!(!game.members.contains_key(&child));
     assert!(game.driver.as_ref().unwrap().children.contains_key(&child));
     session
-        .command(isocosm::Command::Act {
+        .command(cosmograph::Command::Act {
             actor: child,
             target: None,
             process: "test:move-refused-child".into(),

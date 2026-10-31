@@ -6,7 +6,7 @@
 
 //! A graft allowance's receipt in words (`rules::Compatibility`, 755).
 
-use isocosm::rules::GraftReceipt;
+use cosmograph::rules::GraftReceipt;
 
 pub fn compatibility_words(receipt: &GraftReceipt) -> String {
     let requested = receipt.incoming_mg.saturating_add(receipt.retained_mg);

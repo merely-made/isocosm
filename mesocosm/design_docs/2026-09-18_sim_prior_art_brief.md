@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-18
 
-*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
+*Names, 2026-10-30 (wing design record, cases 1036 and 1037): the products are Isocosm (the VTT), Mesocosm and Eponym, peers without a family prefix; the sim they share is Cosmograph. Earlier names: the VTT was Isometry, then Isocosm: VTT; the sim was Isocosm; Eponym was Paredros. Verbatim rulings and quotations keep the old words.*
 
 **Status, 2026-09-18:** brief, for Mark's reading before W2 opens. Nothing
 here is a ruling; it is the references the wing already gives, mapped to the
