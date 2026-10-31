@@ -39,8 +39,8 @@ pub fn site_scene(sim: &Simulation, played: Option<Id>) -> Result<SiteScene, Str
     let site = site_of(sim, played).ok_or("a world with no sites")?;
     let volume = lift(sim, site)?;
     let ground = volume.ground().clone();
-    let bodies = placed(sim, site, &volume);
-    let volumes = body_volumes(&bodies)?;
+    let mut bodies = placed(sim, site, &volume);
+    let volumes = body_volumes(&mut bodies)?;
     Ok(SiteScene {
         walking: cosmograph::spatial::embodiment::walking_rules(sim),
         site,
@@ -57,7 +57,7 @@ pub fn site_scene_visible(sim: &Simulation, played: Option<Id>, visible: &View)
     -> Result<SiteScene, String> {
     let mut scene = site_scene(sim, played)?;
     scene.bodies.retain(|b| visible.shows(b.id));
-    scene.volumes = body_volumes(&scene.bodies)?;
+    scene.volumes = body_volumes(&mut scene.bodies)?;
     Ok(scene)
 }
 
@@ -87,10 +87,10 @@ pub fn site_scene_sighted(runtime: &mesocosm_runtime::Runtime,
             Some(held.pose.clone())
         };
         bodies.push(PlacedBody { id, document, at:volume.to_ground(cell), physical, walks: vec![],
-            materials: native_materials(e),
+            parts: crate::section::skin_parts(e), materials: vec![], palette: vec![],
             tint:tint_of(kingdom::of(e)), alive:e.alive });
     }
-    let volumes = body_volumes(&bodies)?;
+    let volumes = body_volumes(&mut bodies)?;
     Ok(SiteScene { walking: cosmograph::spatial::embodiment::walking_rules(&sim), site:site.site(), ground, window:volume, bodies,
         played:runtime.critter(), volumes })
 }
@@ -125,7 +125,7 @@ pub fn placed(
                 .map(|p| volume.to_ground(p.cell))
                 .unwrap_or_else(|| super::layout::spot(ground, index)),
             tint: tint_of(kingdom::of(entity)),
-            materials: native_materials(entity),
+            parts: crate::section::skin_parts(entity), materials: vec![], palette: vec![],
             alive: entity.alive,
         })
         .collect()
@@ -169,7 +169,7 @@ pub fn placed_physical(sim: &Simulation, site: Id,
         }
         bodies.push(PlacedBody { id, document, at:cell, physical:Some(at.pose.clone()),
             walks: walks.get(&id).cloned().unwrap_or_default(),
-            materials: native_materials(entity),
+            parts: crate::section::skin_parts(entity), materials: vec![], palette: vec![],
             tint:tint_of(kingdom::of(entity)), alive:entity.alive });
     }
     Ok(bodies)
@@ -195,15 +195,11 @@ pub fn site_scene_physical(sim: &Simulation, played: Option<Id>, visible: &View,
         let edits:Vec<_> = sim.state().edits.iter().map(|e| (e.site,e.edit.clone())).collect();
         isometer::space::volume::Volume::paged(&view,site,t.window.min,t.window.max,t.window.depth,&edits)?
     } else { sim.site_volume(site, window)?.as_ref().clone() };
-    let bodies = placed_physical(sim, site, &volume, visible, game)?;
-    let volumes = body_volumes(&bodies)?;
+    let mut bodies = placed_physical(sim, site, &volume, visible, game)?;
+    let volumes = body_volumes(&mut bodies)?;
     Ok(SiteScene { walking: cosmograph::spatial::embodiment::walking_rules(&sim), site, ground:volume.ground().clone(), window:volume, bodies, played, volumes })
 }
 
-/// The same admitted native summaries used by the borrowed close-up.
-fn native_materials(e: &cosmograph::schema::Entity) -> Vec<isometer::render::PartMaterial> {
-    crate::section::bodies::function_materials(&cosmograph::attention::spatial::allocations(e))
-}
 
 /// Read the existing validated placement history; never infer a path between
 /// distant endpoints or replay another visit's steps.

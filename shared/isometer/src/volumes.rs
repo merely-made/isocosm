@@ -91,6 +91,11 @@ impl DeclaredExtentVolumes {
         self.volumes.is_empty()
     }
 
+    /// Hold a form under its own reference, for parts that name it.
+    pub(crate) fn insert(&mut self, reference: VolumeRef, volume: Volume) {
+        self.volumes.insert(reference, volume);
+    }
+
     /// The resolved map, for a consumer that wants the source by value.
     pub fn volumes(&self) -> &VolumeMap {
         &self.volumes
@@ -102,7 +107,12 @@ impl VolumeSource for DeclaredExtentVolumes {
         self.volumes.volume(reference)
     }
 
+    /// A part whose own reference names a form held here (a skinned
+    /// presentation copy) takes that form; any other takes its extent's.
     fn resolve_part(&self, part: &isometer_core::Part) -> Option<(VolumeRef, &Volume)> {
+        if let Some(volume) = self.volumes.volume(part.volume) {
+            return Some((part.volume, volume));
+        }
         let extent = part.half_extent.map(|half| (half.max(0) as u32) * 2);
         let reference = *self.extents.get(&extent)?;
         self.volume(reference).map(|volume| (reference, volume))

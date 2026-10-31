@@ -23,6 +23,7 @@ mod glyphs;
 mod producer;
 mod query;
 mod scene;
+mod skin;
 mod tokens;
 mod volumes;
 
@@ -47,6 +48,7 @@ pub use scene::{
 pub use tokens::{
     MissingLayer, Silhouette, TokenBody, material_colours, mesh_silhouette, scene_volumes,
 };
+pub use skin::{PartSkin, Skin, SkinBody, SkinRules, function_marks, skin};
 pub use volumes::DeclaredExtentVolumes;
 
 /// The volume seam, re-exported so a producer needs one crate in scope.

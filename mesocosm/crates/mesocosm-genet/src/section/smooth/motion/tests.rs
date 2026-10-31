@@ -64,17 +64,19 @@ fn fixture() -> (PlacedBody, SiteScene) {
         walks: vec![],
         physical: Some(pose.clone()),
         tint: [1.; 3],
+        parts: vec![],
         materials: vec![],
+        palette: vec![],
         alive: true,
     };
-    let bodies = vec![body.clone()];
+    let mut bodies = vec![body.clone()];
     let scene = SiteScene {
         walking: None,
         site: 0,
         ground: volume.ground().clone(),
         window: volume,
         played: Some(6),
-        volumes: crate::section::body_volumes(&bodies).unwrap(),
+        volumes: crate::section::body_volumes(&mut bodies).unwrap(),
         bodies,
     };
     (body, scene)
@@ -148,15 +150,17 @@ fn jointed_motion(pivot: bool) -> (PlacedBody, SiteScene, Pose, isometer::core::
                 physical: Some(from),
                 walks: vec![],
                 tint: [1.; 3],
+                parts: vec![],
                 materials: vec![],
+                palette: vec![],
                 alive: true,
             };
-            let bodies = vec![body.clone()];
+            let mut bodies = vec![body.clone()];
             let scene = SiteScene {
                 site: 0,
                 ground: volume.ground().clone(),
                 window: volume.clone(),
-                volumes: crate::section::body_volumes(&bodies).unwrap(),
+                volumes: crate::section::body_volumes(&mut bodies).unwrap(),
                 bodies,
                 played: Some(6),
                 walking: Some(rules),

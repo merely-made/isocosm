@@ -138,6 +138,84 @@ pub(super) struct ItemDraw<'a> {
     pub(super) seed: u64,
 }
 
+impl Library {
+    /// One item alone, as the variant strip shows it.
+    pub fn resolve_item(&self, item: &ItemLook) -> Result<Resolved, String> {
+        let [dx, dy, dz] = self.size;
+        let mut voxels = Voxels::new(dx, dy, dz);
+        let mut colours = Vec::new();
+        let drawn = self.draw_items(&mut voxels, &mut colours, std::slice::from_ref(item))?;
+        let mut hasher = std::collections::hash_map::DefaultHasher::new();
+        (self.fingerprint, &drawn, &colours).hash(&mut hasher);
+        Ok(Resolved {
+            voxels,
+            palette: Palette::new(colours),
+            key: hasher.finish(),
+        })
+    }
+
+    /// `item` again under other material, make and condition keys, `count`
+    /// of them, walking the pack's own vocabularies so every pack shows its
+    /// range. The first is the item as it is.
+    pub fn item_variants(&self, item: &ItemLook, count: usize) -> Vec<ItemLook> {
+        let materials = self.variant_materials(item);
+        let makes: Vec<&str> = self.items.makes.keys().map(String::as_str).collect();
+        let conditions: Vec<Option<&str>> = std::iter::once(None)
+            .chain(self.items.conditions.keys().map(|key| Some(key.as_str())))
+            .collect();
+        let mut out = vec![item.clone()];
+        for i in 1..count {
+            let mut variant = item.clone();
+            if !materials.is_empty() {
+                variant.material = Some(materials[i % materials.len()].to_owned());
+            }
+            if !makes.is_empty() {
+                variant.grade = Some(makes[i % makes.len()].to_owned());
+            }
+            variant.condition = conditions[i % conditions.len()].map(str::to_owned);
+            variant.seed = item.seed.wrapping_add((i as u64).wrapping_mul(0x9e37_79b9_7f4a_7c15));
+            out.push(variant);
+        }
+        out
+    }
+
+    /// Draw each item over `voxels` in paper-doll order and set its colours;
+    /// returns what was drawn, for the look's key.
+    pub(super) fn draw_items(
+        &self,
+        voxels: &mut Voxels,
+        colours: &mut Vec<Rgb>,
+        items: &[ItemLook],
+    ) -> Result<Vec<(String, bool, u8, u64)>, String> {
+        if colours.len() < ITEM_PALETTE {
+            colours.resize(ITEM_PALETTE, [255, 0, 255]);
+        }
+        let mut ordered: Vec<&ItemLook> = items.iter().collect();
+        ordered.sort_by_key(|item| item.order());
+        let mut drawn = Vec::new();
+        let dx = self.size[0];
+        for item in ordered {
+            let Some(look) = self.item_draw(item)? else {
+                continue;
+            };
+            for (i, colour) in look.colours.iter().enumerate() {
+                set_colour(colours, look.base as usize + i, *colour);
+            }
+            let layer = self.layer(look.layer)?;
+            draw(voxels, layer, |x, y, z, index| {
+                if index == 0 && chipped(look.seed, x, y, z, look.chip) {
+                    return None;
+                }
+                let x = if look.mirror { dx - 1 - x } else { x };
+                Some((x, y, z, look.base + index.min(3)))
+            });
+            drawn.push((look.layer.to_owned(), look.mirror, look.base, look.seed));
+        }
+        Ok(drawn)
+    }
+
+}
+
 /// The first palette entry each hand's four item colours take.
 pub(super) fn hand_base(hand: &str) -> u8 {
     match hand {
@@ -149,7 +227,7 @@ pub(super) fn hand_base(hand: &str) -> u8 {
 }
 
 /// The palette length every look is padded to, so item colours always exist.
-pub(super) const ITEM_PALETTE: usize = 26;
+const ITEM_PALETTE: usize = 26;
 
 impl Library {
     /// The materials `item`'s variants walk: its sort's own, else every one
@@ -241,7 +319,7 @@ fn fade(colour: Rgb, by: f32) -> Rgb {
 
 /// Whether wear has taken the voxel at `(x, y, z)`: a fixed draw per voxel
 /// and seed, so the same item always loses the same bits.
-pub(super) fn chipped(seed: u64, x: i32, y: i32, z: i32, chip: f32) -> bool {
+fn chipped(seed: u64, x: i32, y: i32, z: i32, chip: f32) -> bool {
     if chip <= 0.0 {
         return false;
     }

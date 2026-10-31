@@ -14,7 +14,7 @@ use isometer::{BodyFrameStats, Pose, SceneBody, SubjectKey};
 use super::{PlacedBody, SiteScene};
 
 mod materials;
-pub(crate) use materials::function_materials;
+pub(crate) use materials::{body_volumes, skin_parts};
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum BodyMode {
@@ -127,6 +127,17 @@ impl HostBodies {
 
 impl super::Section {
     /// One frame's bodies in scene order; the scene culls and orders them.
+    /// Each body's skin colour table, registered against its subject.
+    pub(super) fn register_palettes(&mut self, scene: &SiteScene) {
+        let layer = self.scene.bodies_mut();
+        for body in &scene.bodies {
+            let subject = isometer::SubjectKey(body.id);
+            if layer.palette(subject) != Some(body.palette.as_slice()) {
+                layer.set_palette(subject, Some(body.palette.clone()));
+            }
+        }
+    }
+
     pub(super) fn scene_bodies<'a>(&self, scene: &'a SiteScene) -> Vec<SceneBody<'a>> {
         scene
             .bodies
