@@ -77,7 +77,7 @@ pub fn derive(r: &Records, b: &Build) -> Derived {
     }
     if let Some(a) = ancestry {
         line("Size, Speed, senses", format!("{}, {} feet, {}", a.size, a.speed + b.speed_bonus, a.vision));
-        line("Languages", a.languages.join(", "));
+        line("Languages", b.languages.join(", "));
     }
     let skills = records::SKILLS
         .iter()
@@ -94,6 +94,10 @@ pub fn derive(r: &Records, b: &Build) -> Derived {
     line("Attacks", attacks);
     let defenses = ["unarmored", "light", "medium", "heavy"].map(|k| format!("{k} {}", rank_name(rank(k)))).join(", ");
     line("Defenses", defenses);
+    if !b.gear.is_empty() {
+        line("Gear", b.gear.iter().map(|g| r.items[g].name.clone()).collect::<Vec<_>>().join(", "));
+    }
+    line("Coins", super::draft::money(b.coins));
     let feats = b.feats.iter().map(|f| r.feats[f].name.clone()).collect::<Vec<_>>().join(", ");
     line("Feats and features", feats);
     for (feat, value) in &b.options {

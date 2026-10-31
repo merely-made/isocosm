@@ -13,6 +13,7 @@ pub struct Selection {
     pub profile_path: String,
     pub attachment_path: String,
     pub sites: Vec<String>,
+    pub edition: String,
 }
 
 #[derive(Clone, Debug, Default)]
@@ -47,6 +48,9 @@ pub struct NativeUi {
     pub enabled: bool,
     pub profile_path: TextInput,
     pub attachment_path: TextInput,
+    /// The edition the campaign will be founded under (case 1029); empty
+    /// until chosen, then a key in `isocosm_vtt::founding::EDITIONS`.
+    pub edition: String,
     pub preview_request: bool,
     pub selection: Option<Selection>,
     pub events:crate::NativeEventUi,
@@ -84,6 +88,10 @@ pub enum ItemsOutcome {
 pub enum Acceptance { TableOnly, Native(Selection) }
 
 impl NativeUi {
+    /// The chosen edition; a table that never chose founds the 5e default.
+    pub fn chosen_edition(&self) -> String {
+        if self.edition.is_empty() { isocosm_vtt::founding::default_edition() } else { self.edition.clone() }
+    }
     pub fn acceptance(&self, record: &GenerationRecord) -> Result<Acceptance, String> {
         if self.world.is_some() { return Err("this campaign already owns a native world".into()); }
         if !self.enabled { return Ok(Acceptance::TableOnly); }
@@ -101,14 +109,16 @@ impl NativeUi {
     ) -> Result<(), String> {
         let mut setup = Setup::decode(bytes)?;
         if let Some(bytes) = attachments { setup.replace_attachments(bytes)?; }
+        let edition = self.chosen_edition();
         let prepared = Campaign::from_setup_for(&setup, record, 16, purpose, offered)
             .map_err(|e| e.to_string())?;
-        let preview = NativeWorld::from_campaign(&prepared.campaign)?;
-        let sites = prepared.campaign.reading().authored_places().iter().map(|(key, (id, place))|
+        let campaign = prepared.campaign.with_edition(&edition).map_err(|e| e.to_string())?;
+        let preview = NativeWorld::from_campaign(&campaign)?;
+        let sites = campaign.reading().authored_places().iter().map(|(key, (id, place))|
             format!("{}: site {id} ({key})", place.name)).collect();
         self.selection = Some(Selection { setup, record: record.clone(), preview, sites,
             profile_path: self.profile_path.text().trim().into(),
-            attachment_path: self.attachment_path.text().trim().into() });
+            attachment_path: self.attachment_path.text().trim().into(), edition });
         Ok(())
     }
     pub fn selected(&self, record: &GenerationRecord) -> Result<&Selection, String> {
@@ -117,6 +127,9 @@ impl NativeUi {
         if selected.profile_path != self.profile_path.text().trim()
             || selected.attachment_path != self.attachment_path.text().trim()
         { return Err("world profile selection changed since preview".into()); }
+        if selected.edition != self.chosen_edition() {
+            return Err("the campaign's edition changed since preview".into());
+        }
         Ok(selected)
     }
 }
@@ -166,6 +179,13 @@ impl super::UiState {
         self.native.preview_request = false;
         self.status = if enabled { "select a world profile and preview its site attachments" }
             else { "accepting table content with simulation off" }.into();
+    }
+    pub fn choose_edition(&mut self, edition: &str) {
+        if !self.can_edit_inventory { self.status = "the edition is chosen by the host".into(); return; }
+        if self.native.world.is_some() { self.status = "this campaign is already founded".into(); return; }
+        if !isocosm_vtt::founding::EDITIONS.contains(&edition) { self.status = format!("unknown edition {edition}"); return; }
+        self.native.edition = edition.to_owned();
+        self.status = format!("the campaign will be founded under {}", isocosm_vtt::founding::edition_label(edition));
     }
     pub fn preview_native_world(&mut self) {
         if !self.can_edit_inventory { self.status = "world selection requires the host".into(); return; }

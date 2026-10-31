@@ -1,0 +1,1496 @@
+# Pathfinder 2e Player Core (Remaster): the item-level-0 weapons, armour and
+# shields. ORC-licensed mechanics checked against the foundryvtt/pf2e
+# Remaster ORC records (case 1016); summaries are generated from these
+# fields, and no descriptive text is reproduced.
+# Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative
+# License: https://paizo.com/orclicense
+#
+# Prices are in copper pieces. Bulk is "-", "L" or a whole number.
+version = 1
+
+[[item]]
+id = "breastplate"
+name = "Breastplate"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "armor"
+price = 800
+bulk = "2"
+rarity = "common"
+category = "medium"
+group = "plate"
+ac = 4
+dex_cap = 1
+check = -2
+speed = -5
+strength = 3
+summary = "Medium armour: +4 AC, Dex cap +1, check penalty -2, Speed -5 feet, Strength +3 avoids penalties. 8 gp, Bulk 2."
+
+[[item]]
+id = "chain-mail"
+name = "Chain Mail"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "armor"
+price = 600
+bulk = "2"
+rarity = "common"
+traits = ["flexible", "noisy"]
+category = "medium"
+group = "chain"
+ac = 4
+dex_cap = 1
+check = -2
+speed = -5
+strength = 3
+summary = "Medium armour: +4 AC, Dex cap +1, check penalty -2, Speed -5 feet, Strength +3 avoids penalties; flexible, noisy. 6 gp, Bulk 2."
+
+[[item]]
+id = "chain-shirt"
+name = "Chain Shirt"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "armor"
+price = 500
+bulk = "1"
+rarity = "common"
+traits = ["flexible", "noisy"]
+category = "light"
+group = "chain"
+ac = 2
+dex_cap = 3
+check = -1
+speed = 0
+strength = 1
+summary = "Light armour: +2 AC, Dex cap +3, check penalty -1, Strength +1 avoids penalties; flexible, noisy. 5 gp, Bulk 1."
+
+[[item]]
+id = "explorers-clothing"
+name = "Explorer's Clothing"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "armor"
+price = 10
+bulk = "L"
+rarity = "common"
+traits = ["comfort"]
+category = "unarmored"
+group = "cloth"
+ac = 0
+dex_cap = 5
+check = 0
+speed = 0
+strength = 0
+summary = "Unarmored armour: +0 AC, Dex cap +5; comfort. 1 sp, Bulk L."
+
+[[item]]
+id = "hide-armor"
+name = "Hide Armor"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "armor"
+price = 200
+bulk = "2"
+rarity = "common"
+category = "medium"
+group = "leather"
+ac = 3
+dex_cap = 2
+check = -2
+speed = -5
+strength = 2
+summary = "Medium armour: +3 AC, Dex cap +2, check penalty -2, Speed -5 feet, Strength +2 avoids penalties. 2 gp, Bulk 2."
+
+[[item]]
+id = "leather-armor"
+name = "Leather Armor"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "armor"
+price = 200
+bulk = "1"
+rarity = "common"
+category = "light"
+group = "leather"
+ac = 1
+dex_cap = 4
+check = -1
+speed = 0
+strength = 0
+summary = "Light armour: +1 AC, Dex cap +4, check penalty -1. 2 gp, Bulk 1."
+
+[[item]]
+id = "padded-armor"
+name = "Padded Armor"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "armor"
+price = 20
+bulk = "L"
+rarity = "common"
+traits = ["comfort"]
+category = "light"
+group = "cloth"
+ac = 1
+dex_cap = 3
+check = 0
+speed = 0
+strength = 0
+summary = "Light armour: +1 AC, Dex cap +3; comfort. 2 sp, Bulk L."
+
+[[item]]
+id = "scale-mail"
+name = "Scale Mail"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "armor"
+price = 400
+bulk = "2"
+rarity = "common"
+category = "medium"
+group = "composite"
+ac = 3
+dex_cap = 2
+check = -2
+speed = -5
+strength = 2
+summary = "Medium armour: +3 AC, Dex cap +2, check penalty -2, Speed -5 feet, Strength +2 avoids penalties. 4 gp, Bulk 2."
+
+[[item]]
+id = "studded-leather-armor"
+name = "Studded Leather Armor"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "armor"
+price = 300
+bulk = "1"
+rarity = "common"
+category = "light"
+group = "leather"
+ac = 2
+dex_cap = 3
+check = -1
+speed = 0
+strength = 1
+summary = "Light armour: +2 AC, Dex cap +3, check penalty -1, Strength +1 avoids penalties. 3 gp, Bulk 1."
+
+[[item]]
+id = "buckler"
+name = "Buckler"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "shield"
+price = 100
+bulk = "L"
+rarity = "common"
+ac = 1
+hardness = 3
+hp = 6
+speed = 0
+summary = "Shield: raised, +1 circumstance bonus to AC; Hardness 3, 6 HP. 1 gp, Bulk L."
+
+[[item]]
+id = "steel-shield"
+name = "Steel Shield"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "shield"
+price = 200
+bulk = "1"
+rarity = "common"
+ac = 2
+hardness = 5
+hp = 20
+speed = 0
+summary = "Shield: raised, +2 circumstance bonus to AC; Hardness 5, 20 HP. 2 gp, Bulk 1."
+
+[[item]]
+id = "tower-shield"
+name = "Tower Shield"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "shield"
+price = 1000
+bulk = "4"
+rarity = "common"
+ac = 2
+hardness = 5
+hp = 20
+speed = -5
+summary = "Shield: raised, +2 circumstance bonus to AC; Hardness 5, 20 HP, Speed -5 feet. 10 gp, Bulk 4."
+
+[[item]]
+id = "wooden-shield"
+name = "Wooden Shield"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "shield"
+price = 100
+bulk = "1"
+rarity = "common"
+ac = 2
+hardness = 3
+hp = 12
+speed = 0
+summary = "Shield: raised, +2 circumstance bonus to AC; Hardness 3, 12 HP. 1 gp, Bulk 1."
+
+[[item]]
+id = "arbalest"
+name = "Arbalest"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 800
+bulk = "2"
+rarity = "common"
+traits = ["backstabber"]
+category = "martial"
+group = "crossbow"
+damage = "1d10"
+damage_type = "piercing"
+hands = 2
+range = 110
+summary = "Martial crossbow weapon, 1d10 piercing, 2-handed, range 110 feet; backstabber. 8 gp, Bulk 2."
+
+[[item]]
+id = "bastard-sword"
+name = "Bastard Sword"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 400
+bulk = "1"
+rarity = "common"
+traits = ["two-hand-d12"]
+category = "martial"
+group = "sword"
+damage = "1d8"
+damage_type = "slashing"
+hands = 1
+summary = "Martial sword weapon, 1d8 slashing, 1-handed; two hand d12. 4 gp, Bulk 1."
+
+[[item]]
+id = "battle-axe"
+name = "Battle Axe"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "1"
+rarity = "common"
+traits = ["sweep"]
+category = "martial"
+group = "axe"
+damage = "1d8"
+damage_type = "slashing"
+hands = 1
+summary = "Martial axe weapon, 1d8 slashing, 1-handed; sweep. 1 gp, Bulk 1."
+
+[[item]]
+id = "blowgun"
+name = "Blowgun"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 10
+bulk = "L"
+rarity = "common"
+traits = ["agile", "nonlethal"]
+category = "simple"
+group = "dart"
+damage = "1"
+damage_type = "piercing"
+hands = 1
+range = 20
+summary = "Simple dart weapon, 1 piercing, 1-handed, range 20 feet; agile, nonlethal. 1 sp, Bulk L."
+
+[[item]]
+id = "bo-staff"
+name = "Bo Staff"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 20
+bulk = "2"
+rarity = "common"
+traits = ["monk", "parry", "reach", "trip"]
+category = "martial"
+group = "club"
+damage = "1d8"
+damage_type = "bludgeoning"
+hands = 2
+summary = "Martial club weapon, 1d8 bludgeoning, 2-handed; monk, parry, reach, trip. 2 sp, Bulk 2."
+
+[[item]]
+id = "bola"
+name = "Bola"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 50
+bulk = "L"
+rarity = "common"
+traits = ["nonlethal", "ranged-trip", "thrown"]
+category = "martial"
+group = "sling"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+range = 20
+summary = "Martial sling weapon, 1d6 bludgeoning, 1-handed, range 20 feet; nonlethal, ranged trip, thrown. 5 sp, Bulk L."
+
+[[item]]
+id = "clan-dagger"
+name = "Clan Dagger"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "dwarf", "parry", "versatile-b"]
+category = "simple"
+group = "knife"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+summary = "Simple knife weapon, 1d4 piercing, 1-handed; agile, dwarf, parry, versatile b. 2 gp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "club"
+name = "Club"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 0
+bulk = "1"
+rarity = "common"
+traits = ["thrown-10"]
+category = "simple"
+group = "club"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Simple club weapon, 1d6 bludgeoning, 1-handed; thrown 10. free, Bulk 1."
+
+[[item]]
+id = "crossbow"
+name = "Crossbow"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 300
+bulk = "1"
+rarity = "common"
+category = "simple"
+group = "crossbow"
+damage = "1d8"
+damage_type = "piercing"
+hands = 2
+range = 120
+summary = "Simple crossbow weapon, 1d8 piercing, 2-handed, range 120 feet; no traits. 3 gp, Bulk 1."
+
+[[item]]
+id = "dagger"
+name = "Dagger"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 20
+bulk = "L"
+rarity = "common"
+traits = ["agile", "finesse", "thrown-10", "versatile-s"]
+category = "simple"
+group = "knife"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+summary = "Simple knife weapon, 1d4 piercing, 1-handed; agile, finesse, thrown 10, versatile s. 2 sp, Bulk L."
+
+[[item]]
+id = "dart"
+name = "Dart"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 1
+bulk = "L"
+rarity = "common"
+traits = ["agile", "thrown"]
+category = "simple"
+group = "dart"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+range = 20
+summary = "Simple dart weapon, 1d4 piercing, 1-handed, range 20 feet; agile, thrown. 1 cp, Bulk L."
+
+[[item]]
+id = "dogslicer"
+name = "Dogslicer"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 10
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "backstabber", "finesse", "goblin"]
+category = "martial"
+group = "sword"
+damage = "1d6"
+damage_type = "slashing"
+hands = 1
+summary = "Martial sword weapon, 1d6 slashing, 1-handed; agile, backstabber, finesse, goblin. 1 sp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "dwarven-war-axe"
+name = "Dwarven War Axe"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 300
+bulk = "2"
+rarity = "uncommon"
+traits = ["dwarf", "sweep", "two-hand-d12"]
+category = "advanced"
+group = "axe"
+damage = "1d8"
+damage_type = "slashing"
+hands = 1
+summary = "Advanced axe weapon, 1d8 slashing, 1-handed; dwarf, sweep, two hand d12. 3 gp, Bulk 2. Uncommon: needs access."
+
+[[item]]
+id = "elven-curve-blade"
+name = "Elven Curve Blade"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 400
+bulk = "2"
+rarity = "uncommon"
+traits = ["elf", "finesse", "forceful"]
+category = "martial"
+group = "sword"
+damage = "1d8"
+damage_type = "slashing"
+hands = 2
+summary = "Martial sword weapon, 1d8 slashing, 2-handed; elf, finesse, forceful. 4 gp, Bulk 2. Uncommon: needs access."
+
+[[item]]
+id = "falchion"
+name = "Falchion"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 300
+bulk = "2"
+rarity = "common"
+traits = ["forceful", "sweep"]
+category = "martial"
+group = "sword"
+damage = "1d10"
+damage_type = "slashing"
+hands = 2
+summary = "Martial sword weapon, 1d10 slashing, 2-handed; forceful, sweep. 3 gp, Bulk 2."
+
+[[item]]
+id = "filchers-fork"
+name = "Filcher's Fork"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "backstabber", "deadly-d6", "finesse", "halfling", "thrown-20"]
+category = "martial"
+group = "spear"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+summary = "Martial spear weapon, 1d4 piercing, 1-handed; agile, backstabber, deadly d6, finesse, halfling, thrown 20. 1 gp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "flail"
+name = "Flail"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 80
+bulk = "1"
+rarity = "common"
+traits = ["disarm", "sweep", "trip"]
+category = "martial"
+group = "flail"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Martial flail weapon, 1d6 bludgeoning, 1-handed; disarm, sweep, trip. 8 sp, Bulk 1."
+
+[[item]]
+id = "gauntlet"
+name = "Gauntlet"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 20
+bulk = "L"
+rarity = "common"
+traits = ["agile", "free-hand"]
+category = "simple"
+group = "brawling"
+damage = "1d4"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Simple brawling weapon, 1d4 bludgeoning, 1-handed; agile, free hand. 2 sp, Bulk L."
+
+[[item]]
+id = "glaive"
+name = "Glaive"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "2"
+rarity = "common"
+traits = ["deadly-d8", "forceful", "reach"]
+category = "martial"
+group = "polearm"
+damage = "1d8"
+damage_type = "slashing"
+hands = 2
+summary = "Martial polearm weapon, 1d8 slashing, 2-handed; deadly d8, forceful, reach. 1 gp, Bulk 2."
+
+[[item]]
+id = "gnome-flickmace"
+name = "Gnome Flickmace"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 300
+bulk = "1"
+rarity = "uncommon"
+traits = ["gnome", "reach", "sweep"]
+category = "advanced"
+group = "flail"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Advanced flail weapon, 1d6 bludgeoning, 1-handed; gnome, reach, sweep. 3 gp, Bulk 1. Uncommon: needs access."
+
+[[item]]
+id = "gnome-hooked-hammer"
+name = "Gnome Hooked Hammer"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "1"
+rarity = "uncommon"
+traits = ["gnome", "trip", "two-hand-d10", "versatile-p"]
+category = "martial"
+group = "hammer"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Martial hammer weapon, 1d6 bludgeoning, 1-handed; gnome, trip, two hand d10, versatile p. 2 gp, Bulk 1. Uncommon: needs access."
+
+[[item]]
+id = "greataxe"
+name = "Greataxe"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "2"
+rarity = "common"
+traits = ["sweep"]
+category = "martial"
+group = "axe"
+damage = "1d12"
+damage_type = "slashing"
+hands = 2
+summary = "Martial axe weapon, 1d12 slashing, 2-handed; sweep. 2 gp, Bulk 2."
+
+[[item]]
+id = "greatclub"
+name = "Greatclub"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "2"
+rarity = "common"
+traits = ["backswing", "shove"]
+category = "martial"
+group = "club"
+damage = "1d10"
+damage_type = "bludgeoning"
+hands = 2
+summary = "Martial club weapon, 1d10 bludgeoning, 2-handed; backswing, shove. 1 gp, Bulk 2."
+
+[[item]]
+id = "greatpick"
+name = "Greatpick"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "2"
+rarity = "common"
+traits = ["fatal-d12"]
+category = "martial"
+group = "pick"
+damage = "1d10"
+damage_type = "piercing"
+hands = 2
+summary = "Martial pick weapon, 1d10 piercing, 2-handed; fatal d12. 1 gp, Bulk 2."
+
+[[item]]
+id = "greatsword"
+name = "Greatsword"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "2"
+rarity = "common"
+traits = ["versatile-p"]
+category = "martial"
+group = "sword"
+damage = "1d12"
+damage_type = "slashing"
+hands = 2
+summary = "Martial sword weapon, 1d12 slashing, 2-handed; versatile p. 2 gp, Bulk 2."
+
+[[item]]
+id = "guisarme"
+name = "Guisarme"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "2"
+rarity = "common"
+traits = ["reach", "trip"]
+category = "martial"
+group = "polearm"
+damage = "1d10"
+damage_type = "slashing"
+hands = 2
+summary = "Martial polearm weapon, 1d10 slashing, 2-handed; reach, trip. 2 gp, Bulk 2."
+
+[[item]]
+id = "halberd"
+name = "Halberd"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "2"
+rarity = "common"
+traits = ["reach", "versatile-s"]
+category = "martial"
+group = "polearm"
+damage = "1d10"
+damage_type = "piercing"
+hands = 2
+summary = "Martial polearm weapon, 1d10 piercing, 2-handed; reach, versatile s. 2 gp, Bulk 2."
+
+[[item]]
+id = "halfling-sling-staff"
+name = "Halfling Sling Staff"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 500
+bulk = "1"
+rarity = "uncommon"
+traits = ["halfling", "propulsive"]
+category = "martial"
+group = "sling"
+damage = "1d10"
+damage_type = "bludgeoning"
+hands = 2
+range = 80
+summary = "Martial sling weapon, 1d10 bludgeoning, 2-handed, range 80 feet; halfling, propulsive. 5 gp, Bulk 1. Uncommon: needs access."
+
+[[item]]
+id = "hand-crossbow"
+name = "Hand Crossbow"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 300
+bulk = "L"
+rarity = "common"
+category = "simple"
+group = "crossbow"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+range = 60
+summary = "Simple crossbow weapon, 1d6 piercing, 1-handed, range 60 feet; no traits. 3 gp, Bulk L."
+
+[[item]]
+id = "hatchet"
+name = "Hatchet"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 40
+bulk = "L"
+rarity = "common"
+traits = ["agile", "sweep", "thrown-10"]
+category = "martial"
+group = "axe"
+damage = "1d6"
+damage_type = "slashing"
+hands = 1
+summary = "Martial axe weapon, 1d6 slashing, 1-handed; agile, sweep, thrown 10. 4 sp, Bulk L."
+
+[[item]]
+id = "heavy-crossbow"
+name = "Heavy Crossbow"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 400
+bulk = "2"
+rarity = "common"
+category = "simple"
+group = "crossbow"
+damage = "1d10"
+damage_type = "piercing"
+hands = 2
+range = 120
+summary = "Simple crossbow weapon, 1d10 piercing, 2-handed, range 120 feet; no traits. 4 gp, Bulk 2."
+
+[[item]]
+id = "horsechopper"
+name = "Horsechopper"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 90
+bulk = "2"
+rarity = "uncommon"
+traits = ["goblin", "reach", "trip", "versatile-p"]
+category = "martial"
+group = "polearm"
+damage = "1d8"
+damage_type = "slashing"
+hands = 2
+summary = "Martial polearm weapon, 1d8 slashing, 2-handed; goblin, reach, trip, versatile p. 9 sp, Bulk 2. Uncommon: needs access."
+
+[[item]]
+id = "javelin"
+name = "Javelin"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 10
+bulk = "L"
+rarity = "common"
+traits = ["thrown"]
+category = "simple"
+group = "dart"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+range = 30
+summary = "Simple dart weapon, 1d6 piercing, 1-handed, range 30 feet; thrown. 1 sp, Bulk L."
+
+[[item]]
+id = "kama"
+name = "Kama"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "monk", "trip"]
+category = "martial"
+group = "knife"
+damage = "1d6"
+damage_type = "slashing"
+hands = 1
+summary = "Martial knife weapon, 1d6 slashing, 1-handed; agile, monk, trip. 1 gp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "katana"
+name = "Katana"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "1"
+rarity = "uncommon"
+traits = ["deadly-d8", "two-hand-d10", "versatile-p"]
+category = "martial"
+group = "sword"
+damage = "1d6"
+damage_type = "slashing"
+hands = 1
+summary = "Martial sword weapon, 1d6 slashing, 1-handed; deadly d8, two hand d10, versatile p. 2 gp, Bulk 1. Uncommon: needs access."
+
+[[item]]
+id = "katar"
+name = "Katar"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 30
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "deadly-d6", "monk"]
+category = "simple"
+group = "knife"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+summary = "Simple knife weapon, 1d4 piercing, 1-handed; agile, deadly d6, monk. 3 sp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "khakkhara"
+name = "Khakkhara"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "1"
+rarity = "uncommon"
+traits = ["shove", "two-hand-d10", "versatile-p"]
+category = "martial"
+group = "club"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Martial club weapon, 1d6 bludgeoning, 1-handed; shove, two hand d10, versatile p. 2 gp, Bulk 1. Uncommon: needs access."
+
+[[item]]
+id = "kukri"
+name = "Kukri"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 60
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "finesse", "trip"]
+category = "martial"
+group = "knife"
+damage = "1d6"
+damage_type = "slashing"
+hands = 1
+summary = "Martial knife weapon, 1d6 slashing, 1-handed; agile, finesse, trip. 6 sp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "lance"
+name = "Lance"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "2"
+rarity = "common"
+traits = ["deadly-d8", "jousting-d6", "reach"]
+category = "martial"
+group = "spear"
+damage = "1d8"
+damage_type = "piercing"
+hands = 2
+summary = "Martial spear weapon, 1d8 piercing, 2-handed; deadly d8, jousting d6, reach. 1 gp, Bulk 2."
+
+[[item]]
+id = "light-hammer"
+name = "Light Hammer"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 30
+bulk = "L"
+rarity = "common"
+traits = ["agile", "thrown-20"]
+category = "martial"
+group = "hammer"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Martial hammer weapon, 1d6 bludgeoning, 1-handed; agile, thrown 20. 3 sp, Bulk L."
+
+[[item]]
+id = "light-mace"
+name = "Light Mace"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 40
+bulk = "L"
+rarity = "common"
+traits = ["agile", "finesse", "shove"]
+category = "simple"
+group = "club"
+damage = "1d4"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Simple club weapon, 1d4 bludgeoning, 1-handed; agile, finesse, shove. 4 sp, Bulk L."
+
+[[item]]
+id = "light-pick"
+name = "Light Pick"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 40
+bulk = "L"
+rarity = "common"
+traits = ["agile", "fatal-d8"]
+category = "martial"
+group = "pick"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+summary = "Martial pick weapon, 1d4 piercing, 1-handed; agile, fatal d8. 4 sp, Bulk L."
+
+[[item]]
+id = "longbow"
+name = "Longbow"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 600
+bulk = "2"
+rarity = "common"
+traits = ["deadly-d10", "volley-30"]
+category = "martial"
+group = "bow"
+damage = "1d8"
+damage_type = "piercing"
+hands = 1
+range = 100
+summary = "Martial bow weapon, 1d8 piercing, 1-handed, range 100 feet; deadly d10, volley 30. 6 gp, Bulk 2."
+
+[[item]]
+id = "longspear"
+name = "Longspear"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 50
+bulk = "2"
+rarity = "common"
+traits = ["reach"]
+category = "simple"
+group = "spear"
+damage = "1d8"
+damage_type = "piercing"
+hands = 2
+summary = "Simple spear weapon, 1d8 piercing, 2-handed; reach. 5 sp, Bulk 2."
+
+[[item]]
+id = "longsword"
+name = "Longsword"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "1"
+rarity = "common"
+traits = ["versatile-p"]
+category = "martial"
+group = "sword"
+damage = "1d8"
+damage_type = "slashing"
+hands = 1
+summary = "Martial sword weapon, 1d8 slashing, 1-handed; versatile p. 1 gp, Bulk 1."
+
+[[item]]
+id = "mace"
+name = "Mace"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "1"
+rarity = "common"
+traits = ["shove"]
+category = "simple"
+group = "club"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Simple club weapon, 1d6 bludgeoning, 1-handed; shove. 1 gp, Bulk 1."
+
+[[item]]
+id = "main-gauche"
+name = "Main-Gauche"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 50
+bulk = "L"
+rarity = "common"
+traits = ["agile", "disarm", "finesse", "parry", "versatile-s"]
+category = "martial"
+group = "knife"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+summary = "Martial knife weapon, 1d4 piercing, 1-handed; agile, disarm, finesse, parry, versatile s. 5 sp, Bulk L."
+
+[[item]]
+id = "maul"
+name = "Maul"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 300
+bulk = "2"
+rarity = "common"
+traits = ["shove"]
+category = "martial"
+group = "hammer"
+damage = "1d12"
+damage_type = "bludgeoning"
+hands = 2
+summary = "Martial hammer weapon, 1d12 bludgeoning, 2-handed; shove. 3 gp, Bulk 2."
+
+[[item]]
+id = "morningstar"
+name = "Morningstar"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "1"
+rarity = "common"
+traits = ["versatile-p"]
+category = "simple"
+group = "club"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Simple club weapon, 1d6 bludgeoning, 1-handed; versatile p. 1 gp, Bulk 1."
+
+[[item]]
+id = "nunchaku"
+name = "Nunchaku"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 20
+bulk = "L"
+rarity = "uncommon"
+traits = ["backswing", "disarm", "finesse", "monk"]
+category = "martial"
+group = "club"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Martial club weapon, 1d6 bludgeoning, 1-handed; backswing, disarm, finesse, monk. 2 sp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "orc-knuckle-dagger"
+name = "Orc Knuckle Dagger"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 70
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "disarm", "orc"]
+category = "martial"
+group = "knife"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+summary = "Martial knife weapon, 1d6 piercing, 1-handed; agile, disarm, orc. 7 sp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "orc-necksplitter"
+name = "Orc Necksplitter"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "1"
+rarity = "uncommon"
+traits = ["forceful", "orc", "sweep"]
+category = "advanced"
+group = "axe"
+damage = "1d8"
+damage_type = "slashing"
+hands = 1
+summary = "Advanced axe weapon, 1d8 slashing, 1-handed; forceful, orc, sweep. 2 gp, Bulk 1. Uncommon: needs access."
+
+[[item]]
+id = "pick"
+name = "Pick"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 70
+bulk = "1"
+rarity = "common"
+traits = ["fatal-d10"]
+category = "martial"
+group = "pick"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+summary = "Martial pick weapon, 1d6 piercing, 1-handed; fatal d10. 7 sp, Bulk 1."
+
+[[item]]
+id = "ranseur"
+name = "Ranseur"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "2"
+rarity = "common"
+traits = ["disarm", "reach"]
+category = "martial"
+group = "polearm"
+damage = "1d10"
+damage_type = "piercing"
+hands = 2
+summary = "Martial polearm weapon, 1d10 piercing, 2-handed; disarm, reach. 2 gp, Bulk 2."
+
+[[item]]
+id = "rapier"
+name = "Rapier"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "1"
+rarity = "common"
+traits = ["deadly-d8", "disarm", "finesse"]
+category = "martial"
+group = "sword"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+summary = "Martial sword weapon, 1d6 piercing, 1-handed; deadly d8, disarm, finesse. 2 gp, Bulk 1."
+
+[[item]]
+id = "sai"
+name = "Sai"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 60
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "disarm", "finesse", "monk", "versatile-b"]
+category = "martial"
+group = "knife"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+summary = "Martial knife weapon, 1d4 piercing, 1-handed; agile, disarm, finesse, monk, versatile b. 6 sp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "sap"
+name = "Sap"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 10
+bulk = "L"
+rarity = "common"
+traits = ["agile", "nonlethal"]
+category = "martial"
+group = "club"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Martial club weapon, 1d6 bludgeoning, 1-handed; agile, nonlethal. 1 sp, Bulk L."
+
+[[item]]
+id = "sawtooth-saber"
+name = "Sawtooth Saber"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 500
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "finesse", "twin"]
+category = "advanced"
+group = "sword"
+damage = "1d6"
+damage_type = "slashing"
+hands = 1
+summary = "Advanced sword weapon, 1d6 slashing, 1-handed; agile, finesse, twin. 5 gp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "scimitar"
+name = "Scimitar"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "1"
+rarity = "common"
+traits = ["forceful", "sweep"]
+category = "martial"
+group = "sword"
+damage = "1d6"
+damage_type = "slashing"
+hands = 1
+summary = "Martial sword weapon, 1d6 slashing, 1-handed; forceful, sweep. 1 gp, Bulk 1."
+
+[[item]]
+id = "scythe"
+name = "Scythe"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "2"
+rarity = "common"
+traits = ["deadly-d10", "trip"]
+category = "martial"
+group = "polearm"
+damage = "1d10"
+damage_type = "slashing"
+hands = 2
+summary = "Martial polearm weapon, 1d10 slashing, 2-handed; deadly d10, trip. 2 gp, Bulk 2."
+
+[[item]]
+id = "shield-boss"
+name = "Shield Boss"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 50
+bulk = "-"
+rarity = "common"
+traits = ["attached-to-shield"]
+category = "martial"
+group = "shield"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Martial shield weapon, 1d6 bludgeoning, 1-handed; attached to shield. 5 sp, Bulk -."
+
+[[item]]
+id = "shield-spikes"
+name = "Shield Spikes"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 50
+bulk = "-"
+rarity = "common"
+traits = ["attached-to-shield"]
+category = "martial"
+group = "shield"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+summary = "Martial shield weapon, 1d6 piercing, 1-handed; attached to shield. 5 sp, Bulk -."
+
+[[item]]
+id = "shortbow"
+name = "Shortbow"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 300
+bulk = "1"
+rarity = "common"
+traits = ["deadly-d10"]
+category = "martial"
+group = "bow"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+range = 60
+summary = "Martial bow weapon, 1d6 piercing, 1-handed, range 60 feet; deadly d10. 3 gp, Bulk 1."
+
+[[item]]
+id = "shortsword"
+name = "Shortsword"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 90
+bulk = "L"
+rarity = "common"
+traits = ["agile", "finesse", "versatile-s"]
+category = "martial"
+group = "sword"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+summary = "Martial sword weapon, 1d6 piercing, 1-handed; agile, finesse, versatile s. 9 sp, Bulk L."
+
+[[item]]
+id = "shuriken"
+name = "Shuriken"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 1
+bulk = "-"
+rarity = "uncommon"
+traits = ["agile", "monk", "thrown"]
+category = "martial"
+group = "dart"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+range = 20
+summary = "Martial dart weapon, 1d4 piercing, 1-handed, range 20 feet; agile, monk, thrown. 1 cp, Bulk -. Uncommon: needs access."
+
+[[item]]
+id = "sickle"
+name = "Sickle"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 20
+bulk = "L"
+rarity = "common"
+traits = ["agile", "finesse", "trip"]
+category = "simple"
+group = "knife"
+damage = "1d4"
+damage_type = "slashing"
+hands = 1
+summary = "Simple knife weapon, 1d4 slashing, 1-handed; agile, finesse, trip. 2 sp, Bulk L."
+
+[[item]]
+id = "sling"
+name = "Sling"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 0
+bulk = "L"
+rarity = "common"
+traits = ["propulsive"]
+category = "simple"
+group = "sling"
+damage = "1d6"
+damage_type = "bludgeoning"
+hands = 1
+range = 50
+summary = "Simple sling weapon, 1d6 bludgeoning, 1-handed, range 50 feet; propulsive. free, Bulk L."
+
+[[item]]
+id = "spear"
+name = "Spear"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 10
+bulk = "1"
+rarity = "common"
+traits = ["monk", "thrown-20"]
+category = "simple"
+group = "spear"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+summary = "Simple spear weapon, 1d6 piercing, 1-handed; monk, thrown 20. 1 sp, Bulk 1."
+
+[[item]]
+id = "spiked-chain"
+name = "Spiked Chain"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 300
+bulk = "1"
+rarity = "uncommon"
+traits = ["disarm", "finesse", "trip"]
+category = "martial"
+group = "flail"
+damage = "1d8"
+damage_type = "slashing"
+hands = 2
+summary = "Martial flail weapon, 1d8 slashing, 2-handed; disarm, finesse, trip. 3 gp, Bulk 1. Uncommon: needs access."
+
+[[item]]
+id = "spiked-gauntlet"
+name = "Spiked Gauntlet"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 30
+bulk = "L"
+rarity = "common"
+traits = ["agile", "free-hand"]
+category = "simple"
+group = "brawling"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+summary = "Simple brawling weapon, 1d4 piercing, 1-handed; agile, free hand. 3 sp, Bulk L."
+
+[[item]]
+id = "staff"
+name = "Staff"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 0
+bulk = "1"
+rarity = "common"
+traits = ["monk", "two-hand-d8"]
+category = "simple"
+group = "club"
+damage = "1d4"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Simple club weapon, 1d4 bludgeoning, 1-handed; monk, two hand d8. free, Bulk 1."
+
+[[item]]
+id = "starknife"
+name = "Starknife"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "L"
+rarity = "common"
+traits = ["agile", "deadly-d6", "finesse", "thrown-20", "versatile-s"]
+category = "martial"
+group = "knife"
+damage = "1d4"
+damage_type = "piercing"
+hands = 1
+summary = "Martial knife weapon, 1d4 piercing, 1-handed; agile, deadly d6, finesse, thrown 20, versatile s. 2 gp, Bulk L."
+
+[[item]]
+id = "sword-cane"
+name = "Sword Cane"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 500
+bulk = "1"
+rarity = "common"
+traits = ["agile", "concealable", "finesse"]
+category = "martial"
+group = "sword"
+damage = "1d6"
+damage_type = "piercing"
+hands = 1
+summary = "Martial sword weapon, 1d6 piercing, 1-handed; agile, concealable, finesse. 5 gp, Bulk 1."
+
+[[item]]
+id = "temple-sword"
+name = "Temple Sword"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "1"
+rarity = "uncommon"
+traits = ["monk", "trip"]
+category = "martial"
+group = "sword"
+damage = "1d8"
+damage_type = "slashing"
+hands = 1
+summary = "Martial sword weapon, 1d8 slashing, 1-handed; monk, trip. 2 gp, Bulk 1. Uncommon: needs access."
+
+[[item]]
+id = "trident"
+name = "Trident"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "1"
+rarity = "common"
+traits = ["thrown-20"]
+category = "martial"
+group = "spear"
+damage = "1d8"
+damage_type = "piercing"
+hands = 1
+summary = "Martial spear weapon, 1d8 piercing, 1-handed; thrown 20. 1 gp, Bulk 1."
+
+[[item]]
+id = "wakizashi"
+name = "Wakizashi"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "L"
+rarity = "uncommon"
+traits = ["agile", "deadly-d8", "finesse", "versatile-p"]
+category = "martial"
+group = "sword"
+damage = "1d4"
+damage_type = "slashing"
+hands = 1
+summary = "Martial sword weapon, 1d4 slashing, 1-handed; agile, deadly d8, finesse, versatile p. 1 gp, Bulk L. Uncommon: needs access."
+
+[[item]]
+id = "war-flail"
+name = "War Flail"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 200
+bulk = "2"
+rarity = "common"
+traits = ["disarm", "sweep", "trip"]
+category = "martial"
+group = "flail"
+damage = "1d10"
+damage_type = "bludgeoning"
+hands = 2
+summary = "Martial flail weapon, 1d10 bludgeoning, 2-handed; disarm, sweep, trip. 2 gp, Bulk 2."
+
+[[item]]
+id = "warhammer"
+name = "Warhammer"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 100
+bulk = "1"
+rarity = "common"
+traits = ["shove"]
+category = "martial"
+group = "hammer"
+damage = "1d8"
+damage_type = "bludgeoning"
+hands = 1
+summary = "Martial hammer weapon, 1d8 bludgeoning, 1-handed; shove. 1 gp, Bulk 1."
+
+[[item]]
+id = "whip"
+name = "Whip"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "weapon"
+price = 10
+bulk = "1"
+rarity = "common"
+traits = ["disarm", "finesse", "nonlethal", "reach", "trip"]
+category = "martial"
+group = "flail"
+damage = "1d4"
+damage_type = "slashing"
+hands = 1
+summary = "Martial flail weapon, 1d4 slashing, 1-handed; disarm, finesse, nonlethal, reach, trip. 1 sp, Bulk 1."

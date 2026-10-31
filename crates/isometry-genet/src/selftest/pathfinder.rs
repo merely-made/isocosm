@@ -1,7 +1,9 @@
 //! Opt-in headed trial of Pathfinder 2e creation: every choice is a painted
 //! endpoint button on the Character sheets page. `ISOMETRY_PF2E_SELFTEST`
 //! is `draft` (stop at the ancestry feat, where refused options show their
-//! reasons) or `finished` (finish a dwarf fighter and show the sheet).
+//! reasons), `finished` (finish a dwarf fighter and show the sheet) or
+//! `play` (over a `pf2e_table --ready` ledger: start an encounter, Strike
+//! twice, Raise a Shield).
 use super::painted::Painted;
 use super::*;
 use cambium_genet_winit_host::ScrollAlign;
@@ -11,12 +13,12 @@ use isonetry::family::{Checkpoint, FamilyReplica};
 const HUMAN_ROGUE: &[&str] = &[
     "human", "dex", "int", "skilled-human", "stealth", "street-urchin", "dex", "con", "rogue", "thief",
     "athletics", "acrobatics", "dex", "dex", "con", "wis", "cha", "arcana", "crafting", "diplomacy",
-    "medicine", "nature", "occultism", "religion", "society",
+    "medicine", "nature", "occultism", "religion", "society", "Draconic", "Elven",
 ];
 const DWARF_FIGHTER: &[&str] = &[
     "dwarf", "listed", "str", "rock-dwarf", "warrior", "str", "con", "fighter", "athletics", "str",
-    "dex", "con", "wis", "int", "acrobatics", "medicine", "survival", "crafting", "dwarven-lore",
-    "society", "vicious-swing",
+    "dex", "con", "wis", "int", "acrobatics", "medicine", "survival", "crafting", "Gnomish", "dwarven-lore",
+    "society", "vicious-swing", "longsword", "steel-shield", "scale-mail", "done",
 ];
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -25,6 +27,8 @@ enum Phase {
     Create,
     Choose(usize),
     Finish,
+    /// Encounter steps: start, Strike, Strike, Raise a Shield.
+    Play(usize),
     Verify,
     Capture(u8),
     Done,
@@ -32,6 +36,9 @@ enum Phase {
 
 pub(crate) struct PathfinderSelftest {
     finished: bool,
+    play: bool,
+    /// Log length when the last play step was clicked.
+    log: usize,
     phase: Phase,
     started: Instant,
     painted: Painted,
@@ -44,8 +51,8 @@ pub(crate) struct PathfinderSelftest {
 impl PathfinderSelftest {
     pub(crate) fn from_env() -> Option<Self> {
         std::env::var("ISOMETRY_PF2E_SELFTEST").ok().map(|mode| {
-            assert!(["draft", "finished"].contains(&mode.as_str()), "pf2e selftest mode is draft or finished");
-            Self { finished: mode == "finished", phase: Phase::Select, started: Instant::now(),
+            assert!(["draft", "finished", "play"].contains(&mode.as_str()), "pf2e selftest mode is draft, finished or play");
+            Self { finished: mode == "finished", play: mode == "play", log: 0, phase: Phase::Select, started: Instant::now(),
                 painted: Painted::default(), body: None, before: None, waiting: false }
         })
     }
@@ -79,6 +86,33 @@ impl PathfinderSelftest {
             state.as_ref()?.drafts.get(&id).map(|d| d.choices.len())
         };
         match self.phase {
+            Phase::Select if self.play => {
+                if self.painted.tab(ctx, SHEETS) {
+                    self.phase = Phase::Play(0);
+                }
+            },
+            Phase::Play(n) => {
+                let state = state.expect("a --ready ledger has edition state");
+                if self.waiting {
+                    if state.log.len() > self.log {
+                        self.waiting = false;
+                        self.phase = if n >= 3 { Phase::Verify } else { Phase::Play(n + 1) };
+                    }
+                    return;
+                }
+                let current = state.encounter.as_ref().and_then(|e| e.current()).map(|t| u64::from(t.token));
+                self.body = current.or(self.body);
+                let target = state.sheets.keys().map(|id| u64::from(id.0)).find(|id| Some(*id) != current);
+                let (intent, body) = match n {
+                    0 => ("vtt.pf2e-start-encounter".to_owned(), None),
+                    1 | 2 => (format!("vtt.pf2e-rule-strike-{}", target.unwrap()), current),
+                    _ => ("vtt.pf2e-raise-shield".to_owned(), current),
+                };
+                self.log = state.log.len();
+                if self.painted.button(ctx, &intent, body) {
+                    self.waiting = true;
+                }
+            },
             Phase::Select => {
                 if self.painted.tab(ctx, SHEETS) {
                     self.body = Self::startable(ctx);
@@ -124,19 +158,20 @@ impl PathfinderSelftest {
                 let state = state.expect("edition state");
                 let id = isocosm_vtt::ruleset::token(self.body.unwrap()).unwrap();
                 eprintln!(
-                    "[pf2e-selftest] PASS mode={} body={} choices={} sheet={} hp={:?} accepted_records={} durable_replay=exact",
-                    if self.finished { "finished" } else { "draft" },
+                    "[pf2e-selftest] PASS mode={} body={} choices={} sheet={} hp={:?} accepted_records={} durable_replay=exact; last={:?}",
+                    if self.play { "play" } else if self.finished { "finished" } else { "draft" },
                     self.body.unwrap(),
                     state.drafts[&id].choices.len(),
                     state.sheets.contains_key(&id),
                     state.sheets.get(&id).and_then(|s| s.int("hp_current")),
-                    suffix.len()
+                    suffix.len(),
+                    state.log.last().map(|l| (&l.note, &l.rolls))
                 );
                 self.phase = Phase::Capture(0);
             },
             Phase::Capture(frames) => {
                 if frames == 0 {
-                    let wanted = if self.finished { "Hit Points: " } else { "Next decision: " };
+                    let wanted = if self.play { "Condition: " } else if self.finished { "Hit Points: " } else { "Next decision: " };
                     let node = {
                         let dom = ctx.runner.dom();
                         let dom = dom.borrow();

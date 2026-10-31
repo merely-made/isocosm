@@ -120,6 +120,58 @@ pub enum Grant {
     Initiative(i64),
     /// Resistance equal to half the level, minimum 1.
     Resistance(String),
+    /// Learn this many more languages.
+    Languages(u8),
+}
+
+/// A weapon, armour or shield. Fields the kind does not use are absent.
+#[derive(Clone, Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Item {
+    pub id: String,
+    pub name: String,
+    pub source: Source,
+    /// weapon, armor or shield.
+    pub kind: String,
+    /// In copper pieces.
+    pub price: i64,
+    pub bulk: String,
+    pub rarity: String,
+    #[serde(default)]
+    pub traits: Vec<String>,
+    #[serde(default)]
+    pub category: Option<String>,
+    #[serde(default)]
+    pub group: Option<String>,
+    #[serde(default)]
+    pub damage: Option<String>,
+    #[serde(default)]
+    pub damage_type: Option<String>,
+    #[serde(default)]
+    pub hands: Option<u8>,
+    #[serde(default)]
+    pub range: Option<i64>,
+    #[serde(default)]
+    pub ac: Option<i64>,
+    #[serde(default)]
+    pub dex_cap: Option<i64>,
+    #[serde(default)]
+    pub check: Option<i64>,
+    #[serde(default)]
+    pub speed: Option<i64>,
+    #[serde(default)]
+    pub strength: Option<i64>,
+    #[serde(default)]
+    pub hardness: Option<i64>,
+    #[serde(default)]
+    pub hp: Option<i64>,
+    pub summary: String,
+}
+
+impl Item {
+    pub fn has(&self, trait_: &str) -> bool {
+        self.traits.iter().any(|t| t == trait_)
+    }
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -136,6 +188,15 @@ pub struct Ancestry {
     pub boosts: Vec<Vec<String>>,
     pub flaws: Vec<String>,
     pub languages: Vec<String>,
+    /// Languages offered for extra picks; empty offers the common list.
+    #[serde(default)]
+    pub additional_languages: Vec<String>,
+    /// Extra language picks before Intelligence.
+    #[serde(default)]
+    pub extra_languages: i64,
+    /// Items every member starts with (a dwarf's clan dagger).
+    #[serde(default)]
+    pub items: Vec<String>,
     pub summary: String,
 }
 
@@ -272,6 +333,10 @@ struct File {
     #[serde(default)]
     feat: Vec<Feat>,
     #[serde(default)]
+    item: Vec<Item>,
+    #[serde(default)]
+    common_languages: Vec<String>,
+    #[serde(default)]
     step: BTreeMap<String, String>,
 }
 
@@ -282,17 +347,21 @@ pub struct Records {
     pub backgrounds: BTreeMap<String, Background>,
     pub classes: BTreeMap<String, Class>,
     pub feats: BTreeMap<String, Feat>,
+    pub items: BTreeMap<String, Item>,
+    /// Languages any character may learn.
+    pub common_languages: Vec<String>,
     /// The explanation shown with each kind of step.
     pub steps: BTreeMap<String, String>,
 }
 
-const SOURCES: [&str; 7] = [
+const SOURCES: [&str; 8] = [
     include_str!("../../data/pf2e/ancestries.toml"),
     include_str!("../../data/pf2e/backgrounds.toml"),
     include_str!("../../data/pf2e/classes.toml"),
     include_str!("../../data/pf2e/feats.toml"),
     include_str!("../../data/pf2e/general.toml"),
     include_str!("../../data/pf2e/skills.toml"),
+    include_str!("../../data/pf2e/equipment.toml"),
     include_str!("../../data/pf2e/steps.toml"),
 ];
 
@@ -347,6 +416,11 @@ impl Records {
                 source_ok(&r.name, &r.source)?;
                 insert(&mut records.feats, &r.id.clone(), r)?;
             }
+            for r in file.item {
+                source_ok(&r.name, &r.source)?;
+                insert(&mut records.items, &r.id.clone(), r)?;
+            }
+            records.common_languages.extend(file.common_languages);
             records.steps.extend(file.step);
         }
         records.check()?;
@@ -397,6 +471,11 @@ impl Records {
         let grants = |list: &[Grant]| grants(list, &skill, &feat);
         for a in self.ancestries.values() {
             a.boosts.iter().flatten().chain(&a.flaws).try_for_each(attribute)?;
+            for i in &a.items {
+                if !self.items.contains_key(i) {
+                    return Err(format!("{}: unknown item {i}", a.name));
+                }
+            }
         }
         for h in self.heritages.values() {
             if !self.ancestries.contains_key(&h.ancestry) {

@@ -27,9 +27,9 @@ fn script(values: &[&str]) -> Draft {
 
 const DWARF_FIGHTER: &[&str] = &[
     "dwarf", "listed", "str", "rock-dwarf", "warrior", "str", "con", "fighter", "athletics", "str",
-    "dex", "con", "wis", "int", "acrobatics", "medicine", "survival", "crafting",
+    "dex", "con", "wis", "int", "acrobatics", "medicine", "survival", "crafting", "Gnomish",
     // Dwarven Lore's Crafting is already trained, so it asks for another skill.
-    "dwarven-lore", "society", "vicious-swing",
+    "dwarven-lore", "society", "vicious-swing", "longsword", "steel-shield", "scale-mail", "done",
 ];
 
 #[test]
@@ -46,6 +46,9 @@ fn a_legal_dwarf_fighter_finishes_with_derived_numbers() {
     }
     // 10 ancestry + 10 class + Constitution 3.
     assert_eq!(derive(builtin(), &build).hp_max, 23);
+    assert_eq!(build.gear, ["clan-dagger", "longsword", "steel-shield", "scale-mail"]);
+    assert_eq!(build.coins, 800);
+    assert_eq!(build.languages, ["Common", "Dwarven", "Gnomish"]);
 }
 
 #[test]
@@ -55,7 +58,7 @@ fn doubled_training_and_prerequisites_are_enforced() {
         // Thief's Thievery and the class's Stealth are both already trained.
         "thief", "athletics", "acrobatics", "dex", "dex", "con", "wis", "cha",
         "arcana", "crafting", "diplomacy", "medicine", "nature", "occultism", "religion", "society",
-        "natural-ambition",
+        "Draconic", "Elven", "natural-ambition",
     ]);
     let walked = walk(builtin(), &draft).unwrap();
     let Progress::Pending(slot) = walked.progress else { panic!("class feat pending") };
@@ -67,6 +70,13 @@ fn doubled_training_and_prerequisites_are_enforced() {
     answer(&mut draft, "plant-evidence").unwrap();
     answer(&mut draft, "hefty-hauler").unwrap();
     answer(&mut draft, "tumble-behind").unwrap();
+    // Uncommon gear needs access; a human rogue has none for a clan dagger.
+    let walked = walk(builtin(), &draft).unwrap();
+    let Progress::Pending(slot) = walked.progress else { panic!("gear pending") };
+    let dagger = slot.options.iter().find(|o| o.value == "clan-dagger").unwrap();
+    assert_eq!(dagger.refused.as_deref(), Some("uncommon: needs access"));
+    answer(&mut draft, "rapier").unwrap();
+    answer(&mut draft, "done").unwrap();
     assert!(draft.finished(builtin()).is_ok());
 }
 
@@ -89,7 +99,7 @@ fn a_saved_draft_reopens_exactly_or_is_refused() {
     assert!(walk(builtin(), &tampered).is_err());
     let mut undone = reopened;
     undone.undo().unwrap();
-    assert!(matches!(walk(builtin(), &undone).unwrap().progress, Progress::Pending(s) if s.id == "class-feat"));
+    assert!(matches!(walk(builtin(), &undone).unwrap().progress, Progress::Pending(s) if s.id == "gear:3"));
 }
 
 #[test]

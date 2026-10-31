@@ -11,7 +11,7 @@ use std::collections::BTreeMap;
 
 mod actions;
 mod frame;
-mod pathfinder;
+pub(crate) mod pathfinder;
 
 pub const SECTION: &str = "isocosm-vtt:edition";
 const CAMPAIGN: &str = "isocosm-vtt:campaign";
@@ -41,10 +41,7 @@ pub fn edition(sections: &BTreeMap<String, Vec<u8>>) -> Result<String, String> {
     Ok(founded.content.edition)
 }
 
-/// The edition's label as the table shows it.
-pub fn label(edition: &str) -> &'static str {
-    if edition == pf2e::SYSTEM { pf2e::LABEL } else { "D&D SRD 5.1" }
-}
+pub use crate::founding::edition_label as label;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Action {
@@ -98,6 +95,18 @@ pub enum Action {
     Finish(u64),
     /// Abandon an unfinished draft.
     Discard(u64),
+    /// Roll initiative and begin encounter mode (a GM seat).
+    StartEncounter,
+    EndEncounter,
+    EndTurn(u64),
+    RaiseShield(u64),
+    /// A skill check against the table's current DC.
+    Check {
+        actor: u64,
+        skill: String,
+    },
+    /// A GM seat moves the DC that skill checks are made against.
+    SetDc(i64),
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -128,6 +137,13 @@ pub struct State {
     /// A finished draft stays as the record of how its sheet was made.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     pub drafts: BTreeMap<TokenId, Draft>,
+    /// Encounter mode as the edition declares it (case 1026): initiative
+    /// order, actions, reaction and attacks per turn.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub encounter: Option<pf2e::play::Encounter>,
+    /// The DC a GM seat set for skill checks; absent is the 1st-level 15.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub check_dc: Option<i64>,
 }
 
 impl State {
@@ -144,6 +160,8 @@ impl State {
             cells_per_square: None,
             log: Vec::new(),
             drafts: BTreeMap::new(),
+            encounter: None,
+            check_dc: None,
         }
     }
     pub fn read(sections: &BTreeMap<String, Vec<u8>>) -> Result<Option<Self>, String> {
@@ -159,7 +177,8 @@ impl State {
                     || state.log.len() > 4096
                     || state.cells_per_square == Some(0)
                     || state.sheets.values().any(|sheet| sheet.system != edition)
-                    || (edition != pf2e::SYSTEM && !state.drafts.is_empty())
+                    || (edition != pf2e::SYSTEM
+                        && (!state.drafts.is_empty() || state.encounter.is_some() || state.check_dc.is_some()))
                 {
                     return Err("unsupported or invalid edition state".into());
                 }
@@ -261,7 +280,7 @@ pub fn settle(session: &Session, sections: &mut BTreeMap<String, Vec<u8>>) -> Re
 /// This runs inside World::product_sections, hence a refusal publishes no
 /// prefix, no dice advance and no accepted family record.
 pub fn apply(
-    session: &Session,
+    session: &mut Session,
     sections: &mut BTreeMap<String, Vec<u8>>,
     access: OrdinaryAccess,
     action: &Action,
@@ -276,9 +295,9 @@ pub fn apply(
     }
     let mut map = state.current_map(session)?;
     let (note, rolls) = if edition == pf2e::SYSTEM {
-        pathfinder::apply(&mut state, &mut map, session, access, action)?
+        pathfinder::apply(&mut state, &mut map, session, sections, access, action, payload)?
     } else {
-        actions::apply(&mut state, &mut map, session, sections, access, action, payload)?
+        actions::apply(&mut state, &mut map, &*session, sections, access, action, payload)?
     };
     state.take_map(map);
     state.log.push(Log {

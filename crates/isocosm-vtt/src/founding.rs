@@ -18,7 +18,7 @@ pub use publication::{NativeCursor, NativeWorld};
 mod content;
 mod generation;
 mod table;
-pub use content::{Content, EDITIONS, TableMetadata, default_edition, is_default_edition};
+pub use content::{Content, EDITIONS, TableMetadata, default_edition, edition_label, is_default_edition};
 pub use generation::GenerationOrigin;
 
 /// The VTT's declared vocabulary; other kinds remain the caller's founding choice.
@@ -112,6 +112,14 @@ impl Campaign {
     pub fn save(&self) -> CampaignSaved {
         CampaignSaved { native: self.replay.save(), content: self.content.clone(),
             origin: self.origin.clone() }
+    }
+
+    /// Found the campaign under `edition` (case 1029), a key in [`EDITIONS`].
+    pub fn with_edition(&self, edition: &str) -> Result<Self, FoundingError> {
+        let mut content = self.content.clone();
+        content.edition = edition.to_owned();
+        content.validate()?;
+        Ok(Self { content, ..self.clone() })
     }
 
     pub fn reading(&self) -> Reading<'_> { self.replay.reading() }

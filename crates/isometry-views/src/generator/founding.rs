@@ -13,6 +13,15 @@ pub(super) fn selection(ui: &UiState) -> Vec<UiChild> {
             |ui: &mut UiState, _| ui.choose_native_world(true)),
     )).attr("class", "btn-row"))];
     if !ui.native.enabled { return body; }
+    let chosen = ui.native.chosen_edition();
+    let editions: Vec<UiChild> = isocosm_vtt::founding::EDITIONS.iter().map(|edition| {
+        let edition = *edition;
+        let class = if edition == chosen { "btn btn-active" } else { "btn" };
+        Box::new(clickable(el("span", text(isocosm_vtt::founding::edition_label(edition))).attr("class", class),
+            move |ui: &mut UiState, _| ui.choose_edition(edition))) as UiChild
+    }).collect();
+    body.push(Box::new(el("div", (text("Edition "), el("span", editions).attr("class", "btn-row")))
+        .attr("class", "sheet-row")));
     body.push(Box::new(el("div", (text("World profile file "), lens(
         |field: &mut TextInput| caret_text_field(field, &[]),
         |ui: &mut UiState| &mut ui.native.profile_path,

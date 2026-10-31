@@ -167,7 +167,8 @@ source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
 category = "skill"
 repeatable = true
 requires = [{ trained = "society" }]
-summary = "Learn two more languages (another as a master and as legendary in Society). Can be taken again. Languages are noted at the table for now."
+grants = [{ languages = 2 }]
+summary = "Learn two more languages (another as a master and as legendary in Society). Can be taken again."
 
 [[feat]]
 id = "natural-medicine"
