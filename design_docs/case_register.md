@@ -403,7 +403,7 @@ three design docs that cite it. The record holds the words.
 | 451 | An epoch ends by Timed, Gated or PlayerTriggered rule; Timed counts the world's unit and defaults to a year. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 452 | Deep time's span counts epochs in the world's rules, as Mesocosm does; under the default year a century is 100 epochs. | none |
 | 607 | Isocosm's state hash becomes the family's 64-bit FNV-1a witness with labelled entries, first-divergence report and per-tick trace; SHA-256 stays for content addresses. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
-| 610 | Saves keep one labelled checkpoint per epoch and a mismatch names the first diverging entry; bench and probe tools write a per-tick trace on demand. | none |
+| 610 | Saves keep one labelled checkpoint per epoch and a mismatch names the first diverging entry; bench and probe tools write a per-tick trace on demand. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 633 | Saved checkpoints carry labelled entries per top-level State field; the on-demand per-tick trace carries entities. | none |
 | 636 | The witness hashes postcard bytes through isometer_core::snapshot::encode, one encoding across the family. | none |
 | 642 | The probe's trace records draw 0's exact run in the bench's tick-witness line format. | none |
@@ -617,7 +617,7 @@ three design docs that cite it. The record holds the words.
 | 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [DOC README](DOC_README.md) |
 | 604 | Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
 | 606 | The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
-| 609 | One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm. | none |
+| 609 | One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 622 | scenevm is a donor of techniques only: kiss3d stays the lit body tenant; techniques are taken by name under MIT with a licence row. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 643 | The repo shares a cargo build-dir, not a target-dir; intermediates are shared per checkout and binaries stay per workspace. | none |
 | 644 | The shared build-dir setting lives in the machine-local root cargo config; nothing is committed but the plan. | none |

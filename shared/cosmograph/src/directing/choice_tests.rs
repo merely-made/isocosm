@@ -226,3 +226,32 @@ fn a_lineage_decides_only_every_its_period_of_ticks() {
     assert!(paced.iter().all(|w| (w.tick + w.actor) % 3 == 0), "{paced:?}");
     assert!(paced.len() < every.len());
 }
+
+/// A paced cohort chooses by its first identity, and cohorts regroup at an
+/// advance's end, so a span must come out as its ticks taken singly (D41).
+#[test]
+fn a_paced_grouped_span_matches_its_ticks_one_at_a_time() {
+    for (seed, population, lineages) in [(19, 2, 1), (3, 6, 2), (5, 8, 3), (7, 12, 3)] {
+        let g = crate::Founding {
+            seed,
+            sites: 1,
+            population,
+            lineages,
+            cohort_size: 1,
+            stock_min: 12,
+            stock_max: 12,
+            period_max: 1,
+            played: Some(Played { lineage: lineages - 1, region_sites: 1 }),
+            ..Default::default()
+        }
+        .generate()
+        .unwrap();
+        let mut single = Session::new(g.clone(), Execution::Grouped).unwrap();
+        let mut span = Session::new(g, Execution::Grouped).unwrap();
+        for _ in 0..12 {
+            single.advance(1).unwrap();
+        }
+        span.advance(12).unwrap();
+        assert_eq!(single.sim.state_hash(), span.sim.state_hash(), "seed {seed}");
+    }
+}

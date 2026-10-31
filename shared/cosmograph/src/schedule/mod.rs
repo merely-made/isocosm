@@ -97,6 +97,22 @@ fn framed(p: &Process) -> bool {
 
 impl Simulation {
     pub(crate) fn advance_to(&mut self, end: Tick) -> Result<Work> {
+        // A paced cohort chooses by its first identity (E8) and cohorts
+        // regroup at an advance's end, so a Grouped span with a paced lineage
+        // runs a tick at a time: the same ticks group and choose alike
+        // however an advance cuts them (D41).
+        if self.mode == Execution::Grouped && end > self.state.tick.saturating_add(1) && self.paced() {
+            let mut work = Work::default();
+            while self.state.tick < end {
+                let next = self.advance_to(self.state.tick + 1)?;
+                work.evaluations += next.evaluations;
+                work.represented += next.represented;
+                work.accepted += next.accepted;
+                work.blocked += next.blocked;
+                work.arrivals += next.arrivals;
+            }
+            return Ok(work);
+        }
         let _span = crate::profile::Span::new("schedule.total");
         self.refresh_attention();
         self.protect_attention();
@@ -281,6 +297,11 @@ impl Simulation {
         let mut frame = self.frame.take().expect("a pass under way");
         frame.share(plans, ground, rules);
         self.frame = Some(frame);
+    }
+
+    /// Whether any lineage decides less often than every tick (D15).
+    fn paced(&self) -> bool {
+        self.state.lineages.values().any(|l| l.decides.is_some_and(|p| p > 1))
     }
 
     /// Whether a group decides this tick (D15, D16): a choice or a move
