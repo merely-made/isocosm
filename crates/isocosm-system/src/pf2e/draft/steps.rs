@@ -46,7 +46,7 @@ pub(super) fn run(w: &mut Walk<'_>) -> Result<(), Stop> {
     let ancestry = &r.ancestries[&w.take(slot("ancestry", "ancestry", "Ancestry", options))?];
     w.build.ancestry = Some(ancestry.id.clone());
     w.build.languages.extend(ancestry.languages.iter().cloned());
-    w.build.gear.extend(ancestry.items.iter().cloned());
+    w.build.gear.extend(ancestry.items.iter().map(|i| (i.clone(), 1)));
     w.build.coins = STARTING_COINS;
     let listed = ancestry.boosts.iter().any(|b| !b.is_empty()) || !ancestry.flaws.is_empty();
     let alternate = listed && {
@@ -171,7 +171,9 @@ pub(super) fn run(w: &mut Walk<'_>) -> Result<(), Stop> {
     // Starting gear, one purchase at a time.
     for n in 0.. {
         let mut options = vec![Opt { value: "done".into(), label: "Stop buying".into(), refused: None,
-            summary: format!("Keep {} as coins.", money(w.build.coins)) }];
+            summary: format!("Keep {} as coins.", money(w.build.coins)) },
+            Opt { value: "class-kit".into(), label: "Take a class kit".into(), summary: String::new(),
+                refused: Some("no ORC Remaster record of the class kits exists to check them against (case 1042)".into()) }];
         options.extend(r.items.values().map(|i| Opt {
             value: i.id.clone(), label: format!("{} ({})", i.name, money(i.price)), summary: i.summary.clone(),
             refused: if i.price > w.build.coins {
@@ -186,7 +188,12 @@ pub(super) fn run(w: &mut Walk<'_>) -> Result<(), Stop> {
             break;
         }
         w.build.coins -= r.items[&item].price;
-        w.build.gear.push(item);
+        let bought = &r.items[&item];
+        if bought.contents.is_empty() {
+            w.build.gear.push((item, 1));
+        } else {
+            w.build.gear.extend(bought.contents.iter().cloned());
+        }
     }
     Ok(())
 }

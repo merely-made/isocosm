@@ -1,5 +1,5 @@
 # Pathfinder 2e Player Core (Remaster): the item-level-0 weapons, armour and
-# shields. ORC-licensed mechanics checked against the foundryvtt/pf2e
+# shields, and the Adventurer's Pack. ORC-licensed mechanics checked against the foundryvtt/pf2e
 # Remaster ORC records (case 1016); summaries are generated from these
 # fields, and no descriptive text is reproduced.
 # Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative
@@ -1494,3 +1494,106 @@ damage = "1d4"
 damage_type = "slashing"
 hands = 1
 summary = "Martial flail weapon, 1d4 slashing, 1-handed; disarm, finesse, nonlethal, reach, trip. 1 sp, Bulk 1."
+
+# The Adventurer's Pack and the gear it holds (case 1034). Each checked
+# against its foundryvtt/pf2e Remaster ORC record; summaries are original.
+[[item]]
+id = "backpack"
+name = "Backpack"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "backpack"
+price = 10
+bulk = "-"
+rarity = "common"
+summary = "Holds up to 4 Bulk; while worn, the first 2 Bulk inside do not count against your limit. 1 sp, Bulk -."
+
+[[item]]
+id = "bedroll"
+name = "Bedroll"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "gear"
+price = 2
+bulk = "L"
+rarity = "common"
+summary = "Bedding for sleeping in the open. 2 cp, Bulk L."
+
+[[item]]
+id = "chalk"
+name = "Chalk"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "gear"
+price = 1
+bulk = "-"
+rarity = "common"
+summary = "A stick of chalk for marking surfaces. 1 cp, Bulk -."
+
+[[item]]
+id = "flint-and-steel"
+name = "Flint and Steel"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "gear"
+price = 5
+bulk = "-"
+rarity = "common"
+summary = "Strikes sparks to light a fire. 5 cp, Bulk -."
+
+[[item]]
+id = "rope"
+name = "Rope"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "gear"
+price = 50
+bulk = "L"
+rarity = "common"
+summary = "50 feet of rope. 5 sp, Bulk L."
+
+[[item]]
+id = "rations"
+name = "Rations"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "gear"
+price = 40
+bulk = "L"
+rarity = "common"
+summary = "A week of preserved food for one person. 4 sp, Bulk L."
+
+[[item]]
+id = "soap"
+name = "Soap"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "gear"
+price = 2
+bulk = "-"
+rarity = "common"
+summary = "A bar of soap. 2 cp, Bulk -."
+
+[[item]]
+id = "torch"
+name = "Torch"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "gear"
+price = 1
+bulk = "L"
+rarity = "common"
+summary = "Burns for an hour, shedding bright light in a 20-foot radius and dim light beyond. 1 cp, Bulk L."
+
+[[item]]
+id = "waterskin"
+name = "Waterskin"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "gear"
+price = 5
+bulk = "L"
+rarity = "common"
+summary = "Holds a day's water for one person. 5 cp, Bulk L."
+
+[[item]]
+id = "adventurers-pack"
+name = "Adventurer's Pack"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "kit"
+price = 150
+bulk = "1"
+rarity = "common"
+contents = [["backpack", 1], ["bedroll", 1], ["chalk", 10], ["flint-and-steel", 1], ["rope", 1], ["rations", 2], ["soap", 1], ["torch", 5], ["waterskin", 1]]
+summary = "A backpack holding a bedroll, 10 chalk, flint and steel, 50 feet of rope, two weeks' rations, soap, 5 torches and a waterskin. 15 sp."

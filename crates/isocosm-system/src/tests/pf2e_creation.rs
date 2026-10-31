@@ -46,7 +46,8 @@ fn a_legal_dwarf_fighter_finishes_with_derived_numbers() {
     }
     // 10 ancestry + 10 class + Constitution 3.
     assert_eq!(derive(builtin(), &build).hp_max, 23);
-    assert_eq!(build.gear, ["clan-dagger", "longsword", "steel-shield", "scale-mail"]);
+    let gear: Vec<_> = build.gear.iter().map(|(g, _)| g.as_str()).collect();
+    assert_eq!(gear, ["clan-dagger", "longsword", "steel-shield", "scale-mail"]);
     assert_eq!(build.coins, 800);
     assert_eq!(build.languages, ["Common", "Dwarven", "Gnomish"]);
 }

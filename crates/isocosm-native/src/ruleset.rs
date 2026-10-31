@@ -107,6 +107,16 @@ pub enum Action {
     },
     /// A GM seat moves the DC that skill checks are made against.
     SetDc(i64),
+    /// One action moving to a native cell, measured against Speed.
+    Stride {
+        actor: u64,
+        to: [i64; 3],
+    },
+    /// A GM seat rules a Stride within Speed where no scale is set.
+    RuleStride {
+        actor: u64,
+        to: [i64; 3],
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

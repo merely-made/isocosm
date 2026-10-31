@@ -90,8 +90,9 @@ pub struct Build {
     pub initiative: i64,
     pub resistances: Vec<String>,
     pub languages: Vec<String>,
-    /// Items owned at 1st level: bought, or given by the ancestry.
-    pub gear: Vec<String>,
+    /// Items owned at 1st level, with quantities: bought (a kit opens into
+    /// its contents), or given by the ancestry.
+    pub gear: Vec<(String, u32)>,
     /// Starting money left after buying, in copper pieces.
     pub coins: i64,
 }

@@ -790,7 +790,7 @@ three design docs that cite it. The record holds the words.
 | 1033 | Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1034 | PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move. | none |
 | 1035 | A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
-| 1042 | PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only. | none |
+| 1042 | PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1043 | Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 | 1044 | Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes. | none |
 | 1046 | The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks. | none |

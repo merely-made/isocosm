@@ -317,3 +317,18 @@ sheet read AC 19 with the shield raised and Longsword +8, both checked by
 hand. Capture: `C:\Users\mark_\Code\testing\isocosm\pf2e-chars\play\isometry_capture.png`.
 The dying track's native wound and kill are covered by
 `ruleset_pf2e.rs`'s encounter test.
+
+### Stride trial, 2026-10-31
+
+Ledger from `pf2e_table --stride`: two characters admitted through native
+recipe admission, placement and control, drafted as dwarf fighters, geared,
+and the scale set to 4 cells per square. Headed desktop with
+`ISOCOSM_PF2E_SELFTEST=stride ISOCOSM_PF2E_STRIDER=19`: Start encounter, end
+character 18's turn, then "Stride 20 feet east" for character 19. PASS: three
+accepted records, durable replay exact. The note reads "moved: brisa at [32,
+6, 16]; 20 feet of Speed 20, measured at 4 cells per square", and the disk
+reopen (sequence 69) shows body 19's table position current at [32, 6, 16].
+Capture `C:\Users\mark_\Code\testing\isocosm\pf2e-chars\stride\isocosm_capture.png`
+(703367 bytes, SHA-256
+`e9ce7cdb4a6a5e6ea9f3e0c093147307de6085b8cdd8b0ba7e9ef5831e99fba9`) shows
+the card after the Stride: two actions left and the next destinations.

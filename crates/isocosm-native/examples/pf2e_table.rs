@@ -1,10 +1,13 @@
 //! Write a fresh Bench family ledger founded under Pathfinder 2e, for the
 //! desktop creation trial; `--inspect` reopens a saved one and prints what the
-//! family host replayed.
+//! family host replayed. `--ready` drafts both bodies as dwarf fighters;
+//! `--stride` does so over admitted, placed characters at 4 cells a square.
 #[path = "../tests/native_founding/fixture.rs"]
 mod content_fixture;
 #[path = "../tests/support/table.rs"]
 mod table;
+#[path = "../tests/support/admitted.rs"]
+mod admitted;
 use chirograph::{IntentInvocation, IntentResult};
 use graphshell_endpoint::{IntentSink, ProjectionCatalog, ProjectionSource};
 use cosmograph_host::world::World;
@@ -16,11 +19,16 @@ use isocosm_native::{
 };
 use isonetry::family::{FamilyHost, FamilyLedgerLimits, FamilyLimits, SessionId};
 
-fn click(
+fn click(endpoint: &mut VttEndpoint, projection: &str, id: &str, intent: &str) -> Result<(), String> {
+    click_payload(endpoint, projection, id, intent, &[])
+}
+
+fn click_payload(
     endpoint: &mut VttEndpoint,
     projection: &str,
     id: &str,
     intent: &str,
+    payload: &[u8],
 ) -> Result<(), String> {
     let offer = endpoint
         .describe()
@@ -46,7 +54,7 @@ fn click(
         observed_epoch: snap.scene.epoch,
         observed_revision: snap.scene.revision,
         intent: intent.into(),
-        payload: vec![],
+        payload: payload.to_vec(),
     })? {
         IntentResult::Accepted => Ok(()),
         other => Err(format!("fixture action refused: {other:?}")),
@@ -65,9 +73,14 @@ fn main() -> Result<(), String> {
     if path == "--inspect" {
         return inspect(&args.next().ok_or("supply the saved .family ledger path")?);
     }
-    let table::Table {
-        world, dm, bodies, ..
-    } = table::table_with_sites(1);
+    let mode = args.next();
+    let (world, dm, bodies) = if mode.as_deref() == Some("--stride") {
+        let a = admitted::admitted_table();
+        (a.world, a.dm, a.characters)
+    } else {
+        let t = table::table_with_sites(1);
+        (t.world, t.dm, t.bodies)
+    };
     let (session, mut sections) = world.into_parts()?;
     let draft = content_fixture::draft();
     let content = Content {
@@ -82,7 +95,9 @@ fn main() -> Result<(), String> {
         edition: "pf2e-srd".into(),
     };
     content.validate().map_err(|e| e.to_string())?;
-    sections.insert("vtt".into(), GameBindings::decode(&[])?.encode()?);
+    if !sections.contains_key("vtt") {
+        sections.insert("vtt".into(), GameBindings::decode(&[])?.encode()?);
+    }
     sections.insert(
         "isocosm-native:campaign".into(),
         serde_json::to_vec(&serde_json::json!({"content":content,"origin":null}))
@@ -104,7 +119,7 @@ fn main() -> Result<(), String> {
     click(&mut endpoint, TABLE, "roster", "vtt.roster-empty")?;
     // `--ready`: both bodies drafted as dwarf fighters through the same
     // sheet buttons, with longsword, steel shield and scale mail readied.
-    if args.next().as_deref() == Some("--ready") {
+    if mode.is_some() {
         for body in bodies {
             let card = format!("sheet:{body}");
             click(&mut endpoint, SHEETS, &card, "vtt.sheet-create")?;
@@ -124,6 +139,9 @@ fn main() -> Result<(), String> {
             }
         }
     }
+    if mode.as_deref() == Some("--stride") {
+        click_payload(&mut endpoint, isocosm_native::AUTHORING, "ruleset-scale", "vtt.ruleset-scale", br#"{"cells_per_square":4}"#)?;
+    }
     println!(
         "Pathfinder Bench ledger {path}; bodies={bodies:?}; sequence={}",
         host.sequence()
@@ -140,7 +158,7 @@ fn inspect(path: &str) -> Result<(), String> {
         FamilyLimits::default(),
         FamilyLedgerLimits::default(),
     )?;
-    let report = host.read(|_, sections| -> Result<_, String> {
+    let report = host.read(|session, sections| -> Result<_, String> {
         let state = isocosm_native::ruleset::State::read(sections)?.ok_or("no saved edition state")?;
         Ok(serde_json::json!({
             "edition": isocosm_native::ruleset::edition(sections)?,
@@ -150,6 +168,9 @@ fn inspect(path: &str) -> Result<(), String> {
             "drafts": state.drafts.iter().map(|(id, draft)| serde_json::json!({
                 "body": id.0, "choices": draft.choices.len()
             })).collect::<Vec<_>>(),
+            "positions": GameBindings::decode(sections.get("vtt").map_or(&[], Vec::as_slice))?.positions().values()
+                .map(|p| format!("{} {:?}", p.entity, p.current(session))).collect::<Vec<_>>(),
+            "scale": state.cells_per_square,
             "log": state.log.iter().map(|entry| entry.note.clone()).collect::<Vec<_>>(),
         }))
     })??;

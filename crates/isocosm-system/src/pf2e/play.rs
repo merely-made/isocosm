@@ -106,6 +106,7 @@ pub fn fist() -> Item {
         hands: Some(1),
         range: None,
         ac: None, dex_cap: None, check: None, speed: None, strength: None, hardness: None, hp: None,
+        contents: Vec::new(),
         summary: "Unarmed attack: 1d4 bludgeoning; agile, finesse, nonlethal.".into(),
     }
 }

@@ -13,6 +13,9 @@ use isocosm_system::pf2e::{
     records::Item,
 };
 
+mod stride;
+pub(crate) use stride::{ground, position, speed, squares};
+
 /// Native cells one wound takes. Provisional: the size is an open fork.
 const WOUND_CELLS: u32 = 1;
 /// Player Core's simple DC for a 1st-level task.
@@ -167,7 +170,7 @@ pub(super) fn apply(
     state: &mut State,
     map: &mut MapDocument,
     session: &mut Session,
-    sections: &BTreeMap<String, Vec<u8>>,
+    sections: &mut BTreeMap<String, Vec<u8>>,
     access: OrdinaryAccess,
     action: &Action,
     payload: &[u8],
@@ -175,13 +178,35 @@ pub(super) fn apply(
     use frame::authorize;
     let mut rolls = Vec::new();
     let note = match action {
+        Action::Stride { actor, to } => stride::stride(state, map, session, sections, access, *actor, *to, false)?,
+        Action::RuleStride { actor, to } => stride::stride(state, map, session, sections, access, *actor, *to, true)?,
+        Action::Calibrate => {
+            gm(access)?;
+            #[derive(Deserialize)]
+            #[serde(deny_unknown_fields)]
+            struct Scale {
+                cells_per_square: u32,
+            }
+            let scale: Scale = serde_json::from_slice(payload).map_err(|_| "enter native cells per five-foot square")?;
+            if scale.cells_per_square == 0 {
+                return Err("physical scale must be positive".into());
+            }
+            state.cells_per_square = Some(scale.cells_per_square);
+            format!("GM set {} native cells per five-foot square", scale.cells_per_square)
+        },
+        Action::UseRulings => {
+            gm(access)?;
+            state.cells_per_square = None;
+            "GM chose recorded rulings for distance".into()
+        },
         Action::Equip { actor, item } => {
             let id = authorize(session, access, *actor)?;
             let record = item_of(state, id, item).ok_or("not a Pathfinder item in this character's inventory")?;
             let slot = match record.kind.as_str() {
                 "weapon" => EquipmentSlot::MainHand,
                 "shield" => EquipmentSlot::OffHand,
-                _ => EquipmentSlot::Body,
+                "armor" => EquipmentSlot::Body,
+                _ => return Err(format!("{} is carried, not readied", record.name)),
             };
             if state.encounter.as_ref().is_some_and(|e| e.turn(id.0).is_some()) {
                 if slot == EquipmentSlot::Body {
@@ -289,7 +314,7 @@ pub(super) fn apply(
             } else {
                 payload
             };
-            let (_, reach) = frame::reach(state, session, sections, access, *actor, *target, ruling)?;
+            let (_, reach) = frame::reach(state, session, &*sections, access, *actor, *target, ruling)?;
             let ab = build(state, a)?;
             let weapon = gear(state, a).weapon.cloned().unwrap_or_else(rules::fist);
             if weapon.range.is_some() && !weapon.traits.iter().any(|x| x.starts_with("thrown")) {
@@ -339,7 +364,7 @@ pub(super) fn apply(
             let note = hurt(state, map, session, t, i64::from(*amount), false)?;
             format!("GM ruled {amount} damage to {target}: {note}")
         },
-        _ => return Err("not built for Pathfinder 2e yet (Stride waits on a ruling)".into()),
+        _ => return Err("not built for Pathfinder 2e".into()),
     };
     Ok((note, rolls))
 }
