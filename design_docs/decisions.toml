@@ -5256,6 +5256,13 @@ area = "Directing and play"
 summary = "A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture."
 draws_on = ["60", "671", "1053", "1055"]
 
+[cases."1057"]
+title = "An arrival enters through the border it crossed"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings."
+draws_on = ["processes.16", "world.6"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

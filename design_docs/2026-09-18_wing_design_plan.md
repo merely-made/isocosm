@@ -11469,6 +11469,23 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1034, 1047, vtt.2, vtt.3, vtt.5 · summary PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members.
 
+1057. **An arrival enters through the border it crossed.** Ruled by Mark on
+      2026-10-31, after Mesocosm was found refusing to found a seeded torus
+      (its two routes between the same two sites made duplicate crossings,
+      since a crossing keeps only its two sites, introduced in 39a597c9):
+      "If we can use 1 to implement directional approach of an area (i.e.
+      enter from this tile to this one results in entering into the tile
+      from a map-relative direction. If not, perhaps at most reconsider
+      arrivals, including the torus case". Deduplicating crossings by site
+      pair would discard direction, while every route already carries its
+      border (the side it leaves and the side it enters), so the reading is
+      the second: a crossing is keyed by its route's border, its stand lies
+      at the entering edge of the destination, and an arrival enters from
+      that map-relative direction; a torus's two routes between one pair of
+      sites are two distinct crossings.
+
+      Links: area World generation · draws on world.6, processes.16 · summary A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings.
+
 1045. **A shared mechanism moves when its second consumer is planned, not
       when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
       D12, refining mere's Stack 1): "second host is planned", because
