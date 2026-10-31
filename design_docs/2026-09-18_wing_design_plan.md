@@ -11403,6 +11403,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1023, 1043, processes.13 · summary Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes.
 
+1045. **Edition ids may sit in the core pack; creature bodies are the next
+      looks.** Ruled by Mark on 2026-10-31 (Mark: "Keep in the core pack",
+      "Creature bodies"), after generated item looks landed. The reading: the
+      core pack (MIT OR Apache-2.0) may name an edition's item ids to bind
+      them to looks, ids being references and not the edition's text, as the
+      5e SRD bindings already are; the next stage of 1035 draws a lineage's
+      recipe as a voxel body.
+
+      Links: area The VTT · draws on 1035, 1043, licensing.1 · summary The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks.
+
 1045. **A shared mechanism moves when its second consumer is planned, not
       when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
       D12, refining mere's Stack 1): "second host is planned", because
