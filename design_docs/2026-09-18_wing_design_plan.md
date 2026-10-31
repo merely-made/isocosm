@@ -11387,6 +11387,20 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1012, 1035, processes.13 · summary Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults.
 
+1044. **Homebrew is the sim's making, with Distillery's models optional;
+      quick-start worlds author their own ground.** Ruled by Mark on
+      2026-10-31. On 1043's "homebrew addition from the distillery" (Mark:
+      "Both, models optional"): new items, spells and templates are composed
+      by the sim's own making machinery on a ruleset's defaults, and
+      Distillery (mere's model-works port) may propose names, descriptions
+      and variants on top when a device runs it, each proposal checked and
+      built by the sim, never taken unchecked. On the head-founding gate
+      (875, 885), which refused a quick-start laid over a drawn world (Mark:
+      "Quick-starts author their world"): a quick-start pack declares its own
+      sites and routes, so its world is authored and passes the gate.
+
+      Links: area The VTT · draws on 1023, 1043, processes.13 · summary Homebrew is composed by the sim's making on ruleset defaults, Distillery's models optional and checked; quick-start packs author their own sites and routes.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
