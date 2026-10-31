@@ -622,7 +622,7 @@ three design docs that cite it. The record holds the words.
 | 537 | The web modules take the newest wasm-bindgen they can, shared as one exact pin. (amended by 556) | none |
 | 556 | Every wasm module in mere moves to wasm-bindgen 0.2.129; 'stay with the newest' stands for later pins. | none |
 | 567 | The pre.4 probe, repro and OPFS runners build with the repo's pinned toolchain from mere's rust-toolchain.toml; bundles are rebuilt once. | none |
-| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [DOC README](DOC_README.md) |
+| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [DOC README](DOC_README.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 604 | Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
 | 606 | The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
 | 609 | One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |

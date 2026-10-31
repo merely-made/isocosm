@@ -5655,6 +5655,14 @@ summary = "A Grouped advance with a paced lineage runs one tick at a time, so a 
 draws_on = ["609", "610", "sim-execution D15", "sim-execution D19"]
 governs = ["cosmograph::schedule"]
 
+[decisions."sim-execution D42"]
+title = "the record is a store per component, keyed by identity (2026-10-31), applies 483"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "The sim's schema and saves"
+summary = "The record holds each component in a store suited to its shape, keyed and listed by the sim's own identities; no ECS crate holds it."
+draws_on = ["482", "483", "600", "sim-execution D27", "sim-execution D28", "sim-execution D29"]
+governs = ["cosmograph::population"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"
