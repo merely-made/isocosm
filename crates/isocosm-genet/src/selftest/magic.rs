@@ -45,7 +45,7 @@ pub(crate) struct MagicSelftest {
 
 impl MagicSelftest {
     pub(crate) fn from_env() -> Option<Self> {
-        std::env::var("ISOMETRY_MAGIC_WEAPON_SELFTEST")
+        std::env::var("ISOCOSM_MAGIC_WEAPON_SELFTEST")
             .ok()
             .map(|mode| {
                 assert!(

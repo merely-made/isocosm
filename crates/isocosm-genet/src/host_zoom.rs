@@ -68,7 +68,7 @@ fn board(window: (f32, f32), fit: bool) -> BoardHarness {
 }
 
 /// Whether this receipt measures the DOM board's own boxes, which under
-/// `ISOMETRY_SCENE_BOARD` do not exist: decision 2 of the board plan moved the
+/// `ISOCOSM_SCENE_BOARD` do not exist: decision 2 of the board plan moved the
 /// pixel grid off `board_scale` and onto the producer's render scale, so on the
 /// scene board the crispness these assert is in the renderer rather than in a
 /// laid-out tile. `scene_board::SceneBoard::sync` owns the scale there, and
@@ -78,7 +78,7 @@ fn dom_board_only(what: &str) -> bool {
         return false;
     }
     eprintln!(
-        "SKIPPED (ISOMETRY_SCENE_BOARD): {what} measures the DOM board's tile box; the \
+        "SKIPPED (ISOCOSM_SCENE_BOARD): {what} measures the DOM board's tile box; the \
          scene board's pixel grid is the producer's render scale."
     );
     true

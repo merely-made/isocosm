@@ -1,4 +1,4 @@
-//! `ISOMETRY_REGION_SELFTEST=<label>`: once a restored native table offers
+//! `ISOCOSM_REGION_SELFTEST=<label>`: once a restored native table offers
 //! its projections, select the GM's adventure projection, where the places
 //! read off their residents sit beside the polities, for a capture.
 
@@ -16,7 +16,7 @@ pub(crate) struct RegionSelftest {
 
 impl RegionSelftest {
     pub(crate) fn from_env() -> Option<Self> {
-        std::env::var("ISOMETRY_REGION_SELFTEST").ok()
+        std::env::var("ISOCOSM_REGION_SELFTEST").ok()
             .map(|party| Self { party, started: None, asked: false, done: false })
     }
 
@@ -46,7 +46,7 @@ impl RegionSelftest {
             return;
         }
         if ctx.runner.state().vtt_selected_projection == isocosm_native::ADVENTURE {
-            eprintln!("[isometry] region selftest: GM adventure projection selected for {}", self.party);
+            eprintln!("[isocosm] region selftest: GM adventure projection selected for {}", self.party);
             self.done = true;
             // The capture waits on a frame; a still table draws one only on change.
             ctx.runner.update(|ui| ui.status = "GM adventure projection: places and polities".into());

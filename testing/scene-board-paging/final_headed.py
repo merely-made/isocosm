@@ -10,24 +10,24 @@ def run(exe,out,root):
     preference.parent.mkdir(parents=True,exist_ok=False)
     preference.write_text(json.dumps(dict(version=1,atlas_budget_mib=1)))
     (out/'terrain-seeded-preference.json').write_bytes(preference.read_bytes())
-    cases=[('terrain-change',dict(ISOMETRY_SYNTH='256',ISOMETRY_TERRAIN_SELFTEST='change'),config),
-           ('terrain-restart',dict(ISOMETRY_SYNTH='256',ISOMETRY_TERRAIN_SELFTEST='verify'),config),
-           ('headed-demo',dict(ISOMETRY_OVERLAY_SELFTEST='1'),None),
-           ('headed-256',dict(ISOMETRY_SYNTH='256',ISOMETRY_OVERLAY_SELFTEST='1'),None),
-           ('headroom-zero',dict(ISOMETRY_SYNTH='256',ISOMETRY_OVERLAY_SELFTEST='1',ISOMETRY_SCENE_HEADROOM='0'),None),
-           ('overlay-control',dict(ISOMETRY_SYNTH='256'),None)]
+    cases=[('terrain-change',dict(ISOCOSM_SYNTH='256',ISOCOSM_TERRAIN_SELFTEST='change'),config),
+           ('terrain-restart',dict(ISOCOSM_SYNTH='256',ISOCOSM_TERRAIN_SELFTEST='verify'),config),
+           ('headed-demo',dict(ISOCOSM_OVERLAY_SELFTEST='1'),None),
+           ('headed-256',dict(ISOCOSM_SYNTH='256',ISOCOSM_OVERLAY_SELFTEST='1'),None),
+           ('headroom-zero',dict(ISOCOSM_SYNTH='256',ISOCOSM_OVERLAY_SELFTEST='1',ISOCOSM_SCENE_HEADROOM='0'),None),
+           ('overlay-control',dict(ISOCOSM_SYNTH='256'),None)]
     for name,switches,local in cases:
         directory=out/name
         directory.mkdir(exist_ok=False)
-        env={key:value for key,value in os.environ.items() if not key.startswith('ISOMETRY_')}
-        env.update(LOCALAPPDATA=str(local or directory/'local-appdata'),ISOMETRY_SCENE_BOARD='1',ISOMETRY_PROFILE='1',ISOMETRY_CAPTURE_DIR=str(directory),**switches)
-        (directory/'source.json').write_text(json.dumps(dict(source=source,binary=str(exe),sha256=sha,build='release',cwd=str(root),env={k:v for k,v in env.items() if k.startswith('ISOMETRY_') or k=='LOCALAPPDATA'}),indent=2))
+        env={key:value for key,value in os.environ.items() if not key.startswith('ISOCOSM_')}
+        env.update(LOCALAPPDATA=str(local or directory/'local-appdata'),ISOCOSM_SCENE_BOARD='1',ISOCOSM_PROFILE='1',ISOCOSM_CAPTURE_DIR=str(directory),**switches)
+        (directory/'source.json').write_text(json.dumps(dict(source=source,binary=str(exe),sha256=sha,build='release',cwd=str(root),env={k:v for k,v in env.items() if k.startswith('ISOCOSM_') or k=='LOCALAPPDATA'}),indent=2))
         print(name,flush=True)
         with (directory/'stdout.log').open('xb') as stdout,(directory/'stderr.log').open('xb') as stderr:
             process=subprocess.Popen([str(exe)],cwd=root,env=env,stdout=stdout,stderr=stderr)
             deadline=time.monotonic()+30
             while time.monotonic()<deadline and process.poll() is None:
-                if (directory/'isometry_capture.png').exists():
+                if (directory/'isocosm_capture.png').exists():
                     time.sleep(1)
                     break
                 time.sleep(.25)
@@ -36,7 +36,7 @@ def run(exe,out,root):
             code=process.wait()
         text=(directory/'stderr.log').read_text(errors='replace')
         assert live, (name,'host exited before bounded stop',code,text[-2000:])
-        assert (directory/'isometry_capture.png').exists(),(name,'capture missing')
+        assert (directory/'isocosm_capture.png').exists(),(name,'capture missing')
         assert 'panicked at' not in text and 'scene board: ' not in text,(name,'host error')
         if name.startswith('terrain-'):
             assert '[terrain-host-receipt] PASS' in text,(name,'host assertion marker absent')
@@ -46,7 +46,7 @@ def run(exe,out,root):
         (directory/'termination.json').write_text(json.dumps(dict(exit=code,stopped_after_capture=live)))
     from PIL import Image
     import numpy as np
-    def pixels(name):return np.asarray(Image.open(out/name/'isometry_capture.png').convert('RGBA'))
+    def pixels(name):return np.asarray(Image.open(out/name/'isocosm_capture.png').convert('RGBA'))
     first=pixels('headed-256');same=pixels('headroom-zero');control=pixels('overlay-control')
     assert first.shape==same.shape==control.shape
     drift=int(np.any(first!=same,axis=2).sum());positive=int(np.any(first!=control,axis=2).sum())

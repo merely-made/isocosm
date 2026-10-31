@@ -126,14 +126,14 @@ fn game_snapshot(native: NativeWorld, table: NativeTable) -> GameSnapshot {
     }
 }
 
-/// Run with `ISOMETRY_H7_RECEIPT_DIR` set to the existing H7 receipt owner.
+/// Run with `ISOCOSM_H7_RECEIPT_DIR` set to the existing H7 receipt owner.
 /// The fixed stem is create-only: a prior fixture is never replaced.
 #[test]
 #[ignore = "explicit Bench-only H7 headed fixture exporter"]
 fn export_seed11_bench_table_for_headed_gate() {
     let receipt_root = PathBuf::from(
-        std::env::var_os("ISOMETRY_H7_RECEIPT_DIR")
-            .expect("set ISOMETRY_H7_RECEIPT_DIR to the existing H7 receipt folder"),
+        std::env::var_os("ISOCOSM_H7_RECEIPT_DIR")
+            .expect("set ISOCOSM_H7_RECEIPT_DIR to the existing H7 receipt folder"),
     );
     assert!(receipt_root.is_dir(), "receipt owner must already exist");
     let campaign_dir = receipt_root.join("campaigns");

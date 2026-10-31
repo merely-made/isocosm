@@ -516,7 +516,7 @@ mod tests {
                 .sources
                 .iter()
                 .flatten()
-                .all(|source| source.adapter == isocosm_views::ISOMETRY_OVERMAP_ADAPTER)
+                .all(|source| source.adapter == isocosm_views::ISOCOSM_OVERMAP_ADAPTER)
         );
         let board = endpoint
             .snapshot(descriptor.projections[1].request.clone())
@@ -526,7 +526,7 @@ mod tests {
         assert_eq!(backdrop.len(), 1);
         assert_eq!(
             backdrop[0].1.kind,
-            isocosm_views::ISOMETRY_TILE_BOARD_BACKDROP
+            isocosm_views::ISOCOSM_TILE_BOARD_BACKDROP
         );
         assert!(!backdrop[0].1.collidable);
         let wire = serde_json::to_string(&board.scene).unwrap();
@@ -539,7 +539,7 @@ mod tests {
                 .sources
                 .iter()
                 .flatten()
-                .all(|source| source.adapter == isocosm_views::ISOMETRY_TILE_BOARD_ADAPTER)
+                .all(|source| source.adapter == isocosm_views::ISOCOSM_TILE_BOARD_ADAPTER)
         );
     }
 

@@ -205,7 +205,7 @@ impl FamilyTable {
             }
         }
         drop(session);
-        if std::env::var_os("ISOMETRY_PROFILE").is_some() {
+        if std::env::var_os("ISOCOSM_PROFILE").is_some() {
             eprintln!(
                 "[isocosm-family] {} durable={} sequence={} revision={} native={}",
                 if resumed { "resumed" } else { "created" }, durable,

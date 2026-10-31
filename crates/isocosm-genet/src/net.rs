@@ -320,7 +320,7 @@ async fn run_host(
     host.spawn_accept();
     out.emit(BridgeUpdate::LocalSender(Some(isonetry::native_table::TableSender::Host)));
     let ticket = host.ticket().await;
-    println!("[isometry] hosting. share this ticket to join:\n\n  {ticket}\n");
+    println!("[isocosm] hosting. share this ticket to join:\n\n  {ticket}\n");
     out.emit(BridgeUpdate::HostReady {
         ticket,
         snapshot: host.snapshot().await,
@@ -479,7 +479,7 @@ async fn run_client(
             return;
         },
     };
-    println!("[isometry] joined session as {name}; replaying host log.");
+    println!("[isocosm] joined session as {name}; replaying host log.");
     let sender=isonetry::native_table::TableSender::Endpoint(client.endpoint_key());
     let mut sender_announced=false;
     let mut last_applied = u64::MAX;

@@ -11,7 +11,7 @@ pub(crate) struct TerrainReceipt {
 
 impl TerrainReceipt {
     pub(crate) fn from_env() -> Option<Self> {
-        std::env::var("ISOMETRY_TERRAIN_SELFTEST")
+        std::env::var("ISOCOSM_TERRAIN_SELFTEST")
             .ok()
             .map(|value| Self {
                 verify: value == "verify",

@@ -91,10 +91,10 @@ mod tests {
         assert_eq!(parse("spawn goblin"), Command::Spawn("goblin".to_owned()));
         assert_eq!(parse("gen npc"), Command::Gen("npc".to_owned()));
         assert_eq!(
-            parse("choose session-4 isometry.generator/v1 next scene"),
+            parse("choose session-4 isocosm.generator/v1 next scene"),
             Command::Choose {
                 seed: "session-4".to_owned(),
-                domain: "isometry.generator/v1".to_owned(),
+                domain: "isocosm.generator/v1".to_owned(),
                 prompt: "next scene".to_owned(),
             }
         );

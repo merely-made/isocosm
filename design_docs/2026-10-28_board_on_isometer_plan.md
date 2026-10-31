@@ -4,7 +4,7 @@
 `2026-09-25_vtt_overlay_plan.md` (the board and appearance items),
 `2026-08-08_extracted_receipts.md` (headed acceptance, tile geometry), which are
 archived in `archive_docs/2026-10-28/`. The authored scene board is built behind
-the `ISOMETRY_SCENE_BOARD` flag beside the DOM board, with per-tile diffing and
+the `ISOCOSM_SCENE_BOARD` flag beside the DOM board, with per-tile diffing and
 paged residency. Open are the DOM board's fate, the sim-on lifted-site path,
 what the scene board does not yet draw, the appearance theory, the smallest
 supported display and headed acceptance.
@@ -228,7 +228,7 @@ roadmap's distribution residue goes to `content-packs`.
   `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:398-409`.
 
 ## Findings
-- 2026-10-28: the scene board is behind `ISOMETRY_SCENE_BOARD`
+- 2026-10-28: the scene board is behind `ISOCOSM_SCENE_BOARD`
   (`crates/isocosm-views/src/board.rs:311`, `state.rs:118`,
   `crates/isocosm-genet/src/scene_routing.rs`); the DOM board has not been
   archived or made the fallback by ruling. The sim-on lifted-site path does not
@@ -271,7 +271,7 @@ roadmap's distribution residue goes to `content-packs`.
   south had been drawn as north on both: bake facing 0 and yaw zero put the
   rig's front toward the upper right. `bake_facing_of` and `yaw_of` now put
   north at zero, so a south-facing token shows its face.
-- 2026-10-30: the in-app `ISOMETRY_CAPTURE_DIR` readback did not land for any
+- 2026-10-30: the in-app `ISOCOSM_CAPTURE_DIR` readback did not land for any
   selftest on this machine (a turns-selftest control run included); the look
   editor's headed pairs were taken with PrintWindow from outside the process.
 

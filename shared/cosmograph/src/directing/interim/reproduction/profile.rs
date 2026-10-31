@@ -75,7 +75,7 @@ impl Form {
 pub(super) fn world(seed: u64, form: Form, original: bool) -> Genesis {
     let rates = if original { Rates::Stock } else { Rates::A1 };
     let founding = form.founding(seed, rates);
-    world_from_founding(founding, original, std::env::var("ISOCOSM_REPRO_TWEAK").ok().as_deref())
+    world_from_founding(founding, original, std::env::var("COSMOGRAPH_REPRO_TWEAK").ok().as_deref())
 }
 
 pub(super) fn world_from_founding(
@@ -118,7 +118,7 @@ fn check(g: &Genesis, original: bool) {
 }
 
 /// Declared exploratory tweaks, applied after the base checks and only to a
-/// run that names them: `ISOCOSM_REPRO_TWEAK` is a comma list of `meal=N`,
+/// run that names them: `COSMOGRAPH_REPRO_TWEAK` is a comma list of `meal=N`,
 /// `upkeep=N`, `feed=N`, `gate=N`, `provision=N`, `bperiod=N` (consumer rates) and
 /// `lifebase=N` (every lineage's lifespan ceiling is N plus a draw of 0 to 40), and
 /// `pdecide=N`, `cdecide=N`, `ddecide=N` (how often producers, consumers and

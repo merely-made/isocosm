@@ -12,15 +12,15 @@
 //! promoted it to `isomere::host::Capture` with the two environment variable
 //! names, the file and the log prefix lifted into [`CAPTURE`]. The policy is
 //! unchanged — one final frame once the armed self-tests finish, or every
-//! frame under `ISOMETRY_CAPTURE_EVERY_FRAME=1`, written to a `.tmp` and
-//! renamed — so `ISOMETRY_CAPTURE_DIR` still means exactly what it meant, and
+//! frame under `ISOCOSM_CAPTURE_EVERY_FRAME=1`, written to a `.tmp` and
+//! renamed — so `ISOCOSM_CAPTURE_DIR` still means exactly what it meant, and
 //! `png` left this crate's manifest because `mesquite::write_png` does the
 //! encoding now.
 //!
 //! **The scene board is the one producer.** B2 registered it inside
 //! `SceneBoard::sync`; the assembly does it instead, from
 //! [`Product::viewport_keys`] and [`Product::producer`]. With
-//! `ISOMETRY_SCENE_BOARD` unset there is no scene board, so the key is never
+//! `ISOCOSM_SCENE_BOARD` unset there is no scene board, so the key is never
 //! named and nothing is registered — which is what [`NoProducer`] would have
 //! been for had B2 not landed first. The snapshot push and the pixel grid stay
 //! in `SceneBoard`, because they are about the board and not about hosting it.
@@ -33,7 +33,7 @@
 //! Giving Isocosm the shared error line is a view change and belongs to a
 //! later milestone.
 //!
-//! **No scenario lane.** Isocosm drives itself through the `ISOMETRY_*_SELFTEST`
+//! **No scenario lane.** Isocosm drives itself through the `ISOCOSM_*_SELFTEST`
 //! drivers rather than a `mesquite::Scenario`, so it hands the assembly no
 //! lane; `after_frame` is the drivers, exactly as before.
 
@@ -50,10 +50,10 @@ use crate::{App, Ctx, Logic, Runner};
 /// What this host calls its capture policy. The two variables and the file name
 /// are the ones every receipt under `testing/isocosm/images` was taken with.
 pub(crate) const CAPTURE: CaptureNames = CaptureNames {
-    directory_var: "ISOMETRY_CAPTURE_DIR",
-    every_frame_var: "ISOMETRY_CAPTURE_EVERY_FRAME",
-    file: "isometry_capture.png",
-    log_prefix: "isometry",
+    directory_var: "ISOCOSM_CAPTURE_DIR",
+    every_frame_var: "ISOCOSM_CAPTURE_EVERY_FRAME",
+    file: "isocosm_capture.png",
+    log_prefix: "isocosm",
 };
 
 /// Isocosm, as the shared assembly sees it: one handle on the application
@@ -66,7 +66,7 @@ impl Product for Isocosm {
     type View = UiChild;
     type Producer = Rc<RefCell<BoardProducer>>;
 
-    const LOG_PREFIX: &'static str = "isometry";
+    const LOG_PREFIX: &'static str = "isocosm";
     /// See the module header: this DOM has no error element to publish into.
     const PUBLISHES_ERROR: bool = false;
 
@@ -169,14 +169,14 @@ mod tests {
     /// what `capture.rs`'s own tests were replaced by.
     #[test]
     fn the_capture_variables_are_the_ones_every_receipt_was_taken_with() {
-        assert_eq!(CAPTURE.directory_var, "ISOMETRY_CAPTURE_DIR");
-        assert_eq!(CAPTURE.every_frame_var, "ISOMETRY_CAPTURE_EVERY_FRAME");
+        assert_eq!(CAPTURE.directory_var, "ISOCOSM_CAPTURE_DIR");
+        assert_eq!(CAPTURE.every_frame_var, "ISOCOSM_CAPTURE_EVERY_FRAME");
     }
 
     #[test]
     fn the_capture_file_and_prefix_are_unchanged() {
-        assert_eq!(CAPTURE.file, "isometry_capture.png");
-        assert_eq!(CAPTURE.log_prefix, "isometry");
+        assert_eq!(CAPTURE.file, "isocosm_capture.png");
+        assert_eq!(CAPTURE.log_prefix, "isocosm");
         assert_eq!(Isocosm::LOG_PREFIX, CAPTURE.log_prefix);
     }
 }

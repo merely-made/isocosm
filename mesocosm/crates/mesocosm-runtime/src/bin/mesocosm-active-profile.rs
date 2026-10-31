@@ -15,7 +15,7 @@ fn main() {
         play::run();
     } else if std::env::var_os("MESOCOSM_PROFILE_SEAL").is_some_and(|v| v == "1") {
         seal();
-    } else if std::env::var_os("ISOCOSM_PROFILE_REGISTRY").is_some_and(|v| v == "1") {
+    } else if std::env::var_os("COSMOGRAPH_PROFILE_REGISTRY").is_some_and(|v| v == "1") {
         registry();
     } else {
         active_profile::saved_active_update();

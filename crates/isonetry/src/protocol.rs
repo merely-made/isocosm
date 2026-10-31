@@ -22,8 +22,9 @@ use serde::{Deserialize, Serialize};
 /// all and the frame never arrives. This constant covers the dangerous half of
 /// the space: a body that *does* decode and means something else. Bump it for
 /// any change to the wire shape, and move `iroh_link::ALPN` with it so an
-/// incompatible peer cannot even dial.
-pub const PROTOCOL_VERSION: u16 = 23;
+/// incompatible peer cannot even dial. 24 renamed the ALPN from `isometry/`
+/// to `isocosm/` (case 1039); a v23 peer is refused, not degraded.
+pub const PROTOCOL_VERSION: u16 = 24;
 
 /// A peer's identity within a session. For the iroh transport this wraps
 /// the remote node id; the pure-sync core only needs it to route.

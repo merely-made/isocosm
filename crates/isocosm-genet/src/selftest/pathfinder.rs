@@ -1,5 +1,5 @@
 //! Opt-in headed trial of Pathfinder 2e creation: every choice is a painted
-//! endpoint button on the Character sheets page. `ISOMETRY_PF2E_SELFTEST`
+//! endpoint button on the Character sheets page. `ISOCOSM_PF2E_SELFTEST`
 //! is `draft` (stop at the ancestry feat, where refused options show their
 //! reasons), `finished` (finish a dwarf fighter and show the sheet) or
 //! `play` (over a `pf2e_table --ready` ledger: start an encounter, Strike
@@ -50,7 +50,7 @@ pub(crate) struct PathfinderSelftest {
 
 impl PathfinderSelftest {
     pub(crate) fn from_env() -> Option<Self> {
-        std::env::var("ISOMETRY_PF2E_SELFTEST").ok().map(|mode| {
+        std::env::var("ISOCOSM_PF2E_SELFTEST").ok().map(|mode| {
             assert!(["draft", "finished", "play"].contains(&mode.as_str()), "pf2e selftest mode is draft, finished or play");
             Self { finished: mode == "finished", play: mode == "play", log: 0, phase: Phase::Select, started: Instant::now(),
                 painted: Painted::default(), body: None, before: None, waiting: false }

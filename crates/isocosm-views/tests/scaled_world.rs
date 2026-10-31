@@ -19,7 +19,7 @@
 //!   Release matters: debug timings are dominated by unoptimized BTreeMap walks
 //!   and misreport the ratios.
 //!
-//! `ISOMETRY_SYNTH_WORLD=<places>` overrides the receipt's largest size.
+//! `ISOCOSM_SYNTH_WORLD=<places>` overrides the receipt's largest size.
 
 use std::time::{Duration, Instant};
 
@@ -172,7 +172,7 @@ fn micros(d: Duration) -> f64 {
 #[test]
 #[ignore = "scaled perf receipt; run with --release -- --ignored --nocapture"]
 fn receipt() {
-    let largest = std::env::var("ISOMETRY_SYNTH_WORLD")
+    let largest = std::env::var("ISOCOSM_SYNTH_WORLD")
         .ok()
         .and_then(|v| v.parse::<usize>().ok())
         .unwrap_or(400);

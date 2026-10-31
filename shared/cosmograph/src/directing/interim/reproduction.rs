@@ -73,8 +73,8 @@ struct Pilot {
 
 fn receipt_directory() -> std::path::PathBuf {
     let path = std::path::PathBuf::from(
-        std::env::var_os("ISOCOSM_REPRO_RECEIPT_DIR")
-            .expect("set ISOCOSM_REPRO_RECEIPT_DIR to the existing receipt directory"),
+        std::env::var_os("COSMOGRAPH_REPRO_RECEIPT_DIR")
+            .expect("set COSMOGRAPH_REPRO_RECEIPT_DIR to the existing receipt directory"),
     );
     // The same owner on each machine: `~/Code/testing/isocosm/...` (883).
     let home = std::env::var_os("USERPROFILE").or_else(|| std::env::var_os("HOME"));
@@ -82,7 +82,7 @@ fn receipt_directory() -> std::path::PathBuf {
         .join("Code/testing/isocosm/after-pass-2026-10-10/q3-reproduction");
     assert!(
         path == owner && path.is_absolute() && path.is_dir(),
-        "ISOCOSM_REPRO_RECEIPT_DIR must name the existing primary reproduction owner"
+        "COSMOGRAPH_REPRO_RECEIPT_DIR must name the existing primary reproduction owner"
     );
     path
 }
@@ -289,7 +289,7 @@ fn sweep(form: Form, original: bool, pilot: Option<Outcome>) -> Vec<(u64, Outcom
     }
     let (send, receive) = mpsc::channel();
     let mut rows = std::thread::scope(|scope| {
-        let workers = std::env::var("ISOCOSM_REPRO_WORKERS").map_or(1, |w| w.parse().unwrap());
+        let workers = std::env::var("COSMOGRAPH_REPRO_WORKERS").map_or(1, |w| w.parse().unwrap());
         for worker in 0..workers {
             let send = send.clone();
             scope.spawn(move || {
@@ -473,7 +473,7 @@ fn consumer_reproduction_bodied_candidate_pilot() {
 }
 
 fn arm() -> (Form, bool) {
-    let arm = std::env::var("ISOCOSM_REPRO_ARM").expect("set ISOCOSM_REPRO_ARM, e.g. played-candidate");
+    let arm = std::env::var("COSMOGRAPH_REPRO_ARM").expect("set COSMOGRAPH_REPRO_ARM, e.g. played-candidate");
     let (form, rate) = arm.split_once('-').expect("form-rate");
     let form = [Form::Bare, Form::Bodied, Form::Played]
         .into_iter().find(|f| f.name() == form).expect("a declared form");
@@ -483,7 +483,7 @@ fn arm() -> (Form, bool) {
 /// One declared arm of twenty draws. Candidate arms qualify on every draw;
 /// original arms are the negative control and end on every draw.
 #[test]
-#[ignore = "one declared A1 arm; ISOCOSM_REPRO_ARM names it"]
+#[ignore = "one declared A1 arm; COSMOGRAPH_REPRO_ARM names it"]
 fn consumer_reproduction_arm() {
     let (form, original) = arm();
     let rows = sweep(form, original, None);
@@ -499,31 +499,31 @@ fn consumer_reproduction_arm() {
 
 /// One seed-zero pilot of an arm, with full readings, before its twenty draws.
 #[test]
-#[ignore = "seed-0 pilot of one declared arm; ISOCOSM_REPRO_ARM names it"]
+#[ignore = "seed-0 pilot of one declared arm; COSMOGRAPH_REPRO_ARM names it"]
 fn consumer_reproduction_arm_pilot() {
     let (form, original) = arm();
-    let seed = std::env::var("ISOCOSM_REPRO_SEED").map_or(0, |s| s.parse().unwrap());
+    let seed = std::env::var("COSMOGRAPH_REPRO_SEED").map_or(0, |s| s.parse().unwrap());
     let g = world(seed, form, original);
     eprintln!("ARM PILOT BEGIN form={} original={original} seed={seed} genesis={}", form.name(), crate::digest(&g));
     let rate = if original { "original" } else { "candidate" };
-    let tweak = std::env::var("ISOCOSM_REPRO_TWEAK").unwrap_or_default().replace([',', '='], "_");
+    let tweak = std::env::var("COSMOGRAPH_REPRO_TWEAK").unwrap_or_default().replace([',', '='], "_");
     let out = played_named(g, Some(format!("{}-{rate}{}-seed{seed}", form.name(),
         if tweak.is_empty() { String::new() } else { format!("-{tweak}") })));
     eprintln!("ARM PILOT completed: {out:?} qualifies={}", out.qualifies());
 }
 
 /// Exploratory selection pilots (declaration 2): seeds from
-/// `ISOCOSM_REPRO_SEEDS` ("100-107"), the tweak from `ISOCOSM_REPRO_TWEAK`.
+/// `COSMOGRAPH_REPRO_SEEDS` ("100-107"), the tweak from `COSMOGRAPH_REPRO_TWEAK`.
 /// One line per seed; no per-draw receipts.
 #[test]
-#[ignore = "declared tuning battery; ISOCOSM_REPRO_ARM, _SEEDS, _TWEAK, _WORKERS"]
+#[ignore = "declared tuning battery; COSMOGRAPH_REPRO_ARM, _SEEDS, _TWEAK, _WORKERS"]
 fn consumer_reproduction_battery() {
     let (form, original) = arm();
-    let spec = std::env::var("ISOCOSM_REPRO_SEEDS").unwrap();
+    let spec = std::env::var("COSMOGRAPH_REPRO_SEEDS").unwrap();
     let (lo, hi) = spec.split_once('-').unwrap();
     let (lo, hi): (u64, u64) = (lo.parse().unwrap(), hi.parse().unwrap());
-    let workers: u64 = std::env::var("ISOCOSM_REPRO_WORKERS").map_or(1, |w| w.parse().unwrap());
-    let tweak = std::env::var("ISOCOSM_REPRO_TWEAK").unwrap_or_default();
+    let workers: u64 = std::env::var("COSMOGRAPH_REPRO_WORKERS").map_or(1, |w| w.parse().unwrap());
+    let tweak = std::env::var("COSMOGRAPH_REPRO_TWEAK").unwrap_or_default();
     let (send, receive) = mpsc::channel();
     std::thread::scope(|scope| {
         for worker in 0..workers {

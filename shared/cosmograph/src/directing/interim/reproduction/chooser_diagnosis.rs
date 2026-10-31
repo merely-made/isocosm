@@ -12,7 +12,7 @@ fn a1_seed9_accepted_choices_and_moves() {
     let path = receipt_directory().join("a1-2026-10-16-chooser-seed9.json");
     assert!(!path.exists(), "fresh receipt required before the full diagnostic runs");
     assert!(
-        std::env::var_os("ISOCOSM_REPRO_TWEAK").is_none(),
+        std::env::var_os("COSMOGRAPH_REPRO_TWEAK").is_none(),
         "unchanged A1 preset"
     );
     let g = diagnosed_seed9();

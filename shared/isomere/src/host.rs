@@ -14,7 +14,7 @@
 //! 2. **The mesquite scenario lane**, ticked in `after_frame` and told about a
 //!    close in `close_request`, with a redraw so the deferred close can present
 //!    its last frame.
-//! 3. **Capture arming** — Isocosm's bounded `ISOMETRY_CAPTURE_DIR` policy,
+//! 3. **Capture arming** — Isocosm's bounded `ISOCOSM_CAPTURE_DIR` policy,
 //!    which is the same policy under any other env name.
 //! 4. **The error line**, published from the product's own scene error or the
 //!    first producer error among its leaves, compared against what is already
@@ -274,7 +274,7 @@ pub trait Product: Sized + 'static {
         false
     }
 
-    /// Whether to print the frame profile line. Isocosm's `ISOMETRY_PROFILE=1`.
+    /// Whether to print the frame profile line. Isocosm's `ISOCOSM_PROFILE=1`.
     fn profiling(&self) -> bool {
         false
     }

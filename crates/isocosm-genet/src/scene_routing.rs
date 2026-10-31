@@ -2,7 +2,7 @@
 //! real host and a real drawn frame.
 //!
 //! [`super::host_routing`] proves the routing on the DOM board, where identity
-//! is closure-captured on one element per tile. Under `ISOMETRY_SCENE_BOARD`
+//! is closure-captured on one element per tile. Under `ISOCOSM_SCENE_BOARD`
 //! there are no such elements: the pane carries one `custom_leaf` and nothing
 //! else, so a press that selects a tile can only have got there through
 //! `isometer`'s own pick. That is what these assert, and the tile-element count

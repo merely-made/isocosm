@@ -42,7 +42,7 @@ fn board() -> BoardHarness {
     // to the window; leaving it at `(0, 0)` would give that layer no area and
     // quietly prove nothing.
     ui.viewport = (WINDOW.0 - isocosm_views::PANEL_W, WINDOW.1);
-    // Both arms from one fixture: `ISOMETRY_SCENE_BOARD=1 cargo test` runs
+    // Both arms from one fixture: `ISOCOSM_SCENE_BOARD=1 cargo test` runs
     // every receipt below on the scene board, and the ones that cannot say so.
     ui.scene_board = crate::scene_board::enabled();
     let mut hooks = inert_hooks();
@@ -100,7 +100,7 @@ fn tile_point(harness: &BoardHarness, at: TileCoord) -> (f32, f32) {
 }
 
 /// Whether this receipt is the DOM board's own and cannot run under
-/// `ISOMETRY_SCENE_BOARD`.
+/// `ISOCOSM_SCENE_BOARD`.
 ///
 /// Two things stop one: under the flag the pane carries a single
 /// `custom_leaf` and no per-tile elements at all, so a receipt that measures a
@@ -114,7 +114,7 @@ fn dom_board_only(what: &str) -> bool {
         return false;
     }
     eprintln!(
-        "SKIPPED (ISOMETRY_SCENE_BOARD): {what} is the DOM board's receipt; \
+        "SKIPPED (ISOCOSM_SCENE_BOARD): {what} is the DOM board's receipt; \
          `scene_routing` is the scene arm's."
     );
     true

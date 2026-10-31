@@ -19,7 +19,7 @@
 //! frame and skip loudly without an adapter. This one needs none: `board_root`
 //! emits the leaf whether or not a producer ever draws into it. Both arms are
 //! built in one process from an explicit flag rather than from the
-//! environment, so `ISOMETRY_SCENE_BOARD` changes nothing here and the DOM arm
+//! environment, so `ISOCOSM_SCENE_BOARD` changes nothing here and the DOM arm
 //! is always present as the positive control — a zero that only ever means
 //! "the walk found nothing" is worth nothing.
 
@@ -72,7 +72,7 @@ impl Census {
             .collect::<Vec<_>>()
             .join(", ");
         format!(
-            "[isometry-b5] {arm}: {} .board container(s) hold {counted} = {} board elements; \
+            "[isocosm-b5] {arm}: {} .board container(s) hold {counted} = {} board elements; \
              allowed beside them: {allowed}",
             self.containers,
             self.total(),

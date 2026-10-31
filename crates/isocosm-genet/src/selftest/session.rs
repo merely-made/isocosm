@@ -1,6 +1,6 @@
 //! The session lanes: one end-turn over the net, and a door crossing.
 //!
-//! `ISOMETRY_NET_SELFTEST` and `ISOMETRY_TRAVEL_SELFTEST`. Both drive the
+//! `ISOCOSM_NET_SELFTEST` and `ISOCOSM_TRAVEL_SELFTEST`. Both drive the
 //! board through the shipping path — the session round trip, and the
 //! Play-mode click that walks onto a door — rather than by poking state.
 //!
@@ -21,11 +21,11 @@ impl App {
             .unwrap_or(false);
         // A two-machine controller can wait for both initial frames before
         // releasing the same shipping end-turn path used by this self-test.
-        let released = std::env::var_os("ISOMETRY_NET_SELFTEST_TRIGGER")
+        let released = std::env::var_os("ISOCOSM_NET_SELFTEST_TRIGGER")
             .is_none_or(|path| std::path::Path::new(&path).exists());
         if ready && released {
             self.selftest_fired = true;
-            eprintln!("[isometry] selftest: firing end_turn");
+            eprintln!("[isocosm] selftest: firing end_turn");
             {
                 let runner = &mut *ctx.runner;
                 runner.update(|ui| ui.end_turn());
@@ -37,7 +37,7 @@ impl App {
     /// Pair native frame captures with the public state actually mirrored into
     /// the view. Runs only on a network update and only for opt-in captures.
     pub(crate) fn capture_network_receipt(&self, ui: &UiState, version: u64) {
-        let Some(directory) = std::env::var_os("ISOMETRY_CAPTURE_DIR") else {
+        let Some(directory) = std::env::var_os("ISOCOSM_CAPTURE_DIR") else {
             return;
         };
         let directory = std::path::PathBuf::from(directory);
@@ -50,18 +50,18 @@ impl App {
             std::fs::write(&pending, bytes).map_err(|error| error.to_string())?;
             std::fs::rename(pending, final_path).map_err(|error| error.to_string())?;
             eprintln!(
-                "[isometry] network receipt: version={version} map={} active={:?}",
+                "[isocosm] network receipt: version={version} map={} active={:?}",
                 ui.map.name,
                 ui.turns.active()
             );
             Ok(())
         })();
         if let Err(error) = result {
-            eprintln!("[isometry] network receipt failed: {error}");
+            eprintln!("[isocosm] network receipt failed: {error}");
         }
     }
 
-    /// `ISOMETRY_TRAVEL_SELFTEST=1`: prove C2 end to end in the app. The demo
+    /// `ISOCOSM_TRAVEL_SELFTEST=1`: prove C2 end to end in the app. The demo
     /// board becomes the stored map `field` with a door; a `hut` map waits on
     /// the other side; the knight (the whole party: everyone else is demoted to
     /// DM furniture) walks onto the door through the normal Play-mode click
@@ -134,7 +134,7 @@ impl App {
             // a rest, so the two locations' clocks drift apart.
             ui.pass_time(4);
             eprintln!(
-                "[isometry] travel selftest: on {:?}, knight@{:?}, door at (12, 14) | clocks {:?}",
+                "[isocosm] travel selftest: on {:?}, knight@{:?}, door at (12, 14) | clocks {:?}",
                 ui.active_map,
                 ui.map.token(TokenId(1)).map(|t| t.at),
                 ui.clocks,
@@ -144,7 +144,7 @@ impl App {
             ui.select_token(TokenId(1));
             ui.click_tile((12, 14));
             eprintln!(
-                "[isometry] travel selftest: {} | active {:?} board '{}' | knight here: {:?} | field still holds knight: {:?} | clocks {:?}",
+                "[isocosm] travel selftest: {} | active {:?} board '{}' | knight here: {:?} | field still holds knight: {:?} | clocks {:?}",
                 ui.status,
                 ui.active_map,
                 ui.map.name,

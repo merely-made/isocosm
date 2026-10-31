@@ -1,6 +1,6 @@
 //! B4's headed receipt: put every overlay on the board and leave it standing.
 //!
-//! `ISOMETRY_OVERLAY_SELFTEST` arms it, and its *value* chooses what the
+//! `ISOCOSM_OVERLAY_SELFTEST` arms it, and its *value* chooses what the
 //! capture shows, because the three groups hide each other: fog would swallow
 //! the tints it is meant to be seen beside, and a focus elevation cuts the
 //! hill they stand on.
@@ -44,7 +44,7 @@ impl OverlayArm {
 }
 
 impl App {
-    /// `ISOMETRY_OVERLAY_SELFTEST`: lay the board's overlays on and hold them.
+    /// `ISOCOSM_OVERLAY_SELFTEST`: lay the board's overlays on and hold them.
     pub(crate) fn maybe_overlay_selftest(&mut self, ctx: &mut Ctx<'_>) {
         let Some(arm) = self.overlay_selftest else {
             return;
@@ -64,7 +64,7 @@ impl App {
         ctx.runner.update(|ui| {
             let step = lay_tints(ui);
             eprintln!(
-                "[isometry] overlay selftest ({arm:?}): selected {:?}, reach {} tiles, path \
+                "[isocosm] overlay selftest ({arm:?}): selected {:?}, reach {} tiles, path \
                  to {step:?}, door at {DOOR:?} among {:?}, encounter site at {ENCOUNTER:?}",
                 ui.selected,
                 ui.reach.len(),
@@ -84,7 +84,7 @@ impl App {
                     ui.sight_radius = 3;
                     ui.recompute_fog();
                     eprintln!(
-                        "[isometry] overlay selftest: viewer {:?} at sight {}, {} visible, \
+                        "[isocosm] overlay selftest: viewer {:?} at sight {}, {} visible, \
                          {} explored, {} shrouded",
                         ui.viewer,
                         ui.sight_radius,
@@ -96,7 +96,7 @@ impl App {
                 OverlayArm::Focus => {
                     ui.cycle_focus_elevation();
                     eprintln!(
-                        "[isometry] overlay selftest: focus {:?} — {}",
+                        "[isocosm] overlay selftest: focus {:?} — {}",
                         ui.focus_elevation, ui.status
                     );
                 },

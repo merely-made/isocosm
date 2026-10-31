@@ -45,7 +45,7 @@ pub(crate) struct FamilySelftest {
 
 impl FamilySelftest {
     pub(crate) fn from_env() -> Option<Self> {
-        std::env::var_os("ISOMETRY_H7_FAMILY_SELFTEST").map(|_| Self {
+        std::env::var_os("ISOCOSM_H7_FAMILY_SELFTEST").map(|_| Self {
             phase: Phase::WaitingForPage,
             started: None,
             tab_ids: Vec::new(),

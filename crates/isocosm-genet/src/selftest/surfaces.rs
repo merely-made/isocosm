@@ -1,7 +1,7 @@
 //! The typed-surface lanes: the command line, the compendium, the composer.
 //!
-//! `ISOMETRY_CMD_SELFTEST`, `ISOMETRY_COMPENDIUM_SELFTEST` and
-//! `ISOMETRY_WHISPER_SELFTEST`. All three send their letters down the
+//! `ISOCOSM_CMD_SELFTEST`, `ISOCOSM_COMPENDIUM_SELFTEST` and
+//! `ISOCOSM_WHISPER_SELFTEST`. All three send their letters down the
 //! shipping key path, so the field's own `TextInput` is what edits the text;
 //! nothing here appends a character.
 //!
@@ -10,7 +10,7 @@
 use super::*;
 
 impl App {
-    /// `ISOMETRY_TURNS_SELFTEST=1`: collapse the Turns disclosure through the
+    /// `ISOCOSM_TURNS_SELFTEST=1`: collapse the Turns disclosure through the
     /// same laid-out trigger and host pointer route as a person's click, then
     /// leave the short panel standing for the headed capture.
     pub(crate) fn maybe_turns_selftest(&mut self, ctx: &mut Ctx<'_>) {
@@ -32,7 +32,7 @@ impl App {
                 .next()
         };
         let Some((x, y, width, height)) = trigger.and_then(|node| ctx.painted_rect(node)) else {
-            eprintln!("[isometry] turns selftest: disclosure trigger has no painted box");
+            eprintln!("[isocosm] turns selftest: disclosure trigger has no painted box");
             self.turns_fired = true;
             return;
         };
@@ -41,10 +41,10 @@ impl App {
         ctx.pointer.push(HostPointer::Press(x, y));
         ctx.pointer.push(HostPointer::Release(x, y));
         self.turns_fired = true;
-        eprintln!("[isometry] turns selftest: clicked disclosure trigger at ({x:.1}, {y:.1})");
+        eprintln!("[isocosm] turns selftest: clicked disclosure trigger at ({x:.1}, {y:.1})");
     }
 
-    /// `ISOMETRY_CMD_SELFTEST=1` (pair with `ISOMETRY_GEN_SEED` for a fixed
+    /// `ISOCOSM_CMD_SELFTEST=1` (pair with `ISOCOSM_GEN_SEED` for a fixed
     /// NPC): drive the whole `>` command surface once, focus-free.
     pub(crate) fn maybe_cmd_selftest(&mut self, ctx: &mut Ctx<'_>) {
         if !self.cmd_selftest || self.cmd_fired {
@@ -73,7 +73,7 @@ impl App {
             let runner = &mut *ctx.runner;
             runner.update(|ui| ui.find_query("sword"));
             eprintln!(
-                "[isometry] cmd selftest: find 'sword' -> {} results, first: {:?}",
+                "[isocosm] cmd selftest: find 'sword' -> {} results, first: {:?}",
                 runner.state().command_results.len(),
                 runner.state().command_results.first(),
             );
@@ -86,7 +86,7 @@ impl App {
             runner.update(|ui| {
                 ui.choose_generator(
                     "cmd-selftest".to_owned(),
-                    "isometry.cmd-selftest/v1".to_owned(),
+                    "isocosm.cmd-selftest/v1".to_owned(),
                     "What should I prepare for the next scene?".to_owned(),
                 )
             });
@@ -94,7 +94,7 @@ impl App {
         self.pump_generators(ctx); // receipt -> selected declaration -> Generate
         self.pump_generators(ctx); // Generate -> preview
         eprintln!(
-            "[isometry] cmd selftest: receipt selection = {:?}",
+            "[isocosm] cmd selftest: receipt selection = {:?}",
             self.last_generator_selection
                 .as_ref()
                 .map(|selection| (selection.candidate_id(), selection.receipt()))
@@ -111,7 +111,7 @@ impl App {
         }
         self.pump_generators(ctx); // Generate -> preview
         let previewed = Some(&*ctx.runner).and_then(|r| r.state().generator_preview.clone());
-        eprintln!("[isometry] cmd selftest: gen npc preview = {previewed:?}");
+        eprintln!("[isocosm] cmd selftest: gen npc preview = {previewed:?}");
         {
             let runner = &mut *ctx.runner;
             runner.update(|ui| ui.commit_generation_preview());
@@ -124,7 +124,7 @@ impl App {
             let ui = runner.state();
             let newest = ui.map.tokens.last();
             eprintln!(
-                "[isometry] cmd selftest: tokens {} -> {} | newest {:?} sheet name {:?} hp {:?} | status: {}",
+                "[isocosm] cmd selftest: tokens {} -> {} | newest {:?} sheet name {:?} hp {:?} | status: {}",
                 before,
                 ui.map.tokens.len(),
                 newest.map(|t| (t.id.0, t.sprite.clone(), t.at)),
@@ -139,7 +139,7 @@ impl App {
         }
     }
 
-    /// `ISOMETRY_COMPENDIUM_SELFTEST=1`: open the compendium and type "gob"
+    /// `ISOCOSM_COMPENDIUM_SELFTEST=1`: open the compendium and type "gob"
     /// into its filter, then leave the surface open for the capture.
     ///
     /// M3 turned that filter into a `TextInput` under `caret_text_field`, and
@@ -182,12 +182,12 @@ impl App {
         let (rows, first) = compendium_index(&*ctx.runner);
         let query = ctx.runner.state().compendium_search.text().to_owned();
         eprintln!(
-            "[isometry] compendium selftest: caret in {lane:?} (host seam sees it: {seam}) | \
+            "[isocosm] compendium selftest: caret in {lane:?} (host seam sees it: {seam}) | \
              typed {query:?} | index {before} -> {rows} rows | first row {first:?}"
         );
     }
 
-    /// `ISOMETRY_WHISPER_SELFTEST=1`: open the whisper composer with `w`, type
+    /// `ISOCOSM_WHISPER_SELFTEST=1`: open the whisper composer with `w`, type
     /// a draft into it, and leave it open — unsent, with the caret in it — for
     /// the capture.
     ///
@@ -238,7 +238,7 @@ impl App {
         let runner = &*ctx.runner;
         let ui = runner.state();
         eprintln!(
-            "[isometry] whisper selftest: layout {logical_w:.1}x{logical_h:.1} at zoom \
+            "[isocosm] whisper selftest: layout {logical_w:.1}x{logical_h:.1} at zoom \
              {zoom:.4} (device scale {:.2}, board scale {:.5}, pixel grid {}) | \
              `w` opened the lane: {opened} | caret in {lane:?} \
              (host seam sees it: {seam}) at byte {} of {} | draft {:?} | to {:?} | \

@@ -117,7 +117,7 @@ pub struct UiState {
     /// host has not reported it yet, in which case culling is skipped (emit
     /// everything, the safe pre-windowing behavior).
     pub viewport: (f32, f32),
-    /// `ISOMETRY_SCENE_BOARD=1`: draw the board through the isometer scene
+    /// `ISOCOSM_SCENE_BOARD=1`: draw the board through the isometer scene
     /// leaf instead of one element per tile and token (B2). Host-set once at
     /// boot; off is the shipped DOM board, unchanged.
     pub scene_board: bool,

@@ -80,7 +80,7 @@ fn generator_choice_request_is_host_only_and_preserves_the_disclosed_inputs() {
     ui.can_edit_inventory = false;
     ui.choose_generator(
         "session-4".to_owned(),
-        "isometry.generator-preview/v1".to_owned(),
+        "isocosm.generator-preview/v1".to_owned(),
         "What should I prepare?".to_owned(),
     );
     assert!(ui.generator_selection_request.is_none());
@@ -89,14 +89,14 @@ fn generator_choice_request_is_host_only_and_preserves_the_disclosed_inputs() {
     ui.can_edit_inventory = true;
     ui.choose_generator(
         "session-4".to_owned(),
-        "isometry.generator-preview/v1".to_owned(),
+        "isocosm.generator-preview/v1".to_owned(),
         "What should I prepare?".to_owned(),
     );
     assert_eq!(
         ui.generator_selection_request,
         Some(GeneratorSelectionRequest {
             seed: "session-4".to_owned(),
-            domain: "isometry.generator-preview/v1".to_owned(),
+            domain: "isocosm.generator-preview/v1".to_owned(),
             prompt: "What should I prepare?".to_owned(),
         })
     );

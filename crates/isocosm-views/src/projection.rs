@@ -12,10 +12,10 @@ use sceno::{
 };
 
 /// Opaque source lane for tactical-board tiles.
-pub const ISOMETRY_TILE_BOARD_ADAPTER: &str = "isometry.tile-board";
+pub const ISOCOSM_TILE_BOARD_ADAPTER: &str = "isocosm.tile-board";
 
 /// Open face used for the authored board surface behind selectable tiles.
-pub const ISOMETRY_TILE_BOARD_BACKDROP: &str = "isometry:tile-board";
+pub const ISOCOSM_TILE_BOARD_BACKDROP: &str = "isocosm:tile-board";
 
 /// Score the authored ground tiles as a regular board. The isometric painter
 /// consumes the resulting scene for membership while retaining its own diamond
@@ -33,7 +33,7 @@ pub fn tile_board_score(map: &MapDocument) -> Score {
         .filter(|(_, _, kind)| kind.0 != 0)
         .enumerate()
         .map(|(ordinal, (column, row, _))| ScoreItem {
-            source: SourceRef::new(ISOMETRY_TILE_BOARD_ADAPTER, format!("{column}:{row}")),
+            source: SourceRef::new(ISOCOSM_TILE_BOARD_ADAPTER, format!("{column}:{row}")),
             ordinal: ordinal as u32,
             footprint: Footprint::Rect {
                 size: Size2::new(32.0, 32.0),
@@ -65,7 +65,7 @@ pub fn tile_board_scene(map: &MapDocument) -> Scene {
     );
     let board_origin = Vec2::new(-16.0, -16.0);
     let source = scene.intern_source(SourceRef::new(
-        ISOMETRY_TILE_BOARD_ADAPTER,
+        ISOCOSM_TILE_BOARD_ADAPTER,
         format!("map:{}", map.name),
     ));
     scene.backdrops.push(Backdrop {
@@ -76,7 +76,7 @@ pub fn tile_board_scene(map: &MapDocument) -> Scene {
             board_origin.y + board_size.h * 0.5,
         ),
         footprint: Footprint::Rect { size: board_size },
-        kind: ISOMETRY_TILE_BOARD_BACKDROP.into(),
+        kind: ISOCOSM_TILE_BOARD_BACKDROP.into(),
         visible: true,
         collidable: false,
     });
@@ -94,7 +94,7 @@ pub fn tile_board_cells(map: &MapDocument) -> BTreeSet<TileCoord> {
         .iter()
         .filter(|item| item.visible)
         .filter_map(|item| scene.sources.get(item.source.0 as usize))
-        .filter(|source| source.adapter == ISOMETRY_TILE_BOARD_ADAPTER)
+        .filter(|source| source.adapter == ISOCOSM_TILE_BOARD_ADAPTER)
         .filter_map(|source| source.id.split_once(':'))
         .filter_map(|(column, row)| Some((column.parse().ok()?, row.parse().ok()?)))
         .collect()
@@ -114,7 +114,7 @@ mod tests {
         assert!(matches!(score.arrangement, Arrangement::Grid(_)));
         let scene = tile_board_scene(&map);
         assert_eq!(scene.backdrops.len(), 1);
-        assert_eq!(scene.backdrops[0].kind, ISOMETRY_TILE_BOARD_BACKDROP);
+        assert_eq!(scene.backdrops[0].kind, ISOCOSM_TILE_BOARD_BACKDROP);
         assert!(scene.backdrops[0].visible);
         assert!(!scene.backdrops[0].collidable);
         assert_eq!(tile_board_cells(&map), BTreeSet::from([(0, 0), (2, 1)]));

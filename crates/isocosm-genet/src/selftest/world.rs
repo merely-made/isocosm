@@ -1,7 +1,7 @@
 //! The campaign-world lanes: storylets and the overmap.
 //!
-//! `ISOMETRY_STORYLET_SELFTEST` and `ISOMETRY_OVERMAP_SELFTEST`, the latter
-//! carrying `ISOMETRY_OVERMAP_SOURCE_TIME_SELFTEST` as its historical
+//! `ISOCOSM_STORYLET_SELFTEST` and `ISOCOSM_OVERMAP_SELFTEST`, the latter
+//! carrying `ISOCOSM_OVERMAP_SOURCE_TIME_SELFTEST` as its historical
 //! variant. Both seed a world, open the surface, and leave it open for the
 //! capture.
 //!
@@ -11,7 +11,7 @@ use super::*;
 use cosmograph::asserted::{Assertion, Place, Route};
 
 impl App {
-    /// `ISOMETRY_STORYLET_SELFTEST=1`: seed a ready storylet and a locked one,
+    /// `ISOCOSM_STORYLET_SELFTEST=1`: seed a ready storylet and a locked one,
     /// open the surface, play the ready one, and confirm its fact committed.
     pub(crate) fn maybe_storylet_selftest(&mut self, ctx: &mut Ctx<'_>) {
         if !self.storylet_selftest || self.storylet_fired {
@@ -74,7 +74,7 @@ impl App {
             let runner = &*ctx.runner;
             for row in &runner.state().storylets {
                 eprintln!(
-                    "[isometry] storylet selftest: {} available={} status={:?} entry={:?}",
+                    "[isocosm] storylet selftest: {} available={} status={:?} entry={:?}",
                     row.key, row.available, row.status, row.entry
                 );
             }
@@ -98,11 +98,11 @@ impl App {
             .map(|r| r.state().status.clone())
             .unwrap_or_default();
         eprintln!(
-            "[isometry] storylet selftest: played | journal has 'gate-met': {committed} | status: {status}"
+            "[isocosm] storylet selftest: played | journal has 'gate-met': {committed} | status: {status}"
         );
     }
 
-    /// `ISOMETRY_OVERMAP_SELFTEST=1`: seed a small overmap (four places joined by
+    /// `ISOCOSM_OVERMAP_SELFTEST=1`: seed a small overmap (four places joined by
     /// roads), stand the party at the village, reveal the map it would know, and
     /// open the overmap surface. A focus-free proof the C8 render draws.
     pub(crate) fn maybe_overmap_selftest(&mut self, ctx: &mut Ctx<'_>) {
@@ -229,12 +229,12 @@ impl App {
                     });
                 }
                 eprintln!(
-                    "[isometry] overmap source-time selftest: selected event 0 of 1; live authority retained"
+                    "[isocosm] overmap source-time selftest: selected event 0 of 1; live authority retained"
                 );
             }
         }
         eprintln!(
-            "[isometry] overmap selftest: seeded 5 places, party at the village knowing 3, \
+            "[isocosm] overmap selftest: seeded 5 places, party at the village knowing 3, \
              carrying a chart to the citadel; reading the map reveals keep + citadel"
         );
     }

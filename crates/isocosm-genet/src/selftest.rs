@@ -1,6 +1,6 @@
 //! The env-gated self-tests: scripted sessions the host drives itself.
 //!
-//! Each one arms from an `ISOMETRY_*` env var, waits out a warm-up so the
+//! Each one arms from an `ISOCOSM_*` env var, waits out a warm-up so the
 //! window and the first frames exist, fires once, and prints what it saw. They
 //! are how a headed run proves a lane end to end without a human driving the
 //! mouse, and they stay out of `main.rs` because they are scaffolding for

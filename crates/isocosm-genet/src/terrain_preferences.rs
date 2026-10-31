@@ -60,7 +60,7 @@ impl Preferences {
             Ok(Some(value)) => ui.terrain_settings.budget_mib = value,
             Ok(None) => {},
             Err(error) => {
-                eprintln!("[isometry] terrain preference unavailable; using default: {error}")
+                eprintln!("[isocosm] terrain preference unavailable; using default: {error}")
             },
         }
         store.attempted = ui.terrain_settings.budget_mib;

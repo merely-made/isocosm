@@ -117,7 +117,7 @@ pub(super) fn validated_recipe_bytes(
 
 pub(super) fn run_missing_bodied_original() {
     assert!(
-        std::env::var("ISOCOSM_REPRO_TWEAK")
+        std::env::var("COSMOGRAPH_REPRO_TWEAK")
             .unwrap_or_default()
             .is_empty(),
         "bodied-stock recovery must use the unchanged stock profile"

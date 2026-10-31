@@ -21,7 +21,7 @@
 //! |------|-----------------|
 //! | `frame` | pane viewport, overmap leaf, scene board, beat hold ([`hooks::App::frame_tick`]) |
 //! | `after_dispatch` | save/load, the pumps, source-time attach, the net outbox ([`dispatch`]) |
-//! | `after_frame` | the `ISOMETRY_*_SELFTEST` drivers ([`selftest`]); the profile line is the assembly's |
+//! | `after_frame` | the `ISOCOSM_*_SELFTEST` drivers ([`selftest`]); the profile line is the assembly's |
 //! | `after_wake` | drain the session bridge the armillary actor woke us for ([`net`]) |
 //! | `close_request` | exit: nothing here outlives the window |
 //! | `focused_text` | whichever of the three text lanes holds the caret ([`hooks`]) |
@@ -38,17 +38,17 @@
 //! disclosed VTT projections and routes actions through its owner-thread
 //! endpoint. Peer transport remains disabled until configured peer identity
 //! and admission authority are available. Env hooks:
-//! `ISOMETRY_PROFILE=1` (frame timers +
-//! net trace), `ISOMETRY_CAPTURE_DIR` (one final self-capture),
-//! `ISOMETRY_CAPTURE_EVERY_FRAME=1` (continuous diagnostic self-capture),
-//! `ISOMETRY_SYNTH=1` (stress board), `ISOMETRY_NET_SELFTEST=1` (fire one
+//! `ISOCOSM_PROFILE=1` (frame timers +
+//! net trace), `ISOCOSM_CAPTURE_DIR` (one final self-capture),
+//! `ISOCOSM_CAPTURE_EVERY_FRAME=1` (continuous diagnostic self-capture),
+//! `ISOCOSM_SYNTH=1` (stress board), `ISOCOSM_NET_SELFTEST=1` (fire one
 //! end-turn after warm-up to verify the session round-trip without OS input),
-//! `ISOMETRY_OVERMAP_SELFTEST=1` (overmap capture),
-//! `ISOMETRY_OVERMAP_SOURCE_TIME_SELFTEST=1` (historical-overmap capture),
-//! `ISOMETRY_COMPENDIUM_SELFTEST=1` and `ISOMETRY_WHISPER_SELFTEST=1` (the two
+//! `ISOCOSM_OVERMAP_SELFTEST=1` (overmap capture),
+//! `ISOCOSM_OVERMAP_SOURCE_TIME_SELFTEST=1` (historical-overmap capture),
+//! `ISOCOSM_COMPENDIUM_SELFTEST=1` and `ISOCOSM_WHISPER_SELFTEST=1` (the two
 //! M3 text lanes, typed through the field and held open for a capture),
-//! `ISOMETRY_TURNS_SELFTEST=1` (collapse the Turns section through its
-//! trigger), and `ISOMETRY_SCENE_BOARD=1` (the scene board; see [`scene_board`]).
+//! `ISOCOSM_TURNS_SELFTEST=1` (collapse the Turns section through its
+//! trigger), and `ISOCOSM_SCENE_BOARD=1` (the scene board; see [`scene_board`]).
 
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -278,7 +278,7 @@ struct App {
     pub(crate) family_wake: Option<cambium_genet_winit_host::HostWake>,
     /// Last session version pulled into the UI; a bump means redraw.
     last_net_version: u64,
-    /// `ISOMETRY_NET_SELFTEST=1`: fire one end-turn from inside the app a
+    /// `ISOCOSM_NET_SELFTEST=1`: fire one end-turn from inside the app a
     /// few seconds after a session starts, so the UI→net→republish→UI
     /// round-trip is verifiable without OS input automation (Windows
     /// foreground-lock makes driving one of two windows unreliable).
@@ -291,65 +291,65 @@ struct App {
     /// Tokens whose standing-on-a-door state has already produced a travel
     /// event, so the sweep emits once per crossing rather than once per poll.
     travel_emitted: Vec<TokenId>,
-    /// `ISOMETRY_TRAVEL_SELFTEST`: register two campaign maps joined by a door
+    /// `ISOCOSM_TRAVEL_SELFTEST`: register two campaign maps joined by a door
     /// and walk the knight through it. Focus-free, like the others.
     travel_selftest: bool,
     travel_fired: bool,
-    /// `ISOMETRY_CMD_SELFTEST`: drive the `>` command line: spawn, find, and a
+    /// `ISOCOSM_CMD_SELFTEST`: drive the `>` command line: spawn, find, and a
     /// full `>gen npc` generate/commit into a statted NPC.
     cmd_selftest: bool,
     cmd_fired: bool,
     watchtower_selftest: bool,
     watchtower_fired: bool,
-    /// `ISOMETRY_CONVINCE_SELFTEST`: a bard wins a goblin over, then hits the
+    /// `ISOCOSM_CONVINCE_SELFTEST`: a bard wins a goblin over, then hits the
     /// party cap on the next one. Proves allegiance + the cap + fog.
     convince_selftest: bool,
     convince_fired: bool,
-    /// `ISOMETRY_STORYLET_SELFTEST`: seed two storylets (one ready, one locked),
+    /// `ISOCOSM_STORYLET_SELFTEST`: seed two storylets (one ready, one locked),
     /// open the surface, play the ready one, and confirm its fact commits.
     storylet_selftest: bool,
     storylet_fired: bool,
-    /// `ISOMETRY_OVERMAP_SELFTEST`: seed a small overmap, place the party, and
+    /// `ISOCOSM_OVERMAP_SELFTEST`: seed a small overmap, place the party, and
     /// open the overmap surface for a capture (C8).
     overmap_selftest: bool,
     overmap_fired: bool,
-    /// `ISOMETRY_OVERMAP_SOURCE_TIME_SELFTEST`: after the normal overmap seed,
+    /// `ISOCOSM_OVERMAP_SOURCE_TIME_SELFTEST`: after the normal overmap seed,
     /// capture its first durable source prefix. This stays opt-in so the C8
     /// screenshot mode remains a live exploration proof.
     overmap_source_time_selftest: bool,
-    /// `ISOMETRY_COMPENDIUM_SELFTEST`: open the compendium and type into its
+    /// `ISOCOSM_COMPENDIUM_SELFTEST`: open the compendium and type into its
     /// filter through the field's own `TextInput`, then hold the surface open
     /// for a capture. The headed half of M3's compendium lane.
     compendium_selftest: bool,
     compendium_fired: bool,
-    /// `ISOMETRY_WHISPER_SELFTEST`: open the whisper composer with `w` and type
+    /// `ISOCOSM_WHISPER_SELFTEST`: open the whisper composer with `w` and type
     /// a draft into it, then hold it open — unsent, caret in it — for a
     /// capture. The headed half of M3's composer lane.
     whisper_selftest: bool,
     whisper_fired: bool,
-    /// `ISOMETRY_TURNS_SELFTEST`: click the Turns disclosure through the
+    /// `ISOCOSM_TURNS_SELFTEST`: click the Turns disclosure through the
     /// host's own laid-out geometry and leave the collapsed panel for capture.
     turns_selftest: bool,
     terrain_receipt: Option<selftest::TerrainReceipt>,
     turns_fired: bool,
-    /// `ISOMETRY_H7_FAMILY_SELFTEST`: drive the admitted table page through
+    /// `ISOCOSM_H7_FAMILY_SELFTEST`: drive the admitted table page through
     /// party selection and native join, then verify the accepted replay.
     family_selftest: Option<selftest::FamilySelftest>,
     magic_selftest: Option<selftest::MagicSelftest>,
     region_selftest: Option<selftest::RegionSelftest>,
     look_selftest: Option<selftest::LookSelftest>,
     pathfinder_selftest: Option<selftest::PathfinderSelftest>,
-    /// `ISOMETRY_SELECT_SELFTEST`: B3's headed receipt. Press on raised ground
+    /// `ISOCOSM_SELECT_SELFTEST`: B3's headed receipt. Press on raised ground
     /// and right-press a token, both through the board's own pointer path, and
     /// leave the selection and the menu standing for a capture.
     select_selftest: bool,
     select_fired: bool,
-    /// `ISOMETRY_OVERLAY_SELFTEST`: B4's headed receipt. Lay the board's
+    /// `ISOCOSM_OVERLAY_SELFTEST`: B4's headed receipt. Lay the board's
     /// overlays on — tints, or fog, or a focus elevation, by the flag's own
     /// value — and leave them standing for a capture.
     overlay_selftest: Option<selftest::OverlayArm>,
     overlay_fired: bool,
-    /// `ISOMETRY_COMBAT_SELFTEST`: drive a short adjudicated exchange on boot.
+    /// `ISOCOSM_COMBAT_SELFTEST`: drive a short adjudicated exchange on boot.
     combat_selftest: bool,
     /// Swings left to throw, when the last one landed, and whether the winner
     /// has taken its bow.

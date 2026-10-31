@@ -168,7 +168,7 @@ mod tests {
             MOOT,
             &MootEvent::Shared {
                 manifest_id: [7; 32],
-                schema_id: "isometry.Campaign/v1".into(),
+                schema_id: "isocosm.Campaign/v1".into(),
                 title: "River Oath".into(),
                 at_ms: 7,
             },

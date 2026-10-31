@@ -54,13 +54,13 @@ impl App {
                 .all(|token| ui.map.sheet(token.id).is_some())
         );
         eprintln!(
-            "[isometry] watchtower receipt: {} inhabitants committed on {} with sheets; status={}",
+            "[isocosm] watchtower receipt: {} inhabitants committed on {} with sheets; status={}",
             expected, ui.map.name, ui.status
         );
         ctx.runner.update(|ui| {
             ui.camera = (ui.viewport.0 / 2.0, 110.0);
             ui.close_generator();
-            match std::env::var("ISOMETRY_WATCHTOWER_VIEW").as_deref() {
+            match std::env::var("ISOCOSM_WATCHTOWER_VIEW").as_deref() {
                 Ok("travel-overmap") => {
                     ui.drag_move_token(TokenId(1), (1, 7));
                     ui.travel(TokenId(1));

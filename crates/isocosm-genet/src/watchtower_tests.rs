@@ -19,14 +19,14 @@ type WatchtowerHarness = Harness<UiState, Logic, UiChild>;
 const WINDOW: (f32, f32) = (1_100.0, 820.0);
 
 /// Whether this receipt reads the DOM board's own elements, which under
-/// `ISOMETRY_SCENE_BOARD` the pane does not emit. Says so and asserts nothing;
+/// `ISOCOSM_SCENE_BOARD` the pane does not emit. Says so and asserts nothing;
 /// `super::scene_routing` is the scene arm's set.
 fn dom_board_only(what: &str) -> bool {
     if !crate::scene_board::enabled() {
         return false;
     }
     eprintln!(
-        "SKIPPED (ISOMETRY_SCENE_BOARD): {what} reads per-tile board elements; the scene \
+        "SKIPPED (ISOCOSM_SCENE_BOARD): {what} reads per-tile board elements; the scene \
          board emits none."
     );
     true

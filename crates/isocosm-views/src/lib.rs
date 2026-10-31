@@ -53,11 +53,11 @@ pub use demo::{SYNTH_PARTY, demo_map, synth_map, synth_world};
 pub use keymap::{BoardKey, KEYMAP, NamedPress, Press, key_hint};
 pub use overmap::{
     AtlasBounds, AtlasProjection, AtlasRoute, AtlasSite, AtlasTerrainCell,
-    ISOMETRY_OVERMAP_ADAPTER, OVERMAP_CANVAS, OVERMAP_LEAF_KEY, OvermapNodeKind, atlas_projection,
+    ISOCOSM_OVERMAP_ADAPTER, OVERMAP_CANVAS, OVERMAP_LEAF_KEY, OvermapNodeKind, atlas_projection,
     overmap_atlas, overmap_positions, overmap_score, overmap_swatch,
 };
 pub use projection::{
-    ISOMETRY_TILE_BOARD_ADAPTER, ISOMETRY_TILE_BOARD_BACKDROP, tile_board_cells, tile_board_scene,
+    ISOCOSM_TILE_BOARD_ADAPTER, ISOCOSM_TILE_BOARD_BACKDROP, tile_board_cells, tile_board_scene,
     tile_board_score,
 };
 pub use scene::{

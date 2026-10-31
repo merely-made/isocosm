@@ -25,7 +25,7 @@ pub(crate) use tokens::{BOARD_BAKE, SPRITE_FIT};
 /// 2,945, which is why the hand-picked 500-503 the panels used to carry put
 /// every one of them under the board — the combat capture showed tiles painted
 /// over the Knight's sheet. The board the app actually allows is larger: an
-/// `ISOMETRY_SYNTH=<n>` square has no size cap, and its ceiling is
+/// `ISOCOSM_SYNTH=<n>` square has no size cap, and its ceiling is
 /// `(2n - 2) * 64 + 257` (the elevation grid is a `u8`). This clears every
 /// board up to about 7,800 tiles a side — six million elements, far past what
 /// the emitter or the machine will carry — and it is *one* number, so a panel

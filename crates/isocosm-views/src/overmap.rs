@@ -54,7 +54,7 @@ pub const OVERMAP_CANVAS: (u32, u32) = (440, 300);
 
 /// The adapter id persisted in a score's opaque source refs. It identifies a
 /// boundary, not an Isocosm type in the portable scene schema.
-pub const ISOMETRY_OVERMAP_ADAPTER: &str = "isometry.overmap";
+pub const ISOCOSM_OVERMAP_ADAPTER: &str = "isocosm.overmap";
 
 /// A local relation-cell id for the present overmap projection. `OvermapEdge`
 /// does not yet carry the campaign route id, so the source order distinguishes

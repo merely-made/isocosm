@@ -1,4 +1,4 @@
-//! The board's own gestures, self-driven: `ISOMETRY_SELECT_SELFTEST`.
+//! The board's own gestures, self-driven: `ISOCOSM_SELECT_SELFTEST`.
 //!
 //! B3's headed receipt. Every other self-test drives a panel control or a text
 //! lane; this one drives the *board*, which before B3 had nothing to drive on
@@ -19,7 +19,7 @@
 use super::*;
 
 impl App {
-    /// `ISOMETRY_SELECT_SELFTEST=1`: select a tile and open a token menu
+    /// `ISOCOSM_SELECT_SELFTEST=1`: select a tile and open a token menu
     /// through the board's own pointer path, then leave both standing.
     pub(crate) fn maybe_select_selftest(&mut self, ctx: &mut Ctx<'_>) {
         if !self.select_selftest || self.select_fired {
@@ -37,14 +37,14 @@ impl App {
 
         let ui = ctx.runner.state();
         let Some((local, at, elevation)) = raised_probe(ui) else {
-            eprintln!("[isometry] select selftest: no raised ground is on screen");
+            eprintln!("[isocosm] select selftest: no raised ground is on screen");
             return;
         };
         let flat = ui
             .geo
             .screen_to_tile((local.0 - ui.camera.0, local.1 - ui.camera.1));
         eprintln!(
-            "[isometry] select selftest: pressing pane {local:?}; the board shows {at:?} at \
+            "[isocosm] select selftest: pressing pane {local:?}; the board shows {at:?} at \
              height {elevation}, the flat-ground inverse would say {flat:?}"
         );
         let (x, y) = (PANEL_W + local.0, local.1);
@@ -64,11 +64,11 @@ impl App {
         // the whole point of B3; the scale gap is the drawing lane's and is
         // recorded for B5.
         let Some((token_local, id)) = token_probe(ui) else {
-            eprintln!("[isometry] select selftest: no token is on screen");
+            eprintln!("[isocosm] select selftest: no token is on screen");
             return;
         };
         eprintln!(
-            "[isometry] select selftest: right press on token {} at pane {token_local:?}",
+            "[isocosm] select selftest: right press on token {} at pane {token_local:?}",
             id.0
         );
         let (tx, ty) = (PANEL_W + token_local.0, token_local.1);

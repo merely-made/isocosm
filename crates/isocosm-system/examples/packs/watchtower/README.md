@@ -23,7 +23,7 @@ table. The generator proposes a campaign; it never resolves an encounter.
 ## Generate and commit
 
 The pack is bundled and available as `>gen watchtower` (or by selecting
-`watchtower:ruined_tower`). Set `ISOMETRY_GEN_SEED` when a repeatable seed is
+`watchtower:ruined_tower`). Set `ISOCOSM_GEN_SEED` when a repeatable seed is
 needed, or reroll the preview before committing to try another layout. The
 `Breach on the east` lock preset fixes the breach while leaving the nest seeded. Use **Generate** to
 create the proposal, then **Commit** when the DM accepts that proposal into the

@@ -32,7 +32,7 @@ impl Draw {
 }
 
 fn compact() -> bool {
-    std::env::var("ISOCOSM_REPRO_COMPACT").as_deref() == Ok("1")
+    std::env::var("COSMOGRAPH_REPRO_COMPACT").as_deref() == Ok("1")
 }
 
 #[derive(Debug)]
@@ -161,7 +161,7 @@ impl Record {
         let genesis = crate::digest(g);
         let founding = g.founding.clone().expect("generated A1 founding");
         let profile_adjustment = draw.recovery.then(|| {
-            let tweak = std::env::var("ISOCOSM_REPRO_TWEAK").unwrap_or_default();
+            let tweak = std::env::var("COSMOGRAPH_REPRO_TWEAK").unwrap_or_default();
             assert!(tweak.is_empty(), "bodied-stock recovery is the untuned stock control");
             tweak
         });

@@ -25,14 +25,14 @@ pub(crate) fn generator_pack_roots() -> Vec<std::path::PathBuf> {
     let mut roots = vec![example_pack("core")];
     // `demo` and `watchtower` are fixtures: the host's tests and the watchtower
     // self-test load them, a user's table does not.
-    if cfg!(test) || std::env::var_os("ISOMETRY_WATCHTOWER_SELFTEST").is_some() {
+    if cfg!(test) || std::env::var_os("ISOCOSM_WATCHTOWER_SELFTEST").is_some() {
         roots.extend(["demo", "watchtower"].map(example_pack));
     }
     let local = std::path::PathBuf::from("packs");
     if local.is_dir() {
         roots.push(local);
     }
-    if let Some(paths) = std::env::var_os("ISOMETRY_PACK_DIRS") {
+    if let Some(paths) = std::env::var_os("ISOCOSM_PACK_DIRS") {
         roots.extend(std::env::split_paths(&paths));
     }
     roots
@@ -113,7 +113,7 @@ impl App {
         // rule may read a beat.
         let (pack_beats, beat_diagnostics) = generator_catalog.choreography();
         for diagnostic in &beat_diagnostics {
-            eprintln!("[isometry] choreography: {diagnostic}");
+            eprintln!("[isocosm] choreography: {diagnostic}");
         }
         let mut sheet = board_css();
         for beat in &pack_beats {
@@ -152,7 +152,7 @@ impl App {
             native_choreography: Vec::new(),
             last_viewport: (0.0, 0.0),
             scene_board: None,
-            profile: std::env::var_os("ISOMETRY_PROFILE").is_some(),
+            profile: std::env::var_os("ISOCOSM_PROFILE").is_some(),
             net_intent: parse_net_intent(),
             net_is_host: false,
             viewer_arg: parse_viewer(),
@@ -162,29 +162,29 @@ impl App {
             family_request_pumps: Vec::new(),
             family_wake: None,
             last_net_version: 0,
-            net_selftest: std::env::var_os("ISOMETRY_NET_SELFTEST").is_some(),
-            travel_selftest: std::env::var_os("ISOMETRY_TRAVEL_SELFTEST").is_some(),
+            net_selftest: std::env::var_os("ISOCOSM_NET_SELFTEST").is_some(),
+            travel_selftest: std::env::var_os("ISOCOSM_TRAVEL_SELFTEST").is_some(),
             travel_fired: false,
-            cmd_selftest: std::env::var_os("ISOMETRY_CMD_SELFTEST").is_some(),
+            cmd_selftest: std::env::var_os("ISOCOSM_CMD_SELFTEST").is_some(),
             cmd_fired: false,
-            watchtower_selftest: std::env::var_os("ISOMETRY_WATCHTOWER_SELFTEST").is_some(),
+            watchtower_selftest: std::env::var_os("ISOCOSM_WATCHTOWER_SELFTEST").is_some(),
             watchtower_fired: false,
-            convince_selftest: std::env::var_os("ISOMETRY_CONVINCE_SELFTEST").is_some(),
+            convince_selftest: std::env::var_os("ISOCOSM_CONVINCE_SELFTEST").is_some(),
             convince_fired: false,
-            storylet_selftest: std::env::var_os("ISOMETRY_STORYLET_SELFTEST").is_some(),
+            storylet_selftest: std::env::var_os("ISOCOSM_STORYLET_SELFTEST").is_some(),
             storylet_fired: false,
-            overmap_selftest: std::env::var_os("ISOMETRY_OVERMAP_SELFTEST").is_some(),
+            overmap_selftest: std::env::var_os("ISOCOSM_OVERMAP_SELFTEST").is_some(),
             overmap_fired: false,
-            overmap_source_time_selftest: std::env::var_os("ISOMETRY_OVERMAP_SOURCE_TIME_SELFTEST")
+            overmap_source_time_selftest: std::env::var_os("ISOCOSM_OVERMAP_SOURCE_TIME_SELFTEST")
                 .is_some(),
-            compendium_selftest: std::env::var_os("ISOMETRY_COMPENDIUM_SELFTEST").is_some(),
+            compendium_selftest: std::env::var_os("ISOCOSM_COMPENDIUM_SELFTEST").is_some(),
             compendium_fired: false,
-            whisper_selftest: std::env::var_os("ISOMETRY_WHISPER_SELFTEST").is_some(),
+            whisper_selftest: std::env::var_os("ISOCOSM_WHISPER_SELFTEST").is_some(),
             whisper_fired: false,
-            turns_selftest: std::env::var_os("ISOMETRY_TURNS_SELFTEST").is_some(),
-            select_selftest: std::env::var_os("ISOMETRY_SELECT_SELFTEST").is_some(),
+            turns_selftest: std::env::var_os("ISOCOSM_TURNS_SELFTEST").is_some(),
+            select_selftest: std::env::var_os("ISOCOSM_SELECT_SELFTEST").is_some(),
             select_fired: false,
-            overlay_selftest: std::env::var("ISOMETRY_OVERLAY_SELFTEST")
+            overlay_selftest: std::env::var("ISOCOSM_OVERLAY_SELFTEST")
                 .ok()
                 .map(|value| crate::selftest::OverlayArm::of(&value)),
             overlay_fired: false,
@@ -195,7 +195,7 @@ impl App {
             region_selftest: selftest::RegionSelftest::from_env(),
             look_selftest: selftest::LookSelftest::from_env(),
             pathfinder_selftest: selftest::PathfinderSelftest::from_env(),
-            combat_selftest: std::env::var_os("ISOMETRY_COMBAT_SELFTEST").is_some(),
+            combat_selftest: std::env::var_os("ISOCOSM_COMBAT_SELFTEST").is_some(),
             combat_swings: 4,
             last_swing: None,
             combat_emoted: false,
@@ -204,11 +204,11 @@ impl App {
             selftest_fired: false,
             system: None,
             last_sheet_open: None,
-            // `ISOMETRY_GEN_SEED` fixes the generator tape so `>gen` previews and
+            // `ISOCOSM_GEN_SEED` fixes the generator tape so `>gen` previews and
             // rerolls are reproducible (headed verification, and a table that wants
             // a deterministic session); otherwise the wall clock seeds it as before.
             generation_tape: EntropyTape::from_seed(
-                std::env::var("ISOMETRY_GEN_SEED")
+                std::env::var("ISOCOSM_GEN_SEED")
                     .ok()
                     .and_then(|s| s.parse::<u64>().ok())
                     .unwrap_or_else(|| {
@@ -261,7 +261,7 @@ fn pack_appearance(roots: &[std::path::PathBuf]) -> (isocosm_views::appearance::
             .and_then(|text| library.overlay(&text, &read));
         match result {
             Ok(()) => overlaid = true,
-            Err(error) => eprintln!("[isometry] appearance {}: {error}", path.display()),
+            Err(error) => eprintln!("[isocosm] appearance {}: {error}", path.display()),
         }
     }
     (library, overlaid)

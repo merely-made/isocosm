@@ -195,10 +195,10 @@ pub(crate) fn init(
 ) -> Init<UiState, Logic> {
     let mut app = app.borrow_mut();
     app.family_wake = Some(wake.clone());
-    // `ISOMETRY_SYNTH=<n>` loads an n x n synthetic stress board (n>1,
+    // `ISOCOSM_SYNTH=<n>` loads an n x n synthetic stress board (n>1,
     // default 30 = the probe P2 board) instead of the demo skirmish;
     // large n exercises viewport windowing.
-    let mut map = match std::env::var("ISOMETRY_SYNTH") {
+    let mut map = match std::env::var("ISOCOSM_SYNTH") {
         Ok(v) => {
             let n = v
                 .trim()
@@ -269,7 +269,7 @@ pub(crate) fn init(
     }
     ui.generator_choices = app.generator_catalog.choices();
     for diagnostic in app.generator_catalog.diagnostics() {
-        eprintln!("[isometry] content pack: {diagnostic}");
+        eprintln!("[isocosm] content pack: {diagnostic}");
     }
     if let Some(status) = restore_status {
         ui.status = status;
@@ -358,7 +358,7 @@ pub(crate) fn init(
     ui.spells = spells_of();
     ui.items = items_of();
     app.system = Some(system);
-    // B2's flag, read once here for the same reason every other `ISOMETRY_*`
+    // B2's flag, read once here for the same reason every other `ISOCOSM_*`
     // hook is: the environment is the host's to read, and the view is handed a
     // field. With it unset nothing below is built and the DOM board stands.
     if app.family_table.is_none() && scene_board::enabled() {

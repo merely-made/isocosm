@@ -50,14 +50,14 @@ fn founded(seed: u64) -> (World, Id, isocosm_native::founding::Content,
     (world, host, content, origin)
 }
 
-/// Run with `ISOMETRY_REGION_FIXTURE_DIR` naming an existing folder; it
+/// Run with `ISOCOSM_REGION_FIXTURE_DIR` naming an existing folder; it
 /// writes `campaigns/region_quickstart.redb` there, launched with
 /// `--campaign region_quickstart` from that folder.
 #[test]
 #[ignore = "explicit region-lane headed fixture exporter"]
 fn export_region_quickstart_for_headed_read() {
-    let root = PathBuf::from(std::env::var_os("ISOMETRY_REGION_FIXTURE_DIR")
-        .expect("set ISOMETRY_REGION_FIXTURE_DIR to the receipt folder"));
+    let root = PathBuf::from(std::env::var_os("ISOCOSM_REGION_FIXTURE_DIR")
+        .expect("set ISOCOSM_REGION_FIXTURE_DIR to the receipt folder"));
     assert!(root.is_dir(), "the receipt folder must already exist");
     let path = root.join("campaigns").join("region_quickstart.redb");
     assert!(!path.exists(), "refusing to overwrite an existing campaign fixture");

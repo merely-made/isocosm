@@ -79,7 +79,7 @@ mod tests {
         assert!(!choices.is_empty(), "the fixture generator packs must load");
         let request = GeneratorSelectionRequest {
             seed: "session-4".to_owned(),
-            domain: "isometry.generator-preview/v1".to_owned(),
+            domain: "isocosm.generator-preview/v1".to_owned(),
             prompt: "What should I prepare for the next scene?".to_owned(),
         };
 
@@ -115,7 +115,7 @@ mod tests {
         };
         let request = GeneratorSelectionRequest {
             seed: "seed".to_owned(),
-            domain: "isometry.generator-preview/v1".to_owned(),
+            domain: "isocosm.generator-preview/v1".to_owned(),
             prompt: " ".to_owned(),
         };
         assert_eq!(

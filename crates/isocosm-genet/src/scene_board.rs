@@ -19,7 +19,7 @@
 //! the producer presents each of those pixels as one square block, which is
 //! the GBA crispness pillar expressed in the renderer rather than in CSS.
 //!
-//! **Headroom.** `ISOMETRY_SCENE_HEADROOM=<layers>` sets the spare brick
+//! **Headroom.** `ISOCOSM_SCENE_HEADROOM=<layers>` sets the spare brick
 //! layers the scene board's pointer volume keeps above the board's tallest
 //! tile; unset, the residency's own default of one, which is provisional.
 //!
@@ -37,9 +37,9 @@ use isocosm_views::{
 
 use crate::Ctx;
 
-/// `ISOMETRY_SCENE_BOARD=1`: draw the board through the isometer scene.
+/// `ISOCOSM_SCENE_BOARD=1`: draw the board through the isometer scene.
 pub(crate) fn enabled() -> bool {
-    std::env::var_os("ISOMETRY_SCENE_BOARD").is_some()
+    std::env::var_os("ISOCOSM_SCENE_BOARD").is_some()
 }
 
 /// The host's handle on the scene board: the snapshot the view layer's source
@@ -53,7 +53,7 @@ pub(crate) struct SceneBoard {
     /// all. A scene board that quietly draws nothing is the failure this
     /// guards against.
     reported: Option<String>,
-    /// The last ground change reported under `ISOMETRY_PROFILE`, so a still
+    /// The last ground change reported under `ISOCOSM_PROFILE`, so a still
     /// board says nothing and an edit says what it cost (B4).
     costed: Option<GroundCost>,
     preferences: crate::terrain_preferences::Preferences,
@@ -64,13 +64,13 @@ pub(crate) struct SceneBoard {
 }
 
 /// The residency settings the environment asks for: the default, with
-/// `ISOMETRY_SCENE_HEADROOM` overriding its spare layers when it parses.
+/// `ISOCOSM_SCENE_HEADROOM` overriding its spare layers when it parses.
 fn residency() -> ResidencySettings {
     let mut settings = ResidencySettings::default();
-    let asked = std::env::var("ISOMETRY_SCENE_HEADROOM").ok();
+    let asked = std::env::var("ISOCOSM_SCENE_HEADROOM").ok();
     if let Some(layers) = asked.and_then(|value| value.trim().parse().ok()) {
         settings.headroom = layers;
-        eprintln!("[isometry] scene board headroom {layers} layers");
+        eprintln!("[isocosm] scene board headroom {layers} layers");
     }
     settings
 }
@@ -123,7 +123,7 @@ impl SceneBoard {
     }
 
     /// Reports current omissions/device bounds to the panel and, under
-    /// `ISOMETRY_PROFILE`, what the last ground change cost.
+    /// `ISOCOSM_PROFILE`, what the last ground change cost.
     ///
     /// Called *after* the frame rather than in [`Self::sync`], because the
     /// ground is brought up to date inside the producer's own draw: asked
@@ -143,13 +143,13 @@ impl SceneBoard {
                 }
             }
         }
-        if std::env::var_os("ISOMETRY_PROFILE").is_none() {
+        if std::env::var_os("ISOCOSM_PROFILE").is_none() {
             return;
         }
         if self.costed != cost {
             self.costed = cost;
             if let Some(cost) = cost {
-                eprintln!("[isometry] scene board ground: {}", cost.line());
+                eprintln!("[isocosm] scene board ground: {}", cost.line());
             }
         }
     }
@@ -157,7 +157,7 @@ impl SceneBoard {
     /// Save a changed user request at dispatch, before a window can close.
     pub(crate) fn save_preferences(&mut self, ctx: &mut Ctx<'_>) {
         if let Err(error) = self.preferences.save_changed(ctx.runner.state()) {
-            eprintln!("[isometry] could not save terrain memory preference: {error}");
+            eprintln!("[isocosm] could not save terrain memory preference: {error}");
             ctx.runner.update(|ui| {
                 ui.status = format!("Terrain memory applies this session; saving failed: {error}")
             });
@@ -189,7 +189,7 @@ impl SceneBoard {
             // board a capture cannot tell you from its pixels alone once the
             // upscale is doing its job.
             eprintln!(
-                "[isometry] scene board render scale {scale} (device {device}, zoom {})",
+                "[isocosm] scene board render scale {scale} (device {device}, zoom {})",
                 ctx.ui_zoom
             );
         }
@@ -197,7 +197,7 @@ impl SceneBoard {
         let error=producer.last_error().or_else(||producer.source().native_error()).map(str::to_owned);
         if self.reported != error {
             if let Some(why) = &error {
-                eprintln!("[isometry] scene board: {why}");
+                eprintln!("[isocosm] scene board: {why}");
             }
             self.reported = error;
         }

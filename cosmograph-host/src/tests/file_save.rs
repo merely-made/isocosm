@@ -5,7 +5,7 @@ use std::{fs::{self, OpenOptions}, io::{self, Write}, path::{Path, PathBuf}};
 use crate::file_save;
 
 fn owner() -> PathBuf {
-    let path = PathBuf::from(std::env::var_os("ISOCOSM_HOST_ATOMIC_SAVE_DIR")
+    let path = PathBuf::from(std::env::var_os("COSMOGRAPH_HOST_ATOMIC_SAVE_DIR")
         .expect("atomic-save gates require an explicit existing file owner"));
     assert!(path.is_dir(), "atomic-save gates never create an owner directory");
     path
@@ -22,7 +22,7 @@ fn fixture_file(bytes: &[u8]) -> tempfile::TempPath {
 fn failure() -> io::Error { io::Error::other("declared precommit failure") }
 
 #[test]
-#[ignore = "requires an explicit existing ISOCOSM_HOST_ATOMIC_SAVE_DIR owner"]
+#[ignore = "requires an explicit existing COSMOGRAPH_HOST_ATOMIC_SAVE_DIR owner"]
 fn partial_staging_failure_preserves_previous_save_and_retires_only_own_stage() {
     let old = b"previous native and opaque mode bytes\0\xff";
     let destination = fixture_file(old);
@@ -47,7 +47,7 @@ fn partial_staging_failure_preserves_previous_save_and_retires_only_own_stage() 
 }
 
 #[test]
-#[ignore = "requires an explicit existing ISOCOSM_HOST_ATOMIC_SAVE_DIR owner"]
+#[ignore = "requires an explicit existing COSMOGRAPH_HOST_ATOMIC_SAVE_DIR owner"]
 fn complete_stage_is_exclusive_and_closed_before_a_precommit_refusal() {
     let old = b"old complete save";
     let destination = fixture_file(old);
@@ -73,7 +73,7 @@ fn complete_stage_is_exclusive_and_closed_before_a_precommit_refusal() {
 }
 
 #[test]
-#[ignore = "requires an explicit existing ISOCOSM_HOST_ATOMIC_SAVE_DIR owner"]
+#[ignore = "requires an explicit existing COSMOGRAPH_HOST_ATOMIC_SAVE_DIR owner"]
 fn replacement_publishes_exact_bytes_and_can_replace_the_same_path_again() {
     let destination = fixture_file(b"previous save");
     let bytes = b"complete native history\0opaque mode\xff";
@@ -84,7 +84,7 @@ fn replacement_publishes_exact_bytes_and_can_replace_the_same_path_again() {
 }
 
 #[test]
-#[ignore = "requires an explicit existing ISOCOSM_HOST_ATOMIC_SAVE_DIR owner"]
+#[ignore = "requires an explicit existing COSMOGRAPH_HOST_ATOMIC_SAVE_DIR owner"]
 fn missing_parent_refuses_without_creating_a_directory() {
     let occupied = fixture_file(b"occupied file is not a parent directory");
     let path = Path::new(&*occupied).join("world.save");
@@ -95,7 +95,7 @@ fn missing_parent_refuses_without_creating_a_directory() {
 
 #[cfg(windows)]
 #[test]
-#[ignore = "requires an explicit existing ISOCOSM_HOST_ATOMIC_SAVE_DIR owner"]
+#[ignore = "requires an explicit existing COSMOGRAPH_HOST_ATOMIC_SAVE_DIR owner"]
 fn refused_windows_replacement_keeps_previous_bytes_after_the_stage_is_closed() {
     use std::os::windows::fs::OpenOptionsExt;
     let old = b"previous Windows save";

@@ -92,7 +92,7 @@ pub fn demo_map() -> MapDocument {
 /// half) plus 20 scattered tokens. At 30x30 this is the ~2,700-element
 /// probe P2 board; larger sizes exercise viewport windowing (the emitted
 /// element count should stay bounded by the pane, not the board).
-/// `ISOMETRY_SYNTH=<n>` loads an n x n board (n>1; default 30).
+/// `ISOCOSM_SYNTH=<n>` loads an n x n board (n>1; default 30).
 pub fn synth_map(w: u32, h: u32) -> MapDocument {
     let mut map = MapDocument::new(format!("Synthetic {w}x{h}"), w, h);
     let grass = map.intern_tile_kind("grass");

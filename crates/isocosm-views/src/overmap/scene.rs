@@ -33,7 +33,7 @@ pub fn overmap_score(overmap: &Overmap) -> Score {
         .iter()
         .enumerate()
         .map(|(ordinal, node)| ScoreItem {
-            source: SourceRef::new(ISOMETRY_OVERMAP_ADAPTER, &node.id),
+            source: SourceRef::new(ISOCOSM_OVERMAP_ADAPTER, &node.id),
             ordinal: ordinal as u32,
             footprint: Footprint::Circle { radius: 6.0 },
             representation: Representation::Glyph,

@@ -312,8 +312,8 @@ fn bodily_wounds_and_rot_cannot_spill_a_traveller_at_the_actor_site() {
 #[ignore = "requires immutable genuine v3 archive and SHA256 supplied by root"]
 fn authentic_v3_movement_archive_is_authenticated_before_kept_replay() {
     use sha2::{Digest,Sha256};
-    let path = std::env::var("ISOCOSM_JOURNEY_V3_ARCHIVE").unwrap();
-    let expected = std::env::var("ISOCOSM_JOURNEY_V3_ARCHIVE_SHA256").unwrap();
+    let path = std::env::var("COSMOGRAPH_JOURNEY_V3_ARCHIVE").unwrap();
+    let expected = std::env::var("COSMOGRAPH_JOURNEY_V3_ARCHIVE_SHA256").unwrap();
     let bytes = std::fs::read(path).unwrap();
     assert_eq!(format!("{:x}",Sha256::digest(&bytes)),expected);
     let saved: crate::history::Saved = serde_json::from_slice(&bytes).unwrap();

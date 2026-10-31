@@ -87,7 +87,7 @@ fn a_pan_reads_nothing_and_uploads_only_what_it_frames() {
     let panned = board.terrain();
     let cost = board.cost();
     eprintln!(
-        "[isometry-b5] pan: {}, tracer uploaded {} bytes, frame {:.2} ms",
+        "[isocosm-b5] pan: {}, tracer uploaded {} bytes, frame {:.2} ms",
         cost.line(),
         panned.brick_upload_bytes,
         elapsed.as_secs_f32() * 1e3,
@@ -137,7 +137,7 @@ fn a_token_move_costs_the_ground_nothing() {
     let elapsed = started.elapsed();
     let moved = board.terrain();
     eprintln!(
-        "[isometry-b5] token {} {at:?} -> {step:?}: {}, tracer uploaded {} bytes, frame {:.2} ms",
+        "[isocosm-b5] token {} {at:?} -> {step:?}: {}, tracer uploaded {} bytes, frame {:.2} ms",
         token.0,
         board.cost().line(),
         moved.brick_upload_bytes,
@@ -181,7 +181,7 @@ fn what_reading_the_ground_costs_beside_raising_it() {
         let read = started.elapsed();
         let bricks = BoardBricks::new(&columns, None);
         eprintln!(
-            "[isometry-b5] {name}: raising the ground {:.2} ms over {} bricks; reading its \
+            "[isocosm-b5] {name}: raising the ground {:.2} ms over {} bricks; reading its \
              columns {:.2} ms",
             raise.as_secs_f32() * 1e3,
             grown.brick_count(),
@@ -228,7 +228,7 @@ fn the_brick_cap_bounds_residency_not_the_board() {
     for edge in [24, 30, 48, 64, 68, 70, 72, 80, 96, 256] {
         let (ground, held, total) = first_map(&synth_map(edge, edge));
         eprintln!(
-            "[isometry-b5] {edge}x{edge}: {total} bricks on the board, {held} of {} held for the \
+            "[isocosm-b5] {edge}x{edge}: {total} bricks on the board, {held} of {} held for the \
              frame",
             ground.capacity(),
         );
@@ -236,7 +236,7 @@ fn the_brick_cap_bounds_residency_not_the_board() {
     }
     let edge = isocosm_campaign::MAX_GENERATED_MAP_EDGE;
     let (_, held, total) = first_map(&relief_map(edge));
-    eprintln!("[isometry-b5] {edge}x{edge} with relief: {total} bricks on the board, {held} held");
+    eprintln!("[isocosm-b5] {edge}x{edge} with relief: {total} bricks on the board, {held} held");
     let past_the_old_cap: Vec<_> = held_at
         .iter()
         .filter(|(_, _, total)| *total > 2_047)

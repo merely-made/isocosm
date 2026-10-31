@@ -66,7 +66,7 @@ fn profile_overmap_interaction() {
     ] {
         samples.sort_by(f64::total_cmp);
         eprintln!(
-            "[isometry-perf] {name} n={} median_ms={:.3} p95_ms={:.3}",
+            "[isocosm-perf] {name} n={} median_ms={:.3} p95_ms={:.3}",
             samples.len(),
             samples[15],
             samples[28]
@@ -77,7 +77,7 @@ fn profile_overmap_interaction() {
         std::hint::black_box(isocosm_views::overmap_swatch(harness.state()));
     }
     eprintln!(
-        "[isometry-perf] swatch mean_ms={:.3}",
+        "[isocosm-perf] swatch mean_ms={:.3}",
         start.elapsed().as_secs_f64() * 10.0
     );
 }

@@ -75,7 +75,7 @@ crates/
   isocosm-core/     Pure substrate model: grids, iso math, map documents,
                     session events. No I/O, UI, net or genet deps.
   isocosm-views/    Cambium view fns + CSS sheets (tilesets are stylesheets).
-  isocosm-genet/    Native winit host; ISOMETRY_PROFILE=1 prints frame timers.
+  isocosm-genet/    Native winit host; ISOCOSM_PROFILE=1 prints frame timers.
   isonetry/         DM-authority replication over a pure protocol seam, iroh
                     behind a feature.
   isocosm-system/   System plugins: schemas plus piccolo Lua rules, with the

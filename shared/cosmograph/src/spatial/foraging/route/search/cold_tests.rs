@@ -6,9 +6,9 @@ use crate::{Command, Execution, Session, spatial::Preparation};
 use std::time::Instant;
 
 #[test]
-#[ignore = "set ISOCOSM_COLD_TRACE to the retained shore trace; explicit benchmark"]
+#[ignore = "set COSMOGRAPH_COLD_TRACE to the retained shore trace; explicit benchmark"]
 fn retained_cold_failures_keep_their_search_census_with_fewer_posture_evaluations() {
-    let path = std::env::var("ISOCOSM_COLD_TRACE").expect("retained trace path");
+    let path = std::env::var("COSMOGRAPH_COLD_TRACE").expect("retained trace path");
     let value: serde_json::Value = serde_json::from_slice(&std::fs::read(path).unwrap()).unwrap();
     let saved: crate::history::Saved = serde_json::from_value(value["native"].clone()).unwrap();
     assert_eq!(saved.genesis.seed, 3580977844374872680);

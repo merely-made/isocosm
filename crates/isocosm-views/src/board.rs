@@ -187,7 +187,7 @@ impl BoardCensus {
         self.ground + self.props + self.tokens
     }
 
-    /// One line for `ISOMETRY_PROFILE`, naming what was counted and what is
+    /// One line for `ISOCOSM_PROFILE`, naming what was counted and what is
     /// allowed to be there, so the number cannot be read as more than it is.
     fn line(&self) -> String {
         format!(
@@ -308,7 +308,7 @@ pub fn board_root(ui: &UiState) -> UiChild {
             .expect("a nonempty VTT projection set renders its table page");
         return Box::new(el("div", page).attr("class", "app vtt-family"));
     }
-    // B2: behind `ISOMETRY_SCENE_BOARD` the board pane carries one scene leaf
+    // B2: behind `ISOCOSM_SCENE_BOARD` the board pane carries one scene leaf
     // instead of one element per tile, prop, marker and token. Everything
     // outside the `.board` container — the side panel, the overlays, the
     // gestures — is the same tree either way. B4 brings the markers back over
@@ -349,12 +349,12 @@ pub fn board_root(ui: &UiState) -> UiChild {
             )));
         }
     }
-    // Windowing metric turned census (B5): with `ISOMETRY_PROFILE` on, say
+    // Windowing metric turned census (B5): with `ISOCOSM_PROFILE` on, say
     // what the board containers hold and what is allowed to be there. The
     // element count should stay bounded by the pane rather than grow with the
     // board (the windowing plan), and under the flag it should be zero.
-    if std::env::var_os("ISOMETRY_PROFILE").is_some() {
-        eprintln!("[isometry] {}", census.line());
+    if std::env::var_os("ISOCOSM_PROFILE").is_some() {
+        eprintln!("[isocosm] {}", census.line());
     }
     if let Some(overlay) = crate::character::character_overlay(ui) {
         pane_children.push(overlay);
@@ -419,9 +419,9 @@ fn board_pane(children: Vec<UiChild>) -> UiChild {
             // or Up follows it, so opening the menu is the whole gesture.
             (PointerPhase::Down, PointerButton::Secondary) => ui.board_context_menu(event.local),
             (PointerPhase::Down, PointerButton::Primary) => {
-                if std::env::var_os("ISOMETRY_PROFILE").is_some() {
+                if std::env::var_os("ISOCOSM_PROFILE").is_some() {
                     eprintln!(
-                        "[isometry] board press at {:?} shows {:?}",
+                        "[isocosm] board press at {:?} shows {:?}",
                         event.local,
                         ui.board_at(event.local)
                     );

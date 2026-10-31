@@ -1,4 +1,4 @@
-//! `ISOMETRY_LOOK_SELFTEST=preview|board`: a headed look-editor run.
+//! `ISOCOSM_LOOK_SELFTEST=preview|board`: a headed look-editor run.
 //!
 //! Equips the first token with a sword, opens its look editor (the menu row's
 //! own call), then picks a class and the hood (the core pack's .vox layer)
@@ -20,7 +20,7 @@ pub(crate) struct LookSelftest {
 
 impl LookSelftest {
     pub(crate) fn from_env() -> Option<Self> {
-        let mode = std::env::var("ISOMETRY_LOOK_SELFTEST").ok()?;
+        let mode = std::env::var("ISOCOSM_LOOK_SELFTEST").ok()?;
         assert!(["preview", "board"].contains(&mode.as_str()), "look selftest mode is preview or board");
         Some(Self {
             save: mode == "board",
@@ -67,8 +67,8 @@ impl LookSelftest {
                 true
             },
             4 => {
-                // `ISOMETRY_LOOK_TURNS` quarter turns (one by default).
-                let turns: usize = std::env::var("ISOMETRY_LOOK_TURNS")
+                // `ISOCOSM_LOOK_TURNS` quarter turns (one by default).
+                let turns: usize = std::env::var("ISOCOSM_LOOK_TURNS")
                     .ok()
                     .and_then(|value| value.parse().ok())
                     .unwrap_or(1);
@@ -99,7 +99,7 @@ impl LookSelftest {
                 let ui = ctx.runner.state();
                 let token = &ui.map.tokens[0];
                 eprintln!(
-                    "[isometry] look selftest: {} as {} with {:?}, editor open {}, draft {:?}",
+                    "[isocosm] look selftest: {} as {} with {:?}, editor open {}, draft {:?}",
                     token.id.0,
                     token.sprite,
                     ui.map.appearances.get(&token.id),

@@ -10,7 +10,7 @@ use super::*;
 #[ignore = "explicit 20-seed, three-epoch native ecology/replay receipt"]
 fn varied_body_proportions_keep_the_a1_gate() {
     // The same bounded worker setting as the existing A1 matrix.
-    let workers = std::env::var("ISOCOSM_REPRO_WORKERS")
+    let workers = std::env::var("COSMOGRAPH_REPRO_WORKERS")
         .map_or(2, |value| value.parse::<u64>().expect("worker count")).clamp(1, 20);
     let (send, receive) = mpsc::channel();
     let mut rows = std::thread::scope(|scope| {

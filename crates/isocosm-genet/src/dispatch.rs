@@ -117,7 +117,7 @@ impl App {
         if self.profile {
             let ui = ctx.runner.state();
             eprintln!(
-                "[isometry] post-dispatch mode={:?} selected={:?} status={:?}",
+                "[isocosm] post-dispatch mode={:?} selected={:?} status={:?}",
                 ui.mode, ui.selected, ui.status
             );
         }
@@ -345,7 +345,7 @@ impl App {
             // its typed updates before reading any mirror state.
             net.poll();
             if !events.is_empty() && self.profile {
-                eprintln!("[isometry] pump: submitting {} event(s)", events.len());
+                eprintln!("[isocosm] pump: submitting {} event(s)", events.len());
             }
             for event in events {
                 net.submit(event);

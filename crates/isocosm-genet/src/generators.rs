@@ -1,7 +1,7 @@
 //! The worldbuilding generator lane: preview, reroll, commit.
 //!
 //! Generation is host-side and seeded from an entropy tape, so a fixed
-//! `ISOMETRY_GEN_SEED` replays the same world. A preview is not yet world
+//! `ISOCOSM_GEN_SEED` replays the same world. A preview is not yet world
 //! state; committing is what turns it into replicated events.
 //!
 //! Split out of `main.rs` on 2026-07-24; behavior unchanged.

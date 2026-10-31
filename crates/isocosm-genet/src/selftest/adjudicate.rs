@@ -1,6 +1,6 @@
 //! The adjudication lanes: a recruit, and a swing.
 //!
-//! `ISOMETRY_CONVINCE_SELFTEST` and `ISOMETRY_COMBAT_SELFTEST`. Both are
+//! `ISOCOSM_CONVINCE_SELFTEST` and `ISOCOSM_COMBAT_SELFTEST`. Both are
 //! focus-free, for the reason the combat lane's own doc comment gives.
 //!
 //! Split out of `selftest.rs` on 2026-09-04. The two doc comments below came
@@ -10,7 +10,7 @@
 use super::*;
 
 impl App {
-    /// `ISOMETRY_CONVINCE_SELFTEST=1`: a bard recruits a goblin, then meets the
+    /// `ISOCOSM_CONVINCE_SELFTEST=1`: a bard recruits a goblin, then meets the
     /// party cap on the next. Focus-free.
     pub(crate) fn maybe_convince_selftest(&mut self, ctx: &mut Ctx<'_>) {
         if !self.convince_selftest || self.convince_fired {
@@ -87,7 +87,7 @@ impl App {
                 ui.recompute_fog();
                 let a_active = ui.map.tokens.iter().filter(|t| t.owner.as_deref() == Some("A")).count();
                 eprintln!(
-                    "[isometry] convince selftest: A owns {a_active} here + 1 stored = 3 global, cap {}",
+                    "[isocosm] convince selftest: A owns {a_active} here + 1 stored = 3 global, cap {}",
                     ui.party_cap
                 );
             });
@@ -127,7 +127,7 @@ impl App {
                     .filter(|t| t.owner.as_deref() == Some("A"))
                     .count();
             eprintln!(
-                "[isometry] convince selftest: goblin2 owner {:?} | goblin4 owner {:?} | A owns {a_here} here, {a_global} global (cap 4) | status: {}",
+                "[isocosm] convince selftest: goblin2 owner {:?} | goblin4 owner {:?} | A owns {a_here} here, {a_global} global (cap 4) | status: {}",
                 owner(TokenId(2)),
                 owner(TokenId(4)),
                 ui.status,
@@ -135,13 +135,13 @@ impl App {
         }
     }
 
-    /// `ISOMETRY_COMBAT_SELFTEST=1`: a focus-free proof of the adjudication
+    /// `ISOCOSM_COMBAT_SELFTEST=1`: a focus-free proof of the adjudication
     /// loop. It stats both duelists, stands the goblin in reach, and swings.
     ///
     /// The app drives itself rather than being driven by synthetic clicks,
     /// because SendKeys loses the foreground race on a machine someone is
     /// actually using and silently types into their editor. Same rationale as
-    /// `ISOMETRY_NET_SELFTEST`.
+    /// `ISOCOSM_NET_SELFTEST`.
     pub(crate) fn maybe_combat_selftest(&mut self, ctx: &mut Ctx<'_>) {
         if !self.combat_selftest || (self.combat_swings == 0 && self.combat_emoted) {
             return;
@@ -169,7 +169,7 @@ impl App {
                 let runner = &mut *ctx.runner;
                 runner.update(|ui| ui.emote(TokenId(1), "cheer"));
                 eprintln!(
-                    "[isometry] combat selftest: emote | beats = {:?}",
+                    "[isocosm] combat selftest: emote | beats = {:?}",
                     runner.state().beats
                 );
             }
@@ -190,7 +190,7 @@ impl App {
             .find(|m| m.key == "goblin")
             .map(monster_sheet)
         else {
-            eprintln!("[isometry] combat selftest: no goblin in the bestiary");
+            eprintln!("[isocosm] combat selftest: no goblin in the bestiary");
             return;
         };
         let runner = &mut *ctx.runner;
@@ -209,7 +209,7 @@ impl App {
                 ui.open_sheet = Some(TokenId(1));
                 ui.recompute_fog();
                 eprintln!(
-                    "[isometry] combat selftest: knight@{:?} vs goblin@{:?} | goblin hp {:?}, ac {:?} (1d20+7 to hit)",
+                    "[isocosm] combat selftest: knight@{:?} vs goblin@{:?} | goblin hp {:?}, ac {:?} (1d20+7 to hit)",
                     ui.map.token(TokenId(1)).map(|t| t.at),
                     ui.map.token(TokenId(2)).map(|t| t.at),
                     ui.map.sheet(TokenId(2)).and_then(|s| s.int("hp_current")),
@@ -229,7 +229,7 @@ impl App {
             let runner = &*ctx.runner;
             let ui = runner.state();
             eprintln!(
-                "[isometry] combat selftest: {} | goblin hp {:?} conds {:?} mobility {:?} | beats = {:?}",
+                "[isocosm] combat selftest: {} | goblin hp {:?} conds {:?} mobility {:?} | beats = {:?}",
                 ui.status,
                 ui.map.sheet(TokenId(2)).and_then(|s| s.int("hp_current")),
                 ui.map.conditions.get(&TokenId(2)),
