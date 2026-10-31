@@ -5,8 +5,8 @@ use std::time::Duration;
 
 use chirograph::Carrier;
 use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
-use isocosm::{Command, Execution, Founding, Session};
-use isocosm_host::world::World;
+use cosmograph::{Command, Execution, Founding, Session};
+use cosmograph_host::world::World;
 use muniment::MemoryBackend;
 use murm_replication::MunimentStore;
 use p2panda_core::SigningKey;

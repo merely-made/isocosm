@@ -1,13 +1,13 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::{Execution, directing::interim::{Interim, Pace, Start}, directing::readings::Mode};
-use isocosm_overlay::{EntityHandle, Intent, IntentEnvelope, ParticipantHandle, Tick,
+use cosmograph::{Execution, directing::interim::{Interim, Pace, Start}, directing::readings::Mode};
+use cosmograph_overlay::{EntityHandle, Intent, IntentEnvelope, ParticipantHandle, Tick,
     mesocosm::{BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, MesocosmIntent}};
 
 use crate::{Founded, Runtime};
 
-#[path = "../../../../../shared/isocosm/tests/ecology_independence_879/fixture.rs"]
+#[path = "../../../../../shared/cosmograph/tests/ecology_independence_879/fixture.rs"]
 #[allow(dead_code)]
 mod native_fixture;
 
@@ -69,8 +69,8 @@ fn held_advance_adopts_external_world_revision() {
 #[test]
 fn failed_publish_does_not_mark_world_revision_clean() {
     use std::{cell::{Cell, RefCell}, collections::BTreeMap, rc::Rc};
-    use isocosm::Session;
-    use isocosm_host::world::CommitGate;
+    use cosmograph::Session;
+    use cosmograph_host::world::CommitGate;
 
     let runtime = Rc::new(RefCell::new(Runtime::bench(Founded::generated(9, 256).unwrap(), 30).unwrap()));
     let world = runtime.borrow().world().share();

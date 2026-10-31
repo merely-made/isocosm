@@ -10,11 +10,11 @@ fn terrain_with_edits(
     paged: bool,
     edits: &[(u64, isometer::space::edit::Edit)],
 ) -> isometer::space::volume::Volume {
-    let genesis = isocosm::Founding {
+    let genesis = cosmograph::Founding {
         seed: 7,
         sites: 4,
         population: 8,
-        map: Some(isocosm::map::Layout::Grid(isocosm::map::Grid {
+        map: Some(cosmograph::map::Layout::Grid(cosmograph::map::Grid {
             shape: "shape:plane".into(),
             width: 2,
             height: 2,
@@ -27,7 +27,7 @@ fn terrain_with_edits(
     }
     .generate()
     .unwrap();
-    let sim = isocosm::Simulation::new(genesis, isocosm::Execution::Individuals).unwrap();
+    let sim = cosmograph::Simulation::new(genesis, cosmograph::Execution::Individuals).unwrap();
     if paged {
         isometer::space::volume::Volume::paged(
             &sim.atlas().unwrap(),

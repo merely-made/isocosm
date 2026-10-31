@@ -108,8 +108,8 @@ impl FamilyRecordOutbox {
 mod tests {
     use super::*;
     use crate::family::HostAdmission;
-    use isocosm::{Command, Execution, Founding, Session};
-    use isocosm_host::world::World;
+    use cosmograph::{Command, Execution, Founding, Session};
+    use cosmograph_host::world::World;
     use std::collections::BTreeMap;
 
     fn host() -> FamilyHost {

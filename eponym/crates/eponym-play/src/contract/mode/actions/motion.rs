@@ -77,8 +77,8 @@ pub(super) fn advance(session:&mut Session, mode:&mut ModeState, actions:&Action
 
 fn mobile(session:&Session,entity:Id) -> Result<bool,String> {
     let body = session.sim.state().population.get(entity).ok_or("Eponym body is absent")?;
-    let wound = isocosm::harm::wound_share(body);
-    let fatigue = isocosm::needs::want(&session.sim.genesis().rules,body,ENERGY)
+    let wound = cosmograph::harm::wound_share(body);
+    let fatigue = cosmograph::needs::want(&session.sim.genesis().rules,body,ENERGY)
         .map_or(0,|want|want.deficit().min(u64::from(crate::MAX_NEED)));
     Ok(body.alive && session.sim.name_of(entity).is_some()
         && wound < u64::from(crate::MOBILITY_WOUND) && fatigue < u64::from(crate::MAX_NEED))

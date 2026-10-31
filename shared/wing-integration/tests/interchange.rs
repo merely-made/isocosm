@@ -9,9 +9,9 @@
 //! producer's live bytes against the retained artifact, and the same bytes
 //! through the baker.
 
-use isometry_campaign::{Arrival, ChronicleError};
-use isocosm::lineage::chronicle::Deed;
-use isocosm::lineage::{
+use isocosm_campaign::{Arrival, ChronicleError};
+use cosmograph::lineage::chronicle::Deed;
+use cosmograph::lineage::{
     Chronicle, Consequence, LineageBody as BodyDocument, Origin, Provenance, SpeciesId,
 };
 use isometer_core::{Attachment, PartId, VolumeRef, Yaw};

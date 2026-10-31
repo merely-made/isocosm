@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Authored dry crossing. These boxes are both the contact input and the mesh;
-//! this is a playable fixture, not generated terrain or an Isometry actor model.
+//! this is a playable fixture, not generated terrain or an Isocosm actor model.
 
 mod draw;
 

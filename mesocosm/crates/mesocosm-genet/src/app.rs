@@ -8,7 +8,7 @@
 
 use std::time::Instant;
 
-use isocosm::schema::Id;
+use cosmograph::schema::Id;
 use mesocosm_runtime::Runtime;
 
 use crate::section::{Pan, SiteScene};
@@ -224,7 +224,7 @@ impl Host {
                     );
                     let key = (
                         site,
-                        format!("{}:{}", sim.terrain_revision(), isocosm::digest(&window)),
+                        format!("{}:{}", sim.terrain_revision(), cosmograph::digest(&window)),
                     );
                     let changed = self.scene_key.as_ref() != Some(&key);
                     self.scene = Some(scene);

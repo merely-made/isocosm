@@ -32,7 +32,7 @@ Checked at the pinned commit, against the summary the physics session relayed:
   `<authority>:<counter>`, not u64; and the ring is `CheckpointRing` in the
   code, `SnapshotRing` only in `ARCHITECTURE.md` (both from the lane).
 - hecs is 0.11.1, the version ruling 481's bench measured. The toolchain pin
-  is 1.98.1, the same as Isometry's.
+  is 1.98.1, the same as Isocosm's.
 
 ## 2. What the wing holds, and what balaur does
 
@@ -70,14 +70,14 @@ steps done render-side only, so no system ever reads a blend; and a
 
 ### 2.3 Determinism: where balaur is ahead
 
-What Isocosm has, measured at isometry `cf3b1dbb`:
+What Cosmograph has, measured at isocosm `cf3b1dbb`:
 
-- **An integer sim.** No `f32` anywhere in `shared/isocosm/src`; `f64`
+- **An integer sim.** No `f32` anywhere in `shared/cosmograph/src`; `f64`
   appears only in tools, probes and tests, and the five transcendental calls
-  sit in the `isocosm-scale` curve fit and a probe's statistical bound. Maps
+  sit in the `cosmograph-scale` curve fit and a probe's statistical bound. Maps
   are ordered (`BTreeMap` in 100 files, `HashMap` in one).
 - **One whole-state hash.** `Simulation::state_hash`
-  (`shared/isocosm/src/simulation.rs:192`) clones the state and takes SHA-256
+  (`shared/cosmograph/src/simulation.rs:192`) clones the state and takes SHA-256
   over its JSON (`crate::digest`, `src/lib.rs:48`). It is the equality
   instrument for replay, saves and branches, called 220 times across the
   tree, and it answers only "equal" or "not".
@@ -169,7 +169,7 @@ From §3.8 of mere's brief, read at the same commit through web reads only:
   format 3 with a trailer whose absence means a crash; `--verify` stops at the
   first mismatching digest. One PCG32, seed 0, its state in snapshots and the
   header; `house_lints.py` rejects bare transcendental calls. This settles
-  §2.3's description; fork 1 stands. Isocosm's keyed draws already avoid the
+  §2.3's description; fork 1 stands. Cosmograph's keyed draws already avoid the
   single shared stream, which suits §4.7's shards better than one generator.
 - **ECS and scheduler.** Eight stages, systems as closures run in insertion
   order with no constraints, one 60 Hz accumulator capped at four substeps, a
@@ -189,5 +189,5 @@ From §3.8 of mere's brief, read at the same commit through web reads only:
 - **Mere's own forks.** The lane put five to Mark on mere's side (A to E).
   Its fork E amends conatus's G8 with a labelled per-tick trace, the first
   divergence, velocity in the fold, one owned generator per world and a
-  lint: the physics half of this brief's forks 1 and 2, which are Isocosm's
+  lint: the physics half of this brief's forks 1 and 2, which are Cosmograph's
   hash and the wing's requirement.

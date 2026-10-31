@@ -24,9 +24,9 @@ struct Input {
     /// Existing admitted game vocabulary, with authored seeds/positions.
     initial_intents: Vec<GameIntent>,
     #[serde(default)]
-    stock_ownership: Vec<isocosm::projects::StockLot>,
+    stock_ownership: Vec<cosmograph::projects::StockLot>,
     #[serde(default)]
-    owned_stock: Option<isocosm::projects::StockRules>,
+    owned_stock: Option<cosmograph::projects::StockRules>,
     played: SubjectId,
     target: SubjectId,
     target_item: ItemId,

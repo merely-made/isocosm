@@ -90,16 +90,16 @@ pub struct SiteScene {
     pub played: Option<u64>,
     /// Generated, envelope-preserving voxel forms for native body documents.
     pub volumes: DeclaredExtentVolumes,
-    pub walking: Option<isocosm::spatial::embodiment::Walking>,
+    pub walking: Option<cosmograph::spatial::embodiment::Walking>,
 }
 
 #[derive(Clone, Debug)]
 pub struct Walk {
-    pub poses: [isocosm::spatial::Pose;2],
+    pub poses: [cosmograph::spatial::Pose;2],
     pub stride: Option<isometer::core::legs::Stride>,
 }
-impl From<[isocosm::spatial::Pose;2]> for Walk {
-    fn from(poses:[isocosm::spatial::Pose;2])->Self {Self {poses,stride:None}}
+impl From<[cosmograph::spatial::Pose;2]> for Walk {
+    fn from(poses:[cosmograph::spatial::Pose;2])->Self {Self {poses,stride:None}}
 }
 
 /// Every native scene uses the same voxel grammar and structural material

@@ -1,4 +1,4 @@
-//! The interchange receipt: real Mesocosm bytes become an Isometry sprite.
+//! The interchange receipt: real Mesocosm bytes become an Isocosm sprite.
 //!
 //! The unit tests in `bake/body.rs` build their own wire bytes, while this file
 //! keeps a literal v0 artifact readable. It protects persisted data but cannot
@@ -67,7 +67,7 @@ fn every_solid_cell_names_the_part_that_wrote_it() {
 
 #[test]
 fn a_real_body_bakes_to_a_sprite_from_every_facing() {
-    // The done-condition's other half: body document -> Isometry sprite.
+    // The done-condition's other half: body document -> Isocosm sprite.
     let body = BodyProfile::from_bytes(CRITTER).unwrap();
     let voxels = body.voxels_by_part();
     let palette = body.origin_palette([90, 140, 60], [200, 120, 70]);

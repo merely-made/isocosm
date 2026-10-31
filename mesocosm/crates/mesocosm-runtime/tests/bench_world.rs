@@ -5,7 +5,7 @@
 #[allow(dead_code)]
 mod worlds;
 
-use isocosm::{Execution, directing::interim::Interim};
+use cosmograph::{Execution, directing::interim::Interim};
 use mesocosm_runtime::Runtime;
 
 #[test]

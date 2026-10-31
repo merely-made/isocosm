@@ -3,8 +3,8 @@
 
 use super::*;
 use crate::{Refusal, FlowWindows, succession::Occasion};
-use isocosm::{Session, Command, directing::readings::{self, Mode, View}};
-use isocosm_overlay::{OrdinaryAccess, Seat, mesocosm::{BirthAnswer, CheckpointAnswerKind}};
+use cosmograph::{Session, Command, directing::readings::{self, Mode, View}};
+use cosmograph_overlay::{OrdinaryAccess, Seat, mesocosm::{BirthAnswer, CheckpointAnswerKind}};
 
 fn access(session: &Session, access: OrdinaryAccess) -> Result<(), Refusal> {
     if access.seat != Seat::Player || access.subject.is_none()

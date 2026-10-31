@@ -25,7 +25,7 @@ pub mod scene;
 pub use scene::site_scene;
 
 /// A recorded run: the native session's save.
-pub type PlayedTrace = isocosm::history::Saved;
+pub type PlayedTrace = cosmograph::history::Saved;
 
 /// How often the demo nudges its critter toward its own site.
 const NUDGE_EVERY: u64 = 40;
@@ -150,7 +150,7 @@ pub fn write_json<T: Serialize>(path: &Path, value: &T) -> Result<(), String> {
 pub fn write_world_trace(path: &Path, runtime: &Runtime) -> Result<(), String> {
     ensure_parent(path)?;
     let bytes = runtime.save_world()?.encode()?;
-    isocosm_host::file_save::replace(path, &bytes).map_err(|error| format!("{}: {error}", path.display()))
+    cosmograph_host::file_save::replace(path, &bytes).map_err(|error| format!("{}: {error}", path.display()))
 }
 
 pub fn read_trace(path: &Path) -> Result<PlayedTrace, String> {
@@ -162,7 +162,7 @@ pub fn read_game_trace(path: &Path) -> Result<mesocosm_runtime::GameSave, String
     mesocosm_runtime::GameSave::from_world(&read_world_trace(path)?)
 }
 
-fn read_world_trace(path: &Path) -> Result<isocosm_host::save::WorldSave, String> {
+fn read_world_trace(path: &Path) -> Result<cosmograph_host::save::WorldSave, String> {
     let bytes = std::fs::read(path).map_err(|error| format!("{}: {error}", path.display()))?;
     Runtime::decode_world_save(&bytes).map_err(|error| format!("{}: {error}", path.display()))
 }
@@ -174,7 +174,7 @@ pub fn resume(path: &Path, ticks_per_second: u32) -> Result<Runtime, String> {
 
 /// An explicit viewing choice changes presentation; absent input preserves saved settings.
 pub fn resume_with_mode(path: &Path, ticks_per_second: u32,
-    mode: Option<isocosm::directing::readings::Mode>) -> Result<Runtime, String> {
+    mode: Option<cosmograph::directing::readings::Mode>) -> Result<Runtime, String> {
     Runtime::resume_world(read_world_trace(path)?,ticks_per_second,mode)
 }
 
@@ -210,7 +210,7 @@ pub fn demo_step(runtime: &mut Runtime, step: u64) {
     runtime.step(1);
 }
 
-fn demo_intent(runtime: &Runtime, step: u64) -> Option<isocosm_overlay::mesocosm::MesocosmIntent> {
+fn demo_intent(runtime: &Runtime, step: u64) -> Option<cosmograph_overlay::mesocosm::MesocosmIntent> {
     use mesocosm_runtime::{Context, Named, Press};
     // A script, so it takes the keymap's intent and queues it directly (957).
     let context = Context::default();

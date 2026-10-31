@@ -4946,6 +4946,274 @@ area = "Processes and rules"
 summary = "An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act."
 draws_on = ["95", "96", "143"]
 
+[cases."1013"]
+title = "Pathfinder 2e is the first edition built whole at the table"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile."
+draws_on = ["249", "522", "541", "vtt.5"]
+
+[cases."1014"]
+title = "A VTT campaign's ruleset leads unless its founder picks the sim"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The sim's schema and saves"
+summary = "A VTT campaign defaults to ruleset-led; sim-led is a founding choice; calibration binds only sim-led worlds."
+draws_on = ["114", "249", "538", "schema.8"]
+
+[cases."1015"]
+title = "A town is a reading over founders"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Founding places households by geography and resources; a town is read off dwellings, tenancies, work and institutions, never stored."
+draws_on = ["54", "63", "schema.12"]
+
+[cases."1016"]
+title = "Pathfinder 2e content is checked against ORC records only"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Licensing and sources"
+summary = "Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields."
+draws_on = ["541", "licensing.1"]
+
+[cases."1017"]
+title = "A town's size is a ladder of words"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "The town reading takes a size ladder of words read off population and institutions; a naming round sets words and thresholds."
+draws_on = ["1015", "naming.3"]
+
+[cases."1018"]
+title = "Each edition declares its campaign's shape"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record."
+draws_on = ["522", "1013", "vtt.2", "vtt.5"]
+
+[cases."1019"]
+title = "A look is a voxel recipe; class names bind it"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe."
+draws_on = ["1018"]
+
+[cases."1020"]
+title = "Pathfinder 2e hit points stay the edition's; crits, dying and death reach the body"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction."
+draws_on = ["542", "1013", "vtt.5"]
+
+[cases."1021"]
+title = "Pathfinder 2e's first slice is two ancestries and two classes"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting."
+draws_on = ["1013", "1016"]
+
+[cases."1022"]
+title = "A character's look is kept at the table as a class plus overrides"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden."
+draws_on = ["1019", "vtt.7"]
+
+[cases."1023"]
+title = "People grow out of a world given deep time; a quick-start world is a modded, shared world"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "In a world given deep time people grow out of its conditions and are read up a ladder; a quick-start world is a modded, shared world with authored founders."
+draws_on = ["ecology.4", "naming.2", "processes.6", "processes.12", "schema.5"]
+replaces = ["1015"]
+
+[cases."1024"]
+title = "A faction decides by consent; a polity adds a constitution"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The sim's schema and saves"
+summary = "\"Any group decision-making\" covers faction and polity; a constitution makes a faction a polity."
+draws_on = ["processes.12", "schema.5"]
+
+[cases."1025"]
+title = "A town's tiers are hamlet, town and city"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "The ladder's tiers are hamlet, town and city, thresholds set from measured draws."
+draws_on = ["1017", "naming.3"]
+
+[cases."1026"]
+title = "Pathfinder 2e is built beside the skeleton, from a saved draft, and stays marked experimental"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists."
+draws_on = ["1013", "1014", "1018", "1020", "vtt.5", "vtt.6"]
+
+[cases."1027"]
+title = "A place's tier counts its residents"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing."
+draws_on = ["1025", "method.10", "processes.12"]
+
+[cases."1028"]
+title = "Layers may come from `.vox` files as well as TOML"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today."
+draws_on = ["1019", "1022", "bodies.2"]
+
+[cases."1029"]
+title = "A campaign's edition is chosen at its founding"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset."
+draws_on = ["1014", "1018", "schema.8"]
+
+[cases."1030"]
+title = "Roles are seats people trade; a table may have many GMs or none"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal."
+draws_on = ["153", "156", "vtt.2", "vtt.4", "vtt.5"]
+
+[cases."1031"]
+title = "Pathfinder 2e's slice takes all forty backgrounds"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "The PF2e slice takes all forty backgrounds and their skill feats, about a hundred records."
+draws_on = ["1021"]
+
+[cases."1032"]
+title = "The ladder's first readings settle residents, groups and founding events"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members."
+draws_on = ["1023", "1024", "1027", "world.10"]
+
+[cases."1033"]
+title = "Looks face four ways; PF2e founds, names lores and waits for languages"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text."
+draws_on = ["1022", "1028", "1029", "1031"]
+
+[cases."1034"]
+title = "Pathfinder 2e play: arms and armour, one-cell wounds, Stride moves the body"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move."
+draws_on = ["1020", "1021", "1026", "vtt.5"]
+
+[cases."1035"]
+title = "A look is derived in layers; items first; packs carry style until culture does"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture."
+draws_on = ["1012", "1019", "1022", "1028", "bodies.6", "bodies.11", "processes.13", "schema.7"]
+
+[cases."1036"]
+title = "Isocosm is the VTT; the sim is Cosmograph; the products are peers"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm."
+replaces = ["naming.1"]
+
+[cases."1037"]
+title = "The tree follows the names now"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow."
+draws_on = ["1036"]
+
+[cases."1038"]
+title = "Cosmograph gets a standalone world-graph viewer"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Host and network"
+summary = "A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched."
+draws_on = ["1036", "host.2", "naming.3", "processes.6", "record.4"]
+
+[cases."1039"]
+title = "Runtime and stored names follow the rename, with a version bump"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration."
+draws_on = ["1036", "1037", "schema.9"]
+
+[cases."1040"]
+title = "Stored names migrate at load; the chronicle moves to v1; \"nemeses\" means relation-based tracking"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Naming"
+summary = "Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion."
+draws_on = ["1030", "1039", "schema.9"]
+
+[cases."1041"]
+title = "Quick-start worlds are founded from a picker; the population model is E4's"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4."
+draws_on = ["1023", "1032"]
+
+[cases."1042"]
+title = "Pathfinder 2e ships the Adventurer's Pack, not class kits; Stride gets an admitted-character bench"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only."
+draws_on = ["1016", "1034"]
+
+[cases."1043"]
+title = "Table items carry open material, make and condition keys; make names its grade, its act and its maker"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults."
+draws_on = ["1012", "1035", "processes.13"]
+
+[cases."1044"]
+title = "Homebrew is the sim's making, with Distillery's models optional; quick-start worlds author their own ground"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes."
+draws_on = ["1023", "1043", "processes.13"]
+
+[cases."1045"]
+title = "A shared mechanism moves when its second consumer is planned, not when it arrives"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Stack and engine"
+summary = "A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt."
+draws_on = ["mere:stack.1"]
+amends = ["332"]
+
+[cases."1046"]
+title = "Edition ids may sit in the core pack; creature bodies are the next looks"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks."
+draws_on = ["1035", "1043", "licensing.1"]
+
+[cases."1047"]
+title = "Pathfinder 2e measures diagonals by the book; ordinary combat is next"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next."
+draws_on = ["1042", "vtt.5"]
+
+[cases."1048"]
+title = "The world-graph viewer runs on a bench-founded generated world, branches diverge by an act, and draws on the stack's canvas"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Host and network"
+summary = "H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack."
+draws_on = ["1038", "1045", "host.2", "record.4"]
+
+[cases."1049"]
+title = "Creature bodies get a shared presentation skin"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes."
+draws_on = ["1035", "1046", "bodies.2", "bodies.11"]
+
+[cases."1050"]
+title = "Pathfinder 2e combat: ammunition spent, Shield Block chosen by the defender, healing by toolkit and time, flanking by party"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members."
+draws_on = ["1034", "1047", "vtt.2", "vtt.3", "vtt.5"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -4968,11 +5236,15 @@ source = "mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.m
 area = "Bodies and anatomy"
 summary = "Existing paid body chains and function appearance connect to ordinary play."
 draws_on = ["511", "512", "531", "758"]
-governs = ["isocosm::datasheet::native", "isocosm::development", "mesocosm-genet::section"]
+governs = ["cosmograph::datasheet::native", "cosmograph::development", "mesocosm-genet::section"]
 
 [decisions."orthographic-voxel-presentation D3"]
 title = "the camera decides neither the sim nor the rendering (2026-10-28), refines D1"
 source = "mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md"
+area = "Presentation"
+summary = "The projection a view uses is a setting; the camera determines neither the sim nor the rendering."
+draws_on = ["382", "orthographic-voxel-presentation D1", "presentation.1"]
+amends = ["orthographic-voxel-presentation D1"]
 
 [decisions."place-graph-engine D1"]
 title = "many projections of one store (2026-10-28), applies 18"
@@ -4994,7 +5266,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Amount, bite, risk and soma draws are keyed by actor, tick and process, never by commit order, so evaluation is order-free; one deliberate hash move."
 draws_on = ["454", "958"]
-governs = ["isocosm::execute", "isocosm::stage"]
+governs = ["cosmograph::execute", "cosmograph::stage"]
 
 [decisions."sim-execution D2"]
 title = "exactness (2026-10-19), applies Processes 6, refines Mesocosm 5"
@@ -5002,7 +5274,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Mesocosm's worlds are statistical: far sites run as the crowd, the played critter and every noted member as individuals."
 draws_on = ["75", "113", "211"]
-governs = ["isocosm::probe::crowd"]
+governs = ["cosmograph::probe::crowd"]
 
 [decisions."sim-execution D3"]
 title = "near (2026-10-19), refines Directing 5"
@@ -5010,7 +5282,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "Near is the attention roots and everything within one hop of the played critter's site; the band is owed before E5."
 draws_on = ["212", "742"]
-governs = ["isocosm::directing::tier"]
+governs = ["cosmograph::directing::tier"]
 
 [decisions."sim-execution D4"]
 title = "order (2026-10-19), refines Processes 7"
@@ -5018,7 +5290,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Speed first: waking, draw keys and parallel evaluation (E1 to E3) before the crowd and the tier line (E4, E5)."
 draws_on = ["978"]
-governs = ["isocosm::schedule"]
+governs = ["cosmograph::schedule"]
 
 [decisions."sim-execution D5"]
 title = "stage bodies by `Arc` (2026-10-20), applies Schema 9"
@@ -5026,7 +5298,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "The sim's schema and saves"
 summary = "The stage holds each body by the Arc it starts with and copies it only on its first write; serialisation, hashes and saves unchanged."
 draws_on = ["338", "975"]
-governs = ["isocosm::population::Population", "isocosm::stage::Stage"]
+governs = ["cosmograph::population::Population", "cosmograph::stage::Stage"]
 
 [decisions."sim-execution D6"]
 title = "`foregone` only on direct acts (2026-10-20), applies Directing 4"
@@ -5034,7 +5306,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "A receipt's foregone list is filled for direct acts only; scheduled and planned receipts carry an empty one."
 draws_on = ["685"]
-governs = ["isocosm::execute", "isocosm::simulation::Receipt"]
+governs = ["cosmograph::execute", "cosmograph::simulation::Receipt"]
 
 [decisions."sim-execution D7"]
 title = "parts by `Arc` before E1 (2026-10-23), applies Schema 9"
@@ -5043,7 +5315,7 @@ area = "The sim's schema and saves"
 summary = "A body's parts are held by Arc and copied only when written; that and a cheaper gate index come before E1."
 draws_on = ["975", "sim-execution D5"]
 amends = ["sim-execution D4"]
-governs = ["isocosm::schedule::Filed", "isocosm::schema::Entity"]
+governs = ["cosmograph::schedule::Filed", "cosmograph::schema::Entity"]
 
 [decisions."sim-execution D8"]
 title = "deliberation and planning before E1 (2026-10-23), applies Directing 4 and Processes 8"
@@ -5052,7 +5324,7 @@ area = "Directing and play"
 summary = "After D7, deliberation and a shared-ground pass's plan are probed and cut before E1, keeping how choices are made and ground shared."
 draws_on = ["454", "683", "813", "sim-execution D7"]
 amends = ["sim-execution D7"]
-governs = ["isocosm::directing::choice", "isocosm::schedule"]
+governs = ["cosmograph::directing::choice", "cosmograph::schedule"]
 
 [decisions."sim-execution D9"]
 title = "deliberation cut without changing a choice (2026-10-23), applies Directing 4"
@@ -5060,7 +5332,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "A prey search visits only possible prey, and an empty choice is scored again only when the world has changed since."
 draws_on = ["683", "813", "sim-execution D8"]
-governs = ["isocosm::directing::choice", "isocosm::targets"]
+governs = ["cosmograph::directing::choice", "cosmograph::targets"]
 
 [decisions."sim-execution D10"]
 title = "a shared-ground act keeps its planned writes (2026-10-23), applies Processes 8"
@@ -5068,7 +5340,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "An act whose shares cover its plan keeps the planned stage and only re-checks fit before commit."
 draws_on = ["454", "sim-execution D8"]
-governs = ["isocosm::execute", "isocosm::schedule"]
+governs = ["cosmograph::execute", "cosmograph::schedule"]
 
 [decisions."sim-execution D11"]
 title = "D9b dropped and the prey scan narrowed further (2026-10-23), applies Directing 4"
@@ -5077,7 +5349,7 @@ area = "Directing and play"
 summary = "Skipping unchanged re-choices is dropped; a prey search files living and dead apart and tests prey-independent requirements once."
 draws_on = ["683", "813", "sim-execution D9"]
 amends = ["sim-execution D9"]
-governs = ["isocosm::targets"]
+governs = ["cosmograph::targets"]
 
 [decisions."sim-execution D12"]
 title = "D10 tried where provably safe, then dropped (2026-10-23), applies Processes 8"
@@ -5086,7 +5358,7 @@ area = "Processes and rules"
 summary = "Keeping a plan's stage for its act, tried where provably safe, was exact but slower and is dropped; shared-ground acts evaluate twice."
 draws_on = ["454", "sim-execution D10"]
 amends = ["sim-execution D10"]
-governs = ["isocosm::execute"]
+governs = ["cosmograph::execute"]
 
 [decisions."sim-execution D13"]
 title = "E1 in three parts (2026-10-23), applies Processes 7"
@@ -5094,7 +5366,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Waking is built as more gates, then re-filing by what an act changed, then an index kept across advances, each exact."
 draws_on = ["258", "286", "683", "813", "sim-execution D1", "sim-execution D4"]
-governs = ["isocosm::schedule::Filed"]
+governs = ["cosmograph::schedule::Filed"]
 
 [decisions."sim-execution D14"]
 title = "E1a by cheap necessary gates, mood left out (2026-10-23), applies Processes 7"
@@ -5103,7 +5375,7 @@ area = "Processes and rules"
 summary = "Rest is filed by a lost cell its healing needs, a site's condition read as the act reads it; mood is not gated."
 draws_on = ["258", "286", "sim-execution D13"]
 amends = ["sim-execution D13"]
-governs = ["isocosm::schedule::Filed"]
+governs = ["cosmograph::schedule::Filed"]
 
 [decisions."sim-execution D15"]
 title = "a kind's decision rate on its lineage (2026-10-28), refines Processes 7"
@@ -5111,7 +5383,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A lineage's decision period paces its members' choices and moves."
 draws_on = ["258", "sim-execution D4"]
-governs = ["isocosm::schedule", "isocosm::schema::Lineage"]
+governs = ["cosmograph::schedule", "cosmograph::schema::Lineage"]
 
 [decisions."sim-execution D16"]
 title = "decisions are choices and moves (2026-10-28), refines Processes 7"
@@ -5119,7 +5391,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Choices and moves are paced by the lineage; bodily rates are worked out when read, their crossings due events per member."
 draws_on = ["159", "227", "906", "sim-execution D1"]
-governs = ["isocosm::ecology", "isocosm::rules::mind", "isocosm::schedule"]
+governs = ["cosmograph::ecology", "cosmograph::rules::mind", "cosmograph::schedule"]
 
 [decisions."sim-execution D17"]
 title = "order (2026-10-28), amends D4 and D13"
@@ -5128,7 +5400,7 @@ area = "Processes and rules"
 summary = "E1c, then rates worked out when read, then decision periods per lineage, then the crowd and the tier line."
 draws_on = ["sim-execution D4", "sim-execution D13"]
 amends = ["sim-execution D4", "sim-execution D13"]
-governs = ["isocosm::schedule"]
+governs = ["cosmograph::schedule"]
 
 [decisions."sim-execution D18"]
 title = "wired first, validated after (2026-10-28), refines Method 4"
@@ -5144,7 +5416,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Producers decide every 10 ticks, consumers every 2, decomposers every 5."
 draws_on = ["sim-execution D15", "sim-execution D16"]
-governs = ["isocosm::directing::found", "isocosm::ecology::rates"]
+governs = ["cosmograph::directing::found", "cosmograph::ecology::rates"]
 
 [decisions."sim-execution D20"]
 title = "meals scale with the decision period (2026-10-28), applies Processes 7"
@@ -5152,7 +5424,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A meal taken by a choice is its amount times the eater's decision period."
 draws_on = ["sim-execution D15", "sim-execution D19"]
-governs = ["isocosm::stage"]
+governs = ["cosmograph::stage"]
 
 [decisions."sim-execution D21"]
 title = "the head at 10 ticks a second (2026-10-28), amends case 978"
@@ -5169,7 +5441,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "E7b, then the crowd and the tier line."
 draws_on = ["sim-execution D17"]
-governs = ["isocosm::ecology"]
+governs = ["cosmograph::ecology"]
 
 [decisions."sim-execution D23"]
 title = "three tiers (2026-10-28), applies Processes 6"
@@ -5177,7 +5449,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "Near is the rendered area, view-dependent; far within it is presentation; the aggregate tier lies outside it and never depends on the view."
 draws_on = ["113", "742", "sim-execution D2", "sim-execution D3"]
-governs = ["isocosm::directing::tier"]
+governs = ["cosmograph::directing::tier"]
 
 [decisions."sim-execution D24"]
 title = "the aggregate runs a population model (2026-10-28), refines Processes 6"
@@ -5186,7 +5458,7 @@ area = "Processes and rules"
 summary = "Outside the rendered area, a population model per site and lineage, not a histogram of exact states."
 draws_on = ["113", "207", "261", "266", "sim-execution D2", "sim-execution D23"]
 amends = ["sim-execution D2"]
-governs = ["isocosm::probe::crowd"]
+governs = ["cosmograph::probe::crowd"]
 
 [decisions."sim-execution D25"]
 title = "near is the rendered area plus the roots (2026-10-28), refines Directing 5"
@@ -5195,7 +5467,7 @@ area = "Directing and play"
 summary = "Near is the rendered area plus the attention roots and those they care for."
 draws_on = ["212", "742", "sim-execution D3", "sim-execution D23"]
 amends = ["sim-execution D3"]
-governs = ["isocosm::directing::tier"]
+governs = ["cosmograph::directing::tier"]
 
 [decisions."sim-execution D26"]
 title = "a band in ticks (2026-10-28), refines Directing 5"
@@ -5203,7 +5475,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "A member keeps its tier until out of its area for a band of ticks."
 draws_on = ["742", "sim-execution D25"]
-governs = ["isocosm::directing::tier"]
+governs = ["cosmograph::directing::tier"]
 
 [decisions."sim-execution D27"]
 title = "bands run through the scheduler (2026-10-28), applies Processes 6"
@@ -5211,7 +5483,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A band is a representative body with a count, run by the scheduler with multiplicity."
 draws_on = ["219", "sim-execution D24"]
-governs = ["isocosm::population", "isocosm::schedule"]
+governs = ["cosmograph::population", "cosmograph::schedule"]
 
 [decisions."sim-execution D28"]
 title = "a representative plus a pool (2026-10-28), applies Processes 6"
@@ -5219,7 +5491,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A band's pool holds the difference between its members' matter and the representative's times its count."
 draws_on = ["sim-execution D24", "sim-execution D27"]
-governs = ["isocosm::population"]
+governs = ["cosmograph::population"]
 
 [decisions."sim-execution D29"]
 title = "bands by age and felt needs (2026-10-28), applies Processes 6"
@@ -5227,7 +5499,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A band is a site, lineage, age band and set of felt needs."
 draws_on = ["227", "sim-execution D24"]
-governs = ["isocosm::population"]
+governs = ["cosmograph::population"]
 
 [decisions."sim-execution D30"]
 title = "the Places cache, then far members off the physical path (2026-10-28), amends D22"
@@ -5236,7 +5508,7 @@ area = "Processes and rules"
 summary = "Fix the Places re-derivation, then take far members off the physical path."
 draws_on = ["sim-execution D22", "sim-execution D24"]
 amends = ["sim-execution D22"]
-governs = ["isocosm::spatial"]
+governs = ["cosmograph::spatial"]
 
 [decisions."sim-execution D31"]
 title = "the head stays at 10 ticks a second (2026-10-28), applies D21"
@@ -5252,7 +5524,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "The head's view windows are an attention region; outside them members hold no pose."
 draws_on = ["742", "sim-execution D23", "sim-execution D25", "sim-execution D26", "sim-execution D30"]
-governs = ["isocosm::attention", "isocosm::spatial"]
+governs = ["cosmograph::attention", "cosmograph::spatial"]
 
 [decisions."sim-execution D33"]
 title = "the frame off on main for now (2026-10-28), applies D18"
@@ -5268,7 +5540,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A far forager eats at the rate near foragers are measured to eat."
 draws_on = ["113", "sim-execution D2", "sim-execution D24"]
-governs = ["isocosm::spatial::foraging"]
+governs = ["cosmograph::spatial::foraging"]
 
 [decisions."sim-execution D35"]
 title = "far meals by an encounter rate from prey density (2026-10-28), replaces D34"
@@ -5277,7 +5549,7 @@ area = "Processes and rules"
 summary = "A far forager finds food by a saturating encounter rate on its site's prey matter."
 draws_on = ["113", "sim-execution D24", "sim-execution D34"]
 replaces = ["sim-execution D34"]
-governs = ["isocosm::spatial::foraging"]
+governs = ["cosmograph::spatial::foraging"]
 
 [decisions."sim-execution D36"]
 title = "far foragers wait at site grain (2026-10-28), applies Processes 6"
@@ -5285,7 +5557,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A far forager whose site holds food it can eat waits there for its feed, as a posed forager waits with food in reach."
 draws_on = ["113", "sim-execution D32", "sim-execution D35"]
-governs = ["isocosm::spatial::foraging"]
+governs = ["cosmograph::spatial::foraging"]
 
 [decisions."sim-execution D37"]
 title = "far prey read by the forager's own intake (2026-10-28), applies Processes 6"
@@ -5293,7 +5565,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A far forager's prey matter is what the ordinary search accepts for it, by its own intake."
 draws_on = ["sim-execution D35"]
-governs = ["isocosm::spatial::tier", "isocosm::targets"]
+governs = ["cosmograph::spatial::tier", "cosmograph::targets"]
 
 [decisions."sim-execution D38"]
 title = "a resting body re-settles (2026-10-28), applies Bodies 2"
@@ -5301,7 +5573,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Bodies and anatomy"
 summary = "A posed member whose stance stops balancing takes the nearest balanced stance at the end of the advance."
 draws_on = ["sim-execution D32", "sim-execution D33"]
-governs = ["isocosm::spatial"]
+governs = ["cosmograph::spatial"]
 
 [decisions."sim-execution D39"]
 title = "a crowded frame draws by the ordinary search (2026-10-28), applies Directing 5"
@@ -5309,7 +5581,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "A drawn member with no free stance near its food takes the ordinary search, and that food counts as crowded for the rest of the advance."
 draws_on = ["sim-execution D32", "sim-execution D36"]
-governs = ["isocosm::spatial"]
+governs = ["cosmograph::spatial"]
 
 [decisions."sim-execution D40"]
 title = "a frame's draw stops at its first failure (2026-10-29), applies Directing 5"
@@ -5317,7 +5589,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Directing and play"
 summary = "A frame's draw stops for the advance at its first member with no stance in the frame."
 draws_on = ["sim-execution D32", "sim-execution D39"]
-governs = ["isocosm::spatial"]
+governs = ["cosmograph::spatial"]
 
 [decisions."sim-execution D41"]
 title = "a paced Grouped span runs a tick at a time (2026-10-30), applies Processes 7"
@@ -5325,7 +5597,7 @@ source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A Grouped advance with a paced lineage runs one tick at a time, so a span groups and chooses as its ticks taken singly."
 draws_on = ["609", "610", "sim-execution D15", "sim-execution D19"]
-governs = ["isocosm::schedule"]
+governs = ["cosmograph::schedule"]
 
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
@@ -5539,10 +5811,10 @@ summary = "Blows resolve in the foreground and hand back; motion and contact are
 draws_on = ["233", "597", "943", "processes.1"]
 
 [statements."eponym.3"]
-title = "Eponym's world is native Isocosm"
+title = "Eponym's world is native Cosmograph"
 source = "design_docs/doctrine.md"
 area = "Eponym"
-summary = "Eponym's needs, wounds, knowing, items and social vocabulary are native Isocosm; crafts are rules-pack keys."
+summary = "Eponym's needs, wounds, knowing, items and social vocabulary are native Cosmograph; crafts are rules-pack keys."
 draws_on = ["239", "767", "771", "776", "777", "778", "808"]
 
 [statements."eponym.4"]
@@ -5556,7 +5828,7 @@ draws_on = ["816", "818", "819", "825", "835"]
 title = "One sim host under three product hosts"
 source = "design_docs/doctrine.md"
 area = "Host and network"
-summary = "The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it."
+summary = "The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it."
 draws_on = ["381", "884", "892", "896", "898", "901", "925", "926", "927"]
 
 [statements."host.2"]
@@ -5717,8 +5989,8 @@ draws_on = ["623", "624", "625", "758", "772", "939"]
 title = "The family"
 source = "design_docs/doctrine.md"
 area = "Naming"
-summary = "Isocosm is the family and the sim; Isometry is only a technical prefix."
-draws_on = ["110", "111", "112", "300", "883"]
+summary = "Isocosm (the VTT), Mesocosm and Eponym are peer products; the sim is Cosmograph; the repository stays isocosm."
+draws_on = ["1036", "1037"]
 
 [statements."naming.2"]
 title = "The of-note ladder"
@@ -5747,21 +6019,21 @@ title = "Divinity is earned by the journey"
 source = "design_docs/doctrine.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Ascension sacrifices glyph forms; grade is depth of relation scaled by form; the domain is how the forms were acquired."
-draws_on = ["44", "46", "47", "107"]
+draws_on = ["44", "46", "47", "107", "wing-organs D1"]
 
 [statements."organs.2"]
 title = "Power is the frequency of the domain's process"
 source = "design_docs/doctrine.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "A domain's power is how often its process happens; rare but significant effects mitigate; referents are for the greatest."
-draws_on = ["49", "52"]
+draws_on = ["49", "52", "wing-organs D1"]
 
 [statements."organs.3"]
 title = "Peeking behind the curtain"
 source = "design_docs/doctrine.md"
 area = "Organs: glyphs, impresa, hagiograph"
 summary = "Some divine figures read truth beyond their reach, a magic bending rules 5 and 59; a trait, not a seat."
-draws_on = ["384"]
+draws_on = ["384", "wing-organs D1"]
 
 [statements."organs.4"]
 title = "The impresa note"
@@ -6041,7 +6313,7 @@ title = "Polities"
 source = "design_docs/doctrine.md"
 area = "The sim's schema and saves"
 summary = "A polity enforces with what it provides and asserts; efficacy is read; a focus not a size; contingency borrows enforcement; no will to continue."
-draws_on = ["64", "67", "68", "81", "988", "989", "991", "992"]
+draws_on = ["64", "67", "68", "81", "988", "989", "991", "992", "1024"]
 
 [statements."schema.6"]
 title = "Minds"
@@ -6061,8 +6333,8 @@ draws_on = ["165", "166", "170", "171", "record.6"]
 title = "One rules language; each world picks who leads"
 source = "design_docs/doctrine.md"
 area = "The sim's schema and saves"
-summary = "World rules and rulesets are one language; each world picks whether the sim or its ruleset leads; ledger and record stay inviolable."
-draws_on = ["41", "114", "218", "538"]
+summary = "World rules and rulesets are one language; each world picks whether the sim or its ruleset leads, a table campaign defaulting to its ruleset; ledger and record stay inviolable."
+draws_on = ["41", "114", "218", "538", "1014"]
 
 [statements."schema.9"]
 title = "Saves stay readable"
@@ -6126,7 +6398,7 @@ title = "Physics is conatus's"
 source = "design_docs/doctrine.md"
 area = "Stack and engine"
 summary = "Physics is conatus's, replaying bit for bit across machines; isometer answers picks; bindings, when built, are generic conatus modules."
-draws_on = ["332", "347", "348", "349", "350", "351", "352", "604", "609", "695", "724"]
+draws_on = ["332", "347", "348", "349", "350", "351", "352", "604", "609", "695", "724", "1045"]
 stack = true
 
 [statements."stack.8"]
@@ -6183,11 +6455,11 @@ summary = "A campaign runs sim-off as a board still writing assertions; sim-on, 
 draws_on = ["188", "243", "244", "248", "768", "807", "809", "814", "schema.1"]
 
 [statements."vtt.2"]
-title = "Time at the table is consent"
+title = "Roles are traded seats; time at the table is consent"
 source = "design_docs/doctrine.md"
 area = "The VTT"
-summary = "The DM may play the unclaimed and edit; downtime needs every bound player's yes or their own release, binding tick and roster."
-draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "record.1"]
+summary = "GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes."
+draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "1029", "1030", "record.1"]
 
 [statements."vtt.3"]
 title = "A party is opt-in and grants no control"
@@ -6208,7 +6480,21 @@ title = "The table plays editions faithfully"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked."
-draws_on = ["189", "250", "538", "539", "540", "542", "543"]
+draws_on = ["189", "250", "538", "539", "540", "542", "543", "1013", "1020", "1021", "1026", "1031"]
+
+[statements."vtt.6"]
+title = "Each edition declares its campaign's shape"
+source = "design_docs/doctrine.md"
+area = "The VTT"
+summary = "An edition declares its campaign's structure; the table supplies sessions, consent and the record."
+draws_on = ["522", "1013", "1018", "vtt.2", "vtt.5"]
+
+[statements."vtt.7"]
+title = "A look is derived in layers"
+source = "design_docs/doctrine.md"
+area = "The VTT"
+summary = "A look is derived in layers (shape, material, make, style, condition, seed, overrides) into one Appearance read by preview and board."
+draws_on = ["1012", "1019", "1022", "1028", "1035"]
 
 [statements."world.1"]
 title = "Shape and scale"
@@ -6272,3 +6558,10 @@ source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "Glyph presence makes divine places; placement and rooms have quality; alignment runs through tenets. Parked."
 draws_on = ["48"]
+
+[statements."world.10"]
+title = "People grow out of the world; towns are read off them"
+source = "design_docs/doctrine.md"
+area = "World generation"
+summary = "People grow out of a deep-time world (a quick-start world is modded and shared, its founders authored); places read as hamlet, town or city, never stored."
+draws_on = ["54", "63", "1017", "1023", "1025", "1027", "ecology.4", "naming.2", "naming.3", "processes.6", "schema.12"]

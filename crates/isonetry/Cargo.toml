@@ -6,20 +6,20 @@ edition.workspace = true
 license.workspace = true
 authors.workspace = true
 repository.workspace = true
-description = "Isocosm-family accepted-record replication with an optional VTT session layer and transport features."
+description = "Wing-wide accepted-record replication with an optional VTT session layer and transport features."
 
 [features]
 # Keep the established VTT API as the default. Family-only consumers can turn
-# it off and depend on the host-owned Isocosm family without campaign storage.
+# it off and depend on the host-owned wing family without campaign storage.
 default = ["vtt"]
 vtt = [
-    "dep:isometry-core",
-    "dep:isometry-campaign",
-    "dep:isocosm-vtt",
-    "dep:isocosm-overlay",
+    "dep:isocosm-core",
+    "dep:isocosm-campaign",
+    "dep:isocosm-native",
+    "dep:cosmograph-overlay",
     "dep:muniment",
     "dep:postcard",
-    "isocosm/society",
+    "cosmograph/society",
 ]
 iroh = ["vtt", "dep:iroh", "dep:iroh-tickets", "dep:tokio", "dep:tracing"]
 campaign-p2p = [
@@ -59,11 +59,11 @@ family-net = [
 ]
 
 [dependencies]
-isometry-core = { workspace = true, optional = true }
-isometry-campaign = { workspace = true, optional = true }
-isocosm-vtt = { workspace = true, optional = true, default-features = false }
-isocosm = { path = "../../shared/isocosm", default-features = false }
-isocosm-host = { path = "../../host" }
+isocosm-core = { workspace = true, optional = true }
+isocosm-campaign = { workspace = true, optional = true }
+isocosm-native = { workspace = true, optional = true, default-features = false }
+cosmograph = { path = "../../shared/cosmograph", default-features = false }
+cosmograph-host = { path = "../../cosmograph-host" }
 # The admitted native stream APIs, in graphshell-host since mere lifted
 # Graphshell's serving half there (2e896a75, 2026-10-15).
 graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381", default-features = false, features = ["native"], optional = true }
@@ -73,7 +73,7 @@ sceno = { workspace = true, optional = true }
 insigne = { git = "https://github.com/merely-made/dramatis.git", branch = "main", optional = true }
 notochord = { git = "https://github.com/merely-made/dramatis.git", branch = "main", optional = true }
 # The VTT's contract, whose assertions the host commits (wing ruling 795).
-isocosm-overlay = { workspace = true, optional = true }
+cosmograph-overlay = { workspace = true, optional = true }
 muniment = { workspace = true, optional = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
@@ -101,8 +101,8 @@ tokio = { version = "1", features = ["rt", "rt-multi-thread", "sync", "macros", 
 tracing = { version = "0.1", optional = true }
 
 [dev-dependencies]
-isometry-core = { workspace = true }
-isometry-system = { workspace = true }
+isocosm-core = { workspace = true }
+isocosm-system = { workspace = true }
 pollster = "0.4"
 
 [[example]]

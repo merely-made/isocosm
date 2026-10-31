@@ -10,12 +10,12 @@ impl VerifiedQuestion {
     pub(super) fn after_validation(game: &Game) -> Option<Self> {
         let saved = game.continuation.as_ref()?;
         if saved.checkpoint.is_none() || saved.world_end.is_some() { return None; }
-        Some(Self { continuation: isocosm::digest(saved) })
+        Some(Self { continuation: cosmograph::digest(saved) })
     }
 
     pub(super) fn matches(&self, game: &Game) -> bool {
         game.continuation.as_ref().is_some_and(|saved|
-            self.continuation == isocosm::digest(saved))
+            self.continuation == cosmograph::digest(saved))
     }
 }
 

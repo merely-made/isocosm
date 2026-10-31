@@ -26,8 +26,8 @@ use genet_livery::{
     emit_paint_list_with_text_system_scrolled_with_images, layout_with_text_system, resolve_styles,
 };
 use genet_scripted_dom::{NodeId, ScriptedDom};
-use isocosm::schema::Id;
-use isocosm::simulation::Simulation;
+use cosmograph::schema::Id;
+use cosmograph::simulation::Simulation;
 use mesocosm_runtime::{Refusal, Trend};
 use mesocosm_views::{Vitals, VitalsChild};
 use paint_list_api::{DeviceIntSize, PaintList as _};

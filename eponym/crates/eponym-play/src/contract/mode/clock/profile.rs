@@ -11,7 +11,7 @@ impl Profile {
             self.subject(mode, *subject)?;
             for (key, input) in inputs {
                 let process = sim.genesis().rules.processes.get(key).ok_or("clock terrain process absent")?;
-                if !process.effects.iter().any(|e| matches!(e, isocosm::rules::Effect::Terrain {..})) {
+                if !process.effects.iter().any(|e| matches!(e, cosmograph::rules::Effect::Terrain {..})) {
                     return Err("clock terrain input names no actual native terrain effect".into());
                 }
                 target(sim, input.target)?;
@@ -161,7 +161,7 @@ impl State {
                 steps: record.steps.clone(), arrivals: record.arrivals.clone(), births: record.births.clone() };
             let accepted: BTreeSet<_> = record.order.iter().filter_map(|p|
                 if let native::Publication::Step(action) = p { Some(action.clone()) } else { None }).collect();
-            let outcome = format!("birth spatial advanced 1; answers {}", isocosm::digest(&(
+            let outcome = format!("birth spatial advanced 1; answers {}", cosmograph::digest(&(
                 &record.arrival_reports, accepted, &record.birth_reports, &record.order)));
             if entry.command != command || entry.outcome != record.outcome || entry.outcome != outcome {
                 return Err("clock saved answers differ from the accepted native entry".into());

@@ -5,8 +5,8 @@
 
 use super::*;
 use crate::native_table::table_digest;
-use isocosm::{Command, Execution, Session, asserted::{Assertion, Fact}};
-use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
+use cosmograph::{Command, Execution, Session, asserted::{Assertion, Fact}};
+use cosmograph_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -72,7 +72,7 @@ fn prepare(state: &GameSnapshot, fact: &WorldFact) -> Result<NativeSecretResolve
         subject: old.table_session().sim.plays(table.host_participant).map(EntityHandle) };
     // Check the existing assertion door's actual DM cut without replacing
     // the authored string subject with an invented contract Pointable.
-    let assertions = Vec::<isocosm_overlay::vtt::Assertion>::new();
+    let assertions = Vec::<cosmograph_overlay::vtt::Assertion>::new();
     let bytes = serde_json::to_vec(&assertions).map_err(|error| error.to_string())?;
     let (checked, game, _) = old.with_table_input(table.game.clone(), access, &bytes)?;
     if game != table.game { return Err("reveal changes unrelated product bytes".into()); }

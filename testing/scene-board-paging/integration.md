@@ -88,7 +88,7 @@ The initial format-check failure and corrected pass also remain archived.
 
 ## Raw evidence
 
-`Code/testing/isometry/receipts/2026-09-27/lane-e-final-paging/`
+`Code/testing/isocosm/receipts/2026-09-27/lane-e-final-paging/`
 contains 112 files named by `SHA256SUMS`. Its SHA-256 is
 `d604a92f697aa9b64f1bcb0e1fdbc474c08379e23ede8c2369de5d0a0659c65f`.
 `verification.json`, source qualification notes and the command drivers are

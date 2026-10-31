@@ -1,6 +1,6 @@
 use super::*;
 
-use isocosm::Founding;
+use cosmograph::Founding;
 
 fn world() -> World {
     let genesis = Founding {
@@ -47,7 +47,7 @@ fn assert_converged(host: &FamilyHost, replica: &FamilyReplica) {
                 session.entries.clone(),
                 session.sim.state().tick,
                 session.sim.state_hash(),
-                isocosm::digest(sections),
+                cosmograph::digest(sections),
             )
         })
         .unwrap();
@@ -57,7 +57,7 @@ fn assert_converged(host: &FamilyHost, replica: &FamilyReplica) {
                 session.entries.clone(),
                 session.sim.state().tick,
                 session.sim.state_hash(),
-                isocosm::digest(sections),
+                cosmograph::digest(sections),
             )
         })
         .unwrap();
@@ -383,7 +383,7 @@ fn initial_checkpoint_digest_binds_opaque_root_state() {
         .world
         .sections
         .insert("unknown".into(), vec![42]);
-    alternate_root.section_digest = isocosm::digest(&alternate_root.world.sections);
+    alternate_root.section_digest = cosmograph::digest(&alternate_root.world.sections);
     let alternate_root = alternate_root.seal();
     let mut replica = FamilyReplica::install(alternate_root, &[], Execution::Individuals).unwrap();
 

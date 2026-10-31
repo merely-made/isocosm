@@ -11,7 +11,7 @@ mod worlds;
 #[path = "runtime_pin/trace.rs"]
 mod trace;
 
-use isocosm_overlay::{AttentionChange, Intent, Tick};
+use cosmograph_overlay::{AttentionChange, Intent, Tick};
 use mesocosm_runtime::{GameSave, Occasion, Refusal, Runtime};
 use worlds::{RATE, death_answer, envelope, held, keep_parent, nudge, offered};
 

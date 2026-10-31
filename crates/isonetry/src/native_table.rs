@@ -4,11 +4,11 @@
 //! Explicit standalone table bindings, never inferred from owners or IDs.
 
 use crate::{GameSnapshot, NativePublication};
-use isocosm::{Session, schema::{Id, Key}};
-use isometry_campaign::CampaignMap;
-use isocosm_vtt::{founding::NativeCursor, native::{AdmissionBatch, GameBindings, ParticipantInput}};
-use isometry_core::{MapDocument, TileCoord, TokenId};
-use isocosm_overlay::vtt::Cell;
+use cosmograph::{Session, schema::{Id, Key}};
+use isocosm_campaign::CampaignMap;
+use isocosm_native::{founding::NativeCursor, native::{AdmissionBatch, GameBindings, ParticipantInput}};
+use isocosm_core::{MapDocument, TileCoord, TokenId};
+use cosmograph_overlay::vtt::Cell;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
@@ -80,8 +80,8 @@ pub struct NativeTableResolved {
 #[derive(Clone, Copy, Debug)]
 pub enum TableSender { Host, Endpoint([u8; 32]) }
 
-pub fn ground_digest(document: &MapDocument) -> String { isocosm::digest(&document.ground) }
-pub fn table_digest(table: Option<&NativeTable>) -> Option<String> { table.map(isocosm::digest) }
+pub fn ground_digest(document: &MapDocument) -> String { cosmograph::digest(&document.ground) }
+pub fn table_digest(table: Option<&NativeTable>) -> Option<String> { table.map(cosmograph::digest) }
 
 fn board<'a>(state: &'a GameSnapshot, map: &str) -> Result<&'a MapDocument, String> {
     let held: &CampaignMap = state.maps.get(map).ok_or("table binding names no saved map")?;
@@ -96,9 +96,9 @@ impl NativeTable {
             .filter(|participant| *participant != self.host_participant).collect()
     }
 
-    pub fn time_roster(&self) -> Result<isocosm_vtt::native::time::Roster, String> {
+    pub fn time_roster(&self) -> Result<isocosm_native::native::time::Roster, String> {
         let players = self.bound_players();
-        Ok(isocosm_vtt::native::time::Roster { preimage:isocosm::digest(&players), players,
+        Ok(isocosm_native::native::time::Roster { preimage:cosmograph::digest(&players), players,
             revision:GameBindings::decode(&self.game)?.roster_revision() })
     }
 
@@ -115,7 +115,7 @@ impl NativeTable {
     pub fn validate_history(&self, session: &Session) -> Result<(), String> {
         if self.version != 1 { return Err("unsupported native table binding version".into()); }
         let participant = |id| session.sim.state().population.get(id)
-            .is_some_and(isocosm::directing::is_participant);
+            .is_some_and(cosmograph::directing::is_participant);
         if !participant(self.host_participant) { return Err("table host has no native participant".into()); }
         let mut endpoints = BTreeSet::new();
         for peer in &self.peers {

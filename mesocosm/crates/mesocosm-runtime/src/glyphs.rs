@@ -6,11 +6,11 @@
 //! through a caller's canon. It neither changes the world nor grants
 //! durable powers; the sim stays the authority for the act.
 
-use isocosm::effects::{GlyphGrantOutcome, Journal, embodied};
-use isocosm::flows::{Flow, Holder};
-use isocosm::history::Command;
-use isocosm::schema::Id;
-use isocosm::{Session, simulation::Simulation};
+use cosmograph::effects::{GlyphGrantOutcome, Journal, embodied};
+use cosmograph::flows::{Flow, Holder};
+use cosmograph::history::Command;
+use cosmograph::schema::Id;
+use cosmograph::{Session, simulation::Simulation};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use wing_glyphs::{Canon, CanonSpec, ExpressionTable, GlyphId, Provenance, ProvenanceKind};

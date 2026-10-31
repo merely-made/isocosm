@@ -3,7 +3,7 @@
 
 //! Read and validate the native body without letting a snapshot author it.
 
-use isocosm::lineage::{LineageBody, SpeciesId};
+use cosmograph::lineage::{LineageBody, SpeciesId};
 use crate::{AnatomyError, GameError, NativeAnatomySource};
 use crate::identity::SubjectId;
 use super::GameState;

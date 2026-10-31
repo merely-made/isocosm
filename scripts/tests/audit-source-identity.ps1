@@ -20,7 +20,7 @@ $valid.packages[0].features = $features
 function Assert-Audit {
     param($Metadata, [bool] $Accept, [string] $Name, $SecondMetadata = $null)
     $Metadata | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $fixture
-    $arguments = @{ Scope = @('isometry'); MetadataPath = @($fixture) }
+    $arguments = @{ Scope = @('isocosm'); MetadataPath = @($fixture) }
     if ($null -ne $SecondMetadata) {
         $SecondMetadata | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $secondFixture
         $arguments.Scope += 'mesocosm'

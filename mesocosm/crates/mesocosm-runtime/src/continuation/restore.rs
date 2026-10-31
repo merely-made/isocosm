@@ -3,7 +3,7 @@
 
 use super::*;
 use crate::succession::{self, Occasion};
-use isocosm::{Session, Command, lineage::Review};
+use cosmograph::{Session, Command, lineage::Review};
 
 pub(crate) fn validate_question(saved: &Continuation, session: &Session) -> Result<(), String> {
     if let Some(stamp) = &saved.world_end {
@@ -180,7 +180,7 @@ fn world_ended(saved: &Continuation, session: &Session) -> Result<(), String> {
     if saved.world_end.as_ref().is_none_or(|source| source.tick != tick)
         || !session.sim.global_collapse()?.is_some_and(|reading| reading.collapsed)
         || !saved.happenings.iter().any(|h| matches!(h,
-            isocosm::directing::interim::Happening::WorldEnded { tick: ended } if *ended == tick)) {
+            cosmograph::directing::interim::Happening::WorldEnded { tick: ended } if *ended == tick)) {
         return Err("saved world end lacks its current authored native predicate".into());
     }
     Ok(())

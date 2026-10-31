@@ -11,14 +11,14 @@
 //! a current pick nudges toward it. Keys that only move host state (camera,
 //! inspection, the dev clock, the board cursor, the hint menu) are the window's.
 
-use isocosm::schema::Id;
-use isocosm_host::drive::{Button, Context, Named, Pick, Press};
-use isocosm_host::world::World;
-use isocosm_overlay::mesocosm::{
+use cosmograph::schema::Id;
+use cosmograph_host::drive::{Button, Context, Named, Pick, Press};
+use cosmograph_host::world::World;
+use cosmograph_overlay::mesocosm::{
     BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, DeathAnswer, DevIntent, MesocosmIntent, Nudge,
     NudgeMeaning, NudgeTarget, PlayerAct, PlayerActKind, RevisionAnswer,
 };
-use isocosm_overlay::{CandidateHandle, EntityHandle, Intent, ParticipantHandle, PlaceHandle, Tick};
+use cosmograph_overlay::{CandidateHandle, EntityHandle, Intent, ParticipantHandle, PlaceHandle, Tick};
 
 use super::{Envelope, Mesocosm, session};
 use crate::succession::{Checkpoint, Occasion};

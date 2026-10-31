@@ -4,13 +4,13 @@
 //! A run's record is its session's log: saving it and loading it back
 //! replays every command and checks every witness on the way.
 
-use isocosm::history::Saved;
-use isocosm::{Execution, Session};
+use cosmograph::history::Saved;
+use cosmograph::{Execution, Session};
 use serde::{Deserialize, Serialize};
 
 use super::{Founded, Runtime};
-use isocosm::directing::interim::{Interim, OnCollapse, Pace, Start};
-use isocosm::directing::readings::Mode;
+use cosmograph::directing::interim::{Interim, OnCollapse, Pace, Start};
+use cosmograph::directing::readings::Mode;
 
 /// What a receipt says about a run.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -99,14 +99,14 @@ impl Runtime {
     /// Only an explicitly supplied mode overrides its presentation mode.
     pub fn resume_game_with_mode(saved: GameSave, ticks_per_second: u32,
         mode: Option<Mode>) -> Result<Self, String> {
-        use isocosm_host::save::ImportSave;
+        use cosmograph_host::save::ImportSave;
         Self::resume_world(saved.into_world_save()?, ticks_per_second, mode)
     }
 
     pub fn receipt(&self) -> Receipt {
         let session = self.session();
         Receipt {
-            genesis: isocosm::digest(session.sim.genesis()),
+            genesis: cosmograph::digest(session.sim.genesis()),
             tick: session.sim.state().tick,
             entries: session.entries.len() as u64,
             envelopes: self.trace().len() as u64,

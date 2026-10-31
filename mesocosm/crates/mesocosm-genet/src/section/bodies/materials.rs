@@ -1,8 +1,8 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 //! Product meanings for the existing five neutral tissue channels.
-use isocosm::attention::spatial::PartAllocation;
-use isocosm::schema::PartId;
+use cosmograph::attention::spatial::PartAllocation;
+use cosmograph::schema::PartId;
 use isometer::render::PartMaterial;
 use std::collections::BTreeMap;
 

@@ -7,7 +7,7 @@ use super::GameState;
 use crate::contract::mode::{self, SpatialBindingInput};
 
 pub struct NativeHandoff {
-    pub native: isocosm::Session,
+    pub native: cosmograph::Session,
     pub game: Vec<u8>,
 }
 

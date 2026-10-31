@@ -9,12 +9,12 @@
 //! with the cohort as further lives (61), and the boundary's review (57).
 //! The hold is the driver's; the world never learns anybody stopped.
 
-use isocosm::directing::interim::{Happening, Interim, Turn};
-use isocosm::schema::{Id, Method};
-use isocosm::Session;
+use cosmograph::directing::interim::{Happening, Interim, Turn};
+use cosmograph::schema::{Id, Method};
+use cosmograph::Session;
 use serde::{Serialize, Deserialize};
-use isocosm_overlay::Intent;
-use isocosm_overlay::mesocosm::{CheckpointAnswerKind, MesocosmIntent};
+use cosmograph_overlay::Intent;
+use cosmograph_overlay::mesocosm::{CheckpointAnswerKind, MesocosmIntent};
 
 use crate::runtime::Envelope;
 

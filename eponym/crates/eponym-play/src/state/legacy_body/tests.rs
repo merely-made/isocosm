@@ -3,7 +3,7 @@
 
 use super::*;
 use crate::{AnatomyRecord, Name, World, WorldConfig, WorldError, WorldIntent, WorldSave};
-use isocosm::lineage::SpeciesId;
+use cosmograph::lineage::SpeciesId;
 use isometer_core::{VolumeRef, snapshot};
 use serde::Serialize;
 
@@ -14,7 +14,7 @@ fn legacy_record() -> WorldSave {
     let config = WorldConfig { side: 2, extent: 8 };
     let genesis = crate::founding::legacy_genesis_v2(seed, u32::from(config.side), config.extent as u64*2).unwrap();
     WorldSave { generator_version: 2, seed, config,
-        base_hash: snapshot::hash_bytes(isocosm::digest(&genesis).as_bytes()), intents: vec![] }
+        base_hash: snapshot::hash_bytes(cosmograph::digest(&genesis).as_bytes()), intents: vec![] }
 }
 
 fn generated() -> GameState {

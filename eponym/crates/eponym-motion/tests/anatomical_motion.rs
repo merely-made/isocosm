@@ -54,7 +54,7 @@ fn state() -> GameState {
             tick: state.next_tick(),
             subject: SUBJECT,
             revision: BodyRevisionId(0),
-            document: Box::new(state.native_anatomy(SUBJECT, isocosm::lineage::SpeciesId(71)).unwrap()),
+            document: Box::new(state.native_anatomy(SUBJECT, cosmograph::lineage::SpeciesId(71)).unwrap()),
         })
         .unwrap();
     state

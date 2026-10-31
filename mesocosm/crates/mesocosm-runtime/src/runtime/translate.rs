@@ -9,9 +9,9 @@
 //! takes up a life or commits the review's offer; a dev intent is native
 //! where native has a command, and refused where it has none.
 
-use isocosm_host::world::World;
-use isocosm_overlay::Intent;
-use isocosm_overlay::mesocosm::{
+use cosmograph_host::world::World;
+use cosmograph_overlay::Intent;
+use cosmograph_overlay::mesocosm::{
     MesocosmIntent,
 };
 use serde::{Deserialize, Serialize};
@@ -62,13 +62,13 @@ impl Mesocosm {
     fn translate(&mut self, world: &World, intent: &MesocosmIntent) -> Result<String, Refusal> {
         match intent {
             MesocosmIntent::Checkpoint(answer) => self.answer_saved(world, *answer),
-            MesocosmIntent::Dev(isocosm_overlay::mesocosm::DevIntent::ForceBirth { organism }) => {
+            MesocosmIntent::Dev(cosmograph_overlay::mesocosm::DevIntent::ForceBirth { organism }) => {
                 let mut game = self.spatial.clone();
                 let out = commit(world, |session| game.force_birth(session, organism.0).map_err(Refusal::Sim))?;
                 self.spatial = game;
                 Ok(out)
             },
-            MesocosmIntent::Dev(isocosm_overlay::mesocosm::DevIntent::EndEpoch) => {
+            MesocosmIntent::Dev(cosmograph_overlay::mesocosm::DevIntent::EndEpoch) => {
                 let ticks = {
                     let session = session(world);
                     let epoch = session.sim.genesis().rules.epoch_ticks.max(1);

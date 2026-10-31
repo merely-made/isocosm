@@ -6,7 +6,7 @@
 
 //! The probe's terrain fixture: legacy Mesocosm's grown enclosure, its
 //! relief and the brick terrain `Ground::grow` reads, moved here whole when
-//! legacy Mesocosm left Isocosm (wing ruling 786's reading), so this
+//! legacy Mesocosm left Cosmograph (wing ruling 786's reading), so this
 //! receipt's figures stay as they were. A fixture, not a world.
 
 mod bricks;

@@ -7,9 +7,9 @@ this file is the canonical index for this directory, updated in the same
 session as any doc change. Each row is a link, what the doc is for and a dated
 status (wing design record, ruling 612); the docs hold the rest.
 
-Names: the sim and the family are Isocosm, the second-person game is Eponym
-(formerly Paredros), the tabletop is Isocosm: VTT (rulings 109 to 111). The
-native package is `eponym-client`.
+Names: the products are Isocosm (the VTT), Mesocosm and Eponym (formerly
+Paredros), peers; the sim is Cosmograph (cases 1036 and 1037; earlier,
+rulings 109 to 111). The native package is `eponym-client`.
 
 ## Working principles for AI assistants
 
@@ -29,7 +29,7 @@ native package is `eponym-client`.
   with one named creature until death. Control may shift through an explicit
   world event or optional player rule, with its consequences recorded. Drift
   means free roster control or care widening to a squad you administer, which
-  is Isometry's granularity.
+  is Isocosm's granularity.
 
 ## Active docs
 
@@ -37,7 +37,7 @@ native package is `eponym-client`.
 | --- | --- | --- |
 | [DOC_POLICY.md](DOC_POLICY.md) | A link to the repository's one documentation policy. | Since 2026-10-06 (ruling 615). |
 | [PROJECT_DESCRIPTION.md](PROJECT_DESCRIPTION.md) | Eponym's goals and pillars: one named life in a persistent generated world. | Maintainer-owned; revised 2026-08-13. |
-| [2026-10-28_eponym_overlay_plan.md](2026-10-28_eponym_overlay_plan.md) | Eponym's overlay (W5): driving a sophont on Isocosm (E3), the played loop (E4), and the founding charter's open questions. | 2026-10-28: cut; E0 to E2 done; E3 and headed E4 open. |
+| [2026-10-28_eponym_overlay_plan.md](2026-10-28_eponym_overlay_plan.md) | Eponym's overlay (W5): driving a sophont on Cosmograph (E3), the played loop (E4), and the founding charter's open questions. | 2026-10-28: cut; E0 to E2 done; E3 and headed E4 open. |
 
 ## Archive
 

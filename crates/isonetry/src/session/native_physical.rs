@@ -5,9 +5,9 @@
 
 use super::*;
 use crate::native_table::{NativeTable, table_digest};
-use isocosm::Execution;
-use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
-use isocosm_vtt::native::physical_map::{PhysicalMapInput, PhysicalMapPreview, prepare_physical_map};
+use cosmograph::Execution;
+use cosmograph_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
+use isocosm_native::native::physical_map::{PhysicalMapInput, PhysicalMapPreview, prepare_physical_map};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -19,7 +19,7 @@ pub struct NativePhysicalResolved {
     pub input: PhysicalMapInput,
 }
 
-fn access(campaign: &isocosm_vtt::founding::Campaign, table: &NativeTable) -> OrdinaryAccess {
+fn access(campaign: &isocosm_native::founding::Campaign, table: &NativeTable) -> OrdinaryAccess {
     OrdinaryAccess { participant: ParticipantHandle(table.host_participant), seat: Seat::Dm,
         subject: campaign.table_session().sim.plays(table.host_participant).map(EntityHandle) }
 }

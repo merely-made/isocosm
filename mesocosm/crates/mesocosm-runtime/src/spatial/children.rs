@@ -4,7 +4,7 @@
 //! Explicit ordinal-slot inputs acquire only an actual reported biological child ID.
 
 use super::*;
-use isocosm::spatial::{BirthReport, BirthRequest};
+use cosmograph::spatial::{BirthReport, BirthRequest};
 
 /// Destination data has no guessed actor. Birth admission supplies that identity.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

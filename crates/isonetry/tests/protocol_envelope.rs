@@ -5,7 +5,7 @@
 //! from `replication.rs` because they prove properties of the envelope rather
 //! than of replication: what a peer refuses, and what it declines to do twice.
 
-use isometry_core::{
+use isocosm_core::{
     Beat, Facing, MapDocument, RollRecord, SheetData, SheetDelta, Token, TokenId, TurnList,
 };
 use isonetry::sim::Sim;
@@ -265,12 +265,18 @@ fn the_prior_v4_version_is_refused_without_adopting_or_logging() {
     assert_version_refused(4);
 }
 
+#[test]
+fn the_isometry_named_v23_peer_is_refused() {
+    assert!(23 < PROTOCOL_VERSION);
+    assert_version_refused(23);
+}
+
 #[cfg(feature = "iroh")]
 #[test]
 fn the_transport_alpn_matches_the_session_version() {
     assert_eq!(
         isonetry::iroh_link::ALPN,
-        format!("isometry/session/v{PROTOCOL_VERSION}").as_bytes()
+        format!("isocosm/session/v{PROTOCOL_VERSION}").as_bytes()
     );
 }
 

@@ -4,8 +4,8 @@
 //! Saved game geometry, bound to native bodies, places and terrain (833).
 
 use std::collections::{BTreeMap, BTreeSet};
-use isocosm::{Session, schema::Id, simulation::Simulation, operations::{Pending, Window}};
-use isocosm_overlay::{ActKey, EntityHandle, PlaceHandle, Tick,
+use cosmograph::{Session, schema::Id, simulation::Simulation, operations::{Pending, Window}};
+use cosmograph_overlay::{ActKey, EntityHandle, PlaceHandle, Tick,
     mesocosm::{TerrainGeometry, TerrainShape}};
 use isometer_core::Yaw;
 use isometer_space::places::PlaceId;
@@ -41,7 +41,7 @@ pub mod graft;
 pub use sight::{SightConfig, SightedSetup};
 
 /// Exact root-pivot pose in the site's base cells; no presentation scale.
-pub use isocosm::spatial::Pose;
+pub use cosmograph::spatial::Pose;
 
 /// Explicit geometry used only if its process is chosen.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -186,9 +186,9 @@ impl Game {
     }
 
     /// Both candidates stay private until every native operation is admitted.
-    pub fn advance(&mut self, session: &mut Session, access: isocosm_overlay::OrdinaryAccess)
-        -> Result<isocosm::flows::FlowResult<isocosm::simulation::Work>, crate::Refusal> {
-        if access.seat != isocosm_overlay::Seat::Player || access.subject.is_none()
+    pub fn advance(&mut self, session: &mut Session, access: cosmograph_overlay::OrdinaryAccess)
+        -> Result<cosmograph::flows::FlowResult<cosmograph::simulation::Work>, crate::Refusal> {
+        if access.seat != cosmograph_overlay::Seat::Player || access.subject.is_none()
             || session.sim.plays(access.participant.0) != access.subject.map(|id| id.0)
         { return Err(crate::Refusal::NotPlayed); }
         self.advance_clock(session).map_err(crate::Refusal::Sim)

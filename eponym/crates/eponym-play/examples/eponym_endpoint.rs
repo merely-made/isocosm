@@ -5,7 +5,7 @@
 //! arguments, so Graphshell's `g4_sessions` receipt can mount it (H2).
 
 use eponym_play::endpoint::EponymEndpoint;
-use isocosm_host::fixtures::fixture;
+use cosmograph_host::fixtures::fixture;
 
 fn main() -> Result<(), String> {
     let f = fixture();

@@ -12,7 +12,7 @@ Evaluated against the wing design record; see
 
 ## 0. Framing and the substrate invariants
 
-This document records a design space, not a plan. Everything in it rides seams Isometry already has or already intends to build. Four substrate facts (verified against the code in the survey) decide how any model attaches, and they make most of this cheaper and safer than it looks:
+This document records a design space, not a plan. Everything in it rides seams Isocosm already has or already intends to build. Four substrate facts (verified against the code in the survey) decide how any model attaches, and they make most of this cheaper and safer than it looks:
 
 1. **The determinism firewall.** Session convergence is an FNV-1a rolling hash over the postcard bytes of every `(seq, GameEvent)` (`protocol.rs:91-112`). An LLM is never byte-identical across peers, so a model can never sit *inside* replay. It sits *beside* the log: the host runs it once, and only the **result** crosses the wire as ordinary data (a `SheetSet`, a `TokenPlaced`, a text entry). This is exactly the seam `dice.rs` uses and the generators lane already plans (`dice.rs:5-9`).
 2. **DM-authority is the trust boundary, already built.** The DM app is the sole authority, the only holder of file I/O and inbound net, and the only place a model or API key would live. Players never invoke inference. The planned `>gen` preview with `[insert] [reroll] [discard]` is a ready-made human-in-the-loop gate. *(Update 2026-07-09: "the DM" generalized to "whoever is in edit mode" per the [shared-authority doc](2026-10-28_session_network_plan.md): the model and its key live in the GM ring (edit-mode holders), which may be more than one app; inference stays out of consensus state either way.)*
@@ -35,9 +35,9 @@ The substrate does not expose "an LLM." It exposes a small set of **dialog capab
 - `offer_quest(id)` / `set_flag(key, val)`: world-state mutations
 - `end_conversation()`: close the exchange
 
-A **deterministic dialog tree** and an **LLM** are interchangeable drivers of that same tool surface. The tree walks authored nodes and calls the tools; the model reasons and calls the tools. The substrate depends on neither. This mirrors the isometry-core/isometry-system split (core knows geometry and turns; rules are Lua) and burn's provider seam (inference lives behind a trait, never bound as universal). It is the same discipline the recommended `DialogEngine` seam (section 3.5) embodies and the same posture Hidden Door validates in prior art: the model is an **optional accelerator over an authored substrate**, so the tree is the graceful-degradation floor rather than AI-Dungeon's "generation or nothing."
+A **deterministic dialog tree** and an **LLM** are interchangeable drivers of that same tool surface. The tree walks authored nodes and calls the tools; the model reasons and calls the tools. The substrate depends on neither. This mirrors the isocosm-core/isocosm-system split (core knows geometry and turns; rules are Lua) and burn's provider seam (inference lives behind a trait, never bound as universal). It is the same discipline the recommended `DialogEngine` seam (section 3.5) embodies and the same posture Hidden Door validates in prior art: the model is an **optional accelerator over an authored substrate**, so the tree is the graceful-degradation floor rather than AI-Dungeon's "generation or nothing."
 
-Each tool maps to an existing surface: an `isometry-system` Lua/piccolo action or an `isometry-core` read. The driver never touches state directly; it *requests* a tool, the DM host executes it authoritatively, and the effect becomes an ordinary event. This inherits every determinism and authority property for free.
+Each tool maps to an existing surface: an `isocosm-system` Lua/piccolo action or an `isocosm-core` read. The driver never touches state directly; it *requests* a tool, the DM host executes it authoritatively, and the effect becomes an ordinary event. This inherits every determinism and authority property for free.
 
 ### 1.2 Framing two: the conversation economy is a system-plugin value
 
@@ -92,11 +92,11 @@ player types a question
         │
         ▼
 [1] budget check                     plugin-computed cost vs remaining
-    (isometry-system)                counter; in-battle = 1; reject if 0
+    (isocosm-system)                counter; in-battle = 1; reject if 0
         │  (ok)
         ▼
 [2] assemble context projection      tokens + SheetData + GameEvent tail
-    (host, reads isometry-core)       + roll_log + this NPC's known facts
+    (host, reads isocosm-core)       + roll_log + this NPC's known facts
         │
         ▼
 [3] driver runs the dialog tools     tree walks nodes  OR  model reasons;
@@ -138,7 +138,7 @@ The tree is the fallback that ships when no model is loaded. The two are not com
 
 ### 2.1 Current state (from the ecosystem audit)
 
-Entity/graph infrastructure in Isometry is **essentially greenfield**. `isometry-core` has `dice, event, grid, iso, map, path, sheet, template, turn, visibility` and **no `node`, `relation`, `edge`, `world`, or `graph` module**.
+Entity/graph infrastructure in Isocosm is **essentially greenfield**. `isocosm-core` has `dice, event, grid, iso, map, path, sheet, template, turn, visibility` and **no `node`, `relation`, `edge`, `world`, or `graph` module**.
 
 - Entity = `Token { id, at, facing, sprite, owner }` (`map.rs:40-49`) carrying `SheetData { system, fields: BTreeMap<String, FieldValue> }`, `FieldValue = Int | Text | Bool` (`sheet.rs:14-44`).
 - **No inter-entity relationships exist as types.** `SessionEvent` is tile/token/elevation mutations; `GameEvent` adds turn-order + roll-log + `SheetSet`. No event asserts a relationship between two entities.
@@ -154,9 +154,9 @@ The upshot: the substrate is already a clean, flat, serializable **projection so
 
 - Mere's `graph-kernel::Node` is a **webpage object** (`cached_host`, `favicon_rgba`, `thumbnail_png`, `viewer_override`, `NodeLifecycle` webview management). Importing it to represent an NPC or a room drags a browser's entire surface in. This matches the standing ruling: graphshell/mere is donor and grab-bag, cite for ideas, never copy wholesale; mere-kernel is canonical *for Mere*.
 - What **is** worth borrowing is the **design** of Mere's edge taxonomy, not its code: `RelationKind = Semantic | Traversal | Containment | Arrangement | Imported | Provenance` with a read-side discriminant split from the write-side assertion, plus `RelationDurability::{Durable, Session}`. That typed-family + subkind + durability shape is a proven reference *if and when* a real graph is funded.
-- For the DM model now: **project** relevant tokens + `SheetData` + the recent event tail into a prompt, **run** it through the seam on an off-thread actor, **keep it out of `isometry-core`** (core stays pure: no wgpu, no iroh, no genet). The projection reads core types; it never pollutes them. It belongs in the native host or a new `isometry-intel` / `isometry-brain` crate.
+- For the DM model now: **project** relevant tokens + `SheetData` + the recent event tail into a prompt, **run** it through the seam on an off-thread actor, **keep it out of `isocosm-core`** (core stays pure: no wgpu, no iroh, no genet). The projection reads core types; it never pollutes them. It belongs in the native host or a new `isocosm-intel` / `isocosm-brain` crate.
 
-**When a first-class entity graph would be justified:** if the product grows to NPC relationship webs, faction politics, quest-dependency graphs, or the WORLD pointcrawl. The right move then is a **new pure-`isometry-core` graph module** over Isometry's *own* entities (reusing the weighted-BFS traversal), borrowing the `RelationKind` design as reference, **not** a Mere import. That graph then becomes a richer projection source for the same seam. It is a separable, product-gated feature; the context-projection ships first and works against today's flat substrate.
+**When a first-class entity graph would be justified:** if the product grows to NPC relationship webs, faction politics, quest-dependency graphs, or the WORLD pointcrawl. The right move then is a **new pure-`isocosm-core` graph module** over Isocosm's *own* entities (reusing the weighted-BFS traversal), borrowing the `RelationKind` design as reference, **not** a Mere import. That graph then becomes a richer projection source for the same seam. It is a separable, product-gated feature; the context-projection ships first and works against today's flat substrate.
 
 ---
 
@@ -172,7 +172,7 @@ A typical DM laptop can run a small tool-calling LLM for interactive NPC dialog,
 
 ### 3.2 Latency
 
-The governing metric is **time-to-first-token**, because dialog streams word by word. Text (unlike voice) is forgiving: players read at ~5 words/sec, so even 20-30 tok/s keeps up. A 3-4B int4 model on a modern laptop GPU or Apple Silicon streams a 40-token line in ~1-1.5s with sub-second TTFT. **Hidden cost: a tool-using line is two passes** (emit `tool_call` → DM executes → speak the result), so budget two TTFTs. Tool executions are local `isometry-system`/`isometry-core` calls (microseconds), not network round-trips.
+The governing metric is **time-to-first-token**, because dialog streams word by word. Text (unlike voice) is forgiving: players read at ~5 words/sec, so even 20-30 tok/s keeps up. A 3-4B int4 model on a modern laptop GPU or Apple Silicon streams a 40-token line in ~1-1.5s with sub-second TTFT. **Hidden cost: a tool-using line is two passes** (emit `tool_call` → DM executes → speak the result), so budget two TTFTs. Tool executions are local `isocosm-system`/`isocosm-core` calls (microseconds), not network round-trips.
 
 ### 3.3 Candidate models
 
@@ -194,7 +194,7 @@ Two findings shape the design more than model choice:
 
 ### 3.5 Recommended architecture: one seam, DM-only, external-first, burn-eventual
 
-A single trait seam (`DialogEngine` / `NpcBrain`, new crate e.g. `isometry-brain`) shaped on the **OpenAI chat+tools** contract, which all three candidate runtimes speak. Tools bridge to `isometry-system` Lua actions and `isometry-core` reads; results and streamed text propagate over `isonetry`.
+A single trait seam (`DialogEngine` / `NpcBrain`, new crate e.g. `isocosm-brain`) shaped on the **OpenAI chat+tools** contract, which all three candidate runtimes speak. Tools bridge to `isocosm-system` Lua actions and `isocosm-core` reads; results and streamed text propagate over `isonetry`.
 
 | Engine | Cross-platform GPU (4 targets) | Tool calling | In-process | Verdict |
 |---|---|---|---|---|
@@ -205,11 +205,11 @@ A single trait seam (`DialogEngine` / `NpcBrain`, new crate e.g. `isometry-brain
 
 **Why external-first despite the burn endorsement.** The burn doctrine is about keeping the in-process ML *lane* first-class behind a seam, and this design does exactly that. But Burn-LM today ports only Llama-family models (Llama 3/3.1/3.2 + TinyLlama), with **no documented quantization, chat templating, or tool-calling**. Making it the default would mean porting a model and building the tool/template layer yourself: a multi-week spike, not a weekend. The llama.cpp lane meets the requirement (reliable multi-turn tool calls on all four desktop GPUs) now. The seam honors burn strategically without blocking the feature on it. This is the low-regret "support both" resolution.
 
-Note: Mere already has a validated in-process burn-wgpu inference lane (`intel/infer`: `InferenceProvider` seam, real llama decoder, TinyLlama at ~10 tok/s on GPU, streaming actor, canned no-GPU stub). Isometry consumes **none** of it today (zero burn/intel references in any Isometry `Cargo.toml`); it lives in Mere, not the genet/netrender stack Isometry depends on. Reuse would mean **promoting `intel/infer` to a standalone crate** (the wgpu-graft/weld/scry precedent; its seam is a clean ~215-LOC, `Send+Sync`, wasm-safe core) or mirroring its ~3-type seam. Either way the burn decoder, actor, and canned-stub patterns transfer directly when the `BurnLmEngine` swap comes.
+Note: Mere already has a validated in-process burn-wgpu inference lane (`intel/infer`: `InferenceProvider` seam, real llama decoder, TinyLlama at ~10 tok/s on GPU, streaming actor, canned no-GPU stub). Isocosm consumes **none** of it today (zero burn/intel references in any Isocosm `Cargo.toml`); it lives in Mere, not the genet/netrender stack Isocosm depends on. Reuse would mean **promoting `intel/infer` to a standalone crate** (the wgpu-graft/weld/scry precedent; its seam is a clean ~215-LOC, `Send+Sync`, wasm-safe core) or mirroring its ~3-type seam. Either way the burn decoder, actor, and canned-stub patterns transfer directly when the `BurnLmEngine` swap comes.
 
 ### 3.6 Spikes (with confidence)
 
-1. **Seam + local endpoint end-to-end**: one NPC calls one real Isometry tool and speaks the streamed result on the DM host. *Works: HIGH.*
+1. **Seam + local endpoint end-to-end**: one NPC calls one real Isocosm tool and speaks the streamed result on the DM host. *Works: HIGH.*
 2. **Model bake-off on Mark's hardware**: Qwen2.5-3B vs Llama-3.2-3B vs Phi-4-mini vs Gemma-3-4B on Windows (Vulkan) and iMac (Metal); measure tool-call correctness, TTFT, tok/s. Output: default model + per-target numbers. *Usable default: HIGH.*
 3. **Grammar-constrained tool output**: confirm schema-constrained decoding makes a 3B emit valid tool JSON reliably. *Reliability unlock: HIGH.*
 4. **Cross-platform GPU matrix**: verify acceleration on all four targets (Win/Fedora/Mint Vulkan, iMac Metal). *llama.cpp Vulkan/Metal: HIGH.*
@@ -296,7 +296,7 @@ Leverage = value × substrate-fit ÷ (effort + risk). Each tagged with the lane 
 2. **DM-gate scope.** Per-critical-NPC spotlight, or blanket real-time filter? The prior art says the blanket version fails at scale. If spotlight, what flags an NPC's reasoning for DM attention (secret-adjacent, out-of-lore, refusal-worthy)?
 3. **Conversation economy stat-gating.** Should CHA raise *how many* questions, *how well each lands*, or both? Coupling both risks locking low-CHA players out of the social pillar. What alternative lever do low-CHA players get (evidence, leverage, environment)?
 4. **Word-limit vs compromise.** Hard per-question word caps (risk: reads as a glitch) or a Duel-of-Wits-style partial/compromise outcome?
-5. **`intel/infer` promotion.** Promote Mere's inference seam to a standalone crates.io crate (wgpu-graft precedent) so Isometry can consume it, or mirror the ~215-LOC seam independently?
+5. **`intel/infer` promotion.** Promote Mere's inference seam to a standalone crates.io crate (wgpu-graft precedent) so Isocosm can consume it, or mirror the ~215-LOC seam independently?
 6. **Local-only vs cloud-at-prep.** Hold to local-only for on-ethos offline play, or allow frontier cloud models for latency-tolerant prep-time authoring (recap polish, table compilation in §5 #4's killer sub-move)?
 7. **The annotation channel.** Add `GameEvent::Narration` (or promote GM-notes to replicated events) now as the shared story layer, given it is `#[serde(default)]`-migratable and unlocks recap/search/living-world at once?
 8. **World/entity graph trigger.** What product goal (NPC relationship webs, factions, quest graphs, the WORLD pointcrawl) would justify building the first-class pure-core graph module (borrowing Mere's `RelationKind` *design*, not its web-graph code)?
@@ -319,9 +319,9 @@ Resolutions to the open questions and design additions from the review. These su
 
 - **DM-gate is a per-critical-NPC spotlight (leaning, from the overall posture, Q7.2).** Not a blanket real-time filter on all dialog. An auto-pre-filter surfaces only flagged reasoning (secret-adjacent, out-of-lore, refusal-worthy) to the DM. Left open: the exact flagging heuristic.
 
-- **Promote `intel/infer` to a standalone crate (resolves Q7.5).** Confirmed. Promote Mere's burn-wgpu inference seam to a standalone crate (the wgpu-graft/weld/scry precedent) so Isometry and others can consume it. Name: **vates** (Latin, the poet-prophet), chosen 2026-07-07. It is the one word that fuses speech (the bard who voices) with prophecy (the seer who infers), which is exactly a crate that both voices NPCs and runs inference. Free on crates.io. The field was run first: oracle (Oracle DB/Corp), cassandra (Apache Cassandra, plus the cursed never-believed connotation), pythia (a well-known open LLM family), and sibyl (an Oracle DB driver crate) were ruled out on collision; sybil was ruled out on connotation (the P2P Sybil-attack, wrong in a P2P codebase). sibylla and vates were the collision-clean finalists; vates won on precision and for carrying no prior baggage.
+- **Promote `intel/infer` to a standalone crate (resolves Q7.5).** Confirmed. Promote Mere's burn-wgpu inference seam to a standalone crate (the wgpu-graft/weld/scry precedent) so Isocosm and others can consume it. Name: **vates** (Latin, the poet-prophet), chosen 2026-07-07. It is the one word that fuses speech (the bard who voices) with prophecy (the seer who infers), which is exactly a crate that both voices NPCs and runs inference. Free on crates.io. The field was run first: oracle (Oracle DB/Corp), cassandra (Apache Cassandra, plus the cursed never-believed connotation), pythia (a well-known open LLM family), and sibyl (an Oracle DB driver crate) were ruled out on collision; sybil was ruled out on connotation (the P2P Sybil-attack, wrong in a P2P codebase). sibylla and vates were the collision-clean finalists; vates won on precision and for carrying no prior baggage.
 
-- **Board-to-text narration: near-term buildable, NOT post-keystone gated.** The factual layer needs no model and no ABI widening (pure isometry-core reads plus templated text), so it escapes this document's post-keystone gating and can be built early, even beside viewport windowing. Scope: **N1** a `narrate` module in isometry-core serializing scene facts (positions, facing, distance via `path_to`, LOS/fog via `visible_from`, elevation, turn) with a done-condition of accurate text for a known board; **N2** viewer-relative and fog-aware (omits what the viewer's tokens cannot see); **N3** (later, gated) an optional model fluency pass behind the provider seam. It is the shared perception primitive, feeding accessibility and text-only play, session recap, and the model's own grounding projection. Candidate for its own short plan.
+- **Board-to-text narration: near-term buildable, NOT post-keystone gated.** The factual layer needs no model and no ABI widening (pure isocosm-core reads plus templated text), so it escapes this document's post-keystone gating and can be built early, even beside viewport windowing. Scope: **N1** a `narrate` module in isocosm-core serializing scene facts (positions, facing, distance via `path_to`, LOS/fog via `visible_from`, elevation, turn) with a done-condition of accurate text for a known board; **N2** viewer-relative and fog-aware (omits what the viewer's tokens cannot see); **N3** (later, gated) an optional model fluency pass behind the provider seam. It is the shared perception primitive, feeding accessibility and text-only play, session recap, and the model's own grounding projection. Candidate for its own short plan.
 
 Still open: Q7.6 (local-only vs cloud-at-prep) and Q7.7 (add `GameEvent::Narration` now).
 

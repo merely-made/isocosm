@@ -14,7 +14,7 @@ use eponym_sortie::scene;
 use eponym_sortie::sortie::SortieEvent;
 use eponym_play::identity::Tick;
 use eponym_sortie::settled::SELA;
-use isocosm::social::Verdict;
+use cosmograph::social::Verdict;
 
 fn main() {
     let (answers, sortie) = scene::played_through();

@@ -18,7 +18,7 @@ pub use admission::{answer_loop, configure_loop, submit_loop};
 pub use round::advance_loop;
 
 use crate::spatial::Game;
-use isocosm::Session;
+use cosmograph::Session;
 
 pub const VERSION: u32 = 1;
 pub const KIND: &str = "mesocosm:loop";
@@ -31,7 +31,7 @@ pub(crate) fn physical(game: &Game) -> Game {
 }
 
 pub fn cut(session: &Session, game: &Game) -> LoopCut {
-    LoopCut { native: isocosm::digest(&session.save()), game: isocosm::digest(game),
+    LoopCut { native: cosmograph::digest(&session.save()), game: cosmograph::digest(game),
         question: game.continuation.as_ref().and_then(Continuation::question) }
 }
 
@@ -45,7 +45,7 @@ impl Continuation {
     }
 
     pub fn question(&self) -> Option<String> {
-        self.checkpoint.as_ref().map(|_| isocosm::digest(&(
+        self.checkpoint.as_ref().map(|_| cosmograph::digest(&(
             &self.native, self.participant, &self.phase, &self.checkpoint,
             &self.review, &self.proposed)))
     }
@@ -55,15 +55,15 @@ impl Continuation {
         let count = usize::try_from(self.native_entries).map_err(|_| "loop source count overflow")?;
         if self.version != VERSION || self.native_tick != session.sim.state().tick
             || count > session.entries.len()
-            || self.native != isocosm::digest(&(&session.branch, session.sim.genesis(),
+            || self.native != cosmograph::digest(&(&session.branch, session.sim.genesis(),
                 &session.entries[..count], self.native_tick))
-            || session.entries[count..].iter().any(|entry| !matches!(&entry.command, isocosm::Command::Window(_)))
+            || session.entries[count..].iter().any(|entry| !matches!(&entry.command, cosmograph::Command::Window(_)))
             || self.physical != game.physical_digest() {
             return Err("saved loop names another native/product cut".into());
         }
         if self.settings.pace.round == 0 || self.settings.pace.scoring == 0
             || !session.sim.state().population.get(self.participant)
-                .is_some_and(isocosm::directing::is_participant) {
+                .is_some_and(cosmograph::directing::is_participant) {
             return Err("saved loop participant or explicit pace invalid".into());
         }
         restore::validate_question(self, session)
@@ -91,7 +91,7 @@ impl Game {
 }
 
 pub(crate) fn prefix(session: &Session) -> String {
-    isocosm::digest(&(&session.branch, session.sim.genesis(), &session.entries,
+    cosmograph::digest(&(&session.branch, session.sim.genesis(), &session.entries,
         session.sim.state().tick))
 }
 

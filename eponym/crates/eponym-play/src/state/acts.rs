@@ -5,9 +5,9 @@
 //! carrying, eating, rest and the exertion each costs (767), admitting its
 //! anatomy and wearing an item.
 
-use isocosm::history::Command;
-use isocosm_overlay::eponym::{EponymHandoff, EponymIntent, PlayerAct, PlayerActKind};
-use isocosm_overlay::{EntityHandle, Pointable};
+use cosmograph::history::Command;
+use cosmograph_overlay::eponym::{EponymHandoff, EponymIntent, PlayerAct, PlayerActKind};
+use cosmograph_overlay::{EntityHandle, Pointable};
 
 use crate::bodies::{BodyError, BodyRecord, SAFE_FALL};
 use crate::founding::{
@@ -376,12 +376,12 @@ impl GameState {
             return Err(MovementError::InvalidStart(at).into());
         }
         self.world.select_native_recipe(recipe)?;
-        let seed = isocosm::draw(self.world.seed(), "eponym:development", &[body_seed, subject.0]);
+        let seed = cosmograph::draw(self.world.seed(), "eponym:development", &[body_seed, subject.0]);
         let sim = self.world.sim();
         let body = sim.development_body(founding::SOPHONT, seed).map_err(|_| GameError::Decode)?;
         let tissue = body.parts.iter().try_fold(0u64, |total, (id, part)| {
             let geo = body.doc.part(*id).ok_or(GameError::Decode)?;
-            total.checked_add(isocosm::anatomy::bound(geo.half_extent, part, &sim.genesis().rules, founding::TISSUE))
+            total.checked_add(cosmograph::anatomy::bound(geo.half_extent, part, &sim.genesis().rules, founding::TISSUE))
                 .ok_or(GameError::Decode)
         })?;
         let accounts = [
@@ -389,10 +389,10 @@ impl GameState {
             (RESERVE, FULL),
             (ENERGY, FULL),
         ];
-        let arrival = isocosm::arrival::Arrival {
+        let arrival = cosmograph::arrival::Arrival {
             lineage: founding::SOPHONT.into(),
             site: self.world.site(),
-            method: isocosm::schema::Method::Normative,
+            method: cosmograph::schema::Method::Normative,
             accounts: accounts.iter().map(|(k, v)| (k.to_string(), *v)).collect(),
             traits: Default::default(),
             skills: Default::default(),
@@ -440,7 +440,7 @@ impl GameState {
         else {
             return 0;
         };
-        let want = isocosm::needs::want(&self.world.sim().genesis().rules, e, account);
+        let want = cosmograph::needs::want(&self.world.sim().genesis().rules, e, account);
         want.map_or(0, |w| w.deficit().min(100) as u16)
     }
 

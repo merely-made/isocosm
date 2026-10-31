@@ -5,7 +5,7 @@
 //! Native replay remains the sole world authority; this checks its saved game bytes.
 
 use super::*;
-use isocosm::Command;
+use cosmograph::Command;
 
 fn physical(a: &Placement, b: &Placement) -> bool {
     a.actor == b.actor && a.site == b.site && a.pose == b.pose && a.eye == b.eye
@@ -68,7 +68,7 @@ impl Game {
                     { return Err("birth command record names unsupported native work".into()); }
                     let native = record.command_outcome.as_ref().ok_or("birth command outcome absent")?;
                     let outcome = format!("birth spatial command; answers {}",
-                        isocosm::digest(&(native, &record.births, &record.order)));
+                        cosmograph::digest(&(native, &record.births, &record.order)));
                     let changes = folded.apply_publications(&session.sim, &[], births, &record.births, &record.order)?;
                     (outcome, changes)
                 },
@@ -83,17 +83,17 @@ impl Game {
                     let mut changes = folded.apply_arrivals(arrivals, &record.arrivals)?;
                     let outcome = if let Command::AdvanceBirthSpatial { births, .. } = &entry.command {
                         let ordered: BTreeSet<_> = record.order.iter().filter_map(|p|
-                            if let isocosm::spatial::Publication::Step(action) = p { Some(action.clone()) } else { None }).collect();
+                            if let cosmograph::spatial::Publication::Step(action) = p { Some(action.clone()) } else { None }).collect();
                         if ordered != record.steps { return Err("saved step acceptance differs from native publication order".into()); }
                         changes.extend(folded.apply_publications(&session.sim, steps, births, &record.births, &record.order)?);
                         format!("birth spatial advanced {ticks}; answers {}",
-                            isocosm::digest(&(&record.arrivals, &record.steps, &record.births, &record.order)))
+                            cosmograph::digest(&(&record.arrivals, &record.steps, &record.births, &record.order)))
                     } else {
                         if !record.births.is_empty() || !record.order.is_empty() {
                             return Err("legacy spatial outcome authenticates no birth/publication fields".into());
                         }
                         changes.extend(folded.apply_steps(steps, &record.steps)?);
-                        format!("spatial advanced {ticks}; answers {}", isocosm::digest(&(&record.arrivals, &record.steps)))
+                        format!("spatial advanced {ticks}; answers {}", cosmograph::digest(&(&record.arrivals, &record.steps)))
                     };
                     (outcome, changes)
                 }

@@ -7,8 +7,8 @@
 //! The dev lane's follow tile over a native critter (DT2): who it is, where,
 //! what it holds, and its first few parts. The words are this crate's.
 
-use isocosm::schema::Id;
-use isocosm::simulation::Simulation;
+use cosmograph::schema::Id;
+use cosmograph::simulation::Simulation;
 use isometer_core::{Role, classify};
 
 /// How many part rows the tile shows before it starts counting instead.

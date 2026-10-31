@@ -3,7 +3,7 @@
 
 use eponym_play::identity::{BodyRevisionId, SubjectId};
 use eponym_play::{GameEvent, GameState, StrikeOutcome};
-use isocosm::history::Command;
+use cosmograph::history::Command;
 use isometer_core::PartId;
 
 pub fn sever(game: &mut GameState, target: SubjectId, part: PartId) {

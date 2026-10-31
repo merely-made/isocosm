@@ -12,11 +12,11 @@
 
 use std::path::Path;
 
-use isocosm::directing::interim::Interim;
-use isocosm::history::Command;
-use isocosm::process::Registry;
-use isocosm::schema::Entity;
-pub use isocosm::lineage::{Offer, Reading, Review};
+use cosmograph::directing::interim::Interim;
+use cosmograph::history::Command;
+use cosmograph::process::Registry;
+use cosmograph::schema::Entity;
+pub use cosmograph::lineage::{Offer, Reading, Review};
 use mesocosm_phenotype::express::{Allocation, Entropy, Policy, Request, Runner, lower};
 use mesocosm_phenotype::{Admission, asset, discover};
 
@@ -34,7 +34,7 @@ pub struct Authored {
     scripts: Vec<(String, String)>,
     policy: Policy,
     terms: mesocosm_phenotype::TermTable,
-    affinity: Option<isocosm::rules::Affinity>,
+    affinity: Option<cosmograph::rules::Affinity>,
 }
 
 /// What one script made of one offer: the cells it would change on the
@@ -49,7 +49,7 @@ pub struct Proposed {
 
 impl Proposed {
     /// The commands committing this proposal sends for `entity` (787).
-    pub fn commands(&self, entity: isocosm::schema::Id) -> Vec<Command> {
+    pub fn commands(&self, entity: cosmograph::schema::Id) -> Vec<Command> {
         let Some(allocation) = self.allocation.as_ref().filter(|_| self.cells.is_ok()) else {
             return vec![];
         };
@@ -112,11 +112,11 @@ impl Authored {
     pub fn terms(&self) -> &mesocosm_phenotype::TermTable { &self.terms }
 
     /// The pack's explicit law, supplied before a NEW native founding.
-    pub fn affinity(&self) -> Option<&isocosm::rules::Affinity> { self.affinity.as_ref() }
+    pub fn affinity(&self) -> Option<&cosmograph::rules::Affinity> { self.affinity.as_ref() }
 
     /// Existing sessions retain their realized law. Expression/display
     /// content can load only when its explicit law agrees with that world.
-    pub fn validate_world(&self, genesis: &isocosm::simulation::Genesis) -> Result<(), String> {
+    pub fn validate_world(&self, genesis: &cosmograph::simulation::Genesis) -> Result<(), String> {
         if let Some(affinity) = &self.affinity {
             affinity.validate()?;
             if affinity != &genesis.rules.affinity.clone().unwrap_or_default() {
@@ -134,7 +134,7 @@ impl Authored {
     /// line does not hold (`held` functions), on a copy of `body`.
     pub fn propose(&self, review: &Review, body: &Entity, held: &[String], seed: u64) -> Vec<Proposed> {
         let registry = Registry::native();
-        let entropy = Entropy::from_seed(isocosm::draw(seed, "authored", &[review.tick]));
+        let entropy = Entropy::from_seed(cosmograph::draw(seed, "authored", &[review.tick]));
         let material = body.accounts.values().fold(0u64, |a, b| a.saturating_add(*b));
         let mut out = Vec::new();
         for (index, offer) in review.offers.iter().enumerate() {

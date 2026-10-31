@@ -5,7 +5,7 @@
 //! Its result only removes bodies from the caller's existing native cut.
 
 use super::{clock, ModeState, PictureBody, SubjectId};
-use isocosm::{Session, schema::Id};
+use cosmograph::{Session, schema::Id};
 use isometer_space::{places::Places, volume::Volume};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};

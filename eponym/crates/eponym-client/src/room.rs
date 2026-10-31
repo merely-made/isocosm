@@ -6,7 +6,7 @@
 
 //! One room, carved into a hillside of a grown world.
 //!
-//! Nothing here invents terrain. Eponym's world on Isocosm lays the sites,
+//! Nothing here invents terrain. Eponym's world on Cosmograph lays the sites,
 //! isometer lifts the played one into bricks, and the room is one carve the
 //! sim keeps, into rock the world already had. The hunt below only picks
 //! *where*: the first buried spot, in a deterministic outward scan, whose

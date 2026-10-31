@@ -8,7 +8,7 @@ use crate::timed_action::{
     Direction, LimbBinding, StrikeReceipt, TimedActionError, TimedActionSession,
 };
 use crate::{CombatRules, GameEvent, GameIntent, GameState, part_bounds};
-use isocosm::lineage::SpeciesId;
+use cosmograph::lineage::SpeciesId;
 use isometer_core::PartId;
 
 pub const STRIKER: SubjectId = SubjectId(74);

@@ -9,7 +9,7 @@
 //! The stack's projection posture, adopted from birth rather than migrated to:
 //! this crate **discloses** world facts as a [`sceno::Score`], `scenomise`
 //! solves placement, and the paint leaves here realize the solved scene. The
-//! layout debt isometry carried (hand-rolled positions the proofs plan
+//! layout debt Isocosm carried (hand-rolled positions the proofs plan
 //! schedules for deletion) is never incurred.
 //!
 //! What a scene element *means* stays on this side of the contract, per the

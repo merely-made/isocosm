@@ -97,16 +97,16 @@ fn generated_map_stores_activates_edits_and_replicates_as_result_data() {
         .position(|kind| kind == "stone")
         .unwrap() as u16;
     sim.host_event(GameEvent::Map(SessionEvent::TilePlaced {
-        layer: isometry_core::Layer::Ground,
+        layer: isocosm_core::Layer::Ground,
         at: (1, 1),
-        kind: isometry_core::TileKindId(stone),
+        kind: isocosm_core::TileKindId(stone),
     }));
     assert_eq!(
         sim.host.state().maps["demo:river-cache"]
             .document
             .ground
             .get(1, 1),
-        Some(&isometry_core::TileKindId(stone))
+        Some(&isocosm_core::TileKindId(stone))
     );
 
     sim.connect(PeerId(20));

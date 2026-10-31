@@ -81,7 +81,7 @@ impl SlabCamera {
 
     /// The board's locked 2:1 dimetric lens, as a forward vector.
     ///
-    /// Isometry's `IsoGeometry` is a pure screen transform — a tile at
+    /// Isocosm's `IsoGeometry` is a pure screen transform — a tile at
     /// `(col, row, elev)` lands at `x = (col - row) * tile_w / 2`,
     /// `y = (col + row) * tile_h / 2 - elev * elev_step`, with the shipped
     /// 32 / 16 / 8 defaults. This preset is the camera that reproduces it,

@@ -5,7 +5,7 @@
 
 use super::Host;
 use cambium::{DetailRow, DetailSection, detail_panel, el, text};
-use isocosm_overlay::{ParticipantHandle, Tick};
+use cosmograph_overlay::{ParticipantHandle, Tick};
 use mesocosm_runtime::continuation::{self, LoopAction, LoopAnswer, LoopInput,
     LoopPhase, LoopReading};
 use mesocosm_views::{Succession, SuccessionChild};

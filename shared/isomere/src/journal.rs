@@ -6,7 +6,7 @@
 //!
 //! The 2026-09-15 inventory found this panel three times under three names:
 //! Eponym's acquisition journal (`.glyphs` of `.glyph` rows under
-//! `#journal-summary`), Isometry's message log, and Mesocosm's review rows.
+//! `#journal-summary`), Isocosm's message log, and Mesocosm's review rows.
 //! Two of them turned out to be the same three lines in the same order — a
 //! headline with a mark beside it, a founding line that never moves, and a
 //! line that only shows when the live reading has diverged from the founding
@@ -22,13 +22,13 @@
 //! So [`JournalRow`] is those four, plus the board's selection cursor, which
 //! the session has no use for and leaves `false`.
 //!
-//! **Isometry's message log is not the third.** It is five flat `.roll-line`
+//! **Isocosm's message log is not the third.** It is five flat `.roll-line`
 //! divs sharing the dice log's own rule — one sentence each, no mark, no
 //! founding line, no live line and no summary — so it is the same shape as
 //! `UiState::rolls`, not the same shape as the glyph journal. Promoting it
 //! would nest a div inside every line for no reconciliation, so §1's journal
-//! row is corrected for Isometry as the viewport row was for the overmap in M1
-//! and the examiner row for `sheet.rs` in M2. What Isometry did bring to M3 is
+//! row is corrected for Isocosm as the viewport row was for the overmap in M1
+//! and the examiner row for `sheet.rs` in M2. What Isocosm did bring to M3 is
 //! its keymap; see [`status`](crate::status).
 //!
 //! **Why the classes are overridable and the examiner's were not.** The two

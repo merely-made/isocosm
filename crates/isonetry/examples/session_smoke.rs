@@ -10,7 +10,7 @@
 
 use std::time::Duration;
 
-use isometry_core::{Facing, MapDocument, Token, TokenId, TurnList};
+use isocosm_core::{Facing, MapDocument, Token, TokenId, TurnList};
 use isonetry::iroh_link::{ClientNet, HostNet};
 use isonetry::{GameEvent, GameSnapshot};
 

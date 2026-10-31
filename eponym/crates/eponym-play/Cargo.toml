@@ -4,14 +4,14 @@ name = "eponym-play"
 version = "0.0.1"
 edition = "2024"
 license = "MPL-2.0"
-description = "Eponym's play over Isocosm: a sapient player's driving, and what the sim hands back to the game (wing rulings 597, 669, 671 and 755)."
+description = "Eponym's play over Cosmograph: a sapient player's driving, and what the sim hands back to the game (wing rulings 597, 669, 671 and 755)."
 repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 [dependencies]
-isocosm = { path = "../../../shared/isocosm" }
+cosmograph = { path = "../../../shared/cosmograph" }
 # The contract play crosses, lowered in `contract` (wing ruling 794).
-isocosm-overlay = { path = "../../../shared/isocosm-overlay" }
+cosmograph-overlay = { path = "../../../shared/cosmograph-overlay" }
 isometer-core = { path = "../../../shared/isometer/crates/isometer-core" }
 isometer-space = { path = "../../../shared/isometer/crates/isometer-space" }
 wing-glyphs = { path = "../../../shared/wing-glyphs" }
@@ -19,16 +19,16 @@ wing-functions = { path = "../../../shared/wing-functions" }
 serde = { version = "1", default-features = false, features = ["derive", "alloc"] }
 serde_json = "1"
 # The next-life Graphshell endpoint over the sim-host core (rulings 900, 903).
-isocosm-host = { path = "../../../host", optional = true, features = ["endpoint"] }
+cosmograph-host = { path = "../../../cosmograph-host", optional = true, features = ["endpoint"] }
 chirograph = { git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381", optional = true }
 graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381", optional = true }
 
 [features]
-endpoint = ["dep:isocosm-host", "dep:chirograph", "dep:graphshell-endpoint"]
+endpoint = ["dep:cosmograph-host", "dep:chirograph", "dep:graphshell-endpoint"]
 
 [dev-dependencies]
 isonetry = { path = "../../../crates/isonetry", default-features = false }
-isocosm-host = { path = "../../../host", features = ["endpoint", "fixtures"] }
+cosmograph-host = { path = "../../../cosmograph-host", features = ["endpoint", "fixtures"] }
 graphshell-endpoint = { git = "https://www.github.com/merely-made/mere.git", rev = "b232631f3e5ef30d24b19b3e832ddf225177c381", features = ["local", "stdio"] }
 
 # A no-argument stdio endpoint for Graphshell's g4_sessions receipt (H2).

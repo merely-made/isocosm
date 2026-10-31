@@ -1,6 +1,6 @@
 # Wing functions
 
-Shared, deterministic functional networks for the Isometry games. MPL-2.0.
+Shared, deterministic functional networks for the Isocosm games. MPL-2.0.
 This crate has its own small Cargo workspace and no rendering or host dependency.
 
 ```powershell
@@ -33,7 +33,7 @@ and site assignment belong to the construction rules used by the caller.
 Use `NetworkSnapshot::validate` after loading; execution also validates its
 network. The consumer chooses storage, identity lifetimes and migration rules.
 Never substitute a saved live-part set for current body authority. Mesocosm's
-`functions` module supplies that reading. Isometry's `ConstructionProposal`
+`functions` module supplies that reading. Isocosm's `ConstructionProposal`
 carries the accepted network and operation requests inside its existing
 `GenValue` envelope and binary generation record, without rerunning generation.
 

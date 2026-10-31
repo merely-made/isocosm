@@ -6,7 +6,7 @@
 
 use super::{Item, ItemId};
 use crate::GameState;
-use isocosm::{anatomy, rules::AccountKind, schema::{Id, Key, Lineage, Provenance}};
+use cosmograph::{anatomy, rules::AccountKind, schema::{Id, Key, Lineage, Provenance}};
 use std::collections::BTreeMap;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -97,7 +97,7 @@ impl GameState {
                 },
                 Some(kind) => ItemHoldingKind::NonMatter(kind.clone()),
                 None if state.spreads.owns(account) => ItemHoldingKind::SpreadMatter {
-                    source: isocosm::spread::provenance(state, account)
+                    source: cosmograph::spread::provenance(state, account)
                         .map_or(SourceLineage::Unresolved, |line| SourceLineage::read(&line, &state.lineages)),
                 },
                 None => ItemHoldingKind::Unknown,
@@ -119,7 +119,7 @@ impl GameState {
         Ok(ItemReading {
             item, native_tick: state.tick, body_revision: entity.body_revision,
             lineage: SourceLineage::read(&entity.lineage, &state.lineages), holdings,
-            matter_mass_mg: isocosm::spread::ledger_mass(&books, rules, &state.spreads),
+            matter_mass_mg: cosmograph::spread::ledger_mass(&books, rules, &state.spreads),
             provenance: entity.provenance.clone(), born_from, maker,
         })
     }

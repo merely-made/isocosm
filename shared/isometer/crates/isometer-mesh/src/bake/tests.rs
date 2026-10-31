@@ -148,7 +148,7 @@ fn appearance_round_trips_json() {
 // The merge's done condition is pixel-identical sheets. These hash the bake's
 // own output, at the parameters the real consumers use, against values
 // captured from `isometry-voxel` at eb8b764 before the move. A change here is
-// a change to every tileset sprite Isometry ships, and must be deliberate.
+// a change to every tileset sprite Isocosm ships, and must be deliberate.
 //
 // `tower-beast.png`'s pin is the blake3 of the byte stream the
 // `watchtower_sprites` example wrote before the move, so the encoder is
@@ -162,7 +162,7 @@ fn sheet_digest(sheet: &Sheet) -> String {
     hasher.finalize().to_hex().to_string()
 }
 
-/// The board's parameters: `isometry-views` bakes every token and prop here.
+/// The board's parameters: `isocosm-views` bakes every token and prop here.
 const BOARD: BakeParams = BakeParams {
     half_w: 2,
     cube_h: 2,

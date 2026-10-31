@@ -1,6 +1,6 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
-use isocosm::{Command, Execution, Session, simulation::Genesis, spatial as native};
+use cosmograph::{Command, Execution, Session, simulation::Genesis, spatial as native};
 use mesocosm_runtime::{
     Founded,
     spatial::{Admission, Game},
@@ -92,7 +92,7 @@ fn blocked_nearest_meal_yields_to_a_reachable_alternative() {
         )
         .unwrap();
         let left = occupied.iter().map(|b| b[0][0]).min().unwrap();
-        let terrain = isocosm::Simulation::new(g.clone(), Execution::Grouped)
+        let terrain = cosmograph::Simulation::new(g.clone(), Execution::Grouped)
             .unwrap()
             .site_volume(site, &t.window)
             .unwrap();
@@ -368,7 +368,7 @@ fn another_residents_geometry_cannot_reuse_a_clear_route_from_a_shared_cache() {
         let entity = g.population.get(actor).unwrap().clone();
         let site = entity.resident_site().unwrap();
         let t = g.rules.spatial_templates.as_ref().unwrap();
-        let terrain = isocosm::Simulation::new(g.clone(), Execution::Grouped)
+        let terrain = cosmograph::Simulation::new(g.clone(), Execution::Grouped)
             .unwrap()
             .site_volume(site, &t.window)
             .unwrap();

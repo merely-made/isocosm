@@ -4,7 +4,7 @@
 //! Coarse instruments and generator-placed play share one native founding.
 
 use super::*;
-use isocosm_host::founding::Purpose;
+use cosmograph_host::founding::Purpose;
 
 impl Runtime {
     /// Explicit dev instrument, retaining site-grain placement.
@@ -15,7 +15,7 @@ impl Runtime {
     /// Play instrument using the generator's saved stands and spatial clock.
     /// This does not supply the independent ecological admission witness.
     pub fn bench_placed(mut founded: Founded, ticks_per_second: u32) -> Result<Self, String> {
-        isocosm::spatial::embodiment::declare(&mut founded.genesis)?;
+        cosmograph::spatial::embodiment::declare(&mut founded.genesis)?;
         Self::found_in_core(founded, ticks_per_second, Purpose::Bench, true)
     }
 
@@ -30,7 +30,7 @@ impl Runtime {
         purpose: Purpose,
         placed: bool,
     ) -> Result<Self, String> {
-        let world = isocosm_host::founding::found(
+        let world = cosmograph_host::founding::found(
             founded.genesis.clone(),
             Execution::Grouped,
             purpose,

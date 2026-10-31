@@ -4,8 +4,8 @@
 //! Native suggestions for the current rendered topic. Leaf picking is in Assembly.
 
 use super::Host;
-use isocosm::schema::Id;
-use isocosm_overlay::{ActKey, EntityHandle, PlaceHandle, mesocosm::{MesocosmIntent, Nudge, NudgeMeaning, NudgeTarget}};
+use cosmograph::schema::Id;
+use cosmograph_overlay::{ActKey, EntityHandle, PlaceHandle, mesocosm::{MesocosmIntent, Nudge, NudgeMeaning, NudgeTarget}};
 use mesocosm_views::Succession;
 use winit::keyboard::{Key, NamedKey};
 
@@ -37,7 +37,7 @@ impl Host {
         let Some(site) = self.runtime.played().and_then(|body| body.resident_site()) else { return; };
         let clicked_visible = match menu.clicked { NudgeTarget::Thing(id) => visible.shows(id.0), NudgeTarget::Place(id) => visible.sites.contains(&id.0) };
         if !clicked_visible { return; }
-        menu.hints = visible.filter(isocosm::directing::readings::suggestions(&self.runtime.sim(),menu.actor)).into_iter()
+        menu.hints = visible.filter(cosmograph::directing::readings::suggestions(&self.runtime.sim(),menu.actor)).into_iter()
             .filter_map(|hint| {
                 let topic = match hint.target { Some(id) => NudgeTarget::Thing(EntityHandle(id)),
                     None if visible.sites.contains(&site) => NudgeTarget::Place(PlaceHandle(site)), None => return None };

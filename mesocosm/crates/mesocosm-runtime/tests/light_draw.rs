@@ -5,7 +5,7 @@
 //! what the producers of the seed-9 A1 world draw from `sim:energy` per site
 //! per tick. Run with `--ignored --nocapture`; `LIGHT_DRAW_TICKS` sets the span.
 
-use isocosm::Execution;
+use cosmograph::Execution;
 use mesocosm_runtime::{Founded, Runtime, runtime::ecology::Setup};
 
 const CREDIT: u64 = 1_000_000;
@@ -17,7 +17,7 @@ fn what_producers_draw_from_the_sun() {
     let ticks: u64 = std::env::var("LIGHT_DRAW_TICKS").ok().and_then(|v| v.parse().ok()).unwrap_or(60);
     let mut founded = Founded::generated(9, 256).unwrap();
     let mut founding = founded.genesis.founding.clone().unwrap();
-    founding.ecology_rates = isocosm::ecology::Rates::A1;
+    founding.ecology_rates = cosmograph::ecology::Rates::A1;
     founded.genesis = founding.generate().unwrap();
     let setup = Setup::generated(founded, Execution::Grouped).unwrap();
     let mut runtime = setup.offer(30).unwrap();

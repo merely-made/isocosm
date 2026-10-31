@@ -111,7 +111,7 @@ pub fn verify_host_record(
     }
     let mut unsigned = record.clone();
     let digest = std::mem::take(&mut unsigned.digest);
-    if digest.is_empty() || digest != isocosm::digest(&unsigned) {
+    if digest.is_empty() || digest != cosmograph::digest(&unsigned) {
         return Err("accepted record digest mismatch".into());
     }
     Ok(record)
@@ -153,7 +153,7 @@ where
         let rejected_records = Arc::new(AtomicU64::new(0));
         let rejects = Arc::clone(&rejected_records);
         let joined = JoinedSpace::join::<_, [u8; 16], _, _>(
-            lane_id("isocosm/family-records/v1", topic),
+            lane_id("cosmograph/family-records/v1", topic),
             store.clone(),
             endpoint,
             gossip,
@@ -273,9 +273,9 @@ pub use record_outbox::{
 mod lifecycle;
 pub use lifecycle::{FamilyHostNetwork, FamilyReplicaNetwork, MAX_REPLICA_RECORD_QUEUE};
 
-/// Graphshell's admitted stream path, re-exported at the Isocosm family seam.
+/// Graphshell's admitted stream path, re-exported at the wing seam.
 ///
-/// Admission and request semantics remain owned by Graphshell. Isocosm owns
+/// Admission and request semantics remain owned by Graphshell. Cosmograph owns
 /// the family host, signed accepted-record log, and replica application.
 pub mod stream {
     pub use graphshell_native::{admission, carrier, lifecycle, network_carrier, session_loop};

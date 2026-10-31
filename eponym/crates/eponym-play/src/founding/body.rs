@@ -3,7 +3,7 @@
 
 //! The compact six-part native recipe selected in rulings 816 and 818.
 
-use isocosm::rules::{Anchor, Development, Facing, Policy, Recipe, Rules, Tagma, Template};
+use cosmograph::rules::{Anchor, Development, Facing, Policy, Recipe, Rules, Tagma, Template};
 use std::collections::BTreeMap;
 
 const ROOT: &str = "kind:eponym-root";
@@ -20,8 +20,8 @@ fn template(half_extent: [i32; 3], cells: &[(&str, u32)]) -> Template {
 }
 
 pub(super) fn install(rules: &mut Rules) -> Development {
-    rules.functions.extend(isocosm::rules::default_functions());
-    rules.shapes.extend(isocosm::rules::default_shapes());
+    rules.functions.extend(cosmograph::rules::default_functions());
+    rules.shapes.extend(cosmograph::rules::default_shapes());
     rules.kinds.extend(BTreeMap::from([
         (ROOT.into(), template([4, 4, 4], &[("intake", 22), ("store", 5)])),
         (LIMB.into(), template([4, 1, 1], &[("contract", 1), ("support", 1), ("grip", 1)])),

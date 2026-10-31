@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isocosm_overlay::{EntityHandle, Intent, IntentEnvelope, ParticipantHandle, Tick,
+use cosmograph_overlay::{EntityHandle, Intent, IntentEnvelope, ParticipantHandle, Tick,
     mesocosm::{BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, MesocosmIntent}};
 use std::time::Instant;
 
@@ -48,9 +48,9 @@ pub(super) fn saved_active_update() {
     let reading = crate::profile::measure("case.after_reading", || runtime.loop_reading()).unwrap();
     let receipt = serde_json::json!({"input_bytes":bytes.len(), "before_tick":before,
         "tick":runtime.tick(), "step_us":step_us, "native_hash":runtime.state_hash(),
-        "native_digest":isocosm::digest(&runtime.session().save()),
-        "section_digest":isocosm::digest(&runtime.world().section(MODE).unwrap()),
+        "native_digest":cosmograph::digest(&runtime.session().save()),
+        "section_digest":cosmograph::digest(&runtime.world().section(MODE).unwrap()),
         "world_revision":runtime.revision().unwrap(), "entries":runtime.session().entries.len(),
-        "trace":isocosm::digest(&runtime.trace()), "loop_reading":isocosm::digest(&reading)});
+        "trace":cosmograph::digest(&runtime.trace()), "loop_reading":cosmograph::digest(&reading)});
     eprintln!("[active-case] {receipt}");
 }

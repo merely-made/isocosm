@@ -13,9 +13,9 @@
 //!   sibling and keeps the id for the same reason: both products' scenarios
 //!   read it by id.
 //! - **A status panel**: a heading over a stack of lines, which the session's
-//!   `.status-lines` is. Isometry's `.side-status` did *not* move: it is a
+//!   `.status-lines` is. Isocosm's `.side-status` did *not* move: it is a
 //!   bare `div` with no id, styled by a sheet that is not isomere's, so it
-//!   moves when M4 puts Isometry on the shared host and sheet.
+//!   moves when M4 puts Isocosm on the shared host and sheet.
 //! - **The control-help line**: `#controls-help`, the one line that says what
 //!   the keys do.
 //!
@@ -184,7 +184,7 @@ impl<'a, Press, Command> Binding<'a, Press, Command> {
 
     /// How this entry reads on its own, with `infix` between the keys and what
     /// they do — a space in the session's line, a colon and a space in
-    /// Isometry's crib.
+    /// Isocosm's crib.
     pub fn words(&self, infix: &str) -> String {
         format!("{}{infix}{}", self.keys, self.action)
     }

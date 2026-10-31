@@ -7,7 +7,7 @@
 //! The panel's wound and mood readings (the 2026-10-18 note to ruling 227).
 
 use super::*;
-use isocosm::{Execution, Session, harm, history::Command, schema::PartId};
+use cosmograph::{Execution, Session, harm, history::Command, schema::PartId};
 use mesocosm_runtime::Founded;
 
 /// A generated world's played critter, in its session.
@@ -20,7 +20,7 @@ fn played() -> (Session, Id) {
         .population
         .groups
         .iter()
-        .find(|(_, g)| g.entity.method == isocosm::schema::Method::Deliberative)
+        .find(|(_, g)| g.entity.method == cosmograph::schema::Method::Deliberative)
         .map(|(first, _)| *first)
         .expect("a generated world has a played lineage");
     (s, critter)
@@ -52,7 +52,7 @@ fn the_panel_states_wounds_and_mood_beside_what_the_critter_holds() {
         if harm::wound_share(e) >= 25 {
             break;
         }
-        let left = isocosm::anatomy::living_cells(e.extent(id), &e.parts[&id]);
+        let left = cosmograph::anatomy::living_cells(e.extent(id), &e.parts[&id]);
         if left > 1 {
             s.command(Command::Wound { entity: critter, part: Some(id), cells: left - 1 }).unwrap();
         }
@@ -72,7 +72,7 @@ fn a_dead_or_absent_critter_states_its_state_alone() {
     // Losing every cell of the root kills a body.
     let e = s.sim.state().population.get(critter).unwrap();
     let root = e.living().map(|(id, _)| id).find(|id| e.parent_of(*id).is_none()).unwrap();
-    let cells = isocosm::anatomy::living_cells(e.extent(root), &e.parts[&root]);
+    let cells = cosmograph::anatomy::living_cells(e.extent(root), &e.parts[&root]);
     s.command(Command::Wound { entity: critter, part: Some(root), cells }).unwrap();
     assert!(!s.sim.state().population.get(critter).unwrap().alive);
     for dead in [reading(&s, critter), vitals_of(&s.sim, None, 0, None, None)] {

@@ -10,8 +10,8 @@
 #[allow(dead_code)]
 mod worlds;
 
-use isocosm_overlay::Intent;
-use isocosm_overlay::mesocosm::{CheckpointAnswerKind, DevIntent, MesocosmIntent, NudgeTarget, PlayerActKind};
+use cosmograph_overlay::Intent;
+use cosmograph_overlay::mesocosm::{CheckpointAnswerKind, DevIntent, MesocosmIntent, NudgeTarget, PlayerActKind};
 use mesocosm_runtime::{Button, Context, InputRefusal, Named, Pick, Pointed, Press, Runtime};
 use worlds::{held, offered};
 
@@ -39,13 +39,13 @@ fn play_keys_reach_the_session_through_the_core() {
     let site = runtime.played().unwrap().resident_site().unwrap();
     for nudge in &applied[..2] {
         let MesocosmIntent::Nudge(nudge) = nudge else { panic!("{nudge:?}") };
-        assert_eq!((nudge.entity.0, nudge.target), (critter, NudgeTarget::Place(isocosm_overlay::PlaceHandle(site))));
+        assert_eq!((nudge.entity.0, nudge.target), (critter, NudgeTarget::Place(cosmograph_overlay::PlaceHandle(site))));
     }
     assert!(matches!(&applied[2], MesocosmIntent::Act(act) if matches!(act.kind, PlayerActKind::Speciate { .. })));
     let focused = Context { focus: Some(critter + 1), ..context };
     runtime.press(&Press::char('e'), &focused).unwrap();
     let MesocosmIntent::Nudge(nudge) = &queued_then_applied(&mut runtime, 1)[0] else { panic!() };
-    assert_eq!(nudge.target, NudgeTarget::Thing(isocosm_overlay::EntityHandle(critter + 1)), "toward the focused thing");
+    assert_eq!(nudge.target, NudgeTarget::Thing(cosmograph_overlay::EntityHandle(critter + 1)), "toward the focused thing");
 }
 
 #[test]
@@ -97,7 +97,7 @@ fn a_click_nudges_toward_a_current_pick_and_a_stale_one_is_refused() {
     assert_eq!(runtime.current(&menu), Ok(Pick::Thing(thing)));
     assert_eq!(runtime.point(&click, &context), Ok(true));
     let MesocosmIntent::Nudge(nudge) = &queued_then_applied(&mut runtime, 1)[0] else { panic!() };
-    assert_eq!(nudge.target, NudgeTarget::Thing(isocosm_overlay::EntityHandle(thing)));
+    assert_eq!(nudge.target, NudgeTarget::Thing(cosmograph_overlay::EntityHandle(thing)));
     let current = runtime.revision().unwrap();
     assert!(matches!(runtime.point(&click, &context), Err(InputRefusal::Stale { picked, .. }) if picked == drawn && current > drawn));
     assert_eq!(runtime.queued_len(), 0);

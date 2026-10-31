@@ -7,8 +7,9 @@
 //! Primitive, versioned interchange records for the games wing.
 //!
 //! These records carry no game behavior. Products own their local validation,
-//! interpretation, and projection methods; this crate owns only the stable v0
-//! serde layouts and the raw header checked before positional decoding.
+//! interpretation, and projection methods; this crate owns only the stable
+//! serde layouts, the raw header checked before positional decoding, and the
+//! migrations that carry an older chronicle forward.
 
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 
@@ -17,9 +18,14 @@ pub const HEADER_LEN: usize = 10;
 pub const BODY_SCHEMA: &str = "mesocosm.body/v0";
 pub const BODY_MAGIC: [u8; 8] = *b"MESOBODY";
 pub const BODY_VERSION: u16 = 0;
-pub const CHRONICLE_SCHEMA: &str = "mesocosm.chronicle/v0";
+pub const CHRONICLE_SCHEMA: &str = "mesocosm.chronicle/v1";
 pub const CHRONICLE_MAGIC: [u8; 8] = *b"MESOCHRN";
-pub const CHRONICLE_VERSION: u16 = 0;
+/// v1 keeps v0's layout and renames the VTT's vessel (case 1040).
+pub const CHRONICLE_VERSION: u16 = 1;
+/// The VTT's vessel name from v1 on.
+pub const VTT_VESSEL: &str = "isocosm";
+/// The VTT's vessel name in a v0 chronicle.
+pub const V0_VTT_VESSEL: &str = "isometry";
 
 /// Shared rejection reasons for framed v0 artifacts.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -172,6 +178,22 @@ pub fn validate_body_profile(profile: &BodyProfile) -> Result<(), WireError> {
     Ok(())
 }
 
+/// Reads a chronicle of any version this build knows, carried forward to the
+/// current one: v0 is read whole and its VTT deeds renamed. Writers always
+/// [`frame`] at [`CHRONICLE_VERSION`], so a migrated chronicle is written new.
+pub fn read_chronicle(bytes: &[u8]) -> Result<Chronicle, WireError> {
+    if peek(CHRONICLE_MAGIC, bytes)? != 0 {
+        return unframe(CHRONICLE_MAGIC, CHRONICLE_VERSION, bytes);
+    }
+    let mut chronicle: Chronicle = unframe(CHRONICLE_MAGIC, 0, bytes)?;
+    for deed in &mut chronicle.deeds {
+        if deed.vessel == V0_VTT_VESSEL {
+            deed.vessel = VTT_VESSEL.to_owned();
+        }
+    }
+    Ok(chronicle)
+}
+
 /// Ensures a chronicle still names at least one body part.
 pub fn validate_chronicle(chronicle: &Chronicle) -> Result<(), WireError> {
     if chronicle.parts.is_empty() {
@@ -187,6 +209,28 @@ mod tests {
 
     const MAGIC: [u8; 8] = *b"TESTWIRE";
     const OTHER: [u8; 8] = *b"OTHERSCH";
+
+    #[test]
+    fn a_v0_chronicle_reads_forward_and_writes_v1() {
+        let old = Chronicle {
+            species: 3,
+            parts: vec![PartOrigin { from_species: None, from_part: None, epoch: 0 }],
+            deeds: vec![Deed::new(V0_VTT_VESSEL, "held", 1), Deed::new("mesocosm", "ate", 2)],
+        };
+        let v0 = frame(CHRONICLE_MAGIC, 0, &old).unwrap();
+        let read = read_chronicle(&v0).unwrap();
+        assert_eq!(read.deeds[0].vessel, VTT_VESSEL);
+        assert_eq!(read.deeds[1].vessel, "mesocosm");
+        let v1 = frame(CHRONICLE_MAGIC, CHRONICLE_VERSION, &read).unwrap();
+        assert_eq!(peek(CHRONICLE_MAGIC, &v1), Ok(1));
+        assert_eq!(read_chronicle(&v1), Ok(read));
+        let mut v9 = v1.clone();
+        v9[8] = 9;
+        assert_eq!(
+            read_chronicle(&v9),
+            Err(WireError::UnknownVersion { found: 9, expected: CHRONICLE_VERSION })
+        );
+    }
 
     #[test]
     fn framed_values_round_trip() {

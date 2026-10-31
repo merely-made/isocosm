@@ -4,7 +4,7 @@
 //! The played-turn endpoint over stdio on the core's fixture world, taking no
 //! arguments, so Graphshell's `g4_sessions` receipt can mount it (H2).
 
-use isocosm_host::fixtures::fixture;
+use cosmograph_host::fixtures::fixture;
 use mesocosm_runtime::endpoint::MesocosmEndpoint;
 
 fn main() -> Result<(), String> {

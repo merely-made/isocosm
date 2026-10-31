@@ -8,7 +8,7 @@
 //! same panel: the Eponym session's subject sheet and the Mesocosm bench's
 //! parts examiner are both a heading, a `.parts` palette of focusable
 //! `button.part` chips with a selected and a state class, and a `.reading`
-//! column of `.field` / `.field-name` / `.field-value` rows. Isometry's
+//! column of `.field` / `.field-name` / `.field-value` rows. Isocosm's
 //! `sheet.rs` shares only the word: it is a character-sheet overlay of
 //! `.sheet-row` lines with no palette and no addressable part, so it is not a
 //! consumer and did not move.

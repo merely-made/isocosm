@@ -5,7 +5,7 @@
 
 use super::AnatomyView;
 use crate::identity::{BodyRevisionId, SubjectId};
-use isocosm::{lineage::{BodyRead, SpeciesId}, rules::Rules, schema::Entity};
+use cosmograph::{lineage::{BodyRead, SpeciesId}, rules::Rules, schema::Entity};
 
 #[derive(Clone, Copy, Debug)]
 pub struct NativeAnatomyRead<'a> {

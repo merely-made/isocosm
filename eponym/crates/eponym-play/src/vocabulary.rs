@@ -6,7 +6,7 @@
 //! its weight on trust and liking and how it is said. The sim names only
 //! the seven deeds asks and agreements record; Eponym weighs them too.
 
-use isocosm::social::{self, DeedRule, Vocabulary};
+use cosmograph::social::{self, DeedRule, Vocabulary};
 
 pub const SCOUTING: &str = "craft:scouting";
 pub const SMITHING: &str = "craft:smithing";

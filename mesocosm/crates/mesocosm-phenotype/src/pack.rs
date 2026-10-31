@@ -17,7 +17,7 @@
 use serde::{Deserialize, Serialize};
 
 use isometer_core::Role;
-use isocosm::process::{NATIVE_ABI, Seeding};
+use cosmograph::process::{NATIVE_ABI, Seeding};
 
 /// The pack format ABI this build reads. One, and it is the core's own.
 pub const SUPPORTED_ABI: u32 = NATIVE_ABI;
@@ -64,7 +64,7 @@ pub struct Manifest {
     /// Explicit native world law for NEW founding. A restored world keeps
     /// its saved law; a pack cannot replace that law after the session exists.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub affinity: Option<isocosm::rules::Affinity>,
+    pub affinity: Option<cosmograph::rules::Affinity>,
 }
 
 /// One `processes/<name>.toml` (or `.json`).

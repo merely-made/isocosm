@@ -3,7 +3,7 @@
 Each host binary runs two sessions of the shipping host, each left to run 25
 seconds and stopped: `headed-demo`, the demo board under the flag as B5
 measured it, and `headed-256`, the 256 by 256 stress board
-(`ISOMETRY_SYNTH=256`). Both arm the overlay self-test, so the host keeps
+(`ISOCOSM_SYNTH=256`). Both arm the overlay self-test, so the host keeps
 drawing a still board until the test fires at three seconds. Hosts built at
 several commits run back to back and interleaved, so a before and an after
 share one window of the machine's load; the demo session is each run's own
@@ -41,20 +41,20 @@ def session(
     directory.mkdir(parents=True, exist_ok=True)
     env = dict(os.environ)
     env.update({
-        "ISOMETRY_SCENE_BOARD": "1",
-        "ISOMETRY_PROFILE": "1",
-        "ISOMETRY_OVERLAY_SELFTEST": "1",
-        "ISOMETRY_CAPTURE_DIR": str(directory),
+        "ISOCOSM_SCENE_BOARD": "1",
+        "ISOCOSM_PROFILE": "1",
+        "ISOCOSM_OVERLAY_SELFTEST": "1",
+        "ISOCOSM_CAPTURE_DIR": str(directory),
     })
-    env.pop("ISOMETRY_SYNTH", None)
-    env.pop("ISOMETRY_SCENE_HEADROOM", None)
-    switches = "ISOMETRY_SCENE_BOARD=1 ISOMETRY_PROFILE=1 ISOMETRY_OVERLAY_SELFTEST=1"
+    env.pop("ISOCOSM_SYNTH", None)
+    env.pop("ISOCOSM_SCENE_HEADROOM", None)
+    switches = "ISOCOSM_SCENE_BOARD=1 ISOCOSM_PROFILE=1 ISOCOSM_OVERLAY_SELFTEST=1"
     if synth:
-        env["ISOMETRY_SYNTH"] = synth
-        switches += f" ISOMETRY_SYNTH={synth}"
+        env["ISOCOSM_SYNTH"] = synth
+        switches += f" ISOCOSM_SYNTH={synth}"
     if headroom is not None:
-        env["ISOMETRY_SCENE_HEADROOM"] = str(headroom)
-        switches += f" ISOMETRY_SCENE_HEADROOM={headroom}"
+        env["ISOCOSM_SCENE_HEADROOM"] = str(headroom)
+        switches += f" ISOCOSM_SCENE_HEADROOM={headroom}"
     with open(directory / "stderr.log", "wb") as err, open(directory / "stdout.log", "wb") as log:
         process = subprocess.Popen([str(exe)], cwd=cwd, env=env, stdout=log, stderr=err)
         time.sleep(seconds)
@@ -65,7 +65,7 @@ def session(
         NEWLINE.join([
             f"commit {commit}",
             f"binary {exe.name} sha256 {digest}",
-            f"switches {switches} ISOMETRY_CAPTURE_DIR=<this directory>",
+            f"switches {switches} ISOCOSM_CAPTURE_DIR=<this directory>",
             f"run {seconds} s, then stopped",
             "",
         ]),
@@ -172,7 +172,7 @@ def files(out: pathlib.Path) -> list[pathlib.Path]:
     found = []
     runs = [host / name for host in hosts(out) for name in SESSIONS] + checks(out)
     for run in runs:
-        for leaf in ("stderr.log", "isometry_capture.png", "source.txt"):
+        for leaf in ("stderr.log", "isocosm_capture.png", "source.txt"):
             path = run / leaf
             if path.exists():
                 found.append(path)
@@ -186,7 +186,7 @@ def pictures(out: pathlib.Path) -> str:
     runs = [host / "headed-256" for host in hosts(out)] + checks(out)
     rows = []
     for run in runs:
-        capture, log = run / "isometry_capture.png", run / "stderr.log"
+        capture, log = run / "isocosm_capture.png", run / "stderr.log"
         if not (capture.exists() and log.exists()):
             continue
         text = log.read_text(encoding="utf-8", errors="replace")
@@ -214,11 +214,11 @@ def pictures(out: pathlib.Path) -> str:
     ]
     reference = {}
     for target, headroom, run, digest in sorted(rows, key=lambda r: (r[0], r[1] != "none", str(r[2]))):
-        first = reference.setdefault(target, run / "isometry_capture.png")
+        first = reference.setdefault(target, run / "isocosm_capture.png")
         label = run.relative_to(out).as_posix()
         lines.append(
             f"| {target} | {headroom} | `{label}` | `{digest}` "
-            f"| {unlike(first, run / 'isometry_capture.png')} |"
+            f"| {unlike(first, run / 'isocosm_capture.png')} |"
         )
     return NEWLINE.join(lines) + NEWLINE
 

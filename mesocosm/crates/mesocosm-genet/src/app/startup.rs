@@ -6,17 +6,17 @@
 use super::{HostConfig, Runtime};
 
 fn a1_setup(mut founded: mesocosm_runtime::Founded,
-    affinity: Option<isocosm::rules::Affinity>)
+    affinity: Option<cosmograph::rules::Affinity>)
     -> Result<mesocosm_runtime::runtime::ecology::Setup, mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
     if affinity.is_some() {
         return Err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("--ecology-rates a1 cannot be combined with the authored pack affinity; remove that affinity before selecting A1".into()));
     }
     let mut founding = founded.genesis.founding.clone()
         .ok_or_else(|| mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid("--ecology-rates a1 requires an ordinary generated founding".into()))?;
-    founding.ecology_rates = isocosm::ecology::Rates::A1;
+    founding.ecology_rates = cosmograph::ecology::Rates::A1;
     founded.genesis = founding.generate().map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
     mesocosm_runtime::runtime::ecology::Setup::generated_classified(
-        founded, isocosm::Execution::Individuals)
+        founded, cosmograph::Execution::Individuals)
 }
 
 fn candidate_seed(base: u64, attempt: u32) -> u64 {
@@ -65,7 +65,7 @@ fn select_a1_candidate<T>(
         "no A1 candidate met the requested food/placement conditions after {attempts} candidate(s)")))
 }
 
-pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Result<Runtime, String> {
+pub(super) fn generated(config: &HostConfig, affinity: Option<cosmograph::rules::Affinity>) -> Result<Runtime, String> {
     if config.ecology_rates.is_some()
         && (config.bench_world || config.ecology_candidate.is_some()
             || config.watch.is_some()
@@ -87,12 +87,12 @@ pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Af
         return setup.offer(config.ticks_per_second);
     }
     let seed = if config.unchosen_seed {
-        // Same clock-sourced seed as native isocosm-bench. This is not OS randomness.
+        // Same clock-sourced seed as native cosmograph-bench. This is not OS randomness.
         std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)
             .map_err(|why| why.to_string())?.as_nanos() as u64
     } else { config.seed };
     if config.ecology_witness.is_none()
-        && config.ordinary_ecology_rates() == isocosm::ecology::Rates::A1 {
+        && config.ordinary_ecology_rates() == cosmograph::ecology::Rates::A1 {
         let began = std::time::Instant::now();
         let selected = select_a1_candidate(seed, config.candidate_attempts, config.unchosen_seed, config.population,
             |candidate| {
@@ -142,14 +142,14 @@ pub(super) fn generated(config: &HostConfig, affinity: Option<isocosm::rules::Af
 /// A world to play rather than to admit: the A1 candidate search keeps its
 /// cheap structural check (a living consumer with food), the full ecology
 /// witness is skipped, and the epoch is short enough to reach the board.
-fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Result<Runtime, String> {
+fn play(config: &HostConfig, affinity: Option<cosmograph::rules::Affinity>) -> Result<Runtime, String> {
     let seed = if config.unchosen_seed {
         std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)
             .map_err(|why| why.to_string())?.as_nanos() as u64
     } else { config.seed };
     // A1 was qualified on 60 founders; the generator's default of 256 booms
     // past a thousand within an epoch. An explicit --population still wins.
-    let population = if config.population == isocosm::Founding::default().population { 60 } else { config.population };
+    let population = if config.population == cosmograph::Founding::default().population { 60 } else { config.population };
     let selected = select_a1_candidate(seed, config.candidate_attempts, config.unchosen_seed, population,
         |candidate| {
             let mut founded = mesocosm_runtime::Founded::generated_with_affinity(candidate, population, affinity.clone())
@@ -176,9 +176,9 @@ fn play(config: &HostConfig, affinity: Option<isocosm::rules::Affinity>) -> Resu
                 if let Some(soil) = site.accounts.get_mut("world:soil") { *soil = *soil * config.play_soil / 100; }
             }
             let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
-            founded.genesis.rules.sun = Some(isocosm::light::SunRules { start_hour: config.play_hour, ..sun });
+            founded.genesis.rules.sun = Some(cosmograph::light::SunRules { start_hour: config.play_hour, ..sun });
             if config.habitat_site {
-                isocosm::spatial::embodiment::declare_site(&mut founded.genesis)
+                cosmograph::spatial::embodiment::declare_site(&mut founded.genesis)
                     .map_err(mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid)?;
                 preflight_site_starter(&founded)?;
             }
@@ -217,9 +217,9 @@ fn placed_food_near_starter(runtime: &Runtime) -> bool {
         .filter(|at| at.site==actor.site).map(|at|at.pose.clone()))
 }
 
-fn starter_food_near(sim:&isocosm::Simulation,id:u64,site:u64,
-    mut pose:impl FnMut(u64)->Option<isocosm::spatial::Pose>) -> bool {
-    use isocosm::spatial::{embodiment, foraging};
+fn starter_food_near(sim:&cosmograph::Simulation,id:u64,site:u64,
+    mut pose:impl FnMut(u64)->Option<cosmograph::spatial::Pose>) -> bool {
+    use cosmograph::spatial::{embodiment, foraging};
     let Some(at)=pose(id) else {return false};
     let Some(doc) = sim.state().population.get(id).and_then(|e|e.body.as_ref()) else { return false; };
     let Ok(occupied) = embodiment::boxes(doc, &at) else { return false; };
@@ -236,15 +236,15 @@ fn preflight_site_starter(founded:&mesocosm_runtime::Founded)
     -> Result<(),mesocosm_runtime::runtime::ecology::GeneratedSetupError> {
     use mesocosm_runtime::runtime::ecology::GeneratedSetupError as Error;
     if founded.start!=Default::default() || founded.genesis.rules.deep_time.epochs!=0 {return Ok(());}
-    let session=isocosm::Session::new(founded.genesis.clone(),isocosm::Execution::Grouped).map_err(Error::Invalid)?;
-    let interim=isocosm::directing::interim::Interim::found_session(session,
+    let session=cosmograph::Session::new(founded.genesis.clone(),cosmograph::Execution::Grouped).map_err(Error::Invalid)?;
+    let interim=cosmograph::directing::interim::Interim::found_session(session,
         founded.start,founded.mode,founded.pace).map_err(Error::Invalid)?;
     let actor=interim.critter().ok_or(Error::MissingPlayedPlacement)?;
     let sim=&interim.session.sim;
     let site=sim.state().population.get(actor).and_then(|e|e.resident_site()).ok_or(Error::MissingPlayedPlacement)?;
     let t=sim.genesis().rules.spatial_templates.as_ref().ok_or(Error::MissingPlayedPlacement)?;
     let poses:std::collections::BTreeMap<_,_>=t.stands.get(&site).into_iter().flatten()
-        .filter_map(|s|Some((s.actor?,isocosm::spatial::Pose {at:s.at,yaw:s.yaw,feet:s.feet.clone()}))).collect();
+        .filter_map(|s|Some((s.actor?,cosmograph::spatial::Pose {at:s.at,yaw:s.yaw,feet:s.feet.clone()}))).collect();
     if !poses.contains_key(&actor) {return Err(Error::MissingPlayedPlacement);}
     if !starter_food_near(sim,actor,site,|id|poses.get(&id).cloned()) {return Err(Error::MissingViableConsumerFood);}
     Ok(())
@@ -264,16 +264,16 @@ mod tests {
         let founded = mesocosm_runtime::Founded::generated(9, 256).unwrap();
         let setup = a1_setup(founded, None).unwrap();
         assert_eq!(setup.founded.genesis.founding.as_ref().unwrap().ecology_rates,
-            isocosm::ecology::Rates::A1);
+            cosmograph::ecology::Rates::A1);
         assert_eq!(setup.specification.horizon, 60);
         assert_eq!(setup.founded.genesis.rules.ecology_witness.as_ref(), Some(&setup.specification));
-        assert_eq!(setup.execution, isocosm::Execution::Individuals);
+        assert_eq!(setup.execution, cosmograph::Execution::Individuals);
     }
 
     #[test]
     fn explicit_a1_reports_authored_pack_affinity_instead_of_stripping_it() {
         let founded = mesocosm_runtime::Founded::generated(9, 256).unwrap();
-        let error = a1_setup(founded, Some(isocosm::rules::Affinity::default())).unwrap_err();
+        let error = a1_setup(founded, Some(cosmograph::rules::Affinity::default())).unwrap_err();
         assert!(matches!(error, mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message)
             if message.contains("authored pack affinity")));
     }
@@ -326,7 +326,7 @@ mod tests {
         let error = select_a1_candidate(1_792_230_697_480_612_000, 12, true, 256, |seed| {
             tried.push(seed);
             a1_setup(mesocosm_runtime::Founded::generated(seed, 256).unwrap(),
-                Some(isocosm::rules::Affinity::default()))
+                Some(cosmograph::rules::Affinity::default()))
         }).unwrap_err();
         assert_eq!(tried, [1_792_230_697_480_612_000]);
         assert!(matches!(error, mesocosm_runtime::runtime::ecology::GeneratedSetupError::Invalid(message)

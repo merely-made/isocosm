@@ -4,13 +4,13 @@
 //! Marked physical items require native custody and equipment admission.
 
 use super::*;
-use isometry_campaign::{Inventory, ItemId};
+use isocosm_campaign::{Inventory, ItemId};
 use std::collections::BTreeSet;
 
 fn bound_items(state:&GameSnapshot)->Result<BTreeSet<ItemId>,GameError> {
     if state.native.is_none() {return Ok(BTreeSet::new());}
     let Some(table)=&state.native_table else {return Ok(BTreeSet::new());};
-    let game=isocosm_vtt::native::GameBindings::decode(&table.game).map_err(GameError::Native)?;
+    let game=isocosm_native::native::GameBindings::decode(&table.game).map_err(GameError::Native)?;
     Ok(game.item_records().iter().filter_map(|record|record.binding.as_ref().map(|binding|binding.item.clone())).collect())
 }
 

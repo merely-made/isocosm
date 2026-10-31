@@ -1,5 +1,5 @@
 //! Bakes the interchange fixture to a PNG strip, as a visual receipt that a
-//! Mesocosm critter arrives in Isometry as a legible sprite.
+//! Mesocosm critter arrives in Isocosm as a legible sprite.
 //!
 //! Run the committed fixture:
 //! `cargo run -p isometer-mesh --example critter_sprite -- [output.png]`

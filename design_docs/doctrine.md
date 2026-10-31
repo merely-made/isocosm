@@ -112,10 +112,10 @@ be revived by whoever brings it support.
 
 *Not verified:* enforcement. Polities are built behind the society feature.
 
-Links: draws on 64, 67, 68, 81, 988, 989, 991, 992 · summary A polity enforces with what it provides and asserts; efficacy is read; a focus not a size; contingency borrows enforcement; no will to continue.
+Links: draws on 64, 67, 68, 81, 988, 989, 991, 992, 1024 · summary A polity enforces with what it provides and asserts; efficacy is read; a focus not a size; contingency borrows enforcement; no will to continue.
 
-*Refined 2026-10-22 from cases 988, 989, 991 and 992 (Mark: "Both refined as
-drafted").*
+*Applied 2026-10-30, case 1024: "any group decision-making" covers faction
+and polity (Mark: "Keep the split").*
 
 ### Schema 6. Minds
 
@@ -157,15 +157,16 @@ World rules and game rulesets are one binding language, at founding and at
 play. Each world chooses whether the sim leads, rulesets calibrating to its
 background (114), or its ruleset leads, the sim's background following it
 wherever it specifies behaviour; the ledger, the record and the derivation
-rule stay inviolable either way. A reading's bound and a competition's
-definition sit in the world's rules. Effects entailed by a world's
-composition, and a space scope, come later.
+rule stay inviolable either way. A campaign founded at the table defaults to
+its ruleset leading, sim-led chosen at founding. A reading's bound and a
+competition's definition sit in the world's rules. Effects entailed by a
+world's composition, and a space scope, come later.
 
 *Not yet built:* the per-world choice.
 
-Links: draws on 41, 114, 218, 538 · summary World rules and rulesets are one language; each world picks whether the sim or its ruleset leads; ledger and record stay inviolable.
+Links: draws on 41, 114, 218, 538, 1014 · summary World rules and rulesets are one language; each world picks whether the sim or its ruleset leads, a table campaign defaulting to its ruleset; ledger and record stay inviolable.
 
-*Reviewed 2026-10-22, new. Mark: "Schema statement".*
+*Refined 2026-10-30 from case 1014 (Mark: "Ruleset leads").*
 
 ### Schema 9. Saves stay readable
 
@@ -1157,7 +1158,7 @@ follows.
 
 Links: draws on 147, 148, 391, 392, 393, 394, 396, 399, 400, 401, 402, 403, 670, 744 · summary Skeleton, edge profiles and Coons interiors lift sites to chunked columns; the lift is isometer's; the sim has no render crate.
 
-*Reviewed 2026-10-22, new. 392 and 393 put the lift in Isocosm; 670 had
+*Reviewed 2026-10-22, new. 392 and 393 put the lift in the sim; 670 had
 moved in-site space to isometer, where the lift's code lives, without the
 link. Mark: "As drafted, 670 amends 392 and 393".*
 
@@ -1197,6 +1198,25 @@ Links: draws on 48 · summary Glyph presence makes divine places; placement and 
 
 *Reviewed 2026-10-22, new. Mark: "A parked World statement".*
 
+### World 10. People grow out of the world; towns are read off them
+
+In a world given deep time the generator places no people: lineages grow and
+spread where conditions hold them, and named individuals, kin, households,
+factions and polities are read up the ladder from them, individuals lifted
+where play attends. A quick-start world is a modded, shared world whose
+founders are authored and enter by the founding door at its first tick.
+Either way a place is a hamlet, town or city, read off its dwellings,
+tenancies, work and institutions and never stored, its tier counting
+residents against thresholds set from measured draws; its history explains it, and factions and polities act
+through its residents.
+
+*Not yet built:* any of it (sim S5 sub-item d); the readings come first.
+
+Links: draws on 54, 63, 1017, 1023, 1025, 1027, naming.2, naming.3, processes.6, ecology.4, schema.12 · summary People grow out of a deep-time world (a quick-start world is modded and shared, its founders authored); places read as hamlet, town or city, never stored.
+
+*Refined 2026-10-30 from cases 1023 and 1025 (Mark: "3 for sure. A quick
+start world is a modded, shared world!").*
+
 ## Organs: glyphs, impresa, hagiograph
 
 ### Organs 1. Divinity is earned by the journey
@@ -1208,33 +1228,42 @@ that magic runs in its story, and scaled by the form sacrificed (an item, then
 a technique, skill or ability, then an embodied trait), so a devotee of one
 magic who used it greatly can still reach greater divinity. The domain is how
 the sacrificed forms were acquired, and a mix of forms mixes it. Collecting
-all the magics is favoured, as a world setting. Parked under 279: a design to resume from, not one to build to.
+all the magics is favoured, as a world setting. Parked
+(279, wing-organs D1): not a priority, and code or design on it is what
+unparks it.
 
-Links: draws on 44, 46, 47, 107 · summary Ascension sacrifices glyph forms; grade is depth of relation scaled by form; the domain is how the forms were acquired.
+Links: draws on 44, 46, 47, 107, wing-organs D1 · summary Ascension sacrifices glyph forms; grade is depth of relation scaled by form; the domain is how the forms were acquired.
 
-*Reviewed 2026-10-21, new. Mark on the grading tension between 46 and 107: "Both: depth sets the grade, form scales it"; on the text: "As drafted".*
+*Refined 2026-10-30 from wing-organs D1, the parked clause only (Mark:
+"Parked is a designation. ... It's not a prohibition.").*
 
 ### Organs 2. Power is the frequency of the domain's process
 
 A domain is named freely, but acts fuel it, and a god whose process rarely
 happens is weak, unless its effects are unprecedented or significant.
 Choosing a referent is for greater divinities and avatars. Anatomy (vampire,
-lich, fey, eldritch) is the other road to long life. Parked under 279: a design to resume from, not one to build to.
+lich, fey, eldritch) is the other road to long life. Parked
+(279, wing-organs D1): not a priority, and code or design on it is what
+unparks it.
 
-Links: draws on 49, 52 · summary A domain's power is how often its process happens; rare but significant effects mitigate; referents are for the greatest.
+Links: draws on 49, 52, wing-organs D1 · summary A domain's power is how often its process happens; rare but significant effects mitigate; referents are for the greatest.
 
-*Reviewed 2026-10-21, new. Mark: "As drafted".*
+*Refined 2026-10-30 from wing-organs D1, the parked clause only (Mark:
+"Parked is a designation. ... It's not a prohibition.").*
 
 ### Organs 3. Peeking behind the curtain
 
 Some divine figures read truth beyond their senses and reach: magic that
 bends rules 5 (memory is not global) and 59 (senses are the creature's own)
 for its bearer. It is a trait a figure may hold, not one its tier grants, and
-no play mode or seat. Parked under 279: a design to resume from, not one to build to.
+no play mode or seat. Parked
+(279, wing-organs D1): not a priority, and code or design on it is what
+unparks it.
 
-Links: draws on 384 · summary Some divine figures read truth beyond their reach, a magic bending rules 5 and 59; a trait, not a seat.
+Links: draws on 384, wing-organs D1 · summary Some divine figures read truth beyond their reach, a magic bending rules 5 and 59; a trait, not a seat.
 
-*Reviewed 2026-10-21, new: kept as drafted when Mark moved divine places (case 48) to World generation.*
+*Refined 2026-10-30 from wing-organs D1, the parked clause only (Mark:
+"Parked is a designation. ... It's not a prohibition.").*
 
 ### Organs 4. The impresa note
 
@@ -1500,14 +1529,14 @@ mere's doctrine as Stack 3 ("Split as drafted").*
 
 ### Stack 4. One sim, one contract, one bench
 
-Isocosm generates worlds, histories and entities, configurable and
+Cosmograph generates worlds, histories and entities, configurable and
 extensible, played several ways; projections, perspectives, turn-based or
 real-time play are distinctions made on top of it. No product's paradigm is
 hardcoded into it: named scopes (world, region, area, battlemap) are a game's
 defaults, not levels the sim holds (World 3). It is the one sim: no product
 grows an engine of its own, and mesocosm-core's sim moved in, re-expressed in
 process definitions, and retired. Games meet the sim through one game-neutral
-crate, `isocosm-overlay`, submitting intents and taking back events, a
+crate, `cosmograph-overlay`, submitting intents and taking back events, a
 read-only view of each tick and, through the handoff, the outcomes they
 settle: each game's vocabulary a module, shapes two games share lifted once
 into its core (points, act keys, harm, wounds, parts), the tick a newtype over
@@ -1569,14 +1598,17 @@ Bindings, when built, are a conatus module generic over the key: bodies only,
 on a world shared with the terrain collider; accepted state arrives whole and
 per key, the two agreeing; a moved body keeps its id. Edits carry the
 source's stamp; conatus refreshes queries on call; a barrier on the stamp
-stays in the product until a second consumer needs it.
+stays in the product until a second consumer plans it.
 
-Links: draws on 332, 347, 348, 349, 350, 351, 352, 604, 609, 695, 724 · stack · summary Physics is conatus's, replaying bit for bit across machines; isometer answers picks; bindings, when built, are generic conatus modules.
+Links: draws on 332, 347, 348, 349, 350, 351, 352, 604, 609, 695, 724, 1045 · stack · summary Physics is conatus's, replaying bit for bit across machines; isometer answers picks; bindings, when built, are generic conatus modules.
 
 *Reviewed 2026-10-22, new. Built: parry private inside conatus, rapier's
 enhanced determinism, the query refresh, isometer's pick. Not yet built: the
 binding module, the labelled-digest crate, the cross-OS digest. Mark: "As
 drafted, tagged stack".*
+
+*Refined 2026-10-31 (1045): the barrier waits for a planned second consumer,
+not an arrived one. Mark: "Also isocosm Stack 7".*
 
 ### Stack 8. Lit bodies over traced terrain
 
@@ -1671,13 +1703,13 @@ Stack 5 ("Split as drafted").*
 
 ### Host 1. One sim host under three product hosts
 
-The embeddable core, `isocosm-host` as a library, founds worlds and holds the
+The embeddable core, `cosmograph-host` as a library, founds worlds and holds the
 world and its session (Mesocosm's included), the clock with an explicit step
 (each product picks wall-clock or explicit pacing), and a driver typed
 through a product trait. Three uniform product hosts sit on isomere's
 `Assembly` over it.
 
-Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core isocosm-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
+Links: draws on 381, 884, 892, 896, 898, 901, 925, 926, 927 · summary The embeddable core cosmograph-host holds world, session, clock and a typed driver; three product hosts sit on Assembly over it.
 
 *Refined 2026-10-22 in the Stack and engine review: 381, the decision the core
 and product hosts carry out, cited (Mark: "Refile to Host, cited by Host 1").*
@@ -1685,8 +1717,8 @@ and product hosts carry out, cited (Mark: "Refile to Host, cited by Host 1").*
 ### Host 2. Inspection is endpoints
 
 The core's inspection is a Graphshell endpoint behind a feature in
-`isocosm-host`; each product's panels are an endpoint module behind a feature
-in an existing crate. No new `isometry-` names are made. Every snapshot
+`cosmograph-host`; each product's panels are an endpoint module behind a feature
+in an existing crate. No new crate names are made for it. Every snapshot
 records tick, entry count and state hash, and an intent checks it, so a
 change through any endpoint stales every endpoint (Record 1).
 
@@ -1831,7 +1863,7 @@ Links: draws on 233, 597, 943, processes.1 · summary Blows resolve in the foreg
 *Reviewed 2026-10-22, new. Mark moved the handback principle up to
 Processes 1 ("Move the handback principle up"); this statement cites it.*
 
-### Eponym 3. Eponym's world is native Isocosm
+### Eponym 3. Eponym's world is native Cosmograph
 
 Needs are native accounts read by needs; a wound is cell loss; knowing is
 notes plus the reach; items are inert entities carried by relation, with
@@ -1840,7 +1872,7 @@ native geometry; crafts and deed weights are keys a rules pack declares, which
 other games can declare too; a deed carries its agreement as a typed link on
 its event.
 
-Links: draws on 239, 767, 771, 776, 777, 778, 808 · summary Eponym's needs, wounds, knowing, items and social vocabulary are native Isocosm; crafts are rules-pack keys.
+Links: draws on 239, 767, 771, 776, 777, 778, 808 · summary Eponym's needs, wounds, knowing, items and social vocabulary are native Cosmograph; crafts are rules-pack keys.
 
 *Reviewed 2026-10-22, new; checked built (crafts are keys the world's
 vocabulary declares).*
@@ -1881,22 +1913,26 @@ Links: draws on 188, 243, 244, 248, 768, 807, 809, 814, schema.1 · summary A ca
 authored content is native moved to Schema 1, and the table's own vocabulary
 (807, 809, 814) stays here.*
 
-### VTT 2. Time at the table is consent
+### VTT 2. Roles are traded seats; time at the table is consent
 
-A DM may take up any unclaimed entity to play and may edit the world; players
-sharing a character and the DM playing the unclaimed are on by default.
-Downtime advances the world's time, a domain where order matters (Record 1),
-and at the table it needs consent: every bound player holds it, disconnected
+GM, player and host are authorities over a shared world state that people
+hold, trade and share: any number may hold the GM seat or none, a GM may play
+characters beside the unclaimed, and the seat controlling a body drafts its
+character. A campaign's edition and world configuration are chosen at its
+founding. Downtime advances the world's time, a domain where order matters
+(Record 1), and needs consent: every bound player holds it, disconnected
 players included, and only a player can release their own hold, which covers
 later proposals until they retake it. A proposal binds its tick and roster,
-and a change needs a new one; the DM chooses which ready proposal advances.
+and a change needs a new one; a GM chooses which ready proposal advances.
 Pace is an authored profile of duration and stock costs.
 
-Links: draws on 156, 245, 246, 851, 852, 855, 856, 860, record.1 · summary The DM may play the unclaimed and edit; downtime needs every bound player's yes or their own release, binding tick and roster.
+*Owed:* who chooses a ready proposal, and who takes up VTT 4's offers, at a
+table with no GM seated (1030's sandbox play).
 
-*Reviewed 2026-10-22, new. Mark: "Downtime to Record 1": time is a domain
-where order matters, so the statement cites Record 1 and keeps the table's
-specifics.*
+Links: draws on 156, 245, 246, 851, 852, 855, 856, 860, 1029, 1030, record.1 · summary GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes.
+
+*Refined 2026-10-30 from cases 1029 and 1030 (Mark: "it should even be
+possible for six people to all be gm, and for eight to all be players").*
 
 ### VTT 3. A party is opt-in and grants no control
 
@@ -1939,24 +1975,52 @@ encounter runs under a named hybrid profile documenting each crossing. An
 uncalibrated edition plays experimentally: warned at open, every receipt
 marked.
 
-Links: draws on 189, 250, 538, 539, 540, 542, 543 · summary The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked.
+Links: draws on 189, 250, 538, 539, 540, 542, 543, 1013, 1020, 1021, 1026, 1031 · summary The table builds TTRPG editions faithfully: GM decision points kept, edition state beside the body, hybrids by named profile, uncalibrated play marked.
 
-*Reviewed 2026-10-22, new. Mark reframed the first draft: "it's true in the
-most direct way for the vtt, because we're talking about ttrpg rulesets which
-the vtt is meant to represent faithfully". Then "Split: VTT 5 + Processes 3".*
+*Applied 2026-10-30, cases 1013, 1020, 1021: Pathfinder 2e is built whole
+first; its HP stays the edition's while crits, dying and death reach the body
+(Mark: "Crits and dying wound").*
+
+### VTT 6. Each edition declares its campaign's shape
+
+An edition declares its campaign structure: a party or a troupe, its unit of
+time, holdings shared like a covenant. The table supplies what every shape
+uses (sessions, consent, the record), and no edition's shape is the table's
+model.
+
+Links: draws on 522, 1013, 1018, vtt.2, vtt.5 · summary An edition declares its campaign's structure; the table supplies sessions, consent and the record.
+
+*Reviewed 2026-10-30, new, from case 1018 (Mark: "Each edition declares it").*
+
+### VTT 7. A look is derived in layers
+
+A thing's look is derived from what it is, outward, into an isometer
+`Appearance`: shape from the body's part tree or the item's sort, palette from
+material, finish from make, style from a pack (from culture, once built),
+wear from condition, variation from its seed within its lineage's bounds, and
+the creator's overrides last. A pack binds class names to layers and
+palettes, so a campaign reskins without touching the app; the preview and the
+board read the same look, sim on or off. Items are generated first.
+
+Links: draws on 1012, 1019, 1022, 1028, 1035 · summary A look is derived in layers (shape, material, make, style, condition, seed, overrides) into one Appearance read by preview and board.
+
+*Refined 2026-10-30 from case 1035 (Mark: "Derived in layers").*
 
 ## Naming
 
 ### Naming 1. The family
 
-The family and its sim are Isocosm; the products are Isocosm: VTT, Isocosm:
-Mesocosm and Isocosm: Eponym. Isometry survives only as a plain technical
-prefix (the VTT's `isometry-*` crates) and in paths that receipts already cite
-(`Code/testing/isometry`, `worktrees/isometry-*`).
+The products are peers: Isocosm (the VTT), Mesocosm and Eponym, with no
+family prefix. The sim they share is Cosmograph. The repository stays
+`isocosm`, the VTT being the original project. Crates follow: the sim's are
+`cosmograph*`, the VTT's `isocosm-*` (its adapter over the sim
+`isocosm-native`); `isonetry` and `isomere` keep their own names.
 
-Links: draws on 110, 111, 112, 300, 883 · summary Isocosm is the family and the sim; Isometry is only a technical prefix.
+*Owed:* carrying the rename through the tree (case 1037).
 
-*Reviewed 2026-10-21, new. Mark: "Drop the old-name aliases".*
+Links: draws on 1036, 1037 · summary Isocosm (the VTT), Mesocosm and Eponym are peer products; the sim is Cosmograph; the repository stays isocosm.
+
+*Refined 2026-10-30 from case 1036 (Mark: "Cosmograph").*
 
 ### Naming 2. The of-note ladder
 
@@ -2027,7 +2091,7 @@ Links: draws on 914, 917 · summary The crates aim to be published; each release
 
 ### Licensing 3. Licences follow the layer
 
-The VTT's crates, `isocosm-vtt` included, are MIT OR Apache-2.0. Mesocosm,
+The VTT's crates, `isocosm-native` included, are MIT OR Apache-2.0. Mesocosm,
 Eponym, the shared wing crates and their promoted library crates are
 MPL-2.0; the only exception route is the fork/vendor criterion in mere's
 license posture brief (`mere/design_docs/2026-08-22_license_posture_brief.md`).

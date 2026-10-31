@@ -57,7 +57,7 @@
 //! optional overlay over it, and the error line under the column. What a
 //! product hands over is a leaf key and a box — never a scene — plus the four
 //! things the two genuinely differed on (leaf class, id, description, and the
-//! bench's transform style). The Isometry overmap is *not* a consumer: its leaf
+//! bench's transform style). The Isocosm overmap is *not* a consumer: its leaf
 //! is Cambium's own `GraphCanvasSwatch`, placed in a panel rather than a card.
 //!
 //! ## M2: the examiner
@@ -67,7 +67,7 @@
 //! `button.part` chips with a label, a selected state and a condition class,
 //! over `.field` name-value rows. A product hands over an
 //! [`ExaminerModel`] built from its own projection — a row is a `u64` and a
-//! label, never a part — and a selection handler over its own state. Isometry's
+//! label, never a part — and a selection handler over its own state. Isocosm's
 //! `sheet.rs` is not a consumer: it is a character-sheet overlay of
 //! `.sheet-row` lines with no palette, so §1's row is corrected there too.
 
@@ -81,7 +81,7 @@
 //! clicks: the published status line, the status panel, and the control-help
 //! line, which is now *derived* from a [`Keymap`] the product's key handler
 //! dispatches through, so the sentence and the bindings cannot drift.
-//! Isometry's message log is the journal's third consumer and its side status
+//! Isocosm's message log is the journal's third consumer and its side status
 //! the status panel's.
 
 //!

@@ -2,24 +2,24 @@
 // SPDX-License-Identifier: MPL-2.0
 
 //! Eponym through its contract (wing rulings 686 and 794): every act of
-//! play, an `isocosm_overlay::eponym` intent or handoff, becomes native
+//! play, an `cosmograph_overlay::eponym` intent or handoff, becomes native
 //! commands here and nowhere else. The driven sophont's actuation (232,
 //! 233, 779), its asks, agreements, deeds and tellings, the player's acts,
 //! the checkpoint answers, and the harm the foreground settled (669).
 //! Founding, the host's arrivals, bodies and authored content, goes
 //! through [`World::found`].
 
-use isocosm::harm::Wounded;
-use isocosm::history::Command;
-use isocosm::knowing::{Knowing, Proposition};
-use isocosm::schema::{Id, Key};
-use isocosm::social::{self, DeedKind, Offer, Social};
-use isocosm_overlay::eponym::{
+use cosmograph::harm::Wounded;
+use cosmograph::history::Command;
+use cosmograph::knowing::{Knowing, Proposition};
+use cosmograph::schema::{Id, Key};
+use cosmograph::social::{self, DeedKind, Offer, Social};
+use cosmograph_overlay::eponym::{
     ActTarget, Actuation, AgreementAct, AgreementHandle, EndReason, EponymHandoff, EponymIntent,
     LifeCheckpoint, LifeChoice, Manner, PlayerActKind, Proposal, StartTime, Successor, Term,
     TermSide, WorkKey,
 };
-use isocosm_overlay::{EntityHandle, Harm, Pointable, WoundSeverity};
+use cosmograph_overlay::{EntityHandle, Harm, Pointable, WoundSeverity};
 use isometer_space::{Edit, Op, edit::Shape};
 use serde::Deserialize;
 
@@ -90,29 +90,29 @@ impl Borrowed<'_> {
             EponymIntent::StockAct(act) => return self.stock_act(participant, act),
             EponymIntent::ProjectConsent(act) => {
                 check(act.subject)?;
-                use isocosm_overlay::eponym::ProjectOwner;
+                use cosmograph_overlay::eponym::ProjectOwner;
                 let owner = match act.owner {
-                    ProjectOwner::Entity(entity) => isocosm::projects::Owner::Entity(entity.0),
-                    ProjectOwner::Polity(polity) => isocosm::projects::Owner::Polity(polity.0),
+                    ProjectOwner::Entity(entity) => cosmograph::projects::Owner::Entity(entity.0),
+                    ProjectOwner::Polity(polity) => cosmograph::projects::Owner::Polity(polity.0),
                 };
-                let outcome = self.run(Command::Project(isocosm::projects::Change::Consent {
+                let outcome = self.run(Command::Project(cosmograph::projects::Change::Consent {
                     participant: participant.ok_or(WorldError::NotPlayed)?, actor:act.subject.0,
-                    project:isocosm::projects::ProjectId(act.project.0), owner, worker:act.worker.0,
+                    project:cosmograph::projects::ProjectId(act.project.0), owner, worker:act.worker.0,
                     grant:act.grant, process:act.process.as_ref().map(|process| process.0.clone()), cause:None,
                 }))?;
-                let _:isocosm::projects::Consented = serde_json::from_str(&outcome).map_err(|_| WorldError::Decode)?;
+                let _:cosmograph::projects::Consented = serde_json::from_str(&outcome).map_err(|_| WorldError::Decode)?;
                 out.outcomes.push(outcome);
                 return Ok(out);
             },
             EponymIntent::ProjectCarry(act) => {
                 check(act.subject)?;
-                let outcome = self.run(Command::Project(isocosm::projects::Change::Carry {
+                let outcome = self.run(Command::Project(cosmograph::projects::Change::Carry {
                     participant: participant.ok_or(WorldError::NotPlayed)?,
                     actor: act.subject.0,
-                    project: isocosm::projects::ProjectId(act.project.0),
+                    project: cosmograph::projects::ProjectId(act.project.0),
                     carried: act.carried,
                 }))?;
-                let _: isocosm::projects::Custody =
+                let _: cosmograph::projects::Custody =
                     serde_json::from_str(&outcome).map_err(|_| WorldError::Decode)?;
                 out.outcomes.push(outcome);
                 return Ok(out);
@@ -120,16 +120,16 @@ impl Borrowed<'_> {
             EponymIntent::Project(act) => {
                 check(act.subject)?;
                 let participant = participant.ok_or(WorldError::NotPlayed)?;
-                let outcome = self.run(Command::Project(isocosm::projects::Change::Act {
+                let outcome = self.run(Command::Project(cosmograph::projects::Change::Act {
                     participant,
                     actor: act.subject.0,
                     target: act.target.map(|target| target.0),
                     process: act.process.0.clone(),
-                    project: act.project.map(|project| isocosm::projects::ProjectId(project.0)),
+                    project: act.project.map(|project| cosmograph::projects::ProjectId(project.0)),
                     lots: act.lots.clone(),
                     cause: None,
                 }))?;
-                let acted: isocosm::projects::Acted =
+                let acted: cosmograph::projects::Acted =
                     serde_json::from_str(&outcome).map_err(|_| WorldError::Decode)?;
                 if !acted.receipt.accepted() { return Err(WorldError::Refused); }
                 out.outcomes.push(outcome);
@@ -193,7 +193,7 @@ impl Borrowed<'_> {
                 let Pointable::Event(handle) = t.claim.about else {
                     return Err(WorldError::Refused);
                 };
-                let named = isocosm_overlay::key_for_handle(
+                let named = cosmograph_overlay::key_for_handle(
                     self.sim().state().events.keys().map(String::as_str),
                     handle.0,
                 );
@@ -426,7 +426,7 @@ impl Borrowed<'_> {
             process: process.into(),
             cause: None,
         })?;
-        let receipt: isocosm::simulation::Receipt =
+        let receipt: cosmograph::simulation::Receipt =
             serde_json::from_str(&outcome).map_err(|_| WorldError::Decode)?;
         receipt
             .accepted()

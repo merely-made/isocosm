@@ -5,7 +5,7 @@
 
 use super::*;
 use crate::{ActorRef, HolderRef, IdentityRef, AuthorSupply, AuthorSpreadStep};
-use isocosm::{asserted::Assertion, projects::{SpreadPreview, StockLot, StockSource},
+use cosmograph::{asserted::Assertion, projects::{SpreadPreview, StockLot, StockSource},
     spread::{self, Identity, Supply}};
 
 impl GameState {
@@ -57,7 +57,7 @@ impl GameState {
     }
 
     fn spread_command<'a>(&self, step: &'a AuthorSpreadStep)
-        -> Result<(Command, Option<&'a [isocosm::projects::DebitSelection]>), GameError> {
+        -> Result<(Command, Option<&'a [cosmograph::projects::DebitSelection]>), GameError> {
         use crate::author_spread::{substrate, placement};
         let pair = match step {
             AuthorSpreadStep::Register { identity } =>

@@ -57,7 +57,7 @@ user data. Tests track current semantics only.
 ### 5. Cross-referencing
 
 - Within a repo: relative links.
-- Across repos: cite by path (`isometry/design_docs/...`), since relative links
+- Across repos: cite by path (`isocosm/design_docs/...`), since relative links
   do not cross repository boundaries reliably and rot silently when the
   neighbour moves or is archived.
 - Crates: link to crates.io when referring to a public API
@@ -103,13 +103,15 @@ roots, in `<area>_docs/implementation_strategy/`. Each plan carries:
 - A **Progress** log, dated, appended as phases land: a line per landing,
   naming what landed.
 
-A plan holds no receipts. Run evidence — hashes, seeds, timings, counts,
-capture paths, commands run, run narratives — goes to
-`archive_docs/<YYYY-MM-DD>/<plan file stem>_receipts.md`, when it is kept at
-all; evidence that matters is a test in the repository or a line in Findings.
-Thresholds in done-conditions stay in the plan. When a plan grows its history
-past its open work, cut a new plan from its open, deferred and follow-on items
-and archive the old one whole (as on 2026-10-28).
+A plan holds no receipts. Receipts are not live, so they are archived from
+the start: each plan keeps one receipt file,
+`archive_docs/receipts/<plan file stem>_receipts.md`, appended under dated
+headings, and no folder of outputs, logs or captures beside it. Receipts
+are run evidence: hashes, seeds, timings, counts, commands run, run
+narratives. Evidence that matters is also a test in the repository or a line
+in Findings. Thresholds in done-conditions stay in the plan. When a plan
+grows its history past its open work, cut a new plan from its open, deferred
+and follow-on items and archive the old one whole (as on 2026-10-28).
 
 Code samples in a plan state whether they are illustrative or compile-ready.
 
@@ -175,9 +177,9 @@ yet keeps rules 1 to 4 until its first statement is written.
    leave; git keeps them. What is built, owed or unverified is said
    before the fields line.
 
-## Local addendum — Isometry, the games wing's repository
+## Local addendum — Isocosm, the games wing's repository
 
-This repository holds three products: Isocosm: VTT at the root, Mesocosm in
+This repository holds three products: Isocosm at the root, Mesocosm in
 `mesocosm/` and Eponym in `eponym/`, each with a flat `design_docs/` and its
 own index; no area roots have been promoted yet. This one policy governs all
 three (wing design record, ruling 615); the product directories link here.

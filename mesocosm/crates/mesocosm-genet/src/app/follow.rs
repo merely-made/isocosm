@@ -8,8 +8,8 @@
 //! unless `--dev` moved it. Following moves the camera and nothing else, so
 //! none of it reaches the queue.
 
-use isocosm::schema::Id;
-use isocosm::simulation::Simulation;
+use cosmograph::schema::Id;
+use cosmograph::simulation::Simulation;
 use mesocosm_views::Lost;
 
 use super::Host;

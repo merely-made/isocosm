@@ -6,13 +6,13 @@
 //! offer gate, `held` founded through `Interim` with a six-tick epoch and
 //! resumed, where a birth question opens at once.
 
-use isocosm::{Execution, directing::{interim::{Interim, OnCollapse, Pace, Start}, readings::Mode}};
-use isocosm_overlay::{EntityHandle, Intent, IntentEnvelope, ParticipantHandle, PlaceHandle, Tick,
+use cosmograph::{Execution, directing::{interim::{Interim, OnCollapse, Pace, Start}, readings::Mode}};
+use cosmograph_overlay::{EntityHandle, Intent, IntentEnvelope, ParticipantHandle, PlaceHandle, Tick,
     mesocosm::{BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, DeathAnswer, MesocosmIntent, Nudge,
         NudgeMeaning, NudgeTarget}};
 use mesocosm_runtime::{Founded, Runtime, runtime::{Envelope, ecology::Setup}};
 
-#[path = "../../../../../shared/isocosm/tests/ecology_independence_879/fixture.rs"]
+#[path = "../../../../../shared/cosmograph/tests/ecology_independence_879/fixture.rs"]
 #[allow(dead_code)]
 mod native_fixture;
 

@@ -6,8 +6,8 @@
 //! attached once and replaced as the critter moves, so members outside it
 //! leave the physical path.
 
-use isocosm::attention::{Region, WindowAttention};
-use isocosm_host::world::World;
+use cosmograph::attention::{Region, WindowAttention};
+use cosmograph_host::world::World;
 use super::{Mesocosm, commit, session};
 use crate::runtime::translate::Refusal;
 
@@ -28,7 +28,7 @@ impl Mesocosm {
             let Some(critter) = sim.plays(participant) else { return };
             let Some(t) = sim.genesis().rules.spatial_templates.as_ref() else { return };
             let Some(at) = sim.state().spatial_poses.get(&critter) else { return };
-            let w = isocosm::spatial::embodiment::site_window(t, at.pose.at);
+            let w = cosmograph::spatial::embodiment::site_window(t, at.pose.at);
             let attention = WindowAttention { examined: Some(Region::Frame { site: at.site, min: w.min, max: w.max }),
                 ..Default::default() };
             let held = sim.window_for(participant, PROFILE)

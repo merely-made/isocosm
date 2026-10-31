@@ -9,9 +9,9 @@
 //! judgement window, and births and deaths over a longer one. Derivable
 //! from a save, so kept beside the world, never in it.
 
-use isocosm::directing::interim::Happening;
-use isocosm::flows::{Flow, Holder};
-use isocosm::simulation::Simulation;
+use cosmograph::directing::interim::Happening;
+use cosmograph::flows::{Flow, Holder};
+use cosmograph::simulation::Simulation;
 use serde::{Deserialize, Serialize};
 
 /// Rounds the long window keeps.
@@ -30,7 +30,7 @@ struct Totals {
     died: u32,
 }
 
-fn flora(kind: &Option<isocosm::flows::Kind>) -> bool {
+fn flora(kind: &Option<cosmograph::flows::Kind>) -> bool {
     kind.as_ref().is_some_and(|k| k.kingdom == FLORA)
 }
 

@@ -8,8 +8,8 @@
 use chirograph::{IntentInvocation, IntentResult, PortableCardV1, ProjectionSnapshot, ResourceRequest};
 use eponym_play::endpoint::{EponymEndpoint, STEP, TAKE};
 use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
-use isocosm::Command;
-use isocosm_host::fixtures::fixture;
+use cosmograph::Command;
+use cosmograph_host::fixtures::fixture;
 
 fn snapshot(endpoint: &mut EponymEndpoint) -> ProjectionSnapshot {
     let request = endpoint.describe().projections[0].request.clone();

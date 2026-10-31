@@ -1,0 +1,46 @@
+[package]
+rust-version = "1.97.1"
+name = "isocosm-views"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Isocosm's Cambium view layer: board + chrome view fns and the CSS sheets, host-agnostic (desktop and, later, web)."
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+isocosm-core = { workspace = true }
+isocosm-campaign = { workspace = true }
+isocosm-native = { workspace = true, default-features = false }
+cosmograph = { workspace = true }
+cosmograph-overlay = { workspace = true }
+isonetry = { workspace = true }
+isometer-mesh = { workspace = true, features = ["vox"] }
+toml = "1"
+isometer-core = { workspace = true }
+isometer-lens = { workspace = true }
+isometer = { workspace = true }
+wgpu = { workspace = true }
+isomere = { workspace = true }
+muniment = { workspace = true }
+cambium = { workspace = true }
+sceno = { workspace = true }
+scenomise = { workspace = true }
+sprigging = { workspace = true }
+scenotime = { workspace = true }
+
+[dev-dependencies]
+# The parity gate is a real GPU frame, so the receipts — and only the
+# receipts — turn the backends on. The library above links none.
+wgpu = { version = "30", default-features = false, features = [
+    "std",
+    "wgsl",
+    "dx12",
+    "vulkan",
+    "metal",
+    "gles",
+    "webgpu",
+] }
+pollster = "0.4"

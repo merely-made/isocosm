@@ -798,6 +798,47 @@ dependencies = [
 ]
 
 [[package]]
+name = "cosmograph"
+version = "0.1.0"
+dependencies = [
+ "hagiograph",
+ "impresa",
+ "isometer-core",
+ "isometer-space",
+ "postcard",
+ "serde",
+ "serde_json",
+ "sha2 0.10.9",
+ "state-witness",
+ "toml",
+ "wing-formats",
+ "wing-functions",
+ "wing-glyphs",
+]
+
+[[package]]
+name = "cosmograph-host"
+version = "0.1.0"
+dependencies = [
+ "chirograph",
+ "cosmograph",
+ "cosmograph-overlay",
+ "graphshell-endpoint",
+ "sceno",
+ "scenomise",
+ "serde",
+ "serde_json",
+ "tempfile",
+]
+
+[[package]]
+name = "cosmograph-overlay"
+version = "0.1.0"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "cpufeatures"
 version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1303,10 +1344,10 @@ name = "eponym-play"
 version = "0.0.1"
 dependencies = [
  "chirograph",
+ "cosmograph",
+ "cosmograph-host",
+ "cosmograph-overlay",
  "graphshell-endpoint",
- "isocosm",
- "isocosm-host",
- "isocosm-overlay",
  "isometer-core",
  "isometer-space",
  "serde",
@@ -2799,59 +2840,54 @@ dependencies = [
 ]
 
 [[package]]
-name = "isocosm"
+name = "isocosm-campaign"
 version = "0.1.0"
 dependencies = [
- "hagiograph",
- "impresa",
- "isometer-core",
+ "cosmograph",
+ "cosmograph-overlay",
+ "isocosm-core",
  "isometer-space",
- "postcard",
  "serde",
  "serde_json",
- "sha2 0.10.9",
- "state-witness",
- "toml",
  "wing-formats",
  "wing-functions",
- "wing-glyphs",
 ]
 
 [[package]]
-name = "isocosm-host"
-version = "0.1.0"
-dependencies = [
- "chirograph",
- "graphshell-endpoint",
- "isocosm",
- "isocosm-overlay",
- "sceno",
- "scenomise",
- "serde",
- "serde_json",
- "tempfile",
-]
-
-[[package]]
-name = "isocosm-overlay"
+name = "isocosm-core"
 version = "0.1.0"
 dependencies = [
  "serde",
 ]
 
 [[package]]
-name = "isocosm-vtt"
+name = "isocosm-native"
 version = "0.0.2"
 dependencies = [
  "chirograph",
+ "cosmograph",
+ "cosmograph-host",
+ "cosmograph-overlay",
  "graphshell-endpoint",
- "isocosm",
- "isocosm-host",
- "isocosm-overlay",
+ "isocosm-campaign",
+ "isocosm-core",
+ "isocosm-system",
  "isometer-space",
- "isometry-campaign",
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "isocosm-system"
+version = "0.1.0"
+dependencies = [
+ "cosmograph",
+ "isocosm-campaign",
+ "isocosm-core",
+ "piccolo",
+ "serde",
+ "serde_json",
+ "toml",
 ]
 
 [[package]]
@@ -2886,36 +2922,15 @@ dependencies = [
 ]
 
 [[package]]
-name = "isometry-campaign"
-version = "0.1.0"
-dependencies = [
- "isocosm",
- "isocosm-overlay",
- "isometer-space",
- "isometry-core",
- "serde",
- "serde_json",
- "wing-formats",
- "wing-functions",
-]
-
-[[package]]
-name = "isometry-core"
-version = "0.1.0"
-dependencies = [
- "serde",
-]
-
-[[package]]
 name = "isonetry"
 version = "0.1.0"
 dependencies = [
  "chirograph",
+ "cosmograph",
+ "cosmograph-host",
  "graphshell-endpoint",
  "graphshell-host",
  "insigne",
- "isocosm",
- "isocosm-host",
  "mere-p2panda-net",
  "mere-transport",
  "muniment",
@@ -3344,7 +3359,7 @@ dependencies = [
 name = "mesocosm-phenotype"
 version = "0.0.1"
 dependencies = [
- "isocosm",
+ "cosmograph",
  "isometer-core",
  "piccolo",
  "serde",
@@ -3358,10 +3373,10 @@ version = "0.0.1"
 dependencies = [
  "chirograph",
  "conatus",
+ "cosmograph",
+ "cosmograph-host",
+ "cosmograph-overlay",
  "graphshell-endpoint",
- "isocosm",
- "isocosm-host",
- "isocosm-overlay",
  "isometer-core",
  "isometer-space",
  "mesocosm-phenotype",
@@ -6907,17 +6922,17 @@ name = "wing-integration"
 version = "0.0.1"
 dependencies = [
  "chirograph",
+ "cosmograph",
+ "cosmograph-host",
+ "cosmograph-overlay",
  "eponym-play",
  "graphshell-endpoint",
  "graphshell-host",
  "insigne",
- "isocosm",
- "isocosm-host",
- "isocosm-overlay",
- "isocosm-vtt",
+ "isocosm-campaign",
+ "isocosm-native",
  "isometer-core",
  "isometer-mesh",
- "isometry-campaign",
  "isonetry",
  "mere-transport",
  "mesocosm-runtime",

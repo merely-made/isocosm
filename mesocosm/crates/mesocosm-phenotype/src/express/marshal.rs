@@ -69,7 +69,7 @@ pub(super) fn request_table<'gc>(ctx: Context<'gc>, request: &Request) -> Table<
 /// The host's draws, as plain Lua integers.
 ///
 /// The high bit is cleared so each fits an `i64` without changing what the
-/// recorded trace says was drawn — the same accommodation Isometry's runtime
+/// recorded trace says was drawn — the same accommodation Isocosm's runtime
 /// makes, for the same reason.
 pub(super) fn entropy_table<'gc>(ctx: Context<'gc>, draws: &[u64]) -> Table<'gc> {
     let table = Table::new(&ctx);

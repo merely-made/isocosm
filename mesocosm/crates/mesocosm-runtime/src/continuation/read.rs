@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isocosm::{Session, directing::readings::View, schema::Method};
-use isocosm_overlay::{OrdinaryAccess, EntityHandle};
+use cosmograph::{Session, directing::readings::View, schema::Method};
+use cosmograph_overlay::{OrdinaryAccess, EntityHandle};
 use crate::succession::Occasion;
 
 pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible: &View)
@@ -54,15 +54,15 @@ pub fn read_loop(session: &Session, game: &Game, access: OrdinaryAccess, visible
         }
     }
     out.happenings = saved.happenings.iter().filter_map(|h| match h {
-        isocosm::directing::interim::Happening::Born { parent, child }
+        cosmograph::directing::interim::Happening::Born { parent, child }
             if (visible.shows(*parent) || origin == Some(*parent)) && visible.shows(*child) => Some(h.clone()),
-        isocosm::directing::interim::Happening::Died { critter, next }
+        cosmograph::directing::interim::Happening::Died { critter, next }
             if visible.shows(*critter) && next.is_none_or(|id| visible.shows(id)) => Some(h.clone()),
-        isocosm::directing::interim::Happening::Boundary { tick, .. } =>
-            Some(isocosm::directing::interim::Happening::Boundary { tick: *tick, turns: Vec::new() }),
-        isocosm::directing::interim::Happening::LineageEnded { .. }
+        cosmograph::directing::interim::Happening::Boundary { tick, .. } =>
+            Some(cosmograph::directing::interim::Happening::Boundary { tick: *tick, turns: Vec::new() }),
+        cosmograph::directing::interim::Happening::LineageEnded { .. }
             if saved.phase == LoopPhase::LineageEnded && out.checkpoint.is_some() => Some(h.clone()),
-        isocosm::directing::interim::Happening::WorldEnded { .. }
+        cosmograph::directing::interim::Happening::WorldEnded { .. }
             if saved.phase == LoopPhase::WorldEnded => Some(h.clone()),
         _ => None,
     }).collect();

@@ -1,0 +1,338 @@
+# Cosmograph
+
+The product-independent simulation core, consumed by Mesocosm's native
+specimen bench. Local version 0.1.0 follows the 0.0.1 name reservation; this
+implementation has not been published.
+
+Run from the repository root:
+
+```powershell
+cargo test --manifest-path shared/cosmograph/Cargo.toml
+cargo run --manifest-path shared/cosmograph/Cargo.toml --bin cosmograph-bench -- --ecology --population 48 --sites 3 --lineages 3 --ticks 64 --output world.json
+cargo run --manifest-path shared/cosmograph/Cargo.toml --bin cosmograph-bench -- --draws 16 --ticks 64 --output draws.json
+cargo run --release --manifest-path shared/cosmograph/Cargo.toml --bin cosmograph-scale -- --output scale.json
+cargo run --release --manifest-path shared/cosmograph/Cargo.toml --bin cosmograph-probe -- --draws 1000 --output probe.json
+```
+
+`cosmograph-scale` times drawn worlds by size through the host API, one tick at a
+time, and records evaluations, stored groups, history growth and heap for each.
+It counts heap with an allocator wrapper local to that binary; the library has
+no `unsafe`. Its seeds come from one master seed, printed and saved like the
+bench's. Run it in release: debug timings say nothing about scale.
+`--remeasure RECEIPT` (repeatable, with `--family` to narrow) runs an earlier
+receipt's points again on the same draws and reports, point by point, the
+speedup and whether every deterministic field came out as before.
+
+`cosmograph-probe` runs ruling 113's check on ruling 115's competing instance,
+feeding when food is short, over drawn worlds of the `probe` module's domain.
+Each world runs four ways: twice through the exact individual runner, once as
+a crowd, and once as a crowd that averages reserves. Readings are derived from
+the definitions; each gets a difference test and an equivalence test against
+its bound, Holm-corrected. `--density` runs only the exact and crowd arms, to
+measure savings without a verdict; `--members LO HI` overrides the domain's
+members per site and lineage; `--water` has every world contest water as well
+as food; `--predators` adds a lineage that hunts the others by ruling 287's
+weighted draw, a reading of where each hunt's draw took its meals, and, beside
+a verdict, a crowd that draws prey by members alone, the draw's control. A
+draw a crowd refuses is recorded and left out of that arm's comparisons, and a
+crowd under certification that refuses more than one draw in a hundred fails
+its comparison; a control's refusals are recorded with no bound.
+`--approximate` adds a fifth arm, a crowd whose round takes each count, the
+segments, the pairing and the settling alike, in one step near its mean and
+variance instead of member by member (ruling 220), checked against the exact
+runner and against the exact crowd. `--crowds` runs those two crowds alone, to
+time them at densities the exact runner is too slow to reach.
+
+Omit `--seed` for an unselected seed, printed before a draw run and saved in
+its receipt. Use `--load world.json --ticks 0 --individuals` to verify a saved
+world through individual execution. `--world genesis.json` admits authored
+founding facts and rules using the same validator and interpreter. The
+`genesis` object inside a save is such a document. A generated world's
+founding parameters accompany its realized rules and topology.
+
+## Current behavior
+
+- Integer account ledgers, declared conditions and requirements, and typed
+  effects form a serializable ruleset with a content digest. Admission checks
+  its references and material balance. A rejected transition changes nothing,
+  including identity grouping and earlier effects within that transition.
+- A stable clock and ordered due-process queue drive choices, agentless
+  processes and transitions. A tick counts a unit of world time the world's
+  rules may state, a minute by default, and process periods are read in it;
+  anything finer is the foreground game's (rulings 256 and 257). A due process
+  visits only the stored groups ready for it: carrying the traits it requires
+  of its actor (ruling 258) and passing its thresholds on the actor's own
+  accounts, holdings and age, each group filed again as acts commit to it and
+  one too young kept on a timer for the tick it comes of age (ruling 286). A
+  pass still sees groups as they stood when it began. An advance is limited by
+  its work, not by the ticks it spans (ruling 284). Configured operation,
+  history and population limits refuse work atomically; the operation budget
+  counts the members each evaluation that runs stands for (rulings 259 and
+  285), so a budget means the same grouped and individually. They do not
+  discard history to fit a budget.
+- Populations retain complete per-member states as counted identity intervals.
+  Only statically independent unary effects can run once for an interval.
+  Shared resources, target selection, risk, parentage and public events use
+  individual execution in identity order. A target selector may name a set of
+  lineages and draw its target (ruling 287): seeded and keyed by the act, each
+  member it accepts weighted by the matter it holds, and counted per member,
+  so the grouped and individual runners draw the same one. Inspection lifts an
+  identity; restriction merges only exactly equal states after the collection
+  buffer. A host may watch a process: each accepted scheduled act of it is
+  kept, with the matter its target held as the act began, until the host takes
+  them. Watching changes nothing the world does, and a refused advance takes
+  its acts back.
+- The reservoir generator varies independent metabolic networks. The ecology
+  generator adds shared soil, producers, consumers, decomposers, paid births,
+  starvation and age death. Each consumer and decomposer feeds through one
+  process, once a period (ruling 287): it eats a unit of a prey drawn among
+  its prey lineages by what each holds, the meal taken from every matter
+  account the prey holds in proportion and credited to the eater's own body.
+  Sites are explicitly well-mixed compartments. These are testable law
+  families, not the full authored ecology.
+- A world's rules may name the shapes its parts take and a catalogue of
+  functions (rulings 276, 278 and 338 to 341), each function listing the
+  shapes that admit it and whether growing such a part expresses it (Grown)
+  or only a development does (Acquired). A part has a shape and expresses
+  functions its shape admits. A process requiring `Expresses` binds its
+  actor's lowest-numbered live part expressing that function as
+  `Binding::Part`: its receipt reads that part's address and the body's
+  revision, and it may read and mark the part's traits, which revises the
+  body. Ruling 276's eight shapes, under their own `part-shape:` keys (ruling
+  360), and ruling 339's five functions in use are defaults a world adopts by
+  naming them; a world naming none serializes and hashes as before. A required
+  function is one of a process's gates. The crowd refuses processes that bind
+  a part until the vertical probe certifies them.
+- A transform may declare a conversion, checked against Mesocosm's three
+  (rulings 342 and 357): synthesis turns the world's matter, of a lineage of
+  the world's kingdom, into the body's own lineage's, so whatever synthesizes
+  is a producer; digestion turns living matter into the eater's own; and
+  mineralization returns matter that includes living matter to the world's.
+  Undeclared transforms pass as before. `diffusion::percolate` is Mesocosm's
+  soil transport as a pure kernel over ledgers, unwired until the places
+  family decides whether columns are sites (ruling 343).
+- A dev may place matter into any declared matter account at a site
+  (`Command::PlaceMatter`, rulings 271, 344 and 358). It enters from outside
+  the conserved total: the world hashes as the matter it holds, what was
+  issued is kept beside the world and recomputed on replay, every receipt
+  carries it beside the conserved totals once it is not nothing, and the
+  history labels the run assisted.
+- A host requests the flow record for one tick or command (rulings 270,
+  345, 359 and 371). `Session::advance_tick_with_flows()` advances exactly
+  one tick; `Session::command_with_flows(command)` acts at the current tick.
+  Both return `FlowResult { tick, result, flows }`: every accepted matter
+  move, its holders and accounts, amount per member, member count and process
+  or dev-placement command. Recording is opt-in for that call only, outside
+  state, hashes and saves. Results are owned by the caller; successive calls
+  cannot accumulate or repeat previous moves. Empty ticks return an empty
+  record. A failed tick rolls back under the existing one-tick transaction
+  and returns an error, with no flow result; blocked acts return their
+  outcome with no moves. Recorded runs across several ticks explicitly call
+  the API once per tick, each call its own transaction. Ordinary
+  `advance(ticks)` retains its unrecorded, whole-span transaction. Every
+  member's and site's ledgers reconcile in both execution modes. This
+  replaces the checkpoint-5 `keep_flows`/`take_flows` queue.
+- Notes use the Impresa causal core with a Djot/open-data envelope. Events
+  spread along directed routes. Deterministic knowing integrates past
+  residence and decaying reach; learning fixes a note. Hagiograph judges
+  measured account records. A beaten standing mark promotes its event to
+  legend, retained with a global reach floor.
+- Sessions save founding facts, accepted and refused intents, outcome receipts
+  and epoch hashes. Loading replays and verifies them, including across
+  execution modes. Branches retain their source. Merge returns a reviewable
+  proposal and reports changed accepted outcomes as well as refusals.
+- A world may carry a dynamics seed apart from its founding seed, so one
+  founded world can run under independent draws. Absent, it is the world seed,
+  and such worlds serialize and hash as before it existed.
+- A world may carry a mind (rulings 159, 164 and 227). Mood is read from the
+  needs its rules declare, each a query on the member and a weight, and is
+  never kept; strain is kept in a strain account. The rules' own processes
+  build strain while mood reads low and ease it off while it does not. A mind
+  bears strain up to a bearing set by its traits. Worlds without a mind
+  serialize and hash as before.
+- The `probe` module runs ruling 115's competition, pairwise contest, share
+  and yield, both member by member through the interpreter and as a crowd:
+  counts per exact state, advanced by integer count draws that follow the
+  member-by-member round's distribution. Two contesters who size each other up
+  as a close match fight in rounds (rulings 221 to 223). The side standing
+  lower loses each exchange unless an upset turns it; both take the round's
+  strain, and the loser spends reserve, which strains it more. A side past its
+  bearing breaks once, up or down by its traits, its mood and a draw, and its
+  standing shifts for the rest of the fight. The fight ends when a side is
+  spent or, sized up again, outmatched. Both runners fight through one
+  function and apply effects through the interpreter's own meanings. A world's
+  competitions are keyed by the site account each contests (ruling 236) and
+  run at once in a tick (ruling 240): each resolves against its members' state
+  at the tick's start, fights on copies, and at the tick's end each member's
+  rounds, reserve spent (capped at what it holds) and winnings settle in one
+  order. `cosmograph-probe --water` has every world contest water as well as
+  food. The definitions and the per-reading similitude bounds are part of the
+  world's rules and its rules digest. The rounds still run in the probe, not
+  the core's scheduler. With `--predators` a lineage hunts the others through
+  the core's scheduler, each prey drawn by ruling 287's weighted draw, and its
+  prey carry fat nothing but a hunt takes, so they differ in what they hold.
+  The crowd draws a prey state per hunting member, weighted by its members
+  times what each holds, which is the core's draw in distribution; both
+  runners report each meal, and the check reads what the prey held as each
+  began. Only prey holding a whole bite are taken, so the order hunters come
+  in changes nothing until the prey run out part way through a site's hunters.
+  The core then feeds the first in identity order, which the crowd matches
+  when those hunters share one state and refuses when they do not.
+
+`Founding -> Genesis -> Session` is the host API. Hosts send `Command`s and
+advance the clock explicitly. Views read `Simulation::state`; drawing does
+not inspect an entity or advance time. The core has no renderer dependency.
+
+## Current limits
+
+This is the first executable foundation of the
+[sim plan](../../mesocosm/design_docs/2026-10-28_sim_plan.md), not completion of
+S1-S6. The schema includes several future authoring seams whose full behavior
+is not implemented: goals and deliberation, ranked polity consent, genotype
+epochs and realignment, world crossing, magic, body-volume mechanics, and
+what the catalogue's functions do beyond binding a part, which the vertical
+probe (ruling 262) takes up. Periodic processes use authored cadences; they
+are not a general planner.
+
+Collection is conservative exact compression. It retains deviations and
+history; graded stubs, event pruning and reconstruction from a sparse log
+remain open. Epoch checkpoints are verification hashes, not fast state
+snapshots. There is no parallel sharding or network authority implementation.
+
+Reach currently uses one earliest-arrival route per place, with strongest
+arrival and lowest predecessor breaking ties. Later independent carriers,
+relevance weighting and secret/taboo willingness remain open. Exposure uses
+capped integer strength summed over residence ticks; it is an explicit first
+law, not a calibrated social model. The backward arrival path is inspectable;
+it does not yet materialize a carrier or teller.
+
+An act stages copies of only what it binds, its bodies and its site, and
+lists what it adds; the world is written once the act is accepted. Receipts
+read the world's matter from a total summed at founding, which every accepted
+act conserves. During an advance, a scheduled act with a target looks for it
+only among the stored groups filed at the place and under the lineage its
+selector could match, an index kept current as acts commit; and the advance
+journals the first state of whatever it changes, so a refused advance is
+undone from the journal instead of from a copy of the world taken before it
+began (ruling 237). Debug builds check the first against the full search and
+the second against a full copy. Grouping reduces interpreter calls for
+independent processes, but gives no general time or memory bound as a world
+diversifies. The
+[aggregation research](../../mesocosm/design_docs/2026-09-22_aggregation_research.md)
+separates exact equivalence from possible approximate reductions.
+
+The first baseline, measured on 2026-09-25 in the receipts under
+`mesocosm/testing/bench/receipts/2026-09-25/isocosm/`, found time per tick
+growing about with the square of the population at the largest sizes run,
+because every evaluation first totalled matter over the whole stored world and
+every accepted one cloned the whole simulation, reach field included. With
+both costs cut, the baseline's 30 ecology points ran again on the same draws
+(`remeasure-ecology.json`) with every hash and count unchanged, 12 to 113
+times faster per tick, 40 times over all. Time per evaluation still rose
+slowly with size then, from about 3 to 4 microseconds grouped and 4 to 8
+individually as members doubled from 2,048 to 4,096. Ruling 237 cut the two
+costs left, the target search across the whole population and the copy of the
+world before each advance. The same points ran again on 2026-09-26
+(`remeasure-237.json` in that day's receipts) with every hash and count
+unchanged, 2.2 times faster over all than at checkpoint 1 and 4 times at 4,096
+members individually, and took about 1.1 to 1.9 microseconds per evaluation at
+2,048 and 4,096 members in both modes. Every due process was still evaluated
+for every living group, so evaluations grew with lineages, and at eight
+lineages about 98% of ecology evaluations ended without effect. Ruling 258 has
+a due process visit only the groups carrying the traits it requires. On the
+lineage sweep at 1,024 members (`scheduler-lineages.json` in the same day's
+receipts), ecology evaluations per tick fell from 219,408 to 7,457 at 32
+lineages and ticks from 196 to 22 ms, with every hash unchanged. Ruling 286
+then filed each group as ready for a process once it passes the process's own
+thresholds, a young one on a timer: on the same sweep, every hash unchanged,
+ecology evaluations per tick fell to 667 at 2 lineages, 1,221 at 8 and 5,281
+at 32. What still grew with lineages was the generator's one feeding process
+per pair of lineages, whose searches mostly found no target. Ruling 287 gave
+each consumer one, drawing among its prey (`c4-lineages.json`, checkpoint 4):
+evaluations per tick are now 673 at 2 lineages, 682 at 8 and 631 at 32, and
+the share of the members evaluated whose act ended without effect is 41 to 50%
+at 32 lineages, against 92 to 95% before. The ecology's results change with
+its feeding; the reservoir family's do not. The dead stay stored and each
+noted event keeps an arrival at every site it reached, so ticks grow dearer as
+history accumulates. Founding in cohorts of 32 puts each cohort on one site,
+and those ecology worlds died out without a birth.
+
+The probe's first certified receipt, `probe.json` of 2026-09-25, drew 1,000
+worlds. In each, the crowd stayed within 0.2 Kolmogorov-Smirnov distance of the
+exact individual runner on all 16 readings the definitions yield, and no
+difference was detected beyond chance. The exact runner against itself passed
+the same test, and a crowd that averages reserves failed the starvation
+readings. The crowd used 11 times fewer evaluations there; across the density
+ladder, 6 to 40 times fewer as members per site and lineage rose from 32 to
+512. Its count draws are exact in distribution, so the receipt certifies this
+reduction's implementation and the instrument, not an approximation's error,
+and only for this one process.
+
+Under the fight in rounds and the mind (rulings 221 to 223 and 227), the check
+ran again on 2026-09-26, in `mesocosm/testing/bench/receipts/2026-09-26/isocosm/`.
+With food contested (`probe.json`), all 30 readings were certified within
+their bounds, the largest distance 0.052 on an inspected member's strain, and
+no difference was detected. With water contested as well (`probe-water.json`,
+two competitions a tick), all 40 were, the largest 0.032. In both, the exact
+runner passed against itself and the averaged crowd failed the starvation
+readings. The crowd used 6.5 and 2.4 times fewer evaluations and ran 12.5 and
+6.0 times faster; with two competitions a tick, members spread over more
+states, a median of 2.1 alive members per state at the end against 9.8.
+
+`probe-approximate.json` qualifies ruling 220's approximate pairing draw at
+512 to 1,024 members per site and lineage, eight times the probe's default,
+where the median state held 56 alive members at the end. Against the exact
+runner all 30 readings were certified, the largest distance 0.036 beside the
+exact crowd's 0.041 and the exact runner's own 0.022, and none differed after
+correction; against the exact crowd, all 30 again, the largest 0.058. The
+largest distances fell on single inspected members. It saved nothing there:
+the exact crowd already used 23 times fewer evaluations than the exact runner
+and ran 36 times faster, and the approximate crowd took the same evaluations
+and the same time, each within 1%. Timed alone (`probe-crowds-*.json`, four
+draws each), it ran 1.02, 1.10 and 1.33 times faster than the exact crowd
+from 512, 2,048 and 8,192 members per site and lineage, so at these densities
+the count draws are a small part of the crowd's time. The receipt qualifies
+the draw only at the density it ran at.
+
+Under rulings 284 to 287 the check ran again on 2026-09-26 (checkpoint 4, the
+`c4-` receipts of that day) with `--predators`, every world founding a lineage
+that hunts the others by ruling 287's weighted draw. With food contested
+(`c4-probe-predators.json`), all 34 readings were certified within their
+bounds, the largest distance 0.038, and no difference was detected; with water
+as well (`c4-probe-predators-water.json`), all 44 were, the largest 0.037. In
+both, the exact runner passed against itself and the averaged crowd failed the
+starvation readings. A crowd drawing prey by members alone, the draw's
+control, was told from the exact runner on one reading with food, the members
+holding strain, at a distance of 0.029, and on none with water, where the
+smallest corrected p was 0.11: the readings see how prey are chosen only
+faintly. Prey ran out part way through a site's hunters in 6 of the crowd's
+1,000 food draws and 3 of its water draws, each time among hunters in one
+state, so no draw was refused. The crowd used 4.3 and 2.0 times fewer
+evaluations and ran 10.5 and 5.9 times faster. On the density ladder
+(`c4-density.json`, eight draws a rung) it used 3.4 to 4.1 times fewer
+evaluations from 32 to 128 members per site and lineage and 14 times fewer at
+256 and 512 with hunters, and 4.6 to 14 times fewer without. These sit below
+checkpoint 1's 6 to 40 because since rulings 258 and 286 neither runner
+evaluates the members a process's gates keep out, which were most of the exact
+runner's evaluations. Without hunters, the 16-draw pilots at a fixed seed read
+exactly as checkpoint 2's.
+
+Mark then asked that the check see which prey a hunt takes, and that the
+domain let that choice move outcomes (checkpoint 4b, the `c4b-` receipts of
+the same day). A host can now watch a process's accepted scheduled acts, and
+the check reads, for each hunt, what its prey held as each meal began. Hunting
+widened to 12 to 48 hunters per site, bites of 2 to 6 and appetites of 2 to
+12, and every prey cohort carries 0 to 48 fat that only a hunt takes. With
+food (`c4b-probe-predators.json`), all 37 readings were certified within their
+bounds and none differed, the largest distance 0.038; with water
+(`c4b-probe-predators-water.json`), all 47, the largest 0.036. The exact
+runner passed against itself and the averaged crowd failed the starvation
+readings. The draw's control was told from the exact runner on the new reading
+at a distance of 0.44 in both, its prey holding 27.5 against 31.9 at a meal
+with food and 30.3 against 34.7 with water, and on 16 other readings with food
+and 7 with water, among them the prey alive and starved at the end: a draw by
+headcount left 2 to 3.5 fewer prey of a lineage alive. Prey ran out part way
+through a site's hunters in 2 of the crowd's 1,000 draws with food and 1 with
+water, each time among hunters in one state, and no crowd refused a draw. The
+crowd used 2.5 and 1.6 times fewer evaluations and ran 5.5 and 4.6 times
+faster, less than before, as fat spreads prey over more states.

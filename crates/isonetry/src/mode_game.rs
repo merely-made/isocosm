@@ -4,14 +4,14 @@
 //! VTT-owned mode bytes. Native history stays exclusively in the host's world save.
 
 use crate::GameSnapshot;
-use isocosm::Session;
-use isometry_campaign::GenerationRecord;
-use isocosm_vtt::founding::{Content, GenerationOrigin, NativeWorld};
+use cosmograph::Session;
+use isocosm_campaign::GenerationRecord;
+use isocosm_native::founding::{Content, GenerationOrigin, NativeWorld};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
-use isometry_core::{Beat, MapDocument, RollRecord, TokenId, TurnList};
-use isometry_campaign::{Inventory, WorldFact};
-use isometry_campaign::CampaignMap;
+use isocosm_core::{Beat, MapDocument, RollRecord, TokenId, TurnList};
+use isocosm_campaign::{Inventory, WorldFact};
+use isocosm_campaign::CampaignMap;
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -51,7 +51,7 @@ impl ModeGame {
             journal: state.journal.clone(), inventories: state.inventories.clone(),
             // Campaign assertion streams are native history, not a per-mode save authority.
             generations: state.generations.iter().filter(|record|
-                !matches!(record.proposal, isometry_campaign::GenValue::Campaign { .. }))
+                !matches!(record.proposal, isocosm_campaign::GenValue::Campaign { .. }))
                 .cloned().collect(),
             maps: state.maps.clone(), active_map: state.active_map.clone(), clocks: state.clocks.clone(),
             party_cap: state.party_cap, last_beats: state.last_beats.clone(), beat_seq: state.beat_seq,
@@ -69,7 +69,7 @@ impl ModeGame {
         if game.version != 1 { return Err("unsupported VTT game section version".into()); }
         game.content.validate().map_err(|e| e.to_string())?;
         if game.table.generations.iter().any(|record|
-            matches!(record.proposal, isometry_campaign::GenValue::Campaign { .. }))
+            matches!(record.proposal, isocosm_campaign::GenValue::Campaign { .. }))
         {
             return Err("VTT game section contains a campaign assertion stream".into());
         }

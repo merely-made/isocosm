@@ -6,7 +6,7 @@
 
 //! P4: accepted Eponym history read through a caller-supplied glyph canon.
 //!
-//! The journal is native (`isocosm::effects::Journal`, the effects family).
+//! The journal is native (`cosmograph::effects::Journal`, the effects family).
 //! This adapter reads `GameState` and goes with Eponym's world move (wing
 //! ruling 755).
 //!
@@ -59,12 +59,12 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use wing_glyphs::{Journey, Provenance};
 
-use isocosm::effects::Journal;
+use cosmograph::effects::Journal;
 use crate::{CanonRevisionCause, GameEvent, GameState};
 
 // The kernel types a host needs to author rules and draw a journal, so a
 // consumer of this module needs no `wing-glyphs` dependency of its own.
-pub use isocosm::effects::GlyphGrantOutcome;
+pub use cosmograph::effects::GlyphGrantOutcome;
 pub use wing_glyphs::{
     Acquisition, Canon, CanonSpec, CorrespondenceMove, Eligibility, GlyphDefinition, GrantRecord,
     ProvenanceKind,

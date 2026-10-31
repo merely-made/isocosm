@@ -5,7 +5,7 @@
 //! identities, chosen acts and publication order come from that clock.
 
 use super::*;
-use isocosm::{
+use cosmograph::{
     Command,
     spatial::{self as native, embodiment as body},
 };
@@ -252,7 +252,7 @@ impl Game {
                     ]
                 };
                 let yaw = if body::articulated(&session.sim) {
-                    (0..isocosm::draw(
+                    (0..cosmograph::draw(
                         session.sim.genesis().seed,
                         "body-arrival-yaw",
                         &[id, destination],
@@ -373,7 +373,7 @@ impl Game {
         if available.is_empty() {
             return Err("no supported unoccupied whole-body walking neighbour".into());
         }
-        let pick = (isocosm::draw(pending.sim.genesis().seed, "body-walk", &[r.actor, r.tick])
+        let pick = (cosmograph::draw(pending.sim.genesis().seed, "body-walk", &[r.actor, r.tick])
             % available.len() as u64) as usize;
         let after = available[pick].clone();
         let offset = pending
@@ -467,7 +467,7 @@ impl Game {
             .ok_or("birth templates absent")?;
         let modern = body::articulated(&pending.sim);
         let child_yaw = if modern {
-            (0..isocosm::draw(pending.sim.genesis().seed, "body-birth-yaw", &[r.child]) % 4)
+            (0..cosmograph::draw(pending.sim.genesis().seed, "body-birth-yaw", &[r.child]) % 4)
                 .fold(Yaw::Zero, |y, _| y.compose(Yaw::Quarter))
         } else {
             parent.pose.yaw

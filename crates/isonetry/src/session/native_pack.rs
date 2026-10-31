@@ -5,9 +5,9 @@
 
 use super::*;
 use crate::native_table::{NativeTable, TableSender, table_digest};
-use isocosm::Execution;
-use isocosm_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
-use isocosm_vtt::native::pack::{self, PackEnvelope, PackInput, Definition, Choreography};
+use cosmograph::Execution;
+use cosmograph_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
+use isocosm_native::native::pack::{self, PackEnvelope, PackInput, Definition, Choreography};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
@@ -50,9 +50,9 @@ pub(crate) fn apply_native_pack(state: &mut GameSnapshot, result: &NativePackRes
     Ok(())
 }
 
-fn boards(game: &[u8], activated: Option<&str>) -> Result<Vec<isometry_campaign::CampaignMap>, String> {
+fn boards(game: &[u8], activated: Option<&str>) -> Result<Vec<isocosm_campaign::CampaignMap>, String> {
     let Some(key) = activated else { return Ok(Vec::new()); };
-    let bindings = isocosm_vtt::native::GameBindings::decode(game)?;
+    let bindings = isocosm_native::native::GameBindings::decode(game)?;
     let definition = &bindings.catalogue().and_then(|c| c.packs.get(key)).ok_or("activated pack catalogue is absent")?.definition;
     definition.content.as_ref().map(|content| content.lowered_maps().map_err(|e| e.to_string())).transpose()
         .map(|maps| maps.unwrap_or_default())
@@ -89,8 +89,8 @@ impl HostSession {
         Ok(out)
     }
 
-    pub fn register_generated_pack(&mut self, record: &isometry_campaign::GenerationRecord,
-        requirements: isometry_campaign::StoryletRequirements, roles: Vec<isometry_campaign::RoleSlot>,
+    pub fn register_generated_pack(&mut self, record: &isocosm_campaign::GenerationRecord,
+        requirements: isocosm_campaign::StoryletRequirements, roles: Vec<isocosm_campaign::RoleSlot>,
         choreography: Vec<Choreography>, max_depth: usize) -> Result<Vec<Outbound>, String> {
         let (definition,secrets) = Definition::from_generation(record,requirements,roles,choreography,max_depth)?;
         let table = self.state.native_table.as_ref().ok_or("generated pack needs an admitted native DM binding")?;

@@ -209,8 +209,8 @@ impl Session {
     pub fn project_act(
         &mut self,
         process: String,
-        target: Option<isocosm::schema::Id>,
-        project: Option<isocosm::projects::ProjectId>,
+        target: Option<cosmograph::schema::Id>,
+        project: Option<cosmograph::projects::ProjectId>,
     ) -> Result<Vec<GameEvent>, SessionError> {
         self.apply_game(GameIntent::ProjectAct {
             tick: self.game.next_tick(),
@@ -223,7 +223,7 @@ impl Session {
 
     pub fn carry_project(
         &mut self,
-        project: isocosm::projects::ProjectId,
+        project: cosmograph::projects::ProjectId,
         carried: bool,
     ) -> Result<Vec<GameEvent>, SessionError> {
         self.apply_game(GameIntent::ProjectCarry {
@@ -240,7 +240,7 @@ impl Session {
     pub fn reserve_project(
         &mut self,
         process: String,
-        target: Option<isocosm::schema::Id>,
+        target: Option<cosmograph::schema::Id>,
         lots: Vec<String>,
     ) -> Result<Vec<GameEvent>, SessionError> {
         self.apply_game(GameIntent::ProjectReserve {

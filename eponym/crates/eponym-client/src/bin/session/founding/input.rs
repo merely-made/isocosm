@@ -17,7 +17,7 @@ struct SpreadInput {
     profile:eponym_play::SpreadMaterialProfile,
     initial_intents:Vec<GameIntent>,
     #[serde(default)]
-    stock_ownership:Vec<isocosm::projects::StockLot>,
+    stock_ownership:Vec<cosmograph::projects::StockLot>,
     played:SubjectId,
     target:SubjectId,
     target_item:ItemId,
@@ -31,7 +31,7 @@ struct SpreadInput {
 pub(super) struct Prepared {
     pub world:World,
     pub initial_intents:Vec<GameIntent>,
-    pub stock_ownership:Vec<isocosm::projects::StockLot>,
+    pub stock_ownership:Vec<cosmograph::projects::StockLot>,
     pub played:SubjectId,
     pub target:SubjectId,
     pub target_item:ItemId,

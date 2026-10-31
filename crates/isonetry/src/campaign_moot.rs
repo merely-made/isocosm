@@ -71,7 +71,7 @@ impl CampaignMootContext {
 #[cfg(test)]
 mod tests {
     use gemot::moot::MootEvent;
-    use isometry_campaign::{CampaignProposal, CampaignProposalMode};
+    use isocosm_campaign::{CampaignProposal, CampaignProposalMode};
     use muniment::MemoryBackend;
     use personae::Ed25519Keypair;
 
@@ -168,7 +168,7 @@ mod tests {
             MOOT,
             &MootEvent::Shared {
                 manifest_id: [7; 32],
-                schema_id: "isometry.Campaign/v1".into(),
+                schema_id: "isocosm.Campaign/v1".into(),
                 title: "River Oath".into(),
                 at_ms: 7,
             },

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isocosm::{directing::readings::View, schema::BodyDocument};
+use cosmograph::{directing::readings::View, schema::BodyDocument};
 use isometer_space::volume::Volume;
 
 pub struct PictureBody {
@@ -72,7 +72,7 @@ impl<'a> BorrowedReading<'a> {
         if bodies.is_empty() || require_played && played.is_none_or(|id|!bodies.iter().any(|body|body.entity == id)) {
             return Err("Eponym picture lacks current bindings for its admitted played region".into());
         }
-        let digest = isocosm::digest(&(source(self.session),self.visible,site,frame,self.state,played));
+        let digest = cosmograph::digest(&(source(self.session),self.visible,site,frame,self.state,played));
         let mut fingerprint = [0;4];
         for (i,word) in fingerprint.iter_mut().enumerate() {
             *word = u64::from_str_radix(&digest[i*16..(i+1)*16],16).map_err(|e|e.to_string())?;

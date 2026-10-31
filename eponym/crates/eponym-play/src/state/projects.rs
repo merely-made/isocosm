@@ -6,9 +6,9 @@
 use super::GameState;
 use crate::identity::{SubjectId, Tick};
 use crate::{GameError, GameEvent, WorldError};
-use isocosm::{projects::ProjectId, schema::Id};
-use isocosm_overlay::{ActKey, EntityHandle};
-use isocosm_overlay::eponym::{EponymIntent, ProjectAct, ProjectHandle};
+use cosmograph::{projects::ProjectId, schema::Id};
+use cosmograph_overlay::{ActKey, EntityHandle};
+use cosmograph_overlay::eponym::{EponymIntent, ProjectAct, ProjectHandle};
 
 impl GameState {
     pub(super) fn project_act(
@@ -53,7 +53,7 @@ impl GameState {
             lots: lots.to_vec(),
         }))?;
         let result = lowered.outcomes.last().ok_or(WorldError::Refused)?;
-        let acted: isocosm::projects::Acted =
+        let acted: cosmograph::projects::Acted =
             serde_json::from_str(result).map_err(|_| WorldError::Decode)?;
         if let Some(id) = acted.project {
             if !self.project_places.contains_key(&id) {

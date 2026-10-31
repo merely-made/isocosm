@@ -301,7 +301,7 @@ where
         descriptor: &FamilyCheckpointDescriptor,
         pinned_host: &VerifyingKey,
         limits: WireLimits,
-        execution: isocosm::Execution,
+        execution: cosmograph::Execution,
     ) -> Result<FamilyReplica, String> {
         let checkpoint = verify_checkpoint_resource(response, descriptor, pinned_host, limits)?;
         FamilyReplica::install(checkpoint, &[], execution)

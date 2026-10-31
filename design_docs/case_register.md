@@ -72,6 +72,8 @@ three design docs that cite it. The record holds the words.
 | 989 | Whether a means is efficacious is a track record, never asserted; the gap between a constitution and its members' preference is read at any time. | [DOC README](DOC_README.md) |
 | 991 | No will to continue is built into a polity; an institution seen clinging on is subordinated to its own officers' faction. | [DOC README](DOC_README.md) |
 | 992 | A contingent polity borrows its host's enforcement, so it is cheap to found, and a host's failure cascades through what is contingent on it. | [DOC README](DOC_README.md) |
+| 1014 | A VTT campaign defaults to ruleset-led; sim-led is a founding choice; calibration binds only sim-led worlds. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1024 | "Any group decision-making" covers faction and polity; a constitution makes a faction a polity. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 
 ## Processes and rules
 
@@ -373,6 +375,7 @@ three design docs that cite it. The record holds the words.
 | 812 | Healing after an adapter transfer restores lost cells as free-pool cells, retaining the lost cell IDs. | none |
 | 872 | Defensive tissue is explicitly designated and its bite threshold is an authored native expression; plate geometry alone establishes no armour. | none |
 | 873 | Defence compares the final pass-granted bite on the protected part, not the planned bite; admission uses the same grant. | none |
+| 1049 | A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes. | none |
 
 ## Record and history
 
@@ -476,6 +479,13 @@ three design docs that cite it. The record holds the words.
 | 1004 | Nesting (a node opening into a finer map, no named tiers) is the sim's; a scope (a window of extent and grain) is a game's; each game has its own. | [DOC README](DOC_README.md) |
 | 1008 | The world's open kind (inert, sentient, sophont, god, dead) is a position on ruled axes; agentless processes are its metabolism; geology is anatomy. | [DOC README](DOC_README.md) |
 | 1011 | Related worlds relate by descent (forked worldlines share a prefix) or neighbourhood (worlds placed in relation, crossings recorded in both logs); nothing merges. | [DOC README](DOC_README.md) |
+| 1015 | Founding places households by geography and resources; a town is read off dwellings, tenancies, work and institutions, never stored. | none |
+| 1017 | The town reading takes a size ladder of words read off population and institutions; a naming round sets words and thresholds. | none |
+| 1023 | In a world given deep time people grow out of its conditions and are read up a ladder; a quick-start world is a modded, shared world with authored founders. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1025 | The ladder's tiers are hamlet, town and city, thresholds set from measured draws. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1027 | A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1032 | Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members. | none |
+| 1041 | A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4. | none |
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -635,6 +645,7 @@ three design docs that cite it. The record holds the words.
 | 962 | The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots. | [session network](2026-10-28_session_network_plan.md) |
 | 969 | Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide. | none |
 | 1000 | Ruling 78 as discipline: native binding first, a component binding when a rung-3 consumer exists; contract types round-trip through bytes; cores stay native. | [DOC README](DOC_README.md) |
+| 1045 | A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt. | none |
 
 ## Host and network
 
@@ -663,6 +674,8 @@ three design docs that cite it. The record holds the words.
 | 957 | H4: the live-input backlog cap moves into the core driver, configurable, default 10; replays and scripts are not capped. | none |
 | 959 | The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents. | [session network](2026-10-28_session_network_plan.md) |
 | 960 | Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer. | [session network](2026-10-28_session_network_plan.md) |
+| 1038 | A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
+| 1048 | H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack. | none |
 
 ## Mesocosm
 
@@ -765,12 +778,32 @@ three design docs that cite it. The record holds the words.
 | 913 | isometry-campaign retires, its contents becoming components; where each part lands comes back as questions. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 915 | isometry-campaign's components are owning homes, no new crates: world into the sim, game layer into isocosm-vtt, map lowering into isometry-core, store into isonetry. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 921 | isonetry holds the GM store and the proposal lifecycle until V2. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
+| 1013 | Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1018 | An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record. | none |
+| 1019 | A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
+| 1020 | PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1021 | The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1022 | A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
+| 1026 | PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 1028 | Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
+| 1029 | A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1030 | GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1031 | The PF2e slice takes all forty backgrounds and their skill feats, about a hundred records. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1033 | Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1034 | PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move. | none |
+| 1035 | A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
+| 1042 | PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1043 | Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
+| 1044 | Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes. | none |
+| 1046 | The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks. | none |
+| 1047 | PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next. | none |
+| 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | none |
 
 ## Naming
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
-| 110 | The family and sim are Isocosm; the tabletop is Isocosm: VTT; reservations eponym, isocosm, isocosm-vtt published to crates.io; the rename is planned. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md) |
+| 110 | The family and sim are Isocosm; the tabletop is Isocosm: VTT; reservations eponym, isocosm, isocosm-vtt published to crates.io; the rename is planned. | [DOC README](DOC_README.md), [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 111 | Isometry is retired as a product word and kept as the plain technical prefix of the tabletop's crates; the tabletop is Isocosm: VTT only. | [DOC README](DOC_README.md), [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 112 | Mesocosm keeps its name; Eponym stays; the family is settled as Isocosm with Isocosm: VTT, Mesocosm and Eponym. | none |
 | 157 | A thing of note is a relic, an event of note a tale, and Mesocosm's body site a tract. | [campaign retirement](2026-10-28_campaign_retirement_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
@@ -782,6 +815,10 @@ three design docs that cite it. The record holds the words.
 | 341 | Seeding's two values are Grown and Acquired. | [anatomy](../mesocosm/design_docs/2026-10-02_anatomy_brief.md) |
 | 434 | The player's choice of which glyphs far marks show is called a filter; lens keeps one meaning, a projection. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 883 | The local checkout is Code/repos/isocosm; a naming-ledger line records it and lane worktrees and the testing tree keep their isometry names. | none |
+| 1036 | The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
+| 1037 | Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
+| 1039 | Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration. | none |
+| 1040 | Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion. | none |
 
 ## Licensing and sources
 
@@ -792,6 +829,7 @@ three design docs that cite it. The record holds the words.
 | 914 | The crates stay publishable in principle: licences, metadata and dependencies in order; publishing any is its own decision. (amended by 917) | none |
 | 917 | The crates aim to be published, not only publishable in principle. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 919 | isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
+| 1016 | Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields. | none |
 
 ## Method and documents
 

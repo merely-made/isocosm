@@ -7,9 +7,9 @@
 
 use chirograph::{IntentInvocation, IntentResult, PortableCardV1, ProjectionSnapshot, ResourceRequest};
 use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
-use isocosm::directing::interim::{OnCollapse, Pace};
-use isocosm::directing::readings::Mode;
-use isocosm_host::fixtures::fixture;
+use cosmograph::directing::interim::{OnCollapse, Pace};
+use cosmograph::directing::readings::Mode;
+use cosmograph_host::fixtures::fixture;
 use mesocosm_runtime::continuation::LoopSettings;
 use mesocosm_runtime::endpoint::{ANSWER, CONFIGURE, MesocosmEndpoint, STEP};
 

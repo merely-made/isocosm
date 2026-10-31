@@ -4,7 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 
-//! Runs Mesocosm in a window over a native Isocosm session.
+//! Runs Mesocosm in a window over a native Cosmograph session.
 //!
 //! ```text
 //! cargo run -p mesocosm-genet
@@ -130,11 +130,11 @@ fn main() {
                 let (within, epochs) = value.split_once(':')
                     .and_then(|(within, epochs)| Some((within.parse().ok()?, epochs.parse().ok()?)))
                     .unwrap_or_else(|| fail("--start wants WITHIN:EPOCHS, both unsigned epoch counts"));
-                config.start = Some(isocosm::directing::interim::Start { within, epochs });
+                config.start = Some(cosmograph::directing::interim::Start { within, epochs });
             },
             "--mode" => config.mode = Some(match args.next().as_deref() {
-                Some("survival") => isocosm::directing::readings::Mode::Survival,
-                Some("creative") => isocosm::directing::readings::Mode::Creative,
+                Some("survival") => cosmograph::directing::readings::Mode::Survival,
+                Some("creative") => cosmograph::directing::readings::Mode::Creative,
                 _ => fail("--mode wants survival or creative"),
             }),
             "--population" => {
@@ -335,7 +335,7 @@ fn fail(why: &str) -> ! {
 }
 
 const HELP: &str = "\
-mesocosm-genet: run Mesocosm in a window over a native Isocosm session
+mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
 
   --frames N      run N frames and exit
   --render-scale N  draw the viewport at 1/N resolution, nearest scaled (1..8, default 1)

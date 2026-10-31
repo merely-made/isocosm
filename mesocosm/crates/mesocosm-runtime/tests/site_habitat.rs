@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::{Command,Execution,Session,spatial as native};
+use cosmograph::{Command,Execution,Session,spatial as native};
 use mesocosm_runtime::{Founded,spatial::{Admission,Game}};
 #[path="foraging_play/fixtures.rs"]
 mod fixtures;
@@ -104,7 +104,7 @@ fn an_actual_journey_uses_site_arrival_placement_and_restores() {
     let prefix=format!("move:{from}-");
     let mut process=g.rules.processes.values().find(|p|p.id.starts_with(&prefix)).unwrap().clone();
     process.id="test:site-journey".into();
-    process.requires.retain(|q|!matches!(q,isocosm::rules::Query::MoodBelow {..}));
+    process.requires.retain(|q|!matches!(q,cosmograph::rules::Query::MoodBelow {..}));
     g.rules.processes.insert(process.id.clone(),process);
     let mut session=Session::new(g,Execution::Grouped).unwrap();
     let mut game=Game::default();game.found_generated(&mut session).unwrap();

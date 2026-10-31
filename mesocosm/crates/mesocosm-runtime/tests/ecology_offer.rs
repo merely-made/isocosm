@@ -3,10 +3,10 @@
 
 //! Offer/save/replay certification for site-grain fixtures and generated physical worlds.
 
-#[path = "../../../../shared/isocosm/tests/ecology_independence_879/fixture.rs"]
+#[path = "../../../../shared/cosmograph/tests/ecology_independence_879/fixture.rs"]
 mod native_fixture;
 
-use isocosm::{Command, Execution, directing::{self, interim::{OnCollapse, Pace, Start}, readings::Mode}};
+use cosmograph::{Command, Execution, directing::{self, interim::{OnCollapse, Pace, Start}, readings::Mode}};
 use mesocosm_runtime::{Founded, GameSave, Runtime, runtime::ecology::Setup, spatial::ECOLOGY_VERSION};
 
 fn setup(execution: Execution) -> Setup {
@@ -22,19 +22,19 @@ fn accepted_run_handoff_matches_public_replay_and_binds_execution() {
     for execution in [Execution::Individuals, Execution::Grouped] {
         let setup = setup(execution);
         let run = || {
-            let verified = isocosm::ecology::run_joint_validated(
+            let verified = cosmograph::ecology::run_joint_validated(
                 &setup.founded.genesis, &setup.specification, execution,
                 &mut |session| session.advance_tick_with_flows()).unwrap();
             assert_eq!(verified.session().save(), verified.witness().native);
-            let basis = isocosm::ecology::GeneratedBasis::new(
+            let basis = cosmograph::ecology::GeneratedBasis::new(
                 setup.founded.genesis.founding.as_ref().unwrap()).unwrap();
-            isocosm::ecology::admit_validated(verified,
+            cosmograph::ecology::admit_validated(verified,
                 setup.specification.independence.as_ref().unwrap(), &basis).unwrap()
         };
         let (world, witness, admission) =
-            isocosm_host::founding::from_admitted_run(execution, run()).unwrap();
-        let replayed = isocosm_host::founding::from_admitted(execution,
-            isocosm_host::founding::Offered { witness: &witness, admission: &admission }).unwrap();
+            cosmograph_host::founding::from_admitted_run(execution, run()).unwrap();
+        let replayed = cosmograph_host::founding::from_admitted(execution,
+            cosmograph_host::founding::Offered { witness: &witness, admission: &admission }).unwrap();
         assert_eq!(world.save().unwrap(), replayed.save().unwrap());
         assert_eq!(world.save().unwrap().native, witness.native);
         world.advance(1).unwrap();
@@ -44,7 +44,7 @@ fn accepted_run_handoff_matches_public_replay_and_binds_execution() {
         let other = if execution == Execution::Individuals {
             Execution::Grouped
         } else { Execution::Individuals };
-        assert!(isocosm_host::founding::from_admitted_run(other, run()).is_err());
+        assert!(cosmograph_host::founding::from_admitted_run(other, run()).is_err());
     }
 }
 
@@ -59,15 +59,15 @@ fn actual_offer_retains_the_native_role_cut_before_same_tick_join_and_take() {
         assert_eq!(runtime.session().sim.mode(), execution);
         assert_eq!(runtime.session().sim.genesis(), &setup.founded.genesis);
         let native = &seal.witness.native;
-        let offered = isocosm_host::founding::Offered { witness: &seal.witness, admission: &seal.admission };
-        let core = isocosm_host::founding::from_admitted(execution, offered).unwrap();
+        let offered = cosmograph_host::founding::Offered { witness: &seal.witness, admission: &seal.admission };
+        let core = cosmograph_host::founding::from_admitted(execution, offered).unwrap();
         assert_eq!(core.save().unwrap().native, *native, "the core resumes the actual admitted trajectory");
         let other = if execution == Execution::Individuals { Execution::Grouped } else { Execution::Individuals };
-        assert!(isocosm_host::founding::from_admitted(other, offered).is_err(), "execution is bound to the witness");
+        assert!(cosmograph_host::founding::from_admitted(other, offered).is_err(), "execution is bound to the witness");
         let mut foreign = setup.founded.genesis.clone();
         foreign.seed ^= 1;
-        assert!(isocosm_host::founding::found(foreign, execution,
-            isocosm_host::founding::Purpose::Head, Some(offered)).is_err(), "another generated candidate is refused");
+        assert!(cosmograph_host::founding::found(foreign, execution,
+            cosmograph_host::founding::Purpose::Head, Some(offered)).is_err(), "another generated candidate is refused");
         assert_eq!(runtime.session().prefix(native.entries.len(), native.tick).unwrap().save(), *native);
         assert_eq!(runtime.session().sim.state().tick, setup.specification.horizon);
         assert!(runtime.session().entries.starts_with(&native.entries));
@@ -160,12 +160,12 @@ fn generated_a1_offer_authors_and_replays_one_physical_joint_witness() {
         eprintln!("generated physical witness: {execution:?}, declaring roles");
         let mut founded = Founded::generated(9, 256).unwrap();
         assert_eq!(founded.genesis.founding.as_ref().unwrap().ecology_rates,
-            isocosm::ecology::Rates::Stock);
+            cosmograph::ecology::Rates::Stock);
         let mut founding = founded.genesis.founding.clone().unwrap();
-        founding.ecology_rates = isocosm::ecology::Rates::A1;
+        founding.ecology_rates = cosmograph::ecology::Rates::A1;
         founded.genesis = founding.generate().unwrap();
         assert_eq!(founded.genesis.founding.as_ref().unwrap().ecology_rates,
-            isocosm::ecology::Rates::A1);
+            cosmograph::ecology::Rates::A1);
         let setup = Setup::generated(founded, execution).unwrap();
         let mut legacy = serde_json::to_value(&setup).unwrap();
         legacy.as_object_mut().unwrap().remove("generated_templates");
@@ -185,7 +185,7 @@ fn generated_a1_offer_authors_and_replays_one_physical_joint_witness() {
         assert_eq!(assessment.witness.spec.counterplay.selection.target_lineage.as_deref(), Some("lineage:3"));
         assert!(assessment.spatial.driver.is_some(), "889 templates must be the physical witness source");
         assessment.spatial.validate_replay(
-            &isocosm::Session::load(assessment.witness.native.clone(), execution).unwrap()).unwrap();
+            &cosmograph::Session::load(assessment.witness.native.clone(), execution).unwrap()).unwrap();
 
         eprintln!("generated physical witness: {execution:?}, offering 60 ticks");
         let runtime = decoded.offer(30).unwrap();
@@ -209,7 +209,7 @@ fn generated_a1_offer_authors_and_replays_one_physical_joint_witness() {
 fn generated_a1_offer_refuses_when_founders_have_no_viable_trophic_pair() {
     let mut founded = Founded::generated(9, 60).unwrap();
     let mut founding = founded.genesis.founding.clone().unwrap();
-    founding.ecology_rates = isocosm::ecology::Rates::A1;
+    founding.ecology_rates = cosmograph::ecology::Rates::A1;
     founded.genesis = founding.generate().unwrap();
     let error = Setup::generated(founded, Execution::Individuals)
         .err()

@@ -6,7 +6,7 @@
 
 //! Mesocosm's host-neutral runtime.
 //!
-//! Sits between a native Isocosm [`Session`](isocosm::Session) and any host
+//! Sits between a native Cosmograph [`Session`](cosmograph::Session) and any host
 //! (the switch, wing ruling 681). A host owns the window, the device and the
 //! frame loop; it hands elapsed time in, queues contract envelopes, which
 //! [`Runtime`] translates into native commands (686), and reads the world
@@ -32,7 +32,7 @@ pub mod tactile;
 pub mod terrain;
 pub mod voxel_profile;
 
-pub use isocosm_host::drive::{Advance, Button, Clock, Context, InputRefusal, Named, Pick, Pointed, Press};
+pub use cosmograph_host::drive::{Advance, Button, Clock, Context, InputRefusal, Named, Pick, Pointed, Press};
 pub use runtime::author_spread;
 pub use readings::{FlowWindows, JUDGEMENT_TICKS, RETENTION_TICKS, Trend};
 pub use review::{Authored, Offer, Proposed, Reading, Review};

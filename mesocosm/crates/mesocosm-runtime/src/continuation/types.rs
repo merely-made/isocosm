@@ -1,9 +1,9 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-use isocosm::{Command, schema::Id, directing::{interim::{Happening, OnCollapse, Pace,
+use cosmograph::{Command, schema::Id, directing::{interim::{Happening, OnCollapse, Pace,
     Start, Handover}, readings::Mode}, lineage::boundary::Score};
-use isocosm_overlay::{EntityHandle, ParticipantHandle, Tick, mesocosm::CheckpointAnswer};
+use cosmograph_overlay::{EntityHandle, ParticipantHandle, Tick, mesocosm::CheckpointAnswer};
 use serde::{Deserialize, Serialize};
 use crate::{Checkpoint, FlowWindows, Review};
 
@@ -72,7 +72,7 @@ pub struct SavedProposal {
 pub struct SavedExpressionSource {
     pub scripts: Vec<(String, String)>, pub fuel: i32,
     pub max_output_bytes: usize, pub max_depth: usize, pub max_entries: usize,
-    pub terms: mesocosm_phenotype::TermTable, pub affinity: Option<isocosm::rules::Affinity>,
+    pub terms: mesocosm_phenotype::TermTable, pub affinity: Option<cosmograph::rules::Affinity>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

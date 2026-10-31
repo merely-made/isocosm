@@ -14,7 +14,7 @@
 //!
 //! The lens keeps [`BiomeMaps`], which is the renderer's input type.
 
-use isocosm::rng::Rng;
+use cosmograph::rng::Rng;
 use isometer::lens::maps::BiomeMaps;
 
 /// One region centre per cell of a `side` by `side` grid over `-extent..extent`,

@@ -11,7 +11,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use crate::identity::{BodyRevisionId, SubjectId};
-use isocosm::lineage::LineageBody as BodyDocument;
+use cosmograph::lineage::LineageBody as BodyDocument;
 use isometer_core::{Aabb, PartId, Yaw};
 use serde::{Deserialize, Serialize};
 
@@ -68,8 +68,8 @@ pub fn part_bounds(document: &isometer_core::BodyDocument, id: PartId) -> Option
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct NativeAnatomySource {
-    pub entity: isocosm::schema::Id,
-    pub lineage: isocosm::schema::Key,
+    pub entity: cosmograph::schema::Id,
+    pub lineage: cosmograph::schema::Key,
     pub body_revision: u64,
     pub tick: u64,
     pub state_hash: u64,

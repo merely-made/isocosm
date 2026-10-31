@@ -12,11 +12,11 @@ settles. Evaluated against the wing design record; see
 
 The founding record's laws are untouched: care granularity is the
 invariant, person is agency rather than camera, home persons stay
-first/second/third for Mesocosm/Paredros/Isometry.
+first/second/third for Mesocosm/Paredros/Isocosm.
 
 ## 1. The briefs
 
-### Isometry
+### Isocosm
 
 An isometric, procedural voxel VTT. Local, region, and world maps;
 turn-based gameplay; exploration, combat, and interaction loops;
@@ -32,7 +32,7 @@ world's magic system, physical properties, or creatures and ecology
 differ.
 
 **First release goal:** run a PF2e- or SRD-compatible campaign end to
-end through Isometry. The PC/GM split is **Role and Creator modes**,
+end through Isocosm. The PC/GM split is **Role and Creator modes**,
 which participants can be allowed to switch between depending on the
 session's rules, who convened it, and what rules everyone accepted when
 joining.
@@ -44,7 +44,7 @@ developing the individual's story. Real-time action RPG: control your
 character, explore the world, gather a coterie, build a base. **Kenshi
 made of voxels** is the best reference. Factions, cities, bases, NPCs,
 and legends develop naturally and accrete on a homebrewed world through
-solo, parallel, and co-op play, in a world that Isometry can share.
+solo, parallel, and co-op play, in a world that Isocosm can share.
 
 ### Mesocosm
 
@@ -130,7 +130,7 @@ elevated tactical view, in Kenshi's register continuum: near acts, mid
 leads, far plans. Companions legible at every zoom, because the
 second-person vessel's story is witnessed. Two exclusions: not first
 person as the default (melee and coterie awareness die there), and not
-fixed isometric (that is Isometry's identity; cameras are most of what
+fixed isometric (that is Isocosm's identity; cameras are most of what
 keep vessels distinct over one world).
 
 **First person as a setting, Paredros only.** Mark toyed with a
@@ -140,17 +140,17 @@ the two compose, and only at the Paredros level. This is a camera
 setting under the founding record's guardrails, not a person shift, and
 it must not require a second simulation or renderer.
 
-### Isometry
+### Isocosm
 
 Isometric, by name and by its own repo's standing rulings.
 
 ### The rhyme, protected
 
-One loop at three timescales: Isometry is the turn, Paredros the
+One loop at three timescales: Isocosm is the turn, Paredros the
 moment, Mesocosm the epoch. Care widens with timescale (community,
 individual, species) and camera intimacy runs inverse to it.
 Initiative-by-biomass makes Mesocosm's epoch review a table scene,
-Isometry's register one level up. When a feature blurs this symmetry,
+Isocosm's register one level up. When a feature blurs this symmetry,
 that is the signal to stop and check.
 
 ### The shared chrome stack (ruled 2026-08-29, Mark)
@@ -160,7 +160,7 @@ host for chrome that says things (menus, status bars, panels, sheets),
 and painted overlays (sprigging leaves and vello scenes through
 paint_list and netrender) for in-scene marks. The games are designed
 differently, but they draw on the same stack — let them strengthen
-each other and the stack. Isometry is the working proof of the text
+each other and the stack. Isocosm is the working proof of the text
 half; Mesocosm's minimap and Paredros's chrome bar are the painted
 half. Chrome surfaces are projections in mere's sense — a status bar
 is a reading plus an encoding plus a realization — so the projection
@@ -188,7 +188,7 @@ section-view world projects into 3D for the other two on those terms.
 
 **The primordial-name hook:** play your cards right in Mesocosm and
 your organism can become a named primordial being referenced in
-Paredros and Isometry. This is the deepest-timescale case of the
+Paredros and Isocosm. This is the deepest-timescale case of the
 mechanism in §4.
 
 ## 4. Irrevocability: one mechanism at three scales
@@ -196,7 +196,7 @@ mechanism in §4.
 Each vessel needs a way for play to change the world permanently, and
 they are the same mechanism at three timescales, all record-first:
 
-- **The arc** (Isometry): a narrative arc defined in terms of the
+- **The arc** (Isocosm): a narrative arc defined in terms of the
   constituent elements of the world, authored or generated, that when
   developed changes the world irrevocably. Primitive: a named tension
   with stakes, fulfilled or betrayed, minting irreversible facts.

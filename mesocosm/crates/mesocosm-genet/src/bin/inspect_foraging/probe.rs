@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MPL-2.0
 //! Inspect refusals without changing the recorded world or its budgets.
 use super::*;
-use isocosm::spatial::{embodiment as body, foraging};
+use cosmograph::spatial::{embodiment as body, foraging};
 
 pub(super) fn census(session: &Session) -> Result<(), String> {
     for entry in &session.entries {
@@ -70,8 +70,8 @@ pub(super) fn census(session: &Session) -> Result<(), String> {
 }
 
 pub(super) fn verify(
-    sim: &isocosm::Simulation,
-    r: &isocosm::spatial::Request,
+    sim: &cosmograph::Simulation,
+    r: &cosmograph::spatial::Request,
     route: &foraging::FoodRoute,
 ) -> Result<(), String> {
     let document = sim

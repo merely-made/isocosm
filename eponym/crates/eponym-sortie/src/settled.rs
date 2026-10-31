@@ -3,14 +3,14 @@
 
 //! S1's refusal scene and S2's settling, the society the sortie departs
 //! from, kept here as this receipt's own fixture once Eponym's social family
-//! moved onto Isocosm (wing rulings 669, 672 and 755). Aud's record with the
+//! moved onto Cosmograph (wing rulings 669, 672 and 755). Aud's record with the
 //! three is laid as deeds at ticks one to seven; the three answer the same
 //! ask at eight; Bram and Sela are housed at eleven and twelve.
 
 use eponym_play::identity::{SubjectId, Tick};
-use isocosm::schema::Id;
+use cosmograph::schema::Id;
 use eponym_play::vocabulary::{ABANDONED, HEALING, SCOUTING, SHARED, STOOD_BY, WATCHING};
-use isocosm::social::{DeedKind, Offer, Response, Terms, Work};
+use cosmograph::social::{DeedKind, Offer, Response, Terms, Work};
 
 use crate::society::{SocialError, Society};
 

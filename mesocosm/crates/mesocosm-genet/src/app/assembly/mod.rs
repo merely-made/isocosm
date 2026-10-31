@@ -281,10 +281,10 @@ impl State {
                 .map_err(|why| format!("{why:?}"))?;
             let target = match pick {
                 Pick::Thing(id) => {
-                    isocosm_overlay::mesocosm::NudgeTarget::Thing(isocosm_overlay::EntityHandle(id))
+                    cosmograph_overlay::mesocosm::NudgeTarget::Thing(cosmograph_overlay::EntityHandle(id))
                 },
                 Pick::Place(id) => {
-                    isocosm_overlay::mesocosm::NudgeTarget::Place(isocosm_overlay::PlaceHandle(id))
+                    cosmograph_overlay::mesocosm::NudgeTarget::Place(cosmograph_overlay::PlaceHandle(id))
                 },
                 Pick::Nothing => return Ok(()),
             };

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 
 use super::*;
-use isocosm::{Execution, schema::{Id, Ledger}};
-use isocosm_vtt::founding::{Campaign, NativeCursor, NativeWorld};
-use isometry_campaign::Inventory;
+use cosmograph::{Execution, schema::{Id, Ledger}};
+use isocosm_native::founding::{Campaign, NativeCursor, NativeWorld};
+use isocosm_campaign::Inventory;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -13,7 +13,7 @@ use std::collections::{BTreeMap, BTreeSet};
 pub struct NativePublication {
     pub expected: Option<NativeCursor>,
     pub world: NativeWorld,
-    pub boards: Vec<isometry_campaign::CampaignMap>,
+    pub boards: Vec<isocosm_campaign::CampaignMap>,
     pub inventories: BTreeMap<TokenId, Inventory>,
     pub activate: Option<String>,
 }
@@ -74,13 +74,13 @@ pub struct TravelMember {
 /// Every portable consequence is an absolute result, never a receiver inference.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TravelTableResult {
-    pub map: isometry_core::MapDocument,
-    pub turns: isometry_core::TurnList,
-    pub boards: BTreeMap<String, isometry_campaign::CampaignMap>,
+    pub map: isocosm_core::MapDocument,
+    pub turns: isocosm_core::TurnList,
+    pub boards: BTreeMap<String, isocosm_campaign::CampaignMap>,
     pub clocks: BTreeMap<String, u64>,
     pub active: Option<String>,
     pub inventories: BTreeMap<TokenId, Inventory>,
-    pub rolls: Vec<isometry_core::RollRecord>,
+    pub rolls: Vec<isocosm_core::RollRecord>,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
@@ -149,7 +149,7 @@ impl HostSession {
     pub fn commit_native_travel(
         &mut self,
         request: RequestId,
-        commands: &[isocosm::Command],
+        commands: &[cosmograph::Command],
         ticks: u64,
         travelers: &BTreeSet<Id>,
         table_result: impl FnOnce(&Campaign) -> Result<TravelTableResult, String>,

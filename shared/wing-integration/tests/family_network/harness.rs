@@ -8,8 +8,8 @@ use chirograph::{
     ProjectionRequest, ProjectionSnapshot, ProtocolVersion, ResourceResponse, SessionOpen,
 };
 use graphshell_endpoint::{IntentSink, PresentationSource, ProjectionCatalog, ProjectionSource};
-use isocosm::Execution;
-use isocosm_host::world::World;
+use cosmograph::Execution;
+use cosmograph_host::world::World;
 use isonetry::family::{
     AcceptedRecord, FamilyHost, FamilyLedgerLimits, FamilyLimits, FamilyReplica, SessionId,
     WireLimits,

@@ -8,7 +8,7 @@
 //! material edit; no body position or contact result is supplied by hand.
 
 use crate::identity::{BodyRevisionId, SubjectId, Tick};
-use isocosm::lineage::SpeciesId;
+use cosmograph::lineage::SpeciesId;
 use isometer_core::PartId;
 use wing_functions::{
     Edge, FunctionalNetwork, Node, NodeId, NodeKind, Operator, PartRef, WorldRules,

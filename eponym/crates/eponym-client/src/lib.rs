@@ -10,7 +10,7 @@
 //! receipt. Everything load-bearing is consumed rather than grown here, per
 //! the execution plan's stop rule:
 //!
-//! - the world and the room are Eponym's world on Isocosm, its played site
+//! - the world and the room are Eponym's world on Cosmograph, its played site
 //!   lifted into brick ground by isometer, and a room carved into a hillside
 //!   as an edit the sim keeps;
 //! - movement is the walker's step over isometer's in-site space, with no

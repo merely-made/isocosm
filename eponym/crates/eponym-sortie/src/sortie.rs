@@ -24,9 +24,9 @@
 use std::collections::BTreeMap;
 
 use eponym_play::identity::{BodyRevisionId, Control, ControlIntent, SubjectId, Tick};
-use isocosm::schema::Id as AgreementId;
+use cosmograph::schema::Id as AgreementId;
 use eponym_play::vocabulary::{SHARED, STOOD_BY};
-use isocosm::social::{DeedKind, EndReason, RulingKind, Work};
+use cosmograph::social::{DeedKind, EndReason, RulingKind, Work};
 use isometer_core::ground::ROCK;
 use isometer_core::snapshot::{encode, hash_bytes};
 use serde::{Deserialize, Serialize};

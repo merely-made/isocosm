@@ -46,7 +46,7 @@ pub enum Admission {
         action: String,
         /// The exact accepted path and weight transfers in new walking worlds.
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        geometry: Option<Box<isocosm::spatial::Geometry>>,
+        geometry: Option<Box<cosmograph::spatial::Geometry>>,
     }, Arrival, Birth { action: String, parent: Id, ordinal: u64 }
 }
 
@@ -61,11 +61,11 @@ pub struct Transition {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Record {
     pub entry: String, pub changes: Vec<Transition>,
-    pub steps: BTreeSet<String>, pub arrivals: Vec<isocosm::spatial::ArrivalReport>,
+    pub steps: BTreeSet<String>, pub arrivals: Vec<cosmograph::spatial::ArrivalReport>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub births: Vec<isocosm::spatial::BirthReport>,
+    pub births: Vec<cosmograph::spatial::BirthReport>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub order: Vec<isocosm::spatial::Publication>,
+    pub order: Vec<cosmograph::spatial::Publication>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub command_outcome: Option<String>,
 }
@@ -109,10 +109,10 @@ impl Profile {
 
     pub fn validate(&self, sim: &Simulation) -> Result<(), String> {
         self.version()?;
-        if self.version == 6 && !isocosm::spatial::embodiment::whole_site(sim) {
+        if self.version == 6 && !cosmograph::spatial::embodiment::whole_site(sim) {
             return Err("whole-site driver needs native full-site templates".into());
         }
-        if self.generated() && (!isocosm::spatial::embodiment::enabled(sim)
+        if self.generated() && (!cosmograph::spatial::embodiment::enabled(sim)
             || !self.steps.is_empty() || !self.births.is_empty() || !self.arrivals.is_empty()) {
             return Err("generated spatial driver needs whole-body templates without competing authored inputs".into());
         }
@@ -185,9 +185,9 @@ impl Game {
 }
 
 pub(super) fn native_source(session: &Session) -> String {
-    isocosm::digest(&(&session.branch, &session.entries, session.sim.state_hash(), session.sim.genesis()))
+    cosmograph::digest(&(&session.branch, &session.entries, session.sim.state_hash(), session.sim.genesis()))
 }
 
 pub(super) fn native_prefix(session: &Session, count: usize, tick: u64) -> String {
-    isocosm::digest(&(&session.branch, &session.entries[..count], tick, session.sim.genesis()))
+    cosmograph::digest(&(&session.branch, &session.entries[..count], tick, session.sim.genesis()))
 }

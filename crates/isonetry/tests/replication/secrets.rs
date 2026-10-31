@@ -14,7 +14,7 @@ use super::*;
 /// ordinary logged event, and a client cannot fabricate a fact.
 #[test]
 fn secrets_stay_host_side_until_revealed() {
-    use isometry_campaign::{RevealCondition, SecretFact};
+    use isocosm_campaign::{RevealCondition, SecretFact};
 
     const SECRET_TEXT: &str = "OATHBOUND-RIVER-SECRET";
 
@@ -45,7 +45,7 @@ fn secrets_stay_host_side_until_revealed() {
     // A client cannot make something true by proposing it.
     sim.client_intent(
         PeerId(10),
-        GameEvent::Fact(isometry_campaign::WorldFact {
+        GameEvent::Fact(isocosm_campaign::WorldFact {
             id: "forged".to_owned(),
             kind: "reveal".to_owned(),
             text: "the king owes me gold".to_owned(),
@@ -75,7 +75,7 @@ fn secrets_stay_host_side_until_revealed() {
 
 #[test]
 fn failed_reveal_restores_the_private_secret() {
-    use isometry_campaign::{RevealCondition, SecretFact, WorldFact};
+    use isocosm_campaign::{RevealCondition, SecretFact, WorldFact};
 
     let mut host = HostSession::new(snapshot());
     host.local_event(GameEvent::Fact(WorldFact {
@@ -98,8 +98,8 @@ fn failed_reveal_restores_the_private_secret() {
 
 #[test]
 fn restored_host_reconciles_a_pending_reveal() {
-    use isometry_campaign::{RevealCondition, SecretFact};
-    use isometry_campaign::CampaignStore;
+    use isocosm_campaign::{RevealCondition, SecretFact};
+    use isocosm_campaign::CampaignStore;
 
     let mut campaign = CampaignStore::new();
     campaign.insert_secret(SecretFact {
@@ -123,7 +123,7 @@ fn restored_host_reconciles_a_pending_reveal() {
 
 #[test]
 fn restored_history_rebuilds_sequence_and_convergence_hash() {
-    use isometry_campaign::CampaignStore;
+    use isocosm_campaign::CampaignStore;
 
     let mut host = HostSession::new(snapshot());
     host.local_event(mv(1, (2, 1)));

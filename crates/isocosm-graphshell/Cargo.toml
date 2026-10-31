@@ -1,0 +1,20 @@
+[package]
+rust-version = "1.97.1"
+name = "isocosm-graphshell"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Isocosm's product-owned Graphshell projection endpoint."
+
+[dependencies]
+graphshell-endpoint = { workspace = true, features = ["stdio"] }
+chirograph = { workspace = true }
+cosmograph = { workspace = true }
+isocosm-core = { workspace = true }
+isocosm-campaign = { workspace = true }
+isocosm-views = { workspace = true }
+sceno = { workspace = true }
+scenomise = { workspace = true }
+serde_json = { workspace = true }

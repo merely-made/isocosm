@@ -24,7 +24,7 @@
 //! decides when there is anything to show.
 
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
-use isocosm::lineage::{Offer, Reading};
+use cosmograph::lineage::{Offer, Reading};
 use isomere::{JournalClasses, JournalRow};
 use mesocosm_runtime::Trend;
 

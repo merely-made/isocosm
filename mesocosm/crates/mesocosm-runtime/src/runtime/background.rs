@@ -6,12 +6,12 @@
 //! started from; if the world moved meanwhile, it is dropped and run again.
 
 use std::sync::mpsc::{self, Receiver, TryRecvError};
-use isocosm::Session;
-use isocosm_host::world::{Cut, World};
+use cosmograph::Session;
+use cosmograph_host::world::{Cut, World};
 use super::{Mesocosm, Runtime, session};
 use crate::{continuation::VerifiedQuestion, spatial::{Game, GeometryCache}};
 
-type Out = Result<(String, Vec<isocosm::flows::Flow>, Option<VerifiedQuestion>), String>;
+type Out = Result<(String, Vec<cosmograph::flows::Flow>, Option<VerifiedQuestion>), String>;
 
 pub(crate) struct Pending { cut: Cut, done: Receiver<Done> }
 

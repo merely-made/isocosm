@@ -16,8 +16,8 @@ every live case in one line with the plans that cite it.
 
 ## Current state, 2026-10-10
 
-Isocosm is the single sim in `shared/isocosm`. Legacy Mesocosm and Eponym
-are deleted; `shared/isocosm/src/legacy.rs` exports only `campaign`,
+Cosmograph is the single sim in `shared/cosmograph`. Legacy Mesocosm and Eponym
+are deleted; `shared/cosmograph/src/legacy.rs` exports only `campaign`,
 held by the VTT until V2. Isometer owns in-site shape, edits and queries in
 `shared/isometer/crates/isometer-space/src/`. Eponym's game-side motion,
 combat, admitted anatomy and control live in `eponym/crates/eponym-play`;
@@ -10994,6 +10994,495 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       afford a technique of its own.
 
       Links: area Processes and rules · draws on 96, 95, 143 · summary An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act.
+
+1013. **Pathfinder 2e is the first edition built whole at the table.** Ruled
+      by Mark on 2026-10-30 (Mark: "PF2e first"), offered against the 5e SRD,
+      which the adapter alone accepts today, and Ars Magica. The reading:
+      legal character creation and ordinary play (equipment, actions,
+      incapacitation, recorded GM rulings, save and reopen) are completed for
+      Pathfinder 2e's Player Core Remaster before the other editions, which
+      are specified but not built meanwhile. It keeps 249's order: the same
+      edition is calibrated first where the sim leads.
+
+      Links: area The VTT · draws on 249, 522, 541, vtt.5 · summary Pathfinder 2e is completed first for character creation and ordinary play; the other editions are specified meanwhile.
+
+1014. **A VTT campaign's ruleset leads unless its founder picks the sim.**
+      Ruled by Mark on 2026-10-30 (Mark: "Ruleset leads"), offered against
+      the sim leading by default and no default. The reading: a campaign
+      founded at the table defaults to its ruleset leading, the sim's
+      background following wherever the edition specifies behaviour; sim-led
+      is chosen at founding. 114's calibration binds only sim-led worlds, so
+      V3's bench is required of an edition only when a world it plays in is
+      sim-led.
+
+      Links: area The sim's schema and saves · draws on 114, 538, 249, schema.8 · summary A VTT campaign defaults to ruleset-led; sim-led is a founding choice; calibration binds only sim-led worlds.
+
+1015. **A town is a reading over founders.** Ruled by Mark on 2026-10-30
+      (Mark: "Reading over founders"), offered against pure emergence from
+      deep time and towns asserted as a place kind. The reading: the founding
+      flow places households where geography and resources favour them, and
+      a town is read off the dwellings, tenancies, work and institutions
+      gathered there, never stored, so its history is what explains it.
+
+      Links: area World generation · draws on 54, 63, schema.12 · summary Founding places households by geography and resources; a town is read off dwellings, tenancies, work and institutions, never stored.
+
+1016. **Pathfinder 2e content is checked against ORC records only.** Ruled by
+      Mark on 2026-10-30 (Mark: "Foundry records, ORC only"), offered against
+      his own Player Core copy as the authority and both. The reading: as the
+      effects README already did for spells, a lane reads the foundryvtt/pf2e
+      repository's records as a check, never vendoring them, keeps only those
+      whose source is a Remaster book under the ORC licence, and writes
+      original summaries and executable fields. Legacy OGL records are not
+      used.
+
+      Links: area Licensing and sources · draws on 541, licensing.1 · summary Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields.
+
+1017. **A town's size is a ladder of words.** Ruled by Mark on 2026-10-30
+      (Mark: "A size ladder"), offered against one word with size as a read
+      property and leaving the word to a later round. The reading: the
+      reading of 1015 takes a ladder of words by size (hamlet to city, for
+      example), read off population and institutions; the words and the
+      thresholds are set by a naming round, never coined in a lane.
+      "Settlement" is not one of them: it already carries two senses in code.
+
+      Links: area World generation · draws on 1015, naming.3 · summary The town reading takes a size ladder of words read off population and institutions; a naming round sets words and thresholds.
+
+1018. **Each edition declares its campaign's shape.** Ruled by Mark on
+      2026-10-30 (Mark: "Each edition declares it"), offered against one
+      universal campaign that editions extend and deferring until Ars Magica.
+      The reading: an edition declares its campaign structure (a party or a
+      troupe, its unit of time, holdings shared like a covenant), and the
+      table supplies what every shape uses: sessions, consent and the record.
+      Pathfinder 2e's party, levels and encounters are one declaration, not
+      the table's model.
+
+      Links: area The VTT · draws on 522, 1013, vtt.2, vtt.5 · summary An edition declares its campaign's structure (party or troupe, time unit, shared holdings); the table supplies sessions, consent and the record.
+
+1019. **A look is a voxel recipe; class names bind it.** Ruled by Mark on
+      2026-10-30 (Mark: "Voxel source, classes bind"), settling the
+      board-on-isometer plan's BD5, offered against the stylesheet theory
+      (voxels baked to sprites a stylesheet names) and voxels only. The
+      reading: a character's or thing's look is an isometer `Appearance`
+      recipe (layers, palette, clips); PROJECT_DESCRIPTION pillar 3 holds as
+      data, a pack mapping class names to layers and palettes, so a campaign
+      reskins without touching the app; the creator's preview and the board
+      read the same recipe.
+
+      Links: area The VTT · draws on 1018 · summary A look is an isometer Appearance recipe; packs bind class names to layers and palettes; preview and board read one recipe.
+
+1020. **Pathfinder 2e hit points stay the edition's; crits, dying and death
+      reach the body.** Ruled by Mark on 2026-10-30 (Mark: "Crits and dying
+      wound"), offered against hit points alone with death killing, every hit
+      wounding in proportion, and death by the DM's ruling. The reading: hit
+      points are edition state, read as vigour rather than wounds; a critical
+      hit and going dying each issue a native wound, and death issues the
+      native kill, in the same transaction as the edition's change; a native
+      death shows on the sheet.
+
+      Links: area The VTT · draws on 542, 1013, vtt.5 · summary PF2e HP stays edition state; critical hits and dying wound the native body and death kills it, in the same transaction.
+
+1021. **Pathfinder 2e's first slice is two ancestries and two classes.**
+      Ruled by Mark on 2026-10-30 (Mark: "2 ancestries, 2 classes"), offered
+      against every ancestry with two classes and all of Player Core's first
+      level. The reading: Human and Dwarf, Fighter and Rogue, about 75 ORC
+      Remaster records, with no spellcasting; the slice grows once the path is
+      proven.
+
+      Links: area The VTT · draws on 1013, 1016 · summary The first PF2e slice: Human and Dwarf, Fighter and Rogue, about 75 records, no spellcasting.
+
+1022. **A character's look is kept at the table as a class plus overrides.**
+      Ruled by Mark on 2026-10-30 (Mark: "Table record, class plus
+      overrides"), offered against the fully resolved recipe and the native
+      binding with the sim on only. The reading: a per-token look lives in the
+      table's record beside its sheet, replicated by its own event, sim on or
+      off; it stores the class name with per-slot choices and palette
+      overrides, so a pack's reskin reaches whatever is not overridden; the
+      existing sprite names become classes with no save migration.
+
+      Links: area The VTT · draws on 1019, vtt.7 · summary A look is kept in the table record as class plus per-slot and palette overrides, sim on or off; reskins reach what is not overridden.
+
+1023. **People grow out of a world given deep time; a quick-start world is a
+      modded, shared world.** Ruled by Mark on 2026-10-30 (Mark: "3 for sure.
+      A quick start world is a modded, shared world!"), replacing 1015's
+      founding flow, after his account of the ladder: creatures arising from
+      the world's conditions, shaped by them and finding the leverage they
+      can exact from them, becoming named, gaining friends, enemies, families
+      and lineages, depending on particular areas and living in larger groups
+      as their needs allow, growing "from a small hamlet into a town, then
+      perhaps into a city", factions and polities developing out of them;
+      each product foregrounding different layers of one sim. Offered against
+      emergence only and founders as a scaffold to be replaced. The reading: in
+      a world given deep time the generator places no people; lineages grow
+      and spread where conditions hold them, and individuals, kin, households,
+      factions and polities are read up the ladder from them, individuals
+      lifted where play attends. A quick-start world is a modded, shared world
+      whose founders are authored and enter by the founding door at its first
+      tick. A town is read the same way in either.
+
+      Links: area World generation · replaces 1015 · draws on naming.2, processes.6, processes.12, ecology.4, schema.5 · summary In a world given deep time people grow out of its conditions and are read up a ladder; a quick-start world is a modded, shared world with authored founders.
+
+1024. **A faction decides by consent; a polity adds a constitution.** Ruled by
+      Mark on 2026-10-30 (Mark: "Keep the split"), after he called a polity
+      "really just any type of group decision-making". The reading: his phrase
+      covers both rungs; groups act first as factions, and a constitution
+      makes one a polity.
+
+      Links: area The sim's schema and saves · draws on schema.5, processes.12 · summary "Any group decision-making" covers faction and polity; a constitution makes a faction a polity.
+
+1025. **A town's tiers are hamlet, town and city.** Ruled by Mark on
+      2026-10-30 (Mark: "Hamlet, town, city"), offered against settlement,
+      town, city and a later naming round, settling 1017's ladder. The
+      reading: three tiers read off size; their thresholds are set from
+      measured draws, not guessed.
+
+      Links: area World generation · draws on 1017, naming.3 · summary The ladder's tiers are hamlet, town and city, thresholds set from measured draws.
+
+1026. **Pathfinder 2e is built beside the skeleton, from a saved draft, and
+      stays marked experimental.** Ruled by Mark on 2026-10-30 (Mark: "All as
+      recommended, keep the mark"), the rules lane's forks taken as drafted.
+      The reading: Remaster attribute modifiers are built beside the skeleton's
+      ability scores; the system id `pf2e-srd` stays an opaque key with a
+      correct label; equipment is unmarked at the table and coins are edition
+      state, as the Magic Weapon loop has them; encounter mode (initiative,
+      three actions, reaction) is declared in edition state; ancestry is an
+      edition fact, tied to a native lineage later; creation is a saved draft,
+      one explained step at a time; legality and derivation are Rust over
+      TOML, Lua kept for degrees of success; the book's words name fields
+      only. Play stays marked experimental until the per-world lead choice
+      exists.
+
+      Links: area The VTT · draws on 1013, 1014, 1018, 1020, vtt.5, vtt.6 · summary PF2e is built beside the skeleton from a saved, explained draft; encounter mode is the edition's; play stays marked experimental until the lead choice exists.
+
+1027. **A place's tier counts its residents.** Ruled by Mark on 2026-10-30
+      (Mark: "Size counts residents"), offered against households with a
+      standing tenancy, the region lane's other forks taken as drafted. The
+      reading: hamlet, town or city is read off living residents; a dwelling
+      is an asserted place linked to its map site through a `Location`; the
+      tier thresholds and any scoring weights live in a datasheet; the first
+      dispute read is an agreement one party ends against the other's
+      standing; hooks travel the existing goal-thread path; a polity's
+      governance is chosen by ranked preference over its members (Processes
+      12).
+
+      Links: area World generation · draws on 1025, processes.12, method.10 · summary A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing.
+
+1028. **Layers may come from `.vox` files as well as TOML.** Ruled by Mark on
+      2026-10-30 (Mark: "Allow .vox too"), approving the `dot_vox` dependency,
+      the appearance lane's other forks taken as drafted. The reading: layers
+      are authored as TOML box fills or loaded from `.vox` files (Vengi,
+      MagicaVoxel); the preview follows whichever board is active; packs bind
+      item keys to layers; with the sim on the body draws as today, the look
+      only sim-off for now; the words class, recipe and layer go to a naming
+      round.
+
+      Links: area The VTT · draws on 1019, 1022, bodies.2 · summary Layers come from TOML box fills or .vox files; the preview follows the active board; packs bind items to layers; sim-on bodies draw as today.
+
+1029. **A campaign's edition is chosen at its founding.** Ruled by Mark on
+      2026-10-30 (Mark: "Field in campaign founding"), offered against a DM
+      action that locks once a sheet exists and a choice per character. With
+      1030 he named what founding chooses: "the ruleset and other worldgen
+      configs (or using preexisting worlds/applying a new ruleset to a
+      preexisting world)". The reading: the edition is a field of the
+      campaign's founding, beside its lead and world configuration, and a
+      campaign may be founded over an existing world under a new ruleset;
+      those who join, join a world under those rules.
+
+      Links: area The VTT · draws on 1014, 1018, schema.8 · summary A campaign's edition is a founding field beside its lead and world configuration; an existing world may be founded under a new ruleset.
+
+1030. **Roles are seats people trade; a table may have many GMs or none.**
+      Ruled by Mark on 2026-10-30, answering who drafts a character (Mark:
+      "1 for that reason"): "the separation between dungeon/gamemaster and
+      player should not be so severe ... gms can make and play player-faction
+      aligned characters along with npcs, players can make their characters
+      and can take over hosting duties if needed, and the goal should be to
+      allow people to trade off of those responsibilities by sharing the
+      worldstate and changing authorities related to these roles. it should
+      even be possible for six people to all be gm, and for eight to all be
+      players relying on a prewritten campaign, with one choosing to become a
+      gm when needed to resolve an issue. the goal of including scripting,
+      dialogue, worldgen, the equivalent of radiant quests and nemeses and
+      procedurally generated narrative cues grounded in the simmed world, is
+      to make it possible to play in a sandbox fashion without a gm
+      worldbuilding and cultivating the experience." The reading: the seat
+      that controls a body drafts its character; GM, player and host are
+      authorities over a shared world state that people hold, trade and
+      share, any number at once or none; play without a GM is a goal, carried
+      by the sim's generated cues.
+
+      Links: area The VTT · draws on 153, 156, vtt.2, vtt.4, vtt.5 · summary GM, player and host are tradeable authorities over shared world state, any number or none; the body's controller drafts its character; GM-less sandbox play is a goal.
+
+1031. **Pathfinder 2e's slice takes all forty backgrounds.** Ruled by Mark on
+      2026-10-30 (Mark: "All 40"), offered against ten chosen for skill
+      coverage. The reading: 1021's slice grows to every Player Core
+      background and the skill feats they grant, about a hundred records.
+
+      Links: area The VTT · draws on 1021 · summary The PF2e slice takes all forty backgrounds and their skill feats, about a hundred records.
+
+1032. **The ladder's first readings settle residents, groups and founding
+      events.** Ruled by Mark on 2026-10-30 (Mark: "All as recommended"), the
+      region lane's forks after its first readings. The reading: a place's
+      residents are its tenants and their kin with no home of their own on the
+      same site; founding-door entries write sim events, so every product can
+      read why a place exists; founders become kin only through births, the
+      population model's work; a group is a polity once its constitution
+      names members, otherwise a faction; a quick-start world's tenancies form
+      by the founding tick's own commands; loading a quick-start world in the
+      app gets an owner before the population model lands.
+
+      Links: area World generation · draws on 1023, 1024, 1027, world.10 · summary Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members.
+
+1033. **Looks face four ways; PF2e founds, names lores and waits for
+      languages.** Ruled by Mark on 2026-10-30 (Mark: "All as recommended"),
+      the appearance and rules lanes' forks after their first builds. The
+      reading: each look bakes four true facings; the classes keep their
+      varied looks; turn entries are labelled by the character's name; the
+      founding panel picks a campaign's edition, re-founding an existing
+      world under a new ruleset being a later flow; lores the book leaves to
+      the player are written in as text; Player Core's nine terrain lores
+      stand; languages come with the equipment increment.
+
+      Links: area The VTT · draws on 1022, 1028, 1029, 1031 · summary Looks bake four facings and keep varied classes; turns label by name; the founding panel picks the edition; player-named lores are text.
+
+1034. **Pathfinder 2e play: arms and armour, one-cell wounds, Stride moves
+      the body.** Ruled by Mark on 2026-10-30, each as recommended. Gear
+      (Mark: "All arms and armour + kit gear"): every level-0 Player Core
+      weapon, armour and shield plus the gear the Fighter and Rogue kits and
+      the adventurer's pack name, about 110 records, bought with 15 gp or
+      taken as a class kit. Wounds (Mark: "One cell each"): a critical hit
+      taken and each drop to dying wound one cell of a part the sim draws.
+      Stride (Mark: "Stride carries the move"): one transaction carries the
+      native cell batch, checked against Speed at the campaign's
+      cells-per-square, and spends an action; where the scale is unset, a
+      GM's recorded ruling stands in.
+
+      Links: area The VTT · draws on 1020, 1021, 1026, vtt.5 · summary PF2e gear is all level-0 arms and armour plus kit gear, by gold or kit; crits and dying wound one cell; Stride carries the native move.
+
+1035. **A look is derived in layers; items first; packs carry style until
+      culture does.** Ruled by Mark on 2026-10-30 (Mark: "Derived in
+      layers", "Items", "Packs now, culture later"), after he asked how
+      items, character models and entities should be procedurally generated
+      and varied. Offered against authored classes with seeded variation and
+      looks from sim data alone. The reading: a look is derived from what a
+      thing is, outward: shape from the body's part tree or the item's sort,
+      palette from material, finish from make, style from a pack today and
+      from culture once culture is built, wear from condition, variation from
+      the seed within its lineage's bounds, and the creator's overrides last;
+      the same derivation runs sim-on and sim-off, sim-off with fewer layers.
+      Items are generated first.
+
+      Links: area The VTT · draws on 1012, 1019, 1022, 1028, bodies.6, bodies.11, processes.13, schema.7 · summary A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture.
+
+1036. **Isocosm is the VTT; the sim is Cosmograph; the products are peers.**
+      Ruled by Mark on 2026-10-30, after "Isometry" was found taken and
+      released by another project: "i suspect that isocosm and mesocosm,
+      being similar, maybe should just be peer names. could the name
+      cosmograph be the name of the sim instead? then isocosm could slot in as
+      the vtt's name. and no need for colons any more", then "we needn't make
+      the repo `cosmograph`; the original thing was the vtt, and since that's
+      now `isocosm`, let's just leave that as is", and from a round of
+      alternatives (entelecheia, imago mundi, cosmogon), "Cosmograph". The
+      reading: the products are Isocosm (the VTT), Mesocosm and Eponym, peers
+      without a family prefix; the shared sim is Cosmograph; the repository
+      stays `isocosm`. Cosmograph was chosen knowing a commercial
+      graph-visualization product shares the name and Profantasy's
+      Cosmographer Pro sits one word away in tabletop mapping.
+
+      Links: area Naming · replaces naming.1 · summary The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm.
+
+1037. **The tree follows the names now.** Ruled by Mark on 2026-10-30
+      ("Everything now", then "isocosm-native", "Keep both", "Rename paths
+      too"). The reading: the sim crates become `cosmograph`,
+      `cosmograph-host` and `cosmograph-overlay` (folder `shared/cosmograph`);
+      the VTT's `isometry-*` crates become `isocosm-*`; its adapter over the
+      sim, `isocosm-vtt`, becomes `isocosm-native`; `isonetry` and `isomere`
+      keep their names; visible strings say Isocosm; the `Code/testing/isometry`
+      and `worktrees/isometry-*` paths are renamed and their citations fixed.
+      `cosmograph` 0.0.1 and `isocosm` 0.0.2 were published to claim the names.
+
+      Links: area Naming · draws on 1036 · summary Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow.
+
+1038. **Cosmograph gets a standalone world-graph viewer.** Ruled by Mark on
+      2026-10-31, from his wish for "a lil standalone that render[s] the world
+      data and advance/reverse time in a style reminiscent of the graph
+      visualization tool, but for our procedurally generated worlds, from the
+      regions to the entities" (Mark: "Standalone over the endpoint", "Scrub,
+      then branch", "Both"). The reading: a small native app, a Graphshell
+      client of the sim host's inspection endpoint (Host 2), runs on a seed or
+      a save and draws the world as one zoomable graph (regions and sites as
+      clusters with route edges, opening into populations, entities of note,
+      kin and relations, factions and polities, far nodes aggregates) under
+      filters that narrow it by domain (geography, ecology, society,
+      polities); time advances, and scrubbing back replays to a past tick
+      without changing it, from which a branch can be forked (Record 4).
+
+      Links: area Host and network · draws on 1036, host.2, record.4, processes.6, naming.3 · summary A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched.
+
+1039. **Runtime and stored names follow the rename, with a version bump.**
+      Ruled by Mark on 2026-10-31 (Mark: "Rename both", "Rename with a
+      version bump"), offered against keeping them. The reading: the VTT's
+      `ISOMETRY_*` variables become `ISOCOSM_*` and the sim's `ISOCOSM_*`
+      become `COSMOGRAPH_*`, captures and log tags following, old harness
+      scripts kept as history; the persisted and wire identifiers that still
+      say isometry (chronicle vessel, store slots, seed domains, effect keys,
+      schema ids, the session ALPN, the pack manifest file, the preferences
+      directory) are renamed together under one version bump, old saves read
+      through a one-time migration.
+
+      Links: area Naming · draws on 1036, 1037, schema.9 · summary Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration.
+
+1040. **Stored names migrate at load; the chronicle moves to v1; "nemeses"
+      means relation-based tracking.** Ruled by Mark on 2026-10-31 (Mark: "At
+      load", "Bump the chronicle to v1", "One per container"). The reading:
+      renamed stored names are read new-then-old and written new, the old
+      removed after the first good write, each renamed container's version
+      moving once (session 24, checkpoint format 3, active effects 2); the
+      shared chronicle format moves to v1 for every game, its fixtures
+      regenerated. On 1030's "radiant quests and nemeses", asked whether the
+      Eponym guardrail against rival-hierarchy promotion (patented to August
+      2036) should limit it: "Ah, i did not mean rival-hierarchy. Just
+      relation-based entity tracking. They do not own the world nemesis, even
+      if they have patented the nemesis system." So nemeses are entities
+      tracked by their relations to the players (remembered enmity and its
+      history), and the guardrail is untouched.
+
+      Links: area Naming · draws on 1030, 1039, schema.9 · summary Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion.
+
+1041. **Quick-start worlds are founded from a picker; the population model is
+      E4's.** Ruled by Mark on 2026-10-30 (Mark: "Picker + packs from disk",
+      "Build on E4 when it lands"), the region lane's forks after its second
+      increment. The reading: the founding panel lists the quick-start worlds
+      the sim carries and those content packs offer from disk, and founds one
+      in a single step; the region lane builds the sapient-lineage slice on
+      the sim execution plan's E4 when it lands, not a model of its own, and
+      the tier thresholds stay provisional until then.
+
+      Links: area World generation · draws on 1023, 1032 · summary A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4.
+
+1042. **Pathfinder 2e ships the Adventurer's Pack, not class kits; Stride gets
+      an admitted-character bench.** Ruled by Mark on 2026-10-31 (Mark: "Pack
+      now, kits wait", "Build an admitted-character bench", "Generic only").
+      The reading: no ORC record carries the Fighter or Rogue kit, so taking
+      a class kit is refused with that reason until a source is ruled, and
+      the Adventurer's Pack (checked item by item) is bought with starting
+      gold; Stride moves characters admitted through native table admission,
+      a bench building them, and a body without that binding is refused with
+      the reason; only the generic languages ship.
+
+      Links: area The VTT · draws on 1016, 1034 · summary PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only.
+
+1043. **Table items carry open material, make and condition keys; make names
+      its grade, its act and its maker.** Ruled by Mark on 2026-10-31 (Mark:
+      "Open keys on table items"; on make, "1, 3 (with the maker listed). it
+      would be nice if modifiers could be applied based on 3. and even if
+      we're not deriving things from deep time, we should be able to use the
+      sim's machinery to make stuff that builds on a ruleset's default
+      items/spells/templates"). The reading: each table item may carry
+      `material`, `make` and `condition` keys with no fixed vocabulary, a pack
+      mapping them to palette, finish and wear, and with the sim on they are
+      filled from the item's entity; make is a grade key together with the
+      act that made it and its maker, and modifiers may follow from that act;
+      the sim's making machinery should be usable at the table to make new
+      things on a ruleset's default items, spells and templates, without deep
+      time.
+
+      Links: area The VTT · draws on 1012, 1035, processes.13 · summary Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults.
+
+1044. **Homebrew is the sim's making, with Distillery's models optional;
+      quick-start worlds author their own ground.** Ruled by Mark on
+      2026-10-31. On 1043's "homebrew addition from the distillery" (Mark:
+      "Both, models optional"): new items, spells and templates are composed
+      by the sim's own making machinery on a ruleset's defaults, and the
+      stack's ML capabilities through Burn (Mark: "i think of that as the
+      stack's ML capabilities through burn": esp, Distillery and the other
+      ports being extracted from mere) may propose names, descriptions and
+      variants on top when a device runs them, each proposal checked and
+      built by the sim, never taken unchecked. On the head-founding gate
+      (875, 885), which refused a quick-start laid over a drawn world (Mark:
+      "Quick-starts author their world"): a quick-start pack declares its own
+      sites and routes, so its world is authored and passes the gate.
+
+      Links: area The VTT · draws on 1023, 1043, processes.13 · summary Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes.
+
+1046. **Edition ids may sit in the core pack; creature bodies are the next
+      looks.** Ruled by Mark on 2026-10-31 (Mark: "Keep in the core pack",
+      "Creature bodies"), after generated item looks landed. The reading: the
+      core pack (MIT OR Apache-2.0) may name an edition's item ids to bind
+      them to looks, ids being references and not the edition's text, as the
+      5e SRD bindings already are; the next stage of 1035 draws a lineage's
+      recipe as a voxel body.
+
+      Links: area The VTT · draws on 1035, 1043, licensing.1 · summary The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks.
+
+1047. **Pathfinder 2e measures diagonals by the book; ordinary combat is
+      next.** Ruled by Mark on 2026-10-31 (Mark: "Player Core's 5/10",
+      "Finish ordinary combat"), after Stride landed measuring plain squares.
+      The reading: under Pathfinder 2e, Stride and reach count diagonals at 5
+      then 10 feet alternately, as Player Core does, other editions keeping
+      their own rule; the rules lane next builds ranged Strikes, conditions
+      (off-guard, Sneak Attack), Shield Block and healing.
+
+      Links: area The VTT · draws on 1042, vtt.5 · summary PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next.
+
+1048. **The world-graph viewer runs on a bench-founded generated world,
+      branches diverge by an act, and draws on the stack's canvas.** Ruled by
+      Mark on 2026-10-31 (Mark: "Generated, bench-founded", "A change inside
+      the branch", "Mere lane extracts the mapping"), after the viewer lane
+      measured that a branch forked by `fork_at` replays identically to its
+      main line (the branch key seeds nothing) and that Mill Ford does not
+      change over fifty ticks. The reading: H9 founds a seed nobody chose
+      under the bench purpose, the viewer being an instrument, and shows the
+      place step at site grain until World 10's people land; a branch becomes
+      its own when a change is offered inside it; the graph is drawn by
+      mere's `pictograph` canvas, the Graphshell scene-to-canvas mapping moved
+      out of the web-only port into the stack as its second consumer
+      arrives, and the viewer is a binary in `cosmograph-host` behind a
+      feature.
+
+      Links: area Host and network · draws on 1038, 1045, record.4, host.2 · summary H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack.
+
+1049. **Creature bodies get a shared presentation skin.** Ruled by Mark on
+      2026-10-31 (Mark: "All as recommended"), the appearance lane's forks on
+      creature bodies. The reading: the body's skin is the presentation half
+      of phenotype-contract P5, in isometer's body adapter and shared by all
+      three products (Mesocosm's function colouring moving into it); forms
+      are drawn inside each part's declared extent and never read back as
+      geometry; palette comes from matter, a pack mapping matter keys to
+      colours, with function regions as marks and seeded colour variation
+      only; with the sim off, creatures keep their pack classes; construction
+      (P1) and generation (C0) stay with the phenotype plan.
+
+      Links: area Bodies and anatomy · draws on 1035, 1046, bodies.2, bodies.11 · summary A shared presentation skin in isometer's body adapter draws bodies inside declared extents, palette from matter; sim-off creatures keep pack classes.
+
+1050. **Pathfinder 2e combat: ammunition spent, Shield Block chosen by the
+      defender, healing by toolkit and time, flanking by party.** Ruled by
+      Mark on 2026-10-31, each as recommended ("Add and spend ammo", "Strike
+      pauses for the defender", "Toolkit, Battle Medicine, timed healing",
+      "Allies are party members"). The reading: Player Core's four level-0
+      ammunition records join starting gear and each ranged Strike spends
+      one, refused when none is left; a hit pauses at the defender's pending
+      reaction, the defender's seat choosing Shield Block or not before
+      damage applies; the healer's toolkit joins the gear, Battle Medicine is
+      an encounter action, and Treat Wounds and rest pass native time through
+      downtime consent; flanking is measured from positions and reach, allies
+      being members of the same native party, with GM-ruled off-guard for
+      everything else.
+
+      Links: area The VTT · draws on 1034, 1047, vtt.2, vtt.3, vtt.5 · summary PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members.
+
+1045. **A shared mechanism moves when its second consumer is planned, not
+      when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
+      D12, refining mere's Stack 1): "second host is planned", because
+      "shows up doesn't happen, you know, until it's planned. And shows up
+      also doesn't happen until the extraction happens. But then the
+      extraction is gated on a second consumer, right? So it's just
+      circular." Planned means a dated plan in the consumer's own repository
+      names the adoption with a done-condition; the move is done when the
+      code has moved and its first consumer builds on it, and the second
+      consumer's adoption is that consumer's receipt. Mark asked that the
+      same rule reach the wing ("Also isocosm Stack 7"): 332's stamp barrier
+      moves into conatus once a second consumer plans it.
+
+      Links: area Stack and engine · amends 332 · draws on mere:stack.1 · summary A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

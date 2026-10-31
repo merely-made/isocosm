@@ -5,13 +5,13 @@
 //! played site lifted in one bounded window, its patches derived by
 //! isometer, and each unplaced cohort's first member given one in turn.
 
-use isocosm::history::Command;
-use isocosm::schema::Id;
-use isocosm::simulation::Simulation;
+use cosmograph::history::Command;
+use cosmograph::schema::Id;
+use cosmograph::simulation::Simulation;
 use isometer_space::places::{Kind, PlaceId, Places, Rules};
 use isometer_space::volume::Volume;
 
-use isocosm_host::world::World;
+use cosmograph_host::world::World;
 
 use super::Mesocosm;
 
@@ -26,13 +26,13 @@ pub fn lift(sim: &Simulation, site: Id) -> Result<Volume, String> {
     sim.volume(site, w.min, w.max, w.depth)
 }
 
-pub(crate) fn window(sim: &Simulation) -> Result<isocosm::operations::Window, String> {
+pub(crate) fn window(sim: &Simulation) -> Result<cosmograph::operations::Window, String> {
     let side = sim.atlas()?.footprint.side as i64;
     let half = WINDOW_HALF.min(side / 2).max(1);
     let mid = side / 2;
     let min = [(mid - half).max(0); 2];
     let max = [(mid + half).min(side); 2];
-    Ok(isocosm::operations::Window { min, max, depth: DEPTH })
+    Ok(cosmograph::operations::Window { min, max, depth: DEPTH })
 }
 
 /// Source of the terrain lift, including weather/skeleton changes and edits
@@ -57,7 +57,7 @@ impl Mesocosm {
                 .groups
                 .iter()
                 .filter(|(_, g)| g.entity.alive && g.entity.resident_site() == Some(site) && g.entity.patch.is_none())
-                .filter(|(_, g)| !isocosm::directing::is_participant(&g.entity))
+                .filter(|(_, g)| !cosmograph::directing::is_participant(&g.entity))
                 .map(|(first, _)| *first)
                 .collect();
             if unplaced.is_empty() {

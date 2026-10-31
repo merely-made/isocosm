@@ -5,12 +5,12 @@
 
 use super::*;
 use std::collections::{BTreeMap, BTreeSet};
-use isocosm::{Command, Simulation, spatial as native};
+use cosmograph::{Command, Simulation, spatial as native};
 use isometer_core::Yaw;
 use isometer_space::{Edit, Op, Shape, places::{Places, Rules as PlaceRules}};
 use actions::{ActionState, SubjectProfile, OrdinaryAccess, game_source};
-use isocosm::directing::readings::View;
-use isocosm_overlay::Seat;
+use cosmograph::directing::readings::View;
+use cosmograph_overlay::Seat;
 
 mod profile;
 mod geometry;
@@ -65,7 +65,7 @@ pub struct BirthMotion {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct BirthSlot {
-    pub subject: SubjectId, pub species: isocosm::lineage::SpeciesId,
+    pub subject: SubjectId, pub species: cosmograph::lineage::SpeciesId,
     pub revision: crate::identity::BodyRevisionId,
     pub motion: Option<actions::MotionPolicy>, pub combat: Option<actions::CombatPolicy>,
     pub offset_from_parent: [i64; 3], pub yaw_from_parent: Yaw,
@@ -157,7 +157,7 @@ pub fn submit(session: &mut Session, bytes: Vec<u8>, input: &Input,
     mode.validate_native(session)?;
     let actor = binding(&mode, input.subject)?;
     if access.seat != Seat::Player || access.subject.map(|id| id.0) != Some(actor.entity)
-        || !session.sim.state().population.get(access.participant.0).is_some_and(isocosm::directing::is_participant)
+        || !session.sim.state().population.get(access.participant.0).is_some_and(cosmograph::directing::is_participant)
         || session.sim.plays(access.participant.0) != Some(actor.entity) || !visible.shows(actor.entity) {
         return Err("Eponym clock requires its actual native played subject".into());
     }

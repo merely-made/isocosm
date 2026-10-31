@@ -3,9 +3,9 @@
 
 use super::*;
 use crate::native_table::{NativeTable,TableSender,table_digest};
-use isocosm::Execution;
-use isocosm_overlay::{EntityHandle,OrdinaryAccess,ParticipantHandle,Seat};
-use isocosm_vtt::native::items::{ItemInput,ItemPreview,prepare_item};
+use cosmograph::Execution;
+use cosmograph_overlay::{EntityHandle,OrdinaryAccess,ParticipantHandle,Seat};
+use isocosm_native::native::items::{ItemInput,ItemPreview,prepare_item};
 use serde::{Deserialize,Serialize};
 
 #[derive(Clone,Debug,PartialEq,Serialize,Deserialize)]
@@ -15,7 +15,7 @@ pub struct NativeItemsResolved {
     pub input:ItemInput,pub participant:u64,
 }
 
-fn access(campaign:&isocosm_vtt::founding::Campaign,table:&NativeTable,participant:u64)
+fn access(campaign:&isocosm_native::founding::Campaign,table:&NativeTable,participant:u64)
     ->Result<OrdinaryAccess,String> {
     let seat=if participant==table.host_participant {Seat::Dm}
         else if table.peers.iter().any(|peer|peer.participant==participant) {Seat::Player}
@@ -41,7 +41,7 @@ pub(crate) fn apply_native_items(state:&mut GameSnapshot,result:&NativeItemsReso
     if game!=result.table.game || expected!=result.publication {
         return Err(fail("item result differs from the whole exact re-admitted native and product pair"));
     }
-    let bindings=isocosm_vtt::native::GameBindings::decode(&game).map_err(GameError::Native)?;
+    let bindings=isocosm_native::native::GameBindings::decode(&game).map_err(GameError::Native)?;
     if bindings.item_records().last().is_none_or(|record|
         record.participant!=result.participant || record.input!=result.input) {
         return Err(fail("item publication lacks its actual accepted participant/input witness"));

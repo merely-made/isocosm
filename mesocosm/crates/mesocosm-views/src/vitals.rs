@@ -10,10 +10,10 @@
 //! windows. The core answers what is; this crate says it.
 
 use cambium::{AnyView, DetailRow, DetailSection, GenetCtx, GenetElement, detail_panel, el, text};
-use isocosm::kingdom::{self, Kingdom};
-use isocosm::mosaic::ports::feeding;
-use isocosm::schema::{Entity, Id};
-use isocosm::simulation::Simulation;
+use cosmograph::kingdom::{self, Kingdom};
+use cosmograph::mosaic::ports::feeding;
+use cosmograph::schema::{Entity, Id};
+use cosmograph::simulation::Simulation;
 use mesocosm_runtime::{Refusal, TermTable, Trend};
 
 mod graft;
@@ -87,7 +87,7 @@ pub fn vitals_of_with_terms(
     Vitals {
         energy_mg,
         fullness,
-        wound: e.map(isocosm::harm::wound_share),
+        wound: e.map(cosmograph::harm::wound_share),
         mood: critter.filter(|_| e.is_some()).and_then(|id| sim.mood(id)),
         notice: notice.filter(|_| energy_mg.is_some()),
         replacement: trend.map(replacement_words),

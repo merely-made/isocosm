@@ -3,7 +3,7 @@
 
 //! Eponym's existing contract receiver, borrowing the host's native session.
 
-use isocosm::{Session, Command, Simulation, schema::Id, directing::readings::View};
+use cosmograph::{Session, Command, Simulation, schema::Id, directing::readings::View};
 use isometer_space::volume::Volume;
 use crate::WorldError;
 

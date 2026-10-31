@@ -9,7 +9,7 @@
 
 use std::path::{Path, PathBuf};
 
-use isocosm::process::Registry;
+use cosmograph::process::Registry;
 
 use mesocosm_phenotype::*;
 

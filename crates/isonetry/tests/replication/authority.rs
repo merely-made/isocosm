@@ -50,9 +50,9 @@ fn a_player_commands_its_own_tokens_and_may_not_edit_the_board() {
     sim.client_intent(
         PeerId(10),
         GameEvent::Map(SessionEvent::TilePlaced {
-            layer: isometry_core::Layer::Ground,
+            layer: isocosm_core::Layer::Ground,
             at: (0, 0),
-            kind: isometry_core::TileKindId(grass),
+            kind: isocosm_core::TileKindId(grass),
         }),
     );
     sim.client_intent(

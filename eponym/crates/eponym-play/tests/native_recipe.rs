@@ -4,8 +4,8 @@
 use eponym_play::*;
 use eponym_play::identity::{BodyRevisionId, SubjectId};
 use eponym_play::founding::{ENERGY, RESERVE, SOPHONT, TISSUE};
-use isocosm::{Command, anatomy};
-use isocosm::lineage::SpeciesId;
+use cosmograph::{Command, anatomy};
+use cosmograph::lineage::SpeciesId;
 use isometer_core::PartId;
 
 const SUBJECT: SubjectId = SubjectId(818);

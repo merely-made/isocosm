@@ -5,7 +5,7 @@
 
 use crate::identity::{BodyRevisionId, SubjectId, Tick};
 use crate::*;
-use isocosm::lineage::LineageBody;
+use cosmograph::lineage::LineageBody;
 use isometer_core::PartId;
 use serde::{Deserialize, Serialize};
 
@@ -74,19 +74,19 @@ intents! {
     GenerateNativeRecipe { tick:Tick, subject:SubjectId, body_seed:u64, at:[i32;3], recipe:NativeFixtureRecipe },
     Drop { tick:Tick, subject:SubjectId, item:ItemId },
     ProjectAct { tick:Tick, subject:SubjectId, process:String,
-        target:Option<isocosm::schema::Id>, project:Option<isocosm::projects::ProjectId> },
-    ProjectCarry { tick:Tick, subject:SubjectId, project:isocosm::projects::ProjectId,
+        target:Option<cosmograph::schema::Id>, project:Option<cosmograph::projects::ProjectId> },
+    ProjectCarry { tick:Tick, subject:SubjectId, project:cosmograph::projects::ProjectId,
         carried:bool },
     ProjectReserve { tick:Tick, subject:SubjectId, process:String,
-        target:Option<isocosm::schema::Id>, lots:Vec<String> },
-    StockOwnership { tick:Tick, lot:isocosm::projects::StockLot },
-    ProjectConsent { tick:Tick, subject:SubjectId, project:isocosm::projects::ProjectId,
-        owner:isocosm::projects::Owner, worker:SubjectId, grant:bool, process:Option<String> },
+        target:Option<cosmograph::schema::Id>, lots:Vec<String> },
+    StockOwnership { tick:Tick, lot:cosmograph::projects::StockLot },
+    ProjectConsent { tick:Tick, subject:SubjectId, project:cosmograph::projects::ProjectId,
+        owner:cosmograph::projects::Owner, worker:SubjectId, grant:bool, process:Option<String> },
     StockAct { tick:Tick, subject:SubjectId, process:String,
-        target:Option<isocosm::schema::Id>, selections:Vec<isocosm::projects::DebitSelection> },
+        target:Option<cosmograph::schema::Id>, selections:Vec<cosmograph::projects::DebitSelection> },
     EatOwned { tick:Tick, subject:SubjectId, item:ItemId,
-        selections:Vec<isocosm::projects::DebitSelection> },
-    FoundSpreadActor { tick:Tick, key:String, recipe:String, site:isocosm::schema::Id },
+        selections:Vec<cosmograph::projects::DebitSelection> },
+    FoundSpreadActor { tick:Tick, key:String, recipe:String, site:cosmograph::schema::Id },
     SpreadOwnership { tick:Tick, identity:crate::IdentityRef, lot:crate::AuthorSpreadLot },
     AuthoredSpread { tick:Tick, step:crate::AuthorSpreadStep },
     ExternalVolley { tick:Tick, actor:SubjectId, actor_revision:BodyRevisionId,

@@ -1,0 +1,68 @@
+[package]
+rust-version = "1.97.1"
+name = "isocosm-system"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Isocosm's system-plugin lane: a game system is a schema plus Lua scripts (via piccolo). Interprets the substrate's SheetData into derived stats and action dice-expressions. Ships the 5e SRD system."
+
+[dependencies]
+isocosm-core = { workspace = true }
+isocosm-campaign = { workspace = true }
+cosmograph = { workspace = true }
+serde = { workspace = true }
+# Parses the vendored SRD content packs (data/*.json) at load.
+serde_json = { workspace = true }
+toml = "1"
+# Pure-Rust Lua VM: the system-plugin scripting engine, sandboxed
+# (no io/os), wasm-friendly, and the tabletop modding lingua franca.
+piccolo = "0.3"
+
+[dev-dependencies]
+isocosm-native = { workspace = true, default-features = false }
+isometer-core = { workspace = true }
+
+# App-local terminal authoring; normal runtime builds do not carry syntax tooling.
+[features]
+pack-authoring = [
+    "dep:taplo",
+    "dep:sha2",
+    "dep:logos",
+    "dep:mere-edit",
+    "dep:libc",
+]
+
+# Shared source-edit kernel, optional to private authoring; canonical Git source.
+[dependencies.mere-edit]
+git = "https://www.github.com/merely-made/mere.git"
+rev = "b232631f3e5ef30d24b19b3e832ddf225177c381"
+version = "0.1.0"
+optional = true
+
+# MIT taplo 0.14 fork (github.com/merely-made/taplo, branch merely/rowan-0.17):
+# Rowan 0.17, batched DOM construction, parse_with_cache, TOML 1.1 parsing and layout.
+[dependencies.taplo]
+git = "https://github.com/merely-made/taplo.git"
+rev = "205c299124007ffd96f28e7376a20c3bd90cc672"
+version = "=0.14.0"
+optional = true
+
+[dependencies.sha2]
+version = "0.10.9"
+optional = true
+
+[dependencies.logos]
+version = "=0.12.1"
+optional = true
+
+# Save-lease host name and PID liveness for stale-lease reclaim.
+[target.'cfg(unix)'.dependencies.libc]
+version = "0.2.189"
+optional = true
+
+[[bin]]
+name = "pack-author"
+path = "src/bin/pack_author.rs"
+required-features = ["pack-authoring"]

@@ -1,0 +1,148 @@
+// Copyright 2026 Mark Alan Boykin
+// SPDX-License-Identifier: MPL-2.0
+
+use cosmograph::{Execution, Founding, Session, history::Command};
+
+fn main() {
+    if let Err(why) = run() {
+        eprintln!("{why}");
+        std::process::exit(1);
+    }
+}
+fn run() -> Result<(), String> {
+    let mut args = std::env::args().skip(1);
+    let mut founding = Founding {
+        seed: std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_err(|e| e.to_string())?
+            .as_nanos() as u64,
+        ..Default::default()
+    };
+    let mut ticks = 32;
+    let mut draws = None;
+    let mut map_draws = None;
+    let mut lift_draws = None;
+    let mut lift_digest = None;
+    let mut output = None;
+    let mut trace = None;
+    let mut trace_entries = None;
+    let mut load = None;
+    let mut world = None;
+    let mut mode = Execution::Grouped;
+    while let Some(arg) = args.next() {
+        if arg == "--individuals" {
+            mode = Execution::Individuals;
+            continue;
+        }
+        if arg == "--ecology" {
+            founding.ecology = true;
+            continue;
+        }
+        if arg == "--help" {
+            println!(
+                "cosmograph-bench [--seed N] [--ticks N] [--population N] [--sites N] [--lineages N] [--cohort-size N] [--ecology] [--draws N | --map-draws N | --lift-draws N | --lift-digest SITES] [--load SAVE | --world GENESIS] [--output FILE] [--trace FILE] [--trace-entries FILE] [--individuals]"
+            );
+            return Ok(());
+        }
+        let value = args
+            .next()
+            .ok_or_else(|| format!("missing value for {arg}"))?;
+        let number = || {
+            value
+                .parse::<u64>()
+                .map_err(|_| format!("invalid integer for {arg}"))
+        };
+        match arg.as_str() {
+            "--seed" => founding.seed = number()?,
+            "--ticks" => ticks = number()?,
+            "--population" => founding.population = number()?,
+            "--cohort-size" => founding.cohort_size = number()?,
+            "--sites" => founding.sites = u32::try_from(number()?).map_err(|e| e.to_string())?,
+            "--lineages" => {
+                founding.lineages = u32::try_from(number()?).map_err(|e| e.to_string())?
+            },
+            "--draws" => draws = Some(number()?),
+            "--map-draws" => map_draws = Some(number()?),
+            "--lift-draws" => lift_draws = Some(number()?),
+            "--lift-digest" => lift_digest = Some(number()?),
+            "--output" => output = Some(value),
+            "--trace" => trace = Some(value),
+            "--trace-entries" => trace_entries = Some(value),
+            "--load" => load = Some(value),
+            "--world" => world = Some(value),
+            _ => return Err(format!("unknown argument {arg}")),
+        }
+    }
+    if let Some(sites) = lift_digest {
+        println!("{}", cosmograph::bench::lift_digest(founding.seed, sites)?);
+        return Ok(());
+    }
+    let json = if let Some(count) = lift_draws {
+        eprintln!("Lift-draw receipt: master seed {}, draws {count}", founding.seed);
+        let report = cosmograph::bench::lift_draws(founding.seed, count)?;
+        let borders: u64 = report.draws.iter().map(|d| d.borders).sum();
+        let chunks: u64 = report.draws.iter().map(|d| d.chunks).sum();
+        eprintln!("{} worlds, {borders} border sides met exactly, {chunks} chunks lifted twice, master seed {}", report.draws.len(), founding.seed);
+        serde_json::to_string_pretty(&report)
+    } else if let Some(count) = map_draws {
+        eprintln!("Map-draw receipt: master seed {}, draws {count}", founding.seed);
+        let report = cosmograph::bench::map_draws(founding.seed, count)?;
+        let borders: u64 = report.draws.iter().map(|d| d.borders).sum();
+        let corners: u64 = report.draws.iter().map(|d| d.corners).sum();
+        eprintln!("{} maps, {borders} border sides and {corners} corners checked, master seed {}", report.draws.len(), founding.seed);
+        serde_json::to_string_pretty(&report)
+    } else if let Some(count) = draws {
+        eprintln!("Generated-draw receipt: master seed {}, draws {count}, ticks {ticks}",founding.seed);
+        let report = cosmograph::bench::draws(founding.seed,count,ticks)?;
+        eprintln!("{} generated comparisons, {} saved replays, master seed {}",report.comparisons.len(),report.saved_replays,founding.seed);
+        serde_json::to_string_pretty(&report)
+    } else {
+        let mut session = if let Some(path) = load {
+            let bytes = std::fs::read(path).map_err(|e|e.to_string())?;
+            Session::load_json(&bytes,mode)?
+        } else if let Some(path) = world {
+            let bytes=std::fs::read(path).map_err(|e|e.to_string())?;
+            let genesis=serde_json::from_slice(&bytes).map_err(|e|e.to_string())?;
+            Session::new(genesis,mode)?
+        } else { Session::new(founding.generate()?,mode)? };
+        // `<tick> <witness>` lines (ruling 610) and per-entity entries,
+        // framed (653), for every advanced tick.
+        let work = if trace.is_some() || trace_entries.is_some() {
+            let mut lines = String::new();
+            let mut entries = state_witness::Trace::new();
+            let work = session.advance_traced(ticks, |sim| {
+                let tick = sim.state().tick;
+                if trace.is_some() {
+                    lines += &format!("{tick} {:016x}\n", sim.state_hash());
+                }
+                if trace_entries.is_some() {
+                    entries.push(tick, sim.entity_witness()).expect("ticks advance");
+                }
+            })?;
+            if let Some(path) = &trace {
+                std::fs::write(path, lines).map_err(|e| e.to_string())?;
+            }
+            if let Some(path) = &trace_entries {
+                let framed = entries.to_framed().map_err(|e| format!("{e:?}"))?;
+                std::fs::write(path, framed).map_err(|e| e.to_string())?;
+            }
+            work
+        } else {
+            session.advance(ticks)?
+        };
+        // Observation is an explicit log entry, never a side effect of drawing UI.
+        let actor = session.sim.state().population.groups.iter()
+            .find(|(_,g)|g.entity.method != cosmograph::schema::Method::Inert).map(|(id,_)|*id).ok_or("no critter")?;
+        session.command(Command::Inspect(actor))?;
+        eprintln!("seed {} · tick {} · {} entities · {} groups · {} evaluations for {} represented acts · {}",
+            session.sim.genesis().seed, session.sim.state().tick, session.sim.state().population.count(),
+            session.sim.state().population.groups.len(),work.evaluations,work.represented,format!("{:016x}",session.sim.state_hash()));
+        serde_json::to_string_pretty(&session.save())
+    }.map_err(|e|e.to_string())?;
+    if let Some(path) = output {
+        std::fs::write(path, json).map_err(|e| e.to_string())?;
+    } else {
+        println!("{json}");
+    }
+    Ok(())
+}

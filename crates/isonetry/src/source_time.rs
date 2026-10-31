@@ -107,8 +107,8 @@ impl GameSourceHistory {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use isometry_campaign::{CampaignWorld, WorldFact};
-    use isometry_core::{MapDocument, TurnList};
+    use isocosm_campaign::{CampaignWorld, WorldFact};
+    use isocosm_core::{MapDocument, TurnList};
 
     fn snapshot() -> GameSnapshot {
         GameSnapshot {

@@ -6,7 +6,7 @@
 //! availability; callers remain responsible for admitting the supplied facts.
 
 use crate::identity::{BodyRevisionId, SubjectId};
-use isocosm::lineage::{LineageBody as BodyDocument, Provenance};
+use cosmograph::lineage::{LineageBody as BodyDocument, Provenance};
 use isometer_core::{Aabb, PartId};
 
 use crate::part_bounds;

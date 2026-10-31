@@ -4,7 +4,7 @@
 //! Accepted in-site locations supplement native project custody (840).
 
 use std::collections::BTreeMap;
-use isocosm::{projects::ProjectId, schema::Id};
+use cosmograph::{projects::ProjectId, schema::Id};
 use serde::{Deserialize, Serialize};
 use crate::{GameError, ItemError, WorldError};
 use crate::identity::SubjectId;

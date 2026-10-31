@@ -4,10 +4,10 @@
 //! Disposable effect/material experiment. This does not modify a World, assign
 //! capabilities to organs, or implement a tabletop ruleset. Coordinates are a
 //! normalized integer demonstration plane; they are not collision results.
-//! Handed back from Isocosm's legacy tree to the game (wing ruling 669).
+//! Handed back from Cosmograph's legacy tree to the game (wing ruling 669).
 
-pub use isocosm::effects::Glyph;
-use isocosm::rng::Rng;
+pub use cosmograph::effects::Glyph;
+use cosmograph::rng::Rng;
 use serde::{Deserialize, Serialize};
 
 pub const VERSION: u32 = 1;

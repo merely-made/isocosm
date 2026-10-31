@@ -4,7 +4,7 @@
 `2026-09-25_vtt_overlay_plan.md` (the board and appearance items),
 `2026-08-08_extracted_receipts.md` (headed acceptance, tile geometry), which are
 archived in `archive_docs/2026-10-28/`. The authored scene board is built behind
-the `ISOMETRY_SCENE_BOARD` flag beside the DOM board, with per-tile diffing and
+the `ISOCOSM_SCENE_BOARD` flag beside the DOM board, with per-tile diffing and
 paged residency. Open are the DOM board's fate, the sim-on lifted-site path,
 what the scene board does not yet draw, the appearance theory, the smallest
 supported display and headed acceptance.
@@ -21,10 +21,6 @@ the 2D lens needs its own plan, per CLAUDE.md); the detail ladder, far marks and
 the overmap as a second camera (`orthographic-voxel-presentation`); isomere
 (`sim-host`); the session model (`session-network`); campaign packs
 (`content-packs`).
-
-Receipts from this plan's runs go to `archive_docs/<date>/`, never into this
-plan (DOC_POLICY §8). Evidence that matters is a test in the repository or a
-line in Findings.
 
 ## Decisions
 
@@ -65,7 +61,7 @@ Copied verbatim from the old plan's section 5.
   `board_tile_clips_its_hit_area_to_the_visible_diamond` defines.
 - **Isometer additions are tested inside isometer** against its existing
   receipts, which stay byte-identical where the new inputs are unused.
-- The `isometry-core` crate stays pure and keeps iso math and `depth_key` for
+- The `isocosm-core` crate stays pure and keeps iso math and `depth_key` for
   any DOM overlay that still wants a paint order.
 
 ## Phases
@@ -132,9 +128,10 @@ The colour table now generates the CSS. The old overlay plan called it "a
 question for this plan to rule"; it is held here, and it is a question for Mark.
 It bears on BD4's tints and on `content-packs` (appearance preview, a real
 tileset).
+- Ruled 2026-10-30, case 1019 (Mark: "Voxel source, classes bind"): a look is an isometer `Appearance` recipe; packs bind class names to layers and palettes; the preview and the board read one recipe (doctrine VTT 7).
 - Done when: not stated; owed
-- Needs: Mark's ruling; BD4
-- Rulings: PROJECT_DESCRIPTION pillar 3
+- Needs: BD4
+- Rulings: PROJECT_DESCRIPTION pillar 3, 1019
 - From: `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:332-334`
   (the "Owed" row of its section 6).
 
@@ -218,10 +215,6 @@ roadmap's distribution residue goes to `content-packs`.
   exactly "archive, or keep as a downlevel path". Since the paging trigger has
   fired, the ruling is now due. From:
   `archive_docs/2026-10-28/2026-09-15_board_on_isometer_plan.md:178,382-391`.
-- **Stylesheet or voxel-sourced appearance (BD5)**: which of the two theories
-  governs how the board gets its looks, now that the colour table generates the
-  CSS. The old plan stated the two theories, not a recommendation. From:
-  `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:332-334`.
 - **What "Genet text acceptance" means**: the old plan names it open in its
   status line and last progress entry but never says what it is. The wing
   record (case 438, `2026-09-18_wing_design_plan.md:4370-4395`) put three
@@ -235,13 +228,13 @@ roadmap's distribution residue goes to `content-packs`.
   `archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md:398-409`.
 
 ## Findings
-- 2026-10-28: the scene board is behind `ISOMETRY_SCENE_BOARD`
-  (`crates/isometry-views/src/board.rs:311`, `state.rs:118`,
-  `crates/isometry-genet/src/scene_routing.rs`); the DOM board has not been
+- 2026-10-28: the scene board is behind `ISOCOSM_SCENE_BOARD`
+  (`crates/isocosm-views/src/board.rs:311`, `state.rs:118`,
+  `crates/isocosm-genet/src/scene_routing.rs`); the DOM board has not been
   archived or made the fallback by ruling. The sim-on lifted-site path does not
   exist.
 - 2026-10-28: the board uses `SlabCamera::dimetric_2_1` (I5) in
-  `crates/isometry-views/src/scene/world.rs`, and B3 retired `tile_at_pane` and
+  `crates/isocosm-views/src/scene/world.rs`, and B3 retired `tile_at_pane` and
   `token_drag_candidate` as reachable paths (`scene/parity_tests.rs`,
   `state/interaction/gestures.rs`). Decisions 1 to 3 are as built: tokens are
   live bodies, the producer owns the render scale, tints go through materials.
@@ -260,11 +253,37 @@ roadmap's distribution residue goes to `content-packs`.
 - 2026-10-28: `MAX_TERRAIN_MATERIALS` is 64 (`isometer-lens/src/lib.rs:126`),
   as the old plan says.
 - 2026-10-28: the eight-way, one-diagonal-cost test `budget_caps_the_reach` is
-  in `crates/isometry-core/src/path.rs:159`.
-- 2026-10-28: `DESIGN_SIZE` is (1100, 820) in `crates/isometry-genet/src/main.rs:168`.
+  in `crates/isocosm-core/src/path.rs:159`.
+- 2026-10-28: `DESIGN_SIZE` is (1100, 820) in `crates/isocosm-genet/src/main.rs:168`.
 - 2026-10-28: the old plan's timing and single-sample figures (M4 layout median,
   regrow times) are machine-specific and are not carried as thresholds.
+- 2026-10-30: under BD5's ruling (1019, 1022, 1028) both boards draw a
+  token from one resolution, `appearance::Library::resolve` in
+  `isocosm-views`: the class (`Token::sprite`) bound by the core pack's
+  `appearance.toml`, the token's overrides (`MapDocument::appearances`,
+  `TokenAppearance` in `isocosm-core`) and its equipped items' bound layers.
+  The scene board keys a token's geometry revision and colour table by the
+  resolved look; the DOM board bakes class rules from the same file and
+  bakes a token with its own look inline.
+- 2026-10-30: a token's facing now draws as a true quarter turn on both
+  boards and in the preview (case 1033), and four headed previews per board
+  (`Code/testing/isocosm/appearance/facings-{dom,scene}.png`) showed that
+  south had been drawn as north on both: bake facing 0 and yaw zero put the
+  rig's front toward the upper right. `bake_facing_of` and `yaw_of` now put
+  north at zero, so a south-facing token shows its face.
+- 2026-10-30: the in-app `ISOCOSM_CAPTURE_DIR` readback did not land for any
+  selftest on this machine (a turns-selftest control run included); the look
+  editor's headed pairs were taken with PrintWindow from outside the process.
 
 ## Progress
 - 2026-10-28: cut from the board-on-isometer plan, the VTT overlay plan's board
   and appearance items, and the extracted-receipts ledger.
+- 2026-10-30: the look editor (creation panel and the token menu's
+  Appearance row) with a live preview on whichever board is active, cancel,
+  save and reopen; `AppearanceSet` replicates a look (protocol 23); headed
+  pairs in `Code/testing/isocosm/appearance/`.
+- 2026-10-31: item looks derived from what an item is (cases 1035, 1043):
+  a pack binds item templates (or kind tags) to sorts with seeded shapes,
+  maps `material`, make grade and `condition` keys to palette, finish and
+  wear, and the look editor shows a variant strip; PF2e level-0 arms,
+  armour and shields are bound in the core pack (protocol 25).

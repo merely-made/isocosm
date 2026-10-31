@@ -14,7 +14,7 @@
 
 use std::collections::BTreeMap;
 
-use isocosm::schema::Id;
+use cosmograph::schema::Id;
 use isometer_core::PartId;
 use serde::{Deserialize, Serialize};
 

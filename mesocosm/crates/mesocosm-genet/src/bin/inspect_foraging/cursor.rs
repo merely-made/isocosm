@@ -46,7 +46,7 @@ mod tests {
 
     #[test]
     fn cursor_keeps_exact_cuts_across_commands_clock_gaps_and_backwards_reads() {
-        let g = isocosm::Founding {
+        let g = cosmograph::Founding {
             seed: 7,
             sites: 2,
             population: 8,

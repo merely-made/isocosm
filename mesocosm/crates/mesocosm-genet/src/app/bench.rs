@@ -1,7 +1,7 @@
 // Copyright 2026 Mark Alan Boykin
 // SPDX-License-Identifier: MPL-2.0
 
-//! The bench: a cambium document over a native Isocosm session. Found a
+//! The bench: a cambium document over a native Cosmograph session. Found a
 //! world, step it, inspect sites and individuals, save, load, branch and
 //! merge. The legacy specimen bench went with the legacy world.
 

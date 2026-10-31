@@ -5,7 +5,7 @@ default-run = "mesocosm-genet"
 version = "0.0.1"
 edition = "2024"
 license = "MPL-2.0"
-description = "Mesocosm's windowed host: a winit window and wgpu surface over a native Isocosm session through the shared runtime. Owns the loop and the device, never a rule."
+description = "Mesocosm's windowed host: a winit window and wgpu surface over a native Cosmograph session through the shared runtime. Owns the loop and the device, never a rule."
 repository = "https://github.com/merely-made/isocosm"
 publish = false
 
@@ -18,14 +18,14 @@ publish = false
 # master and layers traced terrain with the transparent same-device body
 # tenant; the host still owns the final surface blit and presentation.
 [dependencies]
-isocosm-host = { path = "../../../host" }
+cosmograph-host = { path = "../../../cosmograph-host" }
 tenant = { workspace = true }
 mesocosm-runtime = { workspace = true }
 mesocosm-views = { workspace = true }
 # The contract the host speaks: nudges, checkpoint answers and dev intents
 # go in as overlay envelopes, never as native commands (wing ruling 686).
-isocosm-overlay = { path = "../../../shared/isocosm-overlay" }
-isocosm = { workspace = true }
+cosmograph-overlay = { path = "../../../shared/cosmograph-overlay" }
+cosmograph = { workspace = true }
 netrender = { workspace = true }
 paint_list_api = { workspace = true }
 paint_list_render = { workspace = true }
@@ -46,7 +46,7 @@ taproot = { workspace = true }
 # The dev lane's placement (ruled 2026-09-02): a workbench tile, not a
 # hand-rolled corner constant. See `dev`.
 workbench = { workspace = true }
-# The generic half of the bench acceptance lane. It was the shared Isometry
+# The generic half of the bench acceptance lane. It was the shared Isocosm
 # path crate `shared/wing-scenario` (P3a, 2026-09-14); mere took it into the
 # cambium family the same day as `mesquite`, so it arrives from mere.git at
 # the family rev like every other cambium edge.

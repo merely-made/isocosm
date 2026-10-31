@@ -9,7 +9,7 @@ repository = "https://github.com/merely-made/isocosm"
 publish = false
 
 # Its own workspace, like the other `shared/` path crates, and excluded from
-# the Isometry root workspace beside them. The root pins mere at a different
+# the Isocosm root workspace beside them. The root pins mere at a different
 # revision, so pulling this crate into it would fork the cambium family.
 [workspace]
 members = [".", "crates/*"]

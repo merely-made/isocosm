@@ -1,0 +1,185 @@
+# Pathfinder 2e Player Core (Remaster): the slice's two classes, their
+# 1st-level features and 1st-level class feats (case 1021; no spellcasting).
+# ORC-licensed mechanics checked against the foundryvtt/pf2e Remaster ORC
+# records (case 1016); summaries are original.
+# Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative
+# License: https://paizo.com/orclicense
+#
+# Ranks: 0 untrained, 1 trained, 2 expert, 3 master, 4 legendary.
+version = 1
+
+[[class]]
+id = "fighter"
+name = "Fighter"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+hp = 10
+key = ["str", "dex"]
+ranks = { perception = 2, fortitude = 2, reflex = 2, will = 1, class_dc = 1, unarmed = 2, simple = 2, martial = 2, advanced = 1, unarmored = 1, light = 1, medium = 1, heavy = 1 }
+skill_choice = ["acrobatics", "athletics"]
+additional_skills = 3
+skill_feat_at_first = false
+grants = [{ feat = "shield-block" }, { feat = "reactive-strike" }]
+summary = "A master of weapons and armour. 10 Hit Points plus Constitution per level; key attribute Strength or Dexterity; expert in Perception, Fortitude, Reflex and simple, martial and unarmed attacks; trained in every armour and in advanced weapons. Starts with Shield Block and Reactive Strike."
+
+[[class]]
+id = "rogue"
+name = "Rogue"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+hp = 8
+key = ["dex"]
+ranks = { perception = 2, fortitude = 1, reflex = 2, will = 2, class_dc = 1, unarmed = 1, simple = 1, martial = 1, advanced = 0, unarmored = 1, light = 1, medium = 0, heavy = 0 }
+skills = ["stealth"]
+additional_skills = 7
+option = "racket"
+skill_feat_at_first = true
+grants = [{ feat = "sneak-attack" }, { feat = "surprise-attack" }]
+summary = "A skilled opportunist. 8 Hit Points plus Constitution per level; key attribute Dexterity (a racket can offer another); expert in Perception, Reflex and Will; trained in simple and martial weapons and light armour; trained in Stealth plus seven skills. Chooses a racket, gains Sneak Attack and Surprise Attack, and takes a skill feat at 1st level."
+
+[[feat]]
+id = "reactive-strike"
+name = "Reactive Strike"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "feature"
+owner = "fighter"
+summary = "A reaction: when a creature in your reach uses a manipulate or move action, makes a ranged attack, or leaves a square while moving, make a melee Strike against it; a critical hit on a manipulate action disrupts it."
+
+[[feat]]
+id = "sneak-attack"
+name = "Sneak Attack"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "feature"
+owner = "rogue"
+summary = "Strikes with agile or finesse melee weapons, or ranged weapons, against an off-guard creature deal an extra 1d6 precision damage (more dice at 5th, 11th and 17th level)."
+
+[[feat]]
+id = "surprise-attack"
+name = "Surprise Attack"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "feature"
+owner = "rogue"
+summary = "In the first round of combat, if you rolled Deception or Stealth for initiative, creatures that have not acted yet are off-guard to you."
+
+[[feat]]
+id = "thief"
+name = "Thief"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "feature"
+owner = "rogue"
+option = "racket"
+grants = [{ train = "thievery" }]
+summary = "Racket. With finesse melee weapons you may add Dexterity rather than Strength to damage. Trained in Thievery. Key attribute stays Dexterity."
+
+[[feat]]
+id = "ruffian"
+name = "Ruffian"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "feature"
+owner = "rogue"
+option = "racket"
+key = ["str"]
+grants = [{ train = "intimidation" }, { rank = { target = "medium", rank = 1 } }]
+summary = "Racket. Sneak Attack works with any simple weapon up to d8 damage or martial weapon up to d6, and your critical hits with them against off-guard foes apply critical specialization. Trained in Intimidation and medium armour; medium armour keeps pace with your light armour later. You may choose Strength as your key attribute."
+
+[[feat]]
+id = "scoundrel"
+name = "Scoundrel"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "feature"
+owner = "rogue"
+option = "racket"
+key = ["cha"]
+grants = [{ train = "deception" }, { train = "diplomacy" }]
+summary = "Racket. A successful Feint leaves the target off-guard to your melee attacks until the end of your next turn (to everyone's on a critical success). Trained in Deception and Diplomacy. You may choose Charisma as your key attribute."
+
+[[feat]]
+id = "mastermind"
+name = "Mastermind"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "feature"
+owner = "rogue"
+option = "racket"
+key = ["int"]
+grants = [{ train = "society" }, { train_choice = { count = 1, from = ["arcana", "nature", "occultism", "religion"] } }]
+summary = "Racket. Identifying a creature with Recall Knowledge leaves it off-guard to your attacks until the start of your next turn (for a minute on a critical success). Trained in Society and one of Arcana, Nature, Occultism or Religion. You may choose Intelligence as your key attribute."
+
+[[feat]]
+id = "double-slice"
+name = "Double Slice"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "fighter"
+summary = "Two actions, wielding a melee weapon in each hand: Strike once with each at your current multiple attack penalty; the second takes -2 unless it is agile. Combine their damage if both hit."
+
+[[feat]]
+id = "exacting-strike"
+name = "Exacting Strike"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "fighter"
+summary = "One action, press: make a Strike; if it fails, it does not count toward your multiple attack penalty."
+
+[[feat]]
+id = "point-blank-stance"
+name = "Point Blank Stance"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "fighter"
+summary = "One action, stance, wielding a ranged weapon: volley weapons lose their penalty at close range, and other ranged Strikes in the first range increment gain extra damage."
+
+[[feat]]
+id = "snagging-strike"
+name = "Snagging Strike"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "fighter"
+summary = "One action, with a hand free and the target in its reach: make a Strike; on a hit the target is off-guard until the start of your next turn or until it leaves your reach."
+
+[[feat]]
+id = "vicious-swing"
+name = "Vicious Swing"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "fighter"
+summary = "Two actions, flourish: make a melee Strike that deals an extra weapon damage die on a hit and counts as two attacks for your multiple attack penalty."
+
+[[feat]]
+id = "nimble-dodge"
+name = "Nimble Dodge"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "rogue"
+summary = "A reaction when a creature you can see targets you with an attack and you are not encumbered: +2 circumstance bonus to AC against it."
+
+[[feat]]
+id = "overextending-feint"
+name = "Overextending Feint"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "rogue"
+requires = [{ trained = "deception" }]
+summary = "A successful Feint may instead give the target a -2 circumstance penalty to its next attack roll against you before the end of its next turn (to all its attack rolls against you on a critical success). Requires training in Deception."
+
+[[feat]]
+id = "plant-evidence"
+name = "Plant Evidence"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "rogue"
+requires = [{ feat = "pickpocket" }]
+summary = "One action: slip an item of light or negligible Bulk onto a person with a Thievery check against their Perception DC (a free action after a successful Shove if you are a ruffian). Requires the Pickpocket feat."
+
+[[feat]]
+id = "tumble-behind"
+name = "Tumble Behind"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "rogue"
+summary = "When you successfully Tumble Through a foe's space, it is off-guard against your next attack before the end of your turn."
+
+[[feat]]
+id = "twin-feint"
+name = "Twin Feint"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "class"
+owner = "rogue"
+summary = "Two actions, wielding a melee weapon in each hand: Strike with each against one target; it is off-guard against the second Strike."

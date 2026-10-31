@@ -4,7 +4,7 @@
 use std::cell::RefCell;
 use super::*;
 use crate::{Refusal, succession};
-use isocosm::{Session, schema::Id, directing::interim::{BorrowedInterim, Happening},
+use cosmograph::{Session, schema::Id, directing::interim::{BorrowedInterim, Happening},
     lineage::{boundary, revise}};
 
 pub fn advance_loop(session: &mut Session, game: &mut Game, participant: Id)
@@ -16,14 +16,14 @@ pub fn advance_loop(session: &mut Session, game: &mut Game, participant: Id)
 }
 
 pub(crate) fn advance_with_flows(session: &mut Session, game: &mut Game, participant: Id)
-    -> Result<(String, Vec<isocosm::flows::Flow>, Option<VerifiedQuestion>), Refusal> {
+    -> Result<(String, Vec<cosmograph::flows::Flow>, Option<VerifiedQuestion>), Refusal> {
     let mut geometry = crate::spatial::GeometryCache::default();
     advance_with_flows_cached(session, game, participant, &mut geometry)
 }
 
 pub(crate) fn advance_with_flows_cached(session: &mut Session, game: &mut Game, participant: Id,
     geometry: &mut crate::spatial::GeometryCache)
-    -> Result<(String, Vec<isocosm::flows::Flow>, Option<VerifiedQuestion>), Refusal> {
+    -> Result<(String, Vec<cosmograph::flows::Flow>, Option<VerifiedQuestion>), Refusal> {
     let _span = crate::profile::Span::new("round.borrowed");
     game.validate(session).map_err(Refusal::Sim)?;
     let mut saved = game.continuation.clone()

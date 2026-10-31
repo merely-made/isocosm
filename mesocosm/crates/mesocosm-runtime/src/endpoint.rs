@@ -18,14 +18,14 @@ use chirograph::{
 use graphshell_endpoint::{
     IntentSink, PresentationSource, ProjectionCatalog, ProjectionNoticeSource, ProjectionSource,
 };
-use isocosm::directing::interim::Happening;
-use isocosm_host::{
+use cosmograph::directing::interim::Happening;
+use cosmograph_host::{
     binding::Binding,
     endpoint::disclosure::{self, Disclosure, Item, NULL, action, card, rejected, value},
     window::Window,
     world::World,
 };
-use isocosm_overlay::{
+use cosmograph_overlay::{
     AttentionSet, CandidateHandle, EntityHandle, ParticipantHandle, Seat, Tick,
     mesocosm::{BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, DeathAnswer, RevisionAnswer},
 };

@@ -47,7 +47,7 @@ niche, for a survival strategy in a strange place.
 
 ## Where it sits
 
-Vessel 1 of the Isocosm family, over one simulator, Isocosm, that shares a
+Vessel 1 of the wing, over one simulator, Cosmograph, that shares a
 world substrate, a lineage model,
 a trust plane, one clock and the simulator's own verbs, reached as handles
 — engine organs are shared where they stay verb-neutral — but shares no

@@ -42,7 +42,7 @@ arbitrary threshold process. Two populations may have equal total energy
 but different numbers of starving individuals. The new tests include that
 counterexample.
 
-`shared/isocosm/src/population.rs` stores complete member state with an
+`shared/cosmograph/src/population.rs` stores complete member state with an
 identity interval and multiplicity. Different reserves, traits, body
 revisions, places, skills, dispositions or tenets stay in different rows.
 Lifting splits an interval without changing its state. Restriction combines

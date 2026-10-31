@@ -13,8 +13,8 @@
 use std::cmp::Reverse;
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
 
-use isocosm::schema::Id;
-use isocosm::simulation::Simulation;
+use cosmograph::schema::Id;
+use cosmograph::simulation::Simulation;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]

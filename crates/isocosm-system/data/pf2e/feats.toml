@@ -1,0 +1,125 @@
+# Pathfinder 2e Player Core (Remaster): the slice's 1st-level ancestry feats
+# (human, dwarf). ORC-licensed mechanics checked against the foundryvtt/pf2e
+# Remaster ORC records (case 1016); summaries are original.
+# Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative
+# License: https://paizo.com/orclicense
+version = 1
+
+[[feat]]
+id = "adapted-cantrip"
+name = "Adapted Cantrip"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "human"
+requires = [{ unavailable = "needs a spellcasting class feature, and neither Fighter nor Rogue has one" }]
+summary = "Swap one of your cantrips for a cantrip from another magical tradition."
+
+[[feat]]
+id = "cooperative-nature"
+name = "Cooperative Nature"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "human"
+summary = "A +4 circumstance bonus to checks to Aid."
+
+[[feat]]
+id = "general-training"
+name = "General Training"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "human"
+grants = [{ feat_choice = "general" }]
+summary = "Gain one 1st-level general feat whose prerequisites you meet; skill feats count as general feats."
+
+[[feat]]
+id = "haughty-obstinacy"
+name = "Haughty Obstinacy"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "human"
+summary = "A success on a save against a mental effect that tries to control your actions becomes a critical success, and a failed Intimidation check to Coerce you becomes a critical failure."
+
+[[feat]]
+id = "natural-ambition"
+name = "Natural Ambition"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "human"
+grants = [{ feat_choice = "class" }]
+summary = "Gain a 1st-level class feat for your class whose prerequisites you meet."
+
+[[feat]]
+id = "natural-skill"
+name = "Natural Skill"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "human"
+grants = [{ train_choice = { count = 2 } }]
+summary = "Become trained in two skills of your choice."
+
+[[feat]]
+id = "unconventional-weaponry"
+name = "Unconventional Weaponry"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "human"
+requires = [{ unavailable = "chooses an uncommon weapon, and weapon records arrive with the equipment step" }]
+summary = "Gain access to one uncommon ancestry or cultural weapon and treat it as one category simpler for proficiency."
+
+[[feat]]
+id = "dwarven-doughtiness"
+name = "Dwarven Doughtiness"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "dwarf"
+summary = "At the end of your turn, your frightened value drops by 2 rather than 1."
+
+[[feat]]
+id = "dwarven-lore"
+name = "Dwarven Lore"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "dwarf"
+grants = [{ train = "crafting" }, { train = "religion" }, { lore = "Dwarven Lore" }]
+summary = "Become trained in Crafting, Religion and Dwarven Lore; if you were already trained in Crafting or Religion, train another skill of your choice instead."
+
+[[feat]]
+id = "dwarven-weapon-familiarity"
+name = "Dwarven Weapon Familiarity"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "dwarf"
+summary = "Access to uncommon dwarf weapons; battle axes, picks, warhammers and dwarf weapons count as one category simpler for proficiency; critical specialization with them from 5th level."
+
+[[feat]]
+id = "mountain-strategy"
+name = "Mountain Strategy"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "dwarf"
+summary = "Your weapon and unarmed attacks deal +1 circumstance damage per weapon damage die against giants, goblins, hryngar and orcs."
+
+[[feat]]
+id = "rock-runner"
+name = "Rock Runner"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "dwarf"
+summary = "Ignore difficult terrain made of stone and earth; a success to Balance on stone or earth becomes a critical success, and you are not off-guard while Balancing on them."
+
+[[feat]]
+id = "stonemasons-eye"
+name = "Stonemason's Eye"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "dwarf"
+grants = [{ train_else_feat = { skill = "crafting", feat = "specialty-crafting", choice = "stonemasonry" } }]
+summary = "Become trained in Crafting (if already trained, gain Specialty Crafting for stonemasonry), and a +2 circumstance bonus to Perception to notice unusual stonework."
+
+[[feat]]
+id = "unburdened-iron"
+name = "Unburdened Iron"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "ancestry"
+owner = "dwarf"
+summary = "Ignore the Speed reduction from armour, and reduce other Speed penalties by 5 feet."

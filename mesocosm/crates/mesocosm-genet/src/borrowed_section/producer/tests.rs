@@ -14,7 +14,7 @@ fn viewport_pixels_match_the_original_section_and_refuse_an_unpresented_revision
             &session,
             participant,
             window,
-            isocosm::directing::readings::Mode::Survival,
+            cosmograph::directing::readings::Mode::Survival,
             site,
             0,
         )

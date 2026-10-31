@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: MPL-2.0
 
 use super::*;
-use isocosm_overlay::{EntityHandle, Intent, IntentEnvelope, ParticipantHandle, Tick,
+use cosmograph_overlay::{EntityHandle, Intent, IntentEnvelope, ParticipantHandle, Tick,
     mesocosm::{BirthAnswer, CheckpointAnswer, CheckpointAnswerKind, MesocosmIntent}};
 
-#[path = "../../../../../shared/isocosm/tests/ecology_independence_879/fixture.rs"]
+#[path = "../../../../../shared/cosmograph/tests/ecology_independence_879/fixture.rs"]
 #[allow(dead_code)]
 mod native_fixture;
 
@@ -21,7 +21,7 @@ fn held() -> Runtime {
     runtime
 }
 
-fn answer(runtime: &Runtime) -> isocosm_overlay::mesocosm::CheckpointAnswer {
+fn answer(runtime: &Runtime) -> cosmograph_overlay::mesocosm::CheckpointAnswer {
     CheckpointAnswer { entity: EntityHandle(runtime.critter().unwrap()),
         kind: CheckpointAnswerKind::Birth(BirthAnswer::KeepParent) }
 }

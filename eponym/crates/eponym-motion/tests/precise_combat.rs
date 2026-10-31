@@ -4,7 +4,7 @@
 use eponym_play::identity::{BodyRevisionId, SubjectId};
 use eponym_play::timed_action::{Direction, LimbBinding, StrikeReceipt};
 use eponym_play::*;
-use isocosm::lineage::SpeciesId;
+use cosmograph::lineage::SpeciesId;
 
 const ACTOR: SubjectId = SubjectId(31);
 const TARGET: SubjectId = SubjectId(32);

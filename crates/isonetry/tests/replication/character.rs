@@ -60,8 +60,8 @@ fn refused_character_placement_does_not_attach_an_orphan_sheet() {
 /// native entry it was lowered to (768).
 #[test]
 fn a_contract_character_replicates_as_its_native_entry() {
-    use isocosm_overlay::vtt::{Assertion as Contract, Cell, NewCharacter};
-    use isocosm_overlay::{ParticipantHandle, PlaceHandle, WorldPoint};
+    use cosmograph_overlay::vtt::{Assertion as Contract, Cell, NewCharacter};
+    use cosmograph_overlay::{ParticipantHandle, PlaceHandle, WorldPoint};
     let mut snap = snapshot();
     let ford = Place {
         key: "ford".into(),
@@ -72,7 +72,7 @@ fn a_contract_character_replicates_as_its_native_entry() {
     let original_map = snap.map.clone();
     let mut sim = Sim::new(HostSession::new(snap));
     sim.connect(PeerId(10));
-    let site = PlaceHandle(isocosm_vtt::contract::handle("ford"));
+    let site = PlaceHandle(isocosm_native::contract::handle("ford"));
     let mira = Contract::Character(NewCharacter {
         key: "mira".into(),
         name: "Mira".into(),
@@ -85,7 +85,7 @@ fn a_contract_character_replicates_as_its_native_entry() {
     });
     sim.host_assertion(&mira).expect("the character commits");
     sim.connect(PeerId(11)); // The late snapshot keeps metadata too.
-    let expected = Some(isocosm::asserted::CharacterTable {
+    let expected = Some(cosmograph::asserted::CharacterTable {
         cell: [-7, 2, 13],
         owner: Some(10),
     });
@@ -125,8 +125,8 @@ fn a_contract_character_replicates_as_its_native_entry() {
 
 #[test]
 fn a_contract_character_announcement_retains_metadata_through_wire_delivery() {
-    use isocosm_overlay::vtt::{Assertion as Contract, Cell, NewCharacter};
-    use isocosm_overlay::{ParticipantHandle, PlaceHandle, WorldPoint};
+    use cosmograph_overlay::vtt::{Assertion as Contract, Cell, NewCharacter};
+    use cosmograph_overlay::{ParticipantHandle, PlaceHandle, WorldPoint};
     let mut snap = snapshot();
     snap.world
         .assert(Assertion::Place(Place {
@@ -146,7 +146,7 @@ fn a_contract_character_announcement_retains_metadata_through_wire_delivery() {
         name: "Mira".into(),
         faction: None,
         at: Cell {
-            site: PlaceHandle(isocosm_vtt::contract::handle("ford")),
+            site: PlaceHandle(isocosm_native::contract::handle("ford")),
             at: WorldPoint([-7, 2, 13]),
         },
         owner: Some(ParticipantHandle(10)),
@@ -164,7 +164,7 @@ fn a_contract_character_announcement_retains_metadata_through_wire_delivery() {
     assert_eq!(client.applied(), host.seq());
     assert_eq!(
         client.state().unwrap().world.characters()["mira"].table,
-        Some(isocosm::asserted::CharacterTable {
+        Some(cosmograph::asserted::CharacterTable {
             cell: [-7, 2, 13],
             owner: Some(10)
         })

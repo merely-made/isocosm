@@ -10,7 +10,7 @@
 //! author writes one Lua function, the host hands it a frozen picture of a body
 //! and its situation, and what comes back is a [`Proposal`] — never a change.
 //! The proposal is lowered to the ordinary
-//! a native mosaic placement (`isocosm::mosaic::propose`) and offered to the
+//! a native mosaic placement (`cosmograph::mosaic::propose`) and offered to the
 //! one validator, which accepts or refuses it exactly as it would a hand-drawn
 //! or an automatic one.
 //!
@@ -70,7 +70,7 @@ pub use proposal::{Allocation, Expression, Proposal, lower};
 pub use request::{Ambient, Definition, PartView, Request, TractView, Trigger};
 pub use runner::Runner;
 
-use isocosm::schema::PartId;
+use cosmograph::schema::PartId;
 
 /// Host policy for one expression call.
 ///
@@ -126,11 +126,11 @@ pub struct Entropy {
 impl Entropy {
     /// Draws this call's tape from a seed.
     ///
-    /// The core's own [`Rng`](isocosm::rng::Rng) — SplitMix64, the stream
+    /// The core's own [`Rng`](cosmograph::rng::Rng) — SplitMix64, the stream
     /// every other seeded decision in this game comes out of. No second
     /// generator was invented for this door.
     pub fn from_seed(seed: u64) -> Self {
-        let mut rng = isocosm::rng::Rng::from_seed(seed);
+        let mut rng = cosmograph::rng::Rng::from_seed(seed);
         Self {
             seed,
             draws: (0..DRAWS).map(|_| rng.next_u64()).collect(),

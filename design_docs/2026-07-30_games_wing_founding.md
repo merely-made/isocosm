@@ -1,9 +1,9 @@
 # The Games Wing: Founding Record
 
-*Names, 2026-09-22 (wing design record, rulings 109 and 110): the sim and the family are Isocosm, the second-person game is Eponym (formerly Paredros), the tabletop is Isocosm: VTT, with Isometry retired as a product word and kept only as the plain technical prefix of its crates, and Mesocosm is unchanged. Verbatim rulings, quotations and code paths keep the old words until the rename lane lands.*
+*Names, 2026-10-30 (wing design record, cases 1036 and 1037): the products are Isocosm (the VTT), Mesocosm and Eponym, peers without a family prefix; the sim they share is Cosmograph. Earlier names: the VTT was Isometry, then Isocosm: VTT; the sim was Isocosm; Eponym was Paredros. Verbatim rulings and quotations keep the old words.*
 
 **Status: founding record, 2026-07-30.** Wing-level. Owns the shared
-architecture, laws, and vocabulary for Mesocosm, Eponym, and Isometry.
+architecture, laws, and vocabulary for Mesocosm, Eponym, and Isocosm.
 Vessel-specific design lives in each repo's own founding plan. This document
 is cited by `eponym/design_docs/` and should be cited rather than copied.
 
@@ -46,7 +46,7 @@ governs content inheritance across games, not code or format sharing. See
 | ---- | ------ | ------------ | ------------------ |
 | **Mesocosm** | First | I am this body | Movement, consumption, perception, damage, feeding, and growth are experienced directly. |
 | **Eponym** | Second | I live with you | Companions can be addressed, persuaded, equipped, and helped. They remain peers, and they can replace you. |
-| **Isometry** | Third | They occupy the world | Characters become groups, factions, visible pieces in a shared tactical and historical account. |
+| **Isocosm** | Third | They occupy the world | Characters become groups, factions, visible pieces in a shared tactical and historical account. |
 
 **Person is agency, not camera.** Ruled 2026-07-30 after the two vocabularies
 collided in a render doc. "Second person" says companions are peers you
@@ -63,7 +63,7 @@ sharing an engine":
   capacities change.
 - **Eponym** asks whether a community remains itself as control, bodies,
   and generations change.
-- **Isometry** asks whether a campaign remains itself across adjudication,
+- **Isocosm** asks whether a campaign remains itself across adjudication,
   authors, imports, and revisions.
 
 This names what the wing's vocabulary was already circling: *animula* is a
@@ -101,13 +101,13 @@ Any of the three games may be played at any supported point in a world's
 history. Their characteristic historical settings differ: Mesocosm naturally
 foregrounds early ecological history, when most subjects are critters;
 Eponym foregrounds pre-civilization and the emergence of kin, kith, camps,
-colonies, and bases; Isometry foregrounds worlds where civilizations and their
+colonies, and bases; Isocosm foregrounds worlds where civilizations and their
 institutions have become dominant. These are historical emphases, not required
 stages, population-type restrictions, or a mandatory export sequence.
 
 Late Mesocosm can concern organisms in cultivated soil, infrastructure,
 domesticated populations, or ruins. Late Eponym can concern one life among
-powerful institutions. Early Isometry can concern the collective activity of
+powerful institutions. Early Isocosm can concern the collective activity of
 a small founding group. Each keeps its own care granularity and admits the
 mechanisms it supports. An unsupported ruleset is an explicit compatibility
 result, not an era lock. Naming does not create cognition; anonymous subjects
@@ -168,7 +168,7 @@ does not impose its attributes, skill points, or action rules on the other games
 (`eponym/design_docs/archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md`), and recorded
 symmetrically rather than one-directionally: no vessel is the primary one.
 
-- **Isometry** is the fortress and atlas mode: care for a squad and a map,
+- **Isocosm** is the fortress and atlas mode: care for a squad and a map,
   prepared ahead, adjudicated in turns.
 - **Eponym** is the adventure mode: the same world's people met one at a
   time, embodied, negotiated.
@@ -198,7 +198,7 @@ What the frame decides, and why it is here rather than only in the review:
   provenance), and **places** (sites with history). They cross by the three
   pipeline laws of §3, as choices under scarcity with pointable inheritance.
   Kinematics, tile-and-turn adjudication, renderers, and control schemes do
-  not cross, ever. Eponym walking Mesocosm's voxels and Isometry baking
+  not cross, ever. Eponym walking Mesocosm's voxels and Isocosm baking
   voxels to sprites are the same source becoming two lenses, not one lens
   borrowed.
 - **Platform organs go up, not sideways.** Where two vessels need the same
@@ -211,9 +211,9 @@ What the frame decides, and why it is here rather than only in the review:
   deliberately *not* shared as a library: one grammar, sovereign evaluators
   per vessel, per the general model's evaluator rule.
 
-### Isometry as an umbrella home (2026-09-09 discussion)
+### Isocosm as an umbrella home (2026-09-09 discussion)
 
-**Historical discussion, accepted later on 2026-09-09.** See the [completed consolidation](archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md) for the current layout. The discussion below records its rationale. Mark was considering Isometry as
+**Historical discussion, accepted later on 2026-09-09.** See the [completed consolidation](archive_docs/2026-10-10/2026-09-09_games_wing_consolidation_plan.md) for the current layout. The discussion below records its rationale. Mark was considering Isocosm as
 the repository home for Mesocosm and Eponym to make interdependency easier,
 and explicitly welcomes use of all three projects. Distinguish repository
 organization, library dependency direction, and product runtime integration.
@@ -221,14 +221,14 @@ One repository can contain three independently runnable applications and
 shared game-domain libraries without requiring one running world instance.
 
 The live dependency shape already includes direct Eponym dependencies on
-Mesocosm core, mesh, render and optional lens crates. Isometry separately owns
+Mesocosm core, mesh, render and optional lens crates. Isocosm separately owns
 a bounded generator runtime, typed proposals, campaign item state and system
 plugins that should be assessed for reuse before recreating equivalent
 machinery. A common home would permit atomic consumer/producer changes and
 coordinated dependency pins. Shared code must still have an acyclic dependency
 graph; co-location alone cannot remove a semantic ownership conflict.
 
-Discussion recommendation: an Isometry repository and, if dependency
+Discussion recommendation: an Isocosm repository and, if dependency
 resolution permits, one Cargo workspace with separately runnable products,
 focused build targets, common dependency selection, and one wing doc index.
 Keep existing package identities during a possible move. Game-specific
@@ -268,7 +268,7 @@ So the invariant is the thesis, not the grammar:
 
 > **Care granularity must not drift. Person may.**
 
-Mesocosm is care for a **species**, Eponym for **individuals**, Isometry for
+Mesocosm is care for a **species**, Eponym for **individuals**, Isocosm for
 a **community**. That survives camera and control changes in a way person
 does not — XCOM is third person at individual granularity, Mount & Blade is
 first person at community granularity. Person was a convenient proxy for
@@ -282,7 +282,7 @@ narrower rules.
 
 1. **Each vessel has a home person** — its default, its center of gravity, the
    one you inhabit continuously. Mesocosm's home is first, Eponym' second,
-   Isometry's third. A shift is a departure you return from.
+   Isocosm's third. A shift is a departure you return from.
 2. **Shifts are bounded and diegetic.** Earned, framed, and temporary, not a
    second mode of equal weight with its own menu.
 3. **Removal test.** Can each layer be deleted with the game still standing?
@@ -316,10 +316,10 @@ by the care-granularity rule; each still has to pass the three guardrails.
   *become* another body. That is succession in miniature, and succession is
   already ruled — becoming a companion temporarily is the same mechanic as
   becoming one permanently.
-- **An embodied scout** (Isometry). Exploration mode, the pointcrawl, and
+- **An embodied scout** (Isocosm). Exploration mode, the pointcrawl, and
   board-to-text narration already exist there; one figure moving through the
   world is a shift that repo is nearly built for. Still gated behind
-  Isometry's own render-lane ruling.
+  Isocosm's own render-lane ruling.
 - **Asymmetric co-op** (all three), and this is the largest unlock. The original
   implementation deferral did not remove co-op from the design. **Clarified
   2026-09-09:** co-op is critical to every vessel; concrete session shapes and
@@ -391,7 +391,7 @@ thing to an artifact that already exists:
 | ------ | ---- | ------------------ |
 | Mesocosm | remembered history, relationship, or explicit designation | a denizen, out of a critter |
 | Eponym | a **faction** | a character, out of a denizen |
-| Isometry | a **history** | a legend, out of a character |
+| Isocosm | a **history** | a legend, out of a character |
 
 **Individual remembrance is the whole promotion.** A critter is a member of a
 species; a denizen is a particular inhabitant the simulation retains. That can
@@ -420,7 +420,7 @@ Three consequences worth holding:
 - **This is the one-substrate law paying out.** Three games, three additions,
   one object. If any vessel had needed to *convert* a critter into a character,
   that would have been the hollowing Spore suffered.
-- **It also explains the export arrow.** A legend in Isometry is not a fourth
+- **It also explains the export arrow.** A legend in Isocosm is not a fourth
   kind of thing — it is a character whose history outlived it, which is exactly
   what `tulpa` was named for.
 
@@ -480,7 +480,7 @@ vision. It is the material-language lodestar rather than a core-loop template:
   remember, and care about.
 
 This does not make a voxel grid shared simulation authority. Mesocosm's body
-graph and developmental recipe, Eponym' close presentation, and Isometry's
+graph and developmental recipe, Eponym' close presentation, and Isocosm's
 sprite projection remain sovereign representations. The wing-level target is
 the perceptual continuity: each vessel should make the same buildable,
 damageable material history recognizable through its own lens.
@@ -564,7 +564,7 @@ point where the game supports it. Plans can continue until an alert calls for
 manual attention, as in RimWorld; long unattended stretches can leave room to
 think, as in Kenshi. Turn-based and stepwise movement are also welcome, with
 CDDA as a reference. Each vessel retains its own pace and input model; this
-preference does not change Isometry's turn-based brief or impose pause on a
+preference does not change Isocosm's turn-based brief or impose pause on a
 shared session. Where practical, expose pace, alerts, and assistance as settings.
 
 Things die and stay dead in the played history. Continuing while wounded and
@@ -577,7 +577,7 @@ are tastes; each vessel's camera ruling remains distinct. Destructibility is
 especially important, with construction and destruction understood as changes
 to the same material system, consistent with the Voxatron reference above.
 Terrain can offer routes, hazards, and opportunities that become legible through
-experience. Mark points to Isometry's surface effects and Breath of the Wild
+experience. Mark points to Isocosm's surface effects and Breath of the Wild
 as things to learn from when making hostile environments playable.
 
 Exploratory examples: rain changes footing, equipment changes crossing options,
@@ -680,7 +680,7 @@ discovery and lineage development. Eponym's
 `eponym/design_docs/archive_docs/2026-10-10/2026-09-09_memory_and_remembrance_plan.md` are locally
 drafted planning locations, inspected 2026-09-09, for action loops, environmental
 laws, and remembered social consequences respectively; they are not completion
-receipts for this taste record. Isometry's own rulesets decide item and surface
+receipts for this taste record. Isocosm's own rulesets decide item and surface
 consequences. Shared
 identity and history do not require a wing-wide combat, item-growth, or culture
 evaluator. The [vessel briefs](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
@@ -692,11 +692,11 @@ retain the distinct game and presentation directions.
 
 Genesis (Mesocosm) produces critters. Critters graduate into lives
 (Eponym). Lives accumulate into settlements. Settlements export as
-campaigns (Isometry). Worlds fork, graft, and federate.
+campaigns (Isocosm). Worlds fork, graft, and federate.
 
 **Spore's stages are the known failure mode**: five shallow genres sharing
 nothing, so no stage could deepen another. The insurance is one rule, and it
-is the same rule Isometry already runs on (`isometry/CLAUDE.md`: the
+is the same rule Isocosm already runs on (`isocosm/CLAUDE.md`: the
 substrate/system split is load-bearing).
 
 > **A vessel must not create a private replacement for shared world identity,
@@ -717,7 +717,7 @@ sharing rules per layer are tabulated in the
 [body pipeline plan](../mesocosm/design_docs/archive_docs/2026-08-07/2026-07-30_body_pipeline_and_host_probe_plan.md).
 
 Consequently: **"shared world model" is too strong** — Mesocosm's live
-ecology, Eponym' settlement, and Isometry's campaign state will never be one
+ecology, Eponym' settlement, and Isocosm's campaign state will never be one
 in-memory model. They append compatible facts to one world. The shared thing
 is the **world identity and fact substrate**.
 
@@ -758,10 +758,10 @@ provenance and causal history in the most literal sense the wing has. So the
 **The fold is rules.** What capability falls out of an anatomy is exactly the
 kind of thing each vessel decides for itself, like a renderer or a camera.
 Mesocosm folds reach and upkeep out of geometry; Eponym folds a chassis into
-manipulation; Isometry folds nothing at all.
+manipulation; Isocosm folds nothing at all.
 
-Isometry is the interesting case and its own law already answers it: *the
-substrate stays geometry and turns; rules belong in system plugins*. So Isometry
+Isocosm is the interesting case and its own law already answers it: *the
+substrate stays geometry and turns; rules belong in system plugins*. So Isocosm
 **carries the tree as data and mints no types for it.** A 5e character has hit
 points, not fingers, and the day the substrate grows a `BodyPart` is the day it
 has hard-coded a game system. The tree rides in the portable record; a system
@@ -820,10 +820,10 @@ A shape cannot become a faction. What crosses vessels is **meaningful choice
 under scarcity**, logged as `(scarcity context, chosen, foregone, cause-link)`.
 The *foregone* field is load-bearing: values are revealed by what was given
 up. Repeated tradeoffs of the same shape compile into a lineage value; values
-drift into ethos; ethos is what Isometry reads as a faction.
+drift into ethos; ethos is what Isocosm reads as a faction.
 
 Log "chose armor over speed while starving in a cold vent," never "grew
-spikes." Otherwise Isometry inherits a generated bestiary and calls it a
+spikes." Otherwise Isocosm inherits a generated bestiary and calls it a
 history.
 
 **Boundary:** morphology still matters enormously *within* Mesocosm, where
@@ -845,13 +845,13 @@ only as material.
 
 Dwarf Fortress depth that nobody notices reads as procedural noise. Each
 lineage carries a **small number of very loud signatures** over unlimited
-quiet drift. If a player cannot walk into a village in Isometry and say
+quiet drift. If a player cannot walk into a village in Isocosm and say
 "those are mine," the pipeline is invisible and therefore fake. If all they
 see is what they made, they have no reason to explore.
 
 The loudness selector already exists in the wing's vocabulary: **Tulpa's
 attention mechanic**. Codicil holds everything; Tulpa holds the retold
-subset; Isometry surfaces the retold subset as visible signatures; the untold
+subset; Isocosm surfaces the retold subset as visible signatures; the untold
 remainder stays quiet texture for players who dig. Endosymbiosis supplies the
 loudest signature class for free, because a faction's famous incorporated
 organism is a visible motif.
@@ -866,7 +866,7 @@ structural, not motivational.
 > gates it.
 
 Each vessel is standalone-complete: Mesocosm's win condition references no
-later game, Eponym is fully playable on RNG worlds, Isometry already
+later game, Eponym is fully playable on RNG worlds, Isocosm already
 stands alone. Inheritance is enrichment. The proof pair (§6) must
 demonstrate displacement explicitly: import a played critter and an RNG
 critter through the same profile and confirm the consuming game cannot tell
@@ -883,7 +883,7 @@ vocabulary (participant / petition / grant); "lens" is the ortet/ramet
 vocabulary. A game walks the participant gate like any other outsider and
 renders the world through its own lens. A game's presence in a moot is
 **pack-shaped**: schema plus scripts plus a capability manifest, which is
-what Isometry's system plugins already are.
+what Isocosm's system plugins already are.
 
 Tier mapping, using the platform ladder as-is (`mere/design_docs/TERMINOLOGY.md`):
 
@@ -928,7 +928,7 @@ subject has one stable identity and independently versioned profile facets:
 | Critter | metabolism, body topology, traits, biological descent, incorporated-part provenance |
 | Eponym character | continuity of person, skills, affinities, personality, trust, history, relationships |
 | Place | buildings, inhabitants, dependencies, deeds, accumulated customs and institutions |
-| Isometry participant/faction | campaign role, authority, allegiance, ethos, public history |
+| Isocosm participant/faction | campaign role, authority, allegiance, ethos, public history |
 
 A character may refer to a critter body profile; a changed chassis mints or
 selects another body revision without copying the whole person into it. A
@@ -966,7 +966,7 @@ optional derived artifacts riding beside it. Detail in the
 interpretation.** Games append history in their own vocabulary and never
 mutate foreign facts without a grant. Each game retains facts it cannot
 interpret. Re-entry is *interpretation*, not merging: Mesocosm reads "lost an
-arm at the ford" from Isometry's appended history and derives the
+arm at the ford" from Isocosm's appended history and derives the
 morphological consequence itself, under its own rules.
 
 This prevents **destructive merge and fact loss**; it does not make semantic
@@ -975,21 +975,21 @@ Incompatible claims remain visible until the relevant domain materializer and
 group policy interpret, reject, sequence, or branch them. A true CRDT belongs
 only where a domain needs concurrent edits to one mergeable value, such as
 text, a counter, or possibly map cells. Live tactics and timing-sensitive
-simulation retain an ordered sequencer or authority. Isometry already proves
+simulation retain an ordered sequencer or authority. Isocosm already proves
 both sides: signed multi-writer campaign space and a separately ordered
 tactical session.
 
-**Authority:** lenses hold revocable per-domain grants. Isometry's shape
+**Authority:** lenses hold revocable per-domain grants. Isocosm's shape
 generalizes unchanged — a client sends an *ask*, never a verdict, and the
-grant holder resolves (`isometry/design_docs/2026-07-14_adjudication_and_representation_plan.md`).
+grant holder resolves (`isocosm/design_docs/2026-07-14_adjudication_and_representation_plan.md`).
 
 **Time** is causal order; wall time is presentation. Cross-game clocks (a
 colony decade against a tactics session) are unresolvable any other way, and
-Isometry's per-map tick clocks already taught this at small scale.
+Isocosm's per-map tick clocks already taught this at small scale.
 
 **Space** is lens-local. Shared space interoperates at place-graph
 granularity only; whether a lens draws diamonds, voxels, or hexes is its own
-business. Isometry's tile-geometry seam plan already proved rules can be
+business. Isocosm's tile-geometry seam plan already proved rules can be
 geometry-independent.
 
 ---
@@ -1007,7 +1007,7 @@ overstated it, and the correction matters.
   distribution over a real retinue link with moot curation and a refused
   mid-flight scope-widening tamper.
   (`mere/design_docs/mere_docs/implementation_strategy/2026-07-17_participant_gate_packs_plan.md`)
-- Isometry has landed: typed worldgen (W0–W5: factions, places, characters,
+- Isocosm has landed: typed worldgen (W0–W5: factions, places, characters,
   routes, laws, history, storylets), parties and recruitment, app-side
   adjudication, split-party per-map clocks, a pointcrawl overmap on the graph
   canvas, `isometry-voxel` recipe-not-image appearance, and signed
@@ -1020,16 +1020,16 @@ overstated it, and the correction matters.
 
 - **The world-noun profile does not exist.** Chartulary is generic
   (containers, facets, nesting, attributed edits) and contains zero faction
-  vocabulary; factions, places, characters, and history are Isometry types in
-  `isometry-campaign`. A portable profile is **extracted after two real
+  vocabulary; factions, places, characters, and history are Isocosm types in
+  `isocosm-campaign`. A portable profile is **extracted after two real
   consumers**, never declared in advance. Do not describe world nouns as
   "chartulary-typed."
-- **The missing arrow is adoption, not wire.** `isometry-campaign` does not
+- **The missing arrow is adoption, not wire.** `isocosm-campaign` does not
   yet lower to or recover from `mere.pack/v1`.
 - **Genuinely new organs** the wing needs and the stack does not have:
-  real-time netcode (Isometry's current tactical lane is deliberately ordered
+  real-time netcode (Isocosm's current tactical lane is deliberately ordered
   and turn-based), voxels as live attachable bodies and possibly playable
-  volume (Isometry keeps them as an asset substrate), and settlement/
+  volume (Isocosm keeps them as an asset substrate), and settlement/
   production simulation.
 - **Parked deliberately:** R³ fields (numen is R² today, and numen/quint are
   a field algebra — an influence-map substrate — while seiche is rapier2d
@@ -1077,7 +1077,7 @@ games.**
 **The proof pair is built and passing**, both directions, with committed bytes
 rather than agreeing types. Two schemas ride one framing: `mesocosm.body/v0`
 carries appearance to `isometry-voxel`, and `mesocosm.chronicle/v0` carries the
-record to `isometry-campaign` and back. Neither repo depends on the other.
+record to `isocosm-campaign` and back. Neither repo depends on the other.
 Receipts and findings in the
 [execution waves plan](../mesocosm/design_docs/archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) §1.4 and §2.4.
 
@@ -1102,10 +1102,10 @@ Three things the build settled that this section had not:
 The pair as originally specified:
 
 1. Mesocosm mints an organism.
-2. Isometry imports it as a token, preserving the v0 appearance and flat
+2. Isocosm imports it as a token, preserving the v0 appearance and flat
    provenance through local mirror types. V1 adds opaque topology and stable
-   subject/body addresses without making Isometry interpret Mesocosm rules.
-3. Isometry appends a played history.
+   subject/body addresses without making Isocosm interpret Mesocosm rules.
+3. Isocosm appends a played history.
 4. Mesocosm reads the descendant back without either side losing facts.
 5. The same slot accepts an RNG-authored organism indistinguishably (Law C).
 
@@ -1119,7 +1119,7 @@ subject and body-revision identity, primitive parent links, source addresses,
 and optional projection data.
 
 Projection recipes are optional on purpose. `isometry-voxel` recipes are an
-excellent first projection codec and probably Isometry's, but making them
+excellent first projection codec and probably Isocosm's, but making them
 canonical would let today's renderer leak into the substrate. Each vessel
 derives its own presentation from topology.
 
@@ -1163,7 +1163,7 @@ maintainer's manual step.
 | **fili** | Lineage across worlds. Reserved in `mere/design_docs/TERMINOLOGY.md` for moot ancestry, forks, and genealogy. Not event history, not content descent. |
 | **tulpa** | The legend and memorial organ: what memory makes of history, sustained by continued attention. Proposed 2026-07-30, crates.io free, **lexicon inscription still pending the maintainer's ruling.** |
 | **denizen** | An inhabitant individually remembered by simulation because history, relationships, or explicit designation makes it matter. Earned notability does not require sapience, a name, a faction, or costly foreground simulation. The `denizen` crate name and concept are reserved for this tier; no crate or Servitor move follows from that reservation. Supersedes the provisional `borg` term on 2026-09-20. Amended 2026-09-25 (wing design record ruling 200): a denizen is a named entity, the tier being of note; the crate waits for a reason of its own (ruling 201). |
-| **character** | A **faction-associated** denizen, made by playing Eponym. Not a new coinage — Isometry already uses `character` for the same artifact, so the word is agreement between two vessels rather than a fourth term. |
+| **character** | A **faction-associated** denizen, made by playing Eponym. Not a new coinage — Isocosm already uses `character` for the same artifact, so the word is agreement between two vessels rather than a fourth term. |
 | **deme** | Banked, unspent. Biology's local interbreeding population; the leading candidate for Mesocosm's unit word if one is wanted. |
 
 Also banked clean and unspent: **coppice**, **diaspore**, **holobiont**.
@@ -1212,9 +1212,9 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    not the pixels — so splitting the bet is live.
 
    Carries Mark's proposed dimensionality (Mesocosm 2 or 2.5D, Eponym a
-   close camera, Isometry a distant one) with two flags: **camera distance is
+   close camera, Isocosm a distant one) with two flags: **camera distance is
    not person** (say close camera, never "first-person Paredros"), and **a 3D
-   Isometry contradicts a standing ruling in that repo**, which needs its own
+   Isocosm contradicts a standing ruling in that repo**, which needs its own
    plan there rather than arriving as a side effect.
 
    **Closed 2026-08-18.** The camera decisions are ruled in
@@ -1222,7 +1222,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    Mesocosm is a side-on terrarium section with a trait-graph board for
    the epoch review; Eponym is third-person 3D on one continuous
    Kenshi-style zoom, with first person composable as a Eponym-only
-   setting under the guardrails; Isometry stays isometric. Person and
+   setting under the guardrails; Isocosm stays isometric. Person and
    care rulings here are untouched.
 
    **Decided 2026-07-31 for Mesocosm**: a small custom wgpu body renderer,
@@ -1244,7 +1244,7 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    ruling (§1) puts borg in *Mesocosm's* output and gives Eponym
    **character**: a critter is an organism, a borg is a named critter, a
    character is a faction-associated borg. So Eponym' unit word is
-   `character`, which is also already Isometry's word for the same artifact —
+   `character`, which is also already Isocosm's word for the same artifact —
    agreement across two vessels rather than a coinage.
 
    **Superseded for terminology 2026-09-20.** The current load-bearing noun is
@@ -1327,12 +1327,12 @@ Carried forward deliberately. Each needs a ruling before the work it gates.
    lineages, and the player's displace generated ones, which is Law C seen
    from inside the fiction. Gotcha Force's point budget stays in Mesocosm as
    the **metabolic budget**, not as a roster cap. What genuinely belongs to
-   Isometry is **taming** — collecting critters and characters into a faction
-   roster, which is befriending a goblin or taming a dog, and which Isometry
+   Isocosm is **taming** — collecting critters and characters into a faction
+   roster, which is befriending a goblin or taming a dog, and which Isocosm
    already implements as `convince`. Detail in the Mesocosm founding plan.
 10. **Run rhythm across the wing** (2026-07-30). Mesocosm runs generations,
     Eponym runs expeditions against a settlement that keeps (the Heroes of
-    Hammerwatch shape), Isometry runs campaigns. One rhythm, three scales,
+    Hammerwatch shape), Isocosm runs campaigns. One rhythm, three scales,
     and it delivers the sortie-and-return through-line under half the
     influence set. It also produced the wing's first concrete co-op design:
     your character visits another player's settlement, which is
@@ -1363,7 +1363,7 @@ statuses as recorded there.*
   effects including magic, the world, specimens, items and effects, so a draw
   from the generator's declared space can be run, replayed and reviewed in any
   of them without any game. A headless start exists
-  (`shared/isocosm/src/bin/isocosm-bench.rs`); the dev tools' remaining verbs
+  (`shared/cosmograph/src/bin/cosmograph-bench.rs`); the dev tools' remaining verbs
   lift to it from Mesocosm's host (ruling 801).
 - **W5, the first game overlay.** Done when a game has a profile designed as a
   core implementing the overlay contract, and a played loop with receipts drawn

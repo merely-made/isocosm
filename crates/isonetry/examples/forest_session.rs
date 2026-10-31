@@ -15,9 +15,9 @@ use std::fs;
 use std::path::Path;
 use std::time::{Duration, Instant};
 
-use isometry_campaign::{EntropyTape, GenValue, GenerationRecord, GeneratorRequest};
-use isometry_core::{Facing, FieldValue, MapDocument, SheetData, Token, TokenId, TurnList};
-use isometry_system::{GeneratorCatalog, GeneratorLimits};
+use isocosm_campaign::{EntropyTape, GenValue, GenerationRecord, GeneratorRequest};
+use isocosm_core::{Facing, FieldValue, MapDocument, SheetData, Token, TokenId, TurnList};
+use isocosm_system::{GeneratorCatalog, GeneratorLimits};
 use isonetry::iroh_link::{ClientNet, HostNet};
 use isonetry::{
     ActionIntent, GameEvent, GameSnapshot, PROTOCOL_VERSION, RequestId, resolve_transition,
@@ -57,7 +57,7 @@ fn empty_snapshot() -> GameSnapshot {
 
 fn generated_watchtower() -> Result<(GenerationRecord, (i32, i32), String), String> {
     let pack =
-        Path::new(env!("CARGO_MANIFEST_DIR")).join("../isometry-system/examples/packs/watchtower");
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../isocosm-system/examples/packs/watchtower");
     let catalog = GeneratorCatalog::discover([pack]);
     if !catalog.diagnostics().is_empty() {
         return Err(format!(
