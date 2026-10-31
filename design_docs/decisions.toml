@@ -5122,6 +5122,13 @@ area = "Naming"
 summary = "Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow."
 draws_on = ["1036"]
 
+[cases."1038"]
+title = "Cosmograph gets a standalone world-graph viewer"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Host and network"
+summary = "A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched."
+draws_on = ["1036", "host.2", "naming.3", "processes.6", "record.4"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

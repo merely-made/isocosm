@@ -27,6 +27,13 @@ When the capabilities being lifted out of Graphshell's reference host land (899)
 - Rulings: 896, 899, 904
 - From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md` H2 step 4, lines 187-189 and 82-87.
 
+### H9. The world-graph viewer
+A standalone Cosmograph viewer (case 1038): a native Graphshell client of the core's inspection endpoint, on a seed or a save. The endpoint grows a graph projection (nodes for regions, sites, populations, entities of note and groups; edges for routes, kin, relations, membership and claims), with zoom opening clusters and filters narrowing by domain; a timeline advances, scrubs back by replay without changing the world, and forks a branch at any past tick (Record 4).
+- Done when: "from a seed nobody chose, the viewer shows the world's regions and routes, zooms into a place's residents, kin and groups, advances time and watches them change, scrubs back to an earlier tick and sees the earlier graph, and forks a branch there whose replay is its own"; one capture per step.
+- Needs: the rename (case 1037); the region lane's readings (World 10)
+- Rulings: 1038, 896, 899
+- From: case 1038.
+
 ### H8. The other products on the core
 Later, no phases yet; each gets phases here when it starts: Eponym's `session` on the core (founding a generated world, asks through the UI, succession in the client); the VTT over the sim (in-app campaign founding from a seeded draw); Eponym's motion adopting the core's `Clock`; the VTT on the explicit step; and H5's import of Eponym's Game13 and the VTT campaign into `WorldSave` with the product section kept as opaque bytes (only the Mesocosm `GameSave` import has a stated condition, and it is met). Pacing stays per product under 927: Eponym paces motion at 60 Hz by `Instant` and drops its backlog after eight catch-up steps, the VTT has no wall clock (consented downtime), Mesocosm uses `Clock` (rational steps, the cap defers). Unifying them is not asked.
 - Done when: not stated; owed. For the import, the one stated form is H5's: "a save written by the Mesocosm head loads in the core and resumes to the same hash, and an unknown section survives a round trip untouched."

@@ -11301,6 +11301,22 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Naming · draws on 1036 · summary Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow.
 
+1038. **Cosmograph gets a standalone world-graph viewer.** Ruled by Mark on
+      2026-10-31, from his wish for "a lil standalone that render[s] the world
+      data and advance/reverse time in a style reminiscent of the graph
+      visualization tool, but for our procedurally generated worlds, from the
+      regions to the entities" (Mark: "Standalone over the endpoint", "Scrub,
+      then branch", "Both"). The reading: a small native app, a Graphshell
+      client of the sim host's inspection endpoint (Host 2), runs on a seed or
+      a save and draws the world as one zoomable graph (regions and sites as
+      clusters with route edges, opening into populations, entities of note,
+      kin and relations, factions and polities, far nodes aggregates) under
+      filters that narrow it by domain (geography, ecology, society,
+      polities); time advances, and scrubbing back replays to a past tick
+      without changing it, from which a branch can be forked (Record 4).
+
+      Links: area Host and network · draws on 1036, host.2, record.4, processes.6, naming.3 · summary A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

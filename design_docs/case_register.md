@@ -671,6 +671,7 @@ three design docs that cite it. The record holds the words.
 | 957 | H4: the live-input backlog cap moves into the core driver, configurable, default 10; replays and scripts are not capped. | none |
 | 959 | The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents. | [session network](2026-10-28_session_network_plan.md) |
 | 960 | Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer. | [session network](2026-10-28_session_network_plan.md) |
+| 1038 | A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 
 ## Mesocosm
 
@@ -805,7 +806,7 @@ three design docs that cite it. The record holds the words.
 | 434 | The player's choice of which glyphs far marks show is called a filter; lens keeps one meaning, a projection. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 883 | The local checkout is Code/repos/isocosm; a naming-ledger line records it and lane worktrees and the testing tree keep their isometry names. | none |
 | 1036 | The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm. | none |
-| 1037 | Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow. | none |
+| 1037 | Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 
 ## Licensing and sources
 
