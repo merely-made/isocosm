@@ -8,7 +8,11 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use cambium::{AnyView, GenetCtx, GenetElement, clickable, custom_leaf, el, focusable, text};
+use cambium::{
+    AnyView, GenetCtx, GenetElement, PointerEvent, PointerPhase, WheelEvent, clickable, custom_leaf, el,
+    focusable, on_pointer, on_wheel, text,
+};
+use pictograph::canvas::{CANVAS_PHYSICS_LAWS, PhysicsLaw};
 use cosmograph_host::endpoint::graph::{CLOSE, Domain, OPEN};
 use cosmograph_host::endpoint::{BIRTH, BRANCH, DEATH, FILTER, LINE, SCRUB, STEP};
 
@@ -23,6 +27,8 @@ pub struct Viewer {
     pub board: Rc<RefCell<Board>>,
     pub events: Vec<String>,
     pub graph_size: (u32, u32),
+    /// Where a drag on the graph last was, in the leaf's coordinates.
+    pub drag: Option<(f32, f32)>,
 }
 
 impl Viewer {
@@ -49,6 +55,15 @@ impl Viewer {
         if let Some(at) = kept.iter().position(|d| *d == domain) { kept.remove(at); } else { kept.push(domain); }
         let words: Vec<String> = kept.iter().map(|d| format!("\"{}\"", d.word())).collect();
         self.invoke("world", FILTER, format!(r#"{{"domains":[{}]}}"#, words.join(",")).as_bytes());
+    }
+
+    /// Runs another force law over the graph.
+    pub fn set_law(&mut self, law: PhysicsLaw) {
+        let outcome = self.board.borrow_mut().set_law(law);
+        self.events.push(match outcome {
+            Ok(()) => format!("law {}", law.label()),
+            Err(why) => format!("law {} refused: {why}", law.label()),
+        });
     }
 
     /// The shown site holding the most stored groups.
@@ -95,6 +110,17 @@ fn timeline(v: &Viewer) -> Vec<Child> {
         rows.push(button(format!("{} {mark}", domain.word()), format!("Filter {}", domain.word()),
             move |s| s.toggle(domain)));
     }
+    rows.push(button("Fit view", "Fit view", |s| s.board.borrow_mut().view(false)));
+    rows.push(button("Actual size", "Actual size", |s| s.board.borrow_mut().view(true)));
+    rows.push(button("Zoom in", "Zoom in", |s| s.board.borrow_mut().zoom_by(1.25)));
+    rows.push(button("Zoom out", "Zoom out", |s| s.board.borrow_mut().zoom_by(0.8)));
+    let current = v.board.borrow().law();
+    rows.push(line("title", "Force law".into()));
+    for (id, label) in CANVAS_PHYSICS_LAWS {
+        let Some(law) = PhysicsLaw::parse(id) else { continue };
+        let mark = if law == current { " •" } else { "" };
+        rows.push(button(format!("{label}{mark}"), format!("Law {label}"), move |s| s.set_law(law)));
+    }
     rows.push(line("hash", format!("State {}", v.client.world().and_then(|w| w.value("State hash")).unwrap_or(""))));
     if !v.client.notice.is_empty() { rows.push(line("notice", v.client.notice.clone())); }
     rows
@@ -117,8 +143,22 @@ pub fn root(v: &Viewer) -> Child {
     let panel = el("div", (el("div", timeline(v)).attr("class", "group"), el("div", items).attr("class", "list")))
         .attr("class", "panel");
     let (w, h) = v.graph_size;
-    let graph = custom_leaf::<Viewer, ()>(LEAF, w, h).attr("class", "graph").attr("role", "img")
+    let leaf = custom_leaf::<Viewer, ()>(LEAF, w, h).attr("class", "graph").attr("role", "img")
         .attr("aria-label", "World graph");
+    // The camera: the wheel zooms, a drag pans; the cards keep their size.
+    let graph = on_pointer(on_wheel(leaf, |s: &mut Viewer, e: WheelEvent| {
+        s.board.borrow_mut().zoom_by(if e.delta.1 < 0.0 { 1.15 } else { 1.0 / 1.15 });
+        e.prevent_default();
+    }), |s: &mut Viewer, e: PointerEvent| {
+        match e.phase {
+            PointerPhase::Down => s.drag = Some(e.local),
+            PointerPhase::Up => s.drag = None,
+            _ => if let Some((x, y)) = s.drag {
+                s.board.borrow_mut().pan_by(e.local.0 - x, e.local.1 - y);
+                s.drag = Some(e.local);
+            },
+        }
+    });
     Box::new(el("div", (panel, graph)).attr("class", "frame"))
 }
 

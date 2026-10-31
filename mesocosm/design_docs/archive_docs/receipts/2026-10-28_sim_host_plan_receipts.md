@@ -27,3 +27,15 @@ Run 3 is after the pin moved to mere `79837737` by git rev (the landed
 merge of `remote-board-to-stack`), with isocosm main merged; the 63 host lib
 tests, `cargo check --all-targets` with and without `society`, and the
 viewer build passed first.
+
+## H9 layout, 2026-10-31
+
+Mere pinned at `122451ca` (the relation-reading force and camera). The H9
+scenario with its layout steps (Springs then Energy, each asserting linked
+cards' mean gap below all cards' mean gap; zoom in to 125%; the fitted view):
+
+| Run | Seed | Result | Captures |
+| --- | --- | --- | --- |
+| 4 | 1793486188702097600 | ok, 943 frames, 10 distinct digests | Energy as the default, before the actual-size view; superseded by run 5 |
+| 5 | 1793486328792273500 | ok, 958 frames, 11 distinct digests, 0 blank | 11, `Code/testing/isocosm/world-graph-viewer/2026-10-31-layout2/` |
+

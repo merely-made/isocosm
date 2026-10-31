@@ -40,6 +40,33 @@ assert snap tick == 10
 assert snap head == 10
 capture h9-3-advanced-ten
 
+# The layout reads the relations: linked cards sit closer than cards in
+# general under the default law (Springs), and the law is the panel's to
+# switch (Energy gathers harder).
+settle 240
+assert snap law == Springs
+assert snap cluster_pct <= 99
+capture h9-layout-springs
+click role:button Law Energy
+settle 240
+assert snap law == Energy
+assert snap cluster_pct <= 99
+capture h9-layout-energy
+click role:button Law Springs
+settle 120
+
+# The camera zooms over cards of a fixed size.
+click role:button Zoom in
+settle 10
+assert snap zoom_pct == 125
+capture h9-camera-zoomed-in
+click role:button Fit view
+settle 10
+assert snap zoom_pct == 100
+capture h9-camera-whole-graph
+click role:button Actual size
+settle 10
+
 # 4. Scrubbing back replays tick 5 without changing the line.
 click role:button Back five
 settle 30
