@@ -244,6 +244,7 @@ pub(crate) fn init(
         }
     }
     let mut ui = UiState::new(map);
+    ui.native.quickstarts = crate::quickstart::choices(&app.generator_catalog);
     if let Some(snapshot) = restored_public {
         ui.apply_snapshot(snapshot);
     }

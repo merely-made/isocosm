@@ -41,6 +41,17 @@ impl HostSession {
         self.publish_native_founding(prepared, item_owner)
     }
 
+    /// Found a quick-start pack's world in one step (case 1023; Mark: "Picker + packs from disk"): `pack`
+    /// is the datasheet text, carried or read from a content pack's folder.
+    pub fn commit_native_quickstart(
+        &mut self, pack: &str, seed: u64, mode: Execution,
+    ) -> Result<Vec<Outbound>, String> {
+        if self.state.native.is_some() { return Err("native campaign already founded".into()); }
+        let prepared = Campaign::from_quickstart_for(pack, seed, mode, Purpose::Head, None)
+            .map_err(|e| e.to_string())?;
+        self.publish_native_founding(prepared, None)
+    }
+
     /// Only the inspected native preview may be published by this host.
     pub fn commit_native_setup(
         &mut self, setup: &isocosm_native::founding::Setup, expected: &NativeWorld,

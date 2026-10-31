@@ -27,6 +27,12 @@ impl NetBridge {
         }).then_some(request)
     }
 
+    pub fn commit_native_quickstart(&mut self, pack: String, seed: u64, mode: cosmograph::Execution)
+        -> Option<RequestId> {
+        let request = self.request_ids.issue();
+        self.actor.command(BridgeCommand::NativeQuickstart { request, pack, seed, mode }).then_some(request)
+    }
+
     pub fn commit_native_campaign(
         &mut self,
         profile: cosmograph::Founding,
