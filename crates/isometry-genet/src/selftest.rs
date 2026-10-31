@@ -18,6 +18,7 @@ pub(crate) use family::FamilySelftest;
 pub(crate) use look::LookSelftest;
 pub(crate) use magic::MagicSelftest;
 pub(crate) use region::RegionSelftest;
+pub(crate) use pathfinder::PathfinderSelftest;
 pub(crate) use overlays::OverlayArm;
 
 mod adjudicate;
@@ -25,6 +26,8 @@ mod board;
 mod family;
 mod look;
 mod magic;
+mod painted;
+mod pathfinder;
 mod overlays;
 mod region;
 mod session;

@@ -1,0 +1,27 @@
+# What each step of Pathfinder 2e character creation decides, shown beside
+# its choices. Original text summarising the Player Core Remaster procedure.
+version = 1
+
+[step]
+ancestry = "Your ancestry is the people you come from. It sets your starting Hit Points, size, Speed and senses, gives attribute boosts (and sometimes a flaw), and decides which heritages and ancestry feats you can take."
+ancestry-boosts = "Take your ancestry's listed boosts and flaw, or instead take two free boosts and no flaw. Every boost adds 1 to an attribute modifier; a flaw subtracts 1."
+ancestry-boost = "Choose the attribute for this free ancestry boost. Boosts from one source must go to different attributes."
+heritage = "Your heritage narrows your ancestry: an inherited trait, adaptation or training that sets you apart."
+background = "Your background is what you did before adventuring. It gives two attribute boosts, training in a skill and a Lore, and a skill feat."
+background-boost = "One background boost must go to one of the two attributes your background names."
+background-free-boost = "Your second background boost is free, but must go to a different attribute than the first."
+class = "Your class is your adventuring profession. It sets your Hit Points per level, your key attribute, your trained proficiencies and your class features."
+racket = "A rogue chooses a racket: the kind of work they built their reputation on. It adds training and an edge in combat, and may offer another key attribute."
+key-attribute = "Your key attribute receives your class boost and sets your class DC."
+free-boost = "Four free boosts finish your attributes; each must go to a different attribute. At 1st level no modifier can exceed +4."
+skill = "Choose a skill to become trained in. A trained skill adds your level plus 2 to its checks."
+lore = "A Lore covers one narrow subject; it keys off Intelligence."
+ancestry-feat = "Choose a 1st-level feat of your ancestry."
+heritage-feat = "Your heritage grants a general feat."
+class-feat = "Choose a 1st-level feat of your class."
+skill-feat = "A rogue takes a skill feat at 1st level. Choose one whose skill you are trained in."
+feat = "Choose the feat this grants. You must meet its prerequisites."
+choice = "Record the option this feat asks for."
+rank = "Choose which proficiency becomes expert."
+other-ancestry = "Choose the ancestry that raised or adopted you."
+finish = "Every choice is made. Finishing records this build as the character's sheet at 1st level, with full Hit Points."

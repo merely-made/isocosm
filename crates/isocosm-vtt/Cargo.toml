@@ -41,6 +41,10 @@ required-features = ["endpoint"]
 name = "magic_weapon_table"
 required-features = ["endpoint"]
 
+[[example]]
+name = "pf2e_table"
+required-features = ["endpoint"]
+
 [[test]]
 name = "endpoint"
 required-features = ["endpoint"]

@@ -338,6 +338,7 @@ struct App {
     magic_selftest: Option<selftest::MagicSelftest>,
     region_selftest: Option<selftest::RegionSelftest>,
     look_selftest: Option<selftest::LookSelftest>,
+    pathfinder_selftest: Option<selftest::PathfinderSelftest>,
     /// `ISOMETRY_SELECT_SELFTEST`: B3's headed receipt. Press on raised ground
     /// and right-press a token, both through the board's own pointer path, and
     /// leave the selection and the menu standing for a capture.

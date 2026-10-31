@@ -194,6 +194,7 @@ impl App {
             magic_selftest: selftest::MagicSelftest::from_env(),
             region_selftest: selftest::RegionSelftest::from_env(),
             look_selftest: selftest::LookSelftest::from_env(),
+            pathfinder_selftest: selftest::PathfinderSelftest::from_env(),
             combat_selftest: std::env::var_os("ISOMETRY_COMBAT_SELFTEST").is_some(),
             combat_swings: 4,
             last_swing: None,

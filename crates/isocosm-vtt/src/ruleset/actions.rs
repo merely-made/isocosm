@@ -310,6 +310,9 @@ pub(super) fn apply(
             state.cells_per_square = None;
             "DM selected explicit reach rulings".into()
         },
+        Action::Choose { .. } | Action::Undo(_) | Action::Finish(_) | Action::Discard(_) => {
+            return Err("creation drafts belong to the Pathfinder 2e edition".into());
+        },
     };
     Ok((note, rolls))
 }

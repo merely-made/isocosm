@@ -526,6 +526,7 @@ impl App {
             || self.magic_selftest.as_ref().is_some_and(|test| !test.done())
             || self.region_selftest.as_ref().is_some_and(|test| !test.done())
             || self.look_selftest.as_ref().is_some_and(|test| !test.done())
+            || self.pathfinder_selftest.as_ref().is_some_and(|test| !test.done())
             || (self.select_selftest && !self.select_fired)
             || (self.overlay_selftest.is_some() && !self.overlay_fired)
             || (self.net.is_some() && self.net_selftest && !self.selftest_fired)
@@ -553,6 +554,7 @@ impl App {
             test.drive(ctx);
             self.look_selftest = Some(test);
         }
+        self.maybe_pathfinder_selftest(ctx);
         if self.net.is_some() {
             self.maybe_selftest(ctx);
         }

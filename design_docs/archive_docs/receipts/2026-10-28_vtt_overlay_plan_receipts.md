@@ -275,3 +275,32 @@ Synthetic `.family` ledgers, host `.redb` stores, lock files and full local
 logs remain ignored under `magic_weapon_play/` for replay. Public evidence
 is the PNGs and this compact receipt. All application processes launched by
 this lane are closed after capture; no existing evidence was removed.
+
+## RS: Pathfinder 2e creation, 2026-10-30
+
+Owner: the rules and characters lane, branch `pf2e-chars` from `main` at
+`060f0b3c`. Rulings carried: 1016, 1020, 1021, 1026, 1029 to 1031.
+
+Headed trials in the native desktop, each from a fresh Bench ledger founded
+under Pathfinder 2e (`isocosm-vtt` example `pf2e_table`), the host seat
+clicking painted Character sheets buttons (`ISOMETRY_PF2E_SELFTEST`):
+
+| Mode | Result | Choices | Sheet | Accepted records | Replay |
+| --- | --- | ---: | --- | ---: | --- |
+| draft | human rogue stopped at the ancestry feat; Adapted Cantrip and Unconventional Weaponry shown refused with reasons | 25 | none | 26 | exact |
+| finished | dwarf fighter finished at 23 Hit Points | 21 | `pf2e-srd` | 23 | exact |
+
+Captures, outside the repository (`C:\Users\mark_\Code\testing\isocosm\pf2e-chars\`):
+`draft/isometry_capture.png` (639401 bytes, SHA-256
+`7ecb6e4bc29a27dd3a5b5edfc7005435bf1bd8457b0fc39803b0caff462620c2`) and
+`finished/isometry_capture.png` (620388 bytes, SHA-256
+`f3cae738cd2bc5722add5eb4a6021c8c4c9f283c97c6e270dc4ad7b915a39dc8`).
+After the writer closed, `pf2e_table --inspect` reopened the finished ledger
+through the family host: sequence 26, edition `pf2e-srd`, one sheet at 23 Hit
+Points, its 21-choice draft and the choice-by-choice log.
+
+A player seat drafting its own body, a second GM seat discarding a draft it
+did not start, family replay and refusal of drafts under a 5e founding are
+covered by `crates/isocosm-vtt/tests/ruleset_pf2e.rs`; illegal choices and
+the 1016 loader filter by `crates/isometry-system/src/tests/pf2e_creation.rs`.
+The 5e endpoint tests (`ruleset_play.rs`) pass unchanged.

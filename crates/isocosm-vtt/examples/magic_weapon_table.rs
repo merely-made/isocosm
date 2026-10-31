@@ -72,6 +72,7 @@ fn main() -> Result<(), String> {
         starting_map: draft.starting_map,
         final_storylet: draft.final_storylet,
         table: TableMetadata::default(),
+        edition: isocosm_vtt::founding::default_edition(),
     };
     content.validate().map_err(|e| e.to_string())?;
     sections.insert("vtt".into(), GameBindings::decode(&[])?.encode()?);

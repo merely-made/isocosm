@@ -105,8 +105,13 @@ Sources and licences:
   licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
   The adaptation uses original summaries and executable fields.
 - Player Core Remaster mechanics in `pf2.toml`: ORC licensed, Paizo Inc.
-  The [PF2e system's spell records](https://github.com/foundryvtt/pf2e/tree/master/packs/pf2e/spells/spells)
+  The [PF2e system's spell records](https://github.com/foundryvtt/pf2e/tree/v14-dev/packs/pf2e/spells)
   supplied the source checks: rank-2 Darkvision and Enlarge, rank-1 Runic Weapon.
+  Character creation records in `../pf2e/` (ancestries, heritages,
+  backgrounds, classes, feats) follow the same rule (case 1016): each was
+  checked against a foundryvtt/pf2e record whose publication is a Remaster
+  book under the ORC licence, and the loader refuses any record that does
+  not say so. Their summaries are original; nothing is vendored.
   Pathfinder is a trademark of Paizo Inc. No art or other reserved material is
   included. See the [ORC licence](https://azoralaw.com/orclicense/).
 - [Atlas's open Ars Magica text](https://www.atlas-games.com/arsmagica/openars):

@@ -1,0 +1,293 @@
+# Pathfinder 2e Player Core (Remaster): the 1st-level skill feats the
+# backgrounds grant (case 1031), also open to the rogue's 1st-level skill
+# feat and to General Training. ORC-licensed mechanics checked against the
+# foundryvtt/pf2e Remaster ORC records (case 1016); summaries are original.
+# Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative
+# License: https://paizo.com/orclicense
+version = 1
+
+[[feat]]
+id = "assurance"
+name = "Assurance"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+repeatable = true
+requires = [{ any_trained = [] }]
+grants = ["trained_skill_choice"]
+summary = "Choose a skill you are trained in; you may take 10 plus your proficiency bonus instead of rolling it, with no other modifiers. Can be taken again for another skill."
+
+[[feat]]
+id = "bargain-hunter"
+name = "Bargain Hunter"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "diplomacy" }]
+summary = "Earn Income with Diplomacy by finding and reselling bargains, or spend that time buying an item at a discount; taken at 1st level, start with 2 more gold."
+
+[[feat]]
+id = "battle-medicine"
+name = "Battle Medicine"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "medicine" }]
+summary = "One action with a healer's toolkit: a Medicine check as for Treat Wounds restores Hit Points to a creature, which cannot benefit from your Battle Medicine again for a day."
+
+[[feat]]
+id = "cat-fall"
+name = "Cat Fall"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "acrobatics" }]
+summary = "Treat falls as 10 feet shorter (more as your Acrobatics improves; legendary, you always land on your feet unhurt)."
+
+[[feat]]
+id = "charming-liar"
+name = "Charming Liar"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "deception" }]
+summary = "A critical success to Lie also improves the target's attitude toward you by one step, once per conversation."
+
+[[feat]]
+id = "courtly-graces"
+name = "Courtly Graces"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "society" }]
+summary = "You pass as noble or close to the nobility; use Society to Make an Impression on nobles and to Impersonate them, or take +1 with the usual skills."
+
+[[feat]]
+id = "dubious-knowledge"
+name = "Dubious Knowledge"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ any_trained = ["arcana", "crafting", "medicine", "nature", "occultism", "religion", "society"] }]
+summary = "When you fail (not critically) to Recall Knowledge, you learn the true answer and a false one without knowing which is which. Requires training in a skill that can Recall Knowledge."
+
+[[feat]]
+id = "experienced-professional"
+name = "Experienced Professional"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = ["any_lore"]
+summary = "Earn Income with Lore: a critical failure counts as a failure, and as an expert a failure pays double. Requires training in a Lore."
+
+[[feat]]
+id = "experienced-smuggler"
+name = "Experienced Smuggler"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "stealth" }]
+summary = "When the GM rolls Stealth for an item you have hidden from a passive observer, a die result under 10 counts as 10."
+
+[[feat]]
+id = "experienced-tracker"
+name = "Experienced Tracker"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "survival" }]
+summary = "Track while moving at full Speed with a -5 penalty (none as a master; as legendary you roll only when the trail changes)."
+
+[[feat]]
+id = "fascinating-performance"
+name = "Fascinating Performance"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "performance" }]
+summary = "When you Perform, beat one observer's Will DC to fascinate it for a round (a critical success in combat); more observers as your Performance improves."
+
+[[feat]]
+id = "forager"
+name = "Forager"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "survival" }]
+summary = "Subsisting with Survival never goes worse than a success, and a success feeds you and four others (more on a critical success and as you improve)."
+
+[[feat]]
+id = "group-coercion"
+name = "Group Coercion"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "intimidation" }]
+summary = "Coerce up to five targets with one check (more as your Intimidation improves)."
+
+[[feat]]
+id = "group-impression"
+name = "Group Impression"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "diplomacy" }]
+summary = "Make an Impression on up to ten people you conversed with, with no penalty (more as your Diplomacy improves)."
+
+[[feat]]
+id = "hefty-hauler"
+name = "Hefty Hauler"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "athletics" }]
+summary = "Your maximum and encumbered Bulk limits rise by 2."
+
+[[feat]]
+id = "hobnobber"
+name = "Hobnobber"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "diplomacy" }]
+summary = "Gather Information takes half as long; as a master of Diplomacy, a critical failure there counts as a failure."
+
+[[feat]]
+id = "impressive-performance"
+name = "Impressive Performance"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "performance" }]
+summary = "Make an Impression with Performance; after 10 minutes performing, on up to ten audience members without penalty (more for longer shows)."
+
+[[feat]]
+id = "intimidating-glare"
+name = "Intimidating Glare"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "intimidation" }]
+summary = "Demoralize with a glare: it becomes visual rather than auditory, with no penalty when the target does not share your language."
+
+[[feat]]
+id = "lie-to-me"
+name = "Lie to Me"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "deception" }]
+summary = "In a back-and-forth conversation, someone Lying to you must beat your Deception DC when it is higher than your Perception DC."
+
+[[feat]]
+id = "multilingual"
+name = "Multilingual"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+repeatable = true
+requires = [{ trained = "society" }]
+summary = "Learn two more languages (another as a master and as legendary in Society). Can be taken again. Languages are noted at the table for now."
+
+[[feat]]
+id = "natural-medicine"
+name = "Natural Medicine"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "nature" }]
+summary = "Treat Wounds with Nature instead of Medicine, with a +2 circumstance bonus in the wilderness if the GM allows."
+
+[[feat]]
+id = "oddity-identification"
+name = "Oddity Identification"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "occultism" }]
+summary = "On noticing magic, know at once whether it is mental, fortune or misfortune, or a detection, prediction, revelation or scrying effect; +2 to identify such effects with Occultism."
+
+[[feat]]
+id = "pickpocket"
+name = "Pickpocket"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "thievery" }]
+summary = "Steal or Palm an Object from a closely guarded place such as a pocket without the -5 penalty."
+
+[[feat]]
+id = "quick-coercion"
+name = "Quick Coercion"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "intimidation" }]
+summary = "Coerce after one round of conversation rather than a minute (still not in combat)."
+
+[[feat]]
+id = "quick-jump"
+name = "Quick Jump"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "athletics" }]
+summary = "High Jump and Long Jump take one action rather than two, without the initial Stride."
+
+[[feat]]
+id = "schooled-in-secrets"
+name = "Schooled in Secrets"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "occultism" }]
+summary = "Use Occultism to Gather Information about secret societies and to Impersonate their members; recognise members of your own."
+
+[[feat]]
+id = "seasoned"
+name = "Seasoned"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ any_of = [{ trained = "crafting" }, { lore = "Alcohol Lore" }, { lore = "Cooking Lore" }] }]
+summary = "+1 circumstance bonus to Craft food and drink (+2 as a master of a prerequisite skill). Requires training in Crafting, Alcohol Lore or Cooking Lore."
+
+[[feat]]
+id = "specialty-crafting"
+name = "Specialty Crafting"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "crafting" }]
+grants = [{ choice = { key = "specialty", options = ["alchemy", "artistry", "blacksmithing", "bookmaking", "glassmaking", "leatherworking", "pottery", "shipbuilding", "stonemasonry", "tailoring", "woodworking"] } }]
+summary = "Choose a craft; you gain a +1 circumstance bonus to Craft items of that kind (+2 as a master of Crafting)."
+
+[[feat]]
+id = "steady-balance"
+name = "Steady Balance"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "acrobatics" }]
+summary = "A success to Balance becomes a critical success; you are not off-guard while Balancing on narrow or uneven ground, and can Grab an Edge more easily."
+
+[[feat]]
+id = "streetwise"
+name = "Streetwise"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "society" }]
+summary = "Gather Information with Society, and in a settlement you frequent, Recall Knowledge with Society for what you could otherwise only gather."
+
+[[feat]]
+id = "student-of-the-canon"
+name = "Student of the Canon"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "religion" }]
+summary = "Critical failures to Decipher religious writing or recall tenets of faiths become failures; recalling your own faith's tenets, results improve a step."
+
+[[feat]]
+id = "survey-wildlife"
+name = "Survey Wildlife"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "survival" }]
+summary = "Spend 10 minutes reading signs to learn which creatures are nearby, with a Survival check against a DC the GM sets; you may then Recall Knowledge about one of them with a -2 penalty."
+
+[[feat]]
+id = "terrain-expertise"
+name = "Terrain Expertise"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+repeatable = true
+requires = [{ trained = "survival" }]
+grants = [{ choice = { key = "terrain", options = ["aquatic", "arctic", "desert", "forest", "mountain", "plains", "sky", "swamp", "underground"] } }]
+summary = "+1 circumstance bonus to Survival checks in one terrain you choose. Can be taken again for another terrain."
+
+[[feat]]
+id = "train-animal"
+name = "Train Animal"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "nature" }]
+summary = "Downtime: teach an animal a basic action it could learn, with a check and time the GM sets."
+
+[[feat]]
+id = "underwater-marauder"
+name = "Underwater Marauder"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "skill"
+requires = [{ trained = "athletics" }]
+summary = "In water you are not off-guard, and bludgeoning and slashing melee weapons suffer no penalty."

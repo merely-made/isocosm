@@ -1,0 +1,114 @@
+# Pathfinder 2e Player Core (Remaster): the 1st-level general feats. ORC-
+# licensed mechanics checked against the foundryvtt/pf2e Remaster ORC records
+# (case 1016); summaries are original.
+# Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative
+# License: https://paizo.com/orclicense
+version = 1
+
+[[feat]]
+id = "adopted-ancestry"
+name = "Adopted Ancestry"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+grants = ["other_ancestry"]
+summary = "Choose another common ancestry whose culture raised or adopted you; you can take its ancestry feats that do not depend on its physiology."
+
+[[feat]]
+id = "armor-proficiency"
+name = "Armor Proficiency"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+grants = ["armor_step"]
+summary = "Become trained in light armour; if you already are, in medium; if both, in heavy."
+
+[[feat]]
+id = "breath-control"
+name = "Breath Control"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+summary = "Hold your breath 25 times as long, with a +1 circumstance bonus to saves against inhaled threats and a success against them becoming a critical success."
+
+[[feat]]
+id = "canny-acumen"
+name = "Canny Acumen"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+grants = [{ rank_choice = { options = ["fortitude", "reflex", "will", "perception"], rank = 2 } }]
+summary = "Become an expert in Fortitude, Reflex, Will or Perception, your choice (master at 17th level)."
+
+[[feat]]
+id = "diehard"
+name = "Diehard"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+grants = [{ dying_max = 5 }]
+summary = "You die at dying 5 rather than dying 4."
+
+[[feat]]
+id = "fast-recovery"
+name = "Fast Recovery"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+requires = [{ attribute = { key = "con", at_least = 2 } }]
+summary = "Regain twice as many Hit Points from rest, and a successful Fortitude save against an ongoing disease or poison lowers its stage by 2 (1 if virulent). Requires Constitution +2."
+
+[[feat]]
+id = "feather-step"
+name = "Feather Step"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+requires = [{ attribute = { key = "dex", at_least = 2 } }]
+summary = "You can Step into difficult terrain. Requires Dexterity +2."
+
+[[feat]]
+id = "fleet"
+name = "Fleet"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+grants = [{ speed = 5 }]
+summary = "Your Speed rises by 5 feet."
+
+[[feat]]
+id = "incredible-initiative"
+name = "Incredible Initiative"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+grants = [{ initiative = 2 }]
+summary = "A +2 circumstance bonus to initiative rolls."
+
+[[feat]]
+id = "pet"
+name = "Pet"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+summary = "A Tiny animal companion of your choosing with the minion trait; Command an Animal gives it two actions on your turn without a check."
+
+[[feat]]
+id = "ride"
+name = "Ride"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+summary = "Commanding a mount you ride to take a move action succeeds automatically, and the mount acts on your turn like a minion."
+
+[[feat]]
+id = "shield-block"
+name = "Shield Block"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+summary = "A reaction while your shield is raised and an attack would deal you physical damage: the shield prevents damage up to its Hardness, and you and the shield split the rest."
+
+[[feat]]
+id = "toughness"
+name = "Toughness"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+grants = [{ hit_points_per_level = 1 }, { recovery_dc = -1 }]
+summary = "Your maximum Hit Points rise by your level, and the DC of your recovery checks drops by 1."
+
+[[feat]]
+id = "weapon-proficiency"
+name = "Weapon Proficiency"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+category = "general"
+requires = [{ unavailable = "Fighter and Rogue already train every martial weapon, so this would choose an advanced weapon, and weapon records arrive with the equipment step" }]
+summary = "Become trained in all martial weapons; if you already are, in one advanced weapon of your choice."

@@ -1,5 +1,6 @@
 //! Opt-in headed receipt. Every choice goes through painted endpoint buttons.
 use super::*;
+use super::painted::Painted;
 use cambium_genet_winit_host::ScrollAlign;
 use isocosm_vtt::{
     SHEETS, TABLE,
@@ -33,7 +34,7 @@ pub(crate) struct MagicSelftest {
     mode: String,
     phase: Phase,
     started: Instant,
-    scrolled: bool,
+    painted: Painted,
     before: Option<(Checkpoint, u64)>,
     caster: u64,
     target: u64,
@@ -55,7 +56,7 @@ impl MagicSelftest {
                     mode,
                     phase: Phase::Select,
                     started: Instant::now(),
-                    scrolled: false,
+                    painted: Painted::default(),
                     before: None,
                     caster: 0,
                     target: 0,
@@ -94,12 +95,12 @@ impl MagicSelftest {
         }
         match self.phase {
             Phase::Select => {
-                if self.tab(ctx, SHEETS) {
+                if self.painted.tab(ctx, SHEETS) {
                     self.phase = Phase::Cast;
                 }
             },
             Phase::Cast => {
-                if self.button(ctx, "vtt.weapon-cast-2", None) {
+                if self.painted.button(ctx, "vtt.weapon-cast-2", None) {
                     self.phase = Phase::WaitCast;
                 }
             },
@@ -109,7 +110,7 @@ impl MagicSelftest {
                 }
             },
             Phase::Attack => {
-                if self.button(
+                if self.painted.button(
                     ctx,
                     &format!("vtt.weapon-rule-attack-{}", self.target),
                     None,
@@ -132,7 +133,7 @@ impl MagicSelftest {
             },
             Phase::Damage => {
                 self.wait_log = state.log.len();
-                if self.button(ctx, "vtt.sheet-damage-1", Some(self.caster)) {
+                if self.painted.button(ctx, "vtt.sheet-damage-1", Some(self.caster)) {
                     self.damage_checks += 1;
                     self.phase = Phase::WaitDamage;
                 }
@@ -155,7 +156,7 @@ impl MagicSelftest {
                 }
             },
             Phase::Again => {
-                if self.button(ctx, "vtt.weapon-cast-2", None) {
+                if self.painted.button(ctx, "vtt.weapon-cast-2", None) {
                     self.phase = Phase::WaitAgain;
                 }
             },
@@ -166,7 +167,7 @@ impl MagicSelftest {
             },
             Phase::Propose => {
                 self.wait_revision = table.revision().unwrap();
-                if self.button(ctx, "vtt.effect-propose-expiry", None) {
+                if self.painted.button(ctx, "vtt.effect-propose-expiry", None) {
                     self.phase = Phase::WaitPropose;
                 }
             },
@@ -176,12 +177,12 @@ impl MagicSelftest {
                 }
             },
             Phase::TimePage => {
-                if self.tab(ctx, TABLE) {
+                if self.painted.tab(ctx, TABLE) {
                     self.phase = Phase::Advance;
                 }
             },
             Phase::Advance => {
-                if self.button(ctx, "vtt.advance", None) {
+                if self.painted.button(ctx, "vtt.advance", None) {
                     self.phase = Phase::WaitExpiry;
                 }
             },
@@ -195,7 +196,7 @@ impl MagicSelftest {
                 }
             },
             Phase::Verify => {
-                if !self.tab(ctx, SHEETS) {
+                if !self.painted.tab(ctx, SHEETS) {
                     return;
                 }
                 self.verify(app, ctx, &state);
@@ -233,118 +234,6 @@ impl MagicSelftest {
         Records::read(&state.map())
             .unwrap()
             .expect("cast ledger exists")
-    }
-    fn tab(&mut self, ctx: &mut Ctx<'_>, id: &str) -> bool {
-        if ctx.runner.state().vtt_selected_projection == id {
-            return true;
-        }
-        let label = ctx
-            .runner
-            .state()
-            .vtt_projections
-            .iter()
-            .find(|p| p.id == id)
-            .unwrap()
-            .label
-            .clone();
-        self.click_text(ctx, "vtt-tab", &label)
-    }
-    fn button(&mut self, ctx: &mut Ctx<'_>, id: &str, body: Option<u64>) -> bool {
-        let selected = &ctx.runner.state().vtt_selected_projection;
-        let label = ctx
-            .runner
-            .state()
-            .vtt_projections
-            .iter()
-            .find(|p| p.id == *selected)
-            .and_then(|p| {
-                p.cards
-                    .iter()
-                    .filter(|card| {
-                        body.is_none_or(|id| {
-                            card.values
-                                .iter()
-                                .any(|v| v.label == "Native body" && v.value == id.to_string())
-                        })
-                    })
-                    .find_map(|card| {
-                        card.actions
-                            .iter()
-                            .find(|a| a.id == id)
-                            .map(|a| a.label.clone())
-                    })
-            });
-        let Some(label) = label else {
-            return false;
-        };
-        // A sheet action can have the same label on two bodies. Find its ordinal
-        // in the supplied card order, then the corresponding painted action.
-        let all = ctx
-            .runner
-            .state()
-            .vtt_projections
-            .iter()
-            .find(|p| p.id == *selected)
-            .unwrap();
-        let matching: Vec<_> = all
-            .cards
-            .iter()
-            .flat_map(|card| {
-                card.actions
-                    .iter()
-                    .filter(|a| a.label == label)
-                    .map(move |_| {
-                        body.is_none_or(|id| {
-                            card.values
-                                .iter()
-                                .any(|v| v.label == "Native body" && v.value == id.to_string())
-                        })
-                    })
-            })
-            .collect();
-        let ordinal = matching.iter().position(|matches| *matches).unwrap();
-        self.click_ordinal(ctx, "vtt-action", &label, ordinal)
-    }
-    fn click_text(&mut self, ctx: &mut Ctx<'_>, class: &str, label: &str) -> bool {
-        self.click_ordinal(ctx, class, label, 0)
-    }
-    fn click_ordinal(
-        &mut self,
-        ctx: &mut Ctx<'_>,
-        class: &str,
-        label: &str,
-        ordinal: usize,
-    ) -> bool {
-        let node = {
-            let dom = ctx.runner.dom();
-            let dom = dom.borrow();
-            dom.all_with_class(dom.document(), class)
-                .into_iter()
-                .filter(|node| {
-                    dom.dom_children(*node)
-                        .filter_map(|child| dom.text(child))
-                        .collect::<String>()
-                        == label
-                })
-                .nth(ordinal)
-        };
-        let Some(node) = node else {
-            return false;
-        };
-        if !self.scrolled {
-            ctx.scroll_into_view(node, ScrollAlign::Nearest);
-            self.scrolled = true;
-            return false;
-        }
-        let Some((x, y, w, h)) = ctx.painted_rect(node) else {
-            return false;
-        };
-        let (x, y) = (x + w / 2.0, y + h / 2.0);
-        ctx.pointer.push(HostPointer::Moved(x, y));
-        ctx.pointer.push(HostPointer::Press(x, y));
-        ctx.pointer.push(HostPointer::Release(x, y));
-        self.scrolled = false;
-        true
     }
     fn verify(&self, app: &mut App, ctx: &mut Ctx<'_>, state: &State) {
         let records = Self::effects(state);
