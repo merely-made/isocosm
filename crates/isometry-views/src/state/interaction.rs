@@ -240,8 +240,8 @@ impl UiState {
             self.map.clear_turn_counters(active);
             self.select_token(active);
             if let Some(t) = self.map.token(active) {
-                let owner = t.owner.as_deref().unwrap_or("dm");
-                self.status = format!("turn: {} {} ({owner})", t.sprite, active.0);
+                let owner = t.owner.as_deref().unwrap_or("dm").to_owned();
+                self.status = format!("turn: {} {} ({owner})", self.turn_name(active), active.0);
             }
         }
     }

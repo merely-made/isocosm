@@ -23,20 +23,38 @@ pub(crate) const BOARD_BAKE: BakeParams = BakeParams {
 pub(crate) const SPRITE_FIT: &str =
     "background-size: contain; background-position: bottom center;";
 
-/// Bake every class `library` binds to a `.token-<class>` rule (data-URI
-/// PNGs). A class that does not resolve gets no rule, so its token shows as
-/// the bare box rather than as some other class.
+/// Bake every class `library` binds to sprite rules (data-URI PNGs): one per
+/// true quarter-turn facing (`.token-<class>.token-facing-<f>`, the turns the
+/// creator's preview shows), and the south view as the bare `.token-<class>`
+/// for places that show a class without a facing. A class that does not
+/// resolve gets no rule, so its token shows as the bare box rather than as
+/// some other class.
 pub fn class_css(library: &Library) -> String {
+    use isometry_core::Facing;
     let mut css = String::new();
     for class in library.classes() {
         let Ok(resolved) = library.resolve(class, None, []) else {
             continue;
         };
-        let uri = bake_facing(&resolved.voxels, &resolved.palette, 0, &BOARD_BAKE).to_png_data_uri();
-        css.push_str(&format!(
-            ".token-{class} {{ background-image: url(\"{uri}\"); {SPRITE_FIT} }}
+        for (facing, name) in [
+            (Facing::South, "south"),
+            (Facing::East, "east"),
+            (Facing::North, "north"),
+            (Facing::West, "west"),
+        ] {
+            let index = crate::appearance::bake_facing_of(facing);
+            let uri = bake_facing(&resolved.voxels, &resolved.palette, index, &BOARD_BAKE)
+                .to_png_data_uri();
+            let selector = if facing == Facing::South {
+                format!(".token-{class}, .token-{class}.token-facing-{name}")
+            } else {
+                format!(".token-{class}.token-facing-{name}")
+            };
+            css.push_str(&format!(
+                "{selector} {{ background-image: url(\"{uri}\"); {SPRITE_FIT} }}
 "
-        ));
+            ));
+        }
     }
     css
 }

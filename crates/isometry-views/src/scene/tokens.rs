@@ -164,17 +164,17 @@ const PLACEHOLDER_COLOUR: [u8; 3] = [220, 40, 200];
 
 /// The yaw a four-way facing turns a body to.
 ///
-/// The board's axes are world `+x` for a column and world `+z` for a row, so
-/// South (row increasing) is the zero and each quarter turn follows the
-/// compass anticlockwise about world up. The rig is symmetric enough that this
-/// reads as a turn rather than as a specific pose; B3 owns whatever facing art
-/// wants beyond it.
+/// The board's axes are world `+x` for a column and world `+z` for a row. At
+/// yaw zero a rig's front faces north (row decreasing): measured in the
+/// running game on 2026-10-30, when the zero was taken as south and a
+/// south-facing token showed its back. The bake ([`crate::appearance::bake_facing_of`])
+/// turns the same way, so the scene, the DOM board and the preview agree.
 pub fn yaw_of(facing: Facing) -> f32 {
     use std::f32::consts::FRAC_PI_2;
     match facing {
-        Facing::South => 0.0,
+        Facing::North => 0.0,
         Facing::West => FRAC_PI_2,
-        Facing::North => std::f32::consts::PI,
+        Facing::South => std::f32::consts::PI,
         Facing::East => 3.0 * FRAC_PI_2,
     }
 }

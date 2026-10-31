@@ -1,10 +1,11 @@
 //! `ISOMETRY_LOOK_SELFTEST=preview|board`: a headed look-editor run.
 //!
 //! Equips the first token with a sword, opens its look editor (the menu row's
-//! own call), then picks a class and a hair through the painted buttons and a
-//! shirt colour. `preview` stops there, editor open; `board` saves and closes,
-//! so the two runs' captures are the creator's preview and the same token on
-//! the board.
+//! own call), then picks a class and the hood (the core pack's .vox layer)
+//! through the painted buttons, a shirt colour, and one quarter turn.
+//! `preview` stops there, editor open; `board` saves, faces the token the way
+//! the preview was turned, and closes, so the two runs' captures are the
+//! creator's preview and the same token on the board.
 use super::*;
 use cambium_genet_winit_host::ScrollAlign;
 use isometry_campaign::EquipmentSlot;
@@ -13,6 +14,7 @@ pub(crate) struct LookSelftest {
     save: bool,
     step: usize,
     scrolled: bool,
+    turned: usize,
     started: Instant,
 }
 
@@ -24,12 +26,13 @@ impl LookSelftest {
             save: mode == "board",
             step: 0,
             scrolled: false,
+            turned: 0,
             started: Instant::now(),
         })
     }
 
     pub(crate) fn done(&self) -> bool {
-        self.step >= 6
+        self.step >= 7
     }
 
     pub(crate) fn drive(&mut self, ctx: &mut Ctx<'_>) {
@@ -58,12 +61,40 @@ impl LookSelftest {
                 ctx.runner.state().look_open
             },
             1 => self.click(ctx, "traveler"),
-            2 => self.click(ctx, "long"),
+            2 => self.click(ctx, "hood"),
             3 => {
                 ctx.runner.update(|ui| ui.set_look_colour(1, [0xd8, 0xb0, 0x4a]));
                 true
             },
-            4 => !self.save || self.click(ctx, "save"),
+            4 => {
+                // `ISOMETRY_LOOK_TURNS` quarter turns (one by default).
+                let turns: usize = std::env::var("ISOMETRY_LOOK_TURNS")
+                    .ok()
+                    .and_then(|value| value.parse().ok())
+                    .unwrap_or(1);
+                if self.turned < turns {
+                    if self.click(ctx, "turn") {
+                        self.turned += 1;
+                    }
+                    false
+                } else {
+                    true
+                }
+            },
+            5 => {
+                if self.save && self.click(ctx, "save") {
+                    // Face the token the way the preview was turned, as a
+                    // player would after saving, so the pair compares.
+                    ctx.runner.update(|ui| {
+                        let facing = ui.look.facing;
+                        let id = ui.map.tokens[0].id;
+                        let _ = apply(&mut ui.map, &SessionEvent::TokenFaced { id, facing });
+                    });
+                    true
+                } else {
+                    !self.save
+                }
+            },
             _ => {
                 let ui = ctx.runner.state();
                 let token = &ui.map.tokens[0];
