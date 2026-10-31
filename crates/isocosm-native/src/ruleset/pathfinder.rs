@@ -87,14 +87,14 @@ pub(super) fn apply(
             sheet.set_int("coins_cp", build.coins);
             map.set_sheet(id, sheet);
             let inventory = state.inventories.entry(id).or_default();
-            for item in &build.gear {
+            for (item, quantity) in &build.gear {
                 let item_id = ItemId(format!("ruleset:pf2e:{}", state.next_item));
                 state.next_item = state.next_item.checked_add(1).ok_or("item identity overflow")?;
                 inventory.items.insert(item_id.clone(), ItemInstance {
                     id: item_id,
                     template: format!("{ITEM}{item}"),
                     name: r.items[item].name.clone(),
-                    quantity: 1,
+                    quantity: *quantity,
                     tags: vec![r.items[item].kind.clone()],
                     modifiers: vec![],
                     appearance_layers: vec![],

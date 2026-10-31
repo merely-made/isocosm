@@ -145,7 +145,8 @@ fn actions(choices: &mut Choices, state: &State, id: u64, token: TokenId, build:
             if inventory.equipped.values().any(|e| e == item_id) {
                 continue;
             }
-            let Some(item) = play::item_of(state, token, item_id) else { continue };
+            let Some(item) = play::item_of(state, token, item_id)
+                .filter(|i| matches!(i.kind.as_str(), "weapon" | "armor" | "shield")) else { continue };
             choices.push((format!("vtt.pf2e-equip-{}", item_id.0), format!("Ready {}", instance.name),
                 item.summary.clone(), Action::Equip { actor: id, item: item_id.clone() }));
         }

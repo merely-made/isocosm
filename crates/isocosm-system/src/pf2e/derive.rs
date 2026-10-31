@@ -95,7 +95,8 @@ pub fn derive(r: &Records, b: &Build) -> Derived {
     let defenses = ["unarmored", "light", "medium", "heavy"].map(|k| format!("{k} {}", rank_name(rank(k)))).join(", ");
     line("Defenses", defenses);
     if !b.gear.is_empty() {
-        line("Gear", b.gear.iter().map(|g| r.items[g].name.clone()).collect::<Vec<_>>().join(", "));
+        line("Gear", b.gear.iter().map(|(g, n)| if *n > 1 { format!("{} ({n})", r.items[g].name) }
+            else { r.items[g].name.clone() }).collect::<Vec<_>>().join(", "));
     }
     line("Coins", super::draft::money(b.coins));
     let feats = b.feats.iter().map(|f| r.feats[f].name.clone()).collect::<Vec<_>>().join(", ");

@@ -181,7 +181,8 @@ pub(super) fn apply(
             let slot = match record.kind.as_str() {
                 "weapon" => EquipmentSlot::MainHand,
                 "shield" => EquipmentSlot::OffHand,
-                _ => EquipmentSlot::Body,
+                "armor" => EquipmentSlot::Body,
+                _ => return Err(format!("{} is carried, not readied", record.name)),
             };
             if state.encounter.as_ref().is_some_and(|e| e.turn(id.0).is_some()) {
                 if slot == EquipmentSlot::Body {

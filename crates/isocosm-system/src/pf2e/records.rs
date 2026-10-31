@@ -165,6 +165,9 @@ pub struct Item {
     pub hardness: Option<i64>,
     #[serde(default)]
     pub hp: Option<i64>,
+    /// What a kit holds: item ids with quantities.
+    #[serde(default)]
+    pub contents: Vec<(String, u32)>,
     pub summary: String,
 }
 
@@ -474,6 +477,13 @@ impl Records {
             for i in &a.items {
                 if !self.items.contains_key(i) {
                     return Err(format!("{}: unknown item {i}", a.name));
+                }
+            }
+        }
+        for item in self.items.values() {
+            for (i, _) in &item.contents {
+                if !self.items.contains_key(i) || !self.items[i].contents.is_empty() {
+                    return Err(format!("{}: kit content {i} is not a plain item", item.name));
                 }
             }
         }
