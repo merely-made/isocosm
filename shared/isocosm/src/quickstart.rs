@@ -110,6 +110,7 @@ impl Pack {
         r.relations.insert(TENANT.to_string());
         r.processes.extend(crate::social::processes(&self.vocabulary));
         r.social = Some(self.vocabulary.clone());
+        r.founding_events = true;
         genesis.validate()
     }
 
