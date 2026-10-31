@@ -33,12 +33,10 @@ fn draft() -> CampaignDraft {
 fn founded(seed: u64) -> (World, Id, isocosm_native::founding::Content,
     Option<isocosm_native::founding::GenerationOrigin>) {
     let pack = cosmograph::quickstart::pack("mill-ford").unwrap();
-    let mut genesis = pack.founding(seed).generate().unwrap();
-    pack.lay(&mut genesis).unwrap();
+    let (mut genesis, sites) = pack.genesis(seed).unwrap();
     genesis.rules.relations.insert(MEMBER.into());
     genesis.rules.party_relations.insert(PARTY.into(), MEMBER.into());
     genesis.validate().unwrap();
-    let sites: Vec<Id> = genesis.sites.keys().copied().collect();
     let prepared = Campaign::from_draft_bench(genesis, &draft(), Execution::Individuals).unwrap();
     let saved = prepared.campaign.save();
     let content = prepared.campaign.content().clone();

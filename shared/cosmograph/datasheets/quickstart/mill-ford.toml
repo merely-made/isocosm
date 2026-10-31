@@ -1,29 +1,48 @@
 # A quick-start world (case 1023, doctrine World 10): a modded, shared world
 # whose founders are authored and enter by the founding door at its first
 # tick. This one is a small original example for the ladder readings, not a
-# shipping preset: six founders on one map site, four dwellings, one
-# faction. Every key and name here is this pack's content.
+# shipping preset: three authored sites, six founders at one of them, four
+# dwellings, one faction. Every key and name here is this pack's content.
 
 schema = 1
 key = "mill-ford"
 name = "Mill Ford"
 status = "example"
 
-# The world the pack is laid over, drawn under the caller's seed.
-[world]
-sites = 4
-population = 16
-lineages = 2
-cohort_size = 4
+# The world the pack authors (case 1044): its sites and the routes between
+# them, each route's weight its travel.
+[[sites]]
+key = "the-ford"
+name = "the ford"
+
+[[sites]]
+key = "north-meadows"
+name = "the north meadows"
+
+[[sites]]
+key = "alder-wood"
+name = "the alder wood"
+
+[[routes]]
+key = "ford-meadows"
+from = "the-ford"
+to = "north-meadows"
+weight = 2
+
+[[routes]]
+key = "ford-wood"
+from = "the-ford"
+to = "alder-wood"
+weight = 3
 
 # The founders' lineage, which the pack adds to the world.
 [lineage]
 key = "lineage:mill-ford-folk"
 kingdom = "kingdom:fauna"
 
-# Which of the world's map sites, in id order, the founders arrive at.
+# Which of the pack's sites the founders arrive at.
 [settle]
-site = 0
+site = "the-ford"
 
 [vocabulary]
 crafts = ["craft:milling", "craft:farming", "craft:fishing", "craft:weaving"]

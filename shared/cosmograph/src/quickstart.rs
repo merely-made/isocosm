@@ -3,16 +3,17 @@
 
 //! A quick-start world (case 1023, doctrine World 10): a modded, shared
 //! world whose founders are authored and enter by the founding door at its
-//! first tick. A pack is a datasheet: the world it is laid over, its
-//! founders' lineage and social vocabulary, a faction, founders and the
-//! dwellings offered to them. Every product reads the same pack.
+//! first tick. A pack is a datasheet: the sites and routes it authors (case
+//! 1044, Mark: "Quick-starts author their world"), its founders' lineage and
+//! social vocabulary, a faction, founders and the dwellings offered to them.
+//! Every product reads the same pack.
 
 use crate::{
     Command, Founding, Result, Session,
     arrival::Arrival,
     asserted::{Assertion, Authored, Character, Faction, Place},
     schema::Lineage,
-    schema::{Id, Key, Location, Method},
+    schema::{Id, Key, Location, Method, Route, Site},
     simulation::{Execution, Genesis},
     social::{Offer, Social, TENANT, Terms, Vocabulary, Work},
 };
@@ -32,7 +33,9 @@ pub struct Pack {
     pub key: Key,
     pub name: String,
     pub status: String,
-    pub world: World,
+    pub sites: Vec<PackSite>,
+    #[serde(default)]
+    pub routes: Vec<PackRoute>,
     pub lineage: PackLineage,
     pub settle: Settle,
     pub vocabulary: Vocabulary,
@@ -42,18 +45,24 @@ pub struct Pack {
     pub dwellings: Vec<Dwelling>,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize)]
+/// One site the pack authors.
+#[derive(Clone, Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct World { pub sites: u32, pub population: u64, pub lineages: u32, pub cohort_size: u64 }
+pub struct PackSite { pub key: Key, pub name: String }
+
+/// A route the pack authors between two of its sites, its weight the travel.
+#[derive(Clone, Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct PackRoute { pub key: Key, pub from: Key, pub to: Key, pub weight: u32 }
 
 #[derive(Clone, Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct PackLineage { pub key: Key, pub kingdom: Key }
 
-/// Which of the world's map sites, in id order, the founders arrive at.
-#[derive(Clone, Copy, Debug, Deserialize)]
+/// Which of the pack's sites, by key, the founders arrive at.
+#[derive(Clone, Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Settle { pub site: usize }
+pub struct Settle { pub site: Key }
 
 #[derive(Clone, Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -102,11 +111,55 @@ fn id(outcome: &str, kind: &str) -> Result<Id> {
 }
 
 impl Pack {
-    /// The world the pack is laid over, drawn under `seed`.
-    pub fn founding(&self, seed: u64) -> Founding {
-        let w = self.world;
-        Founding { seed, sites: w.sites, population: w.population, lineages: w.lineages,
-            cohort_size: w.cohort_size, ..Default::default() }
+    /// The pack's authored world under `seed`: the stock rules, with no
+    /// drawn lineage, process or body, and only the pack's sites and routes,
+    /// so `founding` stays absent and the head gate admits it (case 1044).
+    fn authored(&self, seed: u64) -> Result<(Genesis, BTreeMap<Key, Id>)> {
+        if self.sites.is_empty() {
+            return Err(format!("quick-start pack {} authors no site", self.key));
+        }
+        let stock = Founding { seed, sites: 1, population: 1, lineages: 1, cohort_size: 1, ..Default::default() };
+        let mut genesis = stock.generate()?;
+        genesis.founding = None;
+        let drawn: Vec<Key> = genesis.lineages.keys().filter(|k| *k != "world:ground").cloned().collect();
+        for lineage in &drawn {
+            genesis.lineages.remove(lineage);
+        }
+        let r = &mut genesis.rules;
+        r.processes.retain(|k, _| !k.starts_with("process:cycle-"));
+        r.accounts.retain(|_, kind| !matches!(kind,
+            crate::rules::AccountKind::Matter { lineage, .. } if drawn.contains(lineage)));
+        r.traits.retain(|t| !t.starts_with("ability:cycle-"));
+        r.limits.entities = r.limits.entities.max(1_000_001 + self.sites.len() as u64);
+        let ground = genesis.population.groups.values()
+            .find(|g| g.entity.lineage == "world:ground").map(|g| g.entity.as_ref().clone())
+            .ok_or("the stock world has no ground body")?;
+        let ids: BTreeMap<Key, Id> = self.sites.iter().enumerate().map(|(i, s)| (s.key.clone(), i as Id)).collect();
+        let site = |key: &str| ids.get(key).copied().ok_or_else(|| format!("route names no site {key}"));
+        let mut sites = BTreeMap::new();
+        for (i, s) in self.sites.iter().enumerate() {
+            let place = Place { key: s.key.clone(), name: s.name.clone(), ..Default::default() };
+            sites.insert(i as Id, Site { terrain_seed: crate::draw(seed, "terrain", &[i as u64]),
+                conditions: BTreeMap::from([("world:habitable".into(), 1), ("world:weather".into(), 0)]),
+                accounts: BTreeMap::new(), routes: vec![], authored: Some(place) });
+        }
+        for r in &self.routes {
+            let (from, to) = (site(&r.from)?, site(&r.to)?);
+            let authored = crate::asserted::Route { key: r.key.clone(), from: r.from.clone(), to: r.to.clone(),
+                tags: Default::default(), weight: r.weight };
+            for (at, toward) in [(from, to), (to, from)] {
+                sites.get_mut(&at).expect("an authored site").routes.push(Route { to: toward,
+                    travel: u64::from(r.weight).max(1), transmission: 0, border: None, authored: Some(authored.clone()) });
+            }
+        }
+        genesis.sites = sites;
+        let mut population = crate::population::Population::default();
+        for &id in ids.values() {
+            population.insert(crate::schema::Entity { place: id, ..ground.clone() }, 1)?;
+        }
+        genesis.population = population;
+        genesis.world.footprint = None;
+        Ok((genesis, ids))
     }
 
     /// Adds the pack's lineage, social vocabulary and relations to `genesis`.
@@ -126,8 +179,8 @@ impl Pack {
 
     /// Enters the founders by the founding door at the first tick, then
     /// forms each dwelling's tenancy; `run` is the session's command door.
-    pub fn found(&self, run: &mut dyn FnMut(Command) -> Result<String>, sites: &[Id]) -> Result<()> {
-        let site = *sites.get(self.settle.site).ok_or("the pack settles past the world's sites")?;
+    pub fn found(&self, run: &mut dyn FnMut(Command) -> Result<String>, sites: &BTreeMap<Key, Id>) -> Result<()> {
+        let site = *sites.get(&self.settle.site).ok_or("the pack settles at no site of its own")?;
         let mut claims = BTreeSet::new();
         if let Some(f) = &self.faction {
             let authored = Authored { key: f.key.clone(), name: f.name.clone(), ..Default::default() };
@@ -168,17 +221,16 @@ impl Pack {
 }
 
 impl Pack {
-    /// The pack laid over a world drawn under `seed`, and that world's map
-    /// sites in id order, before anyone enters.
-    pub fn genesis(&self, seed: u64) -> Result<(Genesis, Vec<Id>)> {
-        let mut genesis = self.founding(seed).generate()?;
+    /// The pack's authored world under `seed`, laid, and its sites by key,
+    /// before anyone enters.
+    pub fn genesis(&self, seed: u64) -> Result<(Genesis, BTreeMap<Key, Id>)> {
+        let (mut genesis, sites) = self.authored(seed)?;
         self.lay(&mut genesis)?;
-        let sites = genesis.sites.keys().copied().collect();
         Ok((genesis, sites))
     }
 }
 
-/// The pack `key` laid over a world drawn under `seed`, founded.
+/// The pack `key`'s authored world under `seed`, founded.
 pub fn session(key: &str, seed: u64, mode: Execution) -> Result<Session> {
     let pack = pack(key)?;
     let (genesis, sites) = pack.genesis(seed)?;
