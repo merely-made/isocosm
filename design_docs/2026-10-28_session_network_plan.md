@@ -324,5 +324,12 @@ parked (`wing-organs` D1).
   or none, a GM on the player roster, claim/withdraw/consent/release with the
   yes of every seated GM or, with none, every bound player; the "distinct DM"
   rules in time and joint journeys are gone. Tests: `crates/isocosm-native/tests/seats.rs`.
+- 2026-10-31, working table step 3: a peer at the player seat over two real
+  `P2pandaTransport`s and an admitted stream joins the party with its own body,
+  gives its yes to the GM's downtime and claims the GM seat; its projection
+  shows no GM roster controls; the GM's yes seats it and the replica converges
+  at each step (`shared/wing-integration/tests/family_network/vtt.rs`,
+  `a_player_peer_joins_consents_and_is_seated_as_gm_over_the_transport`). The
+  host still chooses the peer's participant; step 4 binds it from admission.
 - 2026-10-28: cut from the sim host plan's H7, the Stickleback migration plan,
   the shared-authority plan and the campaign retirement plan's H7 follow-on.
