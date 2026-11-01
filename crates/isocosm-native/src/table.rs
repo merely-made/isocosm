@@ -120,6 +120,9 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                         "This window sees what this body knows.", NULL, IntentEffect::Curation));
                     acts.push(Act::ViewAs(member));
                 }
+                actions.push(action("vtt.leave-body", &format!("Put down body {member}"),
+                    "Stop playing this body; it acts as itself again.", NULL, DOMAIN));
+                acts.push(Act::Leave(member));
                 if let Some(party) = &party {
                     let intent = |action| VttIntent::Party(PartyIntent { party: party.clone(), member: EntityHandle(member), action });
                     actions.push(action("vtt.join", &format!("Opt body {member} in"), "Opt this body into the party.", NULL, DOMAIN));

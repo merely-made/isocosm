@@ -95,6 +95,18 @@ fn one_player_plays_two_bodies_acts_for_each_and_views_as_one_per_window() {
     };
     assert!(!offers(&mut second, brisa) && offers(&mut second, arden));
     assert!(offers(&mut first, brisa), "the first window still views as its default body");
+
+    // Putting one of the two down (Leave): the window that viewed it views as
+    // its default again, the other body is still played and still moves.
+    act(&mut second, &format!("body:{brisa}"), "vtt.leave-body");
+    let played = t.world.read(|s| s.sim.played(t.player.0)).unwrap();
+    assert!(!played.contains(&brisa) && played.contains(&arden));
+    assert!(!ids(&mut second).contains(&format!("body:{brisa}")), "the put-down body has no card");
+    let player = access(&t.world, t.player, Seat::Player);
+    assert!(stay(&t.world, player, brisa).is_err(), "a put-down body is not acted for");
+    assert!(stay(&t.world, player, arden).is_ok());
+    t.world.read(|s| assert!(s.entries.iter().any(|e| matches!(&e.command,
+        Command::Leave { participant, critter } if *participant == t.player.0 && *critter == brisa)))).unwrap();
 }
 
 #[test]

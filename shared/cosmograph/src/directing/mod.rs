@@ -184,6 +184,16 @@ impl Simulation {
         }
         self.take_up(participant, critter, true)
     }
+    /// `participant` puts down `critter`, one body it plays; its bond is kept,
+    /// and the critter acts as itself again (1065).
+    pub(crate) fn leave(&mut self, participant: Id, critter: Id) -> Result<()> {
+        self.participant(participant)?;
+        if !self.plays_body(participant, critter) {
+            return Err("the participant does not play this critter".into());
+        }
+        hold(&mut self.state.relations, Relation::new(participant, PLAYS, critter), false);
+        Ok(())
+    }
     fn take_up(&mut self, participant: Id, critter: Id, beside: bool) -> Result<()> {
         self.participant(participant)?;
         let e = self

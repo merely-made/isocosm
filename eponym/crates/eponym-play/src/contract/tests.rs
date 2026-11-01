@@ -58,6 +58,12 @@ fn a_participant_with_a_body_taken_beside_another_is_not_played_here() {
     let hash = world.state_hash().unwrap();
     assert_eq!(world.submit(Some(participant), &drive), Err(WorldError::NotPlayed));
     assert_eq!(world.state_hash().unwrap(), hash, "the refusal changes nothing");
+    // Putting the second down leaves one body, which drives again; putting the
+    // last down leaves none, which is not played.
+    world.run(Command::Leave { participant, critter: b }).unwrap();
+    world.submit(Some(participant), &drive).unwrap();
+    world.run(Command::Leave { participant, critter: a }).unwrap();
+    assert_eq!(world.submit(Some(participant), &drive), Err(WorldError::NotPlayed));
 }
 
 #[test]

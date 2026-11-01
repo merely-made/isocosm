@@ -164,3 +164,36 @@ pub fn submit_loop(session: &mut Session, game: &mut Game,
         LoopAction::Answer(_) => answer_loop(session, game, access, input),
     }
 }
+
+#[cfg(test)]
+mod one_body_tests {
+    use super::*;
+    use cosmograph::{Execution, Founding, schema::Method};
+    use cosmograph_overlay::{EntityHandle, ParticipantHandle};
+
+    /// Mesocosm plays one body (case 1065): a participant playing two, or
+    /// none, is refused; putting one of two down (Leave) is played again.
+    #[test]
+    fn a_participant_is_played_here_only_with_one_body() {
+        let genesis = Founding { seed: 5, sites: 4, population: 48, cohort_size: 4, lineages: 3, ecology: true,
+            played: Some(cosmograph::directing::Played { lineage: 1, region_sites: 2 }),
+            ..Default::default() }.generate().unwrap();
+        let mut session = Session::new(genesis, Execution::Individuals).unwrap();
+        let joined = session.command(Command::Join).unwrap();
+        let p: u64 = joined.strip_prefix("participant:").unwrap().parse().unwrap();
+        let bodies: Vec<u64> = session.sim.state().population.groups.iter()
+            .filter(|(_, g)| g.entity.method == Method::Deliberative && g.entity.alive)
+            .map(|(id, _)| *id).take(2).collect();
+        assert_eq!(bodies.len(), 2);
+        let seat = |s: &Session| OrdinaryAccess { participant: ParticipantHandle(p), seat: Seat::Player,
+            subject: s.sim.plays(p).map(EntityHandle) };
+        session.command(Command::Take { participant: p, critter: bodies[0] }).unwrap();
+        assert!(access(&session, seat(&session)).is_ok());
+        session.command(Command::TakeAlso { participant: p, critter: bodies[1] }).unwrap();
+        assert!(matches!(access(&session, seat(&session)), Err(Refusal::NotPlayed)));
+        session.command(Command::Leave { participant: p, critter: bodies[1] }).unwrap();
+        assert!(access(&session, seat(&session)).is_ok());
+        session.command(Command::Leave { participant: p, critter: bodies[0] }).unwrap();
+        assert!(matches!(access(&session, seat(&session)), Err(Refusal::NotPlayed)));
+    }
+}

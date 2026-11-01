@@ -88,6 +88,8 @@ pub(crate) enum Act {
     Seat(crate::native::SeatAction),
     /// View this window as another body its participant plays (1065).
     ViewAs(u64),
+    /// Put down one body this window's participant plays (1065, `Leave`).
+    Leave(u64),
 }
 
 /// A session's cards and the acts their actions bind.
@@ -232,6 +234,21 @@ impl VttEndpoint {
             },
             Act::SelectParty(party) => { self.party = Some(party); Ok(()) },
             Act::ViewAs(body) => self.window.view_as(Some(cosmograph_overlay::EntityHandle(body))),
+            Act::Leave(body) => {
+                let access = self.window.projection()?.access;
+                let before = self.window.cut()?;
+                self.world.product_sections(before, |session, sections| {
+                    crate::native::current_access(session, access)?;
+                    if !session.sim.plays_body(access.participant.0, body) {
+                        return Err("a window puts down only a body its participant plays".into());
+                    }
+                    session.command(cosmograph::Command::Leave { participant: access.participant.0, critter: body })?;
+                    Ok(((), sections.clone()))
+                })?;
+                // A window viewing the body it put down views as its default again.
+                if access.subject == Some(cosmograph_overlay::EntityHandle(body)) { self.window.view_as(None)?; }
+                Ok(())
+            },
             Act::Overmap(settings) => { self.overmap = settings; Ok(()) },
             Act::Quote(kind) => { self.quote = Some(authoring::quote(self, kind, payload)?); Ok(()) },
             Act::Assert => {

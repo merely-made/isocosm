@@ -169,4 +169,9 @@ pub enum Command {
         participant: Id,
         critter: Id,
     },
+    /// A participant puts down one body it plays, keeping its bond (1065).
+    Leave {
+        participant: Id,
+        critter: Id,
+    },
 }
