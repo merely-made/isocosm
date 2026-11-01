@@ -106,6 +106,8 @@ impl Simulation {
         // Build at most one eye/terrain reading, only if an eligible remote
         // meal needs it. Contact feeding and inedible residents need no rays.
         let sight = std::cell::OnceCell::new();
+        let smell = std::cell::OnceCell::new();
+        let radius = self.smell_radius(actor);
         let ids: BTreeSet<_> = self
             .state
             .spatial_poses
@@ -120,13 +122,16 @@ impl Simulation {
         ids.into_iter()
             .filter_map(|target| {
                 let d = self.food_gap(actor, target)?;
-                if (policy.sight && d > policy.search)
+                if (policy.sight && d > policy.search.max(radius))
                     || !self.food_queries(actor, target, feed, body.place) {
                     return None;
                 }
-                let detected = !policy.sight || d <= policy.reach || sight
+                let smelt = || d <= radius && smell
+                    .get_or_init(|| senses::Smell::read(self, actor, radius))
+                    .as_ref().is_some_and(|s| s.detects(self, target));
+                let detected = !policy.sight || d <= policy.reach || smelt() || (d <= policy.search && sight
                     .get_or_init(|| senses::Sight::read(self, actor, policy.search))
-                    .as_ref().is_some_and(|s| s.detects(self, target).is_some());
+                    .as_ref().is_some_and(|s| s.detects(self, target).is_some()));
                 (detected && self.owned_process_ready(actor, Some(target), feed)).then_some((target, d))
             })
             .collect()

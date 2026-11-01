@@ -88,7 +88,9 @@ fn framed(p: &Process) -> bool {
         )
     });
     // A count of members reads the bodies its pass may bear, move or kill.
-    let counts = p.requires.iter().any(|q| matches!(q, Query::Members { .. } | Query::MembersBelow { .. }));
+    // So does a sense reading (1071): its crowding, gradient or activity.
+    let counts = p.requires.iter()
+        .any(|q| matches!(q, Query::Members { .. } | Query::MembersBelow { .. } | Query::Sensed { .. }));
     p.target.is_some()
         || counts
         || p.risk.is_some()

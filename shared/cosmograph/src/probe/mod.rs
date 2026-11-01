@@ -44,6 +44,11 @@ impl ProbeWorld {
     /// gates; unsupported founding must not silently lose those inputs.
     pub(crate) fn spread_supported(&self) -> Result<()> {
         let g = &self.genesis;
+        if g.rules.senses.is_some() {
+            // A sensing territory spreads down its gradient (1071); the crowd
+            // splits evenly and is owed that reading.
+            return Err("independent spread crowd does not read a sensing territory's gradient".into());
+        }
         if !g.spreads.places.is_empty() || !g.spreads.transit_marks.is_empty()
             || g.spreads.next_transit != 0 {
             return Err("independent spread crowd supports site grain without titled transit".into());

@@ -326,3 +326,36 @@ fn normative_and_unaddressed_direction_refuse_in_the_crowd() {
     let mut crowd = Crowd::for_spreads(&w.probe,w.probe.genesis.dynamics_seed(),&BTreeSet::new()).unwrap();
     assert!(crowd.advance_spreads(1).err().unwrap().contains("882"));
 }
+
+#[test]
+fn a_sensing_territory_spreads_down_its_gradient() {
+    use cosmograph::{rules::{Binding,Causation,Effect,Process,Query},schema::Method};
+    // One direction over two routes; the second destination already holds
+    // more than the source keeps, so a sensing territory sends it nothing
+    // (1071), where an unsensing one splits evenly.
+    let run = |sensing:bool| {
+        let mut w = direction::fixed(Method::Reactive,&[],161);
+        let g = &mut w.probe.genesis;
+        let id = "c11:direct-gradient";
+        g.rules.processes.insert(id.into(),Process {id:id.into(),causation:Causation::Choice,
+            requires:vec![Query::Alive(Binding::Actor),Query::Trait {who:Binding::Actor,key:direction::DIRECTOR.into()}],
+            commitments:vec![],effects:vec![Effect::DirectOverflow {from:w.from,destinations:BTreeSet::from([w.to[0],w.to[1]])}],
+            risk:None,target:None,period:Some(1),priority:0,need_account:None,need_below:0,
+            glyphs:BTreeSet::new(),invariants:BTreeSet::from(["sim:matter".into(),"sim:nonnegative".into()]),
+            note:true,port_feeding:None,goal_directives:Vec::new()});
+        g.sites.get_mut(&w.to[1]).unwrap().accounts.insert(w.territory.key(),150);
+        if sensing {
+            g.rules.senses = Some(Default::default());
+            let seed = g.dynamics_seed();
+            assert!(Crowd::for_spreads(&w.probe,seed,&BTreeSet::new()).err().unwrap().contains("gradient"));
+        }
+        let mut s = Session::new(w.probe.genesis.clone(),Execution::Individuals).unwrap();
+        s.advance(4).unwrap();
+        let held = |site| s.sim.state().sites[&site].accounts.get(&w.territory.key()).copied().unwrap_or(0);
+        (held(w.to[0]),held(w.to[1]))
+    };
+    let (even, sensed) = (run(false), run(true));
+    eprintln!("even split {even:?}, down the gradient {sensed:?}");
+    assert!(sensed.0 > even.0, "the lower destination gains more: {sensed:?} against {even:?}");
+    assert!(sensed.1 <= even.1);
+}

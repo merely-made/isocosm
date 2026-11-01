@@ -106,6 +106,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         g.rules.traits.insert(role.into());
     }
     let rates = founding.ecology_rates;
+    let sensing = founding.bodies.as_ref().is_some_and(|b| b.sensing);
     for i in 0..founding.lineages {
         let role = Role::of(founding.web, i);
         let consumer = role.consumer();
@@ -270,6 +271,15 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                     at_least: 1,
                 },
             ]);
+            if sensing {
+                // A plant grows on what it senses (1071): its share of its
+                // site's light and soil, crowded by the plants beside it,
+                // must cover what one act captures and synthesizes.
+                grow.requires.extend([
+                    Query::Sensed { reading: "sense:light-share".into(), at_least: 1 },
+                    Query::Sensed { reading: "sense:soil-share".into(), at_least: 2 },
+                ]);
+            }
             grow.period = Some(2);
             grow.priority = 0;
             g.rules.processes.insert(grow.id.clone(), grow);

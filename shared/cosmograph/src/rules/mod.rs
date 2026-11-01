@@ -166,6 +166,10 @@ pub enum Query {
     ProjectDecision,
     InstitutionDecision,
     Institution { producer: Key },
+    /// The actor's sense reads at least `at_least` of `reading` (1071,
+    /// Bodies 15), one of `senses::READINGS`, as the pass began. A world
+    /// that does not sense reads nothing, so the requirement fails.
+    Sensed { reading: Key, at_least: u64 },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -357,6 +361,11 @@ pub struct Rules {
     /// hash as before.
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub founding_events: bool,
+    /// Whether the world's active forms sense (1071, Bodies 15), with each
+    /// animal lineage's smell radius; absent in older worlds, which hash as
+    /// before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub senses: Option<crate::senses::Senses>,
 }
 
 /// The condition keys holding a site's coarse terrain, in base units.

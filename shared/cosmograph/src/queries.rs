@@ -62,6 +62,13 @@ impl Simulation {
             };
             return if yes { Ok(format!("{query:?} = {v}")) } else { Err(format!("missing requirement: {query:?} = {v}")) };
         }
+        if let Query::Sensed { reading, at_least } = query {
+            let v = self.sensed(actor, reading);
+            return match v {
+                Some(v) if v >= *at_least => Ok(format!("{query:?} = {v}")),
+                _ => Err(format!("missing requirement: {query:?} = {v:?}")),
+            };
+        }
         if let Query::Holds { who: Binding::Target, at_least } = query {
             let id = target.ok_or_else(|| "target is required".to_owned())?;
             let holdings = self.books_at_start(id).ok_or_else(|| "body missing".to_owned())?;

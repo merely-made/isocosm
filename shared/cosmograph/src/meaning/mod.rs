@@ -242,6 +242,8 @@ pub(crate) fn read(q: &Query, s: &Scene) -> Result<(bool, String)> {
             return Err("project query requires its native simulation".into()),
         Query::Members { .. } | Query::MembersBelow { .. } =>
             return Err("a count of members requires its native simulation".into()),
+        Query::Sensed { .. } =>
+            return Err("a sense reading requires its native simulation".into()),
         Query::Alive(Binding::Part) => {
             let v = s.part_lives()?;
             (v, v.to_string())
