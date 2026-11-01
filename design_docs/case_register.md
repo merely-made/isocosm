@@ -814,7 +814,7 @@ three design docs that cite it. The record holds the words.
 | 1060 | Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller. | [session network](2026-10-28_session_network_plan.md) |
 | 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | none |
 | 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | none |
+| 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 
 ## Naming
 

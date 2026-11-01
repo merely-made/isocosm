@@ -11829,6 +11829,12 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       body's size rather than a fixed count.
 
       Links: area The VTT · draws on 1063, 1020, record.6 · summary Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size.
+      *Built how* (Mark, 2026-11-01, each as recommended): a native wound
+      lands on one part, so a body-wide share severed parts; the cells a
+      Wound costs scale with the body's typical part (share times cells over
+      parts), and Pathfinder 2e's critical and dying wounds follow the same
+      rule; a history line's time is declared in native world ticks, and the
+      chronicle export carries negative times rather than clamping them.
 
 1070. **Time scales per game: life history in world time, a tick unit per
       product, and a real-time rate per game.** Ruled by Mark on 2026-11-01
