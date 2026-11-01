@@ -19,25 +19,7 @@ pub struct TableMetadata {
     pub party_resources: BTreeMap<String, BTreeMap<String, i64>>,
 }
 
-/// The editions a campaign may be founded under, by system key; the ruleset
-/// adapter admits each.
-pub const EDITIONS: [&str; 2] = ["5e-srd", "pf2e-srd"];
-
-/// What the table calls an edition key.
-pub fn edition_label(edition: &str) -> &'static str {
-    match edition {
-        "pf2e-srd" => "Pathfinder 2e Player Core (Remaster)",
-        _ => "D&D SRD 5.1",
-    }
-}
-
-pub fn default_edition() -> String {
-    EDITIONS[0].into()
-}
-
-pub fn is_default_edition(edition: &String) -> bool {
-    edition == EDITIONS[0]
-}
+use super::editions::{PackSet, default_edition, is_default_edition};
 
 /// Authored offers and map proposals; asserted nouns live only in native history.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -50,11 +32,11 @@ pub struct Content {
     pub starting_map: String,
     pub final_storylet: String,
     pub table: TableMetadata,
-    /// The edition the campaign is founded under (case 1029): a system key
-    /// the ruleset adapter admits. Absent in older saves, which are 5e.
+    /// The edition and packs the campaign is founded on (cases 1029, 1064,
+    /// 1067). Absent in older saves, which are 5e; a bare key is unpinned.
     #[serde(default = "default_edition",
         skip_serializing_if = "is_default_edition")]
-    pub edition: String,
+    pub edition: PackSet,
 }
 
 impl Content {
@@ -79,9 +61,7 @@ impl Content {
     pub fn validate(&self) -> Result<(), FoundingError> {
         let invalid = |reason: String| FoundingError::Content(reason);
         if self.id.trim().is_empty() { return Err(invalid("missing campaign id".into())); }
-        if !EDITIONS.contains(&self.edition.as_str()) {
-            return Err(invalid(format!("unknown edition {}", self.edition)));
-        }
+        self.edition.validate().map_err(invalid)?;
         let mut ids = BTreeSet::new();
         for map in &self.maps {
             if !ids.insert(map.map.id.as_str()) {

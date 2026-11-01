@@ -1,0 +1,27 @@
+# Pathfinder 2e Player Core (Remaster) as an edition pack (cases 1064, 1067).
+# Creation records checked against foundryvtt/pf2e Remaster ORC records
+# (case 1016); summaries are original. The adapter's rules stay compiled.
+format = 1
+id = "pf2e-srd"
+name = "Pathfinder 2e Player Core (Remaster)"
+version = "1"
+license = "LicenseRef-ORC"
+credit = "Pathfinder Player Core, Copyright 2023 Paizo Inc.; Open RPG Creative License: https://paizo.com/orclicense. Pathfinder is a trademark of Paizo Inc."
+
+[edition]
+system = "pf2e-srd"
+subsystems = ["pf2e-srd"]
+
+# Read in this order by the creation records loader.
+[edition.records]
+creation = [
+    "ancestries.toml",
+    "backgrounds.toml",
+    "classes.toml",
+    "feats.toml",
+    "general.toml",
+    "skills.toml",
+    "equipment.toml",
+    "steps.toml",
+]
+effects = ["effects.toml"]

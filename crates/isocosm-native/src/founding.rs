@@ -16,11 +16,14 @@ pub use setup::{Setup, MaterialProfile};
 mod publication;
 pub use publication::{NativeCursor, NativeWorld};
 mod content;
+mod editions;
+pub mod subsystems;
 mod generation;
 mod table;
 mod quickstart;
 pub use quickstart::quickstart_draft;
-pub use content::{Content, EDITIONS, TableMetadata, default_edition, edition_label, is_default_edition};
+pub use content::{Content, TableMetadata};
+pub use editions::{PackSet, default_edition, edition_label, edition_pack, editions, is_default_edition};
 pub use generation::GenerationOrigin;
 
 /// The VTT's declared vocabulary; other kinds remain the caller's founding choice.
@@ -116,10 +119,17 @@ impl Campaign {
             origin: self.origin.clone() }
     }
 
-    /// Found the campaign under `edition` (case 1029), a key in [`EDITIONS`].
+    /// Found the campaign under `edition` (case 1029), one of [`editions`],
+    /// pinning its bundled pack (case 1067).
     pub fn with_edition(&self, edition: &str) -> Result<Self, FoundingError> {
+        let set = PackSet::bundled(edition).map_err(FoundingError::Content)?;
+        self.with_packs(set)
+    }
+
+    /// Found the campaign on a pack set: an edition and the packs it plays.
+    pub fn with_packs(&self, set: PackSet) -> Result<Self, FoundingError> {
         let mut content = self.content.clone();
-        content.edition = edition.to_owned();
+        content.edition = set;
         content.validate()?;
         Ok(Self { content, ..self.clone() })
     }

@@ -86,11 +86,9 @@ struct Pack {
 impl Definitions {
     pub fn builtin() -> Result<Self, String> {
         let mut entries = BTreeMap::new();
-        for source in [
-            include_str!("../../data/effects/dnd5.toml"),
-            include_str!("../../data/effects/pf2.toml"),
-            include_str!("../../data/effects/ars5.toml"),
-        ] {
+        // Every bundled edition pack's procedures (cases 1064, 1067).
+        let packs = isocosm_campaign::bundled()?;
+        for source in packs.iter().flat_map(|pack| pack.records("effects")) {
             let pack: Pack =
                 toml::from_str(source).map_err(|e| format!("effect procedures: {e}"))?;
             if pack.version != 1 {

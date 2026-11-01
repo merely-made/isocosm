@@ -5333,6 +5333,13 @@ area = "Licensing and sources"
 summary = "Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin."
 draws_on = ["1044", "1059", "1064", "licensing.3"]
 
+[cases."1068"]
+title = "Pack transfer waits for the identity work; a stale pin refuses until repinned; an edition's unit of time is the `time` decision point"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Licensing and sources"
+summary = "Pack transfer follows the identity work; stale pins refuse until an explicit repin; `time` is the decision point for an edition's unit of time."
+draws_on = ["1064", "1067", "method.8", "vtt.6"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

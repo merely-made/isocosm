@@ -13,7 +13,7 @@ isocosm-core = { workspace = true }
 isocosm-campaign = { workspace = true }
 cosmograph = { workspace = true }
 serde = { workspace = true }
-# Parses the vendored SRD content packs (data/*.json) at load.
+# Sheets, saves and generator records; the SRD lists now load from packs/ as TOML.
 serde_json = { workspace = true }
 toml = "1"
 # Pure-Rust Lua VM: the system-plugin scripting engine, sandboxed

@@ -1,6 +1,6 @@
-//! The SRD bestiary: monsters as content, loaded from the vendored pack.
+//! The SRD bestiary: monsters as content, loaded from the bundled `5e-srd` edition pack.
 //!
-//! The data in `../data/monsters.json` is the SRD 5.1 bestiary transformed
+//! The bundled `5e-srd` pack's `monsters` records are the SRD 5.1 bestiary transformed
 //! from 5e-database into this trimmed shape (P2b). Used under CC-BY-4.0 with
 //! attribution (bootstrap decision #7). The `sprite` key ties a monster to a
 //! voxel appearance, so spawning drops a baked token onto the board.
@@ -60,9 +60,9 @@ impl Monster {
     }
 }
 
-/// The SRD bestiary, vendored from 5e-database (SRD 5.1, CC-BY-4.0).
+/// The SRD bestiary from the bundled `5e-srd` pack, transformed from 5e-database (SRD 5.1, CC-BY-4.0).
 pub fn srd_bestiary() -> Vec<Monster> {
-    serde_json::from_str(include_str!("../data/monsters.json")).unwrap_or_default()
+    crate::items::srd_records("monsters")
 }
 
 #[cfg(test)]

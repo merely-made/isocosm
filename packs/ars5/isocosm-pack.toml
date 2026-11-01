@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# Ars Magica Fifth Edition's adapted records (cases 1064, 1067). Not yet a
+# playable edition: it declares no system or subsystems, and carries the three
+# F11 effect procedures. Source checked against the reviewed Definitive core in
+# OriginalMadman/Ars-Magica-Open-License; summaries and fields are original.
+format = 1
+id = "ars5"
+name = "Ars Magica Fifth Edition"
+version = "1"
+license = "CC-BY-SA-4.0"
+credit = "Based on the material for Ars Magica, copyright 1993-2024, licensed by Trident, Inc. d/b/a Atlas Games under https://creativecommons.org/licenses/by-sa/4.0/. Ars Magica and Mythic Europe are trademarks of Trident, Inc., used with permission."
+
+[edition.records]
+effects = ["effects.toml"]

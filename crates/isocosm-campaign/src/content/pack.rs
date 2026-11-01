@@ -49,6 +49,9 @@ pub struct ContentPackManifest {
     /// panel lists beside the ones the sim carries.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub quickstarts: Vec<QuickstartEntry>,
+    /// An edition's records and the subsystems it declares (cases 1064, 1067).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub edition: Option<crate::EditionSection>,
 }
 
 /// One quick-start world's datasheet, relative to the pack root.
@@ -196,6 +199,12 @@ impl ContentPackManifest {
         if let Some(entry) = self.quickstarts.iter().find(|q| !is_pack_path(&q.file)) {
             return Err(ContentPackError::UnsafePath(entry.file.clone()));
         }
+        if let Some(edition) = &self.edition {
+            let files = edition.records.values().flatten();
+            if let Some(file) = files.into_iter().find(|f| !is_pack_path(f)) {
+                return Err(ContentPackError::UnsafePath(file.clone()));
+            }
+        }
         Ok(())
     }
 
@@ -331,6 +340,7 @@ mod tests {
             credit: None,
             choreography: Vec::new(),
             quickstarts: Vec::new(),
+            edition: None,
             generators: vec![GeneratorEntry {
                 id: "forge_item".to_owned(),
                 name: "Forge item".to_owned(),

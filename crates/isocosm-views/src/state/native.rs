@@ -49,7 +49,7 @@ pub struct NativeUi {
     pub profile_path: TextInput,
     pub attachment_path: TextInput,
     /// The edition the campaign will be founded under (case 1029); empty
-    /// until chosen, then a key in `isocosm_native::founding::EDITIONS`.
+    /// until chosen, then one of `isocosm_native::founding::editions()`.
     pub edition: String,
     pub preview_request: bool,
     pub selection: Option<Selection>,
@@ -196,7 +196,7 @@ impl super::UiState {
     pub fn choose_edition(&mut self, edition: &str) {
         if !self.can_edit_inventory { self.status = "the edition is chosen by the host".into(); return; }
         if self.native.world.is_some() { self.status = "this campaign is already founded".into(); return; }
-        if !isocosm_native::founding::EDITIONS.contains(&edition) { self.status = format!("unknown edition {edition}"); return; }
+        if !isocosm_native::founding::editions().contains(&edition) { self.status = format!("unknown edition {edition}"); return; }
         self.native.edition = edition.to_owned();
         self.status = format!("the campaign will be founded under {}", isocosm_native::founding::edition_label(edition));
     }

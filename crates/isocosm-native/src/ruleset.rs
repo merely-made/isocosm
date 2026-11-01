@@ -16,7 +16,7 @@ pub(crate) mod pathfinder;
 pub const SECTION: &str = "isocosm-native:edition";
 const CAMPAIGN: &str = "isocosm-native:campaign";
 
-pub use crate::founding::{EDITIONS, default_edition};
+pub use crate::founding::{PackSet, default_edition, editions};
 
 /// The edition the campaign was founded under (case 1029); a world with no
 /// campaign record plays the 5e adapter it always has.
@@ -28,17 +28,18 @@ pub fn edition(sections: &BTreeMap<String, Vec<u8>>) -> Result<String, String> {
     #[derive(Deserialize)]
     struct Founding {
         #[serde(default = "default_edition")]
-        edition: String,
+        edition: PackSet,
     }
     let Some(bytes) = sections.get(CAMPAIGN) else {
         return Ok(default_edition());
     };
     let founded: Founded =
         serde_json::from_slice(bytes).map_err(|e| format!("campaign founding: {e}"))?;
-    if !EDITIONS.contains(&founded.content.edition.as_str()) {
-        return Err(format!("unknown edition {}", founded.content.edition));
+    let edition = founded.content.edition.edition;
+    if !editions().contains(&edition.as_str()) {
+        return Err(format!("unknown edition {edition}"));
     }
-    Ok(founded.content.edition)
+    Ok(edition)
 }
 
 pub use crate::founding::edition_label as label;

@@ -360,21 +360,17 @@ pub struct Records {
     pub steps: BTreeMap<String, String>,
 }
 
-const SOURCES: [&str; 8] = [
-    include_str!("../../data/pf2e/ancestries.toml"),
-    include_str!("../../data/pf2e/backgrounds.toml"),
-    include_str!("../../data/pf2e/classes.toml"),
-    include_str!("../../data/pf2e/feats.toml"),
-    include_str!("../../data/pf2e/general.toml"),
-    include_str!("../../data/pf2e/skills.toml"),
-    include_str!("../../data/pf2e/equipment.toml"),
-    include_str!("../../data/pf2e/steps.toml"),
-];
+/// The pack whose `creation` records this adapter reads (case 1064).
+pub const PACK: &str = "pf2e-srd";
 
-/// The built-in slice, parsed and checked once.
+/// The bundled slice, parsed and checked once.
 pub fn builtin() -> &'static Records {
     static RECORDS: OnceLock<Records> = OnceLock::new();
-    RECORDS.get_or_init(|| Records::parse(&SOURCES).expect("built-in Pathfinder 2e records load"))
+    RECORDS.get_or_init(|| {
+        isocosm_campaign::bundled_records(PACK, "creation")
+            .and_then(|sources| Records::parse(&sources))
+            .expect("bundled Pathfinder 2e records load")
+    })
 }
 
 fn source_ok(name: &str, source: &Source) -> Result<(), String> {

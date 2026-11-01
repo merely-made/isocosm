@@ -14,6 +14,7 @@
 
 mod chronicle;
 mod construction;
+mod edition;
 mod fact;
 mod generator;
 mod item;
@@ -26,6 +27,9 @@ pub use chronicle::{
     Arrival, CHRONICLE_SCHEMA, Chronicle, ChronicleError, Deed, LOST_PART, PartOrigin, VESSEL,
 };
 pub use construction::{CONSTRUCTION_SCHEMA, ConstructionError, ConstructionProposal};
+pub use edition::{
+    EditionPack, EditionSection, PackPin, bundled, bundled_pack, bundled_records, bundled_root,
+};
 pub use fact::{RevealCondition, SecretFact, Visibility, WorldFact};
 pub use generator::{
     CastRoleRequest, EntropyTape, GenValue, GenValueError, GenerationRecord, GenerationRecordError,

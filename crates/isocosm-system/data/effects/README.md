@@ -8,6 +8,9 @@ Nine experimental VTT procedures, selected under functional-generation D1:
 | Pathfinder 2e Player Core, Remaster | Darkvision | Enlarge | Runic Weapon |
 | Ars Magica Definitive Fifth Edition | Eyes of the Cat | Preternatural Growth and Shrinking | Edge of the Razor |
 
+The procedure records ship in the bundled edition packs, each pack's
+`effects` records (`packs/*/effects.toml`, cases 1064 and 1067).
+
 Run `cargo run -p isocosm-system --example cast_effects` from the repository
 root. It executes all nine on an authored board, serializes/restores the map,
 suppresses/resumes each change, and advances through its actual expiry. The
@@ -104,10 +107,10 @@ Sources and licences:
   Based on the System Reference Document 5.1 by Wizards of the Coast LLC,
   licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
   The adaptation uses original summaries and executable fields.
-- Player Core Remaster mechanics in `pf2.toml`: ORC licensed, Paizo Inc.
+- Player Core Remaster mechanics in `packs/pf2e-srd/effects.toml`: ORC licensed, Paizo Inc.
   The [PF2e system's spell records](https://github.com/foundryvtt/pf2e/tree/v14-dev/packs/pf2e/spells)
   supplied the source checks: rank-2 Darkvision and Enlarge, rank-1 Runic Weapon.
-  Character creation records in `../pf2e/` (ancestries, heritages,
+  Character creation records in `packs/pf2e-srd/` (ancestries, heritages,
   backgrounds, classes, feats) follow the same rule (case 1016): each was
   checked against a foundryvtt/pf2e record whose publication is a Remaster
   book under the ORC licence, and the loader refuses any record that does
@@ -117,7 +120,7 @@ Sources and licences:
 - [Atlas's open Ars Magica text](https://www.atlas-games.com/arsmagica/openars):
   reviewed Definitive core, Git blob `41860c6a10eedc246c730ca485bed6927060ced9`
   in [OriginalMadman/Ars-Magica-Open-License](https://github.com/OriginalMadman/Ars-Magica-Open-License).
-  `ars5.toml` adapts these mechanics into executable fields and original
+  `packs/ars5/effects.toml` adapts these mechanics into executable fields and original
   descriptions under CC BY-SA 4.0. No illustrations or layout are included.
 
 Based on the material for Ars Magica, ©1993–2024, licensed by Trident, Inc.
