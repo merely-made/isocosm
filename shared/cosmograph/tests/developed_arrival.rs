@@ -32,7 +32,7 @@ fn world(stores: u32) -> Session {
         segments: 1, segment: "kind:arrival-root".into(), bears: None, per_segment: 0,
         parent: None, anchor: Anchor::Base, facing: Facing::Back, socket: Facing::Right, variance: None,
     }], variance: 0, absence: [0,1], riff: [0,1], vary: [0,1] };
-    g.lineages.insert(LINE.into(), Lineage { parent: None, revision: 1,
+    g.lineages.insert(LINE.into(), Lineage { parent: None, revision: 1, policy: None,
         kingdom: "kingdom:fauna".into(), traits: Default::default(),
         development: Some(Development { lexicon: recipe.kinds(), recipe, policy: Policy::default(),
             domain: 0, clutch: 1, anamorphic: false, tracts: vec![], systems: Default::default() }),
