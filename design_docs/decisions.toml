@@ -5726,6 +5726,13 @@ area = "World generation"
 summary = "Generated consumer founders carry living sense tissue, so an ordinary played critter can detect remote food."
 plans = ["bodies"]
 
+[decisions."sim-execution D47"]
+title = "the hungry starter is nudged to travel (2026-11-01), applies Method 4"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "physical_swing's hungry starter is nudged to travel at a sway that outweighs a meal, rather than left to choose travel on its seed."
+draws_on = ["1057", "sim-execution D18", "sim-execution D43"]
+
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
 source = "mesocosm/design_docs/2026-10-28_wing_organs_plan.md"

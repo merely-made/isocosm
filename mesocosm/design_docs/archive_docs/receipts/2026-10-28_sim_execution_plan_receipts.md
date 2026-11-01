@@ -156,3 +156,23 @@ site 0 at tick 12, so the test's departure check fails too (12 ticks, 265 s,
 debug). Its fixture unpaced, as Mark's group-1 answer to the runtime triage
 asks ("Fix replay, unpace where allowed"): the file's three tests pass in
 255 s (`cargo test -p mesocosm-runtime --test physical_swing`, debug).
+
+## physical_swing after case 1057, 2026-11-01 (D47)
+
+`unchosen_hungry_starter_can_take_a_supported_food_step`, unpaced, debug,
+failed its departure check after `df93c8ba` merged case 1057: the critter
+was still at site 0 after eight ticks. Bisected: it fails at `ca54c521`
+(1057) and passes at its parent `75612a3c`, whose critter departs at tick 8
+for site 3 (`move:0-3`). The critter's choices, printed per consideration:
+at `75612a3c` its foraging wait fell to 0 in tick 8's last consideration
+and the moves `move:0-1`, `move:0-2`, `move:0-3` tied at 0; at `df93c8ba`
+the wait stayed 1100 through tick 8 and it chose `ecology:feed-1` at tick
+9. It was still resident at tick 14, where a birth question holds the run.
+The members travelling matched tick for tick through tick 8 (2, 7, 7, 7,
+10, 10, 40). Traces: `Code/testing/isocosm/frame-tier-2026-10-28/traces/`
+`swing-1057-*.log`, `swing-choice-*.log`.
+
+A nudge toward site 1 after the food step at the default sway (1000, a
+fresh bond of 250, so 250): still resident at tick 8. At sway 5000: departs
+at tick 2 by site 1's border (`side: 1`), the old pose withdrawn; 54 s.
+With D47 built, `physical_swing`'s three tests pass in 65 s.

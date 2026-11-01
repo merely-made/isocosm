@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MPL-2.0
 //! Ordinary unchosen regression, without changing needs, terrain or anatomy.
 use cosmograph::spatial::{Pose, embodiment as body};
+use cosmograph_overlay::mesocosm::{MesocosmIntent, Nudge, NudgeMeaning, NudgeTarget};
+use cosmograph_overlay::{EntityHandle, PlaceHandle};
 use std::collections::{BTreeMap, BTreeSet};
 use isometer_space::places::Places;
 use mesocosm_runtime::{Founded, Runtime};
@@ -20,6 +22,9 @@ fn ordinary(seed: u64, proportions: bool) -> Runtime {
     for l in founded.genesis.lineages.values_mut() {
         l.decides = None;
     }
+    // A nudge outweighs a meal at a fresh bond (D47): 5000 x 250 / 1000 is
+    // 1250 against feeding's 1110. Without a live nudge, sway does nothing.
+    founded.genesis.rules.directing.as_mut().unwrap().sway = 5000;
     founded.genesis.rules.epoch_ticks = 60;
     let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
     founded.genesis.rules.sun = Some(cosmograph::light::SunRules {
@@ -88,14 +93,29 @@ fn unchosen_hungry_starter_can_take_a_supported_food_step() {
         )),
         "hungry starter should take an admitted food step"
     );
-    runtime.step(7);
+    // Nudged toward a neighbouring site, it travels (D47). The old site's
+    // historical pose must withdraw on departure, rather than masquerading as
+    // another failed gait.
+    let id = runtime.critter().unwrap();
+    let to = {
+        let sim = runtime.sim();
+        let site = sim.state().population.get(id).unwrap().resident_site().unwrap();
+        sim.state().sites[&site].routes[0].to
+    };
+    let nudge = Nudge { entity: EntityHandle(id), target: NudgeTarget::Place(PlaceHandle(to)),
+        meaning: NudgeMeaning::Attend };
+    runtime.offer(MesocosmIntent::Nudge(nudge)).unwrap();
+    for _ in 0..4 {
+        runtime.step(1);
+        let resident = runtime.sim().state().population.get(id).unwrap().resident_site();
+        if resident != Some(runtime.spatial().members[&id].site.0) {
+            break;
+        }
+    }
     let sim = runtime.sim();
     let game = runtime.spatial();
-    let id = runtime.critter().unwrap();
     let e = sim.state().population.get(id).unwrap();
     assert!(e.alive && e.body.is_some());
-    // It later chooses native travel. The old site's historical pose must
-    // withdraw on departure, rather than masquerading as another failed gait.
     assert_ne!(e.resident_site(), Some(game.members[&id].site.0));
     assert!(game.members[&id].realized(&sim).is_err());
 }

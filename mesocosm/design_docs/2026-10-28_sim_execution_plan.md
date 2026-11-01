@@ -458,6 +458,19 @@ each title names its outcome against the doctrine.
 
   Links: area World generation · plans bodies · summary Generated consumer founders carry living sense tissue, so an ordinary played critter can detect remote food.
 
+- **D47, the hungry starter is nudged to travel (2026-11-01), applies
+  Method 4:** "Nudge it to travel (Recommended)", then "Raise the
+  fixture's sway (Recommended)". `physical_swing`'s hungry-starter test
+  checked that its critter, unchosen, travels by tick 8 and that its old
+  site's pose withdraws. Under case 1057 its food stayed in reach and it
+  ate instead of leaving (Findings, 2026-11-01). After its food step the
+  test now nudges it toward a neighbouring site. A nudge's sway at a fresh
+  bond was 250 against a meal's 1110, so the fixture's sway is 5000 (a
+  nudge of 1250); without a live nudge sway does nothing. Asked when the
+  test failed after the 1057 merge.
+
+  Links: area Method and documents · draws on 1057, sim-execution D18, sim-execution D43 · summary physical_swing's hungry starter is nudged to travel at a sway that outweighs a meal, rather than left to choose travel on its seed.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -610,6 +623,7 @@ rollback check (`journal.rs:66`) gets a form that does not clone the world.
 - 2026-10-30: Under D19's pacing a Grouped world's saves could fail to replay (`Session::load`, `history.rs:282`), first seen in the 879 offer fixture's world with its joint witness lengthened past the played critter's first paced choice. `decides()` (`schedule/mod.rs`) offsets a cohort's choices by its first identity, and `restrict` regroups cohorts only at an advance's end, so the same ticks advanced singly or in one span grouped members differently and chose on different ticks; `replay_until` advances in spans where nothing was recorded. Individuals and unpaced worlds were unaffected; the head plays Individuals, and placed play records an entry every tick, so ordinary saves replayed. Fixed by D41.
 - 2026-10-31: Case 1057's cause: a torus two sites high joins each pair of rows by two routes (`map/grid.rs`), and `Templates::declare` made one crossing per route at the destination's first stand, so the A1 witness's v1 profile held two arrivals for one (actor, from, to) and `Profile::validate` refused the world ("arrival input has duplicate or absent native actor/route/destination"), about one seed in three (seeds 1793482854536437400 and 1 among them). The second route's move act was also lost: generated moves were named `move:{site}-{to}`, so the later route's process overwrote the earlier. Native travel took the first route to a destination and recorded no route. The check entered at `39a597c9`.
 - 2026-10-31: `spatial_clock`'s two birth tests failed from `a3051e84` (D19): their played fixture's producer lineage decides every 10 ticks, so no birth is asked for on the first tick, the only one they read. Mark chose to keep the pacing and advance to the first birth ("Advance to the first birth"): both tests now step the world until its clock first asks for one (tick 8, capped at 64) and compare from there.
+- 2026-11-01: Case 1057 moved `physical_swing`'s hungry starter off travel. Before it (`75612a3c`) the critter's food went out of reach at tick 8 and a seeded tie among three moves sent it to site 3. With arrivals landing at the edge they entered by, other members stand near it, its food stays in reach, it eats at tick 9 and it is still resident at tick 14, where a birth question holds the run. Departure itself works: 40 others are travelling at tick 8 (D47).
 
 ## Progress
 - 2026-10-28: cut from `2026-10-19_sim_execution_plan.md` and the speed items of the sim host, sim, orthographic voxel presentation and foot placement plans.
@@ -634,3 +648,4 @@ rollback check (`journal.rs:66`) gets a form that does not clone the world.
 - 2026-10-30: D41 built (`Simulation::advance_to`, `Simulation::paced`): a paced Grouped span runs a tick at a time; `directing::choice_tests` holds a span against its ticks taken singly.
 - 2026-10-31: Case 1057 built (directional travel, all four forks as recommended): `Movement::Routed` for new worlds, older saves keep their semantics and hashes; `Journey::border`, `ArrivalRequest::border`, `Effect::Move`/`MovePaced` `via`; parallel routes' acts named `move:{site}-{to}-{side}`; v1 crossings carry their border and stand at the entering edge, repeats refused; the v6 habitat (`embodiment::ENTERING`, `place_entering`) lands a bordered arrival in the entering strip where a frame covers it, otherwise far (E5); Mesocosm's profile v7. Tests: `cosmograph/tests/border_arrivals_1057.rs`, `mesocosm-runtime/tests/border_arrival_1057.rs`.
 - 2026-10-31: D43 to D46 keyed, the runtime triage's answers of 2026-10-28. D43 to D45 built: `held()` and the foraging fixtures unpaced; the played 879 witness at ten ticks; the offered and held traces re-recorded, their hash not compared; `physical_play` on version four; the tampered-execution seal refused at its replay. `mesocosm-runtime`'s suite passes but for the ordinary A1 foraging test, owed by D46 (`bodies` BO18).
+- 2026-11-01: D47 built (`physical_swing`): the hungry starter is nudged to travel after its food step.
