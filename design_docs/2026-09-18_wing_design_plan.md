@@ -11680,6 +11680,64 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 753, 802 · summary Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site.
 
+1062. **A participant may play several characters.** Ruled by Mark on
+      2026-11-01, asked who makes an Ars troupe character's choices while no
+      one plays it: "One player, multiple character allowed. Important for
+      fights, the sort of authority a gm needs too (manage all manner of
+      character), and no matter the edition, you can play two+ characters."
+      Offered against an edition record of each character's owner and GMs
+      deciding. The reading: the sim's play relation allows a participant
+      several bodies at once, at the table under any edition, a GM managing
+      many the same way; each product sets its own limit, so Eponym's
+      guardrail that body switching is never a menu operation stands for
+      Eponym (the integration owner's reading, put to Mark with the record).
+
+      Links: area The VTT · draws on 153, 156, 1059, 1060, directing.3, vtt.2 · summary A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit.
+
+1063. **Ars Magica's first slice: magus and grog, study from a summa, every
+      wound reaches the body.** Ruled by Mark on 2026-11-01, each as
+      recommended ("Magus and grog; MuCo/MuTe learnable", "Every Ars wound
+      wounds the body", "Study from a summa", "Age from the body; covenant in
+      edition state", "Ars words, prefixed in fields"). The reading: Houses
+      Flambeau and Bonisagus, all fifteen Arts and eight Characteristics, the
+      core's Quick and Easy Virtues and Flaws and about twenty-two Abilities,
+      near seventy records; Muto Corpus and Muto Terram spells are learnable
+      and only the three working ones cast, the rest refused with a reason;
+      each Ars Wound issues a native wound graded by its level in the same
+      transaction, Dead kills, recovery rolls fall at native sunrise and
+      sunset, and native healing runs on its own; the first seasonal
+      activity is study from a summa, begun and completed across consented
+      downtime; Ars age is read off the native body and an aging Crisis
+      death kills it, the covenant living in edition state for now; Ars's
+      own words name fields under an `ars:` key.
+
+      Links: area The VTT · draws on 1018, 1020, 1029, vtt.5, vtt.6, naming.3 · summary Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state.
+
+1064. **An edition's records ship as a runtime pack; its rules code stays
+      original.** Ruled by Mark on 2026-11-01 (Mark: "Oh, wait, runtime pack?
+      Should we be doing that with all of these…?", then "Data in packs,
+      rules code stays"), replacing his answer for Ars a moment earlier
+      ("CC BY-SA data, crate licence says so"). The reading: each edition's
+      records (ancestries, Arts, Virtues, items, spells, effects) leave the
+      compiled crate for a bundled runtime pack declaring its licence and
+      credit, which the founding edition field selects; the adapters'
+      legality and derivation stay compiled as original MIT code reading
+      their numbers from the pack (1026); homebrew and modded editions are
+      packs like any other (1044). Then, asked which way allows mixing
+      rules that do not conflict (Mark: "Which would allow for mixing
+      nonconflicting rules?", "I'm ok with 1… but was there anything that
+      depended upon us making the rules into packs too?", then "Yes, reserve
+      it"): a campaign is founded on a set of packs, a primary edition and
+      others; rules are subsystems registered by key, each declaring the
+      decision points it governs (what a turn is, how a hit becomes a wound,
+      time's unit), so non-overlapping subsystems mix freely and an overlap
+      is refused at founding unless a named hybrid profile (VTT 5) settles
+      it; a subsystem may be compiled Rust or, reserved for later, a pack's
+      scripted `System`, the registry and conflict rule treating both alike,
+      so house rules and new editions can arrive as packs.
+
+      Links: area Licensing and sources · draws on 1026, 1044, licensing.1, licensing.3, vtt.5 · summary Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

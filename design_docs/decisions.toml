@@ -5284,6 +5284,34 @@ area = "The VTT"
 summary = "Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller."
 draws_on = ["1045", "1059", "vtt.2"]
 
+[cases."1061"]
+title = "Producers may move; a producer's young may land at a neighbouring site, carried by a medium; members at a site can be counted"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site."
+draws_on = ["753", "802"]
+
+[cases."1062"]
+title = "A participant may play several characters"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit."
+draws_on = ["153", "156", "1059", "1060", "directing.3", "vtt.2"]
+
+[cases."1063"]
+title = "Ars Magica's first slice: magus and grog, study from a summa, every wound reaches the body"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state."
+draws_on = ["1018", "1020", "1029", "naming.3", "vtt.5", "vtt.6"]
+
+[cases."1064"]
+title = "An edition's records ship as a runtime pack; its rules code stays original"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Licensing and sources"
+summary = "Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved."
+draws_on = ["1026", "1044", "licensing.1", "licensing.3", "vtt.5"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6011,8 +6039,8 @@ draws_on = ["914", "917"]
 title = "Licences follow the layer"
 source = "design_docs/doctrine.md"
 area = "Licensing and sources"
-summary = "Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0."
-draws_on = ["919"]
+summary = "Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0, edition records in packs carrying their own."
+draws_on = ["919", "1064"]
 
 [statements."mesocosm.1"]
 title = "What the player plays"
@@ -6593,7 +6621,7 @@ title = "Roles are traded seats; time at the table is consent"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes."
-draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "1029", "1030", "1059", "record.1"]
+draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "1029", "1030", "1059", "1062", "record.1"]
 
 [statements."vtt.3"]
 title = "A party is opt-in and grants no control"

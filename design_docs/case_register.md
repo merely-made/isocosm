@@ -82,7 +82,7 @@ three design docs that cite it. The record holds the words.
 | 2 | Three layers run in the background always: adapting ecology, adapting society, and polities and arcs that change the world if left unattended. (amended by 978) | [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 3 | One world, one clock, unbounded time; each game foregrounds an aspect while all background simming runs and relevant parts are pulled forward. | [games wing founding](2026-07-30_games_wing_founding.md), [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
 | 10 | Processes are choices under scarcity, plus agentless field processes and rung transitions as two further shapes; games add handles and verbs on the sim's verbs. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
-| 14 | A graph derived from the bricks, at the rung above them, drives processes; derived candidate locations are asserted when persisted. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
+| 14 | A graph derived from the bricks, at the rung above them, drives processes; derived candidate locations are asserted when persisted. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 28 | Water is salva; nondeterministic water is legitimate when a field directs it, since outcomes read the field, not particles. | [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
 | 32 | The sim's process definition is founded from Paredros's world-conditions schema with its stop rule lifted and Law A record fields added. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
 | 53 | Critters gather and hold by biology with limited capacity; sophonts carry gear; mechs are borgs holding pilots; any sophont, faction or polity can have possessions. | none |
@@ -252,6 +252,7 @@ three design docs that cite it. The record holds the words.
 | 983 | The site's light store holds a night: about 720 x 500 = 360,000 of full credit, so producers draw a reserve down in the dark. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 984 | The credit scales through a new Effect::Sunlight { who, account, full } resolved at staging into the transform it comes to. | none |
 | 1007 | A material's properties are its lineage's traits and its interactions are effects; what a thing is made of is a note; scarcity and provenance are ecological. | [DOC README](DOC_README.md) |
+| 1061 | Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 
 ## Bodies and anatomy
 
@@ -710,7 +711,7 @@ three design docs that cite it. The record holds the words.
 | 677 | Overlay M2 is the families plan's Mesocosm share and keeps its own condition: the web stays alive in most draws. | none |
 | 682 | M3 plays a native generated lineage; the founders join when the bodies family and fork 9 land. | none |
 | 751 | A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there. | none |
-| 753 | After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available. | none |
+| 753 | After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 833 | Mesocosm owns and saves actual spatial state, bound to native body and terrain revisions; missing or stale inputs refuse. | none |
 | 841 | Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 842 | Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
@@ -808,6 +809,8 @@ three design docs that cite it. The record holds the words.
 | 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1059 | Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent. | [session network](2026-10-28_session_network_plan.md) |
 | 1060 | Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller. | [session network](2026-10-28_session_network_plan.md) |
+| 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | none |
+| 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | none |
 
 ## Naming
 
@@ -840,6 +843,7 @@ three design docs that cite it. The record holds the words.
 | 917 | The crates aim to be published, not only publishable in principle. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 919 | isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 1016 | Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields. | none |
+| 1064 | Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved. | none |
 
 ## Method and documents
 

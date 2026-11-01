@@ -1969,8 +1969,8 @@ authored content is native moved to Schema 1, and the table's own vocabulary
 
 GM, player and host are authorities over a shared world state that people
 hold, trade and share: any number may hold the GM seat or none, a GM may play
-characters beside the unclaimed, and the seat controlling a body drafts its
-character. A campaign's edition and world configuration are chosen at its
+characters beside the unclaimed, a participant may play several bodies at
+once, and the seat controlling a body drafts its character. A campaign's edition and world configuration are chosen at its
 founding. Downtime advances the world's time, a domain where order matters
 (Record 1), and needs consent: every bound player holds it, disconnected
 players included, and only a player can release their own hold, which covers
@@ -1983,7 +1983,7 @@ player, the sim's hooks arriving as proposals), a recognition vote standing
 behind it as gathered consent; claiming the GM seat needs the consent of the
 GMs seated, or of the table when none is.
 
-Links: draws on 156, 245, 246, 851, 852, 855, 856, 860, 1029, 1030, 1059, record.1 · summary GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes.
+Links: draws on 156, 245, 246, 851, 852, 855, 856, 860, 1029, 1030, 1059, 1062, record.1 · summary GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes.
 
 *Refined 2026-10-31 from case 1059 (Mark: "1, with 3 as fallback/consensus
 mechanism like downtime", "Needs consent").*
@@ -2150,12 +2150,14 @@ Eponym, the shared wing crates and their promoted library crates are
 MPL-2.0; the only exception route is the fork/vendor criterion in mere's
 license posture brief (`mere/design_docs/2026-08-22_license_posture_brief.md`).
 Original assets are CC BY-SA 4.0 with an attribution entry; imported assets
-keep their own licences and are recorded. Code that moves between layers
+keep their own licences and are recorded. An edition's records ship as a
+runtime pack declaring its own licence and credit, the rules code reading
+them staying original. Code that moves between layers
 takes the destination's licence, relicensed by its author. Each product's
 `LICENSES.md` is the grant itself (`../mesocosm/LICENSES.md`,
 `../eponym/LICENSES.md`, the 2026-09-03 ruling recorded in Mesocosm's).
 
-Links: draws on 919 · summary Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0.
+Links: draws on 919, 1064 · summary Licences follow the layer: the VTT MIT OR Apache-2.0, the games and shared crates MPL-2.0, assets CC BY-SA 4.0, edition records in packs carrying their own.
 
 *Reviewed 2026-10-21, new. Mark, asked whether to cite CLAUDE.md here:
 "claude.md should be derived, not authoritative. idk, if there's important
