@@ -27,8 +27,10 @@ pub use game::{AdmissionBatch, GameBindings, submit_game, submit_game_as, submit
     submit_game_access_with_roster, submit_external_table_access};
 mod shared_roster;
 pub use shared_roster::SharedRosterInput;
+pub mod seats;
+pub use seats::{SeatAction, SeatInput, Seats};
 mod movement;
-pub use movement::submit_table;
+pub use movement::{seat_controls, submit_table};
 pub(crate) use movement::current_access;
 pub mod party;
 pub mod joint_journey;

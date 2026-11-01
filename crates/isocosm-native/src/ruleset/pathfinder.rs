@@ -1,7 +1,8 @@
 //! Pathfinder 2e at the table: creation as a saved draft (cases 1026, 1030)
 //! and ordinary play (`play`). The seat that controls the body drafts and
-//! plays its character; any controlling seat, a GM seat included, may
-//! discard an unfinished draft. Nothing here assumes a single GM.
+//! plays its character: its player, or a GM window for a body no one else
+//! plays (case 1059). The controller or any GM seat may discard an
+//! unfinished draft. Nothing here assumes a single GM.
 
 use super::*;
 use cosmograph_overlay::Seat;
@@ -108,7 +109,9 @@ pub(super) fn apply(
             )
         },
         Action::Discard(actor) => {
-            let id = authorize(session, access, *actor)?;
+            // Discarding is a GM edit as well as the controller's (case 1059).
+            let id = authorize(session, access, *actor)
+                .or_else(|refused| gm(access).map_err(|_| refused).and_then(|()| token(*actor)))?;
             unfinished(state, map, id)?;
             state.drafts.remove(&id);
             format!("Character {actor}'s unfinished draft was discarded")

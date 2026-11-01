@@ -148,8 +148,8 @@ pub fn submit_time(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess,
     let mut candidate = session.clone();
     let accepted = match intent {
         TimeIntent::Downtime { ticks } => {
-            if access.seat != Seat::Dm || roster.players.contains(&access.participant.0) {
-                return Err("the distinct DM declares downtime; it is not a player's consent".into());
+            if access.seat != Seat::Dm {
+                return Err("a GM window declares downtime; a player's window gives consent".into());
             }
             let declaration = Declaration { proposer:access.participant.0, tick:envelope.tick.0,
                 ticks:*ticks, roster:roster.clone() };
@@ -168,9 +168,6 @@ pub fn submit_time(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess,
             let mut proposal = bindings.downtime().get(&key).ok_or("event is not a recorded downtime proposal")?.clone();
             if proposal.completed.is_some() { return Err("downtime already completed".into()); }
             proposal.require_current(envelope.tick.0, roster)?;
-            if roster.players.contains(&proposal.declaration.proposer) {
-                return Err("the proposing DM is distinct from consenting players".into());
-            }
             let record = Record::Consented { participant:access.participant.0, proposal:key.clone(),
                 event:*downtime, roster:roster.clone() };
             proposal.consents.push(Consent { participant:access.participant.0, roster:roster.clone(),
@@ -190,8 +187,8 @@ pub fn submit_time(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess,
                 else { "your hold is taken back; accepted yeses remain" }).into()
         },
         TimeIntent::Advance { downtime } => {
-            if access.seat != Seat::Dm || roster.players.contains(&access.participant.0) {
-                return Err("only the distinct DM may choose a ready downtime".into());
+            if access.seat != Seat::Dm {
+                return Err("only a GM window may choose a ready downtime".into());
             }
             let key = key_for_handle(candidate.sim.state().events.keys().map(String::as_str), downtime.0)
                 .ok_or("downtime handle has no unique actual native event")?.to_owned();

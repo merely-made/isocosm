@@ -12,12 +12,11 @@ pub(super) fn apply(
     action: &Action,
     payload: &[u8],
 ) -> Result<(String, Vec<RollRecord>), String> {
-    use frame::{authorize, dm};
+    use frame::{authorize, dm, edit};
     let mut rolls = Vec::new();
     let note = match action {
         Action::Create(id) => {
-            dm(access)?;
-            authorize(session, access, *id)?;
+            edit(session, access, *id)?;
             let token = token(*id)?;
             if map.sheets.contains_key(&token) {
                 return Err("character already has an edition sheet".into());
@@ -46,8 +45,7 @@ pub(super) fn apply(
             field,
             delta,
         } => {
-            dm(access)?;
-            let id = authorize(session, access, *actor)?;
+            let id = edit(session, access, *actor)?;
             let allowed = srd_5e()
                 .fields
                 .iter()
@@ -74,8 +72,7 @@ pub(super) fn apply(
             format!("DM adjusted {actor} {field} by {delta:+}")
         },
         Action::Learn(actor) => {
-            dm(access)?;
-            let id = authorize(session, access, *actor)?;
+            let id = edit(session, access, *actor)?;
             map.sheets
                 .get_mut(&id)
                 .ok_or("no edition sheet")?
@@ -84,8 +81,7 @@ pub(super) fn apply(
             format!("DM granted Magic Weapon to {actor}")
         },
         Action::Give { actor, template } => {
-            dm(access)?;
-            let id = authorize(session, access, *actor)?;
+            let id = edit(session, access, *actor)?;
             if !["longsword", "club"].contains(&template.as_str()) {
                 return Err("this tranche supports one-handed longsword and club attacks".into());
             }

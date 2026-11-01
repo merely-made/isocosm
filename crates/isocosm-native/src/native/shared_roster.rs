@@ -30,9 +30,9 @@ pub(super) fn submit(session: &Session, game: Vec<u8>, access: OrdinaryAccess,
     if input.version != 1 || input.expected_roster_revision != bindings.roster_revision() {
         return Err("shared table roster input has another version or a stale accepted revision".into());
     }
-    if input.players.contains(&access.participant.0) || input.players.iter().any(|id|
+    if input.players.iter().any(|id|
         !session.sim.state().population.get(*id).is_some_and(cosmograph::directing::is_participant)) {
-        return Err("shared table players must be declared native participants distinct from this DM".into());
+        return Err("shared table players must be declared native participants".into());
     }
     if bindings.shared_players() == Some(&input.players) {
         return Ok(("shared table player roster unchanged".into(), game));

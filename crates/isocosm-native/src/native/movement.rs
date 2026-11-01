@@ -25,6 +25,21 @@ pub(crate) fn current_access(session: &Session, access: OrdinaryAccess) -> Resul
     Ok(())
 }
 
+/// Body control stays with who plays the body (case 1059): a player window
+/// acts for its played body, a GM window for a body no one else plays.
+pub fn seat_controls(session: &Session, access: OrdinaryAccess, actor: u64) -> Result<(), String> {
+    match access.seat {
+        Seat::Player if session.sim.plays(access.participant.0) != Some(actor) =>
+            Err("a player window acts only for the character it plays".into()),
+        Seat::Dm if session.sim.state().relations.iter().any(|relation|
+            relation.kind == cosmograph::directing::PLAYS && relation.object == actor
+                && relation.subject != access.participant.0) =>
+            Err("a GM window acts only for a character no one else plays".into()),
+        Seat::CreativeObserver => Err("creative observation admits no table action".into()),
+        _ => Ok(()),
+    }
+}
+
 /// The trusted host supplies the ordinary seat cut; this function publishes
 /// native Patch entries and product positions together after the entire
 /// supplied batch accepts. There is no token-to-body or tile-to-cell inference.
@@ -48,17 +63,7 @@ pub fn submit_table(session: &mut Session, game: Vec<u8>, access: OrdinaryAccess
     let mut accepted = Vec::new();
     for (index, act) in batch.acts.iter().enumerate() {
         let actor = act.actor.0;
-        match access.seat {
-            Seat::Player if candidate.sim.plays(access.participant.0) != Some(actor) => {
-                return Err(format!("move {index}: a player may move only the character currently played"));
-            },
-            Seat::Dm if candidate.sim.state().relations.iter().any(|relation|
-                relation.kind == cosmograph::directing::PLAYS && relation.object == actor
-                    && relation.subject != access.participant.0) =>
-            { return Err(format!("move {index}: the DM may move only an unclaimed character")); },
-            Seat::CreativeObserver => return Err("creative observation admits no table movement".into()),
-            _ => {},
-        }
+        seat_controls(&candidate, access, actor).map_err(|reason| format!("move {index}: {reason}"))?;
         let (character, recipe) = bindings.characters().iter().find(|(_, recipe)| recipe.entity == actor)
             .ok_or_else(|| format!("move {index}: actor has no admitted character binding"))?;
         let character = character.clone();

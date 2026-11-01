@@ -1,7 +1,7 @@
 //! Edition state beside the native world, accepted only by its current host.
 //! No position, body, terrain or native custody is saved a second time here.
 use cosmograph::Session;
-use cosmograph_overlay::{EntityHandle, OrdinaryAccess, Seat};
+use cosmograph_overlay::{OrdinaryAccess, Seat};
 use isocosm_campaign::{Inventory, ItemId};
 use isocosm_core::{FieldValue, MapDocument, Rng, RollRecord, SheetData, TokenId};
 use isocosm_system::active_effects::{self as effects, Clock, Records};
@@ -290,8 +290,7 @@ pub fn clock(session: &Session) -> Clock {
 }
 
 pub fn controls(session: &Session, access: OrdinaryAccess, actor: u64) -> bool {
-    (access.seat == Seat::Dm
-        || access.seat == Seat::Player && access.subject == Some(EntityHandle(actor)))
+    crate::native::seat_controls(session, access, actor).is_ok()
         && session
             .sim
             .state()
@@ -332,6 +331,7 @@ pub fn apply(
     payload: &[u8],
 ) -> Result<(), String> {
     crate::native::current_access(session, access)?;
+    crate::native::seats::require_held(sections.get(crate::MODE).map_or(&[][..], Vec::as_slice), access)?;
     let edition = edition(sections)?;
     let mut state =
         State::read(sections)?.unwrap_or_else(|| State::new(session.sim.genesis().seed));

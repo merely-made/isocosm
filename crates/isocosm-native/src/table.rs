@@ -35,6 +35,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         let roster = game.shared_roster();
         let players = game.shared_players();
         let rostered = players.is_some_and(|p| p.contains(&participant));
+        super::table_seats::build(&mut built, cx, &game);
         let mut time_actions = Vec::new();
         let mut time_acts = Vec::new();
         if seat == Seat::Dm && players.is_some() {
@@ -66,7 +67,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             }
             let others = session.sim.state().population.groups.iter()
                 .filter(|(_, group)| cosmograph::directing::is_participant(&group.entity))
-                .flat_map(|(first, group)| *first..*first + group.count).filter(|id| *id != participant);
+                .flat_map(|(first, group)| *first..*first + group.count);
             for player in others {
                 let bound = players.is_some_and(|p| p.contains(&player));
                 let label = format!("{} player {player}", if bound { "Unbind" } else { "Bind" });
