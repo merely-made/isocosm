@@ -530,7 +530,7 @@ with a conversion from the last, as earlier versions did. The journal's
 rollback check (`journal.rs:66`) gets a form that does not clone the world.
 - Done when: a world whose hot fields live in stores advances, saves and
   reloads to the same state in a unit test (D18).
-- Needs: D42; E4 alongside
+- Needs: D42; E4 alongside; the spatial costs of the 2026-10-31 finding gone first
 - Rulings: 482, 483, 600, D42
 
 ## Deferred and parked
@@ -545,6 +545,7 @@ rollback check (`journal.rs:66`) gets a form that does not clone the world.
 - **Threads against shards.** E2 (draws keyed by actor, tick and process) is cheap and unblocks both; E3 (parallel evaluation in a pass) pays where work is per individual but gives nothing on the web's one Worker, and much of that work may leave the tick (above); S6's shards (`sim` S6) serve a played region and the web as separate Workers, but the merge is undesigned. Recommendation (2026-10-31, not ruled): E2 now, with every lane keying new draws that way; E3 after movement's home is settled; S6 when a played world spans a region. Thread count never changes a result (Processes 7); default all cores natively, one on the web.
 
 ## Findings
+- 2026-10-31: A played tick on main is spatial work, not bookkeeping. Headless play (`mesocosm-genet --play --curve 20`, release, one seed, 67 to 94 members) took about 1.9 s a tick under `sample`. Route search for food (`foraging.route.search`, about 0.4 s a cold search), walking plans and resting bodies' settling took nearly all of it, with Places derived again on a geometry-cache miss (`site_geometry`, 0.6 to 2.8 s each, a few a tick). The rule interpreter (staged effects, `meaning`), account reads, schedule filing and digests together took under 3%. So interning account keys (E9's first step) buys nothing yet; D42's layout pays only once these costs are gone, and E9 waits for them. They are EX2's (cold route search), `place-graph-engine` PG7's (Places from the column rule) and the near-tier movement question's (route search and walking out of the tick).
 - 2026-10-28: E1c built (`schedule/filed/kept.rs`): the index is reconciled at each advance by each group's body handle and each site's conditions, rebuilt on other rules, movement mode or routes, dropped on a refused advance. A played tick now costs well under 978's premise of 0.45 s (receipts: `archive_docs/receipts/2026-10-28_sim_execution_plan_receipts.md`), so its tempo question is open again. No threads exist in the sim's evaluation (thread scopes only in the probe bin and interim reproduction), so E3 is not built.
 - 2026-10-28: E2 is not built: bite and amount draws are still keyed by the act number (`stage/staged/meal.rs`, `stage/staged/mod.rs`); soma draws by id.
 - 2026-10-28: The crowd lives only in `shared/cosmograph/src/probe/crowd/`; `TierLine` (`directing/tier.rs`) is exported and unwired.
