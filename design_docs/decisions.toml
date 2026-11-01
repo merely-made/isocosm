@@ -5331,7 +5331,7 @@ title = "Edition packs: a manifest section, bundled beside the app, sent at join
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Licensing and sources"
 summary = "Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin."
-draws_on = ["1044", "1059", "1062", "licensing.3"]
+draws_on = ["1044", "1059", "1064", "licensing.3"]
 
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"

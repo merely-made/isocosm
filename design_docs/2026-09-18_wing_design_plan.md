@@ -11788,7 +11788,7 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       keys come from the adapters' existing action groups; a save without a
       pack set reads as its edition's bundled pack.
 
-      Links: area Licensing and sources · draws on 1062, 1044, 1059, licensing.3 · summary Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin.
+      Links: area Licensing and sources · draws on 1064, 1044, 1059, licensing.3 · summary Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
