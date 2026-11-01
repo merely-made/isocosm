@@ -5277,6 +5277,13 @@ area = "The VTT"
 summary = "Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent."
 draws_on = ["1030", "vtt.2", "vtt.4", "vtt.5"]
 
+[cases."1060"]
+title = "A table's identity and invitations come from the stack; a GM edits any sheet but acts only for bodies no one plays"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller."
+draws_on = ["1045", "1059", "vtt.2"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
