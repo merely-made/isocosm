@@ -99,6 +99,10 @@ struct HistoryDetail {
     place: Option<String>,
     #[serde(default)]
     tags: Vec<String>,
+    /// The line's native world tick, kept whole: the shared deed's `at` is
+    /// unsigned, so a date before the founding rides here (case 1069).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    time: Option<i64>,
 }
 
 /// A creature that has arrived, and the record it arrived with.
@@ -165,6 +169,7 @@ impl Arrival {
             participants: event.participants.clone(),
             place: event.place.clone(),
             tags: event.tags.iter().cloned().collect(),
+            time: (event.time < 0).then_some(event.time),
         };
         self.chronicle.deeds.push(Deed {
             vessel: VESSEL.to_string(),
@@ -213,7 +218,7 @@ impl Arrival {
                 let detail: HistoryDetail = serde_json::from_slice(&deed.detail).ok()?;
                 Some(HistoryLine {
                     key: detail.id,
-                    time: deed.at as i64,
+                    time: detail.time.unwrap_or(deed.at as i64),
                     kind: deed.verb.clone(),
                     text: detail.text,
                     participants: detail.participants,
@@ -306,6 +311,16 @@ mod tests {
             event("h1", "held-the-ford", 40),
             "our own event round-trips whole"
         );
+    }
+
+    #[test]
+    fn a_date_before_the_founding_survives_the_chronicle() {
+        // The shared deed's `at` is unsigned; our own detail keeps the
+        // signed native tick, so a pre-founding birth is not clamped to 0.
+        let mut arrival = Arrival::read(&creature()).unwrap();
+        arrival.record(&event("born", "birth", -13_149_000));
+        let back = Arrival::read(&arrival.to_bytes().unwrap()).unwrap();
+        assert_eq!(back.history(), vec![event("born", "birth", -13_149_000)]);
     }
 
     #[test]

@@ -202,8 +202,8 @@ pub(super) fn apply(
                     } else {
                         let key = format!("ars:wounds:{name}");
                         sheet.set_int(&key, sheet.int(&key).unwrap_or(0) + 1);
-                        // Fixed counts until case 1069's size scaling is settled.
-                        let cells = r.wounds.native_cells.get(&name).copied().ok_or("Wound cells undeclared")?;
+                        let share = r.wounds.typical_part_share_percent.get(&name).copied().ok_or("Wound share undeclared")?;
+                        let cells = typical_part_cells(session, *target, share)?;
                         native(session, Command::Wound { entity: *target, part: None, cells })?;
                         format!("GM ruling: {amount} damage against Soak {soak}; a {name} Wound, which takes {cells} native cells")
                     }

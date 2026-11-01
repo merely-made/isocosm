@@ -147,7 +147,7 @@ pub struct Wounds {
     pub first_band: i64,
     pub order: Vec<String>,
     pub penalties: BTreeMap<String, i64>,
-    pub native_cells: BTreeMap<String, u32>,
+    pub typical_part_share_percent: BTreeMap<String, u64>,
 }
 
 #[derive(Clone, Debug, Deserialize)]

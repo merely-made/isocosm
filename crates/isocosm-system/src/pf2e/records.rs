@@ -363,6 +363,24 @@ pub struct Records {
 /// The pack whose `creation` records this adapter reads (case 1064).
 pub const PACK: &str = "pf2e-srd";
 
+/// The share of a body's typical part a critical hit or going dying costs
+/// natively (cases 1020, 1069), from the pack's `play` records.
+pub fn wound_share_percent() -> Result<u64, String> {
+    #[derive(serde::Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct Play {
+        version: u32,
+        wound_typical_part_share_percent: u64,
+    }
+    static SHARE: OnceLock<Result<u64, String>> = OnceLock::new();
+    SHARE.get_or_init(|| {
+        let texts = isocosm_campaign::bundled_records(PACK, "play")?;
+        let [text] = texts.as_slice() else { return Err("the Pathfinder pack must carry one play file".into()) };
+        let play: Play = toml::from_str(text).map_err(|e| format!("Pathfinder play numbers: {e}"))?;
+        (play.version == 1).then_some(play.wound_typical_part_share_percent).ok_or("unsupported play version".into())
+    }).clone()
+}
+
 /// The bundled slice, parsed and checked once.
 pub fn builtin() -> &'static Records {
     static RECORDS: OnceLock<Records> = OnceLock::new();
