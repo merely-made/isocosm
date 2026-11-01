@@ -76,16 +76,22 @@ pub struct RegionReading { pub site: Id, pub played: Option<Id>, pub bodies: Vec
 pub struct InspectedBody { pub body: VisibleBody, pub parts: BTreeMap<PartId, Part> }
 
 impl Simulation {
-    fn spatial_window(&self, participant: Id, window: u64, mode: Mode)
+    fn spatial_window(&self, participant: Id, window: u64, mode: Mode, observer: Option<Id>)
         -> Result<(WindowAttention, View)> {
         let (_, _, held) = self.attention_window(participant, window)?;
-        let subject = self.plays(participant).unwrap_or(Id::MAX);
+        let subject = self.observer(participant, observer)?.unwrap_or(Id::MAX);
         Ok((held, readings::view(self, subject, mode)))
     }
 
     /// Camera distance never causes a native watch or materializes members.
     pub fn far_crowds(&self, participant: Id, window: u64, mode: Mode) -> Result<Vec<Crowd>> {
-        let (_, visible) = self.spatial_window(participant, window, mode)?;
+        self.far_crowds_as(participant, window, mode, None)
+    }
+
+    /// [`Self::far_crowds`] viewed as one of the participant's bodies (1065).
+    pub fn far_crowds_as(&self, participant: Id, window: u64, mode: Mode, observer: Option<Id>)
+        -> Result<Vec<Crowd>> {
+        let (_, visible) = self.spatial_window(participant, window, mode, observer)?;
         let mut crowds = BTreeMap::<(Id, Key), u64>::new();
         for (first, count) in visible.things {
             let Some(entity) = self.state.population.get(first) else { continue; };
@@ -101,14 +107,21 @@ impl Simulation {
     /// window keeps a different region in the player's effective attention.
     pub fn region_reading(&self, participant: Id, window: u64, mode: Mode, site: Id)
         -> Result<RegionReading> {
-        let (held, visible) = self.spatial_window(participant, window, mode)?;
+        self.region_reading_as(participant, window, mode, site, None)
+    }
+
+    /// [`Self::region_reading`] viewed as one of the participant's bodies (1065).
+    pub fn region_reading_as(&self, participant: Id, window: u64, mode: Mode, site: Id, observer: Option<Id>)
+        -> Result<RegionReading> {
+        let observer = self.observer(participant, observer)?;
+        let (held, visible) = self.spatial_window(participant, window, mode, observer)?;
         if !visible.sites.contains(&site) { return Err("close-up site is outside native awareness".into()); }
         let watched = match held.examined {
             Some(Region::Site(id) | Region::Frame { site: id, .. }) => id == site,
             Some(Region::Location(id)) => {
                 let actual = self.state.locations.get(&id).is_some_and(|l| l.sites.contains(&site));
                 if mode == Mode::Creative { actual } else {
-                    let observer = self.plays(participant).ok_or("Location close-up has no actual played observer")?;
+                    let observer = observer.ok_or("Location close-up has no actual played observer")?;
                     let known = self.known_locations(observer)?;
                     let location = known.get(&id).ok_or("Location identity has not been observed or told to this body")?;
                     actual && location.members.iter().chain(&location.extent).any(|record| match &record.statement {
@@ -134,7 +147,7 @@ impl Simulation {
                     document: document.clone(), patch: entity.patch });
             }
         }
-        Ok(RegionReading { site, played: self.plays(participant).filter(|id|
+        Ok(RegionReading { site, played: observer.filter(|id|
             self.state.population.get(*id).is_some_and(|e| e.resident_site() == Some(site))), bodies })
     }
 
@@ -142,7 +155,13 @@ impl Simulation {
     /// close-up and native awareness. A raw pointable ID grants no access.
     pub fn inspected_body(&self, participant: Id, window: u64, mode: Mode, site: Id, id: Id)
         -> Result<InspectedBody> {
-        let region = self.region_reading(participant, window, mode, site)?;
+        self.inspected_body_as(participant, window, mode, site, id, None)
+    }
+
+    /// [`Self::inspected_body`] viewed as one of the participant's bodies (1065).
+    pub fn inspected_body_as(&self, participant: Id, window: u64, mode: Mode, site: Id, id: Id,
+        observer: Option<Id>) -> Result<InspectedBody> {
+        let region = self.region_reading_as(participant, window, mode, site, observer)?;
         let body = region.bodies.into_iter().find(|b| b.id == id)
             .ok_or("examiner target is outside this window's visible close-up")?;
         let entity = self.state.population.get(id).ok_or("examiner target is no longer native")?;

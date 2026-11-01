@@ -56,3 +56,7 @@ required-features = ["endpoint"]
 [[test]]
 name = "seats"
 required-features = ["endpoint"]
+
+[[test]]
+name = "multi_body"
+required-features = ["endpoint"]

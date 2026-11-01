@@ -35,7 +35,7 @@ pub(crate) fn envelope(snapshot: &GameSnapshot, sender: TableSender, request: Pa
         PartyRequest::Leave { party, member } => PartyIntent { party, member: EntityHandle(member), action: PartyAction::Leave },
         PartyRequest::Disclose { party, member } => {
             if access.subject != Some(EntityHandle(member)) { return Err("party disclosure names a changed played body".into()); }
-            isocosm_native::native::party::disclose_known(session, access.participant.0, party)?
+            isocosm_native::native::party::disclose_known(session, access.participant.0, party, member)?
         },
         PartyRequest::Decision { party, member, action } => {
             if access.subject != Some(EntityHandle(member)) { return Err("knowledge input names a changed played body".into()); }

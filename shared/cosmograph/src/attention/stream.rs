@@ -14,8 +14,15 @@ impl Simulation {
     /// events whose native field reaches the body they actually play.
     /// Survival is the existing native knowledge cut, independent of profile.
     pub fn attended_events(&self, participant: Id, visibility: Mode) -> Result<Vec<Event>> {
+        self.attended_events_as(participant, visibility, None)
+    }
+
+    /// [`Self::attended_events`] viewed as one of the participant's bodies:
+    /// its own knowledge, never another body's (1065).
+    pub fn attended_events_as(&self, participant: Id, visibility: Mode, observer: Option<Id>)
+        -> Result<Vec<Event>> {
         let attention = self.player_attention(participant)?;
-        let subject = self.plays(participant);
+        let subject = self.observer(participant, observer)?;
         let known = readings::view(self, subject.unwrap_or(Id::MAX), visibility);
         let mut events: Vec<_> = self.state.events.values()
             .filter(|event| known.events.contains(&event.id))

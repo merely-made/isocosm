@@ -86,6 +86,8 @@ pub(crate) enum Act {
     Ruleset(crate::ruleset::Action),
     /// A seat grant change at the table's current grant revision.
     Seat(crate::native::SeatAction),
+    /// View this window as another body its participant plays (1065).
+    ViewAs(u64),
 }
 
 /// A session's cards and the acts their actions bind.
@@ -225,11 +227,11 @@ impl VttEndpoint {
             Act::Disclose { party, member } => {
                 let participant = self.window.projection()?.access.participant.0;
                 let input = self.world.read(|session|
-                    crate::native::party::disclose_known(session, participant, party))??;
-                if input.member.0 != member { return Err("played body changed before map disclosure".into()); }
+                    crate::native::party::disclose_known(session, participant, party, member))??;
                 self.act(Act::Send(VttIntent::Party(input)), payload)
             },
             Act::SelectParty(party) => { self.party = Some(party); Ok(()) },
+            Act::ViewAs(body) => self.window.view_as(Some(cosmograph_overlay::EntityHandle(body))),
             Act::Overmap(settings) => { self.overmap = settings; Ok(()) },
             Act::Quote(kind) => { self.quote = Some(authoring::quote(self, kind, payload)?); Ok(()) },
             Act::Assert => {

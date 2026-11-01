@@ -104,21 +104,37 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                 actions: vec![action("vtt.read-party", "Read this party", "Choose this party for this window.", NULL,
                     IntentEffect::Curation)] }, vec![Act::SelectParty(name.clone())]);
         }
+        // Each body this participant plays (1065): the window views as one,
+        // chosen here, and acts for any.
+        let own: Vec<u64> = match &party {
+            Some(party) => cosmograph::party::members(&session.sim, party)?.into_iter()
+                .filter(|m| m.participant == participant).map(|m| m.member).collect(),
+            None => Vec::new(),
+        };
+        if seat != Seat::CreativeObserver {
+            for member in session.sim.played(participant) {
+                let mut actions = Vec::new();
+                let mut acts = Vec::new();
+                if subject != Some(member) {
+                    actions.push(action("vtt.view-as", &format!("View as body {member}"),
+                        "This window sees what this body knows.", NULL, IntentEffect::Curation));
+                    acts.push(Act::ViewAs(member));
+                }
+                if let Some(party) = &party {
+                    let intent = |action| VttIntent::Party(PartyIntent { party: party.clone(), member: EntityHandle(member), action });
+                    actions.push(action("vtt.join", &format!("Opt body {member} in"), "Opt this body into the party.", NULL, DOMAIN));
+                    acts.push(Act::Send(intent(PartyAction::Join)));
+                    if own.contains(&member) {
+                        actions.push(action("vtt.disclose", "Share this body's known map", "Disclose what this body knows.", NULL, DOMAIN));
+                        acts.push(Act::Disclose { party: party.clone(), member });
+                    }
+                }
+                built.push(Item { id: format!("body:{member}"), card: card(format!("Body {member}"),
+                    vec![value("Viewing as", subject == Some(member))], &["played"]), actions }, acts);
+            }
+        }
         let Some(party) = party else { return Ok(()) };
         if seat != Seat::CreativeObserver {
-            let own: Vec<u64> = cosmograph::party::members(&session.sim, &party)?.into_iter()
-                .filter(|m| m.participant == participant).map(|m| m.member).collect();
-            if let Some(member) = subject {
-                let intent = |action| VttIntent::Party(PartyIntent { party: party.clone(), member: EntityHandle(member), action });
-                let mut actions = vec![action("vtt.join", &format!("Opt body {member} in"), "Opt this body into the party.", NULL, DOMAIN)];
-                let mut acts = vec![Act::Send(intent(PartyAction::Join))];
-                if own.contains(&member) {
-                    actions.push(action("vtt.disclose", "Share this body's known map", "Disclose what this body knows.", NULL, DOMAIN));
-                    acts.push(Act::Disclose { party: party.clone(), member });
-                }
-                built.push(Item { id: format!("body:{member}"), card: card(format!("Body {member}"), Vec::new(), &["played"]),
-                    actions }, acts);
-            }
             for member in own {
                 built.push(Item { id: format!("member:{member}"), card: card(format!("My body {member}"), Vec::new(), &["member"]),
                     actions: vec![action("vtt.leave", &format!("Withdraw my body {member}"), "Withdraw this body from the party.",

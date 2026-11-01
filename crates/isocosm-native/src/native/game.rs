@@ -67,6 +67,8 @@ pub struct GameBindings {
     characters: BTreeMap<Key, RecipeBinding>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     positions: BTreeMap<Key, PositionBinding>,
+    /// Keyed by the controlled body, since a participant may play several
+    /// (1065); earlier saves keyed it by participant and are re-keyed on read.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
     controls: BTreeMap<Id, ControlBinding>,
     /// The prior table/game payload stays byte-exact and grants no authority.
@@ -107,7 +109,9 @@ fn is_zero(value: &u64) -> bool { *value == 0 }
 impl GameBindings {
     pub fn decode(bytes: &[u8]) -> Result<Self, String> {
         if let Some(bytes) = bytes.strip_prefix(PREFIX) {
-            let game: Self = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
+            let mut game: Self = serde_json::from_slice(bytes).map_err(|error| error.to_string())?;
+            game.controls = std::mem::take(&mut game.controls).into_values()
+                .map(|binding| (binding.entity, binding)).collect();
             if !matches!(game.version, VERSION | PLACEMENT_VERSION | TIME_VERSION | HOLD_VERSION | SHARED_VERSION | JOURNEY_VERSION
                 | OVERMAP_VERSION | HOOK_VERSION | CATALOGUE_VERSION | PHYSICAL_VERSION | ITEM_VERSION | CUSTODY_VERSION | PROJECT_CARRY_VERSION | COMPOSED_STORYLET_VERSION | SPATIAL_VERSION | SEATS_VERSION)
                 || game.version == VERSION && (!game.positions.is_empty() || !game.controls.is_empty())
@@ -304,8 +308,8 @@ impl GameBindings {
             let recipe = self.characters.get(key).ok_or("position has no admitted character binding")?;
             binding.validate(session, key, recipe)?;
         }
-        for (participant, binding) in &self.controls {
-            if *participant != binding.participant { return Err("control participant key differs".into()); }
+        for (entity, binding) in &self.controls {
+            if *entity != binding.entity { return Err("control body key differs".into()); }
             let (key, recipe) = self.characters.iter().find(|(_, recipe)| recipe.entity == binding.entity)
                 .ok_or("control has no admitted character binding")?;
             recipe.validate(session, key)?;
@@ -512,7 +516,7 @@ fn submit_decoded(session: &mut Session, game: Vec<u8>, input: Input, dm: Option
             dm.ok_or("native control has no admitted DM participant")?)
             .map_err(|reason| format!("control {index} ({}): {reason}", control.character))?;
         accepted.push(format!("participant:{} took {}", binding.participant, control.character));
-        bindings.controls.insert(binding.participant, binding);
+        bindings.controls.insert(binding.entity, binding);
     }
     if !batch.placements.is_empty() || !batch.controls.is_empty() { bindings.version = bindings.version.max(PLACEMENT_VERSION); }
     bindings.validate(&candidate)?;

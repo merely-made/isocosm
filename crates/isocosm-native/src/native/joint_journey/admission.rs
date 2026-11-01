@@ -9,7 +9,7 @@ use cosmograph_overlay::key_for_handle;
 pub(super) fn identity(session: &Session, roster: &Roster, party: &str, input: &DepartureInput)
     -> Result<DepartureKind, String> {
     if !roster.players.contains(&input.participant)
-        || session.sim.plays(input.participant) != Some(input.body)
+        || !session.sim.plays_body(input.participant, input.body)
         || !cosmograph::party::members(&session.sim,party)?.iter()
             .any(|m| m.participant == input.participant && m.member == input.body) {
         return Err("journey participant/body is not its current bound player's opted-in played body".into());

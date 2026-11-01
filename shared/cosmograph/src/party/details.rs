@@ -37,7 +37,7 @@ impl Details {
 impl Simulation {
     pub(super) fn participant_observer(&self, participant: Id, member: Id) -> Result<()> {
         if !self.state.population.get(participant).is_some_and(crate::directing::is_participant)
-            || self.plays(participant) != Some(member) {
+            || !self.plays_body(participant, member) {
             return Err("knowledge input requires its actual native participant and played body".into());
         }
         Ok(())

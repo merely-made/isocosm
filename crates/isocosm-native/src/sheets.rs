@@ -59,12 +59,14 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         let native=session.sim.state();
         let mut bodies:std::collections::BTreeSet<u64>=state.sheets.keys().map(|id|u64::from(id.0)).collect();
         bodies.extend(native.population.groups.iter().filter(|(_,g)|cosmograph::directing::is_participant(&g.entity))
-            .filter_map(|(id,_)|session.sim.plays(*id)));
+            .flat_map(|(id,_)|session.sim.played(*id)));
         bodies.extend(native.population.groups.iter().filter(|(_,g)|g.entity.authored.is_some() && g.entity.alive).map(|(id,_)|*id));
-        bodies.retain(|id|cx.cut.visible.shows(*id));
+        // A player sees every body its participant plays, wherever it is (1065).
+        let mine=|id:u64|session.sim.plays_body(access.participant.0,id);
+        bodies.retain(|id|cx.cut.visible.shows(*id) || mine(*id));
         let visible=bodies.clone();
         for id in bodies {
-            if access.seat!=Seat::Dm && access.subject!=Some(cosmograph_overlay::EntityHandle(id)) {continue;}
+            if access.seat!=Seat::Dm && !mine(id) {continue;}
             let tid=ruleset::token(id)?;
             let title=native.population.get(id).and_then(|b|b.authored.as_ref()).map_or_else(||format!("Character {id}"),|a|a.key.clone());
             let can_control=ruleset::controls(session,access,id);
@@ -144,7 +146,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         if let Some(records)=Records::read(&map)? {
             for effect in records.effects.values() {
                 let caster=u64::from(effect.caster.0);
-                if access.seat!=Seat::Dm && access.subject!=Some(cosmograph_overlay::EntityHandle(caster)) {continue;}
+                if access.seat!=Seat::Dm && !mine(caster) {continue;}
                 let running=effect.running(records.tick);
                 let choices=if running && ruleset::controls(session,access,caster) {vec![("vtt.effect-dismiss".into(),"End concentration".into(),Action::Dismiss{actor:caster,effect:effect.id})]} else {vec![]};
                 let target=match &effect.target {effects::Target::Item(item)=>state.inventories.values().find_map(|inv|inv.items.get(item)).map_or_else(||"Weapon no longer present".into(),|item|item.name.clone()),
@@ -172,7 +174,8 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             super::sheets_pf2e::table(&mut built,&state,access.seat==Seat::Dm,native.tick,propose);
         }
         for (index,entry) in state.log.iter().enumerate().rev().take(8) {
-            if access.seat!=Seat::Dm && !entry_mentions(entry,access.subject.map(|s|s.0)) {continue;}
+            if access.seat!=Seat::Dm && !session.sim.played(access.participant.0).into_iter()
+                .any(|body|entry_mentions(entry,Some(body))) {continue;}
             let mut values=vec![value("Native tick",entry.tick),value("Result",&entry.note)];
             values.extend(entry.rolls.iter().map(|roll|value(&roll.by,format!("{} = {}; dice {:?}",roll.expr,roll.total,roll.dice))));
             push(&mut built,format!("ruleset-log:{index}"),"Table result",values,vec![]);

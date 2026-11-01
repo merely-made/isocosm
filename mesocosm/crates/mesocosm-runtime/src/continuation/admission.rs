@@ -7,7 +7,10 @@ use cosmograph::{Session, Command, directing::readings::{self, Mode, View}};
 use cosmograph_overlay::{OrdinaryAccess, Seat, mesocosm::{BirthAnswer, CheckpointAnswerKind}};
 
 fn access(session: &Session, access: OrdinaryAccess) -> Result<(), Refusal> {
+    // Mesocosm plays one body (its limit, case 1065): a participant who plays
+    // several, by another product's TakeAlso, is not played here.
     if access.seat != Seat::Player || access.subject.is_none()
+        || session.sim.played(access.participant.0).len() != 1
         || session.sim.plays(access.participant.0) != access.subject.map(|id| id.0) {
         return Err(Refusal::NotPlayed);
     }

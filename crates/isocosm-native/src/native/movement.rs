@@ -19,18 +19,20 @@ pub(crate) fn current_access(session: &Session, access: OrdinaryAccess) -> Resul
     if access.seat == Seat::CreativeObserver {
         return Err("creative observation admits no table movement or authoring".into());
     }
-    if session.sim.plays(access.participant.0).map(EntityHandle) != access.subject {
+    let subject = access.subject.map(|s| s.0);
+    if session.sim.observer(access.participant.0, subject).ok() != Some(subject) {
         return Err("table access names a stale native subject".into());
     }
     Ok(())
 }
 
-/// Body control stays with who plays the body (case 1059): a player window
-/// acts for its played body, a GM window for a body no one else plays.
+/// Body control stays with who plays the body (cases 1059, 1065): a player
+/// window acts for any body its participant plays, a GM window for its own
+/// bodies and those no one else plays.
 pub fn seat_controls(session: &Session, access: OrdinaryAccess, actor: u64) -> Result<(), String> {
     match access.seat {
-        Seat::Player if session.sim.plays(access.participant.0) != Some(actor) =>
-            Err("a player window acts only for the character it plays".into()),
+        Seat::Player if !session.sim.plays_body(access.participant.0, actor) =>
+            Err("a player window acts only for the characters its participant plays".into()),
         Seat::Dm if session.sim.state().relations.iter().any(|relation|
             relation.kind == cosmograph::directing::PLAYS && relation.object == actor
                 && relation.subject != access.participant.0) =>

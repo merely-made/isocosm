@@ -31,7 +31,7 @@ fn check(session: &Session, access: OrdinaryAccess, input: &InstitutionInput) ->
     let (participant, actor) = actor(&input.change);
     if input.version != 1 || input.expected_native != source(session)
         || input.tick != session.sim.state().tick || access.participant.0 != participant
-        || access.subject != Some(EntityHandle(actor)) || session.sim.plays(participant) != Some(actor) {
+        || !session.sim.plays_body(participant, actor) {
         return Err("institution input differs from its actual native prefix, tick or controlled body".into());
     }
     Ok(())
