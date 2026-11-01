@@ -5270,6 +5270,13 @@ area = "Directing and play"
 summary = "A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third."
 draws_on = ["1053", "1055", "ecology.1"]
 
+[cases."1059"]
+title = "Seats are grants; a GM-less table decides by declared policy, with a table vote behind it; taking the GM seat needs consent"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent."
+draws_on = ["1030", "vtt.2", "vtt.4", "vtt.5"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6544,7 +6551,7 @@ title = "Roles are traded seats; time at the table is consent"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes."
-draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "1029", "1030", "record.1"]
+draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "1029", "1030", "1059", "record.1"]
 
 [statements."vtt.3"]
 title = "A party is opt-in and grants no control"

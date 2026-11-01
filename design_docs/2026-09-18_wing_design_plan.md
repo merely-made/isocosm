@@ -11497,6 +11497,26 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       where parallel routes join one pair; fresh worlds' pinned hashes move
       under the new movement version, old saves keeping theirs.
 
+1059. **Seats are grants; a GM-less table decides by declared policy, with a
+      table vote behind it; taking the GM seat needs consent.** Ruled by Mark
+      on 2026-10-31, on the working-table lane's forks, answering VTT 2's owed
+      question (Mark: "1, with 3 as fallback/consensus mechanism like
+      downtime", "Grants per participant", "Needs consent", the rest "All as
+      recommended"). The reading: GM and player are grants each participant
+      holds, replicated as table records, any number or none and both at
+      once, body control staying with who plays the body and a window's seat
+      choosing only its knowledge view; at a table with no GM seated, the
+      edition or campaign declares a decision policy, by default any bound
+      player choosing among ready proposals and the sim's hooks arriving as
+      proposals, with a recognition vote as the fallback and consensus
+      mechanism, gathered like downtime consent; claiming the GM seat needs
+      the consent of the GMs seated, or of the table when none is; a GM who
+      plays chooses per window between the truth and the character's view;
+      host hand-off is deferred; done means two processes on one machine,
+      headed, then two machines.
+
+      Links: area The VTT · draws on 1030, vtt.2, vtt.4, vtt.5 · summary Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent.
+
 1045. **A shared mechanism moves when its second consumer is planned, not
       when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
       D12, refining mere's Stack 1): "second host is planned", because
