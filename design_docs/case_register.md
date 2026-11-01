@@ -845,8 +845,8 @@ three design docs that cite it. The record holds the words.
 | 917 | The crates aim to be published, not only publishable in principle. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 919 | isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 1016 | Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields. | none |
-| 1064 | Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved. | none |
-| 1067 | Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin. | none |
+| 1064 | Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved. | [content packs](2026-10-28_content_packs_plan.md) |
+| 1067 | Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin. | [content packs](2026-10-28_content_packs_plan.md) |
 
 ## Method and documents
 

@@ -1,6 +1,6 @@
-//! SRD spells as content, loaded from the vendored pack.
+//! SRD spells as content, loaded from the bundled `5e-srd` edition pack.
 //!
-//! `../data/spells.json` is the SRD 5.1 spell list transformed from
+//! The bundled `5e-srd` pack's `spells` records are the SRD 5.1 spell list transformed from
 //! 5e-database (P2b), used under CC-BY-4.0 with attribution (bootstrap
 //! decision #7).
 
@@ -32,9 +32,9 @@ impl Spell {
     }
 }
 
-/// The SRD spell list, vendored from 5e-database (SRD 5.1, CC-BY-4.0).
+/// The SRD spell list from the bundled `5e-srd` pack, transformed from 5e-database (SRD 5.1, CC-BY-4.0).
 pub fn srd_spells() -> Vec<Spell> {
-    serde_json::from_str(include_str!("../data/spells.json")).unwrap_or_default()
+    crate::items::srd_records("spells")
 }
 
 #[cfg(test)]

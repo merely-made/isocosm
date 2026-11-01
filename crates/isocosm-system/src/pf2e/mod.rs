@@ -1,6 +1,6 @@
 //! Pathfinder 2e. The skeleton (ability scores, a Strike ladder) stays as it
 //! was; Player Core Remaster creation is built beside it (case 1026): records
-//! in `data/pf2e/*.toml`, a draft walked one explained choice at a time, and
+//! in the bundled `pf2e-srd` edition pack, a draft walked one explained choice at a time, and
 //! the numbers derived from the finished choices rather than stored.
 
 mod skeleton;

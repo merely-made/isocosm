@@ -14,8 +14,8 @@ pub(super) fn selection(ui: &UiState) -> Vec<UiChild> {
     )).attr("class", "btn-row"))];
     if !ui.native.enabled { return body; }
     let chosen = ui.native.chosen_edition();
-    let editions: Vec<UiChild> = isocosm_native::founding::EDITIONS.iter().map(|edition| {
-        let edition = *edition;
+    // Founding offers the bundled edition packs (cases 1064, 1067).
+    let editions: Vec<UiChild> = isocosm_native::founding::editions().into_iter().map(|edition| {
         let class = if edition == chosen { "btn btn-active" } else { "btn" };
         Box::new(clickable(el("span", text(isocosm_native::founding::edition_label(edition))).attr("class", class),
             move |ui: &mut UiState, _| ui.choose_edition(edition))) as UiChild

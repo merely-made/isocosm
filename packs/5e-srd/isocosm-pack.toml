@@ -1,0 +1,19 @@
+# D&D SRD 5.1 as an edition pack (cases 1064, 1067). The 5e adapter's rules
+# stay compiled; it reads these records. Equipment, bestiary and spells were
+# transformed from 5e-database; the effect procedures are original fields.
+format = 1
+id = "5e-srd"
+name = "D&D SRD 5.1"
+version = "1"
+license = "CC-BY-4.0"
+credit = "This work includes material taken from the System Reference Document 5.1 (\"SRD 5.1\") by Wizards of the Coast LLC and available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License available at https://creativecommons.org/licenses/by/4.0/legalcode."
+
+[edition]
+system = "5e-srd"
+subsystems = ["5e-srd"]
+
+[edition.records]
+items = ["items.toml"]
+monsters = ["monsters.toml"]
+spells = ["spells.toml"]
+effects = ["effects.toml"]
