@@ -209,6 +209,7 @@ three design docs that cite it. The record holds the words.
 | 1012 | An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act. | [DOC README](DOC_README.md) |
 | 1052 | The crowd's bands run the lineage policy once for their members; a distilled rate for unmet lineages only where measured to save. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1053 | Learned deltas fold into a lineage by imitating successful kin and by teaching, faster from parent to young; a bounded share may pass at birth; across lineages only acts are imitated. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1066 | Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities. | none |
 
 ## Ecology
 
@@ -547,6 +548,7 @@ three design docs that cite it. The record holds the words.
 | 1055 | Sapience is read from behaviour (novel directions, imitation, tool use); a lineage is sapient by a share of passing members, and any passing individual may be driven. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1056 | A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1058 | A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1065 | A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits. | none |
 
 ## Presentation
 
@@ -844,6 +846,7 @@ three design docs that cite it. The record holds the words.
 | 919 | isocosm-vtt carries the VTT's licence, MIT OR Apache-2.0, its MPL endpoint relicensed by its author. | [campaign retirement](2026-10-28_campaign_retirement_plan.md) |
 | 1016 | Pathfinder 2e content is checked against foundryvtt/pf2e records from ORC Remaster books only, read not vendored, written as original summaries and fields. | none |
 | 1064 | Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved. | none |
+| 1067 | Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin. | none |
 
 ## Method and documents
 

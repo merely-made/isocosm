@@ -5312,6 +5312,27 @@ area = "Licensing and sources"
 summary = "Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved."
 draws_on = ["1026", "1044", "licensing.1", "licensing.3", "vtt.5"]
 
+[cases."1065"]
+title = "A window views as one of its participant's bodies; the sim takes a second body with TakeAlso and puts one down with Release"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits."
+draws_on = ["1062", "directing.3", "host.4"]
+
+[cases."1066"]
+title = "Characters share what they know by telling it"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities."
+draws_on = ["processes.11", "processes.19", "record.3"]
+
+[cases."1067"]
+title = "Edition packs: a manifest section, bundled beside the app, sent at join; a savepack is a world's release"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Licensing and sources"
+summary = "Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin."
+draws_on = ["1044", "1059", "1062", "licensing.3"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

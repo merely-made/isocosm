@@ -11738,6 +11738,58 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Licensing and sources · draws on 1026, 1044, licensing.1, licensing.3, vtt.5 · summary Edition records ship as runtime packs; campaigns found on a set of packs; subsystems declare decision points and mix unless they overlap; scripted pack subsystems reserved.
 
+1065. **A window views as one of its participant's bodies; the sim takes a
+      second body with TakeAlso and puts one down with Release.** Ruled by
+      Mark on 2026-11-01 (Mark: "1, but note there are conditions where two
+      characters can share knowledge", "Two new commands; Take unchanged",
+      "TakeAlso and Release"). The reading: each window views as one of the
+      bodies its participant plays, chosen per window, and may act for any of
+      them, no character learning what another knows except by telling
+      (1066); `Take` keeps its switching meaning so older saves replay
+      alike, `TakeAlso` takes a body beside those played and `Release` puts
+      one down; each product's adapter sets its limit, Eponym's refusing
+      `TakeAlso`.
+
+      Links: area Directing and play · draws on 1062, host.4, directing.3 · summary A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits.
+
+1066. **Characters share what they know by telling it.** Ruled by Mark on
+      2026-11-01, after: "how many times have you split the party and then
+      needed to say 'i tell them everything?' Indeed, lots of entities need
+      to tell stuff they've experienced or concluded to people… hmm", then
+      "A telling act, offered at the table". The reading: any character may
+      tell another what it knows, a subject or everything about a place or
+      event, as one act that copies the teller's notes, the receiver's belief
+      taking as Processes 11 says; the act is the same whether one player
+      plays both or not, and the sim's entities tell the same way.
+
+      Links: area Processes and rules · draws on processes.11, processes.19, record.3 · summary Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities.
+
+1067. **Edition packs: a manifest section, bundled beside the app, sent at
+      join; a savepack is a world's release.** Ruled by Mark on 2026-11-01
+      ("Manifest section; top-level packs/", the remaining forks "All as
+      recommended"), and on how a joining peer gets the pack set: "Can we do
+      2 as default and 3 as projection? Architecturally number two is
+      necessary in order to change the rules down the line, I would think.
+      But the case in which you would like to compile the mods into a save
+      for portability… and when world editing/gm-ing is not important for
+      that endpoint. That's a real thing, though not the main point of the
+      shared homebrew idea. People could design worlds and offer others a
+      nonediting grant to play in it, complete with updates to the savepack
+      from the creator's origin. Dang, it's kinda like getting source
+      compared to getting releases..." The reading: an edition is a section
+      of the existing pack manifest (record files by kind, declared
+      subsystems, room for scripts); bundled packs live in a top-level
+      `packs/` folder found beside the executable when shipped; by default
+      the host sends a campaign's packs at join, the peer checking each
+      against the hash the founding pins and caching it, so rules can change
+      later; a savepack is a projection, a world compiled with its packs for
+      portability, offered under a grant to play without editing and updated
+      from its creator's origin, as a release is to source; decision-point
+      keys come from the adapters' existing action groups; a save without a
+      pack set reads as its edition's bundled pack.
+
+      Links: area Licensing and sources · draws on 1062, 1044, 1059, licensing.3 · summary Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
