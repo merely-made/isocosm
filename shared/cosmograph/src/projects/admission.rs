@@ -51,7 +51,7 @@ impl Simulation {
     }
     pub(crate) fn project_control(&self, participant: Id, actor: Id) -> Result<()> {
         if !self.state.population.get(participant).is_some_and(crate::directing::is_participant)
-            || self.plays(participant) != Some(actor) {
+            || !self.plays_body(participant, actor) {
             return Err("project act requires native control of its actor".into());
         }
         Ok(())

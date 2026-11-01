@@ -163,4 +163,15 @@ pub enum Command {
     Custody(crate::custody::Change),
     /// An explicit authored grouping; learning its identity is a separate act876.
     Location { location: Location },
+    /// A participant takes up a critter beside those it plays (1065).
+    /// Appended so older saves replay alike; `Take` still switches.
+    TakeAlso {
+        participant: Id,
+        critter: Id,
+    },
+    /// A participant puts down one body it plays, keeping its bond (1065).
+    Leave {
+        participant: Id,
+        critter: Id,
+    },
 }

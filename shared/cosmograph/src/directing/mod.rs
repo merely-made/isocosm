@@ -98,11 +98,30 @@ impl Simulation {
     pub fn bond(&self, participant: Id, critter: Id) -> Option<i64> {
         related(&self.state.relations, participant, BOND, critter).map(|r| r.value)
     }
-    /// The critter `participant` plays now.
+    /// The critter `participant` plays now: its one body where its product
+    /// keeps one, else the lowest of those it plays (1065).
     pub fn plays(&self, participant: Id) -> Option<Id> {
+        self.played(participant).into_iter().next()
+    }
+    /// Every body `participant` plays, lowest first (1062, 1065).
+    pub fn played(&self, participant: Id) -> Vec<Id> {
         let at = |object| Relation::new(participant, PLAYS, object);
-        let mut held = self.state.relations.range(at(0)..=at(Id::MAX));
-        held.find(|r| r.kind == PLAYS).map(|r| r.object)
+        let held = self.state.relations.range(at(0)..=at(Id::MAX));
+        held.filter(|r| r.kind == PLAYS).map(|r| r.object).collect()
+    }
+    /// The body a reading views as: `requested` when the participant plays
+    /// it, else its one or lowest played body (1065).
+    pub fn observer(&self, participant: Id, requested: Option<Id>) -> Result<Option<Id>> {
+        match requested {
+            Some(id) if !self.plays_body(participant, id) =>
+                Err("the reading's body is not one this participant plays".into()),
+            Some(id) => Ok(Some(id)),
+            None => Ok(self.plays(participant)),
+        }
+    }
+    /// Whether `participant` plays `critter`, among however many it plays.
+    pub fn plays_body(&self, participant: Id, critter: Id) -> bool {
+        self.state.relations.iter().any(|r| r.kind == PLAYS && r.subject == participant && r.object == critter)
     }
     /// The participants bonded to `critter`, with each bond's weight.
     pub fn bonded(&self, critter: Id) -> Vec<(Id, i64)> {
@@ -155,6 +174,27 @@ impl Simulation {
     /// weight; otherwise the bond to the critter it played before seeds it
     /// by the world's setting, where both are of one lineage (178).
     pub(crate) fn take(&mut self, participant: Id, critter: Id) -> Result<()> {
+        self.take_up(participant, critter, false)
+    }
+    /// `participant` takes up `critter` beside the bodies it plays (1065),
+    /// its bond seeded as `take` seeds it.
+    pub(crate) fn take_also(&mut self, participant: Id, critter: Id) -> Result<()> {
+        if self.plays_body(participant, critter) {
+            return Err("the participant already plays this critter".into());
+        }
+        self.take_up(participant, critter, true)
+    }
+    /// `participant` puts down `critter`, one body it plays; its bond is kept,
+    /// and the critter acts as itself again (1065).
+    pub(crate) fn leave(&mut self, participant: Id, critter: Id) -> Result<()> {
+        self.participant(participant)?;
+        if !self.plays_body(participant, critter) {
+            return Err("the participant does not play this critter".into());
+        }
+        hold(&mut self.state.relations, Relation::new(participant, PLAYS, critter), false);
+        Ok(())
+    }
+    fn take_up(&mut self, participant: Id, critter: Id, beside: bool) -> Result<()> {
         self.participant(participant)?;
         let e = self
             .state
@@ -180,12 +220,11 @@ impl Simulation {
         let weight = self
             .bond(participant, critter)
             .unwrap_or_else(|| rules.inherit(forebear));
-        if let Some(before) = before {
-            hold(
-                &mut self.state.relations,
-                Relation::new(participant, PLAYS, before),
-                false,
-            );
+        // Take switches: every body played before is put down. TakeAlso keeps them.
+        if !beside {
+            for before in self.played(participant) {
+                hold(&mut self.state.relations, Relation::new(participant, PLAYS, before), false);
+            }
         }
         self.set_bond(participant, critter, weight);
         let plays = Relation::new(participant, PLAYS, critter);

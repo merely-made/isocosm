@@ -78,7 +78,7 @@ impl Simulation {
     pub fn player_attention(&self, participant: Id) -> Result<PlayerAttention> {
         self.attention_participant(participant)?;
         // Every admitted profile was checked. Derivation never accepts host care.
-        let mut attention = self.state.attention.for_player(participant, self.plays(participant), |_| {
+        let mut attention = self.state.attention.for_player(participant, self.played(participant), |_| {
             BTreeSet::new()
         });
         for value in self.state.attention.active.values().filter(|v| v.participant == participant) {

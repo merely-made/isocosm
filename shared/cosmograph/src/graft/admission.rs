@@ -11,7 +11,7 @@ impl Simulation {
             return Err("graft carrying needs distinct bodies and cannot nest".into());
         }
         if !self.state.population.get(participant).is_some_and(crate::directing::is_participant)
-            || self.plays(participant) != Some(actor)
+            || !self.plays_body(participant, actor)
             || !self.state.population.get(actor).is_some_and(|body| body.method == Method::Normative) {
             return Err("controlled graft carrying requires the participant's actual normative body".into());
         }

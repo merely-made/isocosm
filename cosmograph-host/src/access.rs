@@ -6,10 +6,13 @@ use cosmograph::directing::readings::{self, Mode, View};
 use cosmograph::schema::Id;
 use cosmograph_overlay::{EntityHandle, OrdinaryAccess, ParticipantHandle, Seat};
 
+/// The access a window holds: it views as `body`, one of the bodies its
+/// participant plays, or as its one or lowest played body (1065).
 pub fn resolve(
     session: &Session,
     participant: ParticipantHandle,
     seat: Seat,
+    body: Option<EntityHandle>,
 ) -> Result<OrdinaryAccess, String> {
     let entity = session.sim.state().population.get(participant.0);
     if !entity.is_some_and(cosmograph::directing::is_participant) {
@@ -18,7 +21,7 @@ pub fn resolve(
     Ok(OrdinaryAccess {
         participant,
         seat,
-        subject: session.sim.plays(participant.0).map(EntityHandle),
+        subject: session.sim.observer(participant.0, body.map(|b| b.0))?.map(EntityHandle),
     })
 }
 

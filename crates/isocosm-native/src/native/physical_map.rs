@@ -23,8 +23,7 @@ pub fn physical_source(session:&Session) -> Key {
 fn check_access(session:&Session,game:&[u8],access:OrdinaryAccess,input:&PhysicalMapInput)
     -> Result<super::GameBindings,String> {
     super::movement::current_access(session,access)?;
-    if access.seat != Seat::Dm || access.subject != Some(EntityHandle(input.actor))
-        || session.sim.plays(access.participant.0) != Some(input.actor) {
+    if access.seat != Seat::Dm || !session.sim.plays_body(access.participant.0, input.actor) {
         return Err("physical map authoring needs the actual DM's currently played body".into());
     }
     if input.version != 1 || input.expected_source != physical_source(session)

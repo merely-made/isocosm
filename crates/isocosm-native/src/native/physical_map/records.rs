@@ -18,7 +18,7 @@ pub fn validate_records(session:&Session,records:&[PhysicalMapRecord]) -> Result
         let before=session.before_entry(first)?;
         let body=before.sim.state().population.get(input.actor).ok_or("recorded physical edit body is absent")?;
         if input.expected_source!=physical_source(&before) || input.expected_terrain!=before.sim.terrain_revision()
-            || before.sim.plays(record.participant)!=Some(input.actor)
+            || !before.sim.plays_body(record.participant,input.actor)
             || !before.sim.state().population.get(record.participant).is_some_and(cosmograph::directing::is_participant)
             || !body.alive || body.body.is_none() || body.body_revision!=input.body_revision
             || body.resident_site()!=Some(input.geometry.site) || input.metadata.site.0!=input.geometry.site {

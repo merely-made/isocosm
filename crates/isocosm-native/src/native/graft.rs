@@ -19,8 +19,7 @@ pub struct GraftInput {
 fn check(session:&Session,access:OrdinaryAccess,input:&GraftInput)->Result<(),String> {
     super::movement::current_access(session,access)?;
     if input.version!=1 || input.expected_native!=super::institutions::source(session)
-        || input.tick!=session.sim.state().tick || access.subject!=Some(EntityHandle(input.actor))
-        || session.sim.plays(access.participant.0)!=Some(input.actor) {
+        || input.tick!=session.sim.state().tick || !session.sim.plays_body(access.participant.0,input.actor) {
         return Err("graft input differs from its actual native prefix, tick or played body".into());
     }
     Ok(())

@@ -8,7 +8,7 @@ use cosmograph_overlay::{Seat, WindowHandle};
 use crate::window::Projection;
 
 fn current(session: &Session, cut: &Projection, window: WindowHandle) -> Result<Mode, String> {
-    let access = crate::access::resolve(session, cut.access.participant, cut.access.seat)?;
+    let access = crate::access::resolve(session, cut.access.participant, cut.access.seat, cut.access.subject)?;
     if access != cut.access || crate::access::permitted(session, access) != cut.visible {
         return Err("spatial snapshot uses a stale native access cut".into());
     }
@@ -18,17 +18,17 @@ fn current(session: &Session, cut: &Projection, window: WindowHandle) -> Result<
 
 pub fn far(session: &Session, cut: &Projection, window: WindowHandle) -> Result<Vec<Crowd>, String> {
     let mode = current(session, cut, window)?;
-    session.sim.far_crowds(cut.access.participant.0, window.0, mode)
+    session.sim.far_crowds_as(cut.access.participant.0, window.0, mode, cut.access.subject.map(|s| s.0))
 }
 
 pub fn region(session: &Session, cut: &Projection, window: WindowHandle, site: u64)
     -> Result<RegionReading, String> {
     let mode = current(session, cut, window)?;
-    session.sim.region_reading(cut.access.participant.0, window.0, mode, site)
+    session.sim.region_reading_as(cut.access.participant.0, window.0, mode, site, cut.access.subject.map(|s| s.0))
 }
 
 pub fn inspect(session: &Session, cut: &Projection, window: WindowHandle, site: u64, body: u64)
     -> Result<InspectedBody, String> {
     let mode = current(session, cut, window)?;
-    session.sim.inspected_body(cut.access.participant.0, window.0, mode, site, body)
+    session.sim.inspected_body_as(cut.access.participant.0, window.0, mode, site, body, cut.access.subject.map(|s| s.0))
 }

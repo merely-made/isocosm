@@ -130,10 +130,11 @@ fn a_player_opts_the_played_body_into_the_party_and_withdraws_it() {
     let mut player = VttEndpoint::open(&t.world, t.player, Seat::Player).unwrap();
     assert_eq!(act(&mut player, TABLE, &format!("party:{BAND}"), "vtt.read-party", b""), IntentResult::Accepted);
     let body = format!("body:{}", t.bodies[1]);
-    assert_eq!(card(&read(&mut player, TABLE), &body).2, ["vtt.join"]);
+    // Each played body's card also puts it down (case 1065, Leave).
+    assert_eq!(card(&read(&mut player, TABLE), &body).2, ["vtt.leave-body", "vtt.join"]);
     assert_eq!(act(&mut player, TABLE, &body, "vtt.join", b""), IntentResult::Accepted);
     let cards = read(&mut player, TABLE);
-    assert_eq!(card(&cards, &body).2, ["vtt.join", "vtt.disclose"], "a member body can share its known map");
+    assert_eq!(card(&cards, &body).2, ["vtt.leave-body", "vtt.join", "vtt.disclose"], "a member body can share its known map");
     let member = format!("member:{}", t.bodies[1]);
     assert_eq!(card(&cards, &member).2, ["vtt.leave"]);
     assert_eq!(act(&mut player, TABLE, &member, "vtt.leave", b""), IntentResult::Accepted);
