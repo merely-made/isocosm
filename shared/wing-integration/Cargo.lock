@@ -2807,6 +2807,8 @@ dependencies = [
  "isometer-space",
  "serde",
  "serde_json",
+ "sha2 0.10.9",
+ "toml",
  "wing-formats",
  "wing-functions",
 ]

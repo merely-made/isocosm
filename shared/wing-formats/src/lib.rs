@@ -18,10 +18,11 @@ pub const HEADER_LEN: usize = 10;
 pub const BODY_SCHEMA: &str = "mesocosm.body/v0";
 pub const BODY_MAGIC: [u8; 8] = *b"MESOBODY";
 pub const BODY_VERSION: u16 = 0;
-pub const CHRONICLE_SCHEMA: &str = "mesocosm.chronicle/v1";
+pub const CHRONICLE_SCHEMA: &str = "mesocosm.chronicle/v2";
 pub const CHRONICLE_MAGIC: [u8; 8] = *b"MESOCHRN";
-/// v1 keeps v0's layout and renames the VTT's vessel (case 1040).
-pub const CHRONICLE_VERSION: u16 = 1;
+/// v1 kept v0's layout and renamed the VTT's vessel (case 1040); v2 makes a
+/// deed's time signed, so a date before a world's founding is kept (1069).
+pub const CHRONICLE_VERSION: u16 = 2;
 /// The VTT's vessel name from v1 on.
 pub const VTT_VESSEL: &str = "isocosm";
 /// The VTT's vessel name in a v0 chronicle.
@@ -100,17 +101,34 @@ impl PartOrigin {
     }
 }
 
-/// One opaque fact recorded by a product.
+/// One opaque fact recorded by a product. `at` is the world tick it happened
+/// at, negative before the world's founding (v2).
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct Deed {
     pub vessel: String,
     pub verb: String,
-    pub at: u64,
+    pub at: i64,
     pub detail: Vec<u8>,
 }
 
+/// v0 and v1's layout: an unsigned time, which postcard encodes differently.
+#[derive(Deserialize)]
+struct UnsignedDeed {
+    vessel: String,
+    verb: String,
+    at: u64,
+    detail: Vec<u8>,
+}
+
+#[derive(Deserialize)]
+struct UnsignedChronicle {
+    species: u32,
+    parts: Vec<PartOrigin>,
+    deeds: Vec<UnsignedDeed>,
+}
+
 impl Deed {
-    pub fn new(vessel: impl Into<String>, verb: impl Into<String>, at: u64) -> Self {
+    pub fn new(vessel: impl Into<String>, verb: impl Into<String>, at: i64) -> Self {
         Self {
             vessel: vessel.into(),
             verb: verb.into(),
@@ -122,7 +140,7 @@ impl Deed {
     pub fn detailed(
         vessel: impl Into<String>,
         verb: impl Into<String>,
-        at: u64,
+        at: i64,
         detail: Vec<u8>,
     ) -> Self {
         Self {
@@ -179,19 +197,21 @@ pub fn validate_body_profile(profile: &BodyProfile) -> Result<(), WireError> {
 }
 
 /// Reads a chronicle of any version this build knows, carried forward to the
-/// current one: v0 is read whole and its VTT deeds renamed. Writers always
-/// [`frame`] at [`CHRONICLE_VERSION`], so a migrated chronicle is written new.
+/// current one: v0 and v1 times become signed, and v0's VTT deeds are
+/// renamed. Writers always [`frame`] at [`CHRONICLE_VERSION`], so a migrated
+/// chronicle is written new (case 1040).
 pub fn read_chronicle(bytes: &[u8]) -> Result<Chronicle, WireError> {
-    if peek(CHRONICLE_MAGIC, bytes)? != 0 {
+    let version = peek(CHRONICLE_MAGIC, bytes)?;
+    if version != 0 && version != 1 {
         return unframe(CHRONICLE_MAGIC, CHRONICLE_VERSION, bytes);
     }
-    let mut chronicle: Chronicle = unframe(CHRONICLE_MAGIC, 0, bytes)?;
-    for deed in &mut chronicle.deeds {
-        if deed.vessel == V0_VTT_VESSEL {
-            deed.vessel = VTT_VESSEL.to_owned();
-        }
-    }
-    Ok(chronicle)
+    let old: UnsignedChronicle = unframe(CHRONICLE_MAGIC, version, bytes)?;
+    let deeds = old.deeds.into_iter().map(|deed| {
+        let vessel = if version == 0 && deed.vessel == V0_VTT_VESSEL { VTT_VESSEL.to_owned() } else { deed.vessel };
+        let at = i64::try_from(deed.at).map_err(|_| WireError::Inconsistent)?;
+        Ok(Deed { vessel, verb: deed.verb, at, detail: deed.detail })
+    }).collect::<Result<_, WireError>>()?;
+    Ok(Chronicle { species: old.species, parts: old.parts, deeds })
 }
 
 /// Ensures a chronicle still names at least one body part.
@@ -210,26 +230,44 @@ mod tests {
     const MAGIC: [u8; 8] = *b"TESTWIRE";
     const OTHER: [u8; 8] = *b"OTHERSCH";
 
+    /// What a v0 or v1 writer framed: the same fields, an unsigned time.
+    #[derive(Serialize)]
+    struct OldDeed<'a>(&'a str, &'a str, u64, Vec<u8>);
+    #[derive(Serialize)]
+    struct OldChronicle<'a>(u32, Vec<PartOrigin>, Vec<OldDeed<'a>>);
+
+    fn old(vessel: &'static str, at: u64) -> OldChronicle<'static> {
+        OldChronicle(3, vec![PartOrigin::default()],
+            vec![OldDeed(vessel, "held", at, vec![1]), OldDeed("mesocosm", "ate", 300, vec![])])
+    }
+
     #[test]
-    fn a_v0_chronicle_reads_forward_and_writes_v1() {
-        let old = Chronicle {
-            species: 3,
-            parts: vec![PartOrigin { from_species: None, from_part: None, epoch: 0 }],
-            deeds: vec![Deed::new(V0_VTT_VESSEL, "held", 1), Deed::new("mesocosm", "ate", 2)],
-        };
-        let v0 = frame(CHRONICLE_MAGIC, 0, &old).unwrap();
+    fn older_chronicles_read_forward_and_write_v2() {
+        let v0 = frame(CHRONICLE_MAGIC, 0, &old(V0_VTT_VESSEL, 1)).unwrap();
         let read = read_chronicle(&v0).unwrap();
-        assert_eq!(read.deeds[0].vessel, VTT_VESSEL);
-        assert_eq!(read.deeds[1].vessel, "mesocosm");
-        let v1 = frame(CHRONICLE_MAGIC, CHRONICLE_VERSION, &read).unwrap();
-        assert_eq!(peek(CHRONICLE_MAGIC, &v1), Ok(1));
-        assert_eq!(read_chronicle(&v1), Ok(read));
-        let mut v9 = v1.clone();
+        assert_eq!(read.deeds[0], Deed::detailed(VTT_VESSEL, "held", 1, vec![1]));
+        assert_eq!(read.deeds[1], Deed::new("mesocosm", "ate", 300));
+        let v1 = frame(CHRONICLE_MAGIC, 1, &old(VTT_VESSEL, 1)).unwrap();
+        assert_eq!(read_chronicle(&v1), Ok(read.clone()), "v1 reads as v0 did, less the rename");
+        let too_late = frame(CHRONICLE_MAGIC, 1, &old(VTT_VESSEL, u64::MAX)).unwrap();
+        assert_eq!(read_chronicle(&too_late), Err(WireError::Inconsistent));
+        let v2 = frame(CHRONICLE_MAGIC, CHRONICLE_VERSION, &read).unwrap();
+        assert_eq!(peek(CHRONICLE_MAGIC, &v2), Ok(2));
+        assert_eq!(read_chronicle(&v2), Ok(read));
+        let mut v9 = v2.clone();
         v9[8] = 9;
         assert_eq!(
             read_chronicle(&v9),
             Err(WireError::UnknownVersion { found: 9, expected: CHRONICLE_VERSION })
         );
+    }
+
+    #[test]
+    fn a_v2_deed_keeps_a_date_before_the_founding() {
+        let born = Chronicle { species: 1, parts: vec![PartOrigin::default()],
+            deeds: vec![Deed::new(VTT_VESSEL, "birth", -13_149_000)] };
+        let bytes = frame(CHRONICLE_MAGIC, CHRONICLE_VERSION, &born).unwrap();
+        assert_eq!(read_chronicle(&bytes), Ok(born));
     }
 
     #[test]

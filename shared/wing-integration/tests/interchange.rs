@@ -208,13 +208,16 @@ fn current_chronicle_bytes_refuse_foreign_schema_and_newer_version() {
     foreign[..8].copy_from_slice(b"MESOBODY");
     assert_eq!(Arrival::read(&foreign), Err(ChronicleError::WrongSchema));
 
+    // One past the current version, so the check follows the format's bumps
+    // (it had stayed at v0's numbers through v1).
+    let current = cosmograph::lineage::chronicle::CHRONICLE_VERSION;
     let mut newer = bytes;
-    newer[8..10].copy_from_slice(&1u16.to_le_bytes());
+    newer[8..10].copy_from_slice(&(current + 1).to_le_bytes());
     assert_eq!(
         Arrival::read(&newer),
         Err(ChronicleError::UnknownVersion {
-            found: 1,
-            expected: 0
+            found: current + 1,
+            expected: current
         })
     );
 }

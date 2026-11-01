@@ -99,10 +99,6 @@ struct HistoryDetail {
     place: Option<String>,
     #[serde(default)]
     tags: Vec<String>,
-    /// The line's native world tick, kept whole: the shared deed's `at` is
-    /// unsigned, so a date before the founding rides here (case 1069).
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    time: Option<i64>,
 }
 
 /// A creature that has arrived, and the record it arrived with.
@@ -169,12 +165,12 @@ impl Arrival {
             participants: event.participants.clone(),
             place: event.place.clone(),
             tags: event.tags.iter().cloned().collect(),
-            time: (event.time < 0).then_some(event.time),
         };
         self.chronicle.deeds.push(Deed {
             vessel: VESSEL.to_string(),
             verb: event.kind.clone(),
-            at: event.time.max(0) as u64,
+            // Signed since chronicle v2: a date before the founding is kept (1069).
+            at: event.time,
             detail: serde_json::to_vec(&detail).unwrap_or_default(),
         });
     }
@@ -196,7 +192,7 @@ impl Arrival {
     ///
     /// The shared vocabulary is deliberately tiny. Every verb added to it is a
     /// coupling between vessels that has to be kept in step forever.
-    pub fn record_loss(&mut self, part: u32, at: u64) {
+    pub fn record_loss(&mut self, part: u32, at: i64) {
         self.chronicle.deeds.push(Deed {
             vessel: VESSEL.to_string(),
             verb: LOST_PART.to_string(),
@@ -218,7 +214,7 @@ impl Arrival {
                 let detail: HistoryDetail = serde_json::from_slice(&deed.detail).ok()?;
                 Some(HistoryLine {
                     key: detail.id,
-                    time: detail.time.unwrap_or(deed.at as i64),
+                    time: deed.at,
                     kind: deed.verb.clone(),
                     text: detail.text,
                     participants: detail.participants,
@@ -315,8 +311,8 @@ mod tests {
 
     #[test]
     fn a_date_before_the_founding_survives_the_chronicle() {
-        // The shared deed's `at` is unsigned; our own detail keeps the
-        // signed native tick, so a pre-founding birth is not clamped to 0.
+        // Chronicle v2's deed time is signed, so a pre-founding birth keeps
+        // its date for every game that reads the chronicle.
         let mut arrival = Arrival::read(&creature()).unwrap();
         arrival.record(&event("born", "birth", -13_149_000));
         let back = Arrival::read(&arrival.to_bytes().unwrap()).unwrap();

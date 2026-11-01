@@ -11,8 +11,9 @@
 //! campaign must have no way to sort them.
 //!
 //! Both fixtures come from `cargo run -p mesocosm-core --example
-//! emit_chronicles`; their payloads are unchanged since, and their headers
-//! were moved to v1 by wing-formats' `upgrade_chronicle` (case 1040). `played.chronicle` is a
+//! emit_chronicles`; their payloads are unchanged since (they hold no deeds),
+//! and their headers were moved to v1 (case 1040), then v2 (case 1069), by
+//! wing-formats' `upgrade_chronicle`. `played.chronicle` is a
 //! critter driven through the world until it had eaten several dozen
 //! organisms; `rng.chronicle` is one nobody ever ran.
 
@@ -147,12 +148,12 @@ fn a_version_bump_in_a_real_fixture_is_refused() {
     // bumping, the round-trip tests above fail; if it bumps, this one explains
     // why in one line.
     let mut bumped = PLAYED.to_vec();
-    bumped[8..10].copy_from_slice(&2u16.to_le_bytes());
+    bumped[8..10].copy_from_slice(&3u16.to_le_bytes());
     assert_eq!(
         Arrival::read(&bumped),
         Err(ChronicleError::UnknownVersion {
-            found: 2,
-            expected: 1
+            found: 3,
+            expected: 2
         })
     );
 }
