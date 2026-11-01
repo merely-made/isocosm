@@ -24,6 +24,8 @@ notochord = { workspace = true }
 graphshell-host = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8", default-features = false, features = ["native", "custody-client"] }
 djinn = { git = "https://github.com/merely-made/armillary.git", rev = "7eebeeb4447c5dfa70b813e64dc5b492a6212d3d", default-features = false, features = ["custody-client"] }
 personae = { workspace = true }
+insigne = { git = "https://github.com/merely-made/dramatis.git", branch = "main" }
+uuid = "1"
 # Direct endpoint contract use in the Genet-owned FamilyTable adapter.
 chirograph = { workspace = true }
 graphshell-endpoint = { workspace = true }
@@ -55,6 +57,8 @@ pollster = "0.4"
 ab_glyph = "0.2"
 
 [dev-dependencies]
+# Invitation tests sign as an in-memory owner; release builds never do (stack-lift D4).
+graphshell-host = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8", default-features = false, features = ["test-signer"] }
 # Host-routing receipts run through `Harness`, the windowless twin of the
 # shipping host: a click, a right-click, a wheel notch and a key press take the
 # same hit test, capture and dispatch path the real window takes. `taproot`

@@ -4383,6 +4383,7 @@ dependencies = [
  "genet-scripted-dom",
  "graphshell-endpoint",
  "graphshell-host",
+ "insigne",
  "isocosm-campaign",
  "isocosm-core",
  "isocosm-native",
@@ -4402,6 +4403,7 @@ dependencies = [
  "sprigging",
  "taproot",
  "tokio",
+ "uuid",
  "wgpu",
 ]
 
