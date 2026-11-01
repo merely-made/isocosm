@@ -19,8 +19,9 @@ max_sources_per_season = 1
 first_band = 5
 order = ["light", "medium", "heavy", "incapacitated", "dead"]
 penalties = { light = -1, medium = -3, heavy = -5 }
-# Native cells each Wound takes from the body (case 1063). Provisional, as
-# Pathfinder's one cell is: the size is open.
+# Native cells each Wound takes from the body. Case 1069 rules these scale
+# with body size; that waits on a fork (a native Wound lands on one drawn
+# part and cannot take more than it holds), so the provisional counts stand.
 native_cells = { light = 1, medium = 2, heavy = 3, incapacitated = 4 }
 
 [fatigue]

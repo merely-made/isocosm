@@ -76,7 +76,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             if ars {
                 let alive=native.population.get(id).is_some_and(|b|b.alive);
                 let seat=super::sheets_ars::Seat{control:can_control,gm:dm,alive,propose,tick:native.tick};
-                super::sheets_ars::body(&mut built,&state,&map,id,tid,&title,&seat)?;
+                super::sheets_ars::body(&mut built,&state,&map,session,id,tid,&title,&seat)?;
                 continue;
             }
             if pathfinder {

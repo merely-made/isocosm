@@ -73,6 +73,15 @@ fn a_magus_is_drafted_studies_a_season_casts_and_is_wounded() {
     assert_eq!(sheet.system, "ars5");
     assert_eq!(sheet.int("ars:muto"), Some(10));
     let corpus_xp = sheet.int("ars:xp:corpus").unwrap();
+    // The birth is a dated native history line about the character, before
+    // the founding; the native body itself stays born at tick 0 (case 1069).
+    let (time, subject, year) = host.read(|session, _| {
+        let event = &session.sim.state().events[&format!("line:ars-birth-{body}")];
+        (event.authored.as_ref().unwrap().time, event.subject,
+            cosmograph::rules::year_ticks(session.sim.genesis().rules.tick_microseconds()))
+    }).unwrap();
+    assert_eq!(subject, body);
+    assert_eq!(time, -25 * i64::try_from(year).unwrap(), "born 25 native years before tick 0");
 
     let summa = br#"{"subject":"corpus","level":12,"quality":10}"#;
     assert_eq!(click(&mut gm, SHEETS, |c| c == "ars-covenant", "vtt.ars-add-summa", summa), ok);
