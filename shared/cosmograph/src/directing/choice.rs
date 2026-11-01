@@ -24,9 +24,18 @@ pub(crate) mod trace;
 pub(crate) struct Chosen {
     tick: Tick,
     by: BTreeMap<Id, Choice>,
+    /// What lineage policies chose, kept across advances until a reader
+    /// takes it (M3.5).
+    pub(crate) tally: BTreeMap<Key, super::policy::Tally>,
 }
 
 impl Chosen {
+    /// Forgets an advance's choices, keeping the tally.
+    pub(crate) fn clear(&mut self) {
+        self.tick = 0;
+        self.by.clear();
+    }
+
     /// An empty result lasts for one pass; a selected process lasts the tick (813).
     pub(crate) fn begin_pass(&mut self) {
         self.by.retain(|_, choice| choice.process.is_some());
@@ -45,6 +54,9 @@ pub(crate) struct Choice {
     pub answers: Vec<usize>,
     /// What each considered process scored, and on what target.
     pub options: BTreeMap<Key, (i64, Option<Id>)>,
+    /// Where a lineage policy chose: whether the hand-written score's best
+    /// is above the chosen act's (M3.5).
+    pub otherwise: Option<bool>,
 }
 
 /// What the methodology says of one actor's act in a pass.
@@ -125,10 +137,32 @@ fn feeds(e: &Effect, need: &Serves) -> bool {
     }
 }
 
+fn serves_need(process: &Process, n: &Need) -> bool {
+    process.commitments.iter().chain(&process.effects).any(|e| feeds(e, &serves(&n.query)))
+}
+
 fn need_score(process: &Process, mood: i64, pressing: &[&Need]) -> i64 {
-    let needs: i64 = pressing.iter().filter(|n| process.commitments.iter().chain(&process.effects)
-        .any(|e| feeds(e, &serves(&n.query)))).map(|n| -n.weight.min(0)).sum();
+    let needs: i64 = pressing.iter().filter(|n| serves_need(process, n))
+        .map(|n| -n.weight.min(0)).sum();
     needs * 100 * (100 + (-mood).max(0)) / 100
+}
+
+/// What a lineage policy reads of `process`, its needs as `serves` feeds
+/// them: each the hand-written score's own term, which sum to it exactly.
+fn terms(rules: &Rules, serves: &Process, process: &Process, mood: i64, pressing: &[&Need],
+    target: Option<Id>) -> super::policy::Terms {
+    let all = crate::meaning::needs(rules);
+    let lift = 100 + (-mood).max(0);
+    let needs = pressing.iter().filter(|n| serves_need(serves, n)).filter_map(|n| {
+        let k = all.iter().position(|m| std::ptr::eq(m, *n))?;
+        Some((k, -n.weight.min(0) * lift))
+    }).collect();
+    super::policy::Terms {
+        needs,
+        mood,
+        priority: i64::from(process.priority),
+        shape: [!moves(process).is_empty(), hunts(process), binds_place(process), target.is_some()],
+    }
 }
 
 /// Whether `p` acts on its site's ground or conditions.
@@ -216,10 +250,8 @@ impl Simulation {
         }
         let tick = self.state.tick;
         if self.chosen.tick != tick {
-            self.chosen = Chosen {
-                tick,
-                by: BTreeMap::new(),
-            };
+            self.chosen.clear();
+            self.chosen.tick = tick;
         }
         // Empty results are invalidated only at a scheduled pass start (813),
         // so planning and visiting share one decision within that pass.
@@ -227,6 +259,9 @@ impl Simulation {
             let choice = self.choose(actor);
             #[cfg(test)]
             self.record_choice_attempt(actor, &process.id, &choice);
+            if let Some(otherwise) = choice.otherwise {
+                self.tally_choice(actor, otherwise);
+            }
             self.chosen.by.insert(actor, choice);
         }
         let c = &self.chosen.by[&actor];
@@ -380,6 +415,9 @@ impl Simulation {
         let live = self.live_nudges(actor, tick);
         let (mood, pressing) = self.choice_minded(actor);
         let waiting = self.foraging_wait_score(actor);
+        // A lineage policy scores in the hand-written score's place (M3.5).
+        let policy = self.expressed(actor, directing.policy.expression);
+        let mut written = BTreeMap::new();
         let mut best = Choice::default();
         let mut top = i64::MIN;
         let mut candidates = Vec::new();
@@ -436,7 +474,14 @@ impl Simulation {
                     directing.sway * bond / directing.most
                 })
                 .sum();
-            let score = needs + sway + i64::from(p.priority);
+            let hand = needs + sway + i64::from(p.priority);
+            let score = match &policy {
+                Some(policy) => policy.score(&terms(rules, serves, p, mood, &pressing, target)) + sway,
+                None => hand,
+            };
+            if policy.is_some() && !(waiting > 0 && movement_only(p) && hand < waiting) {
+                written.insert(p.id.clone(), hand);
+            }
             if waiting > 0 && movement_only(p) && score < waiting {
                 continue;
             }
@@ -468,6 +513,11 @@ impl Simulation {
             best.target = *target;
             best.explicit_target = *explicit_target;
             best.answers = answers.clone();
+        }
+        if policy.is_some() {
+            let most = written.values().copied().max();
+            let chosen = best.process.as_ref().and_then(|p| written.get(p).copied());
+            best.otherwise = Some(chosen.is_some_and(|c| most.is_some_and(|m| c < m)));
         }
         best
     }

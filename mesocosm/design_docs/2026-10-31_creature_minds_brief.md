@@ -227,7 +227,8 @@ read it coming: the food web, energy flow, Ecology 3's four measures.
 
 ## 4. Cost
 
-Analytic, not measured.
+Analytic, written before M3.5 measured a smaller policy (about 230 weights) at 3% of an
+A1 world's ticks (the Mesocosm overlay plan's Findings, 2026-10-31).
 
 - A useful policy is about 1,000 weights: some thirty inputs, two hidden
   layers of sixteen, a score per offered process. A decision is about 1,000

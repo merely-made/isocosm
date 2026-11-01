@@ -58,6 +58,26 @@ pub struct Directing {
     /// How equally best movement acts are resolved (ruling 958).
     #[serde(default, skip_serializing_if = "is_identity_movement_ties")]
     pub movement_ties: MovementTies,
+    /// How lineage policies vary (mesocosm-overlay D2, M3.5); nought by
+    /// default, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "PolicyVariation::is_none")]
+    pub policy: PolicyVariation,
+}
+
+/// How far a lineage policy varies, in its weights' units: at founding
+/// (D2) and in each member's expression; and how many prospering members'
+/// variants a line weighs at a boundary (M3.5).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PolicyVariation {
+    pub founding: i16,
+    pub expression: i16,
+    pub candidates: u32,
+}
+
+impl PolicyVariation {
+    fn is_none(&self) -> bool {
+        *self == Self::default()
+    }
 }
 
 fn is_identity_movement_ties(value: &MovementTies) -> bool {
@@ -81,6 +101,7 @@ impl Default for Directing {
             sway: 1000,
             slots: BTreeMap::new(),
             variants: four(),
+            policy: PolicyVariation::default(),
         }
     }
 }

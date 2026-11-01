@@ -180,6 +180,7 @@ impl ProbeFounding {
         let mut lineages = BTreeMap::from([(
             "world:ground".into(),
             Lineage {
+                policy: None,
                 parent: None,
                 revision: 1,
                 traits: BTreeSet::new(),
@@ -213,6 +214,7 @@ impl ProbeFounding {
             lineages.insert(
                 lineage,
                 Lineage {
+                    policy: None,
                     parent: None,
                     revision: 1,
                     traits: set(&[identity.clone(), leaning.into()]),
@@ -251,6 +253,7 @@ impl ProbeFounding {
             lineages.insert(
                 lineage,
                 Lineage {
+                    policy: None,
                     parent: None,
                     revision: 1,
                     traits: set(&[identity]),
@@ -474,6 +477,7 @@ pub(super) fn member(
     let l = &lineages[lineage];
     let world = l.kingdom == "kingdom:world";
     Entity {
+        drawn: None,
         lineage: lineage.into(),
         kingdom: l.kingdom.clone(),
         scale: if world { "scale:macro" } else { "scale:meso" }.into(),

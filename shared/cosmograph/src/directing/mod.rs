@@ -14,6 +14,7 @@ use std::collections::BTreeSet;
 mod choice;
 pub mod found;
 pub mod interim;
+pub mod policy;
 pub mod readings;
 pub use crate::lineage::revise;
 pub mod tier;
@@ -116,6 +117,7 @@ impl Simulation {
     /// A participant joins, placeless and kept (688).
     pub(crate) fn join(&mut self) -> Result<Id> {
         let entity = Entity {
+            drawn: None,
             lineage: "participant:player".into(),
             kingdom: PARTICIPANT.into(),
             scale: "scale:meso".into(),
@@ -276,6 +278,8 @@ mod movement_tie_tests;
 mod feeding_tests;
 #[cfg(test)]
 mod pass_start_tests;
+#[cfg(test)]
+mod policy_tests;
 #[cfg(test)]
 mod ruled_tests;
 #[cfg(test)]

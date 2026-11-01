@@ -536,6 +536,10 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
             sim.revise(lineage, development)?;
             Ok("revised".into())
         },
+        Command::Policy { lineage, policy } => {
+            sim.adopt_policy(lineage, policy)?;
+            Ok("adopted".into())
+        },
         Command::Speciate { founder, name } => sim.speciate(*founder, name),
         Command::Assert(assertion) => sim.assert(assertion).and_then(|o| sim.founding_event(command, o)),
         Command::AttachSite { place, attachment } => sim.attach_site(place, attachment),

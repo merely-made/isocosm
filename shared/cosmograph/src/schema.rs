@@ -125,6 +125,11 @@ pub struct Entity {
     /// regrows.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub varied: Vec<Varied>,
+    /// The draw its lineage's policy is varied by in it (M3.5): drawn anew
+    /// at a birth, kept by a bud; absent where its line has no policy,
+    /// which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub drawn: Option<u64>,
     /// The patch or room its game placed it in, inside a lifted site
     /// (rulings 422 and 740); set only on a member split out of its cohort,
     /// updated by its game as it moves within the site, and cleared when it
@@ -219,6 +224,10 @@ pub struct Lineage {
     /// tick, which serializes and hashes as before.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub decides: Option<Tick>,
+    /// The policy its deliberative members choose by (case 1051); absent,
+    /// the hand-written score, which serializes and hashes as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub policy: Option<crate::directing::policy::LineagePolicy>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

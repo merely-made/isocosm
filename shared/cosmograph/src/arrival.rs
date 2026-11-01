@@ -64,6 +64,7 @@ impl Simulation {
         }
         let tick = self.state.tick;
         let entity = Entity {
+            drawn: None,
             lineage: a.lineage.clone(),
             kingdom: lineage.kingdom.clone(),
             scale: "scale:meso".into(),
