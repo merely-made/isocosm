@@ -1,8 +1,9 @@
 # Creature minds: learning in the crowd and out of it
 
 **Status:** 2026-10-31: design brief from a conversation with Mark. Its seven
-questions were answered the same day as cases 1051 to 1056 (§7); the rest is
-proposal and reading of the records. Mark's words are quoted with their date.
+questions were answered the same day as cases 1051 to 1056, its numbers as
+case 1058 (§7), and the doctrine statements they bear on were refined; the
+rest is proposal and reading of the records. Mark's words are quoted with their date.
 It is not a plan: it changes no code, and the phases it implies belong to the
 plans named in §6.
 
@@ -190,9 +191,10 @@ declared kinds (Mark: "agreed on measured classification!").
 - **Sapience is the same test** (case 1055). A creature passes by following a
   direction never given before, by imitating an act it watched, or by using
   one thing on another; a lineage reads as sapient when a share of its
-  members pass, and any passing individual may be driven. A brain-capacity
-  trait makes passing possible; it is not a switch. Passing admits driving
-  (case 671) and moves the lineage up Schema 2's method tiers.
+  adults pass (half to become, at the epoch boundary; it stays until fewer
+  than a third, case 1058), and any passing individual may be driven. A
+  brain-capacity trait makes passing possible; it is not a switch. Passing
+  admits driving (case 671) and moves the lineage up Schema 2's method tiers.
 
 One measured behaviour space serves four consumers: roles, sapience, the
 hagiograph's novelty and quality gates (MAP-Elites' behaviour descriptors),
@@ -299,8 +301,9 @@ Cues for the plans that own each part, not phases of this brief.
 
 ## 7. Answered
 
-Put to Mark as two card rounds on 2026-10-31; each answer is a case in the
-design record, in his words.
+Put to Mark as three card rounds on 2026-10-31; each answer is a case in the
+design record, in his words. Directing 3 and 4, Processes 6 and 14, and
+Mesocosm 1 and 2 were refined from them the same day.
 
 | Question | Case | Answer |
 | --- | --- | --- |
@@ -312,10 +315,11 @@ design record, in his words.
 | What counts as sapience | 1055 | Novel directions, imitation, tool use (not signalling) |
 | Who is sapient | 1055 | Both: a lineage by a share of members, and any passing individual |
 | Whether a driven creature learns from its player | 1056 | Wherever driving is |
+| How much passes at birth | 1058 | A third of each parent's delta |
+| What share makes a lineage sapient | 1058 | Half its adults to become, read at the epoch boundary; it stays sapient until fewer than a third |
 
-Still open: how large a share passes at birth and what share makes a lineage
-sapient (world rules, numbers unset); whether a distilled rate saves enough
-to adopt for unmet lineages (a measurement, `sim-execution` E6). Mark's
+Still open: whether a distilled rate saves enough to adopt for unmet
+lineages (a measurement, `sim-execution` E6). Mark's
 "compatibility?" on teaching was read in 1053 as kinship of policies; if he
 meant something else, it comes back as a question.
 

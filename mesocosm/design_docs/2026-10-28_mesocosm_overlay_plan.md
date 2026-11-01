@@ -26,6 +26,37 @@ store and its lifts (`place-graph-engine`); body appearance, footing, senses and
 hagiograph significance and the glyph organ (`wing-organs`); the wing's portable body contract
 (`wing-phenotype-contract`); parked rungs (`wing-organs` D1).
 
+## Decisions
+
+Mark's answers, keyed `mesocosm-overlay D1` to `D3` in the order he gave them, from one card
+round on 2026-10-31 that began with his "Shall we proceed to prototype the neural net?"
+
+- **D1, the first slice (2026-10-31), applies Directing 4:** "Evolution, then learning
+  (Recommended)". The lineage policy (case 1051) is built in two slices, each seen working
+  alone: first the policy, varied in each member's expression at birth and selected at the
+  epoch boundary (M3.5); then members' own deltas, learned within a life (M3.6). Offered
+  against learning in a life first and against both at once.
+
+  Links: area Directing and play · draws on 1051, ecology.1 · summary The lineage policy is built in two slices: evolution at birth and the boundary first, members' learning within a life second.
+
+- **D2, founding (2026-10-31), applies Directing 4:** "Today's score plus noise
+  (Recommended)". A founding policy carries the hand-written score on a direct path from the
+  chooser's terms, its hidden part starting at zero, plus heritable noise sized by a world
+  rule; with no noise a run hashes as the hand-written chooser's does, the slice's negative
+  control. Offered against seeding from traits and against random weights.
+
+  Links: area Directing and play · draws on 1051, schema.10 · summary A founding policy reproduces the hand-written score plus noise sized by a world rule; with none, runs hash as today.
+
+- **D3, the nudge's weight (2026-10-31), applies Mesocosm 2:** "1, but freely heritable to
+  bounded heritability seem interesting. Perhaps alignment with the player can come through
+  effort… could be interesting, domesticating a wild lineage over time". A nudge's sway is
+  added outside the policy at a fixed weight, so only the bond and trust per kind of
+  direction (1054) decide what a nudge counts for. Heritable heed, free or bounded, stays a
+  candidate, its direction a wild lineage domesticated by effort over generations. Offered
+  against heed heritable within a bound and freely.
+
+  Links: area Directing and play · draws on 1054, mesocosm.2 · summary A nudge's sway stays outside the policy at a fixed weight; heritable heed is a candidate, toward domestication by effort.
+
 ## Constraints
 
 - **Directing, never driving.** A click draws the critter's attention; it weighs each nudge by
@@ -117,6 +148,37 @@ upkeep and age, left by the reproduction lane), or move it to an example.
 - Needs: -
 - Rulings: -
 - From: `archive_docs/2026-10-28/2026-10-08_directing_interim_m4_plan.md:143-145`.
+
+### M3.5. The lineage policy, evolving (D1)
+A lineage carries an optional policy, absent meaning the hand-written score (Schema 10). The
+deliberative chooser scores each offered Choice process with it: a direct path over the
+chooser's terms (each pressing need the process feeds, by a per-need weight that is the
+lineage's drive; priority) plus a small hidden layer over those terms and the process's shape
+(moves, hunts, acts on the ground, has a target), integer throughout; a nudge's sway is added
+outside it (D3). Founding follows D2. Each member expresses the policy with variation drawn
+from its identity (Ecology 1's reroll), stored nowhere; at the epoch boundary the variants of
+members that prospered are offered as candidates and scored by growing a copy forward, the
+status quo among them. Every decision keeps a trace: its inputs, each option's score, the
+choice. Recurrent state waits for M3.6, which first stores per-member state.
+- Done when: "with no noise, seeded runs hash as the hand-written chooser's do over draws;
+  with noise, a seeded run replays to the same hash; a planted variant that serves its
+  lineage better is adopted at the boundary and a worse one is not; evaluation cost is
+  measured per decision and per tick at a few hundred members; and a per-lineage readout
+  shows, across epochs, how often its policy chose otherwise than the hand-written score
+  would have and how its standing moved."
+- Needs: M3.2 (built, awaiting certification)
+- Rulings: 683, 1051, 1052, D1 to D3; Ecology 1
+- From: the [creature minds brief](2026-10-31_creature_minds_brief.md) §3.1, §4, §10.
+
+### M3.6. Members learn (D1)
+Each member carries a small learned delta on its lineage's policy and a recurrent state,
+learned within its life from how its acts served it (the served-ness `answered` already
+measures), faster in youth (EB2) and fading as memory does (Record 3). Culture's mechanisms
+(1053, 1058) follow it.
+- Done when: not stated; set when M3.5 lands
+- Needs: M3.5
+- Rulings: 1051, 1053, D1
+- From: the creature minds brief §3.2, §3.6.
 
 ### M4i.1. The interim loop, headless (was D4)
 Certify founding from a seed, a start the player picks (179), rounds and epochs, a birth
@@ -445,3 +507,4 @@ Epoch boundary (record: open, the record does not decide).
 ## Progress
 - 2026-10-28: cut from the Mesocosm overlay plan, the directing and interim M4 plan and the
   epoch boundary plan.
+- 2026-10-31: D1 to D3 recorded; M3.5 and M3.6 added, the lineage policy of case 1051.
