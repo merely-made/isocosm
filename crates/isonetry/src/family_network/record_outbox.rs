@@ -29,6 +29,22 @@ impl FamilyRecordBatch {
     pub fn into_records(self) -> Vec<AcceptedRecord> {
         self.records
     }
+
+    /// A restarted host's persisted suffix, for republishing on a fresh lane.
+    /// The records must be contiguous and fit the batch limit.
+    pub fn persisted(records: Vec<AcceptedRecord>) -> Result<Self, String> {
+        if records.windows(2).any(|pair| pair[1].sequence != pair[0].sequence + 1) {
+            return Err("persisted family records are not contiguous".into());
+        }
+        let mut encoded_bytes = 0usize;
+        for record in &records {
+            encoded_bytes = encoded_bytes.saturating_add(record.encode()?.len());
+        }
+        if encoded_bytes > MAX_FAMILY_RECORD_BATCH_BYTES {
+            return Err(format!("persisted suffix is {encoded_bytes} bytes; batch limit is {MAX_FAMILY_RECORD_BATCH_BYTES}"));
+        }
+        Ok(Self { records, encoded_bytes })
+    }
 }
 
 /// Owner-thread sender. Queue batch count and each batch's encoded bytes are

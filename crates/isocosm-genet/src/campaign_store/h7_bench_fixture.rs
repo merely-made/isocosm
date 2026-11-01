@@ -24,7 +24,7 @@ const BAND: &str = "party:band";
 const MEMBER: &str = "relation:member-of-band";
 const VTT_SECTION: &str = "vtt";
 
-fn native_table_fixture() -> (
+pub(crate) fn native_table_fixture() -> (
     World,
     Id,
     Id,

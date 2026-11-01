@@ -110,7 +110,7 @@ impl Crowd<'_> {
 /// Keep native due/filter policy: no speculative Choice or future-only gate.
 pub(super) fn route_ready(p: &Process, e: &Entity, site_id: Id, site: &Site) -> bool {
     let moves = p.commitments.iter().chain(&p.effects).filter_map(|effect| match effect {
-        crate::rules::Effect::Move { destination } => Some(*destination),
+        crate::rules::Effect::Move { destination, .. } => Some(*destination),
         _ => None,
     }).collect::<Vec<_>>();
     moves.is_empty() || e.resident_site() == Some(site_id)

@@ -259,6 +259,11 @@ impl FamilyHost {
         Self::attach_journal(session, world, sequence, head_digest, limits, None)
     }
 
+    /// The family session this host sequences.
+    pub fn session(&self) -> SessionId {
+        self.session
+    }
+
     /// Shared handle used to open existing product endpoints. Their World
     /// transactions still publish through the installed commit gate.
     pub fn world(&self) -> &World {

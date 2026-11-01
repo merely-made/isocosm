@@ -124,9 +124,10 @@ impl Product for Isocosm {
     fn after_wake(&mut self, ctx: &mut Ctx<'_>) {
         let mut app = self.0.borrow_mut();
         if app.net.is_none() {
-            if app.family_table.is_some() {
+            if app.family_table.is_some() || app.family_guest.is_some() {
                 // An admitted stream's bounded endpoint bridge uses HostWake
-                // after queueing a request; drain on the World owner thread.
+                // after queueing a request, and a guest's join wakes with what
+                // the owner sent; drain on the World owner thread.
                 app.after_dispatch(ctx);
             }
             return;

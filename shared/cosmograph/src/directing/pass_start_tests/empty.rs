@@ -60,7 +60,7 @@ fn an_actor_can_reconsider_after_more_than_one_empty_pass() {
         let mut later = crate::generate::process(
             "test:later",
             Causation::Choice,
-            vec![Effect::Move { destination: 2 }],
+            vec![Effect::Move { destination: 2, via: None }],
         );
         later.requires.push(Query::Condition {
             key: "site:1".into(),

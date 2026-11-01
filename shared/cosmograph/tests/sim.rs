@@ -436,7 +436,7 @@ fn past_exposure_is_retained_after_movement_and_decay() {
     g.population.lift(3).unwrap().place = 0;
     let mut move_to = g.rules.processes["sim:remember"].clone();
     move_to.id = "sim:move".into();
-    move_to.effects = vec![Effect::Move { destination: 1 }];
+    move_to.effects = vec![Effect::Move { destination: 1, via: None }];
     g.rules.processes.insert(move_to.id.clone(), move_to);
     let mut sim = Simulation::new(g, Execution::Grouped).unwrap();
     let event = sim.execute(3, None, "sim:remember", None);

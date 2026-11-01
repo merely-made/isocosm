@@ -95,7 +95,11 @@ impl Game {
             &Authored {
                 placements,
                 profile: Profile {
-                    version: if templates.version >= 5 { 6 } else { 5 },
+                    version: match templates.version {
+                        v if v >= cosmograph::spatial::embodiment::ENTERING => 7,
+                        v if v >= 5 => 6,
+                        _ => 5,
+                    },
                     steps: BTreeMap::new(),
                     arrivals: Vec::new(),
                     births: Vec::new(),
@@ -314,6 +318,7 @@ impl Game {
                         arrives: journey.arrives,
                         body_revision: member.body_revision,
                         terrain_revision: session.sim.terrain_revision(),
+                        border: journey.border,
                     },
                     geometry: native::ArrivalGeometry {
                         eye: std::array::from_fn(|k| pose.at[k] + t.eye[k]),

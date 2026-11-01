@@ -77,7 +77,7 @@ fn fixture_sites(
             present: false,
         }]
     } else {
-        vec![Effect::Move { destination: 1 }]
+        vec![Effect::Move { destination: 1, via: None }]
     };
     let mut early = crate::generate::process("test:early", Causation::Choice, effects);
     early.requires.push(Query::Condition {

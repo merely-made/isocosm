@@ -29,7 +29,7 @@ pub(super) fn fixture(count: u64) -> (Genesis, Id) {
         });
     }
     for (key, destination) in [("test:first",1), ("test:next",2)] {
-        add(&mut g, key, Causation::Choice, vec![Effect::Move { destination }], None, 0);
+        add(&mut g, key, Causation::Choice, vec![Effect::Move { destination, via: None }], None, 0);
     }
     (g, id)
 }
@@ -70,7 +70,7 @@ fn route_duration_and_next_route_use_the_traversed_route() {
         assert!(act(&mut s, id, None, "test:first").accepted());
         let e = s.sim.state().population.get(id).unwrap();
         assert_eq!(e.resident_site(), None, "departure cannot arrive immediately");
-        assert_eq!(e.journey, Some(Journey { from:0, to:1, departed:1, arrives:4 }),
+        assert_eq!(e.journey, Some(Journey { from:0, to:1, departed:1, arrives:4, border: None }),
             "817 arrival uses the traversed route's authored duration");
         assert_eq!(e.visits, vec![Visit { place:0, from:0, until:1 }]);
         assert!(!act(&mut s, id, None, "test:next").accepted());
@@ -100,7 +100,7 @@ fn invalid_route_times_and_arrival_overflow_never_change_authority() {
     }
     let mut actor = invalid.population.get(id).unwrap().clone();
     let before = actor.clone();
-    assert_eq!(depart(&mut actor,&invalid.sites[&0],1,1).unwrap_err(),
+    assert_eq!(depart(&mut actor,&invalid.sites[&0],1,None,1,true).unwrap_err(),
         "route travel must be positive");
     assert_eq!(actor,before,"an invalid route cannot partially depart");
     let (mut g,id) = fixture(1);
@@ -244,7 +244,7 @@ pub(super) fn bodied_fixture() -> (Genesis,Id) {
     g.rules.traits.insert(ACTOR.into()); g.rules.processes.clear();
     g.sites.get_mut(&0).unwrap().routes = vec![Route { to:1,travel:3,
         transmission:1_000_000,border:None,authored:None }];
-    add(&mut g,"test:first",Causation::Choice,vec![Effect::Move { destination:1 }],None,0);
+    add(&mut g,"test:first",Causation::Choice,vec![Effect::Move { destination:1, via: None }],None,0);
     (g,id)
 }
 

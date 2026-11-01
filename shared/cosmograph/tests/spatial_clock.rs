@@ -24,7 +24,24 @@ fn birth_source() -> Session {
         clearance: [[-1, -1, -1], [1, 1, 1]], medium: BirthMedium::AirOrWater,
         support: BirthSupport::Free,
     });
-    Session::new(genesis, Execution::Grouped).unwrap()
+    at_first_birth(Session::new(genesis, Execution::Grouped).unwrap())
+}
+
+/// Ticks a played lineage may wait for its first paced choice (D19 paces a
+/// producer every 10 ticks, offset by its first identity).
+const BIRTH_CAP: u64 = 64;
+
+/// The world on the tick whose clock first asks for a birth. A pending
+/// birth leaves its source unchanged, so the comparisons start there.
+fn at_first_birth(mut s: Session) -> Session {
+    for _ in 0..BIRTH_CAP {
+        match s.try_advance_birth_spatial_with_flows(1, &[], &[], &[], &[]).unwrap() {
+            SpatialAdvance::Birth(_) => return s,
+            SpatialAdvance::Advanced(_) => {},
+            _ => panic!("fixture needs only birth answers"),
+        }
+    }
+    panic!("no birth was asked for within {BIRTH_CAP} ticks of the paced fixture");
 }
 
 #[test]

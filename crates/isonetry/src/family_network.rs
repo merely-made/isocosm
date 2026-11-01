@@ -270,6 +270,8 @@ mod record_outbox;
 pub use record_outbox::{
     FamilyRecordBatch, FamilyRecordOutbox, MAX_FAMILY_RECORD_BATCH_BYTES, MAX_FAMILY_RECORD_BATCHES,
 };
+/// Invited peers: the owner's card and the guest's dial (isocosm case 1060).
+pub mod invited;
 mod lifecycle;
 pub use lifecycle::{FamilyHostNetwork, FamilyReplicaNetwork, MAX_REPLICA_RECORD_QUEUE};
 

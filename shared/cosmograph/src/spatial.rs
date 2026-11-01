@@ -26,7 +26,7 @@ mod tier;
 mod settle;
 pub mod embodiment;
 pub mod foraging;
-pub use templates::{Templates, Stand, Crossing, STANDS as STANDS_PER_SITE};
+pub use templates::{Templates, Stand, Crossing, entering, STANDS as STANDS_PER_SITE};
 pub(crate) use tier::FarFood;
 #[cfg(test)]
 pub(crate) use tier::encounter;
@@ -101,6 +101,9 @@ pub struct Pending { pub request: Request, pub sim: Box<Simulation> }
 pub struct ArrivalRequest {
     pub actor: Id, pub from: Id, pub to: Id, pub departed: Tick, pub arrives: Tick,
     pub body_revision: u64, pub terrain_revision: Key,
+    /// The border the journey crossed, under routed movement (1057).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub border: Option<Border>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

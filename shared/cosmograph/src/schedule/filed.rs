@@ -176,12 +176,12 @@ impl Gates {
     /// resident site whose routes reach each of its destinations. Routes
     /// change only when asserted, never during an advance.
     pub(crate) fn residing(mut self, p: &Process, sites: &BTreeMap<Id, Site>, immediate: bool) -> Self {
-        let to: Vec<Id> = p.commitments.iter().chain(&p.effects).filter_map(|e| match e {
-            Effect::Move { destination } | Effect::MovePaced { destination, .. } => Some(*destination),
+        let to: Vec<(Id, Option<u8>)> = p.commitments.iter().chain(&p.effects).filter_map(|e| match e {
+            Effect::Move { destination, via } | Effect::MovePaced { destination, via, .. } => Some((*destination, *via)),
             _ => None,
         }).collect();
         if !immediate && !to.is_empty() {
-            let reaches = |s: &Site| to.iter().all(|t| s.routes.iter().any(|r| r.to == *t));
+            let reaches = |s: &Site| to.iter().all(|(t, via)| crate::journey::route(s, *t, *via).is_some());
             self.resides = Some(sites.iter().filter(|(_, s)| reaches(s)).map(|(id, _)| *id).collect());
             self.chosen = p.causation == Causation::Choice;
         }

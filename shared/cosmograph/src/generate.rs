@@ -43,6 +43,10 @@ pub struct Founding {
     /// preset is named; stock foundings serialize and hash as before.
     #[serde(default, skip_serializing_if = "crate::ecology::Rates::is_stock")]
     pub ecology_rates: crate::ecology::Rates,
+    /// The ways of living a generated ecology's lineages take; levels
+    /// unless named, which serialize and hash as before.
+    #[serde(default, skip_serializing_if = "crate::ecology::Web::is_levels")]
+    pub web: crate::ecology::Web,
 }
 
 impl Default for Founding {
@@ -64,6 +68,7 @@ impl Default for Founding {
             played: None,
             affinity: None,
             ecology_rates: Default::default(),
+            web: Default::default(),
         }
     }
 }
@@ -444,7 +449,7 @@ impl Founding {
         let mut remaining = self.population;
         let mut group = 0;
         while remaining > 0 {
-            let i = random("lineage", group) % u64::from(self.lineages);
+            let i = self.web.founder(self.lineages, random("lineage", group));
             let lineage = format!("lineage:{i}");
             let n = 2 + random("compartments", i) % 3;
             let mut accounts = BTreeMap::from([("world:soil".into(), 4)]);

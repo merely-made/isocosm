@@ -72,7 +72,17 @@ struct CampaignMetadata {
 struct TableAccess {
     host_participant: cosmograph::schema::Id,
     peers: Vec<isonetry::native_table::PeerParticipant>,
+    /// The owner's stored grants; admission rechecks them (case 1060).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    invitations: Vec<graphshell_host::invitation::Invitation>,
 }
+
+#[path = "family_invite.rs"]
+pub(crate) mod invite;
+#[path = "family_view.rs"]
+pub(crate) mod view;
+#[path = "family_host_net.rs"]
+pub(crate) mod host_net;
 
 /// A local VTT host imported from the app's one-time native publication.
 pub(crate) struct FamilyTable {
@@ -84,6 +94,8 @@ pub(crate) struct FamilyTable {
     durable: bool,
     snapshots: BTreeMap<String, ProjectionSnapshot>,
     peer_endpoints: BTreeMap<[u8; 32], VttEndpoint>,
+    /// The signed bootstrap checkpoint while hosting invited peers.
+    checkpoint: Option<isonetry::family_network::FamilyCheckpointResource>,
 }
 
 impl FamilyTable {
@@ -121,6 +133,7 @@ impl FamilyTable {
                 let access = TableAccess {
                     host_participant: table.host_participant,
                     peers: table.peers.clone(),
+                    invitations: Vec::new(),
                 };
                 let mut sections = BTreeMap::new();
                 sections.insert(VTT_SECTION.to_owned(), table.game.clone());
@@ -169,7 +182,8 @@ impl FamilyTable {
                 let table = native_table.ok_or(
                     "family ledger has no saved peer bindings; reopen from its native table metadata",
                 )?;
-                TableAccess { host_participant: table.host_participant, peers: table.peers.clone() }
+                TableAccess { host_participant: table.host_participant, peers: table.peers.clone(),
+                    invitations: Vec::new() }
             };
             Ok::<_, String>((metadata, access))
         })??;
@@ -227,6 +241,7 @@ impl FamilyTable {
             durable,
             snapshots: BTreeMap::new(),
             peer_endpoints: BTreeMap::new(),
+            checkpoint: None,
         })
     }
 
@@ -237,8 +252,9 @@ impl FamilyTable {
         for offer in offers {
             let id = offer.request.session.0.clone();
             let snapshot = self.endpoint.snapshot(offer.request)?;
-            views.push(projection_view(
-                &mut self.endpoint,
+            let endpoint = &mut self.endpoint;
+            views.push(view::projection_view(
+                &mut |request| endpoint.resource(request),
                 &offer.label,
                 &id,
                 &snapshot,
@@ -250,43 +266,8 @@ impl FamilyTable {
     }
 
     pub(crate) fn invoke(&mut self, request: VttActionRequest) -> Result<IntentResult, String> {
-        let snapshot = self
-            .snapshots
-            .get(&request.projection)
-            .ok_or("VTT action names a projection that is not currently displayed")?;
-        let target = snapshot
-            .scene
-            .active_items_in_order()
-            .into_iter()
-            .find_map(|(instance, _)| {
-                (card_identifier(instance) == request.card).then_some(instance)
-            })
-            .ok_or("VTT action target is absent from the displayed projection")?;
-        let actions = snapshot
-            .scene
-            .active_items_in_order()
-            .into_iter()
-            .find(|(instance, _)| *instance == target)
-            .and_then(|(instance, _)| snapshot.presentation.offers_for(instance))
-            .into_iter()
-            .flatten()
-            .flat_map(|offer| offer.semantics.actions.iter())
-            .collect::<Vec<_>>();
-        if !actions
-            .iter()
-            .any(|action| action.intent.0 == request.action)
-        {
-            return Err("VTT action is no longer advertised by its displayed card".into());
-        }
-        let result = self.endpoint.invoke(IntentInvocation {
-            session: snapshot.session.clone(),
-            target,
-            observed_epoch: SceneEpoch(request.epoch),
-            observed_revision: Revision(request.revision),
-            intent: request.action,
-            payload: request.payload,
-        })?;
-        Ok(result)
+        let invocation = view::invocation(&self.snapshots, request)?;
+        self.endpoint.invoke(invocation)
     }
 
     pub(crate) fn drain_records(&self) -> Vec<AcceptedRecord> {
@@ -362,9 +343,17 @@ impl FamilyTable {
     ) -> Result<(BridgeEndpoint, AdmittedRequestPump), String> {
         let peer_key = AuthenticatedPeerKey::from_admitted_session(session)
             .map_err(|error| error.to_string())?;
-        let participant = self
-            .participant_for_peer(*peer_key.as_bytes())
-            .ok_or("admitted peer has no native table participant binding")?;
+        // A table that keeps invitations admits only a guest whose stored,
+        // unexpired grant the admitted claims carry, on its own transport key.
+        let participant = if self.access.invitations.is_empty() {
+            self.participant_for_peer(*peer_key.as_bytes())
+                .ok_or("admitted peer has no native table participant binding")?
+        } else {
+            if session.principal.subject != *peer_key.as_bytes() {
+                return Err("the admitted subject is not the authenticated transport key".into());
+            }
+            self.admits(&session.principal, &session.claims.delegations, invite::now_ms())?
+        };
         let peer_endpoint = VttEndpoint::open(
             self.host.world(),
             ParticipantHandle(participant),
@@ -414,6 +403,9 @@ impl FamilyTable {
         let participant = self
             .participant_for_peer(peer_key)
             .ok_or_else(|| "admitted peer has no native table participant binding".to_owned())?;
+        if let Some(answer) = self.checkpoint_answer(&request.call) {
+            return answer;
+        }
         if !self.peer_endpoints.contains_key(&peer_key) {
             let endpoint = VttEndpoint::open(
                 self.host.world(),
@@ -471,74 +463,3 @@ fn family_session_id(saved: &cosmograph::history::Saved) -> Result<SessionId, St
     Ok(SessionId(id))
 }
 
-fn projection_view(
-    endpoint: &mut VttEndpoint,
-    label: &str,
-    id: &str,
-    snapshot: &ProjectionSnapshot,
-) -> Result<VttProjectionView, String> {
-    let mut cards = Vec::new();
-    for (instance, item) in snapshot.scene.active_items_in_order() {
-        let source = snapshot.scene.tables.sources[item.source.0 as usize]
-            .as_ref()
-            .ok_or("VTT projection has an absent item source")?;
-        let offers = snapshot
-            .presentation
-            .offers_for(instance)
-            .ok_or("VTT card has no presentation offer")?;
-        let portable = offers
-            .iter()
-            .find(|offer| offer.codec == chirograph::PresentationCodec::PortableCardV1);
-        let card = match portable {
-            Some(offer) => {
-                let response = endpoint.resource(ResourceRequest {
-                    session: snapshot.session.clone(),
-                    resource: offer.resource.clone(),
-                })?;
-                serde_json::from_slice::<PortableCardV1>(&response.bytes)
-                    .map_err(|error| format!("VTT portable card is invalid: {error}"))?
-            },
-            None => PortableCardV1 {
-                title: source.id.clone(),
-                values: Vec::new(),
-                badges: Vec::new(),
-                media: Vec::new(),
-            },
-        };
-        let actions = offers
-            .iter()
-            .flat_map(|offer| offer.semantics.actions.iter())
-            .map(|action| VttActionView {
-                id: action.intent.0.clone(),
-                label: action.label.clone(),
-                explanation: action.explanation.clone(),
-                payload_schema: action.payload_schema.clone(),
-            })
-            .collect();
-        cards.push(VttCardView {
-            id: card_identifier(instance),
-            title: card.title,
-            values: card
-                .values
-                .into_iter()
-                .map(|value| VttCardValue {
-                    label: value.label,
-                    value: value.value,
-                })
-                .collect(),
-            badges: card.badges,
-            actions,
-        });
-    }
-    Ok(VttProjectionView {
-        id: id.to_owned(),
-        label: label.to_owned(),
-        epoch: snapshot.scene.epoch.0,
-        revision: snapshot.scene.revision.0,
-        cards,
-    })
-}
-
-fn card_identifier(instance: impl std::fmt::Debug) -> String {
-    format!("{instance:?}")
-}

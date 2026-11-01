@@ -54,7 +54,7 @@ fn fixture(seed: u64, place: Id) -> (Genesis, Id, Id, Id) {
         key: "test:edible".into(),
     });
     for (id, effects) in [
-        ("test:move", vec![Effect::Move { destination: 1 }]),
+        ("test:move", vec![Effect::Move { destination: 1, via: None }]),
         (
             "test:strip",
             vec![Effect::Trait {

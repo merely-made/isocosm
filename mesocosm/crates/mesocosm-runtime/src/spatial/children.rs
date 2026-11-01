@@ -14,6 +14,8 @@ pub struct ArrivalTemplate {
     pub pose: Pose, pub eye: [i64; 3], pub window: Window,
     pub places: isometer_space::places::Rules,
     pub operations: BTreeMap<String, Operation>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub border: Option<Border>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -43,9 +45,9 @@ impl BirthTemplates {
         }
         let mut routes = BTreeSet::new();
         for input in &self.arrivals {
-            if !routes.insert((input.from.0, input.to.0)) || !sim.state().sites.contains_key(&input.to.0)
+            if !routes.insert((input.from.0, input.to.0, input.border)) || !sim.state().sites.contains_key(&input.to.0)
                 || !sim.state().sites.get(&input.from.0).is_some_and(|site|
-                    site.routes.iter().any(|route| route.to == input.to.0)) {
+                    site.routes.iter().any(|r| r.to == input.to.0 && (input.border.is_none() || r.border == input.border))) {
                 return Err("birth destination template names a duplicate or absent native route".into());
             }
         }
@@ -57,7 +59,7 @@ impl ArrivalTemplate {
     fn bind(&self, child: Id) -> ArrivalInput {
         ArrivalInput { actor: EntityHandle(child), from: self.from, to: self.to,
             pose: self.pose.clone(), eye: self.eye, window: self.window.clone(),
-            places: self.places, operations: self.operations.clone() }
+            places: self.places, operations: self.operations.clone(), border: self.border }
     }
 }
 
@@ -76,14 +78,14 @@ impl Driver {
         let mut inputs = self.profile.arrivals.clone();
         let mut identities = BTreeSet::new();
         for input in &inputs {
-            if !identities.insert((input.actor.0, input.from.0, input.to.0)) {
+            if !identities.insert((input.actor.0, input.from.0, input.to.0, input.border)) {
                 return Err("destination inputs collide for one actual native identity".into());
             }
         }
         for (&id, child) in &self.children {
             for template in &child.inputs.arrivals {
                 let input = template.bind(id);
-                if !identities.insert((id, input.from.0, input.to.0)) {
+                if !identities.insert((id, input.from.0, input.to.0, input.border)) {
                     return Err("birth destination inputs collide with another authored destination".into());
                 }
                 inputs.push(input);

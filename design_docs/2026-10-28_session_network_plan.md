@@ -331,5 +331,29 @@ parked (`wing-organs` D1).
   at each step (`shared/wing-integration/tests/family_network/vtt.rs`,
   `a_player_peer_joins_consents_and_is_seated_as_gm_over_the_transport`). The
   host still chooses the peer's participant; step 4 binds it from admission.
+- 2026-11-01, working table step 4 (part): the wing pins mere 5431b896, where
+  co-op's invitation was lifted into `graphshell_host::invitation` (mere
+  stack-lift D4, isocosm case 1060). The table's owner invites a guest's
+  contact: one accepted record joins a native participant and binds it to the
+  guest's transport key, keeping the grant in the table's access section;
+  admission rechecks that grant and seats the peer from its admitted key
+  (`isocosm-genet/src/family_invite.rs`). The app's invite and join flow and
+  the headed two-process capture are open: Djinn on this machine refuses
+  "isocosm is not an application this device admits", and its vault is locked.
+- 2026-11-01, working table step 4 (flow): the invite and join flow is built.
+  `--host --handoff DIR` binds the transport on the custody identity's derived
+  key, republishes the signed record lane, signs the bootstrap checkpoint and
+  writes the family card (`table.card.json`: card, attested record key,
+  checkpoint descriptor); each guest contact file in DIR is invited and its
+  invitation written beside it. `--join DIR` writes the guest's contact, waits
+  for its invitation and the card, dials, fetches the checkpoint in chunks,
+  installs a replica on the signed lane and shows the projections the owner
+  serves its seat. Generic pieces are `isonetry::family_network::invited`; the
+  app's are `family_host_net.rs`, `family_guest.rs` and `peer_session.rs`. A
+  two-transport test with dev identities joins, claims the GM seat and
+  converges (`family_guest_tests.rs`). The headed host run here stops at
+  custody: Djinn still refuses the app. Not checked here: a macOS build (no
+  Apple target or SDK on this machine) and reachability between this machine
+  and the iMac (the card's ticket carries direct addresses, no relay).
 - 2026-10-28: cut from the sim host plan's H7, the Stickleback migration plan,
   the shared-authority plan and the campaign retirement plan's H7 follow-on.

@@ -35,7 +35,7 @@ isometer-render = { path = "crates/isometer-render" }
 isometer-space = { path = "crates/isometer-space" }
 # The document leaf seam: `TextureProducer`, `ProducedTexture` and the two
 # output-contract enums. Pinned at the revision both products pin.
-cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 # The device the body layer owns its depth attachment on. Backends are left to
 # the leaf binaries, as the presentation plan's dependency table rules.
 wgpu = { version = "30", default-features = false, features = ["std", "wgsl"] }
@@ -71,9 +71,9 @@ wgpu = { version = "30", default-features = false, features = [
 [patch.crates-io]
 # mere patches accesskit 0.25.1 (support/patches/accesskit); its cambium hosts
 # call methods only the patched copy has, so the same copy, from mere at its pin.
-accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 # Stable CubeCL, with Mere's persistence opt-out for resident GPU consumers.
-cubecl-runtime = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+cubecl-runtime = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 vello = { git = "https://github.com/mark-ik/vello.git", branch = "mark-ik/wgpu-30" }
 # No parley or fontique row: genet published its forks as `genet-parley` and
 # `genet-fontique` at 5ae30cad, so genet.git answers to neither name.
@@ -85,14 +85,14 @@ rust-version = "1.97.1"
 
 # Root patches are not inherited from the imported Murm suppliers.
 [patch."https://github.com/merely-made/mere.git"]
-cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-mere-surface-api = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-cambium-winit = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-meristem = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-workbench = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+mere-surface-api = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+cambium-winit = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+meristem = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+workbench = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 
 # Keep canonical Eidetic and Gemot requests on the selected supplier commits;
 # the www URL spellings refer to the same repositories under separate keys.

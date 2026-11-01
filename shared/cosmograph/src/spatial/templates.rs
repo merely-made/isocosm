@@ -35,10 +35,15 @@ pub struct Stand {
     pub feet: BTreeMap<isometer_core::PartId, [i64; 3]>,
 }
 
-/// The stand a member takes on arriving by this route.
+/// The stand a member takes on arriving by this route. A route with a
+/// border names it, and its stand lies at the edge it enters by (1057).
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub struct Crossing { pub from: Id, pub to: Id, pub stand: Stand }
+pub struct Crossing {
+    pub from: Id, pub to: Id, pub stand: Stand,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub border: Option<Border>,
+}
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -65,7 +70,7 @@ impl Templates {
         if self.walking.is_some_and(|r| self.version < 4 || !r.valid()) {
             return Err("weight transfers need bounded articulated walking rules".into());
         }
-        if !matches!(self.version, VERSION | 2 | 3 | 4 | 5) || self.window.max[0] <= self.window.min[0]
+        if !matches!(self.version, VERSION | 2 | 3 | 4 | 5 | 6) || self.window.max[0] <= self.window.min[0]
             || self.window.max[1] <= self.window.min[1] || self.window.depth <= 0 {
             return Err("unsupported or empty spatial templates".into());
         }
@@ -83,10 +88,17 @@ impl Templates {
             }
         } }
         super::foraging::validate(self, &genesis.rules)?;
+        let mut crossed = BTreeSet::new();
         for crossing in &self.crossings {
-            let routed = genesis.sites.get(&crossing.from)
-                .is_some_and(|site| site.routes.iter().any(|r| r.to == crossing.to));
-            if !routed || self.stands.get(&crossing.to).is_none_or(|stands| !stands.contains(&crossing.stand)) {
+            if !crossed.insert((crossing.from, crossing.to, crossing.border)) {
+                return Err("spatial template crossings repeat a route".into());
+            }
+            let routed = genesis.sites.get(&crossing.from).is_some_and(|site| site.routes.iter()
+                .any(|r| r.to == crossing.to && (crossing.border.is_none() || r.border == crossing.border)));
+            // An edge stand stands apart from the site's own stands.
+            let stood = if crossing.border.is_some() { inside(&crossing.stand) && genesis.sites.contains_key(&crossing.to) }
+                else { self.stands.get(&crossing.to).is_some_and(|stands| stands.contains(&crossing.stand)) };
+            if !routed || !stood {
                 return Err("spatial template arrival names no native route or stand".into());
             }
         }
@@ -108,12 +120,24 @@ impl Templates {
         let mut stands = BTreeMap::new();
         for &site in genesis.sites.keys() {
             let volume = Volume::lift(&view, site, window.min, window.max, window.depth, &[])?;
-            stands.insert(site, stands_of(&volume, places, seed, site)?);
+            stands.insert(site, stands_of(&volume, places, seed, site, [(volume.min[0] + volume.max[0]) / 2; 2], STANDS)?);
         }
-        let crossings = genesis.sites.iter().flat_map(|(&from, site)| site.routes.iter()
-            .filter_map(|r| stands.get(&r.to).and_then(|s| s.first())
-                .map(|stand| Crossing { from, to: r.to, stand: stand.clone() }))
-            .collect::<Vec<_>>()).collect();
+        let mut crossings = Vec::new();
+        for (&from, site) in &genesis.sites {
+            for r in &site.routes {
+                // A bordered route arrives at the edge it enters by; one
+                // without geometry keeps the site's first stand.
+                let stand = match r.border {
+                    Some(b) => {
+                        let volume = Volume::lift(&view, r.to, window.min, window.max, window.depth, &[])?;
+                        let at = entering(&window, b.enters, APART);
+                        stands_of(&volume, places, seed, r.to, at, 1)?.into_iter().next()
+                    }
+                    None => stands.get(&r.to).and_then(|s| s.first()).cloned(),
+                };
+                if let Some(stand) = stand { crossings.push(Crossing { from, to: r.to, stand, border: r.border }); }
+            }
+        }
         genesis.rules.spatial_templates = Some(Templates { version: VERSION, window, places, eye: EYE,
             stands, crossings, foraging: BTreeMap::new(), body_spacing: 0, walking: None });
         Ok(())
@@ -123,7 +147,8 @@ impl Templates {
 /// Root cells on solid ground whose root and eye are clear in one realized
 /// patch, nearest the window centre first and spaced apart. A site whose
 /// terrain admits none declares none.
-fn stands_of(volume: &Volume, rules: PlaceRules, seed: u64, site: Id) -> Result<Vec<Stand>> {
+fn stands_of(volume: &Volume, rules: PlaceRules, seed: u64, site: Id, centre: [i64; 2], limit: usize)
+    -> Result<Vec<Stand>> {
     let m = volume.materials;
     let clear = |cell: [i64; 3]| volume.holds(cell[0], cell[2]) && cell[1] >= volume.datum
         && cell[1] < volume.ceiling() && volume.material(cell).is_some_and(|c| c == m.air);
@@ -134,14 +159,14 @@ fn stands_of(volume: &Volume, rules: PlaceRules, seed: u64, site: Id) -> Result<
         let ground = volume.material([x, top, z]).filter(|&c| c != m.water)?;
         (ground != m.air && top + 1 + EYE[1] < volume.ceiling()).then_some([x, top + 1, z])
     };
-    let mid = (volume.min[0] + volume.max[0]) / 2;
+    let [cx, cz] = centre;
     let mut places: Option<Places> = None;
     let mut found: Vec<Stand> = Vec::new();
     for ring in (0..=REACH.min((volume.max[0] - volume.min[0]) / 2)).step_by(STRIDE as usize) {
-        for x in (mid - ring..=mid + ring).step_by(STRIDE as usize) {
-            for z in (mid - ring..=mid + ring).step_by(STRIDE as usize) {
-                if found.len() >= STANDS { return Ok(found); }
-                if (x - mid).abs().max((z - mid).abs()) != ring || !volume.holds(x, z)
+        for x in (cx - ring..=cx + ring).step_by(STRIDE as usize) {
+            for z in (cz - ring..=cz + ring).step_by(STRIDE as usize) {
+                if found.len() >= limit { return Ok(found); }
+                if (x - cx).abs().max((z - cz).abs()) != ring || !volume.holds(x, z)
                     || found.iter().any(|s| (s.at[0] - x).abs().max((s.at[2] - z).abs()) < APART) { continue; }
                 let Some(root) = root_in(x, z) else { continue; };
                 let eye = [root[0] + EYE[0], root[1] + EYE[1], root[2] + EYE[2]];
@@ -157,4 +182,19 @@ fn stands_of(volume: &Volume, rules: PlaceRules, seed: u64, site: Id) -> Result<
         }
     }
     Ok(found)
+}
+
+/// The middle of `window`'s side `enters`, `inset` columns inward, in
+/// `(x, z)`. Side `k` runs from corner `k` to `k + 1`: 0 is low `z`, 1 high
+/// `x`, 2 high `z`, 3 low `x`, as the map's borders number them.
+pub fn entering(window: &Window, enters: u8, inset: i64) -> [i64; 2] {
+    let (lo, hi) = (window.min, [window.max[0] - 1, window.max[1] - 1]);
+    let mid = [(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2];
+    let inset = inset.min((hi[0] - lo[0]) / 2).min((hi[1] - lo[1]) / 2).max(0);
+    match enters % 4 {
+        0 => [mid[0], lo[1] + inset],
+        1 => [hi[0] - inset, mid[1]],
+        2 => [mid[0], hi[1] - inset],
+        _ => [lo[0] + inset, mid[1]],
+    }
 }

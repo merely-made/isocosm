@@ -28,7 +28,7 @@ isometer-core = { path = "../isometer/crates/isometer-core", version = "0.1.0" }
 # In-site space: the lift, edits and places (wing rulings 696, 698 and 701).
 isometer-space = { path = "../isometer/crates/isometer-space" }
 # The labelled witness, built once in mere (wing rulings 609, 647, 650).
-state-witness = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+state-witness = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 wing-functions = { path = "../wing-functions" }
 wing-formats = { path = "../wing-formats" }
 postcard = { version = "1", default-features = false, features = ["alloc"] }
@@ -45,7 +45,7 @@ rust-version = "1.97.1"
 [patch.crates-io]
 # mere patches accesskit 0.25.1 (support/patches/accesskit); its cambium hosts
 # call methods only the patched copy has, so the same copy, from mere at its pin.
-accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 # Promoted sources shared with immutable older Mere suppliers.
 hagiograph = { git = "https://github.com/merely-made/eidetic.git", rev = "613799afd001200792e6c37d4406807848dadabc" }
 

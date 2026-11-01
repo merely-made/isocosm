@@ -102,6 +102,7 @@ fn movement_fixture(seed: u64) -> (crate::simulation::Genesis, Id, Vec<Key>) {
                     .copied()
                     .find(|to| format!("move:{home}-{to}") == *id)
                     .unwrap(),
+                via: None,
             }],
         );
         let mut process = process;
@@ -248,8 +249,7 @@ fn due_feasible_menu_and_legacy_policy_wire_are_preserved() {
         "move:invalid-destination",
         Causation::Choice,
         vec![Effect::Move {
-            destination: genesis.population.get(actor).unwrap().place,
-        }],
+            destination: genesis.population.get(actor).unwrap().place, via: None }],
     );
     infeasible.period = Some(1);
     infeasible.priority = 0;

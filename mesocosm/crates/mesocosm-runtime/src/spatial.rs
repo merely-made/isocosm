@@ -4,7 +4,7 @@
 //! Saved game geometry, bound to native bodies, places and terrain (833).
 
 use std::collections::{BTreeMap, BTreeSet};
-use cosmograph::{Session, schema::Id, simulation::Simulation, operations::{Pending, Window}};
+use cosmograph::{Session, schema::{Border, Id}, simulation::Simulation, operations::{Pending, Window}};
 use cosmograph_overlay::{ActKey, EntityHandle, PlaceHandle, Tick,
     mesocosm::{TerrainGeometry, TerrainShape}};
 use isometer_core::Yaw;

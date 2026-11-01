@@ -221,7 +221,7 @@ fn typed_event_locations_roundtrip_json_and_binary_with_kept_site_preimages() {
     let (g, actor) = fixture(1);
     let mut s = Session::new(g, Execution::Individuals).unwrap();
     let site = act(&mut s,actor,None,"test:first").id;
-    let journey = Journey { from:0,to:1,departed:0,arrives:3 };
+    let journey = Journey { from:0,to:1,departed:0,arrives:3, border: None };
     for place in [EventPlace::Site(0), EventPlace::Site(crate::directing::PLACELESS),
                   EventPlace::Journey(journey)] {
         let wire = postcard::to_allocvec(&place).unwrap();

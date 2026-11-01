@@ -80,7 +80,7 @@ pub fn world(seed: u64) -> World {
             account: TIMBER.into(), amount: HAUL_MG.into() }]),
         process(DROP, vec![], vec![Effect::Spend { from: vec![TIMBER.into()], to: Binding::Place,
             amount: DROP_MG.into(), into: None }]),
-        process(GO, vec![], vec![Effect::Move { destination: away }]),
+        process(GO, vec![], vec![Effect::Move { destination: away, via: None }]),
     ];
     for p in processes { g.rules.processes.insert(p.id.clone(), p); }
     g.validate().unwrap();

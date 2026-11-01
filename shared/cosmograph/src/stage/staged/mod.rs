@@ -312,8 +312,8 @@ impl Staged<'_> {
                 self.graft(reserve, soil, cause)?;
                 return Ok(false);
             },
-            Effect::MovePaced { destination, profile } => {
-                self.paced_move(*destination, profile, cause)?;
+            Effect::MovePaced { destination, profile, via } => {
+                self.paced_move(*destination, *via, profile, cause)?;
                 return Ok(false);
             },
             Effect::ProjectDecision => {
@@ -459,10 +459,10 @@ impl Staged<'_> {
                 };
                 self.stage.relations.push((relation, *present));
             },
-            Effect::Move { destination } => {
+            Effect::Move { destination, via } => {
                 let site = sim.site_at_start(place).ok_or("departure site absent")?;
                 if !sim.state.movement.immediate() {
-                    crate::journey::depart(self.actor(), site, *destination, tick)?;
+                    crate::journey::depart(self.actor(), site, *destination, *via, tick, sim.state.movement.routed())?;
                     return Ok(false);
                 }
                 // Kept v3 action semantics, explicitly tagged and witnessed.

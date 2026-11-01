@@ -14,7 +14,7 @@ impl Simulation {
         for input in inputs {
             let r = &input.request;
             let patch = if r.from != journey.from || r.to != journey.to || r.departed != journey.departed
-                || r.arrives != journey.arrives {
+                || r.arrives != journey.arrives || r.border != journey.border {
                 Err("arrival offer names another native journey".into())
             } else { geometry::check_arrival(self, r, &input.geometry) };
             if let Ok(patch) = &patch {

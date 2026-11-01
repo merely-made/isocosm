@@ -6,6 +6,8 @@ use super::*;
 use crate::simulation::Genesis;
 
 pub const VERSION: u32 = 5;
+/// The habitat whose arrivals land at the edge their route enters by (1057).
+pub const ENTERING: u32 = 6;
 pub const MAX_STANDS: usize = 256;
 const STRIDE: i64 = 128;
 const MARGIN: i64 = 64;
@@ -45,6 +47,36 @@ pub fn place_in_site(sim: &Simulation, t: &Templates, id: Id, site: Id,
 pub fn place_within(sim: &Simulation, t: &Templates, id: Id, site: Id, within: &Window,
     placed: &BTreeMap<Id, Pose>) -> Result<Pose> {
     stand_within(sim, t, id, site, within, placed, &sim.placement_food(id, site))
+}
+
+/// An arrival by a bordered route, in a strip along the side it enters by
+/// (1057). Under camera frames it lands only where one covers that strip;
+/// one none covers stays far (E5), `None`.
+pub fn place_entering(sim: &Simulation, t: &Templates, id: Id, site: Id, border: Border,
+    placed: &BTreeMap<Id, Pose>) -> Result<Option<Pose>> {
+    let doc = sim.state().population.get(id).and_then(|e| e.body.as_ref()).ok_or("habitat body absent")?;
+    let thick = 2 * (i64::from(doc.aabb().extent().into_iter().max().unwrap_or(0)) + SEARCH_REACH) + 1;
+    let (w, mut strip) = (&t.window, t.window.clone());
+    match border.enters % 4 {
+        0 => strip.max[1] = (w.min[1] + thick).min(w.max[1]),
+        1 => strip.min[0] = (w.max[0] - thick).max(w.min[0]),
+        2 => strip.min[1] = (w.max[1] - thick).max(w.min[1]),
+        _ => strip.max[0] = (w.min[0] + thick).min(w.max[0]),
+    }
+    let frames = sim.state().attention.frames();
+    if !frames.is_empty() {
+        let cut = frames.iter().find_map(|f| match f {
+            crate::attention::Region::Frame { site: s, min, max } if *s == site => {
+                let lo = [0, 1].map(|k| strip.min[k].max(min[k]));
+                let hi = [0, 1].map(|k| strip.max[k].min(max[k]));
+                (0..2).all(|k| lo[k] < hi[k]).then(|| Window { min: lo, max: hi, depth: strip.depth })
+            }
+            _ => None,
+        });
+        let Some(cut) = cut else { return Ok(None) };
+        strip = cut;
+    }
+    stand_within(sim, t, id, site, &strip, placed, &sim.placement_food(id, site)).map(Some)
 }
 
 /// A frame's draw (the execution plan's D39): the same policy, and where no

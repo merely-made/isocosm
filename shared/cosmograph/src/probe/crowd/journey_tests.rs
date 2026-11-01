@@ -33,8 +33,8 @@ pub(super) fn fixture(count: u64, bodies: bool) -> ProbeWorld {
             transmission:1_000_000,border:None,authored:None });
     }
     let mut w = ProbeWorld { genesis:g,ticks:10 };
-    add(&mut w,"test:first",vec![Effect::Move { destination:1 }],1,0);
-    add(&mut w,"test:next",vec![Effect::Move { destination:2 }],1,1);
+    add(&mut w,"test:first",vec![Effect::Move { destination:1, via: None }],1,0);
+    add(&mut w,"test:next",vec![Effect::Move { destination:2, via: None }],1,1);
     w
 }
 
@@ -103,7 +103,7 @@ fn split_bins_and_kin_land_without_authored_evaluations() {
     let mut c=Crowd::new(&w,7,Variant::Histogram).unwrap();
     let resident=c.bins.keys().next().unwrap().clone();
     let mut traveller=resident.clone();
-    crate::journey::depart(&mut traveller,&c.sites[&0],1,0).unwrap();
+    crate::journey::depart(&mut traveller,&c.sites[&0],1,None,0,true).unwrap();
     c.moved(&resident,traveller,4);
     let before=c.bins.keys().next().unwrap().clone();
     let mut varied=before.clone(); varied.accounts.insert(OWN.into(),31);
@@ -169,7 +169,7 @@ fn averaging_never_pools_travellers_with_origin_residents() {
     let e=c.bins.keys().next().unwrap().clone();
     let mut traveller=e.clone(); traveller.accounts.insert(OWN.into(),12);
     traveller.accounts.insert("world:soil".into(),20);
-    traveller.journey=Some(Journey { from:0,to:1,departed:0,arrives:3 });
+    traveller.journey=Some(Journey { from:0,to:1,departed:0,arrives:3, border: None });
     c.moved(&e,traveller.clone(),1);
     let old=c.bins.clone(); c.average(); c.index_journeys();
     assert_eq!(c.bins,old,"averaging classes require actual site residence");

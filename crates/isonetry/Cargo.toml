@@ -56,6 +56,7 @@ family-net = [
     "dep:sceno",
     "dep:insigne",
     "dep:notochord",
+    "dep:uuid",
 ]
 
 [dependencies]
@@ -66,7 +67,7 @@ cosmograph = { path = "../../shared/cosmograph", default-features = false }
 cosmograph-host = { path = "../../cosmograph-host" }
 # The admitted native stream APIs, in graphshell-host since mere lifted
 # Graphshell's serving half there (2e896a75, 2026-10-15).
-graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06", default-features = false, features = ["native"], optional = true }
+graphshell-native = { package = "graphshell-host", git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8", default-features = false, features = ["native"], optional = true }
 graphshell-endpoint = { workspace = true, optional = true }
 chirograph = { workspace = true, optional = true }
 sceno = { workspace = true, optional = true }
@@ -77,6 +78,8 @@ cosmograph-overlay = { workspace = true, optional = true }
 muniment = { workspace = true, optional = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+# An invitation's session id (`family_network::invited`).
+uuid = { version = "1", optional = true }
 # Compact, no_std-friendly wire framing; also the byte form the portable
 # log hash folds over (so convergence is std-hash-independent).
 postcard = { version = "1", features = ["alloc"], optional = true }
