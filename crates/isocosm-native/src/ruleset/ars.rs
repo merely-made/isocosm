@@ -6,6 +6,7 @@
 
 use super::*;
 use cosmograph::Command;
+use cosmograph::asserted::{Assertion, HistoryLine};
 use isocosm_system::active_effects::{CastContext, Definitions, Target, cast, Cast};
 use isocosm_system::ars::{self, draft, records};
 
@@ -52,6 +53,18 @@ pub(super) fn check(state: &State) -> Result<(), String> {
 pub fn season_ticks(session: &Session) -> u64 {
     let unit = session.sim.genesis().rules.tick_microseconds();
     cosmograph::rules::year_ticks(unit) / records::builtin().time.seasons_per_year
+}
+
+fn year_ticks(session: &Session) -> u64 {
+    cosmograph::rules::year_ticks(session.sim.genesis().rules.tick_microseconds())
+}
+
+/// A character's age now: the age chosen in the draft, plus the native years
+/// since the sheet was made (case 1069).
+pub fn age(sheet: &isocosm_core::SheetData, session: &Session) -> i64 {
+    let made = u64::try_from(sheet.int(&ars::field("made")).unwrap_or(0)).unwrap_or(0);
+    let years = session.sim.state().tick.saturating_sub(made) / year_ticks(session).max(1);
+    sheet.int(&ars::field("age")).unwrap_or(0) + i64::try_from(years).unwrap_or(0)
 }
 
 fn native(session: &mut Session, command: Command) -> Result<(), String> {
@@ -108,7 +121,25 @@ pub(super) fn apply(
         Action::Finish(actor) => {
             let id = authorize(session, access, *actor)?;
             let build = draft::finished(r, unfinished(state, map, id)?)?;
-            map.set_sheet(id, ars::sheet(r, &build, &format!("Character {actor}")));
+            let now = session.sim.state().tick;
+            let mut sheet = ars::sheet(r, &build, &format!("Character {actor}"));
+            sheet.set_int(ars::field("made"), i64::try_from(now).map_err(|_| "clock overflow")?);
+            map.set_sheet(id, sheet);
+            // The birth, dated before the sheet in the world's timeline, as a
+            // native history line about the character (case 1069). Native
+            // bodies stay born at tick 0; a body with no authored key has no
+            // name a line can carry, so it keeps the age as edition state only.
+            let key = session.sim.state().population.get(*actor).and_then(|b| b.authored.as_ref()).map(|a| a.key.clone());
+            let born = i64::try_from(now).map_err(|_| "clock overflow")?
+                - i64::from(build.age) * i64::try_from(year_ticks(session)).map_err(|_| "clock overflow")?;
+            if let Some(key) = key {
+                let line = HistoryLine {
+                    key: format!("ars-birth-{actor}"), time: born, kind: "birth".into(),
+                    text: format!("{key} is born, {} years before the saga", build.age),
+                    participants: vec![key], place: None, tags: ["ars5".to_owned()].into_iter().collect(),
+                };
+                native(session, Command::Assert(Assertion::History(line)))?;
+            }
             let house = build.house.as_deref().and_then(|h| r.house(h)).map_or(String::new(), |h| format!(" of House {}", h.name));
             format!("Character {actor} finished as a {}{house}, {} years old", if build.magus() { "magus" } else { "grog" }, build.age)
         },
@@ -171,9 +202,10 @@ pub(super) fn apply(
                     } else {
                         let key = format!("ars:wounds:{name}");
                         sheet.set_int(&key, sheet.int(&key).unwrap_or(0) + 1);
+                        // Fixed counts until case 1069's size scaling is settled.
                         let cells = r.wounds.native_cells.get(&name).copied().ok_or("Wound cells undeclared")?;
                         native(session, Command::Wound { entity: *target, part: None, cells })?;
-                        format!("GM ruling: {amount} damage against Soak {soak}; a {name} Wound, which wounds the native body")
+                        format!("GM ruling: {amount} damage against Soak {soak}; a {name} Wound, which takes {cells} native cells")
                     }
                 },
             }

@@ -45,7 +45,7 @@ fn line(r: &records::Records, sheet: &isocosm_core::SheetData, ids: impl Iterato
     if parts.is_empty() { "none".into() } else { parts.join(", ") }
 }
 
-pub(crate) fn body(built: &mut Built, state: &State, map: &MapDocument, id: u64,
+pub(crate) fn body(built: &mut Built, state: &State, map: &MapDocument, session: &cosmograph::Session, id: u64,
     token: TokenId, title: &str, seat: &Seat) -> Result<(), String> {
     let r = records::builtin();
     let mut values = vec![value("Native body", id), value("Ruleset", RULESET)];
@@ -65,7 +65,7 @@ pub(crate) fn body(built: &mut Built, state: &State, map: &MapDocument, id: u64,
         let build = &walked.build;
         let kind = if build.magus() { "Magus" } else { "Grog" };
         let house = build.house.as_deref().and_then(|h| r.house(h)).map_or(String::new(), |h| format!(" of House {}", h.name));
-        values.push(value("Character", format!("{kind}{house}, {} years old", int("age"))));
+        values.push(value("Character", format!("{kind}{house}, {} years old", crate::ruleset::ars::age(sheet, session))));
         values.push(value("Characteristics", r.characteristics.iter()
             .map(|c| format!("{} {:+}", c.name, int(&c.id))).collect::<Vec<_>>().join(", ")));
         if build.magus() {
