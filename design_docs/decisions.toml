@@ -5270,6 +5270,20 @@ area = "Directing and play"
 summary = "A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third."
 draws_on = ["1053", "1055", "ecology.1"]
 
+[cases."1059"]
+title = "Seats are grants; a GM-less table decides by declared policy, with a table vote behind it; taking the GM seat needs consent"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent."
+draws_on = ["1030", "vtt.2", "vtt.4", "vtt.5"]
+
+[cases."1060"]
+title = "A table's identity and invitations come from the stack; a GM edits any sheet but acts only for bodies no one plays"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller."
+draws_on = ["1045", "1059", "vtt.2"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -5277,6 +5291,27 @@ area = "Processes and rules"
 summary = "Start a broad effect catalogue with explicit edition correspondences and a bounded executable tranche."
 draws_on = ["539", "540", "541", "543"]
 plans = ["functional-generation"]
+
+[decisions."mesocosm-overlay D1"]
+title = "the first slice (2026-10-31), applies Directing 4"
+source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
+area = "Directing and play"
+summary = "The lineage policy is built in two slices: evolution at birth and the boundary first, members' learning within a life second."
+draws_on = ["1051", "ecology.1"]
+
+[decisions."mesocosm-overlay D2"]
+title = "founding (2026-10-31), applies Directing 4"
+source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
+area = "Directing and play"
+summary = "A founding policy reproduces the hand-written score plus noise sized by a world rule; with none, runs hash as today."
+draws_on = ["1051", "schema.10"]
+
+[decisions."mesocosm-overlay D3"]
+title = "the nudge's weight (2026-10-31), applies Mesocosm 2"
+source = "mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md"
+area = "Directing and play"
+summary = "A nudge's sway stays outside the policy at a fixed weight; heritable heed is a candidate, toward domestication by effort."
+draws_on = ["1054", "mesocosm.2"]
 
 [decisions."orthographic-voxel-presentation D1"]
 title = "surface camera (2026-10-21), applies 382"
@@ -5654,6 +5689,14 @@ area = "Processes and rules"
 summary = "A Grouped advance with a paced lineage runs one tick at a time, so a span groups and chooses as its ticks taken singly."
 draws_on = ["609", "610", "sim-execution D15", "sim-execution D19"]
 governs = ["cosmograph::schedule"]
+
+[decisions."sim-execution D42"]
+title = "the record is a store per component, keyed by identity (2026-10-31), applies 483"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "The sim's schema and saves"
+summary = "The record holds each component in a store suited to its shape, keyed and listed by the sim's own identities; no ECS crate holds it."
+draws_on = ["482", "483", "600", "sim-execution D27", "sim-execution D28", "sim-execution D29"]
+governs = ["cosmograph::population"]
 
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
@@ -6515,7 +6558,7 @@ title = "Roles are traded seats; time at the table is consent"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes."
-draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "1029", "1030", "record.1"]
+draws_on = ["156", "245", "246", "851", "852", "855", "856", "860", "1029", "1030", "1059", "record.1"]
 
 [statements."vtt.3"]
 title = "A party is opt-in and grants no control"

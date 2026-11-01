@@ -73,7 +73,7 @@ impl LegacyEntity {
         let parts = self.parts.iter().map(|(&id, p)| {
             Ok((PartId(u32::try_from(id).map_err(|_| "legacy part identity exceeds u32")?), std::sync::Arc::new(p.native())))
         }).collect::<Result<_>>()?;
-        Ok(Entity { lineage:self.lineage.clone(), kingdom:self.kingdom.clone(), scale:self.scale.clone(),
+        Ok(Entity { drawn: None, lineage:self.lineage.clone(), kingdom:self.kingdom.clone(), scale:self.scale.clone(),
             provenance:self.provenance.clone(), method:self.method, place:self.place, arrived:self.arrived,
             visits:self.visits.clone(), journey:None, born:self.born, alive:self.alive,
             body_revision:self.body_revision, body:None, parts, traits:self.traits.clone(),

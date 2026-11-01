@@ -38,8 +38,8 @@ pub(super) fn identity(session: &Session, roster: &Roster, party: &str, input: &
 pub fn preview_departure(session: &Session, access: OrdinaryAccess, roster: &Roster,
     party: &str, input: &DepartureInput) -> Result<cosmograph::projects::DebitPreview,String> {
     super::super::movement::current_access(session,access)?;
-    if access.seat != Seat::Dm || roster.players.contains(&access.participant.0) {
-        return Err("only the admitted distinct DM authors joint departure quotes".into());
+    if access.seat != Seat::Dm {
+        return Err("only a GM window authors joint departure quotes".into());
     }
     roster.validate(session)?;
     if identity(session,roster,party,input)? != DepartureKind::Normative {
@@ -128,11 +128,11 @@ pub fn submit_journey(session: &mut Session, game: Vec<u8>, access: OrdinaryAcce
     if roster.revision != bindings.roster_revision() || roster.preimage != cosmograph::digest(&roster.players) {
         return Err("journey roster differs from the accepted native players/revision".into());
     }
-    let dm = access.seat == Seat::Dm && !roster.players.contains(&input.participant);
+    let dm = access.seat == Seat::Dm;
     let mut candidate = session.clone();
     let accepted = match &input.intent {
         JourneyInput::Propose { party,departures } => {
-            if !dm { return Err("only the distinct DM declares this explicit joint departure".into()); }
+            if !dm { return Err("only a GM window declares this explicit joint departure".into()); }
             let declaration = Declaration { proposer:input.participant,tick:input.tick,party:party.clone(),roster:roster.clone(),
                 departures:quote_departures(&candidate,roster,party,departures)? };
             let witness = super::records::append(&mut candidate,&Record::Proposed(declaration.clone()))?;

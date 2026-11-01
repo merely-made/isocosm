@@ -19,6 +19,7 @@
 #[path = "knowledge.rs"] mod knowledge;
 #[path = "overmap.rs"] mod overmap;
 #[path = "table.rs"] mod table;
+#[path = "table_seats.rs"] mod table_seats;
 #[path = "sheets.rs"] mod sheets;
 #[path = "sheets_pf2e.rs"] mod sheets_pf2e;
 
@@ -83,6 +84,8 @@ pub(crate) enum Act {
     /// The DM's table contract assertions; the payload is their JSON array.
     Assert,
     Ruleset(crate::ruleset::Action),
+    /// A seat grant change at the table's current grant revision.
+    Seat(crate::native::SeatAction),
 }
 
 /// A session's cards and the acts their actions bind.
@@ -142,7 +145,10 @@ impl VttEndpoint {
     }
 
     fn build(&self, session: &str) -> Result<Built, String> {
-        let cx = Cx { cut: self.window.projection()?, party: self.party.as_deref(),
+        let cut = self.window.projection()?;
+        // A released GM grant closes the truth view this window opened with.
+        self.read(|_, game| crate::native::seats::require_held(game, cut.access))?;
+        let cx = Cx { cut, party: self.party.as_deref(),
             overmap: self.overmap.as_ref(), quote: self.quote.as_deref() };
         match session {
             TABLE => table::build(self, &cx),
@@ -205,6 +211,13 @@ impl VttEndpoint {
                 let note: String = serde_json::from_slice(payload).map_err(|e| e.to_string())?;
                 self.act(Act::Send(VttIntent::Hook(HookIntent::ReshapeGoal { arc, goal, note })), payload)
             },
+            Act::Seat(action) => {
+                let revision = self.read(|_, game| Ok(crate::native::GameBindings::decode(game)?
+                    .seats().map_or(0, |seats| seats.revision)))?;
+                let bytes = serde_json::to_vec(&crate::native::SeatInput::new(revision, action))
+                    .map_err(|e| e.to_string())?;
+                self.submit(&bytes)
+            },
             Act::Roster(player) => {
                 let bytes = table::roster(self, player)?;
                 self.submit(&bytes)
@@ -220,9 +233,11 @@ impl VttEndpoint {
             Act::Overmap(settings) => { self.overmap = settings; Ok(()) },
             Act::Quote(kind) => { self.quote = Some(authoring::quote(self, kind, payload)?); Ok(()) },
             Act::Assert => {
-                if self.window.projection()?.access.seat != Seat::Dm {
+                let access = self.window.projection()?.access;
+                if access.seat != Seat::Dm {
                     return Err("native table assertions require the DM seat".into());
                 }
+                self.read(|_, game| crate::native::seats::require_held(game, access))?;
                 let assertions: Vec<Assertion> = serde_json::from_slice(payload).map_err(|e| e.to_string())?;
                 let before = self.window.cut()?;
                 self.world.product_sections(before, |session, sections| {

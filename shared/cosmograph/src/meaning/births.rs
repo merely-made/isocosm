@@ -257,4 +257,8 @@ fn born(child: &mut Entity, rules: &Rules, d: &Development, seed: u64) {
     crate::systems::inherit(child);
     crate::systems::vary(child, rules, recipe, seed);
     crate::systems::riff(child, recipe, seed);
+    // Its line's policy is varied in it by its own draw (M3.5).
+    if child.drawn.is_some() {
+        child.drawn = Some(crate::draw(seed, "policy:expression", &[]));
+    }
 }

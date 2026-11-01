@@ -59,10 +59,9 @@ impl Proposal {
         let declaration = &self.declaration;
         declaration.roster.validate(session)?;
         if key != self.witness.event_key || declaration.tick != self.witness.tick
-            || declaration.roster.players.contains(&declaration.proposer)
             || !session.sim.state().population.get(declaration.proposer)
                 .is_some_and(cosmograph::directing::is_participant) || declaration.departures.is_empty() {
-            return Err("joint journey declaration has no distinct native DM, group or original tick".into());
+            return Err("joint journey declaration has no native GM, group or original tick".into());
         }
         let mut players = BTreeSet::new();
         let mut bodies = BTreeSet::new();

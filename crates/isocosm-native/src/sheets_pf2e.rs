@@ -168,6 +168,9 @@ pub(crate) fn body(built: &mut Built, state: &State, map: &isocosm_core::MapDocu
             choices.push(("vtt.draft-undo".into(), "Take back last choice".into(),
                 "Undo the most recent choice; later steps follow from what remains.".into(), Action::Undo(id)));
         }
+    }
+    // Discarding is the controller's and also a GM edit (case 1059).
+    if control || seat.gm {
         choices.push(("vtt.draft-discard".into(), "Discard draft".into(),
             "Abandon this unfinished character.".into(), Action::Discard(id)));
     }

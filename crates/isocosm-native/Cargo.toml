@@ -52,3 +52,7 @@ required-features = ["endpoint"]
 [[test]]
 name = "family_endpoint"
 required-features = ["endpoint"]
+
+[[test]]
+name = "seats"
+required-features = ["endpoint"]

@@ -26,6 +26,37 @@ store and its lifts (`place-graph-engine`); body appearance, footing, senses and
 hagiograph significance and the glyph organ (`wing-organs`); the wing's portable body contract
 (`wing-phenotype-contract`); parked rungs (`wing-organs` D1).
 
+## Decisions
+
+Mark's answers, keyed `mesocosm-overlay D1` to `D3` in the order he gave them, from one card
+round on 2026-10-31 that began with his "Shall we proceed to prototype the neural net?"
+
+- **D1, the first slice (2026-10-31), applies Directing 4:** "Evolution, then learning
+  (Recommended)". The lineage policy (case 1051) is built in two slices, each seen working
+  alone: first the policy, varied in each member's expression at birth and selected at the
+  epoch boundary (M3.5); then members' own deltas, learned within a life (M3.6). Offered
+  against learning in a life first and against both at once.
+
+  Links: area Directing and play · draws on 1051, ecology.1 · summary The lineage policy is built in two slices: evolution at birth and the boundary first, members' learning within a life second.
+
+- **D2, founding (2026-10-31), applies Directing 4:** "Today's score plus noise
+  (Recommended)". A founding policy carries the hand-written score on a direct path from the
+  chooser's terms, its hidden part starting at zero, plus heritable noise sized by a world
+  rule; with no noise a run hashes as the hand-written chooser's does, the slice's negative
+  control. Offered against seeding from traits and against random weights.
+
+  Links: area Directing and play · draws on 1051, schema.10 · summary A founding policy reproduces the hand-written score plus noise sized by a world rule; with none, runs hash as today.
+
+- **D3, the nudge's weight (2026-10-31), applies Mesocosm 2:** "1, but freely heritable to
+  bounded heritability seem interesting. Perhaps alignment with the player can come through
+  effort… could be interesting, domesticating a wild lineage over time". A nudge's sway is
+  added outside the policy at a fixed weight, so only the bond and trust per kind of
+  direction (1054) decide what a nudge counts for. Heritable heed, free or bounded, stays a
+  candidate, its direction a wild lineage domesticated by effort over generations. Offered
+  against heed heritable within a bound and freely.
+
+  Links: area Directing and play · draws on 1054, mesocosm.2 · summary A nudge's sway stays outside the policy at a fixed weight; heritable heed is a candidate, toward domestication by effort.
+
 ## Constraints
 
 - **Directing, never driving.** A click draws the critter's attention; it weighs each nudge by
@@ -117,6 +148,47 @@ upkeep and age, left by the reproduction lane), or move it to an example.
 - Needs: -
 - Rulings: -
 - From: `archive_docs/2026-10-28/2026-10-08_directing_interim_m4_plan.md:143-145`.
+
+### M3.5. The lineage policy, evolving (D1)
+A lineage carries an optional policy, absent meaning the hand-written score (Schema 10). The
+deliberative chooser scores each offered Choice process with it: a direct path over the
+chooser's terms (each pressing need the process feeds, by a per-need weight that is the
+lineage's drive; priority) plus a small hidden layer over those terms and the process's shape
+(moves, hunts, acts on the ground, has a target), integer throughout; a nudge's sway is added
+outside it (D3). Founding follows D2. Each member expresses the policy varied by one drawn
+number it carries (Ecology 1's reroll: drawn anew at a birth, kept by a bud; cohort-mates
+share it as they share all else); at the epoch boundary the variants of the members holding
+the most matter are offered as candidates and scored by growing a copy forward, the status
+quo among them. Every decision keeps a trace: its inputs, each option's score, the choice.
+Recurrent state waits for M3.6, which first stores per-member state.
+- Built 2026-10-31 (`shared/cosmograph/src/directing/policy.rs`, its controls in
+  `policy_tests.rs`). Met: a founding policy without noise makes every choice the
+  hand-written score makes, and the world ends the same once the policy and draws are taken
+  out (three seeds, 40 ticks; a policy's presence is itself state, so the hash is compared
+  without it); a world without policies hashes as before; a varied run replays; in a world
+  where every Choice process is due each tick, the boundary adopts the hand-written policy
+  over one with its drives inverted and refuses the inverse; cost and the readout below
+  (Findings). The trace keeps each option's score and the choice; its inputs are not kept,
+  since `consider` re-derives them as readings already do.
+- Done when: "with no noise, seeded runs hash as the hand-written chooser's do over draws;
+  with noise, a seeded run replays to the same hash; a planted variant that serves its
+  lineage better is adopted at the boundary and a worse one is not; evaluation cost is
+  measured per decision and per tick at a few hundred members; and a per-lineage readout
+  shows, across epochs, how often its policy chose otherwise than the hand-written score
+  would have and how its standing moved."
+- Needs: M3.2 (built, awaiting certification)
+- Rulings: 683, 1051, 1052, D1 to D3; Ecology 1
+- From: the [creature minds brief](2026-10-31_creature_minds_brief.md) §3.1, §4, §10.
+
+### M3.6. Members learn (D1)
+Each member carries a small learned delta on its lineage's policy and a recurrent state,
+learned within its life from how its acts served it (the served-ness `answered` already
+measures), faster in youth (EB2) and fading as memory does (Record 3). Culture's mechanisms
+(1053, 1058) follow it.
+- Done when: not stated; set when M3.5 lands
+- Needs: M3.5
+- Rulings: 1051, 1053, D1
+- From: the creature minds brief §3.2, §3.6.
 
 ### M4i.1. The interim loop, headless (was D4)
 Certify founding from a seed, a start the player picks (179), rounds and epochs, a birth
@@ -403,6 +475,31 @@ Epoch boundary (record: open, the record does not decide).
   452. From: `archive_docs/2026-10-28/2026-08-01_epoch_boundary_plan.md:45-48`.
 
 ## Findings
+- 2026-10-31 (M3.5, the lineage policy): in A1 worlds (seeds 9 and 3, 160 founders, 30-tick
+  epochs, variation 16, three candidates) the boundary committed a member's variant at most
+  of the first four boundaries, the policy chose otherwise than the hand-written score in
+  under 1% of decisions at first and about 3% by the third epoch, and the policy line held
+  more matter than its hand-written twin at every boundary after the first (seed 9: 1177
+  against 882 at the third; seed 3: 1069 against 744), with one member left at the sixth
+  where the twin was gone. Both still collapse: the consumer booms (44 to 210 members by tick
+  60), grazes its producers out and dies back by about tick 180; selection softened the bust
+  and did not stop it. One run per seed; suggestive, not shown.
+- 2026-10-31 (M3.5): the boundary scores a candidate by growing a copy 20 ticks forward, which
+  rewards matter gained soon; in a world that overgrazes, that can select for greed. How far
+  ahead a boundary looks bears on whether a line can learn to stabilize its ecology.
+- 2026-10-31 (M3.5): in the stock test ecology a deliberative critter usually has one due
+  Choice process a tick, so a policy only matters where processes compete (nudges, moves,
+  shared periods); the boundary control needed a world with every Choice process due each
+  tick. A boundary commits one candidate per line, so policy variants compete with recipe
+  revisions.
+- 2026-10-31 (M3.5): cost at the crate's opt-level 1: scoring one option takes about 93 ns;
+  varying the policy by a member's draw, re-derived each decision, about 1.8 µs; an A1 world
+  of about 170 members ran 90 ticks in 5.00 s with a policy against 4.85 s without (3%).
+  Caching each member's variant would remove most of it. Draws split siblings into separate
+  rows, a cost to grouped execution not yet measured.
+- 2026-10-31: `eponym`'s workspace does not resolve offline: its `genet-taffy` patch asks for
+  `=0.14.0` and genet main holds 0.16.0. M3.5's change there (`policy: None` in two
+  `Lineage` literals in `eponym-play/src/founding.rs`) is unchecked by a build.
 - 2026-10-30: `mesocosm-runtime`'s integration tests ran 56 passed and 36 failed at `76f8f5cc`, with four lib failures, the same with the frame call disabled (`sim-execution` Findings). Many pin behaviour the game has since changed (decision periods, D19). Fixing them is not a work item (Mark, 2026-10-30).
 
 - 2026-10-28: `mesocosm/crates` holds `mesocosm-genet`, `-phenotype`, `-runtime`, `-views`
@@ -445,3 +542,6 @@ Epoch boundary (record: open, the record does not decide).
 ## Progress
 - 2026-10-28: cut from the Mesocosm overlay plan, the directing and interim M4 plan and the
   epoch boundary plan.
+- 2026-10-31: D1 to D3 recorded; M3.5 and M3.6 added, the lineage policy of case 1051.
+- 2026-10-31: M3.5 built: the policy, members' draws, the adopting command, boundary candidates
+  and a readout, its controls passing; Findings carry the readout and its cost.

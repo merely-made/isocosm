@@ -79,6 +79,8 @@ pub(super) struct Entity<'a> {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     varied: &'a Vec<Varied>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    drawn: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     patch: Option<&'a isometer_space::places::PlaceId>,
     #[serde(skip_serializing_if = "Option::is_none")]
     authored: Option<Character<'a>>,
@@ -111,6 +113,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             soma,
             systems,
             varied,
+            drawn,
             patch,
             authored,
             settled,
@@ -138,6 +141,7 @@ impl<'a> From<&'a crate::schema::Entity> for Entity<'a> {
             soma,
             systems,
             varied,
+            drawn: *drawn,
             patch: patch.as_ref(),
             authored: authored.as_ref().map(Character::from),
             settled: *settled,

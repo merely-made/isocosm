@@ -272,10 +272,27 @@ impl Harness {
 
     pub async fn serve_with_bootstrap<E>(
         &mut self,
-        mut endpoint: E,
+        endpoint: E,
         descriptor: Option<FamilyCheckpointDescriptor>,
         intents: Vec<ClientIntent>,
     ) where
+        E: ProjectionCatalog + ProjectionSource + PresentationSource + IntentSink + 'static,
+        <E as ProjectionSource>::Error: Display,
+        <E as PresentationSource>::Error: Display,
+        <E as IntentSink>::Error: Display,
+    {
+        self.serve_and_read(endpoint, descriptor, intents, Vec::new()).await;
+    }
+
+    /// Serve the endpoint, run the intents, then return the item ids each of
+    /// `reads` shows to the remote peer.
+    pub async fn serve_and_read<E>(
+        &mut self,
+        mut endpoint: E,
+        descriptor: Option<FamilyCheckpointDescriptor>,
+        intents: Vec<ClientIntent>,
+        reads: Vec<ProjectionRequest>,
+    ) -> Vec<Vec<String>> where
         E: ProjectionCatalog + ProjectionSource + PresentationSource + IntentSink + 'static,
         <E as ProjectionSource>::Error: Display,
         <E as PresentationSource>::Error: Display,
@@ -334,16 +351,16 @@ impl Harness {
                 stream,
                 network_carrier::CarrierRuntime::borrowed(runtime.clone()),
             );
-            let bootstrap = run_client(&mut carrier, &intents, descriptor);
+            let read = run_client(&mut carrier, &intents, descriptor, &reads);
             carrier
                 .shutdown()
                 .expect("client carrier shuts down cleanly");
             client_closed_tx
                 .send(())
                 .expect("host awaits clean client carrier shutdown");
-            bootstrap
+            read
         });
-        let bootstrap = driven.await.expect("client driver task");
+        let (bootstrap, read) = driven.await.expect("client driver task");
         server.await.expect("host session task");
         if let (Some(descriptor), Some(response)) = (expected_descriptor, bootstrap) {
             let checkpoint = verify_checkpoint_resource(
@@ -358,6 +375,7 @@ impl Harness {
                     .expect("fresh peer installs authenticated checkpoint"),
             );
         }
+        read
     }
 
     pub async fn shutdown(self) {
@@ -380,7 +398,8 @@ fn run_client(
     carrier: &mut impl Carrier,
     intents: &[ClientIntent],
     descriptor: Option<FamilyCheckpointDescriptor>,
-) -> Option<ResourceResponse> {
+    reads: &[ProjectionRequest],
+) -> (Option<ResourceResponse>, Vec<Vec<String>>) {
     let opened = carrier
         .request(CarrierRequestBody::Open(Box::new(SessionOpen {
             version: ProtocolVersion { major: 1, minor: 0 },
@@ -425,10 +444,31 @@ fn run_client(
             action.intent
         );
     }
+    let read = reads
+        .iter()
+        .map(|projection| {
+            let response = carrier
+                .request(CarrierRequestBody::Snapshot(projection.clone()))
+                .expect("product projection snapshot");
+            let CarrierResponseBody::Snapshot(snapshot) = response else {
+                panic!("expected actual endpoint snapshot");
+            };
+            snapshot
+                .scene
+                .active_items_in_order()
+                .into_iter()
+                .filter_map(|(_, item)| {
+                    snapshot.scene.tables.sources[item.source.0 as usize]
+                        .as_ref()
+                        .map(|source| source.id.clone())
+                })
+                .collect()
+        })
+        .collect();
     carrier
         .request(CarrierRequestBody::Close)
         .expect("client closes admitted session");
-    bootstrap
+    (bootstrap, read)
 }
 
 fn item_id(snapshot: &ProjectionSnapshot, id: &str) -> sceno::InstanceId {

@@ -167,7 +167,7 @@ impl Pack {
         if genesis.lineages.contains_key(&self.lineage.key) {
             return Err("the pack's lineage is already the world's".into());
         }
-        genesis.lineages.insert(self.lineage.key.clone(), Lineage { parent: None, revision: 1,
+        genesis.lineages.insert(self.lineage.key.clone(), Lineage { policy: None, parent: None, revision: 1,
             traits: BTreeSet::new(), kingdom: self.lineage.kingdom.clone(), development: None, decides: None });
         let r = &mut genesis.rules;
         r.relations.insert(TENANT.to_string());

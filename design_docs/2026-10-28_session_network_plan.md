@@ -285,6 +285,18 @@ parked (`wing-organs` D1).
   `archive_docs/2026-10-28/2026-08-08_stickleback_migration_plan.md:46-50`.
 
 ## Findings
+- 2026-10-31, working table: the shipping desktop has had no two-peer path since
+  566903f5 (2026-10-17): `--host`/`--join` still parse (`isocosm-genet/src/boot.rs:48`)
+  but nothing spawns a transport, and `register_admitted_family_session` has no
+  caller. Peer-to-participant bindings were written only by the H7 bench fixture.
+- 2026-10-31, working table: seats are grants (case 1059) in the table's game
+  bytes, `native::seats` (`GameBindings::seats`, absent on tables from before
+  grants, where the trusted host's DM window stands as before). A GM window
+  must hold the grant (`seats::require_held`, checked on every table input,
+  ruleset action and projection). Body control is one rule,
+  `native::seat_controls`: a player window acts for its played body, a GM
+  window for a body no one else plays; a GM *edits* any living body's sheet
+  (`ruleset::frame::edit`), which is not acting for it.
 - 2026-10-28: `crates/isonetry/src/campaign_sync.rs` still imports
   `murm_replication::SyncedSpace` and `p2panda_net::LogSync` directly (lines 3,
   7); K0 is open. `JoinedSpace` appears only in `family_network.rs`
@@ -308,5 +320,16 @@ parked (`wing-organs` D1).
 - 2026-10-28: the "no CRDTs" line is gone from the three CLAUDE.md files (D1).
 
 ## Progress
+- 2026-10-31, working table steps 1-2: GM grants per participant, any number
+  or none, a GM on the player roster, claim/withdraw/consent/release with the
+  yes of every seated GM or, with none, every bound player; the "distinct DM"
+  rules in time and joint journeys are gone. Tests: `crates/isocosm-native/tests/seats.rs`.
+- 2026-10-31, working table step 3: a peer at the player seat over two real
+  `P2pandaTransport`s and an admitted stream joins the party with its own body,
+  gives its yes to the GM's downtime and claims the GM seat; its projection
+  shows no GM roster controls; the GM's yes seats it and the replica converges
+  at each step (`shared/wing-integration/tests/family_network/vtt.rs`,
+  `a_player_peer_joins_consents_and_is_seated_as_gm_over_the_transport`). The
+  host still chooses the peer's participant; step 4 binds it from admission.
 - 2026-10-28: cut from the sim host plan's H7, the Stickleback migration plan,
   the shared-authority plan and the campaign retirement plan's H7 follow-on.

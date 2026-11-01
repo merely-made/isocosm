@@ -1974,13 +1974,15 @@ later proposals until they retake it. A proposal binds its tick and roster,
 and a change needs a new one; a GM chooses which ready proposal advances.
 Pace is an authored profile of duration and stock costs.
 
-*Owed:* who chooses a ready proposal, and who takes up VTT 4's offers, at a
-table with no GM seated (1030's sandbox play).
+With no GM seated, a declared decision policy chooses (by default any bound
+player, the sim's hooks arriving as proposals), a recognition vote standing
+behind it as gathered consent; claiming the GM seat needs the consent of the
+GMs seated, or of the table when none is.
 
-Links: draws on 156, 245, 246, 851, 852, 855, 856, 860, 1029, 1030, record.1 · summary GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes.
+Links: draws on 156, 245, 246, 851, 852, 855, 856, 860, 1029, 1030, 1059, record.1 · summary GM, player and host are traded authorities, any number or none; the body's controller drafts; edition chosen at founding; downtime needs every bound player's yes.
 
-*Refined 2026-10-30 from cases 1029 and 1030 (Mark: "it should even be
-possible for six people to all be gm, and for eight to all be players").*
+*Refined 2026-10-31 from case 1059 (Mark: "1, with 3 as fallback/consensus
+mechanism like downtime", "Needs consent").*
 
 ### VTT 3. A party is opt-in and grants no control
 

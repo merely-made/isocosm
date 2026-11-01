@@ -229,6 +229,7 @@ impl BodyFounding {
         let mut lineages = BTreeMap::from([(
             "world:ground".into(),
             Lineage {
+                policy: None,
                 parent: None,
                 revision: 1,
                 traits: BTreeSet::new(),
@@ -266,6 +267,7 @@ impl BodyFounding {
             lineages.insert(
                 lineage,
                 Lineage {
+                    policy: None,
                     parent: None,
                     revision: 1,
                     traits: carried,

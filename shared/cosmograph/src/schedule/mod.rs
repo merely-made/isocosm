@@ -147,7 +147,7 @@ impl Simulation {
         self.journeys = (!self.state.movement.immediate())
             .then(|| crate::journey::Journeys::new(&self.state.population));
         let mut work = Work::default();
-        self.chosen = Default::default();
+        self.chosen.clear();
         let done = self.scheduled(queue, end, &mut work);
         self.targets = None;
         self.far_food = None;
@@ -158,7 +158,7 @@ impl Simulation {
         }
         self.pass = None;
         self.frame = None;
-        self.chosen = Default::default();
+        self.chosen.clear();
         done?;
         self.state.tick = end;
         self.refresh_attention();

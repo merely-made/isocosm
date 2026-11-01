@@ -259,8 +259,15 @@ fn a_player_can_cast_but_cannot_grant_slots_edit_sheets_or_override_reach() {
     } = table::table_with_sites(1);
     let host = FamilyHost::new(SessionId([74; 16]), world).unwrap();
     let mut dm_endpoint = VttEndpoint::open(host.world(), dm, Seat::Dm).unwrap();
-    let weapon = cast_setup(&mut dm_endpoint, bodies[1]);
+    // The GM edits the player's sheet; equipping is the player's own act (case 1059).
+    let sheet = format!("sheet:{}", bodies[1]);
+    for action in ["vtt.sheet-create", "vtt.sheet-learn", "vtt.sheet-give-longsword"] {
+        click(&mut dm_endpoint, &sheet, action);
+    }
+    click(&mut dm_endpoint, &format!("slots:{}:2", bodies[1]), "vtt.slot-2-1");
+    let weapon = format!("weapon:{}:ruleset:weapon:1", bodies[1]);
     let mut endpoint = VttEndpoint::open(host.world(), player, Seat::Player).unwrap();
+    click(&mut endpoint, &weapon, "vtt.weapon-equip");
     let before = host.world().save().unwrap();
     let edit = request(
         &mut endpoint,

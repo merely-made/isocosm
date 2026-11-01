@@ -38,19 +38,19 @@ pub fn variants(d: &Development, most: usize) -> Vec<(Key, Development)> {
 }
 
 /// The boundary's candidates for `lineage`: its recipe's variants, each the
-/// command that commits it, those the world would refuse left out.
+/// command that commits it, those the world would refuse left out; then
+/// the policy variants its prospering members express (M3.5).
 pub fn revisions(session: &Session, lineage: &str) -> Vec<super::boundary::Candidate> {
     let sim = &session.sim;
     let most = sim.genesis().rules.directing().variants as usize;
-    let Some(d) = sim
+    let development = sim
         .state()
         .lineages
         .get(lineage)
-        .and_then(|l| l.development.as_ref())
-    else {
-        return vec![];
-    };
-    offered(session, lineage, d, most)
+        .and_then(|l| l.development.as_ref());
+    let mut out: Vec<_> = development
+        .map(|d| offered(session, lineage, d, most))
+        .unwrap_or_default()
         .into_iter()
         .filter(|(_, v)| sim.revisable(lineage, v).is_ok())
         .map(|(name, development)| super::boundary::Candidate {
@@ -60,7 +60,9 @@ pub fn revisions(session: &Session, lineage: &str) -> Vec<super::boundary::Candi
                 development,
             }],
         })
-        .collect()
+        .collect();
+    out.extend(crate::directing::policy::candidates(session, lineage));
+    out
 }
 
 /// Everything a line could commit, named: its recipe's variants, the

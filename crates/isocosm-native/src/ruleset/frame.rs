@@ -188,6 +188,17 @@ pub(super) fn authorize(
     token(actor)
 }
 
+/// A GM edit of a living body's sheet. Editing is not playing (cases 156,
+/// 1059): a GM window edits any body, played or not, but acts only for one
+/// no one else plays (`authorize`).
+pub(super) fn edit(session: &Session, access: OrdinaryAccess, actor: u64) -> Result<TokenId, String> {
+    dm(access)?;
+    if !session.sim.state().population.get(actor).is_some_and(|body| body.alive) {
+        return Err("a GM edits only a living native body's sheet".into());
+    }
+    token(actor)
+}
+
 pub(super) fn dm(access: OrdinaryAccess) -> Result<(), String> {
     if access.seat != Seat::Dm {
         Err("this edit requires the DM seat".into())

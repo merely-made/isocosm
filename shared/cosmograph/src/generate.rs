@@ -137,6 +137,7 @@ impl Founding {
         let mut lineages = BTreeMap::from([(
             "world:ground".into(),
             Lineage {
+                policy: None,
                 parent: None,
                 revision: 1,
                 traits: BTreeSet::new(),
@@ -174,6 +175,7 @@ impl Founding {
             lineages.insert(
                 lineage.clone(),
                 Lineage {
+                    policy: None,
                     parent: None,
                     revision: 1,
                     traits: BTreeSet::from([ability.clone()]),
@@ -409,6 +411,7 @@ impl Founding {
         for i in 0..u64::from(self.sites) {
             population.insert(
                 Entity {
+                    drawn: None,
                     lineage: "world:ground".into(),
                     kingdom: "kingdom:world".into(),
                     scale: "scale:macro".into(),
@@ -455,6 +458,7 @@ impl Founding {
             let count = self.cohort_size.min(remaining);
             population.insert(
                 Entity {
+                    drawn: None,
                     lineage: lineage.clone(),
                     kingdom: lineages[&lineage].kingdom.clone(),
                     scale: "scale:meso".into(),

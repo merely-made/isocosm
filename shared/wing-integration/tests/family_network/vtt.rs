@@ -366,3 +366,133 @@ async fn vtt_host_restart_reconnects_with_signed_checkpoint_and_republished_ledg
         })
         .await;
 }
+
+fn table_projection(endpoint: &VttEndpoint, session: &str) -> ProjectionRequest {
+    endpoint
+        .describe()
+        .projections
+        .into_iter()
+        .find(|offer| offer.request.session.0 == session)
+        .unwrap()
+        .request
+}
+
+/// Item ids of a local window's projection, and an accepted local action.
+fn local_ids(endpoint: &mut VttEndpoint, session: &str) -> (ProjectionSnapshot, Vec<String>) {
+    let snapshot = endpoint
+        .snapshot(table_projection(endpoint, session))
+        .unwrap();
+    let ids = snapshot
+        .scene
+        .active_items_in_order()
+        .into_iter()
+        .filter_map(|(_, item)| {
+            snapshot.scene.tables.sources[item.source.0 as usize]
+                .as_ref()
+                .map(|source| source.id.clone())
+        })
+        .collect();
+    (snapshot, ids)
+}
+
+fn local_act(endpoint: &mut VttEndpoint, id: &str, intent: &str) {
+    let (snapshot, _) = local_ids(endpoint, TABLE);
+    let target = snapshot
+        .scene
+        .active_items_in_order()
+        .into_iter()
+        .find(|(_, item)| {
+            snapshot.scene.tables.sources[item.source.0 as usize]
+                .as_ref()
+                .is_some_and(|source| source.id == id)
+        })
+        .unwrap_or_else(|| panic!("no card {id}"))
+        .0;
+    let result = endpoint
+        .invoke(IntentInvocation {
+            session: snapshot.session.clone(),
+            target,
+            observed_epoch: snapshot.scene.epoch,
+            observed_revision: snapshot.scene.revision,
+            intent: intent.into(),
+            payload: Vec::new(),
+        })
+        .unwrap();
+    assert_eq!(result, IntentResult::Accepted, "{intent} on {id}");
+}
+
+/// A peer at the player seat over the real transport (case 1059): it joins the
+/// party with its own body, gives its yes to the GM's downtime and claims the
+/// GM seat; its projection shows no GM roster controls; the GM's yes seats it
+/// and the replica converges on every step.
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn a_player_peer_joins_consents_and_is_seated_as_gm_over_the_transport() {
+    tokio::task::LocalSet::new()
+        .run_until(async {
+            let table::Table {
+                world,
+                dm,
+                player,
+                bodies,
+            } = table::table();
+            let mut family = Harness::new(world, 79).await;
+            let mut gm = VttEndpoint::open(family.host.borrow().world(), dm, Seat::Dm)
+                .expect("the host's GM window opens");
+            local_act(&mut gm, "seats", "vtt.seats-configure");
+            local_act(&mut gm, "roster", "vtt.roster-empty");
+            local_act(&mut gm, &format!("player:{}", player.0), "vtt.roster-toggle");
+            local_act(&mut gm, "time", "vtt.propose-1");
+            family.sync_pending().await;
+            let (_, gm_ids) = local_ids(&mut gm, TABLE);
+            let proposal = gm_ids
+                .iter()
+                .find(|id| id.starts_with("proposal:"))
+                .expect("the GM's proposal")
+                .clone();
+            assert!(gm_ids.contains(&format!("player:{}", player.0)));
+
+            let remote = VttEndpoint::open(family.host.borrow().world(), player, Seat::Player)
+                .expect("the host serves the peer its player window");
+            let projection = table_projection(&remote, TABLE);
+            let intent = |target: &str, intent: &str| ClientIntent {
+                projection: projection.clone(),
+                target: target.into(),
+                intent: intent.into(),
+                payload: Vec::new(),
+            };
+            let read = family
+                .serve_and_read(
+                    remote,
+                    None,
+                    vec![
+                        intent("party:party:band", "vtt.read-party"),
+                        intent(&format!("body:{}", bodies[1]), "vtt.join"),
+                        intent(&proposal, "vtt.consent"),
+                        intent("seats", "vtt.seat-claim"),
+                    ],
+                    vec![projection.clone()],
+                )
+                .await;
+            let seen = &read[0];
+            assert!(seen.contains(&format!("claim:{}", player.0)), "{seen:?}");
+            assert!(
+                !seen.iter().any(|id| id.starts_with("player:")),
+                "a player window shows no GM roster controls: {seen:?}"
+            );
+            assert!(family.sync_pending().await.len() >= 3);
+
+            let before = family.replica.snapshot().unwrap().revision;
+            local_act(&mut gm, &proposal, "vtt.advance");
+            local_act(&mut gm, &format!("claim:{}", player.0), "vtt.seat-consent");
+            family.sync_pending().await;
+            assert!(family.replica.snapshot().unwrap().revision > before);
+            let mut seated = VttEndpoint::open(family.host.borrow().world(), player, Seat::Dm)
+                .expect("the seated GM opens its GM window");
+            let (_, ids) = local_ids(&mut seated, TABLE);
+            assert!(ids.contains(&format!("player:{}", player.0)), "{ids:?}");
+            // Opening a window is journaled; the replica takes it too.
+            assert!(!family.sync_pending().await.is_empty());
+            family.shutdown().await;
+        })
+        .await;
+}

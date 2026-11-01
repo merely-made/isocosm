@@ -11485,6 +11485,52 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       sites are two distinct crossings.
 
       Links: area World generation · draws on world.6, processes.16 · summary A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings.
+      *Built how* (Mark, 2026-10-31: "A: full directional travel", offered
+      against directional arrival alone and one crossing per pair): travel
+      acts name the route they take and a journey records its border,
+      behind a new movement version so older saves replay unchanged; both
+      of a torus's routes are travellable.
+      Its forks, each as recommended (Mark, 2026-10-31): legacy v1
+      crossings gain an optional border and a v6 habitat lands arrivals at
+      the entering edge; an arrival lands at the edge when the camera frame
+      covers it and otherwise stays far (E5); move acts carry their side only
+      where parallel routes join one pair; fresh worlds' pinned hashes move
+      under the new movement version, old saves keeping theirs.
+
+1059. **Seats are grants; a GM-less table decides by declared policy, with a
+      table vote behind it; taking the GM seat needs consent.** Ruled by Mark
+      on 2026-10-31, on the working-table lane's forks, answering VTT 2's owed
+      question (Mark: "1, with 3 as fallback/consensus mechanism like
+      downtime", "Grants per participant", "Needs consent", the rest "All as
+      recommended"). The reading: GM and player are grants each participant
+      holds, replicated as table records, any number or none and both at
+      once, body control staying with who plays the body and a window's seat
+      choosing only its knowledge view; at a table with no GM seated, the
+      edition or campaign declares a decision policy, by default any bound
+      player choosing among ready proposals and the sim's hooks arriving as
+      proposals, with a recognition vote as the fallback and consensus
+      mechanism, gathered like downtime consent; claiming the GM seat needs
+      the consent of the GMs seated, or of the table when none is; a GM who
+      plays chooses per window between the truth and the character's view;
+      host hand-off is deferred; done means two processes on one machine,
+      headed, then two machines.
+
+      Links: area The VTT · draws on 1030, vtt.2, vtt.4, vtt.5 · summary Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent.
+
+1060. **A table's identity and invitations come from the stack; a GM edits
+      any sheet but acts only for bodies no one plays.** Ruled by Mark on
+      2026-10-31 (Mark: "Lift co-op's identity into the stack", "Keep the
+      split"), after the working table found that admission needs a persona
+      key, a trust root and a delegation grant, which products never make
+      (962), and that only Graphshell's co-op, in a mere port, builds them.
+      The reading: co-op's identity and invitation pieces (signed contact,
+      invitation, card) move into a mere stack crate with the VTT as their
+      planned second consumer (1045), and the VTT admits peers through them;
+      a GM may edit any living body's sheet (create, grant, adjust, slots,
+      outside damage), while equipping, casting, striking and drafting
+      belong to whoever controls the body.
+
+      Links: area The VTT · draws on 1045, 1059, vtt.2 · summary Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller.
 
 1045. **A shared mechanism moves when its second consumer is planned, not
       when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style

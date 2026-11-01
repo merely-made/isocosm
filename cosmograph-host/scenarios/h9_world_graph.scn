@@ -1,0 +1,97 @@
+# H9's done-condition, one capture per step (sim host plan H9, case 1048).
+#
+#   WORLD_GRAPH_VIEWER_SCENARIO=cosmograph-host/scenarios/h9_world_graph.scn \
+#   WORLD_GRAPH_VIEWER_CAPTURE_DIR=<Code/testing/isocosm/world-graph-viewer> \
+#     cargo run --offline --features viewer --bin world-graph-viewer
+#
+# The seed is read from the clock, so nobody chose it; the viewer prints it.
+# Targets that depend on the world drawn are picked by `act`; the timeline
+# and filters are driven as controls.
+
+log world-graph-viewer: a seed nobody chose, founded under the bench purpose
+settle 30
+
+# 1. The world's regions and routes.
+assert snap tick == 0
+assert snap regions >= 1
+assert snap sites >= 2
+assert snap edges >= 1
+capture h9-1-regions-and-routes
+
+# 2. Zoom into a place: the busiest site opens onto its residents and their kin.
+act open-busiest-site
+settle 30
+assert snap groups >= 1
+capture h9-2-a-site-opened
+
+# A filter narrows the graph by domain, and widens it back.
+click role:button Filter geography
+settle 20
+assert snap sites == 0
+capture h9-filter-without-geography
+click role:button Filter geography
+settle 20
+assert snap sites >= 2
+
+# 3. Time advances and the residents change.
+click role:button Advance ten
+settle 30
+assert snap tick == 10
+assert snap head == 10
+capture h9-3-advanced-ten
+
+# The layout reads the relations: linked cards sit closer than cards in
+# general under the default law (Springs), and the law is the panel's to
+# switch (Energy gathers harder).
+settle 240
+assert snap law == Springs
+assert snap cluster_pct <= 99
+capture h9-layout-springs
+click role:button Law Energy
+settle 240
+assert snap law == Energy
+assert snap cluster_pct <= 99
+capture h9-layout-energy
+click role:button Law Springs
+settle 120
+
+# The camera zooms over cards of a fixed size.
+click role:button Zoom in
+settle 10
+assert snap zoom_pct == 125
+capture h9-camera-zoomed-in
+click role:button Fit view
+settle 10
+assert snap zoom_pct == 100
+capture h9-camera-whole-graph
+click role:button Actual size
+settle 10
+
+# 4. Scrubbing back replays tick 5 without changing the line.
+click role:button Back five
+settle 30
+assert snap tick == 5
+assert snap head == 10
+assert snap line == 0
+capture h9-4-scrubbed-to-five
+
+# 5. A branch forked there becomes its own by a death inside it.
+click role:button Branch here
+settle 20
+assert snap line == 1
+assert snap lines == 2
+act death
+settle 10
+assert snap entries >= 1
+click role:button Advance ten
+settle 30
+assert snap tick == 15
+capture h9-5-branch-after-a-death
+
+# The main line, at its own head, is unchanged by the branch.
+click role:button Line 0
+settle 30
+assert snap line == 0
+assert snap tick == 10
+assert snap entries == 0
+capture h9-5-main-line-unchanged

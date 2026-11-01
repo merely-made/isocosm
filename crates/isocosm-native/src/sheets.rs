@@ -69,6 +69,8 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             let title=native.population.get(id).and_then(|b|b.authored.as_ref()).map_or_else(||format!("Character {id}"),|a|a.key.clone());
             let can_control=ruleset::controls(session,access,id);
             let dm=access.seat==Seat::Dm;
+            // A GM edits any living body's sheet; acting for it is control (case 1059).
+            let can_edit=dm && native.population.get(id).is_some_and(|b|b.alive);
             if pathfinder {
                 let alive=native.population.get(id).is_some_and(|b|b.alive);
                 let targets:Vec<u64>=visible.iter().copied().filter(|t|*t!=id && map.sheet(ruleset::token(*t).unwrap()).is_some_and(|s|s.int("dead").unwrap_or(0)==0)
@@ -80,7 +82,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                 continue;
             }
             let Some(sheet)=map.sheet(tid) else {
-                let choices=if dm && can_control {vec![("vtt.sheet-create".into(),"Create D&D SRD 5.1 sheet".into(),Action::Create(id))]} else {vec![]};
+                let choices=if can_edit {vec![("vtt.sheet-create".into(),"Create D&D SRD 5.1 sheet".into(),Action::Create(id))]} else {vec![]};
                 push(&mut built,format!("sheet:{id}"),&title,vec![value("Native body",id),value("Sheet","not configured")],choices);
                 continue;
             };
@@ -91,7 +93,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                 value("Constitution save bonus",sheet.int("con_save_bonus").unwrap_or(0))];
             let known=sheet.fields.get("known:dnd5:magic-weapon")==Some(&FieldValue::Bool(true));
             values.push(value("Magic Weapon",if known {"known"} else {"not granted"}));
-            if dm && can_control {
+            if can_edit {
                 if !known {choices.push(("vtt.sheet-learn".into(),"Grant Magic Weapon".into(),Action::Learn(id)));}
                 for template in ["longsword","club"] {choices.push((format!("vtt.sheet-give-{template}"),format!("Add {template} to sheet"),Action::Give{actor:id,template:template.into()}));}
                 for (field,label) in [("hp_current","HP"),("hp_max","Maximum HP"),("str","Strength"),("con","Constitution"),("ac","Armor class"),("con_save_bonus","Constitution save")] {
@@ -108,7 +110,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             for rank in 2..=9u8 {
                 let left=sheet.int(&format!("slot:{rank}")).unwrap_or(0);
                 if left==0 && (!dm || rank!=2) {continue;}
-                let choices=if dm && can_control {[-1,1].into_iter().filter(|delta|*delta>0||left>0).map(|delta|
+                let choices=if can_edit {[-1,1].into_iter().filter(|delta|*delta>0||left>0).map(|delta|
                     (format!("vtt.slot-{rank}-{delta}"),format!("Level {rank} slot {delta:+}"),Action::Adjust {actor:id,field:format!("slot:{rank}"),delta})).collect()} else {vec![]};
                 push(&mut built,format!("slots:{id}:{rank}"),&format!("{title}: spell slots"),vec![value("Level",rank),value("Remaining",left)],choices);
             }

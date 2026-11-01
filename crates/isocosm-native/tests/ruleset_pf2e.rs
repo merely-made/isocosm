@@ -139,39 +139,45 @@ fn lost_cells(host: &FamilyHost, body: u64) -> usize {
 
 #[test]
 fn encounter_strikes_shield_checks_and_the_dying_track_reach_the_body() {
-    let table::Table { world, dm, bodies, .. } = table::table_with_sites(1);
+    let table::Table { world, dm, player, bodies } = table::table_with_sites(1);
     founded(&world, "pf2e-srd");
     let mut host = FamilyHost::new(SessionId([84; 16]), world).unwrap();
     let checkpoint = host.checkpoint().unwrap();
     host.drain_records();
-    let mut gm = VttEndpoint::open(host.world(), dm, Seat::Dm).unwrap();
+    // Each body is driven from the window that controls it (case 1059): the
+    // GM's own body from its GM window, the player's from the player's.
+    let mut seats = [VttEndpoint::open(host.world(), dm, Seat::Dm).unwrap(),
+        VttEndpoint::open(host.world(), player, Seat::Player).unwrap()];
+    let at = |body: u64| bodies.iter().position(|b| *b == body).unwrap();
     for body in bodies {
+        let seat = &mut seats[at(body)];
         let card = format!("sheet:{body}");
-        assert_eq!(click(&mut gm, &card, "vtt.sheet-create"), IntentResult::Accepted);
+        assert_eq!(click(seat, &card, "vtt.sheet-create"), IntentResult::Accepted);
         for value in DWARF_FIGHTER {
-            assert_eq!(click(&mut gm, &card, &format!("vtt.draft-{value}")), IntentResult::Accepted, "{value}");
+            assert_eq!(click(seat, &card, &format!("vtt.draft-{value}")), IntentResult::Accepted, "{value}");
         }
-        assert_eq!(click(&mut gm, &card, "vtt.draft-finish"), IntentResult::Accepted);
+        assert_eq!(click(seat, &card, "vtt.draft-finish"), IntentResult::Accepted);
         let inventory = state(&host).inventories[&token(body).unwrap()].clone();
         for (id, item) in &inventory.items {
             if ["Longsword", "Steel Shield", "Scale Mail"].contains(&item.name.as_str()) {
-                assert_eq!(click(&mut gm, &card, &format!("vtt.pf2e-equip-{}", id.0)), IntentResult::Accepted);
+                assert_eq!(click(seat, &card, &format!("vtt.pf2e-equip-{}", id.0)), IntentResult::Accepted);
             }
         }
     }
-    assert_eq!(click(&mut gm, "pf2e-table", "vtt.pf2e-start-encounter"), IntentResult::Accepted);
+    assert_eq!(click(&mut seats[0], "pf2e-table", "vtt.pf2e-start-encounter"), IntentResult::Accepted);
     let first = state(&host).encounter.unwrap().current().unwrap().token;
     let (actor, target) = if u64::from(first) == bodies[0] { (bodies[0], bodies[1]) } else { (bodies[1], bodies[0]) };
     let card = format!("sheet:{actor}");
+    let (acting, defending) = (at(actor), at(target));
     let strike = format!("vtt.pf2e-rule-strike-{target}");
-    assert_eq!(click(&mut gm, &card, &strike), IntentResult::Accepted);
-    assert_eq!(click(&mut gm, &card, &strike), IntentResult::Accepted);
+    assert_eq!(click(&mut seats[acting], &card, &strike), IntentResult::Accepted);
+    assert_eq!(click(&mut seats[acting], &card, &strike), IntentResult::Accepted);
     let strikes: Vec<_> = state(&host).log.iter().flat_map(|l| l.rolls.clone()).filter(|r| r.by.ends_with("Strike")).collect();
     assert!(strikes[0].expr.contains("MAP 0") && strikes[1].expr.contains("MAP -5"), "{strikes:?}");
-    assert_eq!(click(&mut gm, &card, "vtt.pf2e-raise-shield"), IntentResult::Accepted);
+    assert_eq!(click(&mut seats[acting], &card, "vtt.pf2e-raise-shield"), IntentResult::Accepted);
     assert_eq!(state(&host).encounter.unwrap().current().unwrap().actions, 0);
-    assert_eq!(click(&mut gm, &card, "vtt.pf2e-end-turn"), IntentResult::Accepted);
-    assert_eq!(click(&mut gm, &format!("sheet:{target}"), "vtt.pf2e-check-athletics"), IntentResult::Accepted);
+    assert_eq!(click(&mut seats[acting], &card, "vtt.pf2e-end-turn"), IntentResult::Accepted);
+    assert_eq!(click(&mut seats[defending], &format!("sheet:{target}"), "vtt.pf2e-check-athletics"), IntentResult::Accepted);
     // GM-ruled damage drives the target through dying to death.
     let before = lost_cells(&host, target);
     let target_card = format!("sheet:{target}");
@@ -181,7 +187,7 @@ fn encounter_strikes_shield_checks_and_the_dying_track_reach_the_body() {
             break;
         }
         wounded |= lost_cells(&host, target) > before;
-        assert_eq!(click(&mut gm, &target_card, "vtt.sheet-damage-10"), IntentResult::Accepted);
+        assert_eq!(click(&mut seats[0], &target_card, "vtt.sheet-damage-10"), IntentResult::Accepted);
     }
     let after = state(&host);
     let sheet = &after.sheets[&token(target).unwrap()];

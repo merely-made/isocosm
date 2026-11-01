@@ -100,7 +100,7 @@ three design docs that cite it. The record holds the words.
 | 113 | Similitude: noted things always run as individuals; the fungible agree in distribution; what was watched is logged; exact agreement is a world setting, statistical default. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 114 | A game's ruleset is held to ruling 113's test: rulesets calibrate to the sim, matching it in distribution when no player choices are made. (amended by 538) | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 115 | Competition: each side's methodology chooses among contest, yield, share or trade, and the sim resolves the choices; lineage leaning is a trait. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 116 | Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223) | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 116 | Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223) | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 117 | Any belief can be wrong through deceit, honest mistake or a changing rumour; entities act on what they believe; reach carries versions of an event. | none |
 | 118 | Whether a belief takes depends on all four: what the receiver can check, who is telling, what it wants to hear, how it is told. | none |
 | 119 | Each entity's disposition shifts a world baseline for weighing beliefs; the baseline is drawn from the world entity's disposition, a neutral median by default. | none |
@@ -208,7 +208,7 @@ three design docs that cite it. The record holds the words.
 | 1009 | The world has a lineage (genotype its catalogue, realignment its boundary); a magic system is a world trait on six axes; bending the rules is declared suspension. | [DOC README](DOC_README.md), [functional generation](../mesocosm/design_docs/2026-10-28_functional_generation_plan.md) |
 | 1012 | An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act. | [DOC README](DOC_README.md) |
 | 1052 | The crowd's bands run the lineage policy once for their members; a distilled rate for unmet lineages only where measured to save. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1053 | Learned deltas fold into a lineage by imitating successful kin and by teaching, faster from parent to young; a bounded share may pass at birth; across lineages only acts are imitated. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1053 | Learned deltas fold into a lineage by imitating successful kin and by teaching, faster from parent to young; a bounded share may pass at birth; across lineages only acts are imitated. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Ecology
 
@@ -541,11 +541,11 @@ three design docs that cite it. The record holds the words.
 | 866 | A native act records participation in every goal it actually served; no primary goal discards the others. | none |
 | 876 | Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately. | none |
 | 1010 | An arc's parts are things the sim has; an arc is a derived thread, never stored; a game makes its statement; the storyteller is the world entity's agency. | [DOC README](DOC_README.md) |
-| 1051 | A lineage's small integer policy scores the chooser's offered processes from its terms and recurrent state; deliberative fauna carry one, non-choosers grow by grammar. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1054 | Under each bond a creature keeps trust per kind of direction, learned from outcomes; it speeds, slows or refuses directions and carries as the bond does. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1051 | A lineage's small integer policy scores the chooser's offered processes from its terms and recurrent state; deliberative fauna carry one, non-choosers grow by grammar. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1054 | Under each bond a creature keeps trust per kind of direction, learned from outcomes; it speeds, slows or refuses directions and carries as the bond does. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1055 | Sapience is read from behaviour (novel directions, imitation, tool use); a lineage is sapient by a share of passing members, and any passing individual may be driven. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1056 | A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1058 | A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1058 | A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Presentation
 
@@ -581,7 +581,7 @@ three design docs that cite it. The record holds the words.
 | --- | --- | --- |
 | 1 | The thing is one configurable, extensible world, history and entity generator playable several ways; views and perspectives are distinctions made on top of the sim. | [games wing founding](2026-07-30_games_wing_founding.md), [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
 | 16 | Stack placement: cambium under isomere, isometer over genet and netrender, generation in isoscape beside esp, dramatis, cleromancy; moot, muniment, murm persist; open standards first. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 20 | One bench for everything generated and reviewed, with sim, world, specimen, item and effect lanes, which is also the dev tools. | none |
+| 20 | One bench for everything generated and reviewed, with sim, world, specimen, item and effect lanes, which is also the dev tools. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 21 | Gamepads are a genet and standards concern; keymapping is a capability wanted across the stack, not only in isomere. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 27 | Use kiss3d provided it composes with the stack, and keep the renderer swappable behind the scene contract. | [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
 | 29 | Desktop is first-class; the web is a supported tier with a stated floor. | [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md) |
@@ -622,7 +622,7 @@ three design docs that cite it. The record holds the words.
 | 537 | The web modules take the newest wasm-bindgen they can, shared as one exact pin. (amended by 556) | none |
 | 556 | Every wasm module in mere moves to wasm-bindgen 0.2.129; 'stay with the newest' stands for later pins. | none |
 | 567 | The pre.4 probe, repro and OPFS runners build with the repo's pinned toolchain from mere's rust-toolchain.toml; bundles are rebuilt once. | none |
-| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [DOC README](DOC_README.md) |
+| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [DOC README](DOC_README.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 604 | Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
 | 606 | The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
 | 609 | One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
@@ -683,7 +683,7 @@ three design docs that cite it. The record holds the words.
 | 959 | The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents. | [session network](2026-10-28_session_network_plan.md) |
 | 960 | Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer. | [session network](2026-10-28_session_network_plan.md) |
 | 1038 | A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
-| 1048 | H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack. | none |
+| 1048 | H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 
 ## Mesocosm
 
@@ -806,6 +806,8 @@ three design docs that cite it. The record holds the words.
 | 1046 | The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks. | none |
 | 1047 | PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1059 | Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent. | [session network](2026-10-28_session_network_plan.md) |
+| 1060 | Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller. | none |
 
 ## Naming
 

@@ -44,6 +44,7 @@ impl Recipe {
         }
         let lineage = &state.lineages[&self.lineage];
         Ok(Entity {
+            drawn: None,
             lineage: self.lineage.clone(),
             kingdom: lineage.kingdom.clone(),
             scale: self.scale.clone(),

@@ -76,6 +76,11 @@ pub enum Command {
         lineage: Key,
         development: crate::rules::Development,
     },
+    /// A lineage commits a policy (case 1051; mesocosm-overlay M3.5).
+    Policy {
+        lineage: Key,
+        policy: crate::directing::policy::LineagePolicy,
+    },
     /// A founder leaves its line for a new one, named (legacy speciation).
     Speciate {
         founder: Id,

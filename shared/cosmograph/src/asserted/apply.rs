@@ -221,6 +221,7 @@ impl Simulation {
 /// A character's placeless entity, its lineage and kingdom placeholders.
 fn authored_entity(c: &Character, tick: Tick) -> Entity {
     Entity {
+        drawn: None,
         lineage: "authored:character".into(),
         kingdom: "kingdom:character".into(),
         scale: "scale:meso".into(),

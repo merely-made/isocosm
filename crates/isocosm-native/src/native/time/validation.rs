@@ -32,7 +32,6 @@ impl Proposal {
     fn validate(&self, session: &Session, key: &str, holds: &[Hold]) -> Result<(), String> {
         self.declaration.roster.validate(session)?;
         if key != self.witness.event_key || self.declaration.tick != self.witness.tick
-            || self.declaration.roster.players.contains(&self.declaration.proposer)
             || !session.sim.state().population.get(self.declaration.proposer)
                 .is_some_and(cosmograph::directing::is_participant) {
             return Err("downtime declaration differs from native participant/roster/tick".into());
@@ -41,8 +40,7 @@ impl Proposal {
         let mut prior = order(session, &self.witness)?;
         for consent in &self.consents {
             consent.roster.validate(session)?;
-            if !consent.roster.players.contains(&consent.participant)
-                || consent.roster.players.contains(&self.declaration.proposer) {
+            if !consent.roster.players.contains(&consent.participant) {
                 return Err("consent participant differs from its authenticated player roster".into());
             }
             consent.witness.validate(session, &Record::Consented { participant:consent.participant,
@@ -64,8 +62,7 @@ impl Proposal {
                 || completion.to != completion.from.checked_add(self.declaration.ticks).ok_or("clock overflow")?
                 || completion.roster != self.declaration.roster || session.sim.state().tick < completion.to
                 || completed <= prior || !session.sim.state().population.get(participant)
-                    .is_some_and(cosmograph::directing::is_participant)
-                || completion.roster.players.contains(&participant) {
+                    .is_some_and(cosmograph::directing::is_participant) {
                 return Err("downtime completion differs from its original span/roster".into());
             }
             let expected = allowances(session, self, holds, completed)?
