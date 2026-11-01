@@ -18,6 +18,12 @@ cosmograph-overlay = { workspace = true }
 isocosm-views = { workspace = true }
 isonetry = { workspace = true, features = ["iroh", "family-net"] }
 notochord = { workspace = true }
+# Peer admission over the holder's custody identity (stack-lift D4, isocosm
+# case 1060): co-op's invitation, lifted into graphshell-host, and Djinn's
+# custody client that signs it. Same sources isonetry's graphshell-host uses.
+graphshell-host = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8", default-features = false, features = ["native", "custody-client"] }
+djinn = { git = "https://github.com/merely-made/armillary.git", rev = "7eebeeb4447c5dfa70b813e64dc5b492a6212d3d", default-features = false, features = ["custody-client"] }
+personae = { workspace = true }
 # Direct endpoint contract use in the Genet-owned FamilyTable adapter.
 chirograph = { workspace = true }
 graphshell-endpoint = { workspace = true }

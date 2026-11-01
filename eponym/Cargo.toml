@@ -28,7 +28,7 @@ members = [
 [patch.crates-io]
 # mere patches accesskit 0.25.1 (support/patches/accesskit); its cambium hosts
 # call methods only the patched copy has, so the same copy, from mere at its pin.
-accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+accesskit = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 # The renderer graph may resolve vello from crates.io, and
 # upstream vello 0.10 still requires wgpu 29. Without this the graph carries
 # two wgpu majors and netrender's vello rasterizer stops type-checking
@@ -52,10 +52,10 @@ opt-level = 1
 # Renderer source is selected once for this product; use the same immutable
 # family revision as the other games and their Mere/Genet host dependencies.
 [workspace.dependencies]
-conatus = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-modulus = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+conatus = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+modulus = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 # The lit body tenant (mere's crates/conatus/tenant, wing rulings 745 to 748).
-tenant = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+tenant = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 netrender = { git = "https://github.com/merely-made/netrender.git", branch = "main" }
 netrender_text = { git = "https://github.com/merely-made/netrender.git", branch = "main" }
 
@@ -63,17 +63,17 @@ netrender_text = { git = "https://github.com/merely-made/netrender.git", branch 
 # below matches Mesocosm's revision for its git family, so the graph holds
 # one identity per family: cargo keys a git source by URL plus reference,
 # and a second reference would be a second crate identity of one commit.
-cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-cambium-desktop = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+cambium-desktop = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 # Named `genet-probe` until genet 7baa554c (2026-09-14).
 taproot = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 # The scenario lane the session acceptance run is built on. It was this
 # repository's `shared/wing-scenario` until mere took it into the cambium
 # family as `mesquite` (mere 3675a352, 2026-09-14), so it is a mere.git pin at
 # the family rev like every other cambium row above.
-mesquite = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+mesquite = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 genet-livery = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 genet-scripted-dom = { git = "https://github.com/merely-made/genet.git", branch = "main" }
 paint_list_api = { git = "https://github.com/merely-made/netrender.git", branch = "main" }
@@ -86,18 +86,18 @@ rust-version = "1.97.1"
 
 # Root patches are not inherited from the imported Murm suppliers.
 [patch."https://github.com/merely-made/mere.git"]
-cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-cambium-desktop = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-mere-surface-api = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-cambium-winit = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-cambium-a11y = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-meristem = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-mesquite = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-tinct = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
-workbench = { git = "https://www.github.com/merely-made/mere.git", rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06" }
+cambium = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+cambium-desktop = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+mere-surface-api = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+sceno = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+cambium-rootstock = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+cambium-winit = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+cambium-a11y = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+meristem = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+mesquite = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+sprigging = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+tinct = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
+workbench = { git = "https://www.github.com/merely-made/mere.git", rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8" }
 
 # Keep canonical Eidetic and Gemot requests on the selected supplier commits;
 # the www URL spellings refer to the same repositories under separate keys.
