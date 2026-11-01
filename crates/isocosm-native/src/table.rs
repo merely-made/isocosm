@@ -134,6 +134,7 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
                 }
                 built.push(Item { id: format!("body:{member}"), card: card(format!("Body {member}"),
                     vec![value("Viewing as", subject == Some(member))], &["played"]), actions }, acts);
+                tell_cards(&mut built, session, member);
             }
         }
         let Some(party) = party else { return Ok(()) };
@@ -173,4 +174,25 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         Ok(())
     })?;
     Ok(built)
+}
+
+/// "Tell [hearer] about [place]" (case 1066): for each character at the
+/// teller's site, a card offering each place the teller knows.
+fn tell_cards(built: &mut Built, session: &cosmograph::Session, teller: u64) {
+    let state = session.sim.state();
+    let Some(site) = state.population.get(teller).and_then(|e| e.resident_site()) else { return };
+    let places = cosmograph::directing::readings::view(&session.sim, teller,
+        cosmograph::directing::readings::Mode::Survival).sites;
+    let hearers = state.population.groups.iter().filter(|(id, g)| **id != teller && g.count == 1 && g.entity.alive
+        && g.entity.resident_site() == Some(site) && (g.entity.authored.is_some()
+            || state.relations.iter().any(|r| r.kind == cosmograph::directing::PLAYS && r.object == **id)))
+        .map(|(id, _)| *id);
+    for hearer in hearers {
+        let (actions, acts): (Vec<_>, Vec<_>) = places.iter().map(|place| (
+            action(&format!("vtt.tell-{place}"), &format!("Tell body {hearer} about site {place}"),
+                "Tell everything this body knows about the place; the hearer may not believe it.", NULL, DOMAIN),
+            Act::Tell { teller, hearer, place: *place })).unzip();
+        built.push(Item { id: format!("tell:{teller}:{hearer}"), card: card(format!("Body {teller} tells body {hearer}"),
+            Vec::new(), &["tell"]), actions }, acts);
+    }
 }

@@ -21,6 +21,15 @@ pub enum Statement {
     Claim { site: Id, polity: Id, present: bool },
 }
 
+/// Whether a statement is about `site`.
+pub fn names_site(statement: &Statement, site: Id) -> bool {
+    match statement {
+        Statement::LocationIdentity { .. } => false,
+        Statement::LocationMembers { sites, .. } | Statement::LocationExtent { sites, .. } => sites.contains(&site),
+        Statement::Condition { site: s, .. } | Statement::Claim { site: s, .. } => *s == site,
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Source { pub note: Note, pub hash: Key, pub revision: Key }
 

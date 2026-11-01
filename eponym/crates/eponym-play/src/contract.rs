@@ -225,6 +225,7 @@ impl Borrowed<'_> {
                     | Knowing::ObserveTerrain { observer, .. } => *observer,
                     Knowing::TellStatement { reporter, .. }
                     | Knowing::TellTerrain { reporter, .. } => *reporter,
+                    Knowing::Tell { teller, .. } => *teller,
                     Knowing::Claim { claimant, .. } => *claimant,
                     Knowing::Correct { corrector, .. } => *corrector,
                     Knowing::Report { .. } => {

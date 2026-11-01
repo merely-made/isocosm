@@ -152,3 +152,60 @@ fn downtime_counts_a_two_body_player_once() {
     assert_eq!(t.world.read(|s| s.sim.state().tick).unwrap(), before + 1,
         "one yes from the participant readies the proposal, however many bodies it plays");
 }
+
+/// Telling at the table (case 1066): a split party regroups, and one
+/// player's body tells another's everything about a place it heard of; the
+/// hearer knows it afterwards or the draw refused, and the world replays alike.
+#[test]
+fn a_regrouped_body_tells_another_about_a_place_at_the_table() {
+    use cosmograph::directing::readings::{Mode, view};
+    let mut genesis = cosmograph::Founding { seed: 5, sites: 3, population: 48, cohort_size: 1, lineages: 3,
+        ecology: true, bodies: Some(Default::default()),
+        played: Some(cosmograph::directing::Played { lineage: 1, region_sites: 1 }), ..Default::default() }
+        .generate().unwrap();
+    for kind in cosmograph::knowing::NOTE_KINDS { genesis.rules.note_kinds.insert(kind.into()); }
+    let mut session = cosmograph::Session::new(genesis, cosmograph::Execution::Individuals).unwrap();
+    // Two living bodies at one site, one of which heard of an event at some
+    // place that the other missed: the regrouped split party.
+    let differing = |s: &cosmograph::Session| {
+        let st = s.sim.state();
+        let living: Vec<(Id, Id)> = st.population.groups.iter().filter(|(_, g)| g.count == 1 && g.entity.alive
+            && g.entity.method == cosmograph::schema::Method::Deliberative)
+            .filter_map(|(id, g)| g.entity.resident_site().map(|site| (*id, site))).collect();
+        for &(a, site) in &living { for &(b, other) in &living {
+            if a == b || site != other { continue; }
+            for (key, e) in &st.events {
+                if e.place.site().is_some() && s.sim.knows(a, key).unwrap() && !s.sim.knows(b, key).unwrap() {
+                    return Some((a, b, key.clone(), e.place.site().unwrap()));
+                }
+            }
+        } }
+        None
+    };
+    while differing(&session).is_none() {
+        assert!(session.sim.state().tick < 80, "no two bodies at a site know the world differently");
+        session.advance(1).unwrap();
+    }
+    let (teller, hearer, event, place) = differing(&session).unwrap();
+    let mut sections = std::collections::BTreeMap::new();
+    sections.insert("vtt".to_string(), GameBindings::decode(&[]).unwrap().encode().unwrap());
+    let world = World::with_sections(session, sections);
+    let join = || ParticipantHandle(world.command(Command::Join).unwrap().strip_prefix("participant:").unwrap()
+        .parse().unwrap());
+    let (teller_player, hearer_player) = (join(), join());
+    world.command(Command::Take { participant: teller_player.0, critter: teller }).unwrap();
+    world.command(Command::Take { participant: hearer_player.0, critter: hearer }).unwrap();
+    let mut player = VttEndpoint::open(&world, teller_player, Seat::Player).unwrap();
+    act(&mut player, &format!("tell:{teller}:{hearer}"), &format!("vtt.tell-{place}"));
+    let (taken, knows, shown) = world.read(|s| {
+        let outcome = &s.entries.iter().rev().find(|e| matches!(e.command, Command::Know(_))).unwrap().outcome;
+        let telling: cosmograph::knowing::telling::Telling = serde_json::from_str(outcome).unwrap();
+        let v = view(&s.sim, hearer, Mode::Survival);
+        (telling.taken, s.sim.knows(hearer, &event).unwrap(), v.events.contains(&event) && v.sites.contains(&place))
+    }).unwrap();
+    assert_eq!(knows, taken, "the hearer knows the event exactly when the draw took the telling");
+    assert_eq!(shown, taken, "and its view shows the place only then");
+    let save = world.save().unwrap();
+    let replayed = cosmograph::Session::load(save.native.clone(), cosmograph::Execution::Individuals).unwrap();
+    assert_eq!(cosmograph::digest(&replayed.save()), cosmograph::digest(&save.native), "the telling replays alike");
+}
