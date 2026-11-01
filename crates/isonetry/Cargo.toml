@@ -56,6 +56,7 @@ family-net = [
     "dep:sceno",
     "dep:insigne",
     "dep:notochord",
+    "dep:uuid",
 ]
 
 [dependencies]
@@ -77,6 +78,8 @@ cosmograph-overlay = { workspace = true, optional = true }
 muniment = { workspace = true, optional = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+# An invitation's session id (`family_network::invited`).
+uuid = { version = "1", optional = true }
 # Compact, no_std-friendly wire framing; also the byte form the portable
 # log hash folds over (so convergence is std-hash-independent).
 postcard = { version = "1", features = ["alloc"], optional = true }

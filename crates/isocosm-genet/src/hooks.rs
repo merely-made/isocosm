@@ -325,13 +325,7 @@ pub(crate) fn init(
         app.source_history_attached = true;
     }
 
-    if app.net_intent.take().is_some() {
-        ui.status = if app.family_table.is_some() {
-            "Peer hosting is not available here yet.".into()
-        } else {
-            "Open a native campaign with table participant bindings before inviting players.".into()
-        };
-    }
+    crate::peer_session::start(&mut app, &mut ui);
     // Boot clock. The net selftest waits on it, and so does the combat
     // selftest, which runs solo (there is no session to wait for).
     app.started = Some(Instant::now());

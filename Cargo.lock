@@ -4393,14 +4393,17 @@ dependencies = [
  "isometer",
  "isonetry",
  "layout-dom-api",
+ "mere-transport",
  "muniment",
  "notochord",
+ "p2panda-core",
  "personae",
  "pollster 0.4.0",
  "sceno",
  "serde",
  "serde_json",
  "sprigging",
+ "stickleback",
  "taproot",
  "tokio",
  "uuid",
@@ -4610,6 +4613,7 @@ dependencies = [
  "thiserror 1.0.69",
  "tokio",
  "tracing",
+ "uuid",
 ]
 
 [[package]]

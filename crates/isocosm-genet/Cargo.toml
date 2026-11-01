@@ -26,6 +26,10 @@ djinn = { git = "https://github.com/merely-made/armillary.git", rev = "7eebeeb44
 personae = { workspace = true }
 insigne = { git = "https://github.com/merely-made/dramatis.git", branch = "main" }
 uuid = "1"
+# The invited-peer transport and its signed record lane (case 1060).
+transport = { workspace = true }
+murm-replication = { workspace = true }
+p2panda-core = { workspace = true }
 # Direct endpoint contract use in the Genet-owned FamilyTable adapter.
 chirograph = { workspace = true }
 graphshell-endpoint = { workspace = true }

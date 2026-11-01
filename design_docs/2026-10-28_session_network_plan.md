@@ -340,5 +340,20 @@ parked (`wing-organs` D1).
   (`isocosm-genet/src/family_invite.rs`). The app's invite and join flow and
   the headed two-process capture are open: Djinn on this machine refuses
   "isocosm is not an application this device admits", and its vault is locked.
+- 2026-11-01, working table step 4 (flow): the invite and join flow is built.
+  `--host --handoff DIR` binds the transport on the custody identity's derived
+  key, republishes the signed record lane, signs the bootstrap checkpoint and
+  writes the family card (`table.card.json`: card, attested record key,
+  checkpoint descriptor); each guest contact file in DIR is invited and its
+  invitation written beside it. `--join DIR` writes the guest's contact, waits
+  for its invitation and the card, dials, fetches the checkpoint in chunks,
+  installs a replica on the signed lane and shows the projections the owner
+  serves its seat. Generic pieces are `isonetry::family_network::invited`; the
+  app's are `family_host_net.rs`, `family_guest.rs` and `peer_session.rs`. A
+  two-transport test with dev identities joins, claims the GM seat and
+  converges (`family_guest_tests.rs`). The headed host run here stops at
+  custody: Djinn still refuses the app. Not checked here: a macOS build (no
+  Apple target or SDK on this machine) and reachability between this machine
+  and the iMac (the card's ticket carries direct addresses, no relay).
 - 2026-10-28: cut from the sim host plan's H7, the Stickleback migration plan,
   the shared-authority plan and the campaign retirement plan's H7 follow-on.

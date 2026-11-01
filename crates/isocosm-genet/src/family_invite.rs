@@ -18,10 +18,16 @@ pub(crate) fn now_ms() -> u64 {
 
 /// The table's admission terms over the lifted invitation.
 pub(crate) const TERMS: InvitationTerms = InvitationTerms {
-    domain: "isocosm.table",
+    domain: isonetry::family_network::invited::DOMAIN,
     salt: b"isocosm/table/v1",
     network_label: b"isocosm.table/v1",
-    path_root: "/services/projection/table",
+    path_root: "/services/projection/isocosm-table",
+};
+
+/// The key the owner signs accepted records with; only its salt is read.
+pub(crate) const RECORD_TERMS: InvitationTerms = InvitationTerms {
+    salt: b"isocosm/table/records/v1",
+    ..TERMS
 };
 
 impl FamilyTable {
@@ -62,6 +68,12 @@ impl FamilyTable {
         self.access = access;
         Ok((invitation, participant))
     }
+
+    #[cfg(test)]
+    pub(crate) fn invitation_count(&self) -> usize { self.access.invitations.len() }
+
+    #[cfg(test)]
+    pub(crate) fn world_save(&self) -> Result<cosmograph_host::save::WorldSave, String> { self.host.world().save() }
 
     /// The owner's admission check for an admitted peer: an unrevoked stored
     /// invitation names it and its grant, and it has a participant binding.
