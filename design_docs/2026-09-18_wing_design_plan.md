@@ -11815,6 +11815,38 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Licensing and sources · draws on 1064, 1067, method.8, vtt.6 · summary Pack transfer follows the identity work; stale pins refuse until an explicit repin; `time` is the decision point for an edition's unit of time.
 
+1069. **An Ars character's age starts in the draft and is placed in the
+      timeline; Ars Wounds cost cells by body size.** Ruled by Mark on
+      2026-11-01, after founded bodies were found born at tick 0 so that
+      "age from the body" (1063) could not hold: "One, but I would also
+      recommend determining when in the timeline. The character was born for
+      some purposes, so maybe a little bit of two?", and on the provisional
+      cells per Wound: "Scale by body size". The reading: a starting age is
+      chosen in the draft and native time elapsed afterwards adds to it; the
+      character's birth is also placed in the world's timeline before the
+      founding as a dated historical fact, for what reads it (history, kin,
+      a world's past); the native cells an Ars Wound costs scale with the
+      body's size rather than a fixed count.
+
+      Links: area The VTT · draws on 1063, 1020, record.6 · summary Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size.
+
+1070. **Time scales per game: life history in world time, a tick unit per
+      product, and a real-time rate per game.** Ruled by Mark on 2026-11-01
+      ("Both", "Real-time play rate per game"), after founded people were
+      found dying of age in their first native day: "You're trying to sim a
+      character on an ecological timescale. Of course it wouldn't work.
+      Mesocosm is one timescale, eponym and isocosm are another…hell, ticks
+      per second would probably differ per game too. Although I'd aim for at
+      least 60 and tune from there. Idk. The point is, how much time elapses
+      in a 'day' of ticks?" The reading: lifespans, gestation and growth are
+      drawn in world time, so a person lives decades whatever a tick is;
+      each product founds with its own default tick unit; and each game sets
+      how many ticks advance per real second while it runs live, aiming near
+      sixty where play is real-time and tuning from there, the VTT
+      advancing by turns and consented downtime.
+
+      Links: area Processes and rules · draws on processes.7, 978, 451 · summary Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
