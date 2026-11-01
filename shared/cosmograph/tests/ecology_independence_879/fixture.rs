@@ -111,7 +111,9 @@ fn build(process_name: &str, extra_quantity: u64, account_alias: bool, played: b
             stock("world:soil"), Conservation::NativeMatter),
         declaration(&process, "counter", ScalarSource::Amount(effect(4)), stock("world:soil"), Conservation::NativeMatter),
     ];
-    let spec = JointSpec { version: 1, key: "test:joint-879".into(), horizon: 1,
+    // A played world's witness runs to the critter's first paced choice, at
+    // tick 9 of its lineage's period of 10 (D19).
+    let spec = JointSpec { version: 1, key: "test:joint-879".into(), horizon: if played { 10 } else { 1 },
         capture: CaptureRequirement { selection: selection.clone(), stock: CaptureStock::EnergyAccount("sim:energy".into()), at_least: 1 },
         returned: ReturnRequirement { selection: selection.clone(), account: "world:soil".into(), at_least: 1 },
         reproduction: BirthRequirement { selection: selection.clone(), at_least: 1 },

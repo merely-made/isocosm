@@ -63,10 +63,10 @@ fn founded() -> Founded {
     let periods: std::collections::BTreeMap<_, _> = founded.genesis.rules.spatial_templates
         .as_ref().unwrap().foraging.iter().map(|(walk, f)|
             (walk.clone(), founded.genesis.rules.processes[&f.feed].period)).collect();
-    // This suite retains the version-two locomotion controls. Food-directed
-    // version-three ordinary choices have their own acceptance suite.
+    // This suite walks on the generated weight-transfer rules (version four,
+    // sim-execution D45) with undirected walks. Food-directed ordinary
+    // choices have their own acceptance suite.
     let templates = founded.genesis.rules.spatial_templates.as_mut().unwrap();
-    templates.version = 2;
     templates.foraging.clear();
     for process in founded.genesis.rules.processes.values_mut().filter(|p| p.id.starts_with("body:walk:")) {
         process.target = None;

@@ -383,9 +383,9 @@ each title names its outcome against the doctrine.
   (609, 610). A Grouped advance with a paced lineage now runs one tick at a
   time, regrouping at each boundary; E8's offset and D15's spread stay.
   Asked after the runtime triage traced a paced world's failed replay to it
-  (Findings, 2026-10-30), carrying out Mark's "Fix replay" (2026-10-28).
+  (Findings, 2026-10-30), carrying out D43's "Fix replay".
 
-  Links: area Processes and rules · draws on 609, 610, sim-execution D15, sim-execution D19 · governs cosmograph::schedule · summary A Grouped advance with a paced lineage runs one tick at a time, so a span groups and chooses as its ticks taken singly.
+  Links: area Processes and rules · draws on 609, 610, sim-execution D15, sim-execution D19, sim-execution D43 · governs cosmograph::schedule · summary A Grouped advance with a paced lineage runs one tick at a time, so a span groups and chooses as its ticks taken singly.
 
 - **D42, the record is a store per component, keyed by identity
   (2026-10-31), applies 483:** Mark, on the recommendation below: "an
@@ -409,6 +409,54 @@ each title names its outcome against the doctrine.
   needs them (600).
 
   Links: area The sim's schema and saves · draws on 482, 483, 600, sim-execution D27, sim-execution D28, sim-execution D29 · governs cosmograph::population · summary The record holds each component in a store suited to its shape, keyed and listed by the sim's own identities; no ECS crate holds it.
+
+- **D43, the runtime suite's paced fixtures (2026-10-28), applies Method
+  4:** "Fix replay, unpace where allowed". D19's pacing broke 30 of
+  `mesocosm-runtime`'s tests, whose fixtures expected a choice on their
+  first tick, and under them a paced world's saves did not replay. The
+  replay is fixed (D41). Fixtures that need a first-tick choice run
+  unpaced, as D19's own choice tests do: `held()`, the foraging fixtures
+  and `physical_swing`. The offer-gate
+  tests stay paced, the played 879 witness running ten ticks to the
+  critter's first choice. A resume replays its history in the seal's
+  execution, and paced, a Grouped cohort chooses on its first member's
+  phase and an individual on its own, so a seal tampered to the other
+  execution now refuses at the replay, before the seals are compared.
+  Asked in the runtime triage (Findings, 2026-10-28). After the suite was
+  set aside as a work item (2026-10-30), Mark, 2026-10-31: "How long would
+  it take? Can you do it now to just settle the matter?", then "Groups 1–3
+  now (Recommended)".
+
+  Links: area Method and documents · draws on 609, 610, sim-execution D18, sim-execution D19 · summary Test fixtures that need a first-tick choice run unpaced; the offer-gate tests stay paced, the played witness run to the critter's first choice.
+
+- **D44, the trace pin leaves out its hash while the sim is wired
+  (2026-10-28), applies Method 4:** "Drop the hash while wiring".
+  `runtime_pin`'s recorded traces compare actions, outcomes, ticks and
+  entries; the final state hash is recorded but not compared, and comes
+  back when validation of the whole is designed (D18). Asked when the trace
+  failed on its hash alone from E7a (`21838c0d`); settled with D43.
+
+  Links: area Method and documents · draws on sim-execution D18 · summary The runtime's recorded traces compare actions, outcomes, ticks and entries, not the final hash, while the sim is wired.
+
+- **D45, `physical_play` walks on version four (2026-10-28), applies
+  Method 4:** "Move it to version 4". Founding opts into weight-transfer
+  walking, which `Templates::validate` refuses below version four
+  (`699f8f61`, the foot placement plan's weight-shifting follow-up), and
+  the suite forced version two to keep its version-two locomotion
+  controls. It now runs on the generated version-four rules with
+  undirected walks. Asked in the runtime triage; settled with D43.
+
+  Links: area Method and documents · draws on sim-execution D18 · summary physical_play runs on the generated version-four walking rules instead of forcing version two.
+
+- **D46, generated consumers sense (2026-10-28), refines World 8:** "Fix
+  founding (Recommended)", keyed 2026-10-31 as "Refine World 8, bodies owes
+  it (Recommended)". Generated consumer founders carry living sense
+  tissue, so an ordinary played critter can detect remote food. Asked when
+  `foraging_play`'s ordinary A1 test was traced to `edbb3b95`, which gave
+  the control fixture's actor a sense cell but not the generator's
+  founders; the test stays as written. Owed by `bodies` BO18.
+
+  Links: area World generation · plans bodies · summary Generated consumer founders carry living sense tissue, so an ordinary played critter can detect remote food.
 
 ## Constraints
 
@@ -557,7 +605,7 @@ rollback check (`journal.rs:66`) gets a form that does not clone the world.
 - 2026-10-28: The old host plan's earlier receipt figures (cohort sharing on the core-tick lane) are not comparable with the execution plan's battery figures: D5 and D7a redid the sharing as stage-body and part `Arc`s.
 - 2026-10-28: The frame's extra deaths were far consumers leaving food, not the far-meal draw: between feeds a posed forager walks toward food or waits with it in reach, while a far one could do neither (`foraging_walk_matches` and `foraging_wait_score` refuse unposed actors), so a move was its only choice (D36). The far-food table also counted every living body at a site, the foragers' own among them, as prey (D37). With both fixed, frame-on deaths match frame-off over the same opening (receipts).
 - 2026-10-28: The critter's blank view after a migration is not the frame's: a stance is admitted against the body's matter as it is posed, and matter gained or lost standing still moves the matter centre, which leaves a stance near the edge of its feet; `realized` then fails and the scene drops the body. Matter does not change `body_revision`, so nothing re-posed it (D38). The same failure was traced with the frame off.
-- 2026-10-28: A large part of `mesocosm-runtime`'s test suite already fails at `76f8f5cc` (among them `held_advance_tests`, `verified_question_tests`, `ecology_offer`, `live_input`, `physical_play`), the same set with D36 to D38; the lib tests among them fail the same with the frame call disabled (receipts). Fixing them is not a work item (Mark, 2026-10-30).
+- 2026-10-28: A large part of `mesocosm-runtime`'s test suite already fails at `76f8f5cc` (among them `held_advance_tests`, `verified_question_tests`, `ecology_offer`, `live_input`, `physical_play`), the same set with D36 to D38; the lib tests among them fail the same with the frame call disabled (receipts). Set aside as a work item (Mark, 2026-10-30), then settled at his word on 2026-10-31 (D43 to D45); of the triage's 36, the ordinary A1 foraging test still fails, owed by D46.
 - 2026-10-28: Unpaced, `physical_swing`'s hungry-starter test ran past half an hour at the frame-on head, against 222 s at `76f8f5cc`, all of it in the frame draw: its frame covers the whole site, and the consumers whose food was already surrounded each ran the near-food search to its candidate budget and failed, every advance (D39); the site's ground also held only about half the frame's share, and the rest failed the ordinary search every advance (D40). D36 to D38's own work (wait score, prey matter, re-settle) came to under half a second a tick (receipts).
 - 2026-10-30: Under D19's pacing a Grouped world's saves could fail to replay (`Session::load`, `history.rs:282`), first seen in the 879 offer fixture's world with its joint witness lengthened past the played critter's first paced choice. `decides()` (`schedule/mod.rs`) offsets a cohort's choices by its first identity, and `restrict` regroups cohorts only at an advance's end, so the same ticks advanced singly or in one span grouped members differently and chose on different ticks; `replay_until` advances in spans where nothing was recorded. Individuals and unpaced worlds were unaffected; the head plays Individuals, and placed play records an entry every tick, so ordinary saves replayed. Fixed by D41.
 
@@ -580,5 +628,6 @@ rollback check (`journal.rs:66`) gets a form that does not clone the world.
 - 2026-10-28: D35 replaces D34: far meals by an encounter rate from prey density.
 - 2026-10-28: D36 to D38 built (`Simulation::prey_matter`, `foraging_wait_score`, `spatial/settle.rs`); `FRAME_TIER` on in main, lifting D33.
 - 2026-10-29: D39, D40 built (`embodiment::draw_within`, `Simulation::draw_into_frames`).
-- 2026-10-29: `physical_swing`'s fixture unpaced, carrying out Mark's answer to the runtime triage's group 1 ("Fix replay, unpace where allowed", 2026-10-28, not yet keyed); its three tests pass.
+- 2026-10-29: `physical_swing`'s fixture unpaced, carrying out Mark's answer to the runtime triage's group 1 ("Fix replay, unpace where allowed", 2026-10-28; D43); its three tests pass.
 - 2026-10-30: D41 built (`Simulation::advance_to`, `Simulation::paced`): a paced Grouped span runs a tick at a time; `directing::choice_tests` holds a span against its ticks taken singly.
+- 2026-10-31: D43 to D46 keyed, the runtime triage's answers of 2026-10-28. D43 to D45 built: `held()` and the foraging fixtures unpaced; the played 879 witness at ten ticks; the offered and held traces re-recorded, their hash not compared; `physical_play` on version four; the tampered-execution seal refused at its replay. `mesocosm-runtime`'s suite passes but for the ordinary A1 foraging test, owed by D46 (`bodies` BO18).

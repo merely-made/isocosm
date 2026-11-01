@@ -16,6 +16,11 @@ const PACE: Pace = Pace { round: 1, scoring: 1 };
 fn held() -> Runtime {
     let mut candidate = native_fixture::candidate_with_played("test:offered-cycle", 1);
     candidate.genesis.rules.epoch_ticks = 6;
+    // The first round's birth needs a choice on the first tick (D19 paces
+    // played worlds).
+    for l in candidate.genesis.lineages.values_mut() {
+        l.decides = None;
+    }
     let interim = Interim::found(candidate.genesis, Start::default(), Mode::Survival, PACE,
         Execution::Grouped).unwrap();
     let mut runtime = Runtime::resume(interim.session.save(), Mode::Survival, PACE, 30).unwrap();

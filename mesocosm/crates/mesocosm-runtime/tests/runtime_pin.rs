@@ -129,7 +129,7 @@ fn save_and_resume_keep_the_question_the_queue_and_the_world() {
 }
 
 #[test]
-fn the_recorded_traces_replay_to_their_recorded_hashes() {
+fn the_recorded_traces_replay_to_their_recordings() {
     for (name, world) in [("offered", offered as fn() -> Runtime), ("held", held)] {
         trace::check(name, world);
     }

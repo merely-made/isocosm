@@ -1192,12 +1192,16 @@ In worlds that ask for bodies, flora and fauna draw recipes by kingdom (myco
 and micro become territories and surfaces); each reproduces in one cell of its
 root, draws its life history within what its body supports, and draws its
 variance, absence and riff odds within bounds a world may widen (Mesocosm's
-by default). Generated consumers graze. Other worlds keep extentless bodies as
-the scale control.
+by default). Generated consumers graze and carry living sense tissue. Other
+worlds keep extentless bodies as the scale control.
 
-Links: draws on 512, 525, 547, 548, 549, 550, 573, 905 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze; others stay extentless.
+*Not yet built:* consumers' sense tissue (the execution plan's D46, the bodies
+plan's BO18).
 
-*Reviewed 2026-10-22, new. Mark: "As drafted" (its pair moved up as Method 9).*
+Links: draws on 512, 525, 547, 548, 549, 550, 573, 905, sim-execution D46 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; others stay extentless.
+
+*Refined 2026-10-31 from the execution plan's D46 (Mark: "Fix founding
+(Recommended)", then "Refine World 8, bodies owes it (Recommended)").*
 
 ### World 9. Places carry quality and alignment
 

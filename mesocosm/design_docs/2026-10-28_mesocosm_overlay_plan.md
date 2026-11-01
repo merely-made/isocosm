@@ -500,7 +500,7 @@ Epoch boundary (record: open, the record does not decide).
 - 2026-10-31: `eponym`'s workspace does not resolve offline: its `genet-taffy` patch asks for
   `=0.14.0` and genet main holds 0.16.0. M3.5's change there (`policy: None` in two
   `Lineage` literals in `eponym-play/src/founding.rs`) is unchecked by a build.
-- 2026-10-30: `mesocosm-runtime`'s integration tests ran 56 passed and 36 failed at `76f8f5cc`, with four lib failures, the same with the frame call disabled (`sim-execution` Findings). Many pin behaviour the game has since changed (decision periods, D19). Fixing them is not a work item (Mark, 2026-10-30).
+- 2026-10-30: `mesocosm-runtime`'s integration tests ran 56 passed and 36 failed at `76f8f5cc`, with four lib failures, the same with the frame call disabled (`sim-execution` Findings). Many pin behaviour the game has since changed (decision periods, D19). Fixing them is not a work item (Mark, 2026-10-30); the triage's groups 1 to 3 were settled at his word on 2026-10-31 (`sim-execution` D43 to D45).
 
 - 2026-10-28: `mesocosm/crates` holds `mesocosm-genet`, `-phenotype`, `-runtime`, `-views`
   and probes; `mesocosm-core` is gone. `cosmograph::legacy` appears only in design docs, so the

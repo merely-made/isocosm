@@ -5687,7 +5687,7 @@ title = "a paced Grouped span runs a tick at a time (2026-10-30), applies Proces
 source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
 area = "Processes and rules"
 summary = "A Grouped advance with a paced lineage runs one tick at a time, so a span groups and chooses as its ticks taken singly."
-draws_on = ["609", "610", "sim-execution D15", "sim-execution D19"]
+draws_on = ["609", "610", "sim-execution D15", "sim-execution D19", "sim-execution D43"]
 governs = ["cosmograph::schedule"]
 
 [decisions."sim-execution D42"]
@@ -5697,6 +5697,34 @@ area = "The sim's schema and saves"
 summary = "The record holds each component in a store suited to its shape, keyed and listed by the sim's own identities; no ECS crate holds it."
 draws_on = ["482", "483", "600", "sim-execution D27", "sim-execution D28", "sim-execution D29"]
 governs = ["cosmograph::population"]
+
+[decisions."sim-execution D43"]
+title = "the runtime suite's paced fixtures (2026-10-28), applies Method 4"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "Test fixtures that need a first-tick choice run unpaced; the offer-gate tests stay paced, the played witness run to the critter's first choice."
+draws_on = ["609", "610", "sim-execution D18", "sim-execution D19"]
+
+[decisions."sim-execution D44"]
+title = "the trace pin leaves out its hash while the sim is wired (2026-10-28), applies Method 4"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "The runtime's recorded traces compare actions, outcomes, ticks and entries, not the final hash, while the sim is wired."
+draws_on = ["sim-execution D18"]
+
+[decisions."sim-execution D45"]
+title = "`physical_play` walks on version four (2026-10-28), applies Method 4"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "Method and documents"
+summary = "physical_play runs on the generated version-four walking rules instead of forcing version two."
+draws_on = ["sim-execution D18"]
+
+[decisions."sim-execution D46"]
+title = "generated consumers sense (2026-10-28), refines World 8"
+source = "mesocosm/design_docs/2026-10-28_sim_execution_plan.md"
+area = "World generation"
+summary = "Generated consumer founders carry living sense tissue, so an ordinary played critter can detect remote food."
+plans = ["bodies"]
 
 [decisions."wing-organs D1"]
 title = "parked (2026-10-28), amends 279 and 673"
@@ -6648,8 +6676,8 @@ draws_on = ["412", "413", "414", "415"]
 title = "Founded lineages are drawn within what bodies allow"
 source = "design_docs/doctrine.md"
 area = "World generation"
-summary = "Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze; others stay extentless."
-draws_on = ["512", "525", "547", "548", "549", "550", "573", "905"]
+summary = "Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; others stay extentless."
+draws_on = ["512", "525", "547", "548", "549", "550", "573", "905", "sim-execution D46"]
 
 [statements."world.9"]
 title = "Places carry quality and alignment"

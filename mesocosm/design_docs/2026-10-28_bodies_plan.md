@@ -9,8 +9,8 @@ the smooth path, native recipe proportions with role-based selection, native
 chains, paid upper/lower/foot chains with weight shifting, intermediate stances,
 supported turns, posed-mass balance, terrain sight rays and a complete-route
 requirement for food. Open: per-connection blending, the strength phase, the
-full-density calibration, richer senses, and the whole body-binding module, which
-is documented but not built.
+full-density calibration, richer senses, sense tissue in generated consumers
+(BO18), and the whole body-binding module, which is documented but not built.
 
 **For:** bodies in the world: how they look (appearance), how they stand and
 step (footing), what they sense (senses) and how a sim entity's body is bound to
@@ -227,6 +227,16 @@ battery does not exercise, and no battery measures it. The bar, if any, is
 - Rulings: -
 - From: `mesocosm/design_docs/archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:461-472`
 
+#### BO18. Generated consumers sense
+Generated consumer founders carry living sense tissue, so an ordinary played
+critter can detect remote food (doctrine World 8). Today most do not
+(Findings, 2026-10-31).
+- Done when: the consumer founders a generator draws carry living sense tissue,
+  and an ordinary played critter finds remote food in play.
+- Needs: -
+- Rulings: `sim-execution` D46
+- From: the runtime triage's group 4 (2026-10-28)
+
 ### Binding
 
 #### BO13. The body-binding module in conatus
@@ -305,6 +315,7 @@ One merged list; each names the phase that owns it.
 - **Two bodies overlapping**: nothing in movement keeps two bodies from overlapping (a reading, not ruled); shared fixtures space bodies at native bounds instead (case 941). Whether movement should prevent it is open. From: `eponym/design_docs/archive_docs/2026-10-28/2026-09-25_eponym_overlay_plan.md:491`.
 
 ## Findings
+- 2026-10-31: in 23 of 25 generated A1 worlds (probed 2026-10-28; founding's senses unchanged since), every consumer founder of the played lineage has no `function:sense` tissue, 25 of 28 bodies; with sight on, reach 0 and a search of 32, such a critter never detects food beyond reach. `edbb3b95` gave `foraging_play`'s control actor a sense cell, not the generator's founders (BO18).
 - 2026-10-28: appearance B1 to B3 are in code: the tenant's `geometry.rs` calls `tissue_colour`, `--body-proportions varied|fixed` exists in `mesocosm-genet/src/main.rs`, and `cosmograph/src/datasheet/native.rs` takes appendage chains (the refusal is gone). Their picture and A1 evidence was not re-run; treat them as closed.
 - 2026-10-28: no `blend_radius` and no area-scaled actuation in code, so BO1 and BO2 are unbuilt. `Walking.balance` (`spatial/embodiment/walking.rs`) and inherited limb sizes (`bodied.rs` `limb_scale`) exist.
 - 2026-10-28: no `BodyBindings` in this repository or in mere. `isometry-runtime` is gone; `TactileWorld` lives in `mesocosm-runtime/src/tactile.rs`; the query-refresh part of the old plan (Q15) is done. In mere, the conatus engine plan carries the "Body bindings" text (documented, not built) and the composition plan's C4 passage still reads "Open."; the `Engine` doc comment now says durable source bindings remain outside the runtime, so recheck A.2.1 at mere main before BO16.
@@ -312,4 +323,5 @@ One merged list; each names the phase that owns it.
 - 2026-10-28: the old body plan's receipt paths are Windows-style and unreachable on this machine.
 
 ## Progress
+- 2026-10-31: BO18 added (`sim-execution` D46).
 - 2026-10-28: cut from the body appearance, foot placement, senses and body binding plans.

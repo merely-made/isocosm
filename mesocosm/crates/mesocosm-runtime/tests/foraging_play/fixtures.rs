@@ -12,6 +12,11 @@ pub fn ordinary(seed: u64) -> Founded {
     let mut domain = founded.genesis.founding.clone().unwrap();
     domain.ecology_rates = cosmograph::ecology::Rates::A1;
     founded.genesis = domain.generate().unwrap();
+    // Every lineage decides each tick: these tests ask how a forager walks,
+    // not how often it decides (D19 paces played worlds).
+    for l in founded.genesis.lineages.values_mut() {
+        l.decides = None;
+    }
     founded.genesis.rules.epoch_ticks = 60;
     let sun = founded.genesis.rules.sun.clone().unwrap_or_default();
     founded.genesis.rules.sun = Some(cosmograph::light::SunRules { start_hour: 7, ..sun });
@@ -41,6 +46,11 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) ->
     domain.bodies.as_mut().unwrap().hazard = [0; 2];
     domain.bodies.as_mut().unwrap().wound = [0; 2];
     founded.genesis = domain.generate().unwrap();
+    // Every lineage decides each tick: these tests ask how a forager walks,
+    // not how often it decides (D19 paces played worlds).
+    for l in founded.genesis.lineages.values_mut() {
+        l.decides = None;
+    }
     let g = &mut founded.genesis;
     for group in g
         .population
