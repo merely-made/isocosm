@@ -11790,6 +11790,20 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Licensing and sources · draws on 1064, 1044, 1059, licensing.3 · summary Edition packs are a manifest section bundled beside the app and sent at join by hash; a savepack compiles a world for play-only grants, updated from its origin.
 
+1068. **Pack transfer waits for the identity work; a stale pin refuses until
+      repinned; an edition's unit of time is the `time` decision point.**
+      Ruled by Mark on 2026-11-01, each as recommended ("Build after Djinn
+      settles", "Refuse; add an explicit repin", "`time`"), after edition
+      packs landed. The reading: sending packs at join, a peer's pack cache
+      keyed by hash and rules reading the campaign's own pinned packs are
+      built once the guest's join path is free of the identity work; a save
+      whose pinned pack no longer matches the one held here is refused
+      (Method 8) until an explicit, recorded repin; the decision point an
+      edition declares for its unit of time and what fills it (Ars's season,
+      a downtime span) is `time`.
+
+      Links: area Licensing and sources · draws on 1064, 1067, method.8, vtt.6 · summary Pack transfer follows the identity work; stale pins refuse until an explicit repin; `time` is the decision point for an edition's unit of time.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
