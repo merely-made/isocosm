@@ -88,7 +88,7 @@ fn main() -> Result<(), String> {
         ..Default::default()
     };
     run(options, move |_, _, _| Init {
-        state: Viewer { client, board, events: Vec::new(), graph_size: (960, 780) },
+        state: Viewer { client, board, events: Vec::new(), graph_size: (960, 780), drag: None },
         logic: root as Logic,
         sheet: SHEET.to_string(),
         fonts: Vec::new(),

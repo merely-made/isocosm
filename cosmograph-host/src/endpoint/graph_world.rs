@@ -28,6 +28,9 @@ pub const FILTER: &str = "cosmograph.filter";
 pub const DEATH: &str = "cosmograph.death";
 pub const BIRTH: &str = "cosmograph.birth";
 const ADAPTER: &str = "cosmograph.graph";
+/// A graph node's footprint: one line of title, narrower than the force
+/// law's resting spacing (about 140 to 170), so a settled graph reads.
+const NODE: [f32; 2] = [132.0, 30.0];
 
 pub struct GraphSession {
     disclosure: Disclosure,
@@ -101,7 +104,7 @@ impl GraphSession {
             g
         })?;
         built.links.retain(|(a, b, _)| a != b);
-        self.disclosure.snapshot_folded(request, ADAPTER, &built.items, &built.links, &built.folds)
+        self.disclosure.snapshot_folded(request, ADAPTER, &built.items, &built.links, &built.folds, NODE)
     }
 
     pub fn resource(&mut self, request: ResourceRequest) -> Result<ResourceResponse, String> {

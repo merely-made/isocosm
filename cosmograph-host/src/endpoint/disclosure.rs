@@ -54,7 +54,7 @@ pub fn action(intent: &str, label: &str, explanation: &str, schema: &str, effect
 }
 
 /// A portable card's footprint, the size Graphshell's own card endpoints use.
-const CARD: [f32; 2] = [260.0, 136.0];
+pub const CARD: [f32; 2] = [260.0, 136.0];
 
 pub fn arrangement() -> Arrangement { Arrangement::Spiral(Spiral::default()) }
 
@@ -74,17 +74,17 @@ pub struct Folded {
 
 /// The items' solved scene, with `links` (from, to, kind) as relations.
 pub fn scene(adapter: &str, items: &[Item], links: &[(String, String, &str)]) -> Scene {
-    scene_folded(adapter, items, links, &[])
+    scene_folded(adapter, items, links, &[], CARD)
 }
 
-/// The items' solved scene with relations and folds.
-pub fn scene_folded(adapter: &str, items: &[Item], links: &[(String, String, &str)], folds: &[Folded])
-    -> Scene {
+/// The items' solved scene with relations and folds, each card `card` in size.
+pub fn scene_folded(adapter: &str, items: &[Item], links: &[(String, String, &str)], folds: &[Folded],
+    card: [f32; 2]) -> Scene {
     let mut score = Score::new(arrangement());
     score.items = items.iter().enumerate().map(|(ordinal, item)| ScoreItem {
         source: SourceRef::new(adapter, &item.id),
         ordinal: ordinal as u32,
-        footprint: Footprint::Rect { size: Size2::new(CARD[0], CARD[1]) },
+        footprint: Footprint::Rect { size: Size2::new(card[0], card[1]) },
         representation: Representation::Card,
         placement: Placement::Ordinal,
         layer: 0,
@@ -149,12 +149,12 @@ impl Disclosure {
     /// A fresh snapshot of `items` at the current revision.
     pub fn snapshot(&mut self, request: ProjectionRequest, adapter: &str, items: &[Item],
         links: &[(String, String, &str)]) -> Result<ProjectionSnapshot, String> {
-        self.snapshot_folded(request, adapter, items, links, &[])
+        self.snapshot_folded(request, adapter, items, links, &[], CARD)
     }
 
-    /// A fresh snapshot whose scene also carries `folds`.
+    /// A fresh snapshot whose scene also carries `folds`, its cards `card` in size.
     pub fn snapshot_folded(&mut self, request: ProjectionRequest, adapter: &str, items: &[Item],
-        links: &[(String, String, &str)], folds: &[Folded]) -> Result<ProjectionSnapshot, String> {
+        links: &[(String, String, &str)], folds: &[Folded], card: [f32; 2]) -> Result<ProjectionSnapshot, String> {
         if request.version.major != ProtocolVersion::V1.major {
             return Err("projection request uses an unsupported protocol".into());
         }
@@ -166,7 +166,7 @@ impl Disclosure {
         }
         self.catch_up()?;
         let scene = SceneSnapshot::from_dense(SceneEpoch(1), Revision(self.revision),
-            scene_folded(adapter, items, links, folds)).map_err(|error| format!("invalid scene: {error:?}"))?;
+            scene_folded(adapter, items, links, folds, card)).map_err(|error| format!("invalid scene: {error:?}"))?;
         let presentation = self.presentations(items, &scene)?;
         let snapshot = ProjectionSnapshot { version: ProtocolVersion::V1, session: request.session,
             scene, presentation, cache_policy: CachePolicy::default() };

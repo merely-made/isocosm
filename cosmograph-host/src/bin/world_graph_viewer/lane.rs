@@ -42,6 +42,12 @@ impl mesquite::Product for Lane {
             .with_field("groups", shown("group:").to_string())
             .with_field("cards", board.cards().to_string())
             .with_field("edges", board.edges().to_string())
+            .with_field("law", board.law().label().to_string())
+            .with_field("zoom_pct", ((board.zoom() * 100.0).round() as i64).to_string())
+            // Linked cards' mean gap against all cards', in percent: under 100
+            // when linked cards cluster.
+            .with_field("cluster_pct", board.cluster_ratio()
+                .map_or("none".into(), |r| ((r * 100.0).round() as i64).to_string()))
             .with_field("notice", v.client.notice.clone())
     }
 

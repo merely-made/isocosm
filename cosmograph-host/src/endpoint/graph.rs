@@ -109,6 +109,8 @@ pub fn graph(session: &Session, view: &View, acts: &[chirograph::AdvertisedActio
             values.extend(region.biomass.iter().map(|(level, m)| value(level.as_str(), m)));
             g.items.push(Item { id: id.clone(), card: card(format!("Region {}", &id[7..]), values,
                 &["region"]), actions: vec![toggle(view, &id, "region")] });
+            // The world card holds its regions, so the force law keeps it with them.
+            g.links.push(("world".into(), id.clone(), "holds"));
         }
     }
     // Sites, with their routes and their region.
