@@ -11469,6 +11469,34 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area The VTT · draws on 1034, 1047, vtt.2, vtt.3, vtt.5 · summary PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members.
 
+1057. **An arrival enters through the border it crossed.** Ruled by Mark on
+      2026-10-31, after Mesocosm was found refusing to found a seeded torus
+      (its two routes between the same two sites made duplicate crossings,
+      since a crossing keeps only its two sites, introduced in 39a597c9):
+      "If we can use 1 to implement directional approach of an area (i.e.
+      enter from this tile to this one results in entering into the tile
+      from a map-relative direction. If not, perhaps at most reconsider
+      arrivals, including the torus case". Deduplicating crossings by site
+      pair would discard direction, while every route already carries its
+      border (the side it leaves and the side it enters), so the reading is
+      the second: a crossing is keyed by its route's border, its stand lies
+      at the entering edge of the destination, and an arrival enters from
+      that map-relative direction; a torus's two routes between one pair of
+      sites are two distinct crossings.
+
+      Links: area World generation · draws on world.6, processes.16 · summary A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings.
+      *Built how* (Mark, 2026-10-31: "A: full directional travel", offered
+      against directional arrival alone and one crossing per pair): travel
+      acts name the route they take and a journey records its border,
+      behind a new movement version so older saves replay unchanged; both
+      of a torus's routes are travellable.
+      Its forks, each as recommended (Mark, 2026-10-31): legacy v1
+      crossings gain an optional border and a v6 habitat lands arrivals at
+      the entering edge; an arrival lands at the edge when the camera frame
+      covers it and otherwise stays far (E5); move acts carry their side only
+      where parallel routes join one pair; fresh worlds' pinned hashes move
+      under the new movement version, old saves keeping theirs.
+
 1045. **A shared mechanism moves when its second consumer is planned, not
       when it arrives.** Ruled by Mark on 2026-10-31, in Mere (house-style
       D12, refining mere's Stack 1): "second host is planned", because
@@ -11483,6 +11511,116 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       moves into conatus once a second consumer plans it.
 
       Links: area Stack and engine · amends 332 · draws on mere:stack.1 · summary A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt.
+
+1051. **A lineage policy scores the chooser's terms; deliberative fauna carry
+      one.** Ruled by Mark on 2026-10-31, from the [creature minds
+      brief](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md)
+      (Mark: "Terms as inputs (Recommended)", "Deliberative fauna
+      (Recommended)"), offered against biasing the hand-written score as B1
+      did and against replacing it; and against every living lineage or only
+      played and sapient ones. The reading: a lineage carries a small integer
+      recurrent policy that scores each Choice process the deliberative
+      chooser offers, its inputs the chooser's terms (pressing needs scaled by
+      the lineage's drives, mood, each nudge by its bond, sensed facts) and
+      its own recurrent state; a world with no policy keeps the hand-written
+      score (Schema 10). Every lineage whose members choose carries one;
+      producers and other non-choosers grow by a developmental grammar
+      instead. The policy proposes and the resolvers dispose, and it chooses
+      only among acts the body and the world admit.
+
+      Links: area Directing and play · draws on 683, directing.4, schema.10 · summary A lineage's small integer policy scores the chooser's offered processes from its terms and recurrent state; deliberative fauna carry one, non-choosers grow by grammar.
+
+1052. **The crowd runs its lineage's policy over bands.** Ruled by Mark on
+      2026-10-31, from the creature minds brief: "1, but 2 for unknown
+      lineages? Idk. 1 seems reasonable, just looking for resource savings.
+      Maybe it wouldn't save much", offered as the shared policy over bands
+      (recommended), a rate distilled from the policy, or the hand-written
+      score in the crowd. The reading: a band's representative runs the
+      lineage policy once for all its members (E4b's shape), exact because
+      members with the same inputs choose the same, and a member with a live
+      learned delta stays an individual. A rate distilled from a policy
+      stays a candidate for lineages no player has met, adopted only where a
+      measurement shows it saves time, as a rate model certified per rules
+      digest (440); one evaluation per band per decision is already cheap,
+      and a rate saves mainly by skipping ticks.
+
+      Links: area Processes and rules · draws on 440, 1051, processes.6, sim-execution D24 · summary The crowd's bands run the lineage policy once for their members; a distilled rate for unmet lineages only where measured to save.
+
+1053. **Culture moves by imitating the successful and by teaching.** Ruled
+      by Mark on 2026-10-31, from the creature minds brief: "Imitating the
+      successful (Recommended), Teaching as an act, Parent to young should
+      accelerate teaching; compatibility? Also cool with a share of the
+      delta, depending on the share." Offered as the named mechanisms that
+      fold an individual's learned delta into its lineage (founding record:
+      a learned technique is heritable "only through a named world
+      mechanism, with its costs and transmission limits recorded"). The
+      reading: young members copy part of nearby kin's deltas, weighted by
+      those kin's success, and the epoch boundary adopts what spread;
+      teaching is a Choice process that costs time and matter, open to social
+      or sapient lineages; a parent teaching its own young transfers faster;
+      a share of a parent's delta may pass at birth, its size a world rule.
+      Compatibility is read as kinship of policies: within a lineage deltas
+      share a base and transfer directly, closest from parent to young;
+      across lineages the weights do not line up, so a learner imitates the
+      teacher's acts and trains its own delta, slower and lossier.
+
+      Links: area Processes and rules · draws on 1051, processes.14 · summary Learned deltas fold into a lineage by imitating successful kin and by teaching, faster from parent to young; a bounded share may pass at birth; across lineages only acts are imitated.
+
+1054. **Trust in a player's directions is kept per kind of direction.**
+      Ruled by Mark on 2026-10-31, from the creature minds brief (Mark: "Per
+      kind of direction (Recommended)"), offered against also keying it by
+      place and against keeping the bond's one weight. The reading: under
+      each bond's weight (688) a creature keeps a small table, by kind of
+      direction (a place to range, a thing to approach, an act toward a
+      target, keyed also by the target's lineage), of how following it
+      turned out against what it expected; it is taken faster as trust
+      grows, hesitated over and then refused as it falls, fades as memory
+      does, and carries to the next generation as the bond does (178).
+
+      Links: area Directing and play · draws on 177, 178, 688, mesocosm.2 · summary Under each bond a creature keeps trust per kind of direction, learned from outcomes; it speeds, slows or refuses directions and carries as the bond does.
+
+1055. **Sapience is measured: novel directions, imitation and tool use; a
+      lineage or an individual.** Ruled by Mark on 2026-10-31, from the
+      creature minds brief (Mark: "Novel directions (Recommended), Imitation
+      (Recommended), Tool use"; "Both (Recommended)"), signalling offered and
+      not taken; offered against sapience belonging to the lineage only or
+      to the individual only. The reading: a creature passes when it
+      follows a direction it has never been given toward a goal it cannot
+      have learned, takes up an act it watched another perform without being
+      rewarded for it, or uses one thing to act on another; a lineage reads
+      as sapient when a share of its members pass, the share a world rule;
+      any individual who passes may be driven (671), even in a lineage that
+      does not.
+
+      Links: area Directing and play · draws on 671, directing.3, naming.2 · summary Sapience is read from behaviour (novel directions, imitation, tool use); a lineage is sapient by a share of passing members, and any passing individual may be driven.
+
+1056. **A driven creature learns from its player wherever driving is.** Ruled
+      by Mark on 2026-10-31, from the creature minds brief (Mark: "Wherever
+      driving is (Recommended)"), offered against Eponym only and against a
+      world setting. The reading: while a player drives a sapient creature,
+      the player's choices are imitation examples for its learned delta, in
+      Eponym, in Mesocosm once a lineage is sapient, and in Isocosm when the
+      table runs on the sim; what it learns passes on by 1053's mechanisms.
+
+      Links: area Directing and play · draws on 60, 671, 1053, 1055 · summary A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture.
+
+1058. **A third of a parent's delta passes at birth; a lineage is sapient
+      from half its adults until under a third.** Ruled by Mark on
+      2026-10-31, setting the world rules 1053 and 1055 left open: "So what
+      do you think on the numbers? Instinctively, I think one third or one
+      half. And for what share of members makes a lineage sapient? Again,
+      one third or one half sounds about right." Put back with a
+      recommendation for each, Mark chose "A third (Recommended)" and "Half
+      in, a third out (Recommended)". The reading: each parent passes a third
+      of its learned delta at birth, so two parents pass at most two thirds,
+      teaching keeps the larger part, and an unrenewed lesson fades to a
+      ninth in two generations. A lineage is read at the epoch boundary, over
+      its adults only: it becomes sapient once half have passed and stays so
+      until fewer than a third have, so a die-off or a baby boom does not
+      flip it, while young who grow up untaught and fail can. Both are world
+      rules; these are their defaults.
+
+      Links: area Directing and play · draws on 1053, 1055, ecology.1 · summary A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

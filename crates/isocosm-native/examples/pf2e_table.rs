@@ -61,6 +61,14 @@ fn click_payload(
     }
 }
 
+const HUMAN_ROGUE: &[&str] = &[
+    "human", "dex", "int", "skilled-human", "stealth", "street-urchin", "dex", "con", "rogue", "thief",
+    "athletics", "acrobatics", "dex", "dex", "con", "wis", "cha", "arcana", "crafting", "diplomacy",
+    "medicine", "nature", "occultism", "religion", "society", "Draconic", "Elven", "natural-ambition",
+    "plant-evidence", "battle-medicine", "tumble-behind", "rapier", "shortbow", "arrows", "leather-armor",
+    "healers-toolkit", "done",
+];
+
 const DWARF_FIGHTER: &[&str] = &[
     "dwarf", "listed", "str", "rock-dwarf", "warrior", "str", "con", "fighter", "athletics", "str",
     "dex", "con", "wis", "int", "acrobatics", "medicine", "survival", "crafting", "Gnomish",
@@ -74,7 +82,9 @@ fn main() -> Result<(), String> {
         return inspect(&args.next().ok_or("supply the saved .family ledger path")?);
     }
     let mode = args.next();
-    let (world, dm, bodies) = if mode.as_deref() == Some("--stride") {
+    let admitted_mode = matches!(mode.as_deref(), Some("--stride" | "--combat"));
+    let combat = mode.as_deref() == Some("--combat");
+    let (world, dm, bodies) = if admitted_mode {
         let a = admitted::admitted_table();
         (a.world, a.dm, a.characters)
     } else {
@@ -120,10 +130,11 @@ fn main() -> Result<(), String> {
     // `--ready`: both bodies drafted as dwarf fighters through the same
     // sheet buttons, with longsword, steel shield and scale mail readied.
     if mode.is_some() {
-        for body in bodies {
+        for (n, body) in bodies.into_iter().enumerate() {
+            let rogue = combat && n == 0;
             let card = format!("sheet:{body}");
             click(&mut endpoint, SHEETS, &card, "vtt.sheet-create")?;
-            for value in DWARF_FIGHTER {
+            for value in if rogue { HUMAN_ROGUE } else { DWARF_FIGHTER } {
                 click(&mut endpoint, SHEETS, &card, &format!("vtt.draft-{value}"))?;
             }
             click(&mut endpoint, SHEETS, &card, "vtt.draft-finish")?;
@@ -133,13 +144,17 @@ fn main() -> Result<(), String> {
                 Ok(inventory.items.iter().map(|(id, item)| (id.0.clone(), item.name.clone())).collect())
             })??;
             for (id, name) in items {
-                if ["Longsword", "Steel Shield", "Scale Mail"].contains(&name.as_str()) {
+                let wanted: &[&str] = if rogue { &["Shortbow", "Leather Armor"] } else { &["Longsword", "Steel Shield", "Scale Mail"] };
+                if wanted.contains(&name.as_str()) {
                     click(&mut endpoint, SHEETS, &card, &format!("vtt.pf2e-equip-{id}"))?;
                 }
             }
         }
     }
-    if mode.as_deref() == Some("--stride") {
+    if combat {
+        click(&mut endpoint, SHEETS, &format!("sheet:{}", bodies[1]), "vtt.pf2e-off-guard-on")?;
+    }
+    if admitted_mode {
         click_payload(&mut endpoint, isocosm_native::AUTHORING, "ruleset-scale", "vtt.ruleset-scale", br#"{"cells_per_square":4}"#)?;
     }
     println!(

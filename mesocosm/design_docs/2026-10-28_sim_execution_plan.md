@@ -1,7 +1,7 @@
 # The sim's execution model: speed, waking, parallel evaluation, near and far
 
-**Status:** 2026-10-29: cut on 2026-10-28 from `2026-10-19_sim_execution_plan.md`, plus the speed items of `2026-10-14_sim_host_plan.md`, `2026-09-22_sim_plan.md`, `2026-09-11_orthographic_voxel_presentation_plan.md` and `2026-10-22_foot_placement_plan.md`, which are archived in
-`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20), a paced Grouped span run a tick at a time so saves replay (D41); the head at 10 ticks a second (D21); a missed risk on a process that otherwise does nothing makes no act (E7b). Built in part: E4a (far members fold into bands with a pool, where a world declares banding) and E5: a camera frame roots its posed members, and elsewhere members leave the physical path once a world has attention windows (E5a-b); members are drawn into a frame by its share of the site (E5c); the runtime holds the critter's frame as attention, and far arrivals and births land without a pose (E5d). The frame is on in main since D36 to D38 (far foragers wait at site grain and read prey by their own intake; resting bodies re-settle); a crowded frame draws by the ordinary search (D39) and stops at its first failure (D40). Open: E4b (bands act once for all members, effects scaled by count), E1 as a whole, E2, E3, E6, the tier line's band and the speed bars. The Places fix D30 asks for is `place-graph-engine` PG7. From E7 on, phases are checked in isolation while the sim is wired (D18).
+**Status:** 2026-10-31: cut on 2026-10-28 from `2026-10-19_sim_execution_plan.md`, plus the speed items of `2026-10-14_sim_host_plan.md`, `2026-09-22_sim_plan.md`, `2026-09-11_orthographic_voxel_presentation_plan.md` and `2026-10-22_foot_placement_plan.md`, which are archived in
+`archive_docs/2026-10-28/`. Built and exact: stage bodies and parts by `Arc` (D5, D7), the narrower prey scan (D9a, D11), and the gate index's more-gates and re-filing parts (E1a, E1b); the index kept across advances (E1c); strain worked out when read (E7a); decision periods per lineage (E8) at 10 / 2 / 5 with meals scaled (D19, D20), a paced Grouped span run a tick at a time so saves replay (D41); the head at 10 ticks a second (D21); a missed risk on a process that otherwise does nothing makes no act (E7b). Built in part: E4a (far members fold into bands with a pool, where a world declares banding) and E5: a camera frame roots its posed members, and elsewhere members leave the physical path once a world has attention windows (E5a-b); members are drawn into a frame by its share of the site (E5c); the runtime holds the critter's frame as attention, and far arrivals and births land without a pose (E5d). The frame is on in main since D36 to D38 (far foragers wait at site grain and read prey by their own intake; resting bodies re-settle); a crowded frame draws by the ordinary search (D39) and stops at its first failure (D40). Open: E4b (bands act once for all members, effects scaled by count), the record's stores per component (D42, E9), E1 as a whole, E2, E3, E6, the tier line's band and the speed bars. The Places fix D30 asks for is `place-graph-engine` PG7. From E7 on, phases are checked in isolation while the sim is wired (D18).
 
 **For:** every tick-latency, frame and search-time bar in the family, and the execution work that serves them: waking (E1), draw keys (E2), parallel evaluation (E3), the crowd in the core (E4), crossings and the tier line (E5), rate models (E6), the host's latency bars, cold-route and startup search time, and the scale and scheduler-waste items. This is the only plan that states a speed number; others name `sim-execution` and do not restate it.
 
@@ -387,6 +387,29 @@ each title names its outcome against the doctrine.
 
   Links: area Processes and rules · draws on 609, 610, sim-execution D15, sim-execution D19 · governs cosmograph::schedule · summary A Grouped advance with a paced lineage runs one tick at a time, so a span groups and chooses as its ticks taken singly.
 
+- **D42, the record is a store per component, keyed by identity
+  (2026-10-31), applies 483:** Mark, on the recommendation below: "an
+  interesting direction, go for it". The record keeps its identities
+  (`Population`'s intervals, never reused) and each component of `Entity`
+  moves, one at a time, into a store chosen for its shape, after the
+  per-component stores of Haskell's apecs: an interval store for what a
+  cohort shares, paged columns behind `Arc` for fixed-shape state every pass
+  reads, an ordered map for sparse state, and a single value for the world
+  and the played critter. Data-defined accounts are interned per world and
+  each held as a column. Every store lists its members in identity order,
+  so a process is a merge of stores in that order, saves and hashes do not
+  depend on storage history, and Processes 7 and E2's keys hold unchanged;
+  the scheduler stays the sim's (482). No ECS crate holds the record: hecs,
+  bevy_ecs and shipyard allocate and reuse their own identities, iterate in
+  storage order and have no member standing for many, so each would need a
+  table from our identities to theirs, a second answer to who a member is
+  (483). hecs stays where it fits, as storage for conatus's near-tier
+  runtime, rebuilt from the record and never saved. The stores start as a
+  module of `cosmograph` and move into the stack when a second consumer
+  needs them (600).
+
+  Links: area The sim's schema and saves · draws on 482, 483, 600, sim-execution D27, sim-execution D28, sim-execution D29 · governs cosmograph::population · summary The record holds each component in a store suited to its shape, keyed and listed by the sim's own identities; no ECS crate holds it.
+
 ## Constraints
 
 - **Three tiers, and which ones the view may move (D23).** Mark: "I think the near tier is necessarily dependent on the viewing dimension, but the far tier, well, there's like a far tier, like in the way that people use billboarding, where like if something is really, really, really far away, then they'll just billboard it, you know? And then there's the far tier of like, it's not in this area. You could not possibly see it. Then that's like aggregate tier, right?" So: *near* is inside the rendered area and runs as individuals; it depends on the view, and the viewing dimension may change it. *Far within the rendered area* is presentation, the billboard end of `orthographic-voxel-presentation` L10, and reads the same individuals more coarsely. *Aggregate* is everything outside the rendered area, cohorts and crowds grouped to save calculation; it never depends on the view, so E4 and E5's seeded lift and the tier line's crossings key on site, lineage and tick, never on a view event. From: the 2026-10-27 discussion and Mark's answer.
@@ -494,15 +517,35 @@ After the narrowed prey scan, shared-ground passes (`produce-3`, `feed-1`) evalu
 - Rulings: 206, 220, 306, 454, 683, 813
 - From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:236-244`, `:394-396`, `:408-428`; `archive_docs/2026-10-28/2026-09-22_sim_plan.md:1658-1659`, `:1712-1717`.
 
+### E9. Stores per component
+D42's layout, built with the bands (E4), which already want columns. A
+store trait (get, set, remove, members in identity order) and four stores:
+interval, paged column, ordered map, single. Splitting a cohort splits its
+interval in every store, as `lift_shared` splits it today; `restrict`'s
+merge compares components store by store. Fields leave `Entity` one at a
+time, first those every pass reads (alive, place, settled, the accounts
+metabolism, strain and meals touch); mind state, if cohorts grow into
+individual minds, is the next heavy user. The save format takes a version
+with a conversion from the last, as earlier versions did. The journal's
+rollback check (`journal.rs:66`) gets a form that does not clone the world.
+- Done when: a world whose hot fields live in stores advances, saves and
+  reloads to the same state in a unit test (D18).
+- Needs: D42; E4 alongside; the spatial costs of the 2026-10-31 finding gone first
+- Rulings: 482, 483, 600, D42
+
 ## Deferred and parked
 - **Playable-loop forager route search** (the `playable-loop` branch, unpushed at 2026-10-23): its cost is deliberation the A1 battery does not exercise and no battery measures it. Owned by `bodies`; `sim-execution` reads its cost once a battery exists. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:461-472`.
 
 ## Questions for Mark
-- **Which speed bar is the bar.** 966's 1.5 s on the seed-9 save (about a hundred members) stays open for a ruling "with the scheduling profile"; 976's 8 s holds; 978 sets the head at 2 ticks per second with 10 the aspiration; the aim is 0.1 s at a few hundred members. Rule whether the aim replaces 966 and when the head's tempo is raised (the 1,440-tick day of the light field, 973, is 12 minutes of play at 2 ticks per second). From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md:7-13`, `:359-370`.
+- **Which speed bar is the bar.** 966's 1.5 s on the seed-9 save (about a hundred members) stays open for a ruling "with the scheduling profile"; 976's 8 s holds; 978 sets the head at 2 ticks per second with 10 the aspiration; the aim is 0.1 s at a few hundred members. Rule whether the aim replaces 966 and when the head's tempo is raised (the 1,440-tick day of the light field, 973, is 12 minutes of play at 2 ticks per second). From: `archive_docs/2026-10-28/2026-10-14_sim_host_plan.md:7-13`, `:359-370`. Recommendation (2026-10-31, not ruled): the TD2 aim is the bar, split by tier and measured in release: 0.1 s a played tick for the near tier (the rendered area plus roots, a few hundred individuals), and an aggregate whose cost grows with sites and lineages, not with members (D24); 966 and 976 retire as bars.
 - **The `cargo test` profile.** The played seed 0 runs far slower under the `cargo test` profile than release, and with debug assertions off drops substantially. The likely source is named but "not strictly separated": the journal's full `State` clone verifying each rollback (`journal.rs:66`) and `passed_by`'s population rescan (`schedule/mod.rs:314`). No action decided. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:350-355`.
 - **Occurrence index in E2's key (conditional).** If the actor, tick and process key collides for a grouped cohort, E2 brings the fork to Mark. From: `archive_docs/2026-10-28/2026-10-19_sim_execution_plan.md:128-131`.
+- **Where near-tier movement lives (raised 2026-10-30).** Doctrine Stack 12 says the sim "never pathfinds an individual, checks line of sight or resolves a single blow"; rulings 841 and 842 say chosen native steps are "resolved by a game"; yet food-route search, Places derivation and walking plans run in the sim's tick (`shared/isocosm/src/spatial/`, `foraging`, `embodiment`), and that was most of the head's 12.5 s tick (D30). Options: keep it in the tick (one authority, but cost grows with members times path and the region of case 124 is out of reach); the game layer resolves it (Stack 12 and conatus's "Product profiles conduct. Conatus advances spatial state.", but the sim's choice loses its reachability read); or split by grain. Recommendation (2026-10-31, not ruled): split by grain. The sim chooses the goal at the place graph's grain (which place, which meal, whether a route exists, from `place-graph-engine` PG7's Places); the game and conatus find the path, pose the body and place the feet; the sim commits the arrival it accepts, which replay already records as a command. Route search, walking and foot placement move toward conatus (`bodies`).
+- **The tier band's length (D26's "a world rule").** Options: a fixed number of ticks (simple, blind to pace); a multiple of the member's decision period (tied to D19, kinds differ); a span of play time (moves with the tempo). Recommendation (2026-10-31, not ruled): twice the member's decision period by default (20 ticks for producers, 4 for consumers, 10 for decomposers), so a member decides at least once on each side before it switches.
+- **Threads against shards.** E2 (draws keyed by actor, tick and process) is cheap and unblocks both; E3 (parallel evaluation in a pass) pays where work is per individual but gives nothing on the web's one Worker, and much of that work may leave the tick (above); S6's shards (`sim` S6) serve a played region and the web as separate Workers, but the merge is undesigned. Recommendation (2026-10-31, not ruled): E2 now, with every lane keying new draws that way; E3 after movement's home is settled; S6 when a played world spans a region. Thread count never changes a result (Processes 7); default all cores natively, one on the web.
 
 ## Findings
+- 2026-10-31: A played tick on main is spatial work, not bookkeeping. Headless play (`mesocosm-genet --play --curve 20`, release, one seed, 67 to 94 members) took about 1.9 s a tick under `sample`. Route search for food (`foraging.route.search`, about 0.4 s a cold search), walking plans and resting bodies' settling took nearly all of it, with Places derived again on a geometry-cache miss (`site_geometry`, 0.6 to 2.8 s each, a few a tick). The rule interpreter (staged effects, `meaning`), account reads, schedule filing and digests together took under 3%. So interning account keys (E9's first step) buys nothing yet; D42's layout pays only once these costs are gone, and E9 waits for them. They are EX2's (cold route search), `place-graph-engine` PG7's (Places from the column rule) and the near-tier movement question's (route search and walking out of the tick).
 - 2026-10-28: E1c built (`schedule/filed/kept.rs`): the index is reconciled at each advance by each group's body handle and each site's conditions, rebuilt on other rules, movement mode or routes, dropped on a refused advance. A played tick now costs well under 978's premise of 0.45 s (receipts: `archive_docs/receipts/2026-10-28_sim_execution_plan_receipts.md`), so its tempo question is open again. No threads exist in the sim's evaluation (thread scopes only in the probe bin and interim reproduction), so E3 is not built.
 - 2026-10-28: E2 is not built: bite and amount draws are still keyed by the act number (`stage/staged/meal.rs`, `stage/staged/mod.rs`); soma draws by id.
 - 2026-10-28: The crowd lives only in `shared/cosmograph/src/probe/crowd/`; `TierLine` (`directing/tier.rs`) is exported and unwired.

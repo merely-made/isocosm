@@ -33,6 +33,9 @@ enum Phase {
     Play(usize),
     /// Encounter start, then turns passed to the strider, then its Stride.
     Stride(bool),
+    /// Encounter start, then ranged Strikes by the striker until one lands
+    /// Sneak Attack.
+    Combat(bool),
     Verify,
     Capture(u8),
     Done,
@@ -42,6 +45,8 @@ pub(crate) struct PathfinderSelftest {
     finished: bool,
     play: bool,
     strider: Option<u64>,
+    /// (striker, target) in combat mode.
+    combat: Option<(u64, u64)>,
     /// Log length when the last play step was clicked.
     log: usize,
     phase: Phase,
@@ -56,10 +61,12 @@ pub(crate) struct PathfinderSelftest {
 impl PathfinderSelftest {
     pub(crate) fn from_env() -> Option<Self> {
         std::env::var("ISOCOSM_PF2E_SELFTEST").ok().map(|mode| {
-            assert!(["draft", "finished", "play", "stride"].contains(&mode.as_str()), "pf2e selftest mode");
+            assert!(["draft", "finished", "play", "stride", "combat"].contains(&mode.as_str()), "pf2e selftest mode");
+            let id = |name: &str| std::env::var(name).expect("combat mode names its bodies").parse::<u64>().expect("a body id");
+            let combat = (mode == "combat").then(|| (id("ISOCOSM_PF2E_STRIKER"), id("ISOCOSM_PF2E_TARGET")));
             let strider = (mode == "stride").then(|| std::env::var("ISOCOSM_PF2E_STRIDER")
                 .expect("stride mode names its body").parse().expect("a body id"));
-            Self { finished: mode == "finished", play: mode == "play", strider, log: 0, phase: Phase::Select, started: Instant::now(),
+            Self { finished: mode == "finished", play: mode == "play", strider, combat, log: 0, phase: Phase::Select, started: Instant::now(),
                 painted: Painted::default(), body: None, before: None, waiting: false }
         })
     }
@@ -93,6 +100,36 @@ impl PathfinderSelftest {
             state.as_ref()?.drafts.get(&id).map(|d| d.choices.len())
         };
         match self.phase {
+            Phase::Select if self.combat.is_some() => {
+                if self.painted.tab(ctx, SHEETS) {
+                    self.phase = Phase::Combat(false);
+                }
+            },
+            Phase::Combat(started) => {
+                let state = state.expect("a --combat ledger has edition state");
+                if self.waiting {
+                    if state.log.len() > self.log {
+                        self.waiting = false;
+                        let landed = state.log.last().is_some_and(|l| l.rolls.iter().any(|r| r.expr.contains("Sneak Attack")));
+                        self.phase = if landed { Phase::Verify } else { Phase::Combat(true) };
+                    }
+                    return;
+                }
+                let (striker, target) = self.combat.unwrap();
+                self.body = Some(striker);
+                self.log = state.log.len();
+                let turn = state.encounter.as_ref().and_then(|e| e.current()).map(|t| (u64::from(t.token), t.actions));
+                let clicked = match turn {
+                    _ if !started => self.painted.button(ctx, "vtt.pf2e-start-encounter", None),
+                    Some((who, actions)) if who == striker && actions > 0 =>
+                        self.painted.button(ctx, &format!("vtt.pf2e-strike-{target}"), Some(striker)),
+                    Some((who, _)) => self.painted.button(ctx, "vtt.pf2e-end-turn", Some(who)),
+                    None => false,
+                };
+                if clicked {
+                    self.waiting = true;
+                }
+            },
             Phase::Select if self.strider.is_some() => {
                 if self.painted.tab(ctx, SHEETS) {
                     self.phase = Phase::Stride(false);
@@ -205,7 +242,7 @@ impl PathfinderSelftest {
                 let id = isocosm_native::ruleset::token(self.body.unwrap()).unwrap();
                 eprintln!(
                     "[pf2e-selftest] PASS mode={} body={} choices={} sheet={} hp={:?} accepted_records={} durable_replay=exact; last={:?}",
-                    if self.strider.is_some() { "stride" } else if self.play { "play" } else if self.finished { "finished" } else { "draft" },
+                    if self.combat.is_some() { "combat" } else if self.strider.is_some() { "stride" } else if self.play { "play" } else if self.finished { "finished" } else { "draft" },
                     self.body.unwrap(),
                     state.drafts[&id].choices.len(),
                     state.sheets.contains_key(&id),
@@ -217,7 +254,7 @@ impl PathfinderSelftest {
             },
             Phase::Capture(frames) => {
                 if frames == 0 {
-                    let wanted = if self.strider.is_some() { "This turn: 2 actions" } else if self.play { "Condition: " } else if self.finished { "Hit Points: " } else { "Next decision: " };
+                    let wanted = if self.combat.is_some() { "Result: Character " } else if self.strider.is_some() { "This turn: 2 actions" } else if self.play { "Condition: " } else if self.finished { "Hit Points: " } else { "Next decision: " };
                     let node = {
                         let dom = ctx.runner.dom();
                         let dom = dom.borrow();

@@ -1597,3 +1597,59 @@ bulk = "1"
 rarity = "common"
 contents = [["backpack", 1], ["bedroll", 1], ["chalk", 10], ["flint-and-steel", 1], ["rope", 1], ["rations", 2], ["soap", 1], ["torch", 5], ["waterskin", 1]]
 summary = "A backpack holding a bedroll, 10 chalk, flint and steel, 50 feet of rope, two weeks' rations, soap, 5 torches and a waterskin. 15 sp."
+
+# Ammunition and the healer's toolkit (case 1050), each checked against its
+# foundryvtt/pf2e Remaster ORC record; summaries are original.
+[[item]]
+id = "arrows"
+name = "Arrows"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "ammo"
+price = 10
+bulk = "L"
+rarity = "common"
+per = 10
+summary = "Ammunition for bows; sold by 10, and each ranged Strike spends one. 10 cp for 10."
+
+[[item]]
+id = "bolts"
+name = "Bolts"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "ammo"
+price = 10
+bulk = "L"
+rarity = "common"
+per = 10
+summary = "Ammunition for crossbows; sold by 10, and each ranged Strike spends one. 10 cp for 10."
+
+[[item]]
+id = "sling-bullets"
+name = "Sling Bullets"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "ammo"
+price = 1
+bulk = "L"
+rarity = "common"
+per = 10
+summary = "Ammunition for slings; sold by 10, and each ranged Strike spends one. 1 cp for 10."
+
+[[item]]
+id = "blowgun-darts"
+name = "Blowgun Darts"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "ammo"
+price = 5
+bulk = "-"
+rarity = "common"
+per = 10
+summary = "Ammunition for blowguns; sold by 10, and each ranged Strike spends one. 5 cp for 10."
+
+[[item]]
+id = "healers-toolkit"
+name = "Healer's Toolkit"
+source = { book = "Pathfinder Player Core", license = "ORC", remaster = true }
+kind = "gear"
+price = 500
+bulk = "1"
+rarity = "common"
+summary = "Bandages, herbs and tools; needed to Treat Wounds and for Battle Medicine. 5 gp, Bulk 1."

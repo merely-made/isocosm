@@ -6,6 +6,7 @@
 mod skeleton;
 pub use skeleton::pf2e_srd;
 
+pub mod combat;
 pub mod derive;
 pub mod draft;
 pub mod play;

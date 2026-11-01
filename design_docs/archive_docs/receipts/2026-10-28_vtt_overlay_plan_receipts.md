@@ -332,3 +332,19 @@ Capture `C:\Users\mark_\Code\testing\isocosm\pf2e-chars\stride\isocosm_capture.p
 (703367 bytes, SHA-256
 `e9ce7cdb4a6a5e6ea9f3e0c093147307de6085b8cdd8b0ba7e9ef5831e99fba9`) shows
 the card after the Stride: two actions left and the next destinations.
+
+### Ranged Strike and Sneak Attack trial, 2026-10-31
+
+Ledger from `pf2e_table --combat`: an admitted human rogue (thief) with a
+shortbow, 10 arrows and leather armour, and an admitted dwarf fighter the GM
+seat ruled off-guard, at 4 cells per square. Headed desktop with
+`ISOCOSM_PF2E_SELFTEST=combat ISOCOSM_PF2E_STRIKER=18 ISOCOSM_PF2E_TARGET=19`
+Strikes until a hit lands Sneak Attack. PASS, seven accepted records,
+durable replay exact: three misses at MAP 0, -5 and -10, then on round 2
+`1d20+7 vs AC 15 (MAP 0, range 0, off-guard) = 16` and `1d6+0 +1d6
+precision (Sneak Attack) = 9`, 30 feet measured, arrows 10 to 6. Capture
+`C:\Users\mark_\Code\testing\isocosm\pf2e-chars\combat\isocosm_capture.png`
+(615352 bytes, SHA-256
+`cd56b40dcab42251c0b2acc0dc60a620c4fe3aa3621635a8b3b8316bb50107f7`).
+Shield Block, Battle Medicine's daily limit and ammunition counts are also
+covered by `tests/ruleset_pf2e_combat.rs`.

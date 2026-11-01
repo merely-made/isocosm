@@ -100,7 +100,7 @@ three design docs that cite it. The record holds the words.
 | 113 | Similitude: noted things always run as individuals; the fungible agree in distribution; what was watched is logged; exact agreement is a world setting, statistical default. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 114 | A game's ruleset is held to ruling 113's test: rulesets calibrate to the sim, matching it in distribution when no player choices are made. (amended by 538) | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 115 | Competition: each side's methodology chooses among contest, yield, share or trade, and the sim resolves the choices; lineage leaning is a trait. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 116 | Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223) | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 116 | Most contests never reach blows: sides size each other up by display or bluff, only close matches escalate, then one side breaks. (amended by 221, 222, 223) | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 117 | Any belief can be wrong through deceit, honest mistake or a changing rumour; entities act on what they believe; reach carries versions of an event. | none |
 | 118 | Whether a belief takes depends on all four: what the receiver can check, who is telling, what it wants to hear, how it is told. | none |
 | 119 | Each entity's disposition shifts a world baseline for weighing beliefs; the baseline is drawn from the world entity's disposition, a neutral median by default. | none |
@@ -207,6 +207,8 @@ three design docs that cite it. The record holds the words.
 | 1006 | An act is chosen by need times trust times approval; what gets made follows the same score; grinding yields aggregate competence, never a legend; a fey mood is a triggered need. | [DOC README](DOC_README.md) |
 | 1009 | The world has a lineage (genotype its catalogue, realignment its boundary); a magic system is a world trait on six axes; bending the rules is declared suspension. | [DOC README](DOC_README.md), [functional generation](../mesocosm/design_docs/2026-10-28_functional_generation_plan.md) |
 | 1012 | An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act. | [DOC README](DOC_README.md) |
+| 1052 | The crowd's bands run the lineage policy once for their members; a distilled rate for unmet lineages only where measured to save. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1053 | Learned deltas fold into a lineage by imitating successful kin and by teaching, faster from parent to young; a bounded share may pass at birth; across lineages only acts are imitated. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Ecology
 
@@ -396,7 +398,7 @@ three design docs that cite it. The record holds the words.
 | 127 | Everything fades at a rate the holder's memory sets, unless renewed; physical notes (journal, diary) do not fade; legend never fades. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 129 | A thing stays of note only while some mind remembers it or some bearer records it; when the last copy goes it returns to ambient. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
 | 130 | A player keeps things of note through who they play and what they pin; Eponym's notes are diegetic, the VTT's and Mesocosm's are not. | none |
-| 131 | A mind remembers what was new to it, mattered to it, was intense, or kept happening. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 131 | A mind remembers what was new to it, mattered to it, was intense, or kept happening. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 172 | Ages are read and named, capped by the founder, can realign the world, and are the epochs of cultures and society. | none |
 | 274 | When a merge changes lived outcomes the player chooses: keep their fork, let the replay adjust around them, or let it win, making them tales. | none |
 | 444 | The world save holds the sim's history plus an opaque section per mode, which builds without that mode carry through unchanged. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
@@ -434,7 +436,7 @@ three design docs that cite it. The record holds the words.
 | 120 | The world's disposition seeds the founders only; afterwards dispositions are inherited and lived and the world's pull fades. | none |
 | 121 | The world shapes people's dispositions through trait and condition; people drift from the world's temperament, and that temperament may not be static. | none |
 | 122 | A fluid world's temperament is moved by what happens to it, its own cycles and its epoch boundary, not by its people's temperament. | none |
-| 124 | The first scale target is a region (hundreds of sites, tens of thousands of critters); larger scales are not precluded. | [place graph engine](../mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 124 | The first scale target is a region (hundreds of sites, tens of thousands of critters); larger scales are not precluded. | [place graph engine](../mesocosm/design_docs/2026-10-28_place_graph_engine_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 140 | A world's materials lie on a spectrum from a normal base matching a ruleset, through variants, to completely generated; a founding setting. | none |
 | 147 | A site (generating and playing unit) and a paged chunk (paging unit) are independent; a site spans as many chunks as its volume needs. | none |
 | 148 | When a location's ground changes or moves, its kind decides what it follows: a camp its people, a ruin its ground, a battlefield its site. | none |
@@ -485,7 +487,8 @@ three design docs that cite it. The record holds the words.
 | 1025 | The ladder's tiers are hamlet, town and city, thresholds set from measured draws. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1027 | A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1032 | Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members. | none |
-| 1041 | A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4. | none |
+| 1041 | A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
+| 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | none |
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -510,8 +513,8 @@ three design docs that cite it. The record holds the words.
 | --- | --- | --- |
 | 6 | Foregrounding is choosing a domain, ensemble, mechanics, controls, perspective and timescale; the ensemble can change within one game. | [board on isometer](2026-10-28_board_on_isometer_plan.md), [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md), [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md) |
 | 35 | Each game foregrounds one rung of the agent ladder (critter, borg, character); the other rungs are simmed and weakly expressed. | none |
-| 59 | Play is directing, not driving; a creature suggests its own perceptions and the player schedules behavior, with players not limited by diegetic senses. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 60 | Driving is Paredros (one sophont); directing composes on top by giving directives as that sophont, with an opinion modifier for efficacy. | [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 59 | Play is directing, not driving; a creature suggests its own perceptions and the player schedules behavior, with players not limited by diegetic senses. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
+| 60 | Driving is Paredros (one sophont); directing composes on top by giving directives as that sophont, with an opinion modifier for efficacy. | [vessel briefs and presentation](../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 61 | Death is final across the board; each game's trick: extra lives via cohort in Mesocosm and Paredros, and Isometry treats death as nearly defeatable. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 103 | The sim knows the parts of an arc and lets entities pursue consequential goals; the game makes the statement; the world is like a storyteller. | none |
 | 152 | Outside the world, a player directs only who they play; everything else is asked in the world through that entity. | none |
@@ -522,22 +525,27 @@ three design docs that cite it. The record holds the words.
 | 213 | A player's event stream carries what is attended: who they play, what they pin and examine, and the game's own care. | none |
 | 406 | A new life selects which conditions to carry forward, granular by the player's configuration or randomized; unselected conditions keep their historical event. | [functional generation](../mesocosm/design_docs/2026-10-28_functional_generation_plan.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [wing organs](../mesocosm/design_docs/2026-10-28_wing_organs_plan.md) |
 | 445 | What a window may know follows its participant's seat, the entity played and awareness granted in play, never its mode. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
-| 671 | Driving is the sapient player's mode; a non-sapient critter is directed; legacy Mesocosm driving ends with its world family's move. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 671 | Driving is the sapient player's mode; a non-sapient critter is directed; legacy Mesocosm driving ends with its world family's move. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 679 | The six old driving intents become the critter's own acts chosen by its methodology; Idle has no role. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 683 | A deliberative critter chooses one Choice process weighing needs, mood, nudges and bond; Receipt.foregone records what it passed over. (amended by 813) | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 685 | A suggestion is a derived reading over foregone and knows; nothing new is kept. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 686 | The runtime over Session translates contract envelopes into native commands; Isocosm and the contract stay independent; a nudge is a new logged command. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 688 | A participant is a placeless entity and Relation gains a value; each player's bond is its own weighted relation to the critter. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 688 | A participant is a placeless entity and Relation gains a value; each player's bond is its own weighted relation to the critter. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 690 | Standing orders are derived from logged nudges and their outcomes, replaying exactly, not kept on the entity. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 691 | Survival mode filters through what the critter knows and the reach field; the interim M4 ships both modes. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 742 | The tier line goes to directing, moving with the directing plan's D2, not to the host now. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 779 | Native Take also admits a sapient critter for driving: one native path takes up a life in both games. | [eponym overlay](../eponym/design_docs/2026-10-28_eponym_overlay_plan.md) |
-| 813 | An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
+| 813 | An empty choice can be reconsidered once at a later pass start; a selected process stays committed for that tick. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 861 | A player-directed deliberative critter gets a native travel goal from an approved journey; it departs when its own choice allows, so the party can split. (amended by 862) | none |
 | 862 | The existing native bond and scheduled chooser suffice for directed travel; no extra impression filter, trust threshold or motivation layer. | none |
 | 866 | A native act records participation in every goal it actually served; no primary goal discards the others. | none |
 | 876 | Location identity is learned by explicit native observation or telling; member sites and extent are disclosed separately. | none |
 | 1010 | An arc's parts are things the sim has; an arc is a derived thread, never stored; a game makes its statement; the storyteller is the world entity's agency. | [DOC README](DOC_README.md) |
+| 1051 | A lineage's small integer policy scores the chooser's offered processes from its terms and recurrent state; deliberative fauna carry one, non-choosers grow by grammar. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1054 | Under each bond a creature keeps trust per kind of direction, learned from outcomes; it speeds, slows or refuses directions and carries as the bond does. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1055 | Sapience is read from behaviour (novel directions, imitation, tool use); a lineage is sapient by a share of passing members, and any passing individual may be driven. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1056 | A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1058 | A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 
 ## Presentation
 
@@ -573,7 +581,7 @@ three design docs that cite it. The record holds the words.
 | --- | --- | --- |
 | 1 | The thing is one configurable, extensible world, history and entity generator playable several ways; views and perspectives are distinctions made on top of the sim. | [games wing founding](2026-07-30_games_wing_founding.md), [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
 | 16 | Stack placement: cambium under isomere, isometer over genet and netrender, generation in isoscape beside esp, dramatis, cleromancy; moot, muniment, murm persist; open standards first. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
-| 20 | One bench for everything generated and reviewed, with sim, world, specimen, item and effect lanes, which is also the dev tools. | none |
+| 20 | One bench for everything generated and reviewed, with sim, world, specimen, item and effect lanes, which is also the dev tools. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 | 21 | Gamepads are a genet and standards concern; keymapping is a capability wanted across the stack, not only in isomere. | [wing plan evaluations](../mesocosm/design_docs/2026-09-18_wing_plan_evaluations.md), [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 27 | Use kiss3d provided it composes with the stack, and keep the renderer swappable behind the scene contract. | [sim prior art](../mesocosm/design_docs/2026-09-18_sim_prior_art_brief.md) |
 | 29 | Desktop is first-class; the web is a supported tier with a stated floor. | [PROJECT DESCRIPTION](PROJECT_DESCRIPTION.md) |
@@ -608,13 +616,13 @@ three design docs that cite it. The record holds the words.
 | 472 | Lighting is a stack-owned light and environment block read by both tracer and rasteriser. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
 | 473 | WGSL/WESL for raster shaders and CubeCL for compute; rust-gpu stays for Nexus-derived compute only. | none |
 | 476 | vello serves documents; kiss3d 2D is used only behind the scene contract for lit 2D games. | none |
-| 483 | The record-to-scene projection learns what changed from the record's per-tick receipts, not from ECS change tracking. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
+| 483 | The record-to-scene projection learns what changed from the record's per-tick receipts, not from ECS change tracking. | [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 532 | One stack helper runs the wasm constructors once, called first from every web module's start, with a run-once guard and test. | none |
 | 536 | The shared wasm constructor helper lives in cambium-genet-web-host. | none |
 | 537 | The web modules take the newest wasm-bindgen they can, shared as one exact pin. (amended by 556) | none |
 | 556 | Every wasm module in mere moves to wasm-bindgen 0.2.129; 'stay with the newest' stands for later pins. | none |
 | 567 | The pre.4 probe, repro and OPFS runners build with the repo's pinned toolchain from mere's rust-toolchain.toml; bundles are rebuilt once. | none |
-| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [DOC README](DOC_README.md) |
+| 600 | The VTT builds on the stack it has; Cleromancy leaves it entirely (feature, workspace pin, selection module, ipc-channel patch); nothing is fetched. | [DOC README](DOC_README.md), [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 604 | Every float path a game hands to the sim's physics replays bit for bit on any machine, via the balaur-style recipe and cross-OS digest. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md) |
 | 606 | The kiss3d reshape forks upstream at a pinned commit and takes balaur's commits one at a time, each reviewed. | [balaur wing](../mesocosm/design_docs/2026-10-06_balaur_wing_brief.md), [scenevm wing](../mesocosm/design_docs/2026-10-06_scenevm_wing_brief.md) |
 | 609 | One labelled-digest crate is built once in mere, serving conatus's G8 and Isocosm. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
@@ -645,7 +653,7 @@ three design docs that cite it. The record holds the words.
 | 962 | The stack supplies protected identity and admitted connections; games map a peer to participant and seat; products never manufacture keys, grants or trust roots. | [session network](2026-10-28_session_network_plan.md) |
 | 969 | Pack-authoring TOML fixtures and example packs are pinned LF by a narrow .gitattributes rule, not repo-wide. | none |
 | 1000 | Ruling 78 as discipline: native binding first, a component binding when a rung-3 consumer exists; contract types round-trip through bytes; cores stay native. | [DOC README](DOC_README.md) |
-| 1045 | A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt. | none |
+| 1045 | A shared mechanism moves once a second consumer plans it in its own dated plan; the move closes on the first consumer, the second's adoption is its receipt. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 
 ## Host and network
 
@@ -674,17 +682,17 @@ three design docs that cite it. The record holds the words.
 | 957 | H4: the live-input backlog cap moves into the core driver, configurable, default 10; replays and scripts are not capped. | none |
 | 959 | The family session replicates the accepted native log plus opaque section changes; a replica does not rerun a product adapter to decide intents. | [session network](2026-10-28_session_network_plan.md) |
 | 960 | Requests use admitted stream and Graphshell requests; accepted records use Stickleback joined spaces; one host stays the sole accepting writer. | [session network](2026-10-28_session_network_plan.md) |
-| 1038 | A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
-| 1048 | H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack. | none |
+| 1038 | A standalone Graphshell client draws the world as one zoomable graph under domain filters; scrubbing replays the past and any tick can be branched. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
+| 1048 | H9 runs on a bench-founded generated world; a branch diverges by an act; pictograph draws it, the scene mapping extracted into the stack. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md) |
 
 ## Mesocosm
 
 | Case | Decides | Cited by |
 | --- | --- | --- |
 | 155 | What a Mesocosm player plays depends on the lineage's traits; other lineage critters may be competitors or direct extensions. | none |
-| 175 | The first Mesocosm overlay directs, as ruling 60 has it; the played slice's direct control is rewritten. | [games wing founding](2026-07-30_games_wing_founding.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 176 | A Mesocosm player directs with priorities, places, stances and nudges. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 177 | A critter follows its player's directing by its bond, built from how well the player's orders have served it. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 175 | The first Mesocosm overlay directs, as ruling 60 has it; the played slice's direct control is rewritten. | [games wing founding](2026-07-30_games_wing_founding.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
+| 176 | A Mesocosm player directs with priorities, places, stances and nudges. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
+| 177 | A critter follows its player's directing by its bond, built from how well the player's orders have served it. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 178 | Whether the bond carries across generations is a setting (fresh, seeded by lineage, or whole); seeded is the default. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 179 | A Mesocosm player chooses when to start, from the start of the world's habitability for their critter or with as much added time as wanted. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 180 | What a Mesocosm player sees is a mode: survival shows what the critter knows, creative shows the truth. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
@@ -693,9 +701,9 @@ three design docs that cite it. The record holds the words.
 | 184 | Creative mode shows the truth and does not edit; editing belongs to the world editor. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 202 | Speciating (splitting and naming the played line) stays the player's act; expressing a candidate becomes the critter's own development. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 205 | A PLACES directive names a place-graph node by opaque handle; dev intents keep raw coordinates. | none |
-| 214 | A click draws the critter's attention as a nudge it weighs by its bond; attending is the default and a right click picks another meaning. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 215 | A click never warns; the critter reads what it is shown by its own sense, and avoidance comes from experience and stance. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
-| 216 | Standing orders (ranges, homes, priorities, stances) grow from the player's attention as desire paths; the only directive sent is the nudge. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 214 | A click draws the critter's attention as a nudge it weighs by its bond; attending is the default and a right click picks another meaning. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
+| 215 | A click never warns; the critter reads what it is shown by its own sense, and avoidance comes from experience and stance. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
+| 216 | Standing orders (ranges, homes, priorities, stances) grow from the player's attention as desire paths; the only directive sent is the nudge. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 228 | A right click shows a ring of acts around the cursor, the critter's possible acts toward the target, and a click picks one. | none |
 | 229 | When a player's lineage ends, they pick another lineage in the same world or a new world, their call. | none |
 | 230 | A total ecological collapse ends the world as a game, but the world stays watchable. | none |
@@ -704,8 +712,8 @@ three design docs that cite it. The record holds the words.
 | 751 | A site is habitable at the first epoch boundary where it meets every condition the lineage's processes require and a member lives there. | none |
 | 753 | After a regional collapse, founding generates a move process per route and OnCollapse::Elsewhere stays available. | none |
 | 833 | Mesocosm owns and saves actual spatial state, bound to native body and terrain revisions; missing or stale inputs refuse. | none |
-| 841 | Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission. | none |
-| 842 | Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback. | none |
+| 841 | Authored step profiles bind native movement processes; a chosen act drives game-resolved geometry through native admission. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
+| 842 | Destination placement and spatial window come from explicit authored arrival data checked against native geometry; no old-pose fallback. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 848 | Authored birth profiles resolve a newborn's physical placement from its parent's current pose; refused placement never undoes the birth. | none |
 | 961 | Mesocosm defaults to the named A1 preset once receipt and physical-witness gates pass; the shared generator default stays Stock. | [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 978 | Mesocosm's default tempo follows the measured tick: 2 ticks per second, TD2's 10 remaining the aspiration revisited when scheduling drops. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [sim host](../mesocosm/design_docs/2026-10-28_sim_host_plan.md), [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
@@ -794,10 +802,10 @@ three design docs that cite it. The record holds the words.
 | 1035 | A look is derived in layers (shape, material, make, style, condition, seed, overrides), sim-on or off; items first; packs carry style until culture. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 | 1042 | PF2e class kits wait for an ORC source; the Adventurer's Pack ships; Stride moves admitted characters on a new bench; generic languages only. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1043 | Table items carry open material, make and condition keys; make is a grade plus the act and maker, modifiers following the act; the sim's making builds on ruleset defaults. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
-| 1044 | Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes. | none |
+| 1044 | Homebrew is composed by the sim's making on ruleset defaults, the stack's Burn ML optional and checked; quick-start packs author their own sites and routes. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 1046 | The core pack may bind edition item ids (references, not text); creature bodies are the next stage of derived looks. | none |
-| 1047 | PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next. | none |
-| 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | none |
+| 1047 | PF2e Stride and reach use Player Core's alternating 5/10-foot diagonals; ranged Strikes, conditions, Shield Block and healing come next. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 
 ## Naming
 

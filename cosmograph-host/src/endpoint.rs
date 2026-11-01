@@ -11,6 +11,9 @@
 
 mod cards;
 pub mod disclosure;
+pub mod graph;
+mod graph_world;
+pub mod timeline;
 
 use std::path::PathBuf;
 
@@ -31,6 +34,7 @@ pub const INSPECT: &str = "cosmograph.inspect-group";
 pub const STEP: &str = "cosmograph.step";
 pub const SAVE: &str = "cosmograph.save";
 const ADAPTER: &str = "cosmograph.world";
+pub use graph_world::{BIRTH, BRANCH, DEATH, FILTER, GRAPH, LINE, SCRUB};
 
 /// What the inspector has examined, kept between snapshots.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -44,16 +48,20 @@ pub struct SimEndpoint {
     save_to: Option<PathBuf>,
     curation: Curation,
     disclosure: Disclosure,
+    /// The world-graph projection's own disclosure, view and timeline (H9).
+    graph: graph_world::GraphSession,
 }
 
 impl SimEndpoint {
     pub fn new(world: World, save_to: Option<PathBuf>) -> Self {
         let disclosure = Disclosure::new(SESSION, &world);
-        Self { world, save_to, curation: Curation::default(), disclosure }
+        let graph = graph_world::GraphSession::new(&world);
+        Self { world, save_to, curation: Curation::default(), disclosure, graph }
     }
 
     pub fn world(&self) -> &World { &self.world }
     pub fn curation(&self) -> Curation { self.curation }
+    pub fn graph(&self) -> &graph_world::GraphSession { &self.graph }
 }
 
 /// The ticks a step asks for: an empty payload is one, else `{"ticks": n}`.
@@ -70,7 +78,10 @@ impl ProjectionCatalog for SimEndpoint {
     fn describe(&self) -> EndpointDescriptor {
         EndpointDescriptor {
             label: "Cosmograph".into(),
-            projections: vec![ProjectionOffer { label: "World".into(), request: disclosure::request(SESSION) }],
+            projections: vec![
+                ProjectionOffer { label: "World".into(), request: disclosure::request(SESSION) },
+                ProjectionOffer { label: "World graph".into(), request: disclosure::request(GRAPH) },
+            ],
         }
     }
 }
@@ -79,6 +90,7 @@ impl ProjectionSource for SimEndpoint {
     type Error = String;
 
     fn snapshot(&mut self, request: ProjectionRequest) -> Result<ProjectionSnapshot, Self::Error> {
+        if request.session.0 == GRAPH { return self.graph.snapshot(request); }
         let curation = self.curation;
         let (items, links) = self.world.read(|s| (cards::items(s, curation), cards::links(s, curation)))?;
         self.disclosure.snapshot(request, ADAPTER, &items, &links)
@@ -89,6 +101,7 @@ impl PresentationSource for SimEndpoint {
     type Error = String;
 
     fn resource(&mut self, request: ResourceRequest) -> Result<ResourceResponse, Self::Error> {
+        if request.session.0 == GRAPH { return self.graph.resource(request); }
         self.disclosure.resource(request)
     }
 }
@@ -97,6 +110,7 @@ impl IntentSink for SimEndpoint {
     type Error = String;
 
     fn invoke(&mut self, intent: IntentInvocation) -> Result<IntentResult, Self::Error> {
+        if intent.session.0 == GRAPH { return self.graph.invoke(intent); }
         let source = match self.disclosure.admit(&intent)? {
             Ok(source) => source,
             Err(refused) => return Ok(refused),
