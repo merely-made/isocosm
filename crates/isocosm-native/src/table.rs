@@ -176,8 +176,10 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
     Ok(built)
 }
 
-/// "Tell [hearer] about [place]" (case 1066): for each character at the
-/// teller's site, a card offering each place the teller knows.
+/// "Tell [hearer] about [subject]" (case 1066): for each character at the
+/// teller's site, a card offering each place the teller knows, and each event
+/// it knows that the hearer does not, within the world's hops of what the
+/// hearer knows (`Simulation::tellable_events`), nearest first.
 fn tell_cards(built: &mut Built, session: &cosmograph::Session, teller: u64) {
     let state = session.sim.state();
     let Some(site) = state.population.get(teller).and_then(|e| e.resident_site()) else { return };
@@ -187,11 +189,20 @@ fn tell_cards(built: &mut Built, session: &cosmograph::Session, teller: u64) {
         && g.entity.resident_site() == Some(site) && (g.entity.authored.is_some()
             || state.relations.iter().any(|r| r.kind == cosmograph::directing::PLAYS && r.object == **id)))
         .map(|(id, _)| *id);
+    let hops = session.sim.genesis().rules.telling().event_hops;
     for hearer in hearers {
-        let (actions, acts): (Vec<_>, Vec<_>) = places.iter().map(|place| (
+        use cosmograph::knowing::telling::Topic;
+        let (mut actions, mut acts): (Vec<_>, Vec<_>) = places.iter().map(|place| (
             action(&format!("vtt.tell-{place}"), &format!("Tell body {hearer} about site {place}"),
                 "Tell everything this body knows about the place; the hearer may not believe it.", NULL, DOMAIN),
-            Act::Tell { teller, hearer, place: *place })).unzip();
+            Act::Tell { teller, hearer, topic: Topic::Place(*place) })).unzip();
+        for (event, _) in session.sim.tellable_events(teller, hearer, hops) {
+            let handle = cosmograph_overlay::key_handle(&event);
+            let what = state.events.get(&event).map_or_else(|| event.clone(), |e| format!("{} at tick {}", e.process, e.tick));
+            actions.push(action(&format!("vtt.tell-event-{handle}"), &format!("Tell body {hearer} about {what}"),
+                "Tell everything this body knows about the event; the hearer may not believe it.", NULL, DOMAIN));
+            acts.push(Act::Tell { teller, hearer, topic: Topic::Event(event) });
+        }
         built.push(Item { id: format!("tell:{teller}:{hearer}"), card: card(format!("Body {teller} tells body {hearer}"),
             Vec::new(), &["tell"]), actions }, acts);
     }

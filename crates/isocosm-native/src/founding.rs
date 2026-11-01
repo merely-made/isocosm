@@ -26,11 +26,14 @@ pub use content::{Content, TableMetadata};
 pub use editions::{PackSet, default_edition, edition_label, edition_pack, editions, is_default_edition};
 pub use generation::GenerationOrigin;
 
-/// The VTT's declared vocabulary; other kinds remain the caller's founding choice.
+/// The VTT's declared vocabulary; other kinds remain the caller's founding
+/// choice. A table keeps place notes, so a place can be told (case 1066).
 pub fn table_genesis(mut genesis: Genesis) -> Genesis {
-    for kind in ["reveal", "narration", "history", "vtt:hook"] {
+    for kind in ["reveal", "narration", "history", "vtt:hook", cosmograph::rules::PLACE_NOTE] {
         genesis.rules.note_kinds.insert(kind.into());
     }
+    genesis.rules.telling = Some(cosmograph::rules::Telling { place_notes: true,
+        ..genesis.rules.telling.clone().unwrap_or_default() });
     genesis
 }
 

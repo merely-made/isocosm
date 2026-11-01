@@ -55,6 +55,8 @@ pub fn view(sim: &Simulation, critter: Id, mode: Mode) -> View {
         match n.core.kind.as_str() {
             "sim:discover" => { discovered.insert(n.core.object.as_str()); },
             "sim:act" => { acted.insert(n.core.object.as_str()); },
+            // A told place (1066): its object is `site:<id>`.
+            crate::rules::PLACE_NOTE => { v.sites.extend(n.core.object.strip_prefix("site:").and_then(|id| id.parse::<Id>().ok())); },
             _ => {},
         }
     }

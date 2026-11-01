@@ -92,8 +92,8 @@ pub(crate) enum Act {
     /// Put down one body this window's participant plays (1065, `Leave`).
     Leave(u64),
     /// A body this window acts for tells another at its site everything it
-    /// knows about a place (1066).
-    Tell { teller: u64, hearer: u64, place: u64 },
+    /// knows about a place or an event (1066).
+    Tell { teller: u64, hearer: u64, topic: cosmograph::knowing::telling::Topic },
 }
 
 /// A session's cards and the acts their actions bind.
@@ -238,14 +238,14 @@ impl VttEndpoint {
             },
             Act::SelectParty(party) => { self.party = Some(party); Ok(()) },
             Act::ViewAs(body) => self.window.view_as(Some(cosmograph_overlay::EntityHandle(body))),
-            Act::Tell { teller, hearer, place } => {
+            Act::Tell { teller, hearer, topic } => {
                 let access = self.window.projection()?.access;
                 let before = self.window.cut()?;
                 self.world.product_sections(before, |session, sections| {
                     crate::native::current_access(session, access)?;
                     crate::native::seat_controls(session, access, teller)?;
                     session.command(cosmograph::Command::Know(cosmograph::knowing::Knowing::Tell {
-                        teller, hearer, topic: cosmograph::knowing::telling::Topic::Place(place) }))?;
+                        teller, hearer, topic }))?;
                     Ok(((), sections.clone()))
                 })
             },

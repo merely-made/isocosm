@@ -6,7 +6,8 @@
 //! The hearer is at the teller's site (letters and messengers are later).
 //! Whether the hearer takes it is a seeded baseline draw over what Processes
 //! 11 names that exists today: whether the two are related, and the hearer's
-//! caution; the fuller weighing is still to come. Every copy names the teller.
+//! caution; the fuller weighing is still to come. Its numbers are the world's
+//! (`Rules::telling`), tuned in play. Every copy names the teller.
 
 use super::{CLAIM, REPORT, holder, told};
 use crate::{Result, schema::*, simulation::Simulation};
@@ -18,16 +19,6 @@ pub enum Topic {
     Place(Id),
     Event(Key),
 }
-
-/// The baseline chance, in thousandths, that a hearer takes a telling.
-pub const BASE: i64 = 700;
-/// Added when teller and hearer hold any relation, either way.
-pub const RELATED: i64 = 150;
-/// Thousandths taken off per point of the hearer's caution, which is clamped
-/// to ±100 (the disposition's axes are not yet ruled).
-pub const PER_CAUTION: i64 = 2;
-/// The chance never reaches certainty either way.
-pub const BOUNDS: (i64, i64) = (50, 950);
 
 /// What one telling did.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -45,8 +36,10 @@ impl Simulation {
         let h = self.state.population.get(hearer).ok_or("hearer is absent")?;
         let related = self.state.relations.iter().any(|r|
             (r.subject == teller && r.object == hearer) || (r.subject == hearer && r.object == teller));
-        let caution = i64::from(crate::social::caution_of(h)).clamp(-100, 100);
-        Ok((BASE + if related { RELATED } else { 0 } - caution * PER_CAUTION).clamp(BOUNDS.0, BOUNDS.1))
+        let rules = self.genesis.rules.telling();
+        let caution = i64::from(crate::social::caution_of(h)).clamp(-rules.caution_clamp, rules.caution_clamp);
+        Ok((rules.base + if related { rules.related } else { 0 } - caution * rules.per_caution)
+            .clamp(rules.floor, rules.ceiling))
     }
 
     pub(crate) fn tell(&mut self, teller: Id, hearer: Id, topic: &Topic) -> Result<Telling> {
@@ -101,6 +94,13 @@ impl Simulation {
             }
         }
         if let Topic::Place(place) = topic {
+            // Where the world keeps place notes, the place itself: the teller
+            // knows it by living or having been there, or by being told.
+            let rules = &self.genesis.rules;
+            if rules.telling().place_notes && self.knows_place(teller, *place) && !self.has_place_note(hearer, *place) {
+                self.add_note(hearer, format!("site:{place}"), crate::rules::PLACE_NOTE, String::new(), None, id.into())?;
+                copied.push(format!("site:{place}"));
+            }
             // Held statements naming the place, and terrain seen there.
             let statements: Vec<Key> = self.held_statements(teller)?.into_iter()
                 .filter(|held| super::statements::names_site(&held.statement, *place)).map(|held| held.id).collect();
@@ -110,6 +110,60 @@ impl Simulation {
             for held in terrain { copied.push(self.tell_terrain(teller, hearer, &held)?); }
         }
         Ok(())
+    }
+
+    /// The events `teller` could tell `hearer` that matter to it (1066):
+    /// known to the teller, not to the hearer, and within the world's
+    /// `event_hops` of what the hearer knows. One hop is an event at a place
+    /// the hearer knows, with the hearer or a body it holds a relation with as
+    /// a party, or causing or caused by an event it knows; each further hop
+    /// reaches events sharing a party or cause with one offered at the hop
+    /// before. Each comes with its hop, nearest first.
+    pub fn tellable_events(&self, teller: Id, hearer: Id, hops: u32) -> Vec<(Key, u32)> {
+        use crate::directing::readings::{Mode, view};
+        use std::collections::BTreeSet;
+        let heard = view(self, hearer, Mode::Survival);
+        let told = view(self, teller, Mode::Survival);
+        let mut parties: BTreeSet<Id> = self.state.relations.iter().filter_map(|r|
+            if r.subject == hearer { Some(r.object) } else if r.object == hearer { Some(r.subject) } else { None })
+            .collect();
+        parties.insert(hearer);
+        let mut causes: BTreeSet<Key> = heard.events.iter().filter_map(|k| self.state.events.get(k))
+            .map(|e| e.id.clone()).collect();
+        let caused_by: BTreeSet<Key> = heard.events.iter().filter_map(|k| self.state.events.get(k))
+            .filter_map(|e| e.cause.clone()).collect();
+        let mut left: BTreeSet<&Key> = told.events.iter().filter(|k| !heard.events.contains(*k)).collect();
+        let mut offered = Vec::new();
+        for hop in 1..=hops {
+            let reached: Vec<&Key> = left.iter().copied().filter(|key| self.state.events.get(*key).is_some_and(|e|
+                (hop == 1 && e.place.site().is_some_and(|site| heard.sites.contains(&site)))
+                || parties.contains(&e.subject) || e.object.is_some_and(|o| parties.contains(&o))
+                || e.cause.as_ref().is_some_and(|c| causes.contains(c))
+                || (hop == 1 && caused_by.contains(&e.id)))).collect();
+            if reached.is_empty() { break; }
+            for key in reached {
+                left.remove(key);
+                let e = &self.state.events[key];
+                parties.insert(e.subject);
+                parties.extend(e.object);
+                causes.insert(e.id.clone());
+                offered.push((key.clone(), hop));
+            }
+        }
+        offered
+    }
+
+    /// Whether `entity` knows site `place`: it lives or has been there, or
+    /// holds a place note of it.
+    pub fn knows_place(&self, entity: Id, place: Id) -> bool {
+        self.state.population.get(entity).is_some_and(|e| e.resident_site() == Some(place)
+            || e.visits.iter().any(|v| v.place == place)) || self.has_place_note(entity, place)
+    }
+
+    fn has_place_note(&self, entity: Id, place: Id) -> bool {
+        let (subject, object) = (format!("entity:{entity}"), format!("site:{place}"));
+        self.state.notes.iter().any(|n| n.core.kind == crate::rules::PLACE_NOTE && n.core.subject == subject
+            && n.core.object == object)
     }
 
     fn knows_by_note(&self, entity: Id, event: &str) -> bool {

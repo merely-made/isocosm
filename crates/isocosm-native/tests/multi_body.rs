@@ -174,10 +174,9 @@ fn a_regrouped_body_tells_another_about_a_place_at_the_table() {
             .filter_map(|(id, g)| g.entity.resident_site().map(|site| (*id, site))).collect();
         for &(a, site) in &living { for &(b, other) in &living {
             if a == b || site != other { continue; }
-            for (key, e) in &st.events {
-                if e.place.site().is_some() && s.sim.knows(a, key).unwrap() && !s.sim.knows(b, key).unwrap() {
-                    return Some((a, b, key.clone(), e.place.site().unwrap()));
-                }
+            // An event worth telling: unknown to the hearer, near what it knows.
+            for (key, _) in s.sim.tellable_events(a, b, s.sim.genesis().rules.telling().event_hops) {
+                if let Some(site) = st.events[&key].place.site() { return Some((a, b, key, site)); }
             }
         } }
         None
@@ -196,6 +195,15 @@ fn a_regrouped_body_tells_another_about_a_place_at_the_table() {
     world.command(Command::Take { participant: teller_player.0, critter: teller }).unwrap();
     world.command(Command::Take { participant: hearer_player.0, critter: hearer }).unwrap();
     let mut player = VttEndpoint::open(&world, teller_player, Seat::Player).unwrap();
+    // The card offers the event itself: unknown to the hearer, at a place it knows.
+    let offered = world.read(|s| s.sim.tellable_events(teller, hearer, s.sim.genesis().rules.telling().event_hops)).unwrap();
+    assert!(offered.iter().any(|(e, _)| *e == event), "the untold event is offered: {offered:?}");
+    let snap = snapshot(&mut player);
+    let (instance, _) = snap.scene.active_items_in_order().into_iter().find(|(_, item)|
+        snap.scene.tables.sources[item.source.0 as usize].as_ref().unwrap().id == format!("tell:{teller}:{hearer}")).unwrap();
+    let event_action = format!("vtt.tell-event-{}", cosmograph_overlay::key_handle(&event));
+    assert!(snap.presentation.offers_for(instance).unwrap().iter()
+        .any(|o| o.semantics.actions.iter().any(|a| a.intent.0 == event_action)), "the table offers {event_action}");
     act(&mut player, &format!("tell:{teller}:{hearer}"), &format!("vtt.tell-{place}"));
     let (taken, knows, shown) = world.read(|s| {
         let outcome = &s.entries.iter().rev().find(|e| matches!(e.command, Command::Know(_))).unwrap().outcome;
