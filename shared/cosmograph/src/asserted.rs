@@ -173,8 +173,9 @@ pub struct Law {
     pub parameters: BTreeMap<Key, String>,
 }
 
-/// An authored history line: an event's fill, at the table's own time,
-/// naming its participants and place by authored key.
+/// An authored history line: an event's fill, dated in native world ticks
+/// (negative before the founding, case 1069), naming its participants and
+/// place by authored key.
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]
 pub struct HistoryLine {

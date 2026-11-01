@@ -104,7 +104,7 @@ fn a_magus_is_drafted_studies_a_season_casts_and_is_wounded() {
     assert_eq!(click(&mut gm, SHEETS, on, "vtt.sheet-damage-15", &[]), ok);
     let wounded = state(&host);
     assert_eq!(wounded.sheets[&id].int("ars:wounds:heavy"), Some(1), "15 against Soak 1 is a Heavy Wound");
-    assert_eq!(lost(&host), before + 3, "a Heavy Wound takes three native cells");
+    assert_eq!(lost(&host), before + 3, "a Heavy Wound takes a quarter of the typical part: 314 cells over 38 parts gives 3");
 
     let mut replica = FamilyReplica::install(checkpoint, &[], Execution::Individuals).unwrap();
     for record in host.drain_records() {

@@ -1,0 +1,5 @@
+# How Pathfinder 2e's critical hits and going dying wound the native body
+# (cases 1020, 1069): the share of the body's typical part, in percent, at
+# least one cell. Original table data, not Player Core text. Provisional.
+version = 1
+wound_typical_part_share_percent = 5
