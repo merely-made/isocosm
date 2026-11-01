@@ -15,6 +15,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
 pub mod statements;
+pub mod telling;
 pub mod terrain;
 
 pub const OBSERVE: &str = "know:observe";
@@ -65,6 +66,9 @@ pub enum Knowing {
     TellStatement { reporter: Id, hearer: Id, held_note: Key },
     ObserveTerrain { observer: Id, observation: terrain::Observation },
     TellTerrain { reporter: Id, hearer: Id, held_note: Key },
+    /// One telling of everything the teller knows about a place or event,
+    /// taken or not by a seeded draw (1066). Appended so older saves replay alike.
+    Tell { teller: Id, hearer: Id, topic: telling::Topic },
 }
 
 /// A claim as its holder holds it now.
@@ -109,6 +113,10 @@ impl Simulation {
             Knowing::TellStatement { reporter, hearer, held_note } => self.tell_statement(*reporter, *hearer, held_note),
             Knowing::ObserveTerrain { observer, observation } => self.observe_terrain(*observer, observation),
             Knowing::TellTerrain { reporter, hearer, held_note } => self.tell_terrain(*reporter, *hearer, held_note),
+            Knowing::Tell { teller, hearer, topic } => {
+                let telling = self.tell(*teller, *hearer, topic)?;
+                serde_json::to_string(&telling).map_err(|e| e.to_string())
+            },
             Knowing::Observe { observer, event } => self.observe(*observer, event),
             Knowing::Claim { claimant, proposition, supports } => {
                 let supports = self.supported(*claimant, proposition, supports)?;

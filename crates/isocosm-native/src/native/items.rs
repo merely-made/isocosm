@@ -39,7 +39,7 @@ fn check(session:&Session,game:&[u8],access:OrdinaryAccess,input:&ItemInput)
     super::movement::current_access(session,access)?;
     let version=input_version(&input.action);
     if input.version!=version || input.expected_native!=source(session) || input.expected_game!=cosmograph::digest(&game)
-        || access.subject!=Some(EntityHandle(input.actor)) {
+        || !session.sim.plays_body(access.participant.0,input.actor) {
         return Err("item input differs from its actual native, game or controlled body cut".into());
     }
     let body=session.sim.state().population.get(input.actor).ok_or("item actor is absent")?;

@@ -25,7 +25,7 @@ pub(crate) use decision::{DecisionContext, DecisionStamp};
 impl Simulation {
     pub(crate) fn institution_control(&self, participant: Id, actor: Id) -> Result<()> {
         if !self.state.population.get(participant).is_some_and(crate::directing::is_participant)
-            || self.plays(participant) != Some(actor) {
+            || !self.plays_body(participant, actor) {
             return Err("institution input requires actual native control of the acting body".into());
         }
         if !self.state.population.get(actor).is_some_and(|body| body.alive && !crate::directing::is_participant(body)) {

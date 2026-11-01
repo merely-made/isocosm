@@ -87,6 +87,13 @@ pub(crate) enum Act {
     Ruleset(crate::ruleset::Action),
     /// A seat grant change at the table's current grant revision.
     Seat(crate::native::SeatAction),
+    /// View this window as another body its participant plays (1065).
+    ViewAs(u64),
+    /// Put down one body this window's participant plays (1065, `Leave`).
+    Leave(u64),
+    /// A body this window acts for tells another at its site everything it
+    /// knows about a place (1066).
+    Tell { teller: u64, hearer: u64, place: u64 },
 }
 
 /// A session's cards and the acts their actions bind.
@@ -226,11 +233,37 @@ impl VttEndpoint {
             Act::Disclose { party, member } => {
                 let participant = self.window.projection()?.access.participant.0;
                 let input = self.world.read(|session|
-                    crate::native::party::disclose_known(session, participant, party))??;
-                if input.member.0 != member { return Err("played body changed before map disclosure".into()); }
+                    crate::native::party::disclose_known(session, participant, party, member))??;
                 self.act(Act::Send(VttIntent::Party(input)), payload)
             },
             Act::SelectParty(party) => { self.party = Some(party); Ok(()) },
+            Act::ViewAs(body) => self.window.view_as(Some(cosmograph_overlay::EntityHandle(body))),
+            Act::Tell { teller, hearer, place } => {
+                let access = self.window.projection()?.access;
+                let before = self.window.cut()?;
+                self.world.product_sections(before, |session, sections| {
+                    crate::native::current_access(session, access)?;
+                    crate::native::seat_controls(session, access, teller)?;
+                    session.command(cosmograph::Command::Know(cosmograph::knowing::Knowing::Tell {
+                        teller, hearer, topic: cosmograph::knowing::telling::Topic::Place(place) }))?;
+                    Ok(((), sections.clone()))
+                })
+            },
+            Act::Leave(body) => {
+                let access = self.window.projection()?.access;
+                let before = self.window.cut()?;
+                self.world.product_sections(before, |session, sections| {
+                    crate::native::current_access(session, access)?;
+                    if !session.sim.plays_body(access.participant.0, body) {
+                        return Err("a window puts down only a body its participant plays".into());
+                    }
+                    session.command(cosmograph::Command::Leave { participant: access.participant.0, critter: body })?;
+                    Ok(((), sections.clone()))
+                })?;
+                // A window viewing the body it put down views as its default again.
+                if access.subject == Some(cosmograph_overlay::EntityHandle(body)) { self.window.view_as(None)?; }
+                Ok(())
+            },
             Act::Overmap(settings) => { self.overmap = settings; Ok(()) },
             Act::Quote(kind) => { self.quote = Some(authoring::quote(self, kind, payload)?); Ok(()) },
             Act::Assert => {

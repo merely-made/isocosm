@@ -42,6 +42,30 @@ fn world() -> (World, Id, Id) {
     (world, a, b)
 }
 
+/// Eponym keeps one life per participant (case 1065): a participant that
+/// took a second body with TakeAlso drives neither here.
+#[test]
+fn a_participant_with_a_body_taken_beside_another_is_not_played_here() {
+    let (mut world, a, b) = world();
+    let first = FirstLife { start: StartTime::Society, begins_as: LifeChoice::Denizen(EntityHandle(a)) };
+    let participant = world.submit(None, &EponymIntent::Checkpoint(LifeCheckpoint::First(first))).unwrap()
+        .joined.unwrap();
+    let drive = EponymIntent::Drive(Actuation { body: EntityHandle(a), motion: None,
+        acts: vec![TimedAct { act: ActKey(founding::FATIGUE.into()), target: None }] });
+    world.submit(Some(participant), &drive).unwrap();
+    world.run(Command::TakeAlso { participant, critter: b }).unwrap();
+    assert_eq!(world.sim().played(participant).len(), 2);
+    let hash = world.state_hash().unwrap();
+    assert_eq!(world.submit(Some(participant), &drive), Err(WorldError::NotPlayed));
+    assert_eq!(world.state_hash().unwrap(), hash, "the refusal changes nothing");
+    // Putting the second down leaves one body, which drives again; putting the
+    // last down leaves none, which is not played.
+    world.run(Command::Leave { participant, critter: b }).unwrap();
+    world.submit(Some(participant), &drive).unwrap();
+    world.run(Command::Leave { participant, critter: a }).unwrap();
+    assert_eq!(world.submit(Some(participant), &drive), Err(WorldError::NotPlayed));
+}
+
 #[test]
 fn a_participant_drives_only_the_life_it_took() {
     let (mut world, a, b) = world();

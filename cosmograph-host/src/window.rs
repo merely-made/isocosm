@@ -11,6 +11,8 @@ use crate::{access, binding::{self, Binding, BindingPlan}, native_attention,
 pub struct Window {
     world: World, participant: ParticipantHandle, seat: Seat, binding: Binding,
     active: Option<WindowId>, closed: bool,
+    /// The played body this window views as, chosen per window (1065).
+    body: Option<cosmograph_overlay::EntityHandle>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -28,10 +30,10 @@ impl Window {
     /// An actual mode lifecycle uses attach or restores an admitted native ID.
     pub fn new(world: &World, participant: ParticipantHandle, seat: Seat, binding: Binding) -> Result<Self, String> {
         let binding = world.read(|session| {
-            access::resolve(session, participant, seat)?;
+            access::resolve(session, participant, seat, None)?;
             canonical_binding(session, participant, binding)
         })??;
-        Ok(Self { world: world.share(), participant, seat, binding, active: None, closed: false })
+        Ok(Self { world: world.share(), participant, seat, binding, active: None, closed: false, body: None })
     }
 
     pub fn attach(world: &World, participant: ParticipantHandle, seat: Seat, binding: Binding) -> Result<Self, String> {
@@ -58,6 +60,14 @@ impl Window {
     }
 
     pub fn cut(&self) -> Result<Cut, String> { self.world.cut() }
+
+    /// View as `body`, one of the bodies this window's participant plays, or
+    /// as its one or lowest played body (`None`). Acting is not narrowed.
+    pub fn view_as(&mut self, body: Option<cosmograph_overlay::EntityHandle>) -> Result<(), String> {
+        self.world.read(|session| access::resolve(session, self.participant, self.seat, body))??;
+        self.body = body;
+        Ok(())
+    }
     pub fn binding(&self) -> &Binding { &self.binding }
     pub fn set_view_defaults(&mut self, defaults: Vec<u8>) -> Result<(), String> {
         self.projection()?;
@@ -72,7 +82,7 @@ impl Window {
         if self.closed { return Err("window is closed".into()); }
         self.world.read(|session| {
             if let Some(id) = self.active { session.sim.attention_window(self.participant.0, id.id())?; }
-            let access = access::resolve(session, self.participant, self.seat)?;
+            let access = access::resolve(session, self.participant, self.seat, self.body)?;
             let visible = access::permitted(session, access);
             let mut attention = native_attention::effective(session, self.participant)?;
             access::filter_attention(session, access, &visible, &mut attention);

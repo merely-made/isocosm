@@ -20,8 +20,6 @@ mod stride;
 mod strike;
 pub(crate) use stride::{ground, position, speed};
 
-/// Native cells one wound takes. Provisional: the size is an open fork.
-const WOUND_CELLS: u32 = 1;
 /// Player Core's simple DC for a 1st-level task.
 const DEFAULT_DC: i64 = 15;
 
@@ -91,7 +89,8 @@ fn hurt(state: &mut State, map: &mut MapDocument, session: &mut Session, id: Tok
     let entity = u64::from(id.0);
     let mut notes = Vec::new();
     if critical {
-        native(session, Command::Wound { entity, part: None, cells: WOUND_CELLS })?;
+        let cells = typical_part_cells(session, entity, records::wound_share_percent()?)?;
+        native(session, Command::Wound { entity, part: None, cells })?;
         notes.push("the critical hit wounds the native body".to_owned());
     }
     let sheet = map.sheets.get_mut(&id).ok_or("target has no sheet")?;
@@ -114,7 +113,8 @@ fn hurt(state: &mut State, map: &mut MapDocument, session: &mut Session, id: Tok
     if new_dying > dying {
         notes.push(format!("dying {new_dying}"));
         if dying == 0 && hp > 0 {
-            native(session, Command::Wound { entity, part: None, cells: WOUND_CELLS })?;
+            let cells = typical_part_cells(session, entity, records::wound_share_percent()?)?;
+            native(session, Command::Wound { entity, part: None, cells })?;
             notes.push("going dying wounds the native body".into());
         }
     }

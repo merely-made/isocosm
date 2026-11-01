@@ -126,7 +126,7 @@ impl ControlBinding {
             .ok_or("control binding's native take entry is absent")?;
         let developed = session.entries.iter().find(|entry| entry.id == recipe.develop_entry)
             .ok_or("control binding's native development entry is absent")?;
-        if !matches!(&taken.command, Command::Take { participant, critter }
+        if !matches!(&taken.command, Command::Take { participant, critter } | Command::TakeAlso { participant, critter }
             if *participant == self.participant && *critter == self.entity)
             || taken.outcome != "taken" || taken.order <= developed.order
         { return Err("control binding differs from accepted native take history".into()); }
@@ -143,7 +143,7 @@ impl ControlBinding {
 
     /// Native plays relations, not these historical bindings, own control.
     pub fn current(&self, session: &Session) -> bool {
-        session.sim.plays(self.participant) == Some(self.entity)
+        session.sim.plays_body(self.participant, self.entity)
     }
 }
 
@@ -176,7 +176,12 @@ pub(crate) fn take_character(session: &mut Session, input: &CharacterControl,
         relation.kind == cosmograph::directing::PLAYS && relation.object == recipe.entity
             && relation.subject != dm)
     { return Err("the DM may take up only an unclaimed character".into()); }
-    session.command(Command::Take { participant, critter: recipe.entity })?;
+    // A participant who already plays a body takes this one beside it (1065).
+    if session.sim.played(participant).is_empty() {
+        session.command(Command::Take { participant, critter: recipe.entity })?;
+    } else {
+        session.command(Command::TakeAlso { participant, critter: recipe.entity })?;
+    }
     let binding = ControlBinding { entity: recipe.entity, participant, join_entry,
         take_entry: session.entries.last().ok_or("native take entry is absent")?.id.clone() };
     binding.validate(session, recipe)?;

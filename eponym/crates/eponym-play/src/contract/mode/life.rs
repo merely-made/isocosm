@@ -147,6 +147,13 @@ fn admit(session: &Session, mode: &ModeState, input: &Input, access: OrdinaryAcc
         || access.subject.map(|s| s.0) != session.sim.plays(participant) {
         return Err("Eponym life selection needs the actual current native participant".into());
     }
+    // Eponym plays one life at a time (its limit, case 1065): body switching
+    // is never a menu operation, so a participant playing several is refused.
+    if session.sim.played(participant).len() > 1
+        || session.entries.iter().any(|e| matches!(&e.command, Command::TakeAlso { participant: p, .. }
+            | Command::Leave { participant: p, .. } if *p == participant)) {
+        return Err("Eponym plays one life, ended only by death: this participant took a body beside another or put one down".into());
+    }
     let binding = mode.bindings.iter().find(|b| b.subject == input.subject)
         .ok_or("selected life has no explicitly admitted Eponym subject binding")?;
     if binding.entity != target { return Err("selected product subject and native life differ".into()); }
@@ -205,6 +212,11 @@ pub fn validate(records: &[Record]) -> Result<(), String> {
 /// death command, a reconstructed world, or a claim of historical death replay.
 pub fn validate_native(session: &Session, records: &[Record]) -> Result<(), String> {
     validate(records)?;
+    if records.iter().any(|record| session.entries.iter().any(|e|
+        matches!(&e.command, Command::TakeAlso { participant, .. } | Command::Leave { participant, .. }
+            if *participant == record.participant))) {
+        return Err("Eponym plays one life: a recorded participant took a body beside another or put one down".into());
+    }
     let mut last = None;
     for record in records {
         let index = session.entries.iter().position(|e| e.id == record.taken).ok_or("life native Take entry is absent")?;

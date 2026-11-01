@@ -259,8 +259,8 @@ impl World {
 
 pub fn canonical_binding(session: &Session, participant: ParticipantHandle, mut binding: Binding)
     -> Result<Binding, String> {
-    binding.attention.played = session.sim.plays(participant.0)
-        .map(cosmograph_overlay::EntityHandle).into_iter().collect();
+    binding.attention.played = session.sim.played(participant.0)
+        .into_iter().map(cosmograph_overlay::EntityHandle).collect();
     binding.attention.care = native_attention::care(session, participant, &binding.mode)?;
     Ok(binding)
 }

@@ -209,7 +209,7 @@ three design docs that cite it. The record holds the words.
 | 1012 | An item's quality is what it affords (sort, material, make, condition read as techniques), never a stat; improvement is an act. | [DOC README](DOC_README.md) |
 | 1052 | The crowd's bands run the lineage policy once for their members; a distilled rate for unmet lineages only where measured to save. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1053 | Learned deltas fold into a lineage by imitating successful kin and by teaching, faster from parent to young; a bounded share may pass at birth; across lineages only acts are imitated. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
-| 1066 | Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities. | none |
+| 1066 | Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1070 | Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play. | none |
 
 ## Ecology
@@ -813,7 +813,7 @@ three design docs that cite it. The record holds the words.
 | 1050 | PF2e ammo is spent per ranged Strike; Shield Block pauses for the defender's seat; healing by toolkit, Battle Medicine, and consented time; flanking allies are party members. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1059 | Seats are per-participant grants; a GM-less table decides by declared policy with a recognition vote behind it; claiming GM needs consent. | [session network](2026-10-28_session_network_plan.md) |
 | 1060 | Table identity and invitations are lifted from Graphshell co-op into the stack; GMs edit any sheet, acting stays with each body's controller. | [session network](2026-10-28_session_network_plan.md) |
-| 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | none |
+| 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 
@@ -836,7 +836,7 @@ three design docs that cite it. The record holds the words.
 | 1036 | The products are Isocosm (the VTT), Mesocosm and Eponym as peers; the sim is Cosmograph; the repository stays isocosm. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 1037 | Sim crates become cosmograph*, the VTT's isometry-* become isocosm-*, isocosm-vtt becomes isocosm-native; isonetry and isomere stay; paths and visible strings follow. | [games wing founding](2026-07-30_games_wing_founding.md), [DOC README](DOC_README.md), [DOC README](../eponym/design_docs/DOC_README.md) |
 | 1039 | Env vars become ISOCOSM_* (VTT) and COSMOGRAPH_* (sim); persisted and wire identifiers are renamed under one version bump with a one-time migration. | none |
-| 1040 | Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion. | none |
+| 1040 | Renamed stored names migrate at load, one version step per container; the chronicle moves to v1; 1030's nemeses are relation-based entity tracking, not rival-hierarchy promotion. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 
 ## Licensing and sources
 

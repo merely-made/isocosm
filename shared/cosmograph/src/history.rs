@@ -506,6 +506,20 @@ fn dispatch(sim: &mut Simulation, command: &Command) -> Result<String> {
             sim.take(*participant, *critter)?;
             Ok("taken".into())
         },
+        Command::TakeAlso {
+            participant,
+            critter,
+        } => {
+            sim.take_also(*participant, *critter)?;
+            Ok("taken".into())
+        },
+        Command::Leave {
+            participant,
+            critter,
+        } => {
+            sim.leave(*participant, *critter)?;
+            Ok("left".into())
+        },
         Command::Nudge {
             participant,
             critter,

@@ -32,7 +32,11 @@ pub struct Admitted {
     pub characters: [Id; 2],
 }
 
-pub fn admitted_table() -> Admitted {
+pub fn admitted_table() -> Admitted { admitted_table_controlled([true, false]) }
+
+/// The bench with each admitted character controlled by the player (`true`)
+/// or the DM, beside the body each already plays (case 1065).
+pub fn admitted_table_controlled(by_player: [bool; 2]) -> Admitted {
     let table::Table { world, dm, player, bodies } = table::table_with_native_geometry();
     let (mut session, mut sections) = world.into_parts().unwrap();
     sections.entry("vtt".into()).or_insert_with(|| GameBindings::decode(&[]).unwrap().encode().unwrap());
@@ -80,10 +84,8 @@ pub fn admitted_table() -> Admitted {
             places: template.places,
         }
     }).collect();
-    let controls = vec![
-        CharacterControl { character: KEYS[0].into(), participant: ParticipantInput::Existing(player.0) },
-        CharacterControl { character: KEYS[1].into(), participant: ParticipantInput::Existing(dm.0) },
-    ];
+    let controls = KEYS.iter().zip(by_player).map(|(key, mine)| CharacterControl { character: (*key).into(),
+        participant: ParticipantInput::Existing(if mine { player.0 } else { dm.0 }) }).collect();
     submit(&mut session, &mut sections, &AdmissionBatch { version: 2, assertions: vec![], characters: vec![],
         placements, controls, project_carry: None, spatial: vec![] });
     Admitted { world: World::with_sections(session, sections), dm, player, characters: ids }

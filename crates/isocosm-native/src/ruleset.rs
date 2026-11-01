@@ -316,6 +316,19 @@ pub fn clock(session: &Session) -> Clock {
     })
 }
 
+/// The native cells a wound costs on `body` (case 1069): `percent` of the
+/// body's typical part (its cells over its living parts), at least one. A
+/// native wound lands on one part, so a share of the whole body would sever.
+pub fn typical_part_cells(session: &Session, body: u64, percent: u64) -> Result<u32, String> {
+    let entity = session.sim.state().population.get(body).ok_or("no native body")?;
+    let (cells, parts) = entity.living().fold((0u64, 0u64), |(cells, parts), (id, _)|
+        (cells + u64::from(cosmograph::anatomy::capacity(entity.extent(id))), parts + 1));
+    if parts == 0 {
+        return Err("the native body has no cells to wound".into());
+    }
+    u32::try_from((cells * percent).div_ceil(parts * 100).max(1)).map_err(|_| "wound cells overflow".into())
+}
+
 pub fn controls(session: &Session, access: OrdinaryAccess, actor: u64) -> bool {
     crate::native::seat_controls(session, access, actor).is_ok()
         && session

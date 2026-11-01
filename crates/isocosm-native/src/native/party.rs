@@ -79,7 +79,8 @@ fn terrain_observation(session: &Session, bindings: &super::GameBindings, game: 
 /// Shared map facts remain separate from the player's survival cut and event stream.
 pub fn read_party(session: &Session, access: OrdinaryAccess, party: &str) -> Result<SharedMap, String> {
     if !session.sim.state().population.get(access.participant.0).is_some_and(cosmograph::directing::is_participant)
-        || session.sim.plays(access.participant.0).map(cosmograph_overlay::EntityHandle) != access.subject {
+        || session.sim.observer(access.participant.0, access.subject.map(|s| s.0)).ok()
+            != Some(access.subject.map(|s| s.0)) {
         return Err("party map caller has stale native participant or subject".into());
     }
     let map = cosmograph::party::shared_map(session, party)?;
@@ -90,8 +91,10 @@ pub fn read_party(session: &Session, access: OrdinaryAccess, party: &str) -> Res
 }
 
 /// A deliberate share request; the caller still signs/stamps and submits it normally.
-pub fn disclose_known(session: &Session, participant: Id, party: String) -> Result<PartyIntent, String> {
-    let member = session.sim.plays(participant).ok_or("map disclosure needs the currently played body")?;
+pub fn disclose_known(session: &Session, participant: Id, party: String, member: Id) -> Result<PartyIntent, String> {
+    if !session.sim.plays_body(participant, member) {
+        return Err("map disclosure needs a body this participant plays".into());
+    }
     let known = cosmograph::party::knowledge(&session.sim, member)?;
     Ok(PartyIntent { party, member: cosmograph_overlay::EntityHandle(member),
         action: PartyAction::Disclose { sites: known.sites.into_iter().map(cosmograph_overlay::PlaceHandle).collect(),

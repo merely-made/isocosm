@@ -183,3 +183,33 @@ fn a_nudged_run_replays_to_the_same_hash() {
         assert_eq!(fork.sim.state_hash(), s.sim.state_hash());
     }
 }
+
+/// Several bodies per participant (1062, 1065): TakeAlso takes one beside
+/// those played, Take still switches to exactly one, a reading views as one
+/// played body only, and the history replays to the same state.
+#[test]
+fn take_also_plays_several_bodies_take_switches_to_one_and_replays() {
+    let mut s = world(5, Execution::Individuals);
+    let (p, first) = played(&mut s);
+    let others: Vec<Id> = s.sim.state().population.groups.iter()
+        .filter(|(id, g)| g.entity.method == Method::Deliberative && g.entity.alive && **id != first)
+        .map(|(id, _)| *id).take(2).collect();
+    assert_eq!(others.len(), 2, "the fixture has three deliberative critters");
+    for other in &others {
+        s.command(Command::TakeAlso { participant: p, critter: *other }).unwrap();
+    }
+    let mut all = vec![first, others[0], others[1]];
+    all.sort();
+    assert_eq!(s.sim.played(p), all);
+    assert_eq!(s.sim.plays(p), Some(all[0]), "the single reading is the lowest body");
+    assert!(all.iter().all(|id| s.sim.plays_body(p, *id)));
+    assert!(s.command(Command::TakeAlso { participant: p, critter: first }).is_err(), "already played");
+    assert_eq!(s.sim.observer(p, Some(others[1])).unwrap(), Some(others[1]));
+    let stranger = s.sim.state().population.groups.iter()
+        .find(|(id, g)| g.entity.method != Method::Inert && !all.contains(id)).map(|(id, _)| *id).unwrap();
+    assert!(s.sim.observer(p, Some(stranger)).is_err(), "a reading views only as a played body");
+    let replayed = Session::load(s.save(), Execution::Individuals).unwrap();
+    assert_eq!(replayed.sim.played(p), all, "TakeAlso replays from the history");
+    s.command(Command::Take { participant: p, critter: others[0] }).unwrap();
+    assert_eq!(s.sim.played(p), vec![others[0]], "Take switches to exactly one body");
+}

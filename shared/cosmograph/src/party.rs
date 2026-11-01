@@ -122,7 +122,7 @@ impl Simulation {
         let held = relation(self, participant, party, member)?;
         let outcome = match change {
             Change::Join { .. } => {
-                if self.plays(participant) != Some(member) { return Err("only the player's currently played body opts in".into()); }
+                if !self.plays_body(participant, member) { return Err("only the player's currently played body opts in".into()); }
                 self.state.relations.insert(held);
                 Outcome::Joined(Membership { participant, member })
             },
@@ -132,7 +132,7 @@ impl Simulation {
                 Outcome::Left(Membership { participant, member })
             },
             Change::Disclose { sites, events, .. } | Change::DiscloseDetails { sites, events, .. } => {
-                if self.plays(participant) != Some(member) || !self.state.relations.contains(&held) {
+                if !self.plays_body(participant, member) || !self.state.relations.contains(&held) {
                     return Err("only the opted-in currently played body may disclose its map".into());
                 }
                 let known = knowledge(self, member)?;

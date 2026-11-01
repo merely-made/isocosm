@@ -11766,6 +11766,19 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       plays both or not, and the sim's entities tell the same way.
 
       Links: area Processes and rules · draws on processes.11, processes.19, record.3 · summary Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities.
+      *Then* (Mark, 2026-11-01: "Keep as pack/world data, tune in play",
+      "Fix both next"): the baseline draw's numbers (base, relation bonus,
+      caution weight, bounds) live in the world's rules as data, tuned in
+      play; the table offers single events as well as places, and a visit
+      leaves a note about the place so it can be told.
+      Visit notes are on for new VTT foundings (Mark: "On for new VTT
+      foundings"). The events a telling offers are those the hearer does not
+      know but that matter to it (Mark: "can we do 'unknown events related to
+      events the target knows about?' maybe out to a few hops of relations,
+      idk. i guess i just mean that even if they don't know about it, it
+      probably needs to be relevant to them for it to be a meaningful
+      option"): unknown to the hearer and linked, within a few hops of cause
+      or relation, to what it knows, the depth tunable world data.
       *Built how* (Mark, 2026-11-01: "Build belief now", the rest as
       recommended): telling everything about a subject copies the teller's
       notes and what it knows by reach; teller and hearer share a site or are
@@ -11829,6 +11842,10 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       body's size rather than a fixed count.
 
       Links: area The VTT · draws on 1063, 1020, record.6 · summary Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size.
+      *Then* (Mark, 2026-11-01: "Keep, tune in play", "Make it signed
+      now"): the wound shares stay provisional pack data, tuned in play;
+      the shared chronicle's deed time becomes signed under a wing-formats
+      version bump, so other games read a pre-founding birth as dated.
       *Built how* (Mark, 2026-11-01, each as recommended): a native wound
       lands on one part, so a body-wide share severed parts; the cells a
       Wound costs scale with the body's typical part (share times cells over

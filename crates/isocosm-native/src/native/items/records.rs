@@ -39,7 +39,7 @@ pub fn validate_item_records(session:&Session,records:&[PhysicalItemRecord])->Re
         let body=before.sim.state().population.get(input.actor).ok_or("historical item actor is absent")?;
         let version=input_version(&input.action);
         if input.version!=version || record.entries.len()!=record.outcomes.len() || input.expected_native!=source(&before)
-            || before.sim.plays(record.participant)!=Some(input.actor) || !body.alive
+            || !before.sim.plays_body(record.participant,input.actor) || !body.alive
             || body.body_revision!=input.body_revision || record.actor_position.entity!=input.actor {
             return Err("physical item record differs from its actual native source, actor or control".into());
         }

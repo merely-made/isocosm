@@ -79,6 +79,11 @@ impl Borrowed<'_> {
         participant: Option<Id>,
         intent: &EponymIntent,
     ) -> Result<Lowered, WorldError> {
+        // Eponym plays one life at a time (its limit, case 1065): a participant
+        // that took a body beside another (TakeAlso) is not played here.
+        if participant.is_some_and(|p| self.sim().played(p).len() > 1) {
+            return Err(WorldError::NotPlayed);
+        }
         let played = participant.and_then(|p| self.sim().plays(p));
         let check = |actor: EntityHandle| match (participant, played) {
             (Some(_), None) => Err(WorldError::NotPlayed),
@@ -220,6 +225,7 @@ impl Borrowed<'_> {
                     | Knowing::ObserveTerrain { observer, .. } => *observer,
                     Knowing::TellStatement { reporter, .. }
                     | Knowing::TellTerrain { reporter, .. } => *reporter,
+                    Knowing::Tell { teller, .. } => *teller,
                     Knowing::Claim { claimant, .. } => *claimant,
                     Knowing::Correct { corrector, .. } => *corrector,
                     Knowing::Report { .. } => {

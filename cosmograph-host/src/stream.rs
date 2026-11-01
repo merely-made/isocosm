@@ -7,11 +7,12 @@ use crate::window::Projection;
 
 /// The access cut selects visibility; a product Mode never selects it.
 pub fn records(session: &Session, cut: &Projection) -> Result<Vec<EventRecord>, String> {
-    if session.sim.plays(cut.access.participant.0).map(cosmograph_overlay::EntityHandle) != cut.access.subject {
+    let subject = cut.access.subject.map(|s| s.0);
+    if session.sim.observer(cut.access.participant.0, subject).ok() != Some(subject) {
         return Err("event stream access names a stale subject".into());
     }
     let visibility = if cut.access.seat == Seat::Player { Mode::Survival } else { Mode::Creative };
-    session.sim.attended_events(cut.access.participant.0, visibility)?.into_iter()
+    session.sim.attended_events_as(cut.access.participant.0, visibility, subject)?.into_iter()
         .filter(|event| cut.visible.events.contains(&event.id))
         .map(|event| Ok(EventRecord { tick: Tick(event.tick), topic: EventTopic(event.process.clone()),
             payload: serde_json::to_vec(&event).map_err(|e| e.to_string())? })).collect()
