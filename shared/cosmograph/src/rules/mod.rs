@@ -125,6 +125,18 @@ pub enum Query {
         who: Binding,
         at_least: u64,
     },
+    /// At least `at_least` live members of the lineages `among`, the actor
+    /// among them, reside at the actor's site as the pass began (S10). A
+    /// traveller resides nowhere and counts none.
+    Members {
+        among: BTreeSet<Key>,
+        at_least: u64,
+    },
+    /// Fewer than `amount` such members reside there.
+    MembersBelow {
+        among: BTreeSet<Key>,
+        amount: u64,
+    },
     /// The actor has a live part expressing `function` (ruling 338). A
     /// process requires at most one, and binds the lowest-numbered such part
     /// as `Binding::Part`; its receipt reads that part's address.

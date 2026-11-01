@@ -41,7 +41,7 @@ fn reads_prey(q: &Query) -> bool {
         | Query::Wounded { who, .. }
         | Query::Routes { who, .. } => *who == Binding::Target,
         Query::Age { .. } | Query::Condition { .. } | Query::Mood { .. } | Query::MoodBelow { .. }
-        | Query::Expresses { .. } => false,
+        | Query::Expresses { .. } | Query::Members { .. } | Query::MembersBelow { .. } => false,
         Query::Computed(x) => x.reads().iter().any(|u| u.body() == Binding::Target),
         Query::Related { .. }
         | Query::Project { .. }
@@ -128,6 +128,16 @@ impl Simulation {
                 (id < first + group.count).then_some((first, group.count))
             },
         }
+    }
+
+    /// The live members of `among` resident at `site` as the pass began,
+    /// each group counted whole as `weighed` counts it.
+    pub(crate) fn members_at(&self, site: Id, among: &BTreeSet<Key>) -> u64 {
+        let selector = Target { same_place: true, alive: Some(true), lineage: None, among: among.clone(), weighted: false };
+        let here = |first: &Id| self.body_at_start(*first)
+            .is_some_and(|b| b.alive && among.contains(&b.lineage) && b.resident_site() == Some(site));
+        let firsts = self.searched(&selector, site).into_iter().filter(here);
+        firsts.filter_map(|first| self.target_span(first).map(|(_, count)| count)).sum()
     }
 
     /// Live index pieces and preserved bodies can name the same original

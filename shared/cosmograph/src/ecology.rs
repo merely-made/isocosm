@@ -207,6 +207,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             Causation::Transition,
             vec![Effect::Birth {
                 provision: BTreeMap::from([(body.clone(), child_mass)]),
+                scatter: None,
             }],
         );
         birth.requires.extend([

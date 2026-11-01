@@ -65,8 +65,14 @@ pub enum Effect {
         text: String,
         lifetime: Option<Tick>,
     },
+    /// A child holding `provision`, beside its parent; where `scatter`
+    /// names a medium, it lands instead at a neighbouring site, one of the
+    /// parent's site's routes drawn, with the chance out of a hundred the
+    /// parent's site holds that condition (S10).
     Birth {
         provision: Ledger,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        scatter: Option<Key>,
     },
     /// A birth spending the actor's provision (rulings 447, 448, 518 and
     /// 530): a brood develops its lineage's whole recipe from a soma its own

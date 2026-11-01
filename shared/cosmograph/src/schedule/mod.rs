@@ -87,7 +87,10 @@ fn framed(p: &Process) -> bool {
                 | Effect::When { .. }
         )
     });
+    // A count of members reads the bodies its pass may bear, move or kill.
+    let counts = p.requires.iter().any(|q| matches!(q, Query::Members { .. } | Query::MembersBelow { .. }));
     p.target.is_some()
+        || counts
         || p.risk.is_some()
         || p.causation == Causation::Choice
         || !p.goal_directives.is_empty()

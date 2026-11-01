@@ -262,6 +262,7 @@ impl Founding {
             Causation::Transition,
             vec![Effect::Birth {
                 provision: BTreeMap::from([("world:soil".into(), 2)]),
+                scatter: None,
             }],
         );
         birth.note = true;

@@ -137,12 +137,14 @@ pub(super) struct Act<'a> {
 
 fn identity_bound(p: &Process, meal: bool) -> bool {
     let target = |b: &Binding| *b == Binding::Target;
+    let scattered = |e: &Effect| matches!(e, Effect::Birth { scatter: Some(_), .. });
     p.risk.is_some()
         || (p.target.is_some() && !meal)
         || p.note
+        || p.commitments.iter().chain(&p.effects).any(|e| scattered(e) || e.branches().any(scattered))
         || p.requires.iter().any(|q| {
             let reads = match q {
-                Query::Related { .. } => return true,
+                Query::Related { .. } | Query::Members { .. } | Query::MembersBelow { .. } => return true,
                 Query::Project { .. } | Query::ProjectDecision
                 | Query::InstitutionDecision | Query::Institution { .. } => return true,
                 Query::Alive(b) => target(b),

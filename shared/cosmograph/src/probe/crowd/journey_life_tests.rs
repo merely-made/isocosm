@@ -12,7 +12,7 @@ fn generic_paid_children_and_soil_keep_remaining_journeys_in_both_forms() {
         w.genesis.rules.processes.remove("test:next");
         let provision=if bodies { 1 } else { 8 };
         add(&mut w,"test:birth",vec![Effect::Birth {
-            provision:Ledger::from([(OWN.into(),provision)]) }],2,40);
+            provision:Ledger::from([(OWN.into(),provision)]), scatter: None }],2,40);
         add(&mut w,"test:upkeep",vec![Effect::Transform { who:Binding::Actor,
             take:Ledger::from([(OWN.into(),1)]),give:Ledger::from([("world:soil".into(),1)]),conversion:None },
             Effect::Transfer { from:Binding::Actor,to:Binding::Place,account:"world:soil".into(),

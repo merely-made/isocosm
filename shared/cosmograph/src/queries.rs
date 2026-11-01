@@ -52,6 +52,16 @@ impl Simulation {
         if let Query::Institution {producer}=query {
             return self.institution_producer_ready(actor,target,producer);
         }
+        if let Query::Members { among, .. } | Query::MembersBelow { among, .. } = query {
+            let site = self.body_at_start(actor).and_then(Entity::resident_site).filter(|s| *s == place);
+            let v = site.map_or(0, |site| self.members_at(site, among));
+            let yes = match query {
+                Query::Members { at_least, .. } => v >= *at_least,
+                Query::MembersBelow { amount, .. } => v < *amount,
+                _ => unreachable!(),
+            };
+            return if yes { Ok(format!("{query:?} = {v}")) } else { Err(format!("missing requirement: {query:?} = {v}")) };
+        }
         if let Query::Holds { who: Binding::Target, at_least } = query {
             let id = target.ok_or_else(|| "target is required".to_owned())?;
             let holdings = self.books_at_start(id).ok_or_else(|| "body missing".to_owned())?;

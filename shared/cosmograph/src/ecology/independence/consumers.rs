@@ -17,7 +17,7 @@ pub(super) fn consumed(genesis: &Genesis, extra: &ExtraNoun) -> Result<()> {
         Effect::Spend { from, into, .. } => from.iter().any(|k| k == key) || into.as_deref() == Some(key),
         Effect::Eat { into, of, .. } => into == key || of.iter().any(|k| k == key),
         Effect::Convert { from, to, .. } => to == key || from.iter().any(|k| k == key),
-        Effect::Birth { provision } => provision.contains_key(key),
+        Effect::Birth { provision, .. } => provision.contains_key(key),
         _ => false,
     };
     let used = match &extra.noun {

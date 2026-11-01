@@ -11657,6 +11657,29 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Directing and play · draws on 1053, 1055, ecology.1 · summary A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third.
 
+1061. **Producers may move; a producer's young may land at a neighbouring
+      site, carried by a medium; members at a site can be counted.** Ruled
+      by Mark on 2026-11-01, answering the forks the S10 refuge arms raised
+      (sim plan, Findings): "I think producers should be able to move
+      between sites. There is the possibility of an ambulatory producer."
+      On what a starving plant that cannot move does: "they either die or
+      they ... uproot, or ... they try to spread themselves. They try to
+      create new versions of themselves, maybe? A lot of options." Then
+      "add a query for members at a site", and "I'm okay with plant
+      offspring landing at a neighboring site. It might be cool if there's
+      like a medium to spread them. Or maybe it could be terrain dependent
+      or like biome dependent ... Or region dependent, you know, groups of
+      tiles. A lot of options." The reading: 753's moves stay open to
+      producers; what a starving rooted body does stays open. A requirement
+      may count the live members of named lineages at the actor's site, read
+      as the pass began. A birth may name a medium, a site condition: where
+      the parent's site holds it, the child lands at a neighbouring site
+      with that chance out of a hundred, so the medium varies as sites'
+      conditions do, by terrain, biome or region. Which media a world has,
+      and what sets them, stay open.
+
+      Links: area Ecology · draws on 753, 802 · summary Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

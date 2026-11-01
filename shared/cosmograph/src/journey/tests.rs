@@ -183,7 +183,7 @@ fn upkeep_carries_soil_and_a_paid_child_inherits_remaining_journey() {
             account:"world:soil".into(), amount:Amount::Fixed(1) },
     ], Some(1), 20);
     add(&mut g, "test:birth", Causation::Transition,
-        vec![Effect::Birth { provision:Ledger::from([(OWN.into(),8)]) }], None, 40);
+        vec![Effect::Birth { provision:Ledger::from([(OWN.into(),8)]), scatter: None }], None, 40);
     for mode in [Execution::Individuals, Execution::Grouped] {
         let mut s = Session::new(g.clone(), mode).unwrap();
         let matter = s.sim.matter();
@@ -252,7 +252,7 @@ pub(super) fn bodied_fixture() -> (Genesis,Id) {
 fn a_bodied_paid_birth_in_transit_uses_native_part_matter() {
     let (mut g,id) = bodied_fixture();
     add(&mut g,"test:birth",Causation::Transition,
-        vec![Effect::Birth { provision:Ledger::from([(OWN.into(),1)]) }],None,0);
+        vec![Effect::Birth { provision:Ledger::from([(OWN.into(),1)]), scatter: None }],None,0);
     for mode in [Execution::Individuals,Execution::Grouped] {
         let mut s = Session::new(g.clone(),mode).unwrap();
         let matter = s.sim.matter();

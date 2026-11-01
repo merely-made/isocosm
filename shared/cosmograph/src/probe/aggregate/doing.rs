@@ -331,7 +331,8 @@ impl Doing<'_> {
                     Err(_) => Ok(false),
                 }
             },
-            Effect::Birth { provision } => self.provisioned_birth(provision),
+            // A scattered birth is identity-bound, refused before it acts.
+            Effect::Birth { provision, .. } => self.provisioned_birth(provision),
             Effect::Wound { who, cells, slot } => {
                 let resolved = self.compute(|r, d, p| cells.resolve(r, d, p))?;
                 self.wound(*who, resolved.resolved()?, *slot)

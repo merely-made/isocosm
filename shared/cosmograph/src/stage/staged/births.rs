@@ -57,7 +57,7 @@ impl Staged<'_> {
 
     /// The generic birth keeps its parent's form, but only the provision's
     /// matter. A bodied parent pays through its parts, never a second ledger.
-    pub(super) fn provisioned_birth(&mut self, provision: &Ledger) -> Result<()> {
+    pub(super) fn provisioned_birth(&mut self, provision: &Ledger, scatter: Option<&Key>) -> Result<()> {
         let id = self.next_child()?;
         let tick = self.sim.state.tick;
         let rules = &self.sim.genesis.rules;
@@ -96,10 +96,30 @@ impl Staged<'_> {
                 }
             }
         }
+        if let Some(to) = scatter.and_then(|medium| self.scattered(id, medium)) {
+            child.place = to;
+            child.patch = None;
+        }
         self.relate(id);
         self.spatial_birth(id);
         self.stage.births.push(child);
         Ok(())
+    }
+
+    /// Where the medium carries the child `id`: a neighbouring site, one of
+    /// the parent's site's routes drawn, with the chance out of a hundred
+    /// that site holds the medium as the pass began; None beside its parent.
+    fn scattered(&self, id: Id, medium: &Key) -> Option<Id> {
+        let sim = self.sim;
+        let site = sim.body_at_start(self.stage.actor)?.resident_site()?;
+        let s = sim.site_at_start(site)?;
+        let chance = s.conditions.get(medium).map_or(0, |v| (*v).clamp(0, 100) as u64);
+        let seed = sim.genesis.dynamics_seed();
+        if s.routes.is_empty() || crate::draw(seed, "scatter", &[id]) % 100 >= chance {
+            return None;
+        }
+        let k = crate::draw(seed, "scatter-route", &[id]) % s.routes.len() as u64;
+        Some(s.routes[k as usize].to)
     }
 
     /// The soma the child `id` draws from `l`'s recipe by its own seed.

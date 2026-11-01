@@ -70,7 +70,7 @@ fn build(process_name: &str, extra_quantity: u64, account_alias: bool, played: b
             account: "sim:energy".into(), amount: 1.into() },
         Effect::Transfer { from: Binding::Actor, to: Binding::Place,
             account: "world:soil".into(), amount: 1.into() },
-        Effect::Birth { provision: BTreeMap::from([("world:soil".into(), 1)]) },
+        Effect::Birth { provision: BTreeMap::from([("world:soil".into(), 1)]), scatter: None },
         Effect::Transfer { from: Binding::Target, to: Binding::Place,
             account: "world:soil".into(), amount: 1.into() },
     ];

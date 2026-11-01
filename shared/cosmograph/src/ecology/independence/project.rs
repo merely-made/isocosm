@@ -98,7 +98,7 @@ pub(super) fn projection(genesis: &Genesis, address: &EffectAddress, references:
             projection.outputs.push(port(*who, to, n)?);
             projection.controls = json!({"native_limit":"proportional_total","quantity":n,"conversion":conversion});
         },
-        Effect::Birth { provision } => {
+        Effect::Birth { provision, .. } => {
             projection.family = OperationFamily::Birth;
             for (key, n) in provision { projection.inputs.push(port(Binding::Actor, key, *n)?); }
             projection.inputs.sort_by_key(|row| row.account);

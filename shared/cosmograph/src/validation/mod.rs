@@ -55,6 +55,9 @@ fn query(rules: &Rules, q: &Query) -> Result<()> {
         Query::Related { kind } if !rules.relations.contains(kind) => {
             return Err(format!("unknown relation {kind}"));
         }
+        Query::Members { among, .. } | Query::MembersBelow { among, .. } if among.is_empty() => {
+            return Err("a count of members names its lineages".into());
+        }
         Query::Mood { .. } | Query::MoodBelow { .. } if rules.mind.is_none() => {
             return Err("mood is read only in a world with a mind".into());
         }
@@ -345,9 +348,18 @@ fn effect(rules: &Rules, p: &Process, id: &str, e: &Effect) -> Result<()> {
         Effect::Note { kind, .. } if !rules.note_kinds.contains(kind) => {
             return Err(format!("unknown note kind {kind}"));
         }
-        Effect::Birth { provision } => {
+        Effect::Birth { provision, scatter } => {
             for a in provision.keys() {
                 account(rules, a)?;
+            }
+            if let Some(medium) = scatter {
+                if !rules.conditions.contains(medium) {
+                    return Err(format!("unknown condition {medium}"));
+                }
+                // A scattered child has no pose beside its parent (848).
+                if rules.birth_profiles.values().any(|b| b.process == p.id) {
+                    return Err("a scattered birth has no physical placement".into());
+                }
             }
         }
         Effect::FoundPolity { support, .. } => account(rules, support)?,

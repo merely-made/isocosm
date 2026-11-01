@@ -127,7 +127,7 @@ fn effect_fields(genesis: &Genesis, process: &Process, cadence: Tick,
             }
             Ok(())
         },
-        Effect::Birth { provision } => {
+        Effect::Birth { provision, .. } => {
             for (account, value) in provision {
                 let (dimension, conservation) = stock(genesis, account)?;
                 insert(fields, process, cadence, ScalarSource::Input { effect: source.clone(), account: account.clone() },

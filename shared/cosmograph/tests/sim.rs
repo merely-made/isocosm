@@ -80,6 +80,7 @@ fn a_failed_act_keeps_none_of_its_notes_children_or_relations() {
         },
         Effect::Birth {
             provision: BTreeMap::from([("world:soil".into(), 1)]),
+            scatter: None,
         },
         Effect::Transfer {
             from: Binding::Actor,

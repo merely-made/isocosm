@@ -499,8 +499,8 @@ impl Staged<'_> {
                     self.effect(&Effect::Death, cause)?;
                 }
             },
-            Effect::Birth { provision } => {
-                self.provisioned_birth(provision)?;
+            Effect::Birth { provision, scatter } => {
+                self.provisioned_birth(provision, scatter.as_ref())?;
             },
             Effect::Tell { event } => {
                 let teller = &self.stage.bodies[&actor];

@@ -77,6 +77,7 @@ fn fixture(seed: u64, place: Id) -> (Genesis, Id, Id, Id) {
             "test:birth",
             vec![Effect::Birth {
                 provision: Ledger::from([("matter:0-0".into(), 8)]),
+                scatter: None,
             }],
         ),
     ] {

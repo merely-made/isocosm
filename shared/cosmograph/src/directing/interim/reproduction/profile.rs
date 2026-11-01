@@ -168,7 +168,7 @@ fn tweak(g: &mut Genesis, lineages: u64, list: Option<&str>) {
                 },
                 ("provision", 1) => {
                     for e in &mut processes.get_mut(&format!("ecology:birth-{i}")).unwrap().effects {
-                        if let Effect::Birth { provision } = e {
+                        if let Effect::Birth { provision, .. } = e {
                             provision.values_mut().for_each(|v| *v = n);
                         }
                     }
