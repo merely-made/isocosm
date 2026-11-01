@@ -12,6 +12,8 @@ impl App {
     /// Consume one-shot state requests (save/load) and repaint: the
     /// tail of every dispatch.
     pub(crate) fn after_dispatch(&mut self, ctx: &mut Ctx<'_>) {
+        if self.pump_peer_guest(ctx) { return; }
+        self.pump_peer_host(ctx);
         if self.family_table.is_some() {
             let mut network_processed = false;
             let mut network_error = None;

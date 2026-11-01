@@ -161,6 +161,8 @@ impl App {
             family_table: None,
             family_request_pumps: Vec::new(),
             family_wake: None,
+            family_host_net: None,
+            family_guest: None,
             last_net_version: 0,
             net_selftest: std::env::var_os("ISOCOSM_NET_SELFTEST").is_some(),
             travel_selftest: std::env::var_os("ISOCOSM_TRAVEL_SELFTEST").is_some(),

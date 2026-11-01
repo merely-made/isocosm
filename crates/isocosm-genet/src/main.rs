@@ -93,6 +93,8 @@ mod seeded_selection;
 use seeded_selection as generator_selection;
 mod dispatch;
 mod family_table;
+mod family_guest;
+mod peer_session;
 mod generators;
 mod hooks;
 // Host-routing receipts, driven through the shared host with no window.
@@ -277,6 +279,10 @@ struct App {
     /// Coalesced winit wake callback, retained for the future admitted-stream
     /// adapter so queued requests can schedule an owner-thread drain.
     pub(crate) family_wake: Option<cambium_genet_winit_host::HostWake>,
+    /// Hosting invited peers (`--host --handoff`), or this process's join as
+    /// a guest (`--join`); see `peer_session`.
+    family_host_net: Option<family_table::host_net::HostNet>,
+    family_guest: Option<family_guest::FamilyGuest>,
     /// Last session version pulled into the UI; a bump means redraw.
     last_net_version: u64,
     /// `ISOCOSM_NET_SELFTEST=1`: fire one end-turn from inside the app a
