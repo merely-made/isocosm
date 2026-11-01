@@ -11853,6 +11853,33 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · draws on processes.7, 978, 451 · summary Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play.
 
+1071. **What is not inert senses.** Ruled by Mark on 2026-11-01, on BO18
+      (generated consumers founded without sense tissue), first "Maybe the
+      nervous system can also like have a sense feature... the ability to
+      sense anything like your own body and then that's the foundational
+      thing... a basic ability to perceive the environment, your body first
+      and foremost", then: "a non-inert body should, that is a good
+      differentiator. It should have a nervous system of some type or some
+      means of sensing. For example, a world could be inert because it
+      doesn't have a means of sensing. But if it's active, it needs to know
+      stuff, right?... maybe it's a field, like a magnetic field... a
+      distributed neurology of fields and activities... like tides or
+      tectonic plates or volcanic activity... plants... have... a presence...
+      through their roots and their leaves... germs... do sense their
+      environment... which is what I think differentiates maybe inert from
+      living, in the same way that we can measure and differentiate sapient
+      from maybe not sapient but sentient or otherwise." Then "Adopt as
+      drafted", "Every form at once", "A Bodies flag, on for new". The
+      reading is doctrine Bodies 15: every active entity carries a baseline
+      sense by the means its form has, the body first and its surroundings
+      next, organs extending range and acuity; BO18 builds it for animals,
+      plants, microbes and world entities at once, behind a Bodies flag on
+      for new foundings so older foundings keep their meaning; a research
+      brief surveys openly licensed accounts of living worlds and non-neural
+      sensing.
+
+      Links: area Bodies and anatomy · draws on 1009, bodies.1, bodies.10, world.4, directing.3 · summary Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

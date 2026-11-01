@@ -5354,6 +5354,13 @@ area = "Processes and rules"
 summary = "Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play."
 draws_on = ["451", "978", "processes.7"]
 
+[cases."1071"]
+title = "What is not inert senses"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient."
+draws_on = ["1009", "bodies.1", "bodies.10", "directing.3", "world.4"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -5908,6 +5915,13 @@ source = "design_docs/doctrine.md"
 area = "Bodies and anatomy"
 summary = "Defensive tissue is designated with an authored threshold expression; it compares the final granted bite; geometry alone is no armour."
 draws_on = ["872", "873"]
+
+[statements."bodies.15"]
+title = "What is not inert senses"
+source = "design_docs/doctrine.md"
+area = "Bodies and anatomy"
+summary = "Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; inert, sensing, sentient, sapient."
+draws_on = ["1071", "bodies.1", "bodies.10", "world.4"]
 
 [statements."directing.1"]
 title = "Surfaces derive from knowledge and control"
