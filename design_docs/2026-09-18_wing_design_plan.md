@@ -11751,6 +11751,9 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       `TakeAlso`.
 
       Links: area Directing and play · draws on 1062, host.4, directing.3 · summary A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits.
+      *Renamed 2026-11-01:* `Release` was already a saved command (it drops
+      an entity from the kept roots), so the put-down command is `Leave`
+      (Mark: "Leave").
 
 1066. **Characters share what they know by telling it.** Ruled by Mark on
       2026-11-01, after: "how many times have you split the party and then
@@ -11763,6 +11766,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       plays both or not, and the sim's entities tell the same way.
 
       Links: area Processes and rules · draws on processes.11, processes.19, record.3 · summary Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities.
+      *Built how* (Mark, 2026-11-01: "Build belief now", the rest as
+      recommended): telling everything about a subject copies the teller's
+      notes and what it knows by reach; teller and hearer share a site or are
+      in contact, letters and messengers coming later; a baseline acceptance
+      draw weighs each telling now, the teller recorded as its source, the
+      fuller weighing of Processes 11 to follow; one logged act expands to
+      per-note copies; each played body's card offers "Tell [hearer] about
+      [subject]".
 
 1067. **Edition packs: a manifest section, bundled beside the app, sent at
       join; a savepack is a world's release.** Ruled by Mark on 2026-11-01
