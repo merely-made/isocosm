@@ -102,11 +102,11 @@ pub(crate) fn found(f: &Founding, g: &mut Genesis, played: Played) -> Result<()>
         let slot = (founded * u128::from(played.region_sites)).div_ceil(u128::from(f.sites.max(1)));
         slots.insert(level.into(), slot.max(1));
     }
-    // Each kind decides at its own pace (D19), lineages cycling producer,
-    // consumer, decomposer as the ecology founds them.
+    // Each kind decides at its own pace (D19), by the trophic level of the
+    // role the ecology founds it in.
     for i in 0..f.lineages {
         if let Some(l) = g.lineages.get_mut(&format!("lineage:{i}")) {
-            l.decides = Some(crate::ecology::rates::DECIDES[i as usize % 3]);
+            l.decides = Some(crate::ecology::rates::DECIDES[crate::ecology::Role::of(f.web, i).level()]);
         }
     }
     migrate(g)?;

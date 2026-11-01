@@ -14,6 +14,11 @@ mod run;
 mod validated_run;
 mod independence;
 pub(crate) mod rates;
+mod web;
+#[cfg(test)]
+mod web_tests;
+pub(crate) use web::Role;
+pub use web::Web;
 pub use independence::*;
 pub use rates::Rates;
 pub use joint::*;
@@ -35,6 +40,9 @@ const SUN: &str = "sim:energy";
 /// tissue, so their trajectories differ (wing ruling 929).
 const LIGHT: u64 = 500;
 const STORE: u64 = 720 * LIGHT;
+/// The trophic levels and the kingdom each is generated in, by `Role::level`.
+const LEVELS: [&str; 3] = crate::directing::found::LEVELS;
+const KINGDOMS: [&str; 3] = ["kingdom:flora", "kingdom:fauna", "kingdom:myco"];
 
 /// The sun: each site gains light while it holds less than its store.
 fn sunlight() -> Process {
@@ -91,17 +99,17 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         // Birth thresholds are above initial bodies, so reproduction must be fed.
         e.accounts
             .insert(format!("matter:{i}-0"), founding.stock_min + 2);
-        let role = ["life:producer", "life:consumer", "life:decomposer"][i as usize % 3];
-        e.kingdom = ["kingdom:flora", "kingdom:fauna", "kingdom:myco"][i as usize % 3].into();
+        let level = Role::of(founding.web, i).level();
+        let role = LEVELS[level];
+        e.kingdom = KINGDOMS[level].into();
         e.traits.insert(role.into());
         g.rules.traits.insert(role.into());
     }
     let rates = founding.ecology_rates;
     for i in 0..founding.lineages {
-        let consumer = i % 3 == 1;
-        g.rules
-            .traits
-            .insert(["life:producer", "life:consumer", "life:decomposer"][i as usize % 3].into());
+        let role = Role::of(founding.web, i);
+        let consumer = role.consumer();
+        g.rules.traits.insert(LEVELS[role.level()].into());
         let body = format!("matter:{i}-0");
         let own = format!("ability:cycle-{i}");
         let lineage = format!("lineage:{i}");
@@ -127,7 +135,11 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             who: Binding::Actor,
             key: own.clone(),
         });
-        upkeep.period = Some(rates.upkeep_period(consumer));
+        // A predator pays upkeep twice as often as a grazer and breeds at
+        // half its pace: the cost of a meal that runs.
+        let predator = role == Role::Predator;
+        let upkeep_every = rates.upkeep_period(consumer);
+        upkeep.period = Some(if predator { (upkeep_every / 2).max(1) } else { upkeep_every });
         upkeep.priority = 20;
         g.rules.processes.insert(upkeep.id.clone(), upkeep);
         let mut death = process(
@@ -208,11 +220,11 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
                 at_least: rates.birth_gate(founding.stock_min, consumer),
             },
         ]);
-        birth.period = Some(rates.birth_period(consumer));
+        birth.period = Some(rates.birth_period(consumer) * if predator { 2 } else { 1 });
         birth.priority = 40;
         birth.note = true;
         g.rules.processes.insert(birth.id.clone(), birth);
-        if i % 3 == 0 {
+        if role == Role::Producer {
             let mut grow = process(
                 &format!("ecology:produce-{i}"),
                 Causation::Choice,
@@ -263,9 +275,10 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         } else {
             // One feeding process per consumer (ruling 287), choosing among
             // its prey by a draw weighted by what each holds: consumers eat
-            // living producers, decomposers the dead of every other lineage.
+            // the living of the roles their diet admits, decomposers the dead
+            // of every other lineage.
             let prey = (0..founding.lineages)
-                .filter(|&j| i != j && (i % 3 != 1 || j % 3 == 0))
+                .filter(|&j| i != j && role.eats(Role::of(founding.web, j)))
                 .map(|j| format!("lineage:{j}"))
                 .collect();
             let mut feed = process(
@@ -291,7 +304,7 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             ]);
             feed.target = Some(Target {
                 same_place: true,
-                alive: Some(i % 3 == 1),
+                alive: Some(consumer),
                 lineage: None,
                 among: prey,
                 weighted: true,
@@ -304,9 +317,8 @@ pub(crate) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             .get_mut(&lineage)
             .unwrap()
             .traits
-            .insert(["life:producer", "life:consumer", "life:decomposer"][i as usize % 3].into());
-        g.lineages.get_mut(&lineage).unwrap().kingdom =
-            ["kingdom:flora", "kingdom:fauna", "kingdom:myco"][i as usize % 3].into();
+            .insert(LEVELS[role.level()].into());
+        g.lineages.get_mut(&lineage).unwrap().kingdom = KINGDOMS[role.level()].into();
     }
     Ok(())
 }
