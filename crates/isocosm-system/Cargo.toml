@@ -37,7 +37,7 @@ pack-authoring = [
 # Shared source-edit kernel, optional to private authoring; canonical Git source.
 [dependencies.mere-edit]
 git = "https://www.github.com/merely-made/mere.git"
-rev = "122451ca4b1664bbd26ed1989f7d27f4fa802f06"
+rev = "5431b896c8c277c4d8ce2cf33cdfd33692e82cd8"
 version = "0.1.0"
 optional = true
 

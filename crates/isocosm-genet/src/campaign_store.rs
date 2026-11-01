@@ -127,6 +127,23 @@ impl CampaignRepository {
 #[path = "campaign_store/h7_bench_fixture.rs"]
 mod h7_bench_fixture;
 
+/// The bench table, opened as an in-memory family host, for tests.
+#[cfg(test)]
+pub(crate) fn bench_family_table() -> crate::family_table::FamilyTable {
+    use isocosm_native::{founding::NativeWorld, native::GameBindings};
+    let (world, host, player, content, origin) = h7_bench_fixture::native_table_fixture();
+    let table = isonetry::NativeTable {
+        version: 1,
+        game: GameBindings::decode(&[]).unwrap().encode().unwrap(),
+        host_participant: host,
+        peers: vec![isonetry::native_table::PeerParticipant { endpoint: [0x11; 32], participant: player }],
+        boards: Vec::new(),
+    };
+    let (session, _) = world.into_parts().unwrap();
+    let native = NativeWorld::from_session(&session, content, origin).unwrap();
+    crate::family_table::FamilyTable::open(Some(&native), Some(&table), None).unwrap()
+}
+
 #[cfg(test)]
 #[path = "campaign_store/region_fixture.rs"]
 mod region_fixture;

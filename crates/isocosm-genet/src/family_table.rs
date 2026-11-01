@@ -72,7 +72,13 @@ struct CampaignMetadata {
 struct TableAccess {
     host_participant: cosmograph::schema::Id,
     peers: Vec<isonetry::native_table::PeerParticipant>,
+    /// The owner's stored grants; admission rechecks them (case 1060).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    invitations: Vec<graphshell_host::invitation::Invitation>,
 }
+
+#[path = "family_invite.rs"]
+pub(crate) mod invite;
 
 /// A local VTT host imported from the app's one-time native publication.
 pub(crate) struct FamilyTable {
@@ -121,6 +127,7 @@ impl FamilyTable {
                 let access = TableAccess {
                     host_participant: table.host_participant,
                     peers: table.peers.clone(),
+                    invitations: Vec::new(),
                 };
                 let mut sections = BTreeMap::new();
                 sections.insert(VTT_SECTION.to_owned(), table.game.clone());
@@ -169,7 +176,8 @@ impl FamilyTable {
                 let table = native_table.ok_or(
                     "family ledger has no saved peer bindings; reopen from its native table metadata",
                 )?;
-                TableAccess { host_participant: table.host_participant, peers: table.peers.clone() }
+                TableAccess { host_participant: table.host_participant, peers: table.peers.clone(),
+                    invitations: Vec::new() }
             };
             Ok::<_, String>((metadata, access))
         })??;
@@ -362,9 +370,17 @@ impl FamilyTable {
     ) -> Result<(BridgeEndpoint, AdmittedRequestPump), String> {
         let peer_key = AuthenticatedPeerKey::from_admitted_session(session)
             .map_err(|error| error.to_string())?;
-        let participant = self
-            .participant_for_peer(*peer_key.as_bytes())
-            .ok_or("admitted peer has no native table participant binding")?;
+        // A table that keeps invitations admits only a guest whose stored,
+        // unexpired grant the admitted claims carry, on its own transport key.
+        let participant = if self.access.invitations.is_empty() {
+            self.participant_for_peer(*peer_key.as_bytes())
+                .ok_or("admitted peer has no native table participant binding")?
+        } else {
+            if session.principal.subject != *peer_key.as_bytes() {
+                return Err("the admitted subject is not the authenticated transport key".into());
+            }
+            self.admits(&session.principal, &session.claims.delegations, invite::now_ms())?
+        };
         let peer_endpoint = VttEndpoint::open(
             self.host.world(),
             ParticipantHandle(participant),
