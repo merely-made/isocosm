@@ -11879,6 +11879,16 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       sensing.
 
       Links: area Bodies and anatomy · draws on 1009, bodies.1, bodies.10, world.4, directing.3 · summary Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient.
+      *Built how* (Mark, 2026-11-01: "Lineage-drawn radius", "Readings and
+      wiring now", "Computed reading"): an animal's touch is contact and its
+      smell reaches a radius each lineage draws within world bounds, through
+      air and water without a line of sight; plants, molds and microbes read
+      their own state then their near surroundings (light, soil and crowding
+      within leaf and root reach; matter here against neighbouring places),
+      wired now into producer growth and spread direction, so ecology
+      trajectories change under the flag; the world entity's sense is a
+      computed reading of its site's fields and recent activity, storing
+      nothing.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
