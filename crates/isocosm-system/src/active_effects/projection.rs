@@ -173,7 +173,7 @@ pub fn project_sheet(
                 result.set_text("effect_weapon_action", "strike");
             },
             (Edition::Ars5, Kind::Size) => {
-                add(&mut result, "ars_size", i64::from(effect.size_change))?;
+                add(&mut result, "ars:size", i64::from(effect.size_change))?;
                 // Corpus's Size is authoritative. The book does not specify
                 // exact voxel dimensions; project_body requires authored scale.
             },

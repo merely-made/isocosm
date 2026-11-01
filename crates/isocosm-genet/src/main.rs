@@ -346,6 +346,8 @@ struct App {
     region_selftest: Option<selftest::RegionSelftest>,
     look_selftest: Option<selftest::LookSelftest>,
     pathfinder_selftest: Option<selftest::PathfinderSelftest>,
+    /// `ISOCOSM_ARS_SELFTEST`: the headed Ars Magica trial (case 1063).
+    ars_selftest: Option<selftest::ArsSelftest>,
     /// `ISOCOSM_SELECT_SELFTEST`: B3's headed receipt. Press on raised ground
     /// and right-press a token, both through the board's own pointer path, and
     /// leave the selection and the menu standing for a capture.

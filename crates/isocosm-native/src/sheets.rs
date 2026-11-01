@@ -55,6 +55,8 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
         let state=State::read(sections)?.unwrap_or_else(||State::new(session.sim.genesis().seed));
         let map=state.current_map(session)?;
         let pathfinder=super::sheets_pf2e::plays(sections)?;
+        let ars=ruleset::edition(sections)?==isocosm_system::ars::SYSTEM;
+        let propose=crate::native::GameBindings::decode(sections.get("vtt").map_or(&[],Vec::as_slice))?.shared_players().is_some();
         let mut built=Built::new();
         let native=session.sim.state();
         let mut bodies:std::collections::BTreeSet<u64>=state.sheets.keys().map(|id|u64::from(id.0)).collect();
@@ -73,6 +75,12 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             let dm=access.seat==Seat::Dm;
             // A GM edits any living body's sheet; acting for it is control (case 1059).
             let can_edit=dm && native.population.get(id).is_some_and(|b|b.alive);
+            if ars {
+                let alive=native.population.get(id).is_some_and(|b|b.alive);
+                let seat=super::sheets_ars::Seat{control:can_control,gm:dm,alive,propose,tick:native.tick};
+                super::sheets_ars::body(&mut built,&state,&map,session,id,tid,&title,&seat)?;
+                continue;
+            }
             if pathfinder {
                 let alive=native.population.get(id).is_some_and(|b|b.alive);
                 let targets:Vec<u64>=visible.iter().copied().filter(|t|*t!=id && map.sheet(ruleset::token(*t).unwrap()).is_some_and(|s|s.int("dead").unwrap_or(0)==0)
@@ -170,8 +178,10 @@ pub(crate) fn build(endpoint: &VttEndpoint, cx: &Cx) -> Result<Built, String> {
             }
         }
         if pathfinder {
-            let propose=crate::native::GameBindings::decode(sections.get("vtt").map_or(&[],Vec::as_slice))?.shared_players().is_some();
             super::sheets_pf2e::table(&mut built,&state,access.seat==Seat::Dm,native.tick,propose);
+        }
+        if ars {
+            super::sheets_ars::covenant(&mut built,&state,session,access.seat==Seat::Dm);
         }
         for (index,entry) in state.log.iter().enumerate().rev().take(8) {
             if access.seat!=Seat::Dm && !session.sim.played(access.participant.0).into_iter()

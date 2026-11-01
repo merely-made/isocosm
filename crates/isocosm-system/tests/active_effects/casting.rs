@@ -185,9 +185,9 @@ fn formulaic_totals_fatigue_and_failures_use_the_existing_dice_stream() {
     for (score, success, fatigue) in [(30, true, 0), (10, true, 1), (-30, false, 1)] {
         let mut scene = Scene::new(Edition::Ars5, 15);
         let caster = scene.map.sheets.get_mut(&CASTER).unwrap();
-        caster.set_int("stamina", score);
-        caster.set_int("muto", 0);
-        caster.set_int("terram", 0);
+        caster.set_int("ars:sta", score);
+        caster.set_int("ars:muto", 0);
+        caster.set_int("ars:terram", 0);
         let request = scene.request("ars5:edge-of-the-razor", "formulaic");
         let mut rng = scene.rng.clone();
         let die = rng.die(10);
@@ -196,7 +196,7 @@ fn formulaic_totals_fatigue_and_failures_use_the_existing_dice_stream() {
         assert_eq!(receipt.casting_total, Some(score + i64::from(die)));
         assert_eq!(receipt.effect.is_some(), success);
         assert_eq!(
-            scene.map.sheet(CASTER).unwrap().int("fatigue_lost"),
+            scene.map.sheet(CASTER).unwrap().int("ars:fatigue_lost"),
             Some(fatigue)
         );
         assert_eq!(scene.rng.die(100), rng.die(100));

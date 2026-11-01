@@ -110,7 +110,7 @@ pub fn cast(
     if def.edition == Edition::Ars5
         && def.kind != Kind::Weapon
         && (target_sheet.text("body_form") != Some("corpus")
-            || target_sheet.int("ars_size").unwrap_or(0) > 1)
+            || target_sheet.int("ars:size").unwrap_or(0) > 1)
     {
         return Err("Corpus Individual requires a human body within its declared Size".into());
     }
@@ -230,7 +230,7 @@ pub fn cast(
             Some(
                 receipt.casting_total.unwrap() - i64::from(def.level)
                     + candidate.sheets[&request.caster]
-                        .int("penetration_bonus")
+                        .int("ars:penetration")
                         .unwrap_or(0),
             )
         } else {

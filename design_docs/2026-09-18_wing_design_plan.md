@@ -11815,6 +11815,81 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Licensing and sources · draws on 1064, 1067, method.8, vtt.6 · summary Pack transfer follows the identity work; stale pins refuse until an explicit repin; `time` is the decision point for an edition's unit of time.
 
+1069. **An Ars character's age starts in the draft and is placed in the
+      timeline; Ars Wounds cost cells by body size.** Ruled by Mark on
+      2026-11-01, after founded bodies were found born at tick 0 so that
+      "age from the body" (1063) could not hold: "One, but I would also
+      recommend determining when in the timeline. The character was born for
+      some purposes, so maybe a little bit of two?", and on the provisional
+      cells per Wound: "Scale by body size". The reading: a starting age is
+      chosen in the draft and native time elapsed afterwards adds to it; the
+      character's birth is also placed in the world's timeline before the
+      founding as a dated historical fact, for what reads it (history, kin,
+      a world's past); the native cells an Ars Wound costs scale with the
+      body's size rather than a fixed count.
+
+      Links: area The VTT · draws on 1063, 1020, record.6 · summary Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size.
+      *Built how* (Mark, 2026-11-01, each as recommended): a native wound
+      lands on one part, so a body-wide share severed parts; the cells a
+      Wound costs scale with the body's typical part (share times cells over
+      parts), and Pathfinder 2e's critical and dying wounds follow the same
+      rule; a history line's time is declared in native world ticks, and the
+      chronicle export carries negative times rather than clamping them.
+
+1070. **Time scales per game: life history in world time, a tick unit per
+      product, and a real-time rate per game.** Ruled by Mark on 2026-11-01
+      ("Both", "Real-time play rate per game"), after founded people were
+      found dying of age in their first native day: "You're trying to sim a
+      character on an ecological timescale. Of course it wouldn't work.
+      Mesocosm is one timescale, eponym and isocosm are another…hell, ticks
+      per second would probably differ per game too. Although I'd aim for at
+      least 60 and tune from there. Idk. The point is, how much time elapses
+      in a 'day' of ticks?" The reading: lifespans, gestation and growth are
+      drawn in world time, so a person lives decades whatever a tick is;
+      each product founds with its own default tick unit; and each game sets
+      how many ticks advance per real second while it runs live, aiming near
+      sixty where play is real-time and tuning from there, the VTT
+      advancing by turns and consented downtime.
+
+      Links: area Processes and rules · draws on processes.7, 978, 451 · summary Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play.
+
+1071. **What is not inert senses.** Ruled by Mark on 2026-11-01, on BO18
+      (generated consumers founded without sense tissue), first "Maybe the
+      nervous system can also like have a sense feature... the ability to
+      sense anything like your own body and then that's the foundational
+      thing... a basic ability to perceive the environment, your body first
+      and foremost", then: "a non-inert body should, that is a good
+      differentiator. It should have a nervous system of some type or some
+      means of sensing. For example, a world could be inert because it
+      doesn't have a means of sensing. But if it's active, it needs to know
+      stuff, right?... maybe it's a field, like a magnetic field... a
+      distributed neurology of fields and activities... like tides or
+      tectonic plates or volcanic activity... plants... have... a presence...
+      through their roots and their leaves... germs... do sense their
+      environment... which is what I think differentiates maybe inert from
+      living, in the same way that we can measure and differentiate sapient
+      from maybe not sapient but sentient or otherwise." Then "Adopt as
+      drafted", "Every form at once", "A Bodies flag, on for new". The
+      reading is doctrine Bodies 15: every active entity carries a baseline
+      sense by the means its form has, the body first and its surroundings
+      next, organs extending range and acuity; BO18 builds it for animals,
+      plants, microbes and world entities at once, behind a Bodies flag on
+      for new foundings so older foundings keep their meaning; a research
+      brief surveys openly licensed accounts of living worlds and non-neural
+      sensing.
+
+      Links: area Bodies and anatomy · draws on 1009, bodies.1, bodies.10, world.4, directing.3 · summary Sensing separates the active from the inert: a baseline sense by the form's own means, body first; organs extend it; the ladder runs inert, sensing, sentient, sapient.
+      *Built how* (Mark, 2026-11-01: "Lineage-drawn radius", "Readings and
+      wiring now", "Computed reading"): an animal's touch is contact and its
+      smell reaches a radius each lineage draws within world bounds, through
+      air and water without a line of sight; plants, molds and microbes read
+      their own state then their near surroundings (light, soil and crowding
+      within leaf and root reach; matter here against neighbouring places),
+      wired now into producer growth and spread direction, so ecology
+      trajectories change under the flag; the world entity's sense is a
+      computed reading of its site's fields and recent activity, storing
+      nothing.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

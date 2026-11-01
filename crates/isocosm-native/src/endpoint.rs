@@ -22,6 +22,7 @@
 #[path = "table_seats.rs"] mod table_seats;
 #[path = "sheets.rs"] mod sheets;
 #[path = "sheets_pf2e.rs"] mod sheets_pf2e;
+#[path = "sheets_ars.rs"] mod sheets_ars;
 
 use std::collections::BTreeMap;
 

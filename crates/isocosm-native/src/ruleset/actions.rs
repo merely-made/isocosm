@@ -312,6 +312,9 @@ pub(super) fn apply(
         | Action::Block { .. } | Action::BattleMedicine { .. } | Action::Begin { .. } | Action::Complete(_) => {
             return Err("this action belongs to the Pathfinder 2e edition".into());
         },
+        Action::CastSpell { .. } | Action::AddSumma | Action::Study { .. } => {
+            return Err("this action belongs to the Ars Magica edition".into());
+        },
     };
     Ok((note, rolls))
 }

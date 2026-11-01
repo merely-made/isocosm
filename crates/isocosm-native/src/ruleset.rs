@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 mod actions;
+pub mod ars;
 mod frame;
 pub(crate) mod pathfinder;
 
@@ -141,6 +142,19 @@ pub enum Action {
         kind: String,
     },
     Complete(u64),
+    /// Cast a learned Ars formulaic spell on oneself (case 1063).
+    CastSpell {
+        actor: u64,
+        spell: String,
+    },
+    /// A GM seat adds a summa to the Ars covenant's library; the payload
+    /// names its subject, Level and Quality.
+    AddSumma,
+    /// Begin a season of study from the covenant library's summa.
+    Study {
+        actor: u64,
+        summa: usize,
+    },
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -186,6 +200,9 @@ pub struct State {
     pub activities: Vec<pf2e::play::Activity>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub immunities: Vec<pf2e::play::Immunity>,
+    /// Ars Magica's covenant, in edition state for now (case 1063).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub covenant: Option<ars::Covenant>,
 }
 
 impl State {
@@ -207,6 +224,7 @@ impl State {
             pending: None,
             activities: Vec::new(),
             immunities: Vec::new(),
+            covenant: None,
         }
     }
     pub fn read(sections: &BTreeMap<String, Vec<u8>>) -> Result<Option<Self>, String> {
@@ -223,12 +241,18 @@ impl State {
                     || state.cells_per_square == Some(0)
                     || state.sheets.values().any(|sheet| sheet.system != edition)
                     || (edition != pf2e::SYSTEM
-                        && (!state.drafts.is_empty() || state.encounter.is_some() || state.check_dc.is_some()
+                        && (state.encounter.is_some() || state.check_dc.is_some()
                             || state.pending.is_some() || !state.activities.is_empty() || !state.immunities.is_empty()))
+                    || (edition != pf2e::SYSTEM && edition != isocosm_system::ars::SYSTEM && !state.drafts.is_empty())
+                    || (edition != isocosm_system::ars::SYSTEM && state.covenant.is_some())
                 {
                     return Err("unsupported or invalid edition state".into());
                 }
-                pathfinder::check(&state)?;
+                if edition == isocosm_system::ars::SYSTEM {
+                    ars::check(&state)?;
+                } else {
+                    pathfinder::check(&state)?;
+                }
                 Records::read(&state.map())?;
                 Ok(state)
             })
@@ -281,13 +305,15 @@ pub fn token(id: u64) -> Result<TokenId, String> {
         .map_err(|_| "native ID exceeds this edition adapter's token range".into())
 }
 
+/// The native clock and sky: Sun durations end at the next native sunrise or
+/// sunset (case 1063). A clock unit the sky cannot read leaves Sun refused.
 pub fn clock(session: &Session) -> Clock {
-    Clock {
+    Clock::from_native(&session.sim, None).unwrap_or(Clock {
         tick: session.sim.state().tick,
         tick_microseconds: session.sim.genesis().rules.tick_microseconds(),
         next_sun: None,
         next_daily_preparation: None,
-    }
+    })
 }
 
 pub fn controls(session: &Session, access: OrdinaryAccess, actor: u64) -> bool {
@@ -342,6 +368,8 @@ pub fn apply(
     let mut map = state.current_map(session)?;
     let (note, rolls) = if edition == pf2e::SYSTEM {
         pathfinder::apply(&mut state, &mut map, session, sections, access, action, payload)?
+    } else if edition == isocosm_system::ars::SYSTEM {
+        ars::apply(&mut state, &mut map, session, access, action, payload)?
     } else {
         actions::apply(&mut state, &mut map, &*session, sections, access, action, payload)?
     };

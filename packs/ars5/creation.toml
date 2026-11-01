@@ -1,0 +1,444 @@
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# Ars Magica Fifth Edition creation records for the first slice (case 1063):
+# magus and grog, Houses Flambeau and Bonisagus, the fifteen Arts, eight
+# Characteristics, the Quick and Easy Virtues and Flaws, and the Abilities
+# they reach. Summaries are original; numbers and names follow the reviewed
+# Definitive core, blob f2e07311e5d5db317a79b3abdea50dd81e010998 in
+# OriginalMadman/Ars-Magica-Open-License, read as a check.
+# Based on the material for Ars Magica, copyright 1993-2024, licensed by
+# Trident, Inc. d/b/a Atlas Games, under CC BY-SA 4.0.
+version = 1
+
+[rules]
+characteristic_points = 7
+characteristic_costs = { "-3" = -6, "-2" = -3, "-1" = -1, "0" = 0, "1" = 1, "2" = 3, "3" = 6 }
+native_language_xp = 75
+childhood_xp = 45
+childhood_years = 5
+later_life_xp_per_year = 15
+apprenticeship_years = 15
+apprenticeship_xp = 240
+apprenticeship_spell_levels = 120
+virtue_points_max = 10
+grog_minor_max = 3
+magus_minimums = { parma-magica = 1, magic-theory = 1, dead-language = 1 }
+# The highest Ability score at creation by age: (under this age, cap).
+ability_caps = [[30, 5], [36, 6], [41, 7], [46, 8], [999, 9]]
+magus_ages = [25, 30, 35]
+grog_ages = [20, 25, 30, 35]
+affinity_cap_bonus = 2
+
+[[characteristic]]
+id = "int"
+name = "Intelligence"
+[[characteristic]]
+id = "per"
+name = "Perception"
+[[characteristic]]
+id = "pre"
+name = "Presence"
+[[characteristic]]
+id = "com"
+name = "Communication"
+[[characteristic]]
+id = "str"
+name = "Strength"
+[[characteristic]]
+id = "sta"
+name = "Stamina"
+[[characteristic]]
+id = "dex"
+name = "Dexterity"
+[[characteristic]]
+id = "qik"
+name = "Quickness"
+
+[[art]]
+id = "creo"
+name = "Creo"
+kind = "technique"
+[[art]]
+id = "intellego"
+name = "Intellego"
+kind = "technique"
+[[art]]
+id = "muto"
+name = "Muto"
+kind = "technique"
+[[art]]
+id = "perdo"
+name = "Perdo"
+kind = "technique"
+[[art]]
+id = "rego"
+name = "Rego"
+kind = "technique"
+[[art]]
+id = "animal"
+name = "Animal"
+kind = "form"
+[[art]]
+id = "aquam"
+name = "Aquam"
+kind = "form"
+[[art]]
+id = "auram"
+name = "Auram"
+kind = "form"
+[[art]]
+id = "corpus"
+name = "Corpus"
+kind = "form"
+[[art]]
+id = "herbam"
+name = "Herbam"
+kind = "form"
+[[art]]
+id = "ignem"
+name = "Ignem"
+kind = "form"
+[[art]]
+id = "imaginem"
+name = "Imaginem"
+kind = "form"
+[[art]]
+id = "mentem"
+name = "Mentem"
+kind = "form"
+[[art]]
+id = "terram"
+name = "Terram"
+kind = "form"
+[[art]]
+id = "vim"
+name = "Vim"
+kind = "form"
+
+# A House's benefit is a free Virtue on one of the listed targets.
+[[house]]
+id = "flambeau"
+name = "Flambeau"
+summary = "A societas of martial magi, masters of fire and destruction."
+benefit = "puissant-art"
+targets = ["perdo", "ignem"]
+[[house]]
+id = "bonisagus"
+name = "Bonisagus"
+summary = "A true lineage split between researchers and politicians."
+benefit = "puissant-ability"
+targets = ["magic-theory", "intrigue"]
+
+# weight: free, minor (1 point) or major (3). kind follows the book's types.
+# `target` names what the Virtue or Flaw is taken for; `opens` lets creation
+# buy an Ability type; `pool` adds bonus experience restricted to Abilities.
+[[virtue]]
+id = "the-gift"
+name = "The Gift"
+weight = "free"
+kind = "special"
+summary = "The ability to work magic; every magus has it."
+for = ["magus"]
+automatic = true
+[[virtue]]
+id = "hermetic-magus"
+name = "Hermetic Magus"
+weight = "free"
+kind = "social-status"
+summary = "Membership of the Order of Hermes; the social status of every magus and no one else."
+for = ["magus"]
+automatic = true
+[[virtue]]
+id = "covenfolk"
+name = "Covenfolk"
+weight = "free"
+kind = "social-status"
+summary = "One of the covenant's staff, kept by its resources."
+for = ["grog"]
+automatic = true
+[[virtue]]
+id = "warrior"
+name = "Warrior"
+weight = "minor"
+kind = "general"
+summary = "Trained to fight: Martial Abilities open at creation, with 50 bonus experience for them."
+for = ["magus", "grog"]
+opens = "martial"
+pool = { xp = 50, kinds = ["martial"] }
+[[virtue]]
+id = "educated"
+name = "Educated"
+weight = "minor"
+kind = "general"
+summary = "Schooled: Academic Abilities open at creation, with 50 bonus experience for Latin and Artes Liberales."
+for = ["magus", "grog"]
+opens = "academic"
+pool = { xp = 50, abilities = ["dead-language", "artes-liberales"] }
+[[virtue]]
+id = "arcane-lore"
+name = "Arcane Lore"
+weight = "minor"
+kind = "general"
+summary = "Arcane Abilities open at creation, with 50 bonus experience for them; Parma Magica needs The Gift."
+for = ["magus", "grog"]
+opens = "arcane"
+pool = { xp = 50, kinds = ["arcane"] }
+[[virtue]]
+id = "well-traveled"
+name = "Well-Traveled"
+weight = "minor"
+kind = "general"
+summary = "At ease across the region: 50 bonus experience for living languages, Area Lore, Charm, Folk Ken or Guile."
+for = ["magus", "grog"]
+pool = { xp = 50, abilities = ["living-language", "area-lore", "charm", "folk-ken", "guile"] }
+[[virtue]]
+id = "puissant-ability"
+name = "Puissant Ability"
+weight = "minor"
+kind = "general"
+summary = "Adds 2 to one Ability whenever it is used, not when it is learned or taught."
+for = ["magus", "grog"]
+target = "ability"
+repeatable = true
+[[virtue]]
+id = "affinity-with-ability"
+name = "Affinity with Ability"
+weight = "minor"
+kind = "general"
+summary = "Experience put into one Ability counts half again, rounded up; its creation cap rises by 2."
+for = ["magus", "grog"]
+target = "ability"
+repeatable = true
+[[virtue]]
+id = "gossip"
+name = "Gossip"
+weight = "minor"
+kind = "general"
+summary = "Hears local news early on a simple roll of 6 or more and counts local Reputations double."
+for = ["magus", "grog"]
+[[virtue]]
+id = "piercing-gaze"
+name = "Piercing Gaze"
+weight = "minor"
+kind = "general"
+summary = "A stare that unsettles the guilty; +3 to intimidation rolls."
+for = ["magus", "grog"]
+[[virtue]]
+id = "social-contacts"
+name = "Social Contacts"
+weight = "minor"
+kind = "general"
+summary = "Acquaintances in one social circle; somewhere new, a Presence simple roll against 6 finds one."
+for = ["magus", "grog"]
+[[virtue]]
+id = "venus-blessing"
+name = "Venus' Blessing"
+weight = "minor"
+kind = "general"
+summary = "Attractive: +3 to Communication and Presence rolls where that matters."
+for = ["magus", "grog"]
+[[virtue]]
+id = "puissant-art"
+name = "Puissant Art"
+weight = "minor"
+kind = "hermetic"
+summary = "Adds 3 to one Art in every total it enters, not when learning or teaching it."
+for = ["magus"]
+target = "art"
+repeatable = true
+max = 2
+[[virtue]]
+id = "affinity-with-art"
+name = "Affinity with Art"
+weight = "minor"
+kind = "hermetic"
+summary = "Experience put into one Art counts half again, rounded up."
+for = ["magus"]
+target = "art"
+repeatable = true
+max = 2
+[[virtue]]
+id = "minor-magical-focus"
+name = "Minor Magical Focus"
+weight = "minor"
+kind = "hermetic"
+summary = "Magic attuned to a narrow field: within it, the lower Art counts twice."
+for = ["magus"]
+refused = "a focus's field is a storyguide's ruling, which this table cannot record yet"
+
+[[flaw]]
+id = "deficient-form"
+name = "Deficient Form"
+weight = "minor"
+kind = "hermetic"
+summary = "Totals that add one Form, casting and lab work among them, are halved; Magic Resistance is not."
+for = ["magus"]
+target = "form"
+[[flaw]]
+id = "driven"
+name = "Driven"
+weight = "either"
+kind = "personality"
+summary = "Pursues one goal at nearly any cost."
+for = ["magus", "grog"]
+[[flaw]]
+id = "proud"
+name = "Proud"
+weight = "either"
+kind = "personality"
+summary = "Quick to take offence and slow to back down."
+for = ["magus", "grog"]
+[[flaw]]
+id = "reckless"
+name = "Reckless"
+weight = "either"
+kind = "personality"
+summary = "Acts first and weighs the danger afterwards."
+for = ["magus", "grog"]
+[[flaw]]
+id = "covenant-upbringing"
+name = "Covenant Upbringing"
+weight = "minor"
+kind = "personality"
+summary = "Raised among magi and their staff, and ill at ease outside."
+for = ["magus", "grog"]
+[[flaw]]
+id = "enemies"
+name = "Enemies"
+weight = "major"
+kind = "story"
+summary = "Someone powerful wants the character harmed."
+for = ["magus"]
+[[flaw]]
+id = "dark-secret"
+name = "Dark Secret"
+weight = "major"
+kind = "story"
+summary = "Hides something that would ruin the character if known."
+for = ["magus"]
+
+# kind: general, academic, arcane or martial. `childhood` Abilities take the
+# early-childhood experience. `gift` needs The Gift to learn.
+[[ability]]
+id = "area-lore"
+name = "Area Lore"
+kind = "general"
+childhood = true
+[[ability]]
+id = "athletics"
+name = "Athletics"
+kind = "general"
+childhood = true
+[[ability]]
+id = "awareness"
+name = "Awareness"
+kind = "general"
+childhood = true
+[[ability]]
+id = "brawl"
+name = "Brawl"
+kind = "general"
+childhood = true
+[[ability]]
+id = "charm"
+name = "Charm"
+kind = "general"
+childhood = true
+[[ability]]
+id = "folk-ken"
+name = "Folk Ken"
+kind = "general"
+childhood = true
+[[ability]]
+id = "guile"
+name = "Guile"
+kind = "general"
+childhood = true
+[[ability]]
+id = "living-language"
+name = "Living Language"
+kind = "general"
+childhood = true
+[[ability]]
+id = "stealth"
+name = "Stealth"
+kind = "general"
+childhood = true
+[[ability]]
+id = "survival"
+name = "Survival"
+kind = "general"
+childhood = true
+[[ability]]
+id = "swim"
+name = "Swim"
+kind = "general"
+childhood = true
+[[ability]]
+id = "concentration"
+name = "Concentration"
+kind = "general"
+[[ability]]
+id = "intrigue"
+name = "Intrigue"
+kind = "general"
+[[ability]]
+id = "artes-liberales"
+name = "Artes Liberales"
+kind = "academic"
+[[ability]]
+id = "dead-language"
+name = "Dead Language (Latin)"
+kind = "academic"
+[[ability]]
+id = "finesse"
+name = "Finesse"
+kind = "arcane"
+[[ability]]
+id = "magic-lore"
+name = "Magic Lore"
+kind = "arcane"
+[[ability]]
+id = "magic-theory"
+name = "Magic Theory"
+kind = "arcane"
+[[ability]]
+id = "parma-magica"
+name = "Parma Magica"
+kind = "arcane"
+gift = true
+[[ability]]
+id = "penetration"
+name = "Penetration"
+kind = "arcane"
+[[ability]]
+id = "bows"
+name = "Bows"
+kind = "martial"
+[[ability]]
+id = "great-weapon"
+name = "Great Weapon"
+kind = "martial"
+[[ability]]
+id = "single-weapon"
+name = "Single Weapon"
+kind = "martial"
+[[ability]]
+id = "thrown-weapon"
+name = "Thrown Weapon"
+kind = "martial"
+
+[step]
+type = "Ars Magica characters are magi, members of the Order of Hermes who work magic, or grogs, the covenant's minor characters. This slice builds those two; companions come later."
+house = "Every magus belongs to a House of Hermes. Each House gives its members a free Virtue at creation."
+house-benefit = "Choose what your House's free Virtue applies to."
+virtue = "Take Virtues and Flaws. Minor ones are worth 1 point, Major 3. Magi may take up to 10 points of Flaws and as many points of Virtues; grogs only Minor ones, up to 3 of each, and no Story Flaws. Virtue points may not exceed Flaw points."
+target = "Choose what this Virtue or Flaw is taken for."
+weight = "This Flaw can be taken as Minor (1 point) or Major (3 points)."
+characteristic = "Buy each Characteristic from 7 points: +1 costs 1, +2 costs 3, +3 costs 6; a negative score gives points back the same way."
+age = "The troupe decides starting ages. A magus has five years of childhood and fifteen of apprenticeship behind him; each other year before apprenticeship gives 15 experience points."
+childhood = "Early childhood: 45 experience points among the Abilities anyone picks up growing up. Your native Living Language already has 75 (a score of 5)."
+later-life = "Later life: 15 experience points a year, in any Ability your Virtues let you learn."
+bonus = "Spend this Virtue's bonus experience on the Abilities it names."
+apprenticeship = "Apprenticeship: 240 experience points for Arts and Abilities, Arcane, Academic and Martial ones included."
+spell = "Learn spells worth up to 120 levels in all. A spell's level may not exceed its Technique plus Form plus Intelligence plus Magic Theory plus 3."
+finish = "Every step is done. Finishing records the character as a sheet. A magus needs at least Parma Magica 1, Magic Theory 1 and Latin 1 to be admitted to the Order."

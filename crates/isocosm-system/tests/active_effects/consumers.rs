@@ -117,7 +117,7 @@ fn size_projects_the_existing_graph_without_readdressing_parts_or_rounding_joint
     let mut request = ars.request("ars5:preternatural-growth", "shrink2");
     request.size_change = -2;
     ars.cast(&request, 0, false).unwrap();
-    assert_eq!(ars.sheet(BEARER).int("ars_size"), Some(-2));
+    assert_eq!(ars.sheet(BEARER).int("ars:size"), Some(-2));
     assert!(
         project_body(&ars.map, BEARER, &body(), None)
             .unwrap_err()

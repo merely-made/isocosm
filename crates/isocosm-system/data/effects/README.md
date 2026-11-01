@@ -89,7 +89,8 @@ Implemented profiles and remaining boundaries:
   Enlarge supports single-target ranks; rank-six group casting needs one group
   transaction. Restricted manipulation and overlapping polymorph need recorded
   adjudication. Runic Weapon does not lower stronger equipment bonuses.
-- Ars Magica: calm, unmastered formulaic casting, Animal requisite for cat
+- Ars Magica: calm, unmastered formulaic casting (the Technique named by each
+  spell, sheet fields under `ars:`, Puissant Art and Deficient Form applied), Animal requisite for cat
   eyes, casting totals, fatigue and Sun duration. Stress/botch procedures, full
   Magic Resistance adjudication and laboratory enchantment are pending. Edge
   of the Razor reports penetration and that the changed weapon is resisted.

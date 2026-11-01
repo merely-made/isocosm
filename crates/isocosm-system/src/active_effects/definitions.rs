@@ -47,6 +47,9 @@ pub struct Definition {
     pub actions: u8,
     pub bonus_action: bool,
     pub requisite: Option<String>,
+    /// Ars's Technique and Form, the Arts a formulaic casting total adds.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub technique: Option<String>,
     pub form: Option<String>,
     pub source: String,
     pub license: String,
@@ -62,7 +65,7 @@ impl Definition {
             || self.credit.is_empty()
             || self.actions > 3
             || matches!(self.duration, Duration::Seconds(0))
-            || (self.edition == Edition::Ars5 && self.form.is_none())
+            || (self.edition == Edition::Ars5 && (self.form.is_none() || self.technique.is_none()))
         {
             return Err("invalid effect procedure definition".into());
         }
