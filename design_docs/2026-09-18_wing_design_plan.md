@@ -11771,6 +11771,14 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       caution weight, bounds) live in the world's rules as data, tuned in
       play; the table offers single events as well as places, and a visit
       leaves a note about the place so it can be told.
+      Visit notes are on for new VTT foundings (Mark: "On for new VTT
+      foundings"). The events a telling offers are those the hearer does not
+      know but that matter to it (Mark: "can we do 'unknown events related to
+      events the target knows about?' maybe out to a few hops of relations,
+      idk. i guess i just mean that even if they don't know about it, it
+      probably needs to be relevant to them for it to be a meaningful
+      option"): unknown to the hearer and linked, within a few hops of cause
+      or relation, to what it knows, the depth tunable world data.
       *Built how* (Mark, 2026-11-01: "Build belief now", the rest as
       recommended): telling everything about a subject copies the teller's
       notes and what it knows by reach; teller and hearer share a site or are
