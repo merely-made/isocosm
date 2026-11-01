@@ -19,9 +19,11 @@ pub(crate) use look::LookSelftest;
 pub(crate) use magic::MagicSelftest;
 pub(crate) use region::RegionSelftest;
 pub(crate) use pathfinder::PathfinderSelftest;
+pub(crate) use ars::ArsSelftest;
 pub(crate) use overlays::OverlayArm;
 
 mod adjudicate;
+mod ars;
 mod board;
 mod family;
 mod look;

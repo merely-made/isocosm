@@ -143,12 +143,13 @@ pub(super) fn charge(
             Ok(true)
         },
         Edition::Ars5 => {
-            if sheet.fields.get("stressful") == Some(&FieldValue::Bool(true))
-                || sheet.int("spell_mastery").unwrap_or(0) > 0
+            // Ars's own words name its fields under `ars:` (case 1063).
+            if sheet.fields.get("ars:stressful") == Some(&FieldValue::Bool(true))
+                || sheet.int("ars:mastery").unwrap_or(0) > 0
             {
                 return Err("this formulaic procedure requires an adjudicated stress die; calm unmastered casting is executable".into());
             }
-            let fatigue = sheet.int("fatigue_lost").unwrap_or(0);
+            let fatigue = sheet.int("ars:fatigue_lost").unwrap_or(0);
             let penalty = match fatigue {
                 0 | 1 => 0,
                 2 => 1,
@@ -158,29 +159,38 @@ pub(super) fn charge(
             };
             let stat = |key: &str| {
                 sheet
-                    .int(key)
-                    .ok_or_else(|| format!("casting statistic undeclared: {key}"))
+                    .int(&format!("ars:{key}"))
+                    .ok_or_else(|| format!("casting statistic undeclared: ars:{key}"))
             };
-            let mut form = stat(def.form.as_deref().ok_or("formulaic Form missing")?)?;
+            // An Art in use adds its Puissant bonus; with a requisite the
+            // lower Art counts, the bonus deciding which is lower.
+            let art = |key: &str| Ok::<_, String>(stat(key)? + sheet.int(&format!("ars:puissant:{key}")).unwrap_or(0));
+            let form_name = def.form.as_deref().ok_or("formulaic Form missing")?;
+            let mut form = art(form_name)?;
             if let Some(requisite) = &def.requisite {
-                form = form.min(stat(requisite)?);
+                form = form.min(art(requisite)?);
             }
-            let score = stat("stamina")?
-                .checked_add(stat("muto")?)
+            let technique = art(def.technique.as_deref().ok_or("formulaic Technique missing")?)?;
+            let score = stat("sta")?
+                .checked_add(technique)
                 .and_then(|n| n.checked_add(form))
-                .and_then(|n| n.checked_add(sheet.int("casting_modifier").unwrap_or(0)))
-                .and_then(|n| n.checked_add(sheet.int("aura_bonus").unwrap_or(0)))
+                .and_then(|n| n.checked_add(sheet.int("ars:casting_modifier").unwrap_or(0)))
+                .and_then(|n| n.checked_add(sheet.int("ars:aura").unwrap_or(0)))
                 .and_then(|n| n.checked_sub(penalty))
                 .ok_or("casting total overflow")?;
             let die = rng.die(10) as u16;
             receipt.dice.push(die);
-            let total = score
+            let mut total = score
                 .checked_add(i64::from(die))
                 .ok_or("casting total overflow")?;
+            // Deficient Form halves the totals its Form enters.
+            if sheet.fields.get(&format!("ars:deficient:{form_name}")) == Some(&FieldValue::Bool(true)) {
+                total /= 2;
+            }
             receipt.casting_total = Some(total);
             if total < i64::from(def.level) {
-                sheet.set_int("fatigue_lost", fatigue + 1);
-                receipt.costs.insert("fatigue_lost".into(), 1);
+                sheet.set_int("ars:fatigue_lost", fatigue + 1);
+                receipt.costs.insert("ars:fatigue_lost".into(), 1);
             }
             Ok(total >= i64::from(def.level) - 10)
         },

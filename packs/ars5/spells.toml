@@ -1,0 +1,224 @@
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# The Muto Corpus and Muto Terram formulaic spells, learnable in the first
+# slice (case 1063). `procedure` names the effect record a spell casts
+# through; a spell without one is learned but refused at the table, with
+# its reason. Summaries are original; names, levels and parameters follow the
+# reviewed Definitive core, blob f2e07311e5d5db317a79b3abdea50dd81e010998.
+# Based on the material for Ars Magica, copyright 1993-2024, licensed by
+# Trident, Inc. d/b/a Atlas Games, under CC BY-SA 4.0.
+version = 1
+
+[[spell]]
+id = "eyes-of-the-cat"
+name = "Eyes of the Cat"
+technique = "muto"
+form = "corpus"
+requisites = ["animal"]
+level = 5
+range = "Touch"
+duration = "Sun"
+target = "Ind"
+summary = "Cat's eyes that see in near darkness, though not in none."
+procedure = "ars5:eyes-of-the-cat"
+[[spell]]
+id = "disguise-of-the-new-visage"
+name = "Disguise of the New Visage"
+technique = "muto"
+form = "corpus"
+level = 15
+range = "Touch"
+duration = "Sun"
+target = "Part"
+summary = "Reshapes a face into any roughly human one."
+[[spell]]
+id = "preternatural-growth-and-shrinking"
+name = "Preternatural Growth and Shrinking"
+technique = "muto"
+form = "corpus"
+level = 15
+range = "Touch"
+duration = "Sun"
+target = "Ind"
+summary = "Raises Size by 1 or lowers it by up to 2."
+procedure = "ars5:preternatural-growth"
+[[spell]]
+id = "arm-of-the-infant"
+name = "Arm of the Infant"
+technique = "muto"
+form = "corpus"
+level = 20
+range = "Voice"
+duration = "Sun"
+target = "Part"
+summary = "Shrinks one arm to a small child's."
+[[spell]]
+id = "gift-of-the-bears-fortitude"
+name = "Gift of the Bear's Fortitude"
+technique = "muto"
+form = "corpus"
+level = 25
+range = "Per"
+duration = "Sun"
+target = "Ind"
+summary = "Toughened flesh: +3 to Soak, at the cost of fine touch."
+[[spell]]
+id = "shape-of-the-woodland-prowler"
+name = "Shape of the Woodland Prowler"
+technique = "muto"
+form = "corpus"
+requisites = ["animal"]
+level = 25
+range = "Touch"
+duration = "Sun"
+target = "Ind"
+summary = "Turns the target into a wolf, who may change back at will."
+[[spell]]
+id = "cloak-of-black-feathers"
+name = "Cloak of Black Feathers"
+technique = "muto"
+form = "corpus"
+requisites = ["animal"]
+level = 30
+range = "Per"
+duration = "Sun"
+target = "Ind"
+summary = "The caster becomes a raven until choosing otherwise."
+[[spell]]
+id = "curse-of-circe"
+name = "Curse of Circe"
+technique = "muto"
+form = "corpus"
+requisites = ["animal"]
+level = 30
+range = "Voice"
+duration = "Sun"
+target = "Ind"
+summary = "Turns a person into a pig."
+[[spell]]
+id = "stance-of-the-patient-tree"
+name = "Stance of the Patient Tree"
+technique = "muto"
+form = "corpus"
+requisites = ["herbam"]
+level = 35
+range = "Per"
+duration = "Sun"
+target = "Ind"
+summary = "The caster becomes a tree, sensing little but light and weather."
+[[spell]]
+id = "cloak-of-mist"
+name = "Cloak of Mist"
+technique = "muto"
+form = "corpus"
+requisites = ["auram"]
+level = 40
+range = "Per"
+duration = "Sun"
+target = "Ind"
+summary = "The caster becomes a drifting, human-sized mist."
+[[spell]]
+id = "transform-to-water"
+name = "Transform to Water"
+technique = "muto"
+form = "corpus"
+requisites = ["aquam"]
+level = 40
+range = "Per"
+duration = "Sun"
+target = "Ind"
+summary = "The caster becomes water that holds together unless parted."
+[[spell]]
+id = "the-silent-vigil"
+name = "The Silent Vigil"
+technique = "muto"
+form = "corpus"
+requisites = ["terram"]
+level = 45
+range = "Per"
+duration = "Moon"
+target = "Ind"
+summary = "The caster merges into a large rock, hearing but not seeing."
+[[spell]]
+id = "mists-of-change"
+name = "Mists of Change"
+technique = "muto"
+form = "corpus"
+requisites = ["animal"]
+level = 60
+range = "Voice"
+duration = "Sun & Year"
+target = "Bound"
+ritual = true
+summary = "A ritual whose mists turn those they envelop into beasts across a boundary."
+[[spell]]
+id = "the-crystal-dart"
+name = "The Crystal Dart"
+technique = "muto"
+form = "terram"
+requisites = ["rego"]
+level = 10
+range = "Voice"
+duration = "Mom"
+target = "Ind"
+summary = "A stone becomes a crystal dart that flies at a target."
+[[spell]]
+id = "supple-iron-and-rigid-rope"
+name = "Supple Iron and Rigid Rope"
+technique = "muto"
+form = "terram"
+level = 10
+range = "Touch"
+duration = "Sun"
+target = "Ind"
+summary = "Makes a flexible thing stiff or a stiff thing flexible."
+[[spell]]
+id = "rock-of-viscid-clay"
+name = "Rock of Viscid Clay"
+technique = "muto"
+form = "terram"
+level = 15
+range = "Touch"
+duration = "Sun"
+target = "Part"
+summary = "Softens rock to sticky, workable clay."
+[[spell]]
+id = "edge-of-the-razor"
+name = "Edge of the Razor"
+technique = "muto"
+form = "terram"
+level = 20
+range = "Touch"
+duration = "Sun"
+target = "Ind"
+summary = "Sharpens a metal edged or pointed weapon: +2 Damage."
+procedure = "ars5:edge-of-the-razor"
+[[spell]]
+id = "earth-that-breaks-no-more"
+name = "Earth That Breaks No More"
+technique = "muto"
+form = "terram"
+level = 20
+range = "Touch"
+duration = "Sun"
+target = "Part"
+summary = "Turns packed dirt into stone."
+[[spell]]
+id = "object-of-increased-size"
+name = "Object of Increased Size"
+technique = "muto"
+form = "terram"
+level = 20
+range = "Touch"
+duration = "Sun"
+target = "Ind"
+summary = "Doubles a modest object in every dimension."
+[[spell]]
+id = "teeth-of-the-earth-mother"
+name = "Teeth of the Earth Mother"
+technique = "muto"
+form = "terram"
+level = 35
+range = "Voice"
+duration = "Sun"
+target = "Group"
+summary = "A ring of sharp marble pillars springs from the ground."

@@ -32,6 +32,9 @@ pub enum DecisionPoint {
     Movement,
     /// Healing across consented time: `BattleMedicine`, `Begin`, `Complete`.
     Healing,
+    /// An edition's unit of time and what fills it (case 1068): Ars's season
+    /// and its activities.
+    Time,
 }
 
 /// How a subsystem runs. A pack's scripted `System` is reserved (case 1064).
@@ -67,6 +70,11 @@ pub const REGISTRY: &[Subsystem] = &[
     Subsystem {
         key: "pf2e-srd",
         governs: &[Creation, Equipment, Attack, Damage, Encounter, Check, Movement, Healing],
+        implementation: Implementation::Compiled,
+    },
+    Subsystem {
+        key: "ars5",
+        governs: &[Creation, Casting, Damage, Time],
         implementation: Implementation::Compiled,
     },
 ];

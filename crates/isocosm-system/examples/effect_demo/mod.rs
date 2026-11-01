@@ -37,18 +37,18 @@ impl Scene {
         base.set_text("body_form", "corpus");
         for (key, value) in [
             ("size_category", 2),
-            ("ars_size", 0),
+            ("ars:size", 0),
             ("reach_ft", 5),
             ("weight_mg", 64_000_000),
             ("con_save_bonus", 3),
             ("spell_save_dc", 15),
-            ("stamina", 2),
-            ("muto", 10),
-            ("corpus", 10),
-            ("animal", 10),
-            ("terram", 10),
+            ("ars:sta", 2),
+            ("ars:muto", 10),
+            ("ars:corpus", 10),
+            ("ars:animal", 10),
+            ("ars:terram", 10),
             ("hp_current", 30),
-            ("fatigue_lost", 0),
+            ("ars:fatigue_lost", 0),
         ] {
             base.set_int(key, value);
         }

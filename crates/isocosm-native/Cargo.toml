@@ -45,6 +45,10 @@ required-features = ["endpoint"]
 name = "pf2e_table"
 required-features = ["endpoint"]
 
+[[example]]
+name = "ars_table"
+required-features = ["endpoint"]
+
 [[test]]
 name = "endpoint"
 required-features = ["endpoint"]

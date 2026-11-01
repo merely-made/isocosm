@@ -34,6 +34,7 @@ mod bestiary;
 pub mod effect_catalogue;
 pub mod active_effects;
 mod items;
+pub mod ars;
 pub mod pf2e;
 mod spells;
 mod sys;

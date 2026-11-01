@@ -4,7 +4,7 @@
 # Trident, Inc. d/b/a Atlas Games, under CC BY-SA 4.0.
 # Ars Magica and Mythic Europe are trademarks of Trident, Inc., used with permission.
 # Source text: reviewed/Ars Magica - Definitive Edition (Core Rules).md,
-# blob 41860c6a10eedc246c730ca485bed6927060ced9 in OriginalMadman/Ars-Magica-Open-License.
+# blob f2e07311e5d5db317a79b3abdea50dd81e010998 in OriginalMadman/Ars-Magica-Open-License.
 version = 1
 
 [[effects]]
@@ -18,6 +18,7 @@ duration = "sun"
 concentration = false
 actions = 1
 bonus_action = false
+technique = "muto"
 form = "corpus"
 requisite = "animal"
 source = "Ars Magica Definitive Edition: Eyes of the Cat; formulaic Muto Corpus with Animal requisite"
@@ -35,6 +36,7 @@ duration = "sun"
 concentration = false
 actions = 1
 bonus_action = false
+technique = "muto"
 form = "corpus"
 source = "Ars Magica Definitive Edition: Preternatural Growth and Shrinking; normal Size +1 or -1/-2"
 license = "CC-BY-SA-4.0"
@@ -51,6 +53,7 @@ duration = "sun"
 concentration = false
 actions = 1
 bonus_action = false
+technique = "muto"
 form = "terram"
 source = "Ars Magica Definitive Edition: Edge of the Razor; metal edged or pointed weapon, +2 Damage"
 license = "CC-BY-SA-4.0"

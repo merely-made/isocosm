@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: CC-BY-SA-4.0
+# Ars Magica play numbers the compiled adapter reads (cases 1026, 1063):
+# the season as the unit of time, study from a summa, Wounds by Size, and
+# the Fatigue penalties. Based on the material for Ars Magica, copyright
+# 1993-2024, licensed by Trident, Inc. d/b/a Atlas Games, under CC BY-SA 4.0.
+version = 1
+
+[time]
+seasons_per_year = 4
+season_names = ["Spring", "Summer", "Autumn", "Winter"]
+
+[study]
+# A season with a summa gains its Quality in experience, never past its Level.
+max_sources_per_season = 1
+
+[wounds]
+# At Size 0 a Light Wound is 1 to 5 points past Soak, and each level up
+# takes 5 + Size more; each Size step moves every boundary by one.
+first_band = 5
+order = ["light", "medium", "heavy", "incapacitated", "dead"]
+penalties = { light = -1, medium = -3, heavy = -5 }
+# Native cells each Wound takes from the body (case 1063). Provisional, as
+# Pathfinder's one cell is: the size is open.
+native_cells = { light = 1, medium = 2, heavy = 3, incapacitated = 4 }
+
+[fatigue]
+levels = ["Fresh", "Winded", "Weary", "Tired", "Dazed", "Unconscious"]
+penalties = [0, 0, -1, -3, -5]

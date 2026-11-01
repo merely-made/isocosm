@@ -176,15 +176,16 @@ mod tests {
         let mut mixed = pinned;
         mixed.packs.push(edition_pack("5e-srd").unwrap().pin());
         assert!(mixed.validate().unwrap_err().contains("both govern"));
-        let mut records_only = PackSet::bundled("5e-srd").unwrap();
-        records_only.packs.push(isocosm_campaign::bundled_pack("ars5").unwrap().pin());
-        assert!(records_only.validate().is_ok(), "a pack declaring no subsystem mixes");
+        let mut ars = PackSet::bundled("5e-srd").unwrap();
+        ars.packs.push(edition_pack("ars5").unwrap().pin());
+        assert!(ars.validate().unwrap_err().contains("both govern"), "two editions' creation overlap");
     }
 
     #[test]
     fn founding_offers_the_playable_bundled_editions() {
-        assert_eq!(editions(), ["5e-srd", "pf2e-srd"]);
+        assert_eq!(editions(), ["5e-srd", "ars5", "pf2e-srd"]);
         assert_eq!(edition_label("pf2e-srd"), "Pathfinder 2e Player Core (Remaster)");
-        assert!(PackSet::from("ars5").validate().is_err(), "a records-only pack is not an edition");
+        assert!(PackSet::from("ars5").validate().is_ok());
+        assert!(PackSet::from("unknown").validate().is_err());
     }
 }
