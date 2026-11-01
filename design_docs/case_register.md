@@ -488,7 +488,7 @@ three design docs that cite it. The record holds the words.
 | 1027 | A place's tier counts living residents; dwellings are places linked to map sites; thresholds in a datasheet; first dispute an agreement ended against standing. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1032 | Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members. | none |
 | 1041 | A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
-| 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | none |
+| 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 
 ## Organs: glyphs, impresa, hagiograph
 

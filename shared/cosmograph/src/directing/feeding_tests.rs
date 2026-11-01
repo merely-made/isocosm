@@ -74,7 +74,7 @@ fn fixture() -> (Genesis, Id, Id) {
     let mut moving = crate::generate::process(
         "test:prey-move",
         Causation::Choice,
-        vec![Effect::Move { destination: 1 }],
+        vec![Effect::Move { destination: 1, via: None }],
     );
     moving.requires.push(Query::Trait {
         who: Binding::Actor,

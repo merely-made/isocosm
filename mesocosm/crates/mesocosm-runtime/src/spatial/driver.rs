@@ -60,7 +60,7 @@ impl Game {
             if geometry.path[0] != before.pose {
                 return Err("accepted step does not begin at the saved root pose".into());
             }
-            if (geometry.window != before.window && self.driver.as_ref().is_none_or(|d| d.profile.version != 6))
+            if (geometry.window != before.window && self.driver.as_ref().is_none_or(|d| !d.profile.whole_site()))
                 || input.request.site != before.site.0 {
                 return Err("accepted step does not use the saved actual site window".into());
             }

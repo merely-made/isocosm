@@ -63,7 +63,7 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
     templates.body_spacing = 2;
     templates.stands.clear();
     if full_site {
-        templates.version = habitat::VERSION;
+        templates.version = habitat::ENTERING;
         templates.window.min = [0;2];
         templates.window.max = [side;2];
         templates.stands = habitat::stands(genesis, &templates)?;
@@ -170,6 +170,7 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
                         from,
                         to: route.to,
                         stand: stand.clone(),
+                        border: route.border,
                     })
                 })
                 .collect::<Vec<_>>()

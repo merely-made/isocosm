@@ -4,7 +4,7 @@
 use super::*;
 
 impl Staged<'_> {
-    pub(super) fn paced_move(&mut self, to: Id, name: &str, cause: &str) -> Result<()> {
+    pub(super) fn paced_move(&mut self, to: Id, via: Option<u8>, name: &str, cause: &str) -> Result<()> {
         let sim = self.sim;
         if sim.state.movement.immediate() { return Err("paced travel requires native journeys".into()); }
         let actor = &self.stage.bodies[&self.stage.actor];
@@ -12,9 +12,10 @@ impl Staged<'_> {
             return Err("movement actor has no resident site".into());
         }
         let site = sim.site_at_start(self.stage.place).ok_or("departure site absent")?;
-        let route = site.routes.iter().find(|route| route.to == to).ok_or("no route to destination")?;
+        let route = crate::journey::route(site, to, via).ok_or("no route to destination")?;
         let profile = sim.genesis.rules.pace_profiles.get(name).ok_or("unknown pace profile")?;
-        let journey = crate::journey::departure(actor, site, to, sim.state.tick, profile.duration(route.travel)?)?;
+        let journey = crate::journey::departure(actor, site, to, via, sim.state.tick,
+            profile.duration(route.travel)?, sim.state.movement.routed())?;
         for cost in &profile.costs {
             // Spend is ordinarily an up-to take. A pace owes its full authored
             // cost, checked against the stage after every preceding cost.

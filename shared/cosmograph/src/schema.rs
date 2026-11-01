@@ -159,6 +159,9 @@ pub struct Journey {
     pub to: Id,
     pub departed: Tick,
     pub arrives: Tick,
+    /// The border the route crossed, under routed movement only (1057).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub border: Option<Border>,
 }
 
 /// The explicit replay semantics, witnessed independently of founding facts.
@@ -167,9 +170,12 @@ pub enum Movement {
     #[default]
     ImmediateV3,
     Journey,
+    /// Journeys name the route they take and record its border (1057).
+    Routed,
 }
 impl Movement {
     pub fn immediate(&self) -> bool { *self == Self::ImmediateV3 }
+    pub fn routed(&self) -> bool { *self == Self::Routed }
 }
 
 mod event_location;

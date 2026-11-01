@@ -20,7 +20,7 @@ pub(super) fn inputs(session: &Session, mode: &ModeState, state: &State)
         out.push(native::ArrivalResolution {
             request: native::ArrivalRequest { actor: binding.entity, from: journey.from, to: journey.to,
                 departed: journey.departed, arrives: journey.arrives, body_revision: actor.body_revision,
-                terrain_revision: session.sim.terrain_revision() },
+                terrain_revision: session.sim.terrain_revision(), border: journey.border },
             geometry: native::ArrivalGeometry { window: input.window.clone(), pose: native::Pose {
                 at: crate::walking::to_site(&v, input.pose.cell().map_err(|e| format!("Eponym arrival pose: {e:?}"))?),
                 yaw: input.yaw , feet: Default::default() }, eye: input.eye, places: input.places },

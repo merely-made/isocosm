@@ -46,7 +46,7 @@ impl Game {
                     arrivals.push(ArrivalInput { actor: EntityHandle(id), from: PlaceHandle(crossing.from),
                         to: PlaceHandle(crossing.to), pose: Pose { at:to.at, yaw:to.yaw, feet:to.feet.clone() },
                         eye: std::array::from_fn(|k| to.at[k] + templates.eye[k]), window: templates.window.clone(),
-                        places: templates.places, operations: BTreeMap::new() });
+                        places: templates.places, operations: BTreeMap::new(), border: crossing.border });
                 }
             }
         }

@@ -56,6 +56,9 @@ pub enum Effect {
     },
     Move {
         destination: Id,
+        /// The side the route leaves by, naming one of parallel routes (1057).
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        via: Option<u8>,
     },
     Note {
         kind: Key,
@@ -227,7 +230,9 @@ pub enum Effect {
     Step { profile: Key },
     ProjectDecision,
     /// A named authored pace pays its exact stocks before native departure.
-    MovePaced { destination: Id, profile: Key },
+    MovePaced { destination: Id, profile: Key,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        via: Option<u8> },
     InstitutionDecision,
     Graft { reserve: Key, soil: Key },
     Institution { producer: Key },

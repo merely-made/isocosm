@@ -129,11 +129,20 @@ fn migrate(g: &mut Genesis) -> Result<()> {
         site.conditions.insert(here.clone(), 1);
         g.rules.conditions.insert(here.clone());
         for route in &site.routes {
+            // Parallel routes to one site are told apart by the side they
+            // leave by, in name and act; a lone route keeps both (1057).
+            let parallel = site.routes.iter().filter(|r| r.to == route.to).count() > 1;
+            let via = route.border.map(|b| b.side).filter(|_| parallel);
+            let name = match via {
+                Some(side) => format!("move:{id}-{}-{side}", route.to),
+                None => format!("move:{id}-{}", route.to),
+            };
             let mut p = crate::generate::process(
-                &format!("move:{id}-{}", route.to),
+                &name,
                 Causation::Choice,
                 vec![Effect::Move {
                     destination: route.to,
+                    via,
                 }],
             );
             p.requires.extend([

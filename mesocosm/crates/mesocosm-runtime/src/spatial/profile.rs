@@ -19,6 +19,9 @@ pub struct ArrivalInput {
     pub pose: Pose, pub eye: [i64; 3], pub window: Window,
     pub places: isometer_space::places::Rules,
     pub operations: BTreeMap<String, Operation>,
+    /// The route's border, telling parallel routes apart (1057).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub border: Option<Border>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -85,7 +88,9 @@ pub struct Driver {
 }
 
 impl Profile {
-    pub(super) fn generated(&self) -> bool { matches!(self.version, 5 | 6) }
+    pub(super) fn generated(&self) -> bool { matches!(self.version, 5..=7) }
+    /// Whole-site drivers: 6, and 7 whose arrivals enter by their border (1057).
+    pub(super) fn whole_site(&self) -> bool { matches!(self.version, 6 | 7) }
     pub(super) fn has_birth_sight(&self) -> bool {
         self.births.iter().any(|input| input.slots.iter().any(|slot| slot.sight_range.is_some()))
     }
@@ -95,7 +100,7 @@ impl Profile {
     }
 
     pub(super) fn version(&self) -> Result<(), String> {
-        if self.version != 6 && self.version != 5 && self.version != 4 && !(self.version == 3 && !self.has_birth_inputs())
+        if !matches!(self.version, 4..=7) && !(self.version == 3 && !self.has_birth_inputs())
             && !(self.version == 2 && !self.has_birth_sight() && !self.has_birth_inputs())
             && !(self.version == 1 && self.births.is_empty()) {
             return Err("unsupported authored spatial profile".into());
@@ -109,7 +114,7 @@ impl Profile {
 
     pub fn validate(&self, sim: &Simulation) -> Result<(), String> {
         self.version()?;
-        if self.version == 6 && !cosmograph::spatial::embodiment::whole_site(sim) {
+        if self.whole_site() && !cosmograph::spatial::embodiment::whole_site(sim) {
             return Err("whole-site driver needs native full-site templates".into());
         }
         if self.generated() && (!cosmograph::spatial::embodiment::enabled(sim)
@@ -149,10 +154,10 @@ impl Profile {
         }
         let mut destinations = BTreeSet::new();
         for input in &self.arrivals {
-            if !destinations.insert((input.actor.0, input.from.0, input.to.0))
+            if !destinations.insert((input.actor.0, input.from.0, input.to.0, input.border))
                 || sim.state().population.get(input.actor.0).is_none()
                 || !sim.state().sites.contains_key(&input.to.0)
-                || !sim.state().sites.get(&input.from.0).is_some_and(|s| s.routes.iter().any(|r| r.to == input.to.0))
+                || !sim.state().sites.get(&input.from.0).is_some_and(|site| site.routes.iter().any(|r| r.to == input.to.0 && (input.border.is_none() || r.border == input.border)))
             { return Err("arrival input has duplicate or absent native actor/route/destination".into()); }
         }
         Ok(())

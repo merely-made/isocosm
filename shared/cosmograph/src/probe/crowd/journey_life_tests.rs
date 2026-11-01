@@ -118,7 +118,7 @@ fn nursing_journey() -> ProbeWorld {
         transmission:1_000_000,border:None,authored:None }];
     let mut population=Population::default();population.insert(parent,2).unwrap();g.population=population;
     g.rules.traits.insert(ACTOR.into());
-    add(&mut w,"test:depart",vec![Effect::Move { destination:99 }],1,-100);
+    add(&mut w,"test:depart",vec![Effect::Move { destination:99, via: None }],1,-100);
     w
 }
 
@@ -179,7 +179,7 @@ fn competition_rounds_wait_for_residence_without_consuming_transit_food() {
     w.genesis.rules.traits.insert(ACTOR.into());
     w.genesis.sites.get_mut(&0).unwrap().routes=vec![Route { to:1,travel:3,
         transmission:1_000_000,border:None,authored:None }];
-    add(&mut w,"test:depart",vec![Effect::Move { destination:1 }],1,-100);
+    add(&mut w,"test:depart",vec![Effect::Move { destination:1, via: None }],1,-100);
     let mut c=Crowd::new(&w,7,Variant::Histogram).unwrap();
     let matter=c.total_matter();
     let mut ticks=0;

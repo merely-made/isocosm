@@ -96,6 +96,10 @@ impl Rules {
     /// A finite adapter may select one direct authored route, not a branch or
     /// risk outcome. Actual process requirements and debit admission still run.
     pub fn paced_movement(&self, process: &str, destination: Id) -> Result<(&Key, &PaceProfile)> {
+        self.paced_route(process, destination).map(|(name, profile, _)| (name, profile))
+    }
+    /// The same selection, with the side its route leaves by (1057).
+    pub fn paced_route(&self, process: &str, destination: Id) -> Result<(&Key, &PaceProfile, Option<u8>)> {
         fn moves(effect: &Effect) -> bool {
             matches!(effect, Effect::Move { .. } | Effect::MovePaced { .. })
                 || effect.branches().any(moves)
@@ -104,8 +108,8 @@ impl Rules {
         let mut selected = None;
         for effect in process.commitments.iter().chain(&process.effects) {
             match effect {
-                Effect::MovePaced { destination: to, profile } if *to == destination && selected.is_none() => {
-                    selected = Some(profile);
+                Effect::MovePaced { destination: to, profile, via } if *to == destination && selected.is_none() => {
+                    selected = Some((profile, *via));
                 },
                 other if moves(other) => return Err("movement process has another or conditional route".into()),
                 _ => {},
@@ -114,8 +118,8 @@ impl Rules {
         if process.risk.iter().flat_map(|risk| &risk.effects).any(moves) {
             return Err("movement process has a risky route".into());
         }
-        let name = selected.ok_or("process has no direct paced route to destination")?;
-        Ok((name, self.pace_profiles.get(name).ok_or("unknown pace profile")?))
+        let (name, via) = selected.ok_or("process has no direct paced route to destination")?;
+        Ok((name, self.pace_profiles.get(name).ok_or("unknown pace profile")?, via))
     }
 }
 

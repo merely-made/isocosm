@@ -46,20 +46,28 @@ impl Journeys {
 }
 
 /// Existing authored periods still determine when route acts are due (256).
-pub(crate) fn depart(entity: &mut Entity, site: &Site, to: Id, tick: Tick) -> Result<()> {
+pub(crate) fn depart(entity: &mut Entity, site: &Site, to: Id, via: Option<u8>, tick: Tick, routed: bool) -> Result<()> {
     if entity.journey.is_some() { return Err("member is already travelling".into()); }
-    let travel = site.routes.iter().find(|r| r.to == to).ok_or("no route to destination")?.travel;
-    let journey = departure(entity, site, to, tick, travel)?;
+    let travel = route(site, to, via).ok_or("no route to destination")?.travel;
+    let journey = departure(entity, site, to, via, tick, travel, routed)?;
     leave(entity, journey);
     Ok(())
 }
 
-pub(crate) fn departure(entity: &Entity, site: &Site, to: Id, tick: Tick, travel: Tick) -> Result<Journey> {
+/// The route an act takes: the one leaving by `via`, else the first to `to`.
+/// Parallel routes between one pair differ by their border (1057).
+pub fn route(site: &Site, to: Id, via: Option<u8>) -> Option<&Route> {
+    site.routes.iter().find(|r| r.to == to && via.is_none_or(|side| r.border.is_some_and(|b| b.side == side)))
+}
+
+/// Routed movement records the border crossed; earlier semantics never do.
+pub(crate) fn departure(entity: &Entity, site: &Site, to: Id, via: Option<u8>, tick: Tick, travel: Tick, routed: bool)
+    -> Result<Journey> {
     if entity.journey.is_some() { return Err("member is already travelling".into()); }
-    if !site.routes.iter().any(|route| route.to == to) { return Err("no route to destination".into()); }
+    let route = route(site, to, via).ok_or("no route to destination")?;
     if travel == 0 { return Err("route travel must be positive".into()); }
     let arrives = tick.checked_add(travel).ok_or("journey arrival tick overflows")?;
-    Ok(Journey { from: entity.place, to, departed: tick, arrives })
+    Ok(Journey { from: entity.place, to, departed: tick, arrives, border: if routed { route.border } else { None } })
 }
 
 pub(crate) fn leave(entity: &mut Entity, journey: Journey) {
@@ -78,9 +86,9 @@ impl Simulation {
         let entity = self.state.population.get(actor).ok_or("movement actor is absent")?;
         let from = entity.resident_site().ok_or("movement actor has no resident site")?;
         let site = self.state.sites.get(&from).ok_or("departure site absent")?;
-        let route = site.routes.iter().find(|route| route.to == to).ok_or("no route to destination")?;
-        let (_, profile) = self.genesis.rules.paced_movement(process, to)?;
-        departure(entity, site, to, self.state.tick, profile.duration(route.travel)?)
+        let (_, profile, via) = self.genesis.rules.paced_route(process, to)?;
+        let route = route(site, to, via).ok_or("no route to destination")?;
+        departure(entity, site, to, via, self.state.tick, profile.duration(route.travel)?, self.state.movement.routed())
     }
 
     /// Land exact cohorts, including corpses, before installing the next pass.
@@ -126,12 +134,12 @@ impl Simulation {
     pub(crate) fn route_ready(&self, actor: Id, p: &crate::rules::Process) -> bool {
         if self.state.movement.immediate() { return true; }
         let moves = p.commitments.iter().chain(&p.effects).filter_map(|e| match e {
-            crate::rules::Effect::Move { destination }
-                | crate::rules::Effect::MovePaced { destination, .. } => Some(*destination), _ => None,
+            crate::rules::Effect::Move { destination, via }
+                | crate::rules::Effect::MovePaced { destination, via, .. } => Some((*destination, *via)), _ => None,
         }).collect::<Vec<_>>();
         if moves.is_empty() { return true; }
         let Some(from) = self.body_at_start(actor).and_then(Entity::resident_site) else { return false; };
-        self.site_at_start(from).is_some_and(|s| moves.iter().all(|to| s.routes.iter().any(|r| r.to == *to)))
+        self.site_at_start(from).is_some_and(|s| moves.iter().all(|(to, via)| route(s, *to, *via).is_some()))
     }
 }
 

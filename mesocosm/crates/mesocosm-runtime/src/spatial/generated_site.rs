@@ -29,13 +29,19 @@ impl Game {
                 let e = sim.state().population.get(id).ok_or("arriving body absent")?;
                 let j = e.journey.as_ref().ok_or("arrival journey absent")?;
                 let _span = crate::profile::Span::new("arrival.search");
-                let Ok(pose) = body::place_in_site(sim,t,id,site,&placed) else { continue };
+                // A v6 habitat lands a bordered arrival at the edge it entered
+                // by, where a frame covers it; elsewhere it stays far (1057, E5).
+                let pose = match j.border.filter(|_| t.version >= body::ENTERING) {
+                    Some(border) => body::place_entering(sim,t,id,site,border,&placed).ok().flatten(),
+                    None => body::place_in_site(sim,t,id,site,&placed).ok(),
+                };
+                let Some(pose) = pose else { continue };
                 let geometry = native::ArrivalGeometry { window:body::site_window(t,pose.at),
                     eye:std::array::from_fn(|k| pose.at[k]+t.eye[k]),places:t.places,pose:pose.clone() };
                 placed.insert(id,pose);
                 out.push(native::ArrivalResolution { request:native::ArrivalRequest { actor:id,
                     from:j.from,to:j.to,departed:j.departed,arrives:j.arrives,
-                    body_revision:e.body_revision,terrain_revision:sim.terrain_revision() },geometry });
+                    body_revision:e.body_revision,terrain_revision:sim.terrain_revision(),border:j.border },geometry });
             }
         }
         out.sort_by_key(|r| r.request.actor);

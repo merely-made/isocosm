@@ -108,9 +108,10 @@ pub(crate) fn read_with_settings(snapshot:&GameSnapshot,sender:TableSender,party
         }
         for (name,process) in &session.sim.genesis().rules.processes {
             for effect in process.commitments.iter().chain(&process.effects) {
-                if let cosmograph::rules::Effect::MovePaced { destination,profile } = effect {
+                if let cosmograph::rules::Effect::MovePaced { destination,profile,via } = effect {
                     if session.sim.genesis().rules.paced_movement(name,*destination).is_ok() {
-                        journey_authoring.push(format!("Authored process {name} · destination {destination} · profile {profile}"));
+                        let side = via.map(|side| format!(" · leaving by side {side}")).unwrap_or_default();
+                        journey_authoring.push(format!("Authored process {name} · destination {destination}{side} · profile {profile}"));
                     }
                 }
             }

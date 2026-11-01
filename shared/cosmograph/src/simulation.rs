@@ -222,7 +222,7 @@ impl Simulation {
             agreements: BTreeMap::new(),
             asserted: Default::default(),
             attention: Default::default(),
-            movement: Movement::Journey,
+            movement: Movement::Routed,
             spreads: genesis.spreads.clone(),
             projects: crate::projects::Projects::default(),
             institutions: Default::default(),

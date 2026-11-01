@@ -14,12 +14,12 @@ impl Game {
         for input in &driver.arrival_inputs()? {
             let Some(member) = session.sim.state().population.get(input.actor.0) else { continue; };
             let Some(journey) = &member.journey else { continue; };
-            if journey.from != input.from.0 || journey.to != input.to.0
+            if journey.from != input.from.0 || journey.to != input.to.0 || journey.border != input.border
                 || journey.arrives < session.sim.state().tick || journey.arrives > end { continue; }
             out.push(ArrivalResolution {
                 request: ArrivalRequest { actor: input.actor.0, from: journey.from, to: journey.to,
                     departed: journey.departed, arrives: journey.arrives, body_revision: member.body_revision,
-                    terrain_revision: session.sim.terrain_revision() },
+                    terrain_revision: session.sim.terrain_revision(), border: journey.border },
                 geometry: ArrivalGeometry { window: input.window.clone(), pose: input.pose.clone(), eye: input.eye, places: input.places },
             });
         }
@@ -36,7 +36,7 @@ impl Game {
             // A failed physical landing can leave a historical pose several
             // native visits behind. Native arrival admission validates the
             // actual journey; this projection retains only its input contract.
-            if (source.window != input.geometry.window && driver.profile.version != 6)
+            if (source.window != input.geometry.window && !driver.profile.whole_site())
                 || source.places.unwrap_or_default() != input.geometry.places {
                 return Err("generated arrival differs from its source window and route".into());
             }
@@ -48,7 +48,8 @@ impl Game {
         }
         let authored = self.driver.as_ref().ok_or("arrival driver absent")?.arrival_inputs()?;
         let held = authored.iter().find(|held| held.actor.0 == input.request.actor && held.from.0 == input.request.from
-            && held.to.0 == input.request.to).ok_or("accepted arrival has no authored destination")?;
+            && held.to.0 == input.request.to && held.border == input.request.border)
+            .ok_or("accepted arrival has no authored destination")?;
         if input.geometry.window != held.window || input.geometry.pose != held.pose
             || input.geometry.eye != held.eye
             || input.geometry.places != held.places
@@ -93,7 +94,7 @@ mod tests {
         let input = ArrivalResolution {
             request: ArrivalRequest { actor: held.actor.0, from: held.site.0 + 1,
                 to: held.site.0, departed: 12, arrives: 16,
-                body_revision: held.body_revision, terrain_revision: held.terrain_revision.clone() },
+                body_revision: held.body_revision, terrain_revision: held.terrain_revision.clone(), border: None },
             geometry: ArrivalGeometry { window: held.window.clone(),
                 pose: held.pose.clone(),
                 eye: held.eye, places: held.places.unwrap_or_default() },

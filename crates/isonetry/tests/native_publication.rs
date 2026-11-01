@@ -114,7 +114,7 @@ fn travel_host() -> (HostSession, u64, u64) {
     genesis.rules.processes.insert("test:travel".into(), Process {
         port_feeding: None, goal_directives: Vec::new(),
         id: "test:travel".into(), causation: Causation::Choice, requires: Vec::new(),
-        commitments: Vec::new(), effects: vec![Effect::Move { destination: to }],
+        commitments: Vec::new(), effects: vec![Effect::Move { destination: to, via: None }],
         risk: None, target: None, period: None, priority: 0, need_account: None,
         need_below: 0, glyphs: BTreeSet::new(), invariants: BTreeSet::new(), note: false,
     });

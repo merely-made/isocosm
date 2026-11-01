@@ -58,8 +58,13 @@ fn every_crossing_follows_a_native_route_to_a_declared_stand() {
     let templates = templates();
     assert!(!templates.crossings.is_empty());
     for crossing in &templates.crossings {
-        assert!(world().sites[&crossing.from].routes.iter().any(|r| r.to == crossing.to));
-        assert!(templates.stands[&crossing.to].contains(&crossing.stand));
+        assert!(world().sites[&crossing.from].routes.iter().any(|r| r.to == crossing.to && r.border == crossing.border));
+        // A bordered crossing stands at its entering edge (1057); one
+        // without geometry takes a declared stand.
+        match crossing.border {
+            Some(_) => assert!((0..2).all(|k| (templates.window.min[k]..templates.window.max[k]).contains(&crossing.stand.at[2 * k]))),
+            None => assert!(templates.stands[&crossing.to].contains(&crossing.stand)),
+        }
     }
     let routed = world().sites.values().map(|s| s.routes.len()).sum::<usize>();
     assert!(templates.crossings.len() <= routed);
@@ -113,7 +118,7 @@ fn every_move_of_a_played_world_lands_on_a_declared_crossing() {
     let mut moves = 0;
     for process in played.rules.processes.values() {
         for effect in &process.effects {
-            let Effect::Move { destination } = effect else { continue };
+            let Effect::Move { destination, .. } = effect else { continue };
             let from: u64 = process.id.trim_start_matches("move:").split('-').next().unwrap().parse().unwrap();
             moves += 1;
             let seated = !templates.stands[destination].is_empty();

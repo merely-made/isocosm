@@ -22,10 +22,12 @@ use profile::{Form, world};
 // hazard and rest, and a played world its wound need and its strain processes.
 // Rerecorded 2026-10-28 under the execution plan's D16 and D19: a played
 // world keeps strain as a rate, and its kinds decide at their own paces.
+// Rerecorded 2026-10-31 under case 1057: a map world's crossings carry their
+// route's border and stand at the edge it enters by.
 fn diagnosed_seed9() -> Genesis {
     let mut genesis = world(9, Form::Played, false);
     genesis.rules.directing.as_mut().unwrap().movement_ties = MovementTies::Identity;
-    assert_eq!(crate::digest(&genesis), "8c220de1ebead81458b45d56cc3833e62479ac4943a7d6d4c2d690f992edacad");
+    assert_eq!(crate::digest(&genesis), "bde81154bfddb1066dc853bee29d66986952fe9f7d62c257218e36ee79193fd2");
     genesis
 }
 
