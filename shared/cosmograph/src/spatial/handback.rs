@@ -60,14 +60,37 @@ impl Simulation {
 
     fn check_handback(&self, h: &Handback) -> Result<PlaceId> {
         let e = self.state.population.get(h.actor).ok_or("handback actor absent")?;
-        let held = self.state.spatial_poses.get(&h.actor).ok_or("handback actor has no pose")?;
-        if !e.alive || e.body.is_none() || e.resident_site() != Some(h.site) || held.site != h.site
+        // A body's first handback poses it if it already holds a patch at
+        // that site (case 1098).
+        let posed = match self.state.spatial_poses.get(&h.actor) {
+            Some(held) => held.site == h.site,
+            None => e.patch.is_some_and(|p| p.site == h.site),
+        };
+        if !posed {
+            return Err("handback actor has no pose or patch at its site".into());
+        }
+        if !e.alive || e.body.is_none() || e.resident_site() != Some(h.site)
             || e.body_revision != h.body_revision || self.terrain_revision() != h.terrain_revision {
             return Err("handback source changed".into());
         }
         let g = &h.geometry;
         let patch = geometry::check_pose(self, e, h.site, g)?;
         let t = self.genesis.rules.spatial_templates.as_ref().ok_or("handback needs templates")?;
+        let reach = t.foraging.values().map(|f| f.reach).max().unwrap_or(0);
+        if !embodiment::enabled(self) {
+            // Cell grain (case 1099): a clear root and eye inside one patch,
+            // which check_pose holds; the game keeps its own collision, and a
+            // contact is within reach of the root.
+            for &c in &h.contacts {
+                let r = self.state.spatial_poses.get(&c).filter(|r| r.site == h.site)
+                    .ok_or("handback contact is not posed at its site")?;
+                let d = (0..3).map(|k| g.pose.at[k].abs_diff(r.pose.at[k])).max().unwrap_or(0);
+                if d > reach.saturating_add(1) {
+                    return Err("handback contact is beyond feeding reach".into());
+                }
+            }
+            return Ok(patch);
+        }
         let doc = e.body.as_ref().ok_or("handback body absent")?;
         let own = embodiment::boxes(doc, &g.pose)?;
         for (&other, r) in &self.state.spatial_poses {
@@ -79,7 +102,6 @@ impl Simulation {
                 return Err("handback pose intersects another resident".into());
             }
         }
-        let reach = t.foraging.values().map(|f| f.reach).max().unwrap_or(0);
         for &c in &h.contacts {
             let r = self.state.spatial_poses.get(&c).filter(|r| r.site == h.site)
                 .ok_or("handback contact is not posed at its site")?;

@@ -202,3 +202,42 @@ fn step_cost() {
     eprintln!("STEP_COST bodies {} steps {steps}: columns {:.1} us, stance {:.1} us, clearance {:.1} us, total {:.1} us a body a step; \
         {:.0} bodies fill a 60 Hz frame", bodies.len(), per(columns), per(stances), per(clear), total, 1e6 / 60.0 / total);
 }
+
+/// Cases 1098 and 1099: in a world whose templates admit at cell grain, a
+/// body that holds a patch but no pose is posed by its first handback, on
+/// a clear root and eye inside one patch; without a patch it is refused.
+#[test]
+fn a_first_handback_poses_a_patched_body_at_cell_grain() {
+    let g = Founding {
+        seed: 7, population: 256, sites: 6, ecology: true, bodies: Some(Bodies::default()),
+        map: Some(Layout::Grid(Grid { width: 3, height: 2, ..Grid::drawn(7) })),
+        ..Default::default()
+    }.generate().unwrap();
+    let t = g.rules.spatial_templates.clone().unwrap();
+    assert!(t.version < 2, "these templates admit at cell grain");
+    let mut s = Session::new(g, Execution::Individuals).unwrap();
+    let (site, stand) = t.stands.iter().find_map(|(site, st)| st.first().map(|x| (*site, x.clone()))).unwrap();
+    let actor = s.sim.state().population.groups.iter()
+        .find(|(_, g)| g.entity.alive && g.entity.body.is_some() && g.entity.resident_site() == Some(site))
+        .map(|(id, _)| *id).expect("an embodied resident");
+    assert!(!s.sim.state().spatial_poses.contains_key(&actor));
+    let handback = |s: &Session| {
+        let e = s.sim.state().population.get(actor).unwrap();
+        Handback { actor, site, body_revision: e.body_revision, terrain_revision: s.sim.terrain_revision(),
+            geometry: ArrivalGeometry { window: t.window.clone(), eye: std::array::from_fn(|k| stand.at[k] + t.eye[k]),
+                pose: cosmograph::spatial::Pose { at: stand.at, yaw: stand.yaw, feet: Default::default() }, places: t.places },
+            contacts: Vec::new() }
+    };
+    let mut bare = s.clone();
+    let h = handback(&bare);
+    minute(&mut bare, &[h]);
+    assert!(bare.sim.spatial_handbacks()[0].patch.as_ref().is_err_and(|e| e.contains("no pose or patch")));
+    let patch = s.sim.site_geometry(site, &t.window, t.places).unwrap().places.place_at(stand.at).unwrap();
+    s.command(Command::Patch { entity: actor, patch: Some(patch) }).unwrap();
+    let h = handback(&s);
+    minute(&mut s, &[h]);
+    assert!(s.sim.spatial_handbacks()[0].patch.is_ok(), "{:?}", s.sim.spatial_handbacks());
+    assert_eq!(s.sim.state().spatial_poses[&actor].pose.at, stand.at, "the first handback poses the body");
+    let restored = Session::load(s.save(), Execution::Individuals).unwrap();
+    assert_eq!(restored.sim.state_hash(), s.sim.state_hash());
+}

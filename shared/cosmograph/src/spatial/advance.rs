@@ -28,6 +28,7 @@ pub(super) enum StagedAdvance {
 pub struct Prepared {
     candidate: Session, source: Key, pub work: Work,
     pub arrivals: Vec<ArrivalReport>, flows: Vec<Flow>,
+    pub handbacks: Vec<HandbackReport>,
     pub steps: BTreeSet<Key>,
     pub births: Vec<BirthReport>,
     pub order: Vec<Publication>,
@@ -53,9 +54,16 @@ impl Session {
 
     pub fn prepare_birth_spatial(&self, ticks: Tick, terrain: &[TerrainResolution],
         steps: &[Resolution], arrivals: &[ArrivalResolution], births: &[BirthResolution]) -> Result<Preparation> {
+        self.prepare_round_spatial(ticks, terrain, steps, arrivals, births, &[])
+    }
+
+    /// The guarded preparation with a round's handbacks (case 1080).
+    pub fn prepare_round_spatial(&self, ticks: Tick, terrain: &[TerrainResolution],
+        steps: &[Resolution], arrivals: &[ArrivalResolution], births: &[BirthResolution],
+        handbacks: &[Handback]) -> Result<Preparation> {
         let command = Command::AdvanceBirthSpatial {
             ticks, terrain: terrain.to_vec(), steps: steps.to_vec(), arrivals: arrivals.to_vec(), births: births.to_vec(),
-            handbacks: Vec::new(),
+            handbacks: handbacks.to_vec(),
         };
         self.prepare_spatial_command(command)
     }
@@ -98,6 +106,7 @@ impl Session {
             StagedAdvance::Ready { candidate, work, flows } => Ok(Preparation::Ready(Prepared {
                 source: operations::source(self), work,
                 arrivals: candidate.sim.spatial_resolutions.reports.clone(),
+                handbacks: candidate.sim.spatial_resolutions.handbacks.clone(),
                 steps: candidate.sim.spatial_resolutions.accepted.clone(),
                 births: candidate.sim.spatial_resolutions.birth_reports.clone(),
                 order: candidate.sim.spatial_resolutions.order.clone(), candidate, flows,
