@@ -63,8 +63,8 @@ pub use author_spread::{ActorRef, HolderRef, IdentityRef, AuthorSupply, AuthorPl
 pub use items::{Item, ItemError, ItemHolding, ItemHoldingKind, ItemId, ItemKind,
     ItemLocation, ItemPlaces, ItemReading, ItemReadingError, Items, MakerProvenance, SourceLineage};
 pub use motion::{
-    MOTION_SCALE, MotionError, MotionInput, MotionOutcome, MotionPose, MotionRules, MotionSolver,
-    Solve,
+    MOTION_SCALE, MotionError, MotionInput, MotionOutcome, MotionPose, MotionRules, MotionRun,
+    MotionSolver, STEPS_PER_MINUTE, Solve,
 };
 pub use movement::{Movement, MovementError, MovementEvent, MovementIntent, MovementSave};
 pub use movement_profile::{

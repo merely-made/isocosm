@@ -92,4 +92,6 @@ intents! {
     ExternalVolley { tick:Tick, actor:SubjectId, actor_revision:BodyRevisionId,
         target:SubjectId, strikes:Vec<crate::timed_action::StrikeReceipt>, rules:CombatRules },
     Minute { tick:Tick },
+    Steps { tick:Tick, subject:SubjectId, revision:BodyRevisionId, step:u64,
+        runs:Vec<MotionRun>, end:MotionPose, rules:MotionRules },
 }

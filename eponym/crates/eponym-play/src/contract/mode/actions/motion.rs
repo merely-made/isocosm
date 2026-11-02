@@ -12,18 +12,14 @@ pub struct FallPayment {
     pub hunger: Vec<DebitSelection>, pub fatigue: Vec<DebitSelection>,
 }
 
-/// One held input over consecutive fixed steps (case 1117).
-#[derive(Clone,Copy,Debug,PartialEq,Eq,Serialize,Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct Run { pub input: MotionInput, pub steps: u32 }
+pub use crate::MotionRun as Run;
 
 /// A damaging landing's payment, by the fixed step that lands.
 #[derive(Clone,Debug,PartialEq,Eq,Serialize,Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Fall { pub step: u64, pub payment: FallPayment }
 
-/// A round's minute holds at most this many fixed 1/60 s steps.
-pub const STEPS_PER_MINUTE: u64 = 60 * 60;
+pub use crate::STEPS_PER_MINUTE;
 
 pub(super) fn advance(session:&mut Session, mode:&mut ModeState, actions:&ActionState,
     actor:&PoseBinding, participant:Id, step:u64, input:MotionInput, payment:&FallPayment,
@@ -76,9 +72,7 @@ pub(super) fn steps(session:&mut Session, mode:&mut ModeState, actions:&ActionSt
     if !super::super::clock::rounds(session) {
         return Err("outside a round each motion step is its own action".into());
     }
-    let total = runs.iter().try_fold(0u64,|n,r| (r.steps > 0).then(|| n + u64::from(r.steps)))
-        .ok_or("an Eponym motion run holds no steps")?;
-    if total == 0 || total > STEPS_PER_MINUTE { return Err("Eponym minute motion holds 1 to 3600 steps".into()); }
+    let inputs = Run::inputs(runs).ok_or("Eponym minute motion holds 1 to 3600 steps, none in an empty run")?;
     if !falls.windows(2).all(|w| w[0].step < w[1].step) { return Err("Eponym falls are out of step order".into()); }
     let mut pose = actor.current(session)?;
     let first = pose.step;
@@ -88,7 +82,6 @@ pub(super) fn steps(session:&mut Session, mode:&mut ModeState, actions:&ActionSt
     let mut mobile = mobile(session,actor.entity)?;
     let mut falls = falls.iter().peekable();
     let (mut receipts, mut landed) = (Vec::new(), false);
-    let inputs = runs.iter().flat_map(|r| std::iter::repeat_n(r.input,r.steps as usize));
     for input in inputs {
         let step = pose.step.checked_add(1).ok_or("Eponym motion step overflows")?;
         if landed {

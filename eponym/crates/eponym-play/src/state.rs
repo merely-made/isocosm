@@ -443,6 +443,8 @@ impl GameState {
                 rules,
                 ..
             } => self.advance_motion(tick, subject, *revision, *step, *input, *rules),
+            GameIntent::Steps { revision, step, runs, end, rules, .. } =>
+                self.advance_steps(tick, subject, *revision, *step, runs, *end, *rules),
             GameIntent::ResolveVolley {
                 actor,
                 target,

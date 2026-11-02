@@ -66,6 +66,27 @@ pub struct MotionInput {
     pub move_x: i16,
     pub move_z: i16,
 }
+/// One held input over consecutive fixed steps (cases 1117, 1120).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct MotionRun {
+    pub input: MotionInput,
+    pub steps: u32,
+}
+
+/// A round's minute holds at most this many fixed 1/60 s steps.
+pub const STEPS_PER_MINUTE: u64 = 60 * 60;
+
+impl MotionRun {
+    /// The fixed steps' inputs in order, or `None` for an empty run or a
+    /// batch outside 1 to `STEPS_PER_MINUTE` steps.
+    pub fn inputs(runs: &[Self]) -> Option<impl Iterator<Item = MotionInput> + '_> {
+        let total = runs.iter().try_fold(0u64, |n, r| (r.steps > 0).then(|| n + u64::from(r.steps)))?;
+        (1..=STEPS_PER_MINUTE).contains(&total)
+            .then(|| runs.iter().flat_map(|r| std::iter::repeat_n(r.input, r.steps as usize)))
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct MotionRules {
     pub revision: u32,

@@ -7,7 +7,7 @@
 //! replays to its recorded hash.
 
 use cosmograph_host::drive::{Pace, Pacer, Speed};
-use eponym_play::{GameIntent, MotionInput, Session, fixtures::session::{advance_motion, timed_action_world_in_rounds}};
+use eponym_play::{GameIntent, MotionInput, MotionRun, Session, fixtures::session::{advance_minute, advance_motion, timed_action_world_in_rounds}};
 
 /// One real minute of a round at `speed`, a frame at a time: the frame's
 /// due steps run as fixed solver steps, and each due minute is a minute
@@ -50,5 +50,39 @@ fn a_round_at_one_and_eight_times_replays_its_save() {
         let saved = session.save().unwrap();
         let restored = Session::restore_solving(&saved, eponym_play::MotionSolver::STILL).unwrap();
         assert_eq!(restored.state_hash().unwrap(), session.state_hash().unwrap(), "{speed:?}: replay");
+    }
+}
+
+/// Case 1120: the same rounds with each minute's motion one intent, stepped
+/// locally a frame at a time and recorded at the minute, replaying to its
+/// hash; a minute's intents are its motion and the minute itself.
+#[test]
+fn a_batched_round_at_one_and_eight_times_replays_its_save() {
+    const EAST: MotionInput = MotionInput { move_x: 32767, move_z: 0 };
+    for speed in [Speed::X1, Speed::X8] {
+        let started = std::time::Instant::now();
+        let f = timed_action_world_in_rounds();
+        let mut session = f.action.session().clone();
+        let (ticks, intents) = (session.game().world().sim().state().tick, session.game().next_tick().0);
+        let mut pacer = Pacer::new(Pace::Round { speed });
+        let (mut held, mut minutes) = (0u32, 0);
+        while minutes < 2 {
+            let due = pacer.advance(16_667);
+            held += (due.steps * speed.factor()) as u32;
+            for _ in 0..due.ticks {
+                if held > 0 { advance_minute(&mut session, f.keeper, vec![MotionRun { input: EAST, steps: held }]); }
+                held = 0;
+                let tick = session.game().next_tick();
+                session.apply_game(GameIntent::Minute { tick }).expect("the minute");
+                minutes += 1;
+            }
+        }
+        assert_eq!(session.game().world().sim().state().tick, ticks + 2, "{speed:?}");
+        assert_eq!(session.game().next_tick().0, intents + 4, "{speed:?}: two intents a minute");
+        let saved = session.save().unwrap();
+        let bytes = serde_json::to_vec(&saved).unwrap().len();
+        let restored = Session::restore_solving(&saved, eponym_play::MotionSolver::STILL).unwrap();
+        assert_eq!(restored.state_hash().unwrap(), session.state_hash().unwrap(), "{speed:?}: replay");
+        eprintln!("{speed:?}: two batched minutes in {:?}, save {bytes} bytes", started.elapsed());
     }
 }
