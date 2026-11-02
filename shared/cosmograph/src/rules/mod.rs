@@ -14,6 +14,8 @@ mod effect;
 mod feeding;
 mod graft;
 mod epoch;
+mod span;
+pub use span::{Rung, Span};
 mod mind;
 pub(crate) mod pace;
 mod recipe;
@@ -30,7 +32,10 @@ pub use defence::{Defence, DefenceLayer};
 pub use effect::{Conversion, Effect, EffectKind};
 pub use feeding::{FeedingSources, PortFeeding};
 pub use graft::{Compatibility, GraftReceipt, Raise, retained};
-pub use epoch::{DeepTimeSpan, EpochRule, YEAR_MICROSECONDS, deep_time_ceiling, year_ticks};
+pub use epoch::{
+    DeepTimeSpan, EpochRule, MINUTE_MICROSECONDS, YEAR_MICROSECONDS, deep_time_ceiling, minutes_ticks,
+    per_minute_per_tick, year_ticks,
+};
 pub use mind::{Mind, Need, Rate};
 pub use pace::{PaceCost, PaceDuration, PaceProfile};
 pub use recipe::{Affinity, Anchor, ChainFacing, ChainLink, Declared, Development, Facing, Policy, Recipe, Tagma, Template, Verdict};
@@ -382,12 +387,23 @@ pub struct Skeleton {
     pub water: Key,
 }
 
+/// The rules version every world has hashed under (case 1073).
+const FIRST_VERSION: u32 = 1;
+
 /// The clock's unit where a world states none: a minute (ruling 257).
 pub const DEFAULT_TICK_MICROSECONDS: u64 = 60_000_000;
 
 impl Rules {
+    /// The rules' identity in a world's hashes: their content, not their
+    /// format version (case 1073). Hashed as at the first version, so every
+    /// existing world keeps its hash and a format-only bump moves none.
     pub fn revision(&self) -> Key {
-        crate::digest(self)
+        if self.version == FIRST_VERSION {
+            return crate::digest(self);
+        }
+        let mut content = self.clone();
+        content.version = FIRST_VERSION;
+        crate::digest(&content)
     }
     /// The world time one tick counts, in microseconds.
     pub fn tick_microseconds(&self) -> u64 {
