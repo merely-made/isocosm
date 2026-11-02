@@ -453,8 +453,14 @@ impl Founding {
         }
         let mut remaining = self.population;
         let mut group = 0;
+        // A world-time founding gives every lineage at least six (1090),
+        // dealt in turn before the pyramid's draw.
+        let floor = if self.ecology && self.ecology_rates == crate::ecology::Rates::WorldTime {
+            u64::from(self.lineages) * crate::ecology::world_time::FOUNDING_FLOOR.div_ceil(self.cohort_size.max(1))
+        } else { 0 };
         while remaining > 0 {
-            let i = self.web.founder(self.lineages, random("lineage", group), self.ecology_rates);
+            let i = if group < floor { group % u64::from(self.lineages) }
+                else { self.web.founder(self.lineages, random("lineage", group), self.ecology_rates) };
             let lineage = format!("lineage:{i}");
             let n = 2 + random("compartments", i) % 3;
             let mut accounts = BTreeMap::from([("world:soil".into(), 4)]);

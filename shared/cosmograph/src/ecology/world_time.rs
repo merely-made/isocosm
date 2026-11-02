@@ -4,7 +4,7 @@
 //! The ecology in world time (cases 1077, 1078): each role's life history,
 //! metabolism, feeding and growth stated in world units and read at the
 //! world's own unit. Animals feed only while hungry; most of a bite is shed
-//! as litter and dung, which decomposers turn to the soil producers grow
+//! as detritus (1091), which decomposers turn to the soil producers grow
 //! from; producers are many bites large, so grazing wounds rather than
 //! kills, and a wounded producer regrows faster; births come of stored
 //! surplus, producers seeding once a season; founders are born before the
@@ -20,6 +20,14 @@ use std::collections::BTreeMap;
 
 const DAY: u64 = 1440;
 
+/// The medium seeds and spores ride (1092), and its strength at every site
+/// where a founding does not set one: a candidate pending its ruling.
+const AIR: &str = "world:air";
+const AIR_STRENGTH: i64 = 100;
+
+/// The fewest members a world-time founding gives each lineage (1090).
+pub const FOUNDING_FLOOR: u64 = 6;
+
 /// The founded soil, as a multiple of the stock world's (1074: enough
 /// founded food).
 const SOIL_FACTOR: u64 = 3;
@@ -28,7 +36,7 @@ const SOIL_FACTOR: u64 = 3;
 const LIGHT_PER_GROWTH: u64 = 3_000;
 
 /// What bodies shed and bites lose, until decomposers turn it to soil.
-pub const LITTER: &str = "world:litter";
+pub const DETRITUS: &str = "world:detritus";
 
 /// One role's life in world time. Minutes unless named otherwise; matter in
 /// the body's own account.
@@ -40,7 +48,7 @@ pub struct RoleTime {
     /// the years it takes to double.
     pub hazard_per_million: u32,
     pub doubling_years: u32,
-    /// One matter of upkeep per this many minutes, shed as litter.
+    /// One matter of upkeep per this many minutes, shed as detritus.
     pub upkeep: u64,
     /// The body an adult keeps, and what a birth gives the young.
     pub adult: u64,
@@ -62,6 +70,11 @@ pub struct RoleTime {
     pub founders: u64,
     /// Founders' ages are drawn from zero to this many days.
     pub founding_age_days: u64,
+    /// What carries its young to a neighbouring site (1092), and the range
+    /// its lineage draws a scatter propensity from, in millionths of
+    /// births (1093). A walker's young wait on walking speed (1085).
+    pub medium: Option<&'static str>,
+    pub scatter: (u32, u32),
 }
 
 /// The candidate values by role.
@@ -69,19 +82,24 @@ pub(crate) fn role_time(role: Role) -> RoleTime {
     match role {
         Role::Producer => RoleTime { maturity_days: 30, hazard_per_million: 100_000, doubling_years: 3,
             upkeep: DAY, adult: 60, child: 10, feed: 0, bite: 0, kept: 0, grow: 720, regrow: 240,
-            breed: 90 * DAY, founders: 40, founding_age_days: 730 },
+            breed: 90 * DAY, founders: 40, founding_age_days: 730,
+            medium: Some(AIR), scatter: (50_000, 150_000) },
         Role::Grazer => RoleTime { maturity_days: 120, hazard_per_million: 200_000, doubling_years: 2,
             upkeep: 1_680, adult: 12, child: 6, feed: 720, bite: 6, kept: 2, grow: 0, regrow: 0,
-            breed: 90 * DAY, founders: 8, founding_age_days: 1_095 },
+            breed: 90 * DAY, founders: 8, founding_age_days: 1_095,
+            medium: None, scatter: (0, 0) },
         Role::Omnivore => RoleTime { maturity_days: 180, hazard_per_million: 150_000, doubling_years: 3,
             upkeep: 2_400, adult: 12, child: 6, feed: 720, bite: 6, kept: 2, grow: 0, regrow: 0,
-            breed: 180 * DAY, founders: 2, founding_age_days: 1_460 },
+            breed: 180 * DAY, founders: 2, founding_age_days: 1_460,
+            medium: None, scatter: (0, 0) },
         Role::Predator => RoleTime { maturity_days: 365, hazard_per_million: 120_000, doubling_years: 3,
             upkeep: 2_160, adult: 15, child: 8, feed: DAY, bite: 9, kept: 3, grow: 0, regrow: 0,
-            breed: 180 * DAY, founders: 1, founding_age_days: 1_825 },
+            breed: 180 * DAY, founders: 1, founding_age_days: 1_825,
+            medium: None, scatter: (0, 0) },
         Role::Decomposer => RoleTime { maturity_days: 21, hazard_per_million: 500_000, doubling_years: 1,
             upkeep: 720, adult: 8, child: 3, feed: 240, bite: 3, kept: 1, grow: 0, regrow: 0,
-            breed: 45 * DAY, founders: 12, founding_age_days: 180 },
+            breed: 45 * DAY, founders: 12, founding_age_days: 180,
+            medium: Some(AIR), scatter: (50_000, 150_000) },
     }
 }
 
@@ -114,10 +132,12 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         let span = minutes(time.founding_age_days * DAY).max(1);
         e.born = started - crate::draw(founding.seed, "founding-age", &[first]) % span;
     }
-    g.rules.accounts.insert(LITTER.into(), AccountKind::Matter { lineage: "world:ground".into(),
+    g.rules.accounts.insert(DETRITUS.into(), AccountKind::Matter { lineage: "world:ground".into(),
         reserve: false, provision: false });
+    g.rules.conditions.insert(AIR.into());
     for site in g.sites.values_mut() {
-        site.accounts.insert(LITTER.into(), 0);
+        site.conditions.entry(AIR.into()).or_insert(AIR_STRENGTH);
+        site.accounts.insert(DETRITUS.into(), 0);
         if let Some(soil) = site.accounts.get_mut("world:soil") { *soil *= SOIL_FACTOR; }
     }
     for i in 0..founding.lineages {
@@ -130,7 +150,7 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         g.rules.processes.remove(&format!("ecology:age-{i}"));
         if let Some(upkeep) = g.rules.processes.get_mut(&format!("ecology:upkeep-{i}")) {
             upkeep.period = Some(minutes(time.upkeep));
-            upkeep.effects = shed(&body, LITTER, 1);
+            upkeep.effects = shed(&body, DETRITUS, 1);
         }
         let maturity = minutes(time.maturity_days * DAY);
         let mut hazard = process(&format!("ecology:hazard-{i}"), Causation::Transition, vec![]);
@@ -151,6 +171,16 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         // not lost to the upkeep that falls on the same tick.
         birth.priority = 15;
         birth.note = true;
+        // Some births land next door (1089): the lineage's drawn propensity
+        // picks a birth to scatter, and the medium's strength at the parent's
+        // site whether it goes.
+        if let Some(medium) = time.medium {
+            let (low, high) = time.scatter;
+            let propensity = low + (crate::draw(founding.seed, "scatter", &[u64::from(i)])
+                % u64::from(high - low + 1)) as u32;
+            birth.risk = Some(Risk { per_million: propensity, aging: None, effects: vec![Effect::Birth {
+                provision: BTreeMap::from([(body.clone(), time.child)]), scatter: Some(medium.into()) }] });
+        }
         g.rules.processes.insert(birth.id.clone(), birth);
         if role == Role::Producer {
             if let Some(grow) = g.rules.processes.get_mut(&format!("ecology:produce-{i}")) {
@@ -188,7 +218,7 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         // lost share is eaten in its own right and put down whole, so a bite
         // that finds less than it read (two eaters at one carcass in a tick)
         // fails as a whole rather than costing the eater its body.
-        let lost = if role == Role::Decomposer { "world:soil" } else { LITTER };
+        let lost = if role == Role::Decomposer { "world:soil" } else { DETRITUS };
         let eat = |into: &str, amount: u64| Effect::Eat { from: Binding::Target,
             amount: Amount::Fixed(amount), into: into.into(), of: vec![], whole: false };
         feed.effects = vec![eat(&body, time.kept), eat(lost, time.bite - time.kept),
@@ -202,25 +232,25 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
         let feed_every = minutes(time.feed + u64::from(i));
         feed.period = Some(feed_every);
         if role == Role::Decomposer {
-            // Decomposers also eat the site's litter and dung, turning most
+            // Decomposers also eat the site's detritus, turning most
             // of it to soil for the producers (1078).
             // A metabolic transition, not a choice: the mind's needs stay
             // as they are (LineagePolicy), and it eats no body.
-            let mut litter = process(&format!("ecology:litter-{i}"), Causation::Transition, vec![
-                Effect::Transfer { from: Binding::Place, to: Binding::Actor, account: LITTER.into(),
+            let mut detritus = process(&format!("ecology:detritus-{i}"), Causation::Transition, vec![
+                Effect::Transfer { from: Binding::Place, to: Binding::Actor, account: DETRITUS.into(),
                     amount: time.bite.into() },
-                Effect::Transform { who: Binding::Actor, take: BTreeMap::from([(LITTER.into(), time.bite)]),
+                Effect::Transform { who: Binding::Actor, take: BTreeMap::from([(DETRITUS.into(), time.bite)]),
                     give: BTreeMap::from([(body.clone(), time.kept), ("world:soil".into(), time.bite - time.kept)]),
                     conversion: None },
                 Effect::Transfer { from: Binding::Actor, to: Binding::Place, account: "world:soil".into(),
                     amount: (time.bite - time.kept).into() },
             ]);
-            litter.requires.extend([trait_of(),
+            detritus.requires.extend([trait_of(),
                 Query::Below { who: Binding::Actor, key: body.clone(), amount: time.adult + time.child },
-                Query::Account { who: Binding::Place, key: LITTER.into(), at_least: time.bite }]);
-            litter.period = Some(feed_every);
-            litter.priority = 11;
-            g.rules.processes.insert(litter.id.clone(), litter);
+                Query::Account { who: Binding::Place, key: DETRITUS.into(), at_least: time.bite }]);
+            detritus.period = Some(feed_every);
+            detritus.priority = 11;
+            g.rules.processes.insert(detritus.id.clone(), detritus);
         }
     }
     Ok(())

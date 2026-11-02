@@ -64,12 +64,12 @@ fn a_world_time_web_holds_a_year() {
                         (i.to_string(), g.entity.accounts.get(&format!("matter:{i}-0")).copied().unwrap_or(0), (st.tick - g.entity.born) / 1440) }).collect();
                 let site = &st.sites[&trace];
                 let mut what: BTreeMap<String, usize> = BTreeMap::new();
-                for e in st.events.values().filter(|e| e.tick + 60 > st.tick && !e.process.starts_with("ecology:litter")) {
+                for e in st.events.values().filter(|e| e.tick + 60 > st.tick && !e.process.starts_with("ecology:detritus")) {
                     *what.entry(e.process.clone()).or_default() += 1;
                 }
                 eprintln!("trace events {what:?}");
-                eprintln!("trace day {} min {} litter {:?} soil {:?} decomposers {bodies:?}", st.tick / 1440, st.tick % 1440,
-                    site.accounts.get("world:litter"), site.accounts.get("world:soil"));
+                eprintln!("trace day {} min {} detritus {:?} soil {:?} decomposers {bodies:?}", st.tick / 1440, st.tick % 1440,
+                    site.accounts.get("world:detritus"), site.accounts.get("world:soil"));
             }
         }
         let now = living(&s);
@@ -80,14 +80,14 @@ fn a_world_time_web_holds_a_year() {
             (k.clone(), sum / n.max(1)) }).collect();
         let soil: Vec<u64> = st.sites.values().map(|site| site.accounts.get("world:soil").copied().unwrap_or(0)).collect();
         let light: Vec<u64> = st.sites.values().map(|site| site.accounts.get("sim:energy").copied().unwrap_or(0)).collect();
-        let litter: Vec<u64> = st.sites.values().map(|site| site.accounts.get("world:litter").copied().unwrap_or(0)).collect();
+        let detritus: Vec<u64> = st.sites.values().map(|site| site.accounts.get("world:detritus").copied().unwrap_or(0)).collect();
         let mut by_site: BTreeMap<u64, Vec<u64>> = BTreeMap::new();
         for g in st.population.groups.values().filter(|g| g.entity.alive) {
             let Some(i) = g.entity.lineage.strip_prefix("lineage:").and_then(|i| i.parse::<usize>().ok()) else { continue };
             by_site.entry(g.entity.place).or_insert_with(|| vec![0; lineages as usize])[i] += g.count;
         }
         eprintln!("seed {seed} sites {by_site:?}");
-        eprintln!("seed {seed} body {mean:?} soil {soil:?} litter {litter:?} light {light:?}");
+        eprintln!("seed {seed} body {mean:?} soil {soil:?} detritus {detritus:?} light {light:?}");
         eprintln!("seed {seed} month {m} ({:?}) {now:?} births {} starved {} hazard {}", started.elapsed(),
             events(&s, "ecology:birth"), events(&s, "ecology:death"), events(&s, "ecology:hazard"));
         months.push(now);
