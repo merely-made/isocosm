@@ -271,6 +271,9 @@ three design docs that cite it. The record holds the words.
 | 1094 | The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 1103 | Scatter's air and water strength is read from a site's terrain, controlled by site conditions where its region or world sets them. | none |
 | 1105 | Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites. | none |
+| 1109 | The year-matrix runs on a laid map so scatter strengths are read from terrain; map-less worlds fall back to 100. | none |
+| 1110 | A bite reaches parts exposed by their cells' position, above ground or on the surface; bites are made smaller against the plant. | none |
+| 1111 | Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce. | none |
 
 ## Bodies and anatomy
 
@@ -783,6 +786,7 @@ three design docs that cite it. The record holds the words.
 | 1101 | Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged. | none |
 | 1102 | A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged. | none |
 | 1107 | In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute. | none |
+| 1108 | Eponym's borrowed-mode harness drives motion through real access and a real awareness view, as play does. | none |
 
 ## The VTT
 

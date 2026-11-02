@@ -5615,6 +5615,34 @@ area = "Eponym"
 summary = "In a round, borrowed actions check feet against the game's patch and accept the sim's patch as of the last minute."
 draws_on = ["1080", "1095"]
 
+[cases."1108"]
+title = "Eponym's borrowed mode is tested through real access"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's borrowed-mode harness drives motion through real access and a real awareness view, as play does."
+draws_on = ["1095", "1107", "method.4"]
+
+[cases."1109"]
+title = "The year-matrix runs on a laid map"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "The year-matrix runs on a laid map so scatter strengths are read from terrain; map-less worlds fall back to 100."
+draws_on = ["1078", "1103"]
+
+[cases."1110"]
+title = "A part is exposed to a bite by its cells' position"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A bite reaches parts exposed by their cells' position, above ground or on the surface; bites are made smaller against the plant."
+draws_on = ["1078", "1105", "bodies.5", "bodies.12"]
+
+[cases."1111"]
+title = "Crowding sends animals on, and scarcity slows breeding"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Sensed crowding sends some consumers along routes to emptier sites, and breeding slows when food is scarce."
+draws_on = ["1071", "1078", "1104", "bodies.15", "processes.16"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
