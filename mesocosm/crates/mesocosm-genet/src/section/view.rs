@@ -12,6 +12,9 @@ use isometer::SlabCamera;
 
 impl super::Section {
     pub(super) fn view(&self, centre: [f32; 3]) -> SlabCamera {
+        if let Some(perspective) = self.perspective {
+            return perspective;
+        }
         SlabCamera { projection: Default::default(),
             centre,
             forward: self.custom_forward.unwrap_or_else(|| self.mode.forward()),
@@ -47,6 +50,15 @@ impl super::Section {
             self.custom_forward = forward;
         }
         Ok(())
+    }
+
+    /// A perspective camera for the next frames, or `None` for the slab.
+    /// Presentation, like the mode: the world never sees it.
+    pub fn set_perspective(&mut self, camera: Option<SlabCamera>) {
+        if self.perspective != camera {
+            self.invalidate_query();
+            self.perspective = camera;
+        }
     }
 
     pub fn set_mode(&mut self, mode: CameraMode) {

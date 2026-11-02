@@ -4,7 +4,7 @@
 use super::{Primitive, Surface};
 use crate::ClipSlab;
 use bytemuck::{Pod, Zeroable};
-use glam::{Mat4, Vec3};
+use glam::{Mat4, Vec3, Vec4};
 
 const BODIES: usize = 128;
 const PARTS: usize = 8192;
@@ -181,14 +181,25 @@ impl Renderer {
             };
             let mut lo = Vec3::splat(f32::INFINITY);
             let mut hi = -lo;
+            // A perspective corner at or behind the eye has no screen place:
+            // the body then covers the whole frame.
+            let mut wide = false;
             for x in [min[0], max[0]] {
                 for y in [min[1], max[1]] {
                     for z in [min[2], max[2]] {
-                        let p = matrix.project_point3(Vec3::new(x, y, z));
+                        let h = matrix * Vec4::new(x, y, z, 1.0);
+                        if h.w <= 1e-4 {
+                            wide = true;
+                            continue;
+                        }
+                        let p = h.truncate() / h.w;
                         lo = lo.min(p);
                         hi = hi.max(p);
                     }
                 }
+            }
+            if wide {
+                (lo, hi) = (Vec3::splat(-1.0), Vec3::splat(1.0));
             }
             draws.push(Draw {
                 min: [min[0], min[1], min[2], surface.blend],

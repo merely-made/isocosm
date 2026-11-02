@@ -25,7 +25,7 @@ use crate::camera::{SlabCamera, SlabWindow};
 use crate::volumes::DeclaredExtentVolumes;
 
 mod eye;
-pub use eye::eye_of;
+pub use eye::{below_the_eye, eye_of};
 pub(crate) mod placement;
 mod surfaces;
 pub use placement::BodyFrameStats;

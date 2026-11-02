@@ -55,12 +55,22 @@ fn visible(p:vec3<f32>)->bool {
 struct Fragment { @location(0) colour:vec4<f32>, @builtin(frag_depth) depth:f32 }
 @fragment fn fs_main(input:Vertex)->Fragment {
     let body=draws[input.body];
-    let origin=(frame.inverse*vec4(input.ndc,0.,1.)).xyz;
-    let end=(frame.inverse*vec4(input.ndc,1.,1.)).xyz;
+    var origin=(frame.inverse*vec4(input.ndc,0.,1.)).xyz;
+    var end=(frame.inverse*vec4(input.ndc,1.,1.)).xyz;
+    let terrain_depth=textureLoad(terrain,vec2<i32>(input.position.xy),0);
+    var reach=terrain_depth*length(end-origin)+0.0001;
+    // A perspective's clip has a w row: unproject by it, and read the terrain
+    // depth as the point it names, since depth is not linear along the ray.
+    if frame.clip[0][3]!=0. || frame.clip[1][3]!=0. || frame.clip[2][3]!=0. {
+        let near=frame.inverse*vec4(input.ndc,0.,1.);
+        let far=frame.inverse*vec4(input.ndc,1.,1.);
+        let seen=frame.inverse*vec4(input.ndc,terrain_depth,1.);
+        origin=near.xyz/near.w; end=far.xyz/far.w;
+        reach=length(seen.xyz/seen.w-origin)+0.0001;
+    }
     let direction=normalize(end-origin);
     var start=0.; var finish=length(end-origin);
-    let terrain_depth=textureLoad(terrain,vec2<i32>(input.position.xy),0);
-    finish=min(finish,terrain_depth*length(end-origin)+0.0001);
+    finish=min(finish,reach);
     for(var axis=0u;axis<3u;axis++) {
         if abs(direction[axis])<1e-8 {
             if origin[axis]<body.min[axis] || origin[axis]>body.max[axis] {discard;}

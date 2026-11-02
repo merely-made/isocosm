@@ -346,7 +346,8 @@ mesocosm-genet: run Mesocosm in a window over a native Cosmograph session
   --body-founding NAME  new-play body roster (default SpacedRoster; Drawn uses random recipes)
   --body-proportions varied|fixed  native proportions (ordinary play: varied; explicit presets: fixed)
   --habitat site|patch  new-play territory (default: the whole native site)
-  Camera: +/- zoom; O whole-site overview/return; Z/V turn; C section view
+  Camera: +/- zoom; O whole-site overview/return; Z/V turn; C section view;
+          Y cycles overview, over the shoulder and first person
   --epoch N       play epoch ticks (default 60)
   --hour H        play world's starting hour, 0 to 23 (default 7)
   --soil P        play world's founding soil, percent (default 100)
@@ -411,11 +412,12 @@ and four dev intents, which do enter the log and mark the run assisted:
   (the runtime refuses F and K until native has a command for them)
 
 a scenario is one verb a line (blank lines and # comments skipped):
-  act NAME        a key letter above, or follow ID, follow-nearest, demo STEPS
+  act NAME        a key letter above, or follow ID, follow-nearest, demo STEPS,
+                  view-overview, view-over-the-shoulder, view-first-person
   settle N        pump N frames
   wait [CAP]      hold until the host reports quiet
   assert text S   S is on a chrome lane that is on screen
-  assert snap F OP V   hash, mode, camera, tick, steps, frames, dev,
+  assert snap F OP V   hash, mode, camera, view, eye, tick, steps, frames, dev,
                   dev-intents, assisted, queued, controlled, follow, site,
                   living, checkpoint, boundary, fault, paused, inspecting
   assert event S  S is in what the runtime answered

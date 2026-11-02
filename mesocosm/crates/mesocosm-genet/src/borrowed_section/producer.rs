@@ -193,6 +193,7 @@ impl SceneSource for Source {
                 section.set_body_focus(view.focus, view.selection);
             }
             section.set_forward(Some(camera.forward))?;
+            section.set_perspective(camera.frustum().map(|_| camera));
             let mut encoder = self.host.device.create_command_encoder(&wgpu::CommandEncoderDescriptor {
                 label: Some("Mesocosm section on the present device") });
             let draw = &self.target.as_ref().unwrap().1;

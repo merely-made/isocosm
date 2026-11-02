@@ -34,6 +34,10 @@ impl Host {
     /// inspection and dev/world keys so Z/V always remain camera controls.
     pub(super) fn try_camera_key(&mut self, key: &winit::keyboard::Key) -> bool {
         if let winit::keyboard::Key::Character(c) = key {
+            if c.eq_ignore_ascii_case(crate::input::VIEW_KEY) {
+                self.view = self.view.next();
+                return true;
+            }
             if c.eq_ignore_ascii_case("o") {
                 if self.config.slab_half_height > crate::section::SLAB_HALF_HEIGHT*2.0 {
                     self.config.slab_half_height=crate::section::SLAB_HALF_HEIGHT;

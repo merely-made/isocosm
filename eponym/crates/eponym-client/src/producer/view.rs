@@ -36,18 +36,8 @@ impl SceneModel {
         let game = self.game();
         let part = game.world().entity(self.played())
             .and_then(|id| game.world().sim().state().population.get(id))
-            .and_then(cosmograph::anatomy::sensing_part)
-            .filter(|part| document.part(*part).is_some_and(|p| !p.severed))
-            .unwrap_or(document.root);
-        let top = |id: PartId| Some(document.world_pivot(id)?[1] + document.part(id)?.half_extent[1]);
-        let eye = top(part)?;
-        let mut drawn = document.clone();
-        for p in &mut drawn.parts {
-            if top(p.id).is_none_or(|t| t >= eye) {
-                p.severed = true;
-            }
-        }
-        Some(drawn)
+            .and_then(cosmograph::anatomy::sensing_part);
+        Some(isometer::below_the_eye(document, part))
     }
 
     /// Where the played body sees from: the top of its most sensing part,

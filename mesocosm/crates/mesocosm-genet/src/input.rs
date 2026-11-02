@@ -22,6 +22,10 @@
 use mesocosm_runtime::{Named, Press};
 use winit::keyboard::{Key, NamedKey};
 
+/// The key that cycles the overview, over the shoulder and first person.
+/// A host key like Z and V: it moves presentation and nothing else.
+pub const VIEW_KEY: &str = "y";
+
 /// The core's press for a winit key; `None` for a key no keymap names.
 pub fn lower(key: &Key) -> Option<Press> {
     Some(match key {

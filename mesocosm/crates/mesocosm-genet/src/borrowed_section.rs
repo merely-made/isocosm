@@ -21,6 +21,8 @@ pub struct Snapshot {
     pub(crate) quarter_turn: u8,
     pub(crate) presentation: Option<Presentation>,
     pub(crate) revision: Option<u64>,
+    /// Where the played body sees from, when a perspective view asked.
+    pub(crate) eye: Option<[f32; 3]>,
 }
 
 #[derive(Clone, Debug)]
@@ -34,6 +36,8 @@ pub(crate) struct Presentation {
     pub terrain: section::TerrainStyle,
     pub terrain_y: f32,
     pub focus: Option<Id>, pub selection: Option<section::BodySelection>,
+    /// Which camera this is seen through, and what it faces (cases 1131, 1143).
+    pub looking: section::perspective::Looking,
 }
 
 impl Snapshot {
@@ -42,6 +46,9 @@ impl Snapshot {
     pub fn body_ids(&self) -> Vec<Id> { self.scene.bodies.iter().map(|body| body.id).collect() }
     pub fn camera(&self, aspect: f32) -> SlabCamera {
         if let Some(view) = &self.presentation {
+            if let Some(camera) = self.eye.and_then(|eye| section::perspective::camera(&view.looking, eye, aspect)) {
+                return camera;
+            }
             return SlabCamera { projection: Default::default(), centre: view.centre, forward: view.forward,
                 half_height: view.half_height, aspect,
                 depth: view.depth.unwrap_or_else(|| view.mode.depth(view.half_height, aspect)), cutaway: None };
@@ -76,7 +83,8 @@ impl SceneHandle {
             *word = u64::from_str_radix(&digest[i * 16..(i + 1) * 16], 16).map_err(|why| why.to_string())?;
         }
         if self.input.borrow().as_ref().is_some_and(|old| old.fingerprint == fingerprint) { return Ok(()); }
-        *self.input.borrow_mut() = Some(Rc::new(Snapshot { scene: scene.clone(), fingerprint,
+        let (scene, eye) = section::perspective::seen(scene, &presentation.looking);
+        *self.input.borrow_mut() = Some(Rc::new(Snapshot { scene, fingerprint, eye,
             quarter_turn: 0, presentation: Some(presentation), revision: Some(revision) }));
         self.error.borrow_mut().take();
         Ok(())
@@ -142,7 +150,7 @@ impl SceneHandle {
             if self.input.borrow().as_ref().is_some_and(|old|
                 old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
             let volumes = section::body_volumes(&mut bodies)?;
-            let snapshot = Snapshot { presentation:None, revision:None, scene:SiteScene { walking:None, site, ground:volume.ground().clone(), window:volume,
+            let snapshot = Snapshot { presentation:None, revision:None, eye:None, scene:SiteScene { walking:None, site, ground:volume.ground().clone(), window:volume,
                 bodies, played:region.played, volumes }, fingerprint, quarter_turn };
             *self.input.borrow_mut() = Some(Rc::new(snapshot));
             self.error.borrow_mut().take();
@@ -199,7 +207,7 @@ impl SceneHandle {
             if self.input.borrow().as_ref().is_some_and(|old|
                 old.fingerprint == fingerprint && old.quarter_turn == quarter_turn) { return Ok(false); }
             let volumes = section::body_volumes(&mut bodies)?;
-            let snapshot = Snapshot { presentation:None, revision:None, scene:SiteScene { walking:None, site, ground:volume.ground().clone(), window:volume,
+            let snapshot = Snapshot { presentation:None, revision:None, eye:None, scene:SiteScene { walking:None, site, ground:volume.ground().clone(), window:volume,
                 bodies, played:region.played, volumes }, fingerprint, quarter_turn };
             *self.input.borrow_mut() = Some(Rc::new(snapshot)); self.error.borrow_mut().take();
             Ok(true)
@@ -281,6 +289,6 @@ fn lower(session: &Session, region: RegionReading, fingerprint: [u64; 4], quarte
             tint: scene::tint_of(cosmograph::kingdom::of(entity)), alive: entity.alive });
     }
     let volumes = section::body_volumes(&mut bodies)?;
-    Ok(Snapshot { presentation:None, revision:None, scene: SiteScene { walking:None, site: region.site, ground, window: volume, bodies,
+    Ok(Snapshot { presentation:None, revision:None, eye:None, scene: SiteScene { walking:None, site: region.site, ground, window: volume, bodies,
         played: region.played, volumes }, fingerprint, quarter_turn })
 }

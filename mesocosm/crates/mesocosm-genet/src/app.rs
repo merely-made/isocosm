@@ -21,6 +21,7 @@ mod continuation;
 mod devtime;
 pub mod drive;
 mod follow;
+mod view;
 mod graft;
 mod inspection;
 mod pointer;
@@ -59,6 +60,8 @@ pub struct Host {
     scene_source_key: Option<SceneSourceKey>,
     /// Where the section sits relative to the body it follows. Presentation.
     pan: Pan,
+    /// Which camera the played body is seen through. Presentation.
+    view: isometer::View,
     last: Option<Instant>,
     /// Bounded host callback intervals, before pause/speed scaling. Not GPU timings.
     frame_intervals_us: Vec<u64>,
@@ -151,6 +154,7 @@ impl Host {
             scene_key: None,
             scene_source_key: None,
             pan: Pan::default(),
+            view: isometer::View::default(),
             last: None,
             frame_intervals_us: Vec::new(),
             frames: 0,
