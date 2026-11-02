@@ -32,7 +32,7 @@ acceptance artifact.
 
 `acceptance.scenario`
 
-- The document presents: `ready`, no producer error, and the sheet, equipment
+- The document presents: `ready`, no producer error, and the sheet, items
   and status panels are on the surface. Captures `opened`.
 - Movement is drawn at once and reaches the accepted world at the minute
   (cases 1118, 1120): after one `act move-right` the drawn position differs
@@ -49,9 +49,11 @@ acceptance artifact.
   `canon-revision` has moved, the acquired glyph and its count have not, the
   strike's founding effect `paredros-fixture:reach` is still on the surface,
   and `glyph-last-live-effect` is the revised `paredros-fixture:fasten`.
-- Treatment through the controls themselves: `Take dressing` and `Rest` are
-  clicked as buttons, through the host's own pointer routing, and afterwards
-  the played subject's `wound` is 0 with one `lost-part` from the injury cut.
+- Treatment through the controls themselves: `Take item 69` (the dressing at
+  the keeper's cell, in the Items panel) and `Rest` are clicked as buttons, through the host's own pointer routing, and afterwards
+  `rested` is accepted and the played subject has one `lost-part` from the
+  injury cut, its `wound` share 7: a severed part's whole lattice stays in
+  it (the 2026-10-18 note to ruling 227; case 1132).
 - A part button in the sheet selects the same identity a viewport pick would:
   `selected-subject` 701, `selected-part` 3.
 - `Save` then `Load`, both clicked, round-trip one `GameSave` version: a move

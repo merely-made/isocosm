@@ -12683,6 +12683,134 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Presentation · draws on presentation.1, 1130 · summary A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview.
 
+1132. **Eponym's treatment step asserts the wound doctrine as it stands.**
+      Ruled by Mark on 2026-11-02: "Assert doctrine as is (Recommended)". The
+      headed acceptance expected the wound share at 0 after an injury and a
+      rest, but since Mark's note of 2026-10-18 to ruling 227 the share counts
+      lost and severed cells over all cells, so one severed three-cell limb of
+      forty stays at 7 and rest heals only lost cells. The reading: after the
+      rest the scenario asserts a wound of 7, one lost part and the rest
+      event.
+
+      Links: area Eponym · draws on 227, 1127 · summary Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it.
+
+1133. **A denizen body plan is a drawn family in the recipe grammar.** Ruled
+      by Mark on 2026-11-02: "A drawn denizen family (Recommended)". The
+      grammar already branches and grows jointed chains (the authored jointed
+      roster), which the generated lottery did not use; the only drawn
+      proportion was limb scale, 1 to 2. The reading: an upright trunk, a
+      head and paired jointed limb chains, counts and proportions drawn per
+      lineage within bounds a world may widen; a humanoid is one region of
+      that space; sapience stays measured, never declared (Directing 3).
+
+      Links: area Bodies and anatomy · draws on 1128, bodies.6, world.8 · summary A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds.
+
+1134. **The creator designs an individual that seeds a lineage.** Said by
+      Mark on 2026-11-02, answering what the creator edits: "the idea would be to use the individual to seed a lineage, picking between what's common and unique about the individual (what applies and doesn't apply to the lineage...) then you probably need a bit of procedural variance; maybe generate a round of variants and pick examples that would fit within your designed lineage, then use those to figure out what the lineage's typical distribution of appearances could be. you could do as many rounds as we could handle to give the lineage more examples to generalize from, and in the extreme case of one example, we can do some minor variance (palette swaps, for example) treating that example as a blueprint. besides that, a voxel editor would be nice for shaping the individual's body, with snapping to editable body plan templates...? idk! spitballin. i do think that it should also be possible for a player's denizen to be able to be the last of its kind... so maybe an adjustable portion of how rare the lineage is, from 1 to very common? idk! last, i do like the idea of taking critters from mesocosm and making them into playable denizens in eponym, but i figure that will need designing when both are more developed/unified on the sim backend..." The
+      reading, as working direction with its pieces still to rule: the
+      designed individual seeds a lineage, the designer marking which traits
+      are the lineage's and which the individual's own; rounds of drawn
+      variants are kept or discarded as fitting the lineage, and the kept
+      examples set the lineage's distribution, a single example being a
+      blueprint with minor variance such as palette swaps; a voxel editor
+      shapes the individual, snapping to editable body-plan templates; the
+      lineage's rarity is adjustable, from the last of its kind to very
+      common; Mesocosm critters made playable in Eponym wait for the two to
+      meet on the sim backend.
+
+      Links: area Bodies and anatomy · draws on 1128, 1133, bodies.11, eponym.1 · summary The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common.
+
+1135. **The creator opens for lives not born in play.** Ruled by Mark on
+      2026-11-02: "Lives not born in play (Recommended)". The reading: a
+      generated outsider, an authored quick-start founder or a VTT character
+      at creation; a life born in play stays drawn, with look overrides
+      only.
+
+      Links: area Eponym · draws on 1128, eponym.1, vtt.2 · summary The creator opens for outsiders, quick-start founders and VTT characters; births stay drawn with look overrides.
+
+1136. **The shared look lives in isometer-mesh.** Ruled by Mark on
+      2026-11-02: "isometer-mesh (Recommended)". isometer-mesh already owned
+      `Appearance`, layer composing and the bake; the layered resolution
+      lived in `isocosm-views`. The reading: the layered resolution moves
+      into isometer-mesh, for every product.
+
+      Links: area Presentation · draws on 1129, vtt.7, stack.3 · summary The layered look resolution moves into isometer-mesh for every product.
+
+1137. **The creator's lineage rounds and its voxel editor are built
+      together.** Ruled by Mark on 2026-11-02: "Both together", over variant
+      rounds first (recommended) or the editor first. The reading: designing a
+      lineage from an individual through kept variant rounds, and the voxel
+      editor that shapes the individual with template snapping, are built side
+      by side (case 1134).
+
+      Links: area Bodies and anatomy · draws on 1134 · summary The creator's variant rounds and voxel editor are built side by side.
+
+1138. **A lineage's rarity is its founding count.** Ruled by Mark on
+      2026-11-02: "Founding count (Recommended)". The reading: rarity sets how
+      many members a lineage founds with, from one, the last of its kind, to a
+      common share of the population; a lone member may find no mate, and the
+      sim decides what follows. A player's lineage may found below the floor
+      of six (case 1106).
+
+      Links: area World generation · draws on 1134, 1106, 1090 · summary Rarity sets a lineage's founding count, from one to common; a player's lineage may found below the floor.
+
+1139. **A body's voxels are held per part up close.** Ruled by Mark on
+      2026-11-02: "Per part up close (Recommended)". Tokens were one rigid
+      baked volume. The reading: each part is its own voxel shape up close, so
+      limbs move and a severed part shows; the far sprite rung bakes one
+      volume.
+
+      Links: area Presentation · draws on 1129, bodies.2, bodies.12 · summary Bodies hold voxels per part up close and bake one volume for the far rung.
+
+1140. **The perspective camera is the same camera with a second projection.**
+      Ruled by Mark on 2026-11-02: "One camera, two projections
+      (Recommended)". isometer's scene camera derived tracing, culling,
+      raster, clipping and picking from one set of numbers, all orthographic,
+      and its tracer already had a perspective form. The reading: the camera
+      gains a perspective projection, presets (dimetric, first person, over
+      the shoulder) are constructors, and any rename goes to a naming round.
+
+      Links: area Presentation · draws on 1131, presentation.1, stack.5 · summary One isometer camera with orthographic and perspective projections; presets are constructors.
+
+1141. **A sim-backed token takes its shape from the part tree.** Ruled by Mark
+      on 2026-11-02: "The part tree (Recommended)". The reading: a token
+      standing for a sim body is shaped by its part tree, its class's layers
+      becoming style over it; tables with the sim off keep class shapes.
+
+      Links: area The VTT · draws on vtt.7, vtt.1, 1129 · summary A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes.
+
+1142. **Orders reach a companion as in-world asks under its agreement.** Ruled
+      by Mark on 2026-11-02: "In-world asks (Recommended)". Ruling 60 has
+      directives given as the played sophont, ruling 152 limits a player
+      outside the world to who they play, and the asks and willingness code
+      was built. The reading: under a standing companion agreement, go, hold,
+      fight and carry are works it covers, weighed by the existing willingness
+      code; an accepted order becomes a goal the companion's own chooser
+      follows. The founding record's "Configure, don't command" is refined,
+      not dropped.
+
+      Links: area Directing and play · draws on 1130, 60, 152, directing.3 · summary Orders are in-world asks under a companion agreement, weighed by willingness; an accepted one becomes the companion's own goal.
+
+1143. **First person sees from the body's most sensing part.** Ruled by Mark
+      on 2026-11-02: "Most-sensing part (Recommended)". The reading: the eye
+      sits at the part with the most sense cells, falling back to the top of
+      the root, so a denizen sees from its head and an odd body from wherever
+      it senses.
+
+      Links: area Presentation · draws on 1131, bodies.15, directing.1 · summary First person's eye sits at the most sense-celled part, else the root's top.
+
+1144. **Direct control is agreed, recorded and one body at a time.** Ruled by
+      Mark on 2026-11-02: "Agreed, recorded, one at a time (Recommended)".
+      Case 187 put tag-in in creative mode and Eponym's guardrails said "no
+      real-time puppeteering of a party" and "body switching is never a menu
+      operation". The reading: a companion's agreement may allow driving;
+      taking control is a recorded act; the player's own creature acts by its
+      own mind meanwhile; the companion may end it. Directing 1 and case 187
+      are refined, and Eponym's CLAUDE.md guardrails are rewritten to match,
+      with Mark's agreement given in this answer.
+
+      Links: area Directing and play · draws on 1130, 187, directing.1, eponym.1 · summary Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

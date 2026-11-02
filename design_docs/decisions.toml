@@ -5783,6 +5783,97 @@ area = "Presentation"
 summary = "A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview."
 draws_on = ["1130", "presentation.1"]
 
+[cases."1132"]
+title = "Eponym's treatment step asserts the wound doctrine as it stands"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it."
+draws_on = ["227", "1127"]
+
+[cases."1133"]
+title = "A denizen body plan is a drawn family in the recipe grammar"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds."
+draws_on = ["1128", "bodies.6", "world.8"]
+
+[cases."1134"]
+title = "The creator designs an individual that seeds a lineage"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common."
+draws_on = ["1128", "1133", "bodies.11", "eponym.1"]
+
+[cases."1135"]
+title = "The creator opens for lives not born in play"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "The creator opens for outsiders, quick-start founders and VTT characters; births stay drawn with look overrides."
+draws_on = ["1128", "eponym.1", "vtt.2"]
+
+[cases."1136"]
+title = "The shared look lives in isometer-mesh"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "The layered look resolution moves into isometer-mesh for every product."
+draws_on = ["1129", "stack.3", "vtt.7"]
+
+[cases."1137"]
+title = "The creator's lineage rounds and its voxel editor are built together"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "The creator's variant rounds and voxel editor are built side by side."
+draws_on = ["1134"]
+
+[cases."1138"]
+title = "A lineage's rarity is its founding count"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Rarity sets a lineage's founding count, from one to common; a player's lineage may found below the floor."
+draws_on = ["1090", "1106", "1134"]
+
+[cases."1139"]
+title = "A body's voxels are held per part up close"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Bodies hold voxels per part up close and bake one volume for the far rung."
+draws_on = ["1129", "bodies.2", "bodies.12"]
+
+[cases."1140"]
+title = "The perspective camera is the same camera with a second projection"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "One isometer camera with orthographic and perspective projections; presets are constructors."
+draws_on = ["1131", "presentation.1", "stack.5"]
+
+[cases."1141"]
+title = "A sim-backed token takes its shape from the part tree"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "The VTT"
+summary = "A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes."
+draws_on = ["1129", "vtt.1", "vtt.7"]
+
+[cases."1142"]
+title = "Orders reach a companion as in-world asks under its agreement"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "Orders are in-world asks under a companion agreement, weighed by willingness; an accepted one becomes the companion's own goal."
+draws_on = ["60", "152", "1130", "directing.3"]
+
+[cases."1143"]
+title = "First person sees from the body's most sensing part"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "First person's eye sits at the most sense-celled part, else the root's top."
+draws_on = ["1131", "bodies.15", "directing.1"]
+
+[cases."1144"]
+title = "Direct control is agreed, recorded and one body at a time"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Directing and play"
+summary = "Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it."
+draws_on = ["187", "1130", "directing.1", "eponym.1"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
