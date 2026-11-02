@@ -5874,6 +5874,41 @@ area = "Directing and play"
 summary = "Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it."
 draws_on = ["187", "1130", "directing.1", "eponym.1"]
 
+[cases."1145"]
+title = "The year-two crash is met by bodied plants and breeding read per head"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "The year-two crash is met by bodied plants and breeding gated on food per head."
+draws_on = ["1111", "1114", "1115", "1116"]
+
+[cases."1146"]
+title = "After the two-year bar, the seed bank comes first, then metabolic scaling"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates."
+draws_on = ["1116", "1119"]
+
+[cases."1147"]
+title = "Evolution continues slowly in play"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Heritable constants keep drifting and being selected in play at the world's pace."
+draws_on = ["1119", "ecology.1"]
+
+[cases."1148"]
+title = "Rates scale with mass; speed keeps leg length"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length."
+draws_on = ["1112", "1119", "bodies.16"]
+
+[cases."1149"]
+title = "Bodies get microvoxels in the look now and finer body cells later"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later."
+draws_on = ["1129", "1134", "1139", "bodies.2"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6447,8 +6482,8 @@ draws_on = ["1085", "1087", "1088", "1112", "bodies.1", "stack.12"]
 title = "Surfaces derive from knowledge and control"
 source = "design_docs/doctrine.md"
 area = "Directing and play"
-summary = "Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known."
-draws_on = ["180", "184", "187", "432", "445", "847", "868", "869", "870"]
+summary = "Every surface derives from the participant's knowledge and control; other bodies are asked in the world, and driven only by recorded agreement, one at a time."
+draws_on = ["180", "184", "187", "432", "445", "847", "868", "869", "870", "1142", "1144"]
 
 [statements."directing.2"]
 title = "Each game foregrounds one rung"
@@ -7288,7 +7323,7 @@ title = "Founded lineages are drawn within what bodies allow"
 source = "design_docs/doctrine.md"
 area = "World generation"
 summary = "Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; each lineage founds at least six; others stay extentless."
-draws_on = ["512", "525", "547", "548", "549", "550", "573", "905", "1090", "sim-execution D46"]
+draws_on = ["512", "525", "547", "548", "549", "550", "573", "905", "1090", "1138", "sim-execution D46"]
 
 [statements."world.9"]
 title = "Places carry quality and alignment"

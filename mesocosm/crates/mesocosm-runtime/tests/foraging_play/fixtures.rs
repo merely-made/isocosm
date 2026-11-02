@@ -89,34 +89,25 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool, tr
     {
         process.period = None;
     }
-    let t = g.rules.spatial_templates.as_ref().unwrap();
-    let (&site, stands) = t
-        .stands
-        .iter()
-        .find(|(_, stands)| stands.len() >= 2)
-        .unwrap();
-    let actor = stands
-        .iter()
-        .filter_map(|s| s.actor)
-        .find(|id| {
-            g.population
-                .get(*id)
-                .unwrap()
-                .traits
-                .contains("life:consumer")
-        })
-        .unwrap();
-    let food = stands
-        .iter()
-        .filter_map(|s| s.actor)
-        .find(|id| {
-            g.population
-                .get(*id)
-                .unwrap()
-                .traits
-                .contains("life:producer")
-        })
-        .unwrap();
+    // The first consumer, by site and identity, with a producer that can
+    // stand `gap` cells beyond its right side on the flat ground.
+    let (site, actor, food, pose) = {
+        let t = g.rules.spatial_templates.as_ref().unwrap();
+        let has = |id: &u64, key: &str| g.population.get(*id).unwrap().traits.contains(key);
+        let mut found = None;
+        'sites: for (&site, stands) in &t.stands {
+            let ids: Vec<u64> = stands.iter().filter_map(|s| s.actor).collect();
+            for &actor in ids.iter().filter(|id| has(id, "life:consumer")) {
+                for &food in ids.iter().filter(|id| has(id, "life:producer")) {
+                    if let Some(pose) = short_food(g, site, actor, food, gap) {
+                        found = Some((site, actor, food, pose));
+                        break 'sites;
+                    }
+                }
+            }
+        }
+        found.expect("fixture admits a short food route")
+    };
     // This authored navigation control needs an actual sense. The random
     // recipe used here can omit eyes entirely. Allocate one existing cell;
     // function is independent of shape and the physical route stays the same.
@@ -133,13 +124,7 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool, tr
         e.systems = cosmograph::systems::founded(e, &g.rules);
     }
     g.population.groups.get_mut(&food).unwrap().count = 2;
-    let at = stands.iter().find(|s| s.actor == Some(actor)).unwrap();
-    let before = native::Pose {at:at.at,yaw:at.yaw,feet:at.feet.clone()};
-    let actor_boxes = body::boxes(
-        g.population.get(actor).unwrap().body.as_ref().unwrap(),
-        &before,
-    )
-    .unwrap();
+    let t = g.rules.spatial_templates.as_ref().unwrap();
     let (walk, f) = t.foraging.iter().next().unwrap();
     let (walk, feed) = (walk.clone(), f.feed.clone());
     // Author only the fixture's appetite level. Choice, competing processes,
@@ -162,35 +147,6 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool, tr
     }
     let t = g.rules.spatial_templates.as_mut().unwrap();
     t.foraging.get_mut(&walk).unwrap().nodes = nodes;
-    let window = t.window.clone();
-    // Place real food a few cells beyond contact on flat native terrain.
-    let view = cosmograph::terrain::View::of(g).unwrap();
-    let volume = isometer_space::volume::Volume::lift(
-        &view,
-        site,
-        window.min,
-        window.max,
-        window.depth,
-        &[],
-    )
-    .unwrap();
-    let document = g.population.get(food).unwrap().body.as_ref().unwrap();
-    let mut grounding = body::Grounding::new(&volume);
-    let actor_right = actor_boxes.iter().map(|b| b[1][0]).max().unwrap();
-    let pose = (0i64..96)
-        .find_map(|offset| {
-            let p = grounding
-                .at(document, before.at[0] + offset, before.at[2], before.yaw)
-                .ok()?;
-            let boxes = body::boxes(document, &p).ok()?;
-            let d = native::foraging::gap(&actor_boxes, &boxes);
-            let left = boxes.iter().map(|b| b[0][0]).min().unwrap();
-            (!body::intersects(&actor_boxes, &boxes)
-                && d == gap
-                && left >= actor_right + gap as i64)
-                .then_some(p)
-        })
-        .expect("fixture admits a short food route");
     let t = g.rules.spatial_templates.as_mut().unwrap();
     let stand = t
         .stands
@@ -228,6 +184,32 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool, tr
         feed,
         walk,
     }
+}
+
+/// A producer's stance `gap` cells beyond `actor`'s right side, on the flat
+/// ground of `site`'s window.
+fn short_food(g: &cosmograph::simulation::Genesis, site: u64, actor: u64, food: u64, gap: u64) -> Option<native::Pose> {
+    let t = g.rules.spatial_templates.as_ref()?;
+    let at = t.stands.get(&site)?.iter().find(|s| s.actor == Some(actor))?;
+    let before = native::Pose { at: at.at, yaw: at.yaw, feet: at.feet.clone() };
+    let actor_boxes = body::boxes(g.population.get(actor)?.body.as_ref()?, &before).ok()?;
+    let view = cosmograph::terrain::View::of(g).ok()?;
+    let window = &t.window;
+    let volume = isometer_space::volume::Volume::lift(&view, site, window.min, window.max, window.depth, &[]).ok()?;
+    let document = g.population.get(food)?.body.as_ref()?;
+    let mut grounding = body::Grounding::new(&volume);
+    let actor_right = actor_boxes.iter().map(|b| b[1][0]).max()?;
+    // A long plant may need a quarter turn to lie beside the actor, and
+    let yaws = (0..4).scan(before.yaw, |y, _| { let at = *y; *y = y.compose(isometer_core::Yaw::Quarter); Some(at) });
+    // its root may slide along z for its parts to face the actor squarely.
+    let shifts = |yaw| (0i64..96).flat_map(move |dx| (-8i64..=8).map(move |dz| (yaw, dx, dz)));
+    yaws.flat_map(shifts).find_map(|(yaw, offset, dz)| {
+        let p = grounding.at(document, before.at[0] + offset, before.at[2] + dz, yaw).ok()?;
+        let boxes = body::boxes(document, &p).ok()?;
+        let d = native::foraging::gap(&actor_boxes, &boxes);
+        let left = boxes.iter().map(|b| b[0][0]).min().unwrap();
+        (!body::intersects(&actor_boxes, &boxes) && d == gap && left >= actor_right + gap as i64).then_some(p)
+    })
 }
 
 impl Fixture {

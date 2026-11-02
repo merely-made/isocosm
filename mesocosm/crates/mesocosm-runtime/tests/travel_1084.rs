@@ -35,3 +35,4 @@ fn a_hungry_forager_out_of_view_travels_to_its_meal_without_steps() {
     let restored = Session::load(f.session.save(), Execution::Grouped).unwrap();
     assert_eq!(restored.sim.state_hash(), sim.state_hash(), "travel replays from the record");
 }
+

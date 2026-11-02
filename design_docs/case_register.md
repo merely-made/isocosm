@@ -278,6 +278,9 @@ three design docs that cite it. The record holds the words.
 | 1114 | A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty. | [denizen](2026-11-02_denizen_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1116 | All five seeds run two years before people are added; a year-two crash is fixed first. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1119 | Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence. | [DOC README](../mesocosm/design_docs/DOC_README.md) |
+| 1145 | The year-two crash is met by bodied plants and breeding gated on food per head. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1146 | The seed bank follows the two-year bar, then metabolic scaling replaces the per-role rates. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1147 | Heritable constants keep drifting and being selected in play at the world's pace. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 
 ## Bodies and anatomy
 
@@ -411,9 +414,10 @@ three design docs that cite it. The record holds the words.
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | [denizen](2026-11-02_denizen_plan.md) |
 | 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
-| 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | none |
-| 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | none |
-| 1137 | The creator's variant rounds and voxel editor are built side by side. | none |
+| 1133 | A denizen is a drawn family of upright trunk, head and paired jointed limbs, proportions per lineage within world bounds. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
+| 1134 | The creator designs an individual that seeds a lineage: traits marked shared or own, kept variant rounds set its distribution, a voxel editor with template snapping, rarity from one to common. | [denizen](2026-11-02_denizen_plan.md), [DOC README](DOC_README.md) |
+| 1137 | The creator's variant rounds and voxel editor are built side by side. | [denizen](2026-11-02_denizen_plan.md) |
+| 1148 | Metabolic rates scale with mass to the three-quarter power; walking speed keeps leg length. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 
 ## Record and history
 
@@ -526,10 +530,10 @@ three design docs that cite it. The record holds the words.
 | 1032 | Residents are tenants and their homeless kin; founding entries write sim events; kin come from births; a polity's constitution names members. | none |
 | 1041 | A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
-| 1090 | Every founded lineage starts with at least six members. | none |
+| 1090 | Every founded lineage starts with at least six members. | [denizen](2026-11-02_denizen_plan.md) |
 | 1106 | Every generated world founds each lineage with at least six; pinned fixtures are re-recorded. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
 | 1115 | World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding. | [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
-| 1138 | Rarity sets a lineage's founding count, from one to common; a player's lineage may found below the floor. | none |
+| 1138 | Rarity sets a lineage's founding count, from one to common; a player's lineage may found below the floor. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Organs: glyphs, impresa, hagiograph
 
@@ -588,8 +592,8 @@ three design docs that cite it. The record holds the words.
 | 1056 | A driven sapient creature learns from its player by imitation in every game that drives, passing it on as culture. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1058 | A third of each parent's delta passes at birth; a lineage turns sapient at the epoch boundary once half its adults pass and stays so until under a third. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md), [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md), [DOC README](../mesocosm/design_docs/DOC_README.md) |
 | 1065 | A window views as one played body and acts for any; TakeAlso adds a body, Release puts one down, Take unchanged; products set their limits. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md) |
-| 1142 | Orders are in-world asks under a companion agreement, weighed by willingness; an accepted one becomes the companion's own goal. | none |
-| 1144 | Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it. | none |
+| 1142 | Orders are in-world asks under a companion agreement, weighed by willingness; an accepted one becomes the companion's own goal. | [denizen](2026-11-02_denizen_plan.md) |
+| 1144 | Driving a companion needs its agreement, is recorded, one body at a time, and the companion may end it. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Presentation
 
@@ -620,10 +624,11 @@ three design docs that cite it. The record holds the words.
 | 970 | Bodies on the tenant get a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38, sun 0.62, shadows off, matching the tracer; --body-light scales both. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
 | 1129 | Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens. | [denizen](2026-11-02_denizen_plan.md) |
 | 1131 | A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview. | [denizen](2026-11-02_denizen_plan.md) |
-| 1136 | The layered look resolution moves into isometer-mesh for every product. | none |
-| 1139 | Bodies hold voxels per part up close and bake one volume for the far rung. | none |
-| 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | none |
-| 1143 | First person's eye sits at the most sense-celled part, else the root's top. | none |
+| 1136 | The layered look resolution moves into isometer-mesh for every product. | [denizen](2026-11-02_denizen_plan.md) |
+| 1139 | Bodies hold voxels per part up close and bake one volume for the far rung. | [denizen](2026-11-02_denizen_plan.md) |
+| 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | [denizen](2026-11-02_denizen_plan.md) |
+| 1143 | First person's eye sits at the most sense-celled part, else the root's top. | [denizen](2026-11-02_denizen_plan.md) |
+| 1149 | Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Stack and engine
 
@@ -818,7 +823,7 @@ three design docs that cite it. The record holds the words.
 | 1127 | The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays. | [denizen](2026-11-02_denizen_plan.md) |
 | 1130 | Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly. | [denizen](2026-11-02_denizen_plan.md) |
 | 1132 | Eponym's acceptance asserts the severed share stays after rest, as the wound doctrine has it. | none |
-| 1135 | The creator opens for outsiders, quick-start founders and VTT characters; births stay drawn with look overrides. | none |
+| 1135 | The creator opens for outsiders, quick-start founders and VTT characters; births stay drawn with look overrides. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## The VTT
 
@@ -887,7 +892,7 @@ three design docs that cite it. The record holds the words.
 | 1062 | A participant may play several bodies at once, any edition, GMs alike; each product sets its own limit. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [denizen](2026-11-02_denizen_plan.md) |
 | 1063 | Ars's first slice is magus and grog with study from a summa; every Ars Wound wounds the body; age from the body, covenant in edition state. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1069 | Ars age starts in the draft, its birth dated in the timeline before founding; Ars Wounds cost cells scaled by body size. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | none |
+| 1141 | A sim-backed token's shape is its part tree, class layers styling it; sim-off tables keep class shapes. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Naming
 

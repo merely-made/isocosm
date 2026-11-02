@@ -1,7 +1,8 @@
 # Denizens: bodies you play, looks you see, companions you direct, eyes you look through
 
-**Status:** 2026-11-02: plan. Nothing built. Every phase waits on at least
-one question below; P1 waits only on Q8 and Q9.
+**Status:** 2026-11-02: plan. Nothing built. Its ten questions are answered
+as cases 1133 to 1144 (Decisions); P1 to P3 are ready to start. P6 carries
+pieces of case 1134 still to rule, and P7 waits on the creature-minds seam.
 
 **For:** carrying out cases 1128 to 1131, ruled by Mark on 2026-11-02:
 
@@ -84,7 +85,8 @@ Order, and why:
 4. **P4, Eponym's look:** proves case 1129 on the six-part body, so the look
    change and the body change are seen separately.
 5. **P5, a played denizen:** needs P2 and P4; where Mark's picture is met.
-6. **P6, creator:** needs P2's bounds and P3's look, and a denizen to edit.
+6. **P6, creator:** needs P2's templates and founding count, P3's look,
+   and a played denizen (P5).
 7. **P7, orders:** waits on the creature-minds session's chooser; after the
    bodies, to keep one thing moving at a time.
 8. **P8, direct control:** needs P7's agreements and P1's camera.
@@ -98,8 +100,10 @@ product.
 - `shared/isometer/src/camera.rs` and siblings (`camera/`): `SlabCamera`
   derives the tracer camera (`trace`), the cull window (`window`), the raster
   matrix (`clip_from_world`), the body clip (`clip`) and picking (`ndc_of`,
-  `pixel_of`), all orthographic now. Each gains a perspective answer, in the
-  shape Q8 rules.
+  `pixel_of`), all orthographic now. It becomes one camera with two
+  projections, slab and perspective, each derived quantity answering for
+  both; dimetric, first person and over the shoulder are its constructors,
+  and any rename goes to a naming round (case 1140).
 - `shared/isometer/crates/isometer-lens/src/tracer/types.rs`: already has
   `TraceCamera::perspective` (the DDA shares one path for both projections);
   only its use from the scene camera is new.
@@ -111,7 +115,8 @@ product.
 - Presets and a live toggle: Eponym's `producer/policy.rs` (`CameraPolicy`)
   and `producer/handle.rs`; Mesocosm's `mesocosm-genet/src/section/camera.rs`
   (`CameraMode`); Isocosm's `isocosm-views/src/scene/board.rs` and
-  `scene/world.rs`. The eye's place follows Q9.
+  `scene/world.rs`. First person's eye sits at the part with the most sense
+  cells, else the top of the root (case 1143).
 - Eponym's app-local perspective (`eponym-client/src/scene.rs`'s room camera,
   `crossing.rs`, `gpu/body.rs`, `bin/room.rs`, `residency.rs`'s planning
   camera) is surveyed. Its retirement, or why it stays, comes back at this
@@ -128,29 +133,39 @@ product.
   shoulder and first person on the played body, live. The switch writes no
   sim state and rebuilds no scene, and the overview the switch returns to is
   the one left.
+- The eye stands at the most sense-celled part for the six-part body, a
+  roster fauna and a body with no sense part (the root's top), in one test.
 - Existing camera tests and each product's dimetric captures are unchanged.
 - **Headed:** for each product, the same moment in the three views, in
   `Code/testing/<product>/denizen/camera-*.png`. Every frame is examined
   whole, not only the body (terrain seams, culled edges, the HUD).
 
-**Needs:** Q8, Q9. Nothing from other phases.
+**Needs:** cases 1140, 1143. Nothing from other phases.
 
 ### P2. Denizen body plans in the sim
 
 **Owning layer:** the sim (`shared/cosmograph`).
 
+**What:** the denizen family of case 1133, an upright trunk, a head and
+paired jointed limb chains, with counts and proportions drawn per lineage
+within bounds a world may widen; a humanoid is one region of that space.
+Its plans are written as data a template can name, because P6's voxel
+editor snaps to editable body-plan templates (case 1134). A lineage's
+rarity is its founding count (case 1138).
+
 **Touches:**
-- A sibling of `shared/cosmograph/src/bodied.rs` (`bodied/denizen.rs` or as
-  Q1 shapes it) for the denizen draw. `drawn` today makes stretches of 1 to
-  6 `block` segments bearing rods or an eye; it never uses the grammar's
-  `parent`/`anchor` layouts or jointed `chain`s.
+- A sibling of `shared/cosmograph/src/bodied.rs` (`bodied/denizen.rs`) for
+  the denizen draw. `drawn` today makes stretches of 1 to 6 `block` segments
+  bearing rods or an eye; it never uses the grammar's `parent`/`anchor`
+  layouts or jointed `chain`s.
 - `bodied.rs`'s `Bodies` (the bounds, `check`) and `embody` (founding by
-  kingdom, World 8); `bodied/proportions.rs` (limb scale is the only
-  proportion drawn now, `limb_scale` 1 to 2).
-- `shared/cosmograph/datasheets/foundings/`: a palette and chains for the
-  denizen family. `jointed.toml` already has upper leg, lower leg and foot
-  links (`chain.leg`) and `branching.toml` layouts with `parent` and
-  `anchor`; `datasheet/schema.rs` only if Q1 needs new words.
+  kingdom, World 8, and each lineage's founding count);
+  `bodied/proportions.rs` (limb scale is the only proportion drawn now,
+  `limb_scale` 1 to 2).
+- `shared/cosmograph/datasheets/foundings/`: a palette, chains and named
+  plan templates for the denizen family. `jointed.toml` already has upper
+  leg, lower leg and foot links (`chain.leg`) and `branching.toml` layouts
+  with `parent` and `anchor`; `datasheet/schema.rs` only for new words.
 - Read, not edited: `rules/recipe.rs` (`Tagma`, `Recipe`, `ChainLink`,
   `Policy`), `development.rs`, `speed.rs` (Bodies 16 reads leg length),
   `lineage/` (the epoch boundary revises recipes).
@@ -167,17 +182,23 @@ product.
   against a saved founding.
 - The plan is a body, not a declared sophont: sapience stays measured
   (Directing 3), and no denizen draw sets it.
+- Each named template develops as a recipe by itself, and a draw from it
+  stays within the family's bounds.
+- A lineage founds with the count its rarity sets. Drawn lineages keep
+  World 8's floor of six (case 1090); a count below the floor is refused here
+  and admitted only for a player's designed lineage in P6 (case 1138).
 - **Headed:** a lineup of drawn denizens baked through isometer-mesh's
   `flatten` and sprite bake, in `Code/testing/wing/denizen/lineup.png`, beside
   the same seeds' fauna as the control.
 
-**Needs:** Q1. Nothing from other phases.
+**Needs:** cases 1133, 1138. Nothing from other phases.
 
 ### P3. The layered look from the part tree
 
 **Owning layer:** isometer-mesh for the derivation (it owns `Appearance`,
-`compose`, `Palette`, `flatten` and `BodyProfile::voxels`), unless Q4 rules
-otherwise; product packs stay product data.
+`compose`, `Palette`, `flatten` and `BodyProfile::voxels`); the layered
+resolution moves there for every product (case 1136). Product packs stay
+product data.
 
 **Touches:**
 - `shared/isometer/crates/isometer-mesh/src/bake/recipe.rs`, `flatten.rs`,
@@ -187,9 +208,16 @@ otherwise; product packs stay product data.
 - `crates/isocosm-views/src/appearance.rs` (`Library::resolve`),
   `appearance/items.rs`, `scene/tokens.rs`: these resolve today from a pack
   class's `.vox` slot layers (`hood.vox` in the core pack), never from a part
-  tree. They come to read the shared derivation.
-- `shared/isometer/src/bodies.rs` (`SceneVolumes`): per-part voxel volumes,
-  if Q5 rules per part.
+  tree. They come to read the shared derivation. A sim-backed token's shape
+  is its part tree, its class's layers styling it; sim-off tables keep class
+  shapes (case 1141).
+- `shared/isometer/src/bodies.rs` (`SceneVolumes`): a voxel volume per part
+  up close, one baked volume for the far sprite rung (case 1139).
+- Microvoxels (case 1149): the look draws each part at a number of
+  microvoxels per sim cell, shaped by its form and the layered look; the sim
+  keeps cell grain. P6's voxel editor works at the same grain. Finer body
+  cells than terrain's come later, where play needs them, and are not this
+  phase.
 
 **Done when:**
 - One derivation turns a body document and its lineage into a look, and a
@@ -199,12 +227,14 @@ otherwise; product packs stay product data.
   (the existing appearance tests).
 - A part's voxels stay within its declared box, and the part ids a wound
   addresses are the ones drawn.
+- A part's microvoxels stay within its cells, and a severed part's cells
+  vanish from the drawn look.
 - **Headed:** the Isocosm board with a sim-backed token drawn from its part
   tree beside a class token, scene and DOM boards, in
   `Code/testing/isocosm/denizen/`.
 
-**Needs:** Q4, Q5, Q6. Bodies from P2 are not needed: it runs on the roster
-and the six-part fixture.
+**Needs:** cases 1136, 1139, 1141, 1149. Bodies from P2 are not needed: it runs
+on the roster and the six-part fixture.
 
 ### P4. Eponym draws through the look
 
@@ -262,36 +292,69 @@ for a life.
 **Needs:** P2, P4. At its start, the foreground lane's current files are
 checked, since both work in Eponym.
 
-### P6. The creator
+### P6. The creator: an individual that seeds a lineage
 
-**Owning layer:** the sim admits a designed body within bounds. isometer
-draws the preview. isomere hosts the panel, promoted from Isocosm's look
-editor. Each product names when it opens.
+**Owning layer:** the sim admits a designed lineage and founds it; isometer
+holds the voxel edit and draws the preview; isomere hosts the panels,
+promoted from Isocosm's look editor. It opens only for lives not born in
+play: Eponym's generated outsider, a quick-start world's authored founder, a
+VTT character at creation. A life born in play stays drawn, with look
+overrides only (case 1135).
+
+**What (cases 1134, 1137, 1138):** the designer shapes one individual in a
+voxel editor that snaps to P2's editable body-plan templates, and marks each
+trait as the lineage's or the individual's own. Rounds of drawn variants are
+then kept or discarded as fitting the lineage; the kept examples set its
+distribution, and a lone example is a blueprint with minor variance (palette
+swaps, for one). Rarity sets the founding count, from one, the last of its
+kind, to a common share; a player's lineage may found below six, and a lone
+member may find no mate, the sim deciding what follows. The rounds and the
+editor are built together.
 
 **Touches:**
-- The sim: a sibling under `shared/cosmograph/src/bodied/` that admits an
-  explicit draw (the chosen values a designed body was developed from)
-  against its lineage's bounds, and `cosmograph-overlay` for the intent that
-  submits it.
-- isomere: the creator panel promoted from
+- The sim: a sibling under `shared/cosmograph/src/bodied/` that turns a
+  designed individual, its trait marks and its kept examples into a lineage
+  recipe and bounds, admitted or refused whole against the world's `Bodies`
+  bounds; its founding at its count (`embody`, or `arrival.rs` in a running
+  world); `cosmograph-overlay` for the intent that submits it.
+- isometer-mesh: the voxel edit on a part tree, snapping to templates, each
+  edit within its part (Bodies 2: physiology never writes geometry).
+- isomere: the creator panels promoted from
   `crates/isocosm-views/src/look.rs` and `appearance/creator.rs`
-  (`LookDraft`, the live preview leaf), with body rows beside class, slots and
-  palette as Q2 rules.
-- Eponym's first-life pick (P5's `life.rs`) and Isocosm's character creation,
-  as Q3 rules.
+  (`LookDraft`, the live preview leaf): the editor, trait marks, variant
+  rounds and rarity beside class, slots and palette.
+- Eponym's first-life pick (P5's `life.rs`) and Isocosm's character creation.
 
 **Done when:**
-- Every value the creator offers lies within the lineage's bounds. A crafted
-  submission outside them is refused whole by the sim, with its reason
-  (negative control).
-- An accepted design develops to the body the preview showed (the same body
-  document digest), and a save restores it.
+- Over drawn members of a designed lineage, traits marked the lineage's
+  appear in all of them and traits marked the individual's own in it alone.
+- Every member drawn after a round lies within the distribution its kept
+  examples set; a lone example's members differ only by the blueprint's
+  minor variance.
+- A voxel edit snaps to a template, and the edited individual develops to
+  the body the preview showed (the same body document digest); a save
+  restores it.
+- A design outside the world's bounds is refused whole by the sim, with its
+  reason (negative control).
+- Rarity founds the lineage at its count: a player's lineage of one founds
+  and is played, and a drawn lineage of one is still refused (control).
 - Isocosm's look editor behaves as before after promotion (its tests and its
   headed pair in `Code/testing/isocosm/appearance/`).
-- **Headed:** the creator in Eponym and in Isocosm, before and after one
-  edit, with its preview, in `Code/testing/<product>/denizen/creator-*.png`.
+- **Headed:** the editor snapping to a template, a round with kept and
+  discarded variants, and the founded lineage's lineup, in Eponym and
+  Isocosm, in `Code/testing/<product>/denizen/creator-*.png`.
 
-**Needs:** Q2, Q3; P2, P3, P5.
+**Open, returned as questions at this phase's checkpoints** (case 1134 is
+working direction with its pieces still to rule): how a designed lineage
+enters a running world (founders arriving as outsiders, or only at a
+founding); how kept examples become a distribution (their span, or a fitted
+spread); what minor variance a blueprint allows beyond palette swaps; and
+how a voxel edit maps back to the grammar (within a part's box, or reshaping
+it). Mesocosm critters made playable in Eponym wait until the two meet on the
+sim backend (case 1134) and are not here.
+
+**Needs:** cases 1134, 1135, 1137, 1138; P2's templates and founding count,
+P3, P5.
 
 ### P7. Orders
 
@@ -308,7 +371,8 @@ Eponym's input and panel.
   becomes a goal the companion pursues when its own choice allows, the
   pattern Directing 4 gives approved journeys.
 - `shared/cosmograph-overlay/src/eponym/ask.rs` (`Proposal`, `WorkKey`,
-  `AgreementHandle`): a target for go and carry if Q7 rules one is needed.
+  `AgreementHandle`): go and carry need a target, which `Work` lacks; its
+  shape comes back at this phase's checkpoint.
 - `eponym/crates/eponym-play/src/contract.rs` (`EponymIntent::Ask` routes to
   `Social::Consider` or `Social::Exercise` now); the client's order input and
   a panel showing answers.
@@ -326,7 +390,7 @@ Eponym's input and panel.
 - **Headed:** Eponym's panel with an order given, one accepted and one
   refused with its reason, in `Code/testing/eponym/denizen/orders-*.png`.
 
-**Needs:** Q7; the creature-minds session's chooser seam.
+**Needs:** case 1142; the creature-minds session's chooser seam.
 
 ### P8. Direct control
 
@@ -354,203 +418,48 @@ camera).
 - **Headed:** the switch in first person, through the companion and back,
   in `Code/testing/eponym/denizen/drive-*.png`.
 
-**Needs:** Q10; P7, P1.
-
-## Questions for Mark
-
-Each names the doctrine it bears on. Recommendations come first. None is
-decided here. Answers are recorded as `denizen D<n>` in the Decisions
-section, or as cases where code or another plan comes to rely on them.
-
-### Q1. What a denizen body plan is made of (Bodies 6, World 8; case 1128)
-
-Evidence: the recipe grammar already branches (`Tagma::parent`, `anchor`,
-`facing`) and grows jointed chains (`ChainLink`; `jointed.toml`'s upper leg,
-lower leg and foot). Authored roster bodies use both, while the lottery
-(`bodied::drawn`) uses neither: it makes 1 to 4 stretches of 1 to 6 block
-segments under a mouthed head. The only drawn proportion is `limb_scale`, 1
-to 2. Sapience is measured, never declared (Directing 3), and in deep time
-people grow out of lineages (World 10).
-
-1. **(Recommended) A denizen family in the existing grammar.** A third
-   family beside flora and fauna: an upright trunk tagma, a head tagma on
-   it, and paired jointed limb chains, with the trunk's segments, the limb
-   pairs, links per chain, link proportions and head share each drawn per
-   lineage within `Bodies` bounds a world may widen. "Humanoid" is one region
-   of that space. No new vocabulary, and the plan is a body, not a
-   sophont.
-2. **Authored archetypes with drawn proportions.** A datasheet of plans
-   (biped, four-legged with hands, centauroid, armed serpent); each lineage
-   picks one and draws its proportions within ranges. More legible and
-   easier to bound, less generative.
-3. **No separate family.** Widen the fauna lottery to draw layouts and
-   jointed chains, bias limbed, sensing consumers toward grip, and play
-   whatever passes the sapience measure, with authored founders in quick-start
-   worlds. Most faithful to World 10, but a given world may never grow a
-   playable body, and the first is late.
-
-### Q2. What the creator edits, and how an edit stays within bounds (VTT 7, Eponym 4; case 1128)
-
-Evidence: Isocosm's creator (`look.rs`, `appearance/creator.rs`) edits a
-token's class, slot layers and palette with a live preview, and the token
-keeps only its overrides (`TokenAppearance`). A body is developed from a
-recipe and a seed (`development::soma`), and restore regenerates a
-founding by version tag (Eponym 4).
-
-1. **(Recommended) The individual, within its lineage's bounds.** The
-   individual's proportions, link lengths and counts are edited where the
-   recipe's variance allows, along with the look's layers above shape. The
-   rows offer only in-bound values. The result is an explicit draw (seed plus
-   chosen values) that the sim admits or refuses whole. Lineage recipes stay
-   the world editor's, later.
-2. **The seed only.** Reroll within bounds, plus look overrides; always in
-   bounds by construction, but "designable" is thin.
-3. **Individual and lineage by seat.** A player edits their own individual,
-   and a creative observer or world author edits the lineage's recipe within
-   the world's bounds, in one creator.
-
-### Q3. When the creator opens (Eponym 1, VTT 2)
-
-Evidence: Eponym 1's first life is a newly generated outsider, a birth into
-a lineage, or a named denizen of the drawn world. VTT 2: the seat
-controlling a body drafts its character. Every birth is a transfer drawn
-from the parents (Bodies 8).
-
-1. **(Recommended) Only for lives not born in play.** A newly generated
-   outsider, an authored founder in a quick-start world, and a VTT character
-   at creation. Births and named denizens are drawn and only their look
-   overrides are editable.
-2. **Every first life.** A birth into a lineage is also edited within the
-   lineage's bounds, as a designed child.
-3. **Any time, by look only.** Body choices only at creation, and look
-   overrides (palette, style) whenever the seat chooses.
-
-### Q4. Where the shared look lives (VTT 7, Stack 3; case 1129)
-
-Evidence: isometer-mesh already owns `Appearance`, `compose`, `Palette`,
-`flatten` and the sprite bake. The layered resolution (`Library::resolve`,
-the `appearance.toml` pack format, swatches, item layers) lives in
-`isocosm-views`, a Cambium view crate. isomere never names a voxel.
-
-1. **(Recommended) isometer-mesh.** The derivation and the pack binding
-   format move to isometer-mesh's bake, and products load their own packs.
-2. **A new shared crate under `shared/`.** It holds looks apart from
-   meshing, and needs a naming round (Naming 3).
-3. **Eponym depends on `isocosm-views`' appearance module.** Least moved,
-   but one product's view crate becomes another's dependency.
-
-### Q5. A body's voxels per part, or one volume (Bodies 2, Bodies 12; case 1129)
-
-Evidence: Isocosm's tokens are one composed volume
-(`TokenBody::from_voxels`), rigid and turned by facing. Eponym's bodies pose
-and sever by part, and the scene draws them per part from declared extents.
-`flatten` documents the split: the live renderer wants a mesh per part so
-limbs move, and the sprite baker wants one grid.
-
-1. **(Recommended) Per part near, one baked volume far.** Each part gets its
-   own voxel volume, so limbs move and severing shows. The whole-body bake
-   serves the sprite rung (Presentation 2).
-2. **One volume everywhere, as tokens are.** The cheapest, matching today's
-   tokens, but limbs neither move nor visibly sever.
-
-### Q6. A sim-backed token's shape: part tree or pack class (VTT 7, VTT 1)
-
-Evidence: VTT 7 orders the layers shape, palette, finish, style, wear,
-variation, overrides, with shape "from the body's part tree or the item's
-sort". Today every token's shape is its pack class's `.vox` layers. A table
-may run with the sim off (VTT 1), where no part tree exists.
-
-1. **(Recommended) The part tree is the shape; class slot layers become
-   style over it** (a hood over the head part). Sim-off tables keep class
-   shapes.
-2. **The class wins when a token names one**; the part tree is used only for
-   a token without a class.
-
-### Q7. How orders reach a companion's mind (Directing 3, Eponym 1, Mesocosm 2; case 1130)
-
-Evidence: ruling 60 says directives are given "as that sophont to your
-friends", with opinion as their efficacy. Ruling 152 says that, outside the
-world, a player directs only who they play, so everything else is asked in
-the world. The sim already weighs asks and exercises of standing agreements
-(`social/asks.rs`, `willing.rs`), and the contract notes that "an agreement is not
-a command" (`cosmograph-overlay/src/eponym/ask.rs`). Mesocosm's nudge goes
-from a participant to a critter through the bond. The founding record's
-"Configure, don't command" (§1), carried into Eponym's `CLAUDE.md` as "No
-real-time puppeteering of a party", is an earlier reading that orders in the
-moment may contradict.
-
-1. **(Recommended) In-world asks under a standing companion agreement.** Go,
-   hold, fight and carry are works a companion agreement covers. An order
-   exercises it, weighed by `weigh_routine`; outside an agreement it is a
-   plain ask. An accepted order becomes a goal the companion's chooser
-   follows when its own choice allows. Outcome: the founding record's rule
-   is refined to "orders are asks a peer weighs", not dropped.
-2. **Nudges through the bond, as in Mesocosm.** One mechanism across games,
-   but it contradicts ruling 152, which would need reopening.
-3. **Standing configuration only.** Gambit-style terms set in the agreement
-   and no orders in the moment. It keeps "configure, don't command" whole
-   but narrows case 1130's go, hold, fight and carry.
-
-### Q8. The camera's place in isometer (Presentation 1, Stack 5; case 1131)
-
-Evidence: `SlabCamera` is one set of numbers from which isometer derives the
-tracer camera, cull window, raster matrix, body clip and picking, "so the
-four cannot disagree" (`shared/isometer/src/camera.rs`). All are
-orthographic. The tracer already has `TraceCamera::perspective`. Eponym
-builds its own perspective matrices app-local (`scene.rs`, `residency.rs`).
-
-1. **(Recommended) One camera, two projections.** The scene camera gains a
-   projection, slab or perspective (eye, field of view, near, far). Each
-   derived quantity answers for both, the presets (dimetric, first person,
-   over the shoulder) are its constructors, and products only choose
-   presets. A rename, if any, is a naming round.
-2. **A sibling perspective type.** The scene takes either through an enum.
-   The slab code stays untouched, but each derived quantity is written twice.
-3. **Host-supplied matrices.** isometer takes a view and projection pair,
-   as Eponym's room renderer does, with first-person and shoulder helpers.
-   This is the least isometer code, but culling and residency must be
-   inferred from a matrix.
-
-### Q9. Where first person's eye sits (Bodies 15, Directing 1)
-
-Evidence: Bodies 15 says a body knows its world by its own means, and organs
-such as eyes extend it. Denizens and critters vary: an eye borne on a
-segment, a sensor above the root, or no sense organ at all. Directing 3 says
-a creature's senses are its own, but it suggests what it perceives.
-
-1. **(Recommended) At the body's sense part.** Its most sense-celled part,
-   facing that part's facing, falling back to the top of the root. The eye
-   is where the creature knows from.
-2. **At the top of the body's box, facing its heading.** Uniform and
-   simple, but blind to anatomy.
-3. **Per product.** Each product's preset decides.
-
-### Q10. What direct control requires (Eponym 1, Directing 1; cases 187, 1130)
-
-Evidence: case 187 and Directing 1 place tag-in in creative mode. Eponym's
-`CLAUDE.md`, from the founding plan, says "Body switching is never a menu
-operation; control changes through death or a recorded world event". Case
-1130 lets the player drive a companion where its agreement allows, still
-living one creature. The contract's actuation carries "never a second body".
-`PLAYS` already allows several bodies per participant (cases 1062 and 1065).
-A driven creature learns from its player by imitation wherever driving is
-(Directing 3).
-
-1. **(Recommended) Agreed, recorded, one body at a time.** A companion
-   agreement's terms allow driving. Taking control is a recorded exercise,
-   the participant then actuates the companion alone while their own creature
-   acts by its own mind, and the companion may end it. Outcome: Directing 1
-   and case 187 are refined, so that tag-in also lives in survival under
-   agreement.
-2. **Tag-in stays in creative mode.** In survival a companion is only
-   ordered. This narrows case 1130.
-3. **Co-drive.** The participant drives the companion while their own body
-   is held still, with both played. The contract's one-body actuation
-   changes.
+**Needs:** case 1144; P7, P1.
 
 ## Decisions
 
-None yet. Answers are recorded here as `denizen D<n>`, in answer order.
+The plan's ten questions, answered by Mark on 2026-11-02 and recorded as
+cases in the design record's §0, which holds his words and each case's
+links. Here, the question each answers, the reading, and where it lands.
+
+- **Q1, 1133:** a denizen is a drawn family in the recipe grammar: an
+  upright trunk, a head and paired jointed limb chains, counts and
+  proportions per lineage within bounds a world may widen. P2.
+- **Q2, 1134:** reframed in Mark's words. The creator designs an individual
+  that seeds a lineage: traits marked the lineage's or its own, kept rounds
+  of variants set the lineage's distribution, a lone example is a blueprint
+  with minor variance, a voxel editor snaps to editable body-plan
+  templates, and rarity runs from one to common. Working direction, its
+  pieces still to rule. P2, P6.
+- **1137:** the variant rounds and the voxel editor are built together. P6.
+- **1138:** rarity is the founding count; a player's lineage may found below
+  the floor of six. P2, P6.
+- **Q3, 1135:** the creator opens for lives not born in play (outsiders,
+  quick-start founders, VTT characters at creation); births stay drawn,
+  with look overrides only. P6.
+- **Q4, 1136:** the layered look resolution moves into isometer-mesh, for
+  every product. P3.
+- **Q5, 1139:** a body's voxels are held per part up close and baked as one
+  volume for the far rung. P3, P4.
+- **Q6, 1141:** a sim-backed token's shape is its part tree, its class's
+  layers styling it; sim-off tables keep class shapes. P3.
+- **Q7, 1142:** orders are in-world asks under a companion agreement,
+  weighed by the existing willingness code; an accepted one becomes the
+  companion's own goal. "Configure, don't command" is refined, not dropped.
+  Directing 1 refined. P7.
+- **Q8, 1140:** one isometer camera with two projections; presets are
+  constructors, and any rename goes to a naming round. P1.
+- **Q9, 1143:** first person's eye sits at the most sense-celled part, else
+  the top of the root. P1.
+- **Q10, 1144:** driving a companion is agreed, recorded and one body at a
+  time, and the companion may end it. Directing 1 and case 187 refined;
+  Eponym's `CLAUDE.md` guardrails rewritten to match. P8.
+
+Further answers are recorded here as `denizen D<n>`, in answer order.
 
 ## Findings
 
@@ -566,28 +475,43 @@ None yet. Answers are recorded here as `denizen D<n>`, in answer order.
   two bilateral pairs of 4×1×1 limbs (contract, support, grip), one 1×1×1
   sensor above.
 - `bodied::drawn` sets no `parent`, `anchor` or `chain`; no humanoid or
-  denizen plan exists. The grammar and the jointed and branching foundings
-  can express one (Q1's evidence).
-- Isocosm's looks and tokens never read a part tree (Q4 to Q6's evidence);
+  denizen plan exists. The grammar branches (`Tagma::parent`, `anchor`,
+  `facing`, `socket` in `rules/recipe.rs`) and grows `ChainLink` chains, as
+  `datasheets/foundings/jointed.toml` (`chain.leg`: leg, upright_leg, foot)
+  and `branching.toml` layouts do.
+- Isocosm's looks resolve from a pack's class bindings and `.vox` slot
+  layers (`isocosm-views/src/appearance.rs`, `Library::resolve`; core pack
+  `hood.vox`), and tokens are one rigid volume (`scene/tokens.rs`); no look
+  reads a part tree. isometer-mesh turns a body document into voxels
+  (`flatten`; `BodyProfile::voxels`, `voxels_by_part` in `bake/body.rs`), and
   the shared scene draws `SceneVolumes::Voxels` or `DeclaredSolid`
   (`shared/isometer/src/bodies.rs`).
-- isometer's scene camera is orthographic only (`SlabCamera`, and
-  `isometer-render`'s `Camera`). `TraceCamera::perspective` is used today
-  only by Eponym's app-local room renderer and planning camera (Q8's
-  evidence). Every product builds its camera from `SlabCamera` (P1's files).
-- The sim weighs asks and agreement exercises through `willing.rs`'s three
-  gates, and Eponym's contract routes `EponymIntent::Ask` there; `Work`
-  carries no target (Q7's evidence).
-- Records that disagree with cases 1130 and 1131, for reconciliation
-  once Q7 and Q10 are answered:
-  - first person: the vessel briefs
+- isometer's scene camera is orthographic only (`SlabCamera` in
+  `shared/isometer/src/camera.rs`; `isometer-render`'s `Camera`).
+  `TraceCamera::perspective` (`isometer-lens/src/tracer/types.rs`) is used
+  only by Eponym's app-local room renderer (`eponym-client/src/scene.rs`)
+  and planning camera (`residency.rs`). Every product builds its camera from
+  `SlabCamera` (P1's files).
+- The sim weighs asks and agreement exercises (`social/asks.rs`:
+  `weigh_offer`, `exercise`) through `willing.rs`'s craft, trust and danger
+  gates, and Eponym's contract routes `EponymIntent::Ask` there
+  (`eponym-play/src/contract.rs`); `Work` carries no target.
+- Records still disagreeing with the rulings, not edited by this plan:
+  - first person in every product (1131): the vessel briefs
     (`mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md`,
     "First person as a setting, Paredros only") and the founding record's
     closing note to its camera item (lines 1220 to 1226);
-  - orders and switching: the founding record's "Configure, don't
-    command", and Eponym's `CLAUDE.md` guardrails on puppeteering and body
-    switching.
+  - orders as asks (1142): the founding record's "Configure, don't command"
+    (§1), which the case refines;
+  - a player's lineage below six (1138): World 8's "Every founded lineage
+    starts with at least six members".
+
+2026-11-02, after cases 1133 to 1144: Directing 1 refined for 1142 and 1144;
+Eponym 1 already said what they need and is unchanged; Eponym's `CLAUDE.md`
+guardrails were rewritten with case 1144.
 
 ## Progress
 
 - 2026-11-02: plan written from cases 1128 to 1131; nothing landed.
+- 2026-11-02: cases 1133 to 1144 folded in as Decisions; P2 and P6 reshaped for
+  1134, 1137 and 1138; Directing 1 refined.

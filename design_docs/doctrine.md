@@ -980,8 +980,9 @@ speed bounds a round's handback and sets travel time out of view (Stack 12).
 
 *Built:* the speed (`cosmograph::speed`), a founding's default baseline from
 its stated cell size, and travel time out of view (the execution plan's
-E10). *Not yet built:* joint ranges and the swing cap (case 1088), the
-route's difficulty beyond its length, and the handback's reach check.
+E10), and the handback's reach check (case 1123). *Not yet built:* joint
+ranges and the swing cap (case 1088), and the route's difficulty beyond its
+length.
 
 Links: draws on 1085, 1087, 1088, 1112, bodies.1, stack.12 · summary Speed is a world baseline times the root of leg over a reference leg, legless bodies at body lengths a second, stride capped by drawn joint ranges; it bounds handbacks and sets out-of-view travel.
 
@@ -1245,19 +1246,23 @@ and micro become territories and surfaces); each reproduces in one cell of its
 root, draws its life history within what its body supports, and draws its
 variance, absence and riff odds within bounds a world may widen (Mesocosm's
 by default). Generated consumers graze and carry living sense tissue. Every
-founded lineage starts with at least six members. Other worlds keep
+founded lineage starts with at least six members, unless a player's
+designed lineage is founded rarer, down to one. Other worlds keep
 extentless bodies as the scale control.
 
 *Not yet built:* consumers' sense tissue (the execution plan's D46, the bodies
 plan's BO18).
 
-Links: draws on 512, 525, 547, 548, 549, 550, 573, 905, 1090, sim-execution D46 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; each lineage founds at least six; others stay extentless.
+Links: draws on 512, 525, 547, 548, 549, 550, 573, 905, 1090, 1138, sim-execution D46 · summary Founded recipes are drawn by kingdom within bounds a world may widen; consumers graze and sense; each lineage founds at least six; others stay extentless.
 
 *Refined 2026-10-31 from the execution plan's D46 (Mark: "Fix founding
 (Recommended)", then "Refine World 8, bodies owes it (Recommended)").*
 
 *Refined 2026-11-02 from case 1090 (Mark: "Founding floor of 6
 (Recommended)").*
+
+*Refined 2026-11-02 from case 1138 (Mark: "Founding count
+(Recommended)"): a player's designed lineage may found below six.*
 
 ### World 9. Places carry quality and alignment
 
@@ -1380,9 +1385,15 @@ the creative observer's, showing the truth and never editing (the world editor
 edits), and in Eponym it is also where tag-in lives; a mode switch changes only how the known is
 shown. Settings choose how the known is presented, never what is known. The
 sim and the host hold the whole world, so a surface reads through the
-participant's knowledge, never from host state directly.
+participant's knowledge, never from host state directly. Another body is
+offered only as an ask through the played creature: an order to a companion
+(go, hold, fight, carry) is an in-world ask under its agreement, weighed by
+its willingness, and accepted it becomes the companion's own goal. In
+survival a player drives another body only where its agreement allows, a
+recorded act, one body at a time; the creature left acts by its own mind, and
+the driven one may end it.
 
-Links: draws on 445, 180, 184, 187, 432, 847, 868, 869, 870 · summary Every surface derives from the participant's knowledge and control; settings choose how the known is shown, never what is known.
+Links: draws on 445, 180, 184, 187, 432, 847, 868, 869, 870, 1142, 1144 · summary Every surface derives from the participant's knowledge and control; other bodies are asked in the world, and driven only by recorded agreement, one at a time.
 
 *Reviewed 2026-10-22, new. Drafted as a Presentation rule that "the view grants
 nothing". Mark: "maybe it's more like presentation is contingent upon
@@ -1395,6 +1406,10 @@ original rule that knowledge follows seat and subject, never mode. Mark: "All
 as drafted". Mesocosm's survival and creative (180, 184) folded in at Mark's
 word ("M3 into Directing 1") in the Mesocosm review, and Eponym's (187, with
 tag-in) in the Eponym review ("As drafted, 187 into Directing 1").*
+
+*Refined 2026-11-02 from cases 1142 and 1144 (Mark: "In-world asks
+(Recommended)", "Agreed, recorded, one at a time (Recommended)"): orders are
+asks, and driving in survival is agreed and recorded; tag-in stays creative's.*
 
 ### Directing 2. Each game foregrounds one rung
 

@@ -181,11 +181,12 @@ fn generated_a1_offer_authors_and_replays_one_physical_joint_witness() {
         eprintln!("generated physical witness: {execution:?}, assessment complete");
         assessment.witness.require_roles().unwrap();
         assert_eq!(assessment.witness.spec.horizon, 60);
-        assert_eq!(assessment.witness.spec.capture.selection.actor_lineage, "lineage:3");
-        assert_eq!(assessment.witness.spec.returned.selection.actor_lineage, "lineage:3");
-        assert_eq!(assessment.witness.spec.reproduction.selection.actor_lineage, "lineage:3");
+        // Re-recorded under case 1106's founding floor (lineage 3 before).
+        assert_eq!(assessment.witness.spec.capture.selection.actor_lineage, "lineage:0");
+        assert_eq!(assessment.witness.spec.returned.selection.actor_lineage, "lineage:0");
+        assert_eq!(assessment.witness.spec.reproduction.selection.actor_lineage, "lineage:0");
         assert_eq!(assessment.witness.spec.counterplay.selection.actor_lineage, "lineage:1");
-        assert_eq!(assessment.witness.spec.counterplay.selection.target_lineage.as_deref(), Some("lineage:3"));
+        assert_eq!(assessment.witness.spec.counterplay.selection.target_lineage.as_deref(), Some("lineage:0"));
         assert!(assessment.spatial.driver.is_some(), "889 templates must be the physical witness source");
         assessment.spatial.validate_replay(
             &cosmograph::Session::load(assessment.witness.native.clone(), execution).unwrap()).unwrap();
@@ -214,8 +215,16 @@ fn generated_a1_offer_refuses_when_founders_have_no_viable_trophic_pair() {
     let mut founding = founded.genesis.founding.clone().unwrap();
     founding.ecology_rates = cosmograph::ecology::Rates::A1;
     founded.genesis = founding.generate().unwrap();
+    // Every lineage is founded (1106), so the missing pair is authored: no
+    // producer survives the founding.
+    let g = &mut founded.genesis;
+    let producers: Vec<u64> = g.population.groups.iter()
+        .filter(|(_, group)| group.entity.traits.contains("life:producer")).map(|(id, _)| *id).collect();
+    for id in producers {
+        std::sync::Arc::make_mut(&mut g.population.groups.get_mut(&id).unwrap().entity).alive = false;
+    }
     let error = Setup::generated(founded, Execution::Individuals)
         .err()
-        .expect("the two seed-9 cohorts contain neither a native producer nor consumer");
+        .expect("founders without a living producer have no viable trophic pair");
     assert!(error.contains("living producer") && error.contains("native feed"), "{error}");
 }
