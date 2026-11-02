@@ -255,6 +255,8 @@ pub enum GameIntent {
         strikes: Vec<StrikeReceipt>,
         rules: CombatRules,
     },
+    /// A round's minute (case 1100): poses handed back, the sim ticks once.
+    Minute { tick: Tick },
 }
 
 impl GameIntent {
@@ -274,6 +276,7 @@ impl GameIntent {
             | Self::SpreadOwnership { tick, .. }
             | Self::AuthoredSpread { tick, .. }
             | Self::ExternalVolley { tick, .. }
+            | Self::Minute { tick }
             | Self::Name { tick, .. }
             | Self::Move { tick, .. }
             | Self::Observe { tick, .. }
@@ -322,6 +325,7 @@ impl GameIntent {
             | Self::Wait { subject, .. } => Some(*subject),
             Self::ResolveVolley { actor, .. } => Some(*actor),
             Self::ExternalVolley { .. }
+            | Self::Minute { .. }
             | Self::ReviseCanon { .. }
             | Self::StockOwnership { .. }
             | Self::FoundSpreadActor { .. }

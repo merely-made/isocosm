@@ -40,6 +40,7 @@ mod project_carry;
 mod project_consent;
 mod project_places;
 mod projects;
+mod rounds;
 mod spread;
 mod stock;
 pub use project_places::ProjectLocation;
@@ -290,6 +291,9 @@ impl GameState {
             position: WorldPoint(position.try_into().map_err(|_| GameError::Decode)?),
             fell,
         };
+        if self.patched_in_round(self.entity_of(subject)?) {
+            return Ok(());
+        }
         let drive = Actuation {
             body: EntityHandle(self.entity_of(subject)?),
             motion: Some(motion),
@@ -316,7 +320,10 @@ impl GameState {
         }
         let mut next = self.clone();
         let events = next.admit(&intent)?;
-        next.world.tick()?;
+        // In a round the sim ticks only at the minute (case 1100).
+        if !next.world.rounds() {
+            next.world.tick()?;
+        }
         next.intents.push(intent);
         next.events.extend(events.iter().cloned());
         next.refresh();
@@ -327,6 +334,9 @@ impl GameState {
     fn admit(&mut self, intent: &GameIntent) -> Result<Vec<GameEvent>, GameError> {
         if let Some(events) = self.admit_spread_author(intent)? {
             return Ok(events);
+        }
+        if let GameIntent::Minute { .. } = intent {
+            return self.minute();
         }
         let tick = intent.tick();
         if let GameIntent::ExternalVolley {
