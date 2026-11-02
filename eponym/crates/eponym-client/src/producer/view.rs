@@ -6,7 +6,7 @@
 //! sim names, its most sensing part, posed as the frame will draw it.
 
 use eponym_play::MotionPose;
-use isometer::core::PartId;
+use isometer::core::{BodyDocument, PartId};
 use isometer::{DeclaredExtentVolumes, SceneBody, SceneVolumes, SlabCamera, SubjectKey};
 
 use super::handle::SceneModel;
@@ -22,10 +22,32 @@ impl SceneModel {
             return Ok(overview);
         }
         let eye = self.eye()?.ok_or("the played body has no eye to look from")?;
-        let heading = [self.camera.forward[0], 0.0, self.camera.forward[2]];
+        let heading = self.aim;
         self.perspective
             .camera(self.view, eye, heading, aspect)
             .ok_or_else(|| format!("invalid {} camera", self.view.name()))
+    }
+
+    /// The played body as first person draws it: only its parts wholly
+    /// below the eye, so the body does not fill its own view and its limbs
+    /// show at the frame's edge. `None` in any other view.
+    pub fn first_person_document(&self, document: &BodyDocument) -> Option<BodyDocument> {
+        (self.view == View::FirstPerson).then_some(())?;
+        let game = self.game();
+        let part = game.world().entity(self.played())
+            .and_then(|id| game.world().sim().state().population.get(id))
+            .and_then(cosmograph::anatomy::sensing_part)
+            .filter(|part| document.part(*part).is_some_and(|p| !p.severed))
+            .unwrap_or(document.root);
+        let top = |id: PartId| Some(document.world_pivot(id)?[1] + document.part(id)?.half_extent[1]);
+        let eye = top(part)?;
+        let mut drawn = document.clone();
+        for p in &mut drawn.parts {
+            if top(p.id).is_none_or(|t| t >= eye) {
+                p.severed = true;
+            }
+        }
+        Some(drawn)
     }
 
     /// Where the played body sees from: the top of its most sensing part,

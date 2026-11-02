@@ -151,6 +151,17 @@ impl SessionApp {
     }
 
     pub(super) fn prepare(&mut self, direction: Direction) {
+        // First person and the shoulder face the aim (case 1131).
+        let aim = match direction {
+            Direction::Forward => Some([0.0, 0.0, 1.0]),
+            Direction::Backward => Some([0.0, 0.0, -1.0]),
+            Direction::Left => Some([-1.0, 0.0, 0.0]),
+            Direction::Right => Some([1.0, 0.0, 0.0]),
+            Direction::Up | Direction::Down => None,
+        };
+        if let Some(aim) = aim {
+            self.model.borrow_mut().aim = aim;
+        }
         self.direction = direction;
         let mut model = self.model.borrow_mut();
         let Some(action) = model.action_mut() else {
