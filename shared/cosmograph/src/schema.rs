@@ -505,3 +505,6 @@ impl Default for Limits {
         }
     }
 }
+
+/// Whether a tick is zero, for fields that serialize only when set.
+pub fn is_zero_tick(tick: &Tick) -> bool { *tick == 0 }

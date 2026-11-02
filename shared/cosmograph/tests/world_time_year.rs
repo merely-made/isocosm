@@ -51,7 +51,27 @@ fn a_world_time_web_holds_a_year() {
     for m in 1..=steps {
         // A day at a time keeps each advance inside the operation budget.
         let mut left = step;
-        while left > 0 { let day = left.min(60); s.advance(day).unwrap(); left -= day; }
+        let trace = env("WORLD_TIME_TRACE", u64::MAX);
+        while left > 0 {
+            let day = left.min(60); s.advance(day).unwrap(); left -= day;
+            let fine = env("WORLD_TIME_FINE", u64::MAX);
+            let t = s.sim.state().tick;
+            if trace != u64::MAX && (t % 1440 == 0 || (t / 1440 >= fine && t / 1440 < fine + 2)) {
+                let st = s.sim.state();
+                let bodies: Vec<(String, u64, u64)> = st.population.groups.values()
+                    .filter(|g| g.entity.alive && g.entity.place == trace && roles.get(&g.entity.lineage).is_some_and(|r| r.contains("decomposer")))
+                    .map(|g| { let i = g.entity.lineage.trim_start_matches("lineage:");
+                        (i.to_string(), g.entity.accounts.get(&format!("matter:{i}-0")).copied().unwrap_or(0), (st.tick - g.entity.born) / 1440) }).collect();
+                let site = &st.sites[&trace];
+                let mut what: BTreeMap<String, usize> = BTreeMap::new();
+                for e in st.events.values().filter(|e| e.tick + 60 > st.tick && !e.process.starts_with("ecology:litter")) {
+                    *what.entry(e.process.clone()).or_default() += 1;
+                }
+                eprintln!("trace events {what:?}");
+                eprintln!("trace day {} min {} litter {:?} soil {:?} decomposers {bodies:?}", st.tick / 1440, st.tick % 1440,
+                    site.accounts.get("world:litter"), site.accounts.get("world:soil"));
+            }
+        }
         let now = living(&s);
         let st = s.sim.state();
         let mean: BTreeMap<String, u64> = now.keys().map(|k| { let i = k.trim_start_matches("lineage:");
@@ -60,7 +80,14 @@ fn a_world_time_web_holds_a_year() {
             (k.clone(), sum / n.max(1)) }).collect();
         let soil: Vec<u64> = st.sites.values().map(|site| site.accounts.get("world:soil").copied().unwrap_or(0)).collect();
         let light: Vec<u64> = st.sites.values().map(|site| site.accounts.get("sim:energy").copied().unwrap_or(0)).collect();
-        eprintln!("seed {seed} body {mean:?} soil {soil:?} light {light:?}");
+        let litter: Vec<u64> = st.sites.values().map(|site| site.accounts.get("world:litter").copied().unwrap_or(0)).collect();
+        let mut by_site: BTreeMap<u64, Vec<u64>> = BTreeMap::new();
+        for g in st.population.groups.values().filter(|g| g.entity.alive) {
+            let Some(i) = g.entity.lineage.strip_prefix("lineage:").and_then(|i| i.parse::<usize>().ok()) else { continue };
+            by_site.entry(g.entity.place).or_insert_with(|| vec![0; lineages as usize])[i] += g.count;
+        }
+        eprintln!("seed {seed} sites {by_site:?}");
+        eprintln!("seed {seed} body {mean:?} soil {soil:?} litter {litter:?} light {light:?}");
         eprintln!("seed {seed} month {m} ({:?}) {now:?} births {} starved {} hazard {}", started.elapsed(),
             events(&s, "ecology:birth"), events(&s, "ecology:death"), events(&s, "ecology:hazard"));
         months.push(now);

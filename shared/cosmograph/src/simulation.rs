@@ -31,6 +31,10 @@ pub struct Genesis {
     pub population: Population,
     #[serde(default, skip_serializing_if = "crate::spread::Spreads::is_empty")]
     pub spreads: crate::spread::Spreads,
+    /// The world's first tick (1078): founders are born before it, so a
+    /// founding's ages are staggered. Zero, its default, hashes as before.
+    #[serde(default, skip_serializing_if = "crate::schema::is_zero_tick")]
+    pub started: Tick,
 }
 
 impl Genesis {
@@ -202,7 +206,7 @@ impl Simulation {
         genesis.validate()?;
         let revision = genesis.rules.revision();
         let state = State {
-            tick: 0,
+            tick: genesis.started,
             next_action: 0,
             population: genesis.population.clone(),
             sites: genesis.sites.clone(),

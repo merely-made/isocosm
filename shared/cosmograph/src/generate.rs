@@ -509,6 +509,7 @@ impl Founding {
             group += 1;
         }
         let mut genesis = Genesis {
+            started: 0,
             spreads: Default::default(),
             version: crate::VERSION,
             seed: self.seed,

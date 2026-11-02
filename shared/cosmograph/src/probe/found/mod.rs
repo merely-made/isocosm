@@ -378,6 +378,7 @@ impl ProbeFounding {
         let (site_map, population) =
             self.found(&drawn, &lineages, sites, &per_site, hunters.as_ref())?;
         let genesis = Genesis {
+            started: 0,
             spreads: Default::default(),
             version: crate::VERSION,
             seed: self.seed,
