@@ -79,7 +79,11 @@ pub fn standing(session: &Session, lineage: &str) -> (u128, u64) {
         .filter(|g| g.entity.alive && g.entity.lineage == lineage)
         .fold((0, 0), |(held, n), g| {
             let mass = crate::meaning::mass(&crate::anatomy::books(&g.entity), rules);
-            (held + mass * u128::from(g.count), n + g.count)
+            // A band's pool holds what its members hold beyond the representative's.
+            let pool: i128 = g.pool.iter().filter(|(k, _)| crate::meaning::matter(rules, k))
+                .map(|(_, v)| *v).sum();
+            let banded = (mass * u128::from(g.count)).saturating_add_signed(pool);
+            (held + banded, n + g.count)
         })
 }
 
@@ -185,3 +189,5 @@ pub fn adapt_using(
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod coarse_tests;

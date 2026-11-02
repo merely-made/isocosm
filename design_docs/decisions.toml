@@ -5517,6 +5517,97 @@ area = "Ecology"
 summary = "A drawn lineage trait scales the scatter chance its medium or walking speed gives."
 draws_on = ["1092", "bodies.7"]
 
+[cases."1094"]
+title = "At the adaptation phase the player picks among what prospered, and each candidate is tested by a coarse copy over years"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking."
+draws_on = ["684", "1058", "1077", "1080", "1083", "ecology.1"]
+
+[cases."1095"]
+title = "Eponym's bodies hold native poses, so its rounds hand back like the others'"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's bodies hold native poses; its rounds hand back once a minute through the shared contract; per-step recording stops."
+draws_on = ["1080", "eponym.2", "eponym.3", "processes.1"]
+
+[cases."1096"]
+title = "Eponym's standalone client joins the sim's spatial clock"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's standalone client is rewired onto the sim's spatial clock, sharing the borrowed mode's round path."
+draws_on = ["1080", "1081", "1095"]
+
+[cases."1097"]
+title = "Round speed runs Eponym's fixed solver steps as substeps"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "At round speed n, Eponym runs n fixed 1/60 s solver steps per frame."
+draws_on = ["1080", "eponym.2"]
+
+[cases."1098"]
+title = "A body's first pose comes by its first handback"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "A body with a patch but no pose takes its first pose from its first admitted handback."
+draws_on = ["1080", "1095"]
+
+[cases."1099"]
+title = "Eponym's handed-back poses are checked at cell grain"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "The sim admits Eponym poses at cell grain, a clear root and eye in one patch; Eponym's solver keeps finer collision."
+draws_on = ["1095", "eponym.2"]
+
+[cases."1100"]
+title = "Eponym's sim ticks once a world minute, not once an intent"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's sim ticks once a world minute at a minute intent carrying handbacks; older saves replay as recorded."
+draws_on = ["1072", "1080", "1095"]
+
+[cases."1101"]
+title = "Eponym's generator version 9 gates native poses and the minute"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged."
+draws_on = ["1095", "1100", "schema.9"]
+
+[cases."1102"]
+title = "A rounds marker, not a version 9, gates Eponym's rounds"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged."
+draws_on = ["1095", "1100", "1101", "schema.9"]
+
+[cases."1103"]
+title = "Air and water strength is read from terrain, and controlled by site conditions where a region or world gives them"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Scatter's air and water strength is read from a site's terrain, controlled by site conditions where its region or world sets them."
+draws_on = ["1092", "ecology.4", "world.6"]
+
+[cases."1104"]
+title = "Each body breeds on its own clock"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "A body's periodic processes, breeding among them, run offset by its own birth tick, so members do not pulse together."
+draws_on = ["1076", "1078", "processes.7"]
+
+[cases."1105"]
+title = "Grazing works on bodied producers, with the bite scaled to the plant"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites."
+draws_on = ["1078", "bodies.5", "bodies.12", "bodies.13"]
+
+[cases."1106"]
+title = "The founding floor holds in every generated world"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Every generated world founds each lineage with at least six; pinned fixtures are re-recorded."
+draws_on = ["1090", "world.8"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6188,8 +6279,8 @@ draws_on = ["185", "186", "234", "235", "238", "877"]
 title = "Fighting and motion"
 source = "design_docs/doctrine.md"
 area = "Eponym"
-summary = "Blows resolve in the foreground and hand back; motion and contact are game-side; the sim is handed a solver."
-draws_on = ["233", "597", "943", "processes.1"]
+summary = "Blows resolve in the foreground and hand back; motion and contact are game-side; bodies hold native poses and hand back once a minute."
+draws_on = ["233", "597", "943", "1095", "1096", "1097", "processes.1"]
 
 [statements."eponym.3"]
 title = "Eponym's world is native Cosmograph"

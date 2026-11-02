@@ -12267,6 +12267,159 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1092, bodies.7 · summary A drawn lineage trait scales the scatter chance its medium or walking speed gives.
 
+1094. **At the adaptation phase the player picks among what prospered, and
+      each candidate is tested by a coarse copy over years.** Ruled by Mark
+      on 2026-11-02, asking "if we don't step the sim after there's
+      something to learn and adjust from, then when do creatures get the
+      chance to adapt, besides locally? and also, that is a crucial
+      mechanic. how should that work w/rt the roguelike of it all... or, how
+      should adaptation reach the sim? except through deep time?" He chose
+      "Pick what prospered" and "Coarse, over years". The reading: Ecology
+      1's forward copy stays the test of every change to a lineage. Play is
+      lived (memory, culture, the player imitated, births and their
+      selection), and a lineage itself changes only at the adaptation phase
+      (1083), whose candidates are what play showed: variants that bred,
+      behaviours that spread, what the played critter discovered. Each is
+      weighed by a copy run coarse (grouped or in the aggregate) over years
+      of world time, long enough to see generations and quick enough for
+      the phase. The player sees what prospered and how each fared, and
+      picks one or splits the line to take a variant; every other lineage
+      picks by its copy, and deep time is the same phase with nobody
+      picking. His question on leaves ("why wouldn't grazers eat the leaves
+      instead of the parts of the plant that produce leaves? or fruit,
+      etc.") went to 1078's lane as a cue, not ruled: a bite reaching only
+      exposed parts, and fruit grown to be eaten, carrying seed.
+
+      Links: area Ecology · draws on ecology.1, 684, 1058, 1077, 1080, 1083 · summary The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking.
+
+1095. **Eponym's bodies hold native poses, so its rounds hand back like
+      the others'.** Ruled by Mark on 2026-11-02: "Give Eponym native
+      poses", over a patch-grain handback (recommended) and keeping
+      per-step recording. Asked when the foreground lane found Eponym's
+      borrowed mode recording every 60 Hz step as a `Patch` command
+      (`eponym-play/src/contract/mode/actions/motion.rs:51`), its bodies
+      holding no pose in the sim (no spatial templates or poses in
+      `eponym-play` or `eponym-client`), so the handback of case 1080 would
+      refuse them, and doctrine Eponym 2 saying "no host supplies a final
+      position". The reading: Eponym worlds found spatial templates and
+      poses in the sim, so the one handback contract serves all three
+      games; per-step recording stops; once a minute the sim admits the
+      handed-back pose against its invariants.
+
+      Links: area Eponym · draws on 1080, eponym.2, eponym.3, processes.1 · summary Eponym's bodies hold native poses; its rounds hand back once a minute through the shared contract; per-step recording stops.
+
+1096. **Eponym's standalone client joins the sim's spatial clock.** Ruled
+      by Mark on 2026-11-02: "Rewire the client", over giving the client
+      round speed only. Today the client's `tick_motion`
+      (`eponym-client/src/bin/session/actions.rs`) logs each step in
+      Eponym's own intent log over a world that advances plainly, with no
+      spatial minute. The reading: the client and the borrowed mode share
+      one path, the round's pacing, the worker tick and the handback.
+
+      Links: area Eponym · draws on 1095, 1081, 1080 · summary Eponym's standalone client is rewired onto the sim's spatial clock, sharing the borrowed mode's round path.
+
+1097. **Round speed runs Eponym's fixed solver steps as substeps.** Ruled
+      by Mark on 2026-11-02: "Substeps (Recommended)". Eponym's solver
+      steps a fixed 1/60 s (`eponym-motion` `FIXED_DT_SECONDS`). The
+      reading: at speed n, n fixed steps run per frame, so physics,
+      determinism and saved motion logs keep their meaning.
+
+      Links: area Eponym · draws on 1080, eponym.2 · summary At round speed n, Eponym runs n fixed 1/60 s solver steps per frame.
+
+1098. **A body's first pose comes by its first handback.** Ruled by Mark on
+      2026-11-02: "First handback poses it (Recommended)". Eponym bodies made
+      at runtime (arrivals, embodiments, spread) hold no pose for a handback
+      to be checked against. The reading: a handback may admit a body's
+      first pose when the body already holds a patch at that site, so the
+      minute's record stays the only record of movement.
+
+      Links: area Eponym · draws on 1095, 1080 · summary A body with a patch but no pose takes its first pose from its first admitted handback.
+
+1099. **Eponym's handed-back poses are checked at cell grain.** Ruled by
+      Mark on 2026-11-02: "Cell grain (Recommended)", over the whole-body
+      check, which could refuse poses Eponym's solver accepted. The reading:
+      the sim admits a clear root and eye inside one patch, the check older
+      templates already get; Eponym's solver keeps its finer collision.
+
+      Links: area Eponym · draws on 1095, eponym.2 · summary The sim admits Eponym poses at cell grain, a clear root and eye in one patch; Eponym's solver keeps finer collision.
+
+1100. **Eponym's sim ticks once a world minute, not once an intent.** Ruled
+      by Mark on 2026-11-02: "Only at the minute (Recommended)". The
+      standalone game ticked the sim after every intent
+      (`eponym-play/src/state.rs:319`), so each 60 Hz motion step was a
+      world minute, sixty world minutes a real second. The reading: from the
+      new generator version the sim ticks at a minute intent carrying the
+      handbacks; older saves replay as they were.
+
+      Links: area Eponym · draws on 1072, 1080, 1095 · summary Eponym's sim ticks once a world minute at a minute intent carrying handbacks; older saves replay as recorded.
+
+1101. **Eponym's generator version 9 gates native poses and the minute.**
+      Ruled by Mark on 2026-11-02: "Generator version 9 (Recommended)", over a
+      separate session-format bump. Saves already rebuild their world from
+      their generator version (2 to 8). The reading: version 9 founds spatial
+      templates and poses, ticks at the minute and records handbacks; saves
+      from 2 to 8 replay unchanged.
+
+      Links: area Eponym · draws on 1095, 1100, schema.9 · summary Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged.
+
+1102. **A rounds marker, not a version 9, gates Eponym's rounds.** Ruled by
+      Mark on 2026-11-02: "A rounds marker (Recommended)", reopening 1101
+      when the foreground lane found that Eponym keeps one generator version
+      per founding kind (4 plain, 5 the combat fixture, 6 materials, 7 owned
+      materials, 8 spread), and that the client's real worlds are the
+      material, owned and spread ones
+      (`eponym-client/src/bin/session/founding/input.rs:51-60`), so a
+      version 9 for the plain generator would leave actual play off the new
+      path. The reading: a rounds marker in the founding's intent log, like
+      the material-profile markers, turns on native poses, handbacks and
+      minute ticks for any founding kind; saves without it replay unchanged.
+      Replaces 1101, and 1100's "new generator version".
+
+      Links: area Eponym · draws on 1101, 1100, 1095, schema.9 · summary A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged.
+
+1103. **Air and water strength is read from terrain, and controlled by
+      site conditions where a region or world gives them.** Ruled by Mark on
+      2026-11-02, reopening 1092's premise: in a stock world `world:air` and
+      `world:water` are ground materials, not site conditions (the only site
+      conditions being `world:habitable` and `world:weather`,
+      `generate.rs`). Answer: "Can we do 1 in a way that allows it to be
+      controlled by site conditions when the area exists in the context of a
+      region/world". The reading: a site's air and water strength for
+      scattering is read from its laid terrain (water from the laid water,
+      air from weather and exposure); where the site sits in a region or
+      world that sets those conditions, they control it.
+
+      Links: area Ecology · draws on 1092, ecology.4, world.6 · summary Scatter's air and water strength is read from a site's terrain, controlled by site conditions where its region or world sets them.
+
+1104. **Each body breeds on its own clock.** Ruled by Mark on 2026-11-02:
+      "Each body's own clock (Recommended)". Every member of a lineage bred on
+      the same world-clock tick, so counts stepped flat, flat, jump and each
+      season's young crashed together, the main remaining cause of the
+      year-matrix's month losses over a third. The reading: a body's periodic
+      processes run on a period offset by its own birth tick.
+
+      Links: area Processes and rules · draws on 1078, 1076, processes.7 · summary A body's periodic processes, breeding among them, run offset by its own birth tick, so members do not pulse together.
+
+1105. **Grazing works on bodied producers, with the bite scaled to the
+      plant.** Ruled by Mark on 2026-11-02, on his cue that grazers should
+      take leaves, not whole plants: "Bodies, bigger, or, smaller bites".
+      The lane's worlds were bodiless (a plant one account; a grazer's bite a
+      tenth of an adult, two bites a seedling). The reading: producers get
+      bodies, so a bite reaches only exposed parts and the root store
+      survives (1078's "reserve no bite reaches"); the bite is made small
+      against the plant, by larger producers or smaller bites, whichever
+      measures better. Fruit is not taken up now.
+
+      Links: area Ecology · draws on 1078, bodies.5, bodies.12, bodies.13 · summary Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites.
+
+1106. **The founding floor holds in every generated world.** Ruled by Mark
+      on 2026-11-02: "Every generated world (Recommended)". Case 1090's floor
+      of six was applied only to world-time foundings; widening it
+      re-records pinned generated fixtures and re-measures A1.
+
+      Links: area World generation · draws on 1090, world.8 · summary Every generated world founds each lineage with at least six; pinned fixtures are re-recorded.
+
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
