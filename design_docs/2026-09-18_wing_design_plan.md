@@ -12645,6 +12645,44 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Eponym · draws on 1124, 716 · summary The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays.
 
+1128. **A playable denizen is a sim body plan, designable in a creator.**
+      Ruled by Mark on 2026-11-02: "Sim body plans + creator (Recommended)",
+      after seeing Eponym's played body drawn as part boxes: "eponym... i gotta say, you shouldn't be blocks, i was more picturing, like, be an individual...? imagine the old baked voxel tokens in isocosm. like, that's at least approaching a character model. although i would expect that it would be, y'know, a unique, generated, designable humanoid/denizen that you'd be playing, among other procedurally generated, unique entities... seems pretty far from what we've got. although the perspective isn't bad!" The finding:
+      the played body was the compact six-part fixture (Eponym 4), and the
+      sim's generated bodies were segmented flora and fauna only, with no
+      humanoid or denizen plan. The reading: Cosmograph gains generated body
+      plans for sophonts and denizens, drawn per lineage within bounds like
+      other recipes and editable in a creator within those bounds, so people
+      grow out of the world (World 10) and all three games read the same
+      bodies.
+
+      Links: area Bodies and anatomy · draws on eponym.4, world.10, bodies.1, bodies.11 · summary Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds.
+
+1129. **Eponym draws bodies through the shared layered look.** Ruled by
+      Mark on 2026-11-02: "Shared layered looks (Recommended)". Eponym drew
+      each body's part boxes, tinted played or other, and no Eponym crate
+      used isometer's mesh. The reading: Eponym draws through the layered
+      look of VTT 7 and isometer's baked voxels, as Isocosm's tokens do.
+
+      Links: area Presentation · draws on vtt.7, 1128 · summary Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens.
+
+1130. **A player directs companions by orders, and may take direct control
+      where agreed.** Ruled by Mark on 2026-11-02: "Both", after "though first person should also be possible in addition to the kenshi-esque overview. being able to control your character and direct others..." The
+      reading: a player gives companions orders (go, hold, fight, carry) that
+      they weigh with their own minds and may refuse; where the companion's
+      agreement allows, the player may switch to and drive it directly. The
+      player still lives one creature (Eponym 1).
+
+      Links: area Eponym · draws on eponym.1, vtt.2, 1071 · summary Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly.
+
+1131. **A shared perspective camera comes first.** Ruled by Mark on
+      2026-11-02: "Shared perspective camera (Recommended)". The reading: the
+      shared renderer gains a perspective camera giving first person and
+      over the shoulder in every product, switchable live against the
+      overview (Presentation 1).
+
+      Links: area Presentation · draws on presentation.1, 1130 · summary A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

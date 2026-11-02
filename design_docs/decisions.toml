@@ -5755,6 +5755,34 @@ area = "Eponym"
 summary = "The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays."
 draws_on = ["716", "1124"]
 
+[cases."1128"]
+title = "A playable denizen is a sim body plan, designable in a creator"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds."
+draws_on = ["bodies.1", "bodies.11", "eponym.4", "world.10"]
+
+[cases."1129"]
+title = "Eponym draws bodies through the shared layered look"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens."
+draws_on = ["1128", "vtt.7"]
+
+[cases."1130"]
+title = "A player directs companions by orders, and may take direct control where agreed"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly."
+draws_on = ["1071", "eponym.1", "vtt.2"]
+
+[cases."1131"]
+title = "A shared perspective camera comes first"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview."
+draws_on = ["1130", "presentation.1"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6419,8 +6447,8 @@ draws_on = ["96", "97", "98", "100", "139", "739", "836", "1007"]
 title = "Lives and co-op"
 source = "design_docs/doctrine.md"
 area = "Eponym"
-summary = "Each player lives their own creature; first lives and successions are the player's picks among eligible lives."
-draws_on = ["185", "186", "234", "235", "238", "877"]
+summary = "Each player lives their own creature; first lives and successions are the player's picks among eligible lives; companions take orders or, where agreed, direct control."
+draws_on = ["185", "186", "234", "235", "238", "877", "1130"]
 
 [statements."eponym.2"]
 title = "Fighting and motion"
@@ -6441,7 +6469,7 @@ title = "Native recipes make bodies and things"
 source = "design_docs/doctrine.md"
 area = "Eponym"
 summary = "Native recipes develop bodies and stock new items; fresh matter fits the development; founding profiles restore by version tag."
-draws_on = ["816", "818", "819", "825", "835"]
+draws_on = ["816", "818", "819", "825", "835", "1128"]
 
 [statements."host.1"]
 title = "One sim host under three product hosts"
@@ -6673,7 +6701,7 @@ title = "One default view"
 source = "design_docs/doctrine.md"
 area = "Presentation"
 summary = "The default view is the 2:1 dimetric at 30 degrees in quarter turns, in every product; it precludes no other view."
-draws_on = ["18", "382", "387"]
+draws_on = ["18", "382", "387", "1131"]
 
 [statements."presentation.2"]
 title = "The detail ladder"
@@ -7113,7 +7141,7 @@ title = "A look is derived in layers"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "A look is derived in layers (shape, material, make, style, condition, seed, overrides) into one Appearance read by preview and board."
-draws_on = ["1012", "1019", "1022", "1028", "1035"]
+draws_on = ["1012", "1019", "1022", "1028", "1035", "1129"]
 
 [statements."world.1"]
 title = "Shape and scale"

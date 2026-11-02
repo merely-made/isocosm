@@ -410,6 +410,7 @@ three design docs that cite it. The record holds the words.
 | 1087 | Speed's anatomy factor follows leg length by the Froude rule, stride capped by joint swing; legless bodies move in body lengths per second. | none |
 | 1088 | Each joint carries an axis and an angle range drawn per lineage within its form; animation, stride and foot placement keep within them. | none |
 | 1112 | Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md), [ecology from bodies](../mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md) |
+| 1128 | Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds. | none |
 
 ## Record and history
 
@@ -611,6 +612,8 @@ three design docs that cite it. The record holds the words.
 | 870 | Baked map thumbnails are an optional backdrop per world or view and respect sharp clipping. | none |
 | 945 | F7: the producer builds its terrain from the resident window (V1b's capacity-fixed cache), not a raised brick cap. | none |
 | 970 | Bodies on the tenant get a fixed sun toward (0.4, 0.8, 0.3), ambient 0.38, sun 0.62, shadows off, matching the tracer; --body-light scales both. | [orthographic voxel presentation](../mesocosm/design_docs/2026-10-28_orthographic_voxel_presentation_plan.md) |
+| 1129 | Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens. | none |
+| 1131 | A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview. | none |
 
 ## Stack and engine
 
@@ -803,6 +806,7 @@ three design docs that cite it. The record holds the words.
 | 1125 | The standalone client gets 1x, 2x, 4x and 8x keys and a readout. | none |
 | 1126 | An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds. | none |
 | 1127 | The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays. | none |
+| 1130 | Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly. | none |
 
 ## The VTT
 
