@@ -190,6 +190,23 @@ dung lawns (3.6) are the first symbioses no one authors.
   rates from size moves its numbers again (1077 already re-measures it).
 - **Heritable rates and determinism.** Constants evolve as integers, drawn
   and inherited like any trait; nothing floats in the sim.
+- **Mass or leg length** (the PG7 and travel session, 2026-11-02). Speed
+  reads no mass: `speed::Speed::of` reads the current body's mean leg length
+  (hip to sole over `isometer_core::legs::chains`), or body length where
+  legless. 3.1 scales by mass. The two read one figure only by a choice, and
+  they are not interchangeable: a long-legged light body differs from a
+  stout one.
+- **Terrain churn** (same source). 3.6's path exists: `Effect::Terrain`
+  carves or deposits at the base cell (1 mm in Mesocosm), recorded as a
+  command, bumping `terrain_revision`; Places re-derive the dirtied region
+  (about 0.14 s for a whole 256-cell window), and every cached route and
+  travel choice keys on the revision. Many diggers a tick would re-derive
+  often, so edits would batch per tick or per region.
+- **Dormant bodies in a round** (same source). Out of view, a body that
+  does not choose stays posed at no per-tick cost. In view, a framed body
+  takes one of the foreground's 16 slots (1086) whether or not it can act;
+  whether the foreground skips bodies that cannot act is the foreground
+  layer's question.
 - **Roles as readings.** 3.1 and 3.2 push toward roles measured, not
   founded (case 1055); the web of diets' five founded roles become a
   generator's starting draw, not the web's definition.
@@ -211,3 +228,5 @@ dung lawns (3.6) are the first symbioses no one authors.
 - Whether 3.7 evolves worlds (worldgen offers only persisting webs) or also
   keeps evolving them in play, every boundary revising rate constants.
 - Which constants are heritable, and within what bounds a world sets.
+- Whether 3.1 scales by mass, by the leg length speed already reads, or by
+  both (§5).
