@@ -12033,6 +12033,19 @@ the later sections derive from, not rules; new rules are numbered by Mark.
       for the lineage policy (58c97ec7).
 
       Links: area Ecology · draws on 1077, ecology.2, ecology.3, ecology.4 · summary Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding.
+      *After the first year-runs* (all lineages dead by month eight on seeds
+      9, 3 and 7: founders born at tick zero bred in one pulse, grazers
+      doubled at month four, producers seeding once a season crashed at
+      month five), Mark ruled: founders' ages are staggered across each
+      role's maturity and lifespan, born before the founding ("Stagger
+      founders' ages"); decomposers eat litter, dung and corpses and return
+      them as enriched soil for producers, closing the soil cycle ("i would
+      think that decomposers would produce for producers, right? like eat
+      litter, refuse (dead leaves), and corpses to turn them into new soil
+      substrate for plants, enriching the soil"); producers seed once a
+      season ("Seasonal seeding"); and producer growth is faster overall and
+      faster still while a producer is below adult size, holding at adult
+      ("buff growth speed and also apply 1").
 
 1079. **Living worlds and sensing without nerves: the research brief's
       rulings.** Ruled by Mark on 2026-11-01 on the six questions of
