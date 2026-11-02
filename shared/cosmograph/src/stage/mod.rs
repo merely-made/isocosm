@@ -40,6 +40,8 @@ pub(crate) struct Stage {
     pub(crate) birth_places: Vec<crate::spatial::BirthMark>,
     pub(crate) terrain: Option<crate::operations::StagedTerrain>,
     pub(crate) step: Option<crate::spatial::StagedStep>,
+    /// A traveller's departure (case 1084).
+    pub(crate) travel: Option<(Id, crate::spatial::foraging::Travel)>,
     pub(crate) direction: Option<crate::spread::Direction>,
     project_decision: Option<crate::projects::DecisionStamp>,
     institution_decision: Option<crate::institutions::DecisionStamp>,
@@ -126,6 +128,7 @@ impl Simulation {
             birth_places: Vec::new(),
             terrain: None,
             step: None,
+            travel: None,
             direction: None,
             project_decision: None,
             institution_decision: None,

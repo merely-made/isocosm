@@ -33,14 +33,19 @@ pub struct Fixture {
 }
 
 pub fn control(hungry: bool, nodes: usize, edible: bool) -> Fixture {
-    build(hungry, nodes, edible, 4, false)
+    build(hungry, nodes, edible, 4, false, false)
+}
+
+/// The hungry control in a world whose foragers travel out of view (1084).
+pub fn travelling() -> Fixture {
+    build(true, 256, true, 4, false, true)
 }
 
 pub fn at_food() -> Fixture {
-    build(true, 256, true, 0, true)
+    build(true, 256, true, 0, true, false)
 }
 
-fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) -> Fixture {
+fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool, travel: bool) -> Fixture {
     let mut founded = ordinary(16_003_851_315_348_448_882);
     let mut domain = founded.genesis.founding.clone().unwrap();
     domain.bodies.as_mut().unwrap().hazard = [0; 2];
@@ -70,6 +75,10 @@ fn build(hungry: bool, nodes: usize, edible: bool, gap: u64, migration: bool) ->
         }
     }
     body::declare(g).unwrap();
+    // These controls walk by the game's steps, as a round's bodies do.
+    if !travel {
+        g.rules.speed = None;
+    }
     // Isolate contact within a site, retaining feeding, upkeep, healing and
     // reproduction choices. The ordinary acceptance run keeps migration too.
     for process in g

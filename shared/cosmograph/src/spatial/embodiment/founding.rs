@@ -320,6 +320,10 @@ pub(super) fn declare_in(genesis: &mut Genesis, full_site: bool) -> Result<()> {
         );
         genesis.rules.processes.insert(key, process);
     }
+    // Its foragers travel out of view at their walking speed (case 1084).
+    if !templates.foraging.is_empty() {
+        genesis.rules.speed.get_or_insert_with(|| crate::speed::Speed::froude(genesis.world.base_unit_micrometres));
+    }
     genesis.rules.spatial_templates = Some(templates);
     genesis.validate()
 }
