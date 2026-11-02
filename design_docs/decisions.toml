@@ -5397,6 +5397,14 @@ area = "Processes and rules"
 summary = "Pacing keys on each member's identity, so grouped and individual execution choose alike."
 draws_on = ["sim-execution D15", "sim-execution D16", "processes.7"]
 
+[cases."1077"]
+title = "The ecology is retuned to world time, one ecology for every game"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured."
+draws_on = ["1074", "ecology.2", "ecology.3", "world.8"]
+amends = ["1072"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

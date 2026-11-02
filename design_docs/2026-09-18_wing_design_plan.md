@@ -11985,6 +11985,22 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Processes and rules · draws on processes.7, sim-execution D15, sim-execution D16 · summary Pacing keys on each member's identity, so grouped and individual execution choose alike.
 
+1077. **The ecology is retuned to world time, one ecology for every game.**
+      Ruled by Mark on 2026-11-01 ("Retune the ecology for world time", "Yes,
+      one ecology in world time"), after every generated web was measured
+      dying out within a world day: rates tuned per tick before 1072 made a
+      tick a minute left creatures living tens of minutes, eating every three
+      and breeding every fourteen, stripping their producers within the hour.
+      The reading: each role's lifespans, birth spacing, metabolism, feeding
+      and growth become world-time data, measured until a year-long web holds
+      steady (every role alive at month twelve, populations bounded); people
+      then join as a slow omnivore, their preset measured against that web;
+      Mesocosm's critters live biologically plausible spans too, its tempo
+      dial carrying play's pace, and A1's gate is re-measured. This replaces
+      1072's keeping of A1's values as minutes.
+
+      Links: area Ecology · amends 1072 · draws on 1074, ecology.2, ecology.3, world.8 · summary The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency
