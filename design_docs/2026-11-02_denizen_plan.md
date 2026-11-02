@@ -213,6 +213,11 @@ product data.
   shapes (case 1141).
 - `shared/isometer/src/bodies.rs` (`SceneVolumes`): a voxel volume per part
   up close, one baked volume for the far sprite rung (case 1139).
+- Microvoxels (case 1149): the look draws each part at a number of
+  microvoxels per sim cell, shaped by its form and the layered look; the sim
+  keeps cell grain. P6's voxel editor works at the same grain. Finer body
+  cells than terrain's come later, where play needs them, and are not this
+  phase.
 
 **Done when:**
 - One derivation turns a body document and its lineage into a look, and a
@@ -222,11 +227,13 @@ product data.
   (the existing appearance tests).
 - A part's voxels stay within its declared box, and the part ids a wound
   addresses are the ones drawn.
+- A part's microvoxels stay within its cells, and a severed part's cells
+  vanish from the drawn look.
 - **Headed:** the Isocosm board with a sim-backed token drawn from its part
   tree beside a class token, scene and DOM boards, in
   `Code/testing/isocosm/denizen/`.
 
-**Needs:** cases 1136, 1139, 1141. Bodies from P2 are not needed: it runs
+**Needs:** cases 1136, 1139, 1141, 1149. Bodies from P2 are not needed: it runs
 on the roster and the six-part fixture.
 
 ### P4. Eponym draws through the look

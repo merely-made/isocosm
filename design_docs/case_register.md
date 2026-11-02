@@ -628,7 +628,7 @@ three design docs that cite it. The record holds the words.
 | 1139 | Bodies hold voxels per part up close and bake one volume for the far rung. | [denizen](2026-11-02_denizen_plan.md) |
 | 1140 | One isometer camera with orthographic and perspective projections; presets are constructors. | [denizen](2026-11-02_denizen_plan.md) |
 | 1143 | First person's eye sits at the most sense-celled part, else the root's top. | [denizen](2026-11-02_denizen_plan.md) |
-| 1149 | Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later. | none |
+| 1149 | Looks draw parts in microvoxels per sim cell now; bodies may get finer cells than terrain later. | [denizen](2026-11-02_denizen_plan.md) |
 
 ## Stack and engine
 
