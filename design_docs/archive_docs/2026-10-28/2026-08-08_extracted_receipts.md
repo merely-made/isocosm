@@ -58,6 +58,7 @@ against the wing design record; see
 ---
 
 *Archived 2026-10-28.* Cut, with the other active plans, into a new set: what was
-still open, deferred or a follow-on here now lives in `2026-10-28_vtt_overlay_plan.md` (in the product's
-`design_docs/`), which cites this file by line. This copy is history: its
+still open, deferred or a follow-on here now lives in `2026-11-02_vtt_overlay_plan.md` (in the product's
+`design_docs/`), which cites this file by line through the 2026-10-28 plan, itself
+archived in `archive_docs/2026-11-02/`. This copy is history: its
 status lines, receipts and claims are as they stood, not current.

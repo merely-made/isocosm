@@ -198,7 +198,7 @@ than treating those controls as implementations of tabletop magic.
   `MapDocument.system_data`, existing inventories, dice and height visibility;
   native body documents and native clock/sky reads are inputs. There is no new
   biological simulator, universal spell level or material cost curve.
-- Usage and exact supported profiles: [effect procedures](../crates/isocosm-system/data/effects/README.md).
+- Usage and exact supported profiles: [effect procedures](../../../crates/isocosm-system/data/effects/README.md).
 
 #### F12. Magic Weapon in the shipping table
 
@@ -293,3 +293,7 @@ elapsed time, and restore/replay the same accepted results.
 - 2026-10-28: F11a/F11b executable API and headless demonstration built for all nine named procedures, with saved lifecycle and existing consumer integration. F11c remains open; the previous catalogue-only landing did not fulfill the whole agreed small set. Use `cargo run -p isocosm-system --example cast_effects` for execution and `inspect_effects` for coverage.
 - 2026-10-28: F10a initial catalogue, admission checks and native candidate inspector built; F10b native allocation/growth conservation and exact-history controls passed. F10c and edition-native execution remain open. Run `cargo run -p isocosm-system --example inspect_effects -- --markdown` for the readable coverage matrix, `--json` for the revisioned report, or add `--genesis PATH` to inspect a native Genesis rather than the labelled reference founding. Run evidence belongs in the plan's receipt file.
 - 2026-10-28: cut from the VTT overlay, environmental surfaces and extracted-receipts plans.
+
+---
+
+*Archived 2026-11-02.* Cut into a new plan: what was still open, deferred or a follow-on here now lives in `2026-11-02_vtt_overlay_plan.md` (in the product's `design_docs/`), which cites this file by line. This copy is history: its status lines, findings and claims are as they stood, not current; its run evidence is also in `receipts/2026-10-28_vtt_overlay_plan_receipts.md`.
