@@ -1514,11 +1514,11 @@ Links: draws on 103, 866, vtt.4, 1010 · summary The sim knows an arc's parts an
 The wing's default view is the 2:1 dimetric at 30°, turned in quarter steps,
 in every product, Mesocosm included. It precludes no other view (true and
 free-yaw isometric, first person, over the shoulder, Mesocosm's terrarium
-section); first person and over the shoulder wait on a perspective camera the
-scene does not have yet. A game's grid is a projection: the sim's volume is
+section); first person and over the shoulder come from a perspective camera
+in the shared renderer, switchable live against the overview, not yet built. A game's grid is a projection: the sim's volume is
 cubic, and a tile of any shape is a region of voxels an overlay lays over it.
 
-Links: draws on 18, 382, 387 · summary The default view is the 2:1 dimetric at 30 degrees in quarter turns, in every product; it precludes no other view.
+Links: draws on 18, 382, 387, 1131 · summary The default view is the 2:1 dimetric at 30 degrees in quarter turns, in every product; it precludes no other view.
 
 *Reviewed 2026-10-22, new. 382 left open whether Mesocosm opens in the
 default; its camera then defaulted to true isometric (35.26°). Mark: "Follow
@@ -1971,9 +1971,11 @@ default) and how they pick: a newly generated outsider, a birth into one of
 the world's lineages, or a named denizen of the drawn world. At a death the
 player chooses who to become among companions the world's authored social
 agreement or standing predicate makes eligible; with none, it is the player's
-call: another life in that world or a new one.
+call: another life in that world or a new one. A player directs companions
+by orders they weigh with their own minds and may refuse, and drives one
+directly where its agreement allows.
 
-Links: draws on 185, 186, 234, 235, 238, 877 · summary Each player lives their own creature; first lives and successions are the player's picks among eligible lives.
+Links: draws on 185, 186, 234, 235, 238, 877, 1130 · summary Each player lives their own creature; first lives and successions are the player's picks among eligible lives; companions take orders or, where agreed, direct control.
 
 *Reviewed 2026-10-22, new. Mark: "As drafted, 187 into Directing 1".*
 
@@ -2024,9 +2026,13 @@ matter fits what it develops; supplied stocks stay conserved and overflow
 refuses whole. New material items take their stocks from named native
 material recipes; existing saves keep their holdings. A saved version tag
 selects a declared founding profile, and restore regenerates and
-authenticates it.
+authenticates it. A playable sophont or denizen is a sim body plan drawn per
+lineage, editable in a creator within its bounds.
 
-Links: draws on 816, 818, 819, 825, 835 · summary Native recipes develop bodies and stock new items; fresh matter fits the development; founding profiles restore by version tag.
+*Not yet built:* sophont and denizen body plans and their creator; the
+played body is still the six-part fixture.
+
+Links: draws on 816, 818, 819, 825, 835, 1128 · summary Native recipes develop bodies and stock new items; fresh matter fits the development; founding profiles restore by version tag.
 
 *Reviewed 2026-10-22, new. Mark: "Structure only"; the first picks'
 numbers (818, 819) stay in their cases, awaiting native measurement.*
@@ -2141,9 +2147,10 @@ material, finish from make, style from a pack (from culture, once built),
 wear from condition, variation from its seed within its lineage's bounds, and
 the creator's overrides last. A pack binds class names to layers and
 palettes, so a campaign reskins without touching the app; the preview and the
-board read the same look, sim on or off. Items are generated first.
+board read the same look, sim on or off, and every product draws bodies
+through it. Items are generated first.
 
-Links: draws on 1012, 1019, 1022, 1028, 1035 · summary A look is derived in layers (shape, material, make, style, condition, seed, overrides) into one Appearance read by preview and board.
+Links: draws on 1012, 1019, 1022, 1028, 1035, 1129 · summary A look is derived in layers (shape, material, make, style, condition, seed, overrides) into one Appearance read by preview and board.
 
 *Refined 2026-10-30 from case 1035 (Mark: "Derived in layers").*
 

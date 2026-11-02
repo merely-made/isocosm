@@ -45,9 +45,20 @@ pub(super) struct Start {
     pub glyphs: Option<GlyphReading>,
 }
 
+/// Whether new worlds are founded in rounds (case 1122): yes unless
+/// `EPONYM_ROUNDS` is `0`, `off` or `false`.
+pub(super) fn rounds() -> bool {
+    std::env::var("EPONYM_ROUNDS").map_or(true, |v| !matches!(v.trim(), "0" | "off" | "false"))
+}
+
 pub(super) fn start() -> Result<Start, String> {
+    let rounds = rounds();
     let Some(path) = std::env::var_os("EPONYM_MATERIAL_WORLD") else {
-        let fixture = session_fixture::timed_action_world_solving(eponym_motion::SOLVER);
+        let fixture = if rounds {
+            session_fixture::timed_action_world_in_rounds_solving(eponym_motion::SOLVER)
+        } else {
+            session_fixture::timed_action_world_solving(eponym_motion::SOLVER)
+        };
         let played = fixture.keeper;
         let model = SceneModel::timed(fixture.action, played).into_handle();
         let glyphs = match GlyphReading::new(session_fixture::demonstration_rules(played), model.borrow().game()) {
@@ -59,7 +70,12 @@ pub(super) fn start() -> Result<Start, String> {
     };
     let bytes = std::fs::read(path).map_err(|error| error.to_string())?;
     let input = input::decode(&bytes)?;
-    let mut game = GameState::new(input.world).with_motion_solver(eponym_motion::SOLVER);
+    let world = if rounds {
+        input.world.in_rounds().map_err(|error| format!("this world cannot be founded in rounds ({error:?}); set EPONYM_ROUNDS=0"))?
+    } else {
+        input.world
+    };
+    let mut game = GameState::new(world).with_motion_solver(eponym_motion::SOLVER);
     for (index, intent) in input.initial_intents.into_iter().enumerate() {
         game.apply(intent).map_err(|error| format!("initial intent {index}: {error:?}"))?;
     }

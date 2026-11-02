@@ -30,6 +30,7 @@ use super::policy::{Appearance, CameraPolicy};
 /// the answer: the timed-action wrapper goes *inside* the model rather than
 /// beside it, and `session()` reads through. There is still exactly one
 /// `Session`, and every panel reads it.
+#[derive(Clone)]
 pub enum Held {
     /// A session nothing else wraps. What the producer tests use.
     Plain(Session),
@@ -44,6 +45,22 @@ impl Held {
             Self::Timed(action) => action.session(),
         }
     }
+
+    /// One accepted cut. The timed arm reconciles the open action against the
+    /// batch, so an injury that severs a contributing limb repairs the action
+    /// rather than leaving it addressing a part that no longer exists.
+    pub fn apply_batch(&mut self, intents: &[GameIntent]) -> Result<Vec<GameEvent>, TimedActionError> {
+        match self {
+            Self::Plain(session) => {
+                let mut events = Vec::new();
+                for intent in intents {
+                    events.extend(session.apply_game(intent.clone())?);
+                }
+                Ok(events)
+            },
+            Self::Timed(action) => action.apply_game_batch(intents),
+        }
+    }
 }
 
 /// One played session plus the presentation policy over it.
@@ -51,7 +68,7 @@ impl Held {
 /// World state lives in the `Session`; everything else on this struct is
 /// presentation and reaches no intent.
 pub struct SceneModel {
-    pub(super) held: Held,
+    pub(crate) held: Held,
     played: SubjectId,
     /// Authored production motion rules; absent only in the older demo path.
     /// Accepted motion intents retain the actual rules in game history.
@@ -71,6 +88,8 @@ pub struct SceneModel {
     /// Eponym's capacity-fixed V1b brick cache for the resident terrain page.
     #[cfg(feature = "r1-proof")]
     pub(super) terrain_residency: Option<crate::residency::StableResidency>,
+    /// The client's round, when the world plays in them (case 1096).
+    pub(crate) round: Option<crate::round::Round>,
 }
 
 impl SceneModel {
@@ -95,6 +114,7 @@ impl SceneModel {
             scene_size: [0; 2],
             #[cfg(feature = "r1-proof")]
             terrain_residency: None,
+            round: None,
         }
     }
 
@@ -144,41 +164,43 @@ impl SceneModel {
         self.apply_batch(&[intent])
     }
 
-    /// One accepted cut. The timed arm reconciles the open action against the
-    /// batch, so an injury that severs a contributing limb repairs the action
-    /// rather than leaving it addressing a part that no longer exists.
+    /// One accepted cut. A minute in flight is waited for first, so an
+    /// intent never lands on a session about to be replaced; hosts queue
+    /// rather than wait (case 1121).
     pub fn apply_batch(
         &mut self,
         intents: &[GameIntent],
     ) -> Result<Vec<GameEvent>, TimedActionError> {
-        match &mut self.held {
-            Held::Plain(session) => {
-                let mut events = Vec::new();
-                for intent in intents {
-                    events.extend(session.apply_game(intent.clone())?);
-                }
-                Ok(events)
-            },
-            Held::Timed(action) => action.apply_game_batch(intents),
+        if self.minute_pending() {
+            let _ = self.drain_round();
         }
+        self.held.apply_batch(intents)
     }
 
     /// Replaces the session wholesale, for save/load and for a test that
     /// drives intents through another session wrapper.
     pub fn set_session(&mut self, session: Session) {
+        if self.minute_pending() {
+            let _ = self.drain_round();
+        }
         self.held = Held::Plain(session);
+        self.forget_drawn();
     }
 
     /// Replaces the timed-action wrapper wholesale, for F9 load.
     pub fn set_action(&mut self, action: TimedActionSession) {
+        if self.minute_pending() {
+            let _ = self.drain_round();
+        }
         self.held = Held::Timed(Box::new(action));
+        self.forget_drawn();
     }
 
     /// Where the frame is centred: the played subject's exact pose, or its
     /// logical cell when it has no pose yet.
     pub fn follow_centre(&self) -> Result<[f32; 3], GameError> {
         let game = self.game();
-        if let Some(pose) = game.pose(self.played) {
+        if let Some(pose) = self.drawn_pose(self.played) {
             let scale = eponym_play::MOTION_SCALE as f32;
             return Ok([0, 1, 2].map(|i| pose.position[i] as f32 / scale));
         }

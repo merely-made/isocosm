@@ -94,6 +94,12 @@ pub enum MovementError {
     WrongMotionStep { previous: u64, next: u64 },
     Motion(MotionError),
     WrongTick { expected: Tick, actual: Tick },
+    /// A minute's runs are empty or hold more than a minute of steps.
+    MinuteRuns,
+    /// A minute's re-solved motion ends away from its claimed pose.
+    MinuteEnd,
+    /// A minute's motion runs on past its body's fatal landing.
+    MinuteAfterDeath,
     Encode,
     Decode,
 }

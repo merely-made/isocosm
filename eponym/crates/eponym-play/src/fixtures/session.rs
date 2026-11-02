@@ -203,6 +203,11 @@ pub fn timed_action_world_in_rounds() -> Fixture {
     build_timed_action_world(crate::MotionSolver::STILL, None, true)
 }
 
+/// The rounds world with the host's solver.
+pub fn timed_action_world_in_rounds_solving(solver: crate::MotionSolver) -> Fixture {
+    build_timed_action_world(solver, None, true)
+}
+
 fn build_timed_action_world(
     solver: crate::MotionSolver,
     practice_at_target: Option<bool>,
@@ -388,6 +393,21 @@ pub fn advance_motion(session: &mut Session, subject: SubjectId, input: crate::M
             rules: MotionRules::default(),
         })
         .expect("recorded motion step");
+}
+
+/// One recorded minute of a subject's motion (case 1120): the runs stepped
+/// locally to their end pose, then recorded as one intent.
+pub fn advance_minute(session: &mut Session, subject: SubjectId, runs: Vec<crate::MotionRun>) {
+    let game = session.game();
+    let rules = MotionRules::default();
+    let prior = game.movement().pose(subject).expect("pose");
+    let end = crate::MotionRun::inputs(&runs).expect("a minute's runs")
+        .fold(prior, |pose, input| game.predict(subject, pose, input, rules).expect("a local step").pose);
+    let revision = game.bodies().get(subject).expect("body").revision;
+    let tick = game.next_tick();
+    session
+        .apply_game(GameIntent::Steps { tick, subject, revision, step: prior.step + 1, runs, end, rules })
+        .expect("recorded minute of motion");
 }
 
 /// Publishes one canon revision into accepted history, the world fact a

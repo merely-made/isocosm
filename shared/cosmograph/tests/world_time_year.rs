@@ -35,9 +35,13 @@ fn events(s: &Session, prefix: &str) -> usize {
 fn a_world_time_web_holds_a_year() {
     let seed = env("WORLD_TIME_SEED", 9);
     let lineages = env("WORLD_TIME_LINEAGES", 10) as u32;
-    let genesis = Founding { seed, sites: env("WORLD_TIME_SITES", 4) as u32, population: env("WORLD_TIME_POP", 240),
+    // On a laid 2 by 2 map (1109), so scatter reads its terrain.
+    let grid = cosmograph::map::Grid { width: 2, height: 2, ..cosmograph::map::Grid::drawn(seed) };
+    let genesis = Founding { seed, sites: 4, population: env("WORLD_TIME_POP", 240),
         cohort_size: 1, lineages, ecology: true, web: Web::Diets, ecology_rates: Rates::WorldTime,
-        ..Default::default() }.generate().unwrap();
+        map: Some(cosmograph::map::Layout::Grid(grid)), ..Default::default() }.generate().unwrap();
+    let media: Vec<(i64, i64)> = genesis.sites.values().map(|s| (s.conditions["world:air"], s.conditions["world:water"])).collect();
+    eprintln!("seed {seed} air and water by site {media:?}");
     let roles: BTreeMap<String, String> = genesis.lineages.iter().map(|(k, l)| (k.clone(),
         l.traits.iter().find(|t| t.starts_with("role:") || t.contains("producer") || t.contains("consumer")
             || t.contains("decomposer")).cloned().unwrap_or_default())).collect();
@@ -114,7 +118,8 @@ fn a_world_time_web_holds_a_year() {
 #[test]
 fn laid_terrain_gives_scatter_strengths() {
     for seed in [5u64, 9, 11] {
-        let grid = cosmograph::map::Grid::drawn(seed);
+        // Small maps: a walker's moves are one per route (1111).
+        let grid = cosmograph::map::Grid { width: 2 + seed as u32 % 2, height: 2, ..cosmograph::map::Grid::drawn(seed) };
         let founding = Founding { seed, sites: grid.width * grid.height, population: 240, cohort_size: 1,
             lineages: 10, ecology: true, web: Web::Diets, ecology_rates: Rates::WorldTime,
             map: Some(cosmograph::map::Layout::Grid(grid)), ..Default::default() };

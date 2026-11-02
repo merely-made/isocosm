@@ -5650,6 +5650,139 @@ area = "Bodies and anatomy"
 summary = "Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088."
 draws_on = ["1085", "1087", "1088"]
 
+[cases."1113"]
+title = "In a round, motion reaches the sim once a minute; what remains is made local"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "In a round Eponym submits one motion action a minute from locally stepped physics; remaining per-action work is made local."
+draws_on = ["1080", "1081", "1095"]
+
+[cases."1114"]
+title = "A bodied plant keeps a root store no bite reaches and regrows from it"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty."
+draws_on = ["1078", "1105", "1110", "bodies.13"]
+
+[cases."1115"]
+title = "World-time plants are founded small and single-seeded"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding."
+draws_on = ["1114", "world.8"]
+
+[cases."1116"]
+title = "The food web runs two years before people join it"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "All five seeds run two years before people are added; a year-two crash is fixed first."
+draws_on = ["1078", "1111"]
+
+[cases."1117"]
+title = "A round's minute motion carries its inputs and is re-solved"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "A round's minute motion carries its inputs and end pose; the mode re-solves the batch once, refuses a mismatch and charges falls by step."
+draws_on = ["1095", "1113", "eponym.2"]
+
+[cases."1118"]
+title = "Between minutes a host draws its own stepped pose"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Between minutes a host draws a borrowed body from its own locally stepped pose."
+draws_on = ["1113", "1117"]
+
+[cases."1119"]
+title = "The ecology is derived from bodies and finished by selection"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence."
+draws_on = ["1077", "1078", "1094", "bodies.7", "ecology.1", "ecology.2", "record.7"]
+
+[cases."1120"]
+title = "Eponym's standalone client logs one motion intent a minute"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's standalone client logs a minute's motion as one intent carrying its input runs, re-solved on apply and replay."
+draws_on = ["1096", "1113", "1117"]
+
+[cases."1121"]
+title = "The client's minute runs on a worker"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "The client's minute runs on a worker over a copy of the game state; other intents queue until its answer is adopted."
+draws_on = ["1081", "1120"]
+
+[cases."1122"]
+title = "The client founds in rounds by default, with a setting"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "New standalone worlds are founded in rounds by default; a setting turns it off."
+draws_on = ["1096", "1102"]
+
+[cases."1123"]
+title = "The handback's reach is a tick's walk, ungated"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "A handback is refused beyond a tick's walk across the ground plus a cell; no version gate."
+draws_on = ["1080", "1085", "1112"]
+
+[cases."1124"]
+title = "A wound after a minute is fixed in the game, not worked around"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "A wound refused as stale after a minute is fixed in the game's harm and revision path, tested with and without rounds."
+draws_on = ["1120", "bodies.12"]
+
+[cases."1125"]
+title = "The client gets round speed keys now"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "The standalone client gets 1x, 2x, 4x and 8x keys and a readout."
+draws_on = ["1080", "1122"]
+
+[cases."1126"]
+title = "A world that cannot take rounds is refused with a hint"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds."
+draws_on = ["1102", "1122", "method.8"]
+
+[cases."1127"]
+title = "The debug injury names the part it severs"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays."
+draws_on = ["716", "1124"]
+
+[cases."1128"]
+title = "A playable denizen is a sim body plan, designable in a creator"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Bodies and anatomy"
+summary = "Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds."
+draws_on = ["bodies.1", "bodies.11", "eponym.4", "world.10"]
+
+[cases."1129"]
+title = "Eponym draws bodies through the shared layered look"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens."
+draws_on = ["1128", "vtt.7"]
+
+[cases."1130"]
+title = "A player directs companions by orders, and may take direct control where agreed"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly."
+draws_on = ["1071", "eponym.1", "vtt.2"]
+
+[cases."1131"]
+title = "A shared perspective camera comes first"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Presentation"
+summary = "A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview."
+draws_on = ["1130", "presentation.1"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
@@ -6314,8 +6447,8 @@ draws_on = ["96", "97", "98", "100", "139", "739", "836", "1007"]
 title = "Lives and co-op"
 source = "design_docs/doctrine.md"
 area = "Eponym"
-summary = "Each player lives their own creature; first lives and successions are the player's picks among eligible lives."
-draws_on = ["185", "186", "234", "235", "238", "877"]
+summary = "Each player lives their own creature; first lives and successions are the player's picks among eligible lives; companions take orders or, where agreed, direct control."
+draws_on = ["185", "186", "234", "235", "238", "877", "1130"]
 
 [statements."eponym.2"]
 title = "Fighting and motion"
@@ -6336,7 +6469,7 @@ title = "Native recipes make bodies and things"
 source = "design_docs/doctrine.md"
 area = "Eponym"
 summary = "Native recipes develop bodies and stock new items; fresh matter fits the development; founding profiles restore by version tag."
-draws_on = ["816", "818", "819", "825", "835"]
+draws_on = ["816", "818", "819", "825", "835", "1128"]
 
 [statements."host.1"]
 title = "One sim host under three product hosts"
@@ -6568,7 +6701,7 @@ title = "One default view"
 source = "design_docs/doctrine.md"
 area = "Presentation"
 summary = "The default view is the 2:1 dimetric at 30 degrees in quarter turns, in every product; it precludes no other view."
-draws_on = ["18", "382", "387"]
+draws_on = ["18", "382", "387", "1131"]
 
 [statements."presentation.2"]
 title = "The detail ladder"
@@ -7008,7 +7141,7 @@ title = "A look is derived in layers"
 source = "design_docs/doctrine.md"
 area = "The VTT"
 summary = "A look is derived in layers (shape, material, make, style, condition, seed, overrides) into one Appearance read by preview and board."
-draws_on = ["1012", "1019", "1022", "1028", "1035"]
+draws_on = ["1012", "1019", "1022", "1028", "1035", "1129"]
 
 [statements."world.1"]
 title = "Shape and scale"

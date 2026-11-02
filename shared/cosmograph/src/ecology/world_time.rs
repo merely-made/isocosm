@@ -15,8 +15,8 @@
 //! ranges), tuned against a year-long web; they are data, not rulings.
 
 use super::Role;
-use crate::{Founding, Result, generate::process, rules::*, simulation::Genesis};
-use std::collections::BTreeMap;
+use crate::{Founding, Result, generate::process, rules::*, schema::{Key, Tick}, simulation::Genesis};
+use std::collections::{BTreeMap, BTreeSet};
 
 const DAY: u64 = 1440;
 
@@ -75,6 +75,13 @@ pub struct RoleTime {
     /// of births (1093). A walker's young wait on walking speed (1085).
     pub spreads: bool,
     pub scatter: (u32, u32),
+    /// A walker's crowding (1111): where at least `crowd` of its lineage
+    /// live at a site, each adult leaves along each route with this chance
+    /// a day, in millionths; and it breeds only where at least `prey` of
+    /// what it eats live.
+    pub crowd: u64,
+    pub leave: u32,
+    pub prey: u64,
 }
 
 /// The candidate values by role.
@@ -83,23 +90,23 @@ pub(crate) fn role_time(role: Role) -> RoleTime {
         Role::Producer => RoleTime { maturity_days: 30, hazard_per_million: 100_000, doubling_years: 3,
             upkeep: DAY, adult: 60, child: 10, feed: 0, bite: 0, kept: 0, grow: 720, regrow: 240,
             breed: 90 * DAY, founders: 40, founding_age_days: 730,
-            spreads: true, scatter: (50_000, 150_000) },
+            spreads: true, scatter: (50_000, 150_000), crowd: 0, leave: 0, prey: 0 },
         Role::Grazer => RoleTime { maturity_days: 120, hazard_per_million: 200_000, doubling_years: 2,
             upkeep: 1_680, adult: 12, child: 6, feed: 720, bite: 6, kept: 2, grow: 0, regrow: 0,
             breed: 90 * DAY, founders: 8, founding_age_days: 1_095,
-            spreads: false, scatter: (0, 0) },
+            spreads: false, scatter: (0, 0), crowd: 12, leave: 20_000, prey: 30 },
         Role::Omnivore => RoleTime { maturity_days: 180, hazard_per_million: 150_000, doubling_years: 3,
             upkeep: 2_400, adult: 12, child: 6, feed: 720, bite: 6, kept: 2, grow: 0, regrow: 0,
             breed: 180 * DAY, founders: 2, founding_age_days: 1_460,
-            spreads: false, scatter: (0, 0) },
+            spreads: false, scatter: (0, 0), crowd: 6, leave: 20_000, prey: 30 },
         Role::Predator => RoleTime { maturity_days: 365, hazard_per_million: 120_000, doubling_years: 3,
             upkeep: 2_160, adult: 15, child: 8, feed: DAY, bite: 9, kept: 3, grow: 0, regrow: 0,
             breed: 180 * DAY, founders: 1, founding_age_days: 1_825,
-            spreads: false, scatter: (0, 0) },
+            spreads: false, scatter: (0, 0), crowd: 4, leave: 20_000, prey: 10 },
         Role::Decomposer => RoleTime { maturity_days: 21, hazard_per_million: 500_000, doubling_years: 1,
             upkeep: 720, adult: 8, child: 3, feed: 240, bite: 3, kept: 1, grow: 0, regrow: 0,
             breed: 45 * DAY, founders: 12, founding_age_days: 180,
-            spreads: true, scatter: (50_000, 150_000) },
+            spreads: true, scatter: (50_000, 150_000), crowd: 0, leave: 0, prey: 0 },
     }
 }
 
@@ -181,7 +188,16 @@ pub(super) fn configure(founding: &Founding, g: &mut Genesis) -> Result<()> {
             birth.risk = Some(Risk { per_million: propensity, aging: None, effects: vec![Effect::Birth {
                 provision: BTreeMap::from([(body.clone(), time.child)]), scatter: Some(medium.into()) }] });
         }
+        if time.prey > 0 {
+            // Breeding slows where food is scarce (1111).
+            let among = (0..founding.lineages).filter(|&j| role.eats(Role::of(founding.web, j)))
+                .map(|j| format!("lineage:{j}")).collect();
+            birth.requires.push(Query::Members { among, at_least: time.prey });
+        }
         g.rules.processes.insert(birth.id.clone(), birth);
+        if time.leave > 0 {
+            leaving(g, i, maturity, minutes(DAY), time)?;
+        }
         if role == Role::Producer {
             if let Some(grow) = g.rules.processes.get_mut(&format!("ecology:produce-{i}")) {
                 grow.period = Some(minutes(time.grow));
@@ -288,4 +304,44 @@ fn media(g: &mut Genesis) {
         site.conditions.entry(WATER.into()).or_insert(water.clamp(0, 100));
         site.conditions.entry(AIR.into()).or_insert(air.clamp(0, 100));
     }
+}
+
+/// A crowded walker's adults leave along routes (1111): a move per route,
+/// within the world's journeys (Processes 16), open to an adult of lineage
+/// `i` at the route's site while at least `crowd` of its lineage live there,
+/// each day taken with the lineage's chance. A site names itself by the
+/// condition `site:<id>`, as migration's moves read it (753).
+fn leaving(g: &mut Genesis, i: u32, maturity: Tick, day: Tick, time: RoleTime) -> Result<()> {
+    let lineage = format!("lineage:{i}");
+    let mut moves = Vec::new();
+    for (&id, site) in &mut g.sites {
+        let here: Key = format!("site:{id}");
+        site.conditions.insert(here.clone(), 1);
+        g.rules.conditions.insert(here.clone());
+        for route in &site.routes {
+            let parallel = site.routes.iter().filter(|r| r.to == route.to).count() > 1;
+            let via = route.border.map(|b| b.side).filter(|_| parallel);
+            let name = match via {
+                Some(side) => format!("move:{id}-{}-{side}/{lineage}", route.to),
+                None => format!("move:{id}-{}/{lineage}", route.to),
+            };
+            let mut p = process(&name, Causation::Transition, vec![]);
+            p.requires.extend([
+                Query::Trait { who: Binding::Actor, key: format!("ability:cycle-{i}") },
+                Query::Condition { key: here.clone(), at_least: 1 },
+                Query::Age { at_least: maturity },
+                Query::Members { among: BTreeSet::from([lineage.clone()]), at_least: time.crowd },
+            ]);
+            p.risk = Some(Risk { per_million: time.leave, aging: None,
+                effects: vec![Effect::Move { destination: route.to, via }] });
+            p.period = Some(day);
+            p.priority = 45;
+            moves.push(p);
+        }
+    }
+    if g.rules.processes.len() + moves.len() > g.rules.limits.processes {
+        return Err("a walker's move per route exceeds the world's process limit".into());
+    }
+    g.rules.processes.extend(moves.into_iter().map(|p| (p.id.clone(), p)));
+    Ok(())
 }

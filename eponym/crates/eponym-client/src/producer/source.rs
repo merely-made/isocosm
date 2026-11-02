@@ -170,8 +170,10 @@ fn anatomy(game: &GameState, subject: SubjectId) -> Option<&AnatomyRecord> {
         .or_else(|| game.anatomies().get(subject))
 }
 
-/// Every living subject that has both an anatomy and a place to stand.
-fn drawable(game: &GameState) -> Vec<(SubjectId, &AnatomyRecord, MotionPose)> {
+/// Every living subject that has both an anatomy and a place to stand, at
+/// the pose the model draws it (case 1118).
+fn drawable<'a>(game: &'a GameState, round: Option<&crate::round::Round>)
+    -> Vec<(SubjectId, &'a AnatomyRecord, MotionPose)> {
     let subjects: Vec<_> = game
         .bodies()
         .all()
@@ -183,8 +185,9 @@ fn drawable(game: &GameState) -> Vec<(SubjectId, &AnatomyRecord, MotionPose)> {
         let Some(record) = anatomy(game, subject) else {
             continue;
         };
-        let Some(pose) = game
-            .pose(subject)
+        let drawn = round.and_then(|r| r.drawn()).filter(|(s, _)| *s == subject).map(|(_, p)| p);
+        let Some(pose) = drawn
+            .or_else(|| game.pose(subject))
             .or_else(|| game.movement().position(subject).map(MotionPose::at_cell))
         else {
             continue;
@@ -231,7 +234,7 @@ impl SceneModel {
             .ok_or("invalid scene camera")?;
         let game = self.game();
         let scale = self.appearance.scale;
-        let bodies = drawable(game)
+        let bodies = drawable(game, self.round.as_ref())
             .into_iter()
             .map(|(subject, record, pose)| BodySignature {
                 subject: SubjectKey(subject.0),
@@ -290,6 +293,7 @@ impl SceneModel {
         let SceneModel {
             held,
             scene,
+            round,
             #[cfg(feature = "r1-proof")]
             terrain_residency,
             ..
@@ -324,7 +328,7 @@ impl SceneModel {
         #[cfg(not(feature = "r1-proof"))]
         let terrain = terrain_on.then(|| GroundTerrain(ground));
 
-        let drawn = drawable(game);
+        let drawn = drawable(game, round.as_ref());
         let volumes = DeclaredExtentVolumes::from_documents(
             drawn.iter().map(|(_, record, _)| record.document.doc()),
             material,

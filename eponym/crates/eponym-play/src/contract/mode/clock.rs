@@ -7,7 +7,7 @@ use super::*;
 use std::collections::{BTreeMap, BTreeSet};
 use cosmograph::{Command, Simulation, spatial as native};
 use isometer_core::Yaw;
-use isometer_space::{Edit, Op, Shape, places::{Places, Rules as PlaceRules}};
+use isometer_space::{Edit, Op, Shape, places::Rules as PlaceRules};
 use actions::{ActionState, SubjectProfile, OrdinaryAccess, game_source};
 use cosmograph::directing::readings::View;
 use cosmograph_overlay::Seat;
@@ -112,6 +112,17 @@ pub struct Record {
 /// the rounds marker declares spatial templates (case 1102).
 pub(crate) fn rounds(session: &Session) -> bool {
     session.sim.genesis().rules.spatial_templates.is_some()
+}
+
+/// Whether the sim's patch for a bound body agrees with its binding. In a
+/// round the binding moves with the game between minutes and the sim holds
+/// the patch of the last handback, so any patch at the binding's site
+/// agrees (case 1107); otherwise the two are the same patch.
+pub(crate) fn patch_agrees(sim: &Simulation, held: Option<PlaceId>, binding: &PoseBinding) -> bool {
+    match sim.genesis().rules.spatial_templates.is_some() {
+        true => held.is_some_and(|p| p.site == binding.site),
+        false => held == Some(binding.patch),
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]

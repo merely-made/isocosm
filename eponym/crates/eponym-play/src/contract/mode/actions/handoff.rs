@@ -57,7 +57,7 @@ impl ImportedState {
         if let Some(carrier) = carriers.first() {
             let binding = mode.bindings.iter().find(|b|b.entity == carrier.subject)
                 .ok_or("imported Eponym carrier has no explicit subject binding")?;
-            let volume = session.sim.volume(binding.site,binding.window.min,binding.window.max,binding.window.depth)?;
+            let volume = crate::contract::mode::memo::volume(&session.sim, binding.site, &binding.window)?;
             return Ok((binding.site,crate::walking::to_site(&volume,binding.current(session)?.cell().map_err(debug)?)));
         }
         if entity.resident_site() != Some(self.site) { return Err("imported Eponym item has departed its saved place".into()); }

@@ -12488,6 +12488,200 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Bodies and anatomy · draws on 1085, 1087, 1088 · summary Speed is a world baseline times the root of leg over a reference leg; legless bodies move body lengths per second; the joint-swing cap waits for 1088.
 
+1113. **In a round, motion reaches the sim once a minute; what remains is
+      made local.** Ruled by Mark on 2026-11-02: "Batch per minute, then
+      local (Recommended)". The finding: in Eponym's borrowed mode one 60 Hz
+      motion step cost 0.5 to 0.9 s in release (about 1.5 s in a dev build),
+      each step rebuilding the sim's volume and deriving places over the
+      whole 128 by 128 by 8 window and re-encoding a record growing about
+      580 bytes a step, so a minute of play cost 30 to 90 minutes. The
+      reading: in a round the client steps its physics locally and submits
+      one motion action a minute, as the sim hears from a body once a minute
+      (case 1095); the per-step envelope stays outside rounds; the per-action
+      work that remains derives a neighbourhood or caches by terrain
+      revision.
+
+      Links: area Eponym · draws on 1095, 1081, 1080 · summary In a round Eponym submits one motion action a minute from locally stepped physics; remaining per-action work is made local.
+
+1114. **A bodied plant keeps a root store no bite reaches and regrows from
+      it.** Ruled by Mark on 2026-11-02: "Adopt as proposed (Recommended)",
+      on the food-web lane's proposal for case 1105. The reading: an adult
+      plant of 60 holds a root store of 20 below ground, which no bite
+      reaches (case 1110), and 40 over its exposed parts; growth (2 every 720
+      minutes from soil and light, on the plant's own clock) fills the exposed
+      part furthest below its share, then the store; regrowth moves 2 from
+      the store into the most wounded exposed part every 240 minutes, so a
+      stripped plant refills in about 3.3 days while the store holds; upkeep
+      and seeding draw on the store; a plant dies only when every part is
+      empty. A grazer's bite of 3 is about 7.5 per cent of the exposed matter.
+
+      Links: area Ecology · draws on 1105, 1110, 1078, bodies.13 · summary A bodied plant keeps an unreachable root store of a third of its matter, regrows grazed parts from it, and dies only when every part is empty.
+
+1115. **World-time plants are founded small and single-seeded.** Ruled by
+      Mark on 2026-11-02: "Adopt (Recommended)". The reading: world-time
+      producers are drawn with one or two stretches of four to eight
+      segments, fronds on the lit side, one seed a seeding, sensing and
+      grazing mouths on and no hazard, so their exposed parts number five to
+      seventeen.
+
+      Links: area World generation · draws on 1114, world.8 · summary World-time plants are founded with one or two stretches of four to eight segments and one seed a seeding.
+
+1116. **The food web runs two years before people join it.** Ruled by Mark
+      on 2026-11-02: "Two-year run first (Recommended)". All five seeds pass
+      the year bar on a laid map, but producers peak in months eight to nine
+      and fall about 40 per cent by month twelve while grazers rise to six
+      times their founding. The reading: all five seeds run two years, and a
+      year-two crash is fixed before people are added.
+
+      Links: area Ecology · draws on 1078, 1111 · summary All five seeds run two years before people are added; a year-two crash is fixed first.
+
+1117. **A round's minute motion carries its inputs and is re-solved.**
+      Ruled by Mark on 2026-11-02: "Inputs + end pose (Recommended)", over
+      the end pose alone and a per-world choice. Measured in a dev build: one
+      derivation over the window took 183 ms and re-solving the minute's
+      3,600 steps 1.24 s. The reading: in a round the minute's motion action
+      carries its inputs and claimed end pose; the borrowed mode derives the
+      volume once, re-solves the batch and refuses a mismatch; falls within
+      the minute are charged by step index; held input is run-length encoded.
+
+      Links: area Eponym · draws on 1113, 1095, eponym.2 · summary A round's minute motion carries its inputs and end pose; the mode re-solves the batch once, refuses a mismatch and charges falls by step.
+
+1118. **Between minutes a host draws its own stepped pose.** Ruled by Mark
+      on 2026-11-02: "Host draws its own (Recommended)". The reading: a host
+      draws a borrowed body from its locally stepped pose between minutes,
+      as Eponym's standalone client does; the binding moves once a minute.
+
+      Links: area Eponym · draws on 1113, 1117 · summary Between minutes a host draws a borrowed body from its own locally stepped pose.
+
+
+
+1119. **The ecology is derived from bodies and finished by selection.** Ruled
+      by Mark on 2026-11-02 on the seven ideas of
+      `mesocosm/design_docs/2026-11-02_ecology_from_bodies_brief.md`: "agreed...
+      i absolutely agree with 1-7, 7 most of all", after asking how adaptation
+      reaches the sim "except through deep time" and noting that leaf-eaters
+      "wouldn't evolve to do so if there wasn't an abundance of producers
+      anyway". The reading: rates follow from body size and temperature by
+      metabolic scaling rather than a table per role; food differs in quality
+      and a body extracts what its digestive system allows; a web's health is
+      read by region, sites free to crash and recolonize; dormant stages and
+      seasons carry populations through troughs; density-dependent disease
+      ends booms; creatures may change the terrain; and above all, rate
+      constants are heritable within bounds a world sets, deep time selects
+      them, and worlds whose webs persisted are offered. Which comes first,
+      whether evolution continues in play, and which constants are heritable
+      stay open (the brief's §7).
+
+      Links: area Ecology · draws on 1077, 1078, 1094, ecology.1, ecology.2, bodies.7, record.7 · summary Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence.
+
+1120. **Eponym's standalone client logs one motion intent a minute.** Ruled
+      by Mark on 2026-11-02: "One intent a minute (Recommended)". The client
+      logged one intent per 60 Hz step: 3,600 steps took 9.0 s (about 2.5 ms
+      a step, dev build), within 1x but not 8x, and the save grew 342 KB a
+      minute. The reading: an appended intent carries the minute's input
+      runs, re-solved on apply and on replay, as case 1117 does for the
+      borrowed mode.
+
+      Links: area Eponym · draws on 1117, 1096, 1113 · summary Eponym's standalone client logs a minute's motion as one intent carrying its input runs, re-solved on apply and replay.
+
+1121. **The client's minute runs on a worker.** Ruled by Mark on
+      2026-11-02: "Worker (Recommended)". The reading: a worker takes a copy
+      of the game state and the minute's intents and the frame adopts its
+      answer; other game intents (strikes, projects) queue until it arrives,
+      and local stepping continues from the claimed end pose (case 1081).
+
+      Links: area Eponym · draws on 1081, 1120 · summary The client's minute runs on a worker over a copy of the game state; other intents queue until its answer is adopted.
+
+1122. **The client founds in rounds by default, with a setting.** Ruled by
+      Mark on 2026-11-02: "Setting, rounds default (Recommended)".
+
+      Links: area Eponym · draws on 1102, 1096 · summary New standalone worlds are founded in rounds by default; a setting turns it off.
+
+1123. **The handback's reach is a tick's walk, ungated.** Ruled by Mark on
+      2026-11-02: "Both as built (Recommended)". The check refuses a pose
+      farther across the ground than `Speed::of` walks in one tick, plus a
+      cell of allowance, height uncounted (falls are not walking); a first
+      pose and a world without speeds are unbounded. The reading: the bound
+      is the world's tick length, not a literal minute, and no version gates
+      it.
+
+      Links: area Processes and rules · draws on 1080, 1112, 1085 · summary A handback is refused beyond a tick's walk across the ground plus a cell; no version gate.
+
+1124. **A wound after a minute is fixed in the game, not worked around.**
+      Ruled by Mark on 2026-11-02: "Fix the revision bug (Recommended)". The
+      client's injury, applied after any minute intent, was refused with
+      `StaleRevision { known: 1, current: 0 }`, on the round and the
+      non-round fixtures alike, so an existing harm and revision interaction
+      that rounds expose. The reading: find why a minute leaves the anatomy
+      revision behind what harm expects and fix it, with a wound-after-a-
+      minute test in both fixtures.
+
+      Links: area Eponym · draws on 1120, bodies.12 · summary A wound refused as stale after a minute is fixed in the game's harm and revision path, tested with and without rounds.
+
+1125. **The client gets round speed keys now.** Ruled by Mark on 2026-11-02:
+      "Add speed keys now (Recommended)". The reading: keys and a panel
+      readout for 1x, 2x, 4x and 8x through the pacer (case 1080).
+
+      Links: area Eponym · draws on 1080, 1122 · summary The standalone client gets 1x, 2x, 4x and 8x keys and a readout.
+
+1126. **A world that cannot take rounds is refused with a hint.** Ruled by
+      Mark on 2026-11-02: "Refuse with the hint (Recommended)", on the lane's
+      own call. An authored material world that cannot take the rounds
+      marker is refused, with a hint to set `EPONYM_ROUNDS=0`, rather than
+      played without rounds.
+
+      Links: area Eponym · draws on 1122, 1102, method.8 · summary An authored world that cannot take the rounds marker is refused with a hint, never silently played without rounds.
+
+1127. **The debug injury names the part it severs.** Ruled by Mark on
+      2026-11-02: "It names its part (Recommended)", reopening case 1124
+      when the lane found no revision bug: an unnamed wound's part is drawn
+      over the body's living cells seeded by entity and tick (case 716), so
+      at tick 0 it fell on a limb and at later ticks elsewhere, severing
+      nothing; the game bumps the anatomy revision only on a cut, correctly,
+      and the client's debug injury, which reconciled a hard-coded part 1,
+      was refused as stale. Real wounds were unaffected. The reading: the
+      debug injury lowers a severed wound on a named part through the harm
+      path strikes use, and the game reconciles it. Replaces 1124's fix.
+
+      Links: area Eponym · draws on 1124, 716 · summary The debug injury severs a named part through the strike harm path; the drawn part of an unnamed wound was correct and stays.
+
+1128. **A playable denizen is a sim body plan, designable in a creator.**
+      Ruled by Mark on 2026-11-02: "Sim body plans + creator (Recommended)",
+      after seeing Eponym's played body drawn as part boxes: "eponym... i gotta say, you shouldn't be blocks, i was more picturing, like, be an individual...? imagine the old baked voxel tokens in isocosm. like, that's at least approaching a character model. although i would expect that it would be, y'know, a unique, generated, designable humanoid/denizen that you'd be playing, among other procedurally generated, unique entities... seems pretty far from what we've got. although the perspective isn't bad!" The finding:
+      the played body was the compact six-part fixture (Eponym 4), and the
+      sim's generated bodies were segmented flora and fauna only, with no
+      humanoid or denizen plan. The reading: Cosmograph gains generated body
+      plans for sophonts and denizens, drawn per lineage within bounds like
+      other recipes and editable in a creator within those bounds, so people
+      grow out of the world (World 10) and all three games read the same
+      bodies.
+
+      Links: area Bodies and anatomy · draws on eponym.4, world.10, bodies.1, bodies.11 · summary Playable sophonts and denizens are sim body plans drawn per lineage, editable in a creator within their bounds.
+
+1129. **Eponym draws bodies through the shared layered look.** Ruled by
+      Mark on 2026-11-02: "Shared layered looks (Recommended)". Eponym drew
+      each body's part boxes, tinted played or other, and no Eponym crate
+      used isometer's mesh. The reading: Eponym draws through the layered
+      look of VTT 7 and isometer's baked voxels, as Isocosm's tokens do.
+
+      Links: area Presentation · draws on vtt.7, 1128 · summary Eponym draws bodies through the same layered look and baked voxels as Isocosm's tokens.
+
+1130. **A player directs companions by orders, and may take direct control
+      where agreed.** Ruled by Mark on 2026-11-02: "Both", after "though first person should also be possible in addition to the kenshi-esque overview. being able to control your character and direct others..." The
+      reading: a player gives companions orders (go, hold, fight, carry) that
+      they weigh with their own minds and may refuse; where the companion's
+      agreement allows, the player may switch to and drive it directly. The
+      player still lives one creature (Eponym 1).
+
+      Links: area Eponym · draws on eponym.1, vtt.2, 1071 · summary Players order companions, who weigh and may refuse; where a companion agrees, the player may drive it directly.
+
+1131. **A shared perspective camera comes first.** Ruled by Mark on
+      2026-11-02: "Shared perspective camera (Recommended)". The reading: the
+      shared renderer gains a perspective camera giving first person and
+      over the shoulder in every product, switchable live against the
+      overview (Presentation 1).
+
+      Links: area Presentation · draws on presentation.1, 1130 · summary A perspective camera in the shared renderer gives first person and over the shoulder in every product, switchable against the overview.
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

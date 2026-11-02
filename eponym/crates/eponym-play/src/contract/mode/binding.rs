@@ -3,7 +3,7 @@
 
 use super::*;
 use crate::{MOTION_SCALE, walking};
-use isometer_space::{places::Places, volume::Volume};
+use isometer_space::volume::Volume;
 
 impl PoseBinding {
     pub fn current(&self, session: &Session) -> Result<MotionPose, String> {
@@ -11,13 +11,13 @@ impl PoseBinding {
         let body = session.sim.state().population.get(self.entity).ok_or("bound Eponym entity is absent")?;
         if body.resident_site() != Some(self.site) || body.arrived != self.resident_since
             || body.body.is_none() || body.body_revision != self.body_revision
-            || body.patch != Some(self.patch) || self.patch.site != self.site
+            || !super::clock::patch_agrees(&session.sim, body.patch, self) || self.patch.site != self.site
             || session.sim.terrain_revision() != self.terrain_revision {
             return Err("Eponym physical binding is stale, departed or lacks current native geometry".into());
         }
-        let volume = session.sim.volume(self.site,self.window.min,self.window.max,self.window.depth)?;
+        let volume = crate::contract::mode::memo::volume(&session.sim, self.site, &self.window)?;
         let cell = walking::to_site(&volume,self.pose.cell().map_err(|e| format!("Eponym pose: {e:?}"))?);
-        let places = Places::derive(&volume,self.places.unwrap_or_default())?;
+        let places = super::memo::places(&session.sim,self.site,&self.window,self.places.unwrap_or_default())?;
         if !volume.holds(cell[0],cell[2]) || cell[1] < volume.datum || cell[1] >= volume.ceiling()
             || places.place_at(cell) != Some(self.patch)
             || !volume.material(cell).is_some_and(|m| m == volume.materials.air || m == volume.materials.water) {
@@ -31,7 +31,7 @@ impl PoseBinding {
     pub(super) fn in_frame(&self, session: &Session, frame: &Volume) -> Result<MotionPose, String> {
         let mut pose = self.current(session)?;
         if frame.site != self.site { return Err("Eponym picture frame belongs to another native site".into()); }
-        let source = session.sim.volume(self.site,self.window.min,self.window.max,self.window.depth)?;
+        let source = crate::contract::mode::memo::volume(&session.sim, self.site, &self.window)?;
         let from = walking::to_site(&source,[0;3]);
         let to = walking::to_site(frame,[0;3]);
         for axis in 0..3 {

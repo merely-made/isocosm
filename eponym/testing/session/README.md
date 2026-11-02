@@ -34,9 +34,11 @@ acceptance artifact.
 
 - The document presents: `ready`, no producer error, and the sheet, equipment
   and status panels are on the surface. Captures `opened`.
-- Movement reaches the accepted world, not just the drawn frame: after one
-  `act move-right` the played position and the `GameState` hash both differ,
-  the motion step counter grew, and a `motion-advanced` event was accepted.
+- Movement is drawn at once and reaches the accepted world at the minute
+  (cases 1118, 1120): after one `act move-right` the drawn position differs
+  and the step counter grew while the `GameState` hash is unchanged; after
+  `act minute`, a fixture control that takes the round's minute now, a
+  `motion-advanced` event was accepted and the hash differs.
 - The charged volley through the keyboard-only vocabulary — aim, join part 2,
   charge, strike — severs the target's authored limb (`target-parts` shows
   `severed`), drops `target-vitality`, and changes the hash. Captures
