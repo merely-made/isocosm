@@ -43,7 +43,7 @@ fn document(tag: u8) -> BodyDocument {
 }
 
 fn camera() -> SlabCamera {
-    SlabCamera {
+    SlabCamera { projection: Default::default(),
         centre: [0.0; 3],
         forward: SIDE,
         half_height: 4.0,

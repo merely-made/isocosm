@@ -12,7 +12,7 @@ use isometer::SlabCamera;
 
 impl super::Section {
     pub(super) fn view(&self, centre: [f32; 3]) -> SlabCamera {
-        SlabCamera {
+        SlabCamera { projection: Default::default(),
             centre,
             forward: self.custom_forward.unwrap_or_else(|| self.mode.forward()),
             half_height: self.half_height,
@@ -65,7 +65,7 @@ pub(super) fn slab_camera(
     half_height: f32,
     aspect: f32,
 ) -> SlabCamera {
-    SlabCamera {
+    SlabCamera { projection: Default::default(),
         centre,
         forward: mode.forward(),
         half_height,

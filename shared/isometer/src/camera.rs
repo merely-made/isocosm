@@ -19,6 +19,9 @@
 use isometer_lens::{SlabWall, TraceCamera};
 use isometer_render::ClipSlab;
 
+mod projection;
+pub use projection::{Frustum, Projection};
+
 /// World up. Every camera keeps it; it defines the standing wall, not merely
 /// the screen basis.
 const UP: [f32; 3] = [0.0, 1.0, 0.0];
@@ -55,6 +58,9 @@ pub struct SlabCamera {
     pub aspect: f32,
     pub depth: f32,
     pub cutaway: Option<Cutaway>,
+    /// Slab or perspective (case 1140); see [`Projection`] for what the
+    /// other fields mean under each.
+    pub projection: Projection,
 }
 
 impl SlabCamera {
@@ -75,6 +81,7 @@ impl SlabCamera {
             aspect,
             depth,
             cutaway: None,
+            projection: Projection::Slab,
         };
         camera.framable().then_some(camera)
     }
@@ -155,6 +162,7 @@ impl SlabCamera {
                 .iter()
                 .all(|v| v.is_finite() && *v > 0.0)
             && normalize(cross(self.forward, UP)).is_some()
+            && self.perspective_framable()
     }
 
     /// Right, up, forward — the orthonormal frame the tracer builds.
@@ -184,6 +192,9 @@ impl SlabCamera {
     /// the renormalized [`Self::basis`], so a host that hands an exact preset
     /// vector gets the same float it got before this crate existed.
     pub fn reach(self) -> f32 {
+        if let Some(frustum) = self.frustum() {
+            return frustum.far;
+        }
         SlabWall::new(self.forward, UP, self.half_height, self.aspect, self.depth)
             .map_or(self.depth * 0.5, |wall| wall.reach)
     }
@@ -192,6 +203,9 @@ impl SlabCamera {
     pub fn trace(self) -> Option<TraceCamera> {
         if !self.framable() {
             return None;
+        }
+        if let Some(frustum) = self.frustum() {
+            return self.perspective_trace(frustum);
         }
         // The constructor's up vector defines the standing wall, not merely
         // the screen basis. Supplying screen-up tilts the ray interval away
@@ -209,6 +223,9 @@ impl SlabCamera {
     /// The world box this camera shows: what falls outside cannot reach a
     /// pixel, so it is what a roster culls against.
     pub fn window(self) -> SlabWindow {
+        if let Some(frustum) = self.frustum() {
+            return self.perspective_window(frustum);
+        }
         SlabWindow {
             centre: self.centre,
             axes: self.basis(),
@@ -217,12 +234,16 @@ impl SlabCamera {
                 self.half_height,
                 self.reach(),
             ],
+            frustum: None,
         }
     }
 
     /// The one `clip_from_world` terrain and bodies both consume. Standard-z:
     /// depth runs 0 at the front wall to 1 at the back.
     pub fn clip_from_world(self) -> [[f32; 4]; 4] {
+        if let Some(frustum) = self.frustum() {
+            return self.perspective_clip_from_world(frustum);
+        }
         let [right, up, forward] = self.basis();
         let x = right.map(|v| v / (self.half_height * self.aspect));
         let y = up.map(|v| v / self.half_height);
@@ -243,6 +264,9 @@ impl SlabCamera {
     /// The world cut the body renderer applies: two world-vertical walls
     /// about the centre, plus whatever the cutaway adds.
     pub fn clip(self) -> ClipSlab {
+        if let Some(frustum) = self.frustum() {
+            return self.perspective_clip(frustum);
+        }
         let normal = standing_normal(self.forward);
         let middle = dot(normal, self.centre);
         let slab = ClipSlab {
@@ -251,19 +275,7 @@ impl SlabCamera {
             max: middle + self.depth * 0.5,
             bounds: None,
         };
-        match self.cutaway {
-            None => slab,
-            Some(Cutaway::Bounds { min, max }) => ClipSlab {
-                bounds: Some((min, max)),
-                ..slab
-            },
-            Some(Cutaway::Plane { normal, distance }) => ClipSlab {
-                normal: normalize(normal).unwrap_or(slab.normal),
-                min: distance,
-                max: distance + self.depth,
-                bounds: None,
-            },
-        }
+        cut(slab, self.cutaway, self.depth)
     }
 
     /// Where a world point lands on screen, in normalized clip coordinates:
@@ -277,14 +289,19 @@ impl SlabCamera {
             return None;
         }
         let matrix = self.clip_from_world();
-        // Columns are indexed by world axis, rows by clip axis; orthographic,
-        // so w is 1 and there is nothing to divide by.
-        let clip = [0, 1].map(|row| {
+        // Columns are indexed by world axis, rows by clip axis. The slab's w
+        // is 1; a perspective's is the depth ahead of the eye, and a point
+        // not ahead of the near plane has no place on screen.
+        let [x, y, w] = [0, 1, 3].map(|row| {
             (0..3)
                 .map(|axis| matrix[axis][row] * point[axis])
                 .sum::<f32>()
                 + matrix[3][row]
         });
+        if self.frustum().is_some_and(|f| w < f.near) {
+            return None;
+        }
+        let clip = [x / w, y / w];
         clip.iter().all(|v| v.is_finite()).then_some(clip)
     }
 
@@ -313,6 +330,9 @@ impl SlabCamera {
     /// rather than the half-height so a tilted frame does not dip below the
     /// world's floor.
     pub fn vertical_half(self) -> f32 {
+        if let Some(frustum) = self.frustum() {
+            return self.perspective_vertical_half(frustum);
+        }
         let [right, up, forward] = self.basis();
         right[1].abs() * self.half_height * self.aspect
             + up[1].abs() * self.half_height
@@ -332,6 +352,9 @@ pub struct SlabWindow {
     pub axes: [[f32; 3]; 3],
     /// Half extents along those three axes, in the same order.
     pub half: [f32; 3],
+    /// Under perspective, the view inside the box: what culls a body. The
+    /// box alone frames residency, which may keep more than is seen.
+    pub frustum: Option<Frustum>,
 }
 
 impl SlabWindow {
@@ -339,8 +362,28 @@ impl SlabWindow {
     /// the body's extent: a body straddling the cut plane is drawn whole and
     /// the tracer's own ray interval does the trimming.
     pub fn holds(&self, at: [f32; 3]) -> bool {
+        if let Some(frustum) = &self.frustum {
+            return frustum.holds(&self.axes, at);
+        }
         let offset = [0, 1, 2].map(|i| at[i] - self.centre[i]);
         (0..3).all(|axis| dot(offset, self.axes[axis]).abs() <= self.half[axis])
+    }
+}
+
+/// A slab with a cutaway applied.
+fn cut(slab: ClipSlab, cutaway: Option<Cutaway>, depth: f32) -> ClipSlab {
+    match cutaway {
+        None => slab,
+        Some(Cutaway::Bounds { min, max }) => ClipSlab {
+            bounds: Some((min, max)),
+            ..slab
+        },
+        Some(Cutaway::Plane { normal, distance }) => ClipSlab {
+            normal: normalize(normal).unwrap_or(slab.normal),
+            min: distance,
+            max: distance + depth,
+            bounds: None,
+        },
     }
 }
 
@@ -370,3 +413,5 @@ fn normalize(value: [f32; 3]) -> Option<[f32; 3]> {
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod perspective_tests;

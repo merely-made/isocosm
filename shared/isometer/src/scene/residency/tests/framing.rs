@@ -83,3 +83,39 @@ fn the_extent_holds_every_framing_as_the_camera_pans() {
         );
     }
 }
+
+/// Under perspective (cases 1131, 1140) every brick the view can reach is
+/// framed, and a capacity the view overruns keeps to it and reports the
+/// bricks it dropped (Presentation 5).
+#[test]
+fn a_perspective_frames_what_it_sees_and_reports_what_it_omits() {
+    let hills = Hills::new();
+    let [low, high] = hills.bounds().expect("bounded");
+    for (eye, forward) in [([0.0, 14.0, 0.0], [1.0, -0.3, 0.2]), ([-30.0, 20.0, 25.0], [0.4, -0.5, -0.8])] {
+        let view = SlabCamera::perspective(eye, forward, 1.0, 1.5, 0.05, 80.0).expect("frames");
+        let window = view.window();
+        let frustum = window.frustum.expect("a perspective window");
+        let framed = keys(&framed_bricks(view, 0.0, &hills, usize::MAX));
+        let mut seen = 0;
+        for z in low[2]..=high[2] {
+            for x in low[0]..=high[0] {
+                for y in hills.layers([x, z]) {
+                    // Seen when any of a grid of its points is in view: a
+                    // sound lower bound, unlike the cull's conservative test.
+                    let origin = key_origin([x, y, z]).map(|v| v as f32);
+                    let step = BRICK as f32 / 2.0;
+                    let grid = (0..27).map(|n| [n % 3, n / 3 % 3, n / 9].map(|k| k as f32 * step));
+                    if grid.map(|d| [0, 1, 2].map(|i| origin[i] + d[i])).any(|p| frustum.holds(&window.axes, p)) {
+                        seen += 1;
+                        assert!(framed.contains(&[x, y, z]), "{eye:?}: brick {:?} is in view", [x, y, z]);
+                    }
+                }
+            }
+        }
+        assert!(seen > 0, "{eye:?}: the view shows terrain");
+        let capacity = framed.len() / 2;
+        let held = framed_bricks(view, 0.0, &hills, capacity);
+        assert_eq!(held.keys.len(), capacity, "{eye:?}: within the budget");
+        assert_eq!(held.overflow, framed.len() - capacity, "{eye:?}: what it omits is reported");
+    }
+}

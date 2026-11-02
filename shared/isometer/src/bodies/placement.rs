@@ -80,6 +80,9 @@ pub fn distance(at: [f32; 3], centre: [f32; 3]) -> f32 {
 
 /// Whether an axis-aligned world box meets the camera's oriented slab.
 pub fn intersects((min, max): ([f32; 3], [f32; 3]), window: SlabWindow) -> bool {
+    if let Some(frustum) = &window.frustum {
+        return frustum.touches(&window.axes, (min, max));
+    }
     let middle = [0, 1, 2].map(|i| (min[i] + max[i]) * 0.5 - window.centre[i]);
     let half = [0, 1, 2].map(|i| (max[i] - min[i]) * 0.5);
     (0..3).all(|axis| {

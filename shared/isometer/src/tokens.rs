@@ -182,7 +182,7 @@ mod tests {
             .render(
                 &mut encoder,
                 SceneFrame {
-                    camera: SlabCamera {
+                    camera: SlabCamera { projection: Default::default(),
                         centre: [size[0] / 2.0, size[1] / 2.0, size[2] / 2.0],
                         forward: [0.0, 0.0, -1.0],
                         half_height: size[1] * 0.6,

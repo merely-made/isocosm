@@ -42,14 +42,14 @@ impl Snapshot {
     pub fn body_ids(&self) -> Vec<Id> { self.scene.bodies.iter().map(|body| body.id).collect() }
     pub fn camera(&self, aspect: f32) -> SlabCamera {
         if let Some(view) = &self.presentation {
-            return SlabCamera { centre: view.centre, forward: view.forward,
+            return SlabCamera { projection: Default::default(), centre: view.centre, forward: view.forward,
                 half_height: view.half_height, aspect,
                 depth: view.depth.unwrap_or_else(|| view.mode.depth(view.half_height, aspect)), cutaway: None };
         }
         let mode = CameraMode::default();
         let at = self.scene.played.and_then(|id| self.scene.at(id))
             .unwrap_or_else(|| layout::centre(&self.scene.ground));
-        SlabCamera { centre: section::centre_on(at, Pan::default(), section::SLAB_HALF_HEIGHT, mode),
+        SlabCamera { projection: Default::default(), centre: section::centre_on(at, Pan::default(), section::SLAB_HALF_HEIGHT, mode),
             forward: forward(self.quarter_turn), half_height: section::SLAB_HALF_HEIGHT,
             aspect, depth: mode.depth(section::SLAB_HALF_HEIGHT, aspect), cutaway: None }
     }

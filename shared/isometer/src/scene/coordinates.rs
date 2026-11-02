@@ -10,7 +10,13 @@ pub(super) fn camera(c:SlabCamera, cell:f32) -> SlabCamera {
         cutaway:c.cutaway.map(|cut| match cut {
             Cutaway::Bounds {min,max} => Cutaway::Bounds {min:min.map(|v| v/cell),max:max.map(|v| v/cell)},
             Cutaway::Plane {normal,distance} => Cutaway::Plane {normal,distance:distance/cell},
-        }),..c }
+        }),
+        // A field of view is an angle; only its near plane is a distance.
+        projection:match c.projection {
+            crate::Projection::Perspective {vertical_fov,near} =>
+                crate::Projection::Perspective {vertical_fov,near:near/cell},
+            slab => slab,
+        },..c }
 }
 pub(super) fn pose(p:&CritterPose,cell:f32) -> CritterPose {
     let mut out=p.clone();

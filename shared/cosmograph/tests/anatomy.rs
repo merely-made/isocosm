@@ -207,3 +207,20 @@ fn a_declared_name_that_lies_and_matter_outside_the_parts_are_refused() {
     });
     assert!(outside.contains("outside them"), "{outside}");
 }
+
+/// First person's eye sits on the part with the most sense cells (case
+/// 1143): the grazer's eye, not its lump; a body that loses every sensing
+/// part names none, and the camera falls back to its root.
+#[test]
+fn the_sensing_part_is_the_one_with_the_most_sense_cells() {
+    let g = world();
+    let mut e = grazer(&g);
+    let sense = |e: &Entity, id: PartId| e.parts[&id].cells.get("function:sense").copied().unwrap_or(0);
+    let eye = anatomy::sensing_part(&e).expect("the grazer senses");
+    assert!(sense(&e, eye) > 0);
+    assert!(e.living().all(|(id, _)| sense(&e, id) <= sense(&e, eye)), "no part senses more");
+    for part in e.parts.values_mut() {
+        std::sync::Arc::make_mut(part).cells.remove("function:sense");
+    }
+    assert_eq!(anatomy::sensing_part(&e), None);
+}

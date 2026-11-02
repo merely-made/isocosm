@@ -169,6 +169,17 @@ impl Scene {
         self.bodies_mut().presentation_bounds(body, volumes)
     }
 
+    /// Where `body` sees from, posed as the next draw will pose it (case
+    /// 1143): the top centre of `part`, else of its root.
+    pub fn eye(
+        &mut self,
+        body: &SceneBody<'_>,
+        volumes: SceneVolumes<'_>,
+        part: Option<PartId>,
+    ) -> Result<Option<[f32; 3]>, String> {
+        self.bodies_mut().eye(body, volumes, part)
+    }
+
     /// World bounds of one drawn part, posed exactly as the last prepare
     /// posed it. The oracle a severance or fractional-pose test reads.
     pub fn part_bounds(&self, subject: SubjectKey, part: PartId) -> Option<([f32; 3], [f32; 3])> {
@@ -353,3 +364,5 @@ impl Scene {
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod perspective_tests;

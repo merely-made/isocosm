@@ -75,7 +75,7 @@ fn probe(sim:&Simulation,t:&cosmograph::spatial::Templates,site:u64,side:i64)->R
     let doc=sim.state().population.get(stand.actor.unwrap()).unwrap().body.as_ref().unwrap();
     let view=cosmograph::terrain::View::of(sim.genesis())?;
     let v=isometer::space::volume::Volume::paged(&view,site,[0;2],[side;2],8,&[])?;
-    let camera=SlabCamera {centre:v.to_ground(stand.at).map(|x|x as f32),
+    let camera=SlabCamera { projection: Default::default(),centre:v.to_ground(stand.at).map(|x|x as f32),
         forward:mesocosm_genet::section::CameraMode::DimetricNorth.forward(),
         half_height:28.,aspect:1.5,depth:168.,cutaway:None};
     let contacts=cosmograph::spatial::embodiment::contacts(&v,doc,&pose)?;
