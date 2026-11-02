@@ -476,3 +476,61 @@ fn rates_readout() {
         }
     }
 }
+
+/// Each consumer's feeds, by lineage.
+fn feeds(g: &mut Genesis) -> impl Iterator<Item = (u32, &mut Process)> {
+    g.rules.processes.iter_mut().filter_map(|(id, p)| {
+        let i: u32 = id.strip_prefix("ecology:feed-")?.parse().ok()?;
+        Role::of(Web::Diets, i).consumer().then_some((i, p))
+    })
+}
+
+/// A meal's loss: of each consumer bite, `lost` returns to the site at once
+/// as soil (dung), and only the rest builds body.
+fn lossy(mut g: Genesis, lost: u64) -> Genesis {
+    for (i, feed) in feeds(&mut g) {
+        feed.effects.push(Effect::Spend {
+            from: vec![format!("matter:{i}-0")],
+            to: Binding::Place,
+            amount: Amount::Fixed(lost),
+            into: Some("world:soil".into()),
+        });
+    }
+    g
+}
+
+/// Satiety: a consumer feeds only while it holds less than `full`.
+fn sated(mut g: Genesis, full: u64) -> Genesis {
+    for (i, feed) in feeds(&mut g) {
+        feed.requires.push(Query::Below { who: Binding::Actor, key: format!("matter:{i}-0"), amount: full });
+    }
+    g
+}
+
+/// Consumers keep a third of each bite and feed only while hungry (below
+/// the 10 a founded body holds, the mind's hunger line), alone and with the
+/// stabilizer arms: whether overshoot was the meal's arithmetic.
+/// `cargo test loss_readout -- --ignored --nocapture`.
+#[test]
+#[ignore = "a readout, not a control"]
+fn loss_readout() {
+    type Arm = fn(Genesis) -> Genesis;
+    fn both(g: Genesis) -> Genesis {
+        sated(lossy(g, 2), 10)
+    }
+    let arms: [(&str, Arm); 5] = [
+        ("walking, a third kept", |g| lossy(g, 2)),
+        ("walking, fed while hungry", |g| sated(g, 10)),
+        ("walking, both", both),
+        ("sessile, refuge, wind 30, both", |g| both(scattered(with_refuges(sessile(g), 4), 30))),
+        ("sessile, refuge, wind 30, ceiling 6, both", |g| {
+            both(ceiling(scattered(with_refuges(sessile(g), 4), 30), 6))
+        }),
+    ];
+    for seed in [9, 3, 7] {
+        for (label, arm) in arms {
+            let g = arm(founding(seed, Web::Diets, 5).generate().unwrap());
+            census(g, Web::Diets, 5, &format!("seed {seed}, {label}"), 600);
+        }
+    }
+}
