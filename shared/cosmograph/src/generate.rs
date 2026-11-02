@@ -454,7 +454,7 @@ impl Founding {
         let mut remaining = self.population;
         let mut group = 0;
         while remaining > 0 {
-            let i = self.web.founder(self.lineages, random("lineage", group));
+            let i = self.web.founder(self.lineages, random("lineage", group), self.ecology_rates);
             let lineage = format!("lineage:{i}");
             let n = 2 + random("compartments", i) % 3;
             let mut accounts = BTreeMap::from([("world:soil".into(), 4)]);

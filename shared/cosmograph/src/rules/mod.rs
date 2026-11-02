@@ -183,6 +183,41 @@ pub enum Query {
 pub struct Risk {
     pub per_million: u32,
     pub effects: Vec<Effect>,
+    /// A chance that rises with the actor's age (1077) in place of
+    /// `per_million`; absent in risks before it, which hash as before.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub aging: Option<Aging>,
+}
+
+/// A hazard rising with age past maturity (1077): Gompertz, doubling every
+/// `doubling_years`, evaluated per whole year of age as a straight line
+/// between doublings so it stays integer. Stated per year; `year` and
+/// `maturity` are ticks at the world's unit, set at founding.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Aging {
+    pub maturity: Tick,
+    pub year: Tick,
+    /// The chance of dying within the first year past maturity, in millionths.
+    pub per_million_per_year: u32,
+    pub doubling_years: u32,
+}
+
+impl Aging {
+    /// The yearly chance at `age` ticks, in millionths, capped at certainty;
+    /// none before maturity.
+    pub fn per_year(&self, age: Tick) -> Option<u64> {
+        if age < self.maturity { return None; }
+        let years = (age - self.maturity) / self.year.max(1);
+        let d = u64::from(self.doubling_years.max(1));
+        let (doublings, rest) = (years / d, years % d);
+        let base = u128::from(self.per_million_per_year) << doublings.min(64) as u32;
+        let rate = base * u128::from(d + rest) / u128::from(d);
+        Some(u64::try_from(rate.min(1_000_000)).unwrap_or(1_000_000))
+    }
+    /// The chance per tick at `age`, in parts per 10^12.
+    pub fn per_tick(&self, age: Tick) -> Option<u64> {
+        self.per_year(age).map(|per_year| per_year.saturating_mul(1_000_000) / self.year.max(1))
+    }
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
