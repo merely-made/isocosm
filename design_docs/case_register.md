@@ -773,6 +773,10 @@ three design docs that cite it. The record holds the words.
 | 1095 | Eponym's bodies hold native poses; its rounds hand back once a minute through the shared contract; per-step recording stops. | none |
 | 1096 | Eponym's standalone client is rewired onto the sim's spatial clock, sharing the borrowed mode's round path. | none |
 | 1097 | At round speed n, Eponym runs n fixed 1/60 s solver steps per frame. | none |
+| 1098 | A body with a patch but no pose takes its first pose from its first admitted handback. | none |
+| 1099 | The sim admits Eponym poses at cell grain, a clear root and eye in one patch; Eponym's solver keeps finer collision. | none |
+| 1100 | Eponym's sim ticks once a world minute at a minute intent carrying handbacks; older saves replay as recorded. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
+| 1101 | Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged. | none |
 
 ## The VTT
 

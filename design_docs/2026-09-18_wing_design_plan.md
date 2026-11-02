@@ -12326,6 +12326,42 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Eponym · draws on 1080, eponym.2 · summary At round speed n, Eponym runs n fixed 1/60 s solver steps per frame.
 
+1098. **A body's first pose comes by its first handback.** Ruled by Mark on
+      2026-11-02: "First handback poses it (Recommended)". Eponym bodies made
+      at runtime (arrivals, embodiments, spread) hold no pose for a handback
+      to be checked against. The reading: a handback may admit a body's
+      first pose when the body already holds a patch at that site, so the
+      minute's record stays the only record of movement.
+
+      Links: area Eponym · draws on 1095, 1080 · summary A body with a patch but no pose takes its first pose from its first admitted handback.
+
+1099. **Eponym's handed-back poses are checked at cell grain.** Ruled by
+      Mark on 2026-11-02: "Cell grain (Recommended)", over the whole-body
+      check, which could refuse poses Eponym's solver accepted. The reading:
+      the sim admits a clear root and eye inside one patch, the check older
+      templates already get; Eponym's solver keeps its finer collision.
+
+      Links: area Eponym · draws on 1095, eponym.2 · summary The sim admits Eponym poses at cell grain, a clear root and eye in one patch; Eponym's solver keeps finer collision.
+
+1100. **Eponym's sim ticks once a world minute, not once an intent.** Ruled
+      by Mark on 2026-11-02: "Only at the minute (Recommended)". The
+      standalone game ticked the sim after every intent
+      (`eponym-play/src/state.rs:319`), so each 60 Hz motion step was a
+      world minute, sixty world minutes a real second. The reading: from the
+      new generator version the sim ticks at a minute intent carrying the
+      handbacks; older saves replay as they were.
+
+      Links: area Eponym · draws on 1072, 1080, 1095 · summary Eponym's sim ticks once a world minute at a minute intent carrying handbacks; older saves replay as recorded.
+
+1101. **Eponym's generator version 9 gates native poses and the minute.**
+      Ruled by Mark on 2026-11-02: "Generator version 9 (Recommended)", over a
+      separate session-format bump. Saves already rebuild their world from
+      their generator version (2 to 8). The reading: version 9 founds spatial
+      templates and poses, ticks at the minute and records handbacks; saves
+      from 2 to 8 replay unchanged.
+
+      Links: area Eponym · draws on 1095, 1100, schema.9 · summary Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance

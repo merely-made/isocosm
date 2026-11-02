@@ -5545,6 +5545,34 @@ area = "Eponym"
 summary = "At round speed n, Eponym runs n fixed 1/60 s solver steps per frame."
 draws_on = ["1080", "eponym.2"]
 
+[cases."1098"]
+title = "A body's first pose comes by its first handback"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "A body with a patch but no pose takes its first pose from its first admitted handback."
+draws_on = ["1080", "1095"]
+
+[cases."1099"]
+title = "Eponym's handed-back poses are checked at cell grain"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "The sim admits Eponym poses at cell grain, a clear root and eye in one patch; Eponym's solver keeps finer collision."
+draws_on = ["1095", "eponym.2"]
+
+[cases."1100"]
+title = "Eponym's sim ticks once a world minute, not once an intent"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's sim ticks once a world minute at a minute intent carrying handbacks; older saves replay as recorded."
+draws_on = ["1072", "1080", "1095"]
+
+[cases."1101"]
+title = "Eponym's generator version 9 gates native poses and the minute"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged."
+draws_on = ["1095", "1100", "schema.9"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
