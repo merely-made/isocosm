@@ -73,6 +73,71 @@ impl CameraPolicy {
 }
 
 /// How a subject is coloured. Identity, not decoration: the tests read it back.
+/// Which camera the scene is seen through (cases 1131, 1140): the dimetric
+/// overview the [`CameraPolicy`] frames, or a perspective on the played body.
+/// Switching writes no world state and leaves the overview as it was.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum View {
+    #[default]
+    Overview,
+    OverTheShoulder,
+    FirstPerson,
+}
+
+impl View {
+    /// The next view in the switch's cycle.
+    pub fn next(self) -> Self {
+        match self {
+            Self::Overview => Self::OverTheShoulder,
+            Self::OverTheShoulder => Self::FirstPerson,
+            Self::FirstPerson => Self::Overview,
+        }
+    }
+
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::Overview => "overview",
+            Self::OverTheShoulder => "over the shoulder",
+            Self::FirstPerson => "first person",
+        }
+    }
+}
+
+/// Eponym's perspective presets, in world cells. The far plane keeps the
+/// view's ground about the overview's, within the terrain residency budget. The heading is the
+/// overview's, so a switch keeps facing the way the overview looked; bodies
+/// carry no facing of their own yet.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct PerspectivePolicy {
+    pub vertical_fov: f32,
+    pub near: f32,
+    pub far: f32,
+    /// First person's look below level, in radians.
+    pub pitch: f32,
+    pub shoulder_distance: f32,
+    pub shoulder_rise: f32,
+}
+
+impl Default for PerspectivePolicy {
+    fn default() -> Self {
+        Self { vertical_fov: 1.2, near: 0.02, far: 28.0, pitch: 0.12, shoulder_distance: 3.0, shoulder_rise: 1.5 }
+    }
+}
+
+impl PerspectivePolicy {
+    /// The camera for a perspective `view` from `eye` toward `heading`;
+    /// `None` for the overview, which the [`CameraPolicy`] frames.
+    pub fn camera(self, view: View, eye: [f32; 3], heading: [f32; 3], aspect: f32) -> Option<SlabCamera> {
+        match view {
+            View::Overview => None,
+            View::FirstPerson => SlabCamera::first_person(eye, heading, self.pitch, self.vertical_fov,
+                aspect, self.near, self.far),
+            View::OverTheShoulder => SlabCamera::over_the_shoulder(eye, heading, self.shoulder_distance,
+                self.shoulder_rise, self.vertical_fov, aspect, self.near, self.far),
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Appearance {
     /// The played subject.
@@ -111,6 +176,26 @@ mod tests {
         CameraPolicy::default()
             .camera([12.0, 30.0, -4.0], 16.0 / 9.0)
             .unwrap()
+    }
+
+    /// Every view keeps its ground within the first terrain residency band,
+    /// the one the atlas budget holds (cases 1131, 1140).
+    #[cfg(feature = "r1-proof")]
+    #[test]
+    fn every_view_frames_ground_the_residency_budget_holds() {
+        let policy = CameraPolicy::default();
+        let heading = [policy.forward[0], 0.0, policy.forward[2]];
+        let eye = [12.0, 30.0, -4.0];
+        for aspect in [16.0 / 9.0, 1240.0 / 820.0, 1.0] {
+            let overview = policy.camera(eye, aspect).unwrap();
+            let views = [View::FirstPerson, View::OverTheShoulder]
+                .map(|view| PerspectivePolicy::default().camera(view, eye, heading, aspect).unwrap());
+            for camera in [overview].into_iter().chain(views) {
+                let range = crate::residency::camera_visible_range(camera);
+                eprintln!("{:?} aspect {aspect}: range {range}", camera.projection);
+                assert!(range <= crate::residency::PAGE_RANGES[0], "{:?}: {range}", camera.projection);
+            }
+        }
     }
 
     #[test]

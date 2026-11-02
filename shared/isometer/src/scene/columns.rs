@@ -17,8 +17,8 @@ impl ColumnTerrain {
         -> super::FramedBricks {
         loop {
             let cell=self.cell as f32;
-            let scaled=crate::SlabCamera {centre:camera.centre.map(|v|v/cell),
-                half_height:camera.half_height/cell,depth:camera.depth/cell,..camera};
+            // The cutaway is not framing's to read; its scale is harmless.
+            let scaled=super::coordinates::camera(camera,cell);
             let framed=super::framed_bricks(scaled,margin,self,capacity);
             let width=(self.volume.max[0]-self.volume.min[0]).max(self.volume.max[1]-self.volume.min[1]);
             if framed.overflow==0 || self.cell>=width {return framed;}

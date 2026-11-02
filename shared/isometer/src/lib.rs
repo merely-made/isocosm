@@ -29,10 +29,10 @@ mod volumes;
 
 pub use anchors::{GlyphAnchor, MAX_GLYPH_ANCHORS};
 pub use bodies::{
-    BodyFrameStats, BodyLayer, MaterialPalette, PaletteColour, PartAddress, Pose, SceneBody,
+    BodyFrameStats, BodyLayer, MaterialPalette, PaletteColour, PartAddress, Pose, SceneBody, eye_of,
     SceneVolumes, SubjectKey,
 };
-pub use camera::{Cutaway, SlabCamera, SlabWindow};
+pub use camera::{Cutaway, Frustum, Projection, SlabCamera, SlabWindow};
 pub use glyphs::{GlyphOrientation, MAX_SPATIAL_GLYPHS, SpatialGlyph, Stroke};
 pub use producer::{
     BodySignature, FrameRequest, SCENE_ALPHA, SCENE_ENCODING, SceneProducer, SceneSignature,

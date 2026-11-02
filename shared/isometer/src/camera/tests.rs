@@ -51,7 +51,7 @@ fn pitched(horizontal: [f32; 3], degrees: f32) -> [f32; 3] {
 }
 
 fn camera(forward: [f32; 3], centre: [f32; 3], half: f32, aspect: f32) -> SlabCamera {
-    SlabCamera {
+    SlabCamera { projection: Default::default(),
         centre,
         forward,
         half_height: half,
@@ -242,7 +242,7 @@ fn the_cut_plane_is_vertical_and_exactly_one_depth_thick() {
 fn pitched_rays_start_and_end_on_the_same_standing_walls_as_body_clipping() {
     for pitch in [12.0, 45.0] {
         for horizontal in HORIZONTALS {
-            let view = SlabCamera {
+            let view = SlabCamera { projection: Default::default(),
                 centre: [3.0, 200.0, -7.0],
                 forward: pitched(horizontal, pitch),
                 half_height: 5.0,
@@ -282,7 +282,7 @@ fn pitched_rays_start_and_end_on_the_same_standing_walls_as_body_clipping() {
 fn variable_pitch_and_depth_match_traced_rays_after_every_turn() {
     for pitch in [0.0, 12.0, 45.0] {
         for horizontal in HORIZONTALS {
-            let view = SlabCamera {
+            let view = SlabCamera { projection: Default::default(),
                 centre: [-8.0, 23.0, 16.0],
                 forward: pitched(horizontal, pitch),
                 half_height: 38.0,
@@ -368,7 +368,7 @@ fn a_plane_cutaway_drops_the_near_side_of_a_body_cut() {
 #[test]
 fn a_world_point_lands_where_the_raster_matrix_puts_it() {
     for look in [SIDE, ACROSS, oblique()] {
-        let camera = SlabCamera {
+        let camera = SlabCamera { projection: Default::default(),
             centre: [3.0, 5.0, -2.0],
             forward: look,
             half_height: 4.0,

@@ -211,6 +211,7 @@ impl SessionApp {
             },
             None => lines.push("Action: idle".into()),
         }
+        lines.push(format!("View: {}", model.view.name()));
         if let Some(line) = self.round_line() {
             lines.push(line);
         }

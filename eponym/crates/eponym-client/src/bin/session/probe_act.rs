@@ -75,6 +75,12 @@ pub(super) fn act(state: &mut SessionApp, label: &str) -> bool {
         // A round's minute now: a fixture control, so a scenario need not
         // wait out a real minute (case 1096).
         "minute" => state.minute_now(),
+        "view-overview" | "view-over-the-shoulder" | "view-first-person" => {
+            let want = label.trim_start_matches("view-").replace('-', " ");
+            while state.model.borrow().view.name() != want {
+                state.cycle_view();
+            }
+        },
         "speed-1" | "speed-2" | "speed-4" | "speed-8" => {
             let factor = label.trim_start_matches("speed-").parse().unwrap_or(1);
             state.set_speed(cosmograph_host::drive::Speed::from_factor(factor).unwrap_or(cosmograph_host::drive::Speed::X1));

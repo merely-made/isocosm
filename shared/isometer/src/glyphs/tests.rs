@@ -157,7 +157,7 @@ fn glyph_stroke_edges_share_voxel_depth_and_camera() {
             },
         ] {
             for (mode, look) in [("side", SIDE), ("oblique", oblique())] {
-                let view = SlabCamera {
+                let view = SlabCamera { projection: Default::default(),
                     centre: [0.0; 3],
                     forward: look,
                     half_height: 7.0,
@@ -402,7 +402,7 @@ fn world_plane_is_camera_independent_and_invalid_lists_do_not_replace_it() {
             "invalid replacement must retain the entire admitted list"
         );
     }
-    let view = SlabCamera {
+    let view = SlabCamera { projection: Default::default(),
         centre: [0.0; 3],
         forward: SIDE,
         half_height: 7.0,

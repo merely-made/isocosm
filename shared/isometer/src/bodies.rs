@@ -24,7 +24,9 @@ pub use isometer_render::live_body::{MaterialPalette, PaletteColour};
 use crate::camera::{SlabCamera, SlabWindow};
 use crate::volumes::DeclaredExtentVolumes;
 
-mod placement;
+mod eye;
+pub use eye::eye_of;
+pub(crate) mod placement;
 mod surfaces;
 pub use placement::BodyFrameStats;
 pub(crate) use placement::{body_origin, depth_target, distance, intersects};
@@ -290,20 +292,7 @@ impl BodyLayer {
             return surface.part_bounds(part);
         }
         let placed = self.placed.iter().find(|body| body.subject == subject)?;
-        let placement = placed.mesh.placements.iter().find(|p| p.part == part)?;
-        let quads = placed.mesh.mesh_for(placement.volume)?.quads.len();
-        let live = placed.live();
-        let mut min = [f32::INFINITY; 3];
-        let mut max = [f32::NEG_INFINITY; 3];
-        for index in 0..quads {
-            for corner in isometer_render::live_body::posed_quad(live, part, index).ok()? {
-                for axis in 0..3 {
-                    min[axis] = min[axis].min(corner[axis]);
-                    max[axis] = max[axis].max(corner[axis]);
-                }
-            }
-        }
-        (min[0] <= max[0]).then_some((min, max))
+        eye::part_box(placed.live(), &placed.mesh, part)
     }
 
     pub fn pick(

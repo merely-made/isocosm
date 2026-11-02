@@ -72,7 +72,7 @@ impl Specimen {
     }
 
     fn camera(&self, aspect: f32) -> SlabCamera {
-        SlabCamera {
+        SlabCamera { projection: Default::default(),
             centre: [0.0; 3],
             forward: [0.0, 0.0, -1.0],
             half_height: self.half_height,

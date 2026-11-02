@@ -164,7 +164,7 @@ impl SceneSource for SceneModelSource {
 /// The anatomy a frame draws: the current one, falling back to the last
 /// admitted record when injury has made it stale. An out-of-date body is a
 /// truer picture than a missing one.
-fn anatomy(game: &GameState, subject: SubjectId) -> Option<&AnatomyRecord> {
+pub(super) fn anatomy(game: &GameState, subject: SubjectId) -> Option<&AnatomyRecord> {
     game.current_anatomy(subject)
         .ok()
         .or_else(|| game.anatomies().get(subject))
@@ -227,11 +227,7 @@ impl SceneModel {
     /// Everything the frame this request would draw depends on. No projection
     /// and no device work: the walk is the same one [`Self::frame`] makes.
     pub(super) fn inputs(&self, request: &FrameRequest<'_>) -> Result<SceneSignature, String> {
-        let centre = self.follow_centre().map_err(|error| format!("{error:?}"))?;
-        let camera = self
-            .camera
-            .camera(centre, request.aspect)
-            .ok_or("invalid scene camera")?;
+        let camera = self.view_camera(request.aspect)?;
         let game = self.game();
         let scale = self.appearance.scale;
         let bodies = drawable(game, self.round.as_ref())
@@ -249,7 +245,7 @@ impl SceneModel {
         #[cfg(feature = "r1-proof")]
         let terrain_revision = if self.terrain {
             let ground = game.world().ground();
-            let focus = resident_focus(camera.centre);
+            let focus = resident_focus(camera.window().centre);
             let range = camera_visible_range(camera);
             Some(
                 selection_revision(ground, focus, range)
@@ -278,11 +274,7 @@ impl SceneModel {
         &mut self,
         request: &FrameRequest<'_>,
     ) -> Result<Option<wgpu::TextureView>, String> {
-        let centre = self.follow_centre().map_err(|error| format!("{error:?}"))?;
-        let camera = self
-            .camera
-            .camera(centre, request.aspect)
-            .ok_or("invalid scene camera")?;
+        let camera = self.view_camera(request.aspect)?;
         let terrain_on = self.terrain;
         let material = self.appearance.material;
         let scale = self.appearance.scale;
@@ -302,7 +294,7 @@ impl SceneModel {
         let game = held.session().game();
         let ground = game.world().ground();
         #[cfg(feature = "r1-proof")]
-        let focus = resident_focus(camera.centre);
+        let focus = resident_focus(camera.window().centre);
         #[cfg(feature = "r1-proof")]
         let range = camera_visible_range(camera);
         #[cfg(feature = "r1-proof")]
@@ -397,6 +389,8 @@ impl SceneModel {
 }
 
 #[cfg(feature = "r1-proof")]
+/// The middle of what the camera shows: the slab's centre, or the middle of
+/// a perspective's view rather than its eye.
 fn resident_focus(centre: [f32; 3]) -> [i32; 3] {
     centre.map(|coordinate| coordinate.floor() as i32)
 }

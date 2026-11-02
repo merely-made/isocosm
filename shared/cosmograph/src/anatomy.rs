@@ -86,6 +86,16 @@ pub fn share_of(h: Half, p: &Part, function: &str, m: Measure) -> u128 {
     measure(h, m) * cells / u128::from(capacity(h))
 }
 
+/// The part a body senses from most (case 1143): its living part holding
+/// the most `function:sense` cells, the lowest id on a tie; `None` where no
+/// living part senses. First person's eye sits on it.
+pub fn sensing_part(e: &Entity) -> Option<PartId> {
+    e.living()
+        .filter_map(|(id, p)| p.cells.get("function:sense").copied().filter(|n| *n > 0).map(|n| (n, id)))
+        .max_by(|a, b| a.0.cmp(&b.0).then(b.1.cmp(&a.1)))
+        .map(|(_, id)| id)
+}
+
 /// A part's name (ruling 494): a declared tube or shell, a hollow a box
 /// cannot show; otherwise its box read as isometer reads one, refined by
 /// the tree, a rod with two or more children a branch and a point between a
