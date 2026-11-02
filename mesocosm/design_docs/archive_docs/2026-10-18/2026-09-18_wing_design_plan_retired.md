@@ -3155,7 +3155,7 @@ to 2026-10-06 is archived as
 - 2026-09-27: the real-panel capture landed at Isometry `0427e982` (Mere
   `ac41628a`, Genet `92b249af`, NetRender `9607d16`): the paused Simulation >
   Inspect panel reproduced exactly by the Classic verifier; sources sealed in
-  `mesocosm/testing/bench/receipts/2026-09-27/paint-capture/source.json`.
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-27/paint-capture/source.json`.
 - 2026-09-26: the body-site renames on main: tract (`23147d1` to `ad65eb2`,
   ruling 224), then attachment and situs (`1dfb399` to `8d27687`, rulings 251
   and 252).

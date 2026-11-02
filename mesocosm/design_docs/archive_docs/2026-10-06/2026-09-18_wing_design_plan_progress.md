@@ -637,7 +637,7 @@ repointed for the move.
   all 13 committed source blobs, 30 artifact hashes and two executable hashes,
   and confirmed byte-identical capture/final replay PNGs. Default root and
   Eponym checks pass; Isocosm has 111 passing tests. The source seal and scope
-  are in `mesocosm/testing/bench/receipts/2026-09-27/paint-capture/source.json`
+  are in `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-27/paint-capture/source.json`
   and the bench README. Embedded font packets remain local. Hybrid text,
   live external textures, native performance, optional Cleromancy integration
   and Lane L verification on this new family remain separate. This records

@@ -1295,7 +1295,7 @@ standing rule: after two real consumers, never declared in advance.
   chunks in `src/terrain/lift.rs`; the border, mean and relief checks;
   `isocosm-bench --lift-draws` and `--lift-digest`. Twelve tests in
   `tests/lift.rs`, 133 in all, with Clippy and rustfmt clean. Receipt in
-  `mesocosm/testing/bench/receipts/2026-09-28/isocosm/`.
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-28/isocosm/`.
 - 2026-09-28: SP2's forks ruled (400 to 403) and its brief written as §A.9,
   the exact mean kept by a lattice with closed-form sums rather than a sum
   over every column.
@@ -1304,7 +1304,7 @@ standing rule: after two real consumers, never declared in advance.
   before; the grid layout and validation in `src/map/`; corners, profiles
   and the two checks in `src/terrain/`; `isocosm-bench --map-draws`. Ten
   tests in `tests/spine.rs`, 121 in all, with Clippy and rustfmt clean.
-  Receipt in `mesocosm/testing/bench/receipts/2026-09-28/isocosm/`.
+  Receipt in `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-28/isocosm/`.
 - 2026-09-28: SP1's brief written as §A.8 and its three forks ruled (397 to
   399); the Isocosm baseline passed 111 tests before any SP1 change.
 

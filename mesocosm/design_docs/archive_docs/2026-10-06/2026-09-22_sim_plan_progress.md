@@ -60,7 +60,7 @@ for the move.
   1,000 draws, with 4b's two hunting checks passing again under 454 (186
   tests, clippy and rustfmt clean, `mesocosm-genet` checks). Findings
   records the extension list, the density and the cost; receipts under
-  `testing/bench/receipts/2026-10-01/isocosm/`.
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-10-01/isocosm/`.
 - 2026-10-01: rulings 451 to 456 carried into §9's checkpoint 6 brief and
   status as the checkpoint opened and its step 5 was assessed: the epoch
   rule and deep time (451, 452), the minimal body on the core part (453),

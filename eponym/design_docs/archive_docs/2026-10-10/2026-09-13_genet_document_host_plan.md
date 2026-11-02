@@ -138,7 +138,7 @@ new renderling use.
 A `genet-probe` scenario under `eponym/testing/session/` that moves the
 played subject, charges and releases a strike, severs a part, and captures
 before and after. Receipts and captures follow Mesocosm's
-`testing/bench/receipts/<date>/` layout.
+`Code/testing/isocosm/mesocosm-bench-receipts/<date>/` layout.
 
 **Done when:** the scenario asserts a changed viewport region and changed
 sheet text after the volley, the world hash is unchanged by presentation

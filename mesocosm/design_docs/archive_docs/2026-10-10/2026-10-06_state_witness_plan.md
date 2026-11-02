@@ -40,7 +40,7 @@ here and the decisions in the record (ruling 616).
   probe and scale tools, the tests, and `mesocosm-genet`'s probe state
   (`app/bench/probe_state.rs`, a string field). `tests/shapes.rs` proves a
   v1 save from before a rename still loads, against its SHA-256 hash.
-- Frozen receipts under `mesocosm/testing/bench/receipts/` print SHA-256
+- Frozen receipts under `Code/testing/isocosm/mesocosm-bench-receipts/` print SHA-256
   hashes; they stay as taken and are not re-run targets.
 
 ## Phases

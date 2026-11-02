@@ -555,7 +555,7 @@ pack plan made in choosing an axis unilaterally.
 9. `structure-cli` and `population` named as excluded, with their HEAD failure
    hashes, in every step's green claim.
 
-**Receipts**, under `testing/bench/receipts/2026-09-15/expression/`: for one
+**Receipts**, under `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-15/expression/`: for one
 run, the expression table, the embodied glyph set per tick, the expressing part
 ids, the journey snapshot and `trial-mark-budget-dropped == 0`; a capture pair
 before and after a severing, same journey, different embodied set; and a capture
@@ -907,7 +907,7 @@ before quoting it in a green claim.
    unchanged after the bearing is lost; `spatial-coverage` keeps all 32
    viewports byte-identical; `structure-cli` and `population` are named as
    excluded with their HEAD failure hashes in every green claim.
-7. **Receipts**, under `testing/bench/receipts/2026-09-15/experience/`: the
+7. **Receipts**, under `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-15/experience/`: the
    condition table for one run; per experienced glyph the encounter, deed and
    manner; the journey snapshot and its `motif()` groups; and the regenerated
    `testing/glyphs/journey.json` with both world hashes unmoved.
@@ -1250,7 +1250,7 @@ Measured in the tree today; the rest are cited inline above.
   `trial-expressing-parts` empty, `trial-borne-by` becomes journeyed, the
   journey and grant count are byte-identical across the change, and the
   viewport changes; 167 frames, 8 captures, receipts under
-  `testing/bench/receipts/2026-09-15/expression/`. Deviation: the bench
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-15/expression/`. Deviation: the bench
   has no action that severs a part of the bound body, and a button
   calling the phenotype's sever directly would change a body with no
   `Event::Severed` behind it, so the scenario uses death, which empties

@@ -558,7 +558,7 @@ the kernel-facing adapter, outside this slice. Flagged, not taken.
 9. `structure-cli` and `population` named as excluded, with their HEAD
    failure hashes, in every step's green claim.
 
-**Receipts**, under `testing/bench/receipts/2026-09-15/effect-pack/`.
+**Receipts**, under `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-15/effect-pack/`.
 
 10. For one preset run: accepted events per kind, the grant list, the
     withheld-mark count, `trial-mark-budget-dropped == 0`, and the

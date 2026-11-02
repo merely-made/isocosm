@@ -933,7 +933,7 @@ world-history Law C test.
   reaches ticks 1,000 and 2,000 with no checkpoint. Review found the last
   boundary noted only during an advance run, fixed before commit. Spatial
   coverage byte-identical over 32 captures. The three saved comparisons in
-  `receipts/2026-09-13/integrated-world` no longer load: their hashes predate
+  `Code/testing/isocosm/mesocosm-bench-receipts/2026-09-13/integrated-world` no longer load: their hashes predate
   the two `WorldRules` fields added that evening (`c2a26c2`, `2594031`).
 - **2026-09-16.** D6 landed: `WorldRecord` is a transparent newtype over
   `hagiograph::Record<(Feat, Scale), SpeciesId>`, `Mark` a type alias, every

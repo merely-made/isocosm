@@ -1104,7 +1104,7 @@ the border and overview, catches a deliberately mismatched source, restores
 the original viewport exactly, and suspends/resumes an existing trial's epoch
 advance. The first native run caught a renderer-capacity mismatch that CPU
 tests had missed; admission now counts actual occupied bricks before
-allocation. The [receipt](../../../testing/bench/receipts/2026-09-29/spine/SP3_TERRAIN.md)
+allocation. The receipt (`Code/testing/isocosm/mesocosm-bench-receipts/2026-09-29/spine/SP3_TERRAIN.md`)
 preserves that failure alongside the corrected passing runs. This completes
 the approved terrain connection and both documentation lanes, not the later
 body, edits, paging or shared-store implementation.
@@ -1441,7 +1441,7 @@ default layers and stacking come from the bench as readings with numbers.
 the mode host, measuring the briefs' open items and building, Mark chose
 time at scale, the gap §9.2 ranked second. Its assessment remeasured the
 09-25 scale points on today's core
-(`mesocosm/testing/bench/receipts/2026-10-01/isocosm/SCALE_REMEASURE.md`):
+(`Code/testing/isocosm/mesocosm-bench-receipts/2026-10-01/isocosm/SCALE_REMEASURE.md`):
 
 - the quadratic is gone, cost growing as n^1.02 over 512 to 4,096 members,
   33 ms a tick at 4,096 against 18.2 s on 09-25, about 77 ms at 10,000 by
