@@ -12574,6 +12574,39 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Ecology · draws on 1077, 1078, 1094, ecology.1, ecology.2, bodies.7, record.7 · summary Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence.
 
+1120. **Eponym's standalone client logs one motion intent a minute.** Ruled
+      by Mark on 2026-11-02: "One intent a minute (Recommended)". The client
+      logged one intent per 60 Hz step: 3,600 steps took 9.0 s (about 2.5 ms
+      a step, dev build), within 1x but not 8x, and the save grew 342 KB a
+      minute. The reading: an appended intent carries the minute's input
+      runs, re-solved on apply and on replay, as case 1117 does for the
+      borrowed mode.
+
+      Links: area Eponym · draws on 1117, 1096, 1113 · summary Eponym's standalone client logs a minute's motion as one intent carrying its input runs, re-solved on apply and replay.
+
+1121. **The client's minute runs on a worker.** Ruled by Mark on
+      2026-11-02: "Worker (Recommended)". The reading: a worker takes a copy
+      of the game state and the minute's intents and the frame adopts its
+      answer; other game intents (strikes, projects) queue until it arrives,
+      and local stepping continues from the claimed end pose (case 1081).
+
+      Links: area Eponym · draws on 1081, 1120 · summary The client's minute runs on a worker over a copy of the game state; other intents queue until its answer is adopted.
+
+1122. **The client founds in rounds by default, with a setting.** Ruled by
+      Mark on 2026-11-02: "Setting, rounds default (Recommended)".
+
+      Links: area Eponym · draws on 1102, 1096 · summary New standalone worlds are founded in rounds by default; a setting turns it off.
+
+1123. **The handback's reach is a tick's walk, ungated.** Ruled by Mark on
+      2026-11-02: "Both as built (Recommended)". The check refuses a pose
+      farther across the ground than `Speed::of` walks in one tick, plus a
+      cell of allowance, height uncounted (falls are not walking); a first
+      pose and a world without speeds are unbounded. The reading: the bound
+      is the world's tick length, not a literal minute, and no version gates
+      it.
+
+      Links: area Processes and rules · draws on 1080, 1112, 1085 · summary A handback is refused beyond a tick's walk across the ground plus a cell; no version gate.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

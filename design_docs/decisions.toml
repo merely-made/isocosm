@@ -5697,7 +5697,35 @@ title = "The ecology is derived from bodies and finished by selection"
 source = "design_docs/2026-09-18_wing_design_plan.md"
 area = "Ecology"
 summary = "Rates from body size; food quality; regional persistence; dormancy; disease; terrain change; heritable rate constants selected over deep time, worlds offered by persistence."
-draws_on = ["1077", "1078", "1094", "ecology.1", "ecology.2", "bodies.7", "record.7"]
+draws_on = ["1077", "1078", "1094", "bodies.7", "ecology.1", "ecology.2", "record.7"]
+
+[cases."1120"]
+title = "Eponym's standalone client logs one motion intent a minute"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "Eponym's standalone client logs a minute's motion as one intent carrying its input runs, re-solved on apply and replay."
+draws_on = ["1096", "1113", "1117"]
+
+[cases."1121"]
+title = "The client's minute runs on a worker"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "The client's minute runs on a worker over a copy of the game state; other intents queue until its answer is adopted."
+draws_on = ["1081", "1120"]
+
+[cases."1122"]
+title = "The client founds in rounds by default, with a setting"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "New standalone worlds are founded in rounds by default; a setting turns it off."
+draws_on = ["1096", "1102"]
+
+[cases."1123"]
+title = "The handback's reach is a tick's walk, ungated"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "A handback is refused beyond a tick's walk across the ground plus a cell; no version gate."
+draws_on = ["1080", "1085", "1112"]
 
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
