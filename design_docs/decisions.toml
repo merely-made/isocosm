@@ -5580,6 +5580,34 @@ area = "Eponym"
 summary = "A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged."
 draws_on = ["1095", "1100", "1101", "schema.9"]
 
+[cases."1103"]
+title = "Air and water strength is read from terrain, and controlled by site conditions where a region or world gives them"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Scatter's air and water strength is read from a site's terrain, controlled by site conditions where its region or world sets them."
+draws_on = ["1092", "ecology.4", "world.6"]
+
+[cases."1104"]
+title = "Each body breeds on its own clock"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "A body's periodic processes, breeding among them, run offset by its own birth tick, so members do not pulse together."
+draws_on = ["1076", "1078", "processes.7"]
+
+[cases."1105"]
+title = "Grazing works on bodied producers, with the bite scaled to the plant"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Ecology"
+summary = "Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites."
+draws_on = ["1078", "bodies.5", "bodies.12", "bodies.13"]
+
+[cases."1106"]
+title = "The founding floor holds in every generated world"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "World generation"
+summary = "Every generated world founds each lineage with at least six; pinned fixtures are re-recorded."
+draws_on = ["1090", "world.8"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

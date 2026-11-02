@@ -217,6 +217,7 @@ three design docs that cite it. The record holds the words.
 | 1080 | A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1082 | The foreground cap's default is set from a measured step's cost, with 16 as a placeholder until then. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1086 | The foreground cap defaults to 16 bodies, re-measured once the foreground places feet. | none |
+| 1104 | A body's periodic processes, breeding among them, run offset by its own birth tick, so members do not pulse together. | none |
 
 ## Ecology
 
@@ -268,6 +269,8 @@ three design docs that cite it. The record holds the words.
 | 1092 | Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length. | none |
 | 1093 | A drawn lineage trait scales the scatter chance its medium or walking speed gives. | none |
 | 1094 | The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
+| 1103 | Scatter's air and water strength is read from a site's terrain, controlled by site conditions where its region or world sets them. | none |
+| 1105 | Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites. | none |
 
 ## Bodies and anatomy
 
@@ -512,6 +515,7 @@ three design docs that cite it. The record holds the words.
 | 1041 | A picker founds carried or pack-folder quick-start worlds in one step; the sapient-lineage population slice waits on E4. | [creature minds](../mesocosm/design_docs/2026-10-31_creature_minds_brief.md) |
 | 1057 | A crossing is keyed by its route's border and an arrival enters through that edge; parallel routes are distinct crossings. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1090 | Every founded lineage starts with at least six members. | none |
+| 1106 | Every generated world founds each lineage with at least six; pinned fixtures are re-recorded. | none |
 
 ## Organs: glyphs, impresa, hagiograph
 

@@ -12377,6 +12377,48 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Eponym · draws on 1101, 1100, 1095, schema.9 · summary A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged.
 
+1103. **Air and water strength is read from terrain, and controlled by
+      site conditions where a region or world gives them.** Ruled by Mark on
+      2026-11-02, reopening 1092's premise: in a stock world `world:air` and
+      `world:water` are ground materials, not site conditions (the only site
+      conditions being `world:habitable` and `world:weather`,
+      `generate.rs`). Answer: "Can we do 1 in a way that allows it to be
+      controlled by site conditions when the area exists in the context of a
+      region/world". The reading: a site's air and water strength for
+      scattering is read from its laid terrain (water from the laid water,
+      air from weather and exposure); where the site sits in a region or
+      world that sets those conditions, they control it.
+
+      Links: area Ecology · draws on 1092, ecology.4, world.6 · summary Scatter's air and water strength is read from a site's terrain, controlled by site conditions where its region or world sets them.
+
+1104. **Each body breeds on its own clock.** Ruled by Mark on 2026-11-02:
+      "Each body's own clock (Recommended)". Every member of a lineage bred on
+      the same world-clock tick, so counts stepped flat, flat, jump and each
+      season's young crashed together, the main remaining cause of the
+      year-matrix's month losses over a third. The reading: a body's periodic
+      processes run on a period offset by its own birth tick.
+
+      Links: area Processes and rules · draws on 1078, 1076, processes.7 · summary A body's periodic processes, breeding among them, run offset by its own birth tick, so members do not pulse together.
+
+1105. **Grazing works on bodied producers, with the bite scaled to the
+      plant.** Ruled by Mark on 2026-11-02, on his cue that grazers should
+      take leaves, not whole plants: "Bodies, bigger, or, smaller bites".
+      The lane's worlds were bodiless (a plant one account; a grazer's bite a
+      tenth of an adult, two bites a seedling). The reading: producers get
+      bodies, so a bite reaches only exposed parts and the root store
+      survives (1078's "reserve no bite reaches"); the bite is made small
+      against the plant, by larger producers or smaller bites, whichever
+      measures better. Fruit is not taken up now.
+
+      Links: area Ecology · draws on 1078, bodies.5, bodies.12, bodies.13 · summary Producers are bodied, bites reach exposed parts only, and a bite is small against a plant by larger producers or smaller bites.
+
+1106. **The founding floor holds in every generated world.** Ruled by Mark
+      on 2026-11-02: "Every generated world (Recommended)". Case 1090's floor
+      of six was applied only to world-time foundings; widening it
+      re-records pinned generated fixtures and re-measures A1.
+
+      Links: area World generation · draws on 1090, world.8 · summary Every generated world founds each lineage with at least six; pinned fixtures are re-recorded.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
