@@ -103,10 +103,9 @@ impl View {
     }
 }
 
-/// Eponym's perspective presets, in world cells. The far plane keeps the
-/// view's ground about the overview's, within the terrain residency budget. The heading is the
-/// overview's, so a switch keeps facing the way the overview looked; bodies
-/// carry no facing of their own yet.
+/// Eponym's perspective presets, in world cells, facing where the player
+/// aims. The far plane keeps the view's ground about the overview's, within
+/// the terrain residency budget.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct PerspectivePolicy {
     pub vertical_fov: f32,

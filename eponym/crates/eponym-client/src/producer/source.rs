@@ -280,6 +280,9 @@ impl SceneModel {
         let scale = self.appearance.scale;
         let played = self.played();
         let tints = (self.appearance.played, self.appearance.other);
+        // First person draws only what lies below the played body's eye.
+        let first_person = anatomy(self.game(), played)
+            .and_then(|record| self.first_person_document(record.document.doc()));
         self.ensure_scene(request)?;
 
         let SceneModel {
@@ -329,7 +332,10 @@ impl SceneModel {
             .iter()
             .map(|(subject, record, pose)| SceneBody {
                 subject: SubjectKey(subject.0),
-                document: &record.document,
+                document: match &first_person {
+                    Some(drawn) if *subject == played => drawn,
+                    _ => &record.document,
+                },
                 pose: scene_pose(&record.document, *pose, scale),
                 scale,
                 grounded: true,

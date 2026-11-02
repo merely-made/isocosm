@@ -78,6 +78,9 @@ pub struct SceneModel {
     /// kept whatever this is (case 1131).
     pub view: super::policy::View,
     pub perspective: super::policy::PerspectivePolicy,
+    /// Where the player aims, flat: what first person and the shoulder face
+    /// (the arrows' aim; Eponym bodies carry no facing of their own).
+    pub aim: [f32; 3],
     pub appearance: Appearance,
     /// Draw the traced terrain under the bodies. The bodies-only arm is the
     /// isolated preview: same camera, same depth, no ground.
@@ -114,6 +117,7 @@ impl SceneModel {
             camera: CameraPolicy::default(),
             view: Default::default(),
             perspective: Default::default(),
+            aim: [1.0, 0.0, 0.0],
             appearance: Appearance::default(),
             terrain: true,
             scene: None,
