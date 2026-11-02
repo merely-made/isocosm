@@ -96,6 +96,31 @@ pub fn draw_within(sim: &Simulation, t: &Templates, id: Id, site: Id, within: &W
     stand_within(sim, t, id, site, within, placed, &BTreeMap::new())
 }
 
+/// A traveller's arrival (case 1084): a stance touching its meal, held to
+/// no spacing from other residents as a step into contact is not, else the
+/// nearest stance around `at`, where the meal stood when it left.
+pub fn arrive_near(sim: &Simulation, t: &Templates, id: Id, site: Id, food: Id, at: [i64; 3],
+    reach: u64, yaw: Yaw, placed: &BTreeMap<Id, Pose>) -> Result<Pose> {
+    let entity = sim.state().population.get(id).ok_or("arriving actor absent")?;
+    let doc = entity.body.as_ref().ok_or("arriving body absent")?;
+    let blocked: Vec<_> = placed.iter().filter(|(other, _)| **other != id).filter_map(|(other, p)|
+        sim.state().population.get(*other)?.body.as_ref().and_then(|d| boxes(d, p).ok()))
+        .flatten().collect();
+    let volume = sim.site_volume(site, &site_window(t, at))?;
+    let mut grounding = Grounding::new(&volume).with_articulation(true).with_walking(t.walking)
+        .with_balance(balance_for(sim, entity)?);
+    let meal = placed.get(&food).and_then(|p| {
+        let doc = sim.state().population.get(food)?.body.as_ref()?;
+        FoodStand::of(&volume, doc, p, reach).ok()
+    });
+    if let Some(meal) = meal
+        && let Ok(pose) = grounding.near_food(doc, at, yaw, &blocked, &[meal]) {
+        return Ok(pose);
+    }
+    grounding.with_spacing(t.body_spacing)
+        .find(doc, at, yaw, SEARCH_REACH, SEARCH_STRIDE, SEARCH_CANDIDATES, &blocked)
+}
+
 fn stand_within(sim: &Simulation, t: &Templates, id: Id, site: Id, within: &Window,
     placed: &BTreeMap<Id, Pose>, edible: &BTreeMap<Id, u64>) -> Result<Pose> {
     let entity = sim.state().population.get(id).ok_or("habitat actor absent")?;

@@ -71,12 +71,14 @@ impl Simulation {
             return 0;
         }
         let templates = self.genesis.rules.spatial_templates.as_ref().unwrap();
+        // The feed falls due on the forager's own clock (1104).
+        let born = self.body_at_start(actor).map_or(0, |e| e.born);
         templates
             .foraging
             .values()
             .filter_map(|f| {
                 let feed = &self.genesis.rules.processes[&f.feed];
-                if feed.period.is_none_or(|p| self.state.tick % p == 0) {
+                if self.due_for(feed, born) {
                     return None;
                 }
                 let score = self.food_need_score(actor, feed);
@@ -150,8 +152,11 @@ impl Simulation {
                 return None;
             }
             let feed = &self.genesis.rules.processes[&f.feed];
-            if self.food_need_score(actor, feed) <= 0 {
+            if self.food_need_score(actor, feed) <= 0 || self.travelling(actor) {
                 return Some(None);
+            }
+            if self.travels_out_of_view(actor) {
+                return Some(self.travel_target(actor, &p.id, f));
             }
             if f.reachable {
                 return Some(self.food_route(actor, &p.id).ok()

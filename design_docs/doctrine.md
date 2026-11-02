@@ -968,22 +968,27 @@ Links: draws on 1071, bodies.1, bodies.10, world.4 · summary Sensing separates 
 
 ### Bodies 16. Speed follows the body
 
-A body's speed is the world's baseline, cells per world second scaled by
-size, times a factor from its anatomy: leg length by the Froude rule (walking
-near 0.25, a gait change near 0.5), stride capped by each joint's swing;
-bodies without legs move in body lengths per second. Joints carry an axis and
+A legged body's speed is the world's baseline, the speed in cells per world
+second of a body whose leg is the world's reference, times the square root
+of its own leg over that reference: the Froude rule (walking near 0.25, a
+gait change near 0.5), so size enters through leg length. Bodies without legs
+move a world rate in body lengths per world second. Joints carry an axis and
 an angle range, drawn per lineage within what the form allows, and
-animation, stride and foot placement keep within them. Travel is relative to
-the route's difficulty. The same speed bounds a round's handback and sets
-travel time out of view (Stack 12).
+animation, stride and foot placement keep within them; stride is capped by
+each joint's swing. Travel is relative to the route's difficulty. The same
+speed bounds a round's handback and sets travel time out of view (Stack 12).
 
-*Not yet built:* all of it; the handback's reach check waits for it.
+*Built:* the speed (`cosmograph::speed`), a founding's default baseline from
+its stated cell size, and travel time out of view (the execution plan's
+E10). *Not yet built:* joint ranges and the swing cap (case 1088), the
+route's difficulty beyond its length, and the handback's reach check.
 
-Links: draws on 1085, 1087, 1088, bodies.1, stack.12 · summary Speed is a world baseline by size times a Froude-rule factor from leg length, stride capped by drawn joint ranges; it bounds handbacks and out-of-view travel.
+Links: draws on 1085, 1087, 1088, 1112, bodies.1, stack.12 · summary Speed is a world baseline times the root of leg over a reference leg, legless bodies at body lengths a second, stride capped by drawn joint ranges; it bounds handbacks and sets out-of-view travel.
 
 *Reviewed 2026-11-02, new, from cases 1085, 1087 and 1088 (Mark: "1, +2 as
 a factor on the baseline of 1", "Froude × joint swing (Recommended)", "Yes,
-drawn per lineage (Recommended)").*
+drawn per lineage (Recommended)"); refined the same day by case 1112
+("Relative Froude (Recommended)").*
 
 ## Record and history
 

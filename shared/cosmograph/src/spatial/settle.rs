@@ -6,7 +6,9 @@
 //! while it stands moves its centre, and a stance near the edge of its feet
 //! stops balancing. At the end of an advance each posed member whose stance
 //! no longer balances takes the nearest balanced one around it, by the search
-//! arrivals use, published as a draw the game applies.
+//! arrivals use, published as a draw the game applies. Where foragers travel
+//! the sim settles no one (case 1084): out of view no stance is seen, and in
+//! view a round's foreground places the feet.
 
 use super::*;
 use crate::spatial::embodiment;
@@ -17,7 +19,8 @@ impl Simulation {
             return;
         };
         // Only a matter-weighted balance moves with matter.
-        if !embodiment::enabled(self) || !embodiment::walking_rules(self).is_some_and(|w| w.balance) || !self.tiering() {
+        if !embodiment::enabled(self) || !embodiment::walking_rules(self).is_some_and(|w| w.balance) || !self.tiering()
+            || self.travels() {
             return;
         }
         let posed: Vec<(Id, Id, Pose)> = self.state.spatial_poses.iter()

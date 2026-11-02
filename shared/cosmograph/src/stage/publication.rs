@@ -12,6 +12,7 @@ impl Simulation {
         let ecology = self.ecology_publication(&stage);
         let terrain = stage.terrain.take();
         let step = stage.step.take();
+        let travel = stage.travel.take();
         let births = std::mem::take(&mut stage.birth_places);
         let institution = stage.institution_producer.take();
         let direction = stage.direction.take();
@@ -20,6 +21,7 @@ impl Simulation {
             self.commit(stage, next, process);
             self.commit_geometry(terrain);
             self.commit_step(step);
+            self.commit_travel(travel);
             self.place_births(&births);
             self.published_ecology(ecology);
             return Ok(());
@@ -29,6 +31,7 @@ impl Simulation {
         candidate.commit(stage, next, process);
         candidate.commit_geometry(terrain);
         candidate.commit_step(step);
+        candidate.commit_travel(travel);
         if let Some(institution)=institution {candidate.publish_institution_producer(institution)?;}
         candidate.check_custody_changes(self)?;
         candidate.synchronize_custody()?;
