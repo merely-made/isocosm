@@ -227,8 +227,8 @@ fn a_lineage_decides_only_every_its_period_of_ticks() {
     assert!(paced.len() < every.len());
 }
 
-/// A paced cohort chooses by its first identity, and cohorts regroup at an
-/// advance's end, so a span must come out as its ticks taken singly (D41).
+/// Cohorts regroup at an advance's end, so a span must come out as its
+/// ticks taken singly (D41).
 #[test]
 fn a_paced_grouped_span_matches_its_ticks_one_at_a_time() {
     for (seed, population, lineages) in [(19, 2, 1), (3, 6, 2), (5, 8, 3), (7, 12, 3)] {
@@ -254,4 +254,43 @@ fn a_paced_grouped_span_matches_its_ticks_one_at_a_time() {
         span.advance(12).unwrap();
         assert_eq!(single.sim.state_hash(), span.sim.state_hash(), "seed {seed}");
     }
+}
+
+/// A paced cohort decides member by member (case 1076): on a decision tick
+/// only its members whose own identity is due choose, so its row splits, and
+/// grouped and individual execution choose alike.
+#[test]
+fn a_paced_cohort_splits_on_a_decision_tick_and_both_modes_choose_alike() {
+    let mut g = crate::Founding {
+        seed: 3,
+        sites: 2,
+        population: 30,
+        cohort_size: 6,
+        lineages: 3,
+        ecology: true,
+        bodies: Some(crate::bodied::Bodies::default()),
+        played: Some(Played { lineage: 1, region_sites: 1 }),
+        ..Default::default()
+    }.generate().unwrap();
+    g.lineages.get_mut("lineage:1").unwrap().decides = Some(3);
+    let run = |mode: Execution| {
+        let mut s = Session::new(g.clone(), mode).unwrap();
+        let rules = s.sim.genesis().rules.clone();
+        for p in rules.processes.values().filter(|p| p.causation == crate::rules::Causation::Choice) {
+            s.sim.watch(&p.id);
+        }
+        let line = |s: &Session| s.sim.state().population.groups.values()
+            .filter(|g| g.entity.lineage == "lineage:1").count();
+        let before = line(&s);
+        s.advance(6).unwrap();
+        let acts: Vec<_> = s.sim.take_watched().into_iter()
+            .filter(|w| s.sim.state().population.get(w.actor).is_some_and(|e| e.lineage == "lineage:1")).collect();
+        (s.sim.state_hash(), acts, before, line(&s))
+    };
+    let (grouped, acts, before, after) = run(Execution::Grouped);
+    let (single, _, _, _) = run(Execution::Individuals);
+    assert!(!acts.is_empty(), "the paced line chooses");
+    assert!(acts.iter().all(|w| w.count == 1 && (w.tick + w.actor) % 3 == 0), "{acts:?}");
+    assert!(after > before, "a cohort splits where only some members are due: {before} rows, then {after}");
+    assert_eq!(grouped, single, "grouped and individual execution choose alike");
 }

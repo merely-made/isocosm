@@ -229,9 +229,7 @@ impl Simulation {
                 let (first, count) = pass.origin(&self.state.population, found);
                 self.passed_by(gates.as_ref(), from, first);
                 from = first + count;
-                if self.decides(process, first) {
-                    self.visit(process, &id, gates.as_ref(), (first, count), work)?;
-                }
+                self.visit(process, &id, gates.as_ref(), (first, count), work)?;
             }
             self.passed_by(gates.as_ref(), from, bound);
             self.pass = None;
@@ -256,13 +254,11 @@ impl Simulation {
         {
             let count = self.state.population.groups[&first].count;
             from = first + count;
-            if !self.decides(process, first) {
-                continue;
-            }
             let Some((calls, multiplicity)) = self.calls(process, first, count) else {
                 continue;
             };
-            for offset in 0..calls {
+            let (start, step, calls, multiplicity) = self.due(process, first, calls, multiplicity, count);
+            for offset in (start..calls).step_by(step) {
                 let actor = first + offset;
                 let entity = self.state.population.get(actor);
                 if entity.is_none_or(|e| {
@@ -309,16 +305,24 @@ impl Simulation {
         self.state.lineages.values().any(|l| l.decides.is_some_and(|p| p > 1))
     }
 
-    /// Whether a group decides this tick (D15, D16): a choice or a move
-    /// runs for it only every `decides` ticks of its lineage, offset by its
-    /// first identity so a kind's decisions spread across the ticks.
-    fn decides(&self, process: &Process, first: Id) -> bool {
+    /// Which of a group's members decide this tick (D15, D16, case 1076):
+    /// a choice or a move runs for a member only every `decides` ticks of its
+    /// lineage, offset by the member's own identity, so a kind's decisions
+    /// spread across the ticks and the execution mode never changes who
+    /// chooses. A paced group is evaluated member by member, only those due:
+    /// the first offset, the stride, the calls and what each stands for.
+    fn due(&self, process: &Process, first: Id, calls: u64, multiplicity: u64, count: u64)
+        -> (u64, usize, u64, u64) {
         if process.causation != Causation::Choice {
-            return true;
+            return (0, 1, calls, multiplicity);
         }
         let lineage = self.state.population.groups.get(&first).map(|g| &g.entity.lineage);
         let period = lineage.and_then(|l| self.state.lineages.get(l)).and_then(|l| l.decides).unwrap_or(1);
-        period <= 1 || (self.state.tick + first) % period == 0
+        if period <= 1 {
+            return (0, 1, calls, multiplicity);
+        }
+        let start = (period - (self.state.tick + first) % period) % period;
+        (start, usize::try_from(period).unwrap_or(usize::MAX), count, 1)
     }
 
     /// How a group is evaluated: the calls, each standing for some members,
@@ -385,7 +389,8 @@ impl Simulation {
         let Some((calls, multiplicity)) = self.calls(process, first, count) else {
             return Ok(());
         };
-        for offset in 0..calls {
+        let (start, step, calls, multiplicity) = self.due(process, first, calls, multiplicity, count);
+        for offset in (start..calls).step_by(step) {
             let actor = first + offset;
             let Some(entity) = self.body_at_start(actor) else {
                 continue;

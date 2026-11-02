@@ -213,7 +213,7 @@ three design docs that cite it. The record holds the words.
 | 1070 | Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play. | none |
 | 1072 | The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1076 | Pacing keys on each member's identity, so grouped and individual execution choose alike. | none |
+| 1076 | Pacing keys on each member's identity, so grouped and individual execution choose alike. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 
 ## Ecology
 
