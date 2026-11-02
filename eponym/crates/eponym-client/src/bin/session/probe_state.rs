@@ -89,6 +89,7 @@ pub(super) fn snapshot(ctx: &Context<'_>, captures: usize, opacity: f32) -> Prob
         .with_field("aim", format!("{:?}", app.direction))
         .with_field("charging", yes(app.charging))
         .with_field("position", position)
+        .with_field("view", model.view.name().replace(' ', "-"))
         .with_field("round-speed", model.round().map_or("none".into(), |r| r.speed().factor().to_string()))
         .with_field("sim-tick", game.world().sim().state().tick.to_string())
         .with_field(

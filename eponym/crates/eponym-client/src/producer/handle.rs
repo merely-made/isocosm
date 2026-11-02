@@ -74,6 +74,10 @@ pub struct SceneModel {
     /// Accepted motion intents retain the actual rules in game history.
     pub motion_rules: Option<eponym_play::MotionRules>,
     pub camera: CameraPolicy,
+    /// Which camera the frame is seen through; the overview's policy is
+    /// kept whatever this is (case 1131).
+    pub view: super::policy::View,
+    pub perspective: super::policy::PerspectivePolicy,
     pub appearance: Appearance,
     /// Draw the traced terrain under the bodies. The bodies-only arm is the
     /// isolated preview: same camera, same depth, no ground.
@@ -108,6 +112,8 @@ impl SceneModel {
             played,
             motion_rules: None,
             camera: CameraPolicy::default(),
+            view: Default::default(),
+            perspective: Default::default(),
             appearance: Appearance::default(),
             terrain: true,
             scene: None,

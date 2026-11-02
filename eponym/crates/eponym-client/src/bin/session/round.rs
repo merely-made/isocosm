@@ -95,6 +95,13 @@ impl SessionApp {
         self.take_answers();
     }
 
+    /// The next camera view (case 1131); the overview's own framing is kept.
+    pub(super) fn cycle_view(&mut self) {
+        let mut model = self.model.borrow_mut();
+        model.view = model.view.next();
+        self.status = vec![format!("View: {}", model.view.name())];
+    }
+
     /// Sets the round's speed from now on (case 1097).
     pub(super) fn set_speed(&mut self, speed: cosmograph_host::drive::Speed) {
         let set = self.model.borrow_mut().round_mut().map(|round| round.set_speed(speed)).is_some();

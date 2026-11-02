@@ -133,6 +133,8 @@ pub(crate) enum Command {
     Close,
     /// A round's speed (case 1097): world time against real time.
     Speed(Speed),
+    /// The next camera: overview, over the shoulder, first person (case 1131).
+    View,
 }
 
 /// The session's keys, declared once (M3 of the isomere plan).
@@ -193,6 +195,7 @@ pub(crate) static KEYMAP: LazyLock<Keymap<'static, Press, Command>> = LazyLock::
             "round speed",
             Speed::ALL.iter().map(|s| (Press::character(&s.factor().to_string()), Command::Speed(*s))).collect(),
         ),
+        Binding::one("V", "view", Press::character("v"), Command::View),
         Binding::one("Ctrl+S", "save", Press::with_ctrl("s"), Command::Save),
         Binding::one("Ctrl+L", "load", Press::with_ctrl("l"), Command::Load),
         Binding::one(
@@ -263,6 +266,8 @@ impl SessionApp {
             },
             // Pacing, not a world act: it applies at once.
             Command::Speed(speed) => self.set_speed(speed),
+            // A camera, not a world act: it writes nothing and waits for nothing.
+            Command::View => self.cycle_view(),
             // Swallow the repeat: a held Space must not toggle sixty times.
             Command::Charge if repeat => {},
             Command::Close => self.closing = true,
@@ -291,7 +296,7 @@ impl SessionApp {
             Command::Rest => self.rest(),
             Command::Injure => self.injure(),
             Command::Join => self.join_limb(PartId(2)),
-            Command::Move(_) | Command::Close | Command::Speed(_) => {},
+            Command::Move(_) | Command::Close | Command::Speed(_) | Command::View => {},
         }
     }
 
