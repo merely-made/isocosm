@@ -38,7 +38,7 @@ The answer from the current seams is to start the creator while advancing
 specific dependencies beside it. A universal engine or world generator is not
 a prerequisite. All three games remain valid entry points into the wing.
 
-The [wing body/creator contract](../../2026-07-31_wing_phenotype_contract_plan.md#11-shared-character-creator-scope-2026-09-07)
+The [wing body/creator contract](../2026-10-28/2026-07-31_wing_phenotype_contract_plan.md#11-shared-character-creator-scope-2026-09-07)
 owns C0-C5, the source findings, and the primary-source research. These rows
 are bounded work lanes, not new crates or separate competing plans.
 

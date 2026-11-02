@@ -1,6 +1,6 @@
 # Directing and the interim M4: what moved out on 2026-10-18
 
-**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [directing and interim M4 plan](../../2026-10-08_directing_interim_m4_plan.md): its stacked status banners and the Current state section that sat with them, the Progress entries older than the five that describe the open work, and one Finding that was a pasted copy of an entry the after-pass plan owns.
+**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [directing and interim M4 plan](../2026-10-28/2026-10-08_directing_interim_m4_plan.md): its stacked status banners and the Current state section that sat with them, the Progress entries older than the five that describe the open work, and one Finding that was a pasted copy of an entry the after-pass plan owns.
 
 ## Status banners
 
@@ -45,7 +45,7 @@ invariant/headed certification remain open.
 **Status, 2026-10-09:** D1 to D4 built on native Isocosm under 732's
 compile gate (lane `lane-directing`), each phase's done-conditions left
 to the after-pass; D4 stands on three open forks (below). D5 waits. *2026-10-10:* D5 landed under the compile gate (Progress). It carries the
-[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md)'s M3 and the
+[Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md)'s M3 and the
 interim M4 of ruling 680, and the full M4 stays there.
 
 ## Progress entries

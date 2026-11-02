@@ -5,7 +5,7 @@ landed on `mesocosm-core`, which is deleted. Residency is the presentation
 plan's (`isometer::scene::residency`, 291) and its rings L10's; S3's cohort
 execution is the sim's aggregate form; S4's zoom is the [presentation
 plan](../../2026-09-11_orthographic_voxel_presentation_plan.md)'s L10; S5's stress
-receipt is carried into the [sim plan](../../2026-09-22_sim_plan.md) under S5. The
+receipt is carried into the [sim plan](../2026-10-28/2026-09-22_sim_plan.md) under S5. The
 framing ruling (slab half-height 28) was the legacy section's.
 
 **Status: active scale ladder, refreshed 2026-09-01. S1 landed 2026-08-29 on

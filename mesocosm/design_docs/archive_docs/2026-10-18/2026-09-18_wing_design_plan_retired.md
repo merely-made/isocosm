@@ -99,13 +99,13 @@ to it); W1 is evaluated, ruled and applied for all three products. W2, the
 sim's own plan, is next and is design work, not lanes.
 
 **Status, 2026-09-22:** rulings run to 105. W2 is drafted as the
-[sim plan](../../2026-09-22_sim_plan.md), a schema and definitions compiled from
+[sim plan](../2026-10-28/2026-09-22_sim_plan.md), a schema and definitions compiled from
 this record, with the [session notes](../2026-10-06/2026-09-22_sim_design_session_notes.md)
 beside it; the [readings docket](../2026-09-24/2026-09-21_wing_readings_docket.md) holds
 the readings the plan depends on, and no lane is open.
 
 **Status, 2026-09-27:** rulings run to 380, and W5 is drafted as the
-[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md), its M0 and
+[Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md), its M0 and
 M1 done. The sim plan's implementation
 lane is open in `shared/isocosm`; ruling 113 sets what its background must
 agree with, ruling 114 holds every game's ruleset to the same test, rulings

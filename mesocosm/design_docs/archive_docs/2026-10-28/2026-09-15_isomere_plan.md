@@ -6,7 +6,7 @@
 
 **W1, 2026-09-18:** keep. Tier: stack, hosting and interface. Rewrite only
 the keymap row per ruling 21. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Ruling it serves (Mark, 2026-09-14):** isometer is the game-world scene

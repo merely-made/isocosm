@@ -28,7 +28,7 @@ Governing plans, which own the *what*:
 - [Mesocosm founding plan](../2026-09-26/2026-07-30_mesocosm_founding_plan.md) — vessel 1's design and M-phases
 - [games wing founding record](../../../../design_docs/2026-07-30_games_wing_founding.md) — the laws, and the proof pair as the next architectural threshold
 - [phenotype plan](../2026-10-10/2026-07-31_phenotype_plan.md): Mesocosm's body rules and local proof dependencies
-- [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md): portable body identity and sovereign readings
+- [wing phenotype contract](../2026-10-28/2026-07-31_wing_phenotype_contract_plan.md): portable body identity and sovereign readings
 
 ---
 

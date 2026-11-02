@@ -13,7 +13,7 @@ broader substrate remain separate. Receipts and limits are in the
 **Rewritten to the record, 2026-09-28 (ruling 390).** W1 (2026-09-18) gave
 this plan a rewrite verdict: the sim's spatial half, on which W2 could not
 be founded while it stood undecided. The one-game assessment of 2026-09-28
-([session notes §9](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#9-the-one-game-hypothesis-session-2026-09-28))
+([session notes §9](../2026-10-06/2026-09-22_sim_design_session_notes.md#9-the-one-game-hypothesis-session-2026-09-28))
 ranked connecting the sim's site graph to the voxel world first among the
 gaps, and Mark chose to start there. §A is the spine: what connects the
 world map's sites to the voxels under them, who owns each piece, what
@@ -27,9 +27,9 @@ the Findings and the Progress stand as the receipts they were.
 2026-08-04/05 engine rumination. The G labels below record the order in which
 the substrate was assembled. They are historical indexing, not current
 acceptance gates. Sibling to the
-[render lane landscape](archive_docs/2026-09-18/2026-07-30_engine_and_render_lane_landscape.md),
+[render lane landscape](../2026-09-18/2026-07-30_engine_and_render_lane_landscape.md),
 which owns renderer research and the V-gates, and subordinate to the
-[execution waves plan](archive_docs/2026-09-18/2026-07-31_execution_waves_plan.md) for ordering.
+[execution waves plan](../2026-09-18/2026-07-31_execution_waves_plan.md) for ordering.
 This plan owns the world substrate: the place graph, volumetric truth, the
 two-scale execution substrate, and the composed slice that proves them
 together.
@@ -38,14 +38,14 @@ together.
 cannot be founded on an undecided answer here. Rewrite is a lane under the
 record's W2 or W3; until it lands this plan's done-conditions are not
 authoritative. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 ## A. The spatial spine (2026-09-28)
 
 ### A.1 What it rests on
 
-Rulings of the [wing design record](../../design_docs/2026-09-18_wing_design_plan.md), quoted
+Rulings of the [wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md), quoted
 there in full:
 
 | Ruling | What it fixes for the spine |
@@ -655,7 +655,7 @@ layers of meaning over it:
 - **Two-scale execution target.** Places near the played body run embodied
   individuals; distant places may run deterministic cohorts once the
   conversion and comparison receipts in the
-  [scale plan](archive_docs/2026-10-10/2026-08-29_scale_plan.md)
+  [scale plan](../2026-10-10/2026-08-29_scale_plan.md)
   land. The incumbent tick is not there yet: `organism/ecology.rs` still
   advances every organism record and derives `Cohort` only as a conserved
   summary. Promotion and demotion already happen at a hops-distance boundary
@@ -672,7 +672,7 @@ zero-tick round trip must preserve the aggregate record exactly, while
 evolution over time is compared against an all-individual reference under a
 declared error envelope. Camera distance, render LOD, and cache residency
 cannot choose simulation detail. Recorded focus and other world facts may.
-The [playable ecology plan's downstream gates](archive_docs/2026-10-10/2026-08-31_playable_ecology_plan.md#7-downstream-architecture-gates)
+The [playable ecology plan's downstream gates](../2026-10-10/2026-08-31_playable_ecology_plan.md#7-downstream-architecture-gates)
 route that scale-owned contract into PE6.
 
 Presentation stays a family of projections of one truth (landscape §8):
@@ -867,7 +867,7 @@ patience constant, and it duplicates a feeding model the ecology already
 owns. Its lasting contribution is proving the *queries* work: sight
 through terrain, pursuit across a burrow threshold, one-voxel continuity,
 and the movement law that preferences order rather than refuse. The
-[general model plan](archive_docs/2026-09-26/2026-08-06_general_model_plan.md) gate **E4**
+[general model plan](../2026-09-26/2026-08-06_general_model_plan.md) gate **E4**
 replaces it with drive-and-affordance selection, where pursuit is what a
 fast, large-mouthed, starving body does about a reachable meal. Do not
 build further behaviour on the FSM.

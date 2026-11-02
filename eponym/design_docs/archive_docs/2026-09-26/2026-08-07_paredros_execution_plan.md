@@ -6,7 +6,7 @@ fixtures: F2 closes "other lives" on a step that ticks every living member
 every round with residents capped at sixteen a site, where the record's §3.5
 holds hundreds of thousands of things by grouping. Mark: "Retire into the
 overlay plan now." The
-[Eponym overlay plan](../../2026-09-25_eponym_overlay_plan.md) §4.1 maps F3 to F8
+[Eponym overlay plan](../2026-10-28/2026-09-25_eponym_overlay_plan.md) §4.1 maps F3 to F8
 onto E2's families, and its E0 to E4 are Eponym's phases; S0 to S3 and the
 F0 to F2 receipts below stand as the record of what landed. The text is
 kept as written.
@@ -26,7 +26,7 @@ still open. They do not define a required entourage, sortie loop, or camera.
 2026-08-10**: see
 [the extraction review](../../archive_docs/2026-09-18/2026-08-10_r4_extraction_review.md). The former
 S4-S6 future gate line is superseded by the fundamental layers in §4. The
-[founding plan](../../2026-07-30_paredros_founding_plan.md)
+[founding plan](../2026-10-28/2026-07-30_paredros_founding_plan.md)
 remains the charter. Its 2026-08-13 rulings now bind here: one named life in a
 persistent generated world; allies are contingent; control changes through
 death, an explicit world event, or an optional player rule; culture has
@@ -843,7 +843,7 @@ the player should receive. S0's close camera is evidence, not a ruling.
 
 **First read-only slice complete locally, 2026-09-06.** Mark redirected
 exploration from extending the crossing toward borg generation and RPG growth.
-The [founding plan](../../2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)
+The [founding plan](../2026-10-28/2026-07-30_paredros_founding_plan.md#borg-generation-techniques-and-the-character-sheet)
 owns the proposed rules and three-lives fixture. Historical entry and the
 distinct inheritance routes live in
 `design_docs/2026-07-30_games_wing_founding.md`, under
@@ -1033,7 +1033,7 @@ Charge and inhabitants are deferred while the borg design is explored.
 The [functional-loop lanes](../2026-10-10/2026-09-09_functional_loops_plan.md) develop the
 underlying systems without requiring this encounter or its curated sequence.
 
-The [founding plan's player-experience proposal](../../2026-07-30_paredros_founding_plan.md#player-experience-body-place-and-other-lives)
+The [founding plan's player-experience proposal](../2026-10-28/2026-07-30_paredros_founding_plan.md#player-experience-body-place-and-other-lives)
 owns action feel, progression, world differences, and the player-facing
 knowledge boundary. F0-F8 remain semantic milestones. A small playable
 cross-section may exercise preliminary F4/F5/F7 verbs before those milestones

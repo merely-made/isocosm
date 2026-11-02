@@ -3,7 +3,7 @@
 **Archived 2026-10-10 (wing design record ruling 793): done.** TD1 to TD11
 landed and the series closed 2026-08-30. The integration it exposed went to
 the playable ecology plan, archived the same day as superseded, whose open
-phases are now the [sim plan](../../2026-09-22_sim_plan.md)'s. The legacy code it
+phases are now the [sim plan](../2026-10-28/2026-09-22_sim_plan.md)'s. The legacy code it
 cites is deleted; its findings stand as history.
 
 **Status: landed and closed 2026-08-30; refreshed 2026-08-31.** TD1 through

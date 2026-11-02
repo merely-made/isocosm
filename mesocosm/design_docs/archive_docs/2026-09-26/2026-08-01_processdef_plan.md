@@ -3,8 +3,8 @@
 **Archived 2026-09-26 (wing design record ruling 309).** Ruling 32 founded
 the sim's process definition from Eponym's world-conditions schema and made
 this plan's `ProcessDef` shapes expressions in it; the
-[sim plan](../../2026-09-22_sim_plan.md) §3.1 is that definition, and the
-[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md)'s M2 begins
+[sim plan](../2026-10-28/2026-09-22_sim_plan.md) §3.1 is that definition, and the
+[Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md)'s M2 begins
 with the matter-and-processes family that carries the landed code onto
 Isocosm. W1 found the definition space here to hold thirty rule shapes with
 no scarcity, cost, foregone or cause-link, and the status line below stale:
@@ -38,7 +38,7 @@ capability semantics. The
 [dependency ledger](../../archive_docs/2026-09-26/2026-08-07_dependency_ledger.md) owns scheduling, and the
 [playable ecology plan](../2026-10-10/2026-08-31_playable_ecology_plan.md) owns the product
 integration proof that consumes PD1b and PD2.
-The [wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md)
+The [wing phenotype contract](../2026-10-28/2026-07-31_wing_phenotype_contract_plan.md)
 owns what can cross into Paredros and Isometry.
 
 ---
@@ -593,7 +593,7 @@ developmental program that produced that candidate, not the literal mosaic.
 Later bodies realize their own phenotype mosaics from that program and their
 actual conditions.
 
-The [epoch-boundary plan](../../2026-08-01_epoch_boundary_plan.md) owns the
+The [epoch-boundary plan](../2026-10-28/2026-08-01_epoch_boundary_plan.md) owns the
 multi-writer result: players on one lineage may adopt one validated program
 together, while disagreement preserves the proposal as a branch rather than
 merging preview mosaics cell by cell.

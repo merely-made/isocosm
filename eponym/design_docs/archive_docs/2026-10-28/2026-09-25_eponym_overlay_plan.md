@@ -48,22 +48,22 @@ Mesocosm's in `shared/isocosm-overlay` (ruling 197); the played loop W5
 names; and the order in which `eponym-world`'s and `eponym-social`'s
 simulation moves into Isocosm for this overlay's needs (§4, §6 decision 4).
 **Does not own:** the sim, whose schema, process definitions, record and
-generator the [sim plan](../../mesocosm/design_docs/2026-09-22_sim_plan.md)
+generator the [sim plan](../../../../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-22_sim_plan.md)
 owns, so every move lands under its phases; the bench (W4); the other
 overlays (the record's §5.5 and §5.7); the stack's identity organ, which
 takes `eponym-identity` under W3 (ruling 34); or naming. **Consumes:** the
 record; the sim plan; the contract crate's
-[README](../../shared/isocosm-overlay/README.md); the
+[README](../../../../shared/cosmograph-overlay/README.md); the
 [founding plan](2026-07-30_paredros_founding_plan.md), the charter; the
-[execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)'s fundamental-layer
-ledger F0 to F8; the [functional loops plan](archive_docs/2026-10-10/2026-09-09_functional_loops_plan.md)
+[execution plan](../2026-09-26/2026-08-07_paredros_execution_plan.md)'s fundamental-layer
+ledger F0 to F8; the [functional loops plan](../2026-10-10/2026-09-09_functional_loops_plan.md)
 for the joins and lane S; the
-[memory and remembrance plan](archive_docs/2026-10-10/2026-09-09_memory_and_remembrance_plan.md) for
-lanes M and H; the [world conditions plan](archive_docs/2026-09-26/2026-09-09_world_conditions_plan.md),
+[memory and remembrance plan](../2026-10-10/2026-09-09_memory_and_remembrance_plan.md) for
+lanes M and H; the [world conditions plan](../2026-09-26/2026-09-09_world_conditions_plan.md),
 which founds the sim's process definition (ruling 32); the
-[genet document host plan](archive_docs/2026-10-10/2026-09-13_genet_document_host_plan.md) for the
+[genet document host plan](../2026-10-10/2026-09-13_genet_document_host_plan.md) for the
 host that stays Eponym's; and the
-[vessel briefs](../../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
+[vessel briefs](../../../../mesocosm/design_docs/2026-08-18_vessel_briefs_and_presentation.md)
 §2 for the camera.
 
 ---
@@ -71,7 +71,7 @@ host that stays Eponym's; and the
 ## 0. Done-conditions
 
 W5's done-conditions are the record's
-[the wing's phases](../../design_docs/2026-07-30_games_wing_founding.md#9-the-wings-phases) (ruling 617). Here, for Eponym, they are
+[the wing's phases](../../../../design_docs/2026-07-30_games_wing_founding.md#9-the-wings-phases) (ruling 617). Here, for Eponym, they are
 met by §1 (the profile), §3 (the core and the contract) and §2's phase E4
 (the played loop).
 
@@ -214,7 +214,7 @@ rule (`eponym/CLAUDE.md`), split along seams the code already has.
 
 ### 4.1 The execution plan's layers, mapped onto E2 (ruling 313)
 
-The [execution plan](archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
+The [execution plan](../2026-09-26/2026-08-07_paredros_execution_plan.md)
 retired into this plan on 2026-09-26. Its fundamental layers F0 to F2 are
 landed receipts (persistent world, one embodied life, other lives); F3 to F8
 keep their semantic done-conditions and land through E2's families in the
@@ -465,7 +465,7 @@ Ruling 793 archived the genet document host plan to
 - **Glyph marks in the scene** on the shared depth, a real canon, and
   durable journey persistence: the scene half is the presentation plan's
   L10 far marks; the canon and journeys are the
-  [wing organs plan](../../mesocosm/design_docs/2026-09-26_wing_organs_plan.md)'s.
+  [wing organs plan](../../../../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-26_wing_organs_plan.md)'s.
 - **The session bin's name** (`crates/eponym-client/src/bin/session.rs`)
   is a naming round, not a session default.
 

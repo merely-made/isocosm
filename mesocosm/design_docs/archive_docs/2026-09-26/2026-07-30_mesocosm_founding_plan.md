@@ -3,10 +3,10 @@
 **Archived 2026-09-26 (wing design record ruling 308).** W1 evaluated this
 plan as mixed, sim world grammar and game overlay: its world half, the
 world-condition grammar, material flow and the trophic strategies, is the
-sim's ([sim plan](../../2026-09-22_sim_plan.md) §2.2, §2.4, §3.3), and its game
+sim's ([sim plan](../2026-10-28/2026-09-22_sim_plan.md) §2.2, §2.4, §3.3), and its game
 half, metabolize, the epoch loop and care for a species, is what the record's
 §5.5 confirms. Mark: "Archive, carry over." The
-[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md) is Mesocosm's
+[Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md) is Mesocosm's
 charter; its §1.1 carries this plan's Tone section and its §1.2 the epoch
 loop's turn structure, word for word. Everything below is kept as the dated
 founding text. The dependency ledger named in the next line was archived the
@@ -88,7 +88,7 @@ weapon in Isometry is an organism its ancestors ate. An "item" may carry an
 opaque body revision, biological-line reference, optional outer Fili
 provenance, and an appearance projection. The v0 proof carries only part of
 that record; the
-[wing phenotype contract](../../2026-07-31_wing_phenotype_contract_plan.md) scopes
+[wing phenotype contract](../2026-10-28/2026-07-31_wing_phenotype_contract_plan.md) scopes
 the stable identity and topology still needed at v1.
 
 ### The real axis is trait count, not cell count
@@ -470,7 +470,7 @@ Creative mode may offer an explicit freeze setting, but stasis is not the
 default fiction.
 
 When multiple players currently inhabit the same line, adaptation follows the
-[epoch-boundary plan's shared-lineage rule](../../2026-08-01_epoch_boundary_plan.md):
+[epoch-boundary plan's shared-lineage rule](../2026-10-28/2026-08-01_epoch_boundary_plan.md):
 agreement adopts one descendant revision, while disagreement branches without
 editing the shared parent in place.
 

@@ -142,7 +142,7 @@ Retained new receipts total less than 0.2 MB plus this summary, below F10/F11's
 ## Functional generation F12 receipts, 2026-10-30
 
 Owner: the Magic Weapon desktop implementation lane. Governing plan:
-functional generation (now [the VTT plan](../../2026-10-28_vtt_overlay_plan.md)), F12.
+functional generation (now [the VTT plan](../2026-11-02/2026-10-28_vtt_overlay_plan.md)), F12.
 Starting main: `4a715b02`; initial pull was current, and a subsequent fetch
 still found no upstream changes. Total retained receipt cap: 100 MB.
 

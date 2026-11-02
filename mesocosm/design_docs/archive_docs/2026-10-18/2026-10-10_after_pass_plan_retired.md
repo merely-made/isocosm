@@ -103,7 +103,7 @@ Progress for current execution.
   feasibility and scoring preserve 454; 813 reconsiders empty choices once
   at later scheduled pass starts while retaining selected commitments for
   the tick. Focused tests, intended compiled controls and exact restoration
-  are recorded in [directing Progress](../../2026-10-08_directing_interim_m4_plan.md#progress).
+  are recorded in [directing Progress](../2026-10-28/2026-10-08_directing_interim_m4_plan.md#progress).
   A fresh original-rate seed-zero control and unchanged candidate are
   proposed separately; A1 remains open and no rates are promoted.
 

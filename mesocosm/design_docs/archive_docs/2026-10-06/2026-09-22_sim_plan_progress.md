@@ -286,7 +286,7 @@ for the move.
   Mark; results land here when reviewed.
 - 2026-09-25: rulings 192 and 193: Isocosm absorbs `mesocosm-core` family
   by family, each moved file under the 600-line ceiling. The
-  [Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md) orders the
+  [Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md) orders the
   families for W5; each lands under this plan's S1 and S2.
 - 2026-09-25: ruling 191 applied to §2.8's arc row: the VTT offers running
   arcs to the DM as suggested hooks.

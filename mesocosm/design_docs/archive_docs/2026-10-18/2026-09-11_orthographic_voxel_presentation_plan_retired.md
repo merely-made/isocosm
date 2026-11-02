@@ -1,6 +1,6 @@
 # The orthographic voxel presentation plan: what moved out on 2026-10-18
 
-**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [orthographic voxel presentation plan](../../2026-09-11_orthographic_voxel_presentation_plan.md): the four status paragraphs and the 2026-09-16 status addendum at its head, the Current state and Earlier current state sections that sat before the CSS standards list, and the oldest Progress entry. The live status folds in what those sections said about the tenant and the open done-conditions.
+**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [orthographic voxel presentation plan](../2026-10-28/2026-09-11_orthographic_voxel_presentation_plan.md): the four status paragraphs and the 2026-09-16 status addendum at its head, the Current state and Earlier current state sections that sat before the CSS standards list, and the oldest Progress entry. The live status folds in what those sections said about the tenant and the open done-conditions.
 
 ## Status banners
 

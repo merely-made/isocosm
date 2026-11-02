@@ -1,6 +1,6 @@
 # The epoch boundary: what moved out on 2026-10-18
 
-**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [epoch boundary plan](../../2026-08-01_epoch_boundary_plan.md): its four stacked status banners, the Current state section that sat between section 8 and the Findings (the paragraph carried from the phenotype plan stayed), and the Progress entries other than the four that describe the open work.
+**Why this moved.** On 2026-10-18 Mark made the old numbered rulings cases, kept as precedent, with new rules numbered by him alone, and asked every active doc to lose its stacked status banners, old progress entries, stale counters and pasted copies. This file holds, verbatim, what left the live [epoch boundary plan](../2026-10-28/2026-08-01_epoch_boundary_plan.md): its four stacked status banners, the Current state section that sat between section 8 and the Findings (the paragraph carried from the phenotype plan stayed), and the Progress entries other than the four that describe the open work.
 
 ## Status banners
 

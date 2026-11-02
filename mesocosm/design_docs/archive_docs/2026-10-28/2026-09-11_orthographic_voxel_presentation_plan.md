@@ -1019,7 +1019,7 @@ build explicitly used `--target-dir ./target`.
 
 **W1, 2026-09-18:** keep. Tier: stack, rendering. Its benches are the
 product bench W4 lifts out. Evaluated against the wing design record; see
-[2026-09-18_wing_plan_evaluations.md](2026-09-18_wing_plan_evaluations.md)
+[2026-09-18_wing_plan_evaluations.md](../../2026-09-18_wing_plan_evaluations.md)
 §2.
 
 **Owns:** how the three vessels present voxel worlds and bodies through the
@@ -1049,7 +1049,7 @@ execution graph (`netrender/netrender-notes/2026-09-04_wgpu_execution_graph_plan
 ## Rulings (Mark, 2026-09-11)
 
 1. **Paredros is orthographic.** A true isometric game. This closes the camera
-   question the [Paredros execution plan](../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
+   question the [Paredros execution plan](../../../../eponym/design_docs/archive_docs/2026-09-26/2026-08-07_paredros_execution_plan.md)
    left open until the spatial laws could judge it, and it retires the
    Barony/Delver close-perspective reference lane. Camera is not person:
    Paredros stays second person in agency.
@@ -1257,7 +1257,7 @@ CSS Transforms Level 2: `matrix3d`, `translate3d`, `rotate3d`, `scale3d`,
 `rotate`, `scale` properties. Lowering projects each element to netrender's
 existing column-major 4x4 `Transform` and z-sorts within a 3D rendering
 context. Netrender's `Transform` was ready; Livery parsed none of these until
-genet T1 landed (`d61978378c1`, 2026-09-15; see the status addendum, now in the [retired banners](archive_docs/2026-10-18/2026-09-11_orthographic_voxel_presentation_plan_retired.md#status-banners)).
+genet T1 landed (`d61978378c1`, 2026-09-15; see the status addendum, now in the [retired banners](../2026-10-18/2026-09-11_orthographic_voxel_presentation_plan_retired.md#status-banners)).
 
 Founded in genet on 2026-09-12 as
 `genet/design_docs/2026-09-12_css_3d_transforms_and_first_frame_plan.md`
@@ -1279,7 +1279,7 @@ number for a body whose parts move every frame.
 
 ### L2. One appearance crate
 
-**Closed 2026-09-15** by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md)
+**Closed 2026-09-15** by the [isometer family plan](../2026-10-10/2026-09-14_isometer_family_plan.md)
 step 11: the merged crate is `isometer-mesh` at
 `shared/isometer/crates/isometer-mesh`, holding mesocosm-mesh's body
 document, greedy quads and projection beside isometry-voxel's recipes,
@@ -2354,13 +2354,13 @@ Paredros's `GameState`, and Isometry's map stay outside the crate.
 lanes edit mesocosm-genet.
 
 **Progress (2026-09-14):** steps 1 to 7 of the
-[extraction plan](archive_docs/2026-10-10/2026-09-14_isometer_extraction_plan.md) landed on main
+[extraction plan](../2026-10-10/2026-09-14_isometer_extraction_plan.md) landed on main
 through 6983ea5, each with all 32 spatial-coverage viewports byte-identical
 to the 2026-09-13 receipt. Done conditions 1 to 5 hold in the crate; 6 closed
 with step 8, the Paredros retarget (e138186, by the Paredros session), and
 the terrain parity control at `Code/testing/l9-terrain-parity/`. **L9
 closed 2026-09-14.** What remains product-coupled is the family's neutral
-core types, owned by the [isometer family plan](archive_docs/2026-10-10/2026-09-14_isometer_family_plan.md).
+core types, owned by the [isometer family plan](../2026-10-10/2026-09-14_isometer_family_plan.md).
 
 ### L10. The detail ladder (2026-10-01)
 
@@ -2369,7 +2369,7 @@ ruling numbers in this lane are the wing design record's (423 to 426, 432 to
 434). One detail ladder replaces the four near-to-far renderers the one-game
 assessment found: the isometer scene, the VTT's DOM board, the VTT atlas on
 sprigging's canvas and Mesocosm's minimap on the HUD lane
-([session notes, §9.2](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#92-what-the-assessment-found)).
+([session notes, §9.2](../2026-10-06/2026-09-22_sim_design_session_notes.md#92-what-the-assessment-found)).
 It answers the hybrid switch policy among the open decisions below.
 
 **The rungs (423),** near to far, all in the one isometric camera (382, 387):
@@ -2518,7 +2518,7 @@ The VTT's overmap readings that camera draws are its overlay plan's V2
 ## CSS features and standards to earmark
 
 Fast-track candidates for genet's
-[standards-to-features ledger](../../../genet/design_docs/2026-09-07_standards_to_features_ledger.md),
+standards-to-features ledger (`genet/design_docs/2026-09-07_standards_to_features_ledger.md`),
 which is the authority on where Livery stands. The status column here is a
 file-mention count over the livery crates on 2026-09-11, a hint and not a
 conformance claim; the ledger's census numbers win.
@@ -2596,7 +2596,7 @@ consumer. That edit is genet's, in the same session the lane opens.
   the finest; live faces during rotation (ruling 6 above) stand. The ladder's
   five rungs (423), its terrain rings (425) and the open transition are in
   the record and the
-  [session notes' §10](archive_docs/2026-10-06/2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30).
+  [session notes' §10](../2026-10-06/2026-09-22_sim_design_session_notes.md#10-the-design-session-2026-09-30).
   *2026-10-01:* the transition is ruled (426): seamless where the rungs share
   geometry, by ordered dither with hysteresis where they do not. Sprite to
   live parts is the seamless step, and it owes a measurement this plan's

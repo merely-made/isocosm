@@ -4,7 +4,7 @@
 kept as precedent and numbered 1 to 984 in the design record, with new rules
 numbered by him alone, and asked every active doc to lose its stacked status
 banners, old progress entries, stale counters and pasted copies. This file
-holds, verbatim, what left the live [sim plan](../../2026-09-22_sim_plan.md):
+holds, verbatim, what left the live [sim plan](../2026-10-28/2026-09-22_sim_plan.md):
 its stacked status banners and the progress entries that no longer describe
 open work (the newest, which do, stay). Case numbers in the moved text are the
 old ruling numbers, which the design record and its archive keep.
@@ -303,7 +303,7 @@ magic (§2.3, §2.7), parked with divinity and magic under ruling 279. Rulings
 381 and 382, one host with modes and a default view, sit above the sim and
 change nothing in this plan. Rulings 389 to 392 do: the spatial spine, which
 connects the world map's sites to the voxels under them, is planned in the
-rewritten [place-graph engine plan](../../2026-08-05_place_graph_engine_plan.md)
+rewritten [place-graph engine plan](../2026-10-28/2026-08-05_place_graph_engine_plan.md)
 §A, and §2.2 gains the site's skeleton, the edge profile and the lift's
 owner. Its phases SP1 to SP5 run beside S2 without moving `mesocosm-core`'s
 places ahead of ruling 195 or touching mere ahead of ruling 363.
@@ -444,7 +444,7 @@ Checkpoint 9, systems, is ready to open.
   positives, the native all-target check and all nine consumer compilers
   passed. The complete reviews are in
   [lane queue Progress](2026-10-10_lane_queue_plan.md#progress) and the scope
-  is in [directing Progress](../../2026-10-08_directing_interim_m4_plan.md#progress).
+  is in [directing Progress](../2026-10-28/2026-10-08_directing_interim_m4_plan.md#progress).
   The ongoing thousand-draw probe describes its frozen earlier build;
   current-main reproduction, full C10 and journey certification remain open.
 
@@ -458,7 +458,7 @@ Checkpoint 9, systems, is ready to open.
   feasibility and scoring preserve 454; 813 reconsiders empty choices once
   at later scheduled pass starts while retaining selected commitments for
   the tick. Focused tests, intended compiled controls and exact restoration
-  are recorded in [directing Progress](../../2026-10-08_directing_interim_m4_plan.md#progress).
+  are recorded in [directing Progress](../2026-10-28/2026-10-08_directing_interim_m4_plan.md#progress).
   A fresh original-rate seed-zero control and unchanged candidate are
   proposed separately; A1 remains open and no rates are promoted.
 

@@ -79,14 +79,14 @@ pointer picking, which is isometer's alone (347); the sim's entities and
 places (the [sim plan](2026-09-22_sim_plan.md)); what a token or a critter
 means (each product's); or naming.
 
-**Consumes:** the [wing design record](../../design_docs/2026-09-18_wing_design_plan.md)
+**Consumes:** the [wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md)
 rulings 233, 299, 324, 326, 330 to 335, 346 to 352 and 363, and §4.1; the
 retired
-[runtime profile plan](../../design_docs/archive_docs/2026-09-18/2026-08-23_runtime_profile_plan.md);
-the [engine review](2026-08-18_engine_ecology_rulings_and_review.md) §5 T1;
+[runtime profile plan](../../../../design_docs/archive_docs/2026-09-18/2026-08-23_runtime_profile_plan.md);
+the [engine review](../../2026-08-18_engine_ecology_rulings_and_review.md) §5 T1;
 the [Mesocosm overlay plan](2026-09-25_mesocosm_overlay_plan.md) and the
-[VTT overlay plan](../../design_docs/2026-09-25_vtt_overlay_plan.md); the
-[board-on-isometer plan](../../design_docs/2026-09-15_board_on_isometer_plan.md);
+[VTT overlay plan](../../../../design_docs/archive_docs/2026-10-28/2026-09-25_vtt_overlay_plan.md); the
+[board-on-isometer plan](../../../../design_docs/archive_docs/2026-10-28/2026-09-15_board_on_isometer_plan.md);
 mere's `design_docs/mere_docs/implementation_strategy/2026-08-22_conatus_engine_plan.md`
 and `2026-08-23_runtime_composition_acceptance_plan.md`.
 

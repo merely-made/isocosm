@@ -21,7 +21,7 @@ words are quoted verbatim as numbered rulings in the
 [wing design record](../../../../design_docs/2026-09-18_wing_design_plan.md) §0, the readings this
 record's author added are on the
 [readings docket](../2026-09-24/2026-09-21_wing_readings_docket.md), and the compiled
-result is the [sim plan](../../2026-09-22_sim_plan.md). Where this file and those
+result is the [sim plan](../2026-10-28/2026-09-22_sim_plan.md). Where this file and those
 disagree, they win.
 
 **Who spoke.** Mark ruled; the assistant asked, checked and recorded. In
@@ -476,7 +476,7 @@ Administrative: ruling 128 amended Mesocosm's CLAUDE.md portable-profile
 line; the readings docket was archived to `archive_docs/2026-09-24/` once
 nothing was held; relic, tale and tract joined Mesocosm's terminology; Law
 A was amended for materials at Mark's word; and the
-[Mesocosm overlay plan](../../2026-09-25_mesocosm_overlay_plan.md) was drafted as
+[Mesocosm overlay plan](../2026-10-28/2026-09-25_mesocosm_overlay_plan.md) was drafted as
 W5, its M0 done the same day. Then, at Mark's word, work went parallel:
 the overlay plan's M1 and an S2 probe of the sim plan opened as lanes, and a
 read-only consistency pass over the record and the plans went to the RPG

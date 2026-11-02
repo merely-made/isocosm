@@ -309,7 +309,7 @@ Done-conditions:
 
 ### Save growth baseline, 2026-09-09
 
-The runnable [save-growth probe](../../../../shared/isocosm/examples/eponym_world_save_growth.rs)
+The runnable save-growth probe (`shared/isocosm/examples/eponym_world_save_growth.rs`, deleted in `694a3f0e`)
 uses a generated world, one admitted wetland body and one carried dressing.
 Each pair attaches and detaches that dressing. At every checkpoint, the current
 world, body and items equal their initial values; restoring the complete save
@@ -488,7 +488,7 @@ their owner will meet when they next format.
 
 ## Under the wing design record (2026-09-26)
 
-The record and the [sim plan](../../../../mesocosm/design_docs/2026-09-22_sim_plan.md)
+The record and the [sim plan](../../../../mesocosm/design_docs/archive_docs/2026-10-28/2026-09-22_sim_plan.md)
 §4 split what this plan treated as one problem into two regimes, and every
 stage above lands on one side or the other.
 
@@ -525,7 +525,7 @@ legend floor). Retelling re-seeds the field. Manifestation stays a proposal
 consumed by whoever owns world conditions, as F3b4 has it; the hagiograph
 hands memorials to the stack's procedural voxel engine (repo `CLAUDE.md`).
 
-**Where the stages land.** The [Eponym overlay plan](../../2026-09-25_eponym_overlay_plan.md)
+**Where the stages land.** The [Eponym overlay plan](../2026-10-28/2026-09-25_eponym_overlay_plan.md)
 cites this plan for lanes M and H. Its E2 knowledge family absorbs
 `epistemic` (570 lines) as notes on knowers, reports and corrections under
 the sim plan's S3, with the secrets regime; E3 has "a note written is later
