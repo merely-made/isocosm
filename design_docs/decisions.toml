@@ -5573,6 +5573,13 @@ area = "Eponym"
 summary = "Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged."
 draws_on = ["1095", "1100", "schema.9"]
 
+[cases."1102"]
+title = "A rounds marker, not a version 9, gates Eponym's rounds"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Eponym"
+summary = "A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged."
+draws_on = ["1095", "1100", "1101", "schema.9"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"

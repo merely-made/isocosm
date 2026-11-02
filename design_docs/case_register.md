@@ -212,7 +212,7 @@ three design docs that cite it. The record holds the words.
 | 1066 | Knowledge passes between characters by a telling act copying the teller's notes, belief taking per Processes 11, at the table or among the sim's entities. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
 | 1070 | Life history is drawn in world time; each product has a default tick unit and its own real-time tick rate, near sixty for live play. | none |
 | 1072 | The minute is everyone's background tick; individuals step at sixty a second in the foreground; long waits climb a ladder of coarse steps; life history in world time, people by preset. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
-| 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | [vtt overlay](2026-10-28_vtt_overlay_plan.md) |
+| 1075 | The wait ladder is configurable spans, aggregated once E7/E8 land; one clock, detail by attention, deep time as history. | [vtt overlay](2026-10-28_vtt_overlay_plan.md), [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 1076 | Pacing keys on each member's identity, so grouped and individual execution choose alike. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1080 | A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
 | 1082 | The foreground cap's default is set from a measured step's cost, with 16 as a placeholder until then. | [sim execution](../mesocosm/design_docs/2026-10-28_sim_execution_plan.md) |
@@ -262,12 +262,12 @@ three design docs that cite it. The record holds the words.
 | 1007 | A material's properties are its lineage's traits and its interactions are effects; what a thing is made of is a note; scarcity and provenance are ecological. | [DOC README](DOC_README.md) |
 | 1061 | Producers keep their moves; a requirement can count members at a site; a birth can name a site medium that carries the child to a neighbouring site. | [sim](../mesocosm/design_docs/2026-10-28_sim_plan.md) |
 | 1074 | People are an omnivorous consumer lineage in the food web, with world-time metabolism and enough founded food. | none |
-| 1077 | The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured. | none |
+| 1077 | The ecology's rates become world-time data tuned to a stable year-long web; people join as a slow omnivore; Mesocosm's critters too; A1 re-measured. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 | 1078 | Feed only while hungry; meals mostly return to soil; producers many bites large and more varied; births by surplus; a biomass pyramid at founding. | none |
 | 1089 | Some births land at a neighbouring site, so lineages recolonise; ranges are read from where lineages persist. | none |
 | 1092 | Seeds and spores scatter on world:air and world:water; a walker's young scatter at their walking speed over the route's length. | none |
 | 1093 | A drawn lineage trait scales the scatter chance its medium or walking speed gives. | none |
-| 1094 | The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking. | none |
+| 1094 | The player picks among what prospered at the adaptation phase; each candidate is tested by a coarse copy over years; deep time is the phase with nobody picking. | [mesocosm overlay](../mesocosm/design_docs/2026-10-28_mesocosm_overlay_plan.md) |
 
 ## Bodies and anatomy
 
@@ -777,6 +777,7 @@ three design docs that cite it. The record holds the words.
 | 1099 | The sim admits Eponym poses at cell grain, a clear root and eye in one patch; Eponym's solver keeps finer collision. | none |
 | 1100 | Eponym's sim ticks once a world minute at a minute intent carrying handbacks; older saves replay as recorded. | [board on isometer](2026-10-28_board_on_isometer_plan.md) |
 | 1101 | Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged. | none |
+| 1102 | A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged. | none |
 
 ## The VTT
 

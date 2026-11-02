@@ -12362,6 +12362,21 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Eponym · draws on 1095, 1100, schema.9 · summary Eponym's generator version 9 gates native poses, minute ticks and handbacks; versions 2 to 8 replay unchanged.
 
+1102. **A rounds marker, not a version 9, gates Eponym's rounds.** Ruled by
+      Mark on 2026-11-02: "A rounds marker (Recommended)", reopening 1101
+      when the foreground lane found that Eponym keeps one generator version
+      per founding kind (4 plain, 5 the combat fixture, 6 materials, 7 owned
+      materials, 8 spread), and that the client's real worlds are the
+      material, owned and spread ones
+      (`eponym-client/src/bin/session/founding/input.rs:51-60`), so a
+      version 9 for the plain generator would leave actual play off the new
+      path. The reading: a rounds marker in the founding's intent log, like
+      the material-profile markers, turns on native poses, handbacks and
+      minute ticks for any founding kind; saves without it replay unchanged.
+      Replaces 1101, and 1100's "new generator version".
+
+      Links: area Eponym · draws on 1101, 1100, 1095, schema.9 · summary A rounds marker in Eponym's founding intents turns on poses, handbacks and minute ticks for any founding kind; unmarked saves replay unchanged.
+
 
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
