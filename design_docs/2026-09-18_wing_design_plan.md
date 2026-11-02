@@ -12070,6 +12070,41 @@ the later sections derive from, not rules; new rules are numbered by Mark.
 
       Links: area Bodies and anatomy · draws on 1071, bodies.10, bodies.15, world.4, processes.19 · summary World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly.
 
+1080. **Two time modes: a round at real-time speeds with a sixty-step
+      foreground, and world-simming on the dial and the ladder.** Ruled by
+      Mark on 2026-11-02, on the foreground lane's forks: Eponym plays in real
+      time ("Real time, 60 Hz foreground"); a foreground step is a product
+      layer whose handback alone is recorded ("Product layer, handback
+      recorded"); what is examined is the frame tier's set, capped ("The frame
+      tier's set, capped"); and, asked how long a step is, "ten minutes a real
+      second... that applies to if you're not in a round, like if you're
+      examining the world or letting time pass in simming the world to pick a
+      place to play a round with your lineage, no? in a round, it's a bit like
+      rimworld: you can go realtime, double time, triple time, but the point
+      is not to go as fast as you would when you're, like, running the
+      worldgen... have you been conflating, like, observing a round with,
+      like, simming history?" Then "1x, 2x, 4x, 8x", and on a round's span:
+      "it could be up to a whole life if you wanted... so 1, but no cap... you
+      could just keep switching to the next critter, or choose to track
+      one... maybe i should consider the concept of 'the round' as really just
+      stepping out into the cosmograph and participating in the menu/
+      adaptation phase of the sim and game. idk!" The reading: in a round,
+      world time runs at one, two, four or eight times real time; examined
+      bodies (the frame tier's set, capped by a world rule) step sixty times
+      a real second in the product, each step a sixtieth of a second of
+      world time times the speed, choices, meals and metabolism staying on
+      the minute; at each tick boundary the sim records the handback as
+      ordinary commands checked by its invariants, the product logging its
+      own inputs; a round has no fixed span and may run a whole life or
+      more, switching to another critter or tracking one; out of a round
+      (watching or simming the world, picking a place) time runs on the
+      background dial and the coarse ladder; Mesocosm's ten-a-second head
+      tempo is world-simming speed, not a round's. Open, in Mark's words:
+      whether "the round" is better seen as stepping out into the
+      cosmograph's menu and adaptation phase.
+
+      Links: area Processes and rules · draws on 1072, 978, processes.1, processes.7 · summary A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span.
+
 Two earlier decisions this record relies on without restating: the founding
 record's five shared nouns, space, bodies, fields, time and provenance
 (engine clause, narrowed 2026-08-05), and the place-graph plan's "adjacency

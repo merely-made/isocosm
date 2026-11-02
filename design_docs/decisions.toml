@@ -5419,6 +5419,13 @@ area = "Bodies and anatomy"
 summary = "World agency is a three-way world setting; members keep a prior reading per sense; use shapes conducting networks; influence fields share reach's machinery; non-neural bodies join systems slowly."
 draws_on = ["1071", "bodies.10", "bodies.15", "processes.19", "world.4"]
 
+[cases."1080"]
+title = "Two time modes: a round at real-time speeds with a sixty-step foreground, and world-simming on the dial and the ladder"
+source = "design_docs/2026-09-18_wing_design_plan.md"
+area = "Processes and rules"
+summary = "A round runs at 1-8x real time with a 60 Hz product foreground recording only its handback; world-simming runs on the dial and ladder; a round has no fixed span."
+draws_on = ["978", "1072", "processes.1", "processes.7"]
+
 [decisions."functional-generation D1"]
 title = "effect catalogue (2026-10-28), applies Processes 3 and VTT 5"
 source = "mesocosm/design_docs/2026-10-28_functional_generation_plan.md"
