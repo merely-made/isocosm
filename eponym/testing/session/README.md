@@ -51,7 +51,9 @@ acceptance artifact.
   and `glyph-last-live-effect` is the revised `paredros-fixture:fasten`.
 - Treatment through the controls themselves: `Take item 69` (the dressing at
   the keeper's cell, in the Items panel) and `Rest` are clicked as buttons, through the host's own pointer routing, and afterwards
-  the played subject's `wound` is 0 with one `lost-part` from the injury cut.
+  `rested` is accepted and the played subject has one `lost-part` from the
+  injury cut, its `wound` share 7: a severed part's whole lattice stays in
+  it (the 2026-10-18 note to ruling 227; case 1132).
 - A part button in the sheet selects the same identity a viewport pick would:
   `selected-subject` 701, `selected-part` 3.
 - `Save` then `Load`, both clicked, round-trip one `GameSave` version: a move

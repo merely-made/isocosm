@@ -86,7 +86,9 @@ assert event rested
 more before-rest glyphs
 assert snap glyph-last == paredros-fixture:mend
 assert text paredros-fixture:mend
-assert snap wound == 0
+# A severed part's whole lattice stays in the wound share (the 2026-10-18
+# note to ruling 227; case 1132): one 3-cell limb of 40 cells reads 7.
+assert snap wound == 7
 assert snap lost-parts == 1
 
 # A part button in the sheet names the same identity a viewport pick does.
