@@ -24,7 +24,7 @@ pub use project_carry::{ProjectCarryPolicy, ProjectCapacity, ProjectLocation, pr
 pub mod handoff;
 pub use timed::ChargeState;
 pub use projects::{ProjectPose, ProjectOrigin};
-pub use motion::FallPayment;
+pub use motion::{Fall, FallPayment, Run, STEPS_PER_MINUTE};
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -93,6 +93,9 @@ pub enum Action {
     /// Native advancement is requested explicitly, never as an action side effect.
     Advance { ticks: u64 },
     ProjectCarry { project: ProjectId, carried: bool },
+    /// A round's minute of motion: its held inputs, claimed end pose and
+    /// landing payments, re-solved once (case 1117).
+    Steps { runs: Vec<Run>, end: crate::MotionPose, falls: Vec<Fall> },
 }
 
 pub fn game_source(bytes: &[u8]) -> Key { cosmograph::digest(&bytes) }
@@ -197,6 +200,7 @@ pub fn submit(session: &mut Session, bytes: Vec<u8>, input: &ActionInput,
             }
             match action {
                 Action::Motion {step,input,payment} => motion::advance(session,&mut mode,&actions,&binding,participant,*step,*input,payment,solver)?,
+                Action::Steps {runs,end,falls} => motion::steps(session,&mut mode,&actions,&binding,participant,runs,*end,falls,solver)?,
                 Action::Act {process,target,selections} => {
                     if target.is_some_and(|id| !visible.shows(id)) {
                         return Err("Eponym target is outside native awareness".into());
@@ -226,6 +230,14 @@ pub fn submit(session: &mut Session, bytes: Vec<u8>, input: &ActionInput,
     }
     mode.actions = Some(actions); mode.version = mode.required_version(); mode.validate()?;
     Ok((outcome,serde_json::to_vec(&mode).map_err(|e|e.to_string())?))
+}
+
+/// The rules a host steps a subject by between minutes, as the mode
+/// re-solves them (cases 1117, 1118).
+pub fn motion_rules(session:&Session, bytes:&[u8], subject:SubjectId) -> Result<MotionRules,String> {
+    let mode = ModeState::decode(bytes)?.ok_or("Eponym motion needs marked mode state")?;
+    let actions = mode.actions.as_ref().ok_or("Eponym actions need authored configuration")?;
+    motion::rules(session,&mode,actions,binding(&mode,subject)?)
 }
 
 pub fn submit_bytes(session:&mut Session, bytes:Vec<u8>, input:&[u8], access:OrdinaryAccess,
